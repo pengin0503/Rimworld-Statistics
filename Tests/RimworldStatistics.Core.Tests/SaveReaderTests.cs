@@ -12,8 +12,8 @@ public sealed class SaveReaderTests
         => new SaveReader().Read(new MemoryStream(bytes), "test.rws", bytes.Length, T0);
 
     private static SaveXmlBuilder Basic() => new SaveXmlBuilder().Meta("1.6.4566 rev607", mods: 3)
-        .Info(realPlay: 600.5f, tile: "221529", pawns: "Thing_Human1,Thing_Human2", permadeath: true)
-        .Tick(ticksGame: 120000, start: 15000).World(seed: "合弁会社", prv: 735390269, name: "エラクラブ-V")
+        .Info(realPlay: 600.5f, tile: "123456", pawns: "Thing_Human1,Thing_Human2", permadeath: true)
+        .Tick(ticksGame: 120000, start: 15000).World(seed: "見本の種", prv: 123456789, name: "サンプル星-V")
         .Scenario("不時着").Storyteller("Cassandra", "Rough")
         .Stats(raids: 2, threats: 3, killed: 1, launched: 0, greatestPop: 5).WealthTotal(15746f, 20000f, 18000f);
 
@@ -25,15 +25,15 @@ public sealed class SaveReaderTests
         Assert.Equal(3, obs.ModCount);
         Assert.Equal(120000, obs.Values.TicksGame);
         Assert.Equal(600.5, obs.Values.RealPlayTime, 3);
-        Assert.Equal("221529,0", obs.Identity.StartingTile);
+        Assert.Equal("123456,0", obs.Identity.StartingTile);
         Assert.Equal(15000, obs.Identity.GameStartAbsTick);
         Assert.Equal(new[] { "Thing_Human1", "Thing_Human2" }, obs.Identity.StartingPawnIds);
-        Assert.Equal("合弁会社", obs.Identity.SeedString);
-        Assert.Equal(735390269, obs.Identity.PersistentRandomValue);
+        Assert.Equal("見本の種", obs.Identity.SeedString);
+        Assert.Equal(123456789, obs.Identity.PersistentRandomValue);
         Assert.Equal((2, 3, 1, 0, 5), (obs.Values.NumRaidsEnemy, obs.Values.NumThreatsQueued, obs.Values.ColonistsKilled, obs.Values.ColonistsLaunched, obs.Values.GreatestPopulation));
         Assert.Equal(BitConverter.SingleToUInt32Bits(15746f), obs.Identity.FirstWealthBits);
         Assert.Equal((20000.0, 18000.0, 3), (obs.Values.WealthMax, obs.Values.WealthLast, obs.Values.WealthPoints));
-        Assert.Equal(("エラクラブ-V", "不時着", "Cassandra", "Rough", true), (obs.Display.WorldName, obs.Display.Scenario, obs.Display.Storyteller, obs.Display.Difficulty, obs.Display.Permadeath));
+        Assert.Equal(("サンプル星-V", "不時着", "Cassandra", "Rough", true), (obs.Display.WorldName, obs.Display.Scenario, obs.Display.Storyteller, obs.Display.Difficulty, obs.Display.Permadeath));
         Assert.Equal(SaveReader.Version, obs.ReaderVersion);
     }
 
@@ -45,7 +45,7 @@ public sealed class SaveReaderTests
     {
         // No statsRecord, no realPlayTimeInteracting, no gameStartAbsTick, no persistentRandomValue, no permadeathMode.
         var obs = Read(new SaveXmlBuilder().Meta("1.5.4104 rev435")
-            .Info(tile: "33237", pawns: "Thing_Human250").Tick(ticksGame: null, start: null)
+            .Info(tile: "4321", pawns: "Thing_Human250").Tick(ticksGame: null, start: null)
             .World(seed: "s").WealthTotal(500f));
         Assert.Equal(ObservationStatus.Ok, obs.Status);
         Assert.Equal(3, obs.Values.GreatestPopulation);
@@ -100,14 +100,14 @@ public sealed class SaveReaderTests
     public void Read_PathOverload_SetsFileInfo()
     {
         using var dir = new TempDir();
-        var path = dir.File("人々派契約国「バットストバ」 (パーマデス).rws");
+        var path = dir.File("架空連邦「テスト」 (パーマデス).rws");
         var bytes = Basic().Build();
         File.WriteAllBytes(path, bytes);
         var stamp = new DateTime(2025, 3, 4, 5, 6, 7, DateTimeKind.Utc);
         File.SetLastWriteTimeUtc(path, stamp);
 
         var obs = new SaveReader().Read(path);
-        Assert.Equal("人々派契約国「バットストバ」 (パーマデス).rws", obs.FileName);
+        Assert.Equal("架空連邦「テスト」 (パーマデス).rws", obs.FileName);
         Assert.Equal(bytes.LongLength, obs.FileSize);
         Assert.Equal(stamp, obs.LastWriteUtc);
         Assert.Equal(ObservationStatus.Ok, obs.Status);

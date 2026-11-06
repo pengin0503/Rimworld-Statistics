@@ -8,14 +8,14 @@ public sealed class ModelJsonTests
         var p = new Profile();
         p.SaveObservations.Add(new SaveObservation
         {
-            FileName = "人々派契約国「バットストバ」 (パーマデス).rws.old",
+            FileName = "架空連邦「テスト」 (パーマデス).rws.old",
             Status = ObservationStatus.Ok,
-            Display = new DisplayInfo { FactionName = "rim共同体", WorldName = "JDK-49・メリディアナ" },
+            Display = new DisplayInfo { FactionName = "見本共同体", WorldName = "XYZ-01・サンプリア" },
             EndingTraces = { EndingType.AmbiguousLaunch },
         });
         var back = ProfileJson.Deserialize(ProfileJson.Serialize(p));
-        Assert.Equal("人々派契約国「バットストバ」 (パーマデス).rws.old", back.SaveObservations[0].FileName);
-        Assert.Equal("JDK-49・メリディアナ", back.SaveObservations[0].Display.WorldName);
+        Assert.Equal("架空連邦「テスト」 (パーマデス).rws.old", back.SaveObservations[0].FileName);
+        Assert.Equal("XYZ-01・サンプリア", back.SaveObservations[0].Display.WorldName);
         Assert.Equal(EndingType.AmbiguousLaunch, back.SaveObservations[0].EndingTraces[0]);
     }
 
@@ -31,12 +31,12 @@ public sealed class ModelJsonTests
     [Fact]
     public void FingerprintHash_IsStableAndNullWhenIncomplete()
     {
-        var id = new ColonyIdentity { SeedString = "gracie", PersistentRandomValue = 1911680894, StartingTile = "204285,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 };
+        var id = new ColonyIdentity { SeedString = "seedling", PersistentRandomValue = 1234567890, StartingTile = "100200,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 };
         Assert.Equal(16, id.FingerprintHash()!.Length);
-        Assert.Equal(id.FingerprintHash(), new ColonyIdentity { SeedString = "gracie", PersistentRandomValue = 1911680894, StartingTile = "204285,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 }.FingerprintHash());
-        Assert.Null(new ColonyIdentity { SeedString = "gracie", StartingTile = "1,0" }.FingerprintHash());
-        Assert.Equal("221529,0", ColonyIdentity.NormalizeTile("221529"));
-        Assert.Equal("204285,1", ColonyIdentity.NormalizeTile("204285,1"));
+        Assert.Equal(id.FingerprintHash(), new ColonyIdentity { SeedString = "seedling", PersistentRandomValue = 1234567890, StartingTile = "100200,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 }.FingerprintHash());
+        Assert.Null(new ColonyIdentity { SeedString = "seedling", StartingTile = "1,0" }.FingerprintHash());
+        Assert.Equal("123456,0", ColonyIdentity.NormalizeTile("123456"));
+        Assert.Equal("100200,1", ColonyIdentity.NormalizeTile("100200,1"));
     }
 
     [Fact]

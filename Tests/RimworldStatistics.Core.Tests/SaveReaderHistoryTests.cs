@@ -16,9 +16,9 @@ public sealed class SaveReaderHistoryTests
     [Fact]
     public void Read_PlayerFactionName_And_MechanoidFlag()
     {
-        var obs = Read(Base().Faction("OutlanderCivil", "西方連合", false).Faction("PlayerColony", "rim同盟", false)
+        var obs = Read(Base().Faction("OutlanderCivil", "西方連合", false).Faction("PlayerColony", "見本同盟", false)
             .Faction("Mechanoid", null, true).Quest("Gravcore_Mechhive", true, "Success"));
-        Assert.Equal("rim同盟", obs.Display.FactionName);
+        Assert.Equal("見本同盟", obs.Display.FactionName);
         Assert.Equal(new[] { EndingType.CerebrexDestroyed }, obs.EndingTraces); // deactivated reached Detect
     }
 

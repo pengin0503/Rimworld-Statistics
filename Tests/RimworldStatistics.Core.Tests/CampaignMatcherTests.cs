@@ -35,8 +35,8 @@ public sealed class CampaignMatcherTests
     public void ExampleA_PermadeathRename_Merges()
     {
         var c = Assert.Single(CampaignMatcher.BuildColonies(Profile(
-            Obs("人々派契約国「バットストバ」 (パーマデス).rws.old", pawns: "891,951,1047", day: 0),
-            Obs("rim共同体 (パーマデス).rws", pawns: "891", day: 3))));
+            Obs("架空連邦「テスト」 (パーマデス).rws.old", pawns: "891,951,1047", day: 0),
+            Obs("見本共同体 (パーマデス).rws", pawns: "891", day: 3))));
         Assert.Equal(2, c.Observations.Count);
         Assert.Equal($"fp:{Hash}", c.Key);
         Assert.Equal(Hash, c.FingerprintHash);

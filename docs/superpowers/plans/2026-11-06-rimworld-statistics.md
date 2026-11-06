@@ -185,12 +185,12 @@ apt-get update && apt-get install -y dotnet-sdk-10.0
 {
     var p = new Profile();
     p.SaveObservations.Add(new SaveObservation {
-        FileName = "人々派契約国「バットストバ」 (パーマデス).rws.old", Status = ObservationStatus.Ok,
-        Display = new DisplayInfo { FactionName = "rim共同体", WorldName = "JDK-49・メリディアナ" },
+        FileName = "架空連邦「テスト」 (パーマデス).rws.old", Status = ObservationStatus.Ok,
+        Display = new DisplayInfo { FactionName = "見本共同体", WorldName = "XYZ-01・サンプリア" },
         EndingTraces = { EndingType.AmbiguousLaunch } });
     var back = ProfileJson.Deserialize(ProfileJson.Serialize(p));
-    Assert.Equal("人々派契約国「バットストバ」 (パーマデス).rws.old", back.SaveObservations[0].FileName);
-    Assert.Equal("JDK-49・メリディアナ", back.SaveObservations[0].Display.WorldName);
+    Assert.Equal("架空連邦「テスト」 (パーマデス).rws.old", back.SaveObservations[0].FileName);
+    Assert.Equal("XYZ-01・サンプリア", back.SaveObservations[0].Display.WorldName);
     Assert.Equal(EndingType.AmbiguousLaunch, back.SaveObservations[0].EndingTraces[0]);
 }
 [Fact] public void Json_UsesCamelCaseEnumStrings()
@@ -202,12 +202,12 @@ apt-get update && apt-get install -y dotnet-sdk-10.0
 }
 [Fact] public void FingerprintHash_IsStableAndNullWhenIncomplete()
 {
-    var id = new ColonyIdentity { SeedString = "gracie", PersistentRandomValue = 1911680894, StartingTile = "204285,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 };
+    var id = new ColonyIdentity { SeedString = "seedling", PersistentRandomValue = 1234567890, StartingTile = "100200,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 };
     Assert.Equal(16, id.FingerprintHash()!.Length);
-    Assert.Equal(id.FingerprintHash(), new ColonyIdentity { SeedString = "gracie", PersistentRandomValue = 1911680894, StartingTile = "204285,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 }.FingerprintHash());
-    Assert.Null(new ColonyIdentity { SeedString = "gracie", StartingTile = "1,0" }.FingerprintHash());
-    Assert.Equal("221529,0", ColonyIdentity.NormalizeTile("221529"));
-    Assert.Equal("204285,1", ColonyIdentity.NormalizeTile("204285,1"));
+    Assert.Equal(id.FingerprintHash(), new ColonyIdentity { SeedString = "seedling", PersistentRandomValue = 1234567890, StartingTile = "100200,0", GameStartAbsTick = 1570000, FirstWealthBits = 0x46AD9C00 }.FingerprintHash());
+    Assert.Null(new ColonyIdentity { SeedString = "seedling", StartingTile = "1,0" }.FingerprintHash());
+    Assert.Equal("123456,0", ColonyIdentity.NormalizeTile("123456"));
+    Assert.Equal("100200,1", ColonyIdentity.NormalizeTile("100200,1"));
 }
 [Fact] public void LineageToken_RoundTrips_AndRejectsGarbage()
 {
@@ -260,7 +260,7 @@ git commit -m "feat(core): add solution scaffold, profile model and JSON codec"
     - `const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics"`
     - `SaveObservation Read(string path)`: `FileInfo` からサイズと更新日時（UTC）を取る。IO の例外は `Status=Error` にして返し、外へ投げない。
     - `SaveObservation Read(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc)`
-  - `SaveXmlBuilder`（テスト用）: 流れるように書ける組み立て用クラス。例 `.Meta("1.6.4566 rev607", mods: 3)`、`.Info(realPlay: 600.5f, tile: "221529", pawns: "Thing_Human1,Thing_Human2")`、`.Tick(ticksGame: 120000, start: 15000)`、`.World(seed: "x", prv: 5)`、`.Stats(raids: 2)`、`.WealthTotal(params float[] values)`、`.WealthTotalDeflate(params float[] values)`、`.Minimal()`（識別できる最小のセーブ）、`.Maps(sizeBytes)`、`.Build() -> byte[]`
+  - `SaveXmlBuilder`（テスト用）: 流れるように書ける組み立て用クラス。例 `.Meta("1.6.4566 rev607", mods: 3)`、`.Info(realPlay: 600.5f, tile: "123456", pawns: "Thing_Human1,Thing_Human2")`、`.Tick(ticksGame: 120000, start: 15000)`、`.World(seed: "x", prv: 5)`、`.Stats(raids: 2)`、`.WealthTotal(params float[] values)`、`.WealthTotalDeflate(params float[] values)`、`.Minimal()`（識別できる最小のセーブ）、`.Maps(sizeBytes)`、`.Build() -> byte[]`
 
 - [ ] **Step 1: 失敗するテストを書く**（`SaveReaderTests.cs`）
 
@@ -268,20 +268,20 @@ git commit -m "feat(core): add solution scaffold, profile model and JSON codec"
 [Fact] public void Read_BasicSections()
 {
     var obs = Read(new SaveXmlBuilder().Meta("1.6.4566 rev607", mods: 3)
-        .Info(realPlay: 600.5f, tile: "221529", pawns: "Thing_Human1,Thing_Human2", permadeath: true)
-        .Tick(ticksGame: 120000, start: 15000).World(seed: "合弁会社", prv: 735390269, name: "エラクラブ-V")
+        .Info(realPlay: 600.5f, tile: "123456", pawns: "Thing_Human1,Thing_Human2", permadeath: true)
+        .Tick(ticksGame: 120000, start: 15000).World(seed: "見本の種", prv: 123456789, name: "サンプル星-V")
         .Scenario("不時着").Storyteller("Cassandra", "Rough")
         .Stats(raids: 2, threats: 3, killed: 1, launched: 0, greatestPop: 5).WealthTotal(15746f, 20000f, 18000f));
     Assert.Equal(ObservationStatus.Ok, obs.Status);
     Assert.Equal("1.6.4566 rev607", obs.GameVersion); Assert.Equal(3, obs.ModCount);
     Assert.Equal(120000, obs.Values.TicksGame); Assert.Equal(600.5, obs.Values.RealPlayTime, 3);
-    Assert.Equal("221529,0", obs.Identity.StartingTile); Assert.Equal(15000, obs.Identity.GameStartAbsTick);
+    Assert.Equal("123456,0", obs.Identity.StartingTile); Assert.Equal(15000, obs.Identity.GameStartAbsTick);
     Assert.Equal(new[] { "Thing_Human1", "Thing_Human2" }, obs.Identity.StartingPawnIds);
-    Assert.Equal("合弁会社", obs.Identity.SeedString); Assert.Equal(735390269, obs.Identity.PersistentRandomValue);
+    Assert.Equal("見本の種", obs.Identity.SeedString); Assert.Equal(123456789, obs.Identity.PersistentRandomValue);
     Assert.Equal((2, 3, 1, 0, 5), (obs.Values.NumRaidsEnemy, obs.Values.NumThreatsQueued, obs.Values.ColonistsKilled, obs.Values.ColonistsLaunched, obs.Values.GreatestPopulation));
     Assert.Equal(BitConverter.SingleToUInt32Bits(15746f), obs.Identity.FirstWealthBits);
     Assert.Equal((20000.0, 18000.0, 3), (obs.Values.WealthMax, obs.Values.WealthLast, obs.Values.WealthPoints));
-    Assert.Equal(("エラクラブ-V", "不時着", "Cassandra", "Rough", true), (obs.Display.WorldName, obs.Display.Scenario, obs.Display.Storyteller, obs.Display.Difficulty, obs.Display.Permadeath));
+    Assert.Equal(("サンプル星-V", "不時着", "Cassandra", "Rough", true), (obs.Display.WorldName, obs.Display.Scenario, obs.Display.Storyteller, obs.Display.Difficulty, obs.Display.Permadeath));
     Assert.Equal(SaveReader.Version, obs.ReaderVersion);
 }
 [Fact] public void Read_AbsentElements_UseGameDefaults()
@@ -374,8 +374,8 @@ LineageTypes に VoidEmbraced・VoidDisrupted のどれかがある → Void の
 
 ```csharp
 [Fact] public void Read_PlayerFactionName_And_MechanoidFlag()
-// Faction("PlayerColony","rim同盟",false) と Faction("Mechanoid",null,true)
-// → Display.FactionName == "rim同盟"、Detect への入力で MechanoidsDeactivated == true
+// Faction("PlayerColony","見本同盟",false) と Faction("Mechanoid",null,true)
+// → Display.FactionName == "見本同盟"、Detect への入力で MechanoidsDeactivated == true
 [Fact] public void Read_ModCampaignId_FromComponent()
 // Component(SaveReader.ComponentClassName, "campaignId", "6f1c…") → Identity.ModCampaignId == "6f1c…"
 // seedString が無くても Status == Ok（ID で識別できる）
