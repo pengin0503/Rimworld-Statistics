@@ -48,13 +48,16 @@ public static class ProfileMutations
     }
 
     /// <summary>
-    /// True when dropping <paramref name="older"/> cannot change any statistic or grouping: every value is at least as high,
-    /// traces are a superset, and the newer starting pawns include all the older ones (branch evidence, spec §7.1).
+    /// True when dropping <paramref name="older"/> cannot change any statistic, grouping or listed version: same game version,
+    /// every value at least as high, traces a superset, and the newer starting pawns include all the older ones (branch
+    /// evidence, spec §7.1).
     /// </summary>
     public static bool Dominates(SaveObservation newer, SaveObservation older)
     {
         if (older.Status != ObservationStatus.Ok || newer.Status != ObservationStatus.Ok)
             return false;
+        if (older.GameVersion != null && older.GameVersion != newer.GameVersion)
+            return false;   // the only record of a version the colony was played on (Colonies tab, spec §9.2)
         ObservedValues n = newer.Values, o = older.Values;
         return n.TicksGame >= o.TicksGame
             && n.RealPlayTime >= o.RealPlayTime

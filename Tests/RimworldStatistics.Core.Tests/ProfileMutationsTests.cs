@@ -93,6 +93,20 @@ public sealed class ProfileMutationsTests
     }
 
     [Fact]
+    public void Overwrite_AfterGameUpgrade_KeepsOldForVersionHistory()
+    {
+        // The Colonies tab lists the versions a colony was played on (spec §9.2); pruning must not change that (§7.1).
+        var p = new Profile();
+        var old = Obs("a.rws", t0, ticks: 1000); old.GameVersion = "1.6.4566 rev607";
+        var upgraded = Obs("a.rws", t1, ticks: 2000, raids: 1, wealthMax: 200, realPlay: 20); upgraded.GameVersion = "1.7.4985 rev1269";
+        ProfileMutations.AddSaveObservation(p, old);
+        ProfileMutations.AddSaveObservation(p, upgraded);
+        Assert.Equal(2, p.SaveObservations.Count);
+        var stats = StatsCalculator.CalculateColony(Assert.Single(CampaignMatcher.BuildColonies(p)), new StatsOptions());
+        Assert.Equal(new[] { "1.6.4566 rev607", "1.7.4985 rev1269" }, stats.GameVersions);
+    }
+
+    [Fact]
     public void Overwrite_LosingAnExplainedTrace_IsNotDominating()
     {
         var p = new Profile();
