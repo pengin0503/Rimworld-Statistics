@@ -82,7 +82,16 @@ public sealed class SaveReader
     {
         public SaveObservation Obs { get; } = obs;
         public float[]? Wealth { get; set; }
+        public string? ScenarioPlayerFactionDef { get; set; }
+        public List<(string? Def, string? Name)> Factions { get; } = new();
+        public bool MechanoidsDeactivated { get; set; }
+        public bool RoyalAscentSucceeded { get; set; }
+        public bool MechhiveSucceeded { get; set; }
+        public string? AnomalyLevelDef { get; set; }
+        public List<EndingType> LineageTypes { get; } = new();
     }
+
+    private const string AnomalyComponentName = "GameComponent_Anomaly";
 
     private static SaveObservation NewObservation(string fileName, long fileSize, DateTime lastWriteUtc)
         => new() { FileName = fileName, FileSize = fileSize, LastWriteUtc = lastWriteUtc, ReaderVersion = Version, Status = ObservationStatus.Ok };
@@ -105,11 +114,13 @@ public sealed class SaveReader
             {
                 case "info": ReadInfo(Load(r), obs); break;
                 case "tickManager": ReadTickManager(Load(r), obs); break;
-                case "scenario": obs.Display.Scenario = Text(Load(r).Element("name")); break;
+                case "scenario": ReadScenario(Load(r), s); break;
                 case "storyteller": ReadStoryteller(Load(r), obs); break;
                 case "storyWatcher": ReadStats(Load(r).Element("statsRecord"), obs.Values); break;
-                case "world": ReadWorld(r, obs); break;
+                case "world": ReadWorld(r, s); break;
                 case "history": ReadHistory(r, s); break;
+                case "questManager": ReadQuests(r, s); break;
+                case "components": ReadComponents(r, s); break;
                 default: r.Skip(); break;
             }
         });
@@ -154,19 +165,128 @@ public sealed class SaveReader
         v.GreatestPopulation = Int(sr?.Element("greatestPopulation"), 3);
     }
 
-    private static void ReadWorld(XmlReader r, SaveObservation obs)
+    private static void ReadScenario(XElement scenario, ReadState s)
+    {
+        s.Obs.Display.Scenario = Text(scenario.Element("name"));
+        s.ScenarioPlayerFactionDef = Text(scenario.Element("playerFaction")?.Element("factionDef"))?.Trim();
+    }
+
+    private static void ReadWorld(XmlReader r, ReadState s)
+    {
+        var obs = s.Obs;
+        ForEachChild(r, name =>
+        {
+            switch (name)
+            {
+                case "info":
+                    var info = Load(r);
+                    obs.Display.WorldName = Text(info.Element("name"));
+                    obs.Identity.SeedString = Text(info.Element("seedString"));
+                    obs.Identity.PersistentRandomValue = Int(info.Element("persistentRandomValue"), 0);
+                    break;
+                case "factionManager":
+                    ForEachChild(r, fm =>
+                    {
+                        if (fm != "allFactions") { r.Skip(); return; }
+                        ForEachChild(r, _ => ReadFaction(r, s));   // allFactions/li
+                    });
+                    break;
+                default:
+                    r.Skip();
+                    break;
+            }
+        });
+    }
+
+    /// <summary>Reads def, name and deactivated directly under a faction; relations, pawns etc. are skipped.</summary>
+    private static void ReadFaction(XmlReader r, ReadState s)
+    {
+        string? def = null, name = null;
+        var deactivated = false;
+        ForEachChild(r, child =>
+        {
+            switch (child)
+            {
+                case "def": def = r.ReadElementContentAsString().Trim(); break;
+                case "name": name = r.ReadElementContentAsString(); break;
+                case "deactivated": deactivated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                default: r.Skip(); break;
+            }
+        });
+        s.Factions.Add((def, name));
+        if (def == "Mechanoid" && deactivated)
+            s.MechanoidsDeactivated = true;
+    }
+
+    private static void ReadQuests(XmlReader r, ReadState s)
     {
         ForEachChild(r, name =>
         {
-            if (name != "info")
+            if (name != "quests") { r.Skip(); return; }
+            ForEachChild(r, _ =>                                   // quests/li
             {
+                string? root = null, outcome = null;
+                var ended = false;
+                ForEachChild(r, child =>
+                {
+                    switch (child)
+                    {
+                        case "root": root = r.ReadElementContentAsString().Trim(); break;
+                        case "ended": ended = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                        case "endOutcome": outcome = r.ReadElementContentAsString().Trim(); break;
+                        default: r.Skip(); break;
+                    }
+                });
+                // Quest.State == EndedSuccess requires ended && endOutcome == Success (1.7.4985).
+                if (!ended || outcome != "Success")
+                    return;
+                if (root == "EndGame_RoyalAscent") s.RoyalAscentSucceeded = true;
+                else if (root == "Gravcore_Mechhive") s.MechhiveSucceeded = true;
+            });
+        });
+    }
+
+    private static void ReadComponents(XmlReader r, ReadState s)
+    {
+        ForEachChild(r, _ =>                                       // components/li[@Class]
+        {
+            // Scribe writes the class name without ignored namespaces such as "RimWorld." (GenTypes).
+            var cls = r.GetAttribute("Class");
+            if (cls == ComponentClassName)
+                ReadOwnComponent(r, s);
+            else if (cls is AnomalyComponentName or "RimWorld." + AnomalyComponentName)
+                ForEachChild(r, child =>
+                {
+                    if (child == "levelDef") s.AnomalyLevelDef = r.ReadElementContentAsString().Trim();
+                    else r.Skip();
+                });
+            else
                 r.Skip();
-                return;
+        });
+    }
+
+    private static void ReadOwnComponent(XmlReader r, ReadState s)
+    {
+        ForEachChild(r, child =>
+        {
+            switch (child)
+            {
+                case "campaignId":
+                    var id = r.ReadElementContentAsString().Trim();
+                    s.Obs.Identity.ModCampaignId = id.Length == 0 ? null : id;
+                    break;
+                case "lineageEndings":
+                    ForEachChild(r, _ =>
+                    {
+                        // An unreadable token is ignored rather than failing the whole save.
+                        if (LineageEntry.TryParse(r.ReadElementContentAsString().Trim(), out var entry))
+                            s.LineageTypes.Add(entry.Type);
+                    });
+                    break;
+                default:
+                    r.Skip();
+                    break;
             }
-            var info = Load(r);
-            obs.Display.WorldName = Text(info.Element("name"));
-            obs.Identity.SeedString = Text(info.Element("seedString"));
-            obs.Identity.PersistentRandomValue = Int(info.Element("persistentRandomValue"), 0);
         });
     }
 
@@ -210,6 +330,16 @@ public sealed class SaveReader
     private static void Finish(ReadState s)
     {
         var obs = s.Obs;
+        obs.Display.FactionName = PlayerFactionName(s);
+        obs.EndingTraces = EndingTraces.Detect(new TraceInputs
+        {
+            ColonistsLaunched = obs.Values.ColonistsLaunched,
+            RoyalAscentSucceeded = s.RoyalAscentSucceeded,
+            MechhiveSucceeded = s.MechhiveSucceeded,
+            MechanoidsDeactivated = s.MechanoidsDeactivated,
+            AnomalyLevelDef = s.AnomalyLevelDef,
+            LineageTypes = s.LineageTypes,
+        });
         if (s.Wealth is { Length: > 0 } w)
         {
             obs.Identity.FirstWealthBits = BitConverter.SingleToUInt32Bits(w[0]);
@@ -227,6 +357,22 @@ public sealed class SaveReader
             obs.Status = ObservationStatus.Unidentifiable;
             obs.ErrorReason = string.Join(",", missing);
         }
+    }
+
+    /// <summary>
+    /// Faction.OfPlayer is the first faction whose def has isPlayer. The save does not carry that flag, so match the
+    /// scenario's player faction def (e.g. Odyssey's "GravshipCrew"), falling back to defs named "Player…".
+    /// </summary>
+    private static string? PlayerFactionName(ReadState s)
+    {
+        if (s.ScenarioPlayerFactionDef is { Length: > 0 } def)
+        {
+            foreach (var f in s.Factions)
+                if (f.Def == def) return f.Name;
+        }
+        foreach (var f in s.Factions)
+            if (f.Def is not null && f.Def.StartsWith("Player", StringComparison.Ordinal)) return f.Name;
+        return null;
     }
 
     /// <summary>
