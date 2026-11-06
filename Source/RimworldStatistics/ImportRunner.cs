@@ -12,7 +12,7 @@ public static class ImportRunner
     private static readonly object Gate = new();
     private static CancellationTokenSource? cts;
     private static Task? task;
-    private static bool autoStarted;
+    private static readonly AutoImportGate AutoGate = new();   // main thread only
 
     private static volatile ImportProgress? progress;
     private static volatile ImportResult? lastResult;
@@ -51,6 +51,7 @@ public static class ImportRunner
         }
     }
 
+    /// <summary>The user's Cancel: the scan stays stopped until the user rescans.</summary>
     public static void Cancel()
     {
         lock (Gate)
@@ -58,18 +59,24 @@ public static class ImportRunner
     }
 
     /// <summary>
-    /// Main thread, title screen. Starts the first scan of this session when auto-import is on, and resumes a scan that
-    /// was cancelled because a game was started or loaded (spec §7.5: continue on the next return to the title screen).
+    /// Main thread. A game is starting or loading (spec §7.5): stop the scan, and let the title screen continue it the
+    /// next time it is shown.
+    /// </summary>
+    public static void CancelForGameStart()
+    {
+        if (Running)
+            AutoGate.InterruptedByGame();
+        Cancel();
+    }
+
+    /// <summary>
+    /// Main thread, title screen (called on every menu draw). Starts the first scan of this session when auto-import is
+    /// on, and continues a scan that a game start interrupted; never restarts a scan the user cancelled.
     /// </summary>
     public static void AutoStartOnce()
     {
-        if (!RimworldStatisticsMod.Settings.autoImport || Running)
-            return;
-        var resume = lastResult is { Cancelled: true };
-        if (autoStarted && !resume)
-            return;
-        autoStarted = true;
-        StartIfIdle();
+        if (AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, Running))
+            StartIfIdle();
     }
 
     private static void Run(string savesDir, ProfileSession session, CancellationToken ct)

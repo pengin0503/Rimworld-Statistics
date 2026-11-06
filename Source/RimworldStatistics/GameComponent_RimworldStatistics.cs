@@ -98,7 +98,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     {
         try
         {
-            ImportRunner.Cancel();   // a game is starting: stop importing; the rest is read on the next return to the title
+            ImportRunner.CancelForGameStart();   // stop importing; the rest is read on the next return to the title screen
         }
         catch (Exception e)
         {

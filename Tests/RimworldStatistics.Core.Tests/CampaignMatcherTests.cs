@@ -123,6 +123,24 @@ public sealed class CampaignMatcherTests
     }
 
     [Fact]
+    public void IdKeyedColony_KeepsDecision_WhenItsFingerprintArrives()
+    {
+        // A new game is registered before its first wealth record, so it starts as id:<campaignId>. If the user excludes
+        // it then, the exclusion must survive the later save that completes the fingerprint (key becomes fp:<hash>).
+        var p = new Profile();
+        var early = Id(pawns: "1,2"); early.FirstWealthBits = null;
+        p.LiveCampaigns.Add(new LiveCampaign { CampaignId = "g1", Identity = early });
+        Assert.Equal("id:g1", Assert.Single(CampaignMatcher.BuildColonies(p)).Key);
+        p.UserDecisions.ExcludedCampaignKeys.Add("id:g1");
+
+        p.LiveCampaigns[0].Identity.FirstWealthBits = Id().FirstWealthBits;
+        var c = Assert.Single(CampaignMatcher.BuildColonies(p));
+        Assert.Equal($"fp:{Hash}", c.Key);
+        Assert.Contains("id:g1", c.AliasKeys);
+        Assert.True(c.Excluded);
+    }
+
+    [Fact]
     public void AncestorFoundLater_MergesBranches_AndKeepsDecisionViaAlias()
     {
         var p = Profile(Obs("b1.rws", pawns: "1,2"), Obs("b2.rws", pawns: "1,3"));   // two branches of one fingerprint

@@ -144,6 +144,9 @@ public static class CampaignMatcher
                 c.Key = "id:" + c.CampaignIds().OrderBy(i => i, Ord).First();
                 continue;
             }
+            // A live campaign is keyed id:<campaignId> until its first wealth record completes the fingerprint; keep
+            // those keys as aliases so a decision made in the meantime still applies after the key becomes fp:<hash>.
+            c.AliasKeys.AddRange(c.CampaignIds().OrderBy(i => i, Ord).Select(i => "id:" + i));
             var entries = profile.ColonyKeys.Where(e => e.FingerprintHash == hash).ToList();
             var matches = entries
                 .Where(e => !claimed.Contains(e) && SubsetEitherWay(new HashSet<string>(e.StartingPawnIds, Ord), c.StartingPawnUnion))
