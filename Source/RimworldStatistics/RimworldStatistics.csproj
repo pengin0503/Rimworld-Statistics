@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>RimworldStatistics</RootNamespace>
+    <AssemblyName>RimworldStatistics</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)../../1.7/Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <!-- Only the two DLLs go into 1.7/Assemblies: no .pdb/.xml next to them, symbols are embedded. -->
+    <DebugType>embedded</DebugType>
+    <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp" HintPath="$(GameDir)/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityStubs" HintPath="$(GameDir)/UnityStubs.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(HarmonyDll)" Private="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="../RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
+  </ItemGroup>
+  <Target Name="CheckGameReferences" BeforeTargets="ResolveReferences">
+    <Error Condition="!Exists('$(GameDir)/Assembly-CSharp.dll') Or !Exists('$(GameDir)/UnityStubs.dll')" Text="Set GameDir to the RimWorld 1.7 installation directory (or run tools/fetch_dev_inputs.py refs .refs)." />
+    <Error Condition="!Exists('$(HarmonyDll)')" Text="Set HarmonyDll to the Harmony mod's 1.7/Assemblies/0Harmony.dll (or run tools/fetch_dev_inputs.py refs .refs)." />
+  </Target>
+</Project>

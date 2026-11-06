@@ -1,20 +1,70 @@
 # Rimworld-Statistics
 
-RimWorld 1.7 向けに設計中の MOD です。全セーブ・全コロニーを通した、通算のプレイ統計を表示します。
+RimWorld 1.7 向けの MOD です。全セーブ・全コロニーを通した、通算のプレイ統計を表示します。
 
-タイトル画面から、どのセーブもロードせずに、次のような値を確認できることを目標とします。
+タイトル画面の「通算統計」ボタンから、どのセーブもロードせずに、次のような値を確認できます。
 - 通算ゲーム内日数
 - エンディング到達回数（種類別）
 - 最高資産の合計
 - コロニー数、実プレイ時間、襲撃・死亡の累計など
 
-MOD 導入前のセーブ（1.5〜1.7）も取り込みます。
+MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。セーブには書き込みません。
 
-## 設計状況
+前提 MOD: Harmony
 
-**設計仕様 v0.2（レビュー待ち）／未実装。** ゲーム用のコードはまだありません。
+## 状況
+
+**実装済み・手動確認待ち。** 自動確認（単体テスト、実セーブ 49 件での照合、1.7.4985 に対する参照照合）は通っています。ゲームを起動しての確認は、[手動確認の手順書](docs/manual-test-checklist.md)で行います。
 
 - [設計仕様 v0.2（2026-11-06）](docs/superpowers/specs/2026-11-06-rimworld-statistics-design.md)
 - [RimWorld 1.7 実現可能性調査（2026-11-06）](docs/research/2026-11-06-rimworld-1.7-feasibility.md)
+- [実装計画（2026-11-06）](docs/superpowers/plans/2026-11-06-rimworld-statistics.md)
+- [手動確認の手順書](docs/manual-test-checklist.md)
 
-前提 MOD: Harmony
+## ビルド（開発者向け）
+
+.NET 10 SDK が必要です。参照するゲームの DLL と Harmony は、環境変数 `GameDir`（`Assembly-CSharp.dll` と `UnityStubs.dll` のあるフォルダ）と `HarmonyDll`（Harmony の `1.7/Assemblies/0Harmony.dll`）で指定します。指定しなければ `.refs/game` と `.refs/harmony/0Harmony.dll` を使います。
+
+```bash
+dotnet test
+```
+
+```bash
+dotnet build -c Release
+```
+
+```bash
+bash tools/package.sh artifacts/RimworldStatistics.zip
+```
+
+開発用の入力（参照 DLL、実セーブ、監査済み索引）は、R2 の環境変数（`R2_ENDPOINT`、`R2_BUCKET`、`AWS_ACCESS_KEY_ID`、`AWS_SECRET_ACCESS_KEY`）があれば `tools/fetch_dev_inputs.py` で取得できます。実セーブはリポジトリに入れません。
+
+```bash
+python3 -m venv .devinputs/venv && .devinputs/venv/bin/pip install -q boto3
+```
+
+```bash
+.devinputs/venv/bin/python -I tools/fetch_dev_inputs.py refs .refs
+```
+
+```bash
+.devinputs/venv/bin/python -I tools/fetch_dev_inputs.py audit .devinputs/audit
+```
+
+```bash
+.devinputs/venv/bin/python -I tools/fetch_dev_inputs.py saves .devinputs/saves
+```
+
+```bash
+RWSTATS_REAL_SAVES_DIR=$PWD/.devinputs/saves dotnet test
+```
+
+```bash
+bash tools/refcheck.sh && bash tools/check_patches.sh && bash tools/check_keys.sh
+```
+
+| ツール | 内容 |
+|---|---|
+| `tools/refcheck.sh` | 作った DLL が参照するゲームの型とメンバーが、1.7.4985 に存在するか |
+| `tools/check_patches.sh` | Harmony のパッチ対象と、注入する引数名が 1.7.4985 に存在するか |
+| `tools/check_keys.sh` | コードで使う翻訳キーが、日本語と英語の両方にあるか |

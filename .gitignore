@@ -1,0 +1,9 @@
+bin/
+obj/
+.refs/
+.devinputs/
+1.7/Assemblies/
+artifacts/
+*.user
+.vs/
+.idea/

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SettingsCategory>通算統計（Rimworld Statistics）</RWS_SettingsCategory>
+  <RWS_Setting_IncludeDevMode>開発モード中に記録したエンディングを表示し、合計に含める</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>タイトル画面で自動的にセーブを取り込む</RWS_Setting_AutoImport>
+  <RWS_MenuButton>通算統計</RWS_MenuButton>
+  <RWS_WindowTitle>通算統計</RWS_WindowTitle>
+  <RWS_WindowError>統計ウィンドウの表示中にエラーが起きました。詳しくはログを見てください。</RWS_WindowError>
+  <RWS_Tab_Overview>概要</RWS_Tab_Overview>
+  <RWS_Tab_Endings>エンディング</RWS_Tab_Endings>
+  <RWS_Tab_Colonies>コロニー</RWS_Tab_Colonies>
+  <RWS_Tab_Import>取り込み状況</RWS_Tab_Import>
+  <RWS_Stat_Days>通算ゲーム内日数</RWS_Stat_Days>
+  <RWS_Stat_Endings>エンディング到達回数</RWS_Stat_Endings>
+  <RWS_Stat_Departed>旅立った人数</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>最高資産の合計</RWS_Stat_PeakWealthSum>
+  <RWS_Stat_Colonies>コロニー数</RWS_Stat_Colonies>
+  <RWS_Stat_RealPlay>実プレイ時間</RWS_Stat_RealPlay>
+  <RWS_Stat_Raids>敵の襲撃</RWS_Stat_Raids>
+  <RWS_Stat_Threats>大きな脅威</RWS_Stat_Threats>
+  <RWS_Stat_Killed>入植者の死亡</RWS_Stat_Killed>
+  <RWS_Stat_Longest>最長存続</RWS_Stat_Longest>
+  <RWS_Stat_SingleMaxWealth>単一コロニーの最高資産</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_MaxPopulation>最大人口</RWS_Stat_MaxPopulation>
+  <RWS_Stat_LastWealthSum>最終資産の合計</RWS_Stat_LastWealthSum>
+  <RWS_DaysValue>{0}日（{1}年{2}日）</RWS_DaysValue>
+  <RWS_HoursValue>{0}時間</RWS_HoursValue>
+  <RWS_NoData>まだ記録がありません。セーブの取り込みが終わると表示されます（「取り込み状況」タブ）。</RWS_NoData>
+  <RWS_TooltipBasis>{0} コロニー分から計算（合計から外したもの {1}）</RWS_TooltipBasis>
+  <RWS_TooltipMissing>識別できなかった、または読めなかったセーブ {0} 件は含まれていません。</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>MOD 導入前のプレイは、セーブに残った痕跡だけから数えます。痕跡は「少なくとも 1 回」の意味で、アーコネクサスとその他のエンディングは数えられません。</RWS_EndingsTooltipPreInstall>
+  <RWS_UnnamedColony>（未命名）{0}</RWS_UnnamedColony>
+  <RWS_Ending_Ship>宇宙船</RWS_Ending_Ship>
+  <RWS_Ending_RoyalAscent>王族の昇天</RWS_Ending_RoyalAscent>
+  <RWS_Ending_AmbiguousLaunch>旅立ち（種類不明）</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_Archonexus>アーコネクサス</RWS_Ending_Archonexus>
+  <RWS_Ending_CerebrexScavenged>セレブレックス・コア（回収）</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>セレブレックス・コア（破壊）</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>虚無を受け入れた</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>虚無を断ち切った</RWS_Ending_VoidDisrupted>
+  <RWS_Ending_Other>その他</RWS_Ending_Other>
+  <RWS_Source_Live>プレイ中の記録</RWS_Source_Live>
+  <RWS_Source_SeededTrace>導入前の痕跡（引き継ぎ）</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>セーブの痕跡</RWS_Source_SaveTrace>
+  <RWS_DevModeMark>（開発モード）</RWS_DevModeMark>
+  <RWS_AtLeastOnce>1 回以上</RWS_AtLeastOnce>
+  <RWS_Endings_None>まだエンディングの記録はありません。</RWS_Endings_None>
+  <RWS_ExcludedMark>（合計外）</RWS_ExcludedMark>
+  <RWS_Col_Date>日時</RWS_Col_Date>
+  <RWS_Col_Colony>コロニー</RWS_Col_Colony>
+  <RWS_Col_EndingType>種類</RWS_Col_EndingType>
+  <RWS_Col_Ordinal>何回目</RWS_Col_Ordinal>
+  <RWS_Col_Departed>人数</RWS_Col_Departed>
+  <RWS_Col_Source>出所</RWS_Col_Source>
+  <RWS_Col_Name>名前</RWS_Col_Name>
+  <RWS_Col_World>ワールド</RWS_Col_World>
+  <RWS_Col_Scenario>シナリオ / ストーリーテラー</RWS_Col_Scenario>
+  <RWS_Col_Days>日数</RWS_Col_Days>
+  <RWS_Col_PeakWealth>最高資産</RWS_Col_PeakWealth>
+  <RWS_Col_LastWealth>最終資産</RWS_Col_LastWealth>
+  <RWS_Col_Raids>襲撃</RWS_Col_Raids>
+  <RWS_Col_Killed>死亡</RWS_Col_Killed>
+  <RWS_Col_Endings>エンディング</RWS_Col_Endings>
+  <RWS_Col_Versions>遊んだ版</RWS_Col_Versions>
+  <RWS_Col_Saves>セーブ数</RWS_Col_Saves>
+  <RWS_Col_LastPlayed>最後に遊んだ日</RWS_Col_LastPlayed>
+  <RWS_Col_File>ファイル</RWS_Col_File>
+  <RWS_Col_Version>版</RWS_Col_Version>
+  <RWS_Col_Superseded>上書き済み</RWS_Col_Superseded>
+  <RWS_Col_FilePresent>元ファイル</RWS_Col_FilePresent>
+  <RWS_Exclude>合計から外す</RWS_Exclude>
+  <RWS_ExcludeTip>チェックしたコロニーは一覧に残りますが、合計には含めません。</RWS_ExcludeTip>
+  <RWS_Yes>はい</RWS_Yes>
+  <RWS_No>いいえ</RWS_No>
+  <RWS_FileMissing>元ファイルなし</RWS_FileMissing>
+  <RWS_LiveRecord>（プレイ中の記録）</RWS_LiveRecord>
+  <RWS_Rescan>再スキャン</RWS_Rescan>
+  <RWS_Cancel>中止</RWS_Cancel>
+  <RWS_Import_LastScan>最後に読んだ日時: {0}</RWS_Import_LastScan>
+  <RWS_Import_Never>まだ読んでいません</RWS_Import_Never>
+  <RWS_Import_NotRunThisSession>このセッションではまだ取り込んでいません。</RWS_Import_NotRunThisSession>
+  <RWS_Import_Counts>読んだ {0} 件／読み飛ばした {1} 件／失敗 {2} 件</RWS_Import_Counts>
+  <RWS_Import_CancelledMark>（中断）</RWS_Import_CancelledMark>
+  <RWS_Import_Error>取り込みでエラーが起きました: {0}</RWS_Import_Error>
+  <RWS_Import_Progress>{0} / {1} 件（失敗 {2}） {3}</RWS_Import_Progress>
+  <RWS_Import_ProfilePath>記録ファイル: {0}</RWS_Import_ProfilePath>
+  <RWS_Import_LoadSource>読み込み元: {0}</RWS_Import_LoadSource>
+  <RWS_Import_CorruptRenamed>壊れたファイルは {0} として残しました。</RWS_Import_CorruptRenamed>
+  <RWS_Import_ReadOnly>このセッションでは記録ファイルに書き込みません。</RWS_Import_ReadOnly>
+  <RWS_Import_Backups>バックアップ: {0} / 3 世代</RWS_Import_Backups>
+  <RWS_Import_SaveError>記録ファイルに書き込めませんでした: {0}</RWS_Import_SaveError>
+  <RWS_Import_Problems>失敗・識別不可のセーブ（{0} 件）</RWS_Import_Problems>
+  <RWS_LoadSource_Primary>記録ファイル</RWS_LoadSource_Primary>
+  <RWS_LoadSource_Backup1>バックアップ 1</RWS_LoadSource_Backup1>
+  <RWS_LoadSource_Backup2>バックアップ 2</RWS_LoadSource_Backup2>
+  <RWS_LoadSource_Backup3>バックアップ 3</RWS_LoadSource_Backup3>
+  <RWS_LoadSource_Empty>新規（空の状態）</RWS_LoadSource_Empty>
+  <RWS_LoadSource_NewerSchema>新しい版の記録ファイル（読み取り専用）</RWS_LoadSource_NewerSchema>
+  <RWS_Status_Error>失敗</RWS_Status_Error>
+  <RWS_Status_Unidentifiable>識別不可</RWS_Status_Unidentifiable>
+</LanguageData>
