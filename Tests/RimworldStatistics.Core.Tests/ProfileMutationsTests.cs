@@ -161,6 +161,18 @@ public sealed class ProfileMutationsTests
     }
 
     [Fact]
+    public void SameContent_NewerReaderError_KeepsTheGoodObservation()
+    {
+        // After a reader-version bump every file is re-read; a transient failure (sync, antivirus) must not hide the colony.
+        var p = new Profile();
+        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t0, ticks: 5000, reader: 1));
+        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t0, reader: 2, status: ObservationStatus.Error));
+        var kept = Assert.Single(p.SaveObservations);
+        Assert.Equal((ObservationStatus.Ok, 5000, 1, false), (kept.Status, kept.Values.TicksGame, kept.ReaderVersion, kept.Superseded));
+        Assert.True(ProfileMutations.NeedsRead(p, "a.rws", 500, t0, 2));   // still retried by later scans
+    }
+
+    [Fact]
     public void ErrorObservation_IsReplacedByAnyNewRead()
     {
         var p = new Profile();

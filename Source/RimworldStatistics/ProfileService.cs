@@ -3,7 +3,10 @@ using Verse;
 
 namespace RimworldStatistics;
 
-/// <summary>The single <see cref="ProfileSession"/> of this game session, created on first use on the main thread.</summary>
+/// <summary>
+/// The single <see cref="ProfileSession"/> of this game session, created on first use from any thread: the game runs
+/// LoadedGame/StartedNewGame/FinalizeInit on its long-event worker thread (Root_Play, doAsynchronously: true, 1.7.4985).
+/// </summary>
 public static class ProfileService
 {
     private static readonly object Gate = new();
@@ -16,19 +19,22 @@ public static class ProfileService
     {
         get
         {
+            ProfileSession current;
+            var created = false;
             lock (Gate)
             {
-                if (session != null)
-                    return session;
+                if (session is null)
+                {
+                    // Safe off the main thread: SaveDataFolderPath is cached at startup (Prefs.Init) and otherwise reads only
+                    // UnityData's cached paths; the game itself resolves save paths on the long-event thread.
+                    session = new ProfileSession(new ProfileStore(DirectoryPath), () => DateTime.UtcNow);
+                    created = true;
+                }
+                current = session;
             }
-            // GenFilePaths reads Unity's persistent data path, which is main-thread only.
-            if (!UnityData.IsInMainThread)
-                throw new InvalidOperationException("ProfileService must first be used on the main thread.");
-            var created = new ProfileSession(new ProfileStore(DirectoryPath), () => DateTime.UtcNow);
-            lock (Gate)
-                session ??= created;
-            ReportLoadProblemsOnce();
-            return session;
+            if (created)
+                ReportLoadProblemsOnce();
+            return current;
         }
     }
 

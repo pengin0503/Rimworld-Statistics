@@ -4,15 +4,15 @@ using Verse;
 namespace RimworldStatistics;
 
 /// <summary>
-/// Runs <see cref="ImportEngine"/> on a pool thread (spec §7.5). Game API is touched only on the main thread, before
-/// the task starts; the task itself only publishes progress and results through volatile fields.
+/// Runs <see cref="ImportEngine"/> on a pool thread (spec §7.5). Game API is touched only before the task starts; the
+/// task itself only publishes progress and results through volatile fields.
 /// </summary>
 public static class ImportRunner
 {
     private static readonly object Gate = new();
     private static CancellationTokenSource? cts;
     private static Task? task;
-    private static readonly AutoImportGate AutoGate = new();   // main thread only
+    private static readonly AutoImportGate AutoGate = new();
 
     private static volatile ImportProgress? progress;
     private static volatile ImportResult? lastResult;
@@ -59,8 +59,8 @@ public static class ImportRunner
     }
 
     /// <summary>
-    /// Main thread. A game is starting or loading (spec §7.5): stop the scan, and let the title screen continue it the
-    /// next time it is shown.
+    /// A game is starting or loading (spec §7.5; called from FinalizeInit on the game's long-event thread): stop the scan,
+    /// and let the title screen continue it the next time it is shown.
     /// </summary>
     public static void CancelForGameStart()
     {

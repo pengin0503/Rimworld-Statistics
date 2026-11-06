@@ -26,6 +26,9 @@ public static class CampaignMatcher
     public static IReadOnlyList<Colony> BuildColonies(Profile profile)
     {
         var colonies = GroupByFingerprint(GroupById(profile));
+        // A new game is registered when it starts; until it is saved once (or reaches an ending, which also records the
+        // live state) it is not a colony, e.g. a map that was re-rolled and abandoned.
+        colonies.RemoveAll(c => c.Observations.Count == 0 && c.LiveCampaigns.All(l => l.MaxObservedUtc is null));
         AssignKeys(profile, colonies);
         AttachEndings(profile, colonies);
         ApplyManualMerges(profile, colonies);

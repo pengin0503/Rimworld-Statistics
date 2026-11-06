@@ -2,7 +2,7 @@ namespace RimworldStatistics.Core;
 
 /// <summary>
 /// Carries which ending is under way from the patch that starts it to the credits hook that records it (spec §8.4).
-/// Main thread only.
+/// Not thread-safe: use it only from the thread running the game's logic.
 /// </summary>
 public sealed class CreditsContext
 {

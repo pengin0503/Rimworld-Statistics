@@ -37,6 +37,8 @@ public static class ProfileMutations
             {
                 if (obs.ReaderVersion <= old.ReaderVersion)
                     return;                            // same file read again by the same reader: nothing new
+                if (obs.Status == ObservationStatus.Error)
+                    return;                            // a failed re-read never hides good data; the old version keeps it retried
                 p.SaveObservations.Remove(old);        // newer reader re-read the same content
                 continue;
             }

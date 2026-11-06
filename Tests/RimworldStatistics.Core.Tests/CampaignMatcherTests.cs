@@ -129,7 +129,7 @@ public sealed class CampaignMatcherTests
         // it then, the exclusion must survive the later save that completes the fingerprint (key becomes fp:<hash>).
         var p = new Profile();
         var early = Id(pawns: "1,2"); early.FirstWealthBits = null;
-        p.LiveCampaigns.Add(new LiveCampaign { CampaignId = "g1", Identity = early });
+        p.LiveCampaigns.Add(new LiveCampaign { CampaignId = "g1", Identity = early, MaxObservedUtc = T0 });   // saved once
         Assert.Equal("id:g1", Assert.Single(CampaignMatcher.BuildColonies(p)).Key);
         p.UserDecisions.ExcludedCampaignKeys.Add("id:g1");
 
@@ -228,6 +228,22 @@ public sealed class CampaignMatcherTests
         var orphan = colonies.Single(c => c.Key == "id:g9");
         Assert.Empty(orphan.Observations);
         Assert.Equal(EndingType.Other, Assert.Single(orphan.Endings).Type);
+    }
+
+    [Fact]
+    public void NewGameNeverSaved_IsNotAColony()
+    {
+        // StartedNewGame registers the campaign at once; a game abandoned without saving (re-rolling a map) is not a colony.
+        var p = new Profile();
+        ProfileMutations.RegisterLiveCampaign(p, "g1", Id(pawns: "1"), new DisplayInfo(), T0);
+        Assert.Empty(CampaignMatcher.BuildColonies(p));
+        Assert.Empty(p.ColonyKeys);
+        ProfileMutations.ApplyLiveObservation(p, "g1", Id(pawns: "1"), new ObservedValues { TicksGame = 2500 }, new DisplayInfo(), T0.AddHours(1));
+        Assert.Single(CampaignMatcher.BuildColonies(p));   // saved once: now it counts
+
+        var withSave = Profile(Obs("a.rws", pawns: "5", id: "g2"));   // registered at load, never saved, but a save file exists
+        ProfileMutations.RegisterLiveCampaign(withSave, "g2", Id(pawns: "5"), new DisplayInfo(), T0);
+        Assert.Single(CampaignMatcher.BuildColonies(withSave));
     }
 
     [Fact]

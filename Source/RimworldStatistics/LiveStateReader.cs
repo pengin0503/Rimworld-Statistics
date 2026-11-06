@@ -6,7 +6,8 @@ namespace RimworldStatistics;
 
 /// <summary>
 /// Reads the running game into the same shapes SaveReader produces from a file (research §5), so a save observed
-/// both ways yields the same fingerprint. Main thread only.
+/// both ways yields the same fingerprint. Call it on the thread that runs the game's own logic at that moment: the
+/// main thread in play, or the long-event thread while a game loads or starts. Never from the import thread.
 /// </summary>
 public static class LiveStateReader
 {
