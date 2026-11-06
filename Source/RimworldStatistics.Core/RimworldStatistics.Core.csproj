@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <RootNamespace>RimworldStatistics.Core</RootNamespace>
+    <AssemblyName>RimworldStatistics.Core</AssemblyName>
+  </PropertyGroup>
+</Project>
