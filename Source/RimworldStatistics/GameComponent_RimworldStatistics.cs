@@ -123,9 +123,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     {
         try
         {
-            if (string.IsNullOrEmpty(campaignId))
-                campaignId = NewId();   // only if an earlier hook failed; the id is still stamped into this save
-            var id = campaignId!;
+            var id = EnsureCampaignId();
             var identity = LiveStateReader.ReadIdentity(id);
             var values = LiveStateReader.ReadValues();
             var display = LiveStateReader.ReadDisplay();
@@ -135,6 +133,14 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
         {
             Fail("ExposeData (saving)", e);
         }
+    }
+
+    /// <summary>The campaign id; a new one if an earlier hook failed (it is still stamped into the next save).</summary>
+    public string EnsureCampaignId()
+    {
+        if (string.IsNullOrEmpty(campaignId))
+            campaignId = NewId();
+        return campaignId!;
     }
 
     private static string NewId() => Guid.NewGuid().ToString("N");
