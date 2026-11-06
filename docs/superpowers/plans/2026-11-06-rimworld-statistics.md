@@ -291,6 +291,9 @@ git commit -m "feat(core): add solution scaffold, profile model and JSON codec"
 // seedString・startingTile・Wealth_Total が無い → Status == Unidentifiable、ErrorReason == "seedString,startingTile,Wealth_Total"
 [Fact] public void Read_TruncatedFile_IsError()
 // Build() の結果を半分で切ったもの → Status == Error、ErrorReason に "Xml" を含む
+[Theory] [InlineData("records", "!!not-base64!!")] [InlineData("recordsDeflate", "AAAA")]   // 後者は deflate として壊れたデータ
+public void Read_MalformedRecordsPayload_IsError(string label, string payload)
+// XML は正しいが Wealth_Total の中身が壊れている → 例外を投げず Status == Error、ErrorReason が例外の型名で始まる
 [Fact] public void Read_NotASavegame_IsError()
 // <Defs/> → Status == Error、ErrorReason == "not a savegame"
 [Fact] public void Read_SkipsMapsAndUnknownSections()
@@ -323,13 +326,13 @@ Expected: コンパイルエラー
   - それ以外は Task 3 で扱う。今は `Skip()` する。
 - 読む項目と既定値は、調査 §3.1 の表のとおり。`info/startingAndOptionalPawns/li` の中身が `null` の要素は除く。
 - 識別不可（Unidentifiable）の理由は、欠けたものを `seedString`、`startingTile`、`Wealth_Total` の順で `,` でつなぐ。`Identity.ModCampaignId` が null でないセーブは、識別不可にしない（Task 3）。
-- Error の扱い: `XmlException`、`IOException`、`EndOfStreamException`、`UnauthorizedAccessException` は Error とする。理由は `$"{例外の型名}: {メッセージ}"` の先頭 200 文字。
+- Error の扱い: 読み取り中の例外は、型を問わずすべて Error にして返す（`XmlException`、`IOException`、`EndOfStreamException`、`UnauthorizedAccessException`、Base64 の `FormatException`、deflate の `InvalidDataException` を含む）。理由は `$"{例外の型名}: {メッセージ}"` の先頭 200 文字。`Read` は外へ例外を投げない。
 - `history/autoRecorderGroups/li/recorders/li` は、子要素の `def` が `Wealth_Total` のものだけ、`records` または `recordsDeflate` を `RecordsCodec` で読む。それ以外の recorder は Skip する。
 
 - [ ] **Step 4: 成功することを確かめる**
 
 Run: `dotnet test --filter-class "RimworldStatistics.Core.Tests.SaveReaderTests"`
-Expected: 9 件 PASS
+Expected: 11 件 PASS
 
 - [ ] **Step 5: コミットする**
 
@@ -557,7 +560,7 @@ git commit -m "feat(core): group observations into colonies with stable keys"
   - `bool Dominates(SaveObservation newer, SaveObservation older)`
   - `void RegisterLiveCampaign(Profile p, string campaignId, ColonyIdentity identity, DisplayInfo display, DateTime utcNow)`
   - `void ApplyLiveObservation(Profile p, string campaignId, ColonyIdentity identity, ObservedValues values, DisplayInfo display, DateTime savedUtc)`
-  - `bool UpsertEnding(Profile p, EndingEvent ev)`: 追加したら true。
+  - `bool UpsertEnding(Profile p, EndingEvent ev)`: 重複を除くキーは `(CampaignId, Type, Ordinal, DevMode)`。追加したら true。同じキーがあれば、`Departed` と `LaunchedTotalAfter` を大きい方に更新して false。
   - `void SetExcluded(Profile p, IReadOnlyCollection<string> colonyKeys, bool excluded)`: `colonyKeys` は `Colony.Key` と `AliasKeys`。除外するときは先頭のキーだけを足し、外すときは渡されたキーをすべて取り除く。
 
 - [ ] **Step 1: 失敗するテストを書く**
@@ -576,6 +579,9 @@ git commit -m "feat(core): group observations into colonies with stable keys"
 }
 [Fact] public void Overwrite_BySameColonyDominating_DropsOld()
 // 同じコロニーで全項目が以上（ticks・実プレイ時間・各カウンタ・wealthMax・痕跡の上位集合）→ 1 件だけ残る
+[Fact] public void Overwrite_DominatingButFewerPawns_KeepsOldAsEvidence()
+// 同じファイルの {A,B,C} を、数値はすべて上回る {A,B} で上書き → 2 件とも残る（古い方は Superseded）。
+// 別ファイルの {A,C} と合わせて BuildColonies → 1 コロニーのまま
 [Fact] public void Overwrite_BySameColonyNotDominating_KeepsBoth()
 // 同じコロニーで ticks が減った（古いセーブに戻して上書き）→ 2 件、古い方は Superseded
 [Fact] public void SameContent_NewerReaderVersion_Replaces()
@@ -584,15 +590,22 @@ git commit -m "feat(core): group observations into colonies with stable keys"
 // ticks 100（wealthLast 10）→ 300（wealthLast 30）→ 200（wealthLast 99）の順に適用
 // → Max.TicksGame == 300、Max.WealthLast == 30、Latest.TicksGame == 200
 [Fact] public void ApplyLive_FillsMissingFingerprintFields_UnionsPawns()
-[Fact] public void UpsertEnding_DuplicateKey_NotAdded_ButClearsDevModeAndKeepsMax()
+[Fact] public void UpsertEnding_SameKeyAndProvenance_KeepsMax()
 {
     var p = new Profile();
-    Assert.True(ProfileMutations.UpsertEnding(p, Ev("g", EndingType.Ship, 0, dev: true, departed: 2, total: 2)));
+    Assert.True(ProfileMutations.UpsertEnding(p, Ev("g", EndingType.Ship, 0, dev: false, departed: 2, total: 2)));
     Assert.False(ProfileMutations.UpsertEnding(p, Ev("g", EndingType.Ship, 0, dev: false, departed: 3, total: 5)));
     var e = Assert.Single(p.EndingEvents);
-    Assert.False(e.DevMode); Assert.Equal(3, e.Departed); Assert.Equal(5, e.LaunchedTotalAfter);
+    Assert.Equal(3, e.Departed); Assert.Equal(5, e.LaunchedTotalAfter);
 }
-[Fact] public void UpsertEnding_NormalThenDev_StaysNormal()
+[Fact] public void UpsertEnding_DevAndNormal_AreKeptSeparately()
+{
+    var p = new Profile();
+    Assert.True(ProfileMutations.UpsertEnding(p, Ev("g", EndingType.Ship, 0, dev: true, departed: 100, total: 100)));
+    Assert.True(ProfileMutations.UpsertEnding(p, Ev("g", EndingType.Ship, 0, dev: false, departed: 1, total: 1)));
+    Assert.Equal(2, p.EndingEvents.Count);
+    Assert.Equal(1, p.EndingEvents.Single(e => !e.DevMode).Departed);   // 開発モードの 100 が混ざらない
+}
 [Fact] public void SetExcluded_AddsPrimaryOnce_RemovesAllAliases()
 // SetExcluded(p, ["fp:a", "fp:a#2"], true) を 2 回 → ExcludedCampaignKeys == ["fp:a"]。
 // 先に "fp:a#2" が入っている状態で SetExcluded(p, ["fp:a", "fp:a#2"], false) → 空
@@ -614,6 +627,7 @@ Expected: FAIL
   - `older.Status == Ok`
   - `ticksGame`、`realPlayTime`、5 つのカウンタ、`wealthMax` がすべて以上
   - 痕跡が上位集合
+  - `newer.Identity.StartingPawnIds` が `older.Identity.StartingPawnIds` をすべて含む（分岐をつなぐ証拠を消さないため。仕様 §7.1）
 
 - [ ] **Step 4: 成功することを確かめる**
 
@@ -733,7 +747,10 @@ git commit -m "feat(core): atomic profile store with backups and corruption reco
 [Fact] public void Departed_UsesLaunchedTotalAfter()
 // 観測の colonistsLaunched 5、Archonexus の記録 departed 3・launchedTotalAfter 8 → Departed == 8
 [Fact] public void Departed_DevOff_SubtractsDevDepartures()
-// 観測 7、dev の記録 departed 2、通常の記録 departed 1 → IncludeDevMode == false なら max(7−2, 1) == 5、true なら max(7, 3) == 7
+// 観測 7、dev の記録 departed 2、通常の記録 departed 1（別の組）→ IncludeDevMode == false なら max(7−2, 1) == 5、true なら max(7, 3) == 7
+[Fact] public void Departed_DevThenNormalRedo_UsesNormalValue()
+// 同じ (Ship, 0) に dev の記録（departed 100、launchedTotalAfter 100）と通常の記録（departed 1、launchedTotalAfter 1）
+// → IncludeDevMode == false なら EndingCounts[Ship] == 1、Departed == 1。true なら Departed == 100
 [Fact] public void Totals_SkipExcludedColonies()
 [Fact] public void NoColonies_HasDataFalse()
 [Fact] public void StatFormat_SplitDaysAndGroup()
@@ -756,7 +773,8 @@ Expected: FAIL
   - 観測の `ColonistsLaunched`
   - `LiveCampaign.Max.ColonistsLaunched`
   - 全記録の `LaunchedTotalAfter`
-- 記録の組の `departed` は、組の中の最大値を使う。
+- 記録の組（`(Type, Ordinal)` ごと）の `departed` は、設定がオフなら組の中の通常の記録の最大値、オンなら組の中の全記録の最大値を使う。
+- 仕様 §4.4 の D は、組ごとに開発モードの記録の `departed` の最大値を取り、それを足したもの。通常の記録もある組も含む。
 - `Superseded` の観測も計算に含める。
 
 - [ ] **Step 4: 成功することを確かめる**
@@ -860,6 +878,8 @@ git commit -m "feat(core): thread-safe profile session with cached statistics vi
 [Fact] public void Run_Cancelled_KeepsDoneAndResumes()
 // 10 ファイル。3 件読んだところで progress のコールバックから Cancel → Cancelled == true、LastScanUtc は更新しない。
 // 次の Run → Read == 7、Skipped == 3
+[Fact] public void Run_MalformedPayload_FailsThatFileOnly()
+// 正常なファイル 2 件の間に、Wealth_Total の Base64 が壊れたファイル 1 件 → Read == 3、Failed == 1、正常な 2 件は Ok
 [Fact] public void Run_MissingDirectory_ReturnsEmpty()
 ```
 
@@ -877,6 +897,7 @@ Expected: FAIL
   3. 結果を `session.Mutate(..., SaveMode.None)` で記録に足す。
 - 保存: 5 件ごとと最後に `Mutate(_ => { }, SaveMode.Background)` を呼ぶ。
 - 中止の確認は、ファイルとファイルの間で行う。
+- 念のため、ファイル 1 件ごとの処理を try/catch で囲む。`SaveReader` は例外を投げない約束だが、万一投げても、そのファイルを Error の観測として記録し、次のファイルへ進む。
 - 中止されずに終わったときだけ `ImportState.LastScanUtc` を更新する。
 
 - [ ] **Step 4: 成功することを確かめる**
