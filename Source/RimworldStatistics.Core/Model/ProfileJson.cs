@@ -57,6 +57,7 @@ public static class ProfileJson
             c.Max ??= new ObservedValues();
             c.Latest ??= new ObservedValues();
             c.Display ??= new DisplayInfo();
+            c.GameVersions = Clean(c.GameVersions);
         }
 
         p.EndingEvents = Clean(p.EndingEvents);

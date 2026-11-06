@@ -219,6 +219,18 @@ public sealed class ProfileMutationsTests
     }
 
     [Fact]
+    public void ApplyLive_AccumulatesGameVersions()
+    {
+        var p = new Profile();
+        var id = Identity("A", "Thing_Human1");
+        ProfileMutations.ApplyLiveObservation(p, "g", id, V(100, 1), new DisplayInfo(), t0, "1.7.4985 rev1269");
+        ProfileMutations.ApplyLiveObservation(p, "g", id, V(200, 1), new DisplayInfo(), t0.AddHours(1), "1.7.5000 rev1300");
+        ProfileMutations.ApplyLiveObservation(p, "g", id, V(300, 1), new DisplayInfo(), t0.AddHours(2), "1.7.5000 rev1300");
+        ProfileMutations.ApplyLiveObservation(p, "g", id, V(400, 1), new DisplayInfo(), t0.AddHours(3));   // version unknown
+        Assert.Equal(new[] { "1.7.4985 rev1269", "1.7.5000 rev1300" }, Assert.Single(p.LiveCampaigns).GameVersions);
+    }
+
+    [Fact]
     public void ApplyLive_FillsMissingFingerprintFields_UnionsPawns()
     {
         var p = new Profile();

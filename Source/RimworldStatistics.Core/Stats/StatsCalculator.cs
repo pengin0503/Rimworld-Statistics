@@ -154,6 +154,7 @@ public static class StatsCalculator
             EndingCounts = counts,
             HasDevOnlyEndings = pairs.Any(g => g.All(e => e.DevMode)),
             GameVersions = colony.Observations.Select(o => o.GameVersion).Concat(colony.Endings.Select(e => e.GameVersion))
+                .Concat(colony.LiveCampaigns.SelectMany(l => l.GameVersions))
                 .OfType<string>().Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToList(),
             SaveCount = colony.Observations.Select(o => o.FileName).Distinct(StringComparer.Ordinal).Count(),
             LastPlayedUtc = times.Count == 0 ? null : times.Max(),

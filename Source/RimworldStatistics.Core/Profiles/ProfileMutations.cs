@@ -100,7 +100,8 @@ public static class ProfileMutations
     }
 
     /// <summary>Records the values read while the game saved (spec §8.3): per-field maxima, the latest values and the identity.</summary>
-    public static void ApplyLiveObservation(Profile p, string campaignId, ColonyIdentity identity, ObservedValues values, DisplayInfo display, DateTime savedUtc)
+    public static void ApplyLiveObservation(Profile p, string campaignId, ColonyIdentity identity, ObservedValues values, DisplayInfo display,
+        DateTime savedUtc, string? gameVersion = null)
     {
         var live = p.LiveCampaigns.FirstOrDefault(c => c.CampaignId == campaignId);
         if (live is null)
@@ -129,6 +130,8 @@ public static class ProfileMutations
         m.WealthPoints = Math.Max(m.WealthPoints, values.WealthPoints);
         live.Latest = values.Clone();
         live.LastSavedUtc = savedUtc;
+        if (!string.IsNullOrEmpty(gameVersion) && !live.GameVersions.Contains(gameVersion, Ord))
+            live.GameVersions.Add(gameVersion);
     }
 
     /// <summary>Fills fingerprint parts that were not known yet (e.g. the first wealth record of a new game) and unions starting pawns.</summary>

@@ -127,7 +127,8 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             var identity = LiveStateReader.ReadIdentity(id);
             var values = LiveStateReader.ReadValues();
             var display = LiveStateReader.ReadDisplay();
-            ProfileService.Session.Mutate(p => ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, DateTime.UtcNow), SaveMode.Background);
+            var version = LiveStateReader.GameVersion;
+            ProfileService.Session.Mutate(p => ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, DateTime.UtcNow, version), SaveMode.Background);
         }
         catch (Exception e)
         {

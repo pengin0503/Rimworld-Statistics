@@ -33,10 +33,11 @@ public static class EndingPatches
         var identity = LiveStateReader.ReadIdentity(id);
         var values = LiveStateReader.ReadValues();   // includes the post-ending colonistsLaunched (spec §8.4 step 4)
         var display = LiveStateReader.ReadDisplay();
+        var version = LiveStateReader.GameVersion;
         ProfileService.Session.Mutate(p =>
         {
             ProfileMutations.UpsertEnding(p, ev);
-            ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, now);
+            ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, now, version);
         }, SaveMode.Immediate);
     }
 

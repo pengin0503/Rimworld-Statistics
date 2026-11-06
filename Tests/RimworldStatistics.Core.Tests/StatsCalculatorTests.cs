@@ -189,6 +189,10 @@ public sealed class StatsCalculatorTests
         }), Off);
         Assert.Equal(new[] { "1.6.4566 rev607", "1.7.4985 rev1269" }, s.GameVersions);
         Assert.Equal(2, s.SaveCount);
+
+        // A colony known only from live saves (auto-import off, or its files overwritten) still lists its versions.
+        var live = new LiveCampaign { CampaignId = "g1", LastSavedUtc = t0, MaxObservedUtc = t0, GameVersions = { "1.7.5000 rev1300" } };
+        Assert.Equal(new[] { "1.7.5000 rev1300" }, StatsCalculator.CalculateColony(C("k", live: live), Off).GameVersions);
         Assert.Equal(t0.AddDays(2), s.LastPlayedUtc);
         Assert.Null(StatsCalculator.CalculateColony(C("e", endings: new[] { Ev(EndingType.Other, 0) }), Off).LastPlayedUtc);
     }
