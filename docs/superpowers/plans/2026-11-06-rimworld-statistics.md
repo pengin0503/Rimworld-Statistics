@@ -62,6 +62,7 @@ Source/RimworldStatistics.Core/
   Model/SaveObservation.cs
   Model/LiveCampaign.cs
   Model/EndingEvent.cs
+  Model/LineageEntry.cs                       セーブ内の lineageEndings の 1 要素（トークン形式）
   Model/Profile.cs                            Profile, UserDecisions, ColonyKeyEntry, ImportState
   Model/ProfileJson.cs
   Reading/SaveReader.cs
@@ -75,7 +76,7 @@ Source/RimworldStatistics.Core/
   Stats/StatsCalculator.cs                    StatsOptions, ColonyStats, StatsResult
   Stats/StatFormat.cs
   Import/ImportEngine.cs
-  Endings/EndingLedger.cs                     LineageEntry, EndingSignal, EndingLedger
+  Endings/EndingLedger.cs                     EndingSignal, EndingLedger
   Endings/CreditsContext.cs
 Tests/RimworldStatistics.Core.Tests/
   RimworldStatistics.Core.Tests.csproj
@@ -140,6 +141,9 @@ Source/RimworldStatistics/
     - `bool SameFileContent(long size, DateTime lastWriteUtc)`
   - `sealed class LiveCampaign`: `string CampaignId`、`ColonyIdentity Identity`、`ObservedValues Max`、`ObservedValues Latest`、`DisplayInfo Display`、`DateTime LastSavedUtc`
   - `sealed class EndingEvent`: `string CampaignId`、`EndingType Type`、`int Ordinal`、`EndingSource Source`、`int TicksGame`、`DateTime RealTimeUtc`、`int Departed`、`int LaunchedTotalAfter`、`bool DevMode`、`string? GameVersion`、`string? CreditsExcerpt`
+  - `readonly record struct LineageEntry(EndingType Type, int Ordinal, int TicksGame)`
+    - `string ToToken()`: 形は `"ship|0|123456"`（種類は camelCase）。
+    - `static bool TryParse(string token, out LineageEntry entry)`
   - `sealed class UserDecisions`: `List<string> ExcludedCampaignKeys`、`List<List<string>> ManualMerges`、`List<List<string>> ManualSplits`
   - `sealed class ColonyKeyEntry`: `string Key`、`string FingerprintHash`、`List<string> StartingPawnIds`
   - `sealed class ImportState`: `DateTime? LastScanUtc`
@@ -205,6 +209,13 @@ apt-get update && apt-get install -y dotnet-sdk-10.0
     Assert.Equal("221529,0", ColonyIdentity.NormalizeTile("221529"));
     Assert.Equal("204285,1", ColonyIdentity.NormalizeTile("204285,1"));
 }
+[Fact] public void LineageToken_RoundTrips_AndRejectsGarbage()
+{
+    var e = new LineageEntry(EndingType.RoyalAscent, 1, 2500000);
+    Assert.Equal("royalAscent|1|2500000", e.ToToken());
+    Assert.True(LineageEntry.TryParse(e.ToToken(), out var back)); Assert.Equal(e, back);
+    Assert.False(LineageEntry.TryParse("nope|x", out _));
+}
 ```
 
 - [ ] **Step 3: 失敗することを確かめる**
@@ -223,7 +234,7 @@ Expected: 型が無いことによるコンパイルエラー
 - [ ] **Step 5: 成功することを確かめる**
 
 Run: `dotnet test`
-Expected: 3 件 PASS
+Expected: 4 件 PASS
 
 - [ ] **Step 6: コミットする**
 
@@ -339,7 +350,7 @@ git commit -m "feat(core): read save identity and counters with game defaults"
 **Interfaces:**
 - Consumes: Task 2 の `SaveReader`、`SaveXmlBuilder`
 - Produces:
-  - `sealed class TraceInputs`: `int ColonistsLaunched`、`bool RoyalAscentSucceeded`、`bool MechhiveSucceeded`、`bool MechanoidsDeactivated`、`string? AnomalyLevelDef`
+  - `sealed class TraceInputs`: `int ColonistsLaunched`、`bool RoyalAscentSucceeded`、`bool MechhiveSucceeded`、`bool MechanoidsDeactivated`、`string? AnomalyLevelDef`、`IReadOnlyCollection<EndingType> LineageTypes`（セーブ内の `lineageEndings` の種類。MOD 導入前のセーブなら空）
   - `static class EndingTraces`: `List<EndingType> Detect(TraceInputs i)`。結果は列挙型の順に並べる。
 
 ```
@@ -349,6 +360,11 @@ MechhiveSucceeded かつ  MechanoidsDeactivated  → CerebrexDestroyed
 MechhiveSucceeded かつ !MechanoidsDeactivated  → CerebrexScavenged
 AnomalyLevelDef == "Embraced"  → VoidEmbraced
 AnomalyLevelDef == "Disrupted" → VoidDisrupted
+
+一覧で説明できる痕跡は除く（仕様 §4.3）:
+LineageTypes に Ship・RoyalAscent・AmbiguousLaunch のどれかがある → Ship と AmbiguousLaunch を除く
+LineageTypes に CerebrexScavenged・CerebrexDestroyed のどれかがある → Cerebrex の 2 種を除く
+LineageTypes に VoidEmbraced・VoidDisrupted のどれかがある → Void の 2 種を除く
 ```
 
 - [ ] **Step 1: 失敗するテストを書く**（`SaveReaderHistoryTests.cs`。`SaveXmlBuilder` に `.Quest(root, ended, outcome)`、`.Faction(def, name, deactivated)`、`.Component(cls, child, value)` を足す）
@@ -370,11 +386,25 @@ AnomalyLevelDef == "Disrupted" → VoidDisrupted
 [InlineData(0, false, false, false, "Disrupted", new[] { EndingType.VoidDisrupted })]
 [InlineData(0, false, false, false, "Waking",    new EndingType[0])]
 public void Detect_FollowsSpecTable(int launched, bool royal, bool mechhive, bool deactivated, string? level, EndingType[] expected)
-    => Assert.Equal(expected, EndingTraces.Detect(new TraceInputs { ColonistsLaunched = launched, RoyalAscentSucceeded = royal, MechhiveSucceeded = mechhive, MechanoidsDeactivated = deactivated, AnomalyLevelDef = level }));
+    => Assert.Equal(expected, EndingTraces.Detect(new TraceInputs { ColonistsLaunched = launched, RoyalAscentSucceeded = royal, MechhiveSucceeded = mechhive, MechanoidsDeactivated = deactivated, AnomalyLevelDef = level, LineageTypes = Array.Empty<EndingType>() }));
+[Theory]
+[InlineData(3, true,  false, false, null, new[] { EndingType.RoyalAscent })]       // プレイ中に王族の昇天を記録した後のセーブ
+[InlineData(2, false, false, false, null, new[] { EndingType.Ship })]              // 開発モードの打ち上げを記録した後のセーブ
+[InlineData(2, false, false, false, null, new[] { EndingType.AmbiguousLaunch })]   // 導入前の痕跡を引き継いだ後のセーブ
+[InlineData(0, false, true,  true,  null, new[] { EndingType.CerebrexDestroyed })]
+[InlineData(0, false, false, false, "Embraced", new[] { EndingType.VoidEmbraced })]
+public void Detect_SuppressesTracesExplainedByLineage(int launched, bool royal, bool mechhive, bool deactivated, string? level, EndingType[] lineage)
+    => Assert.Empty(EndingTraces.Detect(new TraceInputs { ColonistsLaunched = launched, RoyalAscentSucceeded = royal, MechhiveSucceeded = mechhive, MechanoidsDeactivated = deactivated, AnomalyLevelDef = level, LineageTypes = lineage }));
+[Fact] public void Detect_UnrelatedLineage_KeepsTrace()
+// LineageTypes == [CerebrexScavenged] で launched 1 → [Ship]（別系統のエンディングでは除かない）
 [Fact] public void Read_QuestStates_FeedTraces()
 // Quest("EndGame_RoyalAscent", true, "Success") と Stats(launched: 3) → EndingTraces == [AmbiguousLaunch]
 // Quest("Gravcore_Mechhive", true, "Success") と Faction("Mechanoid", null, false) → EndingTraces に CerebrexScavenged
 // Component("RimWorld.GameComponent_Anomaly", "levelDef", "Embraced") → EndingTraces に VoidEmbraced
+[Fact] public void Read_OwnComponentLineage_SuppressesExplainedTraces()
+// Component(SaveReader.ComponentClassName) に campaignId と lineageEndings（li に "royalAscent|0|2500000"）、
+// Quest("EndGame_RoyalAscent", true, "Success")、Stats(launched: 3) → EndingTraces は空
+// lineageEndings の li に解釈できない文字列が混ざっても例外にせず、その要素だけ無視する
 ```
 
 - [ ] **Step 2: 失敗することを確かめる**
@@ -391,7 +421,7 @@ Expected: FAIL
   - `root == "EndGame_RoyalAscent"` かつ `endOutcome == "Success"` → RoyalAscentSucceeded
   - `root == "Gravcore_Mechhive"` かつ `endOutcome == "Success"` → MechhiveSucceeded
 - `components/li`:
-  - `Class == SaveReader.ComponentClassName` なら `campaignId` を読む。
+  - `Class == SaveReader.ComponentClassName` なら `campaignId` と `lineageEndings/li`（`LineageEntry.TryParse` で読み、種類を `LineageTypes` に入れる）を読む。
   - `Class == "RimWorld.GameComponent_Anomaly"` なら `levelDef` を読む。
   - それ以外は Skip する。
 - 最後に `EndingTraces.Detect` の結果を `EndingTraces` に入れる。
@@ -421,6 +451,7 @@ git commit -m "feat(core): read quests, factions, components and ending traces"
 - Produces:
   - `sealed class Colony`
     - `string Key`
+    - `List<string> AliasKeys`（台帳の複数項目に当たったときの、使わなかったキー。仕様 §6.2）
     - `List<SaveObservation> Observations`、`List<LiveCampaign> LiveCampaigns`、`List<EndingEvent> Endings`
     - `HashSet<EndingType> Traces`（観測の `EndingTraces` の和集合）
     - `bool Excluded`
@@ -454,6 +485,19 @@ git commit -m "feat(core): read quests, factions, components and ending traces"
     p.SaveObservations.Add(Obs("old.rws", pawns: "Thing_Human123,Thing_Human124,Thing_Human126")); // 後から見つかった古いセーブ
     Assert.Equal(keys, CampaignMatcher.BuildColonies(p).Select(c => c.Key).OrderBy(k => k).ToArray()); // キーは変わらない
 }
+[Fact] public void AncestorFoundLater_MergesBranches_AndKeepsDecisionViaAlias()
+{
+    var p = Profile(Obs("b1.rws", pawns: "Thing_Human1,Thing_Human2"), Obs("b2.rws", pawns: "Thing_Human1,Thing_Human3")); // 同じ指紋の 2 分岐
+    var first = CampaignMatcher.BuildColonies(p);
+    Assert.Equal(2, first.Count);
+    p.UserDecisions.ExcludedCampaignKeys.Add($"fp:{Hash}#2");
+    p.SaveObservations.Add(Obs("ancestor.rws", pawns: "Thing_Human1,Thing_Human2,Thing_Human3"));
+    var c = Assert.Single(CampaignMatcher.BuildColonies(p));
+    Assert.Equal($"fp:{Hash}", c.Key); Assert.Contains($"fp:{Hash}#2", c.AliasKeys);
+    Assert.True(c.Excluded);   // 別名に付いた除外も当てる
+}
+[Fact] public void ResultDoesNotDependOnObservationOrder()
+// 同じ観測の集合を 5 通りの順に並べ替えた Profile → コロニー数・各キー・各コロニーの観測ファイル名の集合がすべて同じ
 [Fact] public void ManualMerge_CombinesListedColonies()
 [Fact] public void ExcludedKey_MarksColony()
 [Fact] public void Endings_AttachToColonyOfTheirCampaign()
@@ -479,9 +523,11 @@ Expected: FAIL
 6. **キーを付ける。**
    - 指紋の無いコロニー: `id:<CampaignId>`
    - 指紋があり、同じハッシュのコロニーが 1 つだけで、`ColonyKeys` にそのハッシュの項目も無い: `fp:<hash>`
-   - それ以外（重なりがある）: 並べた順に、`ColonyKeys` の同じハッシュの項目のうち pawn が包含関係にあるものを探し、見つかればそのキーを使って pawn 和集合を更新する。見つからなければ、まだ誰も使っていなければ `fp:<hash>`、使われていれば `fp:<hash>#n`（既存の最大 n + 1。最小は 2）を割り当て、`ColonyKeys` に追記する。
+   - それ以外（重なりがある）: 並べた順に、`ColonyKeys` の同じハッシュの項目のうち pawn が包含関係にあるものをすべて探す。
+     - 1 つ以上見つかれば、番号の最も小さいもの（番号なしが最小）を `Key` にし、残りを `AliasKeys` に入れる。当たった項目すべての pawn 和集合を更新する。
+     - 見つからなければ、まだ誰も使っていなければ `fp:<hash>`、使われていれば `fp:<hash>#n`（既存の最大 n + 1。最小は 2）を割り当て、`ColonyKeys` に追記する。
 7. **エンディングを付ける。** `EndingEvents` は、`CampaignId` を持つコロニーに付ける。該当が無ければ `id:<CampaignId>` のコロニーを作る。
-8. **除外を付ける。** `Excluded = ExcludedCampaignKeys.Contains(Key)`。
+8. **除外を付ける。** `Key` か `AliasKeys` のどれかが `ExcludedCampaignKeys` にあれば `Excluded = true`。
 
 - [ ] **Step 4: 成功することを確かめる**
 
@@ -512,7 +558,7 @@ git commit -m "feat(core): group observations into colonies with stable keys"
   - `void RegisterLiveCampaign(Profile p, string campaignId, ColonyIdentity identity, DisplayInfo display, DateTime utcNow)`
   - `void ApplyLiveObservation(Profile p, string campaignId, ColonyIdentity identity, ObservedValues values, DisplayInfo display, DateTime savedUtc)`
   - `bool UpsertEnding(Profile p, EndingEvent ev)`: 追加したら true。
-  - `void SetExcluded(Profile p, string colonyKey, bool excluded)`
+  - `void SetExcluded(Profile p, IReadOnlyCollection<string> colonyKeys, bool excluded)`: `colonyKeys` は `Colony.Key` と `AliasKeys`。除外するときは先頭のキーだけを足し、外すときは渡されたキーをすべて取り除く。
 
 - [ ] **Step 1: 失敗するテストを書く**
 
@@ -547,7 +593,9 @@ git commit -m "feat(core): group observations into colonies with stable keys"
     Assert.False(e.DevMode); Assert.Equal(3, e.Departed); Assert.Equal(5, e.LaunchedTotalAfter);
 }
 [Fact] public void UpsertEnding_NormalThenDev_StaysNormal()
-[Fact] public void SetExcluded_AddsAndRemovesOnce()
+[Fact] public void SetExcluded_AddsPrimaryOnce_RemovesAllAliases()
+// SetExcluded(p, ["fp:a", "fp:a#2"], true) を 2 回 → ExcludedCampaignKeys == ["fp:a"]。
+// 先に "fp:a#2" が入っている状態で SetExcluded(p, ["fp:a", "fp:a#2"], false) → 空
 ```
 
 - [ ] **Step 2: 失敗することを確かめる**
@@ -852,11 +900,8 @@ git commit -m "feat(core): incremental, cancellable save import"
 - Create: `Tests/RimworldStatistics.Core.Tests/EndingLedgerTests.cs`
 
 **Interfaces:**
-- Consumes: Task 1 の Model
+- Consumes: Task 1 の Model（`LineageEntry` を含む）
 - Produces:
-  - `readonly record struct LineageEntry(EndingType Type, int Ordinal, int TicksGame)`
-    - `string ToToken()`: 形は `"ship|0|123456"`（種類は camelCase）。
-    - `static bool TryParse(string token, out LineageEntry entry)`
   - `sealed record EndingSignal(EndingType Type, int Departed, string? CreditsExcerpt)`
   - `static class EndingLedger`
     - `EndingEvent Record(string campaignId, List<LineageEntry> lineage, EndingSignal signal, EndingSource source, int ticksGame, int launchedTotalAfter, bool devMode, string? gameVersion, DateTime realTimeUtc)`: ordinal は lineage 内の同じ種類の数。lineage に追記する。
@@ -877,7 +922,6 @@ git commit -m "feat(core): incremental, cancellable save import"
 [Fact] public void Record_FromReloadedLineage_ReusesOrdinal()
 // lineage の写しを取り、元に Ship を記録する。写しに対してもう一度 Ship を記録すると ordinal 0（UpsertEnding で重複になる）
 [Fact] public void SeedTraces_SkipsTypesAlreadyInLineage()
-[Fact] public void LineageToken_RoundTrips()
 [Fact] public void Context_ShipDepartedIsDelta()
 // Begin(Ship, 5) → Resolve(8, "…") == (Ship, 3, null)
 [Fact] public void Context_NoContext_IsOtherWithExcerpt()
@@ -1130,7 +1174,7 @@ git commit -m "feat(mod): profile service, background import runner, flush on me
   - `includeDevMode` が偽なら、開発モードだけの組は出さない。
 - **Colonies:** `ColonyStats` を 1 行ずつ並べる。
   - 列見出しをクリックすると、昇順と降順が入れ替わる。
-  - 「合計から外す」チェックで `ProfileService.Session.Mutate(p => ProfileMutations.SetExcluded(p, key, v), SaveMode.Background)` を呼ぶ。
+  - 「合計から外す」チェックで `ProfileService.Session.Mutate(p => ProfileMutations.SetExcluded(p, [colony.Key, .. colony.AliasKeys], v), SaveMode.Background)` を呼ぶ。
   - 行を選ぶと、元になったセーブ（ファイル名、版、日数、`Superseded`、元ファイルの有無）を下に出す。元ファイルの有無は、ウィンドウを開いたときと取り込みが終わったときに、`ImportRunner.LastResult.PresentFiles` から作る。
   - 名前が無ければ `RWS_UnnamedColony` = `（未命名）{0}`（ワールド名）。
 - **Import:**
@@ -1182,7 +1226,7 @@ git commit -m "feat(mod): main menu entry and statistics window"
     - `ColonyIdentity ReadIdentity(string? campaignId)`
     - `ObservedValues ReadValues()`
     - `DisplayInfo ReadDisplay()`
-    - `TraceInputs ReadTraceInputs()`
+    - `TraceInputs ReadTraceInputs(IReadOnlyCollection<EndingType> lineageTypes)`: `lineageTypes` には GameComponent の `Lineage` の種類を渡す。MOD 導入前のセーブを初めてロードしたときは空になる。
     - `string GameVersion => VersionControl.CurrentVersionStringWithRev`
   - `static class EndingRuntime`: `static readonly CreditsContext Context = new()`。Task 16 のパッチもこれを使う。
   - `sealed class GameComponent_RimworldStatistics : GameComponent`（完全名は `SaveReader.ComponentClassName` と同じ）
