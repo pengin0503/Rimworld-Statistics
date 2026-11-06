@@ -107,6 +107,19 @@ public sealed class ProfileMutationsTests
     }
 
     [Fact]
+    public void Overwrite_ByFileWithOlderModificationTime_KeepsOld()
+    {
+        // A restored backup or synced copy can carry more progress but an older time. Dropping the previous observation
+        // would move "last played" back and could change the equal-tick tie-break (spec §4.2), so it is kept.
+        var p = new Profile();
+        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t1, ticks: 1000));
+        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t0, ticks: 2000, raids: 1, wealthMax: 200, realPlay: 20));
+        Assert.Equal(2, p.SaveObservations.Count);
+        var stats = StatsCalculator.CalculateColony(Assert.Single(CampaignMatcher.BuildColonies(p)), new StatsOptions());
+        Assert.Equal(t1, stats.LastPlayedUtc);
+    }
+
+    [Fact]
     public void Overwrite_LosingAnExplainedTrace_IsNotDominating()
     {
         var p = new Profile();
