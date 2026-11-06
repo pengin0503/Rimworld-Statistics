@@ -16,6 +16,7 @@ public sealed class StatsView
 {
     public required IReadOnlyList<Colony> Colonies { get; init; }
     public required StatsResult Stats { get; init; }
+    public int MissingObservations { get; init; }
 }
 
 /// <summary>
@@ -72,6 +73,38 @@ public sealed class ProfileSession
             return read(_profile);
     }
 
+    public StatsView? TryGetCachedView(StatsOptions options)
+    {
+        if (!Monitor.TryEnter(_lock))
+            return null;
+        try
+        {
+            return _views.GetValueOrDefault(options.IncludeDevMode);
+        }
+        finally
+        {
+            Monitor.Exit(_lock);
+        }
+    }
+
+    public bool TryRead<T>(Func<Profile, T> read, out T result)
+    {
+        if (!Monitor.TryEnter(_lock))
+        {
+            result = default!;
+            return false;
+        }
+        try
+        {
+            result = read(_profile);
+            return true;
+        }
+        finally
+        {
+            Monitor.Exit(_lock);
+        }
+    }
+
     /// <summary>Colonies and statistics, cached per option set until the next change.</summary>
     public StatsView GetView(StatsOptions options)
     {
@@ -83,7 +116,12 @@ public sealed class ProfileSession
                 return cached;
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
-            view = new StatsView { Colonies = colonies, Stats = StatsCalculator.Calculate(colonies, options) };
+            view = new StatsView
+            {
+                Colonies = colonies,
+                Stats = StatsCalculator.Calculate(colonies, options),
+                MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
+            };
             ledgerChanged = LedgerSignature() != before;
             if (ledgerChanged)
             {

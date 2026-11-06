@@ -25,7 +25,7 @@ public static class LiveStateReader
             // PlanetTile.ToString() is "tileId,layerId", the 1.6+ save format.
             StartingTile = game.startingTile.Valid ? ColonyIdentity.NormalizeTile(game.startingTile.ToString()) : null,
             GameStartAbsTick = Find.TickManager.gameStartAbsTick,
-            FirstWealthBits = wealth is { Count: > 0 } ? BitConverter.SingleToUInt32Bits(wealth[0]) : null,
+            FirstWealthBits = wealth is { Count: > 0 } && IsValidWealth(wealth[0]) ? BitConverter.SingleToUInt32Bits(wealth[0]) : null,
             StartingPawnIds = game.startingAndOptionalPawns.Where(p => p != null).Select(p => p.GetUniqueLoadID()).ToList(),
             ModCampaignId = campaignId,
         };
@@ -35,10 +35,13 @@ public static class LiveStateReader
     {
         var sr = Find.StoryWatcher.statsRecord;
         var wealth = WealthRecords();
+        if (wealth != null && !wealth.All(IsValidWealth))
+            wealth = null;
+        var realPlayTime = Find.GameInfo.RealPlayTimeInteracting;
         return new ObservedValues
         {
             TicksGame = Find.TickManager.TicksGame,
-            RealPlayTime = Find.GameInfo.RealPlayTimeInteracting,
+            RealPlayTime = double.IsFinite(realPlayTime) && realPlayTime >= 0 ? realPlayTime : 0,
             NumRaidsEnemy = sr.numRaidsEnemy,
             NumThreatsQueued = sr.numThreatBigs,   // saved under the label "numThreatsQueued"
             ColonistsKilled = sr.colonistsKilled,
@@ -81,6 +84,8 @@ public static class LiveStateReader
             LineageTypes = lineageTypes,
         };
     }
+
+    private static bool IsValidWealth(float value) => float.IsFinite(value) && value >= 0;
 
     /// <summary>The Wealth_Total history series (all player home maps), or null if the recorder is missing.</summary>
     private static List<float>? WealthRecords()

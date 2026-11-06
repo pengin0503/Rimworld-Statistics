@@ -14,14 +14,18 @@ public static class ImportTab
 
     private sealed record Problem(string File, ObservationStatus Status, string? Reason);
 
-    public static void Draw(Rect rect)
+    public static void Draw(Rect rect, ProfileSession session)
     {
-        var session = ProfileService.Session;
-        var (lastScan, problems) = session.Read(p => (
+        if (!session.TryRead(p => (
             p.ImportState.LastScanUtc,
             p.SaveObservations.Where(o => !o.Superseded && o.Status != ObservationStatus.Ok)
                 .OrderBy(o => o.FileName, StringComparer.Ordinal)
-                .Select(o => new Problem(o.FileName, o.Status, o.ErrorReason)).ToList()));
+                .Select(o => new Problem(o.FileName, o.Status, o.ErrorReason)).ToList()), out var snapshot))
+        {
+            Widgets.Label(rect, "RWS_Loading".Translate());
+            return;
+        }
+        var (lastScan, problems) = snapshot;
         var result = ImportRunner.LastResult;
         var y = rect.y;
 

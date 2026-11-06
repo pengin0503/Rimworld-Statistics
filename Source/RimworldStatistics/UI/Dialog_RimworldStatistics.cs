@@ -21,13 +21,26 @@ public sealed class Dialog_RimworldStatistics : Window
 
     private static Tab current = Tab.Overview;
     private ImportResult? presentFrom;
+    private Task<SaveFileIndex?>? indexTask;
+    private SaveFileIndex? fileIndex;
+    private DateTime nextIndexRefresh;
+    private Task<StatsView>? viewTask;
+    private bool viewIncludesDevMode;
+    private StatsView? lastView;
 
     public Dialog_RimworldStatistics()
     {
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
-        RefreshPresentFiles();
+        try
+        {
+            ProfileService.PrepareForDialog();
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] Could not start loading statistics: {e}", "RWS.prepare".GetHashCode());
+        }
     }
 
     public override Vector2 InitialSize => new(1000f, 720f);
@@ -39,9 +52,6 @@ public sealed class Dialog_RimworldStatistics : Window
             Text.Font = GameFont.Medium;
             Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width - 40f, TitleHeight), "RWS_WindowTitle".Translate());
             Text.Font = GameFont.Small;
-
-            if (!ReferenceEquals(presentFrom, ImportRunner.LastResult))
-                RefreshPresentFiles();   // an import finished since the window opened
 
             var body = new Rect(inRect.x, inRect.y + TitleHeight + TabHeight, inRect.width, inRect.height - TitleHeight - TabHeight);
             Widgets.DrawMenuSection(body);
@@ -55,12 +65,33 @@ public sealed class Dialog_RimworldStatistics : Window
             TabDrawer.DrawTabs(body, tabs);
 
             var content = body.ContractedBy(12f);
+            var session = ProfileService.TryGetSession();
+            if (session == null)
+            {
+                Widgets.Label(content, "RWS_Loading".Translate());
+                return;
+            }
+            if (current == Tab.Import)
+            {
+                ImportTab.Draw(content, session);
+                return;
+            }
+
+            var view = GetView(session);
+            if (view == null)
+            {
+                Widgets.Label(content, "RWS_Loading".Translate());
+                return;
+            }
+
             switch (current)
             {
-                case Tab.Overview: OverviewTab.Draw(content, ProfileService.View); break;
-                case Tab.Endings: EndingsTab.Draw(content, ProfileService.View); break;
-                case Tab.Colonies: ColoniesTab.Draw(content, ProfileService.View); break;
-                case Tab.Import: ImportTab.Draw(content); break;
+                case Tab.Overview: OverviewTab.Draw(content, view); break;
+                case Tab.Endings: EndingsTab.Draw(content, view); break;
+                case Tab.Colonies:
+                    RefreshPresentFiles();
+                    ColoniesTab.Draw(content, view, fileIndex);
+                    break;
             }
         }
         catch (Exception e)
@@ -76,30 +107,54 @@ public sealed class Dialog_RimworldStatistics : Window
         }
     }
 
-    /// <summary>Which save files exist, for the "source file present" column (spec §7.5).</summary>
+    private StatsView? GetView(ProfileSession session)
+    {
+        var options = ProfileService.Options;
+        if (viewIncludesDevMode != options.IncludeDevMode)
+        {
+            lastView = null;
+            viewTask = null;
+            viewIncludesDevMode = options.IncludeDevMode;
+        }
+        if (viewTask is { IsCompleted: true } completed)
+        {
+            viewTask = null;
+            lastView = completed.GetAwaiter().GetResult();
+        }
+
+        var cached = session.TryGetCachedView(options);
+        if (cached != null)
+            return lastView = cached;
+        viewTask ??= Task.Run(() => session.GetView(options));
+        return lastView;
+    }
+
     private void RefreshPresentFiles()
     {
-        presentFrom = ImportRunner.LastResult;
-        IEnumerable<string> names;
-        if (presentFrom is { } r)
+        if (indexTask is { IsCompleted: true } completed)
         {
-            names = r.PresentFiles;
+            indexTask = null;
+            fileIndex = completed.GetAwaiter().GetResult();
         }
-        else
+
+        var now = DateTime.UtcNow;
+        var latest = ImportRunner.LastResult;
+        if (indexTask != null || (now < nextIndexRefresh && ReferenceEquals(presentFrom, latest)))
+            return;
+        nextIndexRefresh = now.AddSeconds(2);
+        presentFrom = latest;
+        var directory = GenFilePaths.SavedGamesFolderPath;
+        indexTask = Task.Run(() =>
         {
             try
             {
-                var dir = GenFilePaths.SavedGamesFolderPath;
-                names = Directory.Exists(dir)
-                    ? Directory.EnumerateFiles(dir).Select(Path.GetFileName).OfType<string>().Where(ImportEngine.IsSaveFile).ToList()
-                    : new List<string>();
+                return SaveFileIndex.Read(directory);
             }
             catch (Exception e) when (e is IOException or UnauthorizedAccessException)
             {
-                names = new List<string>();
+                return null;
             }
-        }
-        ColoniesTab.SetPresentFiles(new HashSet<string>(names, StringComparer.Ordinal));
+        });
     }
 
     // ----- shared formatting -----

@@ -12,6 +12,10 @@ public sealed class LiveCampaign
 
     /// <summary>When the point in <see cref="Max"/>'s ticks (and its WealthLast and Display) was saved; for tie-breaks.</summary>
     public DateTime? MaxObservedUtc { get; set; }
+    public bool? WealthAtFurthestKnown { get; set; }
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    public bool HasObservation => MaxObservedUtc.HasValue || Max.TicksGame > 0;
 
     /// <summary>Game versions this campaign was saved under, in the order first seen (Colonies tab, spec §9.2).</summary>
     public List<string> GameVersions { get; set; } = new();

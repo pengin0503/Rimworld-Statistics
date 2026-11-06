@@ -51,7 +51,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             var id = campaignId;
             var identity = LiveStateReader.ReadIdentity(id);
             var display = LiveStateReader.ReadDisplay();
-            ProfileService.Session.Mutate(p => ProfileMutations.RegisterLiveCampaign(p, id, identity, display, DateTime.UtcNow), SaveMode.Immediate);
+            ProfileService.Session.Mutate(p => ProfileMutations.RegisterLiveCampaign(p, id, identity, display), SaveMode.Immediate);
         }
         catch (Exception e)
         {
@@ -83,7 +83,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
                 Lineage = lineage;
             session.Mutate(p =>
             {
-                ProfileMutations.RegisterLiveCampaign(p, id, identity, display, DateTime.UtcNow);
+                ProfileMutations.RegisterLiveCampaign(p, id, identity, display);
                 foreach (var ev in seeded)
                     ProfileMutations.UpsertEnding(p, ev);
             }, SaveMode.Immediate);
@@ -109,17 +109,17 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     public override void ExposeData()
     {
         base.ExposeData();
+        if (Scribe.mode == LoadSaveMode.Saving)
+            EnsureCampaignId();
         Scribe_Values.Look(ref campaignId, "campaignId");
         Scribe_Collections.Look(ref lineageTokens, "lineageEndings", LookMode.Value);
         Scribe_Values.Look(ref dataVersion, "dataVersion", 1);
         if (Scribe.mode == LoadSaveMode.PostLoadInit && lineageTokens == null)
             lineageTokens = new List<string>();
-        if (Scribe.mode == LoadSaveMode.Saving)
-            RecordSave();
     }
 
     /// <summary>Spec §8.3: on every save, refresh the live record; the file is written in the background.</summary>
-    private void RecordSave()
+    internal void RecordSave(string path)
     {
         try
         {
@@ -128,11 +128,15 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             var values = LiveStateReader.ReadValues();
             var display = LiveStateReader.ReadDisplay();
             var version = LiveStateReader.GameVersion;
-            ProfileService.Session.Mutate(p => ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, DateTime.UtcNow, version), SaveMode.Background);
+            var file = new FileInfo(path);
+            if (!file.Exists)
+                return;
+            var savedUtc = file.LastWriteTimeUtc;
+            ProfileService.Session.Mutate(p => ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version), SaveMode.Background);
         }
         catch (Exception e)
         {
-            Fail("ExposeData (saving)", e);
+            Fail("RecordSave", e);
         }
     }
 

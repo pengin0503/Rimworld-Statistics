@@ -18,27 +18,45 @@ public static class EndingPatches
     internal static int Launched => Find.StoryWatcher?.statsRecord?.colonistsLaunched ?? 0;
 
     /// <summary>Records an ending into the save's lineage and the record file (written immediately).</summary>
-    public static void RecordNow(EndingSignal signal)
+    public static bool RecordNow(EndingSignal signal)
     {
-        var component = GameComponent_RimworldStatistics.CurrentOrNull;
-        if (component is null)
-            return;
-        var id = component.EnsureCampaignId();
-        var now = DateTime.UtcNow;
-        var launchedAfter = Launched;
-        var lineage = component.Lineage;
-        var ev = EndingLedger.Record(id, lineage, signal, EndingSource.Live, Find.TickManager.TicksGame, launchedAfter,
-            Prefs.DevMode, LiveStateReader.GameVersion, now);
-        component.Lineage = lineage;
-        var identity = LiveStateReader.ReadIdentity(id);
-        var values = LiveStateReader.ReadValues();   // includes the post-ending colonistsLaunched (spec §8.4 step 4)
-        var display = LiveStateReader.ReadDisplay();
-        var version = LiveStateReader.GameVersion;
-        ProfileService.Session.Mutate(p =>
+        try
         {
-            ProfileMutations.UpsertEnding(p, ev);
-            ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, now, version);
-        }, SaveMode.Immediate);
+            var component = GameComponent_RimworldStatistics.CurrentOrNull;
+            if (component is null)
+                return false;
+
+            var id = component.EnsureCampaignId();
+            var now = DateTime.UtcNow;
+            var version = LiveStateReader.GameVersion;
+            var lineage = component.Lineage;
+            var ev = EndingLedger.Record(id, lineage, signal, EndingSource.Live, Find.TickManager.TicksGame, Launched,
+                Prefs.DevMode, version, now);
+
+            (ColonyIdentity Identity, ObservedValues Values, DisplayInfo Display)? observation = null;
+            try
+            {
+                observation = (LiveStateReader.ReadIdentity(id), LiveStateReader.ReadValues(), LiveStateReader.ReadDisplay());
+            }
+            catch (Exception e)
+            {
+                Log.ErrorOnce($"[RimworldStatistics] Could not read the colony state at the ending: {e}", "RWS.ending.observation".GetHashCode());
+            }
+
+            ProfileService.Session.Mutate(p =>
+            {
+                ProfileMutations.UpsertEnding(p, ev);
+                if (observation is { } point)
+                    ProfileMutations.ApplyLiveObservation(p, id, point.Identity, point.Values, point.Display, now, version, isSave: false);
+            }, SaveMode.Immediate);
+            component.Lineage = lineage;
+            return true;
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] Could not record the ending: {e}", "RWS.ending.record".GetHashCode());
+            return false;
+        }
     }
 
     /// <summary>Runs <paramref name="body"/> unless the patch is off; any exception turns the patch off for this session.</summary>
@@ -120,8 +138,8 @@ public static class QuestPartEndGamePatch
             var root = __instance.quest?.root?.defName;
             var royal = root == "EndGame_RoyalAscent";
             var departed = Math.Max(0, EndingPatches.Launched - __state.LaunchedBefore);
-            EndingPatches.RecordNow(new EndingSignal(royal ? EndingType.RoyalAscent : EndingType.Other, departed, royal ? null : root));
-            EndingRuntime.Context.NoteQuestEndingRecorded();
+            if (EndingPatches.RecordNow(new EndingSignal(royal ? EndingType.RoyalAscent : EndingType.Other, departed, royal ? null : root)))
+                EndingRuntime.Context.NoteQuestEndingRecorded();
         });
 }
 

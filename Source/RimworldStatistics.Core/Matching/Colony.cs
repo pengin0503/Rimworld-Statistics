@@ -12,6 +12,7 @@ public sealed class Colony
     public List<SaveObservation> Observations { get; } = new();
     public List<LiveCampaign> LiveCampaigns { get; } = new();
     public List<EndingEvent> Endings { get; } = new();
+    public List<LineageEntry> RecoveredEndings { get; } = new();
 
     /// <summary>Union of the observations' ending traces.</summary>
     public HashSet<EndingType> Traces { get; } = new();

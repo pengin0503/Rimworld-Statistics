@@ -10,50 +10,43 @@ namespace RimworldStatistics;
 public static class ProfileService
 {
     private static readonly object Gate = new();
-    private static ProfileSession? session;
-    private static bool reported;
+    private static Task<ProfileSession>? sessionTask;
 
     public static string DirectoryPath => Path.Combine(GenFilePaths.SaveDataFolderPath, "RimworldStatistics");
 
-    public static ProfileSession Session
+    private static Task<ProfileSession> StartLoading(bool retry = false)
     {
-        get
+        lock (Gate)
         {
-            ProfileSession current;
-            var created = false;
-            lock (Gate)
+            if (sessionTask == null || (retry && sessionTask.IsFaulted))
             {
-                if (session is null)
+                var path = DirectoryPath;
+                sessionTask = Task.Run(() =>
                 {
-                    // Safe off the main thread: SaveDataFolderPath is cached at startup (Prefs.Init) and otherwise reads only
-                    // UnityData's cached paths; the game itself resolves save paths on the long-event thread.
-                    session = new ProfileSession(new ProfileStore(DirectoryPath), () => DateTime.UtcNow);
-                    created = true;
-                }
-                current = session;
+                    var session = new ProfileSession(new ProfileStore(path), () => DateTime.UtcNow);
+                    ReportLoadProblems(session.LoadResult, path);
+                    return session;
+                });
             }
-            if (created)
-                ReportLoadProblemsOnce();
-            return current;
+            return sessionTask;
         }
+    }
+
+    public static ProfileSession Session => StartLoading(retry: true).GetAwaiter().GetResult();
+
+    public static void PrepareForDialog() => StartLoading(retry: true);
+
+    public static ProfileSession? TryGetSession()
+    {
+        var task = StartLoading();
+        return task.IsCompleted ? task.GetAwaiter().GetResult() : null;
     }
 
     public static StatsOptions Options => new() { IncludeDevMode = RimworldStatisticsMod.Settings.includeDevMode };
 
-    public static StatsView View => Session.GetView(Options);
-
-    /// <summary>Warns once if the record file had to be restored, was reset, or cannot be written this session.</summary>
-    public static void ReportLoadProblemsOnce()
+    private static void ReportLoadProblems(ProfileLoadResult r, string path)
     {
-        ProfileLoadResult r;
-        lock (Gate)
-        {
-            if (reported || session is null)
-                return;
-            reported = true;
-            r = session.LoadResult;
-        }
-        var file = Path.Combine(DirectoryPath, "profile.json");
+        var file = Path.Combine(path, "profile.json");
         var renamed = r.CorruptFileRenamedTo is null ? "" : $" The damaged file was kept as {r.CorruptFileRenamedTo}.";
         switch (r.Source)
         {

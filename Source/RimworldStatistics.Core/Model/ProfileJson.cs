@@ -46,6 +46,7 @@ public static class ProfileJson
             o.Values ??= new ObservedValues();
             o.EndingTraces ??= new List<EndingType>();
             o.ExplainedTraces ??= new List<EndingType>();
+            o.Lineage ??= new List<LineageEntry>();
             o.Display ??= new DisplayInfo();
         }
 

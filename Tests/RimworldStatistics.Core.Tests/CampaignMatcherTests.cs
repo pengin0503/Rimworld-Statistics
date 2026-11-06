@@ -235,14 +235,14 @@ public sealed class CampaignMatcherTests
     {
         // StartedNewGame registers the campaign at once; a game abandoned without saving (re-rolling a map) is not a colony.
         var p = new Profile();
-        ProfileMutations.RegisterLiveCampaign(p, "g1", Id(pawns: "1"), new DisplayInfo(), T0);
+        ProfileMutations.RegisterLiveCampaign(p, "g1", Id(pawns: "1"), new DisplayInfo());
         Assert.Empty(CampaignMatcher.BuildColonies(p));
         Assert.Empty(p.ColonyKeys);
         ProfileMutations.ApplyLiveObservation(p, "g1", Id(pawns: "1"), new ObservedValues { TicksGame = 2500 }, new DisplayInfo(), T0.AddHours(1));
         Assert.Single(CampaignMatcher.BuildColonies(p));   // saved once: now it counts
 
         var withSave = Profile(Obs("a.rws", pawns: "5", id: "g2"));   // registered at load, never saved, but a save file exists
-        ProfileMutations.RegisterLiveCampaign(withSave, "g2", Id(pawns: "5"), new DisplayInfo(), T0);
+        ProfileMutations.RegisterLiveCampaign(withSave, "g2", Id(pawns: "5"), new DisplayInfo());
         Assert.Single(CampaignMatcher.BuildColonies(withSave));
     }
 

@@ -28,9 +28,9 @@ public static class CampaignMatcher
         var colonies = GroupByFingerprint(GroupById(profile));
         // A new game is registered when it starts; until it is saved once (or reaches an ending, which also records the
         // live state) it is not a colony, e.g. a map that was re-rolled and abandoned.
-        colonies.RemoveAll(c => c.Observations.Count == 0 && c.LiveCampaigns.All(l => l.MaxObservedUtc is null));
-        AssignKeys(profile, colonies);
         AttachEndings(profile, colonies);
+        colonies.RemoveAll(c => c.Endings.Count == 0 && c.Observations.Count == 0 && c.LiveCampaigns.All(l => !l.HasObservation));
+        AssignKeys(profile, colonies);
         ApplyManualMerges(profile, colonies);
         foreach (var c in colonies)
         {
@@ -40,9 +40,14 @@ public static class CampaignMatcher
                 // Spec §4.3 drops traces the save's lineage explains so recorded endings are not counted twice; when the
                 // profile has no such record (lost, or restored from an older backup), the trace is the remaining evidence.
                 foreach (var t in o.ExplainedTraces)
-                    if (!c.Endings.Any(e => EndingTraces.Explains(e.Type, t)))
+                    if (!o.Lineage.Any(e => EndingTraces.Explains(e.Type, t))
+                        && !c.Endings.Any(e => EndingTraces.Explains(e.Type, t)))
                         c.Traces.Add(t);
             }
+            var recorded = c.Endings.Select(e => (e.Type, e.Ordinal)).ToHashSet();
+            c.RecoveredEndings.AddRange(c.Observations.SelectMany(o => o.Lineage)
+                .Where(e => !recorded.Contains((e.Type, e.Ordinal)))
+                .OrderBy(e => e.TicksGame).DistinctBy(e => (e.Type, e.Ordinal)));
             c.Excluded = profile.UserDecisions.ExcludedCampaignKeys.Any(k => k == c.Key || c.AliasKeys.Contains(k, Ord));
         }
         return colonies;
@@ -55,7 +60,9 @@ public static class CampaignMatcher
         public HashSet<string> Pawns { get; } = new(Ord);
         public string? Hash { get; set; }
 
-        public DateTime Oldest => Obs.Select(o => o.LastWriteUtc).Concat(Live.Select(l => l.LastSavedUtc)).DefaultIfEmpty(DateTime.MaxValue).Min();
+        public DateTime Oldest => Obs.Select(o => o.LastWriteUtc)
+            .Concat(Live.Select(l => l.LastSavedUtc == default ? l.MaxObservedUtc ?? DateTime.MaxValue : l.LastSavedUtc))
+            .DefaultIfEmpty(DateTime.MaxValue).Min();
         public string MinFile => Obs.Select(o => o.FileName).DefaultIfEmpty("").Min(Ord)!;
         public string MinId => Live.Select(l => l.CampaignId).Concat(Obs.Select(o => o.Identity.ModCampaignId ?? "")).DefaultIfEmpty("").Min(Ord)!;
         public string PawnText => string.Join(",", Pawns.OrderBy(p => p, Ord));
@@ -151,13 +158,18 @@ public static class CampaignMatcher
         {
             if (c.FingerprintHash is not { } hash)
             {
-                c.Key = "id:" + c.CampaignIds().OrderBy(i => i, Ord).First();
+                c.Key = "id:" + c.CampaignIds().Concat(c.Endings.Select(e => e.CampaignId)).OrderBy(i => i, Ord).First();
                 continue;
             }
             // A live campaign is keyed id:<campaignId> until its first wealth record completes the fingerprint; keep
             // those keys as aliases so a decision made in the meantime still applies after the key becomes fp:<hash>.
             c.AliasKeys.AddRange(c.CampaignIds().OrderBy(i => i, Ord).Select(i => "id:" + i));
-            var entries = profile.ColonyKeys.Where(e => e.FingerprintHash == hash).ToList();
+            var compatibleHashes = c.Observations.Select(o => o.Identity)
+                .Concat(c.LiveCampaigns.Select(l => l.Identity))
+                .Where(identity => identity.FingerprintHash() == hash)
+                .SelectMany(identity => identity.LegacyFingerprints())
+                .Append(hash).ToHashSet(Ord);
+            var entries = profile.ColonyKeys.Where(e => compatibleHashes.Contains(e.FingerprintHash)).ToList();
             var matches = entries
                 .Where(e => !claimed.Contains(e) && SubsetEitherWay(new HashSet<string>(e.StartingPawnIds, Ord), c.StartingPawnUnion))
                 .OrderBy(e => KeyNumber(e.Key))

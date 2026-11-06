@@ -10,13 +10,14 @@ public sealed class AutoImportGate
     private readonly object gate = new();
     private bool started;
     private bool resumeRequested;
+    private bool userCancelled;
 
     /// <summary>Call on every title-menu draw; true means "start a scan now".</summary>
     public bool ShouldStart(bool autoImportEnabled, bool running)
     {
         lock (gate)
         {
-            if (!autoImportEnabled || running)
+            if (!autoImportEnabled || running || userCancelled)
                 return false;
             if (started && !resumeRequested)
                 return false;
@@ -26,10 +27,34 @@ public sealed class AutoImportGate
         }
     }
 
-    /// <summary>A running scan was stopped because a game started or loaded.</summary>
-    public void InterruptedByGame()
+    public void CancelledByUser()
     {
         lock (gate)
-            resumeRequested = true;
+        {
+            userCancelled = true;
+            resumeRequested = false;
+        }
+    }
+
+    public void StartedManually()
+    {
+        lock (gate)
+        {
+            userCancelled = false;
+            started = true;
+            resumeRequested = false;
+        }
+    }
+
+    public void RefreshAfterSave() => RequestRefresh();
+
+    /// <summary>A running scan was stopped because a game started or loaded.</summary>
+    public void InterruptedByGame() => RequestRefresh();
+
+    private void RequestRefresh()
+    {
+        lock (gate)
+            if (!userCancelled)
+                resumeRequested = true;
     }
 }

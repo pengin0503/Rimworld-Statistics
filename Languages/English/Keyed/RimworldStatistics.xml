@@ -62,7 +62,7 @@
   <RWS_Col_Killed>Killed</RWS_Col_Killed>
   <RWS_Col_Endings>Endings</RWS_Col_Endings>
   <RWS_Col_Versions>Versions</RWS_Col_Versions>
-  <RWS_Col_Saves>Saves</RWS_Col_Saves>
+  <RWS_Col_Saves>Imported saves</RWS_Col_Saves>
   <RWS_Col_LastPlayed>Last played</RWS_Col_LastPlayed>
   <RWS_Col_File>File</RWS_Col_File>
   <RWS_Col_Version>Version</RWS_Col_Version>
@@ -98,4 +98,7 @@
   <RWS_LoadSource_NewerSchema>record file from a newer version (read-only)</RWS_LoadSource_NewerSchema>
   <RWS_Status_Error>failed</RWS_Status_Error>
   <RWS_Status_Unidentifiable>unidentifiable</RWS_Status_Unidentifiable>
+  <RWS_Loading>Loading statistics…</RWS_Loading>
+  <RWS_WealthCoverage>Wealth data from {0} colonies ({1} without data).</RWS_WealthCoverage>
+  <RWS_Source_RecoveredLineage>Recovered from save (dev mode unknown, excluded from totals)</RWS_Source_RecoveredLineage>
 </LanguageData>
