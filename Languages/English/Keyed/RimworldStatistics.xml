@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
+  <RWS_Setting_IncludeDevMode>Show and count endings recorded in development mode</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>Import saves automatically at the title screen</RWS_Setting_AutoImport>
+</LanguageData>

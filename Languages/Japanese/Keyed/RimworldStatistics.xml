@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SettingsCategory>通算統計（Rimworld Statistics）</RWS_SettingsCategory>
+  <RWS_Setting_IncludeDevMode>開発モード中に記録したエンディングを表示し、合計に含める</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>タイトル画面で自動的にセーブを取り込む</RWS_Setting_AutoImport>
+</LanguageData>
