@@ -93,6 +93,16 @@ public sealed class ProfileMutationsTests
     }
 
     [Fact]
+    public void Overwrite_LosingAnExplainedTrace_IsNotDominating()
+    {
+        var p = new Profile();
+        var old = Obs("a.rws", t0, ticks: 1000); old.ExplainedTraces.Add(EndingType.Ship);
+        ProfileMutations.AddSaveObservation(p, old);
+        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t1, ticks: 2000));
+        Assert.Equal(2, p.SaveObservations.Count);   // the older one still carries ending evidence
+    }
+
+    [Fact]
     public void Overwrite_DominatingButFewerPawns_KeepsOldAsEvidence()
     {
         var p = new Profile();
@@ -166,6 +176,7 @@ public sealed class ProfileMutationsTests
         Assert.Equal((200, 99.0), (c.Latest.TicksGame, c.Latest.WealthLast));
         Assert.Equal("late", c.Display.FactionName);   // the display of the furthest point, like observations (spec §9.2)
         Assert.Equal(t0.AddHours(2), c.LastSavedUtc);
+        Assert.Equal(t0.AddHours(1), c.MaxObservedUtc);   // when the furthest point was seen, for tie-breaks
     }
 
     [Fact]

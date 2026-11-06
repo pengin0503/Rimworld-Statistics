@@ -9,4 +9,7 @@ public sealed class LiveCampaign
     public ObservedValues Latest { get; set; } = new();
     public DisplayInfo Display { get; set; } = new();
     public DateTime LastSavedUtc { get; set; }
+
+    /// <summary>When the point in <see cref="Max"/>'s ticks (and its WealthLast and Display) was saved; for tie-breaks.</summary>
+    public DateTime? MaxObservedUtc { get; set; }
 }

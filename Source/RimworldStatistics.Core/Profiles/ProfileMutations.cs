@@ -65,6 +65,7 @@ public static class ProfileMutations
             && n.GreatestPopulation >= o.GreatestPopulation
             && n.WealthMax >= o.WealthMax
             && older.EndingTraces.All(newer.EndingTraces.Contains)
+            && older.ExplainedTraces.All(t => newer.EndingTraces.Contains(t) || newer.ExplainedTraces.Contains(t))
             && older.Identity.StartingPawnIds.All(id => newer.Identity.StartingPawnIds.Contains(id, Ord));
     }
 
@@ -108,6 +109,7 @@ public static class ProfileMutations
         {
             m.WealthLast = values.WealthLast;
             live.Display = display.Clone();
+            live.MaxObservedUtc = savedUtc;
         }
         m.TicksGame = Math.Max(m.TicksGame, values.TicksGame);
         m.RealPlayTime = Math.Max(m.RealPlayTime, values.RealPlayTime);

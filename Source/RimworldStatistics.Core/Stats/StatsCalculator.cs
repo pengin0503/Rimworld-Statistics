@@ -102,7 +102,8 @@ public static class StatsCalculator
     {
         // Superseded observations are history of this colony and count too.
         var points = colony.Observations.Select(o => new Point(o.Values, o.LastWriteUtc, o.Display))
-            .Concat(colony.LiveCampaigns.Select(l => new Point(l.Max, l.LastSavedUtc, l.Display)))
+            // Max/Display describe the furthest live point; LastSavedUtc moves on every save, so tie-break on when that point was seen.
+            .Concat(colony.LiveCampaigns.Select(l => new Point(l.Max, l.MaxObservedUtc ?? l.LastSavedUtc, l.Display)))
             .ToList();
         int MaxOf(Func<ObservedValues, int> f) => points.Select(p => f(p.Values)).DefaultIfEmpty(0).Max();
         double MaxOfD(Func<ObservedValues, double> f) => points.Select(p => f(p.Values)).DefaultIfEmpty(0).Max();

@@ -18,6 +18,12 @@ public sealed class SaveObservation
     public ColonyIdentity Identity { get; set; } = new();
     public ObservedValues Values { get; set; } = new();
     public List<EndingType> EndingTraces { get; set; } = new();
+
+    /// <summary>
+    /// Traces the save's own lineageEndings explains (spec §4.3). They count only when the profile has no recorded
+    /// ending of the same group for this colony, e.g. after profile.json was lost or restored from an older backup.
+    /// </summary>
+    public List<EndingType> ExplainedTraces { get; set; } = new();
     public DisplayInfo Display { get; set; } = new();
 
     public bool SameFileContent(long size, DateTime lastWriteUtc) => FileSize == size && LastWriteUtc == lastWriteUtc;

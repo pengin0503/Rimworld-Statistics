@@ -76,6 +76,20 @@ public sealed class StatsCalculatorTests
     }
 
     [Fact]
+    public void Colony_WealthLast_TieBreak_UsesTimeOfFurthestLivePoint_NotLastSave()
+    {
+        // The live record reached 300 ticks at t0; a later save at 200 ticks (reloaded earlier branch) moved LastSavedUtc.
+        // An imported save at 300 ticks from t0+1d is newer than the live 300-tick point and must win the tie (spec §4.2).
+        var live = new LiveCampaign
+        {
+            CampaignId = "g1", MaxObservedUtc = t0, LastSavedUtc = t0.AddDays(2), Display = new DisplayInfo { FactionName = "stale" },
+            Max = new ObservedValues { TicksGame = 300, WealthLast = 30 },
+        };
+        var s = StatsCalculator.CalculateColony(C("k", new[] { Obs("b.rws", 300, t0.AddDays(1), wealthLast: 40, faction: "newer") }, live: live), Off);
+        Assert.Equal((40.0, "newer"), (s.WealthLast, s.FactionName));
+    }
+
+    [Fact]
     public void Endings_CountDistinctOrdinals_AndTraceCountsOnce()
     {
         var s = StatsCalculator.CalculateColony(C("k",

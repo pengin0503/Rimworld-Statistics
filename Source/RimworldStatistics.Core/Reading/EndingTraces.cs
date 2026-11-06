@@ -29,22 +29,22 @@ public static class EndingTraces
             found.Add(EndingType.VoidDisrupted);
 
         // Traces the save's own ending list already explains are not counted again (spec §4.3).
-        var lineage = i.LineageTypes;
-        if (lineage.Any(t => t is EndingType.Ship or EndingType.RoyalAscent or EndingType.AmbiguousLaunch))
-        {
-            found.Remove(EndingType.Ship);
-            found.Remove(EndingType.AmbiguousLaunch);
-        }
-        if (lineage.Any(t => t is EndingType.CerebrexScavenged or EndingType.CerebrexDestroyed))
-        {
-            found.Remove(EndingType.CerebrexScavenged);
-            found.Remove(EndingType.CerebrexDestroyed);
-        }
-        if (lineage.Any(t => t is EndingType.VoidEmbraced or EndingType.VoidDisrupted))
-        {
-            found.Remove(EndingType.VoidEmbraced);
-            found.Remove(EndingType.VoidDisrupted);
-        }
+        found.RemoveWhere(trace => i.LineageTypes.Any(recorded => Explains(recorded, trace)));
         return found.OrderBy(t => t).ToList();
     }
+
+    /// <summary>
+    /// Whether a recorded ending of type <paramref name="recorded"/> accounts for a save trace of type <paramref name="trace"/>
+    /// (spec §4.3): any launch-style ending explains the launch traces, either Cerebrex ending the Cerebrex traces, and
+    /// either void ending the void traces.
+    /// </summary>
+    public static bool Explains(EndingType recorded, EndingType trace) => Group(recorded) is { } g && g == Group(trace);
+
+    private static int? Group(EndingType t) => t switch
+    {
+        EndingType.Ship or EndingType.RoyalAscent or EndingType.AmbiguousLaunch => 0,
+        EndingType.CerebrexScavenged or EndingType.CerebrexDestroyed => 1,
+        EndingType.VoidEmbraced or EndingType.VoidDisrupted => 2,
+        _ => null,
+    };
 }

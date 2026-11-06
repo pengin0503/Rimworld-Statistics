@@ -231,6 +231,28 @@ public sealed class CampaignMatcherTests
     }
 
     [Fact]
+    public void ExplainedTraces_CountOnlyWhenNoRecordedEndingExplainsThem()
+    {
+        // A mod-stamped save's lineage explains its launch trace. With the ending record in the profile, the trace is not
+        // counted again (spec §4.3); with the profile lost or restored from an older backup, the trace is the only evidence.
+        SaveObservation Stamped()
+        {
+            var o = Obs("stamped.rws", pawns: "1", id: "g1");
+            o.ExplainedTraces.Add(EndingType.AmbiguousLaunch);
+            return o;
+        }
+        Assert.Equal(new[] { EndingType.AmbiguousLaunch }, Assert.Single(CampaignMatcher.BuildColonies(Profile(Stamped()))).Traces);
+
+        var withRecord = Profile(Stamped());
+        withRecord.EndingEvents.Add(new EndingEvent { CampaignId = "g1", Type = EndingType.RoyalAscent, Ordinal = 0 });   // same launch group
+        Assert.Empty(Assert.Single(CampaignMatcher.BuildColonies(withRecord)).Traces);
+
+        var otherGroup = Profile(Stamped());
+        otherGroup.EndingEvents.Add(new EndingEvent { CampaignId = "g1", Type = EndingType.VoidEmbraced, Ordinal = 0 });
+        Assert.Equal(new[] { EndingType.AmbiguousLaunch }, Assert.Single(CampaignMatcher.BuildColonies(otherGroup)).Traces);
+    }
+
+    [Fact]
     public void FindCampaignIdFor_ReturnsMatchingLiveCampaign()
     {
         var p = new Profile();

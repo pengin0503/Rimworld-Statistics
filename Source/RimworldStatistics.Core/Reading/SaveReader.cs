@@ -11,7 +11,8 @@ namespace RimworldStatistics.Core;
 /// </summary>
 public sealed class SaveReader
 {
-    public const int Version = 1;
+    /// <summary>Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 2: ExplainedTraces.</summary>
+    public const int Version = 2;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -331,15 +332,18 @@ public sealed class SaveReader
     {
         var obs = s.Obs;
         obs.Display.FactionName = PlayerFactionName(s);
-        obs.EndingTraces = EndingTraces.Detect(new TraceInputs
+        TraceInputs Inputs(IReadOnlyCollection<EndingType> lineage) => new()
         {
             ColonistsLaunched = obs.Values.ColonistsLaunched,
             RoyalAscentSucceeded = s.RoyalAscentSucceeded,
             MechhiveSucceeded = s.MechhiveSucceeded,
             MechanoidsDeactivated = s.MechanoidsDeactivated,
             AnomalyLevelDef = s.AnomalyLevelDef,
-            LineageTypes = s.LineageTypes,
-        });
+            LineageTypes = lineage,
+        };
+        obs.EndingTraces = EndingTraces.Detect(Inputs(s.LineageTypes));
+        // What the lineage explained is kept: it is the only evidence if the profile lost the matching ending record.
+        obs.ExplainedTraces = EndingTraces.Detect(Inputs(Array.Empty<EndingType>())).Except(obs.EndingTraces).ToList();
         if (s.Wealth is { Length: > 0 } w)
         {
             obs.Identity.FirstWealthBits = BitConverter.SingleToUInt32Bits(w[0]);

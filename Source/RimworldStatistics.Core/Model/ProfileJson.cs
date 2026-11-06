@@ -45,6 +45,7 @@ public static class ProfileJson
             o.Identity = Normalize(o.Identity);
             o.Values ??= new ObservedValues();
             o.EndingTraces ??= new List<EndingType>();
+            o.ExplainedTraces ??= new List<EndingType>();
             o.Display ??= new DisplayInfo();
         }
 

@@ -105,6 +105,7 @@ public sealed class SaveReaderHistoryTests
                 new XElement("dataVersion", 1))
             .Quest("EndGame_RoyalAscent", true, "Success").Stats(launched: 3));
         Assert.Empty(obs.EndingTraces);
+        Assert.Equal(new[] { EndingType.AmbiguousLaunch }, obs.ExplainedTraces);   // kept for when the profile lacks the record
         Assert.Equal(ObservationStatus.Ok, obs.Status);
         Assert.Equal(Guid1, obs.Identity.ModCampaignId);
     }

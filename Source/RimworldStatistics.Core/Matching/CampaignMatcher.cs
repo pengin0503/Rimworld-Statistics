@@ -32,7 +32,14 @@ public static class CampaignMatcher
         foreach (var c in colonies)
         {
             foreach (var o in c.Observations)
+            {
                 c.Traces.UnionWith(o.EndingTraces);
+                // Spec §4.3 drops traces the save's lineage explains so recorded endings are not counted twice; when the
+                // profile has no such record (lost, or restored from an older backup), the trace is the remaining evidence.
+                foreach (var t in o.ExplainedTraces)
+                    if (!c.Endings.Any(e => EndingTraces.Explains(e.Type, t)))
+                        c.Traces.Add(t);
+            }
             c.Excluded = profile.UserDecisions.ExcludedCampaignKeys.Any(k => k == c.Key || c.AliasKeys.Contains(k, Ord));
         }
         return colonies;
