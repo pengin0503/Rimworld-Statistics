@@ -106,7 +106,9 @@ SafeSaver.Save Finalizer → Exit（何が起きても範囲を閉じる。例�
 - 後の tick の確認済みの子を持つ祖先は `Compressed`（値を捨てて系譜のノードだけ残す）。同じ tick の子では圧縮しない。順不同の取り込みでも同じ結果。
 - 保存失敗・原処理スキップ・ファイルなし・ExposeData 未到達は確定しない。後続の他 MOD の Postfix が例外を出しても確定済みは戻さない。入れ子の保存や別スレッドの保存は、前回の確定済み文字列をそのまま書き、確定しない。
 - 記録するファミリーがないときは何も書かない。ロードしたデータがあれば、そのまま書き戻す（データを失わない）。未知の formatVersion・壊れた JSON も原文のまま書き戻し、その上に新しく記録しない。
-- 再開時、ファミリーが「ロードしたセーブの tick まで記録していた」場合だけ連続。そうでなければ continuous=false（以後ずっと部分）。改訂番号が古ければ作り直し、新しければ触らずに保持。
+- 再開時、ファミリーが「ロードしたセーブの tick まで記録していた」場合だけ連続。そうでなければ continuous=false（以後ずっと部分）にし、開いていた区間（Active）は捨てる。累計は残すが、記録していない期間をまたぐ完結標本は作らない。取りこぼし（MarkGap）も同じ。改訂番号が古ければ作り直し、新しければ触らずに保持。
+- DLC の出力で、観測の DLC 一覧にその DLC がなく値が何も記録されていない（0、0÷0、対象外）ものは対象外として母数から外す。DLC が有効だった間に記録した値は表示する。
+- キー上限（4096）に達した集合に依存する出力は部分（「標本なし」も部分）にする（加入ファミリーでは `MarkPartial`）。
 - 完全（Complete）の条件は「sinceTick=0（ゲーム開始から）、continuous、throughTick=このセーブの tick」。それ以外は部分（Partial）。「最初の○○までの日数」は開始から記録した場合だけ値を持つ。
 - 区間がない平均・極値（標本 0）は NotApplicable、0÷0 の率は分子・分母 0 の既知値（Phase A の規約と同じ）。
 
@@ -199,7 +201,7 @@ SafeSaver.Save Finalizer → Exit（何が起きても範囲を閉じる。例�
 1. B/C/D2 の全取得単位を未検証として閉じ、出力を公開しない（利用者の指示が計画の「最初の成功出力を登録」に優先）— 損失: 検証まで利用者には何も見えない。
 2. 既存テスト `ReaderVersion_IsFour` を `ReaderVersion_IsAtLeastFour` に変更（計画が reader=5 を指定。5 は新テストで固定）— 損失: なし。
 3. チェックポイント用の SafeSaver パッチ自体もアダプターにし、記録するファミリーがある時だけ適用 — 損失: なし（閉じている間）。
-4. 後の確認済みの子を持つ祖先チェックポイントの値を捨てる（圧縮）— 損失: その子が後で衝突扱いになると祖先の値が戻らない。
+4. 後の確認済みの子を持つ祖先チェックポイントの値を捨てる（圧縮）。子が後で衝突扱いになったら祖先の圧縮を解き、その内容を次に読んだとき（取り込み・ロード時の回収）に値を戻す（Codex レビューで修正）— 損失: 祖先のファイルが失われていると値は戻らない。
 5. 標本のない期間・極値は NotApplicable（Phase A のクエスト所要日数と同じ）— 損失: 表示の言い方だけ。
 6. 心情起因の精神崩壊は `MentalBreakerTickInterval` の範囲内に限る（開発ツール除外のため、ポーンのティック間隔ごとに Prefix/Finalizer 1 組）— 損失: 単位を開いた時のわずかな負荷。
 7. C2 以降のファミリーは「型が無いことによるコンパイル失敗」を RED とし、実装後に条件を壊す変異テスト（C2 で 11、C3 で 7、C4 で 5）で検出力を確認。生き残った変異は新ケースを足して潰した — 損失: 変異を当てていない分岐に誤りが残る可能性。
@@ -247,7 +249,7 @@ Def（XML）は R2 の `Data/<Core|Royalty|Ideology|Biotech|Odyssey>/Defs/` に�
 
 | コマンド | 結果 |
 |---|---|
-| `RWSTATS_REAL_SAVES_DIR=$PWD/.devinputs/saves dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -p:UseNuGetRefs=true` | 373 件すべて成功（既存 289 ＋ 新規 84。実セーブ 49 件の照合 2 件を含む） |
+| `RWSTATS_REAL_SAVES_DIR=$PWD/.devinputs/saves dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -p:UseNuGetRefs=true` | 377 件すべて成功（既存 289 ＋ 新規 88。実セーブ 49 件の照合 2 件を含む。Codex レビューの指摘 4 件の回帰テストを含む） |
 | `dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release -p:UseNuGetRefs=true` と実 DLL 参照のビルド | 警告 0、エラー 0 |
 | `bash tools/check_patches.sh` | パッチ対象 84 件、失敗 0 |
 | `bash tools/refcheck.sh` | `type-not-found` 0、`signature-not-found` 0 |
