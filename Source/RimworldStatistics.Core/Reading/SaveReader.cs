@@ -102,11 +102,7 @@ public sealed class SaveReader
                 });
             }
             Finish(state);
-            hashing.ReadToEnd();
-            var metrics = obs.Status == ObservationStatus.Ok && hashing.BytesRead == fileSize
-                ? BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash()))
-                : null;
-            return new SaveReadResult(obs, metrics);
+            return new SaveReadResult(obs, TryBuildMetrics(state, hashing, fileSize));
         }
         catch (Exception e)
         {
@@ -497,6 +493,25 @@ public sealed class SaveReader
             if (!char.IsWhiteSpace(c))
                 n++;
         return n;
+    }
+
+    /// <summary>
+    /// The numeric observation once the v1 read is complete; null when the v1 read failed, when not every byte of the
+    /// file was read, or when anything in the numeric part fails (it never changes the v1 observation).
+    /// </summary>
+    private static MetricObservation? TryBuildMetrics(ReadState state, HashingStream hashing, long fileSize)
+    {
+        if (state.Obs.Status != ObservationStatus.Ok)
+            return null;
+        try
+        {
+            hashing.ReadToEnd();
+            return hashing.BytesRead == fileSize ? BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash())) : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
     }
 
     /// <summary>The Phase A numeric observation of a save whose v1 read succeeded.</summary>

@@ -169,7 +169,10 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
         writer.WriteEndArray();
     }
 
-    private static (JsonSerializerOptions Source, JsonSerializerOptions Compact)? cached;
+    private sealed record CompactOptions(JsonSerializerOptions Source, JsonSerializerOptions Compact);
+
+    // One reference, replaced atomically, so concurrent writers never pair one options instance with another's copy.
+    private static volatile CompactOptions? cached;
 
     private static JsonSerializerOptions Compact(JsonSerializerOptions options)
     {
@@ -177,7 +180,7 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
             return c.Compact;
         var compact = new JsonSerializerOptions(options) { WriteIndented = false };
         compact.MakeReadOnly(populateMissingResolver: true);
-        cached = (options, compact);
+        cached = new CompactOptions(options, compact);
         return compact;
     }
 }
