@@ -63,7 +63,8 @@ public static class RetainedQuestMetricReader
             Coverage = coverage, RealValue = decided > 0 ? successes.Count / (double)decided : null, Numerator = successes.Count, Denominator = decided,
         });
 
-        var byRoot = new MetricEntry { Revision = MetricKeys.Revision(MetricKeys.QuestSuccessByRoot) };
+        // The scalar carries the total and its coverage, so quests left out keep the split Partial even when it is empty.
+        var byRoot = new MetricEntry { Revision = MetricKeys.Revision(MetricKeys.QuestSuccessByRoot), Values = { [MetricEntry.Scalar] = Count(successes.Count) } };
         foreach (var g in successes.GroupBy(q => string.IsNullOrEmpty(q.Root) ? MetricKeys.UnknownBucket : q.Root!, StringComparer.Ordinal))
             byRoot.Values[g.Key] = Count(g.Count());
         into[MetricKeys.QuestSuccessByRoot] = byRoot;

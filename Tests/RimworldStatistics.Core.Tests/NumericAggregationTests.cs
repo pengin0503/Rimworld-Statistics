@@ -314,6 +314,20 @@ public sealed class NumericAggregationTests
     }
 
     [Fact]
+    public void AllZeroOverZero_StaysKnown_WithNoValue()
+    {
+        var p = new Profile();
+        p.SaveObservations.Add(V1("a.rws", Id("A"), 300));
+        p.SaveObservations.Add(V1("b.rws", Id("B"), 300));
+        foreach (var (key, seed) in new[] { ("ka", "A"), ("kb", "B") })
+            p.MetricObservations.Add(Numeric(key, Id(seed), 300, seed.ToLowerInvariant() + ".rws", metrics: (MetricKeys.QuestSuccessRate,
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, Numerator = 0, Denominator = 0 })));
+        var row = Overall(View(p), MetricKeys.QuestSuccessRate);
+        Assert.Equal(((double?)null, 0d, 0d, 2, 2, MetricCoverage.SnapshotOnly),
+            (row.Value.Number, row.Value.Numerator, row.Value.Denominator, row.Targets, row.Valid, row.Value.Coverage));
+    }
+
+    [Fact]
     public void NotApplicableWindow_LeavesTheDenominatorWithoutMakingItPartial()
     {
         var p = new Profile();

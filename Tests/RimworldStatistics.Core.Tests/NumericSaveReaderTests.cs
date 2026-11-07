@@ -475,6 +475,18 @@ public sealed class NumericSaveReaderTests
     }
 
     [Fact]
+    public void Quests_SuccessByRoot_KeepsPartialWhenNoSuccessRemains()
+    {
+        var b = Base(600000).WealthTotal(1f).QuestFull(1, "A", acceptanceTick: 5, ended: true, outcome: "Success", cleanupTick: 60005);
+        var xml = System.Text.Encoding.UTF8.GetString(b.Build()).Replace("<acceptanceTick>5</acceptanceTick>", "<acceptanceTick>five</acceptanceTick>");
+        var bytes = System.Text.Encoding.UTF8.GetBytes(xml);
+        using var ms = new MemoryStream(bytes);
+        var m = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length, DateTime.UnixEpoch).Metrics!;
+        var byRoot = V(m, MetricKeys.QuestSuccessByRoot);
+        Assert.Equal((MetricCoverage.Partial, 0L), (byRoot.Coverage, byRoot.IntegerValue));
+    }
+
+    [Fact]
     public void Quests_NegativeDuration_IsExcluded()
     {
         var m = M(Base(600000).WealthTotal(1f)

@@ -155,6 +155,32 @@ public sealed class NumericRankingTests
     }
 
     [Fact]
+    public void ZeroDeathEndings_CountEachEndingOnce_AsTheOverviewDoes()
+    {
+        // The same (type, ordinal) recorded normally and in dev mode is one ending in v1's count.
+        var p = new Profile();
+        p.SaveObservations.Add(V1("A", 700000));
+        p.EndingEvents.Add(Ending("A", EndingType.Ship, 600000, killed: 0));
+        p.EndingEvents.Add(Ending("A", EndingType.Ship, 600000, dev: true, killed: 0));
+        var v = View(p, includeDev: true);
+        var zero = R(v, "ranking.ending.zero_deaths");
+        Assert.Equal((1d, 1, 1), (zero.Value.Number, zero.Targets, zero.Valid));
+        var colonies = CampaignMatcher.BuildColonies(p);
+        Assert.Equal(1, StatsCalculator.Calculate(colonies, new StatsOptions { IncludeDevMode = true }).TotalEndings);
+    }
+
+    [Fact]
+    public void MinimumDeaths_SeveralKnownEndingsOfOneColony_IsComplete()
+    {
+        var p = new Profile();
+        p.SaveObservations.Add(V1("A", 700000));
+        p.EndingEvents.Add(Ending("A", EndingType.Ship, 600000, killed: 2));
+        p.EndingEvents.Add(Ending("A", EndingType.Ship, 650000, ordinal: 1, killed: 3));
+        var min = R(View(p), "ranking.ending.min_deaths");
+        Assert.Equal((2d, MetricCoverage.Complete, 1, 1), (min.Value.Number, min.Value.Coverage, min.Targets, min.Valid));
+    }
+
+    [Fact]
     public void MinimumDeaths_WithNoCounterAnywhere_IsUnknown()
     {
         var p = new Profile();

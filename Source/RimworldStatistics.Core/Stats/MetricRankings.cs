@@ -51,17 +51,28 @@ public static class MetricRankings
             .Where(x => x.Days is not null).ToList();
         yield return Extreme(Def(FastestEnding), fastest, max: false, fastest.Count);
 
-        // R-008 / N1-F-003: the death counter stored with the ending; an ending without it is unknown, not 0.
-        var withCounter = ordered.SelectMany(c => c.CountedEndings.Select(e => (c.Key, Killed: e.ColonistsKilledAtEnding))).ToList();
-        var known = withCounter.Where(x => x.Killed is not null).ToList();
-        var counterCoverage = known.Count < withCounter.Count ? MetricCoverage.Partial : MetricCoverage.Complete;
-        yield return Extreme(Def(MinDeathsAtEnding), known.Select(x => (x.Key, (double?)x.Killed, counterCoverage)).ToList(), max: false, known.Count);
+        // R-008 / N1-F-003: one value per ending as v1 counts it, a (type, ordinal) of the colony; its counter is the smallest
+        // stored with that ending's counted records. An ending without any stored counter is unknown, not 0.
+        var endings = ordered.SelectMany(c => c.CountedEndings.GroupBy(e => (e.Type, e.Ordinal))
+            .Select(g => (c.Key, Killed: g.Select(e => e.ColonistsKilledAtEnding).Where(k => k is not null).Min()))).ToList();
+        var knownEndings = endings.Count(x => x.Killed is not null);
+        var byColony = endings.GroupBy(x => x.Key, Ord)
+            .Select(g => (Key: g.Key, Min: g.Min(x => x.Killed), AllKnown: g.All(x => x.Killed is not null))).ToList();
+        yield return Extreme(Def(MinDeathsAtEnding),
+            byColony.Where(x => x.Min is not null).Select(x => (x.Key, (double?)x.Min, x.AllKnown ? MetricCoverage.Complete : MetricCoverage.Partial)).ToList(),
+            max: false, byColony.Count);
         yield return new NumericRow
         {
             Definition = Def(ZeroDeathEndings),
-            Value = known.Count == 0 ? NumericValue.Unknown : new NumericValue { Number = known.Count(x => x.Killed == 0), Coverage = counterCoverage },
-            Targets = withCounter.Count,
-            Valid = known.Count,
+            Value = knownEndings == 0
+                ? NumericValue.Unknown
+                : new NumericValue
+                {
+                    Number = endings.Count(x => x.Killed == 0),
+                    Coverage = knownEndings < endings.Count ? MetricCoverage.Partial : MetricCoverage.Complete,
+                },
+            Targets = endings.Count,
+            Valid = knownEndings,
         };
 
         // R-013: the scenario label of v1's representative point with the most counted endings.

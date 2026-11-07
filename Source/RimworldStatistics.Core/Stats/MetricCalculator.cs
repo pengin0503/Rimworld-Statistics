@@ -333,7 +333,8 @@ public static class MetricCalculator
             case OverallAggregation.Ratio:
                 var num = known.Sum(k => k.Value.Numerator!.Value);
                 var den = known.Sum(k => k.Value.Denominator!.Value);
-                value = den > 0 ? Result(num / den, num: num, den: den) : NumericValue.Unknown;
+                // 0 ÷ 0 over known colonies stays known: no value, but the colonies count as read.
+                value = Result(den > 0 ? num / den : null, num: num, den: den);
                 break;
             case OverallAggregation.Max or OverallAggregation.Min:
                 var withNumber = known.Where(k => k.Value.Number is not null).ToList();
