@@ -75,7 +75,9 @@ internal static class SavedStateMetricReader
             return ColonyStartSnapshot.Build(null);
         // PlanetTile is stable across saving and reloading; unlike any currently
         // loaded player's home map, this is the game's original start location.
-        var biomeDef = Find.World?.grid?.get_Item(startingTile)?.biome?.defName;
+        var grid = Find.World?.grid;
+        var biomeDef = grid is not null && grid.InBounds(startingTile)
+            ? grid[startingTile]?.biome?.defName : null;
         return ColonyStartSnapshot.Build(biomeDef);
     }
 
