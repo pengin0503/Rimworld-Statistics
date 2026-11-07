@@ -174,8 +174,12 @@ public static class WorkFamily
     public static void PlantRemoved(FamilyState s, string plantId) => s.Untrack(Cohort, plantId);
 
     /// <summary>A player crop died of a confirmed cause (cold, or another cause such as poison or pollution).</summary>
-    public static void CropDied(FamilyState s, string plantId, bool cold)
+    public static void CropDied(FamilyState s, string plantId, bool cold, bool inPlayerHome = true)
     {
+        // The game adapter supplies colony provenance. NPC map plants must never
+        // increase colony losses, including when no sowing cohort was tracked.
+        if (!inPlayerHome)
+            return;
         s.Count(cold ? Cold : Other);
         if (s.Untrack(Cohort, plantId) is not null)
             s.Count(CohortLoss);

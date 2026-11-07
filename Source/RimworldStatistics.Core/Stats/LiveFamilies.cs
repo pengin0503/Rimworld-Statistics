@@ -154,19 +154,29 @@ public sealed class FamilyOutputContext
     /// </summary>
     public void PutCompletePeriodPeak(string acc, string key, int periodTicks)
     {
+        if (periodTicks <= 0)
+            throw new ArgumentOutOfRangeException(nameof(periodTicks));
         var a = State.Peek(acc);
-        double? best = null;
+        // Count the zero-output periods too. An absent bucket means zero activity,
+        // not that a fully observed game day/year was never measured.
+        var firstWhole = ((long)State.SinceTick + periodTicks - 1) / periodTicks;
+        var completeBefore = State.ThroughTick / (long)periodTicks;
+        if (firstWhole >= completeBefore)
+        {
+            Put(key, Value(coverage: MetricCoverage.NotApplicable));
+            return;
+        }
+
+        double best = 0;
         foreach (var (k, v) in a?.By ?? new Dictionary<string, double>())
         {
             if (!long.TryParse(k, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var p))
                 continue;
-            if (p * periodTicks < State.SinceTick || (p + 1) * periodTicks > State.ThroughTick)
+            if (p < firstWhole || p >= completeBefore)
                 continue;
-            best = best is null ? v : Math.Max(best.Value, v);
+            best = Math.Max(best, v);
         }
-        Put(key, best is { } b
-            ? Value(integer: (long)Math.Round(b), partial: !State.Continuous || a!.Overflow)
-            : Value(coverage: MetricCoverage.NotApplicable));
+        Put(key, Value(integer: (long)Math.Round(best), partial: !State.Continuous || a?.Overflow == true));
     }
 
     /// <summary>The first event's day, known only for a range recorded from the start (null: not reached yet).</summary>

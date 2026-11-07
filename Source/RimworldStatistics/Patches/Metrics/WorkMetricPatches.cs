@@ -86,7 +86,7 @@ public static class PlantsSownMetricPatch
 public static class CropLeaflessMetricPatch
 {
     public static void Prefix(Plant __instance, out string? __state)
-        => __state = __instance != null && __instance.Spawned && __instance.IsCrop && !__instance.Destroyed ? GameFacts.Id(__instance) : null;
+        => __state = __instance != null && __instance.Spawned && __instance.Map?.IsPlayerHome == true && __instance.IsCrop && !__instance.Destroyed ? GameFacts.Id(__instance) : null;
 
     public static void Postfix(Plant __instance, Plant.LeaflessCause cause, string? __state)
     {
