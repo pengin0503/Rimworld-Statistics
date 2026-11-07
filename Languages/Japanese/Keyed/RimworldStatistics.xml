@@ -739,4 +739,6 @@
   <RWS_MetricDesc_RoyaltyHighestTitle>Royaltyのイベント取得期間に確定した最高到達爵位。</RWS_MetricDesc_RoyaltyHighestTitle>
   <RWS_Metric_RoyaltyHonor>帝国名誉の獲得・消費</RWS_Metric_RoyaltyHonor>
   <RWS_MetricDesc_RoyaltyHonor>Royaltyのイベント取得期間に確定した帝国名誉の獲得・消費。</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>改宗が成立した回数</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>プレイヤー側の既存の思想から別の思想へ、実際に切り替わった回数。生成時の思想設定を除く。</RWS_MetricDesc_IdeologyConversions>
 </LanguageData>

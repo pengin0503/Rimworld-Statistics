@@ -208,6 +208,7 @@ public static class LiveFamilies
         MedicineFamily.Family,
         DisasterFamily.Family,
         RoyaltyFamily.Family,
+        IdeologyFamily.Family,
         CaravanFamily.Family,
     };
 

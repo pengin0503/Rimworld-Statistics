@@ -268,5 +268,7 @@ public static class LiveCatalog
         Live(RoyaltyFamily.TitleGrants, "L-001", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyTitleGrants", "RWS_MetricDesc_RoyaltyTitleGrants"),
         Live(RoyaltyFamily.HighestTitle, "L-004", MetricCategory.Royalty, Count, Max, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHighestTitle", "RWS_MetricDesc_RoyaltyHighestTitle", breakdown: true),
         Live(RoyaltyFamily.Honor, "N1-E-006", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHonor", "RWS_MetricDesc_RoyaltyHonor", breakdown: true),
+        // D2 · ideology: actual existing-ideology changes on the player side
+        Live(IdeologyFamily.Conversions, "L-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyConversions", "RWS_MetricDesc_IdeologyConversions"),
     };
 }

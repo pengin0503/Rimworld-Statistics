@@ -739,4 +739,6 @@
   <RWS_MetricDesc_RoyaltyHighestTitle>Highest royal title confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHighestTitle>
   <RWS_Metric_RoyaltyHonor>Imperial honor gained and spent</RWS_Metric_RoyaltyHonor>
   <RWS_MetricDesc_RoyaltyHonor>Imperial honor gained and spent confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>Completed conversions</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>Number of observed player-side transitions from an existing ideology to a different ideology; excludes pawn initialization.</RWS_MetricDesc_IdeologyConversions>
 </LanguageData>
