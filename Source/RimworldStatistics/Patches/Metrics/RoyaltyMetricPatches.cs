@@ -28,7 +28,7 @@ public static class RoyaltySetTitleMetricPatch
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
 
-    public static void Postfix(Pawn_RoyaltyTracker __instance, Faction faction, RoyalTitleDef titleDef, (int?, bool) __state)
+    public static void Postfix(Pawn_RoyaltyTracker __instance, Faction faction, RoyalTitleDef title, (int?, bool) __state)
     {
         if (!__state.Item2 || faction is null)
             return;
@@ -36,7 +36,7 @@ public static class RoyaltySetTitleMetricPatch
         {
             var now = __instance.GetCurrentTitleInFaction(faction)?.def;
             // Use the resulting title; an attempted grant that failed must not count.
-            if (now != titleDef || now is null || __state.Item1 == now.seniority)
+            if (now != title || now is null || __state.Item1 == now.seniority)
                 return;
             GameFacts.Record(RoyaltyFamily.Name, s =>
                 RoyaltyFamily.TitleChanged(s, now.defName, __state.Item1, now.seniority, eligible: true));
