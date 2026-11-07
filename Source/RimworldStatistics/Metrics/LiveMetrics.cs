@@ -47,6 +47,7 @@ public static class LiveMetrics
         accumulator = acc;
         session = new CheckpointSaveSession(acc);
         game = g;
+        FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
     }
 
     /// <summary>

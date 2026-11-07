@@ -38,6 +38,9 @@ public static class LiveCatalog
     private const MetricUnit Silver = MetricUnit.Silver;
     private const MetricCategory Work = MetricCategory.Work;
     private const MetricCategory Economy = MetricCategory.Economy;
+    private const MetricCategory Medicine = MetricCategory.Medicine;
+    private const MetricCategory Env = MetricCategory.Environment;
+    private const MetricCategory Explore = MetricCategory.Exploration;
 
     public static IReadOnlyList<MetricDefinition> Definitions { get; } = new[]
     {
@@ -207,5 +210,59 @@ public static class LiveCatalog
         Live(DiplomacyFamily.Reconciled, "T-011", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_Reconciled", "RWS_MetricDesc_Reconciled"),
         Live(DiplomacyFamily.AidRequests, "N2-E-007", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidRequests", "RWS_MetricDesc_AidRequests"),
         Live(DiplomacyFamily.AidArrivals, "N2-E-008", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidArrivals", "RWS_MetricDesc_AidArrivals"),
+
+        // C4 · medicine (N3-H-005 and N3-H-011 are held, see MedicineFamily)
+        Live(MedicineFamily.Tends, "M-001", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Tends", "RWS_MetricDesc_Tends"),
+        Live(MedicineFamily.TendQualityMean, "N1-C-007", Medicine, Percent, Ratio, MedicineFamily.Name, "RWS_Metric_TendQualityMean", "RWS_MetricDesc_TendQualityMean"),
+        Live(MedicineFamily.BestTender, "N3-H-012", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_BestTender", "RWS_MetricDesc_BestTender", breakdown: true),
+        Live(MedicineFamily.NeutralTends, "N4-P-002", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_NeutralTends", "RWS_MetricDesc_NeutralTends"),
+        Live(MedicineFamily.MedicineUsed, "N1-C-010", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_MedicineUsed", "RWS_MetricDesc_MedicineUsed"),
+        Live(MedicineFamily.Surgeries, "M-002", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Surgeries", "RWS_MetricDesc_Surgeries"),
+        Live(MedicineFamily.SurgerySuccessRate, "M-002", Medicine, Percent, Ratio, MedicineFamily.Name, "RWS_Metric_SurgerySuccessRate", "RWS_MetricDesc_SurgerySuccessRate"),
+        Live(MedicineFamily.BestSurgeon, "N3-H-010", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_BestSurgeon", "RWS_MetricDesc_BestSurgeon", breakdown: true),
+        Live(MedicineFamily.Implants, "M-007", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Implants", "RWS_MetricDesc_Implants"),
+        Live(MedicineFamily.Rescues, "P-007", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Rescues", "RWS_MetricDesc_Rescues"),
+        Live(MedicineFamily.HostileRescues, "N4-P-001", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_HostileRescues", "RWS_MetricDesc_HostileRescues"),
+        Live(MedicineFamily.AwayRescues, "N3-X-010", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_AwayRescues", "RWS_MetricDesc_AwayRescues"),
+        Live(MedicineFamily.Resurrections, "P-008", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Resurrections", "RWS_MetricDesc_Resurrections"),
+        Live(MedicineFamily.ResurrectionsPerPawnMax, "N4-P-007", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_ResurrectionsPerPawnMax", "RWS_MetricDesc_ResurrectionsPerPawnMax", breakdown: true),
+        Live(MedicineFamily.DiseaseOnsets, "M-003", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_DiseaseOnsets", "RWS_MetricDesc_DiseaseOnsets"),
+        Live(MedicineFamily.DiseaseDurationMean, "N3-H-001", Medicine, Days, Ratio, MedicineFamily.Name, "RWS_Metric_DiseaseDurationMean", "RWS_MetricDesc_DiseaseDurationMean"),
+        Live(MedicineFamily.InfectionRecoveries, "M-004", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_InfectionRecoveries", "RWS_MetricDesc_InfectionRecoveries"),
+        Live(MedicineFamily.InfectionDurationMax, "N3-H-002", Medicine, Days, Max, MedicineFamily.Name, "RWS_Metric_InfectionDurationMax", "RWS_MetricDesc_InfectionDurationMax"),
+        Live(MedicineFamily.FoodPoisonings, "M-005", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_FoodPoisonings", "RWS_MetricDesc_FoodPoisonings"),
+        Live(MedicineFamily.Addictions, "P-026", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Addictions", "RWS_MetricDesc_Addictions"),
+        Live(MedicineFamily.Overdoses, "N3-H-004", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Overdoses", "RWS_MetricDesc_Overdoses"),
+        Live(MedicineFamily.PartsLost, "M-006", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_PartsLost", "RWS_MetricDesc_PartsLost"),
+        Live(MedicineFamily.Scars, "N3-H-007", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Scars", "RWS_MetricDesc_Scars"),
+        Live(MedicineFamily.InjuriesPerPawnMax, "N4-P-008", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_InjuriesPerPawnMax", "RWS_MetricDesc_InjuriesPerPawnMax", breakdown: true),
+        Live(MedicineFamily.WildAnimalInjuries, "N4-C-010", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_WildAnimalInjuries", "RWS_MetricDesc_WildAnimalInjuries"),
+
+        // C4 · disaster
+        Live(DisasterFamily.ToxicFalloutDays, "D-001", Env, Days, Sum, DisasterFamily.Name, "RWS_Metric_ToxicFalloutDays", "RWS_MetricDesc_ToxicFalloutDays"),
+        Live(DisasterFamily.SolarFlares, "D-002", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_SolarFlares", "RWS_MetricDesc_SolarFlares"),
+        Live(DisasterFamily.SolarFlareDays, "N4-C-012", Env, Days, Sum, DisasterFamily.Name, "RWS_Metric_SolarFlareDays", "RWS_MetricDesc_SolarFlareDays"),
+        Live(DisasterFamily.ColdSnaps, "D-003", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_ColdSnaps", "RWS_MetricDesc_ColdSnaps"),
+        Live(DisasterFamily.HeatWaves, "D-004", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_HeatWaves", "RWS_MetricDesc_HeatWaves"),
+        Live(DisasterFamily.VolcanicWinters, "D-005", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_VolcanicWinters", "RWS_MetricDesc_VolcanicWinters"),
+        Live(DisasterFamily.Eclipses, "N4-C-005", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_Eclipses", "RWS_MetricDesc_Eclipses"),
+        Live(DisasterFamily.CropBlights, "D-006", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_CropBlights", "RWS_MetricDesc_CropBlights"),
+        Live(DisasterFamily.Meteors, "N4-C-006", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_Meteors", "RWS_MetricDesc_Meteors"),
+        Live(DisasterFamily.ShortCircuits, "N4-R-010", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_ShortCircuits", "RWS_MetricDesc_ShortCircuits"),
+        Live(DisasterFamily.Fires, "D-007", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_Fires", "RWS_MetricDesc_Fires"),
+        Live(DisasterFamily.BuildingsBurned, "D-008", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_BuildingsBurned", "RWS_MetricDesc_BuildingsBurned"),
+
+        // C4 · caravan (Q-014 is held, see CaravanFamily)
+        Live(CaravanFamily.Departures, "Q-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanDepartures", "RWS_MetricDesc_CaravanDepartures"),
+        Live(CaravanFamily.Lost_, "Q-009", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravansLost", "RWS_MetricDesc_CaravansLost"),
+        Live(CaravanFamily.TilesTravelled, "Q-010", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanTiles", "RWS_MetricDesc_CaravanTiles"),
+        Live(CaravanFamily.UniqueTiles, "Q-011", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanUniqueTiles", "RWS_MetricDesc_CaravanUniqueTiles"),
+        Live(CaravanFamily.LongestExpedition, "N2-E-001", Explore, Days, Max, CaravanFamily.Name, "RWS_Metric_CaravanLongestExpedition", "RWS_MetricDesc_CaravanLongestExpedition"),
+        Live(CaravanFamily.LongestDistance, "N3-X-007", Explore, Count, Max, CaravanFamily.Name, "RWS_Metric_CaravanLongestDistance", "RWS_MetricDesc_CaravanLongestDistance"),
+        Live(CaravanFamily.ConcurrentMax, "N4-R-011", Explore, Count, Max, CaravanFamily.Name, "RWS_Metric_CaravanConcurrentMax", "RWS_MetricDesc_CaravanConcurrentMax"),
+        Live(CaravanFamily.Ambushes, "N2-E-003", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanAmbushes", "RWS_MetricDesc_CaravanAmbushes"),
+        Live(CaravanFamily.SitesCleared, "Q-012", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SitesCleared", "RWS_MetricDesc_SitesCleared"),
+        Live(CaravanFamily.SettlementsFounded, "N3-X-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsFounded", "RWS_MetricDesc_SettlementsFounded"),
+        Live(CaravanFamily.SettlementsAbandoned, "Q-013", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsAbandoned", "RWS_MetricDesc_SettlementsAbandoned"),
     };
 }

@@ -559,4 +559,100 @@
   <RWS_MetricDesc_AidRequests>Military aid requests a friendly faction accepted.</RWS_MetricDesc_AidRequests>
   <RWS_Metric_AidArrivals>Reinforcements arrived</RWS_Metric_AidArrivals>
   <RWS_MetricDesc_AidArrivals>Times friendly reinforcements actually arrived. Not the same as requests.</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>Tends performed</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>Times a tend was performed; one tend of several wounds counts once.</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>Mean tend quality</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>The mean quality applied to each condition a tend treated.</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>Top doctor (tends)</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>The tends of the pawn who tended most; the breakdown names them (by id). Tends without a known doctor are left out.</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>Tends of neutral pawns</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>Tends whose patient was a neutral pawn.</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>Medicine used</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>Medicine actually consumed by tending.</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>Surgeries</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>Surgeries with a decided outcome (success or failure). Cancellations are not counted.</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_SurgerySuccessRate>Surgery success rate</RWS_Metric_SurgerySuccessRate>
+  <RWS_MetricDesc_SurgerySuccessRate>Successful surgeries ÷ surgeries with a decided outcome.</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_Metric_BestSurgeon>Top surgeon</RWS_Metric_BestSurgeon>
+  <RWS_MetricDesc_BestSurgeon>The successful surgeries of the pawn with most; the breakdown names them (by id).</RWS_MetricDesc_BestSurgeon>
+  <RWS_Metric_Implants>Implants installed</RWS_Metric_Implants>
+  <RWS_MetricDesc_Implants>Artificial parts and implants installed by successful surgeries.</RWS_MetricDesc_Implants>
+  <RWS_Metric_Rescues>Rescues</RWS_Metric_Rescues>
+  <RWS_MetricDesc_Rescues>Rescues completed by tucking the pawn into a bed. Ordinary hauling and captures are not counted.</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>Hostile pawns rescued</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>Rescues of pawns hostile to the player when tucked in.</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>Rescues away from home</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>Rescues on a map that is not a player home.</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>Resurrections</RWS_Metric_Resurrections>
+  <RWS_MetricDesc_Resurrections>Times a free colonist came back from death.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>Most resurrections of one colonist</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>The most resurrections of one pawn; the breakdown names them (by id).</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>New diseases</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>Sicknesses newly added to free colonists.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>Mean days sick</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>The mean days from onset to cure of diseases tracked throughout; those removed by death or amputation are left out.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>Infections recovered</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>Infections that went away by healing; removals by death or amputation are not counted.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_Metric_InfectionDurationMax>Longest infection</RWS_Metric_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>The most days from onset to recovery of an infection tracked throughout.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_Metric_FoodPoisonings>Food poisonings</RWS_Metric_FoodPoisonings>
+  <RWS_MetricDesc_FoodPoisonings>Times a free colonist got food poisoning.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>New addictions</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>Addictions newly added to free colonists. Severity changes are not counted.</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>Overdoses</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>Times a free colonist newly overdosed.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_PartsLost>Body parts lost</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>Times a free colonist lost a body part. Child parts lost with it and parts removed by surgery are not counted.</RWS_MetricDesc_PartsLost>
+  <RWS_Metric_Scars>Permanent scars</RWS_Metric_Scars>
+  <RWS_MetricDesc_Scars>Times a free colonist's injury became permanent.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>Most injured colonist</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>The new injuries of the free colonist with most; the breakdown names them (by id).</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_Metric_WildAnimalInjuries>Injuries by wild animals</RWS_Metric_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>New injuries of free colonists from wild animal attacks.</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_Metric_ToxicFalloutDays>Days of toxic fallout</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Days during which at least one toxic fallout was active, overlaps counted once.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_Metric_SolarFlares>Solar flares</RWS_Metric_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>Solar flares that began; ones already running when recording started are not counted.</RWS_MetricDesc_SolarFlares>
+  <RWS_Metric_SolarFlareDays>Days of solar flare</RWS_Metric_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>Days during which at least one solar flare was active, overlaps counted once; not per-device downtime.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>Cold snaps</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>Cold snaps that began.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>Heat waves</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>Heat waves that began.</RWS_MetricDesc_HeatWaves>
+  <RWS_Metric_VolcanicWinters>Volcanic winters</RWS_Metric_VolcanicWinters>
+  <RWS_MetricDesc_VolcanicWinters>Volcanic winters that began.</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>Eclipses</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>Eclipses that began.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>Crop blights</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Successful crop blight incidents; not the number of blighted plants.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>Meteorite impacts</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>Successful meteorite incidents; not the number of pieces.</RWS_MetricDesc_Meteors>
+  <RWS_Metric_ShortCircuits>Short circuits</RWS_Metric_ShortCircuits>
+  <RWS_MetricDesc_ShortCircuits>Successful short circuit incidents.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>Fires started</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>Fires started, other than by spreading, in a cell without fire on a player home map.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>Buildings lost to fire</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>Completed player buildings destroyed directly by fire damage.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>Caravan departures</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>Player caravans newly formed by leaving a map. Merges and splits are not counted.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>Caravans lost</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>Tracked caravans whose every member died.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>Caravan distance</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>Steps of player caravans to an adjacent tile on foot. Teleports are not counted.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>Tiles visited</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>Distinct tiles (layer and tile) reached on foot; a tile visited again counts once.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>Longest expedition</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>The most days from departure to returning to a player home of an expedition tracked throughout; split or merged ones are left out.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>Longest expedition distance</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>The most tiles walked in one completed expedition.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>Most caravans at once</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>The most player caravans that existed at once, moving or not.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>Caravan ambushes</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>Successful ambushes of caravans.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>Enemy settlements defeated</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>Enemy faction settlements destroyed by the player's victory.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>Settlements founded</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>New player settlements founded from a caravan or an existing map. The starting settlement, moving the colony and gravship landings are not counted.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>Settlements abandoned</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Player settlements abandoned by choice. Automatic removals such as a gravship takeoff are not counted.</RWS_MetricDesc_SettlementsAbandoned>
 </LanguageData>

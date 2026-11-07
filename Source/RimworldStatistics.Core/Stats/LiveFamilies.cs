@@ -182,6 +182,9 @@ public static class LiveFamilies
         FoodFamily.Family,
         TradeFamily.Family,
         DiplomacyFamily.Family,
+        MedicineFamily.Family,
+        DisasterFamily.Family,
+        CaravanFamily.Family,
     };
 
     public static LiveFamily? Find(string name) => All.FirstOrDefault(f => f.Name == name);
