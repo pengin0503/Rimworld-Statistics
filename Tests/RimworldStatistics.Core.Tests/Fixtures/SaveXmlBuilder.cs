@@ -29,8 +29,51 @@ public sealed class SaveXmlBuilder
     private readonly List<(string Root, bool Ended, string? Outcome)> _quests = new();
     private readonly List<(string Def, string? Name, bool Deactivated)> _factions = new();
     private readonly List<(string Class, List<XElement> Children)> _components = new();
+    private readonly List<(string Def, string Element, string Payload)> _recorders = new();
+    private readonly List<XElement> _fullQuests = new();
+    private string[]? _modIds;
+    private bool _omitModIds;
+    private bool _emptyQuests;
 
     public SaveXmlBuilder Meta(string version, int mods = 0) { _meta = (version, mods); return this; }
+
+    /// <summary>Meta with these exact mod ids (null omits the modIds list).</summary>
+    public SaveXmlBuilder MetaMods(string version, params string[]? modIds)
+    {
+        _meta = (version, modIds?.Length ?? 0);
+        _modIds = modIds;
+        _omitModIds = modIds is null;
+        return this;
+    }
+
+    /// <summary>A history recorder series (plain "records" or "recordsDeflate"); replaces the builder's default series of that def.</summary>
+    public SaveXmlBuilder Recorder(string def, float[] values, bool deflate = false)
+        => RecorderRaw(def, deflate ? "recordsDeflate" : "records", Convert.ToBase64String(deflate ? Deflate(FloatBytes(values)) : FloatBytes(values)));
+
+    /// <summary>A history recorder with an arbitrary payload; several calls with one def add duplicates.</summary>
+    public SaveXmlBuilder RecorderRaw(string def, string element, string payload) { _recorders.Add((def, element, payload)); return this; }
+
+    /// <summary>An empty quest list, as a game without quests saves it.</summary>
+    public SaveXmlBuilder EmptyQuests() { _emptyQuests = true; return this; }
+
+    /// <summary>A quest written like Quest.ExposeData (1.7.4985): fields equal to their default are omitted.</summary>
+    public SaveXmlBuilder QuestFull(int id, string? root, int acceptanceTick = -1, int acceptanceExpireTick = -1, bool initiallyAccepted = false,
+        bool ended = false, string? outcome = null, int cleanupTick = -1)
+    {
+        var li = new XElement("li");
+        if (id != 0) li.Add(new XElement("id", id));
+        li.Add(new XElement("name", "クエスト" + id), new XElement("appearanceTick", 1));
+        if (acceptanceTick != -1) li.Add(new XElement("acceptanceTick", acceptanceTick));
+        if (acceptanceExpireTick != -1) li.Add(new XElement("acceptanceExpireTick", acceptanceExpireTick));
+        if (ended) li.Add(new XElement("ended", "True"));
+        if (outcome != null) li.Add(new XElement("endOutcome", outcome));
+        if (cleanupTick != -1) li.Add(new XElement("cleanedUp", "True"), new XElement("cleanupTick", cleanupTick));
+        if (initiallyAccepted) li.Add(new XElement("initiallyAccepted", "True"));
+        if (root != null) li.Add(new XElement("root", root));
+        li.Add(new XElement("parts", new XElement("li", new XAttribute("Class", "QuestPart_Delay"), new XElement("inSignalEnable", "x"))));
+        _fullQuests.Add(li);
+        return this;
+    }
 
     public SaveXmlBuilder Info(float? realPlay = null, string? tile = null, string? pawns = null, bool permadeath = false)
     { _info = (realPlay, tile, pawns, permadeath); return this; }
@@ -149,22 +192,31 @@ public sealed class SaveXmlBuilder
             new XElement("archive", new XElement("archivables",
                 new XElement("li", new XAttribute("Class", "StandardLetter"), new XElement("def", "NegativeEvent"), new XElement("text", "崩落")))));
         var groups = new XElement("autoRecorderGroups");
-        var wealthRecorders = new XElement("recorders",
-            new XElement("li", new XElement("def", "Wealth_Items"), new XElement("records", Convert.ToBase64String(FloatBytes(123456f, 999999f)))));
+        var custom = _recorders.Select(r => r.Def).ToHashSet();
+        var wealthRecorders = new XElement("recorders");
+        if (!custom.Contains("Wealth_Items"))
+            wealthRecorders.Add(new XElement("li", new XElement("def", "Wealth_Items"), new XElement("records", Convert.ToBase64String(FloatBytes(123456f, 999999f)))));
         if (_wealth is { } w)
             wealthRecorders.AddFirst(new XElement("li", new XElement("def", "Wealth_Total"), new XElement(w.Element, w.Payload)));
+        var populationRecorders = new XElement("recorders");
+        if (!custom.Contains("FreeColonists"))
+            populationRecorders.Add(new XElement("li", new XElement("def", "FreeColonists"), new XElement("records", Convert.ToBase64String(FloatBytes(3f, 4f)))));
+        foreach (var r in _recorders)
+        {
+            var target = r.Def.StartsWith("Wealth", StringComparison.Ordinal) ? wealthRecorders : populationRecorders;
+            target.Add(new XElement("li", new XElement("def", r.Def), new XElement(r.Element, r.Payload)));
+        }
         groups.Add(new XElement("li", new XElement("def", "Wealth"), wealthRecorders));
-        groups.Add(new XElement("li", new XElement("def", "Population"), new XElement("recorders",
-            new XElement("li", new XElement("def", "FreeColonists"), new XElement("records", Convert.ToBase64String(FloatBytes(3f, 4f)))))));
+        groups.Add(new XElement("li", new XElement("def", "Population"), populationRecorders));
         history.Add(groups);
         game.Add(history);
 
         if (_unknownBytes > 0)
             game.Add(new XElement("someModManager", DeepNest(_unknownBytes / 2)));
 
-        if (_quests.Count > 0)
+        if (_quests.Count > 0 || _fullQuests.Count > 0 || _emptyQuests)
         {
-            var qs = new XElement("quests");
+            var qs = new XElement("quests", _fullQuests);
             foreach (var q in _quests)
             {
                 var li = new XElement("li", new XElement("name", "クエスト"), new XElement("appearanceTick", 1), new XElement("root", q.Root));
@@ -221,9 +273,10 @@ public sealed class SaveXmlBuilder
         var root = new XElement("savegame");
         if (_meta is { } m)
         {
+            var ids = _modIds ?? Enumerable.Range(0, m.Mods).Select(i => "mod.id" + i).ToArray();
             root.Add(new XElement("meta",
                 new XElement("gameVersion", m.Version),
-                new XElement("modIds", Enumerable.Range(0, m.Mods).Select(i => new XElement("li", "mod.id" + i))),
+                _omitModIds ? null : new XElement("modIds", ids.Select(id => new XElement("li", id))),
                 new XElement("modSteamIds", Enumerable.Range(0, m.Mods).Select(i => new XElement("li", 0))),
                 new XElement("modNames", Enumerable.Range(0, m.Mods).Select(i => new XElement("li", "Mod " + i)))));
         }

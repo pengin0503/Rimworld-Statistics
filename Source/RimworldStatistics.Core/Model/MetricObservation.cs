@@ -151,16 +151,33 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
         return result;
     }
 
+    /// <summary>
+    /// Each observation is written on one line: the record file stays readable, at about half the size of indented
+    /// observations (it is rewritten, compared and backed up on every change).
+    /// </summary>
     public override void Write(Utf8JsonWriter writer, List<MetricObservation> value, JsonSerializerOptions options)
     {
+        var compact = Compact(options);
         writer.WriteStartArray();
         foreach (var obs in value)
         {
             if (obs.Quarantined is { } raw)
                 raw.WriteTo(writer);
             else
-                JsonSerializer.Serialize(writer, obs, options);
+                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(obs, compact), skipInputValidation: true);
         }
         writer.WriteEndArray();
+    }
+
+    private static (JsonSerializerOptions Source, JsonSerializerOptions Compact)? cached;
+
+    private static JsonSerializerOptions Compact(JsonSerializerOptions options)
+    {
+        if (cached is { } c && ReferenceEquals(c.Source, options))
+            return c.Compact;
+        var compact = new JsonSerializerOptions(options) { WriteIndented = false };
+        compact.MakeReadOnly(populateMissingResolver: true);
+        cached = (options, compact);
+        return compact;
     }
 }

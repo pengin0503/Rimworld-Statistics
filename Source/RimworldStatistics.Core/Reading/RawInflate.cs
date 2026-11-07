@@ -26,13 +26,14 @@ internal static class RawInflate
         public readonly short[] Symbol = new short[symbols];
     }
 
-    private sealed class State(byte[] input)
+    private sealed class State(byte[] input, int limit)
     {
         public readonly byte[] In = input;
+        public readonly int Limit = limit;
         public int InPos;
         public int BitBuf;
         public int BitCnt;
-        public byte[] Out = new byte[Math.Max(256, input.Length * 4)];
+        public byte[] Out = new byte[Math.Min(limit, Math.Max(256, input.Length * 4))];
         public int OutPos;
 
         public int Bits(int need)
@@ -60,21 +61,22 @@ internal static class RawInflate
         public void Grow(int extra)
         {
             var needed = (long)OutPos + extra;
-            if (needed > MaxOutput)
+            if (needed > Limit)
                 throw new InvalidDataException("deflate output exceeds the size limit");
-            var size = Out.Length;
+            var size = Math.Max(Out.Length, 1);
             while (size < needed)
-                size = (int)Math.Min((long)size * 2, MaxOutput);
+                size = (int)Math.Min((long)size * 2, Limit);
             Array.Resize(ref Out, size);
         }
     }
 
-    public static byte[] Inflate(byte[] input)
+    /// <param name="maxOutput">Larger output is rejected with <see cref="InvalidDataException"/>.</param>
+    public static byte[] Inflate(byte[] input, int maxOutput = MaxOutput)
     {
         // Zero bytes means "no data": that is what DeflateStream writes for an empty series (it emits no block at all).
         if (input.Length == 0)
             return Array.Empty<byte>();
-        var s = new State(input);
+        var s = new State(input, Math.Min(maxOutput, MaxOutput));
         int last;
         do
         {
