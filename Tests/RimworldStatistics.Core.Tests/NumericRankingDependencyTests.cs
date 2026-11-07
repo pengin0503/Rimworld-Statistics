@@ -74,13 +74,16 @@ public sealed class NumericRankingDependencyTests
             MetricRankings.MostCrafting, MetricRankings.LargestSale, MetricRankings.MostResearch,
         };
         var expected = new[] { 12d, 4d, 100d, 240d, 20d };
+        var owners = new[] { "rank-A", "rank-B", "rank-B", "rank-A", "rank-B" };
+        var byCampaignId = CampaignMatcher.BuildColonies(p).ToDictionary(
+            c => c.CampaignIds().Single(), c => c.Key, StringComparer.Ordinal);
         for (var i = 0; i < keys.Length; i++)
         {
             var row = view.Overall.Single(x => x.Definition.Key == keys[i]);
             Assert.Equal(expected[i], row.Value.Number);
             Assert.Equal(2, row.Valid);
             Assert.Equal(2, row.Targets);
-            Assert.NotNull(row.Value.ColonyKey);
+            Assert.Equal(byCampaignId[owners[i]], row.Value.ColonyKey);
         }
         // These depend on unverified B/C acquisition and must NOT be published in normal Details.
         var normal = View(p, developmentCatalog: false);
