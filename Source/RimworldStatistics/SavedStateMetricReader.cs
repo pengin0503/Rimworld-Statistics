@@ -16,7 +16,7 @@ internal static class SavedStateMetricReader
 
     public static MetricObservation? Read(ColonyIdentity identity, string gameVersion, DateTime utc)
     {
-        var units = MetricGates.RecordingSnapshots();
+        var units = Metrics.MetricGates.RecordingSnapshots();
         if (units.Count == 0)
             return null;
         var observation = new MetricObservation
