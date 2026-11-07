@@ -733,4 +733,10 @@
   <RWS_MetricDesc_BiotechPollutionPeak>Maximum polluted cells observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>Highest used mechanitor bandwidth</RWS_Metric_BiotechBandwidthPeak>
   <RWS_MetricDesc_BiotechBandwidthPeak>Highest used mechanitor bandwidth observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyTitleGrants>Royal titles granted</RWS_Metric_RoyaltyTitleGrants>
+  <RWS_MetricDesc_RoyaltyTitleGrants>Royal titles granted confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>Highest royal title</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>Highest royal title confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>Imperial honor gained and spent</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>Imperial honor gained and spent confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHonor>
 </LanguageData>

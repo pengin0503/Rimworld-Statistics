@@ -207,6 +207,7 @@ public static class LiveFamilies
         DiplomacyFamily.Family,
         MedicineFamily.Family,
         DisasterFamily.Family,
+        RoyaltyFamily.Family,
         CaravanFamily.Family,
     };
 
