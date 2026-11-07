@@ -727,4 +727,10 @@
   <RWS_MetricDesc_StockMedicinePeak>Maximum medicines in stock measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockMedicinePeak>
   <RWS_Metric_StockFoodMin>Minimum food nutrition</RWS_Metric_StockFoodMin>
   <RWS_MetricDesc_StockFoodMin>Minimum food nutrition measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>Highest psylink level</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Highest psylink level observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>Maximum polluted cells</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Maximum polluted cells observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Highest used mechanitor bandwidth</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Highest used mechanitor bandwidth observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
 </LanguageData>

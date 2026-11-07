@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "royalty_state", "biotech_state" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -48,6 +48,12 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "stock")
                     foreach (var (key, value) in ReadStock())
+                        observation.Metrics[key] = value;
+                else if (unit == "royalty_state")
+                    foreach (var (key, value) in ReadRoyaltyState())
+                        observation.Metrics[key] = value;
+                else if (unit == "biotech_state")
+                    foreach (var (key, value) in ReadBiotechState())
                         observation.Metrics[key] = value;
             }
             catch (Exception e)
@@ -287,6 +293,63 @@ internal static class SavedStateMetricReader
                         Gather(item);
             }
         return StockSnapshot.Build(items, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadRoyaltyState()
+    {
+        if (!ModsConfig.RoyaltyActive)
+            throw new InvalidOperationException("Royalty DLC is disabled");
+        var levels = new List<int>();
+        var partial = false;
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        {
+            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist)
+                continue;
+            try { levels.Add(pawn.GetPsylinkLevel()); }
+            catch (Exception) { partial = true; }
+        }
+        return RoyaltyStateSnapshot.Build(levels, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadBiotechState()
+    {
+        if (!ModsConfig.BiotechActive)
+            throw new InvalidOperationException("Biotech DLC is disabled");
+        var polluted = new List<int>();
+        var bandwidth = new List<int>();
+        var partial = false;
+        foreach (var map in Find.Maps)
+        {
+            if (!map.IsPlayerHome)
+                continue;
+            try
+            {
+                var count = 0;
+                foreach (var cell in CellRect.WholeMap(map).Cells)
+                    if (map.pollutionGrid.IsPolluted(cell))
+                        count++;
+                polluted.Add(count);
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        {
+            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist)
+                continue;
+            try
+            {
+                if (pawn.mechanitor is { } tracker)
+                    bandwidth.Add(tracker.UsedBandwidthFromSubjects);
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        return BiotechStateSnapshot.Build(polluted, bandwidth, partial);
     }
 
 }

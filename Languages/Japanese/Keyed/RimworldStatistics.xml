@@ -727,4 +727,10 @@
   <RWS_MetricDesc_StockMedicinePeak>正常保存時のロード済み拠点とプレイヤー保有コンテナの医薬品備蓄最多数。</RWS_MetricDesc_StockMedicinePeak>
   <RWS_Metric_StockFoodMin>食料備蓄栄養量の最小値</RWS_Metric_StockFoodMin>
   <RWS_MetricDesc_StockFoodMin>正常保存時のロード済み拠点とプレイヤー保有コンテナの食料備蓄栄養量の最小値。</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>最高サイリンクレベル</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>対応DLCが有効な正常保存時に観測した最高サイリンクレベル。</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>ホーム拠点の最大汚染セル数</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>対応DLCが有効な正常保存時に観測したホーム拠点の最大汚染セル数。</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>メカニター最高使用帯域</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>対応DLCが有効な正常保存時に観測したメカニター最高使用帯域。</RWS_MetricDesc_BiotechBandwidthPeak>
 </LanguageData>

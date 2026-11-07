@@ -51,5 +51,8 @@ public static class SnapshotCatalog
         Snap(StockSnapshot.PersonaWeaponsPeak, "S-020", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockPersonaWeaponsPeak", "RWS_MetricDesc_StockPersonaWeaponsPeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Royalty),
         Snap(StockSnapshot.MedicinePeak, "N1-A-004", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockMedicinePeak", "RWS_MetricDesc_StockMedicinePeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax),
         Snap(StockSnapshot.FoodMin, "N1-A-005", MetricUnit.Nutrition, OverallAggregation.Min, "stock", "RWS_Metric_StockFoodMin", "RWS_MetricDesc_StockFoodMin", category: MetricCategory.Economy, selection: ColonySelection.ObservationMin),
+        Snap(RoyaltyStateSnapshot.PsylinkPeak, "L-006", MetricUnit.Count, OverallAggregation.Max, "royalty_state", "RWS_Metric_RoyaltyPsylinkPeak", "RWS_MetricDesc_RoyaltyPsylinkPeak", category: MetricCategory.Royalty, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Royalty),
+        Snap(BiotechStateSnapshot.PollutionCellsPeak, "N1-E-004", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechPollutionPeak", "RWS_MetricDesc_BiotechPollutionPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
+        Snap(BiotechStateSnapshot.BandwidthUsedPeak, "N1-E-005", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechBandwidthPeak", "RWS_MetricDesc_BiotechBandwidthPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
     };
 }
