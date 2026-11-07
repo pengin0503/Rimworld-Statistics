@@ -655,4 +655,10 @@
   <RWS_MetricDesc_SettlementsFounded>New player settlements founded from a caravan or an existing map. The starting settlement, moving the colony and gravship landings are not counted.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Settlements abandoned</RWS_Metric_SettlementsAbandoned>
   <RWS_MetricDesc_SettlementsAbandoned>Player settlements abandoned by choice. Automatic removals such as a gravship takeoff are not counted.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_ResearchSnapshotFinished>Completed research projects</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>Number of registered research projects completed at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_Metric_ResearchSnapshotFinishedRate>Research completion rate</RWS_Metric_ResearchSnapshotFinishedRate>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Completed projects divided by all registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>Highest completed research tech level</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>Highest technical level among completed registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotTechPeak>
 </LanguageData>

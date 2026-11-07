@@ -204,11 +204,15 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
                 return;
             var savedUtc = file.LastWriteTimeUtc;
             var numeric = NumericObservation(checkpoint, identity, version);
+            // Read detached snapshots only after the game file has successfully committed.
+            var snapshot = SavedStateMetricReader.Read(identity, version, savedUtc);
             ProfileService.Session.Mutate(p =>
             {
                 ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);
                 if (numeric != null)
                     ProfileMutations.UpsertMetricObservation(p, numeric);
+                if (snapshot != null)
+                    ProfileMutations.UpsertMetricObservation(p, snapshot);
             }, SaveMode.Background);
         }
         catch (Exception e)

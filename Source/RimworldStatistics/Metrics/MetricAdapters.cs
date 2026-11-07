@@ -51,7 +51,9 @@ public static class MetricAdapters
                 continue;
             if (unit.Kind != AcquisitionKind.Family)
             {
-                MetricGates.MarkApplied(unit.Id);   // read at the save itself: no hook
+                // A declared acquisition unit is not proof of an implemented reader.
+                if (unit.Kind == AcquisitionKind.Snapshot && SavedStateMetricReader.Supports(unit.Id))
+                    MetricGates.MarkApplied(unit.Id);
                 continue;
             }
             var classes = adapters.Where(a => a.Units.Contains(unit.Id)).Select(a => a.Type).ToList();
