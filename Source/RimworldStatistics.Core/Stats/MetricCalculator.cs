@@ -243,6 +243,10 @@ public static class MetricCalculator
             };
         else
             value = NumericValue.Unknown;
+        // A family writes its zeros whatever the DLC state; a zero of a DLC output in an observation without that DLC says only
+        // that the DLC was not there (a value recorded while it was active is shown).
+        if (DlcAbsent(d, rep) && NothingRecorded(value) && breakdowns.All(b => NothingRecorded(b.Value)))
+            return new NumericRow { Definition = d, Value = NotApplicable(rep), Targets = 0 };
         var row = Row(d, MetricEntry.Scalar, value);
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
@@ -272,6 +276,9 @@ public static class MetricCalculator
     /// </summary>
     private static bool DlcAbsent(MetricDefinition d, MetricObservation o)
         => d.RequiredDlc is { } dlc && o.ActiveDlcIds is { } active && !active.Contains(dlc, StringComparer.OrdinalIgnoreCase);
+
+    private static bool NothingRecorded(NumericValue v)
+        => v.Coverage == MetricCoverage.NotApplicable || v.Number is 0 || (v.Number is null && v.Numerator is null or 0 && v.Denominator is null or 0);
 
     private static NumericValue NotApplicable(MetricObservation o) => new() { Coverage = MetricCoverage.NotApplicable, ThroughTick = o.SaveTick };
 

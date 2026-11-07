@@ -69,7 +69,11 @@ public sealed class LiveMetricAccumulator
             {
                 // Continuous only when the family recorded up to the very save this game was loaded from.
                 if (family.ThroughTick != payload.SaveTick || payload.SaveTick != tick)
+                {
+                    // Totals stay; intervals open before the gap would span unobserved time, so they end without a sample.
                     family.Continuous = false;
+                    family.Active.Clear();
+                }
                 acc._recording[name] = family;
                 acc._order.Add(name);
             }
@@ -113,11 +117,17 @@ public sealed class LiveMetricAccumulator
     /// <summary>The totals of a recording family; null when the family does not record this session.</summary>
     public FamilyState? Family(string name) => _recording.GetValueOrDefault(name);
 
-    /// <summary>An event of a recording family was missed (e.g. it arrived off the game thread): its totals are no longer complete.</summary>
+    /// <summary>
+    /// An event of a recording family was missed (e.g. it arrived off the game thread): its totals are no longer complete and its
+    /// open intervals are dropped.
+    /// </summary>
     public void MarkGap(string name)
     {
         if (_recording.TryGetValue(name, out var family))
+        {
             family.Continuous = false;
+            family.Active.Clear();   // the missed event may have ended an open interval
+        }
     }
 
     /// <summary>Stops a family (its hook failed): what it recorded is kept, measured through <paramref name="tick"/>.</summary>

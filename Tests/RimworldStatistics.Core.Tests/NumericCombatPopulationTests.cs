@@ -171,6 +171,20 @@ public sealed class NumericCombatPopulationTests
         Assert.Equal(5.0, V(o, LifetimeFamily.TenureMean).RealValue);   // A: 0 → 5 days; the open intervals are not samples
     }
 
+    /// <summary>Codex review: past the member cap, everything that needs "is this pawn new" is partial.</summary>
+    [Fact]
+    public void Membership_PastTheCap_DependentOutputsArePartial()
+    {
+        var (acc, f) = NewGame(MembershipFamily.Family);
+        var m = f(MembershipFamily.Name);
+        MembershipFamily.Baseline(m, Enumerable.Range(0, FamilyOps.KeyCap).Select(i => "Thing_P" + i));
+        MembershipFamily.Joined(m, "Thing_New", MembershipFamily.RouteOther, 20, 100);
+        var o = Save(acc, 1000);
+        foreach (var key in new[] { MembershipFamily.FirstJoin, MembershipFamily.Routes, MembershipFamily.PrisonerRecruit, MembershipFamily.HumanBirths,
+                     MembershipFamily.JoinAgeMean, MembershipFamily.FirstJoinDay, MembershipFamily.Unique, MembershipFamily.Rejoin })
+            Assert.Equal(MetricCoverage.Partial, o.Scalar(key, 1)!.Coverage);
+    }
+
     [Fact]
     public void Membership_SlavesKidnapsAndRescues()
     {

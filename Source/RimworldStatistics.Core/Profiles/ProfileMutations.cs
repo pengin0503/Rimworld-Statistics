@@ -161,6 +161,7 @@ public static class ProfileMutations
             if (existing.PayloadHash != obs.PayloadHash || existing.ParentKey != obs.ParentKey || existing.SaveTick != obs.SaveTick)
             {
                 existing.Conflicted = true;
+                UncompressOrphanedAncestors(p, existing);
                 return;
             }
             foreach (var alias in obs.FileAliases)
@@ -172,6 +173,19 @@ public static class ProfileMutations
         }
         p.MetricObservations.Add(obs);
         CompressAncestors(p, obs);
+    }
+
+    /// <summary>
+    /// A checkpoint was set aside: an ancestor compressed because of it is the representative candidate again. Its values come
+    /// back when its content is read again (an import of its file, or the recovery when that save is loaded).
+    /// </summary>
+    private static void UncompressOrphanedAncestors(Profile p, MetricObservation conflicted)
+    {
+        var lineage = p.MetricObservations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
+            && o.Identity.ModCampaignId == conflicted.Identity.ModCampaignId).ToList();
+        foreach (var node in lineage)
+            if (node.Compressed && !lineage.Any(c => !c.Conflicted && c.ParentKey == node.Key && c.SaveTick > node.SaveTick))
+                node.Compressed = false;
     }
 
     private static void CompressAncestors(Profile p, MetricObservation added)

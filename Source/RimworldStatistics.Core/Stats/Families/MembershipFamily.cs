@@ -138,5 +138,8 @@ public static class MembershipFamily
         c.PutCount(Rescued, KidnapRescues);
         c.PutExtreme(Captive, CaptiveMax, max: true, 1.0 / StatFormat.TicksPerDay);
         c.PutFirstDay(Joins, FirstJoinDay);
+        // Past the member cap a new pawn cannot be told from a known one: every output that needs that is partial.
+        if (s.Peek(Members)?.Overflow == true)
+            c.MarkPartial(FirstJoin, Routes, PrisonerRecruit, HumanBirths, Unique, Rejoin, JoinAgeMean, FirstJoinDay, RecruitTimeMin, RecruitTimeMax);
     }
 }

@@ -22,6 +22,9 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     /// </summary>
     public string? numericStatistics;
 
+    /// <summary>The text as the save held it: written back when no checkpoint scope runs (never an earlier save's draft).</summary>
+    private string? _loadedNumericStatistics;
+
     private readonly Game _game;
 
     public GameComponent_RimworldStatistics(Game game)
@@ -71,6 +74,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
         try
         {
             numericStatistics = null;
+            _loadedNumericStatistics = null;
             LiveMetrics.StartNew(_game);
         }
         catch (Exception e)
@@ -160,6 +164,8 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             PrepareNumericForSave();
         Scribe_Values.Look(ref dataVersion, "dataVersion", 1);
         Scribe_Values.Look(ref numericStatistics, "numericStatistics");
+        if (Scribe.mode == LoadSaveMode.LoadingVars)
+            _loadedNumericStatistics = numericStatistics;
         if (Scribe.mode == LoadSaveMode.PostLoadInit && lineageTokens == null)
             lineageTokens = new List<string>();
     }
@@ -169,8 +175,8 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     {
         try
         {
-            if (ReferenceEquals(Current.Game, _game) && CheckpointSavePatch.TryGetText(out var text) && text != null)
-                numericStatistics = text;
+            // With a scope its text is the answer, null included (nothing committed yet). Without one, what the save held.
+            numericStatistics = ReferenceEquals(Current.Game, _game) && CheckpointSavePatch.TryGetText(out var text) ? text : _loadedNumericStatistics;
             if (numericStatistics != null)
                 dataVersion = Math.Max(dataVersion, 2);
         }

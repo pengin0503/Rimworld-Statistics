@@ -343,6 +343,25 @@ public sealed class NumericCheckpointTests
         Assert.Equal(2, Count(Obs(d)));
     }
 
+    /// <summary>Codex review: an interval open before a gap must not become a completed sample after it.</summary>
+    [Fact]
+    public void Gap_DropsOpenIntervalsButKeepsTotals()
+    {
+        var acc = LiveMetricAccumulator.StartNew(Recording, 0);
+        Events(acc, 2);
+        acc.Family("test")!.Track("open", "x", 50);
+        var p = Save(acc, "P", 100);
+        var continued = LiveMetricAccumulator.Resume(p.Json, Recording, 100);
+        Assert.Equal(50, continued.Family("test")!.Tracked("open", "x"));   // no gap: the interval goes on
+        var later = LiveMetricAccumulator.Resume(p.Json, Recording, 900);   // loaded at another tick: a gap
+        Assert.Empty(later.Family("test")!.Active);
+        Assert.Equal(2, later.Family("test")!.Metrics["events"].N);
+        var missed = LiveMetricAccumulator.StartNew(Recording, 0);
+        missed.Family("test")!.Track("open", "y", 10);
+        missed.MarkGap("test");
+        Assert.Empty(missed.Family("test")!.Active);
+    }
+
     [Fact]
     public void MarkGap_AMissedEventMakesTheFamilyPartialForGood()
     {
@@ -575,6 +594,51 @@ public sealed class NumericCheckpointTests
         ProfileMutations.UpsertMetricObservation(same, q);
         ProfileMutations.UpsertMetricObservation(same, q2);
         Assert.False(same.MetricObservations.Single(o => o.Key == "Q").Compressed);
+    }
+
+    /// <summary>Codex review: a conflicted child must not leave its compressed ancestor unusable.</summary>
+    [Fact]
+    public void ConflictedChild_UncompressesItsAncestor_AndARereadRestoresIt()
+    {
+        var (p, a, _) = Branches(2000, 1500);
+        var reread = CloneWithAlias(p, "P again.rws");   // what a later read of P's file builds (a fresh observation)
+        var profile = ProfileWithColony();
+        ProfileMutations.UpsertMetricObservation(profile, p);
+        ProfileMutations.UpsertMetricObservation(profile, a);
+        Assert.True(profile.MetricObservations.Single(o => o.Key == "P").Compressed);
+        var forged = CloneWithAlias(a, "other.rws");
+        forged.PayloadHash = "0000";
+        ProfileMutations.UpsertMetricObservation(profile, forged);
+        var stored = profile.MetricObservations.Single(o => o.Key == "P");
+        Assert.False(stored.Compressed);   // its only later child is set aside
+        ProfileMutations.UpsertMetricObservation(profile, reread);   // re-read, or recovered when P is loaded
+        Assert.Equal(3, Count(CheckpointSelector.Select(profile.MetricObservations).Representative));
+        Assert.Equal(3, Overall(profile).Value.Number);
+    }
+
+    /// <summary>Codex review: a recorded 0 of a DLC output in an observation without that DLC is "not applicable".</summary>
+    [Fact]
+    public void DlcOutputs_ZeroWithoutTheDlcIsNotApplicable_ButRecordedValuesShow()
+    {
+        var def = CountDef with { Key = "test.dlc", StoredKey = "test.count", RequiredDlc = AcquisitionUnits.Biotech };
+        NumericRow Row(long n, List<string> dlcs)
+        {
+            var acc = LiveMetricAccumulator.StartNew(Recording, 0);
+            Events(acc, (int)n);
+            var d = Save(acc, "P" + n + dlcs.Count, 100);
+            var obs = CheckpointMetrics.ToObservation(d.Payload!, d.Json, Identity(), null, dlcs, Families);
+            var profile = ProfileWithColony();
+            ProfileMutations.UpsertMetricObservation(profile, obs);
+            var colonies = CampaignMatcher.BuildColonies(profile);
+            return MetricCalculator.BuildView(profile, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def })
+                .Overall.Single(r => r.Definition.Key == "test.dlc");
+        }
+        var never = Row(0, new List<string>());
+        Assert.Equal((MetricCoverage.Unknown, 0), (never.Value.Coverage, never.Targets));
+        var recorded = Row(2, new List<string>());
+        Assert.Equal((2.0, 1), (recorded.Value.Number!.Value, recorded.Targets));
+        var active = Row(0, new List<string> { AcquisitionUnits.Biotech });
+        Assert.Equal((0.0, 1), (active.Value.Number!.Value, active.Targets));
     }
 
     [Fact]

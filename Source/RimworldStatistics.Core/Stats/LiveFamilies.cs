@@ -65,6 +65,19 @@ public sealed class FamilyOutputContext
         Into[key] = entry;
     }
 
+    /// <summary>
+    /// Weakens the values of <paramref name="keys"/> to partial when a set they depend on reached its cap: a value is then a lower
+    /// bound, and "no sample" no longer proves there was nothing.
+    /// </summary>
+    public void MarkPartial(params string[] keys)
+    {
+        foreach (var key in keys)
+            if (Into.TryGetValue(key, out var entry))
+                foreach (var v in entry.Values.Values)
+                    if (v.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
+                        v.Coverage = MetricCoverage.Partial;
+    }
+
     // ----- shapes shared by the families -----
 
     /// <summary>The count <c>N</c> of an accumulator (0 when nothing happened in the range).</summary>
