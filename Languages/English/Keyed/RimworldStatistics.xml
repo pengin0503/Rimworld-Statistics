@@ -237,6 +237,10 @@
   <RWS_Unit_SilverPerYear>{0} / year</RWS_Unit_SilverPerYear>
   <RWS_Details_Permadeath>Permadeath</RWS_Details_Permadeath>
   <RWS_Details_NotPermadeath>Normal</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankDaysByBiome>Survival days by original biome</RWS_Metric_RankDaysByBiome>
+  <RWS_MetricDesc_RankDaysByBiome>Total colony survival days grouped by the game's original starting biome; never uses the current settlement biome.</RWS_MetricDesc_RankDaysByBiome>
+  <RWS_Metric_RankEndingsByBiome>Endings by original biome</RWS_Metric_RankEndingsByBiome>
+  <RWS_MetricDesc_RankEndingsByBiome>Accepted endings grouped by the immutable start-tile biome; colonies with unknown origin are excluded and coverage is partial.</RWS_MetricDesc_RankEndingsByBiome>
   <RWS_Metric_RankMostKills>Most enemy kills in one colony</RWS_Metric_RankMostKills>
   <RWS_MetricDesc_RankMostKills>Maximum confirmed hostile kills in a single colony, from its selected checkpoint; missing input does not count as zero.</RWS_MetricDesc_RankMostKills>
   <RWS_Metric_RankDeathFree>Longest death-free period across colonies</RWS_Metric_RankDeathFree>
