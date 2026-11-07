@@ -751,6 +751,10 @@
   <RWS_MetricDesc_BiotechPollutionPeak>Maximum polluted cells observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>Highest used mechanitor bandwidth</RWS_Metric_BiotechBandwidthPeak>
   <RWS_MetricDesc_BiotechBandwidthPeak>Highest used mechanitor bandwidth observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>Royal permits successfully used</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>Royal permits confirmed used by an eligible player colonist; cancelled selections do not count.</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>Successful psycasts</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>Royalty psychic abilities activated successfully by free player colonists; unconfirmed targeting does not count.</RWS_MetricDesc_RoyaltyPsycasts>
   <RWS_Metric_RoyaltyTitleGrants>Royal titles granted</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Royal titles granted confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>Highest royal title</RWS_Metric_RoyaltyHighestTitle>
