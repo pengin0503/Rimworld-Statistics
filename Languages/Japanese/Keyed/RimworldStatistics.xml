@@ -237,6 +237,16 @@
   <RWS_Unit_SilverPerYear>{0} /年</RWS_Unit_SilverPerYear>
   <RWS_Details_Permadeath>パーマデス</RWS_Details_Permadeath>
   <RWS_Details_NotPermadeath>通常</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankMostKills>単一コロニーでの最多敵撃破数</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>選択されたチェックポイントの確定敵撃破数のコロニー横断最大値。未記録は0として扱わない。</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>最長無死亡期間のコロニー横断記録</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>選択されたチェックポイントの完結した無死亡期間の最大値をコロニー間で比較。</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>単一コロニーでの最多製作品数</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>選択されたチェックポイントに記録された確定製作品数のコロニー横断最大値。</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>単一取引での最高販売額</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>成立した一回の販売額についてのコロニー横断最高値。</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>最多研究完了数のコロニー記録</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>保存時点の完了研究Def数をコロニー横断で比較。研究完了イベント回数とは区別する。</RWS_MetricDesc_RankMostResearch>
   <RWS_Metric_RankByDifficultyDays>難易度別の通算日数</RWS_Metric_RankByDifficultyDays>
   <RWS_MetricDesc_RankByDifficultyDays>各コロニーの代表セーブ（最も進んだ時点）の難易度ごとに、コロニーの経過日数を合計します。途中の難易度変更は追いません。クリックで内訳を開きます。</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>難易度別のエンディング数</RWS_Metric_RankByDifficultyEndings>
