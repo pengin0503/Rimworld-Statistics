@@ -28,6 +28,11 @@ public sealed class NumericBiotechEventsTests
         Assert.Equal(1, o.Scalar(BiotechFamily.MechsCreated, MetricKeys.Revision(BiotechFamily.MechsCreated))!.IntegerValue);
         Assert.Equal(1, o.Scalar(BiotechFamily.BirthMothers, MetricKeys.Revision(BiotechFamily.BirthMothers))!.IntegerValue);
         Assert.Equal(2, o.Scalar(BiotechFamily.ChildStages, MetricKeys.Revision(BiotechFamily.ChildStages))!.IntegerValue);
+        // The catalog promises a stage breakdown, not just the scalar count.
+        var stages = o.Metrics[BiotechFamily.ChildStages].Values;
+        Assert.Equal(1, stages["Child"].IntegerValue);
+        Assert.Equal(1, stages["Adult"].IntegerValue);
+        Assert.Equal(2, stages[MetricEntry.Scalar].IntegerValue);
     }
 
     [Fact]
