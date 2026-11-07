@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -39,6 +39,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "factions")
                     foreach (var (key, value) in ReadFactions())
+                        observation.Metrics[key] = value;
+                else if (unit == "roster")
+                    foreach (var (key, value) in ReadRoster())
                         observation.Metrics[key] = value;
             }
             catch (Exception e)
@@ -99,5 +102,45 @@ internal static class SavedStateMetricReader
         }
         return FactionStateSnapshot.Build(facts, partial);
     }
+    private static Dictionary<string, MetricEntry> ReadRoster()
+    {
+        var facts = new List<RosterPawnFact>();
+        var partial = false;
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)
+        {
+            if (pawn is null || pawn.Dead)
+                continue;
+            try
+            {
+                var owned = pawn.Faction == Faction.OfPlayer;
+                var kind = owned && pawn.IsFreeNonSlaveColonist ? RosterKind.FreeColonist
+                    : pawn.IsPrisonerOfColony ? RosterKind.Prisoner
+                    : owned && pawn.RaceProps.Animal ? RosterKind.ColonyAnimal
+                    : owned && pawn.RaceProps.IsMechanoid ? RosterKind.ColonyMech
+                    : RosterKind.Other;
+                if (kind == RosterKind.Other)
+                    continue;
+                var skills = kind == RosterKind.FreeColonist && pawn.skills?.skills is { } list
+                    ? list.Where(x => x?.def != null && !x.TotallyDisabled)
+                        .Select(x => new RosterSkillFact(x.def.defName, x.levelInt, x.passion.ToString())).ToArray()
+                    : Array.Empty<RosterSkillFact>();
+                var hediffs = pawn.health?.hediffSet?.hediffs;
+                facts.Add(new RosterPawnFact
+                {
+                    Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName,
+                    AgeYears = kind == RosterKind.FreeColonist ? pawn.ageTracker?.AgeBiologicalYearsFloat : null,
+                    Augmented = hediffs?.Any(h => h is Hediff_AddedPart) == true,
+                    Injured = hediffs?.Any(h => h is Hediff_Injury) == true,
+                    Skills = skills,
+                });
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        return RosterSnapshot.Build(facts, partial);
+    }
+
 }
 

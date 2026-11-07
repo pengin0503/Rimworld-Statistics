@@ -665,4 +665,28 @@
   <RWS_MetricDesc_FactionSnapshotRelations>Counts of eligible active factions allied or hostile to the player, at the last successful save.</RWS_MetricDesc_FactionSnapshotRelations>
   <RWS_Metric_FactionSnapshotGoodwillRange>Faction goodwill range</RWS_Metric_FactionSnapshotGoodwillRange>
   <RWS_MetricDesc_FactionSnapshotGoodwillRange>Minimum and maximum base goodwill of eligible active factions that support goodwill. Permanently hostile factions contribute to faction counts, not goodwill.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>Living free colonists</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>Living free colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>Living colony prisoners</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>Living colony prisoners at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterAnimals>Colony animals</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>Colony animals at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>Colony mechanoids</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>Colony mechanoids at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>Highest augmented colonists</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>Highest augmented colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>Highest colonists with skill 20</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>Highest colonists with skill 20 at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>Most max-level skills on one colonist</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Most max-level skills on one colonist at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>Oldest living colonist</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>Oldest living colonist at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>Highest colony animal species</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>Highest colony animal species at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>Colonist passions by skill</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Colonist passions by skill at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>Mean living colonist age</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>Mean living colonist age at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>Highest simultaneously injured colonists</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>Highest simultaneously injured colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterInjuredPeak>
 </LanguageData>

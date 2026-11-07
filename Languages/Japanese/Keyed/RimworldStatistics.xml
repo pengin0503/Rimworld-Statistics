@@ -665,4 +665,28 @@
   <RWS_MetricDesc_FactionSnapshotRelations>最後に正常保存した時点の、有効な非プレイヤー勢力の友好・敵対件数。</RWS_MetricDesc_FactionSnapshotRelations>
   <RWS_Metric_FactionSnapshotGoodwillRange>勢力の友好度範囲</RWS_Metric_FactionSnapshotGoodwillRange>
   <RWS_MetricDesc_FactionSnapshotGoodwillRange>正常保存時点で友好度に対応する有効勢力の最小・最大友好度。恒久敵対勢力は勢力数にだけ含む。</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>生存中の自由入植者</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>正常保存時点で生存中の対象Pawnから取得した生存中の自由入植者。最大値は保存観測間で集計。</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>生存中のコロニー囚人</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>正常保存時点で生存中の対象Pawnから取得した生存中のコロニー囚人。最大値は保存観測間で集計。</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterAnimals>飼育動物数</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>正常保存時点で生存中の対象Pawnから取得した飼育動物数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>自軍メカノイド数</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>正常保存時点で生存中の対象Pawnから取得した自軍メカノイド数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>強化義肢装着入植者の最多人数</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>正常保存時点で生存中の対象Pawnから取得した強化義肢装着入植者の最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>スキル20の入植者最多人数</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>正常保存時点で生存中の対象Pawnから取得したスキル20の入植者最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>入植者1人のスキル20最多種類数</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>正常保存時点で生存中の対象Pawnから取得した入植者1人のスキル20最多種類数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>生存入植者の最高齢</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>正常保存時点で生存中の対象Pawnから取得した生存入植者の最高齢。最大値は保存観測間で集計。</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>飼育動物の最多種類数</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>正常保存時点で生存中の対象Pawnから取得した飼育動物の最多種類数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>スキル別情熱人数</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>正常保存時点で生存中の対象Pawnから取得したスキル別情熱人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>生存入植者の平均年齢</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>正常保存時点で生存中の対象Pawnから取得した生存入植者の平均年齢。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>同時負傷入植者の最多人数</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>正常保存時点で生存中の対象Pawnから取得した同時負傷入植者の最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterInjuredPeak>
 </LanguageData>
