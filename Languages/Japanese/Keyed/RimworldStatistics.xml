@@ -709,4 +709,22 @@
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最低屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>保存時の最高屋外気温</RWS_Metric_FacilitiesOutdoorTempMax>
   <RWS_MetricDesc_FacilitiesOutdoorTempMax>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最高屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>最後の食料備蓄栄養量</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>正常保存時のロード済み拠点とプレイヤー保有コンテナの最後の食料備蓄栄養量。</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>最後のシルバー所持数</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>正常保存時のロード済み拠点とプレイヤー保有コンテナの最後のシルバー所持数。</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>スチール・コンポーネント所持数</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>正常保存時のロード済み拠点とプレイヤー保有コンテナのスチール・コンポーネント所持数。</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>保有武器最多数</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>正常保存時のロード済み拠点とプレイヤー保有コンテナの保有武器最多数。</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>保有武器の最多種類数</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>正常保存時のロード済み拠点とプレイヤー保有コンテナの保有武器の最多種類数。</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>レジェンダリー武器最多数</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>正常保存時のロード済み拠点とプレイヤー保有コンテナのレジェンダリー武器最多数。</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>ペルソナ武器最多数</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>正常保存時のロード済み拠点とプレイヤー保有コンテナのペルソナ武器最多数。</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>医薬品備蓄最多数</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>正常保存時のロード済み拠点とプレイヤー保有コンテナの医薬品備蓄最多数。</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>食料備蓄栄養量の最小値</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>正常保存時のロード済み拠点とプレイヤー保有コンテナの食料備蓄栄養量の最小値。</RWS_MetricDesc_StockFoodMin>
 </LanguageData>

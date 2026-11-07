@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -45,6 +45,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "facilities")
                     foreach (var (key, value) in ReadFacilities())
+                        observation.Metrics[key] = value;
+                else if (unit == "stock")
+                    foreach (var (key, value) in ReadStock())
                         observation.Metrics[key] = value;
             }
             catch (Exception e)
@@ -206,6 +209,81 @@ internal static class SavedStateMetricReader
             }
         }
         return FacilitiesSnapshot.Build(maps, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadStock()
+    {
+        var items = new List<StockItemFact>();
+        var visited = new HashSet<string>(StringComparer.Ordinal);
+        var partial = false;
+        var player = Faction.OfPlayerSilentFail;
+        if (player is null)
+            throw new InvalidOperationException("No player faction exists");
+        void Gather(Thing item)
+        {
+            if (item is null || item.Destroyed || item is Corpse || item is Pawn)
+                return;
+            try
+            {
+                if (item.Faction is { } owner && owner != player)
+                    return;
+                if (item.IsForbidden(player))
+                    return;
+                if (item is MinifiedThing min && min.InnerThing is { } inner)
+                {
+                    Gather(inner);
+                    return;
+                }
+                var id = item.GetUniqueLoadID();
+                if (string.IsNullOrEmpty(id) || !visited.Add(id))
+                    return;
+                double nutrition = 0;
+                if (item.def.ingestible != null)
+                {
+                    var value = item.GetStatValue(StatDefOf.Nutrition);
+                    if (float.IsFinite(value) && value > 0)
+                        nutrition = value;
+                }
+                var isWeapon = item.def.IsWeapon;
+                var quality = item.TryGetComp<CompQuality>();
+                var persona = item.TryGetComp<CompBladelinkWeapon>() != null;
+                items.Add(new StockItemFact(id, item.def.defName, item.stackCount, nutrition,
+                    isWeapon, item.def.IsMedicine, quality?.Quality == QualityCategory.Legendary, persona));
+                if (item is IThingHolder holder)
+                {
+                    var direct = holder.GetDirectlyHeldThings();
+                    if (direct != null)
+                        foreach (var contained in direct)
+                            Gather(contained);
+                }
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        foreach (var map in Find.Maps)
+        {
+            if (!map.IsPlayerHome)
+                continue;
+            foreach (var thing in map.listerThings.AllThings)
+                Gather(thing);
+        }
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)
+        {
+            if (pawn is null || pawn.Dead || pawn.Faction != player)
+                continue;
+            if (pawn.equipment != null)
+                foreach (var item in pawn.equipment.AllEquipmentListForReading)
+                    Gather(item);
+            if (pawn.apparel != null)
+                foreach (var item in pawn.apparel.WornApparel)
+                    Gather(item);
+            if (pawn.inventory?.innerContainer is { } inventory)
+                foreach (var item in inventory)
+                    Gather(item);
+        }
+        return StockSnapshot.Build(items, partial);
     }
 
 }

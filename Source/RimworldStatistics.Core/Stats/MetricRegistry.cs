@@ -64,6 +64,9 @@ public enum MetricUnit
 
     /// <summary>Rated stored energy capacity in watt-days.</summary>
     WattDays,
+
+    /// <summary>Food nutrition units available at a successful save.</summary>
+    Nutrition,
 }
 
 /// <summary>Which of a colony's observations gives its value.</summary>

@@ -4,12 +4,12 @@ namespace RimworldStatistics.Core;
 public static class SnapshotCatalog
 {
     private static MetricDefinition Snap(string key, string ledger, MetricUnit metricUnit, OverallAggregation aggregation,
-        string unit, string label, string description, MetricCategory category = MetricCategory.Research, bool breakdown = false, ColonySelection selection = ColonySelection.Representative)
+        string unit, string label, string description, MetricCategory category = MetricCategory.Research, bool breakdown = false, ColonySelection selection = ColonySelection.Representative, string? dlc = null)
         => new()
         {
             Key = key, StoredKey = key, LedgerIds = ledger, Category = category, Unit = metricUnit,
             Provenance = MetricProvenance.SaveSnapshot, Source = MetricObservationSource.SaveSnapshot,
-            Overall = aggregation, Acquisition = unit, HasBreakdown = breakdown, Selection = selection,
+            Overall = aggregation, Acquisition = unit, HasBreakdown = breakdown, Selection = selection, RequiredDlc = dlc,
             LabelKey = label, DescriptionKey = description,
         };
 
@@ -42,5 +42,14 @@ public static class SnapshotCatalog
         Snap(FacilitiesSnapshot.RunningGenerators, "N1-D-004", MetricUnit.Count, OverallAggregation.Sum, "facilities", "RWS_Metric_FacilitiesRunningGenerators", "RWS_MetricDesc_FacilitiesRunningGenerators", category: MetricCategory.Facilities, breakdown: true, selection: ColonySelection.ObservationMax),
         Snap(FacilitiesSnapshot.OutdoorTempMin, "N4-C-001", MetricUnit.Celsius, OverallAggregation.Min, "facilities", "RWS_Metric_FacilitiesOutdoorTempMin", "RWS_MetricDesc_FacilitiesOutdoorTempMin", category: MetricCategory.Facilities, selection: ColonySelection.ObservationMin),
         Snap(FacilitiesSnapshot.OutdoorTempMax, "N4-C-002", MetricUnit.Celsius, OverallAggregation.Max, "facilities", "RWS_Metric_FacilitiesOutdoorTempMax", "RWS_MetricDesc_FacilitiesOutdoorTempMax", category: MetricCategory.Facilities, selection: ColonySelection.ObservationMax),
+        Snap(StockSnapshot.FoodLatest, "S-009", MetricUnit.Nutrition, OverallAggregation.Sum, "stock", "RWS_Metric_StockFoodLatest", "RWS_MetricDesc_StockFoodLatest", category: MetricCategory.Economy),
+        Snap(StockSnapshot.SilverLatest, "S-010", MetricUnit.Silver, OverallAggregation.Sum, "stock", "RWS_Metric_StockSilverLatest", "RWS_MetricDesc_StockSilverLatest", category: MetricCategory.Economy),
+        Snap(StockSnapshot.MaterialsLatest, "S-011", MetricUnit.Count, OverallAggregation.Sum, "stock", "RWS_Metric_StockMaterialsLatest", "RWS_MetricDesc_StockMaterialsLatest", category: MetricCategory.Economy, breakdown: true),
+        Snap(StockSnapshot.WeaponsPeak, "S-017", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockWeaponsPeak", "RWS_MetricDesc_StockWeaponsPeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax),
+        Snap(StockSnapshot.WeaponDefsPeak, "S-018", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockWeaponDefsPeak", "RWS_MetricDesc_StockWeaponDefsPeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax),
+        Snap(StockSnapshot.LegendaryWeaponsPeak, "S-019", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockLegendaryWeaponsPeak", "RWS_MetricDesc_StockLegendaryWeaponsPeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax),
+        Snap(StockSnapshot.PersonaWeaponsPeak, "S-020", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockPersonaWeaponsPeak", "RWS_MetricDesc_StockPersonaWeaponsPeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Royalty),
+        Snap(StockSnapshot.MedicinePeak, "N1-A-004", MetricUnit.Count, OverallAggregation.Max, "stock", "RWS_Metric_StockMedicinePeak", "RWS_MetricDesc_StockMedicinePeak", category: MetricCategory.Economy, selection: ColonySelection.ObservationMax),
+        Snap(StockSnapshot.FoodMin, "N1-A-005", MetricUnit.Nutrition, OverallAggregation.Min, "stock", "RWS_Metric_StockFoodMin", "RWS_MetricDesc_StockFoodMin", category: MetricCategory.Economy, selection: ColonySelection.ObservationMin),
     };
 }

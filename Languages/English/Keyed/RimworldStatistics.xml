@@ -709,4 +709,22 @@
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Highest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMax>
   <RWS_MetricDesc_FacilitiesOutdoorTempMax>Highest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>Food nutrition at last save</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>Food nutrition at last save measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>Silver at last save</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>Silver at last save measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>Construction materials by type</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>Construction materials by type measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>Maximum owned weapons</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Maximum owned weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>Maximum weapon types</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Maximum weapon types measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>Maximum legendary weapons</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Maximum legendary weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>Maximum persona weapons</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Maximum persona weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>Maximum medicines in stock</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Maximum medicines in stock measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>Minimum food nutrition</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>Minimum food nutrition measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockFoodMin>
 </LanguageData>

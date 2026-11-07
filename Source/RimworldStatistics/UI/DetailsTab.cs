@@ -316,6 +316,7 @@ public static class DetailsTab
             MetricUnit.Celsius => n.ToString("N1", Inv) + " °C",
             MetricUnit.Watts => n.ToString("N1", Inv) + " W",
             MetricUnit.WattDays => n.ToString("N1", Inv) + " Wd",
+            MetricUnit.Nutrition => n.ToString("N2", Inv) + " nutrition",
             _ => n.ToString("N2", Inv),
         };
     }
