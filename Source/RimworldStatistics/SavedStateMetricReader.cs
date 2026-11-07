@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "royalty_state", "biotech_state" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "biotech_state" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -49,6 +49,9 @@ internal static class SavedStateMetricReader
                 else if (unit == "stock")
                     foreach (var (key, value) in ReadStock())
                         observation.Metrics[key] = value;
+                else if (unit == "colony_start")
+                    foreach (var (key, value) in ReadColonyStart())
+                        observation.Metrics[key] = value;
                 else if (unit == "royalty_state")
                     foreach (var (key, value) in ReadRoyaltyState())
                         observation.Metrics[key] = value;
@@ -62,6 +65,18 @@ internal static class SavedStateMetricReader
             }
         }
         return observation.Metrics.Count > 0 ? observation : null;
+    }
+
+    /// <summary>Biome of the original game starting tile; relocation never changes the category.</summary>
+    private static Dictionary<string, MetricEntry> ReadColonyStart()
+    {
+        var startingTile = Find.GameInfo.startingTile;
+        if (!startingTile.Valid)
+            return ColonyStartSnapshot.Build(null);
+        // PlanetTile is stable across saving and reloading; unlike any currently
+        // loaded player's home map, this is the game's original start location.
+        var biomeDef = Find.World?.grid?.get_Item(startingTile)?.biome?.defName;
+        return ColonyStartSnapshot.Build(biomeDef);
     }
 
     private static Dictionary<string, MetricEntry> ReadResearch()
