@@ -16,6 +16,7 @@ public static class BiotechFamily
     public const string PollutionCleaned = "biotech.pollution.cleaned";
 
     private const string CreatedMechs = "created_mechs";
+    private const string ReadyGestations = "ready_gestations";
     private const string Mothers = "mothers";
     private const string ReachedStages = "reached_stages";
     private const string Stages = "stage_counts";
@@ -29,6 +30,25 @@ public static class BiotechFamily
     {
         Name = Name, Revision = 1, RequiredDlc = AcquisitionUnits.Biotech, Build = Build,
     };
+
+    /// <summary>Track a confirmed finished manufacturing cycle until the pawn really emerges.</summary>
+    public static void GestationReady(FamilyState s, string mechId, bool playerGestator, bool resurrection)
+    {
+        if (playerGestator && !resurrection && !string.IsNullOrWhiteSpace(mechId))
+            s.Track(ReadyGestations, mechId, 1);
+    }
+
+    /// <summary>
+    /// A reloaded or moved tank can eject later. Only a living player-owned mech
+    /// already tracked from a confirmed gestation result is a completed manufacture.
+    /// </summary>
+    public static void GestationEjected(FamilyState s, string mechId, bool livingPlayerMech)
+    {
+        if (!livingPlayerMech || string.IsNullOrWhiteSpace(mechId))
+            return;
+        if (s.Untrack(ReadyGestations, mechId) is not null)
+            s.Distinct(CreatedMechs, mechId);
+    }
 
     /// <summary>Only a player-made mech after the gestator actually produced a living instance.</summary>
     public static void MechProduced(FamilyState s, string mechThingId, bool playerMade, bool gestationFinished)
@@ -105,6 +125,8 @@ public static class BiotechFamily
         if (s.Peek(ReachedStages)?.Overflow == true || s.Peek(Stages)?.Overflow == true)
             c.MarkPartial(ChildStages);
         if (s.Peek(CreatedMechs)?.Overflow == true)
+            c.MarkPartial(MechsCreated);
+        if (s.TrackerOverflowed(ReadyGestations))
             c.MarkPartial(MechsCreated);
         if (s.Peek(Mothers)?.Overflow == true)
             c.MarkPartial(BirthMothers);
