@@ -263,4 +263,37 @@
   <RWS_MetricDesc_RankMinDeathsAtEnding>The fewest colonist deaths at the moment an ending was recorded, and the colony. Endings recorded before this version have no death count and are left out.</RWS_MetricDesc_RankMinDeathsAtEnding>
   <RWS_Metric_RankZeroDeathEndings>Endings without deaths</RWS_Metric_RankZeroDeathEndings>
   <RWS_MetricDesc_RankZeroDeathEndings>Endings whose colonist death count was 0 when recorded. Endings without a death count are not counted.</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Category_Research>Research</RWS_Category_Research>
+  <RWS_Category_Mind>Mind</RWS_Category_Mind>
+  <RWS_Category_Combat>Combat and deaths</RWS_Category_Combat>
+  <RWS_Category_Social>Relations and prisoners</RWS_Category_Social>
+  <RWS_Category_Medicine>Medicine</RWS_Category_Medicine>
+  <RWS_Category_Work>Work and food</RWS_Category_Work>
+  <RWS_Category_Animals>Animals</RWS_Category_Animals>
+  <RWS_Category_Economy>Trade and diplomacy</RWS_Category_Economy>
+  <RWS_Category_Environment>Disasters and environment</RWS_Category_Environment>
+  <RWS_Category_Exploration>Caravans and settlements</RWS_Category_Exploration>
+  <RWS_Category_Facilities>Facilities and stock</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
+  <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
+  <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
+  <RWS_Metric_ResearchLiveCompleted>Research completed while recorded</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>Research projects that went from unfinished to finished since recording began, each counted once. Not the number of projects finished at save time.</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>Research completion days (list)</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>Per project completed while recorded, the game day it was first finished. Shown per colony only.</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>Shortest research duration</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>Fewest days from the first real work on a project to its completion, including pauses. Projects whose start was not seen are left out.</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>Longest research duration</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>Most days in the same sample as the shortest.</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>Days to the first research completion</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>The game day of the first completion, only when recorded from the start of the game.</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>Mental breaks</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>Mood-caused mental breaks of free colonists. Breaks from drugs, genes, psycasts or dev tools are not counted.</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>Mental breaks by type</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>The mental breaks above, by type (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>Inspirations</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>Inspirations that really started for free colonists. Failed attempts, already-inspired pawns and dev tools are not counted.</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_InspirationsByDef>Inspirations by type</RWS_Metric_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>The inspirations above, by type (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
 </LanguageData>

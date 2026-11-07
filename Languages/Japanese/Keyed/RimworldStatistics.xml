@@ -263,4 +263,37 @@
   <RWS_MetricDesc_RankMinDeathsAtEnding>エンディングを記録した時点の入植者死亡数の最小とそのコロニー。この版より前に記録したエンディングは死亡数が分からないため含めません。</RWS_MetricDesc_RankMinDeathsAtEnding>
   <RWS_Metric_RankZeroDeathEndings>死者なしのエンディング</RWS_Metric_RankZeroDeathEndings>
   <RWS_MetricDesc_RankZeroDeathEndings>記録した時点の入植者死亡数が0だったエンディングの数。死亡数の分からないエンディングは数えません。</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Category_Research>研究</RWS_Category_Research>
+  <RWS_Category_Mind>精神</RWS_Category_Mind>
+  <RWS_Category_Combat>戦闘・死亡</RWS_Category_Combat>
+  <RWS_Category_Social>人間関係・囚人</RWS_Category_Social>
+  <RWS_Category_Medicine>医療</RWS_Category_Medicine>
+  <RWS_Category_Work>生産・食料</RWS_Category_Work>
+  <RWS_Category_Animals>動物</RWS_Category_Animals>
+  <RWS_Category_Economy>交易・外交</RWS_Category_Economy>
+  <RWS_Category_Environment>災害・環境</RWS_Category_Environment>
+  <RWS_Category_Exploration>遠征・拠点</RWS_Category_Exploration>
+  <RWS_Category_Facilities>設備・備蓄</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
+  <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
+  <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
+  <RWS_Metric_ResearchLiveCompleted>記録中に完了した研究の数</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>記録を始めてから未完了→完了になった研究の種類数。同じ研究は一度だけ数えます。保存時点で完了している研究の数とは別です。</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>研究の完了日（一覧）</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>記録中に完了した研究ごとの、最初の完了日（ゲーム内日）。コロニー別だけに出します。</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>研究の最短所要日数</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>同じ研究への最初の実際の研究作業から完了までの日数の最短。中断していた期間も含みます。開始を見ていない研究は含めません。</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>研究の最長所要日数</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>上の最短と同じ標本の最長日数。</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>最初の研究完了までの日数</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>ゲーム開始から記録していた場合だけ、最初に研究が完了したゲーム内日。</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>精神崩壊の回数</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>心情が原因で自由入植者に起きた精神崩壊の数。薬物・遺伝子・超能力などによる崩壊や開発ツールでの発生は含めません。</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>種類別の精神崩壊</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>上の精神崩壊を種類（MentalBreakDef）別に数えたもの。</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>ひらめきの回数</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>自由入植者に実際に始まったひらめきの数。失敗したもの、既にひらめいていたもの、開発ツールによるものは含めません。</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_InspirationsByDef>種類別のひらめき</RWS_Metric_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>上のひらめきを種類（InspirationDef）別に数えたもの。</RWS_MetricDesc_InspirationsByDef>
 </LanguageData>

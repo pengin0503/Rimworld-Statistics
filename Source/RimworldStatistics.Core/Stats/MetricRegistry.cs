@@ -8,6 +8,23 @@ public enum MetricCategory
     Quests,
     Colony,
     Rankings,
+
+    // Phase B / C / D2 (the order is the category menu's order after the Phase A ones)
+    Research,
+    Mind,
+    Combat,
+    Social,
+    Medicine,
+    Work,
+    Animals,
+    Economy,
+    Environment,
+    Exploration,
+    Facilities,
+    Royalty,
+    Ideology,
+    Biotech,
+    Odyssey,
 }
 
 public enum MetricUnit
@@ -99,6 +116,9 @@ public sealed record MetricDefinition
 
     /// <summary>The value has a breakdown (e.g. per quest root def); the scalar is their sum.</summary>
     public bool HasBreakdown { get; init; }
+
+    /// <summary>The unit of the breakdown entries when it differs from the scalar's (e.g. completion days listed under a count).</summary>
+    public MetricUnit? BreakdownUnit { get; init; }
 
     /// <summary>Package id of the DLC the output needs; null for Core.</summary>
     public string? RequiredDlc { get; init; }

@@ -64,12 +64,93 @@ public sealed class FamilyOutputContext
             entry.Values[MetricEntry.Scalar] = scalar;
         Into[key] = entry;
     }
+
+    // ----- shapes shared by the families -----
+
+    /// <summary>The count <c>N</c> of an accumulator (0 when nothing happened in the range).</summary>
+    public void PutCount(string acc, string key) => Put(key, Value(integer: State.Peek(acc)?.N ?? 0));
+
+    /// <summary>A total and its per-key breakdown; the breakdown's scalar is the same total.</summary>
+    public void CountAndBreakdown(string acc, string countKey, string? breakdownKey)
+    {
+        var a = State.Peek(acc);
+        Put(countKey, Value(integer: a?.N ?? 0));
+        if (breakdownKey != null)
+            PutBreakdown(breakdownKey, Counts(a), Value(integer: a?.N ?? 0, partial: a?.Overflow == true));
+    }
+
+    /// <summary>Integer amounts per key (partial when keys were dropped at the cap).</summary>
+    public Dictionary<string, MetricValue> Counts(Accumulator? a)
+        => (a?.By ?? new Dictionary<string, double>()).ToDictionary(kv => kv.Key, kv => Value(integer: (long)Math.Round(kv.Value), partial: a!.Overflow),
+            StringComparer.Ordinal);
+
+    /// <summary>A real sum (0 when nothing happened in the range).</summary>
+    public void PutSum(string acc, string key, double scale = 1) => Put(key, Value(real: (State.Peek(acc)?.Sum ?? 0) * scale));
+
+    /// <summary>
+    /// The extreme of the samples of an accumulator, scaled (e.g. ticks to days). No sample: not applicable (a duration with
+    /// no completed interval, a peak with nothing measured), as the ledger's "期間のない平均・分母0・証拠不足は —".
+    /// </summary>
+    public void PutExtreme(string acc, string key, bool max, double scale = 1)
+    {
+        var a = State.Peek(acc);
+        var n = (int)(a?.N ?? 0);
+        Put(key, n == 0 || (max ? a!.Max : a!.Min) is not { } v
+            ? Value(coverage: MetricCoverage.NotApplicable, samples: 0)
+            : Value(real: v * scale, samples: n));
+    }
+
+    /// <summary>The mean of the samples (sum ÷ count) with its numerator and denominator; no sample: not applicable.</summary>
+    public void PutMean(string acc, string key, double scale = 1)
+    {
+        var a = State.Peek(acc);
+        var n = a?.N ?? 0;
+        Put(key, n == 0
+            ? Value(coverage: MetricCoverage.NotApplicable, numerator: 0, denominator: 0, samples: 0)
+            : Value(real: a!.Sum!.Value * scale / n, numerator: a.Sum.Value * scale, denominator: n, samples: (int)n));
+    }
+
+    /// <summary>
+    /// The largest per-key amount and the key(s) holding it (ties: all of them), e.g. the doctor with most tends. The scalar
+    /// is the amount; the breakdown names the holders. Partial when keys were dropped at the cap.
+    /// </summary>
+    public void PutTop(string acc, string key)
+    {
+        var a = State.Peek(acc);
+        if (a?.By is not { Count: > 0 } by)
+        {
+            Put(key, Value(coverage: MetricCoverage.NotApplicable));
+            return;
+        }
+        var best = by.Values.Max();
+        var holders = by.Where(kv => kv.Value == best).Select(kv => kv.Key).Order(StringComparer.Ordinal)
+            .ToDictionary(k => k, _ => Value(integer: (long)Math.Round(best), partial: a.Overflow), StringComparer.Ordinal);
+        PutBreakdown(key, holders, Value(integer: (long)Math.Round(best), partial: a.Overflow));
+    }
+
+    /// <summary>The number of distinct keys (partial when keys were dropped at the cap).</summary>
+    public void PutDistinct(string acc, string key)
+    {
+        var a = State.Peek(acc);
+        Put(key, Value(integer: a?.By?.Count ?? 0, partial: a?.Overflow == true));
+    }
+
+    /// <summary>The first event's day, known only for a range recorded from the start (null: not reached yet).</summary>
+    public void PutFirstDay(string acc, string key)
+    {
+        var first = State.Peek(acc)?.First;
+        Put(key, !FromStart ? Value(coverage: MetricCoverage.Unknown) : Value(real: first is { } f ? f / (double)StatFormat.TicksPerDay : null));
+    }
 }
 
 /// <summary>The families shipped with this version (each one behind its own acquisition gate in the game).</summary>
 public static class LiveFamilies
 {
-    public static IReadOnlyList<LiveFamily> All { get; } = Array.Empty<LiveFamily>();
+    public static IReadOnlyList<LiveFamily> All { get; } = new[]
+    {
+        ResearchFamily.Family,
+        MentalFamily.Family,
+    };
 
     public static LiveFamily? Find(string name) => All.FirstOrDefault(f => f.Name == name);
 }

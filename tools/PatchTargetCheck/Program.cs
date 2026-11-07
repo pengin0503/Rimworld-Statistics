@@ -42,7 +42,12 @@ using (var pe = new PEReader(File.OpenRead(args[0])))
             var targetType = serializedType.Split(',')[0].Trim();   // "RimWorld.ShipCountdown, Assembly-CSharp, Version=…"
             List<string>? argTypes = null;
             if (value.FixedArguments.Length >= 3 && value.FixedArguments[2].Value is ImmutableArray<CustomAttributeTypedArgument<string>> arr)
-                argTypes = arr.Select(a => (string)a.Value!).ToList();
+                argTypes = arr.Select(a => IndexTypeName((string)a.Value!)).ToList();
+            // HarmonyLib.ArgumentType: Normal 0, Ref 1, Out 2, Pointer 3 (by-ref parameters are "T&" in the index).
+            if (argTypes != null && value.FixedArguments.Length >= 4 && value.FixedArguments[3].Value is ImmutableArray<CustomAttributeTypedArgument<string>> kinds)
+                for (var k = 0; k < kinds.Length && k < argTypes.Count; k++)
+                    if (kinds[k].Value is int kind && kind is 1 or 2)
+                        argTypes[k] += "&";
             checkedTargets++;
             Check(patchClass, targetType, methodName, argTypes, PatchMethods(md, type));
         }
@@ -85,7 +90,7 @@ void Check(string patchClass, string targetType, string methodName, List<string>
         return;
     }
     if (argTypes != null)
-        candidates = candidates.Where(c => ParamTypes(c.Method).SequenceEqual(argTypes.Select(IndexTypeName))).ToList();
+        candidates = candidates.Where(c => ParamTypes(c.Method).SequenceEqual(argTypes)).ToList();
     if (candidates.Count != 1)
     {
         failures.Add($"{patchClass}: {targetType}::{methodName} resolves to {candidates.Count} methods");
@@ -139,6 +144,16 @@ static IEnumerable<string> ParamTypes(JsonElement method)
 
 static string IndexTypeName(string serialized)
 {
+    // A generic instance ("System.Nullable`1[[Verse.DamageInfo, Assembly-CSharp, …]], System.Private.CoreLib") becomes
+    // "[System.Runtime]System.Nullable`1<[Assembly-CSharp]Verse.DamageInfo>", as the index writes it.
+    var open = serialized.IndexOf("[[", StringComparison.Ordinal);
+    if (open > 0)
+    {
+        var close = serialized.LastIndexOf("]]", StringComparison.Ordinal);
+        var outer = serialized[..open];
+        var inner = IndexTypeName(serialized[(open + 2)..close]);
+        return (outer.StartsWith("System.", StringComparison.Ordinal) ? "[System.Runtime]" : "[Assembly-CSharp]") + outer + "<" + inner + ">";
+    }
     var name = serialized.Split(',')[0].Trim();
     return name switch
     {

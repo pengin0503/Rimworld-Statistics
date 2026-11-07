@@ -277,7 +277,7 @@ public static class DetailsTab
             tip.Append((string)"RWS_Details_Tip_Unknown".Translate()).Append('\n');
         tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
 
-        var value = Format(d, v);
+        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
         if (d.Category == MetricCategory.Rankings && row.Breakdown.Length == 0)
         {
             // A ranking names what holds it: the colony, or the label(s) for a split such as the top scenario.
@@ -335,6 +335,21 @@ public static class DetailsTab
         MetricCategory.Defense => "RWS_Category_Defense".Translate(),
         MetricCategory.Quests => "RWS_Category_Quests".Translate(),
         MetricCategory.Colony => "RWS_Category_Colony".Translate(),
+        MetricCategory.Research => "RWS_Category_Research".Translate(),
+        MetricCategory.Mind => "RWS_Category_Mind".Translate(),
+        MetricCategory.Combat => "RWS_Category_Combat".Translate(),
+        MetricCategory.Social => "RWS_Category_Social".Translate(),
+        MetricCategory.Medicine => "RWS_Category_Medicine".Translate(),
+        MetricCategory.Work => "RWS_Category_Work".Translate(),
+        MetricCategory.Animals => "RWS_Category_Animals".Translate(),
+        MetricCategory.Economy => "RWS_Category_Economy".Translate(),
+        MetricCategory.Environment => "RWS_Category_Environment".Translate(),
+        MetricCategory.Exploration => "RWS_Category_Exploration".Translate(),
+        MetricCategory.Facilities => "RWS_Category_Facilities".Translate(),
+        MetricCategory.Royalty => "RWS_Category_Royalty".Translate(),
+        MetricCategory.Ideology => "RWS_Category_Ideology".Translate(),
+        MetricCategory.Biotech => "RWS_Category_Biotech".Translate(),
+        MetricCategory.Odyssey => "RWS_Category_Odyssey".Translate(),
         _ => "RWS_Category_Rankings".Translate(),
     };
 
