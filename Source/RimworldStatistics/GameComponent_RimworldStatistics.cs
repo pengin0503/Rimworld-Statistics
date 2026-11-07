@@ -1,4 +1,6 @@
 using RimworldStatistics.Core;
+using RimworldStatistics.Metrics;
+using RimworldStatistics.Patches;
 using Verse;
 
 namespace RimworldStatistics;
@@ -14,8 +16,20 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     public List<string> lineageTokens = new();
     public int dataVersion = 1;
 
+    /// <summary>
+    /// The checkpoint text of the numeric statistics (Phase C): as loaded, then what each save writes. Data this version
+    /// cannot read, or written while no family records, passes through unchanged (numeric expansion design §3 step 5).
+    /// </summary>
+    public string? numericStatistics;
+
+    /// <summary>The text as the save held it: written back when no checkpoint scope runs (never an earlier save's draft).</summary>
+    private string? _loadedNumericStatistics;
+
+    private readonly Game _game;
+
     public GameComponent_RimworldStatistics(Game game)
     {
+        _game = game;
     }
 
     public static GameComponent_RimworldStatistics? CurrentOrNull => Current.Game?.GetComponent<GameComponent_RimworldStatistics>();
@@ -57,6 +71,16 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
         {
             Fail("StartedNewGame", e);
         }
+        try
+        {
+            numericStatistics = null;
+            _loadedNumericStatistics = null;
+            LiveMetrics.StartNew(_game);
+        }
+        catch (Exception e)
+        {
+            Fail("StartedNewGame.numeric", e);
+        }
     }
 
     public override void LoadedGame()
@@ -81,16 +105,39 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
                 Find.StoryWatcher.statsRecord.colonistsLaunched, LiveStateReader.GameVersion, DateTime.UtcNow);
             if (seeded.Count > 0)
                 Lineage = lineage;
+            var recovered = ResumeNumeric(identity);
             session.Mutate(p =>
             {
                 ProfileMutations.RegisterLiveCampaign(p, id, identity, display);
                 foreach (var ev in seeded)
                     ProfileMutations.UpsertEnding(p, ev);
+                if (recovered != null)
+                    ProfileMutations.UpsertMetricObservation(p, recovered);   // idempotent: same id, same content
             }, SaveMode.Immediate);
         }
         catch (Exception e)
         {
             Fail("LoadedGame", e);
+        }
+    }
+
+    /// <summary>
+    /// Restores the numeric totals from the loaded checkpoint and returns that checkpoint's observation, so a save written
+    /// successfully but never confirmed (its postfix did not run) is recovered with the v1 registration of this load.
+    /// </summary>
+    private MetricObservation? ResumeNumeric(ColonyIdentity identity)
+    {
+        try
+        {
+            var acc = LiveMetrics.Resume(_game, numericStatistics);
+            return acc.Loaded is { } loaded && acc.LoadedJson is { } json
+                ? CheckpointMetrics.ToObservation(loaded, json, identity, LiveStateReader.GameVersion, LiveMetrics.ActiveDlcIds())
+                : null;
+        }
+        catch (Exception e)
+        {
+            Fail("LoadedGame.numeric", e);
+            return null;
         }
     }
 
@@ -113,13 +160,37 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             EnsureCampaignId();
         Scribe_Values.Look(ref campaignId, "campaignId");
         Scribe_Collections.Look(ref lineageTokens, "lineageEndings", LookMode.Value);
+        if (Scribe.mode == LoadSaveMode.Saving)
+            PrepareNumericForSave();
         Scribe_Values.Look(ref dataVersion, "dataVersion", 1);
+        Scribe_Values.Look(ref numericStatistics, "numericStatistics");
+        if (Scribe.mode == LoadSaveMode.LoadingVars)
+            _loadedNumericStatistics = numericStatistics;
         if (Scribe.mode == LoadSaveMode.PostLoadInit && lineageTokens == null)
             lineageTokens = new List<string>();
     }
 
-    /// <summary>Spec §8.3: on every save, refresh the live record; the file is written in the background.</summary>
-    internal void RecordSave(string path)
+    /// <summary>The text of this save: the scope's checkpoint, or (no scope, another game, an error) what was loaded, unchanged.</summary>
+    private void PrepareNumericForSave()
+    {
+        try
+        {
+            // With a scope its text is the answer, null included (nothing committed yet). Without one, what the save held.
+            numericStatistics = ReferenceEquals(Current.Game, _game) && CheckpointSavePatch.TryGetText(out var text) ? text : _loadedNumericStatistics;
+            if (numericStatistics != null)
+                dataVersion = Math.Max(dataVersion, 2);
+        }
+        catch (Exception e)
+        {
+            Fail("ExposeData.numeric", e);
+        }
+    }
+
+    /// <summary>
+    /// Spec §8.3: on every save, refresh the live record; the file is written in the background. A committed checkpoint of the
+    /// same save is recorded under the same lock (numeric expansion design §2 "同じ成功入力でv1記録と拡張観測を一度のロックで反映").
+    /// </summary>
+    internal void RecordSave(string path, SaveDraft? checkpoint)
     {
         try
         {
@@ -132,11 +203,36 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             if (!file.Exists)
                 return;
             var savedUtc = file.LastWriteTimeUtc;
-            ProfileService.Session.Mutate(p => ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version), SaveMode.Background);
+            var numeric = NumericObservation(checkpoint, identity, version);
+            // Read detached snapshots only after the game file has successfully committed.
+            var snapshot = SavedStateMetricReader.Read(identity, version, savedUtc);
+            ProfileService.Session.Mutate(p =>
+            {
+                ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);
+                if (numeric != null)
+                    ProfileMutations.UpsertMetricObservation(p, numeric);
+                if (snapshot != null)
+                    ProfileMutations.UpsertMetricObservation(p, snapshot);
+            }, SaveMode.Background);
         }
         catch (Exception e)
         {
             Fail("RecordSave", e);
+        }
+    }
+
+    private static MetricObservation? NumericObservation(SaveDraft? checkpoint, ColonyIdentity identity, string version)
+    {
+        if (checkpoint?.Payload is not { } payload)
+            return null;
+        try
+        {
+            return CheckpointMetrics.ToObservation(payload, checkpoint.Json, identity, version, LiveMetrics.ActiveDlcIds());
+        }
+        catch (Exception e)
+        {
+            Fail("RecordSave.numeric", e);   // the save and its v1 record are unaffected; the file keeps the checkpoint for import
+            return null;
         }
     }
 

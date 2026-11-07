@@ -7,3 +7,4 @@ artifacts/
 *.user
 .vs/
 .idea/
+tools/VerifyHarness/Mod/1.7/

@@ -572,7 +572,8 @@ public sealed class NumericSaveReaderTests
         Assert.Null(ReadDetailed(Aligned(new[] { 1f }).WealthTotalRaw("records", "%%%")).Metrics);                 // v1 error
     }
 
+    /// <summary>Phase A observations need reader 4 or later (Phase C made it 5: NumericCheckpointTests pins the exact number).</summary>
     [Fact]
-    public void ReaderVersion_IsFour()
-        => Assert.Equal(4, SaveReader.Version);
+    public void ReaderVersion_IsAtLeastFour()
+        => Assert.True(SaveReader.Version >= 4);
 }

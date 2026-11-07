@@ -71,6 +71,8 @@ public static class PatchRunner
         {
             types = e.Types.OfType<Type>().ToArray();
         }
-        return types.Where(t => t.IsDefined(typeof(HarmonyPatch), inherit: false)).OrderBy(t => t.FullName, StringComparer.Ordinal);
+        // Acquisition adapters are applied by Metrics.MetricAdapters, only for open units.
+        return types.Where(t => t.IsDefined(typeof(HarmonyPatch), inherit: false) && !t.IsDefined(typeof(Metrics.MetricAdapterAttribute), inherit: false))
+            .OrderBy(t => t.FullName, StringComparer.Ordinal);
     }
 }

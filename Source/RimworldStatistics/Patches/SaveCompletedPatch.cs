@@ -13,7 +13,8 @@ public static class SaveCompletedPatch
             return;
         try
         {
-            GameComponent_RimworldStatistics.CurrentOrNull?.RecordSave(path);
+            var checkpoint = CheckpointSavePatch.Complete(path, documentElementName, __runOriginal);
+            GameComponent_RimworldStatistics.CurrentOrNull?.RecordSave(path, checkpoint);
             ImportRunner.GameSaveCompleted();
         }
         catch (Exception e)

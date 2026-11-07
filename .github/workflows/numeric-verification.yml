@@ -1,0 +1,62 @@
+name: Numeric statistics build, tests and development packages
+
+on:
+  push:
+    branches:
+      - claude/inspiring-shannon-6wqgka
+  pull_request:
+    paths:
+      - 'Source/**'
+      - 'Tests/**'
+      - 'tools/**'
+      - 'Languages/**'
+      - '.github/workflows/numeric-verification.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-and-unit:
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Core unit tests (no game launch)
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Translation key consistency
+        run: bash tools/check_keys.sh
+      - name: Build production ZIP
+        run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
+      - name: Build separate development verification harness
+        run: bash tools/VerifyHarness/package.sh "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+      - name: Static Harmony patch targets and argument names (1.7.4985 reference metadata)
+        shell: bash
+        run: |
+          set -euo pipefail
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          test -f "$game_ref"
+          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
+          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
+      - name: Check ZIP content
+        shell: bash
+        run: |
+          set -euo pipefail
+          unzip -t "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
+          unzip -t "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-unverified.zip" | grep -F 'VerifyHarness'; then
+            echo 'Development harness leaked into production ZIP' >&2
+            exit 1
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RimworldStatistics-unverified-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/RimworldStatistics-unverified.zip
+            ${{ runner.temp }}/RimworldStatisticsVerifyHarness.zip
+          if-no-files-found: error
+          retention-days: 14

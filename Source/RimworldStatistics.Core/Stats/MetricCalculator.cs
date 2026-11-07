@@ -55,6 +55,9 @@ public sealed class NumericColony
     /// <summary>Numeric observations attached to this colony.</summary>
     public int Observations { get; init; }
 
+    /// <summary>What the colony's checkpoints (Phase C) say about its save lineage.</summary>
+    public CheckpointLineage Lineage { get; init; }
+
     public required IReadOnlyList<NumericRow> Rows { get; init; }
 }
 
@@ -83,20 +86,25 @@ public static class MetricCalculator
 
     /// <param name="stats">The v1 statistics of the same colonies, whose ending filter and labels the rankings use.</param>
     public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats)
+        => BuildView(profile, colonies, stats, MetricRegistry.All);
+
+    /// <param name="definitions">The outputs to build (the published registry, or the whole catalog for verification).</param>
+    public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats, IReadOnlyList<MetricDefinition> definitions)
     {
         var attached = Attach(profile, colonies, out var unattributed);
-        var perColony = new List<(Colony Colony, List<NumericRow> Rows)>(colonies.Count);
+        var perColony = new List<(Colony Colony, List<NumericRow> Rows, CheckpointLineage Lineage)>(colonies.Count);
         foreach (var colony in colonies)
         {
             var observations = attached.GetValueOrDefault(colony) ?? new List<MetricObservation>();
-            perColony.Add((colony, MetricRegistry.All.Select(d => ColonyRow(d, observations)).ToList()));
+            var checkpoints = CheckpointSelector.Select(observations);
+            perColony.Add((colony, definitions.Select(d => ColonyRow(d, observations, checkpoints.Representative)).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
         var overall = new List<NumericRow>();
-        for (var i = 0; i < MetricRegistry.All.Count; i++)
+        for (var i = 0; i < definitions.Count; i++)
         {
-            var def = MetricRegistry.All[i];
+            var def = definitions[i];
             if (def.Overall is OverallAggregation.IndividualOnly or OverallAggregation.Ranking)
                 continue;
             overall.Add(Combine(def, counted.Select(c => (c.Colony.Key, c.Rows[i])).ToList()));
@@ -112,6 +120,7 @@ public static class MetricCalculator
                 Key = c.Colony.Key,
                 Excluded = c.Colony.Excluded,
                 Observations = attached.GetValueOrDefault(c.Colony)?.Count ?? 0,
+                Lineage = c.Lineage,
                 Rows = c.Rows.Where(r => r.Definition.Overall != OverallAggregation.Ranking).ToList(),
             }).ToList(),
             Unattributed = unattributed,
@@ -201,7 +210,8 @@ public static class MetricCalculator
     private static MetricEntry? Entry(MetricObservation o, MetricDefinition d)
         => o.Metrics.TryGetValue(d.StoredKey, out var e) && !e.IsQuarantined && e.Revision == d.Revision ? e : null;
 
-    private static NumericRow ColonyRow(MetricDefinition d, List<MetricObservation> all)
+    /// <param name="checkpoint">The colony's representative checkpoint (Phase C), chosen once for all its outputs.</param>
+    private static NumericRow ColonyRow(MetricDefinition d, List<MetricObservation> all, MetricObservation? checkpoint)
     {
         var observations = all.Where(o => o.Source == d.Source).ToList();
         if (observations.Count == 0)
@@ -210,10 +220,12 @@ public static class MetricCalculator
         if (d.Selection != ColonySelection.Representative)
             return AcrossObservations(d, observations);
 
-        var rep = Representative(observations)!;
+        var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : Representative(observations);
+        if (rep is null)
+            return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var entry = Entry(rep, d);
         if (entry is null)
-            return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
+            return new NumericRow { Definition = d, Value = DlcAbsent(d, rep) ? NotApplicable(rep) : NumericValue.Unknown, Targets = DlcAbsent(d, rep) ? 0 : 1 };
 
         var breakdowns = d.HasBreakdown
             ? entry.Values.Where(kv => kv.Key != MetricEntry.Scalar).OrderBy(kv => kv.Key, Ord)
@@ -231,6 +243,10 @@ public static class MetricCalculator
             };
         else
             value = NumericValue.Unknown;
+        // A family writes its zeros whatever the DLC state; a zero of a DLC output in an observation without that DLC says only
+        // that the DLC was not there (a value recorded while it was active is shown).
+        if (DlcAbsent(d, rep) && NothingRecorded(value) && breakdowns.All(b => NothingRecorded(b.Value)))
+            return new NumericRow { Definition = d, Value = NotApplicable(rep), Targets = 0 };
         var row = Row(d, MetricEntry.Scalar, value);
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
@@ -253,6 +269,18 @@ public static class MetricCalculator
             SampleCount = values.Count,
         });
     }
+
+    /// <summary>
+    /// No value, and the observation's mod list shows the output's DLC was not active: the output does not apply. A value that
+    /// was recorded (e.g. while the DLC was active) is always shown, whatever the DLC state at the observation.
+    /// </summary>
+    private static bool DlcAbsent(MetricDefinition d, MetricObservation o)
+        => d.RequiredDlc is { } dlc && o.ActiveDlcIds is { } active && !active.Contains(dlc, StringComparer.OrdinalIgnoreCase);
+
+    private static bool NothingRecorded(NumericValue v)
+        => v.Coverage == MetricCoverage.NotApplicable || v.Number is 0 || (v.Number is null && v.Numerator is null or 0 && v.Denominator is null or 0);
+
+    private static NumericValue NotApplicable(MetricObservation o) => new() { Coverage = MetricCoverage.NotApplicable, ThroughTick = o.SaveTick };
 
     private static NumericValue From(MetricValue v, int tick) => new()
     {

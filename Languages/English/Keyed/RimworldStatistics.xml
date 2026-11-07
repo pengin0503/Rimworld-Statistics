@@ -263,4 +263,504 @@
   <RWS_MetricDesc_RankMinDeathsAtEnding>The fewest colonist deaths at the moment an ending was recorded, and the colony. Endings recorded before this version have no death count and are left out.</RWS_MetricDesc_RankMinDeathsAtEnding>
   <RWS_Metric_RankZeroDeathEndings>Endings without deaths</RWS_Metric_RankZeroDeathEndings>
   <RWS_MetricDesc_RankZeroDeathEndings>Endings whose colonist death count was 0 when recorded. Endings without a death count are not counted.</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Category_Research>Research</RWS_Category_Research>
+  <RWS_Category_Mind>Mind</RWS_Category_Mind>
+  <RWS_Category_Combat>Combat and deaths</RWS_Category_Combat>
+  <RWS_Category_Social>Relations and prisoners</RWS_Category_Social>
+  <RWS_Category_Medicine>Medicine</RWS_Category_Medicine>
+  <RWS_Category_Work>Work and food</RWS_Category_Work>
+  <RWS_Category_Animals>Animals</RWS_Category_Animals>
+  <RWS_Category_Economy>Trade and diplomacy</RWS_Category_Economy>
+  <RWS_Category_Environment>Disasters and environment</RWS_Category_Environment>
+  <RWS_Category_Exploration>Caravans and settlements</RWS_Category_Exploration>
+  <RWS_Category_Facilities>Facilities and stock</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
+  <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
+  <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
+  <RWS_Metric_ResearchLiveCompleted>Research completed while recorded</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>Research projects that went from unfinished to finished since recording began, each counted once. Not the number of projects finished at save time.</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>Research completion days (list)</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>Per project completed while recorded, the game day it was first finished. Shown per colony only.</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>Shortest research duration</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>Fewest days from the first real work on a project to its completion, including pauses. Projects whose start was not seen are left out.</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>Longest research duration</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>Most days in the same sample as the shortest.</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>Days to the first research completion</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>The game day of the first completion, only when recorded from the start of the game.</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>Mental breaks</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>Mood-caused mental breaks of free colonists. Breaks from drugs, genes, psycasts or dev tools are not counted.</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>Mental breaks by type</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>The mental breaks above, by type (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>Inspirations</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>Inspirations that really started for free colonists. Failed attempts, already-inspired pawns and dev tools are not counted.</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_InspirationsByDef>Inspirations by type</RWS_Metric_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>The inspirations above, by type (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>Enemies killed</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>Deaths of pawns hostile to the player just before dying, whose cause the damage record attributes to the player's side (colonists, turrets, traps, animals, mechs). Deaths without a known attribution are not counted.</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>Most kills by one colonist</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>The most kills credited to one player pawn; the breakdown names the holder (by id). Kills known only by their cause are not credited to anyone.</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>Enemies killed by kind</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>Enemy kills split into humanlike, insect, mechanoid and other.</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>Kills with ranged weapons</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>Enemy kills made with ranged weapons (explosions count as explosive).</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>Kills with melee weapons</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>Enemy kills made with an equipped melee weapon.</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>Unarmed kills</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>Enemy kills made with melee attacks without a weapon.</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>Kills by explosion</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>Enemy kills whose killing damage was an explosion.</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>Kills by fire or environment</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>Enemy kills by fire or other environmental damage that the record attributes to the player's side. Natural deaths and unattributed ones are not counted.</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>Kills by turrets</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>Enemy kills whose attacker was a player turret.</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>Kills by traps</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>Enemy kills caused by a player trap.</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>Kills by tame animals</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>Enemy kills whose attacker was a player animal.</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>Kills by player mechs</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>Enemy kills whose attacker was a player mechanoid (Biotech).</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>Colonist deaths by cause</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition (hediff) or the killing damage type. Deaths with neither are "unknown".</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>Colonist deaths by raids</RWS_Metric_DeathsByRaid>
+  <RWS_MetricDesc_DeathsByRaid>Free colonist deaths split into those caused by a raider, other known causes, and unknown. While raids are not recorded, they are unknown.</RWS_MetricDesc_DeathsByRaid>
+  <RWS_Metric_DiseaseDeaths>Colonist deaths from disease</RWS_Metric_DiseaseDeaths>
+  <RWS_MetricDesc_DiseaseDeaths>Free colonist deaths whose culprit was a sickness (a condition the game treats as making the pawn sick). Deaths merely accompanied by a disease are not counted.</RWS_MetricDesc_DiseaseDeaths>
+  <RWS_Metric_DiseaseDeathRate>Share of deaths from disease</RWS_Metric_DiseaseDeathRate>
+  <RWS_MetricDesc_DiseaseDeathRate>Deaths from disease ÷ free colonist deaths with a known cause.</RWS_MetricDesc_DiseaseDeathRate>
+  <RWS_Metric_LongestDeathGap>Longest time without a colonist death</RWS_Metric_LongestDeathGap>
+  <RWS_MetricDesc_LongestDeathGap>The longest interval between two consecutive free colonist deaths while recorded. The time before the first and after the last death is not an interval.</RWS_MetricDesc_LongestDeathGap>
+  <RWS_Metric_FirstDeathDay>Days to the first colonist death</RWS_Metric_FirstDeathDay>
+  <RWS_MetricDesc_FirstDeathDay>The game day of the first free colonist death, only when recorded from the start of the game.</RWS_MetricDesc_FirstDeathDay>
+  <RWS_Metric_OldestDeathAge>Oldest colonist at death</RWS_Metric_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>The highest biological age of a free colonist just before dying. The same value as the longest-lived colonist (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_Metric_CaravanMemberDeaths>Colonists who died on caravans</RWS_Metric_CaravanMemberDeaths>
+  <RWS_MetricDesc_CaravanMemberDeaths>Free colonists who died while in a player caravan.</RWS_MetricDesc_CaravanMemberDeaths>
+  <RWS_Metric_ColonyAnimalDeaths>Colony animal deaths</RWS_Metric_ColonyAnimalDeaths>
+  <RWS_MetricDesc_ColonyAnimalDeaths>Deaths of animals that belonged to the player just before dying.</RWS_MetricDesc_ColonyAnimalDeaths>
+  <RWS_Metric_ColonyAnimalRaidDeaths>Colony animals killed by raiders</RWS_Metric_ColonyAnimalRaidDeaths>
+  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Colony animal deaths whose attacker belonged to a tracked raid.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
+  <RWS_Metric_ColonistsDowned>Colonists downed</RWS_Metric_ColonistsDowned>
+  <RWS_MetricDesc_ColonistsDowned>Times a free colonist went from not downed to downed. Instant deaths without a downing are not counted.</RWS_MetricDesc_ColonistsDowned>
+  <RWS_Metric_EnemiesDowned>Enemies downed (incapacitated)</RWS_Metric_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Times a pawn hostile to the player went down; going down again after recovering is another time. The same value as enemies incapacitated (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_Metric_ToxicDowns>Downs from toxic buildup</RWS_Metric_ToxicDowns>
+  <RWS_MetricDesc_ToxicDowns>Free colonist downs directly caused by toxic buildup (Biotech).</RWS_MetricDesc_ToxicDowns>
+  <RWS_Metric_SocialFightDowns>Downs from social fights</RWS_Metric_SocialFightDowns>
+  <RWS_MetricDesc_SocialFightDowns>Free colonist downs caused directly by the opponent of a social fight.</RWS_MetricDesc_SocialFightDowns>
+  <RWS_Metric_RaidsByArrivalMode>Raids by arrival mode</RWS_Metric_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Successful enemy raids by arrival mode (PawnsArrivalModeDef). The total is the number of raids.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_Metric_RaidsByFaction>Raids by faction</RWS_Metric_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Successful enemy raids by the attacking faction's def.</RWS_MetricDesc_RaidsByFaction>
+  <RWS_Metric_RaidPawnsMax>Largest raid (pawns)</RWS_Metric_RaidPawnsMax>
+  <RWS_MetricDesc_RaidPawnsMax>The most enemy pawns generated for one successful raid. Raid points are a separate row.</RWS_MetricDesc_RaidPawnsMax>
+  <RWS_Metric_RaidPointsMax>Highest raid points</RWS_Metric_RaidPointsMax>
+  <RWS_MetricDesc_RaidPointsMax>The highest final raid points used to generate a successful raid.</RWS_MetricDesc_RaidPointsMax>
+  <RWS_Metric_RaidKillsMax>Most kills in one raid</RWS_Metric_RaidKillsMax>
+  <RWS_MetricDesc_RaidKillsMax>The most kills the player's side made among one tracked raid's pawns while that raid lasted.</RWS_MetricDesc_RaidKillsMax>
+  <RWS_Metric_RaidSieges>Sieges</RWS_Metric_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Raids with the Siege strategy.</RWS_MetricDesc_RaidSieges>
+  <RWS_Metric_RaidBreaches>Breach raids</RWS_Metric_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Raids with a breaching strategy (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Sappers are not included.</RWS_MetricDesc_RaidBreaches>
+  <RWS_Metric_RaidDrops>Drop pod raids</RWS_Metric_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Raids arriving by drop pod (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_Metric_Infestations>Infestations</RWS_Metric_Infestations>
+  <RWS_MetricDesc_Infestations>Successful insect hive infestations (Infestation, DeepDrillInfestation). Other insect-related events are not counted.</RWS_MetricDesc_Infestations>
+  <RWS_Metric_MechClusters>Mech clusters</RWS_Metric_MechClusters>
+  <RWS_MetricDesc_MechClusters>Successful mech cluster incidents (Royalty). Ordinary mechanoid raids are not counted.</RWS_MetricDesc_MechClusters>
+  <RWS_Metric_ManhunterPacks>Manhunter packs</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Successful manhunter pack incidents (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_RaidLongestGap>Longest time without a raid</RWS_Metric_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>The longest interval between two consecutive raids while recorded, not counting before the first or after the last. The same value as the largest raid interval (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_Metric_RaidMeanGap>Mean time between raids</RWS_Metric_RaidMeanGap>
+  <RWS_MetricDesc_RaidMeanGap>The mean of the same intervals; overall, weighted by the number of intervals.</RWS_MetricDesc_RaidMeanGap>
+  <RWS_Metric_RaidFirstDay>Days to the first raid</RWS_Metric_RaidFirstDay>
+  <RWS_MetricDesc_RaidFirstDay>The game day of the first raid, only when recorded from the start of the game.</RWS_MetricDesc_RaidFirstDay>
+  <RWS_Metric_RaidsRetreated>Raids that retreated</RWS_Metric_RaidsRetreated>
+  <RWS_MetricDesc_RaidsRetreated>Tracked raids that ended with some enemies leaving the map alive.</RWS_MetricDesc_RaidsRetreated>
+  <RWS_Metric_RaidsWiped>Raids wiped out</RWS_Metric_RaidsWiped>
+  <RWS_MetricDesc_RaidsWiped>Tracked raids that ended with every enemy killed and none retreating. A raid with prisoners has another outcome.</RWS_MetricDesc_RaidsWiped>
+  <RWS_Metric_RaidRepelledRate>Raid repel rate</RWS_Metric_RaidRepelledRate>
+  <RWS_MetricDesc_RaidRepelledRate>Raids that retreated or were wiped out ÷ tracked raids with a decided outcome. Raids whose outcome is unknown (e.g. the map vanished) are left out.</RWS_MetricDesc_RaidRepelledRate>
+  <RWS_Metric_RaidRepelledNoDown>Raids repelled without a colonist down</RWS_Metric_RaidRepelledNoDown>
+  <RWS_MetricDesc_RaidRepelledNoDown>Repelled raids during which no free colonist went down on the same map.</RWS_MetricDesc_RaidRepelledNoDown>
+  <RWS_Metric_RaidDurationMean>Mean raid duration</RWS_Metric_RaidDurationMean>
+  <RWS_MetricDesc_RaidDurationMean>The mean days from arrival until the last tracked enemy was out of the fight, over raids with a decided outcome.</RWS_MetricDesc_RaidDurationMean>
+  <RWS_Metric_RaidDurationMax>Longest raid</RWS_Metric_RaidDurationMax>
+  <RWS_MetricDesc_RaidDurationMax>The most days in the same sample.</RWS_MetricDesc_RaidDurationMax>
+  <RWS_Metric_RaidDurationMinRepelled>Fastest repelled raid</RWS_Metric_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMinRepelled>The fewest days of a raid that retreated or was wiped out.</RWS_MetricDesc_RaidDurationMinRepelled>
+  <RWS_Metric_FirstJoins>New members</RWS_Metric_FirstJoins>
+  <RWS_MetricDesc_FirstJoins>Pawns who became free colonists for the first time, other than the starting colonists and births. Each pawn counts once.</RWS_MetricDesc_FirstJoins>
+  <RWS_Metric_JoinRoutes>New members by route</RWS_Metric_JoinRoutes>
+  <RWS_MetricDesc_JoinRoutes>New members split into recruited prisoners, emancipated slaves and other routes.</RWS_MetricDesc_JoinRoutes>
+  <RWS_Metric_PrisonerRecruits>Recruited prisoners</RWS_Metric_PrisonerRecruits>
+  <RWS_MetricDesc_PrisonerRecruits>Pawns who were prisoners of the colony and joined for the first time by recruitment.</RWS_MetricDesc_PrisonerRecruits>
+  <RWS_Metric_HumanBirths>Births</RWS_Metric_HumanBirths>
+  <RWS_MetricDesc_HumanBirths>Humanlike children born alive on the player's side (Biotech). Stillbirths are not counted.</RWS_MetricDesc_HumanBirths>
+  <RWS_Metric_UniqueMembers>Colonists ever (unique)</RWS_Metric_UniqueMembers>
+  <RWS_MetricDesc_UniqueMembers>Pawns who were colonists while recorded (starting colonists, new members, births). Rejoining adds nothing. Overall, the sum over colonies.</RWS_MetricDesc_UniqueMembers>
+  <RWS_Metric_Rejoins>Members who rejoined</RWS_Metric_Rejoins>
+  <RWS_MetricDesc_Rejoins>Pawns who explicitly left and later became free colonists again.</RWS_MetricDesc_Rejoins>
+  <RWS_Metric_JoinAgeMean>Mean age at joining</RWS_Metric_JoinAgeMean>
+  <RWS_MetricDesc_JoinAgeMean>The mean biological age of new members when they joined.</RWS_MetricDesc_JoinAgeMean>
+  <RWS_Metric_FirstJoinDay>Days to the first new member</RWS_Metric_FirstJoinDay>
+  <RWS_MetricDesc_FirstJoinDay>The game day of the first new member, only when recorded from the start of the game.</RWS_MetricDesc_FirstJoinDay>
+  <RWS_Metric_SlavesFreed>Slaves emancipated</RWS_Metric_SlavesFreed>
+  <RWS_MetricDesc_SlavesFreed>Slaves whose slave status was lifted (emancipated). Not the same as releasing prisoners.</RWS_MetricDesc_SlavesFreed>
+  <RWS_Metric_RecruitTimeMin>Shortest recruitment</RWS_Metric_RecruitTimeMin>
+  <RWS_MetricDesc_RecruitTimeMin>The fewest days from becoming a prisoner of the colony to joining by recruitment, where both were observed.</RWS_MetricDesc_RecruitTimeMin>
+  <RWS_Metric_RecruitTimeMax>Longest recruitment</RWS_Metric_RecruitTimeMax>
+  <RWS_MetricDesc_RecruitTimeMax>The most days in the same sample.</RWS_MetricDesc_RecruitTimeMax>
+  <RWS_Metric_Kidnaps>Colonists kidnapped</RWS_Metric_Kidnaps>
+  <RWS_MetricDesc_Kidnaps>Times a free colonist was kidnapped into a faction's captives.</RWS_MetricDesc_Kidnaps>
+  <RWS_Metric_KidnapRescues>Kidnapped colonists returned</RWS_Metric_KidnapRescues>
+  <RWS_MetricDesc_KidnapRescues>Kidnapped colonists who came back through a confirmed route (ransom). Other routes are not counted.</RWS_MetricDesc_KidnapRescues>
+  <RWS_Metric_CaptiveMax>Longest captivity</RWS_Metric_CaptiveMax>
+  <RWS_MetricDesc_CaptiveMax>The longest captivity from kidnapping to return that was tracked.</RWS_MetricDesc_CaptiveMax>
+  <RWS_Metric_LifeMean>Mean age at death</RWS_Metric_LifeMean>
+  <RWS_MetricDesc_LifeMean>The mean biological age of free colonists at death. Living colonists are not included.</RWS_MetricDesc_LifeMean>
+  <RWS_Metric_TenureMean>Mean time in the colony</RWS_Metric_TenureMean>
+  <RWS_MetricDesc_TenureMean>The mean days from joining (or the start of the game) to death or leaving, where both ends were tracked. Ongoing stays are not included.</RWS_MetricDesc_TenureMean>
+  <RWS_Metric_FirstSkill20>Skills first reaching 20</RWS_Metric_FirstSkill20>
+  <RWS_MetricDesc_FirstSkill20>(Pawn, skill) pairs of free colonists that first reached 20 through learning while recorded. Dropping and reaching 20 again counts once.</RWS_MetricDesc_FirstSkill20>
+  <RWS_Metric_JoinGainPeak>Largest skill gain since joining</RWS_Metric_JoinGainPeak>
+  <RWS_MetricDesc_JoinGainPeak>The largest increase of a skill over its level at joining. Pawns whose level at joining is not known are not included.</RWS_MetricDesc_JoinGainPeak>
+  <RWS_Metric_Marriages>Marriages</RWS_Metric_Marriages>
+  <RWS_MetricDesc_Marriages>Pairs that became spouses; both sides' notifications count as one.</RWS_MetricDesc_Marriages>
+  <RWS_Metric_Divorces>Divorces</RWS_Metric_Divorces>
+  <RWS_MetricDesc_Divorces>Spouse relations ended by divorce. Bereavement and other relation removals are not counted.</RWS_MetricDesc_Divorces>
+  <RWS_Metric_Lovers>New lovers</RWS_Metric_Lovers>
+  <RWS_MetricDesc_Lovers>Pairs that became lovers; both sides' notifications count as one.</RWS_MetricDesc_Lovers>
+  <RWS_Metric_SocialFights>Social fights</RWS_Metric_SocialFights>
+  <RWS_MetricDesc_SocialFights>Social fights started; two pawns make one fight.</RWS_MetricDesc_SocialFights>
+  <RWS_Metric_PrisonBreaks>Prison breaks</RWS_Metric_PrisonBreaks>
+  <RWS_MetricDesc_PrisonBreaks>Prison breaks started, however many prisoners escaped.</RWS_MetricDesc_PrisonBreaks>
+  <RWS_Metric_PrisonersReleased>Prisoners released</RWS_Metric_PrisonersReleased>
+  <RWS_MetricDesc_PrisonersReleased>Prisoners of the colony whose release completed. Escapes are not counted.</RWS_MetricDesc_PrisonersReleased>
+  <RWS_Metric_PrisonersCaptured>Enemies captured</RWS_Metric_PrisonersCaptured>
+  <RWS_MetricDesc_PrisonersCaptured>Hostile pawns captured into prisoners of the colony.</RWS_MetricDesc_PrisonersCaptured>
+  <RWS_Metric_AnimalBonds>Animal bonds</RWS_Metric_AnimalBonds>
+  <RWS_MetricDesc_AnimalBonds>Bonds formed between a colonist and a colony animal.</RWS_MetricDesc_AnimalBonds>
+  <RWS_Metric_AnimalsTamed>Animals tamed</RWS_Metric_AnimalsTamed>
+  <RWS_MetricDesc_AnimalsTamed>Wild animals that became the player's through successful taming. Purchases are not counted.</RWS_MetricDesc_AnimalsTamed>
+  <RWS_Metric_AnimalBirths>Colony animal births</RWS_Metric_AnimalBirths>
+  <RWS_MetricDesc_AnimalBirths>Player animals born or hatched alive. Separate from humanlike births.</RWS_MetricDesc_AnimalBirths>
+  <RWS_Metric_AnimalsSlaughtered>Animals slaughtered</RWS_Metric_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsSlaughtered>Colony animal deaths by designated slaughter.</RWS_MetricDesc_AnimalsSlaughtered>
+  <RWS_Metric_AnimalsHunted>Wild animals hunted</RWS_Metric_AnimalsHunted>
+  <RWS_MetricDesc_AnimalsHunted>Wild animals designated for hunting and killed by a player pawn. Incidental fights are not counted.</RWS_MetricDesc_AnimalsHunted>
+  <RWS_Unit_Years>{0} years</RWS_Unit_Years>
+  <RWS_Metric_CraftedUnits>Items crafted</RWS_Metric_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Stack counts of the main and side products of the player's finished bills, including cooking and art; mining, harvests and mech gestation are not included.</RWS_MetricDesc_CraftedUnits>
+  <RWS_Metric_CraftQuality>Crafted items by quality</RWS_Metric_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>The crafted items above by quality; items without quality are "none".</RWS_MetricDesc_CraftQuality>
+  <RWS_Metric_CraftLegendary>Legendary items crafted</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>Crafted items of legendary quality.</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>Masterwork items crafted</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>Crafted items of masterwork quality.</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>Best quality crafted</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>The highest quality of a crafted item (0 = awful … 6 = legendary); the breakdown names it.</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>Most valuable item crafted</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>The highest market value of one crafted item when it was made; not its sale price.</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>Art pieces completed</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>Crafted items that are art (sculptures and the like).</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>Meals cooked by type</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Finished meals among the crafted items, by type (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>Kinds of items crafted</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>The number of item types (ThingDef) crafted at least once.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>Most items crafted in a day</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>The most items crafted in one game day; only days recorded from start to end count.</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>Top crafter</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>The crafted count of the pawn who crafted most; the breakdown names them (by id).</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_BestCook>Top cook</RWS_Metric_BestCook>
+  <RWS_MetricDesc_BestCook>The meal count of the pawn who cooked most; the breakdown names them (by id).</RWS_MetricDesc_BestCook>
+  <RWS_Metric_HarvestUnits>Crops harvested</RWS_Metric_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included.</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>Harvest by crop</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>The harvest by the crop it came from (plant ThingDef); harvests whose crop is not known are "unknown".</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>Most harvested crop</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>The crop with the largest harvest, and that amount.</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>Largest harvest in a year</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>The largest harvest in one game year; only years recorded throughout count.</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>Top harvester</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>The harvest of the pawn who harvested most; the breakdown names them (by id).</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>Failed harvests</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Plants whose harvest by a player pawn actually failed. Not the same as plants dying.</RWS_MetricDesc_HarvestFailures>
+  <RWS_Metric_CropsSown>Crops sown</RWS_Metric_CropsSown>
+  <RWS_MetricDesc_CropsSown>Plants sown by player pawns.</RWS_MetricDesc_CropsSown>
+  <RWS_Metric_CropsSownDefs>Kinds of crops sown</RWS_Metric_CropsSownDefs>
+  <RWS_MetricDesc_CropsSownDefs>The number of crop types sown at least once.</RWS_MetricDesc_CropsSownDefs>
+  <RWS_Metric_CropsColdLoss>Crops lost to cold</RWS_Metric_CropsColdLoss>
+  <RWS_MetricDesc_CropsColdLoss>Crop plants that died of cold.</RWS_MetricDesc_CropsColdLoss>
+  <RWS_Metric_CropsOtherLoss>Crops lost to other causes</RWS_Metric_CropsOtherLoss>
+  <RWS_MetricDesc_CropsOtherLoss>Crop plants that died of another confirmed cause (poison, pollution…). Harvests and cutting are not counted.</RWS_MetricDesc_CropsOtherLoss>
+  <RWS_Metric_CropsLossRate>Crop loss rate</RWS_Metric_CropsLossRate>
+  <RWS_MetricDesc_CropsLossRate>Of the plants seen sown: died ÷ (died + reached their first harvest). Plants removed by hand or not yet decided are not counted.</RWS_MetricDesc_CropsLossRate>
+  <RWS_Metric_MiningUnits>Resources mined</RWS_Metric_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Stack counts of what player pawns' mining produced.</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>Top miner</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>The amount mined by the pawn who mined most; the breakdown names them (by id).</RWS_MetricDesc_BestMiner>
+  <RWS_Metric_Constructions>Buildings completed</RWS_Metric_Constructions>
+  <RWS_MetricDesc_Constructions>Player construction frames completed into buildings. Reinstallations and blueprints are not counted.</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>Materials used in construction</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>The materials completed frames held, by type (ThingDef). Different materials are not added together.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_Metric_BestBuilder>Top builder</RWS_Metric_BestBuilder>
+  <RWS_MetricDesc_BestBuilder>The completed constructions of the pawn who completed most; the breakdown names them (by id).</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>Construction failures</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>Times a construction failed. Cancellations are not counted.</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>Buildings deconstructed</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>Player buildings whose deconstruction order completed. Deconstruction for a replacing blueprint is not counted.</RWS_MetricDesc_Deconstructions>
+  <RWS_Metric_Repairs>Repairs completed</RWS_Metric_Repairs>
+  <RWS_MetricDesc_Repairs>Times a repair job brought a player building back to full hit points.</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>Transport pods launched</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>Player transport pods launched (pods, not launches).</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>Food lost to spoilage</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>Stack counts of player food destroyed by rotting. Burning and eating are not counted.</RWS_MetricDesc_FoodSpoiled>
+  <RWS_Metric_FoodNutrition>Nutrition eaten</RWS_Metric_FoodNutrition>
+  <RWS_MetricDesc_FoodNutrition>The nutrition free colonists actually took in by eating.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_TradeDeals>Trade deals</RWS_Metric_TradeDeals>
+  <RWS_MetricDesc_TradeDeals>Deals in which at least one non-currency item changed hands. Empty deals, gifts and failures are not counted.</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>Deals with trade ships</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>Deals with orbital trade ships.</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>Deals with visiting caravans</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>Deals with traders visiting the colony on foot. Trading at other settlements is separate.</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_Metric_TradeSalesTotal>Total sales</RWS_Metric_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>The contract value of non-currency items sold in completed deals (silver).</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_Metric_TradeBuysTotal>Total purchases</RWS_Metric_TradeBuysTotal>
+  <RWS_MetricDesc_TradeBuysTotal>The contract value of non-currency items bought in completed deals (silver).</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>Largest sale in one deal</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>The largest sale total of one deal.</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>Largest purchase in one deal</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>The largest purchase total of one deal.</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>Highest unit sale price</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>The highest contract value ÷ count of a sold line.</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_Metric_TradeSalesUnits>Items sold</RWS_Metric_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>Stack counts of non-currency items sold.</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_Metric_TradeBuysUnits>Items bought</RWS_Metric_TradeBuysUnits>
+  <RWS_MetricDesc_TradeBuysUnits>Stack counts of non-currency items bought.</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>Most sold item</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>The item type sold most, and how many.</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>Most bought item</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>The item type bought most, and how many.</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>Kinds of items sold</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>The number of non-currency item types sold.</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>Kinds of items bought</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>The number of non-currency item types bought.</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>Kinds of factions traded with</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>The number of known faction types traded with; partners without a faction are shown apart as "unknown".</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>Goodwill gained from gifts</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>The real goodwill increase of the receiving faction around each gift deal; 0 at the limit.</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>Allies turned hostile</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>Times a faction's relation went from ally to hostile.</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>Hostile factions reconciled</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>Times a hostile faction's relation became neutral or ally.</RWS_MetricDesc_Reconciled>
+  <RWS_Metric_AidRequests>Military aid requested</RWS_Metric_AidRequests>
+  <RWS_MetricDesc_AidRequests>Military aid requests a friendly faction accepted.</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>Reinforcements arrived</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>Times friendly reinforcements actually arrived. Not the same as requests.</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>Tends performed</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>Times a tend was performed; one tend of several wounds counts once.</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>Mean tend quality</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>The mean quality applied to each condition a tend treated.</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>Top doctor (tends)</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>The tends of the pawn who tended most; the breakdown names them (by id). Tends without a known doctor are left out.</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>Tends of neutral pawns</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>Tends whose patient was a neutral pawn.</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>Medicine used</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>Medicine actually consumed by tending.</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>Surgeries</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>Surgeries with a decided outcome (success or failure). Cancellations are not counted.</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_SurgerySuccessRate>Surgery success rate</RWS_Metric_SurgerySuccessRate>
+  <RWS_MetricDesc_SurgerySuccessRate>Successful surgeries ÷ surgeries with a decided outcome.</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_Metric_BestSurgeon>Top surgeon</RWS_Metric_BestSurgeon>
+  <RWS_MetricDesc_BestSurgeon>The successful surgeries of the pawn with most; the breakdown names them (by id).</RWS_MetricDesc_BestSurgeon>
+  <RWS_Metric_Implants>Implants installed</RWS_Metric_Implants>
+  <RWS_MetricDesc_Implants>Artificial parts and implants installed by successful surgeries.</RWS_MetricDesc_Implants>
+  <RWS_Metric_Rescues>Rescues</RWS_Metric_Rescues>
+  <RWS_MetricDesc_Rescues>Rescues completed by tucking the pawn into a bed. Ordinary hauling and captures are not counted.</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>Hostile pawns rescued</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>Rescues of pawns hostile to the player when tucked in.</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>Rescues away from home</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>Rescues on a map that is not a player home.</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>Resurrections</RWS_Metric_Resurrections>
+  <RWS_MetricDesc_Resurrections>Times a free colonist came back from death.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>Most resurrections of one colonist</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>The most resurrections of one pawn; the breakdown names them (by id).</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>New diseases</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>Sicknesses newly added to free colonists.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>Mean days sick</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>The mean days from onset to cure of diseases tracked throughout; those removed by death or amputation are left out.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>Infections recovered</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>Infections that went away by healing; removals by death or amputation are not counted.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_Metric_InfectionDurationMax>Longest infection</RWS_Metric_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>The most days from onset to recovery of an infection tracked throughout.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_Metric_FoodPoisonings>Food poisonings</RWS_Metric_FoodPoisonings>
+  <RWS_MetricDesc_FoodPoisonings>Times a free colonist got food poisoning.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>New addictions</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>Addictions newly added to free colonists. Severity changes are not counted.</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>Overdoses</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>Times a free colonist newly overdosed.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_PartsLost>Body parts lost</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>Times a free colonist lost a body part. Child parts lost with it and parts removed by surgery are not counted.</RWS_MetricDesc_PartsLost>
+  <RWS_Metric_Scars>Permanent scars</RWS_Metric_Scars>
+  <RWS_MetricDesc_Scars>Times a free colonist's injury became permanent.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>Most injured colonist</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>The new injuries of the free colonist with most; the breakdown names them (by id).</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_Metric_WildAnimalInjuries>Injuries by wild animals</RWS_Metric_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>New injuries of free colonists from wild animal attacks.</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_Metric_ToxicFalloutDays>Days of toxic fallout</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Days during which at least one toxic fallout was active, overlaps counted once.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_Metric_SolarFlares>Solar flares</RWS_Metric_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>Solar flares that began; ones already running when recording started are not counted.</RWS_MetricDesc_SolarFlares>
+  <RWS_Metric_SolarFlareDays>Days of solar flare</RWS_Metric_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>Days during which at least one solar flare was active, overlaps counted once; not per-device downtime.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>Cold snaps</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>Cold snaps that began.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>Heat waves</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>Heat waves that began.</RWS_MetricDesc_HeatWaves>
+  <RWS_Metric_VolcanicWinters>Volcanic winters</RWS_Metric_VolcanicWinters>
+  <RWS_MetricDesc_VolcanicWinters>Volcanic winters that began.</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>Eclipses</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>Eclipses that began.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>Crop blights</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Successful crop blight incidents; not the number of blighted plants.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>Meteorite impacts</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>Successful meteorite incidents; not the number of pieces.</RWS_MetricDesc_Meteors>
+  <RWS_Metric_ShortCircuits>Short circuits</RWS_Metric_ShortCircuits>
+  <RWS_MetricDesc_ShortCircuits>Successful short circuit incidents.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>Fires started</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>Fires started, other than by spreading, in a cell without fire on a player home map.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>Buildings lost to fire</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>Completed player buildings destroyed directly by fire damage.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>Caravan departures</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>Player caravans newly formed by leaving a map. Merges and splits are not counted.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>Caravans lost</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>Tracked caravans whose every member died.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>Caravan distance</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>Steps of player caravans to an adjacent tile on foot. Teleports are not counted.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>Tiles visited</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>Distinct tiles (layer and tile) reached on foot; a tile visited again counts once.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>Longest expedition</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>The most days from departure to returning to a player home of an expedition tracked throughout; split or merged ones are left out.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>Longest expedition distance</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>The most tiles walked in one completed expedition.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>Most caravans at once</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>The most player caravans that existed at once, moving or not.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>Caravan ambushes</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>Successful ambushes of caravans.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>Enemy settlements defeated</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>Enemy faction settlements destroyed by the player's victory.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>Settlements founded</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>New player settlements founded from a caravan or an existing map. The starting settlement, moving the colony and gravship landings are not counted.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>Settlements abandoned</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Player settlements abandoned by choice. Automatic removals such as a gravship takeoff are not counted.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_ResearchSnapshotFinished>Completed research projects</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>Number of registered research projects completed at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_Metric_ResearchSnapshotFinishedRate>Research completion rate</RWS_Metric_ResearchSnapshotFinishedRate>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Completed projects divided by all registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>Highest completed research tech level</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>Highest technical level among completed registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>Allied and hostile factions</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>Counts of eligible active factions allied or hostile to the player, at the last successful save.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Faction goodwill range</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Minimum and maximum base goodwill of eligible active factions that support goodwill. Permanently hostile factions contribute to faction counts, not goodwill.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>Living free colonists</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>Living free colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>Living colony prisoners</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>Living colony prisoners at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterAnimals>Colony animals</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>Colony animals at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>Colony mechanoids</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>Colony mechanoids at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>Highest augmented colonists</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>Highest augmented colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>Highest colonists with skill 20</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>Highest colonists with skill 20 at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>Most max-level skills on one colonist</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Most max-level skills on one colonist at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>Oldest living colonist</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>Oldest living colonist at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>Highest colony animal species</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>Highest colony animal species at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>Colonist passions by skill</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Colonist passions by skill at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>Mean living colonist age</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>Mean living colonist age at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>Highest simultaneously injured colonists</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>Highest simultaneously injured colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>Most loaded home maps</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>Most loaded home maps across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesMedicalBeds>Most medical beds</RWS_Metric_FacilitiesMedicalBeds>
+  <RWS_MetricDesc_FacilitiesMedicalBeds>Most medical beds across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesMedicalBeds>
+  <RWS_Metric_FacilitiesTurrets>Most installed turrets</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>Most installed turrets across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>Largest growing-zone area</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>Largest growing-zone area across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesRooms>Most enclosed rooms</RWS_Metric_FacilitiesRooms>
+  <RWS_MetricDesc_FacilitiesRooms>Most enclosed rooms across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesRooms>
+  <RWS_Metric_FacilitiesGeneration>Highest rated generating capacity</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>Highest rated generating capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>Highest rated battery capacity</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>Highest rated battery capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_Metric_FacilitiesRunningGenerators>Running generators by type</RWS_Metric_FacilitiesRunningGenerators>
+  <RWS_MetricDesc_FacilitiesRunningGenerators>Running generators by type across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesRunningGenerators>
+  <RWS_Metric_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>Highest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Highest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>Food nutrition at last save</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>Food nutrition at last save measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>Silver at last save</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>Silver at last save measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>Construction materials by type</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>Construction materials by type measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>Maximum owned weapons</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Maximum owned weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>Maximum weapon types</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Maximum weapon types measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>Maximum legendary weapons</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Maximum legendary weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>Maximum persona weapons</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Maximum persona weapons measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>Maximum medicines in stock</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Maximum medicines in stock measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>Minimum food nutrition</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>Minimum food nutrition measured on loaded player home maps and eligible owned containers at a successful save.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>Highest psylink level</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Highest psylink level observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>Maximum polluted cells</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Maximum polluted cells observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Highest used mechanitor bandwidth</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Highest used mechanitor bandwidth observed at a successful save; requires the relevant DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyTitleGrants>Royal titles granted</RWS_Metric_RoyaltyTitleGrants>
+  <RWS_MetricDesc_RoyaltyTitleGrants>Royal titles granted confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>Highest royal title</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>Highest royal title confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>Imperial honor gained and spent</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>Imperial honor gained and spent confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>Completed conversions</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>Number of observed player-side transitions from an existing ideology to a different ideology; excludes pawn initialization.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_OdysseyFlights>Completed gravship flights</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Completed gravship flights from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>Total completed flight distance</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Total completed flight distance from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>Distinct landing locations</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Distinct landing locations from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>Landings on newly created maps</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Landings on newly created maps from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>Mechanoids manufactured</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>Mechanoids manufactured only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>Colonists who gave birth</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>Colonists who gave birth only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>Child growth milestones</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>Child growth milestones only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>Fully completed mech repairs</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>Fully completed mech repairs only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>Toxic wastepacks actually produced</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>Toxic wastepacks actually produced only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>Wastepacks safely neutralized</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>Wastepacks safely neutralized only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>Cells cleaned by colonists</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>Cells cleaned by colonists only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechPollutionCleaned>
 </LanguageData>

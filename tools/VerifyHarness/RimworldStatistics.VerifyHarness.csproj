@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Development-only verification harness (docs: tools/VerifyHarness/README.md). It is a separate mod with its own packageId,
+    never part of tools/package.sh or the publish workflow. It opens unverified acquisition units for an in-game test run.
+  -->
+  <PropertyGroup>
+    <RootNamespace>RimworldStatistics.VerifyHarness</RootNamespace>
+    <AssemblyName>RimworldStatistics.VerifyHarness</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)Mod/1.7/Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <DebugType>embedded</DebugType>
+    <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseNuGetRefs)' == 'true'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4985-unstable" PrivateAssets="all" ExcludeAssets="runtime" />
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.4" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseNuGetRefs)' != 'true'">
+    <Reference Include="Assembly-CSharp" HintPath="$(GameDir)/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityStubs" HintPath="$(GameDir)/UnityStubs.dll" Private="false" />
+    <Reference Include="0Harmony" HintPath="$(HarmonyDll)" Private="false" />
+  </ItemGroup>
+  <!-- The mod's own assemblies are loaded by the main mod (this one loads after it): referenced, never copied. -->
+  <ItemGroup>
+    <ProjectReference Include="../../Source/RimworldStatistics/RimworldStatistics.csproj" Private="false" />
+    <ProjectReference Include="../../Source/RimworldStatistics.Core/RimworldStatistics.Core.csproj" Private="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Mod/**" />
+  </ItemGroup>
+</Project>

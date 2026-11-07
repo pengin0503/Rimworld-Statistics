@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Rimworld Statistics - Verify Harness (development only)</name>
+  <author>pengin0503</author>
+  <packageId>pengin0503.rimworldstatistics.verifyharness</packageId>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+    </li>
+    <li>
+      <packageId>pengin0503.rimworldstatistics</packageId>
+      <displayName>Rimworld Statistics</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>pengin0503.rimworldstatistics</li>
+  </loadAfter>
+  <description>開発専用。Rimworld Statistics の未検証の取得単位を、テスト用の -savedatafolder でだけ開き、開発モードのメニュー「RWS Verify」から確認を実行します。通常のプレイには入れないでください。
+
+Development only. Opens Rimworld Statistics' unverified acquisition units, only with a test -savedatafolder, and runs checks from the "RWS Verify" debug actions. Do not use it for normal play.</description>
+</ModMetaData>
