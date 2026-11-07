@@ -661,4 +661,8 @@
   <RWS_MetricDesc_ResearchSnapshotFinishedRate>Completed projects divided by all registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
   <RWS_Metric_ResearchSnapshotTechPeak>Highest completed research tech level</RWS_Metric_ResearchSnapshotTechPeak>
   <RWS_MetricDesc_ResearchSnapshotTechPeak>Highest technical level among completed registered research projects at the last successful save.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>Allied and hostile factions</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>Counts of eligible active factions allied or hostile to the player, at the last successful save.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Faction goodwill range</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Minimum and maximum base goodwill of eligible active factions that support goodwill. Permanently hostile factions contribute to faction counts, not goodwill.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
 </LanguageData>

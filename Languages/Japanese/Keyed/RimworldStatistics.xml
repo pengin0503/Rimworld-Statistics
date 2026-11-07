@@ -661,4 +661,8 @@
   <RWS_MetricDesc_ResearchSnapshotFinishedRate>正常保存時点の完了研究数を有効な登録研究総数で割った割合。</RWS_MetricDesc_ResearchSnapshotFinishedRate>
   <RWS_Metric_ResearchSnapshotTechPeak>完了研究の最高技術段階</RWS_Metric_ResearchSnapshotTechPeak>
   <RWS_MetricDesc_ResearchSnapshotTechPeak>最後の正常保存時に完了済みだった研究の最高技術段階。</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>友好・敵対勢力数</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>最後に正常保存した時点の、有効な非プレイヤー勢力の友好・敵対件数。</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>勢力の友好度範囲</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>正常保存時点で友好度に対応する有効勢力の最小・最大友好度。恒久敵対勢力は勢力数にだけ含む。</RWS_MetricDesc_FactionSnapshotGoodwillRange>
 </LanguageData>

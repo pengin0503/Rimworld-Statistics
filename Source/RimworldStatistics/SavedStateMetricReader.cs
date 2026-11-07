@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -36,6 +36,9 @@ internal static class SavedStateMetricReader
             {
                 if (unit == "research_state")
                     foreach (var (key, value) in ReadResearch())
+                        observation.Metrics[key] = value;
+                else if (unit == "factions")
+                    foreach (var (key, value) in ReadFactions())
                         observation.Metrics[key] = value;
             }
             catch (Exception e)
@@ -68,4 +71,33 @@ internal static class SavedStateMetricReader
         }
         return ResearchStateSnapshot.Build(facts, partial);
     }
+    private static Dictionary<string, MetricEntry> ReadFactions()
+    {
+        var player = Faction.OfPlayerSilentFail;
+        if (player is null)
+            throw new InvalidOperationException("Player faction is not initialized");
+        var facts = new List<FactionStateFact>();
+        var partial = false;
+        foreach (var f in Find.FactionManager.AllFactions)
+        {
+            if (f is null || f == player)
+                continue;
+            try
+            {
+                var active = !f.defeated && !f.hidden && !f.temporary && !f.deactivated;
+                if (!active)
+                    continue;
+                var relation = player.RelationKindWith(f);
+                var goodwill = f.def.permanentEnemy ? (int?)null : player.GoodwillWith(f);
+                facts.Add(new FactionStateFact(f.GetUniqueLoadID(), true,
+                    relation == FactionRelationKind.Ally, relation == FactionRelationKind.Hostile, goodwill));
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        return FactionStateSnapshot.Build(facts, partial);
+    }
 }
+
