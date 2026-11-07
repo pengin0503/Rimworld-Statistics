@@ -12,6 +12,7 @@ public static class OdysseyFamily
     public const string UniqueTiles = "odyssey.gravship.unique_tiles";
     public const string NewMapLandings = "odyssey.gravship.new_map_landings";
     private const string FlightIds = "completed_ids";
+    private const string PendingTakeoffs = "pending_takeoff";
     private const string Arrivals = "unique_arrival";
     private const string Count = "flights";
     private const string Travel = "distance";
@@ -23,6 +24,33 @@ public static class OdysseyFamily
     {
         Name = Name, Revision = 1, RequiredDlc = AcquisitionUnits.Odyssey, Build = Build,
     };
+
+    /// <summary>Only a confirmed initiating player engine can start a counted flight.</summary>
+    public static void ObservedTakeoff(FamilyState s, string engineId, int tick, bool playerShip)
+    {
+        if (!playerShip || tick < 0 || string.IsNullOrWhiteSpace(engineId)
+            || s.Tracked(PendingTakeoffs, engineId) is not null)
+            return;
+        s.Track(PendingTakeoffs, engineId, tick);
+    }
+
+    /// <summary>
+    /// Match a confirmed landing to a persisted takeoff marker. Failed or aborted
+    /// landing attempts keep the pending flight so a later retry can complete.
+    /// </summary>
+    public static void ObservedLanding(FamilyState s, string engineId, int arrivalLayer,
+        long arrivalTile, bool playerShip, bool successfullyLanded, double? routeDistanceInTiles,
+        bool? landedOnNewMap)
+    {
+        if (!playerShip || !successfullyLanded || arrivalLayer < 0 || arrivalTile < 0
+            || string.IsNullOrWhiteSpace(engineId))
+            return;
+        var start = s.Untrack(PendingTakeoffs, engineId);
+        if (start is not { } tick)
+            return;
+        FlightCompleted(s, engineId + "/" + tick.ToString(System.Globalization.CultureInfo.InvariantCulture),
+            arrivalLayer, arrivalTile, playerShip, successfullyLanded, routeDistanceInTiles, landedOnNewMap);
+    }
 
     /// <summary>
     /// One authoritative completed landing, never a preview, launch, cancelled/failed flight or map load.
@@ -62,6 +90,8 @@ public static class OdysseyFamily
         if (c.State.Peek(Arrivals)?.Overflow == true)
             c.MarkPartial(UniqueTiles);
         if (c.State.Peek(FlightIds)?.Overflow == true)
+            c.MarkPartial(Flights, Distance, UniqueTiles, NewMapLandings);
+        if (c.State.TrackerOverflowed(PendingTakeoffs))
             c.MarkPartial(Flights, Distance, UniqueTiles, NewMapLandings);
     }
 }
