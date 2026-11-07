@@ -30,6 +30,7 @@ internal static class VerifyGameCases
         new("health_death.unattributed", HealthDeathFamily.Name, "Kill an enemy without damage info: +0", c => Kill(c, KillBy.Nobody)),
         new("down.enemy", DownFamily.Name, "Damage a spawned enemy until downed: +1 enemy downed", EnemyDowned),
         new("raid.enemy", RaidFamily.Name, "Execute RaidEnemy (immediate attack, edge walk-in): +1 raid, +1 EdgeWalkIn", RaidEnemy),
+        new("raid.last_kill", RaidFamily.Name, "Execute a new raid and kill every spawned raider through Pawn.Kill: last player kill is included in raid.kills.max", RaidLastKill),
     };
 
     public static CaseResult Run(GameCase c)
@@ -257,4 +258,52 @@ internal static class VerifyGameCases
             requireHooks: true, note: faction.def.defName + " points=" + parms.points.ToString("0"));
         return executed ? result : result with { Outcome = CaseOutcome.Skip, Note = "the game refused the raid (" + result.Note + ")" };
     }
+    /// <summary>
+    /// Integration check of the real Pawn.Kill -> Lord.Notify_PawnLost ordering.
+    /// The final member must be credited before the raid is closed, unlike a direct
+    /// Core-only call to RaidDeathScope.Complete.
+    /// </summary>
+    private static CaseResult RaidLastKill(GameCase c)
+    {
+        var map = Find.CurrentMap;
+        var colonist = Colonist(_ => true);
+        var faction = EnemyFaction();
+        if (colonist is null || faction is null)
+            return CaseCheck.Skip(c.Id, c.Unit, colonist is null ? "no free colonist" : "no hostile humanlike faction");
+        var weapon = RangedWeapon(colonist);
+        if (weapon is null)
+            return CaseCheck.Skip(c.Id, c.Unit, "no ranged weapon def");
+
+        var active = LiveMetrics.Family(RaidFamily.Name);
+        if (active is null)
+            return CaseCheck.Skip(c.Id, c.Unit, "the raid family has no active accumulator");
+
+        var priorPawns = map.mapPawns.AllPawns.Where(p => p.Faction == faction && p.Spawned)
+            .Select(p => p.GetUniqueLoadID()).ToHashSet(StringComparer.Ordinal);
+        var parms = StorytellerUtility.DefaultParmsNow(IncidentCategoryDefOf.ThreatBig, map);
+        parms.faction = faction;
+        parms.raidStrategy = RaidStrategyDefOf.ImmediateAttack;
+        parms.raidArrivalMode = PawnsArrivalModeDefOf.EdgeWalkIn;
+        if (!IncidentDefOf.RaidEnemy.Worker.TryExecute(parms))
+            return CaseCheck.Skip(c.Id, c.Unit, "RaidEnemy refused the incident");
+        var raiders = map.mapPawns.AllPawns.Where(p => p.Faction == faction && p.Spawned
+                && !priorPawns.Contains(p.GetUniqueLoadID()) && RaidFamily.IsMember(active, p.GetUniqueLoadID()))
+            .OrderBy(p => p.thingIDNumber).ToArray();
+        if (raiders.Length == 0)
+            return CaseCheck.Skip(c.Id, c.Unit, "raid executed but spawned no tracked raiders");
+
+        var before = VerifyProbe.Values(out var why);
+        if (why != null)
+            return CaseCheck.Skip(c.Id, c.Unit, why);
+        var priorMax = before.GetValueOrDefault(RaidFamily.KillsMax)?.Number ?? 0;
+        var expectedMaxChange = Math.Max(priorMax, raiders.Length) - priorMax;
+        return Measure(c, () =>
+        {
+            foreach (var pawn in raiders)
+                pawn.Kill(new DamageInfo(DamageDefOf.Bullet, 99999f, 999f, -1f, colonist, null, weapon));
+        }, new[] { new Expect(RaidFamily.KillsMax, expectedMaxChange),
+            new Expect(RaidFamily.KillsMax, 1, Samples: true) },
+            requireHooks: true, note: "real Pawn.Kill, raiders=" + raiders.Length + ", prior-max=" + priorMax);
+    }
+
 }

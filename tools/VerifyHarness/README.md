@@ -40,7 +40,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 結果はゲームのログと、テスト用フォルダの `RimworldStatistics-verify.log` に書きます。長い報告（Status、Dump、Diff）の全文はファイルだけに書きます。
 
-## 自動ケース
+## 自動ケース（13件）
 
 すべて**使い捨てのテスト用コロニー**で実行してください（研究を完了させ、ひらめきと精神崩壊を起こし、敵を出して倒し、襲撃を起こします）。前提を満たさないケース（未完了の研究がない、敵対勢力がない など）は SKIP になります。
 
@@ -58,6 +58,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | health_death.unattributed | `DamageInfo` なしで `Kill` | 撃破 +0 |
 | down.enemy | 敵を出し `HealthUtility.DamageUntilDowned`（出血なし） | 敵ダウン +1、入植者ダウン +0 |
 | raid.enemy | `RaidEnemy` を即時攻撃・端から徒歩で実行 | 襲撃 +1、EdgeWalkIn +1、人数の標本 +1 |
+| raid.last_kill | 新しい襲撃を発生させ、出現した襲撃者をすべて実際の `Pawn.Kill` 経路で撃破 | 最後の撃破を含む `raid.kills.max` と、襲撃終了標本 +1 |
 
 陽性ケースはその単位のフックがイベントを受け付けたこと（`hooks` が 1 以上）も条件です。陰性ケースもフックが発火したうえで数えないことを確かめるため、同じ条件にしています。
 
