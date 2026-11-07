@@ -241,6 +241,8 @@
   <RWS_MetricDesc_RankDaysByBiome>ゲーム開始タイルのバイオーム別にコロニー経過日数を集計。移住後の現在の拠点で分類しない。</RWS_MetricDesc_RankDaysByBiome>
   <RWS_Metric_RankEndingsByBiome>開始バイオーム別のクリア回数</RWS_Metric_RankEndingsByBiome>
   <RWS_MetricDesc_RankEndingsByBiome>開始地点のバイオーム別に採用済みエンディングを集計。開始地点が不明なコロニーは集計から除外し部分記録とする。</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>敵撃破数と入植者死亡数の比率</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>同じチェックポイントの計測期間内で確認された敵撃破数÷自由入植者死亡数。片方未記録なら除外し、死亡0件の除算結果は未定義。</RWS_MetricDesc_RankKillsToDeaths>
   <RWS_Metric_RankMostKills>単一コロニーでの最多敵撃破数</RWS_Metric_RankMostKills>
   <RWS_MetricDesc_RankMostKills>選択されたチェックポイントの確定敵撃破数のコロニー横断最大値。未記録は0として扱わない。</RWS_MetricDesc_RankMostKills>
   <RWS_Metric_RankDeathFree>最長無死亡期間のコロニー横断記録</RWS_Metric_RankDeathFree>
