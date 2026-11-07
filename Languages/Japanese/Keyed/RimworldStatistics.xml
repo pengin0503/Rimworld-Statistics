@@ -741,4 +741,12 @@
   <RWS_MetricDesc_RoyaltyHonor>Royaltyのイベント取得期間に確定した帝国名誉の獲得・消費。</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>改宗が成立した回数</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>プレイヤー側の既存の思想から別の思想へ、実際に切り替わった回数。生成時の思想設定を除く。</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_OdysseyFlights>グラヴシップの完了移動数</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>プレイヤーの着陸完了が確認できたフライトのみを対象とするグラヴシップの完了移動数。</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>グラヴシップの確定移動距離合計</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>プレイヤーの着陸完了が確認できたフライトのみを対象とするグラヴシップの確定移動距離合計。</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>到着したユニーク地点数</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>プレイヤーの着陸完了が確認できたフライトのみを対象とする到着したユニーク地点数。</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>新規マップへの着陸数</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>プレイヤーの着陸完了が確認できたフライトのみを対象とする新規マップへの着陸数。</RWS_MetricDesc_OdysseyNewMaps>
 </LanguageData>

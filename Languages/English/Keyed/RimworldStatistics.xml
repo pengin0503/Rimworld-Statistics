@@ -741,4 +741,12 @@
   <RWS_MetricDesc_RoyaltyHonor>Imperial honor gained and spent confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>Completed conversions</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Number of observed player-side transitions from an existing ideology to a different ideology; excludes pawn initialization.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_OdysseyFlights>Completed gravship flights</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Completed gravship flights from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>Total completed flight distance</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Total completed flight distance from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>Distinct landing locations</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Distinct landing locations from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>Landings on newly created maps</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Landings on newly created maps from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyNewMaps>
 </LanguageData>

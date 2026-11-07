@@ -270,5 +270,10 @@ public static class LiveCatalog
         Live(RoyaltyFamily.Honor, "N1-E-006", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHonor", "RWS_MetricDesc_RoyaltyHonor", breakdown: true),
         // D2 · ideology: actual existing-ideology changes on the player side
         Live(IdeologyFamily.Conversions, "L-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyConversions", "RWS_MetricDesc_IdeologyConversions"),
+        // D2 · odyssey: Core completion accounting, waiting for audited landing hook and stable flight identity
+        Live(OdysseyFamily.Flights, "L-022", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyFlights", "RWS_MetricDesc_OdysseyFlights"),
+        Live(OdysseyFamily.Distance, "L-023", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyDistance", "RWS_MetricDesc_OdysseyDistance"),
+        Live(OdysseyFamily.UniqueTiles, "L-024", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyUniqueTiles", "RWS_MetricDesc_OdysseyUniqueTiles"),
+        Live(OdysseyFamily.NewMapLandings, "L-026", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyNewMaps", "RWS_MetricDesc_OdysseyNewMaps"),
     };
 }
