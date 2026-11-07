@@ -22,7 +22,9 @@ verbs = (
 )
 for entry in entries:
     name = entry["fullName"]
-    if not any(part in name for part in names):
+    # Exact type-name match only: nested compiler-generated classes and hundreds of
+    # RitualOutcomeComp_* implementations are not hook candidates.
+    if "+" in name or name.rsplit(".", 1)[-1] not in names:
         continue
     print("API TYPE:", name)
     methods = [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
