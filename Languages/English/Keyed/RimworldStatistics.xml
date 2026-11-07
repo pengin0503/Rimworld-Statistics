@@ -451,4 +451,112 @@
   <RWS_Metric_AnimalsHunted>Wild animals hunted</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>Wild animals designated for hunting and killed by a player pawn. Incidental fights are not counted.</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} years</RWS_Unit_Years>
+  <RWS_Metric_CraftedUnits>Items crafted</RWS_Metric_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Stack counts of the main and side products of the player's finished bills, including cooking and art; mining, harvests and mech gestation are not included.</RWS_MetricDesc_CraftedUnits>
+  <RWS_Metric_CraftQuality>Crafted items by quality</RWS_Metric_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>The crafted items above by quality; items without quality are "none".</RWS_MetricDesc_CraftQuality>
+  <RWS_Metric_CraftLegendary>Legendary items crafted</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>Crafted items of legendary quality.</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>Masterwork items crafted</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>Crafted items of masterwork quality.</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>Best quality crafted</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>The highest quality of a crafted item (0 = awful … 6 = legendary); the breakdown names it.</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>Most valuable item crafted</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>The highest market value of one crafted item when it was made; not its sale price.</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>Art pieces completed</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>Crafted items that are art (sculptures and the like).</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>Meals cooked by type</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Finished meals among the crafted items, by type (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>Kinds of items crafted</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>The number of item types (ThingDef) crafted at least once.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>Most items crafted in a day</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>The most items crafted in one game day; only days recorded from start to end count.</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>Top crafter</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>The crafted count of the pawn who crafted most; the breakdown names them (by id).</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_BestCook>Top cook</RWS_Metric_BestCook>
+  <RWS_MetricDesc_BestCook>The meal count of the pawn who cooked most; the breakdown names them (by id).</RWS_MetricDesc_BestCook>
+  <RWS_Metric_HarvestUnits>Crops harvested</RWS_Metric_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included.</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>Harvest by crop</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>The harvest by the crop it came from (plant ThingDef); harvests whose crop is not known are "unknown".</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>Most harvested crop</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>The crop with the largest harvest, and that amount.</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>Largest harvest in a year</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>The largest harvest in one game year; only years recorded throughout count.</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>Top harvester</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>The harvest of the pawn who harvested most; the breakdown names them (by id).</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>Failed harvests</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Plants whose harvest by a player pawn actually failed. Not the same as plants dying.</RWS_MetricDesc_HarvestFailures>
+  <RWS_Metric_CropsSown>Crops sown</RWS_Metric_CropsSown>
+  <RWS_MetricDesc_CropsSown>Plants sown by player pawns.</RWS_MetricDesc_CropsSown>
+  <RWS_Metric_CropsSownDefs>Kinds of crops sown</RWS_Metric_CropsSownDefs>
+  <RWS_MetricDesc_CropsSownDefs>The number of crop types sown at least once.</RWS_MetricDesc_CropsSownDefs>
+  <RWS_Metric_CropsColdLoss>Crops lost to cold</RWS_Metric_CropsColdLoss>
+  <RWS_MetricDesc_CropsColdLoss>Crop plants that died of cold.</RWS_MetricDesc_CropsColdLoss>
+  <RWS_Metric_CropsOtherLoss>Crops lost to other causes</RWS_Metric_CropsOtherLoss>
+  <RWS_MetricDesc_CropsOtherLoss>Crop plants that died of another confirmed cause (poison, pollution…). Harvests and cutting are not counted.</RWS_MetricDesc_CropsOtherLoss>
+  <RWS_Metric_CropsLossRate>Crop loss rate</RWS_Metric_CropsLossRate>
+  <RWS_MetricDesc_CropsLossRate>Of the plants seen sown: died ÷ (died + reached their first harvest). Plants removed by hand or not yet decided are not counted.</RWS_MetricDesc_CropsLossRate>
+  <RWS_Metric_MiningUnits>Resources mined</RWS_Metric_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Stack counts of what player pawns' mining produced.</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>Top miner</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>The amount mined by the pawn who mined most; the breakdown names them (by id).</RWS_MetricDesc_BestMiner>
+  <RWS_Metric_Constructions>Buildings completed</RWS_Metric_Constructions>
+  <RWS_MetricDesc_Constructions>Player construction frames completed into buildings. Reinstallations and blueprints are not counted.</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>Materials used in construction</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>The materials completed frames held, by type (ThingDef). Different materials are not added together.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_Metric_BestBuilder>Top builder</RWS_Metric_BestBuilder>
+  <RWS_MetricDesc_BestBuilder>The completed constructions of the pawn who completed most; the breakdown names them (by id).</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>Construction failures</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>Times a construction failed. Cancellations are not counted.</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>Buildings deconstructed</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>Player buildings whose deconstruction order completed. Deconstruction for a replacing blueprint is not counted.</RWS_MetricDesc_Deconstructions>
+  <RWS_Metric_Repairs>Repairs completed</RWS_Metric_Repairs>
+  <RWS_MetricDesc_Repairs>Times a repair job brought a player building back to full hit points.</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>Transport pods launched</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>Player transport pods launched (pods, not launches).</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>Food lost to spoilage</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>Stack counts of player food destroyed by rotting. Burning and eating are not counted.</RWS_MetricDesc_FoodSpoiled>
+  <RWS_Metric_FoodNutrition>Nutrition eaten</RWS_Metric_FoodNutrition>
+  <RWS_MetricDesc_FoodNutrition>The nutrition free colonists actually took in by eating.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_TradeDeals>Trade deals</RWS_Metric_TradeDeals>
+  <RWS_MetricDesc_TradeDeals>Deals in which at least one non-currency item changed hands. Empty deals, gifts and failures are not counted.</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>Deals with trade ships</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>Deals with orbital trade ships.</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>Deals with visiting caravans</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>Deals with traders visiting the colony on foot. Trading at other settlements is separate.</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_Metric_TradeSalesTotal>Total sales</RWS_Metric_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>The contract value of non-currency items sold in completed deals (silver).</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_Metric_TradeBuysTotal>Total purchases</RWS_Metric_TradeBuysTotal>
+  <RWS_MetricDesc_TradeBuysTotal>The contract value of non-currency items bought in completed deals (silver).</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>Largest sale in one deal</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>The largest sale total of one deal.</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>Largest purchase in one deal</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>The largest purchase total of one deal.</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>Highest unit sale price</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>The highest contract value ÷ count of a sold line.</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_Metric_TradeSalesUnits>Items sold</RWS_Metric_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>Stack counts of non-currency items sold.</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_Metric_TradeBuysUnits>Items bought</RWS_Metric_TradeBuysUnits>
+  <RWS_MetricDesc_TradeBuysUnits>Stack counts of non-currency items bought.</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>Most sold item</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>The item type sold most, and how many.</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>Most bought item</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>The item type bought most, and how many.</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>Kinds of items sold</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>The number of non-currency item types sold.</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>Kinds of items bought</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>The number of non-currency item types bought.</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>Kinds of factions traded with</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>The number of known faction types traded with; partners without a faction are shown apart as "unknown".</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>Goodwill gained from gifts</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>The real goodwill increase of the receiving faction around each gift deal; 0 at the limit.</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>Allies turned hostile</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>Times a faction's relation went from ally to hostile.</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>Hostile factions reconciled</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>Times a hostile faction's relation became neutral or ally.</RWS_MetricDesc_Reconciled>
+  <RWS_Metric_AidRequests>Military aid requested</RWS_Metric_AidRequests>
+  <RWS_MetricDesc_AidRequests>Military aid requests a friendly faction accepted.</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>Reinforcements arrived</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>Times friendly reinforcements actually arrived. Not the same as requests.</RWS_MetricDesc_AidArrivals>
 </LanguageData>

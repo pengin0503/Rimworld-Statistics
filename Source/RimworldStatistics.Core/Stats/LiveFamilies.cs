@@ -135,6 +135,27 @@ public sealed class FamilyOutputContext
         Put(key, Value(integer: a?.By?.Count ?? 0, partial: a?.Overflow == true));
     }
 
+    /// <summary>
+    /// The largest amount in one whole period (a game day, a game year) of a breakdown keyed by period index. Only periods the
+    /// range covers entirely count; a range with a gap is partial. No whole period: not applicable.
+    /// </summary>
+    public void PutCompletePeriodPeak(string acc, string key, int periodTicks)
+    {
+        var a = State.Peek(acc);
+        double? best = null;
+        foreach (var (k, v) in a?.By ?? new Dictionary<string, double>())
+        {
+            if (!long.TryParse(k, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var p))
+                continue;
+            if (p * periodTicks < State.SinceTick || (p + 1) * periodTicks > State.ThroughTick)
+                continue;
+            best = best is null ? v : Math.Max(best.Value, v);
+        }
+        Put(key, best is { } b
+            ? Value(integer: (long)Math.Round(b), partial: !State.Continuous || a!.Overflow)
+            : Value(coverage: MetricCoverage.NotApplicable));
+    }
+
     /// <summary>The first event's day, known only for a range recorded from the start (null: not reached yet).</summary>
     public void PutFirstDay(string acc, string key)
     {
@@ -157,6 +178,10 @@ public static class LiveFamilies
         LifetimeFamily.Family,
         SocialFamily.Family,
         AnimalsFamily.Family,
+        WorkFamily.Family,
+        FoodFamily.Family,
+        TradeFamily.Family,
+        DiplomacyFamily.Family,
     };
 
     public static LiveFamily? Find(string name) => All.FirstOrDefault(f => f.Name == name);

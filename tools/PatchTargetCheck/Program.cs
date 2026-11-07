@@ -142,6 +142,25 @@ static string? BaseOf(JsonElement entry)
 static IEnumerable<string> ParamTypes(JsonElement method)
     => method.GetProperty("signature").GetProperty("parameters").EnumerateArray().Select(p => p.GetString()!);
 
+// "[A, asm],[B, asm]" → "A, asm" and "B, asm" (brackets nest for generic arguments that are generic themselves).
+static IEnumerable<string> SplitGenericArguments(string list)
+{
+    var depth = 0;
+    var start = -1;
+    for (var i = 0; i < list.Length; i++)
+    {
+        if (list[i] == '[')
+        {
+            if (depth++ == 0)
+                start = i + 1;
+        }
+        else if (list[i] == ']' && --depth == 0)
+        {
+            yield return list[start..i];
+        }
+    }
+}
+
 // Reference assemblies place BCL types in facades ([System.Runtime], [System.Collections], …); the runtime type is the same.
 static string SystemNeutral(string indexName)
     => System.Text.RegularExpressions.Regex.Replace(indexName, @"\[System(\.[A-Za-z]+)*\]", "[System]");
@@ -155,8 +174,8 @@ static string IndexTypeName(string serialized)
     {
         var close = serialized.LastIndexOf("]]", StringComparison.Ordinal);
         var outer = serialized[..open];
-        var inner = IndexTypeName(serialized[(open + 2)..close]);
-        return (outer.StartsWith("System.", StringComparison.Ordinal) ? "[System.Runtime]" : "[Assembly-CSharp]") + outer + "<" + inner + ">";
+        var args = SplitGenericArguments(serialized[(open + 1)..(close + 1)]).Select(IndexTypeName);
+        return (outer.StartsWith("System.", StringComparison.Ordinal) ? "[System.Runtime]" : "[Assembly-CSharp]") + outer + "<" + string.Join(",", args) + ">";
     }
     var name = serialized.Split(',')[0].Trim();
     return name switch

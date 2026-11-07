@@ -35,6 +35,9 @@ public static class LiveCatalog
     private const MetricCategory Animals = MetricCategory.Animals;
     private const MetricUnit Years = MetricUnit.Years;
     private const MetricUnit Percent = MetricUnit.Percent;
+    private const MetricUnit Silver = MetricUnit.Silver;
+    private const MetricCategory Work = MetricCategory.Work;
+    private const MetricCategory Economy = MetricCategory.Economy;
 
     public static IReadOnlyList<MetricDefinition> Definitions { get; } = new[]
     {
@@ -142,5 +145,67 @@ public static class LiveCatalog
         Live(AnimalsFamily.Births, "A-002", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalBirths", "RWS_MetricDesc_AnimalBirths"),
         Live(AnimalsFamily.Slaughtered, "A-004", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsSlaughtered", "RWS_MetricDesc_AnimalsSlaughtered"),
         Live(AnimalsFamily.Hunted, "N1-D-006", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsHunted", "RWS_MetricDesc_AnimalsHunted"),
+
+        // C3 · work
+        Live(WorkFamily.CraftedUnits, "W-003", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CraftedUnits", "RWS_MetricDesc_CraftedUnits"),
+        Live(WorkFamily.QualityBreakdown, "W-006", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CraftQuality", "RWS_MetricDesc_CraftQuality", breakdown: true),
+        Live(WorkFamily.Legendary, "W-010", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CraftLegendary", "RWS_MetricDesc_CraftLegendary"),
+        Live(WorkFamily.Masterwork, "W-011", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CraftMasterwork", "RWS_MetricDesc_CraftMasterwork"),
+        Live(WorkFamily.BestQuality, "W-005", Work, Count, Max, WorkFamily.Name, "RWS_Metric_CraftBestQuality", "RWS_MetricDesc_CraftBestQuality", breakdown: true),
+        Live(WorkFamily.BestPrice, "W-012", Work, Silver, Max, WorkFamily.Name, "RWS_Metric_CraftBestPrice", "RWS_MetricDesc_CraftBestPrice"),
+        Live(WorkFamily.Sculptures, "W-013", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Sculptures", "RWS_MetricDesc_Sculptures"),
+        Live(WorkFamily.MealsByDef, "W-017, N2-F-012", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_MealsByDef", "RWS_MetricDesc_MealsByDef", breakdown: true),
+        Live(WorkFamily.UniqueCraftedDefs, "W-018", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_UniqueCraftedDefs", "RWS_MetricDesc_UniqueCraftedDefs"),
+        Live(WorkFamily.DailyPeak, "N1-A-009", Work, Count, Max, WorkFamily.Name, "RWS_Metric_CraftDailyPeak", "RWS_MetricDesc_CraftDailyPeak"),
+        Live(WorkFamily.BestCrafter, "N3-W-001", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestCrafter", "RWS_MetricDesc_BestCrafter", breakdown: true),
+        Live(WorkFamily.BestCook, "N3-W-004", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestCook", "RWS_MetricDesc_BestCook", breakdown: true),
+        Live(WorkFamily.HarvestUnits, "W-001", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_HarvestUnits", "RWS_MetricDesc_HarvestUnits"),
+        Live(WorkFamily.HarvestByCrop, "N2-F-002", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_HarvestByCrop", "RWS_MetricDesc_HarvestByCrop", breakdown: true),
+        Live(WorkFamily.TopCrop, "N2-F-003", Work, Count, Each, WorkFamily.Name, "RWS_Metric_TopCrop", "RWS_MetricDesc_TopCrop", breakdown: true),
+        Live(WorkFamily.HarvestYearPeak, "N2-F-011", Work, Count, Max, WorkFamily.Name, "RWS_Metric_HarvestYearPeak", "RWS_MetricDesc_HarvestYearPeak"),
+        Live(WorkFamily.BestHarvester, "N3-W-002", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestHarvester", "RWS_MetricDesc_BestHarvester", breakdown: true),
+        Live(WorkFamily.HarvestFailures, "W-015", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_HarvestFailures", "RWS_MetricDesc_HarvestFailures"),
+        Live(WorkFamily.Sown_, "W-014", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsSown", "RWS_MetricDesc_CropsSown"),
+        Live(WorkFamily.SownDefs, "N2-F-001", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsSownDefs", "RWS_MetricDesc_CropsSownDefs"),
+        Live(WorkFamily.ColdLoss, "W-021", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsColdLoss", "RWS_MetricDesc_CropsColdLoss"),
+        Live(WorkFamily.OtherLoss, "N2-F-005", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsOtherLoss", "RWS_MetricDesc_CropsOtherLoss"),
+        Live(WorkFamily.LossRate, "N2-F-009", Work, Percent, Ratio, WorkFamily.Name, "RWS_Metric_CropsLossRate", "RWS_MetricDesc_CropsLossRate"),
+        Live(WorkFamily.MiningUnits, "W-002", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_MiningUnits", "RWS_MetricDesc_MiningUnits"),
+        Live(WorkFamily.BestMiner, "N3-W-005", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestMiner", "RWS_MetricDesc_BestMiner", breakdown: true),
+        Live(WorkFamily.Constructions, "W-004", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Constructions", "RWS_MetricDesc_Constructions"),
+        Live(WorkFamily.ConstructionMaterials, "W-007", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_ConstructionMaterials", "RWS_MetricDesc_ConstructionMaterials", breakdown: true),
+        Live(WorkFamily.BestBuilder, "N3-W-003", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestBuilder", "RWS_MetricDesc_BestBuilder", breakdown: true),
+        Live(WorkFamily.ConstructionFailures, "W-009", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_ConstructionFailures", "RWS_MetricDesc_ConstructionFailures"),
+        Live(WorkFamily.Deconstructions, "W-008", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Deconstructions", "RWS_MetricDesc_Deconstructions"),
+        Live(WorkFamily.Repairs, "N4-R-004", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Repairs", "RWS_MetricDesc_Repairs"),
+        Live(WorkFamily.PodsLaunched_, "W-023", MetricCategory.Exploration, Count, Sum, WorkFamily.Name, "RWS_Metric_PodsLaunched", "RWS_MetricDesc_PodsLaunched"),
+
+        // C3 · food (N2-F-010 and N1-A-008 are held, see FoodFamily)
+        Live(FoodFamily.SpoiledUnits, "W-016", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodSpoiled", "RWS_MetricDesc_FoodSpoiled"),
+        Live(FoodFamily.Nutrition, "W-019", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodNutrition", "RWS_MetricDesc_FoodNutrition"),
+
+        // C3 · trade
+        Live(TradeFamily.Deals, "T-003", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeDeals", "RWS_MetricDesc_TradeDeals"),
+        Live(TradeFamily.OrbitalDeals, "T-007", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeOrbital", "RWS_MetricDesc_TradeOrbital"),
+        Live(TradeFamily.VisitingCaravanDeals, "T-008", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeVisitingCaravan", "RWS_MetricDesc_TradeVisitingCaravan"),
+        Live(TradeFamily.SalesTotal, "T-001", Economy, Silver, Sum, TradeFamily.Name, "RWS_Metric_TradeSalesTotal", "RWS_MetricDesc_TradeSalesTotal"),
+        Live(TradeFamily.BuysTotal, "T-002", Economy, Silver, Sum, TradeFamily.Name, "RWS_Metric_TradeBuysTotal", "RWS_MetricDesc_TradeBuysTotal"),
+        Live(TradeFamily.SalesPeak, "T-004", Economy, Silver, Max, TradeFamily.Name, "RWS_Metric_TradeSalesPeak", "RWS_MetricDesc_TradeSalesPeak"),
+        Live(TradeFamily.BuysPeak, "T-005", Economy, Silver, Max, TradeFamily.Name, "RWS_Metric_TradeBuysPeak", "RWS_MetricDesc_TradeBuysPeak"),
+        Live(TradeFamily.SalesPeakUnit, "N2-E-004", Economy, Silver, Max, TradeFamily.Name, "RWS_Metric_TradeSalesPeakUnit", "RWS_MetricDesc_TradeSalesPeakUnit"),
+        Live(TradeFamily.SalesUnits, "N4-R-001", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeSalesUnits", "RWS_MetricDesc_TradeSalesUnits"),
+        Live(TradeFamily.BuysUnits, "N4-R-002", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeBuysUnits", "RWS_MetricDesc_TradeBuysUnits"),
+        Live(TradeFamily.TopSold, "T-006", Economy, Count, Each, TradeFamily.Name, "RWS_Metric_TradeTopSold", "RWS_MetricDesc_TradeTopSold", breakdown: true),
+        Live(TradeFamily.TopBought, "N4-R-003", Economy, Count, Each, TradeFamily.Name, "RWS_Metric_TradeTopBought", "RWS_MetricDesc_TradeTopBought", breakdown: true),
+        Live(TradeFamily.SoldDefs, "N2-E-010", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeSoldDefs", "RWS_MetricDesc_TradeSoldDefs"),
+        Live(TradeFamily.BoughtDefs, "N2-E-011", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeBoughtDefs", "RWS_MetricDesc_TradeBoughtDefs"),
+        Live(TradeFamily.PartnerFactionDefs, "N2-E-009", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradePartnerFactionDefs", "RWS_MetricDesc_TradePartnerFactionDefs", breakdown: true),
+
+        // C3 · diplomacy
+        Live(DiplomacyFamily.GiftGoodwill, "T-009", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_GiftGoodwill", "RWS_MetricDesc_GiftGoodwill"),
+        Live(DiplomacyFamily.AllyToHostile, "T-010", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AllyToHostile", "RWS_MetricDesc_AllyToHostile"),
+        Live(DiplomacyFamily.Reconciled, "T-011", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_Reconciled", "RWS_MetricDesc_Reconciled"),
+        Live(DiplomacyFamily.AidRequests, "N2-E-007", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidRequests", "RWS_MetricDesc_AidRequests"),
+        Live(DiplomacyFamily.AidArrivals, "N2-E-008", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidArrivals", "RWS_MetricDesc_AidArrivals"),
     };
 }
