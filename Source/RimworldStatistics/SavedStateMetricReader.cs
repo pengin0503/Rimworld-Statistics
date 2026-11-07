@@ -77,7 +77,7 @@ internal static class SavedStateMetricReader
         // loaded player's home map, this is the game's original start location.
         var grid = Find.World?.grid;
         var biomeDef = grid is not null && grid.InBounds(startingTile)
-            ? grid[startingTile]?.biome?.defName : null;
+            ? grid[startingTile]?.PrimaryBiome?.defName : null;
         return ColonyStartSnapshot.Build(biomeDef);
     }
 
