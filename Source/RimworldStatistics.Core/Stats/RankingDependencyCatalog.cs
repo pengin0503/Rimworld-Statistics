@@ -19,6 +19,10 @@ public static class RankingDependencyCatalog
 
     public static IReadOnlyList<MetricDefinition> Definitions { get; } = new[]
     {
+        Rank(MetricRankings.DaysByBiome, "N1-F-001", MetricUnit.Days, MetricProvenance.SaveSnapshot,
+            "colony_start", "RWS_Metric_RankDaysByBiome", "RWS_MetricDesc_RankDaysByBiome") with { HasBreakdown = true },
+        Rank(MetricRankings.EndingsByBiome, "N1-F-002", MetricUnit.Count, MetricProvenance.SaveSnapshot,
+            "colony_start", "RWS_Metric_RankEndingsByBiome", "RWS_MetricDesc_RankEndingsByBiome") with { HasBreakdown = true },
         Rank(MetricRankings.MostKills, "R-001", MetricUnit.Count, MetricProvenance.LiveAggregate,
             HealthDeathFamily.Name, "RWS_Metric_RankMostKills", "RWS_MetricDesc_RankMostKills"),
         Rank(MetricRankings.LongestDeathFree, "R-002", MetricUnit.Days, MetricProvenance.LiveAggregate,
