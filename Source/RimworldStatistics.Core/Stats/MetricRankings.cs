@@ -22,6 +22,13 @@ public static class MetricRankings
     public const string MinDeathsAtEnding = "ranking.ending.min_deaths";
     public const string ZeroDeathEndings = "ranking.ending.zero_deaths";
 
+    // Phase D dependency ranks: not published until their B/C acquisition is verified.
+    public const string MostKills = "ranking.kills.peak";
+    public const string LongestDeathFree = "ranking.death_free.peak";
+    public const string MostCrafting = "ranking.crafting.peak";
+    public const string LargestSale = "ranking.trade.peak_sale";
+    public const string MostResearch = "ranking.research.peak";
+
     /// <summary>Breakdown keys of the permadeath split.</summary>
     public const string PermadeathOn = "permadeath";
     public const string PermadeathOff = "normal";
@@ -113,6 +120,28 @@ public static class MetricRankings
         var perColonist = ordered.Select(c => (c.Key, RowOf(rows, c.Key, MetricKeys.WealthPerColonistMax)?.Value))
             .Where(x => x.Value?.Number is not null).Select(x => (x.Key, x.Value!.Number, x.Value.Coverage)).ToList();
         yield return Extreme(Def(MetricKeys.WealthPerColonistMax), perColonist, max: true, ordered.Count);
+
+        yield return InputPeak(Def(MostKills), ordered, rows, HealthDeathFamily.HostileKills);
+        yield return InputPeak(Def(LongestDeathFree), ordered, rows, HealthDeathFamily.LongestDeathGap);
+        yield return InputPeak(Def(MostCrafting), ordered, rows, WorkFamily.CraftedUnits);
+        yield return InputPeak(Def(LargestSale), ordered, rows, TradeFamily.SalesPeak);
+        // S-012 is the save-time *finished* research set, not research events counted by Q-001.
+        yield return InputPeak(Def(MostResearch), ordered, rows, ResearchStateSnapshot.Finished);
+    }
+
+    /// <summary>
+    /// Maximum over matched B/C source observations from independent colonies. The
+    /// source row already chooses the representative save/checkpoint and supplies
+    /// its own coverage. Missing input never silently becomes a zero.
+    /// </summary>
+    private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
+    {
+        var candidates = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
+            .Where(x => x.Row?.Value.Number is not null)
+            .Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage))
+            .ToList();
+        return Extreme(definition, candidates, max: true, colonies.Count);
     }
 
     private static string? Permadeath(ColonyStats c) => c.Permadeath switch
