@@ -105,4 +105,44 @@ public sealed class NumericRankingDependencyTests
         Assert.Equal(1, row.Valid);
         Assert.Equal(MetricCoverage.Partial, row.Value.Coverage);
     }
+    [Fact]
+    public void BiomeRankingsUseOriginalBiomeAndSkipUnknownColonies()
+    {
+        var p = new Profile();
+        foreach (var seed in new[] { "A", "B", "C" })
+            p.SaveObservations.Add(Save(seed));
+        static MetricObservation StartBiome(string seed, string biome)
+        {
+            var o = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot,
+                Key = "biome-" + seed, Identity = Id(seed), SaveTick = 60000,
+                ObservedUtc = DateTime.UtcNow,
+            };
+            o.Metrics[ColonyStartSnapshot.Biome] = ColonyStartSnapshot.Build(biome)[ColonyStartSnapshot.Biome];
+            return o;
+        }
+        p.MetricObservations.Add(StartBiome("A", "TemperateForest"));
+        p.MetricObservations.Add(StartBiome("B", "ExtremeDesert"));
+        // C has no original biome; do not guess its current site's biome.
+        p.EndingEvents.Add(new EndingEvent
+        {
+            CampaignId = "rank-B", Type = EndingType.Ship, TicksGame = 60000,
+            Source = EndingSource.Live, Ordinal = 0,
+        });
+        var v = View(p, developmentCatalog: true);
+        var days = v.Overall.Single(x => x.Definition.Key == MetricRankings.DaysByBiome);
+        Assert.Equal((2d, 3, 2, MetricCoverage.Partial),
+            (days.Value.Number, days.Targets, days.Valid, days.Value.Coverage));
+        var split = days.Breakdowns.ToDictionary(x => x.Breakdown, x => x.Value.Number);
+        Assert.Equal(1d, split["TemperateForest"]);
+        Assert.Equal(1d, split["ExtremeDesert"]);
+        var endings = v.Overall.Single(x => x.Definition.Key == MetricRankings.EndingsByBiome);
+        Assert.Equal(1d, endings.Value.Number);
+        Assert.Equal(1d, endings.Breakdowns.Single(x => x.Breakdown == "ExtremeDesert").Value.Number);
+        Assert.Equal(0d, endings.Breakdowns.Single(x => x.Breakdown == "TemperateForest").Value.Number);
+        Assert.DoesNotContain(View(p, developmentCatalog: false).Overall,
+            x => x.Definition.Key == MetricRankings.DaysByBiome || x.Definition.Key == MetricRankings.EndingsByBiome);
+    }
+
 }
