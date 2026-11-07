@@ -237,6 +237,16 @@
   <RWS_Unit_SilverPerYear>{0} / year</RWS_Unit_SilverPerYear>
   <RWS_Details_Permadeath>Permadeath</RWS_Details_Permadeath>
   <RWS_Details_NotPermadeath>Normal</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankMostKills>Most enemy kills in one colony</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>Maximum confirmed hostile kills in a single colony, from its selected checkpoint; missing input does not count as zero.</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>Longest death-free period across colonies</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>Largest measured death-free interval in any one colony, based on completed intervals from the selected checkpoint.</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>Most manufactured items in one colony</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>Maximum confirmed crafted item count in one colony from the selected checkpoint.</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>Largest sale in one colony</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>Maximum confirmed sale amount for one transaction in a colony, compared across colonies.</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>Most completed research in one colony</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>Largest number of completed research projects in a colony's save-time snapshot, not a count of research completion events.</RWS_MetricDesc_RankMostResearch>
   <RWS_Metric_RankByDifficultyDays>Days played by difficulty</RWS_Metric_RankByDifficultyDays>
   <RWS_MetricDesc_RankByDifficultyDays>Colony days summed by the difficulty of each colony's furthest point; changes of difficulty during play are not tracked. Click to show the breakdown.</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>Endings by difficulty</RWS_Metric_RankByDifficultyEndings>
