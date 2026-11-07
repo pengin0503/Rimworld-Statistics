@@ -14,6 +14,9 @@ names = (
     "CompAtomizer", "Gravship", "GravshipUtility", "CompPilotConsole",
     "Building_GravEngine", "PollutionGrid", "Pawn_AgeTracker",
     "CompMech", "MechGest", "MechRepair", "RitualOutcome",
+    "WorldGrid", "PlanetLayer", "Tile", "GameInfo", "GameInitData", "Find",
+    "PollutionGrid", "LordJob_Ritual", "LordJob_Ritual_ChildBirth",
+    "Building_MechGestator", "Gravship", "GravshipUtility",
 )
 verbs = (
     "Birth", "Assign", "Apply", "Finish", "Complete", "Produce",
@@ -27,6 +30,8 @@ for entry in entries:
     if "+" in name or name.rsplit(".", 1)[-1] not in names:
         continue
     print("API TYPE:", name)
+    if name.rsplit(".",1)[-1] in {"WorldGrid","PlanetLayer","Tile","GameInfo","Gravship","WorldComponent_GravshipController","Building_MechGestator","LordJob_Ritual","RitualOutcomePossibility"}:
+        print("  FIELDS:",", ".join(f["name"] for f in entry.get("fields",[])[:75]))
     methods = [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
     for m in methods[:35]:
         types = m["signature"]["parameters"]
