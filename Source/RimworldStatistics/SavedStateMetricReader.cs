@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -42,6 +42,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "roster")
                     foreach (var (key, value) in ReadRoster())
+                        observation.Metrics[key] = value;
+                else if (unit == "facilities")
+                    foreach (var (key, value) in ReadFacilities())
                         observation.Metrics[key] = value;
             }
             catch (Exception e)
@@ -140,6 +143,60 @@ internal static class SavedStateMetricReader
             }
         }
         return RosterSnapshot.Build(facts, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadFacilities()
+    {
+        var maps = new List<FacilityMapFact>();
+        var partial = false;
+        foreach (var map in Find.Maps)
+        {
+            if (!map.IsPlayerHome)
+                continue;
+            try
+            {
+                var player = Faction.OfPlayerSilentFail;
+                var beds = 0;
+                var turrets = 0;
+                double generation = 0, battery = 0;
+                var running = new Dictionary<string, long>(StringComparer.Ordinal);
+                foreach (var thing in map.listerThings.AllThings)
+                {
+                    if (thing.Faction != player)
+                        continue;
+                    if (thing is Building_Bed bed && bed.Medical) beds++;
+                    if (thing is Building_Turret) turrets++;
+                    if (thing is not ThingWithComps compThing) continue;
+                    var plant = compThing.TryGetComp<CompPowerPlant>();
+                    if (plant != null)
+                    {
+                        var rated = Math.Max(0, -plant.Props.PowerConsumption);
+                        generation += rated;
+                        if (plant.PowerOutput > 0)
+                            running[thing.def.defName] = running.GetValueOrDefault(thing.def.defName) + 1;
+                    }
+                    var store = compThing.TryGetComp<CompPowerBattery>();
+                    if (store != null)
+                        battery += store.Props.storedEnergyMax;
+                }
+                var growingCells = map.zoneManager.AllZones.OfType<Zone_Growing>()
+                    .SelectMany(z => z.Cells).Distinct().Count();
+                var indoorRooms = map.regionGrid.allRooms.Count(r => r != null && !r.PsychologicallyOutdoors);
+                maps.Add(new FacilityMapFact
+                {
+                    Id = map.uniqueID.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                    MedicalBeds = beds, Turrets = turrets, GrowingCells = growingCells, IndoorRooms = indoorRooms,
+                    GenerationWatts = generation, BatteryWattDays = battery,
+                    RunningGenerators = running,
+                    OutdoorTempC = map.mapTemperature.OutdoorTemp,
+                });
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+        return FacilitiesSnapshot.Build(maps, partial);
     }
 
 }

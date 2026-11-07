@@ -55,6 +55,15 @@ public enum MetricUnit
 
     /// <summary>Game years (biological ages).</summary>
     Years,
+
+    /// <summary>Outdoor temperature in degrees Celsius.</summary>
+    Celsius,
+
+    /// <summary>Rated electrical generating capacity in watts.</summary>
+    Watts,
+
+    /// <summary>Rated stored energy capacity in watt-days.</summary>
+    WattDays,
 }
 
 /// <summary>Which of a colony's observations gives its value.</summary>

@@ -689,4 +689,24 @@
   <RWS_MetricDesc_RosterAgeMean>Mean living colonist age at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAgeMean>
   <RWS_Metric_RosterInjuredPeak>Highest simultaneously injured colonists</RWS_Metric_RosterInjuredPeak>
   <RWS_MetricDesc_RosterInjuredPeak>Highest simultaneously injured colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>Most loaded home maps</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>Most loaded home maps across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesMedicalBeds>Most medical beds</RWS_Metric_FacilitiesMedicalBeds>
+  <RWS_MetricDesc_FacilitiesMedicalBeds>Most medical beds across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesMedicalBeds>
+  <RWS_Metric_FacilitiesTurrets>Most installed turrets</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>Most installed turrets across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>Largest growing-zone area</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>Largest growing-zone area across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesRooms>Most enclosed rooms</RWS_Metric_FacilitiesRooms>
+  <RWS_MetricDesc_FacilitiesRooms>Most enclosed rooms across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesRooms>
+  <RWS_Metric_FacilitiesGeneration>Highest rated generating capacity</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>Highest rated generating capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>Highest rated battery capacity</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>Highest rated battery capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_Metric_FacilitiesRunningGenerators>Running generators by type</RWS_Metric_FacilitiesRunningGenerators>
+  <RWS_MetricDesc_FacilitiesRunningGenerators>Running generators by type across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesRunningGenerators>
+  <RWS_Metric_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>Highest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Highest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
 </LanguageData>

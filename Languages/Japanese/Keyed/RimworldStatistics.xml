@@ -689,4 +689,24 @@
   <RWS_MetricDesc_RosterAgeMean>正常保存時点で生存中の対象Pawnから取得した生存入植者の平均年齢。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAgeMean>
   <RWS_Metric_RosterInjuredPeak>同時負傷入植者の最多人数</RWS_Metric_RosterInjuredPeak>
   <RWS_MetricDesc_RosterInjuredPeak>正常保存時点で生存中の対象Pawnから取得した同時負傷入植者の最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>同時にロードされた拠点最多数</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>正常保存時にロードされていたプレイヤー拠点マップ上の同時にロードされた拠点最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesMedicalBeds>医療用ベッド最多数</RWS_Metric_FacilitiesMedicalBeds>
+  <RWS_MetricDesc_FacilitiesMedicalBeds>正常保存時にロードされていたプレイヤー拠点マップ上の医療用ベッド最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesMedicalBeds>
+  <RWS_Metric_FacilitiesTurrets>防衛タレット最多数</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>正常保存時にロードされていたプレイヤー拠点マップ上の防衛タレット最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>栽培ゾーン最大面積</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>正常保存時にロードされていたプレイヤー拠点マップ上の栽培ゾーン最大面積。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesRooms>屋内の最多部屋数</RWS_Metric_FacilitiesRooms>
+  <RWS_MetricDesc_FacilitiesRooms>正常保存時にロードされていたプレイヤー拠点マップ上の屋内の最多部屋数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRooms>
+  <RWS_Metric_FacilitiesGeneration>最大発電定格容量</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>正常保存時にロードされていたプレイヤー拠点マップ上の最大発電定格容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>最大蓄電容量</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>正常保存時にロードされていたプレイヤー拠点マップ上の最大蓄電容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_Metric_FacilitiesRunningGenerators>稼働中発電設備の種類別件数</RWS_Metric_FacilitiesRunningGenerators>
+  <RWS_MetricDesc_FacilitiesRunningGenerators>正常保存時にロードされていたプレイヤー拠点マップ上の稼働中発電設備の種類別件数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRunningGenerators>
+  <RWS_Metric_FacilitiesOutdoorTempMin>保存時の最低屋外気温</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最低屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>保存時の最高屋外気温</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最高屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMax>
 </LanguageData>
