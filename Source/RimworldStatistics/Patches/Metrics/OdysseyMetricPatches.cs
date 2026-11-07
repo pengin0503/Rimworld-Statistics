@@ -74,7 +74,7 @@ public static class OdysseyLandingMetricPatch
     public static void Postfix((Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
     {
         var (engine, from, to, targetMap) = __state;
-        if (engine is null || engine.DeadOrDestroyed() || !engine.Spawned
+        if (engine is null || engine.Destroyed || !engine.Spawned
             || engine.Faction != Faction.OfPlayer || engine.Map != targetMap
             || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
             return;
