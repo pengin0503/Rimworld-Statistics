@@ -7,7 +7,11 @@ public static class RoyaltyFamily
     public const string TitleGrants = "royalty.title_grants";
     public const string HighestTitle = "royalty.highest_title";
     public const string Honor = "royalty.honor";
+    public const string PermitUses = "royalty.permit_uses";
+    public const string Psycasts = "royalty.psycasts";
     private const string Grants = "grants";
+    private const string UsedPermits = "permits_used";
+    private const string CastPsycasts = "psycasts";
     private const string Titles = "title";
     private const string HonorGained = "honor_gained";
     private const string HonorSpent = "honor_spent";
@@ -41,9 +45,25 @@ public static class RoyaltyFamily
         // Other decreases are not assumed to be purchases.
     }
 
+    /// <summary>Count only a permit belonging to a free player colonist once it was actually used.</summary>
+    public static void PermitUsed(FamilyState s, bool playerOwned, bool confirmed)
+    {
+        if (playerOwned && confirmed)
+            s.Count(UsedPermits);
+    }
+
+    /// <summary>Count a successful activation by a free player colonist, never UI targeting or failed casts.</summary>
+    public static void PsycastSucceeded(FamilyState s, bool playerFreeColonist, bool confirmed)
+    {
+        if (playerFreeColonist && confirmed)
+            s.Count(CastPsycasts);
+    }
+
     private static void Build(FamilyOutputContext c)
     {
         c.PutCount(Grants, TitleGrants);
+        c.PutCount(UsedPermits, PermitUses);
+        c.PutCount(CastPsycasts, Psycasts);
         var title = c.State.Peek(Titles);
         if (title?.Max is { } rank)
         {
