@@ -269,20 +269,23 @@ internal static class SavedStateMetricReader
             foreach (var thing in map.listerThings.AllThings)
                 Gather(thing);
         }
-        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)
-        {
-            if (pawn is null || pawn.Dead || pawn.Faction != player)
-                continue;
-            if (pawn.equipment != null)
-                foreach (var item in pawn.equipment.AllEquipmentListForReading)
-                    Gather(item);
-            if (pawn.apparel != null)
-                foreach (var item in pawn.apparel.WornApparel)
-                    Gather(item);
-            if (pawn.inventory?.innerContainer is { } inventory)
-                foreach (var item in inventory)
-                    Gather(item);
-        }
+        // Phase B stock intentionally excludes caravans, transport pods and non-home maps.
+        // A player pawn must actually be on a loaded home map for their possessions to count.
+        foreach (var map in Find.Maps.Where(m => m.IsPlayerHome))
+            foreach (var pawn in map.mapPawns.AllPawns)
+            {
+                if (pawn is null || pawn.Dead || !pawn.Spawned || pawn.Faction != player)
+                    continue;
+                if (pawn.equipment != null)
+                    foreach (var item in pawn.equipment.AllEquipmentListForReading)
+                        Gather(item);
+                if (pawn.apparel != null)
+                    foreach (var item in pawn.apparel.WornApparel)
+                        Gather(item);
+                if (pawn.inventory?.innerContainer is { } inventory)
+                    foreach (var item in inventory)
+                        Gather(item);
+            }
         return StockSnapshot.Build(items, partial);
     }
 

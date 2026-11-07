@@ -3,7 +3,7 @@ namespace RimworldStatistics.Core;
 /// <summary>One distinct player-owned item from a loaded home map or a player pawn's owned container.</summary>
 public readonly record struct StockItemFact(
     string Id, string Def, int Count, double NutritionPerUnit,
-    bool Weapon, bool Medicine, bool Legendary, bool Persona);
+    bool Weapon, bool Medicine, bool Legendary, bool Persona, bool InPlayerHome = true);
 
 /// <summary>
 /// Stock measured at one save. No direct game Thing or ThingOwner reference is retained.
@@ -33,6 +33,8 @@ public static class StockSnapshot
         long silver = 0, weapons = 0, legendary = 0, persona = 0, medicine = 0;
         foreach (var item in items)
         {
+            if (!item.InPlayerHome)
+                continue;
             if (string.IsNullOrWhiteSpace(item.Id) || string.IsNullOrEmpty(item.Def)
                 || item.Count < 0 || !double.IsFinite(item.NutritionPerUnit) || item.NutritionPerUnit < 0)
             {

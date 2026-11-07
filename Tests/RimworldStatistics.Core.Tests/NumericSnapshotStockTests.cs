@@ -12,6 +12,7 @@ public sealed class NumericSnapshotStockTests
             new StockItemFact("rice-1", "RawRice", 120, 0.05, false, false, false, false), // same ThingID
             new StockItemFact("silver", "Silver", 5000, 0, false, false, false, false),
             new StockItemFact("steel", "Steel", 200, 0, false, false, false, false),
+            new StockItemFact("caravan-steel", "Steel", 500, 0, false, false, false, false, InPlayerHome: false),
             new StockItemFact("component", "ComponentIndustrial", 8, 0, false, false, false, false),
             new StockItemFact("medicine", "MedicineIndustrial", 3, 0, false, true, false, false),
             new StockItemFact("w1", "Gun_BoltActionRifle", 1, 0, true, false, true, false),
