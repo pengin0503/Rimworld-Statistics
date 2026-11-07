@@ -241,6 +241,8 @@
   <RWS_MetricDesc_RankDaysByBiome>Total colony survival days grouped by the game's original starting biome; never uses the current settlement biome.</RWS_MetricDesc_RankDaysByBiome>
   <RWS_Metric_RankEndingsByBiome>Endings by original biome</RWS_Metric_RankEndingsByBiome>
   <RWS_MetricDesc_RankEndingsByBiome>Accepted endings grouped by the immutable start-tile biome; colonies with unknown origin are excluded and coverage is partial.</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>Hostile kills per colonist death</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>Confirmed hostile kills divided by free-colonist deaths in the same recorded checkpoint interval. Missing paired inputs are excluded; a zero denominator is undefined.</RWS_MetricDesc_RankKillsToDeaths>
   <RWS_Metric_RankMostKills>Most enemy kills in one colony</RWS_Metric_RankMostKills>
   <RWS_MetricDesc_RankMostKills>Maximum confirmed hostile kills in a single colony, from its selected checkpoint; missing input does not count as zero.</RWS_MetricDesc_RankMostKills>
   <RWS_Metric_RankDeathFree>Longest death-free period across colonies</RWS_Metric_RankDeathFree>
