@@ -35,7 +35,7 @@
 | Partial | 途中導入・途中欠落・非対応経路・分類不明・集計対象欠落あり | 取得範囲の値と注意。完全値のように表示しない |
 | SnapshotOnly | セーブ時点の状態、残存クエスト、有限間隔の履歴上の観測 | 値と「保存時点」「履歴上」等の由来 |
 | Unknown | 値・分母・必要な時刻等の根拠が不足 | — と理由 |
-| NotApplicable | DLCなし等で定義上の対象外 | DLCが対象の範囲に一度もなければカテゴリを隠す。対象外コロニーは母数外 |
+| NotApplicable | DLCなし、観測窓が作れない短い系列、条件を満たす点がない等で定義上の対象外 | DLCが対象の範囲に一度もなければカテゴリを隠す。対象外コロニーは母数外。値は — |
 
 SnapshotOnlyのうち欠測のある値は `Partial` とし、元の種別を由来で残す。範囲と由来（`VanillaCounter / SaveHistory / SaveSnapshot / LiveAggregate`）は状態と別。旧セーブのDLCは `meta/modIds` が明示された場合にだけ判定。現行DLC構成で旧記録を消さない。ライブはイベント経路が確定した後のみ有効。未観測時点から0を埋めない。DevModeで発生した事実を通常プレイと厳密に分離できないため、新統計はDev操作を含み得る旨を表示し、既存エンディングのみ既存設定でフィルターする。
 
@@ -60,7 +60,7 @@ v1の `ObservedValues` と枝刈りを拡張値の保存に流用しない。 `P
 | Cの保存 | `GameComponent_RimworldStatistics` v2 に拡張ブロック `numericStatistics`。既存の campaignId / lineageEndings を継承。現在のチェックポイント、前回成功親、計測範囲、ファミリー別の累計と再開に必要な小さなアクティブ状態を保持 |
 | Cのプロファイル | checkpointIdごとに親IDとtick/UTCを保持。完全一致再読は冪等、同じIDに異なるペイロードはそのチェックポイントを隔離。累計ペイロードは確認済みの子を持つ祖先から圧縮できる。初期実装では同値重複だけ削除し、移行時の保存削減を先走らない |
 
-`metricObservations` の要約は分岐判定・代表値・観測極値・再解析・来歴が等価と証明できる場合だけ枝刈り可。取り込みは既存のファイルサイズ/時刻によるスキップを保ち、通常変更されていないファイルにはハッシュ目的で再アクセスしない。削除された元ファイルの未取得項目は不明。Bの値はプロファイルに記録し、Bより前のセーブやBのプロファイルを失った場合は復元不可。Cのイベントは記録済みセーブから取り込み直せる。
+`metricObservations` の要約は分岐判定・代表値・観測極値・再解析・来歴が等価と証明できる場合だけ枝刈り可（Aの実装: 同じ指紋・キャンペーンID・開始入植者集合で、より後のtickの観測があり、観測横断のMOD数も同じ古いA観測を保存しない）。0÷0の率は既知の0件として合算する。取り込みは既存のファイルサイズ/時刻によるスキップを保ち、通常変更されていないファイルにはハッシュ目的で再アクセスしない。削除された元ファイルの未取得項目は不明。Bの値はプロファイルに記録し、Bより前のセーブやBのプロファイルを失った場合は復元不可。Cのイベントは記録済みセーブから取り込み直せる。
 
 拡張観測のJSON名は `source, formatVersion, key, identity, fileAliases, gameVersion, saveTick, observedUtc, activeDlcIds, metrics`。 `identity` は既存 `ColonyIdentity`、`fileAliases` はAの `fileName/fileSize/lastWriteUtc` の組。 `metrics` はキーから値・内訳への辞書で、内訳キーなしのスカラーは予約キー空文字を使う。指標値は `coverage, integerValue, realValue, numerator, denominator, sinceTick, throughTick, sampleCount` のうち必要なフィールドのみ。率・平均は再計算できる分子と分母を必ず持ち、`sampleCount` が計算上の分母と同じ場合は省略できる。各キーの定義改訂番号は `revision` に保持し、異なる改訂番号の値は混ぜない。破損した個別の値は当該キーだけ隔離し、読み取り可能な同版未知フィールドは往復保持する。
 

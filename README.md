@@ -8,6 +8,8 @@ RimWorld 1.7 向けの MOD です。全セーブ・全コロニーを通した�
 - 最高資産の合計
 - コロニー数、実プレイ時間、襲撃・死亡の累計など
 
+「詳細統計」タブでは、取り込んだセーブの履歴グラフ・ゲームの累計カウンター・セーブに残ったクエストから計算した数値（資産・人口と心情・襲撃・クエスト・コロニーの順位など）を、全コロニーまたはコロニー別に一覧できます。グラフは表示しません。
+
 MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。セーブには書き込みません。
 
 前提 MOD: Harmony
@@ -20,6 +22,7 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 - [RimWorld 1.7 実現可能性調査（2026-11-06）](docs/research/2026-11-06-rimworld-1.7-feasibility.md)
 - [実装計画（2026-11-06）](docs/superpowers/plans/2026-11-06-rimworld-statistics.md)
 - [手動確認の手順書](docs/manual-test-checklist.md)
+- 数値統計拡張: [確定設計](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-design.md)・[台帳](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-metrics.md)・[計画](docs/superpowers/plans/2026-11-07-numeric-statistics-expansion.md)・[実装・検証記録](docs/research/2026-11-07-numeric-statistics-expansion-verification.md)（Phase A と D1 の一部を実装。保存時点の状態・プレイ中のイベント・DLC 別の統計は、実機での確認後に追加）
 
 ## ビルド（開発者向け）
 

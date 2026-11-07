@@ -37,7 +37,7 @@
 
 `game/history/autoRecorderGroups/li/recorders/li` の `def` と `records` または `recordsDeflate`。既存 `RecordsCodec` のLE float32とraw deflateを継承。1.7.4985の `Data/Core/Defs/Misc/HistoryAutoRecording/HistoryAutoRecorders.xml` で `Wealth_Total / Items / Buildings / Pawns` は全て30000 tick間隔。Workerはプレイヤーホームを合算する。Wealth_Pawns は wealthWatcher の生物資産分類。統計の取得に地面の全Thingを再集計しない。
 
-`HistoryAutoRecorder.Tick` は初回または頻度の倍数で記録し、ホームのないときは直前値を複製する。XMLに点ごとの時刻・補完フラグはない。インデックスの時間は `HistoryAutoRecorderGroup.DrawGraph` と同じ名目上の観測日。詳細設計の開始整合規則を満たさない系列で「初回日」「連続日数」を出さない。旧1.5/1.6と1.7各版で raw/deflate の両方、空、NaN、同名Def重複、異常な点数を確認。Def変更や無拠点区間の実際の価値は復元不可。
+`HistoryAutoRecorder.Tick` は初回または頻度の倍数で記録し、ホームのないときは直前値を複製する。XMLに点ごとの時刻・補完フラグはない。インデックスの時間は `HistoryAutoRecorderGroup.DrawGraph` と同じ名目上の観測日。詳細設計の開始整合規則を満たさない系列で「初回日」「連続日数」を出さない。旧1.5/1.6と1.7各版で raw/deflate の両方、空、NaN、同名Def重複、異常な点数を確認。Def変更や無拠点区間の実際の価値は復元不可。実装時の確認: 実セーブ49件（1.5系22・1.6系20・1.7系7）で7系列すべての点数が `floor(ticksGame/30000)+1` に一致し、1.5/1.6の間隔の条件を満たした（[実装・検証記録](2026-11-07-numeric-statistics-expansion-verification.md)）。
 
 ## population
 
@@ -45,7 +45,7 @@
 
 ## vanilla
 
-`game/tickManager/ticksGame`、`game/storyWatcher/statsRecord/{numRaidsEnemy,colonistsKilled}`、`meta/modIds/li`。正しい親要素の存在と明示値の有効性を確認し、確認済みの版の省略時デフォルトだけ適用する。MOD数は保存メタデータに載ったID数（Core/DLCも含む）。リスト欠落は不明、明示空リストは0。台帳H-031/032はv1の分岐横断最大値を流用せず同じセーブの分子・分母を使う。
+`game/tickManager/ticksGame`、`game/storyWatcher/statsRecord/{numRaidsEnemy,colonistsKilled}`、`meta/modIds/li`。正しい親要素の存在と明示値の有効性を確認し、確認済みの版の省略時デフォルトだけ適用する（実装時の確認: 1.7は `StatsRecord.ExposeData`、1.5/1.6は実セーブ42件で明示値が0・`greatestPopulation` が3になる例がなく、既定値0の省略と整合）。MOD数は保存メタデータに載ったID数（Core/DLCも含む）。リスト欠落は不明、明示空リストは0。台帳H-031/032はv1の分岐横断最大値を流用せず同じセーブの分子・分母を使う。
 
 ## quests
 
