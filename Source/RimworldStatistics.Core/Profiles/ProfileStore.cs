@@ -39,6 +39,11 @@ public sealed class ProfileStore
     private bool _hasExpectedPrimary;
     private string? _expectedPrimary;
 
+    // A schema-1 file that was loaded (the primary or a backup): copied once to profile.v1.json before the first
+    // schema-2 write, so the user can roll back to v1 (numeric expansion design §2).
+    private string? _v1SourcePath;
+    private string? _v1SourceText;
+
     public ProfileStore(string directory)
     {
         _directory = directory;
@@ -50,6 +55,10 @@ public sealed class ProfileStore
     private string Backup(int n) => ProfilePath + ".bak" + n.ToString(CultureInfo.InvariantCulture);
     private string TmpPath => ProfilePath + ".tmp";
     private string PendingBackup => ProfilePath + ".previous";
+    private string V1CopyPath => Path.Combine(_directory, V1CopyFileName);
+
+    /// <summary>The last schema-1 profile, kept beside the record file (never part of the backup rotation).</summary>
+    public const string V1CopyFileName = "profile.v1.json";
     private FileStream LockFile() => new(ProfilePath + ".lock", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
 
     /// <summary>Tries the primary, then bak1..bak3. An unparseable primary is renamed to profile.json.corrupt-&lt;UTC time&gt;.</summary>
@@ -57,6 +66,8 @@ public sealed class ProfileStore
     {
         _hasExpectedPrimary = true;
         _expectedPrimary = null;
+        _v1SourcePath = null;
+        _v1SourceText = null;
         var candidates = new[]
         {
             (Path: ProfilePath, Source: ProfileLoadSource.Primary),
@@ -107,6 +118,12 @@ public sealed class ProfileStore
                     primaryCorrupt = true;
                 continue;
             }
+            if (version < Profile.CurrentSchemaVersion)
+            {
+                _v1SourcePath = path;
+                _v1SourceText = json;
+            }
+            profile.SchemaVersion = Profile.CurrentSchemaVersion;   // written as the current schema from the first change on
             return Finish(profile, source, primaryCorrupt, primaryUnreadable, utcNow);
         }
         return Finish(new Profile(), ProfileLoadSource.Empty, primaryCorrupt, primaryUnreadable, utcNow);
@@ -155,7 +172,7 @@ public sealed class ProfileStore
         return null;
     }
 
-    /// <summary>Null when the text is not a JSON object with a usable integer schemaVersion (missing counts as 1).</summary>
+    /// <summary>Null when the text is not a JSON object with a usable integer schemaVersion (missing is schema 1, as v1 wrote it).</summary>
     private static int? SchemaVersionOf(string json)
     {
         try
@@ -164,7 +181,7 @@ public sealed class ProfileStore
             if (doc.RootElement.ValueKind != JsonValueKind.Object)
                 return null;
             if (!doc.RootElement.TryGetProperty("schemaVersion", out var v))
-                return Profile.CurrentSchemaVersion;
+                return 1;
             return v.ValueKind == JsonValueKind.Number && v.TryGetInt32(out var n) ? n : null;
         }
         catch (JsonException)
@@ -197,6 +214,7 @@ public sealed class ProfileStore
         var current = File.Exists(ProfilePath) ? File.ReadAllText(ProfilePath, Encoding.UTF8) : null;
         if (_hasExpectedPrimary && current != _expectedPrimary)
             throw new IOException("The statistics file changed in another session. Reopen RimWorld before writing to it.");
+        ProtectV1Source(current);
 
         if (File.Exists(PendingBackup))
             RotateBackups();
@@ -236,6 +254,46 @@ public sealed class ProfileStore
                 // A leftover temp file is overwritten by the next save.
             }
         }
+    }
+
+    /// <summary>
+    /// Before the first schema-2 write, copies the schema-1 file that was loaded to profile.v1.json, once. An existing copy
+    /// is never overwritten. Runs under the write lock; if the source changed or the copy fails, nothing is written.
+    /// </summary>
+    private void ProtectV1Source(string? currentPrimary)
+    {
+        if (_v1SourceText is not { } text || _v1SourcePath is not { } source)
+            return;
+        if (!File.Exists(V1CopyPath))
+        {
+            var sourceNow = source == ProfilePath ? currentPrimary : File.Exists(source) ? File.ReadAllText(source, Encoding.UTF8) : null;
+            if (sourceNow != text)
+                throw new IOException("The schema-1 statistics file changed before it could be copied. Reopen RimWorld before writing to it.");
+            var tmp = V1CopyPath + ".tmp";
+            try
+            {
+                using (var fs = new FileStream(tmp, FileMode.Create, FileAccess.Write, FileShare.None))
+                {
+                    var bytes = Utf8NoBom.GetBytes(text);
+                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Flush(flushToDisk: true);
+                }
+                File.Move(tmp, V1CopyPath, overwrite: false);
+            }
+            finally
+            {
+                try
+                {
+                    if (File.Exists(tmp)) File.Delete(tmp);
+                }
+                catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+                {
+                    // overwritten by the next attempt
+                }
+            }
+        }
+        _v1SourcePath = null;
+        _v1SourceText = null;
     }
 
     private void EnsureBackupPaths()

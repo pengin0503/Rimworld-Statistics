@@ -79,6 +79,19 @@ public static class ProfileJson
         }
 
         p.ImportState ??= new ImportState();
+
+        p.MetricObservations = Clean(p.MetricObservations);
+        foreach (var m in p.MetricObservations)
+        {
+            if (m.IsQuarantined)
+                continue;
+            m.Key ??= "";
+            m.Identity = Normalize(m.Identity);
+            m.FileAliases = Clean(m.FileAliases);
+            foreach (var a in m.FileAliases)
+                a.FileName ??= "";
+            m.Metrics ??= new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        }
     }
 
     private static ColonyIdentity Normalize(ColonyIdentity? id)

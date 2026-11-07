@@ -20,5 +20,9 @@ public sealed class ObservedValues
     public double WealthLast { get; set; }
     public int WealthPoints { get; set; }
 
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
+
     public ObservedValues Clone() => (ObservedValues)MemberwiseClone();
 }

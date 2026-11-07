@@ -88,8 +88,8 @@ public sealed class ProfileStoreTests
     }
 
     [Theory]
-    [InlineData("""{ "schemaVersion": 2, "saveObservations": [ { "fileName": "future.rws", "status": "ok", "newField": { "x": 1 } } ] }""", "future.rws")]
-    [InlineData("""{ "schemaVersion": 2, "endingEvents": [ { "type": "someFutureEnding" } ] }""", null)]   // not readable by this version at all
+    [InlineData("""{ "schemaVersion": 3, "saveObservations": [ { "fileName": "future.rws", "status": "ok", "newField": { "x": 1 } } ] }""", "future.rws")]
+    [InlineData("""{ "schemaVersion": 3, "endingEvents": [ { "type": "someFutureEnding" } ] }""", null)]   // not readable by this version at all
     public void Load_NewerSchema_IsReadOnlyAndSaveThrows(string json, string? visibleFile)
     {
         using var dir = new TempDir();

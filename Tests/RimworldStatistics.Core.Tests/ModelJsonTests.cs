@@ -25,7 +25,7 @@ public sealed class ModelJsonTests
         var json = ProfileJson.Serialize(new Profile { EndingEvents = { new EndingEvent { Type = EndingType.RoyalAscent, Source = EndingSource.SeededTrace } } });
         Assert.Contains("\"type\": \"royalAscent\"", json);
         Assert.Contains("\"source\": \"seededTrace\"", json);
-        Assert.Contains("\"schemaVersion\": 1", json);
+        Assert.Contains("\"schemaVersion\": 2", json);
     }
 
     [Fact]

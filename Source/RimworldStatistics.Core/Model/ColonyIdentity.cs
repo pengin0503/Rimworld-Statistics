@@ -24,6 +24,10 @@ public sealed class ColonyIdentity
     /// <summary>Campaign id stamped into the save by this mod, if any.</summary>
     public string? ModCampaignId { get; set; }
 
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
+
     [JsonIgnore]
     public bool HasFingerprint => SeedString != null && StartingTile != null && FirstWealthBits != null;
 

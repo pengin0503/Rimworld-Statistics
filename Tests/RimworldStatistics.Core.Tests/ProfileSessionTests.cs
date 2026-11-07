@@ -104,7 +104,7 @@ public sealed class ProfileSessionTests
     public void Mutate_WhenReadOnly_DoesNotWriteAndRecordsError()
     {
         using var dir = new TempDir();
-        const string json = """{ "schemaVersion": 2, "saveObservations": [] }""";
+        const string json = """{ "schemaVersion": 3, "saveObservations": [] }""";
         File.WriteAllText(dir.File("profile.json"), json);
         var session = new ProfileSession(new ProfileStore(dir.Path), () => Now);
         Assert.True(session.LoadResult.ReadOnly);

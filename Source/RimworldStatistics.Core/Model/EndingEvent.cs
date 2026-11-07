@@ -20,4 +20,8 @@ public sealed class EndingEvent
     public bool DevMode { get; set; }
     public string? GameVersion { get; set; }
     public string? CreditsExcerpt { get; set; }
+
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
 }
