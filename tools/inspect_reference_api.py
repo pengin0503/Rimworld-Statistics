@@ -32,8 +32,8 @@ for entry in entries:
     print("API TYPE:", name)
     if name.rsplit(".",1)[-1] in {"WorldGrid","PlanetLayer","Tile","GameInfo","Gravship","WorldComponent_GravshipController","Building_MechGestator","LordJob_Ritual","RitualOutcomePossibility"}:
         print("  FIELDS:",", ".join(f["name"] for f in entry.get("fields",[])[:75]))
-    methods = [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
-    for m in methods[:35]:
+    methods = entry.get("methods", []) if name in {"RimWorld.Planet.WorldGrid", "RimWorld.Planet.PlanetLayer", "RimWorld.Planet.Tile"} else [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
+    for m in methods[:85]:
         types = m["signature"]["parameters"]
         pars = m["parameters"]
         args = ", ".join((types[i] if i < len(types) else "?") + " " + p.get("name", "")
