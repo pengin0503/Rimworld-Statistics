@@ -1,0 +1,83 @@
+name: Publish Rimworld Statistics v1.1.0
+
+on:
+  push:
+    branches:
+      - release/v1.1.0-publish
+    paths:
+      - .github/workflows/publish-v1.1.0.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-v1.1.0
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics'
+    runs-on: ubuntu-latest
+    env:
+      RELEASE_SHA: 5b8af6340df9ac4f1bd0d184b109722a3dbd2029
+      UseNuGetRefs: 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 5b8af6340df9ac4f1bd0d184b109722a3dbd2029
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Test the release commit
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$RELEASE_SHA"
+          dotnet test --project Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -p:UseNuGetRefs=true
+          bash tools/check_keys.sh
+      - name: Build and verify the installable ZIP
+        run: |
+          set -euo pipefail
+          zipfile="$RUNNER_TEMP/RimworldStatistics-v1.1.0.zip"
+          bash tools/package.sh "$zipfile"
+          unzip -t "$zipfile"
+          diff -u <(printf '%s\n' \
+            RimworldStatistics/1.7/Assemblies/RimworldStatistics.Core.dll \
+            RimworldStatistics/1.7/Assemblies/RimworldStatistics.dll \
+            RimworldStatistics/About/About.xml \
+            RimworldStatistics/Languages/English/Keyed/RimworldStatistics.xml \
+            RimworldStatistics/Languages/Japanese/Keyed/RimworldStatistics.xml) \
+            <(unzip -Z -1 "$zipfile" | LC_ALL=C sort)
+          cd "$RUNNER_TEMP"
+          sha256sum RimworldStatistics-v1.1.0.zip > RimworldStatistics-v1.1.0.zip.sha256
+      - name: Publish v1.1.0 with the verified ZIP
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd "$RUNNER_TEMP"
+          cat > release-notes.md <<'NOTES'
+          RimWorld 1.7 向け。Harmony が必要です。
+
+          - タイトル画面の「通算統計」に「詳細統計」タブを追加しました。資産、人口・心情、襲撃、クエストなどを全コロニーまたはコロニー別に数値で表示します。
+          - 最大人口、最速エンディング、実プレイ時間など、既存記録から算出できるランキングを追加しました。
+          - 初回の記録更新時にプロファイルをスキーマ2へ移行し、旧版の記録を profile.v1.json に保存します。
+          - 今回の範囲は Phase A と D1 の一部です。保存時点の状態、プレイ中のイベント、DLC別の追加統計は今後の対象です。
+
+          **インストール** — 下の RimworldStatistics-v1.1.0.zip を展開し、RimworldStatistics フォルダを Mods フォルダへ入れてください。
+
+          **検証** — 公開対象コミットで自動テスト、翻訳キー、配布ZIPの構成を確認しました。ゲーム内の画面確認は未実施です。初回取り込み時間は従来比1.18〜1.30倍で、目標の1.25倍を超える計測がありました。
+
+          [変更一覧](https://github.com/pengin0503/Rimworld-Statistics/compare/v1.0.0...v1.1.0) · [検証記録と旧版への戻し方](https://github.com/pengin0503/Rimworld-Statistics/blob/5b8af6340df9ac4f1bd0d184b109722a3dbd2029/docs/research/2026-11-07-numeric-statistics-expansion-verification.md)
+
+          **English** — Adds a numeric Details tab for wealth, population, mood, raids, and quests, plus rankings based on existing records. Requires RimWorld 1.7 and Harmony. The installable mod is the attached versioned ZIP.
+          NOTES
+          gh release create v1.1.0 RimworldStatistics-v1.1.0.zip RimworldStatistics-v1.1.0.zip.sha256 \
+            --repo pengin0503/Rimworld-Statistics --target "$RELEASE_SHA" \
+            --title "Rimworld Statistics v1.1.0" --notes-file release-notes.md --draft
+          gh release view v1.1.0 --repo pengin0503/Rimworld-Statistics --json assets,isDraft,targetCommitish |
+            jq -e --arg sha "$RELEASE_SHA" '
+              .isDraft and .targetCommitish == $sha and
+              ([.assets[] | select(.state == "uploaded" and .size > 0) | .name] | sort) ==
+              ["RimworldStatistics-v1.1.0.zip", "RimworldStatistics-v1.1.0.zip.sha256"]'
+          gh release edit v1.1.0 --repo pengin0503/Rimworld-Statistics --draft=false --latest
