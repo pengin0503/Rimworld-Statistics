@@ -16,7 +16,9 @@ names = (
     "CompMech", "MechGest", "MechRepair", "RitualOutcome",
     "WorldGrid", "PlanetLayer", "Tile", "GameInfo", "GameInitData", "Find",
     "PollutionGrid", "LordJob_Ritual", "LordJob_Ritual_ChildBirth",
-    "Building_MechGestator", "Gravship", "GravshipUtility",
+    "Building_MechGestator", "CompMechGestatorTank", "CompMechRepairable",
+    "MechRepairUtility", "Gravship", "GravshipUtility", "WorldComponent_GravshipController",
+    "JobDriver_CleanPollution", "JobDriver_MechRepair", "JobDriver_CleanToxins",
 )
 verbs = (
     "Birth", "Assign", "Apply", "Finish", "Complete", "Produce",
@@ -30,9 +32,9 @@ for entry in entries:
     if "+" in name or name.rsplit(".", 1)[-1] not in names:
         continue
     print("API TYPE:", name)
-    if name.rsplit(".",1)[-1] in {"WorldGrid","PlanetLayer","Tile","GameInfo","Gravship","WorldComponent_GravshipController","Building_MechGestator","LordJob_Ritual","RitualOutcomePossibility"}:
+    if name.rsplit(".",1)[-1] in {"WorldGrid","PlanetLayer","Tile","GameInfo","Gravship","WorldComponent_GravshipController","Building_MechGestator","LordJob_Ritual","RitualOutcomePossibility","CompMechGestatorTank","CompMechRepairable","Pawn_AgeTracker"}:
         print("  FIELDS:",", ".join(f["name"] for f in entry.get("fields",[])[:75]))
-    methods = entry.get("methods", []) if name in {"RimWorld.Planet.WorldGrid", "RimWorld.Planet.PlanetLayer", "RimWorld.Planet.Tile"} else [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
+    methods = entry.get("methods", []) if name in {"RimWorld.Planet.WorldGrid", "RimWorld.Planet.PlanetLayer", "RimWorld.Planet.Tile","RimWorld.CompMechGestatorTank","RimWorld.Building_MechGestator","RimWorld.MechRepairUtility","Verse.WorldComponent_GravshipController","RimWorld.Planet.Gravship"} else [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
     for m in methods[:85]:
         types = m["signature"]["parameters"]
         pars = m["parameters"]
