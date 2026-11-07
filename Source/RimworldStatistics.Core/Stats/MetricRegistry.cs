@@ -246,7 +246,7 @@ public static class MetricRegistry
     };
 
     /// <summary>Every implemented output: Phase A/D1, then the outputs of the acquisition units (published or not).</summary>
-    public static IReadOnlyList<MetricDefinition> Catalog { get; } = Shipped.Concat(LiveCatalog.Definitions).Concat(SnapshotCatalog.Definitions).ToArray();
+    public static IReadOnlyList<MetricDefinition> Catalog { get; } = Shipped.Concat(LiveCatalog.Definitions).Concat(SnapshotCatalog.Definitions).Concat(RankingDependencyCatalog.Definitions).ToArray();
 
     /// <summary>The published outputs: what the Details tab shows.</summary>
     public static IReadOnlyList<MetricDefinition> All { get; } = Catalog.Where(d => d.Published).ToArray();
