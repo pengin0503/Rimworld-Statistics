@@ -25,6 +25,7 @@ public static class MetricRankings
     // Phase D dependency ranks: not published until their B/C acquisition is verified.
     public const string DaysByBiome = "ranking.survival.by_biome";
     public const string EndingsByBiome = "ranking.endings.by_biome";
+    public const string KillsToDeaths = "ranking.kills_to_colonist_deaths";
     public const string MostKills = "ranking.kills.peak";
     public const string LongestDeathFree = "ranking.death_free.peak";
     public const string MostCrafting = "ranking.crafting.peak";
@@ -125,6 +126,7 @@ public static class MetricRankings
 
         yield return BiomeSplit(Def(DaysByBiome), ordered, rows, Days);
         yield return BiomeSplit(Def(EndingsByBiome), ordered, rows, c => Endings(c));
+        yield return SharedIntervalKillDeathRatio(Def(KillsToDeaths), ordered, rows);
         yield return InputPeak(Def(MostKills), ordered, rows, HealthDeathFamily.HostileKills);
         yield return InputPeak(Def(LongestDeathFree), ordered, rows, HealthDeathFamily.LongestDeathGap);
         yield return InputPeak(Def(MostCrafting), ordered, rows, WorkFamily.CraftedUnits);
@@ -143,6 +145,48 @@ public static class MetricRankings
     /// current player home. Missing or ambiguous values are not "unknown biome"
     /// names and are excluded from the numerator, making coverage Partial.
     /// </summary>
+    /// <summary>
+    /// B-001 and P-004 are emitted by the SAME health_death family in the SAME
+    /// representative checkpoint. Never combine a latest save's vanilla deaths
+    /// counter with an older checkpoint's kills or silently replace absent inputs
+    /// with zero.
+    /// </summary>
+    private static NumericRow SharedIntervalKillDeathRatio(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows)
+    {
+        double kills = 0, deaths = 0;
+        var valid = 0;
+        var weak = false;
+        foreach (var colony in colonies)
+        {
+            var k = RowOf(rows, colony.Key, HealthDeathFamily.HostileKills);
+            var d = RowOf(rows, colony.Key, HealthDeathFamily.DeathsByRaid);
+            if (k?.Value.Number is not { } kv || d?.Value.Number is not { } dv
+                || k.Value.ThroughTick is null || d.Value.ThroughTick != k.Value.ThroughTick
+                || kv < 0 || dv < 0)
+                continue;
+            valid++;
+            kills += kv;
+            deaths += dv;
+            if (k.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown
+                || d.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown)
+                weak = true;
+        }
+        var incomplete = weak || valid < colonies.Count;
+        return new NumericRow
+        {
+            Definition = def,
+            Targets = colonies.Count,
+            Valid = valid,
+            Value = valid == 0 ? NumericValue.Unknown : new NumericValue
+            {
+                Number = deaths > 0 ? kills / deaths : null,
+                Numerator = kills, Denominator = deaths,
+                Coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.Complete,
+            },
+        };
+    }
+
     private static NumericRow BiomeSplit(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, Func<ColonyStats, double> quantity)
     {
