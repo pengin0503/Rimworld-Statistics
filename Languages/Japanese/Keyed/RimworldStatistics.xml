@@ -751,6 +751,10 @@
   <RWS_MetricDesc_BiotechPollutionPeak>対応DLCが有効な正常保存時に観測したホーム拠点の最大汚染セル数。</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>メカニター最高使用帯域</RWS_Metric_BiotechBandwidthPeak>
   <RWS_MetricDesc_BiotechBandwidthPeak>対応DLCが有効な正常保存時に観測したメカニター最高使用帯域。</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>帝国許可証の使用成立回数</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>プレイヤー側自由入植者が実際に使用した帝国許可証の回数。選択やキャンセルは除外。</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>サイキック能力の発動成功回数</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>自由入植者が実際に発動したRoyalty超能力の回数。対象選択のみは含めない。</RWS_MetricDesc_RoyaltyPsycasts>
   <RWS_Metric_RoyaltyTitleGrants>獲得した爵位の回数</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Royaltyのイベント取得期間に確定した獲得した爵位の回数。</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>最高到達爵位</RWS_Metric_RoyaltyHighestTitle>
