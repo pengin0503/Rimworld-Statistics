@@ -74,7 +74,6 @@ public sealed class NumericRankingDependencyTests
             MetricRankings.MostCrafting, MetricRankings.LargestSale, MetricRankings.MostResearch,
         };
         var expected = new[] { 12d, 4d, 100d, 240d, 20d };
-        var a = view.Colonies.Single(x => x.Key.Contains("A") || x.Rows.Any()).Key; // identify by value instead below
         for (var i = 0; i < keys.Length; i++)
         {
             var row = view.Overall.Single(x => x.Definition.Key == keys[i]);
