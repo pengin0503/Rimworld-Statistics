@@ -27,6 +27,9 @@ verbs = (
 )
 for entry in entries:
     name = entry["fullName"]
+    simple = name.rsplit(".", 1)[-1]
+    if "+" not in simple and any(x in simple.lower() for x in ("permit", "psycast", "ritual", "tox", "waste", "pollut", "containment", "study", "gravship", "mechgestat")):
+        print("CANDIDATE:", name)
     # Exact type-name match only: nested compiler-generated classes and hundreds of
     # RitualOutcomeComp_* implementations are not hook candidates.
     if "+" in name or name.rsplit(".", 1)[-1] not in names:
