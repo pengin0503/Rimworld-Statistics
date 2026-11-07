@@ -15,12 +15,23 @@ namespace RimworldStatistics.Patches.Metrics;
 [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
 public static class PawnKillMetricPatch
 {
+    [ThreadStatic]
+    private static Dictionary<Pawn, RaidDeathScope>? activeRaidDeaths;
+
+    internal static bool TryDeferRaidLoss(Pawn pawn, int tick)
+    {
+        if (activeRaidDeaths is null || !activeRaidDeaths.TryGetValue(pawn, out var scope))
+            return false;
+        scope.DeferKilledLoss(tick);
+        return true;
+    }
+
     public static void Prefix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, out DeathFacts? __state)
     {
         __state = null;
         try
         {
-            if (__instance == null || __instance.Dead
+            if (__instance == null || __instance.Dead || activeRaidDeaths?.ContainsKey(__instance) == true
                 || !GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name))
                 return;
             var p = __instance;
@@ -47,6 +58,11 @@ public static class PawnKillMetricPatch
                 SlaughterDesignated = map != null && p.ShouldBeSlaughtered(),
                 ExecutionCut = dinfo?.Def == DamageDefOf.ExecutionCut,
             };
+            if (raid != null && RaidFamily.IsMember(raid, __state.PawnId))
+            {
+                var playerKill = __state.HostileToPlayer && __state.Killer is not (KillerSide.Unknown or KillerSide.NotPlayer);
+                (activeRaidDeaths ??= new(ReferenceEqualityComparer.Instance)).Add(p, new RaidDeathScope(__state.PawnId, playerKill));
+            }
         }
         catch (Exception e)
         {
@@ -68,7 +84,12 @@ public static class PawnKillMetricPatch
             MembershipFamily.PrisonerGone(s, d.PawnId);
             MembershipFamily.KidnapLost(s, d.PawnId);
         });
-        if (d.HostileToPlayer && d.Killer is not (KillerSide.Unknown or KillerSide.NotPlayer))
-            GameFacts.Record(RaidFamily.Name, s => RaidFamily.MemberKilledByPlayer(s, d.PawnId));
+    }
+
+    public static Exception? Finalizer(Pawn __instance, DeathFacts? __state, Exception? __exception)
+    {
+        if (__state != null && activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope))
+            GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
+        return __exception;
     }
 }

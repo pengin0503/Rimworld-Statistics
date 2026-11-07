@@ -86,8 +86,10 @@ public static class LordPawnLostMetricPatch
     {
         if (pawn == null || __instance.ownedPawns.Contains(pawn))
             return;   // the lord job kept the pawn
-        var id = GameFacts.Id(pawn);
         var tick = GameFacts.Tick;
+        if (cond == PawnLostCondition.Killed && PawnKillMetricPatch.TryDeferRaidLoss(pawn, tick))
+            return;   // Pawn.Kill will credit the confirmed kill before applying the loss.
+        var id = GameFacts.Id(pawn);
         var loss = cond switch
         {
             PawnLostCondition.Killed => RaidLoss.Killed,

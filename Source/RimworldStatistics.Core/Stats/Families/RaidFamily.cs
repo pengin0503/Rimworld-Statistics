@@ -271,3 +271,19 @@ public static class RaidFamily
             c.MarkPartial(KillsMax, DurationMean, DurationMax, DurationMinRepelled, RepelledNoDown, Retreated, Wiped, RepelledRate);
     }
 }
+
+/// <summary>Holds a lord's removal during Pawn.Kill until the pawn's death can be confirmed.</summary>
+public sealed class RaidDeathScope(string pawnId, bool killedByPlayer)
+{
+    private int? lossTick;
+
+    public void DeferKilledLoss(int tick) => lossTick ??= tick;
+
+    public void Complete(FamilyState state, bool dead)
+    {
+        if (dead && killedByPlayer)
+            RaidFamily.MemberKilledByPlayer(state, pawnId);
+        if (lossTick is { } tick)
+            RaidFamily.MemberLost(state, pawnId, dead ? RaidLoss.Killed : RaidLoss.Other, tick);
+    }
+}

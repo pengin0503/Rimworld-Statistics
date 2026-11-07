@@ -338,6 +338,34 @@ public sealed class NumericCombatPopulationTests
         Assert.Equal(2, B(o, RaidFamily.ByArrivalMode)["EdgeWalkIn"].IntegerValue);
     }
 
+    [Theory]
+    [InlineData(true, true, 2L, 1L)]
+    [InlineData(false, true, 0L, 1L)]
+    [InlineData(true, false, 0L, 0L)]
+    public void Raids_LordLossBeforeDeathConfirmation(bool playerKill, bool dead, long expectedKills, long expectedWipes)
+    {
+        var (acc, f) = NewGame(RaidFamily.Family);
+        var s = f(RaidFamily.Name);
+        var raid = Arrival("M1", 2);
+        RaidFamily.Arrived(s, raid, Day);
+
+        foreach (var pawn in raid.PawnIds)
+        {
+            // Lord.Notify_PawnLost runs inside Pawn.Kill, before the outer call confirms the death.
+            var death = new RaidDeathScope(pawn, playerKill);
+            death.DeferKilledLoss(2 * Day);
+            death.DeferKilledLoss(2 * Day);
+            Assert.True(RaidFamily.IsMember(s, pawn));
+            death.Complete(s, dead);
+            Assert.False(RaidFamily.IsMember(s, pawn));
+        }
+
+        var o = Save(acc, 3 * Day);
+        Assert.Equal(expectedKills, V(o, RaidFamily.KillsMax).IntegerValue);
+        Assert.Equal(expectedWipes, V(o, RaidFamily.Wiped).IntegerValue);
+        Assert.Equal(1, V(o, RaidFamily.KillsMax).SampleCount);
+    }
+
     [Fact]
     public void Raids_OutcomesDurationsAndKillsPerRaid()
     {
