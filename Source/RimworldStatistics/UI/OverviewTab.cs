@@ -12,9 +12,6 @@ public static class OverviewTab
     private const float TopCellHeight = 92f;
     private const float BottomCellHeight = 70f;
 
-    private static StatsView? missingFor;
-    private static int missingCount;
-
     public static void Draw(Rect rect, StatsView view)
     {
         var s = view.Stats;
@@ -23,13 +20,16 @@ public static class OverviewTab
         string V(string value) => has ? value : Dialog_RimworldStatistics.Dash;
         string Tip(string? extra = null) => has ? (extra is null ? basis : extra + "\n\n" + basis) : (string)"RWS_NoData".Translate() + (extra is null ? "" : "\n\n" + extra);
 
+        string WealthValue(double value, int colonies) => colonies == 0 ? Dialog_RimworldStatistics.Dash : StatFormat.Group(value);
+        string WealthTip(int colonies) => Tip("RWS_WealthCoverage".Translate(colonies, s.ColonyCount - colonies));
+
         string preInstall = "RWS_EndingsTooltipPreInstall".Translate();
         var top = new (string Label, string Value, string Tip)[]
         {
             ("RWS_Stat_Days".Translate(), V(Dialog_RimworldStatistics.DaysWithYears(s.TotalTicks)), Tip()),
             ("RWS_Stat_Endings".Translate(), V(s.TotalEndings.ToString(CultureInfo.InvariantCulture)), Tip(EndingBreakdown(s) + preInstall)),
             ("RWS_Stat_Departed".Translate(), V(s.TotalDeparted.ToString(CultureInfo.InvariantCulture)), Tip(preInstall)),
-            ("RWS_Stat_PeakWealthSum".Translate(), V(StatFormat.Group(s.PeakWealthSum)), Tip()),
+            ("RWS_Stat_PeakWealthSum".Translate(), WealthValue(s.PeakWealthSum, s.PeakWealthColonyCount), WealthTip(s.PeakWealthColonyCount)),
             ("RWS_Stat_Colonies".Translate(), V(s.ColonyCount.ToString(CultureInfo.InvariantCulture)), Tip()),
             ("RWS_Stat_RealPlay".Translate(), V("RWS_HoursValue".Translate(StatFormat.Hours(s.TotalRealPlay).ToString("N1", CultureInfo.InvariantCulture))), Tip()),
         };
@@ -39,9 +39,9 @@ public static class OverviewTab
             ("RWS_Stat_Threats".Translate(), V(s.Threats.ToString(CultureInfo.InvariantCulture)), Tip()),
             ("RWS_Stat_Killed".Translate(), V(s.Killed.ToString(CultureInfo.InvariantCulture)), Tip()),
             ("RWS_Stat_Longest".Translate(), V(Dialog_RimworldStatistics.DaysWithYears(s.LongestTicks)), Tip()),
-            ("RWS_Stat_SingleMaxWealth".Translate(), V(StatFormat.Group(s.SingleMaxWealth)), Tip()),
+            ("RWS_Stat_SingleMaxWealth".Translate(), WealthValue(s.SingleMaxWealth, s.PeakWealthColonyCount), WealthTip(s.PeakWealthColonyCount)),
             ("RWS_Stat_MaxPopulation".Translate(), V(s.MaxPopulation.ToString(CultureInfo.InvariantCulture)), Tip()),
-            ("RWS_Stat_LastWealthSum".Translate(), V(StatFormat.Group(s.LastWealthSum)), Tip()),
+            ("RWS_Stat_LastWealthSum".Translate(), WealthValue(s.LastWealthSum, s.LastWealthColonyCount), WealthTip(s.LastWealthColonyCount)),
         };
 
         const float gap = 10f;
@@ -78,13 +78,8 @@ public static class OverviewTab
     /// <summary>"Computed from N colonies (excluded M)" plus what is missing (spec §4.4).</summary>
     private static string Basis(StatsView view)
     {
-        if (!ReferenceEquals(missingFor, view))
-        {
-            missingFor = view;
-            missingCount = ProfileService.Session.Read(p => p.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok));
-        }
         string text = "RWS_TooltipBasis".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
-        return missingCount > 0 ? text + "\n" + "RWS_TooltipMissing".Translate(missingCount) : text;
+        return view.MissingObservations > 0 ? text + "\n" + "RWS_TooltipMissing".Translate(view.MissingObservations) : text;
     }
 
     private static string EndingBreakdown(StatsResult s)

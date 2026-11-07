@@ -32,42 +32,55 @@ public static class ImportRunner
     public static Exception? LastError => lastError;
 
     /// <summary>Main thread. Starts a scan unless one is running.</summary>
-    public static void StartIfIdle()
+    public static void StartIfIdle() => Start(manual: true);
+
+    private static void Start(bool manual)
     {
-        if (Running)
-            return;
-        var savesDir = GenFilePaths.SavedGamesFolderPath;   // main thread only
-        var session = ProfileService.Session;               // created on the main thread
         lock (Gate)
         {
             if (task is { IsCompleted: false })
                 return;
+            if (manual)
+                AutoGate.StartedManually();
             cts?.Dispose();
-            var source = new CancellationTokenSource();
-            cts = source;
+            cts = null;
             progress = null;
             lastError = null;
-            task = Task.Run(() => Run(savesDir, session, source.Token));
+            try
+            {
+                var savesDir = GenFilePaths.SavedGamesFolderPath;
+                var source = new CancellationTokenSource();
+                cts = source;
+                task = Task.Run(() => Run(savesDir, source.Token));
+            }
+            catch (Exception e)
+            {
+                lastError = e;
+            }
         }
     }
 
-    /// <summary>The user's Cancel: the scan stays stopped until the user rescans.</summary>
     public static void Cancel()
     {
         lock (Gate)
+        {
+            AutoGate.CancelledByUser();
             cts?.Cancel();
+        }
     }
 
-    /// <summary>
-    /// A game is starting or loading (spec §7.5; called from FinalizeInit on the game's long-event thread): stop the scan,
-    /// and let the title screen continue it the next time it is shown.
-    /// </summary>
     public static void CancelForGameStart()
     {
-        if (Running)
+        lock (Gate)
+        {
+            if (task is not { IsCompleted: false } || cts is not { IsCancellationRequested: false })
+                return;
             AutoGate.InterruptedByGame();
-        Cancel();
+            cts.Cancel();
+        }
     }
+
+    public static void GameSaveCompleted() => AutoGate.RefreshAfterSave();
 
     /// <summary>
     /// Main thread, title screen (called on every menu draw). Starts the first scan of this session when auto-import is
@@ -75,15 +88,16 @@ public static class ImportRunner
     /// </summary>
     public static void AutoStartOnce()
     {
-        if (AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, Running))
-            StartIfIdle();
+        lock (Gate)
+            if (AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, task is { IsCompleted: false }))
+                Start(manual: false);
     }
 
-    private static void Run(string savesDir, ProfileSession session, CancellationToken ct)
+    private static void Run(string savesDir, CancellationToken ct)
     {
         try
         {
-            lastResult = new ImportEngine(new SaveReader()).Run(savesDir, session, new ProgressSink(), ct);
+            lastResult = new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(), ct);
         }
         catch (Exception e)
         {

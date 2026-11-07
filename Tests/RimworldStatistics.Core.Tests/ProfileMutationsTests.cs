@@ -235,7 +235,7 @@ public sealed class ProfileMutationsTests
     {
         var p = new Profile();
         var early = Identity("A", "Thing_Human1,Thing_Human2"); early.FirstWealthBits = null;   // new game: no history record yet
-        ProfileMutations.RegisterLiveCampaign(p, "g", early, new DisplayInfo(), t0);
+        ProfileMutations.RegisterLiveCampaign(p, "g", early, new DisplayInfo());
         Assert.False(p.LiveCampaigns[0].Identity.HasFingerprint);
         var later = Identity("A", "Thing_Human2"); later.SeedString = "different";
         ProfileMutations.ApplyLiveObservation(p, "g", later, V(30000, 9000), new DisplayInfo(), t1);
@@ -249,15 +249,15 @@ public sealed class ProfileMutationsTests
     public void RegisterLiveCampaign_IsIdempotent()
     {
         var p = new Profile();
-        ProfileMutations.RegisterLiveCampaign(p, "g", Identity("A", "Thing_Human1"), new DisplayInfo { WorldName = "w" }, t0);
+        ProfileMutations.RegisterLiveCampaign(p, "g", Identity("A", "Thing_Human1"), new DisplayInfo { WorldName = "w" });
         ProfileMutations.ApplyLiveObservation(p, "g", Identity("A", "Thing_Human1"), V(500, 1), new DisplayInfo { WorldName = "w" }, t1);
-        ProfileMutations.RegisterLiveCampaign(p, "g", Identity("A", "Thing_Human1"), new DisplayInfo { WorldName = "w" }, t1.AddDays(1));
+        ProfileMutations.RegisterLiveCampaign(p, "g", Identity("A", "Thing_Human1"), new DisplayInfo { WorldName = "w" });
         var c = Assert.Single(p.LiveCampaigns);
         Assert.Equal(500, c.Max.TicksGame);   // registering again does not reset what was recorded
 
         var q = new Profile();   // display belongs to the save-time observation, never to a re-registration
-        ProfileMutations.RegisterLiveCampaign(q, "g", Identity("A", "Thing_Human1"), new DisplayInfo { FactionName = "first" }, t0);
-        ProfileMutations.RegisterLiveCampaign(q, "g", Identity("A", "Thing_Human1"), new DisplayInfo { FactionName = "again" }, t1);
+        ProfileMutations.RegisterLiveCampaign(q, "g", Identity("A", "Thing_Human1"), new DisplayInfo { FactionName = "first" });
+        ProfileMutations.RegisterLiveCampaign(q, "g", Identity("A", "Thing_Human1"), new DisplayInfo { FactionName = "again" });
         Assert.Equal("first", Assert.Single(q.LiveCampaigns).Display.FactionName);
     }
 
@@ -265,7 +265,7 @@ public sealed class ProfileMutationsTests
     public void ApplyLive_TakesWorldValuesOnlyWhenTheSeedWasUnknown()
     {
         var p = new Profile();
-        ProfileMutations.RegisterLiveCampaign(p, "g", new ColonyIdentity { StartingPawnIds = { "Thing_Human1" } }, new DisplayInfo(), t0);
+        ProfileMutations.RegisterLiveCampaign(p, "g", new ColonyIdentity { StartingPawnIds = { "Thing_Human1" } }, new DisplayInfo());
         ProfileMutations.ApplyLiveObservation(p, "g", Identity("A", "Thing_Human1"), V(10, 1), new DisplayInfo(), t1);
         var id = p.LiveCampaigns[0].Identity;
         Assert.Equal(("seed-A", 42, true), (id.SeedString, id.PersistentRandomValue, id.HasFingerprint));

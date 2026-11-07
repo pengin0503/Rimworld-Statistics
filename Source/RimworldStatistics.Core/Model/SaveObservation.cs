@@ -24,6 +24,8 @@ public sealed class SaveObservation
     /// ending of the same group for this colony, e.g. after profile.json was lost or restored from an older backup.
     /// </summary>
     public List<EndingType> ExplainedTraces { get; set; } = new();
+    public List<LineageEntry> Lineage { get; set; } = new();
+
     public DisplayInfo Display { get; set; } = new();
 
     public bool SameFileContent(long size, DateTime lastWriteUtc) => FileSize == size && LastWriteUtc == lastWriteUtc;

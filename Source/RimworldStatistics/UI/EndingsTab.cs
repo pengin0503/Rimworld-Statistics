@@ -92,9 +92,12 @@ public static class EndingsTab
                 var source = best.Source == EndingSource.SeededTrace ? "RWS_Source_SeededTrace".Translate() : "RWS_Source_Live".Translate();
                 if (best.DevMode)
                     source += "RWS_DevModeMark".Translate();
-                list.Add(new Row(visible.Min(e => e.RealTimeUtc), name, pair.Key.Type, (pair.Key.Ordinal + 1).ToString(CultureInfo.InvariantCulture),
+                list.Add(new Row(visible.Min(e => e.RealTimeUtc), name, pair.Key.Type, (pair.Key.Ordinal + 1L).ToString(CultureInfo.InvariantCulture),
                     best.Source == EndingSource.SeededTrace ? Dialog_RimworldStatistics.Dash : best.Departed.ToString(CultureInfo.InvariantCulture), source));
             }
+            foreach (var recovered in colony.RecoveredEndings)
+                list.Add(new Row(null, name, recovered.Type, (recovered.Ordinal + 1L).ToString(CultureInfo.InvariantCulture),
+                    Dialog_RimworldStatistics.Dash, "RWS_Source_RecoveredLineage".Translate()));
             foreach (var trace in colony.Traces.Where(t => !shownTypes.Contains(t)).OrderBy(t => t))
             {
                 var first = colony.Observations.Where(o => o.EndingTraces.Contains(trace)).Select(o => (DateTime?)o.LastWriteUtc).DefaultIfEmpty(null).Min();

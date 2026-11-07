@@ -62,7 +62,7 @@
   <RWS_Col_Killed>死亡</RWS_Col_Killed>
   <RWS_Col_Endings>エンディング</RWS_Col_Endings>
   <RWS_Col_Versions>遊んだ版</RWS_Col_Versions>
-  <RWS_Col_Saves>セーブ数</RWS_Col_Saves>
+  <RWS_Col_Saves>取込済み</RWS_Col_Saves>
   <RWS_Col_LastPlayed>最後に遊んだ日</RWS_Col_LastPlayed>
   <RWS_Col_File>ファイル</RWS_Col_File>
   <RWS_Col_Version>版</RWS_Col_Version>
@@ -98,4 +98,7 @@
   <RWS_LoadSource_NewerSchema>新しい版の記録ファイル（読み取り専用）</RWS_LoadSource_NewerSchema>
   <RWS_Status_Error>失敗</RWS_Status_Error>
   <RWS_Status_Unidentifiable>識別不可</RWS_Status_Unidentifiable>
+  <RWS_Loading>統計を読み込み中…</RWS_Loading>
+  <RWS_WealthCoverage>資産データがあるコロニーは {0} 件、ないコロニーは {1} 件です。</RWS_WealthCoverage>
+  <RWS_Source_RecoveredLineage>セーブから復旧（開発モード不明、集計外）</RWS_Source_RecoveredLineage>
 </LanguageData>

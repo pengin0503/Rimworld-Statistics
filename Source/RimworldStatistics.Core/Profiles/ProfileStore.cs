@@ -36,6 +36,8 @@ public sealed class ProfileStore
 
     private readonly string _directory;
     private bool _readOnly;
+    private bool _hasExpectedPrimary;
+    private string? _expectedPrimary;
 
     public ProfileStore(string directory)
     {
@@ -47,13 +49,18 @@ public sealed class ProfileStore
 
     private string Backup(int n) => ProfilePath + ".bak" + n.ToString(CultureInfo.InvariantCulture);
     private string TmpPath => ProfilePath + ".tmp";
+    private string PendingBackup => ProfilePath + ".previous";
+    private FileStream LockFile() => new(ProfilePath + ".lock", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
 
     /// <summary>Tries the primary, then bak1..bak3. An unparseable primary is renamed to profile.json.corrupt-&lt;UTC time&gt;.</summary>
     public ProfileLoadResult Load(DateTime utcNow)
     {
+        _hasExpectedPrimary = true;
+        _expectedPrimary = null;
         var candidates = new[]
         {
             (Path: ProfilePath, Source: ProfileLoadSource.Primary),
+            (Path: PendingBackup, Source: ProfileLoadSource.Backup1),
             (Path: Backup(1), Source: ProfileLoadSource.Backup1),
             (Path: Backup(2), Source: ProfileLoadSource.Backup2),
             (Path: Backup(3), Source: ProfileLoadSource.Backup3),
@@ -80,6 +87,8 @@ public sealed class ProfileStore
                 continue;
             }
 
+            if (source == ProfileLoadSource.Primary)
+                _expectedPrimary = json;
             if (SchemaVersionOf(json) is not { } version)
             {
                 if (source == ProfileLoadSource.Primary)
@@ -122,7 +131,14 @@ public sealed class ProfileStore
                 continue;
             try
             {
+                using var writeLock = LockFile();
+                if (File.ReadAllText(ProfilePath, Encoding.UTF8) != _expectedPrimary)
+                {
+                    _readOnly = true;
+                    return null;
+                }
                 File.Move(ProfilePath, target);
+                _expectedPrimary = null;
                 return name;
             }
             catch (IOException) when (File.Exists(target))
@@ -171,12 +187,25 @@ public sealed class ProfileStore
 
     public void Save(Profile profile) => SaveSerialized(ProfileJson.Serialize(profile));
 
-    /// <summary>Writes a temp file, flushes it to disk, rotates bak1..bak3 and atomically replaces the primary.</summary>
+    /// <summary>Commits the primary before rotating older recovery points.</summary>
     public void SaveSerialized(string json)
     {
         if (_readOnly)
             throw new InvalidOperationException("The record file is read-only for this session (written by a newer version, or unreadable).");
         Directory.CreateDirectory(_directory);
+        using var writeLock = LockFile();
+        var current = File.Exists(ProfilePath) ? File.ReadAllText(ProfilePath, Encoding.UTF8) : null;
+        if (_hasExpectedPrimary && current != _expectedPrimary)
+            throw new IOException("The statistics file changed in another session. Reopen RimWorld before writing to it.");
+
+        if (File.Exists(PendingBackup))
+            RotateBackups();
+        if (current == json)
+            return;
+
+        var rotate = current != null && !SameStatistics(current, json);
+        if (rotate)
+            EnsureBackupPaths();
         var tmp = TmpPath;
         try
         {
@@ -186,17 +215,15 @@ public sealed class ProfileStore
                 fs.Write(bytes, 0, bytes.Length);
                 fs.Flush(flushToDisk: true);
             }
-            if (File.Exists(ProfilePath))
-            {
-                if (File.Exists(Backup(3))) File.Delete(Backup(3));
-                if (File.Exists(Backup(2))) File.Move(Backup(2), Backup(3));
-                if (File.Exists(Backup(1))) File.Move(Backup(1), Backup(2));
-                File.Replace(tmp, ProfilePath, Backup(1));
-            }
+            if (current != null)
+                File.Replace(tmp, ProfilePath, rotate ? PendingBackup : null);
             else
-            {
                 File.Move(tmp, ProfilePath);
-            }
+
+            _expectedPrimary = json;
+            _hasExpectedPrimary = true;
+            if (rotate)
+                RotateBackups();
         }
         finally
         {
@@ -206,8 +233,40 @@ public sealed class ProfileStore
             }
             catch (Exception e) when (e is IOException or UnauthorizedAccessException)
             {
-                // a leftover temp file is overwritten by the next save
+                // A leftover temp file is overwritten by the next save.
             }
+        }
+    }
+
+    private void EnsureBackupPaths()
+    {
+        for (var n = 1; n <= 3; n++)
+            if (Directory.Exists(Backup(n)))
+                throw new IOException($"The backup path {Backup(n)} is a directory.");
+    }
+
+    private void RotateBackups()
+    {
+        EnsureBackupPaths();
+        if (File.Exists(Backup(2))) File.Move(Backup(2), Backup(3), overwrite: true);
+        if (File.Exists(Backup(1))) File.Move(Backup(1), Backup(2), overwrite: true);
+        File.Move(PendingBackup, Backup(1), overwrite: true);
+    }
+
+    private static bool SameStatistics(string previous, string next)
+    {
+        try
+        {
+            using var before = JsonDocument.Parse(previous);
+            using var after = JsonDocument.Parse(next);
+            var oldFields = before.RootElement.EnumerateObject().Where(p => p.Name != "importState").ToArray();
+            var newFields = after.RootElement.EnumerateObject().Where(p => p.Name != "importState").ToArray();
+            return oldFields.Length == newFields.Length && oldFields.Zip(newFields).All(pair =>
+                pair.First.Name == pair.Second.Name && JsonElement.DeepEquals(pair.First.Value, pair.Second.Value));
+        }
+        catch (Exception e) when (e is JsonException or InvalidOperationException)
+        {
+            return false;
         }
     }
 }

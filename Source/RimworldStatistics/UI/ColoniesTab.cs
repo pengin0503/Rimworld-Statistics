@@ -21,8 +21,8 @@ public static class ColoniesTab
         new("RWS_Col_World", 0.10f, s => s.WorldName ?? "", s => s.WorldName ?? Dialog_RimworldStatistics.Dash),
         new("RWS_Col_Scenario", 0.13f, s => (s.Scenario ?? "") + "/" + (s.Storyteller ?? ""), s => $"{s.Scenario ?? Dialog_RimworldStatistics.Dash} / {s.Storyteller ?? Dialog_RimworldStatistics.Dash}"),
         new("RWS_Col_Days", 0.06f, s => s.MaxTicks, s => Dialog_RimworldStatistics.Days(s.MaxTicks)),
-        new("RWS_Col_PeakWealth", 0.08f, s => s.WealthMax, s => StatFormat.Group(s.WealthMax)),
-        new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => StatFormat.Group(s.WealthLast)),
+        new("RWS_Col_PeakWealth", 0.08f, s => s.WealthMax, s => s.PeakWealthKnown ? StatFormat.Group(s.WealthMax) : Dialog_RimworldStatistics.Dash),
+        new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => s.LastWealthKnown ? StatFormat.Group(s.WealthLast) : Dialog_RimworldStatistics.Dash),
         new("RWS_Col_Raids", 0.05f, s => s.Raids, s => s.Raids.ToString(Inv)),
         new("RWS_Col_Killed", 0.05f, s => s.Killed, s => s.Killed.ToString(Inv)),
         new("RWS_Col_Endings", 0.05f, s => s.EndingCounts.Values.Sum(), s => s.EndingCounts.Values.Sum().ToString(Inv)),
@@ -38,11 +38,7 @@ public static class ColoniesTab
     private static string? selectedKey;
     private static Vector2 scroll;
     private static Vector2 detailScroll;
-    private static HashSet<string> present = new(StringComparer.Ordinal);
-
-    internal static void SetPresentFiles(HashSet<string> files) => present = files;
-
-    public static void Draw(Rect rect, StatsView view)
+    public static void Draw(Rect rect, StatsView view, SaveFileIndex? files)
     {
         var order = Enumerable.Range(0, view.Colonies.Count).ToList();
         var key = Columns[sortColumn].Sort;
@@ -66,7 +62,7 @@ public static class ColoniesTab
         Widgets.EndScrollView();
 
         if (selected >= 0)
-            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, DetailHeight), view.Colonies[selected]);
+            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, DetailHeight), view.Colonies[selected], files);
     }
 
     private static void DrawHeader(Rect rect)
@@ -131,7 +127,7 @@ public static class ColoniesTab
         }
     }
 
-    private static void DrawDetail(Rect rect, Colony colony)
+    private static void DrawDetail(Rect rect, Colony colony, SaveFileIndex? files)
     {
         Widgets.DrawMenuSection(rect);
         var inner = rect.ContractedBy(6f);
@@ -147,7 +143,7 @@ public static class ColoniesTab
             {
                 o.FileName, o.GameVersion ?? Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Days(o.Values.TicksGame),
                 o.Superseded ? (string)"RWS_Yes".Translate() : (string)"RWS_No".Translate(),
-                present.Contains(o.FileName) ? (string)"RWS_Yes".Translate() : (string)"RWS_FileMissing".Translate(),
+                files == null ? Dialog_RimworldStatistics.Dash : files.Contains(o) ? (string)"RWS_Yes".Translate() : (string)"RWS_FileMissing".Translate(),
             })
             .Concat(colony.LiveCampaigns.Select(l => new[]
             {

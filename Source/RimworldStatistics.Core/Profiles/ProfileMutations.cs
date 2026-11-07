@@ -39,11 +39,14 @@ public static class ProfileMutations
                     return;                            // same file read again by the same reader: nothing new
                 if (obs.Status == ObservationStatus.Error)
                     return;                            // a failed re-read never hides good data; the old version keeps it retried
-                p.SaveObservations.Remove(old);        // newer reader re-read the same content
+                if (old.Status == ObservationStatus.Ok && obs.Status == ObservationStatus.Unidentifiable)
+                    old.Superseded = true;             // retain data and show the latest identification failure
+                else
+                    p.SaveObservations.Remove(old);
                 continue;
             }
             old.Superseded = true;                     // the name now holds other content; keep what it held
-            if (SameColony(old, obs) && Dominates(obs, old))
+            if (Dominates(obs, old) && CanPrune(p, old, obs))
                 p.SaveObservations.Remove(old);        // removing it changes neither totals nor grouping
         }
         p.SaveObservations.Add(obs);
@@ -72,17 +75,37 @@ public static class ProfileMutations
             && n.GreatestPopulation >= o.GreatestPopulation
             && n.WealthMax >= o.WealthMax
             && older.EndingTraces.All(newer.EndingTraces.Contains)
+            && older.Lineage.All(newer.Lineage.Contains)
             && older.ExplainedTraces.All(t => newer.EndingTraces.Contains(t) || newer.ExplainedTraces.Contains(t))
             && older.Identity.StartingPawnIds.All(id => newer.Identity.StartingPawnIds.Contains(id, Ord));
     }
 
-    /// <summary>Spec §7.1: the same colony id, or the same fingerprint with starting pawns in a subset relation.</summary>
-    private static bool SameColony(SaveObservation a, SaveObservation b)
-        => (a.Identity.ModCampaignId is { } id && id == b.Identity.ModCampaignId)
-            || CampaignMatcher.SameColony(a.Identity, b.Identity);
+    private static bool CanPrune(Profile p, SaveObservation older, SaveObservation newer)
+    {
+        var id = older.Identity;
+        var hash = id.FingerprintHash();
+        if (id.ModCampaignId != newer.Identity.ModCampaignId || hash != newer.Identity.FingerprintHash()
+            || (id.ModCampaignId == null && hash == null))
+            return false;
+
+        var pawns = id.StartingPawnIds.ToHashSet(Ord);
+        if (!pawns.SetEquals(newer.Identity.StartingPawnIds))
+            return false;
+
+        // An older timestamp can decide which branch receives an ambiguous subset.
+        foreach (var other in p.SaveObservations.Select(o => o.Identity).Concat(p.LiveCampaigns.Select(l => l.Identity)))
+        {
+            var sameCampaign = id.ModCampaignId != null && id.ModCampaignId == other.ModCampaignId;
+            var otherHash = other.FingerprintHash();
+            if ((sameCampaign && otherHash != hash) ||
+                (hash != null && otherHash == hash && !pawns.SetEquals(other.StartingPawnIds)))
+                return false;
+        }
+        return true;
+    }
 
     /// <summary>Creates the live record for a campaign; if it exists, only fills in its identity (idempotent).</summary>
-    public static void RegisterLiveCampaign(Profile p, string campaignId, ColonyIdentity identity, DisplayInfo display, DateTime utcNow)
+    public static void RegisterLiveCampaign(Profile p, string campaignId, ColonyIdentity identity, DisplayInfo display)
     {
         var live = p.LiveCampaigns.FirstOrDefault(c => c.CampaignId == campaignId);
         if (live is null)
@@ -92,7 +115,6 @@ public static class ProfileMutations
                 CampaignId = campaignId,
                 Identity = identity.Clone(),
                 Display = display.Clone(),
-                LastSavedUtc = utcNow,
             });
             return;
         }
@@ -101,12 +123,12 @@ public static class ProfileMutations
 
     /// <summary>Records the values read while the game saved (spec §8.3): per-field maxima, the latest values and the identity.</summary>
     public static void ApplyLiveObservation(Profile p, string campaignId, ColonyIdentity identity, ObservedValues values, DisplayInfo display,
-        DateTime savedUtc, string? gameVersion = null)
+        DateTime savedUtc, string? gameVersion = null, bool isSave = true)
     {
         var live = p.LiveCampaigns.FirstOrDefault(c => c.CampaignId == campaignId);
         if (live is null)
         {
-            RegisterLiveCampaign(p, campaignId, identity, display, savedUtc);
+            RegisterLiveCampaign(p, campaignId, identity, display);
             live = p.LiveCampaigns.Single(c => c.CampaignId == campaignId);
         }
         MergeIdentity(live.Identity, identity);
@@ -115,21 +137,25 @@ public static class ProfileMutations
         var furthest = values.TicksGame >= m.TicksGame;   // ties go to the newer observation (spec §4.2)
         if (furthest)
         {
-            m.WealthLast = values.WealthLast;
+            m.WealthLast = StatsCalculator.ValidMetricOrZero(values.WealthLast);
+            live.WealthAtFurthestKnown = StatsCalculator.HasWealth(values.WealthLast, values.WealthPoints);
             live.Display = display.Clone();
             live.MaxObservedUtc = savedUtc;
         }
         m.TicksGame = Math.Max(m.TicksGame, values.TicksGame);
-        m.RealPlayTime = Math.Max(m.RealPlayTime, values.RealPlayTime);
+        m.RealPlayTime = Math.Max(StatsCalculator.ValidMetricOrZero(m.RealPlayTime), StatsCalculator.ValidMetricOrZero(values.RealPlayTime));
         m.NumRaidsEnemy = Math.Max(m.NumRaidsEnemy, values.NumRaidsEnemy);
         m.NumThreatsQueued = Math.Max(m.NumThreatsQueued, values.NumThreatsQueued);
         m.ColonistsKilled = Math.Max(m.ColonistsKilled, values.ColonistsKilled);
         m.ColonistsLaunched = Math.Max(m.ColonistsLaunched, values.ColonistsLaunched);
         m.GreatestPopulation = Math.Max(m.GreatestPopulation, values.GreatestPopulation);
-        m.WealthMax = Math.Max(m.WealthMax, values.WealthMax);
-        m.WealthPoints = Math.Max(m.WealthPoints, values.WealthPoints);
+        m.WealthPoints = Math.Max(
+            StatsCalculator.ValidMetric(m.WealthMax) ? m.WealthPoints : 0,
+            StatsCalculator.ValidMetric(values.WealthMax) ? values.WealthPoints : 0);
+        m.WealthMax = Math.Max(StatsCalculator.ValidMetricOrZero(m.WealthMax), StatsCalculator.ValidMetricOrZero(values.WealthMax));
         live.Latest = values.Clone();
-        live.LastSavedUtc = savedUtc;
+        if (isSave)
+            live.LastSavedUtc = savedUtc;
         if (!string.IsNullOrEmpty(gameVersion) && !live.GameVersions.Contains(gameVersion, Ord))
             live.GameVersions.Add(gameVersion);
     }
@@ -163,6 +189,14 @@ public static class ProfileMutations
         {
             p.EndingEvents.Add(ev);
             return true;
+        }
+        if (existing.Source == EndingSource.SeededTrace && ev.Source == EndingSource.Live)
+        {
+            existing.Source = ev.Source;
+            existing.RealTimeUtc = ev.RealTimeUtc;
+            existing.TicksGame = ev.TicksGame;
+            existing.GameVersion = ev.GameVersion;
+            existing.CreditsExcerpt = ev.CreditsExcerpt;
         }
         existing.Departed = Math.Max(existing.Departed, ev.Departed);
         existing.LaunchedTotalAfter = Math.Max(existing.LaunchedTotalAfter, ev.LaunchedTotalAfter);

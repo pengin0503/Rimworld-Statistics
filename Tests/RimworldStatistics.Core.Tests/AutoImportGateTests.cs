@@ -25,7 +25,13 @@ public sealed class AutoImportGateTests
         // Pressing Cancel in the Import tab must stay cancelled while the title menu keeps asking.
         var gate = new AutoImportGate();
         Assert.True(gate.ShouldStart(true, false));
+        gate.CancelledByUser();
+        gate.InterruptedByGame();
+        gate.RefreshAfterSave();
         Assert.False(gate.ShouldStart(true, false));
+        gate.StartedManually();
+        gate.RefreshAfterSave();
+        Assert.True(gate.ShouldStart(true, false));
     }
 
     [Fact]

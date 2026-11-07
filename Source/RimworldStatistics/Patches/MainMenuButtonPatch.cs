@@ -24,12 +24,14 @@ public static class MainMenuButtonPatch
             var index = optList.FindIndex(o => o?.label == options);
             if (index < 0 || optList.Exists(o => o?.label == mine))
                 return;
-            ImportRunner.AutoStartOnce();
             optList.Insert(index, new ListableOption(mine, () => Find.WindowStack.Add(new Dialog_RimworldStatistics())));
         }
         catch (Exception e)
         {
             PatchRunner.Disable(typeof(MainMenuButtonPatch), e);
+            return;
         }
+
+        ImportRunner.AutoStartOnce();
     }
 }

@@ -11,8 +11,8 @@ namespace RimworldStatistics.Core;
 /// </summary>
 public sealed class SaveReader
 {
-    /// <summary>Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 2: ExplainedTraces.</summary>
-    public const int Version = 2;
+    /// <summary>Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 3: lineage recovery and numeric validation.</summary>
+    public const int Version = 3;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -89,7 +89,6 @@ public sealed class SaveReader
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
         public string? AnomalyLevelDef { get; set; }
-        public List<EndingType> LineageTypes { get; } = new();
     }
 
     private const string AnomalyComponentName = "GameComponent_Anomaly";
@@ -135,7 +134,7 @@ public sealed class SaveReader
 
     private static void ReadInfo(XElement info, SaveObservation obs)
     {
-        obs.Values.RealPlayTime = Double(info.Element("realPlayTimeInteracting"), 0);
+        obs.Values.RealPlayTime = StatsCalculator.ValidMetricOrZero(Double(info.Element("realPlayTimeInteracting"), 0));
         obs.Display.Permadeath = Bool(info.Element("permadeathMode"), false);
         var tile = Text(info.Element("startingTile"));
         obs.Identity.StartingTile = string.IsNullOrWhiteSpace(tile) ? null : ColonyIdentity.NormalizeTile(tile);
@@ -281,7 +280,7 @@ public sealed class SaveReader
                     {
                         // An unreadable token is ignored rather than failing the whole save.
                         if (LineageEntry.TryParse(r.ReadElementContentAsString().Trim(), out var entry))
-                            s.LineageTypes.Add(entry.Type);
+                            s.Obs.Lineage.Add(entry);
                     });
                     break;
                 default:
@@ -341,15 +340,19 @@ public sealed class SaveReader
             AnomalyLevelDef = s.AnomalyLevelDef,
             LineageTypes = lineage,
         };
-        obs.EndingTraces = EndingTraces.Detect(Inputs(s.LineageTypes));
+        obs.EndingTraces = EndingTraces.Detect(Inputs(obs.Lineage.Select(e => e.Type).Distinct().ToArray()));
         // What the lineage explained is kept: it is the only evidence if the profile lost the matching ending record.
         obs.ExplainedTraces = EndingTraces.Detect(Inputs(Array.Empty<EndingType>())).Except(obs.EndingTraces).ToList();
         if (s.Wealth is { Length: > 0 } w)
         {
-            obs.Identity.FirstWealthBits = BitConverter.SingleToUInt32Bits(w[0]);
-            obs.Values.WealthMax = w.Max();
-            obs.Values.WealthLast = w[^1];
-            obs.Values.WealthPoints = w.Length;
+            if (StatsCalculator.ValidMetric(w[0]))
+                obs.Identity.FirstWealthBits = BitConverter.SingleToUInt32Bits(w[0]);
+            if (w.All(value => StatsCalculator.ValidMetric(value)))
+            {
+                obs.Values.WealthMax = w.Max();
+                obs.Values.WealthLast = w[^1];
+                obs.Values.WealthPoints = w.Length;
+            }
         }
 
         var missing = new List<string>(3);

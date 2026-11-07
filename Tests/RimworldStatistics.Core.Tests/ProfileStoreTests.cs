@@ -130,6 +130,6 @@ public sealed class ProfileStoreTests
         var store = new ProfileStore(dir.Path);
         store.Save(Tagged("a"));
         store.Save(Tagged("b"));
-        Assert.Equal(new[] { "profile.json", "profile.json.bak1" }, Directory.EnumerateFiles(dir.Path).Select(Path.GetFileName).Order());
+        Assert.Equal(new[] { "profile.json", "profile.json.bak1", "profile.json.lock" }, Directory.EnumerateFiles(dir.Path).Select(Path.GetFileName).Order());
     }
 }
