@@ -23,6 +23,8 @@ public static class MetricRankings
     public const string ZeroDeathEndings = "ranking.ending.zero_deaths";
 
     // Phase D dependency ranks: not published until their B/C acquisition is verified.
+    public const string DaysByBiome = "ranking.survival.by_biome";
+    public const string EndingsByBiome = "ranking.endings.by_biome";
     public const string MostKills = "ranking.kills.peak";
     public const string LongestDeathFree = "ranking.death_free.peak";
     public const string MostCrafting = "ranking.crafting.peak";
@@ -121,6 +123,8 @@ public static class MetricRankings
             .Where(x => x.Value?.Number is not null).Select(x => (x.Key, x.Value!.Number, x.Value.Coverage)).ToList();
         yield return Extreme(Def(MetricKeys.WealthPerColonistMax), perColonist, max: true, ordered.Count);
 
+        yield return BiomeSplit(Def(DaysByBiome), ordered, rows, Days);
+        yield return BiomeSplit(Def(EndingsByBiome), ordered, rows, c => Endings(c));
         yield return InputPeak(Def(MostKills), ordered, rows, HealthDeathFamily.HostileKills);
         yield return InputPeak(Def(LongestDeathFree), ordered, rows, HealthDeathFamily.LongestDeathGap);
         yield return InputPeak(Def(MostCrafting), ordered, rows, WorkFamily.CraftedUnits);
@@ -134,6 +138,46 @@ public static class MetricRankings
     /// source row already chooses the representative save/checkpoint and supplies
     /// its own coverage. Missing input never silently becomes a zero.
     /// </summary>
+    /// <summary>
+    /// Starting biome comes from a *starting-tile* observation, never from the
+    /// current player home. Missing or ambiguous values are not "unknown biome"
+    /// names and are excluded from the numerator, making coverage Partial.
+    /// </summary>
+    private static NumericRow BiomeSplit(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, Func<ColonyStats, double> quantity)
+    {
+        var known = new List<(ColonyStats Colony, string Biome, MetricCoverage Coverage)>();
+        foreach (var colony in colonies)
+        {
+            var source = RowOf(rows, colony.Key, ColonyStartSnapshot.Biome);
+            if (source?.Value.Number != 1 || source.Breakdowns.Count != 1)
+                continue;
+            var biome = source.Breakdowns[0];
+            if (biome.Value.Number != 1 || string.IsNullOrWhiteSpace(biome.Breakdown))
+                continue;
+            known.Add((colony, biome.Breakdown, source.Value.Coverage));
+        }
+        if (known.Count == 0)
+            return new NumericRow { Definition = def, Value = NumericValue.Unknown, Targets = colonies.Count };
+
+        var incomplete = known.Count < colonies.Count || known.Any(x => x.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+        var coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly;
+        var breakdowns = known.GroupBy(x => x.Biome, Ord).OrderBy(g => g.Key, Ord)
+            .Select(g => new NumericRow
+            {
+                Definition = def,
+                Breakdown = g.Key,
+                Value = new NumericValue { Number = g.Sum(x => quantity(x.Colony)), Coverage = coverage },
+                Targets = g.Count(), Valid = g.Count(),
+            }).ToList();
+        return new NumericRow
+        {
+            Definition = def,
+            Value = new NumericValue { Number = known.Sum(x => quantity(x.Colony)), Coverage = coverage },
+            Targets = colonies.Count, Valid = known.Count, Breakdowns = breakdowns,
+        };
+    }
+
     private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
     {
