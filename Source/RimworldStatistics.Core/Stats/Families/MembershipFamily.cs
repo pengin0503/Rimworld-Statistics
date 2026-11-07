@@ -82,12 +82,9 @@ public static class MembershipFamily
             s.Track(LeftTracker, id, tick);
     }
 
-    /// <summary>The pawn became a prisoner of the colony (the start of its recruitment time).</summary>
+    /// <summary>A confirmed capture starts a new recruitment interval, including after an unobserved escape.</summary>
     public static void BecamePrisoner(FamilyState s, string id, int tick)
-    {
-        if (s.Tracked(PrisonerSince, id) is null)
-            s.Track(PrisonerSince, id, tick);
-    }
+        => s.Track(PrisonerSince, id, tick);
 
     /// <summary>A prisoner stopped being one without being recruited (released, escaped, died): its interval is dropped.</summary>
     public static void PrisonerGone(FamilyState s, string id) => s.Untrack(PrisonerSince, id);

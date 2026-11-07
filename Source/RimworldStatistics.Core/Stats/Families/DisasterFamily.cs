@@ -59,8 +59,20 @@ public static class DisasterFamily
             return;
         if (s.Active.ContainsKey(ActivePrefix + def))
             return;   // another condition of the def is still active
-        if (s.Untrack(Open, def) is { } open && tick >= open)
-            s.CountBy(Days_, def, tick - open);
+        CloseInterval(s, def, tick);
+    }
+
+    // Each open entry represents the union for that condition def, even when several maps overlap.
+    internal static void AccrueOpenIntervals(FamilyState s, int throughTick)
+    {
+        foreach (var def in Conditions)
+            CloseInterval(s, def, throughTick);
+    }
+
+    private static void CloseInterval(FamilyState s, string def, int throughTick)
+    {
+        if (s.Untrack(Open, def) is { } open && throughTick >= open)
+            s.CountBy(Days_, def, throughTick - open);
     }
 
     /// <summary>At the start of recording: the conditions running now. Tracked ones that ended unseen are closed now.</summary>

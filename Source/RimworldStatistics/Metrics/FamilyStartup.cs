@@ -7,9 +7,8 @@ namespace RimworldStatistics.Metrics;
 
 /// <summary>
 /// One-time actions when a family begins recording (a new game, or a load where the family starts fresh) and at every load:
-/// the membership baseline (the colonists present are known, not joins), the lifetime baseline (only at the start of a game,
-/// where the starting colonists' tenure and skill levels begin), and the game conditions already running (tracked for their days,
-/// never counted as starts). Each family on its own: a failure closes only that family.
+/// the membership and lifetime baselines, game conditions already running (tracked for their days, never counted as starts),
+/// and the count of existing player caravans. A failure closes only the affected family.
 /// </summary>
 internal static class FamilyStartup
 {
@@ -27,6 +26,7 @@ internal static class FamilyStartup
                     id => Members().FirstOrDefault(p => GameFacts.Id(p) == id) is { } p ? GameFacts.Skills(p) : new Dictionary<string, int>());
         });
         Run(acc, DisasterFamily.Name, tick, (s, _) => DisasterFamily.Reconcile(s, ConditionProbe.ActiveNow().ToList(), tick));
+        Run(acc, CaravanFamily.Name, tick, (s, _) => CaravanFamily.Concurrent(s, CaravanProbe.PlayerCaravans()));
     }
 
     private static IEnumerable<Pawn> Members()

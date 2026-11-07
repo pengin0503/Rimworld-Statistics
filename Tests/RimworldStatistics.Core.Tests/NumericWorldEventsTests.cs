@@ -140,6 +140,30 @@ public sealed class NumericWorldEventsTests
         Assert.Equal(1.0, V(Save(resumed, 5 * Day), DisasterFamily.ToxicFalloutDays).RealValue);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Conditions_GapPreservesObservedUnionWithoutCountingTheInterruption(bool missedEvent)
+    {
+        var (acc, s) = NewGame(DisasterFamily.Family);
+        DisasterFamily.ConditionStarted(s, "ToxicFallout", "c1", 0, counted: true);
+        DisasterFamily.ConditionStarted(s, "ToxicFallout", "c2", Day / 2, counted: true);
+        var saved = acc.PrepareSave(Day, T0, "P")!;
+        acc.Commit(saved);
+
+        if (missedEvent)
+            acc.MarkGap(DisasterFamily.Name);
+        else
+            acc = LiveMetricAccumulator.Resume(saved.Json, new[] { DisasterFamily.Family.Spec }, 3 * Day);
+
+        s = acc.Family(DisasterFamily.Name)!;
+        DisasterFamily.Reconcile(s, new[] { ("ToxicFallout", "c2") }, 3 * Day);
+        DisasterFamily.ConditionEnded(s, "ToxicFallout", "c2", 4 * Day);
+        var days = V(Save(acc, 5 * Day), DisasterFamily.ToxicFalloutDays);
+        Assert.Equal(2.0, days.RealValue);
+        Assert.Equal(MetricCoverage.Partial, days.Coverage);
+    }
+
     // ----- caravan -----
 
     [Fact]

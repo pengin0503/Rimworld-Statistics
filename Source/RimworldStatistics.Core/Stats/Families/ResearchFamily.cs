@@ -49,8 +49,8 @@ public static class ResearchFamily
 
         c.PutExtreme(Duration, DurationMin, max: false, 1.0 / StatFormat.TicksPerDay);
         c.PutExtreme(Duration, DurationMax, max: true, 1.0 / StatFormat.TicksPerDay);
-        if (c.State.TrackerOverflowed(Start))
-            c.MarkPartial(DurationMin, DurationMax);   // a project whose start was dropped has no duration sample
+        if (overflow || c.State.TrackerOverflowed(Start))
+            c.MarkPartial(DurationMin, DurationMax);   // a dropped start or completion can hide a duration sample
 
         // Only a range recorded from the start of the game knows the first completion (overflow cannot hide an earlier one:
         // the set fills in completion order).

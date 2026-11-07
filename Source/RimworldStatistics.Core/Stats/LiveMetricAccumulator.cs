@@ -14,6 +14,8 @@ public sealed class SaveDraft
 
     /// <summary>The checkpoint, when <see cref="IsNew"/>: a detached copy that later events do not change.</summary>
     public CheckpointPayload? Payload { get; init; }
+
+    internal int StopVersion { get; init; }
 }
 
 /// <summary>
@@ -33,6 +35,8 @@ public sealed class LiveMetricAccumulator
     private readonly string? _opaque;   // unknown or unreadable data: written back unchanged, nothing recorded on top
     private string? _lastJson;          // the last committed (or loaded) checkpoint text
     private CheckpointPayload? _last;
+    private int _stopVersion;
+    private int _committedStopVersion;
 
     private LiveMetricAccumulator(string? opaque) => _opaque = opaque;
 
@@ -69,11 +73,7 @@ public sealed class LiveMetricAccumulator
             {
                 // Continuous only when the family recorded up to the very save this game was loaded from.
                 if (family.ThroughTick != payload.SaveTick || payload.SaveTick != tick)
-                {
-                    // Totals stay; intervals open before the gap would span unobserved time, so they end without a sample.
-                    family.Continuous = false;
-                    family.Active.Clear();
-                }
+                    Interrupt(name, family, family.ThroughTick);
                 acc._recording[name] = family;
                 acc._order.Add(name);
             }
@@ -125,9 +125,20 @@ public sealed class LiveMetricAccumulator
     {
         if (_recording.TryGetValue(name, out var family))
         {
-            family.Continuous = false;
-            family.Active.Clear();   // the missed event may have ended an open interval
+            // A missed event has no reliable tick. The last checkpoint provides a known observation boundary.
+            var throughTick = family.ThroughTick;
+            if (_last?.Families.GetValueOrDefault(name) is { } saved && saved.Revision == family.Revision)
+                throughTick = Math.Max(throughTick, saved.ThroughTick);
+            Interrupt(name, family, throughTick);
         }
+    }
+
+    private static void Interrupt(string name, FamilyState family, int throughTick)
+    {
+        if (name == DisasterFamily.Name)
+            DisasterFamily.AccrueOpenIntervals(family, throughTick);
+        family.Continuous = false;
+        family.Active.Clear();
     }
 
     /// <summary>Stops a family (its hook failed): what it recorded is kept, measured through <paramref name="tick"/>.</summary>
@@ -137,15 +148,16 @@ public sealed class LiveMetricAccumulator
             return;
         family.ThroughTick = tick;
         _kept[name] = family;
+        _stopVersion++;
     }
 
     /// <summary>
-    /// What a save at <paramref name="tick"/> writes. With a recording family: a new checkpoint (<paramref name="newId"/>) whose
-    /// parent is <see cref="ParentId"/>. Without one: the last committed or loaded text unchanged, or null when there is none.
+    /// What a save at <paramref name="tick"/> writes. Recording or newly stopped families produce a new checkpoint
+    /// (<paramref name="newId"/>) with <see cref="ParentId"/>. Otherwise the last committed or loaded text is reused.
     /// </summary>
     public SaveDraft? PrepareSave(int tick, DateTime utc, string newId)
     {
-        if (_opaque is not null || _recording.Count == 0)
+        if (_opaque is not null || (_recording.Count == 0 && _stopVersion == _committedStopVersion))
             return _lastJson is null ? null : new SaveDraft { Json = _lastJson, IsNew = false };
 
         var payload = new CheckpointPayload
@@ -168,7 +180,7 @@ public sealed class LiveMetricAccumulator
                 payload.Families[name] = kept.Clone();
             }
         }
-        return new SaveDraft { Json = CheckpointJson.Serialize(payload), IsNew = true, Payload = payload };
+        return new SaveDraft { Json = CheckpointJson.Serialize(payload), IsNew = true, Payload = payload, StopVersion = _stopVersion };
     }
 
     /// <summary>A save holding <paramref name="draft"/> succeeded: it becomes the parent of the next checkpoint.</summary>
@@ -178,5 +190,6 @@ public sealed class LiveMetricAccumulator
             return;
         _last = draft.Payload;
         _lastJson = draft.Json;
+        _committedStopVersion = draft.StopVersion;
     }
 }

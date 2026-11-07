@@ -95,6 +95,24 @@ public sealed class NumericTrackerOverflowTests
     // ----- research -----
 
     [Fact]
+    public void Research_CompletedProjectsFull_DurationsArePartial()
+    {
+        var (acc, s) = NewGame(ResearchFamily.Family);
+        for (var i = 0; i < Cap; i++)
+        {
+            ResearchFamily.Worked(s, "Project" + i, 2 * i);
+            ResearchFamily.Finished(s, "Project" + i, 2 * i + 1);
+        }
+        ResearchFamily.Worked(s, "Dropped", Day);
+        ResearchFamily.Finished(s, "Dropped", 2 * Day);
+
+        var o = Save(acc, 3 * Day);
+        Partial(o, ResearchFamily.Completed, ResearchFamily.DurationMin, ResearchFamily.DurationMax);
+        NotPartial(o, ResearchFamily.FirstDay);
+        Assert.Equal(Cap, V(o, ResearchFamily.Completed).IntegerValue);
+    }
+
+    [Fact]
     public void Research_StartTrackerFull_DurationsArePartial_CountStaysComplete()
     {
         var (acc, s) = NewGame(ResearchFamily.Family);

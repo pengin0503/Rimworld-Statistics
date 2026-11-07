@@ -343,6 +343,34 @@ public sealed class NumericCheckpointTests
         Assert.Equal(2, Count(Obs(d)));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Stop_LastFamilyIsSavedEvenIfAnEarlierDraftCommits(bool commitEarlierDraft)
+    {
+        var acc = LiveMetricAccumulator.StartNew(Recording, 0);
+        Events(acc, 2);
+        var earlier = acc.PrepareSave(100, T0, "P")!;
+        Events(acc, 3);
+        acc.Stop("test", 400);
+        if (commitEarlierDraft)
+            acc.Commit(earlier);
+
+        var retry = acc.PrepareSave(900, T0, "Retry")!;
+        Assert.NotNull(retry);
+        Assert.True(retry.IsNew);
+        Assert.Equal(5, Count(Obs(retry)));
+
+        // An unsuccessful save of the stopped totals leaves them pending.
+        var saved = Save(acc, "S", 1000);
+        Assert.Equal(commitEarlierDraft ? "P" : null, saved.Payload!.ParentCheckpointId);
+        Assert.Equal(400, saved.Payload.Families["test"].ThroughTick);
+        Assert.Equal(5, Count(Obs(saved)));
+        var unchanged = acc.PrepareSave(1100, T0, "Next")!;
+        Assert.False(unchanged.IsNew);
+        Assert.Equal(saved.Json, unchanged.Json);
+    }
+
     /// <summary>Codex review: an interval open before a gap must not become a completed sample after it.</summary>
     [Fact]
     public void Gap_DropsOpenIntervalsButKeepsTotals()

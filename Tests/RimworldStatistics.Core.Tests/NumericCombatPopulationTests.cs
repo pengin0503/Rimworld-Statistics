@@ -171,6 +171,21 @@ public sealed class NumericCombatPopulationTests
         Assert.Equal(5.0, V(o, LifetimeFamily.TenureMean).RealValue);   // A: 0 → 5 days; the open intervals are not samples
     }
 
+    [Fact]
+    public void Membership_RecaptureStartsANewRecruitmentInterval()
+    {
+        var (acc, f) = NewGame(MembershipFamily.Family);
+        var s = f(MembershipFamily.Name);
+        MembershipFamily.BecamePrisoner(s, "Thing_P", Day);
+        // The capture hook reports a new transition after the escape even without an escape notification.
+        MembershipFamily.BecamePrisoner(s, "Thing_P", 5 * Day);
+        MembershipFamily.Joined(s, "Thing_P", MembershipFamily.RoutePrisoner, 30, 7 * Day);
+
+        var o = Save(acc, 8 * Day);
+        Assert.Equal(2.0, V(o, MembershipFamily.RecruitTimeMin).RealValue);
+        Assert.Equal(2.0, V(o, MembershipFamily.RecruitTimeMax).RealValue);
+    }
+
     /// <summary>Codex review: past the member cap, everything that needs "is this pawn new" is partial.</summary>
     [Fact]
     public void Membership_PastTheCap_DependentOutputsArePartial()
