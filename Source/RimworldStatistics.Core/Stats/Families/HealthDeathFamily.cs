@@ -51,6 +51,7 @@ public static class HealthDeathFamily
     private const string Caravan = "caravan";
     private const string AnimalDeaths = "animal_deaths";
     private const string AnimalRaid = "animal_raid";
+    private const string AnimalNonRaid = "animal_non_raid";
 
     public static void Died(FamilyState s, DeathFacts d, int tick)
     {
@@ -92,6 +93,8 @@ public static class HealthDeathFamily
             s.Count(AnimalDeaths);
             if (d.KillerIsRaider == true)
                 s.Count(AnimalRaid);
+            else if (d.KillerIsRaider == false)
+                s.Count(AnimalNonRaid);
         }
     }
 
@@ -130,7 +133,11 @@ public static class HealthDeathFamily
             : c.Value(real: disease / (double)classified, numerator: disease, denominator: classified));
         c.PutExtreme(Age, OldestDeathAge, max: true);
         c.PutCount(Caravan, CaravanMemberDeaths);
-        c.PutCount(AnimalDeaths, ColonyAnimalDeaths);
-        c.PutCount(AnimalRaid, ColonyAnimalRaidDeaths);
+        var animalDeaths = s.Peek(AnimalDeaths)?.N ?? 0;
+        var animalRaid = s.Peek(AnimalRaid)?.N ?? 0;
+        var animalNonRaid = s.Peek(AnimalNonRaid)?.N ?? 0;
+        c.Put(ColonyAnimalDeaths, c.Value(integer: animalDeaths));
+        // Older checkpoints also lack a non-raid count, so their unclassified remainder is uncertain.
+        c.Put(ColonyAnimalRaidDeaths, c.Value(integer: animalRaid, partial: animalDeaths - animalRaid > animalNonRaid));
     }
 }

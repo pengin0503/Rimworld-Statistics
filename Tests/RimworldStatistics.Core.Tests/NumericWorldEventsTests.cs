@@ -27,12 +27,30 @@ public sealed class NumericWorldEventsTests
     // ----- medicine -----
 
     [Fact]
+    public void Tends_OnlyTreatmentsInvolvingTheColonyAffectTotals()
+    {
+        var (acc, s) = NewGame(MedicineFamily.Family);
+        MedicineFamily.Tended(s, null, colonyPatient: false, neutralPatient: true, new[] { 0.1 }, medicineUsed: 3);
+        MedicineFamily.Tended(s, null, colonyPatient: false, neutralPatient: false, new[] { 0.2 }, medicineUsed: 2);
+        MedicineFamily.Tended(s, "Thing_Doc", colonyPatient: false, neutralPatient: true, new[] { 0.5 }, medicineUsed: 1);
+        MedicineFamily.Tended(s, null, colonyPatient: true, neutralPatient: false, new[] { 0.75 }, medicineUsed: 1);
+        MedicineFamily.Tended(s, null, colonyPatient: true, neutralPatient: true, new[] { 0.625 }, medicineUsed: 0);
+
+        var o = Save(acc, 1000);
+        Assert.Equal(3L, V(o, MedicineFamily.Tends).IntegerValue);
+        Assert.Equal(2L, V(o, MedicineFamily.NeutralTends).IntegerValue);
+        Assert.Equal(2L, V(o, MedicineFamily.MedicineUsed).IntegerValue);
+        Assert.Equal(0.625, V(o, MedicineFamily.TendQualityMean).RealValue);
+        Assert.Equal(1L, V(o, MedicineFamily.BestTender).IntegerValue);
+    }
+
+    [Fact]
     public void Tends_OneTendTwoPartsAndSurgeries()
     {
         var (acc, s) = NewGame(MedicineFamily.Family);
-        MedicineFamily.Tended(s, "Thing_Doc", MedicineFamily.PatientColonist, new[] { 0.6, 0.8 }, medicineUsed: 1);
-        MedicineFamily.Tended(s, "Thing_Doc", MedicineFamily.PatientNeutral, new[] { 0.4 }, medicineUsed: 0);
-        MedicineFamily.Tended(s, "Thing_Doc2", MedicineFamily.PatientColonist, Array.Empty<double>(), 0);   // nothing was tended
+        MedicineFamily.Tended(s, "Thing_Doc", colonyPatient: true, neutralPatient: false, new[] { 0.6, 0.8 }, medicineUsed: 1);
+        MedicineFamily.Tended(s, "Thing_Doc", colonyPatient: false, neutralPatient: true, new[] { 0.4 }, medicineUsed: 0);
+        MedicineFamily.Tended(s, "Thing_Doc2", colonyPatient: true, neutralPatient: false, Array.Empty<double>(), 0);   // nothing was tended
         MedicineFamily.Surgery(s, "Thing_Doc", success: true, implant: true);
         MedicineFamily.Surgery(s, "Thing_Doc2", success: false, implant: true);   // a failed install adds no implant
         var o = Save(acc, 1000);

@@ -24,22 +24,40 @@ public static class DoTendMetricPatch
     public sealed class Before
     {
         public readonly Dictionary<HediffComp_TendDuration, (int Ticks, float Quality)> Comps = new();
+        public string? DoctorId;
+        public bool ColonyPatient;
+        public bool NeutralPatient;
         public int Medicine;
     }
 
-    public static void Prefix(Pawn patient, Medicine medicine, out Before? __state)
+    public static void Prefix(Pawn doctor, Pawn patient, Medicine medicine, out Before? __state)
     {
         __state = null;
-        if (patient?.health?.hediffSet == null || LiveMetrics.Family(MedicineFamily.Name) is null)
+        if (patient?.health?.hediffSet == null)
             return;
-        var b = new Before { Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0 };
+
+        var doctorId = doctor != null && GameFacts.IsPlayer(doctor) ? GameFacts.Id(doctor) : null;
+        var playerPatient = GameFacts.IsPlayer(patient);
+        var colonistPatient = patient.IsFreeColonist;
+        var colonyPatient = playerPatient || colonistPatient || patient.IsPrisonerOfColony;
+        if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || LiveMetrics.Family(MedicineFamily.Name) is null)
+            return;
+
+        var b = new Before
+        {
+            DoctorId = doctorId,
+            ColonyPatient = colonyPatient,
+            NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && Faction.OfPlayer != null
+                && patient.RaceProps.Humanlike && !patient.HostileTo(Faction.OfPlayer),
+            Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0,
+        };
         foreach (var h in patient.health.hediffSet.hediffs)
             if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td)
                 b.Comps[td] = (td.tendTicksLeft, td.tendQuality);
         __state = b;
     }
 
-    public static void Postfix(Pawn doctor, Pawn patient, Medicine medicine, Before? __state)
+    public static void Postfix(Pawn patient, Medicine medicine, Before? __state)
     {
         if (__state == null)
             return;
@@ -49,11 +67,8 @@ public static class DoTendMetricPatch
                 && (!__state.Comps.TryGetValue(td, out var before) || before.Ticks != td.tendTicksLeft || before.Quality != td.tendQuality) && td.IsTended)
                 qualities.Add(td.tendQuality);
         var used = __state.Medicine - (medicine is { Destroyed: false } ? medicine.stackCount : 0);
-        var kind = patient.IsFreeColonist ? MedicineFamily.PatientColonist
-            : patient.Faction != null && Faction.OfPlayer != null && !patient.HostileTo(Faction.OfPlayer) && patient.Faction != Faction.OfPlayer && patient.RaceProps.Humanlike
-                ? MedicineFamily.PatientNeutral : MedicineFamily.PatientOther;
-        var doc = doctor != null && GameFacts.IsPlayer(doctor) ? GameFacts.Id(doctor) : null;
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Tended(s, doc, kind, qualities, Math.Max(0, used)));
+        GameFacts.Record(MedicineFamily.Name, s =>
+            MedicineFamily.Tended(s, __state.DoctorId, __state.ColonyPatient, __state.NeutralPatient, qualities, Math.Max(0, used)));
     }
 }
 

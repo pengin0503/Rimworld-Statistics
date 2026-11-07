@@ -119,6 +119,24 @@ public sealed class NumericCombatPopulationTests
         Assert.Equal(1, V(o, AnimalsFamily.Hunted).IntegerValue);
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void AnimalDeaths_UnknownRaidAttributionMakesOnlyRaidCountPartial(bool confirmedRaidDeath)
+    {
+        var (acc, f) = NewGame(HealthDeathFamily.Family);
+        var s = f(HealthDeathFamily.Name);
+        HealthDeathFamily.Died(s, new DeathFacts { PawnId = "Thing_Cow1", VictimKind = DeathFacts.Other, ColonyAnimal = true, KillerIsRaider = confirmedRaidDeath }, Day);
+        Assert.Equal(MetricCoverage.Complete, V(Save(acc, 2 * Day), HealthDeathFamily.ColonyAnimalRaidDeaths).Coverage);
+
+        HealthDeathFamily.Died(s, new DeathFacts { PawnId = "Thing_Cow2", VictimKind = DeathFacts.Other, ColonyAnimal = true, KillerIsRaider = null }, 3 * Day);
+        var o = Save(acc, 4 * Day);
+        Assert.Equal(confirmedRaidDeath ? 1L : 0L, V(o, HealthDeathFamily.ColonyAnimalRaidDeaths).IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, V(o, HealthDeathFamily.ColonyAnimalRaidDeaths).Coverage);
+        Assert.Equal(2L, V(o, HealthDeathFamily.ColonyAnimalDeaths).IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, V(o, HealthDeathFamily.ColonyAnimalDeaths).Coverage);
+    }
+
     // ----- down -----
 
     [Fact]
@@ -249,6 +267,50 @@ public sealed class NumericCombatPopulationTests
     private static RaidArrival Arrival(string map, int pawns, string strategy = "ImmediateAttack", string mode = "EdgeWalkIn", double points = 500)
         => new() { MapId = map, PawnIds = Enumerable.Range(0, pawns).Select(i => map + "_r" + i + "_" + strategy + mode).ToList(), Points = points,
             ArrivalMode = mode, Strategy = strategy, FactionDef = "Pirate" };
+
+    [Theory]
+    [InlineData("resume")]
+    [InlineData("missed event")]
+    [InlineData("stop and reload at the same tick")]
+    public void Interruptions_KeepCompletedDeathAndRaidGapsWithoutConnectingEvents(string interruption)
+    {
+        var specs = new[] { HealthDeathFamily.Family.Spec, RaidFamily.Family.Spec };
+        var acc = LiveMetricAccumulator.StartNew(specs, 0);
+        void Events(int day)
+        {
+            var death = acc.Family(HealthDeathFamily.Name)!;
+            HealthDeathFamily.Died(death, Colonist("Thing_P" + day, 25, null), day * Day);
+            RaidFamily.Arrived(acc.Family(RaidFamily.Name)!, Arrival("M" + day, 1), day * Day);
+        }
+
+        Events(1);
+        Events(3);
+        const int boundary = 4 * Day;
+        if (interruption == "missed event")
+        {
+            foreach (var spec in specs)
+                acc.MarkGap(spec.Name);
+        }
+        else
+        {
+            if (interruption == "stop and reload at the same tick")
+                foreach (var spec in specs)
+                    acc.Stop(spec.Name, boundary);
+            var checkpoint = acc.PrepareSave(boundary, T0, "P")!;
+            var resumeAt = interruption == "resume" ? 50 * Day : boundary;
+            acc = LiveMetricAccumulator.Resume(checkpoint.Json, specs, resumeAt);
+        }
+
+        Events(100);
+        Events(101);
+        var o = Save(acc, 102 * Day);
+        Assert.Equal(2.0, V(o, HealthDeathFamily.LongestDeathGap).RealValue);
+        Assert.Equal(2.0, V(o, RaidFamily.LongestGap).RealValue);
+        Assert.Equal(1.5, V(o, RaidFamily.MeanGap).RealValue);
+        Assert.Equal(2, V(o, RaidFamily.MeanGap).SampleCount);
+        Assert.Equal(4, V(o, RaidFamily.Raids).IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, V(o, RaidFamily.MeanGap).Coverage);
+    }
 
     [Fact]
     public void Raids_CountGapsAndKinds()

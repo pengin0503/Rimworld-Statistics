@@ -54,10 +54,6 @@ public static class MedicineFamily
     public const string InjuriesPerPawnMax = "medicine.injuries.per_pawn_max";
     public const string AwayRescues = "medicine.rescues.away";
 
-    public const string PatientColonist = "colonist";
-    public const string PatientNeutral = "neutral";
-    public const string PatientOther = "other";
-
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
 
     private const string TendCount = "tends";
@@ -88,15 +84,19 @@ public static class MedicineFamily
     private const string DiseaseOpen = "disease";       // active: hediff id → onset tick
     private const string InfectionOpen = "infection";
 
-    /// <summary>One TendUtility.DoTend: the qualities applied to each tended hediff, and the medicine it used up.</summary>
-    public static void Tended(FamilyState s, string? doctorId, string patientKind, IReadOnlyList<double> qualities, int medicineUsed)
+    public static bool IsColonyTend(string? doctorId, bool colonyPatient)
+        => doctorId != null || colonyPatient;
+
+    /// <summary>One colony treatment: the qualities applied to each tended hediff, and the medicine it used up.</summary>
+    public static void Tended(FamilyState s, string? doctorId, bool colonyPatient, bool neutralPatient,
+        IReadOnlyList<double> qualities, int medicineUsed)
     {
-        if (qualities.Count == 0)
+        if (!IsColonyTend(doctorId, colonyPatient) || qualities.Count == 0)
             return;
         s.Count(TendCount);
         if (doctorId != null)
             s.CountBy(TendByDoctor, doctorId);
-        if (patientKind == PatientNeutral)
+        if (neutralPatient)
             s.Count(Neutral);
         foreach (var q in qualities)
             s.Observe(Quality, q);

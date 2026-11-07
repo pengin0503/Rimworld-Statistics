@@ -139,6 +139,9 @@ public sealed class LiveMetricAccumulator
             DisasterFamily.AccrueOpenIntervals(family, throughTick);
         family.Continuous = false;
         family.Active.Clear();
+        // A completed gap needs two observed events in the same uninterrupted stretch.
+        foreach (var metric in family.Metrics.Values)
+            metric.Last = null;
     }
 
     /// <summary>Stops a family (its hook failed): what it recorded is kept, measured through <paramref name="tick"/>.</summary>
@@ -146,6 +149,7 @@ public sealed class LiveMetricAccumulator
     {
         if (!_recording.Remove(name, out var family))
             return;
+        Interrupt(name, family, tick);
         family.ThroughTick = tick;
         _kept[name] = family;
         _stopVersion++;
