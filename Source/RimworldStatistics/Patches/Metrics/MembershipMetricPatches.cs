@@ -81,11 +81,16 @@ public static class EmancipateSlaveMetricPatch
 }
 
 /// <summary>A human birth (evidence #membership): the returned thing is the baby, alive on the player's side, or a stillbirth.</summary>
-[MetricAdapter(MembershipFamily.Name, LifetimeFamily.Name)]
+/// <summary>
+/// ApplyBirthOutcome returns the actual newly born Thing. The birtherThing parameter
+/// (confirmed in RimWorld 1.7.4985 reference metadata) is the physical birther, not
+/// necessarily the geneticMother. Only a living player baby proves a live birth.
+/// </summary>
+[MetricAdapter(MembershipFamily.Name, LifetimeFamily.Name, BiotechFamily.Name)]
 [HarmonyPatch(typeof(PregnancyUtility), nameof(PregnancyUtility.ApplyBirthOutcome))]
 public static class BirthMetricPatch
 {
-    public static void Postfix(Thing __result)
+    public static void Postfix(Thing __result, Thing birtherThing)
     {
         if (__result is not Pawn baby || baby.Dead || baby.Faction != Faction.OfPlayer || !baby.RaceProps.Humanlike)
             return;
@@ -93,6 +98,11 @@ public static class BirthMetricPatch
         var tick = GameFacts.Tick;
         GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Born(s, id, tick));
         GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, GameFacts.Skills(baby)));
+        // One unique birther across multiple live babies/twins; exclude artificial
+        // incubators, outsiders and babies not attributed to a free colony member.
+        if (birtherThing is Pawn mother)
+            GameFacts.Record(BiotechFamily.Name, s => BiotechFamily.BirthConfirmed(
+                s, GameFacts.Id(mother), mother.IsFreeNonSlaveColonist, livingBaby: true));
     }
 }
 
