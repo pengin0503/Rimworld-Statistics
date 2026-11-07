@@ -18,7 +18,7 @@ names = (
 verbs = (
     "Birth", "Assign", "Apply", "Finish", "Complete", "Produce",
     "Process", "Activate", "Launch", "Land", "Repair", "Create", "Clean",
-    "Spawn", "Pollut", "Add", "Remove", "Age", "Grow", "Outcome",
+    "Spawn", "Pollut", "Add", "Remove", "Age", "Grow", "Stage", "Notify", "Outcome",
 )
 for entry in entries:
     name = entry["fullName"]
