@@ -665,6 +665,8 @@
   <RWS_MetricDesc_SettlementsFounded>キャラバンや既存のマップから、プレイヤーの新しい拠点が成立した数。初期拠点・移設・グラヴシップの着陸は含めません。</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>拠点を放棄した回数</RWS_Metric_SettlementsAbandoned>
   <RWS_MetricDesc_SettlementsAbandoned>プレイヤーの拠点を自分で放棄した回数。グラヴシップの離陸などで自動的に消えたものは含めません。</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_ColonyStartingBiome>開始地点のバイオーム</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>ゲーム開始タイルのバイオームDef名。現在の拠点ではなく開始時の場所で分類し、元のタイルが不明な場合は不明扱い。</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>完了した研究の数</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>最後に正常保存した時点で完了済みの登録研究数。</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>研究完了率</RWS_Metric_ResearchSnapshotFinishedRate>
