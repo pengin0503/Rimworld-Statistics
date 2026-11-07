@@ -110,7 +110,14 @@ public static class MetricCalculator
             overall.Add(Combine(def, counted.Select(c => (c.Colony.Key, c.Rows[i])).ToList()));
         }
         var countedStats = stats.Colonies.Where(c => !c.Excluded).ToList();
-        overall.AddRange(MetricRankings.Build(countedStats, counted.ToDictionary(c => c.Colony.Key, c => (IReadOnlyList<NumericRow>)c.Rows, Ord)));
+        // The ranking engine can calculate registered development-only dependencies,
+        // but the normal Details view must not leak any output whose acquisition gate
+        // has not been verified in game.
+        var allowedRankings = definitions.Where(d => d.Overall == OverallAggregation.Ranking)
+            .Select(d => d.Key).ToHashSet(Ord);
+        overall.AddRange(MetricRankings.Build(countedStats,
+            counted.ToDictionary(c => c.Colony.Key, c => (IReadOnlyList<NumericRow>)c.Rows, Ord))
+            .Where(row => allowedRankings.Contains(row.Definition.Key)));
 
         return new NumericView
         {
