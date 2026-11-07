@@ -265,6 +265,8 @@ public static class LiveCatalog
         Live(CaravanFamily.SettlementsFounded, "N3-X-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsFounded", "RWS_MetricDesc_SettlementsFounded"),
         Live(CaravanFamily.SettlementsAbandoned, "Q-013", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsAbandoned", "RWS_MetricDesc_SettlementsAbandoned"),
         // D2 · royalty (only audited title and honor state transitions)
+        Live(RoyaltyFamily.PermitUses, "L-002", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPermitUses", "RWS_MetricDesc_RoyaltyPermitUses"),
+        Live(RoyaltyFamily.Psycasts, "L-005", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPsycasts", "RWS_MetricDesc_RoyaltyPsycasts"),
         Live(RoyaltyFamily.TitleGrants, "L-001", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyTitleGrants", "RWS_MetricDesc_RoyaltyTitleGrants"),
         Live(RoyaltyFamily.HighestTitle, "L-004", MetricCategory.Royalty, Count, Max, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHighestTitle", "RWS_MetricDesc_RoyaltyHighestTitle", breakdown: true),
         Live(RoyaltyFamily.Honor, "N1-E-006", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHonor", "RWS_MetricDesc_RoyaltyHonor", breakdown: true),
