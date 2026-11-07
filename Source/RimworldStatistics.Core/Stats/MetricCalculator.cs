@@ -17,10 +17,15 @@ public sealed class NumericValue
     /// <summary>For an all-colonies maximum or minimum: the colony that holds it (ties: smallest colony key).</summary>
     public string? ColonyKey { get; init; }
 
-    /// <summary>Known range, no value: a threshold that was not reached.</summary>
-    public bool NotReached => Number is null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+    /// <summary>For a ranking over labels (e.g. the scenario with most endings): the label(s) holding it, ties joined.</summary>
+    public string? Label { get; init; }
 
-    public bool Known => Number is not null || NotReached;
+    /// <summary>Known range, no value: a threshold that was not reached (a 0 ÷ 0 rate is not this: it has a denominator).</summary>
+    public bool NotReached => Number is null && Denominator is null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+
+    /// <summary>A value, a threshold not reached, or a known 0 ÷ 0.</summary>
+    public bool Known => Number is not null || NotReached
+        || (Numerator is not null && Denominator is not null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable));
 }
 
 /// <summary>One metric (or one breakdown entry) for all colonies or for one colony.</summary>
@@ -74,6 +79,10 @@ public static class MetricCalculator
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
     public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsOptions options)
+        => BuildView(profile, colonies, StatsCalculator.Calculate(colonies, options));
+
+    /// <param name="stats">The v1 statistics of the same colonies, whose ending filter and labels the rankings use.</param>
+    public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats)
     {
         var attached = Attach(profile, colonies, out var unattributed);
         var perColony = new List<(Colony Colony, List<NumericRow> Rows)>(colonies.Count);
@@ -88,10 +97,12 @@ public static class MetricCalculator
         for (var i = 0; i < MetricRegistry.All.Count; i++)
         {
             var def = MetricRegistry.All[i];
-            if (def.Overall == OverallAggregation.IndividualOnly)
+            if (def.Overall is OverallAggregation.IndividualOnly or OverallAggregation.Ranking)
                 continue;
             overall.Add(Combine(def, counted.Select(c => (c.Colony.Key, c.Rows[i])).ToList()));
         }
+        var countedStats = stats.Colonies.Where(c => !c.Excluded).ToList();
+        overall.AddRange(MetricRankings.Build(countedStats, counted.ToDictionary(c => c.Colony.Key, c => (IReadOnlyList<NumericRow>)c.Rows, Ord)));
 
         return new NumericView
         {
@@ -101,7 +112,7 @@ public static class MetricCalculator
                 Key = c.Colony.Key,
                 Excluded = c.Colony.Excluded,
                 Observations = attached.GetValueOrDefault(c.Colony)?.Count ?? 0,
-                Rows = c.Rows,
+                Rows = c.Rows.Where(r => r.Definition.Overall != OverallAggregation.Ranking).ToList(),
             }).ToList(),
             Unattributed = unattributed,
         };

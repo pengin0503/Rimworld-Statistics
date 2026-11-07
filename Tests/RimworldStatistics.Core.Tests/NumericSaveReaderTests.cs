@@ -31,6 +31,14 @@ public sealed class NumericSaveReaderTests
     private static void Unknown(MetricObservation m, string key)
         => Assert.True(!m.Metrics.ContainsKey(key) || V(m, key).Coverage == MetricCoverage.Unknown, key + " should be unknown");
 
+    /// <summary>Defined as not applicable: e.g. a series too short for the window, a range with no eligible point.</summary>
+    private static void NotApplicable(MetricObservation m, string key)
+    {
+        var v = V(m, key);
+        Assert.Equal(MetricCoverage.NotApplicable, v.Coverage);
+        Assert.False(v.HasValue);
+    }
+
     private static void Real(MetricObservation m, string key, double expected, MetricCoverage coverage = MetricCoverage.SnapshotOnly)
     {
         var v = V(m, key);
@@ -65,8 +73,8 @@ public sealed class NumericSaveReaderTests
         var reach = V(m, MetricKeys.WealthTotalFirst100K);
         Assert.Equal(MetricCoverage.SnapshotOnly, reach.Coverage);
         Assert.False(reach.HasValue);
-        Unknown(m, MetricKeys.WealthTotalMaxGain15D);    // 3 points: no 30-point window
-        Unknown(m, MetricKeys.WealthTotalMaxGrowthRateYear);
+        NotApplicable(m, MetricKeys.WealthTotalMaxGain15D);    // 3 points: no 30-point window exists
+        NotApplicable(m, MetricKeys.WealthTotalMaxGrowthRateYear);
     }
 
     [Fact]
@@ -97,8 +105,8 @@ public sealed class NumericSaveReaderTests
         }
         else
         {
-            Unknown(m, MetricKeys.WealthTotalMaxGain15D);
-            Unknown(m, MetricKeys.WealthTotalMaxLoss15D);
+            NotApplicable(m, MetricKeys.WealthTotalMaxGain15D);
+            NotApplicable(m, MetricKeys.WealthTotalMaxLoss15D);
         }
     }
 
@@ -112,7 +120,7 @@ public sealed class NumericSaveReaderTests
         if (defined)
             Real(m, MetricKeys.WealthTotalMaxGrowthRateYear, (800d - 2000d) / 2000d);
         else
-            Unknown(m, MetricKeys.WealthTotalMaxGrowthRateYear);
+            NotApplicable(m, MetricKeys.WealthTotalMaxGrowthRateYear);
     }
 
     [Fact]
@@ -137,11 +145,34 @@ public sealed class NumericSaveReaderTests
     }
 
     [Fact]
-    public void LossRate_WithoutPositiveStart_IsUnknown()
+    public void LossRate_WithoutPositiveStart_IsNotApplicable()
     {
         var m = M(Aligned(new[] { 0f, 0f, 10f }));
-        Unknown(m, MetricKeys.WealthTotalMaxLossRateHalfDay);
+        NotApplicable(m, MetricKeys.WealthTotalMaxLossRateHalfDay);
         Real(m, MetricKeys.WealthTotalMaxLossHalfDay, 0);
+    }
+
+    [Fact]
+    public void SinglePoint_HasNoIntervals_WhileGapsAreUnknown()
+    {
+        var one = M(Base(1000).WealthTotal(5f).Recorder("ColonistMood", new[] { 60f }));
+        foreach (var key in new[] { MetricKeys.WealthTotalMaxGainHalfDay, MetricKeys.WealthTotalMaxLossRateHalfDay, MetricKeys.WealthTotalLongestGrowth, MetricKeys.MoodBelow50Days })
+            NotApplicable(one, key);
+        Real(one, MetricKeys.WealthTotalPeakDay, 0);
+
+        // Every interval broken by missing points: not known, rather than not applicable.
+        var gaps = M(Aligned(new[] { 100f, float.NaN, 100f, float.NaN }).Recorder("ColonistMood", new[] { 60f, 0f, 70f, 0f }));
+        Unknown(gaps, MetricKeys.WealthTotalMaxGainHalfDay);
+        Unknown(gaps, MetricKeys.WealthTotalLongestGrowth);
+        Unknown(gaps, MetricKeys.MoodBelow50Days);
+    }
+
+    [Fact]
+    public void Share_WithoutPositiveTotal_IsNotApplicable()
+    {
+        var m = M(Aligned(new[] { 0f, 0f }).Recorder("Wealth_Buildings", new[] { 0f, 0f }).Recorder("FreeColonists", new[] { 0f, 0f }));
+        NotApplicable(m, MetricKeys.WealthBuildingsMaxShare);
+        NotApplicable(m, MetricKeys.WealthPerColonistMax);
     }
 
     [Fact]
@@ -454,13 +485,26 @@ public sealed class NumericSaveReaderTests
     }
 
     [Fact]
-    public void Quests_NoneSaved_AreZeroWithUnknownRate()
+    public void Quests_NoneSaved_AreZero_RateAndMeanAreZeroOverZero()
     {
         var m = M(Base(600000).WealthTotal(1f).EmptyQuests());
         Assert.Equal(0L, V(m, MetricKeys.QuestSuccess).IntegerValue);
         Assert.Equal(0L, V(m, MetricKeys.QuestAccepted).IntegerValue);
-        Unknown(m, MetricKeys.QuestSuccessRate);
+        foreach (var key in new[] { MetricKeys.QuestSuccessRate, MetricKeys.QuestSuccessDurationMean })
+        {
+            var v = V(m, key);
+            Assert.Equal((MetricCoverage.SnapshotOnly, 0d, 0d, false), (v.Coverage, v.Numerator, v.Denominator, v.HasValue));
+        }
+        NotApplicable(m, MetricKeys.QuestSuccessDurationMin);
+        NotApplicable(m, MetricKeys.QuestSuccessDurationMax);
+    }
+
+    [Fact]
+    public void Quests_SuccessesWithoutAnyDuration_HaveUnknownDurations()
+    {
+        var m = M(Base(600000).WealthTotal(1f).QuestFull(0, "A", initiallyAccepted: true, ended: true, outcome: "Success", cleanupTick: 5));
         Unknown(m, MetricKeys.QuestSuccessDurationMean);
+        Unknown(m, MetricKeys.QuestSuccessDurationMax);
     }
 
     [Fact]

@@ -116,7 +116,6 @@
   <RWS_Details_Unattributed>{0} observations that could not be matched to one colony are not included.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
   <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
-  <RWS_Details_NotApplicable>N/A</RWS_Details_NotApplicable>
   <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Source: {0} / state: {1}</RWS_Details_Tip_Source>
   <RWS_Details_Tip_Through>Observed at in-game day {0}.</RWS_Details_Tip_Through>
@@ -235,4 +234,33 @@
   <RWS_MetricDesc_QuestSuccessDurationMin>Fewest days in the same sample as the mean.</RWS_MetricDesc_QuestSuccessDurationMin>
   <RWS_Metric_QuestSuccessDurationMax>Longest succeeded quest (acceptance to cleanup)</RWS_Metric_QuestSuccessDurationMax>
   <RWS_MetricDesc_QuestSuccessDurationMax>Most days in the same sample as the mean.</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Unit_SilverPerYear>{0} / year</RWS_Unit_SilverPerYear>
+  <RWS_Details_Permadeath>Permadeath</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>Normal</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankByDifficultyDays>Days played by difficulty</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>Colony days summed by the difficulty of each colony's furthest point; changes of difficulty during play are not tracked. Click to show the breakdown.</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>Endings by difficulty</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>Endings counted as on the Overview (dev-mode setting, traces as at least once), by the difficulty of each colony's furthest point.</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>Days played, permadeath or not</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>Colony days summed by whether each colony's furthest point is in permadeath mode.</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>Endings, permadeath or not</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>Endings counted as on the Overview, by whether each colony's furthest point is in permadeath mode.</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>Largest population (all colonies)</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>The highest of the game's greatest-population counters across colonies, and its colony.</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>Fastest ending</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>The ending recorded during play with the fewest in-game days, and its colony. Pre-install traces, whose time is unknown, are left out.</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>Mean wealth gain per year</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>The colonies' net wealth changes summed, ÷ the years their histories span, summed (histories of one observation are left out).</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>Scenario with the most endings</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>The most endings for one scenario name of the colonies' furthest points, and the name; ties are listed together. Click to show the breakdown.</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>Days played by storyteller</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>Colony days summed by the storyteller of each colony's furthest point.</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>Colony with the most play time</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>The longest real play time of one colony, and the colony.</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>Highest wealth per colonist</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>Largest total wealth ÷ free colonists (at least one) at the same observation, and its colony; only where both histories are complete from the start.</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>Ending with the fewest deaths</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>The fewest colonist deaths at the moment an ending was recorded, and the colony. Endings recorded before this version have no death count and are left out.</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>Endings without deaths</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>Endings whose colonist death count was 0 when recorded. Endings without a death count are not counted.</RWS_MetricDesc_RankZeroDeathEndings>
 </LanguageData>

@@ -15,7 +15,7 @@ public static class DetailsTab
 {
     private const float ControlHeight = 30f;
     private const float RowHeight = 26f;
-    private static readonly float[] Widths = { 0.44f, 0.18f, 0.26f, 0.12f };
+    private static readonly float[] Widths = { 0.40f, 0.26f, 0.22f, 0.12f };
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     private sealed record Line(string Label, string Value, string State, string Count, string Tip, int Depth, string? ExpandKey, bool Dim);
@@ -239,7 +239,7 @@ public static class DetailsTab
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
             foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
-                result.Add(MakeLine(b, b.Breakdown == MetricKeys.UnknownBucket ? (string)"RWS_Details_UnknownBucket".Translate() : b.Breakdown, 1, null, input, colony));
+                result.Add(MakeLine(b, BreakdownLabel(b.Breakdown), 1, null, input, colony));
         }
         return result;
     }
@@ -277,7 +277,16 @@ public static class DetailsTab
             tip.Append((string)"RWS_Details_Tip_Unknown".Translate()).Append('\n');
         tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
 
-        return new Line(label, Format(d, v), CoverageLabel(d, v.Coverage), count, tip.ToString(), depth, expandKey,
+        var value = Format(d, v);
+        if (d.Category == MetricCategory.Rankings && row.Breakdown.Length == 0)
+        {
+            // A ranking names what holds it: the colony, or the label(s) for a split such as the top scenario.
+            if (v.Label is { } holderLabel)
+                value += " · " + holderLabel;
+            else if (v.ColonyKey is { } holderColony)
+                value += " · " + Name(input.Stats, holderColony);
+        }
+        return new Line(label, value, CoverageLabel(d, v.Coverage), count, tip.ToString(), depth, expandKey,
             v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
     }
 
@@ -288,8 +297,6 @@ public static class DetailsTab
 
     internal static string Format(MetricDefinition d, NumericValue v)
     {
-        if (v.Coverage == MetricCoverage.NotApplicable)
-            return "RWS_Details_NotApplicable".Translate();
         if (v.NotReached)
             return "RWS_Details_NotReached".Translate();
         if (v.Number is not { } n)
@@ -303,9 +310,19 @@ public static class DetailsTab
             MetricUnit.Percent => sign + (n * 100).ToString("N1", Inv) + "%",
             MetricUnit.Mood => n.ToString("N1", Inv) + "%",
             MetricUnit.PerYear => "RWS_Unit_PerYear".Translate(n.ToString("N2", Inv)),
+            MetricUnit.Hours => "RWS_HoursValue".Translate(n.ToString("N1", Inv)),
+            MetricUnit.SilverPerYear => "RWS_Unit_SilverPerYear".Translate(sign + StatFormat.Group(n)),
             _ => n.ToString("N2", Inv),
         };
     }
+
+    private static string BreakdownLabel(string key) => key switch
+    {
+        MetricKeys.UnknownBucket => "RWS_Details_UnknownBucket".Translate(),
+        MetricRankings.PermadeathOn => "RWS_Details_Permadeath".Translate(),
+        MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath".Translate(),
+        _ => key,
+    };
 
     private static string Name(StatsResult stats, string key)
         => stats.Colonies.FirstOrDefault(c => c.Key == key) is { } s ? Dialog_RimworldStatistics.ColonyName(s) : key;

@@ -29,6 +29,12 @@ public enum MetricUnit
 
     /// <summary>Events per game year (60 days).</summary>
     PerYear,
+
+    /// <summary>Hours of real play time.</summary>
+    Hours,
+
+    /// <summary>Silver per game year.</summary>
+    SilverPerYear,
 }
 
 /// <summary>Which of a colony's observations gives its value.</summary>
@@ -56,6 +62,9 @@ public enum OverallAggregation
 
     /// <summary>Not combined across colonies (start values, nominal days, labels).</summary>
     IndividualOnly,
+
+    /// <summary>A cross-colony comparison computed by <see cref="MetricRankings"/>; not listed per colony.</summary>
+    Ranking,
 }
 
 /// <summary>Where a value comes from, shown next to its coverage.</summary>
@@ -119,6 +128,7 @@ public static class MetricRegistry
     private const MetricCategory P = MetricCategory.Population;
     private const MetricProvenance H = MetricProvenance.SaveHistory;
     private const MetricProvenance S = MetricProvenance.SaveSnapshot;
+    private const MetricCategory Rk = MetricCategory.Rankings;
 
     public static IReadOnlyList<MetricDefinition> All { get; } = new[]
     {
@@ -175,6 +185,22 @@ public static class MetricRegistry
         Def(MetricKeys.QuestSuccessDurationMean, "N3-X-003", MetricCategory.Quests, MetricUnit.Days, S, OverallAggregation.Ratio, "RWS_Metric_QuestSuccessDurationMean", "RWS_MetricDesc_QuestSuccessDurationMean"),
         Def(MetricKeys.QuestSuccessDurationMin, "N3-X-004", MetricCategory.Quests, MetricUnit.Days, S, OverallAggregation.Min, "RWS_Metric_QuestSuccessDurationMin", "RWS_MetricDesc_QuestSuccessDurationMin"),
         Def(MetricKeys.QuestSuccessDurationMax, "N3-X-005", MetricCategory.Quests, MetricUnit.Days, S, OverallAggregation.Max, "RWS_Metric_QuestSuccessDurationMax", "RWS_MetricDesc_QuestSuccessDurationMax"),
+
+        // Phase D1 · rankings from v1 records and Phase A observations (R-011 is not supported and has no row)
+        Def(MetricRankings.ByDifficultyDays, "S-003", Rk, MetricUnit.Days, S, OverallAggregation.Ranking, "RWS_Metric_RankByDifficultyDays", "RWS_MetricDesc_RankByDifficultyDays", breakdown: true),
+        Def(MetricRankings.ByDifficultyEndings, "S-003, R-015", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankByDifficultyEndings", "RWS_MetricDesc_RankByDifficultyEndings", breakdown: true),
+        Def(MetricRankings.ByPermadeathDays, "S-004", Rk, MetricUnit.Days, S, OverallAggregation.Ranking, "RWS_Metric_RankByPermadeathDays", "RWS_MetricDesc_RankByPermadeathDays", breakdown: true),
+        Def(MetricRankings.ByPermadeathEndings, "S-004", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankByPermadeathEndings", "RWS_MetricDesc_RankByPermadeathEndings", breakdown: true),
+        Def(MetricRankings.PopulationPeak, "R-003", Rk, MetricUnit.Count, MetricProvenance.VanillaCounter, OverallAggregation.Ranking, "RWS_Metric_RankPopulationPeak", "RWS_MetricDesc_RankPopulationPeak"),
+        Def(MetricRankings.FastestEnding, "R-007", Rk, MetricUnit.Days, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankFastestEnding", "RWS_MetricDesc_RankFastestEnding"),
+        Def(MetricRankings.NetWealthPerYear, "R-010", Rk, MetricUnit.SilverPerYear, H, OverallAggregation.Ranking, "RWS_Metric_RankNetWealthPerYear", "RWS_MetricDesc_RankNetWealthPerYear",
+            stored: MetricKeys.WealthTotalNet, signed: true),
+        Def(MetricRankings.TopScenario, "R-013", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankTopScenario", "RWS_MetricDesc_RankTopScenario", breakdown: true),
+        Def(MetricRankings.DaysByStoryteller, "R-014", Rk, MetricUnit.Days, S, OverallAggregation.Ranking, "RWS_Metric_RankDaysByStoryteller", "RWS_MetricDesc_RankDaysByStoryteller", breakdown: true),
+        Def(MetricRankings.PlaytimePeak, "R-016", Rk, MetricUnit.Hours, MetricProvenance.VanillaCounter, OverallAggregation.Ranking, "RWS_Metric_RankPlaytimePeak", "RWS_MetricDesc_RankPlaytimePeak"),
+        Def(MetricKeys.WealthPerColonistMax, "R-009", Rk, MetricUnit.Silver, H, OverallAggregation.Ranking, "RWS_Metric_RankWealthPerColonist", "RWS_MetricDesc_RankWealthPerColonist"),
+        Def(MetricRankings.MinDeathsAtEnding, "R-008", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankMinDeathsAtEnding", "RWS_MetricDesc_RankMinDeathsAtEnding"),
+        Def(MetricRankings.ZeroDeathEndings, "N1-F-003", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankZeroDeathEndings", "RWS_MetricDesc_RankZeroDeathEndings"),
     };
 
     private static readonly Dictionary<string, MetricDefinition> ByKey = All.ToDictionary(d => d.Key, StringComparer.Ordinal);

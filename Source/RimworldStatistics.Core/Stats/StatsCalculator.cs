@@ -15,6 +15,12 @@ public sealed class ColonyStats
     public string? Scenario { get; init; }
     public string? Storyteller { get; init; }
 
+    /// <summary>Difficulty def of the representative (furthest) point, as Scenario and Storyteller.</summary>
+    public string? Difficulty { get; init; }
+
+    /// <summary>Permadeath of the representative point; null when the colony has no observed point.</summary>
+    public bool? Permadeath { get; init; }
+
     public int MaxTicks { get; init; }
     public double MaxRealPlay { get; init; }
     public int Raids { get; init; }
@@ -28,6 +34,9 @@ public sealed class ColonyStats
     public bool LastWealthKnown { get; init; }
 
     public required IReadOnlyDictionary<EndingType, int> EndingCounts { get; init; }
+
+    /// <summary>The ending records behind <see cref="EndingCounts"/> (traces have none): the counted records of each counted (type, ordinal).</summary>
+    public IReadOnlyList<EndingEvent> CountedEndings { get; init; } = Array.Empty<EndingEvent>();
 
     /// <summary>Some (type, ordinal) has only dev-mode records.</summary>
     public bool HasDevOnlyEndings { get; init; }
@@ -128,8 +137,12 @@ public static class StatsCalculator
         var pairs = colony.Endings.GroupBy(e => (e.Type, e.Ordinal)).ToList();
         bool Counted(IGrouping<(EndingType, int), EndingEvent> g) => options.IncludeDevMode || g.Any(e => !e.DevMode);
         var counts = new Dictionary<EndingType, int>();
+        var countedEvents = new List<EndingEvent>();
         foreach (var g in pairs.Where(Counted))
+        {
             counts[g.Key.Item1] = counts.GetValueOrDefault(g.Key.Item1) + 1;
+            countedEvents.AddRange(g.Where(e => options.IncludeDevMode || !e.DevMode));
+        }
         foreach (var t in colony.Traces)
             counts[t] = Math.Max(counts.GetValueOrDefault(t), 1);   // a trace means "at least once"
 
@@ -156,6 +169,8 @@ public static class StatsCalculator
             WorldName = display?.WorldName,
             Scenario = display?.Scenario,
             Storyteller = display?.Storyteller,
+            Difficulty = display?.Difficulty,
+            Permadeath = display?.Permadeath,
             MaxTicks = MaxOf(v => v.TicksGame),
             MaxRealPlay = MaxOfD(v => v.RealPlayTime),
             Raids = MaxOf(v => v.NumRaidsEnemy),
@@ -168,6 +183,7 @@ public static class StatsCalculator
             PeakWealthKnown = points.Any(p => HasWealth(p.Values.WealthMax, p.Values.WealthPoints)),
             LastWealthKnown = furthest?.LastWealthKnown ?? false,
             EndingCounts = counts,
+            CountedEndings = countedEvents,
             HasDevOnlyEndings = pairs.Any(g => g.All(e => e.DevMode)),
             GameVersions = colony.Observations.Select(o => o.GameVersion).Concat(colony.Endings.Select(e => e.GameVersion))
                 .Concat(colony.LiveCampaigns.SelectMany(l => l.GameVersions))

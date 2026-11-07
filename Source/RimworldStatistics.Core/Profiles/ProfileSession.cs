@@ -119,12 +119,13 @@ public sealed class ProfileSession
                 return cached;
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
+            var stats = StatsCalculator.Calculate(colonies, options);
             view = new StatsView
             {
                 Colonies = colonies,
-                Stats = StatsCalculator.Calculate(colonies, options),
+                Stats = stats,
                 MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
-                Numeric = MetricCalculator.BuildView(_profile, colonies, options),
+                Numeric = MetricCalculator.BuildView(_profile, colonies, stats),
             };
             ledgerChanged = LedgerSignature() != before;
             if (ledgerChanged)

@@ -56,14 +56,12 @@ public static class RetainedQuestMetricReader
         Put(MetricKeys.QuestExpired, Count(kept.Count(q =>
             !q.InitiallyAccepted && q.AcceptanceTick < 0 && q.AcceptanceExpireTick >= 0 && q.AcceptanceExpireTick <= saveTick)));
 
+        // 0 ÷ 0 is kept: the colony is known to have no decided quest (shown as no value, adds nothing to a total).
         var decided = successes.Count + failures;
-        if (decided > 0)
+        Put(MetricKeys.QuestSuccessRate, new MetricValue
         {
-            Put(MetricKeys.QuestSuccessRate, new MetricValue
-            {
-                Coverage = coverage, RealValue = successes.Count / (double)decided, Numerator = successes.Count, Denominator = decided,
-            });
-        }
+            Coverage = coverage, RealValue = decided > 0 ? successes.Count / (double)decided : null, Numerator = successes.Count, Denominator = decided,
+        });
 
         var byRoot = new MetricEntry { Revision = MetricKeys.Revision(MetricKeys.QuestSuccessByRoot) };
         foreach (var g in successes.GroupBy(q => string.IsNullOrEmpty(q.Root) ? MetricKeys.UnknownBucket : q.Root!, StringComparer.Ordinal))
@@ -82,8 +80,15 @@ public static class RetainedQuestMetricReader
             }
             days.Add((q.CleanupTick - q.AcceptanceTick) / (double)StatFormat.TicksPerDay);
         }
-        if (days.Count == 0)
+        if (successes.Count == 0)
+        {
+            Put(MetricKeys.QuestSuccessDurationMean, new MetricValue { Coverage = coverage, Numerator = 0, Denominator = 0 });
+            Put(MetricKeys.QuestSuccessDurationMin, new MetricValue { Coverage = MetricCoverage.NotApplicable });
+            Put(MetricKeys.QuestSuccessDurationMax, new MetricValue { Coverage = MetricCoverage.NotApplicable });
             return;
+        }
+        if (days.Count == 0)
+            return;   // successes, but none with a usable time: unknown
         var durationCoverage = durationPartial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly;
         Put(MetricKeys.QuestSuccessDurationMean, new MetricValue
         {

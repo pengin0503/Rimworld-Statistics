@@ -116,7 +116,6 @@
   <RWS_Details_Unattributed>どのコロニーのものか決められなかった観測 {0} 件は含めていません。</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
-  <RWS_Details_NotApplicable>対象外</RWS_Details_NotApplicable>
   <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>出所: {0} ／ 状態: {1}</RWS_Details_Tip_Source>
   <RWS_Details_Tip_Through>ゲーム内 {0} 日の時点の観測です。</RWS_Details_Tip_Through>
@@ -235,4 +234,33 @@
   <RWS_MetricDesc_QuestSuccessDurationMin>上の平均と同じ標本の最短日数。</RWS_MetricDesc_QuestSuccessDurationMin>
   <RWS_Metric_QuestSuccessDurationMax>成功クエストの最長日数（受諾から終了処理まで）</RWS_Metric_QuestSuccessDurationMax>
   <RWS_MetricDesc_QuestSuccessDurationMax>上の平均と同じ標本の最長日数。</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Unit_SilverPerYear>{0} /年</RWS_Unit_SilverPerYear>
+  <RWS_Details_Permadeath>パーマデス</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>通常</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankByDifficultyDays>難易度別の通算日数</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>各コロニーの代表セーブ（最も進んだ時点）の難易度ごとに、コロニーの経過日数を合計します。途中の難易度変更は追いません。クリックで内訳を開きます。</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>難易度別のエンディング数</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>概要タブと同じ数え方（開発モードの設定、痕跡は1回以上）のエンディング数を、代表セーブの難易度ごとに数えます。</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>パーマデス別の通算日数</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>代表セーブがパーマデスかどうかで、コロニーの経過日数を分けて合計します。</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>パーマデス別のエンディング数</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>概要タブと同じ数え方のエンディング数を、代表セーブがパーマデスかどうかで分けて数えます。</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>最多同時入植者数（全コロニー）</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>ゲームが記録した最大人口の、コロニー横断の最大値とそのコロニー。</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>最速のエンディング到達</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>プレイ中に記録したエンディングのうち、ゲーム内日数が最も短いものとそのコロニー。導入前の痕跡（時刻が分からないもの）は含めません。</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>1年あたりの平均資産増加</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>各コロニーの資産の純増の合計 ÷ その履歴がまたがる年数の合計（観測1点だけの履歴は除く）。</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>最も多くエンディングを迎えたシナリオ</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>代表セーブのシナリオ名ごとのエンディング数の最多と、その名前。同数なら並べて表示します。クリックで内訳を開きます。</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>ストーリーテラー別の通算日数</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>代表セーブのストーリーテラーごとに、コロニーの経過日数を合計します。</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>実プレイ時間が最も長いコロニー</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>実際に操作していた時間の、コロニー横断の最大値とそのコロニー。</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>入植者1人あたりの最高資産</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>同じ観測の総資産 ÷ 自由入植者数（1人以上）の最大値とそのコロニー。2つの履歴がゲーム開始から揃っている場合だけ計算します。</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>最少犠牲者でのエンディング</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>エンディングを記録した時点の入植者死亡数の最小とそのコロニー。この版より前に記録したエンディングは死亡数が分からないため含めません。</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>死者なしのエンディング</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>記録した時点の入植者死亡数が0だったエンディングの数。死亡数の分からないエンディングは数えません。</RWS_MetricDesc_RankZeroDeathEndings>
 </LanguageData>

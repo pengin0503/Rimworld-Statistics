@@ -299,6 +299,34 @@ public sealed class NumericAggregationTests
     }
 
     [Fact]
+    public void ZeroOverZero_IsAKnownColony_ButShownAsNoValue()
+    {
+        var p = TwoColonies();
+        p.SaveObservations.Add(V1("c.rws", Id("C"), 60000));
+        p.MetricObservations.Add(Numeric("kc", Id("C"), 60000, "c.rws", metrics: (MetricKeys.QuestSuccessRate,
+            new MetricValue { Coverage = MetricCoverage.SnapshotOnly, Numerator = 0, Denominator = 0 })));
+        var v = View(p);
+        var row = Overall(v, MetricKeys.QuestSuccessRate);
+        Assert.Equal((10d, 12d, 3, 3, MetricCoverage.SnapshotOnly), (row.Value.Numerator, row.Value.Denominator, row.Targets, row.Valid, row.Value.Coverage));
+        var c = Of(v, KeyOf(p, "C"), MetricKeys.QuestSuccessRate).Value;
+        Assert.Null(c.Number);
+        Assert.False(c.NotReached);
+    }
+
+    [Fact]
+    public void NotApplicableWindow_LeavesTheDenominatorWithoutMakingItPartial()
+    {
+        var p = new Profile();
+        p.SaveObservations.Add(V1("a.rws", Id("A"), 300));
+        p.SaveObservations.Add(V1("b.rws", Id("B"), 300));
+        p.MetricObservations.Add(Numeric("ka", Id("A"), 300, "a.rws", metrics: Real(MetricKeys.WealthTotalMaxGain15D, 500)));
+        p.MetricObservations.Add(Numeric("kb", Id("B"), 300, "b.rws",
+            metrics: (MetricKeys.WealthTotalMaxGain15D, new MetricValue { Coverage = MetricCoverage.NotApplicable })));
+        var row = Overall(View(p), MetricKeys.WealthTotalMaxGain15D);
+        Assert.Equal((500d, 1, 1, MetricCoverage.SnapshotOnly), (row.Value.Number, row.Targets, row.Valid, row.Value.Coverage));
+    }
+
+    [Fact]
     public void Registry_KeysAreUniqueAndLabelled()
     {
         Assert.Equal(MetricRegistry.All.Count, MetricRegistry.All.Select(d => d.Key).Distinct().Count());

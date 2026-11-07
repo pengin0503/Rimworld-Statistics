@@ -147,6 +147,9 @@ public static class HistoryMetricReader
     private static MetricValue Snap(double value, bool partial)
         => new() { Coverage = partial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly, RealValue = value };
 
+    /// <summary>Not defined for this series: too short for the window, or no point meets the definition (e.g. a positive start).</summary>
+    private static MetricValue NotApplicable() => new() { Coverage = MetricCoverage.NotApplicable };
+
     private static MetricValue? Max(Series? s) => Extreme(s, max: true);
 
     private static MetricValue? Min(Series? s) => Extreme(s, max: false);
@@ -218,7 +221,7 @@ public static class HistoryMetricReader
     private static MetricValue? Window(Series s, int span, bool gain)
     {
         if (s.N <= span)
-            return null;
+            return NotApplicable();
         var invalid = InvalidPrefix(s);
         var windows = s.N - span;
         var used = 0;
@@ -237,6 +240,8 @@ public static class HistoryMetricReader
     /// <summary>max(0, (before − after) ÷ before) over consecutive valid points with before &gt; 0.</summary>
     private static MetricValue? MaxLossRate(Series s)
     {
+        if (s.N < 2)
+            return NotApplicable();
         double? best = null, num = null, den = null;
         var skipped = false;
         for (var i = 0; i + 1 < s.N; i++)
@@ -254,7 +259,7 @@ public static class HistoryMetricReader
                 (best, num, den) = (rate, loss, s.X[i]);
         }
         if (best is null)
-            return null;
+            return skipped ? null : NotApplicable();
         var v = Snap(best.Value, skipped);
         v.Numerator = num;
         v.Denominator = den;
@@ -265,7 +270,7 @@ public static class HistoryMetricReader
     private static MetricValue? MaxGrowthRate(Series s, int span)
     {
         if (s.N <= span)
-            return null;
+            return NotApplicable();
         var invalid = InvalidPrefix(s);
         double? best = null, num = null, den = null;
         var skipped = false;
@@ -284,7 +289,7 @@ public static class HistoryMetricReader
                 (best, num, den) = (rate, change, s.X[i]);
         }
         if (best is null)
-            return null;
+            return skipped ? null : NotApplicable();
         var v = Snap(best.Value, skipped);
         v.Numerator = num;
         v.Denominator = den;
@@ -294,6 +299,8 @@ public static class HistoryMetricReader
     /// <summary>Longest run of strictly increasing consecutive points ÷ 2 days; equal values and gaps end a run.</summary>
     private static MetricValue? LongestGrowth(Series s)
     {
+        if (s.N < 2)
+            return NotApplicable();
         int run = 0, best = 0, pairs = 0;
         for (var i = 0; i + 1 < s.N; i++)
         {
@@ -325,6 +332,8 @@ public static class HistoryMetricReader
     /// <summary>Half-day intervals with both ends valid whose left end matches, ÷ 2.</summary>
     private static MetricValue? IntervalDays(Series s, Func<float, bool> left)
     {
+        if (s.N < 2)
+            return NotApplicable();
         int pairs = 0, matching = 0;
         for (var i = 0; i + 1 < s.N; i++)
         {
@@ -361,7 +370,7 @@ public static class HistoryMetricReader
                 (best, num, den) = (r, numerator.X[i], denominator.X[i]);
         }
         if (best is null)
-            return null;
+            return skipped ? null : NotApplicable();
         var v = Snap(best.Value, skipped);
         v.Numerator = num;
         v.Denominator = den;
