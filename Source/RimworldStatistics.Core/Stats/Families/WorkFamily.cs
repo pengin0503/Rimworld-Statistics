@@ -231,9 +231,11 @@ public static class WorkFamily
         c.PutCount(Other, OtherLoss);
         var loss = s.Peek(CohortLoss)?.N ?? 0;
         var decided = loss + (s.Peek(CohortHarvest)?.N ?? 0);
+        // A plant dropped at the cohort's cap is never decided: the rate is partial, 0÷0 included.
+        var dropped = s.TrackerOverflowed(Cohort);
         c.Put(LossRate, decided == 0
-            ? c.Value(numerator: 0, denominator: 0)
-            : c.Value(real: loss / (double)decided, numerator: loss, denominator: decided, partial: s.TrackerOverflowed(Cohort)));
+            ? c.Value(numerator: 0, denominator: 0, partial: dropped)
+            : c.Value(real: loss / (double)decided, numerator: loss, denominator: decided, partial: dropped));
     }
 
     private static void PutTopOf(FamilyOutputContext c, Dictionary<string, double>? by, bool overflow, string key)

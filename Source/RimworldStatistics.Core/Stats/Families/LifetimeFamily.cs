@@ -36,7 +36,10 @@ public static class LifetimeFamily
     {
         if (s.Tracked(JoinTick, id) is not null)
             return;
-        s.Track(JoinTick, id, tick);
+        // Past the cap the pawn gets no tenure and no baseline: without its join tick a repeated join could not be told apart
+        // and would move the baseline up. Both outputs are partial from then on (Build).
+        if (!s.Track(JoinTick, id, tick))
+            return;
         foreach (var (skill, level) in skills)
             s.Track(Base, SkillKey(id, skill), level);
     }
@@ -77,5 +80,10 @@ public static class LifetimeFamily
         c.PutDistinct(Twenty, FirstSkill20);
         var g = c.State.Peek(Gain);
         c.Put(JoinGainPeak, g?.Max is { } max ? c.Value(integer: (long)max, samples: (int)(g.N ?? 0)) : c.Value(coverage: MetricCoverage.NotApplicable));
+        // A pawn dropped at a tracker's cap is a missing tenure sample or a skill whose gain cannot be seen.
+        if (c.State.TrackerOverflowed(JoinTick))
+            c.MarkPartial(TenureMean, JoinGainPeak);
+        if (c.State.TrackerOverflowed(Base))
+            c.MarkPartial(JoinGainPeak);
     }
 }

@@ -48,7 +48,9 @@ public static class DiplomacyFamily
         var key = factionId + "|" + from + "|" + to;
         if (s.Tracked(Seen, key) is not null)
             return;
-        s.Track(Seen, key, tick);
+        // Past the cap the other side's notification could not be recognized: not counting keeps the totals lower bounds.
+        if (!s.Track(Seen, key, tick))
+            return;
         if (from == Ally && to == Hostile)
             s.Count(Betrayed);
         if (from == Hostile && to is Neutral or Ally)
@@ -65,5 +67,7 @@ public static class DiplomacyFamily
         c.PutCount(Peace, Reconciled);
         c.PutCount(Requests, AidRequests);
         c.PutCount(Arrivals, AidArrivals);
+        if (c.State.TrackerOverflowed(Seen))
+            c.MarkPartial(AllyToHostile, Reconciled);
     }
 }

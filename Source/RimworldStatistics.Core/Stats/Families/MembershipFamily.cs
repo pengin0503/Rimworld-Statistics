@@ -141,5 +141,11 @@ public static class MembershipFamily
         // Past the member cap a new pawn cannot be told from a known one: every output that needs that is partial.
         if (s.Peek(Members)?.Overflow == true)
             c.MarkPartial(FirstJoin, Routes, PrisonerRecruit, HumanBirths, Unique, Rejoin, JoinAgeMean, FirstJoinDay, RecruitTimeMin, RecruitTimeMax);
+        // An interval dropped at a tracker's cap is a missing sample (the leaving tracker holds members only, so the member set's
+        // cap above covers it).
+        if (s.TrackerOverflowed(PrisonerSince))
+            c.MarkPartial(RecruitTimeMin, RecruitTimeMax);
+        if (s.TrackerOverflowed(KidnappedSince))
+            c.MarkPartial(KidnapRescues, CaptiveMax);
     }
 }

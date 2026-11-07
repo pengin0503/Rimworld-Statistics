@@ -46,7 +46,9 @@ public static class SocialFamily
         var key = relationDef + "|" + pairKey;
         if (s.Tracked(Pairs, key) is not null)
             return;
-        s.Track(Pairs, key, tick);
+        // Past the cap the other side's notification could not be recognized: not counting keeps the totals lower bounds.
+        if (!s.Track(Pairs, key, tick))
+            return;
         s.Count(relationDef == Spouse ? Married : Loved);
     }
 
@@ -73,5 +75,7 @@ public static class SocialFamily
         c.PutCount(Released, PrisonersReleased);
         c.PutCount(Captures, PrisonersCaptured);
         c.PutCount(Bonds, AnimalBonds);
+        if (c.State.TrackerOverflowed(Pairs))
+            c.MarkPartial(Marriages, Lovers);
     }
 }

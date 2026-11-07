@@ -78,18 +78,27 @@ public static class RaidFamily
     private const string Flags = "flags";
     private const string MapOf = "map";
     private const string MapCodes = "map_codes";
+    private const string MapSeq = "map_seq";   // N: the last map code handed out (codes are never reused)
+
+    /// <summary>The per-raid trackers: a key dropped at the cap of any of them loses a raid's outcome.</summary>
+    private static readonly string[] RaidTrackers = { Member, Start, Alive, Size, Dead, Killed, Flags, MapOf, MapCodes };
 
     private const long FlagRetreat = 1;
     private const long FlagColonistDowned = 2;
 
     private static string Id(long seq) => seq.ToString(CultureInfo.InvariantCulture);
 
+    /// <summary>The map's code (0 when it could not be tracked at the cap: no raid there can be told apart by map).</summary>
     private static long MapCode(FamilyState s, string mapId)
     {
         if (s.Tracked(MapCodes, mapId) is { } code)
             return code;
-        var next = (s.Active.TryGetValue(MapCodes, out var m) ? m.Count : 0) + 1;
-        s.Track(MapCodes, mapId, next);
+        var seq = s.Acc(MapSeq);
+        var used = s.Active.TryGetValue(MapCodes, out var m) && m.Count > 0 ? m.Values.Max() : 0;
+        var next = Math.Max(seq.N ?? 0, used) + 1;
+        if (!s.Track(MapCodes, mapId, next))
+            return 0;
+        seq.N = next;
         return next;
     }
 
@@ -113,7 +122,9 @@ public static class RaidFamily
 
         if (a.PawnIds.Count == 0)
             return;
-        s.Track(Start, id, tick);
+        // Past the cap the raid is not tracked at all (its outcome outputs are partial, Build), rather than half-tracked.
+        if (!s.Track(Start, id, tick))
+            return;
         s.Track(Alive, id, 0);
         s.Track(Size, id, a.PawnIds.Count);
         s.Track(Dead, id, 0);
@@ -174,13 +185,14 @@ public static class RaidFamily
             s.Track(Flags, id, (s.Tracked(Flags, id) ?? 0) | FlagColonistDowned);
     }
 
-    /// <summary>The map was removed: its raids end without a known outcome.</summary>
+    /// <summary>The map was removed: its raids end without a known outcome, and its code is released.</summary>
     public static void MapRemoved(FamilyState s, string mapId, int tick)
     {
         if (s.Tracked(MapCodes, mapId) is not { } code)
             return;
         foreach (var id in ActiveOn(s, code))
             End(s, id, tick, decided: false);
+        s.Untrack(MapCodes, mapId);
     }
 
     private static List<string> ActiveOn(FamilyState s, long code)
@@ -252,7 +264,10 @@ public static class RaidFamily
         var repelled = s.Peek(Repelled)?.N ?? 0;
         c.Put(RepelledRate, decided == 0
             ? c.Value(numerator: 0, denominator: 0)
-            : c.Value(real: repelled / (double)decided, numerator: repelled, denominator: decided,
-                partial: s.TrackerOverflowed(Member)));
+            : c.Value(real: repelled / (double)decided, numerator: repelled, denominator: decided));
+        // A raid (or a raider, or a map) dropped at a tracker's cap has no outcome, or a wrong one: every output built from the
+        // tracked raids is partial, "no decided raid" included.
+        if (RaidTrackers.Any(s.TrackerOverflowed))
+            c.MarkPartial(KillsMax, DurationMean, DurationMax, DurationMinRepelled, RepelledNoDown, Retreated, Wiped, RepelledRate);
     }
 }

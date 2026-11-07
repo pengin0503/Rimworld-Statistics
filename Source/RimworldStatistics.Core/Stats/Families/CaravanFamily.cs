@@ -101,5 +101,8 @@ public static class CaravanFamily
         c.PutCount(Found, SettlementsFounded);
         var k = c.State.Peek(Concurrent_);
         c.Put(ConcurrentMax, k?.Max is { } km ? c.Value(integer: (long)km) : c.Value(coverage: MetricCoverage.NotApplicable));
+        // An expedition dropped at the cap is neither a completed sample nor a loss.
+        if (c.State.TrackerOverflowed(Start) || c.State.TrackerOverflowed(Dist))
+            c.MarkPartial(LongestExpedition, LongestDistance, Lost_);
     }
 }

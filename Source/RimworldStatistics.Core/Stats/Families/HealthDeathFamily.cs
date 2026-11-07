@@ -117,8 +117,10 @@ public static class HealthDeathFamily
         // B-020: completed gaps between consecutive colonist deaths only (the open ends are not intervals).
         c.PutExtreme(ColonistDeaths, LongestDeathGap, max: true, 1.0 / StatFormat.TicksPerDay);
         c.PutFirstDay(ColonistDeaths, FirstDeathDay);
-        var deaths = (long)(s.Peek(Causes)?.By?.Values.Sum() ?? 0);
-        c.PutBreakdown(DeathCauses, c.Counts(s.Peek(Causes)), c.Value(integer: deaths, partial: s.Peek(Causes)?.Overflow == true));
+        // The total comes from the raid-cause breakdown: it gets every death and has three keys, so its cap is never reached
+        // (a cause dropped at the cause breakdown's cap would shorten a total taken from that one).
+        var deaths = (long)(s.Peek(RaidCauses)?.By?.Values.Sum() ?? 0);
+        c.PutBreakdown(DeathCauses, c.Counts(s.Peek(Causes)), c.Value(integer: deaths));   // the per-cause values carry the cap
         c.PutBreakdown(DeathsByRaid, c.Counts(s.Peek(RaidCauses)), c.Value(integer: deaths));
         var classified = s.Peek(Classified)?.N ?? 0;
         var disease = s.Peek(Disease)?.N ?? 0;

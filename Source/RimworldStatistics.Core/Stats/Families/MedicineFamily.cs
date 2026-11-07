@@ -208,5 +208,10 @@ public static class MedicineFamily
         c.PutCount(Recovered, InfectionRecoveries);
         c.PutMean(DiseaseDuration, DiseaseDurationMean, Days);
         c.PutExtreme(InfectionDuration, InfectionDurationMax, max: true, Days);
+        // A hediff dropped at a tracker's cap has no duration sample, and an infection dropped there no recovery.
+        if (c.State.TrackerOverflowed(DiseaseOpen))
+            c.MarkPartial(DiseaseDurationMean);
+        if (c.State.TrackerOverflowed(InfectionOpen))
+            c.MarkPartial(InfectionRecoveries, InfectionDurationMax);
     }
 }

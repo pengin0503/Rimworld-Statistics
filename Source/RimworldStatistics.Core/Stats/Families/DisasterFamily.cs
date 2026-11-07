@@ -42,11 +42,15 @@ public static class DisasterFamily
             return;
         if (s.Tracked(ActivePrefix + def, conditionId) is not null)
             return;
+        var first = !s.Active.TryGetValue(ActivePrefix + def, out var active) || active.Count == 0;
+        // Past the cap the condition is not tracked: counting it would count its repeated notification again, and its days
+        // cannot be followed. The def's outputs are partial from then on (Build).
+        if (!s.Track(ActivePrefix + def, conditionId, tick))
+            return;
         if (counted)
             s.CountBy(Starts, def);
-        if (!s.Active.TryGetValue(ActivePrefix + def, out var active) || active.Count == 0)
+        if (first)
             s.Track(Open, def, tick);
-        s.Track(ActivePrefix + def, conditionId, tick);
     }
 
     public static void ConditionEnded(FamilyState s, string def, string conditionId, int tick)
@@ -97,13 +101,14 @@ public static class DisasterFamily
                 closed += c.State.ThroughTick - open;   // still active at this save
             return closed / StatFormat.TicksPerDay;
         }
-        c.Put(SolarFlares, c.Value(integer: Start("SolarFlare")));
-        c.Put(ColdSnaps, c.Value(integer: Start("ColdSnap")));
-        c.Put(HeatWaves, c.Value(integer: Start("HeatWave")));
-        c.Put(VolcanicWinters, c.Value(integer: Start("VolcanicWinter")));
-        c.Put(Eclipses, c.Value(integer: Start("Eclipse")));
-        c.Put(ToxicFalloutDays, c.Value(real: Days("ToxicFallout")));
-        c.Put(SolarFlareDays, c.Value(real: Days("SolarFlare")));
+        bool Dropped(string def) => s.TrackerOverflowed(ActivePrefix + def);
+        c.Put(SolarFlares, c.Value(integer: Start("SolarFlare"), partial: Dropped("SolarFlare")));
+        c.Put(ColdSnaps, c.Value(integer: Start("ColdSnap"), partial: Dropped("ColdSnap")));
+        c.Put(HeatWaves, c.Value(integer: Start("HeatWave"), partial: Dropped("HeatWave")));
+        c.Put(VolcanicWinters, c.Value(integer: Start("VolcanicWinter"), partial: Dropped("VolcanicWinter")));
+        c.Put(Eclipses, c.Value(integer: Start("Eclipse"), partial: Dropped("Eclipse")));
+        c.Put(ToxicFalloutDays, c.Value(real: Days("ToxicFallout"), partial: Dropped("ToxicFallout")));
+        c.Put(SolarFlareDays, c.Value(real: Days("SolarFlare"), partial: Dropped("SolarFlare")));
         c.Put(CropBlights, c.Value(integer: Inc("CropBlight")));
         c.Put(Meteors, c.Value(integer: Inc("MeteoriteImpact")));
         c.Put(ShortCircuits, c.Value(integer: Inc("ShortCircuit")));
