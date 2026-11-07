@@ -741,6 +741,14 @@
   <RWS_MetricDesc_RoyaltyHonor>Royaltyのイベント取得期間に確定した帝国名誉の獲得・消費。</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>改宗が成立した回数</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>プレイヤー側の既存の思想から別の思想へ、実際に切り替わった回数。生成時の思想設定を除く。</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_IdeologyRitualResults>儀式の結果別開催数</RWS_Metric_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>結果が確定した儀式を結果Def別に集計。中断は独立した内訳として数える。</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>儀式成功率</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>成功・失敗が確定した儀式のみを母数とする成功率。中断は母数に含めない。</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_Metric_IdeologyConversionDays>改宗までの平均日数</RWS_Metric_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>明示的な改宗開始から対象の思想への改宗が成立するまでの平均日数。</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>思想役職への任命回数</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>入植者への新しい指導者・専門職の役割が確定した回数。同じ役割の再設定は除外。</RWS_MetricDesc_IdeologyAppointments>
   <RWS_Metric_OdysseyFlights>グラヴシップの完了移動数</RWS_Metric_OdysseyFlights>
   <RWS_MetricDesc_OdysseyFlights>プレイヤーの着陸完了が確認できたフライトのみを対象とするグラヴシップの完了移動数。</RWS_MetricDesc_OdysseyFlights>
   <RWS_Metric_OdysseyDistance>グラヴシップの確定移動距離合計</RWS_Metric_OdysseyDistance>
