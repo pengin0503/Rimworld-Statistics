@@ -5,7 +5,7 @@ using Verse;
 
 namespace RimworldStatistics.UI;
 
-/// <summary>The statistics window (spec §9.2): four tabs over the cached <see cref="StatsView"/>.</summary>
+/// <summary>The statistics window (spec §9.2): the v1 tabs plus Details (numeric expansion §4) over the cached <see cref="StatsView"/>.</summary>
 public sealed class Dialog_RimworldStatistics : Window
 {
     private enum Tab
@@ -13,6 +13,7 @@ public sealed class Dialog_RimworldStatistics : Window
         Overview,
         Endings,
         Colonies,
+        Details,
         Import,
     }
 
@@ -60,6 +61,7 @@ public sealed class Dialog_RimworldStatistics : Window
                 new("RWS_Tab_Overview".Translate(), () => current = Tab.Overview, current == Tab.Overview),
                 new("RWS_Tab_Endings".Translate(), () => current = Tab.Endings, current == Tab.Endings),
                 new("RWS_Tab_Colonies".Translate(), () => current = Tab.Colonies, current == Tab.Colonies),
+                new("RWS_Tab_Details".Translate(), () => current = Tab.Details, current == Tab.Details),
                 new("RWS_Tab_Import".Translate(), () => current = Tab.Import, current == Tab.Import),
             };
             TabDrawer.DrawTabs(body, tabs);
@@ -92,6 +94,7 @@ public sealed class Dialog_RimworldStatistics : Window
                     RefreshPresentFiles();
                     ColoniesTab.Draw(content, view, fileIndex);
                     break;
+                case Tab.Details: DetailsTab.Draw(content, view); break;
             }
         }
         catch (Exception e)

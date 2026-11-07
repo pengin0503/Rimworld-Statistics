@@ -17,6 +17,9 @@ public sealed class StatsView
     public required IReadOnlyList<Colony> Colonies { get; init; }
     public required StatsResult Stats { get; init; }
     public int MissingObservations { get; init; }
+
+    /// <summary>The numeric statistics over the same colonies (Details tab).</summary>
+    public NumericView Numeric { get; init; } = NumericView.Empty;
 }
 
 /// <summary>
@@ -121,6 +124,7 @@ public sealed class ProfileSession
                 Colonies = colonies,
                 Stats = StatsCalculator.Calculate(colonies, options),
                 MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
+                Numeric = MetricCalculator.BuildView(_profile, colonies, options),
             };
             ledgerChanged = LedgerSignature() != before;
             if (ledgerChanged)

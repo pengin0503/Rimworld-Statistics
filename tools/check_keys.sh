@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
-# Every "RWS_…" key used in Source/RimworldStatistics must exist in each Languages/*/Keyed file (and none unused).
+# Every "RWS_…" key used in Source/RimworldStatistics (and the metric registry in Source/RimworldStatistics.Core) must
+# exist in each Languages/*/Keyed file (and none unused).
 # Like the plan's check, but key names may contain digits (e.g. RWS_LoadSource_Backup1).
 set -euo pipefail
 cd "$(dirname "$0")/.."
-used=$(grep -ohE '"RWS_[A-Za-z0-9_]+"' -r Source/RimworldStatistics | tr -d '"' | sort -u)
+used=$(grep -ohE '"RWS_[A-Za-z0-9_]+"' -r --include='*.cs' Source/RimworldStatistics Source/RimworldStatistics.Core | tr -d '"' | sort -u)
 status=0
 for f in Languages/*/Keyed/RimworldStatistics.xml; do
   have=$(grep -oE '<RWS_[A-Za-z0-9_]+>' "$f" | tr -d '<>' | sort -u)

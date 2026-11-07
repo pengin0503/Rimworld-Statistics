@@ -58,6 +58,17 @@ public sealed class NumericRealSavesTests
             .Select(g => $"{g.Key}: {g.Count()} observations, partial mood {g.Count(m => m.Metrics[MetricKeys.MoodMean].Values[""].Coverage == MetricCoverage.Partial)}");
         TestContext.Current.SendDiagnosticMessage(string.Join("; ", byVersion));
 
+        // Every numeric observation is attached to one of the 33 v1 colonies, and every colony has one.
+        var view = session.GetView(new StatsOptions());
+        Assert.Equal(0, view.Numeric.Unattributed);
+        Assert.Equal(33, view.Numeric.Colonies.Count);
+        Assert.All(view.Numeric.Colonies, c => Assert.True(c.Observations > 0));
+        var accepted = view.Numeric.Overall.Single(r => r.Definition.Key == MetricKeys.QuestAccepted);
+        Assert.Equal((33, 33), (accepted.Targets, accepted.Valid));
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+        MetricCalculator.BuildView(session.Read(p => p), view.Colonies, new StatsOptions());
+        TestContext.Current.SendDiagnosticMessage($"numeric view built in {sw.Elapsed.TotalMilliseconds:F1} ms");
+
         // The profile round-trips and the saves were only read.
         var json = ProfileJson.Serialize(session.Read(p => p));
         Assert.Equal(metrics.Count, ProfileJson.Deserialize(json).MetricObservations.Count);

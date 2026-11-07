@@ -101,4 +101,138 @@
   <RWS_Loading>Loading statistics…</RWS_Loading>
   <RWS_WealthCoverage>Wealth data from {0} colonies ({1} without data).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Recovered from save (dev mode unknown, excluded from totals)</RWS_Source_RecoveredLineage>
+  <RWS_Tab_Details>Details</RWS_Tab_Details>
+  <RWS_Details_AllColonies>All colonies</RWS_Details_AllColonies>
+  <RWS_Details_PerColony>One colony</RWS_Details_PerColony>
+  <RWS_Details_AllCategories>All categories</RWS_Details_AllCategories>
+  <RWS_Details_Search>Filter</RWS_Details_Search>
+  <RWS_Details_Col_Name>Statistic</RWS_Details_Col_Name>
+  <RWS_Details_Col_Value>Value</RWS_Details_Col_Value>
+  <RWS_Details_Col_State>Source / state</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>Known / colonies</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>Observed at</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>In-game day of the save the value comes from.</RWS_Details_ThroughTip>
+  <RWS_Details_Note>From {0} colonies (excluded from totals: {1}). Values are computed from the imported saves and may include what happened through dev-mode actions.</RWS_Details_Note>
+  <RWS_Details_Unattributed>{0} observations that could not be matched to one colony are not included.</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
+  <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
+  <RWS_Details_NotApplicable>N/A</RWS_Details_NotApplicable>
+  <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
+  <RWS_Details_Tip_Source>Source: {0} / state: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>Observed at in-game day {0}.</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Measured from: the start of the game</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>The state at the time of saving.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Observations>Observations of this colony: {0}</RWS_Details_Tip_Observations>
+  <RWS_Details_Tip_Colonies>Known for {1} of {0} colonies.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>Held by: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>Samples: {0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Ratio>Numerator {0} ÷ denominator {1}</RWS_Details_Tip_Ratio>
+  <RWS_Details_Tip_Unknown>There is no data to base it on (saves read before this version, a missing file, an unsupported game version, or unreadable data).</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>Ledger: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Unit_Days>{0} days</RWS_Unit_Days>
+  <RWS_Unit_PerYear>{0} / year</RWS_Unit_PerYear>
+  <RWS_Category_Wealth>Wealth</RWS_Category_Wealth>
+  <RWS_Category_Population>Population and mood</RWS_Category_Population>
+  <RWS_Category_Defense>Raids and defense</RWS_Category_Defense>
+  <RWS_Category_Quests>Quests</RWS_Category_Quests>
+  <RWS_Category_Colony>Colony</RWS_Category_Colony>
+  <RWS_Category_Rankings>Rankings</RWS_Category_Rankings>
+  <RWS_Provenance_VanillaCounter>game counter</RWS_Provenance_VanillaCounter>
+  <RWS_Provenance_SaveHistory>save history graph</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>state in the save</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>recorded during play</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>complete</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>partial (gaps)</RWS_Coverage_Partial>
+  <RWS_Coverage_History>history observation</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>as saved</RWS_Coverage_SnapshotOnly>
+  <RWS_Coverage_Unknown>unknown</RWS_Coverage_Unknown>
+  <RWS_Coverage_NotApplicable>not applicable</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>Peak item wealth</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>Largest item wealth in the history graph (one observation per half day). All colonies: the single highest.</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>Latest item wealth</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>Item wealth at the last history observation. All colonies: the sum.</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>Peak building wealth</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>Largest building wealth in the history graph. All colonies: the single highest.</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>Latest building wealth</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>Building wealth at the last history observation. All colonies: the sum.</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>Peak pawn wealth</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>Largest wealth in pawns and animals in the history graph. All colonies: the single highest.</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>Latest pawn wealth</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>Wealth in pawns and animals at the last history observation. All colonies: the sum.</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>Mean total wealth (observed)</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>Mean of the valid total wealth observations. All colonies: weighted by the number of observations.</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>Starting wealth (first observation)</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>Total wealth at the first observation of a history that is complete from the start. One colony only.</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>Net wealth change (latest − first)</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>Total wealth at the last observation minus the first; negative if it fell. All colonies: the sum.</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>Day of peak wealth (observation day)</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>Nominal day of the first observation at the peak total wealth (one observation per half day). One colony only.</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>Largest half-day wealth gain (observed)</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>Largest rise of total wealth between two consecutive observations; 0 if it never rose.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>Largest half-day wealth loss (observed)</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Largest fall of total wealth between two consecutive observations; 0 if it never fell.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Largest half-day wealth loss rate (observed)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Largest (before − after) ÷ before between two consecutive observations, leaving out intervals that start at 0.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>Largest 15-day wealth gain (observed)</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>Largest rise of total wealth between observations 30 apart (15 days); periods with a gap are not used.</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>Largest 15-day wealth loss (observed)</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>Largest fall of total wealth between observations 30 apart (15 days); periods with a gap are not used.</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>Largest one-year wealth growth (observed)</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Largest (after − before) ÷ before between observations 120 apart (one year); negative if wealth always fell.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>Longest wealth growth streak (observed)</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>Longest run of observations in which total wealth rose every time; equal values and gaps end a run.</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>Wealth 100,000 reached (observation day)</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>Nominal day of the first observation with total wealth of 100,000 or more. All colonies: the earliest.</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>Wealth 1,000,000 reached (observation day)</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>Nominal day of the first observation with total wealth of 1,000,000 or more. All colonies: the earliest.</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>Largest building share of wealth (observed)</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>Largest building wealth ÷ total wealth at the same observation.</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>Mean colonists (observed)</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>Mean of the observed number of free colonists. All colonies: weighted by the number of observations.</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>Fewest colonists (observed)</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>Smallest observed number of free colonists. All colonies: the smallest.</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_FreeColonistsFirst10>10 colonists reached (observation day)</RWS_Metric_FreeColonistsFirst10>
+  <RWS_MetricDesc_FreeColonistsFirst10>Nominal day of the first observation with 10 or more free colonists. All colonies: the earliest.</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>Most prisoners (observed)</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>Largest observed number of prisoners.</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>Mean prisoners (observed)</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>Mean of the observed number of prisoners. All colonies: weighted by the number of observations.</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>Mean colonist mood (observed)</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>Mean of the observed average colonist mood (0–100). A 0, recorded when there are no colonists, is treated as missing. Not weighted by colonist count.</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>Lowest colonist mood (observed)</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>Lowest valid observation of the average colonist mood.</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>Highest colonist mood (observed)</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>Highest valid observation of the average colonist mood.</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>Days with mood below 50% (observed)</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>Half-day intervals with both ends valid whose starting mood is below 50, ÷ 2. All colonies: the sum.</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>Days with mood at 80% or more (observed)</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>Half-day intervals with both ends valid whose starting mood is 80 or more, ÷ 2. All colonies: the sum.</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>Colonist deaths per year</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>Colonist deaths ÷ elapsed years (1 year = 60 days) in the same save. All colonies: total deaths ÷ total years.</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>Enemy raids per year</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>Enemy raids ÷ elapsed years (1 year = 60 days) in the same save. All colonies: total raids ÷ total years.</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>Mods (latest save)</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>Active mods listed in the latest save, including Core and DLCs. One colony only.</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>Most mods</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>Most mods in any imported save of this colony. One colony only.</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>Fewest mods</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>Fewest mods in any imported save of this colony. One colony only.</RWS_MetricDesc_ModsMin>
+  <RWS_Metric_QuestSuccess>Quests succeeded (retained)</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>Accepted quests that succeeded and are still in the save. Quests the game removed cannot be counted.</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>Quests failed (retained)</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>Accepted quests that failed and are still in the save.</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>Quest success rate (retained)</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>Successes ÷ (successes + failures). All colonies: the summed numerators ÷ the summed denominators.</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>Quests succeeded by type (retained)</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Succeeded quests by quest type (def name). Click to show the breakdown.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>Expired quest offers (retained)</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>Quest offers still in the save that expired without being accepted.</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>Quests accepted (retained)</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>Quests still in the save that were accepted (including automatically), ongoing ones included.</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>Mean days of succeeded quests (acceptance to cleanup)</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>Mean days from acceptance to the start of cleanup for succeeded quests; quests without an acceptance time are left out.</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>Shortest succeeded quest (acceptance to cleanup)</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>Fewest days in the same sample as the mean.</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>Longest succeeded quest (acceptance to cleanup)</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>Most days in the same sample as the mean.</RWS_MetricDesc_QuestSuccessDurationMax>
 </LanguageData>
