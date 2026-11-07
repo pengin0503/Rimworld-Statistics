@@ -15,6 +15,7 @@ public static class SnapshotCatalog
 
     public static IReadOnlyList<MetricDefinition> Definitions { get; } = new[]
     {
+        Snap(ColonyStartSnapshot.Biome, "N1-F-001, N1-F-002", MetricUnit.Count, OverallAggregation.IndividualOnly, "colony_start", "RWS_Metric_ColonyStartingBiome", "RWS_MetricDesc_ColonyStartingBiome", category: MetricCategory.Colony, breakdown: true),
         Snap(ResearchStateSnapshot.Finished, "S-012", MetricUnit.Count, OverallAggregation.Sum, "research_state", "RWS_Metric_ResearchSnapshotFinished", "RWS_MetricDesc_ResearchSnapshotFinished"),
         Snap(ResearchStateSnapshot.FinishedRate, "S-012", MetricUnit.Percent, OverallAggregation.Ratio, "research_state", "RWS_Metric_ResearchSnapshotFinishedRate", "RWS_MetricDesc_ResearchSnapshotFinishedRate"),
         Snap(ResearchStateSnapshot.TechPeak, "S-013", MetricUnit.Count, OverallAggregation.Max, "research_state", "RWS_Metric_ResearchSnapshotTechPeak", "RWS_MetricDesc_ResearchSnapshotTechPeak", breakdown: true),
