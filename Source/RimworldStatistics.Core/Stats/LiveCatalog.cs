@@ -270,6 +270,10 @@ public static class LiveCatalog
         Live(RoyaltyFamily.Honor, "N1-E-006", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHonor", "RWS_MetricDesc_RoyaltyHonor", breakdown: true),
         // D2 · ideology: actual existing-ideology changes on the player side
         Live(IdeologyFamily.Conversions, "L-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyConversions", "RWS_MetricDesc_IdeologyConversions"),
+        Live(IdeologyFamily.RitualResults, "L-008", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyRitualResults", "RWS_MetricDesc_IdeologyRitualResults", breakdown: true),
+        Live(IdeologyFamily.RitualSuccessRate, "L-009", MetricCategory.Ideology, Percent, Ratio, IdeologyFamily.Name, "RWS_Metric_IdeologyRitualRate", "RWS_MetricDesc_IdeologyRitualRate"),
+        Live(IdeologyFamily.ConversionDaysMean, "L-010", MetricCategory.Ideology, Days, Ratio, IdeologyFamily.Name, "RWS_Metric_IdeologyConversionDays", "RWS_MetricDesc_IdeologyConversionDays"),
+        Live(IdeologyFamily.RoleAppointments, "N1-E-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyAppointments", "RWS_MetricDesc_IdeologyAppointments"),
         // D2 · odyssey: Core completion accounting, waiting for audited landing hook and stable flight identity
         Live(OdysseyFamily.Flights, "L-022", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyFlights", "RWS_MetricDesc_OdysseyFlights"),
         Live(OdysseyFamily.Distance, "L-023", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyDistance", "RWS_MetricDesc_OdysseyDistance"),
