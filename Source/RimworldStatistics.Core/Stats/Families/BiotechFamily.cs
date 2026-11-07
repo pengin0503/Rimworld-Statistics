@@ -92,7 +92,11 @@ public static class BiotechFamily
     {
         c.PutDistinct(CreatedMechs, MechsCreated);
         c.PutDistinct(Mothers, BirthMothers);
-        c.CountAndBreakdown(Stages, ChildStages, null);
+        // ChildStages is both a scalar and a stage-keyed breakdown (ledger L-015).
+        // CountAndBreakdown(..., null) silently discarded the promised buckets.
+        var stages = c.State.Peek(Stages);
+        c.PutBreakdown(ChildStages, c.Counts(stages),
+            c.Value(integer: stages?.N ?? 0, partial: stages?.Overflow == true));
         c.PutDistinct(CompletedRepairs, MechRepairs);
         c.PutCount(CreatedWaste, WasteCreated);
         c.PutCount(DisposedWaste, WasteDisposed);
