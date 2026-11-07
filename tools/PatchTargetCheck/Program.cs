@@ -90,7 +90,7 @@ void Check(string patchClass, string targetType, string methodName, List<string>
         return;
     }
     if (argTypes != null)
-        candidates = candidates.Where(c => ParamTypes(c.Method).SequenceEqual(argTypes)).ToList();
+        candidates = candidates.Where(c => ParamTypes(c.Method).Select(SystemNeutral).SequenceEqual(argTypes.Select(SystemNeutral))).ToList();
     if (candidates.Count != 1)
     {
         failures.Add($"{patchClass}: {targetType}::{methodName} resolves to {candidates.Count} methods");
@@ -141,6 +141,10 @@ static string? BaseOf(JsonElement entry)
 
 static IEnumerable<string> ParamTypes(JsonElement method)
     => method.GetProperty("signature").GetProperty("parameters").EnumerateArray().Select(p => p.GetString()!);
+
+// Reference assemblies place BCL types in facades ([System.Runtime], [System.Collections], …); the runtime type is the same.
+static string SystemNeutral(string indexName)
+    => System.Text.RegularExpressions.Regex.Replace(indexName, @"\[System(\.[A-Za-z]+)*\]", "[System]");
 
 static string IndexTypeName(string serialized)
 {

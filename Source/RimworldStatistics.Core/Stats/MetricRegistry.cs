@@ -52,6 +52,9 @@ public enum MetricUnit
 
     /// <summary>Silver per game year.</summary>
     SilverPerYear,
+
+    /// <summary>Game years (biological ages).</summary>
+    Years,
 }
 
 /// <summary>Which of a colony's observations gives its value.</summary>

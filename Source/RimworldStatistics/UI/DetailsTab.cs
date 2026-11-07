@@ -312,6 +312,7 @@ public static class DetailsTab
             MetricUnit.PerYear => "RWS_Unit_PerYear".Translate(n.ToString("N2", Inv)),
             MetricUnit.Hours => "RWS_HoursValue".Translate(n.ToString("N1", Inv)),
             MetricUnit.SilverPerYear => "RWS_Unit_SilverPerYear".Translate(sign + StatFormat.Group(n)),
+            MetricUnit.Years => "RWS_Unit_Years".Translate(n.ToString("N1", Inv)),
             _ => n.ToString("N2", Inv),
         };
     }

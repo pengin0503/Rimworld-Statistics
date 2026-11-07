@@ -296,4 +296,159 @@
   <RWS_MetricDesc_Inspirations>Inspirations that really started for free colonists. Failed attempts, already-inspired pawns and dev tools are not counted.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>Inspirations by type</RWS_Metric_InspirationsByDef>
   <RWS_MetricDesc_InspirationsByDef>The inspirations above, by type (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>Enemies killed</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>Deaths of pawns hostile to the player just before dying, whose cause the damage record attributes to the player's side (colonists, turrets, traps, animals, mechs). Deaths without a known attribution are not counted.</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>Most kills by one colonist</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>The most kills credited to one player pawn; the breakdown names the holder (by id). Kills known only by their cause are not credited to anyone.</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>Enemies killed by kind</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>Enemy kills split into humanlike, insect, mechanoid and other.</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>Kills with ranged weapons</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>Enemy kills made with ranged weapons (explosions count as explosive).</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>Kills with melee weapons</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>Enemy kills made with an equipped melee weapon.</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>Unarmed kills</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>Enemy kills made with melee attacks without a weapon.</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>Kills by explosion</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>Enemy kills whose killing damage was an explosion.</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>Kills by fire or environment</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>Enemy kills by fire or other environmental damage that the record attributes to the player's side. Natural deaths and unattributed ones are not counted.</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>Kills by turrets</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>Enemy kills whose attacker was a player turret.</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>Kills by traps</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>Enemy kills caused by a player trap.</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>Kills by tame animals</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>Enemy kills whose attacker was a player animal.</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>Kills by player mechs</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>Enemy kills whose attacker was a player mechanoid (Biotech).</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>Colonist deaths by cause</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition (hediff) or the killing damage type. Deaths with neither are "unknown".</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>Colonist deaths by raids</RWS_Metric_DeathsByRaid>
+  <RWS_MetricDesc_DeathsByRaid>Free colonist deaths split into those caused by a raider, other known causes, and unknown. While raids are not recorded, they are unknown.</RWS_MetricDesc_DeathsByRaid>
+  <RWS_Metric_DiseaseDeaths>Colonist deaths from disease</RWS_Metric_DiseaseDeaths>
+  <RWS_MetricDesc_DiseaseDeaths>Free colonist deaths whose culprit was a sickness (a condition the game treats as making the pawn sick). Deaths merely accompanied by a disease are not counted.</RWS_MetricDesc_DiseaseDeaths>
+  <RWS_Metric_DiseaseDeathRate>Share of deaths from disease</RWS_Metric_DiseaseDeathRate>
+  <RWS_MetricDesc_DiseaseDeathRate>Deaths from disease ÷ free colonist deaths with a known cause.</RWS_MetricDesc_DiseaseDeathRate>
+  <RWS_Metric_LongestDeathGap>Longest time without a colonist death</RWS_Metric_LongestDeathGap>
+  <RWS_MetricDesc_LongestDeathGap>The longest interval between two consecutive free colonist deaths while recorded. The time before the first and after the last death is not an interval.</RWS_MetricDesc_LongestDeathGap>
+  <RWS_Metric_FirstDeathDay>Days to the first colonist death</RWS_Metric_FirstDeathDay>
+  <RWS_MetricDesc_FirstDeathDay>The game day of the first free colonist death, only when recorded from the start of the game.</RWS_MetricDesc_FirstDeathDay>
+  <RWS_Metric_OldestDeathAge>Oldest colonist at death</RWS_Metric_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>The highest biological age of a free colonist just before dying. The same value as the longest-lived colonist (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_Metric_CaravanMemberDeaths>Colonists who died on caravans</RWS_Metric_CaravanMemberDeaths>
+  <RWS_MetricDesc_CaravanMemberDeaths>Free colonists who died while in a player caravan.</RWS_MetricDesc_CaravanMemberDeaths>
+  <RWS_Metric_ColonyAnimalDeaths>Colony animal deaths</RWS_Metric_ColonyAnimalDeaths>
+  <RWS_MetricDesc_ColonyAnimalDeaths>Deaths of animals that belonged to the player just before dying.</RWS_MetricDesc_ColonyAnimalDeaths>
+  <RWS_Metric_ColonyAnimalRaidDeaths>Colony animals killed by raiders</RWS_Metric_ColonyAnimalRaidDeaths>
+  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Colony animal deaths whose attacker belonged to a tracked raid.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
+  <RWS_Metric_ColonistsDowned>Colonists downed</RWS_Metric_ColonistsDowned>
+  <RWS_MetricDesc_ColonistsDowned>Times a free colonist went from not downed to downed. Instant deaths without a downing are not counted.</RWS_MetricDesc_ColonistsDowned>
+  <RWS_Metric_EnemiesDowned>Enemies downed (incapacitated)</RWS_Metric_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Times a pawn hostile to the player went down; going down again after recovering is another time. The same value as enemies incapacitated (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_Metric_ToxicDowns>Downs from toxic buildup</RWS_Metric_ToxicDowns>
+  <RWS_MetricDesc_ToxicDowns>Free colonist downs directly caused by toxic buildup (Biotech).</RWS_MetricDesc_ToxicDowns>
+  <RWS_Metric_SocialFightDowns>Downs from social fights</RWS_Metric_SocialFightDowns>
+  <RWS_MetricDesc_SocialFightDowns>Free colonist downs caused directly by the opponent of a social fight.</RWS_MetricDesc_SocialFightDowns>
+  <RWS_Metric_RaidsByArrivalMode>Raids by arrival mode</RWS_Metric_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Successful enemy raids by arrival mode (PawnsArrivalModeDef). The total is the number of raids.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_Metric_RaidsByFaction>Raids by faction</RWS_Metric_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Successful enemy raids by the attacking faction's def.</RWS_MetricDesc_RaidsByFaction>
+  <RWS_Metric_RaidPawnsMax>Largest raid (pawns)</RWS_Metric_RaidPawnsMax>
+  <RWS_MetricDesc_RaidPawnsMax>The most enemy pawns generated for one successful raid. Raid points are a separate row.</RWS_MetricDesc_RaidPawnsMax>
+  <RWS_Metric_RaidPointsMax>Highest raid points</RWS_Metric_RaidPointsMax>
+  <RWS_MetricDesc_RaidPointsMax>The highest final raid points used to generate a successful raid.</RWS_MetricDesc_RaidPointsMax>
+  <RWS_Metric_RaidKillsMax>Most kills in one raid</RWS_Metric_RaidKillsMax>
+  <RWS_MetricDesc_RaidKillsMax>The most kills the player's side made among one tracked raid's pawns while that raid lasted.</RWS_MetricDesc_RaidKillsMax>
+  <RWS_Metric_RaidSieges>Sieges</RWS_Metric_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Raids with the Siege strategy.</RWS_MetricDesc_RaidSieges>
+  <RWS_Metric_RaidBreaches>Breach raids</RWS_Metric_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Raids with a breaching strategy (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Sappers are not included.</RWS_MetricDesc_RaidBreaches>
+  <RWS_Metric_RaidDrops>Drop pod raids</RWS_Metric_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Raids arriving by drop pod (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_Metric_Infestations>Infestations</RWS_Metric_Infestations>
+  <RWS_MetricDesc_Infestations>Successful insect hive infestations (Infestation, DeepDrillInfestation). Other insect-related events are not counted.</RWS_MetricDesc_Infestations>
+  <RWS_Metric_MechClusters>Mech clusters</RWS_Metric_MechClusters>
+  <RWS_MetricDesc_MechClusters>Successful mech cluster incidents (Royalty). Ordinary mechanoid raids are not counted.</RWS_MetricDesc_MechClusters>
+  <RWS_Metric_ManhunterPacks>Manhunter packs</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Successful manhunter pack incidents (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_RaidLongestGap>Longest time without a raid</RWS_Metric_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>The longest interval between two consecutive raids while recorded, not counting before the first or after the last. The same value as the largest raid interval (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_Metric_RaidMeanGap>Mean time between raids</RWS_Metric_RaidMeanGap>
+  <RWS_MetricDesc_RaidMeanGap>The mean of the same intervals; overall, weighted by the number of intervals.</RWS_MetricDesc_RaidMeanGap>
+  <RWS_Metric_RaidFirstDay>Days to the first raid</RWS_Metric_RaidFirstDay>
+  <RWS_MetricDesc_RaidFirstDay>The game day of the first raid, only when recorded from the start of the game.</RWS_MetricDesc_RaidFirstDay>
+  <RWS_Metric_RaidsRetreated>Raids that retreated</RWS_Metric_RaidsRetreated>
+  <RWS_MetricDesc_RaidsRetreated>Tracked raids that ended with some enemies leaving the map alive.</RWS_MetricDesc_RaidsRetreated>
+  <RWS_Metric_RaidsWiped>Raids wiped out</RWS_Metric_RaidsWiped>
+  <RWS_MetricDesc_RaidsWiped>Tracked raids that ended with every enemy killed and none retreating. A raid with prisoners has another outcome.</RWS_MetricDesc_RaidsWiped>
+  <RWS_Metric_RaidRepelledRate>Raid repel rate</RWS_Metric_RaidRepelledRate>
+  <RWS_MetricDesc_RaidRepelledRate>Raids that retreated or were wiped out ÷ tracked raids with a decided outcome. Raids whose outcome is unknown (e.g. the map vanished) are left out.</RWS_MetricDesc_RaidRepelledRate>
+  <RWS_Metric_RaidRepelledNoDown>Raids repelled without a colonist down</RWS_Metric_RaidRepelledNoDown>
+  <RWS_MetricDesc_RaidRepelledNoDown>Repelled raids during which no free colonist went down on the same map.</RWS_MetricDesc_RaidRepelledNoDown>
+  <RWS_Metric_RaidDurationMean>Mean raid duration</RWS_Metric_RaidDurationMean>
+  <RWS_MetricDesc_RaidDurationMean>The mean days from arrival until the last tracked enemy was out of the fight, over raids with a decided outcome.</RWS_MetricDesc_RaidDurationMean>
+  <RWS_Metric_RaidDurationMax>Longest raid</RWS_Metric_RaidDurationMax>
+  <RWS_MetricDesc_RaidDurationMax>The most days in the same sample.</RWS_MetricDesc_RaidDurationMax>
+  <RWS_Metric_RaidDurationMinRepelled>Fastest repelled raid</RWS_Metric_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMinRepelled>The fewest days of a raid that retreated or was wiped out.</RWS_MetricDesc_RaidDurationMinRepelled>
+  <RWS_Metric_FirstJoins>New members</RWS_Metric_FirstJoins>
+  <RWS_MetricDesc_FirstJoins>Pawns who became free colonists for the first time, other than the starting colonists and births. Each pawn counts once.</RWS_MetricDesc_FirstJoins>
+  <RWS_Metric_JoinRoutes>New members by route</RWS_Metric_JoinRoutes>
+  <RWS_MetricDesc_JoinRoutes>New members split into recruited prisoners, emancipated slaves and other routes.</RWS_MetricDesc_JoinRoutes>
+  <RWS_Metric_PrisonerRecruits>Recruited prisoners</RWS_Metric_PrisonerRecruits>
+  <RWS_MetricDesc_PrisonerRecruits>Pawns who were prisoners of the colony and joined for the first time by recruitment.</RWS_MetricDesc_PrisonerRecruits>
+  <RWS_Metric_HumanBirths>Births</RWS_Metric_HumanBirths>
+  <RWS_MetricDesc_HumanBirths>Humanlike children born alive on the player's side (Biotech). Stillbirths are not counted.</RWS_MetricDesc_HumanBirths>
+  <RWS_Metric_UniqueMembers>Colonists ever (unique)</RWS_Metric_UniqueMembers>
+  <RWS_MetricDesc_UniqueMembers>Pawns who were colonists while recorded (starting colonists, new members, births). Rejoining adds nothing. Overall, the sum over colonies.</RWS_MetricDesc_UniqueMembers>
+  <RWS_Metric_Rejoins>Members who rejoined</RWS_Metric_Rejoins>
+  <RWS_MetricDesc_Rejoins>Pawns who explicitly left and later became free colonists again.</RWS_MetricDesc_Rejoins>
+  <RWS_Metric_JoinAgeMean>Mean age at joining</RWS_Metric_JoinAgeMean>
+  <RWS_MetricDesc_JoinAgeMean>The mean biological age of new members when they joined.</RWS_MetricDesc_JoinAgeMean>
+  <RWS_Metric_FirstJoinDay>Days to the first new member</RWS_Metric_FirstJoinDay>
+  <RWS_MetricDesc_FirstJoinDay>The game day of the first new member, only when recorded from the start of the game.</RWS_MetricDesc_FirstJoinDay>
+  <RWS_Metric_SlavesFreed>Slaves emancipated</RWS_Metric_SlavesFreed>
+  <RWS_MetricDesc_SlavesFreed>Slaves whose slave status was lifted (emancipated). Not the same as releasing prisoners.</RWS_MetricDesc_SlavesFreed>
+  <RWS_Metric_RecruitTimeMin>Shortest recruitment</RWS_Metric_RecruitTimeMin>
+  <RWS_MetricDesc_RecruitTimeMin>The fewest days from becoming a prisoner of the colony to joining by recruitment, where both were observed.</RWS_MetricDesc_RecruitTimeMin>
+  <RWS_Metric_RecruitTimeMax>Longest recruitment</RWS_Metric_RecruitTimeMax>
+  <RWS_MetricDesc_RecruitTimeMax>The most days in the same sample.</RWS_MetricDesc_RecruitTimeMax>
+  <RWS_Metric_Kidnaps>Colonists kidnapped</RWS_Metric_Kidnaps>
+  <RWS_MetricDesc_Kidnaps>Times a free colonist was kidnapped into a faction's captives.</RWS_MetricDesc_Kidnaps>
+  <RWS_Metric_KidnapRescues>Kidnapped colonists returned</RWS_Metric_KidnapRescues>
+  <RWS_MetricDesc_KidnapRescues>Kidnapped colonists who came back through a confirmed route (ransom). Other routes are not counted.</RWS_MetricDesc_KidnapRescues>
+  <RWS_Metric_CaptiveMax>Longest captivity</RWS_Metric_CaptiveMax>
+  <RWS_MetricDesc_CaptiveMax>The longest captivity from kidnapping to return that was tracked.</RWS_MetricDesc_CaptiveMax>
+  <RWS_Metric_LifeMean>Mean age at death</RWS_Metric_LifeMean>
+  <RWS_MetricDesc_LifeMean>The mean biological age of free colonists at death. Living colonists are not included.</RWS_MetricDesc_LifeMean>
+  <RWS_Metric_TenureMean>Mean time in the colony</RWS_Metric_TenureMean>
+  <RWS_MetricDesc_TenureMean>The mean days from joining (or the start of the game) to death or leaving, where both ends were tracked. Ongoing stays are not included.</RWS_MetricDesc_TenureMean>
+  <RWS_Metric_FirstSkill20>Skills first reaching 20</RWS_Metric_FirstSkill20>
+  <RWS_MetricDesc_FirstSkill20>(Pawn, skill) pairs of free colonists that first reached 20 through learning while recorded. Dropping and reaching 20 again counts once.</RWS_MetricDesc_FirstSkill20>
+  <RWS_Metric_JoinGainPeak>Largest skill gain since joining</RWS_Metric_JoinGainPeak>
+  <RWS_MetricDesc_JoinGainPeak>The largest increase of a skill over its level at joining. Pawns whose level at joining is not known are not included.</RWS_MetricDesc_JoinGainPeak>
+  <RWS_Metric_Marriages>Marriages</RWS_Metric_Marriages>
+  <RWS_MetricDesc_Marriages>Pairs that became spouses; both sides' notifications count as one.</RWS_MetricDesc_Marriages>
+  <RWS_Metric_Divorces>Divorces</RWS_Metric_Divorces>
+  <RWS_MetricDesc_Divorces>Spouse relations ended by divorce. Bereavement and other relation removals are not counted.</RWS_MetricDesc_Divorces>
+  <RWS_Metric_Lovers>New lovers</RWS_Metric_Lovers>
+  <RWS_MetricDesc_Lovers>Pairs that became lovers; both sides' notifications count as one.</RWS_MetricDesc_Lovers>
+  <RWS_Metric_SocialFights>Social fights</RWS_Metric_SocialFights>
+  <RWS_MetricDesc_SocialFights>Social fights started; two pawns make one fight.</RWS_MetricDesc_SocialFights>
+  <RWS_Metric_PrisonBreaks>Prison breaks</RWS_Metric_PrisonBreaks>
+  <RWS_MetricDesc_PrisonBreaks>Prison breaks started, however many prisoners escaped.</RWS_MetricDesc_PrisonBreaks>
+  <RWS_Metric_PrisonersReleased>Prisoners released</RWS_Metric_PrisonersReleased>
+  <RWS_MetricDesc_PrisonersReleased>Prisoners of the colony whose release completed. Escapes are not counted.</RWS_MetricDesc_PrisonersReleased>
+  <RWS_Metric_PrisonersCaptured>Enemies captured</RWS_Metric_PrisonersCaptured>
+  <RWS_MetricDesc_PrisonersCaptured>Hostile pawns captured into prisoners of the colony.</RWS_MetricDesc_PrisonersCaptured>
+  <RWS_Metric_AnimalBonds>Animal bonds</RWS_Metric_AnimalBonds>
+  <RWS_MetricDesc_AnimalBonds>Bonds formed between a colonist and a colony animal.</RWS_MetricDesc_AnimalBonds>
+  <RWS_Metric_AnimalsTamed>Animals tamed</RWS_Metric_AnimalsTamed>
+  <RWS_MetricDesc_AnimalsTamed>Wild animals that became the player's through successful taming. Purchases are not counted.</RWS_MetricDesc_AnimalsTamed>
+  <RWS_Metric_AnimalBirths>Colony animal births</RWS_Metric_AnimalBirths>
+  <RWS_MetricDesc_AnimalBirths>Player animals born or hatched alive. Separate from humanlike births.</RWS_MetricDesc_AnimalBirths>
+  <RWS_Metric_AnimalsSlaughtered>Animals slaughtered</RWS_Metric_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsSlaughtered>Colony animal deaths by designated slaughter.</RWS_MetricDesc_AnimalsSlaughtered>
+  <RWS_Metric_AnimalsHunted>Wild animals hunted</RWS_Metric_AnimalsHunted>
+  <RWS_MetricDesc_AnimalsHunted>Wild animals designated for hunting and killed by a player pawn. Incidental fights are not counted.</RWS_MetricDesc_AnimalsHunted>
+  <RWS_Unit_Years>{0} years</RWS_Unit_Years>
 </LanguageData>

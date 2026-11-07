@@ -150,6 +150,13 @@ public static class LiveFamilies
     {
         ResearchFamily.Family,
         MentalFamily.Family,
+        HealthDeathFamily.Family,
+        DownFamily.Family,
+        MembershipFamily.Family,
+        RaidFamily.Family,
+        LifetimeFamily.Family,
+        SocialFamily.Family,
+        AnimalsFamily.Family,
     };
 
     public static LiveFamily? Find(string name) => All.FirstOrDefault(f => f.Name == name);
