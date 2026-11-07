@@ -1,8 +1,13 @@
 using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
 namespace RimworldStatistics.Core;
+
+/// <summary>The v1 observation of one save and, when the read is confirmed, its Phase A numeric observation.</summary>
+public sealed record SaveReadResult(SaveObservation Observation, MetricObservation? Metrics);
 
 /// <summary>
 /// Reads one save (.rws) front to back with <see cref="XmlReader"/>, keeping only what the statistics need
@@ -11,11 +16,20 @@ namespace RimworldStatistics.Core;
 /// </summary>
 public sealed class SaveReader
 {
-    /// <summary>Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 3: lineage recovery and numeric validation.</summary>
-    public const int Version = 3;
+    /// <summary>
+    /// Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 3: lineage recovery and
+    /// numeric validation. 4: Phase A numeric observations (history series, counters, retained quests, content hash).
+    /// </summary>
+    public const int Version = 4;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
+
+    /// <summary>
+    /// Versions where an omitted statsRecord counter is known to mean 0: 1.7 by StatsRecord.ExposeData (1.7.4985), 1.5 and
+    /// 1.6 by real saves (an explicitly written raid or death counter is never 0 there, and greatestPopulation is never 3).
+    /// </summary>
+    private static readonly HashSet<string> CounterDefaultVersions = new(StringComparer.Ordinal) { "1.5", "1.6", "1.7" };
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     private static readonly XmlReaderSettings Settings = new()
@@ -28,7 +42,16 @@ public sealed class SaveReader
         CloseInput = false,
     };
 
-    public SaveObservation Read(string path)
+    public SaveObservation Read(string path) => ReadDetailed(path).Observation;
+
+    public SaveObservation Read(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc)
+        => ReadDetailed(xml, fileName, fileSize, lastWriteUtc).Observation;
+
+    /// <summary>
+    /// Reads the file once. The numeric observation is kept only when every byte was read, the byte count equals the size
+    /// taken before reading, and the size and time are unchanged afterwards (a file replaced mid-read confirms nothing).
+    /// </summary>
+    public SaveReadResult ReadDetailed(string path)
     {
         var fileName = Path.GetFileName(path);
         long size = 0;
@@ -39,43 +62,51 @@ public sealed class SaveReader
             var info = new FileInfo(path);
             size = info.Length;
             lastWrite = info.LastWriteTimeUtc;
-            using var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 1 << 16, FileOptions.SequentialScan);
-            return Read(fs, fileName, size, lastWrite);
+            SaveReadResult result;
+            using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 1 << 16, FileOptions.SequentialScan))
+                result = ReadDetailed(fs, fileName, size, lastWrite);
+            if (result.Metrics is null)
+                return result;
+            var after = new FileInfo(path);
+            return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite ? result : result with { Metrics = null };
         }
         catch (Exception e)
         {
-            return Failed(fileName, size, lastWrite, e);
+            return new SaveReadResult(Failed(fileName, size, lastWrite, e), null);
         }
     }
 
-    public SaveObservation Read(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc)
+    public SaveReadResult ReadDetailed(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc)
     {
         try
         {
             var obs = NewObservation(fileName, fileSize, lastWriteUtc);
-            using var reader = XmlReader.Create(xml, Settings);
-            if (reader.MoveToContent() != XmlNodeType.Element || reader.LocalName != "savegame")
-            {
-                obs.Status = ObservationStatus.Error;
-                obs.ErrorReason = "not a savegame";
-                return obs;
-            }
+            using var hashing = new HashingStream(xml);
             var state = new ReadState(obs);
-            ForEachChild(reader, name =>
+            using (var reader = XmlReader.Create(hashing, Settings))
             {
-                switch (name)
+                if (reader.MoveToContent() != XmlNodeType.Element || reader.LocalName != "savegame")
                 {
-                    case "meta": ReadMeta(Load(reader), obs); break;
-                    case "game": ReadGame(reader, state); break;
-                    default: reader.Skip(); break;
+                    obs.Status = ObservationStatus.Error;
+                    obs.ErrorReason = "not a savegame";
+                    return new SaveReadResult(obs, null);
                 }
-            });
+                ForEachChild(reader, name =>
+                {
+                    switch (name)
+                    {
+                        case "meta": ReadMeta(Load(reader), state); break;
+                        case "game": ReadGame(reader, state); break;
+                        default: reader.Skip(); break;
+                    }
+                });
+            }
             Finish(state);
-            return obs;
+            return new SaveReadResult(obs, TryBuildMetrics(state, hashing, fileSize));
         }
         catch (Exception e)
         {
-            return Failed(fileName, fileSize, lastWriteUtc, e);
+            return new SaveReadResult(Failed(fileName, fileSize, lastWriteUtc, e), null);
         }
     }
 
@@ -89,6 +120,17 @@ public sealed class SaveReader
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
         public string? AnomalyLevelDef { get; set; }
+
+        // Numeric expansion inputs (never used by the v1 values above).
+        public List<string>? ModIds { get; set; }
+        public bool StatsRecordPresent { get; set; }
+        public bool RaidsWritten { get; set; }
+        public bool KilledWritten { get; set; }
+        public string? WealthTotalPayload { get; set; }
+        public int WealthTotalCount { get; set; }
+        public Dictionary<string, List<float[]?>> Series { get; } = new(StringComparer.Ordinal);
+        public List<RetainedQuest>? Quests { get; set; }
+        public int UnreadableQuests { get; set; }
     }
 
     private const string AnomalyComponentName = "GameComponent_Anomaly";
@@ -116,7 +158,13 @@ public sealed class SaveReader
                 case "tickManager": ReadTickManager(Load(r), obs); break;
                 case "scenario": ReadScenario(Load(r), s); break;
                 case "storyteller": ReadStoryteller(Load(r), obs); break;
-                case "storyWatcher": ReadStats(Load(r).Element("statsRecord"), obs.Values); break;
+                case "storyWatcher":
+                    var statsRecord = Load(r).Element("statsRecord");
+                    ReadStats(statsRecord, obs.Values);
+                    s.StatsRecordPresent = statsRecord != null;
+                    s.RaidsWritten = statsRecord?.Element("numRaidsEnemy") != null;
+                    s.KilledWritten = statsRecord?.Element("colonistsKilled") != null;
+                    break;
                 case "world": ReadWorld(r, s); break;
                 case "history": ReadHistory(r, s); break;
                 case "questManager": ReadQuests(r, s); break;
@@ -126,10 +174,13 @@ public sealed class SaveReader
         });
     }
 
-    private static void ReadMeta(XElement meta, SaveObservation obs)
+    private static void ReadMeta(XElement meta, ReadState s)
     {
+        var obs = s.Obs;
         obs.GameVersion = Text(meta.Element("gameVersion"));
-        obs.ModCount = meta.Element("modIds")?.Elements("li").Count() ?? 0;
+        var modIds = meta.Element("modIds");
+        obs.ModCount = modIds?.Elements("li").Count() ?? 0;
+        s.ModIds = modIds?.Elements("li").Select(li => li.Value.Trim()).Where(id => id.Length > 0).ToList();
     }
 
     private static void ReadInfo(XElement info, SaveObservation obs)
@@ -223,10 +274,20 @@ public sealed class SaveReader
         ForEachChild(r, name =>
         {
             if (name != "quests") { r.Skip(); return; }
+            s.Quests ??= new List<RetainedQuest>();
             ForEachChild(r, _ =>                                   // quests/li
             {
                 string? root = null, outcome = null;
                 var ended = false;
+                // Numeric expansion fields: a value that does not parse leaves this quest out of the quest metrics only.
+                int id = 0, accepted = -1, expire = -1, cleanup = -1;
+                var initially = false;
+                var readable = true;
+                void Int(ref int field)
+                {
+                    if (!int.TryParse(r.ReadElementContentAsString().Trim(), NumberStyles.Integer, Inv, out field))
+                        readable = false;
+                }
                 ForEachChild(r, child =>
                 {
                     switch (child)
@@ -234,9 +295,21 @@ public sealed class SaveReader
                         case "root": root = r.ReadElementContentAsString().Trim(); break;
                         case "ended": ended = bool.Parse(r.ReadElementContentAsString().Trim()); break;
                         case "endOutcome": outcome = r.ReadElementContentAsString().Trim(); break;
+                        case "id": Int(ref id); break;
+                        case "acceptanceTick": Int(ref accepted); break;
+                        case "acceptanceExpireTick": Int(ref expire); break;
+                        case "cleanupTick": Int(ref cleanup); break;
+                        case "initiallyAccepted":
+                            if (!bool.TryParse(r.ReadElementContentAsString().Trim(), out initially))
+                                readable = false;
+                            break;
                         default: r.Skip(); break;
                     }
                 });
+                if (readable)
+                    s.Quests.Add(new RetainedQuest(id, root, accepted, expire, initially, ended, outcome ?? "Unknown", cleanup));
+                else
+                    s.UnreadableQuests++;
                 // Quest.State == EndedSuccess requires ended && endOutcome == Success (1.7.4985).
                 if (!ended || outcome != "Success")
                     return;
@@ -308,6 +381,7 @@ public sealed class SaveReader
     {
         string? def = null;
         (string Payload, bool Deflate)? data = null;
+        (string? Payload, bool Deflate)? extension = null;
         ForEachChild(r, name =>
         {
             switch (name)
@@ -318,13 +392,294 @@ public sealed class SaveReader
                 case "records" or "recordsDeflate" when def is null or "Wealth_Total":
                     data = (r.ReadElementContentAsString(), name == "recordsDeflate");
                     break;
+                case "records" or "recordsDeflate" when HistoryMetricReader.Defs.Contains(def):
+                    extension = (ReadCappedText(r, HistoryMetricReader.MaxBase64Chars), name == "recordsDeflate");
+                    break;
                 default:
                     r.Skip();
                     break;
             }
         });
-        if (def == "Wealth_Total" && data is { } d && s.Wealth is null)
-            s.Wealth = RecordsCodec.Decode(d.Payload, d.Deflate);
+        if (def == "Wealth_Total" && data is { } d)
+        {
+            s.WealthTotalCount++;
+            if (s.Wealth is null)
+            {
+                s.Wealth = RecordsCodec.Decode(d.Payload, d.Deflate);
+                s.WealthTotalPayload = d.Payload;
+            }
+            return;
+        }
+        if (def is null || def == "Wealth_Total" || !HistoryMetricReader.Defs.Contains(def))
+            return;
+        if (extension is null && data is { } early)   // records written before def: not seen in real saves
+            extension = (CountNonWhitespace(early.Payload) <= HistoryMetricReader.MaxBase64Chars ? early.Payload : null, early.Deflate);
+        if (extension is not { } e)
+            return;
+        float[]? values = null;
+        if (e.Payload is { } payload && RecordsCodec.TryDecodeLimited(payload, e.Deflate, HistoryMetricReader.MaxPoints, out var decoded))
+            values = decoded;
+        if (!s.Series.TryGetValue(def, out var list))
+            s.Series[def] = list = new List<float[]?>();
+        list.Add(values);
+    }
+
+    /// <summary>
+    /// The text of the current element, or null when it has more than <paramref name="maxNonWhitespace"/> non-whitespace
+    /// characters or child elements. The element is consumed either way, without keeping an oversized text in memory.
+    /// </summary>
+    private static string? ReadCappedText(XmlReader r, int maxNonWhitespace)
+    {
+        if (!r.CanReadValueChunk)
+        {
+            var all = r.ReadElementContentAsString();
+            return CountNonWhitespace(all) <= maxNonWhitespace ? all : null;
+        }
+        if (r.IsEmptyElement)
+        {
+            r.Read();
+            return "";
+        }
+        var depth = r.Depth;
+        r.Read();
+        var text = new StringBuilder();
+        var buffer = new char[8192];
+        long count = 0;
+        var usable = true;
+        while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+        {
+            if (r.EOF)
+                throw new XmlException("unexpected end of file");
+            switch (r.NodeType)
+            {
+                case XmlNodeType.Text or XmlNodeType.CDATA or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace:
+                    int n;
+                    while ((n = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                    {
+                        if (!usable)
+                            continue;
+                        for (var i = 0; i < n; i++)
+                            if (!char.IsWhiteSpace(buffer[i]))
+                                count++;
+                        if (count > maxNonWhitespace)
+                        {
+                            usable = false;
+                            text.Clear();
+                        }
+                        else
+                        {
+                            text.Append(buffer, 0, n);
+                        }
+                    }
+                    r.Read();
+                    break;
+                case XmlNodeType.Element:
+                    usable = false;
+                    r.Skip();
+                    break;
+                default:
+                    r.Read();
+                    break;
+            }
+        }
+        r.Read();
+        return usable ? text.ToString() : null;
+    }
+
+    private static long CountNonWhitespace(string text)
+    {
+        long n = 0;
+        foreach (var c in text)
+            if (!char.IsWhiteSpace(c))
+                n++;
+        return n;
+    }
+
+    /// <summary>
+    /// The numeric observation once the v1 read is complete; null when the v1 read failed, when not every byte of the
+    /// file was read, or when anything in the numeric part fails (it never changes the v1 observation).
+    /// </summary>
+    private static MetricObservation? TryBuildMetrics(ReadState state, HashingStream hashing, long fileSize)
+    {
+        if (state.Obs.Status != ObservationStatus.Ok)
+            return null;
+        try
+        {
+            hashing.ReadToEnd();
+            return hashing.BytesRead == fileSize ? BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash())) : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>The Phase A numeric observation of a save whose v1 read succeeded.</summary>
+    private static MetricObservation BuildMetrics(ReadState s, string hash)
+    {
+        var obs = s.Obs;
+        var m = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile,
+            FormatVersion = Version,
+            Key = hash,
+            Identity = obs.Identity.Clone(),
+            FileAliases = { new MetricFileAlias { FileName = obs.FileName, FileSize = obs.FileSize, LastWriteUtc = obs.LastWriteUtc } },
+            GameVersion = obs.GameVersion,
+            SaveTick = obs.Values.TicksGame,
+            ObservedUtc = obs.LastWriteUtc,
+            ActiveDlcIds = s.ModIds?
+                .Where(id => id.StartsWith("ludeon.rimworld.", StringComparison.OrdinalIgnoreCase))
+                .Select(id => id.ToLowerInvariant()).Distinct().Order(StringComparer.Ordinal).ToList(),
+        };
+
+        // History: a recorder def saved twice is ambiguous and left out, as is a series beyond the extension limits.
+        var series = new Dictionary<string, float[]?>(StringComparer.Ordinal);
+        foreach (var (def, list) in s.Series)
+            series[def] = list.Count == 1 ? list[0] : null;
+        if (s.WealthTotalCount > 0)
+            series[HistoryMetricReader.WealthTotal] = s.WealthTotalCount == 1 && s.Wealth is { } w && w.Length <= HistoryMetricReader.MaxPoints
+                && s.WealthTotalPayload is { } p && CountNonWhitespace(p) <= HistoryMetricReader.MaxBase64Chars
+                    ? w
+                    : null;
+        HistoryMetricReader.Summarize(series, obs.GameVersion, obs.Values.TicksGame, m.Metrics);
+
+        // Vanilla counters: the same save's counter and ticks. An omitted counter is 0 only where that default is verified.
+        if (s.StatsRecordPresent && obs.Values.TicksGame > 0)
+        {
+            var years = obs.Values.TicksGame / (double)(StatFormat.TicksPerDay * StatFormat.DaysPerYear);
+            var defaultKnown = HistoryMetricReader.MajorMinor(obs.GameVersion) is { } v && CounterDefaultVersions.Contains(v);
+            void PerYear(string key, bool written, int counter)
+            {
+                if (!written && !defaultKnown)
+                    return;
+                m.Metrics[key] = MetricEntry.Of(MetricKeys.Revision(key), new MetricValue
+                {
+                    Coverage = MetricCoverage.Complete, RealValue = counter / years, Numerator = counter, Denominator = years,
+                });
+            }
+            PerYear(MetricKeys.RaidsPerYear, s.RaidsWritten, obs.Values.NumRaidsEnemy);
+            PerYear(MetricKeys.DeathsPerYear, s.KilledWritten, obs.Values.ColonistsKilled);
+        }
+        if (s.ModIds is { } mods)
+            m.Metrics[MetricKeys.ModsLatest] = MetricEntry.Of(MetricKeys.Revision(MetricKeys.ModsLatest),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = mods.Count });
+
+        RetainedQuestMetricReader.Summarize(s.Quests, s.UnreadableQuests, obs.Values.TicksGame, m.Metrics);
+        return m;
+    }
+
+    /// <summary>
+    /// Serves the XML reader from blocks read from the file and hashes each block on a second thread, so hashing adds
+    /// little import time. The hash covers exactly the bytes served, in order. Blocks circulate between a free list and a
+    /// queue of filled blocks; nothing is allocated per block.
+    /// </summary>
+    private sealed class HashingStream : Stream
+    {
+        private const int BlockSize = 1 << 16;
+        private const int Blocks = 4;
+        private readonly Stream _inner;
+        private readonly IncrementalHash _hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        private readonly System.Collections.Concurrent.BlockingCollection<byte[]> _free = new();
+        private readonly System.Collections.Concurrent.BlockingCollection<(byte[] Block, int Length)> _filled = new();
+        private readonly Task _worker;
+        private byte[]? _block;
+        private int _pos;
+        private int _len;
+        private bool _eof;
+
+        public HashingStream(Stream inner)
+        {
+            _inner = inner;
+            for (var i = 0; i < Blocks; i++)
+                _free.Add(new byte[BlockSize]);
+            _worker = Task.Factory.StartNew(() =>
+            {
+                foreach (var (block, length) in _filled.GetConsumingEnumerable())
+                {
+                    _hash.AppendData(block, 0, length);
+                    _free.Add(block);
+                }
+            }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+        }
+
+        public long BytesRead { get; private set; }
+
+        public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
+
+        public override int Read(Span<byte> buffer)
+        {
+            if (_pos == _len && !Refill())
+                return 0;
+            var n = Math.Min(buffer.Length, _len - _pos);
+            _block.AsSpan(_pos, n).CopyTo(buffer);
+            _pos += n;
+            return n;
+        }
+
+        private bool Refill()
+        {
+            if (_eof)
+                return false;
+            if (_block is not null && _len > 0)
+                _filled.Add((_block, _len));
+            _block = _free.Take();
+            _pos = 0;
+            _len = Math.Max(0, _inner.Read(_block, 0, BlockSize));
+            BytesRead += _len;
+            _eof = _len == 0;
+            return !_eof;
+        }
+
+        /// <summary>Reads (and hashes) what the XML reader left after the end of the document.</summary>
+        public void ReadToEnd()
+        {
+            _pos = _len;
+            while (Refill())
+                _pos = _len;
+        }
+
+        public byte[] Hash()
+        {
+            if (_block is not null && _len > 0)
+                _filled.Add((_block, _len));
+            _block = null;
+            _len = 0;
+            _filled.CompleteAdding();
+            _worker.Wait();
+            return _hash.GetHashAndReset();
+        }
+
+        public override bool CanRead => true;
+        public override bool CanSeek => false;
+        public override bool CanWrite => false;
+        public override long Length => throw new NotSupportedException();
+        public override long Position { get => BytesRead; set => throw new NotSupportedException(); }
+        public override void Flush() { }
+        public override long Seek(long offset, SeekOrigin origin) => throw new NotSupportedException();
+        public override void SetLength(long value) => throw new NotSupportedException();
+        public override void Write(byte[] buffer, int offset, int count) => throw new NotSupportedException();
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (!_filled.IsAddingCompleted)
+                    _filled.CompleteAdding();
+                try
+                {
+                    _worker.Wait();
+                }
+                catch (AggregateException)
+                {
+                    // the worker only hashes; nothing to report after a failed read
+                }
+                _filled.Dispose();
+                _free.Dispose();
+                _hash.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 
     private static void Finish(ReadState s)

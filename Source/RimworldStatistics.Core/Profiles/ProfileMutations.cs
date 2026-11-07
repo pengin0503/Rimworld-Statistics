@@ -104,6 +104,73 @@ public static class ProfileMutations
         return true;
     }
 
+    /// <summary>
+    /// Adds a numeric observation, or merges a re-read of the same content (same source and key): file aliases are
+    /// unioned, the time is the earliest copy's, and per metric a newer definition revision replaces the old one while,
+    /// for the same revision, a worse value never hides a good one (numeric expansion design §2 "同じ入力の再解析").
+    /// </summary>
+    public static void UpsertMetricObservation(Profile p, MetricObservation obs)
+    {
+        var existing = p.MetricObservations.FirstOrDefault(o => !o.IsQuarantined && o.Source == obs.Source && o.Key == obs.Key);
+        if (existing is null)
+        {
+            if (p.MetricObservations.Any(o => Supersedes(o, obs)))
+                return;
+            p.MetricObservations.RemoveAll(o => Supersedes(obs, o));
+            p.MetricObservations.Add(obs);
+            return;
+        }
+        foreach (var alias in obs.FileAliases)
+            if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
+                existing.FileAliases.Add(alias);
+        if (obs.ObservedUtc < existing.ObservedUtc)
+            existing.ObservedUtc = obs.ObservedUtc;
+        existing.FormatVersion = Math.Max(existing.FormatVersion, obs.FormatVersion);
+        foreach (var (key, entry) in obs.Metrics)
+        {
+            if (entry.IsQuarantined)
+                continue;
+            if (!existing.Metrics.TryGetValue(key, out var old) || old.IsQuarantined || entry.Revision > old.Revision
+                || (entry.Revision == old.Revision && Quality(entry) > Quality(old)))
+                existing.Metrics[key] = entry;
+        }
+    }
+
+    /// <summary>
+    /// True when <paramref name="older"/> can no longer change any shown value, so keeping it only grows the record file
+    /// (each changed autosave is a new observation). Both are save-file observations with the same identity (fingerprint,
+    /// campaign id and starting pawn set, so they are always attached to the same colony); <paramref name="newer"/> has a
+    /// strictly later tick, so it is always chosen as the representative; and the only value taken across observations,
+    /// the mod count, is the same in both.
+    /// </summary>
+    private static bool Supersedes(MetricObservation newer, MetricObservation older)
+    {
+        if (newer.IsQuarantined || older.IsQuarantined || ReferenceEquals(newer, older)
+            || newer.Source != MetricObservationSource.SaveFile || older.Source != MetricObservationSource.SaveFile
+            || newer.SaveTick <= older.SaveTick)
+            return false;
+        ColonyIdentity a = newer.Identity, b = older.Identity;
+        if (a.FingerprintHash() is not { } hash || hash != b.FingerprintHash() || a.ModCampaignId != b.ModCampaignId
+            || !a.StartingPawnIds.ToHashSet(Ord).SetEquals(b.StartingPawnIds))
+            return false;
+        return ModCount(newer) == ModCount(older);
+    }
+
+    /// <summary>The stored mod count and its revision; a missing or unreadable entry is its own state.</summary>
+    private static (bool Readable, long? Count, int Revision) ModCount(MetricObservation o)
+        => o.Metrics.TryGetValue(MetricKeys.ModsLatest, out var e)
+            ? (!e.IsQuarantined, e.IsQuarantined ? null : e.Values.GetValueOrDefault(MetricEntry.Scalar)?.IntegerValue, e.Revision)
+            : (true, null, 0);
+
+    /// <summary>Good (complete, snapshot or not applicable) above partial above unknown; the worst value of the entry counts.</summary>
+    private static int Quality(MetricEntry e)
+        => e.Values.Count == 0 ? 2 : e.Values.Values.Min(v => v.Coverage switch
+        {
+            MetricCoverage.Unknown => 0,
+            MetricCoverage.Partial => 1,
+            _ => 2,
+        });
+
     /// <summary>Creates the live record for a campaign; if it exists, only fills in its identity (idempotent).</summary>
     public static void RegisterLiveCampaign(Profile p, string campaignId, ColonyIdentity identity, DisplayInfo display)
     {
@@ -198,6 +265,7 @@ public static class ProfileMutations
             existing.GameVersion = ev.GameVersion;
             existing.CreditsExcerpt = ev.CreditsExcerpt;
         }
+        existing.ColonistsKilledAtEnding ??= ev.ColonistsKilledAtEnding;   // the first recorded value stays
         existing.Departed = Math.Max(existing.Departed, ev.Departed);
         existing.LaunchedTotalAfter = Math.Max(existing.LaunchedTotalAfter, ev.LaunchedTotalAfter);
         return false;

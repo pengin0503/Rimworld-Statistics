@@ -19,4 +19,8 @@ public sealed class LiveCampaign
 
     /// <summary>Game versions this campaign was saved under, in the order first seen (Colonies tab, spec §9.2).</summary>
     public List<string> GameVersions { get; set; } = new();
+
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
 }

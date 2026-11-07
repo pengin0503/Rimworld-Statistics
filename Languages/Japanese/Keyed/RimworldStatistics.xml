@@ -101,4 +101,166 @@
   <RWS_Loading>統計を読み込み中…</RWS_Loading>
   <RWS_WealthCoverage>資産データがあるコロニーは {0} 件、ないコロニーは {1} 件です。</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>セーブから復旧（開発モード不明、集計外）</RWS_Source_RecoveredLineage>
+  <RWS_Tab_Details>詳細統計</RWS_Tab_Details>
+  <RWS_Details_AllColonies>全コロニー</RWS_Details_AllColonies>
+  <RWS_Details_PerColony>コロニー別</RWS_Details_PerColony>
+  <RWS_Details_AllCategories>すべてのカテゴリ</RWS_Details_AllCategories>
+  <RWS_Details_Search>絞り込み</RWS_Details_Search>
+  <RWS_Details_Col_Name>項目</RWS_Details_Col_Name>
+  <RWS_Details_Col_Value>値</RWS_Details_Col_Value>
+  <RWS_Details_Col_State>出所・状態</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>値あり / 対象</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>観測時点</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>値の根拠になったセーブのゲーム内日数です。</RWS_Details_ThroughTip>
+  <RWS_Details_Note>{0} コロニー分（合計から外したもの {1}）。数値は取り込んだセーブの内容から計算します。開発モードの操作で起きた事柄も含まれることがあります。</RWS_Details_Note>
+  <RWS_Details_Unattributed>どのコロニーのものか決められなかった観測 {0} 件は含めていません。</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
+  <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
+  <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
+  <RWS_Details_Tip_Source>出所: {0} ／ 状態: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>ゲーム内 {0} 日の時点の観測です。</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>計測の始まり: ゲーム開始</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>セーブした時点の状態です。</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Observations>このコロニーの観測: {0} 件</RWS_Details_Tip_Observations>
+  <RWS_Details_Tip_Colonies>対象 {0} コロニーのうち、値があるのは {1} コロニーです。</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>記録のコロニー: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>標本数: {0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Ratio>分子 {0} ÷ 分母 {1}</RWS_Details_Tip_Ratio>
+  <RWS_Details_Tip_Unknown>根拠になるデータがありません（取り込み前のセーブ、元ファイルなし、対応外の版、読めないデータなど）。</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>台帳: {0}（{1}）</RWS_Details_Tip_Ledger>
+  <RWS_Unit_Days>{0} 日</RWS_Unit_Days>
+  <RWS_Unit_PerYear>{0} 回/年</RWS_Unit_PerYear>
+  <RWS_Category_Wealth>資産</RWS_Category_Wealth>
+  <RWS_Category_Population>人口・心情</RWS_Category_Population>
+  <RWS_Category_Defense>襲撃・防衛</RWS_Category_Defense>
+  <RWS_Category_Quests>クエスト</RWS_Category_Quests>
+  <RWS_Category_Colony>コロニー</RWS_Category_Colony>
+  <RWS_Category_Rankings>順位・比較</RWS_Category_Rankings>
+  <RWS_Provenance_VanillaCounter>ゲームの累計カウンター</RWS_Provenance_VanillaCounter>
+  <RWS_Provenance_SaveHistory>セーブの履歴グラフ</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>セーブ時点の状態</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>プレイ中の集計</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>完全</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>部分（欠けあり）</RWS_Coverage_Partial>
+  <RWS_Coverage_History>履歴上の観測</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>保存時点</RWS_Coverage_SnapshotOnly>
+  <RWS_Coverage_Unknown>不明</RWS_Coverage_Unknown>
+  <RWS_Coverage_NotApplicable>対象外</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>アイテム資産の最高額</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>履歴グラフ（半日ごとの観測）のアイテム資産の最大値。全コロニーでは最高の1件。</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>アイテム資産の最終額</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>履歴グラフの最後の観測のアイテム資産。全コロニーでは合計。</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>建築物資産の最高額</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>履歴グラフの建築物資産の最大値。全コロニーでは最高の1件。</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>建築物資産の最終額</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>履歴グラフの最後の観測の建築物資産。全コロニーでは合計。</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>人員・動物資産の最高額</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>履歴グラフの人員・動物資産の最大値。全コロニーでは最高の1件。</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>人員・動物資産の最終額</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>履歴グラフの最後の観測の人員・動物資産。全コロニーでは合計。</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>総資産の平均（観測）</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>総資産の有効な観測値の平均。全コロニーでは観測点数で重み付け。</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>初期資産（最初の観測）</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>ゲーム開始時から揃っている履歴の、最初の総資産。コロニー別のみ。</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>資産の純増（最終 − 初期）</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>最後の観測の総資産から最初の観測の総資産を引いた値。減っていれば負。全コロニーでは合計。</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>資産が最高だった日（観測日）</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>総資産が初めて最大になった観測の名目上の日（観測は半日ごと）。コロニー別のみ。</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>半日での最大資産増加（観測）</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>隣り合う2つの観測の間で総資産が最も増えた額。増えた区間がなければ0。</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>半日での最大資産減少（観測）</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>隣り合う2つの観測の間で総資産が最も減った額。減った区間がなければ0。</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>半日での最大資産減少率（観測）</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>隣り合う2つの観測で（前 − 後）÷ 前 が最大の値。前の値が0の区間は除きます。</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>15日間の最大資産増加（観測）</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>30観測（15日）離れた2点の間で総資産が最も増えた額。間に欠けがある期間は使いません。</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>15日間の最大資産減少（観測）</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>30観測（15日）離れた2点の間で総資産が最も減った額。間に欠けがある期間は使いません。</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>1年間の最大資産成長率（観測）</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>120観測（1年）離れた2点で（後 − 前）÷ 前 が最大の値。減り続けたなら負。</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>資産が増え続けた最長期間（観測）</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>総資産が観測ごとに増え続けた最長の期間。同じ値や欠けで途切れます。</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>資産10万到達（観測日）</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>総資産が初めて100,000以上になった観測の名目上の日。全コロニーでは最短。</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>資産100万到達（観測日）</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>総資産が初めて1,000,000以上になった観測の名目上の日。全コロニーでは最短。</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>建築物資産の最大比率（観測）</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>同じ観測の建築物資産 ÷ 総資産の最大値。</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>入植者数の平均（観測）</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>自由入植者数の観測値の平均。全コロニーでは観測点数で重み付け。</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>入植者数の最小（観測）</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>自由入植者数の観測値の最小。全コロニーでは最小。</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_FreeColonistsFirst10>入植者10人到達（観測日）</RWS_Metric_FreeColonistsFirst10>
+  <RWS_MetricDesc_FreeColonistsFirst10>自由入植者が初めて10人以上になった観測の名目上の日。全コロニーでは最短。</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>囚人数の最大（観測）</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>囚人数の観測値の最大。</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>囚人数の平均（観測）</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>囚人数の観測値の平均。全コロニーでは観測点数で重み付け。</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>平均心情の平均（観測）</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>入植者の平均心情（0〜100）の観測値の平均。入植者がいないと記録される0は欠けとして除きます。人数では重み付けしません。</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>平均心情の最低（観測）</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>平均心情の有効な観測値の最小。</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>平均心情の最高（観測）</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>平均心情の有効な観測値の最大。</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>心情50%未満の日数（観測）</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>両端が有効な半日区間のうち、始まりの平均心情が50未満の区間の数 ÷ 2。全コロニーでは合計。</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>心情80%以上の日数（観測）</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>両端が有効な半日区間のうち、始まりの平均心情が80以上の区間の数 ÷ 2。全コロニーでは合計。</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>1年あたりの入植者死亡</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>同じセーブの入植者死亡数 ÷ 経過年数（1年 = 60日）。全コロニーでは死亡数の合計 ÷ 年数の合計。</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>1年あたりの敵の襲撃</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>同じセーブの敵の襲撃回数 ÷ 経過年数（1年 = 60日）。全コロニーでは回数の合計 ÷ 年数の合計。</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>MOD数（最新のセーブ）</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>最新のセーブに記録された有効なMODの数（Core と DLC を含む）。コロニー別のみ。</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>MOD数の最大</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>このコロニーの取り込んだセーブの中で最も多かったMOD数。コロニー別のみ。</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>MOD数の最小</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>このコロニーの取り込んだセーブの中で最も少なかったMOD数。コロニー別のみ。</RWS_MetricDesc_ModsMin>
+  <RWS_Metric_QuestSuccess>成功したクエスト（保存内）</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>セーブに残っている、受諾して成功したクエストの数。ゲームが消したクエストは数えられません。</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>失敗したクエスト（保存内）</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>セーブに残っている、受諾して失敗したクエストの数。</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>クエスト成功率（保存内）</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>成功 ÷（成功 + 失敗）。全コロニーでは分子と分母をそれぞれ合計して計算。</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>種類別の成功クエスト（保存内）</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>成功したクエストをクエストの種類（Def名）別に数えます。クリックで内訳を開きます。</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>期限切れのクエスト（保存内）</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>受諾されないまま期限が過ぎた、セーブに残っているクエストの数。</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>受諾したクエスト（保存内）</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>セーブに残っている、受諾した（自動受諾を含む）クエストの数。進行中を含みます。</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>成功クエストの平均日数（受諾から終了処理まで）</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>成功したクエストの、受諾から終了処理の開始までの日数の平均。受諾の時刻が残っていないものは除きます。</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>成功クエストの最短日数（受諾から終了処理まで）</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>上の平均と同じ標本の最短日数。</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>成功クエストの最長日数（受諾から終了処理まで）</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>上の平均と同じ標本の最長日数。</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Unit_SilverPerYear>{0} /年</RWS_Unit_SilverPerYear>
+  <RWS_Details_Permadeath>パーマデス</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>通常</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankByDifficultyDays>難易度別の通算日数</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>各コロニーの代表セーブ（最も進んだ時点）の難易度ごとに、コロニーの経過日数を合計します。途中の難易度変更は追いません。クリックで内訳を開きます。</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>難易度別のエンディング数</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>概要タブと同じ数え方（開発モードの設定、痕跡は1回以上）のエンディング数を、代表セーブの難易度ごとに数えます。</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>パーマデス別の通算日数</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>代表セーブがパーマデスかどうかで、コロニーの経過日数を分けて合計します。</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>パーマデス別のエンディング数</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>概要タブと同じ数え方のエンディング数を、代表セーブがパーマデスかどうかで分けて数えます。</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>最多同時入植者数（全コロニー）</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>ゲームが記録した最大人口の、コロニー横断の最大値とそのコロニー。</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>最速のエンディング到達</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>プレイ中に記録したエンディングのうち、ゲーム内日数が最も短いものとそのコロニー。導入前の痕跡（時刻が分からないもの）は含めません。</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>1年あたりの平均資産増加</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>各コロニーの資産の純増の合計 ÷ その履歴がまたがる年数の合計（観測1点だけの履歴は除く）。</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>最も多くエンディングを迎えたシナリオ</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>代表セーブのシナリオ名ごとのエンディング数の最多と、その名前。同数なら並べて表示します。クリックで内訳を開きます。</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>ストーリーテラー別の通算日数</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>代表セーブのストーリーテラーごとに、コロニーの経過日数を合計します。</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>実プレイ時間が最も長いコロニー</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>実際に操作していた時間の、コロニー横断の最大値とそのコロニー。</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>入植者1人あたりの最高資産</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>同じ観測の総資産 ÷ 自由入植者数（1人以上）の最大値とそのコロニー。2つの履歴がゲーム開始から揃っている場合だけ計算します。</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>最少犠牲者でのエンディング</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>エンディングを記録した時点の入植者死亡数の最小とそのコロニー。この版より前に記録したエンディングは死亡数が分からないため含めません。</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>死者なしのエンディング</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>記録した時点の入植者死亡数が0だったエンディングの数。死亡数の分からないエンディングは数えません。</RWS_MetricDesc_RankZeroDeathEndings>
 </LanguageData>

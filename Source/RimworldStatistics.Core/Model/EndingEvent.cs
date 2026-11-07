@@ -20,4 +20,15 @@ public sealed class EndingEvent
     public bool DevMode { get; set; }
     public string? GameVersion { get; set; }
     public string? CreditsExcerpt { get; set; }
+
+    /// <summary>
+    /// statsRecord.colonistsKilled when the ending was recorded (ledger R-008, N1-F-003); null for endings recorded before
+    /// this field existed, for traces, or when the colony state could not be read. Never taken from a later record.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public int? ColonistsKilledAtEnding { get; set; }
+
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
 }

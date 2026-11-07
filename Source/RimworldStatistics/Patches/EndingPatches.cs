@@ -42,6 +42,8 @@ public static class EndingPatches
             {
                 Log.ErrorOnce($"[RimworldStatistics] Could not read the colony state at the ending: {e}", "RWS.ending.observation".GetHashCode());
             }
+            // Ledger R-008 / N1-F-003: the death counter at this moment, written with the ending; unknown if the read failed.
+            ev.ColonistsKilledAtEnding = observation?.Values.ColonistsKilled;
 
             ProfileService.Session.Mutate(p =>
             {

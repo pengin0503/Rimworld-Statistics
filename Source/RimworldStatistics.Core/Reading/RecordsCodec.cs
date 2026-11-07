@@ -21,6 +21,32 @@ public static class RecordsCodec
         return values;
     }
 
+    /// <summary>
+    /// Like <see cref="Decode"/>, for the numeric expansion only: false (never an exception) for bad data or for more
+    /// than <paramref name="maxPoints"/> values, so one broken or oversized series never fails the save.
+    /// </summary>
+    public static bool TryDecodeLimited(string base64, bool deflate, int maxPoints, out float[] values)
+    {
+        values = Array.Empty<float>();
+        var maxBytes = maxPoints * 4;
+        try
+        {
+            var bytes = Convert.FromBase64String(StripWhitespace(base64));
+            if (deflate)
+                bytes = RawInflate.Inflate(bytes, maxBytes);
+            if (bytes.Length % 4 != 0 || bytes.Length > maxBytes)
+                return false;
+            values = new float[bytes.Length / 4];
+            for (var i = 0; i < values.Length; i++)
+                values[i] = BinaryPrimitives.ReadSingleLittleEndian(bytes.AsSpan(i * 4, 4));
+            return true;
+        }
+        catch (Exception e) when (e is FormatException or InvalidDataException)
+        {
+            return false;
+        }
+    }
+
     private static string StripWhitespace(string s)
     {
         if (!s.Any(char.IsWhiteSpace))

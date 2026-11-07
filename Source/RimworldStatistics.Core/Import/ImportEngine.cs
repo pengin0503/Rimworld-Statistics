@@ -61,11 +61,16 @@ public sealed class ImportEngine(SaveReader reader)
                     skipped++;
                     continue;
                 }
-                var obs = reader.Read(path);
+                var (obs, metrics) = reader.ReadDetailed(path);
                 read++;
                 if (obs.Status == ObservationStatus.Error)
                     failed++;
-                session.Mutate(p => ProfileMutations.AddSaveObservation(p, obs), SaveMode.None);
+                session.Mutate(p =>
+                {
+                    ProfileMutations.AddSaveObservation(p, obs);
+                    if (metrics is not null)
+                        ProfileMutations.UpsertMetricObservation(p, metrics);
+                }, SaveMode.None);
             }
             catch (Exception e)
             {

@@ -28,5 +28,9 @@ public sealed class SaveObservation
 
     public DisplayInfo Display { get; set; } = new();
 
+    /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
+    [System.Text.Json.Serialization.JsonExtensionData]
+    public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
+
     public bool SameFileContent(long size, DateTime lastWriteUtc) => FileSize == size && LastWriteUtc == lastWriteUtc;
 }
