@@ -749,4 +749,18 @@
   <RWS_MetricDesc_OdysseyUniqueTiles>Distinct landing locations from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyUniqueTiles>
   <RWS_Metric_OdysseyNewMaps>Landings on newly created maps</RWS_Metric_OdysseyNewMaps>
   <RWS_MetricDesc_OdysseyNewMaps>Landings on newly created maps from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>Mechanoids manufactured</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>Mechanoids manufactured only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>Colonists who gave birth</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>Colonists who gave birth only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>Child growth milestones</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>Child growth milestones only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>Fully completed mech repairs</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>Fully completed mech repairs only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>Toxic wastepacks actually produced</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>Toxic wastepacks actually produced only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>Wastepacks safely neutralized</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>Wastepacks safely neutralized only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>Cells cleaned by colonists</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>Cells cleaned by colonists only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechPollutionCleaned>
 </LanguageData>

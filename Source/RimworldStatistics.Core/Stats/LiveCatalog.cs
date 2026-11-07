@@ -275,5 +275,12 @@ public static class LiveCatalog
         Live(OdysseyFamily.Distance, "L-023", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyDistance", "RWS_MetricDesc_OdysseyDistance"),
         Live(OdysseyFamily.UniqueTiles, "L-024", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyUniqueTiles", "RWS_MetricDesc_OdysseyUniqueTiles"),
         Live(OdysseyFamily.NewMapLandings, "L-026", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyNewMaps", "RWS_MetricDesc_OdysseyNewMaps"),
+        Live(BiotechFamily.MechsCreated, "L-012", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechMechsCreated", "RWS_MetricDesc_BiotechMechsCreated"),
+        Live(BiotechFamily.BirthMothers, "L-014", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechBirthMothers", "RWS_MetricDesc_BiotechBirthMothers"),
+        Live(BiotechFamily.ChildStages, "L-015", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechChildStages", "RWS_MetricDesc_BiotechChildStages", breakdown: true),
+        Live(BiotechFamily.MechRepairs, "L-016", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechMechRepairs", "RWS_MetricDesc_BiotechMechRepairs"),
+        Live(BiotechFamily.WasteCreated, "N1-E-001", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechWasteCreated", "RWS_MetricDesc_BiotechWasteCreated"),
+        Live(BiotechFamily.WasteDisposed, "N1-E-002", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechWasteDisposed", "RWS_MetricDesc_BiotechWasteDisposed"),
+        Live(BiotechFamily.PollutionCleaned, "N1-E-003", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechPollutionCleaned", "RWS_MetricDesc_BiotechPollutionCleaned"),
     };
 }

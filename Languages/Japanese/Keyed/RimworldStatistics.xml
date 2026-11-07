@@ -749,4 +749,18 @@
   <RWS_MetricDesc_OdysseyUniqueTiles>プレイヤーの着陸完了が確認できたフライトのみを対象とする到着したユニーク地点数。</RWS_MetricDesc_OdysseyUniqueTiles>
   <RWS_Metric_OdysseyNewMaps>新規マップへの着陸数</RWS_Metric_OdysseyNewMaps>
   <RWS_MetricDesc_OdysseyNewMaps>プレイヤーの着陸完了が確認できたフライトのみを対象とする新規マップへの着陸数。</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>製造したメカノイド総数</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>Biotechの対象操作が実際に完了したと確認できた製造したメカノイド総数。</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>出産した入植者のユニーク人数</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>Biotechの対象操作が実際に完了したと確認できた出産した入植者のユニーク人数。</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>子供の成長段階到達数</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>Biotechの対象操作が実際に完了したと確認できた子供の成長段階到達数。</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>完了したメカノイド修理回数</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>Biotechの対象操作が実際に完了したと確認できた完了したメカノイド修理回数。</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>生成された毒性廃棄物パック数</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>Biotechの対象操作が実際に完了したと確認できた生成された毒性廃棄物パック数。</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>無害化処分した毒性廃棄物パック数</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>Biotechの対象操作が実際に完了したと確認できた無害化処分した毒性廃棄物パック数。</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>入植者が除染したマップセル数</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>Biotechの対象操作が実際に完了したと確認できた入植者が除染したマップセル数。</RWS_MetricDesc_BiotechPollutionCleaned>
 </LanguageData>
