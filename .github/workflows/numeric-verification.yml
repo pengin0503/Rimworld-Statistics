@@ -41,6 +41,7 @@ jobs:
           game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
           test -f "$game_ref"
           dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
+          python3 tools/inspect_reference_api.py "$RUNNER_TEMP/ref-index/chunk-0000.json.gz"
           dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
       - name: Check ZIP content
         shell: bash
