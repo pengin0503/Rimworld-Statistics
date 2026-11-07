@@ -741,6 +741,14 @@
   <RWS_MetricDesc_RoyaltyHonor>Imperial honor gained and spent confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>Completed conversions</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Number of observed player-side transitions from an existing ideology to a different ideology; excludes pawn initialization.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_IdeologyRitualResults>Rituals by final outcome</RWS_Metric_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Confirmed Ideology rituals by outcome Def; interrupted rituals use a separate bucket.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>Ritual success rate</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>Confirmed successes divided by rituals with a classified success or failure; interruptions are excluded.</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_Metric_IdeologyConversionDays>Mean conversion duration</RWS_Metric_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>Average days from a confirmed explicit conversion action to reaching its matching target ideology.</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>Role appointments</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>Confirmed new assignments of ideology leader or specialist roles to player-side colonists; repeat assignments excluded.</RWS_MetricDesc_IdeologyAppointments>
   <RWS_Metric_OdysseyFlights>Completed gravship flights</RWS_Metric_OdysseyFlights>
   <RWS_MetricDesc_OdysseyFlights>Completed gravship flights from authoritative completed player flights, not launch or preview data.</RWS_MetricDesc_OdysseyFlights>
   <RWS_Metric_OdysseyDistance>Total completed flight distance</RWS_Metric_OdysseyDistance>
