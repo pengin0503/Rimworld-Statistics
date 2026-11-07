@@ -181,7 +181,16 @@ internal static class SavedStateMetricReader
                 }
                 var growingCells = map.zoneManager.AllZones.OfType<Zone_Growing>()
                     .SelectMany(z => z.Cells).Distinct().Count();
-                var indoorRooms = map.regionGrid.allRooms.Count(r => r != null && !r.PsychologicallyOutdoors);
+                // RegionGrid in the referenced 1.7 API has no public allRooms.
+                // Iterate cells and deduplicate Room instances; never infer a room from a single doorway.
+                var rooms = new HashSet<Room>();
+                foreach (var cell in CellRect.WholeMap(map).Cells)
+                {
+                    var room = RegionAndRoomQuery.RoomAt(cell, map);
+                    if (room != null && !room.PsychologicallyOutdoors)
+                        rooms.Add(room);
+                }
+                var indoorRooms = rooms.Count;
                 maps.Add(new FacilityMapFact
                 {
                     Id = map.uniqueID.ToString(System.Globalization.CultureInfo.InvariantCulture),
