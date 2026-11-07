@@ -1,0 +1,67 @@
+name: Publish Rimworld Statistics v1.0.0
+
+on:
+  push:
+    paths:
+      - .github/workflows/publish-v1.0.0.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+      - name: Try to package MOD with configured R2 references
+        env:
+          R2_ENDPOINT: ${{ secrets.R2_ENDPOINT }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        shell: bash
+        run: |
+          if [ -z "$R2_ENDPOINT" ] || [ -z "$R2_BUCKET" ] || [ -z "$AWS_ACCESS_KEY_ID" ] || [ -z "$AWS_SECRET_ACCESS_KEY" ]; then
+            echo 'R2 inputs are not configured; publishing a source-only release.'
+            exit 0
+          fi
+          python3 -m pip install -q boto3
+          python3 tools/fetch_dev_inputs.py refs .refs
+          dotnet test -c Release --nologo
+          bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.0.0.zip"
+          echo "RELEASE_ZIP=$RUNNER_TEMP/RimworldStatistics-v1.0.0.zip" >> "$GITHUB_ENV"
+      - name: Create v1.0.0 release at the reviewed commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_ZIP: ${{ env.RELEASE_ZIP }}
+        shell: bash
+        run: |
+          if gh release view v1.0.0 >/dev/null 2>&1; then
+            echo 'Release v1.0.0 already exists; not replacing it.'
+            exit 0
+          fi
+          cat > "$RUNNER_TEMP/release-notes.md" <<'EOF'
+          # Rimworld Statistics v1.0.0
+
+          First release for RimWorld 1.7. View aggregate statistics across colonies and saves from the title screen, including total game days, peak wealth, raids, population, real play time, and endings by type.
+
+          - Automatically scans `.rws` and `.rws.old` saves (including pre-install saves from RimWorld 1.5–1.7) without modifying them.
+          - Maintains colony identity and historical observations across save-file overwrites.
+          - Tracks endings and departures; can exclude development-mode results.
+          - Supports Japanese and English, scan progress/cancel/rescan, and three local profile backups.
+          - Includes fixes from PR #24 for save finalization, corruption recovery, calculation safety, and title-screen responsiveness.
+
+          **Validation:** v1 implementation builds against RimWorld 1.7.4985 references, with automated tests passing in PR #24 (173 passed, 1 skipped due to missing real-save inputs). In-game verification on a full mod list remains outstanding.
+
+          If no installable MOD ZIP is attached to this release, the build references were unavailable to GitHub Actions; the automatically attached source archives are **not installable mods**. An installable release requires `RimworldStatistics-v1.0.0.zip`, containing `RimworldStatistics/1.7/Assemblies/*.dll`.
+          EOF
+          if [ -n "$RELEASE_ZIP" ] && [ -f "$RELEASE_ZIP" ]; then
+            gh release create v1.0.0 "$RELEASE_ZIP" --target c0b7f24c1c99b25ea7672c41b184e5b85a541490 --title 'Rimworld Statistics v1.0.0' --notes-file "$RUNNER_TEMP/release-notes.md"
+          else
+            gh release create v1.0.0 --target c0b7f24c1c99b25ea7672c41b184e5b85a541490 --title 'Rimworld Statistics v1.0.0' --notes-file "$RUNNER_TEMP/release-notes.md"
+          fi
