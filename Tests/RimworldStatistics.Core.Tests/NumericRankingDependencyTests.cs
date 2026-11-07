@@ -145,4 +145,43 @@ public sealed class NumericRankingDependencyTests
             x => x.Definition.Key == MetricRankings.DaysByBiome || x.Definition.Key == MetricRankings.EndingsByBiome);
     }
 
+    [Fact]
+    public void KillDeathRatioCombinesOnlySameCheckpointPairs()
+    {
+        var p = new Profile();
+        foreach (var seed in new[] { "A", "B", "C" })
+            p.SaveObservations.Add(Save(seed));
+        p.MetricObservations.Add(Event("A",
+            (HealthDeathFamily.HostileKills, 12), (HealthDeathFamily.DeathsByRaid, 3)));
+        p.MetricObservations.Add(Event("B",
+            (HealthDeathFamily.HostileKills, 6), (HealthDeathFamily.DeathsByRaid, 1)));
+        // No checkpoint for C: coverage is partial and C does not dilute the numerator.
+        var ratio = View(p, developmentCatalog: true).Overall.Single(x => x.Definition.Key == MetricRankings.KillsToDeaths);
+        Assert.Equal((18d, 4d, 4.5d), (ratio.Value.Numerator, ratio.Value.Denominator, ratio.Value.Number));
+        Assert.Equal((3, 2, MetricCoverage.Partial), (ratio.Targets, ratio.Valid, ratio.Value.Coverage));
+        Assert.False(MetricRegistry.Find(MetricRankings.KillsToDeaths)!.Published);
+        Assert.DoesNotContain(View(p, developmentCatalog: false).Overall,
+            x => x.Definition.Key == MetricRankings.KillsToDeaths);
+    }
+
+    [Fact]
+    public void KillDeathRatioDoesNotDivideByZeroOrUseUnpairedInput()
+    {
+        var p = new Profile();
+        p.SaveObservations.Add(Save("A"));
+        p.MetricObservations.Add(Event("A", (HealthDeathFamily.HostileKills, 7),
+            (HealthDeathFamily.DeathsByRaid, 0)));
+        var v = View(p, developmentCatalog: true).Overall.Single(x => x.Definition.Key == MetricRankings.KillsToDeaths);
+        Assert.Null(v.Value.Number);
+        Assert.Equal(7d, v.Value.Numerator);
+        Assert.Equal(0d, v.Value.Denominator);
+        Assert.Equal(1, v.Valid);
+        var missing = new Profile();
+        missing.SaveObservations.Add(Save("A"));
+        missing.MetricObservations.Add(Event("A", (HealthDeathFamily.HostileKills, 7)));
+        var unknown = View(missing, developmentCatalog: true).Overall.Single(x => x.Definition.Key == MetricRankings.KillsToDeaths);
+        Assert.Equal(MetricCoverage.Unknown, unknown.Value.Coverage);
+        Assert.Equal(0, unknown.Valid);
+    }
+
 }
