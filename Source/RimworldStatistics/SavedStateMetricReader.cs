@@ -84,7 +84,7 @@ internal static class SavedStateMetricReader
                 continue;
             try
             {
-                var active = !f.defeated && !f.hidden && !f.temporary && !f.deactivated;
+                var active = f.defeated == false && f.hidden == false && f.temporary == false && f.deactivated == false;
                 if (!active)
                     continue;
                 var relation = player.RelationKindWith(f);
