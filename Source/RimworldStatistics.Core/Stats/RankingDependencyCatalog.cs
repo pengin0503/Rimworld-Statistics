@@ -23,6 +23,8 @@ public static class RankingDependencyCatalog
             "colony_start", "RWS_Metric_RankDaysByBiome", "RWS_MetricDesc_RankDaysByBiome") with { HasBreakdown = true },
         Rank(MetricRankings.EndingsByBiome, "N1-F-002", MetricUnit.Count, MetricProvenance.SaveSnapshot,
             "colony_start", "RWS_Metric_RankEndingsByBiome", "RWS_MetricDesc_RankEndingsByBiome") with { HasBreakdown = true },
+        Rank(MetricRankings.KillsToDeaths, "R-012", MetricUnit.Count, MetricProvenance.LiveAggregate,
+            HealthDeathFamily.Name, "RWS_Metric_RankKillsToDeaths", "RWS_MetricDesc_RankKillsToDeaths"),
         Rank(MetricRankings.MostKills, "R-001", MetricUnit.Count, MetricProvenance.LiveAggregate,
             HealthDeathFamily.Name, "RWS_Metric_RankMostKills", "RWS_MetricDesc_RankMostKills"),
         Rank(MetricRankings.LongestDeathFree, "R-002", MetricUnit.Days, MetricProvenance.LiveAggregate,
