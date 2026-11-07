@@ -53,6 +53,25 @@ public sealed class MetricObservation
     [JsonConverter(typeof(MetricEntriesConverter))]
     public Dictionary<string, MetricEntry> Metrics { get; set; } = new(StringComparer.Ordinal);
 
+    /// <summary>A checkpoint's parent checkpoint id (Phase C); null for a lineage root and for other sources.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ParentKey { get; set; }
+
+    /// <summary>A checkpoint's content hash: the same id with another hash is a conflict, never merged.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? PayloadHash { get; set; }
+
+    /// <summary>The same checkpoint id was seen with different contents: neither is used, and the lineage is unknown.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool Conflicted { get; set; }
+
+    /// <summary>
+    /// An ancestor checkpoint whose values were dropped because a later checkpoint of the colony exists (it can never be the
+    /// representative again); only its place in the lineage is kept.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool Compressed { get; set; }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
