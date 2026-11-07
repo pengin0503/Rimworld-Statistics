@@ -42,7 +42,11 @@ jobs:
         shell: bash
         run: |
           if gh release view v1.0.0 >/dev/null 2>&1; then
-            echo 'Release v1.0.0 already exists; not replacing it.'
+            if [ -n "$RELEASE_ZIP" ] && [ -f "$RELEASE_ZIP" ]; then
+              gh release upload v1.0.0 "$RELEASE_ZIP" --clobber
+            else
+              echo 'Release v1.0.0 exists; no installable ZIP is available to attach.'
+            fi
             exit 0
           fi
           cat > "$RUNNER_TEMP/release-notes.md" <<'EOF'
