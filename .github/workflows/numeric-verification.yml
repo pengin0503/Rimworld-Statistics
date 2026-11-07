@@ -34,6 +34,14 @@ jobs:
         run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
       - name: Build separate development verification harness
         run: bash tools/VerifyHarness/package.sh "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+      - name: Static Harmony patch targets and argument names (1.7.4985 reference metadata)
+        shell: bash
+        run: |
+          set -euo pipefail
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          test -f "$game_ref"
+          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
+          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
       - name: Check ZIP content
         shell: bash
         run: |
