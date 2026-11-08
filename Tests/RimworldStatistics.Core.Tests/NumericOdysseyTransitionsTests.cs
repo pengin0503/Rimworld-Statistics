@@ -56,6 +56,7 @@ public sealed class NumericOdysseyTransitionsTests
         var state = s.Family(OdysseyFamily.Name)!;
         OdysseyFamily.ObservedExistingMaps(state, new[] { "Map_101", "Map_102" });
         OdysseyFamily.ObservedTakeoff(state, "engine", 100, playerShip: true);
+        OdysseyFamily.ObservedMapGenerated(state, "engine", "Map_103", 150, confirmed: true);
         OdysseyFamily.ObservedLanding(state, "engine", 0, 25,
             playerShip: true, successfullyLanded: true, routeDistanceInTiles: null,
             landedOnNewMap: null, arrivedMapId: "Map_103");
@@ -73,6 +74,37 @@ public sealed class NumericOdysseyTransitionsTests
         Assert.Equal(1, o.Scalar(OdysseyFamily.NewMapLandings, MetricKeys.Revision(OdysseyFamily.NewMapLandings))!.IntegerValue);
         Assert.Equal(MetricCoverage.Partial,
             o.Scalar(OdysseyFamily.Distance, MetricKeys.Revision(OdysseyFamily.Distance))!.Coverage);
+    }
+
+    [Fact]
+    public void NewMapGenerationProofSurvivesReloadButCannotBeReusedForASecondFlight()
+    {
+        var original = LiveMetricAccumulator.StartNew(new[] { OdysseyFamily.Family.Spec }, 0);
+        var state = original.Family(OdysseyFamily.Name)!;
+        OdysseyFamily.ObservedExistingMaps(state, new[] { "Map_101" });
+        // A map created before the departure is not evidence for that flight.
+        OdysseyFamily.ObservedMapGenerated(state, "engine", "Map_103", 90, confirmed: true);
+        OdysseyFamily.ObservedTakeoff(state, "engine", 100, playerShip: true);
+        OdysseyFamily.ObservedMapGenerated(state, "engine", "Map_103", 150, confirmed: true);
+        var draft = original.PrepareSave(160, DateTime.UtcNow, "midflight")!;
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, new[] { OdysseyFamily.Family.Spec }, 160);
+        var restored = resumed.Family(OdysseyFamily.Name)!;
+        OdysseyFamily.ObservedLanding(restored, "engine", 0, 25,
+            playerShip: true, successfullyLanded: true, routeDistanceInTiles: null,
+            landedOnNewMap: null, arrivedMapId: "Map_103");
+        OdysseyFamily.ObservedTakeoff(restored, "engine", 200, playerShip: true);
+        OdysseyFamily.ObservedLanding(restored, "engine", 0, 25,
+            playerShip: true, successfullyLanded: true, routeDistanceInTiles: null,
+            landedOnNewMap: null, arrivedMapId: "Map_103");
+        var final = resumed.PrepareSave(250, DateTime.UtcNow, "landed")!;
+        var observation = CheckpointMetrics.ToObservation(final.Payload!, final.Json,
+            new ColonyIdentity { ModCampaignId = "landed" }, null, null);
+        Assert.Equal(2, observation.Scalar(OdysseyFamily.Flights,
+            MetricKeys.Revision(OdysseyFamily.Flights))!.IntegerValue);
+        Assert.Equal(1, observation.Scalar(OdysseyFamily.NewMapLandings,
+            MetricKeys.Revision(OdysseyFamily.NewMapLandings))!.IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, observation.Scalar(OdysseyFamily.NewMapLandings,
+            MetricKeys.Revision(OdysseyFamily.NewMapLandings))!.Coverage);
     }
 
 }
