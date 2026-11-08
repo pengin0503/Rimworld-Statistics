@@ -123,6 +123,8 @@ public static class ProfileMutations
                 return;
             p.MetricObservations.RemoveAll(o => Supersedes(obs, o));
             p.MetricObservations.Add(obs);
+            if (obs.Source == MetricObservationSource.SaveSnapshot)
+                CompactSaveSnapshots(p, obs);
             return;
         }
         foreach (var alias in obs.FileAliases)
@@ -132,6 +134,102 @@ public static class ProfileMutations
             existing.ObservedUtc = obs.ObservedUtc;
         existing.FormatVersion = Math.Max(existing.FormatVersion, obs.FormatVersion);
         MergeMetrics(existing, obs);
+    }
+
+    /// <summary>
+    /// SaveSnapshot selection has two kinds of consumers: a single latest observation,
+    /// and per-key historical maxima/minima. Keep each selection's actual witness,
+    /// plus one missing/partial witness when required for coverage. Accumulate the
+    /// sample multiplicity of removed observations on the winning witness so the
+    /// historical row still reports the real number of measurements.
+    ///
+    /// This is limited to a fully identified live campaign and the exact starting
+    /// pawn set. Unknown future metric keys are never compacted away.
+    /// </summary>
+    private static void CompactSaveSnapshots(Profile p, MetricObservation added)
+    {
+        var identity = added.Identity;
+        if (string.IsNullOrEmpty(identity.ModCampaignId)
+            || identity.FingerprintHash() is not { } hash || identity.StartingPawnIds.Count == 0)
+            return;
+
+        var pawns = identity.StartingPawnIds.ToHashSet(Ord);
+        var snapshots = p.MetricObservations.Where(o => !o.IsQuarantined
+            && o.Source == MetricObservationSource.SaveSnapshot
+            && o.Identity.ModCampaignId == identity.ModCampaignId
+            && o.Identity.FingerprintHash() == hash
+            && pawns.SetEquals(o.Identity.StartingPawnIds)).ToList();
+        if (snapshots.Count < 2)
+            return;
+
+        var definitions = SnapshotCatalog.Definitions;
+        var keys = definitions.Select(d => d.StoredKey).ToHashSet(Ord);
+        var kept = new HashSet<MetricObservation>();
+        // Representative selection: latest tick, then UTC, then smallest key.
+        kept.Add(snapshots.OrderByDescending(o => o.SaveTick)
+            .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First());
+        foreach (var o in snapshots)
+            if (o.Metrics.Keys.Any(k => !keys.Contains(k)))
+                kept.Add(o);
+
+        MetricValue? Scalar(MetricObservation o, MetricDefinition d)
+            => o.Metrics.TryGetValue(d.StoredKey, out var e)
+                && !e.IsQuarantined && e.Revision == d.Revision
+                ? e.Values.GetValueOrDefault(MetricEntry.Scalar) : null;
+
+        bool Applicable(MetricObservation o, MetricDefinition d)
+            => d.RequiredDlc is not { } dlc || o.ActiveDlcIds is null
+                || o.ActiveDlcIds.Contains(dlc, StringComparer.OrdinalIgnoreCase)
+                || Scalar(o, d)?.Number is { } n && n != 0;
+
+        foreach (var d in definitions)
+        {
+            if (d.Selection == ColonySelection.Representative)
+                continue;
+            var applicable = snapshots.Where(o => Applicable(o, d)).ToList();
+            if (applicable.Count == 0)
+                continue;
+            var valid = applicable.Where(o => Scalar(o, d)?.Number is not null).ToList();
+            if (valid.Count == 0)
+            {
+                // A known DLC session but no measurable value means Unknown, not NotApplicable.
+                kept.Add(applicable[0]);
+                continue;
+            }
+            // Stable LINQ ordering preserves the original earliest winner on a tie.
+            var best = d.Selection == ColonySelection.ObservationMax
+                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
+                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            kept.Add(best);
+            var partial = valid.FirstOrDefault(o => Scalar(o, d)!.Coverage == MetricCoverage.Partial);
+            if (partial is not null)
+                kept.Add(partial);
+            var missing = applicable.FirstOrDefault(o => Scalar(o, d)?.Number is null);
+            if (missing is not null)
+                kept.Add(missing);
+        }
+
+        // Weights must be moved before removing the observations that own them. A
+        // previously compacted winner may itself cease to be an extremum later.
+        foreach (var d in definitions)
+        {
+            if (d.Selection == ColonySelection.Representative)
+                continue;
+            var valid = snapshots.Where(o => Applicable(o, d) && Scalar(o, d)?.Number is not null).ToList();
+            if (valid.Count == 0)
+                continue;
+            var best = d.Selection == ColonySelection.ObservationMax
+                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
+                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            long Weight(MetricObservation o) => Math.Max(1, o.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1);
+            var removed = valid.Where(o => !kept.Contains(o)).Sum(Weight);
+            if (removed <= 0)
+                continue;
+            best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
+            best.CompactedSampleCounts[d.StoredKey] =
+                (int)Math.Min(int.MaxValue, Weight(best) + removed);
+        }
+        p.MetricObservations.RemoveAll(o => snapshots.Contains(o) && !kept.Contains(o));
     }
 
     /// <summary>Per metric, a newer definition revision replaces the old one; for the same revision a worse value never hides a good one.</summary>
