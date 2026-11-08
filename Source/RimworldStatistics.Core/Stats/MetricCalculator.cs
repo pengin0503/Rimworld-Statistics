@@ -351,7 +351,10 @@ public static class MetricCalculator
     {
         var direct = definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
             && evidence.TryGetValue(id, out var captured) ? captured : MetricEvidence.UnknownLegacy;
-        return observation.CompactedEvidenceByMetric?.GetValueOrDefault(definition.StoredKey) is { } compacted
+        // Value-type GetValueOrDefault returns default(UnknownLegacy) when an unrelated
+        // compacted key exists; check presence before weakening capture confidence.
+        return observation.CompactedEvidenceByMetric is { } metadata
+            && metadata.TryGetValue(definition.StoredKey, out var compacted)
             ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
     }
 
