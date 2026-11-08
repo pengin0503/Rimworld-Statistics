@@ -3,6 +3,30 @@ namespace RimworldStatistics.Core.Tests;
 public sealed class RecruitmentProviderPolicyTests
 {
     [Fact]
+    public void AuditedRegistrationRequiresExactModAndCompatibleVersion()
+    {
+        var descriptors = new[] { RecruitmentMetricPolicy.StartedDescriptor, RecruitmentMetricPolicy.ActiveDescriptor };
+        Assert.All(descriptors, d => Assert.True(d.IsValid()));
+        Assert.Equal(new[] { RecruitmentMetricPolicy.StartedKey, RecruitmentMetricPolicy.ActiveKey },
+            descriptors.Select(d => d.StableKey));
+        Assert.Equal(new[] { RecruitmentMetricPolicy.RequestsFamilyId, RecruitmentMetricPolicy.QueueFamilyId },
+            descriptors.Select(d => d.AcquisitionId));
+        foreach (var d in descriptors)
+        {
+            Assert.Equal(ModProviderAvailability.MissingPackage,
+                ModProviderDiscovery.Resolve(d, Array.Empty<ModPackageInfo>()).State);
+            Assert.Equal(ModProviderAvailability.MissingVersion,
+                ModProviderDiscovery.Resolve(d, new[] { new ModPackageInfo("PENGIN0503.RECRUITMENT", null) }).State);
+            Assert.Equal(ModProviderAvailability.IncompatibleVersion,
+                ModProviderDiscovery.Resolve(d, new[] { new ModPackageInfo(RecruitmentMetricPolicy.OwnerPackageId, "1.1.1") }).State);
+            Assert.Equal(ModProviderAvailability.Available,
+                ModProviderDiscovery.Resolve(d, new[] { new ModPackageInfo(RecruitmentMetricPolicy.OwnerPackageId, "1.1.2") }).State);
+            Assert.Equal(ModProviderAvailability.IncompatibleVersion,
+                ModProviderDiscovery.Resolve(d, new[] { new ModPackageInfo(RecruitmentMetricPolicy.OwnerPackageId, "1.2.0") }).State);
+        }
+    }
+
+    [Fact]
     public void EventIsCountedOnceOnlyAfterValidSuccessfulDriveCreation()
     {
         var f = new FamilyState { Revision = 1 };

@@ -39,6 +39,16 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      - uses: actions/checkout@v4
+        with:
+          repository: pengin0503/Rimworld-Recruitment
+          ref: cff2f296bc152ee61000d132107767977193a243
+          path: .devinputs/recruitment-1.1.2
+          persist-credentials: false
+      - name: Verify audited Recruitment 1.1.2 source contract
+        run: python3 tools/check_recruitment_contract.py .devinputs/recruitment-1.1.2
+      - name: Build pinned Recruitment 1.1.2 optional dependency
+        run: dotnet build .devinputs/recruitment-1.1.2/Source/Recruitment/Recruitment.csproj -c Release --nologo
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: Profile scaling benchmark (100–3000 synthetic saves)

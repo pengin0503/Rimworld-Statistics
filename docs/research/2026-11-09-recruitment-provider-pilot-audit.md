@@ -8,7 +8,7 @@
 | [Colony Task Auditor](https://github.com/pengin0503/rimworld-Colony-Task-Auditor) | package `pengin0503.colonytaskauditor`, v1.1.0. Task monitoring with 250-tick progress checks and 5,000-tick diagnostics | Work-in-progress classifications and overlapping work notifications, more risk of false event counts | Defer |
 | [Animal Management](https://github.com/pengin0503/rimworld-Animal-Management) | package `pengin0503.animalmanagement`, v1.1.0. Forecasts and auto production decisions | Forecasts depend on changing inputs; recomputing at each save costs more, snapshot semantics less stable | Defer |
 
-These are publicly available repositories, not copies of proprietary implementation. No license text from another repository is embedded. Sources were inspected at each repository's `main` on 2026-11-09.
+These are publicly available repositories, not copies of proprietary implementation. No license text from another repository is embedded. Sources were inspected at each repository's `main` on 2026-11-09. Recruitment code is pinned in CI to commit `cff2f296bc152ee61000d132107767977193a243` and built from the same source.
 
 ## Authoritative source evidence
 
