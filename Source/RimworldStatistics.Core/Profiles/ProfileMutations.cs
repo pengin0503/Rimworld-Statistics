@@ -175,8 +175,9 @@ public static class ProfileMutations
         var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
         var kept = new HashSet<MetricObservation>();
         // Representative selection: latest tick, then UTC, then smallest key.
-        kept.Add(snapshots.OrderByDescending(o => o.SaveTick)
-            .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First());
+        var representative = snapshots.OrderByDescending(o => o.SaveTick)
+            .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First();
+        kept.Add(representative);
         // JsonExtensionData represents fields from a minor version this binary does
         // not understand. Discarding their owner would silently destroy information.
         static bool HasOpaqueData(MetricObservation o)
@@ -249,6 +250,17 @@ public static class ProfileMutations
             best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
             best.CompactedSampleCounts[d.StoredKey] =
                 (int)Math.Min(int.MaxValue, Weight(best) + removed);
+        }
+        // Retaining only the physical rows would understate the number of
+        // observations shown in Details, and after a later missing attribution
+        // would also understate Unattributed. Carry the deleted rows' multiplicity
+        // on the latest survivor, independently of the per-metric sample counts.
+        var removedObservations = snapshots.Where(o => !kept.Contains(o)).ToList();
+        if (removedObservations.Count > 0)
+        {
+            var total = (long)Math.Max(1, representative.CompactedObservationCount ?? 1)
+                + removedObservations.Sum(o => (long)Math.Max(1, o.CompactedObservationCount ?? 1));
+            representative.CompactedObservationCount = (int)Math.Min(int.MaxValue, total);
         }
         p.MetricObservations.RemoveAll(o => snapshots.Contains(o) && !kept.Contains(o));
     }
