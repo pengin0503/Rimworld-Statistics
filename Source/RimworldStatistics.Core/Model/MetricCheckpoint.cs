@@ -37,6 +37,10 @@ public sealed class FamilyState
     public int SinceTick { get; set; }
     public int ThroughTick { get; set; }
     public bool Continuous { get; set; } = true;
+
+    /// <summary>Optional: absent in older checkpoints, which have unknown capture evidence.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public MetricEvidence? Evidence { get; set; }
     public Dictionary<string, Accumulator> Metrics { get; set; } = new(StringComparer.Ordinal);
     public Dictionary<string, Dictionary<string, long>> Active { get; set; } = new(StringComparer.Ordinal);
 
@@ -57,7 +61,7 @@ public sealed class FamilyState
             return new FamilyState { Quarantined = q };
         var c = new FamilyState
         {
-            Revision = Revision, SinceTick = SinceTick, ThroughTick = ThroughTick, Continuous = Continuous,
+            Revision = Revision, SinceTick = SinceTick, ThroughTick = ThroughTick, Continuous = Continuous, Evidence = Evidence,
             ExtensionData = ExtensionData is null ? null : new Dictionary<string, JsonElement>(ExtensionData),
         };
         foreach (var (k, v) in Metrics)

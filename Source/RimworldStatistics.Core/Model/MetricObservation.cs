@@ -50,6 +50,10 @@ public sealed class MetricObservation
     /// <summary>Official DLC package ids in the save's mod list; null when the list was not in the save.</summary>
     public List<string>? ActiveDlcIds { get; set; }
 
+    /// <summary>Per acquisition unit, captured at recording time. Null means pre-provenance legacy data.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, MetricEvidence>? EvidenceByAcquisition { get; set; }
+
     [JsonConverter(typeof(MetricEntriesConverter))]
     public Dictionary<string, MetricEntry> Metrics { get; set; } = new(StringComparer.Ordinal);
 

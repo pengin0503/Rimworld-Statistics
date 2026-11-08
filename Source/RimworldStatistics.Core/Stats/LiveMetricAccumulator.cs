@@ -34,18 +34,23 @@ public sealed class LiveMetricAccumulator
     private readonly Dictionary<string, FamilyState> _recording = new(Ord);
     private readonly Dictionary<string, FamilyState> _kept = new(Ord);
     private readonly List<string> _order = new();
+    private readonly IReadOnlySet<string>? _experimentalUnits;
     private readonly string? _opaque;   // unknown or unreadable data: written back unchanged, nothing recorded on top
     private string? _lastJson;          // the last committed (or loaded) checkpoint text
     private CheckpointPayload? _last;
     private int _stopVersion;
     private int _committedStopVersion;
 
-    private LiveMetricAccumulator(string? opaque) => _opaque = opaque;
+    private LiveMetricAccumulator(string? opaque, IReadOnlySet<string>? experimentalUnits = null)
+    {
+        _opaque = opaque;
+        _experimentalUnits = experimentalUnits is null ? null : new HashSet<string>(experimentalUnits, Ord);
+    }
 
     /// <summary>A new game: every recording family starts at <paramref name="tick"/> (0 is the start of the game).</summary>
-    public static LiveMetricAccumulator StartNew(IReadOnlyCollection<FamilySpec> recording, int tick)
+    public static LiveMetricAccumulator StartNew(IReadOnlyCollection<FamilySpec> recording, int tick, IReadOnlySet<string>? experimentalUnits = null)
     {
-        var acc = new LiveMetricAccumulator(null);
+        var acc = new LiveMetricAccumulator(null, experimentalUnits);
         foreach (var spec in recording)
             acc.Begin(spec, tick);
         return acc;
@@ -57,16 +62,16 @@ public sealed class LiveMetricAccumulator
     /// when their revision changed, and are kept verbatim when they do not record this session. Unknown data is written back
     /// unchanged and nothing new is recorded on top of it.
     /// </summary>
-    public static LiveMetricAccumulator Resume(string? raw, IReadOnlyCollection<FamilySpec> recording, int tick)
+    public static LiveMetricAccumulator Resume(string? raw, IReadOnlyCollection<FamilySpec> recording, int tick, IReadOnlySet<string>? experimentalUnits = null)
     {
         if (raw is null)
-            return StartNew(recording, tick);
+            return StartNew(recording, tick, experimentalUnits);
         var parsed = CheckpointJson.Parse(raw);
         if (parsed.Status != CheckpointParseStatus.Ok)
-            return new LiveMetricAccumulator(raw) { _lastJson = raw };
+            return new LiveMetricAccumulator(raw, experimentalUnits) { _lastJson = raw };
 
         var payload = parsed.Payload!;
-        var acc = new LiveMetricAccumulator(null) { _lastJson = raw, _last = payload };
+        var acc = new LiveMetricAccumulator(null, experimentalUnits) { _lastJson = raw, _last = payload };
         var specs = recording.ToDictionary(r => r.Name, Ord);
         foreach (var (name, loaded) in payload.Families)
         {
@@ -76,6 +81,12 @@ public sealed class LiveMetricAccumulator
                 // Continuous only when the family recorded up to the very save this game was loaded from.
                 if (family.ThroughTick != payload.SaveTick || payload.SaveTick != tick)
                     Interrupt(name, family, family.ThroughTick, family.ThroughTick);
+                if (experimentalUnits is not null)
+                    family.Evidence = MetricEvidencePolicy.Combine(new[]
+                    {
+                        family.Evidence ?? MetricEvidence.UnknownLegacy,
+                        experimentalUnits.Contains(name) ? MetricEvidence.Experimental : MetricEvidence.Verified,
+                    });
                 acc._recording[name] = family;
                 acc._order.Add(name);
             }
@@ -97,7 +108,12 @@ public sealed class LiveMetricAccumulator
 
     private void Begin(FamilySpec spec, int tick)
     {
-        _recording[spec.Name] = new FamilyState { Revision = spec.Revision, SinceTick = tick, ThroughTick = tick, Continuous = true };
+        _recording[spec.Name] = new FamilyState
+        {
+            Revision = spec.Revision, SinceTick = tick, ThroughTick = tick, Continuous = true,
+            Evidence = _experimentalUnits is null ? null
+                : _experimentalUnits.Contains(spec.Name) ? MetricEvidence.Experimental : MetricEvidence.Verified,
+        };
         if (!_order.Contains(spec.Name))
             _order.Add(spec.Name);
     }

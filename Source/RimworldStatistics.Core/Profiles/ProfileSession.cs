@@ -33,7 +33,7 @@ public sealed class ProfileSession
     private readonly Profile _profile;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
-    private readonly Dictionary<bool, StatsView> _views = new();
+    private readonly Dictionary<(bool IncludeDevMode, string Visible), StatsView> _views = new();
 
     private long _changeSeq;     // bumped by every change (under _lock)
     private long _writtenSeq;    // newest change seq that reached the file (under _ioLock)
@@ -76,13 +76,13 @@ public sealed class ProfileSession
             return read(_profile);
     }
 
-    public StatsView? TryGetCachedView(StatsOptions options)
+    public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null)
     {
         if (!Monitor.TryEnter(_lock))
             return null;
         try
         {
-            return _views.GetValueOrDefault(options.IncludeDevMode);
+            return _views.GetValueOrDefault((options.IncludeDevMode, VisibilityKey(visibleUnitIds)));
         }
         finally
         {
@@ -109,13 +109,14 @@ public sealed class ProfileSession
     }
 
     /// <summary>Colonies and statistics, cached per option set until the next change.</summary>
-    public StatsView GetView(StatsOptions options)
+    public StatsView GetView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null)
     {
         bool ledgerChanged;
         StatsView view;
         lock (_lock)
         {
-            if (_views.TryGetValue(options.IncludeDevMode, out var cached))
+            var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds));
+            if (_views.TryGetValue(cacheKey, out var cached))
                 return cached;
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
@@ -125,7 +126,10 @@ public sealed class ProfileSession
                 Colonies = colonies,
                 Stats = stats,
                 MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
-                Numeric = MetricCalculator.BuildView(_profile, colonies, stats),
+                Numeric = MetricCalculator.BuildView(_profile, colonies, stats,
+                    MetricDisplayPolicy.SelectDefinitions(MetricRegistry.Catalog,
+                        visibleUnitIds is null ? new HashSet<string>(StringComparer.Ordinal)
+                            : new HashSet<string>(visibleUnitIds, StringComparer.Ordinal))),
             };
             ledgerChanged = LedgerSignature() != before;
             if (ledgerChanged)
@@ -133,12 +137,16 @@ public sealed class ProfileSession
                 _views.Clear();   // other option sets were built before the ledger changed; keep them consistent
                 _changeSeq++;
             }
-            _views[options.IncludeDevMode] = view;
+            _views[cacheKey] = view;
         }
         if (ledgerChanged)
             Save(SaveMode.Background);   // new colony keys must survive a restart (spec §6.2)
         return view;
     }
+
+    private static string VisibilityKey(IReadOnlyCollection<string>? unitIds)
+        => unitIds is null || unitIds.Count == 0 ? "" :
+            string.Join("\u001f", unitIds.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
 
     /// <summary>Entries are only appended and their pawn unions only grow, so this changes exactly when the ledger does.</summary>
     private (int, long) LedgerSignature() => (_profile.ColonyKeys.Count, _profile.ColonyKeys.Sum(k => (long)k.StartingPawnIds.Count));
