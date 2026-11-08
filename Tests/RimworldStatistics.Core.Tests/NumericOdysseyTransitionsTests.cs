@@ -130,7 +130,7 @@ public sealed class NumericOdysseyTransitionsTests
         Assert.Equal(1, row.Scalar(OdysseyFamily.Flights,
             MetricKeys.Revision(OdysseyFamily.Flights))!.IntegerValue);
         Assert.Equal(7, row.Scalar(OdysseyFamily.Distance,
-            MetricKeys.Revision(OdysseyFamily.Distance))!.RealValue);
+            MetricKeys.Revision(OdysseyFamily.Distance))!.Number);
     }
 
 }
