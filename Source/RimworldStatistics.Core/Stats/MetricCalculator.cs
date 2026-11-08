@@ -274,13 +274,17 @@ public static class MetricCalculator
         var best = d.Selection == ColonySelection.ObservationMax
             ? values.OrderByDescending(x => x.Value!.Number).First()
             : values.OrderBy(x => x.Value!.Number).First();
-        var partial = values.Count < applicable.Count || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
+        // A compacted history retains a witness for any missing applicable reading;
+        // raw value counts are no longer interchangeable with observation counts.
+        var partial = applicable.Any(o => Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is null)
+            || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
         return Row(d, MetricEntry.Scalar, new NumericValue
         {
             Number = best.Value!.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
             ThroughTick = observations.Max(o => o.SaveTick),
-            SampleCount = values.Count,
+            SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
+                x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
         });
     }
 
