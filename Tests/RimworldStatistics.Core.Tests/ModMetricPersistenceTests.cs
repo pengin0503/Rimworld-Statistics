@@ -43,8 +43,11 @@ public sealed class ModMetricPersistenceTests
         Assert.Single(restored.ModMetricDescriptors);
         Assert.Equal("1.0.3", restored.MetricObservations.Single().ProviderCaptures![descriptor.ProviderId].OwnerVersion);
         var colonies = CampaignMatcher.BuildColonies(restored);
-        var definitions = MetricRegistry.Compose(restored.ModMetricDescriptors,
+        var hidden = MetricRegistry.Compose(restored.ModMetricDescriptors,
             new HashSet<string>(StringComparer.Ordinal));
+        Assert.DoesNotContain(hidden, d => d.Key == descriptor.StableKey);
+        var definitions = MetricRegistry.Compose(restored.ModMetricDescriptors,
+            new HashSet<string>(StringComparer.Ordinal) { MetricRegistry.OptionalModVisibilityId });
         var view = MetricCalculator.BuildView(restored, colonies,
             StatsCalculator.Calculate(colonies, new StatsOptions()), definitions);
         Assert.Equal(7, Assert.Single(Assert.Single(view.Colonies).Rows,
@@ -75,7 +78,7 @@ public sealed class ModMetricPersistenceTests
         Assert.Equal(33, restored.MetricObservations.Single().Metrics[desc.StableKey].Values[""].IntegerValue);
         Assert.Contains("mod.future.unknown.metric", restored.MetricObservations.Single().Metrics);
         var defined = Assert.Single(MetricRegistry.Compose(restored.ModMetricDescriptors,
-            new HashSet<string>()), d => d.Key == desc.StableKey);
+            new HashSet<string> { MetricRegistry.OptionalModVisibilityId }), d => d.Key == desc.StableKey);
         Assert.Equal(2, defined.Revision);
     }
 
