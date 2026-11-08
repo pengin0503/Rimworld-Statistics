@@ -3,7 +3,17 @@ name: Numeric statistics build, tests and development packages
 on:
   push:
     branches:
+      - main
       - claude/inspiring-shannon-6wqgka
+    paths:
+      - 'Source/**'
+      - 'Tests/**'
+      - 'tools/**'
+      - 'Languages/**'
+      - '.github/workflows/numeric-verification.yml'
+      - 'About/**'
+      - 'Directory.Build.props'
+      - 'global.json'
   pull_request:
     paths:
       - 'Source/**'
@@ -11,6 +21,9 @@ on:
       - 'tools/**'
       - 'Languages/**'
       - '.github/workflows/numeric-verification.yml'
+      - 'About/**'
+      - 'Directory.Build.props'
+      - 'global.json'
   workflow_dispatch:
 
 permissions:
@@ -28,6 +41,13 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Profile scaling benchmark (100–3000 synthetic saves)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile \
+            > "$RUNNER_TEMP/rws-profile-benchmark.csv"
+          cat "$RUNNER_TEMP/rws-profile-benchmark.csv"
       - name: Translation key consistency
         run: bash tools/check_keys.sh
       - name: Build production ZIP
@@ -59,5 +79,6 @@ jobs:
           path: |
             ${{ runner.temp }}/RimworldStatistics-unverified.zip
             ${{ runner.temp }}/RimworldStatisticsVerifyHarness.zip
+            ${{ runner.temp }}/rws-profile-benchmark.csv
           if-no-files-found: error
           retention-days: 14

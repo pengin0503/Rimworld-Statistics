@@ -33,12 +33,15 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | 項目 | 内容 |
 |---|---|
 | Status | ゲームの版、`Assembly-CSharp.dll` の SHA-256、Harmony の版、有効な DLC、単位ごとのゲート（recording / open, not applied / closed (DLC off) / closed (failed this session) / closed）と受け付けたイベント数、記録中のファミリーの範囲（since・through・continuous）、本体の Harmony が当てたメソッドの一覧 |
+| Benchmark pollution totals | Biotech有効時、全ホームマップで `PollutionGrid.TotalPollution` とセル全走査の結果を比較。取得時間・セル数・`MATCH/MISMATCH` をファイルへ記録（マップへの変更なし） | 
 | Checkpoint lineage | テスト用プロファイルにある、このゲームの campaignId のチェックポイント（ID・親・tick・UTC・衝突・圧縮、値はファイルだけ）と、詳細タブが使う代表・系譜 |
 | Dump values | 次の保存で記録される値の一覧（保存と同じ PrepareSave → ToObservation を、確定せずに実行したもの） |
 | Mark / Diff since mark | 今の値を覚え、その後に変わった値と、受け付けたイベント数の増分を出す。手動の確認（下記）に使う |
 | Run all automated cases / Run one case | 下表の自動ケース |
 
-結果はゲームのログと、テスト用フォルダの `RimworldStatistics-verify.log` に書きます。長い報告（Status、Dump、Diff）の全文はファイルだけに書きます。
+結果はゲームのログと、テスト用フォルダの `RimworldStatistics-verify.log` に書きます。長い報告（Status、Dump、Diff）の全文はファイルだけに書きます。Status はタイトル画面とプレイ中の両方で表示される（各状態に個別の DebugAction を登録）。
+
+**注意:** `medicine.hospital_bed` は同期呼出しから入院開始を確定できないため、開始しない場合は SKIP とします。これは本体の入院記録が正常だと検証できた意味ではありません。
 
 ## 自動ケース（18件）
 
@@ -60,7 +63,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | raid.enemy | `RaidEnemy` を即時攻撃・端から徒歩で実行 | 襲撃 +1、EdgeWalkIn +1、人数の標本 +1 |
 | raid.last_kill | 新しい襲撃を発生させ、出現した襲撃者をすべて実際の `Pawn.Kill` 経路で撃破 | 最後の撃破を含む `raid.kills.max` と、襲撃終了標本 +1 |
 | medicine.withdrawal | 入植者に依存症を付け、化学的欲求の水準を 0 → 0.005 → 1 → 0 にする（実際の `Need_Chemical.CurLevel` → `Hediff_Addiction.Notify_NeedCategoryChanged`） | 禁断症状 +2。使った依存症は最後に取り除く |
-| medicine.hospital_bed | 空いた医療ベッドに `Pawn_JobTracker.Notify_TuckedIntoBed` で寝かせ、ジョブを終える | 入院が開き、その後「起き上がった」状態になる（日数は時間経過が要るので手動） |
+| medicine.hospital_bed | 医療ベッドと自由入植者の存在を確認。同期デバッグアクションでは実際の `LayDown` toil を進められないため、ジョブの変更は行わない | SKIP（誤った FAIL や意図しないジョブ変更を防止）。実際の入院時間は手動で確認 |
 | food.stock_recount | 現在のホームマップで `ResourceCounter.UpdateResourceCounts` | 食料の在庫フックが発火し、ほかの値は変わらない |
 | food.growing_cells | 新しい栽培ゾーンに 1 セル足して取り除く（`Zone.AddCell / RemoveCell`） | 追跡中の栽培セル数が +1 してから元に戻る |
 | caravan.ancient_danger | 祠の外のセル、次に監視中の封印された祠の中心を 2 回 `FogGrid.Unfog` | 古代の脅威の開封 +1（2 回目と外のセルは +0）。監視中の祠が現在のマップに無ければ SKIP |

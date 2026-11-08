@@ -232,15 +232,39 @@ public static class MiningScopeMetricPatch
     new[] { typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode), typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int) })]
 public static class MiningPlaceMetricPatch
 {
-    public static void Prefix(Thing thing)
+    public sealed class Placement
     {
+        public required string MinerId;
+        public required ThingDef YieldDef;
+        public int Placed;
+    }
+
+    // GenPlace's placedAction reports quantities that actually got placed/merged.
+    // Reading thing.stackCount in a prefix counted attempts (including failed placement).
+    // Wrap rather than replace the caller's action so vanilla and other mods still receive it.
+    public static void Prefix(Thing thing, ref Action<Thing, int> placedAction, out Placement? __state)
+    {
+        __state = null;
         if (MiningProbe.Miner is not { } miner || thing?.def == null || thing.def != MiningProbe.Yield)
             return;
-        var id = GameFacts.Id(miner);
-        var def = thing.def.defName;
-        var units = thing.stackCount;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, id, def, units));
-        MiningProbe.Miner = null;   // one yield per scope
+        var state = new Placement { MinerId = GameFacts.Id(miner), YieldDef = thing.def };
+        __state = state;
+        var original = placedAction;
+        placedAction = (placedThing, count) =>
+        {
+            original?.Invoke(placedThing, count);
+            if (placedThing?.def == state.YieldDef && count > 0)
+                state.Placed = state.Placed > int.MaxValue - count ? int.MaxValue : state.Placed + count;
+        };
+    }
+
+    // Preserve the callback's successful partial placements even if TryPlaceThing returns false
+    // because a remaining portion could not be placed. Exceptions never reach this postfix.
+    public static void Postfix(Placement? __state)
+    {
+        if (__state is not { Placed: > 0 } state)
+            return;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, state.MinerId, state.YieldDef.defName, state.Placed));
     }
 }
 

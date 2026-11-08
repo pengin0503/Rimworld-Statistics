@@ -210,12 +210,13 @@ internal static class SavedStateMetricReader
                 }
                 var growingCells = map.zoneManager.AllZones.OfType<Zone_Growing>()
                     .SelectMany(z => z.Cells).Distinct().Count();
-                // RegionGrid in the referenced 1.7 API has no public allRooms.
-                // Iterate cells and deduplicate Room instances; never infer a room from a single doorway.
+                // Regions are the game's already-deduplicated spatial partition. Enumerating
+                // them avoids invoking RegionAndRoomQuery.RoomAt for every single map cell.
+                // Rebuild-capable AllRegions also observes room changes after construction.
                 var rooms = new HashSet<Room>();
-                foreach (var cell in CellRect.WholeMap(map).Cells)
+                foreach (var region in map.regionGrid.AllRegions)
                 {
-                    var room = RegionAndRoomQuery.RoomAt(cell, map);
+                    var room = region.Room;
                     if (room != null && !room.PsychologicallyOutdoors)
                         rooms.Add(room);
                 }
@@ -379,10 +380,12 @@ internal static class SavedStateMetricReader
                 continue;
             try
             {
-                var count = 0;
-                foreach (var cell in CellRect.WholeMap(map).Cells)
-                    if (map.pollutionGrid.IsPolluted(cell))
-                        count++;
+                // Vanilla PollutionGrid exposes the aggregate as a public property.
+                // Do not iterate every map cell on every successful save.
+                // An invalid aggregate is a failed unit reading, not a fabricated zero.
+                var count = map.pollutionGrid.TotalPollution;
+                if (count < 0 || count > map.cellIndices.NumGridCells)
+                    throw new InvalidOperationException("PollutionGrid.TotalPollution was outside the map cell count.");
                 polluted.Add(count);
             }
             catch (Exception)

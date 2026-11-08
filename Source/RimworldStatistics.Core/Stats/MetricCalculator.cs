@@ -97,7 +97,16 @@ public static class MetricCalculator
         {
             var observations = attached.GetValueOrDefault(colony) ?? new List<MetricObservation>();
             var checkpoints = CheckpointSelector.Select(observations);
-            perColony.Add((colony, definitions.Select(d => ColonyRow(d, observations, checkpoints.Representative)).ToList(), checkpoints.Lineage));
+            // Group once per colony instead of scanning/allocating a source-specific list
+            // for every metric definition. Order within each source stays unchanged.
+            var bySource = observations.GroupBy(o => o.Source)
+                .ToDictionary(g => g.Key, g => (IReadOnlyList<MetricObservation>)g.ToList());
+            // All definitions of one source use the same latest observation. Resolve
+            // its order-sensitive tie break only once instead of sorting per row.
+            var latestBySource = bySource.ToDictionary(kv => kv.Key, kv => Representative(kv.Value));
+            perColony.Add((colony, definitions.Select(d => ColonyRow(d,
+                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(),
+                checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source))).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
@@ -126,7 +135,7 @@ public static class MetricCalculator
             {
                 Key = c.Colony.Key,
                 Excluded = c.Colony.Excluded,
-                Observations = attached.GetValueOrDefault(c.Colony)?.Count ?? 0,
+                Observations = (int)Math.Min(int.MaxValue, attached.GetValueOrDefault(c.Colony)?.Sum(ObservationWeight) ?? 0L),
                 Lineage = c.Lineage,
                 Rows = c.Rows.Where(r => r.Definition.Overall != OverallAggregation.Ranking).ToList(),
             }).ToList(),
@@ -167,7 +176,7 @@ public static class MetricCalculator
             var colony = Find(m, colonies, byCampaign, byFile);
             if (colony is null)
             {
-                unattributed++;
+                unattributed = (int)Math.Min(int.MaxValue, (long)unattributed + ObservationWeight(m));
                 continue;
             }
             if (!result.TryGetValue(colony, out var list))
@@ -176,6 +185,11 @@ public static class MetricCalculator
         }
         return result;
     }
+
+    /// <summary>A compacted SaveSnapshot still represents its original save-time observations.</summary>
+    private static long ObservationWeight(MetricObservation o)
+        => o.Source == MetricObservationSource.SaveSnapshot
+            ? Math.Max(1, o.CompactedObservationCount ?? 1) : 1L;
 
     private static void Add(Dictionary<string, HashSet<Colony>> map, string key, Colony c)
     {
@@ -218,16 +232,16 @@ public static class MetricCalculator
         => o.Metrics.TryGetValue(d.StoredKey, out var e) && !e.IsQuarantined && e.Revision == d.Revision ? e : null;
 
     /// <param name="checkpoint">The colony's representative checkpoint (Phase C), chosen once for all its outputs.</param>
-    private static NumericRow ColonyRow(MetricDefinition d, List<MetricObservation> all, MetricObservation? checkpoint)
+    private static NumericRow ColonyRow(MetricDefinition d, IReadOnlyList<MetricObservation> observations,
+        MetricObservation? checkpoint, MetricObservation? latest)
     {
-        var observations = all.Where(o => o.Source == d.Source).ToList();
         if (observations.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
 
         if (d.Selection != ColonySelection.Representative)
             return AcrossObservations(d, observations);
 
-        var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : Representative(observations);
+        var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : latest;
         if (rep is null)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var entry = Entry(rep, d);
@@ -258,22 +272,33 @@ public static class MetricCalculator
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
 
-    private static NumericRow AcrossObservations(MetricDefinition d, List<MetricObservation> observations)
+    private static NumericRow AcrossObservations(MetricDefinition d, IReadOnlyList<MetricObservation> observations)
     {
-        var values = observations.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
+        // A zero emitted while the DLC was absent is not an observed zero and must not
+        // take part in a historical maximum/minimum. A nonzero, explicitly recorded
+        // value remains evidence even when the DLC list says it was absent.
+        var applicable = observations.Where(o => !DlcAbsent(d, o)
+            || Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is { } recorded && recorded != 0).ToList();
+        if (applicable.Count == 0)
+            return Row(d, MetricEntry.Scalar, new NumericValue { Coverage = MetricCoverage.NotApplicable });
+        var values = applicable.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
             .Where(x => x.Value?.Number is not null).ToList();
         if (values.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var best = d.Selection == ColonySelection.ObservationMax
             ? values.OrderByDescending(x => x.Value!.Number).First()
             : values.OrderBy(x => x.Value!.Number).First();
-        var partial = values.Count < observations.Count || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
+        // A compacted history retains a witness for any missing applicable reading;
+        // raw value counts are no longer interchangeable with observation counts.
+        var partial = applicable.Any(o => Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is null)
+            || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
         return Row(d, MetricEntry.Scalar, new NumericValue
         {
             Number = best.Value!.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
             ThroughTick = observations.Max(o => o.SaveTick),
-            SampleCount = values.Count,
+            SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
+                x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
         });
     }
 

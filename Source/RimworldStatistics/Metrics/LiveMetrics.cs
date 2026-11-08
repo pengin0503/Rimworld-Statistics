@@ -44,6 +44,9 @@ public static class LiveMetrics
 
     private static void Install(Game g, LiveMetricAccumulator acc)
     {
+        // HitCounts are diagnostic counts for the current game, not a global
+        // process-wide total. Reset when starting or resuming another colony.
+        Hits.Clear();
         accumulator = acc;
         session = new CheckpointSaveSession(acc);
         game = g;

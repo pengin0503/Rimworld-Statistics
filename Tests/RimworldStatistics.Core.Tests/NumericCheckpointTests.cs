@@ -630,7 +630,7 @@ public sealed class NumericCheckpointTests
         ProfileMutations.UpsertMetricObservation(profile, b);
         var stored = profile.MetricObservations.Single(o => o.Key == "P");
         Assert.True(stored.Compressed);
-        Assert.Empty(stored.Metrics);
+        Assert.NotEmpty(stored.Metrics);   // keep ancestor data available if the child later conflicts
         Assert.Equal((1000, (string?)null), (stored.SaveTick, stored.ParentKey));
 
         var reverse = ProfileWithColony();
@@ -648,6 +648,26 @@ public sealed class NumericCheckpointTests
         ProfileMutations.UpsertMetricObservation(same, q);
         ProfileMutations.UpsertMetricObservation(same, q2);
         Assert.False(same.MetricObservations.Single(o => o.Key == "Q").Compressed);
+    }
+
+    [Fact]
+    public void ConflictedChild_RestoresAncestorMetricsEvenWhenOriginalSaveCannotBeRead()
+    {
+        var (parent, child, _) = Branches(2000, 1500);
+        var profile = ProfileWithColony();
+        ProfileMutations.UpsertMetricObservation(profile, parent);
+        ProfileMutations.UpsertMetricObservation(profile, child);
+        Assert.True(profile.MetricObservations.Single(o => o.Key == "P").Compressed);
+
+        // The original parent save no longer exists; no reread is possible.
+        var conflictingChild = CloneWithAlias(child, "conflict.rws");
+        conflictingChild.PayloadHash = "different-content";
+        ProfileMutations.UpsertMetricObservation(profile, conflictingChild);
+
+        var restoredParent = profile.MetricObservations.Single(o => o.Key == "P");
+        Assert.False(restoredParent.Compressed);
+        Assert.Equal(3, Count(CheckpointSelector.Select(profile.MetricObservations).Representative));
+        Assert.Equal(3d, Overall(profile).Value.Number);
     }
 
     /// <summary>Codex review: a conflicted child must not leave its compressed ancestor unusable.</summary>

@@ -347,4 +347,78 @@ public sealed class NumericAggregationTests
         Assert.All(MetricRegistry.All, d => Assert.StartsWith("RWS_Metric_", d.LabelKey));
         Assert.Equal(MetricRegistry.All.Count, MetricRegistry.All.Select(d => d.LabelKey).Distinct().Count());
     }
+
+    // Regression: Phase B facilities "latest" must not select the historical peak.
+    [Fact]
+    public void RunningGenerators_LatestSnapshotHasTheCurrentCountAndBreakdown()
+    {
+        var p = new Profile();
+        var identity = Id("A");
+        p.SaveObservations.Add(V1("a.rws", identity, 300));
+
+        void AddSnapshot(string key, int tick, long count, long solar, long wood)
+        {
+            var entry = MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.RunningGenerators),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = count });
+            entry.Values["SolarGenerator"] = new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = solar };
+            if (wood > 0)
+                entry.Values["WoodFiredGenerator"] = new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = wood };
+            var obs = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = key, Identity = identity.Clone(),
+                SaveTick = tick, ObservedUtc = T0.AddMinutes(tick),
+            };
+            obs.Metrics[FacilitiesSnapshot.RunningGenerators] = entry;
+            p.MetricObservations.Add(obs);
+        }
+
+        AddSnapshot("old", 100, 3, 2, 1);
+        AddSnapshot("new", 200, 1, 1, 0);
+        var def = SnapshotCatalog.Definitions.Single(d => d.Key == FacilitiesSnapshot.RunningGenerators);
+        var colonies = CampaignMatcher.BuildColonies(p);
+        var view = MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
+        var latest = Assert.Single(Assert.Single(view.Colonies).Rows);
+        Assert.Equal(1d, latest.Value.Number);
+        Assert.Equal(200, latest.Value.ThroughTick);
+        Assert.Equal(1d, Assert.Single(latest.Breakdowns).Value.Number);
+        Assert.Equal("SolarGenerator", latest.Breakdowns[0].Breakdown);
+        var overall = Assert.Single(view.Overall);
+        Assert.Equal(1d, overall.Value.Number);
+        Assert.Equal(1d, Assert.Single(overall.Breakdowns).Value.Number);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void PersonaWeaponPeak_WithoutRoyaltyIsNotApplicable_ButWithRoyaltyZeroIsKnown(bool royalty)
+    {
+        var p = new Profile();
+        var identity = Id("A");
+        p.SaveObservations.Add(V1("a.rws", identity, 300));
+        var obs = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveSnapshot, Key = "one", Identity = identity.Clone(),
+            SaveTick = 100, ObservedUtc = T0, ActiveDlcIds = royalty ? new List<string> { AcquisitionUnits.Royalty } : new List<string>(),
+        };
+        obs.Metrics[StockSnapshot.PersonaWeaponsPeak] = MetricEntry.Of(
+            MetricKeys.Revision(StockSnapshot.PersonaWeaponsPeak),
+            new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = 0 });
+        p.MetricObservations.Add(obs);
+        var def = SnapshotCatalog.Definitions.Single(d => d.Key == StockSnapshot.PersonaWeaponsPeak);
+        var colonies = CampaignMatcher.BuildColonies(p);
+        var view = MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
+        var row = Assert.Single(Assert.Single(view.Colonies).Rows);
+        if (royalty)
+        {
+            Assert.Equal(1, row.Targets);
+            Assert.Equal(0d, row.Value.Number);
+        }
+        else
+        {
+            Assert.Equal(0, row.Targets);
+            Assert.Equal(MetricCoverage.NotApplicable, row.Value.Coverage);
+            Assert.Equal(0, Assert.Single(view.Overall).Targets);
+        }
+    }
+
 }

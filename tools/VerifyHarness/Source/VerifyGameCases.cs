@@ -352,18 +352,16 @@ internal static class VerifyGameCases
         if (bed is null)
             return CaseCheck.Skip(c.Id, c.Unit, "no free medical bed on the current map");
         var pawn = Colonist(p => !p.InBed());
-        if (pawn is null || LiveMetrics.Family(MedicineFamily.Name) is not { } family)
+        // Query availability without incrementing the harness hook-hit counter.
+        if (pawn is null || LiveMetrics.Accumulator?.Family(MedicineFamily.Name) is null)
             return CaseCheck.Skip(c.Id, c.Unit, pawn is null ? "no free colonist out of bed" : "the medicine family does not record");
-        var id = pawn.GetUniqueLoadID();
-        var hits = VerifyProbe.Hits(c.Unit);
-        pawn.jobs.Notify_TuckedIntoBed(bed);
-        var entered = MedicineFamily.StayState(family, id);
-        pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, startNewJob: false);
-        var left = MedicineFamily.StayState(family, id);
-        var ok = entered is (true, false) && left is (true, true);
-        return new CaseResult(c.Id, c.Unit, ok ? CaseOutcome.Pass : CaseOutcome.Fail, "entered:open,left:got-up",
-            $"entered:{(entered.Open ? "open" : "none")},left:{(left.Left ? "got-up" : left.Open ? "open" : "none")}", VerifyProbe.Hits(c.Unit) - hits,
-            bed.def.defName + " #" + bed.thingIDNumber);
+        // A synchronous debug action cannot advance the real LayDown toil. Enqueuing
+        // Notify_TuckedIntoBed and inspecting immediately falsely FAILs; worse, the
+        // queued job can run after this test and unexpectedly change later cases.
+        // Do not touch the pawn or its jobs. A normal, time-advanced medical stay is
+        // the only valid positive test of this game-side hook.
+        return CaseCheck.Skip(c.Id, c.Unit,
+            "real LayDown toil requires game ticks; verify a medical-bed stay manually (bed " + bed.thingIDNumber + ")");
     }
 
     /// <summary>N2-F-010: a recount of a player home map reaches the stock hook (the spans need game time and are checked by hand).</summary>

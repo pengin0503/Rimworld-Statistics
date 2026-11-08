@@ -53,6 +53,19 @@ public sealed class MetricObservation
     [JsonConverter(typeof(MetricEntriesConverter))]
     public Dictionary<string, MetricEntry> Metrics { get; set; } = new(StringComparer.Ordinal);
 
+    /// <summary>
+    /// SaveSnapshot retention: a historical maximum/minimum may stand for multiple
+    /// numeric snapshot samples after redundant observations were compacted.
+    /// A missing key implies one original sample. Only extremum selections use it;
+    /// the latest snapshot is always kept separately. No checkpoint or SaveFile uses it.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, int>? CompactedSampleCounts { get; set; }
+
+    /// <summary>Original SaveSnapshot observations represented by this retained record (defaults to one).</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public int? CompactedObservationCount { get; set; }
+
     /// <summary>A checkpoint's parent checkpoint id (Phase C); null for a lineage root and for other sources.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ParentKey { get; set; }

@@ -123,6 +123,8 @@ public static class ProfileMutations
                 return;
             p.MetricObservations.RemoveAll(o => Supersedes(obs, o));
             p.MetricObservations.Add(obs);
+            if (obs.Source == MetricObservationSource.SaveSnapshot)
+                CompactSaveSnapshots(p, obs);
             return;
         }
         foreach (var alias in obs.FileAliases)
@@ -132,6 +134,135 @@ public static class ProfileMutations
             existing.ObservedUtc = obs.ObservedUtc;
         existing.FormatVersion = Math.Max(existing.FormatVersion, obs.FormatVersion);
         MergeMetrics(existing, obs);
+    }
+
+    /// <summary>
+    /// SaveSnapshot selection has two kinds of consumers: a single latest observation,
+    /// and per-key historical maxima/minima. Keep each selection's actual witness,
+    /// plus one missing/partial witness when required for coverage. Accumulate the
+    /// sample multiplicity of removed observations on the winning witness so the
+    /// historical row still reports the real number of measurements.
+    ///
+    /// This is limited to a fully identified live campaign and the exact starting
+    /// pawn set. Unknown future metric keys are never compacted away.
+    /// </summary>
+    private static void CompactSaveSnapshots(Profile p, MetricObservation added)
+    {
+        var identity = added.Identity;
+        if (string.IsNullOrEmpty(identity.ModCampaignId)
+            || identity.FingerprintHash() is not { } hash || identity.StartingPawnIds.Count == 0)
+            return;
+
+        // Unattributed records are counted individually in the Details tab. Do
+        // not delete any until a matching live colony is registered. A conflicting
+        // campaign identity must likewise remain untouched for later repair.
+        var owners = p.LiveCampaigns.Where(c => c.CampaignId == identity.ModCampaignId).ToList();
+        if (owners.Count != 1 || owners[0].Identity.FingerprintHash() != hash
+            || p.SaveObservations.Any(o => o.Identity.ModCampaignId == identity.ModCampaignId
+                && o.Identity.FingerprintHash() is { } otherHash && otherHash != hash))
+            return;
+
+        var pawns = identity.StartingPawnIds.ToHashSet(Ord);
+        var snapshots = p.MetricObservations.Where(o => !o.IsQuarantined
+            && o.Source == MetricObservationSource.SaveSnapshot
+            && o.Identity.ModCampaignId == identity.ModCampaignId
+            && o.Identity.FingerprintHash() == hash
+            && pawns.SetEquals(o.Identity.StartingPawnIds)).ToList();
+        if (snapshots.Count < 2)
+            return;
+
+        var definitions = SnapshotCatalog.Definitions;
+        var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
+        var kept = new HashSet<MetricObservation>();
+        // Representative selection: latest tick, then UTC, then smallest key.
+        var representative = snapshots.OrderByDescending(o => o.SaveTick)
+            .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First();
+        kept.Add(representative);
+        // JsonExtensionData represents fields from a minor version this binary does
+        // not understand. Discarding their owner would silently destroy information.
+        static bool HasOpaqueData(MetricObservation o)
+            => o.ExtensionData is { Count: > 0 }
+                || o.Identity.ExtensionData is { Count: > 0 }
+                || o.FileAliases.Any(a => a.ExtensionData is { Count: > 0 })
+                || o.Metrics.Values.Any(e => e.ExtensionData is { Count: > 0 }
+                    || e.Values.Values.Any(v => v.ExtensionData is { Count: > 0 }));
+
+        foreach (var o in snapshots)
+            // Preserve future extension fields, unknown keys, unreadable entries and
+            // different revisions: the current catalogue cannot prove them redundant.
+            if (HasOpaqueData(o) || o.Metrics.Any(kv => !definitionsByKey.TryGetValue(kv.Key, out var d)
+                || kv.Value.IsQuarantined || kv.Value.Revision != d.Revision))
+                kept.Add(o);
+
+        MetricValue? Scalar(MetricObservation o, MetricDefinition d)
+            => o.Metrics.TryGetValue(d.StoredKey, out var e)
+                && !e.IsQuarantined && e.Revision == d.Revision
+                ? e.Values.GetValueOrDefault(MetricEntry.Scalar) : null;
+
+        bool Applicable(MetricObservation o, MetricDefinition d)
+            => d.RequiredDlc is not { } dlc || o.ActiveDlcIds is null
+                || o.ActiveDlcIds.Contains(dlc, StringComparer.OrdinalIgnoreCase)
+                || Scalar(o, d)?.Number is { } n && n != 0;
+
+        foreach (var d in definitions)
+        {
+            if (d.Selection == ColonySelection.Representative)
+                continue;
+            var applicable = snapshots.Where(o => Applicable(o, d)).ToList();
+            if (applicable.Count == 0)
+                continue;
+            var valid = applicable.Where(o => Scalar(o, d)?.Number is not null).ToList();
+            if (valid.Count == 0)
+            {
+                // A known DLC session but no measurable value means Unknown, not NotApplicable.
+                kept.Add(applicable[0]);
+                continue;
+            }
+            // Stable LINQ ordering preserves the original earliest winner on a tie.
+            var best = d.Selection == ColonySelection.ObservationMax
+                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
+                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            kept.Add(best);
+            var partial = valid.FirstOrDefault(o => Scalar(o, d)!.Coverage == MetricCoverage.Partial);
+            if (partial is not null)
+                kept.Add(partial);
+            var missing = applicable.FirstOrDefault(o => Scalar(o, d)?.Number is null);
+            if (missing is not null)
+                kept.Add(missing);
+        }
+
+        // Weights must be moved before removing the observations that own them. A
+        // previously compacted winner may itself cease to be an extremum later.
+        foreach (var d in definitions)
+        {
+            if (d.Selection == ColonySelection.Representative)
+                continue;
+            var valid = snapshots.Where(o => Applicable(o, d) && Scalar(o, d)?.Number is not null).ToList();
+            if (valid.Count == 0)
+                continue;
+            var best = d.Selection == ColonySelection.ObservationMax
+                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
+                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            long Weight(MetricObservation o) => Math.Max(1, o.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1);
+            var removed = valid.Where(o => !kept.Contains(o)).Sum(Weight);
+            if (removed <= 0)
+                continue;
+            best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
+            best.CompactedSampleCounts[d.StoredKey] =
+                (int)Math.Min(int.MaxValue, Weight(best) + removed);
+        }
+        // Retaining only the physical rows would understate the number of
+        // observations shown in Details, and after a later missing attribution
+        // would also understate Unattributed. Carry the deleted rows' multiplicity
+        // on the latest survivor, independently of the per-metric sample counts.
+        var removedObservations = snapshots.Where(o => !kept.Contains(o)).ToList();
+        if (removedObservations.Count > 0)
+        {
+            var total = (long)Math.Max(1, representative.CompactedObservationCount ?? 1)
+                + removedObservations.Sum(o => (long)Math.Max(1, o.CompactedObservationCount ?? 1));
+            representative.CompactedObservationCount = (int)Math.Min(int.MaxValue, total);
+        }
+        p.MetricObservations.RemoveAll(o => snapshots.Contains(o) && !kept.Contains(o));
     }
 
     /// <summary>Per metric, a newer definition revision replaces the old one; for the same revision a worse value never hides a good one.</summary>
@@ -151,7 +282,7 @@ public static class ProfileMutations
     /// A checkpoint (numeric expansion design §2 "Cのプロファイル"). The same id with the same content is the same checkpoint
     /// (re-imported, copied, or recovered at load) and only adds file aliases; the same id with other content is a conflict and
     /// that checkpoint is set aside. An ancestor with a confirmed child saved at a later tick can never be the representative
-    /// again (the child holds its totals and more), so it keeps only its place in the lineage: id, parent, tick and time.
+    /// again (the child holds its totals and more). Keep its metrics internally: a later conflict can invalidate the child, and the original ancestor file may be gone.
     /// </summary>
     private static void UpsertCheckpoint(Profile p, MetricObservation obs)
     {
@@ -167,7 +298,7 @@ public static class ProfileMutations
             foreach (var alias in obs.FileAliases)
                 if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
                     existing.FileAliases.Add(alias);
-            if (!existing.Compressed && !existing.Conflicted)
+            if (!existing.Conflicted)
                 MergeMetrics(existing, obs);
             return;
         }
@@ -177,7 +308,7 @@ public static class ProfileMutations
 
     /// <summary>
     /// A checkpoint was set aside: an ancestor compressed because of it is the representative candidate again. Its values come
-    /// back when its content is read again (an import of its file, or the recovery when that save is loaded).
+    /// back from the retained metrics, even when the original save file is no longer accessible.
     /// </summary>
     private static void UncompressOrphanedAncestors(Profile p, MetricObservation conflicted)
     {
@@ -197,7 +328,8 @@ public static class ProfileMutations
             if (node.Compressed || !lineage.Any(c => c.ParentKey == node.Key && c.SaveTick > node.SaveTick))
                 continue;
             node.Compressed = true;
-            node.Metrics.Clear();
+            // A later child may be disqualified by a conflicting checkpoint ID.
+            // Dropping this payload would make the ancestor irrecoverable without its save file.
         }
     }
 
