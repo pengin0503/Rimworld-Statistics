@@ -5,6 +5,32 @@ public static class ProfileMutations
 {
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
+    /// <summary>Remember a provider's definition, even after it is uninstalled. A changed meaning needs a higher revision.</summary>
+    public static void RememberModMetrics(Profile profile, IEnumerable<ModMetricDescriptor> definitions)
+    {
+        profile.ModMetricDescriptors ??= new List<ModMetricDescriptor>();
+        var registry = new ModMetricProviderRegistry();
+        foreach (var existing in profile.ModMetricDescriptors)
+            registry.Register(existing);
+        foreach (var definition in definitions)
+        {
+            if (definition is null || !definition.IsValid())
+                continue;
+            var key = definition.StableKey;
+            var current = profile.ModMetricDescriptors.FindIndex(d => d.IsValid() && d.StableKey == key);
+            if (current >= 0)
+            {
+                var old = profile.ModMetricDescriptors[current];
+                if (old.ProviderId == definition.ProviderId && definition.Revision > old.Revision)
+                    profile.ModMetricDescriptors[current] = definition;
+                continue;
+            }
+            if (!registry.Register(definition).Accepted)
+                continue;
+            profile.ModMetricDescriptors.Add(definition);
+        }
+    }
+
     /// <summary>
     /// False when the current (non-superseded) observation of this file has the same size and time, was not a failure,
     /// and was read by this reader version or newer (spec §7.1: unchanged files are not read; failed ones are retried).
@@ -283,6 +309,12 @@ public static class ProfileMutations
     /// <summary>Per metric, a newer definition revision replaces the old one; for the same revision a worse value never hides a good one.</summary>
     private static void MergeMetrics(MetricObservation existing, MetricObservation obs)
     {
+        if (obs.ProviderCaptures is { } incomingCaptures)
+        {
+            existing.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(Ord);
+            foreach (var (providerId, capture) in incomingCaptures)
+                existing.ProviderCaptures.TryAdd(providerId, capture);
+        }
         // Re-reading the same snapshot must not silently overwrite its earlier
         // capture-quality evidence. A conflict is represented conservatively.
         if (obs.EvidenceByAcquisition is { } received)

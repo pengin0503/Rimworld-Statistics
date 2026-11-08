@@ -58,6 +58,10 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, MetricEvidence>? CompactedEvidenceByMetric { get; set; }
 
+    /// <summary>Provider origins at the time of capture; never recomputed from current installed MODs.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, ModProviderCapture>? ProviderCaptures { get; set; }
+
     [JsonConverter(typeof(MetricEntriesConverter))]
     public Dictionary<string, MetricEntry> Metrics { get; set; } = new(StringComparer.Ordinal);
 

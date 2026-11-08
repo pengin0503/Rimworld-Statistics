@@ -266,6 +266,11 @@ public static class CheckpointMetrics
                 obs.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
                 obs.EvidenceByAcquisition[name] = evidence;
             }
+            if (state.ProviderId is { Length: > 0 } providerId && state.ProviderCapture is { } capture)
+            {
+                obs.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(StringComparer.Ordinal);
+                obs.ProviderCaptures[providerId] = capture;
+            }
             foreach (var (key, entry) in built)
                 obs.Metrics[key] = entry;
         }
