@@ -75,6 +75,44 @@ public sealed class ExperimentalEvidenceTests
     }
 
     [Fact]
+    public void CompactedSnapshotExtremaPreserveExperimentalCaptures()
+    {
+        var profile = new Profile();
+        var id = new ColonyIdentity
+        {
+            SeedString = "experimental", PersistentRandomValue = 1,
+            StartingTile = "5,0", GameStartAbsTick = 1, FirstWealthBits = 13,
+            ModCampaignId = "test-campaign",
+            StartingPawnIds = { "Thing_Human1" },
+        };
+        ProfileMutations.RegisterLiveCampaign(profile, id.ModCampaignId!, id, new DisplayInfo());
+        for (var i = 0; i < 4; i++)
+        {
+            var obs = new MetricObservation
+            {
+                Key = "snap-" + i, Source = MetricObservationSource.SaveSnapshot,
+                Identity = id.Clone(), SaveTick = i + 1,
+                ObservedUtc = new DateTime(2026, 11, 8, 0, 0, 0, DateTimeKind.Utc).AddMinutes(i),
+                EvidenceByAcquisition = new Dictionary<string, MetricEvidence>
+                {
+                    ["facilities"] = i == 2 ? MetricEvidence.Experimental : MetricEvidence.Verified,
+                },
+            };
+            obs.Metrics[FacilitiesSnapshot.OutdoorTempMax] =
+                MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                    new MetricValue { Coverage = MetricCoverage.SnapshotOnly, RealValue = i + 1 });
+            ProfileMutations.UpsertMetricObservation(profile, obs);
+        }
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var def = Assert.Single(SnapshotCatalog.Definitions.Where(d => d.Key == FacilitiesSnapshot.OutdoorTempMax));
+        var view = MetricCalculator.BuildView(profile, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
+        var row = Assert.Single(Assert.Single(view.Colonies).Rows);
+        Assert.Equal(4, row.Value.Number);
+        Assert.Equal(MetricEvidence.Mixed, row.Value.Evidence);
+    }
+
+    [Fact]
     public void SnapshotObservationCarriesPerAcquisitionEvidence()
     {
         var o = new MetricObservation

@@ -244,9 +244,24 @@ public static class ProfileMutations
                 ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
                 : valid.OrderBy(o => Scalar(o, d)!.Number).First();
             long Weight(MetricObservation o) => Math.Max(1, o.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1);
-            var removed = valid.Where(o => !kept.Contains(o)).Sum(Weight);
+            var removedRows = valid.Where(o => !kept.Contains(o)).ToList();
+            var removed = removedRows.Sum(Weight);
             if (removed <= 0)
                 continue;
+
+            // Carry the capture-time quality of removed samples into the surviving
+            // extremum witness. Otherwise a later verified capture could silently
+            // hide earlier experimental observations of the same maximum/minimum.
+            MetricEvidence Captured(MetricObservation row)
+            {
+                var direct = d.Acquisition is { } id && row.EvidenceByAcquisition is { } evidence
+                    && evidence.TryGetValue(id, out var e) ? e : MetricEvidence.UnknownLegacy;
+                return row.CompactedEvidenceByMetric?.GetValueOrDefault(d.StoredKey) is { } prior
+                    ? MetricEvidencePolicy.Combine(new[] { direct, prior }) : direct;
+            }
+            var values = removedRows.Select(Captured).Append(Captured(best));
+            best.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
+            best.CompactedEvidenceByMetric[d.StoredKey] = MetricEvidencePolicy.Combine(values);
             best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
             best.CompactedSampleCounts[d.StoredKey] =
                 (int)Math.Min(int.MaxValue, Weight(best) + removed);
@@ -268,6 +283,22 @@ public static class ProfileMutations
     /// <summary>Per metric, a newer definition revision replaces the old one; for the same revision a worse value never hides a good one.</summary>
     private static void MergeMetrics(MetricObservation existing, MetricObservation obs)
     {
+        // Re-reading the same snapshot must not silently overwrite its earlier
+        // capture-quality evidence. A conflict is represented conservatively.
+        if (obs.EvidenceByAcquisition is { } received)
+        {
+            existing.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(Ord);
+            foreach (var (unit, evidence) in received)
+                existing.EvidenceByAcquisition[unit] = existing.EvidenceByAcquisition.TryGetValue(unit, out var previous)
+                    ? MetricEvidencePolicy.Combine(new[] { previous, evidence }) : evidence;
+        }
+        if (obs.CompactedEvidenceByMetric is { } compacted)
+        {
+            existing.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
+            foreach (var (key, evidence) in compacted)
+                existing.CompactedEvidenceByMetric[key] = existing.CompactedEvidenceByMetric.TryGetValue(key, out var previous)
+                    ? MetricEvidencePolicy.Combine(new[] { previous, evidence }) : evidence;
+        }
         foreach (var (key, entry) in obs.Metrics)
         {
             if (entry.IsQuarantined)

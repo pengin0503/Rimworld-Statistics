@@ -54,6 +54,10 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, MetricEvidence>? EvidenceByAcquisition { get; set; }
 
+    /// <summary>Capture evidence from retained extrema samples removed by lossless snapshot compaction.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Dictionary<string, MetricEvidence>? CompactedEvidenceByMetric { get; set; }
+
     [JsonConverter(typeof(MetricEntriesConverter))]
     public Dictionary<string, MetricEntry> Metrics { get; set; } = new(StringComparer.Ordinal);
 

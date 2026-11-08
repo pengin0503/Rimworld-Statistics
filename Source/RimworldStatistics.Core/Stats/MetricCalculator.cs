@@ -321,8 +321,12 @@ public static class MetricCalculator
     private static NumericValue NotApplicable(MetricObservation o) => new() { Coverage = MetricCoverage.NotApplicable, ThroughTick = o.SaveTick };
 
     private static MetricEvidence EvidenceFor(MetricObservation observation, MetricDefinition definition)
-        => definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
+    {
+        var direct = definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
             && evidence.TryGetValue(id, out var captured) ? captured : MetricEvidence.UnknownLegacy;
+        return observation.CompactedEvidenceByMetric?.GetValueOrDefault(definition.StoredKey) is { } compacted
+            ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
+    }
 
     private static NumericValue From(MetricValue v, MetricObservation observation, MetricDefinition definition) => new()
     {
