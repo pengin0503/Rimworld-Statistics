@@ -158,4 +158,65 @@ public sealed class NumericSnapshotRetentionTests
             o.Identity.ModCampaignId == "snapshot-retention"));
     }
 
+    [Fact]
+    public void Compaction_MatchesUncompactedHistoryAcrossMissingPartialAndDlcChanges()
+    {
+        var definitions = SnapshotCatalog.Definitions.Where(d => d.Key is
+            FacilitiesSnapshot.OutdoorTempMax or FacilitiesSnapshot.OutdoorTempMin
+            or RosterSnapshot.AugmentedPeak or StockSnapshot.PersonaWeaponsPeak
+            or FacilitiesSnapshot.RunningGenerators).ToArray();
+        for (var seed = 0; seed < 12; seed++)
+        {
+            var random = new Random(seed + 1234);
+            var original = new Profile();
+            var compact = new Profile();
+            var identity = Identity("random-campaign-" + seed);
+            foreach (var p in new[] { original, compact })
+                ProfileMutations.ApplyLiveObservation(p, identity.ModCampaignId!, identity,
+                    new ObservedValues { TicksGame = 20000 }, new DisplayInfo(), Epoch);
+            for (var i = 0; i < 65; i++)
+            {
+                var snapshot = new MetricObservation
+                {
+                    Source = MetricObservationSource.SaveSnapshot, Key = "random-" + seed + "-" + i,
+                    Identity = identity.Clone(), SaveTick = random.Next(1000),
+                    ObservedUtc = Epoch.AddSeconds(i),
+                    ActiveDlcIds = random.Next(3) == 0 ? new List<string> { AcquisitionUnits.Royalty } : new List<string>(),
+                };
+                foreach (var d in definitions)
+                {
+                    if (random.Next(9) == 0)
+                        continue;
+                    var value = new MetricValue
+                    {
+                        Coverage = random.Next(7) == 0 ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly,
+                        RealValue = random.Next(12) - 5,
+                    };
+                    snapshot.Metrics[d.StoredKey] = MetricEntry.Of(d.Revision, value);
+                }
+                original.MetricObservations.Add(snapshot);
+                ProfileMutations.UpsertMetricObservation(compact, snapshot is { } m ? new MetricObservation
+                {
+                    Source = m.Source, Key = m.Key, Identity = m.Identity.Clone(),
+                    SaveTick = m.SaveTick, ObservedUtc = m.ObservedUtc, ActiveDlcIds = m.ActiveDlcIds?.ToList(),
+                    Metrics = m.Metrics.ToDictionary(x => x.Key, x => x.Value),
+                } : throw new InvalidOperationException());
+            }
+            var raw = Rows(original).ToDictionary(r => r.Definition.Key);
+            var reduced = Rows(compact).ToDictionary(r => r.Definition.Key);
+            foreach (var d in definitions)
+            {
+                var a = raw[d.Key];
+                var b = reduced[d.Key];
+                Assert.True(a.Value.Number == b.Value.Number &&
+                    a.Value.Coverage == b.Value.Coverage &&
+                    a.Value.SampleCount == b.Value.SampleCount &&
+                    a.Value.ThroughTick == b.Value.ThroughTick &&
+                    a.Targets == b.Targets && a.Valid == b.Valid,
+                    $"seed={seed}, key={d.Key}: raw=({a.Value.Number},{a.Value.Coverage},{a.Value.SampleCount},{a.Value.ThroughTick}) " +
+                    $"compact=({b.Value.Number},{b.Value.Coverage},{b.Value.SampleCount},{b.Value.ThroughTick})");
+            }
+        }
+    }
+
 }
