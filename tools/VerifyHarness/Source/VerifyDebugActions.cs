@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text;
 using LudeonTK;
 using RimworldStatistics.Metrics;
@@ -33,6 +34,57 @@ public static class VerifyDebugActions
     {
         var text = VerifyProbe.Status();
         Report(text, text.Split('\n')[0]);
+    }
+
+    /// <summary>
+    /// Non-mutating contract check for the optimized Phase B/D2 pollution reader.
+    /// Measures the vanilla aggregate against the old exhaustive IsPolluted scan.
+    /// No production startup cost and no map-wide callbacks in normal gameplay.
+    /// </summary>
+    [DebugAction(Category, "Benchmark pollution totals", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    public static void BenchmarkPollutionTotals()
+    {
+        if (!ModsConfig.BiotechActive)
+        {
+            Report($"{CaseCheck.LogPrefix} pollution-benchmark result=SKIP reason=Biotech-disabled",
+                $"{CaseCheck.LogPrefix} pollution-benchmark result=SKIP (Biotech disabled)");
+            return;
+        }
+        var report = new StringBuilder();
+        var maps = Find.Maps.Where(m => m.IsPlayerHome).ToList();
+        var mismatch = 0;
+        var errors = 0;
+        report.AppendLine($"{CaseCheck.LogPrefix} pollution-benchmark game={VerifyProbe.GameVersion} homeMaps={maps.Count}");
+        foreach (var map in maps)
+        {
+            try
+            {
+                var watch = Stopwatch.StartNew();
+                var direct = map.pollutionGrid.TotalPollution;
+                watch.Stop();
+                var directMs = watch.Elapsed.TotalMilliseconds;
+                watch.Restart();
+                var full = 0;
+                foreach (var cell in CellRect.WholeMap(map).Cells)
+                    if (map.pollutionGrid.IsPolluted(cell))
+                        full++;
+                watch.Stop();
+                var fullMs = watch.Elapsed.TotalMilliseconds;
+                if (direct != full)
+                    mismatch++;
+                report.AppendLine($"  map={map.uniqueID} cells={map.cellIndices.NumGridCells} direct={direct} scan={full} " +
+                    $"directMs={directMs:F4} scanMs={fullMs:F4} result={(direct == full ? "MATCH" : "MISMATCH")}");
+            }
+            catch (Exception e)
+            {
+                errors++;
+                report.AppendLine($"  map={map.uniqueID} result=ERROR error={e.GetType().Name}: {e.Message}");
+            }
+        }
+        var final = $"{CaseCheck.LogPrefix} pollution-benchmark summary maps={maps.Count} mismatches={mismatch} errors={errors} " +
+            $"result={(maps.Count == 0 ? "SKIP" : mismatch + errors == 0 ? "PASS" : "FAIL")}";
+        report.AppendLine(final);
+        Report(report.ToString().TrimEnd(), final);
     }
 
     [DebugAction(Category, "Checkpoint lineage", allowedGameStates = AllowedGameStates.Playing)]
