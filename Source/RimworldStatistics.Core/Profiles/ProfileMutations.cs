@@ -151,7 +151,7 @@ public static class ProfileMutations
     /// A checkpoint (numeric expansion design §2 "Cのプロファイル"). The same id with the same content is the same checkpoint
     /// (re-imported, copied, or recovered at load) and only adds file aliases; the same id with other content is a conflict and
     /// that checkpoint is set aside. An ancestor with a confirmed child saved at a later tick can never be the representative
-    /// again (the child holds its totals and more), so it keeps only its place in the lineage: id, parent, tick and time.
+    /// again (the child holds its totals and more). Keep its metrics internally: a later conflict can invalidate the child, and the original ancestor file may be gone.
     /// </summary>
     private static void UpsertCheckpoint(Profile p, MetricObservation obs)
     {
@@ -167,7 +167,7 @@ public static class ProfileMutations
             foreach (var alias in obs.FileAliases)
                 if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
                     existing.FileAliases.Add(alias);
-            if (!existing.Compressed && !existing.Conflicted)
+            if (!existing.Conflicted)
                 MergeMetrics(existing, obs);
             return;
         }
@@ -177,7 +177,7 @@ public static class ProfileMutations
 
     /// <summary>
     /// A checkpoint was set aside: an ancestor compressed because of it is the representative candidate again. Its values come
-    /// back when its content is read again (an import of its file, or the recovery when that save is loaded).
+    /// back from the retained metrics, even when the original save file is no longer accessible.
     /// </summary>
     private static void UncompressOrphanedAncestors(Profile p, MetricObservation conflicted)
     {
@@ -197,7 +197,8 @@ public static class ProfileMutations
             if (node.Compressed || !lineage.Any(c => c.ParentKey == node.Key && c.SaveTick > node.SaveTick))
                 continue;
             node.Compressed = true;
-            node.Metrics.Clear();
+            // A later child may be disqualified by a conflicting checkpoint ID.
+            // Dropping this payload would make the ancestor irrecoverable without its save file.
         }
     }
 
