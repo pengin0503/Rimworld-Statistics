@@ -55,6 +55,61 @@ public sealed class ModMetricPersistenceTests
     }
 
     [Fact]
+    public void RemovingProviderNeverDeletesItsLastSnapshotAndLabelsTheValuePartial()
+    {
+        var descriptor = Descriptor();
+        var p = new Profile();
+        var id = new ColonyIdentity
+        {
+            SeedString = "removed-provider", PersistentRandomValue = 4,
+            StartingTile = "2,0", GameStartAbsTick = 1, FirstWealthBits = 20,
+            ModCampaignId = "provider-removal", StartingPawnIds = { "Thing_Human1" },
+        };
+        ProfileMutations.ApplyLiveObservation(p, id.ModCampaignId!, id,
+            new ObservedValues { TicksGame = 1000 }, new DisplayInfo(), DateTime.UtcNow);
+        ProfileMutations.RememberModMetrics(p, new[] { descriptor });
+        for (var tick = 1; tick <= 35; tick++)
+        {
+            var obs = new MetricObservation
+            {
+                Key = "save-" + tick, Source = MetricObservationSource.SaveSnapshot,
+                Identity = id.Clone(), SaveTick = tick * 10,
+                ObservedUtc = new DateTime(2026, 11, 8, 0, 0, 0, DateTimeKind.Utc).AddSeconds(tick),
+            };
+            obs.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(
+                MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                new MetricValue { RealValue = tick, Coverage = MetricCoverage.SnapshotOnly });
+            if (tick <= 3)
+            {
+                obs.Metrics[descriptor.StableKey] = MetricEntry.Of(1,
+                    new MetricValue { IntegerValue = 7, Coverage = MetricCoverage.SnapshotOnly });
+                obs.EvidenceByAcquisition = new Dictionary<string, MetricEvidence>
+                {
+                    [descriptor.AcquisitionId] = MetricEvidence.Experimental,
+                };
+                obs.ProviderCaptures = new Dictionary<string, ModProviderCapture>
+                {
+                    [descriptor.ProviderId] = new("example.stats", "1.0.0", "1.0.0"),
+                };
+            }
+            ProfileMutations.UpsertMetricObservation(p, obs);
+        }
+        Assert.Contains(p.MetricObservations, o => o.Metrics.ContainsKey(descriptor.StableKey));
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+        Assert.Single(restored.ModMetricDescriptors);
+        var colonies = CampaignMatcher.BuildColonies(restored);
+        var defs = MetricRegistry.Compose(restored.ModMetricDescriptors,
+            new HashSet<string> { MetricRegistry.OptionalModVisibilityId });
+        var view = MetricCalculator.BuildView(restored, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), defs);
+        var row = Assert.Single(Assert.Single(view.Colonies).Rows, r => r.Definition.Key == descriptor.StableKey);
+        Assert.Equal(7, row.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, row.Value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
+        Assert.Equal(30, row.Value.ThroughTick);
+    }
+
+    [Fact]
     public void UnknownOrUnregisteredProviderDataIsNeverDeletedAndWrongRevisionIsNotMisinterpreted()
     {
         var profile = new Profile();
