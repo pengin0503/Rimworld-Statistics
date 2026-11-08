@@ -829,4 +829,8 @@
   <RWS_Mod_RequiresMod>Required MOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>Source MOD: {0} (provider: {1})</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>Source MOD is not currently installed. Historical values are preserved; no new samples are recorded.</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>Recruitment requests started</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>Successful Recruitment 1.1.2 requests created after recording began. Historical periods before opt-in are partial. A cancellation after creation still counts as started.</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>Active recruitment requests</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>Pending recruitment requests at the most recent successful save. This is not an all-time total.</RWS_ModRecruitment_ActiveDesc>
 </LanguageData>
