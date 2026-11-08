@@ -35,9 +35,41 @@ public static class PawnSetIdeoMetricPatch
             var owned = ___pawn.IsFreeNonSlaveColonist || ___pawn.IsPrisonerOfColony;
             var active = ___pawn.Spawned || GameFacts.InPlayerCaravan(___pawn);
             // Stable scenario-created pawn ideologies are applied before world placement; exclude them.
-            GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.Converted(
-                s, GameFacts.Id(___pawn), __state.GetUniqueLoadID(), current.GetUniqueLoadID(), owned, active));
+            var id = GameFacts.Id(___pawn);
+            var destination = current.GetUniqueLoadID();
+            GameFacts.Record(IdeologyFamily.Name, s =>
+            {
+                IdeologyFamily.Converted(s, id, __state.GetUniqueLoadID(), destination, owned, active);
+                // Only a matching, previously observed explicit attempt contributes
+                // to conversion duration. Unrelated changes do not start timers.
+                if (owned && active)
+                    IdeologyFamily.ConversionReachedTarget(s, id, destination, GameFacts.Tick, eligible: true);
+            });
         }
         catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
     }
 }
+
+    /// <summary>
+    /// This game API is a real conversion action, not GUI targeting. It is
+    /// invoked for a known recipient and target ideology. A failed attempt
+    /// starts an interval only; a later SetIdeo to that target closes it.
+    /// </summary>
+    [MetricAdapter(IdeologyFamily.Name)]
+    [HarmonyPatch(typeof(Pawn_IdeoTracker), nameof(Pawn_IdeoTracker.IdeoConversionAttempt))]
+    public static class IdeologyExplicitAttemptMetricPatch
+    {
+        public static void Prefix(Pawn ___pawn, Ideo initiatorIdeo)
+        {
+            if (LiveMetrics.Family(IdeologyFamily.Name) is null || ___pawn is null
+                || initiatorIdeo is null || ReferenceEquals(___pawn.Ideo, initiatorIdeo))
+                return;
+            var eligible = ___pawn.IsFreeNonSlaveColonist || ___pawn.IsPrisonerOfColony;
+            if (!eligible || (!___pawn.Spawned && !GameFacts.InPlayerCaravan(___pawn)))
+                return;
+            var id = GameFacts.Id(___pawn);
+            GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.ConversionActionStarted(
+                s, id, initiatorIdeo.GetUniqueLoadID(), GameFacts.Tick,
+                eligible: true, explicitAction: true));
+        }
+    }
