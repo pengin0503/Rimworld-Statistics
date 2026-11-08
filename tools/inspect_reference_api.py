@@ -48,4 +48,4 @@ for entry in entries:
         pars = m["parameters"]
         args = ", ".join((types[i] if i < len(types) else "?") + " " + p.get("name", "")
                          for i, p in enumerate(pars))
-        print("  ", m["name"], "(", args, ")", m.get("attributes", ""))
+        print("  ", m["name"], "(", args, ")", "->", m["signature"].get("returnType","?"), m.get("attributes", ""))
