@@ -3,7 +3,17 @@ name: Numeric statistics build, tests and development packages
 on:
   push:
     branches:
+      - main
       - claude/inspiring-shannon-6wqgka
+    paths:
+      - 'Source/**'
+      - 'Tests/**'
+      - 'tools/**'
+      - 'Languages/**'
+      - '.github/workflows/numeric-verification.yml'
+      - 'About/**'
+      - 'Directory.Build.props'
+      - 'global.json'
   pull_request:
     paths:
       - 'Source/**'
@@ -11,6 +21,9 @@ on:
       - 'tools/**'
       - 'Languages/**'
       - '.github/workflows/numeric-verification.yml'
+      - 'About/**'
+      - 'Directory.Build.props'
+      - 'global.json'
   workflow_dispatch:
 
 permissions:
