@@ -755,6 +755,8 @@
   <RWS_MetricDesc_RoyaltyPermitUses>プレイヤー側自由入植者が実際に使用した帝国許可証の回数。選択やキャンセルは除外。</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>サイキック能力の発動成功回数</RWS_Metric_RoyaltyPsycasts>
   <RWS_MetricDesc_RoyaltyPsycasts>自由入植者が実際に発動したRoyalty超能力の回数。対象選択のみは含めない。</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_Metric_RoyaltyQuestSuccess>帝国依頼の達成件数（部分記録）</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>Royal Ascent・爵位授与式・勅令など帝国由来と確認できるRoot Defの達成件数。一般クエストや削除済み依頼は判定せず、全期間の網羅値ではない。</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>獲得した爵位の回数</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Royaltyのイベント取得期間に確定した獲得した爵位の回数。</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>最高到達爵位</RWS_Metric_RoyaltyHighestTitle>
