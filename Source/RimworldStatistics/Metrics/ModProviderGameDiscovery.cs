@@ -21,13 +21,24 @@ internal static class ModProviderGameDiscovery
         const BindingFlags flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
         try
         {
-            var metadata = mod.GetType().GetProperty("ModMetaData", flags)?.GetValue(mod);
+            static object? Member(object? value, string name)
+            {
+                if (value is null) return null;
+                var t = value.GetType();
+                return t.GetProperty(name, flags)?.GetValue(value)
+                    ?? t.GetField(name, flags)?.GetValue(value);
+            }
+            // In RimWorld, Mod owns Content (ModContentPack) and Content owns
+            // ModMetaData. Some loaders expose the metadata directly on Mod.
+            var content = Member(mod, "Content") ?? Member(mod, "content");
+            var metadata = Member(mod, "ModMetaData")
+                ?? Member(content, "ModMetaData") ?? Member(content, "modMetaData")
+                ?? Member(content, "metadata");
             if (metadata is null)
                 return null;
             foreach (var name in new[] { "ModVersion", "modVersion", "Version" })
             {
-                var value = metadata.GetType().GetProperty(name, flags)?.GetValue(metadata)
-                    ?? metadata.GetType().GetField(name, flags)?.GetValue(metadata);
+                var value = Member(metadata, name);
                 if (value is null)
                     continue;
                 var raw = value.ToString();
