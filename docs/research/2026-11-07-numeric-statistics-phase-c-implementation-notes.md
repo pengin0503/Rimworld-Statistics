@@ -12,7 +12,7 @@
 |---|---|
 | C0 チェックポイント基盤 | 実装済み・自動テスト済み・実機未検証 |
 | C1〜C4 の 16 取得単位 | 実装済み・自動テスト済み・実機未検証（台帳 C の 195 候補中 190 候補、188 出力） |
-| C の保留 | 5 候補（N2-F-010、N1-A-008、N3-H-005、N3-H-011、Q-014。理由は §1.3） |
+| C の保留 | 5 候補（N2-F-010、N1-A-008、N3-H-005、N3-H-011、Q-014。理由は §1.3）。**2026-11-08 の第 2 段で 5 件とも実装済み・未公開**（[API 監査](2026-11-08-numeric-remaining-api-audit.md)） |
 | Phase B（保存時点の 35 候補） | 未着手（取得単位の定義と翻訳カテゴリのみ） |
 | Phase D2（Royalty・Ideology・Biotech・Odyssey） | 未着手（取得単位の定義のみ。Anomaly は対象外） |
 | B/C に依存する順位（R-001/2/4/5/6/12、N1-F-001/002） | 未着手 |
@@ -35,17 +35,19 @@
 | social | 8 | 同上 | `Pawn_RelationsTracker.AddDirectRelation`、`SpouseRelationUtility.DoDivorce`、`Pawn_InteractionsTracker.StartSocialFight`、`PrisonBreakUtility.StartPrisonBreak`（5 引数版）、`RelationsUtility.TryDevelopBondRelation` |
 | animals | 4 | 同上 | `InteractionWorker_RecruitAttempt.DoRecruit`（6 引数版）、`PawnUtility.TrySpawnHatchedOrBornPawn` |
 | work | 32 | `NumericEconomyTests` | `QuestManager.Notify_PlantHarvested`、`Plant.PlantCollected / MakeLeafless`、`Pawn_RecordsTracker.Increment`、`RecordsUtility.Notify_BillDone`、`Frame.CompleteConstruction / FailConstruction`、`JobDriver_Deconstruct.FinishedRemoving`、`ListerBuildingsRepairable.Notify_BuildingRepaired`、`Mineable.TrySpawnYield`（private 3 引数版）＋`GenPlace.TryPlaceThing`（out なし 8 引数版）、`CompLaunchable.TryLaunch` |
-| food | 2 | 同上 | `Thing.Ingested`、`CompRottable.TickInterval`（private） |
+| food | 4 | 同上・`NumericRemainingMetricsTests` | `Thing.Ingested`、`CompRottable.TickInterval`（private）、（2026-11-08 追加）`ResourceCounter.UpdateResourceCounts`、`Zone.AddCell / RemoveCell`、`QuestManager.Notify_PlantHarvested`、`Game.DeinitAndRemoveMap` |
 | trade | 15 | 同上 | `TradeDeal.TryExecute` |
 | diplomacy | 5 | 同上 | `TradeDeal.TryExecute`（贈答）、`Faction.Notify_RelationKindChanged`、`FactionDialogMaker.CallForAid`（private）、`IncidentWorker.TryExecute` |
-| medicine | 25 | `NumericWorldEventsTests` | `TendUtility.DoTend`、`Bill_Medical.Notify_IterationCompleted`、`Recipe_Surgery.CheckSurgeryFail`（protected）、`RestUtility.TuckIntoBed`、`ResurrectionUtility.TryResurrect`、`Pawn_HealthTracker.AddHediff`（Hediff 版）`/ RemoveHediff`、`HediffComp_GetsPermanent.PreFinalizeInjury / CompPostInjuryHeal` |
+| medicine | 27 | `NumericWorldEventsTests`・`NumericRemainingMetricsTests` | `TendUtility.DoTend`、`Bill_Medical.Notify_IterationCompleted`、`Recipe_Surgery.CheckSurgeryFail`（protected）、`RestUtility.TuckIntoBed`、`ResurrectionUtility.TryResurrect`、`Pawn_HealthTracker.AddHediff`（Hediff 版）`/ RemoveHediff`、`HediffComp_GetsPermanent.PreFinalizeInjury / CompPostInjuryHeal`、（2026-11-08 追加）`Hediff_Addiction.Notify_NeedCategoryChanged`、`Toils_LayDown.LayDown`（7 引数版。生成したトイルの init と終了処理に追加） |
 | disaster | 12 | 同上 | `GameConditionManager.RegisterCondition`、`GameCondition.End`、`IncidentWorker.TryExecute`、`Fire.TrySpread`、`FireUtility.TryStartFireIn`、`Thing.Kill` |
-| caravan | 11 | 同上 | `CaravanExitMapUtility.ExitMapAndCreateCaravan`（PlanetTile 3 個の版）、`Caravan_PathFollower.TryEnterNextPathTile`（private）、`CaravanEnterMapUtility.Enter`（Func 版）、`Caravan.Notify_MemberDied`、`WorldObjectsHolder.Add / Remove`、`IncidentWorker.TryExecute`、`SettlementDefeatUtility.CheckDefeated`、`SettlementAbandonUtility.Abandon`（private）、`SettleInEmptyTileUtility.Settle`、`SettleInExistingMapUtility.Settle` |
+| caravan | 12 | 同上・`NumericRemainingMetricsTests` | `CaravanExitMapUtility.ExitMapAndCreateCaravan`（PlanetTile 3 個の版）、`Caravan_PathFollower.TryEnterNextPathTile`（private）、`CaravanEnterMapUtility.Enter`（Func 版）、`Caravan.Notify_MemberDied`、`WorldObjectsHolder.Add / Remove`、`IncidentWorker.TryExecute`、`SettlementDefeatUtility.CheckDefeated`、`SettlementAbandonUtility.Abandon`（private）、`SettleInEmptyTileUtility.Settle`、`SettleInExistingMapUtility.Settle`、（2026-11-08 追加）`FogGrid.Unfog`、`PawnTrigger.ActivatedBy`、`MapGenerator.GenerateMap`、`Game.DeinitAndRemoveMap` |
 | checkpoint（C0） | — | `NumericCheckpointTests` | `SafeSaver.Save`（Prefix・Finalizer）。既存 `SaveCompletedPatch` の Postfix で確定 |
 
 すべてのパッチ対象（既存 10 件を含め 84 件）は `tools/check_patches.sh` で 1.7.4985 の監査索引と一致（型・オーバーロード・注入する引数名・`___field`）。`tools/refcheck.sh` も `type-not-found` 0・`signature-not-found` 0。**静的な一致であり、Harmony が実際に発火することの確認ではありません。**
 
 ### 1.3 保留した候補（実装不能または保留）
+
+> **2026-11-08 追記:** 下表の 5 件は、1.7.4985 の実 DLL・Def・監査索引で確定通知を特定し、実装済み（未公開・`Unverified`）。採用した経路・定義・限界は [API 監査](2026-11-08-numeric-remaining-api-audit.md)「Implemented in the second 2026-11-08 pass」、実機での確認は §6 の追記行。表は保留時点の判断として残す。
 
 | 候補 | 技術的根拠 | 残作業 |
 |---|---|---|
@@ -273,6 +275,13 @@ Def（XML）は R2 の `Data/<Core|Royalty|Ideology|Biotech|Odyssey>/Defs/` に�
 | medicine | 1 回の治療で 2 患部、手術の成功・失敗・中止、義肢装着、救助、蘇生、病気の治癒と死亡時の除去、切断と子部位、傷痕 |
 | disaster | 2 マップで重なる死の灰、太陽フレア、ロード時に進行中の条件（数えない）、延焼（数えない）、火災による建物の破壊 |
 | caravan | 往復、休憩、分割・合流、待ち伏せ、瞬間移動、全滅、拠点の攻略・放棄・設立、グラヴシップ（数えない） |
+| medicine（N3-H-005、2026-11-08） | 依存症の禁断症状への突入（+1）、欲求→禁断→満足→禁断（+2）、記録開始時にすでに禁断（0）、依存症の治癒、囚人・奴隷（数えない）。ハーネス `medicine.withdrawal` でフックが発火すること（対象メソッドは IL 18 バイトでインライン化の危険がある） |
+| medicine（N3-H-011、2026-11-08） | 救助で医療ベッドへ→回復して起床（1 件）、医療ベッドでテレビを見る（分断しない）、別の医療ベッドへ移す（2 件）、入院中の死亡（標本なし）、入院中に保存→ロード→退床（1 件・完全）、通常ベッドでの睡眠（数えない）、ハーネス `medicine.hospital_bed` |
+| food（N2-F-010、2026-11-08） | 開始直後（保管なし＝不足）、備蓄して継続、全量を別の保管場所へ運ぶ（不足にならない）、食べ尽くす（区切れる）、グラヴシップで家マップなし（つながない）、2 ホームマップ（どちらかにあれば継続）、ロード直後、ハーネス `food.stock_recount` |
+| food（N1-A-008、2026-11-08） | 栽培ゾーンの作成・拡張・縮小・削除、建物を置いてセルが減る、ゾーン外の作物・水耕・野生植物（数えない）、マップ放棄、グラヴシップでゾーン移動、保存時の再集計の一致、ハーネス `food.growing_cells` |
+| caravan（Q-014、2026-11-08） | 開始マップの古代の祠の壁を掘って開封（+1）、接近だけ（0）、同じ祠の追加の霧（+0）、離れた岩の採掘（0）、敵の破壊で開いた祠（数える。原因は区別しない）、新しい入植地の祠、ロード後の開封、ハーネス `caravan.ancient_danger` |
+| royalty_quests（L-003、2026-11-08） | 帝国の依頼（勅令・授与式など）成功、帝国が関係勢力の一般クエスト成功、帝国以外の成功、失敗・未受諾、難民クエスト（関係勢力の表示を隠す root。数えない）、DLC なし（読まない） |
+| ending_party（N1-F-004、2026-11-08） | 宇宙船（冷凍睡眠カプセルの人数）、開発モードの強制カウントダウン（値なし）、王族昇天（送り出した入植者数）、アルコネクサス（超越した人数）、メカハイブ破壊（対象外）、記録の重複時は最初の値 |
 
 性能: 受け入れ計測 3（60 秒×5 回の中央値で TPS 低下 2% 以下）。特に毎tick級の `SkillRecord.Learn`、`MentalBreakerTickInterval`、`CompRottable.TickInterval`、`GenPlace.TryPlaceThing`、`Pawn_RecordsTracker.Increment`、`Thing.Kill` は、その単位を開いたときの負荷を測る。
 

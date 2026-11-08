@@ -103,6 +103,8 @@
 
 `TendUtility.DoTend(Pawn,Pawn,Medicine)`、`Hediff.Tended(float,float,int)`、`Pawn_HealthTracker.AddHediff(Hediff,BodyPartRecord,DamageInfo?,DamageWorker.DamageResult)`、`ResurrectionUtility.TryResurrect(Pawn,ResurrectionParams) -> bool`。治療は医師・患者・適用対象の実変化を確認し、Hediffごとの品質を平均の分母にだけ使う。薬品は治療中の実消費差、スタック分割は不変。蘇生は死→生。病気/薬物はHediffDef分類と実追加、消滅理由は治癒経路の証拠を要求。手術は `Recipe_Surgery` 系の実行と失敗判定を同一試行で結合し、派生Recipeにも陽性例が必要。救助は運搬ジョブ完了とベッド収容、入院期間は入退床成功を別途追跡。手術中止、失敗、子部位連鎖、自然治癒、死亡時除去、普通の運搬、MOD手術を試す。全 `TakeDamage` や全ヘルスtickパッチを前提とする出力は無効。
 
+2026-11-08 実装時の確定（静的根拠、実機未検証）: N3-H-005 の禁断症状は `Hediff_Addiction` の段階1で、`Need_Chemical.CurLevel` の setter が区分変化時だけ `Hediff_Addiction.Notify_NeedCategoryChanged` を呼ぶ。この通知で禁断区分に入った回数を数える。N3-H-011 の入退床は、`PawnPosture.LayingInBed` を設定する唯一のコードである `Toils_LayDown.LayDown` のトイル init と、そのトイルの終了処理の対で取る（同じ医療ベッドへ 60 tick 以内に横になり直したジョブ切替は同じ入院）。経路と限界は [API 監査](2026-11-08-numeric-remaining-api-audit.md)。
+
 ## disaster
 
 `GameConditionManager.RegisterCondition(GameCondition)` 成功と `GameCondition.End()` で状態。 `SolarFlare, ColdSnap, HeatWave, VolcanicWinter, ToxicFallout, Eclipse` のCore Defを確認済み。 `IncidentWorker.TryExecute` 成功で `CropBlight, MeteoriteImpact, ShortCircuit` を集計。開始済み条件を旧セーブで読み込んだ場合は開始回数に足さず、期間は確認できた区間のみ。重複効果は区間の和集合。火災は `FireUtility.TryStartFireIn(IntVec3,Map,float,Thing,SimpleCurve)` と延焼経路を照合、設備破壊は破壊前所属とダメージによる直接原因が必須。炎を1つずつtick監視しない。マップ2枚同時、同一条件再ロード、延焼、自然終了と強制解除を試す。
@@ -114,6 +116,8 @@
 ## food
 
 `Thing.Ingested(Pawn,float) -> float` の実栄養、`CompRottable` 等の実消失が候補。腐敗ステージ変更のみ、焼失、普通の摂食の重複を陰性試験。継続在庫と面積積分は境界の変化を低コストの確定通知から全て観測できる場合に限る。セーブ間の補間や定期全Thing走査が必要なら N2-F-010/N1-A-008 は無効。個別荷物移動で食料ゼロになった区間と、単に別の保管場所に移したケースを判別する。
+
+2026-11-08 実装時の確定（静的根拠、実機未検証）: N2-F-010 は本MODの走査ではなく、ゲーム自身の `ResourceCounter.UpdateResourceCounts`（各マップ 204 tick ごとと運搬時。資源表示と食料不足アラートの元）の結果を読み、プレイヤーのポーンが運搬中の食料を加える（保管場所間の移動で不足にならない）。観測した tick だけで区間を測り、420 tick を超える未観測は区間をつながない。保管外・所持品の食料はゲームの集計外。N1-A-008 は `Zone_Growing` のセル変化（`Zone.AddCell / RemoveCell`、マップ削除）の確定通知と、記録開始・ロード・保存時の再集計で積分し、栽培ゾーン内の作物の主収穫と同じ期間で割る。経路と限界は [API 監査](2026-11-08-numeric-remaining-api-audit.md)。
 
 ## animals
 
@@ -135,9 +139,13 @@
 
 `CaravanMaker.MakeCaravan(IEnumerable<Pawn>,Faction,PlanetTile,bool)` は出発以外も呼ぶ。実出発の呼出し元でのみ起点を作る。 `Caravan_PathFollower.TryEnterNextPathTile()` 前後の実タイルと隣接性を確認。 `WorldObjectsHolder.Add/Remove(WorldObject)` は所属確認と同時数には使えるが帰還・全滅の証拠にしない。死亡時 `Caravan.Notify_MemberDied`、任意放棄 `SettlementAbandonUtility` の `Abandon(wasGravshipLaunch:false)`、新設拠点はプレイヤーの拠点生成完了、敵攻略は勝利文脈とWorldObject消滅の両方を確認。古代の脅威は封印解除の確定処理のみ、一般の壁破壊・敵出現では数えない。往復、休憩、分割/合流、待ち伏せ、転送、タイルレイヤー、全滅、未完遠征を試す。遠征の分割/合流後は期間/個別距離の同一性が証明できない場合は打ち切る。
 
+2026-11-08 実装時の確定（静的根拠、実機未検証）: 1.7.4985 の古代の脅威（`GenStep_ScatterShrines` の祠、プレイヤー拠点マップのみ）には専用の封印解除処理がなく、扉のない壁と霧の内部、`ancientTempleApproached-` の `RectTrigger`（`destroyIfUnfogged`）で表される。ゲーム自身の「発見済み」判定（矩形中心の霧が晴れた）を開封の確定とし、霧のうちに登録した祠ごとに `FogGrid.Unfog` で1回数える。ほかの壁の破壊や敵の出現は数えない。開けた原因（採掘・爆発）は区別しない。経路と限界は [API 監査](2026-11-08-numeric-remaining-api-audit.md)。
+
 ## royalty
 
 `Pawn_RoyaltyTracker.SetTitle(Faction,RoyalTitleDef,bool,bool,bool)` の上昇、`GetFavor/GainFavor/TryRemoveFavor` の確定差分。許可証と超能力は成功消費/発動、UI入口は不可。`Ability.Activate` には複数オーバーロードがあり、プレイヤーの実キャスト判定を確認。サイリンクはBと同様セーブ時、帝国クエストは保存rootの固定許可表が確定した分のみ。爵位継承・初期付与・同一値再設定・失効と購入の違い、DLCオフを試す。
+
+2026-11-08 実装時の確定（静的根拠、実機未検証）: L-003 は root の許可表（常に下限値）をやめ、正常セーブ時にゲーム自身がクエスト画面で関係勢力として示すもの（`Quest.InvolvedFactions` のうち非表示でない非プレイヤー勢力、root の `hideInvolvedFactionsInfo` を除く）に帝国の Def の勢力を含む、受諾済み・成功終了・非 hidden の保存クエストを数える（定義改訂 2）。セーブ XML からは 17 種類の `InvolvedFactions` 実装を再現できないため、旧セーブには値を作らない。
 
 ## ideology
 
@@ -162,6 +170,8 @@
 ## ranking-dependency
 
 基礎指標が未記録なら派生指標も未記録。R-009はAの同期規則を満たす2系列のみ。N1-F-001/002はゲーム中 `Find.WorldGrid` の開始PlanetTileからBiomeDefを取得し、初回の正常セーブ時に保存。古いworldGridの全展開なしに同じ情報を取れた版のみ旧セーブを拡張。R-008/N1-F-003はv1 `EndingRuntime` の確定時にその時点の `colonistsKilled` を追加メタデータとして記録。N1-F-004はエンディング種別ごとに参加者の確定定義がある場合のみ。既存 `EndingEvent.Departed` の0を「参加0」の証拠にしない。敗戦・Dev・痕跡・参加者不明・対象除外を試す。
+
+2026-11-08 実装時の確定（静的根拠、実機未検証）: 参加者の確定定義があるのは、宇宙船（`ShipCountdown.CountdownEnded` が使用中の冷凍睡眠カプセルごとに `colonistsLaunched` を加算）、王族昇天（`QuestPart_EndGame` が `SENTCOLONISTS` の人数を加算）、アルコネクサス（`ArchonexusCountdown.EndGame` が生存・非ロッジャーの人型プレイヤーポーンを加算）。この確定経路を通った時だけ v1 の終了記録に `PartyAtEnding` を書き、開発モードの船なしカウントダウン・メカハイブ・ほかの結末・旧記録は値なし。
 
 ## unsupported
 
