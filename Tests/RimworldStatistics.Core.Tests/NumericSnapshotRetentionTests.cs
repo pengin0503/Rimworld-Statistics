@@ -219,4 +219,58 @@ public sealed class NumericSnapshotRetentionTests
         }
     }
 
+    [Fact]
+    public void Compaction_DoesNotEraseUnknownJsonFieldsAtAnyNestingLevel()
+    {
+        static System.Text.Json.JsonElement Json(string value)
+        {
+            using var doc = System.Text.Json.JsonDocument.Parse(value);
+            return doc.RootElement.Clone();
+        }
+
+        var p = new Profile();
+        var id = Identity("extension-data");
+        for (var i = 0; i < 8; i++)
+        {
+            var obs = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "ext-" + i,
+                Identity = id.Clone(), SaveTick = i, ObservedUtc = Epoch.AddSeconds(i),
+            };
+            var entry = MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i });
+            obs.Metrics[FacilitiesSnapshot.OutdoorTempMax] = entry;
+            switch (i)
+            {
+                case 0:
+                    obs.ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
+                        { ["futureObservation"] = Json("{\"revision\":3}") };
+                    break;
+                case 1:
+                    obs.Identity.ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
+                        { ["futureIdentity"] = Json("\"extra\"") };
+                    break;
+                case 2:
+                    entry.ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
+                        { ["futureEntry"] = Json("true") };
+                    break;
+                case 3:
+                    entry.Values[MetricEntry.Scalar].ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
+                        { ["futureValue"] = Json("23") };
+                    break;
+            }
+            ProfileMutations.UpsertMetricObservation(p, obs);
+        }
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+        Assert.Equal(new[] { "ext-0", "ext-1", "ext-2", "ext-3" },
+            restored.MetricObservations.Where(o => o.Key is "ext-0" or "ext-1" or "ext-2" or "ext-3")
+                .Select(o => o.Key).Order().ToArray());
+        Assert.True(restored.MetricObservations.Single(o => o.Key == "ext-0").ExtensionData!.ContainsKey("futureObservation"));
+        Assert.True(restored.MetricObservations.Single(o => o.Key == "ext-1").Identity.ExtensionData!.ContainsKey("futureIdentity"));
+        Assert.True(restored.MetricObservations.Single(o => o.Key == "ext-2")
+            .Metrics[FacilitiesSnapshot.OutdoorTempMax].ExtensionData!.ContainsKey("futureEntry"));
+        Assert.True(restored.MetricObservations.Single(o => o.Key == "ext-3")
+            .Metrics[FacilitiesSnapshot.OutdoorTempMax].Values[MetricEntry.Scalar].ExtensionData!.ContainsKey("futureValue"));
+    }
+
 }
