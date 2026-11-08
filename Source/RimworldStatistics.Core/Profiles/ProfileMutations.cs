@@ -256,7 +256,8 @@ public static class ProfileMutations
             {
                 var direct = d.Acquisition is { } id && row.EvidenceByAcquisition is { } evidence
                     && evidence.TryGetValue(id, out var e) ? e : MetricEvidence.UnknownLegacy;
-                return row.CompactedEvidenceByMetric?.GetValueOrDefault(d.StoredKey) is { } prior
+                return row.CompactedEvidenceByMetric is { } historical
+                    && historical.TryGetValue(d.StoredKey, out var prior)
                     ? MetricEvidencePolicy.Combine(new[] { direct, prior }) : direct;
             }
             var values = removedRows.Select(Captured).Append(Captured(best));
