@@ -237,7 +237,20 @@ public static class ProfileMutations
         foreach (var d in definitions)
         {
             if (d.Selection == ColonySelection.Representative)
+            {
+                if (d.ProviderId is not null)
+                {
+                    // A later save may have been made without the optional provider.
+                    // Keep the last real reading as a historical witness rather than
+                    // letting newer vanilla-only saves erase the provider's result.
+                    var lastCaptured = snapshots.Where(o => Scalar(o, d) is not null)
+                        .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
+                        .ThenBy(o => o.Key, Ord).FirstOrDefault();
+                    if (lastCaptured is not null)
+                        kept.Add(lastCaptured);
+                }
                 continue;
+            }
             var applicable = snapshots.Where(o => Applicable(o, d)).ToList();
             if (applicable.Count == 0)
                 continue;
