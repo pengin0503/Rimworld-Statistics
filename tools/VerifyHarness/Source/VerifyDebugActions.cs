@@ -23,7 +23,12 @@ public static class VerifyDebugActions
         Log.Message(summary + " (full report: " + VerifyLogFile.Path + ")");
     }
 
-    [DebugAction(Category, "Status", allowedGameStates = AllowedGameStates.Entry | AllowedGameStates.Playing)]
+    // AllowedGameStates is an enumeration of mutually-exclusive contexts, not a [Flags] mask.
+    // Combining Entry | Playing hides the action in the in-game menu.
+    [DebugAction(Category, "Status", allowedGameStates = AllowedGameStates.Entry)]
+    public static void EntryStatus() => Status();
+
+    [DebugAction(Category, "Status", allowedGameStates = AllowedGameStates.Playing)]
     public static void Status()
     {
         var text = VerifyProbe.Status();
