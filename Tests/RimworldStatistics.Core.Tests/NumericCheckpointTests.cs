@@ -630,7 +630,7 @@ public sealed class NumericCheckpointTests
         ProfileMutations.UpsertMetricObservation(profile, b);
         var stored = profile.MetricObservations.Single(o => o.Key == "P");
         Assert.True(stored.Compressed);
-        Assert.Empty(stored.Metrics);
+        Assert.NotEmpty(stored.Metrics);   // keep ancestor data available if the child later conflicts
         Assert.Equal((1000, (string?)null), (stored.SaveTick, stored.ParentKey));
 
         var reverse = ProfileWithColony();
