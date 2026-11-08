@@ -1,0 +1,81 @@
+name: Publish Rimworld Statistics v1.2.0-rc.1
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v1.2.0-rc.1.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prerelease:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: 'v1.2.0-rc.1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Run all no-game Core regression tests
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Validate translation keys
+        run: bash tools/check_keys.sh
+      - name: Build release ZIP
+        shell: bash
+        run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.1.zip"
+      - name: Check distribution archive and generate checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          zipfile="$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.1.zip"
+          unzip -t "$zipfile"
+          names="$(unzip -Z -1 "$zipfile")"
+          grep -Fxq 'RimworldStatistics/About/About.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Core.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/Japanese/Keyed/RimworldStatistics.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/English/Keyed/RimworldStatistics.xml' <<< "$names"
+          if grep -Eq 'VerifyHarness|/(Assembly-CSharp|UnityStubs|Waylith|0Harmony)\\.dll$' <<< "$names"; then
+            echo 'ERROR: A game dependency or development harness leaked into the release.' >&2
+            exit 1
+          fi
+          (cd "$RUNNER_TEMP" && sha256sum "RimworldStatistics-v1.2.0-rc.1.zip" > "RimworldStatistics-v1.2.0-rc.1.zip.sha256")
+      - name: Publish pre-release from tested main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite."
+            exit 1
+          fi
+          cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          ## RimWorld 1.7 — numerical statistics expansion (release candidate)
+
+          The Phase B/C/D1/D2 numeric statistics expansion, including the seven formerly held outputs (withdrawal onsets, hospital stays, no-shortage streaks, growing-cell yield, ancient-danger discovery, Empire quest completions, and minimum ending party), is included in this build. The package also includes save/checkpoint preservation, Odyssey flight tracking, and Core regressions.
+
+          **Important: NOT VERIFIED IN GAME.** The new acquisition gates remain `Unverified` and disabled; these new live metrics are not activated for ordinary play. This pre-release is for installation/acceptance testing, **not a claim that the expanded statistics work in-game yet**. Use a separate save-data folder for manual validation before enabling gates.
+
+          Anomaly-specific metrics are intentionally excluded. Average raid damage (`R-011`) remains unsupported.
+
+          - Requires RimWorld 1.7 and Harmony.
+          - `RimworldStatistics-v1.2.0-rc.1.zip`: installable MOD, excludes development harness and game DLLs.
+          - `.zip.sha256`: SHA-256 integrity check.
+          - Developer-only verification harness is in the pull request CI artifacts, not this release.
+
+          See [PR #26](https://github.com/pengin0503/Rimworld-Statistics/pull/26), the [API and implementation audit](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/research/2026-11-08-numeric-remaining-api-audit.md), and the [manual test checklist](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/manual-test-checklist.md).
+          NOTES
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.1.zip" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.1.zip.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics v1.2.0-rc.1 (unverified)" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --prerelease
