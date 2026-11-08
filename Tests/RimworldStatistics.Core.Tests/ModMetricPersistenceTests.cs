@@ -116,6 +116,58 @@ public sealed class ModMetricPersistenceTests
     }
 
     [Fact]
+    public void RemovedEventProviderRetainsCompressedAncestorCountsWithoutDoubleAdding()
+    {
+        var descriptor = Descriptor() with
+        {
+            FamilyId = "requests", MetricName = "started",
+            Source = MetricObservationSource.Checkpoint,
+        };
+        var profile = new Profile();
+        var id = new ColonyIdentity
+        {
+            SeedString = "provider-ancestors", PersistentRandomValue = 3,
+            StartingTile = "3,0", GameStartAbsTick = 1, FirstWealthBits = 20,
+            ModCampaignId = "provider-event", StartingPawnIds = { "Thing_Human1" },
+        };
+        ProfileMutations.ApplyLiveObservation(profile, id.ModCampaignId!, id,
+            new ObservedValues { TicksGame = 300 }, new DisplayInfo(), DateTime.UtcNow);
+        ProfileMutations.RememberModMetrics(profile, new[] { descriptor });
+        var old = new MetricObservation
+        {
+            Key = "parent", PayloadHash = "parent-content", ParentKey = null,
+            Identity = id.Clone(), Source = MetricObservationSource.Checkpoint, SaveTick = 100,
+            EvidenceByAcquisition = new Dictionary<string, MetricEvidence>
+            {
+                [descriptor.AcquisitionId] = MetricEvidence.Experimental,
+            },
+        };
+        old.Metrics[descriptor.StableKey] = MetricEntry.Of(1,
+            new MetricValue { IntegerValue = 3, Coverage = MetricCoverage.Complete, SinceTick = 0, ThroughTick = 100 });
+        ProfileMutations.UpsertMetricObservation(profile, old);
+        var afterRemoval = new MetricObservation
+        {
+            Key = "child", PayloadHash = "child-content", ParentKey = "parent",
+            Identity = id.Clone(), Source = MetricObservationSource.Checkpoint, SaveTick = 200,
+        };
+        ProfileMutations.UpsertMetricObservation(profile, afterRemoval);
+
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(profile));
+        Assert.True(Assert.Single(restored.MetricObservations, o => o.Key == "parent").Compressed);
+        var colonies = CampaignMatcher.BuildColonies(restored);
+        var defs = MetricRegistry.Compose(restored.ModMetricDescriptors,
+            new HashSet<string> { MetricRegistry.OptionalModVisibilityId });
+        var view = MetricCalculator.BuildView(restored, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), defs);
+        var row = Assert.Single(Assert.Single(view.Colonies).Rows,
+            r => r.Definition.Key == descriptor.StableKey);
+        Assert.Equal(3, row.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, row.Value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
+        Assert.Equal(100, row.Value.ThroughTick);
+    }
+
+    [Fact]
     public void UnknownOrUnregisteredProviderDataIsNeverDeletedAndWrongRevisionIsNotMisinterpreted()
     {
         var profile = new Profile();
