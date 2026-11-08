@@ -3,4 +3,7 @@
     <RootNamespace>RimworldStatistics.Core</RootNamespace>
     <AssemblyName>RimworldStatistics.Core</AssemblyName>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../RimworldStatistics.Api/RimworldStatistics.Api.csproj" />
+  </ItemGroup>
 </Project>

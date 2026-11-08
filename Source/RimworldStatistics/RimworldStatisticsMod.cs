@@ -1,5 +1,6 @@
 using HarmonyLib;
 using RimworldStatistics.Core;
+using RimworldStatistics.Api;
 using RimworldStatistics.Metrics;
 using UnityEngine;
 using Verse;
@@ -33,6 +34,8 @@ public sealed class RimworldStatisticsMod : Mod
         ActiveAcquisitionSelection = Settings.DesiredSelection;
         MetricGates.ConfigureProductionSelection(
             ExperimentalAcquisitionPolicy.Resolve(ActiveAcquisitionSelection, AcquisitionUnits.All));
+        if (!StatisticsApi.InstallHost(ExternalSdkHost.Instance))
+            Log.Error("[RimworldStatistics] External SDK host could not be installed; SDK calls remain unavailable.");
         PatchRunner.ApplyAll(new Harmony(HarmonyId));
     }
 

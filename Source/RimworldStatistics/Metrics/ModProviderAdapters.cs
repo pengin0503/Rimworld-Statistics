@@ -5,8 +5,8 @@ using Verse;
 namespace RimworldStatistics.Metrics;
 
 /// <summary>
-/// Internal-only adapter registration. The public SDK contract is deliberately deferred until
-/// a real MOD is audited and its event/snapshot paths pass regression tests.
+/// Internal adapter registration. External SDK providers are mapped to the same
+/// proven checkpoint and snapshot pipeline; no additional persistence is introduced.
 /// </summary>
 internal sealed record ModMetricAdapterRegistration(
     ModMetricDescriptor Descriptor,
@@ -26,9 +26,10 @@ internal static class ModProviderAdapters
     private static Enabled[] active = Array.Empty<Enabled>();
     private static bool initialized;
 
-    /// <summary>Expand this in P2 only with a source-audited, conditionally loaded built-in adapter.</summary>
+    /// <summary>The SDK is frozen with the built-in declarations after all MOD constructors.</summary>
     private static IReadOnlyList<ModMetricAdapterRegistration> BuiltInAdapters()
-        => Providers.RecruitmentMetricProvider.Registrations();
+        => Providers.RecruitmentMetricProvider.Registrations()
+            .Concat(ExternalSdkHost.Instance.BuildAdapters()).ToArray();
 
     public static IReadOnlyList<AcquisitionUnit> KnownUnits =>
         Declarations.Value.Where(x => x.Descriptor.IsValid())
@@ -96,7 +97,8 @@ internal static class ModProviderAdapters
                 if (!Guard.TryRun(id, () => registration.InstallEventHook(harmony),
                     (unit, e) => MetricGates.Fail(unit, e)))
                     continue;
-                families.Add(family);
+                if (!families.Any(x => x.Name == family.Name))
+                    families.Add(family);
             }
             else if (registration.CaptureSnapshot is null)
             {
