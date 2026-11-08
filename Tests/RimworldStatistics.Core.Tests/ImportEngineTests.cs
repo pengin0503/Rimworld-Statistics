@@ -157,4 +157,25 @@ public sealed class ImportEngineTests
         Assert.Equal((0, 0, 0, false), (r.Read, r.Skipped, r.Failed, r.Cancelled));
         Assert.Empty(r.PresentFiles);
     }
+
+    [Fact]
+    public void Run_MetricMutationFails_RecordsOneReadAndRetriesAfterRepair()
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        Write(saves, "a.rws", Save("seed"));
+        var session = NewSession(store);
+        // Deliberately corrupt the in-memory metrics collection after loading.
+        // The v1 save observation must not be accepted if the numeric mutation fails.
+        session.Mutate(p => p.MetricObservations = null!, SaveMode.None);
+        var first = Run(saves, session);
+        Assert.Equal((1, 1), (first.Read, first.Failed));
+        Assert.Equal(ObservationStatus.Error, session.Read(p => p.SaveObservations.Single().Status));
+
+        session.Mutate(p => p.MetricObservations = new List<MetricObservation>(), SaveMode.None);
+        var retry = Run(saves, session);
+        Assert.Equal((1, 0), (retry.Read, retry.Failed));
+        Assert.Equal(ObservationStatus.Ok, session.Read(p => p.SaveObservations.Single().Status));
+    }
+
 }
