@@ -168,10 +168,19 @@ public static class ProfileMutations
         // Representative selection: latest tick, then UTC, then smallest key.
         kept.Add(snapshots.OrderByDescending(o => o.SaveTick)
             .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First());
+        // JsonExtensionData represents fields from a minor version this binary does
+        // not understand. Discarding their owner would silently destroy information.
+        static bool HasOpaqueData(MetricObservation o)
+            => o.ExtensionData is { Count: > 0 }
+                || o.Identity.ExtensionData is { Count: > 0 }
+                || o.FileAliases.Any(a => a.ExtensionData is { Count: > 0 })
+                || o.Metrics.Values.Any(e => e.ExtensionData is { Count: > 0 }
+                    || e.Values.Values.Any(v => v.ExtensionData is { Count: > 0 }));
+
         foreach (var o in snapshots)
-            // Preserve unknown keys, unreadable entries and values written by a
-            // different schema revision: the current catalogue cannot prove them redundant.
-            if (o.Metrics.Any(kv => !definitionsByKey.TryGetValue(kv.Key, out var d)
+            // Preserve future extension fields, unknown keys, unreadable entries and
+            // different revisions: the current catalogue cannot prove them redundant.
+            if (HasOpaqueData(o) || o.Metrics.Any(kv => !definitionsByKey.TryGetValue(kv.Key, out var d)
                 || kv.Value.IsQuarantined || kv.Value.Revision != d.Revision))
                 kept.Add(o);
 
