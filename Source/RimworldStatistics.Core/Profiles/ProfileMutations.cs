@@ -153,6 +153,15 @@ public static class ProfileMutations
             || identity.FingerprintHash() is not { } hash || identity.StartingPawnIds.Count == 0)
             return;
 
+        // Unattributed records are counted individually in the Details tab. Do
+        // not delete any until a matching live colony is registered. A conflicting
+        // campaign identity must likewise remain untouched for later repair.
+        var owners = p.LiveCampaigns.Where(c => c.CampaignId == identity.ModCampaignId).ToList();
+        if (owners.Count != 1 || owners[0].Identity.FingerprintHash() != hash
+            || p.SaveObservations.Any(o => o.Identity.ModCampaignId == identity.ModCampaignId
+                && o.Identity.FingerprintHash() is { } otherHash && otherHash != hash))
+            return;
+
         var pawns = identity.StartingPawnIds.ToHashSet(Ord);
         var snapshots = p.MetricObservations.Where(o => !o.IsQuarantined
             && o.Source == MetricObservationSource.SaveSnapshot
