@@ -352,7 +352,8 @@ internal static class VerifyGameCases
         if (bed is null)
             return CaseCheck.Skip(c.Id, c.Unit, "no free medical bed on the current map");
         var pawn = Colonist(p => !p.InBed());
-        if (pawn is null || LiveMetrics.Family(MedicineFamily.Name) is not { } family)
+        // Query availability without incrementing the harness hook-hit counter.
+        if (pawn is null || LiveMetrics.Accumulator?.Family(MedicineFamily.Name) is null)
             return CaseCheck.Skip(c.Id, c.Unit, pawn is null ? "no free colonist out of bed" : "the medicine family does not record");
         // A synchronous debug action cannot advance the real LayDown toil. Enqueuing
         // Notify_TuckedIntoBed and inspecting immediately falsely FAILs; worse, the
