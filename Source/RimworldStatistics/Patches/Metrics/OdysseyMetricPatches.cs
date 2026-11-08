@@ -77,6 +77,29 @@ public static class OdysseyTakeoffMetricPatch
 }
 
 /// <summary>
+/// A confirmed map-generation result is positive evidence that the destination
+/// map was created during the pending flight. Merely missing from Find.Maps at
+/// takeoff is not proof: an old map may have been unloaded.
+/// </summary>
+[MetricAdapter(OdysseyFamily.Name)]
+[HarmonyPatch(typeof(MapGenerator), nameof(MapGenerator.GenerateMap))]
+public static class OdysseyNewLandingMapMetricPatch
+{
+    public static void Postfix(Map __result)
+    {
+        if (__result is null || LiveMetrics.Family(OdysseyFamily.Name) is null)
+            return;
+        var ship = Find.CurrentGravship;
+        var engine = ship?.Engine;
+        if (ship is null || engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer
+            || !ship.destinationTile.Valid || !__result.Tile.Equals(ship.destinationTile))
+            return;
+        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedMapGenerated(
+            s, GameFacts.Id(engine), GameFacts.MapId(__result), GameFacts.Tick, confirmed: true));
+    }
+}
+
+/// <summary>
 /// Only count landings that actually place the original player engine in the
 /// landing map. Aborted landing attempts cannot pass this post-condition.
 /// </summary>
