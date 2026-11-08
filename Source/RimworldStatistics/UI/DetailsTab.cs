@@ -110,7 +110,9 @@ public static class DetailsTab
         if (Widgets.ButtonText(Next(180f), category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate()))
         {
             var options = new List<FloatMenuOption> { new("RWS_Details_AllCategories".Translate(), () => category = null) };
-            options.AddRange(MetricRegistry.All.Select(d => d.Category).Distinct().Select(c => new FloatMenuOption(CategoryLabel(c), () => category = c)));
+            options.AddRange(view.Numeric.Colonies.SelectMany(c => c.Rows).Select(r => r.Definition.Category)
+                .Concat(view.Numeric.Overall.Select(r => r.Definition.Category)).Distinct()
+                .Select(c => new FloatMenuOption(CategoryLabel(c), () => category = c)));
             Find.WindowStack.Add(new FloatMenu(options));
         }
         var searchLabel = (string)"RWS_Details_Search".Translate();
@@ -255,6 +257,15 @@ public static class DetailsTab
         var tip = new StringBuilder();
         tip.Append(label).Append('\n').Append((string)d.DescriptionKey.Translate()).Append("\n\n");
         tip.Append((string)"RWS_Details_Tip_Source".Translate(ProvenanceLabel(d.Provenance), CoverageLabel(d, v.Coverage))).Append('\n');
+        if (d.Acquisition is { } id && !d.Published)
+        {
+            tip.Append((string)"RWS_Exp_ExperimentalRow".Translate()).Append(" (").Append(id).Append(")\n");
+            tip.Append("RWS_Exp_Evidence".Translate(EvidenceLabel(v.Evidence))).Append('\n');
+            if (v.SinceTick is { } first)
+                tip.Append("RWS_Exp_Since".Translate(Dialog_RimworldStatistics.Days(first))).Append('\n');
+            if (d.RequiredDlc is { } dlc)
+                tip.Append("RWS_Exp_RequiresDlc".Translate(dlc)).Append('\n');
+        }
         if (input.PerColony)
         {
             if (v.ThroughTick is { } through)
@@ -286,7 +297,10 @@ public static class DetailsTab
             else if (v.ColonyKey is { } holderColony)
                 value += " · " + Name(input.Stats, holderColony);
         }
-        return new Line(label, value, CoverageLabel(d, v.Coverage), count, tip.ToString(), depth, expandKey,
+        var state = CoverageLabel(d, v.Coverage);
+        if (d.Acquisition is not null && !d.Published)
+            state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
+        return new Line(label, value, state, count, tip.ToString(), depth, expandKey,
             v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
     }
 
@@ -357,6 +371,14 @@ public static class DetailsTab
         MetricCategory.Biotech => "RWS_Category_Biotech".Translate(),
         MetricCategory.Odyssey => "RWS_Category_Odyssey".Translate(),
         _ => "RWS_Category_Rankings".Translate(),
+    };
+
+    private static string EvidenceLabel(MetricEvidence evidence) => evidence switch
+    {
+        MetricEvidence.Experimental => "RWS_Exp_EvidenceExperimental".Translate(),
+        MetricEvidence.Verified => "RWS_Exp_EvidenceVerified".Translate(),
+        MetricEvidence.Mixed => "RWS_Exp_EvidenceMixed".Translate(),
+        _ => "RWS_Exp_EvidenceUnknown".Translate(),
     };
 
     private static string ProvenanceLabel(MetricProvenance p) => p switch

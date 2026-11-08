@@ -808,4 +808,22 @@
   <RWS_MetricDesc_BiotechWasteDisposed>Wastepacks safely neutralized only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteDisposed>
   <RWS_Metric_BiotechPollutionCleaned>Cells cleaned by colonists</RWS_Metric_BiotechPollutionCleaned>
   <RWS_MetricDesc_BiotechPollutionCleaned>Cells cleaned by colonists only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechPollutionCleaned>
+  <RWS_Exp_Enable>Allow experimental statistics recording (off by default)</RWS_Exp_Enable>
+  <RWS_Exp_Warning>Unverified acquisition: missing or double-counted records and additional CPU cost are possible. Earlier events cannot be reconstructed.</RWS_Exp_Warning>
+  <RWS_Exp_ViewSaved>Show recorded experimental statistics (independent of recording)</RWS_Exp_ViewSaved>
+  <RWS_Exp_SelectAll>Select all available units</RWS_Exp_SelectAll>
+  <RWS_Exp_SelectNone>Clear all</RWS_Exp_SelectNone>
+  <RWS_Exp_SelectEvents>Select event units</RWS_Exp_SelectEvents>
+  <RWS_Exp_Event>Event</RWS_Exp_Event>
+  <RWS_Exp_Snapshot>Successful save snapshot</RWS_Exp_Snapshot>
+  <RWS_Exp_RequiresDlc>Requires DLC/package: {0}</RWS_Exp_RequiresDlc>
+  <RWS_Exp_Restart>Recording changes only take effect after restarting RimWorld. Current session acquisition is unchanged.</RWS_Exp_Restart>
+  <RWS_Exp_Help>Select units individually. Names are stable storage IDs. Turning an option off never deletes past records.</RWS_Exp_Help>
+  <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
+  <RWS_Exp_Evidence>Capture confidence: {0}</RWS_Exp_Evidence>
+  <RWS_Exp_EvidenceExperimental>Unverified capture</RWS_Exp_EvidenceExperimental>
+  <RWS_Exp_EvidenceVerified>Verified at capture</RWS_Exp_EvidenceVerified>
+  <RWS_Exp_EvidenceMixed>Mixed verified and experimental capture</RWS_Exp_EvidenceMixed>
+  <RWS_Exp_EvidenceUnknown>Unknown capture provenance (including legacy)</RWS_Exp_EvidenceUnknown>
+  <RWS_Exp_Since>Recording began at day {0}</RWS_Exp_Since>
 </LanguageData>
