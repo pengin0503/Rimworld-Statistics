@@ -293,7 +293,7 @@ public sealed class NumericSnapshotRetentionTests
         var colonies = CampaignMatcher.BuildColonies(profile);
         var stats = StatsCalculator.Calculate(colonies, new StatsOptions());
         var view = MetricCalculator.BuildView(profile, colonies, stats);
-        Assert.Equal(0, colonies.Count);
+        Assert.Empty(colonies);
         Assert.Equal(10, view.Unattributed);
         Assert.Equal(10, profile.MetricObservations.Count);
     }
