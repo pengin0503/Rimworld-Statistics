@@ -79,7 +79,7 @@ jobs:
           set -euo pipefail
           unzip -t "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
           unzip -t "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
-          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-unverified.zip" | grep -E '(^|/)(Recruitment\\.dll|Recruitment\\.csproj|\\.devinputs)(/|$)'; then
+          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-unverified.zip" | grep -E '(^|/)(Recruitment\.dll|Recruitment\.csproj|\.devinputs)(/|$)'; then
             echo 'Optional Recruitment dependency or build input leaked into production ZIP' >&2
             exit 1
           fi
