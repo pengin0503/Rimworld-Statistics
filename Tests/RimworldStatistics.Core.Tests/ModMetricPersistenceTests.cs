@@ -105,6 +105,7 @@ public sealed class ModMetricPersistenceTests
         var view = MetricCalculator.BuildView(restored, colonies,
             StatsCalculator.Calculate(colonies, new StatsOptions()), defs);
         var row = Assert.Single(Assert.Single(view.Colonies).Rows, r => r.Definition.Key == descriptor.StableKey);
+        Assert.Equal(descriptor.AcquisitionId, row.Definition.Acquisition);
         Assert.Equal(7, row.Value.Number);
         Assert.Equal(MetricCoverage.Partial, row.Value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
