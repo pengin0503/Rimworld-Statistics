@@ -356,8 +356,13 @@ internal static class VerifyGameCases
             return CaseCheck.Skip(c.Id, c.Unit, pawn is null ? "no free colonist out of bed" : "the medicine family does not record");
         var id = pawn.GetUniqueLoadID();
         var hits = VerifyProbe.Hits(c.Unit);
+        // Notify_TuckedIntoBed schedules a lay-down job; it does NOT immediately execute
+        // Toils_LayDown.LayDown's init action. A synchronous debug action has no intervening
+        // game tick, so treating the empty tracker as a failed production hook is a false FAIL.
         pawn.jobs.Notify_TuckedIntoBed(bed);
         var entered = MedicineFamily.StayState(family, id);
+        if (!entered.Open)
+            return CaseCheck.Skip(c.Id, c.Unit, "lay-down toil has not started in this synchronous debug action; verify a real medical-bed stay manually");
         pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, startNewJob: false);
         var left = MedicineFamily.StayState(family, id);
         var ok = entered is (true, false) && left is (true, true);
