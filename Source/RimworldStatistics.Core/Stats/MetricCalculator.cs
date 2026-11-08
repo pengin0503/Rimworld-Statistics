@@ -97,7 +97,12 @@ public static class MetricCalculator
         {
             var observations = attached.GetValueOrDefault(colony) ?? new List<MetricObservation>();
             var checkpoints = CheckpointSelector.Select(observations);
-            perColony.Add((colony, definitions.Select(d => ColonyRow(d, observations, checkpoints.Representative)).ToList(), checkpoints.Lineage));
+            // Group once per colony instead of scanning/allocating a source-specific list
+            // for every metric definition. Order within each source stays unchanged.
+            var bySource = observations.GroupBy(o => o.Source)
+                .ToDictionary(g => g.Key, g => (IReadOnlyList<MetricObservation>)g.ToList());
+            perColony.Add((colony, definitions.Select(d => ColonyRow(d,
+                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(), checkpoints.Representative)).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
@@ -223,9 +228,8 @@ public static class MetricCalculator
         => o.Metrics.TryGetValue(d.StoredKey, out var e) && !e.IsQuarantined && e.Revision == d.Revision ? e : null;
 
     /// <param name="checkpoint">The colony's representative checkpoint (Phase C), chosen once for all its outputs.</param>
-    private static NumericRow ColonyRow(MetricDefinition d, List<MetricObservation> all, MetricObservation? checkpoint)
+    private static NumericRow ColonyRow(MetricDefinition d, IReadOnlyList<MetricObservation> observations, MetricObservation? checkpoint)
     {
-        var observations = all.Where(o => o.Source == d.Source).ToList();
         if (observations.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
 
@@ -263,7 +267,7 @@ public static class MetricCalculator
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
 
-    private static NumericRow AcrossObservations(MetricDefinition d, List<MetricObservation> observations)
+    private static NumericRow AcrossObservations(MetricDefinition d, IReadOnlyList<MetricObservation> observations)
     {
         // A zero emitted while the DLC was absent is not an observed zero and must not
         // take part in a historical maximum/minimum. A nonzero, explicitly recorded
