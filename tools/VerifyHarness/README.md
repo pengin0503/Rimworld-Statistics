@@ -33,6 +33,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | 項目 | 内容 |
 |---|---|
 | Status | ゲームの版、`Assembly-CSharp.dll` の SHA-256、Harmony の版、有効な DLC、単位ごとのゲート（recording / open, not applied / closed (DLC off) / closed (failed this session) / closed）と受け付けたイベント数、記録中のファミリーの範囲（since・through・continuous）、本体の Harmony が当てたメソッドの一覧 |
+| Benchmark pollution totals | Biotech有効時、全ホームマップで `PollutionGrid.TotalPollution` とセル全走査の結果を比較。取得時間・セル数・`MATCH/MISMATCH` をファイルへ記録（マップへの変更なし） | 
 | Checkpoint lineage | テスト用プロファイルにある、このゲームの campaignId のチェックポイント（ID・親・tick・UTC・衝突・圧縮、値はファイルだけ）と、詳細タブが使う代表・系譜 |
 | Dump values | 次の保存で記録される値の一覧（保存と同じ PrepareSave → ToObservation を、確定せずに実行したもの） |
 | Mark / Diff since mark | 今の値を覚え、その後に変わった値と、受け付けたイベント数の増分を出す。手動の確認（下記）に使う |
