@@ -22,16 +22,28 @@ internal static class OdysseyArrivalFacts
             && tileId >= 0 && layerId >= 0;
     }
 
-    /// <summary>Direct vanilla world-grid distance; no speculative distance for cross-layer or unavailable maps.</summary>
-    public static double? ConfirmedDirectDistance(PlanetTile from, PlanetTile to)
+    /// <summary>
+    /// Ask the vanilla flight path solver for its actual traversal distance, but
+    /// only after the original engine has completed landing. This is not a
+    /// straight-line estimate: the solver uses WorldGrid.TraversalDistanceBetween
+    /// and PlanetLayer.TryGetPath for multi-layer routes (1.7.4985 rev1269).
+    /// A missing or invalid path remains unknown rather than becoming zero.
+    /// </summary>
+    public static double? ConfirmedRouteDistance(PlanetTile from, PlanetTile to)
     {
-        var grid = Find.World?.grid;
-        if (grid is null || !grid.InBounds(from) || !grid.InBounds(to))
+        if (!from.Valid || !to.Valid)
             return null;
-        if (!Parse(from, out _, out var fromLayer) || !Parse(to, out _, out var toLayer) || fromLayer != toLayer)
+        try
+        {
+            return GravshipUtility.TryGetPathFuelCost(from, to, out _, out var distance, 1f, 1f)
+                && distance >= 0 ? distance : null;
+        }
+        catch (Exception e)
+        {
+            Log.WarningOnce("[RimworldStatistics] Unable to resolve a completed gravship path; "
+                + "flight distance remains unknown. " + e, "RWS.odyssey.path".GetHashCode());
             return null;
-        var distance = grid.ApproxDistanceInTiles(from, to);
-        return float.IsFinite(distance) && distance >= 0 ? distance : null;
+        }
     }
 }
 
@@ -121,10 +133,10 @@ public static class OdysseyLandingMetricPatch
             || engine.Faction != Faction.OfPlayer || engine.Map != targetMap
             || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
             return;
-        // ApproxDistanceInTiles is a geometric estimate, NOT a confirmed
-        // travelled path length. A conservative unknown prevents a false
-        // number from being presented as an authoritative flight distance.
-        double? length = null;
+        // The landing has completed and the original player engine is spawned
+        // at the destination. Resolve the vanilla traversal route now, not from
+        // a launch UI preview or a geometric approximation.
+        var length = OdysseyArrivalFacts.ConfirmedRouteDistance(from, to);
         GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedLanding(
             s, GameFacts.Id(engine), layerId, tileId,
             playerShip: true, successfullyLanded: true,
