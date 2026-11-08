@@ -61,6 +61,9 @@ internal static class SavedStateMetricReader
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
                         observation.Metrics[key] = value;
+                observation.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+                observation.EvidenceByAcquisition[unit] = Metrics.MetricGates.IsExperimental(unit)
+                    ? MetricEvidence.Experimental : MetricEvidence.Verified;
             }
             catch (Exception e)
             {

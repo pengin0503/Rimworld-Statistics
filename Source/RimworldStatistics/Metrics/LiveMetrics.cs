@@ -29,7 +29,7 @@ public static class LiveMetrics
     public static void StartNew(Game g)
     {
         Missed.Clear();
-        var acc = LiveMetricAccumulator.StartNew(MetricGates.RecordingFamilies(), Find.TickManager.TicksGame);
+        var acc = LiveMetricAccumulator.StartNew(MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         Install(g, acc);
     }
 
@@ -37,7 +37,7 @@ public static class LiveMetrics
     public static LiveMetricAccumulator Resume(Game g, string? raw)
     {
         Missed.Clear();
-        var acc = LiveMetricAccumulator.Resume(raw, MetricGates.RecordingFamilies(), Find.TickManager.TicksGame);
+        var acc = LiveMetricAccumulator.Resume(raw, MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         Install(g, acc);
         return acc;
     }
