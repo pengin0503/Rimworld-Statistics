@@ -260,14 +260,21 @@ public static class MetricCalculator
 
     private static NumericRow AcrossObservations(MetricDefinition d, List<MetricObservation> observations)
     {
-        var values = observations.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
+        // A zero emitted while the DLC was absent is not an observed zero and must not
+        // take part in a historical maximum/minimum. A nonzero, explicitly recorded
+        // value remains evidence even when the DLC list says it was absent.
+        var applicable = observations.Where(o => !DlcAbsent(d, o)
+            || Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is { } recorded && recorded != 0).ToList();
+        if (applicable.Count == 0)
+            return Row(d, MetricEntry.Scalar, new NumericValue { Coverage = MetricCoverage.NotApplicable });
+        var values = applicable.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
             .Where(x => x.Value?.Number is not null).ToList();
         if (values.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var best = d.Selection == ColonySelection.ObservationMax
             ? values.OrderByDescending(x => x.Value!.Number).First()
             : values.OrderBy(x => x.Value!.Number).First();
-        var partial = values.Count < observations.Count || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
+        var partial = values.Count < applicable.Count || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
         return Row(d, MetricEntry.Scalar, new NumericValue
         {
             Number = best.Value!.Number,
