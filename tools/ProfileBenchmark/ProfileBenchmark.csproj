@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>RimworldStatistics.ProfileBenchmark</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Source/RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
+  </ItemGroup>
+</Project>
