@@ -44,7 +44,7 @@ foreach (var h in md.TypeDefinitions)
             name = md.GetString(method.Name),
             attributes = method.Attributes.ToString(),
             parameters = pars,
-            signature = new { parameters = sig.ParameterTypes },
+            signature = new { parameters = sig.ParameterTypes, returnType = sig.ReturnType },
         });
     }
     var parent = def.BaseType.IsNil ? null : types.TypeName(def.BaseType);
