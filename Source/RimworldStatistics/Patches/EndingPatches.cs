@@ -147,8 +147,9 @@ public static class QuestPartEndGamePatch
             var royal = root == "EndGame_RoyalAscent";
             var launchedNow = EndingPatches.Launched;
             var departed = Math.Max(0, launchedNow - __state.LaunchedBefore);
-            // The part adds the colonists of its SENTCOLONISTS list to colonistsLaunched: they are the participants (N1-F-004).
-            int? party = __state.Sent && launchedNow >= __state.LaunchedBefore ? launchedNow - __state.LaunchedBefore : null;
+            // The part adds the colonists of its SENTCOLONISTS list to colonistsLaunched: for Royal Ascent they are the
+            // participants (N1-F-004). Another quest's ending has no participation definition here and gets none.
+            int? party = royal && __state.Sent && launchedNow >= __state.LaunchedBefore ? launchedNow - __state.LaunchedBefore : null;
             if (EndingPatches.RecordNow(new EndingSignal(royal ? EndingType.RoyalAscent : EndingType.Other, departed, royal ? null : root, party)))
                 EndingRuntime.Context.NoteQuestEndingRecorded();
         });

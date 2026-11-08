@@ -29,7 +29,10 @@ public static class FoodFamily
     public const int StockObservationGap = 420;
 
     // Revision 2 added N2-F-010 and N1-A-008: a revision-1 checkpoint did not measure them and is never continued.
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 2, Build = Build };
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 2, Build = Build, Interrupted = (s, throughTick, _) => AccrueOpen(s, throughTick),
+    };
 
     private const string Spoil = "spoiled";
     private const string Eaten = "eaten";
@@ -118,11 +121,16 @@ public static class FoodFamily
     /// <summary>Read only (the verification harness): the growing-zone cells tracked now; null while unknown.</summary>
     public static long? TrackedGrowingCells(FamilyState s) => s.Tracked(Grow, Cells);
 
-    /// <summary>The main harvest of a player-harvested crop standing in a growing zone.</summary>
-    public static void ZoneHarvested(FamilyState s, int units)
+    /// <summary>
+    /// The main harvest of a player-harvested crop standing in a growing zone. The cell-day integral is brought up to
+    /// <paramref name="tick"/> first, so an interruption later can never keep a harvest without the cell-days that preceded it.
+    /// </summary>
+    public static void ZoneHarvested(FamilyState s, int units, int tick)
     {
-        if (units > 0 && s.Tracked(Grow, Cells) is not null)
-            s.Count(ZoneHarvest, units);
+        if (units <= 0 || s.Tracked(Grow, Cells) is null)
+            return;
+        AccrueGrowing(s, tick);
+        s.Count(ZoneHarvest, units);
     }
 
     private static void AccrueGrowing(FamilyState s, int tick)
@@ -173,10 +181,14 @@ public static class FoodFamily
             cellTicks += cells * (double)(c.State.ThroughTick - since);
         var units = c.State.Peek(ZoneHarvest)?.N ?? 0;
         var cellDays = cellTicks / StatFormat.TicksPerDay;
+        if (cellDays <= 0)
+        {
+            // No growing area was measured (none known, or no zone at all): a yield per cell-day is not defined. A harvest
+            // without any cell-day would contradict the tracked count and is unknown rather than a number.
+            c.Put(HarvestPerGrowingCell, c.Value(coverage: units == 0 ? MetricCoverage.NotApplicable : MetricCoverage.Unknown, numerator: units, denominator: 0));
+            return;
+        }
         var partial = c.State.Peek(GrowDrift)?.Overflow == true;
-        if (cellTicks <= 0 && known is null && c.State.Peek(CellTicks) is null)
-            c.Put(HarvestPerGrowingCell, c.Value(coverage: MetricCoverage.NotApplicable, numerator: 0, denominator: 0));   // never measured
-        else
-            c.Put(HarvestPerGrowingCell, c.Value(real: cellDays > 0 ? units / cellDays : null, numerator: units, denominator: cellDays, partial: partial));
+        c.Put(HarvestPerGrowingCell, c.Value(real: units / cellDays, numerator: units, denominator: cellDays, partial: partial));
     }
 }

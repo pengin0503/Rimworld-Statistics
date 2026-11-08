@@ -226,14 +226,25 @@ public static class WithdrawalMetricPatch
     public static void Postfix(Hediff_Addiction __instance)
     {
         var pawn = __instance?.pawn;
-        if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || LiveMetrics.Family(MedicineFamily.Name) is null)
+        if (pawn == null || LiveMetrics.Family(MedicineFamily.Name) is null)
             return;
-        if (__instance!.Need is not { } need)
-            return;
-        var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
-        var id = __instance.GetUniqueLoadID();
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.AddictionNeedChanged(s, id, withdrawal, tick));
+        try
+        {
+            if (__instance!.Need is not { } need)
+                return;
+            var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
+            // An onset counts for a living free colonist only; leaving withdrawal is passed on for anyone, so a pawn that was
+            // a prisoner or away when it recovered is not left marked as still in withdrawal.
+            if (withdrawal && (pawn.Dead || !pawn.IsFreeColonist))
+                return;
+            var id = __instance.GetUniqueLoadID();
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.AddictionNeedChanged(s, id, withdrawal, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(MedicineFamily.Name, e);
+        }
     }
 }
 

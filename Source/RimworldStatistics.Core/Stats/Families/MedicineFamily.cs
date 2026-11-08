@@ -70,7 +70,11 @@ public static class MedicineFamily
     public const int StayMergeTicks = 60;
 
     // Revision 2 added N3-H-005 and N3-H-011: a revision-1 checkpoint did not measure them and is never continued.
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 2, Build = Build };
+    // An interruption settles the stays whose pawn got up long enough before the game's latest tick; open stays are dropped.
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 2, Build = Build, Interrupted = (s, _, latestTick) => SettleStays(s, latestTick),
+    };
 
     private const string TendCount = "tends";
     private const string TendByDoctor = "tends_by_doctor";

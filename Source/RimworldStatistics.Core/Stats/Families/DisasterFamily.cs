@@ -26,7 +26,11 @@ public static class DisasterFamily
     public static readonly IReadOnlySet<string> Conditions = new HashSet<string>(StringComparer.Ordinal)
         { "SolarFlare", "ColdSnap", "HeatWave", "VolcanicWinter", "ToxicFallout", "Eclipse" };
 
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
+    // An interruption closes the union intervals at the last measured tick (never later: an end may have been missed).
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 1, Build = Build, Interrupted = (s, throughTick, _) => AccrueOpenIntervals(s, throughTick),
+    };
 
     private const string Starts = "starts";        // By def
     private const string Days_ = "days";            // By def: closed ticks

@@ -45,7 +45,7 @@ public static class CaravanFamily
     private const string Concurrent_ = "concurrent";
     private const string Start = "start";   // active: caravan id → departure tick
     private const string Dist = "dist";     // active: caravan id → tiles walked
-    private const string Shrine = "shrine";             // active: shrine key → tick it was first seen sealed
+    private const string ShrineWatch = "shrines_watched";    // By: sealed shrine key → tick first seen sealed (kept across gaps)
     private const string ShrinesOpened = "shrines_opened";   // distinct shrine keys opened (each one once)
     private const string ShrineMissed = "shrines_missed";    // Overflow: a watched shrine was found open without its opening seen
 
@@ -119,46 +119,57 @@ public static class CaravanFamily
         return true;
     }
 
-    /// <summary>A shrine seen with its centre still fogged: watched until it opens (never again once it has opened).</summary>
+    /// <summary>
+    /// A shrine seen with its centre still fogged: watched until it opens (never again once it has opened). The watch is a
+    /// register of structures, not an open interval, so an interruption keeps it (an approached shrine has no trigger left to be
+    /// found by again); a gap still makes the count partial through the family's coverage.
+    /// </summary>
     public static void ShrineSealed(FamilyState s, string key, int tick)
     {
-        if (s.Peek(ShrinesOpened)?.By?.ContainsKey(key) == true || s.Tracked(Shrine, key) is not null)
+        if (s.Peek(ShrinesOpened)?.By?.ContainsKey(key) == true || s.Peek(ShrineWatch)?.By?.ContainsKey(key) == true)
             return;
-        s.Track(Shrine, key, tick);
+        var watch = s.Acc(ShrineWatch);
+        watch.By ??= new Dictionary<string, double>(StringComparer.Ordinal);
+        if (watch.By.Count >= FamilyOps.KeyCap)
+        {
+            watch.Overflow = true;   // not watched: its opening could be missed
+            return;
+        }
+        watch.By[key] = tick;
     }
+
+    private static bool Unwatch(FamilyState s, string key) => s.Peek(ShrineWatch)?.By?.Remove(key) == true;
 
     /// <summary>The centre of a watched shrine was unfogged: it was opened.</summary>
     public static void ShrineUnsealed(FamilyState s, string key)
     {
-        if (s.Untrack(Shrine, key) is null)
-            return;
-        s.Distinct(ShrinesOpened, key);
+        if (Unwatch(s, key))
+            s.Distinct(ShrinesOpened, key);
     }
 
     /// <summary>
-    /// A watched shrine was found open without its opening having been seen (e.g. at a load after a missed event): it is not
+    /// A watched shrine was found open without its opening having been seen (e.g. at a load after unrecorded time): it is not
     /// counted, and the count is partial from then on.
     /// </summary>
     public static void ShrineFoundOpen(FamilyState s, string key)
     {
-        if (s.Untrack(Shrine, key) is null)
-            return;
-        s.Acc(ShrineMissed).Overflow = true;
+        if (Unwatch(s, key))
+            s.Acc(ShrineMissed).Overflow = true;
     }
 
     /// <summary>A map was removed: its shrines are no longer watched.</summary>
     public static void ShrinesOnMapGone(FamilyState s, string mapId)
     {
-        if (!s.Active.TryGetValue(Shrine, out var watched))
+        if (s.Peek(ShrineWatch)?.By is not { } watched)
             return;
         var prefix = mapId + "|";
         foreach (var key in watched.Keys.Where(k => k.StartsWith(prefix, StringComparison.Ordinal)).ToList())
-            s.Untrack(Shrine, key);
+            watched.Remove(key);
     }
 
     /// <summary>The shrines watched now, in key order (the adapter's lookup is rebuilt from these).</summary>
     public static IReadOnlyList<string> WatchedShrines(FamilyState s)
-        => s.Active.TryGetValue(Shrine, out var watched) ? watched.Keys.Order(StringComparer.Ordinal).ToList() : new List<string>();
+        => s.Peek(ShrineWatch)?.By is { } watched ? watched.Keys.Order(StringComparer.Ordinal).ToList() : new List<string>();
 
     private static void Build(FamilyOutputContext c)
     {
@@ -180,7 +191,7 @@ public static class CaravanFamily
         if (c.State.TrackerOverflowed(Start) || c.State.TrackerOverflowed(Dist))
             c.MarkPartial(LongestExpedition, LongestDistance, Lost_);
         // A shrine not watched at the cap, or found open unseen, can be missing from the count.
-        if (c.State.TrackerOverflowed(Shrine) || c.State.Peek(ShrineMissed)?.Overflow == true)
+        if (c.State.Peek(ShrineWatch)?.Overflow == true || c.State.Peek(ShrineMissed)?.Overflow == true)
             c.MarkPartial(AncientDangersOpened);
     }
 }

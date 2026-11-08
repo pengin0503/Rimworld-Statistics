@@ -66,7 +66,7 @@ public static class LiveMetrics
             return null;
         }
         if (!Missed.IsEmpty && Missed.TryRemove(name, out _))
-            acc.MarkGap(name);
+            acc.MarkGap(name, Find.TickManager.TicksGame);
         var family = acc.Family(name);
         if (family != null)
             Hits[name] = Hits.GetValueOrDefault(name) + 1;
@@ -95,7 +95,7 @@ public static class LiveMetrics
             return;
         foreach (var name in Missed.Keys.ToList())
             if (Missed.TryRemove(name, out _))
-                acc.MarkGap(name);
+                acc.MarkGap(name, Find.TickManager.TicksGame);
     }
 
     /// <summary>The save-time recounts of the families (game thread only; a save elsewhere skips them).</summary>

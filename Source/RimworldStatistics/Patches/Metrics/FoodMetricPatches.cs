@@ -62,6 +62,11 @@ internal static class FoodStockProbe
 
     public static void Forget(Map map) => ByMap.Remove(map.uniqueID);
 
+    /// <summary>
+    /// The defs <c>ResourceCounter.TotalHumanEdibleNutrition</c> sums (IsNutritionGivingIngestible and HumanEdible, weighted by
+    /// the nutrition stat): "> 0" here is the same test with an early exit and the cached stat, because this runs on every
+    /// recount (every haul) while the vanilla property recomputes the stat of every counted def on each call.
+    /// </summary>
     private static bool Edible(ThingDef def)
         => def.IsNutritionGivingIngestible && def.ingestible.HumanEdible && def.ingestible.CachedNutrition > 0f;
 
@@ -177,13 +182,20 @@ public static class ZoneHarvestMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
-        if (worker == null || harvested == null || !GameFacts.IsPlayer(worker) || LiveMetrics.Family(FoodFamily.Name) is null)
+        if (LiveMetrics.Family(FoodFamily.Name) is null)
             return;
-        var plant = HarvestProbe.JobPlant(worker);
-        if (plant == null || !plant.Spawned || !plant.IsCrop || plant.Map.zoneManager.ZoneAt(plant.Position) is not Zone_Growing)
-            return;
-        var units = harvested.stackCount;
-        GameFacts.Record(FoodFamily.Name, s => FoodFamily.ZoneHarvested(s, units));
+        try
+        {
+            if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant || plant.Map.zoneManager.ZoneAt(plant.Position) is not Zone_Growing)
+                return;
+            var units = harvested.stackCount;
+            var tick = GameFacts.Tick;
+            GameFacts.Record(FoodFamily.Name, s => FoodFamily.ZoneHarvested(s, units, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(FoodFamily.Name, e);
+        }
     }
 }
 
@@ -193,9 +205,18 @@ public static class FoodMapRemovedMetricPatch
 {
     public static void Prefix(Map map)
     {
-        if (map == null || !Find.Maps.Contains(map) || LiveMetrics.Family(FoodFamily.Name) is null)
+        if (map == null || LiveMetrics.Family(FoodFamily.Name) is null)
             return;
-        FoodStockProbe.Forget(map);
-        GrowingProbe.Changed(-GrowingProbe.CellsOn(map));
+        try   // a failure here must close the food family only, never break the map's removal
+        {
+            if (!Find.Maps.Contains(map))
+                return;
+            FoodStockProbe.Forget(map);
+            GrowingProbe.Changed(-GrowingProbe.CellsOn(map));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(FoodFamily.Name, e);
+        }
     }
 }

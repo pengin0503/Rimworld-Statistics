@@ -173,6 +173,21 @@ public sealed class NumericRemainingMetricsTests
     }
 
     [Fact]
+    public void HospitalStay_AGapProcessedLaterSettlesAStayThatEndedAfterTheLastSave()
+    {
+        // Review finding: MarkGap only knew the last save's tick, so a stay that ended after it was dropped as unfinished.
+        var (acc, s) = NewGame(MedicineFamily.Family);
+        Save(acc, 1 * Day);
+        MedicineFamily.BedEntered(s, "Thing_A", 7, 1 * Day + 1000);
+        MedicineFamily.BedLeft(s, "Thing_A", false, 2 * Day);
+        acc.MarkGap(MedicineFamily.Name, nowTick: 3 * Day);
+        var v = V(Save(acc, 4 * Day), MedicineFamily.HospitalStayMean);
+        Assert.Equal(1.0, v.Denominator);
+        Assert.Equal((1.0 * Day - 1000) / Day, v.RealValue!.Value, 12);
+        Assert.Equal(MetricCoverage.Partial, v.Coverage);
+    }
+
+    [Fact]
     public void HospitalStay_PastTheTrackerCapIsPartial()
     {
         var (acc, s) = NewGame(MedicineFamily.Family);
@@ -253,10 +268,10 @@ public sealed class NumericRemainingMetricsTests
     {
         var (acc, s) = NewGame(FoodFamily.Family);
         FoodFamily.GrowingCellsBaseline(s, 100, 0);
-        FoodFamily.ZoneHarvested(s, 30);
+        FoodFamily.ZoneHarvested(s, 30, 2 * Day);
         for (var i = 0; i < 100; i++)
             FoodFamily.GrowingCellsChanged(s, +1, 5 * Day);
-        FoodFamily.ZoneHarvested(s, 20);
+        FoodFamily.ZoneHarvested(s, 20, 7 * Day);
         var v = V(Save(acc, 10 * Day), FoodFamily.HarvestPerGrowingCell);
         Assert.Equal((50.0, 1500.0), (v.Numerator!.Value, v.Denominator!.Value));   // 100 cells × 5 days + 200 cells × 5 days
         Assert.Equal(50.0 / 1500.0, v.RealValue!.Value, 12);
@@ -267,11 +282,38 @@ public sealed class NumericRemainingMetricsTests
     public void GrowingYield_NothingCountsBeforeTheCellsAreKnown()
     {
         var (acc, s) = NewGame(FoodFamily.Family);
-        FoodFamily.ZoneHarvested(s, 30);                 // no baseline yet: neither side is measured
+        FoodFamily.ZoneHarvested(s, 30, 1 * Day);        // no baseline yet: neither side is measured
         FoodFamily.GrowingCellsChanged(s, +5, 1 * Day);
         var v = V(Save(acc, 2 * Day), FoodFamily.HarvestPerGrowingCell);
         Assert.Equal((0.0, 0.0), (v.Numerator!.Value, v.Denominator!.Value));
         Assert.Null(v.RealValue);
+        Assert.Equal(MetricCoverage.NotApplicable, v.Coverage);
+    }
+
+    [Fact]
+    public void GrowingYield_NoGrowingZoneIsNotApplicable_NotACompleteBlank()
+    {
+        // Review finding: a known count of 0 cells gave a "complete" value with no number.
+        var (acc, s) = NewGame(FoodFamily.Family);
+        FoodFamily.GrowingCellsBaseline(s, 0, 0);
+        var v = V(Save(acc, 2 * Day), FoodFamily.HarvestPerGrowingCell);
+        Assert.Null(v.RealValue);
+        Assert.Equal(MetricCoverage.NotApplicable, v.Coverage);
+    }
+
+    [Fact]
+    public void GrowingYield_AGapAfterHarvestsKeepsBothSidesAligned()
+    {
+        // Review finding: after a mid-session gap the cell-days since the last save were lost but the harvests were kept.
+        var (acc, s) = NewGame(FoodFamily.Family);
+        FoodFamily.GrowingCellsBaseline(s, 10, 0);
+        Save(acc, 1 * Day);
+        FoodFamily.ZoneHarvested(s, 5, 1 * Day + Day / 2);   // the integral is brought up to each counted harvest
+        acc.MarkGap(FoodFamily.Name, nowTick: 2 * Day);
+        FoodFamily.GrowingCellsBaseline(s, 10, 3 * Day);
+        var v = V(Save(acc, 4 * Day), FoodFamily.HarvestPerGrowingCell);
+        Assert.Equal((5.0, 25.0), (v.Numerator!.Value, v.Denominator!.Value));   // 10 cells × 1.5 days, then 10 × 1 day
+        Assert.Equal(MetricCoverage.Partial, v.Coverage);
     }
 
     [Fact]
@@ -285,7 +327,7 @@ public sealed class NumericRemainingMetricsTests
         var resumed = LiveMetricAccumulator.Resume(json, new[] { FoodFamily.Family.Spec }, 2 * Day);
         var r = resumed.Family(FoodFamily.Name)!;
         FoodFamily.GrowingCellsBaseline(r, 10, 2 * Day);   // the startup recount agrees
-        FoodFamily.ZoneHarvested(r, 4);
+        FoodFamily.ZoneHarvested(r, 4, 3 * Day);
         var v = V(Save(resumed, 4 * Day), FoodFamily.HarvestPerGrowingCell);
         Assert.Equal((4.0, 40.0), (v.Numerator!.Value, v.Denominator!.Value));
         Assert.Equal(MetricCoverage.Complete, v.Coverage);
@@ -297,7 +339,7 @@ public sealed class NumericRemainingMetricsTests
         var (acc, s) = NewGame(FoodFamily.Family);
         FoodFamily.GrowingCellsBaseline(s, 10, 0);
         FoodFamily.GrowingCellsBaseline(s, 12, 1 * Day);    // cells changed without a tracked AddCell/RemoveCell (e.g. a mod)
-        FoodFamily.ZoneHarvested(s, 3);
+        FoodFamily.ZoneHarvested(s, 3, 1 * Day);
         var v = V(Save(acc, 2 * Day), FoodFamily.HarvestPerGrowingCell);
         Assert.Equal((3.0, 22.0), (v.Numerator!.Value, v.Denominator!.Value));
         Assert.Equal(MetricCoverage.Partial, v.Coverage);
@@ -310,10 +352,10 @@ public sealed class NumericRemainingMetricsTests
         FoodFamily.GrowingCellsBaseline(s, 10, 0);
         Save(acc, 1 * Day);
         acc.MarkGap(FoodFamily.Name);                        // integral kept through the last save
-        FoodFamily.ZoneHarvested(s, 7);                     // not measured: the cells are unknown now
+        FoodFamily.ZoneHarvested(s, 7, 1 * Day + 1);        // not measured: the cells are unknown now
         FoodFamily.GrowingCellsChanged(s, +10, 1 * Day + 5);
         FoodFamily.GrowingCellsBaseline(s, 20, 2 * Day);     // the save-time recount resumes the measure
-        FoodFamily.ZoneHarvested(s, 2);
+        FoodFamily.ZoneHarvested(s, 2, 2 * Day);
         var v = V(Save(acc, 3 * Day), FoodFamily.HarvestPerGrowingCell);
         Assert.Equal((2.0, 30.0), (v.Numerator!.Value, v.Denominator!.Value));
         Assert.Equal(MetricCoverage.Partial, v.Coverage);
@@ -358,6 +400,32 @@ public sealed class NumericRemainingMetricsTests
         var v = V(Save(resumed, 2 * Day), CaravanFamily.AncientDangersOpened);
         Assert.Equal(1L, v.IntegerValue);
         Assert.Equal(MetricCoverage.Complete, v.Coverage);
+    }
+
+    [Fact]
+    public void AncientDanger_AGapKeepsTheWatchedShrines_ButTheCountIsPartial()
+    {
+        // Review follow-up: the watch is a register of sealed structures, not an open interval; a gap must not forget it
+        // (an approached shrine has no trigger left to find it again).
+        var (acc, s) = NewGame(CaravanFamily.Family);
+        var a = CaravanFamily.ShrineKey("Map_0", 10, 10, 26, 24);
+        CaravanFamily.ShrineSealed(s, a, 0);
+        Save(acc, Day);
+        acc.MarkGap(CaravanFamily.Name, nowTick: 2 * Day);
+        Assert.Equal(new[] { a }, CaravanFamily.WatchedShrines(s));
+        CaravanFamily.ShrineUnsealed(s, a);
+        var v = V(Save(acc, 3 * Day), CaravanFamily.AncientDangersOpened);
+        Assert.Equal(1L, v.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, v.Coverage);
+    }
+
+    [Fact]
+    public void AncientDanger_PastTheWatchCapIsPartial()
+    {
+        var (acc, s) = NewGame(CaravanFamily.Family);
+        for (var i = 0; i <= FamilyOps.KeyCap; i++)
+            CaravanFamily.ShrineSealed(s, CaravanFamily.ShrineKey("Map_0", i, 0, i, 0), 0);
+        Assert.Equal(MetricCoverage.Partial, V(Save(acc, Day), CaravanFamily.AncientDangersOpened).Coverage);
     }
 
     [Fact]

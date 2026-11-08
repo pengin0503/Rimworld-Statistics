@@ -17,6 +17,18 @@ internal static class HarvestProbe
     public static int LastTick = -1;
 
     public static Plant? JobPlant(Pawn worker) => worker.CurJob?.targetA.Thing as Plant;
+
+    /// <summary>
+    /// The crop of a player's main harvest (QuestManager.Notify_PlantHarvested): the spawned, sown crop the worker's job targets.
+    /// Shared by the work (W-001) and food (N1-A-008) adapters so their harvest numerators never drift apart.
+    /// </summary>
+    public static Plant? PlayerCrop(Pawn? worker, Thing? harvested)
+    {
+        if (worker == null || harvested == null || !GameFacts.IsPlayer(worker))
+            return null;
+        var plant = JobPlant(worker);
+        return plant != null && plant.Spawned && plant.IsCrop ? plant : null;
+    }
 }
 
 [MetricAdapter(WorkFamily.Name)]
@@ -25,10 +37,7 @@ public static class PlantHarvestedMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
-        if (worker == null || harvested == null || !GameFacts.IsPlayer(worker))
-            return;
-        var plant = HarvestProbe.JobPlant(worker);
-        if (plant == null || !plant.Spawned || !plant.IsCrop)
+        if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant)
             return;
         var plantId = GameFacts.Id(plant);
         var tick = GameFacts.Tick;

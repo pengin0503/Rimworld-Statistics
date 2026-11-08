@@ -75,7 +75,7 @@ public sealed class LiveMetricAccumulator
             {
                 // Continuous only when the family recorded up to the very save this game was loaded from.
                 if (family.ThroughTick != payload.SaveTick || payload.SaveTick != tick)
-                    Interrupt(name, family, family.ThroughTick);
+                    Interrupt(name, family, family.ThroughTick, family.ThroughTick);
                 acc._recording[name] = family;
                 acc._order.Add(name);
             }
@@ -121,9 +121,9 @@ public sealed class LiveMetricAccumulator
 
     /// <summary>
     /// An event of a recording family was missed (e.g. it arrived off the game thread): its totals are no longer complete and its
-    /// open intervals are dropped.
+    /// open intervals are dropped. <paramref name="nowTick"/> is the game's tick when the gap is handled (null when unknown).
     /// </summary>
-    public void MarkGap(string name)
+    public void MarkGap(string name, int? nowTick = null)
     {
         if (_recording.TryGetValue(name, out var family))
         {
@@ -131,19 +131,14 @@ public sealed class LiveMetricAccumulator
             var throughTick = family.ThroughTick;
             if (_last?.Families.GetValueOrDefault(name) is { } saved && saved.Revision == family.Revision)
                 throughTick = Math.Max(throughTick, saved.ThroughTick);
-            Interrupt(name, family, throughTick);
+            Interrupt(name, family, throughTick, Math.Max(throughTick, nowTick ?? throughTick));
         }
     }
 
-    private static void Interrupt(string name, FamilyState family, int throughTick)
+    private static void Interrupt(string name, FamilyState family, int throughTick, int latestTick)
     {
-        // What the active state measured up to the last known boundary is kept before the state is dropped.
-        if (name == DisasterFamily.Name)
-            DisasterFamily.AccrueOpenIntervals(family, throughTick);
-        else if (name == FoodFamily.Name)
-            FoodFamily.AccrueOpen(family, throughTick);
-        else if (name == MedicineFamily.Name)
-            MedicineFamily.SettleStays(family, throughTick);
+        // What the active state measured is kept before the state is dropped (each family decides what that is).
+        LiveFamilies.Find(name)?.Interrupted?.Invoke(family, throughTick, latestTick);
         family.Continuous = false;
         family.Active.Clear();
         // A completed gap needs two observed events in the same uninterrupted stretch.
@@ -156,7 +151,7 @@ public sealed class LiveMetricAccumulator
     {
         if (!_recording.Remove(name, out var family))
             return;
-        Interrupt(name, family, tick);
+        Interrupt(name, family, tick, tick);
         family.ThroughTick = tick;
         _kept[name] = family;
         _stopVersion++;

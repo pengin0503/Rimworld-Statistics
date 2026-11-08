@@ -16,6 +16,13 @@ public sealed class LiveFamily
 
     public required Action<FamilyOutputContext> Build { get; init; }
 
+    /// <summary>
+    /// Called before an interruption (a gap, a stop, a resume after unrecorded time) drops the family's active state, with the
+    /// last tick the range is known to have been measured through and the latest tick the game had reached when the
+    /// interruption was handled. A family keeps here what its open state already measured; nothing may span the gap.
+    /// </summary>
+    public Action<FamilyState, int, int>? Interrupted { get; init; }
+
     public FamilySpec Spec => new(Name, Revision);
 }
 
