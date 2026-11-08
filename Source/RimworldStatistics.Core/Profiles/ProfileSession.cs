@@ -127,7 +127,7 @@ public sealed class ProfileSession
                 Stats = stats,
                 MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
                 Numeric = MetricCalculator.BuildView(_profile, colonies, stats,
-                    MetricDisplayPolicy.SelectDefinitions(MetricRegistry.Catalog,
+                    MetricRegistry.Compose(_profile.ModMetricDescriptors,
                         visibleUnitIds is null ? new HashSet<string>(StringComparer.Ordinal)
                             : new HashSet<string>(visibleUnitIds, StringComparer.Ordinal))),
             };

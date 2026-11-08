@@ -209,6 +209,10 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             ProfileService.Session.Mutate(p =>
             {
                 ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);
+                // Record the interpretation before snapshot compaction sees the new keys.
+                var providers = ModProviderAdapters.ActiveDescriptors;
+                if (providers.Count > 0 && (numeric != null || snapshot != null))
+                    ProfileMutations.RememberModMetrics(p, providers);
                 if (numeric != null)
                     ProfileMutations.UpsertMetricObservation(p, numeric);
                 if (snapshot != null)

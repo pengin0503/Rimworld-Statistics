@@ -150,7 +150,12 @@ public sealed record MetricDefinition
     public required string LabelKey { get; init; }
     public required string DescriptionKey { get; init; }
 
-    public int Revision => MetricKeys.Revision(StoredKey);
+    /// <summary>Optional external-provider metadata; null for built-in metrics.</summary>
+    public string? ProviderId { get; init; }
+    public string? OwnerPackageId { get; init; }
+    public int? DefinitionRevision { get; init; }
+
+    public int Revision => DefinitionRevision ?? MetricKeys.Revision(StoredKey);
 }
 
 /// <summary>
@@ -160,6 +165,8 @@ public sealed record MetricDefinition
 /// </summary>
 public static class MetricRegistry
 {
+    /// <summary>Presentation-only marker for historical optional MOD statistics.</summary>
+    public const string OptionalModVisibilityId = "mod.*";
     private static MetricDefinition Def(string key, string ledger, MetricCategory category, MetricUnit unit, MetricProvenance provenance,
         OverallAggregation overall, string label, string description, string? stored = null, ColonySelection selection = ColonySelection.Representative,
         bool signed = false, bool breakdown = false)
@@ -258,4 +265,17 @@ public static class MetricRegistry
 
     /// <summary>A catalog output by key (published or not).</summary>
     public static MetricDefinition? Find(string key) => ByKey.GetValueOrDefault(key);
+
+    /// <summary>Historical provider descriptors remain visible even if the owner MOD was later removed.
+    /// Built-in publication rules are unchanged; external definitions use the same calculator.</summary>
+    public static IReadOnlyList<MetricDefinition> Compose(
+        IEnumerable<ModMetricDescriptor>? historicalDescriptors, IReadOnlySet<string> visibleUnits)
+    {
+        var provider = new ModMetricProviderRegistry();
+        foreach (var descriptor in historicalDescriptors ?? Array.Empty<ModMetricDescriptor>())
+            provider.Register(descriptor);
+        return MetricDisplayPolicy.SelectDefinitions(Catalog, visibleUnits)
+            .Concat(provider.BuildCatalog().Where(d => visibleUnits.Contains(OptionalModVisibilityId)
+                || d.Acquisition is { } id && visibleUnits.Contains(id))).ToArray();
+    }
 }

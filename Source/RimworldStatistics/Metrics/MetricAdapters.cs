@@ -44,6 +44,15 @@ public static class MetricAdapters
 
     private static void ApplyOpen(Harmony harmony)
     {
+        // A third-party provider must never take down the built-in acquisition scan.
+        try
+        {
+            ModProviderAdapters.Initialize(harmony);
+        }
+        catch (Exception e)
+        {
+            Log.Error("[RimworldStatistics] Optional MOD statistics startup failed; built-in acquisition continues.\n" + e);
+        }
         var adapters = AdapterClasses();
         foreach (var unit in AcquisitionUnits.All)
         {
@@ -66,12 +75,12 @@ public static class MetricAdapters
                 MetricGates.MarkApplied(unit.Id);
         }
 
-        if (!LiveFamilies.All.Any(f => MetricGates.IsRecording(f.Name)))
+        if (!LiveFamilies.Active.Any(f => MetricGates.IsRecording(f.Name)))
             return;
         var checkpoint = adapters.Where(a => a.Units.Contains(CheckpointUnit)).Select(a => a.Type).ToList();
         CheckpointApplied = checkpoint.Count > 0 && checkpoint.All(t => TryApply(harmony, t, adapters));
         if (!CheckpointApplied)
-            foreach (var f in LiveFamilies.All)
+            foreach (var f in LiveFamilies.Active)
                 MetricGates.Fail(f.Name, new InvalidOperationException("the checkpoint save patch could not be applied"));
     }
 

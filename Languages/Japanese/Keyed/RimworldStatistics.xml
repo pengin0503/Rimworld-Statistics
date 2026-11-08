@@ -826,4 +826,7 @@
   <RWS_Exp_EvidenceMixed>混在（未検証と検証済み）</RWS_Exp_EvidenceMixed>
   <RWS_Exp_EvidenceUnknown>記録時の来歴不明（旧データを含む）</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>記録開始日: {0}日目</RWS_Exp_Since>
+  <RWS_Mod_RequiresMod>必要なMOD: {0}</RWS_Mod_RequiresMod>
+  <RWS_Mod_Provider>提供元MOD: {0}（Provider ID: {1}）</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>提供元MODが現在ありません。記録済みの値は保持されていますが、新しい測定は行われません。</RWS_Mod_SourceUnavailable>
 </LanguageData>

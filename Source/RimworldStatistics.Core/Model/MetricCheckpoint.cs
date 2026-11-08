@@ -41,6 +41,13 @@ public sealed class FamilyState
     /// <summary>Optional: absent in older checkpoints, which have unknown capture evidence.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public MetricEvidence? Evidence { get; set; }
+
+    /// <summary>Optional capture origin for an external provider's event family.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ProviderId { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ModProviderCapture? ProviderCapture { get; set; }
     public Dictionary<string, Accumulator> Metrics { get; set; } = new(StringComparer.Ordinal);
     public Dictionary<string, Dictionary<string, long>> Active { get; set; } = new(StringComparer.Ordinal);
 
@@ -61,7 +68,7 @@ public sealed class FamilyState
             return new FamilyState { Quarantined = q };
         var c = new FamilyState
         {
-            Revision = Revision, SinceTick = SinceTick, ThroughTick = ThroughTick, Continuous = Continuous, Evidence = Evidence,
+            Revision = Revision, SinceTick = SinceTick, ThroughTick = ThroughTick, Continuous = Continuous, Evidence = Evidence, ProviderId = ProviderId, ProviderCapture = ProviderCapture,
             ExtensionData = ExtensionData is null ? null : new Dictionary<string, JsonElement>(ExtensionData),
         };
         foreach (var (k, v) in Metrics)

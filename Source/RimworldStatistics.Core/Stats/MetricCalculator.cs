@@ -246,6 +246,21 @@ public static class MetricCalculator
             return AcrossObservations(d, observations);
 
         var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : latest;
+        var staleProvider = false;
+        // A removed optional provider cannot produce a reading in newer saves.
+        // Render its last *actual* captured value as historical partial data,
+        // never fabricate a zero or silently erase it from the UI.
+        if (d.ProviderId is not null && (rep is null || Entry(rep, d) is null))
+        {
+            var historical = observations.Where(o => Entry(o, d) is not null)
+                .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
+                .ThenBy(o => o.Key, Ord).FirstOrDefault();
+            if (historical is not null)
+            {
+                rep = historical;
+                staleProvider = true;
+            }
+        }
         if (rep is null)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var entry = Entry(rep, d);
@@ -269,6 +284,18 @@ public static class MetricCalculator
             };
         else
             value = NumericValue.Unknown;
+        if (staleProvider)
+        {
+            value = new NumericValue
+            {
+                Number = value.Number,
+                Coverage = MetricCoverage.Partial,
+                Evidence = value.Evidence,
+                Numerator = value.Numerator, Denominator = value.Denominator,
+                SinceTick = value.SinceTick, ThroughTick = value.ThroughTick,
+                SampleCount = value.SampleCount,
+            };
+        }
         // A family writes its zeros whatever the DLC state; a zero of a DLC output in an observation without that DLC says only
         // that the DLC was not there (a value recorded while it was active is shown).
         if (DlcAbsent(d, rep) && NothingRecorded(value) && breakdowns.All(b => NothingRecorded(b.Value)))
@@ -324,10 +351,10 @@ public static class MetricCalculator
     {
         var direct = definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
             && evidence.TryGetValue(id, out var captured) ? captured : MetricEvidence.UnknownLegacy;
-        // GetValueOrDefault on an enum dictionary returns UnknownLegacy even when the key
-        // does not exist. A record compacted for an unrelated metric must not weaken this one.
-        return observation.CompactedEvidenceByMetric is { } compactedEvidence
-            && compactedEvidence.TryGetValue(definition.StoredKey, out var compacted)
+        // Value-type GetValueOrDefault returns default(UnknownLegacy) when an unrelated
+        // compacted key exists; check presence before weakening capture confidence.
+        return observation.CompactedEvidenceByMetric is { } metadata
+            && metadata.TryGetValue(definition.StoredKey, out var compacted)
             ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
     }
 

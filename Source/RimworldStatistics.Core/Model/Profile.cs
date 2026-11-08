@@ -49,6 +49,9 @@ public sealed class Profile
     public List<ColonyKeyEntry> ColonyKeys { get; set; } = new();
     public ImportState ImportState { get; set; } = new();
 
+    /// <summary>Small historical interpretation catalog; never removed when a third-party MOD disappears.</summary>
+    public List<ModMetricDescriptor> ModMetricDescriptors { get; set; } = new();
+
     /// <summary>Numeric summaries, kept apart from <see cref="SaveObservations"/> and their pruning.</summary>
     [JsonConverter(typeof(MetricObservationsConverter))]
     public List<MetricObservation> MetricObservations { get; set; } = new();

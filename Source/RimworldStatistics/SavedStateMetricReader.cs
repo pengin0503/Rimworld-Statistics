@@ -17,7 +17,7 @@ internal static class SavedStateMetricReader
     public static MetricObservation? Read(ColonyIdentity identity, string gameVersion, DateTime utc)
     {
         var units = Metrics.MetricGates.RecordingSnapshots();
-        if (units.Count == 0)
+        if (units.Count == 0 && !Metrics.ModProviderAdapters.HasSnapshots)
             return null;
         var observation = new MetricObservation
         {
@@ -70,6 +70,7 @@ internal static class SavedStateMetricReader
                 Metrics.MetricGates.Fail(unit, e);
             }
         }
+        Metrics.ModProviderAdapters.CaptureSuccessfulSave(observation);
         return observation.Metrics.Count > 0 ? observation : null;
     }
 

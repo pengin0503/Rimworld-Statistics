@@ -79,6 +79,7 @@ public static class ProfileJson
         }
 
         p.ImportState ??= new ImportState();
+        p.ModMetricDescriptors = Clean(p.ModMetricDescriptors);
 
         p.MetricObservations = Clean(p.MetricObservations);
         foreach (var m in p.MetricObservations)

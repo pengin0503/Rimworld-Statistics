@@ -826,4 +826,7 @@
   <RWS_Exp_EvidenceMixed>Mixed verified and experimental capture</RWS_Exp_EvidenceMixed>
   <RWS_Exp_EvidenceUnknown>Unknown capture provenance (including legacy)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>Recording began at day {0}</RWS_Exp_Since>
+  <RWS_Mod_RequiresMod>Required MOD: {0}</RWS_Mod_RequiresMod>
+  <RWS_Mod_Provider>Source MOD: {0} (provider: {1})</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>Source MOD is not currently installed. Historical values are preserved; no new samples are recorded.</RWS_Mod_SourceUnavailable>
 </LanguageData>

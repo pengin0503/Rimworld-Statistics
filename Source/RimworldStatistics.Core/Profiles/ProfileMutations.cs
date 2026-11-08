@@ -5,6 +5,32 @@ public static class ProfileMutations
 {
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
+    /// <summary>Remember a provider's definition, even after it is uninstalled. A changed meaning needs a higher revision.</summary>
+    public static void RememberModMetrics(Profile profile, IEnumerable<ModMetricDescriptor> definitions)
+    {
+        profile.ModMetricDescriptors ??= new List<ModMetricDescriptor>();
+        var registry = new ModMetricProviderRegistry();
+        foreach (var existing in profile.ModMetricDescriptors)
+            registry.Register(existing);
+        foreach (var definition in definitions)
+        {
+            if (definition is null || !definition.IsValid())
+                continue;
+            var key = definition.StableKey;
+            var current = profile.ModMetricDescriptors.FindIndex(d => d.IsValid() && d.StableKey == key);
+            if (current >= 0)
+            {
+                var old = profile.ModMetricDescriptors[current];
+                if (old.ProviderId == definition.ProviderId && definition.Revision > old.Revision)
+                    profile.ModMetricDescriptors[current] = definition;
+                continue;
+            }
+            if (!registry.Register(definition).Accepted)
+                continue;
+            profile.ModMetricDescriptors.Add(definition);
+        }
+    }
+
     /// <summary>
     /// False when the current (non-superseded) observation of this file has the same size and time, was not a failure,
     /// and was read by this reader version or newer (spec §7.1: unchanged files are not read; failed ones are retried).
@@ -171,7 +197,11 @@ public static class ProfileMutations
         if (snapshots.Count < 2)
             return;
 
-        var definitions = SnapshotCatalog.Definitions;
+        var definitions = SnapshotCatalog.Definitions.Concat(
+            MetricRegistry.Compose(p.ModMetricDescriptors,
+                new HashSet<string>(Ord) { MetricRegistry.OptionalModVisibilityId })
+                .Where(d => d.ProviderId is not null && d.Source == MetricObservationSource.SaveSnapshot))
+            .ToArray();
         var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
         var kept = new HashSet<MetricObservation>();
         // Representative selection: latest tick, then UTC, then smallest key.
@@ -207,7 +237,20 @@ public static class ProfileMutations
         foreach (var d in definitions)
         {
             if (d.Selection == ColonySelection.Representative)
+            {
+                if (d.ProviderId is not null)
+                {
+                    // A later save may have been made without the optional provider.
+                    // Keep the last real reading as a historical witness rather than
+                    // letting newer vanilla-only saves erase the provider's result.
+                    var lastCaptured = snapshots.Where(o => Scalar(o, d) is not null)
+                        .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
+                        .ThenBy(o => o.Key, Ord).FirstOrDefault();
+                    if (lastCaptured is not null)
+                        kept.Add(lastCaptured);
+                }
                 continue;
+            }
             var applicable = snapshots.Where(o => Applicable(o, d)).ToList();
             if (applicable.Count == 0)
                 continue;
@@ -256,13 +299,24 @@ public static class ProfileMutations
             {
                 var direct = d.Acquisition is { } id && row.EvidenceByAcquisition is { } evidence
                     && evidence.TryGetValue(id, out var e) ? e : MetricEvidence.UnknownLegacy;
-                return row.CompactedEvidenceByMetric is { } historical
-                    && historical.TryGetValue(d.StoredKey, out var prior)
+                return row.CompactedEvidenceByMetric is { } metadata
+                    && metadata.TryGetValue(d.StoredKey, out var prior)
                     ? MetricEvidencePolicy.Combine(new[] { direct, prior }) : direct;
             }
             var values = removedRows.Select(Captured).Append(Captured(best));
             best.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
             best.CompactedEvidenceByMetric[d.StoredKey] = MetricEvidencePolicy.Combine(values);
+            if (d.ProviderId is { } providerId)
+            {
+                best.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(Ord);
+                foreach (var row in removedRows)
+                {
+                    if (row.ProviderCaptures?.GetValueOrDefault(providerId) is not { } capture)
+                        continue;
+                    best.ProviderCaptures[providerId] = best.ProviderCaptures.TryGetValue(providerId, out var previous)
+                        ? ModProviderCapture.Combine(previous, capture) : capture;
+                }
+            }
             best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
             best.CompactedSampleCounts[d.StoredKey] =
                 (int)Math.Min(int.MaxValue, Weight(best) + removed);
@@ -284,6 +338,13 @@ public static class ProfileMutations
     /// <summary>Per metric, a newer definition revision replaces the old one; for the same revision a worse value never hides a good one.</summary>
     private static void MergeMetrics(MetricObservation existing, MetricObservation obs)
     {
+        if (obs.ProviderCaptures is { } incomingCaptures)
+        {
+            existing.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(Ord);
+            foreach (var (providerId, capture) in incomingCaptures)
+                existing.ProviderCaptures[providerId] = existing.ProviderCaptures.TryGetValue(providerId, out var previous)
+                    ? ModProviderCapture.Combine(previous, capture) : capture;
+        }
         // Re-reading the same snapshot must not silently overwrite its earlier
         // capture-quality evidence. A conflict is represented conservatively.
         if (obs.EvidenceByAcquisition is { } received)

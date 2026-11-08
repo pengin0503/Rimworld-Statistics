@@ -15,6 +15,8 @@ public static class MetricGates
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
     private static IReadOnlySet<string> productionSelection = new HashSet<string>(StringComparer.Ordinal);
+    private static IReadOnlyDictionary<string, AcquisitionUnit> optionalUnits =
+        new Dictionary<string, AcquisitionUnit>(StringComparer.Ordinal);
 
     /// <summary>Called during Mod construction, before the startup adapter scan.</summary>
     public static void ConfigureProductionSelection(IReadOnlySet<string> selected)
@@ -23,11 +25,29 @@ public static class MetricGates
             productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
     }
 
+    /// <summary>Register optional units during startup only, using the startup-frozen user selection.</summary>
+    public static void ConfigureOptionalUnits(IReadOnlyCollection<AcquisitionUnit> units, ExperimentalSelection selection)
+    {
+        lock (Gate)
+        {
+            var valid = units.Where(u => u.Id.StartsWith("mod.", StringComparison.Ordinal)
+                && u.Kind is AcquisitionKind.Family or AcquisitionKind.Snapshot)
+                .GroupBy(u => u.Id, StringComparer.Ordinal)
+                .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+            optionalUnits = valid;
+            if (selection.Enabled)
+                productionSelection = productionSelection.Concat(selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id)))
+                    .ToHashSet(StringComparer.Ordinal);
+        }
+    }
+
     public static bool IsExperimental(string unitId)
-        => AcquisitionUnits.Find(unitId)?.Status == AcquisitionStatus.Unverified && IsRecording(unitId);
+        => (AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId))?.Status == AcquisitionStatus.Unverified
+            && IsRecording(unitId);
 
     public static IReadOnlySet<string> RecordingExperimentalUnits()
-        => AcquisitionUnits.All.Where(u => IsExperimental(u.Id)).Select(u => u.Id).ToHashSet(StringComparer.Ordinal);
+        => AcquisitionUnits.All.Concat(optionalUnits.Values).Where(u => IsExperimental(u.Id))
+            .Select(u => u.Id).ToHashSet(StringComparer.Ordinal);
 
     /// <summary>True once the verification harness opened unverified units (never in normal use).</summary>
     public static bool VerificationMode
@@ -55,7 +75,9 @@ public static class MetricGates
     /// <summary>Configured open, its DLC active, and not failed.</summary>
     public static bool IsOpen(string unitId)
     {
-        var unit = AcquisitionUnits.Find(unitId);
+        AcquisitionUnit? unit;
+        lock (Gate)
+            unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
         if (unit is null)
             return false;
         lock (Gate)
@@ -97,7 +119,7 @@ public static class MetricGates
 
     /// <summary>The families that record in a game started or loaded now.</summary>
     public static IReadOnlyList<FamilySpec> RecordingFamilies()
-        => LiveFamilies.All.Where(f => IsRecording(f.Name)).Select(f => f.Spec).ToList();
+        => LiveFamilies.Active.Where(f => IsRecording(f.Name)).Select(f => f.Spec).ToList();
 
     /// <summary>Snapshot units read at a successful save now.</summary>
     public static IReadOnlyList<string> RecordingSnapshots()
