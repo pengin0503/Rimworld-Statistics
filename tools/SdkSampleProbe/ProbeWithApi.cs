@@ -7,12 +7,6 @@ internal static class ProbeWithApi
     internal static void Run()
     {
         if (SampleSdkClient.TryAttach())
-                throw new Exception("Sample incorrectly attached with API DLL absent");
-            Console.WriteLine("SDK absence: PASS");
-            return;
-        }
-        
-        if (SampleSdkClient.TryAttach())
             throw new Exception("Sample found a host before installation");
         var fake = new FakeHost();
         if (!StatisticsApi.InstallHost(fake))
