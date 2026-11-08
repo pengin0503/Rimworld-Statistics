@@ -100,3 +100,9 @@ bash tools/refcheck.sh tools/VerifyHarness/Mod/1.7/Assemblies/RimworldStatistics
 ```
 
 ゲームに依存しない部分（`Logic/`）は Core のテスト（`VerifyHarnessLogicTests`）でコンパイル・テストしています。ゲーム側のケースは実機でしか動かせず、この README の期待値は 1.7.4985 の逆コンパイル結果と本体の判定から決めたものです。
+
+## 本体の実験的取得との違い（2026-11-08）
+
+本体は通常のMOD設定から個々の未検証単位を選び、次回起動から取得を有効化できる。初期OFFで、取得時点の信頼性をプロファイルに保持する。通常取得のオプトインは、実機による検証や `AcquisitionStatus.Verified` への昇格を意味しない。
+
+この開発専用VerifyHarnessは別MODのまま維持し、`-savedatafolder` と `-rwsverify` のテスト手順で使う。本体の製品ZIPに含まれない。

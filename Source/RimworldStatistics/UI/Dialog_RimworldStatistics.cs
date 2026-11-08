@@ -27,6 +27,7 @@ public sealed class Dialog_RimworldStatistics : Window
     private DateTime nextIndexRefresh;
     private Task<StatsView>? viewTask;
     private bool viewIncludesDevMode;
+    private bool viewIncludesExperimental;
     private StatsView? lastView;
 
     public Dialog_RimworldStatistics()
@@ -113,11 +114,15 @@ public sealed class Dialog_RimworldStatistics : Window
     private StatsView? GetView(ProfileSession session)
     {
         var options = ProfileService.Options;
-        if (viewIncludesDevMode != options.IncludeDevMode)
+        var showExperimental = RimworldStatisticsMod.Settings.showRecordedExperimental;
+        var visibleUnits = showExperimental
+            ? AcquisitionUnits.All.Select(u => u.Id).ToArray() : Array.Empty<string>();
+        if (viewIncludesDevMode != options.IncludeDevMode || viewIncludesExperimental != showExperimental)
         {
             lastView = null;
             viewTask = null;
             viewIncludesDevMode = options.IncludeDevMode;
+            viewIncludesExperimental = showExperimental;
         }
         if (viewTask is { IsCompleted: true } completed)
         {
@@ -125,10 +130,10 @@ public sealed class Dialog_RimworldStatistics : Window
             lastView = completed.GetAwaiter().GetResult();
         }
 
-        var cached = session.TryGetCachedView(options);
+        var cached = session.TryGetCachedView(options, visibleUnits);
         if (cached != null)
             return lastView = cached;
-        viewTask ??= Task.Run(() => session.GetView(options));
+        viewTask ??= Task.Run(() => session.GetView(options, visibleUnits));
         return lastView;
     }
 

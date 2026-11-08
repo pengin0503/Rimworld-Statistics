@@ -261,6 +261,11 @@ public static class CheckpointMetrics
             {
                 continue;   // one family's broken totals never take the others with them
             }
+            if (state.Evidence is { } evidence)
+            {
+                obs.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+                obs.EvidenceByAcquisition[name] = evidence;
+            }
             foreach (var (key, entry) in built)
                 obs.Metrics[key] = entry;
         }

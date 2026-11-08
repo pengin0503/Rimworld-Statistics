@@ -7,6 +7,10 @@ public sealed class NumericValue
 
     public double? Number { get; init; }
     public MetricCoverage Coverage { get; init; }
+
+    /// <summary>Capture-time evidence, separate from the covered time range.</summary>
+    public MetricEvidence Evidence { get; init; } = MetricEvidence.UnknownLegacy;
+    public int? SinceTick { get; init; }
     public double? Numerator { get; init; }
     public double? Denominator { get; init; }
     public int? SampleCount { get; init; }
@@ -250,17 +254,18 @@ public static class MetricCalculator
 
         var breakdowns = d.HasBreakdown
             ? entry.Values.Where(kv => kv.Key != MetricEntry.Scalar).OrderBy(kv => kv.Key, Ord)
-                .Select(kv => Row(d, kv.Key, From(kv.Value, rep.SaveTick))).ToList()
+                .Select(kv => Row(d, kv.Key, From(kv.Value, rep, d))).ToList()
             : new List<NumericRow>();
         NumericValue value;
         if (entry.Values.TryGetValue(MetricEntry.Scalar, out var scalar))
-            value = From(scalar, rep.SaveTick);
+            value = From(scalar, rep, d);
         else if (d.HasBreakdown)
             value = new NumericValue
             {
                 Number = breakdowns.Sum(b => b.Value.Number ?? 0),
                 Coverage = Weakest(breakdowns.Select(b => b.Value.Coverage).DefaultIfEmpty(MetricCoverage.SnapshotOnly)),
                 ThroughTick = rep.SaveTick,
+                Evidence = EvidenceFor(rep, d),
             };
         else
             value = NumericValue.Unknown;
@@ -297,6 +302,7 @@ public static class MetricCalculator
             Number = best.Value!.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
             ThroughTick = observations.Max(o => o.SaveTick),
+            Evidence = MetricEvidencePolicy.Combine(values.Select(x => EvidenceFor(x.Obs, d))),
             SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
                 x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
         });
@@ -314,14 +320,27 @@ public static class MetricCalculator
 
     private static NumericValue NotApplicable(MetricObservation o) => new() { Coverage = MetricCoverage.NotApplicable, ThroughTick = o.SaveTick };
 
-    private static NumericValue From(MetricValue v, int tick) => new()
+    private static MetricEvidence EvidenceFor(MetricObservation observation, MetricDefinition definition)
+    {
+        var direct = definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
+            && evidence.TryGetValue(id, out var captured) ? captured : MetricEvidence.UnknownLegacy;
+        // GetValueOrDefault on an enum dictionary returns UnknownLegacy even when the key
+        // does not exist. A record compacted for an unrelated metric must not weaken this one.
+        return observation.CompactedEvidenceByMetric is { } compactedEvidence
+            && compactedEvidence.TryGetValue(definition.StoredKey, out var compacted)
+            ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
+    }
+
+    private static NumericValue From(MetricValue v, MetricObservation observation, MetricDefinition definition) => new()
     {
         Number = v.Number,
         Coverage = v.Coverage,
+        Evidence = EvidenceFor(observation, definition),
         Numerator = v.Numerator,
         Denominator = v.Denominator,
         SampleCount = v.SampleCount,
-        ThroughTick = tick,
+        SinceTick = v.SinceTick,
+        ThroughTick = v.ThroughTick ?? observation.SaveTick,
     };
 
     private static NumericRow Row(MetricDefinition d, string breakdown, NumericValue v) => new()
@@ -365,7 +384,11 @@ public static class MetricCalculator
         var b = row.Breakdowns.FirstOrDefault(x => x.Breakdown == key);
         if (b is not null)
             return b.Value;
-        return row.Value.Number is null ? row.Value : new NumericValue { Number = 0, Coverage = row.Value.Coverage, ThroughTick = row.Value.ThroughTick };
+        return row.Value.Number is null ? row.Value : new NumericValue
+        {
+            Number = 0, Coverage = row.Value.Coverage, Evidence = row.Value.Evidence,
+            SinceTick = row.Value.SinceTick, ThroughTick = row.Value.ThroughTick,
+        };
     }
 
     private static NumericRow Aggregate(MetricDefinition d, string breakdown, List<(string Key, NumericValue Value)> colonies)
@@ -381,7 +404,12 @@ public static class MetricCalculator
             var coverage = Weakest(known.Select(k => k.Value.Coverage));
             if (known.Count < applicable.Count)
                 coverage = MetricCoverage.Partial;
-            return new NumericValue { Number = number, Coverage = coverage, ColonyKey = colony, Numerator = num, Denominator = den };
+            return new NumericValue
+            {
+                Number = number, Coverage = coverage,
+                Evidence = MetricEvidencePolicy.Combine(known.Select(k => k.Value.Evidence)),
+                ColonyKey = colony, Numerator = num, Denominator = den,
+            };
         }
 
         NumericValue value;

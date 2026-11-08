@@ -14,6 +14,20 @@ public static class MetricGates
     private static readonly HashSet<string> OpenedForVerification = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
+    private static IReadOnlySet<string> productionSelection = new HashSet<string>(StringComparer.Ordinal);
+
+    /// <summary>Called during Mod construction, before the startup adapter scan.</summary>
+    public static void ConfigureProductionSelection(IReadOnlySet<string> selected)
+    {
+        lock (Gate)
+            productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
+    }
+
+    public static bool IsExperimental(string unitId)
+        => AcquisitionUnits.Find(unitId)?.Status == AcquisitionStatus.Unverified && IsRecording(unitId);
+
+    public static IReadOnlySet<string> RecordingExperimentalUnits()
+        => AcquisitionUnits.All.Where(u => IsExperimental(u.Id)).Select(u => u.Id).ToHashSet(StringComparer.Ordinal);
 
     /// <summary>True once the verification harness opened unverified units (never in normal use).</summary>
     public static bool VerificationMode
@@ -48,7 +62,8 @@ public static class MetricGates
         {
             if (Failed.Contains(unitId))
                 return false;
-            if (unit.Status != AcquisitionStatus.Verified && !OpenedForVerification.Contains(unitId))
+            if (unit.Status != AcquisitionStatus.Verified && !productionSelection.Contains(unitId)
+                && !OpenedForVerification.Contains(unitId))
                 return false;
         }
         return unit.RequiredDlc is null || ModsConfig.IsActive(unit.RequiredDlc);
