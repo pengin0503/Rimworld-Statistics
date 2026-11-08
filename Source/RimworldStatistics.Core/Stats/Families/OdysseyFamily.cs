@@ -15,6 +15,7 @@ public static class OdysseyFamily
     private const string PendingTakeoffs = "pending_takeoff";
     private const string KnownMaps = "known_maps_before_flight";
     private const string RecordedMapBaselines = "map_baselines";
+    private const string GeneratedForFlight = "generated_for_flight";
     private const string Arrivals = "unique_arrival";
     private const string Count = "flights";
     private const string Travel = "distance";
@@ -47,6 +48,26 @@ public static class OdysseyFamily
             s.Count(RecordedMapBaselines);
     }
 
+    /// <summary>
+    /// Only an actual map generation completed for the pending player's flight proves a map is new.
+    /// A map missing from the preflight loaded-map set may simply be unloaded or revisited.
+    /// Generation markers survive checkpoint reloads and are consumed on a successful landing.
+    /// </summary>
+    public static void ObservedMapGenerated(FamilyState s, string engineId, string mapId, int tick, bool confirmed)
+    {
+        if (!confirmed || tick < 0 || string.IsNullOrWhiteSpace(engineId) || string.IsNullOrWhiteSpace(mapId))
+            return;
+        if (s.Tracked(PendingTakeoffs, engineId) is { } start && tick >= start)
+            s.Track(GeneratedForFlight, engineId + "|" + mapId, tick);
+    }
+
+    private static void ForgetFlightMapGeneration(FamilyState s, string engineId)
+    {
+        if (s.Active.TryGetValue(GeneratedForFlight, out var mapIds))
+            foreach (var id in mapIds.Keys.Where(id => id.StartsWith(engineId + "|", StringComparison.Ordinal)).ToArray())
+                s.Untrack(GeneratedForFlight, id);
+    }
+
     /// <summary>Only a confirmed initiating player engine can start a counted flight.</summary>
     public static void ObservedTakeoff(FamilyState s, string engineId, int tick, bool playerShip)
     {
@@ -70,11 +91,17 @@ public static class OdysseyFamily
         var start = s.Untrack(PendingTakeoffs, engineId);
         if (start is not { } tick)
             return;
-        // A known baseline is required; otherwise the presence of a different
-        // map ID after reload does not prove it was newly generated.
-        if (landedOnNewMap is null && !string.IsNullOrWhiteSpace(arrivedMapId)
-            && (s.Peek(RecordedMapBaselines)?.N ?? 0) > 0)
-            landedOnNewMap = s.Peek(KnownMaps)?.By?.ContainsKey(arrivedMapId) != true;
+        // Newly generated requires affirmative proof from MapGenerator.GenerateMap.
+        // The absence of a loaded map at takeoff alone is NOT that proof.
+        if (landedOnNewMap is null && !string.IsNullOrWhiteSpace(arrivedMapId))
+        {
+            var generationTick = s.Tracked(GeneratedForFlight, engineId + "|" + arrivedMapId);
+            if (generationTick is { } generatedAt && generatedAt >= tick)
+                landedOnNewMap = true;
+            else if (s.Peek(KnownMaps)?.By?.ContainsKey(arrivedMapId) == true)
+                landedOnNewMap = false;
+        }
+        ForgetFlightMapGeneration(s, engineId);
         FlightCompleted(s, engineId + "/" + tick.ToString(System.Globalization.CultureInfo.InvariantCulture),
             arrivalLayer, arrivalTile, playerShip, successfullyLanded, routeDistanceInTiles, landedOnNewMap);
         if (!string.IsNullOrWhiteSpace(arrivedMapId))
@@ -122,7 +149,7 @@ public static class OdysseyFamily
             c.MarkPartial(Flights, Distance, UniqueTiles, NewMapLandings);
         if (c.State.TrackerOverflowed(PendingTakeoffs))
             c.MarkPartial(Flights, Distance, UniqueTiles, NewMapLandings);
-        if (c.State.Peek(KnownMaps)?.Overflow == true)
+        if (c.State.Peek(KnownMaps)?.Overflow == true || c.State.TrackerOverflowed(GeneratedForFlight))
             c.MarkPartial(NewMapLandings);
     }
 }
