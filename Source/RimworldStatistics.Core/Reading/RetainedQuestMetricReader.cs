@@ -68,6 +68,8 @@ public static class RetainedQuestMetricReader
         foreach (var g in successes.GroupBy(q => string.IsNullOrEmpty(q.Root) ? MetricKeys.UnknownBucket : q.Root!, StringComparer.Ordinal))
             byRoot.Values[g.Key] = Count(g.Count());
         into[MetricKeys.QuestSuccessByRoot] = byRoot;
+        // Royalty D2: only explicit imperial roots, never a guess from generic quests.
+        into[RoyaltyQuestDerived.Success] = RoyaltyQuestDerived.Build(kept);
 
         // Time from acceptance to the start of cleanup, for successes with a real acceptance tick.
         var days = new List<double>();
