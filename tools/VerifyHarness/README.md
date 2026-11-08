@@ -62,7 +62,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | raid.enemy | `RaidEnemy` を即時攻撃・端から徒歩で実行 | 襲撃 +1、EdgeWalkIn +1、人数の標本 +1 |
 | raid.last_kill | 新しい襲撃を発生させ、出現した襲撃者をすべて実際の `Pawn.Kill` 経路で撃破 | 最後の撃破を含む `raid.kills.max` と、襲撃終了標本 +1 |
 | medicine.withdrawal | 入植者に依存症を付け、化学的欲求の水準を 0 → 0.005 → 1 → 0 にする（実際の `Need_Chemical.CurLevel` → `Hediff_Addiction.Notify_NeedCategoryChanged`） | 禁断症状 +2。使った依存症は最後に取り除く |
-| medicine.hospital_bed | 空いた医療ベッドに `Pawn_JobTracker.Notify_TuckedIntoBed` を呼ぶ。同期デバッグ処理内では実際の `LayDown` toil 開始を待てない | toil が未開始なら SKIP（誤った FAIL を出さない）。実際の入院時間は手動で確認 |
+| medicine.hospital_bed | 医療ベッドと自由入植者の存在を確認。同期デバッグアクションでは実際の `LayDown` toil を進められないため、ジョブの変更は行わない | SKIP（誤った FAIL や意図しないジョブ変更を防止）。実際の入院時間は手動で確認 |
 | food.stock_recount | 現在のホームマップで `ResourceCounter.UpdateResourceCounts` | 食料の在庫フックが発火し、ほかの値は変わらない |
 | food.growing_cells | 新しい栽培ゾーンに 1 セル足して取り除く（`Zone.AddCell / RemoveCell`） | 追跡中の栽培セル数が +1 してから元に戻る |
 | caravan.ancient_danger | 祠の外のセル、次に監視中の封印された祠の中心を 2 回 `FogGrid.Unfog` | 古代の脅威の開封 +1（2 回目と外のセルは +0）。監視中の祠が現在のマップに無ければ SKIP |
