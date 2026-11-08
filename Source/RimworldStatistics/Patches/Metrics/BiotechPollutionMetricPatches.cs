@@ -42,8 +42,8 @@ public static class BiotechPlayerCleanupJobMetricPatch
     {
         __state = LiveMetrics.Family(BiotechFamily.Name) is not null
             && __instance.pawn?.Faction == Faction.OfPlayer && map?.pollutionGrid is not null;
-        if (__state)
-            BiotechCleanupScope.Enter(map.pollutionGrid, map.uniqueID);
+        if (__state && map?.pollutionGrid is { } grid)
+            BiotechCleanupScope.Enter(grid, map.uniqueID);
     }
 
     public static Exception? Finalizer(bool __state, Exception? __exception)
