@@ -115,6 +115,32 @@ public sealed class NumericCheckpointTests
     }
 
     [Fact]
+    public void Resume_PrepareSave_PreservesUnknownRootFieldsAcrossGenerations()
+    {
+        var initial = LiveMetricAccumulator.StartNew(Recording, 0);
+        Events(initial, 1);
+        var parent = Save(initial, "P", 10);
+        var withFuture = parent.Json.Replace("\"formatVersion\":1",
+            "\"formatVersion\":1,\"future\":{\"items\":[1,2],\"note\":\"keep\"},\"extraFlag\":true");
+
+        var resumed = LiveMetricAccumulator.Resume(withFuture, Recording, 10);
+        Events(resumed, 2);
+        var first = resumed.PrepareSave(20, T0, "A")!;
+        Assert.True(first.IsNew);
+        Assert.Equal("P", first.Payload!.ParentCheckpointId);
+        Assert.Contains("\"future\":{\"items\":[1,2],\"note\":\"keep\"}", first.Json);
+        Assert.Contains("\"extraFlag\":true", first.Json);
+        Assert.NotSame(resumed.Loaded!.ExtensionData, first.Payload.ExtensionData);
+
+        resumed.Commit(first);
+        Events(resumed, 1);
+        var second = resumed.PrepareSave(30, T0, "B")!;
+        Assert.Contains("\"future\":{\"items\":[1,2],\"note\":\"keep\"}", second.Json);
+        Assert.Contains("\"extraFlag\":true", second.Json);
+        Assert.Equal("A", second.Payload!.ParentCheckpointId);
+    }
+
+    [Fact]
     public void Json_UnreadableFamily_IsKeptVerbatimAndOthersStillRead()
     {
         var json = "{\"formatVersion\":1,\"checkpointId\":\"P\",\"saveTick\":10,\"savedUtc\":\"2026-03-01T12:00:00Z\",\"families\":{"
