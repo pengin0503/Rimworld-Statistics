@@ -38,6 +38,43 @@ public sealed class ExperimentalEvidenceTests
     }
 
     [Fact]
+    public void ReimportingSameSnapshotDoesNotDiscardOlderCaptureConfidence()
+    {
+        var profile = new Profile();
+        MetricObservation Snapshot(MetricEvidence evidence) => new()
+        {
+            Source = MetricObservationSource.SaveSnapshot, Key = "same-save",
+            EvidenceByAcquisition = new Dictionary<string, MetricEvidence> { ["facilities"] = evidence },
+            Metrics = new Dictionary<string, MetricEntry>
+            {
+                [FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                    new MetricValue { Coverage = MetricCoverage.SnapshotOnly, RealValue = 2 }),
+            },
+        };
+        ProfileMutations.UpsertMetricObservation(profile, Snapshot(MetricEvidence.Experimental));
+        ProfileMutations.UpsertMetricObservation(profile, Snapshot(MetricEvidence.Verified));
+        Assert.Equal(MetricEvidence.Mixed,
+            Assert.Single(profile.MetricObservations).EvidenceByAcquisition!["facilities"]);
+    }
+
+    [Fact]
+    public void RecordingGapOnReenableKeepsHistoricalTotalsPartial()
+    {
+        var units = new[] { new FamilySpec("research", 1) };
+        var experimental = new HashSet<string> { "research" };
+        var parent = LiveMetricAccumulator.StartNew(units, 0, experimental);
+        parent.Family("research")!.Count("events");
+        var a = parent.PrepareSave(100, DateTime.UtcNow, "P")!;
+        parent.Commit(a);
+        var off = LiveMetricAccumulator.Resume(a.Json, Array.Empty<FamilySpec>(), 100, experimental);
+        var draft = off.PrepareSave(150, DateTime.UtcNow, "off");
+        Assert.False(draft?.IsNew ?? false);
+        var resumed = LiveMetricAccumulator.Resume(draft?.Json ?? a.Json, units, 150, experimental);
+        Assert.False(resumed.Family("research")!.Continuous);
+        Assert.Equal(1, resumed.Family("research")!.Peek("events")?.N);
+    }
+
+    [Fact]
     public void SnapshotObservationCarriesPerAcquisitionEvidence()
     {
         var o = new MetricObservation
