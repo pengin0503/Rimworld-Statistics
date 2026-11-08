@@ -72,7 +72,7 @@ public static class IdeologyRitualOutcomeApplyMetricPatch
     {
         __state = LiveMetrics.Family(IdeologyFamily.Name) is not null
             && jobRitual is not null && IdeologyRitualFacts.IsPlayerRitual(jobRitual);
-        if (__state)
+        if (__state && jobRitual is not null)
             IdeologyRitualFacts.Enter(jobRitual);
     }
 
