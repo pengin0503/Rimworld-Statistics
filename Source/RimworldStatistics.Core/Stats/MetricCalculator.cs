@@ -126,7 +126,7 @@ public static class MetricCalculator
             {
                 Key = c.Colony.Key,
                 Excluded = c.Colony.Excluded,
-                Observations = attached.GetValueOrDefault(c.Colony)?.Count ?? 0,
+                Observations = (int)Math.Min(int.MaxValue, attached.GetValueOrDefault(c.Colony)?.Sum(ObservationWeight) ?? 0L),
                 Lineage = c.Lineage,
                 Rows = c.Rows.Where(r => r.Definition.Overall != OverallAggregation.Ranking).ToList(),
             }).ToList(),
@@ -167,7 +167,7 @@ public static class MetricCalculator
             var colony = Find(m, colonies, byCampaign, byFile);
             if (colony is null)
             {
-                unattributed++;
+                unattributed = (int)Math.Min(int.MaxValue, (long)unattributed + ObservationWeight(m));
                 continue;
             }
             if (!result.TryGetValue(colony, out var list))
@@ -176,6 +176,11 @@ public static class MetricCalculator
         }
         return result;
     }
+
+    /// <summary>A compacted SaveSnapshot still represents its original save-time observations.</summary>
+    private static long ObservationWeight(MetricObservation o)
+        => o.Source == MetricObservationSource.SaveSnapshot
+            ? Math.Max(1, o.CompactedObservationCount ?? 1) : 1L;
 
     private static void Add(Dictionary<string, HashSet<Colony>> map, string key, Colony c)
     {
