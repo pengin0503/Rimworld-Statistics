@@ -108,4 +108,54 @@ public sealed class NumericSnapshotRetentionTests
             Assert.Equal(a[key].Value.Coverage, b[key].Value.Coverage);
         }
     }
+    [Fact]
+    public void Compaction_NeverCombinesDifferentCampaignsOrOtherRevisions()
+    {
+        var p = Build(compact: true);
+        var firstCampaignCount = p.MetricObservations.Count;
+        var other = Identity("another-campaign-with-identical-fingerprint");
+        ProfileMutations.ApplyLiveObservation(p, other.ModCampaignId!, other,
+            new ObservedValues { TicksGame = 10 }, new DisplayInfo(), Epoch);
+        for (var i = 0; i < 15; i++)
+        {
+            var o = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "other-" + i,
+                Identity = other.Clone(), SaveTick = i, ObservedUtc = Epoch.AddSeconds(i),
+            };
+            o.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(
+                MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i });
+            ProfileMutations.UpsertMetricObservation(p, o);
+        }
+        Assert.Equal(firstCampaignCount, p.MetricObservations.Count(o =>
+            o.Identity.ModCampaignId == "snapshot-retention"));
+        Assert.InRange(p.MetricObservations.Count(o =>
+            o.Identity.ModCampaignId == other.ModCampaignId), 2, 4);
+
+        var legacy = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveSnapshot, Key = "legacy",
+            Identity = other.Clone(), SaveTick = 20, ObservedUtc = Epoch.AddSeconds(20),
+        };
+        legacy.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(999,
+            new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = 999 });
+        ProfileMutations.UpsertMetricObservation(p, legacy);
+        for (var i = 21; i < 30; i++)
+        {
+            var o = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "other-" + i,
+                Identity = other.Clone(), SaveTick = i, ObservedUtc = Epoch.AddSeconds(i),
+            };
+            o.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(
+                MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i });
+            ProfileMutations.UpsertMetricObservation(p, o);
+        }
+        Assert.Contains(p.MetricObservations, o => o.Key == "legacy");
+        Assert.Equal(firstCampaignCount, p.MetricObservations.Count(o =>
+            o.Identity.ModCampaignId == "snapshot-retention"));
+    }
+
 }
