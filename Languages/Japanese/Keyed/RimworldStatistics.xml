@@ -829,4 +829,8 @@
   <RWS_Mod_RequiresMod>必要なMOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>提供元MOD: {0}（Provider ID: {1}）</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>提供元MODが現在ありません。記録済みの値は保持されていますが、新しい測定は行われません。</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>募集依頼の開始回数</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>Colonist Recruitment 1.1.2 の募集依頼を正常に開始した回数です。途中からの取得は部分記録です。依頼開始後の取消も開始回数に含みます。</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>進行中の募集依頼数</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>成功したセーブ時点で進行中だった募集依頼の件数です。過去の累計ではありません。</RWS_ModRecruitment_ActiveDesc>
 </LanguageData>

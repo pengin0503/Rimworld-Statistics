@@ -13,7 +13,8 @@ internal sealed record ModMetricAdapterRegistration(
     LiveFamily? EventFamily = null,
     Action<Harmony>? InstallEventHook = null,
     Func<MetricEntry?>? CaptureSnapshot = null,
-    string ProviderVersion = "1.0.0");
+    string ProviderVersion = "1.0.0",
+    Action? ValidateBinding = null);
 
 /// <summary>Frozen at the startup adapter pass; absent optional mods have no hooks or save-time work.</summary>
 internal static class ModProviderAdapters
@@ -27,7 +28,7 @@ internal static class ModProviderAdapters
 
     /// <summary>Expand this in P2 only with a source-audited, conditionally loaded built-in adapter.</summary>
     private static IReadOnlyList<ModMetricAdapterRegistration> BuiltInAdapters()
-        => Array.Empty<ModMetricAdapterRegistration>();
+        => Providers.RecruitmentMetricProvider.Registrations();
 
     public static IReadOnlyList<AcquisitionUnit> KnownUnits =>
         Declarations.Value.Where(x => x.Descriptor.IsValid())
@@ -75,6 +76,12 @@ internal static class ModProviderAdapters
             if (!eligibility.Available)
                 continue;
             if (descriptor.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
+                continue;
+            // Fail the unit before installing a patch/reader if this installed MOD's
+            // actual method/field/property shape is not the version we audited.
+            if (registration.ValidateBinding is not null &&
+                !Guard.TryRun(id, registration.ValidateBinding,
+                    (unit, e) => MetricGates.Fail(unit, e)))
                 continue;
             var ownerVersion = installed.FirstOrDefault(x =>
                 string.Equals(x.PackageId, descriptor.OwnerPackageId, StringComparison.OrdinalIgnoreCase))?.Version;
