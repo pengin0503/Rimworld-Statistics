@@ -104,7 +104,7 @@ public sealed class ExperimentalEvidenceTests
             ProfileMutations.UpsertMetricObservation(profile, obs);
         }
         var colonies = CampaignMatcher.BuildColonies(profile);
-        var def = Assert.Single(SnapshotCatalog.Definitions.Where(d => d.Key == FacilitiesSnapshot.OutdoorTempMax));
+        var def = Assert.Single(SnapshotCatalog.Definitions, d => d.Key == FacilitiesSnapshot.OutdoorTempMax);
         var view = MetricCalculator.BuildView(profile, colonies,
             StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
         var row = Assert.Single(Assert.Single(view.Colonies).Rows);
