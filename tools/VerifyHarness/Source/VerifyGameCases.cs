@@ -354,21 +354,13 @@ internal static class VerifyGameCases
         var pawn = Colonist(p => !p.InBed());
         if (pawn is null || LiveMetrics.Family(MedicineFamily.Name) is not { } family)
             return CaseCheck.Skip(c.Id, c.Unit, pawn is null ? "no free colonist out of bed" : "the medicine family does not record");
-        var id = pawn.GetUniqueLoadID();
-        var hits = VerifyProbe.Hits(c.Unit);
-        // Notify_TuckedIntoBed schedules a lay-down job; it does NOT immediately execute
-        // Toils_LayDown.LayDown's init action. A synchronous debug action has no intervening
-        // game tick, so treating the empty tracker as a failed production hook is a false FAIL.
-        pawn.jobs.Notify_TuckedIntoBed(bed);
-        var entered = MedicineFamily.StayState(family, id);
-        if (!entered.Open)
-            return CaseCheck.Skip(c.Id, c.Unit, "lay-down toil has not started in this synchronous debug action; verify a real medical-bed stay manually");
-        pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, startNewJob: false);
-        var left = MedicineFamily.StayState(family, id);
-        var ok = entered is (true, false) && left is (true, true);
-        return new CaseResult(c.Id, c.Unit, ok ? CaseOutcome.Pass : CaseOutcome.Fail, "entered:open,left:got-up",
-            $"entered:{(entered.Open ? "open" : "none")},left:{(left.Left ? "got-up" : left.Open ? "open" : "none")}", VerifyProbe.Hits(c.Unit) - hits,
-            bed.def.defName + " #" + bed.thingIDNumber);
+        // A synchronous debug action cannot advance the real LayDown toil. Enqueuing
+        // Notify_TuckedIntoBed and inspecting immediately falsely FAILs; worse, the
+        // queued job can run after this test and unexpectedly change later cases.
+        // Do not touch the pawn or its jobs. A normal, time-advanced medical stay is
+        // the only valid positive test of this game-side hook.
+        return CaseCheck.Skip(c.Id, c.Unit,
+            "real LayDown toil requires game ticks; verify a medical-bed stay manually (bed " + bed.thingIDNumber + ")");
     }
 
     /// <summary>N2-F-010: a recount of a player home map reaches the stock hook (the spans need game time and are checked by hand).</summary>
