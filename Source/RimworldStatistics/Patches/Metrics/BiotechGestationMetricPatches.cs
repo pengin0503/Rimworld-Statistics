@@ -30,8 +30,15 @@ public static class BiotechGestationReadyMetricPatch
         var mech = __state.Mech;
         if (mech is null || mech.Dead || !mech.RaceProps.IsMechanoid)
             return;
-        GameFacts.Record(BiotechFamily.Name, s => BiotechFamily.GestationReady(
-            s, GameFacts.Id(mech), __state.Player, __state.Resurrection));
+        var id = GameFacts.Id(mech);
+        GameFacts.Record(BiotechFamily.Name, s =>
+        {
+            BiotechFamily.GestationReady(s, id, __state.Player, __state.Resurrection);
+            // Notify_FormingCompleted may itself eject the pawn before its postfix.
+            // Count only after the returned mech has actually entered a player map.
+            if (mech.Spawned && mech.Faction == Faction.OfPlayer)
+                BiotechFamily.GestationEjected(s, id, livingPlayerMech: true);
+        });
     }
 }
 
