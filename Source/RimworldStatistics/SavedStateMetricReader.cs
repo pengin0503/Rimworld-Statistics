@@ -380,10 +380,12 @@ internal static class SavedStateMetricReader
                 continue;
             try
             {
-                var count = 0;
-                foreach (var cell in CellRect.WholeMap(map).Cells)
-                    if (map.pollutionGrid.IsPolluted(cell))
-                        count++;
+                // Vanilla PollutionGrid exposes the aggregate as a public property.
+                // Do not iterate every map cell on every successful save.
+                // An invalid aggregate is a failed unit reading, not a fabricated zero.
+                var count = map.pollutionGrid.TotalPollution;
+                if (count < 0 || count > map.cellIndices.NumGridCells)
+                    throw new InvalidOperationException("PollutionGrid.TotalPollution was outside the map cell count.");
                 polluted.Add(count);
             }
             catch (Exception)
