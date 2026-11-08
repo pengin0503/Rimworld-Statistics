@@ -51,7 +51,10 @@ public sealed class ExternalSdkMetricRegistry
             return ApiRegistrationResult.DuplicateMetric;
         if (entries.Values.Any(x => x.Descriptor.AcquisitionId == descriptor.AcquisitionId &&
             (x.Descriptor.ProviderId != descriptor.ProviderId || x.Descriptor.Revision != descriptor.Revision ||
-             x.Descriptor.Source != descriptor.Source || x.Api.ProviderVersion != api.ProviderVersion)))
+             x.Descriptor.Source != descriptor.Source || x.Api.ProviderVersion != api.ProviderVersion ||
+             x.Descriptor.RequiredDlc != descriptor.RequiredDlc ||
+             !x.Descriptor.RequiredPackages.Select(r => r.ToString()).SequenceEqual(
+                 descriptor.RequiredPackages.Select(r => r.ToString()), StringComparer.Ordinal))))
             return ApiRegistrationResult.ConflictingFamily;
         if (descriptor.AcquisitionId == RecruitmentMetricPolicy.RequestsFamilyId ||
             descriptor.AcquisitionId == RecruitmentMetricPolicy.QueueFamilyId)
