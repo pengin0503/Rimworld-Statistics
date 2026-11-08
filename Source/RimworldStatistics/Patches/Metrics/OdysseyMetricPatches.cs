@@ -52,9 +52,10 @@ internal static class OdysseyArrivalFacts
 /// flight interval. The pending interval can survive an in-flight save/load.
 /// </summary>
 /// <summary>
-/// Record the identities of all existing maps before launch. Taking this
-/// snapshot never counts as a successful takeoff, and remains cumulative in
-/// the saved Core family. It distinguishes generated maps from revisits.
+/// Record the identities of currently loaded maps before launch. Taking this
+/// snapshot never counts as a successful takeoff and remains cumulative in
+/// the saved Core family. A known map is a revisit, but an unknown map may
+/// have been unloaded; only a separate generation hook proves it was new.
 /// </summary>
 [MetricAdapter(OdysseyFamily.Name)]
 [HarmonyPatch(typeof(WorldComponent_GravshipController), nameof(WorldComponent_GravshipController.InitiateTakeoff))]
