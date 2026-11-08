@@ -111,8 +111,8 @@ public sealed class ModMetricPersistenceTests
         Assert.Equal(descriptor.AcquisitionId, row.Definition.Acquisition);
         Assert.Equal(7, row.Value.Number);
         Assert.Equal(MetricCoverage.Partial, row.Value.Coverage);
-        Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
         Assert.Equal(30, row.Value.ThroughTick);
+        Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
     }
 
     [Fact]
