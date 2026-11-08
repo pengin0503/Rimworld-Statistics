@@ -197,7 +197,11 @@ public static class ProfileMutations
         if (snapshots.Count < 2)
             return;
 
-        var definitions = SnapshotCatalog.Definitions;
+        var definitions = SnapshotCatalog.Definitions.Concat(
+            MetricRegistry.Compose(p.ModMetricDescriptors,
+                new HashSet<string>(Ord) { MetricRegistry.OptionalModVisibilityId })
+                .Where(d => d.ProviderId is not null && d.Source == MetricObservationSource.SaveSnapshot))
+            .ToArray();
         var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
         var kept = new HashSet<MetricObservation>();
         // Representative selection: latest tick, then UTC, then smallest key.
@@ -288,6 +292,17 @@ public static class ProfileMutations
             var values = removedRows.Select(Captured).Append(Captured(best));
             best.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
             best.CompactedEvidenceByMetric[d.StoredKey] = MetricEvidencePolicy.Combine(values);
+            if (d.ProviderId is { } providerId)
+            {
+                best.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(Ord);
+                foreach (var row in removedRows)
+                {
+                    if (row.ProviderCaptures?.GetValueOrDefault(providerId) is not { } capture)
+                        continue;
+                    best.ProviderCaptures[providerId] = best.ProviderCaptures.TryGetValue(providerId, out var previous)
+                        ? ModProviderCapture.Combine(previous, capture) : capture;
+                }
+            }
             best.CompactedSampleCounts ??= new Dictionary<string, int>(Ord);
             best.CompactedSampleCounts[d.StoredKey] =
                 (int)Math.Min(int.MaxValue, Weight(best) + removed);
@@ -313,7 +328,8 @@ public static class ProfileMutations
         {
             existing.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(Ord);
             foreach (var (providerId, capture) in incomingCaptures)
-                existing.ProviderCaptures.TryAdd(providerId, capture);
+                existing.ProviderCaptures[providerId] = existing.ProviderCaptures.TryGetValue(providerId, out var previous)
+                    ? ModProviderCapture.Combine(previous, capture) : capture;
         }
         // Re-reading the same snapshot must not silently overwrite its earlier
         // capture-quality evidence. A conflict is represented conservatively.
