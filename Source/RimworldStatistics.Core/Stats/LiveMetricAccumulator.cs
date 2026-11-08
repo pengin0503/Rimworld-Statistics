@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace RimworldStatistics.Core;
 
 /// <summary>A family that records this session, and the definition revision of its stored totals.</summary>
@@ -170,6 +172,11 @@ public sealed class LiveMetricAccumulator
             ParentCheckpointId = ParentId,
             SaveTick = tick,
             SavedUtc = utc,
+            // A known checkpoint may be extended by a newer version of the MOD.
+            // Keep unknown root properties when deriving its next checkpoint.
+            ExtensionData = _last?.ExtensionData is { } extra
+                ? new Dictionary<string, JsonElement>(extra, StringComparer.Ordinal)
+                : null,
         };
         foreach (var name in _order)
         {
