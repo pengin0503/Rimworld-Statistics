@@ -85,7 +85,9 @@ public sealed class ExperimentalEvidenceTests
             ModCampaignId = "test-campaign",
             StartingPawnIds = { "Thing_Human1" },
         };
-        ProfileMutations.RegisterLiveCampaign(profile, id.ModCampaignId!, id, new DisplayInfo());
+        ProfileMutations.ApplyLiveObservation(profile, id.ModCampaignId!, id,
+            new ObservedValues { TicksGame = 100 }, new DisplayInfo(),
+            new DateTime(2026, 11, 8, 0, 0, 0, DateTimeKind.Utc));
         for (var i = 0; i < 4; i++)
         {
             var obs = new MetricObservation
