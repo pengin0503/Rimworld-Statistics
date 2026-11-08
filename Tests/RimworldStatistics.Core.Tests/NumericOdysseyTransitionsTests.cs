@@ -107,4 +107,30 @@ public sealed class NumericOdysseyTransitionsTests
             MetricKeys.Revision(OdysseyFamily.NewMapLandings))!.Coverage);
     }
 
+    [Fact]
+    public void NewConfirmedTakeoffReplacesAbandonedFlightAndItsStaleGenerationProof()
+    {
+        var a = LiveMetricAccumulator.StartNew(new[] { OdysseyFamily.Family.Spec }, 0);
+        var s = a.Family(OdysseyFamily.Name)!;
+        OdysseyFamily.ObservedTakeoff(s, "engine", 100, playerShip: true);
+        OdysseyFamily.ObservedMapGenerated(s, "engine", "Map_999", 110, confirmed: true);
+        // First flight did not land. A later completed takeoff is a distinct
+        // flight, not a continuation of the old pending interval.
+        OdysseyFamily.ObservedTakeoff(s, "engine", 200, playerShip: true);
+        OdysseyFamily.ObservedLanding(s, "engine", 0, 9,
+            playerShip: true, successfullyLanded: true, routeDistanceInTiles: 7,
+            landedOnNewMap: null, arrivedMapId: "Map_999");
+        var saved = a.PrepareSave(230, DateTime.UtcNow, "retry")!;
+        var row = CheckpointMetrics.ToObservation(saved.Payload!, saved.Json,
+            new ColonyIdentity { ModCampaignId = "retry" }, null, null);
+        var value = row.Scalar(OdysseyFamily.NewMapLandings,
+            MetricKeys.Revision(OdysseyFamily.NewMapLandings))!;
+        Assert.Equal(0, value.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, value.Coverage);
+        Assert.Equal(1, row.Scalar(OdysseyFamily.Flights,
+            MetricKeys.Revision(OdysseyFamily.Flights))!.IntegerValue);
+        Assert.Equal(7, row.Scalar(OdysseyFamily.Distance,
+            MetricKeys.Revision(OdysseyFamily.Distance))!.RealValue);
+    }
+
 }
