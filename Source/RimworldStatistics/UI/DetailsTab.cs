@@ -209,7 +209,7 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
-            .Select(r => (Row: r, Label: (string)r.Definition.LabelKey.Translate()))
+            .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
             .Where(x => term.Length == 0
                 || x.Label.IndexOf(term, StringComparison.CurrentCultureIgnoreCase) >= 0
                 || x.Row.Definition.Key.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0
@@ -255,7 +255,15 @@ public static class DetailsTab
             : $"{row.Valid.ToString(Inv)} / {row.Targets.ToString(Inv)}";
 
         var tip = new StringBuilder();
-        tip.Append(label).Append('\n').Append((string)d.DescriptionKey.Translate()).Append("\n\n");
+        tip.Append(label).Append('\n')
+            .Append(d.ProviderId is not null && d.DescriptionKey == d.Key ? d.Key
+                : (string)d.DescriptionKey.Translate()).Append("\n\n");
+        if (d.OwnerPackageId is { } owner)
+        {
+            tip.Append((string)"RWS_Mod_Provider".Translate(owner, d.ProviderId ?? owner)).Append('\n');
+            if (!ModsConfig.IsActive(owner))
+                tip.Append((string)"RWS_Mod_SourceUnavailable".Translate()).Append('\n');
+        }
         tip.Append((string)"RWS_Details_Tip_Source".Translate(ProvenanceLabel(d.Provenance), CoverageLabel(d, v.Coverage))).Append('\n');
         if (d.Acquisition is { } id && !d.Published)
         {
@@ -335,6 +343,10 @@ public static class DetailsTab
             _ => n.ToString("N2", Inv),
         };
     }
+
+    private static string DefinitionLabel(MetricDefinition d)
+        => d.ProviderId is not null && d.LabelKey == d.Key
+            ? d.Key : (string)d.LabelKey.Translate();
 
     private static string BreakdownLabel(string key) => key switch
     {

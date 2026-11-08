@@ -165,6 +165,8 @@ public sealed record MetricDefinition
 /// </summary>
 public static class MetricRegistry
 {
+    /// <summary>Presentation-only marker for historical optional MOD statistics.</summary>
+    public const string OptionalModVisibilityId = "mod.*";
     private static MetricDefinition Def(string key, string ledger, MetricCategory category, MetricUnit unit, MetricProvenance provenance,
         OverallAggregation overall, string label, string description, string? stored = null, ColonySelection selection = ColonySelection.Representative,
         bool signed = false, bool breakdown = false)
@@ -272,6 +274,8 @@ public static class MetricRegistry
         var provider = new ModMetricProviderRegistry();
         foreach (var descriptor in historicalDescriptors ?? Array.Empty<ModMetricDescriptor>())
             provider.Register(descriptor);
-        return MetricDisplayPolicy.SelectDefinitions(Catalog, visibleUnits).Concat(provider.BuildCatalog()).ToArray();
+        return MetricDisplayPolicy.SelectDefinitions(Catalog, visibleUnits)
+            .Concat(provider.BuildCatalog().Where(d => visibleUnits.Contains(OptionalModVisibilityId)
+                || d.Acquisition is { } id && visibleUnits.Contains(id))).ToArray();
     }
 }

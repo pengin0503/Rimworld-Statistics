@@ -44,8 +44,15 @@ public static class MetricAdapters
 
     private static void ApplyOpen(Harmony harmony)
     {
-        // Load optional providers only after the full mod list and defs exist.
-        ModProviderAdapters.Initialize(harmony);
+        // A third-party provider must never take down the built-in acquisition scan.
+        try
+        {
+            ModProviderAdapters.Initialize(harmony);
+        }
+        catch (Exception e)
+        {
+            Log.Error("[RimworldStatistics] Optional MOD statistics startup failed; built-in acquisition continues.\n" + e);
+        }
         var adapters = AdapterClasses();
         foreach (var unit in AcquisitionUnits.All)
         {

@@ -116,7 +116,8 @@ public sealed class Dialog_RimworldStatistics : Window
         var options = ProfileService.Options;
         var showExperimental = RimworldStatisticsMod.Settings.showRecordedExperimental;
         var visibleUnits = showExperimental
-            ? AcquisitionUnits.All.Select(u => u.Id).ToArray() : Array.Empty<string>();
+            ? AcquisitionUnits.All.Select(u => u.Id).Append(MetricRegistry.OptionalModVisibilityId).ToArray()
+            : Array.Empty<string>();
         if (viewIncludesDevMode != options.IncludeDevMode || viewIncludesExperimental != showExperimental)
         {
             lastView = null;

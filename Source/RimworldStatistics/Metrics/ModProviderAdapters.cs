@@ -20,6 +20,8 @@ internal static class ModProviderAdapters
 {
     private sealed record Enabled(ModMetricAdapterRegistration Registration, string? OwnerVersion);
     private static readonly ModProviderExecutionGuard Guard = new();
+    private static readonly Lazy<IReadOnlyList<ModMetricAdapterRegistration>> Declarations =
+        new(BuiltInAdapters);
     private static Enabled[] active = Array.Empty<Enabled>();
     private static bool initialized;
 
@@ -28,11 +30,14 @@ internal static class ModProviderAdapters
         => Array.Empty<ModMetricAdapterRegistration>();
 
     public static IReadOnlyList<AcquisitionUnit> KnownUnits =>
-        BuiltInAdapters().Where(x => x.Descriptor.IsValid())
+        Declarations.Value.Where(x => x.Descriptor.IsValid())
             .Select(x => new AcquisitionUnit(x.Descriptor.AcquisitionId,
                 x.Descriptor.Source == MetricObservationSource.Checkpoint ? AcquisitionKind.Family : AcquisitionKind.Snapshot,
                 AcquisitionStatus.Unverified, x.Descriptor.RequiredDlc))
             .GroupBy(x => x.Id, StringComparer.Ordinal).Select(g => g.First()).ToArray();
+
+    public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors
+        => Declarations.Value.Where(x => x.Descriptor.IsValid()).Select(x => x.Descriptor).ToArray();
 
     public static IReadOnlyList<ModMetricDescriptor> ActiveDescriptors
         => active.Select(x => x.Registration.Descriptor).ToArray();
@@ -44,7 +49,7 @@ internal static class ModProviderAdapters
         if (initialized)
             return;
         initialized = true;
-        var declarations = BuiltInAdapters();
+        var declarations = Declarations.Value;
         // The optional unit inventory is immutable after startup; editing settings alone never
         // installs a new Harmony patch in a running game.
         MetricGates.ConfigureOptionalUnits(KnownUnits, RimworldStatisticsMod.ActiveAcquisitionSelection);
