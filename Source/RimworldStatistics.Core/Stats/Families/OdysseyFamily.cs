@@ -1,8 +1,9 @@
 namespace RimworldStatistics.Core;
 
 /// <summary>
-/// Odyssey D2 completed-flight accounting. Production adapter is intentionally unavailable until a
-/// confirmed landing with a stable flight id and authoritative route length can be observed.
+/// Odyssey D2 completed-flight accounting. The production adapter observes takeoff,
+/// confirmed landing, map generation and the vanilla route solver; behavioral
+/// validation in RimWorld is still pending behind the Unverified gate.
 /// </summary>
 public static class OdysseyFamily
 {
@@ -29,10 +30,9 @@ public static class OdysseyFamily
     };
 
     /// <summary>
-    /// Capture already-existing maps before initiating a flight. This is
-    /// observational metadata, not a flight. Once saved, a later landing on a
-    /// truly new map can be distinguished across reloads without guessing from
-    /// a new tile (existing settlements can be revisited).
+    /// Capture already-loaded maps before initiating a flight. Presence proves
+    /// a revisit, but absence does NOT prove new generation: a prior map might
+    /// simply be unloaded. New generation needs a separate confirmed hook.
     /// </summary>
     public static void ObservedExistingMaps(FamilyState s, IEnumerable<string> existingMapIds)
     {
@@ -68,12 +68,18 @@ public static class OdysseyFamily
                 s.Untrack(GeneratedForFlight, id);
     }
 
-    /// <summary>Only a confirmed initiating player engine can start a counted flight.</summary>
+    /// <summary>
+    /// A new confirmed takeoff supersedes an older unmatched attempt for this
+    /// engine (for example after an aborted flight). A repeated notification at
+    /// the same tick is idempotent; older out-of-order notifications are ignored.
+    /// </summary>
     public static void ObservedTakeoff(FamilyState s, string engineId, int tick, bool playerShip)
     {
-        if (!playerShip || tick < 0 || string.IsNullOrWhiteSpace(engineId)
-            || s.Tracked(PendingTakeoffs, engineId) is not null)
+        if (!playerShip || tick < 0 || string.IsNullOrWhiteSpace(engineId))
             return;
+        if (s.Tracked(PendingTakeoffs, engineId) is { } previous && tick <= previous)
+            return;
+        ForgetFlightMapGeneration(s, engineId);
         s.Track(PendingTakeoffs, engineId, tick);
     }
 
