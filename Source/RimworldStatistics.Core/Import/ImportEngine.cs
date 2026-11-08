@@ -52,6 +52,7 @@ public sealed class ImportEngine(SaveReader reader)
             if (!info.Exists)
                 continue;   // deleted since the folder was listed
             present.Add(name);
+            var countedRead = false;
             try
             {
                 long size = info.Length;
@@ -64,21 +65,25 @@ public sealed class ImportEngine(SaveReader reader)
                 var result = reader.ReadDetailed(path);
                 var (obs, metrics) = result;
                 read++;
+                countedRead = true;
                 if (obs.Status == ObservationStatus.Error)
                     failed++;
                 session.Mutate(p =>
                 {
-                    ProfileMutations.AddSaveObservation(p, obs);
+                    // A successful v1 read must not be committed before the numeric observations:
+                    // if their mutation fails, leave an Error observation so the file is retried.
                     if (metrics is not null)
                         ProfileMutations.UpsertMetricObservation(p, metrics);
                     if (result.Checkpoint is not null)
                         ProfileMutations.UpsertMetricObservation(p, result.Checkpoint);
+                    ProfileMutations.AddSaveObservation(p, obs);
                 }, SaveMode.None);
             }
             catch (Exception e)
             {
                 // SaveReader does not throw by contract; if anything else does, record this file as failed and go on.
-                read++;
+                if (!countedRead)
+                    read++;
                 failed++;
                 var error = new SaveObservation
                 {
