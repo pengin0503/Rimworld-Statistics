@@ -163,13 +163,16 @@ public static class ProfileMutations
             return;
 
         var definitions = SnapshotCatalog.Definitions;
-        var keys = definitions.Select(d => d.StoredKey).ToHashSet(Ord);
+        var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
         var kept = new HashSet<MetricObservation>();
         // Representative selection: latest tick, then UTC, then smallest key.
         kept.Add(snapshots.OrderByDescending(o => o.SaveTick)
             .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First());
         foreach (var o in snapshots)
-            if (o.Metrics.Keys.Any(k => !keys.Contains(k)))
+            // Preserve unknown keys, unreadable entries and values written by a
+            // different schema revision: the current catalogue cannot prove them redundant.
+            if (o.Metrics.Any(kv => !definitionsByKey.TryGetValue(kv.Key, out var d)
+                || kv.Value.IsQuarantined || kv.Value.Revision != d.Revision))
                 kept.Add(o);
 
         MetricValue? Scalar(MetricObservation o, MetricDefinition d)
