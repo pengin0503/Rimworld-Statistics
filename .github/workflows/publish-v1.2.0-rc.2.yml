@@ -1,0 +1,89 @@
+name: Publish Rimworld Statistics v1.2.0-rc.2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v1.2.0-rc.2.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  prerelease:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: 'v1.2.0-rc.2'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Run all no-game Core regression tests
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Validate translation keys
+        run: bash tools/check_keys.sh
+      - name: Build release ZIP
+        shell: bash
+        run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.2.zip"
+      - name: Check distribution archive and generate checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          zipfile="$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.2.zip"
+          unzip -t "$zipfile"
+          names="$(unzip -Z -1 "$zipfile")"
+          grep -Fxq 'RimworldStatistics/About/About.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Core.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/Japanese/Keyed/RimworldStatistics.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/English/Keyed/RimworldStatistics.xml' <<< "$names"
+          if grep -Eq 'VerifyHarness|/(Assembly-CSharp|UnityStubs|Waylith|0Harmony)\\.dll$' <<< "$names"; then
+            echo 'ERROR: A game dependency or development harness leaked into the release.' >&2
+            exit 1
+          fi
+          (cd "$RUNNER_TEMP" && sha256sum "RimworldStatistics-v1.2.0-rc.2.zip" > "RimworldStatistics-v1.2.0-rc.2.zip.sha256")
+      - name: Publish pre-release from tested main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite."
+            exit 1
+          fi
+          cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          ## RimWorld 1.7 — statistics corrections and performance improvements (release candidate)
+
+          This build incorporates [PR #35](https://github.com/pengin0503/Rimworld-Statistics/pull/35), including:
+          - Corrected import retry and error accounting, checkpoint ancestry restoration and generator selection.
+          - DLC-absent observations are not mistaken for valid zero measurements; failed numeric updates are retried.
+          - Live SaveSnapshot compaction preserves latest/extrema, sample and observation counts, and unknown JSON extension fields.
+          - Mining yields are recorded only for actually placed items (not attempted placement).
+          - Statistics UI reuses per-source observation classification and representative selection.
+          - Facilities room discovery avoids a full-map RoomAt pass; Biotech uses the game's `PollutionGrid.TotalPollution` getter instead of a per-cell scan.
+          - Development-only verification harness fixes and a reproducible CI profile-size/performance benchmark.
+          - CI: 516 Core tests passed, 2 skipped, 0 failed on PR #35; release workflow runs its own tests and package checks.
+
+          **Important: NOT ALL ACQUISITION UNITS VERIFIED IN GAME.** Phase B/C/D2 units remain `Unverified` and their new live metrics stay disabled in ordinary play. The user explicitly elected to ship without further in-game testing. The pollution aggregate and mining hook have been statically checked but the new behavior has not been retested in-game after these changes. Do not interpret this release as full in-game verification.
+
+          Anomaly-specific metrics are intentionally excluded. Average raid damage (`R-011`) remains unsupported.
+
+          - Requires RimWorld 1.7 and Harmony.
+          - `RimworldStatistics-v1.2.0-rc.2.zip`: installable MOD, excludes development harness and game DLLs.
+          - `.zip.sha256`: SHA-256 integrity check.
+          - Developer-only verification harness is in the pull request CI artifacts, not this release.
+
+          See [PR #26](https://github.com/pengin0503/Rimworld-Statistics/pull/26), the [API and implementation audit](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/research/2026-11-08-numeric-remaining-api-audit.md), and the [manual test checklist](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/manual-test-checklist.md).
+          NOTES
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.2.zip" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.2.zip.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics v1.2.0-rc.2 (unverified)" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --prerelease
