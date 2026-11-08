@@ -99,6 +99,9 @@ public sealed class ModMetricPersistenceTests
         Assert.Single(restored.ModMetricDescriptors);
         var captured = Assert.Single(restored.MetricObservations, o => o.SaveTick == 30);
         Assert.Equal(MetricEvidence.Experimental, captured.EvidenceByAcquisition![descriptor.AcquisitionId]);
+        Assert.All(restored.MetricObservations.Where(o => o.Metrics.ContainsKey(descriptor.StableKey)),
+            o => Assert.Equal(MetricEvidence.Experimental, o.EvidenceByAcquisition![descriptor.AcquisitionId]));
+        Assert.False(captured.CompactedEvidenceByMetric?.ContainsKey(descriptor.StableKey) ?? false);
         var colonies = CampaignMatcher.BuildColonies(restored);
         var defs = MetricRegistry.Compose(restored.ModMetricDescriptors,
             new HashSet<string> { MetricRegistry.OptionalModVisibilityId });
