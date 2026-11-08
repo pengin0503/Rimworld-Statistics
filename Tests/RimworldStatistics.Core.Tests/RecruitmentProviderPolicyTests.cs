@@ -63,6 +63,27 @@ public sealed class RecruitmentProviderPolicyTests
     }
 
     [Fact]
+    public void EventOutputHasCorrectKeyRevisionAndCoverageAndReflectsLostEvents()
+    {
+        var state = new FamilyState
+        {
+            Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true,
+        };
+        Assert.Equal(RecruitmentRecordResult.Recorded, RecruitmentMetricPolicy.RecordStarted(state, 3, 25));
+        var entries = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        RecruitmentMetricPolicy.BuildStarted(new FamilyOutputContext(state, 100, entries));
+        var entry = Assert.Single(entries);
+        Assert.Equal(RecruitmentMetricPolicy.StartedKey, entry.Key);
+        Assert.Equal(1, entry.Value.Revision);
+        Assert.Equal(1, entry.Value.Values[MetricEntry.Scalar].Number);
+        Assert.Equal(MetricCoverage.Complete, entry.Value.Values[MetricEntry.Scalar].Coverage);
+        state.Continuous = false;
+        entries.Clear();
+        RecruitmentMetricPolicy.BuildStarted(new FamilyOutputContext(state, 120, entries));
+        Assert.Equal(MetricCoverage.Partial, entries[RecruitmentMetricPolicy.StartedKey].Values[MetricEntry.Scalar].Coverage);
+    }
+
+    [Fact]
     public void ResumeAndBranchesCarryDedupKeysWithoutAddingParentCountsTwice()
     {
         var id = RecruitmentMetricPolicy.RequestsFamilyId;

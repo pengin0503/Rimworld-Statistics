@@ -19,7 +19,7 @@ These are publicly available repositories, not copies of proprietary implementat
 
 ## Two optional outputs (both Unverified until game verification)
 
-1. **Event count:** `mod.pengin0503.recruitment.requests.started` — the number of *successful* `AddDrive` calls after the statistics recorder started. Harmony Postfix to the exact audited method, only if installed and explicitly selected; deduplicate by persisted `RecruitmentDrive.id` using a capped family key set. A repeated notification counts once; invalid return/id counts zero. This is *not* the number of accepted applicants.
+1. **Event count:** `mod.pengin0503.recruitment.requests.started` — the number of *successful* `AddDrive` calls after the statistics recorder started. Harmony Postfix to the exact audited method, only if installed and explicitly selected; deduplicate by persisted `RecruitmentDrive.id` using a capped family key set. A repeated notification counts once; invalid return/id counts zero. Cancelling an already-created drive does not undo a recorded start. This is *not* the number of accepted applicants.
 2. **Save snapshot:** `mod.pengin0503.recruitment.queue.active` — `Drives.Count` after a successful save; 0 is a valid count when the MOD and instance are available. A missing MOD, method/property/instance or failed save yields Unknown, not 0. The saved value is representative, not summed over snapshots.
 
 **Compatibility:** only MOD `pengin0503.recruitment` versions >=1.1.2 and <1.2.0 are eligible, and only when the exact method/field/property signature resolves. A missing/unparseable version fails closed. No hard assembly reference is permitted. Actual game startup, Harmony patching, save/load and TPS remain unverified.
@@ -41,3 +41,8 @@ These are publicly available repositories, not copies of proprietary implementat
 - [ ] Save/load then branch: counts stay on each lineage without ancestor double-add
 - [ ] Disable/re-enable after restart, remove and reinstall MOD: previous values retained, gap partial, no fabricated zeros
 - [ ] Verify with other Harmony MODs and compare TPS/save times; no measured performance claim until run
+
+## Static CI evidence
+
+- [P2 CI run #304](https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42495152512): 545 Core tests passed, 2 real-save tests skipped, 0 failures; source contract checker passed for audited 1.1.2 and the pinned Recruitment assembly built successfully; Harmony 1.7.4985 target checks, translations and production ZIP packaging succeeded.
+- An exact private Harmony `AddDrive` method in another MOD cannot be verified through the RimWorld base-game patch checker. The pinned source/assembly check supplies static source evidence, **not** a runtime Harmony invocation. Do not claim game compatibility until the checklist above is completed.
