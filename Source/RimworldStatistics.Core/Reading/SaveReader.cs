@@ -7,7 +7,11 @@ using System.Xml.Linq;
 namespace RimworldStatistics.Core;
 
 /// <summary>The v1 observation of one save and, when the read is confirmed, its Phase A numeric observation.</summary>
-public sealed record SaveReadResult(SaveObservation Observation, MetricObservation? Metrics);
+public sealed record SaveReadResult(SaveObservation Observation, MetricObservation? Metrics)
+{
+    /// <summary>The Phase C checkpoint embedded by this mod's component, when it is readable and the read is confirmed.</summary>
+    public MetricObservation? Checkpoint { get; init; }
+}
 
 /// <summary>
 /// Reads one save (.rws) front to back with <see cref="XmlReader"/>, keeping only what the statistics need
@@ -19,8 +23,9 @@ public sealed class SaveReader
     /// <summary>
     /// Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 3: lineage recovery and
     /// numeric validation. 4: Phase A numeric observations (history series, counters, retained quests, content hash).
+    /// 5: the Phase C checkpoint embedded in this mod's component (numericStatistics).
     /// </summary>
-    public const int Version = 4;
+    public const int Version = 5;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -68,7 +73,7 @@ public sealed class SaveReader
             if (result.Metrics is null)
                 return result;
             var after = new FileInfo(path);
-            return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite ? result : result with { Metrics = null };
+            return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite ? result : result with { Metrics = null, Checkpoint = null };
         }
         catch (Exception e)
         {
@@ -102,7 +107,8 @@ public sealed class SaveReader
                 });
             }
             Finish(state);
-            return new SaveReadResult(obs, TryBuildMetrics(state, hashing, fileSize));
+            var metrics = TryBuildMetrics(state, hashing, fileSize);
+            return new SaveReadResult(obs, metrics) { Checkpoint = metrics is null ? null : TryBuildCheckpoint(state, metrics) };
         }
         catch (Exception e)
         {
@@ -130,6 +136,7 @@ public sealed class SaveReader
         public int WealthTotalCount { get; set; }
         public Dictionary<string, List<float[]?>> Series { get; } = new(StringComparer.Ordinal);
         public List<RetainedQuest>? Quests { get; set; }
+        public string? CheckpointText { get; set; }
         public int UnreadableQuests { get; set; }
     }
 
@@ -348,6 +355,12 @@ public sealed class SaveReader
                     var id = r.ReadElementContentAsString().Trim();
                     s.Obs.Identity.ModCampaignId = id.Length == 0 ? null : id;
                     break;
+                case "numericStatistics":
+                    // Kept exactly as written: its hash identifies the checkpoint's content.
+                    s.CheckpointText = r.GetAttribute("IsNull") == "True" ? null : r.ReadElementContentAsString();
+                    if (s.CheckpointText is null)
+                        r.Skip();
+                    break;
                 case "lineageEndings":
                     ForEachChild(r, _ =>
                     {
@@ -507,6 +520,29 @@ public sealed class SaveReader
         {
             hashing.ReadToEnd();
             return hashing.BytesRead == fileSize ? BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash())) : null;
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// The checkpoint of a save whose numeric read was confirmed (every byte read, the file unchanged): only a readable
+    /// checkpoint of the known format; anything else is left in the save untouched and adds nothing.
+    /// </summary>
+    private static MetricObservation? TryBuildCheckpoint(ReadState s, MetricObservation metrics)
+    {
+        if (s.CheckpointText is not { } text)
+            return null;
+        try
+        {
+            var parsed = CheckpointJson.Parse(text);
+            if (parsed.Status != CheckpointParseStatus.Ok)
+                return null;
+            var c = CheckpointMetrics.ToObservation(parsed.Payload!, text, s.Obs.Identity, s.Obs.GameVersion, metrics.ActiveDlcIds);
+            c.FileAliases.AddRange(metrics.FileAliases.Select(a => new MetricFileAlias { FileName = a.FileName, FileSize = a.FileSize, LastWriteUtc = a.LastWriteUtc }));
+            return c;
         }
         catch (Exception)
         {

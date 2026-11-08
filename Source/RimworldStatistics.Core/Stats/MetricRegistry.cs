@@ -8,6 +8,23 @@ public enum MetricCategory
     Quests,
     Colony,
     Rankings,
+
+    // Phase B / C / D2 (the order is the category menu's order after the Phase A ones)
+    Research,
+    Mind,
+    Combat,
+    Social,
+    Medicine,
+    Work,
+    Animals,
+    Economy,
+    Environment,
+    Exploration,
+    Facilities,
+    Royalty,
+    Ideology,
+    Biotech,
+    Odyssey,
 }
 
 public enum MetricUnit
@@ -35,6 +52,24 @@ public enum MetricUnit
 
     /// <summary>Silver per game year.</summary>
     SilverPerYear,
+
+    /// <summary>Game years (biological ages).</summary>
+    Years,
+
+    /// <summary>Outdoor temperature in degrees Celsius.</summary>
+    Celsius,
+
+    /// <summary>Rated electrical generating capacity in watts.</summary>
+    Watts,
+
+    /// <summary>Rated stored energy capacity in watt-days.</summary>
+    WattDays,
+
+    /// <summary>Food nutrition units available at a successful save.</summary>
+    Nutrition,
+
+    /// <summary>Items per growing-zone cell per game day (harvest yield over the cell-day integral).</summary>
+    PerCellDay,
 }
 
 /// <summary>Which of a colony's observations gives its value.</summary>
@@ -100,8 +135,17 @@ public sealed record MetricDefinition
     /// <summary>The value has a breakdown (e.g. per quest root def); the scalar is their sum.</summary>
     public bool HasBreakdown { get; init; }
 
+    /// <summary>The unit of the breakdown entries when it differs from the scalar's (e.g. completion days listed under a count).</summary>
+    public MetricUnit? BreakdownUnit { get; init; }
+
     /// <summary>Package id of the DLC the output needs; null for Core.</summary>
     public string? RequiredDlc { get; init; }
+
+    /// <summary>The acquisition unit whose gate the value passes through (<see cref="AcquisitionUnits"/>); null for Phase A/D1.</summary>
+    public string? Acquisition { get; init; }
+
+    /// <summary>Shown to the player: Phase A/D1 outputs, and outputs of a unit confirmed in the game.</summary>
+    public bool Published => AcquisitionUnits.IsVerified(Acquisition);
 
     public required string LabelKey { get; init; }
     public required string DescriptionKey { get; init; }
@@ -110,8 +154,9 @@ public sealed record MetricDefinition
 }
 
 /// <summary>
-/// The outputs whose acquisition was verified and shipped. An output stays registered even when its DLC or hook is off
-/// later, so recorded values keep their meaning; acquisition gates only stop new values. Order is the display order.
+/// The outputs whose acquisition was verified and shipped (<see cref="All"/>), and every implemented output including those
+/// whose acquisition is not confirmed in the game yet (<see cref="Catalog"/>). An output stays registered even when its DLC or
+/// hook is off later, so recorded values keep their meaning; acquisition gates only stop new values. Order is the display order.
 /// </summary>
 public static class MetricRegistry
 {
@@ -130,7 +175,7 @@ public static class MetricRegistry
     private const MetricProvenance S = MetricProvenance.SaveSnapshot;
     private const MetricCategory Rk = MetricCategory.Rankings;
 
-    public static IReadOnlyList<MetricDefinition> All { get; } = new[]
+    private static readonly MetricDefinition[] Shipped =
     {
         // Phase A · wealth
         Def(MetricKeys.WealthItemsPeak, "H-001", W, MetricUnit.Silver, H, OverallAggregation.Max, "RWS_Metric_WealthItemsPeak", "RWS_MetricDesc_WealthItemsPeak"),
@@ -203,7 +248,14 @@ public static class MetricRegistry
         Def(MetricRankings.ZeroDeathEndings, "N1-F-003", Rk, MetricUnit.Count, MetricProvenance.LiveAggregate, OverallAggregation.Ranking, "RWS_Metric_RankZeroDeathEndings", "RWS_MetricDesc_RankZeroDeathEndings"),
     };
 
-    private static readonly Dictionary<string, MetricDefinition> ByKey = All.ToDictionary(d => d.Key, StringComparer.Ordinal);
+    /// <summary>Every implemented output: Phase A/D1, then the outputs of the acquisition units (published or not).</summary>
+    public static IReadOnlyList<MetricDefinition> Catalog { get; } = Shipped.Concat(LiveCatalog.Definitions).Concat(SnapshotCatalog.Definitions).Concat(RankingDependencyCatalog.Definitions).ToArray();
 
+    /// <summary>The published outputs: what the Details tab shows.</summary>
+    public static IReadOnlyList<MetricDefinition> All { get; } = Catalog.Where(d => d.Published).ToArray();
+
+    private static readonly Dictionary<string, MetricDefinition> ByKey = Catalog.ToDictionary(d => d.Key, StringComparer.Ordinal);
+
+    /// <summary>A catalog output by key (published or not).</summary>
     public static MetricDefinition? Find(string key) => ByKey.GetValueOrDefault(key);
 }

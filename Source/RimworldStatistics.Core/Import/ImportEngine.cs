@@ -61,7 +61,8 @@ public sealed class ImportEngine(SaveReader reader)
                     skipped++;
                     continue;
                 }
-                var (obs, metrics) = reader.ReadDetailed(path);
+                var result = reader.ReadDetailed(path);
+                var (obs, metrics) = result;
                 read++;
                 if (obs.Status == ObservationStatus.Error)
                     failed++;
@@ -70,6 +71,8 @@ public sealed class ImportEngine(SaveReader reader)
                     ProfileMutations.AddSaveObservation(p, obs);
                     if (metrics is not null)
                         ProfileMutations.UpsertMetricObservation(p, metrics);
+                    if (result.Checkpoint is not null)
+                        ProfileMutations.UpsertMetricObservation(p, result.Checkpoint);
                 }, SaveMode.None);
             }
             catch (Exception e)

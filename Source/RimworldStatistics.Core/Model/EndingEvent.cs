@@ -28,6 +28,13 @@ public sealed class EndingEvent
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public int? ColonistsKilledAtEnding { get; set; }
 
+    /// <summary>
+    /// The participants the game confirmed when the ending happened (ledger N1-F-004; see <see cref="EndingSignal.Party"/>); null
+    /// for endings without a participation definition, for traces and for records written before this field existed.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public int? PartyAtEnding { get; set; }
+
     /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
     [System.Text.Json.Serialization.JsonExtensionData]
     public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }

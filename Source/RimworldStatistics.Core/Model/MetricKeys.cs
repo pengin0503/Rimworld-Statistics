@@ -63,6 +63,13 @@ public static class MetricKeys
     public const string QuestSuccessDurationMin = "quest.retained.success_duration_min";
     public const string QuestSuccessDurationMax = "quest.retained.success_duration_max";
 
+    /// <summary>Keys whose definition changed after they were first stored, with their current revision.</summary>
+    private static readonly IReadOnlyDictionary<string, int> Revised = new Dictionary<string, int>(StringComparer.Ordinal)
+    {
+        // Revision 1 was a lower bound from an allow-list of saved quest roots; 2 counts the game's involved factions at a save.
+        [RoyaltyQuestSnapshot.Success] = 2,
+    };
+
     /// <summary>The current definition revision of a stored key. Every key starts at 1.</summary>
-    public static int Revision(string key) => 1;
+    public static int Revision(string key) => Revised.GetValueOrDefault(key, 1);
 }

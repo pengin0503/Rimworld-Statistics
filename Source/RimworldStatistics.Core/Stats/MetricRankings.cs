@@ -4,8 +4,9 @@ namespace RimworldStatistics.Core;
 /// Phase D1 cross-colony comparisons from v1 records and Phase A values (ledger sections ranking, ranking_dependency).
 /// They use v1's ending filter (dev mode setting, (type, ordinal) grouping, traces as "at least once"), the labels of v1's
 /// representative point and v1's exclusions, so they never disagree with the Overview's counts. Ties: smallest colony key.
-/// Outputs whose inputs come from Phase B or C (R-001/2/4/5/6/12) and those needing new live data (N1-F-001/2/4) are not
-/// built; R-011 is not supported and has no row.
+/// Outputs whose inputs come from Phase B or C (R-001/2/4/5/6/12), the starting biome (N1-F-001/2) and the participants stored
+/// with an ending (N1-F-004) are built here but registered behind their unverified acquisition units
+/// (<see cref="RankingDependencyCatalog"/>); R-011 is not supported and has no row.
 /// </summary>
 public static class MetricRankings
 {
@@ -21,6 +22,20 @@ public static class MetricRankings
     public const string PlaytimePeak = "ranking.playtime.peak";
     public const string MinDeathsAtEnding = "ranking.ending.min_deaths";
     public const string ZeroDeathEndings = "ranking.ending.zero_deaths";
+
+    // Phase D dependency ranks: not published until their B/C acquisition is verified.
+    public const string DaysByBiome = "ranking.survival.by_biome";
+    public const string EndingsByBiome = "ranking.endings.by_biome";
+    public const string KillsToDeaths = "ranking.kills_to_colonist_deaths";
+    public const string MostKills = "ranking.kills.peak";
+    public const string LongestDeathFree = "ranking.death_free.peak";
+    public const string MostCrafting = "ranking.crafting.peak";
+    public const string LargestSale = "ranking.trade.peak_sale";
+    public const string MostResearch = "ranking.research.peak";
+    public const string MinPartyAtEnding = "ranking.ending.min_party";
+
+    /// <summary>The ending types with a participation definition in 1.7.4985 (see <see cref="EndingSignal.Party"/>).</summary>
+    public static readonly IReadOnlySet<EndingType> PartyEndings = new HashSet<EndingType> { EndingType.Ship, EndingType.RoyalAscent, EndingType.Archonexus };
 
     /// <summary>Breakdown keys of the permadeath split.</summary>
     public const string PermadeathOn = "permadeath";
@@ -113,6 +128,132 @@ public static class MetricRankings
         var perColonist = ordered.Select(c => (c.Key, RowOf(rows, c.Key, MetricKeys.WealthPerColonistMax)?.Value))
             .Where(x => x.Value?.Number is not null).Select(x => (x.Key, x.Value!.Number, x.Value.Coverage)).ToList();
         yield return Extreme(Def(MetricKeys.WealthPerColonistMax), perColonist, max: true, ordered.Count);
+
+        yield return BiomeSplit(Def(DaysByBiome), ordered, rows, Days);
+        yield return BiomeSplit(Def(EndingsByBiome), ordered, rows, c => Endings(c));
+        yield return SharedIntervalKillDeathRatio(Def(KillsToDeaths), ordered, rows);
+        yield return InputPeak(Def(MostKills), ordered, rows, HealthDeathFamily.HostileKills);
+        yield return InputPeak(Def(LongestDeathFree), ordered, rows, HealthDeathFamily.LongestDeathGap);
+        yield return InputPeak(Def(MostCrafting), ordered, rows, WorkFamily.CraftedUnits);
+        yield return InputPeak(Def(LargestSale), ordered, rows, TradeFamily.SalesPeak);
+        // S-012 is the save-time *finished* research set, not research events counted by Q-001.
+        yield return InputPeak(Def(MostResearch), ordered, rows, ResearchStateSnapshot.Finished);
+        yield return MinParty(Def(MinPartyAtEnding), ordered);
+    }
+
+    /// <summary>
+    /// N1-F-004: the fewest confirmed participants of a counted ending, over the ending types with a participation definition.
+    /// One value per (type, ordinal) as v1 counts it (the smallest party stored with its records); a colony whose counted
+    /// endings of those types lack a stored party is a target without a value. No party anywhere is unknown, never 0.
+    /// </summary>
+    private static NumericRow MinParty(MetricDefinition def, IReadOnlyList<ColonyStats> colonies)
+    {
+        var byColony = colonies
+            .Select(c => (c.Key, Endings: c.CountedEndings.Where(e => PartyEndings.Contains(e.Type)).GroupBy(e => (e.Type, e.Ordinal))
+                .Select(g => g.Select(e => e.PartyAtEnding).Where(n => n is not null).Min()).ToList()))
+            .Where(x => x.Endings.Count > 0)
+            .Select(x => (x.Key, Min: x.Endings.Min(), AllKnown: x.Endings.All(n => n is not null)))
+            .ToList();
+        return Extreme(def,
+            byColony.Where(x => x.Min is not null).Select(x => (x.Key, (double?)x.Min, x.AllKnown ? MetricCoverage.Complete : MetricCoverage.Partial)).ToList(),
+            max: false, byColony.Count);
+    }
+
+    /// <summary>
+    /// Maximum over matched B/C source observations from independent colonies. The
+    /// source row already chooses the representative save/checkpoint and supplies
+    /// its own coverage. Missing input never silently becomes a zero.
+    /// </summary>
+    /// <summary>
+    /// Starting biome comes from a *starting-tile* observation, never from the
+    /// current player home. Missing or ambiguous values are not "unknown biome"
+    /// names and are excluded from the numerator, making coverage Partial.
+    /// </summary>
+    /// <summary>
+    /// B-001 and P-004 are emitted by the SAME health_death family in the SAME
+    /// representative checkpoint. Never combine a latest save's vanilla deaths
+    /// counter with an older checkpoint's kills or silently replace absent inputs
+    /// with zero.
+    /// </summary>
+    private static NumericRow SharedIntervalKillDeathRatio(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows)
+    {
+        double kills = 0, deaths = 0;
+        var valid = 0;
+        var weak = false;
+        foreach (var colony in colonies)
+        {
+            var k = RowOf(rows, colony.Key, HealthDeathFamily.HostileKills);
+            var d = RowOf(rows, colony.Key, HealthDeathFamily.DeathsByRaid);
+            if (k?.Value.Number is not { } kv || d?.Value.Number is not { } dv
+                || k.Value.ThroughTick is null || d.Value.ThroughTick != k.Value.ThroughTick
+                || kv < 0 || dv < 0)
+                continue;
+            valid++;
+            kills += kv;
+            deaths += dv;
+            if (k.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown
+                || d.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown)
+                weak = true;
+        }
+        var incomplete = weak || valid < colonies.Count;
+        return new NumericRow
+        {
+            Definition = def,
+            Targets = colonies.Count,
+            Valid = valid,
+            Value = valid == 0 ? NumericValue.Unknown : new NumericValue
+            {
+                Number = deaths > 0 ? kills / deaths : null,
+                Numerator = kills, Denominator = deaths,
+                Coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.Complete,
+            },
+        };
+    }
+
+    private static NumericRow BiomeSplit(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, Func<ColonyStats, double> quantity)
+    {
+        var known = new List<(ColonyStats Colony, string Biome, MetricCoverage Coverage)>();
+        foreach (var colony in colonies)
+        {
+            var source = RowOf(rows, colony.Key, ColonyStartSnapshot.Biome);
+            if (source?.Value.Number != 1 || source.Breakdowns.Count != 1)
+                continue;
+            var biome = source.Breakdowns[0];
+            if (biome.Value.Number != 1 || string.IsNullOrWhiteSpace(biome.Breakdown))
+                continue;
+            known.Add((colony, biome.Breakdown, source.Value.Coverage));
+        }
+        if (known.Count == 0)
+            return new NumericRow { Definition = def, Value = NumericValue.Unknown, Targets = colonies.Count };
+
+        var incomplete = known.Count < colonies.Count || known.Any(x => x.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+        var coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly;
+        var breakdowns = known.GroupBy(x => x.Biome, Ord).OrderBy(g => g.Key, Ord)
+            .Select(g => new NumericRow
+            {
+                Definition = def,
+                Breakdown = g.Key,
+                Value = new NumericValue { Number = g.Sum(x => quantity(x.Colony)), Coverage = coverage },
+                Targets = g.Count(), Valid = g.Count(),
+            }).ToList();
+        return new NumericRow
+        {
+            Definition = def,
+            Value = new NumericValue { Number = known.Sum(x => quantity(x.Colony)), Coverage = coverage },
+            Targets = colonies.Count, Valid = known.Count, Breakdowns = breakdowns,
+        };
+    }
+
+    private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
+    {
+        var candidates = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
+            .Where(x => x.Row?.Value.Number is not null)
+            .Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage))
+            .ToList();
+        return Extreme(definition, candidates, max: true, colonies.Count);
     }
 
     private static string? Permadeath(ColonyStats c) => c.Permadeath switch

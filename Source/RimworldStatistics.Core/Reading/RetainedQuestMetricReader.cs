@@ -68,6 +68,8 @@ public static class RetainedQuestMetricReader
         foreach (var g in successes.GroupBy(q => string.IsNullOrEmpty(q.Root) ? MetricKeys.UnknownBucket : q.Root!, StringComparer.Ordinal))
             byRoot.Values[g.Key] = Count(g.Count());
         into[MetricKeys.QuestSuccessByRoot] = byRoot;
+        // Royalty L-003 is not derived here: the save XML has no reliable Empire attribution (RoyaltyQuestSnapshot reads the
+        // game's own involved factions at a successful save instead).
 
         // Time from acceptance to the start of cleanup, for successes with a real acceptance tick.
         var days = new List<double>();

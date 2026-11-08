@@ -10,6 +10,10 @@
   <ItemGroup>
     <ProjectReference Include="../../Source/RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
   </ItemGroup>
+  <!-- The game-independent part of the development-only verification harness (tools/VerifyHarness), tested here. -->
+  <ItemGroup>
+    <Compile Include="../../tools/VerifyHarness/Logic/*.cs" Link="VerifyHarnessLogic/%(Filename)%(Extension)" />
+  </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />
     <Using Include="RimworldStatistics.Core" />

@@ -105,7 +105,9 @@ public static class CountdownEndedPatch
             var context = EndingRuntime.Context;
             if (ShipRoot.GetValue(null) != null)
             {
-                context.Begin(EndingType.Ship, EndingPatches.Launched);   // a ship, including the escape ship of a ship offer
+                // A ship, including the escape ship of a ship offer. CountdownEnded adds one to colonistsLaunched per occupied
+                // cryptosleep casket of the ship (1.7.4985): those are this ending's participants (N1-F-004).
+                context.Begin(EndingType.Ship, EndingPatches.Launched, participantsDefined: true);
             }
             else if (!string.IsNullOrEmpty(CustomLaunchString.GetValue(null) as string))
             {
@@ -124,23 +126,31 @@ public static class CountdownEndedPatch
 [HarmonyPatch(typeof(QuestPart_EndGame), nameof(QuestPart_EndGame.Notify_QuestSignalReceived))]
 public static class QuestPartEndGamePatch
 {
-    public static void Prefix(out (bool WasCountingDown, int LaunchedBefore) __state)
+    /// <summary>The signal argument QuestPart_EndGame reads the colonists sent away from (1.7.4985 SignalArgsNames.SentExtraColonists).</summary>
+    internal const string SentColonistsArg = "SENTCOLONISTS";
+
+    public static void Prefix(Signal signal, out (bool WasCountingDown, int LaunchedBefore, bool Sent) __state)
     {
-        __state = (true, 0);   // "already counting down" records nothing if the read below fails
+        __state = (true, 0, false);   // "already counting down" records nothing if the read below fails
         var state = __state;
-        EndingPatches.Guard(typeof(QuestPartEndGamePatch), () => state = (ShipCountdown.CountingDown, EndingPatches.Launched));
+        EndingPatches.Guard(typeof(QuestPartEndGamePatch), () =>
+            state = (ShipCountdown.CountingDown, EndingPatches.Launched, signal.args.TryGetArg(SentColonistsArg, out List<Pawn> sent) && sent != null));
         __state = state;
     }
 
-    public static void Postfix(QuestPart_EndGame __instance, (bool WasCountingDown, int LaunchedBefore) __state)
+    public static void Postfix(QuestPart_EndGame __instance, (bool WasCountingDown, int LaunchedBefore, bool Sent) __state)
         => EndingPatches.Guard(typeof(QuestPartEndGamePatch), () =>
         {
             if (__state.WasCountingDown || !ShipCountdown.CountingDown)
                 return;
             var root = __instance.quest?.root?.defName;
             var royal = root == "EndGame_RoyalAscent";
-            var departed = Math.Max(0, EndingPatches.Launched - __state.LaunchedBefore);
-            if (EndingPatches.RecordNow(new EndingSignal(royal ? EndingType.RoyalAscent : EndingType.Other, departed, royal ? null : root)))
+            var launchedNow = EndingPatches.Launched;
+            var departed = Math.Max(0, launchedNow - __state.LaunchedBefore);
+            // The part adds the colonists of its SENTCOLONISTS list to colonistsLaunched: for Royal Ascent they are the
+            // participants (N1-F-004). Another quest's ending has no participation definition here and gets none.
+            int? party = royal && __state.Sent && launchedNow >= __state.LaunchedBefore ? launchedNow - __state.LaunchedBefore : null;
+            if (EndingPatches.RecordNow(new EndingSignal(royal ? EndingType.RoyalAscent : EndingType.Other, departed, royal ? null : root, party)))
                 EndingRuntime.Context.NoteQuestEndingRecorded();
         });
 }
@@ -149,7 +159,8 @@ public static class QuestPartEndGamePatch
 public static class ArchonexusEndGamePatch
 {
     public static void Prefix()
-        => EndingPatches.Guard(typeof(ArchonexusEndGamePatch), () => EndingRuntime.Context.Begin(EndingType.Archonexus, EndingPatches.Launched));
+        // EndGame adds one to colonistsLaunched per living, non-lodger humanlike player pawn on the archonexus map: the participants.
+        => EndingPatches.Guard(typeof(ArchonexusEndGamePatch), () => EndingRuntime.Context.Begin(EndingType.Archonexus, EndingPatches.Launched, participantsDefined: true));
 }
 
 [HarmonyPatch(typeof(CompCerebrexCore), "DeactivateCore")]

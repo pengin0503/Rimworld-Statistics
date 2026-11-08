@@ -1,0 +1,259 @@
+using HarmonyLib;
+using RimWorld;
+using RimworldStatistics.Core;
+using RimworldStatistics.Metrics;
+using Verse;
+
+namespace RimworldStatistics.Patches.Metrics;
+
+/// <summary>
+/// Work (evidence #work). Harvests: QuestManager.Notify_PlantHarvested passes the main product made in the harvest toil of the
+/// worker's current job, whose target A is the plant (JobDriver_PlantWork, 1.7.4985), so the crop is the job's target.
+/// A harvest of a harvestable crop that reached PlantCollected without that notification in the same tick failed.
+/// </summary>
+internal static class HarvestProbe
+{
+    public static string? LastPlant;
+    public static int LastTick = -1;
+
+    public static Plant? JobPlant(Pawn worker) => worker.CurJob?.targetA.Thing as Plant;
+
+    /// <summary>
+    /// The crop of a player's main harvest (QuestManager.Notify_PlantHarvested): the spawned, sown crop the worker's job targets.
+    /// Shared by the work (W-001) and food (N1-A-008) adapters so their harvest numerators never drift apart.
+    /// </summary>
+    public static Plant? PlayerCrop(Pawn? worker, Thing? harvested)
+    {
+        if (worker == null || harvested == null || !GameFacts.IsPlayer(worker))
+            return null;
+        var plant = JobPlant(worker);
+        return plant != null && plant.Spawned && plant.IsCrop ? plant : null;
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(QuestManager), nameof(QuestManager.Notify_PlantHarvested))]
+public static class PlantHarvestedMetricPatch
+{
+    public static void Postfix(Pawn worker, Thing harvested)
+    {
+        if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant)
+            return;
+        var plantId = GameFacts.Id(plant);
+        var tick = GameFacts.Tick;
+        HarvestProbe.LastPlant = plantId;
+        HarvestProbe.LastTick = tick;
+        var crop = plant.def.defName;
+        var worker_ = GameFacts.Id(worker);
+        var units = harvested.stackCount;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Harvested(s, worker_, plantId, crop, units, tick));
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Plant), nameof(Plant.PlantCollected))]
+public static class PlantCollectedMetricPatch
+{
+    public static void Prefix(Plant __instance, Pawn by)
+    {
+        if (__instance == null || !__instance.Spawned || LiveMetrics.Family(WorkFamily.Name) is null)
+            return;
+        var id = GameFacts.Id(__instance);
+        var harvestJob = by?.CurJobDef == JobDefOf.Harvest || by?.CurJobDef == JobDefOf.HarvestDesignated;
+        var failed = harvestJob && by!.RaceProps.Humanlike && GameFacts.IsPlayer(by) && __instance.IsCrop
+            && __instance.def.plant.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
+            && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
+        GameFacts.Record(WorkFamily.Name, s =>
+        {
+            if (failed)
+                WorkFamily.HarvestFailed(s);
+            WorkFamily.PlantRemoved(s, id);
+        });
+    }
+}
+
+/// <summary>Sowing completes where the sow toil increments the actor's PlantsSown record (JobDriver_PlantSow, 1.7.4985).</summary>
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
+public static class PlantsSownMetricPatch
+{
+    public static void Postfix(Pawn_RecordsTracker __instance, RecordDef def)
+    {
+        if (def != RecordDefOf.PlantsSown || __instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+            return;
+        if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned)
+            return;
+        var id = GameFacts.Id(plant);
+        var crop = plant.def.defName;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, id, crop));
+    }
+}
+
+/// <summary>A crop made leafless dies when its def says so (Plant.MakeLeafless): cold is one cause, poison and pollution others.</summary>
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Plant), nameof(Plant.MakeLeafless))]
+public static class CropLeaflessMetricPatch
+{
+    public static void Prefix(Plant __instance, out string? __state)
+        => __state = __instance != null && __instance.Spawned && __instance.Map?.IsPlayerHome == true && __instance.IsCrop && !__instance.Destroyed ? GameFacts.Id(__instance) : null;
+
+    public static void Postfix(Plant __instance, Plant.LeaflessCause cause, string? __state)
+    {
+        if (__state is not { } id || !__instance.Destroyed)
+            return;
+        var cold = cause == Plant.LeaflessCause.Cold;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.CropDied(s, id, cold));
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(RecordsUtility), nameof(RecordsUtility.Notify_BillDone))]
+public static class BillDoneMetricPatch
+{
+    public static void Postfix(Pawn billDoer, List<Thing> products)
+    {
+        if (billDoer == null || products == null || !GameFacts.IsPlayer(billDoer))
+            return;
+        var items = products.Where(p => p != null && p.stackCount > 0).Select(p => new CraftedThing
+        {
+            Def = p.def.defName,
+            Count = p.stackCount,
+            Quality = p.TryGetQuality(out var q) ? q.ToString() : null,
+            UnitMarketValue = p.MarketValue,
+            Meal = p.def.IsIngestible && p.def.ingestible.IsMeal,
+            Art = p.TryGetComp<CompArt>() != null,
+        }).ToList();
+        var worker = GameFacts.Id(billDoer);
+        var tick = GameFacts.Tick;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Frame), nameof(Frame.CompleteConstruction))]
+public static class FrameCompleteMetricPatch
+{
+    public static void Prefix(Frame __instance, out Dictionary<string, int>? __state)
+    {
+        __state = null;
+        if (__instance == null || !GameFacts.IsPlayer(__instance) || LiveMetrics.Family(WorkFamily.Name) is null)
+            return;
+        __state = new Dictionary<string, int>(StringComparer.Ordinal);
+        foreach (var t in __instance.resourceContainer)
+            if (t?.def != null)
+                __state[t.def.defName] = __state.GetValueOrDefault(t.def.defName) + t.stackCount;
+    }
+
+    public static void Postfix(Frame __instance, Pawn worker, Dictionary<string, int>? __state)
+    {
+        if (__state == null || !__instance.Destroyed)
+            return;
+        var id = worker != null ? GameFacts.Id(worker) : null;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Constructed(s, id, __state));
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Frame), nameof(Frame.FailConstruction))]
+public static class FrameFailMetricPatch
+{
+    public static void Prefix(Frame __instance, out bool __state) => __state = __instance != null && GameFacts.IsPlayer(__instance);
+
+    public static void Postfix(bool __state)
+    {
+        if (__state)
+            GameFacts.Record(WorkFamily.Name, WorkFamily.ConstructionFailed);
+    }
+}
+
+/// <summary>A deconstruction order completed (not the deconstruction step of a replacing blueprint).</summary>
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(JobDriver_Deconstruct), "FinishedRemoving")]
+public static class DeconstructMetricPatch
+{
+    public static void Prefix(JobDriver_Deconstruct __instance, out Thing? __state)
+    {
+        var target = __instance?.job?.targetA.Thing;
+        __state = __instance?.GetType() == typeof(JobDriver_Deconstruct) && target is Building && GameFacts.IsPlayer(target) ? target : null;
+    }
+
+    public static void Postfix(Thing? __state)
+    {
+        if (__state != null && __state.Destroyed)
+            GameFacts.Record(WorkFamily.Name, WorkFamily.Deconstructed);
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(ListerBuildingsRepairable), nameof(ListerBuildingsRepairable.Notify_BuildingRepaired))]
+public static class RepairedMetricPatch
+{
+    public static void Postfix(Building b)
+    {
+        if (b != null && GameFacts.IsPlayer(b) && b.HitPoints >= b.MaxHitPoints)
+            GameFacts.Record(WorkFamily.Name, WorkFamily.Repaired);
+    }
+}
+
+/// <summary>Mining yield (evidence #work): the stack Mineable.TrySpawnYield places for a player miner, inside its scope.</summary>
+internal static class MiningProbe
+{
+    public static Pawn? Miner;
+    public static ThingDef? Yield;
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(Mineable), "TrySpawnYield", new[] { typeof(Map), typeof(bool), typeof(Pawn) })]
+public static class MiningScopeMetricPatch
+{
+    public static void Prefix(Mineable __instance, Pawn pawn, out bool __state)
+    {
+        __state = false;
+        if (pawn == null || !GameFacts.IsPlayer(pawn) || __instance?.def?.building?.mineableThing == null || MiningProbe.Miner != null)
+            return;
+        MiningProbe.Miner = pawn;
+        MiningProbe.Yield = __instance.def.building.mineableThing;
+        __state = true;
+    }
+
+    public static Exception? Finalizer(Exception? __exception, bool __state)
+    {
+        if (__state)
+        {
+            MiningProbe.Miner = null;
+            MiningProbe.Yield = null;
+        }
+        return __exception;
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
+    new[] { typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode), typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int) })]
+public static class MiningPlaceMetricPatch
+{
+    public static void Prefix(Thing thing)
+    {
+        if (MiningProbe.Miner is not { } miner || thing?.def == null || thing.def != MiningProbe.Yield)
+            return;
+        var id = GameFacts.Id(miner);
+        var def = thing.def.defName;
+        var units = thing.stackCount;
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, id, def, units));
+        MiningProbe.Miner = null;   // one yield per scope
+    }
+}
+
+[MetricAdapter(WorkFamily.Name)]
+[HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.TryLaunch))]
+public static class PodsLaunchMetricPatch
+{
+    public static void Prefix(CompLaunchable __instance, out int __state)
+        => __state = __instance?.parent is { Spawned: true } p && GameFacts.IsPlayer(p) ? p.TryGetComp<CompTransporter>()?.TransportersInGroup(p.Map)?.Count ?? 0 : 0;
+
+    public static void Postfix(CompLaunchable __instance, int __state)
+    {
+        if (__state > 0 && __instance.parent.Destroyed)
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.PodsLaunched(s, __state));
+    }
+}
