@@ -213,6 +213,9 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
                     ProfileMutations.UpsertMetricObservation(p, numeric);
                 if (snapshot != null)
                     ProfileMutations.UpsertMetricObservation(p, snapshot);
+                var providers = ModProviderAdapters.ActiveDescriptors;
+                if (providers.Count > 0 && (numeric != null || snapshot != null))
+                    ProfileMutations.RememberModMetrics(p, providers);
             }, SaveMode.Background);
         }
         catch (Exception e)

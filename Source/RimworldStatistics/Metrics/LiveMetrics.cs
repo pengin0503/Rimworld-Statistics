@@ -30,6 +30,7 @@ public static class LiveMetrics
     {
         Missed.Clear();
         var acc = LiveMetricAccumulator.StartNew(MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
+        ModProviderAdapters.AttachEventOrigins(acc);
         Install(g, acc);
     }
 
@@ -38,6 +39,7 @@ public static class LiveMetrics
     {
         Missed.Clear();
         var acc = LiveMetricAccumulator.Resume(raw, MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
+        ModProviderAdapters.AttachEventOrigins(acc);
         Install(g, acc);
         return acc;
     }

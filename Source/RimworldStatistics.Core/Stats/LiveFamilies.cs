@@ -221,7 +221,27 @@ public static class LiveFamilies
         CaravanFamily.Family,
     };
 
-    public static LiveFamily? Find(string name) => All.FirstOrDefault(f => f.Name == name);
+    private static IReadOnlyList<LiveFamily> extra = Array.Empty<LiveFamily>();
+
+    /// <summary>The installed built-in and optional families, frozen after the startup adapter scan.</summary>
+    public static IReadOnlyList<LiveFamily> Active
+    {
+        get
+        {
+            var optional = Volatile.Read(ref extra);
+            return optional.Count == 0 ? All : All.Concat(optional).ToArray();
+        }
+    }
+
+    public static void SetOptionalFamilies(IReadOnlyList<LiveFamily> families)
+    {
+        var names = All.Select(f => f.Name).ToHashSet(StringComparer.Ordinal);
+        if (families.Any(f => !names.Add(f.Name)))
+            throw new ArgumentException("A provider tried to register an existing family", nameof(families));
+        Volatile.Write(ref extra, families.OrderBy(f => f.Name, StringComparer.Ordinal).ToArray());
+    }
+
+    public static LiveFamily? Find(string name) => Active.FirstOrDefault(f => f.Name == name);
 }
 
 /// <summary>Turns a checkpoint into the profile's numeric observation (shared by the save hook, the load and the import).</summary>
@@ -247,7 +267,7 @@ public static class CheckpointMetrics
             ObservedUtc = payload.SavedUtc,
             ActiveDlcIds = activeDlcIds?.ToList(),
         };
-        families ??= LiveFamilies.All;
+        families ??= LiveFamilies.Active;
         foreach (var (name, state) in payload.Families)
         {
             if (state.IsQuarantined || families.FirstOrDefault(f => f.Name == name) is not { } family || family.Revision != state.Revision)

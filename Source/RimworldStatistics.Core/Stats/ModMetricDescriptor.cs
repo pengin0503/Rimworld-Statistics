@@ -77,6 +77,22 @@ public sealed record ModMetricDescriptor
 /// <summary>What was actually installed when an observation was captured, not a claim of verification.</summary>
 public sealed record ModProviderCapture(string OwnerPackageId, string? OwnerVersion, string ProviderVersion)
 {
+    /// <summary>Small capped history of observed versions; null when a single version is known.</summary>
+    public List<string>? SeenOwnerVersions { get; init; }
+
+    public static ModProviderCapture Combine(ModProviderCapture previous, ModProviderCapture current)
+    {
+        var versions = (previous.SeenOwnerVersions ?? new List<string> { previous.OwnerVersion ?? "" })
+            .Concat(current.SeenOwnerVersions ?? new List<string> { current.OwnerVersion ?? "" })
+            .Distinct(StringComparer.Ordinal).Take(16).ToList();
+        if (versions.Count == 1 && previous.ProviderVersion == current.ProviderVersion)
+            return previous;
+        return new ModProviderCapture(previous.OwnerPackageId, null, "mixed")
+        {
+            SeenOwnerVersions = versions,
+        };
+    }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; init; }
 }

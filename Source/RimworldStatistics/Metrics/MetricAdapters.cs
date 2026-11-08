@@ -44,6 +44,8 @@ public static class MetricAdapters
 
     private static void ApplyOpen(Harmony harmony)
     {
+        // Load optional providers only after the full mod list and defs exist.
+        ModProviderAdapters.Initialize(harmony);
         var adapters = AdapterClasses();
         foreach (var unit in AcquisitionUnits.All)
         {
@@ -66,12 +68,12 @@ public static class MetricAdapters
                 MetricGates.MarkApplied(unit.Id);
         }
 
-        if (!LiveFamilies.All.Any(f => MetricGates.IsRecording(f.Name)))
+        if (!LiveFamilies.Active.Any(f => MetricGates.IsRecording(f.Name)))
             return;
         var checkpoint = adapters.Where(a => a.Units.Contains(CheckpointUnit)).Select(a => a.Type).ToList();
         CheckpointApplied = checkpoint.Count > 0 && checkpoint.All(t => TryApply(harmony, t, adapters));
         if (!CheckpointApplied)
-            foreach (var f in LiveFamilies.All)
+            foreach (var f in LiveFamilies.Active)
                 MetricGates.Fail(f.Name, new InvalidOperationException("the checkpoint save patch could not be applied"));
     }
 
