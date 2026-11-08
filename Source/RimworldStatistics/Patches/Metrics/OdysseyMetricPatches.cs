@@ -39,6 +39,26 @@ internal static class OdysseyArrivalFacts
 /// A completed takeoff cutscene, not a preview or launch request, starts a persistent
 /// flight interval. The pending interval can survive an in-flight save/load.
 /// </summary>
+/// <summary>
+/// Record the identities of all existing maps before launch. Taking this
+/// snapshot never counts as a successful takeoff, and remains cumulative in
+/// the saved Core family. It distinguishes generated maps from revisits.
+/// </summary>
+[MetricAdapter(OdysseyFamily.Name)]
+[HarmonyPatch(typeof(WorldComponent_GravshipController), nameof(WorldComponent_GravshipController.InitiateTakeoff))]
+public static class OdysseyPreflightMapsMetricPatch
+{
+    public static void Prefix(Building_GravEngine engine)
+    {
+        if (engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer
+            || LiveMetrics.Family(OdysseyFamily.Name) is null)
+            return;
+        var maps = Find.Maps?.Where(m => m is not null)
+            .Select(m => GameFacts.MapId(m)).ToArray() ?? Array.Empty<string>();
+        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedExistingMaps(s, maps));
+    }
+}
+
 [MetricAdapter(OdysseyFamily.Name)]
 [HarmonyPatch(typeof(WorldComponent_GravshipController), "TakeoffEnded")]
 public static class OdysseyTakeoffMetricPatch
@@ -78,10 +98,14 @@ public static class OdysseyLandingMetricPatch
             || engine.Faction != Faction.OfPlayer || engine.Map != targetMap
             || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
             return;
-        var length = OdysseyArrivalFacts.ConfirmedDirectDistance(from, to);
+        // ApproxDistanceInTiles is a geometric estimate, NOT a confirmed
+        // travelled path length. A conservative unknown prevents a false
+        // number from being presented as an authoritative flight distance.
+        double? length = null;
         GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedLanding(
             s, GameFacts.Id(engine), layerId, tileId,
             playerShip: true, successfullyLanded: true,
-            routeDistanceInTiles: length, landedOnNewMap: null));
+            routeDistanceInTiles: length, landedOnNewMap: null,
+            arrivedMapId: GameFacts.MapId(targetMap)));
     }
 }
