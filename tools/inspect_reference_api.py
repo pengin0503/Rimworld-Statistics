@@ -20,6 +20,7 @@ names = (
     "MechRepairUtility", "Gravship", "GravshipUtility", "WorldComponent_GravshipController",
     "JobDriver_CleanPollution", "JobDriver_MechRepair", "JobDriver_CleanToxins",
     "JobDriver_ClearPollution", "CompToxPack", "FactionPermit", "RoyalTitlePermitWorker",
+    "Building_WastepackAtomizer", "CompWasteProducer", "WorkGiver_EmptyWasteContainer", "CompAtomizer",
     "Psycast", "Verb_CastPsycast", "RitualOutcomePossibility", "RitualOutcomeEffectWorker",
     "StudyManager", "Quest", "JobDriver_StudyInteract", "CompWasteProducer", "CompWastePack",
     "RitualOutcomeEffectWorker_FromQuality", "Precept_Ritual", "RitualBehaviorWorker_Conversion", "Lord",
@@ -44,7 +45,7 @@ for entry in entries:
     print("API TYPE:", name)
     if name.rsplit(".",1)[-1] in {"WorldGrid","PlanetLayer","Tile","GameInfo","Gravship","WorldComponent_GravshipController","Building_MechGestator","LordJob_Ritual","RitualOutcomePossibility","CompMechGestatorTank","CompMechRepairable","Pawn_AgeTracker","FactionPermit","RoyalTitlePermitWorker","Psycast","Ability","Pawn_RoyaltyTracker","Verb_CastPsycast","RitualOutcomeEffectWorker","RitualOutcomeEffectWorker_FromQuality","Lord","Precept_Ritual","CompToxPack","Quest","StudyManager"}:
         print("  FIELDS:",", ".join(f["name"] for f in entry.get("fields",[])[:75]))
-    methods = entry.get("methods", []) if name in {"RimWorld.FactionPermit","RimWorld.RoyalTitlePermitWorker","RimWorld.Psycast","RimWorld.Verb_CastPsycast","RimWorld.LordJob_Ritual","RimWorld.RitualOutcomePossibility","RimWorld.RitualOutcomeEffectWorker","RimWorld.RitualOutcomeEffectWorker_FromQuality","RimWorld.RitualBehaviorWorker_Conversion","RimWorld.Precept_Ritual","Verse.AI.Group.Lord","Verse.CompToxPack","RimWorld.JobDriver_ClearPollution","Verse.PollutionGrid","RimWorld.StudyManager","RimWorld.Quest","RimWorld.CompWasteProducer","RimWorld.Pawn_RoyaltyTracker","RimWorld.Ability","RimWorld.InteractionWorker_ConvertIdeoAttempt","RimWorld.RitualOutcomeEffectWorker_Conversion","RimWorld.Pawn_IdeoTracker","RimWorld.RoyalTitlePermitWorker_CallAid","RimWorld.Planet.Gravship"} else [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
+    methods = entry.get("methods", []) if name in {"RimWorld.FactionPermit","RimWorld.RoyalTitlePermitWorker","RimWorld.Psycast","RimWorld.Verb_CastPsycast","RimWorld.LordJob_Ritual","RimWorld.RitualOutcomePossibility","RimWorld.RitualOutcomeEffectWorker","RimWorld.RitualOutcomeEffectWorker_FromQuality","RimWorld.RitualBehaviorWorker_Conversion","RimWorld.Precept_Ritual","Verse.AI.Group.Lord","Verse.CompToxPack","RimWorld.JobDriver_ClearPollution","RimWorld.CompWasteProducer","RimWorld.Building_WastepackAtomizer","RimWorld.WorkGiver_EmptyWasteContainer","RimWorld.CompAtomizer","Verse.PollutionGrid","RimWorld.StudyManager","RimWorld.Quest","RimWorld.CompWasteProducer","RimWorld.Pawn_RoyaltyTracker","RimWorld.Ability","RimWorld.InteractionWorker_ConvertIdeoAttempt","RimWorld.RitualOutcomeEffectWorker_Conversion","RimWorld.Pawn_IdeoTracker","RimWorld.RoyalTitlePermitWorker_CallAid","RimWorld.Planet.Gravship"} else [m for m in entry.get("methods", []) if any(word.lower() in m["name"].lower() for word in verbs)]
     for m in methods[:85]:
         types = m["signature"]["parameters"]
         pars = m["parameters"]
