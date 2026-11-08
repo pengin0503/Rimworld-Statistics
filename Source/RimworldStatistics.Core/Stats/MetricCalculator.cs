@@ -101,8 +101,12 @@ public static class MetricCalculator
             // for every metric definition. Order within each source stays unchanged.
             var bySource = observations.GroupBy(o => o.Source)
                 .ToDictionary(g => g.Key, g => (IReadOnlyList<MetricObservation>)g.ToList());
+            // All definitions of one source use the same latest observation. Resolve
+            // its order-sensitive tie break only once instead of sorting per row.
+            var latestBySource = bySource.ToDictionary(kv => kv.Key, kv => Representative(kv.Value));
             perColony.Add((colony, definitions.Select(d => ColonyRow(d,
-                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(), checkpoints.Representative)).ToList(), checkpoints.Lineage));
+                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(),
+                checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source))).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
@@ -228,7 +232,8 @@ public static class MetricCalculator
         => o.Metrics.TryGetValue(d.StoredKey, out var e) && !e.IsQuarantined && e.Revision == d.Revision ? e : null;
 
     /// <param name="checkpoint">The colony's representative checkpoint (Phase C), chosen once for all its outputs.</param>
-    private static NumericRow ColonyRow(MetricDefinition d, IReadOnlyList<MetricObservation> observations, MetricObservation? checkpoint)
+    private static NumericRow ColonyRow(MetricDefinition d, IReadOnlyList<MetricObservation> observations,
+        MetricObservation? checkpoint, MetricObservation? latest)
     {
         if (observations.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
@@ -236,7 +241,7 @@ public static class MetricCalculator
         if (d.Selection != ColonySelection.Representative)
             return AcrossObservations(d, observations);
 
-        var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : Representative(observations);
+        var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : latest;
         if (rep is null)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var entry = Entry(rep, d);
