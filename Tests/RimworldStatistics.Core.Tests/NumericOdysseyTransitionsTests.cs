@@ -28,6 +28,28 @@ public sealed class NumericOdysseyTransitionsTests
         Assert.Equal(1, o.Scalar(OdysseyFamily.NewMapLandings, MetricKeys.Revision(OdysseyFamily.NewMapLandings))!.IntegerValue);
     }
     [Fact]
+    public void UnloadedExistingMapMustNotBeInventedAsNewWithoutGenerationEvidence()
+    {
+        var a = LiveMetricAccumulator.StartNew(new[] { OdysseyFamily.Family.Spec }, 0);
+        var s = a.Family(OdysseyFamily.Name)!;
+        // The preflight list is only loaded maps; an old world map may be absent.
+        OdysseyFamily.ObservedExistingMaps(s, new[] { "Map_101" });
+        OdysseyFamily.ObservedTakeoff(s, "engine", 100, playerShip: true);
+        OdysseyFamily.ObservedLanding(s, "engine", 0, 25,
+            playerShip: true, successfullyLanded: true, routeDistanceInTiles: null,
+            landedOnNewMap: null, arrivedMapId: "Map_999");
+        var draft = a.PrepareSave(200, DateTime.UtcNow, "unknown-map")!;
+        var observation = CheckpointMetrics.ToObservation(draft.Payload!, draft.Json,
+            new ColonyIdentity { ModCampaignId = "unknown-map" }, null, null);
+        var newLandings = observation.Scalar(OdysseyFamily.NewMapLandings,
+            MetricKeys.Revision(OdysseyFamily.NewMapLandings))!;
+        Assert.Equal(0, newLandings.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, newLandings.Coverage);
+        Assert.Equal(1, observation.Scalar(OdysseyFamily.Flights,
+            MetricKeys.Revision(OdysseyFamily.Flights))!.IntegerValue);
+    }
+
+    [Fact]
     public void NewMapClassificationUsesPersistedPreflightMapIdsAcrossReloads()
     {
         var s = LiveMetricAccumulator.StartNew(new[] { OdysseyFamily.Family.Spec }, 0);
