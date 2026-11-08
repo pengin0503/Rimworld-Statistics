@@ -273,4 +273,29 @@ public sealed class NumericSnapshotRetentionTests
             .Metrics[FacilitiesSnapshot.OutdoorTempMax].Values[MetricEntry.Scalar].ExtensionData!.ContainsKey("futureValue"));
     }
 
+    [Fact]
+    public void UnattributedSnapshots_AreNotCompactedUntilAColonyCanOwnThem()
+    {
+        var profile = new Profile();
+        var identity = Identity("unattributed-campaign");
+        for (var i = 0; i < 10; i++)
+        {
+            var snapshot = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "unattributed-" + i,
+                Identity = identity.Clone(), SaveTick = i, ObservedUtc = Epoch.AddMinutes(i),
+            };
+            snapshot.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(
+                MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i });
+            ProfileMutations.UpsertMetricObservation(profile, snapshot);
+        }
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var stats = StatsCalculator.Calculate(colonies, new StatsOptions());
+        var view = MetricCalculator.BuildView(profile, colonies, stats);
+        Assert.Equal(0, colonies.Count);
+        Assert.Equal(10, view.Unattributed);
+        Assert.Equal(10, profile.MetricObservations.Count);
+    }
+
 }
