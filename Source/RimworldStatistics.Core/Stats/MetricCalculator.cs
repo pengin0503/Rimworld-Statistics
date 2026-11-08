@@ -324,7 +324,10 @@ public static class MetricCalculator
     {
         var direct = definition.Acquisition is { } id && observation.EvidenceByAcquisition is { } evidence
             && evidence.TryGetValue(id, out var captured) ? captured : MetricEvidence.UnknownLegacy;
-        return observation.CompactedEvidenceByMetric?.GetValueOrDefault(definition.StoredKey) is { } compacted
+        // GetValueOrDefault on an enum dictionary returns UnknownLegacy even when the key
+        // does not exist. A record compacted for an unrelated metric must not weaken this one.
+        return observation.CompactedEvidenceByMetric is { } compactedEvidence
+            && compactedEvidence.TryGetValue(definition.StoredKey, out var compacted)
             ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
     }
 
