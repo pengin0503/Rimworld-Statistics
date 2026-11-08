@@ -254,7 +254,7 @@ public static class MiningPlaceMetricPatch
         {
             original?.Invoke(placedThing, count);
             if (placedThing?.def == state.YieldDef && count > 0)
-                state.Placed = checked(state.Placed + count);
+                state.Placed = state.Placed > int.MaxValue - count ? int.MaxValue : state.Placed + count;
         };
     }
 
