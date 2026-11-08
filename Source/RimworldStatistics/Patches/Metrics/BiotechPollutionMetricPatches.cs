@@ -13,24 +13,27 @@ namespace RimworldStatistics.Patches.Metrics;
 /// </summary>
 internal static class BiotechCleanupScope
 {
-    [ThreadStatic] private static PollutionGrid? activeGrid;
-    [ThreadStatic] private static int depth;
-    [ThreadStatic] private static int mapId;
+    // The cleanup job may re-enter the clearance helper. A simple depth count
+    // leaves the INNER grid active after the inner call returns; preserve each
+    // scope's grid/map pair so an outer cleanup cannot be attributed to another map.
+    [ThreadStatic] private static Stack<(PollutionGrid Grid, int MapId)>? scopes;
 
-    public static PollutionGrid? Current => depth > 0 ? activeGrid : null;
-    public static int MapId => mapId;
+    public static PollutionGrid? Current
+        => scopes is { Count: > 0 } ? scopes.Peek().Grid : null;
+
+    public static int MapId
+        => scopes is { Count: > 0 } ? scopes.Peek().MapId : -1;
 
     public static void Enter(PollutionGrid grid, int ownerMapId)
-    {
-        activeGrid = grid;
-        mapId = ownerMapId;
-        depth++;
-    }
+        => (scopes ??= new()).Push((grid, ownerMapId));
 
     public static void Exit()
     {
-        if (depth > 0 && --depth == 0)
-            activeGrid = null;
+        if (scopes is not { Count: > 0 })
+            return;
+        scopes.Pop();
+        if (scopes.Count == 0)
+            scopes = null;
     }
 }
 
