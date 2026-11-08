@@ -22,6 +22,7 @@ public static class CheckpointSavePatch
         try
         {
             LiveMetrics.FlushMissed();
+            LiveMetrics.BeforeSave();
             LiveMetrics.Session?.Enter(documentElementName, Environment.CurrentManagedThreadId, UnityData.IsInMainThread,
                 Find.TickManager.TicksGame, DateTime.UtcNow, () => Guid.NewGuid().ToString("N"));
         }

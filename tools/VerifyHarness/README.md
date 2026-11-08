@@ -40,7 +40,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 結果はゲームのログと、テスト用フォルダの `RimworldStatistics-verify.log` に書きます。長い報告（Status、Dump、Diff）の全文はファイルだけに書きます。
 
-## 自動ケース（13件）
+## 自動ケース（18件）
 
 すべて**使い捨てのテスト用コロニー**で実行してください（研究を完了させ、ひらめきと精神崩壊を起こし、敵を出して倒し、襲撃を起こします）。前提を満たさないケース（未完了の研究がない、敵対勢力がない など）は SKIP になります。
 
@@ -59,6 +59,11 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 | down.enemy | 敵を出し `HealthUtility.DamageUntilDowned`（出血なし） | 敵ダウン +1、入植者ダウン +0 |
 | raid.enemy | `RaidEnemy` を即時攻撃・端から徒歩で実行 | 襲撃 +1、EdgeWalkIn +1、人数の標本 +1 |
 | raid.last_kill | 新しい襲撃を発生させ、出現した襲撃者をすべて実際の `Pawn.Kill` 経路で撃破 | 最後の撃破を含む `raid.kills.max` と、襲撃終了標本 +1 |
+| medicine.withdrawal | 入植者に依存症を付け、化学的欲求の水準を 0 → 0.005 → 1 → 0 にする（実際の `Need_Chemical.CurLevel` → `Hediff_Addiction.Notify_NeedCategoryChanged`） | 禁断症状 +2。使った依存症は最後に取り除く |
+| medicine.hospital_bed | 空いた医療ベッドに `Pawn_JobTracker.Notify_TuckedIntoBed` で寝かせ、ジョブを終える | 入院が開き、その後「起き上がった」状態になる（日数は時間経過が要るので手動） |
+| food.stock_recount | 現在のホームマップで `ResourceCounter.UpdateResourceCounts` | 食料の在庫フックが発火し、ほかの値は変わらない |
+| food.growing_cells | 新しい栽培ゾーンに 1 セル足して取り除く（`Zone.AddCell / RemoveCell`） | 追跡中の栽培セル数が +1 してから元に戻る |
+| caravan.ancient_danger | 祠の外のセル、次に監視中の封印された祠の中心を 2 回 `FogGrid.Unfog` | 古代の脅威の開封 +1（2 回目と外のセルは +0）。監視中の祠が現在のマップに無ければ SKIP |
 
 陽性ケースはその単位のフックがイベントを受け付けたこと（`hooks` が 1 以上）も条件です。陰性ケースもフックが発火したうえで数えないことを確かめるため、同じ条件にしています。
 
@@ -76,7 +81,8 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 - **心情起因の精神崩壊**: 心情を下げて自然な崩壊を待つ → `mental.breaks.count` +1。開発ツール「(natural mood break)」では +0。
 - **C0（保存・ロード・分岐）**: 研究完了 3 の時点で P を保存 → 2 件完了して A を保存 → P をロード → 1 件完了して B を保存 → Checkpoint lineage で、代表が tick の大きい方で、その `research.live.completed` が A なら 5、B なら 4（9 も 6 も出ない）、系譜が Branched であること（各チェックポイントの値はログファイルに出る。未検証の出力は詳細タブに出ない）。
-- **性能**: 単位を 1 つだけ開いて（`-rwsverify=lifetime` など）、受け入れ計測 3（60 秒×5 回の中央値で TPS 低下 2% 以下）を測る。毎tick級の `SkillRecord.Learn`、`MentalBreakerTickInterval`、`CompRottable.TickInterval`、`GenPlace.TryPlaceThing`、`Pawn_RecordsTracker.Increment`、`Thing.Kill` は個別に測る。
+- **性能**: 単位を 1 つだけ開いて（`-rwsverify=lifetime` など）、受け入れ計測 3（60 秒×5 回の中央値で TPS 低下 2% 以下）を測る。毎tick級の `SkillRecord.Learn`、`MentalBreakerTickInterval`、`CompRottable.TickInterval`、`GenPlace.TryPlaceThing`、`Pawn_RecordsTracker.Increment`、`Thing.Kill` は個別に測る。2026-11-08 追加分では、運搬のたびに呼ばれる `ResourceCounter.UpdateResourceCounts`（food）と、霧の解除でセルごとに呼ばれる `FogGrid.Unfog`（caravan）を測る。
+- **2026-11-08 追加分（時間経過が要るもの）**: 入院期間（医療ベッドで回復させて起床 → 1 秒以上後に Diff で `medicine.hospital.stay_mean` の標本 +1）、食料不足のない最長期間（備蓄を食べ尽くす → 再び備蓄、Diff で値が区切れること）、栽培セル日あたりの収穫量（作物を収穫 → 分子 +収穫数、分母が時間とともに増えること）、帝国関係クエスト（成功後に保存し、テスト用プロファイルの保存時点の観測で `royalty.quest_success` を確認）、最少人数エンディング（開発モードの宇宙船の強制カウントダウンでは値が付かないこと、実際の宇宙船では使用中のカプセル数）。詳細は実装記録 §6 の追記行。
 
 ## 検証が通ったら
 

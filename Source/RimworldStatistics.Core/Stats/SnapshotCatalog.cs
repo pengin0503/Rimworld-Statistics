@@ -55,5 +55,6 @@ public static class SnapshotCatalog
         Snap(RoyaltyStateSnapshot.PsylinkPeak, "L-006", MetricUnit.Count, OverallAggregation.Max, "royalty_state", "RWS_Metric_RoyaltyPsylinkPeak", "RWS_MetricDesc_RoyaltyPsylinkPeak", category: MetricCategory.Royalty, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Royalty),
         Snap(BiotechStateSnapshot.PollutionCellsPeak, "N1-E-004", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechPollutionPeak", "RWS_MetricDesc_BiotechPollutionPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
         Snap(BiotechStateSnapshot.BandwidthUsedPeak, "N1-E-005", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechBandwidthPeak", "RWS_MetricDesc_BiotechBandwidthPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
+        Snap(RoyaltyQuestSnapshot.Success, "L-003", MetricUnit.Count, OverallAggregation.Sum, "royalty_quests", "RWS_Metric_RoyaltyQuestSuccess", "RWS_MetricDesc_RoyaltyQuestSuccess", category: MetricCategory.Royalty, dlc: AcquisitionUnits.Royalty),
     };
 }

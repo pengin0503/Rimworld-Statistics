@@ -35,5 +35,7 @@ public static class RankingDependencyCatalog
             TradeFamily.Name, "RWS_Metric_RankLargestSale", "RWS_MetricDesc_RankLargestSale"),
         Rank(MetricRankings.MostResearch, "R-006", MetricUnit.Count, MetricProvenance.SaveSnapshot,
             "research_state", "RWS_Metric_RankMostResearch", "RWS_MetricDesc_RankMostResearch"),
+        Rank(MetricRankings.MinPartyAtEnding, "N1-F-004", MetricUnit.Count, MetricProvenance.LiveAggregate,
+            "ending_party", "RWS_Metric_RankMinPartyAtEnding", "RWS_MetricDesc_RankMinPartyAtEnding"),
     };
 }

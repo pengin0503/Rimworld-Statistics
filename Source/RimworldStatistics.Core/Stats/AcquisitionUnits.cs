@@ -70,11 +70,14 @@ public static class AcquisitionUnits
         // Phase D2 (Anomaly is not implemented: no audited defs or saves, and not owned by the user)
         new("royalty", AcquisitionKind.Family, U, Royalty),
         new("royalty_state", AcquisitionKind.Snapshot, U, Royalty),
-        new("royalty_quests", AcquisitionKind.Derived, U, Royalty),
+        new("royalty_quests", AcquisitionKind.Snapshot, U, Royalty),
         new("ideology", AcquisitionKind.Family, U, Ideology),
         new("biotech", AcquisitionKind.Family, U, Biotech),
         new("biotech_state", AcquisitionKind.Snapshot, U, Biotech),
         new("odyssey", AcquisitionKind.Family, U, Odyssey),
+
+        // Phase D derived: the participants of an ending, recorded with the v1 ending record (N1-F-004)
+        new("ending_party", AcquisitionKind.Derived, U),
     };
 
     private static readonly Dictionary<string, AcquisitionUnit> ById = All.ToDictionary(u => u.Id, StringComparer.Ordinal);

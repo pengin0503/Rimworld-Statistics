@@ -188,7 +188,7 @@ public sealed class NumericEconomyTests
             WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs, WorkFamily.ColdLoss, WorkFamily.PodsLaunched_, WorkFamily.DailyPeak,
             WorkFamily.SownDefs, WorkFamily.HarvestByCrop, WorkFamily.TopCrop, WorkFamily.OtherLoss, WorkFamily.LossRate, WorkFamily.HarvestYearPeak,
             WorkFamily.BestCrafter, WorkFamily.BestHarvester, WorkFamily.BestBuilder, WorkFamily.BestCook, WorkFamily.BestMiner, WorkFamily.Repairs,
-            FoodFamily.SpoiledUnits, FoodFamily.Nutrition,
+            FoodFamily.SpoiledUnits, FoodFamily.Nutrition, FoodFamily.NoShortageLongest, FoodFamily.HarvestPerGrowingCell,
             TradeFamily.SalesTotal, TradeFamily.BuysTotal, TradeFamily.Deals, TradeFamily.SalesPeak, TradeFamily.BuysPeak, TradeFamily.TopSold,
             TradeFamily.OrbitalDeals, TradeFamily.VisitingCaravanDeals, TradeFamily.SalesPeakUnit, TradeFamily.PartnerFactionDefs, TradeFamily.SoldDefs,
             TradeFamily.BoughtDefs, TradeFamily.SalesUnits, TradeFamily.BuysUnits, TradeFamily.TopBought,
@@ -197,8 +197,8 @@ public sealed class NumericEconomyTests
         foreach (var key in keys)
             Assert.True(MetricRegistry.Find(key) is { Source: MetricObservationSource.Checkpoint, Published: false }, key);
         Assert.Contains("N2-F-012", MetricRegistry.Find(WorkFamily.MealsByDef)!.LedgerIds);
-        // Held: no safe low-cost source (continuous stock, growing-area integral).
-        Assert.Null(MetricRegistry.Find("food.no_shortage.longest"));
-        Assert.Null(MetricRegistry.Find("food.harvest.per_growing_cell"));
+        // N2-F-010 and N1-A-008 (held until 2026-11-08) now come from the vanilla resource recount and the growing-zone cell events.
+        Assert.Equal("N2-F-010", MetricRegistry.Find("food.no_shortage.longest")!.LedgerIds);
+        Assert.Equal("N1-A-008", MetricRegistry.Find("food.harvest.per_growing_cell")!.LedgerIds);
     }
 }

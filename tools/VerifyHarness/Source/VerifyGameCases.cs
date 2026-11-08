@@ -31,6 +31,11 @@ internal static class VerifyGameCases
         new("down.enemy", DownFamily.Name, "Damage a spawned enemy until downed: +1 enemy downed", EnemyDowned),
         new("raid.enemy", RaidFamily.Name, "Execute RaidEnemy (immediate attack, edge walk-in): +1 raid, +1 EdgeWalkIn", RaidEnemy),
         new("raid.last_kill", RaidFamily.Name, "Execute a new raid and kill every spawned raider through Pawn.Kill: last player kill is included in raid.kills.max", RaidLastKill),
+        new("medicine.withdrawal", MedicineFamily.Name, "Addict a colonist, then set the chemical need 0 → 0.005 → 1 → 0: +2 withdrawal onsets", Withdrawal),
+        new("medicine.hospital_bed", MedicineFamily.Name, "Tuck a colonist into a medical bed, then end the job: a stay opens, then the colonist has got up from it", HospitalBed),
+        new("food.stock_recount", FoodFamily.Name, "UpdateResourceCounts on the current home map: the stock hook fires, nothing else changes", FoodStockRecount),
+        new("food.growing_cells", FoodFamily.Name, "Add then remove one cell of a new growing zone: the tracked cells go +1 then back", GrowingCells),
+        new("caravan.ancient_danger", CaravanFamily.Name, "Unfog a cell outside, then the centre of a watched sealed shrine twice: +1 ancient danger opened", AncientDanger),
     };
 
     public static CaseResult Run(GameCase c)
@@ -306,4 +311,121 @@ internal static class VerifyGameCases
             requireHooks: true, note: "real Pawn.Kill, raiders=" + raiders.Length + ", prior-max=" + priorMax);
     }
 
+    // ----- held until 2026-11-08: N3-H-005, N3-H-011, N2-F-010, N1-A-008, Q-014 -----
+
+    /// <summary>
+    /// N3-H-005: the real Need_Chemical.CurLevel setter → CategoryChanged → Hediff_Addiction.Notify_NeedCategoryChanged path.
+    /// Entering withdrawal twice counts twice; a change inside withdrawal is not a change of category.
+    /// </summary>
+    private static CaseResult Withdrawal(GameCase c)
+    {
+        var chemical = DefDatabase<ChemicalDef>.AllDefsListForReading.OrderBy(d => d.defName, StringComparer.Ordinal)
+            .FirstOrDefault(d => d.addictionHediff?.chemicalNeed != null);
+        if (chemical is null)
+            return CaseCheck.Skip(c.Id, c.Unit, "no chemical with an addiction need");
+        var pawn = Colonist(p => p.health.hediffSet.GetFirstHediffOfDef(chemical.addictionHediff) == null && p.needs != null);
+        if (pawn is null)
+            return CaseCheck.Skip(c.Id, c.Unit, "no free colonist without that addiction");
+        var addiction = pawn.health.AddHediff(chemical.addictionHediff);
+        if (addiction is not Hediff_Addiction { Need: { } need })
+            return CaseCheck.Skip(c.Id, c.Unit, "the addiction gave no chemical need");
+        var result = Measure(c, () =>
+        {
+            need.CurLevel = 0f;
+            need.CurLevel = 0.005f;
+            need.CurLevel = 1f;
+            need.CurLevel = 0f;
+        }, new[] { new Expect(MedicineFamily.Withdrawals, 2) }, requireHooks: true, note: chemical.defName);
+        pawn.health.RemoveHediff(addiction);
+        return result;
+    }
+
+    /// <summary>
+    /// N3-H-011: the real Pawn_JobTracker.Notify_TuckedIntoBed → LayDown job → Toils_LayDown.LayDown init, and the toil's finish
+    /// action at the job's end. The stay's length needs game time (and the merge window) and is checked by hand.
+    /// </summary>
+    private static CaseResult HospitalBed(GameCase c)
+    {
+        var map = Find.CurrentMap;
+        var bed = map.listerBuildings.AllBuildingsColonistOfClass<Building_Bed>()
+            .Where(b => b.Medical && b.SleepingSlotsCount > 0 && !b.CurOccupants.Any()).OrderBy(b => b.thingIDNumber).FirstOrDefault();
+        if (bed is null)
+            return CaseCheck.Skip(c.Id, c.Unit, "no free medical bed on the current map");
+        var pawn = Colonist(p => !p.InBed());
+        if (pawn is null || LiveMetrics.Family(MedicineFamily.Name) is not { } family)
+            return CaseCheck.Skip(c.Id, c.Unit, pawn is null ? "no free colonist out of bed" : "the medicine family does not record");
+        var id = pawn.GetUniqueLoadID();
+        var hits = VerifyProbe.Hits(c.Unit);
+        pawn.jobs.Notify_TuckedIntoBed(bed);
+        var entered = MedicineFamily.StayState(family, id);
+        pawn.jobs.EndCurrentJob(JobCondition.InterruptForced, startNewJob: false);
+        var left = MedicineFamily.StayState(family, id);
+        var ok = entered is (true, false) && left is (true, true);
+        return new CaseResult(c.Id, c.Unit, ok ? CaseOutcome.Pass : CaseOutcome.Fail, "entered:open,left:got-up",
+            $"entered:{(entered.Open ? "open" : "none")},left:{(left.Left ? "got-up" : left.Open ? "open" : "none")}", VerifyProbe.Hits(c.Unit) - hits,
+            bed.def.defName + " #" + bed.thingIDNumber);
+    }
+
+    /// <summary>N2-F-010: a recount of a player home map reaches the stock hook (the spans need game time and are checked by hand).</summary>
+    private static CaseResult FoodStockRecount(GameCase c)
+    {
+        var map = Find.CurrentMap;
+        if (!map.IsPlayerHome)
+            return CaseCheck.Skip(c.Id, c.Unit, "the current map is not a player home");
+        return Measure(c, () => map.resourceCounter.UpdateResourceCounts(),
+            new[] { new Expect(FoodFamily.SpoiledUnits, 0) }, requireHooks: true, note: "hook only");
+    }
+
+    /// <summary>N1-A-008: the real Zone.AddCell / RemoveCell path of a growing zone (the yield needs game time).</summary>
+    private static CaseResult GrowingCells(GameCase c)
+    {
+        var map = Find.CurrentMap;
+        if (LiveMetrics.Family(FoodFamily.Name) is not { } family || FoodFamily.TrackedGrowingCells(family) is not { } before)
+            return CaseCheck.Skip(c.Id, c.Unit, "the food family has no tracked growing cells");
+        var cell = map.AllCells.Where(x => x.InBounds(map) && !x.Fogged(map) && map.zoneManager.ZoneAt(x) == null && x.GetEdifice(map) == null
+                && x.GetThingList(map).All(t => t.def.CanOverlapZones) && map.fertilityGrid.FertilityAt(x) > 0f)
+            .OrderBy(x => x.z).ThenBy(x => x.x).FirstOrDefault();
+        if (!cell.IsValid || map.zoneManager.ZoneAt(cell) != null)
+            return CaseCheck.Skip(c.Id, c.Unit, "no free fertile cell");
+        var hits = VerifyProbe.Hits(c.Unit);
+        var zone = new Zone_Growing(map.zoneManager);
+        map.zoneManager.RegisterZone(zone);
+        zone.AddCell(cell);
+        var added = FoodFamily.TrackedGrowingCells(family);
+        zone.RemoveCell(cell);   // the last cell: the zone deregisters itself
+        var removed = FoodFamily.TrackedGrowingCells(family);
+        var ok = added == before + 1 && removed == before;
+        return new CaseResult(c.Id, c.Unit, ok ? CaseOutcome.Pass : CaseOutcome.Fail, $"cells:{before}->{before + 1}->{before}",
+            $"cells:{before}->{added?.ToString() ?? "?"}->{removed?.ToString() ?? "?"}", VerifyProbe.Hits(c.Unit) - hits, cell.ToString());
+    }
+
+    /// <summary>
+    /// Q-014: the real FogGrid.Unfog. A cell outside every watched shrine changes nothing; unfogging a watched shrine's centre is
+    /// one opening, and unfogging it again adds nothing. Needs a still sealed shrine on the current map (the starting map usually has one).
+    /// </summary>
+    private static CaseResult AncientDanger(GameCase c)
+    {
+        var map = Find.CurrentMap;
+        if (LiveMetrics.Family(CaravanFamily.Name) is not { } family)
+            return CaseCheck.Skip(c.Id, c.Unit, "the caravan family does not record");
+        var prefix = "Map_" + map.uniqueID + "|";
+        CellRect? shrine = null;
+        foreach (var key in CaravanFamily.WatchedShrines(family))
+            if (key.StartsWith(prefix, StringComparison.Ordinal)
+                && CaravanFamily.TryParseShrineKey(key, out _, out var minX, out var minZ, out var maxX, out var maxZ))
+            {
+                shrine = CellRect.FromLimits(minX, minZ, maxX, maxZ);
+                break;
+            }
+        if (shrine is not { } rect || !map.fogGrid.IsFogged(rect.CenterCell))
+            return CaseCheck.Skip(c.Id, c.Unit, "no watched sealed shrine on the current map");
+        var outside = map.AllCells.FirstOrDefault(x => map.fogGrid.IsFogged(x) && !rect.ExpandedBy(2).Contains(x));
+        return Measure(c, () =>
+        {
+            if (outside.IsValid)
+                map.fogGrid.Unfog(outside);
+            map.fogGrid.Unfog(rect.CenterCell);
+            map.fogGrid.Unfog(rect.CenterCell);
+        }, new[] { new Expect(CaravanFamily.AncientDangersOpened, 1) }, requireHooks: true, note: rect.ToString());
+    }
 }

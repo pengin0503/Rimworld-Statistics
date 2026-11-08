@@ -1,7 +1,13 @@
 namespace RimworldStatistics.Core;
 
-/// <summary>What the credits hook resolved: the kind of ending, colonists who left, and (for "other") a credits excerpt.</summary>
-public sealed record EndingSignal(EndingType Type, int Departed, string? CreditsExcerpt);
+/// <summary>
+/// What the credits hook resolved: the kind of ending, colonists who left, and (for "other") a credits excerpt.
+/// <paramref name="Party"/> is the number of participants the game confirmed for an ending that has a participation definition
+/// (ledger N1-F-004): the ship's occupied cryptosleep caskets, the colonists sent on the royal-ascent shuttle, the colonists who
+/// transcended at the archonexus. Null for every other ending and whenever the confirming path did not run; a
+/// <paramref name="Departed"/> of 0 is never read as "no participants".
+/// </summary>
+public sealed record EndingSignal(EndingType Type, int Departed, string? CreditsExcerpt, int? Party = null);
 
 /// <summary>Turns an ending into a record (spec §8.4) and pre-install traces into "0th" records (spec §8.2).</summary>
 public static class EndingLedger
@@ -31,6 +37,7 @@ public static class EndingLedger
             DevMode = devMode,
             GameVersion = gameVersion,
             CreditsExcerpt = signal.CreditsExcerpt,
+            PartyAtEnding = signal.Party,
         };
     }
 

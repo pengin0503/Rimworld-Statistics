@@ -183,9 +183,11 @@ public static class LiveCatalog
         Live(WorkFamily.Repairs, "N4-R-004", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Repairs", "RWS_MetricDesc_Repairs"),
         Live(WorkFamily.PodsLaunched_, "W-023", MetricCategory.Exploration, Count, Sum, WorkFamily.Name, "RWS_Metric_PodsLaunched", "RWS_MetricDesc_PodsLaunched"),
 
-        // C3 · food (N2-F-010 and N1-A-008 are held, see FoodFamily)
+        // C3 · food
         Live(FoodFamily.SpoiledUnits, "W-016", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodSpoiled", "RWS_MetricDesc_FoodSpoiled"),
         Live(FoodFamily.Nutrition, "W-019", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodNutrition", "RWS_MetricDesc_FoodNutrition"),
+        Live(FoodFamily.NoShortageLongest, "N2-F-010", Work, Days, Max, FoodFamily.Name, "RWS_Metric_FoodNoShortageLongest", "RWS_MetricDesc_FoodNoShortageLongest"),
+        Live(FoodFamily.HarvestPerGrowingCell, "N1-A-008", Work, MetricUnit.PerCellDay, Ratio, FoodFamily.Name, "RWS_Metric_FoodHarvestPerCell", "RWS_MetricDesc_FoodHarvestPerCell"),
 
         // C3 · trade
         Live(TradeFamily.Deals, "T-003", Economy, Count, Sum, TradeFamily.Name, "RWS_Metric_TradeDeals", "RWS_MetricDesc_TradeDeals"),
@@ -211,7 +213,7 @@ public static class LiveCatalog
         Live(DiplomacyFamily.AidRequests, "N2-E-007", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidRequests", "RWS_MetricDesc_AidRequests"),
         Live(DiplomacyFamily.AidArrivals, "N2-E-008", Economy, Count, Sum, DiplomacyFamily.Name, "RWS_Metric_AidArrivals", "RWS_MetricDesc_AidArrivals"),
 
-        // C4 · medicine (N3-H-005 and N3-H-011 are held, see MedicineFamily)
+        // C4 · medicine
         Live(MedicineFamily.Tends, "M-001", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Tends", "RWS_MetricDesc_Tends"),
         Live(MedicineFamily.TendQualityMean, "N1-C-007", Medicine, Percent, Ratio, MedicineFamily.Name, "RWS_Metric_TendQualityMean", "RWS_MetricDesc_TendQualityMean"),
         Live(MedicineFamily.BestTender, "N3-H-012", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_BestTender", "RWS_MetricDesc_BestTender", breakdown: true),
@@ -233,6 +235,8 @@ public static class LiveCatalog
         Live(MedicineFamily.FoodPoisonings, "M-005", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_FoodPoisonings", "RWS_MetricDesc_FoodPoisonings"),
         Live(MedicineFamily.Addictions, "P-026", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Addictions", "RWS_MetricDesc_Addictions"),
         Live(MedicineFamily.Overdoses, "N3-H-004", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Overdoses", "RWS_MetricDesc_Overdoses"),
+        Live(MedicineFamily.Withdrawals, "N3-H-005", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Withdrawals", "RWS_MetricDesc_Withdrawals"),
+        Live(MedicineFamily.HospitalStayMean, "N3-H-011", Medicine, Days, Ratio, MedicineFamily.Name, "RWS_Metric_HospitalStayMean", "RWS_MetricDesc_HospitalStayMean"),
         Live(MedicineFamily.PartsLost, "M-006", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_PartsLost", "RWS_MetricDesc_PartsLost"),
         Live(MedicineFamily.Scars, "N3-H-007", Medicine, Count, Sum, MedicineFamily.Name, "RWS_Metric_Scars", "RWS_MetricDesc_Scars"),
         Live(MedicineFamily.InjuriesPerPawnMax, "N4-P-008", Medicine, Count, Max, MedicineFamily.Name, "RWS_Metric_InjuriesPerPawnMax", "RWS_MetricDesc_InjuriesPerPawnMax", breakdown: true),
@@ -252,7 +256,7 @@ public static class LiveCatalog
         Live(DisasterFamily.Fires, "D-007", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_Fires", "RWS_MetricDesc_Fires"),
         Live(DisasterFamily.BuildingsBurned, "D-008", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_BuildingsBurned", "RWS_MetricDesc_BuildingsBurned"),
 
-        // C4 · caravan (Q-014 is held, see CaravanFamily)
+        // C4 · caravan
         Live(CaravanFamily.Departures, "Q-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanDepartures", "RWS_MetricDesc_CaravanDepartures"),
         Live(CaravanFamily.Lost_, "Q-009", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravansLost", "RWS_MetricDesc_CaravansLost"),
         Live(CaravanFamily.TilesTravelled, "Q-010", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanTiles", "RWS_MetricDesc_CaravanTiles"),
@@ -264,6 +268,7 @@ public static class LiveCatalog
         Live(CaravanFamily.SitesCleared, "Q-012", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SitesCleared", "RWS_MetricDesc_SitesCleared"),
         Live(CaravanFamily.SettlementsFounded, "N3-X-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsFounded", "RWS_MetricDesc_SettlementsFounded"),
         Live(CaravanFamily.SettlementsAbandoned, "Q-013", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_SettlementsAbandoned", "RWS_MetricDesc_SettlementsAbandoned"),
+        Live(CaravanFamily.AncientDangersOpened, "Q-014", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_AncientDangersOpened", "RWS_MetricDesc_AncientDangersOpened"),
         // D2 · royalty (only audited title and honor state transitions)
         Live(RoyaltyFamily.PermitUses, "L-002", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPermitUses", "RWS_MetricDesc_RoyaltyPermitUses"),
         Live(RoyaltyFamily.Psycasts, "L-005", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPsycasts", "RWS_MetricDesc_RoyaltyPsycasts"),

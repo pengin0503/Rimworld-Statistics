@@ -331,6 +331,7 @@ public static class ProfileMutations
             existing.CreditsExcerpt = ev.CreditsExcerpt;
         }
         existing.ColonistsKilledAtEnding ??= ev.ColonistsKilledAtEnding;   // the first recorded value stays
+        existing.PartyAtEnding ??= ev.PartyAtEnding;
         existing.Departed = Math.Max(existing.Departed, ev.Departed);
         existing.LaunchedTotalAfter = Math.Max(existing.LaunchedTotalAfter, ev.LaunchedTotalAfter);
         return false;

@@ -8,13 +8,19 @@ public sealed class CreditsContext
 {
     private EndingType? _type;
     private int _launchedBefore;
+    private bool _participantsDefined;
     private bool _alreadyRecorded;
     private bool _questEndingRecorded;
 
-    public void Begin(EndingType type, int launchedBefore)
+    /// <param name="participantsDefined">
+    /// The game is about to count this ending's participants into statsRecord.colonistsLaunched (a ship with caskets, the
+    /// archonexus); the launched difference then becomes <see cref="EndingSignal.Party"/>.
+    /// </param>
+    public void Begin(EndingType type, int launchedBefore, bool participantsDefined = false)
     {
         _type = type;
         _launchedBefore = launchedBefore;
+        _participantsDefined = participantsDefined;
         _alreadyRecorded = false;
     }
 
@@ -41,20 +47,24 @@ public sealed class CreditsContext
         var type = _type;
         var already = _alreadyRecorded;
         var before = _launchedBefore;
+        var defined = _participantsDefined;
         _type = null;
+        _participantsDefined = false;
         _alreadyRecorded = false;
         if (already)
             return null;
         if (type is not { } t)
             return new EndingSignal(EndingType.Other, 0, EndingLedger.ExcerptOf(creditsText));
         var departed = t is EndingType.Ship or EndingType.Archonexus ? Math.Max(0, launchedNow - before) : 0;
-        return new EndingSignal(t, departed, null);
+        var party = defined && (t is EndingType.Ship or EndingType.Archonexus) && launchedNow >= before ? launchedNow - before : (int?)null;
+        return new EndingSignal(t, departed, null, party);
     }
 
     public void Reset()
     {
         _type = null;
         _launchedBefore = 0;
+        _participantsDefined = false;
         _alreadyRecorded = false;
         _questEndingRecorded = false;
     }

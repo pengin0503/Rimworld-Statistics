@@ -236,10 +236,10 @@ public sealed class NumericWorldEventsTests
             CaravanFamily.Departures, CaravanFamily.Lost_, CaravanFamily.TilesTravelled, CaravanFamily.UniqueTiles, CaravanFamily.SitesCleared,
             CaravanFamily.SettlementsAbandoned, CaravanFamily.LongestExpedition, CaravanFamily.Ambushes, CaravanFamily.LongestDistance,
             CaravanFamily.SettlementsFounded, CaravanFamily.ConcurrentMax,
+            // held until 2026-11-08: N3-H-005, N3-H-011, Q-014
+            MedicineFamily.Withdrawals, MedicineFamily.HospitalStayMean, CaravanFamily.AncientDangersOpened,
         };
         foreach (var key in keys)
             Assert.True(MetricRegistry.Find(key) is { Source: MetricObservationSource.Checkpoint, Published: false }, key);
-        foreach (var held in new[] { "medicine.withdrawal", "medicine.hospital.stay_mean", "exploration.ancient_danger_opened" })
-            Assert.Null(MetricRegistry.Find(held));
     }
 }

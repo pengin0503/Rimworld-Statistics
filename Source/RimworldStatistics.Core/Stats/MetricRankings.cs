@@ -4,8 +4,9 @@ namespace RimworldStatistics.Core;
 /// Phase D1 cross-colony comparisons from v1 records and Phase A values (ledger sections ranking, ranking_dependency).
 /// They use v1's ending filter (dev mode setting, (type, ordinal) grouping, traces as "at least once"), the labels of v1's
 /// representative point and v1's exclusions, so they never disagree with the Overview's counts. Ties: smallest colony key.
-/// Outputs whose inputs come from Phase B or C (R-001/2/4/5/6/12) and those needing new live data (N1-F-001/2/4) are not
-/// built; R-011 is not supported and has no row.
+/// Outputs whose inputs come from Phase B or C (R-001/2/4/5/6/12), the starting biome (N1-F-001/2) and the participants stored
+/// with an ending (N1-F-004) are built here but registered behind their unverified acquisition units
+/// (<see cref="RankingDependencyCatalog"/>); R-011 is not supported and has no row.
 /// </summary>
 public static class MetricRankings
 {
@@ -31,6 +32,10 @@ public static class MetricRankings
     public const string MostCrafting = "ranking.crafting.peak";
     public const string LargestSale = "ranking.trade.peak_sale";
     public const string MostResearch = "ranking.research.peak";
+    public const string MinPartyAtEnding = "ranking.ending.min_party";
+
+    /// <summary>The ending types with a participation definition in 1.7.4985 (see <see cref="EndingSignal.Party"/>).</summary>
+    public static readonly IReadOnlySet<EndingType> PartyEndings = new HashSet<EndingType> { EndingType.Ship, EndingType.RoyalAscent, EndingType.Archonexus };
 
     /// <summary>Breakdown keys of the permadeath split.</summary>
     public const string PermadeathOn = "permadeath";
@@ -133,6 +138,25 @@ public static class MetricRankings
         yield return InputPeak(Def(LargestSale), ordered, rows, TradeFamily.SalesPeak);
         // S-012 is the save-time *finished* research set, not research events counted by Q-001.
         yield return InputPeak(Def(MostResearch), ordered, rows, ResearchStateSnapshot.Finished);
+        yield return MinParty(Def(MinPartyAtEnding), ordered);
+    }
+
+    /// <summary>
+    /// N1-F-004: the fewest confirmed participants of a counted ending, over the ending types with a participation definition.
+    /// One value per (type, ordinal) as v1 counts it (the smallest party stored with its records); a colony whose counted
+    /// endings of those types lack a stored party is a target without a value. No party anywhere is unknown, never 0.
+    /// </summary>
+    private static NumericRow MinParty(MetricDefinition def, IReadOnlyList<ColonyStats> colonies)
+    {
+        var byColony = colonies
+            .Select(c => (c.Key, Endings: c.CountedEndings.Where(e => PartyEndings.Contains(e.Type)).GroupBy(e => (e.Type, e.Ordinal))
+                .Select(g => g.Select(e => e.PartyAtEnding).Where(n => n is not null).Min()).ToList()))
+            .Where(x => x.Endings.Count > 0)
+            .Select(x => (x.Key, Min: x.Endings.Min(), AllKnown: x.Endings.All(n => n is not null)))
+            .ToList();
+        return Extreme(def,
+            byColony.Where(x => x.Min is not null).Select(x => (x.Key, (double?)x.Min, x.AllKnown ? MetricCoverage.Complete : MetricCoverage.Partial)).ToList(),
+            max: false, byColony.Count);
     }
 
     /// <summary>

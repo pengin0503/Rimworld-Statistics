@@ -3,6 +3,7 @@ using RimWorld;
 using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using Verse;
+using Verse.AI;
 
 namespace RimworldStatistics.Patches.Metrics;
 
@@ -211,5 +212,95 @@ internal static class ScarProbe
     {
         if (!wasPermanent && comp.IsPermanent && comp.Pawn is { IsFreeColonist: true })
             GameFacts.Record(MedicineFamily.Name, MedicineFamily.Scar);
+    }
+}
+
+/// <summary>
+/// N3-H-005 (1.7.4985): <c>Need_Chemical.CurLevel</c>'s setter calls <c>CategoryChanged</c> → this method only when the need's
+/// category changed, so finding the need in withdrawal here is an onset. Called rarely (category changes of addicted pawns).
+/// </summary>
+[MetricAdapter(MedicineFamily.Name)]
+[HarmonyPatch(typeof(Hediff_Addiction), nameof(Hediff_Addiction.Notify_NeedCategoryChanged))]
+public static class WithdrawalMetricPatch
+{
+    public static void Postfix(Hediff_Addiction __instance)
+    {
+        var pawn = __instance?.pawn;
+        if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || LiveMetrics.Family(MedicineFamily.Name) is null)
+            return;
+        if (__instance!.Need is not { } need)
+            return;
+        var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
+        var id = __instance.GetUniqueLoadID();
+        var tick = GameFacts.Tick;
+        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.AddictionNeedChanged(s, id, withdrawal, tick));
+    }
+}
+
+/// <summary>
+/// N3-H-011 (1.7.4985): <c>Toils_LayDown.LayDown</c> builds every toil that lays a pawn in a bed (its init is the only code that
+/// sets <c>PawnPosture.LayingInBed</c>); its finish actions run when the pawn stops lying there (next toil, job end, death,
+/// despawn). The factory's postfix appends to that toil's own init and adds a finish action, once per toil built (at a job's
+/// start or a load), so nothing runs per tick. Deathrest is not a medical stay.
+/// </summary>
+[MetricAdapter(MedicineFamily.Name)]
+[HarmonyPatch(typeof(Toils_LayDown), nameof(Toils_LayDown.LayDown))]
+public static class HospitalBedMetricPatch
+{
+    public static void Postfix(Toil __result, TargetIndex bedOrRestSpotIndex, bool hasBed, bool deathrest)
+    {
+        if (__result == null || !hasBed || deathrest)
+            return;
+        var toil = __result;
+        var init = toil.initAction;
+        toil.initAction = () =>
+        {
+            init?.Invoke();   // the game's own init first; its exceptions stay the game's
+            HospitalProbe.Entered(toil, bedOrRestSpotIndex);
+        };
+        toil.AddFinishAction(() => HospitalProbe.Left(toil));
+    }
+}
+
+internal static class HospitalProbe
+{
+    public static void Entered(Toil toil, TargetIndex bedIndex)
+    {
+        try
+        {
+            var pawn = toil.actor;
+            if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || LiveMetrics.Family(MedicineFamily.Name) is null)
+                return;
+            // The game's init ends the job instead when the pawn is not in the bed; then it is not lying there.
+            if (pawn.jobs?.posture != PawnPosture.LayingInBed || pawn.CurJob?.GetTarget(bedIndex).Thing is not Building_Bed { Medical: true } bed
+                || pawn.CurrentBed() != bed)
+                return;
+            var id = GameFacts.Id(pawn);
+            long bedId = bed.thingIDNumber;
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.BedEntered(s, id, bedId, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(MedicineFamily.Name, e);
+        }
+    }
+
+    public static void Left(Toil toil)
+    {
+        try
+        {
+            var pawn = toil.actor;
+            if (pawn == null || LiveMetrics.Family(MedicineFamily.Name) is null)
+                return;
+            var id = GameFacts.Id(pawn);
+            var died = pawn.Dead;
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.BedLeft(s, id, died, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(MedicineFamily.Name, e);
+        }
     }
 }

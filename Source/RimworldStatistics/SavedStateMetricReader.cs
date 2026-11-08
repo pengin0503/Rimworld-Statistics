@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "biotech_state" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state" };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -54,6 +54,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "royalty_state")
                     foreach (var (key, value) in ReadRoyaltyState())
+                        observation.Metrics[key] = value;
+                else if (unit == "royalty_quests")
+                    foreach (var (key, value) in ReadRoyaltyQuests())
                         observation.Metrics[key] = value;
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
@@ -310,6 +313,41 @@ internal static class SavedStateMetricReader
                         Gather(item);
             }
         return StockSnapshot.Build(items, partial);
+    }
+
+    /// <summary>
+    /// L-003: accepted, successfully ended retained quests that the Quests tab shows as related to the Empire
+    /// (MainTabWindow_Quests.DoFactionInfo, 1.7.4985): a non-hidden, non-player involved faction of the Empire's def, unless the
+    /// root hides the involved factions. Hidden quests are not listed by the game and are not counted.
+    /// </summary>
+    private static Dictionary<string, MetricEntry> ReadRoyaltyQuests()
+    {
+        if (!ModsConfig.RoyaltyActive)
+            throw new InvalidOperationException("Royalty DLC is disabled");
+        var empire = FactionDefOf.Empire ?? throw new InvalidOperationException("the Empire faction def is not loaded");
+        var quests = Find.QuestManager?.QuestsListForReading ?? throw new InvalidOperationException("no quest manager");
+        var count = 0;
+        var partial = false;
+        foreach (var quest in quests)
+        {
+            if (quest is null)
+            {
+                partial = true;
+                continue;
+            }
+            try
+            {
+                if (quest.hidden || !quest.EverAccepted || quest.State != QuestState.EndedSuccess || quest.root is null || quest.root.hideInvolvedFactionsInfo)
+                    continue;
+                if (quest.InvolvedFactions.Any(f => f != null && !f.Hidden && !f.IsPlayer && f.def == empire))
+                    count++;
+            }
+            catch (Exception)
+            {
+                partial = true;   // this quest is left out; the count is a lower bound
+            }
+        }
+        return RoyaltyQuestSnapshot.Build(count, partial);
     }
 
     private static Dictionary<string, MetricEntry> ReadRoyaltyState()

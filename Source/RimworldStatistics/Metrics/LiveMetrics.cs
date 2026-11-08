@@ -98,6 +98,14 @@ public static class LiveMetrics
                 acc.MarkGap(name);
     }
 
+    /// <summary>The save-time recounts of the families (game thread only; a save elsewhere skips them).</summary>
+    internal static void BeforeSave()
+    {
+        if (!UnityData.IsInMainThread || Accumulator is not { } acc)
+            return;
+        FamilyStartup.BeforeSave(acc, Find.TickManager.TicksGame);
+    }
+
     /// <summary>How often each family accepted an event this session (the verification harness reports these).</summary>
     public static IReadOnlyDictionary<string, int> HitCounts() => new Dictionary<string, int>(Hits, StringComparer.Ordinal);
 

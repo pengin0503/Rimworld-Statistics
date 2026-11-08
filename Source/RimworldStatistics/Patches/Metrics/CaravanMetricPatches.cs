@@ -159,3 +159,169 @@ public static class SettleExistingMetricPatch
 {
     public static void Postfix() => GameFacts.Record(CaravanFamily.Name, CaravanFamily.Founded);
 }
+
+/// <summary>
+/// Q-014 (1.7.4985): an ancient danger is the temple <c>GenStep_ScatterShrines</c> puts on player settlement maps, marked by a
+/// <c>RectTrigger</c> with an "ancientTempleApproached-" signal tag and <c>destroyIfUnfogged</c> (the game's own "revealed" test is
+/// its rect's centre cell being unfogged). Shrines are registered while that centre is fogged: at the start of recording, after
+/// a map is generated, and when a colonist approaches (the trigger is destroyed then). The opening is the moment
+/// <c>FogGrid.Unfog</c> clears a watched centre. The lookup by map is rebuilt from the family's watched keys after each change.
+/// </summary>
+internal static class ShrineProbe
+{
+    public const string SignalPrefix = "ancientTempleApproached-";
+
+    private static readonly Dictionary<int, List<(CellRect Rect, string Key)>> Watched = new();
+
+    public static bool Empty => Watched.Count == 0;
+
+    public static bool IsShrineTrigger(Thing t)
+        => t is RectTrigger { destroyIfUnfogged: true, signalTag: { } tag } && tag.StartsWith(SignalPrefix, StringComparison.Ordinal);
+
+    private static string Key(Map map, CellRect r) => CaravanFamily.ShrineKey(GameFacts.MapId(map), r.minX, r.minZ, r.maxX, r.maxZ);
+
+    private static bool Sealed(Map map, CellRect r) => r.CenterCell.InBounds(map) && map.fogGrid.IsFogged(r.CenterCell);
+
+    /// <summary>Registers the shrine of <paramref name="trigger"/> when its centre is still fogged.</summary>
+    public static void Register(FamilyState s, RectTrigger trigger, int tick)
+    {
+        if (trigger.Map is not { } map || !Sealed(map, trigger.Rect))
+            return;
+        CaravanFamily.ShrineSealed(s, Key(map, trigger.Rect), tick);
+    }
+
+    public static void RegisterMap(FamilyState s, Map map, int tick)
+    {
+        foreach (var t in map.listerThings.ThingsOfDef(ThingDefOf.RectTrigger))
+            if (IsShrineTrigger(t))
+                Register(s, (RectTrigger)t, tick);
+    }
+
+    /// <summary>At the start of recording (a new game or a load): every map's sealed shrines, and the watched ones found open.</summary>
+    public static void Startup(FamilyState s, int tick)
+    {
+        foreach (var map in Find.Maps)
+            RegisterMap(s, map, tick);
+        var maps = Find.Maps.ToDictionary(GameFacts.MapId, m => m, StringComparer.Ordinal);
+        foreach (var key in CaravanFamily.WatchedShrines(s))
+            if (CaravanFamily.TryParseShrineKey(key, out var mapId, out var minX, out var minZ, out var maxX, out var maxZ))
+            {
+                if (!maps.TryGetValue(mapId, out var map))
+                    CaravanFamily.ShrinesOnMapGone(s, mapId);
+                else if (!Sealed(map, CellRect.FromLimits(minX, minZ, maxX, maxZ)))
+                    CaravanFamily.ShrineFoundOpen(s, key);
+            }
+        Rebuild(s);
+    }
+
+    /// <summary>The lookup of watched shrines by map, from the family's own state.</summary>
+    public static void Rebuild(FamilyState? s)
+    {
+        Watched.Clear();
+        if (s is null)
+            return;
+        foreach (var key in CaravanFamily.WatchedShrines(s))
+        {
+            if (!CaravanFamily.TryParseShrineKey(key, out var mapId, out var minX, out var minZ, out var maxX, out var maxZ)
+                || !mapId.StartsWith("Map_", StringComparison.Ordinal)
+                || !int.TryParse(mapId.AsSpan(4), System.Globalization.NumberStyles.AllowLeadingSign, System.Globalization.CultureInfo.InvariantCulture, out var uid))
+                continue;
+            if (!Watched.TryGetValue(uid, out var list))
+                Watched[uid] = list = new List<(CellRect, string)>();
+            list.Add((CellRect.FromLimits(minX, minZ, maxX, maxZ), key));
+        }
+    }
+
+    /// <summary>After <c>FogGrid.Unfog(c)</c>: a watched shrine around <paramref name="c"/> whose centre is clear now was opened.</summary>
+    public static void Unfogged(Map map, IntVec3 c)
+    {
+        if (!Watched.TryGetValue(map.uniqueID, out var list))
+            return;
+        List<string>? opened = null;
+        foreach (var (rect, key) in list)
+            if (rect.Contains(c) && !map.fogGrid.IsFogged(rect.CenterCell))
+                (opened ??= new List<string>()).Add(key);
+        if (opened is null)
+            return;
+        GameFacts.Record(CaravanFamily.Name, s =>
+        {
+            foreach (var key in opened)
+                CaravanFamily.ShrineUnsealed(s, key);
+        });
+        Rebuild(LiveMetrics.Family(CaravanFamily.Name));
+    }
+
+    public static void Reset() => Watched.Clear();
+}
+
+[MetricAdapter(CaravanFamily.Name)]
+[HarmonyPatch(typeof(FogGrid), nameof(FogGrid.Unfog))]
+public static class ShrineUnfogMetricPatch
+{
+    public static void Postfix(Map ___map, IntVec3 c)
+    {
+        if (ShrineProbe.Empty || ___map == null)
+            return;
+        try
+        {
+            ShrineProbe.Unfogged(___map, c);
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(CaravanFamily.Name, e);
+            ShrineProbe.Reset();
+        }
+    }
+}
+
+[MetricAdapter(CaravanFamily.Name)]
+[HarmonyPatch(typeof(PawnTrigger), nameof(PawnTrigger.ActivatedBy))]
+public static class ShrineApproachMetricPatch
+{
+    public static void Prefix(PawnTrigger __instance)
+    {
+        if (__instance is not RectTrigger trigger || !ShrineProbe.IsShrineTrigger(trigger) || !trigger.Spawned)
+            return;
+        var tick = GameFacts.Tick;
+        GameFacts.Record(CaravanFamily.Name, s =>
+        {
+            ShrineProbe.Register(s, trigger, tick);
+            ShrineProbe.Rebuild(s);
+        });
+    }
+}
+
+/// <summary>A map generated during play (a new settlement) may carry shrines: they are registered once its fog is in place.</summary>
+[MetricAdapter(CaravanFamily.Name)]
+[HarmonyPatch(typeof(MapGenerator), nameof(MapGenerator.GenerateMap))]
+public static class ShrineMapGeneratedMetricPatch
+{
+    public static void Postfix(Map __result)
+    {
+        if (__result is null)
+            return;
+        var tick = GameFacts.Tick;
+        GameFacts.Record(CaravanFamily.Name, s =>
+        {
+            ShrineProbe.RegisterMap(s, __result, tick);
+            ShrineProbe.Rebuild(s);
+        });
+    }
+}
+
+[MetricAdapter(CaravanFamily.Name)]
+[HarmonyPatch(typeof(Game), nameof(Game.DeinitAndRemoveMap))]
+public static class ShrineMapRemovedMetricPatch
+{
+    public static void Prefix(Map map)
+    {
+        if (map == null)
+            return;
+        var id = GameFacts.MapId(map);
+        GameFacts.Record(CaravanFamily.Name, s =>
+        {
+            CaravanFamily.ShrinesOnMapGone(s, id);
+            ShrineProbe.Rebuild(s);
+        });
+    }
+}

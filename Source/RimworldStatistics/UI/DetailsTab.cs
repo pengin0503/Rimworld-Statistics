@@ -317,6 +317,7 @@ public static class DetailsTab
             MetricUnit.Watts => n.ToString("N1", Inv) + " W",
             MetricUnit.WattDays => n.ToString("N1", Inv) + " Wd",
             MetricUnit.Nutrition => n.ToString("N2", Inv) + " nutrition",
+            MetricUnit.PerCellDay => "RWS_Unit_PerCellDay".Translate(n.ToString("N3", Inv)),
             _ => n.ToString("N2", Inv),
         };
     }

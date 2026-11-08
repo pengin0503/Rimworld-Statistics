@@ -137,8 +137,13 @@ public sealed class LiveMetricAccumulator
 
     private static void Interrupt(string name, FamilyState family, int throughTick)
     {
+        // What the active state measured up to the last known boundary is kept before the state is dropped.
         if (name == DisasterFamily.Name)
             DisasterFamily.AccrueOpenIntervals(family, throughTick);
+        else if (name == FoodFamily.Name)
+            FoodFamily.AccrueOpen(family, throughTick);
+        else if (name == MedicineFamily.Name)
+            MedicineFamily.SettleStays(family, throughTick);
         family.Continuous = false;
         family.Active.Clear();
         // A completed gap needs two observed events in the same uninterrupted stretch.

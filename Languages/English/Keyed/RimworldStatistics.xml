@@ -253,6 +253,8 @@
   <RWS_MetricDesc_RankLargestSale>Maximum confirmed sale amount for one transaction in a colony, compared across colonies.</RWS_MetricDesc_RankLargestSale>
   <RWS_Metric_RankMostResearch>Most completed research in one colony</RWS_Metric_RankMostResearch>
   <RWS_MetricDesc_RankMostResearch>Largest number of completed research projects in a colony's save-time snapshot, not a count of research completion events.</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>Smallest party at an ending</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>Fewest participants the game confirmed when an ending happened: the occupied cryptosleep caskets of a ship launch, the colonists sent on the Royal Ascent shuttle, or the colonists who transcended at the archonexus. Other endings, and endings recorded before this was stored, have no value.</RWS_MetricDesc_RankMinPartyAtEnding>
   <RWS_Metric_RankByDifficultyDays>Days played by difficulty</RWS_Metric_RankByDifficultyDays>
   <RWS_MetricDesc_RankByDifficultyDays>Colony days summed by the difficulty of each colony's furthest point; changes of difficulty during play are not tracked. Click to show the breakdown.</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>Endings by difficulty</RWS_Metric_RankByDifficultyEndings>
@@ -467,6 +469,7 @@
   <RWS_Metric_AnimalsHunted>Wild animals hunted</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>Wild animals designated for hunting and killed by a player pawn. Incidental fights are not counted.</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} years</RWS_Unit_Years>
+  <RWS_Unit_PerCellDay>{0} per cell-day</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Items crafted</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>Stack counts of the main and side products of the player's finished bills, including cooking and art; mining, harvests and mech gestation are not included.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Crafted items by quality</RWS_Metric_CraftQuality>
@@ -535,6 +538,10 @@
   <RWS_MetricDesc_FoodSpoiled>Stack counts of player food destroyed by rotting. Burning and eating are not counted.</RWS_MetricDesc_FoodSpoiled>
   <RWS_Metric_FoodNutrition>Nutrition eaten</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>The nutrition free colonists actually took in by eating.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodNoShortageLongest>Longest time without a food shortage</RWS_Metric_FoodNoShortageLongest>
+  <RWS_MetricDesc_FoodNoShortageLongest>Longest observed span in which the player home maps held human-edible food: stored food as the game's resource count shows it, plus food being carried by player pawns. Measured between the game's resource recounts (every 204 ticks); an unobserved stretch ends a span instead of joining it. Not about colonists being hungry.</RWS_MetricDesc_FoodNoShortageLongest>
+  <RWS_Metric_FoodHarvestPerCell>Harvest per growing-zone cell-day</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Main harvest of crops standing in growing zones divided by the growing-zone cells integrated over the same time (cell-days). Hydroponics and wild plants are not included.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Trade deals</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>Deals in which at least one non-currency item changed hands. Empty deals, gifts and failures are not counted.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>Deals with trade ships</RWS_Metric_TradeOrbital>
@@ -617,6 +624,10 @@
   <RWS_MetricDesc_Addictions>Addictions newly added to free colonists. Severity changes are not counted.</RWS_MetricDesc_Addictions>
   <RWS_Metric_Overdoses>Overdoses</RWS_Metric_Overdoses>
   <RWS_MetricDesc_Overdoses>Times a free colonist newly overdosed.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>Withdrawal onsets</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>Times a free colonist's drug addiction entered its withdrawal stage (its chemical need fell into withdrawal). Each entry counts once; an addiction already in withdrawal when recording began is not counted.</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>Mean hospital stay</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>Mean days a free colonist lay in the same medical bed, from lying down to getting up. Lying down again in the same bed right away (a job switch in bed) continues the stay; stays ending in death, or begun before recording, give no sample.</RWS_MetricDesc_HospitalStayMean>
   <RWS_Metric_PartsLost>Body parts lost</RWS_Metric_PartsLost>
   <RWS_MetricDesc_PartsLost>Times a free colonist lost a body part. Child parts lost with it and parts removed by surgery are not counted.</RWS_MetricDesc_PartsLost>
   <RWS_Metric_Scars>Permanent scars</RWS_Metric_Scars>
@@ -671,6 +682,8 @@
   <RWS_MetricDesc_SettlementsFounded>New player settlements founded from a caravan or an existing map. The starting settlement, moving the colony and gravship landings are not counted.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Settlements abandoned</RWS_Metric_SettlementsAbandoned>
   <RWS_MetricDesc_SettlementsAbandoned>Player settlements abandoned by choice. Automatic removals such as a gravship takeoff are not counted.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>Ancient dangers opened</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>Sealed ancient shrines (the ancient dangers of player settlement maps) whose interior was opened, each once. A shrine counts when the game would consider it revealed: the fog over its centre cleared. Other walls broken or enemies appearing are not counted.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Original biome</RWS_Metric_ColonyStartingBiome>
   <RWS_MetricDesc_ColonyStartingBiome>Biome DefName at the game's immutable starting tile, not the current colony site; unknown when the world tile cannot be resolved.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>Completed research projects</RWS_Metric_ResearchSnapshotFinished>
@@ -755,8 +768,8 @@
   <RWS_MetricDesc_RoyaltyPermitUses>Royal permits confirmed used by an eligible player colonist; cancelled selections do not count.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Successful psycasts</RWS_Metric_RoyaltyPsycasts>
   <RWS_MetricDesc_RoyaltyPsycasts>Royalty psychic abilities activated successfully by free player colonists; unconfirmed targeting does not count.</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>Confirmed Imperial quest successes (partial)</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>Succeeded retained quests with proven Empire Royalty roots only, including Royal Ascent, bestowing ceremonies and decrees. Other imperial quests and deleted quests are unknown; not a lifetime total.</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_RoyaltyQuestSuccess>Empire-related quests completed</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>Accepted quests still kept in the save that ended in success and that the Quests tab shows as related to the Empire, counted at each successful save. Quests the game has removed are not included; not a lifetime total.</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>Royal titles granted</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Royal titles granted confirmed during the recorded Royalty event period.</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>Highest royal title</RWS_Metric_RoyaltyHighestTitle>

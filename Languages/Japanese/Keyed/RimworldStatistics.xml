@@ -253,6 +253,8 @@
   <RWS_MetricDesc_RankLargestSale>成立した一回の販売額についてのコロニー横断最高値。</RWS_MetricDesc_RankLargestSale>
   <RWS_Metric_RankMostResearch>最多研究完了数のコロニー記録</RWS_Metric_RankMostResearch>
   <RWS_MetricDesc_RankMostResearch>保存時点の完了研究Def数をコロニー横断で比較。研究完了イベント回数とは区別する。</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>最少人数でのエンディング達成</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>エンディングの成立時にゲームが確定した参加者数の最小。宇宙船の打ち上げでは使用中の冷凍睡眠カプセル、王族昇天ではシャトルで送り出した入植者、アルコネクサスでは超越した入植者。ほかのエンディングと、この値を保存する前の記録は値を持ちません。</RWS_MetricDesc_RankMinPartyAtEnding>
   <RWS_Metric_RankByDifficultyDays>難易度別の通算日数</RWS_Metric_RankByDifficultyDays>
   <RWS_MetricDesc_RankByDifficultyDays>各コロニーの代表セーブ（最も進んだ時点）の難易度ごとに、コロニーの経過日数を合計します。途中の難易度変更は追いません。クリックで内訳を開きます。</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>難易度別のエンディング数</RWS_Metric_RankByDifficultyEndings>
@@ -467,6 +469,7 @@
   <RWS_Metric_AnimalsHunted>狩猟した野生動物の数</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>狩猟の指定をした野生動物がプレイヤーの人物に倒された数。偶然の戦闘は含めません。</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} 歳</RWS_Unit_Years>
+  <RWS_Unit_PerCellDay>{0} 個/セル日</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>製作した品の総数</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>自軍の製作で完成した主・副の成果のスタック個数の合計。調理・芸術品を含み、採掘・収穫・メカノイドの製造は含めません。</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>品質別の製作数</RWS_Metric_CraftQuality>
@@ -535,6 +538,10 @@
   <RWS_MetricDesc_FoodSpoiled>プレイヤーの食品が腐敗して消えたスタック個数。焼失や食事は含めません。</RWS_MetricDesc_FoodSpoiled>
   <RWS_Metric_FoodNutrition>食べた食料の総栄養量</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>自由入植者が食事で実際に得た栄養の合計。</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodNoShortageLongest>食料不足が起きなかった最長期間</RWS_Metric_FoodNoShortageLongest>
+  <RWS_MetricDesc_FoodNoShortageLongest>プレイヤーのホームマップに人間の食べられる食料があった期間のうち、観測できた最長のもの。食料はゲームの資源集計が示す保管中の食料と、プレイヤーのポーンが運搬中の食料。ゲームの資源再集計（204 tick ごと）の間で測り、観測できなかった区間は期間をつなげずに区切ります。入植者の空腹とは別の指標です。</RWS_MetricDesc_FoodNoShortageLongest>
+  <RWS_Metric_FoodHarvestPerCell>栽培セル日あたりの収穫量</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>栽培ゾーンにある作物の主収穫個数を、同じ期間の栽培ゾーンのセル数の時間積分（セル日）で割った値。水耕栽培と野生の植物は含めません。</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>商人との取引回数</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>通貨以外の品が1つ以上動いた取引の数。空の取引・贈り物・失敗は含めません。</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>商船との取引回数</RWS_Metric_TradeOrbital>
@@ -617,6 +624,10 @@
   <RWS_MetricDesc_Addictions>自由入植者に依存症が新しく加わった数。重症度の変化は含めません。</RWS_MetricDesc_Addictions>
   <RWS_Metric_Overdoses>薬物の過剰摂取</RWS_Metric_Overdoses>
   <RWS_MetricDesc_Overdoses>自由入植者に過剰摂取が新しく起きた回数。</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>禁断症状の発症</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>自由入植者の薬物依存症が禁断症状の段階に入った回数（化学的欲求が禁断状態に下がった回数）。1回の突入を1回と数えます。記録開始時にすでに禁断症状だったものは数えません。</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>平均入院期間</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>自由入植者が同じ医療用ベッドに横になってから起き上がるまでの平均日数。ベッドの上でジョブが切り替わって同じベッドにすぐ横になり直した場合は同じ入院として続けます。死亡で終わった入院と、記録開始前に始まった入院は標本にしません。</RWS_MetricDesc_HospitalStayMean>
   <RWS_Metric_PartsLost>身体の部位を失った回数</RWS_Metric_PartsLost>
   <RWS_MetricDesc_PartsLost>自由入植者の部位が失われた回数。子の部位の連鎖や、手術で外した部位は数えません。</RWS_MetricDesc_PartsLost>
   <RWS_Metric_Scars>永久的な傷痕</RWS_Metric_Scars>
@@ -671,6 +682,8 @@
   <RWS_MetricDesc_SettlementsFounded>キャラバンや既存のマップから、プレイヤーの新しい拠点が成立した数。初期拠点・移設・グラヴシップの着陸は含めません。</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>拠点を放棄した回数</RWS_Metric_SettlementsAbandoned>
   <RWS_MetricDesc_SettlementsAbandoned>プレイヤーの拠点を自分で放棄した回数。グラヴシップの離陸などで自動的に消えたものは含めません。</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>古代の脅威の開封</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>プレイヤーの拠点マップにある封印された古代の祠（古代の脅威）の内部が開かれた数。1つの祠は1回だけ数えます。ゲームが「発見済み」とみなすのと同じく、祠の中心の霧が晴れたときに数えます。ほかの壁の破壊や敵の出現では数えません。</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>開始地点のバイオーム</RWS_Metric_ColonyStartingBiome>
   <RWS_MetricDesc_ColonyStartingBiome>ゲーム開始タイルのバイオームDef名。現在の拠点ではなく開始時の場所で分類し、元のタイルが不明な場合は不明扱い。</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>完了した研究の数</RWS_Metric_ResearchSnapshotFinished>
@@ -755,8 +768,8 @@
   <RWS_MetricDesc_RoyaltyPermitUses>プレイヤー側自由入植者が実際に使用した帝国許可証の回数。選択やキャンセルは除外。</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>サイキック能力の発動成功回数</RWS_Metric_RoyaltyPsycasts>
   <RWS_MetricDesc_RoyaltyPsycasts>自由入植者が実際に発動したRoyalty超能力の回数。対象選択のみは含めない。</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>帝国依頼の達成件数（部分記録）</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>Royal Ascent・爵位授与式・勅令など帝国由来と確認できるRoot Defの達成件数。一般クエストや削除済み依頼は判定せず、全期間の網羅値ではない。</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_RoyaltyQuestSuccess>帝国関係クエストの達成数</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>セーブに残っている受諾済みのクエストのうち、成功で終わり、クエスト画面で帝国が関係勢力として表示されるものの数。正常にセーブしたときに数えます。ゲームが削除したクエストは含まれず、全期間の通算ではありません。</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>獲得した爵位の回数</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Royaltyのイベント取得期間に確定した獲得した爵位の回数。</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>最高到達爵位</RWS_Metric_RoyaltyHighestTitle>
