@@ -298,4 +298,25 @@ public sealed class NumericSnapshotRetentionTests
         Assert.Equal(10, profile.MetricObservations.Count);
     }
 
+    [Fact]
+    public void Compaction_RetainsOriginalDisplayedObservationCountEvenAfterLosingAttribution()
+    {
+        var raw = Build(compact: false);
+        var compact = Build(compact: true);
+        NumericView View(Profile p)
+        {
+            var colonies = CampaignMatcher.BuildColonies(p);
+            return MetricCalculator.BuildView(p, colonies,
+                StatsCalculator.Calculate(colonies, new StatsOptions()));
+        }
+        Assert.Equal(250, Assert.Single(View(raw).Colonies).Observations);
+        Assert.Equal(250, Assert.Single(View(compact).Colonies).Observations);
+        compact = ProfileJson.Deserialize(ProfileJson.Serialize(compact));
+        Assert.Equal(250, Assert.Single(View(compact).Colonies).Observations);
+        compact.LiveCampaigns.Clear();
+        var unknown = View(compact);
+        Assert.Empty(unknown.Colonies);
+        Assert.Equal(250, unknown.Unattributed);
+    }
+
 }
