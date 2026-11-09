@@ -40,11 +40,12 @@ internal static class HistoricalFactionSnapshotReader
     {
         if (overflowed || factions.Count == 0 || factions.Count > MaxFactions)
             return null;
-        // Every load ID must identify one faction uniquely. A duplicate means
-        // saved reference IDs are ambiguous; do not guess which is the player.
-        var ids = new HashSet<int>();
-        if (factions.Any(f => !f.Valid || f.LoadId is not { } id || id < 0 || !ids.Add(id)))
-            return null;
+        // Explicit IDs must be unique, including IDs of unsupported MOD
+        // factions. A conflicting reference makes attribution ambiguous.
+        var knownIds = new HashSet<int>();
+        foreach (var faction in factions)
+            if (faction.LoadId is { } id && (id < 0 || !knownIds.Add(id)))
+                return null;
 
         var playerCandidates = factions.Where(f =>
             scenarioPlayerDef is { Length: > 0 } selected
@@ -54,42 +55,53 @@ internal static class HistoricalFactionSnapshotReader
             return null;
 
         var player = playerCandidates[0];
-        if (!player.Active)
+        if (!player.Valid || !player.Active)
             return null;
+
+        // In a real 1.7 save, the default integer loadID=0 may be omitted
+        // while other saved factions still explicitly reference Faction_0.
+        // Infer it ONLY when a single valid faction omitted loadID, no
+        // written zero exists, and the player's saved outgoing relations
+        // refer to Faction_0. Otherwise leave omitted identities unknown.
+        var omitted = factions.Where(f => f.Valid && f.LoadId is null).ToList();
+        if (omitted.Count > 1 || omitted.Count > 0 && knownIds.Contains(0))
+            return null;
+        var inferZero = omitted.Count == 1
+            && player.Relations.Any(r => r.Valid && r.Other == "Faction_0");
+        int? EffectiveId(SavedFaction faction) => faction.LoadId ??
+            (inferZero && faction.Equals(omitted[0]) ? 0 : null);
+        if (EffectiveId(player) is null)
+            return null;
+
         var facts = new List<FactionStateFact>();
-        var selectedIds = new HashSet<int>();
         foreach (var faction in factions)
         {
-            if (faction.LoadId == playerCandidates[0].LoadId || !faction.Active
-                || faction.Def is null || !SupportedVisibleDefs.Contains(faction.Def))
+            if (!faction.Valid || !faction.Active
+                || faction.Def is null || !SupportedVisibleDefs.Contains(faction.Def)
+                || EffectiveId(faction) is not { } id || id == EffectiveId(player))
                 continue;
-            // An Empire relationship is only eligible when Royalty was active
-            // in the *saved* game, not merely installed now.
-            if (faction.Def == "Empire" && activeDlc?.Contains(AcquisitionUnits.Royalty, StringComparer.OrdinalIgnoreCase) != true)
+            if (faction.Def == "Empire" && activeDlc?.Contains(
+                    AcquisitionUnits.Royalty, StringComparer.OrdinalIgnoreCase) != true)
                 continue;
-            // Live capture calls player.RelationKindWith(npc) and
-            // player.GoodwillWith(npc). Saved relations can be asymmetric, so
-            // reading the NPC's reverse relation changes the meaning.
-            var targetId = "Faction_" + faction.LoadId!.Value.ToString(
-                System.Globalization.CultureInfo.InvariantCulture);
-            var matches = player.Relations.Where(r => r.Other == targetId).ToList();
-            if (matches.Count > 1 || matches.Any(r => !r.Valid))
-                return null;
-            if (matches.Count == 0)
+
+            // Live capture queries the player's outgoing relation. Missing
+            // kinds/goodwill (including XML-omitted default enum members)
+            // have not been independently proven, so skip *that relation*,
+            // never erase other independently supported evidence.
+            var targetId = "Faction_" + id.ToString(System.Globalization.CultureInfo.InvariantCulture);
+            var matches = player.Relations.Where(r => r.Other == targetId).Take(2).ToList();
+            if (matches.Count != 1 || !matches[0].Valid)
                 continue;
             var relation = matches[0];
             if (relation.Goodwill is not { } goodwill || goodwill is < -100 or > 100
                 || relation.Kind is not ("Ally" or "Hostile" or "Neutral"))
-                return null;
-            // A member of a known visible first-party faction only. Do not
-            // conflate a relation to a faction with a historical event.
-            selectedIds.Add(faction.LoadId!.Value);
+                continue;
             facts.Add(new FactionStateFact(
-                faction.LoadId.Value.ToString(System.Globalization.CultureInfo.InvariantCulture),
+                id.ToString(System.Globalization.CultureInfo.InvariantCulture),
                 true, relation.Kind == "Ally", relation.Kind == "Hostile", goodwill));
         }
 
-        if (selectedIds.Count == 0)
+        if (facts.Count == 0)
             return null;
         return FactionStateSnapshot.Build(facts, partial: true);
     }
