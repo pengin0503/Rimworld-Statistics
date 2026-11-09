@@ -126,7 +126,8 @@ public static class ExternalSdkMetricPolicy
                 value = output.Value(real: count?.Sum ?? 0, partial: partial);
                 break;
             case ApiEventMode.Mean:
-                value = n == 0 ? output.Value(coverage: MetricCoverage.NotApplicable, samples: 0)
+                value = n == 0 ? output.Value(coverage: output.Coverage == MetricCoverage.Complete
+                        ? MetricCoverage.NotApplicable : MetricCoverage.Unknown, samples: 0)
                     : output.Value(real: count!.Sum!.Value / n, numerator: count.Sum.Value,
                         denominator: n, samples: (int)Math.Min(n, int.MaxValue), partial: partial);
                 break;
