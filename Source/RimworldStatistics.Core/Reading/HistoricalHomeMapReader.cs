@@ -21,9 +21,10 @@ internal static class HistoricalHomeMapReader
         IReadOnlyList<SavedFaction> factions,
         string? scenarioPlayerDef,
         bool mapsOverflowed,
-        bool worldObjectsOverflowed)
+        bool worldObjectsOverflowed,
+        bool factionsOverflowed)
     {
-        if (mapsOverflowed || worldObjectsOverflowed || maps.Count == 0
+        if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
             return null;
         // Without the exact historical Def database, restrict this to the two
@@ -32,11 +33,17 @@ internal static class HistoricalHomeMapReader
             && scenarioPlayerDef is not ("PlayerColony" or "PlayerTribe"))
             return null;
         var players = factions.Where(f =>
-            f.Valid && f.Active && f.LoadId is >= 0
-            && f.Def is ("PlayerColony" or "PlayerTribe")
+            f.Def is ("PlayerColony" or "PlayerTribe")
             && (scenarioPlayerDef is null || f.Def == scenarioPlayerDef)).ToArray();
-        if (players.Length != 1 || players[0].LoadId is not { } playerId)
+        if (players.Length != 1 || !players[0].Valid || !players[0].Active
+            || players[0].LoadId is not { } playerId || playerId < 0)
             return null;
+        // An unrelated faction using the player's explicit ID also breaks
+        // the attribution proof; omitted IDs do not authorize a fallback.
+        var factionIds = new HashSet<int>();
+        foreach (var faction in factions)
+            if (faction.LoadId is { } id && !factionIds.Add(id))
+                return null;
 
         // Any duplicate explicit parent or map ID makes the reference graph
         // ambiguous. Never resolve it by list order or by an assumed default.
