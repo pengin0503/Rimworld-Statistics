@@ -18,7 +18,9 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
             Assert.Skip("Set RWS_PRIVATE_SAVES_DIR locally; no private saves are shipped to CI.");
         Assert.True(Directory.Exists(sourceDir), "Private save folder does not exist.");
 
-        var files = Directory.GetFiles(sourceDir, "*.rws", SearchOption.TopDirectoryOnly);
+        var files = Directory.EnumerateFiles(sourceDir)
+            .Where(path => ImportEngine.IsSaveFile(Path.GetFileName(path)))
+            .ToArray();
         Assert.NotEmpty(files);
         var metadata = files.Select(path =>
         {
@@ -41,6 +43,7 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
         Assert.Equal(0, second.Failed);
         Assert.Equal(0, second.Read);
         Assert.Equal(files.Length, second.Skipped);
+        session.Flush();
 
         var totals = session.Read(profile =>
         {
