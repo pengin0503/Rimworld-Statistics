@@ -98,7 +98,7 @@ public static class HistoricalCounterIntervals
         var value = o.Scalar(key, MetricKeys.Revision(key));
         if (value?.Coverage != MetricCoverage.Complete
             || value.Numerator is not { } n || !double.IsFinite(n)
-            || n < 0 || n > long.MaxValue || Math.Floor(n) != n)
+            || n < 0 || n > int.MaxValue || Math.Floor(n) != n)
             return null;
         return (long)n;
     }
