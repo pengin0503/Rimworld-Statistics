@@ -250,11 +250,13 @@ public static class ProfileMutations
         {
             if (d.Selection == ColonySelection.Representative)
             {
-                if (d.ProviderId is not null)
+                if (d.ProviderId is not null || d.Acquisition == "factions")
                 {
-                    // A later save may have been made without the optional provider.
-                    // Keep the last real reading as a historical witness rather than
-                    // letting newer vanilla-only saves erase the provider's result.
+                    // A later save may have been made after an optional provider
+                    // or the experimental faction acquisition unit was disabled.
+                    // Preserve its last actual capture; otherwise the Details
+                    // view could mistake it for never-recorded and substitute
+                    // weaker SaveFile historical fallback evidence.
                     var lastCaptured = snapshots.Where(o => Scalar(o, d) is not null)
                         .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
                         .ThenBy(o => o.Key, Ord).FirstOrDefault();
