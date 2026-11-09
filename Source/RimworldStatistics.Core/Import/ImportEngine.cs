@@ -72,10 +72,13 @@ public sealed class ImportEngine(SaveReader reader)
                 {
                     // A successful v1 read must not be committed before the numeric observations:
                     // if their mutation fails, leave an Error observation so the file is retried.
-                    if (metrics is not null)
-                        ProfileMutations.UpsertMetricObservation(p, metrics);
+                    // Record the embedded checkpoint before its matching
+                    // SaveFile counters. Compaction then knows this .rws is an
+                    // ancestry witness even when files are scanned out of order.
                     if (result.Checkpoint is not null)
                         ProfileMutations.UpsertMetricObservation(p, result.Checkpoint);
+                    if (metrics is not null)
+                        ProfileMutations.UpsertMetricObservation(p, metrics);
                     ProfileMutations.AddSaveObservation(p, obs);
                 }, SaveMode.None);
             }
