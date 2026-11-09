@@ -1,0 +1,40 @@
+# Historical recovery B/C — implemented partial evidence, not complete backfill (2026-11-09)
+
+Baseline: Rimworld-Statistics v1.2.2 / merged audit #70. Implementation PR #73; work tracked by #71 and #72.
+
+## Stage B: conservative saved faction relations
+
+The streaming `SaveReader` now reads bounded `game/world/factionManager/allFactions/li` relation tags if they belong to a known first-party *visible* faction def. A player faction is identified through `game/scenario/playerFaction/factionDef` or a unique unambiguous `PlayerColony`/`PlayerTribe`. Each included record must explicitly link to the player's saved `Faction_<loadID>` reference and contain a recognized relationship kind plus goodwill in [-100,+100].
+
+This produces *two existing experimental snapshot output keys*:
+- `diplomacy.snapshot.relations` — observed Ally/Hostile relationships among the allow-listed and fully referenced surviving factions.
+- `diplomacy.snapshot.goodwill_range` — observed minimum and maximum goodwill among those faction records.
+
+**Both are always Partial / Experimental**, even with all fields available. They are a deliberately incomplete view of historical in-save state, not a count of every faction and certainly not a history of past diplomatic events. The allow-list is limited to the visible Core `OutlanderCivil`, `OutlanderRough`, `TribeCivil`, `TribeRough` and Royalty `Empire` (only if Royalty is included in *this save*). Unknown or mod-added factions cannot be labeled visible using a current, potentially unrelated MOD setup; they are skipped. Duplicate faction load IDs, ambiguous player identity, inconsistent goodwill, unsupported versions and absent valid facts yield Unknown rather than a fabricated zero.
+
+Values live in the **SaveFile** observation alongside existing Phase A data (content SHA), not in a guessed game-side SaveSnapshot. The Details projection uses them as a fallback only when the same key has never been recorded by a game-side snapshot. Within historical fallback it chooses the most recent **validly observed** save for that key, preserving older partial readings if a later save cannot be interpreted. Reader version changes from 5 to 6 to reread existing .rws files once, without changing their bytes or the existing checkpoint logic.
+
+## Stage C: confirmed-parent interval kernel (no automatic totals)
+
+`HistoricalCounterIntervals.Evaluate(Profile)` produces independent, **non-additive** `Partial` intervals for cumulative enemy raids and colonist deaths, only when:
+- A child checkpoint has a unique, unconflicted **direct parent checkpoint ID** embedded by Rimworld-Statistics (not a matching colony name or similar timestamp).
+- Both checkpoints have content hashes, ordered game ticks, identical full game versions and matching campaign and fingerprint identities.
+- Each checkpoint maps unambiguously to its own exact file-alias-matched Phase A SaveFile observation; those save observations have the same identity, version and tick as the checkpoints.
+- Both saves carry the **same SHA-256 of the exact saved MOD load-order array**, not the current active MOD set.
+- Both saves have completed vanilla counter evidence (not a missing/unknown-version default); counters do not decrease.
+
+This is a **programmatic evidence API only**, not a new UI metric or cumulative event counter. Sibling branches are returned as separate intervals, never added together. Without old mod checkpoints there is no proof of linear ancestry, so earlier saves cannot be compared as historical events. The saved mod list is never copied into the profile; only a digest is stored, and missing digests disable comparison.
+
+## Testing and release status
+
+- Synthetic positive/negative XML: player relations, missing/duplicated IDs, unsupported factions, malformed goodwill, saved MOD fingerprints, unchanged file bytes, reader-upgrade re-import once.
+- Synthetic parent graph: same lineage, no parent, sibling branches, version/MOD mismatch, resets, missing counters, backwards ticks, duplicate checkpoint IDs.
+- Game-dependent private-save tests remain opt-in and unavailable in public CI. Current **1.7 runtime correctness, MOD-extended factions and TPS regressions are not verified**.
+- This PR changes no release tags or binaries; merging does not claim all 41 saved-state candidates (or 214 event-family definitions) were recovered.
+
+## Next verification steps
+
+- [ ] Inspect multiple real 1.7.5000 save XMLs, including 200+ MOD configurations, for player faction IDs, missing goodwill defaults, and faction-def visibility. Redact personal/colony names before adding any fixture.
+- [ ] Test 35+ colonies / 55+ saves for cold scan wall time, memory and unchanged-save second-scan behavior.
+- [ ] Add other saved-state families one at a time only when matching game/DLC/MOD definition semantics are verified; the research count remains Unknown when ProjectDef costs are unavailable.
+- [ ] After acceptance, decide whether to expose the verified parent-only interval diagnostics in an independent UI; don't fold them into `raid`/death event-family totals or claim original event dates.
