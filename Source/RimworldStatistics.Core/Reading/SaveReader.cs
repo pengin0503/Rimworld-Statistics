@@ -281,6 +281,14 @@ public sealed class SaveReader
                 case "deactivated": deactivated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
                 case "defeated": defeated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
                 case "relations":
+                    // Most modded NPC factions are not in the audited allow-list.
+                    // Skip potentially large relation subtrees without allocating
+                    // or interpreting them. XML normally writes def before relations.
+                    if (s.HistoricalFactionsOverflowed || !HistoricalFactionSnapshotReader.MayContainSupportedFacts(def))
+                    {
+                        r.Skip();
+                        break;
+                    }
                     ForEachChild(r, _ =>
                     {
                         if (relations.Count >= HistoricalFactionSnapshotReader.MaxRelationsPerFaction)
