@@ -47,7 +47,8 @@ public sealed class ModMetricPersistenceTests
             new HashSet<string>(StringComparer.Ordinal));
         Assert.DoesNotContain(hidden, d => d.Key == descriptor.StableKey);
         var definitions = MetricRegistry.Compose(restored.ModMetricDescriptors,
-            new HashSet<string>(StringComparer.Ordinal) { MetricRegistry.OptionalModVisibilityId });
+            MetricDisplayPolicy.AllDetailsVisibleUnits);
+        Assert.Contains(definitions, d => d.Key == descriptor.StableKey);
         var view = MetricCalculator.BuildView(restored, colonies,
             StatsCalculator.Calculate(colonies, new StatsOptions()), definitions);
         Assert.Equal(7, Assert.Single(Assert.Single(view.Colonies).Rows,

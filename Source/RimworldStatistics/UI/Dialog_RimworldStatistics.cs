@@ -28,7 +28,6 @@ public sealed class Dialog_RimworldStatistics : Window
     private DateTime nextIndexRefresh;
     private Task<StatsView>? viewTask;
     private bool viewIncludesDevMode;
-    private bool viewIncludesExperimental;
     private StatsView? lastView;
 
     public Dialog_RimworldStatistics()
@@ -115,19 +114,14 @@ public sealed class Dialog_RimworldStatistics : Window
     private StatsView? GetView(ProfileSession session)
     {
         var options = ProfileService.Options;
-        var showExperimental = RimworldStatisticsMod.Settings.showRecordedExperimental;
-        // All external-addon acquisition is opt-in. Historic observations still
-        // exist in the profile and may be shown by the separate display toggle.
-        var visibleUnits = showExperimental
-            ? AcquisitionUnits.All.Select(u => u.Id)
-                .Append(MetricRegistry.OptionalModVisibilityId).ToArray()
-            : Array.Empty<string>();
-        if (viewIncludesDevMode != options.IncludeDevMode || viewIncludesExperimental != showExperimental)
+        // Show all implemented definitions, including unverified and unknown ones.
+        // Visibility is presentation-only; MetricGates still controls acquisition.
+        var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
+        if (viewIncludesDevMode != options.IncludeDevMode)
         {
             lastView = null;
             viewTask = null;
             viewIncludesDevMode = options.IncludeDevMode;
-            viewIncludesExperimental = showExperimental;
         }
         if (viewTask is { IsCompleted: true } completed)
         {

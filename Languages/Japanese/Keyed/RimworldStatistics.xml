@@ -810,7 +810,6 @@
   <RWS_MetricDesc_BiotechPollutionCleaned>Biotechの対象操作が実際に完了したと確認できた入植者が除染したマップセル数。</RWS_MetricDesc_BiotechPollutionCleaned>
   <RWS_Exp_Enable>実験的な統計取得を許可する（初期OFF）</RWS_Exp_Enable>
   <RWS_Exp_Warning>未検証です。記録漏れ・重複計上・処理負荷が生じることがあります。取得開始前のイベントは復元できません。</RWS_Exp_Warning>
-  <RWS_Exp_ViewSaved>記録済みの実験統計を表示する（取得設定とは独立）</RWS_Exp_ViewSaved>
   <RWS_Exp_SelectAll>利用可能な項目をすべて選択</RWS_Exp_SelectAll>
   <RWS_Exp_SelectNone>すべて解除</RWS_Exp_SelectNone>
   <RWS_Exp_SelectEvents>イベントのみ選択</RWS_Exp_SelectEvents>

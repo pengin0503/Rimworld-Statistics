@@ -56,7 +56,6 @@ public sealed class RimworldStatisticsMod : Mod
             listing.Gap(8f);
             listing.CheckboxLabeled("RWS_Exp_Enable".Translate(), ref Settings.experimentalEnabled);
             listing.Label("RWS_Exp_Warning".Translate());
-            listing.CheckboxLabeled("RWS_Exp_ViewSaved".Translate(), ref Settings.showRecordedExperimental);
             var buttons = listing.GetRect(28f);
             var width = (buttons.width - 12f) / 3f;
             if (Widgets.ButtonText(new Rect(buttons.x, buttons.y, width, buttons.height), "RWS_Exp_SelectAll".Translate()))

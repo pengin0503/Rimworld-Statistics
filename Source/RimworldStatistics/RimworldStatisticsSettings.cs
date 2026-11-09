@@ -10,6 +10,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
     public bool autoImport = true;
     public bool experimentalEnabled = false;
     public List<string> experimentalUnitIds = new();
+    // Legacy persisted setting: visibility is now unconditional; retain the serialized key for compatibility.
     public bool showRecordedExperimental = false;
 
     /// <summary>User's desired choices, applied only after restarting RimWorld.</summary>

@@ -810,7 +810,6 @@
   <RWS_MetricDesc_BiotechPollutionCleaned>Cells cleaned by colonists only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechPollutionCleaned>
   <RWS_Exp_Enable>Allow experimental statistics recording (off by default)</RWS_Exp_Enable>
   <RWS_Exp_Warning>Unverified acquisition: missing or double-counted records and additional CPU cost are possible. Earlier events cannot be reconstructed.</RWS_Exp_Warning>
-  <RWS_Exp_ViewSaved>Show recorded experimental statistics (independent of recording)</RWS_Exp_ViewSaved>
   <RWS_Exp_SelectAll>Select all available units</RWS_Exp_SelectAll>
   <RWS_Exp_SelectNone>Clear all</RWS_Exp_SelectNone>
   <RWS_Exp_SelectEvents>Select event units</RWS_Exp_SelectEvents>
