@@ -9,6 +9,7 @@ on:
       - 'Source/**'
       - 'Tests/**'
       - 'examples/**'
+      - 'addons/**'
       - 'docs/sdk/**'
       - 'tools/**'
       - 'Languages/**'
@@ -21,6 +22,7 @@ on:
       - 'Source/**'
       - 'Tests/**'
       - 'examples/**'
+      - 'addons/**'
       - 'docs/sdk/**'
       - 'tools/**'
       - 'Languages/**'
@@ -112,6 +114,38 @@ jobs:
             ${{ runner.temp }}/RWS-Verify-Windows.ps1
             ${{ runner.temp }}/StatisticsSdkSample.zip
             ${{ runner.temp }}/rws-profile-benchmark.csv
+          if-no-files-found: error
+          retention-days: 14
+
+  sau-addon:
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - uses: actions/checkout@v4
+        with:
+          repository: pengin0503/rimworld-Smart-Apparel-Upgrade
+          ref: 5e910b82281fa6d5a4ebc3bcb5b88b1610b1dba8
+          path: .devinputs/sau-1.0.1
+          persist-credentials: false
+      - name: Verify source-audited SAU 1.0.1 automatic-order contract
+        run: python3 tools/check_sau_contract.py .devinputs/sau-1.0.1
+      - name: Run game-independent addon event-ID regressions
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo
+      - name: Build standalone optional SAU statistics addon ZIP
+        run: bash tools/package_sau_addon.sh "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
+      - name: Check independent addon package has no host, SDK or target DLL
+        run: |
+          python3 tools/check_sau_addon.py "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
+          unzip -t "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: RimworldStatistics-SAU-addon-${{ github.sha }}
+          path: ${{ runner.temp }}/RimworldStatistics.SmartApparelAddon.zip
           if-no-files-found: error
           retention-days: 14
 
