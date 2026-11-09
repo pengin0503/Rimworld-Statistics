@@ -83,4 +83,47 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
             $"factionPartial={totals.Factions}, lineageIntervals={totals.Intervals}, " +
             $"coldMs={coldMs:F0}, warmMs={warmMs:F0}; original file metadata unchanged.");
     }
+    [Fact]
+    public void PrivateLegacy17_ExplicitAllianceEvidenceMatchesIndependentXmlAudit_WhenAvailable()
+    {
+        // Optional single-file ground truth from a voluntarily supplied 1.7
+        // original. Public CI does not hold this file. Only aggregate evidence
+        // counts and quality states are compared; never publish names or IDs.
+        var source = Environment.GetEnvironmentVariable("RWS_REAL_17_LEGACY_SAVE");
+        if (string.IsNullOrWhiteSpace(source))
+            Assert.Skip("Set RWS_REAL_17_LEGACY_SAVE to the owner's local legacy save copy.");
+        Assert.True(File.Exists(source), "Private source save missing.");
+
+        static string Digest(string path)
+        {
+            using var stream = File.OpenRead(path);
+            return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream));
+        }
+
+        var before = Digest(source);
+        var info = new FileInfo(source);
+        var originalLength = info.Length;
+        var originalWrite = info.LastWriteTimeUtc;
+        var parsed = new SaveReader().ReadDetailed(source);
+        Assert.Equal(ObservationStatus.Ok, parsed.Observation.Status);
+        Assert.Equal("1.7.4995 rev309", parsed.Observation.GameVersion);
+        Assert.Equal(348, parsed.Observation.ModCount);
+        Assert.Null(parsed.Checkpoint); // archive predates this MOD's checkpoints
+        Assert.NotNull(parsed.Metrics);
+
+        var relations = parsed.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(MetricCoverage.Partial, relations[MetricEntry.Scalar].Coverage);
+        Assert.Equal(2L, relations["ally"].IntegerValue);
+        Assert.Equal(0L, relations["hostile"].IntegerValue);
+        Assert.Equal(MetricEvidence.Experimental, parsed.Metrics.EvidenceByAcquisition!["factions"]);
+        var range = parsed.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(38L, range["min"].IntegerValue);
+        Assert.Equal(64L, range["max"].IntegerValue);
+
+        var after = new FileInfo(source);
+        Assert.Equal(originalLength, after.Length);
+        Assert.Equal(originalWrite, after.LastWriteTimeUtc);
+        Assert.Equal(before, Digest(source));
+    }
+
 }
