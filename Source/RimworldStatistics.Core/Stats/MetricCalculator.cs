@@ -265,11 +265,13 @@ public static class MetricCalculator
             return AcrossObservations(d, observations);
 
         var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : latest;
-        var staleProvider = false;
-        // A removed optional provider cannot produce a reading in newer saves.
-        // Render its last *actual* captured value as historical partial data,
-        // never fabricate a zero or silently erase it from the UI.
-        if (d.ProviderId is not null && (rep is null || Entry(rep, d) is null))
+        var staleCapture = false;
+        // A removed optional provider or disabled experimental faction unit
+        // cannot produce a reading in newer saves. Retain the last genuine
+        // captured value as partial data; never substitute a weaker
+        // historical SaveFile fallback after a live capture was made.
+        if ((d.ProviderId is not null || d.Acquisition == "factions")
+            && (rep is null || Entry(rep, d) is null))
         {
             var historical = observations.Where(o => Entry(o, d) is not null)
                 .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
@@ -277,7 +279,7 @@ public static class MetricCalculator
             if (historical is not null)
             {
                 rep = historical;
-                staleProvider = true;
+                staleCapture = true;
             }
         }
         if (rep is null)
@@ -303,7 +305,7 @@ public static class MetricCalculator
             };
         else
             value = NumericValue.Unknown;
-        if (staleProvider)
+        if (staleCapture)
         {
             value = new NumericValue
             {
