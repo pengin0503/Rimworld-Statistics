@@ -66,7 +66,7 @@ internal static class Program
             expected.Label + ": Statistics component presence");
         Require(o.Values.WealthLast == expected.WealthLatest, expected.Label + ": last wealth");
         Require(o.Values.WealthMax == expected.WealthPeak, expected.Label + ": peak wealth");
-        var m = result.Metrics;
+        var m = result.Metrics!;
         Require(m.Key == HashFile(path), expected.Label + ": full-file SHA-256 does not match streamed reader");
         var mean = Real(m, MetricKeys.WealthTotalMean);
         Require(mean.HasValue && Math.Abs(mean.Value - expected.WealthMean) <= 0.01,
