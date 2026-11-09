@@ -829,4 +829,13 @@
   <RWS_Mod_RequiresMod>必要なMOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>提供元MOD: {0}（Provider ID: {1}）</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>提供元MODが現在ありません。記録済みの値は保持されていますが、新しい測定は行われません。</RWS_Mod_SourceUnavailable>
+  <!-- Legacy labels: historical records remain readable when optional addons are absent. -->
+  <RWS_ModRecruitment_Started>募集依頼の開始回数</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>Colonist Recruitment 1.1.2 の募集依頼を正常に開始した回数です。途中からの取得は部分記録です。依頼開始後の取消も開始回数に含みます。</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>進行中の募集依頼数</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>成功したセーブ時点で進行中だった募集依頼の件数です。過去の累計ではありません。</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality：滞在中のゲスト数（保存時）</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>各ホーム拠点で現在滞在中の Hospitality ゲスト数。成功したセーブ時の値であり、歴代宿泊客の累計ではありません。対象MODのコード変更は不要です。</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality：滞在中のゲスト集団数（保存時）</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>各ホーム拠点で現在滞在中の Hospitality グループ数。成功したセーブ時の値であり、過去の来訪回数ではありません。</RWS_ModHospitality_PresentGroupsDesc>
 </LanguageData>
