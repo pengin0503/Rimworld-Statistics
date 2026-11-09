@@ -1,5 +1,8 @@
 # Experimental Statistics Implementation Plan
 
+> **履歴資料（2026-11-09更新）:** この文書は2026-11-08時点の実装前計画です。その後P0〜P3相当の実装がPR #40〜#44、#53〜#54等でmainへ統合され、v1.2.0が公開されました。以下の「未実装」「承認待ち」等は作成当時の状態を表します。現状はREADME・実コード・現行SDK文書を優先してください。取得単位はUnverifiedのままです。
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 >
 > **状態:** 実装前の設計計画（承認待ち）。**この文書の保存だけでは実装を開始しない。**
