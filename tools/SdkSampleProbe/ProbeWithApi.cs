@@ -26,6 +26,20 @@ internal static class ProbeWithApi
             throw new Exception("Sample duplicate event was recorded");
         if (fake.Snapshot?.Invoke() != 3)
             throw new Exception("Sample snapshot was not captured");
+        // This is a real copy of the sample's save/load event-id algorithm, not just host negotiation.
+        var ids = new List<string>();
+        var ledger = new SampleEventLedger("test-save-guid", 0);
+        if (!ledger.Emit(id => { ids.Add(id); return true; }) || ledger.Count != 1)
+            throw new Exception("Sample event ledger did not record first confirmed event");
+        var restored = new SampleEventLedger("test-save-guid", ledger.Count);
+        if (!restored.Emit(id => { ids.Add(id); return true; }) || restored.Count != 2)
+            throw new Exception("Sample event ledger lost event position on restore");
+        if (ids.Count != 2 || ids[0] == ids[1])
+            throw new Exception("Sample event IDs collided after reload");
+        var offline = new SampleEventLedger("test-save-guid", restored.Count);
+        if (offline.Emit(_ => false) || offline.Count != 3)
+            throw new Exception("Offline sample events must advance their local ordinal, not claim SDK recording");
+
         Console.WriteLine("SDK sample: negotiation, registration, event, dedup and snapshot PASS");
         
     }

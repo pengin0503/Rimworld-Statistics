@@ -8,5 +8,6 @@
   <ItemGroup>
     <ProjectReference Include="../../Source/RimworldStatistics.Api/RimworldStatistics.Api.csproj" />
     <Compile Include="../../examples/StatisticsSdkSample/Source/SampleSdkClient.cs" Link="SampleSdkClient.cs" />
+    <Compile Include="../../examples/StatisticsSdkSample/Source/SampleEventLedger.cs" Link="SampleEventLedger.cs" />
   </ItemGroup>
 </Project>
