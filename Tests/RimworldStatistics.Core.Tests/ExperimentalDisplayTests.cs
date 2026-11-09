@@ -42,4 +42,28 @@ public sealed class ExperimentalDisplayTests
         Assert.Same(b, session.GetView(options, new[] { "research" }));
         Assert.Same(a, session.GetView(options));
     }
+
+    [Fact]
+    public void DefaultDetailsVisibility_ContainsAllImplementedAndUnknownOutputDefinitions()
+    {
+        var ids = MetricDisplayPolicy.AllDetailsVisibleUnits;
+        Assert.Contains(MetricRegistry.OptionalModVisibilityId, ids);
+        Assert.Equal(AcquisitionUnits.All.Select(u => u.Id).Order(StringComparer.Ordinal),
+            ids.Where(id => id != MetricRegistry.OptionalModVisibilityId).Order(StringComparer.Ordinal));
+
+        var selected = MetricDisplayPolicy.SelectDefinitions(MetricRegistry.Catalog, ids);
+        Assert.Equal(MetricRegistry.Catalog.Select(d => d.Key), selected.Select(d => d.Key));
+        Assert.Contains(selected, d => !d.Published && d.Acquisition is not null);
+
+        // Visibility of an output never opts in an acquisition hook.
+        Assert.Empty(ExperimentalAcquisitionPolicy.Resolve(
+            new ExperimentalSelection(false, Array.Empty<string>()), AcquisitionUnits.All));
+
+        // A missing observation remains unknown, rather than a manufactured zero.
+        using var dir = new Fixtures.TempDir();
+        var session = new ProfileSession(new ProfileStore(dir.Path), () => DateTime.UtcNow);
+        var view = session.GetView(new StatsOptions(), ids);
+        Assert.Contains(view.Numeric.Overall, r => !r.Definition.Published &&
+            r.Value.Coverage == MetricCoverage.Unknown && r.Value.Number is null);
+    }
 }
