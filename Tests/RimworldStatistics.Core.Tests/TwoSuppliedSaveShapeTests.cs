@@ -54,10 +54,35 @@ public sealed class TwoSuppliedSaveShapeTests
             .Recorder("ColonistMood", Enumerable.Range(0, shape.Points).Select(i => (float)(55 + i % 25)).ToArray(), deflate: true)
             .Maps(50_000).Unknown(25_000);
 
-        for (var i = 1; i <= shape.QuestCount; i++)
-            b.QuestFull(i, "Synthetic_TestQuest", acceptanceTick: i * 100,
-                ended: i % 3 == 0, outcome: i % 3 == 0 ? "Success" : null,
-                cleanupTick: i % 3 == 0 ? i * 100 + 1000 : -1);
+        // Independently counted *aggregates* in the two source files, never quest IDs or names.
+        // A: accepted 34, success 11, fail 15, expired offers 17, other offers 8.
+        // B: accepted 68, success 14, fail 42, expired offers 26, other offers 8.
+        var successes = shape.HasStatisticsComponent ? 11 : 14;
+        var failures = shape.HasStatisticsComponent ? 15 : 42;
+        var acceptedOther = shape.HasStatisticsComponent ? 8 : 12;
+        var expiredOffers = shape.HasStatisticsComponent ? 17 : 26;
+        var pendingOffers = 8;
+        Assert.Equal(shape.QuestCount, successes + failures + acceptedOther + expiredOffers + pendingOffers);
+        var questId = 0;
+        for (var i = 0; i < successes; i++)
+        {
+            var tick = 1_000 + i * 200;
+            b.QuestFull(++questId, "Synthetic_TestQuest", acceptanceTick: tick,
+                ended: true, outcome: "Success", cleanupTick: tick + 60_000);
+        }
+        for (var i = 0; i < failures; i++)
+        {
+            var tick = 10_000 + i * 200;
+            b.QuestFull(++questId, "Synthetic_TestQuest", acceptanceTick: tick,
+                ended: true, outcome: "Fail", cleanupTick: tick + 60_000);
+        }
+        for (var i = 0; i < acceptedOther; i++)
+            b.QuestFull(++questId, "Synthetic_TestQuest", acceptanceTick: 20_000 + i * 200,
+                ended: i < 2, outcome: i < 2 ? "Unknown" : null);
+        for (var i = 0; i < expiredOffers; i++)
+            b.QuestFull(++questId, "Synthetic_TestQuest", acceptanceExpireTick: 100_000 + i * 200);
+        for (var i = 0; i < pendingOffers; i++)
+            b.QuestFull(++questId, "Synthetic_TestQuest", acceptanceExpireTick: shape.Ticks + 100_000 + i * 200);
 
         if (shape.HasStatisticsComponent)
             b.Component(SaveReader.ComponentClassName,
@@ -194,6 +219,8 @@ public sealed class TwoSuppliedSaveShapeTests
         Assert.Null(b.Observation.Identity.ModCampaignId);
         Assert.Null(a.Checkpoint);
         Assert.Null(b.Checkpoint);
+        AssertQuestOutcomes(a.Metrics!, 34, 11, 15, 17);
+        AssertQuestOutcomes(b.Metrics!, 68, 14, 42, 26);
 
         // Exercise the real import/profile pipeline as well, not only the reader. Work on
         // disposable copies; never move, rewrite or commit either user's source save.
