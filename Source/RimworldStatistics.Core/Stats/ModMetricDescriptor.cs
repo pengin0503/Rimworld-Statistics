@@ -85,11 +85,25 @@ public sealed record ModProviderCapture(string OwnerPackageId, string? OwnerVers
         var versions = (previous.SeenOwnerVersions ?? new List<string> { previous.OwnerVersion ?? "" })
             .Concat(current.SeenOwnerVersions ?? new List<string> { current.OwnerVersion ?? "" })
             .Distinct(StringComparer.Ordinal).Take(16).ToList();
+        // Capture metadata can contain fields from a newer SDK/profile version.
+        // Joining observed versions must not erase those fields. If a future field
+        // appears more than once, retain the previously stored value rather than
+        // silently overwriting it during a re-read or snapshot compaction.
+        var extra = previous.ExtensionData;
+        if (current.ExtensionData is { Count: > 0 } incoming)
+        {
+            extra = extra is { Count: > 0 }
+                ? new Dictionary<string, JsonElement>(extra, StringComparer.Ordinal)
+                : new Dictionary<string, JsonElement>(StringComparer.Ordinal);
+            foreach (var (key, value) in incoming)
+                extra.TryAdd(key, value);
+        }
         if (versions.Count == 1 && previous.ProviderVersion == current.ProviderVersion)
-            return previous;
+            return ReferenceEquals(extra, previous.ExtensionData) ? previous : previous with { ExtensionData = extra };
         return new ModProviderCapture(previous.OwnerPackageId, null, "mixed")
         {
             SeenOwnerVersions = versions,
+            ExtensionData = extra,
         };
     }
 
