@@ -158,7 +158,10 @@ if ($UseSaveModList) {
 
 $nodes = @($active.SelectNodes('li'))
 foreach ($node in $nodes) {
-    if ($node.InnerText.Trim() -ieq $harnessId) {
+    if ($node.InnerText.Trim() -ieq $harnessId -or
+        ($UseSaveModList -and $node.InnerText.Trim() -ieq $mainId)) {
+        # The main MOD and the harness must appear after the save's original
+        # dependencies; remove saved entries before appending them once below.
         [void]$active.RemoveChild($node)
     }
 }
