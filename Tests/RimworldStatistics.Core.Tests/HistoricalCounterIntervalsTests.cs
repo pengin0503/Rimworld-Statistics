@@ -109,4 +109,13 @@ public sealed class HistoricalCounterIntervalsTests
         });
         Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
     }
+    [Fact]
+    public void CounterValuesExceedingTheSavedInt32Domain_AreNotEvidence()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 3, 1);
+        Point(p, "B", "A", 120000, (long)int.MaxValue + 1, 3);
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
+    }
+
 }
