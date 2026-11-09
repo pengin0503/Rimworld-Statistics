@@ -64,7 +64,7 @@ internal static class SauOrderHook
     private static void AfterOrder(object __instance)
     {
         var bound = active;
-        if (bound is null || Find.TickManager is null)
+        if (bound is null || !SauHostClient.IsConnected || Find.TickManager is null)
             return;
         try
         {
