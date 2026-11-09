@@ -1,0 +1,50 @@
+name: Correct v1.2.1 release metadata (notes in README)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/retitle-v1.2.1-release.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: correct-rws-v1.2.1-release
+  cancel-in-progress: false
+
+jobs:
+  update-existing-release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update existing v1.2.1 title and notes (never touch tag or assets)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          release_json=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v1.2.1")
+          release_id=$(jq -r '.id' <<< "$release_json")
+          test "$release_id" = "438875513"
+          test "$(jq -r '.draft' <<< "$release_json")" = false
+          original_tag=$(jq -r '.tag_name' <<< "$release_json")
+          original_assets=$(jq -r '[.assets[].id] | sort | join(",")' <<< "$release_json")
+
+          # Edit an existing release ONLY. No rebuild, re-upload, retag, or new release.
+          gh release edit v1.2.1 \
+            --title "Rimworld Statistics v1.2.1" \
+            --notes-file docs/releases/v1.2.1.md
+
+          updated=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/v1.2.1")
+          test "$(jq -r '.id' <<< "$updated")" = "$release_id"
+          test "$(jq -r '.tag_name' <<< "$updated")" = "$original_tag"
+          test "$(jq -r '[.assets[].id] | sort | join(",")' <<< "$updated")" = "$original_assets"
+          test "$(jq -r '.name' <<< "$updated")" = "Rimworld Statistics v1.2.1"
+          if jq -r '.body' <<< "$updated" | grep -Eiq 'addon|アドオン|hospitality|recruitment|smart apparel'; then
+            echo "Release notes still contain addon information" >&2
+            exit 1
+          fi
+          echo "v1.2.1 release metadata updated; release ID, tag and assets unchanged."
