@@ -10,4 +10,9 @@ if (args.Contains("--no-api", StringComparer.Ordinal))
     return;
 }
 
+if (args.Contains("--host-minor-zero", StringComparer.Ordinal))
+{
+    ProbeWithApi.RunOlderHost();
+    return;
+}
 ProbeWithApi.Run();

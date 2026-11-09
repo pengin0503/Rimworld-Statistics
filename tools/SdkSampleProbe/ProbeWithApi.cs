@@ -3,6 +3,24 @@ using StatisticsSdkSample;
 
 internal static class ProbeWithApi
 {
+    /// <summary>Verify that a synthetic older minor host refuses a 1.1 consumer without loading it.</summary>
+    internal static void RunOlderHost()
+    {
+        if (!StatisticsApi.InstallHost(new FakeHost(0)))
+            throw new Exception("Old 1.0 host could not install");
+        if (!StatisticsApi.TryGetHost(1, 0, out _))
+            throw new Exception("1.0 host rejected a compatible consumer");
+        if (StatisticsApi.TryGetHost(1, 1, out _))
+            throw new Exception("1.0 host incorrectly accepted a 1.1 consumer");
+        if (SampleSdkClient.TryAttach())
+        {
+#if REQUIRES_API_MINOR_1
+            throw new Exception("1.1 sample should not register on 1.0 host");
+#endif
+        }
+        Console.WriteLine("SDK old-host version floor: PASS");
+    }
+
     // This body is JIT-compiled only after the no-API case has branched away.
     internal static void Run()
     {
@@ -50,7 +68,9 @@ internal static class ProbeWithApi
         private readonly HashSet<string> seen = new(StringComparer.Ordinal);
         public Func<double?>? Snapshot { get; private set; }
         public int ApiMajor => 1;
-        public int ApiMinor => 1;
+        private readonly int minor;
+        public FakeHost(int minor = 1) => this.minor = minor;
+        public int ApiMinor => minor;
     
         public ApiRegistrationResult Register(ApiMetricDefinition definition, Func<double?>? captureSnapshot = null)
         {
