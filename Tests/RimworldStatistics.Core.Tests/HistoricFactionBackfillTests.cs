@@ -21,6 +21,29 @@ public sealed class HistoricFactionBackfillTests
 
     private static byte[] Save(params XElement[] factions)
     {
+        // Most test fixtures were written as NPC-to-player relations. Mirror
+        // those explicitly into player-to-NPC records to match the live reader,
+        // but never overwrite a manually supplied asymmetric player relation.
+        var player = factions.FirstOrDefault(f => (string?)f.Element("def") == "PlayerColony");
+        if (player is not null && player.Element("relations") is null)
+        {
+            var outgoing = factions.Where(f => !ReferenceEquals(f, player))
+                .SelectMany(f => f.Element("relations")?.Elements("li")
+                    .Where(x => (string?)x.Element("other") == "Faction_1")
+                    .Select(x => new XElement("li",
+                        new XElement("other", "Faction_" + (string?)f.Element("loadID")),
+                        new XElement("kind", (string?)x.Element("kind")),
+                        x.Element("goodwill") is null ? null
+                            : new XElement("goodwill", (string?)x.Element("goodwill"))))
+                    ?? Enumerable.Empty<XElement>()).ToArray();
+            if (outgoing.Length > 0)
+                player.Add(new XElement("relations", outgoing));
+        }
+        return SaveRaw(factions);
+    }
+
+    private static byte[] SaveRaw(params XElement[] factions)
+    {
         using var original = new MemoryStream(new SaveXmlBuilder().Minimal()
             .Scenario("Crashlanded", playerFactionDef: "PlayerColony").Build());
         var root = XDocument.Load(original);
@@ -231,7 +254,7 @@ public sealed class HistoricFactionBackfillTests
     [Fact]
     public void HistoricalSave_WithoutOutgoingPlayerRelation_MustNotUseReverseRelation()
     {
-        var read = Read(Save(Faction("PlayerColony", 1),
+        var read = Read(SaveRaw(Faction("PlayerColony", 1),
             Faction("OutlanderCivil", 2, "Hostile", -85)));
         Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
     }
