@@ -62,6 +62,7 @@ public sealed class HistoricalCheckpointPairEvidenceTests
         var profile = new Profile();
         foreach (var (name, bytes) in inputs)
         {
+            var original = bytes.ToArray();
             var read = new SaveReader().ReadDetailed(
                 new MemoryStream(bytes, writable: false), name, bytes.Length, Stamp);
             Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
@@ -70,7 +71,7 @@ public sealed class HistoricalCheckpointPairEvidenceTests
             Assert.Equal(MetricObservationSource.Checkpoint, read.Checkpoint!.Source);
             ProfileMutations.UpsertMetricObservation(profile, read.Checkpoint);
             ProfileMutations.UpsertMetricObservation(profile, read.Metrics!);
-            Assert.Equal(bytes, bytes.ToArray()); // input is never mutated
+            Assert.Equal(original, bytes); // input bytes remain unchanged
         }
         Assert.Equal(2, profile.MetricObservations.Count(
             o => o.Source == MetricObservationSource.Checkpoint));
