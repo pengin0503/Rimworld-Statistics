@@ -375,4 +375,61 @@ public sealed class NumericSnapshotRetentionTests
         Assert.Equal(250, unknown.Unattributed);
     }
 
+    [Fact]
+    public void HistoricalFallback_DoesNotOverrideLastActualFactionCaptureAfterCompaction()
+    {
+        var profile = new Profile();
+        var identity = Identity("saved-factions-then-disabled");
+        ProfileMutations.ApplyLiveObservation(profile, identity.ModCampaignId!, identity,
+            new ObservedValues { TicksGame = 1000 }, new DisplayInfo(), Epoch);
+        var historic = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "sha-history",
+            Identity = identity.Clone(), SaveTick = 50, ObservedUtc = Epoch,
+            EvidenceByAcquisition = new Dictionary<string, MetricEvidence>
+            { ["factions"] = MetricEvidence.Experimental },
+            Metrics = FactionStateSnapshot.Build(new[]
+            { new FactionStateFact("old", true, true, false, 20) }, partial: true),
+        };
+        ProfileMutations.UpsertMetricObservation(profile, historic);
+
+        for (var i = 1; i <= 3; i++)
+        {
+            var snapshot = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "faction-snapshot-" + i,
+                Identity = identity.Clone(), SaveTick = i * 100, ObservedUtc = Epoch.AddMinutes(i),
+            };
+            if (i == 1)
+            {
+                snapshot.Metrics = FactionStateSnapshot.Build(new[]
+                {
+                    new FactionStateFact("a", true, true, false, 35),
+                    new FactionStateFact("b", true, false, true, -90),
+                });
+                snapshot.EvidenceByAcquisition = new Dictionary<string, MetricEvidence>
+                { ["factions"] = MetricEvidence.Experimental };
+            }
+            else
+            {
+                // The faction acquisition unit has been disabled. Other
+                // snapshot units still record and trigger compaction.
+                snapshot.Metrics[FacilitiesSnapshot.OutdoorTempMax] = MetricEntry.Of(
+                    MetricKeys.Revision(FacilitiesSnapshot.OutdoorTempMax),
+                    new MetricValue { Coverage = MetricCoverage.SnapshotOnly, RealValue = i });
+            }
+            ProfileMutations.UpsertMetricObservation(profile, snapshot);
+        }
+        Assert.Contains(profile.MetricObservations, o =>
+            o.Source == MetricObservationSource.SaveSnapshot
+            && o.Metrics.ContainsKey(FactionStateSnapshot.Relations));
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var defs = SnapshotCatalog.Definitions.Where(d => d.Key == FactionStateSnapshot.Relations).ToArray();
+        var row = Assert.Single(Assert.Single(MetricCalculator.BuildView(profile, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), defs).Colonies).Rows);
+        Assert.Equal(2.0, row.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, row.Value.Coverage); // retained, but stale
+        Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
+    }
+
 }
