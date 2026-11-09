@@ -24,12 +24,16 @@ powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary
 手元の既存セーブを使用する場合、`-SaveFile` を指定すると**原本に一切書き込まず**、テスト用 `Saves` へ `RWSVerify-元の名前.rws` として複製する。例えば、次のように実行する。
 
 ```powershell
-powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws"
+powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws" -UseSaveModList
 ```
+
+**既存の大量MODセーブには `-UseSaveModList` を指定してください。** このオプションは `<savegame><meta><modIds>` の順序付きMOD IDを読み取り、隔離されたテスト用 `ModsConfig.xml` に適用してから本体・VerifyHarnessを末尾に追加します。通常環境が現在QoL専用構成でも、その構成を誤って使いません。元の `ModsConfig.xml` とセーブを変更しません。セーブから読み取れない場合や `-Minimal` との併用は、テスト用MODリストを書き換える前にエラーとして拒否します。
+
+この機能は**MOD本体をインストールしません**。必要なWorkshop MOD・公式DLCが不足している場合、セーブ内の `modIds` を再現しても `Could not load reference` や `JobDriver_HaulToInventory` の復元失敗が発生し得ます。不足・非互換MODの解消は別途必要です。標準の `-SaveFile`（`-UseSaveModList` なし）は従来どおり、現在の通常環境の `ModsConfig.xml` をコピーする方式です。
 
 既存のテストコピーが同じ内容なら再利用する。テスト側で内容が変わっている場合は、新しい連番のコピーを作って**上書きしない**。ゲーム起動後、「ゲームをロード」から `RWSVerify-` で始まるコピーを選ぶ。MOD依存があるセーブを試す場合は `-Minimal` を使用しない。
 
-`-Minimal` の有無を切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。同じモードで繰り返し起動するときはテスト用の構成を保持する。通常環境の `ModsConfig.xml` は一切変更しない。
+`-Minimal`・`-UseSaveModList`・通常モードを切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。通常モード・最小モードで繰り返し起動するときはテスト用の構成を保持する。`-UseSaveModList` は毎回指定したセーブのMOD一覧でテスト用構成を再生成する。通常環境の `ModsConfig.xml` は一切変更しない。
 
 `-Minimal` は新規の使い捨てテストコロニー向け。元のMOD設定を**別フォルダにコピー**し、Vanilla・有効なDLC・Harmony・Rimworld-Statistics・VerifyHarness 以外をテスト環境のMODリストから除外して軽量化する。Hospitality / Recruitment / 他MODとの互換検証をするとき、または元のMOD構成を必要とする既存セーブを使用するときは **`-Minimal` を付けない**。
 
