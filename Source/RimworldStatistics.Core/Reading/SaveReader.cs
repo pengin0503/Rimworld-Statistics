@@ -27,8 +27,9 @@ public sealed class SaveReader
     /// 6: bounded, partial legacy faction-relationship evidence (no new live hooks).
     /// 7: real 1.7 omitted default faction ID 0 and per-relation partial salvage.
     /// 8: recover Scribe-omitted neutral relation kinds in historical faction snapshots.
+    /// 9: bounded, partial saved player Settlement map observations (not lifetime maxima).
     /// </summary>
-    public const int Version = 8;
+    public const int Version = 9;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -127,6 +128,10 @@ public sealed class SaveReader
         public List<(string? Def, string? Name)> Factions { get; } = new();
         public List<SavedFaction> HistoricalFactions { get; } = new();
         public bool HistoricalFactionsOverflowed { get; set; }
+        public List<SavedWorldMapObject> HistoricalMapObjects { get; } = new();
+        public List<SavedMapParent> HistoricalMaps { get; } = new();
+        public bool HistoricalMapObjectsOverflowed { get; set; }
+        public bool HistoricalMapsOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
@@ -178,6 +183,10 @@ public sealed class SaveReader
                     s.KilledWritten = statsRecord?.Element("colonistsKilled") != null;
                     break;
                 case "world": ReadWorld(r, s); break;
+                case "maps":
+                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadMaps(r, s);
+                    else r.Skip();
+                    break;
                 case "history": ReadHistory(r, s); break;
                 case "questManager": ReadQuests(r, s); break;
                 case "components": ReadComponents(r, s); break;
@@ -247,6 +256,10 @@ public sealed class SaveReader
                     obs.Identity.SeedString = Text(info.Element("seedString"));
                     obs.Identity.PersistentRandomValue = Int(info.Element("persistentRandomValue"), 0);
                     break;
+                case "worldObjects":
+                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadWorldMapObjects(r, s);
+                    else r.Skip();
+                    break;
                 case "factionManager":
                     ForEachChild(r, fm =>
                     {
@@ -259,6 +272,154 @@ public sealed class SaveReader
                     break;
             }
         });
+    }
+
+
+    /// <summary>
+    /// Reads only small map-parent keys; all map terrain, pawns, components and
+    /// things are skipped by XmlReader, never materialized as object trees.
+    /// </summary>
+    private static void ReadMaps(XmlReader r, ReadState s)
+    {
+        ForEachChild(r, item =>
+        {
+            if (item != "li") { r.Skip(); return; }
+            if (s.HistoricalMaps.Count >= HistoricalHomeMapReader.MaxMaps)
+            {
+                s.HistoricalMapsOverflowed = true;
+                r.Skip();
+                return;
+            }
+            int? id = null;
+            string? parent = null;
+            bool? pocket = null;
+            var valid = true;
+            var mapInfoSeen = false;
+            ForEachChild(r, child =>
+            {
+                switch (child)
+                {
+                    case "uniqueID":
+                        var text = ReadHistoricalAtom(r);
+                        if (id is not null || !int.TryParse(text, NumberStyles.Integer, Inv, out var parsedId)
+                            || parsedId < 0)
+                            valid = false;
+                        else
+                            id = parsedId;
+                        break;
+                    case "mapInfo":
+                        if (mapInfoSeen) valid = false;
+                        mapInfoSeen = true;
+                        ForEachChild(r, field =>
+                        {
+                            switch (field)
+                            {
+                                case "parent":
+                                    var value = ReadHistoricalAtom(r);
+                                    if (parent is not null || string.IsNullOrWhiteSpace(value)) valid = false;
+                                    else parent = value;
+                                    break;
+                                case "isPocketMap":
+                                    var flag = ReadHistoricalAtom(r);
+                                    if (pocket is not null || !bool.TryParse(flag, out var isPocket))
+                                        valid = false;
+                                    else pocket = isPocket;
+                                    break;
+                                default: r.Skip(); break;
+                            }
+                        });
+                        break;
+                    default: r.Skip(); break;
+                }
+            });
+            s.HistoricalMaps.Add(new SavedMapParent(id, parent, pocket, valid));
+        });
+    }
+
+    /// <summary>Only world object IDs, Defs and owning-faction references are retained.</summary>
+    private static void ReadWorldMapObjects(XmlReader r, ReadState s)
+    {
+        ForEachChild(r, child =>
+        {
+            if (child != "worldObjects") { r.Skip(); return; }
+            ForEachChild(r, item =>
+            {
+                if (item != "li") { r.Skip(); return; }
+                if (s.HistoricalMapObjects.Count >= HistoricalHomeMapReader.MaxWorldObjects)
+                {
+                    s.HistoricalMapObjectsOverflowed = true;
+                    r.Skip();
+                    return;
+                }
+                int? id = null;
+                string? def = null, faction = null;
+                var valid = true;
+                ForEachChild(r, field =>
+                {
+                    switch (field)
+                    {
+                        case "ID":
+                            var text = ReadHistoricalAtom(r);
+                            if (id is not null || !int.TryParse(text, NumberStyles.Integer, Inv, out var parsed)
+                                || parsed < 0)
+                                valid = false;
+                            else id = parsed;
+                            break;
+                        case "def":
+                            var d = ReadHistoricalAtom(r);
+                            if (def is not null || string.IsNullOrWhiteSpace(d)) valid = false;
+                            else def = d;
+                            break;
+                        case "faction":
+                            var f = ReadHistoricalAtom(r);
+                            if (faction is not null || string.IsNullOrWhiteSpace(f)) valid = false;
+                            else faction = f;
+                            break;
+                        default: r.Skip(); break;
+                    }
+                });
+                s.HistoricalMapObjects.Add(new SavedWorldMapObject(id, def, faction, valid));
+            });
+        });
+    }
+
+    /// <summary>Fixed-memory small XML scalar reader, including overlong whitespace.</summary>
+    private static string? ReadHistoricalAtom(XmlReader r)
+    {
+        if (r.IsEmptyElement) { r.Read(); return ""; }
+        var depth = r.Depth;
+        r.Read();
+        var value = new StringBuilder(64);
+        var buffer = new char[64];
+        var valid = true;
+        while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+        {
+            if (r.EOF) throw new XmlException("unexpected end of historical field");
+            if (r.NodeType is XmlNodeType.Text or XmlNodeType.CDATA
+                or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace)
+            {
+                int count;
+                while ((count = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                {
+                    if (!valid) continue;
+                    if (value.Length + count > 128)
+                    {
+                        value.Clear();
+                        valid = false;
+                    }
+                    else value.Append(buffer, 0, count);
+                }
+                r.Read();
+            }
+            else if (r.NodeType == XmlNodeType.Element)
+            {
+                valid = false;
+                r.Skip();
+            }
+            else r.Read();
+        }
+        r.Read();
+        return valid ? value.ToString().Trim() : null;
     }
 
     /// <summary>Keep the v1 faction identity reader, and selectively gather small
@@ -704,6 +865,18 @@ public sealed class SaveReader
             {
                 ["factions"] = MetricEvidence.Experimental,
             };
+        }
+        // At most a lower bound of mapped, explicitly player-owned vanilla
+        // settlements at this saved tick. Never invent a lifetime maximum.
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalHomeMapReader.Build(s.HistoricalMaps, s.HistoricalMapObjects,
+                s.HistoricalFactions, s.ScenarioPlayerFactionDef,
+                s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed) is { } homes)
+        {
+            foreach (var (key, value) in homes)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            m.EvidenceByAcquisition["facilities"] = MetricEvidence.Experimental;
         }
         return m;
     }
