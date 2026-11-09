@@ -4,7 +4,7 @@ Baseline: Rimworld-Statistics v1.2.2 / merged audit #70. Implementation PR #73; 
 
 ## Stage B: conservative saved faction relations
 
-The streaming `SaveReader` now reads bounded `game/world/factionManager/allFactions/li` relation tags if they belong to a known first-party *visible* faction def. A player faction is identified through `game/scenario/playerFaction/factionDef` or a unique unambiguous `PlayerColony`/`PlayerTribe`. Each included record must explicitly link to the player's saved `Faction_<loadID>` reference and contain a recognized relationship kind plus goodwill in [-100,+100].
+The streaming `SaveReader` now reads bounded `game/world/factionManager/allFactions/li` relation tags if they belong to a known first-party *visible* faction def. A player faction is identified through `game/scenario/playerFaction/factionDef` or a unique unambiguous `PlayerColony`/`PlayerTribe`. Each included record is selected from the **player faction's outgoing** saved relations to that NPC's `Faction_<loadID>` reference, matching the game-side `player.RelationKindWith(f)`/`player.GoodwillWith(f)`. Reverse-only NPC relations do not qualify. The saved faction's `hidden`, `temporary`, `deactivated` and `defeated` flags exclude it when true, and malformed flag values invalidate that record. Each selected relation must contain a recognized relationship kind and goodwill in [-100,+100].
 
 This produces *two existing experimental snapshot output keys*:
 - `diplomacy.snapshot.relations` — observed Ally/Hostile relationships among the allow-listed and fully referenced surviving factions.
@@ -27,7 +27,7 @@ This is a **programmatic evidence API only**, not a new UI metric or cumulative 
 
 ## Testing and release status
 
-- Synthetic positive/negative XML: player relations, missing/duplicated IDs, unsupported factions, malformed goodwill, saved MOD fingerprints, unchanged file bytes, reader-upgrade re-import once.
+- Synthetic positive/negative XML: player outgoing vs NPC reverse relations, hidden/temporary exclusions, missing/duplicated IDs, unsupported factions, malformed goodwill/flags, saved MOD fingerprints, unchanged file bytes, reader-upgrade re-import once. Reused checkpoint aliases are filtered by saved tick/version/identity before testing uniqueness.
 - Synthetic parent graph: same lineage, no parent, sibling branches, version/MOD mismatch, resets, missing counters, backwards ticks, duplicate checkpoint IDs.
 - Game-dependent private-save tests remain opt-in and unavailable in public CI. Current **1.7 runtime correctness, MOD-extended factions and TPS regressions are not verified**.
 - This PR changes no release tags or binaries; merging does not claim all 41 saved-state candidates (or 214 event-family definitions) were recovered.
