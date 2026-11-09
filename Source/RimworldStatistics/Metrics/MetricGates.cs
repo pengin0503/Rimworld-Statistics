@@ -26,7 +26,7 @@ public static class MetricGates
     }
 
     /// <summary>Register optional units during startup only, using the startup-frozen user selection.</summary>
-    public static void ConfigureOptionalUnits(IReadOnlyCollection<AcquisitionUnit> units, ExperimentalSelection selection, IReadOnlySet<string>? automaticUnits = null)
+    public static void ConfigureOptionalUnits(IReadOnlyCollection<AcquisitionUnit> units, ExperimentalSelection selection)
     {
         lock (Gate)
         {
@@ -35,15 +35,10 @@ public static class MetricGates
                 .GroupBy(u => u.Id, StringComparer.Ordinal)
                 .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
             optionalUnits = valid;
-            // Only source-audited built-in adapters may bypass the experimental opt-in.
-            // The caller has already checked that the owning MOD is installed.
-            var auto = (automaticUnits ?? new HashSet<string>(StringComparer.Ordinal))
-                .Where(id => valid.ContainsKey(id));
             var explicitIds = selection.Enabled
                 ? selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
-            productionSelection = productionSelection.Concat(explicitIds).Concat(auto)
-                .ToHashSet(StringComparer.Ordinal);
+            productionSelection = productionSelection.Concat(explicitIds).ToHashSet(StringComparer.Ordinal);
         }
     }
 
