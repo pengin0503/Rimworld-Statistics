@@ -15,7 +15,8 @@ param(
     [Parameter(Mandatory=$true)][string]$GameExe,
     [string]$TestDataFolder = (Join-Path $env:LOCALAPPDATA 'RimworldStatistics-Verify'),
     [string]$NormalDataFolder = (Join-Path $env:USERPROFILE 'AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios'),
-    [switch]$SetupOnly
+    [switch]$SetupOnly,
+    [switch]$Minimal
 )
 
 Set-StrictMode -Version Latest
@@ -74,6 +75,21 @@ if ($null -eq $active) {
 }
 $mainId = 'pengin0503.rimworldstatistics'
 $harnessId = 'pengin0503.rimworldstatistics.verifyharness'
+if ($Minimal) {
+    # For a NEW throwaway colony: eliminate third-party background work while
+    # retaining vanilla DLC, Harmony, and Statistics. Do not use this mode to
+    # load an existing heavily-modded save that depends on other packages.
+    $keep = @('ludeon.rimworld', 'ludeon.rimworld.royalty',
+        'ludeon.rimworld.ideology', 'ludeon.rimworld.biotech',
+        'ludeon.rimworld.anomaly', 'ludeon.rimworld.odyssey',
+        'brrainz.harmony', $mainId, $harnessId)
+    foreach ($node in @($active.SelectNodes('li'))) {
+        if ($keep -notcontains $node.InnerText.Trim().ToLowerInvariant()) {
+            [void]$active.RemoveChild($node)
+        }
+    }
+}
+
 $nodes = @($active.SelectNodes('li'))
 foreach ($node in $nodes) {
     if ($node.InnerText.Trim() -ieq $harnessId) {
@@ -95,6 +111,7 @@ Write-Host "[RWS Verify] Isolated test profile: $test"
 Write-Host "[RWS Verify] Test configuration:   $targetConfig"
 Write-Host "[RWS Verify] Normal saves/config are unchanged."
 Write-Host "[RWS Verify] Both MOD packages must already be installed."
+if ($Minimal) { Write-Host "[RWS Verify] Minimal test mod list enabled (vanilla/DLC/Harmony/RWS only)." }
 
 if ($SetupOnly) { return }
 
