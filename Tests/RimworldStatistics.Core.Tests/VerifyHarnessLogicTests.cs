@@ -99,4 +99,39 @@ public sealed class VerifyHarnessLogicTests
             + "actual=research.live.completed:+0 hooks=2 result=FAIL note=\"no 'hook' fired\"", CaseCheck.Line(r, "1.7.4985 rev1269"));
         Assert.EndsWith("result=SKIP note=\"no project\"", CaseCheck.Line(CaseCheck.Skip("c", "u", "no project"), "v"));
     }
+
+    [Fact]
+    public void BatchCatalogAudit_ClassifiesEveryUnverifiedOutputWithoutPretendingToProveIt()
+    {
+        var defs = MetricRegistry.Catalog.Where(d => d.Acquisition is not null).ToArray();
+        Assert.Equal(264, defs.Length);
+        var snapshot = SnapshotCatalog.Definitions[0];
+        var reported = VerifyCatalogAudit.Build(defs,
+            new HashSet<string> { snapshot.Acquisition!, "research" },
+            new HashSet<string> { snapshot.StoredKey },
+            new HashSet<string>());
+        Assert.Equal(defs.Length, reported.Count);
+        Assert.Equal(CatalogAuditState.Observed, Assert.Single(reported, r => r.Definition.Key == snapshot.Key).State);
+        Assert.Equal(CatalogAuditState.NotObserved,
+            Assert.Single(reported, r => r.Definition.Key == ResearchFamily.Completed).State);
+        Assert.Equal(CatalogAuditState.NotRecording,
+            Assert.Single(reported, r => r.Definition.Key == MentalFamily.Breaks).State);
+        Assert.All(reported.Where(x => x.Definition.Overall == OverallAggregation.Ranking),
+            row => Assert.Equal(CatalogAuditState.DerivedOnly, row.State));
+        Assert.All(reported, row => Assert.False(row.Verified));
+    }
+
+    [Fact]
+    public void BatchCatalogAudit_DlcUnavailableIsNotAFailedTestAndSharedStoredKeysAreRecognized()
+    {
+        var first = MetricRegistry.Find(MetricKeys.WealthItemsPeak)!;
+        var alternate = first with { Key = "alias", Acquisition = "test", StoredKey = first.StoredKey };
+        var marked = VerifyCatalogAudit.Build(new[] { alternate },
+            new HashSet<string> { "test" }, new HashSet<string> { first.StoredKey }, new HashSet<string>());
+        Assert.Equal(CatalogAuditState.Observed, Assert.Single(marked).State);
+        var dlc = alternate with { RequiredDlc = AcquisitionUnits.Biotech };
+        var missing = VerifyCatalogAudit.Build(new[] { dlc },
+            new HashSet<string> { "test" }, new HashSet<string>(), new HashSet<string> { AcquisitionUnits.Biotech });
+        Assert.Equal(CatalogAuditState.DlcUnavailable, Assert.Single(missing).State);
+    }
 }
