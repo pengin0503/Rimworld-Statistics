@@ -158,4 +158,168 @@ public sealed class HistoricalCheckpointPairEvidenceTests
             "Private checkpoint pair: 2 valid distinct checkpoints, stable campaign and saved MOD set, " +
             "unobserved/nonmatching direct parents, zero provable intervals, originals unchanged.");
     }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void FiveSavedCheckpoints_TwoConfirmedMiddleEdges_IgnoreMissingOuterParents(bool reverseImport)
+    {
+        // Five independently read checkpoint-bearing saves, modeled only on
+        // the public/non-identifying graph shape of the actual 2026-11-09
+        // private archive. The real checkpoint IDs and bytes are NOT fixtures.
+        var sources = new[]
+        {
+            ("a.rws", SyntheticSave("a", "unobserved-earlier", 100000, 15, 1)),
+            ("b.rws", SyntheticSave("b", "unobserved-middle", 400000, 16, 1)),
+            ("c.rws", SyntheticSave("c", "b", 445000, 16, 1)),
+            ("d.rws", SyntheticSave("d", "c", 490000, 16, 1)),
+            ("e.rws", SyntheticSave("e", "unobserved-later", 545000, 16, 1)),
+        };
+        var profile = new Profile();
+        var ordered = reverseImport ? sources.Reverse().ToArray() : sources;
+
+        foreach (var (name, bytes) in ordered)
+        {
+            var parsed = new SaveReader().ReadDetailed(
+                new MemoryStream(bytes, writable: false), name, bytes.Length, Stamp);
+            Assert.Equal(ObservationStatus.Ok, parsed.Observation.Status);
+            Assert.NotNull(parsed.Metrics);
+            Assert.NotNull(parsed.Checkpoint);
+            ProfileMutations.UpsertMetricObservation(profile, parsed.Checkpoint!);
+            ProfileMutations.UpsertMetricObservation(profile, parsed.Metrics!);
+        }
+
+        var intervals = HistoricalCounterIntervals.Evaluate(profile)
+            .OrderBy(x => x.StartTick).ToArray();
+        Assert.Equal(5, profile.MetricObservations.Count(
+            o => o.Source == MetricObservationSource.Checkpoint));
+        Assert.Equal(5, profile.MetricObservations.Count(
+            o => o.Source == MetricObservationSource.SaveFile));
+        Assert.Equal(2, intervals.Length);
+        Assert.Equal((400000, 445000), (intervals[0].StartTick, intervals[0].EndTick));
+        Assert.Equal((445000, 490000), (intervals[1].StartTick, intervals[1].EndTick));
+        Assert.All(intervals, row =>
+        {
+            Assert.Equal(MetricCoverage.Partial, row.Coverage);
+            Assert.Equal(0L, row.RaidsIncrease);
+            Assert.Equal(0L, row.ColonistDeathsIncrease);
+        });
+        // Repeated scans must never duplicate either checkpoint evidence or
+        // confirmed intervals and must never create a bridge to the older save.
+        foreach (var (name, bytes) in ordered)
+        {
+            var parsed = new SaveReader().ReadDetailed(
+                new MemoryStream(bytes, writable: false), name, bytes.Length, Stamp);
+            ProfileMutations.UpsertMetricObservation(profile, parsed.Checkpoint!);
+            ProfileMutations.UpsertMetricObservation(profile, parsed.Metrics!);
+        }
+        Assert.Equal(2, HistoricalCounterIntervals.Evaluate(profile).Count);
+        Assert.Equal(10, profile.MetricObservations.Count);
+    }
+
+    [Fact]
+    public void OptionalFiveOriginalSaves_ProveOnlyTwoMiddleEdges_WhenAvailable()
+    {
+        // The two outer original files use the environment variables from the
+        // previously merged opt-in pair acceptance; only three new variables
+        // are needed for this positive-lineage test. No originals go to CI.
+        var paths = new[]
+        {
+            Environment.GetEnvironmentVariable("RWS_PRIVATE_CHECKPOINT_EARLIER"),
+            Environment.GetEnvironmentVariable("RWS_PRIVATE_CHECKPOINT_2110"),
+            Environment.GetEnvironmentVariable("RWS_PRIVATE_CHECKPOINT_2113"),
+            Environment.GetEnvironmentVariable("RWS_PRIVATE_CHECKPOINT_2117"),
+            Environment.GetEnvironmentVariable("RWS_PRIVATE_CHECKPOINT_LATER"),
+        };
+        if (paths.Any(string.IsNullOrWhiteSpace))
+            Assert.Skip("Supply all five private checkpoint save paths locally.");
+        Assert.All(paths, path => Assert.True(File.Exists(path), "A private source save is missing."));
+
+        static byte[] Digest(string path)
+        {
+            using var stream = new FileStream(path, FileMode.Open, FileAccess.Read,
+                FileShare.ReadWrite | FileShare.Delete);
+            return SHA256.HashData(stream);
+        }
+
+        var metadata = paths.Select(path =>
+        {
+            var file = new FileInfo(path!);
+            return (file.Length, file.LastWriteTimeUtc, Hash: Digest(path!));
+        }).ToArray();
+        var reader = new SaveReader();
+        var observations = paths.Select(path => reader.ReadDetailed(path!)).ToArray();
+        var ticks = new[] { 10037861, 10336998, 10381998, 10426998, 10482325 };
+        var raids = new[] { 15, 16, 16, 16, 16 };
+        var campaign = observations[0].Observation.Identity.ModCampaignId;
+        var fingerprint = observations[0].Observation.Identity.FingerprintHash();
+        var mods = observations[0].Metrics?.ModSetHash;
+        Assert.False(string.IsNullOrEmpty(campaign));
+        Assert.False(string.IsNullOrEmpty(fingerprint));
+        Assert.False(string.IsNullOrEmpty(mods));
+
+        for (var i = 0; i < observations.Length; i++)
+        {
+            var read = observations[i];
+            Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+            Assert.Equal("1.7.5000 rev1275", read.Observation.GameVersion);
+            Assert.Equal(192, read.Observation.ModCount);
+            Assert.Equal(ticks[i], read.Observation.Values.TicksGame);
+            Assert.Equal(raids[i], read.Observation.Values.NumRaidsEnemy);
+            Assert.Equal(1, read.Observation.Values.ColonistsKilled);
+            Assert.NotNull(read.Metrics);
+            Assert.NotNull(read.Checkpoint);
+            Assert.Equal(read.Observation.Values.TicksGame, read.Checkpoint!.SaveTick);
+            Assert.False(string.IsNullOrWhiteSpace(read.Checkpoint.ParentKey));
+            Assert.Equal(campaign, read.Observation.Identity.ModCampaignId);
+            Assert.Equal(fingerprint, read.Observation.Identity.FingerprintHash());
+            Assert.Equal(mods, read.Metrics!.ModSetHash);
+            Assert.Equal(MetricObservationSource.Checkpoint, read.Checkpoint.Source);
+        }
+
+        // These are explicit checkpoint references read from all five
+        // originals; neither MOD list nor timestamp ordering establishes them.
+        Assert.NotEqual(observations[0].Checkpoint!.Key, observations[1].Checkpoint!.ParentKey);
+        Assert.Equal(observations[1].Checkpoint.Key, observations[2].Checkpoint!.ParentKey);
+        Assert.Equal(observations[2].Checkpoint.Key, observations[3].Checkpoint!.ParentKey);
+        Assert.NotEqual(observations[3].Checkpoint.Key, observations[4].Checkpoint!.ParentKey);
+
+        var profile = new Profile();
+        foreach (var read in observations)
+        {
+            ProfileMutations.UpsertMetricObservation(profile, read.Checkpoint!);
+            ProfileMutations.UpsertMetricObservation(profile, read.Metrics!);
+        }
+        var intervals = HistoricalCounterIntervals.Evaluate(profile)
+            .OrderBy(interval => interval.StartTick).ToArray();
+        Assert.Equal(2, intervals.Length);
+        Assert.Equal((ticks[1], ticks[2]), (intervals[0].StartTick, intervals[0].EndTick));
+        Assert.Equal((ticks[2], ticks[3]), (intervals[1].StartTick, intervals[1].EndTick));
+        Assert.All(intervals, interval =>
+        {
+            Assert.Equal(MetricCoverage.Partial, interval.Coverage);
+            Assert.Equal(0L, interval.RaidsIncrease);
+            Assert.Equal(0L, interval.ColonistDeathsIncrease);
+        });
+
+        foreach (var read in observations)
+        {
+            ProfileMutations.UpsertMetricObservation(profile, read.Checkpoint!);
+            ProfileMutations.UpsertMetricObservation(profile, read.Metrics!);
+        }
+        Assert.Equal(2, HistoricalCounterIntervals.Evaluate(profile).Count);
+        Assert.Equal(10, profile.MetricObservations.Count);
+
+        for (var i = 0; i < paths.Length; i++)
+        {
+            var file = new FileInfo(paths[i]!);
+            Assert.Equal(metadata[i].Length, file.Length);
+            Assert.Equal(metadata[i].LastWriteTimeUtc, file.LastWriteTimeUtc);
+            Assert.True(metadata[i].Hash.AsSpan().SequenceEqual(Digest(paths[i]!)));
+        }
+        TestContext.Current.SendDiagnosticMessage(
+            "Five private checkpoint saves: two direct middle edges, " +
+            "zero confirmed raid/death counter increases, no inferred outer edges, " +
+            "idempotent import and unchanged original files.");
+    }
 }
