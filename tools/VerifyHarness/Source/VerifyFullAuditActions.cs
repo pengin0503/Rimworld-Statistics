@@ -40,8 +40,10 @@ public static class VerifyFullAuditActions
         // the isolated test profile; otherwise those rows remain NotObserved.
         var preview = VerifyProbe.Values(out var previewReason);
         var observed = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var key in preview.Keys)
+        foreach (var (key, value) in preview)
         {
+            if (value.Number is null) // Unknown/not-applicable is not a measured number.
+                continue;
             var bracket = key.IndexOf('[');
             observed.Add(bracket < 0 ? key : key[..bracket]);
         }
