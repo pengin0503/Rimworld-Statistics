@@ -15,11 +15,8 @@ public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescr
 
 public sealed class ExternalSdkMetricRegistry
 {
-    private readonly ModMetricProviderRegistry registry = new(
-        MetricRegistry.Catalog.Select(d => d.Key).Concat(new[]
-        {
-            RecruitmentMetricPolicy.StartedKey, RecruitmentMetricPolicy.ActiveKey,
-        }));
+    private readonly ModMetricProviderRegistry registry =
+        new(MetricRegistry.Catalog.Select(d => d.Key));
     private readonly Dictionary<string, RegisteredSdkMetric> entries = new(StringComparer.Ordinal);
     private bool sealedForStartup;
 
@@ -62,9 +59,6 @@ public sealed class ExternalSdkMetricRegistry
              x.Descriptor.RequiredDlc != descriptor.RequiredDlc ||
              !x.Descriptor.RequiredPackages.Select(r => r.ToString()).SequenceEqual(
                  descriptor.RequiredPackages.Select(r => r.ToString()), StringComparer.Ordinal))))
-            return ApiRegistrationResult.ConflictingFamily;
-        if (descriptor.AcquisitionId == RecruitmentMetricPolicy.RequestsFamilyId ||
-            descriptor.AcquisitionId == RecruitmentMetricPolicy.QueueFamilyId)
             return ApiRegistrationResult.ConflictingFamily;
         var registration = registry.Register(descriptor);
         if (!registration.Accepted)

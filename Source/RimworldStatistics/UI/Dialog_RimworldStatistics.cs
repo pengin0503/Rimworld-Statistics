@@ -116,13 +116,12 @@ public sealed class Dialog_RimworldStatistics : Window
     {
         var options = ProfileService.Options;
         var showExperimental = RimworldStatisticsMod.Settings.showRecordedExperimental;
-        // Built-in, source-audited external MOD statistics are visible on install;
-        // previously recorded values remain visible after the owner MOD is removed.
-        var automatic = ModProviderAdapters.AutomaticVisibleUnits;
+        // All external-addon acquisition is opt-in. Historic observations still
+        // exist in the profile and may be shown by the separate display toggle.
         var visibleUnits = showExperimental
-            ? AcquisitionUnits.All.Select(u => u.Id).Append(MetricRegistry.OptionalModVisibilityId)
-                .Concat(automatic).Distinct(StringComparer.Ordinal).ToArray()
-            : automatic.ToArray();
+            ? AcquisitionUnits.All.Select(u => u.Id)
+                .Append(MetricRegistry.OptionalModVisibilityId).ToArray()
+            : Array.Empty<string>();
         if (viewIncludesDevMode != options.IncludeDevMode || viewIncludesExperimental != showExperimental)
         {
             lastView = null;

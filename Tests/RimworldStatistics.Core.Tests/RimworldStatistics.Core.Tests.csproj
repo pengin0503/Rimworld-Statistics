@@ -13,7 +13,6 @@
   <!-- The game-independent part of the development-only verification harness (tools/VerifyHarness), tested here. -->
   <ItemGroup>
     <Compile Include="../../tools/VerifyHarness/Logic/*.cs" Link="VerifyHarnessLogic/%(Filename)%(Extension)" />
-    <Compile Include="../../addons/SmartApparelUpgrade/Logic/*.cs" Link="SauAddonLogic/%(Filename)%(Extension)" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

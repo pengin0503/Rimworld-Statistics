@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LanguageData>
-  <RWS_SAU_OrdersIssued>Automatic apparel orders issued</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Number of automatic vanilla Wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of successfully completed apparel changes. Only events after enabling collection are counted. Experimental statistics.</RWS_SAU_OrdersIssuedDesc>
-</LanguageData>

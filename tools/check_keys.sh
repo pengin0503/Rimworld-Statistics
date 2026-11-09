@@ -5,6 +5,10 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 used=$(grep -ohE '"RWS_[A-Za-z0-9_]+"' -r --include='*.cs' Source/RimworldStatistics Source/RimworldStatistics.Core | tr -d '"' | sort -u)
+# Historical labels must remain available even after addon uninstall; these keys
+# no longer appear in host source because the external readers moved out.
+legacy_keys=$(printf '%s\n' 'RWS_ModRecruitment_Started' 'RWS_ModRecruitment_StartedDesc' 'RWS_ModRecruitment_Active' 'RWS_ModRecruitment_ActiveDesc' 'RWS_ModHospitality_PresentGuests' 'RWS_ModHospitality_PresentGuestsDesc' 'RWS_ModHospitality_PresentGroups' 'RWS_ModHospitality_PresentGroupsDesc')
+used=$(printf '%s\n' "$used" "$legacy_keys" | sort -u)
 status=0
 for d in Languages/*/Keyed; do
   f="$d"

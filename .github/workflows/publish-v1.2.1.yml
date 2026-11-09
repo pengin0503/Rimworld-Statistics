@@ -1,0 +1,78 @@
+name: Publish Rimworld Statistics v1.2.1 (generic host, addons extracted)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-v1.2.1.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-rws-v1.2.1
+  cancel-in-progress: false
+
+jobs:
+  host-release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: 'v1.2.1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Refuse to overwrite a release or tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then exit 1; fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null 2>&1; then exit 1; fi
+      - name: Run game-independent Core regressions
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo
+      - name: Check translations and legacy-history compatibility
+        run: bash tools/check_keys.sh
+      - name: Audit host-only DLLs and package ZIP
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.2.1.zip"
+          python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-v1.2.1.zip"
+          unzip -t "$RUNNER_TEMP/RimworldStatistics-v1.2.1.zip"
+          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-v1.2.1.zip" | grep -Ei 'SmartApparel|Recruitment|Hospitality|SDKSample|VerifyHarness|Addon'; then
+            echo 'Third-party addon or developer harness leaked into host ZIP' >&2
+            exit 1
+          fi
+          (cd "$RUNNER_TEMP" && sha256sum RimworldStatistics-v1.2.1.zip > RimworldStatistics-v1.2.1.sha256)
+      - name: Publish tested generic host
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/notes.md" <<'NOTES'
+          ## v1.2.1 — third-party statistics addons extracted
+
+          Rimworld Statistics retains its all-save aggregation, vanilla and DLC statistics, experimental extended metrics, read-only save import, persistence/UI and optional statistics SDK 1.1.
+
+          **BREAKING DISTRIBUTION CHANGE:** Hospitality and Recruitment built-in collectors are removed from the host. Smart Apparel Upgrade and all other third-party integrations now live in the separate [Rimworld-Statistics-mod-addon](https://github.com/pengin0503/Rimworld-Statistics-mod-addon) repository. Install the individual addon MODs for third-party collection, opt into their acquisition units in Statistics settings, and restart. This release contains no third-party source hooks or addon binaries.
+
+          Previously recorded Hospitality and Recruitment metric values/checkpoints and their metadata remain stored. Legacy Japanese/English translation strings are retained so historical metrics remain legible even without addons. Hospitality present counts and Recruitment active-request snapshot keys are stable; the new Recruitment started-event stream uses a separate ID because its deduplication format is incompatible with the previous built-in stream. Do not add legacy and new event series together.
+
+          **Experimental limits:** extended acquisition units and the external SDK are still Unverified; tests and packaging checks do not prove all values correct during gameplay. Anomaly-specific metrics remain unimplemented. No additional in-game testing was performed.
+
+          Install this ZIP as the host MOD. Harmony remains required. [Standalone addons](https://github.com/pengin0503/Rimworld-Statistics-mod-addon) are distributed separately.
+          NOTES
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.1.zip" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.1.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics v1.2.1 - addon extraction" \
+            --notes-file "$RUNNER_TEMP/notes.md" \
+            --latest
