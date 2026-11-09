@@ -16,7 +16,8 @@ param(
     [string]$TestDataFolder = (Join-Path $env:LOCALAPPDATA 'RimworldStatistics-Verify'),
     [string]$NormalDataFolder = (Join-Path $env:USERPROFILE 'AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios'),
     [switch]$SetupOnly,
-    [switch]$Minimal
+    [switch]$Minimal,
+    [string]$SaveFile
 )
 
 Set-StrictMode -Version Latest
@@ -115,6 +116,43 @@ $harness.InnerText = $harnessId
 [void]$active.AppendChild($harness)
 $doc.Save($targetConfig)
 [System.IO.File]::WriteAllText($modeFile, $desiredMode)
+
+if (-not [string]::IsNullOrWhiteSpace($SaveFile)) {
+    if (-not (Test-Path -LiteralPath $SaveFile -PathType Leaf) -or
+        [System.IO.Path]::GetExtension($SaveFile) -ine '.rws') {
+        throw "SaveFile must be an existing .rws file: $SaveFile"
+    }
+    $sourceSave = [System.IO.Path]::GetFullPath($SaveFile)
+    $testSaves = Join-Path $test 'Saves'
+    [void](New-Item -ItemType Directory -Path $testSaves -Force)
+    $name = [System.IO.Path]::GetFileNameWithoutExtension($sourceSave)
+    $copyPath = Join-Path $testSaves ('RWSVerify-' + $name + '.rws')
+    $hash = (Get-FileHash -LiteralPath $sourceSave -Algorithm SHA256).Hash
+    if ((Test-Path -LiteralPath $copyPath -PathType Leaf) -and
+        (Get-FileHash -LiteralPath $copyPath -Algorithm SHA256).Hash -ne $hash) {
+        # Never overwrite a changed test save. Keep both histories.
+        $available = $false
+        for ($i = 1; $i -le 9999; $i++) {
+            $candidate = Join-Path $testSaves ('RWSVerify-' + $name + '-' + $i.ToString('0000') + '.rws')
+            if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) {
+                $copyPath = $candidate
+                $available = $true
+                break
+            }
+            if ((Get-FileHash -LiteralPath $candidate -Algorithm SHA256).Hash -eq $hash) {
+                $copyPath = $candidate
+                $available = $true
+                break
+            }
+        }
+        if (-not $available) { throw 'Too many test copies of this save; choose a new TestDataFolder.' }
+    }
+    if (-not (Test-Path -LiteralPath $copyPath -PathType Leaf)) {
+        Copy-Item -LiteralPath $sourceSave -Destination $copyPath
+    }
+    Write-Host "[RWS Verify] Test save copied/reused at: $copyPath"
+}
+
 
 Write-Host "[RWS Verify] Isolated test profile: $test"
 Write-Host "[RWS Verify] Test configuration:   $targetConfig"
