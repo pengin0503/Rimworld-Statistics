@@ -20,7 +20,9 @@ internal static class SauProbeWithApi
             || metric.Kind != ApiMetricKind.Event || metric.EventMode != ApiEventMode.Count
             || metric.Category != "Work" || metric.Overall != "Sum"
             || metric.LabelKey != "RWS_SAU_OrdersIssued"
-            || metric.OwnerPackageId != "pengin0503.smartapparelupgrade")
+            || metric.OwnerPackageId != "pengin0503.smartapparelupgrade"
+            || metric.MinimumOwnerVersion != "1.0.1"
+            || metric.MaximumOwnerVersionExclusive != "1.0.2")
             throw new Exception("Addon registered the wrong metric or event semantics");
 
         var first = SauOrderEventId.Create("Human_10", "Apparel_20", 12000)!;
