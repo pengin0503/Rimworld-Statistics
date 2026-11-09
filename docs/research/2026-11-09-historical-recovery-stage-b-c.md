@@ -40,3 +40,21 @@ This is a **programmatic evidence API only**, not a new UI metric or cumulative 
 - [ ] Test 35+ colonies / 55+ saves for cold scan wall time, memory and unchanged-save second-scan behavior.
 - [ ] Add other saved-state families one at a time only when matching game/DLC/MOD definition semantics are verified; the research count remains Unknown when ProjectDef costs are unavailable.
 - [ ] After acceptance, decide whether to expose the verified parent-only interval diagnostics in an independent UI; don't fold them into `raid`/death event-family totals or claim original event dates.
+
+## Addendum: Reader v9 and interval hardening (PR #77)
+
+A third of the 41 historical save-time output keys is now implemented as
+**positive-only Partial** evidence: `facilities.home_maps.peak` (one clearly
+owned vanilla Settlement home map in each independently audited 1.7 original).
+It does not prove the historical maximum, or count any gravship/MOD homes.
+The streaming reader is bounded at 128 maps and 4096 world-object records
+and skips full Things / Pawn contents. Details already labels Partial and
+Experimental readings distinctly. See
+[the detailed assessment](2026-11-09-historical-recovery-v9-assessment.md).
+
+Issue #72's optional direct-parent interval kernel additionally checks
+consistent saved DLC inventories, hexadecimal checkpoint content hashes and
+immediate ancestry cycles. The two original supplied saves still lack
+numericStatistics checkpoints and cannot prove any interval. Reader v9
+adds a synthetic 55-file cold/warm import benchmark; real 55+ large-save
+and in-game acceptance remain open. No changes to the v1.2.2 tag.
