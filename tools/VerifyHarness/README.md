@@ -9,14 +9,14 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 ## 最短の検証手順（Windows）
 
 1. [GitHub Actions「Numeric statistics build, tests and development packages」](https://github.com/pengin0503/Rimworld-Statistics/actions/workflows/numeric-verification.yml) の、**同じコミットの成功した実行**から Artifacts を取得する。ZIP 内の `RimworldStatistics-unverified.zip` と `RimworldStatisticsVerifyHarness.zip` をそれぞれ展開し、両MODのフォルダを RimWorld の `Mods` に置く。実際のリリース版ではなく**同じコミットの本体とハーネス**を使う。
-2. リポジトリのルートから、以下のコマンドを実行する。ゲームのパスは自分の環境に置き換える（Steam → RimWorld → 管理 → ローカルファイルを閲覧で確認）。
+2. Artifacts の展開フォルダに同梱される **`RWS-Verify-Windows.ps1`** を使い、以下のコマンドを実行する。リポジトリのクローンは不要。ゲームのパスは自分の環境に置き換える（Steam → RimWorld → 管理 → ローカルファイルを閲覧で確認）。
 3. 使い捨てのコロニーを開始して、開発モード → Debug actions → `RWS Verify` → **1. Run guided full audit (MODIFIES TEST WORLD)** を1回実行する。
 4. **テスト専用のセーブ**を1回正常に保存した後、**2. Read-only rescan after save (no game changes)** を選ぶ。保存時スナップショットの未観測項目を再確認できる。
 5. `RimworldStatistics-verify-guide.md` を開いて優先順に残作業を確認する。前提を揃えたケースだけ再実行したい場合は **3. Retry only failed or skipped cases (MODIFIES TEST WORLD)** を選ぶ。
 6. 部屋・汚染セルの読み取り方式が一致するかも一括確認する場合は、**4. Check room/pollution map contracts (read-only)** を選ぶ。これはマップを変更しないが、TPS低下2%以下を証明するものではない。
 
 ```powershell
-powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -Minimal
+powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -Minimal
 ```
 
 ### 既存セーブを使う場合（原本を変更しない）
@@ -24,7 +24,7 @@ powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe 
 手元の既存セーブを使用する場合、`-SaveFile` を指定すると**原本に一切書き込まず**、テスト用 `Saves` へ `RWSVerify-元の名前.rws` として複製する。例えば、次のように実行する。
 
 ```powershell
-powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws"
+powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws"
 ```
 
 既存のテストコピーが同じ内容なら再利用する。テスト側で内容が変わっている場合は、新しい連番のコピーを作って**上書きしない**。ゲーム起動後、「ゲームをロード」から `RWSVerify-` で始まるコピーを選ぶ。MOD依存があるセーブを試す場合は `-Minimal` を使用しない。
@@ -32,6 +32,8 @@ powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe 
 `-Minimal` の有無を切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。同じモードで繰り返し起動するときはテスト用の構成を保持する。通常環境の `ModsConfig.xml` は一切変更しない。
 
 `-Minimal` は新規の使い捨てテストコロニー向け。元のMOD設定を**別フォルダにコピー**し、Vanilla・有効なDLC・Harmony・Rimworld-Statistics・VerifyHarness 以外をテスト環境のMODリストから除外して軽量化する。Hospitality / Recruitment / 他MODとの互換検証をするとき、または元のMOD構成を必要とする既存セーブを使用するときは **`-Minimal` を付けない**。
+
+Artifacts内の `RWS-Verify-Windows.ps1` はリポジトリの `tools/VerifyHarness/launch-windows.ps1` と同一です。ソースから実行する場合は後者のパスに読み替えます。
 
 `launch-windows.ps1` は通常の `ModsConfig.xml`、通常セーブ、Steam起動オプション、ゲーム本体のMODファイルを書き換えない。独立した `%LOCALAPPDATA%\RimworldStatistics-Verify` 以下に専用データと構成を作成する。既存の無関係なフォルダを指定した場合は上書きを拒否する。MODのZIP展開・インストール自体は行わない。
 
