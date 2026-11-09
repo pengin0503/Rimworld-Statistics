@@ -89,6 +89,9 @@ public sealed class HistoricalHomeMapBackfillTests
     [InlineData("unknown-version")]
     [InlineData("duplicate-map")]
     [InlineData("duplicate-object")]
+    [InlineData("duplicate-player")]
+    [InlineData("duplicate-faction-id")]
+    [InlineData("invalid-player")]
     [InlineData("invalid-object-id")]
     public void UnverifiedOrAmbiguousEvidence_RemainsUnknown(string variant)
     {
@@ -103,6 +106,11 @@ public sealed class HistoricalHomeMapBackfillTests
             "unknown-version" => Save(version: "1.6.4000"),
             "duplicate-map" => Save(maps: new[] { Map(0, "WorldObject_42"), Map(0, "WorldObject_42") }),
             "duplicate-object" => Save(worldObjects: new[] { WorldObject(42), WorldObject(42) }),
+            "duplicate-player" => Save(factions: new[] { Player(), Player(15) }),
+            "duplicate-faction-id" => Save(factions: new[] { Player(),
+                new XElement("li", new XElement("def", "OutlanderCivil"), new XElement("loadID", "14")) }),
+            "invalid-player" => Save(factions: new[] {
+                new XElement("li", new XElement("def", "PlayerColony"), new XElement("loadID", "invalid")) }),
             "invalid-object-id" => Save(worldObjects: new[] {
                 new XElement("li", new XElement("def", "Settlement"),
                     new XElement("ID", "not-an-int"), new XElement("faction", "Faction_14")) }),
