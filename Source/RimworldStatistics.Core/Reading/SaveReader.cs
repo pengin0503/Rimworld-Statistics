@@ -26,8 +26,9 @@ public sealed class SaveReader
     /// 5: the Phase C checkpoint embedded in this mod's component (numericStatistics).
     /// 6: bounded, partial legacy faction-relationship evidence (no new live hooks).
     /// 7: real 1.7 omitted default faction ID 0 and per-relation partial salvage.
+    /// 8: recover Scribe-omitted neutral relation kinds in historical faction snapshots.
     /// </summary>
-    public const int Version = 7;
+    public const int Version = 8;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;

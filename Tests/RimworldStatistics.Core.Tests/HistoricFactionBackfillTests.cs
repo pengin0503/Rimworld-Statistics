@@ -352,4 +352,78 @@ public sealed class HistoricFactionBackfillTests
             .Values["min"].IntegerValue);
     }
 
+    [Fact]
+    public void Test17Shape_OmittedNeutralKind_RecoversPartialGoodwillWithoutFabricatingAllies()
+    {
+        // Anonymous structural reproduction from a 1.7.5000 save:
+        // player outgoing relations to two visible vanilla factions; kind
+        // omitted while goodwill is explicitly present. This must be
+        // distinguishable from an unknown or malformed kind.
+        var player = Faction("PlayerColony", 44);
+        player.Add(new XElement("relations",
+            new XElement("li", new XElement("other", "Faction_30"), new XElement("goodwill", 22)),
+            new XElement("li", new XElement("other", "Faction_32"), new XElement("goodwill", 11))));
+        var input = SaveRaw(Faction("OutlanderCivil", 30), Faction("TribeCivil", 32), player);
+        var original = input.ToArray();
+        var result = Read(input);
+        Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+        Assert.Equal(original, input);
+        var relations = result.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(0L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(0L, relations["ally"].IntegerValue);
+        Assert.Equal(0L, relations["hostile"].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, relations[MetricEntry.Scalar].Coverage);
+        var goodwill = result.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(11L, goodwill["min"].IntegerValue);
+        Assert.Equal(22L, goodwill["max"].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, goodwill["max"].Coverage);
+        Assert.Equal(MetricEvidence.Experimental, result.Metrics.EvidenceByAcquisition!["factions"]);
+    }
+
+    [Fact]
+    public void Test17Shape_OmittedNeutralKind_DoesNotConcealInvalidExplicitKindOrMissingGoodwill()
+    {
+        var player = Faction("PlayerColony", 44);
+        player.Add(new XElement("relations",
+            new XElement("li", new XElement("other", "Faction_30"), new XElement("goodwill", 22)),
+            new XElement("li", new XElement("other", "Faction_32"), new XElement("kind", "NotAValidKind"), new XElement("goodwill", 99)),
+            new XElement("li", new XElement("other", "Faction_33"))));
+        var result = Read(SaveRaw(player, Faction("OutlanderCivil", 30),
+            Faction("TribeCivil", 32), Faction("TribeRough", 33)));
+        var range = result.Metrics!.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(22L, range["min"].IntegerValue);
+        Assert.Equal(22L, range["max"].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, range["min"].Coverage);
+    }
+
+    [Fact]
+    public void Test17Shape_RoyaltyNeutralAndHiddenTemporaryHostiles_StaySeparated()
+    {
+        // The second private save used 1.7.5000 and Royalty. Only explicitly
+        // supported active factions enter this partial snapshot.
+        var player = Faction("PlayerColony", 44);
+        player.Add(new XElement("relations",
+            new XElement("li", new XElement("other", "Faction_30"), new XElement("goodwill", 22)),
+            new XElement("li", new XElement("other", "Faction_32"), new XElement("goodwill", 11)),
+            new XElement("li", new XElement("other", "Faction_37"), new XElement("goodwill", 30)),
+            RelationTo(56, "Hostile", 100)));
+        var hidden = Faction("OutlanderRough", 56);
+        hidden.Add(new XElement("hidden", "True"), new XElement("temporary", "True"));
+        var baseline = SaveRaw(Faction("OutlanderCivil", 30), Faction("TribeCivil", 32),
+            Faction("Empire", 37), hidden, player);
+        var save = XDocument.Load(new MemoryStream(baseline));
+        save.Root!.Element("meta")!.Element("gameVersion")!.Value = "1.7.5000 rev1275";
+        save.Root.Element("meta")!.Element("modIds")!.ReplaceWith(
+            new XElement("modIds", new XElement("li", "ludeon.rimworld"),
+                new XElement("li", "ludeon.rimworld.royalty")));
+        var bytes = Encoding.UTF8.GetBytes(save.ToString());
+        var result = Read(bytes);
+        var relations = result.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(0L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, relations[MetricEntry.Scalar].Coverage);
+        var goodwill = result.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(11L, goodwill["min"].IntegerValue);
+        Assert.Equal(30L, goodwill["max"].IntegerValue);
+    }
+
 }

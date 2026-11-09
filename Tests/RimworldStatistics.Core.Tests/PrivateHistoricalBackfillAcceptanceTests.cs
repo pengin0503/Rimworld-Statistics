@@ -126,4 +126,43 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
         Assert.Equal(before, Digest(source));
     }
 
+    [Fact]
+    public void Test17PrivateSave_OmittedNeutralKindsRecoverPartialGoodwill_WhenAvailable()
+    {
+        var source = Environment.GetEnvironmentVariable("RWS_TEST17_SAVE");
+        if (string.IsNullOrWhiteSpace(source))
+            Assert.Skip("Set RWS_TEST17_SAVE to the owner's private 1.7.5000 test save.");
+        Assert.True(File.Exists(source), "Private save not found.");
+
+        static string Digest(string file)
+        {
+            using var stream = File.OpenRead(file);
+            return Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(stream));
+        }
+
+        var before = new FileInfo(source);
+        var originalLength = before.Length;
+        var originalWrite = before.LastWriteTimeUtc;
+        var originalDigest = Digest(source);
+        var result = new SaveReader().ReadDetailed(source);
+        Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+        Assert.Equal("1.7.5000 rev1275", result.Observation.GameVersion);
+        Assert.Equal(183, result.Observation.ModCount);
+        Assert.Null(result.Checkpoint);
+        Assert.NotNull(result.Metrics);
+        var relations = result.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(0L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(0L, relations["ally"].IntegerValue);
+        Assert.Equal(0L, relations["hostile"].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, relations[MetricEntry.Scalar].Coverage);
+        var goodwill = result.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(11L, goodwill["min"].IntegerValue);
+        Assert.Equal(30L, goodwill["max"].IntegerValue);
+        Assert.Equal(MetricEvidence.Experimental, result.Metrics.EvidenceByAcquisition!["factions"]);
+        var after = new FileInfo(source);
+        Assert.Equal(originalLength, after.Length);
+        Assert.Equal(originalWrite, after.LastWriteTimeUtc);
+        Assert.Equal(originalDigest, Digest(source));
+    }
+
 }
