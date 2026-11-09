@@ -263,4 +263,93 @@ public sealed class HistoricFactionBackfillTests
         => new("li", new XElement("other", "Faction_" + id),
             new XElement("kind", kind), new XElement("goodwill", goodwill));
 
+    [Fact]
+    public void Real17Shape_OmittedZeroFactionIdAndNeutralKind_KeepUnambiguousPartialRelations()
+    {
+        // Sanitized structure only: real 1.7 save omits loadID for its
+        // Faction_0, includes 20 other relation references, and may omit
+        // kind for neutral relations. No private IDs/names/MOD list included.
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations",
+            RelationTo(0, "Ally", 55),
+            new XElement("li", new XElement("other", "Faction_2"),
+                new XElement("goodwill", "10")),
+            RelationTo(3, "Hostile", -80)));
+        var zero = Faction("OutlanderCivil", 0);
+        zero.Element("loadID")!.Remove();
+        var neutral = Faction("TribeCivil", 2);
+        var hostile = Faction("OutlanderRough", 3);
+        var read = Read(SaveRaw(zero, neutral, hostile, player));
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        var relations = read.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(2L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(1L, relations["ally"].IntegerValue);
+        Assert.Equal(1L, relations["hostile"].IntegerValue);
+        var goodwill = read.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(-80L, goodwill["min"].IntegerValue);
+        Assert.Equal(55L, goodwill["max"].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, goodwill["min"].Coverage);
+    }
+
+    [Fact]
+    public void Real17Shape_UnsupportedMissingIdDoesNotSuppressOtherKnownEvidence()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations", RelationTo(2, "Ally", 35)));
+        var unknown = Faction("example.test.faction", 0);
+        unknown.Element("loadID")!.Remove();
+        var read = Read(SaveRaw(player, unknown, Faction("TribeCivil", 2)));
+        Assert.Equal(1L, read.Metrics!.Metrics[FactionStateSnapshot.Relations]
+            .Values[MetricEntry.Scalar].IntegerValue);
+    }
+
+    [Fact]
+    public void Real17Shape_InvalidUnrelatedFactionDoesNotEraseKnownValidFaction()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations", RelationTo(2, "Ally", 35)));
+        var damaged = Faction("OutlanderCivil", 3);
+        damaged.Add(new XElement("defeated", "invalid"));
+        var read = Read(SaveRaw(player, Faction("TribeCivil", 2), damaged));
+        Assert.Equal(1L, read.Metrics!.Metrics[FactionStateSnapshot.Relations]
+            .Values[MetricEntry.Scalar].IntegerValue);
+    }
+
+    [Fact]
+    public void Real17Shape_MissingIdMustNotAliasAnExplicitZero()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations", RelationTo(0, "Ally", 55)));
+        var missing = Faction("OutlanderCivil", 5);
+        missing.Element("loadID")!.Remove();
+        var read = Read(SaveRaw(player, missing, Faction("TribeCivil", 0)));
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void InvalidSecondOmittedId_CannotStealZeroButOtherKnownEvidenceSurvives()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations",
+            RelationTo(0, "Ally", 95),
+            RelationTo(2, "Hostile", -40)));
+
+        var ambiguousFirst = Faction("OutlanderCivil", 0);
+        ambiguousFirst.Element("loadID")!.Remove();
+        var ambiguousSecond = Faction("example.test.faction", 3);
+        ambiguousSecond.Element("loadID")!.Remove();
+        ambiguousSecond.Add(new XElement("defeated", "malformed"));
+
+        var read = Read(SaveRaw(player, ambiguousFirst, ambiguousSecond,
+            Faction("TribeCivil", 2)));
+        var relations = read.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        // Faction_0 can point to either omitted record, including the invalid
+        // one. The separate, explicitly identified Faction_2 remains usable.
+        Assert.Equal(1L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(0L, relations["ally"].IntegerValue);
+        Assert.Equal(1L, relations["hostile"].IntegerValue);
+        Assert.Equal(-40L, read.Metrics.Metrics[FactionStateSnapshot.GoodwillRange]
+            .Values["min"].IntegerValue);
+    }
+
 }
