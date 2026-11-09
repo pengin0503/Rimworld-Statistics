@@ -83,8 +83,8 @@ public sealed class ExternalSdkMetricRegistry
 /// <summary>Deliberately bounded, idempotent numerical recording. A cap produces partial coverage instead of overcounting.</summary>
 public static class ExternalSdkMetricPolicy
 {
-    private static string Seen(string metric) => "sdk.seen." + metric;
-    private static string Value(string metric) => "sdk.value." + metric;
+    private static string Seen(string metric) => "sdk.seen." + metric.ToLowerInvariant();
+    private static string Value(string metric) => "sdk.value." + metric.ToLowerInvariant();
 
     public static ApiRecordResult Record(FamilyState state, ApiMetricDefinition metric, string? eventId, int tick, double value)
     {
