@@ -279,7 +279,12 @@ public sealed class SaveReader
                     else valid = false;
                     break;
                 case "deactivated": deactivated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
-                case "defeated": defeated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                case "defeated":
+                    if (bool.TryParse(r.ReadElementContentAsString().Trim(), out var wasDefeated))
+                        defeated = wasDefeated;
+                    else
+                        valid = false;
+                    break;
                 case "relations":
                     // Most modded NPC factions are not in the audited allow-list.
                     // Skip potentially large relation subtrees without allocating
@@ -309,7 +314,7 @@ public sealed class SaveReader
         if (s.HistoricalFactions.Count >= HistoricalFactionSnapshotReader.MaxFactions)
             s.HistoricalFactionsOverflowed = true;
         else
-            s.HistoricalFactions.Add(new SavedFaction(def, loadId ?? 0, !deactivated && !defeated, relations, valid));
+            s.HistoricalFactions.Add(new SavedFaction(def, loadId, !deactivated && !defeated, relations, valid));
     }
 
     private static SavedFactionRelation ReadFactionRelation(XmlReader r)
