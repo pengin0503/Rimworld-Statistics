@@ -16,7 +16,7 @@ public sealed class HistoricalCounterIntervalsTests
     };
 
     private static void Point(Profile profile, string key, string? parent, int tick,
-        long raids, long deaths, string modHash = "aaa", string version = "1.7.5000 rev1275",
+        long raids, long deaths, string modHash = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", string version = "1.7.5000 rev1275",
         bool includeRaids = true)
     {
         var identity = Identity();
@@ -68,12 +68,12 @@ public sealed class HistoricalCounterIntervalsTests
     }
 
     [Theory]
-    [InlineData("mod", "1.7.5000 rev1275", 120000, 6, 3, true)]
-    [InlineData("aaa", "1.7.4995 rev1269", 120000, 6, 3, true)]
-    [InlineData("aaa", "1.7.5000 rev1275", 50000, 6, 3, true)]
-    [InlineData("aaa", "1.7.5000 rev1275", 120000, 2, 3, true)]
-    [InlineData("aaa", "1.7.5000 rev1275", 120000, 6, 0, true)]
-    [InlineData("aaa", "1.7.5000 rev1275", 120000, 6, 3, false)]
+    [InlineData("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "1.7.5000 rev1275", 120000, 6, 3, true)]
+    [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "1.7.4995 rev1269", 120000, 6, 3, true)]
+    [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "1.7.5000 rev1275", 50000, 6, 3, true)]
+    [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "1.7.5000 rev1275", 120000, 2, 3, true)]
+    [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "1.7.5000 rev1275", 120000, 6, 0, true)]
+    [InlineData("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "1.7.5000 rev1275", 120000, 6, 3, false)]
     public void ChangedInputsOrUnverifiedCounters_AreNotComparable(
         string modHash, string version, int endTick, long raids, long deaths, bool includeRaids)
     {
