@@ -1,0 +1,44 @@
+name: Build private-save probe (self-contained Linux x64)
+
+on:
+  push:
+    branches: [test/portable-real-save-probe-20261109]
+    paths:
+      - 'tools/PrivateSaveProbe/**'
+      - '.github/workflows/private-save-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  portable-probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Validate game-independent C# probe against disposable synthetic saves
+        run: dotnet run --project tools/PrivateSaveProbe/PrivateSaveProbe.csproj -c Release -- --self-test
+      - name: Publish Linux x64 self-contained verifier (no RimWorld binaries or original saves)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet publish tools/PrivateSaveProbe/PrivateSaveProbe.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -o "$RUNNER_TEMP/private-save-probe" --nologo
+          test -f "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe"
+      - name: Verify self-contained published executable
+        shell: bash
+        run: |
+          set -euo pipefail
+          "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe" --self-test
+          file "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rws-private-save-probe-linux-x64
+          path: ${{ runner.temp }}/private-save-probe/PrivateSaveProbe
+          if-no-files-found: error
+          retention-days: 2
