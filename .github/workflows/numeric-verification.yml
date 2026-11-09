@@ -9,7 +9,6 @@ on:
       - 'Source/**'
       - 'Tests/**'
       - 'examples/**'
-      - 'addons/**'
       - 'docs/sdk/**'
       - 'tools/**'
       - 'Languages/**'
@@ -22,7 +21,6 @@ on:
       - 'Source/**'
       - 'Tests/**'
       - 'examples/**'
-      - 'addons/**'
       - 'docs/sdk/**'
       - 'tools/**'
       - 'Languages/**'
@@ -45,16 +43,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-      - uses: actions/checkout@v4
-        with:
-          repository: pengin0503/Rimworld-Recruitment
-          ref: cff2f296bc152ee61000d132107767977193a243
-          path: .devinputs/recruitment-1.1.2
-          persist-credentials: false
-      - name: Verify audited Recruitment 1.1.2 source contract
-        run: python3 tools/check_recruitment_contract.py .devinputs/recruitment-1.1.2
-      - name: Build pinned Recruitment 1.1.2 optional dependency
-        run: dotnet build .devinputs/recruitment-1.1.2/Source/Recruitment/Recruitment.csproj -c Release --nologo
       - name: Compile read-only local save-structure verification tool
         run: python3 -m py_compile tools/check_private_save_shapes.py
       - name: Unit-test independent XML/deflate private-save verifier
@@ -74,10 +62,8 @@ jobs:
         run: bash tools/check_keys.sh
       - name: Build production ZIP
         run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
-      - name: Build independent SDK consumer ZIP (development only)
-        run: bash tools/package_sdk_sample.sh "$RUNNER_TEMP/StatisticsSdkSample.zip"
-      - name: Validate SDK DLL ownership and package contents
-        run: python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-unverified.zip" "$RUNNER_TEMP/StatisticsSdkSample.zip"
+      - name: Validate host-only SDK DLL ownership and package contents
+        run: python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
       - name: Build separate development verification harness
         run: bash tools/VerifyHarness/package.sh "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
       - name: Stage standalone Windows verification launcher with developer packages
@@ -112,104 +98,9 @@ jobs:
             ${{ runner.temp }}/RimworldStatistics-unverified.zip
             ${{ runner.temp }}/RimworldStatisticsVerifyHarness.zip
             ${{ runner.temp }}/RWS-Verify-Windows.ps1
-            ${{ runner.temp }}/StatisticsSdkSample.zip
             ${{ runner.temp }}/rws-profile-benchmark.csv
           if-no-files-found: error
           retention-days: 14
-
-  sau-addon:
-    runs-on: ubuntu-latest
-    env:
-      UseNuGetRefs: 'true'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-      - uses: actions/checkout@v4
-        with:
-          repository: pengin0503/rimworld-Smart-Apparel-Upgrade
-          ref: 5e910b82281fa6d5a4ebc3bcb5b88b1610b1dba8
-          path: .devinputs/sau-1.0.1
-          persist-credentials: false
-      - name: Verify source-audited SAU 1.0.1 automatic-order contract
-        run: python3 tools/check_sau_contract.py .devinputs/sau-1.0.1
-      - name: Run game-independent addon event-ID regressions
-        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo
-      - name: Probe addon SDK host negotiation and event deduplication
-        run: dotnet run --project tools/SauAddonProbe/SauAddonProbe.csproj -c Release --no-launch-profile
-      - name: Probe safe startup without any SDK assembly
-        shell: bash
-        run: |
-          set -euo pipefail
-          folder="tools/SauAddonProbe/bin/Release/net10.0"
-          test -f "$folder/RimworldStatistics.Api.dll"
-          mv "$folder/RimworldStatistics.Api.dll" "$RUNNER_TEMP/rws-api-sau-probe.dll"
-          dotnet "$folder/SauAddonProbe.dll" --no-api
-      - name: Build standalone optional SAU statistics addon ZIP
-        run: bash tools/package_sau_addon.sh "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
-      - name: Check independent addon package has no host, SDK or target DLL
-        run: |
-          python3 tools/check_sau_addon.py "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
-          unzip -t "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
-      - uses: actions/upload-artifact@v4
-        with:
-          name: RimworldStatistics-SAU-addon-${{ github.sha }}
-          path: ${{ runner.temp }}/RimworldStatistics.SmartApparelAddon.zip
-          if-no-files-found: error
-          retention-days: 14
-
-  sdk-consumer-matrix:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        min_minor: [0, 1]
-    env:
-      UseNuGetRefs: 'true'
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-      - name: Independently compile example against SDK minor requirement
-        run: dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release -p:RequiredApiMinor=${{ matrix.min_minor }} --nologo
-      - name: Run host-negotiation and event/snapshot consumer probe
-        run: dotnet run --project tools/SdkSampleProbe/SdkSampleProbe.csproj -c Release -p:RequiredApiMinor=${{ matrix.min_minor }} --no-launch-profile
-      - name: Test host minor 1.0 refusing consumers that require 1.1
-        if: matrix.min_minor == 1
-        run: dotnet tools/SdkSampleProbe/bin/Release/net10.0/SdkSampleProbe.dll --host-minor-zero
-      - name: Run sample when SDK assembly is missing
-        shell: bash
-        run: |
-          set -euo pipefail
-          probe_dir="tools/SdkSampleProbe/bin/Release/net10.0"
-          test -f "$probe_dir/RimworldStatistics.Api.dll"
-          mv "$probe_dir/RimworldStatistics.Api.dll" "$RUNNER_TEMP/api-${{ matrix.min_minor }}.dll"
-          dotnet "$probe_dir/SdkSampleProbe.dll" --no-api
-
-  sdk-binary-compat:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
-      - name: Compile independent consumer against frozen v1.0 binary contract
-        run: dotnet build tools/SdkSampleProbe/SdkSampleProbe.csproj -c Release -p:LegacyApiContract=true -p:RequiredApiMinor=0 --nologo
-      - name: Replace old binary with production v1.1, keeping consumer binary unchanged
-        shell: bash
-        run: |
-          set -euo pipefail
-          probe_dir=tools/SdkSampleProbe/bin/Release/net10.0
-          test -f "$probe_dir/RimworldStatistics.Api.dll"
-          old_sha=$(sha256sum "$probe_dir/RimworldStatistics.Api.dll" | cut -d' ' -f1)
-          dotnet build Source/RimworldStatistics.Api/RimworldStatistics.Api.csproj -c Release --nologo
-          cp Source/RimworldStatistics.Api/bin/Release/net10.0/RimworldStatistics.Api.dll "$probe_dir/RimworldStatistics.Api.dll"
-          new_sha=$(sha256sum "$probe_dir/RimworldStatistics.Api.dll" | cut -d' ' -f1)
-          test "$old_sha" != "$new_sha"
-          dotnet "$probe_dir/SdkSampleProbe.dll"
-          echo "Frozen 1.0 consumer binary against new 1.1 host DLL: PASS"
 
   windows-verify-launcher:
     runs-on: windows-latest
