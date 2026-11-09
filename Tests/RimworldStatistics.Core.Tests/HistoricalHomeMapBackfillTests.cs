@@ -116,7 +116,7 @@ public sealed class HistoricalHomeMapBackfillTests
     [Fact]
     public void ExcessMapsAndHugeScalar_AreBoundedWithoutSuppressingUnrelatedMetrics()
     {
-        var maps = Enumerable.Range(0, 129 // one above the reader's 128-map bound)
+        var maps = Enumerable.Range(0, 129) // one above the reader's 128-map bound
             .Select(i => Map(i, "WorldObject_42")).ToArray();
         var overflow = Read(Save(maps: maps));
         Assert.Equal(ObservationStatus.Ok, overflow.Observation.Status);
