@@ -162,4 +162,49 @@ public sealed class HistoricalCounterIntervalsTests
         Assert.Equal(hash, fromOldReader.ModSetHash);
     }
 
+    [Fact]
+    public void ReusedCheckpointAliasFromLaterSave_DoesNotInvalidateUniqueSourceInterval()
+    {
+        var profile = new Profile();
+        Point(profile, "A", null, 60000, 2, 1);
+        Point(profile, "B", "A", 120000, 4, 3);
+        var checkpoint = profile.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.Checkpoint && o.Key == "B");
+        checkpoint.FileAliases.Add(Alias("later"));
+        profile.MetricObservations.Add(new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "sha-later",
+            GameVersion = checkpoint.GameVersion, ModSetHash = new string('a', 64),
+            SaveTick = 180000, Identity = Identity(),
+            FileAliases = { Alias("later") },
+        });
+        var interval = Assert.Single(HistoricalCounterIntervals.Evaluate(profile));
+        Assert.Equal(("A", "B"), (interval.ParentCheckpointId, interval.ChildCheckpointId));
+        Assert.Equal(2, interval.RaidsIncrease);
+    }
+
+    [Fact]
+    public void TwoPlausibleSavesForSameCheckpointStillRejectAmbiguousAncestry()
+    {
+        var profile = new Profile();
+        Point(profile, "A", null, 60000, 2, 1);
+        Point(profile, "B", "A", 120000, 4, 3);
+        var cp = profile.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.Checkpoint && o.Key == "B");
+        cp.FileAliases.Add(Alias("copy"));
+        var original = profile.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.SaveFile && o.Key == "sha-B");
+        var duplicate = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "other-sha",
+            GameVersion = original.GameVersion, ModSetHash = original.ModSetHash,
+            SaveTick = original.SaveTick, Identity = Identity(),
+            FileAliases = { Alias("copy") },
+        };
+        foreach (var (key, value) in original.Metrics)
+            duplicate.Metrics[key] = value;
+        profile.MetricObservations.Add(duplicate);
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(profile));
+    }
+
 }
