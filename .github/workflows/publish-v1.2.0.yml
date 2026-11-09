@@ -54,6 +54,16 @@ jobs:
             dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release "-p:RequiredApiMinor=$minor" --nologo
             dotnet run --project tools/SdkSampleProbe/SdkSampleProbe.csproj -c Release "-p:RequiredApiMinor=$minor" --no-launch-profile
           done
+      - name: Static RimWorld 1.7 reference and Harmony patch signature checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          test -f "$game_ref"
+          dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release --nologo
+          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
+          python3 tools/inspect_reference_api.py "$RUNNER_TEMP/ref-index/chunk-0000.json.gz"
+          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
       - name: Build host and independent development sample ZIPs
         shell: bash
         run: |
@@ -101,7 +111,7 @@ jobs:
           - Guided VerifyHarness auditing and safe isolated-save launcher; VerifyHarness itself is NOT bundled in the player ZIP.
 
           ### Verification and limitations
-          The release workflow executes Core regression tests, SDK compatibility probes, archive checks and static game reference checks.
+          The release workflow executes Core regression tests, SDK compatibility probes, archive checks and static game reference checks against RimWorld 1.7.4985 reference assemblies.
           A limited isolated test run reported 17 automatic cases passing and one medical-bed case skipped. This does NOT validate all 264 values or demonstrate long-term TPS behavior. No complete in-game multi-MOD acceptance is claimed; further game testing was explicitly waived.
           Anomaly-specific statistics are not implemented. The experimental status of data is preserved; absence of data must not be represented as confirmed zero.
 
