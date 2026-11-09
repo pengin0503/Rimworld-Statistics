@@ -38,7 +38,7 @@ public sealed class HistoricalCounterIntervalsTests
         profile.MetricObservations.Add(new MetricObservation
         {
             Source = MetricObservationSource.Checkpoint, Key = key, ParentKey = parent,
-            PayloadHash = new string(key[0], 64), SaveTick = tick,
+            PayloadHash = new string(char.ToLowerInvariant(key[0]), 64), SaveTick = tick,
             Identity = identity.Clone(), GameVersion = version, FileAliases = { Alias(key) },
         });
     }
@@ -207,4 +207,53 @@ public sealed class HistoricalCounterIntervalsTests
         Assert.Empty(HistoricalCounterIntervals.Evaluate(profile));
     }
 
+
+    [Fact]
+    public void IdenticalModDigestButContradictoryDlcMetadata_IsNotComparable()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 2, 1);
+        Point(p, "B", "A", 120000, 4, 2);
+        foreach (var o in p.MetricObservations)
+            o.ActiveDlcIds = new List<string> { "ludeon.rimworld.royalty" };
+        Assert.Single(HistoricalCounterIntervals.Evaluate(p));
+        var child = p.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.SaveFile && o.Key == "sha-B");
+        child.ActiveDlcIds = new List<string> { "ludeon.rimworld.biotech" };
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
+    }
+
+    [Fact]
+    public void CyclicOrNonHexCheckpointProof_DoesNotCreateInterval()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 2, 1);
+        Point(p, "B", "A", 120000, 4, 2);
+        var a = p.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.Checkpoint && o.Key == "A");
+        a.ParentKey = "B"; // an impossible ancestor cycle
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
+        a.ParentKey = null;
+        var b = p.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.Checkpoint && o.Key == "B");
+        b.PayloadHash = new string('z', 64);
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
+    }
+
+    [Fact]
+    public void SaveOverwriteWithoutMatchingOriginalAlias_CannotProveParent()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 2, 1);
+        Point(p, "B", "A", 120000, 4, 2);
+        var saved = p.MetricObservations.Single(o =>
+            o.Source == MetricObservationSource.SaveFile && o.Key == "sha-A");
+        saved.FileAliases.Clear();
+        saved.FileAliases.Add(new MetricFileAlias
+        {
+            FileName = "A.rws", FileSize = 9999,
+            LastWriteUtc = new DateTime(2026, 11, 9, 0, 0, 0, DateTimeKind.Utc),
+        });
+        Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
+    }
 }

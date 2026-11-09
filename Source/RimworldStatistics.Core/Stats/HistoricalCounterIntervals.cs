@@ -41,10 +41,10 @@ public static class HistoricalCounterIntervals
                 || parentId == child.Key || !uniqueCheckpoints.TryGetValue(child.Key, out var onlyChild)
                 || !ReferenceEquals(onlyChild, child)
                 || !uniqueCheckpoints.TryGetValue(parentId, out var parent)
-                || parent.Conflicted
+                || parent.Conflicted || parent.ParentKey == child.Key
                 || parent.SaveTick <= 0 || child.SaveTick <= parent.SaveTick
                 || string.IsNullOrWhiteSpace(parent.PayloadHash) || string.IsNullOrWhiteSpace(child.PayloadHash)
-                || parent.PayloadHash.Length != 64 || child.PayloadHash.Length != 64
+                || !ValidHash(parent.PayloadHash) || !ValidHash(child.PayloadHash)
                 || !SameColony(parent.Identity, child.Identity)
                 || !string.Equals(parent.GameVersion, child.GameVersion, StringComparison.Ordinal)
                 || string.IsNullOrWhiteSpace(child.GameVersion))
@@ -58,7 +58,10 @@ public static class HistoricalCounterIntervals
                 || !SameColony(through.Identity, child.Identity)
                 || from.SaveTick != parent.SaveTick || through.SaveTick != child.SaveTick
                 || from.GameVersion != parent.GameVersion || through.GameVersion != child.GameVersion
-                || !ValidHash(from.ModSetHash) || from.ModSetHash != through.ModSetHash)
+                || !ValidHash(from.ModSetHash) || from.ModSetHash != through.ModSetHash
+                || !SameSavedDlc(from.ActiveDlcIds, through.ActiveDlcIds)
+                || !SameSavedDlc(from.ActiveDlcIds, parent.ActiveDlcIds)
+                || !SameSavedDlc(through.ActiveDlcIds, child.ActiveDlcIds))
                 continue;
 
             var fromRaids = Counter(from, MetricKeys.RaidsPerYear);
@@ -100,6 +103,16 @@ public static class HistoricalCounterIntervals
         => a.ModCampaignId is { Length: > 0 } id && id == b.ModCampaignId
             && a.FingerprintHash() is { } hash && hash == b.FingerprintHash()
             && a.StartingPawnIds.ToHashSet(Ord).SetEquals(b.StartingPawnIds);
+
+    // Saved MOD-list digests are authoritative for compatibility. This
+    // additional consistency check rejects contradictory/corrupted DLC
+    // metadata even if a digest was copied across observations.
+    private static bool SameSavedDlc(IReadOnlyCollection<string>? a, IReadOnlyCollection<string>? b)
+    {
+        if (a is null || b is null)
+            return a is null && b is null;
+        return a.ToHashSet(StringComparer.OrdinalIgnoreCase).SetEquals(b);
+    }
 
     private static bool ValidHash(string? s)
         => s is { Length: 64 } && s.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');

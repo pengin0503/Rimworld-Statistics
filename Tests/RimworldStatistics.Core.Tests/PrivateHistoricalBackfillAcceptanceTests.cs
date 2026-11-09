@@ -50,10 +50,19 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
             var saveFile = profile.MetricObservations.Where(o =>
                 !o.IsQuarantined && o.Source == MetricObservationSource.SaveFile).ToArray();
             int partialFactionReadings = 0;
+            int partialHomeMaps = 0;
             foreach (var observation in saveFile)
             {
                 if (observation.ModSetHash is { } digest)
                     Assert.Matches("^[0-9a-f]{64}$", digest);
+                if (observation.Metrics.TryGetValue(FacilitiesSnapshot.HomeMapsPeak, out var homes))
+                {
+                    partialHomeMaps++;
+                    Assert.Equal(MetricCoverage.Partial, homes.Values[MetricEntry.Scalar].Coverage);
+                    Assert.True(homes.Values[MetricEntry.Scalar].IntegerValue > 0);
+                    Assert.Equal(MetricEvidence.Experimental,
+                        observation.EvidenceByAcquisition!["facilities"]);
+                }
                 if (!observation.Metrics.TryGetValue(FactionStateSnapshot.Relations, out var relation))
                     continue;
                 partialFactionReadings++;
@@ -66,7 +75,7 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
             }
             var intervals = HistoricalCounterIntervals.Evaluate(profile);
             Assert.All(intervals, row => Assert.Equal(MetricCoverage.Partial, row.Coverage));
-            return (Observed: saveFile.Length, Factions: partialFactionReadings, Intervals: intervals.Count);
+            return (Observed: saveFile.Length, Factions: partialFactionReadings, HomeMaps: partialHomeMaps, Intervals: intervals.Count);
         });
 
         foreach (var saved in metadata)
@@ -80,7 +89,7 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
         TestContext.Current.SendDiagnosticMessage(
             $"Private archive read-only acceptance: files={files.Length}, firstRead={first.Read}, " +
             $"skippedOnRepeat={second.Skipped}, retainedSaveObservations={totals.Observed}, " +
-            $"factionPartial={totals.Factions}, lineageIntervals={totals.Intervals}, " +
+            $"factionPartial={totals.Factions}, homeMapPartial={totals.HomeMaps}, lineageIntervals={totals.Intervals}, " +
             $"coldMs={coldMs:F0}, warmMs={warmMs:F0}; original file metadata unchanged.");
     }
     [Fact]
@@ -119,6 +128,11 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
         var range = parsed.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
         Assert.Equal(38L, range["min"].IntegerValue);
         Assert.Equal(64L, range["max"].IntegerValue);
+
+        var homes = parsed.Metrics.Metrics[FacilitiesSnapshot.HomeMapsPeak].Values[MetricEntry.Scalar];
+        Assert.Equal(1L, homes.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, homes.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, parsed.Metrics.EvidenceByAcquisition!["facilities"]);
 
         var after = new FileInfo(source);
         Assert.Equal(originalLength, after.Length);
@@ -159,6 +173,10 @@ public sealed class PrivateHistoricalBackfillAcceptanceTests
         Assert.Equal(11L, goodwill["min"].IntegerValue);
         Assert.Equal(30L, goodwill["max"].IntegerValue);
         Assert.Equal(MetricEvidence.Experimental, result.Metrics.EvidenceByAcquisition!["factions"]);
+        var homes = result.Metrics.Metrics[FacilitiesSnapshot.HomeMapsPeak].Values[MetricEntry.Scalar];
+        Assert.Equal(1L, homes.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, homes.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, result.Metrics.EvidenceByAcquisition!["facilities"]);
         var after = new FileInfo(source);
         Assert.Equal(originalLength, after.Length);
         Assert.Equal(originalWrite, after.LastWriteTimeUtc);
