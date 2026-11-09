@@ -104,10 +104,13 @@
 
 ## 6. 性能（受け入れ条件 11）
 
-Dubs Performance Analyzer で確かめる。
-- [ ] Tick の項目に `RimworldStatistics` のメソッドが出ない（毎ティックの処理はゼロ）
-- [ ] セーブ 1 回あたり、`GameComponent_RimworldStatistics.ExposeData` の追加時間が 50ms 未満
+Dubs Performance Analyzer で**対象カテゴリを明記して**確認する。プロファイラーのリストにメソッドが無いだけでは、対象外のパッチ・保存時処理・他スレッド負荷を否定できない。
+- [ ] Tick / Update の各対象カテゴリで `RimworldStatistics` のメソッド有無と計測カバレッジを確認し、ソースのtick overrideの有無とも照合する。見つからない場合は「該当カテゴリで未観測」と記載し、毎tick負荷ゼロと判定しない
+- [ ] 同一セーブ・MOD構成・速度・負荷で、本体ON/OFFそれぞれ**安定した5区間以上**のTPSを計測し、中央値の悪化率が2%以下であることを確認する
+- [ ] 保存成功**10組以上**のON/OFF条件で保存時間を比較し、追加時間が50ms以下または5%以下かを確認する。`GameComponent_RimworldStatistics.ExposeData` がDPAに表示されない場合、その時間は**0msでなく未測定**とする。経過時間を計れる別の安全な計測方法を用意する
 - [ ] タイトル画面で、統計ウィンドウを開いても 100ms 以上止まるフレームが出ない
+
+2026-11-09の通常環境での限定的なDPAデータは[性能検証記録](performance/2026-11-09-standard-game-dpa-partial.md)に記載。Game Component TickにRimworld-Statisticsメソッドは観測されなかったが、ON/OFF比較・保存処理の測定は未実施。上記の受け入れ条件は**未達（未測定）**のまま扱う。
 
 ## 7. MOD を外す
 

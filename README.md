@@ -16,7 +16,7 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 
 ## 状況
 
-**基本統計・取り込み・外部MOD統計基盤は実装済み。** Core自動テスト、RimWorld 1.7参照APIの静的照合、SDK互換性検査、配布ZIP検査をGitHub Actionsで実行しています。検証用RimWorld 1.7では限定的な自動ケースを実行しましたが、264項目の正確性、長時間TPS、全MOD構成での動作は証明されていません。追加の実機検証は実施しない方針のため、未検証項目は実験的なまま扱います。
+**基本統計・取り込み・外部MOD統計基盤は実装済み。** Core自動テスト、RimWorld 1.7参照APIの静的照合、SDK互換性検査、配布ZIP検査をGitHub Actionsで実行しています。検証用RimWorld 1.7では限定的な自動ケースを実行し、通常環境で再スキャンとDPAのGame Component Tickを[限定的に確認](docs/performance/2026-11-09-standard-game-dpa-partial.md)しました。ただし264項目の数値正確性、保存処理の追加時間、長時間TPS悪化率、全MOD構成での動作は証明されていません。未検証項目は実験的なまま扱います。
 
 - [設計仕様 v0.2（2026-11-06）](docs/superpowers/specs/2026-11-06-rimworld-statistics-design.md)
 - [RimWorld 1.7 実現可能性調査（2026-11-06）](docs/research/2026-11-06-rimworld-1.7-feasibility.md)
