@@ -164,6 +164,26 @@ public sealed class ExternalSdkMetricTests
     }
 
     [Fact]
+    public void MeanWithoutSamplesAfterCoverageGapIsUnknownNotNotApplicable()
+    {
+        var definition = Metric("satisfaction", ApiEventMode.Mean);
+        var registry = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, registry.Register(definition, null));
+        var registered = Assert.Single(registry.Seal());
+        var state = new FamilyState { Revision = 1, SinceTick = 100, ThroughTick = 200, Continuous = false };
+        var output = new Dictionary<string, MetricEntry>();
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(state, 200, output), registered);
+        Assert.Equal(MetricCoverage.Unknown,
+            output[registered.Descriptor.StableKey].Values[MetricEntry.Scalar].Coverage);
+
+        state = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 200, Continuous = true };
+        output.Clear();
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(state, 200, output), registered);
+        Assert.Equal(MetricCoverage.NotApplicable,
+            output[registered.Descriptor.StableKey].Values[MetricEntry.Scalar].Coverage);
+    }
+
+    [Fact]
     public void RegistryRejectsFamilySchemaMismatchAndLateMissingEvent()
     {
         var registry = new ExternalSdkMetricRegistry();
