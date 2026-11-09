@@ -102,11 +102,27 @@ public sealed class TwoSuppliedSaveShapeTests
             Assert.True(result.Metrics.Metrics.ContainsKey(key), "Missing history/quest metric: " + key);
     }
 
+    private static void AssertQuestOutcomes(MetricObservation m, long accepted, long success, long failure, long expired)
+    {
+        static long? Value(MetricObservation o, string key)
+            => o.Scalar(key, MetricKeys.Revision(key))?.IntegerValue;
+        Assert.Equal(accepted, Value(m, MetricKeys.QuestAccepted));
+        Assert.Equal(success, Value(m, MetricKeys.QuestSuccess));
+        Assert.Equal(failure, Value(m, MetricKeys.QuestFailure));
+        Assert.Equal(expired, Value(m, MetricKeys.QuestExpired));
+    }
+
     [Fact]
     public void AnonymousShapes_PreserveOldAndPostInstallSaveReading()
     {
-        AssertShape(Read(Synthetic(WithStatistics)), WithStatistics);
-        AssertShape(Read(Synthetic(BeforeStatistics)), BeforeStatistics);
+        var a = Read(Synthetic(WithStatistics));
+        var b = Read(Synthetic(BeforeStatistics));
+        AssertShape(a, WithStatistics);
+        AssertShape(b, BeforeStatistics);
+        // Counts obtained from independent read-only analysis of the actual quest XML.
+        // The anonymous fixture must exercise successful, failed, accepted and expired quests.
+        AssertQuestOutcomes(a.Metrics!, 34, 11, 15, 17);
+        AssertQuestOutcomes(b.Metrics!, 68, 14, 42, 26);
     }
 
     [Fact]
