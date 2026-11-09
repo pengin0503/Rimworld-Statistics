@@ -62,3 +62,15 @@
 ## Progress / outstanding evidence\n\nThe faction subset and interval proof kernel are implemented in PR #73. Other snapshot families and historical event counts are **not** complete. Real-game 1.7 acceptance and 55+ save scan benchmarks remain required. Do not close #71/#72 yet.\n\n## Done criteria
 
 Inventory counts and keys are source exact, all tests green, review findings recorded, and no false historical events inserted in the v1.2.2 host release. Stage B/C remain explicitly open until the source schema/lineage evidence exists.
+
+## 2026-11-09 follow-up PR #77 (v9)
+
+- [x] Added one more bounded historical snapshot key: `facilities.home_maps.peak`, strictly as Partial/Experimental saved-tick lower-bound evidence of explicitly referenced player-owned Core Settlement maps. The label's `peak` must **not** be interpreted as a proven lifetime maximum.
+- [x] Reused the existing audits and privately checked map-parent/faction reference shapes in both supplied 1.7 saves without publishing private content. Each independently supports one such map.
+- [x] Synthetic malformed, missing, duplicate, oversized, unsupported-version, byte preservation and reader-upgrade tests; `SaveReader.Version=9`.
+- [x] Hardened Issue #72 direct-parent intervals against contradictory DLC inventories, malformed checkpoint hashes and immediate cycles; these checks do not manufacture ancestry or events.
+- [x] Added opt-in single-file acceptance expectations and a synthetic 55-save cold/warm benchmark.
+- [ ] Execute private original-file .NET acceptance and 55+ **real** large-save memory/scan measurements on the owner's .NET-equipped PC; game runtime confirmation and TPS remain unavailable here.
+- [ ] Implement the remaining 38 of 41 saved-state outputs only after archived Def/game semantics are independently established. Refer to [v9 evidence assessment](../../research/2026-11-09-historical-recovery-v9-assessment.md).
+
+Do not close #71/#72 or change formal release v1.2.2 on the basis of synthetic tests alone.
