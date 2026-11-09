@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SAU_OrdersIssued>自動着替え指示の発行回数</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgradeが自動Wearジョブを入植者へ実際に発行した回数。着替え完了回数ではありません。アドオンの統計取得を有効にした時点以降だけを数えます。実験的な統計です。</RWS_SAU_OrdersIssuedDesc>
+</LanguageData>
