@@ -326,4 +326,30 @@ public sealed class HistoricFactionBackfillTests
         Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
     }
 
+    [Fact]
+    public void InvalidSecondOmittedId_CannotStealZeroButOtherKnownEvidenceSurvives()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations",
+            RelationTo(0, "Ally", 95),
+            RelationTo(2, "Hostile", -40)));
+
+        var ambiguousFirst = Faction("OutlanderCivil", 0);
+        ambiguousFirst.Element("loadID")!.Remove();
+        var ambiguousSecond = Faction("example.test.faction", 3);
+        ambiguousSecond.Element("loadID")!.Remove();
+        ambiguousSecond.Add(new XElement("defeated", "malformed"));
+
+        var read = Read(SaveRaw(player, ambiguousFirst, ambiguousSecond,
+            Faction("TribeCivil", 2)));
+        var relations = read.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        // Faction_0 can point to either omitted record, including the invalid
+        // one. The separate, explicitly identified Faction_2 remains usable.
+        Assert.Equal(1L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(0L, relations["ally"].IntegerValue);
+        Assert.Equal(1L, relations["hostile"].IntegerValue);
+        Assert.Equal(-40L, read.Metrics.Metrics[FactionStateSnapshot.GoodwillRange]
+            .Values["min"].IntegerValue);
+    }
+
 }
