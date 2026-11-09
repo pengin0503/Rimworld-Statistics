@@ -159,6 +159,46 @@ public sealed class ImportEngineTests
     }
 
     [Fact]
+    public void Run_FiveChangedThenSkippedFiles_DoesNotInvalidateCachedViewOnEachSkip()
+    {
+        // A batch of five changed files is followed by unchanged files. The
+        // checkpoint at the fifth read is legitimate, but skipped files must
+        // not trigger another no-op mutation and invalidate the cached view.
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        for (var i = 0; i < 11; i++)
+            Write(saves, $"s{i:00}.rws", Save("initial-" + i));
+        var session = NewSession(store);
+        Assert.Equal(11, Run(saves, session).Read);
+        session.Flush();
+
+        for (var i = 0; i < 5; i++)
+            Write(saves, $"s{i:00}.rws", Save("updated-" + i), Stamp.AddHours(1));
+
+        StatsView? duringSkippedFiles = null;
+        var checkedSkips = 0;
+        var progress = new SyncProgress(p =>
+        {
+            if (p.CurrentFile is null || string.CompareOrdinal(p.CurrentFile, "s05.rws") < 0)
+                return;
+            var current = session.GetView(new StatsOptions());
+            if (duringSkippedFiles is null)
+                duringSkippedFiles = current;
+            else
+            {
+                Assert.Same(duringSkippedFiles, current);
+                checkedSkips++;
+            }
+        });
+
+        var result = Run(saves, session, progress);
+        Assert.Equal((5, 6, 0), (result.Read, result.Skipped, result.Failed));
+        Assert.Equal(5, checkedSkips);
+        session.Flush();
+        Assert.Null(session.LastSaveError);
+    }
+
+    [Fact]
     public void Run_MetricMutationFails_RecordsOneReadAndRetriesAfterRepair()
     {
         using var saves = new TempDir();
