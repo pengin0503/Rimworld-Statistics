@@ -205,6 +205,27 @@ jobs:
           if ($copies.Count -ne 1 -or (Get-FileHash $copies[0].FullName -Algorithm SHA256).Hash -ne $saveHash) {
             throw 'Safe disposable test save copy was missing or duplicated'
           }
+          $saveWithMods = Join-Path $root 'saved-with-mods.rws'
+          Set-Content -LiteralPath $saveWithMods -Value '<savegame><meta><modIds><li>ludeon.rimworld</li><li>brrainz.harmony</li><li>saved.only.mod</li><li>SAVED.ONLY.MOD</li></modIds></meta><game /></savegame>'
+          $saveModsHash = (Get-FileHash $saveWithMods -Algorithm SHA256).Hash
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $saveWithMods -UseSaveModList -SetupOnly
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $saveWithMods -UseSaveModList -SetupOnly
+          [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
+          $ids = @($xml.SelectNodes('/ModsConfigData/activeMods/li') | ForEach-Object { $_.InnerText })
+          $expected = @('ludeon.rimworld','brrainz.harmony','saved.only.mod','pengin0503.rimworldstatistics','pengin0503.rimworldstatistics.verifyharness')
+          if (($ids -join '|') -cne ($expected -join '|')) { throw "Save MOD order/duplicates were not preserved: $($ids -join '|')" }
+          if ((Get-FileHash $saveWithMods -Algorithm SHA256).Hash -ne $saveModsHash) { throw 'Source save changed after loading MOD list' }
+          if ((Get-FileHash $src -Algorithm SHA256).Hash -ne $hash) { throw 'Real MOD config changed after loading save MOD list' }
+          $isolatedConfig = Join-Path $test 'Config/ModsConfig.xml'
+          $testHash = (Get-FileHash $isolatedConfig -Algorithm SHA256).Hash
+          $blocked = $false
+          try { & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $saveWithMods -UseSaveModList -Minimal -SetupOnly } catch { $blocked = $true }
+          if (-not $blocked) { throw 'Incompatible Minimal + UseSaveModList was not rejected' }
+          if ((Get-FileHash $isolatedConfig -Algorithm SHA256).Hash -ne $testHash) { throw 'Invalid flags mutated test MOD config' }
+          $blocked = $false
+          try { & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $originalSave -UseSaveModList -SetupOnly } catch { $blocked = $true }
+          if (-not $blocked) { throw 'Save without a valid modIds header was not rejected' }
+          if ((Get-FileHash $isolatedConfig -Algorithm SHA256).Hash -ne $testHash) { throw 'Invalid save mutated test MOD config' }
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -Minimal -SetupOnly
           [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
           if (@($xml.SelectNodes('/ModsConfigData/activeMods/li') | Where-Object { $_.InnerText -eq 'extra.test.mod' }).Count -ne 0) {
