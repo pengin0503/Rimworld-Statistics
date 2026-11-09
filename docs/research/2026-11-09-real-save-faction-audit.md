@@ -45,9 +45,9 @@ In the known first-party supported/visible subset, **two explicitly recorded All
 The original single-save test is optional and skipped by CI. On a PC with .NET 10, set `RWS_REAL_17_LEGACY_SAVE` to a local copy of this exact legacy file, then run:
 
 ```powershell
-$env:RWS_REAL_17_LEGACY_SAVE = "D:\\private-test-saves\\legacy.rws"
+$env:RWS_REAL_17_LEGACY_SAVE = "D:\private-test-saves\legacy.rws"
 dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true --filter "FullyQualifiedName~PrivateLegacy17_ExplicitAllianceEvidenceMatchesIndependentXmlAudit_WhenAvailable"
-Remove-Item Env:\\RWS_REAL_17_LEGACY_SAVE
+Remove-Item Env:\RWS_REAL_17_LEGACY_SAVE
 ```
 
 Avoid copying the original save or raw test logs into issues, PRs or the public repository.
