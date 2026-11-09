@@ -90,10 +90,10 @@ internal static class HistoricalFactionSnapshotReader
                     AcquisitionUnits.Royalty, StringComparer.OrdinalIgnoreCase) != true)
                 continue;
 
-            // Live capture queries the player's outgoing relation. Missing
-            // kinds/goodwill (including XML-omitted default enum members)
-            // have not been independently proven, so skip *that relation*,
-            // never erase other independently supported evidence.
+            // Match the game-side player's outgoing relation. An omitted
+            // kind is the game's Scribe default Neutral; an absent goodwill
+            // or unrecognized explicit kind is still unsupported evidence.
+            // Skip only that relation, preserving other valid observations.
             var targetId = "Faction_" + id.ToString(System.Globalization.CultureInfo.InvariantCulture);
             var matches = player.Relations.Where(r => r.Other == targetId).Take(2).ToList();
             if (matches.Count != 1 || !matches[0].Valid)
