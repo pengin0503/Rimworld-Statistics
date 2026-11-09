@@ -46,7 +46,9 @@ internal sealed class ExternalSdkHost : IStatisticsHost
         try
         {
             var result = ExternalSdkMetricPolicy.Record(family, metric.Api, uniqueEventId, Find.TickManager.TicksGame, value);
-            if (result == ApiRecordResult.CapExceeded)
+            // An invalid confirmed event is a missed observation, not evidence of zero activity.
+            // Both invalid input and dedup-cap overflow must weaken coverage, never claim Complete.
+            if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
                 LiveMetrics.Accumulator?.MarkGap(unit, Find.TickManager.TicksGame);
             return result;
         }

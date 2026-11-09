@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace StatisticsSdkSample;
@@ -18,16 +17,21 @@ public static class SampleSdkClient
                 x.GetName().Name == "RimworldStatistics.Api"))
             return false;
         try { return ApiConsumer.Connect(); }
-        catch (Exception e) when (e is TypeLoadException or FileNotFoundException or FileLoadException
-            or MissingMethodException or TargetInvocationException or BadImageFormatException)
+        catch (Exception)
         {
+            // Optional host API cannot become a startup failure for this consumer.
             return false;
         }
     }
 
     /// <summary>Call from an actual successful MOD event, with a stable non-personal event id.</summary>
-    public static bool OnConfirmedEvent(string uniqueId) =>
-        connected && ApiConsumer.Record(uniqueId);
+    public static bool OnConfirmedEvent(string uniqueId)
+    {
+        if (!connected)
+            return false;
+        try { return ApiConsumer.Record(uniqueId); }
+        catch (Exception) { return false; }
+    }
 
     /// <summary>Set a detached aggregate from a known game state; null means unavailable (not zero).</summary>
     public static void SetCurrentCount(double? value) => snapshotCount = value;
