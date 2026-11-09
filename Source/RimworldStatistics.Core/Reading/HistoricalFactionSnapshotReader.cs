@@ -53,7 +53,9 @@ internal static class HistoricalFactionSnapshotReader
         if (playerCandidates.Count != 1)
             return null;
 
-        var playerId = "Faction_" + playerCandidates[0].LoadId!.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
+        var player = playerCandidates[0];
+        if (!player.Active)
+            return null;
         var facts = new List<FactionStateFact>();
         var selectedIds = new HashSet<int>();
         foreach (var faction in factions)
@@ -65,7 +67,12 @@ internal static class HistoricalFactionSnapshotReader
             // in the *saved* game, not merely installed now.
             if (faction.Def == "Empire" && activeDlc?.Contains(AcquisitionUnits.Royalty, StringComparer.OrdinalIgnoreCase) != true)
                 continue;
-            var matches = faction.Relations.Where(r => r.Other == playerId).ToList();
+            // Live capture calls player.RelationKindWith(npc) and
+            // player.GoodwillWith(npc). Saved relations can be asymmetric, so
+            // reading the NPC's reverse relation changes the meaning.
+            var targetId = "Faction_" + faction.LoadId!.Value.ToString(
+                System.Globalization.CultureInfo.InvariantCulture);
+            var matches = player.Relations.Where(r => r.Other == targetId).ToList();
             if (matches.Count > 1 || matches.Any(r => !r.Valid))
                 return null;
             if (matches.Count == 0)
