@@ -45,6 +45,14 @@ RimWorld 1.7 用の **Colonist Recruitment 1.1.2**（`pengin0503.recruitment`）
 - [P1 Provider基盤](docs/research/2026-11-09-mod-metric-providers-p1-validation.md)
 - [P2 実MOD監査と検証項目](docs/research/2026-11-09-recruitment-provider-pilot-audit.md)
 
+## 他MOD統計の拡張方針（任意アドオン方式）
+
+新しく対応する他MODについては、**本体に専用パッチを増やさず、個別にインストールする統計アドオン**で拡張します。Rimworld-Statistics本体は全セーブ横断の集計、統計表示、チェックポイントと実験的な外部MOD統計SDKを提供します。単にMODが導入されているだけで、そのMOD固有の数値をすべて自動発見できるわけではありません。
+
+初の追加アドオンとして **[Smart Apparel Upgrade向け統計アドオン](addons/SmartApparelUpgrade/README.md)** を実装しました。対象MODが自動Wearジョブを発行した回数を記録します（着替えが完了した回数ではありません）。アドオンは**別ZIP**で配布し、対応するMODとRimworld-Statistics本体が存在する場合のみ動作します。利用するには本体設定から `mod.pengin0503.smartapparelupgrade.orders` の実験取得を有効にして再起動してください。実ゲームでの動作は未検証です。
+
+すでにv1.2.0で提供済みのHospitalityとRecruitmentの組み込みアダプターは、過去の統計データとの互換性を優先して本体に残します。新規対応はアドオンに分離する方針です。仕様・互換性・残作業は[MOD別アドオン設計](docs/sdk/addon-architecture.md)を参照してください。
+
 ## ビルド（開発者向け）
 
 .NET 10 SDK が必要です。参照するゲームの DLL と Harmony は、環境変数 `GameDir`（`Assembly-CSharp.dll` と `UnityStubs.dll` のあるフォルダ）と `HarmonyDll`（Harmony の `1.7/Assemblies/0Harmony.dll`）で指定します。指定しなければ `.refs/game` と `.refs/harmony/0Harmony.dll` を使います。
