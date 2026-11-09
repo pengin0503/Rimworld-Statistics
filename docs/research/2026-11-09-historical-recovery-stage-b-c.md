@@ -34,7 +34,9 @@ This is a **programmatic evidence API only**, not a new UI metric or cumulative 
 
 ## Next verification steps
 
-- [x] Audit one private 1.7.4995 / 348-MOD save (21 factions, conditional Faction_0, omitted relation kind). Only anonymous aggregate facts and synthetic shape fixtures were committed. [Audit](2026-11-09-real-save-faction-audit.md).\n- [x] Audit a second private 1.7.5000 / 183-MOD save, with 3 supported active first-party neutral relationships serialized without `kind` and with explicit goodwill (11–30). [Anonymized Test1.7 audit](2026-11-09-test17-save-audit.md).\n- [ ] Independently run the private original-file .NET acceptance tests and compare game-side faction truth; two XML samples cannot prove all 41-output recoverability.
+- [x] Audit one private 1.7.4995 / 348-MOD save (21 factions, conditional Faction_0, omitted relation kind). Only anonymous aggregate facts and synthetic shape fixtures were committed. [Audit](2026-11-09-real-save-faction-audit.md).
+- [x] Audit a second private 1.7.5000 / 183-MOD save, with 3 supported active first-party neutral relationships serialized without `kind` and with explicit goodwill (11–30). [Anonymized Test1.7 audit](2026-11-09-test17-save-audit.md).
+- [ ] Independently run the private original-file .NET acceptance tests and compare game-side faction truth; two XML samples cannot prove all 41-output recoverability.
 - [ ] Test 35+ colonies / 55+ saves for cold scan wall time, memory and unchanged-save second-scan behavior.
 - [ ] Add other saved-state families one at a time only when matching game/DLC/MOD definition semantics are verified; the research count remains Unknown when ProjectDef costs are unavailable.
 - [ ] After acceptance, decide whether to expose the verified parent-only interval diagnostics in an independent UI; don't fold them into `raid`/death event-family totals or claim original event dates.
