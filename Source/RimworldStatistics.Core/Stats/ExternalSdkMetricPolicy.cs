@@ -31,7 +31,8 @@ public sealed class ExternalSdkMetricRegistry
             || !Enum.TryParse<OverallAggregation>(api.Overall, false, out var overall) || !Enum.IsDefined(overall)
             || !Enum.TryParse<ColonySelection>(api.Selection, false, out var selection) || !Enum.IsDefined(selection))
             return ApiRegistrationResult.InvalidDefinition;
-        if (api.Kind == ApiMetricKind.Event && (api.EventMode == ApiEventMode.Mean) != (overall == OverallAggregation.Ratio))
+        if (api.Kind == ApiMetricKind.Event && (api.EventMode == ApiEventMode.Mean) != (overall == OverallAggregation.Ratio)
+            || api.Kind == ApiMetricKind.SaveSnapshot && (overall == OverallAggregation.Ratio || api.EventMode != ApiEventMode.Count))
             return ApiRegistrationResult.InvalidDefinition;
         var packages = api.RequiredPackages.Select(x => new ModPackageRequirement(x.PackageId, x.MinimumVersion, x.MaximumVersionExclusive)).ToList();
         if (api.MinimumOwnerVersion is not null || api.MaximumOwnerVersionExclusive is not null)

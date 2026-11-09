@@ -28,8 +28,16 @@ internal static class ModProviderAdapters
 
     /// <summary>The SDK is frozen with the built-in declarations after all MOD constructors.</summary>
     private static IReadOnlyList<ModMetricAdapterRegistration> BuiltInAdapters()
-        => Providers.RecruitmentMetricProvider.Registrations()
-            .Concat(ExternalSdkHost.Instance.BuildAdapters()).ToArray();
+    {
+        var builtIn = Providers.RecruitmentMetricProvider.Registrations();
+        try { return builtIn.Concat(ExternalSdkHost.Instance.BuildAdapters()).ToArray(); }
+        catch (Exception e)
+        {
+            // An SDK consumer must never disable the independently audited Recruitment bridge.
+            Log.Error("[RimworldStatistics] External SDK registration scan failed; built-in provider continues.\n" + e);
+            return builtIn;
+        }
+    }
 
     public static IReadOnlyList<AcquisitionUnit> KnownUnits =>
         Declarations.Value.Where(x => x.Descriptor.IsValid())

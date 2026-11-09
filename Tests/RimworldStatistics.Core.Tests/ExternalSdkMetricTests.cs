@@ -147,6 +147,33 @@ public sealed class ExternalSdkMetricTests
     }
 
     [Fact]
+    public void EventDedupCapacityFailsClosedAndMarksOutputPartial()
+    {
+        var api = Metric();
+        var registry = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, registry.Register(api, null));
+        var registered = Assert.Single(registry.Seal());
+        var state = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 5000, Continuous = true };
+        for (var i = 0; i < FamilyOps.KeyCap; i++)
+            Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.Record(state, api, "event-" + i, i, 1));
+        Assert.Equal(ApiRecordResult.CapExceeded, ExternalSdkMetricPolicy.Record(state, api, "overflow", 5000, 1));
+        Assert.Equal(ApiRecordResult.CapExceeded, ExternalSdkMetricPolicy.Record(state, api, "event-0", 5000, 1));
+        Assert.Equal((long)FamilyOps.KeyCap, state.Peek("sdk.value.checkouts")!.N);
+        var output = new Dictionary<string, MetricEntry>();
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(state, 5000, output), registered);
+        Assert.Equal(MetricCoverage.Partial, output[registered.Descriptor.StableKey].Values[MetricEntry.Scalar].Coverage);
+    }
+
+    [Fact]
+    public void SnapshotCannotClaimRatioWithoutNumeratorDenominator()
+    {
+        var reg = new ExternalSdkMetricRegistry();
+        var snapshot = Metric("state") with { FamilyId = "state", Kind = ApiMetricKind.SaveSnapshot, Overall = "Ratio" };
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition, reg.Register(snapshot, () => 0.7));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition, reg.Register(snapshot with { Overall = "Sum", EventMode = ApiEventMode.Mean }, () => 0.7));
+    }
+
+    [Fact]
     public void OldProfileDataSurvivesAddingSdkDescriptorAndUnknownProperties()
     {
         var profile = new Profile();
