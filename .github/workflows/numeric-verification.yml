@@ -55,6 +55,8 @@ jobs:
         run: dotnet build .devinputs/recruitment-1.1.2/Source/Recruitment/Recruitment.csproj -c Release --nologo
       - name: Compile read-only local save-structure verification tool
         run: python3 -m py_compile tools/check_private_save_shapes.py
+      - name: Unit-test independent XML/deflate private-save verifier
+        run: python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: External SDK event allocation and throughput benchmark
