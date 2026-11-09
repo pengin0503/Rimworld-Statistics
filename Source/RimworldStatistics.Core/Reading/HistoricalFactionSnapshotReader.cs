@@ -99,12 +99,17 @@ internal static class HistoricalFactionSnapshotReader
             if (matches.Count != 1 || !matches[0].Valid)
                 continue;
             var relation = matches[0];
+            // FactionRelation.ExposeData writes kind with default Neutral;
+            // Scribe omits this element when it equals that default. Both
+            // supplied 1.7 saves contain this form for player relations.
+            // An explicit, unrecognized kind is still invalid evidence.
+            var relationKind = relation.Kind ?? "Neutral";
             if (relation.Goodwill is not { } goodwill || goodwill is < -100 or > 100
-                || relation.Kind is not ("Ally" or "Hostile" or "Neutral"))
+                || relationKind is not ("Ally" or "Hostile" or "Neutral"))
                 continue;
             facts.Add(new FactionStateFact(
                 id.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                true, relation.Kind == "Ally", relation.Kind == "Hostile", goodwill));
+                true, relationKind == "Ally", relationKind == "Hostile", goodwill));
         }
 
         if (facts.Count == 0)
