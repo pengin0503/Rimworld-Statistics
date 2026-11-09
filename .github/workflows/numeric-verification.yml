@@ -176,7 +176,8 @@ jobs:
           $normal = Join-Path $root 'normal'
           $test = Join-Path $root 'test'
           $other = Join-Path $root 'occupied'
-          New-Item -ItemType Directory -Force (Join-Path $normal 'Config'), $other | Out-Null
+          New-Item -ItemType Directory -Path (Join-Path $normal 'Config') -Force | Out-Null
+          New-Item -ItemType Directory -Path $other -Force | Out-Null
           $exe = Join-Path $root 'RimWorldWin64.exe'
           Set-Content -LiteralPath $exe -Value 'fake-executable'
           $src = Join-Path $normal 'Config/ModsConfig.xml'
