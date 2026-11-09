@@ -193,4 +193,51 @@ public sealed class HistoricFactionBackfillTests
         Assert.Equal(input, input.ToArray());
     }
 
+    [Fact]
+    public void HistoricalSave_ExcludesExplicitlyHiddenAndTemporaryFactions()
+    {
+        var hidden = Faction("OutlanderCivil", 2, "Ally", 90);
+        hidden.Add(new XElement("hidden", "true"));
+        var temporary = Faction("OutlanderRough", 3, "Hostile", -90);
+        temporary.Add(new XElement("temporary", "true"));
+        var eligible = Faction("TribeCivil", 4, "Ally", 20);
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations",
+            RelationTo(2, "Ally", 90), RelationTo(3, "Hostile", -90),
+            RelationTo(4, "Ally", 20)));
+        var read = Read(Save(player, hidden, temporary, eligible));
+        var relations = read.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(1L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(1L, relations["ally"].IntegerValue);
+        Assert.Equal(0L, relations["hostile"].IntegerValue);
+        var range = read.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(20L, range["min"].IntegerValue);
+        Assert.Equal(20L, range["max"].IntegerValue);
+    }
+
+    [Fact]
+    public void HistoricalSave_UsesOutgoingPlayerRelationNotReverseNpcRelation()
+    {
+        var player = Faction("PlayerColony", 1);
+        player.Add(new XElement("relations", RelationTo(2, "Ally", 25)));
+        var npc = Faction("OutlanderCivil", 2, "Hostile", -95);
+        var read = Read(Save(player, npc));
+        var relations = read.Metrics!.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(1L, relations["ally"].IntegerValue);
+        Assert.Equal(0L, relations["hostile"].IntegerValue);
+        Assert.Equal(25L, read.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values["min"].IntegerValue);
+    }
+
+    [Fact]
+    public void HistoricalSave_WithoutOutgoingPlayerRelation_MustNotUseReverseRelation()
+    {
+        var read = Read(Save(Faction("PlayerColony", 1),
+            Faction("OutlanderCivil", 2, "Hostile", -85)));
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
+    }
+
+    private static XElement RelationTo(int id, string kind, int goodwill)
+        => new("li", new XElement("other", "Faction_" + id),
+            new XElement("kind", kind), new XElement("goodwill", goodwill));
+
 }
