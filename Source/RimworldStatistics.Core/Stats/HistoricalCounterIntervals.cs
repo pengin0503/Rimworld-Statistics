@@ -35,11 +35,13 @@ public static class HistoricalCounterIntervals
         var found = new List<HistoricalCounterInterval>();
         foreach (var child in checkpoints)
         {
-            if (child.Conflicted || child.Compressed || child.ParentKey is not { Length: > 0 } parentId
+            // Compression hides redundant aggregates but preserves immutable parent
+            // links; compressed checkpoints are still valid ancestry evidence.
+            if (child.Conflicted || child.ParentKey is not { Length: > 0 } parentId
                 || parentId == child.Key || !uniqueCheckpoints.TryGetValue(child.Key, out var onlyChild)
                 || !ReferenceEquals(onlyChild, child)
                 || !uniqueCheckpoints.TryGetValue(parentId, out var parent)
-                || parent.Conflicted || parent.Compressed
+                || parent.Conflicted
                 || parent.SaveTick <= 0 || child.SaveTick <= parent.SaveTick
                 || string.IsNullOrWhiteSpace(parent.PayloadHash) || string.IsNullOrWhiteSpace(child.PayloadHash)
                 || parent.PayloadHash.Length != 64 || child.PayloadHash.Length != 64
