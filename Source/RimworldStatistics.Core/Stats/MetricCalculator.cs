@@ -108,9 +108,21 @@ public static class MetricCalculator
             // All definitions of one source use the same latest observation. Resolve
             // its order-sensitive tie break only once instead of sorting per row.
             var latestBySource = bySource.ToDictionary(kv => kv.Key, kv => Representative(kv.Value));
-            perColony.Add((colony, definitions.Select(d => ColonyRow(d,
-                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(),
-                checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source))).ToList(), checkpoints.Lineage));
+            perColony.Add((colony, definitions.Select(d =>
+            {
+                var captured = bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>();
+                // Historic save-file evidence is a fallback only when this key
+                // was never captured by a game-side SaveSnapshot. Mixing the two
+                // would change live maxima or lose stronger evidence.
+                if (d.Source == MetricObservationSource.SaveSnapshot
+                    && d.Acquisition is { } unit
+                    && !captured.Any(o => Entry(o, d) is not null)
+                    && bySource.TryGetValue(MetricObservationSource.SaveFile, out var historical)
+                    && historical.Any(o => Entry(o, d) is not null
+                        && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental))
+                    return ColonyRow(d, historical, null, latestBySource.GetValueOrDefault(MetricObservationSource.SaveFile));
+                return ColonyRow(d, captured, checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source));
+            }).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
