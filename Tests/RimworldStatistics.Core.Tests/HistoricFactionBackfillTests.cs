@@ -1,0 +1,110 @@
+using System.Text;
+using System.Xml.Linq;
+using RimworldStatistics.Core.Tests.Fixtures;
+
+namespace RimworldStatistics.Core.Tests;
+
+/// <summary>Old .rws files may retain player-to-faction relationships, but not every
+/// runtime FactionDef flag; recovered observations must remain explicitly partial.</summary>
+public sealed class HistoricFactionBackfillTests
+{
+    private static readonly DateTime Stamp = new(2026, 11, 9, 9, 0, 0, DateTimeKind.Utc);
+
+    private static XElement Faction(string def, int id, string? playerKind = null, int? goodwill = null)
+        => new("li",
+            new XElement("def", def),
+            new XElement("loadID", id),
+            playerKind is null ? null : new XElement("relations", new XElement("li",
+                new XElement("other", "Faction_1"),
+                new XElement("kind", playerKind),
+                goodwill is null ? null : new XElement("goodwill", goodwill.Value))));
+
+    private static byte[] Save(params XElement[] factions)
+    {
+        using var original = new MemoryStream(new SaveXmlBuilder().Minimal()
+            .Scenario("Crashlanded", playerFactionDef: "PlayerColony").Build());
+        var root = XDocument.Load(original);
+        root.Root!.Element("game")!.Element("world")!.Add(
+            new XElement("factionManager", new XElement("allFactions", factions)));
+        return Encoding.UTF8.GetBytes(root.ToString());
+    }
+
+    private static SaveReadResult Read(byte[] input)
+        => new SaveReader().ReadDetailed(new MemoryStream(input, writable: false), "historical.rws", input.Length, Stamp);
+
+    [Fact]
+    public void Read_RetainedVanillaPlayerRelations_ArePartialSaveFileEvidence()
+    {
+        var input = Save(Faction("PlayerColony", 1), Faction("OutlanderCivil", 2, "Ally", 80),
+            Faction("OutlanderRough", 3, "Hostile", -90));
+        var before = input.ToArray();
+        var output = Read(input);
+        Assert.Equal(before, input);
+        Assert.Equal(ObservationStatus.Ok, output.Observation.Status);
+        Assert.NotNull(output.Metrics);
+        Assert.Equal(MetricObservationSource.SaveFile, output.Metrics!.Source);
+        var relations = output.Metrics.Metrics[FactionStateSnapshot.Relations].Values;
+        Assert.Equal(2L, relations[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, relations[MetricEntry.Scalar].Coverage);
+        Assert.Equal(1L, relations["ally"].IntegerValue);
+        Assert.Equal(1L, relations["hostile"].IntegerValue);
+        Assert.Equal(MetricEvidence.Experimental, output.Metrics.EvidenceByAcquisition!["factions"]);
+        var goodwill = output.Metrics.Metrics[FactionStateSnapshot.GoodwillRange].Values;
+        Assert.Equal(-90L, goodwill["min"].IntegerValue);
+        Assert.Equal(80L, goodwill["max"].IntegerValue);
+    }
+
+    [Fact]
+    public void Read_MissingPlayerOrUnknownFactionIdentity_DoesNotInventZero()
+    {
+        var missingPlayer = Read(Save(Faction("OutlanderCivil", 2, "Hostile", -90)));
+        Assert.NotNull(missingPlayer.Metrics);
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, missingPlayer.Metrics!.Metrics.Keys);
+
+        var unknownOnly = Read(Save(Faction("PlayerColony", 1),
+            Faction("ModdedFaction", 3, "Ally", 90)));
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, unknownOnly.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void Read_DuplicateFactionIdOrInvalidRelation_RemainsUnknown()
+    {
+        var duplicate = Read(Save(Faction("PlayerColony", 1),
+            Faction("OutlanderCivil", 2, "Ally", 80),
+            Faction("OutlanderRough", 2, "Hostile", -80)));
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, duplicate.Metrics!.Metrics.Keys);
+        var invalid = Read(Save(Faction("PlayerColony", 1),
+            Faction("OutlanderCivil", 2, "Ally", 200)));
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, invalid.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void Display_UsesRecoveredPartialReadingOnlyIfNoCapturedLiveValueExists()
+    {
+        var read = Read(Save(Faction("PlayerColony", 1), Faction("OutlanderCivil", 2, "Ally", 80)));
+        var profile = new Profile();
+        ProfileMutations.AddSaveObservation(profile, read.Observation);
+        ProfileMutations.UpsertMetricObservation(profile, read.Metrics!);
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var stats = StatsCalculator.Calculate(colonies, new StatsOptions());
+        var recovered = MetricCalculator.BuildView(profile, colonies, stats, MetricRegistry.Catalog)
+            .Colonies.Single().Rows.Single(r => r.Definition.Key == FactionStateSnapshot.Relations);
+        Assert.Equal(1.0, recovered.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, recovered.Value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, recovered.Value.Evidence);
+
+        var live = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveSnapshot,
+            Key = "live-faction-1", Identity = read.Observation.Identity.Clone(),
+            SaveTick = read.Observation.Values.TicksGame + 10,
+            ObservedUtc = Stamp.AddHours(1),
+            Metrics = FactionStateSnapshot.Build(new[] { new FactionStateFact("f", true, false, true, -5) }),
+        };
+        ProfileMutations.UpsertMetricObservation(profile, live);
+        var preferred = MetricCalculator.BuildView(profile, colonies, stats, MetricRegistry.Catalog)
+            .Colonies.Single().Rows.Single(r => r.Definition.Key == FactionStateSnapshot.Relations);
+        Assert.Equal(1.0, preferred.Value.Number);
+        Assert.Equal(MetricCoverage.SnapshotOnly, preferred.Value.Coverage);
+    }
+}
