@@ -181,7 +181,7 @@ jobs:
           $exe = Join-Path $root 'RimWorldWin64.exe'
           Set-Content -LiteralPath $exe -Value 'fake-executable'
           $src = Join-Path $normal 'Config/ModsConfig.xml'
-          Set-Content -LiteralPath $src -Value '<ModsConfigData><activeMods><li>ludeon.rimworld</li><li>brrainz.harmony</li></activeMods></ModsConfigData>'
+          Set-Content -LiteralPath $src -Value '<ModsConfigData><activeMods><li>ludeon.rimworld</li><li>brrainz.harmony</li><li>extra.test.mod</li></activeMods></ModsConfigData>'
           $hash = (Get-FileHash $src -Algorithm SHA256).Hash
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SetupOnly
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SetupOnly
@@ -192,6 +192,16 @@ jobs:
             if (@($ids | Where-Object { $_ -eq $id }).Count -ne 1) { throw "Expected exactly one test mod entry for $id" }
           }
           if ($ids[-1] -ne 'pengin0503.rimworldstatistics.verifyharness') { throw 'VerifyHarness must load after the main mod' }
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -Minimal -SetupOnly
+          [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
+          if (@($xml.SelectNodes('/ModsConfigData/activeMods/li') | Where-Object { $_.InnerText -eq 'extra.test.mod' }).Count -ne 0) {
+            throw 'Minimal mode kept an unrelated third-party mod'
+          }
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SetupOnly
+          [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
+          if (@($xml.SelectNodes('/ModsConfigData/activeMods/li') | Where-Object { $_.InnerText -eq 'extra.test.mod' }).Count -ne 1) {
+            throw 'Switching back to full mode did not restore the original test mod list'
+          }
           $blocked = $false
           try { & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $normal -SetupOnly } catch { $blocked = $true }
           if (-not $blocked) { throw 'Real save folder was not rejected' }
