@@ -60,6 +60,11 @@ jobs:
           dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile \
             > "$RUNNER_TEMP/rws-profile-benchmark.csv"
           cat "$RUNNER_TEMP/rws-profile-benchmark.csv"
+      - name: Synthetic historical .rws cold/warm scan (55 saves)
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet run -c Release --project tools/SaveImportBenchmark/SaveImportBenchmark.csproj --no-launch-profile -- 55 262144
       - name: Translation key consistency
         run: bash tools/check_keys.sh
       - name: Build production ZIP
