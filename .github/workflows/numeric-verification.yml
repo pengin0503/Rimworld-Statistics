@@ -47,13 +47,6 @@ jobs:
         run: python3 -m py_compile tools/check_private_save_shapes.py
       - name: Unit-test independent XML/deflate private-save verifier
         run: python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
-      - name: Bootstrap source-backed historical recovery CSV
-        shell: bash
-        run: |
-          python3 tools/historical_recovery_inventory.py --write
-          echo HISTORICAL_INVENTORY_START
-          cat docs/research/2026-11-09-historical-recovery-inventory.csv
-          echo HISTORICAL_INVENTORY_END
       - name: Verify all 264 historical-recovery inventory decisions against source
         run: python3 -m unittest discover -s tools/tests -p 'test_historical_recovery_inventory.py' -v
       - name: Core unit tests (no game launch)
