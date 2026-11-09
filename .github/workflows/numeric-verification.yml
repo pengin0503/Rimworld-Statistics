@@ -163,3 +163,38 @@ jobs:
           test "$old_sha" != "$new_sha"
           dotnet "$probe_dir/SdkSampleProbe.dll"
           echo "Frozen 1.0 consumer binary against new 1.1 host DLL: PASS"
+
+  windows-verify-launcher:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guard isolated test profile and idempotent mod-list setup
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $root = Join-Path $env:RUNNER_TEMP 'rws-launcher-check'
+          $normal = Join-Path $root 'normal'
+          $test = Join-Path $root 'test'
+          $other = Join-Path $root 'occupied'
+          New-Item -ItemType Directory -Force (Join-Path $normal 'Config'), $other | Out-Null
+          $exe = Join-Path $root 'RimWorldWin64.exe'
+          Set-Content -LiteralPath $exe -Value 'fake-executable'
+          $src = Join-Path $normal 'Config/ModsConfig.xml'
+          Set-Content -LiteralPath $src -Value '<ModsConfigData><activeMods><li>ludeon.rimworld</li><li>brrainz.harmony</li></activeMods></ModsConfigData>'
+          $hash = (Get-FileHash $src -Algorithm SHA256).Hash
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SetupOnly
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SetupOnly
+          if ((Get-FileHash $src -Algorithm SHA256).Hash -ne $hash) { throw 'Normal mod configuration was modified' }
+          [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
+          $ids = @($xml.SelectNodes('/ModsConfigData/activeMods/li') | ForEach-Object { $_.InnerText })
+          foreach ($id in @('pengin0503.rimworldstatistics','pengin0503.rimworldstatistics.verifyharness')) {
+            if (@($ids | Where-Object { $_ -eq $id }).Count -ne 1) { throw "Expected exactly one test mod entry for $id" }
+          }
+          if ($ids[-1] -ne 'pengin0503.rimworldstatistics.verifyharness') { throw 'VerifyHarness must load after the main mod' }
+          $blocked = $false
+          try { & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $normal -SetupOnly } catch { $blocked = $true }
+          if (-not $blocked) { throw 'Real save folder was not rejected' }
+          Set-Content -LiteralPath (Join-Path $other 'unrelated.txt') -Value 'keep'
+          $blocked = $false
+          try { & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $other -SetupOnly } catch { $blocked = $true }
+          if (-not $blocked) { throw 'Unmarked occupied directory was not rejected' }
