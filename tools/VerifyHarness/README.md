@@ -13,6 +13,7 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 3. 使い捨てのコロニーを開始して、開発モード → Debug actions → `RWS Verify` → **1. Run guided full audit (MODIFIES TEST WORLD)** を1回実行する。
 4. **テスト専用のセーブ**を1回正常に保存した後、**2. Read-only rescan after save (no game changes)** を選ぶ。保存時スナップショットの未観測項目を再確認できる。
 5. `RimworldStatistics-verify-guide.md` を開いて優先順に残作業を確認する。前提を揃えたケースだけ再実行したい場合は **3. Retry only failed or skipped cases (MODIFIES TEST WORLD)** を選ぶ。
+6. 部屋・汚染セルの読み取り方式が一致するかも一括確認する場合は、**4. Check room/pollution map contracts (read-only)** を選ぶ。これはマップを変更しないが、TPS低下2%以下を証明するものではない。
 
 ```powershell
 powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -Minimal
