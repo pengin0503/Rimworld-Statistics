@@ -10,6 +10,7 @@ public static class SampleSdkClient
 {
     private static bool connected;
     private static double? snapshotCount;
+    private static bool throwOnNextSnapshot;
 
     public static bool TryAttach()
     {
@@ -35,6 +36,19 @@ public static class SampleSdkClient
 
     /// <summary>Set a detached aggregate from a known game state; null means unavailable (not zero).</summary>
     public static void SetCurrentCount(double? value) => snapshotCount = value;
+
+    /// <summary>Development-only fault injection for the next save-time snapshot callback.</summary>
+    public static void ArmSnapshotExceptionOnce() => throwOnNextSnapshot = true;
+
+    private static double? CaptureSnapshot()
+    {
+        if (throwOnNextSnapshot)
+        {
+            throwOnNextSnapshot = false;
+            throw new InvalidOperationException("Intentional SDK sample snapshot failure (verification only)");
+        }
+        return snapshotCount;
+    }
 
     private static class ApiConsumer
     {
@@ -64,7 +78,7 @@ public static class SampleSdkClient
                 Kind = RimworldStatistics.Api.ApiMetricKind.SaveSnapshot,
             };
             var a = host.Register(eventDefinition);
-            var b = host.Register(snapshotDefinition, () => snapshotCount);
+            var b = host.Register(snapshotDefinition, CaptureSnapshot);
             connected = a == RimworldStatistics.Api.ApiRegistrationResult.Accepted &&
                 b == RimworldStatistics.Api.ApiRegistrationResult.Accepted;
             return connected;

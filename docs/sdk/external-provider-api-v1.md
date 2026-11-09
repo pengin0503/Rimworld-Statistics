@@ -41,6 +41,15 @@ External SDK units are always **Unverified** and must be explicitly selected in 
 
 Run `dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -p:UseNuGetRefs=true`, `dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release -p:UseNuGetRefs=true`, then `bash tools/package.sh host.zip`, `bash tools/package_sdk_sample.sh sample.zip`, `python3 tools/check_sdk_package.py host.zip sample.zip`.
 
+
+### In-game development buttons and fault isolation
+
+When the independent sample MOD is enabled, open **Options → Mod Settings → Statistics SDK Sample (Development)** while playing a colony. **Simulate one confirmed sample action** increments its own save-persisted, branch-local ordinal and attempts to record one SDK event. The sample snapshots the current ordinal at successful saves; a disabled/missing SDK never stops the sample MOD. The sample does not poll every tick.
+
+**Arm snapshot exception for the next save** intentionally throws exactly once from the SDK snapshot callback. The host must quarantine only `mod.pengin0503.rws.sdksample.state`, leaving the event family and unrelated units functional. This is a development test, never distributed with the production Statistics ZIP.
+
+For step-by-step positive/negative game acceptance and performance measurement protocol, see `docs/sdk/p3-game-acceptance.md`.
+
 ## Not yet verified in actual game
 
 No definitive guarantee until the RimWorld 1.7 host/consumer load order, missing-host startup, production saved checkpoints/rewinds, optional DLC combinations, cross-minor upgrades, SDK assembly resolution, provider exception behavior, actual TPS median degradation (target ≤2%), or incremental save overhead (target ≤50ms **or** ≤5%) are measured. CI/static tests do **not** establish those results. The Hospitality adapter itself is outside P3.

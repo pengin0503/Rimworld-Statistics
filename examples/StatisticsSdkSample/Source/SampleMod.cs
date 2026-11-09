@@ -32,7 +32,13 @@ public sealed class SampleMod : Mod
             Log.Message("[StatisticsSdkSample] Action completed; SDK event " +
                 (savedToHost ? "recorded." : "not recorded (absent/disabled/duplicate)."));
         }
-        Widgets.Label(new Rect(inRect.x, inRect.y + 90f, inRect.width, 60f),
+        if (Widgets.ButtonText(new Rect(inRect.x, inRect.y + 80f, Math.Min(inRect.width, 350f), 32f),
+                "Arm snapshot exception for the next save"))
+        {
+            SampleSdkClient.ArmSnapshotExceptionOnce();
+            Log.Message("[StatisticsSdkSample] The next SDK snapshot will deliberately throw. Other families must continue.");
+        }
+        Widgets.Label(new Rect(inRect.x, inRect.y + 130f, inRect.width, 70f),
             "Enable mod.pengin0503.rws.sdksample.events and .state in the host's experimental settings, " +
             "then restart the game. Save and reload to verify stable counters and partial coverage.");
     }
