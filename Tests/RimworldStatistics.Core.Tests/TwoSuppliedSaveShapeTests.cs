@@ -166,9 +166,26 @@ public sealed class TwoSuppliedSaveShapeTests
         Assert.Null(b.Observation.Identity.ModCampaignId);
         Assert.Null(a.Checkpoint);
         Assert.Null(b.Checkpoint);
+
+        // Exercise the real import/profile pipeline as well, not only the reader. Work on
+        // disposable copies; never move, rewrite or commit either user's source save.
+        using var saves = new TempDir();
+        using var profile = new TempDir();
+        File.Copy(installed, saves.File("case-a.rws"));
+        File.Copy(legacy, saves.File("case-b.rws"));
+        var session = new ProfileSession(new ProfileStore(profile.Path), () => DateTime.UtcNow);
+        var importer = new ImportEngine(new SaveReader());
+        var importClock = Stopwatch.StartNew();
+        var first = importer.Run(saves.Path, session, null, TestContext.Current.CancellationToken);
+        importClock.Stop();
+        Assert.Equal((2, 0, 0), (first.Read, first.Skipped, first.Failed));
+        Assert.Equal(2, session.GetView(new StatsOptions()).Stats.ColonyCount);
+        var second = importer.Run(saves.Path, session, null, TestContext.Current.CancellationToken);
+        Assert.Equal((0, 2, 0), (second.Read, second.Skipped, second.Failed));
+        session.Flush();
         Assert.Equal(installedHash, Hash(installed));
         Assert.Equal(legacyHash, Hash(legacy));
         TestContext.Current.SendDiagnosticMessage(
-            $"Private two-save read: {timer.Elapsed.TotalMilliseconds:F0}ms; both unchanged; no names/IDs logged.");
+            $"Private two-save reader {timer.Elapsed.TotalMilliseconds:F0}ms, import {importClock.Elapsed.TotalMilliseconds:F0}ms; originals unchanged; no names/IDs logged.");
     }
 }
