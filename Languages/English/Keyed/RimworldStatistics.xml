@@ -833,4 +833,9 @@
   <RWS_ModRecruitment_StartedDesc>Successful Recruitment 1.1.2 requests created after recording began. Historical periods before opt-in are partial. A cancellation after creation still counts as started.</RWS_ModRecruitment_StartedDesc>
   <RWS_ModRecruitment_Active>Active recruitment requests</RWS_ModRecruitment_Active>
   <RWS_ModRecruitment_ActiveDesc>Pending recruitment requests at the most recent successful save. This is not an all-time total.</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality: visiting guests at save</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>Number of active Hospitality guests across player home maps at a successful save. Not a lifetime visit total. No change to the guest MOD is required.</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality: visiting groups at save</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>Number of active Hospitality guest groups across player home maps at a successful save. Not a lifetime visit count.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Mod_AutoActive>Built-in adapter: automatic when owner MOD is installed</RWS_Mod_AutoActive>
 </LanguageData>

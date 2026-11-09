@@ -14,7 +14,8 @@ internal sealed record ModMetricAdapterRegistration(
     Action<Harmony>? InstallEventHook = null,
     Func<MetricEntry?>? CaptureSnapshot = null,
     string ProviderVersion = "1.0.0",
-    Action? ValidateBinding = null);
+    Action? ValidateBinding = null,
+    bool AutoEnableOnInstall = false);
 
 /// <summary>Frozen at the startup adapter pass; absent optional mods have no hooks or save-time work.</summary>
 internal static class ModProviderAdapters
@@ -29,7 +30,8 @@ internal static class ModProviderAdapters
     /// <summary>The SDK is frozen with the built-in declarations after all MOD constructors.</summary>
     private static IReadOnlyList<ModMetricAdapterRegistration> BuiltInAdapters()
     {
-        var builtIn = Providers.RecruitmentMetricProvider.Registrations();
+        var builtIn = Providers.RecruitmentMetricProvider.Registrations()
+            .Concat(Providers.HospitalityMetricProvider.Registrations()).ToArray();
         try { return builtIn.Concat(ExternalSdkHost.Instance.BuildAdapters()).ToArray(); }
         catch (Exception e)
         {
@@ -46,6 +48,12 @@ internal static class ModProviderAdapters
                 AcquisitionStatus.Unverified, x.Descriptor.RequiredDlc))
             .GroupBy(x => x.Id, StringComparer.Ordinal).Select(g => g.First()).ToArray();
 
+    /// <summary>Bundled, source-audited MOD adapters are visible even without enabling experimental statistics.</summary>
+    private static readonly Lazy<IReadOnlySet<string>> AutoVisible = new(() =>
+        Declarations.Value.Where(x => x.AutoEnableOnInstall).Select(x => x.Descriptor.AcquisitionId)
+            .ToHashSet(StringComparer.Ordinal));
+    public static IReadOnlySet<string> AutomaticVisibleUnits => AutoVisible.Value;
+
     public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors
         => Declarations.Value.Where(x => x.Descriptor.IsValid()).Select(x => x.Descriptor).ToArray();
 
@@ -60,10 +68,12 @@ internal static class ModProviderAdapters
             return;
         initialized = true;
         var declarations = Declarations.Value;
-        // The optional unit inventory is immutable after startup; editing settings alone never
-        // installs a new Harmony patch in a running game.
-        MetricGates.ConfigureOptionalUnits(KnownUnits, RimworldStatisticsMod.ActiveAcquisitionSelection);
+        // Only our audited built-ins auto-open for an installed MOD; SDK clients
+        // remain explicitly opt-in. Runtime shape checks still fail closed.
         var installed = ModProviderGameDiscovery.ActivePackages();
+        var automatic = ExperimentalAcquisitionPolicy.ResolveAutoAdapters(
+            declarations.Where(x => x.AutoEnableOnInstall).Select(x => x.Descriptor), installed);
+        MetricGates.ConfigureOptionalUnits(KnownUnits, RimworldStatisticsMod.ActiveAcquisitionSelection, automatic);
         var registry = new ModMetricProviderRegistry();
         var enabled = new List<Enabled>();
         var families = new List<LiveFamily>();

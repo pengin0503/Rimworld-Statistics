@@ -1,5 +1,6 @@
 using System.Globalization;
 using RimworldStatistics.Core;
+using RimworldStatistics.Metrics;
 using UnityEngine;
 using Verse;
 
@@ -115,9 +116,13 @@ public sealed class Dialog_RimworldStatistics : Window
     {
         var options = ProfileService.Options;
         var showExperimental = RimworldStatisticsMod.Settings.showRecordedExperimental;
+        // Built-in, source-audited external MOD statistics are visible on install;
+        // previously recorded values remain visible after the owner MOD is removed.
+        var automatic = ModProviderAdapters.AutomaticVisibleUnits;
         var visibleUnits = showExperimental
-            ? AcquisitionUnits.All.Select(u => u.Id).Append(MetricRegistry.OptionalModVisibilityId).ToArray()
-            : Array.Empty<string>();
+            ? AcquisitionUnits.All.Select(u => u.Id).Append(MetricRegistry.OptionalModVisibilityId)
+                .Concat(automatic).Distinct(StringComparer.Ordinal).ToArray()
+            : automatic.ToArray();
         if (viewIncludesDevMode != options.IncludeDevMode || viewIncludesExperimental != showExperimental)
         {
             lastView = null;
