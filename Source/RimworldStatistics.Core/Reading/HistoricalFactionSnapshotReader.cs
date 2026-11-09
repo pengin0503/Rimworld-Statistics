@@ -31,6 +31,9 @@ internal static class HistoricalFactionSnapshotReader
         "PlayerColony", "PlayerTribe",
     };
 
+    public static bool MayContainSupportedFacts(string? factionDef)
+        => factionDef is not null && (SupportedVisibleDefs.Contains(factionDef) || PlayerDefs.Contains(factionDef));
+
     public static Dictionary<string, MetricEntry>? Build(
         IReadOnlyList<SavedFaction> factions, string? scenarioPlayerDef, bool overflowed,
         IReadOnlyCollection<string>? activeDlc)
