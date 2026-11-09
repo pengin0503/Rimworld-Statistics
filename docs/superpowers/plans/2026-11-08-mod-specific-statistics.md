@@ -1,5 +1,8 @@
 # Mod-specific Statistics Provider Implementation Plan
 
+> **履歴資料（2026-11-09更新）:** この文書は2026-11-08時点の実装前計画です。その後P0〜P3相当の実装がPR #40〜#44、#53〜#54等でmainへ統合され、v1.2.0が公開されました。以下の「未実装」「承認待ち」等は作成当時の状態を表します。現状はREADME・実コード・現行SDK文書を優先してください。取得単位はUnverifiedのままです。
+
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 >
 > **状態:** 将来の実装候補の計画（未承認・未実装）。最初に実施するのは前段 `2026-11-08-experimental-statistics.md` のP0のみ。**P1〜P3を一括実装しない。**
