@@ -3,7 +3,7 @@
 Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/research/2026-11-07-numeric-statistics-phase-c-implementation-notes.md) §1）を、テスト用のゲームでだけ開いて、実機で確かめるための別 MOD です。配布物（`tools/package.sh` の zip、公開ワークフロー）には入りません。
 
 - `packageId` は `pengin0503.rimworldstatistics.verifyharness`。本体（`pengin0503.rimworldstatistics`）と Harmony の後にロードします。
-- 起動時に `-savedatafolder=` が無ければ、**何も開きません**（エラーログを出すだけ）。未検証のコードが記録した値が通常のプロファイルに入ると、その単位を `Verified` にした後で利用者に表示されてしまうためです。
+- 起動時に `-savedatafolder=` が無い場合、**または指定先に `.rimworld-statistics-verification` 識別ファイルが無い場合**は、取得ゲートを開きません。上書き指定が通常の保存先を指す可能性があるため、引数だけでは隔離済みと判定しません。
 - 開いた単位の値はセーブとテスト用プロファイルに記録されますが、詳細タブには出ません（公開は `AcquisitionUnits` で `Verified` にした単位だけ）。
 
 ## 最短の検証手順（Windows）
@@ -70,7 +70,7 @@ zip を展開した `RimworldStatisticsVerifyHarness` フォルダを、本体�
 
 ## 起動
 
-テスト用のフォルダを `-savedatafolder` に指定し、開く単位を `-rwsverify` で選びます（省略か `all` で全単位）。
+テスト用のフォルダを `-savedatafolder` に指定し、開く単位を `-rwsverify` で選びます（省略か `all` で全単位）。**通常はWindowsランチャーを使ってください**。ランチャーは隔離用フォルダーに必要な識別ファイルを作ります。手動起動する場合は、**通常のセーブフォルダーではない新規の専用ディレクトリ**を作り、起動前にファイル `.rimworld-statistics-verification` を作成して、中身を `RWS Verify isolated workspace` の1行にしてください。識別ファイルが無い／内容が違う場合は、安全側に倒して未検証ゲートを開きません。
 
 ```bash
 ./RimWorldLinux -savedatafolder=/path/to/rws-verify -rwsverify=research,mental
