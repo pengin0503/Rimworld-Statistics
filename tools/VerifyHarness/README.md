@@ -19,6 +19,18 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -Minimal
 ```
 
+### 既存セーブを使う場合（原本を変更しない）
+
+手元の既存セーブを使用する場合、`-SaveFile` を指定すると**原本に一切書き込まず**、テスト用 `Saves` へ `RWSVerify-元の名前.rws` として複製する。例えば、次のように実行する。
+
+```powershell
+powershell -NoProfile -File ".\tools\VerifyHarness\launch-windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws"
+```
+
+既存のテストコピーが同じ内容なら再利用する。テスト側で内容が変わっている場合は、新しい連番のコピーを作って**上書きしない**。ゲーム起動後、「ゲームをロード」から `RWSVerify-` で始まるコピーを選ぶ。MOD依存があるセーブを試す場合は `-Minimal` を使用しない。
+
+`-Minimal` の有無を切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。同じモードで繰り返し起動するときはテスト用の構成を保持する。通常環境の `ModsConfig.xml` は一切変更しない。
+
 `-Minimal` は新規の使い捨てテストコロニー向け。元のMOD設定を**別フォルダにコピー**し、Vanilla・有効なDLC・Harmony・Rimworld-Statistics・VerifyHarness 以外をテスト環境のMODリストから除外して軽量化する。Hospitality / Recruitment / 他MODとの互換検証をするとき、または元のMOD構成を必要とする既存セーブを使用するときは **`-Minimal` を付けない**。
 
 `launch-windows.ps1` は通常の `ModsConfig.xml`、通常セーブ、Steam起動オプション、ゲーム本体のMODファイルを書き換えない。独立した `%LOCALAPPDATA%\RimworldStatistics-Verify` 以下に専用データと構成を作成する。既存の無関係なフォルダを指定した場合は上書きを拒否する。MODのZIP展開・インストール自体は行わない。
