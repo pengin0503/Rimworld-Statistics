@@ -617,6 +617,11 @@ public sealed class SaveReader
             ActiveDlcIds = s.ModIds?
                 .Where(id => id.StartsWith("ludeon.rimworld.", StringComparison.OrdinalIgnoreCase))
                 .Select(id => id.ToLowerInvariant()).Distinct().Order(StringComparer.Ordinal).ToList(),
+            // The full saved MOD list (including order) is hashed, not persisted.
+            // Different MOD layouts must never be treated as comparable intervals.
+            ModSetHash = s.ModIds is null ? null : Convert.ToHexStringLower(
+                SHA256.HashData(Encoding.UTF8.GetBytes(
+                    System.Text.Json.JsonSerializer.Serialize(s.ModIds)))),
         };
 
         // History: a recorder def saved twice is ambiguous and left out, as is a series beyond the extension limits.
