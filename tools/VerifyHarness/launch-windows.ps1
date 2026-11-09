@@ -62,8 +62,16 @@ if (-not (Test-Path -LiteralPath $marker)) {
 $configFolder = Join-Path $test 'Config'
 [void](New-Item -Path $configFolder -ItemType Directory -Force)
 $targetConfig = Join-Path $configFolder 'ModsConfig.xml'
-if (-not (Test-Path -LiteralPath $targetConfig -PathType Leaf)) {
-    Copy-Item -LiteralPath $sourceConfig -Destination $targetConfig
+$modeFile = Join-Path $test '.rws-verify-modlist-mode'
+$desiredMode = if ($Minimal) { 'minimal' } else { 'full' }
+$previousMode = if (Test-Path -LiteralPath $modeFile -PathType Leaf) {
+    [System.IO.File]::ReadAllText($modeFile).Trim()
+} else { '' }
+# Preserve in-game changes on repeated launches in the same mode, but
+# restore the original *test copy* when switching between minimal and full.
+if (-not (Test-Path -LiteralPath $targetConfig -PathType Leaf) -or
+    $previousMode -ne $desiredMode) {
+    Copy-Item -LiteralPath $sourceConfig -Destination $targetConfig -Force
 }
 
 # Only the copied *test* mod configuration is edited. Preserve all other
@@ -106,6 +114,7 @@ $harness = $doc.CreateElement('li')
 $harness.InnerText = $harnessId
 [void]$active.AppendChild($harness)
 $doc.Save($targetConfig)
+[System.IO.File]::WriteAllText($modeFile, $desiredMode)
 
 Write-Host "[RWS Verify] Isolated test profile: $test"
 Write-Host "[RWS Verify] Test configuration:   $targetConfig"
