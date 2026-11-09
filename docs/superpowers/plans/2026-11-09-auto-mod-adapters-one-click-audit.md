@@ -10,7 +10,7 @@
 - [x] Wire startup gating and display behavior exclusively for source-audited bundled adapters; preserve explicitly enabled SDK behavior.
 - [x] Bundle Hospitality read-only save-time guest and visitor-group counts, with runtime shape validation and bilingual labels. Keep Recruitment adapter automatic when version-compatible.
 - [x] Add a test-world-only one-click debug action that runs the existing game cases and reports every catalog output's observability without ever changing publication status.
-- [ ] Confirm Github Actions compiles the mod, SDK examples, VerifyHarness, static targets and Core regression tests.
+- [x] Confirm GitHub Actions builds the mod, SDK examples, VerifyHarness, static targets and Core regression tests: run #42564550171, 574 passed / 3 skipped / 0 failed.
 - [ ] Conduct actual real-game positive/negative tests and save-time performance measurement; this cannot be proved in CI.
 
 **Non-goals:** Fabricating historical totals from a current count; auto-intercepting unknown MOD code; verifying 264 metrics through one simulated run; publishing the developer harness as a production MOD.
