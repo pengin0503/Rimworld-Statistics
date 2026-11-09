@@ -31,16 +31,6 @@ powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary
 
 この機能は**MOD本体をインストールしません**。必要なWorkshop MOD・公式DLCが不足している場合、セーブ内の `modIds` を再現しても `Could not load reference` や `JobDriver_HaulToInventory` の復元失敗が発生し得ます。不足・非互換MODの解消は別途必要です。標準の `-SaveFile`（`-UseSaveModList` なし）は従来どおり、現在の通常環境の `ModsConfig.xml` をコピーする方式です。
 
-### セーブに保存されたMOD構成を再現する（推奨）
-
-現在の通常プロファイルがQoL用など別の構成の場合、`-SaveFile` だけではセーブのMOD一覧は復元されません。**`-UseSaveModList` を併用**すると、`<savegame><meta><modIds>` に保存されたMODの順序を、テスト用 `ModsConfig.xml` に読み込みます。重複IDは除去し、本体とVerifyHarnessを最後に補います。
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File ".\\RWS-Verify-Windows.ps1" -GameExe "D:\\SteamLibrary\\steamapps\\common\\RimWorld\\RimWorldWin64.exe" -SaveFile "K:\\RimWorldSaves\\rim連合.rws" -UseSaveModList
-```
-
-`-UseSaveModList` は `-SaveFile` が必須で、`-Minimal` とは併用できません。**毎回セーブのMOD一覧から検証側の構成を作り直す**ため、現在の通常MOD構成や過去のテスト側設定には依存しません。通常プロファイルと原本セーブは変更しません。MODのインストールや未所持DLCの取得は行わないため、MOD本体が不足する場合はゲーム側のMOD一覧で確認してください。
-
 既存のテストコピーが同じ内容なら再利用する。テスト側で内容が変わっている場合は、新しい連番のコピーを作って**上書きしない**。ゲーム起動後、「ゲームをロード」から `RWSVerify-` で始まるコピーを選ぶ。MOD依存があるセーブを試す場合は `-Minimal` を使用しない。
 
 `-Minimal`・`-UseSaveModList`・通常モードを切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。通常モード・最小モードで繰り返し起動するときはテスト用の構成を保持する。`-UseSaveModList` は毎回指定したセーブのMOD一覧でテスト用構成を再生成する。通常環境の `ModsConfig.xml` は一切変更しない。
