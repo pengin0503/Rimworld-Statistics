@@ -214,6 +214,7 @@ public static class ProfileMutations
             => o.ExtensionData is { Count: > 0 }
                 || o.Identity.ExtensionData is { Count: > 0 }
                 || o.FileAliases.Any(a => a.ExtensionData is { Count: > 0 })
+                || o.ProviderCaptures?.Values.Any(c => c?.ExtensionData is { Count: > 0 }) == true
                 || o.Metrics.Values.Any(e => e.ExtensionData is { Count: > 0 }
                     || e.Values.Values.Any(v => v.ExtensionData is { Count: > 0 }));
 
