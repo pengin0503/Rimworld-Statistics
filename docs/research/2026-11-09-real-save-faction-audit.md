@@ -19,7 +19,7 @@ Source: **one** voluntarily supplied, unmodified local `.rws` from RimWorld `1.7
 | `maps/li/things/thing` | 14,920 |
 | Embedded Rimworld-Statistics GameComponent | 0 |
 
-The one missing faction ID is consistent with an omitted default numeric `loadID=0`: no explicit zero is recorded, exactly one candidate omits the field, and the other saved faction relations repeatedly reference `Faction_0`. This supports **conditional, not unconditional** zero-ID resolution. In other saves with multiple omitted IDs or a conflicting explicit zero, identity remains ambiguous and the fallback refuses to claim a value.
+The one missing faction ID is consistent with an omitted default numeric `loadID=0`: no explicit zero is recorded, exactly one candidate omits the field, and the other saved faction relations repeatedly reference `Faction_0`. This supports **conditional, not unconditional** zero-ID resolution. In other saves with multiple omitted IDs (including malformed faction records) or a conflicting explicit zero, **Faction_0 itself is unresolvable** and is excluded. Independently identified, explicit nonzero factions can still be reported as Partial; an ambiguous player ID rejects the fallback altogether.
 
 The saved relationship entries do **not** all have `kind` and `goodwill` fields; one allow-listed outgoing relationship has missing `kind`. Missing enum fields might encode defaults, but no game-source proof of their semantics was established here. The reader must **skip only that relationship**, rather than invalidate unrelated valid relationships or interpret the omission as an Ally/Hostile/Neutral event.
 
@@ -28,7 +28,7 @@ In the known first-party supported/visible subset, **two explicitly recorded All
 ## Changes motivated by the actual source
 
 - PR #75: Preserve independently valid faction evidence when one unrelated record has invalid metadata or a relation has missing/unverified fields.
-- Infer omitted `Faction_0` only from a unique omitted identity plus saved outgoing reference and no conflicting explicit ID. Do not infer IDs from current installed MODs.
+- Infer omitted `Faction_0` only from **exactly one omission across all faction records, even invalid records**, plus saved outgoing reference and no conflicting explicit ID. Do not infer IDs from current installed MODs. If Faction_0 is ambiguous, keep only independently proven nonzero records.
 - Version `SaveReader=7` triggers one safe re-read of previously indexed saves (v6 backfill can be missing even when files have not changed); original save bytes remain unchanged.
 - Add anonymized positive and negative synthetic unit tests and one opt-in private original acceptance test. Neither the raw save nor any personally identifying part of it is a public test fixture.
 
