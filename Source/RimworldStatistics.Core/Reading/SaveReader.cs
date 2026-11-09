@@ -265,7 +265,7 @@ public sealed class SaveReader
     {
         string? def = null, name = null;
         int? loadId = null;
-        bool deactivated = false, defeated = false, valid = true;
+        bool deactivated = false, defeated = false, hidden = false, temporary = false, valid = true;
         var relations = new List<SavedFactionRelation>();
         ForEachChild(r, child =>
         {
@@ -278,7 +278,24 @@ public sealed class SaveReader
                         loadId = id;
                     else valid = false;
                     break;
-                case "deactivated": deactivated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                case "deactivated":
+                    if (bool.TryParse(r.ReadElementContentAsString().Trim(), out var wasDeactivated))
+                        deactivated = wasDeactivated;
+                    else
+                        valid = false;
+                    break;
+                case "hidden":
+                    if (bool.TryParse(r.ReadElementContentAsString().Trim(), out var wasHidden))
+                        hidden = wasHidden;
+                    else
+                        valid = false;
+                    break;
+                case "temporary":
+                    if (bool.TryParse(r.ReadElementContentAsString().Trim(), out var wasTemporary))
+                        temporary = wasTemporary;
+                    else
+                        valid = false;
+                    break;
                 case "defeated":
                     if (bool.TryParse(r.ReadElementContentAsString().Trim(), out var wasDefeated))
                         defeated = wasDefeated;
@@ -314,7 +331,8 @@ public sealed class SaveReader
         if (s.HistoricalFactions.Count >= HistoricalFactionSnapshotReader.MaxFactions)
             s.HistoricalFactionsOverflowed = true;
         else
-            s.HistoricalFactions.Add(new SavedFaction(def, loadId, !deactivated && !defeated, relations, valid));
+            s.HistoricalFactions.Add(new SavedFaction(def, loadId,
+                !deactivated && !defeated && !hidden && !temporary, relations, valid));
     }
 
     private static SavedFactionRelation ReadFactionRelation(XmlReader r)
