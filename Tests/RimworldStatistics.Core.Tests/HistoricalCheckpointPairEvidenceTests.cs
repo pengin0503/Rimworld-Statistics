@@ -5,9 +5,9 @@ using RimworldStatistics.Core.Tests.Fixtures;
 namespace RimworldStatistics.Core.Tests;
 
 /// <summary>
-/// Two independently audited private 1.7 saves carry valid checkpoints and
-/// continuous counters, but the two checkpoint IDs are NOT a direct parent
-/// edge. No private save data or original checkpoint identifiers are fixtures.
+/// Independently audited private 1.7 saves carry valid checkpoints and
+/// continuous counters. The original outer pair is NOT a direct parent
+/// edge, whereas the supplied middle saves do form two direct edges.
 /// </summary>
 public sealed class HistoricalCheckpointPairEvidenceTests
 {
@@ -280,9 +280,9 @@ public sealed class HistoricalCheckpointPairEvidenceTests
         // These are explicit checkpoint references read from all five
         // originals; neither MOD list nor timestamp ordering establishes them.
         Assert.NotEqual(observations[0].Checkpoint!.Key, observations[1].Checkpoint!.ParentKey);
-        Assert.Equal(observations[1].Checkpoint.Key, observations[2].Checkpoint!.ParentKey);
-        Assert.Equal(observations[2].Checkpoint.Key, observations[3].Checkpoint!.ParentKey);
-        Assert.NotEqual(observations[3].Checkpoint.Key, observations[4].Checkpoint!.ParentKey);
+        Assert.Equal(observations[1].Checkpoint!.Key, observations[2].Checkpoint!.ParentKey);
+        Assert.Equal(observations[2].Checkpoint!.Key, observations[3].Checkpoint!.ParentKey);
+        Assert.NotEqual(observations[3].Checkpoint!.Key, observations[4].Checkpoint!.ParentKey);
 
         var profile = new Profile();
         foreach (var read in observations)
