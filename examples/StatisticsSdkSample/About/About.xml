@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ModMetaData>
-  <name>Rimworld Statistics SDK Sample (Development Only)</name>
-  <author>pengin0503</author>
-  <packageId>pengin0503.rws.sdksample</packageId>
-  <supportedVersions><li>1.7</li></supportedVersions>
-  <loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>
-  <description>Development-only optional SDK consumer. Does not bundle RimworldStatistics.Api.dll. Registration is opt-in and not verified in-game.</description>
-</ModMetaData>
