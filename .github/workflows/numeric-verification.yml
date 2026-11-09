@@ -192,6 +192,16 @@ jobs:
             if (@($ids | Where-Object { $_ -eq $id }).Count -ne 1) { throw "Expected exactly one test mod entry for $id" }
           }
           if ($ids[-1] -ne 'pengin0503.rimworldstatistics.verifyharness') { throw 'VerifyHarness must load after the main mod' }
+          $originalSave = Join-Path $root 'test-original.rws'
+          Set-Content -LiteralPath $originalSave -Value 'original save must stay unchanged'
+          $saveHash = (Get-FileHash $originalSave -Algorithm SHA256).Hash
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $originalSave -SetupOnly
+          & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $originalSave -SetupOnly
+          if ((Get-FileHash $originalSave -Algorithm SHA256).Hash -ne $saveHash) { throw 'Original save was changed' }
+          $copies = @(Get-ChildItem -LiteralPath (Join-Path $test 'Saves') -Filter 'RWSVerify-*.rws')
+          if ($copies.Count -ne 1 -or (Get-FileHash $copies[0].FullName -Algorithm SHA256).Hash -ne $saveHash) {
+            throw 'Safe disposable test save copy was missing or duplicated'
+          }
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -Minimal -SetupOnly
           [xml]$xml = Get-Content -LiteralPath (Join-Path $test 'Config/ModsConfig.xml') -Raw
           if (@($xml.SelectNodes('/ModsConfigData/activeMods/li') | Where-Object { $_.InnerText -eq 'extra.test.mod' }).Count -ne 0) {
