@@ -162,6 +162,18 @@ public sealed class TwoSuppliedSaveShapeTests
             (b.Observation.ModCount, b.Observation.Values.TicksGame, b.Observation.Values.WealthPoints));
         Assert.Equal(WithStatistics.Raids, a.Observation.Values.NumRaidsEnemy);
         Assert.Equal(BeforeStatistics.Raids, b.Observation.Values.NumRaidsEnemy);
+        // Values decoded independently from each original Wealth_Total raw-deflate stream.
+        // Distinguishes an actual numeric read from merely accepting the outer XML.
+        Assert.Equal(117528.0234375d, a.Observation.Values.WealthLast);
+        Assert.Equal(117741.890625d, a.Observation.Values.WealthMax);
+        Assert.Equal(268320.1875d, b.Observation.Values.WealthLast);
+        Assert.Equal(268320.1875d, b.Observation.Values.WealthMax);
+        var meanA = a.Metrics!.Scalar(MetricKeys.WealthTotalMean, MetricKeys.Revision(MetricKeys.WealthTotalMean));
+        var meanB = b.Metrics!.Scalar(MetricKeys.WealthTotalMean, MetricKeys.Revision(MetricKeys.WealthTotalMean));
+        Assert.NotNull(meanA?.RealValue);
+        Assert.NotNull(meanB?.RealValue);
+        Assert.InRange(meanA.RealValue.Value, 63932.95, 63932.98);
+        Assert.InRange(meanB.RealValue.Value, 93937.64, 93937.68);
         Assert.NotNull(a.Observation.Identity.ModCampaignId);
         Assert.Null(b.Observation.Identity.ModCampaignId);
         Assert.Null(a.Checkpoint);
