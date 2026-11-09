@@ -1,0 +1,134 @@
+name: Publish Rimworld Statistics v1.2.0
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v1.2.0.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-rimworld-statistics-v1.2.0
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: 'v1.2.0'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Refuse to overwrite an existing version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite." >&2
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Tag $RELEASE_TAG already exists; refusing to overwrite." >&2
+            exit 1
+          fi
+      - name: Run full no-game Core regression tests
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Verify SDK event allocation optimization
+        run: dotnet run -c Release --project tools/SdkEventBenchmark/SdkEventBenchmark.csproj --no-launch-profile
+      - name: Validate translation keys
+        run: bash tools/check_keys.sh
+      - name: Independently compile and probe SDK consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          for minor in 0 1; do
+            dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release "-p:RequiredApiMinor=$minor" --nologo
+            dotnet run --project tools/SdkSampleProbe/SdkSampleProbe.csproj -c Release "-p:RequiredApiMinor=$minor" --no-launch-profile
+          done
+      - name: Static RimWorld 1.7 reference and Harmony patch signature checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          test -f "$game_ref"
+          dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release --nologo
+          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
+          python3 tools/inspect_reference_api.py "$RUNNER_TEMP/ref-index/chunk-0000.json.gz"
+          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
+      - name: Build host and independent development sample ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.2.0.zip"
+          bash tools/package_sdk_sample.sh "$RUNNER_TEMP/StatisticsSdkSample-v1.2.0.zip"
+      - name: Verify release package ownership, archive and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          host="$RUNNER_TEMP/RimworldStatistics-v1.2.0.zip"
+          sample="$RUNNER_TEMP/StatisticsSdkSample-v1.2.0.zip"
+          python3 tools/check_sdk_package.py "$host" "$sample"
+          unzip -t "$host"
+          unzip -t "$sample"
+          names="$(unzip -Z -1 "$host")"
+          grep -Fxq 'RimworldStatistics/About/About.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Core.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Api.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/Japanese/Keyed/RimworldStatistics.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/English/Keyed/RimworldStatistics.xml' <<< "$names"
+          if grep -Eq 'VerifyHarness|/(Recruitment|Assembly-CSharp|UnityStubs|Waylith|0Harmony)\\.dll$' <<< "$names"; then
+            echo 'ERROR: Optional game dependency or development verification harness leaked into release.' >&2
+            exit 1
+          fi
+          (cd "$RUNNER_TEMP" && sha256sum RimworldStatistics-v1.2.0.zip StatisticsSdkSample-v1.2.0.zip > RimworldStatistics-v1.2.0.sha256)
+      - name: Publish release from tested main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          ## RimWorld 1.7 — lifetime statistics across saves
+
+          This release packages the current implementation of Rimworld-Statistics for RimWorld 1.7.
+
+          ### Included
+          - Title-screen cumulative statistics across saves/colonies, historical save import, campaign identity and endings.
+          - Numeric detail catalog, save checkpoint persistence, isolated collection failures and provenance-aware historical presentation.
+          - **264 catalog entries in experimental acquisition units** (Phase B/C/D2). These units remain **Unverified**, normally disabled, and can be explicitly enabled via MOD settings. Observation does not prove numerical accuracy.
+          - Source-audited built-in experimental adapters for Hospitality and compatible Recruitment, plus experimental external SDK v1.1 and a separate development sample. The SDK public ABI remains experimental.
+          - Optimized indoor-room and pollution-state snapshot calculations.
+          - Guided VerifyHarness auditing and safe isolated-save launcher; VerifyHarness itself is NOT bundled in the player ZIP.
+
+          ### Verification and limitations
+          The release workflow executes Core regression tests, SDK compatibility probes, archive checks and static game reference checks against RimWorld 1.7.4985 reference assemblies.
+          A limited isolated test run reported 17 automatic cases passing and one medical-bed case skipped. This does NOT validate all 264 values or demonstrate long-term TPS behavior. No complete in-game multi-MOD acceptance is claimed; further game testing was explicitly waived.
+          Anomaly-specific statistics are not implemented. The experimental status of data is preserved; absence of data must not be represented as confirmed zero.
+
+          ### Files and installation
+          - `RimworldStatistics-v1.2.0.zip`: player MOD (RimWorld 1.7, requires Harmony).
+          - `StatisticsSdkSample-v1.2.0.zip`: development-only SDK sample; not needed for gameplay.
+          - `RimworldStatistics-v1.2.0.sha256`: hashes of both ZIPs.
+
+          Extract the `RimworldStatistics` folder to RimWorld's `Mods` directory. Load Harmony before Statistics. Do not bundle a second `RimworldStatistics.Api.dll` from another MOD. Back up saves and the statistics profile when updating.
+
+          [README](https://github.com/pengin0503/Rimworld-Statistics/blob/main/README.md) · [SDK](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/sdk/external-provider-api-v1.md) · [Game acceptance gaps](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/sdk/p3-game-acceptance.md)
+          NOTES
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0.zip" \
+            "$RUNNER_TEMP/StatisticsSdkSample-v1.2.0.zip" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics v1.2.0 (RimWorld 1.7)" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --latest
