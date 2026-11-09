@@ -66,6 +66,33 @@ The original files passed this standalone structural check in the analysis envir
 
 > IMPORTANT: .NET 10 is not installed and cannot be downloaded in the analysis container. Thus the opt-in original-file **C# SaveReader and ImportEngine tests have not been executed** here. Public CI covers the anonymous C# tests only. The real-file C# test is available to run with .NET 10 in a suitable local environment.
 
+
+## Independently observed retained-quest and wealth aggregates
+
+The original saved `questManager/quests/li` records were read using only the counters, acceptance/expiration ticks, end-state fields and numeric IDs needed to mirror the production `RetainedQuestMetricReader` semantics (deduplication, Scribe defaults and defined success/failure conditions). Names, quest descriptions, targets and raw XML were never published.
+
+| Save case | Retained quests | Accepted | Success | Failure | Expired unaccepted offers |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| A (Statistics-installed) | 59 | 34 | 11 | 15 | 17 |
+| B (legacy) | 102 | 68 | 14 | 42 | 26 |
+
+These are retained-save counts, **not** guaranteed lifetime quest-event totals. The anonymous C# fixtures now reproduce these distributions rather than merely reproducing the total number of quest elements. The opt-in private-original C# test checks the same counts.
+
+Additional independent read-only float32 decoding of the seven original raw-DEFLATE series established the following `Wealth_Total` aggregate expectations, used by the opt-in C# check:
+
+| Case | Latest wealth | Peak wealth | Plain mean of observed half-day samples |
+| --- | ---: | ---: | ---: |
+| A | 117528.0234375 | 117741.890625 | 63932.962303958724 |
+| B | 268320.1875 | 268320.1875 | 93937.6574958017 |
+
+The standalone `tools/check_private_save_shapes.py` now checks these aggregate values along with the history lengths, version, mod count, quest outcomes and unchanged input SHA-256. It rejects DTD declarations to match production C# `XmlReader` settings. The self-contained unit tests run in normal CI:
+
+```bash
+python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
+```
+
+The independent Python test suite covers the expected valid shape, missing Statistics component, malformed compressed history, duplicate recorder, truncated XML and prohibited DTD. These are additional no-game tests, not a replacement for an actual RimWorld 1.7 load.
+
 ## Limitations and next gates
 
 - CI synthetic coverage is **not equivalent** to having the two complete user files on the CI runner: it does not test all 16 MB/34 MB of XML, every mod-specific record, memory peak or true input latency.
