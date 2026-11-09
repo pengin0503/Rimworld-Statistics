@@ -136,6 +136,16 @@ jobs:
         run: python3 tools/check_sau_contract.py .devinputs/sau-1.0.1
       - name: Run game-independent addon event-ID regressions
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo
+      - name: Probe addon SDK host negotiation and event deduplication
+        run: dotnet run --project tools/SauAddonProbe/SauAddonProbe.csproj -c Release --no-launch-profile
+      - name: Probe safe startup without any SDK assembly
+        shell: bash
+        run: |
+          set -euo pipefail
+          folder="tools/SauAddonProbe/bin/Release/net10.0"
+          test -f "$folder/RimworldStatistics.Api.dll"
+          mv "$folder/RimworldStatistics.Api.dll" "$RUNNER_TEMP/rws-api-sau-probe.dll"
+          dotnet "$folder/SauAddonProbe.dll" --no-api
       - name: Build standalone optional SAU statistics addon ZIP
         run: bash tools/package_sau_addon.sh "$RUNNER_TEMP/RimworldStatistics.SmartApparelAddon.zip"
       - name: Check independent addon package has no host, SDK or target DLL
