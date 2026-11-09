@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Text;
 using LudeonTK;
+using RimWorld;
 using RimworldStatistics.Metrics;
 using Verse;
 
@@ -41,6 +42,63 @@ public static class VerifyDebugActions
     /// Measures the vanilla aggregate against the old exhaustive IsPolluted scan.
     /// No production startup cost and no map-wide callbacks in normal gameplay.
     /// </summary>
+    /// <summary>
+    /// Read-only Issue #28 equivalence and timing probe for the optimized indoor-room count.
+    /// The exhaustive cell walk matches the original save-time reader; the region walk
+    /// matches the current reader. Require identical Room objects, not only equal counts.
+    /// This is an explicit debug action, never an extra scan on the save path.
+    /// </summary>
+    [DebugAction(Category, "Benchmark indoor rooms", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    public static void BenchmarkIndoorRooms()
+    {
+        var report = new StringBuilder();
+        var maps = Find.Maps.Where(m => m.IsPlayerHome).ToList();
+        var mismatch = 0;
+        var errors = 0;
+        report.AppendLine($"{CaseCheck.LogPrefix} rooms-benchmark game={VerifyProbe.GameVersion} homeMaps={maps.Count}");
+        foreach (var map in maps)
+        {
+            try
+            {
+                var regionRooms = new HashSet<Room>();
+                var watch = Stopwatch.StartNew();
+                foreach (var region in map.regionGrid.AllRegions)
+                {
+                    var room = region.Room;
+                    if (room != null && !room.PsychologicallyOutdoors)
+                        regionRooms.Add(room);
+                }
+                watch.Stop();
+                var regionMs = watch.Elapsed.TotalMilliseconds;
+
+                var cellRooms = new HashSet<Room>();
+                watch.Restart();
+                foreach (var cell in CellRect.WholeMap(map).Cells)
+                {
+                    var room = RegionAndRoomQuery.RoomAt(cell, map);
+                    if (room != null && !room.PsychologicallyOutdoors)
+                        cellRooms.Add(room);
+                }
+                watch.Stop();
+                var scanMs = watch.Elapsed.TotalMilliseconds;
+                var exact = regionRooms.SetEquals(cellRooms);
+                if (!exact)
+                    mismatch++;
+                report.AppendLine($"  map={map.uniqueID} cells={map.cellIndices.NumGridCells} regions={regionRooms.Count} scan={cellRooms.Count} " +
+                    $"regionMs={regionMs:F4} scanMs={scanMs:F4} result={(exact ? "MATCH" : "MISMATCH")}");
+            }
+            catch (Exception e)
+            {
+                errors++;
+                report.AppendLine($"  map={map.uniqueID} result=ERROR error={e.GetType().Name}: {e.Message}");
+            }
+        }
+        var final = $"{CaseCheck.LogPrefix} rooms-benchmark summary maps={maps.Count} mismatches={mismatch} errors={errors} " +
+            $"result={(maps.Count == 0 ? "SKIP" : mismatch + errors == 0 ? "PASS" : "FAIL")}";
+        report.AppendLine(final);
+        Report(report.ToString().TrimEnd(), final);
+    }
+
     [DebugAction(Category, "Benchmark pollution totals", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void BenchmarkPollutionTotals()
     {
