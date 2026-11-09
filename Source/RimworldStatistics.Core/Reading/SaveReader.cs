@@ -871,7 +871,8 @@ public sealed class SaveReader
         if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
             && HistoricalHomeMapReader.Build(s.HistoricalMaps, s.HistoricalMapObjects,
                 s.HistoricalFactions, s.ScenarioPlayerFactionDef,
-                s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed) is { } homes)
+                s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed,
+                s.HistoricalFactionsOverflowed) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;
