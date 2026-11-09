@@ -196,6 +196,50 @@ public sealed class ModMetricPersistenceTests
     }
 
     [Fact]
+    public void ProviderCaptureCombine_KeepsUnknownMetadataWhenVersionsAreMixed()
+    {
+        using var document = JsonDocument.Parse("{\"earlier\":1,\"later\":2}");
+        var previous = new ModProviderCapture("example.stats", "1.0.0", "1.0.0")
+        {
+            ExtensionData = new Dictionary<string, JsonElement>
+            {
+                ["futureEarlier"] = document.RootElement.GetProperty("earlier").Clone(),
+            },
+        };
+        var incoming = new ModProviderCapture("example.stats", "1.1.0", "1.1.0")
+        {
+            ExtensionData = new Dictionary<string, JsonElement>
+            {
+                ["futureLater"] = document.RootElement.GetProperty("later").Clone(),
+            },
+        };
+
+        var combined = ModProviderCapture.Combine(previous, incoming);
+        Assert.Equal("mixed", combined.ProviderVersion);
+        Assert.Equal(new[] { "1.0.0", "1.1.0" }, combined.SeenOwnerVersions);
+        Assert.Equal(1, combined.ExtensionData!["futureEarlier"].GetInt32());
+        Assert.Equal(2, combined.ExtensionData["futureLater"].GetInt32());
+    }
+
+    [Fact]
+    public void ProviderCaptureCombine_KeepsNewMetadataWhenVersionIsUnchanged()
+    {
+        using var document = JsonDocument.Parse("true");
+        var previous = new ModProviderCapture("example.stats", "1.0.0", "1.0.0");
+        var incoming = previous with
+        {
+            ExtensionData = new Dictionary<string, JsonElement>
+            {
+                ["futureFlag"] = document.RootElement.Clone(),
+            },
+        };
+        var combined = ModProviderCapture.Combine(previous, incoming);
+        Assert.True(combined.ExtensionData!["futureFlag"].GetBoolean());
+        Assert.Equal("1.0.0", combined.OwnerVersion);
+        Assert.Equal("1.0.0", combined.ProviderVersion);
+    }
+
+    [Fact]
     public void DescriptorAndProviderMetadataKeepUnknownFutureJsonFields()
     {
         var p = new Profile();
