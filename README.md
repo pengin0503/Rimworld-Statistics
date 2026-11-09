@@ -24,34 +24,15 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 - [手動確認の手順書](docs/manual-test-checklist.md)
 - 数値統計拡張: [確定設計](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-design.md)・[台帳](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-metrics.md)・[計画](docs/superpowers/plans/2026-11-07-numeric-statistics-expansion.md)・[実装・検証記録](docs/research/2026-11-07-numeric-statistics-expansion-verification.md)（Phase A/D1に加え、Phase B/C/D2の取得コードを実装。Phase B/C/D2は未検証の実験的機能として既定OFF）
 
-## 実験的な統計取得と他MOD対応（v1.2.0）
+## 実験的な数値統計と外部MOD統計SDK
 
-**264項目の拡張統計は取得コードを実装済みですが、全項目の正確性は未確認です。** 内蔵のPhase B/C/D2取得単位は既定OFFです。「MOD設定」で実験的な統計取得を許可し、必要な項目を個別に選んで**ゲームを再起動**してください。過去に保存された実験統計の表示は、取得と独立してON/OFFできます。取得開始前の履歴はさかのぼって補完されません。`Unverified` の取得を `Verified` と表示しません。
+本体はバニラ・対応DLCの全セーブ統計、264項目の実験的拡張統計、数値表示、チェックポイントと汎用の**外部MOD統計SDK v1.1**のみを担当します。264項目の正確性・長時間TPSは未検証のため、実験的取得は既定OFFです。MOD設定で必要な取得単位を明示的に選び、ゲームを再起動してください。未確認の数値をVerifiedに昇格しません。導入前のイベントは遡及できません。
 
-一方、ソースを監査した**組み込みアダプター**（対応するHospitality／Rimworld-Recruitment）は、対象MODと必要なAPIが一致した場合に例外的に自動で記録を開始します。外部SDK経由の任意のMODは自動で許可されず、明示的な有効化が必要です。自動記録でも信頼性はExperimentalのままです。
+**他MOD固有の統計のコード・テスト・CI・ZIP・公開は、[Rimworld-Statistics-mod-addon](https://github.com/pengin0503/Rimworld-Statistics-mod-addon)に移しました。** Smart Apparel Upgrade、Hospitality、Rimworld-Recruitmentへの対応は、それぞれ任意の別MODアドオンを導入してください。本体には対象MODへの専用Harmonyパッチやソース参照を含めません。
 
-RimWorld 1.7 用の **Colonist Recruitment 1.1.2**（`pengin0503.recruitment`）が存在し、バージョンと実装APIが一致する場合のみ、次の2項目を取得できます。
+v1.2.0までの本体に含まれていたHospitality／Recruitmentの取得処理も、次版以降は本体から分離します。**既存プロファイルの過去値や来歴は消去しません。** Hospitalityの保存時スナップショット、Recruitmentの進行中募集数は同じ数値IDを維持します。一方、Recruitmentの過去の「募集開始」イベントと新SDKの重複排除方式は互換ではないため、新アドオン側は別の集計IDを使用します。旧値と新値を勝手に合算しません。アドオンが無いセーブや、後に対象MODを削除した場合は新しい取得を行わず、過去に保存された値のみを保持します。
 
-- **募集依頼の開始回数**：募集依頼が実際に作成されたときの累積イベント数。同じ依頼IDを重複計上しません。導入・有効化前の依頼は復元しません。
-- **進行中の募集依頼数**：ゲームのセーブに成功した時点で進行中だった依頼の件数。履歴の累積数ではありません。
-
-対象MODがない場合やAPIが変わった場合は取得せず、存在しない値を0と見なしません。過去に記録したデータ・取得時のバージョン・信頼性は残ります。取得内容の正確性、MOD競合、ゲーム内UI、TPS負荷には未検証の範囲があります。これらは通常機能と区別した**実験的な機能**として配布物に含まれます。
-
-**Hospitality / Hospitality (Continued)** の組み込みアダプターは、宿泊客の現在人数および訪問グループの現在数を保存時点で記録します。*これまで宿泊した客の累積人数*は取得しません。詳細は[組み込みアダプター](docs/sdk/automatic-built-in-adapters.md)を参照してください。
-
-**外部MOD統計SDK v1.1**（実験的）は、MOD作者がイベント数値や保存時スナップショットを登録できます。独立したサンプルMODとABI確認を用意していますが、公開APIとしての完全な互換性保証はありません。[SDK仕様](docs/sdk/external-provider-api-v1.md)を参照してください。Anomaly専用の統計は未実装です。
-
-- [P0実装・検証の範囲](docs/research/2026-11-08-experimental-statistics-p0-validation.md)
-- [P1 Provider基盤](docs/research/2026-11-09-mod-metric-providers-p1-validation.md)
-- [P2 実MOD監査と検証項目](docs/research/2026-11-09-recruitment-provider-pilot-audit.md)
-
-## 他MOD統計の拡張方針（任意アドオン方式）
-
-新しく対応する他MODについては、**本体に専用パッチを増やさず、個別にインストールする統計アドオン**で拡張します。Rimworld-Statistics本体は全セーブ横断の集計、統計表示、チェックポイントと実験的な外部MOD統計SDKを提供します。単にMODが導入されているだけで、そのMOD固有の数値をすべて自動発見できるわけではありません。
-
-初の追加アドオンとして **[Smart Apparel Upgrade向け統計アドオン](addons/SmartApparelUpgrade/README.md)** を実装しました。対象MODが自動Wearジョブを発行した回数を記録します（着替えが完了した回数ではありません）。アドオンは**別ZIP**で配布し、対応するMODとRimworld-Statistics本体が存在する場合のみ動作します。利用するには本体設定から `mod.pengin0503.smartapparelupgrade.orders` の実験取得を有効にして再起動してください。実ゲームでの動作は未検証です。
-
-すでにv1.2.0で提供済みのHospitalityとRecruitmentの組み込みアダプターは、過去の統計データとの互換性を優先して本体に残します。新規対応はアドオンに分離する方針です。仕様・互換性・残作業は[MOD別アドオン設計](docs/sdk/addon-architecture.md)を参照してください。
+[外部MOD SDKの仕様](docs/sdk/external-provider-api-v1.md) · [アドオンリポジトリ](https://github.com/pengin0503/Rimworld-Statistics-mod-addon) · [P0取得ゲートの検証記録](docs/research/2026-11-08-experimental-statistics-p0-validation.md)
 
 ## ビルド（開発者向け）
 
