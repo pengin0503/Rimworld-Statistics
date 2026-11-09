@@ -33,11 +33,13 @@ internal static class RecruitmentMetricProvider
                 },
                 InstallEventHook: InstallStartedHook,
                 ValidateBinding: ValidateEvent,
-                ProviderVersion: "1.0.0"),
+                ProviderVersion: "1.0.0",
+                AutoEnableOnInstall: true),
             new(RecruitmentMetricPolicy.ActiveDescriptor,
                 CaptureSnapshot: CaptureActive,
                 ValidateBinding: ValidateSnapshot,
-                ProviderVersion: "1.0.0"),
+                ProviderVersion: "1.0.0",
+                AutoEnableOnInstall: true),
         };
 
     private static Type ComponentType()
