@@ -274,6 +274,62 @@ public sealed class NumericSnapshotRetentionTests
     }
 
     [Fact]
+    public void Compaction_PreservesUnknownProviderCapturePropertiesOnAnIntermediateSnapshot()
+    {
+        // Opaque provider metadata may have been written by a newer SDK revision.
+        // A non-extremal intermediate snapshot is normally removed; its unknown
+        // JSON must survive when the current reader cannot merge it losslessly.
+        using var doc = System.Text.Json.JsonDocument.Parse("{\"providerNext\":42}");
+        var descriptor = new ModMetricDescriptor
+        {
+            ProviderId = "sample.capture", OwnerPackageId = "sample.analytics",
+            FamilyId = "stock", MetricName = "total", Revision = 1,
+            Source = MetricObservationSource.SaveSnapshot,
+            Category = MetricCategory.Colony, Unit = MetricUnit.Count,
+            Overall = OverallAggregation.Sum,
+            Selection = ColonySelection.ObservationMax,
+        };
+        var id = Identity("capture-extension");
+        var p = new Profile();
+        ProfileMutations.ApplyLiveObservation(p, id.ModCampaignId!, id,
+            new ObservedValues { TicksGame = 1000 }, new DisplayInfo(), Epoch);
+        ProfileMutations.RememberModMetrics(p, new[] { descriptor });
+
+        for (var i = 0; i < 12; i++)
+        {
+            var row = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot,
+                Key = "capture-" + i,
+                Identity = id.Clone(),
+                SaveTick = i,
+                ObservedUtc = Epoch.AddMinutes(i),
+            };
+            row.Metrics[descriptor.StableKey] = MetricEntry.Of(1,
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i });
+            row.ProviderCaptures = new Dictionary<string, ModProviderCapture>
+            {
+                [descriptor.ProviderId] = new ModProviderCapture("sample.analytics", "1.2.0", "1.1.0")
+                {
+                    ExtensionData = i == 3
+                        ? new Dictionary<string, System.Text.Json.JsonElement>
+                            { ["futureCaptureMetadata"] = doc.RootElement.Clone() }
+                        : null,
+                },
+            };
+            ProfileMutations.UpsertMetricObservation(p, row);
+        }
+
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+        var protectedRow = Assert.Single(restored.MetricObservations, o => o.Key == "capture-3");
+        Assert.Equal(42, protectedRow.ProviderCaptures![descriptor.ProviderId]
+            .ExtensionData!["futureCaptureMetadata"].GetProperty("providerNext").GetInt32());
+        Assert.Contains(restored.MetricObservations, o => o.Key == "capture-11");
+        Assert.True(restored.MetricObservations.Count < 12,
+            "Ordinary provider snapshots must still be eligible for compaction");
+    }
+
+    [Fact]
     public void UnattributedSnapshots_AreNotCompactedUntilAColonyCanOwnThem()
     {
         var profile = new Profile();
