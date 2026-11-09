@@ -144,4 +144,29 @@ public sealed class HistoricFactionBackfillTests
         Assert.Equal(MetricCoverage.Partial, value.Coverage);
     }
 
+    [Fact]
+    public void Import_ReaderUpgradeRevisitsOldSaveOnceWithoutChangingItsBytes()
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        var bytes = Save(Faction("PlayerColony", 1), Faction("OutlanderCivil", 2, "Ally", 85));
+        var filename = saves.File("old.rws");
+        File.WriteAllBytes(filename, bytes);
+        File.SetLastWriteTimeUtc(filename, Stamp);
+        var session = new ProfileSession(new ProfileStore(store.Path), () => Stamp);
+        var old = Read(bytes).Observation;
+        old.ReaderVersion = 5;
+        old.FileName = "old.rws";
+        old.LastWriteUtc = File.GetLastWriteTimeUtc(filename);
+        session.Mutate(p => ProfileMutations.AddSaveObservation(p, old), SaveMode.None);
+        var engine = new ImportEngine(new SaveReader());
+        var first = engine.Run(saves.Path, session, null, CancellationToken.None);
+        Assert.Equal((1, 0, 0), (first.Read, first.Skipped, first.Failed));
+        Assert.True(session.Read(p => p.MetricObservations.Any(o => o.Source == MetricObservationSource.SaveFile &&
+            o.Metrics.ContainsKey(FactionStateSnapshot.Relations))));
+        var second = engine.Run(saves.Path, session, null, CancellationToken.None);
+        Assert.Equal((0, 1, 0), (second.Read, second.Skipped, second.Failed));
+        Assert.Equal(bytes, File.ReadAllBytes(filename));
+    }
+
 }
