@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Rimworld Statistics - Smart Apparel Upgrade Addon</name>
+  <author>pengin0503</author>
+  <packageId>pengin0503.rws.smartappareladdon</packageId>
+  <supportedVersions><li>1.7</li></supportedVersions>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>pengin0503.rimworldstatistics</li>
+    <li>pengin0503.smartapparelupgrade</li>
+  </loadAfter>
+  <description>Optional statistics addon for Smart Apparel Upgrade 1.0.1. Records successfully issued automatic Wear-job orders, not completed outfit changes, using the experimental Rimworld Statistics SDK. No polling and no copies of SDK/game DLLs. Inactive without the target mod or statistics host.
+
+Smart Apparel Upgrade 1.0.1向け任意統計アドオン。自動Wearジョブの発行成功回数を記録します（着替え完了回数ではありません）。ホストが無い・対象MODが無い場合は何も記録しません。実験的統計の有効化と再起動が必要です。</description>
+</ModMetaData>
