@@ -49,6 +49,23 @@ dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.cs
 
 The opt-in real-file test asserts basic v1/v2 metadata, expected read success, the presence/absence of the optional campaign ID, and that neither save contains an embedded Phase C checkpoint. It then imports disposable copies into one isolated profile, confirms two distinct colonies and an unchanged-file second-scan skip. It compares each source's SHA-256 before and after and reports only aggregate reader/import durations, never the hashes themselves or personal identifiers. Without both environment variables it is skipped. The original files are never written by the test.
 
+
+## Observed results from the original local files
+
+The original 16.54 MB and 34.29 MB user uploads were successfully parsed as XML. All seven supported history recorder payloads were separately Base64-decoded and raw-DEFLATE-decoded with standard-library Python. The record counts were **268 x 7** (installed case) and **428 x 7** (legacy case); they agree with the respective game tick counts. The original SHA-256 values were compared before and after without printing or publishing them. Neither source was modified.
+
+The reproducible streaming check is in \`tools/check_private_save_shapes.py\`. It works without .NET or installed MODs. Run:
+
+\`\`\`bash
+python3 tools/check_private_save_shapes.py \
+  --installed "/path/to/Test1.7.rws" \
+  --legacy "/path/to/legacy.rws"
+\`\`\`
+
+The original files passed this standalone structural check in the analysis environment. It took roughly 1–3 seconds per file in that environment; **this is Python XML scan time, not C# import time or RimWorld TPS**. A successful run never logs the source filenames, names, user IDs, saved mod IDs, raw data or the original hashes.
+
+> IMPORTANT: .NET 10 is not installed and cannot be downloaded in the analysis container. Thus the opt-in original-file **C# SaveReader and ImportEngine tests have not been executed** here. Public CI covers the anonymous C# tests only. The real-file C# test is available to run with .NET 10 in a suitable local environment.
+
 ## Limitations and next gates
 
 - CI synthetic coverage is **not equivalent** to having the two complete user files on the CI runner: it does not test all 16 MB/34 MB of XML, every mod-specific record, memory peak or true input latency.
