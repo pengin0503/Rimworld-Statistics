@@ -222,6 +222,75 @@ public sealed class ExternalSdkMetricTests
         Assert.Equal(ApiRegistrationResult.InvalidDefinition, reg.Register(snapshot with { Overall = "Sum", EventMode = ApiEventMode.Mean }, () => 0.7));
     }
 
+    [Theory]
+    [InlineData(ApiEventMode.Count, 1.0)]
+    [InlineData(ApiEventMode.Sum, 4.5)]
+    [InlineData(ApiEventMode.Mean, 4.5)]
+    public void RegisteredEventFastPathKeepsCheckpointKeysDigestAndDedupSemantics(ApiEventMode mode, double amount)
+    {
+        var metric = Metric("ReCeIpTs", mode);
+        var catalog = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, catalog.Register(metric, null));
+        var registered = Assert.Single(catalog.Seal());
+        Assert.Equal("sdk.seen.receipts", registered.SeenAccumulatorKey);
+        Assert.Equal("sdk.value.receipts", registered.ValueAccumulatorKey);
+        Assert.Same(registered.SeenAccumulatorKey, registered.SeenAccumulatorKey);
+
+        var legacy = new FamilyState { Revision = 1 };
+        var fast = new FamilyState { Revision = 1 };
+        var ids = new[] { "receipt-A", "ゲスト-😀", "receipt-A", "receipt-B" };
+        var tick = 2;
+        foreach (var id in ids)
+        {
+            var expected = ExternalSdkMetricPolicy.Record(legacy, metric, id, tick, amount);
+            var actual = ExternalSdkMetricPolicy.Record(fast, registered, id, tick, amount);
+            Assert.Equal(expected, actual);
+            tick += 10;
+        }
+        Assert.Equal(legacy.Peek("sdk.value.receipts")!.N, fast.Peek("sdk.value.receipts")!.N);
+        Assert.Equal(legacy.Peek("sdk.value.receipts")!.Sum, fast.Peek("sdk.value.receipts")!.Sum);
+        Assert.Equal(legacy.Peek("sdk.value.receipts")!.First, fast.Peek("sdk.value.receipts")!.First);
+        Assert.Equal(legacy.Peek("sdk.value.receipts")!.Last, fast.Peek("sdk.value.receipts")!.Last);
+        Assert.Equal(
+            legacy.Peek("sdk.seen.receipts")!.By!.Keys.Order(StringComparer.Ordinal),
+            fast.Peek("sdk.seen.receipts")!.By!.Keys.Order(StringComparer.Ordinal));
+
+        Assert.Equal(ApiRecordResult.InvalidEvent,
+            ExternalSdkMetricPolicy.Record(fast, registered, "bad", 30, double.NaN));
+        Assert.Equal(ApiRecordResult.InvalidEvent,
+            ExternalSdkMetricPolicy.Record(fast, registered, new string('x', 129), 30, amount));
+        Assert.Equal(ApiRecordResult.InvalidEvent,
+            ExternalSdkMetricPolicy.Record(fast, registered, "negative-tick", -1, amount));
+        Assert.Equal(3L, fast.Peek("sdk.value.receipts")!.N);
+    }
+
+    [Fact]
+    public void RegisteredFastPathPreservesOverflowAndSaveRestoreHistory()
+    {
+        var metric = Metric("Checkout");
+        var registry = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, registry.Register(metric, null));
+        var registered = Assert.Single(registry.Seal());
+        var id = registered.Descriptor.AcquisitionId;
+        var spec = new[] { new FamilySpec(id, 1) };
+        var acc = LiveMetricAccumulator.StartNew(spec, 0);
+        var family = acc.Family(id)!;
+        Assert.Equal(ApiRecordResult.Recorded,
+            ExternalSdkMetricPolicy.Record(family, registered, "event-one", 1, 1));
+        var save = acc.PrepareSave(50, DateTime.UtcNow, "fast-parent")!;
+        var resumed = LiveMetricAccumulator.Resume(save.Json, spec, 50);
+        var state = resumed.Family(id)!;
+        Assert.Equal(ApiRecordResult.Duplicate,
+            ExternalSdkMetricPolicy.Record(state, registered, "event-one", 51, 1));
+        for (var i = 1; i < FamilyOps.KeyCap; ++i)
+            Assert.Equal(ApiRecordResult.Recorded,
+                ExternalSdkMetricPolicy.Record(state, registered, "new-" + i, 52 + i, 1));
+        Assert.Equal(ApiRecordResult.CapExceeded,
+            ExternalSdkMetricPolicy.Record(state, registered, "over", 5000, 1));
+        Assert.Equal(FamilyOps.KeyCap, state.Peek(registered.ValueAccumulatorKey)!.N);
+        Assert.Equal(true, state.Peek(registered.SeenAccumulatorKey)!.Overflow);
+    }
+
     [Fact]
     public void OldProfileDataSurvivesAddingSdkDescriptorAndUnknownProperties()
     {
