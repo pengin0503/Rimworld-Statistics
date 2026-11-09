@@ -78,6 +78,8 @@ jobs:
         run: python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-unverified.zip" "$RUNNER_TEMP/StatisticsSdkSample.zip"
       - name: Build separate development verification harness
         run: bash tools/VerifyHarness/package.sh "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+      - name: Stage standalone Windows verification launcher with developer packages
+        run: cp tools/VerifyHarness/launch-windows.ps1 "$RUNNER_TEMP/RWS-Verify-Windows.ps1"
       - name: Static Harmony patch targets and argument names (1.7.4985 reference metadata)
         shell: bash
         run: |
@@ -107,6 +109,7 @@ jobs:
           path: |
             ${{ runner.temp }}/RimworldStatistics-unverified.zip
             ${{ runner.temp }}/RimworldStatisticsVerifyHarness.zip
+            ${{ runner.temp }}/RWS-Verify-Windows.ps1
             ${{ runner.temp }}/StatisticsSdkSample.zip
             ${{ runner.temp }}/rws-profile-benchmark.csv
           if-no-files-found: error
