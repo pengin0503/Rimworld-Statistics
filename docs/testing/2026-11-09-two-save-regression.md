@@ -47,7 +47,7 @@ export RWSTATS_CASE_LEGACY_SAVE='/path/to/legacy.rws'
 dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
 ```
 
-The opt-in real-file test asserts basic v1/v2 metadata, expected read success, the presence/absence of the optional campaign ID, and that neither save contains an embedded Phase C checkpoint. It compares each source's SHA-256 before and after and reports only a combined duration, never the hashes themselves or personal identifiers. Without both environment variables it is skipped. The original files are never written by the test.
+The opt-in real-file test asserts basic v1/v2 metadata, expected read success, the presence/absence of the optional campaign ID, and that neither save contains an embedded Phase C checkpoint. It then imports disposable copies into one isolated profile, confirms two distinct colonies and an unchanged-file second-scan skip. It compares each source's SHA-256 before and after and reports only aggregate reader/import durations, never the hashes themselves or personal identifiers. Without both environment variables it is skipped. The original files are never written by the test.
 
 ## Limitations and next gates
 
