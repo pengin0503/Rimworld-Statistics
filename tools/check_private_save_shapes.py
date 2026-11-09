@@ -8,7 +8,9 @@ It does not print file names, colony names, MOD IDs or save hashes.
 import argparse
 import base64
 import hashlib
+import math
 import os
+import struct
 import time
 import zlib
 from xml.parsers import expat
@@ -22,6 +24,19 @@ SUPPORTED = {
     "FreeColonists", "Prisoners", "ColonistMood",
 }
 BASE = ("savegame", "game", "history", "autoRecorderGroups", "li", "recorders", "li")
+QUEST = ("savegame", "game", "questManager", "quests", "li")
+QUEST_FIELDS = {"id", "root", "acceptanceTick", "acceptanceExpireTick",
+                "initiallyAccepted", "ended", "endOutcome", "cleanupTick"}
+QUEST_EXPECTATIONS = {
+    "installed": {"accepted": 34, "success": 11, "failure": 15, "expired": 17},
+    "legacy": {"accepted": 68, "success": 14, "failure": 42, "expired": 26},
+}
+WEALTH_EXPECTATIONS = {
+    "installed": {"latest": 117528.0234375, "max": 117741.890625,
+                  "mean": 63932.962303958724},
+    "legacy": {"latest": 268320.1875, "max": 268320.1875,
+               "mean": 93937.6574958017},
+}
 COMPONENT = ("savegame", "game", "components", "li")
 FIELDS = {
     ("savegame", "meta", "gameVersion"): "version",
@@ -47,18 +62,21 @@ def inspect(path):
     capture = None
     pieces = []
     record = None
+    quests = []
+    quest = None
     in_stats_component = False
 
     def start(name, attrs):
-        nonlocal capture, pieces, record, in_stats_component
+        nonlocal capture, pieces, record, quest, in_stats_component
         stack.append(name)
         p = tuple(stack)
         if len(stack) == 1 and name != "savegame":
             raise ValueError("XML root is not savegame")
         if p == ("savegame", "meta", "modIds", "li"):
             state["mod_count"] += 1
-        if p == ("savegame", "game", "questManager", "quests", "li"):
+        if p == QUEST:
             state["quest_count"] += 1
+            quest = {}
         if p == COMPONENT:
             in_stats_component = attrs.get("Class") == "RimworldStatistics.GameComponent_RimworldStatistics"
             if in_stats_component:
@@ -73,21 +91,27 @@ def inspect(path):
         elif p[:-1] == BASE and p[-1] in ("def", "records", "recordsDeflate"):
             capture = "rec:" + p[-1]
             pieces = []
+        elif p[:-1] == QUEST and p[-1] in QUEST_FIELDS:
+            capture = "quest:" + p[-1]
+            pieces = []
 
     def chars(value):
         if capture is not None:
             pieces.append(value)
 
     def end(_name):
-        nonlocal capture, pieces, record, in_stats_component
+        nonlocal capture, pieces, record, quest, in_stats_component
         p = tuple(stack)
         if capture is not None and (
             (capture.startswith("rec:") and p == BASE + (capture[4:],))
+            or (capture.startswith("quest:") and p == QUEST + (capture[6:],))
             or FIELDS.get(p) == capture
         ):
             value = "".join(pieces).strip()
             if capture.startswith("rec:"):
                 record[capture[4:]] = value
+            elif capture.startswith("quest:"):
+                quest[capture[6:]] = value
             else:
                 state[capture] = value
             capture = None
@@ -110,7 +134,22 @@ def inspect(path):
                 if rec_name in state["recorder_lengths"]:
                     raise ValueError("duplicate recorder " + rec_name)
                 state["recorder_lengths"][rec_name] = len(payload) // 4
+                if rec_name == "Wealth_Total":
+                    if not payload:
+                        raise ValueError("empty Wealth_Total history")
+                    values = (v[0] for v in struct.iter_unpack("<f", payload))
+                    # The recorder contains finite float32 samples. Keep only aggregates.
+                    points = list(values)
+                    if not all(math.isfinite(x) for x in points):
+                        raise ValueError("non-finite Wealth_Total history")
+                    state["wealth_total"] = {
+                        "latest": points[-1], "max": max(points),
+                        "mean": math.fsum(points) / len(points),
+                    }
             record = None
+        if p == QUEST:
+            quests.append(quest)
+            quest = None
         if p == COMPONENT:
             in_stats_component = False
         stack.pop()
@@ -120,10 +159,42 @@ def inspect(path):
     parser.EndElementHandler = end
     parser.CharacterDataHandler = chars
     parser.ExternalEntityRefHandler = lambda *_: 0
+    # Match the production C# XmlReader DtdProcessing.Prohibit behavior.
+    parser.StartDoctypeDeclHandler = lambda *_: (_ for _ in ()).throw(
+        ValueError("DTD declarations are prohibited")
+    )
     with open(path, "rb") as src:
         for chunk in iter(lambda: src.read(1024 * 1024), b""):
             parser.Parse(chunk, False)
     parser.Parse(b"", True)
+
+    # Mirror RetainedQuestMetricReader's deduplication and Scribe defaults.
+    groups = {}
+    for q in quests:
+        try:
+            row = (
+                int(q.get("id", "0")),
+                q.get("root"),
+                int(q.get("acceptanceTick", "-1")),
+                int(q.get("acceptanceExpireTick", "-1")),
+                q.get("initiallyAccepted", "False").lower() == "true",
+                q.get("ended", "False").lower() == "true",
+                q.get("endOutcome", "Unknown"),
+                int(q.get("cleanupTick", "-1")),
+            )
+        except ValueError:
+            continue
+        groups.setdefault(row[0], set()).add(row)
+    kept = [next(iter(rows)) for number, rows in groups.items()
+            if number >= 0 and len(rows) == 1]
+    tick = int(state.get("ticks", "0"))
+    accepted = [q for q in kept if q[2] >= 0 or q[4]]
+    state["quest_outcomes"] = {
+        "accepted": len(accepted),
+        "success": sum(q[5] and q[6] == "Success" for q in accepted),
+        "failure": sum(q[5] and q[6] == "Fail" for q in accepted),
+        "expired": sum(not q[4] and q[2] < 0 and 0 <= q[3] <= tick for q in kept),
+    }
     return state
 
 
@@ -152,6 +223,11 @@ def main():
             raise AssertionError(label + ": expected seven recorders")
         if any(n != points for n in actual["recorder_lengths"].values()):
             raise AssertionError(label + ": recorder lengths do not match")
+        if actual["quest_outcomes"] != QUEST_EXPECTATIONS[label]:
+            raise AssertionError(label + ": retained quest aggregate mismatch")
+        for stat, expected_value in WEALTH_EXPECTATIONS[label].items():
+            if not math.isclose(actual["wealth_total"][stat], expected_value, rel_tol=0, abs_tol=0.01):
+                raise AssertionError(label + ": wealth aggregate mismatch (" + stat + ")")
         if points != ticks // 30_000 + 1:
             raise AssertionError(label + ": unexpected recorder time alignment")
         if before != sha256_file(filename):
