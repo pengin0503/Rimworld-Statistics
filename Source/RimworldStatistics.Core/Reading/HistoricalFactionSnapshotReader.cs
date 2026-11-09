@@ -63,14 +63,19 @@ internal static class HistoricalFactionSnapshotReader
         // Infer it ONLY when a single valid faction omitted loadID, no
         // written zero exists, and the player's saved outgoing relations
         // refer to Faction_0. Otherwise leave omitted identities unknown.
-        var omitted = factions.Where(f => f.Valid && f.LoadId is null).ToList();
-        if (omitted.Count > 1 || omitted.Count > 0 && knownIds.Contains(0))
-            return null;
-        var inferZero = omitted.Count == 1
+        // Even malformed/hidden faction records occupy the saved reference
+        // namespace. Excluding them from this identity proof can incorrectly
+        // assign Faction_0 to a different valid faction.
+        var omitted = factions.Where(f => f.LoadId is null).ToList();
+        var ambiguousZero = omitted.Count > 1
+            || omitted.Count > 0 && knownIds.Contains(0);
+        var inferZero = omitted.Count == 1 && omitted[0].Valid
+            && !ambiguousZero
             && player.Relations.Any(r => r.Valid && r.Other == "Faction_0");
         int? EffectiveId(SavedFaction faction) => faction.LoadId ??
             (inferZero && faction.Equals(omitted[0]) ? 0 : null);
-        if (EffectiveId(player) is null)
+        if (EffectiveId(player) is not { } playerId
+            || ambiguousZero && playerId == 0)
             return null;
 
         var facts = new List<FactionStateFact>();
@@ -78,7 +83,8 @@ internal static class HistoricalFactionSnapshotReader
         {
             if (!faction.Valid || !faction.Active
                 || faction.Def is null || !SupportedVisibleDefs.Contains(faction.Def)
-                || EffectiveId(faction) is not { } id || id == EffectiveId(player))
+                || EffectiveId(faction) is not { } id || id == playerId
+                || ambiguousZero && id == 0)
                 continue;
             if (faction.Def == "Empire" && activeDlc?.Contains(
                     AcquisitionUnits.Royalty, StringComparer.OrdinalIgnoreCase) != true)
