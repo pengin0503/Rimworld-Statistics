@@ -55,6 +55,8 @@ jobs:
         run: dotnet build .devinputs/recruitment-1.1.2/Source/Recruitment/Recruitment.csproj -c Release --nologo
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: External SDK event allocation and throughput benchmark
+        run: dotnet run -c Release --project tools/SdkEventBenchmark/SdkEventBenchmark.csproj --no-launch-profile
       - name: Profile scaling benchmark (100–3000 synthetic saves)
         shell: bash
         run: |
