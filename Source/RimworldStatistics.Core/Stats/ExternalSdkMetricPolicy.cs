@@ -5,7 +5,13 @@ using RimworldStatistics.Api;
 namespace RimworldStatistics.Core;
 
 /// <summary>Pure SDK validation and checkpoint operations; the external SDK has no separate store.</summary>
-public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescriptor Descriptor, Func<double?>? Snapshot);
+public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescriptor Descriptor, Func<double?>? Snapshot)
+{
+    // A metric is frozen at provider registration; game-time events must not rebuild these string keys.
+    // The persisted spelling is intentionally identical to the SDK's original checkpoint format.
+    public string SeenAccumulatorKey { get; } = "sdk.seen." + Descriptor.MetricName.ToLowerInvariant();
+    public string ValueAccumulatorKey { get; } = "sdk.value." + Descriptor.MetricName.ToLowerInvariant();
+}
 
 public sealed class ExternalSdkMetricRegistry
 {
@@ -103,6 +109,42 @@ public static class ExternalSdkMetricPolicy
             return state.Peek(seen)?.Overflow == true ? ApiRecordResult.CapExceeded : ApiRecordResult.Duplicate;
         var key = Value(metric.MetricName);
         if (metric.EventMode == ApiEventMode.Count)
+            state.Count(key);
+        else
+            state.Observe(key, value);
+        state.Mark(key, tick);
+        return ApiRecordResult.Recorded;
+    }
+
+    /// <summary>
+    /// Game-time fast path: use the prevalidated, frozen registration and stack-only UTF-8/hash buffers.
+    /// Only the 64-character hex digest persisted in the bounded distinct set is allocated per attempt.
+    /// Do not change the digest algorithm: old checkpoints must continue deduplicating identically.
+    /// </summary>
+    public static ApiRecordResult Record(FamilyState state, RegisteredSdkMetric? registered, string? eventId, int tick, double value)
+    {
+        if (state is null || registered is null || registered.Api.Kind != ApiMetricKind.Event ||
+            string.IsNullOrWhiteSpace(eventId) || eventId.Length > 128 || tick < 0 ||
+            !double.IsFinite(value) || Math.Abs(value) > 1e12 ||
+            registered.Api.EventMode == ApiEventMode.Count && value != 1)
+            return ApiRecordResult.InvalidEvent;
+
+        var seen = registered.SeenAccumulatorKey;
+        if (state.Peek(seen)?.Overflow == true)
+            return ApiRecordResult.CapExceeded;
+
+        // The validation above bounds UTF-16 input to 128 chars; the maximum UTF-8 byte count
+        // also covers fallback sequences for malformed surrogate pairs.
+        Span<byte> utf8 = stackalloc byte[Encoding.UTF8.GetMaxByteCount(128)];
+        var written = Encoding.UTF8.GetBytes(eventId.AsSpan(), utf8);
+        Span<byte> hash = stackalloc byte[32];
+        SHA256.HashData(utf8[..written], hash);
+        var digest = Convert.ToHexStringLower(hash);
+        if (!state.Distinct(seen, digest))
+            return state.Peek(seen)?.Overflow == true ? ApiRecordResult.CapExceeded : ApiRecordResult.Duplicate;
+
+        var key = registered.ValueAccumulatorKey;
+        if (registered.Api.EventMode == ApiEventMode.Count)
             state.Count(key);
         else
             state.Observe(key, value);
