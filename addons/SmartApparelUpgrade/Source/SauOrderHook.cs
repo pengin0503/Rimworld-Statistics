@@ -21,26 +21,37 @@ internal static class SauOrderHook
     public static bool TryResolve(out Binding binding)
     {
         binding = null!;
-        const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a =>
-            string.Equals(a.GetName().Name, "SmartApparelUpgrade", StringComparison.Ordinal));
-        var scanner = assembly?.GetType("Pengin.SmartApparelUpgrade.ApparelScanner", throwOnError: false);
-        var stamp = assembly?.GetType("Pengin.SmartApparelUpgrade.SwapStamp", throwOnError: false);
-        if (scanner is null || stamp is null || !typeof(MapComponent).IsAssignableFrom(scanner))
+        try
+        {
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a =>
+                string.Equals(a.GetName().Name, "SmartApparelUpgrade", StringComparison.Ordinal));
+            var scanner = assembly?.GetType("Pengin.SmartApparelUpgrade.ApparelScanner", throwOnError: false);
+            var stamp = assembly?.GetType("Pengin.SmartApparelUpgrade.SwapStamp", throwOnError: false);
+            if (scanner is null || stamp is null || !typeof(MapComponent).IsAssignableFrom(scanner))
+                return false;
+            var target = scanner.GetMethod("OrderIdleUpgrades", flags,
+                binder: null, types: Type.EmptyTypes, modifiers: null);
+            var stamps = scanner.GetField("stamps", flags);
+            var issued = stamp.GetField("LastIssued", flags);
+            var pawn = stamp.GetField("PawnId", flags);
+            var apparel = stamp.GetField("TargetId", flags);
+            if (target is null || target.ReturnType != typeof(void) || target.IsStatic ||
+                stamps is null || !stamps.FieldType.IsGenericType ||
+                stamps.FieldType.GetGenericTypeDefinition() != typeof(List<>) ||
+                stamps.FieldType.GenericTypeArguments[0] != stamp ||
+                issued?.FieldType != typeof(int) || pawn?.FieldType != typeof(string) ||
+                apparel?.FieldType != typeof(string))
+                return false;
+            binding = new Binding(target, stamps, issued!, pawn!, apparel!);
+            return true;
+        }
+        catch (Exception)
+        {
+            // A broken, disabled or changed optional MOD must never prevent
+            // other MODs from starting, nor publish an unsupported collector.
             return false;
-        var target = scanner.GetMethod("OrderIdleUpgrades", flags,
-            binder: null, types: Type.EmptyTypes, modifiers: null);
-        var stamps = scanner.GetField("stamps", flags);
-        var issued = stamp.GetField("LastIssued", flags);
-        var pawn = stamp.GetField("PawnId", flags);
-        var apparel = stamp.GetField("TargetId", flags);
-        if (target is null || target.ReturnType != typeof(void) || target.IsStatic ||
-            stamps is null || !typeof(IEnumerable).IsAssignableFrom(stamps.FieldType) ||
-            issued?.FieldType != typeof(int) || pawn?.FieldType != typeof(string) ||
-            apparel?.FieldType != typeof(string))
-            return false;
-        binding = new Binding(target, stamps, issued!, pawn!, apparel!);
-        return true;
+        }
     }
 
     public static bool TryInstall(Binding binding)
