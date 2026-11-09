@@ -38,11 +38,6 @@ public static class VerifyDebugActions
     }
 
     /// <summary>
-    /// Non-mutating contract check for the optimized Phase B/D2 pollution reader.
-    /// Measures the vanilla aggregate against the old exhaustive IsPolluted scan.
-    /// No production startup cost and no map-wide callbacks in normal gameplay.
-    /// </summary>
-    /// <summary>
     /// Read-only Issue #28 equivalence and timing probe for the optimized indoor-room count.
     /// The exhaustive cell walk matches the original save-time reader; the region walk
     /// matches the current reader. Require identical Room objects, not only equal counts.
@@ -99,6 +94,11 @@ public static class VerifyDebugActions
         Report(report.ToString().TrimEnd(), final);
     }
 
+    /// <summary>
+    /// Non-mutating contract check for the optimized Phase B/D2 pollution reader.
+    /// Measures the vanilla aggregate against the old exhaustive IsPolluted scan.
+    /// No production startup cost and no map-wide callbacks in normal gameplay.
+    /// </summary>
     [DebugAction(Category, "Benchmark pollution totals", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void BenchmarkPollutionTotals()
     {
