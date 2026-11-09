@@ -45,7 +45,7 @@ internal sealed class ExternalSdkHost : IStatisticsHost
             return ApiRecordResult.Disabled;
         try
         {
-            var result = ExternalSdkMetricPolicy.Record(family, metric.Api, uniqueEventId, Find.TickManager.TicksGame, value);
+            var result = ExternalSdkMetricPolicy.Record(family, metric, uniqueEventId, Find.TickManager.TicksGame, value);
             // An invalid confirmed event is a missed observation, not evidence of zero activity.
             // Both invalid input and dedup-cap overflow must weaken coverage, never claim Complete.
             if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
