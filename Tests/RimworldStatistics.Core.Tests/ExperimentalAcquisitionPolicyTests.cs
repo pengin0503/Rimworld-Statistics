@@ -47,4 +47,25 @@ public sealed class ExperimentalAcquisitionPolicyTests
         Assert.Contains("research", resolved);
         Assert.DoesNotContain("work", resolved);
     }
+
+    [Fact]
+    public void AuditedBuiltInAdapterOpensOnlyWhenOwnerInstalledWithoutExperimentalOptIn()
+    {
+        var descriptor = new ModMetricDescriptor
+        {
+            OwnerPackageId = "Orion.Hospitality", ProviderId = "rws.hospitality",
+            FamilyId = "guests", MetricName = "present",
+            Source = MetricObservationSource.SaveSnapshot,
+            Category = MetricCategory.Social, Unit = MetricUnit.Count, Overall = OverallAggregation.Sum,
+        };
+        var automatic = new[] { descriptor };
+        var present = ExperimentalAcquisitionPolicy.ResolveAutoAdapters(automatic,
+            new[] { new ModPackageInfo("ORION.HOSPITALITY", null) });
+        Assert.Contains(descriptor.AcquisitionId, present);
+        Assert.Empty(ExperimentalAcquisitionPolicy.ResolveAutoAdapters(automatic, Array.Empty<ModPackageInfo>()));
+        Assert.Empty(ExperimentalAcquisitionPolicy.ResolveAutoAdapters(new[]
+        {
+            descriptor with { RequiredPackages = new[] { new ModPackageRequirement("Orion.Hospitality", "1.0.0") } },
+        }, new[] { new ModPackageInfo("orion.hospitality", null) }));
+    }
 }
