@@ -1,0 +1,119 @@
+name: Publish Rimworld Statistics v1.2.0-rc.3 SDK preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-v1.2.0-rc.3.yml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-rimworld-statistics-v1.2.0-rc.3
+  cancel-in-progress: false
+
+jobs:
+  prerelease:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: 'v1.2.0-rc.3'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+      - name: Refuse to overwrite an existing version
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release $RELEASE_TAG already exists; refusing to overwrite." >&2
+            exit 1
+          fi
+          if git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Tag $RELEASE_TAG already exists; refusing to overwrite." >&2
+            exit 1
+          fi
+      - name: Run full no-game Core regression tests
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Validate translation keys
+        run: bash tools/check_keys.sh
+      - name: Independently compile and probe SDK consumer
+        shell: bash
+        run: |
+          set -euo pipefail
+          for minor in 0 1; do
+            dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release "-p:RequiredApiMinor=$minor" --nologo
+            dotnet run --project tools/SdkSampleProbe/SdkSampleProbe.csproj -c Release "-p:RequiredApiMinor=$minor" --no-launch-profile
+          done
+      - name: Build host and independent development sample ZIPs
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.3.zip"
+          bash tools/package_sdk_sample.sh "$RUNNER_TEMP/StatisticsSdkSample-v1.2.0-rc.3.zip"
+      - name: Verify release package ownership, archive and checksum
+        shell: bash
+        run: |
+          set -euo pipefail
+          host="$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.3.zip"
+          sample="$RUNNER_TEMP/StatisticsSdkSample-v1.2.0-rc.3.zip"
+          python3 tools/check_sdk_package.py "$host" "$sample"
+          unzip -t "$host"
+          unzip -t "$sample"
+          names="$(unzip -Z -1 "$host")"
+          grep -Fxq 'RimworldStatistics/About/About.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Core.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/1.7/Assemblies/RimworldStatistics.Api.dll' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/Japanese/Keyed/RimworldStatistics.xml' <<< "$names"
+          grep -Fxq 'RimworldStatistics/Languages/English/Keyed/RimworldStatistics.xml' <<< "$names"
+          if grep -Eq 'VerifyHarness|/(Recruitment|Assembly-CSharp|UnityStubs|Waylith|0Harmony)\\.dll$' <<< "$names"; then
+            echo 'ERROR: Optional game dependency or development verification harness leaked into release.' >&2
+            exit 1
+          fi
+          (cd "$RUNNER_TEMP" && sha256sum RimworldStatistics-v1.2.0-rc.3.zip StatisticsSdkSample-v1.2.0-rc.3.zip > RimworldStatistics-v1.2.0-rc.3.sha256)
+      - name: Publish prerelease from tested main commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > "$RUNNER_TEMP/release-notes.md" <<'NOTES'
+          ## RimWorld 1.7 — P3 external MOD statistics SDK (experimental)
+
+          このリリースには外部MOD統計SDK（P3）を追加しました。**実機検証とTPS・保存性能測定は未実施**です。現時点では正式なAPI互換性保証はありません。安定版ではなく、導入・検証用の**プレリリース**です。
+
+          ### Changes
+          - External `RimworldStatistics.Api.dll` (API v1.1, experimental): optional host discovery and version negotiation; consumers without the SDK installed fail closed rather than preventing game startup.
+          - Event Count/Sum/Mean and save-time snapshot metrics reuse the audited statistics checkpoints, profiles, experimental acquisition gates and history display.
+          - SHA-256 event ID deduplication, bounded memory, coverage-gap markers and source failure isolation; historical data survives MOD removal, reload and branch handling.
+          - Fixed cumulative counts/deduplication when SDK metric name casing changes, and reporting unsampled mean values incorrectly after a coverage gap.
+          - Independent development-only sample MOD supports explicit game-settings test actions, persistent event IDs and one-shot exception injection.
+          - CI includes SDK 1.0 synthetic binary ABI probe, missing-host check, version-minor matrix and DLL ownership/packaging audit.
+
+          **IMPORTANT:** RimWorld 1.7 in-game operation, save/restore with real MOD combinations, source-specific integration, and performance targets (TPS median regression <=2%; save overhead <=50ms or <=5%) were **not validated**. The 1.0 ABI test uses a synthetic frozen fixture, not a previously shipped public v1.0 binary. See [P3 game acceptance protocol](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/sdk/p3-game-acceptance.md).
+
+          ### Files
+          - `RimworldStatistics-v1.2.0-rc.3.zip`: installable host MOD (requires Harmony).
+          - `StatisticsSdkSample-v1.2.0-rc.3.zip`: **development-only**, optional sample MOD for testing; install only for SDK tests.
+          - `RimworldStatistics-v1.2.0-rc.3.sha256`: SHA-256 digest of both packages.
+
+          **Install:** extract the ZIP and place the `RimworldStatistics` folder under `Mods`. Do not install a second `RimworldStatistics.Api.dll`; the sample does not bundle it. Back up save/profile data before manual testing.
+
+          [Implementation PR #44](https://github.com/pengin0503/Rimworld-Statistics/pull/44) · [SDK documentation](https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/sdk/external-provider-api-v1.md)
+          NOTES
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.3.zip" \
+            "$RUNNER_TEMP/StatisticsSdkSample-v1.2.0-rc.3.zip" \
+            "$RUNNER_TEMP/RimworldStatistics-v1.2.0-rc.3.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics v1.2.0-rc.3 (SDK preview; unverified)" \
+            --notes-file "$RUNNER_TEMP/release-notes.md" \
+            --prerelease

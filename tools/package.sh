@@ -16,7 +16,7 @@ trap 'rm -rf "$stage"' EXIT
 mod="$stage/RimworldStatistics"
 mkdir -p "$mod/About" "$mod/1.7/Assemblies"
 cp About/About.xml "$mod/About/"
-cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll "$mod/1.7/Assemblies/"
+cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll 1.7/Assemblies/RimworldStatistics.Api.dll "$mod/1.7/Assemblies/"
 for lang in Languages/*/; do
   name=$(basename "$lang")
   mkdir -p "$mod/Languages/$name/Keyed"

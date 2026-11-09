@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>SdkSampleProbe</AssemblyName>
+    <RequiredApiMinor Condition="'$(RequiredApiMinor)' == ''">0</RequiredApiMinor>
+    <DefineConstants Condition="'$(RequiredApiMinor)' == '1'">$(DefineConstants);REQUIRES_API_MINOR_1</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../Source/RimworldStatistics.Api/RimworldStatistics.Api.csproj" Condition="'$(LegacyApiContract)' != 'true'" />
+    <ProjectReference Include="../../Tests/Fixtures/SdkApiV1_0/SdkApiV1_0.csproj" Condition="'$(LegacyApiContract)' == 'true'" />
+    <Compile Include="../../examples/StatisticsSdkSample/Source/SampleSdkClient.cs" Link="SampleSdkClient.cs" />
+    <Compile Include="../../examples/StatisticsSdkSample/Source/SampleEventLedger.cs" Link="SampleEventLedger.cs" />
+  </ItemGroup>
+</Project>

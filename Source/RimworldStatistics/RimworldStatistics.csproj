@@ -24,6 +24,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="../RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
+    <ProjectReference Include="../RimworldStatistics.Api/RimworldStatistics.Api.csproj" />
   </ItemGroup>
   <Target Name="CheckGameReferences" BeforeTargets="ResolveReferences" Condition="'$(UseNuGetRefs)' != 'true'">
     <Error Condition="!Exists('$(GameDir)/Assembly-CSharp.dll') Or !Exists('$(GameDir)/UnityStubs.dll')" Text="Set GameDir to the RimWorld 1.7 installation directory (or run tools/fetch_dev_inputs.py refs .refs)." />
