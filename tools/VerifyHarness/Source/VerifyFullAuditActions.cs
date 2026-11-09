@@ -85,6 +85,19 @@ public static class VerifyFullAuditActions
         WriteDossier("retry", lastCases);
     }
 
+    /// <summary>
+    /// Consolidates the two existing non-mutating map equivalence/timing
+    /// probes used for Issue #28. Results still do not prove gameplay TPS.
+    /// </summary>
+    [DebugAction("RWS Verify", "4. Check room/pollution map contracts (read-only)",
+        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    public static void RunMapContracts()
+    {
+        if (!IsIsolated()) return;
+        VerifyDebugActions.BenchmarkIndoorRooms();
+        VerifyDebugActions.BenchmarkPollutionTotals();
+    }
+
     private static string CurrentCampaign()
         => GameComponent_RimworldStatistics.CurrentOrNull?.campaignId ?? "";
 
@@ -162,6 +175,8 @@ public static class VerifyFullAuditActions
             .AppendLine().Append(progressText)
             .AppendLine().AppendLine("## Runtime gate / assembly fingerprint")
             .AppendLine(status)
+            .AppendLine().AppendLine("## Checkpoint lineage")
+            .AppendLine(VerifyProbe.Lineage())
             .AppendLine().AppendLine("## Checkpoint preview")
             .AppendLine("Reason: " + (reason ?? "available"));
         foreach (var (key, value) in values)
