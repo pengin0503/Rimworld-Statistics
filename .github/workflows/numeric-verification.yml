@@ -206,7 +206,7 @@ jobs:
             throw 'Safe disposable test save copy was missing or duplicated'
           }
           $saveWithMods = Join-Path $root 'saved-with-mods.rws'
-          Set-Content -LiteralPath $saveWithMods -Value '<savegame><meta><modIds><li>ludeon.rimworld</li><li>brrainz.harmony</li><li>saved.only.mod</li><li>SAVED.ONLY.MOD</li></modIds></meta><game /></savegame>'
+          Set-Content -LiteralPath $saveWithMods -Value '<savegame><meta><modIds><li>ludeon.rimworld</li><li>brrainz.harmony</li><li>pengin0503.rimworldstatistics</li><li>saved.only.mod</li><li>SAVED.ONLY.MOD</li></modIds></meta><game /></savegame>'
           $saveModsHash = (Get-FileHash $saveWithMods -Algorithm SHA256).Hash
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $saveWithMods -UseSaveModList -SetupOnly
           & ./tools/VerifyHarness/launch-windows.ps1 -GameExe $exe -NormalDataFolder $normal -TestDataFolder $test -SaveFile $saveWithMods -UseSaveModList -SetupOnly
