@@ -37,7 +37,7 @@ Artifacts内の `RWS-Verify-Windows.ps1` はリポジトリの `tools/VerifyHarn
 
 `launch-windows.ps1` は通常の `ModsConfig.xml`、通常セーブ、Steam起動オプション、ゲーム本体のMODファイルを書き換えない。独立した `%LOCALAPPDATA%\RimworldStatistics-Verify` 以下に専用データと構成を作成する。既存の無関係なフォルダを指定した場合は上書きを拒否する。MODのZIP展開・インストール自体は行わない。
 
-通常のセーブを使う場合は、元のセーブを**コピー**して専用データフォルダの `Saves` へ入れ、コピーした方で試験する。自動ケースは研究・襲撃・敵の撃破などを発生させるため、**実際のセーブを直接使わないこと**。
+通常のセーブを使う場合は、`-SaveFile` で原本をテスト専用フォルダへ複製し、そのコピーで試験する。自動ケースは研究・襲撃・敵の撃破などを発生させるため、**実際のセーブを直接使わないこと**。
 
 PowerShell の実行ポリシーにより拒否された場合は、信頼できるこのリポジトリのスクリプトであることを確認した上で、一度のコマンドだけ `powershell -NoProfile -ExecutionPolicy Bypass -File ...` として起動する方法もある。
 
@@ -93,7 +93,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 ## 一括検証（264項目のカバレッジ監査）
 
-最も簡単な手順は、Steam の起動オプションへ `-savedatafolder=C:\\rws-verify -rwsverify=all` を指定し、テスト専用のセーブをロードしてから **開発モード → Debug actions → RWS Verify → 1. Run guided full audit (MODIFIES TEST WORLD)** を1回押す方法です。
+最短の手順は上記の **Windows用スクリプトを使った専用環境の起動**です。手動起動する場合は、Steam の起動オプションへ `-savedatafolder=C:\\rws-verify -rwsverify=all` を指定することもできます。起動後に **開発モード → Debug actions → RWS Verify → 1. Run guided full audit (MODIFIES TEST WORLD)** を選びます。
 
 この操作は次を順番に行います（その後、保存して「2. Read-only rescan」を実行）。
 
