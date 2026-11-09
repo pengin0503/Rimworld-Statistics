@@ -41,10 +41,10 @@ public static class HistoricalCounterIntervals
                 || parentId == child.Key || !uniqueCheckpoints.TryGetValue(child.Key, out var onlyChild)
                 || !ReferenceEquals(onlyChild, child)
                 || !uniqueCheckpoints.TryGetValue(parentId, out var parent)
-                || parent.Conflicted
+                || parent.Conflicted || parent.ParentKey == child.Key
                 || parent.SaveTick <= 0 || child.SaveTick <= parent.SaveTick
                 || string.IsNullOrWhiteSpace(parent.PayloadHash) || string.IsNullOrWhiteSpace(child.PayloadHash)
-                || parent.PayloadHash.Length != 64 || child.PayloadHash.Length != 64
+                || !ValidHash(parent.PayloadHash) || !ValidHash(child.PayloadHash)
                 || !SameColony(parent.Identity, child.Identity)
                 || !string.Equals(parent.GameVersion, child.GameVersion, StringComparison.Ordinal)
                 || string.IsNullOrWhiteSpace(child.GameVersion))
