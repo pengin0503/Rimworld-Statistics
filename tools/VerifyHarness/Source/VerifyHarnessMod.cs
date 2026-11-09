@@ -6,8 +6,8 @@ namespace RimworldStatistics.VerifyHarness;
 /// <summary>
 /// Opens unverified acquisition units for an in-game verification run. Mod constructors run before the main mod applies its
 /// adapters (<c>[StaticConstructorOnStartup]</c>), so the units opened here get their hooks this session. Nothing is opened
-/// unless the game was started with <c>-savedatafolder=</c>: values recorded by unverified code must never reach the player's
-/// real profile, where they would be shown once the unit is verified.
+/// unless the game was started with <c>-savedatafolder=</c> pointing at a separately marked test workspace.
+/// An override flag alone is not evidence of isolation: the flag could point back at the real profile.
 /// </summary>
 public sealed class VerifyHarnessMod : Mod
 {
@@ -28,6 +28,14 @@ public sealed class VerifyHarnessMod : Mod
             {
                 Declined = "the game was not started with -savedatafolder=<a test folder>";
                 Log.Error($"{CaseCheck.LogPrefix} No unit opened: {Declined}. The harness never records into the normal save data folder.");
+                return;
+            }
+            if (!VerifyIsolationPolicy.HasValidMarker(folder))
+            {
+                Declined = "the -savedatafolder directory has no valid " +
+                    VerifyIsolationPolicy.MarkerFileName + " test marker";
+                Log.Error($"{CaseCheck.LogPrefix} No unit opened: {Declined}. " +
+                    "Use the Windows launcher or mark a separate, disposable test directory explicitly.");
                 return;
             }
             GenCommandLine.TryGetCommandLineArg(VerifyArgs.UnitsKey, out var arg);
