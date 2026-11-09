@@ -121,4 +121,27 @@ public sealed class HistoricFactionBackfillTests
         Assert.NotEqual(a.Metrics.ModSetHash, c.Metrics!.ModSetHash);
     }
 
+    [Fact]
+    public void Display_LaterSaveWithoutValidatedFactionEvidence_DoesNotEraseOlderPartialReading()
+    {
+        var old = Read(Save(Faction("PlayerColony", 1), Faction("OutlanderCivil", 2, "Hostile", -85)));
+        var profile = new Profile();
+        ProfileMutations.AddSaveObservation(profile, old.Observation);
+        ProfileMutations.UpsertMetricObservation(profile, old.Metrics!);
+        var later = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "later-save",
+            Identity = old.Observation.Identity.Clone(),
+            SaveTick = old.Observation.Values.TicksGame + 10000,
+            ObservedUtc = Stamp.AddDays(1),
+        };
+        ProfileMutations.UpsertMetricObservation(profile, later);
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var stats = StatsCalculator.Calculate(colonies, new StatsOptions());
+        var value = MetricCalculator.BuildView(profile, colonies, stats, MetricRegistry.Catalog)
+            .Colonies.Single().Rows.Single(x => x.Definition.Key == FactionStateSnapshot.Relations).Value;
+        Assert.Equal(1.0, value.Number);
+        Assert.Equal(MetricCoverage.Partial, value.Coverage);
+    }
+
 }
