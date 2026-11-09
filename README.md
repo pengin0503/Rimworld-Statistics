@@ -30,7 +30,7 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 
 **他MOD固有の統計のコード・テスト・CI・ZIP・公開は、[Rimworld-Statistics-mod-addon](https://github.com/pengin0503/Rimworld-Statistics-mod-addon)に移しました。** Smart Apparel Upgrade、Hospitality、Rimworld-Recruitmentへの対応は、それぞれ任意の別MODアドオンを導入してください。本体には対象MODへの専用Harmonyパッチやソース参照を含めません。
 
-v1.2.0までの本体に含まれていたHospitality／Recruitmentの取得処理も、次版以降は本体から分離します。**既存プロファイルの過去値や来歴は消去しません。** Hospitalityの保存時スナップショット、Recruitmentの進行中募集数は同じ数値IDを維持します。一方、Recruitmentの過去の「募集開始」イベントと新SDKの重複排除方式は互換ではないため、新アドオン側は別の集計IDを使用します。旧値と新値を勝手に合算しません。アドオンが無いセーブや、後に対象MODを削除した場合は新しい取得を行わず、過去に保存された値のみを保持します。
+**v1.2.1で**、v1.2.0まで本体に含まれていたHospitality／Recruitmentの取得処理も分離済みです。外部MOD向けアドオンは本体のリリースではなく、[アドオン専用のリリース](https://github.com/pengin0503/Rimworld-Statistics-mod-addon/releases)から個別に導入します。**既存プロファイルの過去値や来歴は消去しません。** Hospitalityの保存時スナップショット、Recruitmentの進行中募集数は同じ数値IDを維持します。一方、Recruitmentの過去の「募集開始」イベントと新SDKの重複排除方式は互換ではないため、新アドオン側は別の集計IDを使用します。旧値と新値を勝手に合算しません。アドオンが無いセーブや、後に対象MODを削除した場合は新しい取得を行わず、過去に保存された値のみを保持します。
 
 [外部MOD SDKの仕様](docs/sdk/external-provider-api-v1.md) · [アドオンリポジトリ](https://github.com/pengin0503/Rimworld-Statistics-mod-addon) · [P0取得ゲートの検証記録](docs/research/2026-11-08-experimental-statistics-p0-validation.md)
 

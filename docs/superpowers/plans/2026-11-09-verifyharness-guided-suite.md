@@ -22,7 +22,7 @@
 - [x] Wire one-click full suite, safe post-save rescan, targeted retry, and atomic report exports in test-only harness.
 - [x] Write Windows isolated launch script; validate refusal to modify the normal save folder and idempotent test config.
 - [x] Add a minimal test mod-list mode and update Japanese instructions.
-- [ ] Run full GitHub CI after final changes, including Core, SDK matrix, production package isolation, VerifyHarness package and Windows script smoke.
+- [x] Run full GitHub CI after final changes, including Core, SDK event microbenchmark, production package isolation, VerifyHarness package and Windows launcher smoke (main SHA `acbe168`, run [42584875423](https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42584875423): 573 pass, 3 environment-dependent skips, 0 fail; Linux static/unit and Windows launcher jobs pass).
 - [ ] Conduct real-game positive/negative scenario and TPS tests when a tester has an actual RimWorld runtime; CI alone cannot assert those outcomes.
 
 ## Review focus

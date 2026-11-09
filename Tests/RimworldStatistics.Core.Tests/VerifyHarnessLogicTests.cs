@@ -188,4 +188,16 @@ public sealed class VerifyHarnessLogicTests
         Assert.Equal(new[] { d.Key }, regression.LostObservations);
         Assert.False(GuidedAuditReport.Compare(old, next with { CampaignId = "other" }).Comparable);
     }
+
+    [Theory]
+    [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[null],"Units":[],"Cases":[]}""")]
+    [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[{"Key":"dupe","StoredKey":"a","Unit":"research","Kind":"Family","State":"Observed","Action":"CROSS_CHECK_VALUES"},{"Key":"dupe","StoredKey":"a","Unit":"research","Kind":"Family","State":"Observed","Action":"CROSS_CHECK_VALUES"}],"Units":[],"Cases":[]}""")]
+    [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[],"Units":[null],"Cases":[]}""")]
+    [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[],"Units":[],"Cases":[null]}""")]
+    public void GuidedAudit_RejectsCorruptedPriorReports(string json)
+    {
+        // Old reports must not throw from Compare/ToMarkdown when a previous report
+        // was truncated, edited, or partially malformed.
+        Assert.Null(GuidedAuditReport.ReadJson(json));
+    }
 }

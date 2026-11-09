@@ -161,7 +161,19 @@ public sealed record GuidedAuditReport
         try
         {
             var report = JsonSerializer.Deserialize<GuidedAuditReport>(json, JsonOptions);
-            return report?.Metrics is not null && report.Units is not null && report.Cases is not null ? report : null;
+            if (report?.Metrics is null || report.Units is null || report.Cases is null)
+                return null;
+
+            // A syntactically valid old report may still contain null entries or
+            // duplicated keys. Compare() builds a key dictionary and Markdown
+            // dereferences every row; fail closed instead of crashing the game.
+            var keys = new HashSet<string>(StringComparer.Ordinal);
+            if (report.Metrics.Any(m => m is null ||
+                    string.IsNullOrWhiteSpace(m.Key) || !keys.Add(m.Key)) ||
+                report.Units.Any(u => u is null || string.IsNullOrWhiteSpace(u.Unit)) ||
+                report.Cases.Any(c => c is null))
+                return null;
+            return report;
         }
         catch (Exception e) when (e is JsonException or NotSupportedException)
         {
