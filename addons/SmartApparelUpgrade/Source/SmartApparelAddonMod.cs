@@ -11,17 +11,17 @@ public sealed class SmartApparelAddonMod : Mod
     public SmartApparelAddonMod(ModContentPack content) : base(content)
     {
         // Validate the exact 1.0.1 source-audited hook before touching Harmony.
-        if (!SauOrderHook.TryResolve(out var binding) || !SauHostClient.HasCompatibleHost())
-            return;
-        // Never register a collector whose source patch is not actually installed:
-        // an active empty family would otherwise be misreported as a real zero.
-        if (!SauOrderHook.TryInstall(binding))
-        {
+        // This ordering is a correctness invariant: a failed Harmony patch
+        // must not register a collector that could report fabricated zeroes.
+        var targetAudited = SauOrderHook.TryResolve(out var binding);
+        var status = SauAddonStartup.Activate(targetAudited,
+            SauHostClient.HasCompatibleHost,
+            () => SauOrderHook.TryInstall(binding),
+            SauHostClient.TryRegister);
+        if (status == SauStartupStatus.PatchUnavailable)
             Log.WarningOnce("[RWS-SAU] Statistics hook unavailable; no automatic outfit orders will be recorded.",
                 0x52575341);
-            return;
-        }
-        if (!SauHostClient.TryRegister())
+        else if (status == SauStartupStatus.RegistrationDeclined)
             Log.WarningOnce("[RWS-SAU] SDK metric registration was declined; the installed hook remains inert.",
                 0x52575342);
     }
