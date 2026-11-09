@@ -34,4 +34,12 @@ checks = [
 missing = [text for text in checks if text not in code]
 if missing:
     raise SystemExit("Pinned source compatibility check failed: " + repr(missing))
+# The postfix runs after the source has recorded a successful StartJob, not on
+# diagnostic suggestions or attempts that were rejected before pawn.CurJob==job.
+method_start = code.index("void OrderIdleUpgrades()")
+method = code[method_start:]
+job_confirmed = method.index("if(pawn.CurJob==job)")
+stamp_added = method.index("stamps.Add(new SwapStamp")
+if stamp_added <= job_confirmed or "LastIssued=now" not in method[stamp_added:stamp_added + 260]:
+    raise SystemExit("SAU event contract no longer stamps AFTER job issuance succeeds")
 print("SAU 1.0.1 source contract: PASS (static only)")
