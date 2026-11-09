@@ -134,4 +134,58 @@ public sealed class VerifyHarnessLogicTests
             new HashSet<string> { "test" }, new HashSet<string>(), new HashSet<string> { AcquisitionUnits.Biotech });
         Assert.Equal(CatalogAuditState.DlcUnavailable, Assert.Single(missing).State);
     }
+
+    [Fact]
+    public void GuidedAudit_GroupsEveryMetricAndPrioritizesBrokenCasesBeforeManualChecks()
+    {
+        var rows = new[]
+        {
+            new CatalogAuditRow(LiveCatalog.Definitions.First(d => d.Acquisition == "research"), CatalogAuditState.Observed),
+            new CatalogAuditRow(SnapshotCatalog.Definitions.First(d => d.Acquisition == "roster"), CatalogAuditState.NotObserved),
+            new CatalogAuditRow(LiveCatalog.Definitions.First(d => d.Acquisition == "mental"), CatalogAuditState.NotObserved),
+            new CatalogAuditRow(LiveCatalog.Definitions.First(d => d.Acquisition == "trade"), CatalogAuditState.NotRecording),
+            new CatalogAuditRow(RankingDependencyCatalog.Definitions[0], CatalogAuditState.DerivedOnly),
+        };
+        var cases = new[] { new CaseResult("research.direct", "research", CaseOutcome.Fail, "+1", "+0", 1) };
+        var report = GuidedAuditReport.Build(rows, cases, "1.7", "campaign-test", DateTime.UnixEpoch);
+        Assert.Equal(rows.Length, report.Metrics.Count);
+        Assert.Equal("INVESTIGATE_FAILURE", report.Units.Single(u => u.Unit == "research").Action);
+        Assert.Equal("SAVE_AND_RESCAN", report.Units.Single(u => u.Unit == "roster").Action);
+        Assert.Equal("TRIGGER_EVENT", report.Units.Single(u => u.Unit == "mental").Action);
+        Assert.Equal("ENABLE_RECORDING", report.Units.Single(u => u.Unit == "trade").Action);
+        Assert.Equal("REVIEW_DEPENDENCIES", report.Units.Single(u => u.Unit == "colony_start").Action);
+        Assert.Equal("research", report.Units[0].Unit); // failures are always top priority
+        Assert.All(report.Metrics, m => Assert.False(m.Verified));
+    }
+
+    [Fact]
+    public void GuidedAudit_ExportsRecoverableJsonAndCsvWithoutClaimingVerification()
+    {
+        var data = SnapshotCatalog.Definitions[0] with { Key = "one,\"two\"\nthree" };
+        var report = GuidedAuditReport.Build(
+            new[] { new CatalogAuditRow(data, CatalogAuditState.Observed) },
+            Array.Empty<CaseResult>(), "1.7.4995", "test-campaign", DateTime.UnixEpoch);
+        var roundtrip = GuidedAuditReport.ReadJson(report.ToJson());
+        Assert.NotNull(roundtrip);
+        Assert.Equal(report.Metrics[0].Key, roundtrip.Metrics[0].Key);
+        Assert.False(roundtrip.Metrics[0].Verified);
+        Assert.Contains("\"one,\"\"two\"\"\nthree\"", report.ToCsv());
+        Assert.Contains("NOT VERIFIED", report.ToMarkdown());
+    }
+
+    [Fact]
+    public void GuidedAudit_ProgressComparisonRejectsDifferentCampaignAndFlagsRegressions()
+    {
+        var d = SnapshotCatalog.Definitions[0];
+        var old = GuidedAuditReport.Build(new[] { new CatalogAuditRow(d, CatalogAuditState.NotObserved) },
+            Array.Empty<CaseResult>(), "1.7", "same", DateTime.UnixEpoch);
+        var next = GuidedAuditReport.Build(new[] { new CatalogAuditRow(d, CatalogAuditState.Observed) },
+            Array.Empty<CaseResult>(), "1.7", "same", DateTime.UnixEpoch);
+        var progress = GuidedAuditReport.Compare(old, next);
+        Assert.Equal(new[] { d.Key }, progress.NewlyObserved);
+        Assert.Empty(progress.LostObservations);
+        var regression = GuidedAuditReport.Compare(next, old);
+        Assert.Equal(new[] { d.Key }, regression.LostObservations);
+        Assert.False(GuidedAuditReport.Compare(old, next with { CampaignId = "other" }).Comparable);
+    }
 }

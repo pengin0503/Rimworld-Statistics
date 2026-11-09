@@ -6,6 +6,54 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 - 起動時に `-savedatafolder=` が無ければ、**何も開きません**（エラーログを出すだけ）。未検証のコードが記録した値が通常のプロファイルに入ると、その単位を `Verified` にした後で利用者に表示されてしまうためです。
 - 開いた単位の値はセーブとテスト用プロファイルに記録されますが、詳細タブには出ません（公開は `AcquisitionUnits` で `Verified` にした単位だけ）。
 
+## 最短の検証手順（Windows）
+
+1. [GitHub Actions「Numeric statistics build, tests and development packages」](https://github.com/pengin0503/Rimworld-Statistics/actions/workflows/numeric-verification.yml) の、**同じコミットの成功した実行**から Artifacts を取得する。ZIP 内の `RimworldStatistics-unverified.zip` と `RimworldStatisticsVerifyHarness.zip` をそれぞれ展開し、両MODのフォルダを RimWorld の `Mods` に置く。実際のリリース版ではなく**同じコミットの本体とハーネス**を使う。
+2. Artifacts の展開フォルダに同梱される **`RWS-Verify-Windows.ps1`** を使い、以下のコマンドを実行する。リポジトリのクローンは不要。ゲームのパスは自分の環境に置き換える（Steam → RimWorld → 管理 → ローカルファイルを閲覧で確認）。
+3. 使い捨てのコロニーを開始して、開発モード → Debug actions → `RWS Verify` → **1. Run guided full audit (MODIFIES TEST WORLD)** を1回実行する。
+4. **テスト専用のセーブ**を1回正常に保存した後、**2. Read-only rescan after save (no game changes)** を選ぶ。保存時スナップショットの未観測項目を再確認できる。
+5. `RimworldStatistics-verify-guide.md` を開いて優先順に残作業を確認する。前提を揃えたケースだけ再実行したい場合は **3. Retry only failed or skipped cases (MODIFIES TEST WORLD)** を選ぶ。
+6. 部屋・汚染セルの読み取り方式が一致するかも一括確認する場合は、**4. Check room/pollution map contracts (read-only)** を選ぶ。これはマップを変更しないが、TPS低下2%以下を証明するものではない。
+
+```powershell
+powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -Minimal
+```
+
+### 既存セーブを使う場合（原本を変更しない）
+
+手元の既存セーブを使用する場合、`-SaveFile` を指定すると**原本に一切書き込まず**、テスト用 `Saves` へ `RWSVerify-元の名前.rws` として複製する。例えば、次のように実行する。
+
+```powershell
+powershell -NoProfile -File ".\RWS-Verify-Windows.ps1" -GameExe "D:\SteamLibrary\steamapps\common\RimWorld\RimWorldWin64.exe" -SaveFile "K:\RimWorldSaves\Test1.7.rws"
+```
+
+既存のテストコピーが同じ内容なら再利用する。テスト側で内容が変わっている場合は、新しい連番のコピーを作って**上書きしない**。ゲーム起動後、「ゲームをロード」から `RWSVerify-` で始まるコピーを選ぶ。MOD依存があるセーブを試す場合は `-Minimal` を使用しない。
+
+`-Minimal` の有無を切り替えたときは、テスト側の `ModsConfig.xml` を正常環境の元のリストから再生成する。同じモードで繰り返し起動するときはテスト用の構成を保持する。通常環境の `ModsConfig.xml` は一切変更しない。
+
+`-Minimal` は新規の使い捨てテストコロニー向け。元のMOD設定を**別フォルダにコピー**し、Vanilla・有効なDLC・Harmony・Rimworld-Statistics・VerifyHarness 以外をテスト環境のMODリストから除外して軽量化する。Hospitality / Recruitment / 他MODとの互換検証をするとき、または元のMOD構成を必要とする既存セーブを使用するときは **`-Minimal` を付けない**。
+
+Artifacts内の `RWS-Verify-Windows.ps1` はリポジトリの `tools/VerifyHarness/launch-windows.ps1` と同一です。ソースから実行する場合は後者のパスに読み替えます。
+
+`launch-windows.ps1` は通常の `ModsConfig.xml`、通常セーブ、Steam起動オプション、ゲーム本体のMODファイルを書き換えない。独立した `%LOCALAPPDATA%\RimworldStatistics-Verify` 以下に専用データと構成を作成する。既存の無関係なフォルダを指定した場合は上書きを拒否する。MODのZIP展開・インストール自体は行わない。
+
+通常のセーブを使う場合は、`-SaveFile` で原本をテスト専用フォルダへ複製し、そのコピーで試験する。自動ケースは研究・襲撃・敵の撃破などを発生させるため、**実際のセーブを直接使わないこと**。
+
+PowerShell の実行ポリシーにより拒否された場合は、信頼できるこのリポジトリのスクリプトであることを確認した上で、一度のコマンドだけ `powershell -NoProfile -ExecutionPolicy Bypass -File ...` として起動する方法もある。
+
+### 自動生成レポート
+
+出力先は専用データフォルダ `%LOCALAPPDATA%\RimworldStatistics-Verify`（`-TestDataFolder` で変更可）。
+
+| ファイル | 内容 |
+|---|---|
+| `RimworldStatistics-verify-guide.md` | **取得単位別に優先順**で原因・次の操作を示すレポート。自動ケースの結果、パッチ一覧、プレビュー値も含む |
+| `RimworldStatistics-verify-metrics.csv` | 全264項目を1行ずつ列挙。取得状態、対応操作、「未検証」を明示 |
+| `RimworldStatistics-verify-report.json` | 前回レポートと比較するための機械可読ファイル。ゲーム・キャンペーン・バージョンが一致した場合だけ新規観測/消失を比較 |
+| `RimworldStatistics-verify.log` | 既存のケースログと今回の概要を追記 |
+
+`guide.md` で優先度の高い順に処理するだけで、毎回264個のログを手動検索する必要がなくなる。`Observed` は数値を見つけた意味であり**数値の正確性を保証しない**。`NotObserved` は未観測を意味し、不具合の断定ではない。`DlcUnavailable` はDLC不在による適用外であり失敗ではない。
+
 ## ビルドと導入
 
 本体と同じ参照（`.refs/` か `GameDir`・`HarmonyDll`）を使います。
@@ -45,14 +93,14 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 ## 一括検証（264項目のカバレッジ監査）
 
-最も簡単な手順は、Steam の起動オプションへ `-savedatafolder=C:\\rws-verify -rwsverify=all` を指定し、テスト専用のセーブをロードしてから **開発モード → Debug actions → RWS Verify → One-click audit all 264 metrics (test world only)** を1回押す方法です。
+最短の手順は上記の **Windows用スクリプトを使った専用環境の起動**です。手動起動する場合は、Steam の起動オプションへ `-savedatafolder=C:\\rws-verify -rwsverify=all` を指定することもできます。起動後に **開発モード → Debug actions → RWS Verify → 1. Run guided full audit (MODIFIES TEST WORLD)** を選びます。
 
-この操作は次を順番に行います。
+この操作は次を順番に行います（その後、保存して「2. Read-only rescan」を実行）。
 
 1. ゲームのバージョン、DLLハッシュ、Harmonyの適用先、全取得ゲートを記録する。
 2. 従来の自動ケース18件を一括実行する。研究・襲撃・Pawn操作などで **テスト用コロニーが変更される** ため、普段のセーブでは実行しない。
 3. 全264項目のカタログについて `OBSERVED`（記録済み数値あり）、`NOT_OBSERVED`（未観測）、`NOT_RECORDING`（取得ゲートなし）、`DLC_UNAVAILABLE`（DLC不在）、`DERIVED_ONLY`（ランキング等）を1行ずつ出力する。
-4. ケース別PASS/FAIL/SKIP/ERRORと264項目の状態別件数を、`RimworldStatistics-verify.log` に保存する。
+4. ケース別PASS/FAIL/SKIP/ERRORと264項目の状態別件数をログへ記録し、優先順レポート・CSV・JSONを生成する。
 
 **重要:** OBSERVED は取得データの存在確認であり、正しい値かどうかは保証しません。イベントを一括で発生させても未観測になる項目や、数日経過・保存・再読み込みが必要な項目があります。実機の数値正確性・セーブ/ロード・TPS は別に検証する必要があり、全項目が自動でVerifiedになる機能ではありません。セーブ時スナップショットの項目を観測したい場合、一度**テスト用データへ正常に保存**してから再実行してください。ログはテストフォルダ内だけに出力され、公開用MODにはこの機能を入れません。
 
