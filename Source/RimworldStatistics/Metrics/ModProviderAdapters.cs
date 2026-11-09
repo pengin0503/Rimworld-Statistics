@@ -49,9 +49,10 @@ internal static class ModProviderAdapters
             .GroupBy(x => x.Id, StringComparer.Ordinal).Select(g => g.First()).ToArray();
 
     /// <summary>Bundled, source-audited MOD adapters are visible even without enabling experimental statistics.</summary>
-    public static IReadOnlySet<string> AutomaticVisibleUnits =>
+    private static readonly Lazy<IReadOnlySet<string>> AutoVisible = new(() =>
         Declarations.Value.Where(x => x.AutoEnableOnInstall).Select(x => x.Descriptor.AcquisitionId)
-            .ToHashSet(StringComparer.Ordinal);
+            .ToHashSet(StringComparer.Ordinal));
+    public static IReadOnlySet<string> AutomaticVisibleUnits => AutoVisible.Value;
 
     public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors
         => Declarations.Value.Where(x => x.Descriptor.IsValid()).Select(x => x.Descriptor).ToArray();
