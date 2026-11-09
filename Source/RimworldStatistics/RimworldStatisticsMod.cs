@@ -77,6 +77,11 @@ public sealed class RimworldStatisticsMod : Mod
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
                 var label = unit.Id + " · " + kind;
+                if (ModProviderAdapters.AutomaticVisibleUnits.Contains(unit.Id))
+                {
+                    listing.Label(label + " · " + "RWS_Mod_AutoActive".Translate());
+                    continue;
+                }
                 var provider = ModProviderAdapters.KnownDescriptors.FirstOrDefault(d => d.AcquisitionId == unit.Id);
                 if (provider is not null && !ModsConfig.IsActive(provider.OwnerPackageId))
                 {
