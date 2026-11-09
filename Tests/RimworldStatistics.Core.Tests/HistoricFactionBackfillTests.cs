@@ -107,4 +107,18 @@ public sealed class HistoricFactionBackfillTests
         Assert.Equal(1.0, preferred.Value.Number);
         Assert.Equal(MetricCoverage.SnapshotOnly, preferred.Value.Coverage);
     }
+    [Fact]
+    public void Read_ModSetFingerprint_ChangesWhenSaveSpecificLoadOrderChanges()
+    {
+        byte[] Make(params string[] ids) => new SaveXmlBuilder().Minimal()
+            .MetaMods("1.7.5000 rev1275", ids).Build();
+        var a = Read(Make("ludeon.rimworld", "brrainz.harmony", "mod.first"));
+        var b = Read(Make("ludeon.rimworld", "brrainz.harmony", "mod.second"));
+        var c = Read(Make("brrainz.harmony", "ludeon.rimworld", "mod.first"));
+        Assert.NotNull(a.Metrics!.ModSetHash);
+        Assert.Equal(64, a.Metrics.ModSetHash!.Length);
+        Assert.NotEqual(a.Metrics.ModSetHash, b.Metrics!.ModSetHash);
+        Assert.NotEqual(a.Metrics.ModSetHash, c.Metrics!.ModSetHash);
+    }
+
 }
