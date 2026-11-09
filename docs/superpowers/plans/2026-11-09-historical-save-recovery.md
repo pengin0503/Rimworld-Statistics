@@ -46,19 +46,19 @@
 
 **Files:** `Source/RimworldStatistics.Core/Reading/SaveReader.cs` and new focused bounded reader, `Tests/RimworldStatistics.Core.Tests` fixture tests.
 
-- [ ] Step 1: Choose one low-risk saved-state family with exact semantics (e.g. current roster count, or research completion only with matching Defs).
-- [ ] Step 2: TDD RED: synthetic missing/duplicate/oversized/invalid XML and byte-identical source file assertions.
-- [ ] Step 3: Extend streaming selective XML parser; increment `SaveReader.Version` if parsed output changes so unchanged saves are re-imported exactly once.
-- [ ] Step 4: Preserve Provenance=SaveSnapshot, Coverage=SnapshotOnly/Partial; no fabricate Complete historic events, no event timestamps invented.
+- [x] Step 1: Selected explicitly saved Core/Royalty faction relations, emitted as Partial only; no claim that all factions/earlier diplomatic events are counted.
+- [x] Step 2: RED→GREEN synthetic valid/missing/duplicate/invalid saved-faction records, source immutability, reader upgrade/re-import. Other families remain unimplemented.
+- [x] Step 3: Streaming selective faction reader; `SaveReader.Version=6`; read-once and unchanged-save skip confirmed by fixture tests.
+- [x] Step 4: Historical values are stored in hash-keyed SaveFile evidence and displayed as the existing SaveSnapshot definitions with Coverage=Partial, Evidence=Experimental; prioritize genuine game-side captures.
 - [ ] Step 5: GREEN + full CI + private opt-in real-save tests, verify performance and release history.
 
 ## Task C — Fork-safe interval evidence (after Task B)
 
-- [ ] Establish ancestry evidence beyond a shared colony or campaign ID; retain incomparable/ambiguous saves separately.
-- [ ] TDD counter monotonicity, resets, missing series, exact source-version match, fork siblings, and profile compaction.
-- [ ] Expose conditional changes as intervals / Partial only; never alter current live-family complete counters.
+- [x] Establish read-only direct-parent checkpoint proof plus strict source alias, version, identity, and exact saved MOD-list digest equality. Older saves without checkpoints remain incomparable.
+- [x] TDD no-parent, changed-version/MOD, backward tick, reset/missing counters, duplicated checkpoint ID and sibling branch cases. Private profile compaction regression still needed.
+- [x] Expose `HistoricalCounterIntervals.Evaluate(Profile)` as an optional read-only Partial API; no UI total or fabricated event timestamps.
 - [ ] Validate across actual game sessions and verify TPS / save overhead separately.
 
-## Done criteria
+## Progress / outstanding evidence\n\nThe faction subset and interval proof kernel are implemented in PR #73. Other snapshot families and historical event counts are **not** complete. Real-game 1.7 acceptance and 55+ save scan benchmarks remain required. Do not close #71/#72 yet.\n\n## Done criteria
 
 Inventory counts and keys are source exact, all tests green, review findings recorded, and no false historical events inserted in the v1.2.2 host release. Stage B/C remain explicitly open until the source schema/lineage evidence exists.

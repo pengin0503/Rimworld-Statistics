@@ -50,6 +50,12 @@ public sealed class MetricObservation
     /// <summary>Official DLC package ids in the save's mod list; null when the list was not in the save.</summary>
     public List<string>? ActiveDlcIds { get; set; }
 
+    /// <summary>SHA-256 of the saved load-order-preserving modIds array. Null when
+    /// absent; never filled from today's installed MODs. Needed for strict
+    /// multi-save counter comparability, not for player identification.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? ModSetHash { get; set; }
+
     /// <summary>Per acquisition unit, captured at recording time. Null means pre-provenance legacy data.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Dictionary<string, MetricEvidence>? EvidenceByAcquisition { get; set; }

@@ -108,9 +108,28 @@ public static class MetricCalculator
             // All definitions of one source use the same latest observation. Resolve
             // its order-sensitive tie break only once instead of sorting per row.
             var latestBySource = bySource.ToDictionary(kv => kv.Key, kv => Representative(kv.Value));
-            perColony.Add((colony, definitions.Select(d => ColonyRow(d,
-                bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>(),
-                checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source))).ToList(), checkpoints.Lineage));
+            perColony.Add((colony, definitions.Select(d =>
+            {
+                var captured = bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>();
+                // Historic save-file evidence is a fallback only when this key
+                // was never captured by a game-side SaveSnapshot. Mixing the two
+                // would change live maxima or lose stronger evidence.
+                if (d.Source == MetricObservationSource.SaveSnapshot
+                    && d.Acquisition is { } unit
+                    && !captured.Any(o => Entry(o, d) is not null)
+                    && bySource.TryGetValue(MetricObservationSource.SaveFile, out var historical)
+                    && historical.Any(o => Entry(o, d) is not null
+                        && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental))
+                {
+                    // A later save with no supported evidence must not erase a
+                    // partial reading in an older save. Only candidates that
+                    // actually captured this unit participate in selection.
+                    var capturedHistory = historical.Where(o => Entry(o, d) is not null
+                        && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental).ToArray();
+                    return ColonyRow(d, capturedHistory, null, Representative(capturedHistory));
+                }
+                return ColonyRow(d, captured, checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source));
+            }).ToList(), checkpoints.Lineage));
         }
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
@@ -246,11 +265,13 @@ public static class MetricCalculator
             return AcrossObservations(d, observations);
 
         var rep = d.Source == MetricObservationSource.Checkpoint ? checkpoint : latest;
-        var staleProvider = false;
-        // A removed optional provider cannot produce a reading in newer saves.
-        // Render its last *actual* captured value as historical partial data,
-        // never fabricate a zero or silently erase it from the UI.
-        if (d.ProviderId is not null && (rep is null || Entry(rep, d) is null))
+        var staleCapture = false;
+        // A removed optional provider or disabled experimental faction unit
+        // cannot produce a reading in newer saves. Retain the last genuine
+        // captured value as partial data; never substitute a weaker
+        // historical SaveFile fallback after a live capture was made.
+        if ((d.ProviderId is not null || d.Acquisition == "factions")
+            && (rep is null || Entry(rep, d) is null))
         {
             var historical = observations.Where(o => Entry(o, d) is not null)
                 .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
@@ -258,7 +279,7 @@ public static class MetricCalculator
             if (historical is not null)
             {
                 rep = historical;
-                staleProvider = true;
+                staleCapture = true;
             }
         }
         if (rep is null)
@@ -284,7 +305,7 @@ public static class MetricCalculator
             };
         else
             value = NumericValue.Unknown;
-        if (staleProvider)
+        if (staleCapture)
         {
             value = new NumericValue
             {

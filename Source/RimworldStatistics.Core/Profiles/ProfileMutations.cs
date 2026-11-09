@@ -145,9 +145,17 @@ public static class ProfileMutations
         var existing = p.MetricObservations.FirstOrDefault(o => !o.IsQuarantined && o.Source == obs.Source && o.Key == obs.Key);
         if (existing is null)
         {
-            if (p.MetricObservations.Any(o => Supersedes(o, obs)))
+            // Imported checkpoint links must survive regardless of scan order.
+            // Build the alias index once; checking every checkpoint for every
+            // potential save-file compaction would be quadratic on large profiles.
+            var protectedFiles = obs.Source == MetricObservationSource.SaveFile
+                ? p.MetricObservations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint)
+                    .SelectMany(o => o.FileAliases)
+                    .Select(a => (a.FileName, a.FileSize, a.LastWriteUtc)).ToHashSet()
+                : null;
+            if (p.MetricObservations.Any(o => Supersedes(o, obs, protectedFiles)))
                 return;
-            p.MetricObservations.RemoveAll(o => Supersedes(obs, o));
+            p.MetricObservations.RemoveAll(o => Supersedes(obs, o, protectedFiles));
             p.MetricObservations.Add(obs);
             if (obs.Source == MetricObservationSource.SaveSnapshot)
                 CompactSaveSnapshots(p, obs);
@@ -159,6 +167,9 @@ public static class ProfileMutations
         if (obs.ObservedUtc < existing.ObservedUtc)
             existing.ObservedUtc = obs.ObservedUtc;
         existing.FormatVersion = Math.Max(existing.FormatVersion, obs.FormatVersion);
+        // On an upgrade from reader v5, a re-read of identical .rws bytes
+        // adds the saved MOD-set digest without losing earlier good values.
+        existing.ModSetHash ??= obs.ModSetHash;
         MergeMetrics(existing, obs);
     }
 
@@ -239,11 +250,13 @@ public static class ProfileMutations
         {
             if (d.Selection == ColonySelection.Representative)
             {
-                if (d.ProviderId is not null)
+                if (d.ProviderId is not null || d.Acquisition == "factions")
                 {
-                    // A later save may have been made without the optional provider.
-                    // Keep the last real reading as a historical witness rather than
-                    // letting newer vanilla-only saves erase the provider's result.
+                    // A later save may have been made after an optional provider
+                    // or the experimental faction acquisition unit was disabled.
+                    // Preserve its last actual capture; otherwise the Details
+                    // view could mistake it for never-recorded and substitute
+                    // weaker SaveFile historical fallback evidence.
                     var lastCaptured = snapshots.Where(o => Scalar(o, d) is not null)
                         .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
                         .ThenBy(o => o.Key, Ord).FirstOrDefault();
@@ -434,7 +447,8 @@ public static class ProfileMutations
     /// strictly later tick, so it is always chosen as the representative; and the only value taken across observations,
     /// the mod count, is the same in both.
     /// </summary>
-    private static bool Supersedes(MetricObservation newer, MetricObservation older)
+    private static bool Supersedes(MetricObservation newer, MetricObservation older,
+        IReadOnlySet<(string FileName, long FileSize, DateTime LastWriteUtc)>? checkpointFiles)
     {
         if (newer.IsQuarantined || older.IsQuarantined || ReferenceEquals(newer, older)
             || newer.Source != MetricObservationSource.SaveFile || older.Source != MetricObservationSource.SaveFile
@@ -443,6 +457,25 @@ public static class ProfileMutations
         ColonyIdentity a = newer.Identity, b = older.Identity;
         if (a.FingerprintHash() is not { } hash || hash != b.FingerprintHash() || a.ModCampaignId != b.ModCampaignId
             || !a.StartingPawnIds.ToHashSet(Ord).SetEquals(b.StartingPawnIds))
+            return false;
+
+        // A pair of different or unavailable saved MOD sets cannot prove
+        // equivalence. Preserve both observations instead of compacting them.
+        if (newer.ModSetHash != older.ModSetHash)
+            return false;
+        // A checkpoint may represent a direct parent of another checkpoint.
+        // Its exact .rws counter observation must not be compacted away, even
+        // when the later save has the same MOD count and higher tick.
+        if (checkpointFiles is not null && (newer.FileAliases.Any(a =>
+                checkpointFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))
+            || older.FileAliases.Any(a =>
+                checkpointFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))))
+            return false;
+        // Historical partial faction observations do not survive if the
+        // newer save cannot be interpreted (e.g., mod changed or missing refs).
+        if (older.EvidenceByAcquisition?.ContainsKey("factions") == true
+            && older.Metrics.ContainsKey(FactionStateSnapshot.Relations)
+            && !newer.Metrics.ContainsKey(FactionStateSnapshot.Relations))
             return false;
         return ModCount(newer) == ModCount(older);
     }
