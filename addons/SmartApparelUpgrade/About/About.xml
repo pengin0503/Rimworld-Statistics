@@ -3,6 +3,7 @@
   <name>Rimworld Statistics - Smart Apparel Upgrade Addon</name>
   <author>pengin0503</author>
   <packageId>pengin0503.rws.smartappareladdon</packageId>
+  <modVersion>0.1.0</modVersion>
   <supportedVersions><li>1.7</li></supportedVersions>
   <loadAfter>
     <li>brrainz.harmony</li>
