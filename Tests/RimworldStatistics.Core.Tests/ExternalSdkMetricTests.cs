@@ -288,7 +288,7 @@ public sealed class ExternalSdkMetricTests
         Assert.Equal(ApiRecordResult.CapExceeded,
             ExternalSdkMetricPolicy.Record(state, registered, "over", 5000, 1));
         Assert.Equal(FamilyOps.KeyCap, state.Peek(registered.ValueAccumulatorKey)!.N);
-        Assert.Equal(true, state.Peek(registered.SeenAccumulatorKey)!.Overflow);
+        Assert.True(state.Peek(registered.SeenAccumulatorKey)!.Overflow);
     }
 
     [Fact]
