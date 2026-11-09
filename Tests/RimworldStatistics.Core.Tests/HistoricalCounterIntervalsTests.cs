@@ -118,4 +118,48 @@ public sealed class HistoricalCounterIntervalsTests
         Assert.Empty(HistoricalCounterIntervals.Evaluate(p));
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ImportUpsert_RetainsSourceSaveObservationsForCheckpointEdges_InEitherScanOrder(bool reverse)
+    {
+        var source = new Profile();
+        Point(source, "A", null, 60000, 3, 1);
+        Point(source, "B", "A", 120000, 6, 3);
+        var p = new Profile();
+        var ids = reverse ? new[] { "B", "A" } : new[] { "A", "B" };
+        foreach (var id in ids)
+        {
+            var checkpoint = source.MetricObservations.Single(x => x.Source == MetricObservationSource.Checkpoint && x.Key == id);
+            var saved = source.MetricObservations.Single(x => x.Source == MetricObservationSource.SaveFile && x.Key == "sha-" + id);
+            ProfileMutations.UpsertMetricObservation(p, checkpoint);
+            ProfileMutations.UpsertMetricObservation(p, saved);
+        }
+        Assert.Equal(2, p.MetricObservations.Count(x => x.Source == MetricObservationSource.SaveFile));
+        Assert.Single(HistoricalCounterIntervals.Evaluate(p));
+    }
+
+    [Fact]
+    public void ReaderVersionUpgrade_MergesSavedModListHashIntoIdenticalShaObservation()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 3, 1);
+        var fromOldReader = p.MetricObservations.Single(x => x.Source == MetricObservationSource.SaveFile);
+        var hash = fromOldReader.ModSetHash;
+        fromOldReader.ModSetHash = null;
+        var refreshed = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile,
+            Key = fromOldReader.Key,
+            ModSetHash = hash,
+            FormatVersion = SaveReader.Version,
+            Identity = fromOldReader.Identity.Clone(),
+            GameVersion = fromOldReader.GameVersion,
+            SaveTick = fromOldReader.SaveTick,
+            FileAliases = { Alias("A") },
+        };
+        ProfileMutations.UpsertMetricObservation(p, refreshed);
+        Assert.Equal(hash, fromOldReader.ModSetHash);
+    }
+
 }
