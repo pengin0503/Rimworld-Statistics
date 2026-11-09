@@ -2,14 +2,14 @@
 
 ## Source and privacy boundary
 
-Two user-supplied XML `.rws` saves were inspected **locally and read-only**. Their raw contents and extracts are **not** part of this repository, any release artifact or GitHub Actions. This document intentionally omits real filenames, colony identifiers, map data, history time series, pawn names, mod-list contents and SHA-256 hashes.
+Two user-supplied XML `.rws` saves were inspected **locally and read-only**. The complete files are **not** in this repository, any GitHub Actions input or release artifact. PR #48 intentionally retains only the two original compressed Wealth_Total series as limited regression fixtures; no full save, colony identities, maps, pawn data or mod lists are committed. Original full-file SHA-256 values are not printed.
 
 | Case | Game version from `meta/gameVersion` | MOD count | `ticksGame` | `Wealth_Total` samples | Retained quests | Statistics component |
 | --- | --- | ---: | ---: | ---: | ---: | --- |
 | A: Statistics-installed | 1.7.5000 rev1275 | 183 | 8,037,368 | 268 | 59 | Present, with `campaignId` and **without** `numericStatistics` |
 | B: legacy/pre-Statistics | 1.7.4995 rev309 | 348 | 12,818,036 | 428 | 102 | Absent |
 
-Both XML documents parsed successfully in a non-game Python inspection. Each has seven supported deflated history series, and the history lengths agree with `floor(ticksGame / 30000) + 1`. These observations **are not** evidence that the C# `SaveReader` read the raw saves successfully or that RimWorld loaded them.
+Both XML documents parsed in a non-game Python inspection. Each has seven supported deflated history series, and the history lengths agree with `floor(ticksGame / 30000) + 1`. The **complete original saves have now also passed direct C# SaveReader and ImportEngine tests**, described below. This is not evidence that RimWorld itself loaded them.
 
 ## Automatically rerunnable, fully public tests
 
@@ -64,7 +64,7 @@ python3 tools/check_private_save_shapes.py \
 
 The original files passed this standalone structural check in the analysis environment. It took roughly 1–3 seconds per file in that environment; **this is Python XML scan time, not C# import time or RimWorld TPS**. A successful run never logs the source filenames, names, user IDs, saved mod IDs, raw data or the original hashes.
 
-> IMPORTANT: .NET 10 is not installed and cannot be downloaded in the analysis container. Thus the opt-in original-file **C# SaveReader and ImportEngine tests have not been executed** here. Public CI covers the anonymous C# tests only. The real-file C# test is available to run with .NET 10 in a suitable local environment.
+> VERIFIED: A self-contained Linux x64 executable published by .NET 10 CI was downloaded to the isolated analysis environment and executed directly against **both complete original .rws files**. Therefore, direct C# SaveReader and ImportEngine validation is **now complete**; the original saves never entered GitHub Actions. The CLI and exact results are documented below.
 
 
 ## Independently observed retained-quest and wealth aggregates
@@ -93,11 +93,34 @@ python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
 
 The independent Python test suite covers the expected valid shape, missing Statistics component, malformed compressed history, duplicate recorder, truncated XML and prohibited DTD. These are additional no-game tests, not a replacement for an actual RimWorld 1.7 load.
 
+## Verified full original-file C# import (2026-11-09)
+
+A portable game-independent .NET 10 test CLI was compiled on GitHub Actions into a **self-contained Linux x64 single-file executable**, and downloaded into the private analysis container. No full save was uploaded to GitHub. The binary was run against the original 16,544,914-byte and 34,286,586-byte saves, not synthetic re-creations:
+
+```bash
+./PrivateSaveProbe --self-test
+./PrivateSaveProbe --installed /private/Test1.7.rws --legacy /private/legacy.rws
+```
+
+The CLI is implemented in `tools/PrivateSaveProbe`; its workflow is `.github/workflows/private-save-probe.yml`. In both files the production `SaveReader.ReadDetailed` returned `ObservationStatus.Ok`, non-null Phase A metrics, a verified **full-file SHA-256** equal to the reader's streaming hash, and no Phase C checkpoint. All expected game versions, MOD counts, tick counters, raids, deaths, population, seven-series wealth sample counts, latest/peak/mean wealth, retained quest aggregates and the conditional Statistics campaign component were checked.
+
+The production `ImportEngine.Run` then imported disposable copies of both saves into a fresh `ProfileSession`, created **2 independent colonies / 2 persisted numeric observations**, and skipped **both unchanged saves on the second scan**. The profile was flushed and reloaded through `ProfileStore`. SHA-256 for both original files before and after was unchanged. Only aggregate sanitized metrics were printed; original paths, colony names, mod identifiers and hashes were never printed by the CLI.
+
+Measurements from **one run** in the isolated Linux x64 container (not repeatable TPS results):
+
+| Operation | Elapsed |
+| --- | ---: |
+| 1.7.5000 save standalone C# reader | 285.8 ms |
+| 1.7.4995 save standalone C# reader | 457.1 ms |
+| Both saves, combined ImportEngine + profile handling | 578.8 ms |
+
+The initial synthetic `--self-test` also passed. These measurements include ordinary filesystem caching and scheduling variance; they cannot establish in-game load, save performance, TPS or CI performance thresholds. For safety the GitHub Actions artifact contains **only the compiled verifier**, not the input saves or their hashes.
+
 ## Limitations and next gates
 
-- CI synthetic coverage is **not equivalent** to having the two complete user files on the CI runner: it does not test all 16 MB/34 MB of XML, every mod-specific record, memory peak or true input latency.
-- The original files have been statically inspected with Python, but the C# production import of those originals has not been executed in this session.
+- Public CI still does **not** have the full private files; its synthetic and genuine-wealth-record tests run separately. Full original file C# validation was performed offline in the isolated analysis environment.
+- The observations do not establish game-internal compatibility with the user's newer 1.7.4995/1.7.5000 builds or a game load.
 - A single saved snapshot cannot reconstruct all historical live events. Case A has a campaign ID but no `numericStatistics`, so a missing checkpoint must stay missing.
 - No actual RimWorld game process was launched. In-game Harmony callbacks, save/restore and TPS latency require separate validation.
 
-The intended next step is to run the optional real-file test on a machine with the two private saves, then use a dedicated isolated RimWorld 1.7 profile for game acceptance. Do not enable experimental acquisition gates or declare compatibility solely from these no-game tests.
+The next distinct gate is to load both saves with an appropriate RimWorld 1.7 build in an isolated game profile and evaluate live Harmony callbacks, save/reload, profile correctness and TPS. Do not infer game acceptance from no-game import tests.
