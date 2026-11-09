@@ -35,10 +35,10 @@
 - `csv_text(rows: list[dict[str,str]]) -> str`
 
 - [x] Step 1: Write a failing test validating 214 live + 41 snapshot + 9 derived outputs, unique keys, unverified evidence and deterministic CSV matching.
-- [ ] Step 2: Observe expected test failure in CI (missing generator).
-- [ ] Step 3: Implement catalog-source parser that resolves stable symbolic metric keys and acquisition IDs from registered constants. Reject unknown symbolic keys and class changes.
-- [ ] Step 4: Generate a full CSV with one row per output; classify EVENT_LOG_REQUIRED / SAVED_STATE_CANDIDATE / DEPENDS_ON_INPUT conservatively. Do not imply a complete reconstruction without real inputs.
-- [ ] Step 5: Run Python unit tests and entire CI (Core, packaging, translation, Windows script), review actual outputs, merge PR on success.
+- [x] Step 2: Observe expected CI failure (missing generator), run 42604740451.
+- [x] Step 3: Implement catalog-source parser that resolves stable symbolic metric keys and acquisition IDs from registered constants. Reject unknown symbolic keys and class changes.
+- [x] Step 4: Generate the 264-row CSV and source-specific assessment. Classifications are conservative and UNVERIFIED.
+- [x] Step 5: Python 3 audit tests, Core 578 pass/3 skip/0 fail, translation and packaging, Windows launcher verified in Actions run 42606146919; merge only after final diff review.
 
 ## Task B — Save-data extraction with verified source (next PR)
 
