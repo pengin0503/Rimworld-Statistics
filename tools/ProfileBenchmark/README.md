@@ -53,3 +53,17 @@ The action prints each player's home map's area, `PollutionGrid.TotalPollution`,
 If any map reports `MISMATCH`, do **not** treat that build's Biotech snapshot numbers as verified. Attach the log and restore the old reader until the semantic difference is fixed.
 
 The 1.7.4985 reference metadata proves `PollutionGrid.TotalPollution: int` is a public getter, **not** that it is internally O(1) or guaranteed equal to the old exhaustive scan in 1.7.5000. The in-game comparison establishes that missing evidence.
+
+## In-game validation of the indoor-room optimization (Issue #28)
+
+The Verify Harness now exposes a second non-mutating dev-mode action:
+
+`RWS Verify → Benchmark indoor rooms`
+
+For every player home map it compares the **actual set of indoor `Room` objects**, not only the room count, from the current `RegionGrid.AllRegions` reader against the original `RegionAndRoomQuery.RoomAt(cell, map)` exhaustive scan. It reports `regions`, `scan`, `regionMs`, `scanMs` and `MATCH/MISMATCH` by map, followed by a summary. `result=PASS` means all loaded home maps matched during that run, not that performance has been proven across other game versions or maps.
+
+Run in development mode after loading a small map, a large map, and multiple player home maps. Repeat immediately after a room is built, split, demolished or reopened to the outside, and after saving and reloading. Confirm `mismatches=0 errors=0` each time. The action does **not** modify map state or profile data, and performs full-cell scanning **only when invoked**; it is not a normal-save profiling hook.
+
+Record a median of at least five measurements per map condition and also measure the actual successful-save latency using the game's profiler; microbenchmark times from this action exclude all other snapshot units, profile I/O, and normal save overhead. If room objects differ, do not treat the optimized facilities snapshot as semantically verified. If there is no loaded player home map, `result=SKIP` is not a pass.
+
+Issue #28 should remain open until both the indoor-room and pollution comparisons and actual save-time latency have been checked in a RimWorld 1.7 game process.
