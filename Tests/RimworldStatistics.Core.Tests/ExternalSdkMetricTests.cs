@@ -135,6 +135,35 @@ public sealed class ExternalSdkMetricTests
     }
 
     [Fact]
+    public void ChangingOnlyMetricCaseCannotResetSavedCountOrDedupHistory()
+    {
+        var original = Metric("Completed");
+        var catalog = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, catalog.Register(original, null));
+        var registration = Assert.Single(catalog.Seal());
+        var spec = new[] { new FamilySpec(registration.Descriptor.AcquisitionId, 1) };
+        var accumulator = LiveMetricAccumulator.StartNew(spec, 0);
+        Assert.Equal(ApiRecordResult.Recorded,
+            ExternalSdkMetricPolicy.Record(accumulator.Family(spec[0].Name)!, original, "guest-event-101", 25, 1));
+        var saved = accumulator.PrepareSave(100, DateTime.UtcNow, "case-parent")!;
+        accumulator.Commit(saved);
+
+        var reloaded = LiveMetricAccumulator.Resume(saved.Json, spec, 100);
+        var renamed = Metric("completed");
+        var newRegistry = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, newRegistry.Register(renamed, null));
+        var changedRegistration = Assert.Single(newRegistry.Seal());
+        var state = reloaded.Family(spec[0].Name)!;
+        Assert.Equal(ApiRecordResult.Duplicate,
+            ExternalSdkMetricPolicy.Record(state, renamed, "guest-event-101", 101, 1));
+        Assert.Equal(ApiRecordResult.Recorded,
+            ExternalSdkMetricPolicy.Record(state, renamed, "guest-event-102", 102, 1));
+        var values = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(state, 110, values), changedRegistration);
+        Assert.Equal(2, values[changedRegistration.Descriptor.StableKey].Values[MetricEntry.Scalar].Number);
+    }
+
+    [Fact]
     public void RegistryRejectsFamilySchemaMismatchAndLateMissingEvent()
     {
         var registry = new ExternalSdkMetricRegistry();
