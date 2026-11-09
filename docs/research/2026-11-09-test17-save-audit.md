@@ -45,9 +45,9 @@ The existing `diplomacy.snapshot.relations` scalar counts **Ally + Hostile, not 
 Use the owner's local copy only. From the repository root with .NET 10:
 
 ```powershell
-$env:RWS_TEST17_SAVE = "D:\\private-test-saves\\Test1.7.rws"
+$env:RWS_TEST17_SAVE = "D:\private-test-saves\Test1.7.rws"
 dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true --filter "FullyQualifiedName~Test17PrivateSave_OmittedNeutralKindsRecoverPartialGoodwill_WhenAvailable"
-Remove-Item Env:\\RWS_TEST17_SAVE
+Remove-Item Env:\RWS_TEST17_SAVE
 ```
 
 The opt-in test expects saved version 1.7.5000 rev1275, 183 saved MODs, no checkpoint, Partial/Experimental faction recovery, neutral-only ally/hostile counts and goodwill 11–30, with original bytes/mtime unchanged. Absence of this test in public CI does not prove original-file .NET acceptance.
