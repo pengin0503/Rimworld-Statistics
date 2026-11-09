@@ -24,8 +24,9 @@ public sealed class SaveReader
     /// Bumped whenever the reader's output changes, so stored observations are re-read (spec §7.1). 3: lineage recovery and
     /// numeric validation. 4: Phase A numeric observations (history series, counters, retained quests, content hash).
     /// 5: the Phase C checkpoint embedded in this mod's component (numericStatistics).
+    /// 6: bounded, partial legacy faction-relationship evidence (no new live hooks).
     /// </summary>
-    public const int Version = 5;
+    public const int Version = 6;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -122,6 +123,8 @@ public sealed class SaveReader
         public float[]? Wealth { get; set; }
         public string? ScenarioPlayerFactionDef { get; set; }
         public List<(string? Def, string? Name)> Factions { get; } = new();
+        public List<SavedFaction> HistoricalFactions { get; } = new();
+        public bool HistoricalFactionsOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
@@ -256,24 +259,71 @@ public sealed class SaveReader
         });
     }
 
-    /// <summary>Reads def, name and deactivated directly under a faction; relations, pawns etc. are skipped.</summary>
+    /// <summary>Keep the v1 faction identity reader, and selectively gather small
+    /// first-party relation facts for historical, explicitly partial snapshots.</summary>
     private static void ReadFaction(XmlReader r, ReadState s)
     {
         string? def = null, name = null;
-        var deactivated = false;
+        int? loadId = null;
+        bool deactivated = false, defeated = false, valid = true;
+        var relations = new List<SavedFactionRelation>();
         ForEachChild(r, child =>
         {
             switch (child)
             {
                 case "def": def = r.ReadElementContentAsString().Trim(); break;
                 case "name": name = r.ReadElementContentAsString(); break;
+                case "loadID":
+                    if (int.TryParse(r.ReadElementContentAsString().Trim(), NumberStyles.Integer, Inv, out var id) && id >= 0)
+                        loadId = id;
+                    else valid = false;
+                    break;
                 case "deactivated": deactivated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                case "defeated": defeated = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                case "relations":
+                    ForEachChild(r, _ =>
+                    {
+                        if (relations.Count >= HistoricalFactionSnapshotReader.MaxRelationsPerFaction)
+                        {
+                            valid = false;
+                            r.Skip();
+                            return;
+                        }
+                        relations.Add(ReadFactionRelation(r));
+                    });
+                    break;
                 default: r.Skip(); break;
             }
         });
         s.Factions.Add((def, name));
         if (def == "Mechanoid" && deactivated)
             s.MechanoidsDeactivated = true;
+        if (s.HistoricalFactions.Count >= HistoricalFactionSnapshotReader.MaxFactions)
+            s.HistoricalFactionsOverflowed = true;
+        else
+            s.HistoricalFactions.Add(new SavedFaction(def, loadId ?? 0, !deactivated && !defeated, relations, valid));
+    }
+
+    private static SavedFactionRelation ReadFactionRelation(XmlReader r)
+    {
+        string? other = null, kind = null;
+        int? goodwill = null;
+        var valid = true;
+        ForEachChild(r, name =>
+        {
+            switch (name)
+            {
+                case "other": other = r.ReadElementContentAsString().Trim(); break;
+                case "kind": kind = r.ReadElementContentAsString().Trim(); break;
+                case "goodwill":
+                    if (int.TryParse(r.ReadElementContentAsString().Trim(), NumberStyles.Integer, Inv, out var parsed))
+                        goodwill = parsed;
+                    else valid = false;
+                    break;
+                default: r.Skip(); break;
+            }
+        });
+        return new SavedFactionRelation(other, kind, goodwill, valid);
     }
 
     private static void ReadQuests(XmlReader r, ReadState s)
@@ -602,6 +652,21 @@ public sealed class SaveReader
                 new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = mods.Count });
 
         RetainedQuestMetricReader.Summarize(s.Quests, s.UnreadableQuests, obs.Values.TicksGame, m.Metrics);
+
+        // Historical salvage is intentionally a partial lower bound. Unsupported
+        // versions, missing player identity and ambiguous faction references remain
+        // Unknown, not zero. It is independent of the game-side acquisition toggle.
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalFactionSnapshotReader.Build(s.HistoricalFactions, s.ScenarioPlayerFactionDef,
+                s.HistoricalFactionsOverflowed, m.ActiveDlcIds) is { } historical)
+        {
+            foreach (var (key, value) in historical)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition = new Dictionary<string, MetricEvidence>(StringComparer.Ordinal)
+            {
+                ["factions"] = MetricEvidence.Experimental,
+            };
+        }
         return m;
     }
 
