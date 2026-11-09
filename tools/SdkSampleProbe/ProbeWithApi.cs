@@ -44,6 +44,14 @@ internal static class ProbeWithApi
             throw new Exception("Sample duplicate event was recorded");
         if (fake.Snapshot?.Invoke() != 3)
             throw new Exception("Sample snapshot was not captured");
+        SampleSdkClient.ArmSnapshotExceptionOnce();
+        var snapshotFaultObserved = false;
+        try { _ = fake.Snapshot?.Invoke(); }
+        catch (InvalidOperationException) { snapshotFaultObserved = true; }
+        if (!snapshotFaultObserved)
+            throw new Exception("Sample snapshot fault injection did not trigger");
+        if (fake.Snapshot?.Invoke() != 3)
+            throw new Exception("Snapshot fault injection did not reset after one call");
         // This is a real copy of the sample's save/load event-id algorithm, not just host negotiation.
         var ids = new List<string>();
         var ledger = new SampleEventLedger("test-save-guid", 0);
