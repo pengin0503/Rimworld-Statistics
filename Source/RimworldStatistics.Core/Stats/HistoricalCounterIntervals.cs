@@ -82,8 +82,17 @@ public static class HistoricalCounterIntervals
     {
         if (checkpoint.FileAliases.Count == 0)
             return null;
-        var matching = saves.Where(save => save.FileAliases.Any(a =>
-            checkpoint.FileAliases.Any(b => a.Same(b.FileName, b.FileSize, b.LastWriteUtc)))).Take(2).ToList();
+        // A saved checkpoint payload can be reused on later saves while
+        // recording is disabled. Its alias list then contains several .rws
+        // files, but only the one with the checkpoint's own tick is evidence
+        // of the original boundary. Filter candidates before uniqueness.
+        var matching = saves.Where(save =>
+            save.SaveTick == checkpoint.SaveTick
+            && save.GameVersion == checkpoint.GameVersion
+            && SameColony(save.Identity, checkpoint.Identity)
+            && save.FileAliases.Any(a => checkpoint.FileAliases.Any(
+                b => a.Same(b.FileName, b.FileSize, b.LastWriteUtc))))
+            .Take(2).ToList();
         return matching.Count == 1 ? matching[0] : null;
     }
 
