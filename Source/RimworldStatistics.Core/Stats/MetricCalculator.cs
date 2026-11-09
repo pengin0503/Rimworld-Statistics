@@ -120,7 +120,14 @@ public static class MetricCalculator
                     && bySource.TryGetValue(MetricObservationSource.SaveFile, out var historical)
                     && historical.Any(o => Entry(o, d) is not null
                         && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental))
-                    return ColonyRow(d, historical, null, latestBySource.GetValueOrDefault(MetricObservationSource.SaveFile));
+                {
+                    // A later save with no supported evidence must not erase a
+                    // partial reading in an older save. Only candidates that
+                    // actually captured this unit participate in selection.
+                    var capturedHistory = historical.Where(o => Entry(o, d) is not null
+                        && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental).ToArray();
+                    return ColonyRow(d, capturedHistory, null, Representative(capturedHistory));
+                }
                 return ColonyRow(d, captured, checkpoints.Representative, latestBySource.GetValueOrDefault(d.Source));
             }).ToList(), checkpoints.Lineage));
         }
