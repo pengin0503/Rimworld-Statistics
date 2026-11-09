@@ -169,4 +169,28 @@ public sealed class HistoricFactionBackfillTests
         Assert.Equal(bytes, File.ReadAllBytes(filename));
     }
 
+    [Fact]
+    public void Read_MissingFactionLoadId_CannotResolvePlayerRelation()
+    {
+        var missingId = Faction("OutlanderCivil", 2, "Ally", 80);
+        missingId.Element("loadID")!.Remove();
+        var read = Read(Save(Faction("PlayerColony", 1), missingId));
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.NotNull(read.Metrics);
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void Read_MalformedDefeatedFlag_IsNotAllowedToInvalidateTheWholeSave()
+    {
+        var malformed = Faction("OutlanderCivil", 2, "Ally", 80);
+        malformed.Add(new XElement("defeated", "not-a-bool"));
+        var input = Save(Faction("PlayerColony", 1), malformed);
+        var read = Read(input);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.NotNull(read.Metrics);
+        Assert.DoesNotContain(FactionStateSnapshot.Relations, read.Metrics!.Metrics.Keys);
+        Assert.Equal(input, input.ToArray());
+    }
+
 }
