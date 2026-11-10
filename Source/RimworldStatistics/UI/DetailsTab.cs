@@ -313,6 +313,10 @@ public static class DetailsTab
             tip.Append((string)"RWS_Details_Tip_Colonies".Translate(row.Targets, row.Valid)).Append('\n');
             if (v.ColonyKey is { } holder)
                 tip.Append((string)"RWS_Details_Tip_Holder".Translate(Name(input.Stats, holder))).Append('\n');
+            if (v.HolderKeys is { Count: > 1 } tied)
+                tip.Append((string)"RWS_Cross_TiedHolders".Translate(string.Join(", ", tied.Select(k => Name(input.Stats, k))))).Append('\n');
+            if (CrossColonyCatalog.IsDerived(d) && v.ThroughTick is { } recorded)
+                tip.Append((string)"RWS_Cross_RecordedAt".Translate(Dialog_RimworldStatistics.Days(recorded))).Append('\n');
         }
         if (v.SampleCount is { } n)
             tip.Append((string)"RWS_Details_Tip_Samples".Translate(n)).Append('\n');
@@ -323,11 +327,14 @@ public static class DetailsTab
         tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
 
         var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
-        if (d.Category == MetricCategory.Rankings && row.Breakdown.Length == 0)
+        if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
         {
-            // A ranking names what holds it: the colony, or the label(s) for a split such as the top scenario.
+            // Cross-colony records retain their original category but still
+            // show the winning item or the colony holding the record.
             if (v.Label is { } holderLabel)
-                value += " · " + holderLabel;
+                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
+                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
+                    : holderLabel);
             else if (v.ColonyKey is { } holderColony)
                 value += " · " + Name(input.Stats, holderColony);
         }
@@ -371,8 +378,23 @@ public static class DetailsTab
     }
 
     private static string DefinitionLabel(MetricDefinition d)
-        => d.ProviderId is not null && d.LabelKey == d.Key
+    {
+        if (CrossColonyCatalog.IsDerived(d) && MetricRegistry.Find(d.StoredKey) is { } source)
+            return d.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
+                ? (string)"RWS_Cross_MaxColony".Translate((string)source.LabelKey.Translate())
+                : d.Key.StartsWith(CrossColonyCatalog.MinPrefix, StringComparison.Ordinal)
+                    ? (string)"RWS_Cross_MinColony".Translate((string)source.LabelKey.Translate())
+                    : d.Key.StartsWith(CrossColonyCatalog.SumPrefix, StringComparison.Ordinal)
+                        ? (string)"RWS_Cross_Sum".Translate((string)source.LabelKey.Translate())
+                        : d.DescriptionKey == "RWS_CrossDesc_TopCategory"
+                            ? (string)"RWS_Cross_TopCategory".Translate((string)source.LabelKey.Translate())
+                            : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
+        return d.ProviderId is not null && d.LabelKey == d.Key
             ? d.Key : (string)d.LabelKey.Translate();
+    }
+
+    private static string ItemLabel(string defName)
+        => DefDatabase<ThingDef>.GetNamedSilentFail(defName)?.label ?? defName;
 
     private static string BreakdownLabel(MetricDefinition definition, string key)
         => MetricDisplayPolicy.BreakdownLabelKey(definition, key) is { } translation
