@@ -29,8 +29,9 @@ public sealed class SaveReader
     /// 8: recover Scribe-omitted neutral relation kinds in historical faction snapshots.
     /// 9: bounded, partial saved player Settlement map observations (not lifetime maxima).
     /// 10: new breakdown outputs rebuilt from the original checkpoint (no counter revision changes).
+    /// 11: provisional 1.7 history research completion via audited official 1.7 Def costs (Partial).
     /// </summary>
-    public const int Version = 10;
+    public const int Version = 11;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -148,6 +149,9 @@ public sealed class SaveReader
         public Dictionary<string, List<float[]?>> Series { get; } = new(StringComparer.Ordinal);
         public List<RetainedQuest>? Quests { get; set; }
         public string? CheckpointText { get; set; }
+        public List<string>? SavedResearchKeys { get; set; }
+        public List<string>? SavedResearchValues { get; set; }
+        public bool SavedResearchMalformed { get; set; }
         public int UnreadableQuests { get; set; }
     }
 
@@ -183,6 +187,11 @@ public sealed class SaveReader
                     s.RaidsWritten = statsRecord?.Element("numRaidsEnemy") != null;
                     s.KilledWritten = statsRecord?.Element("colonistsKilled") != null;
                     break;
+                case "researchManager":
+                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                        ReadSavedResearch(Load(r), s);
+                    else r.Skip();
+                    break;
                 case "world": ReadWorld(r, s); break;
                 case "maps":
                     if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadMaps(r, s);
@@ -215,6 +224,34 @@ public sealed class SaveReader
             .Select(li => li.Value.Trim())
             .Where(id => id.Length > 0 && id != "null")
             .ToList() ?? new List<string>();
+    }
+
+    /// <summary>
+    /// Parse only researchManager.progress keys/values. Nothing outside 1.7 is
+    /// interpreted; no vanilla cost is inferred from raw progress alone.
+    /// </summary>
+    private static void ReadSavedResearch(XElement manager, ReadState state)
+    {
+        var data = manager.Element("progress");
+        if (data is null)
+            return;
+        var keys = data.Element("keys");
+        var values = data.Element("values");
+        if (keys is null || values is null)
+        {
+            state.SavedResearchMalformed = true;
+            return;
+        }
+        const int maxProjects = 8192;
+        var readKeys = keys.Elements("li").Take(maxProjects + 1).Select(x => x.Value.Trim()).ToList();
+        var readValues = values.Elements("li").Take(maxProjects + 1).Select(x => x.Value.Trim()).ToList();
+        if (readKeys.Count > maxProjects || readValues.Count > maxProjects)
+        {
+            state.SavedResearchMalformed = true;
+            return;
+        }
+        state.SavedResearchKeys = readKeys;
+        state.SavedResearchValues = readValues;
     }
 
     private static void ReadTickManager(XElement tm, SaveObservation obs)
@@ -883,6 +920,18 @@ public sealed class SaveReader
                 m.Metrics[key] = value;
             m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
             m.EvidenceByAcquisition["facilities"] = MetricEvidence.Experimental;
+        }
+        // P0-C: all reconstructed values remain Partial and Experimental:
+        // official 1.7.4985 reference costs are assumed compatible across 1.7,
+        // but are not proof of the saved MOD-resolved runtime DefDatabase.
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalResearchStateReader.Build(s.SavedResearchKeys, s.SavedResearchValues,
+                s.ModIds, s.SavedResearchMalformed) is { } research)
+        {
+            foreach (var (key, value) in research)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            m.EvidenceByAcquisition["research_state"] = MetricEvidence.Experimental;
         }
         return m;
     }
