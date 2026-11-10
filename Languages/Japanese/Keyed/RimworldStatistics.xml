@@ -850,4 +850,8 @@
   <RWS_MetricDesc_CraftedByDef>計測期間に完成した製作品の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>採掘資源の種類別累計</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>計測期間に実際に配置された採掘産出物の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>清掃で完全除去した汚れ数</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>入植者が汚れを完全除去し、ゲーム側の清掃実績が加算された回数です。汚れの厚さの部分減少や、清掃ジョブ全体の回数ではありません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>消火成功件数</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>入植者の消火または自己消火で火が消え、ゲーム側の消火実績が加算された回数です。雨や自然消火は含みません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FiresExtinguished>
 </LanguageData>

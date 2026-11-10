@@ -85,6 +85,8 @@ animals.tamed,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-001,AnimalsFamily.Tam
 animals.birth,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-002,AnimalsFamily.Births
 animals.slaughtered,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-004,AnimalsFamily.Slaughtered
 animals.hunted,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-D-006,AnimalsFamily.Hunted
+work.cleaning.filth_removed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-001,ChoreFamily.FilthRemoved
+work.fire.extinguished,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-002,ChoreFamily.FiresExtinguished
 work.crafting.completed_by_def,work_details,live,EVENT_LOG_REQUIRED,UNVERIFIED,P1-W-001,WorkDetailsFamily.CraftedByDef
 work.mining.units_by_def,work_details,live,EVENT_LOG_REQUIRED,UNVERIFIED,P1-W-002,WorkDetailsFamily.MinedByDef
 work.crafting.units,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-003,WorkFamily.CraftedUnits

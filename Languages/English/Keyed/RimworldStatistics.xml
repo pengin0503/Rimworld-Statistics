@@ -850,4 +850,8 @@
   <RWS_MetricDesc_CraftedByDef>Successfully completed product units by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>Mined resource units by item</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>Successfully placed mining yield by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>Filth completely removed</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>One per filth object completely removed by a player pawn's cleaning job (vanilla MessesCleaned record). Not a count of partial thickness reductions or entire cleaning jobs. Recorded only while enabled.</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>Fires extinguished</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>One per fire destroyed by a player pawn through vanilla fire-fighting or self-extinguish (FiresExtinguished record). Environmental fire extinction is excluded. Recorded only while enabled.</RWS_MetricDesc_FiresExtinguished>
 </LanguageData>

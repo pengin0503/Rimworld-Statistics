@@ -73,13 +73,30 @@ public static class PlantCollectedMetricPatch
 }
 
 /// <summary>Sowing completes where the sow toil increments the actor's PlantsSown record (JobDriver_PlantSow, 1.7.4985).</summary>
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
 public static class PlantsSownMetricPatch
 {
     public static void Postfix(Pawn_RecordsTracker __instance, RecordDef def)
     {
-        if (def != RecordDefOf.PlantsSown || __instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+        // 1.7.4985: the clean-filth toil increments MessesCleaned only after
+        // Filth.ThinFilth leaves the filth Destroyed. Both fire-fighting toils
+        // increment FiresExtinguished after target fire.Destroyed; self-extinguish
+        // destroys fire before the record increment. Reuse the same already-patched
+        // tracker instead of adding a per-tick or extra Harmony interception.
+        if (__instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+            return;
+        if (def == RecordDefOf.MessesCleaned)
+        {
+            GameFacts.Record(ChoreFamily.Name, ChoreFamily.FilthCleared);
+            return;
+        }
+        if (def == RecordDefOf.FiresExtinguished)
+        {
+            GameFacts.Record(ChoreFamily.Name, ChoreFamily.FireCleared);
+            return;
+        }
+        if (def != RecordDefOf.PlantsSown)
             return;
         if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned)
             return;

@@ -210,6 +210,7 @@ public static class LiveFamilies
         AnimalsFamily.Family,
         WorkFamily.Family,
         WorkDetailsFamily.Family,
+        ChoreFamily.Family,
         FoodFamily.Family,
         TradeFamily.Family,
         DiplomacyFamily.Family,
