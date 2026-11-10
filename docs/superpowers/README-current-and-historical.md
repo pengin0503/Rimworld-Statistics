@@ -5,7 +5,7 @@ This index is the **starting point** for maintenance. Older specs are retained a
 ## Current baseline and work branch
 
 - **Shipped main:** v1.4.0, `main@f6890ee626bceb087693136a304333ce089d926c`; 415 registered definitions (331 original + 84 derived); SaveReader v10. Verify HEAD before changing release version.
-- **Active draft implementation:** [PR #102](https://github.com/pengin0503/Rimworld-Statistics/pull/102), branch `feat/post-v1.4-coverage-and-full-leaderboards-20261110`. Scope: coverage diagnostics, measured item ranking, synthetic MOD/DLC hardening and two bounded optimization paths. **Not merged** merely by being documented here.
+- **Active draft implementation:** [PR #102](https://github.com/pengin0503/Rimworld-Statistics/pull/102), branch `feat/post-v1.4-coverage-and-full-leaderboards-20261110`. Scope: coverage diagnostics, measured item ranking, MOD/DLC hardening, bounded P2 optimizations, provisional research, owned-home turrets and direct Silver/Core medicine historical lower bounds. **Reader v13, not merged**.
 - **Research origin:** [PR #101](https://github.com/pengin0503/Rimworld-Statistics/pull/101), originally separate, now **its two authoritative files are also copied onto PR #102's branch** so a future merge of #102 is self-contained. Do not delete #101 while external issue links depend on it.
 
 ## Use these current documents in this order
@@ -43,6 +43,18 @@ This index is the **starting point** for maintenance. Older specs are retained a
 - **49** private R2 originals **did** pass an actual pinned production .NET reader and integrity run (#42830780995), but **55+** original files, same-machine before/after baseline, five TPS windows, ten paired game saves, and the *five newer local 1.7.5000 originals* remain unrun in that production acceptance. Never infer all other validation passed.
 - No unintended release, forced merge, or deletion of active documents.
 
-## 2026-11-10 post-v1.4 research implementation status
+## 2026-11-10 source-evidenced reader v13 and actual R2 qualification — current
 
-Main still ships v1.4.0 with **SaveReader v10**. **PR #102 (not merged)** advances the reader to **v11** specifically to recover provisional official 1.7 research snapshots from unchanged legacy saves, without changing checkpoint v1 or any of the 415 metric definitions. The [game IL/Def/source record](../research/2026-11-10-r2-game-source-1-7-research-recovery.md) and [complete game Def reference](../research/2026-11-10-r2-1-7-research-def-catalog.json) replace the earlier assumption that a different 1.7 build blocks all research recovery. Runtime and mixed-MOD semantics are still separate verification gates.
+**Main is unchanged:** shipped v1.4.0, **SaveReader v10**. [Draft PR #102](https://github.com/pengin0503/Rimworld-Statistics/pull/102) is the active unmerged implementation, now **SaveReader v13**. It retains all **415 metric definitions, revisions, and checkpoint format v1** while adding:
+- P0-C provisional official 1.7 research (`research.snapshot.finished`, rate, highest tech) via [R2 audited 122 ResearchProjectDefs](../research/2026-11-10-r2-game-source-1-7-research-recovery.md). 
+- Strictly positive, ownership-confirmed *historical saved snapshot lower bounds* on home-map [vanilla turrets, direct Silver, three Core medicines](../research/2026-11-10-r2-1-7-historical-home-stock-turret-evidence.md), **all Partial/Experimental**; missing or unproven is Unknown, never zero.
+- Earlier P0 coverage diagnosis, complete Def rankings and bounded P2 optimizations retained.
+
+**Exact acceptance, without rediscovery:**
+- [Core CI #42845357275](https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42845357275) **success**, covering v13 source and schema-2 anonymous acceptance utility. [#42844594938](https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42844594938): 726 Core passed, 0 failed, 9 skipped; 888 translations.
+- [R2 private 49 actual original files v13 #42846305788](https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42846305788) **PASS**: 49 unchanged, 0 errors, 1.7 Partial positive observations: research 7, turret 0, Silver 6, medicines 6. Turret zero **positive observations** does not prove zero installed turrets. [Exact evidence](../testing/2026-11-10-r2-49-original-reader-v13-acceptance.md).
+- [Actual R2 RimWorld 1.7.4985 game/Harmony v13 A+B #42846305625](https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42846305625) **qualified PASS**: no new startup errors, 2 expected title-menu patches registered, 9 other patches unattributed; no actual in-game metric parity or TPS claim. [Exact evidence](../testing/2026-11-10-rimworld-1-7-v13-actual-game-smoke.md). RWMT [PR #73](https://github.com/pengin0503/RimWorld-for-mod-test/pull/73) merged for **test infrastructure only**, Stats PR #102 still draft.
+
+**User compatibility ruling:** take differences between unstable 1.7 internal versions as provisionally irrelevant for development; record the exact source version, and do not upgrade an inferred, MOD-sensitive research/ownership quantity to Verified. The user's eight newest 1.7.5000 private originals are **one campaign**; they were inspected separately via read-only Python structural audit, *not* as part of the R2 49 original .NET run.
+
+**Still outstanding (do not misreport as implemented):** complete live-MOD roster free/prisoner/slave/mech, nested item/holder or caravan stock, medical beds and lifetime medical events, confirmed powered generator runtime state, save-game exact value parity, 55+ independent real saves, matched TPS/save-time A/B and production .NET acceptance of newest eight local originals. Phase B live collectors exist, but historical backfill of the unsupported fields is not proof-safe.
