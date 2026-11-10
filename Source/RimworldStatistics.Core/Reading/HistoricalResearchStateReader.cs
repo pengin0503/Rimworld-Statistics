@@ -79,7 +79,7 @@ public static class HistoricalResearchStateReader
     {
         var defs = Definitions.Value;
         if (defs is null || activeModIds is null || activeModIds.Count == 0
-            || keys is null || values is null || keys.Count == 0
+            || keys is null || values is null || malformed || keys.Count != values.Count || keys.Count == 0
             || keys.Count > MaxProjects || values.Count > MaxProjects)
             return null;
         var active = activeModIds.Where(x => !string.IsNullOrWhiteSpace(x))
@@ -104,7 +104,7 @@ public static class HistoricalResearchStateReader
                 }
                 continue;
             }
-            if (!progress.TryAdd(key, value))
+            if (duplicates.Contains(key) || !progress.TryAdd(key, value))
             {
                 progress.Remove(key);
                 duplicates.Add(key);
@@ -114,8 +114,6 @@ public static class HistoricalResearchStateReader
         var official = defs.Where(d => active.Contains(d.PackageId)).ToArray();
         if (official.Length == 0)
             return null;
-        var known = official.Select(d => d.Name).ToHashSet(StringComparer.Ordinal);
-        if (progress.Keys.Any(k => !known.Contains(k)))
         var records = new List<ResearchStateFact>(official.Length);
         foreach (var def in official)
         {
