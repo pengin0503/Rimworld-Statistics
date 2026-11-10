@@ -166,4 +166,33 @@ public sealed class ChoreLifetimeTests
         Assert.Equal(1L, Read(observed, ChoreFamily.SlaughteredButchery).IntegerValue);
     }
 
+
+    [Fact]
+    public void PendingDestroyedCorpseMarker_SurvivesReloadUntilNextTick()
+    {
+        var acc = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var state = acc.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(state, "pending", 50);
+        ChoreFamily.CorpseDestroyed(state, "pending", 100);
+        var draft = acc.PrepareSave(100, T0, "destroyed-just-before-save")!;
+        acc.Commit(draft);
+
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, new[] { ChoreFamily.Family.Spec }, 100);
+        var loaded = resumed.Family(ChoreFamily.Name)!;
+        Assert.NotNull(loaded.Tracked("slaughter_corpses", "pending"));
+        ChoreFamily.CorpseConsumed(loaded, "pending", butcherFleshRecipe: true);
+        ChoreFamily.PruneDestroyedCorpses(loaded, 101);
+        Assert.Empty(loaded.Active);
+        Assert.Equal(1L, Read(Save(resumed, 101), ChoreFamily.SlaughteredButchery).IntegerValue);
+
+        var second = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var target = second.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(target, "unprocessed", 100);
+        ChoreFamily.CorpseDestroyed(target, "unprocessed", 100);
+        var snap = second.PrepareSave(100, T0, "destroyed-not-butchered")!;
+        var later = LiveMetricAccumulator.Resume(snap.Json, new[] { ChoreFamily.Family.Spec }, 100);
+        ChoreFamily.PruneDestroyedCorpses(later.Family(ChoreFamily.Name)!, 101);
+        Assert.Empty(later.Family(ChoreFamily.Name)!.Active);
+    }
+
 }
