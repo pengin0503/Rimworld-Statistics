@@ -710,6 +710,8 @@
   <RWS_MetricDesc_RosterFree>正常保存時点で生存中の対象Pawnから取得した生存中の自由入植者。最大値は保存観測間で集計。</RWS_MetricDesc_RosterFree>
   <RWS_Metric_RosterPrisoners>生存中のコロニー囚人</RWS_Metric_RosterPrisoners>
   <RWS_MetricDesc_RosterPrisoners>正常保存時点で生存中の対象Pawnから取得した生存中のコロニー囚人。最大値は保存観測間で集計。</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>生存中のコロニー奴隷</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>正常保存時点の生存中の奴隷数。過去セーブからの復元では奴隷状態とプレイヤー所属を確認できた場合に限り、部分的な下限値として表示します。</RWS_MetricDesc_RosterSlaves>
   <RWS_Metric_RosterAnimals>飼育動物数</RWS_Metric_RosterAnimals>
   <RWS_MetricDesc_RosterAnimals>正常保存時点で生存中の対象Pawnから取得した飼育動物数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAnimals>
   <RWS_Metric_RosterMechs>自軍メカノイド数</RWS_Metric_RosterMechs>
@@ -744,8 +746,6 @@
   <RWS_MetricDesc_FacilitiesGeneration>正常保存時にロードされていたプレイヤー拠点マップ上の最大発電定格容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>最大蓄電容量</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>正常保存時にロードされていたプレイヤー拠点マップ上の最大蓄電容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesRunningGenerators>稼働中発電設備の種類別件数</RWS_Metric_FacilitiesRunningGenerators>
-  <RWS_MetricDesc_FacilitiesRunningGenerators>正常保存時にロードされていたプレイヤー拠点マップ上の稼働中発電設備の種類別件数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRunningGenerators>
   <RWS_Metric_FacilitiesOutdoorTempMin>保存時の最低屋外気温</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最低屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>保存時の最高屋外気温</RWS_Metric_FacilitiesOutdoorTempMax>
