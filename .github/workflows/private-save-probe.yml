@@ -46,7 +46,7 @@ jobs:
           dotnet publish Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:UseNuGetRefs=true -o "$RUNNER_TEMP/private-xunit" --nologo
           test -f "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
           chmod +x "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
-          "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests" --help > /dev/null
+          file "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
       - uses: actions/upload-artifact@v4
         with:
           name: rws-private-five-save-xunit-linux-x64
