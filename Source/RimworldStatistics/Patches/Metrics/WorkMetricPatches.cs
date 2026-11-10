@@ -31,12 +31,56 @@ internal static class HarvestProbe
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+/// <summary>Only the exact wood Thing reported by the harvest toil will be matched to
+/// a subsequent placement callback. The game's Notify_PlantHarvested runs before
+/// GenPlace.TryPlaceThing, so a notification by itself is never added as gained wood.</summary>
+internal static class TreeWoodPlacementProbe
+{
+    private static Thing? expected;
+    private static Map? map;
+    private static Game? game;
+    private static int tick = -1;
+
+    public static void Expect(Pawn? worker, Thing? harvest)
+    {
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null ||
+            worker == null || harvest == null || !GameFacts.IsPlayer(worker) ||
+            worker.jobs?.curDriver is not JobDriver_PlantCut ||
+            HarvestProbe.JobPlant(worker) is not { Spawned: true } tree ||
+            tree.def?.plant?.IsTree != true || tree.def.plant.harvestedThingDef != harvest.def ||
+            harvest.stackCount <= 0)
+            return;
+        expected = harvest;
+        map = tree.Map;
+        game = Current.Game;
+        tick = GameFacts.Tick;
+    }
+
+    public static bool Take(Thing? candidate, Map? targetMap)
+    {
+        if (tick != GameFacts.Tick || !ReferenceEquals(game, Current.Game))
+        {
+            expected = null;
+            map = null;
+            game = null;
+            return false;
+        }
+        if (candidate == null || !ReferenceEquals(expected, candidate) || !ReferenceEquals(map, targetMap))
+            return false;
+        expected = null;
+        map = null;
+        game = null;
+        return true;
+    }
+}
+
+[MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.Notify_PlantHarvested))]
 public static class PlantHarvestedMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
+        TreeWoodPlacementProbe.Expect(worker, harvested);
         if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant)
             return;
         var plantId = GameFacts.Id(plant);
@@ -72,14 +116,156 @@ public static class PlantCollectedMetricPatch
     }
 }
 
-/// <summary>Sowing completes where the sow toil increments the actor's PlantsSown record (JobDriver_PlantSow, 1.7.4985).</summary>
-[MetricAdapter(WorkFamily.Name)]
+/// <summary>
+/// Counts completed cell-storage delivery, never the early "ThingsHauled" pickup.
+/// In 1.7.4985 Toils_Haul.PlaceHauledThingInCell calls the 4-argument
+/// Pawn_CarryTracker.TryDropCarriedThing overload with Direct placement.
+/// Its bool success comes from ThingOwner.TryDrop. The retained carried-count
+/// delta measures deposited units including partial stack drops.
+/// The hook observes other use cases, but only commits player HaulToCell drops
+/// at the job's destination cell. No per-tick or pawn collection traversal.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Pawn_CarryTracker), nameof(Pawn_CarryTracker.TryDropCarriedThing),
+    new[] { typeof(IntVec3), typeof(ThingPlaceMode), typeof(Thing), typeof(Action<Thing, int>) },
+    new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
+internal static class HaulToCellCompletionMetricPatch
+{
+    private static void Prefix(Pawn_CarryTracker __instance, IntVec3 dropLoc,
+        ThingPlaceMode mode, out int __state)
+    {
+        __state = 0;
+        // Avoid incrementing diagnostics for speculative haul deliveries.
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+            return;
+        var actor = __instance.pawn;
+        var job = actor?.CurJob;
+        if (actor == null || !GameFacts.IsPlayer(actor) ||
+            job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
+            job.targetB.Cell != dropLoc)
+            return;
+        __state = __instance.CarriedThing?.stackCount ?? 0;
+    }
+
+    private static void Postfix(Pawn_CarryTracker __instance, bool __result, int __state)
+    {
+        if (!__result || __state <= 0)
+            return;
+        var remaining = __instance.CarriedThing?.stackCount ?? 0;
+        int deposited = __state - remaining;
+        if (deposited > 0)
+            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.HaulDeposited(state, deposited));
+    }
+}
+
+/// <summary>
+/// Marks only the corpse of the pawn actually killed by a player Slaughter job.
+/// The game's AnimalsSlaughtered record is incremented *after* DoExecutionByCut.
+/// Hunting can also increment AnimalsSlaughtered, so the exact job type is required.
+/// The corpse identity is stored as checkpoint Active data and can cross save/load.
+/// </summary>
+internal static class SlaughterProvenanceMetric
+{
+    public static void Observe(Pawn actor)
+    {
+        if (actor.jobs?.curDriver is not JobDriver_Slaughter ||
+            actor.CurJob?.targetA.Thing is not Pawn animal ||
+            !animal.RaceProps.Animal || !animal.Dead || !GameFacts.IsPlayer(animal) ||
+            animal.Corpse is not { Destroyed: false } corpse)
+            return;
+        var corpseId = GameFacts.Id(corpse);
+        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId));
+    }
+}
+
+/// <summary>
+/// 1.7 Toils_Recipe consumes ingredients then calls Bill.Notify_IterationCompleted,
+/// then RecordsUtility.Notify_BillDone. The completed Bill receives the original
+/// ingredient list even after consumption. Only tracked corpse IDs and the exact
+/// vanilla flesh-butcher recipe qualify; cremation and hunting can never qualify.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.Notify_IterationCompleted))]
+internal static class SlaughteredButcheryMetricPatch
+{
+    private static void Postfix(Bill_Production __instance, Pawn billDoer, List<Thing> ingredients)
+    {
+        if (billDoer == null || !GameFacts.IsPlayer(billDoer) ||
+            ingredients is not { Count: > 0 } ||
+            LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+            return;
+        var isButcherFlesh = __instance.recipe?.defName == "ButcherCorpseFlesh";
+        // Each input corpse can be counted at most once even when a bill has duplicates.
+        HashSet<string> uniqueCorpses = new(StringComparer.Ordinal);
+        foreach (var ingredient in ingredients)
+        {
+            if (ingredient is Corpse corpse)
+                uniqueCorpses.Add(GameFacts.Id(corpse));
+        }
+        if (uniqueCorpses.Count == 0)
+            return;
+        GameFacts.Record(ChoreFamily.Name, state =>
+        {
+            foreach (var corpseId in uniqueCorpses)
+                ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
+        });
+    }
+}
+
+/// <summary>Vanilla success records for sowing, removed filth, and extinguished fires.</summary>
+/// <summary>Job completion is recorded only after at least one successful removal.
+/// Pending positive work is keyed by persistent Job ID and discarded on cancellation.</summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Verse.AI.Pawn_JobTracker), nameof(Verse.AI.Pawn_JobTracker.EndCurrentJob))]
+internal static class CleanJobCompletedMetricPatch
+{
+    private static void Prefix(Verse.AI.Pawn_JobTracker __instance, Verse.AI.JobCondition condition)
+    {
+        var actor = __instance.curDriver?.pawn;
+        if (actor == null || !GameFacts.IsPlayer(actor) ||
+            __instance.curDriver is not JobDriver_CleanFilth ||
+            __instance.curJob is not { } job)
+            return;
+        string jobId = job.GetUniqueLoadID();
+        GameFacts.Record(ChoreFamily.Name, state =>
+            ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
+    }
+}
+
+[MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
 public static class PlantsSownMetricPatch
 {
     public static void Postfix(Pawn_RecordsTracker __instance, RecordDef def)
     {
-        if (def != RecordDefOf.PlantsSown || __instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+        // 1.7.4985: the clean-filth toil increments MessesCleaned only after
+        // Filth.ThinFilth leaves the filth Destroyed. Both fire-fighting toils
+        // increment FiresExtinguished after target fire.Destroyed; self-extinguish
+        // destroys fire before the record increment. Reuse the same already-patched
+        // tracker instead of adding a per-tick or extra Harmony interception.
+        if (__instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+            return;
+        if (def == RecordDefOf.AnimalsSlaughtered)
+        {
+            SlaughterProvenanceMetric.Observe(actor);
+            return;
+        }
+        if (def == RecordDefOf.MessesCleaned)
+        {
+            GameFacts.Record(ChoreFamily.Name, state =>
+            {
+                ChoreFamily.FilthCleared(state);
+                if (actor.jobs?.curDriver is JobDriver_CleanFilth && actor.CurJob is { } job)
+                    ChoreFamily.CleanedWithinJob(state, job.GetUniqueLoadID());
+            });
+            return;
+        }
+        if (def == RecordDefOf.FiresExtinguished)
+        {
+            GameFacts.Record(ChoreFamily.Name, ChoreFamily.FireCleared);
+            return;
+        }
+        if (def != RecordDefOf.PlantsSown)
             return;
         if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned)
             return;
@@ -106,7 +292,7 @@ public static class CropLeaflessMetricPatch
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
 [HarmonyPatch(typeof(RecordsUtility), nameof(RecordsUtility.Notify_BillDone))]
 public static class BillDoneMetricPatch
 {
@@ -126,6 +312,7 @@ public static class BillDoneMetricPatch
         var worker = GameFacts.Id(billDoer);
         var tick = GameFacts.Tick;
         GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
+        GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.CraftedProducts(s, items));
     }
 }
 
@@ -202,7 +389,7 @@ internal static class MiningProbe
     public static ThingDef? Yield;
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
 [HarmonyPatch(typeof(Mineable), "TrySpawnYield", new[] { typeof(Map), typeof(bool), typeof(Pawn) })]
 public static class MiningScopeMetricPatch
 {
@@ -227,27 +414,34 @@ public static class MiningScopeMetricPatch
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
     new[] { typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode), typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int) })]
 public static class MiningPlaceMetricPatch
 {
     public sealed class Placement
     {
-        public required string MinerId;
+        public string? MinerId;
         public required ThingDef YieldDef;
+        public bool CutTreeWood;
         public int Placed;
     }
 
     // GenPlace's placedAction reports quantities that actually got placed/merged.
     // Reading thing.stackCount in a prefix counted attempts (including failed placement).
     // Wrap rather than replace the caller's action so vanilla and other mods still receive it.
-    public static void Prefix(Thing thing, ref Action<Thing, int> placedAction, out Placement? __state)
+    public static void Prefix(Thing thing, Map map, ref Action<Thing, int> placedAction, out Placement? __state)
     {
         __state = null;
-        if (MiningProbe.Miner is not { } miner || thing?.def == null || thing.def != MiningProbe.Yield)
+        if (thing?.def == null)
             return;
-        var state = new Placement { MinerId = GameFacts.Id(miner), YieldDef = thing.def };
+        var miner = MiningProbe.Miner;
+        bool isMineYield = miner != null && thing.def == MiningProbe.Yield;
+        bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map);
+        if (!isMineYield && !isTreeWood)
+            return;
+        var state = new Placement { MinerId = isMineYield ? GameFacts.Id(miner!) : null,
+            YieldDef = thing.def, CutTreeWood = isTreeWood };
         __state = state;
         var original = placedAction;
         placedAction = (placedThing, count) =>
@@ -264,7 +458,13 @@ public static class MiningPlaceMetricPatch
     {
         if (__state is not { Placed: > 0 } state)
             return;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, state.MinerId, state.YieldDef.defName, state.Placed));
+        if (state.MinerId is { } miner)
+        {
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
+            GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+        }
+        if (state.CutTreeWood)
+            GameFacts.Record(ChoreFamily.Name, s => ChoreFamily.WoodObtained(s, state.Placed));
     }
 }
 

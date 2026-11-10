@@ -837,4 +837,33 @@
   <RWS_ModHospitality_PresentGuestsDesc>各ホーム拠点で現在滞在中の Hospitality ゲスト数。成功したセーブ時の値であり、歴代宿泊客の累計ではありません。対象MODのコード変更は不要です。</RWS_ModHospitality_PresentGuestsDesc>
   <RWS_ModHospitality_PresentGroups>Hospitality：滞在中のゲスト集団数（保存時）</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>各ホーム拠点で現在滞在中の Hospitality グループ数。成功したセーブ時の値であり、過去の来訪回数ではありません。</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>通算（記録範囲内）</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>その他</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>すべて</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>手術成功</RWS_Details_SurgerySuccess>
+  <RWS_Details_SurgeryFailure>手術失敗</RWS_Details_SurgeryFailure>
+  <RWS_Details_TradeKindOrbital>軌道商人</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>訪問キャラバン</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>拠点との取引</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>その他の交易相手</RWS_Details_TradeKindOther>
+  <RWS_Metric_CraftedByDef>製作完了品の種類別累計</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>計測期間に完成した製作品の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>採掘資源の種類別累計</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>計測期間に実際に配置された採掘産出物の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>清掃で完全除去した汚れ数</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>入植者が汚れを完全除去し、ゲーム側の清掃実績が加算された回数です。汚れの厚さの部分減少や、清掃ジョブ全体の回数ではありません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>消火成功件数</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>入植者の消火または自己消火で火が消え、ゲーム側の消火実績が加算された回数です。雨や自然消火は含みません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>食事摂取の成立回数</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>プレイヤー陣営の人間型ポーンが食事を実際に摂取し、栄養の取得量が正だった回数を記録します。キャラバンでの摂取も含み、食事以外の食品・薬物・非プレイヤーは除外します。</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>保管セルへの運搬完了回数</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>入植者のHaulToCellが指定セルに実際に品物を置けた回数です。拾い上げだけでは数えません。コンテナ運搬や別のMOD固有経路は対象外で、部分的な記録です。</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>保管セルに運んだ品目個数</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>HaulToCellで指定セルへの配置に成功した品目の個数を、運搬中スタックの減少量から記録します。コンテナ運搬などを除くため部分的な記録です。</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>清掃ジョブの完了回数</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>少なくとも1つの汚れを完全除去した入植者の清掃ジョブが、成功として終了した回数です。1ジョブで汚れを複数除去しても1回と数え、途中中断は除外します。</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_Metric_TreeWoodPlaced>伐採で実際に獲得した木材（主産物）</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>入植者が樹木を伐採し、主要産物の木材が実際に配置・スタック統合された個数を記録します。取得通知だけでは加算しません。MOD由来の追加産物や独自伐採経路は含まれないためPartialです。</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>屠殺後に解体された動物の累計</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>入植者が屠殺した動物の死体IDを保存し、同じ死体が標準の食肉解体Billで実際に消費された場合のみ数えます。狩猟・病死・敵の死体は含みません。MOD独自レシピ等は対象外のためPartialです。</RWS_MetricDesc_SlaughteredButchery>
 </LanguageData>

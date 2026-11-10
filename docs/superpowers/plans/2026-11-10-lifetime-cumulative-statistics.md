@@ -10,7 +10,7 @@
 
 **Spec:** [docs/superpowers/specs/2026-11-10-lifetime-cumulative-statistics-design.md](../specs/2026-11-10-lifetime-cumulative-statistics-design.md)
 
-**Status: PLAN ONLY. The user explicitly forbids implementation at this time. Do not execute any checkbox, change a C# source/test file, change a game setting, open a code PR, or publish a release until separately authorized.**
+**Current status (2026-11-10): User explicitly authorized P0–P2 implementation. Draft implementation PR #88 is in progress; former implementation bans below are historical, not current restrictions. Release and merge still require all acceptance gates.**
 
 ## Global Constraints
 
@@ -130,7 +130,7 @@
 - [ ] **Step 3 — actual game:** Use `pengin0503/RimWorld-for-mod-test` for qualified 1.7.4985 A+B where available; this alone does **not** establish menu/positive event/TPS acceptance. For UI and event checks use an isolated matching RimWorld 1.7 game profile, enable the relevant experimental units deliberately, test several positive game events, save/reload and validate numbers. Run 1.7.5000-original testing only on a matching or newer qualified host.
 - [ ] **Step 4 — review:** Zero Critical/Important issues and no changed family revisions; preserve v1.3.0 historical release. Only when separately authorized open and merge implementation PR; release version is a future explicit decision.
 
-## P1: second, independent implementation PR — defer until P0 is accepted
+## P1: independent production recording — authorized, provisionally implemented in draft PR #88
 
 **Task scope:** New item-def production totals and mined-def totals. Both are **new recordings**, not a retroactive reinterpretation of old `WorkFamily` counters.
 
@@ -139,10 +139,21 @@
 - [ ] Add detailed counters only after approval, then compare baseline TPS, allocations and ZIP/checkpoint growth. Existing capture families and existing `ProfileJson` must be unchanged.
 - [ ] Do **not** include the previously rejected `N3-W-012` Bill count unless re-approved based on independent value.
 
-## P2: research gate only — implementation not authorized
+## P2: evidence-gated implementation — user-authorized, still requiring game acceptance
 
-Possible clean/haul/eat/extinguish/woodcut actions have no proven stable event contracts in the present design. Before any P2 implementation proposal: identify exact positive trigger and negative controls (NPC, auto-clean, rain, destroyed job, repeated events), test mod interactions, measure TPS/allocation/save size with and without the hook, and produce a separate approved plan. High-frequency combat-shot and damage event hooks remain deferred.
+Possible clean/haul/eat/extinguish/woodcut actions have no proven stable event contracts in the present design. Before accepting P2 implementation: identify exact positive trigger and negative controls (NPC, auto-clean, rain, destroyed job, repeated events), test mod interactions, measure TPS/allocation/save size with and without the hook, and produce a separate approved plan. High-frequency combat-shot and damage event hooks remain deferred.
 
 ## Handoff / stopping condition
 
-This plan is **preparation for future implementation**, not permission to implement. All checkboxes are intentionally unchecked. Before execution an implementer must review the linked specification and re-check current main/CI, then obtain an explicit instruction to implement P0. The P1/P2 stage boundaries require their own acceptance and authorization.
+This was originally a pre-implementation plan; its former authorization gates were superseded by the user's 2026-11-10 instruction. Remaining unchecked acceptance and real-game validation steps are still mandatory before merge/release.
+## Execution ledger, 2026-11-10
+
+- [x] P0: semantic lifetime filter, 5 cached family breakdowns, UI mode, translation, one-time Reader v10 reevaluation; source keys and old family revisions unchanged.
+- [x] P1: opt-in independent `work_details` family; completed products by Def, successfully placed mined yield by Def. Bill count rejected as redundant.
+- [x] P2: opt-in independent `chore` family; completely removed filth, extinguished fires, meal ingestions, successful cell-storage haul drops and deposited item units. The latter two are Partial by construction.
+- [x] P2 provisional source-informed instrumentation: clean-job success after positive filth removal, actually placed primary tree wood, and vanilla flesh-butchering of tracked slaughter-origin corpse IDs. All remain Unverified until in-game positive/negative tests; wood/butchery intentionally Partial.
+- [x] Static 1.7.4985 DLL/IL method-reference audit for implemented events, Core unit regression checks and Actions static/compilation tests at completed commits.
+- [ ] 1.7 game-run positive/negative event tests (player/NPC, modded jobs, interrupted jobs), replayed save/fork/DLC and UI acceptance, measured TPS/allocations/save cost, zero Important/Critical review findings.
+- [ ] Pass release ZIP/SHA256 and Workshop-preparation CI; then merge, update version/docs/changes and issue v1.4.0 GitHub Release. **Do not merge or release before these gates.**
+
+Source evidence and blockers: `docs/research/2026-11-10-lifetime-p2-source-evidence.md`.

@@ -229,7 +229,7 @@ public static class WorkFamily
         c.PutCount(Pods, PodsLaunched_);
 
         var sow = s.Peek(Sow);
-        c.Put(Sown_, c.Value(integer: sow?.N ?? 0));
+        c.PutBreakdown(Sown_, c.Counts(sow), c.Value(integer: sow?.N ?? 0));
         c.Put(SownDefs, c.Value(integer: sow?.By?.Count ?? 0, partial: sow?.Overflow == true));
         c.PutCount(Cold, ColdLoss);
         c.PutCount(Other, OtherLoss);

@@ -85,6 +85,16 @@ animals.tamed,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-001,AnimalsFamily.Tam
 animals.birth,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-002,AnimalsFamily.Births
 animals.slaughtered,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-004,AnimalsFamily.Slaughtered
 animals.hunted,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-D-006,AnimalsFamily.Hunted
+work.butcher.slaughtered_carcasses_processed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-008,ChoreFamily.SlaughteredButchery
+work.trees.wood_placed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-007,ChoreFamily.TreeWoodPlaced
+work.cleaning.jobs_completed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-006,ChoreFamily.CleaningJobsCompleted
+work.cleaning.filth_removed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-001,ChoreFamily.FilthRemoved
+work.hauling.cell_deposits,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-004,ChoreFamily.HaulPlacements
+work.hauling.cell_deposited_units,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-005,ChoreFamily.HauledUnits
+work.food.meal_ingestions,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-003,ChoreFamily.MealIngestions
+work.fire.extinguished,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-002,ChoreFamily.FiresExtinguished
+work.crafting.completed_by_def,work_details,live,EVENT_LOG_REQUIRED,UNVERIFIED,P1-W-001,WorkDetailsFamily.CraftedByDef
+work.mining.units_by_def,work_details,live,EVENT_LOG_REQUIRED,UNVERIFIED,P1-W-002,WorkDetailsFamily.MinedByDef
 work.crafting.units,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-003,WorkFamily.CraftedUnits
 work.crafting.quality,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-006,WorkFamily.QualityBreakdown
 work.crafting.quality.legendary,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-010,WorkFamily.Legendary

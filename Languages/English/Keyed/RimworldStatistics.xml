@@ -837,4 +837,33 @@
   <RWS_ModHospitality_PresentGuestsDesc>Number of active Hospitality guests across player home maps at a successful save. Not a lifetime visit total. No change to the guest MOD is required.</RWS_ModHospitality_PresentGuestsDesc>
   <RWS_ModHospitality_PresentGroups>Hospitality: visiting groups at save</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>Number of active Hospitality guest groups across player home maps at a successful save. Not a lifetime visit count.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>Lifetime (recorded)</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>Other</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>All</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>Successful surgeries</RWS_Details_SurgerySuccess>
+  <RWS_Details_SurgeryFailure>Failed surgeries</RWS_Details_SurgeryFailure>
+  <RWS_Details_TradeKindOrbital>Orbital trader</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>Visiting caravan</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>Settlement</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>Other trader</RWS_Details_TradeKindOther>
+  <RWS_Metric_CraftedByDef>Finished products by item</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Successfully completed product units by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>Mined resource units by item</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Successfully placed mining yield by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>Filth completely removed</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>One per filth object completely removed by a player pawn's cleaning job (vanilla MessesCleaned record). Not a count of partial thickness reductions or entire cleaning jobs. Recorded only while enabled.</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>Fires extinguished</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>One per fire destroyed by a player pawn through vanilla fire-fighting or self-extinguish (FiresExtinguished record). Environmental fire extinction is excluded. Recorded only while enabled.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>Meal ingestion events</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>Successful positive-nutrition ingestion calls for meals eaten by player-faction humanlike pawns. Each call counts once, including consumption in a caravan, but not non-meal food, drugs, or non-player pawns.</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>Hauls deposited into storage cells</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Successful placement actions for player HaulToCell jobs at the selected destination cell. Partial coverage: container deposits and mod-specific hauling methods are not counted. A pickup alone is never counted.</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>Items deposited into storage cells</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total items successfully dropped during player HaulToCell deliveries, measured by the change in carried stack count. Partial coverage: container hauling and other transport modes are not counted.</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>Cleaning jobs completed</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Successful completion of a player pawn's cleaning job after at least one filth object was fully removed. Multiple filth objects in one job count as one job. Interrupted jobs are excluded.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_Metric_TreeWoodPlaced>Tree-cutting wood obtained (primary yield)</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Number of primary wood units actually placed or merged after a player's tree-cutting harvest, measured by GenPlace's placedAction. Partial coverage: bonus wood from some MOD components and nonstandard cutting paths are excluded.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>Slaughtered animals subsequently butchered</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Counts successfully completed vanilla ButcherCorpseFlesh recipe consumptions of an animal corpse previously recorded as slaughtered by a player pawn. Identifies the exact corpse across saves. Excludes hunted, wild-death and enemy corpses. Partial: MOD butcher recipes and some corpse disappearance paths are not recognized.</RWS_MetricDesc_SlaughteredButchery>
 </LanguageData>

@@ -20,9 +20,12 @@ public static class DetailsTab
 
     private sealed record Line(string Label, string Value, string State, string Count, string Tip, int Depth, string? ExpandKey, bool Dim);
 
-    private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion);
+    private enum DetailsViewMode { Lifetime, Other, All }
 
+    private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode);
+
+    private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
     private static bool perColony;
     private static string? colonyKey;
     private static MetricCategory? category;
@@ -59,7 +62,7 @@ public static class DetailsTab
         GUI.color = Color.white;
         y += noteHeight + 4f;
 
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion);
+        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode);
         if (builtFor != inputs)
         {
             builtFor = inputs;
@@ -94,6 +97,16 @@ public static class DetailsTab
             return r;
         }
 
+        if (Widgets.ButtonText(Next(125f), ViewModeLabel(viewMode)))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(ViewModeLabel(DetailsViewMode.Lifetime), () => viewMode = DetailsViewMode.Lifetime),
+                new(ViewModeLabel(DetailsViewMode.Other), () => viewMode = DetailsViewMode.Other),
+                new(ViewModeLabel(DetailsViewMode.All), () => viewMode = DetailsViewMode.All),
+            }));
+        }
+
         if (Widgets.ButtonText(Next(150f), perColony ? "RWS_Details_PerColony".Translate() : "RWS_Details_AllColonies".Translate()))
             perColony = !perColony;
         if (perColony && colonyKey is { } selected)
@@ -123,6 +136,13 @@ public static class DetailsTab
         var field = new Rect(x, rect.y + 2f, Math.Max(80f, rect.xMax - x), rect.height - 4f);
         search = Widgets.TextField(field, search) ?? "";
     }
+
+    private static string ViewModeLabel(DetailsViewMode mode) => mode switch
+    {
+        DetailsViewMode.Lifetime => "RWS_Details_ViewLifetime".Translate(),
+        DetailsViewMode.Other => "RWS_Details_ViewOther".Translate(),
+        _ => "RWS_Details_ViewAll".Translate(),
+    };
 
     private static void DrawHeader(Rect rect)
     {
@@ -209,6 +229,12 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
+            .Where(r => input.Mode switch
+            {
+                DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(r.Definition),
+                DetailsViewMode.Other => !MetricDisplayPolicy.IsLifetimeCumulative(r.Definition),
+                _ => true,
+            })
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
             .Where(x => term.Length == 0
                 || x.Label.IndexOf(term, StringComparison.CurrentCultureIgnoreCase) >= 0
@@ -351,6 +377,12 @@ public static class DetailsTab
     private static string BreakdownLabel(string key) => key switch
     {
         MetricKeys.UnknownBucket => "RWS_Details_UnknownBucket".Translate(),
+        "success" => "RWS_Details_SurgerySuccess".Translate(),
+        "failure" => "RWS_Details_SurgeryFailure".Translate(),
+        TradeFamily.Orbital => "RWS_Details_TradeKindOrbital".Translate(),
+        TradeFamily.VisitingCaravan => "RWS_Details_TradeKindCaravan".Translate(),
+        TradeFamily.Settlement => "RWS_Details_TradeKindSettlement".Translate(),
+        TradeFamily.OtherTrader => "RWS_Details_TradeKindOther".Translate(),
         MetricRankings.PermadeathOn => "RWS_Details_Permadeath".Translate(),
         MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath".Translate(),
         _ => key,

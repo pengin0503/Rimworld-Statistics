@@ -7,17 +7,24 @@ using Verse;
 namespace RimworldStatistics.Patches.Metrics;
 
 /// <summary>Eating (evidence #food): Thing.Ingested returns the nutrition actually taken.</summary>
-[MetricAdapter(FoodFamily.Name)]
+[MetricAdapter(FoodFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Thing), nameof(Thing.Ingested))]
 public static class IngestedMetricPatch
 {
-    public static void Postfix(float __result, Pawn ingester)
+    public static void Postfix(Thing __instance, float __result, Pawn ingester)
     {
         if (ingester == null || !(__result > 0f))
             return;
         var free = ingester.IsFreeColonist;
         var n = (double)__result;
         GameFacts.Record(FoodFamily.Name, s => FoodFamily.Ate(s, n, free));
+
+        // Reuse the original low-frequency successful-ingestion hook.
+        // A meal eaten by a player-faction humanlike is distinct from the
+        // already-captured nutrition amount. No extra Harmony patch needed.
+        if (__instance.def?.ingestible?.IsMeal == true &&
+            ingester.RaceProps.Humanlike && GameFacts.IsPlayer(ingester))
+            GameFacts.Record(ChoreFamily.Name, ChoreFamily.MealIngested);
     }
 }
 

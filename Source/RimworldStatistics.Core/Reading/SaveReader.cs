@@ -28,8 +28,9 @@ public sealed class SaveReader
     /// 7: real 1.7 omitted default faction ID 0 and per-relation partial salvage.
     /// 8: recover Scribe-omitted neutral relation kinds in historical faction snapshots.
     /// 9: bounded, partial saved player Settlement map observations (not lifetime maxima).
+    /// 10: new breakdown outputs rebuilt from the original checkpoint (no counter revision changes).
     /// </summary>
-    public const int Version = 9;
+    public const int Version = 10;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
