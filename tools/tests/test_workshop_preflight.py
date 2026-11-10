@@ -125,6 +125,11 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertFalse((self.root / "extra.vdf").exists())
         (staged / "secrets.txt").unlink()
 
+        (staged / ".hidden-secret").write_text("no hidden files")
+        self.assertNotEqual(0, run("hidden.vdf").returncode)
+        (staged / ".hidden-secret").unlink()
+
+
         (staged / "About/PublishedFileId.txt").write_text("123456789\n")
         self.assertNotEqual(0, run("duplicate.vdf", "0").returncode)
         self.assertNotEqual(0, run("wrong-id.vdf", "123456780").returncode)
