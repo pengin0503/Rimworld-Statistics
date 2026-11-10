@@ -39,6 +39,20 @@ jobs:
           "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe" --self-test
           "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe" --five-self-test
           file "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe"
+      - name: Publish self-contained full Core xUnit v3 acceptance runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet publish Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=true -p:UseNuGetRefs=true -o "$RUNNER_TEMP/private-xunit" --nologo
+          test -f "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          chmod +x "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests" --help > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rws-private-five-save-xunit-linux-x64
+          path: ${{ runner.temp }}/private-xunit/
+          if-no-files-found: error
+          retention-days: 2
       - uses: actions/upload-artifact@v4
         with:
           name: rws-private-save-probe-linux-x64
