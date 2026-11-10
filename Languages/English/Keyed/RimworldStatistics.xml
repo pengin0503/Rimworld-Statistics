@@ -875,4 +875,8 @@
   <RWS_CrossDesc_TopType>Sum quantities separately for each item definition across independent colonies, then rank those totals. Counts use one representative observation per colony. Missing, overflowed, or untracked definitions give partial coverage. State inventories and lifetime events are not interchangeable.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Tied colonies: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Record observed on game day: {0}</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>Most common category across colonies: {0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>Summed counts for each recorded category across independent colonies, using one representative observation per colony. Incomplete and missing category splits remain Partial; categories are not item counts.</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>Combined colony snapshots: {0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>Sum of separately measured state quantities at the representative saved moment of each independent colony. This is not a lifetime event total. Unknown readings never become zero.</RWS_CrossDesc_Sum>
 </LanguageData>
