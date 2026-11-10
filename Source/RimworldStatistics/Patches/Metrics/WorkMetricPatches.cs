@@ -217,20 +217,21 @@ internal static class SlaughteredButcheryMetricPatch
 /// A non-butchered corpse can decay, burn or be destroyed by another job.
 /// The destruction is recorded as pending; the butcher bill's completed
 /// notification can consume its marker later in the same tick.
-/// Only installed for the optional chore acquisition unit.
+/// Only installed for the optional chore acquisition unit. Patch the
+/// Corpse override rather than the base Thing.Destroy shared by all objects.
 /// </summary>
 [MetricAdapter(ChoreFamily.Name)]
-[HarmonyPatch(typeof(Thing), nameof(Thing.Destroy))]
+[HarmonyPatch(typeof(Corpse), nameof(Corpse.Destroy))]
 internal static class SlaughteredCorpseDestroyedMetricPatch
 {
-    private static void Prefix(Thing __instance, out string? __state)
+    private static void Prefix(Corpse __instance, out string? __state)
     {
         __state = null;
-        if (__instance is not Corpse corpse || LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
             return;
         try
         {
-            __state = GameFacts.Id(corpse);
+            __state = GameFacts.Id(__instance);
         }
         catch (Exception e)
         {
@@ -238,7 +239,7 @@ internal static class SlaughteredCorpseDestroyedMetricPatch
         }
     }
 
-    private static void Postfix(Thing __instance, string? __state)
+    private static void Postfix(Corpse __instance, string? __state)
     {
         if (__state is null || !__instance.Destroyed)
             return;
