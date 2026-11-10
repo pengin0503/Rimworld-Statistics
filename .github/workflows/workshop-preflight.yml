@@ -2,6 +2,21 @@ name: Prepare Steam Workshop candidate (NO UPLOAD)
 
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - '.github/workflows/workshop-preflight.yml'
+      - 'tools/prepare_workshop.py'
+      - 'tools/generate_workshop_preview.py'
+      - 'tools/tests/test_workshop_preflight.py'
+      - 'docs/workshop/**'
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/workshop-preflight.yml'
+      - 'tools/prepare_workshop.py'
+      - 'tools/generate_workshop_preview.py'
+      - 'tools/tests/test_workshop_preflight.py'
+      - 'docs/workshop/**'
 
 permissions:
   contents: read
@@ -22,6 +37,9 @@ jobs:
           python -m pip install --disable-pip-version-check Pillow==11.3.0
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
+
+      - name: Validate preparation rules offline
+        run: python -m unittest discover -s tools/tests -p 'test_workshop_preflight.py' -v
 
       - name: Fetch the exact published GitHub release (no build)
         env:
