@@ -305,17 +305,24 @@ public static class MedicineFamily
         c.PutCount(Used, MedicineUsed);
         var n = c.State.Peek(Surgery_)?.N ?? 0;
         var ok = c.State.Peek(SurgeryOk)?.N ?? 0;
-        // Never infer a negative failed count from a damaged or future checkpoint.
-        // The old scalar remains available even when the outcome split is unusable.
-        if (ok < 0 || n < ok)
+        // Keep the original scalar as partial when an old or damaged checkpoint
+        // is inconsistent; never propagate an impossible ratio into totals.
+        var validSurgeryCounts = n >= 0 && ok >= 0 && ok <= n;
+        if (!validSurgeryCounts)
+        {
             c.Put(Surgeries, c.Value(integer: n, partial: true));
+            c.Put(SurgerySuccessRate, c.Value(coverage: MetricCoverage.Unknown));
+        }
         else
+        {
             c.PutBreakdown(Surgeries, new Dictionary<string, MetricValue>(StringComparer.Ordinal)
             {
                 ["success"] = c.Value(integer: ok),
                 ["failure"] = c.Value(integer: n - ok),
             }, c.Value(integer: n));
-        c.Put(SurgerySuccessRate, n == 0 ? c.Value(numerator: 0, denominator: 0) : c.Value(real: ok / (double)n, numerator: ok, denominator: n));
+            c.Put(SurgerySuccessRate, n == 0 ? c.Value(numerator: 0, denominator: 0)
+                : c.Value(real: ok / (double)n, numerator: ok, denominator: n));
+        }
         c.PutTop(SurgeonOk, BestSurgeon);
         c.PutCount(Implant, Implants);
         c.PutCount(Rescue, Rescues);
