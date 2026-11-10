@@ -122,6 +122,8 @@ public sealed class PostV14LeaderboardTests
             };
         Assert.Equal(MetricAvailability.NoMeasuredColonies,
             MetricAvailabilityPolicy.Classify(Row(35, 0, MetricCoverage.Unknown)));
+        Assert.Equal(MetricAvailability.NoMeasuredColonies,
+            MetricAvailabilityPolicy.Classify(Row(35, 35, MetricCoverage.Unknown)));
         Assert.Equal(MetricAvailability.SomeMeasuredColonies,
             MetricAvailabilityPolicy.Classify(Row(35, 1, MetricCoverage.Partial)));
         Assert.Equal(MetricAvailability.AllMeasuredColonies,
