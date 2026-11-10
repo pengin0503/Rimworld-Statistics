@@ -1,0 +1,93 @@
+{
+  "schema": 1,
+  "inventoryTime": "2026-11-10",
+  "privacy": "aggregates-only; original R2 save keys, hashes, identities and contents omitted",
+  "bucket": "rimworld-17",
+  "source": {
+    "gameSourcePrefix": "Game-Linux/",
+    "gameVersionFile": "Game-Linux/Version.txt",
+    "exactVersion": "1.7.4985 rev1269",
+    "sourceObjectCount": 2672,
+    "sourceBytes": 1095733293,
+    "auditedPrefix": "research/vanilla-1.7.4985-audited/",
+    "auditedObjectCount": 1612,
+    "auditedBytes": 63680347,
+    "referenceFilesListed": 2672,
+    "referenceBytesVerified": 1486,
+    "staticAuditTestsPassed": 22,
+    "staticAuditTestsFailed": 0,
+    "runtimeStatus": "not-launched"
+  },
+  "privateR2SavePopulation": {
+    "prefix": "Saves/",
+    "objects": 49,
+    "bytes": 824593049,
+    "readOnlyExamples": [
+      {
+        "alias": "R2-A",
+        "gameVersion": "1.6.4523 rev1054",
+        "mods": 74,
+        "researchProgressPresent": true,
+        "checkpointPresent": false
+      },
+      {
+        "alias": "R2-B",
+        "gameVersion": "1.5.4104 rev435",
+        "mods": 32,
+        "researchProgressPresent": true,
+        "checkpointPresent": false
+      },
+      {
+        "alias": "R2-C",
+        "gameVersion": "1.5.4243 rev947",
+        "mods": 119,
+        "researchProgressPresent": true,
+        "checkpointPresent": false
+      },
+      {
+        "alias": "R2-D",
+        "gameVersion": "1.6.4566 rev607",
+        "mods": 193,
+        "researchProgressPresent": true,
+        "checkpointPresent": false
+      }
+    ],
+    "note": "Four selected examples, not an exhaustive content scan of all 49."
+  },
+  "localOriginals": {
+    "source": "private conversation attachments, not R2",
+    "gameVersion": "1.7.5000 rev1275",
+    "mods": 192,
+    "files": 8,
+    "distinctColonies": 1,
+    "latestFiveProgressKeysPerFile": 123,
+    "latestFiveProgressPositiveValues": [
+      75,
+      76,
+      76,
+      77,
+      78
+    ],
+    "previousThreeProgressKeysPerFile": 123,
+    "previousThreeProgressPositiveValues": [
+      69,
+      69,
+      69
+    ],
+    "allEightSourceUnchanged": true,
+    "researchFinishedCount": null,
+    "qualifiedDirectParentEdgesInLatestFive": 1
+  },
+  "reproduction": {
+    "list": "GET /accounts/{account_id}/r2/buckets/rimworld-17/objects?prefix=...&per_page=1000; follow result_info.cursor until not truncated",
+    "version": "GET /accounts/{account_id}/r2/buckets/rimworld-17/objects/Game-Linux%2FVersion.txt",
+    "research": "tools/PrivateSaveProbe/private_research_probe.py --expected-game-version '1.7.5000 rev1275' <private-originals>",
+    "localTest": "python3 -m unittest discover -s tools/PrivateSaveProbe -p test_private_research_probe.py"
+  },
+  "strictGates": [
+    "The 1.7.4985 official and DLC definitions do not match the 1.7.5000 latest originals.",
+    "Unknown or positive progress is never a proven ResearchProjectDef.IsFinished count.",
+    "Map Pawns and Things are not exhaustive live player-owned state.",
+    "No 55+ real-save or game TPS acceptance has been performed."
+  ]
+}
