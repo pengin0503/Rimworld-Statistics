@@ -72,7 +72,11 @@ public static class CrossColonyCatalog
             StoredKey = source.Key,
             Overall = OverallAggregation.Ranking,
             HasBreakdown = false,
-            LabelKey = label,
+            // Every published definition requires a unique RWS_Metric_ key.
+            // The UI resolves the localized generic template using the source label.
+            LabelKey = "RWS_Metric_Cross_" +
+                (prefix == MaxPrefix ? "Max_" : prefix == MinPrefix ? "Min_" : "Top_") +
+                source.Key.Replace('.', '_'),
             DescriptionKey = description,
         };
 }
