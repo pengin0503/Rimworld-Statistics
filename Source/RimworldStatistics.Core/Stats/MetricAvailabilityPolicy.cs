@@ -19,7 +19,9 @@ public static class MetricAvailabilityPolicy
     {
         if (row.Targets <= 0)
             return MetricAvailability.NoApplicableColonies;
-        if (row.Valid <= 0)
+        // An old or malformed row may carry a numeric payload but still be
+        // explicitly marked Unknown. The count alone is not capture proof.
+        if (row.Valid <= 0 || row.Value.Coverage == MetricCoverage.Unknown)
             return MetricAvailability.NoMeasuredColonies;
         return row.Valid < row.Targets
             ? MetricAvailability.SomeMeasuredColonies
