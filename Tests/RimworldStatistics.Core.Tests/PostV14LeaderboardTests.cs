@@ -178,6 +178,6 @@ public sealed class PostV14LeaderboardTests
         Assert.Equal(MetricRegistry.Catalog.Count,
             MetricRegistry.Catalog.Select(d => d.Key).Distinct(StringComparer.Ordinal).Count());
         Assert.False(MetricRegistry.Find(CrossColonyCatalog.TopPrefix + WorkFamily.HarvestByCrop)!.HasBreakdown);
-        Assert.Equal(10, SaveReader.Version);
+        Assert.Equal(11, SaveReader.Version);
     }
 }
