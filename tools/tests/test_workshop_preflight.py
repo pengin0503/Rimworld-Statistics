@@ -2,7 +2,6 @@
 import hashlib
 import importlib.util
 import os
-import re
 import struct
 import shutil
 import subprocess
@@ -112,9 +111,12 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertIn('"publishedfileid" "0"', initial)
         self.assertIn('"visibility" "2"', initial)
         if os.name == "nt":
-            # PowerShell may canonicalize Windows paths to DOS 8.3 aliases.
-            # Check that the VDF-escaped path resolves to the same directory.
-            match = re.search(r'^    "contentfolder" "([^"]+)"
+            # PowerShell may canonicalize paths to DOS 8.3 aliases.
+            lines = [line for line in initial.splitlines() if '"contentfolder"' in line]
+            self.assertEqual(1, len(lines))
+            actual_path = lines[0].split('"')[3]
+            self.assertIn(r"\\", actual_path)
+            self.assertTrue(Path(actual_path.replace("\\\\", "\\")).samefile(staged))
         self.assertIn('"description"', initial)
         self.assertIn("STEAM_UPLOAD=NOT_PERFORMED", first.stdout)
 
