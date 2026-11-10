@@ -73,7 +73,7 @@ public sealed class IndexedBreakdownAggregationTests
             Assert.Equal(2, row.Valid);
             Assert.Equal(2 * int.Parse(row.Breakdown["SyntheticItem".Length..], System.Globalization.CultureInfo.InvariantCulture), row.Value.Number);
         });
-        Assert.Equal((double)entries, ranking.Value.Number);
+        Assert.Equal(2d * entries, ranking.Value.Number);
         Assert.Equal(2 * entries, ranking.Breakdowns[0].Value.Number);
         Assert.Equal(incomplete ? MetricCoverage.Partial : MetricCoverage.Complete, ranking.Value.Coverage);
         Assert.Equal(2, ranking.Breakdowns[0].Breakdowns.Count);
