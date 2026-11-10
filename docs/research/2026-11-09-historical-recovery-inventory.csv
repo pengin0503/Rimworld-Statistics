@@ -231,6 +231,7 @@ diplomacy.snapshot.relations,factions,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,
 diplomacy.snapshot.goodwill_range,factions,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-015,FactionStateSnapshot.GoodwillRange
 population.snapshot.free,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-005,RosterSnapshot.Free
 population.snapshot.prisoners,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006,RosterSnapshot.Prisoners
+population.snapshot.slaves,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-S,RosterSnapshot.Slaves
 population.snapshot.animals,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-007,RosterSnapshot.Animals
 population.snapshot.mechs,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-008,RosterSnapshot.Mechs
 population.snapshot.augmented_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-021,RosterSnapshot.AugmentedPeak
@@ -248,7 +249,6 @@ facilities.growing_cells.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFI
 facilities.rooms.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-003,FacilitiesSnapshot.RoomsPeak
 facilities.generation_capacity.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-001,FacilitiesSnapshot.GenerationPeak
 facilities.battery_capacity.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-002,FacilitiesSnapshot.BatteryPeak
-facilities.running_generators.latest,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-004,FacilitiesSnapshot.RunningGenerators
 facilities.outdoor_temp.min,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-C-001,FacilitiesSnapshot.OutdoorTempMin
 facilities.outdoor_temp.max,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-C-002,FacilitiesSnapshot.OutdoorTempMax
 stock.food_nutrition.latest,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-009,StockSnapshot.FoodLatest
