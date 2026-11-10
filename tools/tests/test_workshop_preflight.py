@@ -212,7 +212,7 @@ class WorkshopPrepareTests(unittest.TestCase):
     def test_path_traversal_is_rejected(self):
         self.make_zip({**NAMES, "RimworldStatistics/../outside.txt": b"attack"})
         self.write_sha()
-        with self.assertRaisesRegex(ValueError, "Unsafe ZIP entry"):
+        with self.assertRaisesRegex(ValueError, "Unsafe or unapproved ZIP payload"):
             mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
 
     def test_wrong_version_is_rejected(self):
