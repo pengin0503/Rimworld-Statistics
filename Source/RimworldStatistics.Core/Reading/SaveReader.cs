@@ -384,9 +384,9 @@ public sealed class SaveReader
             s.HistoricalMaps.Add(new SavedMapParent(id, parent, pocket, valid));
             foreach (var turret in onMapTurrets)
                 s.HistoricalTurrets.Add(new SavedMapTurret(id, turret.Id, turret.Faction, valid && turret.Valid));
-            foreach (var item in onMapStock)
-                s.HistoricalStock.Add(new SavedMapStockItem(id, item.Id, item.Def, item.Count,
-                    item.Faction, item.Forbidden, valid && item.Valid));
+            foreach (var stockItem in onMapStock)
+                s.HistoricalStock.Add(new SavedMapStockItem(id, stockItem.Id, stockItem.Def, stockItem.Count,
+                    stockItem.Faction, stockItem.Forbidden, valid && stockItem.Valid));
         });
     }
 
