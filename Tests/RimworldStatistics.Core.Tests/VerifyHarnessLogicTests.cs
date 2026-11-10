@@ -103,7 +103,9 @@ public sealed class VerifyHarnessLogicTests
     [Fact]
     public void BatchCatalogAudit_ClassifiesEveryUnverifiedOutputWithoutPretendingToProveIt()
     {
-        var defs = MetricRegistry.Catalog.Where(d => d.Acquisition is not null).ToArray();
+        // The original 274 acquisition definitions are a stable, separately
+        // auditable baseline. Derived comparisons reuse those acquisition gates.
+        var defs = MetricRegistry.BaseCatalog.Where(d => d.Acquisition is not null).ToArray();
         Assert.Equal(274, defs.Length);
         var snapshot = SnapshotCatalog.Definitions[0];
         var reported = VerifyCatalogAudit.Build(defs,
