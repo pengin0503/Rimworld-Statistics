@@ -74,6 +74,52 @@ public sealed class ChoreLifetimeTests
     }
 
     [Fact]
+    public void CompletedWorkLineages_SurviveSaveLoadAndRejectDuplicateOrInvalidBodies()
+    {
+        var acc = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var state = acc.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_Slaughtered");
+        ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_NotButchered");
+        ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_Slaughtered");
+        ChoreFamily.CleanedWithinJob(state, "Job_Cleaned");
+        ChoreFamily.CleanedWithinJob(state, "Job_Interrupted");
+        var draft = acc.PrepareSave(100, T0, "checkpoint")!;
+        acc.Commit(draft);
+
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, new[] { ChoreFamily.Family.Spec }, 100);
+        var loaded = resumed.Family(ChoreFamily.Name)!;
+        ChoreFamily.CorpseConsumed(loaded, "Corpse_Slaughtered", true);
+        ChoreFamily.CorpseConsumed(loaded, "Corpse_Slaughtered", true);
+        ChoreFamily.CorpseConsumed(loaded, "Corpse_NeverMarked", true);
+        ChoreFamily.CorpseConsumed(loaded, "Corpse_NotButchered", false);
+        ChoreFamily.CleaningJobEnded(loaded, "Job_Cleaned", true);
+        ChoreFamily.CleaningJobEnded(loaded, "Job_Cleaned", true);
+        ChoreFamily.CleaningJobEnded(loaded, "Job_Interrupted", false);
+        var observation = Save(resumed, 200);
+        Assert.Equal(1, Read(observation, ChoreFamily.SlaughteredButchery).IntegerValue);
+        Assert.Equal(1, Read(observation, ChoreFamily.CleaningJobsCompleted).IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, Read(observation, ChoreFamily.SlaughteredButchery).Coverage);
+        Assert.Empty(loaded.Active);
+    }
+
+    [Fact]
+    public void UnverifiedCorpusTrackerCapacity_OnlyWeakensCompletionNotOtherChoreCounters()
+    {
+        var acc = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var state = acc.Family(ChoreFamily.Name)!;
+        for (int i = 0; i <= FamilyOps.KeyCap; i++)
+            ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_" + i);
+        ChoreFamily.FireCleared(state);
+        ChoreFamily.CorpseConsumed(state, "Corpse_0", true);
+        ChoreFamily.CorpseConsumed(state, "Corpse_" + FamilyOps.KeyCap, true);
+        var observation = Save(acc, 100);
+        Assert.Equal(1, Read(observation, ChoreFamily.SlaughteredButchery).IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, Read(observation, ChoreFamily.SlaughteredButchery).Coverage);
+        Assert.Equal(1, Read(observation, ChoreFamily.FiresExtinguished).IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, Read(observation, ChoreFamily.FiresExtinguished).Coverage);
+    }
+
+    [Fact]
     public void ChoreRecording_IsOptInAndLifetimeSemanticsExplicit()
     {
         var unit = AcquisitionUnits.Find(ChoreFamily.Name)!;

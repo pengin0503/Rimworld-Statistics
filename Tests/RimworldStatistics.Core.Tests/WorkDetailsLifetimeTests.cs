@@ -69,6 +69,22 @@ public sealed class WorkDetailsLifetimeTests
     }
 
     [Fact]
+    public void PerDefOverflow_OnlyWeakensChildrenAndNeverDropsTheIndependentTotal()
+    {
+        var a = LiveMetricAccumulator.StartNew(new[] { WorkDetailsFamily.Family.Spec }, 0);
+        for (int i = 0; i <= FamilyOps.KeyCap; i++)
+            WorkDetailsFamily.CraftedProducts(a.Family(WorkDetailsFamily.Name)!, new[] { Product("Def_" + i, 1) });
+        var observation = Save(a);
+        var entry = observation.Metrics[WorkDetailsFamily.CraftedByDef];
+        var total = observation.Scalar(WorkDetailsFamily.CraftedByDef, 1)!;
+        Assert.Equal(FamilyOps.KeyCap + 1, total.IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, total.Coverage);
+        var children = entry.Values.Where(x => x.Key != MetricEntry.Scalar).Select(x => x.Value).ToArray();
+        Assert.Equal(FamilyOps.KeyCap, children.Length);
+        Assert.All(children, child => Assert.Equal(MetricCoverage.Partial, child.Coverage));
+    }
+
+    [Fact]
     public void NewUnit_IsUnverifiedAndCataloged()
     {
         Assert.Equal(AcquisitionStatus.Unverified, AcquisitionUnits.Find(WorkDetailsFamily.Name)!.Status);

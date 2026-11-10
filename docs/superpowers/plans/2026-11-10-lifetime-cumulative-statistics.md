@@ -151,7 +151,7 @@ This was originally a pre-implementation plan; its former authorization gates we
 - [x] P0: semantic lifetime filter, 5 cached family breakdowns, UI mode, translation, one-time Reader v10 reevaluation; source keys and old family revisions unchanged.
 - [x] P1: opt-in independent `work_details` family; completed products by Def, successfully placed mined yield by Def. Bill count rejected as redundant.
 - [x] P2: opt-in independent `chore` family; completely removed filth, extinguished fires, meal ingestions, successful cell-storage haul drops and deposited item units. The latter two are Partial by construction.
-- [ ] P2: full clean-job completion, actual delivered wood units from cut trees, and completed butchery strictly after animal slaughter. Each needs source-proven success boundary and false-positive exclusions; not safe to synthesize.
+- [x] P2 provisional source-informed instrumentation: clean-job success after positive filth removal, actually placed primary tree wood, and vanilla flesh-butchering of tracked slaughter-origin corpse IDs. All remain Unverified until in-game positive/negative tests; wood/butchery intentionally Partial.
 - [x] Static 1.7.4985 DLL/IL method-reference audit for implemented events, Core unit regression checks and Actions static/compilation tests at completed commits.
 - [ ] 1.7 game-run positive/negative event tests (player/NPC, modded jobs, interrupted jobs), replayed save/fork/DLC and UI acceptance, measured TPS/allocations/save cost, zero Important/Critical review findings.
 - [ ] Pass release ZIP/SHA256 and Workshop-preparation CI; then merge, update version/docs/changes and issue v1.4.0 GitHub Release. **Do not merge or release before these gates.**

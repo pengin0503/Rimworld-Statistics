@@ -46,7 +46,7 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 3. Backward compatible profile re-import of source saves, failed read preservation, forked colony identity, mixed DLC/MOD configurations, UI controls in a real menu.
 4. Do not promote acquisition units to Verified or publish v1.4.0 until acceptance passes.
 
-## Precisely scoped blockers for remaining P2 items
+## Original P2 blockers (resolved as provisional opt-in instrumentation; runtime tests pending)
 
 **Whole cleaning job completions:** A `JobDriver_CleanFilth` job can clean several queued filth objects, can be interrupted after a positive removal, and can succeed with no final positive removal. `MessesCleaned` increments per destroyed filth, not per completed job. A second metric requires a verified `JobCondition.Succeeded` boundary correlated with successful operations under a stable job identity. Reusing `MessesCleaned` would double-count jobs.
 
@@ -54,7 +54,7 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 
 **Successful processing of a slaughtered animal:** `JobDriver_Slaughter`'s `AnimalsSlaughtered` increments when the animal is killed, not when its corpse is butchered. `RecordsUtility.Notify_BillDone(Pawn,List<Thing>)` provides resulting products without the source corpse's provenance. Hunting, disease, enemy corpses and animals slaughtered elsewhere could all create the same products. A correct metric needs stable slaughtered-corpse lineage through subsequent hauling and bill ingredients, completed processing, and save/reload; counting generic butcher bills is unsound.
 
-All three require both positive and negative controls under the matching game build. They are **not included** in this PR, not zeros, and must not be represented as Complete measured values.
+All three originally required positive source confirmation. Subsequent game-source/IL audit has allowed provisional opt-in implementations with bounded scopes: (1) successful cleaning job with positively recorded filth removal, (2) actually placed primary wood, and (3) uniquely traced slaughtered corpse consumed by vanilla flesh butchery. Actual gameplay acceptance, load/mod compatibility, and TPS are still outstanding. They must not be reported as fully validated or fully Complete.
 
 ## Cleaning jobs with positive work (implementation update)
 
