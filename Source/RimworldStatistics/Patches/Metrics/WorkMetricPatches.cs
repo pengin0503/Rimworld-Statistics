@@ -172,6 +172,60 @@ internal static class MealIngestedMetricPatch
     }
 }
 
+/// <summary>
+/// Marks only the corpse of the pawn actually killed by a player Slaughter job.
+/// The game's AnimalsSlaughtered record is incremented *after* DoExecutionByCut.
+/// Hunting can also increment AnimalsSlaughtered, so the exact job type is required.
+/// The corpse identity is stored as checkpoint Active data and can cross save/load.
+/// </summary>
+internal static class SlaughterProvenanceMetric
+{
+    public static void Observe(Pawn actor)
+    {
+        if (actor.jobs?.curDriver is not JobDriver_Slaughter ||
+            actor.CurJob?.targetA.Thing is not Pawn animal ||
+            !animal.RaceProps.Animal || !animal.Dead || !GameFacts.IsPlayer(animal) ||
+            animal.Corpse is not { Destroyed: false } corpse)
+            return;
+        var corpseId = GameFacts.Id(corpse);
+        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId));
+    }
+}
+
+/// <summary>
+/// 1.7 Toils_Recipe consumes ingredients then calls Bill.Notify_IterationCompleted,
+/// then RecordsUtility.Notify_BillDone. The completed Bill receives the original
+/// ingredient list even after consumption. Only tracked corpse IDs and the exact
+/// vanilla flesh-butcher recipe qualify; cremation and hunting can never qualify.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Bill_Production), nameof(Bill_Production.Notify_IterationCompleted))]
+internal static class SlaughteredButcheryMetricPatch
+{
+    private static void Postfix(Bill_Production __instance, Pawn billDoer, List<Thing> ingredients)
+    {
+        if (billDoer == null || !GameFacts.IsPlayer(billDoer) ||
+            ingredients is not { Count: > 0 } ||
+            LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+            return;
+        var isButcherFlesh = __instance.recipe?.defName == "ButcherCorpseFlesh";
+        // Each input corpse can be counted at most once even when a bill has duplicates.
+        HashSet<string> uniqueCorpses = new(StringComparer.Ordinal);
+        foreach (var ingredient in ingredients)
+        {
+            if (ingredient is Corpse corpse)
+                uniqueCorpses.Add(GameFacts.Id(corpse));
+        }
+        if (uniqueCorpses.Count == 0)
+            return;
+        GameFacts.Record(ChoreFamily.Name, state =>
+        {
+            foreach (var corpseId in uniqueCorpses)
+                ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
+        });
+    }
+}
+
 /// <summary>Vanilla success records for sowing, removed filth, and extinguished fires.</summary>
 /// <summary>Job completion is recorded only after at least one successful removal.
 /// Pending positive work is keyed by persistent Job ID and discarded on cancellation.</summary>
@@ -205,6 +259,11 @@ public static class PlantsSownMetricPatch
         // tracker instead of adding a per-tick or extra Harmony interception.
         if (__instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
             return;
+        if (def == RecordDefOf.AnimalsSlaughtered)
+        {
+            SlaughterProvenanceMetric.Observe(actor);
+            return;
+        }
         if (def == RecordDefOf.MessesCleaned)
         {
             GameFacts.Record(ChoreFamily.Name, state =>

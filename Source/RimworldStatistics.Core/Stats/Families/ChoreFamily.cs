@@ -15,6 +15,7 @@ public static class ChoreFamily
     public const string HaulPlacements = "work.hauling.cell_deposits";
     public const string HauledUnits = "work.hauling.cell_deposited_units";
     public const string TreeWoodPlaced = "work.trees.wood_placed";
+    public const string SlaughteredButchery = "work.butcher.slaughtered_carcasses_processed";
     private const string FilthKey = "filth";
     private const string CleaningJobsKey = "clean_jobs";
     private const string CleaningPendingKey = "clean_pending";
@@ -23,6 +24,8 @@ public static class ChoreFamily
     private const string HaulPlacementsKey = "hauls";
     private const string HaulUnitsKey = "haul_units";
     private const string WoodKey = "wood_placed";
+    private const string SlaughteredCorpseKey = "slaughter_corpses";
+    private const string ButcheredKey = "butcher_after_slaughter";
 
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
 
@@ -56,6 +59,23 @@ public static class ChoreFamily
         if (placedWoodUnits > 0) state.Count(WoodKey, placedWoodUnits);
     }
 
+    /// <summary>Only corpses created by successful, player-operated slaughter are eligible.</summary>
+    public static void MarkSlaughteredCorpse(FamilyState state, string corpseId)
+    {
+        if (!string.IsNullOrEmpty(corpseId))
+            state.Track(SlaughteredCorpseKey, corpseId, 1);
+    }
+
+    /// <summary>One successfully consumed tracked corpse, not a generic butcher bill or an animal death.
+    /// A non-butchery consumer clears the marker but must never count as a butcher job.</summary>
+    public static void CorpseConsumed(FamilyState state, string corpseId, bool butcherFleshRecipe)
+    {
+        if (string.IsNullOrEmpty(corpseId)) return;
+        var formerlySlaughtered = state.Untrack(SlaughteredCorpseKey, corpseId);
+        if (butcherFleshRecipe && formerlySlaughtered > 0)
+            state.Count(ButcheredKey);
+    }
+
     public static void HaulDeposited(FamilyState state, int depositedUnits)
     {
         if (depositedUnits <= 0) return;
@@ -76,5 +96,8 @@ public static class ChoreFamily
         context.Put(HauledUnits, context.Value(integer: context.State.Peek(HaulUnitsKey)?.N ?? 0, partial: true));
         // Primary harvest only; comp-based bonus yield and nonstandard modded cutting remain outside coverage.
         context.Put(TreeWoodPlaced, context.Value(integer: context.State.Peek(WoodKey)?.N ?? 0, partial: true));
+        // Only the vanilla flesh-butcher recipe has a source-proven completion
+        // boundary. Alternate MOD butchering and unobserved corpse lifetimes remain partial.
+        context.Put(SlaughteredButchery, context.Value(integer: context.State.Peek(ButcheredKey)?.N ?? 0, partial: true));
     }
 }

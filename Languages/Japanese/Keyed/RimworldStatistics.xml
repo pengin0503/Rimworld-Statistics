@@ -864,4 +864,6 @@
   <RWS_MetricDesc_CleaningJobsCompleted>少なくとも1つの汚れを完全除去した入植者の清掃ジョブが、成功として終了した回数です。1ジョブで汚れを複数除去しても1回と数え、途中中断は除外します。</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>伐採で実際に獲得した木材（主産物）</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>入植者が樹木を伐採し、主要産物の木材が実際に配置・スタック統合された個数を記録します。取得通知だけでは加算しません。MOD由来の追加産物や独自伐採経路は含まれないためPartialです。</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>屠殺後に解体された動物の累計</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>入植者が屠殺した動物の死体IDを保存し、同じ死体が標準の食肉解体Billで実際に消費された場合のみ数えます。狩猟・病死・敵の死体は含みません。MOD独自レシピ等は対象外のためPartialです。</RWS_MetricDesc_SlaughteredButchery>
 </LanguageData>

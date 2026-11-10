@@ -32,6 +32,11 @@ public sealed class ChoreLifetimeTests
         ChoreFamily.WoodObtained(state, 7);
         ChoreFamily.WoodObtained(state, 0);
         ChoreFamily.WoodObtained(state, 3);
+        ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_001");
+        ChoreFamily.MarkSlaughteredCorpse(state, "Corpse_002");
+        ChoreFamily.CorpseConsumed(state, "Corpse_001", butcherFleshRecipe: true);
+        ChoreFamily.CorpseConsumed(state, "Corpse_001", butcherFleshRecipe: true);
+        ChoreFamily.CorpseConsumed(state, "Corpse_002", butcherFleshRecipe: false);
         var obs = Save(acc, 200);
         Assert.Equal(2, Read(obs, ChoreFamily.FilthRemoved).IntegerValue);
         Assert.Equal(1, Read(obs, ChoreFamily.CleaningJobsCompleted).IntegerValue);
@@ -40,6 +45,8 @@ public sealed class ChoreLifetimeTests
         Assert.Equal(2, Read(obs, ChoreFamily.HaulPlacements).IntegerValue);
         Assert.Equal(8, Read(obs, ChoreFamily.HauledUnits).IntegerValue);
         Assert.Equal(10, Read(obs, ChoreFamily.TreeWoodPlaced).IntegerValue);
+        Assert.Equal(1, Read(obs, ChoreFamily.SlaughteredButchery).IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, Read(obs, ChoreFamily.SlaughteredButchery).Coverage);
         Assert.Equal(MetricCoverage.Partial, Read(obs, ChoreFamily.TreeWoodPlaced).Coverage);
         Assert.Equal(MetricCoverage.Partial, Read(obs, ChoreFamily.HauledUnits).Coverage);
         Assert.False(obs.Metrics.ContainsKey(WorkFamily.CraftedUnits));
@@ -72,7 +79,7 @@ public sealed class ChoreLifetimeTests
         var unit = AcquisitionUnits.Find(ChoreFamily.Name)!;
         Assert.Equal(AcquisitionStatus.Unverified, unit.Status);
         Assert.Equal(AcquisitionKind.Family, unit.Kind);
-        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.CleaningJobsCompleted, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions, ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits, ChoreFamily.TreeWoodPlaced })
+        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.CleaningJobsCompleted, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions, ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits, ChoreFamily.TreeWoodPlaced, ChoreFamily.SlaughteredButchery })
         {
             var def = MetricRegistry.Catalog.Single(x => x.Key == key);
             Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(def));

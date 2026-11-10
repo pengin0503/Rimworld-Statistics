@@ -47,6 +47,7 @@ public static class MetricDisplayPolicy
         AnimalsFamily.Tames, AnimalsFamily.Births, AnimalsFamily.Slaughtered, AnimalsFamily.Hunted,
         ChoreFamily.FilthRemoved, ChoreFamily.CleaningJobsCompleted, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions,
         ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits, ChoreFamily.TreeWoodPlaced,
+        ChoreFamily.SlaughteredButchery,
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
         WorkFamily.CraftedUnits, WorkFamily.HarvestUnits, WorkFamily.HarvestFailures,
         WorkFamily.Sown_, WorkFamily.ColdLoss, WorkFamily.OtherLoss, WorkFamily.MiningUnits,

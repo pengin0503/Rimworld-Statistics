@@ -864,4 +864,6 @@
   <RWS_MetricDesc_CleaningJobsCompleted>Successful completion of a player pawn's cleaning job after at least one filth object was fully removed. Multiple filth objects in one job count as one job. Interrupted jobs are excluded.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Tree-cutting wood obtained (primary yield)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Number of primary wood units actually placed or merged after a player's tree-cutting harvest, measured by GenPlace's placedAction. Partial coverage: bonus wood from some MOD components and nonstandard cutting paths are excluded.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>Slaughtered animals subsequently butchered</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Counts successfully completed vanilla ButcherCorpseFlesh recipe consumptions of an animal corpse previously recorded as slaughtered by a player pawn. Identifies the exact corpse across saves. Excludes hunted, wild-death and enemy corpses. Partial: MOD butcher recipes and some corpse disappearance paths are not recognized.</RWS_MetricDesc_SlaughteredButchery>
 </LanguageData>
