@@ -225,6 +225,9 @@ public sealed class LifetimeCumulativeTests
         Assert.Equal("RWS_Details_SurgerySuccess",
             MetricDisplayPolicy.BreakdownLabelKey(MetricRegistry.Catalog.Single(d => d.Key == MedicineFamily.Surgeries), "success"));
         Assert.Null(MetricDisplayPolicy.BreakdownLabelKey(recruitment, "success"));
+        Assert.Null(MetricDisplayPolicy.BreakdownLabelKey(recruitment, MetricRankings.PermadeathOn));
+        Assert.Equal("RWS_Details_Permadeath", MetricDisplayPolicy.BreakdownLabelKey(
+            MetricRegistry.Catalog.Single(d => d.Key == MetricRankings.ByPermadeathDays), MetricRankings.PermadeathOn));
     }
 
 }
