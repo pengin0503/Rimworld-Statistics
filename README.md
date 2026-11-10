@@ -26,6 +26,10 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 - [手動確認の手順書](docs/manual-test-checklist.md)
 - 数値統計拡張: [確定設計](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-design.md)・[台帳](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-metrics.md)・[計画](docs/superpowers/plans/2026-11-07-numeric-statistics-expansion.md)・[実装・検証記録](docs/research/2026-11-07-numeric-statistics-expansion-verification.md)（Phase A/D1に加え、Phase B/C/D2の取得コードを実装。Phase B/C/D2は未検証の実験的機能として既定OFF）
 
+### 開発・検証を引き継ぐ場合
+
+過去の調査を最初から繰り返さず、**[現行仕様と旧仕様の区別](docs/superpowers/README-current-and-historical.md)**を起点にしてください。参照する資料は、[R2のバージョン別ゲーム本体・Defs調査](docs/research/2026-11-10-r2-private-reference-inventory.md)、[R2実セーブ49件・12ビルドの匿名台帳](docs/research/2026-11-10-r2-save-compatibility-census.md)、[49件の本番.NET読込検証結果](docs/testing/2026-11-10-private-r2-49-original-net-acceptance.md)、[残りの実装と受入条件](docs/superpowers/plans/2026-11-10-post-v1.4-five-save-improvements.md)です。これらには再現可能な取得手順・検証済み範囲・未検証の理由・CIの参照番号を記録してあります。元の非公開セーブ、全MOD一覧、ゲームバイナリは公開リポジトリへ保存していません。
+
 ## 実験的な数値統計と汎用SDK
 
 本体はバニラ・対応DLCの全セーブ統計、264項目の実験的拡張統計、数値表示、チェックポイント、汎用の**外部MOD統計SDK v1.1**を担当します。**「詳細統計」には実装済みの全項目を表示**し、実験的／不明（未観測）の値も隠しません。未観測の値は「—」と「不明」で示し、**0として扱いません**。個別コロニーにのみ適用される項目はコロニー別表示で確認できます。外部MOD統計は、プロファイルに記録された提供元の定義がある場合のみ表示されます。
