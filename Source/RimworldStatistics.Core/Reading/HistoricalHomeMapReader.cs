@@ -11,6 +11,16 @@ internal readonly record struct SavedMapStockItem(
     string? Faction, bool Forbidden, bool Valid);
 
 /// <summary>
+/// Detached direct-map Pawn evidence. No names, skills, ideology, health details,
+/// genealogy, MOD race data or runtime Pawn references are retained.
+/// </summary>
+internal readonly record struct SavedMapPawn(
+    int? MapId, string? ThingId, string? RaceDef, string? KindDef,
+    string? Faction, string? HostFaction, string? GuestStatus,
+    bool GuestPresent, bool HostFactionSeen, bool HealthPresent,
+    bool Dead, bool Valid);
+
+/// <summary>
 /// Partial lower bound for player home maps in pre-install saves. Only explicit
 /// WorldObject references to vanilla player-owned Settlement parents count.
 /// In particular, MOD/DLC homes, gravships and maps with unresolved parents
@@ -23,6 +33,7 @@ internal static class HistoricalHomeMapReader
     public const int MaxSavedTurrets = 8192;
     public const int MaxSavedStockItems = 16384;
     public const int MaxTrustedStockStack = 1_000_000;
+    public const int MaxSavedPawns = 8192;
 
     public static Dictionary<string, MetricEntry>? Build(
         IReadOnlyList<SavedMapParent> maps,
@@ -35,7 +46,9 @@ internal static class HistoricalHomeMapReader
         IReadOnlyList<SavedMapTurret>? turrets = null,
         bool turretsOverflowed = false,
         IReadOnlyList<SavedMapStockItem>? stock = null,
-        bool stockOverflowed = false)
+        bool stockOverflowed = false,
+        IReadOnlyList<SavedMapPawn>? pawns = null,
+        bool pawnsOverflowed = false)
     {
         if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
@@ -159,6 +172,49 @@ internal static class HistoricalHomeMapReader
                 });
             }
         }
+        // Deliberately positive-only, conservative direct-map human roster:
+        // 1.7 actual Pawn API: IsFreeNonSlaveColonist = free && !IsSlave;
+        // IsPrisonerOfColony = guest.IsPrisoner && guest.HostFaction.IsPlayer;
+        // IsSlaveOfColony = IsSlave && Faction.IsPlayer.
+        // joinStatus is NOT guestStatus: even free colonists can have JoinAsSlave.
+        // World pawns, caravans, MOD races and nested holders are not traversed,
+        // so an unobserved category remains Unknown rather than measured zero.
+        if (pawns is { Count: > 0 } && !pawnsOverflowed && pawns.Count <= MaxSavedPawns)
+        {
+            long free = 0, prisoners = 0, slaves = 0;
+            foreach (var group in pawns.Where(p => !string.IsNullOrWhiteSpace(p.ThingId))
+                .GroupBy(p => p.ThingId!, StringComparer.Ordinal))
+            {
+                var first = group.First();
+                // A repeated ID with disagreeing classification is ambiguous.
+                if (!group.All(p => p.Valid && p.MapId is { } id
+                    && confirmedMapIds.Contains(id)
+                    && p.RaceDef == "Human" && p.GuestPresent && p.HostFactionSeen
+                    && p.HealthPresent && !p.Dead && p.Equals(first)))
+                    continue;
+                if (first.GuestStatus == "Prisoner" && first.HostFaction == playerReference)
+                    prisoners++;
+                else if (first.GuestStatus == "Slave" && first.Faction == playerReference)
+                    slaves++;
+                else if (first.Faction == playerReference && first.HostFaction is null
+                    && first.KindDef == "Colonist"
+                    && first.GuestStatus is (null or "Guest"))
+                    free++;
+            }
+            void RecordIfPositive(string key, long n)
+            {
+                if (n > 0)
+                    result[key] = MetricEntry.Of(MetricKeys.Revision(key), new MetricValue
+                    {
+                        Coverage = MetricCoverage.Partial,
+                        IntegerValue = n,
+                    });
+            }
+            RecordIfPositive(RosterSnapshot.Free, free);
+            RecordIfPositive(RosterSnapshot.Prisoners, prisoners);
+            RecordIfPositive(RosterSnapshot.Slaves, slaves);
+        }
+
         return result;
     }
 }
