@@ -211,6 +211,71 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Contains(FacilitiesSnapshot.HomeMapsPeak, save.Metrics.Metrics.Keys);
     }
 
+    private static XElement StockThing(string id, string def, string className, int count,
+        string? faction = null, bool forbidden = false)
+        => new("thing", new XAttribute("Class", className),
+            new XElement("def", def), new XElement("id", id),
+            new XElement("map", "0"),
+            new XElement("stackCount", count),
+            faction is null ? null : new XElement("faction", faction),
+            forbidden ? new XElement("forbidden", "True") : null);
+
+    [Fact]
+    public void KnownCoreSilverAndMedicine_OnVerifiedHomeCountOnlyPositivePartialStocks()
+    {
+        var map = TurretMap(0, "WorldObject_42",
+            StockThing("Silver1", "Silver", "ThingWithComps", 400),
+            StockThing("Silver1", "Silver", "ThingWithComps", 400), // same ID, one stack
+            StockThing("SilverHostile", "Silver", "ThingWithComps", 500, faction: "Faction_77"),
+            StockThing("SilverForbidden", "Silver", "ThingWithComps", 50, forbidden: true),
+            StockThing("SilverOtherClass", "Silver", "Thing", 60),
+            StockThing("Med1", "MedicineHerbal", "Medicine", 2),
+            StockThing("Med2", "MedicineIndustrial", "Medicine", 3),
+            StockThing("ModdedMed", "MedicineModded", "Medicine", 8),
+            StockThing("SilverBadCount", "Silver", "ThingWithComps", -9));
+        var bytes = Save(maps: new[] { map });
+        var r = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.Equal(MetricCoverage.Partial, r.Metrics!.Metrics[StockSnapshot.SilverLatest].Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(400, r.Metrics.Metrics[StockSnapshot.SilverLatest].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(5, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["stock"]);
+        Assert.DoesNotContain(StockSnapshot.MaterialsLatest, r.Metrics.Metrics);
+        Assert.DoesNotContain(StockSnapshot.FoodLatest, r.Metrics.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalStock_NoConfirmedPositiveEvidence_MustNotInventZero()
+    {
+        var empty = Read(Save(maps: new[] { TurretMap(0, "WorldObject_42") }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, empty.Metrics!.Metrics);
+        Assert.DoesNotContain(StockSnapshot.MedicinePeak, empty.Metrics.Metrics);
+
+        var unowned = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", StockThing("Silver1", "Silver", "ThingWithComps", 100))
+        }, worldObjects: new[] { WorldObject(43, def: "Site") }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, unowned.Metrics!.Metrics);
+
+        var old = Read(Save(version: "1.6.4566 rev607", maps: new[] {
+            TurretMap(0, "WorldObject_42", StockThing("Silver1", "Silver", "ThingWithComps", 100))
+        }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, old.Metrics!.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalStock_ConflictedIdAndInvalidStackNeverInflateTotals()
+    {
+        var bytes = Save(maps: new[] { TurretMap(0, "WorldObject_42",
+            StockThing("SilverSame", "Silver", "ThingWithComps", 100),
+            StockThing("SilverSame", "Silver", "ThingWithComps", 500, faction: "Faction_77"),
+            StockThing("MedBad", "MedicineUltratech", "Medicine", int.MaxValue),
+            StockThing("MedOK", "MedicineHerbal", "Medicine", 1)) });
+        var r = Read(bytes);
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, r.Metrics!.Metrics);
+        Assert.Equal(1, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].IntegerValue);
+    }
+
     [Fact]
     public void ReaderUpgrade_ReimportsOnceAndLeavesOriginalUnmodified()
     {
