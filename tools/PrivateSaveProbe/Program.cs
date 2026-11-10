@@ -195,6 +195,10 @@ internal static class Program
         {
             if (args.Length == 1 && args[0] == "--self-test")
                 return SelfTest();
+            if (args.Length == 1 && args[0] == "--five-self-test")
+                return FiveCheckpointProbe.SelfTest();
+            if (args.Length == 6 && args[0] == "--five")
+                return FiveCheckpointProbe.Run(args.Skip(1).ToArray());
             if (args.Length != 4 || args[0] != "--installed" || args[2] != "--legacy")
             {
                 Console.Error.WriteLine("Usage: PrivateSaveProbe --installed path-to-save-A --legacy path-to-save-B");
