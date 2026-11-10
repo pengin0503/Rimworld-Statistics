@@ -45,7 +45,7 @@ public static class MetricDisplayPolicy
         SocialFamily.Fights, SocialFamily.PrisonBreaks, SocialFamily.PrisonersReleased,
         SocialFamily.PrisonersCaptured, SocialFamily.AnimalBonds,
         AnimalsFamily.Tames, AnimalsFamily.Births, AnimalsFamily.Slaughtered, AnimalsFamily.Hunted,
-        ChoreFamily.FilthRemoved, ChoreFamily.FiresExtinguished,
+        ChoreFamily.FilthRemoved, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions,
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
         WorkFamily.CraftedUnits, WorkFamily.HarvestUnits, WorkFamily.HarvestFailures,
         WorkFamily.Sown_, WorkFamily.ColdLoss, WorkFamily.OtherLoss, WorkFamily.MiningUnits,

@@ -73,6 +73,25 @@ public static class PlantCollectedMetricPatch
 }
 
 /// <summary>Sowing completes where the sow toil increments the actor's PlantsSown record (JobDriver_PlantSow, 1.7.4985).</summary>
+
+/// <summary>
+/// 1.7.4985 Verse.Thing.Ingested(Pawn, float) returns actual ingested nutrition.
+/// It is also called for feeding and caravans: require a meal and a player
+/// humanlike ingester. Zero-yield calls are not counted.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Thing), nameof(Thing.Ingested), new[] { typeof(Pawn), typeof(float) })]
+internal static class MealIngestedMetricPatch
+{
+    private static void Postfix(Thing __instance, Pawn ingester, float __result)
+    {
+        if (__result <= 0f || __instance.def?.ingestible?.IsMeal != true ||
+            ingester == null || !ingester.RaceProps.Humanlike || !GameFacts.IsPlayer(ingester))
+            return;
+        GameFacts.Record(ChoreFamily.Name, ChoreFamily.MealIngested);
+    }
+}
+
 [MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
 public static class PlantsSownMetricPatch

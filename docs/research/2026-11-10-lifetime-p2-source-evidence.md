@@ -18,10 +18,17 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 - `RimWorld.JobDriver_ExtinguishSelf` closure (`0x06004c7f`): explicitly destroys target fire then increments `FiresExtinguished`.
 - Reuse existing record-tracker hook with player-owner gate, ensuring rain and naturally expired fires are not counted as pawn extinguishments.
 
+
+## Successful meal ingestion (additional P2 candidate)
+
+- `Verse.Thing.Ingested(Pawn ingester, float nutritionWanted)` is defined as `MethodDef 0x06002ad5`, CLI method signature `20 02 0c 12 93 58 0c`: instance, two parameters, `float` return.
+- It is called by `RimWorld.Toils_Ingest.FinalizeIngest`'s closure, by caravan food handling, and by some administering/feeding paths. A `Thing.Ingested` call alone does not prove a colonist meal. Filter successful (`__result > 0f`), `ThingDef.ingestible.IsMeal`, humanlike player faction ingester. A partial food portion counts one ingestion event; not an inferred whole-meal stack.
+- New low-frequency Harmony Postfix targets `Thing.Ingested`; the exact signature is checked against 1.7 public game references in CI. Actual game frequency, modded feeding, and edge-cases still need acceptance tests.
+
 ## Unsafe/undecided event sources (do not fabricate)
 
 - `RecordDefOf.ThingsHauled` is incremented within `Toils_Haul.StartCarryThing` closure (`0x06010977`) **at pickup**, before a storage placement outcome. It cannot represent a successful haul or deposited unit count.
-- Full clean job completions, successfully deposited haul amounts, completed ingestion, wood actually gained after tree cutting, and slaughtered-animal corpse processing need source-confirmed post-success boundaries with negative controls. In particular, a Bill completion cannot prove whether the corpse came from slaughter rather than hunting without provenance.
+- Full clean job completions, successfully deposited haul amounts, wood actually gained after tree cutting, and slaughtered-animal corpse processing need source-confirmed post-success boundaries with negative controls. In particular, a Bill completion cannot prove whether the corpse came from slaughter rather than hunting without provenance.
 - `work_details` production/ore breakdown reuses audited preexisting work hooks but the new on-game results require actual event smoke checks.
 - Existing RWMT real-game A+B verifies loader and certain Harmony registrations only; it does **not** test this new event body, source save/reload, player/NPC origin, 1.7.5000 save compatibility, or TPS.
 

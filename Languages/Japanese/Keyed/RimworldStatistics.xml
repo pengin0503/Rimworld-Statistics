@@ -854,4 +854,6 @@
   <RWS_MetricDesc_FilthRemoved>入植者が汚れを完全除去し、ゲーム側の清掃実績が加算された回数です。汚れの厚さの部分減少や、清掃ジョブ全体の回数ではありません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>消火成功件数</RWS_Metric_FiresExtinguished>
   <RWS_MetricDesc_FiresExtinguished>入植者の消火または自己消火で火が消え、ゲーム側の消火実績が加算された回数です。雨や自然消火は含みません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>食事摂取の成立回数</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>プレイヤー陣営の人間型ポーンが食事を実際に摂取し、栄養の取得量が正だった回数を記録します。キャラバンでの摂取も含み、食事以外の食品・薬物・非プレイヤーは除外します。</RWS_MetricDesc_MealIngestions>
 </LanguageData>

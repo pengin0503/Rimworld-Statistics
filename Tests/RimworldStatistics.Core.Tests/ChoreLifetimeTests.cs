@@ -20,9 +20,11 @@ public sealed class ChoreLifetimeTests
         ChoreFamily.FilthCleared(state);
         ChoreFamily.FilthCleared(state);
         ChoreFamily.FireCleared(state);
+        ChoreFamily.MealIngested(state);
         var obs = Save(acc, 200);
         Assert.Equal(2, Read(obs, ChoreFamily.FilthRemoved).IntegerValue);
         Assert.Equal(1, Read(obs, ChoreFamily.FiresExtinguished).IntegerValue);
+        Assert.Equal(1, Read(obs, ChoreFamily.MealIngestions).IntegerValue);
         Assert.False(obs.Metrics.ContainsKey(WorkFamily.CraftedUnits));
         Assert.Equal(MetricCoverage.Complete, Read(obs, ChoreFamily.FilthRemoved).Coverage);
     }
@@ -53,7 +55,7 @@ public sealed class ChoreLifetimeTests
         var unit = AcquisitionUnits.Find(ChoreFamily.Name)!;
         Assert.Equal(AcquisitionStatus.Unverified, unit.Status);
         Assert.Equal(AcquisitionKind.Family, unit.Kind);
-        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.FiresExtinguished })
+        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions })
         {
             var def = MetricRegistry.Catalog.Single(x => x.Key == key);
             Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(def));
