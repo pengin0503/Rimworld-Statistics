@@ -52,7 +52,7 @@ jobs:
       - name: Verify all 274 historical-recovery inventory decisions against source
         run: python3 -m unittest discover -s tools/tests -p 'test_historical_recovery_inventory.py' -v
       - name: Compile opt-in read-only production .NET original-save verifier
-        run: dotnet build tools/PrivateSaveProbe/PrivateRealSaveImport.csproj -c Release --nologo -p:UseNuGetRefs=true
+        run: dotnet build tools/RealSaveImport/RealSaveImport.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: External SDK event allocation and throughput benchmark
