@@ -69,6 +69,8 @@ public sealed class HistoricalCheckpointPairEvidenceTests
             Assert.NotNull(read.Metrics);
             Assert.NotNull(read.Checkpoint);
             Assert.Equal(MetricObservationSource.Checkpoint, read.Checkpoint!.Source);
+            Assert.NotNull(read.Metrics!.ModSetHash);
+            Assert.Equal(read.Metrics.ModSetHash, read.Checkpoint.ModSetHash);
             ProfileMutations.UpsertMetricObservation(profile, read.Checkpoint);
             ProfileMutations.UpsertMetricObservation(profile, read.Metrics!);
             Assert.Equal(original, bytes); // input bytes remain unchanged
