@@ -29,7 +29,7 @@
 
 標準のゲーム内アップロードが利用できない場合のみ使用する。ValveのSteamCMDは `+workshop_build_item` とVDFを使用する。**Steam認証情報をGitHub、チャット、PR、ログ、Artifact、VDFへ保存しない**。SteamCMDには投稿者本人がローカルで対話的にログインし、必要に応じてSteam Guardを承認する。
 
-配布候補を上記Aの手順で `Mods/RimworldStatistics` に展開後、**同梱された** `make_workshop_vdf.ps1` をPC上で使う（リポジトリ原本: [tools/make_workshop_vdf.ps1](../../tools/make_workshop_vdf.ps1)）。これは投稿も認証も実行しない。別途[Valve公式SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)を入手する。
+配布候補を上記Aの手順で `Mods/RimworldStatistics` に展開後、**同梱された** `make_workshop_vdf.ps1` をPC上で使う（リポジトリ原本: [tools/make_workshop_vdf.ps1](https://github.com/pengin0503/Rimworld-Statistics/blob/main/tools/make_workshop_vdf.ps1)）。これは投稿も認証も実行しない。別途[Valve公式SteamCMD](https://developer.valvesoftware.com/wiki/SteamCMD)を入手する。
 
 PowerShellで、自分のゲームパスに合わせて次を実行する:
 
