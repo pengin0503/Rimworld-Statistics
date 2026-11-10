@@ -867,4 +867,12 @@
   <RWS_MetricDesc_TreeWoodPlaced>Number of primary wood units actually placed or merged after a player's tree-cutting harvest, measured by GenPlace's placedAction. Partial coverage: bonus wood from some MOD components and nonstandard cutting paths are excluded.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Slaughtered animals subsequently butchered</RWS_Metric_SlaughteredButchery>
   <RWS_MetricDesc_SlaughteredButchery>Counts successfully completed vanilla ButcherCorpseFlesh recipe consumptions of an animal corpse previously recorded as slaughtered by a player pawn. Identifies the exact corpse across saves. Excludes hunted, wild-death and enemy corpses. Partial: MOD butcher recipes and some corpse disappearance paths are not recognized.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>Colony with most: {0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>Colony with least: {0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>Top item across colonies: {0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>Highest recorded value across independent colonies, using one representative observation per colony. Missing readings are not treated as zero. State quantities refer to each colony's recorded save, not cumulative production.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Lowest recorded value across independent colonies, using one representative observation per colony. Only actually measured zeros can win; unknown and non-applicable values do not.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Sum quantities separately for each item definition across independent colonies, then rank those totals. Counts use one representative observation per colony. Missing, overflowed, or untracked definitions give partial coverage. State inventories and lifetime events are not interchangeable.</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>Tied colonies: {0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>Record observed on game day: {0}</RWS_Cross_RecordedAt>
 </LanguageData>
