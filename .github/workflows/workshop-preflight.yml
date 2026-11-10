@@ -7,6 +7,8 @@ on:
       - '.github/workflows/workshop-preflight.yml'
       - 'tools/prepare_workshop.py'
       - 'tools/generate_workshop_preview.py'
+      - 'tools/make_workshop_vdf.ps1'
+      - 'tools/make_workshop_vdf.ps1'
       - 'tools/tests/test_workshop_preflight.py'
       - 'docs/workshop/**'
   push:
@@ -38,7 +40,10 @@ jobs:
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans.ttf
           test -f /usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf
 
-      - name: Validate preparation rules offline
+      - name: Validate Windows VDF tool is testable on the runner
+        run: command -v pwsh
+
+      - name: Validate preparation rules offline (including PowerShell)
         run: python -m unittest discover -s tools/tests -p 'test_workshop_preflight.py' -v
 
       - name: Fetch the exact published GitHub release (no build)
@@ -82,7 +87,10 @@ jobs:
           )
           (cd "$RUNNER_TEMP/workshop-output" && sha256sum RimworldStatistics-Workshop-Candidate-v1.3.0.zip > RimworldStatistics-Workshop-Candidate-v1.3.0.sha256)
           unzip -t "$RUNNER_TEMP/workshop-output/RimworldStatistics-Workshop-Candidate-v1.3.0.zip"
-          cp "$RUNNER_TEMP/workshop-stage/workshop.vdf" "$RUNNER_TEMP/workshop-output/workshop.vdf"
+          cp docs/workshop/pc-publishing.md "$RUNNER_TEMP/workshop-output/PC-PUBLISH.md"
+          cp docs/workshop/listing-ja.bbcode docs/workshop/listing-en.bbcode "$RUNNER_TEMP/workshop-output/"
+          cp tools/make_workshop_vdf.ps1 "$RUNNER_TEMP/workshop-output/"
+          test ! -e "$RUNNER_TEMP/workshop-output/workshop.vdf" # Linux paths are not valid on Windows
           echo 'WORKSHOP_PREP_VERIFIED; STEAM_UPLOAD_NOT_EXECUTED'
 
       - uses: actions/upload-artifact@v4
@@ -93,4 +101,7 @@ jobs:
           path: |
             ${{ runner.temp }}/workshop-output/RimworldStatistics-Workshop-Candidate-v1.3.0.zip
             ${{ runner.temp }}/workshop-output/RimworldStatistics-Workshop-Candidate-v1.3.0.sha256
-            ${{ runner.temp }}/workshop-output/workshop.vdf
+            ${{ runner.temp }}/workshop-output/PC-PUBLISH.md
+            ${{ runner.temp }}/workshop-output/listing-ja.bbcode
+            ${{ runner.temp }}/workshop-output/listing-en.bbcode
+            ${{ runner.temp }}/workshop-output/make_workshop_vdf.ps1
