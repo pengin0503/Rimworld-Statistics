@@ -59,10 +59,12 @@ public static class CrossColonyCatalog
     private static readonly string[] CrossSumKeys = { RosterSnapshot.Passions };
 
     public static bool IsDerived(MetricDefinition definition)
-        => definition.Key.StartsWith(MaxPrefix, StringComparison.Ordinal)
-            || definition.Key.StartsWith(MinPrefix, StringComparison.Ordinal)
-            || definition.Key.StartsWith(TopPrefix, StringComparison.Ordinal)
-            || definition.Key.StartsWith(SumPrefix, StringComparison.Ordinal);
+        => definition.Overall == OverallAggregation.Ranking
+            && definition.ProviderId is null && definition.OwnerPackageId is null
+            && (definition.Key.StartsWith(MaxPrefix, StringComparison.Ordinal)
+                || definition.Key.StartsWith(MinPrefix, StringComparison.Ordinal)
+                || definition.Key.StartsWith(TopPrefix, StringComparison.Ordinal)
+                || definition.Key.StartsWith(SumPrefix, StringComparison.Ordinal));
 
     /// <summary>Only call after the unmodified base catalog is assembled.</summary>
     public static IReadOnlyList<MetricDefinition> Build(IReadOnlyList<MetricDefinition> baseDefinitions)
