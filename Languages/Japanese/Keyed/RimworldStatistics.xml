@@ -875,4 +875,8 @@
   <RWS_CrossDesc_TopType>品目Def別の数量を独立コロニーの代表観測から合計し、その合計が最多の品目を選びます。未測定、上限超過、品目不明はPartialです。保存時点の在庫と生涯イベント累計を混同しません。</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>同率のコロニー：{0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>記録の観測ゲーム内日：{0}</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>全コロニーで最も多い種類：{0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>独立コロニーの代表観測値で種類別に件数を合計し、最多の種類を表示します。欠測・不完全な内訳はPartialのまま扱います。品目の個数ではなく分類別の回数や人数を表す場合があります。</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>コロニー代表保存時点の合計：{0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>独立した各コロニーの代表保存時点に記録された状態数量を合計します。生涯イベント累計ではありません。欠測を0に置き換えません。</RWS_CrossDesc_Sum>
 </LanguageData>
