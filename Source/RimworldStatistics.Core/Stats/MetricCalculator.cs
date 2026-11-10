@@ -101,7 +101,7 @@ public static class MetricCalculator
         var attached = Attach(profile, colonies, out var unattributed);
         // Derived rankings consume selected input rows, but require no extra
         // per-colony observations or save-data lookups of their own.
-        var sourceDefinitions = definitions.Where(d => d.Overall != OverallAggregation.Ranking).ToList();
+        var sourceDefinitions = definitions.Where(d => !CrossColonyCatalog.IsDerived(d)).ToList();
         var perColony = new List<(Colony Colony, List<NumericRow> Rows, CheckpointLineage Lineage)>(colonies.Count);
         foreach (var colony in colonies)
         {
