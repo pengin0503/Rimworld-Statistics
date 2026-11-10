@@ -201,7 +201,7 @@ internal static class Program
                 return FiveCheckpointProbe.Run(args.Skip(1).ToArray());
             if (args.Length != 4 || args[0] != "--installed" || args[2] != "--legacy")
             {
-                Console.Error.WriteLine("Usage: PrivateSaveProbe --installed path-to-save-A --legacy path-to-save-B");
+                Console.Error.WriteLine("Usage: PrivateSaveProbe --installed path-A --legacy path-B | --five older.rws 2110.rws 2113.rws 2117.rws later.rws | --five-self-test");
                 return 2;
             }
             var installedPath = Path.GetFullPath(args[1]);
