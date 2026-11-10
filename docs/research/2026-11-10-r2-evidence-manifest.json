@@ -22,37 +22,95 @@
     "prefix": "Saves/",
     "objects": 49,
     "bytes": 824593049,
-    "readOnlyExamples": [
+    "allObjectBodiesRead": true,
+    "readOnly": true,
+    "contentVerification": "gameVersion, modIds count and numericStatistics tag; NOT production SaveReader or game validation",
+    "exactBuildCount": 12,
+    "gameSeriesCounts": {
+      "1.5": 22,
+      "1.6": 20,
+      "1.7": 7
+    },
+    "rangeOfModCounts": [
+      32,
+      252
+    ],
+    "checkpointTagCount": 0,
+    "byBuild": [
       {
-        "alias": "R2-A",
-        "gameVersion": "1.6.4523 rev1054",
-        "mods": 74,
-        "researchProgressPresent": true,
-        "checkpointPresent": false
+        "build": "1.5.4104 rev435",
+        "count": 11,
+        "modMin": 32,
+        "modMax": 117
       },
       {
-        "alias": "R2-B",
-        "gameVersion": "1.5.4104 rev435",
-        "mods": 32,
-        "researchProgressPresent": true,
-        "checkpointPresent": false
+        "build": "1.5.4243 rev947",
+        "count": 4,
+        "modMin": 117,
+        "modMax": 119
       },
       {
-        "alias": "R2-C",
-        "gameVersion": "1.5.4243 rev947",
-        "mods": 119,
-        "researchProgressPresent": true,
-        "checkpointPresent": false
+        "build": "1.5.4297 rev1079",
+        "count": 5,
+        "modMin": 119,
+        "modMax": 127
       },
       {
-        "alias": "R2-D",
-        "gameVersion": "1.6.4566 rev607",
-        "mods": 193,
-        "researchProgressPresent": true,
-        "checkpointPresent": false
+        "build": "1.5.4409 rev1120",
+        "count": 2,
+        "modMin": 127,
+        "modMax": 127
+      },
+      {
+        "build": "1.6.4523 rev1054",
+        "count": 1,
+        "modMin": 74,
+        "modMax": 74
+      },
+      {
+        "build": "1.6.4535 rev993",
+        "count": 1,
+        "modMin": 79,
+        "modMax": 79
+      },
+      {
+        "build": "1.6.4566 rev607",
+        "count": 8,
+        "modMin": 96,
+        "modMax": 193
+      },
+      {
+        "build": "1.6.4630 rev467",
+        "count": 1,
+        "modMin": 192,
+        "modMax": 192
+      },
+      {
+        "build": "1.6.4633 rev1261",
+        "count": 7,
+        "modMin": 201,
+        "modMax": 209
+      },
+      {
+        "build": "1.6.4850 rev646",
+        "count": 2,
+        "modMin": 204,
+        "modMax": 205
+      },
+      {
+        "build": "1.7.4979 rev109",
+        "count": 1,
+        "modMin": 207,
+        "modMax": 207
+      },
+      {
+        "build": "1.7.4985 rev1269",
+        "count": 6,
+        "modMin": 239,
+        "modMax": 252
       }
     ],
-    "note": "Four selected examples, not an exhaustive content scan of all 49."
+    "details": "docs/research/2026-11-10-r2-save-compatibility-census.md"
   },
   "localOriginals": {
     "source": "private conversation attachments, not R2",
