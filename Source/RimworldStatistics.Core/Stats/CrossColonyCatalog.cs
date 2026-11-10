@@ -55,16 +55,16 @@ public static class CrossColonyCatalog
         {
             if (!byKey.TryGetValue(key, out var source))
                 continue;
-            result.Add(Derive(source, MaxPrefix, "RWS_Cross_MaxColony", "RWS_CrossDesc_MaxColony"));
-            result.Add(Derive(source, MinPrefix, "RWS_Cross_MinColony", "RWS_CrossDesc_MinColony"));
+            result.Add(Derive(source, MaxPrefix, "RWS_CrossDesc_MaxColony"));
+            result.Add(Derive(source, MinPrefix, "RWS_CrossDesc_MinColony"));
         }
         foreach (var key in TopTypeKeys)
             if (byKey.TryGetValue(key, out var source) && source.HasBreakdown)
-                result.Add(Derive(source, TopPrefix, "RWS_Cross_TopType", "RWS_CrossDesc_TopType"));
+                result.Add(Derive(source, TopPrefix, "RWS_CrossDesc_TopType"));
         return result;
     }
 
-    private static MetricDefinition Derive(MetricDefinition source, string prefix, string label, string description)
+    private static MetricDefinition Derive(MetricDefinition source, string prefix, string description)
         => source with
         {
             Key = prefix + source.Key,
@@ -74,9 +74,8 @@ public static class CrossColonyCatalog
             HasBreakdown = false,
             // Every published definition requires a unique RWS_Metric_ key.
             // The UI resolves the localized generic template using the source label.
-            LabelKey = "RWS_Metric_Cross_" +
-                (prefix == MaxPrefix ? "Max_" : prefix == MinPrefix ? "Min_" : "Top_") +
-                source.Key.Replace('.', '_'),
+            LabelKey = source.LabelKey +
+                (prefix == MaxPrefix ? "_CrossMax" : prefix == MinPrefix ? "_CrossMin" : "_CrossTop"),
             DescriptionKey = description,
         };
 }
