@@ -846,4 +846,8 @@
   <RWS_Details_TradeKindCaravan>訪問キャラバン</RWS_Details_TradeKindCaravan>
   <RWS_Details_TradeKindSettlement>拠点との取引</RWS_Details_TradeKindSettlement>
   <RWS_Details_TradeKindOther>その他の交易相手</RWS_Details_TradeKindOther>
+  <RWS_Metric_CraftedByDef>製作完了品の種類別累計</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>計測期間に完成した製作品の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>採掘資源の種類別累計</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>計測期間に実際に配置された採掘産出物の種類別個数です。従来の作業記録とは独立し、導入前の履歴は推定しません。</RWS_MetricDesc_MinedByDef>
 </LanguageData>

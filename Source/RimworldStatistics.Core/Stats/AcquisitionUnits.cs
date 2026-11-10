@@ -52,6 +52,7 @@ public static class AcquisitionUnits
         new("social", AcquisitionKind.Family, U),
         new("animals", AcquisitionKind.Family, U),
         new("work", AcquisitionKind.Family, U),
+        new("work_details", AcquisitionKind.Family, U),
         new("food", AcquisitionKind.Family, U),
         new("trade", AcquisitionKind.Family, U),
         new("diplomacy", AcquisitionKind.Family, U),

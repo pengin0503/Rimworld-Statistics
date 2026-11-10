@@ -106,7 +106,7 @@ public static class CropLeaflessMetricPatch
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
 [HarmonyPatch(typeof(RecordsUtility), nameof(RecordsUtility.Notify_BillDone))]
 public static class BillDoneMetricPatch
 {
@@ -126,6 +126,7 @@ public static class BillDoneMetricPatch
         var worker = GameFacts.Id(billDoer);
         var tick = GameFacts.Tick;
         GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
+        GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.CraftedProducts(s, items));
     }
 }
 
@@ -202,7 +203,7 @@ internal static class MiningProbe
     public static ThingDef? Yield;
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
 [HarmonyPatch(typeof(Mineable), "TrySpawnYield", new[] { typeof(Map), typeof(bool), typeof(Pawn) })]
 public static class MiningScopeMetricPatch
 {
@@ -227,7 +228,7 @@ public static class MiningScopeMetricPatch
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
 [HarmonyPatch(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
     new[] { typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode), typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int) })]
 public static class MiningPlaceMetricPatch
@@ -265,6 +266,7 @@ public static class MiningPlaceMetricPatch
         if (__state is not { Placed: > 0 } state)
             return;
         GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, state.MinerId, state.YieldDef.defName, state.Placed));
+        GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
     }
 }
 

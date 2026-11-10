@@ -846,4 +846,8 @@
   <RWS_Details_TradeKindCaravan>Visiting caravan</RWS_Details_TradeKindCaravan>
   <RWS_Details_TradeKindSettlement>Settlement</RWS_Details_TradeKindSettlement>
   <RWS_Details_TradeKindOther>Other trader</RWS_Details_TradeKindOther>
+  <RWS_Metric_CraftedByDef>Finished products by item</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Successfully completed product units by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>Mined resource units by item</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Successfully placed mining yield by item during the recorded period. An independent series; no historical estimate for time before activation.</RWS_MetricDesc_MinedByDef>
 </LanguageData>
