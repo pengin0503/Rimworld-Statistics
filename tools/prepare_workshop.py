@@ -5,6 +5,7 @@ NO Steam login, uploads, credential reads, workshop writes or game saves.
 """
 import argparse
 import hashlib
+import re
 import shutil
 import struct
 import xml.etree.ElementTree as ET
@@ -79,13 +80,14 @@ def stage(zip_path: Path, preview: Path, out: Path, version: str, license_path: 
 
 
 def vdf_quote(value: str) -> str:
-    if any(ch in value for ch in ('"', "\\", "\n", "\r", "\x00")):
+    if any(ch in value for ch in ('"', "\n", "\r", "\x00")):
         raise ValueError("Unsafe VDF value")
-    return f'"{value}"'
+    # Windows file paths contain backslashes; SteamCMD VDF requires them escaped.
+    return '"' + value.replace("\\", "\\\\") + '"'
 
 
 def write_vdf(mod: Path, target: Path, workshop_id: str) -> None:
-    if not workshop_id.isdecimal() or (workshop_id != "0" and int(workshop_id) <= 0):
+    if re.fullmatch(r"(?:0|[1-9][0-9]*)", workshop_id) is None:
         raise ValueError("Published file ID must be 0 or a positive integer")
     fields = {
         "appid": APP_ID,

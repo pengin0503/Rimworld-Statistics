@@ -1,7 +1,10 @@
 """Workshop preparation is offline, non-destructive and rejects invalid release ZIPs."""
 import hashlib
 import importlib.util
+import os
 import struct
+import shutil
+import subprocess
 import tempfile
 import unittest
 import zipfile
@@ -9,6 +12,7 @@ import zlib
 from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / "prepare_workshop.py"
+PS_SCRIPT = SCRIPT.parent / "make_workshop_vdf.ps1"
 SPEC = importlib.util.spec_from_file_location("prepare_workshop", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 mod = importlib.util.module_from_spec(SPEC)
@@ -80,6 +84,63 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertIn('"visibility" "2"', data)
         self.assertNotIn("password", data.lower())
         mod.verify_sha(self.zip, self.sha)
+
+    def test_vdf_escapes_windows_paths_and_rejects_unicode_ids(self):
+        self.assertEqual('"' + r'C:\\Games\\RimWorld' + '"', mod.vdf_quote(r'C:\Games\RimWorld'))
+        self.assertRaisesRegex(ValueError, "Unsafe", mod.vdf_quote, "bad\nvalue")
+        staged = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
+        with self.assertRaisesRegex(ValueError, "Published file ID"):
+            mod.write_vdf(staged, self.root / "out/workshop.vdf", "１２３")
+
+    @unittest.skipUnless(shutil.which("pwsh"), "PowerShell not installed")
+    def test_pc_vdf_tool_first_upload_and_safe_updates(self):
+        staged = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
+
+        def run(name, workshop_id="0"):
+            return subprocess.run(
+                ["pwsh", "-NoProfile", "-File", str(PS_SCRIPT),
+                 "-ModPath", str(staged), "-OutputPath", str(self.root / name),
+                 "-PublishedFileId", workshop_id],
+                text=True, capture_output=True, timeout=25,
+            )
+
+        first = run("initial.vdf")
+        self.assertEqual(0, first.returncode, first.stderr)
+        initial = (self.root / "initial.vdf").read_text(encoding="utf-8")
+        self.assertIn('"appid" "294100"', initial)
+        self.assertIn('"publishedfileid" "0"', initial)
+        self.assertIn('"visibility" "2"', initial)
+        if os.name == "nt":
+            # PowerShell may canonicalize paths to DOS 8.3 aliases.
+            lines = [line for line in initial.splitlines() if '"contentfolder"' in line]
+            self.assertEqual(1, len(lines))
+            actual_path = lines[0].split('"')[3]
+            self.assertIn(r"\\", actual_path)
+            self.assertTrue(Path(actual_path.replace("\\\\", "\\")).samefile(staged))
+        self.assertIn('"description"', initial)
+        self.assertIn("STEAM_UPLOAD=NOT_PERFORMED", first.stdout)
+
+        (staged / "secrets.txt").write_text("do not publish")
+        self.assertNotEqual(0, run("extra.vdf").returncode)
+        self.assertFalse((self.root / "extra.vdf").exists())
+        (staged / "secrets.txt").unlink()
+
+        (staged / ".hidden-secret").write_text("no hidden files")
+        self.assertNotEqual(0, run("hidden.vdf").returncode)
+        (staged / ".hidden-secret").unlink()
+
+
+        (staged / "About/PublishedFileId.txt").write_text("123456789\n")
+        self.assertNotEqual(0, run("duplicate.vdf", "0").returncode)
+        self.assertNotEqual(0, run("wrong-id.vdf", "123456780").returncode)
+        updated = run("update.vdf", "123456789")
+        self.assertEqual(0, updated.returncode, updated.stderr)
+        update = (self.root / "update.vdf").read_text(encoding="utf-8")
+        self.assertIn('"publishedfileid" "123456789"', update)
+        self.assertNotIn('"visibility"', update)
+        self.assertNotIn('"description"', update)
+        self.assertNotIn('"title"', update)
+        self.assertNotEqual(0, run("update.vdf", "123456789").returncode)
 
     def test_bad_hash_is_rejected(self):
         self.sha.write_text("0" * 64 + "  " + self.zip.name + "\n")
