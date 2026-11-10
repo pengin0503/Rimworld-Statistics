@@ -90,14 +90,11 @@ public static class PlantCollectedMetricPatch
 /// at the job's destination cell. No per-tick or pawn collection traversal.
 /// </summary>
 [MetricAdapter(ChoreFamily.Name)]
-[HarmonyPatch]
+[HarmonyPatch(typeof(Pawn_CarryTracker), nameof(Pawn_CarryTracker.TryDropCarriedThing),
+    new[] { typeof(IntVec3), typeof(ThingPlaceMode), typeof(Thing), typeof(Action<Thing, int>) },
+    new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
 internal static class HaulToCellCompletionMetricPatch
 {
-    private static System.Reflection.MethodBase TargetMethod()
-        => AccessTools.Method(typeof(Pawn_CarryTracker),
-            nameof(Pawn_CarryTracker.TryDropCarriedThing),
-            new[] { typeof(IntVec3), typeof(ThingPlaceMode), typeof(Thing).MakeByRefType(),
-                    typeof(Action<Thing, int>) })!;
 
     private static void Prefix(Pawn_CarryTracker __instance, IntVec3 dropLoc,
         ThingPlaceMode mode, out int __state)
