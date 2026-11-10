@@ -267,7 +267,7 @@ public static class DetailsTab
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
             foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
-                result.Add(MakeLine(b, BreakdownLabel(b.Breakdown), 1, null, input, colony));
+                result.Add(MakeLine(b, BreakdownLabel(row.Definition, b.Breakdown), 1, null, input, colony));
         }
         return result;
     }
@@ -374,19 +374,9 @@ public static class DetailsTab
         => d.ProviderId is not null && d.LabelKey == d.Key
             ? d.Key : (string)d.LabelKey.Translate();
 
-    private static string BreakdownLabel(string key) => key switch
-    {
-        MetricKeys.UnknownBucket => "RWS_Details_UnknownBucket".Translate(),
-        "success" => "RWS_Details_SurgerySuccess".Translate(),
-        "failure" => "RWS_Details_SurgeryFailure".Translate(),
-        TradeFamily.Orbital => "RWS_Details_TradeKindOrbital".Translate(),
-        TradeFamily.VisitingCaravan => "RWS_Details_TradeKindCaravan".Translate(),
-        TradeFamily.Settlement => "RWS_Details_TradeKindSettlement".Translate(),
-        TradeFamily.OtherTrader => "RWS_Details_TradeKindOther".Translate(),
-        MetricRankings.PermadeathOn => "RWS_Details_Permadeath".Translate(),
-        MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath".Translate(),
-        _ => key,
-    };
+    private static string BreakdownLabel(MetricDefinition definition, string key)
+        => MetricDisplayPolicy.BreakdownLabelKey(definition, key) is { } translation
+            ? (string)translation.Translate() : key;
 
     private static string Name(StatsResult stats, string key)
         => stats.Colonies.FirstOrDefault(c => c.Key == key) is { } s ? Dialog_RimworldStatistics.ColonyName(s) : key;
