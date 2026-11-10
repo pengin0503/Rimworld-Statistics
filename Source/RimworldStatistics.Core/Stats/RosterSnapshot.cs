@@ -1,6 +1,6 @@
 namespace RimworldStatistics.Core;
 
-public enum RosterKind { Other, FreeColonist, Prisoner, ColonyAnimal, ColonyMech }
+public enum RosterKind { Other, FreeColonist, Prisoner, ColonyAnimal, ColonyMech, Slave }
 
 public readonly record struct RosterSkillFact(string Def, int Level, string Passion);
 
@@ -21,6 +21,7 @@ public static class RosterSnapshot
 {
     public const string Free = "population.snapshot.free";
     public const string Prisoners = "population.snapshot.prisoners";
+    public const string Slaves = "population.snapshot.slaves";
     public const string Animals = "population.snapshot.animals";
     public const string Mechs = "population.snapshot.mechs";
     public const string AugmentedPeak = "population.snapshot.augmented_peak";
@@ -37,6 +38,7 @@ public static class RosterSnapshot
         var seen = new HashSet<string>(StringComparer.Ordinal);
         var free = 0L;
         var prisoners = 0L;
+        var slaves = 0L;
         var animals = 0L;
         var mechs = 0L;
         var augmented = 0L;
@@ -92,6 +94,9 @@ public static class RosterSnapshot
                 case RosterKind.Prisoner:
                     prisoners++;
                     break;
+                case RosterKind.Slave:
+                    slaves++;
+                    break;
                 case RosterKind.ColonyAnimal:
                     animals++;
                     if (!string.IsNullOrEmpty(p.RaceDef)) animalDefs.Add(p.RaceDef);
@@ -115,6 +120,7 @@ public static class RosterSnapshot
         });
         Count(Free, free);
         Count(Prisoners, prisoners);
+        Count(Slaves, slaves);
         Count(Animals, animals);
         Count(Mechs, mechs);
         Count(AugmentedPeak, augmented);
