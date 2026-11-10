@@ -2,7 +2,7 @@ name: Build private-save probe (self-contained Linux x64)
 
 on:
   push:
-    branches: [test/portable-real-save-probe-20261109]
+    branches: [test/portable-real-save-probe-20261109, test/self-contained-five-save-acceptance-20261110]
     paths:
       - 'tools/PrivateSaveProbe/**'
       - '.github/workflows/private-save-probe.yml'
@@ -24,6 +24,8 @@ jobs:
           dotnet-version: '10.0.x'
       - name: Validate game-independent C# probe against disposable synthetic saves
         run: dotnet run --project tools/PrivateSaveProbe/PrivateSaveProbe.csproj -c Release -- --self-test
+      - name: Validate five-file lineage acceptance on disposable synthetic saves
+        run: dotnet run --project tools/PrivateSaveProbe/PrivateSaveProbe.csproj -c Release -- --five-self-test
       - name: Publish Linux x64 self-contained verifier (no RimWorld binaries or original saves)
         shell: bash
         run: |
@@ -35,7 +37,23 @@ jobs:
         run: |
           set -euo pipefail
           "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe" --self-test
+          "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe" --five-self-test
           file "$RUNNER_TEMP/private-save-probe/PrivateSaveProbe"
+      - name: Publish self-contained full Core xUnit v3 acceptance runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          dotnet publish Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release -r linux-x64 --self-contained true -p:PublishSingleFile=false -p:UseNuGetRefs=true -o "$RUNNER_TEMP/private-xunit" --nologo
+          test -f "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          chmod +x "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          file "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests" -assemblyInfo > /dev/null
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rws-private-five-save-xunit-linux-x64
+          path: ${{ runner.temp }}/private-xunit/
+          if-no-files-found: error
+          retention-days: 2
       - uses: actions/upload-artifact@v4
         with:
           name: rws-private-save-probe-linux-x64
