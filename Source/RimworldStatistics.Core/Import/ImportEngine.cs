@@ -39,6 +39,13 @@ public sealed class ImportEngine(SaveReader reader)
         int read = 0, skipped = 0, failed = 0, done = 0;
         var cancelled = false;
         var present = new List<string>(files.Count);
+
+        // Warm scans used to search the entire profile for every unchanged
+        // .rws (O(files * observations)). Cache only the matching read
+        // identities; the profile revision invalidates the cache under the
+        // same lock, including writes by other threads during this scan.
+        var indexedRevision = -1L;
+        var skippable = new HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>();
         foreach (var (path, name) in files)
         {
             progress?.Report(new ImportProgress(files.Count, done, failed, name));
@@ -57,7 +64,20 @@ public sealed class ImportEngine(SaveReader reader)
             {
                 long size = info.Length;
                 var time = info.LastWriteTimeUtc;
-                if (!session.Read(p => ProfileMutations.NeedsRead(p, name, size, time, SaveReader.Version)))
+                var alreadyRead = session.ReadWithRevision((p, revision) =>
+                {
+                    if (revision != indexedRevision)
+                    {
+                        skippable = p.SaveObservations
+                            .Where(o => !o.Superseded && o.Status != ObservationStatus.Error
+                                && o.ReaderVersion >= SaveReader.Version)
+                            .Select(o => (o.FileName, o.FileSize, o.LastWriteUtc))
+                            .ToHashSet();
+                        indexedRevision = revision;
+                    }
+                    return skippable.Contains((name, size, time));
+                });
+                if (alreadyRead)
                 {
                     skipped++;
                     continue;
