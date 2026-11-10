@@ -122,12 +122,14 @@ public static class MetricDisplayPolicy
             };
         if (key == MembershipFamily.RouteOther)
             return "RWS_Details_Other";
-        return key switch
-        {
-            MetricRankings.PermadeathOn => "RWS_Details_Permadeath",
-            MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath",
-            _ => null,
-        };
+        if (definition.Key is MetricRankings.ByPermadeathDays or MetricRankings.ByPermadeathEndings)
+            return key switch
+            {
+                MetricRankings.PermadeathOn => "RWS_Details_Permadeath",
+                MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath",
+                _ => null,
+            };
+        return null;
     }
 
     public static IReadOnlyList<MetricDefinition> SelectDefinitions(
