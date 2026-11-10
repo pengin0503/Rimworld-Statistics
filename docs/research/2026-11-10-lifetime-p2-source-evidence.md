@@ -45,3 +45,13 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 2. Baseline-vs-patched TPS/allocations, save-write time/size in busy multi-pawn colonies. The reused record-tracker hook avoids per-tick scans but this is not a measured claim.
 3. Backward compatible profile re-import of source saves, failed read preservation, forked colony identity, mixed DLC/MOD configurations, UI controls in a real menu.
 4. Do not promote acquisition units to Verified or publish v1.4.0 until acceptance passes.
+
+## Precisely scoped blockers for remaining P2 items
+
+**Whole cleaning job completions:** A `JobDriver_CleanFilth` job can clean several queued filth objects, can be interrupted after a positive removal, and can succeed with no final positive removal. `MessesCleaned` increments per destroyed filth, not per completed job. A second metric requires a verified `JobCondition.Succeeded` boundary correlated with successful operations under a stable job identity. Reusing `MessesCleaned` would double-count jobs.
+
+**Actual wood obtained from cut trees:** `RimWorld.Plant.PlantCollected(Pawn, PlantDestructionMode)` (`0x0600b2fb`) destroys a plant and includes a tree-related history/notification path. `JobDriver_PlantCut.PlantWorkDoneToil` (`0x06005188`) delegates to `Toils_Interact.DestroyThing`. Neither gives a proven number of successfully **placed** wood units attributable to the player; the theoretical `YieldNow()` amount is not proof of actual collected items, and crop `QuestManager.Notify_PlantHarvested` does not prove coverage of all trees. Implement only after verifying the actual placement success path and origin.
+
+**Successful processing of a slaughtered animal:** `JobDriver_Slaughter`'s `AnimalsSlaughtered` increments when the animal is killed, not when its corpse is butchered. `RecordsUtility.Notify_BillDone(Pawn,List<Thing>)` provides resulting products without the source corpse's provenance. Hunting, disease, enemy corpses and animals slaughtered elsewhere could all create the same products. A correct metric needs stable slaughtered-corpse lineage through subsequent hauling and bill ingredients, completed processing, and save/reload; counting generic butcher bills is unsound.
+
+All three require both positive and negative controls under the matching game build. They are **not included** in this PR, not zeros, and must not be represented as Complete measured values.

@@ -1,6 +1,6 @@
 # 生涯累計統計の拡張と既存表示の整理 — 設計（2026-11-10）
 
-**状態：設計のみ。実装・取得ゲート変更・既存統計削除・リリースは禁止。**
+**状態（2026-11-10更新）：ユーザーがP0〜P2の実装を承認済み。ドラフト実装PR #88が進行中。以前の設計段階の実装禁止は現在の承認により失効。ただし、検証完了までmainへのマージおよび正式リリースは禁止。**
 
 **対象：** pengin0503/Rimworld-Statistics、調査時 main `dbb374bacf4a0da3fe396cf060384d8a5cee8f41`（v1.3.0）。起点は [Issue #82](https://github.com/pengin0503/Rimworld-Statistics/issues/82)。実装開始前に main の差分を再確認する。
 
@@ -102,3 +102,13 @@ P0が受け入れられた後に別変更として実装を検討する。
 - 表示：`Source/RimworldStatistics/UI/DetailsTab.cs`
 - 調査：`docs/superpowers/specs/2026-11-07-statistics-expansion-{candidate-catalog,triage}.md`
 - 既存検証：`Tests/RimworldStatistics.Core.Tests/{NumericCatalogTests,NumericCheckpointTests,NumericRemainingMetricsTests}.cs`
+
+## 9. 2026-11-10 実装進捗と現行の承認条件
+
+本仕様に残る「P0のみ」「P1/P2実装禁止」の記述は作成時の履歴であり、2026-11-10のユーザー承認で更新された。ただし、検証未完了・重大欠陥のまま正式リリースしてはならない。
+
+- **P0**: 通算・その他・すべての切替、明示的累計ホワイトリスト、交易/作物/手術の5種内訳、Reader v10での旧チェックポイント再評価、日英UI。元のメトリクスとfamily Revision不変。通算主画面で旧取引形態カウンターを折りたたみ、Allには残す。
+- **P1**: 独立family `work_details` (revision 1, Unverified, default OFF) で製作完了品Def別・実際に配置された採掘資源Def別の累計。旧workと独立して保存・計測。Bill完了回数は重複して付加価値が低く採用しない。
+- **P2実装済・未実ゲーム検証**: 独立family `chore` (revision 1, Unverified, default OFF) で汚れの完全除去数、消火成功数、食事摂取数、保管セル配置による運搬完了件数と個数。コンテナ搬入等を含まない運搬2種は常にPartialとする。
+- **P2未実装・検証不足**: 清掃ジョブ全体の完了件数は除去した汚れ数と異なる。伐採で得た木材数は伐採実行と製品配置の成功・個数を対応付ける必要がある。屠殺後の解体は死体の屠殺来歴を生産Billの完了まで追跡する必要がある。推測で計測しない。詳細は `docs/research/2026-11-10-lifetime-p2-source-evidence.md`。
+- **Release条件**: CI成功だけでは不十分。旧セーブ再読込、セーブ分岐、実ゲームの正負イベント、DLC/MOD構成、TPS・allocations・保存時間の実測、レビュー、配布ZIP/SHA256/Workshop準備CIが通るまではmainへマージせずv1.4.0を作成しない。
