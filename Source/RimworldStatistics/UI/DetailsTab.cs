@@ -23,7 +23,7 @@ public static class DetailsTab
     private enum DetailsViewMode { Lifetime, Other, All }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, bool MeasuredOnly);
 
     private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
     private static bool perColony;
@@ -32,6 +32,7 @@ public static class DetailsTab
     private static string search = "";
     private static bool byValue;
     private static bool ascending = true;
+    private static bool measuredOnly;
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
     private static int expandedVersion;
     private static Vector2 scroll;
@@ -62,7 +63,15 @@ public static class DetailsTab
         GUI.color = Color.white;
         y += noteHeight + 4f;
 
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode);
+        const float filterHeight = 24f;
+        var filterRect = new Rect(rect.x, y, Math.Min(rect.width, 195f), filterHeight);
+        var previousMeasuredOnly = measuredOnly;
+        Widgets.CheckboxLabeled(filterRect, "RWS_Details_OnlyMeasured".Translate(), ref measuredOnly);
+        if (previousMeasuredOnly != measuredOnly)
+            scroll = Vector2.zero;
+        y += filterHeight + 4f;
+
+        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, measuredOnly);
         if (builtFor != inputs)
         {
             builtFor = inputs;
@@ -229,6 +238,7 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
+            .Where(r => !input.MeasuredOnly || MetricDisplayPolicy.HasMeasuredNumber(r))
             .Where(r => input.Mode switch
             {
                 DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(r.Definition),
@@ -323,7 +333,11 @@ public static class DetailsTab
         if (v.Numerator is { } num && v.Denominator is { } den && d.Overall == OverallAggregation.Ratio)
             tip.Append((string)"RWS_Details_Tip_Ratio".Translate(Number(num), Number(den))).Append('\n');
         if (v.Coverage == MetricCoverage.Unknown)
+        {
             tip.Append((string)"RWS_Details_Tip_Unknown".Translate()).Append('\n');
+            if (d.Acquisition is not null)
+                tip.Append((string)"RWS_Details_MissingAcquisitionTip".Translate()).Append('\n');
+        }
         tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
 
         var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
@@ -352,6 +366,8 @@ public static class DetailsTab
 
     internal static string Format(MetricDefinition d, NumericValue v)
     {
+        if (MetricDisplayPolicy.IsUnrankedTop(d, v))
+            return "RWS_Details_UnrankedTop".Translate();
         if (v.NotReached)
             return "RWS_Details_NotReached".Translate();
         if (v.Number is not { } n)
