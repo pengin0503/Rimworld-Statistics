@@ -12,10 +12,16 @@ public static class CrossColonyAggregator
         IReadOnlyList<MetricDefinition> definitions,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> colonyRows)
     {
-        // Build indexes only once for all derived outputs.
+        var derived = definitions.Where(CrossColonyCatalog.IsDerived).ToArray();
+        if (derived.Length == 0)
+            yield break;
+        // Only index source keys needed by derived records. Indexing the entire
+        // catalog would allocate hundreds of unnecessary entries per colony.
+        var sourceKeys = derived.Select(d => d.StoredKey).ToHashSet(Ord);
         var indexed = colonyRows.OrderBy(c => c.Key, Ord)
-            .Select(c => (c.Key, Rows: c.Value.ToDictionary(r => r.Definition.Key, Ord))).ToList();
-        foreach (var definition in definitions.Where(CrossColonyCatalog.IsDerived))
+            .Select(c => (c.Key, Rows: c.Value.Where(r => sourceKeys.Contains(r.Definition.Key))
+                .ToDictionary(r => r.Definition.Key, Ord))).ToList();
+        foreach (var definition in derived)
         {
             var values = indexed.Select(c => (c.Key,
                 Row: c.Rows.GetValueOrDefault(definition.StoredKey))).ToList();
