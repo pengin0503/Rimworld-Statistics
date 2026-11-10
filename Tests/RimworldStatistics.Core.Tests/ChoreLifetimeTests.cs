@@ -21,11 +21,17 @@ public sealed class ChoreLifetimeTests
         ChoreFamily.FilthCleared(state);
         ChoreFamily.FireCleared(state);
         ChoreFamily.MealIngested(state);
+        ChoreFamily.CleanedWithinJob(state, "Job_001");
+        ChoreFamily.CleanedWithinJob(state, "Job_001");
+        ChoreFamily.CleanedWithinJob(state, "Job_002");
+        ChoreFamily.CleaningJobEnded(state, "Job_001", succeeded: true);
+        ChoreFamily.CleaningJobEnded(state, "Job_002", succeeded: false);
         ChoreFamily.HaulDeposited(state, 5);
         ChoreFamily.HaulDeposited(state, 3);
         ChoreFamily.HaulDeposited(state, 0);
         var obs = Save(acc, 200);
         Assert.Equal(2, Read(obs, ChoreFamily.FilthRemoved).IntegerValue);
+        Assert.Equal(1, Read(obs, ChoreFamily.CleaningJobsCompleted).IntegerValue);
         Assert.Equal(1, Read(obs, ChoreFamily.FiresExtinguished).IntegerValue);
         Assert.Equal(1, Read(obs, ChoreFamily.MealIngestions).IntegerValue);
         Assert.Equal(2, Read(obs, ChoreFamily.HaulPlacements).IntegerValue);
@@ -61,7 +67,7 @@ public sealed class ChoreLifetimeTests
         var unit = AcquisitionUnits.Find(ChoreFamily.Name)!;
         Assert.Equal(AcquisitionStatus.Unverified, unit.Status);
         Assert.Equal(AcquisitionKind.Family, unit.Kind);
-        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions, ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits })
+        foreach (var key in new[] { ChoreFamily.FilthRemoved, ChoreFamily.CleaningJobsCompleted, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions, ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits })
         {
             var def = MetricRegistry.Catalog.Single(x => x.Key == key);
             Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(def));

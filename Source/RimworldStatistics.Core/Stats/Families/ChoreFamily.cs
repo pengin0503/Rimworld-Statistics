@@ -9,11 +9,14 @@ public static class ChoreFamily
 {
     public const string Name = "chore";
     public const string FilthRemoved = "work.cleaning.filth_removed";
+    public const string CleaningJobsCompleted = "work.cleaning.jobs_completed";
     public const string FiresExtinguished = "work.fire.extinguished";
     public const string MealIngestions = "work.food.meal_ingestions";
     public const string HaulPlacements = "work.hauling.cell_deposits";
     public const string HauledUnits = "work.hauling.cell_deposited_units";
     private const string FilthKey = "filth";
+    private const string CleaningJobsKey = "clean_jobs";
+    private const string CleaningPendingKey = "clean_pending";
     private const string FireKey = "fire";
     private const string MealKey = "meal";
     private const string HaulPlacementsKey = "hauls";
@@ -22,6 +25,26 @@ public static class ChoreFamily
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
 
     public static void FilthCleared(FamilyState state) => state.Count(FilthKey);
+
+    /// <summary>One actual destroyed filth object in an active cleaning job.
+    /// Job.loadID is persisted by the game, and family.Active by the checkpoint.</summary>
+    public static void CleanedWithinJob(FamilyState state, string jobId)
+    {
+        if (!string.IsNullOrEmpty(jobId))
+            state.Track(CleaningPendingKey, jobId, 1);
+    }
+
+    /// <summary>Only a successfully ended job that cleaned at least one filth object.
+    /// Clearing a pending job after cancellation prevents an interrupted partial job
+    /// from being reported as a completed job.</summary>
+    public static void CleaningJobEnded(FamilyState state, string jobId, bool succeeded)
+    {
+        if (string.IsNullOrEmpty(jobId))
+            return;
+        var cleaned = state.Untrack(CleaningPendingKey, jobId);
+        if (succeeded && cleaned > 0)
+            state.Count(CleaningJobsKey);
+    }
     public static void FireCleared(FamilyState state) => state.Count(FireKey);
     public static void MealIngested(FamilyState state) => state.Count(MealKey);
 
@@ -35,6 +58,9 @@ public static class ChoreFamily
     private static void Build(FamilyOutputContext context)
     {
         context.Put(FilthRemoved, context.Value(integer: context.State.Peek(FilthKey)?.N ?? 0));
+        context.Put(CleaningJobsCompleted, context.Value(
+            integer: context.State.Peek(CleaningJobsKey)?.N ?? 0,
+            partial: context.State.TrackerOverflowed(CleaningPendingKey)));
         context.Put(FiresExtinguished, context.Value(integer: context.State.Peek(FireKey)?.N ?? 0));
         context.Put(MealIngestions, context.Value(integer: context.State.Peek(MealKey)?.N ?? 0));
         // Cell-storage drops only: container hauling and nonstandard MOD paths are not covered.

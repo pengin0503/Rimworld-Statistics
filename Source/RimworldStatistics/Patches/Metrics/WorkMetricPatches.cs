@@ -129,6 +129,25 @@ internal static class MealIngestedMetricPatch
 }
 
 /// <summary>Vanilla success records for sowing, removed filth, and extinguished fires.</summary>
+/// <summary>Job completion is recorded only after at least one successful removal.
+/// Pending positive work is keyed by persistent Job ID and discarded on cancellation.</summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Verse.AI.Pawn_JobTracker), nameof(Verse.AI.Pawn_JobTracker.EndCurrentJob))]
+internal static class CleanJobCompletedMetricPatch
+{
+    private static void Prefix(Verse.AI.Pawn_JobTracker __instance, Verse.AI.JobCondition condition)
+    {
+        var actor = __instance.pawn;
+        if (actor == null || !GameFacts.IsPlayer(actor) ||
+            __instance.curDriver is not JobDriver_CleanFilth ||
+            __instance.curJob is not { } job)
+            return;
+        string jobId = job.GetUniqueLoadID();
+        GameFacts.Record(ChoreFamily.Name, state =>
+            ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
+    }
+}
+
 [MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
 public static class PlantsSownMetricPatch
@@ -144,7 +163,12 @@ public static class PlantsSownMetricPatch
             return;
         if (def == RecordDefOf.MessesCleaned)
         {
-            GameFacts.Record(ChoreFamily.Name, ChoreFamily.FilthCleared);
+            GameFacts.Record(ChoreFamily.Name, state =>
+            {
+                ChoreFamily.FilthCleared(state);
+                if (actor.jobs?.curDriver is JobDriver_CleanFilth && actor.CurJob is { } job)
+                    ChoreFamily.CleanedWithinJob(state, job.GetUniqueLoadID());
+            });
             return;
         }
         if (def == RecordDefOf.FiresExtinguished)

@@ -860,4 +860,6 @@
   <RWS_MetricDesc_HaulPlacements>入植者のHaulToCellが指定セルに実際に品物を置けた回数です。拾い上げだけでは数えません。コンテナ運搬や別のMOD固有経路は対象外で、部分的な記録です。</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>保管セルに運んだ品目個数</RWS_Metric_HauledUnits>
   <RWS_MetricDesc_HauledUnits>HaulToCellで指定セルへの配置に成功した品目の個数を、運搬中スタックの減少量から記録します。コンテナ運搬などを除くため部分的な記録です。</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>清掃ジョブの完了回数</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>少なくとも1つの汚れを完全除去した入植者の清掃ジョブが、成功として終了した回数です。1ジョブで汚れを複数除去しても1回と数え、途中中断は除外します。</RWS_MetricDesc_CleaningJobsCompleted>
 </LanguageData>
