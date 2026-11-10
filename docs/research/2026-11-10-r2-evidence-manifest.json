@@ -147,5 +147,25 @@
     "Unknown or positive progress is never a proven ResearchProjectDef.IsFinished count.",
     "Map Pawns and Things are not exhaustive live player-owned state.",
     "No 55+ real-save or game TPS acceptance has been performed."
-  ]
+  ],
+  "productionRealSaveAcceptance": {
+    "runUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42830780995",
+    "rwmtMainSha": "d2a80116b0e8b1c43a8a1c4a9c8ac9da0e2f93cd",
+    "statisticsReaderPinSha": "91c2203e1f0c2800759f9d717f14a27b336e55fc",
+    "status": "passed",
+    "scope": "production .NET SaveReader.ReadDetailed of 49 legacy R2 originals, not game-side semantic verification",
+    "files": 49,
+    "originalsUnchanged": 49,
+    "errors": 0,
+    "checkpointCount": 0,
+    "exactBuildCountsMatched": true,
+    "readP50Milliseconds": 36.808,
+    "readP95Milliseconds": 125.85,
+    "managedAllocMedianBytes": 808696,
+    "individualStatusCounts": "not published in safe log; Ok+Unidentifiable=49",
+    "fullGameRuntimeVerified": false,
+    "gameTpsVerified": false,
+    "readOnlyR2": true,
+    "details": "docs/testing/2026-11-10-private-r2-49-original-net-acceptance.md"
+  }
 }
