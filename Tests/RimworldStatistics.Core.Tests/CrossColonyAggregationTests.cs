@@ -53,6 +53,15 @@ public sealed class CrossColonyAggregationTests
     [InlineData(WorkFamily.MealsByDef)]
     [InlineData(StockSnapshot.MaterialsLatest)]
     [InlineData(FacilitiesSnapshot.RunningGenerators)]
+    [InlineData(WorkFamily.ConstructionMaterials)]
+    [InlineData(RosterSnapshot.Passions)]
+    [InlineData(MentalFamily.BreaksByDef)]
+    [InlineData(HealthDeathFamily.KillsByVictimKind)]
+    [InlineData(RaidFamily.ByFaction)]
+    [InlineData(TradeFamily.Deals)]
+    [InlineData(MedicineFamily.Surgeries)]
+    [InlineData(IdeologyFamily.RitualResults)]
+    [InlineData(BiotechFamily.ChildStages)]
     public void TopItem_UsesExistingDefBreakdowns(string key)
     {
         var row = Derived(CrossColonyCatalog.TopPrefix + key,
@@ -198,4 +207,29 @@ public sealed class CrossColonyAggregationTests
             Assert.Equal(MetricRegistry.Find(derived.StoredKey)!.Acquisition, derived.Acquisition);
         });
     }
+    [Fact]
+    public void PassionTotals_AreAggregatedAcrossColonies_WithoutChangingIndividualOnlySource()
+    {
+        var sum = Derived(CrossColonyCatalog.SumPrefix + RosterSnapshot.Passions,
+            ("a", new[] { Record(RosterSnapshot.Passions, 5) }),
+            ("b", new[] { Record(RosterSnapshot.Passions, 7) }),
+            ("missing", new[] { Record(RosterSnapshot.Passions, null, MetricCoverage.Unknown) }));
+        Assert.Equal(12d, sum.Value.Number);
+        Assert.Equal((3, 2, MetricCoverage.Partial), (sum.Targets, sum.Valid, sum.Value.Coverage));
+        Assert.Equal(OverallAggregation.IndividualOnly,
+            MetricRegistry.Find(RosterSnapshot.Passions)!.Overall);
+    }
+
+    [Fact]
+    public void CategoryRanking_UsesCountsByCategory_NotSingleColonyLeader()
+    {
+        var top = Derived(CrossColonyCatalog.TopPrefix + RosterSnapshot.Passions,
+            ("a", new[] { Record(RosterSnapshot.Passions, 11, MetricCoverage.SnapshotOnly,
+                ("Shooting:Major", 8), ("Crafting:Minor", 3)) }),
+            ("b", new[] { Record(RosterSnapshot.Passions, 12, MetricCoverage.SnapshotOnly,
+                ("Shooting:Major", 2), ("Crafting:Minor", 10)) }));
+        Assert.Equal(13d, top.Value.Number);
+        Assert.Equal("Crafting:Minor", top.Value.Label);
+    }
+
 }
