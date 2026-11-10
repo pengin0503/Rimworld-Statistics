@@ -98,6 +98,19 @@ public static class MetricDisplayPolicy
     public static bool IsLifetimePrimaryRow(MetricDefinition definition)
         => IsLifetimeCumulative(definition) && !LifetimeBreakdownAliases.Contains(definition.Key);
 
+    /// <summary>A captured numeric reading, including an observed zero. Missing,
+    /// non-applicable and non-finite values never qualify for the optional UI filter.</summary>
+    public static bool HasMeasuredNumber(NumericRow row)
+        => row.Value.Number is { } n && double.IsFinite(n)
+            && row.Value.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+
+    /// <summary>A cross-colony top-category output with no ranked winner is
+    /// not a time or wealth threshold that a colony has failed to reach.</summary>
+    public static bool IsUnrankedTop(MetricDefinition definition, NumericValue value)
+        => CrossColonyCatalog.IsDerived(definition)
+            && definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
+            && value.NotReached;
+
     /// <summary>Return a localization key only for a breakdown of this parent.
     /// Shared tokens such as "other" and "success" are not globally meaningful.</summary>
     public static string? BreakdownLabelKey(MetricDefinition definition, string key)
