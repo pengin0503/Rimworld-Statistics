@@ -115,7 +115,8 @@ public static class CrossColonyAggregator
             if (row?.Value.Coverage == MetricCoverage.NotApplicable)
                 continue;
             targets++;
-            if (row?.Value.Number is not { } parent || !double.IsFinite(parent) || parent < 0)
+            if (row?.Value.Number is not { } parent || !double.IsFinite(parent) || parent < 0
+                || row.Value.Coverage == MetricCoverage.Unknown)
             {
                 partial = true;
                 continue;
@@ -140,8 +141,13 @@ public static class CrossColonyAggregator
                     partial = true;
                     continue;
                 }
+                if (child.Value.Coverage is MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+                {
+                    partial = true;
+                    continue;
+                }
                 counted += quantity;
-                if (child.Value.Coverage is MetricCoverage.Unknown or MetricCoverage.Partial or MetricCoverage.NotApplicable)
+                if (child.Value.Coverage == MetricCoverage.Partial)
                     partial = true;
                 if (child.Breakdown == MetricKeys.UnknownBucket)
                 {
@@ -151,7 +157,13 @@ public static class CrossColonyAggregator
                 }
                 if (quantity <= 0)
                     continue;
-                totals[child.Breakdown] = totals.GetValueOrDefault(child.Breakdown) + quantity;
+                var total = totals.GetValueOrDefault(child.Breakdown) + quantity;
+                if (!double.IsFinite(total))
+                {
+                    partial = true;
+                    continue;
+                }
+                totals[child.Breakdown] = total;
                 if (!contributors.TryGetValue(child.Breakdown, out var list))
                     contributors[child.Breakdown] = list = new List<(string Colony, NumericValue Value)>();
                 list.Add((colony, child.Value));
