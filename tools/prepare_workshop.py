@@ -34,10 +34,13 @@ def verify_sha(zip_path: Path, sha_file: Path) -> None:
         raise ValueError("Release ZIP SHA256 mismatch")
 
 
-def stage(zip_path: Path, preview: Path, out: Path, version: str) -> Path:
+def stage(zip_path: Path, preview: Path, out: Path, version: str, license_path: Path) -> Path:
     if out.exists() or out.is_symlink():
         raise ValueError("Output folder must not exist (prevent stale files)")
     check_preview(preview)
+    license_text = license_path.read_text(encoding="utf-8")
+    if not license_text.startswith("MIT License\n") or "Copyright (c) 2026 pengin0503" not in license_text:
+        raise ValueError("MIT license/copyright text is missing")
     with zipfile.ZipFile(zip_path) as z:
         entries = [entry for entry in z.infolist() if not entry.is_dir()]
         names = [entry.filename for entry in entries]
@@ -71,6 +74,7 @@ def stage(zip_path: Path, preview: Path, out: Path, version: str) -> Path:
             with z.open(entry) as src, dest.open("wb") as dst:
                 shutil.copyfileobj(src, dst)
         shutil.copyfile(preview, mod / "About/Preview.png")
+        shutil.copyfile(license_path, mod / "LICENSE")
     return mod
 
 
@@ -103,12 +107,13 @@ def main() -> None:
     p.add_argument("--zip", type=Path, required=True)
     p.add_argument("--sha256", type=Path, required=True)
     p.add_argument("--preview", type=Path, required=True)
+    p.add_argument("--license", type=Path, required=True)
     p.add_argument("--out", type=Path, required=True)
     p.add_argument("--version", default="1.3.0")
     p.add_argument("--published-file-id", default="0")
     a = p.parse_args()
     verify_sha(a.zip, a.sha256)
-    mod = stage(a.zip, a.preview, a.out, a.version)
+    mod = stage(a.zip, a.preview, a.out, a.version, a.license)
     write_vdf(mod, a.out / "workshop.vdf", a.published_file_id)
     print(f"WORKSHOP_PREP_OK app={APP_ID} version={a.version} ID={a.published_file_id} visibility=private")
     print(f"MOD_ROOT={mod}")
