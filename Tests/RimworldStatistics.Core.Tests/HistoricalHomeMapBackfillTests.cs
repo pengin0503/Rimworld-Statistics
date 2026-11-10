@@ -138,6 +138,79 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.DoesNotContain(FacilitiesSnapshot.HomeMapsPeak, overlong.Metrics!.Metrics.Keys);
     }
 
+    private static XElement Turret(string id, string faction = "Faction_14", string className = "Building_TurretGun")
+        => new("thing", new XAttribute("Class", className),
+            new XElement("def", "Turret_Mortar"),
+            new XElement("id", id), new XElement("faction", faction),
+            new XElement("map", "0"), new XElement("pos", "(1, 0, 2)"));
+
+    private static XElement TurretMap(int mapId, string parent, params XElement[] things)
+    {
+        var map = Map(mapId, parent);
+        map.Element("things")!.ReplaceNodes(things);
+        return map;
+    }
+
+    [Fact]
+    public void OnlyExplicitPlayerOwnedTurretsOnVerifiedHomeMap_CountAsPartialSnapshot()
+    {
+        // In actual 1.7 R2 game type index Building_TurretGun inherits Building_Turret.
+        var bytes = Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                Turret("Thing_Turret1"), Turret("Thing_Turret2"),
+                Turret("Thing_Turret2"), // duplicate thing ID never double-counts
+                Turret("Thing_Hostile", faction: "Faction_77"),
+                Turret("Thing_UnknownMod", className: "SomeMod.Turret"),
+                new XElement("thing", new XAttribute("Class", "Medicine"), new XElement("id", "Med1"))),
+            TurretMap(1, "WorldObject_43", Turret("Thing_SiteTurret"))
+        }, worldObjects: new[] { WorldObject(42), WorldObject(43, def: "Site") });
+        var original = bytes.ToArray();
+        var r = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.Equal(original, bytes);
+        var value = r.Metrics!.Metrics[FacilitiesSnapshot.TurretsPeak].Values[MetricEntry.Scalar];
+        Assert.Equal(2L, value.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["facilities"]);
+        Assert.DoesNotContain(FacilitiesSnapshot.MedicalBedsPeak, r.Metrics.Metrics.Keys);
+        Assert.DoesNotContain(FacilitiesSnapshot.RunningGenerators, r.Metrics.Metrics.Keys);
+    }
+
+    [Fact]
+    public void TurretsWithoutProvenOwnerOrHomeRemainAbsentRatherThanZero()
+    {
+        var hostile = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42", Turret("Thing_Turret1", "Faction_77"))
+        }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, hostile.Metrics!.Metrics.Keys);
+
+        var site = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", Turret("Thing_Turret1"))
+        }, worldObjects: new[] { WorldObject(43, def: "Site") }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, site.Metrics!.Metrics.Keys);
+
+        var unknownVersion = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42", Turret("Thing_Turret1"))
+        }, version: "1.6.4566 rev607"));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, unknownVersion.Metrics!.Metrics.Keys);
+
+        var empty = Read(Save(maps: new[] { TurretMap(0, "WorldObject_42") }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, empty.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void MalformedTurrets_DoNotAuthorizeAnInventedPositiveCount()
+    {
+        var save = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                Turret("", "Faction_14"),
+                Turret("Thing_Turret2", "Faction_77"),
+                Turret("Thing_Turret3", "", "Building_TurretGun"))
+        }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, save.Metrics!.Metrics.Keys);
+        Assert.Contains(FacilitiesSnapshot.HomeMapsPeak, save.Metrics.Metrics.Keys);
+    }
+
     [Fact]
     public void ReaderUpgrade_ReimportsOnceAndLeavesOriginalUnmodified()
     {
