@@ -54,6 +54,23 @@ public sealed class NumericSnapshotRosterTests
     }
 
     [Fact]
+    public void SlaveStatusHasIndependentLiveSnapshotCountAndCannotBeDoubleCounted()
+    {
+        Assert.True(Enum.TryParse<RosterKind>("Slave", out var slave));
+        var r = RosterSnapshot.Build(new[] {
+            new RosterPawnFact { Id = "S1", Kind = slave },
+            new RosterPawnFact { Id = "S1", Kind = slave },
+            new RosterPawnFact { Id = "F1", Kind = RosterKind.FreeColonist, AgeYears = 20 },
+            new RosterPawnFact { Id = "P1", Kind = RosterKind.Prisoner },
+        });
+        Assert.Equal(1, r["population.snapshot.slaves"].Values[""].IntegerValue);
+        Assert.Equal(1, r[RosterSnapshot.Free].Values[""].IntegerValue);
+        Assert.Equal(1, r[RosterSnapshot.Prisoners].Values[""].IntegerValue);
+        Assert.NotNull(MetricRegistry.Find("population.snapshot.slaves"));
+        Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
+    }
+
+    [Fact]
     public void CatalogRetainsPeakSelectionWithoutPublishing()
     {
         Assert.Equal(ColonySelection.ObservationMax, MetricRegistry.Find(RosterSnapshot.InjuredPeak)!.Selection);
