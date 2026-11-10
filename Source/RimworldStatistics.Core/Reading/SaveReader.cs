@@ -140,6 +140,8 @@ public sealed class SaveReader
         public bool HistoricalTurretsOverflowed { get; set; }
         public List<SavedMapStockItem> HistoricalStock { get; } = new();
         public bool HistoricalStockOverflowed { get; set; }
+        public List<SavedMapPawn> HistoricalPawns { get; } = new();
+        public bool HistoricalPawnsOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
@@ -341,6 +343,7 @@ public sealed class SaveReader
             var mapInfoSeen = false;
             var onMapTurrets = new List<(string? Id, string? Faction, bool Valid)>();
             var onMapStock = new List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)>();
+            var onMapPawns = new List<SavedMapPawn>();
             ForEachChild(r, child =>
             {
                 switch (child)
@@ -354,7 +357,7 @@ public sealed class SaveReader
                             id = parsedId;
                         break;
                     case "things":
-                        ReadSavedMapThings(r, s, onMapTurrets, onMapStock);
+                        ReadSavedMapThings(r, s, onMapTurrets, onMapStock, onMapPawns);
                         break;
                     case "mapInfo":
                         if (mapInfoSeen) valid = false;
@@ -387,6 +390,8 @@ public sealed class SaveReader
             foreach (var stockItem in onMapStock)
                 s.HistoricalStock.Add(new SavedMapStockItem(id, stockItem.Id, stockItem.Def, stockItem.Count,
                     stockItem.Faction, stockItem.Forbidden, valid && stockItem.Valid));
+            foreach (var savedPawn in onMapPawns)
+                s.HistoricalPawns.Add(savedPawn with { MapId = id, Valid = valid && savedPawn.Valid });
         });
     }
 
@@ -397,12 +402,24 @@ public sealed class SaveReader
     /// </summary>
     private static void ReadSavedMapThings(XmlReader r, ReadState s,
         List<(string? Id, string? Faction, bool Valid)> turrets,
-        List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)> stock)
+        List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)> stock,
+        List<SavedMapPawn> pawns)
     {
         ForEachChild(r, node =>
         {
             if (node != "thing") { r.Skip(); return; }
             var className = r.GetAttribute("Class");
+            if (className == "Pawn")
+            {
+                if (s.HistoricalPawns.Count + pawns.Count >= HistoricalHomeMapReader.MaxSavedPawns)
+                {
+                    s.HistoricalPawnsOverflowed = true;
+                    r.Skip();
+                }
+                else
+                    pawns.Add(ReadSavedPawn(r));
+                return;
+            }
             var isTurret = className is "Building_TurretGun" or "Building_Turret";
             var stockCandidate = className is "ThingWithComps" or "Medicine";
             if (!isTurret && !stockCandidate) { r.Skip(); return; }
@@ -483,6 +500,97 @@ public sealed class SaveReader
                 valid && !string.IsNullOrWhiteSpace(id)
                 && count > 0 && count <= HistoricalHomeMapReader.MaxTrustedStockStack));
         });
+    }
+
+    /// <summary>
+    /// Read only top-level saved Pawn identity/guest/health state from one map.
+    /// The 1.7 game Pawn_GuestTracker uses guestStatusInt, not joinStatus,
+    /// for IsPrisoner/IsSlave. All other pawn data are streamed over, not held.
+    /// Missing guestStatus represents the game's default Guest state only
+    /// when guest tracker and hostFaction fields are explicitly present.
+    /// </summary>
+    private static SavedMapPawn ReadSavedPawn(XmlReader r)
+    {
+        string? id = null, race = null, kind = null, faction = null, host = null, status = null;
+        var valid = true;
+        var idSeen = false;
+        var raceSeen = false;
+        var kindSeen = false;
+        var factionSeen = false;
+        var guestSeen = false;
+        var hostSeen = false;
+        var statusSeen = false;
+        var healthSeen = false;
+        var dead = false;
+        ForEachChild(r, field =>
+        {
+            switch (field)
+            {
+                case "id":
+                    var idText = ReadHistoricalAtom(r);
+                    if (idSeen || string.IsNullOrWhiteSpace(idText)) valid = false;
+                    idSeen = true;
+                    id = idText;
+                    break;
+                case "def":
+                    var raceText = ReadHistoricalAtom(r);
+                    if (raceSeen || string.IsNullOrWhiteSpace(raceText)) valid = false;
+                    raceSeen = true;
+                    race = raceText;
+                    break;
+                case "kindDef":
+                    var kindText = ReadHistoricalAtom(r);
+                    if (kindSeen || string.IsNullOrWhiteSpace(kindText)) valid = false;
+                    kindSeen = true;
+                    kind = kindText;
+                    break;
+                case "faction":
+                    var factionText = ReadHistoricalAtom(r);
+                    if (factionSeen || string.IsNullOrWhiteSpace(factionText)) valid = false;
+                    factionSeen = true;
+                    faction = factionText is "null" ? null : factionText;
+                    break;
+                case "guest":
+                    if (guestSeen) { valid = false; r.Skip(); break; }
+                    guestSeen = true;
+                    ForEachChild(r, guestField =>
+                    {
+                        switch (guestField)
+                        {
+                            case "hostFaction":
+                                var hostText = ReadHistoricalAtom(r);
+                                if (hostSeen || hostText is null || string.IsNullOrWhiteSpace(hostText))
+                                    valid = false;
+                                hostSeen = true;
+                                host = hostText is "null" ? null : hostText;
+                                break;
+                            case "guestStatus":
+                                var statusText = ReadHistoricalAtom(r);
+                                if (statusSeen || statusText is not ("Guest" or "Prisoner" or "Slave"))
+                                    valid = false;
+                                statusSeen = true;
+                                status = statusText;
+                                break;
+                            default: r.Skip(); break;
+                        }
+                    });
+                    break;
+                case "healthTracker":
+                    if (healthSeen) { valid = false; r.Skip(); break; }
+                    healthSeen = true;
+                    ForEachChild(r, healthField =>
+                    {
+                        if (healthField != "dead") { r.Skip(); return; }
+                        var deadText = ReadHistoricalAtom(r);
+                        if (!bool.TryParse(deadText, out var explicitDead)) valid = false;
+                        else dead |= explicitDead;
+                    });
+                    break;
+                default: r.Skip(); break;
+            }
+        });
+        return new SavedMapPawn(null, id, race, kind, faction, host, status,
+            guestSeen, hostSeen, healthSeen, dead, valid && idSeen && raceSeen);
     }
 
     /// <summary>Only world object IDs, Defs and owning-faction references are retained.</summary>
@@ -1027,7 +1135,8 @@ public sealed class SaveReader
                 s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed,
                 s.HistoricalFactionsOverflowed,
                 s.HistoricalTurrets, s.HistoricalTurretsOverflowed,
-                s.HistoricalStock, s.HistoricalStockOverflowed) is { } homes)
+                s.HistoricalStock, s.HistoricalStockOverflowed,
+                s.HistoricalPawns, s.HistoricalPawnsOverflowed) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;
@@ -1035,6 +1144,9 @@ public sealed class SaveReader
             m.EvidenceByAcquisition["facilities"] = MetricEvidence.Experimental;
             if (homes.ContainsKey(StockSnapshot.SilverLatest) || homes.ContainsKey(StockSnapshot.MedicinePeak))
                 m.EvidenceByAcquisition["stock"] = MetricEvidence.Experimental;
+            if (homes.ContainsKey(RosterSnapshot.Free) || homes.ContainsKey(RosterSnapshot.Prisoners)
+                || homes.ContainsKey(RosterSnapshot.Slaves))
+                m.EvidenceByAcquisition["roster"] = MetricEvidence.Experimental;
         }
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,
