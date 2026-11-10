@@ -174,7 +174,8 @@ internal static class SlaughterProvenanceMetric
             animal.Corpse is not { Destroyed: false } corpse)
             return;
         var corpseId = GameFacts.Id(corpse);
-        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId));
+        var tick = GameFacts.Tick;
+        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId, tick));
     }
 }
 
@@ -209,6 +210,41 @@ internal static class SlaughteredButcheryMetricPatch
             foreach (var corpseId in uniqueCorpses)
                 ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
         });
+    }
+}
+
+/// <summary>
+/// A non-butchered corpse can decay, burn or be destroyed by another job.
+/// The destruction is recorded as pending; the butcher bill's completed
+/// notification can consume its marker later in the same tick.
+/// Only installed for the optional chore acquisition unit. Patch the
+/// Corpse override rather than the base Thing.Destroy shared by all objects.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch(typeof(Corpse), nameof(Corpse.Destroy))]
+internal static class SlaughteredCorpseDestroyedMetricPatch
+{
+    private static void Prefix(Corpse __instance, out string? __state)
+    {
+        __state = null;
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+            return;
+        try
+        {
+            __state = GameFacts.Id(__instance);
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
+    }
+
+    private static void Postfix(Corpse __instance, string? __state)
+    {
+        if (__state is null || !__instance.Destroyed)
+            return;
+        var tick = GameFacts.Tick;
+        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.CorpseDestroyed(state, __state, tick));
     }
 }
 

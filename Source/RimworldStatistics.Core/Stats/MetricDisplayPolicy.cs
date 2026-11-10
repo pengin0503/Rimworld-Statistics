@@ -66,6 +66,21 @@ public static class MetricDisplayPolicy
         MedicineFamily.Addictions, MedicineFamily.Overdoses, MedicineFamily.Withdrawals,
         MedicineFamily.PartsLost, MedicineFamily.Scars, MedicineFamily.WildAnimalInjuries,
         DisasterFamily.SolarFlares, DisasterFamily.ColdSnaps, DisasterFamily.HeatWaves,
+        DisasterFamily.VolcanicWinters, DisasterFamily.Eclipses,
+        DisasterFamily.CropBlights, DisasterFamily.Meteors, DisasterFamily.ShortCircuits,
+        DisasterFamily.Fires, DisasterFamily.BuildingsBurned,
+        DisasterFamily.ToxicFalloutDays, DisasterFamily.SolarFlareDays,
+        CaravanFamily.Departures, CaravanFamily.Lost_, CaravanFamily.TilesTravelled,
+        CaravanFamily.UniqueTiles, CaravanFamily.Ambushes, CaravanFamily.SitesCleared,
+        CaravanFamily.SettlementsFounded, CaravanFamily.SettlementsAbandoned,
+        CaravanFamily.AncientDangersOpened,
+        HealthDeathFamily.KillsByVictimKind, HealthDeathFamily.DeathCauses,
+        HealthDeathFamily.DeathsByRaid, RaidFamily.ByArrivalMode, RaidFamily.ByFaction,
+        MembershipFamily.Routes, MembershipFamily.Unique,
+        WorkFamily.QualityBreakdown, WorkFamily.Legendary, WorkFamily.Masterwork,
+        WorkFamily.Sculptures, WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs,
+        WorkFamily.HarvestByCrop, WorkFamily.SownDefs, WorkFamily.ConstructionMaterials,
+        TradeFamily.SoldDefs, TradeFamily.BoughtDefs, TradeFamily.PartnerFactionDefs,
     };
 
     /// <summary>A monotone event accumulation along one recorded checkpoint lineage, not
@@ -82,6 +97,40 @@ public static class MetricDisplayPolicy
 
     public static bool IsLifetimePrimaryRow(MetricDefinition definition)
         => IsLifetimeCumulative(definition) && !LifetimeBreakdownAliases.Contains(definition.Key);
+
+    /// <summary>Return a localization key only for a breakdown of this parent.
+    /// Shared tokens such as "other" and "success" are not globally meaningful.</summary>
+    public static string? BreakdownLabelKey(MetricDefinition definition, string key)
+    {
+        if (key == MetricKeys.UnknownBucket)
+            return "RWS_Details_UnknownBucket";
+        if (definition.Key == MedicineFamily.Surgeries)
+            return key switch
+            {
+                "success" => "RWS_Details_SurgerySuccess",
+                "failure" => "RWS_Details_SurgeryFailure",
+                _ => null,
+            };
+        if (definition.Key == TradeFamily.Deals)
+            return key switch
+            {
+                TradeFamily.Orbital => "RWS_Details_TradeKindOrbital",
+                TradeFamily.VisitingCaravan => "RWS_Details_TradeKindCaravan",
+                TradeFamily.Settlement => "RWS_Details_TradeKindSettlement",
+                TradeFamily.OtherTrader => "RWS_Details_TradeKindOther",
+                _ => null,
+            };
+        if (key == MembershipFamily.RouteOther)
+            return "RWS_Details_Other";
+        if (definition.Key is MetricRankings.ByPermadeathDays or MetricRankings.ByPermadeathEndings)
+            return key switch
+            {
+                MetricRankings.PermadeathOn => "RWS_Details_Permadeath",
+                MetricRankings.PermadeathOff => "RWS_Details_NotPermadeath",
+                _ => null,
+            };
+        return null;
+    }
 
     public static IReadOnlyList<MetricDefinition> SelectDefinitions(
         IReadOnlyCollection<MetricDefinition> catalog, IReadOnlySet<string> visibleUnitIds)

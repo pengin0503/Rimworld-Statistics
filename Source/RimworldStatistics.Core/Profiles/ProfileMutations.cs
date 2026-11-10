@@ -381,7 +381,22 @@ public static class ProfileMutations
                 continue;
             if (!existing.Metrics.TryGetValue(key, out var old) || old.IsQuarantined || entry.Revision > old.Revision
                 || (entry.Revision == old.Revision && Quality(entry) > Quality(old)))
+            {
                 existing.Metrics[key] = entry;
+            }
+            else if (existing.Source == MetricObservationSource.Checkpoint && entry.Revision == old.Revision
+                && old.Values.TryGetValue(MetricEntry.Scalar, out var previous)
+                && entry.Values.TryGetValue(MetricEntry.Scalar, out var incoming)
+                // Re-decoding the same immutable checkpoint may reveal new breakdown
+                // evidence. Do not combine children if the parent scalar changed.
+                && previous.Coverage == incoming.Coverage
+                && previous.IntegerValue == incoming.IntegerValue && previous.RealValue == incoming.RealValue
+                && previous.Numerator == incoming.Numerator && previous.Denominator == incoming.Denominator)
+            {
+                foreach (var (child, value) in entry.Values)
+                    if (child != MetricEntry.Scalar && !old.Values.ContainsKey(child))
+                        old.Values.Add(child, value);
+            }
         }
     }
 

@@ -133,4 +133,66 @@ public sealed class ChoreLifetimeTests
             Assert.Equal(OverallAggregation.Sum, def.Overall);
         }
     }
+
+    [Fact]
+    public void DestroyedCorpse_IsReleasedAfterRecipeTickWithoutLosingLegitimateButchery()
+    {
+        var acc = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var state = acc.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(state, "processed", 100);
+        ChoreFamily.CorpseDestroyed(state, "processed", 101);
+        // Vanilla consumes ingredients before notifying the completed butcher bill in this same tick.
+        ChoreFamily.PruneDestroyedCorpses(state, 101);
+        ChoreFamily.CorpseConsumed(state, "processed", true);
+        ChoreFamily.PruneDestroyedCorpses(state, 102);
+
+        ChoreFamily.MarkSlaughteredCorpse(state, "rotted", 110);
+        ChoreFamily.CorpseDestroyed(state, "rotted", 120);
+        ChoreFamily.PruneDestroyedCorpses(state, 121);
+        Assert.Null(state.Tracked("slaughter_corpses", "rotted"));
+        ChoreFamily.CorpseConsumed(state, "rotted", true);
+
+        for (int i = 0; i < FamilyOps.KeyCap + 20; i++)
+        {
+            string id = "decayed_" + i;
+            int tick = 130 + i * 2;
+            ChoreFamily.MarkSlaughteredCorpse(state, id, tick);
+            ChoreFamily.CorpseDestroyed(state, id, tick);
+            ChoreFamily.PruneDestroyedCorpses(state, tick + 1);
+        }
+        Assert.False(state.TrackerOverflowed("slaughter_corpses"));
+        Assert.Empty(state.Active);
+        var observed = Save(acc, 10000);
+        Assert.Equal(1L, Read(observed, ChoreFamily.SlaughteredButchery).IntegerValue);
+    }
+
+
+    [Fact]
+    public void PendingDestroyedCorpseMarker_SurvivesReloadUntilNextTick()
+    {
+        var acc = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var state = acc.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(state, "pending", 50);
+        ChoreFamily.CorpseDestroyed(state, "pending", 100);
+        var draft = acc.PrepareSave(100, T0, "destroyed-just-before-save")!;
+        acc.Commit(draft);
+
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, new[] { ChoreFamily.Family.Spec }, 100);
+        var loaded = resumed.Family(ChoreFamily.Name)!;
+        Assert.NotNull(loaded.Tracked("slaughter_corpses", "pending"));
+        ChoreFamily.CorpseConsumed(loaded, "pending", butcherFleshRecipe: true);
+        ChoreFamily.PruneDestroyedCorpses(loaded, 101);
+        Assert.Empty(loaded.Active);
+        Assert.Equal(1L, Read(Save(resumed, 101), ChoreFamily.SlaughteredButchery).IntegerValue);
+
+        var second = LiveMetricAccumulator.StartNew(new[] { ChoreFamily.Family.Spec }, 0);
+        var target = second.Family(ChoreFamily.Name)!;
+        ChoreFamily.MarkSlaughteredCorpse(target, "unprocessed", 100);
+        ChoreFamily.CorpseDestroyed(target, "unprocessed", 100);
+        var snap = second.PrepareSave(100, T0, "destroyed-not-butchered")!;
+        var later = LiveMetricAccumulator.Resume(snap.Json, new[] { ChoreFamily.Family.Spec }, 100);
+        ChoreFamily.PruneDestroyedCorpses(later.Family(ChoreFamily.Name)!, 101);
+        Assert.Empty(later.Family(ChoreFamily.Name)!.Active);
+    }
+
 }

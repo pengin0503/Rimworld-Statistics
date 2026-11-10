@@ -25,6 +25,7 @@ public static class ChoreFamily
     private const string HaulUnitsKey = "haul_units";
     private const string WoodKey = "wood_placed";
     private const string SlaughteredCorpseKey = "slaughter_corpses";
+    private const string DestroyedCorpseKey = "destroyed_slaughter_corpses";
     private const string ButcheredKey = "butcher_after_slaughter";
 
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
@@ -59,11 +60,35 @@ public static class ChoreFamily
         if (placedWoodUnits > 0) state.Count(WoodKey, placedWoodUnits);
     }
 
-    /// <summary>Only corpses created by successful, player-operated slaughter are eligible.</summary>
-    public static void MarkSlaughteredCorpse(FamilyState state, string corpseId)
+    /// <summary>Only corpses created by successful, player-operated slaughter are eligible.
+    /// Retire corpses destroyed on earlier ticks before allocating a new tracking key.</summary>
+    public static void MarkSlaughteredCorpse(FamilyState state, string corpseId, int tick = 0)
     {
-        if (!string.IsNullOrEmpty(corpseId))
-            state.Track(SlaughteredCorpseKey, corpseId, 1);
+        if (string.IsNullOrEmpty(corpseId)) return;
+        if (tick > 0)
+            PruneDestroyedCorpses(state, tick);
+        state.Track(SlaughteredCorpseKey, corpseId, 1);
+    }
+
+    /// <summary>The corpse was destroyed, but may still complete its butcher bill
+    /// later in the same tick. Defer removal so ingredient consumption can be counted.</summary>
+    public static void CorpseDestroyed(FamilyState state, string corpseId, int tick)
+    {
+        if (!string.IsNullOrEmpty(corpseId) && state.Tracked(SlaughteredCorpseKey, corpseId) is not null)
+            state.Track(DestroyedCorpseKey, corpseId, tick);
+    }
+
+    /// <summary>Release dead corpse markers after their possible bill completion tick.
+    /// At most KeyCap tracked keys are inspected, with no world or map scan.</summary>
+    public static void PruneDestroyedCorpses(FamilyState state, int tick)
+    {
+        if (!state.Active.TryGetValue(DestroyedCorpseKey, out var destroyed))
+            return;
+        foreach (var id in destroyed.Where(pair => pair.Value < tick).Select(pair => pair.Key).ToList())
+        {
+            state.Untrack(SlaughteredCorpseKey, id);
+            state.Untrack(DestroyedCorpseKey, id);
+        }
     }
 
     /// <summary>One successfully consumed tracked corpse, not a generic butcher bill or an animal death.
@@ -72,6 +97,7 @@ public static class ChoreFamily
     {
         if (string.IsNullOrEmpty(corpseId)) return;
         var formerlySlaughtered = state.Untrack(SlaughteredCorpseKey, corpseId);
+        state.Untrack(DestroyedCorpseKey, corpseId);
         if (butcherFleshRecipe && formerlySlaughtered > 0)
             state.Count(ButcheredKey);
     }

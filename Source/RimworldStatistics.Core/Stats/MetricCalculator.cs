@@ -426,13 +426,38 @@ public static class MetricCalculator
         return new NumericRow { Definition = d, Value = scalar.Value, Targets = scalar.Targets, Valid = scalar.Valid, Breakdowns = breakdowns };
     }
 
-    /// <summary>A colony whose entry exists but lacks this breakdown key has 0 of it (the breakdown lists every key it has).</summary>
+    // These event streams have an exhaustive per-kind split in the new decoder.
+    // Legacy scalars and overflowed child sets cannot prove a missing kind was zero.
+    private static readonly IReadOnlySet<string> ExhaustiveEventBreakdowns = new HashSet<string>(Ord)
+    {
+        TradeFamily.Deals, TradeFamily.SalesUnits, TradeFamily.BuysUnits,
+        WorkFamily.Sown_, MedicineFamily.Surgeries,
+    };
+
+    /// <summary>Absent breakdown keys imply zero only if the split covers the entire parent.</summary>
     private static NumericValue BreakdownValue(NumericRow row, string key)
     {
         var b = row.Breakdowns.FirstOrDefault(x => x.Breakdown == key);
         if (b is not null)
             return b.Value;
-        return row.Value.Number is null ? row.Value : new NumericValue
+        if (row.Value.Number is null)
+            return row.Value;
+
+        if (ExhaustiveEventBreakdowns.Contains(row.Definition.Key))
+        {
+            var complete = row.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly
+                && row.Breakdowns.All(child => child.Value.Number is not null
+                    && child.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly)
+                && Math.Abs(row.Breakdowns.Sum(child => child.Value.Number ?? 0) - row.Value.Number.Value) < 1e-6;
+            if (!complete)
+                return new NumericValue
+                {
+                    Coverage = MetricCoverage.Unknown, Evidence = row.Value.Evidence,
+                    SinceTick = row.Value.SinceTick, ThroughTick = row.Value.ThroughTick,
+                };
+        }
+
+        return new NumericValue
         {
             Number = 0, Coverage = row.Value.Coverage, Evidence = row.Value.Evidence,
             SinceTick = row.Value.SinceTick, ThroughTick = row.Value.ThroughTick,
