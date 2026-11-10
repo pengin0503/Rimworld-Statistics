@@ -271,13 +271,26 @@ public static class DetailsTab
         var result = new List<Line>();
         foreach (var (row, label) in ordered)
         {
-            var expandable = row.Definition.HasBreakdown && row.Breakdowns.Count > 0;
+            var crossTop = CrossColonyCatalog.IsDerived(row.Definition)
+                && row.Definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal);
+            var expandable = row.Breakdowns.Count > 0 && (row.Definition.HasBreakdown || crossTop);
             var expandKey = expandable ? (input.PerColony ? "c:" : "a:") + row.Definition.Key : null;
             result.Add(MakeLine(row, label, 0, expandKey, input, colony));
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
             foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
-                result.Add(MakeLine(b, BreakdownLabel(row.Definition, b.Breakdown), 1, null, input, colony));
+            {
+                var childKey = crossTop && b.Breakdowns.Count > 0 ? expandKey + ":" + b.Breakdown : null;
+                var sourceDef = crossTop ? MetricRegistry.Find(row.Definition.StoredKey) ?? row.Definition : row.Definition;
+                var breakdownLabel = crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType"
+                    ? ItemLabel(b.Breakdown)
+                    : BreakdownLabel(sourceDef, b.Breakdown);
+                result.Add(MakeLine(b, breakdownLabel, 1, childKey, input, colony));
+                if (childKey is not null && Expanded.Contains(childKey))
+                    foreach (var contribution in b.Breakdowns)
+                        result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
+                            2, null, input, colony));
+            }
         }
         return result;
     }
@@ -321,6 +334,24 @@ public static class DetailsTab
         else
         {
             tip.Append((string)"RWS_Details_Tip_Colonies".Translate(row.Targets, row.Valid)).Append('\n');
+            if (depth == 0)
+            {
+                var stateOfCapture = MetricAvailabilityPolicy.Classify(row) switch
+                {
+                    MetricAvailability.NoApplicableColonies => "RWS_Details_AvailabilityNone".Translate(),
+                    MetricAvailability.NoMeasuredColonies => "RWS_Details_AvailabilityMissing".Translate(),
+                    MetricAvailability.SomeMeasuredColonies => "RWS_Details_AvailabilitySome".Translate(),
+                    _ => "RWS_Details_AvailabilityAll".Translate(),
+                };
+                tip.Append(stateOfCapture).Append('\n');
+                if (MetricAvailabilityPolicy.IsPeriodIncomplete(row))
+                    tip.Append((string)"RWS_Details_AvailabilityPartialPeriod".Translate()).Append('\n');
+            }
+            if (depth == 1 && CrossColonyCatalog.IsDerived(d)
+                && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal))
+                tip.Append((string)"RWS_Cross_RankedTypeExplanation".Translate()).Append('\n');
+            if (depth == 2 && CrossColonyCatalog.IsDerived(d))
+                tip.Append((string)"RWS_Cross_ContributionExplanation".Translate()).Append('\n');
             if (v.ColonyKey is { } holder)
                 tip.Append((string)"RWS_Details_Tip_Holder".Translate(Name(input.Stats, holder))).Append('\n');
             if (v.HolderKeys is { Count: > 1 } tied)
