@@ -27,6 +27,8 @@ public static class CrossColonyAggregator
                 Row: c.Rows.GetValueOrDefault(definition.StoredKey))).ToList();
             if (definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal))
                 yield return TopType(definition, values);
+            else if (definition.Key.StartsWith(CrossColonyCatalog.SumPrefix, StringComparison.Ordinal))
+                yield return Sum(definition, values);
             else
                 yield return Extreme(definition, values,
                     definition.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal));
@@ -42,6 +44,26 @@ public static class CrossColonyAggregator
             return MetricCoverage.Partial;
         return coverages.Contains(MetricCoverage.SnapshotOnly)
             ? MetricCoverage.SnapshotOnly : MetricCoverage.Complete;
+    }
+
+    /// <summary>Explicitly additive individual-only snapshot: one observation per colony.</summary>
+    private static NumericRow Sum(MetricDefinition definition, List<(string Key, NumericRow? Row)> colonies)
+    {
+        var applicable = colonies.Where(c => c.Row?.Value.Coverage != MetricCoverage.NotApplicable).ToList();
+        var measured = applicable.Where(c => c.Row?.Value.Number is { } n && double.IsFinite(n))
+            .Select(c => c.Row!.Value).ToList();
+        if (measured.Count == 0)
+            return Empty(definition, applicable.Count, colonies.Count);
+        return new NumericRow
+        {
+            Definition = definition, Targets = applicable.Count, Valid = measured.Count,
+            Value = new NumericValue
+            {
+                Number = measured.Sum(v => v.Number!.Value),
+                Coverage = Coverage(measured.Select(v => v.Coverage), measured.Count < applicable.Count),
+                Evidence = MetricEvidencePolicy.Combine(measured.Select(v => v.Evidence)),
+            },
+        };
     }
 
     private static NumericRow Extreme(MetricDefinition definition,
