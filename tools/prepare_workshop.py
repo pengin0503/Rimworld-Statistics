@@ -74,7 +74,8 @@ def verify_sha(zip_path: Path, sha_file: Path) -> None:
             entries[0][1].lstrip("*") != zip_path.name or
             re.fullmatch(r"[0-9a-fA-F]{64}", entries[0][0]) is None):
         raise ValueError("Checksum file does not describe the selected release ZIP")
-    digest = hashlib.file_digest(zip_path.open("rb"), "sha256").hexdigest()
+    with zip_path.open("rb") as source:
+        digest = hashlib.file_digest(source, "sha256").hexdigest()
     if digest.lower() != entries[0][0].lower():
         raise ValueError("Release ZIP SHA256 mismatch")
 
