@@ -110,6 +110,8 @@ public static class CrossColonyAggregator
         var targets = 0;
         var valid = 0;
         var partial = false;
+        var modCohorts = new HashSet<string>(Ord);
+        var missingModFingerprint = false;
         foreach (var (colony, row) in colonies)
         {
             if (row?.Value.Coverage == MetricCoverage.NotApplicable)
@@ -123,6 +125,10 @@ public static class CrossColonyAggregator
             }
 
             valid++;
+            if (string.IsNullOrWhiteSpace(row.Value.ModSetHash))
+                missingModFingerprint = true;
+            else
+                modCohorts.Add(row.Value.ModSetHash);
             evidence.Add(row.Value.Evidence);
             coverage.Add(row.Value.Coverage);
             var counted = 0d;
@@ -174,6 +180,11 @@ public static class CrossColonyAggregator
                 partial = true;
         }
 
+        // A DefName alone does not prove identical meaning under different
+        // MOD inventories. Retain captured quantity as an explicitly partial
+        // cross-MOD comparison instead of asserting a complete leaderboard.
+        if (modCohorts.Count > 1 || (modCohorts.Count > 0 && missingModFingerprint))
+            partial = true;
         var overallCoverage = Coverage(coverage, partial || valid < targets);
         var overallEvidence = MetricEvidencePolicy.Combine(evidence);
         if (totals.Count == 0)
