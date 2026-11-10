@@ -232,4 +232,15 @@ public sealed class CrossColonyAggregationTests
         Assert.Equal("Crafting:Minor", top.Value.Label);
     }
 
+    [Fact]
+    public void ThirdPartyProviderKeys_AreNeverMistakenForBuiltInDerivedDefinitions()
+    {
+        var provider = MetricRegistry.Find(WorkFamily.HarvestByCrop)! with
+        {
+            Key = "cross.top.custom_provider", Overall = OverallAggregation.Ranking,
+            ProviderId = "thirdparty.sample", OwnerPackageId = "thirdparty.sample",
+        };
+        Assert.False(CrossColonyCatalog.IsDerived(provider));
+    }
+
 }
