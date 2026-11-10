@@ -36,6 +36,8 @@ var successes = 0;
 var unidentifiable = 0;
 var errors = 0;
 var checkpoints = 0;
+var researchObserved = 0;
+var researchPartial = 0;
 var unchanged = 0;
 var times = new List<double>(originals.Length);
 var allocations = new List<long>(originals.Length);
@@ -61,6 +63,13 @@ foreach (var file in originals)
         byVersion[version] = byVersion.GetValueOrDefault(version) + 1;
         if (result.Checkpoint is not null)
             checkpoints++;
+        if (result.Metrics?.Metrics.TryGetValue(ResearchStateSnapshot.Finished, out var recovered) == true
+            && recovered.Values.TryGetValue("", out var value) && value.IntegerValue is >= 0)
+        {
+            researchObserved++;
+            if (value.Coverage == MetricCoverage.Partial)
+                researchPartial++;
+        }
         switch (result.Observation.Status)
         {
             case ObservationStatus.Ok: successes++; break;
@@ -82,12 +91,13 @@ foreach (var file in originals)
 }
 times.Sort();
 allocations.Sort();
-Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes");
+Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes,research_observed,research_partial");
 Console.WriteLine(string.Join(",", 1, originals.Length, successes, unidentifiable,
     errors, unchanged, checkpoints,
     Percentile(times, 0.5).ToString("F3", CultureInfo.InvariantCulture),
     Percentile(times, 0.95).ToString("F3", CultureInfo.InvariantCulture),
-    allocations.Count > 0 ? allocations[allocations.Count / 2] : 0L));
+    allocations.Count > 0 ? allocations[allocations.Count / 2] : 0L,
+    researchObserved, researchPartial));
 Console.WriteLine("build,anonymous_count");
 foreach (var (version, count) in byVersion)
     Console.WriteLine(version + "," + count.ToString(CultureInfo.InvariantCulture));
