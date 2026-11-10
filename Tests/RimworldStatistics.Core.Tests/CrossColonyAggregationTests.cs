@@ -129,6 +129,28 @@ public sealed class CrossColonyAggregationTests
     }
 
     [Fact]
+    public void MeasuredZeroEvents_DoNotClaimThereWasAWinningCategory()
+    {
+        var top = Derived(CrossColonyCatalog.TopPrefix + MentalFamily.BreaksByDef,
+            ("only", new[] { Record(MentalFamily.BreaksByDef, 0, MetricCoverage.Partial) }));
+        Assert.Equal((1, 1), (top.Targets, top.Valid));
+        Assert.Null(top.Value.Number);
+        Assert.Null(top.Value.Label);
+        Assert.True(MetricDisplayPolicy.IsUnrankedTop(top.Definition, top.Value));
+    }
+
+    [Fact]
+    public void IncompleteCategoryBreakdown_DoesNotInventAWinnerOrZero()
+    {
+        var top = Derived(CrossColonyCatalog.TopPrefix + MedicineFamily.Surgeries,
+            ("only", new[] { Record(MedicineFamily.Surgeries, 4, MetricCoverage.Partial) }));
+        Assert.Null(top.Value.Number);
+        Assert.Null(top.Value.Label);
+        Assert.Equal(MetricCoverage.Partial, top.Value.Coverage);
+        Assert.True(MetricDisplayPolicy.IsUnrankedTop(top.Definition, top.Value));
+    }
+
+    [Fact]
     public void NoObservedValues_DoNotInventZeroOrTopItem()
     {
         var r = Derived(CrossColonyCatalog.TopPrefix + WorkFamily.HarvestByCrop,
