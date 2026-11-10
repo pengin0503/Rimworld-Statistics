@@ -3,6 +3,8 @@ namespace RimworldStatistics.Core;
 /// <summary>Bounded, detached references serialized by MapInfo and WorldObject.ExposeData.</summary>
 internal readonly record struct SavedMapParent(int? UniqueId, string? Parent, bool? Pocket, bool Valid);
 internal readonly record struct SavedWorldMapObject(int? Id, string? Def, string? Faction, bool Valid);
+/// <summary>A narrowly recognized saved Building_Turret or Building_TurretGun instance.</summary>
+internal readonly record struct SavedMapTurret(int? MapId, string? ThingId, string? Faction, bool Valid);
 
 /// <summary>
 /// Partial lower bound for player home maps in pre-install saves. Only explicit
@@ -14,6 +16,7 @@ internal static class HistoricalHomeMapReader
 {
     public const int MaxMaps = 128;
     public const int MaxWorldObjects = 4096;
+    public const int MaxSavedTurrets = 8192;
 
     public static Dictionary<string, MetricEntry>? Build(
         IReadOnlyList<SavedMapParent> maps,
@@ -22,7 +25,9 @@ internal static class HistoricalHomeMapReader
         string? scenarioPlayerDef,
         bool mapsOverflowed,
         bool worldObjectsOverflowed,
-        bool factionsOverflowed)
+        bool factionsOverflowed,
+        IReadOnlyList<SavedMapTurret>? turrets = null,
+        bool turretsOverflowed = false)
     {
         if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
@@ -64,18 +69,19 @@ internal static class HistoricalHomeMapReader
         if (homeParents.Count == 0)
             return null;
 
-        var confirmed = 0L;
+        var confirmedMapIds = new HashSet<int>();
         foreach (var map in maps)
             if (map.Valid && map.UniqueId is >= 0 && map.Pocket != true
                 && map.Parent is { Length: > 0 } parent && homeParents.Contains(parent))
-                confirmed++;
+                confirmedMapIds.Add(map.UniqueId!.Value);
+        var confirmed = (long)confirmedMapIds.Count;
         // A partial zero cannot establish that this save has no player homes:
         // the home may be a gravship or a MOD-provided map parent.
         if (confirmed == 0)
             return null;
 
         var key = FacilitiesSnapshot.HomeMapsPeak;
-        return new Dictionary<string, MetricEntry>(StringComparer.Ordinal)
+        var result = new Dictionary<string, MetricEntry>(StringComparer.Ordinal)
         {
             [key] = MetricEntry.Of(MetricKeys.Revision(key), new MetricValue
             {
@@ -83,5 +89,27 @@ internal static class HistoricalHomeMapReader
                 IntegerValue = confirmed,
             }),
         };
+        // A positive lower bound, never a historical maximum or proof that
+        // every MOD turret class is recognized. Only actual game subclasses
+        // Building_TurretGun / Building_Turret are captured by the stream reader.
+        if (turrets is { Count: > 0 } && !turretsOverflowed && turrets.Count <= MaxSavedTurrets)
+        {
+            // An identical ThingID observed in multiple places/factions is ambiguous.
+            // Only a unanimously owned, verified-home group counts once.
+            var verifiedCount = turrets.Where(t => !string.IsNullOrWhiteSpace(t.ThingId))
+                .GroupBy(t => t.ThingId!, StringComparer.Ordinal)
+                .LongCount(group => group.All(t => t.Valid && t.MapId is { } id
+                    && confirmedMapIds.Contains(id) && t.Faction == playerReference));
+            if (verifiedCount > 0)
+            {
+                var turretKey = FacilitiesSnapshot.TurretsPeak;
+                result[turretKey] = MetricEntry.Of(MetricKeys.Revision(turretKey), new MetricValue
+                {
+                    Coverage = MetricCoverage.Partial,
+                    IntegerValue = verifiedCount,
+                });
+            }
+        }
+        return result;
     }
 }
