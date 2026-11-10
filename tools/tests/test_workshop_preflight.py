@@ -1,6 +1,7 @@
 """Workshop preparation is offline, non-destructive and rejects invalid release ZIPs."""
 import hashlib
 import importlib.util
+import os
 import struct
 import shutil
 import subprocess
@@ -109,6 +110,10 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertIn('"appid" "294100"', initial)
         self.assertIn('"publishedfileid" "0"', initial)
         self.assertIn('"visibility" "2"', initial)
+        if os.name == "nt":
+            escaped = str(staged.resolve()).replace("\\", "\\\\")
+            self.assertIn('"contentfolder" "' + escaped + '"', initial)
+
         self.assertIn('"description"', initial)
         self.assertIn("STEAM_UPLOAD=NOT_PERFORMED", first.stdout)
 
