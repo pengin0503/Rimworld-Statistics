@@ -30,8 +30,9 @@ public sealed class SaveReader
     /// 9: bounded, partial saved player Settlement map observations (not lifetime maxima).
     /// 10: new breakdown outputs rebuilt from the original checkpoint (no counter revision changes).
     /// 11: provisional 1.7 history research completion via audited official 1.7 Def costs (Partial).
+    /// 12: evidence-gated positive historical home-map turret counts (Partial; no unknown-as-zero).
     /// </summary>
-    public const int Version = 11;
+    public const int Version = 12;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -134,6 +135,8 @@ public sealed class SaveReader
         public List<SavedMapParent> HistoricalMaps { get; } = new();
         public bool HistoricalMapObjectsOverflowed { get; set; }
         public bool HistoricalMapsOverflowed { get; set; }
+        public List<SavedMapTurret> HistoricalTurrets { get; } = new();
+        public bool HistoricalTurretsOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
@@ -333,6 +336,7 @@ public sealed class SaveReader
             bool? pocket = null;
             var valid = true;
             var mapInfoSeen = false;
+            var onMapTurrets = new List<(string? Id, string? Faction, bool Valid)>();
             ForEachChild(r, child =>
             {
                 switch (child)
@@ -344,6 +348,9 @@ public sealed class SaveReader
                             valid = false;
                         else
                             id = parsedId;
+                        break;
+                    case "things":
+                        ReadSavedTurrets(r, s, onMapTurrets);
                         break;
                     case "mapInfo":
                         if (mapInfoSeen) valid = false;
@@ -371,6 +378,54 @@ public sealed class SaveReader
                 }
             });
             s.HistoricalMaps.Add(new SavedMapParent(id, parent, pocket, valid));
+            foreach (var turret in onMapTurrets)
+                s.HistoricalTurrets.Add(new SavedMapTurret(id, turret.Id, turret.Faction, valid && turret.Valid));
+        });
+    }
+
+    /// <summary>
+    /// Streaming, memory-bounded recognition of the two 1.7 classes that the
+    /// real game's type index confirms are Building_Turret subclasses.
+    /// Unknown MOD turret classes are skipped, not reclassified from defName.
+    /// </summary>
+    private static void ReadSavedTurrets(XmlReader r, ReadState s,
+        List<(string? Id, string? Faction, bool Valid)> items)
+    {
+        ForEachChild(r, name =>
+        {
+            if (name != "thing"
+                || r.GetAttribute("Class") is not ("Building_TurretGun" or "Building_Turret"))
+            {
+                r.Skip();
+                return;
+            }
+            if (s.HistoricalTurrets.Count + items.Count >= HistoricalHomeMapReader.MaxSavedTurrets)
+            {
+                s.HistoricalTurretsOverflowed = true;
+                r.Skip();
+                return;
+            }
+
+            string? id = null, faction = null;
+            var valid = true;
+            ForEachChild(r, field =>
+            {
+                switch (field)
+                {
+                    case "id":
+                        var i = ReadHistoricalAtom(r);
+                        if (id != null || string.IsNullOrWhiteSpace(i)) valid = false;
+                        else id = i;
+                        break;
+                    case "faction":
+                        var f = ReadHistoricalAtom(r);
+                        if (faction != null || string.IsNullOrWhiteSpace(f)) valid = false;
+                        else faction = f;
+                        break;
+                    default: r.Skip(); break;
+                }
+            });
+            items.Add((id, faction, valid && id is not null && faction is not null));
         });
     }
 
@@ -914,7 +969,8 @@ public sealed class SaveReader
             && HistoricalHomeMapReader.Build(s.HistoricalMaps, s.HistoricalMapObjects,
                 s.HistoricalFactions, s.ScenarioPlayerFactionDef,
                 s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed,
-                s.HistoricalFactionsOverflowed) is { } homes)
+                s.HistoricalFactionsOverflowed,
+                s.HistoricalTurrets, s.HistoricalTurretsOverflowed) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;
