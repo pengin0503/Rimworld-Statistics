@@ -229,7 +229,12 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
-            .Where(r => input.Mode == DetailsViewMode.All || (MetricDisplayPolicy.IsLifetimeCumulative(r.Definition) == (input.Mode == DetailsViewMode.Lifetime)))
+            .Where(r => input.Mode switch
+            {
+                DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(r.Definition),
+                DetailsViewMode.Other => !MetricDisplayPolicy.IsLifetimeCumulative(r.Definition),
+                _ => true,
+            })
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
             .Where(x => term.Length == 0
                 || x.Label.IndexOf(term, StringComparison.CurrentCultureIgnoreCase) >= 0

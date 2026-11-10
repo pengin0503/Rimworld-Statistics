@@ -72,6 +72,16 @@ public static class MetricDisplayPolicy
     public static bool IsLifetimeCumulative(MetricDefinition definition)
         => definition.ProviderId is null && definition.OwnerPackageId is null && LifetimeKeys.Contains(definition.Key);
 
+    // Standalone trade-kind counts are already nested under the trade.count
+    // breakdown. Preserve their semantic membership and accessibility in All.
+    private static readonly IReadOnlySet<string> LifetimeBreakdownAliases = new HashSet<string>(StringComparer.Ordinal)
+    {
+        TradeFamily.OrbitalDeals, TradeFamily.VisitingCaravanDeals,
+    };
+
+    public static bool IsLifetimePrimaryRow(MetricDefinition definition)
+        => IsLifetimeCumulative(definition) && !LifetimeBreakdownAliases.Contains(definition.Key);
+
     public static IReadOnlyList<MetricDefinition> SelectDefinitions(
         IReadOnlyCollection<MetricDefinition> catalog, IReadOnlySet<string> visibleUnitIds)
         => catalog.Where(d => d.Published || d.Acquisition is { } id && visibleUnitIds.Contains(id)).ToArray();

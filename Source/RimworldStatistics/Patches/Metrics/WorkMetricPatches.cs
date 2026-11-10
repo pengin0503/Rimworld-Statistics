@@ -72,14 +72,6 @@ public static class PlantCollectedMetricPatch
     }
 }
 
-/// <summary>Sowing completes where the sow toil increments the actor's PlantsSown record (JobDriver_PlantSow, 1.7.4985).</summary>
-
-/// <summary>
-/// 1.7.4985 Verse.Thing.Ingested(Pawn, float) returns actual ingested nutrition.
-/// It is also called for feeding and caravans: require a meal and a player
-/// humanlike ingester. Zero-yield calls are not counted.
-/// </summary>
-
 /// <summary>
 /// Counts completed cell-storage delivery, never the early "ThingsHauled" pickup.
 /// In 1.7.4985 Toils_Haul.PlaceHauledThingInCell calls the 4-argument
@@ -95,12 +87,12 @@ public static class PlantCollectedMetricPatch
     new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Normal })]
 internal static class HaulToCellCompletionMetricPatch
 {
-
     private static void Prefix(Pawn_CarryTracker __instance, IntVec3 dropLoc,
         ThingPlaceMode mode, out int __state)
     {
         __state = 0;
-        if (LiveMetrics.Family(ChoreFamily.Name) is null)
+        // Avoid incrementing diagnostics for speculative haul deliveries.
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
             return;
         var actor = __instance.pawn;
         var job = actor?.CurJob;
@@ -122,6 +114,7 @@ internal static class HaulToCellCompletionMetricPatch
     }
 }
 
+/// <summary>Only positive ingestion of prepared meals by player humanlike pawns.</summary>
 [MetricAdapter(ChoreFamily.Name)]
 [HarmonyPatch(typeof(Thing), nameof(Thing.Ingested), new[] { typeof(Pawn), typeof(float) })]
 internal static class MealIngestedMetricPatch
@@ -135,6 +128,7 @@ internal static class MealIngestedMetricPatch
     }
 }
 
+/// <summary>Vanilla success records for sowing, removed filth, and extinguished fires.</summary>
 [MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(Pawn_RecordsTracker), nameof(Pawn_RecordsTracker.Increment))]
 public static class PlantsSownMetricPatch

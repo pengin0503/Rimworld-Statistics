@@ -101,6 +101,25 @@ public sealed class LifetimeCumulativeTests
     }
 
     [Fact]
+    public void LifetimeDisplay_FoldsStandaloneTradeAliasesButRetainsOldDefinitions()
+    {
+        var catalog = MetricRegistry.Catalog;
+        var parent = catalog.Single(d => d.Key == TradeFamily.Deals);
+        var orbital = catalog.Single(d => d.Key == TradeFamily.OrbitalDeals);
+        var caravan = catalog.Single(d => d.Key == TradeFamily.VisitingCaravanDeals);
+        Assert.True(MetricDisplayPolicy.IsLifetimePrimaryRow(parent));
+        Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(orbital));
+        Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(caravan));
+        Assert.False(MetricDisplayPolicy.IsLifetimePrimaryRow(orbital));
+        Assert.False(MetricDisplayPolicy.IsLifetimePrimaryRow(caravan));
+        var all = MetricDisplayPolicy.SelectDefinitions(catalog, MetricDisplayPolicy.AllDetailsVisibleUnits);
+        Assert.Contains(all, d => d.Key == TradeFamily.OrbitalDeals);
+        Assert.Contains(all, d => d.Key == TradeFamily.VisitingCaravanDeals);
+        Assert.Contains(all, d => d.Key == TradeFamily.Deals);
+        Assert.Equal(catalog.Count, all.Count);
+    }
+
+    [Fact]
     public void OldCheckpoint_IsReevaluatedWithoutMutatingFamilyRevisions()
     {
         Assert.Equal(10, SaveReader.Version);
