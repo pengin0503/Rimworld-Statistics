@@ -9,13 +9,11 @@ public sealed class NumericSnapshotFacilitiesTests
         {
             Id = "map-1", MedicalBeds = 2, Turrets = 3, GrowingCells = 60,
             IndoorRooms = 8, GenerationWatts = 2500, BatteryWattDays = 1200, OutdoorTempC = -45.2,
-            RunningGenerators = new Dictionary<string,long> { ["SolarGenerator"] = 2 },
         };
         var b = new FacilityMapFact
         {
             Id = "map-2", MedicalBeds = 1, Turrets = 0, GrowingCells = 40, IndoorRooms = 3,
             GenerationWatts = 500, BatteryWattDays = 400, OutdoorTempC = 22.5,
-            RunningGenerators = new Dictionary<string,long> { ["WoodFiredGenerator"] = 1 },
         };
         var r = FacilitiesSnapshot.Build(new[] { a, a, b });
         Assert.Equal(2, r[FacilitiesSnapshot.HomeMapsPeak].Values[""].IntegerValue);
@@ -25,7 +23,8 @@ public sealed class NumericSnapshotFacilitiesTests
         Assert.Equal(1600d, r[FacilitiesSnapshot.BatteryPeak].Values[""].RealValue);
         Assert.Equal(-45.2d, r[FacilitiesSnapshot.OutdoorTempMin].Values[""].RealValue);
         Assert.Equal(22.5d, r[FacilitiesSnapshot.OutdoorTempMax].Values[""].RealValue);
-        Assert.Equal(2, r[FacilitiesSnapshot.RunningGenerators].Values["SolarGenerator"].IntegerValue);
+        Assert.DoesNotContain("facilities.running_generators.latest", r.Keys);
+        Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
         Assert.Equal(MetricCoverage.Partial, r[FacilitiesSnapshot.HomeMapsPeak].Values[""].Coverage);
     }
 
