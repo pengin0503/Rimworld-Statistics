@@ -47,6 +47,7 @@ jobs:
           test -f "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
           chmod +x "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
           file "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests"
+          "$RUNNER_TEMP/private-xunit/RimworldStatistics.Core.Tests" -assemblyInfo > /dev/null
       - uses: actions/upload-artifact@v4
         with:
           name: rws-private-five-save-xunit-linux-x64
