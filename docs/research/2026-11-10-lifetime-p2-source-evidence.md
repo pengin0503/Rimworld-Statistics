@@ -23,7 +23,7 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 
 - `Verse.Thing.Ingested(Pawn ingester, float nutritionWanted)` is defined as `MethodDef 0x06002ad5`, CLI method signature `20 02 0c 12 93 58 0c`: instance, two parameters, `float` return.
 - It is called by `RimWorld.Toils_Ingest.FinalizeIngest`'s closure, by caravan food handling, and by some administering/feeding paths. A `Thing.Ingested` call alone does not prove a colonist meal. Filter successful (`__result > 0f`), `ThingDef.ingestible.IsMeal`, humanlike player faction ingester. A partial food portion counts one ingestion event; not an inferred whole-meal stack.
-- New low-frequency Harmony Postfix targets `Thing.Ingested`; the exact signature is checked against 1.7 public game references in CI. Actual game frequency, modded feeding, and edge-cases still need acceptance tests.
+- The existing `FoodFamily` `IngestedMetricPatch` already targets `Thing.Ingested`; it now also serves `ChoreFamily` through the same Postfix/one Harmony registration. No second ingestion patch is introduced. The exact signature is checked against 1.7 public game references in CI. Actual game frequency, modded feeding, and edge-cases still need acceptance tests.
 
 
 ## Successful cell hauls (additional P2 candidate)

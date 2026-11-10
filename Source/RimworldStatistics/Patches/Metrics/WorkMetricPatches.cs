@@ -158,20 +158,6 @@ internal static class HaulToCellCompletionMetricPatch
     }
 }
 
-/// <summary>Only positive ingestion of prepared meals by player humanlike pawns.</summary>
-[MetricAdapter(ChoreFamily.Name)]
-[HarmonyPatch(typeof(Thing), nameof(Thing.Ingested), new[] { typeof(Pawn), typeof(float) })]
-internal static class MealIngestedMetricPatch
-{
-    private static void Postfix(Thing __instance, Pawn ingester, float __result)
-    {
-        if (__result <= 0f || __instance.def?.ingestible?.IsMeal != true ||
-            ingester == null || !ingester.RaceProps.Humanlike || !GameFacts.IsPlayer(ingester))
-            return;
-        GameFacts.Record(ChoreFamily.Name, ChoreFamily.MealIngested);
-    }
-}
-
 /// <summary>
 /// Marks only the corpse of the pawn actually killed by a player Slaughter job.
 /// The game's AnimalsSlaughtered record is incremented *after* DoExecutionByCut.
