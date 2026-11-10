@@ -167,5 +167,41 @@
     "gameTpsVerified": false,
     "readOnlyR2": true,
     "details": "docs/testing/2026-11-10-private-r2-49-original-net-acceptance.md"
+  },
+  "provisionalOneSevenResearch": {
+    "userPolicy": "Treat 1.7 unstable sub-build differences as equivalent for this research pass; not proof of identical MOD-def costs or full runtime correctness",
+    "gameSourceVersion": "1.7.4985 rev1269",
+    "privateLocalSourceVersion": "1.7.5000 rev1275",
+    "sourceCatalogPath": "docs/research/2026-11-10-r2-1-7-research-def-catalog.json",
+    "gameIlReviewPath": "docs/research/2026-11-10-r2-game-source-1-7-research-recovery.md",
+    "officialResearchDefCount": 122,
+    "perLocalSaveResearchEntries": 123,
+    "matchedOfficialDefNamesPerSave": 122,
+    "privateLocalCampaignCount": 1,
+    "earlierThreeCandidateCostThresholdCounts": [
+      67,
+      68,
+      68
+    ],
+    "laterFiveCandidateCostThresholdCounts": [
+      72,
+      73,
+      73,
+      75,
+      77
+    ],
+    "candidateOnly": true,
+    "confidence": "Partial/Experimental",
+    "draftSaveReaderVersion": 11,
+    "shippedMainSaveReaderVersion": 10,
+    "confirmedProductionCoreCiUrl": "https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42837643992",
+    "confirmedTests": {
+      "succeeded": 720,
+      "failed": 0,
+      "skipped": 9
+    },
+    "actualGameSmokeVerified": false,
+    "newV11R2ProductionReadVerified": false,
+    "plannedRimworldForModTestPrUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/pull/72"
   }
 }
