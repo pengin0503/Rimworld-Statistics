@@ -151,6 +151,7 @@ internal static class SavedStateMetricReader
                 var owned = pawn.Faction == Faction.OfPlayer;
                 var kind = owned && pawn.IsFreeNonSlaveColonist ? RosterKind.FreeColonist
                     : pawn.IsPrisonerOfColony ? RosterKind.Prisoner
+                    : pawn.IsSlaveOfColony ? RosterKind.Slave
                     : owned && pawn.RaceProps.Animal ? RosterKind.ColonyAnimal
                     : owned && pawn.RaceProps.IsMechanoid ? RosterKind.ColonyMech
                     : RosterKind.Other;
@@ -192,7 +193,6 @@ internal static class SavedStateMetricReader
                 var beds = 0;
                 var turrets = 0;
                 double generation = 0, battery = 0;
-                var running = new Dictionary<string, long>(StringComparer.Ordinal);
                 foreach (var thing in map.listerThings.AllThings)
                 {
                     if (thing.Faction != player)
@@ -205,8 +205,6 @@ internal static class SavedStateMetricReader
                     {
                         var rated = Math.Max(0, -plant.Props.PowerConsumption);
                         generation += rated;
-                        if (plant.PowerOutput > 0)
-                            running[thing.def.defName] = running.GetValueOrDefault(thing.def.defName) + 1;
                     }
                     var store = compThing.TryGetComp<CompPowerBattery>();
                     if (store != null)
@@ -230,7 +228,6 @@ internal static class SavedStateMetricReader
                     Id = map.uniqueID.ToString(System.Globalization.CultureInfo.InvariantCulture),
                     MedicalBeds = beds, Turrets = turrets, GrowingCells = growingCells, IndoorRooms = indoorRooms,
                     GenerationWatts = generation, BatteryWattDays = battery,
-                    RunningGenerators = running,
                     OutdoorTempC = map.mapTemperature.OutdoorTemp,
                 });
             }
@@ -280,13 +277,6 @@ internal static class SavedStateMetricReader
                 var persona = item.TryGetComp<CompBladelinkWeapon>() != null;
                 items.Add(new StockItemFact(id, item.def.defName, item.stackCount, nutrition,
                     isWeapon, item.def.IsMedicine, quality?.Quality == QualityCategory.Legendary, persona));
-                if (item is IThingHolder holder)
-                {
-                    var direct = holder.GetDirectlyHeldThings();
-                    if (direct != null)
-                        foreach (var contained in direct)
-                            Gather(contained);
-                }
             }
             catch (Exception)
             {
@@ -300,7 +290,8 @@ internal static class SavedStateMetricReader
             foreach (var thing in map.listerThings.AllThings)
                 Gather(thing);
         }
-        // Phase B stock intentionally excludes caravans, transport pods and non-home maps.
+        // Stock deliberately excludes nested storage-holder contents, caravans, transport pods and
+        // non-home maps. Pawn gear and carried inventory remain distinct, direct-owned sources.
         // A player pawn must actually be on a loaded home map for their possessions to count.
         foreach (var map in Find.Maps.Where(m => m.IsPlayerHome))
             foreach (var pawn in map.mapPawns.AllPawns)
