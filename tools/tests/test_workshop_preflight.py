@@ -177,6 +177,16 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertIn("Defs/ThingDefs/Example.xml", [f["path"] for f in manifest["files"]])
         self.assertNotIn("About/PublishedFileId.txt", [f["path"] for f in manifest["files"]])
 
+        if shutil.which("pwsh"):
+            check = subprocess.run([
+                "pwsh", "-NoProfile", "-File", str(PS_SCRIPT),
+                "-ModPath", str(staged), "-ManifestPath", str(manifest_path),
+                "-OutputPath", str(self.root / "v1.4.0.vdf"), "-PublishedFileId", "0"
+            ], text=True, capture_output=True, timeout=25)
+            self.assertEqual(0, check.returncode, check.stderr)
+            self.assertIn("VERSION=1.4.0", check.stdout)
+
+
     def test_future_release_must_not_claim_different_version(self):
         with self.assertRaisesRegex(ValueError, "modVersion"):
             mod.stage(self.zip, self.preview, self.root / "wrong", "1.4.0", self.license)
