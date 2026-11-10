@@ -421,4 +421,48 @@ public sealed class NumericAggregationTests
         }
     }
 
+
+    [Fact]
+    public void LegacyOrOverflowedBreakdowns_DoNotFabricateCompleteZeroForMissingKeys()
+    {
+        NumericView Build(bool hasFullBreakdown, bool overflowed)
+        {
+            var p = new Profile();
+            p.SaveObservations.Add(V1("a.rws", Id("A"), 300));
+            p.SaveObservations.Add(V1("b.rws", Id("B"), 300));
+            MetricObservation Trade(string key, string seed, long total, string? kind, long amount, bool partial)
+            {
+                var m = Numeric(key, Id(seed), 300, seed.ToLowerInvariant() + ".rws");
+                m.Source = MetricObservationSource.Checkpoint;
+                m.PayloadHash = "hash-" + key;
+                var e = MetricEntry.Of(MetricKeys.Revision(TradeFamily.Deals),
+                    new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = total });
+                if (kind is not null)
+                    e.Values[kind] = new MetricValue
+                    {
+                        Coverage = partial ? MetricCoverage.Partial : MetricCoverage.Complete,
+                        IntegerValue = amount,
+                    };
+                m.Metrics[TradeFamily.Deals] = e;
+                return m;
+            }
+            p.MetricObservations.Add(Trade("a", "A", 5, hasFullBreakdown ? "visiting_caravan" : overflowed ? "visiting_caravan" : null,
+                overflowed ? 4 : 5, overflowed));
+            p.MetricObservations.Add(Trade("b", "B", 1, "orbital", 1, false));
+            var colonies = CampaignMatcher.BuildColonies(p);
+            return MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), MetricRegistry.Catalog);
+        }
+        var legacy = Overall(Build(false, false), TradeFamily.Deals);
+        Assert.Equal(6d, legacy.Value.Number);
+        Assert.Equal(1d, legacy.Breakdowns.Single(x => x.Breakdown == "orbital").Value.Number);
+        Assert.Equal(MetricCoverage.Partial, legacy.Breakdowns.Single(x => x.Breakdown == "orbital").Value.Coverage);
+
+        var overflow = Overall(Build(false, true), TradeFamily.Deals);
+        Assert.Equal(MetricCoverage.Partial, overflow.Breakdowns.Single(x => x.Breakdown == "orbital").Value.Coverage);
+
+        var complete = Overall(Build(true, false), TradeFamily.Deals);
+        Assert.Equal(1d, complete.Breakdowns.Single(x => x.Breakdown == "orbital").Value.Number);
+        Assert.Equal(MetricCoverage.Complete, complete.Breakdowns.Single(x => x.Breakdown == "orbital").Value.Coverage);
+    }
+
 }

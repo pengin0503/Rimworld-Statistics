@@ -134,4 +134,97 @@ public sealed class LifetimeCumulativeTests
         Assert.Equal(1, Scalar(o, WorkFamily.Sown_).IntegerValue);
         Assert.Equal(1, Children(o, WorkFamily.Sown_)["Rice"].IntegerValue);
     }
+
+    [Fact]
+    public void HistoricalEventFamilies_AreVisibleInTheLifetimeFilter()
+    {
+        var keys = new[]
+        {
+            DisasterFamily.VolcanicWinters, DisasterFamily.Eclipses, DisasterFamily.CropBlights,
+            DisasterFamily.Meteors, DisasterFamily.ShortCircuits, DisasterFamily.Fires,
+            DisasterFamily.BuildingsBurned, DisasterFamily.ToxicFalloutDays,
+            CaravanFamily.Departures, CaravanFamily.Lost_, CaravanFamily.TilesTravelled,
+            CaravanFamily.UniqueTiles, CaravanFamily.Ambushes, CaravanFamily.SitesCleared,
+            CaravanFamily.SettlementsFounded, CaravanFamily.SettlementsAbandoned,
+            CaravanFamily.AncientDangersOpened, WorkFamily.Sculptures,
+            WorkFamily.Legendary, WorkFamily.Masterwork, WorkFamily.MealsByDef,
+            WorkFamily.HarvestByCrop, WorkFamily.QualityBreakdown,
+            MembershipFamily.Routes, TradeFamily.SoldDefs,
+        };
+        foreach (var key in keys)
+        {
+            var definition = MetricRegistry.Catalog.Single(d => d.Key == key);
+            Assert.True(MetricDisplayPolicy.IsLifetimeCumulative(definition), key);
+        }
+        foreach (var key in new[] { CaravanFamily.LongestExpedition, TradeFamily.SalesPeak,
+            MedicineFamily.SurgerySuccessRate, MetricKeys.WealthItemsLatest })
+            Assert.False(MetricDisplayPolicy.IsLifetimeCumulative(MetricRegistry.Catalog.Single(d => d.Key == key)), key);
+    }
+
+    [Fact]
+    public void ReimportSameCheckpoint_EnrichesExistingScalarWithNewBreakdown()
+    {
+        var profile = new Profile();
+        MetricObservation Checkpoint(bool detailed, long scalar)
+        {
+            var observation = new MetricObservation
+            {
+                Source = MetricObservationSource.Checkpoint,
+                Key = "immutable-checkpoint", PayloadHash = "same-saved-bytes",
+                SaveTick = 100, Identity = new ColonyIdentity { ModCampaignId = "campaign" },
+            };
+            var entry = MetricEntry.Of(MetricKeys.Revision(TradeFamily.Deals), new MetricValue
+            {
+                Coverage = MetricCoverage.Complete, IntegerValue = scalar,
+            });
+            if (detailed)
+            {
+                entry.Values["orbital"] = new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = 1 };
+                entry.Values["visiting_caravan"] = new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = 2 };
+            }
+            observation.Metrics[TradeFamily.Deals] = entry;
+            return observation;
+        }
+        ProfileMutations.UpsertMetricObservation(profile, Checkpoint(false, 3));
+        ProfileMutations.UpsertMetricObservation(profile, Checkpoint(true, 3));
+        ProfileMutations.UpsertMetricObservation(profile, Checkpoint(true, 3)); // idempotent
+        var saved = Assert.Single(profile.MetricObservations).Metrics[TradeFamily.Deals];
+        Assert.Equal(3, saved.Values.Count);
+        Assert.Equal(3L, saved.Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(1L, saved.Values["orbital"].IntegerValue);
+        Assert.Equal(2L, saved.Values["visiting_caravan"].IntegerValue);
+
+        ProfileMutations.UpsertMetricObservation(profile, Checkpoint(true, 9)); // contradictory decode
+        Assert.Equal(3L, saved.Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(1L, saved.Values["orbital"].IntegerValue);
+    }
+
+    [Fact]
+    public void DamagedSurgerySuccessCount_DoesNotProduceImpossiblePercentage()
+    {
+        var (acc, state) = NewGame(MedicineFamily.Family);
+        state.Count("surgeries", 1);
+        state.Count("surgeries_ok", 2);
+        var observed = Observe(acc);
+        var surgeries = Scalar(observed, MedicineFamily.Surgeries);
+        var rate = Scalar(observed, MedicineFamily.SurgerySuccessRate);
+        Assert.Equal(MetricCoverage.Partial, surgeries.Coverage);
+        Assert.Equal(MetricCoverage.Unknown, rate.Coverage);
+        Assert.Null(rate.RealValue);
+        Assert.Null(rate.Numerator);
+        Assert.Null(rate.Denominator);
+    }
+
+    [Fact]
+    public void BreakdownLabelKeys_RequireTheParentMetricContext()
+    {
+        var trade = MetricRegistry.Catalog.Single(d => d.Key == TradeFamily.Deals);
+        var recruitment = MetricRegistry.Catalog.Single(d => d.Key == MembershipFamily.Routes);
+        Assert.Equal("RWS_Details_TradeKindOther", MetricDisplayPolicy.BreakdownLabelKey(trade, "other"));
+        Assert.Equal("RWS_Details_Other", MetricDisplayPolicy.BreakdownLabelKey(recruitment, "other"));
+        Assert.Equal("RWS_Details_SurgerySuccess",
+            MetricDisplayPolicy.BreakdownLabelKey(MetricRegistry.Catalog.Single(d => d.Key == MedicineFamily.Surgeries), "success"));
+        Assert.Null(MetricDisplayPolicy.BreakdownLabelKey(recruitment, "success"));
+    }
+
 }
