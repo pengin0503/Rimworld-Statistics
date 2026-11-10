@@ -115,6 +115,9 @@
   <RWS_Details_Note>{0} コロニー分（合計から外したもの {1}）。数値は取り込んだセーブの内容から計算します。開発モードの操作で起きた事柄も含まれることがあります。</RWS_Details_Note>
   <RWS_Details_Unattributed>どのコロニーのものか決められなかった観測 {0} 件は含めていません。</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
+  <RWS_Details_OnlyMeasured>数値のある項目のみ</RWS_Details_OnlyMeasured>
+  <RWS_Details_UnrankedTop>最多の種類を確定できません</RWS_Details_UnrankedTop>
+  <RWS_Details_MissingAcquisitionTip>取得開始前のセーブ、取得機能の無効化、または未対応の記録などが原因の可能性があります。過去のイベントを0として補完することはできません。</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>出所: {0} ／ 状態: {1}</RWS_Details_Tip_Source>
