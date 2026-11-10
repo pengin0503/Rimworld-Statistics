@@ -52,7 +52,7 @@ public sealed class PostV14PrivateFiveSaveAcceptanceTests
         Assert.Equal(5, uniqueIds.Count);
         // Same campaign/tick order is not proof of parentage. Exactly one
         // direct-parent ID is proven among the five new originals.
-        Assert.Single(reads.Where(r => r.Checkpoint!.ParentKey is { } parent && uniqueIds.Contains(parent)));
+        Assert.Single(reads, r => r.Checkpoint!.ParentKey is { } parent && uniqueIds.Contains(parent));
 
         var splitKeys = new[]
         {
