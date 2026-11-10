@@ -67,6 +67,8 @@ jobs:
           dotnet run -c Release --project tools/SaveImportBenchmark/SaveImportBenchmark.csproj --no-launch-profile -- 55 262144
       - name: Synthetic 35-colony by-item leaderboard benchmark
         run: dotnet run -c Release --project tools/CrossColonyBenchmark/CrossColonyBenchmark.csproj --no-launch-profile
+      - name: Matched synthetic breakdown lookup A/B benchmark
+        run: dotnet run -c Release --project tools/BreakdownLookupBenchmark/BreakdownLookupBenchmark.csproj --no-launch-profile
       - name: Translation key consistency
         run: bash tools/check_keys.sh
       - name: Build production ZIP
