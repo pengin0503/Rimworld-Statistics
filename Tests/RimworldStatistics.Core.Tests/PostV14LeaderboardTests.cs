@@ -132,6 +132,42 @@ public sealed class PostV14LeaderboardTests
         Assert.False(MetricAvailabilityPolicy.IsPeriodIncomplete(Row(35, 35, MetricCoverage.Complete)));
     }
 
+
+    [Fact]
+    public void NumericallyFilledButUnknownEvidence_DoesNotBecomeAWinningDef()
+    {
+        var sourceKey = WorkFamily.HarvestByCrop;
+        var result = Leaderboard(sourceKey,
+            ("a", Source(sourceKey, 10, MetricCoverage.Unknown, ("UnknownFromOldProfile", 10))),
+            ("b", Source(sourceKey, 2, MetricCoverage.Complete, ("Confirmed", 2))));
+        Assert.Equal("Confirmed", result.Value.Label);
+        Assert.Equal(2d, result.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, result.Value.Coverage);
+        Assert.Equal(1, result.Valid);
+        Assert.Single(result.Breakdowns);
+    }
+
+    [Fact]
+    public void UnknownChildNumber_IsNotReliableItemQuantity()
+    {
+        var sourceKey = TradeFamily.SalesUnits;
+        var definition = MetricRegistry.Find(sourceKey)!;
+        var parent = Source(sourceKey, 10, MetricCoverage.Complete, ("Rice", 10));
+        var invalid = new NumericRow
+        {
+            Definition = definition, Breakdown = "Rice",
+            Value = new NumericValue { Number = 10, Coverage = MetricCoverage.Unknown },
+        };
+        var row = new NumericRow
+        {
+            Definition = definition, Value = parent.Value, Targets = 1, Valid = 1,
+            Breakdowns = new[] { invalid },
+        };
+        var ranked = Leaderboard(sourceKey, ("a", row));
+        Assert.Empty(ranked.Breakdowns);
+        Assert.Null(ranked.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, ranked.Value.Coverage);
+    }
     [Fact]
     public void NewPresentation_DoesNotAlter415CatalogKeysOrStorageContract()
     {
