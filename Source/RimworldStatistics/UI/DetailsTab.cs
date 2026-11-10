@@ -380,7 +380,11 @@ public static class DetailsTab
     private static string DefinitionLabel(MetricDefinition d)
     {
         if (CrossColonyCatalog.IsDerived(d) && MetricRegistry.Find(d.StoredKey) is { } source)
-            return (string)d.LabelKey.Translate((string)source.LabelKey.Translate());
+            return d.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
+                ? (string)"RWS_Cross_MaxColony".Translate((string)source.LabelKey.Translate())
+                : d.Key.StartsWith(CrossColonyCatalog.MinPrefix, StringComparison.Ordinal)
+                    ? (string)"RWS_Cross_MinColony".Translate((string)source.LabelKey.Translate())
+                    : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
         return d.ProviderId is not null && d.LabelKey == d.Key
             ? d.Key : (string)d.LabelKey.Translate();
     }
