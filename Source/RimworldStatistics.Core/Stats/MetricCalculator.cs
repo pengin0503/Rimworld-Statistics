@@ -21,6 +21,9 @@ public sealed class NumericValue
     /// <summary>For an all-colonies maximum or minimum: the colony that holds it (ties: smallest colony key).</summary>
     public string? ColonyKey { get; init; }
 
+    /// <summary>All colonies tied at an extreme, in stable key order.</summary>
+    public IReadOnlyList<string>? HolderKeys { get; init; }
+
     /// <summary>For a ranking over labels (e.g. the scenario with most endings): the label(s) holding it, ties joined.</summary>
     public string? Label { get; init; }
 
@@ -96,6 +99,9 @@ public static class MetricCalculator
     public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats, IReadOnlyList<MetricDefinition> definitions)
     {
         var attached = Attach(profile, colonies, out var unattributed);
+        // Derived rankings consume selected input rows, but require no extra
+        // per-colony observations or save-data lookups of their own.
+        var sourceDefinitions = definitions.Where(d => d.Overall != OverallAggregation.Ranking).ToList();
         var perColony = new List<(Colony Colony, List<NumericRow> Rows, CheckpointLineage Lineage)>(colonies.Count);
         foreach (var colony in colonies)
         {
@@ -108,7 +114,7 @@ public static class MetricCalculator
             // All definitions of one source use the same latest observation. Resolve
             // its order-sensitive tie break only once instead of sorting per row.
             var latestBySource = bySource.ToDictionary(kv => kv.Key, kv => Representative(kv.Value));
-            perColony.Add((colony, definitions.Select(d =>
+            perColony.Add((colony, sourceDefinitions.Select(d =>
             {
                 var captured = bySource.GetValueOrDefault(d.Source) ?? Array.Empty<MetricObservation>();
                 // Historic save-file evidence is a fallback only when this key
@@ -134,9 +140,9 @@ public static class MetricCalculator
 
         var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
         var overall = new List<NumericRow>();
-        for (var i = 0; i < definitions.Count; i++)
+        for (var i = 0; i < sourceDefinitions.Count; i++)
         {
-            var def = definitions[i];
+            var def = sourceDefinitions[i];
             if (def.Overall is OverallAggregation.IndividualOnly or OverallAggregation.Ranking)
                 continue;
             overall.Add(Combine(def, counted.Select(c => (c.Colony.Key, c.Rows[i])).ToList()));
@@ -147,9 +153,10 @@ public static class MetricCalculator
         // has not been verified in game.
         var allowedRankings = definitions.Where(d => d.Overall == OverallAggregation.Ranking)
             .Select(d => d.Key).ToHashSet(Ord);
-        overall.AddRange(MetricRankings.Build(countedStats,
-            counted.ToDictionary(c => c.Colony.Key, c => (IReadOnlyList<NumericRow>)c.Rows, Ord))
+        var rowsByColony = counted.ToDictionary(c => c.Colony.Key, c => (IReadOnlyList<NumericRow>)c.Rows, Ord);
+        overall.AddRange(MetricRankings.Build(countedStats, rowsByColony)
             .Where(row => allowedRankings.Contains(row.Definition.Key)));
+        overall.AddRange(CrossColonyAggregator.Build(definitions, rowsByColony));
 
         return new NumericView
         {
@@ -431,7 +438,9 @@ public static class MetricCalculator
     private static readonly IReadOnlySet<string> ExhaustiveEventBreakdowns = new HashSet<string>(Ord)
     {
         TradeFamily.Deals, TradeFamily.SalesUnits, TradeFamily.BuysUnits,
-        WorkFamily.Sown_, MedicineFamily.Surgeries,
+        WorkFamily.Sown_, WorkFamily.HarvestByCrop, WorkFamily.MealsByDef,
+        WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
+        MedicineFamily.Surgeries,
     };
 
     /// <summary>Absent breakdown keys imply zero only if the split covers the entire parent.</summary>
