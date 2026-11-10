@@ -115,6 +115,9 @@
   <RWS_Details_Note>From {0} colonies (excluded from totals: {1}). Values are computed from the imported saves and may include what happened through dev-mode actions.</RWS_Details_Note>
   <RWS_Details_Unattributed>{0} observations that could not be matched to one colony are not included.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
+  <RWS_Details_OnlyMeasured>Measured numbers only</RWS_Details_OnlyMeasured>
+  <RWS_Details_UnrankedTop>No category winner can be established</RWS_Details_UnrankedTop>
+  <RWS_Details_MissingAcquisitionTip>This may reflect saves predating acquisition, disabled collection, or unavailable source data. Past events must not be backfilled as zero.</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Source: {0} / state: {1}</RWS_Details_Tip_Source>
