@@ -104,7 +104,7 @@ public sealed class VerifyHarnessLogicTests
     public void BatchCatalogAudit_ClassifiesEveryUnverifiedOutputWithoutPretendingToProveIt()
     {
         var defs = MetricRegistry.Catalog.Where(d => d.Acquisition is not null).ToArray();
-        Assert.Equal(264, defs.Length);
+        Assert.Equal(266, defs.Length);
         var snapshot = SnapshotCatalog.Definitions[0];
         var reported = VerifyCatalogAudit.Build(defs,
             new HashSet<string> { snapshot.Acquisition!, "research" },
