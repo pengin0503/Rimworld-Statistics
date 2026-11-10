@@ -60,6 +60,7 @@ jobs:
             --zip "$RUNNER_TEMP/workshop-source/RimworldStatistics-v1.3.0.zip" \
             --sha256 "$RUNNER_TEMP/workshop-source/RimworldStatistics-v1.3.0.sha256" \
             --preview "$RUNNER_TEMP/workshop-preview.png" \
+            --license LICENSE \
             --out "$RUNNER_TEMP/workshop-stage" \
             --version 1.3.0 \
             --published-file-id 0
@@ -69,6 +70,7 @@ jobs:
           set -euo pipefail
           test -f "$RUNNER_TEMP/workshop-stage/RimworldStatistics/About/Preview.png"
           test -f "$RUNNER_TEMP/workshop-stage/RimworldStatistics/About/About.xml"
+          test -f "$RUNNER_TEMP/workshop-stage/RimworldStatistics/LICENSE"
           test ! -e "$RUNNER_TEMP/workshop-stage/RimworldStatistics/Source"
           test ! -e "$RUNNER_TEMP/workshop-stage/RimworldStatistics/VerifyHarness"
           ! find "$RUNNER_TEMP/workshop-stage/RimworldStatistics" -type f \
