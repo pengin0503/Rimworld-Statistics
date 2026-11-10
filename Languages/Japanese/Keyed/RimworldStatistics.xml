@@ -867,4 +867,12 @@
   <RWS_MetricDesc_TreeWoodPlaced>入植者が樹木を伐採し、主要産物の木材が実際に配置・スタック統合された個数を記録します。取得通知だけでは加算しません。MOD由来の追加産物や独自伐採経路は含まれないためPartialです。</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>屠殺後に解体された動物の累計</RWS_Metric_SlaughteredButchery>
   <RWS_MetricDesc_SlaughteredButchery>入植者が屠殺した動物の死体IDを保存し、同じ死体が標準の食肉解体Billで実際に消費された場合のみ数えます。狩猟・病死・敵の死体は含みません。MOD独自レシピ等は対象外のためPartialです。</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>最多コロニー：{0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>最少コロニー：{0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>全コロニーの最多品目：{0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>独立したコロニーを各1件の代表観測値で比較した最高値です。欠測値は0とみなしません。保存時点の人数・設備・在庫は通算獲得量ではありません。</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>独立したコロニーを各1件の代表観測値で比較した最小値です。実際に観測した0だけを最小値として採用し、欠測や対象外は除外します。</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>品目Def別の数量を独立コロニーの代表観測から合計し、その合計が最多の品目を選びます。未測定、上限超過、品目不明はPartialです。保存時点の在庫と生涯イベント累計を混同しません。</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>同率のコロニー：{0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>記録の観測ゲーム内日：{0}</RWS_Cross_RecordedAt>
 </LanguageData>
