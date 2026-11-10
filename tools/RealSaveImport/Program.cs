@@ -22,6 +22,17 @@ static byte[] Digest(string path)
 static double Percentile(IReadOnlyList<double> sorted, double fraction)
     => sorted.Count == 0 ? 0 : sorted[(int)Math.Ceiling(sorted.Count * fraction) - 1];
 
+static void CountPositivePartial(MetricObservation? observation, string key, ref int observed, ref int partial)
+{
+    if (observation?.Metrics.TryGetValue(key, out var entry) == true
+        && entry.Values.TryGetValue("", out var value) && value.IntegerValue is > 0)
+    {
+        observed++;
+        if (value.Coverage == MetricCoverage.Partial)
+            partial++;
+    }
+}
+
 var originals = Directory.EnumerateFiles(args[0], "*", SearchOption.TopDirectoryOnly)
     .Where(f => f.EndsWith(".rws", StringComparison.OrdinalIgnoreCase)
         || f.EndsWith(".rws.old", StringComparison.OrdinalIgnoreCase))
@@ -38,6 +49,12 @@ var errors = 0;
 var checkpoints = 0;
 var researchObserved = 0;
 var researchPartial = 0;
+var turretObserved = 0;
+var turretPartial = 0;
+var silverObserved = 0;
+var silverPartial = 0;
+var medicineObserved = 0;
+var medicinePartial = 0;
 var unchanged = 0;
 var times = new List<double>(originals.Length);
 var allocations = new List<long>(originals.Length);
@@ -70,6 +87,9 @@ foreach (var file in originals)
             if (value.Coverage == MetricCoverage.Partial)
                 researchPartial++;
         }
+        CountPositivePartial(result.Metrics, FacilitiesSnapshot.TurretsPeak, ref turretObserved, ref turretPartial);
+        CountPositivePartial(result.Metrics, StockSnapshot.SilverLatest, ref silverObserved, ref silverPartial);
+        CountPositivePartial(result.Metrics, StockSnapshot.MedicinePeak, ref medicineObserved, ref medicinePartial);
         switch (result.Observation.Status)
         {
             case ObservationStatus.Ok: successes++; break;
@@ -91,13 +111,15 @@ foreach (var file in originals)
 }
 times.Sort();
 allocations.Sort();
-Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes,research_observed,research_partial");
-Console.WriteLine(string.Join(",", 1, originals.Length, successes, unidentifiable,
+Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes,research_observed,research_partial,turret_observed,turret_partial,silver_observed,silver_partial,medicine_observed,medicine_partial");
+Console.WriteLine(string.Join(",", 2, originals.Length, successes, unidentifiable,
     errors, unchanged, checkpoints,
     Percentile(times, 0.5).ToString("F3", CultureInfo.InvariantCulture),
     Percentile(times, 0.95).ToString("F3", CultureInfo.InvariantCulture),
     allocations.Count > 0 ? allocations[allocations.Count / 2] : 0L,
-    researchObserved, researchPartial));
+    researchObserved, researchPartial,
+    turretObserved, turretPartial, silverObserved, silverPartial,
+    medicineObserved, medicinePartial));
 Console.WriteLine("build,anonymous_count");
 foreach (var (version, count) in byVersion)
     Console.WriteLine(version + "," + count.ToString(CultureInfo.InvariantCulture));
