@@ -1,6 +1,6 @@
 # Rimworld Statistics — Steam Workshop公開準備（Androidのみ）
 
-**PCから初回投稿する場合は [PC向け公開手順](pc-publishing.md) を優先してください。** この資料は過去のAndroidによる生成説明を保存したものです。
+**PCから初回投稿する場合は [PC向け公開手順](pc-publishing.md) を優先してください。** この資料はAndroidからGitHub Actionsを操作するための補足です。Steamへの投稿はPC側で行います。
 
 **対象**: GitHub正式版 [v1.3.0](https://github.com/pengin0503/Rimworld-Statistics/releases/tag/v1.3.0)、RimWorld 1.7、Steam App ID `294100`、Package ID `pengin0503.rimworldstatistics`。GitHubでの準備はSteamへの公開ではありません。
 
@@ -9,16 +9,16 @@
 - 配布ZIPの中身は `About/About.xml`、`1.7/Assemblies/` の3 DLL、日英翻訳。Steamのプレビュー画像は既存v1.3.0のimmutableなZIPに含まれていない。
 - [`tools/generate_workshop_preview.py`](../../tools/generate_workshop_preview.py) が独自の640×360 PNGを生成。著作物スクリーンショットを流用しない。1 MB未満を検査。
 - [`tools/prepare_workshop.py`](../../tools/prepare_workshop.py) が正式版ZIPのSHA256、全ファイル名・XML・Harmony依存を照合し、`RimworldStatistics/About/Preview.png`を追加した専用フォルダーを作る。**Steamへ通信しない**。
-- [`workshop-preflight.yml`](../../.github/workflows/workshop-preflight.yml) は `workflow_dispatch` に加え、関連ファイルのPR/`main` pushでも起動する。GitHub releaseから同じバージョンをダウンロードし、Preview作成、ZIP整合性検証、配布候補ZIPをActions Artifactに保存する。**Steamログインもアップロードもない**。
+- [`workshop-preflight.yml`](../../.github/workflows/workshop-preflight.yml) は`workflow_dispatch`に加え、関連ファイルのPR/`main` pushと新しい正式Release公開時にも起動する。標準では最新の安定リリースを選択し、`release_tag`で特定のvX.Y.Zを指定できる。GitHub releaseから同じバージョンをダウンロードし、Preview作成、ZIP整合性検証、配布候補ZIPをActions Artifactに保存する。**Steamログインもアップロードもない**。
 - Workshopページ向け日英BBCode: [日本語](listing-ja.bbcode)・[English](listing-en.bbcode)。Workshop IDは未発行。初回公開操作も未実施。
 
 ## 2. AndroidからGitHub Actionsで準備ZIPを作る
 
 1. Androidのブラウザで `https://github.com/pengin0503/Rimworld-Statistics/actions` にアクセスしてログイン。表示されなければブラウザの**PC版サイト**表示にする。
 2. **Prepare Steam Workshop candidate (NO UPLOAD)** を選び、`Run workflow` で**main**を指定して実行。
-3. 成功した実行の **Artifacts** から `RimworldStatistics-Workshop-Preflight-v1.3.0` をダウンロード。
+3. 成功した実行の **Artifacts** から、選択したタグの `RimworldStatistics-Workshop-Preflight-vX.Y.Z` をダウンロード。
 4. Artifact内の `RimworldStatistics-Workshop-Candidate-v1.3.0.zip` は配布候補で、`RimworldStatistics/` フォルダーがルートに1つある。`workshop.vdf` はActionsランナー上の絶対パスを含む**サンプル**であり、ダウンロードしたAndroid端末で直接再実行できない。
-5. `RimworldStatistics-Workshop-Candidate-v1.3.0.sha256`で整合性を検証する。v1.3.0の既存Releaseは一切上書きされない。
+5. 同じタグの `.sha256` で整合性を検証する。選択した正式Releaseは一切上書きされない。SteamCMD用VDFはWindows上でマニフェストと同じ配布候補を使って生成する。
 
 ## 3. Androidから実際にWorkshopへ投稿できるか
 
