@@ -85,7 +85,7 @@ class WorkshopPrepareTests(unittest.TestCase):
         mod.verify_sha(self.zip, self.sha)
 
     def test_vdf_escapes_windows_paths_and_rejects_unicode_ids(self):
-        self.assertEqual('"C:\\Games\\RimWorld"', mod.vdf_quote(r"C:\Games\RimWorld"))
+        self.assertEqual('"' + r'C:\\Games\\RimWorld' + '"', mod.vdf_quote(r'C:\Games\RimWorld'))
         self.assertRaisesRegex(ValueError, "Unsafe", mod.vdf_quote, "bad\nvalue")
         staged = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
         with self.assertRaisesRegex(ValueError, "Published file ID"):
