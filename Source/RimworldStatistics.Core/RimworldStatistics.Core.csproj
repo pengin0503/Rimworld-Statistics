@@ -5,5 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="../RimworldStatistics.Api/RimworldStatistics.Api.csproj" />
+    <!-- Source-pinned official 1.7 Def metadata, not private saves or MOD assets. -->
+    <EmbeddedResource Include="../../docs/research/2026-11-10-r2-1-7-research-def-catalog.json" LogicalName="RimworldStatistics.VanillaResearchCostCatalog.json" />
   </ItemGroup>
 </Project>
