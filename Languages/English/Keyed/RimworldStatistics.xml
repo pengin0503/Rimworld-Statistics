@@ -117,6 +117,13 @@
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
   <RWS_Details_OnlyMeasured>Measured numbers only</RWS_Details_OnlyMeasured>
   <RWS_Details_UnrankedTop>No category winner can be established</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>None of the selected colonies is applicable to this metric; a missing DLC can explain this only when supported by a saved DLC inventory.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>0 eligible colonies have a captured value. The cause is unconfirmed: collection may be disabled or late, the event may not have been captured, or historical import may be unsupported. Do not substitute zero.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>Only some eligible colonies have a captured value. The others are unknown, not zero; the combined value may be partial.</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>All eligible colonies have a captured value. This alone does not prove full-campaign or real-game verification.</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>A captured value may cover only part of the campaign. Do not interpret it as a verified lifetime total.</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>Quantity summed by type across independently selected colonies; the ranking may be partial if any recorded breakdown is missing.</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>Measured contribution of this colony to the selected type. Unlisted or missing colonies were not assumed to have zero.</RWS_Cross_ContributionExplanation>
   <RWS_Details_MissingAcquisitionTip>This may reflect saves predating acquisition, disabled collection, or unavailable source data. Past events must not be backfilled as zero.</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
