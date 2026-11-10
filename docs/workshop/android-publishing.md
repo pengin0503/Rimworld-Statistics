@@ -27,7 +27,7 @@
 将来クラウドアップローダーを実装する場合:
 - ユーザーがAndroidブラウザからリポジトリの**GitHub Actions secrets**に必要な認証情報を自分で設定する。**Issue、PR、コメント、チャット、通常ファイル、ArtifactsにSteamパスワード・Steam Guard seed/code・sessionを絶対保存しない**。Steam Mobileへの確認が必要なら本人が操作する。
 - 初回ID=0で投稿すると**新しいWorkshopアイテム**が作られ得る。誤投稿・重複投稿を防ぐため、初回発行には追加の明示的承認を要求し、`visibility=2`（private）から開始。投稿後の`publishedfileid`を取得し、更新時はそのIDを必須にする。
-- SteamCMDのログを無加工で公開したり、Actions Artifactへアップロードしない。第三者Marketplace Actionに認証情報を渡す実装を避ける。短命ランナーの認証と2FAの信頼性を確かめてから投稿を許可。
+- SteamCMDのログを無加工で公開したり、Actions Artifactへアップロードしない。SteamworksのWorkshop利用規約に同意が必要なら投稿者本人がWebから確認する。第三者Marketplace Actionに認証情報を渡す実装を避ける。短命ランナーの認証と2FAの信頼性を確かめてから投稿を許可。
 - 現在は**このログイン・SteamCMD実行ワークフローを用意していない**。Androidから公開実行が成功した実績もない。
 
 公式：[Steamworks Workshop Implementation Guide](https://partner.steamgames.com/doc/features/workshop/implementation)、[RimWorld Wiki — Uploading](https://rimworldwiki.com/wiki/Modding_Tutorials)、[Steam Guard](https://help.steampowered.com/en/faqs/view/06B0-26E6-2CF8-254C)。
@@ -36,7 +36,7 @@
 
 - SteamでRimWorldを所有し、投稿可能なアカウントであること。
 - `About/About.xml` の1.7/Harmony依存、日英翻訳、ZIPルート、PNGサイズが妥当であること。
-- [日本語](listing-ja.bbcode)か[English](listing-en.bbcode)を掲載文にコピーし、英日両言語で案内する。Steamページの必須アイテム欄にHarmonyを指定し、ゲーム/バージョンのタグが必要ならページから設定する（SteamCMDだけでタグの自動設定を保証しない）。
+- [日本語](listing-ja.bbcode)と[English](listing-en.bbcode)を続けて掲載文にコピーし、両言語で案内する。Steamページの必須アイテム欄にHarmonyを指定し、ゲーム/バージョンのタグが必要ならページから設定する（SteamCMDだけでタグの自動設定を保証しない）。
 - **発行後にWorkshopのダウンロード内容と表示を目視確認**する。画像のサムネイルと説明文だけを確認してMODが実機で正常動作したとは言わない。実ゲーム検証は別の作業とする。
 - Steam上でプライベート投稿できた場合、IDを保全して後続の更新で再利用。`PublishedFileId.txt`を第三者のIDから流用しない。
 
