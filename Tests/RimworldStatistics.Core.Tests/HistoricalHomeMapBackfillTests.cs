@@ -173,7 +173,7 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Equal(MetricCoverage.Partial, value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["facilities"]);
         Assert.DoesNotContain(FacilitiesSnapshot.MedicalBedsPeak, r.Metrics.Metrics.Keys);
-        Assert.DoesNotContain(FacilitiesSnapshot.RunningGenerators, r.Metrics.Metrics.Keys);
+        Assert.DoesNotContain("facilities.running_generators.latest", r.Metrics.Metrics.Keys);
     }
 
     [Fact]
