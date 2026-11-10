@@ -710,6 +710,8 @@
   <RWS_MetricDesc_RosterFree>Living free colonists at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterFree>
   <RWS_Metric_RosterPrisoners>Living colony prisoners</RWS_Metric_RosterPrisoners>
   <RWS_MetricDesc_RosterPrisoners>Living colony prisoners at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>Living colony slaves</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>Living colony slaves at a successful save. Historical save recovery reports a partial lower bound only when a saved slave status and player ownership are confirmed.</RWS_MetricDesc_RosterSlaves>
   <RWS_Metric_RosterAnimals>Colony animals</RWS_Metric_RosterAnimals>
   <RWS_MetricDesc_RosterAnimals>Colony animals at a successful save, from eligible living pawns (peak values span saved observations).</RWS_MetricDesc_RosterAnimals>
   <RWS_Metric_RosterMechs>Colony mechanoids</RWS_Metric_RosterMechs>
@@ -744,8 +746,6 @@
   <RWS_MetricDesc_FacilitiesGeneration>Highest rated generating capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>Highest rated battery capacity</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Highest rated battery capacity across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesRunningGenerators>Running generators by type</RWS_Metric_FacilitiesRunningGenerators>
-  <RWS_MetricDesc_FacilitiesRunningGenerators>Running generators by type across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesRunningGenerators>
   <RWS_Metric_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>Lowest observed outdoor temperature across loaded player home maps at a successful save. Peaks are selected across recorded saves.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Highest observed outdoor temperature</RWS_Metric_FacilitiesOutdoorTempMax>
