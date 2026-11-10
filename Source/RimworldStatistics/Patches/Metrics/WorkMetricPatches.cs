@@ -137,7 +137,7 @@ internal static class CleanJobCompletedMetricPatch
 {
     private static void Prefix(Verse.AI.Pawn_JobTracker __instance, Verse.AI.JobCondition condition)
     {
-        var actor = __instance.pawn;
+        var actor = __instance.curDriver?.pawn;
         if (actor == null || !GameFacts.IsPlayer(actor) ||
             __instance.curDriver is not JobDriver_CleanFilth ||
             __instance.curJob is not { } job)
