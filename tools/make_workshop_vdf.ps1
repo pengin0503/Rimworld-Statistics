@@ -69,8 +69,10 @@ if ($PublishedFileId -eq '0') {
 $actual = @(Get-ChildItem -LiteralPath $mod -File -Recurse | ForEach-Object {
     $_.FullName.Substring($mod.TrimEnd($sep).Length + 1).Replace('\', '/')
 })
-if (Compare-Object -ReferenceObject ($expected | Sort-Object) -DifferenceObject ($actual | Sort-Object)) {
-    throw 'Mod folder has missing or unexpected files. Do not upload developer files or saves.'
+$difference = Compare-Object -ReferenceObject ($expected | Sort-Object) -DifferenceObject ($actual | Sort-Object)
+if ($difference) {
+    $names = ($difference | ForEach-Object { $_.SideIndicator + ' ' + $_.InputObject }) -join ', '
+    throw "Mod folder has missing or unexpected files: $names"
 }
 
 function Quote-Vdf([string]$value) {
