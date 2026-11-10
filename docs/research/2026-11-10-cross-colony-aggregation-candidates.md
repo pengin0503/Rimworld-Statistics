@@ -38,7 +38,7 @@ Rimworld-Statisticsに適するのは**独立コロニーを横断して統合�
 | 設備・電力 | `facilities.medical_beds.peak/turrets.peak/growing_cells.peak/rooms.peak/generation_capacity.peak/battery_capacity.peak`, `facilities.running_generators.latest` | **稼働発電機は既存合計**、各設備の最多/最少コロニー、観測最大、必要なら代表時点合計 | 最大値と同一時点の合計は別指標、ワット/ワット日混同禁止 |
 | 研究 | `research.snapshot.finished/finished_rate/tech_peak` | **研究完了数は既存合計**、最多/最少完了コロニー、到達技術段階の最高記録 | 研究済みの種類数は各コロニーで別々に数える；歴史的な完了イベントと区別 |
 | 派閥・外交 | `diplomacy.snapshot.relations/goodwill_range` | **関係件数は既存合計**、最多関係コロニー、最大/最小友好度等 | 保存済み関係は既存実装の限定的・Partialな対象 |
-| DLC固有 | `biotech.pollution.cells_peak/bandwidth.used_peak`, `royalty.psylink.peak` | DLC導入コロニー間の合計可能な代表値、最悪/最高記録と保持コロニー | DLC不在コロニーはN/A、使用中と上限値を区別 |
+| DLC固有 | `biotech.pollution.cells_peak/bandwidth.used_peak`, `royalty.psylink.max` | DLC導入コロニー間の合計可能な代表値、最悪/最高記録と保持コロニー | DLC不在コロニーはN/A、使用中と上限値を区別 |
 | 資産・人口履歴 | `wealth.items.latest/buildings.latest/pawns.latest`, `wealth.*.peak`, `population.mood.*` | 横断代表時点合計、最高/最低コロニー、歴代記録、記録分布 | 「最新値だけ」の新規出力は増やさず、既存系列の比較に付加価値がある時のみ |
 | ゲーム設定 | `colony.mods.latest/peak/min`, `colony.start.biome` | MOD導入数最多/最少コロニー、開始バイオーム別コロニー数・プレイ日数 | 主たるプレイ実績より優先度低。キー同一性/DLC/MOD差分に注意 |
 | 天候・地形 | `facilities.outdoor_temp.min/max` 等 | 最低/最高観測気温とコロニー、地形別記録 | 観測時の範囲・方法が違う値の無批判な比較禁止 |
