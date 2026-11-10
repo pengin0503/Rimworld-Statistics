@@ -5,6 +5,10 @@ internal readonly record struct SavedMapParent(int? UniqueId, string? Parent, bo
 internal readonly record struct SavedWorldMapObject(int? Id, string? Def, string? Faction, bool Valid);
 /// <summary>A narrowly recognized saved Building_Turret or Building_TurretGun instance.</summary>
 internal readonly record struct SavedMapTurret(int? MapId, string? ThingId, string? Faction, bool Valid);
+/// <summary>Only direct, saved, vanilla Silver/Medicine stacks; no contents or MOD Def inference.</summary>
+internal readonly record struct SavedMapStockItem(
+    int? MapId, string? ThingId, string? DefName, int StackCount,
+    string? Faction, bool Forbidden, bool Valid);
 
 /// <summary>
 /// Partial lower bound for player home maps in pre-install saves. Only explicit
@@ -17,6 +21,8 @@ internal static class HistoricalHomeMapReader
     public const int MaxMaps = 128;
     public const int MaxWorldObjects = 4096;
     public const int MaxSavedTurrets = 8192;
+    public const int MaxSavedStockItems = 16384;
+    public const int MaxTrustedStockStack = 1_000_000;
 
     public static Dictionary<string, MetricEntry>? Build(
         IReadOnlyList<SavedMapParent> maps,
@@ -27,7 +33,9 @@ internal static class HistoricalHomeMapReader
         bool worldObjectsOverflowed,
         bool factionsOverflowed,
         IReadOnlyList<SavedMapTurret>? turrets = null,
-        bool turretsOverflowed = false)
+        bool turretsOverflowed = false,
+        IReadOnlyList<SavedMapStockItem>? stock = null,
+        bool stockOverflowed = false)
     {
         if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
@@ -107,6 +115,47 @@ internal static class HistoricalHomeMapReader
                 {
                     Coverage = MetricCoverage.Partial,
                     IntegerValue = verifiedCount,
+                });
+            }
+        }
+        // In the audited 1.7 Core Def XML Silver is a ThingWithComps,
+        // and the three vanilla medicine defs are RimWorld.Medicine.
+        // The streaming reader only admits matching Class+Def pairs; these
+        // direct on-map stacks are NOT the full contents of a colony's holders.
+        if (stock is { Count: > 0 } && !stockOverflowed && stock.Count <= MaxSavedStockItems)
+        {
+            long silver = 0, medicine = 0;
+            foreach (var group in stock.Where(t => !string.IsNullOrWhiteSpace(t.ThingId))
+                .GroupBy(t => t.ThingId!, StringComparer.Ordinal))
+            {
+                var first = group.First();
+                // Conflicting duplicate IDs, hostile objects, forbidden objects,
+                // invalid stack counts and non-home maps do not provide evidence.
+                if (!group.All(t => t.Valid && t.MapId is { } id && confirmedMapIds.Contains(id)
+                    && (t.Faction is null || t.Faction == playerReference)
+                    && !t.Forbidden && t.StackCount > 0 && t.StackCount <= MaxTrustedStockStack
+                    && t.DefName == first.DefName && t.StackCount == first.StackCount))
+                    continue;
+                if (first.DefName == "Silver")
+                    silver += first.StackCount;
+                else if (first.DefName is "MedicineHerbal" or "MedicineIndustrial" or "MedicineUltratech")
+                    medicine += first.StackCount;
+            }
+            // Do not emit a zero from incomplete map/holder/forbidden data.
+            if (silver > 0)
+            {
+                var stockKey = StockSnapshot.SilverLatest;
+                result[stockKey] = MetricEntry.Of(MetricKeys.Revision(stockKey), new MetricValue
+                {
+                    Coverage = MetricCoverage.Partial, IntegerValue = silver,
+                });
+            }
+            if (medicine > 0)
+            {
+                var medicineKey = StockSnapshot.MedicinePeak;
+                result[medicineKey] = MetricEntry.Of(MetricKeys.Revision(medicineKey), new MetricValue
+                {
+                    Coverage = MetricCoverage.Partial, IntegerValue = medicine,
                 });
             }
         }
