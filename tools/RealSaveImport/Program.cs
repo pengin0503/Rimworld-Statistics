@@ -55,6 +55,12 @@ var silverObserved = 0;
 var silverPartial = 0;
 var medicineObserved = 0;
 var medicinePartial = 0;
+var freeObserved = 0;
+var freePartial = 0;
+var prisonerObserved = 0;
+var prisonerPartial = 0;
+var slaveObserved = 0;
+var slavePartial = 0;
 var unchanged = 0;
 var times = new List<double>(originals.Length);
 var allocations = new List<long>(originals.Length);
@@ -90,6 +96,9 @@ foreach (var file in originals)
         CountPositivePartial(result.Metrics, FacilitiesSnapshot.TurretsPeak, ref turretObserved, ref turretPartial);
         CountPositivePartial(result.Metrics, StockSnapshot.SilverLatest, ref silverObserved, ref silverPartial);
         CountPositivePartial(result.Metrics, StockSnapshot.MedicinePeak, ref medicineObserved, ref medicinePartial);
+        CountPositivePartial(result.Metrics, RosterSnapshot.Free, ref freeObserved, ref freePartial);
+        CountPositivePartial(result.Metrics, RosterSnapshot.Prisoners, ref prisonerObserved, ref prisonerPartial);
+        CountPositivePartial(result.Metrics, RosterSnapshot.Slaves, ref slaveObserved, ref slavePartial);
         switch (result.Observation.Status)
         {
             case ObservationStatus.Ok: successes++; break;
@@ -111,15 +120,17 @@ foreach (var file in originals)
 }
 times.Sort();
 allocations.Sort();
-Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes,research_observed,research_partial,turret_observed,turret_partial,silver_observed,silver_partial,medicine_observed,medicine_partial");
-Console.WriteLine(string.Join(",", 2, originals.Length, successes, unidentifiable,
+Console.WriteLine("schema,originals,parsed_ok,unidentifiable,errors,unchanged,checkpoints,p50_ms,p95_ms,p50_alloc_bytes,research_observed,research_partial,turret_observed,turret_partial,silver_observed,silver_partial,medicine_observed,medicine_partial,free_observed,free_partial,prisoner_observed,prisoner_partial,slave_observed,slave_partial");
+Console.WriteLine(string.Join(",", 3, originals.Length, successes, unidentifiable,
     errors, unchanged, checkpoints,
     Percentile(times, 0.5).ToString("F3", CultureInfo.InvariantCulture),
     Percentile(times, 0.95).ToString("F3", CultureInfo.InvariantCulture),
     allocations.Count > 0 ? allocations[allocations.Count / 2] : 0L,
     researchObserved, researchPartial,
     turretObserved, turretPartial, silverObserved, silverPartial,
-    medicineObserved, medicinePartial));
+    medicineObserved, medicinePartial,
+    freeObserved, freePartial, prisonerObserved, prisonerPartial,
+    slaveObserved, slavePartial));
 Console.WriteLine("build,anonymous_count");
 foreach (var (version, count) in byVersion)
     Console.WriteLine(version + "," + count.ToString(CultureInfo.InvariantCulture));
