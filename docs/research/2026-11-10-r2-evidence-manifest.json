@@ -200,8 +200,33 @@
       "failed": 0,
       "skipped": 9
     },
-    "actualGameSmokeVerified": false,
-    "newV11R2ProductionReadVerified": false,
-    "plannedRimworldForModTestPrUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/pull/72"
+    "actualGameSmokeVerified": true,
+    "newV11R2ProductionReadVerified": true,
+    "plannedRimworldForModTestPrUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/pull/72",
+    "verifiedRuntimeScope": "actual RimWorld 1.7.4985 A+B startup baseline/Harmony registration only; no in-game research equality",
+    "actualGameSourceBuild": "1.7.4985 rev1269",
+    "actualGameSmokeRun": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42838545527",
+    "actualGameSmoke": {
+      "status": "passed",
+      "fidelity": "qualified",
+      "newErrorCount": 0,
+      "stageAChecks": 0,
+      "expectedHarmonyPatches": 2,
+      "additionalUnattributedHarmonyPatches": 9
+    },
+    "productionV11ReaderRun": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42838545431",
+    "productionV11Reader": {
+      "originals": 49,
+      "unchanged": 49,
+      "errors": 0,
+      "observedResearch17": 7,
+      "partialResearch17": 7,
+      "readP50ms": 53.132,
+      "readP95ms": 142.153,
+      "medianAllocBytes": 809400
+    },
+    "rwmtMainSha": "fdbe5d907ac380ad35c25b012a33504244549c6c",
+    "actualGameEvidencePath": "docs/testing/2026-11-10-rimworld-1-7-v11-actual-game-smoke.md",
+    "real49EvidencePath": "docs/testing/2026-11-10-r2-49-original-reader-v11-acceptance.md"
   }
 }
