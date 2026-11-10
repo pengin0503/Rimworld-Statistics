@@ -47,7 +47,7 @@ jobs:
         run: python3 -m py_compile tools/check_private_save_shapes.py
       - name: Unit-test independent XML/deflate private-save verifier
         run: python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
-      - name: Verify all 264 historical-recovery inventory decisions against source
+      - name: Verify all 266 historical-recovery inventory decisions against source
         run: python3 -m unittest discover -s tools/tests -p 'test_historical_recovery_inventory.py' -v
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
