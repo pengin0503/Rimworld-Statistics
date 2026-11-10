@@ -18,6 +18,9 @@ public sealed class NumericValue
     /// <summary>The game tick the value runs to (the representative observation's save tick).</summary>
     public int? ThroughTick { get; init; }
 
+    /// <summary>Saved MOD inventory fingerprint, in memory only; never shown or persisted as a new output.</summary>
+    public string? ModSetHash { get; init; }
+
     /// <summary>For an all-colonies maximum or minimum: the colony that holds it (ties: smallest colony key).</summary>
     public string? ColonyKey { get; init; }
 
@@ -321,6 +324,7 @@ public static class MetricCalculator
                 Evidence = value.Evidence,
                 Numerator = value.Numerator, Denominator = value.Denominator,
                 SinceTick = value.SinceTick, ThroughTick = value.ThroughTick,
+                ModSetHash = value.ModSetHash,
                 SampleCount = value.SampleCount,
             };
         }
@@ -396,6 +400,7 @@ public static class MetricCalculator
         SampleCount = v.SampleCount,
         SinceTick = v.SinceTick,
         ThroughTick = v.ThroughTick ?? observation.SaveTick,
+        ModSetHash = observation.ModSetHash,
     };
 
     private static NumericRow Row(MetricDefinition d, string breakdown, NumericValue v) => new()
