@@ -40,7 +40,11 @@ internal static class FamilyStartup
     /// restarts the measure after a gap. A few zones per map, once per save.
     /// </summary>
     public static void BeforeSave(LiveMetricAccumulator acc, int tick)
-        => Run(acc, FoodFamily.Name, tick, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
+    {
+        Run(acc, FoodFamily.Name, tick, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
+        // Retire abandoned corpse IDs even if no further slaughter jobs occur.
+        Run(acc, ChoreFamily.Name, tick, (s, _) => ChoreFamily.PruneDestroyedCorpses(s, tick));
+    }
 
     private static IEnumerable<Pawn> Members()
         => PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep.Where(GameFacts.IsMember);
