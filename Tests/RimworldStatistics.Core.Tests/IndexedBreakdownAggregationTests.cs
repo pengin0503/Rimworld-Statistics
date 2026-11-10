@@ -80,6 +80,32 @@ public sealed class IndexedBreakdownAggregationTests
     }
 
     [Fact]
+    public void DifferentModSetFingerprints_KeepQuantitiesButCannotClaimCompleteRanking()
+    {
+        var p = Build(3, false);
+        var observations = p.MetricObservations.OrderBy(o => o.Key, StringComparer.Ordinal).ToArray();
+        observations[0].ModSetHash = new string('a', 64);
+        observations[1].ModSetHash = new string('b', 64);
+        NumericRow Rank()
+        {
+            var colonies = CampaignMatcher.BuildColonies(p);
+            return MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()),
+                new[] { MetricRegistry.Find(Key)!, MetricRegistry.Find(CrossColonyCatalog.TopPrefix + Key)! })
+                .Overall.Single(r => r.Definition.Key == CrossColonyCatalog.TopPrefix + Key);
+        }
+        var mixed = Rank();
+        Assert.Equal(6d, mixed.Value.Number); // stored observed quantity still visible
+        Assert.Equal((2, 2, MetricCoverage.Partial), (mixed.Targets, mixed.Valid, mixed.Value.Coverage));
+        Assert.All(mixed.Breakdowns, b => Assert.Equal(MetricCoverage.Partial, b.Value.Coverage));
+
+        observations[1].ModSetHash = null;
+        Assert.Equal(MetricCoverage.Partial, Rank().Value.Coverage); // old saved MOD inventory missing
+
+        observations[1].ModSetHash = observations[0].ModSetHash;
+        Assert.Equal(MetricCoverage.Complete, Rank().Value.Coverage);
+    }
+
+    [Fact]
     public void MissingItem_OnlyFullReconciledParentCanProveZero()
     {
         var p = Build(2, false);
