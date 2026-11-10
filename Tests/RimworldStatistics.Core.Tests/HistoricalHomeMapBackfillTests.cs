@@ -276,6 +276,86 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Equal(1, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].IntegerValue);
     }
 
+    // R2 Assembly-CSharp: Pawn.IsPrisonerOfColony checks guest status AND host player;
+    // Pawn.IsSlaveOfColony checks guest status AND pawn's player faction.
+    // joinStatus is a requested future joining mode, NOT current enslavement.
+    private static XElement SavedHuman(string id, string? faction,
+        string? guestStatus = null, string hostFaction = "null",
+        string joinStatus = "JoinAsSlave", string kind = "Colonist")
+    {
+        return new XElement("thing", new XAttribute("Class", "Pawn"),
+            new XElement("def", "Human"), new XElement("kindDef", kind),
+            new XElement("id", id), faction is null ? null : new XElement("faction", faction),
+            new XElement("guest",
+                new XElement("hostFaction", hostFaction),
+                guestStatus is null ? null : new XElement("guestStatus", guestStatus),
+                new XElement("joinStatus", joinStatus)),
+            new XElement("healthTracker", new XElement("hediffSet")));
+    }
+
+    [Fact]
+    public void HistoricalRoster_OnlyVerifiedLivingHomeHumanStatusesBecomePartial()
+    {
+        const string slaves = "population.snapshot.slaves";
+        var bytes = Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                SavedHuman("Free1", "Faction_14"),
+                SavedHuman("Free1", "Faction_14"),
+                SavedHuman("Free2", "Faction_14", joinStatus: "JoinAsColonist"),
+                SavedHuman("Slave1", "Faction_14", guestStatus: "Slave"),
+                SavedHuman("Prisoner1", "Faction_99", guestStatus: "Prisoner", hostFaction: "Faction_14"),
+                SavedHuman("Foreign1", "Faction_99"),
+                SavedHuman("Guest1", "Faction_99", guestStatus: "Guest", hostFaction: "Faction_14"),
+                SavedHuman("AnotherHostPrisoner", "Faction_99", guestStatus: "Prisoner", hostFaction: "Faction_50"),
+                new XElement("thing", new XAttribute("Class", "Pawn"), new XElement("def", "Sheep"),
+                    new XElement("id", "Sheep1"), new XElement("faction", "Faction_14"))),
+            TurretMap(1, "WorldObject_43", SavedHuman("OutsideHome", "Faction_14"))
+        }, worldObjects: new[] { WorldObject(42), WorldObject(43, "Site") });
+        var original = bytes.ToArray();
+        var read = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.Equal(original, bytes);
+        foreach (var (key, expected) in new[] {
+            (RosterSnapshot.Free, 2L), (RosterSnapshot.Prisoners, 1L), (slaves, 1L) })
+        {
+            var value = read.Metrics!.Metrics[key].Values[MetricEntry.Scalar];
+            Assert.Equal(expected, value.IntegerValue);
+            Assert.Equal(MetricCoverage.Partial, value.Coverage);
+        }
+        Assert.Equal(MetricEvidence.Experimental, read.Metrics!.EvidenceByAcquisition!["roster"]);
+        Assert.DoesNotContain(RosterSnapshot.Animals, read.Metrics.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalRoster_UnknownsAndUnprovenZeroStayMissing()
+    {
+        const string slaves = "population.snapshot.slaves";
+        var noPawns = Read(Save());
+        foreach (var key in new[] { RosterSnapshot.Free, RosterSnapshot.Prisoners, slaves })
+            Assert.DoesNotContain(key, noPawns.Metrics!.Metrics);
+
+        var wrongMap = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", SavedHuman("F1", "Faction_14"))
+        }, worldObjects: new[] { WorldObject(43, "Site") }));
+        Assert.DoesNotContain(RosterSnapshot.Free, wrongMap.Metrics!.Metrics);
+
+        var wrongVersion = Read(Save(version: "1.6.4633 rev1261", maps: new[] {
+            TurretMap(0, "WorldObject_42", SavedHuman("F1", "Faction_14"))
+        }));
+        Assert.DoesNotContain(RosterSnapshot.Free, wrongVersion.Metrics!.Metrics);
+
+        var contradictory = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                SavedHuman("Same", "Faction_14"),
+                SavedHuman("Same", "Faction_14", guestStatus: "Slave"),
+                SavedHuman("BadJoin", "Faction_99", joinStatus: "JoinAsSlave"),
+                SavedHuman("NoHost", "Faction_99", guestStatus: "Prisoner"),
+                SavedHuman("UnknownStatus", "Faction_14", guestStatus: "ModStatus"))
+        }));
+        foreach (var key in new[] { RosterSnapshot.Free, RosterSnapshot.Prisoners, slaves })
+            Assert.DoesNotContain(key, contradictory.Metrics!.Metrics);
+    }
+
     [Fact]
     public void ReaderUpgrade_ReimportsOnceAndLeavesOriginalUnmodified()
     {
