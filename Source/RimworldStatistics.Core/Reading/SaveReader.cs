@@ -786,6 +786,10 @@ public sealed class SaveReader
             if (parsed.Status != CheckpointParseStatus.Ok)
                 return null;
             var c = CheckpointMetrics.ToObservation(parsed.Payload!, text, s.Obs.Identity, s.Obs.GameVersion, metrics.ActiveDlcIds);
+            // Both observations came from the same verified full-file read.
+            // Preserve the saved MOD cohort on checkpoint event breakdowns too;
+            // otherwise a cross-MOD ranked Def looks spuriously compatible.
+            c.ModSetHash = metrics.ModSetHash;
             c.FileAliases.AddRange(metrics.FileAliases.Select(a => new MetricFileAlias { FileName = a.FileName, FileSize = a.FileSize, LastWriteUtc = a.LastWriteUtc }));
             return c;
         }
