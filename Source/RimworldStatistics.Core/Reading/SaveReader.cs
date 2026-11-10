@@ -32,8 +32,9 @@ public sealed class SaveReader
     /// 11: provisional 1.7 history research completion via audited official 1.7 Def costs (Partial).
     /// 12: evidence-gated positive historical home-map turret counts (Partial; no unknown-as-zero).
     /// 13: conservative 1.7 saved home silver/medicine stacks (Partial; Core Def-only).
+    /// 14: saved 1.7 direct-map human guest-status historical roster; retired running generators and nested storage inventory.
     /// </summary>
-    public const int Version = 13;
+    public const int Version = 14;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
