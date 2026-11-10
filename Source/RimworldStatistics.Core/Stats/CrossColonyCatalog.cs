@@ -17,9 +17,8 @@ public static class CrossColonyCatalog
     // the minimum value the colony ever held.
     private static readonly string[] ComparableKeys =
     {
-        RosterSnapshot.Free, RosterSnapshot.Prisoners, RosterSnapshot.Animals, RosterSnapshot.Mechs,
+        RosterSnapshot.Free, RosterSnapshot.Prisoners, RosterSnapshot.Slaves, RosterSnapshot.Animals, RosterSnapshot.Mechs,
         StockSnapshot.FoodLatest, StockSnapshot.SilverLatest, StockSnapshot.MaterialsLatest,
-        FacilitiesSnapshot.RunningGenerators,
         ResearchStateSnapshot.Finished, ResearchStateSnapshot.FinishedRate,
         FactionStateSnapshot.Relations,
         MetricKeys.WealthItemsLatest, MetricKeys.WealthBuildingsLatest, MetricKeys.WealthPawnsLatest,
@@ -39,7 +38,7 @@ public static class CrossColonyCatalog
         WorkFamily.HarvestByCrop, TradeFamily.SalesUnits, TradeFamily.BuysUnits,
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
         WorkFamily.MealsByDef, WorkFamily.Sown_,
-        StockSnapshot.MaterialsLatest, FacilitiesSnapshot.RunningGenerators,
+        StockSnapshot.MaterialsLatest,
         WorkFamily.ConstructionMaterials,
     };
 
