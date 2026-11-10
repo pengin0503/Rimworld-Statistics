@@ -66,7 +66,11 @@ if ($PublishedFileId -eq '0') {
     }
     $expected += 'About/PublishedFileId.txt'
 }
-$actual = @(Get-ChildItem -LiteralPath $mod -File -Recurse | ForEach-Object {
+$allEntries = @(Get-ChildItem -LiteralPath $mod -Recurse -Force)
+if ($allEntries | Where-Object { ($_.Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0 }) {
+    throw 'Mod folder contains a symbolic link or junction. Refusing ambiguous upload contents.'
+}
+$actual = @($allEntries | Where-Object { -not $_.PSIsContainer } | ForEach-Object {
     [IO.Path]::GetRelativePath($mod, $_.FullName).Replace('\', '/')
 })
 $difference = Compare-Object -ReferenceObject ($expected | Sort-Object) -DifferenceObject ($actual | Sort-Object)
