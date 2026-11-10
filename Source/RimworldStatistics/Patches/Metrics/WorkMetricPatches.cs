@@ -31,12 +31,56 @@ internal static class HarvestProbe
     }
 }
 
-[MetricAdapter(WorkFamily.Name)]
+/// <summary>Only the exact wood Thing reported by the harvest toil will be matched to
+/// a subsequent placement callback. The game's Notify_PlantHarvested runs before
+/// GenPlace.TryPlaceThing, so a notification by itself is never added as gained wood.</summary>
+internal static class TreeWoodPlacementProbe
+{
+    private static Thing? expected;
+    private static Map? map;
+    private static Game? game;
+    private static int tick = -1;
+
+    public static void Expect(Pawn? worker, Thing? harvest)
+    {
+        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null ||
+            worker == null || harvest == null || !GameFacts.IsPlayer(worker) ||
+            worker.jobs?.curDriver is not JobDriver_PlantCut ||
+            HarvestProbe.JobPlant(worker) is not { Spawned: true } tree ||
+            tree.def?.plant?.IsTree != true || tree.def.plant.harvestedThingDef != harvest.def ||
+            harvest.stackCount <= 0)
+            return;
+        expected = harvest;
+        map = tree.Map;
+        game = Current.Game;
+        tick = GameFacts.Tick;
+    }
+
+    public static bool Take(Thing? candidate, Map? targetMap)
+    {
+        if (tick != GameFacts.Tick || !ReferenceEquals(game, Current.Game))
+        {
+            expected = null;
+            map = null;
+            game = null;
+            return false;
+        }
+        if (candidate == null || !ReferenceEquals(expected, candidate) || !ReferenceEquals(map, targetMap))
+            return false;
+        expected = null;
+        map = null;
+        game = null;
+        return true;
+    }
+}
+
+[MetricAdapter(WorkFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(QuestManager), nameof(QuestManager.Notify_PlantHarvested))]
 public static class PlantHarvestedMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
+        TreeWoodPlacementProbe.Expect(worker, harvested);
         if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant)
             return;
         var plantId = GameFacts.Id(plant);
@@ -325,27 +369,34 @@ public static class MiningScopeMetricPatch
     }
 }
 
-[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
+[MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name, ChoreFamily.Name)]
 [HarmonyPatch(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
     new[] { typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode), typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int) })]
 public static class MiningPlaceMetricPatch
 {
     public sealed class Placement
     {
-        public required string MinerId;
+        public string? MinerId;
         public required ThingDef YieldDef;
+        public bool CutTreeWood;
         public int Placed;
     }
 
     // GenPlace's placedAction reports quantities that actually got placed/merged.
     // Reading thing.stackCount in a prefix counted attempts (including failed placement).
     // Wrap rather than replace the caller's action so vanilla and other mods still receive it.
-    public static void Prefix(Thing thing, ref Action<Thing, int> placedAction, out Placement? __state)
+    public static void Prefix(Thing thing, Map map, ref Action<Thing, int> placedAction, out Placement? __state)
     {
         __state = null;
-        if (MiningProbe.Miner is not { } miner || thing?.def == null || thing.def != MiningProbe.Yield)
+        if (thing?.def == null)
             return;
-        var state = new Placement { MinerId = GameFacts.Id(miner), YieldDef = thing.def };
+        var miner = MiningProbe.Miner;
+        bool isMineYield = miner != null && thing.def == MiningProbe.Yield;
+        bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map);
+        if (!isMineYield && !isTreeWood)
+            return;
+        var state = new Placement { MinerId = isMineYield ? GameFacts.Id(miner!) : null,
+            YieldDef = thing.def, CutTreeWood = isTreeWood };
         __state = state;
         var original = placedAction;
         placedAction = (placedThing, count) =>
@@ -362,8 +413,13 @@ public static class MiningPlaceMetricPatch
     {
         if (__state is not { Placed: > 0 } state)
             return;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, state.MinerId, state.YieldDef.defName, state.Placed));
-        GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+        if (state.MinerId is { } miner)
+        {
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
+            GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+        }
+        if (state.CutTreeWood)
+            GameFacts.Record(ChoreFamily.Name, s => ChoreFamily.WoodObtained(s, state.Placed));
     }
 }
 

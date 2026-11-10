@@ -150,6 +150,7 @@ public static class LiveCatalog
         Live(AnimalsFamily.Hunted, "N1-D-006", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsHunted", "RWS_MetricDesc_AnimalsHunted"),
 
         // C3 · work
+        Live(ChoreFamily.TreeWoodPlaced, "P2-W-007", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_TreeWoodPlaced", "RWS_MetricDesc_TreeWoodPlaced"),
         Live(ChoreFamily.CleaningJobsCompleted, "P2-W-006", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_CleaningJobsCompleted", "RWS_MetricDesc_CleaningJobsCompleted"),
         Live(ChoreFamily.FilthRemoved, "P2-W-001", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_FilthRemoved", "RWS_MetricDesc_FilthRemoved"),
         Live(ChoreFamily.HaulPlacements, "P2-W-004", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_HaulPlacements", "RWS_MetricDesc_HaulPlacements"),

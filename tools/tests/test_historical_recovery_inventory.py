@@ -1,4 +1,4 @@
-"""Regression checks for the conservative 272-output historical-recovery inventory."""
+"""Regression checks for the conservative 273-output historical-recovery inventory."""
 import collections
 import pathlib
 import sys
@@ -12,9 +12,9 @@ from historical_recovery_inventory import build_inventory, csv_text
 class HistoricalRecoveryInventoryTests(unittest.TestCase):
     def test_every_implemented_acquisition_output_has_one_recovery_decision(self):
         rows = build_inventory(ROOT)
-        self.assertEqual(272, len(rows))
+        self.assertEqual(273, len(rows))
         self.assertEqual(
-            {"live": 222, "snapshot": 41, "derived": 9},
+            {"live": 223, "snapshot": 41, "derived": 9},
             dict(collections.Counter(row["catalog"] for row in rows)),
         )
         keys = [row["metric_key"] for row in rows]

@@ -14,6 +14,7 @@ public static class ChoreFamily
     public const string MealIngestions = "work.food.meal_ingestions";
     public const string HaulPlacements = "work.hauling.cell_deposits";
     public const string HauledUnits = "work.hauling.cell_deposited_units";
+    public const string TreeWoodPlaced = "work.trees.wood_placed";
     private const string FilthKey = "filth";
     private const string CleaningJobsKey = "clean_jobs";
     private const string CleaningPendingKey = "clean_pending";
@@ -21,6 +22,7 @@ public static class ChoreFamily
     private const string MealKey = "meal";
     private const string HaulPlacementsKey = "hauls";
     private const string HaulUnitsKey = "haul_units";
+    private const string WoodKey = "wood_placed";
 
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
 
@@ -48,6 +50,12 @@ public static class ChoreFamily
     public static void FireCleared(FamilyState state) => state.Count(FireKey);
     public static void MealIngested(FamilyState state) => state.Count(MealKey);
 
+    /// <summary>Only wood units reported by GenPlace's successful placedAction on a player's cut tree.</summary>
+    public static void WoodObtained(FamilyState state, int placedWoodUnits)
+    {
+        if (placedWoodUnits > 0) state.Count(WoodKey, placedWoodUnits);
+    }
+
     public static void HaulDeposited(FamilyState state, int depositedUnits)
     {
         if (depositedUnits <= 0) return;
@@ -66,5 +74,7 @@ public static class ChoreFamily
         // Cell-storage drops only: container hauling and nonstandard MOD paths are not covered.
         context.Put(HaulPlacements, context.Value(integer: context.State.Peek(HaulPlacementsKey)?.N ?? 0, partial: true));
         context.Put(HauledUnits, context.Value(integer: context.State.Peek(HaulUnitsKey)?.N ?? 0, partial: true));
+        // Primary harvest only; comp-based bonus yield and nonstandard modded cutting remain outside coverage.
+        context.Put(TreeWoodPlaced, context.Value(integer: context.State.Peek(WoodKey)?.N ?? 0, partial: true));
     }
 }
