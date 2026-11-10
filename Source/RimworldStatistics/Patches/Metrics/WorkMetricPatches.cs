@@ -79,6 +79,52 @@ public static class PlantCollectedMetricPatch
 /// It is also called for feeding and caravans: require a meal and a player
 /// humanlike ingester. Zero-yield calls are not counted.
 /// </summary>
+
+/// <summary>
+/// Counts completed cell-storage delivery, never the early "ThingsHauled" pickup.
+/// In 1.7.4985 Toils_Haul.PlaceHauledThingInCell calls the 4-argument
+/// Pawn_CarryTracker.TryDropCarriedThing overload with Direct placement.
+/// Its bool success comes from ThingOwner.TryDrop. The retained carried-count
+/// delta measures deposited units including partial stack drops.
+/// The hook observes other use cases, but only commits player HaulToCell drops
+/// at the job's destination cell. No per-tick or pawn collection traversal.
+/// </summary>
+[MetricAdapter(ChoreFamily.Name)]
+[HarmonyPatch]
+internal static class HaulToCellCompletionMetricPatch
+{
+    private static System.Reflection.MethodBase TargetMethod()
+        => AccessTools.Method(typeof(Pawn_CarryTracker),
+            nameof(Pawn_CarryTracker.TryDropCarriedThing),
+            new[] { typeof(IntVec3), typeof(ThingPlaceMode), typeof(Thing).MakeByRefType(),
+                    typeof(Action<Thing, int>) })!;
+
+    private static void Prefix(Pawn_CarryTracker __instance, IntVec3 dropLoc,
+        ThingPlaceMode mode, out int __state)
+    {
+        __state = 0;
+        if (LiveMetrics.Family(ChoreFamily.Name) is null)
+            return;
+        var actor = __instance.pawn;
+        var job = actor?.CurJob;
+        if (actor == null || !GameFacts.IsPlayer(actor) ||
+            job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
+            job.targetB.Cell != dropLoc)
+            return;
+        __state = __instance.CarriedThing?.stackCount ?? 0;
+    }
+
+    private static void Postfix(Pawn_CarryTracker __instance, bool __result, int __state)
+    {
+        if (!__result || __state <= 0)
+            return;
+        var remaining = __instance.CarriedThing?.stackCount ?? 0;
+        int deposited = __state - remaining;
+        if (deposited > 0)
+            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.HaulDeposited(state, deposited));
+    }
+}
+
 [MetricAdapter(ChoreFamily.Name)]
 [HarmonyPatch(typeof(Thing), nameof(Thing.Ingested), new[] { typeof(Pawn), typeof(float) })]
 internal static class MealIngestedMetricPatch

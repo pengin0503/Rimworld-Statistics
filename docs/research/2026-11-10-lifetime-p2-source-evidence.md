@@ -25,10 +25,17 @@ Source: private R2 `rimworld-17/Assembly-CSharp.dll` (15,632,896 bytes, 2026-10-
 - It is called by `RimWorld.Toils_Ingest.FinalizeIngest`'s closure, by caravan food handling, and by some administering/feeding paths. A `Thing.Ingested` call alone does not prove a colonist meal. Filter successful (`__result > 0f`), `ThingDef.ingestible.IsMeal`, humanlike player faction ingester. A partial food portion counts one ingestion event; not an inferred whole-meal stack.
 - New low-frequency Harmony Postfix targets `Thing.Ingested`; the exact signature is checked against 1.7 public game references in CI. Actual game frequency, modded feeding, and edge-cases still need acceptance tests.
 
+
+## Successful cell hauls (additional P2 candidate)
+
+- `Verse.AI.Toils_Haul.PlaceHauledThingInCell` (`MethodDef 0x060041e1`) installs a Toil whose `initAction` drops the carried Thing at the cell. The 1.7.4985 `Verse.Pawn_CarryTracker.TryDropCarriedThing` four-argument overload (`0x060024b0`; signature includes `out Thing`, `Action<Thing,int>`) forwards to `ThingOwner.TryDrop` and returns whether the **drop** succeeded.
+- The prefix stores the player's carried stack size only for `JobDefOf.HaulToCell`, `ThingPlaceMode.Direct` and the job's exact destination cell; on a successful drop the postfix adds one *placement* and the positive before/after stack difference. A pickup without delivery does not qualify; failed placements, cancellation, NPC activity, or unmodified carries add nothing.
+- The secondary overload `0x060024b1` is intentionally not patched. Container deliveries use `TryTransferToContainer` and are **out of scope**. These metrics always report `Partial`, not a falsely complete game-wide hauling total. MOD-specific alternative placement flows need their own source-verified adapters and performance tests.
+
 ## Unsafe/undecided event sources (do not fabricate)
 
 - `RecordDefOf.ThingsHauled` is incremented within `Toils_Haul.StartCarryThing` closure (`0x06010977`) **at pickup**, before a storage placement outcome. It cannot represent a successful haul or deposited unit count.
-- Full clean job completions, successfully deposited haul amounts, wood actually gained after tree cutting, and slaughtered-animal corpse processing need source-confirmed post-success boundaries with negative controls. In particular, a Bill completion cannot prove whether the corpse came from slaughter rather than hunting without provenance.
+- Full clean job completions, wood actually gained after tree cutting, and slaughtered-animal corpse processing need source-confirmed post-success boundaries with negative controls. In particular, a Bill completion cannot prove whether the corpse came from slaughter rather than hunting without provenance.
 - `work_details` production/ore breakdown reuses audited preexisting work hooks but the new on-game results require actual event smoke checks.
 - Existing RWMT real-game A+B verifies loader and certain Harmony registrations only; it does **not** test this new event body, source save/reload, player/NPC origin, 1.7.5000 save compatibility, or TPS.
 

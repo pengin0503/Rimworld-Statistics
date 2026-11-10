@@ -151,6 +151,8 @@ public static class LiveCatalog
 
         // C3 · work
         Live(ChoreFamily.FilthRemoved, "P2-W-001", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_FilthRemoved", "RWS_MetricDesc_FilthRemoved"),
+        Live(ChoreFamily.HaulPlacements, "P2-W-004", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_HaulPlacements", "RWS_MetricDesc_HaulPlacements"),
+        Live(ChoreFamily.HauledUnits, "P2-W-005", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_HauledUnits", "RWS_MetricDesc_HauledUnits"),
         Live(ChoreFamily.MealIngestions, "P2-W-003", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_MealIngestions", "RWS_MetricDesc_MealIngestions"),
         Live(ChoreFamily.FiresExtinguished, "P2-W-002", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_FiresExtinguished", "RWS_MetricDesc_FiresExtinguished"),
         Live(WorkDetailsFamily.CraftedByDef, "P1-W-001", Work, Count, Sum, WorkDetailsFamily.Name, "RWS_Metric_CraftedByDef", "RWS_MetricDesc_CraftedByDef", breakdown: true),

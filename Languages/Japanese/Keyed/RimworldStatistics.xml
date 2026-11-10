@@ -856,4 +856,8 @@
   <RWS_MetricDesc_FiresExtinguished>入植者の消火または自己消火で火が消え、ゲーム側の消火実績が加算された回数です。雨や自然消火は含みません。記録を有効にした期間のみ対象です。</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>食事摂取の成立回数</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>プレイヤー陣営の人間型ポーンが食事を実際に摂取し、栄養の取得量が正だった回数を記録します。キャラバンでの摂取も含み、食事以外の食品・薬物・非プレイヤーは除外します。</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>保管セルへの運搬完了回数</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>入植者のHaulToCellが指定セルに実際に品物を置けた回数です。拾い上げだけでは数えません。コンテナ運搬や別のMOD固有経路は対象外で、部分的な記録です。</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>保管セルに運んだ品目個数</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>HaulToCellで指定セルへの配置に成功した品目の個数を、運搬中スタックの減少量から記録します。コンテナ運搬などを除くため部分的な記録です。</RWS_MetricDesc_HauledUnits>
 </LanguageData>
