@@ -24,6 +24,10 @@
 
 **Crucial new opportunity:** `Game-Linux/Version.txt` and the audited 2,672-file source corpus match **six R2 1.7.4985 original saves** exactly at the *build identifier* level. But these six saves contain **239–252** MODs. Matching build is necessary and **not sufficient** for completed research, Pawn, stock or power semantics; vanilla/Core+DLC Defs do not resolve all installed MOD-defined types. They are valid candidates for a qualified game-host compatibility test with the **actual saved MOD inventories** loaded privately. Do not treat `1.7.4979` or any `1.7.5000` attached sample as exact-match for these 4985 DLLs.
 
+## Subsequent production .NET validation
+
+After this original metadata census, a **separate private run using the actual production .NET SaveReader** was executed and **passed**: [RWMT #42830780995](https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42830780995), [immutable acceptance evidence](../testing/2026-11-10-private-r2-49-original-net-acceptance.md). 49/49 originals preserved, 0 reader/integrity errors, all 12 exact build counts matched, p50 **36.808 ms** and p95 **125.850 ms** (median managed allocations **808,696 bytes**). The census on this page remains a **metadata method**, not a runtime Def correctness verification. The program does not print raw source IDs or original names.
+
 ## Reproducible read-only method
 
 1. `GET /accounts/{account_id}/r2/buckets/rimworld-17/objects?prefix=Saves/&per_page=1000`; continue `result_info.cursor` until `is_truncated=false`. The present inventory returned 49 objects and 824,593,049 bytes.
