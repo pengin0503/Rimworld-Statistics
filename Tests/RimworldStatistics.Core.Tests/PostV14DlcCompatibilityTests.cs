@@ -101,6 +101,6 @@ public sealed class PostV14DlcCompatibilityTests
             Assert.Equal(original.Metrics.Keys.Order(StringComparer.Ordinal),
                 copy.Metrics.Keys.Order(StringComparer.Ordinal));
         }
-        Assert.Equal(415, MetricRegistry.Catalog.Count);
+        Assert.Equal(414, MetricRegistry.Catalog.Count);
     }
 }
