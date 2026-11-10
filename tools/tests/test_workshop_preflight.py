@@ -13,6 +13,11 @@ from pathlib import Path
 
 SCRIPT = Path(__file__).resolve().parents[1] / "prepare_workshop.py"
 PS_SCRIPT = SCRIPT.parent / "make_workshop_vdf.ps1"
+LISTING_SCRIPT = SCRIPT.parent / "render_workshop_listings.py"
+LSPEC = importlib.util.spec_from_file_location("render_workshop_listings", LISTING_SCRIPT)
+assert LSPEC is not None and LSPEC.loader is not None
+listings = importlib.util.module_from_spec(LSPEC)
+LSPEC.loader.exec_module(listings)
 SPEC = importlib.util.spec_from_file_location("prepare_workshop", SCRIPT)
 assert SPEC is not None and SPEC.loader is not None
 mod = importlib.util.module_from_spec(SPEC)
@@ -95,11 +100,14 @@ class WorkshopPrepareTests(unittest.TestCase):
     @unittest.skipUnless(shutil.which("pwsh"), "PowerShell not installed")
     def test_pc_vdf_tool_first_upload_and_safe_updates(self):
         staged = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
+        manifest_path = self.root / "out/workshop-manifest.json"
+        mod.write_manifest(staged, manifest_path, "1.3.0")
 
         def run(name, workshop_id="0"):
             return subprocess.run(
                 ["pwsh", "-NoProfile", "-File", str(PS_SCRIPT),
-                 "-ModPath", str(staged), "-OutputPath", str(self.root / name),
+                 "-ModPath", str(staged), "-ManifestPath", str(manifest_path),
+                 "-OutputPath", str(self.root / name),
                  "-PublishedFileId", workshop_id],
                 text=True, capture_output=True, timeout=25,
             )
@@ -119,6 +127,14 @@ class WorkshopPrepareTests(unittest.TestCase):
             self.assertTrue(Path(actual_path.replace("\\\\", "\\")).samefile(staged))
         self.assertIn('"description"', initial)
         self.assertIn("STEAM_UPLOAD=NOT_PERFORMED", first.stdout)
+
+        # Tampered production binaries must not pass the generated manifest.
+        dll = staged / "1.7/Assemblies/RimworldStatistics.dll"
+        original = dll.read_bytes()
+        dll.write_bytes(b"modified")
+        self.assertNotEqual(0, run("tampered.vdf").returncode)
+        self.assertFalse((self.root / "tampered.vdf").exists())
+        dll.write_bytes(original)
 
         (staged / "secrets.txt").write_text("do not publish")
         self.assertNotEqual(0, run("extra.vdf").returncode)
@@ -142,6 +158,46 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.assertNotIn('"title"', update)
         self.assertNotEqual(0, run("update.vdf", "123456789").returncode)
 
+
+    def test_future_version_and_approved_asset_folders(self):
+        newer = ABOUT.replace(b"1.3.0", b"1.4.0")
+        members = {
+            **NAMES,
+            "RimworldStatistics/About/About.xml": newer,
+            "RimworldStatistics/Defs/ThingDefs/Example.xml": b"<Defs/>",
+            "RimworldStatistics/Textures/Icons/example.png": b"\x89PNGtest",
+            "RimworldStatistics/Languages/Japanese/DefInjected/ThingDef/example.xml": b"<LanguageData/>",
+        }
+        self.make_zip(members)
+        staged = mod.stage(self.zip, self.preview, self.root / "future", "1.4.0", self.license)
+        manifest_path = self.root / "future/workshop-manifest.json"
+        mod.write_manifest(staged, manifest_path, "1.4.0")
+        manifest = __import__("json").loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertEqual("1.4.0", manifest["version"])
+        self.assertIn("Defs/ThingDefs/Example.xml", [f["path"] for f in manifest["files"]])
+        self.assertNotIn("About/PublishedFileId.txt", [f["path"] for f in manifest["files"]])
+
+    def test_future_release_must_not_claim_different_version(self):
+        with self.assertRaisesRegex(ValueError, "modVersion"):
+            mod.stage(self.zip, self.preview, self.root / "wrong", "1.4.0", self.license)
+
+    def test_unapproved_payload_and_debug_files_rejected(self):
+        members = {**NAMES, "RimworldStatistics/Source/Program.cs": b"unsafe"}
+        self.make_zip(members)
+        with self.assertRaisesRegex(ValueError, "Unsafe or unapproved"):
+            mod.stage(self.zip, self.preview, self.root / "bad", "1.3.0", self.license)
+        self.make_zip({**NAMES, "RimworldStatistics/1.7/Assemblies/Debug.pdb": b"debug"})
+        with self.assertRaisesRegex(ValueError, "Unsafe or unapproved"):
+            mod.stage(self.zip, self.preview, self.root / "bad2", "1.3.0", self.license)
+
+    def test_render_bilingual_release_metadata(self):
+        template = "mod={{MOD_VERSION}} tag={{RELEASE_TAG}}"
+        self.assertEqual("mod=1.4.0 tag=v1.4.0", listings.render(template, "1.4.0"))
+        with self.assertRaisesRegex(ValueError, "stable"):
+            listings.render(template, "1.4.0-rc.1")
+        with self.assertRaisesRegex(ValueError, "placeholder"):
+            listings.render("mod=1.3.0", "1.4.0")
+
     def test_bad_hash_is_rejected(self):
         self.sha.write_text("0" * 64 + "  " + self.zip.name + "\n")
         with self.assertRaisesRegex(ValueError, "mismatch"):
@@ -150,7 +206,7 @@ class WorkshopPrepareTests(unittest.TestCase):
     def test_extra_dev_content_is_rejected(self):
         self.make_zip({**NAMES, "RimworldStatistics/tools/VerifyHarness.dll": b"X"})
         self.write_sha()
-        with self.assertRaisesRegex(ValueError, "Unexpected ZIP payload"):
+        with self.assertRaisesRegex(ValueError, "Unsafe or unapproved ZIP payload"):
             mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
 
     def test_path_traversal_is_rejected(self):
