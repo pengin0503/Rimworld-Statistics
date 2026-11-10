@@ -31,8 +31,9 @@ public sealed class SaveReader
     /// 10: new breakdown outputs rebuilt from the original checkpoint (no counter revision changes).
     /// 11: provisional 1.7 history research completion via audited official 1.7 Def costs (Partial).
     /// 12: evidence-gated positive historical home-map turret counts (Partial; no unknown-as-zero).
+    /// 13: conservative 1.7 saved home silver/medicine stacks (Partial; Core Def-only).
     /// </summary>
-    public const int Version = 12;
+    public const int Version = 13;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -137,6 +138,8 @@ public sealed class SaveReader
         public bool HistoricalMapsOverflowed { get; set; }
         public List<SavedMapTurret> HistoricalTurrets { get; } = new();
         public bool HistoricalTurretsOverflowed { get; set; }
+        public List<SavedMapStockItem> HistoricalStock { get; } = new();
+        public bool HistoricalStockOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
@@ -317,8 +320,8 @@ public sealed class SaveReader
 
 
     /// <summary>
-    /// Reads only small map-parent keys; all map terrain, pawns, components and
-    /// things are skipped by XmlReader, never materialized as object trees.
+    /// Reads bounded map-parent keys and narrow validated Thing class/Def evidence.
+    /// All terrain, pawns and components are skipped, never materialized as object trees.
     /// </summary>
     private static void ReadMaps(XmlReader r, ReadState s)
     {
@@ -337,6 +340,7 @@ public sealed class SaveReader
             var valid = true;
             var mapInfoSeen = false;
             var onMapTurrets = new List<(string? Id, string? Faction, bool Valid)>();
+            var onMapStock = new List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)>();
             ForEachChild(r, child =>
             {
                 switch (child)
@@ -350,7 +354,7 @@ public sealed class SaveReader
                             id = parsedId;
                         break;
                     case "things":
-                        ReadSavedTurrets(r, s, onMapTurrets);
+                        ReadSavedMapThings(r, s, onMapTurrets, onMapStock);
                         break;
                     case "mapInfo":
                         if (mapInfoSeen) valid = false;
@@ -380,52 +384,104 @@ public sealed class SaveReader
             s.HistoricalMaps.Add(new SavedMapParent(id, parent, pocket, valid));
             foreach (var turret in onMapTurrets)
                 s.HistoricalTurrets.Add(new SavedMapTurret(id, turret.Id, turret.Faction, valid && turret.Valid));
+            foreach (var item in onMapStock)
+                s.HistoricalStock.Add(new SavedMapStockItem(id, item.Id, item.Def, item.Count,
+                    item.Faction, item.Forbidden, valid && item.Valid));
         });
     }
 
     /// <summary>
-    /// Streaming, memory-bounded recognition of the two 1.7 classes that the
-    /// real game's type index confirms are Building_Turret subclasses.
-    /// Unknown MOD turret classes are skipped, not reclassified from defName.
+    /// Streaming, bounded extraction of specific vanilla building and stock
+    /// classes proven by the 1.7.4985 game Def/type index. This never loads
+    /// the full maps/things into XElement trees or interprets unknown MOD defs.
     /// </summary>
-    private static void ReadSavedTurrets(XmlReader r, ReadState s,
-        List<(string? Id, string? Faction, bool Valid)> items)
+    private static void ReadSavedMapThings(XmlReader r, ReadState s,
+        List<(string? Id, string? Faction, bool Valid)> turrets,
+        List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)> stock)
     {
-        ForEachChild(r, name =>
+        ForEachChild(r, node =>
         {
-            if (name != "thing"
-                || r.GetAttribute("Class") is not ("Building_TurretGun" or "Building_Turret"))
-            {
-                r.Skip();
-                return;
-            }
-            if (s.HistoricalTurrets.Count + items.Count >= HistoricalHomeMapReader.MaxSavedTurrets)
+            if (node != "thing") { r.Skip(); return; }
+            var className = r.GetAttribute("Class");
+            var isTurret = className is "Building_TurretGun" or "Building_Turret";
+            var stockCandidate = className is "ThingWithComps" or "Medicine";
+            if (!isTurret && !stockCandidate) { r.Skip(); return; }
+            if (isTurret && s.HistoricalTurrets.Count + turrets.Count >= HistoricalHomeMapReader.MaxSavedTurrets)
             {
                 s.HistoricalTurretsOverflowed = true;
                 r.Skip();
                 return;
             }
 
-            string? id = null, faction = null;
+            string? id = null, faction = null, def = null;
+            var count = 1;
+            var forbidden = false;
             var valid = true;
+            var idSeen = false;
+            var factionSeen = false;
+            var defSeen = false;
+            var countSeen = false;
+            var forbiddenSeen = false;
             ForEachChild(r, field =>
             {
                 switch (field)
                 {
                     case "id":
-                        var i = ReadHistoricalAtom(r);
-                        if (id != null || string.IsNullOrWhiteSpace(i)) valid = false;
-                        else id = i;
+                        var idValue = ReadHistoricalAtom(r);
+                        if (idSeen || string.IsNullOrWhiteSpace(idValue)) valid = false;
+                        idSeen = true;
+                        id = idValue;
+                        break;
+                    case "def":
+                        var defValue = ReadHistoricalAtom(r);
+                        if (defSeen || string.IsNullOrWhiteSpace(defValue)) valid = false;
+                        defSeen = true;
+                        def = defValue;
                         break;
                     case "faction":
-                        var f = ReadHistoricalAtom(r);
-                        if (faction != null || string.IsNullOrWhiteSpace(f)) valid = false;
-                        else faction = f;
+                        var factionValue = ReadHistoricalAtom(r);
+                        if (factionSeen || string.IsNullOrWhiteSpace(factionValue)) valid = false;
+                        factionSeen = true;
+                        faction = factionValue is "null" ? null : factionValue;
+                        break;
+                    case "stackCount":
+                        var countValue = ReadHistoricalAtom(r);
+                        if (countSeen || !int.TryParse(countValue, NumberStyles.Integer, Inv, out var number))
+                            valid = false;
+                        else count = number;
+                        countSeen = true;
+                        break;
+                    case "forbidden":
+                        var forbiddenValue = ReadHistoricalAtom(r);
+                        if (forbiddenSeen || !bool.TryParse(forbiddenValue, out var isForbidden))
+                            valid = false;
+                        else forbidden = isForbidden;
+                        forbiddenSeen = true;
                         break;
                     default: r.Skip(); break;
                 }
             });
-            items.Add((id, faction, valid && id is not null && faction is not null));
+
+            if (isTurret)
+            {
+                turrets.Add((id, faction, valid && !string.IsNullOrWhiteSpace(id)
+                    && !string.IsNullOrWhiteSpace(faction)));
+                return;
+            }
+            // The actual official Core 1.7 resolved ThingDefs define precisely
+            // these Class/Def pairings. Unknown MOD medicine or other classes
+            // may exist; their omission is why this is always Partial.
+            if (className == "ThingWithComps" && def != "Silver"
+                || className == "Medicine" && def is not ("MedicineHerbal" or "MedicineIndustrial" or "MedicineUltratech"))
+                return;
+            if (s.HistoricalStock.Count + stock.Count >= HistoricalHomeMapReader.MaxSavedStockItems)
+            {
+                s.HistoricalStockOverflowed = true;
+                return;
+            }
+            stock.Add((id, def, count, faction, forbidden,
+                valid && !string.IsNullOrWhiteSpace(id)
+                && count > 0 && count <= HistoricalHomeMapReader.MaxTrustedStockStack));
         });
     }
 
@@ -970,12 +1026,15 @@ public sealed class SaveReader
                 s.HistoricalFactions, s.ScenarioPlayerFactionDef,
                 s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed,
                 s.HistoricalFactionsOverflowed,
-                s.HistoricalTurrets, s.HistoricalTurretsOverflowed) is { } homes)
+                s.HistoricalTurrets, s.HistoricalTurretsOverflowed,
+                s.HistoricalStock, s.HistoricalStockOverflowed) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;
             m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
             m.EvidenceByAcquisition["facilities"] = MetricEvidence.Experimental;
+            if (homes.ContainsKey(StockSnapshot.SilverLatest) || homes.ContainsKey(StockSnapshot.MedicinePeak))
+                m.EvidenceByAcquisition["stock"] = MetricEvidence.Experimental;
         }
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,
