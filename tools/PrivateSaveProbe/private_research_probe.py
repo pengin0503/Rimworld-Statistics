@@ -126,8 +126,11 @@ def main() -> int:
         try:
             r = probe(path, args.expected_game_version)
             results.append({"input_index": i, **r})
-        except (ProbeError, OSError) as exc:
+        except ProbeError as exc:
             results.append({"input_index": i, "reader_status": "error", "reason": str(exc)})
+        except OSError:
+            # OSError messages contain private input paths; never print them.
+            results.append({"input_index": i, "reader_status": "error", "reason": "private input unavailable"})
     print(json.dumps({"schema": 1, "privacy": "no-input-identifiers", "results": results}, ensure_ascii=False, sort_keys=True))
     return 1 if any(r["reader_status"] != "complete" for r in results) else 0
 
