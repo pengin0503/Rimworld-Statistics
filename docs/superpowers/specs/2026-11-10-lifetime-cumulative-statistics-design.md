@@ -51,6 +51,12 @@
 
 上限は `FamilyOps.KeyCap=4096`。辞書は上限時に新しいキーを落とすが、独立した親総量は継続しうる。したがって、**内訳が欠けた場合だけ内訳がPartial、親は実際の計測範囲に応じたcoverage**とし、`sum(内訳) != 親`を無理に調整しない。未知Defの表示は「不明」とし推測しない。旧セーブでfamilyそのものが無ければ欠測として表示し、0を作らない。
 
+### 4.1. 既存プロファイルの再読込み契約（重要）
+
+チェックポイントのファミリー原データは .rws 内の `numericStatistics` にあり、`CheckpointMetrics.ToObservation` がそこから`MetricObservation.Metrics`を生成する。一方、`Profile.MetricObservations`には**既に計算した出力**が保存され、`ImportEngine`は`ProfileMutations.NeedsRead(..., SaveReader.Version)`に従って未変更ファイルをスキップする。従って**P0でfamily.Buildを変更しただけでは既存プロファイルの内訳が自動補完されると保証できない**。
+
+実装時には、`SaveReader.Version`（現行9）を新しい出力形式に対応させて更新するか、同等の安全な再評価機構を用意する。推奨は一度だけのReaderVersion更新で、重複インポートやファイル改変をしないこと。既存の読込失敗時は良好な古い観測値を維持し、スキャン済みセーブでもチェックポイントを再構築できることをテストで証明する。読み取り元の.rwsがなく、旧プロファイルに内訳がない場合は回復不能なUnknownとし、親のカウントは維持する。なお`WorkFamily`・`TradeFamily`・`MedicineFamily`の**ファミリーRevisionは上げない**。
+
 ## 5. 表示整理（データを削らない）
 
 現行 `DetailsTab` の全コロニー/個別コロニー・カテゴリ・検索・並べ替え・内訳展開を維持したうえで、一覧表示モードを追加する。新規タブの複製は不要。
