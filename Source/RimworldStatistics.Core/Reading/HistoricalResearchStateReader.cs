@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Reflection;
 using System.Text.Json;
 
 namespace RimworldStatistics.Core;
@@ -90,7 +89,6 @@ public static class HistoricalResearchStateReader
 
         var progress = new Dictionary<string, float>(StringComparer.Ordinal);
         var duplicates = new HashSet<string>(StringComparer.Ordinal);
-        var partial = malformed || keys.Count != values.Count;
         var count = Math.Min(keys.Count, values.Count);
         for (var i = 0; i < count; i++)
         {
@@ -99,7 +97,6 @@ public static class HistoricalResearchStateReader
                 || !float.TryParse(values[i], NumberStyles.Float, CultureInfo.InvariantCulture, out var value)
                 || !float.IsFinite(value) || value < 0)
             {
-                partial = true;
                 if (!string.IsNullOrEmpty(key))
                 {
                     progress.Remove(key);
@@ -111,7 +108,6 @@ public static class HistoricalResearchStateReader
             {
                 progress.Remove(key);
                 duplicates.Add(key);
-                partial = true;
             }
         }
 
@@ -120,13 +116,11 @@ public static class HistoricalResearchStateReader
             return null;
         var known = official.Select(d => d.Name).ToHashSet(StringComparer.Ordinal);
         if (progress.Keys.Any(k => !known.Contains(k)))
-            partial = true;
         var records = new List<ResearchStateFact>(official.Length);
         foreach (var def in official)
         {
             if (duplicates.Contains(def.Name))
             {
-                partial = true;
                 continue;
             }
             // Missing keys in ResearchManager.progress have the game's default progress 0.
@@ -137,6 +131,6 @@ public static class HistoricalResearchStateReader
 
         // The 1.7.4985 official Def archive is being used provisionally for
         // 1.7.5000, and other MODs can patch baseCost. Never claim Complete.
-        return ResearchStateSnapshot.Build(records, partial: true || partial);
+        return ResearchStateSnapshot.Build(records, partial: true);
     }
 }
