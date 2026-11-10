@@ -67,7 +67,7 @@ if ($PublishedFileId -eq '0') {
     $expected += 'About/PublishedFileId.txt'
 }
 $actual = @(Get-ChildItem -LiteralPath $mod -File -Recurse | ForEach-Object {
-    $_.FullName.Substring($mod.TrimEnd($sep).Length + 1).Replace('\', '/')
+    [IO.Path]::GetRelativePath($mod, $_.FullName).Replace('\', '/')
 })
 $difference = Compare-Object -ReferenceObject ($expected | Sort-Object) -DifferenceObject ($actual | Sort-Object)
 if ($difference) {
