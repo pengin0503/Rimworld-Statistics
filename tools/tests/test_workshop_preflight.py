@@ -52,6 +52,8 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.zip = self.root / "RimworldStatistics-v1.3.0.zip"
         self.preview = self.root / "Preview.png"
         self.preview.write_bytes(preview_png())
+        self.license = self.root / "LICENSE"
+        self.license.write_text("MIT License\nCopyright (c) 2026 pengin0503\n")
         self.make_zip(NAMES)
         self.sha = self.root / "RimworldStatistics-v1.3.0.sha256"
         self.write_sha()
@@ -65,9 +67,10 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.sha.write_text(hashlib.sha256(self.zip.read_bytes()).hexdigest() + "  " + self.zip.name + "\n")
 
     def test_valid_stage_is_mod_folder_with_private_vdf_and_no_upload(self):
-        modroot = mod.stage(self.zip, self.preview, self.root / "staged", "1.3.0")
+        modroot = mod.stage(self.zip, self.preview, self.root / "staged", "1.3.0", self.license)
         self.assertTrue((modroot / "About/Preview.png").exists())
-        self.assertEqual(7, len(list(modroot.rglob("*.*"))))
+        self.assertEqual(8, len(list(modroot.rglob("*.*"))))
+        self.assertTrue((modroot / "LICENSE").exists())
         self.assertEqual(ABOUT, (modroot / "About/About.xml").read_bytes())
         vdf = self.root / "staged/workshop.vdf"
         mod.write_vdf(modroot, vdf, "0")
@@ -87,24 +90,24 @@ class WorkshopPrepareTests(unittest.TestCase):
         self.make_zip({**NAMES, "RimworldStatistics/tools/VerifyHarness.dll": b"X"})
         self.write_sha()
         with self.assertRaisesRegex(ValueError, "Unexpected ZIP payload"):
-            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0")
+            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
 
     def test_path_traversal_is_rejected(self):
         self.make_zip({**NAMES, "RimworldStatistics/../outside.txt": b"attack"})
         self.write_sha()
         with self.assertRaisesRegex(ValueError, "Unsafe ZIP entry"):
-            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0")
+            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
 
     def test_wrong_version_is_rejected(self):
         with self.assertRaisesRegex(ValueError, "modVersion"):
-            mod.stage(self.zip, self.preview, self.root / "out", "1.2.2")
+            mod.stage(self.zip, self.preview, self.root / "out", "1.2.2", self.license)
 
     def test_existing_output_not_overwritten(self):
         dest = self.root / "out"
         dest.mkdir()
         (dest / "keep.txt").write_text("existing")
         with self.assertRaisesRegex(ValueError, "must not exist"):
-            mod.stage(self.zip, self.preview, dest, "1.3.0")
+            mod.stage(self.zip, self.preview, dest, "1.3.0", self.license)
         self.assertEqual("existing", (dest / "keep.txt").read_text())
 
     def test_preview_wrong_dimensions_rejected(self):
@@ -112,10 +115,10 @@ class WorkshopPrepareTests(unittest.TestCase):
         data[16:20] = struct.pack(">I", 100)
         self.preview.write_bytes(data)
         with self.assertRaisesRegex(ValueError, "640x360"):
-            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0")
+            mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
 
     def test_workshop_id_not_guessed_or_auto_published(self):
-        modroot = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0")
+        modroot = mod.stage(self.zip, self.preview, self.root / "out", "1.3.0", self.license)
         with self.assertRaisesRegex(ValueError, "Published file ID"):
             mod.write_vdf(modroot, self.root / "out/workshop.vdf", "not-an-id")
         mod.write_vdf(modroot, self.root / "out/workshop.vdf", "123456789")
