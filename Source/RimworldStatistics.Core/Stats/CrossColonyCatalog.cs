@@ -9,6 +9,7 @@ public static class CrossColonyCatalog
     public const string MaxPrefix = "cross.max.";
     public const string MinPrefix = "cross.min.";
     public const string TopPrefix = "cross.top.";
+    public const string SumPrefix = "cross.sum.";
 
     // Representative saved-state values and selected lifetime event totals.
     // Do not add historical peaks here: their original Max/Min aggregations
@@ -39,12 +40,29 @@ public static class CrossColonyCatalog
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
         WorkFamily.MealsByDef, WorkFamily.Sown_,
         StockSnapshot.MaterialsLatest, FacilitiesSnapshot.RunningGenerators,
+        WorkFamily.ConstructionMaterials,
     };
+
+    // Categorical (not ThingDef) splits: most frequent form, status, or cause.
+    private static readonly string[] TopCategoryKeys =
+    {
+        RosterSnapshot.Passions, MentalFamily.BreaksByDef, MentalFamily.InspirationsByDef,
+        HealthDeathFamily.KillsByVictimKind, HealthDeathFamily.DeathCauses,
+        RaidFamily.ByArrivalMode, RaidFamily.ByFaction,
+        MembershipFamily.Routes, WorkFamily.QualityBreakdown,
+        TradeFamily.Deals, MedicineFamily.Surgeries,
+        IdeologyFamily.RitualResults, BiotechFamily.ChildStages,
+    };
+
+    // Existing IndividualOnly data with a genuinely additive interpretation.
+    // Passion entries count captured pawn-skill assignments, NOT skill levels.
+    private static readonly string[] CrossSumKeys = { RosterSnapshot.Passions };
 
     public static bool IsDerived(MetricDefinition definition)
         => definition.Key.StartsWith(MaxPrefix, StringComparison.Ordinal)
             || definition.Key.StartsWith(MinPrefix, StringComparison.Ordinal)
-            || definition.Key.StartsWith(TopPrefix, StringComparison.Ordinal);
+            || definition.Key.StartsWith(TopPrefix, StringComparison.Ordinal)
+            || definition.Key.StartsWith(SumPrefix, StringComparison.Ordinal);
 
     /// <summary>Only call after the unmodified base catalog is assembled.</summary>
     public static IReadOnlyList<MetricDefinition> Build(IReadOnlyList<MetricDefinition> baseDefinitions)
@@ -61,6 +79,12 @@ public static class CrossColonyCatalog
         foreach (var key in TopTypeKeys)
             if (byKey.TryGetValue(key, out var source) && source.HasBreakdown)
                 result.Add(Derive(source, TopPrefix, "RWS_CrossDesc_TopType"));
+        foreach (var key in TopCategoryKeys)
+            if (byKey.TryGetValue(key, out var source) && source.HasBreakdown)
+                result.Add(Derive(source, TopPrefix, "RWS_CrossDesc_TopCategory"));
+        foreach (var key in CrossSumKeys)
+            if (byKey.TryGetValue(key, out var source) && source.Overall == OverallAggregation.IndividualOnly)
+                result.Add(Derive(source, SumPrefix, "RWS_CrossDesc_Sum"));
         return result;
     }
 
@@ -75,7 +99,8 @@ public static class CrossColonyCatalog
             // Every published definition requires a unique RWS_Metric_ key.
             // The UI resolves the localized generic template using the source label.
             LabelKey = source.LabelKey +
-                (prefix == MaxPrefix ? "_CrossMax" : prefix == MinPrefix ? "_CrossMin" : "_CrossTop"),
+                (prefix == MaxPrefix ? "_CrossMax" : prefix == MinPrefix ? "_CrossMin" :
+                    prefix == SumPrefix ? "_CrossSum" : "_CrossTop"),
             DescriptionKey = description,
         };
 }
