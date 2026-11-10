@@ -76,6 +76,17 @@ public sealed class ProfileSession
             return read(_profile);
     }
 
+    /// <summary>
+    /// A profile read with the exact mutation revision under the same lock.
+    /// A scan may cache an index while the revision is stable, but must rebuild
+    /// after any mutation (including a concurrent change).
+    /// </summary>
+    internal T ReadWithRevision<T>(Func<Profile, long, T> read)
+    {
+        lock (_lock)
+            return read(_profile, _changeSeq);
+    }
+
     public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null)
     {
         if (!Monitor.TryEnter(_lock))
