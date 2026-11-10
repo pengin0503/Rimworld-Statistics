@@ -117,6 +117,13 @@
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
   <RWS_Details_OnlyMeasured>数値のある項目のみ</RWS_Details_OnlyMeasured>
   <RWS_Details_UnrankedTop>最多の種類を確定できません</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>選択対象に、この統計が適用されるコロニーはありません。DLC非適用と断定できるのは、保存されたDLC構成で確認できる場合だけです。</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>対象コロニーの取得済み値は0件です。取得無効・記録開始前・イベント未記録・過去セーブの解析未対応など、原因は未確定です。欠測を0として補完しません。</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>対象コロニーの一部だけで値を取得できています。未取得のコロニーを0とは扱わず、全体値は部分的な記録となる可能性があります。</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>対象コロニーには取得済みの値があります。ただし、全プレイ期間を取得できたことや実ゲームでの正確性を保証するものではありません。</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>取得済み値はプレイ期間の一部のみを対象としている可能性があります。全期間の確定累計とは区別してください。</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>独立したコロニーごとの代表記録から、種類別の数量を合計しています。内訳の欠測がある場合、順位は部分的なものです。</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>このコロニーで実際に取得した対象品目の数量です。表示されていないコロニーを0として加算していません。</RWS_Cross_ContributionExplanation>
   <RWS_Details_MissingAcquisitionTip>取得開始前のセーブ、取得機能の無効化、または未対応の記録などが原因の可能性があります。過去のイベントを0として補完することはできません。</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
