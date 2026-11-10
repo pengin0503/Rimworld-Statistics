@@ -837,4 +837,13 @@
   <RWS_ModHospitality_PresentGuestsDesc>Number of active Hospitality guests across player home maps at a successful save. Not a lifetime visit total. No change to the guest MOD is required.</RWS_ModHospitality_PresentGuestsDesc>
   <RWS_ModHospitality_PresentGroups>Hospitality: visiting groups at save</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>Number of active Hospitality guest groups across player home maps at a successful save. Not a lifetime visit count.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>Lifetime (recorded)</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>Other</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>All</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>Successful surgeries</RWS_Details_SurgerySuccess>
+  <RWS_Details_SurgeryFailure>Failed surgeries</RWS_Details_SurgeryFailure>
+  <RWS_Details_TradeKindOrbital>Orbital trader</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>Visiting caravan</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>Settlement</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>Other trader</RWS_Details_TradeKindOther>
 </LanguageData>

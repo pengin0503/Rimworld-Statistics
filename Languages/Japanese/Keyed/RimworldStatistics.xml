@@ -837,4 +837,13 @@
   <RWS_ModHospitality_PresentGuestsDesc>各ホーム拠点で現在滞在中の Hospitality ゲスト数。成功したセーブ時の値であり、歴代宿泊客の累計ではありません。対象MODのコード変更は不要です。</RWS_ModHospitality_PresentGuestsDesc>
   <RWS_ModHospitality_PresentGroups>Hospitality：滞在中のゲスト集団数（保存時）</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>各ホーム拠点で現在滞在中の Hospitality グループ数。成功したセーブ時の値であり、過去の来訪回数ではありません。</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>通算（記録範囲内）</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>その他</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>すべて</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>手術成功</RWS_Details_SurgerySuccess>
+  <RWS_Details_SurgeryFailure>手術失敗</RWS_Details_SurgeryFailure>
+  <RWS_Details_TradeKindOrbital>軌道商人</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>訪問キャラバン</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>拠点との取引</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>その他の交易相手</RWS_Details_TradeKindOther>
 </LanguageData>

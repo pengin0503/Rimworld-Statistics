@@ -101,7 +101,7 @@ public static class TradeFamily
         c.PutSum(Sold, SalesTotal);
         c.PutSum(Bought, BuysTotal);
         var deals = s.Peek(Deal);
-        c.Put(Deals, c.Value(integer: deals?.N ?? 0));
+        c.PutBreakdown(Deals, c.Counts(deals), c.Value(integer: deals?.N ?? 0));
         long Kind(string k) => deals?.By != null && deals.By.TryGetValue(k, out var v) ? (long)v : 0;
         c.Put(OrbitalDeals, c.Value(integer: Kind(Orbital)));
         c.Put(VisitingCaravanDeals, c.Value(integer: Kind(VisitingCaravan)));
@@ -110,8 +110,8 @@ public static class TradeFamily
         c.PutExtreme(UnitSale, SalesPeakUnit, max: true);
         c.PutTop(Sold, TopSold);
         c.PutTop(Bought, TopBought);
-        c.PutCount(SoldUnits, SalesUnits);
-        c.PutCount(BoughtUnits, BuysUnits);
+        c.PutBreakdown(SalesUnits, c.Counts(s.Peek(Sold)), c.Value(integer: s.Peek(SoldUnits)?.N ?? 0));
+        c.PutBreakdown(BuysUnits, c.Counts(s.Peek(Bought)), c.Value(integer: s.Peek(BoughtUnits)?.N ?? 0));
         c.Put(SoldDefs, c.Value(integer: s.Peek(Sold)?.By?.Count ?? 0, partial: s.Peek(Sold)?.Overflow == true));
         c.Put(BoughtDefs, c.Value(integer: s.Peek(Bought)?.By?.Count ?? 0, partial: s.Peek(Bought)?.Overflow == true));
         var partners = s.Peek(Partners);
