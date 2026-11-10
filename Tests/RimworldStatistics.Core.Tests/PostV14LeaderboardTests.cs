@@ -38,11 +38,11 @@ public sealed class PostV14LeaderboardTests
         Assert.Equal(23d, result.Value.Number);
         Assert.Equal("Potato", result.Value.Label); // existing top-one contract
         Assert.Equal(new[] { "Potato", "Rice" }, result.Breakdowns.Select(r => r.Breakdown));
-        Assert.Equal(new[] { 23d, 12d }, result.Breakdowns.Select(r => r.Value.Number));
+        Assert.Equal(new[] { 23d, 12d }, result.Breakdowns.Select(r => r.Value.Number!.Value).ToArray());
         Assert.Equal((2, 2), (result.Targets, result.Valid));
         var potato = result.Breakdowns[0];
         Assert.Equal(new[] { "b", "a" }, potato.Breakdowns.Select(c => c.Breakdown));
-        Assert.Equal(new[] { 20d, 3d }, potato.Breakdowns.Select(c => c.Value.Number));
+        Assert.Equal(new[] { 20d, 3d }, potato.Breakdowns.Select(c => c.Value.Number!.Value).ToArray());
         Assert.Equal(MetricCoverage.Complete, potato.Value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, potato.Value.Evidence);
         Assert.All(potato.Breakdowns, p => Assert.Equal((1, 1), (p.Valid, p.Targets)));
