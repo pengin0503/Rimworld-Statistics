@@ -384,7 +384,11 @@ public static class DetailsTab
                 ? (string)"RWS_Cross_MaxColony".Translate((string)source.LabelKey.Translate())
                 : d.Key.StartsWith(CrossColonyCatalog.MinPrefix, StringComparison.Ordinal)
                     ? (string)"RWS_Cross_MinColony".Translate((string)source.LabelKey.Translate())
-                    : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
+                    : d.Key.StartsWith(CrossColonyCatalog.SumPrefix, StringComparison.Ordinal)
+                        ? (string)"RWS_Cross_Sum".Translate((string)source.LabelKey.Translate())
+                        : d.DescriptionKey == "RWS_CrossDesc_TopCategory"
+                            ? (string)"RWS_Cross_TopCategory".Translate((string)source.LabelKey.Translate())
+                            : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
         return d.ProviderId is not null && d.LabelKey == d.Key
             ? d.Key : (string)d.LabelKey.Translate();
     }
