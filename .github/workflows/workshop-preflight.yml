@@ -105,3 +105,21 @@ jobs:
             ${{ runner.temp }}/workshop-output/listing-ja.bbcode
             ${{ runner.temp }}/workshop-output/listing-en.bbcode
             ${{ runner.temp }}/workshop-output/make_workshop_vdf.ps1
+
+  windows-vdf-offline:
+    name: Windows SteamCMD VDF generation (no upload)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Verify PowerShell 7 is available
+        shell: pwsh
+        run: $PSVersionTable.PSVersion.ToString()
+
+      - name: Run offline Workshop preparation and Windows VDF tests
+        shell: pwsh
+        run: python -m unittest discover -s tools/tests -p 'test_workshop_preflight.py' -v
