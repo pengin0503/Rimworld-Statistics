@@ -16,7 +16,7 @@ public static class LiveMetrics
     private static LiveMetricAccumulator? accumulator;
     private static CheckpointSaveSession? session;
     private static readonly ConcurrentDictionary<string, bool> Missed = new(StringComparer.Ordinal);
-    private static readonly Dictionary<string, int> Hits = new(StringComparer.Ordinal);
+    private static Dictionary<string, int>? hitCounts;
 
     /// <summary>The totals of the game being played, or null (no game, another game, or still setting up).</summary>
     public static LiveMetricAccumulator? Accumulator => IsCurrent ? accumulator : null;
@@ -48,7 +48,7 @@ public static class LiveMetrics
     {
         // HitCounts are diagnostic counts for the current game, not a global
         // process-wide total. Reset when starting or resuming another colony.
-        Hits.Clear();
+        hitCounts?.Clear();
         accumulator = acc;
         session = new CheckpointSaveSession(acc);
         game = g;
@@ -62,8 +62,8 @@ public static class LiveMetrics
     public static FamilyState? Family(string name)
     {
         var family = Resolve(name);
-        if (family != null)
-            Hits[name] = Hits.GetValueOrDefault(name) + 1;
+        if (family != null && hitCounts is { } hits)
+            hits[name] = hits.GetValueOrDefault(name) + 1;
         return family;
     }
 
@@ -120,8 +120,13 @@ public static class LiveMetrics
         FamilyStartup.BeforeSave(acc, Find.TickManager.TicksGame);
     }
 
-    /// <summary>How often each family handed out its state for recording this game.</summary>
-    public static IReadOnlyDictionary<string, int> HitCounts() => new Dictionary<string, int>(Hits, StringComparer.Ordinal);
+    /// <summary>Turns on diagnostic state handout counts for an isolated verification session.</summary>
+    public static void EnableHitDiagnostics() => hitCounts ??= new Dictionary<string, int>(StringComparer.Ordinal);
+
+    /// <summary>How often each family handed out its state for recording this game, when diagnostics are enabled.</summary>
+    public static IReadOnlyDictionary<string, int> HitCounts() => hitCounts is { } hits
+        ? new Dictionary<string, int>(hits, StringComparer.Ordinal)
+        : new Dictionary<string, int>(StringComparer.Ordinal);
 
     /// <summary>The DLC package ids active now, in the form saves list them (meta/modIds).</summary>
     public static List<string> ActiveDlcIds()

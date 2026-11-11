@@ -88,6 +88,7 @@ public static class HistoryMetricReader
         }
 
         var total = Get(WealthTotal, Wealth);
+        var buildings = Get(WealthBuildings, Wealth);
         foreach (var (def, peak, latest) in new[]
         {
             (WealthItems, MetricKeys.WealthItemsPeak, MetricKeys.WealthItemsLatest),
@@ -95,11 +96,10 @@ public static class HistoryMetricReader
             (WealthPawns, MetricKeys.WealthPawnsPeak, MetricKeys.WealthPawnsLatest),
         })
         {
-            var s = Get(def, Wealth);
+            var s = def == WealthBuildings ? buildings : Get(def, Wealth);
             Put(peak, Max(s));
             Put(latest, Latest(s));
         }
-        var buildings = Get(WealthBuildings, Wealth);
         Put(MetricKeys.WealthBuildingsMaxShare, MaxRatio(buildings, total));
 
         if (total is not null)
@@ -107,15 +107,16 @@ public static class HistoryMetricReader
             Put(MetricKeys.WealthTotalMean, Mean(total));
             if (total.Aligned)
             {
+                var invalid = total.AnyMissing ? InvalidPrefix(total) : null;
                 Put(MetricKeys.WealthTotalFirst, Snap(total.X[0], false));
                 Put(MetricKeys.WealthTotalNet, Net(total));
                 Put(MetricKeys.WealthTotalPeakDay, PeakDay(total));
-                Put(MetricKeys.WealthTotalMaxGainHalfDay, Window(total, 1, gain: true));
-                Put(MetricKeys.WealthTotalMaxLossHalfDay, Window(total, 1, gain: false));
+                Put(MetricKeys.WealthTotalMaxGainHalfDay, Window(total, invalid, 1, gain: true));
+                Put(MetricKeys.WealthTotalMaxLossHalfDay, Window(total, invalid, 1, gain: false));
                 Put(MetricKeys.WealthTotalMaxLossRateHalfDay, MaxLossRate(total));
-                Put(MetricKeys.WealthTotalMaxGain15D, Window(total, PointsPer15Days, gain: true));
-                Put(MetricKeys.WealthTotalMaxLoss15D, Window(total, PointsPer15Days, gain: false));
-                Put(MetricKeys.WealthTotalMaxGrowthRateYear, MaxGrowthRate(total, PointsPerYear));
+                Put(MetricKeys.WealthTotalMaxGain15D, Window(total, invalid, PointsPer15Days, gain: true));
+                Put(MetricKeys.WealthTotalMaxLoss15D, Window(total, invalid, PointsPer15Days, gain: false));
+                Put(MetricKeys.WealthTotalMaxGrowthRateYear, MaxGrowthRate(total, invalid, PointsPerYear));
                 Put(MetricKeys.WealthTotalLongestGrowth, LongestGrowth(total));
                 Put(MetricKeys.WealthTotalFirst100K, FirstReach(total, 100000));
                 Put(MetricKeys.WealthTotalFirst1M, FirstReach(total, 1000000));
@@ -218,17 +219,16 @@ public static class HistoryMetricReader
     }
 
     /// <summary>Largest rise (or fall) between points <paramref name="span"/> apart, over windows without a missing point; never negative.</summary>
-    private static MetricValue? Window(Series s, int span, bool gain)
+    private static MetricValue? Window(Series s, int[]? invalid, int span, bool gain)
     {
         if (s.N <= span)
             return NotApplicable();
-        var invalid = InvalidPrefix(s);
         var windows = s.N - span;
         var used = 0;
         double best = 0;
         for (var i = 0; i + span < s.N; i++)
         {
-            if (invalid[i + span + 1] - invalid[i] > 0)
+            if (invalid is not null && invalid[i + span + 1] != invalid[i])
                 continue;
             used++;
             var d = gain ? (double)s.X[i + span] - s.X[i] : (double)s.X[i] - s.X[i + span];
@@ -267,16 +267,15 @@ public static class HistoryMetricReader
     }
 
     /// <summary>Largest (after − before) ÷ before over windows <paramref name="span"/> points apart without a gap; may be negative.</summary>
-    private static MetricValue? MaxGrowthRate(Series s, int span)
+    private static MetricValue? MaxGrowthRate(Series s, int[]? invalid, int span)
     {
         if (s.N <= span)
             return NotApplicable();
-        var invalid = InvalidPrefix(s);
         double? best = null, num = null, den = null;
         var skipped = false;
         for (var i = 0; i + span < s.N; i++)
         {
-            if (invalid[i + span + 1] - invalid[i] > 0)
+            if (invalid is not null && invalid[i + span + 1] != invalid[i])
             {
                 skipped = true;
                 continue;

@@ -43,8 +43,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
 
         // Warm scans used to search the entire profile for every unchanged
         // .rws (O(files * observations)). Cache only the matching read
-        // identities; the profile revision invalidates the cache under the
-        // same lock, including writes by other threads during this scan.
+        // identities; mutations from another thread invalidate the cache.
         var indexedRevision = -1L;
         var skippable = new HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>();
         var pending = new Dictionary<int, Task<SaveReadResult?>>();
@@ -63,6 +62,15 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
             }
             return skippable.Contains((name, size, time));
         });
+
+        void CommitCurrentFile(Action<Profile> change)
+        {
+            var (before, after) = session.MutateWithRevision(change);
+            // A directory snapshot visits each filename once. This mutation can
+            // only change that file's skip identities, which are no longer queried.
+            if (indexedRevision == before)
+                indexedRevision = after;
+        }
 
         void DiscardReadAhead(int index)
         {
@@ -142,7 +150,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                     countedRead = true;
                     if (obs.Status == ObservationStatus.Error)
                         failed++;
-                    session.Mutate(p =>
+                    CommitCurrentFile(p =>
                     {
                         // A successful v1 read must not be committed before the numeric observations:
                         // if their mutation fails, leave an Error observation so the file is retried.
@@ -154,7 +162,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                         if (metrics is not null)
                             ProfileMutations.UpsertMetricObservation(p, metrics);
                         ProfileMutations.AddSaveObservation(p, obs);
-                    }, SaveMode.None);
+                    });
                 }
                 catch (Exception e)
                 {
@@ -168,10 +176,10 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                         FileName = name, ReaderVersion = SaveReader.Version, Status = ObservationStatus.Error,
                         ErrorReason = $"{e.GetType().Name}: {e.Message}",
                     };
-                    session.Mutate(p => ProfileMutations.AddSaveObservation(p, error), SaveMode.None);
+                    CommitCurrentFile(p => ProfileMutations.AddSaveObservation(p, error));
                 }
                 if (read > 0 && read % SaveEvery == 0)
-                    session.Mutate(static _ => { }, SaveMode.Background);
+                    session.QueueSave();
             }
         }
         finally

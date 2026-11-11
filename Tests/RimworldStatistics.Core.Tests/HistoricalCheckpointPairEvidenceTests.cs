@@ -14,7 +14,7 @@ public sealed class HistoricalCheckpointPairEvidenceTests
     private static readonly DateTime Stamp = new(2026, 11, 9, 11, 0, 0, DateTimeKind.Utc);
 
     private static byte[] SyntheticSave(string checkpointId, string missingParent,
-        int tick, int raids, int deaths)
+        int tick, int raids, int deaths, int? fileTick = null, string dlc = "ludeon.rimworld.royalty")
     {
         var checkpoint = new CheckpointPayload
         {
@@ -37,13 +37,67 @@ public sealed class HistoricalCheckpointPairEvidenceTests
         };
         return new SaveXmlBuilder()
             .Minimal()
-            .MetaMods("1.7.5000 rev1275", "ludeon.rimworld", "ludeon.rimworld.royalty")
-            .Tick(ticksGame: tick, start: 0)
+            .MetaMods("1.7.5000 rev1275", "ludeon.rimworld", dlc)
+            .Tick(ticksGame: fileTick ?? tick, start: 0)
             .Stats(raids: raids, killed: deaths)
             .Component(SaveReader.ComponentClassName,
                 new XElement("campaignId", "synthetic-same-colony"),
                 new XElement("numericStatistics", CheckpointJson.Serialize(checkpoint)))
             .Build();
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ExactSaveMetadataWinsOverLiveContextRegardlessOfImportOrder(bool fileFirst)
+    {
+        var bytes = SyntheticSave("node", "parent", 60000, 1, 1);
+        var result = new SaveReader().ReadDetailed(new MemoryStream(bytes), "original.rws", bytes.Length, Stamp);
+        var file = result.Checkpoint!;
+        var live = CheckpointMetrics.ToObservation(new CheckpointPayload
+        {
+            CheckpointId = file.Key, ParentCheckpointId = file.ParentKey, SaveTick = file.SaveTick,
+        }, "placeholder", file.Identity, "1.7.4985 rev1269", []);
+        live.PayloadHash = file.PayloadHash;
+        var p = new Profile();
+        ProfileMutations.UpsertMetricObservation(p, fileFirst ? file : live);
+        ProfileMutations.UpsertMetricObservation(p, fileFirst ? live : file);
+
+        var stored = Assert.Single(ProfileJson.Deserialize(ProfileJson.Serialize(p)).MetricObservations);
+        Assert.Equal(result.Metrics!.ModSetHash, stored.ModSetHash);
+        Assert.Equal(result.Metrics.ActiveDlcIds, stored.ActiveDlcIds);
+        Assert.Equal(result.Metrics.GameVersion, stored.GameVersion);
+    }
+
+    [Fact]
+    public void ReusedAndContradictorySaveMetadataCannotDescribeAnOriginalBoundary()
+    {
+        MetricObservation Read(string name, int tick, string dlc)
+        {
+            var bytes = SyntheticSave("node", "parent", 60000, 1, 1, tick, dlc);
+            return new SaveReader().ReadDetailed(new MemoryStream(bytes), name, bytes.Length, Stamp).Checkpoint!;
+        }
+
+        var original = Read("original.rws", 60000, "ludeon.rimworld.royalty");
+        var reused = Read("later.rws", 120000, "ludeon.rimworld.biotech");
+        Assert.Null(reused.ModSetHash);
+        Assert.Null(reused.ActiveDlcIds);
+
+        var p = new Profile();
+        ProfileMutations.UpsertMetricObservation(p, reused);
+        ProfileMutations.UpsertMetricObservation(p, original);
+        var stored = Assert.Single(p.MetricObservations);
+        Assert.NotNull(stored.ModSetHash);
+        Assert.Equal(["ludeon.rimworld.royalty"], stored.ActiveDlcIds);
+
+        ProfileMutations.UpsertMetricObservation(p, Read("conflict.rws", 60000, "ludeon.rimworld.biotech"));
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+        ProfileMutations.UpsertMetricObservation(restored, original);
+        stored = Assert.Single(restored.MetricObservations);
+        Assert.Null(stored.ModSetHash);
+        Assert.Null(stored.ActiveDlcIds);
+        Assert.False(stored.Conflicted);
+        Assert.Equal(3, stored.FileAliases.Count);
     }
 
     [Theory]

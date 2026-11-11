@@ -122,7 +122,7 @@ public sealed class LifetimeCumulativeTests
     [Fact]
     public void OldCheckpoint_IsReevaluatedWithoutMutatingFamilyRevisions()
     {
-        Assert.Equal(16, SaveReader.Version);
+        Assert.Equal(17, SaveReader.Version);
         Assert.Equal(1, TradeFamily.Family.Revision);
         Assert.Equal(1, WorkFamily.Family.Revision);
         Assert.Equal(2, MedicineFamily.Family.Revision);

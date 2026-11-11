@@ -33,8 +33,9 @@ public sealed partial class SaveReader
     /// 14: saved 1.7 direct-map human guest-status historical roster; retired running generators and nested storage inventory.
     /// 15: drop canceled medical-bed and indoor-room snapshot definitions and prevent legacy values from reimporting.
     /// 16: retry unstable reads and isolate invalid wealth history when the campaign ID is available.
+    /// 17: distinguish exact-boundary checkpoint metadata from later files and live load context.
     /// </summary>
-    public const int Version = 16;
+    public const int Version = 17;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -97,7 +98,7 @@ public sealed partial class SaveReader
         try
         {
             var obs = NewObservation(fileName, fileSize, lastWriteUtc);
-            using var hashing = new HashingStream(xml);
+            using var hashing = new HashingStream(xml, fileSize);
             var state = new ReadState(obs);
             using (var reader = XmlReader.Create(hashing, Settings))
             {
@@ -137,6 +138,8 @@ public sealed partial class SaveReader
         public Exception? WealthReadError { get; set; }
         public string? ScenarioPlayerFactionDef { get; set; }
         public List<(string? Def, string? Name)> Factions { get; } = new();
+        public char[]? HistoricalAtomValue { get; set; }
+        public char[]? HistoricalAtomChunk { get; set; }
         public List<SavedFaction> HistoricalFactions { get; } = new();
         public bool HistoricalFactionsOverflowed { get; set; }
         public List<SavedWorldMapObject> HistoricalMapObjects { get; } = new();
@@ -161,7 +164,8 @@ public sealed partial class SaveReader
         public bool KilledWritten { get; set; }
         public string? WealthTotalPayload { get; set; }
         public int WealthTotalCount { get; set; }
-        public Dictionary<string, List<float[]?>> Series { get; } = new(StringComparer.Ordinal);
+        public Dictionary<string, float[]?> Series { get; } = new(StringComparer.Ordinal);
+        public char[]? HistoryTextChunk { get; set; }
         public List<RetainedQuest>? Quests { get; set; }
         public string? CheckpointText { get; set; }
         public List<string>? SavedResearchKeys { get; set; }

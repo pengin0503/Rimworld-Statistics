@@ -65,6 +65,29 @@ public sealed class ImportEngineReadAheadTests
         Assert.Equal(120000, s3.Values.TicksGame);
     }
 
+    [Theory]
+    [InlineData(1)]
+    [InlineData(3)]
+    public void ExternalProfileMutationInvalidatesSkipIndexDuringMixedImport(int readAhead)
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        for (var i = 0; i < 4; i++)
+            Write(saves, $"s{i}.rws", Save("seed" + i, 60000));
+        var session = new ProfileSession(new ProfileStore(store.Path), () => Now);
+        var engine = new ImportEngine(new SaveReader(), readAhead);
+        engine.Run(saves.Path, session, null, TestContext.Current.CancellationToken);
+        Write(saves, "s0.rws", Save("seed0", 120000), Stamp.AddMinutes(1));
+        var progress = new SyncProgress(p =>
+        {
+            if (p.CurrentFile == "s2.rws")
+                session.Mutate(profile => profile.SaveObservations.RemoveAll(o => o.FileName == "s3.rws"), SaveMode.None);
+        });
+        var mixed = engine.Run(saves.Path, session, progress, TestContext.Current.CancellationToken);
+        Assert.Equal((2, 2, 0), (mixed.Read, mixed.Skipped, mixed.Failed));
+        Assert.Contains(session.Read(p => p.SaveObservations.ToArray()), o => o.FileName == "s3.rws");
+    }
+
     [Fact]
     public void UnchangedFilesAreNotReadAhead_OnAWarmScan()
     {

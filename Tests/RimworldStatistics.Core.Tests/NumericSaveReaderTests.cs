@@ -555,6 +555,27 @@ public sealed class NumericSaveReaderTests
         Assert.Equal(new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc), m.ObservedUtc);
     }
 
+    [Theory]
+    [InlineData(0)]
+    [InlineData(256 * 1024)]
+    public void IndependentReadsHashTheWholeFileAndRecoverAfterTruncation(int padding)
+    {
+        var bytes = Aligned(new[] { 100f }).Maps(padding).Build();
+        var expected = Convert.ToHexStringLower(System.Security.Cryptography.SHA256.HashData(bytes));
+        var reader = new SaveReader();
+        var truncated = reader.ReadDetailed(new MemoryStream(bytes, 0, bytes.Length / 2),
+            "truncated.rws", bytes.Length, DateTime.UnixEpoch);
+        Assert.Equal(ObservationStatus.Error, truncated.Observation.Status);
+
+        var results = Enumerable.Range(0, 4).AsParallel().Select(i =>
+            reader.ReadDetailed(new MemoryStream(bytes), $"copy-{i}.rws", bytes.Length, DateTime.UnixEpoch)).ToArray();
+        Assert.All(results, result =>
+        {
+            Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+            Assert.Equal(expected, result.Metrics!.Key);
+        });
+    }
+
     [Fact]
     public void Observation_SizeDifferentFromBytesRead_IsNotConfirmed()
     {

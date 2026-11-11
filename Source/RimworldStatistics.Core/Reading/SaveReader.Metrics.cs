@@ -33,11 +33,14 @@ public sealed partial class SaveReader
             var parsed = CheckpointJson.Parse(text);
             if (parsed.Status != CheckpointParseStatus.Ok)
                 return null;
-            var c = CheckpointMetrics.ToObservation(parsed.Payload!, text, s.Obs.Identity, s.Obs.GameVersion, metrics.ActiveDlcIds);
-            // Both observations came from the same verified full-file read.
-            // Preserve the saved MOD cohort on checkpoint event breakdowns too;
-            // otherwise a cross-MOD ranked Def looks spuriously compatible.
-            c.ModSetHash = metrics.ModSetHash;
+            var exactBoundary = parsed.Payload!.SaveTick == metrics.SaveTick && metrics.ModSetHash is not null;
+            var c = CheckpointMetrics.ToObservation(parsed.Payload, text, s.Obs.Identity, s.Obs.GameVersion,
+                exactBoundary ? metrics.ActiveDlcIds : null);
+            if (exactBoundary)
+            {
+                c.ModSetHash = metrics.ModSetHash;
+                c.CheckpointMetadata = CheckpointMetadataEvidence.Confirmed;
+            }
             c.FileAliases.AddRange(metrics.FileAliases.Select(a => new MetricFileAlias { FileName = a.FileName, FileSize = a.FileSize, LastWriteUtc = a.LastWriteUtc }));
             return c;
         }
@@ -72,9 +75,7 @@ public sealed partial class SaveReader
         };
 
         // History: a recorder def saved twice is ambiguous and left out, as is a series beyond the extension limits.
-        var series = new Dictionary<string, float[]?>(StringComparer.Ordinal);
-        foreach (var (def, list) in s.Series)
-            series[def] = list.Count == 1 ? list[0] : null;
+        var series = s.Series;
         if (s.WealthTotalCount > 0)
             series[HistoryMetricReader.WealthTotal] = s.WealthTotalCount == 1 && s.Wealth is { } w && w.Length <= HistoryMetricReader.MaxPoints
                 && s.WealthTotalPayload is { } p && CountNonWhitespace(p) <= HistoryMetricReader.MaxBase64Chars

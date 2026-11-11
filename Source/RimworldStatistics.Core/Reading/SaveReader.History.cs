@@ -163,7 +163,7 @@ public sealed partial class SaveReader
                     data = (r.ReadElementContentAsString(), name == "recordsDeflate");
                     break;
                 case "records" or "recordsDeflate" when HistoryMetricReader.Defs.Contains(def):
-                    extension = (ReadCappedText(r, HistoryMetricReader.MaxBase64Chars), name == "recordsDeflate");
+                    extension = (ReadCappedText(r, s, HistoryMetricReader.MaxBase64Chars), name == "recordsDeflate");
                     break;
                 default:
                     r.Skip();
@@ -193,19 +193,22 @@ public sealed partial class SaveReader
             extension = (CountNonWhitespace(early.Payload) <= HistoryMetricReader.MaxBase64Chars ? early.Payload : null, early.Deflate);
         if (extension is not { } e)
             return;
-        float[]? values = null;
+        if (!s.Series.TryAdd(def, null))
+        {
+            // An ambiguous definition can never contribute values. Release
+            // the first decoded series and avoid decoding subsequent copies.
+            s.Series[def] = null;
+            return;
+        }
         if (e.Payload is { } payload && RecordsCodec.TryDecodeLimited(payload, e.Deflate, HistoryMetricReader.MaxPoints, out var decoded))
-            values = decoded;
-        if (!s.Series.TryGetValue(def, out var list))
-            s.Series[def] = list = new List<float[]?>();
-        list.Add(values);
+            s.Series[def] = decoded;
     }
 
     /// <summary>
     /// The text of the current element, or null when it has more than <paramref name="maxNonWhitespace"/> non-whitespace
     /// characters or child elements. The element is consumed either way, without keeping an oversized text in memory.
     /// </summary>
-    private static string? ReadCappedText(XmlReader r, int maxNonWhitespace)
+    private static string? ReadCappedText(XmlReader r, ReadState state, int maxNonWhitespace)
     {
         if (!r.CanReadValueChunk)
         {
@@ -220,8 +223,7 @@ public sealed partial class SaveReader
         var depth = r.Depth;
         r.Read();
         var text = new StringBuilder();
-        var buffer = new char[8192];
-        long count = 0;
+        var buffer = state.HistoryTextChunk ??= new char[8192];
         var usable = true;
         while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
         {
@@ -235,17 +237,18 @@ public sealed partial class SaveReader
                     {
                         if (!usable)
                             continue;
+                        var compactLength = 0;
                         for (var i = 0; i < n; i++)
                             if (!char.IsWhiteSpace(buffer[i]))
-                                count++;
-                        if (count > maxNonWhitespace)
+                                buffer[compactLength++] = buffer[i];
+                        if (compactLength > maxNonWhitespace - text.Length)
                         {
                             usable = false;
                             text.Clear();
                         }
                         else
                         {
-                            text.Append(buffer, 0, n);
+                            text.Append(buffer, 0, compactLength);
                         }
                     }
                     r.Read();

@@ -43,6 +43,7 @@ public sealed class VerifyHarnessMod : Mod
             if (unknown.Count > 0)
                 Log.Warning($"{CaseCheck.LogPrefix} Ignored unknown unit ids: {string.Join(", ", unknown)}.");
             MetricGates.OpenForVerification(units, Caller);
+            LiveMetrics.EnableHitDiagnostics();
             Opened = units;
             VerifyLogFile.Append($"{CaseCheck.LogPrefix} session game={RimWorld.VersionControl.CurrentVersionStringWithRev} opened={string.Join(",", units)}");
         }

@@ -33,7 +33,7 @@ public sealed class UserApprovedMetricScopeTests
             Assert.DoesNotContain(visible, def => def.StoredKey == key);
         }
         Assert.Equal(416, MetricRegistry.Catalog.Count);
-        Assert.Equal(16, SaveReader.Version);
+        Assert.Equal(17, SaveReader.Version);
     }
 
     [Fact]

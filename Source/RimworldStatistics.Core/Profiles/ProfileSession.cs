@@ -62,8 +62,15 @@ public sealed class ProfileSession
 
     public void Mutate(Action<Profile> change, SaveMode mode)
     {
+        MutateWithRevision(change);
+        Save(mode);
+    }
+
+    internal (long Before, long After) MutateWithRevision(Action<Profile> change)
+    {
         lock (_lock)
         {
+            var before = _changeSeq;
             try
             {
                 change(_profile);
@@ -74,9 +81,11 @@ public sealed class ProfileSession
                 _views.Clear();
                 _changeSeq++;
             }
+            return (before, _changeSeq);
         }
-        Save(mode);
     }
+
+    internal void QueueSave() => Save(SaveMode.Background);
 
     private void RestoreCheckpointMetrics()
     {
@@ -137,8 +146,8 @@ public sealed class ProfileSession
 
     /// <summary>
     /// A profile read with the exact mutation revision under the same lock.
-    /// A scan may cache an index while the revision is stable, but must rebuild
-    /// after any mutation (including a concurrent change).
+    /// A scan may cache an index while the revision is stable and use mutation
+    /// receipts to identify its own edits without missing concurrent changes.
     /// </summary>
     internal T ReadWithRevision<T>(Func<Profile, long, T> read)
     {
