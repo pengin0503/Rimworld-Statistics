@@ -66,20 +66,17 @@ public sealed class NumericEconomyTests
     }
 
     [Fact]
-    public void Harvest_SowingCropLossAndYears()
+    public void Harvest_SowingAndYearlyYieldAreUnaffectedByCropLossRetirement()
     {
         var (acc, s) = NewGame(WorkFamily.Family);
-        WorkFamily.Sown(s, "Thing_Plant1", "Plant_Rice");
-        WorkFamily.Sown(s, "Thing_Plant2", "Plant_Rice");
-        WorkFamily.Sown(s, "Thing_Plant3", "Plant_Corn");
+        WorkFamily.Sown(s, "Plant_Rice");
+        WorkFamily.Sown(s, "Plant_Rice");
+        WorkFamily.Sown(s, "Plant_Corn");
         WorkFamily.Harvested(s, "Thing_A", "Thing_Plant1", "Plant_Rice", 10, 10 * Day);
-        WorkFamily.Harvested(s, "Thing_A", "Thing_Plant1", "Plant_Rice", 4, 11 * Day);   // regrowth: the cohort counts once
-        WorkFamily.CropDied(s, "Thing_Plant2", cold: true);
-        WorkFamily.CropDied(s, "Thing_Plant9", cold: false);    // never seen sown: a loss, not in the cohort
+        WorkFamily.Harvested(s, "Thing_A", "Thing_Plant1", "Plant_Rice", 4, 11 * Day);   // regrowth is still harvested work
         WorkFamily.Harvested(s, "Thing_B", "Thing_Plant3", null, 6, 70 * Day);           // crop not known
         WorkFamily.HarvestFailed(s);
-        WorkFamily.Sown(s, "Thing_Plant4", "Plant_Corn");
-        WorkFamily.PlantRemoved(s, "Thing_Plant4");   // cut by hand or a failed harvest: undecided, not in the rate
+        WorkFamily.Sown(s, "Plant_Corn");
         WorkFamily.Harvested(s, "Thing_B", "Thing_Plant4", "Plant_Corn", 0, 71 * Day);
         var o = Save(acc, 130 * Day);
         Assert.Equal(20, V(o, WorkFamily.HarvestUnits).IntegerValue);
@@ -87,9 +84,9 @@ public sealed class NumericEconomyTests
         Assert.Equal(2, V(o, WorkFamily.SownDefs).IntegerValue);
         Assert.Equal((14L, 6L), (B(o, WorkFamily.HarvestByCrop)["Plant_Rice"].IntegerValue!.Value, B(o, WorkFamily.HarvestByCrop)[MetricKeys.UnknownBucket].IntegerValue!.Value));
         Assert.Equal(new[] { "Plant_Rice" }, B(o, WorkFamily.TopCrop).Keys);
-        Assert.Equal((1L, 1L), (V(o, WorkFamily.ColdLoss).IntegerValue!.Value, V(o, WorkFamily.OtherLoss).IntegerValue!.Value));
-        var rate = V(o, WorkFamily.LossRate);
-        Assert.Equal((1.0, 3.0), (rate.Numerator!.Value, rate.Denominator!.Value));   // Plant2 died; Plant1 and Plant3 harvested
+        Assert.Null(MetricRegistry.Find("work.crops.cold_loss"));
+        Assert.Null(MetricRegistry.Find("work.crops.other_loss"));
+        Assert.Null(MetricRegistry.Find("work.crops.loss_rate"));
         Assert.Equal(1, V(o, WorkFamily.HarvestFailures).IntegerValue);
         Assert.Equal(14, V(o, WorkFamily.BestHarvester).IntegerValue);
         Assert.Equal(14, V(o, WorkFamily.HarvestYearPeak).IntegerValue);   // year 0: 14, year 1 (60…120 days): 6; year 2 is not complete
@@ -185,10 +182,10 @@ public sealed class NumericEconomyTests
             WorkFamily.HarvestUnits, WorkFamily.MiningUnits, WorkFamily.CraftedUnits, WorkFamily.Constructions, WorkFamily.BestQuality,
             WorkFamily.QualityBreakdown, WorkFamily.ConstructionMaterials, WorkFamily.Deconstructions, WorkFamily.ConstructionFailures,
             WorkFamily.Legendary, WorkFamily.Masterwork, WorkFamily.BestPrice, WorkFamily.Sculptures, WorkFamily.Sown_, WorkFamily.HarvestFailures,
-            WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs, WorkFamily.ColdLoss, WorkFamily.PodsLaunched_, WorkFamily.DailyPeak,
-            WorkFamily.SownDefs, WorkFamily.HarvestByCrop, WorkFamily.TopCrop, WorkFamily.OtherLoss, WorkFamily.LossRate, WorkFamily.HarvestYearPeak,
+            WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs, WorkFamily.PodsLaunched_, WorkFamily.DailyPeak,
+            WorkFamily.SownDefs, WorkFamily.HarvestByCrop, WorkFamily.TopCrop, WorkFamily.HarvestYearPeak,
             WorkFamily.BestCrafter, WorkFamily.BestHarvester, WorkFamily.BestBuilder, WorkFamily.BestCook, WorkFamily.BestMiner, WorkFamily.Repairs,
-            FoodFamily.SpoiledUnits, FoodFamily.Nutrition, FoodFamily.NoShortageLongest, FoodFamily.HarvestPerGrowingCell,
+            FoodFamily.SpoiledUnits, FoodFamily.Nutrition, FoodFamily.HarvestPerGrowingCell,
             TradeFamily.SalesTotal, TradeFamily.BuysTotal, TradeFamily.Deals, TradeFamily.SalesPeak, TradeFamily.BuysPeak, TradeFamily.TopSold,
             TradeFamily.OrbitalDeals, TradeFamily.VisitingCaravanDeals, TradeFamily.SalesPeakUnit, TradeFamily.PartnerFactionDefs, TradeFamily.SoldDefs,
             TradeFamily.BoughtDefs, TradeFamily.SalesUnits, TradeFamily.BuysUnits, TradeFamily.TopBought,
@@ -197,8 +194,8 @@ public sealed class NumericEconomyTests
         foreach (var key in keys)
             Assert.True(MetricRegistry.Find(key) is { Source: MetricObservationSource.Checkpoint, Published: false }, key);
         Assert.Contains("N2-F-012", MetricRegistry.Find(WorkFamily.MealsByDef)!.LedgerIds);
-        // N2-F-010 and N1-A-008 (held until 2026-11-08) now come from the vanilla resource recount and the growing-zone cell events.
-        Assert.Equal("N2-F-010", MetricRegistry.Find("food.no_shortage.longest")!.LedgerIds);
+        // Food-shortage duration was retired; growing-zone yield is retained.
+        Assert.Null(MetricRegistry.Find("food.no_shortage.longest"));
         Assert.Equal("N1-A-008", MetricRegistry.Find("food.harvest.per_growing_cell")!.LedgerIds);
     }
 }
