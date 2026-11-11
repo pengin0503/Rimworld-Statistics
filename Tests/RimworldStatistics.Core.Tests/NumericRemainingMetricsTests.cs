@@ -197,68 +197,15 @@ public sealed class NumericRemainingMetricsTests
         Assert.Equal(MetricCoverage.Partial, V(Save(acc, 2 * Day), MedicineFamily.HospitalStayMean).Coverage);
     }
 
-    // ----- N2-F-010 · longest span without a food shortage -----
-
-    private const int Recount = 204;   // ResourceCounter.ResourceCounterTick (1.7.4985)
-
+    // The N2-F-010 food shortage duration was explicitly retired; keep the
+    // unrelated N1-A-008 growing-zone yield counter and its tests intact.
     [Fact]
-    public void FoodStock_LongestSpanBetweenObservedShortages()
+    public void FoodStock_DurationMetricIsNotRegisteredOrReintroduced()
     {
-        var (acc, s) = NewGame(FoodFamily.Family);
-        FoodFamily.StockObserved(s, hasFood: false, 1 * Recount);   // the start: nothing stored yet
-        for (var i = 2; i <= 10; i++)
-            FoodFamily.StockObserved(s, hasFood: true, i * Recount);
-        FoodFamily.StockObserved(s, hasFood: false, 11 * Recount);  // ran out
-        for (var i = 12; i <= 14; i++)
-            FoodFamily.StockObserved(s, hasFood: true, i * Recount);
-        var v = V(Save(acc, 15 * Recount), FoodFamily.NoShortageLongest);
-        Assert.Equal(8.0 * Recount / Day, v.RealValue!.Value, 12);   // 2 → 10, observed ticks only
-        Assert.Equal(MetricCoverage.Complete, v.Coverage);
-    }
-
-    [Fact]
-    public void FoodStock_TheOngoingSpanCounts_AndAnUnwatchedStretchIsNotBridged()
-    {
-        var (acc, s) = NewGame(FoodFamily.Family);
-        FoodFamily.StockObserved(s, true, 1 * Recount);
-        FoodFamily.StockObserved(s, true, 3 * Recount);
-        FoodFamily.StockObserved(s, true, 3 * Recount + FoodFamily.StockObservationGap + 1);   // e.g. no home map in between
-        FoodFamily.StockObserved(s, true, 4 * Recount + FoodFamily.StockObservationGap + 1);
-        var v = V(Save(acc, Day), FoodFamily.NoShortageLongest);
-        Assert.Equal(2.0 * Recount / Day, v.RealValue!.Value, 12);   // two spans of 2 and 1 recount intervals, not one of 4+
-    }
-
-    [Fact]
-    public void FoodStock_NothingObservedIsNotApplicable_OnlyShortagesIsAMeasuredZero()
-    {
+        Assert.Null(MetricRegistry.Find("food.no_shortage.longest"));
         var (acc, _) = NewGame(FoodFamily.Family);
-        Assert.Equal(MetricCoverage.NotApplicable, V(Save(acc, Day), FoodFamily.NoShortageLongest).Coverage);
-
-        var (acc2, s2) = NewGame(FoodFamily.Family);
-        FoodFamily.StockObserved(s2, false, Recount);
-        FoodFamily.StockObserved(s2, false, 2 * Recount);
-        var v = V(Save(acc2, Day), FoodFamily.NoShortageLongest);
-        Assert.Equal(0.0, v.RealValue);
-        Assert.Equal(MetricCoverage.Complete, v.Coverage);
-    }
-
-    [Fact]
-    public void FoodStock_ASpanContinuesAcrossAContinuousLoad_AndAGapClosesIt()
-    {
-        var (acc, s) = NewGame(FoodFamily.Family);
-        FoodFamily.StockObserved(s, true, 1 * Recount);
-        FoodFamily.StockObserved(s, true, 2 * Recount);
-        var (_, json) = SaveWithJson(acc, 2 * Recount + 50);
-        var resumed = LiveMetricAccumulator.Resume(json, new[] { FoodFamily.Family.Spec }, 2 * Recount + 50);
-        var r = resumed.Family(FoodFamily.Name)!;
-        FoodFamily.StockObserved(r, true, 3 * Recount);
-        FoodFamily.StockObserved(r, true, 4 * Recount);
-        Save(resumed, 4 * Recount + 10);
-        resumed.MarkGap(FoodFamily.Name);                    // closes the span observed so far
-        FoodFamily.StockObserved(r, true, 20 * Recount);     // a new span after the gap
-        var v = V(Save(resumed, 21 * Recount), FoodFamily.NoShortageLongest);
-        Assert.Equal(3.0 * Recount / Day, v.RealValue!.Value, 12);
-        Assert.Equal(MetricCoverage.Partial, v.Coverage);
+        var observation = Save(acc, Day);
+        Assert.DoesNotContain("food.no_shortage.longest", observation.Metrics.Keys);
     }
 
     // ----- N1-A-008 · harvest per growing-cell day -----
@@ -565,7 +512,6 @@ public sealed class NumericRemainingMetricsTests
         {
             [MedicineFamily.Withdrawals] = ("N3-H-005", MedicineFamily.Name),
             [MedicineFamily.HospitalStayMean] = ("N3-H-011", MedicineFamily.Name),
-            [FoodFamily.NoShortageLongest] = ("N2-F-010", FoodFamily.Name),
             [FoodFamily.HarvestPerGrowingCell] = ("N1-A-008", FoodFamily.Name),
             [CaravanFamily.AncientDangersOpened] = ("Q-014", CaravanFamily.Name),
             [RoyaltyQuestSnapshot.Success] = ("L-003", "royalty_quests"),
