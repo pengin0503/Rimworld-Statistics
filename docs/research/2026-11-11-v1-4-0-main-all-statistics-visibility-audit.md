@@ -303,3 +303,19 @@
 ## 根拠コード
 
 `Source/RimworldStatistics.Core/Stats/{MetricRegistry,MetricDisplayPolicy,MetricCalculator,LiveCatalog,SnapshotCatalog,RankingDependencyCatalog,CrossColonyCatalog}.cs`、`Source/RimworldStatistics/UI/{DetailsTab,Dialog_RimworldStatistics,OverviewTab,ColoniesTab,EndingsTab}.cs`、`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs`、`Languages/Japanese/Keyed/RimworldStatistics.xml`。
+
+## 追加：旧来の概要統計にある「コロニー別の専用表示欄なし」
+
+上記の404/415件は数値レジストリの定義数であり、**別経路で記録されるv1基本統計も監査対象に含める必要がある**。\
+`StatsCalculator.ColonyStats` は次の数値を**コロニー単位で計算・保持**するが、`ColoniesTab.Columns` の表には専用列がなく、`DetailsTab` に同一の基礎統計をコロニー別で再提示する定義もない。
+
+| コロニー別の記録値 | 現在見える場所 | 欠ける表示 |
+|---|---|---|
+| `ColonyStats.Threats`（脅威イベント数） | `OverviewTab` の全コロニー合計 | **各コロニーの脅威件数**の専用欄なし |
+| `ColonyStats.Departed`（脱出／離脱者数） | `OverviewTab` の全コロニー合計と `EndingsTab` の各エンディング記録 | **コロニー別累計の離脱者数**の専用欄なし |
+| `ColonyStats.MaxPopulation`（最大人口） | `OverviewTab` の全コロニー最大値と `ranking.population.peak` の最大コロニー順位 | **各コロニーの最大人口**の専用欄なし |
+| `ColonyStats.MaxRealPlay`（実プレイ時間） | `OverviewTab` の全コロニー合計と `ranking.playtime.peak` の最大コロニー順位 | **各コロニーの実プレイ時間**の専用欄なし |
+
+`ColonyStats.Difficulty` と `ColonyStats.Permadeath` は数値統計ではなく記録済みの属性。これらも `ColoniesTab` に個別の専用列はなく、`MetricRankings` の難易度別／パーマデス別集計に利用される。**いずれもデータ未記録のためではなく、UIの列・定義の欠落によるコロニー別非表示**である。全コロニーの値まで完全に見えないという意味ではない。
+
+対象コード：`Source/RimworldStatistics.Core/Stats/StatsCalculator.cs`（`ColonyStats`, `StatsResult`）、`Source/RimworldStatistics/UI/{ColoniesTab,OverviewTab,EndingsTab}.cs`、`Source/RimworldStatistics.Core/Stats/MetricRankings.cs`。この調査では表示欄の追加は行っていない。
