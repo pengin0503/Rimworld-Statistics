@@ -59,14 +59,17 @@ public static class ColoniesTab
 
         var selected = order.FirstOrDefault(i => view.Colonies[i].Key == selectedKey, -1);
         var tableHeight = rect.height - (selected >= 0 ? DetailHeight + 8f : 0f);
-        // One scroll view for the header and body keeps horizontal offsets synchronized.
         var width = Math.Max(rect.width - 16f, MinTableWidth);
-        var outRect = new Rect(rect.x, rect.y, rect.width, tableHeight);
-        var viewRect = new Rect(0f, 0f, width, (order.Count + 1) * RowHeight);
+        // Keep the sortable header fixed vertically while tracking horizontal body scroll.
+        GUI.BeginGroup(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 16f), RowHeight));
+        DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight));
+        GUI.EndGroup();
+
+        var outRect = new Rect(rect.x, rect.y + RowHeight, rect.width, tableHeight - RowHeight);
+        var viewRect = new Rect(0f, 0f, width, order.Count * RowHeight);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        DrawHeader(new Rect(0f, 0f, width, RowHeight));
         for (var row = 0; row < order.Count; row++)
-            DrawColony(new Rect(0f, (row + 1) * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]], row);
+            DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]], row);
         Widgets.EndScrollView();
 
         if (selected >= 0)
