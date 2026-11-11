@@ -36,12 +36,10 @@ public static class ProfileMutations
     /// and was read by this reader version or newer (spec §7.1: unchanged files are not read; failed ones are retried).
     /// </summary>
     public static bool NeedsRead(Profile p, string fileName, long size, DateTime lastWriteUtc, int readerVersion)
-        => !p.SaveObservations.Any(o =>
-            !o.Superseded
-            && o.FileName == fileName
-            && o.Status != ObservationStatus.Error
-            && o.SameFileContent(size, lastWriteUtc)
-            && o.ReaderVersion >= readerVersion);
+        => !p.SaveObservations.Any(o => o.FileName == fileName && o.SameFileContent(size, lastWriteUtc) && IsCurrentRead(o, readerVersion));
+
+    public static bool IsCurrentRead(SaveObservation o, int readerVersion)
+        => !o.Superseded && o.Status != ObservationStatus.Error && o.ReaderVersion >= readerVersion;
 
     /// <summary>Appends an observation; earlier ones are kept as superseded history unless provably redundant (spec §7.1).</summary>
     public static void AddSaveObservation(Profile p, SaveObservation obs)
@@ -216,8 +214,7 @@ public static class ProfileMutations
         var definitionsByKey = definitions.ToDictionary(d => d.StoredKey, Ord);
         var kept = new HashSet<MetricObservation>();
         // Representative selection: latest tick, then UTC, then smallest key.
-        var representative = snapshots.OrderByDescending(o => o.SaveTick)
-            .ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).First();
+        var representative = MetricObservationOrder.Latest(snapshots)!;
         kept.Add(representative);
         // JsonExtensionData represents fields from a minor version this binary does
         // not understand. Discarding their owner would silently destroy information.
@@ -250,16 +247,14 @@ public static class ProfileMutations
         {
             if (d.Selection == ColonySelection.Representative)
             {
-                if (d.ProviderId is not null || d.Acquisition == "factions")
+                if (SnapshotSelectionPolicy.UsesLastCapture(d))
                 {
                     // A later save may have been made after an optional provider
                     // or the experimental faction acquisition unit was disabled.
                     // Preserve its last actual capture; otherwise the Details
                     // view could mistake it for never-recorded and substitute
                     // weaker SaveFile historical fallback evidence.
-                    var lastCaptured = snapshots.Where(o => Scalar(o, d) is not null)
-                        .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
-                        .ThenBy(o => o.Key, Ord).FirstOrDefault();
+                    var lastCaptured = MetricObservationOrder.Latest(snapshots.Where(o => Scalar(o, d) is not null));
                     if (lastCaptured is not null)
                         kept.Add(lastCaptured);
                 }
