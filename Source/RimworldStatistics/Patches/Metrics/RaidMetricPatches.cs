@@ -29,7 +29,7 @@ public static class IncidentExecuteMetricPatch
     public static void Prefix(out object? __state)
     {
         __state = null;
-        if (!LiveMetrics.IsRecordingNow(RaidFamily.Name))
+        if (!LiveMetrics.CanCaptureEvent(RaidFamily.Name))
             return;
         var scope = new RaidProbe.Scope();
         RaidProbe.Stack.Add(scope);

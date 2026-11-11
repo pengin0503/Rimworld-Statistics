@@ -16,7 +16,7 @@ namespace RimworldStatistics.Patches.Metrics;
 public static class BiotechProducedWasteMetricPatch
 {
     public static void Prefix(CompWasteProducer __instance, out int __state)
-        => __state = LiveMetrics.IsRecordingNow(BiotechFamily.Name)
+        => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
             && __instance.parent?.Faction == Faction.OfPlayer
                 ? __instance.Waste?.stackCount ?? 0 : -1;
 
@@ -39,7 +39,7 @@ public static class BiotechProducedWasteMetricPatch
 public static class BiotechAtomizedWasteMetricPatch
 {
     public static void Prefix(CompAtomizer __instance, out int __state)
-        => __state = LiveMetrics.IsRecordingNow(BiotechFamily.Name)
+        => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
             && __instance.parent?.Faction == Faction.OfPlayer ? __instance.SpaceLeft : -1;
 
     public static void Postfix(CompAtomizer __instance, int __state)

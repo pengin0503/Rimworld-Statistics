@@ -55,13 +55,16 @@ public static class LiveMetrics
         FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
     }
 
-    /// <summary>Whether this family is currently recording, without counting a hit.</summary>
-    public static bool IsRecordingNow(string name) => Resolve(name) != null;
+    /// <summary>Whether this family is recording on this thread. This query does not change the recording.</summary>
+    public static bool IsRecordingNow(string name) => Resolve(name, eventAttempt: false) != null;
+
+    /// <summary>Whether the hook can capture an event. An off-thread attempt may make the family's coverage partial.</summary>
+    internal static bool CanCaptureEvent(string name) => Resolve(name, eventAttempt: true) != null;
 
     /// <summary>Returns the recording state and counts one hit when it is available.</summary>
     public static FamilyState? Family(string name)
     {
-        var family = Resolve(name);
+        var family = Resolve(name, eventAttempt: true);
         if (family != null && hitCounts is { } hits)
             hits[name] = hits.GetValueOrDefault(name) + 1;
         return family;
@@ -71,18 +74,18 @@ public static class LiveMetrics
     /// The totals an adapter adds to, or null when the family does not record now. Off the game thread an event is never
     /// applied (the totals are not thread-safe); the family is marked as having a gap instead.
     /// </summary>
-    private static FamilyState? Resolve(string name)
+    private static FamilyState? Resolve(string name, bool eventAttempt)
     {
         var acc = Accumulator;
         if (acc is null)
             return null;
         if (!UnityData.IsInMainThread)
         {
-            if (acc.Recording.Contains(name))
+            if (eventAttempt && acc.Recording.Contains(name))
                 Missed[name] = true;
             return null;
         }
-        if (!Missed.IsEmpty && Missed.TryRemove(name, out _))
+        if (eventAttempt && !Missed.IsEmpty && Missed.TryRemove(name, out _))
             acc.MarkGap(name, Find.TickManager.TicksGame);
         return acc.Family(name);
     }
