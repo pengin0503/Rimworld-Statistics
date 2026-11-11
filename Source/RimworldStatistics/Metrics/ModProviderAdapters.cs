@@ -37,20 +37,29 @@ internal static class ModProviderAdapters
         }
     }
 
-    public static IReadOnlyList<AcquisitionUnit> KnownUnits =>
+    private static readonly Lazy<IReadOnlyList<AcquisitionUnit>> KnownUnitList = new(() =>
         Declarations.Value.Where(x => x.Descriptor.IsValid())
             .Select(x => new AcquisitionUnit(x.Descriptor.AcquisitionId,
                 x.Descriptor.Source == MetricObservationSource.Checkpoint ? AcquisitionKind.Family : AcquisitionKind.Snapshot,
                 AcquisitionStatus.Unverified, x.Descriptor.RequiredDlc))
-            .GroupBy(x => x.Id, StringComparer.Ordinal).Select(g => g.First()).ToArray();
+            .GroupBy(x => x.Id, StringComparer.Ordinal).Select(g => g.First()).ToArray());
+    private static readonly Lazy<IReadOnlyList<ModMetricDescriptor>> KnownDescriptorList = new(() =>
+        Declarations.Value.Where(x => x.Descriptor.IsValid()).Select(x => x.Descriptor).ToArray());
+    private static readonly Lazy<IReadOnlyDictionary<string, ModMetricDescriptor>> FirstByAcquisition = new(() =>
+    {
+        var map = new Dictionary<string, ModMetricDescriptor>(StringComparer.Ordinal);
+        foreach (var d in KnownDescriptorList.Value)
+            map.TryAdd(d.AcquisitionId, d);
+        return map;
+    });
+    private static IReadOnlyList<ModMetricDescriptor> activeDescriptors = Array.Empty<ModMetricDescriptor>();
+    private static bool hasSnapshots;
 
-    public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors
-        => Declarations.Value.Where(x => x.Descriptor.IsValid()).Select(x => x.Descriptor).ToArray();
-
-    public static IReadOnlyList<ModMetricDescriptor> ActiveDescriptors
-        => active.Select(x => x.Registration.Descriptor).ToArray();
-
-    public static bool HasSnapshots => active.Any(x => x.Registration.Descriptor.Source == MetricObservationSource.SaveSnapshot);
+    public static IReadOnlyList<AcquisitionUnit> KnownUnits => KnownUnitList.Value;
+    public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors => KnownDescriptorList.Value;
+    public static ModMetricDescriptor? FirstDescriptorFor(string acquisitionId) => FirstByAcquisition.Value.GetValueOrDefault(acquisitionId);
+    public static IReadOnlyList<ModMetricDescriptor> ActiveDescriptors => activeDescriptors;
+    public static bool HasSnapshots => hasSnapshots;
 
     public static void Initialize(Harmony harmony)
     {
@@ -115,6 +124,8 @@ internal static class ModProviderAdapters
         }
         LiveFamilies.SetOptionalFamilies(families);
         active = enabled.ToArray();
+        activeDescriptors = active.Select(x => x.Registration.Descriptor).ToArray();
+        hasSnapshots = active.Any(x => x.Registration.Descriptor.Source == MetricObservationSource.SaveSnapshot);
     }
 
     /// <summary>Ensure a resumed event family is attributed without rewriting earlier version histories.</summary>
