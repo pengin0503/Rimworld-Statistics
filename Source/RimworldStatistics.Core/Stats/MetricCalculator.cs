@@ -387,7 +387,7 @@ public static class MetricCalculator
         // compacted key exists; check presence before weakening capture confidence.
         return observation.CompactedEvidenceByMetric is { } metadata
             && metadata.TryGetValue(definition.StoredKey, out var compacted)
-            ? MetricEvidencePolicy.Combine(new[] { direct, compacted }) : direct;
+            ? MetricEvidencePolicy.Combine(direct, compacted) : direct;
     }
 
     private static NumericValue From(MetricValue v, MetricObservation observation, MetricDefinition definition) => new()

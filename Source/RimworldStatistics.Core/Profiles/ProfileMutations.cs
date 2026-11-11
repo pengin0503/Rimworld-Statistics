@@ -315,7 +315,7 @@ public static class ProfileMutations
                     && evidence.TryGetValue(id, out var e) ? e : MetricEvidence.UnknownLegacy;
                 return row.CompactedEvidenceByMetric is { } metadata
                     && metadata.TryGetValue(d.StoredKey, out var prior)
-                    ? MetricEvidencePolicy.Combine(new[] { direct, prior }) : direct;
+                    ? MetricEvidencePolicy.Combine(direct, prior) : direct;
             }
             var values = removedRows.Select(Captured).Append(Captured(best));
             best.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
@@ -366,14 +366,14 @@ public static class ProfileMutations
             existing.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(Ord);
             foreach (var (unit, evidence) in received)
                 existing.EvidenceByAcquisition[unit] = existing.EvidenceByAcquisition.TryGetValue(unit, out var previous)
-                    ? MetricEvidencePolicy.Combine(new[] { previous, evidence }) : evidence;
+                    ? MetricEvidencePolicy.Combine(previous, evidence) : evidence;
         }
         if (obs.CompactedEvidenceByMetric is { } compacted)
         {
             existing.CompactedEvidenceByMetric ??= new Dictionary<string, MetricEvidence>(Ord);
             foreach (var (key, evidence) in compacted)
                 existing.CompactedEvidenceByMetric[key] = existing.CompactedEvidenceByMetric.TryGetValue(key, out var previous)
-                    ? MetricEvidencePolicy.Combine(new[] { previous, evidence }) : evidence;
+                    ? MetricEvidencePolicy.Combine(previous, evidence) : evidence;
         }
         foreach (var (key, entry) in obs.Metrics)
         {
