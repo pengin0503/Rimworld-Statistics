@@ -17,9 +17,9 @@ public sealed class CraftedThing
 }
 
 /// <summary>
-/// Phase C · work (ledger W-001…W-015, W-017, W-018, W-021, W-023, N1-A-009, N2-F-001…N2-F-003, N2-F-005, N2-F-009, N2-F-011,
-/// N2-F-012, N3-W-001…N3-W-005, N4-R-004; evidence #work). Units are stack counts. A sown plant enters a cohort; its first
-/// successful harvest or its confirmed death decides it (a plant removed otherwise stays undecided and is not counted).
+/// Phase C · work (crop loss W-021/N2-F-005/N2-F-009 retired; other retained work ledgers W-001…W-015, W-017, W-018, W-023, N1-A-009, N2-F-001…N2-F-003, N2-F-011,
+/// N2-F-012, N3-W-001…N3-W-005, N4-R-004; evidence #work). Units are stack counts. Sowing and harvested
+/// yield are retained independently; retired crop-death cohort tracking is not collected.
 /// </summary>
 public static class WorkFamily
 {
@@ -42,14 +42,11 @@ public static class WorkFamily
     public const string HarvestFailures = "work.harvest.failures";
     public const string MealsByDef = "work.cooking.by_def";
     public const string UniqueCraftedDefs = "work.crafting.unique_defs";
-    public const string ColdLoss = "work.crops.cold_loss";
     public const string PodsLaunched_ = "transport.pods.launched";
     public const string DailyPeak = "work.crafting.daily_peak";
     public const string SownDefs = "work.crops.sown_defs";
     public const string HarvestByCrop = "work.harvest.by_crop";
     public const string TopCrop = "work.harvest.top_crop";
-    public const string OtherLoss = "work.crops.other_loss";
-    public const string LossRate = "work.crops.loss_rate";
     public const string HarvestYearPeak = "work.harvest.year_peak";
     public const string BestCrafter = "work.crafting.best_worker";
     public const string BestHarvester = "work.harvest.best_worker";
@@ -63,6 +60,8 @@ public static class WorkFamily
     /// <summary>RimWorld.QualityCategory, worst to best.</summary>
     public static readonly IReadOnlyList<string> Qualities = new[] { "Awful", "Poor", "Normal", "Good", "Excellent", "Masterwork", "Legendary" };
 
+    // Revision 1 is retained so existing counters for sow/harvest/other retained work metrics continue uninterrupted.
+    // Legacy crop-loss accumulator keys are never emitted as public outputs.
     public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
 
     private const string Harvest = "harvest";            // Sum; By crop
@@ -84,13 +83,8 @@ public static class WorkFamily
     private const string Deconstruct = "deconstructed";
     private const string BuildFail = "construction_failed";
     private const string Sow = "sown";                   // N; By crop (distinct crops)
-    private const string Cold = "cold_loss";
-    private const string Other = "other_loss";
-    private const string CohortLoss = "cohort_loss";
-    private const string CohortHarvest = "cohort_harvest";
     private const string Pods = "pods";
     private const string Repair = "repairs";
-    private const string Cohort = "cohort";              // active: plant id → sow tick
 
     private static string Period(int tick, int ticks) => (tick / ticks).ToString(CultureInfo.InvariantCulture);
 
@@ -104,8 +98,6 @@ public static class WorkFamily
         s.CountBy(Harvest, cropDef ?? MetricKeys.UnknownBucket, units);
         s.CountBy(HarvestByWorker, workerId, units);
         s.CountBy(HarvestByYear, Period(tick, StatFormat.TicksPerDay * StatFormat.DaysPerYear), units);
-        if (plantId != null && s.Untrack(Cohort, plantId) is not null)
-            s.Count(CohortHarvest);
     }
 
     public static void HarvestFailed(FamilyState s) => s.Count(Fails);
@@ -163,26 +155,10 @@ public static class WorkFamily
             s.Count(Pods, pods);
     }
 
-    public static void Sown(FamilyState s, string plantId, string cropDef)
+    public static void Sown(FamilyState s, string cropDef)
     {
         s.Count(Sow);
         s.CountBy(Sow, cropDef);
-        s.Track(Cohort, plantId, 0);
-    }
-
-    /// <summary>A sown plant left the cohort without a decision (cut by hand, a failed harvest, destroyed otherwise).</summary>
-    public static void PlantRemoved(FamilyState s, string plantId) => s.Untrack(Cohort, plantId);
-
-    /// <summary>A player crop died of a confirmed cause (cold, or another cause such as poison or pollution).</summary>
-    public static void CropDied(FamilyState s, string plantId, bool cold, bool inPlayerHome = true)
-    {
-        // The game adapter supplies colony provenance. NPC map plants must never
-        // increase colony losses, including when no sowing cohort was tracked.
-        if (!inPlayerHome)
-            return;
-        s.Count(cold ? Cold : Other);
-        if (s.Untrack(Cohort, plantId) is not null)
-            s.Count(CohortLoss);
     }
 
     private static void Build(FamilyOutputContext c)
@@ -231,15 +207,6 @@ public static class WorkFamily
         var sow = s.Peek(Sow);
         c.PutBreakdown(Sown_, c.Counts(sow), c.Value(integer: sow?.N ?? 0));
         c.Put(SownDefs, c.Value(integer: sow?.By?.Count ?? 0, partial: sow?.Overflow == true));
-        c.PutCount(Cold, ColdLoss);
-        c.PutCount(Other, OtherLoss);
-        var loss = s.Peek(CohortLoss)?.N ?? 0;
-        var decided = loss + (s.Peek(CohortHarvest)?.N ?? 0);
-        // A plant dropped at the cohort's cap is never decided: the rate is partial, 0÷0 included.
-        var dropped = s.TrackerOverflowed(Cohort);
-        c.Put(LossRate, decided == 0
-            ? c.Value(numerator: 0, denominator: 0, partial: dropped)
-            : c.Value(real: loss / (double)decided, numerator: loss, denominator: decided, partial: dropped));
     }
 
     private static void PutTopOf(FamilyOutputContext c, Dictionary<string, double>? by, bool overflow, string key)
