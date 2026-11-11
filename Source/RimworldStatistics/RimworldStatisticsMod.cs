@@ -18,6 +18,7 @@ public sealed class RimworldStatisticsMod : Mod
         new(false, Array.Empty<string>());
 
     private static Vector2 experimentalScroll;
+    private static AcquisitionUnit[]? selectableUnits;
 
     private static bool SelectionNeedsRestart()
     {
@@ -46,7 +47,7 @@ public sealed class RimworldStatisticsMod : Mod
     public override void DoSettingsWindowContents(Rect inRect)
     {
         const float rowHeight = 27f;
-        var selectable = AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
+        var selectable = selectableUnits ??= AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
         var viewRect = new Rect(0f, 0f, inRect.width - 20f, 330f + selectable.Length * rowHeight);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
         try
@@ -78,7 +79,7 @@ public sealed class RimworldStatisticsMod : Mod
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
                 var label = unit.Id + " · " + kind;
-                var provider = ModProviderAdapters.KnownDescriptors.FirstOrDefault(d => d.AcquisitionId == unit.Id);
+                var provider = ModProviderAdapters.FirstDescriptorFor(unit.Id);
                 if (provider is not null && !ModsConfig.IsActive(provider.OwnerPackageId))
                 {
                     listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(provider.OwnerPackageId));
