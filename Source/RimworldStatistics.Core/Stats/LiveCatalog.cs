@@ -116,13 +116,9 @@ public static class LiveCatalog
         Live(MembershipFamily.Routes, "N1-C-003", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_JoinRoutes", "RWS_MetricDesc_JoinRoutes", breakdown: true),
         Live(MembershipFamily.PrisonerRecruit, "P-002", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_PrisonerRecruits", "RWS_MetricDesc_PrisonerRecruits"),
         Live(MembershipFamily.HumanBirths, "P-003, L-011", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_HumanBirths", "RWS_MetricDesc_HumanBirths", dlc: Biotech),
-        Live(MembershipFamily.Unique, "P-009", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_UniqueMembers", "RWS_MetricDesc_UniqueMembers"),
-        Live(MembershipFamily.Rejoin, "N1-C-004", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_Rejoins", "RWS_MetricDesc_Rejoins"),
         Live(MembershipFamily.JoinAgeMean, "N4-P-003", Pop, Years, Ratio, MembershipFamily.Name, "RWS_Metric_JoinAgeMean", "RWS_MetricDesc_JoinAgeMean"),
         Live(MembershipFamily.FirstJoinDay, "N5-M-002", Pop, Days, Min, MembershipFamily.Name, "RWS_Metric_FirstJoinDay", "RWS_MetricDesc_FirstJoinDay"),
         Live(MembershipFamily.SlavesFreed, "P-018", Social, Count, Sum, MembershipFamily.Name, "RWS_Metric_SlavesFreed", "RWS_MetricDesc_SlavesFreed"),
-        Live(MembershipFamily.RecruitTimeMin, "P-027", Social, Days, Min, MembershipFamily.Name, "RWS_Metric_RecruitTimeMin", "RWS_MetricDesc_RecruitTimeMin"),
-        Live(MembershipFamily.RecruitTimeMax, "P-027", Social, Days, Max, MembershipFamily.Name, "RWS_Metric_RecruitTimeMax", "RWS_MetricDesc_RecruitTimeMax"),
         Live(MembershipFamily.Kidnaps, "P-028", Social, Count, Sum, MembershipFamily.Name, "RWS_Metric_Kidnaps", "RWS_MetricDesc_Kidnaps"),
         Live(MembershipFamily.KidnapRescues, "N4-P-005", Social, Count, Sum, MembershipFamily.Name, "RWS_Metric_KidnapRescues", "RWS_MetricDesc_KidnapRescues"),
         Live(MembershipFamily.CaptiveMax, "N4-P-006", Social, Days, Max, MembershipFamily.Name, "RWS_Metric_CaptiveMax", "RWS_MetricDesc_CaptiveMax"),
@@ -180,9 +176,6 @@ public static class LiveCatalog
         Live(WorkFamily.HarvestFailures, "W-015", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_HarvestFailures", "RWS_MetricDesc_HarvestFailures"),
         Live(WorkFamily.Sown_, "W-014", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsSown", "RWS_MetricDesc_CropsSown", breakdown: true),
         Live(WorkFamily.SownDefs, "N2-F-001", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsSownDefs", "RWS_MetricDesc_CropsSownDefs"),
-        Live(WorkFamily.ColdLoss, "W-021", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsColdLoss", "RWS_MetricDesc_CropsColdLoss"),
-        Live(WorkFamily.OtherLoss, "N2-F-005", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_CropsOtherLoss", "RWS_MetricDesc_CropsOtherLoss"),
-        Live(WorkFamily.LossRate, "N2-F-009", Work, Percent, Ratio, WorkFamily.Name, "RWS_Metric_CropsLossRate", "RWS_MetricDesc_CropsLossRate"),
         Live(WorkFamily.MiningUnits, "W-002", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_MiningUnits", "RWS_MetricDesc_MiningUnits"),
         Live(WorkFamily.BestMiner, "N3-W-005", Work, Count, Max, WorkFamily.Name, "RWS_Metric_BestMiner", "RWS_MetricDesc_BestMiner", breakdown: true),
         Live(WorkFamily.Constructions, "W-004", Work, Count, Sum, WorkFamily.Name, "RWS_Metric_Constructions", "RWS_MetricDesc_Constructions"),
@@ -196,7 +189,6 @@ public static class LiveCatalog
         // C3 · food
         Live(FoodFamily.SpoiledUnits, "W-016", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodSpoiled", "RWS_MetricDesc_FoodSpoiled"),
         Live(FoodFamily.Nutrition, "W-019", Work, Count, Sum, FoodFamily.Name, "RWS_Metric_FoodNutrition", "RWS_MetricDesc_FoodNutrition"),
-        Live(FoodFamily.NoShortageLongest, "N2-F-010", Work, Days, Max, FoodFamily.Name, "RWS_Metric_FoodNoShortageLongest", "RWS_MetricDesc_FoodNoShortageLongest"),
         Live(FoodFamily.HarvestPerGrowingCell, "N1-A-008", Work, MetricUnit.PerCellDay, Ratio, FoodFamily.Name, "RWS_Metric_FoodHarvestPerCell", "RWS_MetricDesc_FoodHarvestPerCell"),
 
         // C3 · trade
