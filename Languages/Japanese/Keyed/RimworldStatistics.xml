@@ -869,4 +869,32 @@
   <RWS_CrossDesc_TopCategory>独立コロニーの代表観測値で種類別に件数を合計し、最多の種類を表示します。欠測・不完全な内訳はPartialのまま扱います。品目の個数ではなく分類別の回数や人数を表す場合があります。</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>コロニー代表保存時点の合計：{0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>独立した各コロニーの代表保存時点に記録された状態数量を合計します。生涯イベント累計ではありません。欠測を0に置き換えません。</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality：来訪グループ累計（導入後）</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>このアドオンを有効にしてからプレイヤー拠点に実際に到着したHospitality訪問グループの累計。救助後に再編成されたグループは対象外です。ロード時の重複はイベントIDで除外し、導入前の来訪数は推定しません。</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality：来訪客の延べ人数（導入後）</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>導入後に到着を確認したHospitality訪問グループの所属人数合計。同じ人物の再訪問も別の来訪として数えます。ユニーク人数・保存時滞在人数ではなく、導入前の値も復元しません。</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_Recruited>Hospitality：宿泊客の加入成功累計（導入後）</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>アドオン有効化後にHospitalityの加入処理が成功した宿泊客の人数。プレイヤー所属になったことを確認し、導入前の履歴は推定しません。</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality：強制加入の成功累計（導入後）</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>Hospitality側で強制加入と扱われた成功件数。全加入成功件数の内訳です。</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality：任意加入の成功累計（導入後）</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>Hospitality側で強制加入ではないと扱われた成功件数。全加入成功件数の内訳です。</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality：宿泊客に割当済みのベッド数（保存時）</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>保存成功時点でプレイヤー拠点にいる宿泊客に割り当て済みのゲストベッドを重複せず数えた値。共同利用のベッドは1台です。実際に寝ている人数や過去の宿泊件数ではありません。</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>募集依頼の開始回数（アドオン導入後）</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>Recruitment 1.1.2の依頼作成成功を、アドオンで記録した回数です。旧本体のイベント台帳とは重複排除形式が異なるため、別の時系列として表示します。</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment：募集への銀支払累計（導入後）</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>アドオン有効化後に募集依頼の作成が成功し、実際に支払った銀の合計です。追加料金も含み、失敗した依頼は含みません。</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment：予定応募人数累計（導入後）</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>有効化後の募集開始時に抽選された予定応募人数の合計。実際に生成・到着・加入した人数とは異なります。</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene：配管内の貯水量（L）</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>プレイヤーの各ホーム拠点にある配管網接続済み貯水設備の水量（リットル）を、タンクを重複計上せず合計したセーブ成功時点の値。生涯の累計生産量・消費量ではありません。導入前の水量は復元されず、取得できない場合は不明として扱います。</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene：配管接続タンク容量（L）</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>各プレイヤー拠点で配管に接続された貯水設備の最大容量を重複排除して合計した、保存時点の値。累計生産量ではありません。</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene：ポンプ供給能力（L/日）</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>配管網ごとの名目ポンプ供給能力を重複せず合計した、保存時点のL/ゲーム内日。実際に汲み上げた累計量ではありません。</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene：地下水供給能力（L/日）</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>水源による名目供給能力を配管網ごとに重複せず合計した、保存時点のL/ゲーム内日。実際に生産した水の累計ではありません。</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>自動着替え指示の発行回数</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgradeが自動Wearジョブを入植者へ実際に発行した回数。着替え完了回数ではありません。アドオンの統計取得を有効にした時点以降だけを数えます。実験的な統計です。</RWS_SAU_OrdersIssuedDesc>
 </LanguageData>

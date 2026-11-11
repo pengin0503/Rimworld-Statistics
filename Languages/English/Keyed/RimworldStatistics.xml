@@ -869,4 +869,32 @@
   <RWS_CrossDesc_TopCategory>Summed counts for each recorded category across independent colonies, using one representative observation per colony. Incomplete and missing category splits remain Partial; categories are not item counts.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Combined colony snapshots: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>Sum of separately measured state quantities at the representative saved moment of each independent colony. This is not a lifetime event total. Unknown readings never become zero.</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality: lifetime guest groups arrived (since activation)</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>Number of confirmed visiting Hospitality groups arriving at player home maps since this addon was enabled. Rescued guests given replacement groups are excluded. Replays use hashed event IDs. No pre-install history is inferred.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality: lifetime guest arrivals (since activation)</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>Total visiting pawns in confirmed Hospitality groups arriving at player home maps since this addon was enabled. Repeat visits count again; this is not a unique-person count or the current number of guests. Historical visitors before activation are unknown.</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_Recruited>Hospitality: successfully recruited guests (since activation)</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>Confirmed Hospitality guest adoptions since opt-in, counted only after the upstream Recruit action returns with a player-faction pawn. No historical backfill.</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality: forced guest recruitments (since activation)</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>Confirmed Hospitality guest recruitments marked forced by the target, since opt-in. A subset of successful recruitments.</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality: voluntary guest recruitments (since activation)</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>Confirmed Hospitality guest recruitments not marked forced by the target, since opt-in. A subset of successful recruitments.</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality: guest-assigned beds at save</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>Number of distinct guest beds assigned to currently present Hospitality visitors across player home maps at successful save. Shared beds are counted once. This is bed assignment, not a measure of guests physically sleeping or of lifetime bookings.</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>Recruitment requests started (addon period)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>Confirmed recruitment requests after opt-in; distinct from the legacy built-in series because event deduplication/checkpoint keys changed.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment: silver spent on started requests (since activation)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>Total confirmed silver paid for newly created Recruitment drives since opting in. Includes premiums; does not count failed attempts or represent net wealth.</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: planned applicants in requests (since activation)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>Total candidates rolled when paid Recruitment drives start, since opt-in. This is the planned applicant count, not people who actually arrived, joined, or became colonists; generation may fail.</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: stored piped water (L)</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>Total liters physically stored in unique Dubs Bad Hygiene pipe-connected water tanks across player home maps at a successful save. Includes only available connected tanks; not lifetime production or usage. Values from before enabling the addon are not reconstructed. Unknown if source data cannot be read.</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: piped tank capacity (L)</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>Total maximum water capacity in liters of distinct pipe-connected tank components across player home maps at the latest successful save. Not a lifetime quantity.</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: pump capacity (L/day)</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>Sum of source-defined potential pumping capacity of unique populated pipe networks at a successful save, in liters per RimWorld day. This is capacity, not actual water produced.</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: groundwater supply capacity (L/day)</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>Sum of source-defined water inlet/groundwater capacity in liters per game day across populated unique pipe networks at a successful save. Not the actual amount pumped.</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>Automatic apparel orders issued</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Number of automatic vanilla Wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of successfully completed apparel changes. Only events after enabling collection are counted. Experimental statistics.</RWS_SAU_OrdersIssuedDesc>
 </LanguageData>
