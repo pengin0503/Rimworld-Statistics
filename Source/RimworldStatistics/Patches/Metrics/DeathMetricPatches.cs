@@ -79,11 +79,7 @@ public static class PawnKillMetricPatch
         GameFacts.Record(HealthDeathFamily.Name, s => HealthDeathFamily.Died(s, d, tick));
         GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Died(s, d.PawnId, d.FreeColonist, d.AgeYears, tick));
         GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Died(s, d));
-        GameFacts.Record(MembershipFamily.Name, s =>
-        {
-            MembershipFamily.PrisonerGone(s, d.PawnId);
-            MembershipFamily.KidnapLost(s, d.PawnId);
-        });
+        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, d.PawnId));
     }
 
     public static Exception? Finalizer(Pawn __instance, DeathFacts? __state, Exception? __exception)
