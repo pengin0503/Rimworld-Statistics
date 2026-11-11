@@ -60,7 +60,7 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Equal(1L, value.IntegerValue);
         Assert.Equal(MetricCoverage.Partial, value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, read.Metrics.EvidenceByAcquisition!["facilities"]);
-        Assert.DoesNotContain(FacilitiesSnapshot.MedicalBedsPeak, read.Metrics.Metrics);
+        Assert.DoesNotContain("facilities.medical_beds.peak", read.Metrics.Metrics);
         Assert.DoesNotContain(ColonyStartSnapshot.Biome, read.Metrics.Metrics);
     }
 
@@ -172,7 +172,7 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Equal(2L, value.IntegerValue);
         Assert.Equal(MetricCoverage.Partial, value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["facilities"]);
-        Assert.DoesNotContain(FacilitiesSnapshot.MedicalBedsPeak, r.Metrics.Metrics.Keys);
+        Assert.DoesNotContain("facilities.medical_beds.peak", r.Metrics.Metrics.Keys);
         Assert.DoesNotContain("facilities.running_generators.latest", r.Metrics.Metrics.Keys);
     }
 
