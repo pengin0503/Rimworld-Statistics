@@ -54,7 +54,7 @@ public sealed class ModdedIncidentFamilyTests
         ModdedIncidentFamily.RecordSuccess(state, "another.events", "EarthQuake", succeeded: true, playerHome: true);
         var obs = Save(acc, 100);
         var breakdown = obs.Metrics[ModdedIncidentFamily.ByDef].Values;
-        Assert.Equal(2L, obs.Scalar(ModdedIncidentFamily.ByDef)!.IntegerValue);
+        Assert.Equal(2L, obs.Scalar(ModdedIncidentFamily.ByDef, MetricKeys.Revision(ModdedIncidentFamily.ByDef))!.IntegerValue);
         Assert.Equal(1L, breakdown["vanillaexpanded.events:EarthQuake"].IntegerValue);
         Assert.Equal(1L, breakdown["another.events:EarthQuake"].IntegerValue);
         Assert.Equal(3, breakdown.Count); // 2 packages and scalar
@@ -67,7 +67,7 @@ public sealed class ModdedIncidentFamilyTests
         ModdedIncidentFamily.RecordSuccess(state, "vanillaexpanded.events", "EarthQuake", succeeded: true, playerHome: true);
         ModdedIncidentFamily.RecordSuccess(state, "vanillaexpanded.events", "EarthQuake", succeeded: true, playerHome: true);
         var obs = Save(acc, 300);
-        Assert.Equal(2L, obs.Scalar(ModdedIncidentFamily.ByDef)!.IntegerValue);
+        Assert.Equal(2L, obs.Scalar(ModdedIncidentFamily.ByDef, MetricKeys.Revision(ModdedIncidentFamily.ByDef))!.IntegerValue);
         Assert.False(obs.Metrics.ContainsKey(DisasterFamily.CropBlights));
         Assert.False(obs.Metrics.ContainsKey(DisasterFamily.Meteors));
         Assert.False(obs.Metrics.ContainsKey(DisasterFamily.ShortCircuits));
@@ -84,7 +84,7 @@ public sealed class ModdedIncidentFamilyTests
         var retained = CheckpointJson.Parse(withoutUnit.PrepareSave(400, SavedAt, "next")!.Json).Payload!;
         var obs = CheckpointMetrics.ToObservation(retained, saved.Json,
             new ColonyIdentity { ModCampaignId = "incident-test" }, null, null);
-        Assert.Equal(1L, obs.Scalar(ModdedIncidentFamily.ByDef)!.IntegerValue);
+        Assert.Equal(1L, obs.Scalar(ModdedIncidentFamily.ByDef, MetricKeys.Revision(ModdedIncidentFamily.ByDef))!.IntegerValue);
     }
 
     [Fact]
