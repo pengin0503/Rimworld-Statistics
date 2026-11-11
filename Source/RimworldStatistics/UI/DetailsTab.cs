@@ -18,7 +18,15 @@ public static class DetailsTab
     private static readonly float[] Widths = { 0.40f, 0.26f, 0.22f, 0.12f };
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private sealed record Line(string Label, string Value, string State, string Count, string Tip, int Depth, string? ExpandKey, bool Dim);
+    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, bool Dim);
+
+    private sealed class LazyTip(Func<string> build)
+    {
+        private string? _text;
+        public string Get() => _text ??= build();
+    }
+
+    private static int buildVersion;
 
     private enum DetailsViewMode { Lifetime, Other, All }
 
@@ -210,7 +218,7 @@ public static class DetailsTab
         }
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
-        TooltipHandler.TipRegion(rect, line.Tip);
+        TooltipHandler.TipRegion(rect, line.Tip, line.TipId);
         if (line.ExpandKey is { } key && Widgets.ButtonInvisible(rect))
         {
             if (!Expanded.Remove(key))
@@ -223,6 +231,7 @@ public static class DetailsTab
 
     private static List<Line> Build(Inputs input)
     {
+        var version = unchecked(++buildVersion);
         IReadOnlyList<NumericRow> rows;
         NumericColony? colony = null;
         if (input.PerColony)
@@ -275,7 +284,7 @@ public static class DetailsTab
                 && row.Definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal);
             var expandable = row.Breakdowns.Count > 0 && (row.Definition.HasBreakdown || crossTop);
             var expandKey = expandable ? (input.PerColony ? "c:" : "a:") + row.Definition.Key : null;
-            result.Add(MakeLine(row, label, 0, expandKey, input, colony));
+            result.Add(MakeLine(row, label, 0, expandKey, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
             foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
@@ -285,17 +294,17 @@ public static class DetailsTab
                 var breakdownLabel = crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType"
                     ? ItemLabel(b.Breakdown)
                     : BreakdownLabel(sourceDef, b.Breakdown);
-                result.Add(MakeLine(b, breakdownLabel, 1, childKey, input, colony));
+                result.Add(MakeLine(b, breakdownLabel, 1, childKey, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
                 if (childKey is not null && Expanded.Contains(childKey))
                     foreach (var contribution in b.Breakdowns)
                         result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
-                            2, null, input, colony));
+                            2, null, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
             }
         }
         return result;
     }
 
-    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony)
+    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony, int tipId)
     {
         var d = row.Definition;
         var v = row.Value;
@@ -303,6 +312,30 @@ public static class DetailsTab
             ? v.ThroughTick is { } t ? Dialog_RimworldStatistics.Days(t) : Dialog_RimworldStatistics.Dash
             : $"{row.Valid.ToString(Inv)} / {row.Targets.ToString(Inv)}";
 
+        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
+        if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
+        {
+            // Cross-colony records retain their original category but still
+            // show the winning item or the colony holding the record.
+            if (v.Label is { } holderLabel)
+                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
+                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
+                    : holderLabel);
+            else if (v.ColonyKey is { } holderColony)
+                value += " · " + Name(input.Stats, holderColony);
+        }
+        var state = CoverageLabel(d, v.Coverage);
+        if (d.Acquisition is not null && !d.Published)
+            state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
+        var lazy = new LazyTip(() => BuildTip(row, label, depth, input, colony));
+        return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
+            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+    }
+
+    private static string BuildTip(NumericRow row, string label, int depth, Inputs input, NumericColony? colony)
+    {
+        var d = row.Definition;
+        var v = row.Value;
         var tip = new StringBuilder();
         tip.Append(label).Append('\n')
             .Append(d.ProviderId is not null && d.DescriptionKey == d.Key ? d.Key
@@ -370,24 +403,7 @@ public static class DetailsTab
                 tip.Append((string)"RWS_Details_MissingAcquisitionTip".Translate()).Append('\n');
         }
         tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
-
-        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
-        if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
-        {
-            // Cross-colony records retain their original category but still
-            // show the winning item or the colony holding the record.
-            if (v.Label is { } holderLabel)
-                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
-                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
-                    : holderLabel);
-            else if (v.ColonyKey is { } holderColony)
-                value += " · " + Name(input.Stats, holderColony);
-        }
-        var state = CoverageLabel(d, v.Coverage);
-        if (d.Acquisition is not null && !d.Published)
-            state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
-        return new Line(label, value, state, count, tip.ToString(), depth, expandKey,
-            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+        return tip.ToString();
     }
 
     // ----- formatting -----
