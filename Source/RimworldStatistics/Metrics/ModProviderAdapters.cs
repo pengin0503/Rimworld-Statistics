@@ -26,7 +26,7 @@ internal static class ModProviderAdapters
     private static Enabled[] active = Array.Empty<Enabled>();
     private static bool initialized;
 
-    /// <summary>Only separately loaded SDK addons can register optional metrics.</summary>
+    /// <summary>Both embedded optional integrations and separately loaded SDK consumers register in the existing host during Mod construction.</summary>
     private static IReadOnlyList<ModMetricAdapterRegistration> ExternalOnlyAdapters()
     {
         try { return ExternalSdkHost.Instance.BuildAdapters(); }
