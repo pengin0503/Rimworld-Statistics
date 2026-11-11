@@ -899,4 +899,6 @@
   <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgradeが自動Wearジョブを入植者へ実際に発行した回数。着替え完了回数ではありません。アドオンの統計取得を有効にした時点以降だけを数えます。実験的な統計です。</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>MOD追加インシデントの成功回数（種類別）</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>実験的統計取得を有効にした後、プレイヤーの本拠地マップで成功したバニラ以外のMOD追加インシデントを、パッケージIDとインシデント定義別に集計します。既存のバニラ災害統計とは独立しており、過去の未記録期間は補完しません。</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>稼働中のプレイヤーOutposts（セーブ時点）</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>セーブ成功時点のプレイヤー所有Vanilla Expanded Framework Outpostsの稼働数です。全コロニーでは代表セーブ時点の数を合計します。累計建設数や生産・受領アイテム数ではありません。実験的統計であり、過去の未記録期間は補完しません。</RWS_MetricDesc_OutpostsActive>
 </LanguageData>

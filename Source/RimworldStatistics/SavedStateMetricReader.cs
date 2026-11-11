@@ -10,7 +10,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state" };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -61,6 +61,9 @@ internal static class SavedStateMetricReader
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
                         observation.Metrics[key] = value;
+                else if (unit == OutpostSnapshot.Unit)
+                    foreach (var (key, value) in ReadOutposts())
+                        observation.Metrics[key] = value;
                 observation.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
                 observation.EvidenceByAcquisition[unit] = Metrics.MetricGates.IsExperimental(unit)
                     ? MetricEvidence.Experimental : MetricEvidence.Verified;
@@ -72,6 +75,23 @@ internal static class SavedStateMetricReader
         }
         Metrics.ModProviderAdapters.CaptureSuccessfulSave(observation);
         return observation.Metrics.Count > 0 ? observation : null;
+    }
+
+    /// <summary>
+    /// Successful-save only: no calls to Outpost.ProducedThings, Produce or Deliver.
+    /// Each live player-owned Outposts.Outpost instance contributes once.
+    /// </summary>
+    private static Dictionary<string, MetricEntry> ReadOutposts()
+    {
+        var player = Faction.OfPlayerSilentFail
+            ?? throw new InvalidOperationException("Player faction is not initialized");
+        var objects = Find.WorldObjects?.AllWorldObjects
+            ?? throw new InvalidOperationException("World objects are not initialized");
+        var unique = new HashSet<object>(ReferenceEqualityComparer.Instance);
+        foreach (var obj in objects)
+            if (obj != null && obj.Faction == player && OutpostSnapshot.IsOutpostType(obj.GetType()))
+                unique.Add(obj);
+        return OutpostSnapshot.Build(unique.Count);
     }
 
     /// <summary>Biome of the original game starting tile; relocation never changes the category.</summary>

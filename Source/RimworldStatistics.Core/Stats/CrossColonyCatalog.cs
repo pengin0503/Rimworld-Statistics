@@ -30,6 +30,7 @@ public static class CrossColonyCatalog
         HealthDeathFamily.HostileKills, MembershipFamily.FirstJoin,
         BiotechFamily.MechsCreated, RoyaltyFamily.Psycasts,
         ModdedIncidentFamily.ByDef,
+        OutpostSnapshot.Active,
     };
 
     // Each source stores an exhaustive per-Def split when it is measured

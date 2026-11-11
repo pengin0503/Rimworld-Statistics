@@ -255,6 +255,7 @@ royalty.psylink.max,royalty_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-00
 biotech.pollution.cells_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-004,BiotechStateSnapshot.PollutionCellsPeak
 biotech.bandwidth.used_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-005,BiotechStateSnapshot.BandwidthUsedPeak
 royalty.quest_success,royalty_quests,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-003,RoyaltyQuestSnapshot.Success
+exploration.outposts.active,outpost_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,GEN-OUT-001,OutpostSnapshot.Active
 ranking.survival.by_biome,colony_start,derived,DEPENDS_ON_INPUT,UNVERIFIED,N1-F-001,MetricRankings.DaysByBiome
 ranking.endings.by_biome,colony_start,derived,DEPENDS_ON_INPUT,UNVERIFIED,N1-F-002,MetricRankings.EndingsByBiome
 ranking.kills_to_colonist_deaths,health_death,derived,DEPENDS_ON_INPUT,UNVERIFIED,R-012,MetricRankings.KillsToDeaths

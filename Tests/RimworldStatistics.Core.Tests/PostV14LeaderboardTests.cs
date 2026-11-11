@@ -174,7 +174,7 @@ public sealed class PostV14LeaderboardTests
     public void Catalog_ReplacesRetiredGeneratorWithSlaveMetricAndPreservesStorageContract()
     {
         Assert.Equal(322, MetricRegistry.BaseCatalog.Count);
-        Assert.Equal(408, MetricRegistry.Catalog.Count);
+        Assert.Equal(411, MetricRegistry.Catalog.Count);
         Assert.Equal(MetricRegistry.Catalog.Count,
             MetricRegistry.Catalog.Select(d => d.Key).Distinct(StringComparer.Ordinal).Count());
         Assert.False(MetricRegistry.Find(CrossColonyCatalog.TopPrefix + WorkFamily.HarvestByCrop)!.HasBreakdown);

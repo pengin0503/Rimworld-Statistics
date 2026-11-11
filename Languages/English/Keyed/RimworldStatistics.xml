@@ -899,4 +899,6 @@
   <RWS_SAU_OrdersIssuedDesc>Number of automatic vanilla Wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of successfully completed apparel changes. Only events after enabling collection are counted. Experimental statistics.</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>Successful MOD incidents by type</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>Confirmed incidents from non-vanilla MODs that succeeded on a player home map after experimental collection was enabled. Split by package ID and incident definition; not the existing vanilla disaster counters. Historical gaps are not backfilled.</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>Active player Outposts (saved state)</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>Number of active player-controlled Vanilla Expanded Framework Outposts in a successful save. Across colonies, sums representative saved states; not a lifetime count or a measure of items produced or received. Experimental; no backfilling.</RWS_MetricDesc_OutpostsActive>
 </LanguageData>
