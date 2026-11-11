@@ -2,6 +2,12 @@
 
 Status: **experimental / NOT compatibility-guaranteed**, pending target-game acceptance and performance testing. This document describes the current candidate code, not a release commitment.
 
+## Integrated optional gameplay-MOD statistics (2026-11-11)
+
+The Rimworld-Statistics host now embeds the previously separate Hospitality, Recruitment, Dubs Bad Hygiene and Smart Apparel Upgrade adapters. They use the **same SDK 1.1 API and existing checkpoint/representative-save/profile store** as external providers, preserving all stable IDs and revisions. The host package ships **only** `RimworldStatistics.dll`, `RimworldStatistics.Core.dll` and `RimworldStatistics.Api.dll`; third-party target MOD assemblies and standalone statistics addon DLLs are **not bundled**. When a gameplay target is absent, no reflection/patching/collection runs. If its old standalone statistics addon remains installed during migration, that addon is allowed to own the corresponding hooks and the integrated implementation stands down until removal and restart.
+
+Previously saved numbers remain visible after target or old addon removal; missing time intervals are not backfilled. The rest of this document remains the SDK contract for other third-party developers and is not deprecated by host integration.
+
 ## Host and binary distribution
 
 The host MOD `pengin0503.rimworldstatistics` packages **one** `RimworldStatistics.Api.dll` inside `1.7/Assemblies`, together with its existing `RimworldStatistics.dll` and `RimworldStatistics.Core.dll`. The external consumer compiles against the API reference but **must not copy any API/Core/host DLL into its ZIP**. Assemblies are resolved from the host at runtime. Source-level project reference for local development:
