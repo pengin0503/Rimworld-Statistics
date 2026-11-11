@@ -18,7 +18,7 @@ The host MOD `pengin0503.rimworldstatistics` packages **one** `RimworldStatistic
 
 For separate repositories, use a compile-time reference to the host's published `RimworldStatistics.Api.dll` with `Private="false"`, or a separately distributed reference package containing metadata only. Do not ship that DLL in the consumer.
 
-An optional external MOD should use `<loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>` **without** `modDependencies`; its own startup code must probe loaded assemblies by name `RimworldStatistics.Api` **before** invoking any API-typed code. Use a no-inline nested bridge method with no API types in startup-class signatures. See `https://github.com/pengin0503/Rimworld-Statistics-mod-addon/blob/main/https://github.com/pengin0503/Rimworld-Statistics-mod-addon/tree/main/examples/StatisticsSdkSample/Source/SampleSdkClient.cs`. When the host is missing, registration and emission are skipped without warning/error. The sample is built independently.
+An optional external MOD should use `<loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>` **without** `modDependencies`; its own startup code must probe loaded assemblies by name `RimworldStatistics.Api` **before** invoking any API-typed code. Use a no-inline nested bridge method with no API types in startup-class signatures. See `../../examples/StatisticsSdkSample/Source/SampleSdkClient.cs`. When the host is missing, registration and emission are skipped without warning/error. The sample is built independently.
 
 ## ABI and semantic version policy
 
