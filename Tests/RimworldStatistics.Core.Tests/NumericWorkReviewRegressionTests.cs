@@ -37,17 +37,16 @@ public sealed class NumericWorkReviewRegressionTests
     }
 
     [Fact]
-    public void AForeignMapCropCannotChangeColonyLossTotalsOrItsCohort()
+    public void SownAndHarvestAreRetained_WithoutRetiredCropLossCounters()
     {
         var acc = LiveMetricAccumulator.StartNew(new[] { WorkFamily.Family.Spec }, 0);
         var state = acc.Family(WorkFamily.Name)!;
-        WorkFamily.Sown(state, "colony-plant", "Plant_Rice");
-        WorkFamily.CropDied(state, "colony-plant", cold: true, inPlayerHome: false);
-        WorkFamily.CropDied(state, "npc-plant", cold: false, inPlayerHome: false);
-        Assert.Equal(0, At(acc, Day, WorkFamily.ColdLoss).IntegerValue);
-        Assert.Equal(0, At(acc, Day, WorkFamily.OtherLoss).IntegerValue);
-        WorkFamily.CropDied(state, "colony-plant", cold: true, inPlayerHome: true);
-        Assert.Equal(1, At(acc, 2 * Day, WorkFamily.ColdLoss).IntegerValue);
-        Assert.Equal(0, At(acc, 2 * Day, WorkFamily.OtherLoss).IntegerValue);
+        WorkFamily.Sown(state, "Plant_Rice");
+        WorkFamily.Harvested(state, "Thing_Worker", "Thing_Plant", "Plant_Rice", 3, 1);
+        Assert.Equal(1, At(acc, Day, WorkFamily.Sown_).IntegerValue);
+        Assert.Equal(3, At(acc, Day, WorkFamily.HarvestUnits).IntegerValue);
+        Assert.Null(MetricRegistry.Find("work.crops.cold_loss"));
+        Assert.Null(MetricRegistry.Find("work.crops.other_loss"));
+        Assert.Null(MetricRegistry.Find("work.crops.loss_rate"));
     }
 }
