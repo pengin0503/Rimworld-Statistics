@@ -1,0 +1,133 @@
+name: Prepare or publish Rimworld Statistics
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: Release tag matching About.xml and the release notes (vX.Y.Z)
+        required: true
+        type: string
+      publish:
+        description: Create the tag and release after successful verification
+        required: true
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-rws
+  cancel-in-progress: false
+
+jobs:
+  host-release:
+    if: github.repository == 'pengin0503/Rimworld-Statistics' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    env:
+      UseNuGetRefs: 'true'
+      RELEASE_TAG: ${{ inputs.release_tag }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Validate version and reject an existing tag or release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if [[ ! "$RELEASE_TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "Expected a stable vX.Y.Z tag." >&2
+            exit 1
+          fi
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            echo "Release already exists; refusing overwrite." >&2
+            exit 1
+          fi
+          status=0
+          git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null || status=$?
+          if [ "$status" -ne 2 ]; then
+            echo "Tag already exists or its absence could not be verified." >&2
+            exit 1
+          fi
+          python3 - "$RELEASE_TAG" <<'PY_RELEASE'
+          import sys
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          tag = sys.argv[1]
+          root = ET.parse("About/About.xml").getroot()
+          if root.findtext("modVersion") != tag[1:]:
+              sys.exit("About.xml version differs from the release tag.")
+          notes = Path(f"docs/releases/{tag}.md")
+          if not notes.is_file() or not notes.read_text(encoding="utf-8").strip():
+              sys.exit("Missing release notes for the requested tag.")
+          PY_RELEASE
+
+      - name: Verify 17 stable integrated MOD metric IDs and one installable MOD
+        run: python3 tools/IntegratedModAudit/check_embedded_integrations.py
+
+      - name: Verify game-independent core tests
+        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+
+      - name: Validate translations
+        run: bash tools/check_keys.sh
+
+      - name: Package and inspect exact host distribution
+        shell: bash
+        run: |
+          set -euo pipefail
+          asset="RimworldStatistics-$RELEASE_TAG"
+          zip="$RUNNER_TEMP/$asset.zip"
+          bash tools/package.sh "$zip"
+          python3 tools/check_sdk_package.py "$zip"
+          unzip -t "$zip"
+          python3 - "$zip" "$RELEASE_TAG" <<'PY'
+          import sys, zipfile, xml.etree.ElementTree as ET
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              root = ET.fromstring(z.read("RimworldStatistics/About/About.xml"))
+              assert root.findtext("modVersion") == sys.argv[2][1:]
+              paths = z.namelist()
+              assert all(p.startswith("RimworldStatistics/") for p in paths)
+              assert not any(term in p.lower() for p in paths for term in (
+                  "verifyharness", "smartapparel", "recruitment", "hospitality", "addon"
+              ))
+          PY
+          (cd "$RUNNER_TEMP" && sha256sum "$asset.zip" > "$asset.sha256" && sha256sum -c "$asset.sha256")
+
+      - name: Archive the verified distribution
+        if: ${{ !inputs.publish }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: RimworldStatistics-${{ inputs.release_tag }}-preflight
+          path: |
+            ${{ runner.temp }}/RimworldStatistics-${{ inputs.release_tag }}.zip
+            ${{ runner.temp }}/RimworldStatistics-${{ inputs.release_tag }}.sha256
+          if-no-files-found: error
+
+      - name: Create tag and release
+        if: ${{ inputs.publish }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          asset="RimworldStatistics-$RELEASE_TAG"
+          gh release create "$RELEASE_TAG" \
+            "$RUNNER_TEMP/$asset.zip" \
+            "$RUNNER_TEMP/$asset.sha256" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics $RELEASE_TAG" \
+            --notes-file "docs/releases/$RELEASE_TAG.md" \
+            --latest
+          release=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG")
+          test "$(jq -r '.tag_name' <<<"$release")" = "$RELEASE_TAG"
+          test "$(jq -r '.draft' <<<"$release")" = false
+          test "$(jq -r '.prerelease' <<<"$release")" = false
+          names=$(jq -r '[.assets[].name] | sort | join(",")' <<<"$release")
+          test "$names" = "$asset.sha256,$asset.zip"
+          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')
+          test "$tag_sha" = "$GITHUB_SHA"
+          echo "$RELEASE_TAG published at $GITHUB_SHA with host ZIP and checksum."
