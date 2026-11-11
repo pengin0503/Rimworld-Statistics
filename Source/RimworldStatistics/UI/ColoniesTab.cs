@@ -46,18 +46,38 @@ public static class ColoniesTab
     private static string? selectedKey;
     private static Vector2 scroll;
     private static Vector2 detailScroll;
+
+    private sealed class TableCache(StatsView view, int sortColumn, bool ascending, int[] order)
+    {
+        public StatsView View { get; } = view;
+        public int SortColumn { get; } = sortColumn;
+        public bool Ascending { get; } = ascending;
+        public int[] Order { get; } = order;
+        public string[]?[] Cells { get; } = new string[order.Length][];
+        public float[]?[] Widths { get; } = new float[order.Length][];
+    }
+
+    private static TableCache? cache;
+
     public static void Draw(Rect rect, StatsView view, SaveFileIndex? files)
     {
-        var order = Enumerable.Range(0, view.Colonies.Count).ToList();
-        var key = Columns[sortColumn].Sort;
-        order = (ascending ? order.OrderBy(i => key(view.Stats.Colonies[i])) : order.OrderByDescending(i => key(view.Stats.Colonies[i]))).ToList();
-        if (order.Count == 0)
+        if (cache is null || !ReferenceEquals(cache.View, view) || cache.SortColumn != sortColumn || cache.Ascending != ascending)
+        {
+            var indices = Enumerable.Range(0, view.Colonies.Count);
+            var key = Columns[sortColumn].Sort;
+            var sorted = (ascending ? indices.OrderBy(i => key(view.Stats.Colonies[i])) : indices.OrderByDescending(i => key(view.Stats.Colonies[i]))).ToArray();
+            cache = new TableCache(view, sortColumn, ascending, sorted);
+        }
+        var table = cache;
+        var order = table.Order;
+        if (order.Length == 0)
         {
             Widgets.Label(rect, "RWS_NoData".Translate());
             return;
         }
 
-        var selected = order.FirstOrDefault(i => view.Colonies[i].Key == selectedKey, -1);
+        var selectedRow = Array.FindIndex(order, i => view.Colonies[i].Key == selectedKey);
+        var selected = selectedRow < 0 ? -1 : order[selectedRow];
         var tableHeight = rect.height - (selected >= 0 ? DetailHeight + 8f : 0f);
         var width = Math.Max(rect.width - 16f, MinTableWidth);
         // Keep the sortable header fixed vertically while tracking horizontal body scroll.
@@ -66,10 +86,12 @@ public static class ColoniesTab
         GUI.EndGroup();
 
         var outRect = new Rect(rect.x, rect.y + RowHeight, rect.width, tableHeight - RowHeight);
-        var viewRect = new Rect(0f, 0f, width, order.Count * RowHeight);
+        var viewRect = new Rect(0f, 0f, width, order.Length * RowHeight);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        for (var row = 0; row < order.Count; row++)
-            DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]], row);
+        var first = Math.Max(0, (int)(scroll.y / RowHeight));
+        var last = Math.Min(order.Length - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
+        for (var row = first; row <= last; row++)
+            DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]], row, table);
         Widgets.EndScrollView();
 
         if (selected >= 0)
@@ -102,7 +124,7 @@ public static class ColoniesTab
         Text.Anchor = TextAnchor.UpperLeft;
     }
 
-    private static void DrawColony(Rect rect, Colony colony, ColonyStats s, int row)
+    private static void DrawColony(Rect rect, Colony colony, ColonyStats s, int row, TableCache table)
     {
         if (colony.Key == selectedKey)
             Widgets.DrawHighlightSelected(rect);
@@ -113,12 +135,20 @@ public static class ColoniesTab
             GUI.color = new Color(1f, 1f, 1f, 0.5f);
         var x = rect.x;
         Text.Anchor = TextAnchor.MiddleLeft;
-        foreach (var col in Columns)
+        if (table.Cells[row] is not { } texts)
         {
+            texts = Columns.Select(c => c.Text(s)).ToArray();
+            table.Widths[row] = texts.Select(text => Text.CalcSize(text).x).ToArray();
+            table.Cells[row] = texts;
+        }
+        var widths = table.Widths[row]!;
+        for (var c = 0; c < Columns.Length; c++)
+        {
+            var col = Columns[c];
             var cell = new Rect(x + 3f, rect.y, rect.width * col.Width / TotalColumnWeight - 6f, rect.height);
-            var text = col.Text(s);
+            var text = texts[c];
             Widgets.Label(cell, text);
-            if (Text.CalcSize(text).x > cell.width)
+            if (widths[c] > cell.width)
                 TooltipHandler.TipRegion(cell, text);
             x += rect.width * col.Width / TotalColumnWeight;
         }
