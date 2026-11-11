@@ -220,6 +220,7 @@ public static class LiveFamilies
         RoyaltyFamily.Family,
         IdeologyFamily.Family,
         OdysseyFamily.Family,
+        FishingFamily.Family,
         BiotechFamily.Family,
         CaravanFamily.Family,
     };
