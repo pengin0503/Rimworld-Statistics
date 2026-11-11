@@ -190,14 +190,12 @@ internal static class SavedStateMetricReader
             try
             {
                 var player = Faction.OfPlayerSilentFail;
-                var beds = 0;
                 var turrets = 0;
                 double generation = 0, battery = 0;
                 foreach (var thing in map.listerThings.AllThings)
                 {
                     if (thing.Faction != player)
                         continue;
-                    if (thing is Building_Bed bed && bed.Medical) beds++;
                     if (thing is Building_Turret) turrets++;
                     if (thing is not ThingWithComps compThing) continue;
                     var plant = compThing.TryGetComp<CompPowerPlant>();
@@ -212,21 +210,10 @@ internal static class SavedStateMetricReader
                 }
                 var growingCells = map.zoneManager.AllZones.OfType<Zone_Growing>()
                     .SelectMany(z => z.Cells).Distinct().Count();
-                // Regions are the game's already-deduplicated spatial partition. Enumerating
-                // them avoids invoking RegionAndRoomQuery.RoomAt for every single map cell.
-                // Rebuild-capable AllRegions also observes room changes after construction.
-                var rooms = new HashSet<Room>();
-                foreach (var region in map.regionGrid.AllRegions)
-                {
-                    var room = region.Room;
-                    if (room != null && !room.PsychologicallyOutdoors)
-                        rooms.Add(room);
-                }
-                var indoorRooms = rooms.Count;
                 maps.Add(new FacilityMapFact
                 {
                     Id = map.uniqueID.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    MedicalBeds = beds, Turrets = turrets, GrowingCells = growingCells, IndoorRooms = indoorRooms,
+                    Turrets = turrets, GrowingCells = growingCells,
                     GenerationWatts = generation, BatteryWattDays = battery,
                     OutdoorTempC = map.mapTemperature.OutdoorTemp,
                 });
