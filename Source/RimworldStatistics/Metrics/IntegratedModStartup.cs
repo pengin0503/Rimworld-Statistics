@@ -31,8 +31,9 @@ internal static class IntegratedModStartup
         Safe("pengin0503.recruitment", "pengin0503.rws.recruitmentaddon", () =>
         {
             if (!RecruitmentSource.TryBind() || !RecruitmentSdk.HasHost()) return;
-            var patched = RecruitmentSource.InstallEventHook();
-            RecruitmentSdk.Register(allowEvents: patched);
+            ExternalSdkHost.Instance.IntegratedHooks.Defer("mod.pengin0503.recruitment.requestsaddon",
+                RecruitmentSource.InstallEventHook);
+            RecruitmentSdk.Register(allowEvents: true);
         });
         Safe("Dubwise.DubsBadHygiene", "pengin0503.rws.dubsbadhygieneaddon", () =>
         {
@@ -43,7 +44,12 @@ internal static class IntegratedModStartup
         {
             var audited = SauOrderHook.TryResolve(out var binding);
             var status = SauAddonStartup.Activate(audited, SauHostClient.HasCompatibleHost,
-                () => SauOrderHook.TryInstall(binding), SauHostClient.TryRegister);
+                () =>
+                {
+                    ExternalSdkHost.Instance.IntegratedHooks.Defer("mod.pengin0503.smartapparelupgrade.orders",
+                        () => SauOrderHook.TryInstall(binding));
+                    return true;
+                }, SauHostClient.TryRegister);
             if (status == SauStartupStatus.PatchUnavailable)
                 Log.WarningOnce("[RimworldStatistics] Smart Apparel statistics hook unavailable.",
                     0x52575341);
