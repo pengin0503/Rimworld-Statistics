@@ -237,22 +237,7 @@ public sealed class NumericTrackerOverflowTests
         NotPartial(o, MedicineFamily.DiseaseDurationMean);
     }
 
-    // ----- membership trackers other than the member set (the leaving tracker holds members only, so the member set's own cap
-    //       covers it: Membership_PastTheCap_DependentOutputsArePartial) -----
-
-    [Fact]
-    public void Membership_PrisonerTrackerFull_RecruitTimesArePartial()
-    {
-        var (acc, s) = NewGame(MembershipFamily.Family);
-        for (var i = 0; i < Cap; i++)
-            MembershipFamily.BecamePrisoner(s, "Thing_Q" + i, 0);
-        MembershipFamily.BecamePrisoner(s, "Thing_X", 0);
-        MembershipFamily.Joined(s, "Thing_X", MembershipFamily.RoutePrisoner, 30, Day);
-        var o = Save(acc, 2 * Day);
-        Partial(o, MembershipFamily.RecruitTimeMin, MembershipFamily.RecruitTimeMax);
-        NotPartial(o, MembershipFamily.PrisonerRecruit, MembershipFamily.Rejoin, MembershipFamily.CaptiveMax);
-        Assert.Equal(1, V(o, MembershipFamily.PrisonerRecruit).IntegerValue);
-    }
+    // ----- retained membership kidnapping tracker -----
 
     [Fact]
     public void Membership_KidnapTrackerFull_RescuesAndCaptivityArePartial()
@@ -264,7 +249,7 @@ public sealed class NumericTrackerOverflowTests
         MembershipFamily.KidnapReturned(s, "Thing_X", Day);
         var o = Save(acc, 2 * Day);
         Partial(o, MembershipFamily.KidnapRescues, MembershipFamily.CaptiveMax);
-        NotPartial(o, MembershipFamily.Kidnaps, MembershipFamily.RecruitTimeMin);
+        NotPartial(o, MembershipFamily.Kidnaps);
         Assert.Equal(Cap + 1, V(o, MembershipFamily.Kidnaps).IntegerValue);
     }
 
@@ -332,14 +317,15 @@ public sealed class NumericTrackerOverflowTests
     // ----- work -----
 
     [Fact]
-    public void Work_CohortFull_LossRateIsPartial_EvenWhenNothingWasDecided()
+    public void Work_SownRetainsAnExactTotalWithoutTheRetiredPlantDeathCohort()
     {
         var (acc, s) = NewGame(WorkFamily.Family);
         for (var i = 0; i <= Cap; i++)
-            WorkFamily.Sown(s, "Plant_" + i, "PlantRice");
+            WorkFamily.Sown(s, "PlantRice");
         var o = Save(acc, Day);
-        Partial(o, WorkFamily.LossRate);
-        NotPartial(o, WorkFamily.Sown_, WorkFamily.ColdLoss);
+        NotPartial(o, WorkFamily.Sown_);
+        Assert.Equal(Cap + 1, V(o, WorkFamily.Sown_).IntegerValue);
+        Assert.Null(MetricRegistry.Find("work.crops.loss_rate"));
     }
 
     // ----- health and death: a breakdown's cap never shortens a total -----
