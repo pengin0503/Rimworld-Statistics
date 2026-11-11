@@ -71,7 +71,7 @@ public sealed class ModdedIncidentFamilyTests
         var saved = acc.PrepareSave(300, SavedAt, "original")!;
         acc.Commit(saved);
         var withoutUnit = LiveMetricAccumulator.Resume(saved.Json, Array.Empty<FamilySpec>(), 300);
-        var retained = CheckpointJson.Parse(withoutUnit.PrepareSave(400, SavedAt, "next")!.Json)!;
+        var retained = CheckpointJson.Parse(withoutUnit.PrepareSave(400, SavedAt, "next")!.Json).Payload!;
         var obs = CheckpointMetrics.ToObservation(retained, saved.Json,
             new ColonyIdentity { ModCampaignId = "incident-test" }, null, null);
         Assert.Equal(1L, obs.Scalar(ModdedIncidentFamily.ByDef)!.IntegerValue);

@@ -67,17 +67,27 @@ public static class EndConditionMetricPatch
     }
 }
 
-[MetricAdapter(DisasterFamily.Name)]
+[MetricAdapter(DisasterFamily.Name, ModdedIncidentFamily.Name)]
 [HarmonyPatch(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute))]
 public static class DisasterIncidentMetricPatch
 {
-    public static void Postfix(bool __result, IncidentWorker __instance)
+    public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms)
     {
-        if (__result && __instance?.def != null)
-        {
-            var def = __instance.def.defName;
-            GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, def));
-        }
+        if (!__result || __instance?.def is not { } definition)
+            return;
+
+        // Preserve the exact legacy three-def counters, independent of incident provenance.
+        GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, definition.defName));
+
+        // The generic family is an independent opt-in. A successful player-home incident
+        // is observed once at the outer TryExecute return, never during the worker attempt.
+        if (parms?.target is not Map { IsPlayerHome: true })
+            return;
+        var packageId = definition.modContentPack?.PackageId;
+        if (!ModdedIncidentFamily.IsModded(packageId, definition.defName))
+            return;
+        GameFacts.Record(ModdedIncidentFamily.Name, s =>
+            ModdedIncidentFamily.RecordSuccess(s, packageId, definition.defName, succeeded: true, playerHome: true));
     }
 }
 

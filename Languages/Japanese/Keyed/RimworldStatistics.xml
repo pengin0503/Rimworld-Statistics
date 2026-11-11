@@ -897,4 +897,6 @@
   <RWS_DBH_GroundwaterCapacityDesc>水源による名目供給能力を配管網ごとに重複せず合計した、保存時点のL/ゲーム内日。実際に生産した水の累計ではありません。</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>自動着替え指示の発行回数</RWS_SAU_OrdersIssued>
   <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgradeが自動Wearジョブを入植者へ実際に発行した回数。着替え完了回数ではありません。アドオンの統計取得を有効にした時点以降だけを数えます。実験的な統計です。</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>MOD追加インシデントの成功回数（種類別）</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>実験的統計取得を有効にした後、プレイヤーの本拠地マップで成功したバニラ以外のMOD追加インシデントを、パッケージIDとインシデント定義別に集計します。既存のバニラ災害統計とは独立しており、過去の未記録期間は補完しません。</RWS_MetricDesc_ModdedIncidentsByDef>
 </LanguageData>

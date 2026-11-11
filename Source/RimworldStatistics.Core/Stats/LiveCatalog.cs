@@ -257,6 +257,9 @@ public static class LiveCatalog
         Live(DisasterFamily.ShortCircuits, "N4-R-010", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_ShortCircuits", "RWS_MetricDesc_ShortCircuits"),
         Live(DisasterFamily.Fires, "D-007", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_Fires", "RWS_MetricDesc_Fires"),
         Live(DisasterFamily.BuildingsBurned, "D-008", Env, Count, Sum, DisasterFamily.Name, "RWS_Metric_BuildingsBurned", "RWS_MetricDesc_BuildingsBurned"),
+        // GEN-INC-001: distinct from the legacy three-def disaster counter; experimental.
+        Live(ModdedIncidentFamily.ByDef, "GEN-INC-001", Env, Count, Sum, ModdedIncidentFamily.Name,
+            "RWS_Metric_ModdedIncidentsByDef", "RWS_MetricDesc_ModdedIncidentsByDef", breakdown: true),
 
         // C4 · caravan
         Live(CaravanFamily.Departures, "Q-008", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_CaravanDepartures", "RWS_MetricDesc_CaravanDepartures"),

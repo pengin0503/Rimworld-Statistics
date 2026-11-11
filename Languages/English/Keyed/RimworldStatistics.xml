@@ -897,4 +897,6 @@
   <RWS_DBH_GroundwaterCapacityDesc>Sum of source-defined water inlet/groundwater capacity in liters per game day across populated unique pipe networks at a successful save. Not the actual amount pumped.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>Automatic apparel orders issued</RWS_SAU_OrdersIssued>
   <RWS_SAU_OrdersIssuedDesc>Number of automatic vanilla Wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of successfully completed apparel changes. Only events after enabling collection are counted. Experimental statistics.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>Successful MOD incidents by type</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>Confirmed incidents from non-vanilla MODs that succeeded on a player home map after experimental collection was enabled. Split by package ID and incident definition; not the existing vanilla disaster counters. Historical gaps are not backfilled.</RWS_MetricDesc_ModdedIncidentsByDef>
 </LanguageData>
