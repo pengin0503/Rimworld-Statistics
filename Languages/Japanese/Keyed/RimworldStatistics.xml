@@ -426,20 +426,12 @@
   <RWS_MetricDesc_PrisonerRecruits>直前までコロニーの囚人で、勧誘されて初めて自由入植者になった人数。</RWS_MetricDesc_PrisonerRecruits>
   <RWS_Metric_HumanBirths>出生数</RWS_Metric_HumanBirths>
   <RWS_MetricDesc_HumanBirths>プレイヤー側に生きて生まれた人型の子の数（Biotech）。死産は含めません。</RWS_MetricDesc_HumanBirths>
-  <RWS_Metric_UniqueMembers>歴代入植者のユニーク人数</RWS_Metric_UniqueMembers>
-  <RWS_MetricDesc_UniqueMembers>記録中に入植者だった人物の数（開始時の入植者・新規加入・出生）。再加入しても増えません。全体はコロニーごとの人数の合計です。</RWS_MetricDesc_UniqueMembers>
-  <RWS_Metric_Rejoins>離脱後に再加入した人数</RWS_Metric_Rejoins>
-  <RWS_MetricDesc_Rejoins>はっきり離脱した後に、再び自由入植者に戻った人物の数。</RWS_MetricDesc_Rejoins>
   <RWS_Metric_JoinAgeMean>加入時の平均年齢</RWS_Metric_JoinAgeMean>
   <RWS_MetricDesc_JoinAgeMean>新規加入した時点の生物年齢の平均。</RWS_MetricDesc_JoinAgeMean>
   <RWS_Metric_FirstJoinDay>最初の新規加入までの日数</RWS_Metric_FirstJoinDay>
   <RWS_MetricDesc_FirstJoinDay>ゲーム開始から記録していた場合だけ、最初の新規加入のゲーム内日。</RWS_MetricDesc_FirstJoinDay>
   <RWS_Metric_SlavesFreed>奴隷を解放した人数</RWS_Metric_SlavesFreed>
   <RWS_MetricDesc_SlavesFreed>奴隷の身分を解除（解放）した人数。囚人の釈放とは別です。</RWS_MetricDesc_SlavesFreed>
-  <RWS_Metric_RecruitTimeMin>囚人の最短勧誘期間</RWS_Metric_RecruitTimeMin>
-  <RWS_MetricDesc_RecruitTimeMin>コロニーの囚人になってから勧誘で加入するまでの日数の最短。囚人になった時点を見ていない場合は含めません。</RWS_MetricDesc_RecruitTimeMin>
-  <RWS_Metric_RecruitTimeMax>囚人の最長勧誘期間</RWS_Metric_RecruitTimeMax>
-  <RWS_MetricDesc_RecruitTimeMax>上と同じ標本の最長日数。</RWS_MetricDesc_RecruitTimeMax>
   <RWS_Metric_Kidnaps>誘拐された入植者の数</RWS_Metric_Kidnaps>
   <RWS_MetricDesc_Kidnaps>自由入植者が誘拐されて勢力の拘束リストに入った回数。</RWS_MetricDesc_Kidnaps>
   <RWS_Metric_KidnapRescues>誘拐から戻った入植者の数</RWS_Metric_KidnapRescues>
@@ -520,12 +512,6 @@
   <RWS_MetricDesc_CropsSown>プレイヤーの人物が植え付けた株の数。</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>栽培した作物の種類数</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>一度でも植え付けた作物の種類の数。</RWS_MetricDesc_CropsSownDefs>
-  <RWS_Metric_CropsColdLoss>寒さで枯れた作物</RWS_Metric_CropsColdLoss>
-  <RWS_MetricDesc_CropsColdLoss>作物の株が寒さで枯れた数。</RWS_MetricDesc_CropsColdLoss>
-  <RWS_Metric_CropsOtherLoss>寒さ以外で枯れた作物</RWS_Metric_CropsOtherLoss>
-  <RWS_MetricDesc_CropsOtherLoss>作物の株が寒さ以外の確定した原因（毒・汚染など）で枯れた数。収穫・刈り取りは含めません。</RWS_MetricDesc_CropsOtherLoss>
-  <RWS_Metric_CropsLossRate>作物の枯死率</RWS_Metric_CropsLossRate>
-  <RWS_MetricDesc_CropsLossRate>植え付けを見た株のうち、枯れた株 ÷（枯れた株＋最初の収穫まで育った株）。手で除いた株やまだ決着していない株は含めません。</RWS_MetricDesc_CropsLossRate>
   <RWS_Metric_MiningUnits>採掘した資源量</RWS_Metric_MiningUnits>
   <RWS_MetricDesc_MiningUnits>プレイヤーの人物の採掘で産出した品のスタック個数の合計。</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>最も多く採掘した入植者</RWS_Metric_BestMiner>
@@ -548,8 +534,6 @@
   <RWS_MetricDesc_FoodSpoiled>プレイヤーの食品が腐敗して消えたスタック個数。焼失や食事は含めません。</RWS_MetricDesc_FoodSpoiled>
   <RWS_Metric_FoodNutrition>食べた食料の総栄養量</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>自由入植者が食事で実際に得た栄養の合計。</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodNoShortageLongest>食料不足が起きなかった最長期間</RWS_Metric_FoodNoShortageLongest>
-  <RWS_MetricDesc_FoodNoShortageLongest>プレイヤーのホームマップに人間の食べられる食料があった期間のうち、観測できた最長のもの。食料はゲームの資源集計が示す保管中の食料と、プレイヤーのポーンが運搬中の食料。ゲームの資源再集計（204 tick ごと）の間で測り、観測できなかった区間は期間をつなげずに区切ります。入植者の空腹とは別の指標です。</RWS_MetricDesc_FoodNoShortageLongest>
   <RWS_Metric_FoodHarvestPerCell>栽培セル日あたりの収穫量</RWS_Metric_FoodHarvestPerCell>
   <RWS_MetricDesc_FoodHarvestPerCell>栽培ゾーンにある作物の主収穫個数を、同じ期間の栽培ゾーンのセル数の時間積分（セル日）で割った値。水耕栽培と野生の植物は含めません。</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>商人との取引回数</RWS_Metric_TradeDeals>
@@ -734,14 +718,10 @@
   <RWS_MetricDesc_RosterInjuredPeak>正常保存時点で生存中の対象Pawnから取得した同時負傷入植者の最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterInjuredPeak>
   <RWS_Metric_FacilitiesHomeMaps>同時にロードされた拠点最多数</RWS_Metric_FacilitiesHomeMaps>
   <RWS_MetricDesc_FacilitiesHomeMaps>正常保存時にロードされていたプレイヤー拠点マップ上の同時にロードされた拠点最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesMedicalBeds>医療用ベッド最多数</RWS_Metric_FacilitiesMedicalBeds>
-  <RWS_MetricDesc_FacilitiesMedicalBeds>正常保存時にロードされていたプレイヤー拠点マップ上の医療用ベッド最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesMedicalBeds>
   <RWS_Metric_FacilitiesTurrets>防衛タレット最多数</RWS_Metric_FacilitiesTurrets>
   <RWS_MetricDesc_FacilitiesTurrets>正常保存時にロードされていたプレイヤー拠点マップ上の防衛タレット最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesTurrets>
   <RWS_Metric_FacilitiesGrowingCells>栽培ゾーン最大面積</RWS_Metric_FacilitiesGrowingCells>
   <RWS_MetricDesc_FacilitiesGrowingCells>正常保存時にロードされていたプレイヤー拠点マップ上の栽培ゾーン最大面積。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesRooms>屋内の最多部屋数</RWS_Metric_FacilitiesRooms>
-  <RWS_MetricDesc_FacilitiesRooms>正常保存時にロードされていたプレイヤー拠点マップ上の屋内の最多部屋数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRooms>
   <RWS_Metric_FacilitiesGeneration>最大発電定格容量</RWS_Metric_FacilitiesGeneration>
   <RWS_MetricDesc_FacilitiesGeneration>正常保存時にロードされていたプレイヤー拠点マップ上の最大発電定格容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>最大蓄電容量</RWS_Metric_FacilitiesBattery>
