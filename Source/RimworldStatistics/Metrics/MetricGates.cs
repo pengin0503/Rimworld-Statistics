@@ -89,7 +89,14 @@ public static class MetricGates
                 && !OpenedForVerification.Contains(unitId))
                 return false;
         }
-        return unit.RequiredDlc is null || ModsConfig.IsActive(unit.RequiredDlc);
+        if (unit.RequiredDlc is not null && !ModsConfig.IsActive(unit.RequiredDlc))
+            return false;
+        // Without a content MOD defining new incidents there is no live source.
+        // Keep old checkpoints/descriptors: this only closes current acquisition.
+        if (unitId == ModdedIncidentFamily.Name)
+            return DefDatabase<RimWorld.IncidentDef>.AllDefsListForReading.Any(def =>
+                ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
+        return true;
     }
 
     /// <summary>Open and with its hooks in place.</summary>

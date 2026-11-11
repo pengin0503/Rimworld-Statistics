@@ -29,6 +29,7 @@ public static class CrossColonyCatalog
         TradeFamily.SalesTotal, TradeFamily.BuysTotal,
         HealthDeathFamily.HostileKills, MembershipFamily.FirstJoin,
         BiotechFamily.MechsCreated, RoyaltyFamily.Psycasts,
+        ModdedIncidentFamily.ByDef,
     };
 
     // Each source stores an exhaustive per-Def split when it is measured
@@ -51,6 +52,7 @@ public static class CrossColonyCatalog
         MembershipFamily.Routes, WorkFamily.QualityBreakdown,
         TradeFamily.Deals, MedicineFamily.Surgeries,
         IdeologyFamily.RitualResults, BiotechFamily.ChildStages,
+        ModdedIncidentFamily.ByDef,
     };
 
     // Existing IndividualOnly data with a genuinely additive interpretation.

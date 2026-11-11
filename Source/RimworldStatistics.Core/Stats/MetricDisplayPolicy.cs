@@ -70,6 +70,7 @@ public static class MetricDisplayPolicy
         DisasterFamily.CropBlights, DisasterFamily.Meteors, DisasterFamily.ShortCircuits,
         DisasterFamily.Fires, DisasterFamily.BuildingsBurned,
         DisasterFamily.ToxicFalloutDays, DisasterFamily.SolarFlareDays,
+        ModdedIncidentFamily.ByDef,
         CaravanFamily.Departures, CaravanFamily.Lost_, CaravanFamily.TilesTravelled,
         CaravanFamily.UniqueTiles, CaravanFamily.Ambushes, CaravanFamily.SitesCleared,
         CaravanFamily.SettlementsFounded, CaravanFamily.SettlementsAbandoned,

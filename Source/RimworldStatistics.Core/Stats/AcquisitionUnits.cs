@@ -59,6 +59,7 @@ public static class AcquisitionUnits
         new("diplomacy", AcquisitionKind.Family, U),
         new("medicine", AcquisitionKind.Family, U),
         new("disaster", AcquisitionKind.Family, U),
+        new(ModdedIncidentFamily.Name, AcquisitionKind.Family, U),
         new("caravan", AcquisitionKind.Family, U),
 
         // Phase B
