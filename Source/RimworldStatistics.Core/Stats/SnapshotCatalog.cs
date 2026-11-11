@@ -54,5 +54,8 @@ public static class SnapshotCatalog
         Snap(BiotechStateSnapshot.PollutionCellsPeak, "N1-E-004", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechPollutionPeak", "RWS_MetricDesc_BiotechPollutionPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
         Snap(BiotechStateSnapshot.BandwidthUsedPeak, "N1-E-005", MetricUnit.Count, OverallAggregation.Max, "biotech_state", "RWS_Metric_BiotechBandwidthPeak", "RWS_MetricDesc_BiotechBandwidthPeak", category: MetricCategory.Biotech, selection: ColonySelection.ObservationMax, dlc: AcquisitionUnits.Biotech),
         Snap(RoyaltyQuestSnapshot.Success, "L-003", MetricUnit.Count, OverallAggregation.Sum, "royalty_quests", "RWS_Metric_RoyaltyQuestSuccess", "RWS_MetricDesc_RoyaltyQuestSuccess", category: MetricCategory.Royalty, dlc: AcquisitionUnits.Royalty),
+        // GEN-OUT-001: a successful-save count, not production/delivery throughput.
+        Snap(OutpostSnapshot.Active, "GEN-OUT-001", MetricUnit.Count, OverallAggregation.Sum, OutpostSnapshot.Unit,
+            "RWS_Metric_OutpostsActive", "RWS_MetricDesc_OutpostsActive", category: MetricCategory.Exploration),
     };
 }

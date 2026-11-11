@@ -96,6 +96,9 @@ public static class MetricGates
         if (unitId == ModdedIncidentFamily.Name)
             return DefDatabase<RimWorld.IncidentDef>.AllDefsListForReading.Any(def =>
                 ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
+        if (unitId == OutpostSnapshot.Unit)
+            return DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
+                OutpostSnapshot.IsOutpostType(def.worldObjectClass));
         return true;
     }
 
