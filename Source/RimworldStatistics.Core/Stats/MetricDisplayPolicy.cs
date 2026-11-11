@@ -71,6 +71,7 @@ public static class MetricDisplayPolicy
         DisasterFamily.Fires, DisasterFamily.BuildingsBurned,
         DisasterFamily.ToxicFalloutDays, DisasterFamily.SolarFlareDays,
         ModdedIncidentFamily.ByDef,
+        FishingFamily.SuccessfulActions, FishingFamily.AcceptedUnitsByDef,
         CaravanFamily.Departures, CaravanFamily.Lost_, CaravanFamily.TilesTravelled,
         CaravanFamily.UniqueTiles, CaravanFamily.Ambushes, CaravanFamily.SitesCleared,
         CaravanFamily.SettlementsFounded, CaravanFamily.SettlementsAbandoned,

@@ -31,6 +31,7 @@ public static class CrossColonyCatalog
         BiotechFamily.MechsCreated, RoyaltyFamily.Psycasts,
         ModdedIncidentFamily.ByDef,
         OutpostSnapshot.Active,
+        FishingFamily.SuccessfulActions,
     };
 
     // Each source stores an exhaustive per-Def split when it is measured
@@ -42,6 +43,7 @@ public static class CrossColonyCatalog
         WorkFamily.MealsByDef, WorkFamily.Sown_,
         StockSnapshot.MaterialsLatest,
         WorkFamily.ConstructionMaterials,
+        FishingFamily.AcceptedUnitsByDef,
     };
 
     // Categorical (not ThingDef) splits: most frequent form, status, or cause.

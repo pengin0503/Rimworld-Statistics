@@ -79,6 +79,7 @@ public static class AcquisitionUnits
         new("biotech", AcquisitionKind.Family, U, Biotech),
         new("biotech_state", AcquisitionKind.Snapshot, U, Biotech),
         new("odyssey", AcquisitionKind.Family, U, Odyssey),
+        new(FishingFamily.Name, AcquisitionKind.Family, U, Odyssey),
 
         // Phase D derived: the participants of an ending, recorded with the v1 ending record (N1-F-004)
         new("ending_party", AcquisitionKind.Derived, U),

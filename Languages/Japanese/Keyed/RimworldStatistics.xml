@@ -901,4 +901,8 @@
   <RWS_MetricDesc_ModdedIncidentsByDef>実験的統計取得を有効にした後、プレイヤーの本拠地マップで成功したバニラ以外のMOD追加インシデントを、パッケージIDとインシデント定義別に集計します。既存のバニラ災害統計とは独立しており、過去の未記録期間は補完しません。</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>稼働中のプレイヤーOutposts（セーブ時点）</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>セーブ成功時点のプレイヤー所有Vanilla Expanded Framework Outpostsの稼働数です。全コロニーでは代表セーブ時点の数を合計します。累計建設数や生産・受領アイテム数ではありません。実験的統計であり、過去の未記録期間は補完しません。</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>釣果が得られた釣り作業回数</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>プレイヤーの本拠地マップで釣果を1個以上配置できた釣り作業の回数。同じ作業の追加釣果は個数だけを加算します。</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>品目別の釣果個数</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>プレイヤーの本拠地マップで釣りによって実際に配置された品目と個数。レア釣果と対応する Vanilla Fishing Expanded の追加釣果を含みます。集計対象は計測した期間です。</RWS_MetricDesc_FishingCatchByDef>
 </LanguageData>

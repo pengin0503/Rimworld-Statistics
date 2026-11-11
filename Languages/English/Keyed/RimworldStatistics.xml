@@ -901,4 +901,8 @@
   <RWS_MetricDesc_ModdedIncidentsByDef>Confirmed incidents from non-vanilla MODs that succeeded on a player home map after experimental collection was enabled. Split by package ID and incident definition; not the existing vanilla disaster counters. Historical gaps are not backfilled.</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>Active player Outposts (saved state)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>Number of active player-controlled Vanilla Expanded Framework Outposts in a successful save. Across colonies, sums representative saved states; not a lifetime count or a measure of items produced or received. Experimental; no backfilling.</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>Fishing jobs with accepted catches</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>Player fishing jobs on home maps that placed at least one catch. A bonus catch from the same job adds items only.</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>Placed fishing catches by item</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Items actually placed by player fishing jobs on home maps, including rare catches and supported Vanilla Fishing Expanded bonuses. Only recorded periods are covered.</RWS_MetricDesc_FishingCatchByDef>
 </LanguageData>

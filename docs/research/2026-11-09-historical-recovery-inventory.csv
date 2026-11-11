@@ -209,6 +209,8 @@ odyssey.gravship.flights,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-022,Odysse
 odyssey.gravship.distance,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-023,OdysseyFamily.Distance
 odyssey.gravship.unique_tiles,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-024,OdysseyFamily.UniqueTiles
 odyssey.gravship.new_map_landings,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-026,OdysseyFamily.NewMapLandings
+exploration.fishing.successful_actions,fishing,live,EVENT_LOG_REQUIRED,UNVERIFIED,GEN-FISH-001,FishingFamily.SuccessfulActions
+exploration.fishing.accepted_units_by_def,fishing,live,EVENT_LOG_REQUIRED,UNVERIFIED,GEN-FISH-002,FishingFamily.AcceptedUnitsByDef
 biotech.mechs.created,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-012,BiotechFamily.MechsCreated
 biotech.birth.mothers,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-014,BiotechFamily.BirthMothers
 biotech.child_stages,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-015,BiotechFamily.ChildStages
