@@ -8,7 +8,8 @@ namespace RimworldStatistics.Core;
 /// <summary>JSON codec for <see cref="Profile"/>: camelCase names and enum strings, UTC ISO 8601 dates.</summary>
 public static class ProfileJson
 {
-    public static JsonSerializerOptions Options { get; } = CreateOptions();
+    public static JsonSerializerOptions Options { get; } = CreateOptions(writeIndented: true);
+    public static JsonSerializerOptions CompactOptions { get; } = CreateOptions(writeIndented: false);
 
     public static string Serialize(Profile profile) => JsonSerializer.Serialize(profile, Options);
 
@@ -21,12 +22,12 @@ public static class ProfileJson
         return profile;
     }
 
-    private static JsonSerializerOptions CreateOptions()
+    private static JsonSerializerOptions CreateOptions(bool writeIndented)
     {
         var o = new JsonSerializerOptions
         {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            WriteIndented = true,
+            WriteIndented = writeIndented,
             Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
             NumberHandling = JsonNumberHandling.AllowNamedFloatingPointLiterals,
         };

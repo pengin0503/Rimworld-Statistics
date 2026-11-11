@@ -23,7 +23,8 @@ public static class ProfileService
                 var path = DirectoryPath;
                 sessionTask = Task.Run(() =>
                 {
-                    var session = new ProfileSession(new ProfileStore(path), () => DateTime.UtcNow);
+                    var session = new ProfileSession(new ProfileStore(path), () => DateTime.UtcNow,
+                        new FileCheckpointArchive(Path.Combine(path, "checkpoint-archive")));
                     ReportLoadProblems(session.LoadResult, path);
                     return session;
                 });

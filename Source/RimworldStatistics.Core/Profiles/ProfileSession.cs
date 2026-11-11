@@ -1,3 +1,5 @@
+using System.Text.Json;
+
 namespace RimworldStatistics.Core;
 
 public enum SaveMode
@@ -31,6 +33,7 @@ public sealed class ProfileSession
 {
     private readonly ProfileStore _store;
     private readonly Profile _profile;
+    private readonly ICheckpointArchive? _archive;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
     private readonly Dictionary<(bool IncludeDevMode, string Visible), StatsView> _views = new();
@@ -41,17 +44,21 @@ public sealed class ProfileSession
     private bool _backgroundPending;
     private Task? _backgroundTask;
     private volatile Exception? _lastSaveError;
+    private volatile Exception? _lastArchiveError;
 
-    public ProfileSession(ProfileStore store, Func<DateTime> utcNow)
+    public ProfileSession(ProfileStore store, Func<DateTime> utcNow, ICheckpointArchive? archive = null)
     {
         _store = store;
         LoadResult = store.Load(utcNow());
         _profile = LoadResult.Profile;
+        _archive = LoadResult.ReadOnly ? null : archive;
+        RestoreCheckpointMetrics();
     }
 
     public ProfileLoadResult LoadResult { get; }
 
     public Exception? LastSaveError => _lastSaveError;
+    public Exception? LastArchiveError => _lastArchiveError;
 
     public void Mutate(Action<Profile> change, SaveMode mode)
     {
@@ -60,6 +67,7 @@ public sealed class ProfileSession
             try
             {
                 change(_profile);
+                RestoreCheckpointMetrics();
             }
             finally
             {
@@ -68,6 +76,57 @@ public sealed class ProfileSession
             }
         }
         Save(mode);
+    }
+
+    private void RestoreCheckpointMetrics()
+    {
+        // Re-decoding the same checkpoint can add visible evidence, even if
+        // the ancestor is still compressed. Merge before saving the profile,
+        // so an unavailable archive cannot lose newly imported metrics.
+        foreach (var incoming in _profile.PendingCheckpointArchive)
+        {
+            var target = _profile.MetricObservations.FirstOrDefault(o => !o.IsQuarantined
+                && o.Source == MetricObservationSource.Checkpoint && o.Key == incoming.Key);
+            if (target is null || target.Conflicted)
+                continue;
+            if (target.ArchivedMetrics)
+                RestoreCheckpointMetrics(target);
+            ProfileMutations.RestoreArchivedMetrics(target, incoming);
+        }
+        _profile.PendingCheckpointArchive.Clear();
+
+        if (_archive is not null)
+            foreach (var observation in _profile.MetricObservations)
+                if (!observation.IsQuarantined && observation.ArchivedMetrics && !observation.Compressed)
+                    RestoreCheckpointMetrics(observation);
+    }
+
+    private void RestoreCheckpointMetrics(MetricObservation target)
+    {
+        if (_archive is null || target.Identity.ModCampaignId is not { Length: > 0 } campaign)
+            return;
+
+        try
+        {
+            var restored = false;
+            foreach (var observation in _archive.Read(campaign, target.Key))
+            {
+                if (observation.Source != MetricObservationSource.Checkpoint || observation.IsQuarantined
+                    || observation.Metrics is not { Count: > 0 }
+                    || observation.Identity?.ModCampaignId != campaign || observation.Key != target.Key
+                    || observation.PayloadHash != target.PayloadHash || observation.ParentKey != target.ParentKey
+                    || observation.SaveTick != target.SaveTick)
+                    continue;
+                ProfileMutations.RestoreArchivedMetrics(target, observation);
+                restored = true;
+            }
+            if (restored)
+                target.ArchivedMetrics = false;
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException)
+        {
+            _lastArchiveError = e;
+        }
     }
 
     public T Read<T>(Func<Profile, T> read)
@@ -219,17 +278,64 @@ public sealed class ProfileSession
         }
     }
 
+    private void ArchiveCheckpoints()
+    {
+        if (_archive is null)
+            return;
+
+        try
+        {
+            IReadOnlyList<ArchiveStep> steps;
+            long plannedRevision;
+            var batches = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            lock (_lock)
+            {
+                plannedRevision = _changeSeq;
+                steps = CheckpointArchivePlanner.Plan(_profile);
+                foreach (var step in steps)
+                {
+                    var campaign = step.Observation.Identity.ModCampaignId!;
+                    if (!batches.TryGetValue(campaign, out var lines))
+                        batches.Add(campaign, lines = new List<string>());
+                    lines.Add(JsonSerializer.Serialize(step.Observation, ProfileJson.CompactOptions));
+                }
+            }
+
+            foreach (var (campaign, lines) in batches)
+                _archive.Append(campaign, lines);
+
+            lock (_lock)
+            {
+                // A mutation can replace a breakdown in place without changing its
+                // entry reference or size. Only trim the revision written to disk.
+                if (_changeSeq == plannedRevision)
+                    foreach (var step in steps)
+                        CheckpointArchivePlanner.Apply(step);
+            }
+
+            if (batches.Count > 0)
+                _lastArchiveError = null;
+        }
+        catch (Exception e)
+        {
+            _lastArchiveError = e;
+        }
+    }
+
     /// <summary>Serializes the current profile and writes it, unless the file already holds this or a newer snapshot.</summary>
     private void WriteLatest()
     {
         lock (_ioLock)
         {
+            lock (_lock)
+                if (_changeSeq <= _writtenSeq)
+                    return;
+
+            ArchiveCheckpoints();
             string json;
             long seq;
             lock (_lock)
             {
-                if (_changeSeq <= _writtenSeq)
-                    return;
                 seq = _changeSeq;
                 try
                 {

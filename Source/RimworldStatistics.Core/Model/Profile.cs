@@ -56,6 +56,9 @@ public sealed class Profile
     [JsonConverter(typeof(MetricObservationsConverter))]
     public List<MetricObservation> MetricObservations { get; set; } = new();
 
+    [JsonIgnore]
+    public List<MetricObservation> PendingCheckpointArchive { get; } = new();
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 }

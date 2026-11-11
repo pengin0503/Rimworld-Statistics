@@ -103,6 +103,10 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public bool Compressed { get; set; }
 
+    /// <summary>Some metrics of this checkpoint are stored in the append-only archive.</summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public bool ArchivedMetrics { get; set; }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
