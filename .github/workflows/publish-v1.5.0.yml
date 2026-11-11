@@ -45,7 +45,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           root = ET.parse(Path("About/About.xml")).getroot()
-          assert root.findtext("modVersion") == "1.4.0"
+          assert root.findtext("modVersion") == "1.5.0"
           assert Path("docs/releases/v1.5.0.md").is_file()
           PY
 
@@ -70,7 +70,7 @@ jobs:
           import sys, zipfile, xml.etree.ElementTree as ET
           with zipfile.ZipFile(sys.argv[1]) as z:
               root = ET.fromstring(z.read("RimworldStatistics/About/About.xml"))
-              assert root.findtext("modVersion") == "1.4.0"
+              assert root.findtext("modVersion") == "1.5.0"
               paths = z.namelist()
               assert all(p.startswith("RimworldStatistics/") for p in paths)
               assert not any(term in p.lower() for p in paths for term in (
