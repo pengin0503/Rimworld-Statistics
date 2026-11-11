@@ -17,7 +17,7 @@ public static class RoyaltySetTitleMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int?, bool) __state)
     {
         __state = default;
-        if (LiveMetrics.Family(RoyaltyFamily.Name) is null || ___pawn is null || faction is null)
+        if (!LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) || ___pawn is null || faction is null)
             return;
         try
         {
@@ -53,7 +53,7 @@ public static class RoyaltyGainHonorMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int Before, bool Eligible) __state)
     {
         __state = default;
-        if (LiveMetrics.Family(RoyaltyFamily.Name) is null || ___pawn is null || faction is null)
+        if (!LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) || ___pawn is null || faction is null)
             return;
         try { __state = (__instance.GetFavor(faction), ___pawn.IsFreeNonSlaveColonist && faction.def.HasRoyalTitles); }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
@@ -81,7 +81,7 @@ public static class RoyaltySpendHonorMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int Before, bool Eligible) __state)
     {
         __state = default;
-        if (LiveMetrics.Family(RoyaltyFamily.Name) is null || ___pawn is null || faction is null)
+        if (!LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) || ___pawn is null || faction is null)
             return;
         try { __state = (__instance.GetFavor(faction), ___pawn.IsFreeNonSlaveColonist && faction.def.HasRoyalTitles); }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }

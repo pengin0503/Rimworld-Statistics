@@ -37,7 +37,7 @@ internal static class ResearchProbe
 
     public static Scope? Begin(ResearchProjectDef? def, Dictionary<ResearchProjectDef, float> progress, Dictionary<ResearchProjectDef, float> knowledge)
     {
-        if (def is null || LiveMetrics.Family(Unit) is null)
+        if (def is null || !LiveMetrics.IsRecordingNow(Unit))
             return null;
         try
         {

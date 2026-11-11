@@ -18,7 +18,7 @@ namespace RimworldStatistics.Patches.Metrics;
 public static class RoyalPermitUsedMetricPatch
 {
     public static void Prefix(FactionPermit __instance, out int __state)
-        => __state = LiveMetrics.Family(RoyaltyFamily.Name) is null ? int.MinValue : __instance.LastUsedTick;
+        => __state = !LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) ? int.MinValue : __instance.LastUsedTick;
 
     public static void Postfix(FactionPermit __instance, int __state)
     {
@@ -55,7 +55,7 @@ internal static class RoyalPsycastFacts
 public static class RoyalPsycastLocalMetricPatch
 {
     public static void Prefix(Psycast __instance, out int? __state)
-        => __state = LiveMetrics.Family(RoyaltyFamily.Name) is not null ? RoyalPsycastFacts.Tick(__instance) : null;
+        => __state = LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) ? RoyalPsycastFacts.Tick(__instance) : null;
 
     public static void Postfix(Psycast __instance, int? __state)
     {
@@ -70,7 +70,7 @@ public static class RoyalPsycastLocalMetricPatch
 public static class RoyalPsycastWorldMetricPatch
 {
     public static void Prefix(Psycast __instance, out int? __state)
-        => __state = LiveMetrics.Family(RoyaltyFamily.Name) is not null ? RoyalPsycastFacts.Tick(__instance) : null;
+        => __state = LiveMetrics.IsRecordingNow(RoyaltyFamily.Name) ? RoyalPsycastFacts.Tick(__instance) : null;
 
     public static void Postfix(Psycast __instance, int? __state)
     {

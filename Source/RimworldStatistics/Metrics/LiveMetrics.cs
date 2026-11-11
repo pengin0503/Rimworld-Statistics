@@ -55,11 +55,23 @@ public static class LiveMetrics
         FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
     }
 
+    /// <summary>Whether this family is currently recording, without counting a hit.</summary>
+    public static bool IsRecordingNow(string name) => Resolve(name) != null;
+
+    /// <summary>Returns the recording state and counts one hit when it is available.</summary>
+    public static FamilyState? Family(string name)
+    {
+        var family = Resolve(name);
+        if (family != null)
+            Hits[name] = Hits.GetValueOrDefault(name) + 1;
+        return family;
+    }
+
     /// <summary>
     /// The totals an adapter adds to, or null when the family does not record now. Off the game thread an event is never
     /// applied (the totals are not thread-safe); the family is marked as having a gap instead.
     /// </summary>
-    public static FamilyState? Family(string name)
+    private static FamilyState? Resolve(string name)
     {
         var acc = Accumulator;
         if (acc is null)
@@ -72,10 +84,7 @@ public static class LiveMetrics
         }
         if (!Missed.IsEmpty && Missed.TryRemove(name, out _))
             acc.MarkGap(name, Find.TickManager.TicksGame);
-        var family = acc.Family(name);
-        if (family != null)
-            Hits[name] = Hits.GetValueOrDefault(name) + 1;
-        return family;
+        return acc.Family(name);
     }
 
     /// <summary>A hook of <paramref name="unit"/> threw: close the unit and keep what it recorded, measured through now.</summary>
@@ -111,7 +120,7 @@ public static class LiveMetrics
         FamilyStartup.BeforeSave(acc, Find.TickManager.TicksGame);
     }
 
-    /// <summary>How often each family accepted an event this session (the verification harness reports these).</summary>
+    /// <summary>How often each family handed out its state for recording this game.</summary>
     public static IReadOnlyDictionary<string, int> HitCounts() => new Dictionary<string, int>(Hits, StringComparer.Ordinal);
 
     /// <summary>The DLC package ids active now, in the form saves list them (meta/modIds).</summary>

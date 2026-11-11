@@ -115,7 +115,7 @@ public static class ZoneHarvestMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
-        if (LiveMetrics.Family(FoodFamily.Name) is null)
+        if (!LiveMetrics.IsRecordingNow(FoodFamily.Name))
             return;
         try
         {
@@ -138,7 +138,7 @@ public static class FoodMapRemovedMetricPatch
 {
     public static void Prefix(Map map)
     {
-        if (map == null || LiveMetrics.Family(FoodFamily.Name) is null)
+        if (map == null || !LiveMetrics.IsRecordingNow(FoodFamily.Name))
             return;
         try   // a failure here must close the food family only, never break the map's removal
         {

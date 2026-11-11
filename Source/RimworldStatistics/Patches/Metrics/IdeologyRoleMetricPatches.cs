@@ -15,7 +15,7 @@ internal static class RoleAssignmentMetricFacts
 {
     public static bool WasAssigned(Precept_Role role, Pawn pawn)
     {
-        if (pawn is null || role is null || LiveMetrics.Family(IdeologyFamily.Name) is null)
+        if (pawn is null || role is null || !LiveMetrics.IsRecordingNow(IdeologyFamily.Name))
             return false;
         try { return role.IsAssigned(pawn); }
         catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); return false; }
@@ -24,7 +24,7 @@ internal static class RoleAssignmentMetricFacts
     public static void Assigned(Precept_Role role, Pawn pawn, bool wasAssigned)
     {
         if (wasAssigned || pawn is null || role is null || !pawn.IsFreeNonSlaveColonist
-            || LiveMetrics.Family(IdeologyFamily.Name) is null)
+            || !LiveMetrics.IsRecordingNow(IdeologyFamily.Name))
             return;
         try
         {
