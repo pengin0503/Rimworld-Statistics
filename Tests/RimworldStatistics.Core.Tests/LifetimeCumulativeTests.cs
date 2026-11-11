@@ -50,9 +50,9 @@ public sealed class LifetimeCumulativeTests
     public void SowingAndSurgery_RevealOutcomesWithoutNewCounters()
     {
         var (w, ws) = NewGame(WorkFamily.Family);
-        WorkFamily.Sown(ws, "plant1", "Rice");
-        WorkFamily.Sown(ws, "plant2", "Rice");
-        WorkFamily.Sown(ws, "plant3", "Corn");
+        WorkFamily.Sown(ws, "Rice");
+        WorkFamily.Sown(ws, "Rice");
+        WorkFamily.Sown(ws, "Corn");
         var wo = Observe(w);
         Assert.Equal(3, Scalar(wo, WorkFamily.Sown_).IntegerValue);
         Assert.Equal(2, Children(wo, WorkFamily.Sown_)["Rice"].IntegerValue);
@@ -127,7 +127,7 @@ public sealed class LifetimeCumulativeTests
         Assert.Equal(1, WorkFamily.Family.Revision);
         Assert.Equal(2, MedicineFamily.Family.Revision);
         var (a, s) = NewGame(WorkFamily.Family);
-        WorkFamily.Sown(s, "plant", "Rice");
+        WorkFamily.Sown(s, "Rice");
         var draft = a.PrepareSave(100, Now, "legacy")!;
         var parsed = CheckpointJson.Parse(draft.Json).Payload!;
         var o = CheckpointMetrics.ToObservation(parsed, draft.Json, new ColonyIdentity { ModCampaignId = "legacy" }, null, null);
