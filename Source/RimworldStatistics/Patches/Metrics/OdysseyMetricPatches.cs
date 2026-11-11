@@ -64,7 +64,7 @@ public static class OdysseyPreflightMapsMetricPatch
     public static void Prefix(Building_GravEngine engine)
     {
         if (engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer
-            || !LiveMetrics.IsRecordingNow(OdysseyFamily.Name))
+            || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
             return;
         var maps = Find.Maps?.Where(m => m is not null)
             .Select(m => GameFacts.MapId(m)).ToArray() ?? Array.Empty<string>();
@@ -77,7 +77,7 @@ public static class OdysseyPreflightMapsMetricPatch
 public static class OdysseyTakeoffMetricPatch
 {
     public static void Prefix(Gravship ___gravship, out Building_GravEngine? __state)
-        => __state = LiveMetrics.IsRecordingNow(OdysseyFamily.Name) ? ___gravship?.Engine : null;
+        => __state = LiveMetrics.CanCaptureEvent(OdysseyFamily.Name) ? ___gravship?.Engine : null;
 
     public static void Postfix(Building_GravEngine? __state)
     {
@@ -100,7 +100,7 @@ public static class OdysseyNewLandingMapMetricPatch
 {
     public static void Postfix(Map __result)
     {
-        if (__result is null || !LiveMetrics.IsRecordingNow(OdysseyFamily.Name))
+        if (__result is null || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
             return;
         var ship = Find.CurrentGravship;
         var engine = ship?.Engine;
@@ -123,7 +123,7 @@ public static class OdysseyLandingMetricPatch
     public static void Prefix(Gravship ___gravship, PlanetTile ___takeoffTile,
         PlanetTile ___landingTile, Map ___landingMap,
         out (Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
-        => __state = LiveMetrics.IsRecordingNow(OdysseyFamily.Name)
+        => __state = LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
             ? (___gravship?.Engine, ___takeoffTile, ___landingTile, ___landingMap)
             : default;
 

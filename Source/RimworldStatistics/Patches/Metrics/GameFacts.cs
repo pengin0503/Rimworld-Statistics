@@ -84,7 +84,7 @@ internal static class GameFacts
     public static bool AnyRecording(params string[] families)
     {
         foreach (var f in families)
-            if (LiveMetrics.IsRecordingNow(f))
+            if (LiveMetrics.CanCaptureEvent(f))
                 return true;
         return false;
     }

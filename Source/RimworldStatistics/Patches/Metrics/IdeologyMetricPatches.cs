@@ -17,7 +17,7 @@ public static class PawnSetIdeoMetricPatch
     public static void Prefix(Pawn ___pawn, out Ideo? __state)
     {
         __state = null;
-        if (!LiveMetrics.IsRecordingNow(IdeologyFamily.Name) || ___pawn is null)
+        if (!LiveMetrics.CanCaptureEvent(IdeologyFamily.Name) || ___pawn is null)
             return;
         try { __state = ___pawn.Ideo; }
         catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
@@ -25,7 +25,7 @@ public static class PawnSetIdeoMetricPatch
 
     public static void Postfix(Pawn ___pawn, Ideo? __state)
     {
-        if (__state is null || ___pawn is null || !LiveMetrics.IsRecordingNow(IdeologyFamily.Name))
+        if (__state is null || ___pawn is null || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
             return;
         try
         {
@@ -61,7 +61,7 @@ public static class PawnSetIdeoMetricPatch
     {
         public static void Prefix(Pawn ___pawn, Ideo initiatorIdeo)
         {
-            if (!LiveMetrics.IsRecordingNow(IdeologyFamily.Name) || ___pawn is null
+            if (!LiveMetrics.CanCaptureEvent(IdeologyFamily.Name) || ___pawn is null
                 || initiatorIdeo is null || ReferenceEquals(___pawn.Ideo, initiatorIdeo))
                 return;
             var eligible = ___pawn.IsFreeNonSlaveColonist || ___pawn.IsPrisonerOfColony;

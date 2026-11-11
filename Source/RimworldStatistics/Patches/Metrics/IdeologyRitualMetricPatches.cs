@@ -70,7 +70,7 @@ public static class IdeologyRitualOutcomeApplyMetricPatch
 {
     public static void Prefix(LordJob_Ritual jobRitual, out bool __state)
     {
-        __state = LiveMetrics.IsRecordingNow(IdeologyFamily.Name)
+        __state = LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
             && jobRitual is not null && IdeologyRitualFacts.IsPlayerRitual(jobRitual);
         if (__state && jobRitual is not null)
             IdeologyRitualFacts.Enter(jobRitual);
@@ -102,7 +102,7 @@ public static class IdeologyOtherCompletedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
-        if (cancelled || !LiveMetrics.IsRecordingNow(IdeologyFamily.Name)
+        if (cancelled || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
             || !IdeologyRitualFacts.IsPlayerRitual(__instance)
             || IdeologyRitualFacts.Id(__instance) is not { } id)
             return;
@@ -119,7 +119,7 @@ public static class IdeologyInterruptedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
-        if (!cancelled || !LiveMetrics.IsRecordingNow(IdeologyFamily.Name)
+        if (!cancelled || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
             || !IdeologyRitualFacts.IsPlayerRitual(__instance)
             || IdeologyRitualFacts.Id(__instance) is not { } id)
             return;

@@ -18,7 +18,7 @@ public static class BiotechGestationReadyMetricPatch
     public static void Prefix(Building_MechGestator __instance, out (Pawn? Mech, bool Player, bool Resurrection) __state)
     {
         __state = default;
-        if (!LiveMetrics.IsRecordingNow(BiotechFamily.Name) || __instance is null)
+        if (!LiveMetrics.CanCaptureEvent(BiotechFamily.Name) || __instance is null)
             return;
         __state = (__instance.GestatingMech,
             __instance.Faction == Faction.OfPlayer,
@@ -47,7 +47,7 @@ public static class BiotechGestationReadyMetricPatch
 public static class BiotechGestationEjectMetricPatch
 {
     public static void Prefix(Building_MechGestator __instance, out Pawn? __state)
-        => __state = !LiveMetrics.IsRecordingNow(BiotechFamily.Name) ? null : __instance?.GestatingMech;
+        => __state = !LiveMetrics.CanCaptureEvent(BiotechFamily.Name) ? null : __instance?.GestatingMech;
 
     public static void Postfix(Pawn? __state)
     {

@@ -13,6 +13,7 @@
   <!-- The game-independent part of the development-only verification harness (tools/VerifyHarness), tested here. -->
   <ItemGroup>
     <Compile Include="../../tools/VerifyHarness/Logic/*.cs" Link="VerifyHarnessLogic/%(Filename)%(Extension)" />
+    <Compile Include="../../Source/RimworldStatistics/Metrics/LiveMetrics.cs" Link="GameBridge/LiveMetrics.cs" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="Xunit" />

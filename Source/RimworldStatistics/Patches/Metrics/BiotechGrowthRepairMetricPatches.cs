@@ -18,7 +18,7 @@ public static class BiotechChildStageMetricPatch
     public static void Prefix(Pawn_AgeTracker __instance, Pawn ___pawn, out int __state)
     {
         __state = -1;
-        if (!LiveMetrics.IsRecordingNow(BiotechFamily.Name) || ___pawn is null || ___pawn.Dead
+        if (!LiveMetrics.CanCaptureEvent(BiotechFamily.Name) || ___pawn is null || ___pawn.Dead
             || !___pawn.IsFreeNonSlaveColonist || !___pawn.RaceProps.Humanlike
             || __instance.AgeBiologicalYearsFloat >= 18f)
             return;
@@ -42,7 +42,7 @@ public static class BiotechChildStageMetricPatch
 internal static class MechRepairMetricFacts
 {
     public static bool WasInjured(Pawn mech)
-        => LiveMetrics.IsRecordingNow(BiotechFamily.Name)
+        => LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
            && mech is { Dead: false } && mech.Faction == Faction.OfPlayer && mech.RaceProps.IsMechanoid
            && mech.health?.hediffSet?.hediffs?.Any(h => h is Hediff_Injury) == true;
 

@@ -41,7 +41,7 @@ public static class DoTendMetricPatch
         var playerPatient = GameFacts.IsPlayer(patient);
         var colonistPatient = patient.IsFreeColonist;
         var colonyPatient = playerPatient || colonistPatient || patient.IsPrisonerOfColony;
-        if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+        if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
 
         var b = new Before
@@ -143,7 +143,7 @@ public static class AddHediffMetricPatch
     public static void Postfix(Pawn ___pawn, Hediff hediff, BodyPartRecord part, DamageInfo? dinfo, bool __state)
     {
         if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead || !___pawn.health.hediffSet.hediffs.Contains(hediff)
-            || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+            || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
         var set = ___pawn.health.hediffSet;
         var attacker = dinfo?.Instigator as Pawn;
@@ -172,7 +172,7 @@ public static class RemoveHediffMetricPatch
 {
     public static void Prefix(Pawn ___pawn, Hediff hediff)
     {
-        if (___pawn == null || hediff == null || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+        if (___pawn == null || hediff == null || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
         var id = hediff.GetUniqueLoadID();
         var cured = !___pawn.Dead && MedicalProbe.SurgeryDepth == 0 && hediff.ShouldRemove
@@ -226,7 +226,7 @@ public static class WithdrawalMetricPatch
     public static void Postfix(Hediff_Addiction __instance)
     {
         var pawn = __instance?.pawn;
-        if (pawn == null || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+        if (pawn == null || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
         try
         {
@@ -280,7 +280,7 @@ internal static class HospitalProbe
         try
         {
             var pawn = toil.actor;
-            if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+            if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
                 return;
             // The game's init ends the job instead when the pawn is not in the bed; then it is not lying there.
             if (pawn.jobs?.posture != PawnPosture.LayingInBed || pawn.CurJob?.GetTarget(bedIndex).Thing is not Building_Bed { Medical: true } bed
@@ -302,7 +302,7 @@ internal static class HospitalProbe
         try
         {
             var pawn = toil.actor;
-            if (pawn == null || !LiveMetrics.IsRecordingNow(MedicineFamily.Name))
+            if (pawn == null || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
                 return;
             var id = GameFacts.Id(pawn);
             var died = pawn.Dead;

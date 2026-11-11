@@ -100,7 +100,7 @@ public static class PlantCollectedMetricPatch
 {
     public static void Prefix(Plant __instance, Pawn by)
     {
-        if (__instance == null || !__instance.Spawned || !LiveMetrics.IsRecordingNow(WorkFamily.Name))
+        if (__instance == null || !__instance.Spawned || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
             return;
         var id = GameFacts.Id(__instance);
         var harvestJob = by?.CurJobDef == JobDefOf.Harvest || by?.CurJobDef == JobDefOf.HarvestDesignated;
@@ -337,7 +337,7 @@ public static class FrameCompleteMetricPatch
     public static void Prefix(Frame __instance, out Dictionary<string, int>? __state)
     {
         __state = null;
-        if (__instance == null || !GameFacts.IsPlayer(__instance) || !LiveMetrics.IsRecordingNow(WorkFamily.Name))
+        if (__instance == null || !GameFacts.IsPlayer(__instance) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
             return;
         __state = new Dictionary<string, int>(StringComparer.Ordinal);
         foreach (var t in __instance.resourceContainer)

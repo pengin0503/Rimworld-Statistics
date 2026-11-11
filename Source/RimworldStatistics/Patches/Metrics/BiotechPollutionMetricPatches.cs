@@ -43,7 +43,7 @@ public static class BiotechPlayerCleanupJobMetricPatch
 {
     public static void Prefix(JobDriver_ClearPollution __instance, Map map, out bool __state)
     {
-        __state = LiveMetrics.IsRecordingNow(BiotechFamily.Name)
+        __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
             && __instance.pawn?.Faction == Faction.OfPlayer && map?.pollutionGrid is not null;
         if (__state && map?.pollutionGrid is { } grid)
             BiotechCleanupScope.Enter(grid, map.uniqueID);
