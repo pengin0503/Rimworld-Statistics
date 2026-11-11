@@ -18,7 +18,7 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面から表示します。MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。
+  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面から表示します。MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。Hospitality、Recruitment、Dubs Bad Hygiene、Smart Apparel Upgradeの対応統計を本体に内蔵しており、統計アドオンの追加導入は不要です。
 
-Shows lifetime play statistics across all saves and colonies from the title screen. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
+Shows lifetime play statistics across all saves and colonies from the title screen. Includes optional source-audited statistics for Hospitality, Recruitment, Dubs Bad Hygiene and Smart Apparel Upgrade with no separate statistics addons. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
 </ModMetaData>

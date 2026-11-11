@@ -2,6 +2,12 @@
 
 Status: **experimental / NOT compatibility-guaranteed**, pending target-game acceptance and performance testing. This document describes the current candidate code, not a release commitment.
 
+## Integrated optional gameplay-MOD statistics (2026-11-11)
+
+The Rimworld-Statistics host now embeds the previously separate Hospitality, Recruitment, Dubs Bad Hygiene and Smart Apparel Upgrade adapters. They use the **same SDK 1.1 API and existing checkpoint/representative-save/profile store** as external providers, preserving all stable IDs and revisions. The host package ships **only** `RimworldStatistics.dll`, `RimworldStatistics.Core.dll` and `RimworldStatistics.Api.dll`; third-party target MOD assemblies and standalone statistics addon DLLs are **not bundled**. When a gameplay target is absent, no reflection/patching/collection runs. If its old standalone statistics addon remains installed during migration, that addon is allowed to own the corresponding hooks and the integrated implementation stands down until removal and restart.
+
+Previously saved numbers remain visible after target or old addon removal; missing time intervals are not backfilled. The rest of this document remains the SDK contract for other third-party developers and is not deprecated by host integration.
+
 ## Host and binary distribution
 
 The host MOD `pengin0503.rimworldstatistics` packages **one** `RimworldStatistics.Api.dll` inside `1.7/Assemblies`, together with its existing `RimworldStatistics.dll` and `RimworldStatistics.Core.dll`. The external consumer compiles against the API reference but **must not copy any API/Core/host DLL into its ZIP**. Assemblies are resolved from the host at runtime. Source-level project reference for local development:
@@ -12,7 +18,7 @@ The host MOD `pengin0503.rimworldstatistics` packages **one** `RimworldStatistic
 
 For separate repositories, use a compile-time reference to the host's published `RimworldStatistics.Api.dll` with `Private="false"`, or a separately distributed reference package containing metadata only. Do not ship that DLL in the consumer.
 
-An optional external MOD should use `<loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>` **without** `modDependencies`; its own startup code must probe loaded assemblies by name `RimworldStatistics.Api` **before** invoking any API-typed code. Use a no-inline nested bridge method with no API types in startup-class signatures. See `https://github.com/pengin0503/Rimworld-Statistics-mod-addon/blob/main/https://github.com/pengin0503/Rimworld-Statistics-mod-addon/tree/main/examples/StatisticsSdkSample/Source/SampleSdkClient.cs`. When the host is missing, registration and emission are skipped without warning/error. The sample is built independently.
+An optional external MOD should use `<loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>` **without** `modDependencies`; its own startup code must probe loaded assemblies by name `RimworldStatistics.Api` **before** invoking any API-typed code. Use a no-inline nested bridge method with no API types in startup-class signatures. See `../../examples/StatisticsSdkSample/Source/SampleSdkClient.cs`. When the host is missing, registration and emission are skipped without warning/error. The sample is built independently.
 
 ## ABI and semantic version policy
 

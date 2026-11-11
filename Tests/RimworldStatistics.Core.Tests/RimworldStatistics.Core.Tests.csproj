@@ -17,5 +17,6 @@
   <ItemGroup>
     <Using Include="Xunit" />
     <Using Include="RimworldStatistics.Core" />
+    <Compile Include="../../Source/RimworldStatistics/IntegratedMods/*/Logic/*.cs" Link="IntegratedModLogic/%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>
