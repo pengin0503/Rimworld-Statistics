@@ -31,6 +31,16 @@ public sealed class ModdedIncidentFamilyTests
     }
 
     [Fact]
+    public void SourceIdentityRequiresAnExternalIncidentDef()
+    {
+        Assert.True(ModdedIncidentFamily.IsModded("vanillaexpanded.events", "EarthQuake"));
+        Assert.False(ModdedIncidentFamily.IsModded("ludeon.rimworld", "CropBlight"));
+        Assert.False(ModdedIncidentFamily.IsModded("LUDEON.RIMWORLD.ODYSSEY", "FishMigration"));
+        Assert.False(ModdedIncidentFamily.IsModded(null, "EarthQuake"));
+        Assert.False(ModdedIncidentFamily.IsModded("other.events", ""));
+    }
+
+    [Fact]
     public void OnlyConfirmedModdedHomeMapEventsCount_AndPackagesDoNotCollide()
     {
         var (acc, state) = NewGame();
