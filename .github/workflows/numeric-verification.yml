@@ -43,6 +43,65 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
+      # Read-only pinned public sources. No target assembly is bundled.
+      - uses: actions/checkout@v4
+        with:
+          repository: pengin0503/rimworld-Smart-Apparel-Upgrade
+          ref: 5e910b82281fa6d5a4ebc3bcb5b88b1610b1dba8
+          path: .devinputs/integrated/sau
+          sparse-checkout: |
+            About/About.xml
+            Source/SmartApparelUpgrade.cs
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: pengin0503/Rimworld-Recruitment
+          ref: cff2f296bc152ee61000d132107767977193a243
+          path: .devinputs/integrated/recruitment
+          sparse-checkout: |
+            About/About.xml
+            Source/Recruitment/GameComponent_Recruitment.cs
+            Source/Recruitment/RecruitmentDrive.cs
+            Source/Recruitment/Recruitment.csproj
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Dubwise56/Dubs-Bad-Hygiene
+          ref: 96ec4b51efaf9ef4baa98aa832a8078be09d3f45
+          path: .devinputs/integrated/dbh
+          sparse-checkout: |
+            About/About.xml
+            1.7/Assemblies/BadHygiene.dll
+            1.7/Languages/English/Keyed/DubsHygiene.xml
+            1.7/Defs/ThingDefs_Buildings/BuildingsD_WaterManagement.xml
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Zaljerem/Hospitality
+          ref: d465bdc07b88d77eb3d158c215af388dcf771863
+          path: .devinputs/integrated/hospitality
+          sparse-checkout: |
+            About/About.xml
+            Source/Hospitality_MapComponent.cs
+            Source/Utilities/GuestUtility.cs
+            Source/LordJob_VisitColony.cs
+            Source/CompGuest.cs
+            Source/Building_GuestBed.cs
+            Source/IncidentWorker_VisitorGroup.cs
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/IntegratedModAudit/check_sau_contract.py .devinputs/integrated/sau
+          python3 tools/IntegratedModAudit/check_recruitment_contract.py .devinputs/integrated/recruitment
+          python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality
+          python3 tools/IntegratedModAudit/check_dbh_contract.py .devinputs/integrated/dbh
+          dotnet run -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll
       - name: Compile read-only local save-structure verification tool
         run: python3 -m py_compile tools/check_private_save_shapes.py
       - name: Unit-test independent XML/deflate private-save verifier
