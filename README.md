@@ -14,17 +14,19 @@ MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みま�
 
 前提 MOD: Harmony
 
-**新規統計の採用原則:** 全コロニー横断の通算実績・歴代記録・比較に加え、**各コロニーの代表保存時点の人数・物資・設備等を横断して合計し、最多・最少コロニーを求める統計**も対象です。単一セーブの「最新値」だけを表示する重複項目は増やしません。既存項目は削除しません。[横断性の監査](docs/research/2026-11-10-cross-colony-metric-scope-audit.md)・[集計/ランキング候補の追加方針](docs/research/2026-11-10-cross-colony-aggregation-candidates.md)を参照。
+**新規統計の採用原則:** 全コロニー横断の通算実績・歴代記録・比較に加え、**各コロニーの代表保存時点の人数・物資・設備等を横断して合計し、最多・最少コロニーを求める統計**も対象です。単一セーブの「最新値」だけを表示する重複項目は増やしません。**ただし2026-11-11にユーザーが削除を明示した10項目（旧発電機・収納内在庫は別途廃止）は例外です。** 現行の正式採否は[19項目の存廃確定記録](docs/research/2026-11-11-approved-metric-retention-removal.md)に従います。[横断性の監査](docs/research/2026-11-10-cross-colony-metric-scope-audit.md)・[集計/ランキング候補の追加方針](docs/research/2026-11-10-cross-colony-aggregation-candidates.md)を参照。
 
 ## 状況
 
-**基本統計・取り込み・外部MOD統計基盤は実装済み。** Core自動テスト、RimWorld 1.7参照APIの静的照合、SDK互換性検査、配布ZIP検査をGitHub Actionsで実行しています。検証用RimWorld 1.7では限定的な自動ケースを実行し、通常環境で再スキャンとDPAのGame Component Tickを[限定的に確認](docs/performance/2026-11-09-standard-game-dpa-partial.md)しました。ただし264項目の数値正確性、保存処理の追加時間、長時間TPS悪化率、全MOD構成での動作は証明されていません。未検証項目は実験的なまま扱います。
+**基本統計・取り込み・外部MOD統計基盤は実装済み。** Core自動テスト、RimWorld 1.7参照APIの静的照合、SDK互換性検査、配布ZIP検査をGitHub Actionsで実行しています。検証用RimWorld 1.7では限定的な自動ケースを実行し、通常環境で再スキャンとDPAのGame Component Tickを[限定的に確認](docs/performance/2026-11-09-standard-game-dpa-partial.md)しました。ただし実験的取得項目を含む全登録統計の数値正確性、保存処理の追加時間、長時間TPS悪化率、全MOD構成での動作は証明されていません。未検証項目は実験的なまま扱います。
 
 - [設計仕様 v0.2（2026-11-06）](docs/superpowers/specs/2026-11-06-rimworld-statistics-design.md)
 - [RimWorld 1.7 実現可能性調査（2026-11-06）](docs/research/2026-11-06-rimworld-1.7-feasibility.md)
 - [実装計画（2026-11-06）](docs/superpowers/plans/2026-11-06-rimworld-statistics.md)
 - [手動確認の手順書](docs/manual-test-checklist.md)
 - 数値統計拡張: [確定設計](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-design.md)・[台帳](docs/superpowers/specs/2026-11-07-numeric-statistics-expansion-metrics.md)・[計画](docs/superpowers/plans/2026-11-07-numeric-statistics-expansion.md)・[実装・検証記録](docs/research/2026-11-07-numeric-statistics-expansion-verification.md)（Phase A/D1に加え、Phase B/C/D2の取得コードを実装。Phase B/C/D2は未検証の実験的機能として既定OFF）
+
+**開発版PR #102の確定スコープ（未マージ）：** [残す13群／削除6群＋従来の2件](docs/research/2026-11-11-approved-metric-retention-removal.md)。SaveReader v15で404定義（321基本＋83派生）。旧版v1.4.0は変更せず、削除した統計の旧プロファイル保存値を他のキーへ転用しません。 
 
 ### 開発・検証を引き継ぐ場合
 
