@@ -34,8 +34,8 @@ public sealed class NumericValue
     public bool NotReached => Number is null && Denominator is null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
 
     /// <summary>A value, a threshold not reached, or a known 0 ÷ 0.</summary>
-    public bool Known => Number is not null || NotReached
-        || (Numerator is not null && Denominator is not null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable));
+    public bool Known => Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+        && (Number is not null || NotReached || (Numerator is not null && Denominator is not null));
 }
 
 /// <summary>One metric (or one breakdown entry) for all colonies or for one colony.</summary>
@@ -306,14 +306,14 @@ public static class MetricCalculator
         else if (d.HasBreakdown)
             value = new NumericValue
             {
-                Number = breakdowns.Sum(b => b.Value.Number ?? 0),
+                Number = breakdowns.Count == 0 || breakdowns.Any(b => b.Value.Known) ? breakdowns.Sum(b => b.Value.Number ?? 0) : null,
                 Coverage = Weakest(breakdowns.Select(b => b.Value.Coverage).DefaultIfEmpty(MetricCoverage.SnapshotOnly)),
                 ThroughTick = rep.SaveTick,
                 Evidence = EvidenceFor(rep, d),
             };
         else
             value = NumericValue.Unknown;
-        if (staleCapture)
+        if (staleCapture && value.Known)
         {
             value = new NumericValue
             {
@@ -340,11 +340,11 @@ public static class MetricCalculator
         // take part in a historical maximum/minimum. A nonzero, explicitly recorded
         // value remains evidence even when the DLC list says it was absent.
         var applicable = observations.Where(o => !DlcAbsent(d, o)
-            || Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is { } recorded && recorded != 0).ToList();
+            || MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is { } recorded && recorded != 0).ToList();
         if (applicable.Count == 0)
             return Row(d, MetricEntry.Scalar, new NumericValue { Coverage = MetricCoverage.NotApplicable });
         var values = applicable.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
-            .Where(x => x.Value?.Number is not null).ToList();
+            .Where(x => MeasuredNumber(x.Value) is not null).ToList();
         if (values.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
         var best = d.Selection == ColonySelection.ObservationMax
@@ -352,7 +352,7 @@ public static class MetricCalculator
             : values.OrderBy(x => x.Value!.Number).First();
         // A compacted history retains a witness for any missing applicable reading;
         // raw value counts are no longer interchangeable with observation counts.
-        var partial = applicable.Any(o => Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)?.Number is null)
+        var partial = applicable.Any(o => MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is null)
             || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
         return Row(d, MetricEntry.Scalar, new NumericValue
         {
@@ -388,9 +388,12 @@ public static class MetricCalculator
             ? MetricEvidencePolicy.Combine(direct, compacted) : direct;
     }
 
+    internal static double? MeasuredNumber(MetricValue? value)
+        => value?.Coverage is null or MetricCoverage.Unknown or MetricCoverage.NotApplicable ? null : value.Number;
+
     private static NumericValue From(MetricValue v, MetricObservation observation, MetricDefinition definition) => new()
     {
-        Number = v.Number,
+        Number = MeasuredNumber(v),
         Coverage = v.Coverage,
         Evidence = EvidenceFor(observation, definition),
         Numerator = v.Numerator,
@@ -461,7 +464,7 @@ public static class MetricCalculator
         TradeFamily.Deals, TradeFamily.SalesUnits, TradeFamily.BuysUnits,
         WorkFamily.Sown_, WorkFamily.HarvestByCrop, WorkFamily.MealsByDef,
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
-        MedicineFamily.Surgeries,
+        MedicineFamily.Surgeries, FishingFamily.AcceptedUnitsByDef, ModdedIncidentFamily.ByDef,
     };
 
     /// <summary>
@@ -476,7 +479,7 @@ public static class MetricCalculator
         if (ExhaustiveEventBreakdowns.Contains(row.Definition.Key))
         {
             var complete = row.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly
-                && row.Breakdowns.All(child => child.Value.Number is not null
+                && row.Breakdowns.All(child => child.Breakdown != MetricKeys.UnknownBucket && child.Value.Number is not null
                     && child.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly)
                 && Math.Abs(row.Breakdowns.Sum(child => child.Value.Number ?? 0) - row.Value.Number.Value) < 1e-6;
             if (!complete)
@@ -497,9 +500,8 @@ public static class MetricCalculator
     private static NumericRow Aggregate(MetricDefinition d, string breakdown, List<(string Key, NumericValue Value)> colonies)
     {
         var applicable = colonies.Where(c => c.Value.Coverage != MetricCoverage.NotApplicable).ToList();
-        var known = applicable.Where(c => d.Overall == OverallAggregation.Ratio
-            ? c.Value.Numerator is not null && c.Value.Denominator is not null
-            : c.Value.Known).ToList();
+        var known = applicable.Where(c => c.Value.Known && (d.Overall != OverallAggregation.Ratio
+            || (c.Value.Numerator is not null && c.Value.Denominator is not null))).ToList();
         NumericValue Result(double? number, string? colony = null, double? num = null, double? den = null)
         {
             if (known.Count == 0)

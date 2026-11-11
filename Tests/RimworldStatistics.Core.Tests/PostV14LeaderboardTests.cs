@@ -10,7 +10,7 @@ public sealed class PostV14LeaderboardTests
         {
             Definition = definition, Targets = coverage == MetricCoverage.NotApplicable ? 0 : 1,
             Valid = total is null || coverage == MetricCoverage.NotApplicable ? 0 : 1,
-            Value = new NumericValue { Number = total, Coverage = coverage, Evidence = MetricEvidence.Experimental },
+            Value = new NumericValue { Number = total, Coverage = coverage, Evidence = MetricEvidence.Experimental, ModSetHash = "fixture-cohort" },
             Breakdowns = parts.Select(p => new NumericRow
             {
                 Definition = definition,
@@ -182,6 +182,6 @@ public sealed class PostV14LeaderboardTests
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MaxPrefix + RosterSnapshot.Slaves));
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MinPrefix + RosterSnapshot.Slaves));
         Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
-        Assert.Equal(15, SaveReader.Version);
+        Assert.Equal(16, SaveReader.Version);
     }
 }

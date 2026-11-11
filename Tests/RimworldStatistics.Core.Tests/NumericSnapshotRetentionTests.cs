@@ -61,6 +61,72 @@ public sealed class NumericSnapshotRetentionTests
     }
 
     [Fact]
+    public void MissingOutpostCaptureRetainsTheLastMeasuredValueIncludingZero()
+    {
+        var id = Identity();
+        var p = new Profile();
+        ProfileMutations.ApplyLiveObservation(p, id.ModCampaignId!, id, new ObservedValues { TicksGame = 100 },
+            new DisplayInfo(), Epoch);
+        void Add(int tick, int? outposts)
+        {
+            var observation = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = "outposts-" + tick,
+                Identity = id.Clone(), SaveTick = tick, ObservedUtc = Epoch.AddMinutes(tick),
+                Metrics = outposts is int count ? OutpostSnapshot.Build(count) : new(),
+            };
+            ProfileMutations.UpsertMetricObservation(p, observation);
+        }
+
+        NumericRow Read()
+        {
+            var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+            var colonies = CampaignMatcher.BuildColonies(restored);
+            return Assert.Single(Assert.Single(MetricCalculator.BuildView(restored, colonies,
+                StatsCalculator.Calculate(colonies, new StatsOptions()),
+                [MetricRegistry.Find(OutpostSnapshot.Active)!]).Colonies).Rows);
+        }
+
+        Add(1, null);
+        Add(2, 3);
+        Add(3, null);
+        Assert.Equal((3d, MetricCoverage.Partial), (Read().Value.Number, Read().Value.Coverage));
+        Add(4, 0);
+        Assert.Equal((0d, MetricCoverage.SnapshotOnly), (Read().Value.Number, Read().Value.Coverage));
+        Add(5, null);
+        Assert.Equal((0d, MetricCoverage.Partial), (Read().Value.Number, Read().Value.Coverage));
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void OlderSaveFileKeepsIndependentHistoricalEvidence(bool newestFirst)
+    {
+        var id = Identity();
+        var p = new Profile();
+        ProfileMutations.ApplyLiveObservation(p, id.ModCampaignId!, id, new ObservedValues { TicksGame = 100 },
+            new DisplayInfo(), Epoch);
+        var older = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "historical", Identity = id.Clone(),
+            SaveTick = 1, ObservedUtc = Epoch, ModSetHash = "cohort",
+            EvidenceByAcquisition = new() { ["research_state"] = MetricEvidence.Experimental },
+            Metrics = { [ResearchStateSnapshot.Finished] = MetricEntry.Of(MetricKeys.Revision(ResearchStateSnapshot.Finished),
+                new MetricValue { Coverage = MetricCoverage.Partial, IntegerValue = 6 }) },
+        };
+        var newer = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveFile, Key = "newer", Identity = id.Clone(),
+            SaveTick = 2, ObservedUtc = Epoch.AddMinutes(1), ModSetHash = "cohort",
+        };
+        ProfileMutations.UpsertMetricObservation(p, newestFirst ? newer : older);
+        ProfileMutations.UpsertMetricObservation(p, newestFirst ? older : newer);
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(p));
+        var witness = Assert.Single(restored.MetricObservations, o => o.Key == older.Key);
+        Assert.Equal(6, witness.Metrics[ResearchStateSnapshot.Finished].Values[MetricEntry.Scalar].IntegerValue);
+    }
+
+    [Fact]
     public void HundredsOfSnapshots_CompactWithoutChangingLatestExtremaCoverageOrSampleCounts()
     {
         var raw = Build(compact: false);

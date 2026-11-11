@@ -32,8 +32,9 @@ public sealed partial class SaveReader
     /// 13: conservative 1.7 saved home silver/medicine stacks (Partial; Core Def-only).
     /// 14: saved 1.7 direct-map human guest-status historical roster; retired running generators and nested storage inventory.
     /// 15: drop canceled medical-bed and indoor-room snapshot definitions and prevent legacy values from reimporting.
+    /// 16: retry unstable reads and isolate invalid wealth history when the campaign ID is available.
     /// </summary>
-    public const int Version = 15;
+    public const int Version = 16;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -78,10 +79,12 @@ public sealed partial class SaveReader
             SaveReadResult result;
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 1 << 16, FileOptions.SequentialScan))
                 result = ReadDetailed(fs, fileName, size, lastWrite);
-            if (result.Metrics is null)
+            if (result.Observation.Status == ObservationStatus.Error)
                 return result;
             var after = new FileInfo(path);
-            return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite ? result : result with { Metrics = null, Checkpoint = null };
+            return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite
+                ? result
+                : new SaveReadResult(Failed(fileName, size, lastWrite, new IOException("save changed during read")), null);
         }
         catch (Exception e)
         {
@@ -114,8 +117,11 @@ public sealed partial class SaveReader
                     }
                 });
             }
+            hashing.ReadToEnd();
+            if (hashing.BytesRead != fileSize)
+                throw new IOException("save length changed during read");
             Finish(state);
-            var metrics = TryBuildMetrics(state, hashing, fileSize);
+            var metrics = TryBuildMetrics(state, hashing);
             return new SaveReadResult(obs, metrics) { Checkpoint = metrics is null ? null : TryBuildCheckpoint(state, metrics) };
         }
         catch (Exception e)
@@ -128,6 +134,7 @@ public sealed partial class SaveReader
     {
         public SaveObservation Obs { get; } = obs;
         public float[]? Wealth { get; set; }
+        public Exception? WealthReadError { get; set; }
         public string? ScenarioPlayerFactionDef { get; set; }
         public List<(string? Def, string? Name)> Factions { get; } = new();
         public List<SavedFaction> HistoricalFactions { get; } = new();
@@ -288,6 +295,9 @@ public sealed partial class SaveReader
                 obs.Values.WealthPoints = w.Length;
             }
         }
+
+        if (obs.Identity.FirstWealthBits is null && obs.Identity.ModCampaignId is null && s.WealthReadError is { } error)
+            throw new InvalidDataException(error.Message, error);
 
         var missing = new List<string>(3);
         if (obs.Identity.SeedString is null) missing.Add("seedString");

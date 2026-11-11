@@ -13,7 +13,7 @@ public sealed class CrossColonyAggregationTests
         return new NumericRow
         {
             Definition = definition,
-            Value = new NumericValue { Number = total, Coverage = coverage, ThroughTick = 60000 },
+            Value = new NumericValue { Number = total, Coverage = coverage, ThroughTick = 60000, ModSetHash = "fixture-cohort" },
             Targets = coverage == MetricCoverage.NotApplicable ? 0 : 1,
             Valid = total is null ? 0 : 1,
             Breakdowns = breakdown.Select(b => new NumericRow
@@ -32,6 +32,19 @@ public sealed class CrossColonyAggregationTests
         return CrossColonyAggregator.Build(
             CrossColonyCatalog.Build(MetricRegistry.BaseCatalog), byColony)
             .Single(r => r.Definition.Key == key);
+    }
+
+    [Theory]
+    [InlineData(CrossColonyCatalog.SumPrefix, RosterSnapshot.Passions)]
+    [InlineData(CrossColonyCatalog.MaxPrefix, RosterSnapshot.Free)]
+    [InlineData(CrossColonyCatalog.MinPrefix, RosterSnapshot.Free)]
+    public void UnknownPayloadIsNotAColonyMeasurement(string prefix, string key)
+    {
+        var row = Derived(prefix + key,
+            ("known", [Record(key, 0)]),
+            ("unknown", [Record(key, 999, MetricCoverage.Unknown)]));
+        Assert.Equal(0d, row.Value.Number);
+        Assert.Equal((2, 1, MetricCoverage.Partial), (row.Targets, row.Valid, row.Value.Coverage));
     }
 
     [Fact]

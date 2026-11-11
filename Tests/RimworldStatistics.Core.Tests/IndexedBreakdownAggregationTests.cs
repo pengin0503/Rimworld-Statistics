@@ -13,7 +13,7 @@ public sealed class IndexedBreakdownAggregationTests
         ModCampaignId = "fixture-" + seed,
     };
 
-    private static Profile Build(int entries, bool incomplete)
+    private static Profile Build(int entries, bool incomplete, string key = Key)
     {
         var p = new Profile();
         foreach (var seed in new[] { "A", "B" })
@@ -28,13 +28,13 @@ public sealed class IndexedBreakdownAggregationTests
             });
             var observation = new MetricObservation
             {
-                Source = MetricRegistry.Find(Key)!.Source,
+                Source = MetricRegistry.Find(key)!.Source,
                 FormatVersion = SaveReader.Version, Key = "checkpoint-" + seed,
                 Identity = identity.Clone(), SaveTick = 60000, ObservedUtc = Stamp,
                 ModSetHash = new string('a', 64),
             };
             observation.FileAliases.Add(new MetricFileAlias { FileName = file, FileSize = 100, LastWriteUtc = Stamp });
-            var entry = MetricEntry.Of(MetricKeys.Revision(Key),
+            var entry = MetricEntry.Of(MetricKeys.Revision(key),
                 new MetricValue
                 {
                     Coverage = MetricCoverage.Complete,
@@ -44,7 +44,7 @@ public sealed class IndexedBreakdownAggregationTests
             for (var i = 1; i <= entries; i++)
                 entry.Values["SyntheticItem" + i.ToString("D4", System.Globalization.CultureInfo.InvariantCulture)] =
                     new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = i };
-            observation.Metrics[Key] = entry;
+            observation.Metrics[key] = entry;
             p.MetricObservations.Add(observation);
         }
         return p;
@@ -101,25 +101,32 @@ public sealed class IndexedBreakdownAggregationTests
         observations[1].ModSetHash = null;
         Assert.Equal(MetricCoverage.Partial, Rank().Value.Coverage); // old saved MOD inventory missing
 
+        observations[0].ModSetHash = null;
+        Assert.Equal(MetricCoverage.Partial, Rank().Value.Coverage);
+
+        observations[0].ModSetHash = new string('a', 64);
         observations[1].ModSetHash = observations[0].ModSetHash;
         Assert.Equal(MetricCoverage.Complete, Rank().Value.Coverage);
     }
 
-    [Fact]
-    public void MissingItem_OnlyFullReconciledParentCanProveZero()
+    [Theory]
+    [InlineData(Key)]
+    [InlineData(FishingFamily.AcceptedUnitsByDef)]
+    [InlineData(ModdedIncidentFamily.ByDef)]
+    public void MissingItem_OnlyFullReconciledParentCanProveZero(string key)
     {
-        var p = Build(2, false);
+        var p = Build(2, false, key);
         var a = p.MetricObservations.Single(o => o.Key == "checkpoint-A");
         var b = p.MetricObservations.Single(o => o.Key == "checkpoint-B");
-        var aEntry = a.Metrics[Key];
-        var bEntry = b.Metrics[Key];
+        var aEntry = a.Metrics[key];
+        var bEntry = b.Metrics[key];
         aEntry.Values.Remove("SyntheticItem0002");
         aEntry.Values[MetricEntry.Scalar].IntegerValue = 1;
         bEntry.Values.Remove("SyntheticItem0001");
         bEntry.Values[MetricEntry.Scalar].IntegerValue = 2;
         var cols = CampaignMatcher.BuildColonies(p);
         var view = MetricCalculator.BuildView(p, cols, StatsCalculator.Calculate(cols, new StatsOptions()),
-            new[] { MetricRegistry.Find(Key)! });
+            new[] { MetricRegistry.Find(key)! });
         var row = Assert.Single(view.Overall);
         Assert.Equal(1d, row.Breakdowns.Single(r => r.Breakdown == "SyntheticItem0001").Value.Number);
         Assert.Equal(2d, row.Breakdowns.Single(r => r.Breakdown == "SyntheticItem0002").Value.Number);
@@ -129,7 +136,7 @@ public sealed class IndexedBreakdownAggregationTests
         // A scalar that no longer matches its captured split cannot prove a missing item was 0.
         aEntry.Values[MetricEntry.Scalar].IntegerValue = 10;
         view = MetricCalculator.BuildView(p, cols, StatsCalculator.Calculate(cols, new StatsOptions()),
-            new[] { MetricRegistry.Find(Key)! });
+            new[] { MetricRegistry.Find(key)! });
         row = Assert.Single(view.Overall);
         var incompleteMissing = row.Breakdowns.Single(r => r.Breakdown == "SyntheticItem0002");
         Assert.Equal((2, 1, MetricCoverage.Partial),

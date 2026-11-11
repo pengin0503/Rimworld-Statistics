@@ -46,16 +46,6 @@ public static partial class ProfileMutations
         // Representative selection: latest tick, then UTC, then smallest key.
         var representative = MetricObservationOrder.Latest(snapshots)!;
         kept.Add(representative);
-        // JsonExtensionData represents fields from a minor version this binary does
-        // not understand. Discarding their owner would silently destroy information.
-        static bool HasOpaqueData(MetricObservation o)
-            => o.ExtensionData is { Count: > 0 }
-                || o.Identity.ExtensionData is { Count: > 0 }
-                || o.FileAliases.Any(a => a.ExtensionData is { Count: > 0 })
-                || o.ProviderCaptures?.Values.Any(c => c?.ExtensionData is { Count: > 0 }) == true
-                || o.Metrics.Values.Any(e => e.ExtensionData is { Count: > 0 }
-                    || e.Values.Values.Any(v => v.ExtensionData is { Count: > 0 }));
-
         foreach (var o in snapshots)
             // Preserve future extension fields, unknown keys, unreadable entries and
             // different revisions: the current catalogue cannot prove them redundant.
@@ -71,7 +61,7 @@ public static partial class ProfileMutations
         bool Applicable(MetricObservation o, MetricDefinition d)
             => d.RequiredDlc is not { } dlc || o.ActiveDlcIds is null
                 || o.ActiveDlcIds.Contains(dlc, StringComparer.OrdinalIgnoreCase)
-                || Scalar(o, d)?.Number is { } n && n != 0;
+                || MetricCalculator.MeasuredNumber(Scalar(o, d)) is { } n && n != 0;
 
         foreach (var d in definitions)
         {
@@ -93,7 +83,7 @@ public static partial class ProfileMutations
             var applicable = snapshots.Where(o => Applicable(o, d)).ToList();
             if (applicable.Count == 0)
                 continue;
-            var valid = applicable.Where(o => Scalar(o, d)?.Number is not null).ToList();
+            var valid = applicable.Where(o => MetricCalculator.MeasuredNumber(Scalar(o, d)) is not null).ToList();
             if (valid.Count == 0)
             {
                 // A known DLC session but no measurable value means Unknown, not NotApplicable.
@@ -119,7 +109,7 @@ public static partial class ProfileMutations
         {
             if (d.Selection == ColonySelection.Representative)
                 continue;
-            var valid = snapshots.Where(o => Applicable(o, d) && Scalar(o, d)?.Number is not null).ToList();
+            var valid = snapshots.Where(o => Applicable(o, d) && MetricCalculator.MeasuredNumber(Scalar(o, d)) is not null).ToList();
             if (valid.Count == 0)
                 continue;
             var best = d.Selection == ColonySelection.ObservationMax
@@ -173,5 +163,15 @@ public static partial class ProfileMutations
         }
         p.MetricObservations.RemoveAll(o => snapshots.Contains(o) && !kept.Contains(o));
     }
+
+    // JsonExtensionData represents fields from a minor version this binary does
+    // not understand. Discarding their owner would silently destroy information.
+    private static bool HasOpaqueData(MetricObservation o)
+        => o.ExtensionData is { Count: > 0 }
+            || o.Identity.ExtensionData is { Count: > 0 }
+            || o.FileAliases.Any(a => a.ExtensionData is { Count: > 0 })
+            || o.ProviderCaptures?.Values.Any(c => c?.ExtensionData is { Count: > 0 }) == true
+            || o.Metrics.Values.Any(e => e.ExtensionData is { Count: > 0 }
+                || e.Values.Values.Any(v => v.ExtensionData is { Count: > 0 }));
 
 }

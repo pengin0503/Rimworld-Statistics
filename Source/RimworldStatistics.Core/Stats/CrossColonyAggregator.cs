@@ -50,7 +50,7 @@ public static class CrossColonyAggregator
     private static NumericRow Sum(MetricDefinition definition, List<(string Key, NumericRow? Row)> colonies)
     {
         var applicable = colonies.Where(c => c.Row?.Value.Coverage != MetricCoverage.NotApplicable).ToList();
-        var measured = applicable.Where(c => c.Row?.Value.Number is { } n && double.IsFinite(n))
+        var measured = applicable.Where(c => c.Row?.Value is { Known: true, Number: { } n } && double.IsFinite(n))
             .Select(c => c.Row!.Value).ToList();
         if (measured.Count == 0)
             return Empty(definition, applicable.Count, colonies.Count);
@@ -70,7 +70,7 @@ public static class CrossColonyAggregator
         List<(string Key, NumericRow? Row)> colonies, bool max)
     {
         var applicable = colonies.Where(c => c.Row?.Value.Coverage != MetricCoverage.NotApplicable).ToList();
-        var measured = applicable.Where(c => c.Row?.Value.Number is { } n && double.IsFinite(n))
+        var measured = applicable.Where(c => c.Row?.Value is { Known: true, Number: { } n } && double.IsFinite(n))
             .Select(c => (c.Key, Value: c.Row!.Value)).ToList();
         if (measured.Count == 0)
             return Empty(definition, applicable.Count, colonies.Count);
@@ -183,7 +183,7 @@ public static class CrossColonyAggregator
         // A DefName alone does not prove identical meaning under different
         // MOD inventories. Retain captured quantity as an explicitly partial
         // cross-MOD comparison instead of asserting a complete leaderboard.
-        if (modCohorts.Count > 1 || (modCohorts.Count > 0 && missingModFingerprint))
+        if (modCohorts.Count > 1 || missingModFingerprint)
             partial = true;
         var overallCoverage = Coverage(coverage, partial || valid < targets);
         var overallEvidence = MetricEvidencePolicy.Combine(evidence);
