@@ -32,8 +32,7 @@ public static class CheckpointSelector
         var nodes = observations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint).ToList();
         if (nodes.Count == 0)
             return new CheckpointSelection(null, CheckpointLineage.None, 0);
-        var rep = nodes.Where(o => !o.Conflicted && !o.Compressed)
-            .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).FirstOrDefault();
+        var rep = MetricObservationOrder.Latest(nodes.Where(o => !o.Conflicted && !o.Compressed));
         return new CheckpointSelection(rep, Lineage(nodes), nodes.Count);
     }
 

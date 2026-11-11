@@ -97,8 +97,8 @@ public sealed class MetricObservation
     public bool Conflicted { get; set; }
 
     /// <summary>
-    /// An ancestor checkpoint whose values were dropped because a later checkpoint of the colony exists (it can never be the
-    /// representative again); only its place in the lineage is kept.
+    /// An ancestor checkpoint with a confirmed later child: it is never the representative again. Its values are kept, so it can
+    /// be restored when that child is later set aside as conflicted.
     /// </summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public bool Compressed { get; set; }

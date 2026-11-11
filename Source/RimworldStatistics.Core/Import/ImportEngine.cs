@@ -69,8 +69,7 @@ public sealed class ImportEngine(SaveReader reader)
                     if (revision != indexedRevision)
                     {
                         skippable = p.SaveObservations
-                            .Where(o => !o.Superseded && o.Status != ObservationStatus.Error
-                                && o.ReaderVersion >= SaveReader.Version)
+                            .Where(o => ProfileMutations.IsCurrentRead(o, SaveReader.Version))
                             .Select(o => (o.FileName, o.FileSize, o.LastWriteUtc))
                             .ToHashSet();
                         indexedRevision = revision;

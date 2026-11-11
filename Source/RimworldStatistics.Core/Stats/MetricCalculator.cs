@@ -259,7 +259,7 @@ public static class MetricCalculator
 
     /// <summary>Latest save tick first, then the latest time, then the smallest key.</summary>
     private static MetricObservation? Representative(IEnumerable<MetricObservation> observations)
-        => observations.OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc).ThenBy(o => o.Key, Ord).FirstOrDefault();
+        => MetricObservationOrder.Latest(observations);
 
     private static MetricEntry? Entry(MetricObservation o, MetricDefinition d)
         => o.Metrics.TryGetValue(d.StoredKey, out var e) && !e.IsQuarantined && e.Revision == d.Revision ? e : null;
@@ -280,12 +280,10 @@ public static class MetricCalculator
         // cannot produce a reading in newer saves. Retain the last genuine
         // captured value as partial data; never substitute a weaker
         // historical SaveFile fallback after a live capture was made.
-        if ((d.ProviderId is not null || d.Acquisition == "factions")
+        if (SnapshotSelectionPolicy.UsesLastCapture(d)
             && (rep is null || Entry(rep, d) is null))
         {
-            var historical = observations.Where(o => Entry(o, d) is not null)
-                .OrderByDescending(o => o.SaveTick).ThenByDescending(o => o.ObservedUtc)
-                .ThenBy(o => o.Key, Ord).FirstOrDefault();
+            var historical = MetricObservationOrder.Latest(observations.Where(o => Entry(o, d) is not null));
             if (historical is not null)
             {
                 rep = historical;

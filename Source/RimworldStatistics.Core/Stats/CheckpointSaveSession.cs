@@ -11,7 +11,6 @@ public sealed class CheckpointSaveSession
 {
     public const string SaveGameElement = "savegame";
 
-    private readonly Dictionary<int, int> _foreign = new();
     private int? _owner;        // the thread of the outermost save in progress
     private int _depth;
     private bool _suppressed;   // a nested save happened: this save commits nothing
@@ -39,10 +38,6 @@ public sealed class CheckpointSaveSession
         {
             _depth++;
             _suppressed = true;
-        }
-        else
-        {
-            _foreign[threadId] = _foreign.GetValueOrDefault(threadId) + 1;
         }
     }
 
@@ -84,13 +79,6 @@ public sealed class CheckpointSaveSession
             _suppressed = false;
             _written = false;
             _draft = null;
-        }
-        else if (_foreign.TryGetValue(threadId, out var n))
-        {
-            if (n <= 1)
-                _foreign.Remove(threadId);
-            else
-                _foreign[threadId] = n - 1;
         }
     }
 }
