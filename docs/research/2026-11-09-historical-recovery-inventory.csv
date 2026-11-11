@@ -182,6 +182,7 @@ environment.meteor.count,disaster,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-C-006,Di
 environment.short_circuit.count,disaster,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-R-010,DisasterFamily.ShortCircuits
 environment.fire.ignitions,disaster,live,EVENT_LOG_REQUIRED,UNVERIFIED,D-007,DisasterFamily.Fires
 environment.fire.buildings_lost,disaster,live,EVENT_LOG_REQUIRED,UNVERIFIED,D-008,DisasterFamily.BuildingsBurned
+environment.modded_incidents.by_def,modded_incidents,live,EVENT_LOG_REQUIRED,UNVERIFIED,GEN-INC-001,ModdedIncidentFamily.ByDef
 caravan.departures,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,Q-008,CaravanFamily.Departures
 caravan.lost,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,Q-009,CaravanFamily.Lost_
 caravan.tiles_travelled,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,Q-010,CaravanFamily.TilesTravelled
