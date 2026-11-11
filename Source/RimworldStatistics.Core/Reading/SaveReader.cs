@@ -33,8 +33,9 @@ public sealed class SaveReader
     /// 12: evidence-gated positive historical home-map turret counts (Partial; no unknown-as-zero).
     /// 13: conservative 1.7 saved home silver/medicine stacks (Partial; Core Def-only).
     /// 14: saved 1.7 direct-map human guest-status historical roster; retired running generators and nested storage inventory.
+    /// 15: drop canceled medical-bed and indoor-room snapshot definitions and prevent legacy values from reimporting.
     /// </summary>
-    public const int Version = 14;
+    public const int Version = 15;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
