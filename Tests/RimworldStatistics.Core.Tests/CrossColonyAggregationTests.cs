@@ -234,7 +234,7 @@ public sealed class CrossColonyAggregationTests
     [Fact]
     public void DerivedDefinitions_DoNotReplaceTheExisting331Definitions()
     {
-        Assert.Equal(322, MetricRegistry.BaseCatalog.Count);
+        Assert.Equal(323, MetricRegistry.BaseCatalog.Count);
         Assert.All(MetricRegistry.BaseCatalog, old =>
             Assert.Same(old, MetricRegistry.Find(old.Key)));
         Assert.All(CrossColonyCatalog.Build(MetricRegistry.BaseCatalog), derived =>
