@@ -26,7 +26,7 @@ Read timing measured within the runner: **p50 44.158 ms; p95 148.483 ms**, media
 
 ### Actual RimWorld 1.7 game/Harmony smoke (separate)
 
-[RWMT game run #42933296702](https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42933296702): **execution status to record after completion**. The public preflight compiled the pinned candidate. The secret-isolated job prepares actual R2 `Game-Linux/` RimWorld **1.7.4985 rev1269** and Harmony to run A-level startup comparison and B-level expected menu patch registration. **Do not label this gate passed until its own final logs say passed.** It never provides exact loaded-MOD metric/score parity, replay of the user's 192-MOD save or matched TPS.
+[RWMT game run #42933296702](https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42933296702): **both source-build-preflight and private statistics-a-smoke jobs SUCCESS**, using real R2 `Game-Linux/` RimWorld **1.7.4985 rev1269** and Harmony. Exact safe output: **A-level** `{"fidelity":"qualified","newErrorCount":0,"reasons":[],"stageA":{"checks":0,"status":"completed"},"status":"passed"}`; **B-level** `{"fidelity":"qualified","reasons":[],"stageB":{"expectedPatches":2,"status":"completed","unexpectedPatches":9},"status":"passed"}`. Both are **qualified**. The 9 non-contract patches are not individually attributed in the safe report, and the reported A-level `checks=0` does not claim an exact game UI metric-count check. This test **only confirms real game startup and menu Harmony patch registration**; it does not establish exact loaded-MOD metric values, replay of the user's 192-MOD save, matched TPS or save performance.
 
 ### Remaining limits and release status
 
