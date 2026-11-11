@@ -117,6 +117,13 @@
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
   <RWS_Details_OnlyMeasured>数値のある項目のみ</RWS_Details_OnlyMeasured>
   <RWS_Details_UnrankedTop>最多の種類を確定できません</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>選択対象に、この統計が適用されるコロニーはありません。DLC非適用と断定できるのは、保存されたDLC構成で確認できる場合だけです。</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>対象コロニーの取得済み値は0件です。取得無効・記録開始前・イベント未記録・過去セーブの解析未対応など、原因は未確定です。欠測を0として補完しません。</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>対象コロニーの一部だけで値を取得できています。未取得のコロニーを0とは扱わず、全体値は部分的な記録となる可能性があります。</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>対象コロニーには取得済みの値があります。ただし、全プレイ期間を取得できたことや実ゲームでの正確性を保証するものではありません。</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>取得済み値はプレイ期間の一部のみを対象としている可能性があります。全期間の確定累計とは区別してください。</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>独立したコロニーごとの代表記録から、種類別の数量を合計しています。内訳の欠測がある場合、順位は部分的なものです。</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>このコロニーで実際に取得した対象品目の数量です。表示されていないコロニーを0として加算していません。</RWS_Cross_ContributionExplanation>
   <RWS_Details_MissingAcquisitionTip>取得開始前のセーブ、取得機能の無効化、または未対応の記録などが原因の可能性があります。過去のイベントを0として補完することはできません。</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
@@ -419,20 +426,12 @@
   <RWS_MetricDesc_PrisonerRecruits>直前までコロニーの囚人で、勧誘されて初めて自由入植者になった人数。</RWS_MetricDesc_PrisonerRecruits>
   <RWS_Metric_HumanBirths>出生数</RWS_Metric_HumanBirths>
   <RWS_MetricDesc_HumanBirths>プレイヤー側に生きて生まれた人型の子の数（Biotech）。死産は含めません。</RWS_MetricDesc_HumanBirths>
-  <RWS_Metric_UniqueMembers>歴代入植者のユニーク人数</RWS_Metric_UniqueMembers>
-  <RWS_MetricDesc_UniqueMembers>記録中に入植者だった人物の数（開始時の入植者・新規加入・出生）。再加入しても増えません。全体はコロニーごとの人数の合計です。</RWS_MetricDesc_UniqueMembers>
-  <RWS_Metric_Rejoins>離脱後に再加入した人数</RWS_Metric_Rejoins>
-  <RWS_MetricDesc_Rejoins>はっきり離脱した後に、再び自由入植者に戻った人物の数。</RWS_MetricDesc_Rejoins>
   <RWS_Metric_JoinAgeMean>加入時の平均年齢</RWS_Metric_JoinAgeMean>
   <RWS_MetricDesc_JoinAgeMean>新規加入した時点の生物年齢の平均。</RWS_MetricDesc_JoinAgeMean>
   <RWS_Metric_FirstJoinDay>最初の新規加入までの日数</RWS_Metric_FirstJoinDay>
   <RWS_MetricDesc_FirstJoinDay>ゲーム開始から記録していた場合だけ、最初の新規加入のゲーム内日。</RWS_MetricDesc_FirstJoinDay>
   <RWS_Metric_SlavesFreed>奴隷を解放した人数</RWS_Metric_SlavesFreed>
   <RWS_MetricDesc_SlavesFreed>奴隷の身分を解除（解放）した人数。囚人の釈放とは別です。</RWS_MetricDesc_SlavesFreed>
-  <RWS_Metric_RecruitTimeMin>囚人の最短勧誘期間</RWS_Metric_RecruitTimeMin>
-  <RWS_MetricDesc_RecruitTimeMin>コロニーの囚人になってから勧誘で加入するまでの日数の最短。囚人になった時点を見ていない場合は含めません。</RWS_MetricDesc_RecruitTimeMin>
-  <RWS_Metric_RecruitTimeMax>囚人の最長勧誘期間</RWS_Metric_RecruitTimeMax>
-  <RWS_MetricDesc_RecruitTimeMax>上と同じ標本の最長日数。</RWS_MetricDesc_RecruitTimeMax>
   <RWS_Metric_Kidnaps>誘拐された入植者の数</RWS_Metric_Kidnaps>
   <RWS_MetricDesc_Kidnaps>自由入植者が誘拐されて勢力の拘束リストに入った回数。</RWS_MetricDesc_Kidnaps>
   <RWS_Metric_KidnapRescues>誘拐から戻った入植者の数</RWS_Metric_KidnapRescues>
@@ -513,12 +512,6 @@
   <RWS_MetricDesc_CropsSown>プレイヤーの人物が植え付けた株の数。</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>栽培した作物の種類数</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>一度でも植え付けた作物の種類の数。</RWS_MetricDesc_CropsSownDefs>
-  <RWS_Metric_CropsColdLoss>寒さで枯れた作物</RWS_Metric_CropsColdLoss>
-  <RWS_MetricDesc_CropsColdLoss>作物の株が寒さで枯れた数。</RWS_MetricDesc_CropsColdLoss>
-  <RWS_Metric_CropsOtherLoss>寒さ以外で枯れた作物</RWS_Metric_CropsOtherLoss>
-  <RWS_MetricDesc_CropsOtherLoss>作物の株が寒さ以外の確定した原因（毒・汚染など）で枯れた数。収穫・刈り取りは含めません。</RWS_MetricDesc_CropsOtherLoss>
-  <RWS_Metric_CropsLossRate>作物の枯死率</RWS_Metric_CropsLossRate>
-  <RWS_MetricDesc_CropsLossRate>植え付けを見た株のうち、枯れた株 ÷（枯れた株＋最初の収穫まで育った株）。手で除いた株やまだ決着していない株は含めません。</RWS_MetricDesc_CropsLossRate>
   <RWS_Metric_MiningUnits>採掘した資源量</RWS_Metric_MiningUnits>
   <RWS_MetricDesc_MiningUnits>プレイヤーの人物の採掘で産出した品のスタック個数の合計。</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>最も多く採掘した入植者</RWS_Metric_BestMiner>
@@ -541,8 +534,6 @@
   <RWS_MetricDesc_FoodSpoiled>プレイヤーの食品が腐敗して消えたスタック個数。焼失や食事は含めません。</RWS_MetricDesc_FoodSpoiled>
   <RWS_Metric_FoodNutrition>食べた食料の総栄養量</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>自由入植者が食事で実際に得た栄養の合計。</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodNoShortageLongest>食料不足が起きなかった最長期間</RWS_Metric_FoodNoShortageLongest>
-  <RWS_MetricDesc_FoodNoShortageLongest>プレイヤーのホームマップに人間の食べられる食料があった期間のうち、観測できた最長のもの。食料はゲームの資源集計が示す保管中の食料と、プレイヤーのポーンが運搬中の食料。ゲームの資源再集計（204 tick ごと）の間で測り、観測できなかった区間は期間をつなげずに区切ります。入植者の空腹とは別の指標です。</RWS_MetricDesc_FoodNoShortageLongest>
   <RWS_Metric_FoodHarvestPerCell>栽培セル日あたりの収穫量</RWS_Metric_FoodHarvestPerCell>
   <RWS_MetricDesc_FoodHarvestPerCell>栽培ゾーンにある作物の主収穫個数を、同じ期間の栽培ゾーンのセル数の時間積分（セル日）で割った値。水耕栽培と野生の植物は含めません。</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>商人との取引回数</RWS_Metric_TradeDeals>
@@ -703,6 +694,8 @@
   <RWS_MetricDesc_RosterFree>正常保存時点で生存中の対象Pawnから取得した生存中の自由入植者。最大値は保存観測間で集計。</RWS_MetricDesc_RosterFree>
   <RWS_Metric_RosterPrisoners>生存中のコロニー囚人</RWS_Metric_RosterPrisoners>
   <RWS_MetricDesc_RosterPrisoners>正常保存時点で生存中の対象Pawnから取得した生存中のコロニー囚人。最大値は保存観測間で集計。</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>生存中のコロニー奴隷</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>正常保存時点の生存中の奴隷数。過去セーブからの復元では奴隷状態とプレイヤー所属を確認できた場合に限り、部分的な下限値として表示します。</RWS_MetricDesc_RosterSlaves>
   <RWS_Metric_RosterAnimals>飼育動物数</RWS_Metric_RosterAnimals>
   <RWS_MetricDesc_RosterAnimals>正常保存時点で生存中の対象Pawnから取得した飼育動物数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterAnimals>
   <RWS_Metric_RosterMechs>自軍メカノイド数</RWS_Metric_RosterMechs>
@@ -725,20 +718,14 @@
   <RWS_MetricDesc_RosterInjuredPeak>正常保存時点で生存中の対象Pawnから取得した同時負傷入植者の最多人数。最大値は保存観測間で集計。</RWS_MetricDesc_RosterInjuredPeak>
   <RWS_Metric_FacilitiesHomeMaps>同時にロードされた拠点最多数</RWS_Metric_FacilitiesHomeMaps>
   <RWS_MetricDesc_FacilitiesHomeMaps>正常保存時にロードされていたプレイヤー拠点マップ上の同時にロードされた拠点最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesMedicalBeds>医療用ベッド最多数</RWS_Metric_FacilitiesMedicalBeds>
-  <RWS_MetricDesc_FacilitiesMedicalBeds>正常保存時にロードされていたプレイヤー拠点マップ上の医療用ベッド最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesMedicalBeds>
   <RWS_Metric_FacilitiesTurrets>防衛タレット最多数</RWS_Metric_FacilitiesTurrets>
   <RWS_MetricDesc_FacilitiesTurrets>正常保存時にロードされていたプレイヤー拠点マップ上の防衛タレット最多数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesTurrets>
   <RWS_Metric_FacilitiesGrowingCells>栽培ゾーン最大面積</RWS_Metric_FacilitiesGrowingCells>
   <RWS_MetricDesc_FacilitiesGrowingCells>正常保存時にロードされていたプレイヤー拠点マップ上の栽培ゾーン最大面積。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesRooms>屋内の最多部屋数</RWS_Metric_FacilitiesRooms>
-  <RWS_MetricDesc_FacilitiesRooms>正常保存時にロードされていたプレイヤー拠点マップ上の屋内の最多部屋数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRooms>
   <RWS_Metric_FacilitiesGeneration>最大発電定格容量</RWS_Metric_FacilitiesGeneration>
   <RWS_MetricDesc_FacilitiesGeneration>正常保存時にロードされていたプレイヤー拠点マップ上の最大発電定格容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>最大蓄電容量</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>正常保存時にロードされていたプレイヤー拠点マップ上の最大蓄電容量。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesRunningGenerators>稼働中発電設備の種類別件数</RWS_Metric_FacilitiesRunningGenerators>
-  <RWS_MetricDesc_FacilitiesRunningGenerators>正常保存時にロードされていたプレイヤー拠点マップ上の稼働中発電設備の種類別件数。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesRunningGenerators>
   <RWS_Metric_FacilitiesOutdoorTempMin>保存時の最低屋外気温</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>正常保存時にロードされていたプレイヤー拠点マップ上の保存時の最低屋外気温。極値は保存観測から取得。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>保存時の最高屋外気温</RWS_Metric_FacilitiesOutdoorTempMax>

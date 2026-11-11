@@ -45,7 +45,6 @@ public static class SetFactionMetricPatch
         }
         else if (!member && __state.Member)
         {
-            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Left(s, id, tick));
             GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Left(s, id, tick));
         }
         if (__state.Player && __instance.Faction != Faction.OfPlayer)
@@ -138,7 +137,7 @@ public static class KidnapReturnMetricPatch
 }
 
 /// <summary>Capture (evidence #social, #membership): a hostile pawn becoming a prisoner of the colony.</summary>
-[MetricAdapter(SocialFamily.Name, MembershipFamily.Name)]
+[MetricAdapter(SocialFamily.Name)]
 [HarmonyPatch(typeof(Pawn_GuestTracker), nameof(Pawn_GuestTracker.CapturedBy))]
 public static class CapturedMetricPatch
 {
@@ -149,15 +148,12 @@ public static class CapturedMetricPatch
     {
         if (___pawn == null || by != Faction.OfPlayer || __state.Prisoner || !___pawn.IsPrisonerOfColony)
             return;
-        var id = GameFacts.Id(___pawn);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.BecamePrisoner(s, id, tick));
         if (__state.Hostile)
             GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);
     }
 }
 
-[MetricAdapter(SocialFamily.Name, MembershipFamily.Name)]
+[MetricAdapter(SocialFamily.Name)]
 [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.PrisonerRelease))]
 public static class PrisonerReleaseMetricPatch
 {
@@ -167,8 +163,6 @@ public static class PrisonerReleaseMetricPatch
     {
         if (!__state || p == null || p.IsPrisonerOfColony)
             return;
-        var id = GameFacts.Id(p);
         GameFacts.Record(SocialFamily.Name, SocialFamily.PrisonerReleased);
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.PrisonerGone(s, id));
     }
 }

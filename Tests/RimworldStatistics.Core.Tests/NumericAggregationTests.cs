@@ -348,43 +348,38 @@ public sealed class NumericAggregationTests
         Assert.Equal(MetricRegistry.All.Count, MetricRegistry.All.Select(d => d.LabelKey).Distinct().Count());
     }
 
-    // Regression: Phase B facilities "latest" must not select the historical peak.
     [Fact]
-    public void RunningGenerators_LatestSnapshotHasTheCurrentCountAndBreakdown()
+    public void SlaveRoster_UsesLatestObservedSnapshot_NotHistoricalPeak()
     {
         var p = new Profile();
         var identity = Id("A");
         p.SaveObservations.Add(V1("a.rws", identity, 300));
 
-        void AddSnapshot(string key, int tick, long count, long solar, long wood)
+        void AddSnapshot(string key, int tick, long count)
         {
-            var entry = MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.RunningGenerators),
-                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = count });
-            entry.Values["SolarGenerator"] = new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = solar };
-            if (wood > 0)
-                entry.Values["WoodFiredGenerator"] = new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = wood };
             var obs = new MetricObservation
             {
-                Source = MetricObservationSource.SaveSnapshot, Key = key, Identity = identity.Clone(),
-                SaveTick = tick, ObservedUtc = T0.AddMinutes(tick),
+                Source = MetricObservationSource.SaveSnapshot, Key = key,
+                Identity = identity.Clone(), SaveTick = tick,
+                ObservedUtc = T0.AddMinutes(tick),
             };
-            obs.Metrics[FacilitiesSnapshot.RunningGenerators] = entry;
+            obs.Metrics[RosterSnapshot.Slaves] = MetricEntry.Of(
+                MetricKeys.Revision(RosterSnapshot.Slaves),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = count });
             p.MetricObservations.Add(obs);
         }
 
-        AddSnapshot("old", 100, 3, 2, 1);
-        AddSnapshot("new", 200, 1, 1, 0);
-        var def = SnapshotCatalog.Definitions.Single(d => d.Key == FacilitiesSnapshot.RunningGenerators);
+        AddSnapshot("old", 100, 3);
+        AddSnapshot("new", 200, 1);
+        var def = SnapshotCatalog.Definitions.Single(d => d.Key == RosterSnapshot.Slaves);
         var colonies = CampaignMatcher.BuildColonies(p);
-        var view = MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
+        var view = MetricCalculator.BuildView(p, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), new[] { def });
         var latest = Assert.Single(Assert.Single(view.Colonies).Rows);
         Assert.Equal(1d, latest.Value.Number);
         Assert.Equal(200, latest.Value.ThroughTick);
-        Assert.Equal(1d, Assert.Single(latest.Breakdowns).Value.Number);
-        Assert.Equal("SolarGenerator", latest.Breakdowns[0].Breakdown);
-        var overall = Assert.Single(view.Overall);
-        Assert.Equal(1d, overall.Value.Number);
-        Assert.Equal(1d, Assert.Single(overall.Breakdowns).Value.Number);
+        Assert.Equal(1d, Assert.Single(view.Overall).Value.Number);
+        Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
     }
 
     [Theory]

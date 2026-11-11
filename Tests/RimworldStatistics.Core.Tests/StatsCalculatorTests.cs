@@ -170,6 +170,28 @@ public sealed class StatsCalculatorTests
     }
 
     [Fact]
+    public void LegacyColonyColumns_UseEachColonyValuesEvenWhenAnotherColonyIsExcluded()
+    {
+        var included = C("included", new[]
+        {
+            Obs("included.rws", 60000, t0, threats: 3, launched: 2, pop: 6, realPlay: 7200),
+        }, new[] { Ev(EndingType.Ship, 0, departed: 1, total: 2) });
+        var excluded = C("excluded", new[]
+        {
+            Obs("excluded.rws", 120000, t0, threats: 9, launched: 4, pop: 14, realPlay: 1800),
+        }, excluded: true);
+
+        var stats = StatsCalculator.Calculate(new[] { included, excluded }, Off);
+        var a = stats.Colonies.Single(s => s.Key == "included");
+        var b = stats.Colonies.Single(s => s.Key == "excluded");
+
+        Assert.Equal((3, 2L, 6, 7200d), (a.Threats, a.Departed, a.MaxPopulation, a.MaxRealPlay));
+        Assert.Equal((9, 4L, 14, 1800d), (b.Threats, b.Departed, b.MaxPopulation, b.MaxRealPlay));
+        Assert.True(b.Excluded);
+        Assert.Equal((3L, 2L, 6, 7200d), (stats.Threats, stats.TotalDeparted, stats.MaxPopulation, stats.TotalRealPlay));
+    }
+
+    [Fact]
     public void NoColonies_HasDataFalse()
     {
         Assert.False(StatsCalculator.Calculate(Array.Empty<Colony>(), Off).HasData);

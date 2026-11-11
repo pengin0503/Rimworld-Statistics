@@ -37,13 +37,7 @@ public sealed class NumericSnapshotRetentionTests
                 Number(RosterSnapshot.AugmentedPeak, i == 45 ? 50 : i % 6,
                     i == 17 ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly);
             Number(StockSnapshot.PersonaWeaponsPeak, i % 3 == 0 ? i % 5 : 0);
-            var generator = MetricEntry.Of(MetricKeys.Revision(FacilitiesSnapshot.RunningGenerators),
-                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i == 249 ? 1 : 3 });
-            generator.Values["SolarGenerator"] = new MetricValue
-            {
-                Coverage = MetricCoverage.SnapshotOnly, IntegerValue = i == 249 ? 1 : 3,
-            };
-            observation.Metrics[FacilitiesSnapshot.RunningGenerators] = generator;
+            Number(RosterSnapshot.Slaves, i == 249 ? 1 : 3);
             // Unknown future revision/metric must be kept conservatively.
             if (i == 5)
                 Number("future.metric", 123);
@@ -59,7 +53,7 @@ public sealed class NumericSnapshotRetentionTests
     {
         var defs = SnapshotCatalog.Definitions.Where(d => d.Key is
             FacilitiesSnapshot.OutdoorTempMax or FacilitiesSnapshot.OutdoorTempMin
-            or FacilitiesSnapshot.RunningGenerators or RosterSnapshot.AugmentedPeak
+            or RosterSnapshot.Slaves or RosterSnapshot.AugmentedPeak
             or StockSnapshot.PersonaWeaponsPeak).ToList();
         var colonies = CampaignMatcher.BuildColonies(p);
         return Assert.Single(MetricCalculator.BuildView(p, colonies,
@@ -164,7 +158,7 @@ public sealed class NumericSnapshotRetentionTests
         var definitions = SnapshotCatalog.Definitions.Where(d => d.Key is
             FacilitiesSnapshot.OutdoorTempMax or FacilitiesSnapshot.OutdoorTempMin
             or RosterSnapshot.AugmentedPeak or StockSnapshot.PersonaWeaponsPeak
-            or FacilitiesSnapshot.RunningGenerators).ToArray();
+            or RosterSnapshot.Slaves).ToArray();
         for (var seed = 0; seed < 12; seed++)
         {
             var random = new Random(seed + 1234);

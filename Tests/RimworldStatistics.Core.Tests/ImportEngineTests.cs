@@ -76,6 +76,60 @@ public sealed class ImportEngineTests
     }
 
     [Fact]
+    public void Run_IndexInvalidatesIfProfileChangesBetweenTwoWarmFileChecks()
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        Write(saves, "a.rws", Save("A"));
+        Write(saves, "b.rws", Save("B"));
+        var session = NewSession(store);
+        Assert.Equal(2, Run(saves, session).Read);
+
+        var tampered = false;
+        var progress = new SyncProgress(p =>
+        {
+            if (!tampered && p.CurrentFile == "b.rws")
+            {
+                tampered = true;
+                session.Mutate(profile => profile.SaveObservations.RemoveAll(
+                    observation => observation.FileName == "b.rws"), SaveMode.None);
+            }
+        });
+        var rerun = Run(saves, session, progress);
+        Assert.True(tampered);
+        Assert.Equal((1, 1, 0), (rerun.Read, rerun.Skipped, rerun.Failed));
+        Assert.Equal(2, session.Read(p => p.SaveObservations.Count));
+        Assert.All(session.Read(p => p.SaveObservations), o => Assert.Equal(ObservationStatus.Ok, o.Status));
+    }
+
+    [Fact]
+    public void Run_IndexInvalidatesIfReaderVersionChangesDuringWarmScan()
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        Write(saves, "a.rws", Save("A"));
+        Write(saves, "b.rws", Save("B"));
+        var session = NewSession(store);
+        Assert.Equal(2, Run(saves, session).Read);
+
+        var changed = false;
+        var progress = new SyncProgress(p =>
+        {
+            if (!changed && p.CurrentFile == "b.rws")
+            {
+                changed = true;
+                session.Mutate(profile => profile.SaveObservations.Single(o => o.FileName == "b.rws")
+                    .ReaderVersion = SaveReader.Version - 1, SaveMode.None);
+            }
+        });
+        var rerun = Run(saves, session, progress);
+        Assert.True(changed);
+        Assert.Equal((1, 1, 0), (rerun.Read, rerun.Skipped, rerun.Failed));
+        Assert.Equal(SaveReader.Version,
+            session.Read(p => p.SaveObservations.Single(o => !o.Superseded && o.FileName == "b.rws").ReaderVersion));
+    }
+
+    [Fact]
     public void Run_ChangedFile_AppendsObservation()
     {
         using var saves = new TempDir();

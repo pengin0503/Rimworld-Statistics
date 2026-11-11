@@ -59,13 +59,9 @@ membership.first_join,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-001,Member
 membership.route,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-C-003,MembershipFamily.Routes
 membership.prisoner_recruit,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-002,MembershipFamily.PrisonerRecruit
 membership.human_birth,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,"P-003, L-011",MembershipFamily.HumanBirths
-membership.unique,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-009,MembershipFamily.Unique
-membership.rejoin,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-C-004,MembershipFamily.Rejoin
 membership.join_age_mean,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-P-003,MembershipFamily.JoinAgeMean
 membership.first_day,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N5-M-002,MembershipFamily.FirstJoinDay
 membership.slave_freed,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-018,MembershipFamily.SlavesFreed
-membership.recruit_time.min,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-027,MembershipFamily.RecruitTimeMin
-membership.recruit_time.max,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-027,MembershipFamily.RecruitTimeMax
 membership.kidnapped,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-028,MembershipFamily.Kidnaps
 membership.kidnap_rescued,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-P-005,MembershipFamily.KidnapRescues
 membership.captive_max,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-P-006,MembershipFamily.CaptiveMax
@@ -115,9 +111,6 @@ work.harvest.best_worker,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N3-W-002,WorkFa
 work.harvest.failures,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-015,WorkFamily.HarvestFailures
 work.crops.sown,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-014,WorkFamily.Sown_
 work.crops.sown_defs,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-F-001,WorkFamily.SownDefs
-work.crops.cold_loss,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-021,WorkFamily.ColdLoss
-work.crops.other_loss,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-F-005,WorkFamily.OtherLoss
-work.crops.loss_rate,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-F-009,WorkFamily.LossRate
 work.mining.units,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-002,WorkFamily.MiningUnits
 work.mining.best_worker,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N3-W-005,WorkFamily.BestMiner
 work.construction.count,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-004,WorkFamily.Constructions
@@ -129,7 +122,6 @@ work.repair.completed,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-R-004,WorkFamil
 transport.pods.launched,work,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-023,WorkFamily.PodsLaunched_
 food.spoiled.units,food,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-016,FoodFamily.SpoiledUnits
 food.consumed.nutrition,food,live,EVENT_LOG_REQUIRED,UNVERIFIED,W-019,FoodFamily.Nutrition
-food.no_shortage.longest,food,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-F-010,FoodFamily.NoShortageLongest
 food.harvest.per_growing_cell,food,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-A-008,FoodFamily.HarvestPerGrowingCell
 trade.count,trade,live,EVENT_LOG_REQUIRED,UNVERIFIED,T-003,TradeFamily.Deals
 trade.orbital.count,trade,live,EVENT_LOG_REQUIRED,UNVERIFIED,T-007,TradeFamily.OrbitalDeals
@@ -231,6 +223,7 @@ diplomacy.snapshot.relations,factions,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,
 diplomacy.snapshot.goodwill_range,factions,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-015,FactionStateSnapshot.GoodwillRange
 population.snapshot.free,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-005,RosterSnapshot.Free
 population.snapshot.prisoners,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006,RosterSnapshot.Prisoners
+population.snapshot.slaves,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-S,RosterSnapshot.Slaves
 population.snapshot.animals,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-007,RosterSnapshot.Animals
 population.snapshot.mechs,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-008,RosterSnapshot.Mechs
 population.snapshot.augmented_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-021,RosterSnapshot.AugmentedPeak
@@ -242,13 +235,10 @@ population.snapshot.passion,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N3-
 population.snapshot.age_mean,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-P-011,RosterSnapshot.AgeMean
 medicine.injured_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,P-019,RosterSnapshot.InjuredPeak
 facilities.home_maps.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-016,FacilitiesSnapshot.HomeMapsPeak
-facilities.medical_beds.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-024,FacilitiesSnapshot.MedicalBedsPeak
 facilities.turrets.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-025,FacilitiesSnapshot.TurretsPeak
 facilities.growing_cells.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-001,FacilitiesSnapshot.GrowingCellsPeak
-facilities.rooms.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-003,FacilitiesSnapshot.RoomsPeak
 facilities.generation_capacity.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-001,FacilitiesSnapshot.GenerationPeak
 facilities.battery_capacity.peak,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-002,FacilitiesSnapshot.BatteryPeak
-facilities.running_generators.latest,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-004,FacilitiesSnapshot.RunningGenerators
 facilities.outdoor_temp.min,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-C-001,FacilitiesSnapshot.OutdoorTempMin
 facilities.outdoor_temp.max,facilities,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-C-002,FacilitiesSnapshot.OutdoorTempMax
 stock.food_nutrition.latest,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-009,StockSnapshot.FoodLatest

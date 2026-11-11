@@ -16,7 +16,6 @@ internal static class FamilyStartup
     public static void Apply(LiveMetricAccumulator acc, int tick)
     {
         // Per-game lookups of the adapters: never carried from another game.
-        FoodStockProbe.Reset();
         ShrineProbe.Reset();
         Run(acc, MembershipFamily.Name, tick, (s, fresh) =>
         {

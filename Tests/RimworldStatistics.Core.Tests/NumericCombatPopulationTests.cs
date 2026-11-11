@@ -167,10 +167,8 @@ public sealed class NumericCombatPopulationTests
         var l = f(LifetimeFamily.Name);
         MembershipFamily.Baseline(m, new[] { "Thing_A", "Thing_B", "Thing_C" });
         LifetimeFamily.Baseline(l, new[] { "Thing_A", "Thing_B", "Thing_C" }, 0, _ => new Dictionary<string, int> { ["Shooting"] = 5 });
-        MembershipFamily.BecamePrisoner(m, "Thing_P", 1 * Day);
         MembershipFamily.Joined(m, "Thing_P", MembershipFamily.RoutePrisoner, 30, 4 * Day);
         LifetimeFamily.Joined(l, "Thing_P", 4 * Day, new Dictionary<string, int> { ["Shooting"] = 3 });
-        MembershipFamily.Left(m, "Thing_A", 5 * Day);
         LifetimeFamily.Left(l, "Thing_A", 5 * Day);
         MembershipFamily.Joined(m, "Thing_A", MembershipFamily.RouteOther, 40, 6 * Day);   // a rejoin, not a new member
         MembershipFamily.Joined(m, "Thing_A", MembershipFamily.RouteOther, 40, 6 * Day);   // a duplicate notification
@@ -179,29 +177,27 @@ public sealed class NumericCombatPopulationTests
         var o = Save(acc, 10 * Day);
         Assert.Equal(1, V(o, MembershipFamily.FirstJoin).IntegerValue);
         Assert.Equal(1, V(o, MembershipFamily.PrisonerRecruit).IntegerValue);
-        Assert.Equal(5, V(o, MembershipFamily.Unique).IntegerValue);    // A, B, C, P, the baby
-        Assert.Equal(1, V(o, MembershipFamily.Rejoin).IntegerValue);
         Assert.Equal(1, V(o, MembershipFamily.HumanBirths).IntegerValue);
         Assert.Equal(4.0, V(o, MembershipFamily.FirstJoinDay).RealValue);
         Assert.Equal(30.0, V(o, MembershipFamily.JoinAgeMean).RealValue);
         Assert.Equal(1, B(o, MembershipFamily.Routes)[MembershipFamily.RoutePrisoner].IntegerValue);
-        Assert.Equal((3.0, 3.0), (V(o, MembershipFamily.RecruitTimeMin).RealValue!.Value, V(o, MembershipFamily.RecruitTimeMax).RealValue!.Value));
         Assert.Equal(5.0, V(o, LifetimeFamily.TenureMean).RealValue);   // A: 0 → 5 days; the open intervals are not samples
     }
 
     [Fact]
-    public void Membership_RecaptureStartsANewRecruitmentInterval()
+    public void Membership_PrisonerJoinStillRecordsRecruitmentWithoutDurationOrRejoinMetrics()
     {
         var (acc, f) = NewGame(MembershipFamily.Family);
         var s = f(MembershipFamily.Name);
-        MembershipFamily.BecamePrisoner(s, "Thing_P", Day);
-        // The capture hook reports a new transition after the escape even without an escape notification.
-        MembershipFamily.BecamePrisoner(s, "Thing_P", 5 * Day);
         MembershipFamily.Joined(s, "Thing_P", MembershipFamily.RoutePrisoner, 30, 7 * Day);
-
-        var o = Save(acc, 8 * Day);
-        Assert.Equal(2.0, V(o, MembershipFamily.RecruitTimeMin).RealValue);
-        Assert.Equal(2.0, V(o, MembershipFamily.RecruitTimeMax).RealValue);
+        MembershipFamily.Joined(s, "Thing_P", MembershipFamily.RoutePrisoner, 30, 8 * Day);
+        var o = Save(acc, 9 * Day);
+        Assert.Equal(1, V(o, MembershipFamily.PrisonerRecruit).IntegerValue);
+        Assert.Equal(1, V(o, MembershipFamily.FirstJoin).IntegerValue);
+        Assert.Null(MetricRegistry.Find("membership.unique"));
+        Assert.Null(MetricRegistry.Find("membership.rejoin"));
+        Assert.Null(MetricRegistry.Find("membership.recruit_time.min"));
+        Assert.Null(MetricRegistry.Find("membership.recruit_time.max"));
     }
 
     /// <summary>Codex review: past the member cap, everything that needs "is this pawn new" is partial.</summary>
@@ -214,7 +210,7 @@ public sealed class NumericCombatPopulationTests
         MembershipFamily.Joined(m, "Thing_New", MembershipFamily.RouteOther, 20, 100);
         var o = Save(acc, 1000);
         foreach (var key in new[] { MembershipFamily.FirstJoin, MembershipFamily.Routes, MembershipFamily.PrisonerRecruit, MembershipFamily.HumanBirths,
-                     MembershipFamily.JoinAgeMean, MembershipFamily.FirstJoinDay, MembershipFamily.Unique, MembershipFamily.Rejoin })
+                     MembershipFamily.JoinAgeMean, MembershipFamily.FirstJoinDay })
             Assert.Equal(MetricCoverage.Partial, o.Scalar(key, 1)!.Coverage);
     }
 
@@ -465,8 +461,8 @@ public sealed class NumericCombatPopulationTests
             HealthDeathFamily.UnarmedKills, HealthDeathFamily.ExplosiveKills, HealthDeathFamily.EnvironmentKills, HealthDeathFamily.PlayerMechKills,
             HealthDeathFamily.FirstDeathDay, HealthDeathFamily.ColonyAnimalDeaths,
             DownFamily.ColonistsDowned, DownFamily.EnemiesDowned, DownFamily.ToxicDowns, DownFamily.SocialFightDowns,
-            MembershipFamily.FirstJoin, MembershipFamily.PrisonerRecruit, MembershipFamily.HumanBirths, MembershipFamily.Unique, MembershipFamily.Routes,
-            MembershipFamily.Rejoin, MembershipFamily.JoinAgeMean, MembershipFamily.SlavesFreed, MembershipFamily.RecruitTimeMin, MembershipFamily.RecruitTimeMax,
+            MembershipFamily.FirstJoin, MembershipFamily.PrisonerRecruit, MembershipFamily.HumanBirths, MembershipFamily.Routes,
+            MembershipFamily.JoinAgeMean, MembershipFamily.SlavesFreed,
             MembershipFamily.Kidnaps, MembershipFamily.KidnapRescues, MembershipFamily.CaptiveMax, MembershipFamily.FirstJoinDay,
             RaidFamily.PawnsMax, RaidFamily.ByArrivalMode, RaidFamily.LongestGap, RaidFamily.KillsMax, RaidFamily.Infestations, RaidFamily.MechClusters,
             RaidFamily.Manhunters, RaidFamily.Sieges, RaidFamily.Breaches, RaidFamily.Drops, RaidFamily.PointsMax, RaidFamily.DurationMean,

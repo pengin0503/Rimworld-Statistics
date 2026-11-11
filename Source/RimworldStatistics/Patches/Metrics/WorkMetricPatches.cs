@@ -107,12 +107,8 @@ public static class PlantCollectedMetricPatch
         var failed = harvestJob && by!.RaceProps.Humanlike && GameFacts.IsPlayer(by) && __instance.IsCrop
             && __instance.def.plant.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
             && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
-        GameFacts.Record(WorkFamily.Name, s =>
-        {
-            if (failed)
-                WorkFamily.HarvestFailed(s);
-            WorkFamily.PlantRemoved(s, id);
-        });
+        if (failed)
+            GameFacts.Record(WorkFamily.Name, WorkFamily.HarvestFailed);
     }
 }
 
@@ -305,26 +301,8 @@ public static class PlantsSownMetricPatch
             return;
         if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned)
             return;
-        var id = GameFacts.Id(plant);
         var crop = plant.def.defName;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, id, crop));
-    }
-}
-
-/// <summary>A crop made leafless dies when its def says so (Plant.MakeLeafless): cold is one cause, poison and pollution others.</summary>
-[MetricAdapter(WorkFamily.Name)]
-[HarmonyPatch(typeof(Plant), nameof(Plant.MakeLeafless))]
-public static class CropLeaflessMetricPatch
-{
-    public static void Prefix(Plant __instance, out string? __state)
-        => __state = __instance != null && __instance.Spawned && __instance.Map?.IsPlayerHome == true && __instance.IsCrop && !__instance.Destroyed ? GameFacts.Id(__instance) : null;
-
-    public static void Postfix(Plant __instance, Plant.LeaflessCause cause, string? __state)
-    {
-        if (__state is not { } id || !__instance.Destroyed)
-            return;
-        var cold = cause == Plant.LeaflessCause.Cold;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.CropDied(s, id, cold));
+        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, crop));
     }
 }
 

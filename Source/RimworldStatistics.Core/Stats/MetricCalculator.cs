@@ -18,6 +18,9 @@ public sealed class NumericValue
     /// <summary>The game tick the value runs to (the representative observation's save tick).</summary>
     public int? ThroughTick { get; init; }
 
+    /// <summary>Saved MOD inventory fingerprint, in memory only; never shown or persisted as a new output.</summary>
+    public string? ModSetHash { get; init; }
+
     /// <summary>For an all-colonies maximum or minimum: the colony that holds it (ties: smallest colony key).</summary>
     public string? ColonyKey { get; init; }
 
@@ -321,6 +324,7 @@ public static class MetricCalculator
                 Evidence = value.Evidence,
                 Numerator = value.Numerator, Denominator = value.Denominator,
                 SinceTick = value.SinceTick, ThroughTick = value.ThroughTick,
+                ModSetHash = value.ModSetHash,
                 SampleCount = value.SampleCount,
             };
         }
@@ -396,6 +400,7 @@ public static class MetricCalculator
         SampleCount = v.SampleCount,
         SinceTick = v.SinceTick,
         ThroughTick = v.ThroughTick ?? observation.SaveTick,
+        ModSetHash = observation.ModSetHash,
     };
 
     private static NumericRow Row(MetricDefinition d, string breakdown, NumericValue v) => new()
@@ -425,10 +430,28 @@ public static class MetricCalculator
 
     private static NumericRow Combine(MetricDefinition d, List<(string Key, NumericRow Row)> colonies)
     {
-        var breakdownKeys = d.HasBreakdown
-            ? colonies.SelectMany(c => c.Row.Breakdowns.Select(b => b.Breakdown)).Distinct(Ord).Order(Ord).ToList()
-            : new List<string>();
-        var breakdowns = breakdownKeys.Select(k => Aggregate(d, k, colonies.Select(c => (c.Key, Value: BreakdownValue(c.Row, k))).ToList())).ToList();
+        var breakdowns = new List<NumericRow>();
+        if (d.HasBreakdown)
+        {
+            // Each colony's per-Def dictionary is indexed once. Previously every
+            // global key searched all children and re-summed the source to decide
+            // whether a missing key was a *known zero* (O(colonies * keys²)).
+            // Preserve the first-child-wins behavior for malformed duplicate keys.
+            var lookups = colonies.Select(c =>
+            {
+                var byKey = new Dictionary<string, NumericValue>(Ord);
+                foreach (var child in c.Row.Breakdowns)
+                    byKey.TryAdd(child.Breakdown, child.Value);
+                return (c.Key, ByKey: byKey, Missing: MissingBreakdownValue(c.Row));
+            }).ToArray();
+            var keys = lookups.SelectMany(c => c.ByKey.Keys).Distinct(Ord).Order(Ord);
+            foreach (var key in keys)
+            {
+                var values = lookups.Select(c => (c.Key, Value:
+                    c.ByKey.TryGetValue(key, out var value) ? value : c.Missing)).ToList();
+                breakdowns.Add(Aggregate(d, key, values));
+            }
+        }
         var scalar = Aggregate(d, MetricEntry.Scalar, colonies.Select(c => (c.Key, c.Row.Value)).ToList());
         return new NumericRow { Definition = d, Value = scalar.Value, Targets = scalar.Targets, Valid = scalar.Valid, Breakdowns = breakdowns };
     }
@@ -443,12 +466,12 @@ public static class MetricCalculator
         MedicineFamily.Surgeries,
     };
 
-    /// <summary>Absent breakdown keys imply zero only if the split covers the entire parent.</summary>
-    private static NumericValue BreakdownValue(NumericRow row, string key)
+    /// <summary>
+    /// One cached fallback for each colony. Missing breakdown keys imply zero
+    /// only if the source's entire parent/split relationship proves it.
+    /// </summary>
+    private static NumericValue MissingBreakdownValue(NumericRow row)
     {
-        var b = row.Breakdowns.FirstOrDefault(x => x.Breakdown == key);
-        if (b is not null)
-            return b.Value;
         if (row.Value.Number is null)
             return row.Value;
 

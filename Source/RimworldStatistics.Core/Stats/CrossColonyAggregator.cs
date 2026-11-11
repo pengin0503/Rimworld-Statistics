@@ -95,30 +95,44 @@ public static class CrossColonyAggregator
         };
     }
 
-    /// <summary>Rank sum(colony[def]), never sum(colony's top item).</summary>
+    /// <summary>
+    /// Rank sum(colony[def]), never sum(colony's top item). Preserve the original
+    /// top-one row and attach a sorted, read-only complete captured-period
+    /// leaderboard. Each item retains measured contributions from independent
+    /// colonies; missing/unknown item contributions are never imputed as zero.
+    /// </summary>
     private static NumericRow TopType(MetricDefinition definition, List<(string Key, NumericRow? Row)> colonies)
     {
         var totals = new Dictionary<string, double>(Ord);
+        var contributors = new Dictionary<string, List<(string Colony, NumericValue Value)>>(Ord);
         var evidence = new List<MetricEvidence>();
         var coverage = new List<MetricCoverage>();
         var targets = 0;
         var valid = 0;
         var partial = false;
-        foreach (var (_, row) in colonies)
+        var modCohorts = new HashSet<string>(Ord);
+        var missingModFingerprint = false;
+        foreach (var (colony, row) in colonies)
         {
             if (row?.Value.Coverage == MetricCoverage.NotApplicable)
                 continue;
             targets++;
-            if (row?.Value.Number is not { } parent || !double.IsFinite(parent))
+            if (row?.Value.Number is not { } parent || !double.IsFinite(parent) || parent < 0
+                || row.Value.Coverage == MetricCoverage.Unknown)
             {
                 partial = true;
                 continue;
             }
 
             valid++;
+            if (string.IsNullOrWhiteSpace(row.Value.ModSetHash))
+                missingModFingerprint = true;
+            else
+                modCohorts.Add(row.Value.ModSetHash);
             evidence.Add(row.Value.Evidence);
             coverage.Add(row.Value.Coverage);
             var counted = 0d;
+            var seen = new HashSet<string>(Ord);
             foreach (var child in row.Breakdowns)
             {
                 if (child.Value.Number is not { } quantity || !double.IsFinite(quantity) || quantity < 0)
@@ -126,17 +140,39 @@ public static class CrossColonyAggregator
                     partial = true;
                     continue;
                 }
+                // A duplicated key is ambiguous; including it would overcount
+                // the same colony even if a malformed input happened to balance.
+                if (!seen.Add(child.Breakdown))
+                {
+                    partial = true;
+                    continue;
+                }
+                if (child.Value.Coverage is MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+                {
+                    partial = true;
+                    continue;
+                }
                 counted += quantity;
-                if (child.Value.Coverage is MetricCoverage.Unknown or MetricCoverage.Partial)
+                if (child.Value.Coverage == MetricCoverage.Partial)
                     partial = true;
                 if (child.Breakdown == MetricKeys.UnknownBucket)
                 {
                     if (quantity > 0)
-                        partial = true; // Recorded item without a trustworthy Def identity.
+                        partial = true; // No defensible Def identity for this quantity.
                     continue;
                 }
-                if (quantity > 0)
-                    totals[child.Breakdown] = totals.GetValueOrDefault(child.Breakdown) + quantity;
+                if (quantity <= 0)
+                    continue;
+                var total = totals.GetValueOrDefault(child.Breakdown) + quantity;
+                if (!double.IsFinite(total))
+                {
+                    partial = true;
+                    continue;
+                }
+                totals[child.Breakdown] = total;
+                if (!contributors.TryGetValue(child.Breakdown, out var list))
+                    contributors[child.Breakdown] = list = new List<(string Colony, NumericValue Value)>();
+                list.Add((colony, child.Value));
             }
             // A legacy split, dropped key (4096 cap), or scalar-only record
             // cannot prove the ranking, even when the parent total is known.
@@ -144,35 +180,59 @@ public static class CrossColonyAggregator
                 partial = true;
         }
 
+        // A DefName alone does not prove identical meaning under different
+        // MOD inventories. Retain captured quantity as an explicitly partial
+        // cross-MOD comparison instead of asserting a complete leaderboard.
+        if (modCohorts.Count > 1 || (modCohorts.Count > 0 && missingModFingerprint))
+            partial = true;
+        var overallCoverage = Coverage(coverage, partial || valid < targets);
+        var overallEvidence = MetricEvidencePolicy.Combine(evidence);
         if (totals.Count == 0)
         {
             if (valid == 0)
                 return Empty(definition, targets, colonies.Count);
             return new NumericRow
             {
-                Definition = definition,
-                Targets = targets, Valid = valid,
-                Value = new NumericValue
-                {
-                    Coverage = Coverage(coverage, partial),
-                    Evidence = MetricEvidencePolicy.Combine(evidence),
-                },
+                Definition = definition, Targets = targets, Valid = valid,
+                Value = new NumericValue { Coverage = overallCoverage, Evidence = overallEvidence },
             };
         }
 
-        var best = totals.Values.Max();
-        var keys = totals.Where(k => k.Value == best).Select(k => k.Key).Order(Ord).ToArray();
+        var ranking = totals.OrderByDescending(kv => kv.Value)
+            .ThenBy(kv => kv.Key, Ord).Select(kv =>
+            {
+                var parts = contributors[kv.Key].OrderByDescending(c => c.Value.Number!.Value)
+                    .ThenBy(c => c.Colony, Ord).Select(c => new NumericRow
+                    {
+                        Definition = definition,
+                        Breakdown = c.Colony,
+                        Value = c.Value,
+                        Targets = 1, Valid = 1,
+                    }).ToArray();
+                return new NumericRow
+                {
+                    Definition = definition, Breakdown = kv.Key,
+                    Targets = targets, Valid = valid,
+                    Value = new NumericValue
+                    {
+                        Number = kv.Value, Coverage = overallCoverage, Evidence = overallEvidence,
+                    },
+                    Breakdowns = parts,
+                };
+            }).ToArray();
+
+        var best = ranking[0].Value.Number!.Value;
+        var keys = ranking.Where(r => r.Value.Number == best).Select(r => r.Breakdown).Order(Ord).ToArray();
         var label = string.Join(" / ", keys.Take(4));
         if (keys.Length > 4)
             label += " (+" + (keys.Length - 4).ToString(System.Globalization.CultureInfo.InvariantCulture) + ")";
         return new NumericRow
         {
-            Definition = definition, Targets = targets, Valid = valid,
+            Definition = definition, Targets = targets, Valid = valid, Breakdowns = ranking,
             Value = new NumericValue
             {
                 Number = best, Label = label,
-                Coverage = Coverage(coverage, partial || valid < targets),
-                Evidence = MetricEvidencePolicy.Combine(evidence),
+                Coverage = overallCoverage, Evidence = overallEvidence,
             },
         };
     }

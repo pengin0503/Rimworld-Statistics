@@ -52,7 +52,6 @@ public sealed class CrossColonyAggregationTests
     [InlineData(WorkDetailsFamily.MinedByDef)]
     [InlineData(WorkFamily.MealsByDef)]
     [InlineData(StockSnapshot.MaterialsLatest)]
-    [InlineData(FacilitiesSnapshot.RunningGenerators)]
     [InlineData(WorkFamily.ConstructionMaterials)]
     [InlineData(RosterSnapshot.Passions)]
     [InlineData(MentalFamily.BreaksByDef)]
@@ -98,6 +97,21 @@ public sealed class CrossColonyAggregationTests
         Assert.Equal(0, min.Value.Number);
         Assert.Equal("a", min.Value.ColonyKey);
         Assert.Equal(new[] { "a", "z" }, min.Value.HolderKeys);
+    }
+
+    [Fact]
+    public void SlaveSnapshotsCompareColonyMinMaxWithoutInventingUnknownZero()
+    {
+        var cases = new (string Colony, NumericRow[] Rows)[] {
+            ("a", new[] { Record(RosterSnapshot.Slaves, 2, MetricCoverage.Partial) }),
+            ("b", new[] { Record(RosterSnapshot.Slaves, 1, MetricCoverage.Partial) }),
+            ("c", new[] { Record(RosterSnapshot.Slaves, null, MetricCoverage.Unknown) }),
+        };
+        var max = Derived(CrossColonyCatalog.MaxPrefix + RosterSnapshot.Slaves, cases);
+        var min = Derived(CrossColonyCatalog.MinPrefix + RosterSnapshot.Slaves, cases);
+        Assert.Equal((2d, "a"), (max.Value.Number, max.Value.ColonyKey));
+        Assert.Equal((1d, "b"), (min.Value.Number, min.Value.ColonyKey));
+        Assert.Equal(MetricCoverage.Partial, min.Value.Coverage);
     }
 
     [Fact]
@@ -220,7 +234,7 @@ public sealed class CrossColonyAggregationTests
     [Fact]
     public void DerivedDefinitions_DoNotReplaceTheExisting331Definitions()
     {
-        Assert.Equal(331, MetricRegistry.BaseCatalog.Count);
+        Assert.Equal(321, MetricRegistry.BaseCatalog.Count);
         Assert.All(MetricRegistry.BaseCatalog, old =>
             Assert.Same(old, MetricRegistry.Find(old.Key)));
         Assert.All(CrossColonyCatalog.Build(MetricRegistry.BaseCatalog), derived =>

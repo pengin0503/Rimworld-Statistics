@@ -10,6 +10,8 @@ public static class ColoniesTab
 {
     private const float RowHeight = 28f;
     private const float DetailHeight = 190f;
+    // Additional per-colony fields must remain readable in smaller windows.
+    private const float MinTableWidth = 1260f;
 
     private sealed record Column(string LabelKey, float Width, Func<ColonyStats, IComparable> Sort, Func<ColonyStats, string> Text);
 
@@ -25,6 +27,11 @@ public static class ColoniesTab
         new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => s.LastWealthKnown ? StatFormat.Group(s.WealthLast) : Dialog_RimworldStatistics.Dash),
         new("RWS_Col_Raids", 0.05f, s => s.Raids, s => s.Raids.ToString(Inv)),
         new("RWS_Col_Killed", 0.05f, s => s.Killed, s => s.Killed.ToString(Inv)),
+        new("RWS_Stat_Threats", 0.06f, s => s.Threats, s => s.Threats.ToString(Inv)),
+        new("RWS_Stat_Departed", 0.06f, s => s.Departed, s => s.Departed.ToString(Inv)),
+        new("RWS_Stat_MaxPopulation", 0.07f, s => s.MaxPopulation, s => s.MaxPopulation.ToString(Inv)),
+        new("RWS_Stat_RealPlay", 0.08f, s => s.MaxRealPlay,
+            s => "RWS_HoursValue".Translate(StatFormat.Hours(s.MaxRealPlay).ToString("N1", Inv))),
         new("RWS_Col_Endings", 0.05f, s => s.EndingCounts.Values.Sum(), s => s.EndingCounts.Values.Sum().ToString(Inv)),
         new("RWS_Col_Versions", 0.07f, s => string.Join(",", s.GameVersions), s => Dialog_RimworldStatistics.ShortVersions(s.GameVersions)),
         new("RWS_Col_Saves", 0.05f, s => s.SaveCount, s => s.SaveCount.ToString(Inv)),
@@ -32,6 +39,7 @@ public static class ColoniesTab
     };
 
     private const float ExcludeWidth = 0.05f;
+    private static readonly float TotalColumnWeight = Columns.Sum(c => c.Width) + ExcludeWidth;
 
     private static int sortColumn = 3;
     private static bool ascending;
@@ -51,8 +59,11 @@ public static class ColoniesTab
 
         var selected = order.FirstOrDefault(i => view.Colonies[i].Key == selectedKey, -1);
         var tableHeight = rect.height - (selected >= 0 ? DetailHeight + 8f : 0f);
-        var width = rect.width - 16f;
-        DrawHeader(new Rect(rect.x, rect.y, width, RowHeight));
+        var width = Math.Max(rect.width - 16f, MinTableWidth);
+        // Keep the sortable header fixed vertically while tracking horizontal body scroll.
+        GUI.BeginGroup(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 16f), RowHeight));
+        DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight));
+        GUI.EndGroup();
 
         var outRect = new Rect(rect.x, rect.y + RowHeight, rect.width, tableHeight - RowHeight);
         var viewRect = new Rect(0f, 0f, width, order.Count * RowHeight);
@@ -72,7 +83,7 @@ public static class ColoniesTab
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         for (var c = 0; c < Columns.Length; c++)
         {
-            var cell = new Rect(x, rect.y, rect.width * Columns[c].Width, rect.height);
+            var cell = new Rect(x, rect.y, rect.width * Columns[c].Width / TotalColumnWeight, rect.height);
             var label = (string)Columns[c].LabelKey.Translate() + (sortColumn == c ? (ascending ? " ▲" : " ▼") : "");
             Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), label);
             Widgets.DrawHighlightIfMouseover(cell);
@@ -84,8 +95,9 @@ public static class ColoniesTab
             }
             x += cell.width;
         }
-        Widgets.Label(new Rect(x + 3f, rect.y, rect.width * ExcludeWidth, rect.height), "RWS_Exclude".Translate());
-        TooltipHandler.TipRegion(new Rect(x, rect.y, rect.width * ExcludeWidth, rect.height), "RWS_ExcludeTip".Translate());
+        var excludeWidth = rect.width * ExcludeWidth / TotalColumnWeight;
+        Widgets.Label(new Rect(x + 3f, rect.y, excludeWidth - 6f, rect.height), "RWS_Exclude".Translate());
+        TooltipHandler.TipRegion(new Rect(x, rect.y, excludeWidth, rect.height), "RWS_ExcludeTip".Translate());
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
     }
@@ -103,12 +115,12 @@ public static class ColoniesTab
         Text.Anchor = TextAnchor.MiddleLeft;
         foreach (var col in Columns)
         {
-            var cell = new Rect(x + 3f, rect.y, rect.width * col.Width - 6f, rect.height);
+            var cell = new Rect(x + 3f, rect.y, rect.width * col.Width / TotalColumnWeight - 6f, rect.height);
             var text = col.Text(s);
             Widgets.Label(cell, text);
             if (Text.CalcSize(text).x > cell.width)
                 TooltipHandler.TipRegion(cell, text);
-            x += rect.width * col.Width;
+            x += rect.width * col.Width / TotalColumnWeight;
         }
         Text.Anchor = TextAnchor.UpperLeft;
         GUI.color = Color.white;

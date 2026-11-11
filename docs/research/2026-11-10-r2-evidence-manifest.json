@@ -1,0 +1,232 @@
+{
+  "schema": 1,
+  "inventoryTime": "2026-11-10",
+  "privacy": "aggregates-only; original R2 save keys, hashes, identities and contents omitted",
+  "bucket": "rimworld-17",
+  "source": {
+    "gameSourcePrefix": "Game-Linux/",
+    "gameVersionFile": "Game-Linux/Version.txt",
+    "exactVersion": "1.7.4985 rev1269",
+    "sourceObjectCount": 2672,
+    "sourceBytes": 1095733293,
+    "auditedPrefix": "research/vanilla-1.7.4985-audited/",
+    "auditedObjectCount": 1612,
+    "auditedBytes": 63680347,
+    "referenceFilesListed": 2672,
+    "referenceBytesVerified": 1486,
+    "staticAuditTestsPassed": 22,
+    "staticAuditTestsFailed": 0,
+    "runtimeStatus": "not-launched"
+  },
+  "privateR2SavePopulation": {
+    "prefix": "Saves/",
+    "objects": 49,
+    "bytes": 824593049,
+    "allObjectBodiesRead": true,
+    "readOnly": true,
+    "contentVerification": "gameVersion, modIds count and numericStatistics tag; NOT production SaveReader or game validation",
+    "exactBuildCount": 12,
+    "gameSeriesCounts": {
+      "1.5": 22,
+      "1.6": 20,
+      "1.7": 7
+    },
+    "rangeOfModCounts": [
+      32,
+      252
+    ],
+    "checkpointTagCount": 0,
+    "byBuild": [
+      {
+        "build": "1.5.4104 rev435",
+        "count": 11,
+        "modMin": 32,
+        "modMax": 117
+      },
+      {
+        "build": "1.5.4243 rev947",
+        "count": 4,
+        "modMin": 117,
+        "modMax": 119
+      },
+      {
+        "build": "1.5.4297 rev1079",
+        "count": 5,
+        "modMin": 119,
+        "modMax": 127
+      },
+      {
+        "build": "1.5.4409 rev1120",
+        "count": 2,
+        "modMin": 127,
+        "modMax": 127
+      },
+      {
+        "build": "1.6.4523 rev1054",
+        "count": 1,
+        "modMin": 74,
+        "modMax": 74
+      },
+      {
+        "build": "1.6.4535 rev993",
+        "count": 1,
+        "modMin": 79,
+        "modMax": 79
+      },
+      {
+        "build": "1.6.4566 rev607",
+        "count": 8,
+        "modMin": 96,
+        "modMax": 193
+      },
+      {
+        "build": "1.6.4630 rev467",
+        "count": 1,
+        "modMin": 192,
+        "modMax": 192
+      },
+      {
+        "build": "1.6.4633 rev1261",
+        "count": 7,
+        "modMin": 201,
+        "modMax": 209
+      },
+      {
+        "build": "1.6.4850 rev646",
+        "count": 2,
+        "modMin": 204,
+        "modMax": 205
+      },
+      {
+        "build": "1.7.4979 rev109",
+        "count": 1,
+        "modMin": 207,
+        "modMax": 207
+      },
+      {
+        "build": "1.7.4985 rev1269",
+        "count": 6,
+        "modMin": 239,
+        "modMax": 252
+      }
+    ],
+    "details": "docs/research/2026-11-10-r2-save-compatibility-census.md"
+  },
+  "localOriginals": {
+    "source": "private conversation attachments, not R2",
+    "gameVersion": "1.7.5000 rev1275",
+    "mods": 192,
+    "files": 8,
+    "distinctColonies": 1,
+    "latestFiveProgressKeysPerFile": 123,
+    "latestFiveProgressPositiveValues": [
+      75,
+      76,
+      76,
+      77,
+      78
+    ],
+    "previousThreeProgressKeysPerFile": 123,
+    "previousThreeProgressPositiveValues": [
+      69,
+      69,
+      69
+    ],
+    "allEightSourceUnchanged": true,
+    "researchFinishedCount": null,
+    "qualifiedDirectParentEdgesInLatestFive": 1
+  },
+  "reproduction": {
+    "list": "GET /accounts/{account_id}/r2/buckets/rimworld-17/objects?prefix=...&per_page=1000; follow result_info.cursor until not truncated",
+    "version": "GET /accounts/{account_id}/r2/buckets/rimworld-17/objects/Game-Linux%2FVersion.txt",
+    "research": "tools/PrivateSaveProbe/private_research_probe.py --expected-game-version '1.7.5000 rev1275' <private-originals>",
+    "localTest": "python3 -m unittest discover -s tools/PrivateSaveProbe -p test_private_research_probe.py"
+  },
+  "strictGates": [
+    "The 1.7.4985 official and DLC definitions do not match the 1.7.5000 latest originals.",
+    "Unknown or positive progress is never a proven ResearchProjectDef.IsFinished count.",
+    "Map Pawns and Things are not exhaustive live player-owned state.",
+    "No 55+ real-save or game TPS acceptance has been performed."
+  ],
+  "productionRealSaveAcceptance": {
+    "runUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42830780995",
+    "rwmtMainSha": "d2a80116b0e8b1c43a8a1c4a9c8ac9da0e2f93cd",
+    "statisticsReaderPinSha": "91c2203e1f0c2800759f9d717f14a27b336e55fc",
+    "status": "passed",
+    "scope": "production .NET SaveReader.ReadDetailed of 49 legacy R2 originals, not game-side semantic verification",
+    "files": 49,
+    "originalsUnchanged": 49,
+    "errors": 0,
+    "checkpointCount": 0,
+    "exactBuildCountsMatched": true,
+    "readP50Milliseconds": 36.808,
+    "readP95Milliseconds": 125.85,
+    "managedAllocMedianBytes": 808696,
+    "individualStatusCounts": "not published in safe log; Ok+Unidentifiable=49",
+    "fullGameRuntimeVerified": false,
+    "gameTpsVerified": false,
+    "readOnlyR2": true,
+    "details": "docs/testing/2026-11-10-private-r2-49-original-net-acceptance.md"
+  },
+  "provisionalOneSevenResearch": {
+    "userPolicy": "Treat 1.7 unstable sub-build differences as equivalent for this research pass; not proof of identical MOD-def costs or full runtime correctness",
+    "gameSourceVersion": "1.7.4985 rev1269",
+    "privateLocalSourceVersion": "1.7.5000 rev1275",
+    "sourceCatalogPath": "docs/research/2026-11-10-r2-1-7-research-def-catalog.json",
+    "gameIlReviewPath": "docs/research/2026-11-10-r2-game-source-1-7-research-recovery.md",
+    "officialResearchDefCount": 122,
+    "perLocalSaveResearchEntries": 123,
+    "matchedOfficialDefNamesPerSave": 122,
+    "privateLocalCampaignCount": 1,
+    "earlierThreeCandidateCostThresholdCounts": [
+      67,
+      68,
+      68
+    ],
+    "laterFiveCandidateCostThresholdCounts": [
+      72,
+      73,
+      73,
+      75,
+      77
+    ],
+    "candidateOnly": true,
+    "confidence": "Partial/Experimental",
+    "draftSaveReaderVersion": 11,
+    "shippedMainSaveReaderVersion": 10,
+    "confirmedProductionCoreCiUrl": "https://github.com/pengin0503/Rimworld-Statistics/actions/runs/42837643992",
+    "confirmedTests": {
+      "succeeded": 720,
+      "failed": 0,
+      "skipped": 9
+    },
+    "actualGameSmokeVerified": true,
+    "newV11R2ProductionReadVerified": true,
+    "plannedRimworldForModTestPrUrl": "https://github.com/pengin0503/RimWorld-for-mod-test/pull/72",
+    "verifiedRuntimeScope": "actual RimWorld 1.7.4985 A+B startup baseline/Harmony registration only; no in-game research equality",
+    "actualGameSourceBuild": "1.7.4985 rev1269",
+    "actualGameSmokeRun": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42838545527",
+    "actualGameSmoke": {
+      "status": "passed",
+      "fidelity": "qualified",
+      "newErrorCount": 0,
+      "stageAChecks": 0,
+      "expectedHarmonyPatches": 2,
+      "additionalUnattributedHarmonyPatches": 9
+    },
+    "productionV11ReaderRun": "https://github.com/pengin0503/RimWorld-for-mod-test/actions/runs/42838545431",
+    "productionV11Reader": {
+      "originals": 49,
+      "unchanged": 49,
+      "errors": 0,
+      "observedResearch17": 7,
+      "partialResearch17": 7,
+      "readP50ms": 53.132,
+      "readP95ms": 142.153,
+      "medianAllocBytes": 809400
+    },
+    "rwmtMainSha": "fdbe5d907ac380ad35c25b012a33504244549c6c",
+    "actualGameEvidencePath": "docs/testing/2026-11-10-rimworld-1-7-v11-actual-game-smoke.md",
+    "real49EvidencePath": "docs/testing/2026-11-10-r2-49-original-reader-v11-acceptance.md"
+  }
+}

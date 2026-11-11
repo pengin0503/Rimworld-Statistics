@@ -60,7 +60,7 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Equal(1L, value.IntegerValue);
         Assert.Equal(MetricCoverage.Partial, value.Coverage);
         Assert.Equal(MetricEvidence.Experimental, read.Metrics.EvidenceByAcquisition!["facilities"]);
-        Assert.DoesNotContain(FacilitiesSnapshot.MedicalBedsPeak, read.Metrics.Metrics);
+        Assert.DoesNotContain("facilities.medical_beds.peak", read.Metrics.Metrics);
         Assert.DoesNotContain(ColonyStartSnapshot.Biome, read.Metrics.Metrics);
     }
 
@@ -136,6 +136,224 @@ public sealed class HistoricalHomeMapBackfillTests
         var overlong = Read(Save(maps: new[] { longName }));
         Assert.Equal(ObservationStatus.Ok, overlong.Observation.Status);
         Assert.DoesNotContain(FacilitiesSnapshot.HomeMapsPeak, overlong.Metrics!.Metrics.Keys);
+    }
+
+    private static XElement Turret(string id, string faction = "Faction_14", string className = "Building_TurretGun")
+        => new("thing", new XAttribute("Class", className),
+            new XElement("def", "Turret_Mortar"),
+            new XElement("id", id), new XElement("faction", faction),
+            new XElement("map", "0"), new XElement("pos", "(1, 0, 2)"));
+
+    private static XElement TurretMap(int mapId, string parent, params XElement[] things)
+    {
+        var map = Map(mapId, parent);
+        map.Element("things")!.ReplaceNodes(things);
+        return map;
+    }
+
+    [Fact]
+    public void OnlyExplicitPlayerOwnedTurretsOnVerifiedHomeMap_CountAsPartialSnapshot()
+    {
+        // In actual 1.7 R2 game type index Building_TurretGun inherits Building_Turret.
+        var bytes = Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                Turret("Thing_Turret1"), Turret("Thing_Turret2"),
+                Turret("Thing_Turret2"), // duplicate thing ID never double-counts
+                Turret("Thing_Hostile", faction: "Faction_77"),
+                Turret("Thing_UnknownMod", className: "SomeMod.Turret"),
+                new XElement("thing", new XAttribute("Class", "Medicine"), new XElement("id", "Med1"))),
+            TurretMap(1, "WorldObject_43", Turret("Thing_SiteTurret"))
+        }, worldObjects: new[] { WorldObject(42), WorldObject(43, def: "Site") });
+        var original = bytes.ToArray();
+        var r = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.Equal(original, bytes);
+        var value = r.Metrics!.Metrics[FacilitiesSnapshot.TurretsPeak].Values[MetricEntry.Scalar];
+        Assert.Equal(2L, value.IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["facilities"]);
+        Assert.DoesNotContain("facilities.medical_beds.peak", r.Metrics.Metrics.Keys);
+        Assert.DoesNotContain("facilities.running_generators.latest", r.Metrics.Metrics.Keys);
+    }
+
+    [Fact]
+    public void TurretsWithoutProvenOwnerOrHomeRemainAbsentRatherThanZero()
+    {
+        var hostile = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42", Turret("Thing_Turret1", "Faction_77"))
+        }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, hostile.Metrics!.Metrics.Keys);
+
+        var site = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", Turret("Thing_Turret1"))
+        }, worldObjects: new[] { WorldObject(43, def: "Site") }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, site.Metrics!.Metrics.Keys);
+
+        var unknownVersion = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42", Turret("Thing_Turret1"))
+        }, version: "1.6.4566 rev607"));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, unknownVersion.Metrics!.Metrics.Keys);
+
+        var empty = Read(Save(maps: new[] { TurretMap(0, "WorldObject_42") }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, empty.Metrics!.Metrics.Keys);
+    }
+
+    [Fact]
+    public void MalformedTurrets_DoNotAuthorizeAnInventedPositiveCount()
+    {
+        var save = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                Turret("", "Faction_14"),
+                Turret("Thing_Turret2", "Faction_77"),
+                Turret("Thing_Turret3", "", "Building_TurretGun"))
+        }));
+        Assert.DoesNotContain(FacilitiesSnapshot.TurretsPeak, save.Metrics!.Metrics.Keys);
+        Assert.Contains(FacilitiesSnapshot.HomeMapsPeak, save.Metrics.Metrics.Keys);
+    }
+
+    private static XElement StockThing(string id, string def, string className, int count,
+        string? faction = null, bool forbidden = false)
+        => new("thing", new XAttribute("Class", className),
+            new XElement("def", def), new XElement("id", id),
+            new XElement("map", "0"),
+            new XElement("stackCount", count),
+            faction is null ? null : new XElement("faction", faction),
+            forbidden ? new XElement("forbidden", "True") : null);
+
+    [Fact]
+    public void KnownCoreSilverAndMedicine_OnVerifiedHomeCountOnlyPositivePartialStocks()
+    {
+        var map = TurretMap(0, "WorldObject_42",
+            StockThing("Silver1", "Silver", "ThingWithComps", 400),
+            StockThing("Silver1", "Silver", "ThingWithComps", 400), // same ID, one stack
+            StockThing("SilverHostile", "Silver", "ThingWithComps", 500, faction: "Faction_77"),
+            StockThing("SilverForbidden", "Silver", "ThingWithComps", 50, forbidden: true),
+            StockThing("SilverOtherClass", "Silver", "Thing", 60),
+            StockThing("Med1", "MedicineHerbal", "Medicine", 2),
+            StockThing("Med2", "MedicineIndustrial", "Medicine", 3),
+            StockThing("ModdedMed", "MedicineModded", "Medicine", 8),
+            StockThing("SilverBadCount", "Silver", "ThingWithComps", -9));
+        var bytes = Save(maps: new[] { map });
+        var r = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.Equal(MetricCoverage.Partial, r.Metrics!.Metrics[StockSnapshot.SilverLatest].Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(400, r.Metrics.Metrics[StockSnapshot.SilverLatest].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(5, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(MetricEvidence.Experimental, r.Metrics.EvidenceByAcquisition!["stock"]);
+        Assert.DoesNotContain(StockSnapshot.MaterialsLatest, r.Metrics.Metrics);
+        Assert.DoesNotContain(StockSnapshot.FoodLatest, r.Metrics.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalStock_NoConfirmedPositiveEvidence_MustNotInventZero()
+    {
+        var empty = Read(Save(maps: new[] { TurretMap(0, "WorldObject_42") }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, empty.Metrics!.Metrics);
+        Assert.DoesNotContain(StockSnapshot.MedicinePeak, empty.Metrics.Metrics);
+
+        var unowned = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", StockThing("Silver1", "Silver", "ThingWithComps", 100))
+        }, worldObjects: new[] { WorldObject(43, def: "Site") }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, unowned.Metrics!.Metrics);
+
+        var old = Read(Save(version: "1.6.4566 rev607", maps: new[] {
+            TurretMap(0, "WorldObject_42", StockThing("Silver1", "Silver", "ThingWithComps", 100))
+        }));
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, old.Metrics!.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalStock_ConflictedIdAndInvalidStackNeverInflateTotals()
+    {
+        var bytes = Save(maps: new[] { TurretMap(0, "WorldObject_42",
+            StockThing("SilverSame", "Silver", "ThingWithComps", 100),
+            StockThing("SilverSame", "Silver", "ThingWithComps", 500, faction: "Faction_77"),
+            StockThing("MedBad", "MedicineUltratech", "Medicine", int.MaxValue),
+            StockThing("MedOK", "MedicineHerbal", "Medicine", 1)) });
+        var r = Read(bytes);
+        Assert.DoesNotContain(StockSnapshot.SilverLatest, r.Metrics!.Metrics);
+        Assert.Equal(1, r.Metrics.Metrics[StockSnapshot.MedicinePeak].Values[MetricEntry.Scalar].IntegerValue);
+    }
+
+    // R2 Assembly-CSharp: Pawn.IsPrisonerOfColony checks guest status AND host player;
+    // Pawn.IsSlaveOfColony checks guest status AND pawn's player faction.
+    // joinStatus is a requested future joining mode, NOT current enslavement.
+    private static XElement SavedHuman(string id, string? faction,
+        string? guestStatus = null, string hostFaction = "null",
+        string joinStatus = "JoinAsSlave", string kind = "Colonist")
+    {
+        return new XElement("thing", new XAttribute("Class", "Pawn"),
+            new XElement("def", "Human"), new XElement("kindDef", kind),
+            new XElement("id", id), faction is null ? null : new XElement("faction", faction),
+            new XElement("guest",
+                new XElement("hostFaction", hostFaction),
+                guestStatus is null ? null : new XElement("guestStatus", guestStatus),
+                new XElement("joinStatus", joinStatus)),
+            new XElement("healthTracker", new XElement("hediffSet")));
+    }
+
+    [Fact]
+    public void HistoricalRoster_OnlyVerifiedLivingHomeHumanStatusesBecomePartial()
+    {
+        const string slaves = "population.snapshot.slaves";
+        var bytes = Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                SavedHuman("Free1", "Faction_14"),
+                SavedHuman("Free1", "Faction_14"),
+                SavedHuman("Free2", "Faction_14", joinStatus: "JoinAsColonist"),
+                SavedHuman("Slave1", "Faction_14", guestStatus: "Slave"),
+                SavedHuman("Prisoner1", "Faction_99", guestStatus: "Prisoner", hostFaction: "Faction_14"),
+                SavedHuman("Foreign1", "Faction_99"),
+                SavedHuman("Guest1", "Faction_99", guestStatus: "Guest", hostFaction: "Faction_14"),
+                SavedHuman("AnotherHostPrisoner", "Faction_99", guestStatus: "Prisoner", hostFaction: "Faction_50"),
+                new XElement("thing", new XAttribute("Class", "Pawn"), new XElement("def", "Sheep"),
+                    new XElement("id", "Sheep1"), new XElement("faction", "Faction_14"))),
+            TurretMap(1, "WorldObject_43", SavedHuman("OutsideHome", "Faction_14"))
+        }, worldObjects: new[] { WorldObject(42), WorldObject(43, "Site") });
+        var original = bytes.ToArray();
+        var read = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.Equal(original, bytes);
+        foreach (var (key, expected) in new[] {
+            (RosterSnapshot.Free, 2L), (RosterSnapshot.Prisoners, 1L), (slaves, 1L) })
+        {
+            var value = read.Metrics!.Metrics[key].Values[MetricEntry.Scalar];
+            Assert.Equal(expected, value.IntegerValue);
+            Assert.Equal(MetricCoverage.Partial, value.Coverage);
+        }
+        Assert.Equal(MetricEvidence.Experimental, read.Metrics!.EvidenceByAcquisition!["roster"]);
+        Assert.DoesNotContain(RosterSnapshot.Animals, read.Metrics.Metrics);
+    }
+
+    [Fact]
+    public void HistoricalRoster_UnknownsAndUnprovenZeroStayMissing()
+    {
+        const string slaves = "population.snapshot.slaves";
+        var noPawns = Read(Save());
+        foreach (var key in new[] { RosterSnapshot.Free, RosterSnapshot.Prisoners, slaves })
+            Assert.DoesNotContain(key, noPawns.Metrics!.Metrics);
+
+        var wrongMap = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_43", SavedHuman("F1", "Faction_14"))
+        }, worldObjects: new[] { WorldObject(43, "Site") }));
+        Assert.DoesNotContain(RosterSnapshot.Free, wrongMap.Metrics!.Metrics);
+
+        var wrongVersion = Read(Save(version: "1.6.4633 rev1261", maps: new[] {
+            TurretMap(0, "WorldObject_42", SavedHuman("F1", "Faction_14"))
+        }));
+        Assert.DoesNotContain(RosterSnapshot.Free, wrongVersion.Metrics!.Metrics);
+
+        var contradictory = Read(Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                SavedHuman("Same", "Faction_14"),
+                SavedHuman("Same", "Faction_14", guestStatus: "Slave"),
+                SavedHuman("BadJoin", "Faction_99", joinStatus: "JoinAsSlave"),
+                SavedHuman("NoHost", "Faction_99", guestStatus: "Prisoner"),
+                SavedHuman("UnknownStatus", "Faction_14", guestStatus: "ModStatus"))
+        }));
+        foreach (var key in new[] { RosterSnapshot.Free, RosterSnapshot.Prisoners, slaves })
+            Assert.DoesNotContain(key, contradictory.Metrics!.Metrics);
     }
 
     [Fact]

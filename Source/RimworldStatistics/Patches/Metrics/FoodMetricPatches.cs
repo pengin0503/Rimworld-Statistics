@@ -56,80 +56,6 @@ public static class RotMetricPatch
 }
 
 /// <summary>
-/// N2-F-010: the colony's food stock as the game counts it. <c>ResourceCounter.UpdateResourceCounts</c> (1.7.4985) recounts the
-/// stored, fresh, unfogged resources of one map every 204 ticks and on hauling; the stock has food when that count holds a
-/// human-edible nutrition-giving def, or a player pawn on the map carries such food (a stack between two stockpiles). The colony
-/// has food when any player home map has; a home map not recounted since the load makes the state unknown until it is.
-/// </summary>
-internal static class FoodStockProbe
-{
-    private static readonly Dictionary<int, bool> ByMap = new();
-
-    public static void Reset() => ByMap.Clear();
-
-    public static void Forget(Map map) => ByMap.Remove(map.uniqueID);
-
-    /// <summary>
-    /// The defs <c>ResourceCounter.TotalHumanEdibleNutrition</c> sums (IsNutritionGivingIngestible and HumanEdible, weighted by
-    /// the nutrition stat): "> 0" here is the same test with an early exit and the cached stat, because this runs on every
-    /// recount (every haul) while the vanilla property recomputes the stat of every counted def on each call.
-    /// </summary>
-    private static bool Edible(ThingDef def)
-        => def.IsNutritionGivingIngestible && def.ingestible.HumanEdible && def.ingestible.CachedNutrition > 0f;
-
-    private static bool HasFood(Map map)
-    {
-        foreach (var (def, count) in map.resourceCounter.AllCountedAmounts)
-            if (count > 0 && def != null && Edible(def))
-                return true;
-        foreach (var pawn in map.mapPawns.SpawnedPawnsInFaction(Faction.OfPlayer))
-            if (pawn.carryTracker?.CarriedThing?.GetInnerIfMinified() is { } carried && carried.def.CountAsResource && Edible(carried.def)
-                && !carried.IsNotFresh())
-                return true;
-        return false;
-    }
-
-    /// <summary>After <paramref name="recounted"/>'s recount: the colony has food, has none, or is not known yet (null).</summary>
-    public static bool? Colony(Map recounted)
-    {
-        ByMap[recounted.uniqueID] = HasFood(recounted);
-        var unknown = false;
-        foreach (var map in Find.Maps)
-        {
-            if (!map.IsPlayerHome)
-                continue;
-            if (!ByMap.TryGetValue(map.uniqueID, out var food))
-                unknown = true;
-            else if (food)
-                return true;
-        }
-        return unknown ? null : false;
-    }
-}
-
-[MetricAdapter(FoodFamily.Name)]
-[HarmonyPatch(typeof(ResourceCounter), nameof(ResourceCounter.UpdateResourceCounts))]
-public static class FoodStockMetricPatch
-{
-    public static void Postfix(Map ___map)
-    {
-        if (___map is not { IsPlayerHome: true } || LiveMetrics.Family(FoodFamily.Name) is null)
-            return;
-        try
-        {
-            if (FoodStockProbe.Colony(___map) is not { } hasFood)
-                return;
-            var tick = GameFacts.Tick;
-            GameFacts.Record(FoodFamily.Name, s => FoodFamily.StockObserved(s, hasFood, tick));
-        }
-        catch (Exception e)
-        {
-            LiveMetrics.Fail(FoodFamily.Name, e);
-        }
-    }
-}
-
-/// <summary>
 /// N1-A-008: the cells of every growing zone (only the player's designators and gravship landings create <c>Zone_Growing</c> in
 /// 1.7.4985). Cells change through <c>Zone.AddCell</c> (which <c>Zone_Growing.AddCell</c> calls) and <c>Zone.RemoveCell</c>
 /// (also used by <c>Zone.Delete</c>, gravship takeoff and buildings placed over a zone); a removed map takes its zones along.
@@ -218,7 +144,6 @@ public static class FoodMapRemovedMetricPatch
         {
             if (!Find.Maps.Contains(map))
                 return;
-            FoodStockProbe.Forget(map);
             GrowingProbe.Changed(-GrowingProbe.CellsOn(map));
         }
         catch (Exception e)
