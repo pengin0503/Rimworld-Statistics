@@ -16,6 +16,14 @@ public enum MetricObservationSource
     Checkpoint,
 }
 
+/// <summary>Whether checkpoint metadata was confirmed from an exact save boundary.</summary>
+public enum CheckpointMetadataEvidence
+{
+    Provisional,
+    Confirmed,
+    Conflicting,
+}
+
 /// <summary>A save file that held the observed bytes.</summary>
 public sealed class MetricFileAlias
 {
@@ -55,6 +63,9 @@ public sealed class MetricObservation
     /// multi-save counter comparability, not for player identification.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ModSetHash { get; set; }
+
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
+    public CheckpointMetadataEvidence CheckpointMetadata { get; set; }
 
     /// <summary>Per acquisition unit, captured at recording time. Null means pre-provenance legacy data.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

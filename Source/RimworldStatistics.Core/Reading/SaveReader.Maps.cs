@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 namespace RimworldStatistics.Core;
@@ -33,7 +32,7 @@ public sealed partial class SaveReader
                 switch (child)
                 {
                     case "uniqueID":
-                        var text = ReadHistoricalAtom(r);
+                        var text = ReadHistoricalAtom(r, s);
                         if (id is not null || !int.TryParse(text, NumberStyles.Integer, Inv, out var parsedId)
                             || parsedId < 0)
                             valid = false;
@@ -51,12 +50,12 @@ public sealed partial class SaveReader
                             switch (field)
                             {
                                 case "parent":
-                                    var value = ReadHistoricalAtom(r);
+                                    var value = ReadHistoricalAtom(r, s);
                                     if (parent is not null || string.IsNullOrWhiteSpace(value)) valid = false;
                                     else parent = value;
                                     break;
                                 case "isPocketMap":
-                                    var flag = ReadHistoricalAtom(r);
+                                    var flag = ReadHistoricalAtom(r, s);
                                     if (pocket is not null || !bool.TryParse(flag, out var isPocket))
                                         valid = false;
                                     else pocket = isPocket;
@@ -101,7 +100,7 @@ public sealed partial class SaveReader
                     r.Skip();
                 }
                 else
-                    pawns.Add(ReadSavedPawn(r));
+                    pawns.Add(ReadSavedPawn(r, s));
                 return;
             }
             var isTurret = className is "Building_TurretGun" or "Building_Turret";
@@ -128,32 +127,32 @@ public sealed partial class SaveReader
                 switch (field)
                 {
                     case "id":
-                        var idValue = ReadHistoricalAtom(r);
+                        var idValue = ReadHistoricalAtom(r, s);
                         if (idSeen || string.IsNullOrWhiteSpace(idValue)) valid = false;
                         idSeen = true;
                         id = idValue;
                         break;
                     case "def":
-                        var defValue = ReadHistoricalAtom(r);
+                        var defValue = ReadHistoricalAtom(r, s);
                         if (defSeen || string.IsNullOrWhiteSpace(defValue)) valid = false;
                         defSeen = true;
                         def = defValue;
                         break;
                     case "faction":
-                        var factionValue = ReadHistoricalAtom(r);
+                        var factionValue = ReadHistoricalAtom(r, s);
                         if (factionSeen || string.IsNullOrWhiteSpace(factionValue)) valid = false;
                         factionSeen = true;
                         faction = factionValue is "null" ? null : factionValue;
                         break;
                     case "stackCount":
-                        var countValue = ReadHistoricalAtom(r);
+                        var countValue = ReadHistoricalAtom(r, s);
                         if (countSeen || !int.TryParse(countValue, NumberStyles.Integer, Inv, out var number))
                             valid = false;
                         else count = number;
                         countSeen = true;
                         break;
                     case "forbidden":
-                        var forbiddenValue = ReadHistoricalAtom(r);
+                        var forbiddenValue = ReadHistoricalAtom(r, s);
                         if (forbiddenSeen || !bool.TryParse(forbiddenValue, out var isForbidden))
                             valid = false;
                         else forbidden = isForbidden;
@@ -193,7 +192,7 @@ public sealed partial class SaveReader
     /// Missing guestStatus represents the game's default Guest state only
     /// when guest tracker and hostFaction fields are explicitly present.
     /// </summary>
-    private static SavedMapPawn ReadSavedPawn(XmlReader r)
+    private static SavedMapPawn ReadSavedPawn(XmlReader r, ReadState s)
     {
         string? id = null, race = null, kind = null, faction = null, host = null, status = null;
         var valid = true;
@@ -211,25 +210,25 @@ public sealed partial class SaveReader
             switch (field)
             {
                 case "id":
-                    var idText = ReadHistoricalAtom(r);
+                    var idText = ReadHistoricalAtom(r, s);
                     if (idSeen || string.IsNullOrWhiteSpace(idText)) valid = false;
                     idSeen = true;
                     id = idText;
                     break;
                 case "def":
-                    var raceText = ReadHistoricalAtom(r);
+                    var raceText = ReadHistoricalAtom(r, s);
                     if (raceSeen || string.IsNullOrWhiteSpace(raceText)) valid = false;
                     raceSeen = true;
                     race = raceText;
                     break;
                 case "kindDef":
-                    var kindText = ReadHistoricalAtom(r);
+                    var kindText = ReadHistoricalAtom(r, s);
                     if (kindSeen || string.IsNullOrWhiteSpace(kindText)) valid = false;
                     kindSeen = true;
                     kind = kindText;
                     break;
                 case "faction":
-                    var factionText = ReadHistoricalAtom(r);
+                    var factionText = ReadHistoricalAtom(r, s);
                     if (factionSeen || string.IsNullOrWhiteSpace(factionText)) valid = false;
                     factionSeen = true;
                     faction = factionText is "null" ? null : factionText;
@@ -242,14 +241,14 @@ public sealed partial class SaveReader
                         switch (guestField)
                         {
                             case "hostFaction":
-                                var hostText = ReadHistoricalAtom(r);
+                                var hostText = ReadHistoricalAtom(r, s);
                                 if (hostSeen || hostText is null || string.IsNullOrWhiteSpace(hostText))
                                     valid = false;
                                 hostSeen = true;
                                 host = hostText is "null" ? null : hostText;
                                 break;
                             case "guestStatus":
-                                var statusText = ReadHistoricalAtom(r);
+                                var statusText = ReadHistoricalAtom(r, s);
                                 if (statusSeen || statusText is not ("Guest" or "Prisoner" or "Slave"))
                                     valid = false;
                                 statusSeen = true;
@@ -265,7 +264,7 @@ public sealed partial class SaveReader
                     ForEachChild(r, healthField =>
                     {
                         if (healthField != "dead") { r.Skip(); return; }
-                        var deadText = ReadHistoricalAtom(r);
+                        var deadText = ReadHistoricalAtom(r, s);
                         if (!bool.TryParse(deadText, out var explicitDead)) valid = false;
                         else dead |= explicitDead;
                     });
@@ -278,13 +277,14 @@ public sealed partial class SaveReader
     }
 
     /// <summary>Fixed-memory small XML scalar reader, including overlong whitespace.</summary>
-    private static string? ReadHistoricalAtom(XmlReader r)
+    private static string? ReadHistoricalAtom(XmlReader r, ReadState s)
     {
         if (r.IsEmptyElement) { r.Read(); return ""; }
         var depth = r.Depth;
         r.Read();
-        var value = new StringBuilder(64);
-        var buffer = new char[64];
+        var value = s.HistoricalAtomValue ??= new char[128];
+        var buffer = s.HistoricalAtomChunk ??= new char[64];
+        var length = 0;
         var valid = true;
         while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
         {
@@ -296,12 +296,13 @@ public sealed partial class SaveReader
                 while ((count = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
                 {
                     if (!valid) continue;
-                    if (value.Length + count > 128)
-                    {
-                        value.Clear();
+                    if (length + count > value.Length)
                         valid = false;
+                    else
+                    {
+                        buffer.AsSpan(0, count).CopyTo(value.AsSpan(length));
+                        length += count;
                     }
-                    else value.Append(buffer, 0, count);
                 }
                 r.Read();
             }
@@ -313,7 +314,7 @@ public sealed partial class SaveReader
             else r.Read();
         }
         r.Read();
-        return valid ? value.ToString().Trim() : null;
+        return valid ? value.AsSpan(0, length).Trim().ToString() : null;
     }
 
 }

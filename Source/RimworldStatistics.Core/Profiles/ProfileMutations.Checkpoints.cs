@@ -15,7 +15,7 @@ public static partial class ProfileMutations
             if (existing.PayloadHash != obs.PayloadHash || existing.ParentKey != obs.ParentKey || existing.SaveTick != obs.SaveTick)
             {
                 existing.Conflicted = true;
-                UncompressOrphanedAncestors(p, existing);
+                UpdateAncestorCompression(p, existing.Identity.ModCampaignId, recover: true);
                 return;
             }
             foreach (var alias in obs.FileAliases)
@@ -23,6 +23,7 @@ public static partial class ProfileMutations
                     existing.FileAliases.Add(alias);
             if (!existing.Conflicted)
             {
+                MergeCheckpointMetadata(existing, obs);
                 if (existing.ArchivedMetrics)
                     p.PendingCheckpointArchive.Add(obs);
                 else
@@ -31,37 +32,55 @@ public static partial class ProfileMutations
             return;
         }
         p.MetricObservations.Add(obs);
-        CompressAncestors(p, obs);
+        UpdateAncestorCompression(p, obs.Identity.ModCampaignId, recover: false);
     }
 
     public static void RestoreArchivedMetrics(MetricObservation target, MetricObservation archived)
         => MergeMetrics(target, archived);
 
-    /// <summary>
-    /// A checkpoint was set aside: an ancestor compressed because of it is the representative candidate again. Its values come
-    /// back from the retained metrics, even when the original save file is no longer accessible.
-    /// </summary>
-    private static void UncompressOrphanedAncestors(Profile p, MetricObservation conflicted)
+    private static void MergeCheckpointMetadata(MetricObservation target, MetricObservation incoming)
+    {
+        if (target.CheckpointMetadata == CheckpointMetadataEvidence.Conflicting
+            || incoming.CheckpointMetadata == CheckpointMetadataEvidence.Provisional)
+            return;
+
+        if (incoming.CheckpointMetadata == CheckpointMetadataEvidence.Conflicting
+            || (target.CheckpointMetadata == CheckpointMetadataEvidence.Confirmed
+                && (target.ModSetHash != incoming.ModSetHash || target.GameVersion != incoming.GameVersion
+                    || !HistoricalCounterIntervals.SameSavedDlc(target.ActiveDlcIds, incoming.ActiveDlcIds))))
+        {
+            target.CheckpointMetadata = CheckpointMetadataEvidence.Conflicting;
+            target.ModSetHash = null;
+            target.ActiveDlcIds = null;
+            target.GameVersion = null;
+            return;
+        }
+
+        target.CheckpointMetadata = CheckpointMetadataEvidence.Confirmed;
+        target.ModSetHash = incoming.ModSetHash;
+        target.ActiveDlcIds = incoming.ActiveDlcIds?.ToList();
+        target.GameVersion = incoming.GameVersion;
+    }
+
+    // A direct, valid later child is sufficient to hide the parent. On a
+    // conflict, restore only compressed nodes that lost their last such child.
+    private static void UpdateAncestorCompression(Profile p, string? campaignId, bool recover)
     {
         var lineage = p.MetricObservations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
-            && o.Identity.ModCampaignId == conflicted.Identity.ModCampaignId).ToList();
-        foreach (var node in lineage)
-            if (node.Compressed && !lineage.Any(c => !c.Conflicted && c.ParentKey == node.Key && c.SaveTick > node.SaveTick))
-                node.Compressed = false;
-    }
+            && o.Identity.ModCampaignId == campaignId).ToList();
+        var latestChildTick = new Dictionary<string, int>(Ord);
+        foreach (var child in lineage)
+            if (!child.Conflicted && child.ParentKey is { } parent
+                && (!latestChildTick.TryGetValue(parent, out var tick) || child.SaveTick > tick))
+                latestChildTick[parent] = child.SaveTick;
 
-    private static void CompressAncestors(Profile p, MetricObservation added)
-    {
-        var lineage = p.MetricObservations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint && !o.Conflicted
-            && o.Identity.ModCampaignId == added.Identity.ModCampaignId).ToList();
         foreach (var node in lineage)
         {
-            if (node.Compressed || !lineage.Any(c => c.ParentKey == node.Key && c.SaveTick > node.SaveTick))
+            if (recover ? !node.Compressed : node.Conflicted || node.Compressed)
                 continue;
-            node.Compressed = true;
-            // A later child may be disqualified by a conflicting checkpoint ID.
-            // Dropping this payload would make the ancestor irrecoverable without its save file.
+            var hasLaterChild = latestChildTick.TryGetValue(node.Key, out var tick) && tick > node.SaveTick;
+            if (recover != hasLaterChild)
+                node.Compressed = hasLaterChild;
         }
     }
-
 }

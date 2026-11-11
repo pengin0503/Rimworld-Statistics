@@ -107,7 +107,7 @@ public static class HistoricalCounterIntervals
     // Saved MOD-list digests are authoritative for compatibility. This
     // additional consistency check rejects contradictory/corrupted DLC
     // metadata even if a digest was copied across observations.
-    private static bool SameSavedDlc(IReadOnlyCollection<string>? a, IReadOnlyCollection<string>? b)
+    internal static bool SameSavedDlc(IReadOnlyCollection<string>? a, IReadOnlyCollection<string>? b)
     {
         if (a is null || b is null)
             return a is null && b is null;

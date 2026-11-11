@@ -58,19 +58,19 @@ public sealed partial class SaveReader
                     switch (field)
                     {
                         case "ID":
-                            var text = ReadHistoricalAtom(r);
+                            var text = ReadHistoricalAtom(r, s);
                             if (id is not null || !int.TryParse(text, NumberStyles.Integer, Inv, out var parsed)
                                 || parsed < 0)
                                 valid = false;
                             else id = parsed;
                             break;
                         case "def":
-                            var d = ReadHistoricalAtom(r);
+                            var d = ReadHistoricalAtom(r, s);
                             if (def is not null || string.IsNullOrWhiteSpace(d)) valid = false;
                             else def = d;
                             break;
                         case "faction":
-                            var f = ReadHistoricalAtom(r);
+                            var f = ReadHistoricalAtom(r, s);
                             if (faction is not null || string.IsNullOrWhiteSpace(f)) valid = false;
                             else faction = f;
                             break;
