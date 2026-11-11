@@ -561,8 +561,20 @@ public sealed class NumericSaveReaderTests
         var bytes = Aligned(new[] { 100f }).Build();
         using var ms = new MemoryStream(bytes);
         var r = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length + 1, DateTime.UnixEpoch);
-        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.Equal(ObservationStatus.Error, r.Observation.Status);
         Assert.Null(r.Metrics);
+        Assert.Null(r.Checkpoint);
+    }
+
+    [Theory]
+    [InlineData("records", "%%%")]
+    [InlineData("recordsDeflate", "AA==")]
+    public void InvalidWealthDoesNotDiscardAnIdentifiableSave(string element, string payload)
+    {
+        var result = ReadDetailed(Base(60000, V17).Component(SaveReader.ComponentClassName, "campaignId", "campaign").WealthTotalRaw(element, payload));
+        Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+        Assert.Null(result.Observation.Identity.FirstWealthBits);
+        Assert.NotNull(result.Metrics);
     }
 
     [Fact]

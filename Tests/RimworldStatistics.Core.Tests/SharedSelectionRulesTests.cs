@@ -17,10 +17,10 @@ public sealed class SharedSelectionRulesTests
     }
 
     [Fact]
-    public void UsesLastCapture_IsExactlyProvidersAndFactions()
+    public void UsesLastCapture_IncludesProvidersFactionsAndOutposts()
     {
         foreach (var d in MetricRegistry.Catalog)
-            Assert.Equal(d.ProviderId is not null || d.Acquisition == "factions", SnapshotSelectionPolicy.UsesLastCapture(d));
+            Assert.Equal(d.ProviderId is not null || d.Acquisition is "factions" or OutpostSnapshot.Unit, SnapshotSelectionPolicy.UsesLastCapture(d));
         Assert.Contains(MetricRegistry.Catalog, d => SnapshotSelectionPolicy.UsesLastCapture(d));
     }
 

@@ -4,17 +4,15 @@ namespace RimworldStatistics.Core;
 public sealed partial class SaveReader
 {
     /// <summary>
-    /// The numeric observation once the v1 read is complete; null when the v1 read failed, when not every byte of the
-    /// file was read, or when anything in the numeric part fails (it never changes the v1 observation).
+    /// The numeric observation once a complete read is confirmed; optional numeric failures do not invalidate the v1 observation.
     /// </summary>
-    private static MetricObservation? TryBuildMetrics(ReadState state, HashingStream hashing, long fileSize)
+    private static MetricObservation? TryBuildMetrics(ReadState state, HashingStream hashing)
     {
         if (state.Obs.Status != ObservationStatus.Ok)
             return null;
         try
         {
-            hashing.ReadToEnd();
-            return hashing.BytesRead == fileSize ? BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash())) : null;
+            return BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash()));
         }
         catch (Exception)
         {

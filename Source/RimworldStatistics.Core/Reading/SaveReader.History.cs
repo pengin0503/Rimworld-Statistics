@@ -175,8 +175,15 @@ public sealed partial class SaveReader
             s.WealthTotalCount++;
             if (s.Wealth is null)
             {
-                s.Wealth = RecordsCodec.Decode(d.Payload, d.Deflate);
-                s.WealthTotalPayload = d.Payload;
+                try
+                {
+                    s.Wealth = RecordsCodec.Decode(d.Payload, d.Deflate);
+                    s.WealthTotalPayload = d.Payload;
+                }
+                catch (Exception error) when (error is FormatException or InvalidDataException)
+                {
+                    s.WealthReadError = error;
+                }
             }
             return;
         }

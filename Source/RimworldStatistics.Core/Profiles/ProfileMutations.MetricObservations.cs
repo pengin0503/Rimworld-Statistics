@@ -95,13 +95,12 @@ public static partial class ProfileMutations
         }
     }
 
-    /// <summary>
-    /// True when <paramref name="older"/> can no longer change any shown value, so keeping it only grows the record file
-    /// (each changed autosave is a new observation). Both are save-file observations with the same identity (fingerprint,
-    /// campaign id and starting pawn set, so they are always attached to the same colony); <paramref name="newer"/> has a
-    /// strictly later tick, so it is always chosen as the representative; and the only value taken across observations,
-    /// the mod count, is the same in both.
-    /// </summary>
+    private static readonly IReadOnlyDictionary<string, int> SaveFileRevisions = MetricRegistry.BaseCatalog
+        .Where(d => d.Source == MetricObservationSource.SaveFile)
+        .GroupBy(d => d.StoredKey, Ord)
+        .ToDictionary(g => g.Key, g => g.First().Revision, Ord);
+
+    /// <summary>Whether a later equivalent save can replace the older representative without discarding independent evidence.</summary>
     private static bool Supersedes(MetricObservation newer, MetricObservation older,
         IReadOnlySet<(string FileName, long FileSize, DateTime LastWriteUtc)>? checkpointFiles)
     {
@@ -126,11 +125,12 @@ public static partial class ProfileMutations
             || older.FileAliases.Any(a =>
                 checkpointFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))))
             return false;
-        // Historical partial faction observations do not survive if the
-        // newer save cannot be interpreted (e.g., mod changed or missing refs).
-        if (older.EvidenceByAcquisition?.ContainsKey("factions") == true
-            && older.Metrics.ContainsKey(FactionStateSnapshot.Relations)
-            && !newer.Metrics.ContainsKey(FactionStateSnapshot.Relations))
+        // Historical fallback uses independently captured SaveFile rows for
+        // snapshot metrics (including extrema). Preserve every such sample.
+        // Also retain anything this reader cannot prove it understands.
+        if (older.EvidenceByAcquisition is { Count: > 0 } || HasOpaqueData(older)
+            || older.Metrics.Any(kv => !SaveFileRevisions.TryGetValue(kv.Key, out var revision)
+                || kv.Value.IsQuarantined || kv.Value.Revision != revision))
             return false;
         return ModCount(newer) == ModCount(older);
     }
