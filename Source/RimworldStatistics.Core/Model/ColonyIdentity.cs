@@ -31,8 +31,20 @@ public sealed class ColonyIdentity
     [JsonIgnore]
     public bool HasFingerprint => SeedString != null && StartingTile != null && FirstWealthBits != null;
 
+    private sealed record CachedFingerprint(string? Seed, int Random, string? Tile, int AbsTick, uint? Wealth, string? Hash);
+    private CachedFingerprint? _fingerprint;
+
     /// <summary>First 8 bytes of SHA-256 over the fingerprint fields, lower-case hex; null when incomplete.</summary>
-    public string? FingerprintHash() => FingerprintHash(CultureInfo.InvariantCulture.NumberFormat);
+    public string? FingerprintHash()
+    {
+        var c = _fingerprint;
+        if (c is not null && ReferenceEquals(c.Seed, SeedString) && c.Random == PersistentRandomValue
+            && ReferenceEquals(c.Tile, StartingTile) && c.AbsTick == GameStartAbsTick && c.Wealth == FirstWealthBits)
+            return c.Hash;
+        var hash = FingerprintHash(CultureInfo.InvariantCulture.NumberFormat);
+        _fingerprint = new CachedFingerprint(SeedString, PersistentRandomValue, StartingTile, GameStartAbsTick, FirstWealthBits, hash);
+        return hash;
+    }
 
     internal IEnumerable<string> LegacyFingerprints()
     {
