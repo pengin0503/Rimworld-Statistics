@@ -22,12 +22,20 @@ public static partial class ProfileMutations
                 if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
                     existing.FileAliases.Add(alias);
             if (!existing.Conflicted)
-                MergeMetrics(existing, obs);
+            {
+                if (existing.ArchivedMetrics)
+                    p.PendingCheckpointArchive.Add(obs);
+                else
+                    MergeMetrics(existing, obs);
+            }
             return;
         }
         p.MetricObservations.Add(obs);
         CompressAncestors(p, obs);
     }
+
+    public static void RestoreArchivedMetrics(MetricObservation target, MetricObservation archived)
+        => MergeMetrics(target, archived);
 
     /// <summary>
     /// A checkpoint was set aside: an ancestor compressed because of it is the representative candidate again. Its values come

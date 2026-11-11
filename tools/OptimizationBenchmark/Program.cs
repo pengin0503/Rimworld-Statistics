@@ -247,7 +247,7 @@ if (mode == "store")
     }
 }
 
-if (mode == "savepath")
+if (mode is "savepath" or "savepath-session")
 {
     var keysPerBreakdown = int.Parse(args[1]);
     var saves = int.Parse(args[2]);
@@ -277,7 +277,10 @@ if (mode == "savepath")
             for (var i = 0; i < n / 4 + 1; i++) { st.CountBy("bench.by", "K" + rnd.Next(keysPerBreakdown)); st.Count("bench.n"); st.Observe("bench.obs", rnd.NextDouble()); }
         }
     }
-    var profile = new Profile();
+    using var directory = mode == "savepath-session" ? new SavePathBenchmarkDirectory() : null;
+    var session = directory is null ? null : new ProfileSession(new ProfileStore(directory.Path),
+        () => DateTime.UtcNow, new FileCheckpointArchive(Path.Combine(directory.Path, "checkpoint-archive")));
+    var profile = session?.Read(p => p) ?? new Profile();
     var ident = new ColonyIdentity { SeedString = "s", PersistentRandomValue = 1, StartingTile = "1,0", GameStartAbsTick = 0, FirstWealthBits = 5, ModCampaignId = "camp", StartingPawnIds = { "A", "B", "C" } };
     var snapDefs = SnapshotCatalog.Definitions.ToArray();
     var epoch = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc);
@@ -297,15 +300,28 @@ if (mode == "savepath")
         var snap = new MetricObservation { Source = MetricObservationSource.SaveSnapshot, Key = Guid.NewGuid().ToString("N"), Identity = ident.Clone(), FormatVersion = 1, SaveTick = tick, ObservedUtc = epoch.AddMinutes(save), ActiveDlcIds = new List<string>() };
         foreach (var d in snapDefs) snap.Metrics[d.StoredKey] = MetricEntry.Of(d.Revision, new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = save % 17 });
         a0 = GC.GetAllocatedBytesForCurrentThread(); t = Stopwatch.GetTimestamp();
-        ProfileMutations.ApplyLiveObservation(profile, "camp", ident, new ObservedValues { TicksGame = tick }, new DisplayInfo(), epoch.AddMinutes(save), "1.7.4985 rev1269");
-        ProfileMutations.UpsertMetricObservation(profile, numeric);
-        ProfileMutations.UpsertMetricObservation(profile, snap);
+        void RecordSave(Profile target)
+        {
+            ProfileMutations.ApplyLiveObservation(target, "camp", ident, new ObservedValues { TicksGame = tick }, new DisplayInfo(), epoch.AddMinutes(save), "1.7.4985 rev1269");
+            ProfileMutations.UpsertMetricObservation(target, numeric);
+            ProfileMutations.UpsertMetricObservation(target, snap);
+        }
+        if (session is null)
+            RecordSave(profile);
+        else
+            session.Mutate(RecordSave, save % 10 == 0 || save == saves ? SaveMode.Immediate : SaveMode.None);
         var mut = Ms(t); var mutA = GC.GetAllocatedBytesForCurrentThread() - a0;
         if (save is 1 or 2 or 10 or 100 or 300 or 1000 or 2000 or 3000 || save == saves)
         {
             t = Stopwatch.GetTimestamp(); var json = ProfileJson.Serialize(profile); var ser = Ms(t);
             Console.WriteLine($"{save},{F(prep)},{prepA / 1024},{draft.Json.Length / 1024},{F(toObs)},{F(mut)},{mutA / 1024},{F(ser)},{F(json.Length / 1e6)},{profile.MetricObservations.Count}");
         }
+    }
+    if (session is not null)
+    {
+        if ((session.LastSaveError ?? session.LastArchiveError) is { } error)
+            throw new InvalidOperationException("The benchmark could not save its generated profile.", error);
+        Console.WriteLine($"archivedCheckpoints={profile.MetricObservations.Count(o => o.ArchivedMetrics)}");
     }
     var tv = Stopwatch.GetTimestamp();
     var cols = CampaignMatcher.BuildColonies(profile);
@@ -328,4 +344,11 @@ if (mode == "profile-report")
         Console.WriteLine($"{g.Key.Source},{g.Key.Compressed},{g.Key.Conflicted},{sizes.Length},{sizes.Sum()},{sizes.Max()}");
     }
     Console.WriteLine($"quarantined={p.MetricObservations.Count(o => o.IsQuarantined)}");
+}
+
+internal sealed class SavePathBenchmarkDirectory : IDisposable
+{
+    public string Path { get; } = Directory.CreateTempSubdirectory("rws-savepath-").FullName;
+
+    public void Dispose() => Directory.Delete(Path, recursive: true);
 }
