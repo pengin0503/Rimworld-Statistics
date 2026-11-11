@@ -102,6 +102,8 @@ jobs:
           python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality
           python3 tools/IntegratedModAudit/check_dbh_contract.py .devinputs/integrated/dbh
           dotnet run -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll
+      - name: Assert one-MOD packaging, old-addon coexistence and unchanged metric IDs
+        run: python3 tools/IntegratedModAudit/check_embedded_integrations.py
       - name: Compile read-only local save-structure verification tool
         run: python3 -m py_compile tools/check_private_save_shapes.py
       - name: Unit-test independent XML/deflate private-save verifier
