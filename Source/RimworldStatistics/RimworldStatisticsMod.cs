@@ -36,6 +36,8 @@ public sealed class RimworldStatisticsMod : Mod
             ExperimentalAcquisitionPolicy.Resolve(ActiveAcquisitionSelection, AcquisitionUnits.All));
         if (!StatisticsApi.InstallHost(ExternalSdkHost.Instance))
             Log.Error("[RimworldStatistics] External SDK host could not be installed; SDK calls remain unavailable.");
+        else
+            IntegratedModStartup.Register(); // Before SDK registration freezes during startup.
         PatchRunner.ApplyAll(new Harmony(HarmonyId));
     }
 
