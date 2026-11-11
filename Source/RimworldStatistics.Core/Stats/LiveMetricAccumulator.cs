@@ -82,11 +82,9 @@ public sealed class LiveMetricAccumulator
                 if (family.ThroughTick != payload.SaveTick || payload.SaveTick != tick)
                     Interrupt(name, family, family.ThroughTick, family.ThroughTick);
                 if (experimentalUnits is not null)
-                    family.Evidence = MetricEvidencePolicy.Combine(new[]
-                    {
+                    family.Evidence = MetricEvidencePolicy.Combine(
                         family.Evidence ?? MetricEvidence.UnknownLegacy,
-                        experimentalUnits.Contains(name) ? MetricEvidence.Experimental : MetricEvidence.Verified,
-                    });
+                        experimentalUnits.Contains(name) ? MetricEvidence.Experimental : MetricEvidence.Verified);
                 acc._recording[name] = family;
                 acc._order.Add(name);
             }

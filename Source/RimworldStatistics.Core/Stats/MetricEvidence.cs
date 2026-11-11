@@ -14,11 +14,20 @@ public static class MetricEvidencePolicy
     /// <summary>Never upgrade an old observation when the acquisition unit is verified in a later release.</summary>
     public static MetricEvidence Combine(IEnumerable<MetricEvidence> values)
     {
-        var seen = new HashSet<MetricEvidence>(values);
-        if (seen.Count == 0 || seen.Contains(MetricEvidence.UnknownLegacy))
-            return MetricEvidence.UnknownLegacy;
-        if (seen.Count == 1)
-            return seen.Single();
-        return MetricEvidence.Mixed;
+        var any = false;
+        var mixed = false;
+        var first = MetricEvidence.UnknownLegacy;
+        foreach (var v in values)
+        {
+            if (v == MetricEvidence.UnknownLegacy)
+                return MetricEvidence.UnknownLegacy;
+            if (!any) { first = v; any = true; }
+            else if (v != first) mixed = true;
+        }
+        return !any ? MetricEvidence.UnknownLegacy : mixed ? MetricEvidence.Mixed : first;
     }
+
+    public static MetricEvidence Combine(MetricEvidence a, MetricEvidence b)
+        => a == MetricEvidence.UnknownLegacy || b == MetricEvidence.UnknownLegacy ? MetricEvidence.UnknownLegacy
+            : a == b ? a : MetricEvidence.Mixed;
 }
