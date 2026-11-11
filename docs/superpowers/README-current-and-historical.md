@@ -2,6 +2,20 @@
 
 This index is the **starting point** for maintenance. Older specs are retained as historical design decisions/acceptance fixtures, not to be reapproved or blindly reimplemented. **Never read the entire old tree and start a new discovery phase**: use the active documents and follow precise source pointers.
 
+## Optimization review and implementation handoff (2026-11-11) — design only, no production code changed
+
+Architecture-level review of `main@2cd7a2d` for performance, memory, maintainability and extensibility. Statistic IDs, stored formats and aggregate meanings are unchanged by every adopted task. Read in this order:
+
+1. [Current architecture](specs/2026-11-11-optimization-1-architecture-analysis.md)
+2. [Findings F-01–F-23](specs/2026-11-11-optimization-2-findings.md) (each marked measured / static / unverified)
+3. [Priorities, expected effect, risk; adopted and rejected options](specs/2026-11-11-optimization-3-prioritization.md)
+4. [Adopted design D1–D11](specs/2026-11-11-optimization-4-adopted-design.md)
+5. [Implementation plan T0–T11](plans/2026-11-11-optimization-5-implementation-plan.md)
+6. [Regression, performance comparison and verification](plans/2026-11-11-optimization-6-verification.md)
+7. [Prompt for the implementing model](plans/2026-11-11-optimization-7-handoff-prompt.md) · [benchmark harness source](plans/2026-11-11-optimization-benchmark-harness.md)
+
+No in-game TPS, save-time or UI timing was measured; T11 (checkpoint archive) is gated on a real-profile measurement by the owner.
+
 ## Most recent authoritative user decision (2026-11-11): 19-candidate keep/delete
 
 **Read [approved 13 keep / 6 delete groups](../research/2026-11-11-approved-metric-retention-removal.md) first.** This user decision supersedes historic design inventories and all sections below when inconsistent. The deleted groups correspond to **10 active metric keys**: `membership.unique`, `membership.rejoin`, `membership.recruit_time.min`, `membership.recruit_time.max`, `facilities.rooms.peak`, `food.no_shortage.longest`, `work.crops.cold_loss`, `work.crops.other_loss`, `work.crops.loss_rate`, `facilities.medical_beds.peak`. Previously retired running-generator count and nested storage-holder inventory remain discontinued. Retain all other 13 named difficult-metric groups.
