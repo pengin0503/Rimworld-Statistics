@@ -1,11 +1,19 @@
-# Specification status index — updated 2026-11-10
+# Specification status index — updated 2026-11-11
 
 This index is the **starting point** for maintenance. Older specs are retained as historical design decisions/acceptance fixtures, not to be reapproved or blindly reimplemented. **Never read the entire old tree and start a new discovery phase**: use the active documents and follow precise source pointers.
+
+## Most recent authoritative user decision (2026-11-11): 19-candidate keep/delete
+
+**Read [approved 13 keep / 6 delete groups](../research/2026-11-11-approved-metric-retention-removal.md) first.** This user decision supersedes historic design inventories and all sections below when inconsistent. The deleted groups correspond to **10 active metric keys**: `membership.unique`, `membership.rejoin`, `membership.recruit_time.min`, `membership.recruit_time.max`, `facilities.rooms.peak`, `food.no_shortage.longest`, `work.crops.cold_loss`, `work.crops.other_loss`, `work.crops.loss_rate`, `facilities.medical_beds.peak`. Previously retired running-generator count and nested storage-holder inventory remain discontinued. Retain all other 13 named difficult-metric groups.
+
+**Unmerged draft Statistics PR #102:** SaveReader **v15**, **404 registered definitions (321 base + 83 derived)**; historical recovery inventory **264 acquisition definitions (216 live, 39 snapshot, 9 derived)**. Checkpoint schema v1, profile schema 2, and surviving metric meanings/revisions preserved. Existing family-level ID dedup still supports first-join and birth correctness, but does not expose lifetime unique-member or rejoin counts. Food spoilage, crop sowing/harvest, stock nutrition, animal/mech comparisons, colony rescue, caravan and raid outcomes remain. The deleted high-frequency `ResourceCounter` observation and `Plant.MakeLeafless` Harmony patch and region grid walk have been removed. **Previous v14 R2 49-save and real-game A+B runs are historical evidence and do not qualify the v15 code** until source-pinned acceptance is re-run. Latest test outcomes are recorded on PR #102.
+
+**Shipped main v1.4.0 is unchanged.** Do not merge/release without a further user instruction, and do not repurpose or delete private historic save records.
 
 ## Current baseline and work branch
 
 - **Shipped main:** v1.4.0, `main@f6890ee626bceb087693136a304333ce089d926c`; 415 registered definitions (331 original + 84 derived); SaveReader v10. Verify HEAD before changing release version.
-- **Active draft implementation:** [PR #102](https://github.com/pengin0503/Rimworld-Statistics/pull/102), branch `feat/post-v1.4-coverage-and-full-leaderboards-20261110`. Scope: coverage diagnostics, measured item ranking, MOD/DLC hardening, bounded P2 optimizations, provisional research, owned-home turrets and direct Silver/Core medicine historical lower bounds. **Reader v13, not merged**.
+- **Active draft implementation:** [PR #102](https://github.com/pengin0503/Rimworld-Statistics/pull/102), branch `feat/post-v1.4-coverage-and-full-leaderboards-20261110`. Scope: prior coverage/leaderboards, provisional R2 research, home turrets/Silver/medicine, 1.7 saved Pawn roles, and the [approved 19-candidate deletion decision](../research/2026-11-11-approved-metric-retention-removal.md). **SaveReader v15, 404 definitions, not merged**.
 - **Research origin:** [PR #101](https://github.com/pengin0503/Rimworld-Statistics/pull/101), originally separate, now **its two authoritative files are also copied onto PR #102's branch** so a future merge of #102 is self-contained. Do not delete #101 while external issue links depend on it.
 
 ## Use these current documents in this order
