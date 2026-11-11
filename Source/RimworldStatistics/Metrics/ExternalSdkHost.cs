@@ -8,6 +8,7 @@ namespace RimworldStatistics.Metrics;
 internal sealed class ExternalSdkHost : IStatisticsHost
 {
     public static ExternalSdkHost Instance { get; } = new();
+    internal DeferredHookRegistry IntegratedHooks { get; } = new();
     private readonly ExternalSdkMetricRegistry registry = new();
     private readonly object gate = new();
 
@@ -91,7 +92,11 @@ internal sealed class ExternalSdkHost : IStatisticsHost
             if (metric.Api.Kind == ApiMetricKind.Event)
                 result.Add(new ModMetricAdapterRegistration(d,
                     EventFamily: familyBuilders[d.AcquisitionId],
-                    InstallEventHook: _ => { }, ProviderVersion: metric.Api.ProviderVersion));
+                    InstallEventHook: _ =>
+                    {
+                        if (!IntegratedHooks.Run(d.AcquisitionId))
+                            throw new InvalidOperationException("Integrated event hook could not be installed for " + d.AcquisitionId);
+                    }, ProviderVersion: metric.Api.ProviderVersion));
             else
                 result.Add(new ModMetricAdapterRegistration(d,
                     CaptureSnapshot: () =>

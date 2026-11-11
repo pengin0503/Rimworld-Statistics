@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using RimworldStatistics.Metrics;
 using Verse;
 
 namespace RimworldStatistics.HospitalityAddon;
@@ -23,10 +24,13 @@ internal static class HospitalitySdk
         try
         {
             if (!Bridge.HasHost()) return;
-            // Register lifetime acquisition only after the source-signature hook is installed.
-            var arrivalReady = HospitalityArrival.TryBind() && HospitalityArrival.TryInstall();
-            // Recruitment is registered only after its independent exact-shape hook is live.
-            var recruitReady = HospitalityRecruitHook.TryBind() && HospitalityRecruitHook.TryInstall();
+            var hooks = ExternalSdkHost.Instance.IntegratedHooks;
+            var arrivalReady = HospitalityArrival.TryBind();
+            if (arrivalReady)
+                hooks.Defer("mod.orion.hospitality.visits", HospitalityArrival.TryInstall);
+            var recruitReady = HospitalityRecruitHook.TryBind();
+            if (recruitReady)
+                hooks.Defer("mod.orion.hospitality.recruits", HospitalityRecruitHook.TryInstall);
             var bedsReady = HospitalityAssignedBedsSnapshot.TryBind();
             (groupConnected, guestsConnected, recruitedConnected, forcedConnected, voluntaryConnected) =
                 Bridge.Attach(arrivalReady, recruitReady, bedsReady);
