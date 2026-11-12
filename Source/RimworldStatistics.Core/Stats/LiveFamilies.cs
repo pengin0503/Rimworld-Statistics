@@ -218,6 +218,7 @@ public static class LiveFamilies
         DisasterFamily.Family,
         ModdedIncidentFamily.Family,
         VpeStatistics.Family,
+        OutpostProduction.Family,
         RoyaltyFamily.Family,
         IdeologyFamily.Family,
         OdysseyFamily.Family,

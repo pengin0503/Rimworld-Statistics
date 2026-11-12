@@ -1,4 +1,5 @@
 using RimWorld;
+using RimWorld.Planet;
 using RimworldStatistics.Core;
 using RimworldStatistics.Patches.Metrics;
 using Verse;
@@ -91,11 +92,11 @@ internal static class SavedStateMetricReader
             ?? throw new InvalidOperationException("Player faction is not initialized");
         var objects = Find.WorldObjects?.AllWorldObjects
             ?? throw new InvalidOperationException("World objects are not initialized");
-        var unique = new HashSet<object>(ReferenceEqualityComparer.Instance);
+        var unique = new HashSet<WorldObject>(ReferenceEqualityComparer.Instance);
         foreach (var obj in objects)
             if (obj != null && obj.Faction == player && OutpostSnapshot.IsOutpostType(obj.GetType()))
                 unique.Add(obj);
-        return OutpostSnapshot.Build(unique.Count);
+        return OutpostSnapshot.Build(unique.Select(outpost => new OutpostState(outpost.def?.defName, OutpostContract.CountPawns(outpost))).ToArray());
     }
 
     /// <summary>Biome of the original game starting tile; relocation never changes the category.</summary>
