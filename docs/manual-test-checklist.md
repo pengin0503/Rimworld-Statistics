@@ -65,6 +65,13 @@
 - [ ] 日本語・英語、標準ウィンドウと小画面で7タブのフォールバックと表が重ならない
 - [ ] 実ゲーム未検証の統計を「実測済み＝検証済み」と誤認させる表示がない
 
+## CSV出力（A7 / #161）
+
+- [ ] データ管理から全コロニーと保存済みグループの両方を出力し、ボタンとmanifestの範囲名が一致する。
+- [ ] ExcelまたはLibreOfficeで日本語・長いコロニー名・カンマや引用符を含む名前を開く。欠測は空欄、数値列は小数点付きで読める。
+- [ ] `summary.csv` を詳細統計、`rankings.csv` を昇順・降順のランキングと照合する。`colonies.csv` に範囲外のコロニーも残っている。
+- [ ] 空のプロフィール、出力失敗時の表示、フォルダーを開く・パスをコピーを確認する。
+
 ## 0. 準備
 
 - [ ] 配布物を作る: `tools/fetch_dev_inputs.py refs .refs` のあと `bash tools/package.sh artifacts/RimworldStatistics.zip`。zip を展開した `RimworldStatistics` フォルダを `Mods` フォルダに置く（または Workshop の外の任意の MOD フォルダ）
