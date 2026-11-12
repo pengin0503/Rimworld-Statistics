@@ -107,8 +107,10 @@ internal static class SavedStateMetricReader
             ?? throw new InvalidOperationException("Player faction is not initialized");
         foreach (var map in Find.Maps)
             if (map.IsPlayerHome)
-                foreach (var thing in map.listerThings.AllThings)
-                    if (thing is Building building && building.Faction == player)
+                // ListerBuildings maintains spawned player-owned buildings; avoid walking
+                // potentially thousands of items, plants and filth on every save.
+                foreach (var building in map.listerBuildings.allBuildingsColonist)
+                    if (building != null && building.Faction == player)
                         yield return new DbhFixture(building.def?.defName, building.def?.modContentPack?.PackageId, true);
     }
 
@@ -230,12 +232,14 @@ internal static class SavedStateMetricReader
                 var player = Faction.OfPlayerSilentFail;
                 var turrets = 0;
                 double generation = 0, battery = 0;
-                foreach (var thing in map.listerThings.AllThings)
+                // Only spawned player buildings can contribute turrets or power comps.
+                // The growing-zone count deliberately retains its separate cell path.
+                foreach (var building in map.listerBuildings.allBuildingsColonist)
                 {
-                    if (thing.Faction != player)
+                    if (building == null || building.Faction != player)
                         continue;
-                    if (thing is Building_Turret) turrets++;
-                    if (thing is not ThingWithComps compThing) continue;
+                    if (building is Building_Turret) turrets++;
+                    ThingWithComps compThing = building;
                     var plant = compThing.TryGetComp<CompPowerPlant>();
                     if (plant != null)
                     {
