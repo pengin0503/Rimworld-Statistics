@@ -43,6 +43,32 @@ public static class MetricGates
         }
     }
 
+    /// <summary>Selection frozen at startup, independent of whether targets were compatible.</summary>
+    internal static bool IsSelected(string unitId)
+    {
+        lock (Gate)
+        {
+            var unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
+            return unit is not null && unit.Kind != AcquisitionKind.Derived
+                && (unit.Status == AcquisitionStatus.Verified || productionSelection.Contains(unitId)
+                    || OpenedForVerification.Contains(unitId));
+        }
+    }
+
+    /// <summary>Diagnose selected units with no compatible capture target once after adapter initialization.</summary>
+    internal static void WarnUnavailableSelectedUnits()
+    {
+        foreach (var unit in AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits)
+                     .DistinctBy(unit => unit.Id, StringComparer.Ordinal))
+        {
+            if (UnitRecordingStates.Get(unit.Id) != UnitRecordingState.TargetIncompatible)
+                continue;
+            Log.WarningOnce($"[RimworldStatistics] Selected acquisition '{unit.Id}' is not recording: "
+                + "target MOD version, method or source contract is not supported by this build.",
+                ("RWS.unit.incompatible." + unit.Id).GetHashCode());
+        }
+    }
+
     public static bool IsExperimental(string unitId)
         => (AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId))?.Status == AcquisitionStatus.Unverified
             && IsRecording(unitId);

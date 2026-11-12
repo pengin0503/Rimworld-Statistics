@@ -20,7 +20,9 @@ internal static class UnitRecordingStates
             return UnitRecordingState.TargetModMissing;
         if (MetricGates.FailedThisSession(acquisitionId))
             return UnitRecordingState.Failed;
-        return MetricGates.IsRecording(acquisitionId)
-            ? UnitRecordingState.Recording : UnitRecordingState.NotSelected;
+        if (MetricGates.IsRecording(acquisitionId))
+            return UnitRecordingState.Recording;
+        return MetricGates.IsSelected(acquisitionId)
+            ? UnitRecordingState.TargetIncompatible : UnitRecordingState.NotSelected;
     }
 }

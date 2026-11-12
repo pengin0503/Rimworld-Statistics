@@ -1000,6 +1000,7 @@
   <RWS_Status_RecordingOff>Not recording</RWS_Status_RecordingOff>
   <RWS_Status_DlcMissing>Required DLC missing</RWS_Status_DlcMissing>
   <RWS_Status_ModMissing>Target MOD missing</RWS_Status_ModMissing>
+  <RWS_Status_TargetIncompatible>Target MOD version or capture hook unsupported</RWS_Status_TargetIncompatible>
   <RWS_Status_RecordingFailed>Failed this session</RWS_Status_RecordingFailed>
   <RWS_Status_RecordingUnnecessary>No live collection needed</RWS_Status_RecordingUnnecessary>
   <RWS_Status_MissingColonies>Missing observations in {0} colonies:</RWS_Status_MissingColonies>

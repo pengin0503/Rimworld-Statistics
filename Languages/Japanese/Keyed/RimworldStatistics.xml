@@ -1000,6 +1000,7 @@
   <RWS_Status_RecordingOff>現在は記録していない</RWS_Status_RecordingOff>
   <RWS_Status_DlcMissing>必要DLCなし</RWS_Status_DlcMissing>
   <RWS_Status_ModMissing>対象MODなし</RWS_Status_ModMissing>
+  <RWS_Status_TargetIncompatible>対象MODの版・取得先が非対応</RWS_Status_TargetIncompatible>
   <RWS_Status_RecordingFailed>このセッションで失敗</RWS_Status_RecordingFailed>
   <RWS_Status_RecordingUnnecessary>プレイ中取得は不要</RWS_Status_RecordingUnnecessary>
   <RWS_Status_MissingColonies>取得のないコロニー {0}件：</RWS_Status_MissingColonies>

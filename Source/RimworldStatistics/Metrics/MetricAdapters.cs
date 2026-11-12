@@ -33,6 +33,7 @@ public static class MetricAdapters
         try
         {
             ApplyOpen(new Harmony(RimworldStatisticsMod.HarmonyId));
+            MetricGates.WarnUnavailableSelectedUnits();
         }
         catch (Exception e)
         {
