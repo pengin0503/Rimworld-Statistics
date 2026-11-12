@@ -351,6 +351,7 @@ public sealed class ProfileSession
             IReadOnlyList<ArchiveStep> steps;
             long plannedRevision;
             var batches = new Dictionary<string, List<string>>(StringComparer.Ordinal);
+            var serialized = new List<(ArchiveStep Step, string Json)>();
             lock (_lock)
             {
                 plannedRevision = _changeSeq;
@@ -360,7 +361,9 @@ public sealed class ProfileSession
                     var campaign = step.Observation.Identity.ModCampaignId!;
                     if (!batches.TryGetValue(campaign, out var lines))
                         batches.Add(campaign, lines = new List<string>());
-                    lines.Add(JsonSerializer.Serialize(step.Observation, ProfileJson.CompactOptions));
+                    var json = JsonSerializer.Serialize(step.Observation, ProfileJson.CompactOptions);
+                    lines.Add(json);
+                    serialized.Add((step, json));
                 }
             }
 
@@ -372,8 +375,31 @@ public sealed class ProfileSession
                 // A mutation can replace a breakdown in place without changing its
                 // entry reference or size. Only trim the revision written to disk.
                 if (_changeSeq == plannedRevision)
+                {
                     foreach (var step in steps)
                         CheckpointArchivePlanner.Apply(step);
+                }
+                else
+                {
+                    // An unrelated import mutation must not leave the same ancestor
+                    // untrimmed and repeatedly appended. Recheck BOTH the archived
+                    // parent bytes and current child proof before applying any drop.
+                    // Changed parent payloads and invalidated child proofs stay intact.
+                    var current = CheckpointArchivePlanner.Plan(_profile);
+                    foreach (var (step, json) in serialized)
+                    {
+                        var stillPlanned = current.FirstOrDefault(candidate =>
+                            ReferenceEquals(candidate.Observation, step.Observation));
+                        if (stillPlanned is null || !step.Drops.All(drop => stillPlanned.Drops.Any(now =>
+                                now.Key == drop.Key && ReferenceEquals(now.Entry, drop.Entry)
+                                && now.ValueCount == drop.ValueCount)))
+                            continue;
+                        if (!string.Equals(JsonSerializer.Serialize(step.Observation, ProfileJson.CompactOptions),
+                                json, StringComparison.Ordinal))
+                            continue;
+                        CheckpointArchivePlanner.Apply(step);
+                    }
+                }
             }
 
             if (batches.Count > 0)
