@@ -20,6 +20,11 @@
   <RWS_Export_Progress>Exporting files ({0}/{1})…</RWS_Export_Progress>
   <RWS_Export_Error>CSV export failed: {0}</RWS_Export_Error>
   <RWS_Export_Done>CSV saved to {0}</RWS_Export_Done>
+  <RWS_Compare_Mode>Compare</RWS_Compare_Mode>
+  <RWS_Compare_Add>Add column…</RWS_Compare_Add>
+  <RWS_Compare_Group>Group</RWS_Compare_Group>
+  <RWS_Compare_Colony>Colony</RWS_Compare_Colony>
+  <RWS_Compare_Remove>Remove column</RWS_Compare_Remove>
   <RWS_Stat_Days>In-game days</RWS_Stat_Days>
   <RWS_Stat_Endings>Endings reached</RWS_Stat_Endings>
   <RWS_Stat_Departed>Colonists departed</RWS_Stat_Departed>

@@ -42,6 +42,7 @@ public static class DetailsTab
 
     private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
     private static bool perColony;
+    private static bool comparing;
     private static string? colonyKey;
     private static MetricCategory? category;
     private static string search = "";
@@ -54,7 +55,7 @@ public static class DetailsTab
     private static Inputs? builtFor;
     private static List<Line> lines = new();
 
-    public static void Draw(Rect rect, StatsView view, ViewPreferences? favorites = null, Action? saveFavorites = null)
+    public static void Draw(Rect rect, StatsView view, ProfileSession session, ViewPreferences? favorites = null, Action? saveFavorites = null)
     {
         favoritePreferences = favorites;
         persistFavorites = saveFavorites;
@@ -64,22 +65,25 @@ public static class DetailsTab
             Widgets.Label(rect, "RWS_NoData".Translate());
             return;
         }
-        if (perColony && (colonyKey is null || numeric.Colonies.All(c => c.Key != colonyKey)))
+        if (!comparing && perColony && (colonyKey is null || numeric.Colonies.All(c => c.Key != colonyKey)))
             colonyKey = numeric.Colonies.OrderBy(c => Name(view.Stats, c.Key), StringComparer.CurrentCulture).First().Key;
 
         var y = rect.y;
         y += DrawControls(new Rect(rect.x, y, rect.width, ControlHeight), view) + 4f;
 
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
-        if (view.Stats.OutOfScopeColonyCount > 0)
-            note += " " + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
-        if (numeric.Unattributed > 0)
-            note += " " + "RWS_Details_Unattributed".Translate(numeric.Unattributed);
-        var noteHeight = Text.CalcHeight(note, rect.width);
-        Widgets.Label(new Rect(rect.x, y, rect.width, noteHeight), note);
-        GUI.color = Color.white;
-        y += noteHeight + 4f;
+        if (!comparing)
+        {
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
+            if (view.Stats.OutOfScopeColonyCount > 0)
+                note += " " + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
+            if (numeric.Unattributed > 0)
+                note += " " + "RWS_Details_Unattributed".Translate(numeric.Unattributed);
+            var noteHeight = Text.CalcHeight(note, rect.width);
+            Widgets.Label(new Rect(rect.x, y, rect.width, noteHeight), note);
+            GUI.color = Color.white;
+            y += noteHeight + 4f;
+        }
 
         const float filterHeight = 25f;
         var filterRect = new Rect(rect.x, y, Math.Min(rect.width, 230f), filterHeight);
@@ -94,6 +98,15 @@ public static class DetailsTab
                 })).ToList()));
         }
         y += filterHeight + 4f;
+        if (comparing)
+        {
+            var filter = (viewMode, category, search: search.Trim(), statusFilter);
+            ComparisonPanel.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), session, view, favorites, filter,
+                (definition, label) => MatchesMode(definition, filter.viewMode) && (filter.category is null || definition.Category == filter.category)
+                    && MatchesSearch(definition, label, filter.search),
+                row => MatchesStatus(row, filter.statusFilter));
+            return;
+        }
 
         var language = LanguageDatabase.activeLanguage;
         var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, language);
@@ -161,9 +174,16 @@ public static class DetailsTab
             }));
         }
 
-        if (Button(perColony ? "RWS_Details_PerColony".Translate() : "RWS_Details_AllColonies".Translate(), 240f))
-            perColony = !perColony;
-        if (perColony && colonyKey is { } selected)
+        var displayLabel = comparing ? (string)"RWS_Compare_Mode".Translate()
+            : perColony ? (string)"RWS_Details_PerColony".Translate() : (string)"RWS_Details_AllColonies".Translate();
+        if (Button(displayLabel, 240f))
+            Find.WindowStack.Add(new FloatMenu(
+            [
+                new FloatMenuOption("RWS_Details_AllColonies".Translate(), () => (comparing, perColony) = (false, false)),
+                new FloatMenuOption("RWS_Details_PerColony".Translate(), () => (comparing, perColony) = (false, true)),
+                new FloatMenuOption("RWS_Compare_Mode".Translate(), () => comparing = true),
+            ]));
+        if (!comparing && perColony && colonyKey is { } selected)
         {
             if (Button(Name(view.Stats, selected), 260f))
             {
@@ -192,6 +212,27 @@ public static class DetailsTab
         search = Widgets.TextField(field, search) ?? "";
         return controls.Height;
     }
+
+    private static bool MatchesStatus(NumericRow row, DetailsStatusFilter filter) => filter switch
+    {
+        DetailsStatusFilter.Measured => MetricDisplayPolicy.HasMeasuredNumber(row),
+        DetailsStatusFilter.Partial => MetricStatusClassifier.IsPartial(row),
+        DetailsStatusFilter.Missing => !MetricDisplayPolicy.HasMeasuredNumber(row) && row.Value.Coverage != MetricCoverage.NotApplicable,
+        DetailsStatusFilter.Experimental => MetricStatusClassifier.IsExperimental(row),
+        _ => true,
+    };
+
+    private static bool MatchesMode(MetricDefinition definition, DetailsViewMode mode) => mode switch
+    {
+        DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(definition),
+        DetailsViewMode.Other => !MetricDisplayPolicy.IsLifetimeCumulative(definition),
+        _ => true,
+    };
+
+    private static bool MatchesSearch(MetricDefinition definition, string label, string term) =>
+        term.Length == 0 || label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
+        || definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
+        || definition.LedgerIds.Contains(term, StringComparison.OrdinalIgnoreCase);
 
     private static string StatusFilterLabel(DetailsStatusFilter filter) => filter switch
     {
@@ -327,26 +368,10 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
-            .Where(r => input.StatusFilter switch
-            {
-                DetailsStatusFilter.Measured => MetricDisplayPolicy.HasMeasuredNumber(r),
-                DetailsStatusFilter.Partial => MetricStatusClassifier.IsPartial(r),
-                DetailsStatusFilter.Missing => !MetricDisplayPolicy.HasMeasuredNumber(r)
-                    && r.Value.Coverage != MetricCoverage.NotApplicable,
-                DetailsStatusFilter.Experimental => MetricStatusClassifier.IsExperimental(r),
-                _ => true,
-            })
-            .Where(r => input.Mode switch
-            {
-                DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(r.Definition),
-                DetailsViewMode.Other => !MetricDisplayPolicy.IsLifetimeCumulative(r.Definition),
-                _ => true,
-            })
+            .Where(r => MatchesStatus(r, input.StatusFilter))
+            .Where(r => MatchesMode(r.Definition, input.Mode))
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
-            .Where(x => term.Length == 0
-                || x.Label.IndexOf(term, StringComparison.CurrentCultureIgnoreCase) >= 0
-                || x.Row.Definition.Key.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0
-                || x.Row.Definition.LedgerIds.IndexOf(term, StringComparison.OrdinalIgnoreCase) >= 0)
+            .Where(x => MatchesSearch(x.Row.Definition, x.Label, term))
             .ToList();
 
         IEnumerable<(NumericRow Row, string Label)> ordered;
