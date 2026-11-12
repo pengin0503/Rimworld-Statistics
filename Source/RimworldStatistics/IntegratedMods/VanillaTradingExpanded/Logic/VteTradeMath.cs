@@ -26,6 +26,10 @@ internal static class VteTradeMath
         return (int)Math.Min(requested, Math.Min(consumed, int.MaxValue));
     }
 
+    /// <summary>Player-posted contracts settle only after full bank payment and item generation.</summary>
+    internal static bool PaidPurchaseCompleted(int cost, long plannedSpend, int requested, int remaining)
+        => cost > 0 && plannedSpend == cost && requested > 0 && remaining == 0;
+
     internal static int ProportionalReward(int reward, int requested, int delivered)
     {
         if (reward <= 0 || requested <= 0 || delivered <= 0)
