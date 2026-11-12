@@ -148,6 +148,7 @@ jobs:
             1.6/Source/VanillaTradingExpanded/AI/LordJob_GrabItemsAndLeave.cs
             1.6/Source/VanillaTradingExpanded/Misc/TransactionProcess.cs
             1.6/Source/VanillaTradingExpanded/UI/Window_PerformTransactionCosts.cs
+            1.6/Assemblies/VanillaTradingExpanded.dll
           sparse-checkout-cone-mode: false
           persist-credentials: false
       - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
@@ -157,6 +158,13 @@ jobs:
           python3 tools/IntegratedModAudit/check_outposts_contract.py .devinputs/integrated/vef-outposts .devinputs/integrated/voe
           python3 tools/IntegratedModAudit/check_vpe_contract.py .devinputs/integrated/vpe
           python3 tools/IntegratedModAudit/check_vte_contract.py .devinputs/integrated/vte
+          # R2 observed this same 153088-byte DLL under the v1.6 folder
+          # selected by loadFolders for RimWorld 1.7. This is an exact
+          # binary identity check, not a server-side R2 mutation.
+          vte=.devinputs/integrated/vte/1.6/Assemblies/VanillaTradingExpanded.dll
+          test "$(stat -c%s "$vte")" -eq 153088
+          printf 'b76e66b58f02b28f40bb7446970bcb1e  %s\n' "$vte" | md5sum -c -
+          dotnet run -c Release --project tools/IntegratedModAudit/VteIlAudit/VteIlAudit.csproj -- "$vte"
           python3 tools/IntegratedModAudit/check_sau_contract.py .devinputs/integrated/sau
           python3 tools/IntegratedModAudit/check_recruitment_contract.py .devinputs/integrated/recruitment
           python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality
