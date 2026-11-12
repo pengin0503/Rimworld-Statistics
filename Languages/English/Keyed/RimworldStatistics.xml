@@ -962,4 +962,36 @@
   <RWS_Rankings_Coverage>Measured {0} of {1} colonies</RWS_Rankings_Coverage>
   <RWS_Rankings_PartialNote>Some observations are missing or partial.</RWS_Rankings_PartialNote>
   <RWS_Rankings_NoMatches>No ranked values are available.</RWS_Rankings_NoMatches>
+  <RWS_Tab_Coverage>Acquisition status</RWS_Tab_Coverage>
+  <RWS_Status_Summary>Measured {0} · Partial {1} · Missing {2} · N/A {3} · Experimental {4}</RWS_Status_Summary>
+  <RWS_Status_Caution>A recorded value does not prove its numeric accuracy has been verified in-game.</RWS_Status_Caution>
+  <RWS_Status_VerificationAll>All verification states</RWS_Status_VerificationAll>
+  <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>
+  <RWS_Status_Legacy>Legacy evidence</RWS_Status_Legacy>
+  <RWS_Status_Standard>Standard</RWS_Status_Standard>
+  <RWS_Status_Measured>Measured</RWS_Status_Measured>
+  <RWS_Status_Partial>Partial</RWS_Status_Partial>
+  <RWS_Status_NotMeasured>Not measured</RWS_Status_NotMeasured>
+  <RWS_Status_NotApplicable>Not applicable</RWS_Status_NotApplicable>
+  <RWS_Status_FilterAll>All coverage</RWS_Status_FilterAll>
+  <RWS_Status_FilterMeasured>Has measurements</RWS_Status_FilterMeasured>
+  <RWS_Status_FilterPartial>Partial coverage</RWS_Status_FilterPartial>
+  <RWS_Status_FilterMissing>No measurements</RWS_Status_FilterMissing>
+  <RWS_Status_FilterNA>Not applicable</RWS_Status_FilterNA>
+  <RWS_Status_Statistic>Metric / acquisition unit</RWS_Status_Statistic>
+  <RWS_Status_Recording>Current collection</RWS_Status_Recording>
+  <RWS_Status_Coverage>Recorded coverage</RWS_Status_Coverage>
+  <RWS_Status_Count>Colonies</RWS_Status_Count>
+  <RWS_Status_RecordingOn>Recording</RWS_Status_RecordingOn>
+  <RWS_Status_RecordingOff>Not recording</RWS_Status_RecordingOff>
+  <RWS_Status_DlcMissing>Required DLC missing</RWS_Status_DlcMissing>
+  <RWS_Status_ModMissing>Target MOD missing</RWS_Status_ModMissing>
+  <RWS_Status_RecordingFailed>Failed this session</RWS_Status_RecordingFailed>
+  <RWS_Status_RecordingUnnecessary>No live collection needed</RWS_Status_RecordingUnnecessary>
+  <RWS_Status_MissingColonies>Missing observations in {0} colonies:</RWS_Status_MissingColonies>
+  <RWS_Details_StatusAll>All statistics</RWS_Details_StatusAll>
+  <RWS_Details_StatusMeasured>Has measured numbers</RWS_Details_StatusMeasured>
+  <RWS_Details_StatusPartial>Partial records</RWS_Details_StatusPartial>
+  <RWS_Details_StatusMissing>Unmeasured</RWS_Details_StatusMissing>
+  <RWS_Details_StatusExperimental>Experimental</RWS_Details_StatusExperimental>
 </LanguageData>
