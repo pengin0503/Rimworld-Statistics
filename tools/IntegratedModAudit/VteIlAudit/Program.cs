@@ -58,7 +58,10 @@ Assert(Calls(complete, "FoundItemsInMap") && Calls(complete, "Destroy"),
     "Immediate NPC buy order must transfer items before recording");
 Assert(Calls(complete, "Add") && Calls(complete, "Remove"),
     "Delayed NPC buy order must schedule a caravan, not claim fulfillment");
-RequiredFields("LordJob_GrabItemsAndLeave", "contract", "caravanSent");
+// caravanSent is inherited from RimWorld's LordJob_FormAndSendCaravan,
+// not declared on this VTE subclass. Its stfld use below still proves
+// that the exit action toggles the inherited success marker.
+RequiredFields("LordJob_GrabItemsAndLeave", "contract");
 var exit = RequiredMethod("LordJob_GrabItemsAndLeave", "ExitCaravan");
 Assert(Writes(exit, "caravanSent") && Calls(exit, "PassToWorld") &&
     Calls(exit, "SpawnDropPod") == false,
