@@ -77,6 +77,7 @@ public static class AcquisitionUnits
         // Phase D2 (Anomaly is not implemented: no audited defs or saves, and not owned by the user)
         new("royalty", AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.EventUnit, AcquisitionKind.Family, U, Royalty),
+        new(VpeStatistics.CastUnit, AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.SnapshotUnit, AcquisitionKind.Snapshot, U, Royalty),
         new("royalty_state", AcquisitionKind.Snapshot, U, Royalty),
         new("royalty_quests", AcquisitionKind.Snapshot, U, Royalty),

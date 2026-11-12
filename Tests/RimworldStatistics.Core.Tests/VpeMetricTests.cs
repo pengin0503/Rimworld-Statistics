@@ -26,6 +26,51 @@ public sealed class VpeMetricTests
     }
 
     [Fact]
+    public void CastsCountOnlyConfirmedPlayerFreeColonistCastsAndBreakDownByAbility()
+    {
+        var state = new FamilyState();
+        VpeStatistics.RecordCast(state, "VPE_Skip", playerFreeColonist: true, confirmed: false);
+        VpeStatistics.RecordCast(state, "VPE_Skip", playerFreeColonist: false, confirmed: true);
+        VpeStatistics.RecordCast(state, "", playerFreeColonist: true, confirmed: true);
+        VpeStatistics.RecordCast(state, "VPE_Skip", playerFreeColonist: true, confirmed: true);
+        VpeStatistics.RecordCast(state, "VPE_Skip", playerFreeColonist: true, confirmed: true);
+        VpeStatistics.RecordCast(state, "VPE_Cast", playerFreeColonist: true, confirmed: true);
+
+        var values = new Dictionary<string, MetricEntry>();
+        VpeStatistics.CastFamily.Build(new FamilyOutputContext(state, 0, values));
+        var entry = values[VpeStatistics.Casts];
+        Assert.Equal(3, entry.Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(2, entry.Values["VPE_Skip"].IntegerValue);
+        Assert.Equal(1, entry.Values["VPE_Cast"].IntegerValue);
+    }
+
+    [Fact]
+    public void CastsBreakdownOverflowWeakensCoverageWithoutLosingScalar()
+    {
+        var state = new FamilyState { SinceTick = 0, ThroughTick = 20, Continuous = true };
+        for (var i = 0; i <= FamilyOps.KeyCap; i++)
+            VpeStatistics.RecordCast(state, "ability_" + i, true, true);
+
+        var values = new Dictionary<string, MetricEntry>();
+        VpeStatistics.CastFamily.Build(new FamilyOutputContext(state, 20, values));
+        var entry = values[VpeStatistics.Casts];
+        Assert.Equal(FamilyOps.KeyCap + 1, entry.Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(FamilyOps.KeyCap + 1, entry.Values.Count);
+        Assert.Equal(MetricCoverage.Partial, entry.Values[MetricEntry.Scalar].Coverage);
+    }
+
+    [Fact]
+    public void VpeCastAcquisitionRemainsExperimentalAndIndependentOfLevelAcquisition()
+    {
+        Assert.Equal(AcquisitionStatus.Unverified, AcquisitionUnits.Find(VpeStatistics.CastUnit)?.Status);
+        Assert.NotEqual(VpeStatistics.CastUnit, VpeStatistics.EventUnit);
+        var def = MetricRegistry.Find(VpeStatistics.Casts);
+        Assert.NotNull(def);
+        Assert.True(def.HasBreakdown);
+        Assert.False(def.Published);
+    }
+
+    [Fact]
     public void LastVpeCaptureSurvivesLaterSnapshotWithoutVpe()
     {
         var identity = new ColonyIdentity { ModCampaignId = "vpe-test" };
