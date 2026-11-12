@@ -15,6 +15,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 concurrency:
   group: publish-rws
@@ -66,7 +67,22 @@ jobs:
               sys.exit("Missing release notes for the requested tag.")
           PY_RELEASE
 
-      - name: Verify 17 stable integrated MOD metric IDs and one installable MOD
+      - name: Require successful numeric verification for the release commit
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # A PR check is not equivalent to checking the merged commit.
+          # Both preflight and publication must use the exact release target SHA.
+          runs=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/numeric-verification.yml/runs?head_sha=$GITHUB_SHA&per_page=100")
+          if ! jq -e --arg sha "$GITHUB_SHA" \
+            '[.workflow_runs[] | select(.head_sha == $sha and .event == "push" and .status == "completed" and .conclusion == "success")] | length > 0' \
+            <<<"$runs" >/dev/null; then
+            echo "No successful numeric-verification push run for $GITHUB_SHA; refusing release/preflight." >&2
+            exit 1
+          fi
+      - name: Verify stable integrated MOD metric IDs and one installable MOD
         run: python3 tools/IntegratedModAudit/check_embedded_integrations.py
 
       - name: Verify game-independent core tests
