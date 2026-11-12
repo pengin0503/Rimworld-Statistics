@@ -37,6 +37,17 @@ public sealed class VteTradeMathTests
     public void RewardForCaravanDeliveryIsProportional(int reward, int requested, int delivered, int expected) =>
         Assert.Equal(expected, VteTradeMath.ProportionalReward(reward, requested, delivered));
 
+    [Theory]
+    [InlineData(250, 250, 5, 0, true)]
+    [InlineData(250, 0, 5, 0, false)]
+    [InlineData(250, 100, 5, 0, false)]
+    [InlineData(250, 250, 5, 2, false)]
+    [InlineData(0, 0, 5, 0, false)]
+    [InlineData(250, 250, 0, 0, false)]
+    public void PlayerPostedContractCountsOnlyFullyPaidAndGeneratedPurchases(
+        int cost, long spend, int wanted, int remaining, bool expected) =>
+        Assert.Equal(expected, VteTradeMath.PaidPurchaseCompleted(cost, spend, wanted, remaining));
+
     [Fact]
     public void VeryLongDefNamesStillProduceSdkCompatibleEventIdentifiers()
     {
