@@ -16,6 +16,10 @@
   <RWS_Tab_Endings>エンディング</RWS_Tab_Endings>
   <RWS_Tab_Colonies>コロニー</RWS_Tab_Colonies>
   <RWS_Tab_Import>データ管理</RWS_Tab_Import>
+  <RWS_Export_Button>CSV出力 · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>CSVを書き出しています（{0}/{1}）…</RWS_Export_Progress>
+  <RWS_Export_Error>CSV出力に失敗しました：{0}</RWS_Export_Error>
+  <RWS_Export_Done>CSVを保存しました：{0}</RWS_Export_Done>
   <RWS_Stat_Days>通算ゲーム内日数</RWS_Stat_Days>
   <RWS_Stat_Endings>エンディング到達回数</RWS_Stat_Endings>
   <RWS_Stat_Departed>旅立った人数</RWS_Stat_Departed>

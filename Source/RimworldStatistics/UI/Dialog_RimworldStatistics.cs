@@ -123,7 +123,7 @@ public sealed class Dialog_RimworldStatistics : Window
             }
             if (current == Tab.Import)
             {
-                DataManagementTab.Draw(content, session);
+                DataManagementTab.Draw(content, session, ImportRunner.Running ? null : GetView(session), ScopeLabel());
                 return;
             }
 
@@ -168,7 +168,7 @@ public sealed class Dialog_RimworldStatistics : Window
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
         // The Endings and Colonies tabs always show the entire recorded history.
         // Group selection only changes the aggregate overview and numeric details.
-        var scope = current is Tab.Overview or Tab.Details or Tab.Rankings or Tab.Coverage ? ActiveScope() : ViewScope.All;
+        var scope = current is Tab.Overview or Tab.Details or Tab.Rankings or Tab.Coverage or Tab.Import ? ActiveScope() : ViewScope.All;
         if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;

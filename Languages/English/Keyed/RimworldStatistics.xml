@@ -16,6 +16,10 @@
   <RWS_Tab_Endings>Endings</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colonies</RWS_Tab_Colonies>
   <RWS_Tab_Import>Data management</RWS_Tab_Import>
+  <RWS_Export_Button>Export CSV · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>Exporting files ({0}/{1})…</RWS_Export_Progress>
+  <RWS_Export_Error>CSV export failed: {0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV saved to {0}</RWS_Export_Done>
   <RWS_Stat_Days>In-game days</RWS_Stat_Days>
   <RWS_Stat_Endings>Endings reached</RWS_Stat_Endings>
   <RWS_Stat_Departed>Colonists departed</RWS_Stat_Departed>

@@ -23,8 +23,11 @@ internal static class DataManagementTab
     private static string? error;
     private static bool succeeded;
 
-    public static void Draw(Rect rect, ProfileSession session)
+    public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
+        const float exportHeight = 56f;
+        ExportPanel.Draw(new Rect(rect.x, rect.yMax - exportHeight, rect.width, exportHeight), exportView, scope);
+        rect.height = Math.Max(0, rect.height - exportHeight - 6f);
         var importHeight = Math.Min(325f, rect.height * 0.53f);
         ImportTab.Draw(new Rect(rect.x, rect.y, rect.width, importHeight), session);
         var backupRect = new Rect(rect.x, rect.y + importHeight + 8f, rect.width, rect.height - importHeight - 8f);
