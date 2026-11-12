@@ -65,7 +65,9 @@ Assert(Writes(exit, "caravanSent") && Calls(exit, "PassToWorld") &&
     "Caravan exit must consume collected items before creating reward dialog");
 
 RequiredFields("Contract", "item", "stuff", "amount", "reward", "expiresInTicks", "mapToTakeItems");
-var found = RequiredMethod("Contract", "FoundItemsInMap", "Verse.Map");
+var found = RequiredType("Contract").Methods.Single(m =>
+    m.Name == "FoundItemsInMap" && m.Parameters.Count == 1 &&
+    m.Parameters[0].ParameterType.FullName == "Verse.Map" && !m.IsStatic && m.HasBody);
 Assert(found.ReturnType.FullName.StartsWith("System.Collections.Generic.List"),
     "FoundItemsInMap must return a list of Thing stacks");
 
