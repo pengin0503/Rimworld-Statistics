@@ -952,4 +952,14 @@
   <RWS_Fav_Unknown>Previously saved metric is no longer available.</RWS_Fav_Unknown>
   <RWS_Fav_NoOverall>This metric has no combined value across colonies.</RWS_Fav_NoOverall>
   <RWS_Fav_AddBasic>Add basic statistic</RWS_Fav_AddBasic>
+  <RWS_Tab_Rankings>Rankings</RWS_Tab_Rankings>
+  <RWS_Rankings_Search>Search statistics</RWS_Rankings_Search>
+  <RWS_Rankings_Desc>Largest first</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>Smallest first</RWS_Rankings_Asc>
+  <RWS_Rankings_All>Show all ranks</RWS_Rankings_All>
+  <RWS_Rankings_Top10>Show top 10</RWS_Rankings_Top10>
+  <RWS_Rankings_Position>Rank</RWS_Rankings_Position>
+  <RWS_Rankings_Coverage>Measured {0} of {1} colonies</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>Some observations are missing or partial.</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>No ranked values are available.</RWS_Rankings_NoMatches>
 </LanguageData>

@@ -952,4 +952,14 @@
   <RWS_Fav_Unknown>保存されている統計項目は現在利用できません。</RWS_Fav_Unknown>
   <RWS_Fav_NoOverall>この統計項目にはコロニー横断の集計値がありません。</RWS_Fav_NoOverall>
   <RWS_Fav_AddBasic>基本統計を追加</RWS_Fav_AddBasic>
+  <RWS_Tab_Rankings>ランキング</RWS_Tab_Rankings>
+  <RWS_Rankings_Search>統計項目を検索</RWS_Rankings_Search>
+  <RWS_Rankings_Desc>大きい順</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>小さい順</RWS_Rankings_Asc>
+  <RWS_Rankings_All>全順位を表示</RWS_Rankings_All>
+  <RWS_Rankings_Top10>上位10件を表示</RWS_Rankings_Top10>
+  <RWS_Rankings_Position>順位</RWS_Rankings_Position>
+  <RWS_Rankings_Coverage>測定済み {0}／対象 {1}コロニー</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>未取得・部分記録が含まれます。</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>順位付けできる記録がありません。</RWS_Rankings_NoMatches>
 </LanguageData>
