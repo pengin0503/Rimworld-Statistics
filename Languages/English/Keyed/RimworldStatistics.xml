@@ -1044,4 +1044,6 @@
   <RWS_VTE_ContractPurchasesDesc>Player-posted VTE purchase contracts paid in full through VTE bank transactions and fulfilled with generated items. Cancelling payment or accepting a contract without settlement does not count.</RWS_VTE_ContractPurchasesDesc>
   <RWS_VTE_ContractReceived>Goods purchased through VTE contracts</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>Units of items generated from successfully paid player-posted VTE purchase contracts, distinct from NPC buy-order deliveries and ordinary trade.</RWS_VTE_ContractReceivedDesc>
+  <RWS_Metric_VpeCasts>VPE confirmed psycasts</RWS_Metric_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>Successful Vanilla Psycasts Expanded ability casts by player free colonists, counted after VPE's ability-use consumption. Includes a count by ability type. Queued orders, cancelled casts and NPC casts are excluded.</RWS_MetricDesc_VpeCasts>
 </LanguageData>
