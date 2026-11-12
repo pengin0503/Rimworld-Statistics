@@ -78,7 +78,7 @@ public sealed partial class SaveReader
         var series = s.Series;
         if (s.WealthTotalCount > 0)
             series[HistoryMetricReader.WealthTotal] = s.WealthTotalCount == 1 && s.Wealth is { } w && w.Length <= HistoryMetricReader.MaxPoints
-                && s.WealthTotalPayload is { } p && CountNonWhitespace(p) <= HistoryMetricReader.MaxBase64Chars
+                && s.WealthTotalWithinTextLimit
                     ? w
                     : null;
         HistoryMetricReader.Summarize(series, obs.GameVersion, obs.Values.TicksGame, m.Metrics);
