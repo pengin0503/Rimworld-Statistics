@@ -1010,4 +1010,12 @@
   <RWS_MetricDesc_VpeMaxLevel>Highest VPE psycaster level among free colonists at a recorded save.</RWS_MetricDesc_VpeMaxLevel>
   <RWS_Metric_VpeSumLevels>Total VPE psycaster levels</RWS_Metric_VpeSumLevels>
   <RWS_MetricDesc_VpeSumLevels>Sum of VPE psycaster levels of free colonists at a recorded save.</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_OutpostPawns>Outpost occupants</RWS_Metric_OutpostPawns>
+  <RWS_MetricDesc_OutpostPawns>Player-owned outpost occupants at a recorded save.</RWS_MetricDesc_OutpostPawns>
+  <RWS_Metric_OutpostByType>Outposts by type</RWS_Metric_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>Player-owned outposts at a recorded save, grouped by world object definition.</RWS_MetricDesc_OutpostByType>
+  <RWS_Metric_OutpostDeliveries>Outpost production deliveries</RWS_Metric_OutpostDeliveries>
+  <RWS_MetricDesc_OutpostDeliveries>Nonempty production batches passed to outpost delivery. Items held locally or in transit may not have arrived.</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_Metric_OutpostProducts>Outpost products by item</RWS_Metric_OutpostProducts>
+  <RWS_MetricDesc_OutpostProducts>Production units passed to outpost delivery, by item.</RWS_MetricDesc_OutpostProducts>
 </LanguageData>

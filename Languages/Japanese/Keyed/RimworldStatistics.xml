@@ -1010,4 +1010,12 @@
   <RWS_MetricDesc_VpeMaxLevel>記録したセーブ時点での自由入植者のVPEサイキャスター最高レベル。</RWS_MetricDesc_VpeMaxLevel>
   <RWS_Metric_VpeSumLevels>VPE サイキャスターレベル合計</RWS_Metric_VpeSumLevels>
   <RWS_MetricDesc_VpeSumLevels>記録したセーブ時点での自由入植者のVPEサイキャスターレベル合計。</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_OutpostPawns>前哨基地の駐在ポーン数</RWS_Metric_OutpostPawns>
+  <RWS_MetricDesc_OutpostPawns>記録したセーブ時点でプレイヤー所有の前哨基地に駐在しているポーン数。</RWS_MetricDesc_OutpostPawns>
+  <RWS_Metric_OutpostByType>前哨基地の種類別数</RWS_Metric_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>記録したセーブ時点でのプレイヤー所有の前哨基地の種類別数。</RWS_MetricDesc_OutpostByType>
+  <RWS_Metric_OutpostDeliveries>前哨基地の生産配送回数</RWS_Metric_OutpostDeliveries>
+  <RWS_MetricDesc_OutpostDeliveries>前哨基地の配送処理に渡された生産品バッチ数。現地保管や輸送中も含み、到着を示すものではありません。</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_Metric_OutpostProducts>前哨基地の生産品目別数量</RWS_Metric_OutpostProducts>
+  <RWS_MetricDesc_OutpostProducts>前哨基地の配送処理に渡された生産品の品目別数量。</RWS_MetricDesc_OutpostProducts>
 </LanguageData>

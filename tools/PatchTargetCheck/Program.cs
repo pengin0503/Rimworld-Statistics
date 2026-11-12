@@ -22,6 +22,7 @@ var checkedTargets = 0;
 
 var optional = new Dictionary<string, List<(string Type, string Method, List<string> Parameters)>>(StringComparer.Ordinal);
 var fields = new List<(string Type, string Field)>();
+var extraIndexes = new List<string>();
 for (var i = 2; i < args.Length; i++)
 {
     var option = args[i];
@@ -34,9 +35,7 @@ for (var i = 2; i < args.Length; i++)
     switch (option)
     {
         case "--index":
-            foreach (var (name, entry) in LoadIndex(value))
-                if (!name.StartsWith('<') && !index.TryAdd(name, entry))
-                    failures.Add($"duplicate type {name} in {value}");
+            extraIndexes.Add(value);
             break;
         case "--target" when value.Split(':', 4) is [var patch, var type, var method, var parameters]:
             if (!optional.TryGetValue(patch, out var targets))
@@ -51,6 +50,14 @@ for (var i = 2; i < args.Length; i++)
             break;
     }
 }
+
+// Compiler-generated helper types are shared by unrelated assemblies.
+// Only import explicitly audited target types from optional indexes.
+var targetTypes = optional.Values.SelectMany(targets => targets).Select(target => target.Type).ToHashSet(StringComparer.Ordinal);
+foreach (var directory in extraIndexes)
+    foreach (var (name, entry) in LoadIndex(directory))
+        if (targetTypes.Contains(name) && !index.TryAdd(name, entry))
+            failures.Add($"duplicate target type {name} in {directory}");
 
 using (var pe = new PEReader(File.OpenRead(args[0])))
 {

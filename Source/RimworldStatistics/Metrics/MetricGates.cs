@@ -101,6 +101,8 @@ public static class MetricGates
             return VpeMetricPatch.HasLevelTarget;
         if (unitId == VpeStatistics.SnapshotUnit)
             return VpeMetricPatch.ImplantType is not null;
+        if (unitId == OutpostProduction.Unit)
+            return ModsConfig.IsActive(OutpostSnapshot.PackageId) && OutpostContract.Available;
         if (unitId == OutpostSnapshot.Unit)
             return DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
                 OutpostSnapshot.IsOutpostType(def.worldObjectClass));
