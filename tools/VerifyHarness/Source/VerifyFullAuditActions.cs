@@ -21,13 +21,14 @@ public static class VerifyFullAuditActions
     {
         if (VerifyHarnessMod.Declined is null &&
             GenCommandLine.TryGetCommandLineArg("savedatafolder", out var folder) &&
-            !string.IsNullOrWhiteSpace(folder))
+            !string.IsNullOrWhiteSpace(folder) &&
+            VerifyIsolationPolicy.HasValidMarker(folder))
             return true;
         Log.Error("[RWS-VERIFY] Declined: start with -savedatafolder=<test folder>.");
         return false;
     }
 
-    /// <summary>The original 18 synthetic cases, followed by a diagnostic dossier.</summary>
+    /// <summary>The 18 real-game paths plus read-only integration contracts, followed by one dossier.</summary>
     [DebugAction("RWS Verify", "1. Run guided full audit (MODIFIES TEST WORLD)",
         allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void RunFull()
@@ -35,7 +36,8 @@ public static class VerifyFullAuditActions
         if (!IsIsolated()) return;
         var campaign = CurrentCampaign();
         lastCampaign = campaign;
-        lastCases = VerifyGameCases.All.Select(VerifyGameCases.Run).ToList();
+        lastCases = VerifyGameCases.All.Select(VerifyGameCases.Run)
+            .Concat(VerifyAutomatedContracts.All.Select(VerifyAutomatedContracts.Run)).ToList();
         WriteDossier("full", lastCases);
     }
 
@@ -53,6 +55,10 @@ public static class VerifyFullAuditActions
             lastCampaign = CurrentCampaign();
             lastCases = new();
         }
+        // Re-evaluate read-only contracts after a save: imported checkpoint ancestry
+        // can change even though the earlier game-event evidence must not be replayed.
+        lastCases = lastCases.Where(c => !c.CaseId.StartsWith("contract.", StringComparison.Ordinal))
+            .Concat(VerifyAutomatedContracts.All.Select(VerifyAutomatedContracts.Run)).ToList();
         WriteDossier("read-only", lastCases);
     }
 
@@ -72,7 +78,7 @@ public static class VerifyFullAuditActions
             return;
         }
         var candidates = lastCases.Where(c =>
-                c.Outcome is CaseOutcome.Fail or CaseOutcome.Error or CaseOutcome.Skip)
+                c.Outcome is CaseOutcome.Fail or CaseOutcome.Error or CaseOutcome.Skip or CaseOutcome.Inconclusive)
             .Select(c => c.CaseId).ToHashSet(StringComparer.Ordinal);
         if (candidates.Count == 0)
         {
@@ -81,6 +87,8 @@ public static class VerifyFullAuditActions
         }
         var rerun = VerifyGameCases.All.Where(c => candidates.Contains(c.Id))
             .ToDictionary(c => c.Id, VerifyGameCases.Run, StringComparer.Ordinal);
+        foreach (var c in VerifyAutomatedContracts.All.Where(c => candidates.Contains(c.Id)))
+            rerun[c.Id] = VerifyAutomatedContracts.Run(c);
         lastCases = lastCases.Select(c => rerun.GetValueOrDefault(c.CaseId, c)).ToList();
         WriteDossier("retry", lastCases);
     }
@@ -96,6 +104,23 @@ public static class VerifyFullAuditActions
         if (!IsIsolated()) return;
         VerifyDebugActions.BenchmarkIndoorRooms();
         VerifyDebugActions.BenchmarkPollutionTotals();
+    }
+
+    /// <summary>Read-only contracts can be rerun without spawning enemies or changing research.</summary>
+    [DebugAction("RWS Verify", "5. Run extra integration contracts (read-only)", 
+        allowedGameStates = AllowedGameStates.PlayingOnMap)]
+    public static void RunContractsOnly()
+    {
+        if (!IsIsolated()) return;
+        var campaign = CurrentCampaign();
+        if (lastCampaign != campaign)
+        {
+            lastCampaign = campaign;
+            lastCases = new();
+        }
+        lastCases = lastCases.Where(c => !c.CaseId.StartsWith("contract.", StringComparison.Ordinal))
+            .Concat(VerifyAutomatedContracts.All.Select(VerifyAutomatedContracts.Run)).ToList();
+        WriteDossier("contracts", lastCases);
     }
 
     private static string CurrentCampaign()
@@ -195,6 +220,7 @@ public static class VerifyFullAuditActions
             $"dlcNA={counts.GetValueOrDefault(nameof(CatalogAuditState.DlcUnavailable))} " +
             $"casesFail={cases.Count(c => c.Outcome is CaseOutcome.Fail or CaseOutcome.Error)} " +
             $"casesSkip={cases.Count(c => c.Outcome == CaseOutcome.Skip)} " +
+            $"casesInconclusive={cases.Count(c => c.Outcome == CaseOutcome.Inconclusive)} " +
             $"newObserved={(progress is { Comparable: true } ? progress.NewlyObserved.Count : 0)} " +
             $"lost={(progress is { Comparable: true } ? progress.LostObservations.Count : 0)} " +
             "verified=0 (requires real-game acceptance)";
