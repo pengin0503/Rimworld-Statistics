@@ -101,6 +101,7 @@ jobs:
           sparse-checkout: |
             About/About.xml
             1.7/Source/VanillaPsycastsExpanded/Hediff_PsycastAbilities.cs
+            1.7/Assemblies/VanillaPsycastsExpanded.dll
           sparse-checkout-cone-mode: false
           persist-credentials: false
       - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
@@ -165,7 +166,9 @@ jobs:
           test -f "$game_ref"
           dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
           python3 tools/inspect_reference_api.py "$RUNNER_TEMP/ref-index/chunk-0000.json.gz"
-          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index"
+          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/vpe/1.7/Assemblies/VanillaPsycastsExpanded.dll "$RUNNER_TEMP/vpe-index"
+          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index" \
+            --index "$RUNNER_TEMP/vpe-index" --target 'VpeMetricPatch:VanillaPsycastsExpanded.Hediff_PsycastAbilities:ChangeLevel:int32'
       - name: Check ZIP content
         shell: bash
         run: |
