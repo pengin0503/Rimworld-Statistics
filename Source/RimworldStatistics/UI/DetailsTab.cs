@@ -35,9 +35,10 @@ public static class DetailsTab
     private static int buildVersion;
 
     private enum DetailsViewMode { Lifetime, Other, All }
+    private enum DetailsStatusFilter { All, Measured, Partial, Missing, Experimental }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, bool MeasuredOnly, object? Language);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, object? Language);
 
     private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
     private static bool perColony;
@@ -46,7 +47,7 @@ public static class DetailsTab
     private static string search = "";
     private static bool byValue;
     private static bool ascending = true;
-    private static bool measuredOnly;
+    private static DetailsStatusFilter statusFilter;
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
     private static int expandedVersion;
     private static Vector2 scroll;
@@ -80,16 +81,22 @@ public static class DetailsTab
         GUI.color = Color.white;
         y += noteHeight + 4f;
 
-        const float filterHeight = 24f;
-        var filterRect = new Rect(rect.x, y, Math.Min(rect.width, 195f), filterHeight);
-        var previousMeasuredOnly = measuredOnly;
-        Widgets.CheckboxLabeled(filterRect, "RWS_Details_OnlyMeasured".Translate(), ref measuredOnly);
-        if (previousMeasuredOnly != measuredOnly)
-            scroll = Vector2.zero;
+        const float filterHeight = 25f;
+        var filterRect = new Rect(rect.x, y, Math.Min(rect.width, 230f), filterHeight);
+        var filterLabel = StatusFilterLabel(statusFilter);
+        if (Widgets.ButtonText(filterRect, filterLabel.Truncate(filterRect.width - 10f)))
+        {
+            Find.WindowStack.Add(new FloatMenu(Enum.GetValues<DetailsStatusFilter>()
+                .Select(value => new FloatMenuOption(StatusFilterLabel(value), () =>
+                {
+                    statusFilter = value;
+                    scroll = Vector2.zero;
+                })).ToList()));
+        }
         y += filterHeight + 4f;
 
         var language = LanguageDatabase.activeLanguage;
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, measuredOnly, language);
+        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, language);
         if (builtFor != inputs)
         {
             builtFor = inputs;
@@ -185,6 +192,15 @@ public static class DetailsTab
         search = Widgets.TextField(field, search) ?? "";
         return controls.Height;
     }
+
+    private static string StatusFilterLabel(DetailsStatusFilter filter) => filter switch
+    {
+        DetailsStatusFilter.Measured => "RWS_Details_StatusMeasured".Translate(),
+        DetailsStatusFilter.Partial => "RWS_Details_StatusPartial".Translate(),
+        DetailsStatusFilter.Missing => "RWS_Details_StatusMissing".Translate(),
+        DetailsStatusFilter.Experimental => "RWS_Details_StatusExperimental".Translate(),
+        _ => "RWS_Details_StatusAll".Translate(),
+    };
 
     private static string ViewModeLabel(DetailsViewMode mode) => mode switch
     {
@@ -311,7 +327,15 @@ public static class DetailsTab
         var term = input.Search.Trim();
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
-            .Where(r => !input.MeasuredOnly || MetricDisplayPolicy.HasMeasuredNumber(r))
+            .Where(r => input.StatusFilter switch
+            {
+                DetailsStatusFilter.Measured => MetricDisplayPolicy.HasMeasuredNumber(r),
+                DetailsStatusFilter.Partial => MetricStatusClassifier.IsPartial(r),
+                DetailsStatusFilter.Missing => !MetricDisplayPolicy.HasMeasuredNumber(r)
+                    && r.Value.Coverage != MetricCoverage.NotApplicable,
+                DetailsStatusFilter.Experimental => MetricStatusClassifier.IsExperimental(r),
+                _ => true,
+            })
             .Where(r => input.Mode switch
             {
                 DetailsViewMode.Lifetime => MetricDisplayPolicy.IsLifetimePrimaryRow(r.Definition),
@@ -507,7 +531,7 @@ public static class DetailsTab
     internal static string OverallTip(NumericRow row, StatsResult stats)
         => BuildTip(row, DefinitionLabel(row.Definition), 0,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
-                DetailsViewMode.All, false, null), null);
+                DetailsViewMode.All, DetailsStatusFilter.All, null), null);
 
     internal static string DefinitionLabel(MetricDefinition d)
     {

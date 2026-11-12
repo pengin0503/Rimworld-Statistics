@@ -16,6 +16,7 @@ public sealed class Dialog_RimworldStatistics : Window
         Colonies,
         Details,
         Rankings,
+        Coverage,
         Import,
     }
 
@@ -84,9 +85,29 @@ public sealed class Dialog_RimworldStatistics : Window
                 new("RWS_Tab_Colonies".Translate(), () => current = Tab.Colonies, current == Tab.Colonies),
                 new("RWS_Tab_Details".Translate(), () => current = Tab.Details, current == Tab.Details),
                 new("RWS_Tab_Rankings".Translate(), () => current = Tab.Rankings, current == Tab.Rankings),
+                new("RWS_Tab_Coverage".Translate(), () => current = Tab.Coverage, current == Tab.Coverage),
                 new("RWS_Tab_Import".Translate(), () => current = Tab.Import, current == Tab.Import),
             };
-            TabDrawer.DrawTabs(body, tabs);
+            var tabNames = new[]
+            {
+                (string)"RWS_Tab_Overview".Translate(), (string)"RWS_Tab_Endings".Translate(),
+                (string)"RWS_Tab_Colonies".Translate(), (string)"RWS_Tab_Details".Translate(),
+                (string)"RWS_Tab_Rankings".Translate(), (string)"RWS_Tab_Coverage".Translate(),
+                (string)"RWS_Tab_Import".Translate(),
+            };
+            if (tabNames.Sum(x => Text.CalcSize(x).x + 33f) > body.width - 16f)
+            {
+                var tabRect = new Rect(body.x + 8f, body.y - 30f, Math.Min(230f, body.width - 16f), 28f);
+                if (Widgets.ButtonText(tabRect, tabNames[(int)current].Truncate(tabRect.width - 12f)))
+                {
+                    Find.WindowStack.Add(new FloatMenu(tabNames.Select((label, index) =>
+                        new FloatMenuOption(label, () => current = (Tab)index)).ToList()));
+                }
+            }
+            else
+            {
+                TabDrawer.DrawTabs(body, tabs);
+            }
 
             var content = body.ContractedBy(12f);
             if (ProfileService.DataOperationRunning)
@@ -123,6 +144,7 @@ public sealed class Dialog_RimworldStatistics : Window
                     break;
                 case Tab.Details: DetailsTab.Draw(content, view, preferences, SavePreferences); break;
                 case Tab.Rankings: RankingsTab.Draw(content, view, preferences, SavePreferences); break;
+                case Tab.Coverage: CoverageTab.Draw(content, view); break;
             }
         }
         catch (Exception e)
@@ -146,7 +168,7 @@ public sealed class Dialog_RimworldStatistics : Window
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
         // The Endings and Colonies tabs always show the entire recorded history.
         // Group selection only changes the aggregate overview and numeric details.
-        var scope = current is Tab.Overview or Tab.Details or Tab.Rankings ? ActiveScope() : ViewScope.All;
+        var scope = current is Tab.Overview or Tab.Details or Tab.Rankings or Tab.Coverage ? ActiveScope() : ViewScope.All;
         if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;
