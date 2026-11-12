@@ -239,6 +239,7 @@ jobs:
           dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/voe/1.6/Assemblies/VOE.dll "$RUNNER_TEMP/voe-index"
           dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index" \
             --index "$RUNNER_TEMP/vpe-index" --target 'VpeMetricPatch:VanillaPsycastsExpanded.Hediff_PsycastAbilities:ChangeLevel:int32' \
+            --target 'VpeCastMetricPatch:VanillaPsycastsExpanded.AbilityExtension_Psycast:Cast:[Assembly-CSharp]RimWorld.Planet.GlobalTargetInfo[]|[VEF]VEF.Abilities.Ability' \
             --index "$RUNNER_TEMP/outposts-index" --index "$RUNNER_TEMP/voe-index" \
             --target 'OutpostProduceMetricPatch:Outposts.Outpost:Produce:' \
             --target 'OutpostProduceMetricPatch:VOE.Outpost_Town:Produce:' \
