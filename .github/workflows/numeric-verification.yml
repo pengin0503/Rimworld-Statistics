@@ -146,6 +146,8 @@ jobs:
             1.6/Source/VanillaTradingExpanded/Banks/Bank.cs
             1.6/Source/VanillaTradingExpanded/TradingManager.cs
             1.6/Source/VanillaTradingExpanded/AI/LordJob_GrabItemsAndLeave.cs
+            1.6/Source/VanillaTradingExpanded/Misc/TransactionProcess.cs
+            1.6/Source/VanillaTradingExpanded/UI/Window_PerformTransactionCosts.cs
           sparse-checkout-cone-mode: false
           persist-credentials: false
       - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
