@@ -33,4 +33,29 @@ public sealed class ColumnLayoutTests
     [Fact]
     public void SingleColumnFillsWidth() =>
         Assert.Equal(new[] { 400f }, ColumnLayout.Resolve([new(100, 0)], 400).Widths);
+
+    [Fact]
+    public void VisibleColumnsSkipOffscreenColumnsOnBothSides() =>
+        Assert.Equal((1, 3), ColumnLayout.VisibleColumns([100f, 100f, 100f, 100f], 150f, 110f));
+
+    [Fact]
+    public void VisibleColumnsRespectExactViewportBoundaries() =>
+        Assert.Equal((1, 2), ColumnLayout.VisibleColumns([100f, 100f, 100f], 100f, 100f));
+
+    [Fact]
+    public void VisibleColumnsIncludeAllColumnsWithoutHorizontalScroll() =>
+        Assert.Equal((0, 3), ColumnLayout.VisibleColumns([90f, 110f, 100f], 0f, 300f));
+
+    [Fact]
+    public void VisibleColumnsAfterLastColumnReturnEmptyEndRange() =>
+        Assert.Equal((3, 3), ColumnLayout.VisibleColumns([100f, 100f, 100f], 500f, 100f));
+
+    [Fact]
+    public void VisibleColumnsWithNonPositiveViewportReturnEmptyRange() =>
+        Assert.Equal((0, 0), ColumnLayout.VisibleColumns([100f, 100f], 0f, 0f));
+
+    [Fact]
+    public void VisibleColumnsWithNegativeScrollClampToTableStart() =>
+        Assert.Equal((0, 2), ColumnLayout.VisibleColumns([100f, 100f, 100f], -10f, 150f));
+
 }
