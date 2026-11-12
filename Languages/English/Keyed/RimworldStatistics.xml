@@ -887,6 +887,8 @@
   <RWS_Hospitality_VisitGroupsDesc>Number of confirmed visiting Hospitality groups arriving at player home maps since this addon was enabled. Rescued guests given replacement groups are excluded. Replays use hashed event IDs. No pre-install history is inferred.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: lifetime guest arrivals (since activation)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>Total visiting pawns in confirmed Hospitality groups arriving at player home maps since this addon was enabled. Repeat visits count again; this is not a unique-person count or the current number of guests. Historical visitors before activation are unknown.</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality: peacefully departed visiting groups (since activation)</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>Counts non-hostile Hospitality groups after the visiting toil ends, an actual map exit is observed and the lord disbands with no remaining members or other losses. Sent-away and recovered groups are excluded. A load during departure may lack enough evidence and is omitted, never guessed.</RWS_Hospitality_VisitsCompletedDesc>
   <RWS_Hospitality_Recruited>Hospitality: successfully recruited guests (since activation)</RWS_Hospitality_Recruited>
   <RWS_Hospitality_RecruitedDesc>Confirmed Hospitality guest adoptions since opt-in, counted only after the upstream Recruit action returns with a player-faction pawn. No historical backfill.</RWS_Hospitality_RecruitedDesc>
   <RWS_Hospitality_ForcedRecruit>Hospitality: forced guest recruitments (since activation)</RWS_Hospitality_ForcedRecruit>
