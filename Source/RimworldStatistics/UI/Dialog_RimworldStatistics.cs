@@ -113,13 +113,13 @@ public sealed class Dialog_RimworldStatistics : Window
 
             switch (current)
             {
-                case Tab.Overview: OverviewTab.Draw(content, view); break;
+                case Tab.Overview: OverviewTab.Draw(content, view, preferences, SavePreferences); break;
                 case Tab.Endings: EndingsTab.Draw(content, view); break;
                 case Tab.Colonies:
                     RefreshPresentFiles();
                     ColoniesTab.Draw(content, view, fileIndex);
                     break;
-                case Tab.Details: DetailsTab.Draw(content, view); break;
+                case Tab.Details: DetailsTab.Draw(content, view, preferences, SavePreferences); break;
             }
         }
         catch (Exception e)
