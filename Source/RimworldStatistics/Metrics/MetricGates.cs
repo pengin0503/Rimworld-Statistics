@@ -99,6 +99,8 @@ public static class MetricGates
                 ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
         if (unitId == VpeStatistics.EventUnit)
             return VpeMetricPatch.HasLevelTarget;
+        if (unitId == VpeStatistics.CastUnit)
+            return VpeCastMetricPatch.HasCastTarget;
         if (unitId == VpeStatistics.SnapshotUnit)
             return VpeMetricPatch.ImplantType is not null;
         if (unitId == OutpostProduction.Unit)
