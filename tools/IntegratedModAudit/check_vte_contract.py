@@ -34,4 +34,19 @@ assert "public void ExitCaravan()" in lord
 assert "caravanSent = true;" in lord
 assert "if (collectedAmount > 0)" in lord
 assert "new Window_PerformTransactionGains(" in lord
+transaction = (src / "Misc/TransactionProcess.cs").read_text(encoding="utf-8-sig")
+assert "public Action postTransactionAction;" in transaction
+assert "public Dictionary<Bank, int> amountToSpend;" in transaction
+assert re.search(r"public void PerformTransaction\(\)", transaction)
+assert "this.amountToSpend.Clear();" in transaction
+assert "postTransactionAction();" in transaction
+assert transaction.index("this.amountToSpend.Clear();") < transaction.index("postTransactionAction();")
+costs = (src / "UI/Window_PerformTransactionCosts.cs").read_text(encoding="utf-8-sig")
+assert "allMoneyToSpend == transactionProcess.transactionCost" in costs
+assert "this.transactionProcess.PerformTransaction();" in costs
+assert "transactionProcess.PostCancel();" in costs
+assert "new Window_PerformTransactionCosts(\"VTE.PayMoneyForContract\"" in manager
+assert "postTransactionAction = delegate" in manager
+assert "contract.amount -= thing.stackCount;" in manager
+assert "DropPodUtility.DropThingsNear(" in manager
 print("VTE 1.7 loadFolders and pinned 1.6 confirmed-operation source contract: PASS")
