@@ -1026,4 +1026,6 @@
   <RWS_MetricDesc_DbhFixtures>保存成功時点で、自コロニーのマップにあるプレイヤー所有のDubs Bad Hygieneの建物数。</RWS_MetricDesc_DbhFixtures>
   <RWS_Metric_DbhActivities>Dubs Bad Hygieneの衛生行動の完了数（ジョブ別）</RWS_Metric_DbhActivities>
   <RWS_MetricDesc_DbhActivities>有効化後、自コロニーのマップで自勢力のポーンが完了したトイレ、シャワー、確認済みの洗浄ジョブの回数。</RWS_MetricDesc_DbhActivities>
+  <RWS_SAU_CompletedSwaps>Smart Apparel Upgradeの着替え完了数</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwapsDesc>有効化後、Smart Apparel Upgradeの自動指示で指定の服を実際に着用した回数。</RWS_SAU_CompletedSwapsDesc>
 </LanguageData>
