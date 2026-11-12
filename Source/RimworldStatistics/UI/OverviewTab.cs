@@ -72,7 +72,16 @@ public static class OverviewTab
             new Rect(0, 0, width, favoriteTop + favoritesContentHeight));
         DrawGrid(top, topColumns, 0, TopCellHeight, GameFont.Medium);
         DrawGrid(bottom, bottomColumns, topHeight + 14f, BottomCellHeight, GameFont.Small);
-        Widgets.Label(new Rect(0, favoriteTop, width, 27f), "RWS_Fav_Title".Translate());
+        Widgets.Label(new Rect(0, favoriteTop, Math.Max(0, width - 185f), 27f), "RWS_Fav_Title".Translate());
+        if (Widgets.ButtonText(new Rect(Math.Max(0f, width - 180f), favoriteTop, Math.Min(180f, width), 27f),
+                "RWS_Fav_AddBasic".Translate()))
+        {
+            var available = BasicMetrics.Keys.Where(key =>
+                preferences?.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal) != true)
+                .Select(key => new FloatMenuOption(BasicLabel(key), () => ToggleFavorite(key))).ToList();
+            if (available.Count > 0)
+                Find.WindowStack.Add(new FloatMenu(available));
+        }
         if (favoriteCells.Length == 0)
         {
             Widgets.Label(new Rect(0, favoriteTop + 27f, width, 25f), "RWS_Fav_Empty".Translate());
