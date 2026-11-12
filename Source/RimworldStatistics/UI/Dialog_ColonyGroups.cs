@@ -15,6 +15,7 @@ public sealed class Dialog_ColonyGroups : Window
     private Vector2 memberScroll;
     private string newGroupName = "";
     private string? selectedId;
+    private bool nameDirty;
 
     public Dialog_ColonyGroups(ViewPreferences preferences, StatsView? view, Action onChange)
     {
@@ -30,6 +31,21 @@ public sealed class Dialog_ColonyGroups : Window
     }
 
     public override Vector2 InitialSize => new(820f, 640f);
+
+    public override void PostClose()
+    {
+        // A completed rename is persisted once, not after every TextField keystroke.
+        if (nameDirty)
+            onChange();
+        base.PostClose();
+    }
+
+    private void SaveStructuralChange()
+    {
+        // A structural operation persists an earlier rename as part of the same write.
+        nameDirty = false;
+        onChange();
+    }
 
     public override void DoWindowContents(Rect rect)
     {
@@ -47,7 +63,7 @@ public sealed class Dialog_ColonyGroups : Window
             preferences.Groups.Add(group);
             selectedId = group.Id;
             newGroupName = "";
-            onChange();
+            SaveStructuralChange();
         }
 
         var top = rect.y + 72f;
@@ -71,7 +87,7 @@ public sealed class Dialog_ColonyGroups : Window
                 preferences.Groups.RemoveAt(i);
                 if (selectedId == group.Id)
                     selectedId = preferences.Groups.FirstOrDefault()?.Id;
-                onChange();
+                SaveStructuralChange();
                 break;
             }
         }
@@ -90,7 +106,7 @@ public sealed class Dialog_ColonyGroups : Window
         if (renamed != selected.Name)
         {
             selected.Name = renamed.Length > 64 ? renamed[..64] : renamed;
-            onChange();
+            nameDirty = true;
         }
         var filtered = new HashSet<string>(selected.ColonyKeys, StringComparer.Ordinal);
         var unavailable = selected.ColonyKeys.Count(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)));
@@ -99,7 +115,7 @@ public sealed class Dialog_ColonyGroups : Window
         if (unavailable > 0 && Widgets.ButtonText(new Rect(nameRect.x, notice.yMax, width, 26f), "RWS_Groups_RemoveMissing".Translate()))
         {
             selected.ColonyKeys.RemoveAll(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)));
-            onChange();
+            SaveStructuralChange();
         }
 
         var listRect = new Rect(nameRect.x, notice.yMax + (unavailable > 0 ? 32f : 3f),
@@ -121,7 +137,7 @@ public sealed class Dialog_ColonyGroups : Window
             selected.ColonyKeys.RemoveAll(k => k == colony.Key || colony.AliasKeys.Contains(k));
             if (included)
                 selected.ColonyKeys.Add(colony.Key);
-            onChange();
+            SaveStructuralChange();
         }
         Widgets.EndScrollView();
     }

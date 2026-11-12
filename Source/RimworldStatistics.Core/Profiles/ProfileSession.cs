@@ -36,7 +36,11 @@ public sealed class ProfileSession
     private readonly ICheckpointArchive? _archive;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
-    private readonly Dictionary<(bool IncludeDevMode, string Visible, string Scope), StatsView> _views = new();
+    // The active scope and up to four comparison columns must coexist with the all-colony view.
+    // LRU eviction also avoids repeatedly rebuilding recently requested groups when users switch scopes.
+    private const int MaxCachedViews = 8;
+    private readonly Dictionary<(bool IncludeDevMode, string Visible, string Scope), (StatsView View, long LastAccess)> _views = new();
+    private long _viewAccess;
 
     private long _changeSeq;     // bumped by every change (under _lock)
     private long _writtenSeq;    // newest change seq that reached the file (under _ioLock)
@@ -164,7 +168,11 @@ public sealed class ProfileSession
             return null;
         try
         {
-            return _views.GetValueOrDefault((options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? ""));
+            var key = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
+            if (!_views.TryGetValue(key, out var entry))
+                return null;
+            _views[key] = (entry.View, ++_viewAccess);
+            return entry.View;
         }
         finally
         {
@@ -202,7 +210,10 @@ public sealed class ProfileSession
         {
             var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
             if (_views.TryGetValue(cacheKey, out var cached))
-                return cached;
+            {
+                _views[cacheKey] = (cached.View, ++_viewAccess);
+                return cached.View;
+            }
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
             scope?.Apply(colonies);
@@ -223,16 +234,10 @@ public sealed class ProfileSession
                 _views.Clear();   // other option sets were built before the ledger changed; keep them consistent
                 _changeSeq++;
             }
-            // Keep the active scope plus a small number of recently requested scopes.
-            if (_views.Count >= 4)
-            {
-                var victim = _views.Keys.FirstOrDefault(k => k.Scope.Length > 0);
-                if (victim.Scope is { Length: > 0 })
-                    _views.Remove(victim);
-                else
-                    _views.Clear();
-            }
-            _views[cacheKey] = view;
+            // Keep a complete comparison working set; evict only the least recently accessed view.
+            if (_views.Count >= MaxCachedViews)
+                _views.Remove(_views.MinBy(entry => entry.Value.LastAccess).Key);
+            _views[cacheKey] = (view, ++_viewAccess);
         }
         if (ledgerChanged)
             Save(SaveMode.Background);   // new colony keys must survive a restart (spec §6.2)
