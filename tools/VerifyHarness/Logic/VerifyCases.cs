@@ -46,9 +46,17 @@ public enum CaseOutcome
 
     /// <summary>The case itself threw: its result says nothing about the mod.</summary>
     Error,
+
+    /// <summary>A check inspected prerequisites only or lacks independent real-game ground truth.</summary>
+    Inconclusive,
 }
 
-public sealed record CaseResult(string CaseId, string Unit, CaseOutcome Outcome, string Expected, string Actual, int Hooks, string? Note = null);
+public sealed record CaseResult(string CaseId, string Unit, CaseOutcome Outcome, string Expected, string Actual, int Hooks, string? Note = null)
+{
+    /// <summary>Evidence provenance. GamePath means an existing real RimWorld action was invoked;
+    /// other kinds must never be interpreted as a passed live-event acceptance test.</summary>
+    public string Evidence { get; init; } = "GamePath";
+}
 
 /// <summary>Compares a case's expected changes with the two snapshots, and writes the harness's log line.</summary>
 public static class CaseCheck
