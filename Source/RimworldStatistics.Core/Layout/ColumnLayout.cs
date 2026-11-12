@@ -9,6 +9,38 @@ public sealed record ColumnPlan(float[] Widths, float TotalWidth)
 
 public static class ColumnLayout
 {
+
+    /// <summary>
+    /// Zero-based half-open range of columns intersecting the horizontal viewport.
+    /// Offscreen columns must not allocate display strings or register tooltips.
+    /// </summary>
+    public static (int First, int LastExclusive) VisibleColumns(
+        IReadOnlyList<float> widths, float viewportStart, float viewportWidth)
+    {
+        if (widths.Count == 0 || viewportWidth <= 0)
+            return (0, 0);
+
+        var left = Math.Max(0f, viewportStart);
+        var right = left + viewportWidth;
+        var x = 0f;
+        var first = widths.Count;
+        var last = widths.Count;
+        for (var i = 0; i < widths.Count; i++)
+        {
+            var width = Math.Max(0f, widths[i]);
+            if (x + width > left && x < right)
+            {
+                if (first == widths.Count)
+                    first = i;
+                last = i + 1;
+            }
+            x += width;
+            if (x >= right)
+                break;
+        }
+        return (first, last);
+    }
+
     public static ColumnPlan Resolve(IReadOnlyList<ColumnSpec> columns, float available)
     {
         var widths = new float[columns.Count];
