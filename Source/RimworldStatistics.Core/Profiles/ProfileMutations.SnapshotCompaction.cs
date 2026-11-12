@@ -36,7 +36,8 @@ public static partial class ProfileMutations
         if (snapshots.Count < 2)
             return;
 
-        var definitions = SnapshotCatalog.Definitions.Concat(
+        var definitions = SnapshotCatalog.Definitions
+            .Concat(BuiltInModMetricCatalog.Definitions.Where(d => d.Source == MetricObservationSource.SaveSnapshot)).Concat(
             MetricRegistry.Compose(p.ModMetricDescriptors,
                 new HashSet<string>(Ord) { MetricRegistry.OptionalModVisibilityId })
                 .Where(d => d.ProviderId is not null && d.Source == MetricObservationSource.SaveSnapshot))

@@ -3,7 +3,7 @@
 // argument a Prefix/Postfix asks Harmony to inject (by parameter name, __instance, ___field) exists on the target.
 // The reference checker (refcheck.py) cannot do this: a patch target is a type token plus a string, not a member reference.
 //
-// usage: PatchTargetCheck <mod.dll> <index dir: assembly/Assembly-CSharp> [--field Namespace.Type:fieldName]...
+// usage: PatchTargetCheck <mod.dll> <index dir> [--index directory] [--target PatchClass:Type:method:type|type] [--field Type:field]...
 using System.Collections.Immutable;
 using System.IO.Compression;
 using System.Reflection.Metadata;
@@ -12,13 +12,45 @@ using System.Text.Json;
 
 if (args.Length < 2)
 {
-    Console.Error.WriteLine("usage: PatchTargetCheck <mod.dll> <index dir> [--field Type:field]...");
+    Console.Error.WriteLine("usage: PatchTargetCheck <mod.dll> <index dir> [--index directory] [--target PatchClass:Type:method:types] [--field Type:field]...");
     return 2;
 }
 
 var index = LoadIndex(args[1]);
 var failures = new List<string>();
 var checkedTargets = 0;
+
+var optional = new Dictionary<string, List<(string Type, string Method, List<string> Parameters)>>(StringComparer.Ordinal);
+var fields = new List<(string Type, string Field)>();
+for (var i = 2; i < args.Length; i++)
+{
+    var option = args[i];
+    if (i + 1 >= args.Length)
+    {
+        failures.Add($"missing value for {option}");
+        break;
+    }
+    var value = args[++i];
+    switch (option)
+    {
+        case "--index":
+            foreach (var (name, entry) in LoadIndex(value))
+                if (!name.StartsWith('<') && !index.TryAdd(name, entry))
+                    failures.Add($"duplicate type {name} in {value}");
+            break;
+        case "--target" when value.Split(':', 4) is [var patch, var type, var method, var parameters]:
+            if (!optional.TryGetValue(patch, out var targets))
+                optional.Add(patch, targets = []);
+            targets.Add((type, method, parameters.Split('|', StringSplitOptions.RemoveEmptyEntries).ToList()));
+            break;
+        case "--field" when value.Split(':', 2) is [var type, var field]:
+            fields.Add((type, field));
+            break;
+        default:
+            failures.Add($"bad argument {option} {value}");
+            break;
+    }
+}
 
 using (var pe = new PEReader(File.OpenRead(args[0])))
 {
@@ -34,6 +66,17 @@ using (var pe = new PEReader(File.OpenRead(args[0])))
             if (AttributeTypeName(md, attr) != "HarmonyLib.HarmonyPatch")
                 continue;
             var value = attr.DecodeValue(provider);
+            if (value.FixedArguments.Length == 0
+                && type.GetMethods().Select(md.GetMethodDefinition).Any(m => md.GetString(m.Name) is "TargetMethod" or "TargetMethods")
+                && optional.Remove(patchClass, out var targets))
+            {
+                foreach (var target in targets)
+                {
+                    checkedTargets++;
+                    Check(patchClass, target.Type, target.Method, target.Parameters, PatchMethods(md, type));
+                }
+                continue;
+            }
             if (value.FixedArguments.Length < 2 || value.FixedArguments[0].Value is not string serializedType || value.FixedArguments[1].Value is not string methodName)
             {
                 failures.Add($"{patchClass}: unsupported [HarmonyPatch] form (expected typeof(T), \"method\"[, Type[]])");
@@ -54,18 +97,14 @@ using (var pe = new PEReader(File.OpenRead(args[0])))
     }
 }
 
-for (var i = 2; i < args.Length; i++)
+foreach (var patch in optional.Keys)
+    failures.Add($"configured target was not used: {patch}");
+foreach (var (type, field) in fields)
 {
-    if (args[i] != "--field" || i + 1 >= args.Length)
-    {
-        failures.Add($"bad argument {args[i]}");
-        continue;
-    }
-    var spec = args[++i].Split(':');
-    if (FindField(spec[0], spec[1]) is null)
-        failures.Add($"field {spec[0]}.{spec[1]}: not found");
+    if (FindField(type, field) is null)
+        failures.Add($"field {type}.{field}: not found");
     else
-        Console.WriteLine($"matched field  {spec[0]}.{spec[1]}");
+        Console.WriteLine($"matched field  {type}.{field}");
 }
 
 Console.WriteLine($"patch targets checked: {checkedTargets}, failures: {failures.Count}");
@@ -115,6 +154,9 @@ void Check(string patchClass, string targetType, string methodName, List<string>
                 if (FindField(targetType, n[3..]) is null) failures.Add($"{patchClass}.{patchMethod}: field {n[3..]} not on {targetType}");
                 continue;
             }
+            if (n.StartsWith("__", StringComparison.Ordinal) && int.TryParse(n.AsSpan(2), out var position)
+                && position >= 0 && position < targetParams.Count)
+                continue;
             if (!targetParams.Contains(n))
                 failures.Add($"{patchClass}.{patchMethod}: parameter '{n}' is not a parameter of {targetType}::{methodName}({string.Join(", ", targetParams)})");
         }

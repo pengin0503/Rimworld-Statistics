@@ -17,7 +17,7 @@ public sealed class ModMetricProviderRegistry
 
     public ModMetricProviderRegistry(IEnumerable<string>? reserved = null)
     {
-        _reserved = (reserved ?? MetricRegistry.Catalog.Select(d => d.Key))
+        _reserved = (reserved ?? MetricRegistry.ImplementedCatalog.Select(d => d.Key))
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
     }
 

@@ -14,7 +14,9 @@ internal static class UnitRecordingStates
         var dlc = provider?.RequiredDlc ?? unit?.RequiredDlc;
         if (dlc is not null && !ModsConfig.IsActive(dlc))
             return UnitRecordingState.DlcMissing;
-        if (provider?.OwnerPackageId is { } owner && !ModsConfig.IsActive(owner))
+        var owner = provider?.OwnerPackageId ?? BuiltInModMetricCatalog.Definitions
+            .FirstOrDefault(d => d.Acquisition == acquisitionId)?.OwnerPackageId;
+        if (owner is not null && !ModsConfig.IsActive(owner))
             return UnitRecordingState.TargetModMissing;
         if (MetricGates.FailedThisSession(acquisitionId))
             return UnitRecordingState.Failed;

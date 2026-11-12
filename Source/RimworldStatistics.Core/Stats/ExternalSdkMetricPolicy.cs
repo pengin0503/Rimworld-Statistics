@@ -16,7 +16,7 @@ public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescr
 public sealed class ExternalSdkMetricRegistry
 {
     private readonly ModMetricProviderRegistry registry =
-        new(MetricRegistry.Catalog.Select(d => d.Key));
+        new(MetricRegistry.ImplementedCatalog.Select(d => d.Key));
     private readonly Dictionary<string, RegisteredSdkMetric> entries = new(StringComparer.Ordinal);
     private bool sealedForStartup;
 

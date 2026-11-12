@@ -1,4 +1,5 @@
 using RimworldStatistics.Core;
+using RimworldStatistics.Patches.Metrics;
 using Verse;
 
 namespace RimworldStatistics.Metrics;
@@ -96,6 +97,10 @@ public static class MetricGates
         if (unitId == ModdedIncidentFamily.Name)
             return DefDatabase<RimWorld.IncidentDef>.AllDefsListForReading.Any(def =>
                 ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
+        if (unitId == VpeStatistics.EventUnit)
+            return VpeMetricPatch.HasLevelTarget;
+        if (unitId == VpeStatistics.SnapshotUnit)
+            return VpeMetricPatch.ImplantType is not null;
         if (unitId == OutpostSnapshot.Unit)
             return DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
                 OutpostSnapshot.IsOutpostType(def.worldObjectClass));

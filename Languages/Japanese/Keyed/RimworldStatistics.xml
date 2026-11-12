@@ -997,4 +997,12 @@
   <RWS_Details_StatusPartial>部分記録</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>未取得</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>実験的</RWS_Details_StatusExperimental>
+  <RWS_Metric_VpeLevelsGained>VPE サイキャスターレベル上昇</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>記録開始後に確定した、プレイヤー勢力のVPEサイキャスターレベル上昇の合計。</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>VPE サイキャスター数</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>記録したセーブ時点でVPEサイキャスターのインプラントを持つ自由入植者数。</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>VPE サイキャスター最高レベル</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>記録したセーブ時点での自由入植者のVPEサイキャスター最高レベル。</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>VPE サイキャスターレベル合計</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>記録したセーブ時点での自由入植者のVPEサイキャスターレベル合計。</RWS_MetricDesc_VpeSumLevels>
 </LanguageData>

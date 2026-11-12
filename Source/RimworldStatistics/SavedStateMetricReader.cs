@@ -1,5 +1,6 @@
 using RimWorld;
 using RimworldStatistics.Core;
+using RimworldStatistics.Patches.Metrics;
 using Verse;
 
 namespace RimworldStatistics;
@@ -10,7 +11,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -60,6 +61,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
+                        observation.Metrics[key] = value;
+                else if (unit == VpeStatistics.SnapshotUnit)
+                    foreach (var (key, value) in ReadVpe())
                         observation.Metrics[key] = value;
                 else if (unit == OutpostSnapshot.Unit)
                     foreach (var (key, value) in ReadOutposts())
@@ -351,6 +355,25 @@ internal static class SavedStateMetricReader
             }
         }
         return RoyaltyQuestSnapshot.Build(count, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadVpe()
+    {
+        var type = VpeMetricPatch.ImplantType ?? throw new InvalidOperationException("VPE implant type unavailable.");
+        var levels = new List<int>();
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        {
+            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist || pawn.health?.hediffSet is not { } hediffs)
+                continue;
+            foreach (var hediff in hediffs.hediffs)
+            {
+                if (hediff is not Hediff_Level level || !type.IsInstanceOfType(level))
+                    continue;
+                levels.Add(level.level);
+                break;
+            }
+        }
+        return VpeStatistics.BuildSnapshot(levels);
     }
 
     private static Dictionary<string, MetricEntry> ReadRoyaltyState()

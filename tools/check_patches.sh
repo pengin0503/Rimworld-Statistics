@@ -8,4 +8,4 @@ dotnet build tools/PatchTargetCheck/PatchTargetCheck.csproj -c Release -nologo -
 dotnet tools/PatchTargetCheck/bin/Release/net10.0/PatchTargetCheck.dll 1.7/Assemblies/RimworldStatistics.dll \
   .devinputs/audit/assembly/Assembly-CSharp \
   --field RimWorld.ShipCountdown:shipRoot \
-  --field RimWorld.ShipCountdown:customLaunchString
+  --field RimWorld.ShipCountdown:customLaunchString "$@"

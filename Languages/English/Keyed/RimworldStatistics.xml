@@ -997,4 +997,12 @@
   <RWS_Details_StatusPartial>Partial records</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>Unmeasured</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>Experimental</RWS_Details_StatusExperimental>
+  <RWS_Metric_VpeLevelsGained>VPE psycaster levels gained</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>Confirmed upward changes of player-faction VPE psycaster levels, counted after recording starts.</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>VPE psycasters</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>Free colonists with a VPE psycaster implant at a recorded save.</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>Highest VPE psycaster level</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>Highest VPE psycaster level among free colonists at a recorded save.</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>Total VPE psycaster levels</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>Sum of VPE psycaster levels of free colonists at a recorded save.</RWS_MetricDesc_VpeSumLevels>
 </LanguageData>
