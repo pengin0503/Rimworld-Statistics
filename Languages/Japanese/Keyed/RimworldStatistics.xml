@@ -1044,4 +1044,6 @@
   <RWS_VTE_ContractPurchasesDesc>プレイヤーが掲示したVTEの購入契約について、銀行から代金を全額支払い、品物の生成まで完了した回数。支払キャンセルや単なる契約受付では増えません。</RWS_VTE_ContractPurchasesDesc>
   <RWS_VTE_ContractReceived>VTE 契約購入品の受取数量</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>プレイヤー掲示契約で支払いが成功し、生成された品物の数量。NPC買取契約の引渡しや通常の交易とは別です。</RWS_VTE_ContractReceivedDesc>
+  <RWS_Metric_VpeCasts>VPE サイキャスト使用成功回数</RWS_Metric_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>自勢力の自由入植者がVanilla Psycasts Expandedの能力を実際に発動・消費した累計回数。能力Def別の内訳を含み、詠唱指示・中断・NPCの発動は数えません。</RWS_MetricDesc_VpeCasts>
 </LanguageData>
