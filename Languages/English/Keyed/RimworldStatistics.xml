@@ -3,6 +3,12 @@
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
   <RWS_Setting_IncludeDevMode>Show and count endings recorded in development mode</RWS_Setting_IncludeDevMode>
   <RWS_Setting_AutoImport>Import saves automatically at the title screen</RWS_Setting_AutoImport>
+  <RWS_Setting_WindowSize>Statistics window size</RWS_Setting_WindowSize>
+  <RWS_Setting_WindowSizeStandard>Standard (1000 × 720)</RWS_Setting_WindowSizeStandard>
+  <RWS_Setting_WindowSizeLarge>Large (1400 × 900)</RWS_Setting_WindowSizeLarge>
+  <RWS_Setting_WindowSizeExtraLarge>Extra large (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>Fit screen (90%)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>Applied the next time you open Statistics. Font size is unchanged; oversized windows fit the screen.</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>Lifetime stats</RWS_MenuButton>
   <RWS_WindowTitle>Lifetime statistics</RWS_WindowTitle>
   <RWS_WindowError>The statistics window failed to draw. See the log for details.</RWS_WindowError>

@@ -48,7 +48,7 @@ public sealed class RimworldStatisticsMod : Mod
     {
         const float rowHeight = 27f;
         var selectable = selectableUnits ??= AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
-        var viewRect = new Rect(0f, 0f, inRect.width - 20f, 330f + selectable.Length * rowHeight);
+        var viewRect = new Rect(0f, 0f, inRect.width - 20f, 440f + selectable.Length * rowHeight);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
         try
         {
@@ -56,6 +56,25 @@ public sealed class RimworldStatisticsMod : Mod
             listing.Begin(viewRect);
             listing.CheckboxLabeled("RWS_Setting_IncludeDevMode".Translate(), ref Settings.includeDevMode);
             listing.CheckboxLabeled("RWS_Setting_AutoImport".Translate(), ref Settings.autoImport);
+            listing.Gap(8f);
+            listing.Label("RWS_Setting_WindowSize".Translate());
+            var sizeButton = listing.GetRect(30f);
+            if (Widgets.ButtonText(new Rect(sizeButton.x, sizeButton.y, Math.Min(sizeButton.width, 320f), sizeButton.height),
+                    WindowSizeLabel((StatisticsWindowSizePreset)Settings.windowSizePreset)))
+            {
+                Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+                {
+                    new(WindowSizeLabel(StatisticsWindowSizePreset.Standard),
+                        () => Settings.windowSizePreset = (int)StatisticsWindowSizePreset.Standard),
+                    new(WindowSizeLabel(StatisticsWindowSizePreset.Large),
+                        () => Settings.windowSizePreset = (int)StatisticsWindowSizePreset.Large),
+                    new(WindowSizeLabel(StatisticsWindowSizePreset.ExtraLarge),
+                        () => Settings.windowSizePreset = (int)StatisticsWindowSizePreset.ExtraLarge),
+                    new(WindowSizeLabel(StatisticsWindowSizePreset.FitScreen),
+                        () => Settings.windowSizePreset = (int)StatisticsWindowSizePreset.FitScreen),
+                }));
+            }
+            listing.Label("RWS_Setting_WindowSizeHelp".Translate());
             listing.Gap(8f);
             listing.CheckboxLabeled("RWS_Exp_Enable".Translate(), ref Settings.experimentalEnabled);
             listing.Label("RWS_Exp_Warning".Translate());
@@ -106,4 +125,12 @@ public sealed class RimworldStatisticsMod : Mod
             Widgets.EndScrollView();
         }
     }
+
+    private static string WindowSizeLabel(StatisticsWindowSizePreset preset) => preset switch
+    {
+        StatisticsWindowSizePreset.Large => "RWS_Setting_WindowSizeLarge".Translate(),
+        StatisticsWindowSizePreset.ExtraLarge => "RWS_Setting_WindowSizeExtraLarge".Translate(),
+        StatisticsWindowSizePreset.FitScreen => "RWS_Setting_WindowSizeFitScreen".Translate(),
+        _ => "RWS_Setting_WindowSizeStandard".Translate(),
+    };
 }
