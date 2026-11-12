@@ -951,4 +951,5 @@
   <RWS_Fav_Remove>Remove favorite</RWS_Fav_Remove>
   <RWS_Fav_Unknown>Previously saved metric is no longer available.</RWS_Fav_Unknown>
   <RWS_Fav_NoOverall>This metric has no combined value across colonies.</RWS_Fav_NoOverall>
+  <RWS_Fav_AddBasic>Add basic statistic</RWS_Fav_AddBasic>
 </LanguageData>
