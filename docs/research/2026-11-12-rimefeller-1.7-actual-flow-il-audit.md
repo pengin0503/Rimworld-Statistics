@@ -36,7 +36,7 @@ ECMA-335 metadata and the IL body of each specified method. They are
 | `CompRefinery.Produced(int):void` | Called at two separate `CompRefinery.CompTick` sites. One site follows `GenPlace.TryPlaceThing`, but the latter's success return is discarded before `Produced`. | The `Produced` callback by itself does not prove successful spawning/placement. |
 
 The IL methods include `CompOilDerrick.Pump` at token
-`0x060000D3` (134 bytes), `OilField.Used` at `0x06000169` (75),
+`0x060000AB` (134 bytes), `OilField.Used` at `0x06000169` (75),
 `PipelineNet.PushCrude` at `0x060001D6` (304),
 `PipelineNet.PushFuel` at `0x060001D7` (299),
 `PipelineNet.Tick` at `0x060001DA` (873), and
