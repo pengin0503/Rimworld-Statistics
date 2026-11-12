@@ -60,6 +60,36 @@ public sealed class ViewScopeTests
     }
 
     [Fact]
+    public void ComparisonWorkingSetDoesNotEvictActiveScopeEachFrame()
+    {
+        using var tmp = new TempDir();
+        var session = new ProfileSession(new ProfileStore(tmp.Path), () => Now);
+        session.Mutate(p =>
+        {
+            for (var i = 0; i < 6; i++)
+                p.SaveObservations.Add(Save($"{i}.rws", $"Seed{i}", 120000 + i * 60000));
+        }, SaveMode.None);
+        var options = new StatsOptions();
+        var all = session.GetView(options);
+        var keys = all.Colonies.Select(c => c.Key).ToArray();
+        var scopes = Enumerable.Range(0, 5).Select(i => ViewScope.ForGroup(new ColonyGroup
+        {
+            Id = $"group{i}", Name = $"Group {i}", ColonyKeys = [keys[i]],
+        })).ToArray();
+        var active = session.GetView(options, scope: scopes[4]);
+        var columns = new[] { session.GetView(options), session.GetView(options, scope: scopes[0]),
+            session.GetView(options, scope: scopes[1]), session.GetView(options, scope: scopes[2]) };
+        for (var frame = 0; frame < 30; frame++)
+        {
+            Assert.Same(active, session.TryGetCachedView(options, scope: scopes[4]));
+            Assert.Same(active, session.GetView(options, scope: scopes[4]));
+            Assert.Same(columns[0], session.GetView(options));
+            for (var i = 1; i < columns.Length; i++)
+                Assert.Same(columns[i], session.GetView(options, scope: scopes[i - 1]));
+        }
+    }
+
+    [Fact]
     public void ScopedNumericTotalsMatchOrdinaryExclusionAndKeepAllPerColonyRows()
     {
         var profile = new Profile();
