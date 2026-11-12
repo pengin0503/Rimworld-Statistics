@@ -1,6 +1,6 @@
 # Implementation checklist — planned optional-MOD statistics
 
-This checklist applies to **every** target in [README.md](README.md), including compatibility-blocked and low-priority entries. A target remains planned if its proof is missing; record the blocker rather than hallucinating a metric or dropping the row.
+Work sequencing: first consult [the Workshop popularity and feasibility ranking](2026-11-12-popularity-priority.md), which supersedes the legacy per-row High/Medium ratings for implementation ordering. Popularity is a reach proxy, **not** grounds for duplicate collectors.\n\nThis checklist applies to **every** target in [README.md](README.md), including compatibility-blocked and low-priority entries. A target remains planned if its proof is missing; record the blocker rather than hallucinating a metric or dropping the row.
 
 ## Pre-implementation acceptance gates
 
@@ -19,10 +19,10 @@ This checklist applies to **every** target in [README.md](README.md), including 
 
 | Batch | Candidate scope | Important dependency |
 |---|---|---|
-| D1 | Aspirations, Tribals, Classical | Independent state transitions and post-success checkpoints |
-| D2 | Cryptoforge, Ancients, Drone Factory, Insectoids 2 | Unique event outcomes; pawn/quest dedup |
-| D3 | Factory, Nutrient Paste Expanded, Brewing Expanded, Gastronomy | Actual production or settled payment; generic bill/trade exclusion |
-| D4 | Skills, Android, Pirates, Deserters, Generator, Settlers, Books | Validate 1.7 source, scope, own event semantics |
+| D1 | VFE Security, high-reach Cooking/Brewing source audit, Social Interactions | Prioritize 500k+ subscribers where success event is distinct; skip if generic |
+| D2 | Books Expanded, Settlers, Empire, Genetics, Rimatomics, Chemfuel; then Cryptoforge/Ancients/Drone Factory/Insectoids 2 by refreshed reach | Distinct outcomes and version/IL proof; no double-counted quest/bill/pipe outputs |
+| D3 | Medieval 2, Achievements Expanded, Factory, Nutrient Paste Expanded, Gastronomy | Actual successful production, completed achievements, settled payment; generic exclusion |
+| D4 | Skills, Android, Pirates, Deserters, Generator, Giddy-Up Continued, Simple Warrants | Validate 1.7 source, committed outcomes, and audience reach |
 | D5 | Genetics, Rimefeller, Rimatomics, SOS2, Magic, Combat Extended | Source/IL or potentially hot-path perf auditing |
 | D6 | Prison Expanded, Project RimFactory Revived | Exact target identity / 1.7 compatibility blockers |
 
