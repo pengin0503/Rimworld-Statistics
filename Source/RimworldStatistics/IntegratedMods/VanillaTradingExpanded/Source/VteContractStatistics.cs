@@ -34,8 +34,9 @@ internal static class VteContractStatistics
     private static FieldInfo? caravanSentField;
     private static MethodInfo? foundItems;
 
-    private sealed record ContractBefore(string Fingerprint, int Tick, int Requested, int Reward,
-        object Contract, Map Map, int ItemCount);
+    private sealed record SelectedStack(Thing Thing, int BeforeCount);
+    private sealed record ContractBefore(string Fingerprint, int Tick, int Requested,
+        object Contract, IReadOnlyList<SelectedStack> Stacks, int ItemCount);
     private sealed record CaravanBefore(string Fingerprint, int Tick, int Requested, int Reward, int ItemCount);
 
     internal static void TryRegister()
@@ -134,17 +135,17 @@ internal static class VteContractStatistics
             ReadInt(contract, expiryField), ":", map?.Tile ?? -1);
     }
 
-    private static int CollectibleItems(object contract, Map map)
+    private static List<SelectedStack> SelectedItems(object contract, Map map)
     {
+        var selected = new List<SelectedStack>();
         if (foundItems?.Invoke(contract, [map]) is not IEnumerable found)
-            return 0;
+            return selected;
         var item = itemField?.GetValue(contract) as ThingDef;
         var stuff = stuffField?.GetValue(contract) as ThingDef;
-        long count = 0;
         foreach (var thing in found)
             if (thing is Thing t && !t.Destroyed && t.def == item && t.Stuff == stuff)
-                count += t.stackCount;
-        return (int)Math.Clamp(count, 0, int.MaxValue);
+                selected.Add(new SelectedStack(t, t.stackCount));
+        return selected;
     }
 
     private static void BeforeComplete(object __instance, object __0, out ContractBefore? __state)
@@ -163,8 +164,12 @@ internal static class VteContractStatistics
             var reward = ReadInt(__0, rewardField);
             if (requested <= 0 || reward <= 0)
                 return;
+            var stacks = SelectedItems(__0, map);
+            long counted = 0;
+            foreach (var stack in stacks)
+                counted += stack.BeforeCount;
             __state = new ContractBefore(Fingerprint(__0, map), Find.TickManager.TicksGame,
-                requested, reward, __0, map, CollectibleItems(__0, map));
+                requested, __0, stacks, (int)Math.Min(int.MaxValue, counted));
         }
         catch (Exception e) { MetricGates.Fail(Unit, e); }
     }
@@ -179,10 +184,19 @@ internal static class VteContractStatistics
             if ((pendingField?.GetValue(__instance) as IList)?.Contains(__state.Contract) == true ||
                 (scheduledField?.GetValue(__instance) as IList)?.Contains(__state.Contract) == true)
                 return;
-            var after = CollectibleItems(__state.Contract, __state.Map);
-            var delivered = VteTradeMath.FulfilledItems(__state.ItemCount, after, __state.Requested);
+            // The original FoundItemsInMap stops as soon as enough stacks were
+            // found. Calling it again would include untouched replacement stacks,
+            // masking a completed transfer when the map has excess stock.
+            var remaining = new (int Before, int After)[__state.Stacks.Count];
+            for (var i = 0; i < __state.Stacks.Count; i++)
+            {
+                var stack = __state.Stacks[i];
+                remaining[i] = (stack.BeforeCount, stack.Thing.Destroyed ? 0 : stack.Thing.stackCount);
+            }
+            var delivered = VteTradeMath.ConsumedSelected(remaining, __state.Requested);
             if (delivered > 0)
-                Record(__state.Fingerprint, "instant", __state.Tick, __state.ItemCount, after, delivered);
+                Record(__state.Fingerprint, "instant", __state.Tick,
+                    __state.ItemCount, __state.ItemCount - delivered, delivered);
         }
         catch (Exception e) { MetricGates.Fail(Unit, e); }
     }
