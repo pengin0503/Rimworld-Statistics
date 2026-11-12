@@ -26,6 +26,9 @@ internal static class CoverageTab
     private static MetricVerification? verification;
     private static Vector2 scroll;
     private static string summary = "";
+    private static string caution = "";
+    private static float layoutWidth = -1;
+    private static ColumnPlan? tablePlan;
 
     public static void Draw(Rect rect, StatsView view)
     {
@@ -39,23 +42,24 @@ internal static class CoverageTab
             Expanded.UnionWith(groups);
             rebuildRows = true;
             scroll = Vector2.zero;
+            var countMeasured = statuses.Count(s => s.Availability == MetricAvailability.AllMeasuredColonies
+                && !MetricStatusClassifier.IsPartial(s));
+            var countPartial = statuses.Count(s => s.Measured > 0 && MetricStatusClassifier.IsPartial(s));
+            var countMissing = statuses.Count(s => s.Availability == MetricAvailability.NoMeasuredColonies);
+            var countNA = statuses.Count(s => s.Availability == MetricAvailability.NoApplicableColonies);
+            var countExperimental = statuses.Count(s => s.Verification == MetricVerification.Experimental);
+
+            summary = "RWS_Status_Summary".Translate(
+                countMeasured, countPartial, countMissing, countNA, countExperimental);
+            caution = "RWS_Status_Caution".Translate();
         }
 
-        var countMeasured = statuses.Count(s => s.Availability == MetricAvailability.AllMeasuredColonies
-            && !MetricStatusClassifier.IsPartial(s));
-        var countPartial = statuses.Count(s => MetricStatusClassifier.IsPartial(s));
-        var countMissing = statuses.Count(s => s.Availability == MetricAvailability.NoMeasuredColonies);
-        var countNA = statuses.Count(s => s.Availability == MetricAvailability.NoApplicableColonies);
-        var countExperimental = statuses.Count(s => s.Verification == MetricVerification.Experimental);
-
-        var summaryNow = (string)"RWS_Status_Summary".Translate(
-            countMeasured, countPartial, countMissing, countNA, countExperimental);
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), summaryNow.Truncate(rect.width));
-        TooltipHandler.TipRegion(new Rect(rect.x, rect.y, rect.width, 30f), summaryNow);
-        Widgets.Label(new Rect(rect.x, rect.y + 29f, rect.width, 28f),
-            ((string)"RWS_Status_Caution".Translate()).Truncate(rect.width));
-        TooltipHandler.TipRegion(new Rect(rect.x, rect.y + 29f, rect.width, 28f),
-            "RWS_Status_Caution".Translate());
+        var summaryRect = new Rect(rect.x, rect.y, rect.width, 30f);
+        Widgets.Label(summaryRect, summary.Truncate(rect.width));
+        TooltipHandler.TipRegion(summaryRect, summary);
+        var cautionRect = new Rect(rect.x, rect.y + 29f, rect.width, 28f);
+        Widgets.Label(cautionRect, caution.Truncate(rect.width));
+        TooltipHandler.TipRegion(cautionRect, caution);
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 63f, rect.width, 28f));
         var filterText = FilterLabel(filter);
@@ -106,17 +110,23 @@ internal static class CoverageTab
         }
         if (rebuildRows)
         {
-            rows = BuildRows(view);
+            rows = BuildRows();
             rebuildRows = false;
         }
 
         var start = searchY + 34f;
-        var tableWidth = Math.Max(740f, rect.width - 16f);
+        if (tablePlan is null || layoutWidth != rect.width)
+        {
+            layoutWidth = rect.width;
+            tablePlan = ColumnLayout.Resolve(
+                [new(340f, 5f), new(150f, 2f), new(180f, 3f), new(85f, 1f)], Math.Max(0, rect.width - 16f));
+        }
+        var tableWidth = tablePlan.TotalWidth;
         var titleRect = new Rect(rect.x, start, rect.width, 27f);
         GUI.BeginGroup(titleRect);
         DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
             ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
-                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], true);
+                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths);
         GUI.EndGroup();
 
         var viewport = new Rect(rect.x, start + RowHeight, rect.width, Math.Max(0, rect.yMax - start - RowHeight));
@@ -130,7 +140,7 @@ internal static class CoverageTab
             var rowRect = new Rect(0f, i * RowHeight, tableWidth, RowHeight);
             if (i % 2 == 1)
                 Widgets.DrawHighlight(rowRect, 0.2f);
-            DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], false);
+            DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths);
             if (row.Status is null)
             {
                 Widgets.DrawHighlightIfMouseover(rowRect);
@@ -151,7 +161,7 @@ internal static class CoverageTab
         Widgets.EndScrollView();
     }
 
-    private static DisplayRow[] BuildRows(StatsView view)
+    private static DisplayRow[] BuildRows()
     {
         var term = search.Trim();
         var filtered = statuses.Where(s => category is null || s.Definition.Category == category)
@@ -171,11 +181,14 @@ internal static class CoverageTab
         var results = new List<DisplayRow>(filtered.Length + 30);
         foreach (var group in filtered.GroupBy(GroupId).OrderBy(g => g.Key, StringComparer.Ordinal))
         {
-            var state = group.First().Recording;
+            var first = group.First();
+            var state = first.Recording;
+            var requirement = string.Join(" · ", new[] { first.Definition.RequiredDlc, first.Definition.OwnerPackageId }
+                .Where(value => !string.IsNullOrEmpty(value)));
             var num = group.Count();
             var measured = group.Count(s => s.Measured > 0);
             results.Add(new DisplayRow(group.Key, (Expanded.Contains(group.Key) ? "▾ " : "▸ ") + group.Key,
-                RecordingLabel(state), "", measured + "/" + num, null));
+                RecordingLabel(state), requirement, measured + "/" + num, null));
             if (!Expanded.Contains(group.Key))
                 continue;
             foreach (var status in group.OrderBy(s => MetricText.Label(s.Definition), StringComparer.CurrentCulture))
@@ -232,7 +245,11 @@ internal static class CoverageTab
             + CoverageLabel(status) + " · " + VerificationLabel(status.Verification) + "\n"
             + RecordingLabel(status.Recording) + "\n"
             + status.Measured + " / " + status.Targets + "\n"
-            + status.Definition.Provenance + "\n";
+            + status.Definition.Provenance + " · " + status.Definition.Source + "\n";
+        if (status.Definition.Acquisition is { } unit)
+            text += unit + "\n";
+        if (status.Definition.RequiredDlc is { } dlc)
+            text += dlc + "\n";
         if (status.Definition.OwnerPackageId is { } owner)
             text += owner + "\n";
         if (status.MissingColonyKeys.Count > 0)
@@ -247,11 +264,8 @@ internal static class CoverageTab
         return text;
     }
 
-    private static void DrawCells(Rect rect, string[] cells, bool header)
+    private static void DrawCells(Rect rect, string[] cells, float[] widths)
     {
-        var widths = ColumnLayout.Resolve(
-            [new(340f, 5f), new(150f, 2f), new(180f, 3f), new(85f, 1f)],
-            rect.width).Widths;
         var x = rect.x;
         var priorAnchor = Text.Anchor;
         Text.Anchor = TextAnchor.MiddleLeft;

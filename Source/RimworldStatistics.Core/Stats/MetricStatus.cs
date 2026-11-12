@@ -38,6 +38,8 @@ public static class MetricStatusClassifier
 
         var overall = view.Numeric.Overall.ToDictionary(r => r.Definition.Key, StringComparer.Ordinal);
         var counted = view.Numeric.Colonies.Where(c => !c.Excluded && !c.OutOfScope).ToArray();
+        var rowsByColony = counted.Select(c => (c.Key, Rows: c.Rows.ToDictionary(r => r.Definition.Key, StringComparer.Ordinal))).ToArray();
+        var recordingByUnit = new Dictionary<string, UnitRecordingState>(StringComparer.Ordinal);
         var results = new List<MetricStatus>(definitions.Length);
 
         foreach (var definition in definitions)
@@ -48,27 +50,32 @@ public static class MetricStatusClassifier
             var targets = 0;
             var partial = false;
             var evidence = aggregate?.Value.Evidence ?? MetricEvidence.UnknownLegacy;
-            if (CrossColonyCatalog.IsDerived(definition) && aggregate is not null)
+            var hasLegacy = false;
+            if (definition.Overall == OverallAggregation.Ranking && aggregate is not null)
             {
                 // Derived rows have no individual colony record; their count is already computed by Core.
                 measured = aggregate.Valid;
+                hasLegacy = measured > 0 && evidence == MetricEvidence.UnknownLegacy;
                 targets = aggregate.Targets;
                 partial = MetricAvailabilityPolicy.IsPeriodIncomplete(aggregate);
             }
             else
             {
-                foreach (var c in counted)
+                foreach (var c in rowsByColony)
                 {
-                    var row = c.Rows.FirstOrDefault(r => r.Definition.Key == definition.Key);
+                    var row = c.Rows.GetValueOrDefault(definition.Key);
                     if (row?.Value.Coverage == MetricCoverage.NotApplicable)
                         continue;
                     targets++;
-                    if (row?.Value.Number is { } number
-                        && double.IsFinite(number)
-                        && row.Value.Known)
+                    if (row is not null && row.Value.Known && (row.Value.Number is not { } number || double.IsFinite(number)))
                     {
                         measured++;
-                        partial |= MetricAvailabilityPolicy.IsPeriodIncomplete(row);
+                        if (MetricAvailabilityPolicy.IsPeriodIncomplete(row))
+                        {
+                            partial = true;
+                            missing.Add(c.Key);
+                        }
+                        hasLegacy |= row.Value.Evidence == MetricEvidence.UnknownLegacy;
                         if (row.Value.Evidence == MetricEvidence.Experimental
                             || row.Value.Evidence == MetricEvidence.Mixed)
                             evidence = row.Value.Evidence;
@@ -78,13 +85,6 @@ public static class MetricStatusClassifier
                         missing.Add(c.Key);
                     }
                 }
-                // Certain global-only records have no colony row and are evaluated by their precomputed aggregate.
-                if (counted.Length == 0 && aggregate is not null)
-                {
-                    targets = aggregate.Targets;
-                    measured = aggregate.Valid;
-                    partial = MetricAvailabilityPolicy.IsPeriodIncomplete(aggregate);
-                }
             }
 
             var availability = targets == 0 ? MetricAvailability.NoApplicableColonies
@@ -92,16 +92,16 @@ public static class MetricStatusClassifier
                 : measured < targets ? MetricAvailability.SomeMeasuredColonies
                 : MetricAvailability.AllMeasuredColonies;
 
-            var verification = definition.Acquisition is not null && evidence == MetricEvidence.UnknownLegacy
-                    && measured > 0
+            var verification = definition.Acquisition is not null && hasLegacy
                 ? MetricVerification.Legacy
                 : definition.ProviderId is not null || definition.Acquisition is not null && !definition.Published
                     || evidence is MetricEvidence.Experimental or MetricEvidence.Mixed
                     ? MetricVerification.Experimental
                     : MetricVerification.Standard;
 
-            var recording = definition.Acquisition is { } unit
-                ? unitState(unit) : UnitRecordingState.NotRequired;
+            var recording = UnitRecordingState.NotRequired;
+            if (definition.Acquisition is { } unit && !recordingByUnit.TryGetValue(unit, out recording))
+                recordingByUnit[unit] = recording = unitState(unit);
 
             results.Add(new MetricStatus(definition, availability, partial, verification,
                 recording, measured, targets, missing));

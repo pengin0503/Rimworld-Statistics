@@ -121,7 +121,6 @@
   <RWS_Details_Note>From {0} colonies (excluded from totals: {1}). Values are computed from the imported saves and may include what happened through dev-mode actions.</RWS_Details_Note>
   <RWS_Details_Unattributed>{0} observations that could not be matched to one colony are not included.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
-  <RWS_Details_OnlyMeasured>Measured numbers only</RWS_Details_OnlyMeasured>
   <RWS_Details_UnrankedTop>No category winner can be established</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>None of the selected colonies is applicable to this metric; a missing DLC can explain this only when supported by a saved DLC inventory.</RWS_Details_AvailabilityNone>
   <RWS_Details_AvailabilityMissing>0 eligible colonies have a captured value. The cause is unconfirmed: collection may be disabled or late, the event may not have been captured, or historical import may be unsupported. Do not substitute zero.</RWS_Details_AvailabilityMissing>

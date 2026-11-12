@@ -106,6 +106,37 @@ public sealed class MetricStatusTests
     }
 
     [Fact]
+    public void PartialAndLateColoniesAppearInMissingDetails()
+    {
+        var status = Only(View(Definition,
+            ("a", 3, MetricCoverage.Partial, null),
+            ("b", 2, MetricCoverage.Complete, 500),
+            ("c", 1, MetricCoverage.Complete, null)));
+        Assert.Equal(new[] { "a", "b" }, status.MissingColonyKeys);
+        Assert.Equal((3, 3), (status.Measured, status.Targets));
+    }
+
+    [Fact]
+    public void RankingUsesPrecomputedCoverageWithoutColonyRows()
+    {
+        var definition = Definition with { Key = "ranking.test", Overall = OverallAggregation.Ranking };
+        var seed = View(definition, ("a", 3, MetricCoverage.Complete, null), ("b", null, MetricCoverage.Unknown, null));
+        var view = new StatsView
+        {
+            Colonies = seed.Colonies,
+            Stats = seed.Stats,
+            Numeric = new NumericView
+            {
+                Overall = seed.Numeric.Overall,
+                Colonies = seed.Numeric.Colonies.Select(c => new NumericColony { Key = c.Key, Rows = [] }).ToArray(),
+            },
+        };
+        var status = Only(view);
+        Assert.Equal((1, 2), (status.Measured, status.Targets));
+        Assert.Empty(status.MissingColonyKeys);
+    }
+
+    [Fact]
     public void EmptyNumericViewContainsNoIncorrectResults()
     {
         var view = new StatsView

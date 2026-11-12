@@ -121,7 +121,6 @@
   <RWS_Details_Note>{0} コロニー分（合計から外したもの {1}）。数値は取り込んだセーブの内容から計算します。開発モードの操作で起きた事柄も含まれることがあります。</RWS_Details_Note>
   <RWS_Details_Unattributed>どのコロニーのものか決められなかった観測 {0} 件は含めていません。</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
-  <RWS_Details_OnlyMeasured>数値のある項目のみ</RWS_Details_OnlyMeasured>
   <RWS_Details_UnrankedTop>最多の種類を確定できません</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>選択対象に、この統計が適用されるコロニーはありません。DLC非適用と断定できるのは、保存されたDLC構成で確認できる場合だけです。</RWS_Details_AvailabilityNone>
   <RWS_Details_AvailabilityMissing>対象コロニーの取得済み値は0件です。取得無効・記録開始前・イベント未記録・過去セーブの解析未対応など、原因は未確定です。欠測を0として補完しません。</RWS_Details_AvailabilityMissing>
