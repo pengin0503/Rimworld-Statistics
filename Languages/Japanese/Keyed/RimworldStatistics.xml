@@ -20,6 +20,11 @@
   <RWS_Export_Progress>CSVを書き出しています（{0}/{1}）…</RWS_Export_Progress>
   <RWS_Export_Error>CSV出力に失敗しました：{0}</RWS_Export_Error>
   <RWS_Export_Done>CSVを保存しました：{0}</RWS_Export_Done>
+  <RWS_Compare_Mode>比較</RWS_Compare_Mode>
+  <RWS_Compare_Add>比較列を追加…</RWS_Compare_Add>
+  <RWS_Compare_Group>グループ</RWS_Compare_Group>
+  <RWS_Compare_Colony>コロニー</RWS_Compare_Colony>
+  <RWS_Compare_Remove>比較列を削除</RWS_Compare_Remove>
   <RWS_Stat_Days>通算ゲーム内日数</RWS_Stat_Days>
   <RWS_Stat_Endings>エンディング到達回数</RWS_Stat_Endings>
   <RWS_Stat_Departed>旅立った人数</RWS_Stat_Departed>
