@@ -110,6 +110,7 @@ jobs:
           sparse-checkout: |
             About/About.xml
             1.7/Source/VanillaPsycastsExpanded/Hediff_PsycastAbilities.cs
+            1.7/Source/VanillaPsycastsExpanded/AbilityExtension_Psycast.cs
             1.7/Assemblies/VanillaPsycastsExpanded.dll
           sparse-checkout-cone-mode: false
           persist-credentials: false
@@ -122,6 +123,9 @@ jobs:
             Source/Outposts/Outpost/Outpost.cs
             Source/Outposts/Outpost/Outpost_Deliveries.cs
             1.7/Assemblies/Outposts.dll
+            Source/VEF/Abilities/Misc/Ability.cs
+            Source/VEF/Abilities/ModExtensions/AbilityExtension_AbilityMod.cs
+            1.7/Assemblies/VEF.dll
           sparse-checkout-cone-mode: false
           persist-credentials: false
       - uses: actions/checkout@v4
@@ -156,7 +160,14 @@ jobs:
         run: |
           set -euo pipefail
           python3 tools/IntegratedModAudit/check_outposts_contract.py .devinputs/integrated/vef-outposts .devinputs/integrated/voe
-          python3 tools/IntegratedModAudit/check_vpe_contract.py .devinputs/integrated/vpe
+          python3 tools/IntegratedModAudit/check_vpe_contract.py .devinputs/integrated/vpe .devinputs/integrated/vef-outposts
+          vpe=.devinputs/integrated/vpe/1.7/Assemblies/VanillaPsycastsExpanded.dll
+          vef=.devinputs/integrated/vef-outposts/1.7/Assemblies/VEF.dll
+          test "$(stat -c%s "$vpe")" -eq 338944
+          test "$(stat -c%s "$vef")" -eq 1567744
+          printf '646245929f2a2d3121de8298abb602fa  %s\n' "$vpe" | md5sum -c -
+          printf 'c22466f560cec75f6f0092ab52067da4  %s\n' "$vef" | md5sum -c -
+          dotnet run -c Release --project tools/IntegratedModAudit/VpeCastIlAudit/VpeCastIlAudit.csproj -- "$vpe" "$vef"
           python3 tools/IntegratedModAudit/check_vte_contract.py .devinputs/integrated/vte
           # R2 observed this same 153088-byte DLL under the v1.6 folder
           # selected by loadFolders for RimWorld 1.7. This is an exact
