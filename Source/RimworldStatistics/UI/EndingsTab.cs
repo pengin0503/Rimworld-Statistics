@@ -16,61 +16,38 @@ public static class EndingsTab
     private sealed record Row(DateTime? Time, string Colony, EndingType Type, string Ordinal, string Departed, string Source);
 
     private static StatsView? builtFor;
-    private static List<Row> rows = new();
+    private static object? language;
+    private static string[][] rows = [];
+    private static string[] headers = [];
+    private static readonly StatsTable Table = new(RowHeight, new(112, 2), new(136, 4), new(104, 3),
+        new(72, 1), new(76, 1), new(115, 2));
     private static Vector2 scroll;
 
     public static void Draw(Rect rect, StatsView view)
     {
-        var includeDev = ProfileService.Options.IncludeDevMode;
-        if (!ReferenceEquals(builtFor, view))
+        var currentLanguage = LanguageDatabase.activeLanguage;
+        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage))
         {
             builtFor = view;
-            rows = Build(view, includeDev);
+            language = currentLanguage;
+            rows = Build(view, ProfileService.Options.IncludeDevMode).Select(r => new[]
+            {
+                Dialog_RimworldStatistics.Local(r.Time), r.Colony, Dialog_RimworldStatistics.EndingLabel(r.Type),
+                r.Ordinal, r.Departed, r.Source,
+            }).ToArray();
+            headers =
+            [
+                "RWS_Col_Date".Translate(), "RWS_Col_Colony".Translate(), "RWS_Col_EndingType".Translate(),
+                "RWS_Col_Ordinal".Translate(), "RWS_Col_Departed".Translate(), "RWS_Col_Source".Translate(),
+            ];
         }
-        if (rows.Count == 0)
+        if (rows.Length == 0)
         {
             Widgets.Label(rect, "RWS_Endings_None".Translate() + "\n\n" + "RWS_EndingsTooltipPreInstall".Translate());
             return;
         }
 
-        var widths = new[] { 0.16f, 0.26f, 0.22f, 0.09f, 0.09f, 0.18f };
-        var headers = new string[]
-        {
-            "RWS_Col_Date".Translate(), "RWS_Col_Colony".Translate(), "RWS_Col_EndingType".Translate(),
-            "RWS_Col_Ordinal".Translate(), "RWS_Col_Departed".Translate(), "RWS_Col_Source".Translate(),
-        };
-        DrawRow(new Rect(rect.x, rect.y, rect.width - 16f, RowHeight), widths, headers, header: true);
-        var outRect = new Rect(rect.x, rect.y + RowHeight + 4f, rect.width, rect.height - RowHeight - 4f);
-        var viewRect = new Rect(0f, 0f, outRect.width - 16f, rows.Count * RowHeight);
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        for (var i = 0; i < rows.Count; i++)
-        {
-            var r = rows[i];
-            var rowRect = new Rect(0f, i * RowHeight, viewRect.width, RowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(rowRect, 0.25f);
-            DrawRow(rowRect, widths, new[] { Dialog_RimworldStatistics.Local(r.Time), r.Colony, Dialog_RimworldStatistics.EndingLabel(r.Type), r.Ordinal, r.Departed, r.Source }, header: false);
-        }
-        Widgets.EndScrollView();
-    }
-
-    private static void DrawRow(Rect rect, float[] widths, string[] cells, bool header)
-    {
-        var x = rect.x;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        if (header)
-            GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        for (var c = 0; c < cells.Length; c++)
-        {
-            var w = rect.width * widths[c];
-            var cell = new Rect(x + 4f, rect.y, w - 8f, rect.height);
-            Widgets.Label(cell, cells[c]);
-            if (Text.CalcSize(cells[c]).x > cell.width)
-                TooltipHandler.TipRegion(cell, cells[c]);
-            x += w;
-        }
-        GUI.color = Color.white;
-        Text.Anchor = TextAnchor.UpperLeft;
+        Table.Draw(rect, ref scroll, headers, rows);
     }
 
     private static List<Row> Build(StatsView view, bool includeDev)

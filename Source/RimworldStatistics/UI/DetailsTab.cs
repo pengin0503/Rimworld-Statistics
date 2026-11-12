@@ -15,7 +15,11 @@ public static class DetailsTab
 {
     private const float ControlHeight = 30f;
     private const float RowHeight = 26f;
-    private static readonly float[] Widths = { 0.40f, 0.26f, 0.22f, 0.12f };
+    private static ColumnPlan? tablePlan;
+    private static float tableWidth;
+    private static object? tableLanguage;
+    private static (string Text, string? Full)[][] cellCache = [];
+    private static Func<string>?[] tipCache = [];
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, bool Dim);
@@ -31,7 +35,7 @@ public static class DetailsTab
     private enum DetailsViewMode { Lifetime, Other, All }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, bool MeasuredOnly);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, bool MeasuredOnly, object? Language);
 
     private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
     private static bool perColony;
@@ -59,8 +63,7 @@ public static class DetailsTab
             colonyKey = numeric.Colonies.OrderBy(c => Name(view.Stats, c.Key), StringComparer.CurrentCulture).First().Key;
 
         var y = rect.y;
-        DrawControls(new Rect(rect.x, y, rect.width, ControlHeight), view);
-        y += ControlHeight + 4f;
+        y += DrawControls(new Rect(rect.x, y, rect.width, ControlHeight), view) + 4f;
 
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
@@ -79,17 +82,36 @@ public static class DetailsTab
             scroll = Vector2.zero;
         y += filterHeight + 4f;
 
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, measuredOnly);
+        var language = LanguageDatabase.activeLanguage;
+        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, measuredOnly, language);
         if (builtFor != inputs)
         {
             builtFor = inputs;
             lines = Build(inputs);
+            cellCache = new (string, string?)[lines.Count][];
+            tipCache = new Func<string>?[lines.Count];
         }
 
-        var width = rect.width - 16f;
-        DrawHeader(new Rect(rect.x, y, width, RowHeight));
+        var available = Math.Max(0, rect.width - 16f);
+        if (tablePlan is null || tableWidth != available || !ReferenceEquals(tableLanguage, language))
+        {
+            tableWidth = available;
+            tableLanguage = language;
+            string partial = "RWS_Coverage_Partial".Translate();
+            var experimental = EvidenceLabel(MetricEvidence.Experimental);
+            var stateWidth = Text.CalcSize(experimental + " · " + partial).x + 12f;
+            tablePlan = ColumnLayout.Resolve([new(150, 4), new(90, 3), new(Math.Max(115, stateWidth), 2), new(96, 1)], available);
+            Array.Clear(cellCache);
+            Array.Clear(tipCache);
+        }
+        var width = tablePlan.TotalWidth;
+        GUI.BeginGroup(new Rect(rect.x, y, available, RowHeight));
+        DrawHeader(new Rect(-scroll.x, 0, width, RowHeight));
+        GUI.EndGroup();
         y += RowHeight;
         var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
+        if (outRect.height <= 0)
+            return;
         if (lines.Count == 0)
         {
             Widgets.Label(outRect, "RWS_Details_NoMatch".Translate());
@@ -104,17 +126,19 @@ public static class DetailsTab
         Widgets.EndScrollView();
     }
 
-    private static void DrawControls(Rect rect, StatsView view)
+    private static float DrawControls(Rect rect, StatsView view)
     {
-        var x = rect.x;
-        Rect Next(float w)
+        var controls = new ControlRow(rect);
+        bool Button(string text, float max)
         {
-            var r = new Rect(x, rect.y, w, rect.height);
-            x += w + 6f;
-            return r;
+            var button = controls.Next(text, 80f, max);
+            var shown = text.Truncate(Math.Max(0, button.width - 12f));
+            if (shown != text)
+                TooltipHandler.TipRegion(button, text);
+            return Widgets.ButtonText(button, shown);
         }
 
-        if (Widgets.ButtonText(Next(125f), ViewModeLabel(viewMode)))
+        if (Button(ViewModeLabel(viewMode), 250f))
         {
             Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
             {
@@ -124,11 +148,11 @@ public static class DetailsTab
             }));
         }
 
-        if (Widgets.ButtonText(Next(150f), perColony ? "RWS_Details_PerColony".Translate() : "RWS_Details_AllColonies".Translate()))
+        if (Button(perColony ? "RWS_Details_PerColony".Translate() : "RWS_Details_AllColonies".Translate(), 240f))
             perColony = !perColony;
         if (perColony && colonyKey is { } selected)
         {
-            if (Widgets.ButtonText(Next(220f), Name(view.Stats, selected).Truncate(210f)))
+            if (Button(Name(view.Stats, selected), 260f))
             {
                 var options = view.Numeric.Colonies
                     .OrderBy(c => Name(view.Stats, c.Key), StringComparer.CurrentCulture)
@@ -137,7 +161,7 @@ public static class DetailsTab
                 Find.WindowStack.Add(new FloatMenu(options));
             }
         }
-        if (Widgets.ButtonText(Next(180f), category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate()))
+        if (Button(category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate(), 240f))
         {
             var options = new List<FloatMenuOption> { new("RWS_Details_AllCategories".Translate(), () => category = null) };
             options.AddRange(view.Numeric.Colonies.SelectMany(c => c.Rows).Select(r => r.Definition.Category)
@@ -146,12 +170,14 @@ public static class DetailsTab
             Find.WindowStack.Add(new FloatMenu(options));
         }
         var searchLabel = (string)"RWS_Details_Search".Translate();
-        var labelWidth = Text.CalcSize(searchLabel).x + 6f;
+        var labelWidth = Math.Min(Text.CalcSize(searchLabel).x + 6f, Math.Max(0, rect.width - 120f));
+        var searchArea = controls.Next(labelWidth + 120f, fill: true);
         Text.Anchor = TextAnchor.MiddleLeft;
-        Widgets.Label(Next(labelWidth), searchLabel);
+        Widgets.Label(new Rect(searchArea.x, searchArea.y, labelWidth, searchArea.height), searchLabel.Truncate(labelWidth));
         Text.Anchor = TextAnchor.UpperLeft;
-        var field = new Rect(x, rect.y + 2f, Math.Max(80f, rect.xMax - x), rect.height - 4f);
+        var field = new Rect(searchArea.x + labelWidth, searchArea.y + 2f, searchArea.width - labelWidth, searchArea.height - 4f);
         search = Widgets.TextField(field, search) ?? "";
+        return controls.Height;
     }
 
     private static string ViewModeLabel(DetailsViewMode mode) => mode switch
@@ -175,7 +201,7 @@ public static class DetailsTab
         Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < headers.Length; c++)
         {
-            var cell = new Rect(x, rect.y, rect.width * Widths[c], rect.height);
+            var cell = new Rect(x, rect.y, tablePlan!.Widths[c], rect.height);
             Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), headers[c]);
             if (c <= 1)
             {
@@ -192,7 +218,7 @@ public static class DetailsTab
             x += cell.width;
         }
         if (perColony)
-            TooltipHandler.TipRegion(new Rect(rect.x + rect.width * (1f - Widths[3]), rect.y, rect.width * Widths[3], rect.height), "RWS_Details_ThroughTip".Translate());
+            TooltipHandler.TipRegion(new Rect(x - tablePlan!.Widths[3], rect.y, tablePlan.Widths[3], rect.height), "RWS_Details_ThroughTip".Translate());
         Text.Anchor = TextAnchor.UpperLeft;
         GUI.color = Color.white;
     }
@@ -202,23 +228,36 @@ public static class DetailsTab
         if (index % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
         Widgets.DrawHighlightIfMouseover(rect);
-        var cells = new[]
+        var widths = tablePlan!.Widths;
+        if (cellCache[index] is not { } cells)
         {
-            new string(' ', line.Depth * 4) + (line.ExpandKey is { } k ? (Expanded.Contains(k) ? "▾ " : "▸ ") : "") + line.Label,
-            line.Value, line.State, line.Count,
-        };
+            var values = new[]
+            {
+                new string(' ', line.Depth * 4) + (line.ExpandKey is { } k ? (Expanded.Contains(k) ? "▾ " : "▸ ") : "") + line.Label,
+                line.Value, line.State, line.Count,
+            };
+            cells = new (string Text, string? Full)[values.Length];
+            for (var c = 0; c < values.Length; c++)
+            {
+                var shown = values[c].Truncate(widths[c] - 6f);
+                cells[c] = (shown, shown == values[c] ? null : values[c]);
+            }
+            cellCache[index] = cells;
+            var fullText = string.Join("\n", cells.Where(c => c.Full is not null).Select(c => c.Full));
+            tipCache[index] = fullText.Length == 0 ? line.Tip : new LazyTip(() => fullText + "\n\n" + line.Tip()).Get;
+        }
         var x = rect.x;
         Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < cells.Length; c++)
         {
-            var cell = new Rect(x + 3f, rect.y, rect.width * Widths[c] - 6f, rect.height);
+            var cell = new Rect(x + 3f, rect.y, widths[c] - 6f, rect.height);
             GUI.color = c == 1 && line.Dim ? new Color(0.75f, 0.75f, 0.75f) : Color.white;
-            Widgets.Label(cell, cells[c].Truncate(cell.width));
-            x += rect.width * Widths[c];
+            Widgets.Label(cell, cells[c].Text);
+            x += widths[c];
         }
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
-        TooltipHandler.TipRegion(rect, line.Tip, line.TipId);
+        TooltipHandler.TipRegion(rect, tipCache[index]!, line.TipId);
         if (line.ExpandKey is { } key && Widgets.ButtonInvisible(rect))
         {
             if (!Expanded.Remove(key))

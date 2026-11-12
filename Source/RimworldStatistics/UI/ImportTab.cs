@@ -12,20 +12,38 @@ public static class ImportTab
     private static DateTime backupsCheckedUtc;
     private static int backupCount;
 
-    private sealed record Problem(string File, ObservationStatus Status, string? Reason);
+    private sealed record Snapshot(ProfileSession Session, long Revision, object? Language, DateTime? LastScan, string[][] Problems);
+    private static Snapshot? cached;
+    private static readonly StatsTable ProblemsTable = new(24f, new ColumnSpec(0f, 1f));
 
     public static void Draw(Rect rect, ProfileSession session)
     {
-        if (!session.TryRead(p => (
-            p.ImportState.LastScanUtc,
-            p.SaveObservations.Where(o => !o.Superseded && o.Status != ObservationStatus.Ok)
-                .OrderBy(o => o.FileName, StringComparer.Ordinal)
-                .Select(o => new Problem(o.FileName, o.Status, o.ErrorReason)).ToList()), out var snapshot))
+        var language = LanguageDatabase.activeLanguage;
+        if (!session.TryReadWithRevision((profile, revision) =>
         {
-            Widgets.Label(rect, "RWS_Loading".Translate());
-            return;
+            if (cached is { } previous && ReferenceEquals(previous.Session, session) && previous.Revision == revision
+                && ReferenceEquals(previous.Language, language))
+                return previous;
+
+            var problems = profile.SaveObservations.Where(o => !o.Superseded && o.Status != ObservationStatus.Ok)
+                .OrderBy(o => o.FileName, StringComparer.Ordinal)
+                .Select(o =>
+                {
+                    string status = o.Status == ObservationStatus.Error ? "RWS_Status_Error".Translate() : "RWS_Status_Unidentifiable".Translate();
+                    return new[] { $"{o.FileName}  —  {status}: {o.ErrorReason ?? ""}" };
+                }).ToArray();
+            return new Snapshot(session, revision, language, profile.ImportState.LastScanUtc, problems);
+        }, out var snapshot))
+        {
+            if (cached is not { } previous || !ReferenceEquals(previous.Session, session) || !ReferenceEquals(previous.Language, language))
+            {
+                Widgets.Label(rect, "RWS_Loading".Translate());
+                return;
+            }
+            snapshot = previous;
         }
-        var (lastScan, problems) = snapshot;
+        cached = snapshot;
+        var (lastScan, problems) = (snapshot.LastScan, snapshot.Problems);
         var result = ImportRunner.LastResult;
         var y = rect.y;
 
@@ -46,10 +64,14 @@ public static class ImportTab
         {
             var p = ImportRunner.Progress;
             var fraction = p is { Total: > 0 } ? p.Done / (float)p.Total : 0f;
-            Widgets.FillableBar(new Rect(rect.x, y, rect.width - 200f, 32f), fraction);
+            var bar = new Rect(rect.x, y, Math.Max(0, rect.width - 200f), 32f);
+            Widgets.FillableBar(bar, fraction);
             Text.Anchor = TextAnchor.MiddleCenter;
-            Widgets.Label(new Rect(rect.x, y, rect.width - 200f, 32f),
-                p is null ? "…" : (string)"RWS_Import_Progress".Translate(p.Done, p.Total, p.Failed, p.CurrentFile ?? ""));
+            var full = p is null ? "…" : (string)"RWS_Import_Progress".Translate(p.Done, p.Total, p.Failed, p.CurrentFile ?? "");
+            var shown = full.Truncate(Math.Max(0, bar.width - 8f));
+            Widgets.Label(bar, shown);
+            if (shown != full)
+                TooltipHandler.TipRegion(bar, full);
             Text.Anchor = TextAnchor.UpperLeft;
             if (Widgets.ButtonText(new Rect(rect.xMax - 180f, y, 180f, 32f), "RWS_Cancel".Translate()))
                 ImportRunner.Cancel();
@@ -79,31 +101,28 @@ public static class ImportTab
 
         y += 8f;
         Text.Font = GameFont.Small;
-        Widgets.Label(new Rect(rect.x, y, rect.width, 24f), "RWS_Import_Problems".Translate(problems.Count));
-        y += 26f;
-        var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
-        var lineHeight = 24f;
-        var viewRect = new Rect(0f, 0f, outRect.width - 16f, Math.Max(problems.Count * lineHeight, 1f));
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        for (var i = 0; i < problems.Count; i++)
-        {
-            var pr = problems[i];
-            var row = new Rect(0f, i * lineHeight, viewRect.width, lineHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(row, 0.25f);
-            var status = pr.Status == ObservationStatus.Error ? (string)"RWS_Status_Error".Translate() : (string)"RWS_Status_Unidentifiable".Translate();
-            var text = $"{pr.File}  —  {status}: {pr.Reason ?? ""}";
-            Text.Anchor = TextAnchor.MiddleLeft;
-            Widgets.Label(new Rect(row.x + 4f, row.y, row.width - 8f, row.height), text);
-            Text.Anchor = TextAnchor.UpperLeft;
-            TooltipHandler.TipRegion(row, text);
-        }
-        Widgets.EndScrollView();
+        var title = (string)"RWS_Import_Problems".Translate(problems.Length);
+        ProblemsTable.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), ref scroll, [title], problems);
     }
+
+    private static readonly Dictionary<string, float> LineHeights = new(StringComparer.Ordinal);
+    private static float lineWidth;
+    private static object? lineLanguage;
 
     private static void Line(Rect rect, ref float y, string text)
     {
-        var h = Math.Max(24f, Text.CalcHeight(text, rect.width));
+        var language = LanguageDatabase.activeLanguage;
+        if (lineWidth != rect.width || !ReferenceEquals(lineLanguage, language) || LineHeights.Count >= 32)
+        {
+            LineHeights.Clear();
+            lineWidth = rect.width;
+            lineLanguage = language;
+        }
+        if (!LineHeights.TryGetValue(text, out var h))
+        {
+            h = Math.Max(24f, Text.CalcHeight(text, rect.width));
+            LineHeights[text] = h;
+        }
         Widgets.Label(new Rect(rect.x, y, rect.width, h), text);
         y += h + 2f;
     }

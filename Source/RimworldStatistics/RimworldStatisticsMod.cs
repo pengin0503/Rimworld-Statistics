@@ -44,11 +44,13 @@ public sealed class RimworldStatisticsMod : Mod
 
     public override string SettingsCategory() => "RWS_SettingsCategory".Translate();
 
+    private float settingsContentHeight;
+
     public override void DoSettingsWindowContents(Rect inRect)
     {
         const float rowHeight = 27f;
         var selectable = selectableUnits ??= AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
-        var viewRect = new Rect(0f, 0f, inRect.width - 20f, 440f + selectable.Length * rowHeight);
+        var viewRect = new Rect(0f, 0f, inRect.width - 20f, settingsContentHeight > 0 ? settingsContentHeight : 440f + selectable.Length * rowHeight);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
         try
         {
@@ -118,6 +120,7 @@ public sealed class RimworldStatisticsMod : Mod
             if (SelectionNeedsRestart())
                 listing.Label("RWS_Exp_Restart".Translate());
             listing.Label("RWS_Exp_Help".Translate());
+            settingsContentHeight = listing.CurHeight;
             listing.End();
         }
         finally
