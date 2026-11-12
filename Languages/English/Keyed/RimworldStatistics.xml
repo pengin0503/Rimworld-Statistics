@@ -941,4 +941,5 @@
   <RWS_Groups_Members>Selected: {0} (missing keys: {1})</RWS_Groups_Members>
   <RWS_Groups_RemoveMissing>Remove missing keys</RWS_Groups_RemoveMissing>
   <RWS_Groups_Excluded>excluded</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>Outside selected group: {0} colonies</RWS_Groups_OutOfScope>\n</LanguageData>
+  <RWS_Groups_OutOfScope>Outside selected group: {0} colonies</RWS_Groups_OutOfScope>\n  <RWS_Backup_RestorePreferences>Also restore favorites and colony group settings</RWS_Backup_RestorePreferences>
+</LanguageData>

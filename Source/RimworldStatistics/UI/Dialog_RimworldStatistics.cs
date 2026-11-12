@@ -29,7 +29,8 @@ public sealed class Dialog_RimworldStatistics : Window
     private Task<StatsView>? viewTask;
     private bool viewIncludesDevMode;
     private StatsView? lastView;
-    private readonly ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings.viewPreferencesJson);
+    private ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings.viewPreferencesJson);
+    private string loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
     private string? selectedGroupId;
     private string activeScopeKey = "";
     private ProfileSession? viewSession;
@@ -64,6 +65,7 @@ public sealed class Dialog_RimworldStatistics : Window
     {
         try
         {
+            RefreshSavedPreferences();
             Text.Font = GameFont.Medium;
             var selectorWidth = Math.Min(245f, Math.Max(135f, inRect.width * 0.30f));
             var selectorX = inRect.xMax - selectorWidth - 32f;
@@ -163,6 +165,16 @@ public sealed class Dialog_RimworldStatistics : Window
         return lastView;
     }
 
+    private void RefreshSavedPreferences()
+    {
+        var serialized = RimworldStatisticsMod.Settings.viewPreferencesJson ?? "";
+        if (serialized == loadedPreferencesJson)
+            return;
+        preferences = ViewPreferences.Parse(serialized);
+        loadedPreferencesJson = serialized;
+        SelectScope(null);
+    }
+
     private ViewScope ActiveScope()
     {
         var selected = preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId);
@@ -195,6 +207,7 @@ public sealed class Dialog_RimworldStatistics : Window
     private void SavePreferences()
     {
         RimworldStatisticsMod.Settings.viewPreferencesJson = preferences.ToJson();
+        loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
         RimworldStatisticsMod.Instance?.WriteSettings();
         if (preferences.Groups.All(g => g.Id != selectedGroupId))
             selectedGroupId = null;

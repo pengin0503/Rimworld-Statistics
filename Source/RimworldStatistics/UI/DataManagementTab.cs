@@ -11,6 +11,9 @@ internal static class DataManagementTab
     private static Vector2 scroll;
     private static Task<IReadOnlyList<BackupInfo>>? refresh;
     private static Task? operation;
+    private static Task<RestoreResult>? restoreOperation;
+    private static bool restoreViewPreferences;
+    private static bool applyRestoredPreferences;
     private static IReadOnlyList<BackupInfo>? backups;
     private static IReadOnlyList<BackupInfo>? builtFor;
     private static string[][] rows = [];
@@ -46,7 +49,7 @@ internal static class DataManagementTab
         var actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
         var idle = operation is null && !ImportRunner.Running && Current.ProgramState == ProgramState.Entry;
         if (Button(ref actions, "RWS_Backup_Create", idle))
-            Run(() => ProfileService.CreateBackup(session, Metadata("")));
+            Run(() => ProfileService.CreateBackup(session, Metadata(""), RimworldStatisticsMod.Settings.viewPreferencesJson));
         if (Button(ref actions, "RWS_Backup_Refresh", refresh is null && operation is null))
             refresh = Task.Run(() => ProfileBackup.List(directory));
         if (Button(ref actions, "RWS_Backup_OpenFolder", Directory.Exists(directory)))
@@ -59,6 +62,9 @@ internal static class DataManagementTab
         var selectedInfo = available?.FirstOrDefault(b => b.Path == selected);
         if (available is { Count: > 0 })
         {
+            Widgets.CheckboxLabeled(new Rect(rect.x, y, rect.width, 26f),
+                "RWS_Backup_RestorePreferences".Translate(), ref restoreViewPreferences);
+            y += 28f;
             actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
             string selectLabel = selectedInfo is null ? "RWS_Backup_Select".Translate() : Title(selectedInfo);
             var selectRect = actions.Next(selectLabel, 110f, 300f);
@@ -71,7 +77,13 @@ internal static class DataManagementTab
                 var summary = "RWS_Backup_ConfirmRestore".Translate(
                     Dialog_RimworldStatistics.Local(manifest.CreatedUtc), manifest.ModVersion, manifest.Colonies, manifest.Observations);
                 Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(summary, () =>
-                    Run(() => ProfileService.RestoreBackup(session, info.Path, Metadata("RWS_Backup_BeforeRestore".Translate()))), true));
+                    Run(() =>
+                    {
+                        restoreOperation = ProfileService.RestoreBackup(session, info.Path,
+                            Metadata("RWS_Backup_BeforeRestore".Translate()), RimworldStatisticsMod.Settings.viewPreferencesJson);
+                        applyRestoredPreferences = restoreViewPreferences;
+                        return restoreOperation;
+                    }), true));
             }
             if (Button(ref actions, "RWS_Backup_Delete", idle && selectedInfo is not null))
             {
@@ -162,6 +174,15 @@ internal static class DataManagementTab
         operation = null;
         error = completed.Exception?.GetBaseException().Message;
         succeeded = completed.IsCompletedSuccessfully;
+        if (succeeded && applyRestoredPreferences && restoreOperation is { IsCompletedSuccessfully: true }
+            && restoreOperation.Result.Preferences is { } settingsJson)
+        {
+            // Apply presentation settings on the UI thread only after the profile was restored successfully.
+            RimworldStatisticsMod.Settings.viewPreferencesJson = ViewPreferences.Parse(settingsJson).ToJson();
+            RimworldStatisticsMod.Instance?.WriteSettings();
+        }
+        restoreOperation = null;
+        applyRestoredPreferences = false;
         backups = null;
         refresh = null;
     }

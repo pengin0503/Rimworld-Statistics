@@ -941,4 +941,5 @@
   <RWS_Groups_Members>選択: {0}件（見つからないキー: {1}件）</RWS_Groups_Members>
   <RWS_Groups_RemoveMissing>見つからないキーを削除</RWS_Groups_RemoveMissing>
   <RWS_Groups_Excluded>除外済み</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>選択グループの範囲外：{0}コロニー</RWS_Groups_OutOfScope>\n</LanguageData>
+  <RWS_Groups_OutOfScope>選択グループの範囲外：{0}コロニー</RWS_Groups_OutOfScope>\n  <RWS_Backup_RestorePreferences>復元時にお気に入り・コロニーグループの表示設定も戻す</RWS_Backup_RestorePreferences>
+</LanguageData>
