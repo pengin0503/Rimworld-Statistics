@@ -49,8 +49,9 @@ public static class MetricGates
         lock (Gate)
         {
             var unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
-            return unit is not null && (unit.Status == AcquisitionStatus.Verified
-                || productionSelection.Contains(unitId) || OpenedForVerification.Contains(unitId));
+            return unit is not null && unit.Kind != AcquisitionKind.Derived
+                && (unit.Status == AcquisitionStatus.Verified || productionSelection.Contains(unitId)
+                    || OpenedForVerification.Contains(unitId));
         }
     }
 
