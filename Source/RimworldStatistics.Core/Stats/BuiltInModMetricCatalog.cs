@@ -6,6 +6,7 @@ public static class BuiltInModMetricCatalog
     public static IReadOnlyList<MetricDefinition> Definitions { get; } =
     [
         Vpe(VpeStatistics.LevelsGained, "RWS_Metric_VpeLevelsGained", "RWS_MetricDesc_VpeLevelsGained", OverallAggregation.Sum, live: true),
+        Vpe(VpeStatistics.Casts, "RWS_Metric_VpeCasts", "RWS_MetricDesc_VpeCasts", OverallAggregation.Sum, live: true, cast: true, breakdown: true),
         Vpe(VpeStatistics.Psycasters, "RWS_Metric_VpePsycasters", "RWS_MetricDesc_VpePsycasters", OverallAggregation.Sum),
         Vpe(VpeStatistics.MaxLevel, "RWS_Metric_VpeMaxLevel", "RWS_MetricDesc_VpeMaxLevel", OverallAggregation.Max),
         Vpe(VpeStatistics.SumLevels, "RWS_Metric_VpeSumLevels", "RWS_MetricDesc_VpeSumLevels", OverallAggregation.Sum),
@@ -28,13 +29,14 @@ public static class BuiltInModMetricCatalog
         LabelKey = label, DescriptionKey = description,
     };
 
-    private static MetricDefinition Vpe(string key, string label, string description, OverallAggregation overall, bool live = false) => new()
+    private static MetricDefinition Vpe(string key, string label, string description,
+        OverallAggregation overall, bool live = false, bool cast = false, bool breakdown = false) => new()
     {
         Key = key, StoredKey = key, LedgerIds = "M1", Category = MetricCategory.Royalty, Unit = MetricUnit.Count,
-        RequiredDlc = AcquisitionUnits.Royalty, Overall = overall,
+        RequiredDlc = AcquisitionUnits.Royalty, Overall = overall, HasBreakdown = breakdown,
         Source = live ? MetricObservationSource.Checkpoint : MetricObservationSource.SaveSnapshot,
         Provenance = live ? MetricProvenance.LiveAggregate : MetricProvenance.SaveSnapshot,
-        Acquisition = live ? VpeStatistics.EventUnit : VpeStatistics.SnapshotUnit,
+        Acquisition = cast ? VpeStatistics.CastUnit : live ? VpeStatistics.EventUnit : VpeStatistics.SnapshotUnit,
         OwnerPackageId = VpeStatistics.PackageId,
         LabelKey = label, DescriptionKey = description,
     };
