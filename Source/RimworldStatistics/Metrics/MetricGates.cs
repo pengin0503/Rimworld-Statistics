@@ -103,6 +103,12 @@ public static class MetricGates
     }
 
     /// <summary>Open and with its hooks in place.</summary>
+    public static bool FailedThisSession(string unitId)
+    {
+        lock (Gate)
+            return Failed.Contains(unitId);
+    }
+
     public static bool IsRecording(string unitId)
     {
         if (!IsOpen(unitId))
