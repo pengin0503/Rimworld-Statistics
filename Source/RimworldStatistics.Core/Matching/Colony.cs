@@ -18,6 +18,9 @@ public sealed class Colony
     public HashSet<EndingType> Traces { get; } = new();
 
     public bool Excluded { get; set; }
+    /// <summary>False only for members of the active view scope. Attribution still sees all colonies.</summary>
+    public bool OutOfScope { get; set; }
+    public bool Counted => !Excluded && !OutOfScope;
     public string? FingerprintHash { get; set; }
     public HashSet<string> StartingPawnUnion { get; } = new(StringComparer.Ordinal);
 

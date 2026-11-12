@@ -61,6 +61,7 @@ public sealed class NumericColony
 {
     public required string Key { get; init; }
     public bool Excluded { get; init; }
+    public bool OutOfScope { get; init; }
 
     /// <summary>Numeric observations attached to this colony.</summary>
     public int Observations { get; init; }
@@ -141,7 +142,7 @@ public static class MetricCalculator
             }).ToList(), checkpoints.Lineage));
         }
 
-        var counted = perColony.Where(c => !c.Colony.Excluded).ToList();
+        var counted = perColony.Where(c => c.Colony.Counted).ToList();
         var overall = new List<NumericRow>();
         for (var i = 0; i < sourceDefinitions.Count; i++)
         {
@@ -150,7 +151,7 @@ public static class MetricCalculator
                 continue;
             overall.Add(Combine(def, counted.Select(c => (c.Colony.Key, c.Rows[i])).ToList()));
         }
-        var countedStats = stats.Colonies.Where(c => !c.Excluded).ToList();
+        var countedStats = stats.Colonies.Where(c => !c.Excluded && !c.OutOfScope).ToList();
         // The ranking engine can calculate registered development-only dependencies,
         // but the normal Details view must not leak any output whose acquisition gate
         // has not been verified in game.
@@ -168,6 +169,7 @@ public static class MetricCalculator
             {
                 Key = c.Colony.Key,
                 Excluded = c.Colony.Excluded,
+                OutOfScope = c.Colony.OutOfScope,
                 Observations = (int)Math.Min(int.MaxValue, attached.GetValueOrDefault(c.Colony)?.Sum(ObservationWeight) ?? 0L),
                 Lineage = c.Lineage,
                 Rows = c.Rows.Where(r => r.Definition.Overall != OverallAggregation.Ranking).ToList(),
