@@ -69,7 +69,7 @@ python3 -m venv .devinputs/venv && .devinputs/venv/bin/pip install -q boto3
 .devinputs/venv/bin/python -I tools/fetch_dev_inputs.py refs .refs
 ```
 
-R2 がない環境では、以降のビルドに `-p:UseNuGetRefs=true` を付ける（CI と同じ）。
+以下のコマンドは CI と同じく NuGet の参照アセンブリ（`-p:UseNuGetRefs=true`）を使うので、R2 がなくても動く（.NET 10 SDK が必要）。`tools/refcheck.sh`・`tools/check_patches.sh` を実行するときは、R2 から取得した実DLL（`.refs/`）でビルドする（フラグを外す）。
 
 - [ ] **基準の確認**：次がすべて成功することを確かめる。失敗したら変更せずに報告する。
 
@@ -145,7 +145,7 @@ bash tools/check_keys.sh
 **Files:**
 - Modify: `Source/RimworldStatistics/UI/DetailsTab.cs`、`Source/RimworldStatistics/UI/ColoniesTab.cs`
 
-- [ ] **Step 1:** 詳細統計の操作行を `ControlRow` にする（固定の 125/150/220/180 を文字幅ベースに。検索欄の最小幅 120 を保ち、入らなければ次の行）。表の列を `ColumnSpec`（名前・値・状態・件数）にし、状態列は「実験的 · 部分（欠けあり）」が入る最小幅を持つ。省略したセルだけ全文ツールチップ（行全体のツールチップは従来どおり）。
+- [ ] **Step 1:** 詳細統計の操作行を `ControlRow` にする（固定の 125/150/220/180 を文字幅ベースに。検索欄の最小幅 120 を保ち、入らなければ次の行）。表の列を `ColumnSpec`（名前・値・状態・件数）にし、状態列は「実験的 · 部分（欠けあり）」が入る最小幅を持つ。詳細統計には行全体のツールチップが既にあるため、セル単位のツールチップは重ねず、省略したセルの全文を行のツールチップの先頭に含める。
 - [ ] **Step 2:** コロニー一覧の列の最小幅に見出しの文字幅を含める（「シナリオ / ストーリーテラー」が重ならない）。#144 のキャッシュ・並べ替え・選択・除外・横スクロールの挙動は変えない。下段のセーブ一覧は選択コロニーと `StatsView` とファイル索引が同じ間はキャッシュする。
 - [ ] **Step 3:** `docs/manual-test-checklist.md` に「表示（分野1）」節を追加：日本語・英語 × 4サイズ × UIスケール100%・150% で5タブと設定画面に重なりがない／省略セルの全文ツールチップ／並べ替え・除外・選択・縦横スクロールが従来どおり／文字サイズが変わっていない／開いたまま放置してもフレーム時間が増え続けない。
 - [ ] **Step 4:** 共通の完了確認、PR。PR 本文で #123 の残り（日英ソート・スクロール・除外・選択の実ゲーム確認、描画の割り当て計測）を手動確認項目として挙げる。
@@ -365,7 +365,7 @@ dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj -
 **Interfaces:**
 - Produces（推奨）：`public enum MetricVerification { Standard, Experimental, Legacy }`、`public enum UnitRecordingState { Recording, NotSelected, DlcMissing, TargetModMissing, Failed, NotRequired }`、`public sealed record MetricStatus(MetricDefinition Definition, MetricAvailability Availability, bool PeriodIncomplete, MetricVerification Verification, UnitRecordingState Recording, int Measured, int Targets, IReadOnlyList<string> MissingColonyKeys)`、`public static class MetricStatusClassifier { public static IReadOnlyList<MetricStatus> Classify(StatsView view, Func<string, UnitRecordingState> unitState); }`。画面の4段階（取得済み・部分記録・未取得・対象外）は `Availability` と `PeriodIncomplete` から導く（設計 §5 F5）。
 
-- [ ] **Step 1: 失敗するテストを書く** — `NoTargetsIsNotApplicable`、`NoMeasuredIsNotMeasured`、`SomeMeasuredIsPartial`、`PartialCoverageIsPartial`、`LateStartIsPartial`（`SinceTick > 0`）、`AllMeasuredIsMeasured`、`UnverifiedUnitIsExperimental`、`ProviderMetricIsExperimental`、`LegacyEvidenceIsLegacy`、`DerivedUsesOverallCounts`、`SaveFileMetricRecordingIsNotRequired`、`MissingColonyKeysListsUnmeasuredCountedColonies`、`IndividualOnlyIsClassifiedFromColonyRows`、`CountsSumToDefinitionCount`、`EmptyProfileIsAllNotApplicable`（Review Focus 1）。
+- [ ] **Step 1: 失敗するテストを書く** — `NoTargetsIsNotApplicable`、`NoMeasuredIsNotMeasured`、`SomeMeasuredIsPartial`、`PartialCoverageIsPartial`、`LateStartIsPartial`（`SinceTick > 0`）、`AllMeasuredIsMeasured`、`UnverifiedUnitIsExperimental`、`ProviderMetricIsExperimental`、`LegacyEvidenceIsLegacy`（取得単位を持つ定義）、`SaveFileMetricWithDefaultLegacyEvidenceIsStandard`（取得単位なし・証拠 `UnknownLegacy` → 標準）、`DerivedUsesOverallCounts`、`SaveFileMetricRecordingIsNotRequired`、`MissingColonyKeysListsUnmeasuredCountedColonies`、`IndividualOnlyIsClassifiedFromColonyRows`、`CountsSumToDefinitionCount`、`EmptyProfileIsAllNotApplicable`（Review Focus 1）。
 - [ ] **Step 2〜4:** 失敗確認 → 実装 → 成功確認。
 - [ ] **Step 5:** コミット。
 
