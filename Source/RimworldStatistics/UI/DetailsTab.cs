@@ -16,13 +16,15 @@ public static class DetailsTab
     private const float ControlHeight = 30f;
     private const float RowHeight = 26f;
     private static ColumnPlan? tablePlan;
+    private static ViewPreferences? favoritePreferences;
+    private static Action? persistFavorites;
     private static float tableWidth;
     private static object? tableLanguage;
     private static (string Text, string? Full)[][] cellCache = [];
     private static Func<string>?[] tipCache = [];
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, bool Dim);
+    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, bool Dim, string? MetricKey);
 
     private sealed class LazyTip(Func<string> build)
     {
@@ -51,8 +53,10 @@ public static class DetailsTab
     private static Inputs? builtFor;
     private static List<Line> lines = new();
 
-    public static void Draw(Rect rect, StatsView view)
+    public static void Draw(Rect rect, StatsView view, ViewPreferences? favorites = null, Action? saveFavorites = null)
     {
+        favoritePreferences = favorites;
+        persistFavorites = saveFavorites;
         var numeric = view.Numeric;
         if (numeric.Colonies.Count == 0)
         {
@@ -241,7 +245,8 @@ public static class DetailsTab
             cells = new (string Text, string? Full)[values.Length];
             for (var c = 0; c < values.Length; c++)
             {
-                var shown = values[c].Truncate(widths[c] - 6f);
+                var space = widths[c] - 6f - (c == 0 && line.MetricKey is not null ? 28f : 0f);
+                var shown = values[c].Truncate(Math.Max(1f, space));
                 cells[c] = (shown, shown == values[c] ? null : values[c]);
             }
             cellCache[index] = cells;
@@ -252,7 +257,9 @@ public static class DetailsTab
         Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < cells.Length; c++)
         {
-            var cell = new Rect(x + 3f, rect.y, widths[c] - 6f, rect.height);
+            var hasStar = c == 0 && line.MetricKey is not null;
+            var cell = new Rect(x + (hasStar ? 30f : 3f), rect.y,
+                widths[c] - (hasStar ? 34f : 6f), rect.height);
             GUI.color = c == 1 && line.Dim ? new Color(0.75f, 0.75f, 0.75f) : Color.white;
             Widgets.Label(cell, cells[c].Text);
             x += widths[c];
@@ -260,7 +267,23 @@ public static class DetailsTab
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
         TooltipHandler.TipRegion(rect, tipCache[index]!, line.TipId);
-        if (line.ExpandKey is { } key && Widgets.ButtonInvisible(rect))
+        if (line.MetricKey is { } metricKey && favoritePreferences is not null)
+        {
+            var starRect = new Rect(rect.x + 2f, rect.y + 2f, 25f, rect.height - 4f);
+            var saved = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
+            if (Widgets.ButtonText(starRect, saved ? "★" : "☆"))
+            {
+                if (saved)
+                    favoritePreferences.FavoriteMetricKeys.Remove(metricKey);
+                else if (favoritePreferences.FavoriteMetricKeys.Count < 500)
+                    favoritePreferences.FavoriteMetricKeys.Add(metricKey);
+                persistFavorites?.Invoke();
+            }
+            TooltipHandler.TipRegion(starRect, "RWS_Fav_StarTip".Translate());
+        }
+        if (line.ExpandKey is { } key && Widgets.ButtonInvisible(new Rect(
+                rect.x + (line.MetricKey is null ? 0f : 30f), rect.y,
+                rect.width - (line.MetricKey is null ? 0f : 30f), rect.height)))
         {
             if (!Expanded.Remove(key))
                 Expanded.Add(key);
@@ -370,7 +393,7 @@ public static class DetailsTab
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
         var lazy = new LazyTip(() => BuildTip(row, label, depth, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
-            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown, depth == 0 ? d.Key : null);
     }
 
     private static string BuildTip(NumericRow row, string label, int depth, Inputs input, NumericColony? colony)
@@ -481,7 +504,12 @@ public static class DetailsTab
         };
     }
 
-    private static string DefinitionLabel(MetricDefinition d)
+    internal static string OverallTip(NumericRow row, StatsResult stats)
+        => BuildTip(row, DefinitionLabel(row.Definition), 0,
+            new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
+                DetailsViewMode.All, false, null), null);
+
+    internal static string DefinitionLabel(MetricDefinition d)
     {
         if (CrossColonyCatalog.IsDerived(d) && MetricRegistry.Find(d.StoredKey) is { } source)
             return d.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
