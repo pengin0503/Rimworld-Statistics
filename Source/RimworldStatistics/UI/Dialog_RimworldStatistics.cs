@@ -45,7 +45,16 @@ public sealed class Dialog_RimworldStatistics : Window
         }
     }
 
-    public override Vector2 InitialSize => new(1000f, 720f);
+    public override Vector2 InitialSize
+    {
+        get
+        {
+            var size = StatisticsWindowLayout.Resolve(
+                (StatisticsWindowSizePreset)RimworldStatisticsMod.Settings.windowSizePreset,
+                Verse.UI.screenWidth, Verse.UI.screenHeight);
+            return new Vector2(size.Width, size.Height);
+        }
+    }
 
     public override void DoWindowContents(Rect inRect)
     {
