@@ -139,7 +139,9 @@ public sealed class Dialog_RimworldStatistics : Window
         // Show all implemented definitions, including unverified and unknown ones.
         // Visibility is presentation-only; MetricGates still controls acquisition.
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
-        var scope = ActiveScope();
+        // The Endings and Colonies tabs always show the entire recorded history.
+        // Group selection only changes the aggregate overview and numeric details.
+        var scope = current is Tab.Overview or Tab.Details ? ActiveScope() : ViewScope.All;
         if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;
