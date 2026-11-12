@@ -933,4 +933,12 @@
   <RWS_Backup_NewerSchema>新しいプロフィール形式</RWS_Backup_NewerSchema>
   <RWS_Backup_UnknownFormat>未対応のバックアップ形式</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>検証失敗</RWS_Backup_Invalid>
+  <RWS_Groups_Title>コロニーグループを編集</RWS_Groups_Title>
+  <RWS_Groups_Add>グループ作成</RWS_Groups_Add>
+  <RWS_Groups_All>全コロニー</RWS_Groups_All>
+  <RWS_Groups_Edit>グループを編集…</RWS_Groups_Edit>
+  <RWS_Groups_None>グループを作成してください。</RWS_Groups_None>
+  <RWS_Groups_Members>選択: {0}件（見つからないキー: {1}件）</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>見つからないキーを削除</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>除外済み</RWS_Groups_Excluded>
 </LanguageData>

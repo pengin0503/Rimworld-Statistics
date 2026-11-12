@@ -933,4 +933,12 @@
   <RWS_Backup_NewerSchema>Newer profile schema</RWS_Backup_NewerSchema>
   <RWS_Backup_UnknownFormat>Unknown backup format</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>Verification failed</RWS_Backup_Invalid>
+  <RWS_Groups_Title>Edit colony groups</RWS_Groups_Title>
+  <RWS_Groups_Add>Create group</RWS_Groups_Add>
+  <RWS_Groups_All>All colonies</RWS_Groups_All>
+  <RWS_Groups_Edit>Edit groups…</RWS_Groups_Edit>
+  <RWS_Groups_None>Create a group to begin.</RWS_Groups_None>
+  <RWS_Groups_Members>Selected: {0} (missing keys: {1})</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>Remove missing keys</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>excluded</RWS_Groups_Excluded>
 </LanguageData>

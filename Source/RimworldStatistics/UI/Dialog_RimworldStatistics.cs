@@ -29,6 +29,9 @@ public sealed class Dialog_RimworldStatistics : Window
     private Task<StatsView>? viewTask;
     private bool viewIncludesDevMode;
     private StatsView? lastView;
+    private readonly ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings.viewPreferencesJson);
+    private string? selectedGroupId;
+    private string activeScopeKey = "";
     private ProfileSession? viewSession;
 
     public Dialog_RimworldStatistics()
@@ -62,7 +65,11 @@ public sealed class Dialog_RimworldStatistics : Window
         try
         {
             Text.Font = GameFont.Medium;
-            Widgets.Label(new Rect(inRect.x, inRect.y, inRect.width - 40f, TitleHeight), "RWS_WindowTitle".Translate());
+            var selectorWidth = Math.Min(245f, Math.Max(135f, inRect.width * 0.30f));
+            var selectorX = inRect.xMax - selectorWidth - 32f;
+            Widgets.Label(new Rect(inRect.x, inRect.y, Math.Max(0f, selectorX - inRect.x - 8f), TitleHeight), "RWS_WindowTitle".Translate());
+            if (Widgets.ButtonText(new Rect(selectorX, inRect.y + 4f, selectorWidth, 30f), ScopeLabel().Truncate(selectorWidth - 12f)))
+                ShowScopeMenu();
             Text.Font = GameFont.Small;
 
             var body = new Rect(inRect.x, inRect.y + TitleHeight + TabHeight, inRect.width, inRect.height - TitleHeight - TabHeight);
@@ -132,12 +139,14 @@ public sealed class Dialog_RimworldStatistics : Window
         // Show all implemented definitions, including unverified and unknown ones.
         // Visibility is presentation-only; MetricGates still controls acquisition.
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
-        if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode)
+        var scope = ActiveScope();
+        if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;
             lastView = null;
             viewTask = null;
             viewIncludesDevMode = options.IncludeDevMode;
+            activeScopeKey = scope.CacheKey;
         }
         if (viewTask is { IsCompleted: true } completed)
         {
@@ -145,11 +154,51 @@ public sealed class Dialog_RimworldStatistics : Window
             lastView = completed.GetAwaiter().GetResult();
         }
 
-        var cached = session.TryGetCachedView(options, visibleUnits);
+        var cached = session.TryGetCachedView(options, visibleUnits, scope);
         if (cached != null)
             return lastView = cached;
-        viewTask ??= Task.Run(() => session.GetView(options, visibleUnits));
+        viewTask ??= Task.Run(() => session.GetView(options, visibleUnits, scope));
         return lastView;
+    }
+
+    private ViewScope ActiveScope()
+    {
+        var selected = preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId);
+        return selected is null ? ViewScope.All : ViewScope.ForGroup(selected);
+    }
+
+    private string ScopeLabel() => preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId)?.Name
+        ?? "RWS_Groups_All".Translate();
+
+    private void ShowScopeMenu()
+    {
+        var choices = new List<FloatMenuOption>
+        {
+            new("RWS_Groups_All".Translate(), () => SelectScope(null)),
+        };
+        choices.AddRange(preferences.Groups.Select(g => new FloatMenuOption(g.Name, () => SelectScope(g.Id))));
+        choices.Add(new FloatMenuOption("RWS_Groups_Edit".Translate(), () =>
+            Find.WindowStack.Add(new Dialog_ColonyGroups(preferences, lastView, SavePreferences))));
+        Find.WindowStack.Add(new FloatMenu(choices));
+    }
+
+    private void SelectScope(string? id)
+    {
+        selectedGroupId = id;
+        viewTask = null;
+        lastView = null;
+        activeScopeKey = "";
+    }
+
+    private void SavePreferences()
+    {
+        RimworldStatisticsMod.Settings.viewPreferencesJson = preferences.ToJson();
+        RimworldStatisticsMod.Instance?.WriteSettings();
+        if (preferences.Groups.All(g => g.Id != selectedGroupId))
+            selectedGroupId = null;
+        viewTask = null;
+        lastView = null;
+        activeScopeKey = "";
     }
 
     private void RefreshPresentFiles()
