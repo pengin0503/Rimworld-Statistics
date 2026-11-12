@@ -383,6 +383,35 @@ public sealed class CheckpointArchiveTests
     }
 
     [Fact]
+    public void Write_UnrelatedMutationDuringAppendStillTrimsArchivedAncestor()
+    {
+        using var temp = new TempDir();
+        var archive = new MemoryArchive();
+        var session = Start(temp, archive);
+        archive.OnAppend = () => session.Mutate(_ => { }, SaveMode.None);
+        session.Flush();
+        Assert.True(session.Read(Parent).ArchivedMetrics);
+        Assert.Single(archive.Read(Campaign, "P"));
+        session.Mutate(_ => { }, SaveMode.None);
+        session.Flush();
+        Assert.Single(archive.Read(Campaign, "P"));
+        Assert.True(Parent(new ProfileStore(temp.Path).Load(Now).Profile).ArchivedMetrics);
+    }
+
+    [Fact]
+    public void Write_ChildProofChangedDuringAppendDoesNotTrimAncestor()
+    {
+        using var temp = new TempDir();
+        var archive = new MemoryArchive();
+        var session = Start(temp, archive);
+        archive.OnAppend = () => session.Mutate(p => p.MetricObservations.Single(o => o.Key == "C")
+            .Metrics.Clear(), SaveMode.None);
+        session.Flush();
+        Assert.False(session.Read(Parent).ArchivedMetrics);
+        Assert.Contains(BuiltIn.StoredKey, session.Read(Parent).Metrics.Keys);
+    }
+
+    [Fact]
     public void Write_WhenAppendFails_KeepsFullMetricsAndStillSavesTheProfile()
     {
         using var temp = new TempDir();
