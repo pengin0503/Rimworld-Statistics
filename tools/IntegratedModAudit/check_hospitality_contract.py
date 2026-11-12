@@ -49,3 +49,23 @@ for action in ("Item.SplitOff(", ".apparel.Wear(", ".equipment.AddEquipment(", "
     assert action in shopping, action
 assert "TradeDeal" not in shopping
 print("Hospitality 1.7 pinned guest shopping contract: item transfer and payment PASS")
+
+# Peaceful visit evidence: the callback marks leaving before actual exit.
+# The new recorder therefore requires a separate exit notification and the
+# final LordJob destruction, and must reject angry/sent-away groups.
+visit_toil = (root / "Source/LordToil_VisitPoint.cs").read_text(encoding="utf-8")
+assert "public void OnLeaveTriggered()" in lord_job
+assert "leaving = true;" in lord_job
+assert "public override void Notify_LordDestroyed()" in lord_job
+assert "GuestUtility.OnLordDespawned(lord);" in lord_job
+assert "public override void Notify_PawnLost(Pawn pawn, PawnLostCondition condition)" in lord_job
+assert "if (condition == PawnLostCondition.ExitedMap) return;" in lord_job
+assert "public override void Cleanup()" in visit_toil
+assert "private void Leave()" in visit_toil
+assert "visit.OnLeaveTriggered();" in visit_toil
+assert "if (compGuest.sentAway)" in visit_toil
+assert "var hostile =" in visit_toil
+assert "public bool sentAway;" in guest_component
+assert "public bool recoveredOnMap;" in lord_job
+print("Hospitality 1.7 pinned departure contract: exit must follow visit end PASS")
+

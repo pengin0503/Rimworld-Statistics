@@ -7,6 +7,7 @@ namespace RimworldStatistics.HospitalityAddon;
 internal static class HospitalitySdk
 {
     private static bool groupConnected;
+    private static bool completionConnected;
     private static bool guestsConnected;
     private static bool recruitedConnected;
     private static bool forcedConnected;
@@ -15,6 +16,7 @@ internal static class HospitalitySdk
     internal static bool RecruitmentConnected => recruitedConnected || forcedConnected || voluntaryConnected;
 
     internal static bool EventsConnected => groupConnected || guestsConnected;
+    internal static bool CompletionsConnected => completionConnected;
 
     internal static void TryRegister()
     {
@@ -28,16 +30,19 @@ internal static class HospitalitySdk
             var arrivalReady = HospitalityArrival.TryBind();
             if (arrivalReady)
                 hooks.Defer("mod.orion.hospitality.visits", HospitalityArrival.TryInstall);
+            var completionReady = HospitalityDeparture.TryBind();
+            if (completionReady)
+                hooks.Defer("mod.orion.hospitality.visits", HospitalityDeparture.TryInstall);
             var recruitReady = HospitalityRecruitHook.TryBind();
             if (recruitReady)
                 hooks.Defer("mod.orion.hospitality.recruits", HospitalityRecruitHook.TryInstall);
             var bedsReady = HospitalityAssignedBedsSnapshot.TryBind();
-            (groupConnected, guestsConnected, recruitedConnected, forcedConnected, voluntaryConnected) =
-                Bridge.Attach(arrivalReady, recruitReady, bedsReady);
+            (groupConnected, guestsConnected, completionConnected, recruitedConnected, forcedConnected, voluntaryConnected) =
+                Bridge.Attach(arrivalReady, recruitReady, bedsReady, completionReady);
         }
         catch (Exception)
         {
-            groupConnected = guestsConnected = recruitedConnected = forcedConnected = voluntaryConnected = false;
+            groupConnected = guestsConnected = completionConnected = recruitedConnected = forcedConnected = voluntaryConnected = false;
         }
     }
 
@@ -46,6 +51,13 @@ internal static class HospitalitySdk
         if (!EventsConnected || guests <= 0) return;
         try { Bridge.RecordArrival(eventId, guests, groupConnected, guestsConnected); }
         catch (Exception) { /* Optional host removal or game shutdown cannot break visits. */ }
+    }
+
+    internal static void RecordCompletion(string eventId)
+    {
+        if (!completionConnected) return;
+        try { Bridge.RecordCompletion(eventId); }
+        catch (Exception) { /* An optional guest lifecycle must never break the game. */ }
     }
 
     internal static void RecordRecruitment(string eventId, bool forced)
@@ -59,6 +71,7 @@ internal static class HospitalitySdk
     {
         private const string GroupId = "mod.orion.hospitality.visits.groups_arrived";
         private const string GuestsId = "mod.orion.hospitality.visits.guests_arrived";
+        private const string CompletedId = "mod.orion.hospitality.visits.completed";
         private const string RecruitedId = "mod.orion.hospitality.recruits.completed";
         private const string ForcedId = "mod.orion.hospitality.recruits.forced";
         private const string VoluntaryId = "mod.orion.hospitality.recruits.voluntary";
@@ -93,11 +106,11 @@ internal static class HospitalitySdk
             };
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        internal static (bool Groups, bool Guests, bool Recruited, bool Forced, bool Voluntary)
-            Attach(bool arrivalReady, bool recruitReady, bool bedsReady)
+        internal static (bool Groups, bool Guests, bool Completed, bool Recruited, bool Forced, bool Voluntary)
+            Attach(bool arrivalReady, bool recruitReady, bool bedsReady, bool completionReady)
         {
             if (!RimworldStatistics.Api.StatisticsApi.TryGetHost(1, 1, out var host) || host is null)
-                return (false, false, false, false, false);
+                return (false, false, false, false, false, false);
 
             // Preserve existing snapshot IDs and revisions exactly.
             _ = host.Register(Metric("visitors", "guests",
@@ -123,6 +136,10 @@ internal static class HospitalitySdk
                 "RWS_Hospitality_VisitGuests", "RWS_Hospitality_VisitGuestsDesc",
                 RimworldStatistics.Api.ApiEventMode.Sum))
                 : RimworldStatistics.Api.ApiRegistrationResult.Failed;
+            var completed = completionReady ? host.Register(Metric("visits", "completed",
+                RimworldStatistics.Api.ApiMetricKind.Event,
+                "RWS_Hospitality_VisitsCompleted", "RWS_Hospitality_VisitsCompletedDesc"))
+                : RimworldStatistics.Api.ApiRegistrationResult.Failed;
             var recruited = recruitReady ? host.Register(Metric("recruits", "completed",
                 RimworldStatistics.Api.ApiMetricKind.Event,
                 "RWS_Hospitality_Recruited", "RWS_Hospitality_RecruitedDesc"))
@@ -137,6 +154,7 @@ internal static class HospitalitySdk
                 : RimworldStatistics.Api.ApiRegistrationResult.Failed;
             return (group == RimworldStatistics.Api.ApiRegistrationResult.Accepted,
                 guests == RimworldStatistics.Api.ApiRegistrationResult.Accepted,
+                completed == RimworldStatistics.Api.ApiRegistrationResult.Accepted,
                 recruited == RimworldStatistics.Api.ApiRegistrationResult.Accepted,
                 forced == RimworldStatistics.Api.ApiRegistrationResult.Accepted,
                 voluntary == RimworldStatistics.Api.ApiRegistrationResult.Accepted);
@@ -151,6 +169,13 @@ internal static class HospitalitySdk
             if (completedEnabled) _ = host.RecordEvent(RecruitedId, id);
             if (forced && forcedEnabled) _ = host.RecordEvent(ForcedId, id);
             if (!forced && voluntaryEnabled) _ = host.RecordEvent(VoluntaryId, id);
+        }
+
+        internal static void RecordCompletion(string id)
+        {
+            if (!RimworldStatistics.Api.StatisticsApi.TryGetHost(1, 1, out var host) || host is null)
+                return;
+            _ = host.RecordEvent(CompletedId, id);
         }
 
         internal static void RecordArrival(string id, int guests, bool groupsEnabled, bool guestsEnabled)

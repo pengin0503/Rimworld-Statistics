@@ -18,6 +18,7 @@ expected = {
     "mod.orion.hospitality.visitors.assigned_guest_beds",
     "mod.orion.hospitality.visits.groups_arrived",
     "mod.orion.hospitality.visits.guests_arrived",
+    "mod.orion.hospitality.visits.completed",
     "mod.orion.hospitality.recruits.completed",
     "mod.orion.hospitality.recruits.forced",
     "mod.orion.hospitality.recruits.voluntary",

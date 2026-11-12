@@ -887,6 +887,8 @@
   <RWS_Hospitality_VisitGroupsDesc>このアドオンを有効にしてからプレイヤー拠点に実際に到着したHospitality訪問グループの累計。救助後に再編成されたグループは対象外です。ロード時の重複はイベントIDで除外し、導入前の来訪数は推定しません。</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality：来訪客の延べ人数（導入後）</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>導入後に到着を確認したHospitality訪問グループの所属人数合計。同じ人物の再訪問も別の来訪として数えます。ユニーク人数・保存時滞在人数ではなく、導入前の値も復元しません。</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality：正常に帰還した訪問グループ累計（導入後）</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>滞在終了と実際のマップ退出を確認し、敵対化・送還・他の離脱・死亡・再編成がなく、全員が退出してグループが消滅した場合だけ数えます。退出途中でロードして確認材料が失われた場合は推定しません。</RWS_Hospitality_VisitsCompletedDesc>
   <RWS_Hospitality_Recruited>Hospitality：宿泊客の加入成功累計（導入後）</RWS_Hospitality_Recruited>
   <RWS_Hospitality_RecruitedDesc>アドオン有効化後にHospitalityの加入処理が成功した宿泊客の人数。プレイヤー所属になったことを確認し、導入前の履歴は推定しません。</RWS_Hospitality_RecruitedDesc>
   <RWS_Hospitality_ForcedRecruit>Hospitality：強制加入の成功累計（導入後）</RWS_Hospitality_ForcedRecruit>

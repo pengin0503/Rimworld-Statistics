@@ -97,6 +97,7 @@ jobs:
             Source/JobDriver_BuyItem.cs
             Source/Utilities/GuestUtility.cs
             Source/LordJob_VisitColony.cs
+            Source/LordToil_VisitPoint.cs
             Source/CompGuest.cs
             Source/Building_GuestBed.cs
             Source/IncidentWorker_VisitorGroup.cs
