@@ -893,6 +893,10 @@
   <RWS_Hospitality_ForcedRecruitDesc>Hospitality側で強制加入と扱われた成功件数。全加入成功件数の内訳です。</RWS_Hospitality_ForcedRecruitDesc>
   <RWS_Hospitality_VoluntaryRecruit>Hospitality：任意加入の成功累計（導入後）</RWS_Hospitality_VoluntaryRecruit>
   <RWS_Hospitality_VoluntaryRecruitDesc>Hospitality側で強制加入ではないと扱われた成功件数。全加入成功件数の内訳です。</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_ShoppingUnits>Hospitalityの客が購入した品数</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnitsDesc>有効化後、自コロニーのマップで買い物ジョブを完了し、客の所持品・装備に加わった品数。</RWS_Hospitality_ShoppingUnitsDesc>
+  <RWS_Hospitality_ShoppingSilver>Hospitalityの客が支払ったシルバー</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilverDesc>有効化後、同じ買い物ジョブで客が支払ったシルバー。</RWS_Hospitality_ShoppingSilverDesc>
   <RWS_Hospitality_AssignedBeds>Hospitality：宿泊客に割当済みのベッド数（保存時）</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>保存成功時点でプレイヤー拠点にいる宿泊客に割り当て済みのゲストベッドを重複せず数えた値。共同利用のベッドは1台です。実際に寝ている人数や過去の宿泊件数ではありません。</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>募集依頼の開始回数（アドオン導入後）</RWS_AddonRecruitment_Started>

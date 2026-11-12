@@ -86,6 +86,7 @@ jobs:
           sparse-checkout: |
             About/About.xml
             Source/Hospitality_MapComponent.cs
+            Source/JobDriver_BuyItem.cs
             Source/Utilities/GuestUtility.cs
             Source/LordJob_VisitColony.cs
             Source/CompGuest.cs

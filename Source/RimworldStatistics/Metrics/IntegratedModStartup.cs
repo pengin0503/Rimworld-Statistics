@@ -27,6 +27,7 @@ internal static class IntegratedModStartup
         {
             if (HospitalitySnapshot.TryBind())
                 HospitalitySdk.TryRegister();
+            HospitalityPurchases.TryRegister();
         });
         Safe("pengin0503.recruitment", "pengin0503.rws.recruitmentaddon", () =>
         {
