@@ -169,7 +169,10 @@ public sealed class ProfileSession
         }
     }
 
-    public bool TryRead<T>(Func<Profile, T> read, out T result)
+    public bool TryRead<T>(Func<Profile, T> read, out T result) =>
+        TryReadWithRevision((profile, _) => read(profile), out result);
+
+    public bool TryReadWithRevision<T>(Func<Profile, long, T> read, out T result)
     {
         if (!Monitor.TryEnter(_lock))
         {
@@ -178,7 +181,7 @@ public sealed class ProfileSession
         }
         try
         {
-            result = read(_profile);
+            result = read(_profile, _changeSeq);
             return true;
         }
         finally

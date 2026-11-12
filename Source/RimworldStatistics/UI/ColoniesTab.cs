@@ -40,12 +40,20 @@ public static class ColoniesTab
 
     private const float ExcludeWidth = 0.05f;
     private static readonly float TotalColumnWeight = Columns.Sum(c => c.Width) + ExcludeWidth;
+    private static ColumnPlan? columnPlan;
+    private static object? tableLanguage;
+    private static float tableWidth;
+    private static string[] labels = [];
+    private static ColumnSpec[] specs = [];
 
     private static int sortColumn = 3;
     private static bool ascending;
     private static string? selectedKey;
     private static Vector2 scroll;
     private static Vector2 detailScroll;
+    private static readonly StatsTable DetailTable = new(24f, new(180, 5), new(90, 2), new(68, 1), new(95, 1), new(95, 1));
+    private sealed record DetailCache(Colony Colony, SaveFileIndex? Files, object? Language, string[] Headers, string[][] Rows);
+    private static DetailCache? details;
 
     private sealed class TableCache(StatsView view, int sortColumn, bool ascending, int[] order)
     {
@@ -54,13 +62,33 @@ public static class ColoniesTab
         public bool Ascending { get; } = ascending;
         public int[] Order { get; } = order;
         public string[]?[] Cells { get; } = new string[order.Length][];
-        public float[]?[] Widths { get; } = new float[order.Length][];
+        public string[]?[] Display { get; } = new string[order.Length][];
     }
 
     private static TableCache? cache;
 
     public static void Draw(Rect rect, StatsView view, SaveFileIndex? files)
     {
+        var language = LanguageDatabase.activeLanguage;
+        if (!ReferenceEquals(tableLanguage, language) || labels.Length == 0)
+        {
+            tableLanguage = language;
+            labels = Columns.Select(c => (string)c.LabelKey.Translate()).Append((string)"RWS_Exclude".Translate()).ToArray();
+            specs = Columns.Select((c, i) => new ColumnSpec(
+                Math.Max(MinTableWidth * c.Width / TotalColumnWeight, Text.CalcSize(labels[i] + " ▲").x + 8f), c.Width))
+                .Append(new ColumnSpec(Math.Max(MinTableWidth * ExcludeWidth / TotalColumnWeight, Text.CalcSize(labels[^1]).x + 8f), ExcludeWidth))
+                .ToArray();
+            columnPlan = null;
+            cache = null;
+        }
+        var available = Math.Max(0, rect.width - 16f);
+        if (columnPlan is null || tableWidth != available)
+        {
+            columnPlan = ColumnLayout.Resolve(specs, available);
+            tableWidth = available;
+            if (cache is not null)
+                Array.Clear(cache.Cells);
+        }
         if (cache is null || !ReferenceEquals(cache.View, view) || cache.SortColumn != sortColumn || cache.Ascending != ascending)
         {
             var indices = Enumerable.Range(0, view.Colonies.Count);
@@ -79,7 +107,7 @@ public static class ColoniesTab
         var selectedRow = Array.FindIndex(order, i => view.Colonies[i].Key == selectedKey);
         var selected = selectedRow < 0 ? -1 : order[selectedRow];
         var tableHeight = rect.height - (selected >= 0 ? DetailHeight + 8f : 0f);
-        var width = Math.Max(rect.width - 16f, MinTableWidth);
+        var width = columnPlan.TotalWidth;
         // Keep the sortable header fixed vertically while tracking horizontal body scroll.
         GUI.BeginGroup(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 16f), RowHeight));
         DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight));
@@ -105,8 +133,8 @@ public static class ColoniesTab
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         for (var c = 0; c < Columns.Length; c++)
         {
-            var cell = new Rect(x, rect.y, rect.width * Columns[c].Width / TotalColumnWeight, rect.height);
-            var label = (string)Columns[c].LabelKey.Translate() + (sortColumn == c ? (ascending ? " ▲" : " ▼") : "");
+            var cell = new Rect(x, rect.y, columnPlan!.Widths[c], rect.height);
+            var label = labels[c] + (sortColumn == c ? (ascending ? " ▲" : " ▼") : "");
             Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), label);
             Widgets.DrawHighlightIfMouseover(cell);
             TooltipHandler.TipRegion(cell, label);
@@ -117,8 +145,8 @@ public static class ColoniesTab
             }
             x += cell.width;
         }
-        var excludeWidth = rect.width * ExcludeWidth / TotalColumnWeight;
-        Widgets.Label(new Rect(x + 3f, rect.y, excludeWidth - 6f, rect.height), "RWS_Exclude".Translate());
+        var excludeWidth = columnPlan!.Widths[^1];
+        Widgets.Label(new Rect(x + 3f, rect.y, excludeWidth - 6f, rect.height), labels[^1]);
         TooltipHandler.TipRegion(new Rect(x, rect.y, excludeWidth, rect.height), "RWS_ExcludeTip".Translate());
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
@@ -138,19 +166,18 @@ public static class ColoniesTab
         if (table.Cells[row] is not { } texts)
         {
             texts = Columns.Select(c => c.Text(s)).ToArray();
-            table.Widths[row] = texts.Select(text => Text.CalcSize(text).x).ToArray();
+            table.Display[row] = texts.Select((text, i) => text.Truncate(columnPlan!.Widths[i] - 6f)).ToArray();
             table.Cells[row] = texts;
         }
-        var widths = table.Widths[row]!;
+        var shown = table.Display[row]!;
         for (var c = 0; c < Columns.Length; c++)
         {
-            var col = Columns[c];
-            var cell = new Rect(x + 3f, rect.y, rect.width * col.Width / TotalColumnWeight - 6f, rect.height);
+            var cell = new Rect(x + 3f, rect.y, columnPlan!.Widths[c] - 6f, rect.height);
             var text = texts[c];
-            Widgets.Label(cell, text);
-            if (widths[c] > cell.width)
+            Widgets.Label(cell, shown[c]);
+            if (shown[c] != text)
                 TooltipHandler.TipRegion(cell, text);
-            x += rect.width * col.Width / TotalColumnWeight;
+            x += columnPlan!.Widths[c];
         }
         Text.Anchor = TextAnchor.UpperLeft;
         GUI.color = Color.white;
@@ -172,8 +199,15 @@ public static class ColoniesTab
     private static void DrawDetail(Rect rect, Colony colony, SaveFileIndex? files)
     {
         Widgets.DrawMenuSection(rect);
-        var inner = rect.ContractedBy(6f);
-        var widths = new[] { 0.46f, 0.18f, 0.10f, 0.13f, 0.13f };
+        var language = LanguageDatabase.activeLanguage;
+        if (details is not { } data || !ReferenceEquals(data.Colony, colony) || !ReferenceEquals(data.Files, files)
+            || !ReferenceEquals(data.Language, language))
+            details = data = BuildDetail(colony, files, language);
+        DetailTable.Draw(rect.ContractedBy(6f), ref detailScroll, data.Headers, data.Rows);
+    }
+
+    private static DetailCache BuildDetail(Colony colony, SaveFileIndex? files, object? language)
+    {
         var headers = new string[]
         {
             "RWS_Col_File".Translate(), "RWS_Col_Version".Translate(), "RWS_Col_Days".Translate(),
@@ -192,33 +226,7 @@ public static class ColoniesTab
                 (string)"RWS_LiveRecord".Translate(), Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Days(l.Max.TicksGame),
                 Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Dash,
             }))
-            .ToList();
-
-        Row(new Rect(inner.x, inner.y, inner.width - 16f, 24f), widths, headers, header: true);
-        var outRect = new Rect(inner.x, inner.y + 26f, inner.width, inner.height - 26f);
-        var viewRect = new Rect(0f, 0f, outRect.width - 16f, lines.Count * 24f);
-        Widgets.BeginScrollView(outRect, ref detailScroll, viewRect);
-        for (var i = 0; i < lines.Count; i++)
-            Row(new Rect(0f, i * 24f, viewRect.width, 24f), widths, lines[i], header: false);
-        Widgets.EndScrollView();
-    }
-
-    private static void Row(Rect rect, float[] widths, string[] cells, bool header)
-    {
-        var x = rect.x;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        if (header)
-            GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        for (var c = 0; c < cells.Length; c++)
-        {
-            var w = rect.width * widths[c];
-            var cell = new Rect(x + 3f, rect.y, w - 6f, rect.height);
-            Widgets.Label(cell, cells[c]);
-            if (Text.CalcSize(cells[c]).x > cell.width)
-                TooltipHandler.TipRegion(cell, cells[c]);
-            x += w;
-        }
-        GUI.color = Color.white;
-        Text.Anchor = TextAnchor.UpperLeft;
+            .ToArray();
+        return new DetailCache(colony, files, language, headers, lines);
     }
 }
