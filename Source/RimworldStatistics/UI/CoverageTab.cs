@@ -235,6 +235,7 @@ internal static class CoverageTab
         UnitRecordingState.NotSelected => "RWS_Status_RecordingOff".Translate(),
         UnitRecordingState.DlcMissing => "RWS_Status_DlcMissing".Translate(),
         UnitRecordingState.TargetModMissing => "RWS_Status_ModMissing".Translate(),
+        UnitRecordingState.TargetIncompatible => "RWS_Status_TargetIncompatible".Translate(),
         UnitRecordingState.Failed => "RWS_Status_RecordingFailed".Translate(),
         _ => "RWS_Status_RecordingUnnecessary".Translate(),
     };
