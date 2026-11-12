@@ -40,6 +40,7 @@ public sealed class ProfileSession
 
     private long _changeSeq;     // bumped by every change (under _lock)
     private long _writtenSeq;    // newest change seq that reached the file (under _ioLock)
+    private bool _closed;
     private bool _backgroundRunning;
     private bool _backgroundPending;
     private Task? _backgroundTask;
@@ -71,6 +72,8 @@ public sealed class ProfileSession
         lock (_lock)
         {
             var before = _changeSeq;
+            if (_closed)
+                return (before, before);
             try
             {
                 change(_profile);
@@ -250,6 +253,37 @@ public sealed class ProfileSession
         WriteLatest();
     }
 
+    public T WithWritesPaused<T>(Func<T> action)
+    {
+        lock (_ioLock)
+        {
+            WriteLatest();
+            EnsureFlushed();
+            return action();
+        }
+    }
+
+    public void Close()
+    {
+        lock (_ioLock)
+        lock (_lock)
+        {
+            if (_closed)
+                return;
+            WriteLatest();
+            EnsureFlushed();
+            _closed = true;
+        }
+    }
+
+    private void EnsureFlushed()
+    {
+        if (_lastSaveError is { } saveError)
+            throw new IOException("Could not flush the profile.", saveError);
+        if (_lastArchiveError is { } archiveError)
+            throw new IOException("Could not flush the checkpoint archive.", archiveError);
+    }
+
     private void Save(SaveMode mode)
     {
         switch (mode)
@@ -260,6 +294,8 @@ public sealed class ProfileSession
             case SaveMode.Background:
                 lock (_lock)
                 {
+                    if (_closed)
+                        return;
                     if (_backgroundRunning)
                     {
                         _backgroundPending = true;
@@ -340,7 +376,7 @@ public sealed class ProfileSession
         lock (_ioLock)
         {
             lock (_lock)
-                if (_changeSeq <= _writtenSeq)
+                if (_closed || _changeSeq <= _writtenSeq)
                     return;
 
             ArchiveCheckpoints();

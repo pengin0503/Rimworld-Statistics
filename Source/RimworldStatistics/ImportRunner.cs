@@ -38,7 +38,7 @@ public static class ImportRunner
     {
         lock (Gate)
         {
-            if (task is { IsCompleted: false })
+            if (ProfileService.DataOperationRunning || task is { IsCompleted: false })
                 return;
             if (manual)
                 AutoGate.StartedManually();
@@ -89,7 +89,7 @@ public static class ImportRunner
     public static void AutoStartOnce()
     {
         lock (Gate)
-            if (AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, task is { IsCompleted: false }))
+            if (!ProfileService.DataOperationRunning && AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, task is { IsCompleted: false }))
                 Start(manual: false);
     }
 

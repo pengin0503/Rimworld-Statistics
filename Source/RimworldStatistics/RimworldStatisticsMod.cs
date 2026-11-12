@@ -11,6 +11,8 @@ public sealed class RimworldStatisticsMod : Mod
 {
     public const string HarmonyId = "pengin0503.rimworldstatistics";
 
+    internal static string InstalledVersion { get; private set; } = "?";
+
     public static RimworldStatisticsSettings Settings { get; private set; } = new();
 
     /// <summary>Frozen at startup. Changes to desired settings never hot-patch Harmony.</summary>
@@ -32,6 +34,15 @@ public sealed class RimworldStatisticsMod : Mod
         : base(content)
     {
         Settings = GetSettings<RimworldStatisticsSettings>();
+        try
+        {
+            InstalledVersion = System.Xml.Linq.XDocument.Load(Path.Combine(content.RootDir, "About", "About.xml"))
+                .Root?.Element("modVersion")?.Value ?? "?";
+        }
+        catch (Exception error) when (error is IOException or UnauthorizedAccessException or System.Xml.XmlException)
+        {
+            Log.Warning($"[RimworldStatistics] Could not read the installed mod version: {error.Message}");
+        }
         ActiveAcquisitionSelection = Settings.DesiredSelection;
         MetricGates.ConfigureProductionSelection(
             ExperimentalAcquisitionPolicy.Resolve(ActiveAcquisitionSelection, AcquisitionUnits.All));

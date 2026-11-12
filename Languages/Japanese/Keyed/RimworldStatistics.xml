@@ -15,7 +15,7 @@
   <RWS_Tab_Overview>概要</RWS_Tab_Overview>
   <RWS_Tab_Endings>エンディング</RWS_Tab_Endings>
   <RWS_Tab_Colonies>コロニー</RWS_Tab_Colonies>
-  <RWS_Tab_Import>取り込み状況</RWS_Tab_Import>
+  <RWS_Tab_Import>データ管理</RWS_Tab_Import>
   <RWS_Stat_Days>通算ゲーム内日数</RWS_Stat_Days>
   <RWS_Stat_Endings>エンディング到達回数</RWS_Stat_Endings>
   <RWS_Stat_Departed>旅立った人数</RWS_Stat_Departed>
@@ -911,4 +911,26 @@
   <RWS_MetricDesc_FishingActions>プレイヤーの本拠地マップで釣果を1個以上配置できた釣り作業の回数。同じ作業の追加釣果は個数だけを加算します。</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>品目別の釣果個数</RWS_Metric_FishingCatchByDef>
   <RWS_MetricDesc_FishingCatchByDef>プレイヤーの本拠地マップで釣りによって実際に配置された品目と個数。レア釣果と対応する Vanilla Fishing Expanded の追加釣果を含みます。集計対象は計測した期間です。</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>今すぐバックアップ</RWS_Backup_Create>
+  <RWS_Backup_Refresh>一覧を更新</RWS_Backup_Refresh>
+  <RWS_Backup_OpenFolder>フォルダーを開く</RWS_Backup_OpenFolder>
+  <RWS_Backup_CopyPath>パスをコピー</RWS_Backup_CopyPath>
+  <RWS_Backup_Select>バックアップを選択</RWS_Backup_Select>
+  <RWS_Backup_Restore>復元…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>削除…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>{0} のバックアップ（MOD {1}、コロニー {2} 件、観測 {3} 件）を復元しますか？ 先に現在の記録をバックアップします。</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>このバックアップを削除しますか？ {0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>復元前</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>取り込みの完了を待つか、取り込みを中止してください。</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>バックアップを処理しています…</RWS_Backup_Working>
+  <RWS_Backup_Error>バックアップ操作に失敗しました：{0}</RWS_Backup_Error>
+  <RWS_Backup_Done>操作が完了しました。バックアップフォルダー：{0}</RWS_Backup_Done>
+  <RWS_Backup_None>バックアップはありません。</RWS_Backup_None>
+  <RWS_Backup_Label>ラベル / ファイル</RWS_Backup_Label>
+  <RWS_Backup_Size>サイズ</RWS_Backup_Size>
+  <RWS_Backup_Verification>検証結果</RWS_Backup_Verification>
+  <RWS_Backup_Valid>検証済み</RWS_Backup_Valid>
+  <RWS_Backup_NewerSchema>新しいプロフィール形式</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>未対応のバックアップ形式</RWS_Backup_UnknownFormat>
+  <RWS_Backup_Invalid>検証失敗</RWS_Backup_Invalid>
 </LanguageData>
