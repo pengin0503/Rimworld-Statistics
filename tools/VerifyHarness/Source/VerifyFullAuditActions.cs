@@ -15,6 +15,7 @@ namespace RimworldStatistics.VerifyHarness;
 public static class VerifyFullAuditActions
 {
     private static string? lastCampaign;
+    private static Game? lastGame;
     private static List<CaseResult> lastCases = new();
 
     private static bool IsIsolated()
@@ -36,6 +37,7 @@ public static class VerifyFullAuditActions
         if (!IsIsolated()) return;
         var campaign = CurrentCampaign();
         lastCampaign = campaign;
+        lastGame = Current.Game;
         lastCases = VerifyGameCases.All.Select(VerifyGameCases.Run)
             .Concat(VerifyAutomatedContracts.All.Select(VerifyAutomatedContracts.Run)).ToList();
         WriteDossier("full", lastCases);
@@ -50,9 +52,10 @@ public static class VerifyFullAuditActions
     public static void RescanOnly()
     {
         if (!IsIsolated()) return;
-        if (lastCampaign != CurrentCampaign())
+        if (lastCampaign != CurrentCampaign() || !ReferenceEquals(lastGame, Current.Game))
         {
             lastCampaign = CurrentCampaign();
+            lastGame = Current.Game;
             lastCases = new();
         }
         // Re-evaluate read-only contracts after a save: imported checkpoint ancestry
@@ -72,7 +75,7 @@ public static class VerifyFullAuditActions
     {
         if (!IsIsolated()) return;
         var campaign = CurrentCampaign();
-        if (lastCampaign != campaign || lastCases.Count == 0)
+        if (lastCampaign != campaign || !ReferenceEquals(lastGame, Current.Game) || lastCases.Count == 0)
         {
             Log.Warning("[RWS-VERIFY] First use the guided full audit in this campaign.");
             return;
@@ -113,9 +116,10 @@ public static class VerifyFullAuditActions
     {
         if (!IsIsolated()) return;
         var campaign = CurrentCampaign();
-        if (lastCampaign != campaign)
+        if (lastCampaign != campaign || !ReferenceEquals(lastGame, Current.Game))
         {
             lastCampaign = campaign;
+            lastGame = Current.Game;
             lastCases = new();
         }
         lastCases = lastCases.Where(c => !c.CaseId.StartsWith("contract.", StringComparison.Ordinal))
