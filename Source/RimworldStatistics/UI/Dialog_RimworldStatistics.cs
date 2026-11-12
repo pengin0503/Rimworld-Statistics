@@ -15,6 +15,7 @@ public sealed class Dialog_RimworldStatistics : Window
         Endings,
         Colonies,
         Details,
+        Rankings,
         Import,
     }
 
@@ -82,6 +83,7 @@ public sealed class Dialog_RimworldStatistics : Window
                 new("RWS_Tab_Endings".Translate(), () => current = Tab.Endings, current == Tab.Endings),
                 new("RWS_Tab_Colonies".Translate(), () => current = Tab.Colonies, current == Tab.Colonies),
                 new("RWS_Tab_Details".Translate(), () => current = Tab.Details, current == Tab.Details),
+                new("RWS_Tab_Rankings".Translate(), () => current = Tab.Rankings, current == Tab.Rankings),
                 new("RWS_Tab_Import".Translate(), () => current = Tab.Import, current == Tab.Import),
             };
             TabDrawer.DrawTabs(body, tabs);
@@ -120,6 +122,7 @@ public sealed class Dialog_RimworldStatistics : Window
                     ColoniesTab.Draw(content, view, fileIndex);
                     break;
                 case Tab.Details: DetailsTab.Draw(content, view, preferences, SavePreferences); break;
+                case Tab.Rankings: RankingsTab.Draw(content, view, preferences, SavePreferences); break;
             }
         }
         catch (Exception e)
@@ -143,7 +146,7 @@ public sealed class Dialog_RimworldStatistics : Window
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
         // The Endings and Colonies tabs always show the entire recorded history.
         // Group selection only changes the aggregate overview and numeric details.
-        var scope = current is Tab.Overview or Tab.Details ? ActiveScope() : ViewScope.All;
+        var scope = current is Tab.Overview or Tab.Details or Tab.Rankings ? ActiveScope() : ViewScope.All;
         if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;
