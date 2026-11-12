@@ -1028,4 +1028,20 @@
   <RWS_MetricDesc_DbhActivities>有効化後、自コロニーのマップで自勢力のポーンが完了したトイレ、シャワー、確認済みの洗浄ジョブの回数。</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>Smart Apparel Upgradeの着替え完了数</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>有効化後、Smart Apparel Upgradeの自動指示で指定の服を実際に着用した回数。</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>VTE 銀行預入額（手数料控除後）</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCreditsDesc>実験的統計を有効にしてから、VTE銀行に預け入れて実際に増加した口座残高（手数料控除後のシルバー）。契約の報酬入金は含めません。</RWS_VTE_BankCreditsDesc>
+  <RWS_VTE_BankDebits>VTE 銀行引出額（手数料控除前）</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebitsDesc>VTE銀行の引出しで実際に減少した口座残高（手数料控除前のシルバー）。</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>VTE 融資実行回数</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>記録有効化後に成功したVTE銀行の融資実行回数。失敗した操作や返済は含めません。</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>VTE 融資元本合計</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>VTE銀行から実際に実行された融資の元本シルバー合計。返済・利息は含めません。</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>VTE 契約の品物引渡し完了回数</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>VTEのNPC買取契約で、品物が実際に消費されたかキャラバンに引き渡された回数。予約・受付だけでは数えません。報酬の口座への入金確定は表しません。</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>VTE 契約の引渡し品物数</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>VTEのNPC買取契約で実際に引き渡した品物数。一部引渡しとキャラバンによる回収を含み、契約に記載された予定数だけでは数えません。</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_ContractPurchases>VTE プレイヤー掲示契約の購入完了数</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchasesDesc>プレイヤーが掲示したVTEの購入契約について、銀行から代金を全額支払い、品物の生成まで完了した回数。支払キャンセルや単なる契約受付では増えません。</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>VTE 契約購入品の受取数量</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>プレイヤー掲示契約で支払いが成功し、生成された品物の数量。NPC買取契約の引渡しや通常の交易とは別です。</RWS_VTE_ContractReceivedDesc>
 </LanguageData>

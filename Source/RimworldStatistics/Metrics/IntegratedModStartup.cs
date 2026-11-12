@@ -2,6 +2,7 @@ using RimworldStatistics.DubsBadHygieneAddon;
 using RimworldStatistics.HospitalityAddon;
 using RimworldStatistics.RecruitmentAddon;
 using RimworldStatistics.SmartApparelAddon;
+using RimworldStatistics.VanillaTradingExpandedAddon;
 using Verse;
 
 namespace RimworldStatistics.Metrics;
@@ -40,6 +41,11 @@ internal static class IntegratedModStartup
         {
             if (DbhWaterSource.TryBind())
                 DbhSdk.TryRegister();
+        });
+        Safe("VanillaExpanded.VanillaTradingExpanded", "pengin0503.rws.vteaddon", () =>
+        {
+            VteBankStatistics.TryRegister();
+            VteContractStatistics.TryRegister();
         });
         Safe("pengin0503.smartapparelupgrade", "pengin0503.rws.smartappareladdon", () =>
         {

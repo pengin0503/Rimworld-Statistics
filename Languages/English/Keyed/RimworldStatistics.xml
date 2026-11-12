@@ -1028,4 +1028,20 @@
   <RWS_MetricDesc_DbhActivities>Completed toilet, shower and audited washing jobs of player pawns on home maps since opt-in.</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>Completed Smart Apparel Upgrade changes</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>Automatic Smart Apparel Upgrade orders that finished equipping the chosen item since opt-in.</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>VTE silver credited to banks</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCreditsDesc>Net silver credited by completed VTE bank deposits, after bank fees, since enabling this experimental statistic. Contract payouts are excluded.</RWS_VTE_BankCreditsDesc>
+  <RWS_VTE_BankDebits>VTE silver withdrawn from banks</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebitsDesc>Gross silver debited from VTE bank accounts by successful withdrawals, before withdrawal fees, since enabling the statistic.</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>VTE loans issued</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>Successfully issued VTE bank loans after enabling recording; failed requests and repayments are excluded.</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>VTE loan principal issued</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>Silver principal of completed VTE loan issues; repayment and interest are not included.</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>VTE contracts fulfilled by delivering goods</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>VTE NPC buy-order contracts where goods were actually consumed or carried away; merely accepting a contract is excluded. Reward crediting is not confirmed by this metric.</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>Goods delivered to VTE contracts</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>Item units handed over for completed or partially fulfilled VTE NPC buy-order contracts, including caravan pickups. Actual transfers, not requested amounts.</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_ContractPurchases>VTE player-posted contracts purchased</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchasesDesc>Player-posted VTE purchase contracts paid in full through VTE bank transactions and fulfilled with generated items. Cancelling payment or accepting a contract without settlement does not count.</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>Goods purchased through VTE contracts</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>Units of items generated from successfully paid player-posted VTE purchase contracts, distinct from NPC buy-order deliveries and ordinary trade.</RWS_VTE_ContractReceivedDesc>
 </LanguageData>
