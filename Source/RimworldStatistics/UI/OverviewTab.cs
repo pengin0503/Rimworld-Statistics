@@ -209,9 +209,9 @@ public static class OverviewTab
                 var number = BasicMetrics.OverallValue(view.Stats, key);
                 var formatted = number is null ? Dialog_RimworldStatistics.Dash
                     : key == BasicMetrics.Days
-                        ? "RWS_Unit_Days".Translate(number.Value.ToString("N1", CultureInfo.InvariantCulture))
+                        ? (string)"RWS_Unit_Days".Translate(number.Value.ToString("N1", CultureInfo.InvariantCulture))
                         : key == BasicMetrics.RealPlayHours
-                            ? "RWS_HoursValue".Translate(number.Value.ToString("N1", CultureInfo.InvariantCulture))
+                            ? (string)"RWS_HoursValue".Translate(number.Value.ToString("N1", CultureInfo.InvariantCulture))
                             : StatFormat.Group(number.Value);
                 return new FavoriteCell(key,
                     new Cell(BasicLabel(key), formatted, Basis(view)));
