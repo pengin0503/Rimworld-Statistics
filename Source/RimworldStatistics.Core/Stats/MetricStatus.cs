@@ -13,6 +13,7 @@ public enum UnitRecordingState
     NotSelected,
     DlcMissing,
     TargetModMissing,
+    TargetIncompatible,
     Failed,
     NotRequired,
 }
