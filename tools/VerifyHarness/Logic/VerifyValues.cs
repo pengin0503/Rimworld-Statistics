@@ -41,7 +41,7 @@ public static class VerifyValues
 {
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
-    private static readonly Dictionary<string, string?> UnitByStoredKey = MetricRegistry.Catalog
+    private static readonly Dictionary<string, string?> UnitByStoredKey = MetricRegistry.ImplementedCatalog
         .GroupBy(d => d.StoredKey, Ord)
         .ToDictionary(g => g.Key, g => g.Select(d => d.Acquisition).FirstOrDefault(a => a != null), Ord);
 

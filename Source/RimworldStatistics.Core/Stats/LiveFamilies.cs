@@ -217,6 +217,7 @@ public static class LiveFamilies
         MedicineFamily.Family,
         DisasterFamily.Family,
         ModdedIncidentFamily.Family,
+        VpeStatistics.Family,
         RoyaltyFamily.Family,
         IdeologyFamily.Family,
         OdysseyFamily.Family,

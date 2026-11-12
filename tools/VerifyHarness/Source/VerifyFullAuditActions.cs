@@ -139,7 +139,7 @@ public static class VerifyFullAuditActions
         var absentDlc = AcquisitionUnits.All.Where(u =>
                 u.RequiredDlc is not null && !ModsConfig.IsActive(u.RequiredDlc))
             .Select(u => u.RequiredDlc!).ToHashSet(StringComparer.Ordinal);
-        var rows = VerifyCatalogAudit.Build(MetricRegistry.Catalog, recording, observed, absentDlc);
+        var rows = VerifyCatalogAudit.Build(MetricRegistry.ImplementedCatalog, recording, observed, absentDlc);
         var report = GuidedAuditReport.Build(rows, cases, VerifyProbe.GameVersion, campaign, DateTime.UtcNow);
 
         // Preserve last successful dossier for same-campaign progress diffs,

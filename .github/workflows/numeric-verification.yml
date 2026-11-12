@@ -93,10 +93,21 @@ jobs:
             Source/IncidentWorker_VisitorGroup.cs
           sparse-checkout-cone-mode: false
           persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Vanilla-Expanded/VanillaPsycastsExpanded
+          ref: 379b3235a4e91fa03d589af544fd8d5845d23690
+          path: .devinputs/integrated/vpe
+          sparse-checkout: |
+            About/About.xml
+            1.7/Source/VanillaPsycastsExpanded/Hediff_PsycastAbilities.cs
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
       - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
         shell: bash
         run: |
           set -euo pipefail
+          python3 tools/IntegratedModAudit/check_vpe_contract.py .devinputs/integrated/vpe
           python3 tools/IntegratedModAudit/check_sau_contract.py .devinputs/integrated/sau
           python3 tools/IntegratedModAudit/check_recruitment_contract.py .devinputs/integrated/recruitment
           python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality

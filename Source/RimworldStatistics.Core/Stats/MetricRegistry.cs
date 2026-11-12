@@ -160,7 +160,7 @@ public sealed record MetricDefinition
 
 /// <summary>
 /// The outputs whose acquisition was verified and shipped (<see cref="All"/>), and every implemented output including those
-/// whose acquisition is not confirmed in the game yet (<see cref="Catalog"/>). An output stays registered even when its DLC or
+/// whose acquisition is not confirmed in the game yet (<see cref="ImplementedCatalog"/>). An output stays registered even when its DLC or
 /// hook is off later, so recorded values keep their meaning; acquisition gates only stop new values. Order is the display order.
 /// </summary>
 public static class MetricRegistry
@@ -257,12 +257,16 @@ public static class MetricRegistry
 
     /// <summary>Every implemented output: Phase A/D1, then the outputs of the acquisition units (published or not).</summary>
     public static IReadOnlyList<MetricDefinition> BaseCatalog { get; } = Shipped.Concat(LiveCatalog.Definitions).Concat(SnapshotCatalog.Definitions).Concat(RankingDependencyCatalog.Definitions).ToArray();
+    /// <summary>The baseline catalog, including its existing derived outputs.</summary>
     public static IReadOnlyList<MetricDefinition> Catalog { get; } = BaseCatalog.Concat(CrossColonyCatalog.Build(BaseCatalog)).ToArray();
 
-    /// <summary>The published outputs: what the Details tab shows.</summary>
-    public static IReadOnlyList<MetricDefinition> All { get; } = Catalog.Where(d => d.Published).ToArray();
+    /// <summary>All built-in definitions, including integrations for optional MOD frameworks.</summary>
+    public static IReadOnlyList<MetricDefinition> ImplementedCatalog { get; } = Catalog.Concat(BuiltInModMetricCatalog.Definitions).ToArray();
 
-    private static readonly Dictionary<string, MetricDefinition> ByKey = Catalog.ToDictionary(d => d.Key, StringComparer.Ordinal);
+    /// <summary>The published outputs without opting into experimental visibility.</summary>
+    public static IReadOnlyList<MetricDefinition> All { get; } = ImplementedCatalog.Where(d => d.Published).ToArray();
+
+    private static readonly Dictionary<string, MetricDefinition> ByKey = ImplementedCatalog.ToDictionary(d => d.Key, StringComparer.Ordinal);
 
     /// <summary>A catalog output by key (published or not).</summary>
     public static MetricDefinition? Find(string key) => ByKey.GetValueOrDefault(key);
@@ -275,7 +279,7 @@ public static class MetricRegistry
         var provider = new ModMetricProviderRegistry();
         foreach (var descriptor in historicalDescriptors ?? Array.Empty<ModMetricDescriptor>())
             provider.Register(descriptor);
-        return MetricDisplayPolicy.SelectDefinitions(Catalog, visibleUnits)
+        return MetricDisplayPolicy.SelectDefinitions(ImplementedCatalog, visibleUnits)
             .Concat(provider.BuildCatalog().Where(d => visibleUnits.Contains(OptionalModVisibilityId)
                 || d.Acquisition is { } id && visibleUnits.Contains(id))).ToArray();
     }
