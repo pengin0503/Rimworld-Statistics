@@ -1,3 +1,7 @@
+using System.Globalization;
+using System.Security.Cryptography;
+using System.Text;
+
 namespace RimworldStatistics.VanillaTradingExpandedAddon;
 
 /// <summary>Game-independent value checks for VTE's completed operations, not UI intent.</summary>
@@ -29,7 +33,17 @@ internal static class VteTradeMath
         return (int)Math.Clamp(reward * Math.Min(delivered, requested) / (float)requested, 0f, int.MaxValue);
     }
 
-    /// <summary>Deterministic within a checkpoint branch. A different balance state is a new transaction.</summary>
+    /// <summary>
+    /// Deterministic and bounded for SDK's 128-char limit. The SHA-256 digest
+    /// prevents long DefNames and faction IDs from invalidating a confirmed event.
+    /// </summary>
     internal static string EventId(string bankOrContract, string action, int tick, int before, int after)
-        => string.Concat("vte:", action, ":", bankOrContract, ":", tick, ":", before, ":", after);
+    {
+        var raw = string.Concat(bankOrContract.Length.ToString(CultureInfo.InvariantCulture), ":", bankOrContract,
+            action.Length.ToString(CultureInfo.InvariantCulture), ":", action, ":",
+            tick.ToString(CultureInfo.InvariantCulture), ":",
+            before.ToString(CultureInfo.InvariantCulture), ":",
+            after.ToString(CultureInfo.InvariantCulture));
+        return "vte:" + Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(raw)));
+    }
 }
