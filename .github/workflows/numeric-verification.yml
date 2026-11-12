@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - claude/inspiring-shannon-6wqgka
     paths:
       - 'Source/**'
       - 'Tests/**'
@@ -13,6 +12,8 @@ on:
       - 'tools/**'
       - 'Languages/**'
       - '.github/workflows/numeric-verification.yml'
+      - '.github/workflows/publish.yml'
+      - 'docs/releases/**'
       - 'About/**'
       - 'Directory.Build.props'
       - 'global.json'
@@ -25,6 +26,8 @@ on:
       - 'tools/**'
       - 'Languages/**'
       - '.github/workflows/numeric-verification.yml'
+      - '.github/workflows/publish.yml'
+      - 'docs/releases/**'
       - 'About/**'
       - 'Directory.Build.props'
       - 'global.json'
