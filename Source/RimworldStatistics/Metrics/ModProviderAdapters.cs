@@ -88,7 +88,12 @@ internal static class ModProviderAdapters
                 : ModProviderGameDiscovery.ExistingDefs(descriptor.RequiredDefNames);
             var eligibility = ModProviderDiscovery.Resolve(descriptor, installed, presentDefs);
             if (!eligibility.Available)
+            {
+                Log.WarningOnce($"[RimworldStatistics] Selected optional acquisition '{id}' unavailable: "
+                    + $"{eligibility.State} ({eligibility.Detail ?? descriptor.OwnerPackageId}).",
+                    ("RWS.provider.unavailable." + id).GetHashCode());
                 continue;
+            }
             if (descriptor.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
                 continue;
             var ownerVersion = installed.FirstOrDefault(x =>
