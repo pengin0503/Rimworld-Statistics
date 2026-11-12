@@ -60,6 +60,57 @@ public sealed class ViewScopeTests
     }
 
     [Fact]
+    public void ScopedNumericTotalsMatchOrdinaryExclusionAndKeepAllPerColonyRows()
+    {
+        var profile = new Profile();
+        var a = Save("a.rws", "A", 120000);
+        var b = Save("b.rws", "B", 240000);
+        profile.SaveObservations.AddRange([a, b]);
+        foreach (var (obs, value) in new[] { (a, 2L), (b, 5L) })
+        {
+            var metric = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveFile,
+                FormatVersion = SaveReader.Version,
+                Key = obs.FileName,
+                Identity = obs.Identity.Clone(),
+                SaveTick = obs.Values.TicksGame,
+                ObservedUtc = obs.LastWriteUtc,
+            };
+            metric.FileAliases.Add(new MetricFileAlias
+            {
+                FileName = obs.FileName,
+                FileSize = obs.FileSize,
+                LastWriteUtc = obs.LastWriteUtc,
+            });
+            metric.Metrics[MetricKeys.QuestSuccess] = MetricEntry.Of(
+                MetricKeys.Revision(MetricKeys.QuestSuccess),
+                new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = value });
+            profile.MetricObservations.Add(metric);
+        }
+
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var baseline = MetricCalculator.BuildView(profile, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()));
+        var member = colonies.Single(c => c.Observations.Any(o => o.Identity.SeedString == "A"));
+        ViewScope.ForGroup(new ColonyGroup { Id = "g", Name = "A", ColonyKeys = [member.Key] }).Apply(colonies);
+        var scopedStats = StatsCalculator.Calculate(colonies, new StatsOptions());
+        var scoped = MetricCalculator.BuildView(profile, colonies, scopedStats);
+        var scopedValue = scoped.Overall.Single(r => r.Definition.Key == MetricKeys.QuestSuccess);
+        Assert.Equal(2d, scopedValue.Value.Number);
+        Assert.Equal(1, scopedValue.Targets);
+        Assert.Equal(baseline.Unattributed, scoped.Unattributed);
+        Assert.Equal(baseline.Colonies.Select(c => c.Observations), scoped.Colonies.Select(c => c.Observations));
+        Assert.Equal(2, scoped.Colonies.Count);
+
+        foreach (var colony in colonies)
+            colony.OutOfScope = false;
+        colonies.Single(c => c.Key != member.Key).Excluded = true;
+        var excluded = MetricCalculator.BuildView(profile, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()));
+        Assert.Equal(excluded.Overall.Single(r => r.Definition.Key == MetricKeys.QuestSuccess).Value.Number, scopedValue.Value.Number);
+        Assert.Equal(excluded.Overall.Single(r => r.Definition.Key == MetricKeys.QuestSuccess).Targets, scopedValue.Targets);
+    }
+
+    [Fact]
     public void AliasKeysAndUnknownKeysAreHandled()
     {
         var colony = new Colony { Key = "new" };
