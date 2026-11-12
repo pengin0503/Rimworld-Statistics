@@ -199,12 +199,31 @@ public sealed record GuidedAuditReport
         return sb.ToString();
     }
 
+    /// <summary>Independent evidence ledger; only game-path cases invoke the actual gameplay method.</summary>
+    public string ToCasesCsv()
+    {
+        var sb = new StringBuilder("CaseId,Unit,Outcome,Evidence,Expected,Actual,Hooks,Note\r\n");
+        foreach (var c in Cases)
+        {
+            sb.AppendJoin(",", new[]
+            {
+                CsvValue(c.CaseId), CsvValue(c.Unit), CsvValue(c.Outcome.ToString()),
+                CsvValue(c.Evidence), CsvValue(c.Expected), CsvValue(c.Actual),
+                CsvValue(c.Hooks.ToString(CultureInfo.InvariantCulture)), CsvValue(c.Note ?? ""),
+            });
+            sb.Append("\r\n");
+        }
+        return sb.ToString();
+    }
+
     public string ToMarkdown()
     {
         var sb = new StringBuilder()
             .AppendLine("# Rimworld-Statistics guided verification")
             .AppendLine()
             .AppendLine("**NOT VERIFIED**: observed numbers do not establish correctness, missing zeros or TPS safety.")
+            .AppendLine("ReadOnlyGameParity/ReadOnlyCacheContract/DetachedSdkPolicy PASS is not live-event acceptance.")
+            .AppendLine("Inconclusive means a prerequisite was inspected without proving the target operation.")
             .AppendLine()
             .AppendLine("Game: `" + GameVersion + "` · UTC: " +
                 CapturedUtc.ToString("O", CultureInfo.InvariantCulture))
@@ -220,7 +239,7 @@ public sealed record GuidedAuditReport
             sb.AppendLine("- **" + u.Unit + "** (" + u.Action + "): " + u.Hint);
         sb.AppendLine().AppendLine().AppendLine("## Automated cases (separate from 264 metric observations)");
         foreach (var c in Cases)
-            sb.AppendLine($"- {c.CaseId} [{c.Outcome}]: expected={c.Expected}, actual={c.Actual}, hooks={c.Hooks}" +
+            sb.AppendLine($"- {c.CaseId} [{c.Outcome}, evidence={c.Evidence}]: expected={c.Expected}, actual={c.Actual}, hooks={c.Hooks}" +
                 (c.Note is null ? "" : ", note=" + c.Note.Replace("\r", " ").Replace("\n", " ")));
         sb.AppendLine().AppendLine("## Recommended workflow")
             .AppendLine("1. Investigate FAIL/ERROR cases first, then enable closed gates.")
