@@ -41,3 +41,11 @@ assert "public bool HasBed" in guest_component
 assert "Scribe_References.Look(ref bed, \"bed\");" in guest_component
 assert "public class Building_GuestBed : Building_Bed" in bed
 print("Hospitality 1.7 pinned source contract: arrival callback, recovery marker, guest snapshots PASS")
+
+shopping = (root / "Source/JobDriver_BuyItem.cs").read_text(encoding="utf-8")
+assert re.search(r"private\s+void\s+BuyThing\(Toil toil\)", shopping)
+assert re.search(r"initAction\s*=\s*\(\)\s*=>\s*BuyThing\(", shopping)
+for action in ("Item.SplitOff(", ".apparel.Wear(", ".equipment.AddEquipment(", ".TryAdd(", ".TryDrop("):
+    assert action in shopping, action
+assert "TradeDeal" not in shopping
+print("Hospitality 1.7 pinned guest shopping contract: item transfer and payment PASS")
