@@ -20,6 +20,8 @@ public sealed class ColonyStats
 
     /// <summary>Permadeath of the representative point; null when the colony has no observed point.</summary>
     public bool? Permadeath { get; init; }
+    /// <summary>A saved or live observation exists; an ending trace alone is insufficient for a basic numeric reading.</summary>
+    public bool HasObservedPoint { get; init; }
 
     public int MaxTicks { get; init; }
     public double MaxRealPlay { get; init; }
@@ -174,6 +176,7 @@ public static class StatsCalculator
             Storyteller = display?.Storyteller,
             Difficulty = display?.Difficulty,
             Permadeath = display?.Permadeath,
+            HasObservedPoint = points.Count > 0,
             MaxTicks = MaxOf(v => v.TicksGame),
             MaxRealPlay = MaxOfD(v => v.RealPlayTime),
             Raids = MaxOf(v => v.NumRaidsEnemy),
