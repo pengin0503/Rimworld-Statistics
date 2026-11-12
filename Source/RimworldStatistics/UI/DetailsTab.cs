@@ -577,7 +577,7 @@ public static class DetailsTab
         _ => "RWS_Provenance_LiveAggregate".Translate(),
     };
 
-    private static string CoverageLabel(MetricDefinition d, MetricCoverage c) => c switch
+    internal static string CoverageLabel(MetricDefinition d, MetricCoverage c) => c switch
     {
         MetricCoverage.Complete => "RWS_Coverage_Complete".Translate(),
         MetricCoverage.Partial => "RWS_Coverage_Partial".Translate(),

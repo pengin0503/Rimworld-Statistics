@@ -238,7 +238,7 @@ public static class OverviewTab
         }).ToArray();
     }
 
-    private static string BasicLabel(string key) => key switch
+    internal static string BasicLabel(string key) => key switch
     {
         BasicMetrics.Days => "RWS_Stat_Days".Translate(),
         BasicMetrics.RealPlayHours => "RWS_Stat_RealPlay".Translate(),
