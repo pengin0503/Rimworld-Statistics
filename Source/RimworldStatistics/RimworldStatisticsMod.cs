@@ -124,6 +124,8 @@ public sealed class RimworldStatisticsMod : Mod
                     listing.Label(label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(dlc));
                     continue;
                 }
+                if (enabled && UnitRecordingStates.Get(unit.Id) == UnitRecordingState.TargetIncompatible)
+                    label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
                 listing.CheckboxLabeled(label, ref enabled);
                 if (enabled && !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
                     Settings.experimentalUnitIds.Add(unit.Id);
