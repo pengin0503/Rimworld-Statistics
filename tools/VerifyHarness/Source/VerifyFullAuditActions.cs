@@ -209,6 +209,7 @@ public static class VerifyFullAuditActions
 
         WriteFile("guide.md", details.ToString());
         WriteFile("metrics.csv", report.ToCsv());
+        WriteFile("cases.csv", report.ToCasesCsv());
         WriteFile("report.json", report.ToJson());
 
         var counts = report.Metrics.GroupBy(m => m.State)
