@@ -38,6 +38,14 @@ public sealed class VteTradeMathTests
         Assert.Equal(expected, VteTradeMath.ProportionalReward(reward, requested, delivered));
 
     [Fact]
+    public void VeryLongDefNamesStillProduceSdkCompatibleEventIdentifiers()
+    {
+        var id = VteTradeMath.EventId(new string('x', 800), "contract", 60000, 15, 5);
+        Assert.True(id.Length <= 128);
+        Assert.Equal(id, VteTradeMath.EventId(new string('x', 800), "contract", 60000, 15, 5));
+    }
+
+    [Fact]
     public void EventIdsAreStableAcrossEquivalentCheckpointsAndDistinctAcrossRealTransfers()
     {
         var id = VteTradeMath.EventId("bank_1", "deposit", 500, 100, 140);
