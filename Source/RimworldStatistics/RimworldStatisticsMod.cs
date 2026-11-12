@@ -14,6 +14,7 @@ public sealed class RimworldStatisticsMod : Mod
     internal static string InstalledVersion { get; private set; } = "?";
 
     public static RimworldStatisticsSettings Settings { get; private set; } = new();
+    public static RimworldStatisticsMod? Instance { get; private set; }
 
     /// <summary>Frozen at startup. Changes to desired settings never hot-patch Harmony.</summary>
     public static ExperimentalSelection ActiveAcquisitionSelection { get; private set; } =
@@ -33,6 +34,7 @@ public sealed class RimworldStatisticsMod : Mod
     public RimworldStatisticsMod(ModContentPack content)
         : base(content)
     {
+        Instance = this;
         Settings = GetSettings<RimworldStatisticsSettings>();
         try
         {

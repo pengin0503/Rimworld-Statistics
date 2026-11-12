@@ -45,6 +45,7 @@ public sealed class ColonyStats
     public int SaveCount { get; init; }
     public DateTime? LastPlayedUtc { get; init; }
     public bool Excluded { get; init; }
+    public bool OutOfScope { get; init; }
 }
 
 /// <summary>Totals across colonies (spec §4.1, §4.2). Excluded colonies are listed but not counted.</summary>
@@ -52,6 +53,7 @@ public sealed class StatsResult
 {
     public int ColonyCount { get; init; }
     public int ExcludedColonyCount { get; init; }
+    public int OutOfScopeColonyCount { get; init; }
     public bool HasData => ColonyCount > 0;
 
     public long TotalTicks { get; init; }
@@ -87,7 +89,7 @@ public static class StatsCalculator
     public static StatsResult Calculate(IReadOnlyList<Colony> colonies, StatsOptions options)
     {
         var all = colonies.Select(c => CalculateColony(c, options)).ToList();
-        var counted = all.Where(c => !c.Excluded).ToList();
+        var counted = all.Where(c => !c.Excluded && !c.OutOfScope).ToList();
         var byType = new Dictionary<EndingType, int>();
         foreach (var c in counted)
             foreach (var (type, n) in c.EndingCounts)
@@ -96,7 +98,8 @@ public static class StatsCalculator
         return new StatsResult
         {
             ColonyCount = counted.Count,
-            ExcludedColonyCount = all.Count - counted.Count,
+            ExcludedColonyCount = all.Count(c => c.Excluded),
+            OutOfScopeColonyCount = all.Count(c => c.OutOfScope && !c.Excluded),
             TotalTicks = counted.Sum(c => (long)c.MaxTicks),
             TotalRealPlay = counted.Sum(c => c.MaxRealPlay),
             TotalEndings = byType.Values.Sum(),
@@ -191,6 +194,7 @@ public static class StatsCalculator
             SaveCount = colony.Observations.Select(o => o.FileName).Distinct(StringComparer.Ordinal).Count(),
             LastPlayedUtc = times.Count == 0 ? null : times.Max(),
             Excluded = colony.Excluded,
+            OutOfScope = colony.OutOfScope,
         };
     }
 }

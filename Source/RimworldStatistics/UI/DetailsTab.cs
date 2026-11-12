@@ -67,6 +67,8 @@ public static class DetailsTab
 
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
+        if (view.Stats.OutOfScopeColonyCount > 0)
+            note += " " + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
         if (numeric.Unattributed > 0)
             note += " " + "RWS_Details_Unattributed".Translate(numeric.Unattributed);
         var noteHeight = Text.CalcHeight(note, rect.width);

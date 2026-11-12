@@ -14,6 +14,8 @@ public sealed class RimworldStatisticsSettings : ModSettings
     public List<string> experimentalUnitIds = new();
     // Legacy persisted setting: visibility is now unconditional; retain the serialized key for compatibility.
     public bool showRecordedExperimental = false;
+    // UI presentation choices only: groups and favourites never enter profile.json.
+    public string viewPreferencesJson = "";
 
     /// <summary>User's desired choices, applied only after restarting RimWorld.</summary>
     public ExperimentalSelection DesiredSelection => new(experimentalEnabled, experimentalUnitIds.ToArray());
@@ -28,6 +30,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
         Scribe_Values.Look(ref experimentalEnabled, "experimentalEnabled", false);
         Scribe_Collections.Look(ref experimentalUnitIds, "experimentalUnitIds", LookMode.Value);
         Scribe_Values.Look(ref showRecordedExperimental, "showRecordedExperimental", false);
+        Scribe_Values.Look(ref viewPreferencesJson, "viewPreferencesJson", "");
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
             experimentalUnitIds ??= new List<string>();
     }

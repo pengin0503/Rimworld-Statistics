@@ -123,6 +123,8 @@ public static class OverviewTab
     private static string Basis(StatsView view)
     {
         string text = "RWS_TooltipBasis".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
+        if (view.Stats.OutOfScopeColonyCount > 0)
+            text += "\n" + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
         return view.MissingObservations > 0 ? text + "\n" + "RWS_TooltipMissing".Translate(view.MissingObservations) : text;
     }
 

@@ -36,7 +36,7 @@ public sealed class ProfileSession
     private readonly ICheckpointArchive? _archive;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
-    private readonly Dictionary<(bool IncludeDevMode, string Visible), StatsView> _views = new();
+    private readonly Dictionary<(bool IncludeDevMode, string Visible, string Scope), StatsView> _views = new();
 
     private long _changeSeq;     // bumped by every change (under _lock)
     private long _writtenSeq;    // newest change seq that reached the file (under _ioLock)
@@ -158,13 +158,13 @@ public sealed class ProfileSession
             return read(_profile, _changeSeq);
     }
 
-    public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null)
+    public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null, ViewScope? scope = null)
     {
         if (!Monitor.TryEnter(_lock))
             return null;
         try
         {
-            return _views.GetValueOrDefault((options.IncludeDevMode, VisibilityKey(visibleUnitIds)));
+            return _views.GetValueOrDefault((options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? ""));
         }
         finally
         {
@@ -194,17 +194,18 @@ public sealed class ProfileSession
     }
 
     /// <summary>Colonies and statistics, cached per option set until the next change.</summary>
-    public StatsView GetView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null)
+    public StatsView GetView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null, ViewScope? scope = null)
     {
         bool ledgerChanged;
         StatsView view;
         lock (_lock)
         {
-            var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds));
+            var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
             if (_views.TryGetValue(cacheKey, out var cached))
                 return cached;
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
+            scope?.Apply(colonies);
             var stats = StatsCalculator.Calculate(colonies, options);
             view = new StatsView
             {
@@ -221,6 +222,15 @@ public sealed class ProfileSession
             {
                 _views.Clear();   // other option sets were built before the ledger changed; keep them consistent
                 _changeSeq++;
+            }
+            // Keep the active scope plus a small number of recently requested scopes.
+            if (_views.Count >= 4)
+            {
+                var victim = _views.Keys.FirstOrDefault(k => k.Scope.Length > 0);
+                if (victim.Scope is { Length: > 0 })
+                    _views.Remove(victim);
+                else
+                    _views.Clear();
             }
             _views[cacheKey] = view;
         }
