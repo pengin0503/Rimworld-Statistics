@@ -40,3 +40,6 @@ The absence of a dedicated `1.7/Assemblies/` directory is *not* proof that a MOD
 - [Feature expansion MOD-specific design](../superpowers/specs/2026-11-12-feature-expansion-mod-statistics.md)
 - [M5 prerequisite](https://github.com/pengin0503/Rimworld-Statistics/issues/167)
 - [M7 tracking](https://github.com/pengin0503/Rimworld-Statistics/issues/169)
+- [VTE banking/contract follow-up #175](https://github.com/pengin0503/Rimworld-Statistics/issues/175)
+- [Rimefeller actual-flow follow-up #176](https://github.com/pengin0503/Rimworld-Statistics/issues/176)
+
