@@ -941,4 +941,4 @@
   <RWS_Groups_Members>Selected: {0} (missing keys: {1})</RWS_Groups_Members>
   <RWS_Groups_RemoveMissing>Remove missing keys</RWS_Groups_RemoveMissing>
   <RWS_Groups_Excluded>excluded</RWS_Groups_Excluded>
-</LanguageData>
+  <RWS_Groups_OutOfScope>Outside selected group: {0} colonies</RWS_Groups_OutOfScope>\n</LanguageData>
