@@ -167,33 +167,38 @@ internal static class VerifyAutomatedContracts
         var session = ProfileService.TryGetSession();
         if (string.IsNullOrWhiteSpace(campaign) || session is null)
             return Skipped(id, "campaign or profile not ready");
-        var nodes = session.Read(p => p.MetricObservations.Where(o =>
-            !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
-            && o.Identity.ModCampaignId == campaign).ToArray());
-        if (nodes.Length == 0)
-            return Skipped(id, "no imported checkpoint in current campaign; save and rescan first");
-        var byId = new Dictionary<string, MetricObservation>(StringComparer.Ordinal);
-        var invalid = 0;
-        foreach (var node in nodes)
-            if (string.IsNullOrWhiteSpace(node.Key) || node.SaveTick < 0
-                || !byId.TryAdd(node.Key, node))
-                invalid++;
-        foreach (var node in nodes)
+        // Keep all reads and CheckpointSelector operations under the session lock.
+        // The profile importer may mutate observations concurrently.
+        var (count, invalid, lineage) = session.Read(p =>
         {
-            if (node.ParentKey == node.Key)
-                invalid++;
-            if (node.ParentKey is { } parent && byId.TryGetValue(parent, out var ancestor)
-                && ancestor.SaveTick > node.SaveTick)
-                invalid++;
-        }
-        var selection = CheckpointSelector.Select(nodes);
+            var nodes = p.MetricObservations.Where(o =>
+                !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
+                && o.Identity.ModCampaignId == campaign).ToArray();
+            var byId = new Dictionary<string, MetricObservation>(StringComparer.Ordinal);
+            var problems = 0;
+            foreach (var node in nodes)
+                if (string.IsNullOrWhiteSpace(node.Key) || node.SaveTick < 0
+                    || !byId.TryAdd(node.Key, node))
+                    problems++;
+            foreach (var node in nodes)
+            {
+                if (node.ParentKey == node.Key)
+                    problems++;
+                if (node.ParentKey is { } parent && byId.TryGetValue(parent, out var ancestor)
+                    && ancestor.SaveTick > node.SaveTick)
+                    problems++;
+            }
+            return (nodes.Length, problems, CheckpointSelector.Select(nodes).Lineage);
+        });
+        if (count == 0)
+            return Skipped(id, "no imported checkpoint in current campaign; save and rescan first");
         if (invalid > 0)
             return Result(id, false, "invalid:0", "invalid:" + invalid,
-                "ReadOnlyLineage", $"nodes={nodes.Length} lineage={selection.Lineage}");
-        if (selection.Lineage == CheckpointLineage.Unknown)
-            return Inconclusive(id, $"nodes={nodes.Length}; unknown lineage may mean missing imported ancestors or a conflict; do not report success");
+                "ReadOnlyLineage", $"nodes={count} lineage={lineage}");
+        if (lineage == CheckpointLineage.Unknown)
+            return Inconclusive(id, $"nodes={count}; unknown lineage may mean missing imported ancestors or a conflict; do not report success");
         return Result(id, true, "invalid:0", "invalid:0", "ReadOnlyLineage",
-            $"nodes={nodes.Length} lineage={selection.Lineage}; not a save/reload/branch test");
+            $"nodes={count} lineage={lineage}; not a save/reload/branch test");
     }
 
     private static CaseResult SdkCap()
