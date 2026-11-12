@@ -150,48 +150,73 @@ public sealed partial class SaveReader
     private static void ReadRecorder(XmlReader r, ReadState s)
     {
         string? def = null;
-        (string Payload, bool Deflate)? data = null;
+        (string? Payload, bool Deflate)? data = null;
         (string? Payload, bool Deflate)? extension = null;
-        ForEachChild(r, name =>
+        FileStream? overflow = null;
+        try
         {
-            switch (name)
+            ForEachChild(r, name =>
             {
-                case "def":
-                    def = r.ReadElementContentAsString().Trim();
-                    break;
-                case "records" or "recordsDeflate" when def is null or "Wealth_Total":
-                    data = (r.ReadElementContentAsString(), name == "recordsDeflate");
-                    break;
-                case "records" or "recordsDeflate" when HistoryMetricReader.Defs.Contains(def):
-                    extension = (ReadCappedText(r, s, HistoryMetricReader.MaxBase64Chars), name == "recordsDeflate");
-                    break;
-                default:
-                    r.Skip();
-                    break;
+                switch (name)
+                {
+                    case "def":
+                        def = r.ReadElementContentAsString().Trim();
+                        break;
+                    case "records" or "recordsDeflate" when def is null or "Wealth_Total":
+                        overflow?.Dispose();
+                        overflow = null;
+                        if (def is null)
+                        {
+                            var early = ReadRecorderText(r, s, preserveOverflow: true);
+                            overflow = early.Overflow;
+                            data = (early.Text, name == "recordsDeflate");
+                        }
+                        else
+                        {
+                            data = (r.ReadElementContentAsString(), name == "recordsDeflate");
+                        }
+                        break;
+                    case "records" or "recordsDeflate" when HistoryMetricReader.Defs.Contains(def):
+                        extension = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
+                        break;
+                    default:
+                        r.Skip();
+                        break;
+                }
+            });
+            if (def == "Wealth_Total" && data is { } d)
+            {
+                s.WealthTotalCount++;
+                if (s.Wealth is null)
+                {
+                    try
+                    {
+                        var payload = d.Payload;
+                        if (overflow is not null)
+                        {
+                            overflow.Position = 0;
+                            using var reader = new StreamReader(overflow, Encoding.UTF8, leaveOpen: true);
+                            payload = reader.ReadToEnd();
+                        }
+                        s.Wealth = RecordsCodec.Decode(payload!, d.Deflate);
+                        s.WealthTotalWithinTextLimit = overflow is null
+                            && CountNonWhitespace(payload!) <= HistoryMetricReader.MaxBase64Chars;
+                    }
+                    catch (Exception error) when (error is FormatException or InvalidDataException)
+                    {
+                        s.WealthReadError = error;
+                    }
+                }
+                return;
             }
-        });
-        if (def == "Wealth_Total" && data is { } d)
+        }
+        finally
         {
-            s.WealthTotalCount++;
-            if (s.Wealth is null)
-            {
-                try
-                {
-                    s.Wealth = RecordsCodec.Decode(d.Payload, d.Deflate);
-                    s.WealthTotalPayload = d.Payload;
-                }
-                catch (Exception error) when (error is FormatException or InvalidDataException)
-                {
-                    s.WealthReadError = error;
-                }
-            }
-            return;
+            overflow?.Dispose();
         }
         if (def is null || def == "Wealth_Total" || !HistoryMetricReader.Defs.Contains(def))
             return;
-        if (extension is null && data is { } early)   // records written before def: not seen in real saves
-            extension = (CountNonWhitespace(early.Payload) <= HistoryMetricReader.MaxBase64Chars ? early.Payload : null, early.Deflate);
-        if (extension is not { } e)
+        if ((extension ?? data) is not { } e)
             return;
         if (!s.Series.TryAdd(def, null))
         {
@@ -200,70 +225,100 @@ public sealed partial class SaveReader
             s.Series[def] = null;
             return;
         }
-        if (e.Payload is { } payload && RecordsCodec.TryDecodeLimited(payload, e.Deflate, HistoryMetricReader.MaxPoints, out var decoded))
+        if (e.Payload is { } extensionPayload && RecordsCodec.TryDecodeLimited(extensionPayload, e.Deflate, HistoryMetricReader.MaxPoints, out var decoded))
             s.Series[def] = decoded;
     }
 
     /// <summary>
-    /// The text of the current element, or null when it has more than <paramref name="maxNonWhitespace"/> non-whitespace
-    /// characters or child elements. The element is consumed either way, without keeping an oversized text in memory.
+    /// Reads non-whitespace payload text within the numeric history limit. If the definition is
+    /// still unknown, spill oversized text to disk in case it belongs to legacy Wealth_Total.
+    /// The caller owns any returned overflow stream.
     /// </summary>
-    private static string? ReadCappedText(XmlReader r, ReadState state, int maxNonWhitespace)
+    private static (string? Text, FileStream? Overflow) ReadRecorderText(
+        XmlReader r, ReadState state, bool preserveOverflow)
     {
-        if (!r.CanReadValueChunk)
-        {
-            var all = r.ReadElementContentAsString();
-            return CountNonWhitespace(all) <= maxNonWhitespace ? all : null;
-        }
         if (r.IsEmptyElement)
         {
             r.Read();
-            return "";
+            return ("", null);
         }
         var depth = r.Depth;
         r.Read();
         var text = new StringBuilder();
         var buffer = state.HistoryTextChunk ??= new char[8192];
+        FileStream? overflow = null;
+        StreamWriter? writer = null;
         var usable = true;
-        while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+        try
         {
-            if (r.EOF)
-                throw new XmlException("unexpected end of file");
-            switch (r.NodeType)
+            try
             {
-                case XmlNodeType.Text or XmlNodeType.CDATA or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace:
-                    int n;
-                    while ((n = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+                {
+                    if (r.EOF)
+                        throw new XmlException("unexpected end of file");
+                    switch (r.NodeType)
                     {
-                        if (!usable)
-                            continue;
-                        var compactLength = 0;
-                        for (var i = 0; i < n; i++)
-                            if (!char.IsWhiteSpace(buffer[i]))
-                                buffer[compactLength++] = buffer[i];
-                        if (compactLength > maxNonWhitespace - text.Length)
-                        {
+                        case XmlNodeType.Text or XmlNodeType.CDATA or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace:
+                            int n;
+                            while ((n = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                            {
+                                if (!usable)
+                                    continue;
+                                var count = 0;
+                                for (var i = 0; i < n; i++)
+                                    if (!char.IsWhiteSpace(buffer[i]))
+                                        buffer[count++] = buffer[i];
+
+                                if (writer is null && count > HistoryMetricReader.MaxBase64Chars - text.Length)
+                                {
+                                    if (!preserveOverflow)
+                                    {
+                                        usable = false;
+                                        text.Clear();
+                                        continue;
+                                    }
+
+                                    overflow = new FileStream(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()),
+                                        FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None, 4096,
+                                        FileOptions.DeleteOnClose | FileOptions.SequentialScan);
+                                    writer = new StreamWriter(overflow, new UTF8Encoding(false), leaveOpen: true);
+                                    foreach (var chunk in text.GetChunks())
+                                        writer.Write(chunk.Span);
+                                    text = new StringBuilder();
+                                }
+
+                                if (writer is null)
+                                    text.Append(buffer, 0, count);
+                                else
+                                    writer.Write(buffer, 0, count);
+                            }
+                            r.Read();
+                            break;
+                        case XmlNodeType.Element:
+                            if (preserveOverflow)
+                                throw new XmlException("unexpected child element in recorder text");
                             usable = false;
-                            text.Clear();
-                        }
-                        else
-                        {
-                            text.Append(buffer, 0, compactLength);
-                        }
+                            r.Skip();
+                            break;
+                        default:
+                            r.Read();
+                            break;
                     }
-                    r.Read();
-                    break;
-                case XmlNodeType.Element:
-                    usable = false;
-                    r.Skip();
-                    break;
-                default:
-                    r.Read();
-                    break;
+                }
+                r.Read();
             }
+            finally
+            {
+                writer?.Dispose();
+            }
+            return (usable && overflow is null ? text.ToString() : null, overflow);
         }
-        r.Read();
-        return usable ? text.ToString() : null;
+        catch
+        {
+            overflow?.Dispose();
+            throw;
+        }
     }
 
     private static long CountNonWhitespace(string text)

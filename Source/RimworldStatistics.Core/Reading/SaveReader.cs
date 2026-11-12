@@ -162,7 +162,7 @@ public sealed partial class SaveReader
         public bool StatsRecordPresent { get; set; }
         public bool RaidsWritten { get; set; }
         public bool KilledWritten { get; set; }
-        public string? WealthTotalPayload { get; set; }
+        public bool WealthTotalWithinTextLimit { get; set; }
         public int WealthTotalCount { get; set; }
         public Dictionary<string, float[]?> Series { get; } = new(StringComparer.Ordinal);
         public char[]? HistoryTextChunk { get; set; }

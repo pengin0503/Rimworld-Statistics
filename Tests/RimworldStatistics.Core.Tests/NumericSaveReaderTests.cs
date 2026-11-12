@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using RimworldStatistics.Core.Tests.Fixtures;
 
 namespace RimworldStatistics.Core.Tests;
@@ -300,6 +301,61 @@ public sealed class NumericSaveReaderTests
         Unknown(r.Metrics!, MetricKeys.PrisonersPeak);
         Unknown(r.Metrics!, MetricKeys.MoodMean);
         Real(r.Metrics!, MetricKeys.WealthTotalMean, 370d / 3);
+    }
+
+    private static byte[] RecordsBeforeDef(SaveXmlBuilder save, string def)
+    {
+        using var source = new MemoryStream(save.Build());
+        var xml = XDocument.Load(source);
+        foreach (var recorder in xml.Descendants("recorders").Elements("li")
+            .Where(r => (string?)r.Element("def") == def))
+        {
+            var definition = recorder.Element("def")!;
+            definition.Remove();
+            recorder.Add(definition);
+        }
+        return System.Text.Encoding.UTF8.GetBytes(xml.ToString(SaveOptions.DisableFormatting));
+    }
+
+    [Fact]
+    public void EarlyRecorderWhitespaceDoesNotScaleManagedAllocations()
+    {
+        var payload = Convert.ToBase64String(SaveXmlBuilder.FloatBytes(1f, 2f, 3f));
+        var spaced = payload[..4] + "\n" + new string(' ', 8 * 1024 * 1024) + payload[4..];
+        var bytes = RecordsBeforeDef(Aligned([100f, 150f, 120f]).RecorderRaw("Prisoners", "records", spaced), "Prisoners");
+        using var source = new MemoryStream(bytes);
+        var reader = new SaveReader();
+        var before = GC.GetAllocatedBytesForCurrentThread();
+        var result = reader.ReadDetailed(source, "early.rws", bytes.Length, DateTime.UnixEpoch);
+        var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
+        Real(result.Metrics!, MetricKeys.PrisonersPeak, 3);
+        Assert.True(allocated < 8 * 1024 * 1024, $"Allocated {allocated} bytes on the reader thread.");
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void EarlyOversizedRecordsPreserveOnlyLegacyWealth(bool deflate)
+    {
+        var raw = deflate
+            ? SaveXmlBuilder.Deflate(SaveXmlBuilder.FloatBytes(42f)).Concat(new byte[1572864]).ToArray()
+            : new byte[1572872]; // 393218 zero-valued points
+        var payload = Convert.ToBase64String(raw);
+        var element = deflate ? "recordsDeflate" : "records";
+        var bytes = RecordsBeforeDef(Base(60000).WealthTotalRaw(element, payload), "Wealth_Total");
+        using var source = new MemoryStream(bytes);
+        var result = new SaveReader().ReadDetailed(source, "wealth.rws", bytes.Length, DateTime.UnixEpoch);
+        Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+        Assert.Equal(deflate ? 42d : 0d, result.Observation.Values.WealthMax);
+        Unknown(result.Metrics!, MetricKeys.WealthTotalMean);
+
+        bytes = RecordsBeforeDef(Aligned([100f, 150f, 120f])
+            .Recorder("Prisoners", [1f, 2f, 3f]).RecorderRaw("Prisoners", element, payload), "Prisoners");
+        using var duplicate = new MemoryStream(bytes);
+        result = new SaveReader().ReadDetailed(duplicate, "duplicate.rws", bytes.Length, DateTime.UnixEpoch);
+        Assert.Equal(ObservationStatus.Ok, result.Observation.Status);
+        Unknown(result.Metrics!, MetricKeys.PrisonersPeak);
+        Real(result.Metrics!, MetricKeys.WealthTotalMean, 370d / 3);
     }
 
     [Fact]
