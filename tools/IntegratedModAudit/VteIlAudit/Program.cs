@@ -37,7 +37,7 @@ void Assert(bool condition, string description)
 
 RequiredFields("Bank", "depositAmount", "parentFaction", "loans", "bankExtension");
 var deposit = RequiredMethod("Bank", "DepositSilver",
-    "System.Collections.Generic.List\`1<Verse.Thing>", "System.Int32");
+    "System.Collections.Generic.List`1<Verse.Thing>", "System.Int32");
 var withdraw = RequiredMethod("Bank", "WithdrawSilver", "Verse.Pawn", "System.Int32");
 var loan = RequiredMethod("Bank", "TakeLoan",
     "Verse.Pawn", "System.Int32", "System.Int32", "System.Int32",
