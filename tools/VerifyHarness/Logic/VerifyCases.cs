@@ -46,9 +46,17 @@ public enum CaseOutcome
 
     /// <summary>The case itself threw: its result says nothing about the mod.</summary>
     Error,
+
+    /// <summary>A check inspected prerequisites only or lacks independent real-game ground truth.</summary>
+    Inconclusive,
 }
 
-public sealed record CaseResult(string CaseId, string Unit, CaseOutcome Outcome, string Expected, string Actual, int Hooks, string? Note = null);
+public sealed record CaseResult(string CaseId, string Unit, CaseOutcome Outcome, string Expected, string Actual, int Hooks, string? Note = null)
+{
+    /// <summary>Evidence provenance. GamePath means an existing real RimWorld action was invoked;
+    /// other kinds must never be interpreted as a passed live-event acceptance test.</summary>
+    public string Evidence { get; init; } = "GamePath";
+}
 
 /// <summary>Compares a case's expected changes with the two snapshots, and writes the harness's log line.</summary>
 public static class CaseCheck
@@ -85,6 +93,8 @@ public static class CaseCheck
     public static string Line(CaseResult r, string gameVersion)
     {
         var line = $"{LogPrefix} case={r.CaseId} unit={r.Unit} game={NoSpaces(gameVersion)} expected={r.Expected} actual={r.Actual} hooks={r.Hooks.ToString(CultureInfo.InvariantCulture)} result={r.Outcome.ToString().ToUpperInvariant()}";
+        if (!string.Equals(r.Evidence, "GamePath", StringComparison.Ordinal))
+            line += " evidence=" + NoSpaces(r.Evidence);
         return r.Note is null ? line : line + " note=\"" + r.Note.Replace("\"", "'").Replace("\r", " ").Replace("\n", " ") + "\"";
     }
 

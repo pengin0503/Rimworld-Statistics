@@ -201,18 +201,45 @@ public static class VerifyDebugActions
     [DebugAction(Category, "Run all automated cases", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static void RunAll()
     {
-        var results = VerifyGameCases.All.Select(VerifyGameCases.Run).ToList();
+        // Never mutate a normal save: the convenience menu uses the same isolation
+        // contract as the guided full audit.
+        if (!VerifyIsolationPolicy.HasValidMarker(GenFilePaths.SaveDataFolderPath)
+            || VerifyHarnessMod.Declined is not null)
+        {
+            Log.Error("[RWS-VERIFY] Run all declined: isolated test workspace required.");
+            return;
+        }
+        var results = VerifyGameCases.All.Select(VerifyGameCases.Run)
+            .Concat(VerifyAutomatedContracts.All.Select(VerifyAutomatedContracts.Run)).ToList();
         foreach (var r in results)
             Write(r);
         var line = $"{CaseCheck.LogPrefix} summary pass={results.Count(r => r.Outcome == CaseOutcome.Pass)} fail={results.Count(r => r.Outcome == CaseOutcome.Fail)} "
-            + $"skip={results.Count(r => r.Outcome == CaseOutcome.Skip)} error={results.Count(r => r.Outcome == CaseOutcome.Error)}";
+            + $"skip={results.Count(r => r.Outcome == CaseOutcome.Skip)} error={results.Count(r => r.Outcome == CaseOutcome.Error)} "
+            + $"inconclusive={results.Count(r => r.Outcome == CaseOutcome.Inconclusive)}";
         VerifyLogFile.Append(line);
         Log.Message(line);
     }
 
     [DebugAction(Category, "Run one case", allowedGameStates = AllowedGameStates.PlayingOnMap)]
     public static List<DebugActionNode> RunOne()
-        => VerifyGameCases.All.Select(c => new DebugActionNode(c.Id + " — " + c.Description, DebugActionType.Action, () => Write(VerifyGameCases.Run(c)))).ToList();
+        => VerifyGameCases.All.Select(c => new DebugActionNode(c.Id + " — " + c.Description, DebugActionType.Action, () =>
+        {
+            if (!VerifyIsolationPolicy.HasValidMarker(GenFilePaths.SaveDataFolderPath) || VerifyHarnessMod.Declined is not null)
+            {
+                Log.Error("[RWS-VERIFY] A disposable isolated workspace is required.");
+                return;
+            }
+            Write(VerifyGameCases.Run(c));
+        })).Concat(VerifyAutomatedContracts.All.Select(c =>
+            new DebugActionNode(c.Id + " — " + c.Description, DebugActionType.Action, () =>
+            {
+                if (!VerifyIsolationPolicy.HasValidMarker(GenFilePaths.SaveDataFolderPath) || VerifyHarnessMod.Declined is not null)
+                {
+                    Log.Error("[RWS-VERIFY] A disposable isolated workspace is required.");
+                    return;
+                }
+                Write(VerifyAutomatedContracts.Run(c));
+            }))).ToList();
 
     private static void Write(CaseResult r)
     {

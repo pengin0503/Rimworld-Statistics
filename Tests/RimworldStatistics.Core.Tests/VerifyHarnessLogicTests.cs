@@ -191,6 +191,29 @@ public sealed class VerifyHarnessLogicTests
         Assert.False(GuidedAuditReport.Compare(old, next with { CampaignId = "other" }).Comparable);
     }
 
+    [Fact]
+    public void CaseEvidence_SeparatesReadonlyContractsFromActualGameplayAcceptance()
+    {
+        var diagnostic = new CaseResult("contract.sdk_cap", "verify.contract",
+            CaseOutcome.Pass, "4096", "4096", 0, "detached")
+        { Evidence = "DetachedSdkPolicy" };
+        var inconclusive = new CaseResult("contract.hospitality", "verify.contract",
+            CaseOutcome.Inconclusive, "-", "-", 0, "real departure not exercised")
+        { Evidence = "PrerequisiteOnly" };
+        Assert.Contains("result=PASS evidence=DetachedSdkPolicy", CaseCheck.Line(diagnostic, "1.7"));
+        Assert.Contains("result=INCONCLUSIVE evidence=PrerequisiteOnly", CaseCheck.Line(inconclusive, "1.7"));
+
+        var definition = SnapshotCatalog.Definitions[0];
+        var report = GuidedAuditReport.Build(
+            new[] { new CatalogAuditRow(definition, CatalogAuditState.NotObserved) },
+            new[] { diagnostic, inconclusive }, "1.7", "test-campaign", DateTime.UnixEpoch);
+        Assert.Equal("DetachedSdkPolicy", GuidedAuditReport.ReadJson(report.ToJson())!.Cases[0].Evidence);
+        Assert.Contains("\"DetachedSdkPolicy\"", report.ToCasesCsv());
+        Assert.Contains("\"Inconclusive\"", report.ToCasesCsv());
+        Assert.Contains("evidence=DetachedSdkPolicy", report.ToMarkdown());
+        Assert.All(report.Metrics, m => Assert.False(m.Verified));
+    }
+
     [Theory]
     [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[null],"Units":[],"Cases":[]}""")]
     [InlineData("""{"GameVersion":"1.7","CampaignId":"same","Metrics":[{"Key":"dupe","StoredKey":"a","Unit":"research","Kind":"Family","State":"Observed","Action":"CROSS_CHECK_VALUES"},{"Key":"dupe","StoredKey":"a","Unit":"research","Kind":"Family","State":"Observed","Action":"CROSS_CHECK_VALUES"}],"Units":[],"Cases":[]}""")]

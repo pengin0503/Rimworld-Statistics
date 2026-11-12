@@ -6,6 +6,35 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 - 起動時に `-savedatafolder=` が無い場合、**または指定先に `.rimworld-statistics-verification` 識別ファイルが無い場合**は、取得ゲートを開きません。上書き指定が通常の保存先を指す可能性があるため、引数だけでは隔離済みと判定しません。
 - 開いた単位の値はセーブとテスト用プロファイルに記録されますが、詳細タブには出ません（公開は `AcquisitionUnits` で `Verified` にした単位だけ）。
 
+## 追加の一括自動検証（2026-11-12）
+
+開発者モードから **1. Run guided full audit** を1回実行すると、従来の実ゲーム操作18件に加え、次の**診断契約8件**を実行します。診断契約は実際のコロニーにイベントを追加しません。使い捨ての隔離ワークスペースだけで実行されます。
+
+| ID | Issue | 自動で検証する内容 | 証拠の限界 |
+|---|---|---|---|
+| `contract.buildings` | #193 | ホームマップで全Thingから列挙した自陣営建物と専用Listerを参照同一性・砲台・発電・蓄電・DBH施設def別で比較。旧/新の列挙を10対計測 | 保存時間10回の比較ではない |
+| `contract.view_cache` | #192 | 全体ビューと異なる5グループビューを20周要求し参照同一性を確認 | UIのスクロール位置や描画は未確認 |
+| `contract.lineage` | #72 | 現在キャンペーンのチェックポイントの重複ID、自己参照、親子tick逆転、系譜状態を確認 | 親が未取り込みならINCONCLUSIVE。分岐セーブは生成しない |
+| `contract.sdk_cap` | #196 | 本体のSDK Policyを**非接続のメモリ上**で4096件まで呼び、再送の除外と上限後のfail-closedを確認 | 実MODの頻度・保存ロードや継続計数は未確認 |
+| `contract.pollution` | #63 | Biotechの汚染総量と全セルカウントの一致 | TPS比較ではない。DLCが無ければSKIP |
+| `contract.hospitality` | #165 | Hospitality有無と訪問・購入ゲート状態を調査 | 客の正常な退出/取引を実行せずINCONCLUSIVE |
+| `contract.rimefeller` | #167 | 未実装の確定イベント経路であることを明示 | SKIP。原油・燃料の成功イベントは未検証 |
+| `contract.vehicle` | #176 | Vehicle Framework 1.7対応ソース不足を明示 | SKIP。1.6専用ファイルでは実装できない |
+
+**実行手順を最短にするには**、隔離プロファイルでMOD/セーブをロード → **1. Run guided full audit** → テストコピーを正常に1回保存 → **2. Read-only rescan after save** の順に操作します。Rescanは8件の診断契約を再評価します。**5. Run extra integration contracts (read-only)** ならゲーム内イベントの再実行なしに診断だけをやり直せます。**3. Retry** は失敗・SKIP・INCONCLUSIVEだけを再実行します。
+
+追加出力の `RimworldStatistics-verify-cases.csv` は、ケース単位でPASS/FAIL/SKIP/ERROR/INCONCLUSIVE、`Evidence`、期待値、実測値、Hook数、理由を保存します。従来の `RimworldStatistics-verify-report.json` にも `Evidence` が含まれます。
+
+- `GamePath`: ゲーム本来の対象メソッドを実行した検証。ゲーム内時間が必要なケースはSKIPになる。
+- `ReadOnlyGameParity` / `ReadOnlyCacheContract` / `ReadOnlyLineage`: 実データでの不変条件検査。イベントの成功は証明しない。
+- `DetachedSdkPolicy`: 独立したメモリ上でのSDK方針検査。実際の外部MODイベントではない。
+- `PrerequisiteOnly`: 対象MODがあるか等を調べたのみ。PASSにはしない。
+- `ContractError`: 診断自体が例外で失敗。ゲーム側の統計が不正と断定しない。
+
+**実機による追加確認が残るもの:** #192の画面スクロール、#198の10文字編集→画面を閉じる→再起動による保存回数/永続化、#197の対象MOD版切替、#165の実際の宿泊客売買・退出、#167の正当な生産/消費の確定点の特定、#176の1.7版取得、#63の同一条件での5対TPS窓と10対成功保存、#64のMODセット切替と保存分岐、#72の真の分岐・巻戻しなど。すべて「自動検証済み」にはできません。
+
+隔離マーカーが無い場合、**Run all automated cases / Run one case** からもゲーム内操作を拒否します。本体リリース・Steam WorkshopにVerifyHarnessを含めない方針は変更しません。個別ケースのPASSをもって未検証統計をVerifiedに昇格させません。
+
 ## 最短の検証手順（Windows）
 
 1. [GitHub Actions「Numeric statistics build, tests and development packages」](https://github.com/pengin0503/Rimworld-Statistics/actions/workflows/numeric-verification.yml) の、**同じコミットの成功した実行**から Artifacts を取得する。ZIP 内の `RimworldStatistics-unverified.zip` と `RimworldStatisticsVerifyHarness.zip` をそれぞれ展開し、両MODのフォルダを RimWorld の `Mods` に置く。実際のリリース版ではなく**同じコミットの本体とハーネス**を使う。
