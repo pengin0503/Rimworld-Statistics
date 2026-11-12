@@ -80,6 +80,14 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v4
         with:
+          repository: Dubwise56/Dubs-Bad-Hygiene
+          ref: f949f17b0c8f71e3621ff7c299b5e49e534e27a6
+          path: .devinputs/integrated/dbh-3258
+          sparse-checkout: 1.7/Assemblies/BadHygiene.dll
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
           repository: Zaljerem/Hospitality
           ref: d465bdc07b88d77eb3d158c215af388dcf771863
           path: .devinputs/integrated/hospitality
@@ -138,6 +146,7 @@ jobs:
           python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality
           python3 tools/IntegratedModAudit/check_dbh_contract.py .devinputs/integrated/dbh
           dotnet run -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll
+          dotnet run --no-build -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh-3258/1.7/Assemblies/BadHygiene.dll
       - name: Assert one-MOD packaging, old-addon coexistence and unchanged metric IDs
         run: python3 tools/IntegratedModAudit/check_embedded_integrations.py
       - name: Compile read-only local save-structure verification tool

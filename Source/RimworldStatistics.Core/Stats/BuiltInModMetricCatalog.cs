@@ -13,7 +13,20 @@ public static class BuiltInModMetricCatalog
         Outposts(OutpostSnapshot.ByType, "RWS_Metric_OutpostByType", "RWS_MetricDesc_OutpostByType", OutpostSnapshot.Unit, breakdown: true),
         Outposts(OutpostProduction.Deliveries, "RWS_Metric_OutpostDeliveries", "RWS_MetricDesc_OutpostDeliveries", OutpostProduction.Unit),
         Outposts(OutpostProduction.ByDef, "RWS_Metric_OutpostProducts", "RWS_MetricDesc_OutpostProducts", OutpostProduction.Unit, breakdown: true),
+        Dbh(DbhStatistics.FixturesByDef, "RWS_Metric_DbhFixtures", "RWS_MetricDesc_DbhFixtures", live: false),
+        Dbh(DbhStatistics.ActivitiesByJob, "RWS_Metric_DbhActivities", "RWS_MetricDesc_DbhActivities", live: true),
     ];
+
+    private static MetricDefinition Dbh(string key, string label, string description, bool live) => new()
+    {
+        Key = key, StoredKey = key, LedgerIds = "M4", Category = live ? MetricCategory.Medicine : MetricCategory.Facilities, Unit = MetricUnit.Count,
+        Overall = OverallAggregation.Sum, HasBreakdown = true,
+        Source = live ? MetricObservationSource.Checkpoint : MetricObservationSource.SaveSnapshot,
+        Provenance = live ? MetricProvenance.LiveAggregate : MetricProvenance.SaveSnapshot,
+        Acquisition = live ? DbhStatistics.ActivitiesUnit : DbhStatistics.FixturesUnit,
+        OwnerPackageId = DbhStatistics.PackageId,
+        LabelKey = label, DescriptionKey = description,
+    };
 
     private static MetricDefinition Vpe(string key, string label, string description, OverallAggregation overall, bool live = false) => new()
     {

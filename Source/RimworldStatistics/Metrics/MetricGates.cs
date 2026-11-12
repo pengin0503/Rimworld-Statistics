@@ -106,6 +106,10 @@ public static class MetricGates
         if (unitId == OutpostSnapshot.Unit)
             return DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
                 OutpostSnapshot.IsOutpostType(def.worldObjectClass));
+        if (unitId is DbhStatistics.FixturesUnit or DbhStatistics.ActivitiesUnit)
+            return ModsConfig.IsActive(DbhStatistics.PackageId)
+                && !ModsConfig.IsActive("pengin0503.rws.dubsbadhygieneaddon")
+                && (unitId == DbhStatistics.FixturesUnit || DbhActivityMetricPatch.Available);
         return true;
     }
 
