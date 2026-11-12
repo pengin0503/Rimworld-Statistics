@@ -173,7 +173,7 @@ public sealed class ProfileStore
     }
 
     /// <summary>Null when the text is not a JSON object with a usable integer schemaVersion (missing is schema 1, as v1 wrote it).</summary>
-    private static int? SchemaVersionOf(string json)
+    internal static int? SchemaVersionOf(string json)
     {
         try
         {

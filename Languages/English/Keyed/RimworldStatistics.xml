@@ -15,7 +15,7 @@
   <RWS_Tab_Overview>Overview</RWS_Tab_Overview>
   <RWS_Tab_Endings>Endings</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colonies</RWS_Tab_Colonies>
-  <RWS_Tab_Import>Import</RWS_Tab_Import>
+  <RWS_Tab_Import>Data management</RWS_Tab_Import>
   <RWS_Stat_Days>In-game days</RWS_Stat_Days>
   <RWS_Stat_Endings>Endings reached</RWS_Stat_Endings>
   <RWS_Stat_Departed>Colonists departed</RWS_Stat_Departed>
@@ -911,4 +911,26 @@
   <RWS_MetricDesc_FishingActions>Player fishing jobs on home maps that placed at least one catch. A bonus catch from the same job adds items only.</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>Placed fishing catches by item</RWS_Metric_FishingCatchByDef>
   <RWS_MetricDesc_FishingCatchByDef>Items actually placed by player fishing jobs on home maps, including rare catches and supported Vanilla Fishing Expanded bonuses. Only recorded periods are covered.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>Back up now</RWS_Backup_Create>
+  <RWS_Backup_Refresh>Refresh backups</RWS_Backup_Refresh>
+  <RWS_Backup_OpenFolder>Open folder</RWS_Backup_OpenFolder>
+  <RWS_Backup_CopyPath>Copy path</RWS_Backup_CopyPath>
+  <RWS_Backup_Select>Select backup</RWS_Backup_Select>
+  <RWS_Backup_Restore>Restore…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>Delete…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>Restore the backup from {0} (MOD {1}, {2} colonies, {3} observations)? The current record will be backed up first.</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>Delete this backup? {0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>Before restore</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>Wait for the current import to finish, or cancel it.</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>Working on backups…</RWS_Backup_Working>
+  <RWS_Backup_Error>Backup operation failed: {0}</RWS_Backup_Error>
+  <RWS_Backup_Done>Operation completed. Backup folder: {0}</RWS_Backup_Done>
+  <RWS_Backup_None>No backups found.</RWS_Backup_None>
+  <RWS_Backup_Label>Label / file</RWS_Backup_Label>
+  <RWS_Backup_Size>Size</RWS_Backup_Size>
+  <RWS_Backup_Verification>Verification</RWS_Backup_Verification>
+  <RWS_Backup_Valid>Verified</RWS_Backup_Valid>
+  <RWS_Backup_NewerSchema>Newer profile schema</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>Unknown backup format</RWS_Backup_UnknownFormat>
+  <RWS_Backup_Invalid>Verification failed</RWS_Backup_Invalid>
 </LanguageData>

@@ -29,6 +29,7 @@ public sealed class Dialog_RimworldStatistics : Window
     private Task<StatsView>? viewTask;
     private bool viewIncludesDevMode;
     private StatsView? lastView;
+    private ProfileSession? viewSession;
 
     public Dialog_RimworldStatistics()
     {
@@ -77,6 +78,11 @@ public sealed class Dialog_RimworldStatistics : Window
             TabDrawer.DrawTabs(body, tabs);
 
             var content = body.ContractedBy(12f);
+            if (ProfileService.DataOperationRunning)
+            {
+                Widgets.Label(content, "RWS_Backup_Working".Translate());
+                return;
+            }
             var session = ProfileService.TryGetSession();
             if (session == null)
             {
@@ -85,7 +91,7 @@ public sealed class Dialog_RimworldStatistics : Window
             }
             if (current == Tab.Import)
             {
-                ImportTab.Draw(content, session);
+                DataManagementTab.Draw(content, session);
                 return;
             }
 
@@ -126,8 +132,9 @@ public sealed class Dialog_RimworldStatistics : Window
         // Show all implemented definitions, including unverified and unknown ones.
         // Visibility is presentation-only; MetricGates still controls acquisition.
         var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
-        if (viewIncludesDevMode != options.IncludeDevMode)
+        if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode)
         {
+            viewSession = session;
             lastView = null;
             viewTask = null;
             viewIncludesDevMode = options.IncludeDevMode;
