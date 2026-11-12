@@ -951,4 +951,5 @@
   <RWS_Fav_Remove>お気に入りを解除</RWS_Fav_Remove>
   <RWS_Fav_Unknown>保存されている統計項目は現在利用できません。</RWS_Fav_Unknown>
   <RWS_Fav_NoOverall>この統計項目にはコロニー横断の集計値がありません。</RWS_Fav_NoOverall>
+  <RWS_Fav_AddBasic>基本統計を追加</RWS_Fav_AddBasic>
 </LanguageData>
