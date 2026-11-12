@@ -61,7 +61,13 @@ The call sequences below come from reading .NET metadata and IL in the checked-i
 | VSE | `ExpertiseTracker.AddExpertise` | Appends an expertise record. Source distinguishes the ordinary `DoExpertisePanel` select button from `DebugActionsSkills` |
 | VanillaBooksExpanded | `JobDriver_Reading_ReadBook_Patch.Postfix` | Adds a finish action for room thought/history. `Items_Newspaper.xml` provides a standard recipe for production |
 | Rimefeller | `CompRefinery.Produced(int)` | Updates `producedUnits` and calls bill completion. Actual transfer and producer thread still need proof |
-| Rimatomics | `Building_PlutoniumProc.TakeOutFuel()` | Constructs outputs, calls placement for by-products and resets. Distinguish actual successful output and removal from reset alone |
+| GeneticRim | `CompTargetEffect_Extract.DoEffectOn(Pawn,Thing)` | One item placement precedes charge use and pawn effects. Capture the callback amount to exclude attempts |
+| Rimatomics | `JobDriver_UnloadPlutonium.<MakeNewToils>b__6_1`, `Building_PlutoniumProc.TakeOutFuel()` | Two by-product placement calls occur inside the method. The unload job subsequently places returned fuel itself |
+| PipeSystem / Chemfuel | `CompDeepExtractor.TryProducePortion()` | One storage call exposes accepted quantity through an out parameter; the ground route uses `TryPlaceThing`. The pumpjack Def links `VCHE_Deepchem` to `VCHE_DeepchemNet` |
+| VNPE / PipeSystem | `Building_NutrientGrinder.TryProducePaste()` | Selected VNPE IL calls the one-float overload. Selected PipeSystem source forwards that overload through `out float stored` and default storage behavior |
+| GiddyUpCore | `JobDriver_Mount+<>c__DisplayClass8_0.<TalkToAnimal>b__2`, `MountUtility.GoMount` | After the job delegate's checks, it calls Instant. That branch writes actual mount state. Other branches schedule jobs |
+| VanillaFurnitureExpandedFactory | `Building_Autofarmer.ProcessRow(int)` | Directly merges/appends harvest buffer items or places on the ground, then spawns and marks each sown plant. Offloading is a separate path |
+| VanillaQuestsExpandedAncients | `Building_ArchogenInjector.FinishProcess`, `HandleRejectionOutcome`, `HandleMutationOutcome` | Finishes through three branches. Rejection applies coma, mutation destroys the original then spawns a mutant, and success can defer actual gene changes to a choice |
 
 ## Read-only input checks
 
