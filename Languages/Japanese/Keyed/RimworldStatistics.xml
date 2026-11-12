@@ -943,4 +943,12 @@
   <RWS_Groups_Excluded>除外済み</RWS_Groups_Excluded>
   <RWS_Groups_OutOfScope>選択グループの範囲外：{0}コロニー</RWS_Groups_OutOfScope>
   <RWS_Backup_RestorePreferences>復元時にお気に入り・コロニーグループの表示設定も戻す</RWS_Backup_RestorePreferences>
+  <RWS_Fav_Title>お気に入りの統計</RWS_Fav_Title>
+  <RWS_Fav_Empty>概要カードまたは詳細統計の星を押して登録できます。</RWS_Fav_Empty>
+  <RWS_Fav_StarTip>お気に入りに登録・解除</RWS_Fav_StarTip>
+  <RWS_Fav_MoveUp>表示順を前に移動</RWS_Fav_MoveUp>
+  <RWS_Fav_MoveDown>表示順を後ろに移動</RWS_Fav_MoveDown>
+  <RWS_Fav_Remove>お気に入りを解除</RWS_Fav_Remove>
+  <RWS_Fav_Unknown>保存されている統計項目は現在利用できません。</RWS_Fav_Unknown>
+  <RWS_Fav_NoOverall>この統計項目にはコロニー横断の集計値がありません。</RWS_Fav_NoOverall>
 </LanguageData>
