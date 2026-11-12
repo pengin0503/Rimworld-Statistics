@@ -93,6 +93,8 @@ public static class CaseCheck
     public static string Line(CaseResult r, string gameVersion)
     {
         var line = $"{LogPrefix} case={r.CaseId} unit={r.Unit} game={NoSpaces(gameVersion)} expected={r.Expected} actual={r.Actual} hooks={r.Hooks.ToString(CultureInfo.InvariantCulture)} result={r.Outcome.ToString().ToUpperInvariant()}";
+        if (!string.Equals(r.Evidence, "GamePath", StringComparison.Ordinal))
+            line += " evidence=" + NoSpaces(r.Evidence);
         return r.Note is null ? line : line + " note=\"" + r.Note.Replace("\"", "'").Replace("\r", " ").Replace("\n", " ") + "\"";
     }
 
