@@ -3,6 +3,12 @@
   <RWS_SettingsCategory>通算統計（Rimworld Statistics）</RWS_SettingsCategory>
   <RWS_Setting_IncludeDevMode>開発モード中に記録したエンディングを表示し、合計に含める</RWS_Setting_IncludeDevMode>
   <RWS_Setting_AutoImport>タイトル画面で自動的にセーブを取り込む</RWS_Setting_AutoImport>
+  <RWS_Setting_WindowSize>統計ウィンドウの大きさ</RWS_Setting_WindowSize>
+  <RWS_Setting_WindowSizeStandard>標準 (1000 × 720)</RWS_Setting_WindowSizeStandard>
+  <RWS_Setting_WindowSizeLarge>大 (1400 × 900)</RWS_Setting_WindowSizeLarge>
+  <RWS_Setting_WindowSizeExtraLarge>特大 (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>画面に合わせる (90%)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>次に統計ウィンドウを開くときに適用されます。文字サイズは変わらず、画面内に収まる大きさになります。</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>通算統計</RWS_MenuButton>
   <RWS_WindowTitle>通算統計</RWS_WindowTitle>
   <RWS_WindowError>統計ウィンドウの表示中にエラーが起きました。詳しくはログを見てください。</RWS_WindowError>
