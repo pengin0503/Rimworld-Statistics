@@ -1,6 +1,6 @@
 # Planned MOD-specific statistics — master index (2026-11-12)
 
-**Scope:** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 26 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.
+**Scope:** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 35 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets + 9 popularity-selected follow-ups). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.
 
 **Authoritative for these proposals:** this folder. For pre-existing host integration status use the current source and README; older documents such as [generic-first audit](../research/2026-11-11-content-mod-coverage-and-priority-audit.md), [optional MOD audit](../research/2026-11-12-m7-optional-mod-audit.md), and [next MOD metric backlog](../research/2026-11-11-next-modded-statistics-backlog.md) contain dated evidence, **not a claim of present implementation state**.
 
@@ -14,6 +14,10 @@
 6. **Cross-MOD key identity:** use package identity plus Def identity/version where applicable; avoid treating a bare DefName as globally unique across unrelated MOD sets.
 7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture Experimental/opt-in.
 8. **No code changes in this documentation task.** Existing v1.6.0 release and Steam Workshop are untouched.
+
+## Popularity-aware execution priority
+
+The **authoritative execution ordering** (including previously registered candidates) is in [the 2026-11-12 subscriber/feasibility ranking](2026-11-12-popularity-priority.md). The legacy `Priority` cells in sections A–C are the **initial technical-interest ratings**, not a claim that those candidates outrank higher-subscriber options. For new engineering batches, first rank by active Workshop subscribers (a dated, imperfect proxy for reach), then by existence of genuinely distinct events, evidence quality, integration cost and 1.7 compatibility. Do **not** create a useless or duplicate metric merely because the base MOD is popular.
 
 ## A. Previously investigated in this conversation (11 newly proposed targets)
 
@@ -56,8 +60,25 @@
 | Vanilla Books Expanded | Medium | Finished reading of MOD-specific books, authoring completion if unique | `JobDriver_Reading_ReadBook_Patch`; check whether vanilla already records it |
 | Project RimFactory Revived | Conditional | Autonomous machine production by product and machine | Repo has unusual 1.7 `loadFolders.xml` selecting root only; **compatibility and active binary not yet established** |
 
+## D. Popularity-led additions (9 more, 2026-11-12)
+
+These are also **planned**; the source/method status is not a promise that all proposals are directly implementable. Workshop approximate subscribers are a **crawled snapshot**, not an exact 2026-11-12 real-time count. Exact reference URLs, lower-confidence cases and exclusion rationale are documented in [the popularity audit](2026-11-12-popularity-priority.md).
+
+| Target MOD | Approx subscribers | Execution lane | Proposed distinct metrics | Source and gating |
+|---|---:|---|---|---|
+| Vanilla Furniture Expanded - Security | ~890k | Popularity P0 | Successfully rearmed traps; confirmed off-map artillery bombardments by type | 1.7 loads 1.6; `CompRearmable.Rearm` and `JobDriver_RearmTrap` confirmed; exclude spawn setup and job attempts; artillery outcome proof required |
+| Vanilla Cooking Expanded | ~739k | Popularity P0, conditional | Independently finished soup/cheese aging batches by product and count | 1.7 loads 1.6; standard recipe products already generic; locate the actually loaded ferment/aged-food success callback (may be VEF) before a metric |
+| Vanilla Social Interactions Expanded | ~583k | Popularity P0 | Aspirations fully completed by inspiration; successful unique teaching interactions | 1.7-specific source: `Aspiration.OnComplete`, `InteractionWorker_Teaching.Interacted`; distinct from Vanilla Aspirations Expanded and existing social family |
+| Vanilla Factions Expanded - Empire | ~409k | Popularity P1 | Newly awarded special honors/court milestones; dedicated imperial ceremonies successfully completed | 1.7-specific source: `GameComponent_Honors.AddHonor`; verify no inherited/read-from-save duplication and that quest outcomes are not already counted |
+| Vanilla Chemfuel Expanded | ~386k | Popularity P1, conditional | Actual drilling/refining quantities and material type breakdowns | 1.7 loads 1.6; local `CompRefinery` only wraps VEF `CompResourceProcessor` animation: inspect framework actual committed flows, do not derive quantities from capacity |
+| Vanilla Factions Expanded - Medieval 2 | ~321k | Popularity P1 | Successfully harvested apiary honey quantities and beekeeper achievements | 1.7 loads 1.6; `Building_Apiary.TakeOutHoney` returns produced stack, but only count if downstream delivery truly succeeds |
+| Vanilla Achievements Expanded | ~262k | Popularity P1 | Earned achievements by Def, earned achievement points across independent colonies | 1.7 code: `AchievementCard.UnlockCard` and `AchievementPointManager.AddPoints`; debug unlock, save reload and source's own existing achievement records require careful deduplication |
+| Giddy-Up 2 - Continued | ~125–132k | Popularity P2 | Successfully mounted riding sessions by mount-kind, dismount completions if meaningful | 1.7 code: `MountUtility.GoMount`; distinguish successful player mounts vs premounted arrivals and AI retries |
+| Simple Warrants | ~127–128k | Popularity P2, conditional | Actually fulfilled warrants by target category, payouts earned/paid | Steam announces 1.7 update Oct 27 2026; verify actual loaded DLL and confirmed `Fulfill Warrant` transaction; vanilla quest count must not be duplicated |
+
 ## Follow-on research
 
 - [Detailed source/method evidence and cautions](2026-11-12-source-research.md)
 - [Implementation and deduplication checklist](implementation-checklist.md)
-- This index is the planning register for all **26** targets; additions must be appended with an evidence level and a clear success-path audit requirement.
+- [Popularity-first execution priority, source references and explicit exclusions](2026-11-12-popularity-priority.md)
+- This index is the planning register for all **35** targets; additions must be appended with an evidence level and a clear success-path audit requirement.
