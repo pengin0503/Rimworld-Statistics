@@ -21,6 +21,14 @@ public sealed class VteTradeMathTests
     public void ContractDeliveryCountsOnlyActualConsumedItems(int before, int after, int requested, int expected) =>
         Assert.Equal(expected, VteTradeMath.FulfilledItems(before, after, requested));
 
+    [Fact]
+    public void ContractSaleDoesNotRequeryOtherUnchangedStockpilesAfterTheFirstStackIsDestroyed() =>
+        Assert.Equal(5, VteTradeMath.ConsumedSelected([(5, 0), (5, 5)], 5));
+
+    [Fact]
+    public void PartialContractSaleIsClampedToRequestedUnitsAndIgnoresStockGrowth() =>
+        Assert.Equal(4, VteTradeMath.ConsumedSelected([(5, 3), (4, 2), (1, 4)], 4));
+
     [Theory]
     [InlineData(200, 10, 5, 100)]
     [InlineData(200, 10, 10, 200)]
