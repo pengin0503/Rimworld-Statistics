@@ -99,13 +99,18 @@ internal static class VerifyAutomatedContracts
             var oldBuildings = Slow();
             var newBuildings = Fast();
             members += oldBuildings.Length;
-            var same = oldBuildings.ToHashSet(ReferenceEqualityComparer.Instance)
-                .SetEquals(newBuildings);
+            // Lister duplicates must not sneak past a set comparison: production sums
+            // every entry, including duplicates.
+            var same = oldBuildings.Length == newBuildings.Length
+                && oldBuildings.ToHashSet(ReferenceEqualityComparer.Instance)
+                    .SetEquals(newBuildings);
             var oldFacts = BuildingFacts(oldBuildings);
             var newFacts = BuildingFacts(newBuildings);
+            static bool NearlyEqual(double a, double b)
+                => Math.Abs(a - b) <= 1e-6 * Math.Max(1, Math.Max(Math.Abs(a), Math.Abs(b)));
             same &= oldFacts.Turrets == newFacts.Turrets
-                && oldFacts.Power == newFacts.Power
-                && oldFacts.Battery == newFacts.Battery
+                && NearlyEqual(oldFacts.Power, newFacts.Power)
+                && NearlyEqual(oldFacts.Battery, newFacts.Battery)
                 && oldFacts.Dbh.Count == newFacts.Dbh.Count
                 && oldFacts.Dbh.All(kv => newFacts.Dbh.GetValueOrDefault(kv.Key, -1) == kv.Value);
             if (!same) mismatch++;
@@ -169,7 +174,7 @@ internal static class VerifyAutomatedContracts
             return Skipped(id, "campaign or profile not ready");
         // Keep all reads and CheckpointSelector operations under the session lock.
         // The profile importer may mutate observations concurrently.
-        var (count, invalid, lineage) = session.Read(p =>
+        var (count, invalid, missingParents, lineage) = session.Read(p =>
         {
             var nodes = p.MetricObservations.Where(o =>
                 !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
@@ -180,15 +185,18 @@ internal static class VerifyAutomatedContracts
                 if (string.IsNullOrWhiteSpace(node.Key) || node.SaveTick < 0
                     || !byId.TryAdd(node.Key, node))
                     problems++;
+            var missing = 0;
             foreach (var node in nodes)
             {
                 if (node.ParentKey == node.Key)
                     problems++;
-                if (node.ParentKey is { } parent && byId.TryGetValue(parent, out var ancestor)
-                    && ancestor.SaveTick > node.SaveTick)
-                    problems++;
+                if (node.ParentKey is { } parent)
+                {
+                    if (!byId.TryGetValue(parent, out var ancestor)) missing++;
+                    else if (ancestor.SaveTick > node.SaveTick) problems++;
+                }
             }
-            return (nodes.Length, problems, CheckpointSelector.Select(nodes).Lineage);
+            return (nodes.Length, problems, missing, CheckpointSelector.Select(nodes).Lineage);
         });
         if (count == 0)
             return Skipped(id, "no imported checkpoint in current campaign; save and rescan first");
@@ -196,7 +204,15 @@ internal static class VerifyAutomatedContracts
             return Result(id, false, "invalid:0", "invalid:" + invalid,
                 "ReadOnlyLineage", $"nodes={count} lineage={lineage}");
         if (lineage == CheckpointLineage.Unknown)
-            return Inconclusive(id, $"nodes={count}; unknown lineage may mean missing imported ancestors or a conflict; do not report success");
+        {
+            if (missingParents > 0)
+                return Inconclusive(id, $"nodes={count} unknownParents={missingParents}; load earlier saves; do not infer missing ancestry");
+            // With all parent IDs present and no structural invalidity, Unknown
+            // indicates a cycle, multiple roots or a conflicted checkpoint.
+            return Result(id, false, "lineage:known-or-missing-parents",
+                "lineage:Unknown", "ReadOnlyLineage",
+                $"nodes={count} all parent IDs present; investigate cycle, roots or conflict");
+        }
         return Result(id, true, "invalid:0", "invalid:0", "ReadOnlyLineage",
             $"nodes={count} lineage={lineage}; not a save/reload/branch test");
     }
