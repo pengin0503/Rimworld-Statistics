@@ -106,6 +106,17 @@ public sealed class MetricStatusTests
     }
 
     [Fact]
+    public void UnsupportedSelectedProviderIsNotMisreportedAsUnselected()
+    {
+        var def = Definition with { Key = "mod.test.unsupported", ProviderId = "provider", Acquisition = "mod.test.unit" };
+        var status = Assert.Single(MetricStatusClassifier.Classify(
+            View(def, ("a", null, MetricCoverage.Unknown, null)), _ => UnitRecordingState.TargetIncompatible));
+        Assert.Equal(UnitRecordingState.TargetIncompatible, status.Recording);
+        Assert.Equal(MetricVerification.Experimental, status.Verification);
+        Assert.Equal(MetricAvailability.NoMeasuredColonies, status.Availability);
+    }
+
+    [Fact]
     public void PartialAndLateColoniesAppearInMissingDetails()
     {
         var status = Only(View(Definition,
