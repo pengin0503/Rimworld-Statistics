@@ -1,6 +1,21 @@
-# Specification status index — updated 2026-11-11
+# Specification status index — updated 2026-11-12
 
 This index is the **starting point** for maintenance. Older specs are retained as historical design decisions/acceptance fixtures, not to be reapproved or blindly reimplemented. **Never read the entire old tree and start a new discovery phase**: use the active documents and follow precise source pointers.
+
+## Current baseline (2026-11-12)
+
+`main@59ad1eb0` = released **v1.6.0** plus merged #148–#153 (SaveReader **v17**, profile schema 2, checkpoint format 1). PR #102 and #103 described below were merged before v1.5.0/v1.6.0; status lines in the older sections are historical snapshots, not the current state.
+
+## Feature expansion (2026-11-12) — design and plan only, no production code changed
+
+Eight planned feature areas (statistics window layout, favorites/custom overview, colony groups and comparison, acquisition-status list, all-time TOP10 rankings, CSV export, manual profile backup/restore, other-MOD statistics). Read in this order:
+
+1. [Design: invariants, shared foundations F1–F7, per-feature specs and acceptance](specs/2026-11-12-feature-expansion-design.md)
+2. [Design appendix: other-MOD statistics (VPE, VEF Outposts, Hospitality, DBH, Vehicle Framework, SAU) with R2/source evidence](specs/2026-11-12-feature-expansion-mod-statistics.md)
+3. [Implementation plan: work packages A1–A8, M1–M7, tests and verification](plans/2026-11-12-feature-expansion-plan.md)
+4. [Handoff prompt for the implementing model](plans/2026-11-12-feature-expansion-handoff-prompt.md)
+
+The design lets implementers change names, tab layout and internal structure; the invariants (§2) and the intent of each acceptance criterion are fixed.
 
 ## Optimization review and implementation handoff (2026-11-11) — design only, no production code changed
 
