@@ -1022,4 +1022,8 @@
   <RWS_MetricDesc_OutpostDeliveries>前哨基地の配送処理に渡された生産品バッチ数。現地保管や輸送中も含み、到着を示すものではありません。</RWS_MetricDesc_OutpostDeliveries>
   <RWS_Metric_OutpostProducts>前哨基地の生産品目別数量</RWS_Metric_OutpostProducts>
   <RWS_MetricDesc_OutpostProducts>前哨基地の配送処理に渡された生産品の品目別数量。</RWS_MetricDesc_OutpostProducts>
+  <RWS_Metric_DbhFixtures>Dubs Bad Hygieneの設備数（種類別）</RWS_Metric_DbhFixtures>
+  <RWS_MetricDesc_DbhFixtures>保存成功時点で、自コロニーのマップにあるプレイヤー所有のDubs Bad Hygieneの建物数。</RWS_MetricDesc_DbhFixtures>
+  <RWS_Metric_DbhActivities>Dubs Bad Hygieneの衛生行動の完了数（ジョブ別）</RWS_Metric_DbhActivities>
+  <RWS_MetricDesc_DbhActivities>有効化後、自コロニーのマップで自勢力のポーンが完了したトイレ、シャワー、確認済みの洗浄ジョブの回数。</RWS_MetricDesc_DbhActivities>
 </LanguageData>

@@ -12,7 +12,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -69,6 +69,8 @@ internal static class SavedStateMetricReader
                 else if (unit == OutpostSnapshot.Unit)
                     foreach (var (key, value) in ReadOutposts())
                         observation.Metrics[key] = value;
+                else if (unit == DbhStatistics.FixturesUnit)
+                    observation.Metrics[DbhStatistics.FixturesByDef] = DbhStatistics.Fixtures(ReadDbhBuildings());
                 observation.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
                 observation.EvidenceByAcquisition[unit] = Metrics.MetricGates.IsExperimental(unit)
                     ? MetricEvidence.Experimental : MetricEvidence.Verified;
@@ -97,6 +99,17 @@ internal static class SavedStateMetricReader
             if (obj != null && obj.Faction == player && OutpostSnapshot.IsOutpostType(obj.GetType()))
                 unique.Add(obj);
         return OutpostSnapshot.Build(unique.Select(outpost => new OutpostState(outpost.def?.defName, OutpostContract.CountPawns(outpost))).ToArray());
+    }
+
+    private static IEnumerable<DbhFixture> ReadDbhBuildings()
+    {
+        var player = Faction.OfPlayerSilentFail
+            ?? throw new InvalidOperationException("Player faction is not initialized");
+        foreach (var map in Find.Maps)
+            if (map.IsPlayerHome)
+                foreach (var thing in map.listerThings.AllThings)
+                    if (thing is Building building && building.Faction == player)
+                        yield return new DbhFixture(building.def?.defName, building.def?.modContentPack?.PackageId, true);
     }
 
     /// <summary>Biome of the original game starting tile; relocation never changes the category.</summary>

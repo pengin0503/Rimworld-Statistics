@@ -89,5 +89,26 @@ if (!pipeMap.Fields.Any(f => f.Name == "PipeNets" && f.IsPublic && f.FieldType.F
     throw new InvalidDataException("DBH capacity/source snapshot reflection ABI changed");
 Console.WriteLine("DBH P0 water snapshot public ABI and numeric field types: PASS");
 
+// JobCondition.Succeeded is 2 in the RimWorld 1.7 reference assembly.
+var auditedMvids = new[] { new Guid("85b03536-f71c-4780-8aaa-3c790e11de9a"), new Guid("7f4b7428-565f-4495-86c7-9c01a1dac461") };
+if (!auditedMvids.Contains(assembly.MainModule.Mvid))
+    throw new InvalidDataException("Unreviewed DBH module: " + assembly.MainModule.Mvid);
+foreach (var name in new[] { "UseToilet", "takeShower", "washHands", "useWashBucket", "washAtCell" })
+{
+    var driver = RequiredType("DubsBadHygiene.JobDriver_" + name);
+    var makeToils = driver.Methods.Single(m => m.Name == "MakeNewToils");
+    var iterator = driver.NestedTypes.Single(t => t.Name.StartsWith("<MakeNewToils>d__", StringComparison.Ordinal));
+    var moveNext = iterator.Methods.Single(m => m.Name == "MoveNext");
+    var il = moveNext.Body.Instructions;
+    var end = il.Single(i => i.Operand is MethodReference call && call.Name == "AddEndCondition");
+    var condition = end.Previous.Previous.Operand as MethodDefinition;
+    if (makeToils.IsStatic || condition?.ReturnType.FullName != "Verse.AI.JobCondition" ||
+        !condition.Body.Instructions.Any(i => i.Operand is MethodReference call && call.Name == "get_CurLevel") ||
+        !condition.Body.Instructions.Any(i => i.OpCode.Code == Mono.Cecil.Cil.Code.Ldc_I4_2) ||
+        !condition.Body.Instructions.Any(i => i.OpCode.Code == Mono.Cecil.Cil.Code.Ldc_I4_4))
+        throw new InvalidDataException("DBH terminal need/success condition changed: " + name);
+    Console.WriteLine("DBH audited terminal condition: " + name);
+}
+
 Console.WriteLine("auditedMethodBodies="+count);
 return count >= 5 ? 0 : 2;

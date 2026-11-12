@@ -71,6 +71,8 @@ public static class AcquisitionUnits
         new("colony_start", AcquisitionKind.Snapshot, U),
         new(OutpostSnapshot.Unit, AcquisitionKind.Snapshot, U),
         new(OutpostProduction.Unit, AcquisitionKind.Family, U),
+        new(DbhStatistics.FixturesUnit, AcquisitionKind.Snapshot, U),
+        new(DbhStatistics.ActivitiesUnit, AcquisitionKind.Family, U),
 
         // Phase D2 (Anomaly is not implemented: no audited defs or saves, and not owned by the user)
         new("royalty", AcquisitionKind.Family, U, Royalty),
