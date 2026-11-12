@@ -1026,4 +1026,6 @@
   <RWS_MetricDesc_DbhFixtures>Player-owned Dubs Bad Hygiene buildings across home maps at a successful save.</RWS_MetricDesc_DbhFixtures>
   <RWS_Metric_DbhActivities>Completed Dubs Bad Hygiene activities by job</RWS_Metric_DbhActivities>
   <RWS_MetricDesc_DbhActivities>Completed toilet, shower and audited washing jobs of player pawns on home maps since opt-in.</RWS_MetricDesc_DbhActivities>
+  <RWS_SAU_CompletedSwaps>Completed Smart Apparel Upgrade changes</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwapsDesc>Automatic Smart Apparel Upgrade orders that finished equipping the chosen item since opt-in.</RWS_SAU_CompletedSwapsDesc>
 </LanguageData>

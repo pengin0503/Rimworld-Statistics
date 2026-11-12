@@ -44,6 +44,8 @@ internal static class IntegratedModStartup
         Safe("pengin0503.smartapparelupgrade", "pengin0503.rws.smartappareladdon", () =>
         {
             var audited = SauOrderHook.TryResolve(out var binding);
+            if (audited)
+                SauCompletedSwaps.TryRegister(binding);
             var status = SauAddonStartup.Activate(audited, SauHostClient.HasCompatibleHost,
                 () =>
                 {

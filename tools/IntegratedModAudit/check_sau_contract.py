@@ -27,6 +27,9 @@ checks = [
     "public string PawnId,TargetId,RemovedId;",
     "public int LastIssued;",
     "stamps.Add(new SwapStamp",
+    "JobMaker.MakeJob(JobDefOf.Wear,choice.Better)",
+    "pawn.jobs.StartJob(job,JobCondition.InterruptForced",
+    'Scribe_Collections.Look(ref stamps,"swapHistory",LookMode.Deep)',
     "if(pawn.CurJob==job)",
     "job.playerForced=false;",
     "LastIssued=now",
@@ -38,8 +41,9 @@ if missing:
 # diagnostic suggestions or attempts that were rejected before pawn.CurJob==job.
 method_start = code.index("void OrderIdleUpgrades()")
 method = code[method_start:]
+job_started = method.index("pawn.jobs.StartJob(job,JobCondition.InterruptForced")
 job_confirmed = method.index("if(pawn.CurJob==job)")
 stamp_added = method.index("stamps.Add(new SwapStamp")
-if stamp_added <= job_confirmed or "LastIssued=now" not in method[stamp_added:stamp_added + 260]:
+if not job_started < job_confirmed < stamp_added or "LastIssued=now" not in method[stamp_added:stamp_added + 260]:
     raise SystemExit("SAU event contract no longer stamps AFTER job issuance succeeds")
 print("SAU 1.0.1 source contract: PASS (static only)")
