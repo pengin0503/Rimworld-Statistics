@@ -1061,4 +1061,6 @@
   <RWS_VfeTribals_CornerstonesDesc>New cornerstone definitions added with available points during active play. Existing unlocks and load restores are excluded; grouped by cornerstone.</RWS_VfeTribals_CornerstonesDesc>
   <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded aspirations completed</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
 </LanguageData>
