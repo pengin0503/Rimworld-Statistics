@@ -192,7 +192,7 @@ internal static class VqeDroneFactoryStatistics
                     ReferenceEquals(p.kindDef, __state.Kind)).ToArray();
             if (!VqeDroneRules.AssemblerSuccess(
                     __state.CountBefore, __state.Target,
-                    produced.Length == 1, correctKind: true, player: true))
+                    produced.Length == 1, matchesKind: true, playerOwned: true))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(
                 __state.Kind.modContentPack?.PackageId, __state.Kind.defName);
