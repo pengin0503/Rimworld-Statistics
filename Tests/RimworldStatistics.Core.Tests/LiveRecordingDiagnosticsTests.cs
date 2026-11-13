@@ -71,7 +71,7 @@ namespace RimworldStatistics.Metrics
 
     internal static class FamilyStartup
     {
-        internal static void Apply(LiveMetricAccumulator accumulator, int tick) { }
+        internal static void Apply(LiveMetricAccumulator accumulator, int tick, IReadOnlySet<string>? onlyFamilies = null) { }
         internal static void BeforeSave(LiveMetricAccumulator accumulator, int tick) { }
     }
 }
