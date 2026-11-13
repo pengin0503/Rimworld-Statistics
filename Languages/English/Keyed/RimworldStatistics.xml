@@ -1049,4 +1049,6 @@
   <RWS_VTE_ContractReceivedDesc>Units of items generated from successfully paid player-posted VTE purchase contracts, distinct from NPC buy-order deliveries and ordinary trade.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>VPE confirmed psycasts</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>Successful Vanilla Psycasts Expanded ability casts by player free colonists, counted after VPE's ability-use consumption. Includes a count by ability type. Queued orders, cancelled casts and NPC casts are excluded.</RWS_MetricDesc_VpeCasts>
+  <RWS_VfeSecurity_TrapsRearmed>VFE Security traps successfully rearmed</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmedDesc>Number of disarmed player-owned traps successfully rearmed during active play. Counts only a real disarmed-to-armed transition, not job orders, spawn initialization, debug operations or the upstream pawn record.</RWS_VfeSecurity_TrapsRearmedDesc>
 </LanguageData>
