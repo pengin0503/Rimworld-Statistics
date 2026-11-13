@@ -8,6 +8,10 @@
 
 Start with the [implementation handoff](2026-11-13-implementation-handoff.md). The [35-candidate disposition](2026-11-13-candidate-disposition.md) records the first implementation slices and the evidence each remaining proposal needs. Use the [pinned references](2026-11-13-reference-lock.md) to reproduce the source and assembly checks. These three documents carry the current decisions when an earlier research note describes a preliminary status.
 
+## New research candidates, not part of the approved 35
+
+On 2026-11-13, the existing 35-MOD implementation register was kept intact and **8 separately proposed MOD candidates** were preserved in the [third-wave candidate register](2026-11-13-thirdwave-candidate-register.md). A further **9 candidates outside the Vanilla Expanded family**, plus explicit 1.7 compatibility exclusions, were researched in the [non-Vanilla Expanded discovery audit](2026-11-13-non-ve-discovery.md). These files are **investigation-only**: the 35 planned rows remain 35, neither group is counted as implemented, and neither group automatically becomes a mandatory engineering task. Candidate status is subject to active 1.7 binary / successful commit point proof and no generic-statistic duplication.
+
 ## Second-wave scope is also committed
 
 The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-implementation-scope.md) originally made the previously deferred secondary statistics **required implementation targets** (subsequently amended only for evidence-gated Tasks 27–29), not excluded ideas. They cover Combat Extended ammunition/suppression; Gastronomy paid orders; Prison Expanded departures, riots and completed sentences; Rimefeller measured production/consumption; Pirates contracts/payments; Skills expertise-level records; Security artillery; Genetics hybrid births/transformations; and Drone Factory hatching. They augment, and never replace, the first 25 slices or the 35-MOD master register. Outcomes awaiting a proven 1.7 commit site remain explicitly tracked until implemented or evidenced as covered by an existing generic metric.
