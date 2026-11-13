@@ -24,7 +24,7 @@ internal static class VqeDroneFactoryStatistics
     private static FieldInfo? droneOwnershipField;
     [ThreadStatic] private static HatchScope? hatching;
 
-    private sealed record AssemblerBefore(int CountBefore, PawnKindDef Kind, Map Map,
+    private sealed record AssemblerBefore(int CountBefore, int Target, PawnKindDef Kind, Map Map,
         HashSet<Pawn> Existing);
     private sealed class HatchScope
     {
@@ -168,7 +168,7 @@ internal static class VqeDroneFactoryStatistics
                 assemblerKind?.GetValue(__instance) is not PawnKindDef kind ||
                 before <= target)
                 return;
-            __state = new AssemblerBefore(before, kind, map,
+            __state = new AssemblerBefore(before, target, kind, map,
                 new HashSet<Pawn>(map.mapPawns.AllPawnsSpawned, ReferenceEqualityComparer.Instance));
         }
         catch (Exception e) { LiveMetrics.Fail(AssemblyUnit, e); }
@@ -191,7 +191,7 @@ internal static class VqeDroneFactoryStatistics
                     p.Faction == Faction.OfPlayer &&
                     ReferenceEquals(p.kindDef, __state.Kind)).ToArray();
             if (!VqeDroneRules.AssemblerSuccess(
-                    __state.CountBefore, assemblerTimer?.GetValue(__instance) is int target ? target : -1,
+                    __state.CountBefore, __state.Target,
                     produced.Length == 1, correctKind: true, player: true))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(
@@ -233,9 +233,8 @@ internal static class VqeDroneFactoryStatistics
             // The upstream hatcher tags the child as a player drone *after*
             // the successful vanilla spawn call, before Hatch returns.
             var markedAsDrone = child.AllComps.Any(c =>
-                ReferenceEquals(c.GetType().GetField("isPlayerDrone",
-                    BindingFlags.Instance | BindingFlags.Public), droneOwnershipField)
-                    && droneOwnershipField?.GetValue(c) is true);
+                droneOwnershipField?.DeclaringType?.IsAssignableFrom(c.GetType()) == true
+                    && droneOwnershipField.GetValue(c) is true);
             if (!VqeDroneRules.HatchSuccess(__state.SpawnSucceeded, born, player && markedAsDrone))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(
