@@ -1121,4 +1121,12 @@
   <RWS_CE_RoundsUsedDesc>入植者の弾倉から減少した弾薬、または直接給弾で実際に消滅した弾薬の累計（AmmoDef別）。リロード時の弾薬移動、空撃ち、砲塔、デバッグ補充は含みません。</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended 自勢力が新規制圧された回数</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>自勢力のポーンが非制圧状態からCombat Extendedの制圧状態に新たに移った回数。制圧継続中の追加被弾や開発用の制圧テストを除外します。敵に与えた制圧数ではありません。</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>VFE Pirates 傭兵契約の成立件数</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>Vanilla Expanded Frameworkの雇用画面からPirates由来の勢力と実際に契約し、雇用ポーンが登録された回数。画面表示、取り消した契約、決済失敗は含みません。</RWS_VfePirates_HireContractsDesc>
+  <RWS_VfePirates_HireSilver>VFE Pirates 傭兵雇用で実際に支払った銀貨数</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilverDesc>Pirates傭兵契約成立時、プレイヤーのマップにある銀貨から実際に減った数量。見積額ではなく実支払額を記録し、無料契約は0となります。</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>VGE 培養槽で生まれたハイブリッド数</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>自勢力の遺伝子培養槽で成長処理が成功し、新しい自勢力ハイブリッドが実際にスポーンした数（PawnKindDef別）。失敗、進捗のみ、ロード復元は含みません。</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_Conversions>VGE 生体機械ハイブリッドへの変換完了数</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_ConversionsDesc>自勢力のメカハイブリッド化装置で元の対象が消滅し、変換後の自勢力ポーンが実際に生み出された回数（結果のPawnKindDef別）。起動のみ、待機時間、生成失敗は含みません。</RWS_VgeHybrid_ConversionsDesc>
 </LanguageData>
