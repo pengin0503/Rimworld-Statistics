@@ -6,6 +6,7 @@ using RimworldStatistics.VfeClassical;
 using RimworldStatistics.VfeEmpire;
 using RimworldStatistics.Vsie;
 using RimworldStatistics.GiddyUp;
+using RimworldStatistics.CombatExtendedReload;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -28,6 +29,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeEmpireStatistics.Build());
         result.AddRange(VsieStatistics.Build());
         result.AddRange(GiddyUpMountStatistics.Build());
+        result.AddRange(CombatExtendedReloadStatistics.Build());
         return result;
     }
 }
