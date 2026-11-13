@@ -1073,4 +1073,6 @@
   <RWS_GiddyUp_MountSessionsDesc>Player colonists who successfully start riding owned animals through a completed Giddy-Up Mount job, grouped by animal kind. Pre-mounted arrivals, queued commands and repeat observations do not count.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Combat Extended successful pawn reloads</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Completed player-pawn reload actions that actually move ammunition into a weapon magazine. Each DoReload action counts once even when it loads several ammo stacks. Turrets, auto-loaders, disabled ammo and failed actions are excluded.</RWS_CombatExtended_ReloadsDesc>
+  <RWS_VreAndroid_Awakenings>VRE Android natural awakenings</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_AwakeningsDesc>Player-owned synthetic-body androids that naturally become awakened through the mood-based gene tick, excluding direct developer awakening, startup and already-awakened state. Requires Biotech.</RWS_VreAndroid_AwakeningsDesc>
 </LanguageData>
