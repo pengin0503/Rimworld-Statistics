@@ -1081,4 +1081,8 @@
   <RWS_VseExpertise_LevelUpsDesc>記録開始後、経験値によって実際に増加した専門技能レベルの累計（専門技能種類別）。独立したコロニー全体の合計です。</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE 専門技能の通算最高到達レベル</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>全コロニーを通じて実際の経験値上昇で到達した専門技能レベルの最高値。現在のセーブだけの状態やレベルの合計ではありません。</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking 独自加工バッチ完了数</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expandedのスープ・チーズなど、独自の加工処理が正常完了した累計（ProcessDef別）。通常の製造指示や出力が途中で止まった処理は含みません。</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing 発酵・熟成バッチ完了数</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expandedの発酵・醸造・熟成工程が正常完了した累計（ProcessDef別）。一時停止、出力未完了、通常の製造指示は含みません。</RWS_VefBrewing_BatchesDesc>
 </LanguageData>
