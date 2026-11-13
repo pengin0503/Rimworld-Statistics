@@ -867,7 +867,7 @@ public sealed class NumericCheckpointTests
     [Fact]
     public void LiveSelection_OffThenOnPreservesTotalsAndMarksGapWithoutRestart()
     {
-        var accumulator = LiveMetricAccumulator.StartNew(Recording, 0);
+        var accumulator = LiveMetricAccumulator.StartNew(Recording, 0, new HashSet<string>());
         Events(accumulator, 2, 50);
         Save(accumulator, "before-disable", 100);
         Assert.Empty(accumulator.Reconfigure(Array.Empty<FamilySpec>(), 200));
