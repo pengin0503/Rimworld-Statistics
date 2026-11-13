@@ -1085,4 +1085,6 @@
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expandedのスープ・チーズなど、独自の加工処理が正常完了した累計（ProcessDef別）。通常の製造指示や出力が途中で止まった処理は含みません。</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing 発酵・熟成バッチ完了数</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expandedの発酵・醸造・熟成工程が正常完了した累計（ProcessDef別）。一時停止、出力未完了、通常の製造指示は含みません。</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy レストランで受領した食事代金</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>自勢力のレストランでゲストから食事代として実際に受け取った銀の累計。分割払いは受領した分のみ加算し、未回収の売掛金、無料食事、通常交易は含みません。</RWS_Gastronomy_SilverCollectedDesc>
 </LanguageData>
