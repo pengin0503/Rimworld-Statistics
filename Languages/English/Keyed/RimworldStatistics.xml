@@ -1059,4 +1059,6 @@
   <RWS_VfeTribals_EraAdvancesDesc>Successful forward increases of the player's tribal technology era. Initialization, equal or lower levels and save restores are excluded; grouped by era.</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>VFE Tribals cornerstones acquired</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>New cornerstone definitions added with available points during active play. Existing unlocks and load restores are excluded; grouped by cornerstone.</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded aspirations completed</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
 </LanguageData>
