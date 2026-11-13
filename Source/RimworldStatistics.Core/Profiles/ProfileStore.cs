@@ -311,8 +311,56 @@ public sealed class ProfileStore
         File.Move(PendingBackup, Backup(1), overwrite: true);
     }
 
+    // The normal serializer emits these two adjacent, top-level properties in this order.
+    // When only importState changes, comparing the byte-identical prefix and suffix
+    // avoids parsing the entire (possibly multi-megabyte) profile twice for backup rotation.
+    // A noncanonical layout or inserted sibling falls back to the structural comparison.
+    private static bool SameStatisticsExceptImportState(string previous, string next)
+    {
+        const string startMarker = "\n  \"importState\": ";
+        const string endMarker = "\n  \"modMetricDescriptors\": ";
+        var a = previous.IndexOf(startMarker, StringComparison.Ordinal);
+        var b = next.IndexOf(startMarker, StringComparison.Ordinal);
+        if (a < 0 || b < 0)
+            return false;
+        var aEnd = previous.IndexOf(endMarker, a + startMarker.Length, StringComparison.Ordinal);
+        var bEnd = next.IndexOf(endMarker, b + startMarker.Length, StringComparison.Ordinal);
+        if (aEnd < 0 || bEnd < 0
+            || !previous.AsSpan(0, a).SequenceEqual(next.AsSpan(0, b))
+            || !previous.AsSpan(aEnd).SequenceEqual(next.AsSpan(bEnd)))
+            return false;
+
+        // Ensure that the skipped region contains exactly one valid object value
+        // followed by its property separator, not a changed sibling property.
+        return HasOneImportStateValue(previous, a + startMarker.Length, aEnd)
+            && HasOneImportStateValue(next, b + startMarker.Length, bEnd);
+    }
+
+    private static bool HasOneImportStateValue(string json, int start, int end)
+    {
+        while (end > start && char.IsWhiteSpace(json[end - 1]))
+            end--;
+        if (end <= start || json[--end] != ',')
+            return false;
+        while (end > start && char.IsWhiteSpace(json[end - 1]))
+            end--;
+        if (end <= start)
+            return false;
+        try
+        {
+            using var doc = JsonDocument.Parse(json.AsMemory(start, end - start));
+            return doc.RootElement.ValueKind == JsonValueKind.Object;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
+    }
+
     private static bool SameStatistics(string previous, string next)
     {
+        if (SameStatisticsExceptImportState(previous, next))
+            return true;
         try
         {
             using var before = JsonDocument.Parse(previous);
