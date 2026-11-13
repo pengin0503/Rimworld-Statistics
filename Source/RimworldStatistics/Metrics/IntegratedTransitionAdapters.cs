@@ -12,6 +12,7 @@ using RimworldStatistics.VreAndroid;
 using RimworldStatistics.VseExpertise;
 using RimworldStatistics.VefProcessing;
 using RimworldStatistics.Gastronomy;
+using RimworldStatistics.SimpleWarrants;
 using RimworldStatistics.VqeDroneFactory;
 using RimworldStatistics.VqeGenerator;
 using RimworldStatistics.VceDeepchem;
@@ -57,6 +58,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VseExpertiseStatistics.Build());
         result.AddRange(VefProcessingStatistics.Build());
         result.AddRange(GastronomyPaymentStatistics.Build());
+        result.AddRange(SimpleWarrantsStatistics.Build());
         result.AddRange(VqeDroneFactoryStatistics.Build());
         result.Add(VqeGeneratorStatistics.Build());
         result.AddRange(VceDeepchemStatistics.Build());

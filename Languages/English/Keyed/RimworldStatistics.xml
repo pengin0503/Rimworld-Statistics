@@ -1071,6 +1071,10 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_SimpleWarrants_Completed>Simple Warrants completed hand-ins</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_CompletedDesc>Warrants settled through a player caravan hand-in after the target was removed and the warrant closed.</RWS_SimpleWarrants_CompletedDesc>
+  <RWS_SimpleWarrants_Silver>Simple Warrants silver received</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_SilverDesc>Actual silver added to a player caravan by rewards for completed warrant hand-ins.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator completed ARC upgrades</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Completed player construction that replaces an existing player-owned ARC generator in place, grouped by the new generator type.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Peak owned vehicles</RWS_VehicleFramework_OwnedPeak>
