@@ -24,6 +24,7 @@ internal static class VseExpertiseStatistics
     private const string LevelUpKey = Unit + ".levelups";
     private const string HighestKey = Unit + ".highest_level";
     private static PropertyInfo? allExpertiseProperty;
+    private static PropertyInfo? trackerPawnProperty;
     private static FieldInfo? expertiseDefField;
     private static PropertyInfo? expertiseLevelProperty;
     private static PropertyInfo? expertisePawnProperty;
@@ -94,6 +95,7 @@ internal static class VseExpertiseStatistics
         var add = AccessTools.DeclaredMethod(tracker, "AddExpertise", [def]);
         var learn = AccessTools.DeclaredMethod(record, "Learn", [typeof(float)]);
         var all = AccessTools.Property(tracker, "AllExpertise");
+        var trackerPawn = AccessTools.Property(tracker, "Pawn");
         var rDef = AccessTools.DeclaredField(record, "def");
         var level = AccessTools.Property(record, "Level");
         var pawn = AccessTools.Property(record, "Pawn");
@@ -101,11 +103,13 @@ internal static class VseExpertiseStatistics
         if (add?.ReturnType != typeof(void) || learn?.ReturnType != typeof(void) ||
             ui?.ReturnType != typeof(void) || all is null ||
             !typeof(IList).IsAssignableFrom(all.PropertyType) ||
+            trackerPawn?.PropertyType != typeof(Pawn) ||
             rDef?.FieldType != def || level?.PropertyType != typeof(int) ||
             pawn?.PropertyType != typeof(Pawn))
             throw new InvalidOperationException("VSE expertise selection/learning signature mismatch");
 
         allExpertiseProperty = all;
+        trackerPawnProperty = trackerPawn;
         expertiseDefField = rDef;
         expertiseLevelProperty = level;
         expertisePawnProperty = pawn;
@@ -123,6 +127,7 @@ internal static class VseExpertiseStatistics
             harmony.Unpatch(add, HarmonyPatchType.All, harmony.Id);
             harmony.Unpatch(learn, HarmonyPatchType.All, harmony.Id);
             allExpertiseProperty = expertiseLevelProperty = expertisePawnProperty = null;
+            trackerPawnProperty = null;
             expertiseDefField = null;
             throw;
         }
@@ -159,7 +164,9 @@ internal static class VseExpertiseStatistics
         out SelectionBefore? __state)
     {
         __state = null;
-        if (!CanObserve() || __0 is not Def def || !OrdinaryPanelCaller())
+        if (!CanObserve() || __0 is not Def def ||
+            trackerPawnProperty?.GetValue(__instance) is not Pawn owner ||
+            !GameFacts.IsMember(owner) || !OrdinaryPanelCaller())
             return;
         try
         {
