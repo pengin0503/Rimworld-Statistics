@@ -1069,4 +1069,6 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>儀式が成功した際に、保留状態から入植者に正式授与された栄誉の累計（種類別）。栄誉候補の追加や開発用操作は含みません。</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>VSIE インスピレーション願望達成数</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで入植者の発想状態と一致した願望が新たに完了した回数（発想種類別）。未達成の進捗、期限切れ、別の発想は含みません。</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_GiddyUp_MountSessions>Giddy-Up 2 騎乗開始成功回数</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessionsDesc>プレイヤー入植者がGiddy-Upの騎乗ジョブを完了し、自勢力の動物への騎乗を実際に開始した回数（動物種類別）。既に騎乗した状態での登場、予約指示、重複状態は除外します。</RWS_GiddyUp_MountSessionsDesc>
 </LanguageData>
