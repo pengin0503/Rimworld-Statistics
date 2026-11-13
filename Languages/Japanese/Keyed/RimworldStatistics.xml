@@ -1075,4 +1075,10 @@
   <RWS_CombatExtended_ReloadsDesc>入植者の武器弾倉に弾薬が実際に追加されたリロード動作の累計。同じ動作中に複数の弾薬スタックを補充しても1回とします。砲塔、自動装填、弾薬無効、失敗した操作は含みません。</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android 自然覚醒回数</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>合成人工身体をもつ自勢力のアンドロイドが、気分による自然な遺伝子処理から新規覚醒した回数。開発用の直接覚醒、初期化、既覚醒状態を除外します。Biotechが必要です。</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>VSE 専門技能を選択した回数</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>通常の専門技能選択画面で入植者が新たに獲得した専門技能の回数（ExpertiseDef別）。デバッグによる追加や記録復元は含みません。</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE 専門技能レベルの獲得数</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>記録開始後、経験値によって実際に増加した専門技能レベルの累計（専門技能種類別）。独立したコロニー全体の合計です。</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE 専門技能の通算最高到達レベル</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>全コロニーを通じて実際の経験値上昇で到達した専門技能レベルの最高値。現在のセーブだけの状態やレベルの合計ではありません。</RWS_VseExpertise_HighestDesc>
 </LanguageData>
