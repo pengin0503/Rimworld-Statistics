@@ -1,4 +1,5 @@
 using RimworldStatistics.VaeAchievements;
+using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
 using RimworldStatistics.VfeTribals;
 
@@ -16,6 +17,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeSecurityStatistics.Build());
         result.AddRange(VaeAchievementsStatistics.Build());
         result.AddRange(VfeTribalsStatistics.Build());
+        result.AddRange(VaeAspirationsStatistics.Build());
         return result;
     }
 }
