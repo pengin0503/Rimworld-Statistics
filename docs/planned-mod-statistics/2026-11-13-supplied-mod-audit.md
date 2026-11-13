@@ -1,6 +1,6 @@
 # Supplied MOD archives — implementation addendum
 
-Reviewed the five supplied archives on 2026-11-13 JST. This addendum uses the [existing implementation handoff](2026-11-13-implementation-handoff.md), including Task 0, opt-in acquisition, revision 1, representative checkpoint selection and cross-colony sums. It adds three scoped tasks and a Simple Warrants loader check. The archives are private development inputs.
+Reviewed the five supplied archives on 2026-11-13 JST. This addendum uses the [existing implementation handoff](2026-11-13-implementation-handoff.md), including Task 0, default-on eligible acquisition with explicit opt-out preservation, revision 1, representative checkpoint selection and cross-colony sums. It adds three scoped tasks and a Simple Warrants loader check. The archives are private development inputs.
 
 | MOD / Workshop ID | PackageId and release | Selected or available DLL | SHA-256 |
 |---|---|---|---|
