@@ -55,6 +55,24 @@ public static class LiveMetrics
         FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
     }
 
+    /// <summary>
+    /// Reflect an acquisition-setting change immediately in the loaded game,
+    /// without replacing the save session or discarding an existing checkpoint.
+    /// The caller must run on the Unity game thread (the mod settings UI does).
+    /// </summary>
+    public static void RefreshSelection()
+    {
+        if (!UnityData.IsInMainThread || Accumulator is not { } acc)
+            return;
+        var tick = Find.TickManager.TicksGame;
+        var started = acc.Reconfigure(MetricGates.RecordingFamilies(), tick,
+            MetricGates.RecordingExperimentalUnits());
+        if (started.Count == 0)
+            return;
+        ModProviderAdapters.AttachEventOrigins(acc);
+        FamilyStartup.Apply(acc, tick, started.ToHashSet(StringComparer.Ordinal));
+    }
+
     /// <summary>Whether this family is recording on this thread. This query does not change the recording.</summary>
     public static bool IsRecordingNow(string name) => Resolve(name, eventAttempt: false) != null;
 
