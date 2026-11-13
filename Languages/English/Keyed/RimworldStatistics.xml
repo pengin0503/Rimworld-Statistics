@@ -1087,4 +1087,8 @@
   <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches owned by Vanilla Brewing Expanded, grouped by ProcessDef. Paused, blocked or unfinished output and generic bill crafting are excluded.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Gastronomy guest meal silver collected</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Silver actually transferred by a non-player restaurant customer for a meal at a player-owned restaurant. Partial payments contribute their transferred amounts; uncollected debts, free meals and unrelated trade do not count.</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VqeDrones_Assembled>VQE Drone Factory assembled drones</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_AssembledDesc>Player-owned drones actually spawned by the automated drone assembler when its production timer finishes, by pawn kind. Mere timer progress, failed spawn and egg hatching are excluded.</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_Hatched>VQE Drone Factory hatched drones</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_HatchedDesc>Player drones actually born through successful egg hatching, by pawn kind. Destroyed eggs without a spawned drone and independently assembled drones are excluded.</RWS_VqeDrones_HatchedDesc>
 </LanguageData>
