@@ -34,7 +34,7 @@ public sealed class LiveMetricAccumulator
     private readonly Dictionary<string, FamilyState> _recording = new(Ord);
     private readonly Dictionary<string, FamilyState> _kept = new(Ord);
     private readonly List<string> _order = new();
-    private readonly IReadOnlySet<string>? _experimentalUnits;
+    private IReadOnlySet<string>? _experimentalUnits;
     private readonly string? _opaque;   // unknown or unreadable data: written back unchanged, nothing recorded on top
     private string? _lastJson;          // the last committed (or loaded) checkpoint text
     private CheckpointPayload? _last;
@@ -173,6 +173,10 @@ public sealed class LiveMetricAccumulator
     {
         if (_opaque is not null)
             return Array.Empty<string>();
+        // New families must use the current evidence classification rather
+        // than the selection captured when this game first started.
+        _experimentalUnits = experimentalUnits is null ? null
+            : new HashSet<string>(experimentalUnits, Ord);
 
         var target = recording.ToDictionary(f => f.Name, Ord);
         foreach (var (name, existing) in _recording.ToArray())
