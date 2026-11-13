@@ -1051,4 +1051,12 @@
   <RWS_MetricDesc_VpeCasts>Successful Vanilla Psycasts Expanded ability casts by player free colonists, counted after VPE's ability-use consumption. Includes a count by ability type. Queued orders, cancelled casts and NPC casts are excluded.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>VFE Security traps successfully rearmed</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>Number of disarmed player-owned traps successfully rearmed during active play. Counts only a real disarmed-to-armed transition, not job orders, spawn initialization, debug operations or the upstream pawn record.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE achievement cards unlocked</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>New achievement cards unlocked during normal play, grouped by achievement definition. Debug unlocks and game-startup restore checks do not count.</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>VAE achievement points earned</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>Achievement points actually credited by new non-debug unlocks. When the point manager cannot be read, the recorded amount is marked partial.</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>VFE Tribals era advances</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>Successful forward increases of the player's tribal technology era. Initialization, equal or lower levels and save restores are excluded; grouped by era.</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals cornerstones acquired</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>New cornerstone definitions added with available points during active play. Existing unlocks and load restores are excluded; grouped by cornerstone.</RWS_VfeTribals_CornerstonesDesc>
 </LanguageData>
