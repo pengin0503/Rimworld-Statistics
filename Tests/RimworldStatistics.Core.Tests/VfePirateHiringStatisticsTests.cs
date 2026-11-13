@@ -5,14 +5,13 @@ namespace RimworldStatistics.Core.Tests;
 public sealed class VfePirateHiringStatisticsTests
 {
     [Theory]
-    [InlineData(true, true, true, 300, true)]
-    [InlineData(true, true, true, 0, true)]
-    [InlineData(true, true, false, 300, false)]
-    [InlineData(true, false, true, 300, false)]
-    [InlineData(false, true, true, 300, false)]
+    [InlineData(true, true, true, true)]
+    [InlineData(true, true, false, false)]
+    [InlineData(true, false, true, false)]
+    [InlineData(false, true, true, false)]
     public void ContractCountsOnlyCommittedNewPirateHire(
         bool pirateFaction, bool newPawnList, bool newPawnCountPositive,
-        int paid, bool expected)
+        bool expected)
         => Assert.Equal(expected, VfePirateHiringRules.ContractCreated(
             pirateFaction, newPawnList, newPawnCountPositive));
 
