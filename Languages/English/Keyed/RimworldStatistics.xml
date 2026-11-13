@@ -1063,4 +1063,6 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VfeClassical_SenatorFavors>VFE Classical senator favors newly gained</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>Previously unfavored senators who become favored through normal diplomacy or quests, grouped by faction. Developer actions, already favored senators and historical save restoration do not count.</RWS_VfeClassical_SenatorFavorsDesc>
 </LanguageData>
