@@ -57,9 +57,17 @@ internal static class CoverageTab
         var summaryRect = new Rect(rect.x, rect.y, rect.width, 30f);
         Widgets.Label(summaryRect, summary.Truncate(rect.width));
         TooltipHandler.TipRegion(summaryRect, summary);
+        // A full SDK deduplication set cannot accept further events safely:
+        // display this live-session warning even when the cached history view has not changed.
+        var cappedMetrics = statuses
+            .Where(status => ExternalSdkHost.Instance.IsEventDedupCapacityExceeded(status.Definition.Key))
+            .Select(status => MetricText.Label(status.Definition)).ToArray();
+        var cautionText = cappedMetrics.Length == 0 ? caution
+            : (string)"RWS_Status_SdkEventCapExceeded".Translate(cappedMetrics.Length, FamilyOps.KeyCap);
         var cautionRect = new Rect(rect.x, rect.y + 29f, rect.width, 28f);
-        Widgets.Label(cautionRect, caution.Truncate(rect.width));
-        TooltipHandler.TipRegion(cautionRect, caution);
+        Widgets.Label(cautionRect, cautionText.Truncate(rect.width));
+        TooltipHandler.TipRegion(cautionRect, cappedMetrics.Length == 0 ? caution
+            : cautionText + "\n" + string.Join("\n", cappedMetrics) + "\n" + caution);
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 63f, rect.width, 28f));
         var filterText = FilterLabel(filter);

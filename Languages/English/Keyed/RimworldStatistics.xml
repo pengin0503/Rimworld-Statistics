@@ -977,6 +977,7 @@
   <RWS_Rankings_NoMatches>No ranked values are available.</RWS_Rankings_NoMatches>
   <RWS_Tab_Coverage>Acquisition status</RWS_Tab_Coverage>
   <RWS_Status_Summary>Measured {0} · Partial {1} · Missing {2} · N/A {3} · Experimental {4}</RWS_Status_Summary>
+  <RWS_Status_SdkEventCapExceeded>SDK event ID limit reached for {0} metric(s) (limit: {1}). Later events are not counted; totals are partial.</RWS_Status_SdkEventCapExceeded>
   <RWS_Status_Caution>A recorded value does not prove its numeric accuracy has been verified in-game.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>All verification states</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>

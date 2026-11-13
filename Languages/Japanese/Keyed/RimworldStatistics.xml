@@ -977,6 +977,7 @@
   <RWS_Rankings_NoMatches>順位付けできる記録がありません。</RWS_Rankings_NoMatches>
   <RWS_Tab_Coverage>取得状況</RWS_Tab_Coverage>
   <RWS_Status_Summary>取得済み {0} ・部分記録 {1} ・未取得 {2} ・対象外 {3} ・実験的 {4}</RWS_Status_Summary>
+  <RWS_Status_SdkEventCapExceeded>SDKのイベントID上限に到達した統計が{0}件あります（上限：{1}件）。以後のイベントは計数せず、部分記録として扱います。</RWS_Status_SdkEventCapExceeded>
   <RWS_Status_Caution>数値が記録されていても、実ゲームでの数値の正確さが検証済みとは限りません。</RWS_Status_Caution>
   <RWS_Status_VerificationAll>すべての検証状態</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>実験的</RWS_Status_Experimental>

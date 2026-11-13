@@ -214,6 +214,47 @@ public sealed class ExternalSdkMetricTests
     }
 
     [Fact]
+    public void OverflowedLegacyDigestSetRemainsFailClosedAcrossCheckpointForks()
+    {
+        var definition = Metric("receipt");
+        var registry = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, registry.Register(definition, null));
+        var metric = Assert.Single(registry.Seal());
+        var family = new FamilySpec(metric.Descriptor.AcquisitionId, metric.Descriptor.Revision);
+        var live = LiveMetricAccumulator.StartNew([family], 0);
+        var state = live.Family(family.Name)!;
+        for (var i = 0; i < FamilyOps.KeyCap; i++)
+            Assert.Equal(ApiRecordResult.Recorded,
+                ExternalSdkMetricPolicy.Record(state, metric, "receipt-" + i, i + 1, 1));
+        Assert.Equal(ApiRecordResult.CapExceeded,
+            ExternalSdkMetricPolicy.Record(state, metric, "receipt-overflow", 5000, 1));
+
+        var saved = live.PrepareSave(5000, DateTime.UtcNow, "checkpoint")!;
+        Assert.True(saved.IsNew);
+        Assert.DoesNotContain("receipt-overflow", saved.Json);
+        foreach (var fork in new[]
+        {
+            LiveMetricAccumulator.Resume(saved.Json, [family], 5000),
+            LiveMetricAccumulator.Resume(saved.Json, [family], 5000),
+        })
+        {
+            var restored = fork.Family(family.Name)!;
+            Assert.True(restored.Peek(metric.SeenAccumulatorKey)!.Overflow);
+            // No information is discarded and neither a previously seen ID
+            // nor a new ID may silently inflate an exact-looking lifetime count.
+            Assert.Equal(ApiRecordResult.CapExceeded,
+                ExternalSdkMetricPolicy.Record(restored, metric, "receipt-0", 5001, 1));
+            Assert.Equal(ApiRecordResult.CapExceeded,
+                ExternalSdkMetricPolicy.Record(restored, metric, "receipt-after", 5002, 1));
+            Assert.Equal(FamilyOps.KeyCap, restored.Peek(metric.ValueAccumulatorKey)!.N);
+            var output = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+            ExternalSdkMetricPolicy.Build(new FamilyOutputContext(restored, 5002, output), metric);
+            Assert.Equal(MetricCoverage.Partial,
+                output[metric.Descriptor.StableKey].Values[MetricEntry.Scalar].Coverage);
+        }
+    }
+
+    [Fact]
     public void SnapshotCannotClaimRatioWithoutNumeratorDenominator()
     {
         var reg = new ExternalSdkMetricRegistry();
