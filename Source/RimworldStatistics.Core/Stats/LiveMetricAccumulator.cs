@@ -34,7 +34,7 @@ public sealed class LiveMetricAccumulator
     private readonly Dictionary<string, FamilyState> _recording = new(Ord);
     private readonly Dictionary<string, FamilyState> _kept = new(Ord);
     private readonly List<string> _order = new();
-    private readonly IReadOnlySet<string>? _experimentalUnits;
+    private IReadOnlySet<string>? _experimentalUnits;
     private readonly string? _opaque;   // unknown or unreadable data: written back unchanged, nothing recorded on top
     private string? _lastJson;          // the last committed (or loaded) checkpoint text
     private CheckpointPayload? _last;
@@ -158,6 +158,70 @@ public sealed class LiveMetricAccumulator
         // A completed gap needs two observed events in the same uninterrupted stretch.
         foreach (var metric in family.Metrics.Values)
             metric.Last = null;
+    }
+
+    /// <summary>
+    /// Apply a changed acquisition selection during the same game, without replacing
+    /// the checkpoint session. Turning a unit off seals but retains its totals.
+    /// Turning it back on resumes the same revision with incomplete coverage; a
+    /// previously unseen unit begins measuring only from this tick.
+    /// Unreadable/future checkpoint formats remain opaque and untouchable.
+    /// Returns newly started/resumed family IDs for one-time startup baselines.
+    /// </summary>
+    public IReadOnlyList<string> Reconfigure(IReadOnlyCollection<FamilySpec> recording, int tick,
+        IReadOnlySet<string>? experimentalUnits = null)
+    {
+        if (_opaque is not null)
+            return Array.Empty<string>();
+        // New families must use the current evidence classification rather
+        // than the selection captured when this game first started.
+        _experimentalUnits = experimentalUnits is null ? null
+            : new HashSet<string>(experimentalUnits, Ord);
+
+        var target = recording.ToDictionary(f => f.Name, Ord);
+        foreach (var (name, existing) in _recording.ToArray())
+        {
+            if (!target.TryGetValue(name, out var spec) || spec.Revision != existing.Revision)
+                Stop(name, tick);
+        }
+
+        var started = new List<string>();
+        foreach (var spec in recording)
+        {
+            if (_recording.ContainsKey(spec.Name))
+                continue;
+            if (_kept.TryGetValue(spec.Name, out var kept))
+            {
+                // Never interpret unreadable or newer-format data as an older version.
+                if (kept.IsQuarantined || kept.Revision > spec.Revision)
+                    continue;
+                _kept.Remove(spec.Name);
+                if (kept.Revision == spec.Revision)
+                {
+                    // No events were observed while disabled. Keep prior totals,
+                    // but do not present the interval as continuous coverage.
+                    Interrupt(spec.Name, kept, kept.ThroughTick, tick);
+                    kept.ThroughTick = Math.Max(kept.ThroughTick, tick);
+                    if (experimentalUnits is not null)
+                        kept.Evidence = MetricEvidencePolicy.Combine(
+                            kept.Evidence ?? MetricEvidence.UnknownLegacy,
+                            experimentalUnits.Contains(spec.Name)
+                                ? MetricEvidence.Experimental : MetricEvidence.Verified);
+                    _recording[spec.Name] = kept;
+                }
+                else
+                {
+                    // A revised family uses an independent counting contract.
+                    Begin(spec, tick);
+                }
+            }
+            else
+            {
+                Begin(spec, tick);
+            }
+            started.Add(spec.Name);
+        }
+        return started;
     }
 
     /// <summary>Stops a family (its hook failed): what it recorded is kept, measured through <paramref name="tick"/>.</summary>

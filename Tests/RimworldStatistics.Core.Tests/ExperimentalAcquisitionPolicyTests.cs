@@ -48,4 +48,23 @@ public sealed class ExperimentalAcquisitionPolicyTests
         Assert.DoesNotContain("work", resolved);
     }
 
+    [Fact]
+    public void AutoAllTokenOptsInEveryNonDerivedUnitIncludingFutureOptionalFamilies()
+    {
+        var units = AcquisitionUnits.All.Concat(new[]
+        {
+            new AcquisitionUnit("mod.example.future", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("mod.example.derived", AcquisitionKind.Derived, AcquisitionStatus.Unverified),
+        }).ToArray();
+        var selected = ExperimentalAcquisitionPolicy.Resolve(
+            new ExperimentalSelection(true, new[] { ExperimentalAcquisitionPolicy.AllUnitsToken }), units);
+        Assert.Contains("mod.example.future", selected);
+        Assert.Contains("research", selected);
+        Assert.DoesNotContain("mod.example.derived", selected);
+        Assert.DoesNotContain("mod.example.future", ExperimentalAcquisitionPolicy.Resolve(
+            new ExperimentalSelection(false, new[] { ExperimentalAcquisitionPolicy.AllUnitsToken }), units));
+        Assert.DoesNotContain("mod.example.future", ExperimentalAcquisitionPolicy.Resolve(
+            new ExperimentalSelection(true, Array.Empty<string>()), units));
+    }
+
 }

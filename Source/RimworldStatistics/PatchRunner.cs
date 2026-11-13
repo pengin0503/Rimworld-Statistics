@@ -71,7 +71,7 @@ public static class PatchRunner
         {
             types = e.Types.OfType<Type>().ToArray();
         }
-        // Acquisition adapters are applied by Metrics.MetricAdapters, only for open units.
+        // Acquisition adapters are installed by Metrics.MetricAdapters when their target is compatible; runtime gates control recording.
         return types.Where(t => t.IsDefined(typeof(HarmonyPatch), inherit: false) && !t.IsDefined(typeof(Metrics.MetricAdapterAttribute), inherit: false))
             .OrderBy(t => t.FullName, StringComparer.Ordinal);
     }

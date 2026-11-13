@@ -812,16 +812,15 @@
   <RWS_MetricDesc_BiotechWasteDisposed>Wastepacks safely neutralized only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechWasteDisposed>
   <RWS_Metric_BiotechPollutionCleaned>Cells cleaned by colonists</RWS_Metric_BiotechPollutionCleaned>
   <RWS_MetricDesc_BiotechPollutionCleaned>Cells cleaned by colonists only after the relevant Biotech action actually completes.</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>Allow experimental statistics recording (off by default)</RWS_Exp_Enable>
-  <RWS_Exp_Warning>Unverified acquisition: missing or double-counted records and additional CPU cost are possible. Earlier events cannot be reconstructed.</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>Select all available units</RWS_Exp_SelectAll>
+  <RWS_Exp_Enable>Record all available statistics (on by default)</RWS_Exp_Enable>
+  <RWS_Exp_Warning>Unverified captures are collected by default. Some integrations can miss or double-count records or add CPU overhead; unavailable MODs are skipped. Prior events cannot be reconstructed.</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>All (including future units)</RWS_Exp_SelectAll>
   <RWS_Exp_SelectNone>Clear all</RWS_Exp_SelectNone>
   <RWS_Exp_SelectEvents>Select event units</RWS_Exp_SelectEvents>
   <RWS_Exp_Event>Event</RWS_Exp_Event>
   <RWS_Exp_Snapshot>Successful save snapshot</RWS_Exp_Snapshot>
   <RWS_Exp_RequiresDlc>Requires DLC/package: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Restart>Recording changes only take effect after restarting RimWorld. Current session acquisition is unchanged.</RWS_Exp_Restart>
-  <RWS_Exp_Help>Select units individually. Names are stable storage IDs. Turning an option off never deletes past records.</RWS_Exp_Help>
+  <RWS_Exp_Help>All units are selected for new installations. Uncheck an item to opt out of that collection; turning off a unit does not delete its recorded history. Changes apply immediately, without restarting the game.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Evidence>Capture confidence: {0}</RWS_Exp_Evidence>
   <RWS_Exp_EvidenceExperimental>Unverified capture</RWS_Exp_EvidenceExperimental>
@@ -1049,4 +1048,86 @@
   <RWS_VTE_ContractReceivedDesc>Units of items generated from successfully paid player-posted VTE purchase contracts, distinct from NPC buy-order deliveries and ordinary trade.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>VPE confirmed psycasts</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>Successful Vanilla Psycasts Expanded ability casts by player free colonists, counted after VPE's ability-use consumption. Includes a count by ability type. Queued orders, cancelled casts and NPC casts are excluded.</RWS_MetricDesc_VpeCasts>
+  <RWS_VfeSecurity_TrapsRearmed>VFE Security traps successfully rearmed</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmedDesc>Number of disarmed player-owned traps successfully rearmed during active play. Counts only a real disarmed-to-armed transition, not job orders, spawn initialization, debug operations or the upstream pawn record.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE achievement cards unlocked</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>New achievement cards unlocked during normal play, grouped by achievement definition. Debug unlocks and game-startup restore checks do not count.</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>VAE achievement points earned</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>Achievement points actually credited by new non-debug unlocks. When the point manager cannot be read, the recorded amount is marked partial.</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>VFE Tribals era advances</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>Successful forward increases of the player's tribal technology era. Initialization, equal or lower levels and save restores are excluded; grouped by era.</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals cornerstones acquired</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>New cornerstone definitions added with available points during active play. Existing unlocks and load restores are excluded; grouped by cornerstone.</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded aspirations completed</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VfeClassical_SenatorFavors>VFE Classical senator favors newly gained</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>Previously unfavored senators who become favored through normal diplomacy or quests, grouped by faction. Developer actions, already favored senators and historical save restoration do not count.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>VFE Empire honors formally bestowed</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>Pending VFE Empire honors actually bestowed on a player colonist at completion of a ritual, grouped by honor definition. Merely receiving an available honor or developer actions are excluded.</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>VSIE inspiration aspirations completed</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Newly completed aspirations tied to the colonist's active inspiration in Vanilla Social Interactions Expanded, grouped by inspiration. Incomplete progress, expiration and unrelated inspirations do not count.</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_GiddyUp_MountSessions>Giddy-Up 2 successful mount sessions</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessionsDesc>Player colonists who successfully start riding owned animals through a completed Giddy-Up Mount job, grouped by animal kind. Pre-mounted arrivals, queued commands and repeat observations do not count.</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Combat Extended successful pawn reloads</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>Completed player-pawn reload actions that actually move ammunition into a weapon magazine. Each DoReload action counts once even when it loads several ammo stacks. Turrets, auto-loaders, disabled ammo and failed actions are excluded.</RWS_CombatExtended_ReloadsDesc>
+  <RWS_VreAndroid_Awakenings>VRE Android natural awakenings</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_AwakeningsDesc>Player-owned synthetic-body androids that naturally become awakened through the mood-based gene tick, excluding direct developer awakening, startup and already-awakened state. Requires Biotech.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>VSE expertise specializations selected</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>New expertise specializations selected by player colonists in the normal expertise panel, by ExpertiseDef. Debug unlocks and restored records are excluded.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE expertise levels earned</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>Positive permanent increases in VSE expertise levels earned after recording was enabled, summed across all independent colonies and grouped by ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE highest expertise level ever reached</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>The largest expertise level actually attained through XP progression among independent colonies, not a sum of levels or a snapshot of the latest save.</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking independent processing batches</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Completed VEF soup, cheese and other independent processes owned by Vanilla Cooking Expanded, grouped by ProcessDef. Ordinary bill crafting and partially blocked output are excluded.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing fermentation and aging batches</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches owned by Vanilla Brewing Expanded, grouped by ProcessDef. Paused, blocked or unfinished output and generic bill crafting are excluded.</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy guest meal silver collected</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>Silver actually transferred by a non-player restaurant customer for a meal at a player-owned restaurant. Partial payments contribute their transferred amounts; uncollected debts, free meals and unrelated trade do not count.</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VqeDrones_Assembled>VQE Drone Factory assembled drones</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_AssembledDesc>Player-owned drones actually spawned by the automated drone assembler when its production timer finishes, by pawn kind. Mere timer progress, failed spawn and egg hatching are excluded.</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_Hatched>VQE Drone Factory hatched drones</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_HatchedDesc>Player drones actually born through successful egg hatching, by pawn kind. Destroyed eggs without a spawned drone and independently assembled drones are excluded.</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded Deepchem accepted into pipes</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>The actual fractional Deepchem units accepted into pipe storage by a player-owned pumpjack, measured at PipeSystem's successful storage call. Requested yield, ground placement and blocked storage do not count.</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded DNA extraction outputs</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged by successful player-controlled extractions, by output ThingDef. Invalid targets, failed placements, charge consumption without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStoredDesc>The actual fractional nutrient slurry units accepted into the pipe network by player-owned Vanilla Nutrient Paste Expanded grinders. Grinder attempts, ingredient consumption without accepted slurry and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
+  <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 honey actually harvested</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Honey units successfully placed or merged after a player colonist unloads a player-owned Medieval2 apiary, grouped by output ThingDef. Production readiness, failed placements and later hauling are excluded.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security cross-map artillery projectiles launched</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Successful target-map projectile launches from player-owned off-map artillery when a traveling world shell arrives, grouped by projectile definition. Target orders, transit without arrival and shots with no spawned projectile do not count. This does not measure target hits.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeFactory_Harvested>VFE Factory Autofarmer harvested items</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_HarvestedDesc>Items newly harvested by a player-owned Autofarmer, including real harvest-buffer increases and confirmed ground placement, grouped by output ThingDef. Later hopper offloading, rejected placement and generic pawn harvesting are excluded.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>VFE Factory Autofarmer plants sown</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>New plants actually spawned, marked sown and matched to the selected crop during a player Autofarmer ProcessRow, grouped by plant ThingDef. Unsuccessful rows and old plants are excluded.</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>VFE Pirates Warcasket fittings completed</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>Fully completed player Warcasket fittings through normal welding, confirmed by project clearing and three newly worn matching pieces, grouped by armor Def. Incomplete jobs, partial outfit application and developer completion are excluded.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>VQE Ancients completed injection rejections</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>Rejected player Archogen Injector outcomes whose occupant was released alive with actual injection coma. Canceled work, a selected outcome without successful completion, and pending gene-success choices are excluded. Requires Biotech.</RWS_VqeAncients_RejectedDesc>
+  <RWS_VqeAncients_Mutations>VQE Ancients completed mutant transformations</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_MutationsDesc>Player Archogen Injector mutation outcomes that destroy the original pawn and spawn one player-owned mutant of the chosen PawnKindDef, grouped by mutant kind. Other spawns, cancellations and pending success choices are excluded. Requires Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VfeSettlers_BountyHandins>VFE Settlers bounties successfully turned in</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandinsDesc>Player caravan wanted criminals or bodies actually turned in and removed while receiving a positive silver reward. Opening the command, missing subjects, failed transfers and unrelated belongings do not count.</RWS_VfeSettlers_BountyHandinsDesc>
+  <RWS_VfeSettlers_BountySilver>VFE Settlers bounty silver actually received</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilverDesc>Silver actually added to the player caravan by the first reward transfer in a successful VFE Settlers wanted-person hand-in. Excludes the criminal's items and any silver in those belongings.</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_Rimatomics_Byproducts>Dubs Rimatomics reprocessing by-products actually placed</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_ByproductsDesc>Items actually placed or merged as by-products during a player-owned plutonium processor's completed fuel unload, grouped by output ThingDef. Returned spent fuel, merely processed material and unrelated placements do not count.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Combat Extended ammunition rounds consumed</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>Real rounds deducted from player-colonist weapon magazines or destroyed through direct-feed shooting, grouped by AmmoDef. Reload movements, dry fires, turret consumption and debug ammo replenishment do not count.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_SuppressionReceived>Combat Extended new suppression on player colonists</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceivedDesc>Player-colony pawns newly entering the Combat Extended suppressed state, counted once per transition out of an unsuppressed state. Repeated suppression while already suppressed and developer test suppression are excluded. This measures suppression received, not suppression inflicted on enemies.</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>VFE Pirates hire contracts completed</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>New pirate or mercenary contracts actually committed by Vanilla Expanded Framework's hiring window for a Pirates-owned hiring faction. Dialog views, canceled offers and failed payments do not count.</RWS_VfePirates_HireContractsDesc>
+  <RWS_VfePirates_HireSilver>VFE Pirates silver actually paid for hires</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilverDesc>Silver actually removed from player-map inventories when a new VFE Pirates hire contract is registered, rather than its rounded quoted price. Free contracts contribute zero silver.</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>VGE Electro-womb successful hybrid births</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>Exactly one new player-owned hybrid pawn actually spawned when a player-owned VGE electro-womb completes a successful growth cycle, grouped by pawn kind. Failed growth, timer progression and load restoration are excluded.</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_Conversions>VGE biomechanical transformations completed</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_ConversionsDesc>Successful player-owned mechahybridizer transformations that destroy the original subject and spawn one new player-owned converted pawn, by resulting pawn kind. Machine activation, waiting progress and failed spawn are excluded.</RWS_VgeHybrid_ConversionsDesc>
+  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded parole approvals</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApprovedDesc>Parole-hearing Release decisions that successfully clear a due sentence for a living prisoner still in player custody, with the actual release interaction enabled. Mere hearings, extensions, recruit options, repeated choices and later physical departures do not count.</RWS_PrisonExpanded_ParoleApprovedDesc>
 </LanguageData>

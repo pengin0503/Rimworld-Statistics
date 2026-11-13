@@ -8,7 +8,7 @@ namespace RimworldStatistics.Patches;
 /// <summary>
 /// The save scope of the checkpoint (numeric expansion design §3 step 2): the prefix prepares this save's checkpoint, the
 /// component writes it, <see cref="SaveCompletedPatch"/> commits it after the save succeeded, and the finalizer ends the scope
-/// whatever happened, passing any exception on unchanged. Applied only while at least one family records.
+/// whatever happened, passing any exception on unchanged. Preinstalled when compatible families exist, even if currently disabled.
 /// </summary>
 [MetricAdapter(MetricAdapters.CheckpointUnit)]
 [HarmonyPatch(typeof(SafeSaver), nameof(SafeSaver.Save))]

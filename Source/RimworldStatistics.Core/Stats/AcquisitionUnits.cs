@@ -27,8 +27,8 @@ public sealed record AcquisitionUnit(string Id, AcquisitionKind Kind, Acquisitio
 /// <summary>
 /// The acquisition units of Phases B, C and D2 (numeric expansion design §2: registered outputs stay registered, acquisition
 /// gates only stop new values). A unit is <see cref="AcquisitionStatus.Verified"/> only after the in-game checks of the evidence
-/// document passed on the target version; until then its game-side gate stays closed (no patch is applied, nothing is read) and
-/// its outputs stay in <see cref="MetricRegistry.Catalog"/> only. The ids are the metrics ledger's section names.
+/// document passed on the target version. This evidence status remains independent of the user's default-on acquisition
+/// setting and does not imply a missing output. The ids are the metrics ledger's section names.
 /// </summary>
 public static class AcquisitionUnits
 {

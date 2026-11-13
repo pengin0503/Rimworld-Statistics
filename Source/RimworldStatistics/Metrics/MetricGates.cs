@@ -7,7 +7,7 @@ namespace RimworldStatistics.Metrics;
 /// <summary>
 /// The game-side acquisition gates (numeric expansion design §2 "取得ゲート"). A unit records only when it is configured open
 /// (verified in the game, see <see cref="AcquisitionUnits"/>, or opened by the development-only verification harness), its DLC is
-/// active, its hooks were applied and nothing it ran has failed this session. Closed units apply no patch and read nothing.
+/// active, its hooks were applied and nothing it ran has failed this session. Closed units can have preinstalled hooks but record nothing.
 /// </summary>
 public static class MetricGates
 {
@@ -16,6 +16,7 @@ public static class MetricGates
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
     private static IReadOnlySet<string> productionSelection = new HashSet<string>(StringComparer.Ordinal);
+    private static IReadOnlySet<string> optionalSelection = new HashSet<string>(StringComparer.Ordinal);
     private static IReadOnlyDictionary<string, AcquisitionUnit> optionalUnits =
         new Dictionary<string, AcquisitionUnit>(StringComparer.Ordinal);
 
@@ -26,7 +27,7 @@ public static class MetricGates
             productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
     }
 
-    /// <summary>Register optional units during startup only, using the startup-frozen user selection.</summary>
+    /// <summary>Register optional units and refresh their enabled set after settings changes.</summary>
     public static void ConfigureOptionalUnits(IReadOnlyCollection<AcquisitionUnit> units, ExperimentalSelection selection)
     {
         lock (Gate)
@@ -36,14 +37,21 @@ public static class MetricGates
                 .GroupBy(u => u.Id, StringComparer.Ordinal)
                 .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
             optionalUnits = valid;
+            // New installations default to all compatible acquisitions, including
+            // optional MOD units registered after the built-in catalog is resolved.
+            // Keeping "*" in the saved selection also includes newly added families
+            // after a MOD update; a cleared list remains a deliberate opt-out.
             var explicitIds = selection.Enabled
-                ? selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
+                ? selection.ExplicitUnitIds.Contains(ExperimentalAcquisitionPolicy.AllUnitsToken,
+                    StringComparer.Ordinal)
+                    ? valid.Keys.AsEnumerable()
+                    : selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
-            productionSelection = productionSelection.Concat(explicitIds).ToHashSet(StringComparer.Ordinal);
+            optionalSelection = explicitIds.ToHashSet(StringComparer.Ordinal);
         }
     }
 
-    /// <summary>Selection frozen at startup, independent of whether targets were compatible.</summary>
+    /// <summary>Current user selection, independent of whether compatible hooks were installed.</summary>
     internal static bool IsSelected(string unitId)
     {
         lock (Gate)
@@ -51,7 +59,7 @@ public static class MetricGates
             var unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
             return unit is not null && unit.Kind != AcquisitionKind.Derived
                 && (unit.Status == AcquisitionStatus.Verified || productionSelection.Contains(unitId)
-                    || OpenedForVerification.Contains(unitId));
+                    || optionalSelection.Contains(unitId) || OpenedForVerification.Contains(unitId));
         }
     }
 
@@ -100,20 +108,18 @@ public static class MetricGates
             + "Use a separate -savedatafolder; values recorded now are not published.");
     }
 
-    /// <summary>Configured open, its DLC active, and not failed.</summary>
-    public static bool IsOpen(string unitId)
+    /// <summary>
+    /// True when a unit may install its hooks or reader. This is deliberately
+    /// independent of the current user selection so enabling a unit in the
+    /// settings screen never requires a RimWorld restart.
+    /// </summary>
+    public static bool IsInstallEligible(string unitId)
     {
         AcquisitionUnit? unit;
         lock (Gate)
-            unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
-        if (unit is null)
-            return false;
-        lock (Gate)
         {
-            if (Failed.Contains(unitId))
-                return false;
-            if (unit.Status != AcquisitionStatus.Verified && !productionSelection.Contains(unitId)
-                && !OpenedForVerification.Contains(unitId))
+            unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
+            if (unit is null || unit.Kind == AcquisitionKind.Derived || Failed.Contains(unitId))
                 return false;
         }
         if (unit.RequiredDlc is not null && !ModsConfig.IsActive(unit.RequiredDlc))
@@ -140,6 +146,9 @@ public static class MetricGates
                 && (unitId == DbhStatistics.FixturesUnit || DbhActivityMetricPatch.Available);
         return true;
     }
+
+    /// <summary>Currently selected, compatible, and not failed.</summary>
+    public static bool IsOpen(string unitId) => IsSelected(unitId) && IsInstallEligible(unitId);
 
     /// <summary>Open and with its hooks in place.</summary>
     public static bool FailedThisSession(string unitId)

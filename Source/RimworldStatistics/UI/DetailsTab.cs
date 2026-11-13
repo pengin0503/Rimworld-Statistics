@@ -40,7 +40,8 @@ public static class DetailsTab
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
         bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, object? Language);
 
-    private static DetailsViewMode viewMode = DetailsViewMode.Lifetime;
+    // Show all metrics immediately, including optional MOD outputs and non-lifetime readings.
+    private static DetailsViewMode viewMode = DetailsViewMode.All;
     private static bool perColony;
     private static bool comparing;
     private static string? colonyKey;

@@ -16,19 +16,28 @@ public sealed class RimworldStatisticsMod : Mod
     public static RimworldStatisticsSettings Settings { get; private set; } = new();
     public static RimworldStatisticsMod? Instance { get; private set; }
 
-    /// <summary>Frozen at startup. Changes to desired settings never hot-patch Harmony.</summary>
+    /// <summary>Last applied recording selection; the compatible patches remain installed.</summary>
     public static ExperimentalSelection ActiveAcquisitionSelection { get; private set; } =
         new(false, Array.Empty<string>());
 
     private static Vector2 experimentalScroll;
     private static AcquisitionUnit[]? selectableUnits;
 
-    private static bool SelectionNeedsRestart()
+    private static void ApplyLiveSelectionIfChanged()
     {
         var desired = Settings.DesiredSelection;
-        return desired.Enabled != ActiveAcquisitionSelection.Enabled ||
-            !desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
-                .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds);
+        if (desired.Enabled == ActiveAcquisitionSelection.Enabled &&
+            desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
+                .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds))
+            return;
+
+        // Runtime capture selection is separate from one-time Harmony patch
+        // installation. Always update both built-in and optional MOD units.
+        MetricGates.ConfigureProductionSelection(
+            ExperimentalAcquisitionPolicy.Resolve(desired, AcquisitionUnits.All));
+        MetricGates.ConfigureOptionalUnits(ModProviderAdapters.KnownUnits, desired);
+        ActiveAcquisitionSelection = desired;
+        LiveMetrics.RefreshSelection();
     }
 
     public RimworldStatisticsMod(ModContentPack content)
@@ -96,20 +105,24 @@ public sealed class RimworldStatisticsMod : Mod
             var buttons = listing.GetRect(28f);
             var width = (buttons.width - 12f) / 3f;
             if (Widgets.ButtonText(new Rect(buttons.x, buttons.y, width, buttons.height), "RWS_Exp_SelectAll".Translate()))
-                Settings.experimentalUnitIds = selectable
-                    .Where(u => u.Kind != AcquisitionKind.Derived && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc)))
-                    .Select(u => u.Id).ToList();
+                Settings.experimentalUnitIds = new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken };
             if (Widgets.ButtonText(new Rect(buttons.x + width + 6f, buttons.y, width, buttons.height), "RWS_Exp_SelectNone".Translate()))
                 Settings.experimentalUnitIds.Clear();
             if (Widgets.ButtonText(new Rect(buttons.x + (width + 6f) * 2f, buttons.y, width, buttons.height), "RWS_Exp_SelectEvents".Translate()))
                 Settings.experimentalUnitIds = selectable
                     .Where(u => u.Kind == AcquisitionKind.Family && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc)))
                     .Select(u => u.Id).ToList();
+            // The wildcard marks every current and future unit selected. When a
+            // user unticks an individual item, materialize the current catalog
+            // to preserve their choice without silently restoring all on restart.
+            var autoAll = Settings.experimentalUnitIds.Contains(
+                ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
             foreach (var unit in selectable)
             {
                 if (unit.Kind == AcquisitionKind.Derived)
                     continue;
-                var enabled = Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
+                var enabled = autoAll ||
+                    Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
                 var label = unit.Id + " · " + kind;
@@ -127,13 +140,24 @@ public sealed class RimworldStatisticsMod : Mod
                 if (enabled && UnitRecordingStates.Get(unit.Id) == UnitRecordingState.TargetIncompatible)
                     label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
                 listing.CheckboxLabeled(label, ref enabled);
-                if (enabled && !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
+                if (autoAll && !enabled)
+                {
+                    Settings.experimentalUnitIds = selectable
+                        .Where(u => u.Kind != AcquisitionKind.Derived && u.Id != unit.Id)
+                        .Select(u => u.Id)
+                        .Distinct(StringComparer.Ordinal)
+                        .ToList();
+                    autoAll = false;
+                }
+                else if (!autoAll && enabled &&
+                    !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
                     Settings.experimentalUnitIds.Add(unit.Id);
-                else if (!enabled)
+                else if (!autoAll && !enabled)
                     Settings.experimentalUnitIds.RemoveAll(x => x == unit.Id);
             }
-            if (SelectionNeedsRestart())
-                listing.Label("RWS_Exp_Restart".Translate());
+            // Apply immediately, on this UI (game) thread. No restart or
+            // reinstallation of Harmony patches is necessary.
+            ApplyLiveSelectionIfChanged();
             listing.Label("RWS_Exp_Help".Translate());
             settingsContentHeight = listing.CurHeight;
             listing.End();
