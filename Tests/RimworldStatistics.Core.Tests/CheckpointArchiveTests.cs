@@ -356,6 +356,26 @@ public sealed class CheckpointArchiveTests
         return session;
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Write_WhenDiskLockIsHeldOrPrimaryWasReplaced_LeavesArchiveUntouched(bool replaced)
+    {
+        using var temp = new TempDir();
+        var archive = new MemoryArchive();
+        var session = Start(temp, archive);
+        if (replaced)
+            new ProfileStore(temp.Path).Save(new Profile());
+
+        using var held = replaced ? null : File.Open(temp.File("profile.json.lock"),
+            FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+        session.Flush();
+
+        Assert.IsType<IOException>(session.LastSaveError);
+        Assert.Empty(archive.Lines);
+        Assert.False(session.Read(Parent).ArchivedMetrics);
+    }
+
     [Fact]
     public void Write_AppendsBeforeTheProfileIsSlimmed()
     {

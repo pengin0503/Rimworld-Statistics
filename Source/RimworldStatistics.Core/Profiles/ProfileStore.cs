@@ -205,7 +205,10 @@ public sealed class ProfileStore
     public void Save(Profile profile) => SaveSerialized(ProfileJson.Serialize(profile));
 
     /// <summary>Commits the primary before rotating older recovery points.</summary>
-    public void SaveSerialized(string json)
+    public void SaveSerialized(string json) => SaveSerialized(() => json);
+
+    // The session prepares archive and primary changes under the same disk lock.
+    internal void SaveSerialized(Func<string> prepare)
     {
         if (_readOnly)
             throw new InvalidOperationException("The record file is read-only for this session (written by a newer version, or unreadable).");
@@ -213,6 +216,7 @@ public sealed class ProfileStore
         using var writeLock = LockFile();
         var current = ReadVerifiedPrimary();
         ProtectV1Source(current);
+        var json = prepare();
 
         if (File.Exists(PendingBackup))
             RotateBackups();

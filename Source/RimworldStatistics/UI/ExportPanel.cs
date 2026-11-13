@@ -67,6 +67,7 @@ internal static class ExportPanel
                 labels.TryAdd(key, MetricText.BasicLabel(key));
             var names = view.Stats.Colonies.ToDictionary(c => c.Key, Dialog_RimworldStatistics.ColonyName, StringComparer.Ordinal);
             var values = new Dictionary<NumericRow, string>();
+            string ColonyName(string key) => names.GetValueOrDefault(key) ?? key;
             foreach (var row in view.Numeric.Overall)
                 Capture(row);
             var units = definitions.Select(d => d.Acquisition).OfType<string>().Distinct(StringComparer.Ordinal)
@@ -79,11 +80,8 @@ internal static class ExportPanel
 
             void Capture(NumericRow row)
             {
-                var definition = row.Definition;
                 if (row.Value.Known)
-                    values[row] = MetricText.Format(
-                        row.Breakdown.Length != 0 && definition.BreakdownUnit is { } unit ? definition with { Unit = unit } : definition,
-                        row.Value);
+                    values[row] = DetailsTab.FormatRowValue(row, ColonyName);
                 foreach (var child in row.Breakdowns)
                     Capture(child);
             }

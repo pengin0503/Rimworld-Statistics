@@ -9,7 +9,8 @@ namespace RimworldStatistics.UI;
 internal sealed class Dialog_HistoricalCounterIntervals : Window
 {
     private readonly Task<IReadOnlyList<HistoricalCounterInterval>> pending;
-    private readonly StatsTable table = new(26f, new(145f, 2f), new(145f, 2f), new(130f, 1f), new(145f, 1f));
+    private readonly StatsTable table = new(26f, new(130f, 2f), new(140f, 3f), new(140f, 3f),
+        new(112f, 1f), new(112f, 1f), new(110f, 1f), new(116f, 1f));
     private Vector2 scroll;
     private object? language;
     private string[] headers = [];
@@ -19,10 +20,10 @@ internal sealed class Dialog_HistoricalCounterIntervals : Window
     {
         doCloseX = true;
         absorbInputAroundWindow = true;
-        pending = Task.Run(() => session.Read(HistoricalCounterIntervals.ForDiagnostics));
+        pending = Task.Run(session.ReadHistoricalCounterIntervals);
     }
 
-    public override Vector2 InitialSize => new(760f, 520f);
+    public override Vector2 InitialSize => new(1000f, 520f);
 
     public override void DoWindowContents(Rect rect)
     {
@@ -54,10 +55,14 @@ internal sealed class Dialog_HistoricalCounterIntervals : Window
         if (rows is null || !ReferenceEquals(language, activeLanguage))
         {
             language = activeLanguage;
-            headers = ["RWS_HistoricalIntervals_Start".Translate(), "RWS_HistoricalIntervals_End".Translate(),
+            headers = ["RWS_Col_Colony".Translate(), "RWS_HistoricalIntervals_ParentSave".Translate(),
+                "RWS_HistoricalIntervals_ChildSave".Translate(), "RWS_HistoricalIntervals_Start".Translate(), "RWS_HistoricalIntervals_End".Translate(),
                 "RWS_HistoricalIntervals_Raids".Translate(), "RWS_HistoricalIntervals_Deaths".Translate()];
             rows = pending.Result.Select(row => new[]
             {
+                row.ColonyName ?? Dialog_RimworldStatistics.Dash,
+                Boundary(row.ParentSaveName, row.ParentCheckpointId),
+                Boundary(row.ChildSaveName, row.ChildCheckpointId),
                 row.StartTick.ToString("N0", CultureInfo.CurrentCulture),
                 row.EndTick.ToString("N0", CultureInfo.CurrentCulture),
                 row.RaidsIncrease.ToString("N0", CultureInfo.CurrentCulture),
@@ -66,4 +71,6 @@ internal sealed class Dialog_HistoricalCounterIntervals : Window
         }
         table.Draw(body, ref scroll, headers, rows);
     }
+
+    private static string Boundary(string? name, string id) => name is null ? id : $"{name} ({id})";
 }

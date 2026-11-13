@@ -77,6 +77,25 @@ public sealed class HistoricalCounterIntervalsTests
     }
 
     [Fact]
+    public void DiagnosticsIdentifyBothSavesAndDeduplicateAliasesForSameContents()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 3, 1);
+        Point(p, "B", "A", 120000, 5, 1);
+        p.SaveObservations.Add(new SaveObservation
+        {
+            Identity = Identity(), Status = ObservationStatus.Ok,
+            Display = new DisplayInfo { FactionName = "Colony Name" },
+            Values = new ObservedValues { TicksGame = 120000 },
+        });
+        foreach (var point in p.MetricObservations.Where(o => o.Key is "B" or "sha-B"))
+            point.FileAliases.Add(Alias("B-copy"));
+
+        var row = Assert.Single(HistoricalCounterIntervals.ForDiagnostics(p));
+        Assert.Equal(("Colony Name", "A.rws", "B-copy.rws"), (row.ColonyName, row.ParentSaveName, row.ChildSaveName));
+    }
+
+    [Fact]
     public void NoConfirmedParent_EvenSameCampaignAndLaterSave_IsNotCompared()
     {
         var p = new Profile();

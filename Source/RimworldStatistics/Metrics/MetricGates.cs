@@ -12,6 +12,8 @@ namespace RimworldStatistics.Metrics;
 public static class MetricGates
 {
     private static readonly object Gate = new();
+    private static long recordingRevision;
+    internal static long RecordingRevision => Volatile.Read(ref recordingRevision);
     private static readonly HashSet<string> OpenedForVerification = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
@@ -24,7 +26,10 @@ public static class MetricGates
     public static void ConfigureProductionSelection(IReadOnlySet<string> selected)
     {
         lock (Gate)
+        {
             productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
+            Interlocked.Increment(ref recordingRevision);
+        }
     }
 
     /// <summary>Register optional units and refresh their enabled set after settings changes.</summary>
@@ -48,6 +53,7 @@ public static class MetricGates
                     : selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
             optionalSelection = explicitIds.ToHashSet(StringComparer.Ordinal);
+            Interlocked.Increment(ref recordingRevision);
         }
     }
 
@@ -103,7 +109,10 @@ public static class MetricGates
     {
         var ids = unitIds.Where(id => AcquisitionUnits.Find(id) != null).ToList();
         lock (Gate)
+        {
             OpenedForVerification.UnionWith(ids);
+            Interlocked.Increment(ref recordingRevision);
+        }
         Log.Warning($"[RimworldStatistics] {caller} opened unverified acquisition units for verification: {string.Join(", ", ids)}. "
             + "Use a separate -savedatafolder; values recorded now are not published.");
     }
@@ -168,7 +177,8 @@ public static class MetricGates
     internal static void MarkApplied(string unitId)
     {
         lock (Gate)
-            Applied.Add(unitId);
+            if (Applied.Add(unitId))
+                Interlocked.Increment(ref recordingRevision);
     }
 
     /// <summary>Closes a unit for the rest of the session and logs the cause once. What it recorded so far is kept.</summary>
@@ -178,6 +188,7 @@ public static class MetricGates
         {
             if (!Failed.Add(unitId))
                 return;
+            Interlocked.Increment(ref recordingRevision);
         }
         Log.ErrorOnce($"[RimworldStatistics] Numeric statistics unit '{unitId}' failed and is off for this session.\n{e}", ("RWS.unit." + unitId).GetHashCode());
     }

@@ -426,18 +426,7 @@ public static class DetailsTab
             ? v.ThroughTick is { } t ? Dialog_RimworldStatistics.Days(t) : Dialog_RimworldStatistics.Dash
             : $"{row.Valid.ToString(Inv)} / {row.Targets.ToString(Inv)}";
 
-        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
-        if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
-        {
-            // Cross-colony records retain their original category but still
-            // show the winning item or the colony holding the record.
-            if (v.Label is { } holderLabel)
-                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
-                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
-                    : holderLabel);
-            else if (v.ColonyKey is { } holderColony)
-                value += " · " + Name(input.Stats, holderColony);
-        }
+        var value = FormatRowValue(row, key => Name(input.Stats, key));
         var state = CoverageLabel(d, v.Coverage);
         if (d.Acquisition is not null && !d.Published)
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
@@ -524,6 +513,25 @@ public static class DetailsTab
 
     private static string Number(double value)
         => Math.Abs(value - Math.Round(value)) < 1e-9 ? value.ToString("N0", Inv) : value.ToString("N2", Inv);
+
+    internal static string FormatRowValue(NumericRow row, Func<string, string> colonyName)
+    {
+        var d = row.Definition;
+        var v = row.Value;
+        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
+        if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
+        {
+            // Cross-colony records retain their original category but still
+            // show the winning item or the colony holding the record.
+            if (v.Label is { } holderLabel)
+                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
+                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
+                    : holderLabel);
+            else if (v.ColonyKey is { } holderColony)
+                value += " · " + colonyName(holderColony);
+        }
+        return value;
+    }
 
     internal static string Format(MetricDefinition d, NumericValue v)
     {

@@ -151,6 +151,9 @@ public sealed class ProfileSession
             return read(_profile);
     }
 
+    public IReadOnlyList<HistoricalCounterInterval> ReadHistoricalCounterIntervals()
+        => HistoricalCounterIntervals.ForDiagnostics(Read(HistoricalCounterIntervals.Capture));
+
     /// <summary>
     /// A profile read with the exact mutation revision under the same lock.
     /// A scan may cache an index while the revision is stable and use mutation
@@ -420,25 +423,18 @@ public sealed class ProfileSession
                 if (_closed || _changeSeq <= _writtenSeq)
                     return;
 
-            ArchiveCheckpoints();
-            string json;
-            long seq;
-            lock (_lock)
-            {
-                seq = _changeSeq;
-                try
-                {
-                    json = ProfileJson.Serialize(_profile);
-                }
-                catch (Exception e)
-                {
-                    _lastSaveError = e;
-                    return;
-                }
-            }
+            long seq = 0;
             try
             {
-                _store.SaveSerialized(json);
+                _store.SaveSerialized(() =>
+                {
+                    ArchiveCheckpoints();
+                    lock (_lock)
+                    {
+                        seq = _changeSeq;
+                        return ProfileJson.Serialize(_profile);
+                    }
+                });
                 _writtenSeq = seq;
                 _lastSaveError = null;
             }

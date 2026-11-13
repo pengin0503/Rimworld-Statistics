@@ -26,6 +26,8 @@ public static class LifetimeFamily
     /// <summary>The members when recording begins at the game's start (tick 0): their tenure and skill gains start now.</summary>
     public static void Baseline(FamilyState s, IEnumerable<string> members, int tick, Func<string, IReadOnlyDictionary<string, int>> skills)
     {
+        if (tick != 0)
+            return;
         foreach (var id in members)
             JoinedAt(s, id, tick, skills(id));
     }

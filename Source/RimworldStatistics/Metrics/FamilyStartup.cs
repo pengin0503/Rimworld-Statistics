@@ -31,7 +31,7 @@ internal static class FamilyStartup
         });
         RunSelected(LifetimeFamily.Name, (s, fresh) =>
         {
-            if (fresh)
+            if (fresh && tick == 0)
                 LifetimeFamily.Baseline(s, Members().Select(GameFacts.Id).ToList(), tick,
                     id => Members().FirstOrDefault(p => GameFacts.Id(p) == id) is { } p ? GameFacts.Skills(p) : new Dictionary<string, int>());
         });
