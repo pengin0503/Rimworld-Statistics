@@ -1107,4 +1107,8 @@
   <RWS_VfeFactory_SownDesc>New plants actually spawned, marked sown and matched to the selected crop during a player Autofarmer ProcessRow, grouped by plant ThingDef. Unsuccessful rows and old plants are excluded.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates Warcasket fittings completed</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>Fully completed player Warcasket fittings through normal welding, confirmed by project clearing and three newly worn matching pieces, grouped by armor Def. Incomplete jobs, partial outfit application and developer completion are excluded.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>VQE Ancients completed injection rejections</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>Rejected player Archogen Injector outcomes whose occupant was released alive with actual injection coma. Canceled work, a selected outcome without successful completion, and pending gene-success choices are excluded. Requires Biotech.</RWS_VqeAncients_RejectedDesc>
+  <RWS_VqeAncients_Mutations>VQE Ancients completed mutant transformations</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_MutationsDesc>Player Archogen Injector mutation outcomes that destroy the original pawn and spawn one player-owned mutant of the chosen PawnKindDef, grouped by mutant kind. Other spawns, cancellations and pending success choices are excluded. Requires Biotech.</RWS_VqeAncients_MutationsDesc>
 </LanguageData>
