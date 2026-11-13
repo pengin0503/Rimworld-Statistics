@@ -1130,4 +1130,6 @@
   <RWS_VgeHybrid_ConversionsDesc>自勢力のメカハイブリッド化装置で元の対象が消滅し、変換後の自勢力ポーンが実際に生み出された回数（結果のPawnKindDef別）。起動のみ、待機時間、生成失敗は含みません。</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 仮釈放承認回数</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>自勢力の監禁中の生存囚人について、審査で正式に釈放を承認し、刑期と仮釈放待機が解除され釈放指示になった回数。審査発生、延長、勧誘、重複選択、その後の実際の退去は含みません。</RWS_PrisonExpanded_ParoleApprovedDesc>
+  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller 油田からの原油採取量（油田容量単位）</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>自勢力の油井ポンプ処理で、油田の CurrentCap が実際に減少した量を記録します。単位は油田容量であり、パイプ内の原油量やアイテム個数ではありません。掘削進捗、採取失敗、自然回復、タンク間移動、精製品の生成は含みません。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
 </LanguageData>
