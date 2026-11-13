@@ -134,10 +134,12 @@ internal static class VefProcessingStatistics
                 definitionField?.GetValue(__instance) is not Def process ||
                 processCountField?.GetValue(__instance) is not int count)
                 return;
+            // ProcessDefs are shipped by Cooking/Brewing, while the processor
+            // building may be defined in the common VEF framework. Matching
+            // the machine's own package to the recipe owner would silently
+            // discard valid completed batches on shared processors.
             var processOwner = process.modContentPack?.PackageId;
-            var machineOwner = machine.def?.modContentPack?.PackageId;
-            if (string.IsNullOrWhiteSpace(processOwner) ||
-                !string.Equals(processOwner, machineOwner, StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(processOwner))
                 return;
             var unit = string.Equals(processOwner, CookingOwner, StringComparison.OrdinalIgnoreCase)
                 ? VefProcessingRules.CookingUnit
