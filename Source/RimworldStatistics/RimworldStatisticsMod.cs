@@ -96,20 +96,24 @@ public sealed class RimworldStatisticsMod : Mod
             var buttons = listing.GetRect(28f);
             var width = (buttons.width - 12f) / 3f;
             if (Widgets.ButtonText(new Rect(buttons.x, buttons.y, width, buttons.height), "RWS_Exp_SelectAll".Translate()))
-                Settings.experimentalUnitIds = selectable
-                    .Where(u => u.Kind != AcquisitionKind.Derived && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc)))
-                    .Select(u => u.Id).ToList();
+                Settings.experimentalUnitIds = new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken };
             if (Widgets.ButtonText(new Rect(buttons.x + width + 6f, buttons.y, width, buttons.height), "RWS_Exp_SelectNone".Translate()))
                 Settings.experimentalUnitIds.Clear();
             if (Widgets.ButtonText(new Rect(buttons.x + (width + 6f) * 2f, buttons.y, width, buttons.height), "RWS_Exp_SelectEvents".Translate()))
                 Settings.experimentalUnitIds = selectable
                     .Where(u => u.Kind == AcquisitionKind.Family && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc)))
                     .Select(u => u.Id).ToList();
+            // The wildcard marks every current and future unit selected. When a
+            // user unticks an individual item, materialize the current catalog
+            // to preserve their choice without silently restoring all on restart.
+            var autoAll = Settings.experimentalUnitIds.Contains(
+                ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
             foreach (var unit in selectable)
             {
                 if (unit.Kind == AcquisitionKind.Derived)
                     continue;
-                var enabled = Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
+                var enabled = autoAll ||
+                    Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
                 var label = unit.Id + " · " + kind;
@@ -127,9 +131,19 @@ public sealed class RimworldStatisticsMod : Mod
                 if (enabled && UnitRecordingStates.Get(unit.Id) == UnitRecordingState.TargetIncompatible)
                     label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
                 listing.CheckboxLabeled(label, ref enabled);
-                if (enabled && !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
+                if (autoAll && !enabled)
+                {
+                    Settings.experimentalUnitIds = selectable
+                        .Where(u => u.Kind != AcquisitionKind.Derived && u.Id != unit.Id)
+                        .Select(u => u.Id)
+                        .Distinct(StringComparer.Ordinal)
+                        .ToList();
+                    autoAll = false;
+                }
+                else if (!autoAll && enabled &&
+                    !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
                     Settings.experimentalUnitIds.Add(unit.Id);
-                else if (!enabled)
+                else if (!autoAll && !enabled)
                     Settings.experimentalUnitIds.RemoveAll(x => x == unit.Id);
             }
             if (SelectionNeedsRestart())
