@@ -21,19 +21,25 @@ internal static class ModProviderAdapters
     private sealed record Enabled(ModMetricAdapterRegistration Registration, string? OwnerVersion);
     private static readonly ModProviderExecutionGuard Guard = new();
     private static readonly Lazy<IReadOnlyList<ModMetricAdapterRegistration>> Declarations =
-        new(ExternalOnlyAdapters);
+        new(BuildAllAdapters);
     private static Enabled[] active = Array.Empty<Enabled>();
     private static bool initialized;
 
     /// <summary>Both embedded optional integrations and separately loaded SDK consumers register in the existing host during Mod construction.</summary>
-    private static IReadOnlyList<ModMetricAdapterRegistration> ExternalOnlyAdapters()
+    private static IReadOnlyList<ModMetricAdapterRegistration> BuildAllAdapters()
     {
-        try { return ExternalSdkHost.Instance.BuildAdapters(); }
+        var result = new List<ModMetricAdapterRegistration>();
+        try { result.AddRange(IntegratedTransitionAdapters.Build()); }
         catch (Exception e)
         {
-            Log.Error("[RimworldStatistics] External SDK registration scan failed; optional metrics are off.\n" + e);
-            return Array.Empty<ModMetricAdapterRegistration>();
+            Log.Error("[RimworldStatistics] Native optional metrics registration failed.\n" + e);
         }
+        try { result.AddRange(ExternalSdkHost.Instance.BuildAdapters()); }
+        catch (Exception e)
+        {
+            Log.Error("[RimworldStatistics] External SDK registration scan failed.\n" + e);
+        }
+        return result;
     }
 
     private static readonly Lazy<IReadOnlyList<AcquisitionUnit>> KnownUnitList = new(() =>
@@ -72,6 +78,8 @@ internal static class ModProviderAdapters
         var registry = new ModMetricProviderRegistry();
         var enabled = new List<Enabled>();
         var families = new List<LiveFamily>();
+        // A family with several output descriptors owns one hook and state.
+        var installedEventFamilies = new HashSet<string>(StringComparer.Ordinal);
         foreach (var registration in declarations)
         {
             var descriptor = registration.Descriptor;
@@ -106,9 +114,13 @@ internal static class ModProviderAdapters
                     MetricGates.Fail(id, new InvalidOperationException("Optional event family lacks a complete hook/decoder"));
                     continue;
                 }
-                if (!Guard.TryRun(id, () => registration.InstallEventHook(harmony),
-                    (unit, e) => MetricGates.Fail(unit, e)))
-                    continue;
+                if (!installedEventFamilies.Contains(id))
+                {
+                    if (!Guard.TryRun(id, () => registration.InstallEventHook(harmony),
+                        (unit, e) => MetricGates.Fail(unit, e)))
+                        continue;
+                    installedEventFamilies.Add(id);
+                }
                 if (!families.Any(x => x.Name == family.Name))
                     families.Add(family);
             }
