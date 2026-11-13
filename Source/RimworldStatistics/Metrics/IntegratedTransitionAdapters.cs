@@ -14,6 +14,7 @@ using RimworldStatistics.Gastronomy;
 using RimworldStatistics.VqeDroneFactory;
 using RimworldStatistics.VceDeepchem;
 using RimworldStatistics.VgeExtraction;
+using RimworldStatistics.VnpeGrinder;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -44,6 +45,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VqeDroneFactoryStatistics.Build());
         result.AddRange(VceDeepchemStatistics.Build());
         result.AddRange(VgeExtractionStatistics.Build());
+        result.AddRange(VnpeGrinderStatistics.Build());
         return result;
     }
 }
