@@ -1115,4 +1115,6 @@
   <RWS_VfeSettlers_BountyHandinsDesc>プレイヤーのキャラバンが賞金首またはその遺体を実際に引き渡し、銀の報酬を受領した回数。コマンド表示、対象不在、報酬受取失敗、所有物の引き渡しは含みません。</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers 賞金報酬の受領銀貨数</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>賞金首引き渡し時、最初の報酬移動によってキャラバンに実際に加わった銀貨の累計。対象が持っていた品物や銀貨は含みません。</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_Rimatomics_Byproducts>Dubs Rimatomics 再処理副産物の生成数</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_ByproductsDesc>自勢力のプルトニウム処理設備で燃料を取り出す際、実際に配置またはスタックへ統合された副産物の個数（種類別）。取り出した使用済み燃料、処理予定量、無関係な配置は含みません。</RWS_Rimatomics_ByproductsDesc>
 </LanguageData>
