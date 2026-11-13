@@ -4,6 +4,14 @@
 
 **Authoritative for these proposals:** this folder. For pre-existing host integration status use the current source and README; older documents such as [generic-first audit](../research/2026-11-11-content-mod-coverage-and-priority-audit.md), [optional MOD audit](../research/2026-11-12-m7-optional-mod-audit.md), and [next MOD metric backlog](../research/2026-11-11-next-modded-statistics-backlog.md) contain dated evidence, **not a claim of present implementation state**.
 
+## Implementation entry point
+
+Start with the [implementation handoff](2026-11-13-implementation-handoff.md). The [35-candidate disposition](2026-11-13-candidate-disposition.md) records the first implementation slices and the evidence each remaining proposal needs. Use the [pinned references](2026-11-13-reference-lock.md) to reproduce the source and assembly checks. These three documents carry the current decisions when an earlier research note describes a preliminary status.
+
+## Second-wave scope is also committed
+
+The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-implementation-scope.md) make the previously deferred secondary statistics **required implementation targets**, not excluded ideas. They cover Combat Extended ammunition/suppression; Gastronomy paid orders; Prison Expanded departures, riots and completed sentences; Rimefeller measured production/consumption; Pirates contracts/payments; Skills expertise-level records; Security artillery; Genetics hybrid births/transformations; and Drone Factory hatching. They augment, and never replace, the first 25 slices or the 35-MOD master register. Outcomes awaiting a proven 1.7 commit site remain explicitly tracked until implemented or evidenced as covered by an existing generic metric.
+
 ## Non-negotiable implementation contract
 
 1. **One MOD package:** implement directly in Rimworld-Statistics; no separate statistics add-on repository. Never turn existing generic captures into duplicate MOD-branded metric families.
@@ -12,7 +20,7 @@
 4. **No DLC assumptions:** gate optional DLC and optional gameplay MODs by actual presence; missing targets fail closed, previous records persist, gaps are Partial/Unknown rather than fabricated zero. In particular, Anomaly-only coverage is not a required acceptance test.
 5. **RimWorld 1.7 check:** inspect the active `loadFolders.xml` and *actual selected assembly* (sometimes version folder 1.6); confirm public source/IL signature and successful event. 1.7 branding or folder existence alone is insufficient.
 6. **Cross-MOD key identity:** use package identity plus Def identity/version where applicable; avoid treating a bare DefName as globally unique across unrelated MOD sets.
-7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture Experimental/opt-in.
+7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture classified Experimental/Unverified, but enable eligible statistics by default on new installations. Respect explicit existing opt-outs, and allow recording changes without restart.
 8. **No code changes in this documentation task.** Existing v1.6.0 release and Steam Workshop are untouched.
 
 ## Popularity-aware execution priority
