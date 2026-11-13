@@ -1097,4 +1097,6 @@
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged by successful player-controlled extractions, by output ThingDef. Invalid targets, failed placements, charge consumption without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>The actual fractional nutrient slurry units accepted into the pipe network by player-owned Vanilla Nutrient Paste Expanded grinders. Grinder attempts, ingredient consumption without accepted slurry and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
+  <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 honey actually harvested</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Honey units successfully placed or merged after a player colonist unloads a player-owned Medieval2 apiary, grouped by output ThingDef. Production readiness, failed placements and later hauling are excluded.</RWS_VfeMedieval2_HoneyItemsDesc>
 </LanguageData>
