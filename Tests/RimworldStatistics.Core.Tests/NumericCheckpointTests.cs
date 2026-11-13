@@ -849,4 +849,53 @@ public sealed class NumericCheckpointTests
         Assert.Single(checkpoints);
         Assert.Equal(new[] { "A.rws", "Copy.rws" }, checkpoints[0].FileAliases.Select(a => a.FileName).Order(StringComparer.Ordinal));
     }
+    [Fact]
+    public void LiveSelection_OpensNewFamilyImmediatelyWithPartialCoverageAndExperimentalEvidence()
+    {
+        var accumulator = LiveMetricAccumulator.StartNew(Array.Empty<FamilySpec>(), 0);
+        var added = accumulator.Reconfigure(Recording, 500, new HashSet<string> { "test" });
+        Assert.Equal(new[] { "test" }, added);
+        var family = Assert.IsType<FamilyState>(accumulator.Family("test"));
+        Assert.Equal(500, family.SinceTick);
+        Assert.Equal(MetricEvidence.Experimental, family.Evidence);
+        Events(accumulator, 2, 525);
+        var draft = Save(accumulator, "live-on", 600);
+        Assert.Equal(2, draft.Payload!.Families["test"].Peek("events")?.N);
+        Assert.False(new FamilyOutputContext(family, 600, new Dictionary<string, MetricEntry>()).FromStart);
+    }
+
+    [Fact]
+    public void LiveSelection_OffThenOnPreservesTotalsAndMarksGapWithoutRestart()
+    {
+        var accumulator = LiveMetricAccumulator.StartNew(Recording, 0);
+        Events(accumulator, 2, 50);
+        Save(accumulator, "before-disable", 100);
+        Assert.Empty(accumulator.Reconfigure(Array.Empty<FamilySpec>(), 200));
+        Assert.Null(accumulator.Family("test"));
+        var duringOff = Save(accumulator, "while-disabled", 250);
+        Assert.Equal(2, duringOff.Payload!.Families["test"].Peek("events")?.N);
+        Assert.Equal(new[] { "test" }, accumulator.Reconfigure(Recording, 300, new HashSet<string> { "test" }));
+        var restored = Assert.IsType<FamilyState>(accumulator.Family("test"));
+        Assert.False(restored.Continuous);
+        Assert.Equal(2, restored.Peek("events")?.N);
+        Assert.Equal(MetricEvidence.Mixed, restored.Evidence);
+        Events(accumulator, 3, 310);
+        var after = Save(accumulator, "after-enable", 400);
+        Assert.Equal(5, after.Payload!.Families["test"].Peek("events")?.N);
+        Assert.False(after.Payload.Families["test"].Continuous);
+        Assert.Equal("while-disabled", after.Payload.ParentCheckpointId);
+    }
+
+    [Fact]
+    public void LiveSelection_UnreadableFutureCheckpointCannotBeOverwrittenByToggle()
+    {
+        var opaque = "{\\\"formatVersion\\\":10000,\\\"checkpointId\\\":\\\"future\\\"}";
+        var accumulator = LiveMetricAccumulator.Resume(opaque, Array.Empty<FamilySpec>(), 500);
+        Assert.Empty(accumulator.Reconfigure(Recording, 600, new HashSet<string> { "test" }));
+        Assert.Null(accumulator.Family("test"));
+        var draft = accumulator.PrepareSave(700, T0, "unused");
+        Assert.False(draft!.IsNew);
+        Assert.Equal(opaque, draft.Json);
+    }
+
 }
