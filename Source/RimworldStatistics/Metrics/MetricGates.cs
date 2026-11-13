@@ -7,7 +7,7 @@ namespace RimworldStatistics.Metrics;
 /// <summary>
 /// The game-side acquisition gates (numeric expansion design §2 "取得ゲート"). A unit records only when it is configured open
 /// (verified in the game, see <see cref="AcquisitionUnits"/>, or opened by the development-only verification harness), its DLC is
-/// active, its hooks were applied and nothing it ran has failed this session. Closed units apply no patch and read nothing.
+/// active, its hooks were applied and nothing it ran has failed this session. Closed units can have preinstalled hooks but record nothing.
 /// </summary>
 public static class MetricGates
 {
