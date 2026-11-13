@@ -19,7 +19,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
     // UI presentation choices only: groups and favourites never enter profile.json.
     public string viewPreferencesJson = "";
 
-    /// <summary>User's desired choices, applied only after restarting RimWorld.</summary>
+    /// <summary>User's desired acquisition choices; UI edits are applied to the current game immediately.</summary>
     public ExperimentalSelection DesiredSelection => new(experimentalEnabled, experimentalUnitIds.ToArray());
 
 
