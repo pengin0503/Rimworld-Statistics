@@ -1107,4 +1107,8 @@
   <RWS_VfeFactory_SownDesc>自勢力の自動農機の処理行で新規スポーンし、播種状態になった設定作物の数（植物種類別）。失敗した播種と既存の植物は含みません。</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates ウォーキャスケット装着完了回数</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>通常の溶接作業でプロジェクトを完了し、アーマー・ヘルメット・肩当ての3部位を実際に装着した回数（装甲種類別）。途中で中断した作業、一部だけの装着、開発モードによる直接完了は含みません。</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>VQE Ancients アルコジェン注入拒絶数</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>自勢力の注入装置で実際に拒絶結果となり、対象が生存状態で排出され注入昏睡を発症した回数。中断、未確定の結果、遺伝子選択待ちの成功は含みません。Biotechが必要です。</RWS_VqeAncients_RejectedDesc>
+  <RWS_VqeAncients_Mutations>VQE Ancients 注入による変異完了数</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_MutationsDesc>自勢力の注入装置で元の対象が消失し、選択された種類の変異体が実際に生成された回数（PawnKindDef別）。別のスポーン、中断、成功結果の遺伝子選択待ちは含みません。Biotechが必要です。</RWS_VqeAncients_MutationsDesc>
 </LanguageData>
