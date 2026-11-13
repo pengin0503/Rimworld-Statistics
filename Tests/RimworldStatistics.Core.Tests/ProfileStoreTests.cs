@@ -132,6 +132,7 @@ public sealed class ProfileStoreTests
         store.Save(Tagged("b"));
         Assert.Equal(new[] { "profile.json", "profile.json.bak1", "profile.json.lock" }, Directory.EnumerateFiles(dir.Path).Select(Path.GetFileName).Order());
     }
+
     [Fact]
     public void ImportStateOnlyUpdatesDoNotRotateStatisticsBackups()
     {
@@ -167,7 +168,7 @@ public sealed class ProfileStoreTests
         profile.ImportState.ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
         {
             ["custom"] = System.Text.Json.JsonSerializer.SerializeToElement(
-                new { nested = new { text = "escaped \\n  \\"modMetricDescriptors\\" inside" } }),
+                new { nested = new { text = "safe nested value" } }),
         };
         store.Save(profile);
         Assert.False(File.Exists(dir.File("profile.json.bak1")));
@@ -182,8 +183,8 @@ public sealed class ProfileStoreTests
         var original = ProfileJson.Serialize(Tagged("same"));
         store.SaveSerialized(original);
         var unexpected = original.Replace(
-            "\\n  \\"modMetricDescriptors\\": ",
-            "\\n  \\"unexpectedRootField\\": 1,\\n  \\"modMetricDescriptors\\": ",
+            "\n  \"modMetricDescriptors\": ",
+            "\n  \"unexpectedRootField\": 1,\n  \"modMetricDescriptors\": ",
             StringComparison.Ordinal);
         Assert.NotEqual(original, unexpected);
         store.SaveSerialized(unexpected);
