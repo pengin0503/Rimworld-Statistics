@@ -23,7 +23,7 @@ internal static class VaeAspirationsStatistics
     private static MethodInfo? isComplete;
     [ThreadStatic] private static int normalCompletionScope;
 
-    private sealed record BeforeCompletion(string? Key, bool WasComplete);
+    private sealed record AspirationBefore(string? Key, bool WasComplete);
 
     private static readonly LiveFamily Family = new()
     {
@@ -113,7 +113,7 @@ internal static class VaeAspirationsStatistics
         => isComplete?.Invoke(need, [def]) is true;
 
     private static void BeforeCompletion(object __instance, object __0,
-        out BeforeCompletion? __state)
+        out AspirationBefore? __state)
     {
         __state = null;
         if (!CanObserve())
@@ -129,14 +129,14 @@ internal static class VaeAspirationsStatistics
                     normalCompletionScope > 0, debug: normalCompletionScope == 0))
                 return;
             var def = (Def)__0;
-            __state = new BeforeCompletion(OptionalTransitionRecording.QualifiedDefKey(
+            __state = new AspirationBefore(OptionalTransitionRecording.QualifiedDefKey(
                 def.modContentPack?.PackageId, def.defName), WasComplete: false);
         }
         catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterCompletion(object __instance, object __0, bool __runOriginal,
-        BeforeCompletion? __state)
+        AspirationBefore? __state)
     {
         if (!__runOriginal || __state is null || !CanObserve())
             return;
