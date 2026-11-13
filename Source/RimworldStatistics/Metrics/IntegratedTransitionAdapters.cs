@@ -17,6 +17,7 @@ using RimworldStatistics.VgeExtraction;
 using RimworldStatistics.VnpeGrinder;
 using RimworldStatistics.VfeMedieval2;
 using RimworldStatistics.VfeSecurityArtillery;
+using RimworldStatistics.VfeFactory;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -50,6 +51,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VnpeGrinderStatistics.Build());
         result.AddRange(VfeMedieval2Statistics.Build());
         result.AddRange(VfeSecurityArtilleryStatistics.Build());
+        result.AddRange(VfeFactoryStatistics.Build());
         return result;
     }
 }
