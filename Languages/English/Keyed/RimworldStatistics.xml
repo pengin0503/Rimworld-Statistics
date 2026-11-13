@@ -1121,4 +1121,12 @@
   <RWS_CE_RoundsUsedDesc>Real rounds deducted from player-colonist weapon magazines or destroyed through direct-feed shooting, grouped by AmmoDef. Reload movements, dry fires, turret consumption and debug ammo replenishment do not count.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended new suppression on player colonists</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Player-colony pawns newly entering the Combat Extended suppressed state, counted once per transition out of an unsuppressed state. Repeated suppression while already suppressed and developer test suppression are excluded. This measures suppression received, not suppression inflicted on enemies.</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>VFE Pirates hire contracts completed</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>New pirate or mercenary contracts actually committed by Vanilla Expanded Framework's hiring window for a Pirates-owned hiring faction. Dialog views, canceled offers and failed payments do not count.</RWS_VfePirates_HireContractsDesc>
+  <RWS_VfePirates_HireSilver>VFE Pirates silver actually paid for hires</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilverDesc>Silver actually removed from player-map inventories when a new VFE Pirates hire contract is registered, rather than its rounded quoted price. Free contracts contribute zero silver.</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>VGE Electro-womb successful hybrid births</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>Exactly one new player-owned hybrid pawn actually spawned when a player-owned VGE electro-womb completes a successful growth cycle, grouped by pawn kind. Failed growth, timer progression and load restoration are excluded.</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_Conversions>VGE biomechanical transformations completed</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_ConversionsDesc>Successful player-owned mechahybridizer transformations that destroy the original subject and spawn one new player-owned converted pawn, by resulting pawn kind. Machine activation, waiting progress and failed spawn are excluded.</RWS_VgeHybrid_ConversionsDesc>
 </LanguageData>
