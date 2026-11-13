@@ -1091,4 +1091,6 @@
   <RWS_VqeDrones_AssembledDesc>自勢力の自動組立機で生産タイマーが完了し、実際にスポーンしたドローン数（種類別）。タイマーの進行だけ、スポーン失敗、卵からの孵化は含みません。</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory ドローン孵化成功数</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>卵から実際にスポーンした自勢力のドローン数（種類別）。ドローン生成を伴わない卵の破壊、自動組立機での生産は含みません。</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded パイプ貯蔵Deepchem量</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>自勢力のポンプジャックからパイプ貯蔵へ実際に受け入れられたDeepchem量（小数単位も記録）。予定生産量、地面への排出、満杯による受入失敗は含みません。</RWS_VceDeepchem_StoredUnitsDesc>
 </LanguageData>
