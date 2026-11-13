@@ -1067,4 +1067,6 @@
   <RWS_VfeClassical_SenatorFavorsDesc>通常の外交またはクエストで、未支持状態から新たに支持を得た議員の数（勢力別）。開発モード操作、すでに支持済みの議員、セーブ復元は含みません。</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>VFE Empire 儀式によって正式に授与された栄誉</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>儀式が成功した際に、保留状態から入植者に正式授与された栄誉の累計（種類別）。栄誉候補の追加や開発用操作は含みません。</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>VSIE インスピレーション願望達成数</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで入植者の発想状態と一致した願望が新たに完了した回数（発想種類別）。未達成の進捗、期限切れ、別の発想は含みません。</RWS_Vsie_AspirationsCompletedDesc>
 </LanguageData>
