@@ -19,6 +19,7 @@ using RimworldStatistics.VfeMedieval2;
 using RimworldStatistics.VfeSecurityArtillery;
 using RimworldStatistics.VfeFactory;
 using RimworldStatistics.VfePirates;
+using RimworldStatistics.VqeAncients;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -54,6 +55,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeSecurityArtilleryStatistics.Build());
         result.AddRange(VfeFactoryStatistics.Build());
         result.AddRange(VfePiratesStatistics.Build());
+        result.AddRange(VqeAncientsStatistics.Build());
         return result;
     }
 }
