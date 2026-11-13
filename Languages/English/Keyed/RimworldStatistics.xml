@@ -1085,4 +1085,6 @@
   <RWS_VefCooking_BatchesDesc>Completed VEF soup, cheese and other independent processes owned by Vanilla Cooking Expanded, grouped by ProcessDef. Ordinary bill crafting and partially blocked output are excluded.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing fermentation and aging batches</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches owned by Vanilla Brewing Expanded, grouped by ProcessDef. Paused, blocked or unfinished output and generic bill crafting are excluded.</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy guest meal silver collected</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>Silver actually transferred by a non-player restaurant customer for a meal at a player-owned restaurant. Partial payments contribute their transferred amounts; uncollected debts, free meals and unrelated trade do not count.</RWS_Gastronomy_SilverCollectedDesc>
 </LanguageData>
