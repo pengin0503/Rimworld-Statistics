@@ -16,6 +16,7 @@ public static class MetricGates
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
     private static IReadOnlySet<string> productionSelection = new HashSet<string>(StringComparer.Ordinal);
+    private static IReadOnlySet<string> optionalSelection = new HashSet<string>(StringComparer.Ordinal);
     private static IReadOnlyDictionary<string, AcquisitionUnit> optionalUnits =
         new Dictionary<string, AcquisitionUnit>(StringComparer.Ordinal);
 
@@ -26,7 +27,7 @@ public static class MetricGates
             productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
     }
 
-    /// <summary>Register optional units during startup only, using the startup-frozen user selection.</summary>
+    /// <summary>Register optional units and refresh their enabled set after settings changes.</summary>
     public static void ConfigureOptionalUnits(IReadOnlyCollection<AcquisitionUnit> units, ExperimentalSelection selection)
     {
         lock (Gate)
@@ -46,11 +47,11 @@ public static class MetricGates
                     ? valid.Keys.AsEnumerable()
                     : selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
-            productionSelection = productionSelection.Concat(explicitIds).ToHashSet(StringComparer.Ordinal);
+            optionalSelection = explicitIds.ToHashSet(StringComparer.Ordinal);
         }
     }
 
-    /// <summary>Selection frozen at startup, independent of whether targets were compatible.</summary>
+    /// <summary>Current user selection, independent of whether compatible hooks were installed.</summary>
     internal static bool IsSelected(string unitId)
     {
         lock (Gate)
@@ -58,7 +59,7 @@ public static class MetricGates
             var unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
             return unit is not null && unit.Kind != AcquisitionKind.Derived
                 && (unit.Status == AcquisitionStatus.Verified || productionSelection.Contains(unitId)
-                    || OpenedForVerification.Contains(unitId));
+                    || optionalSelection.Contains(unitId) || OpenedForVerification.Contains(unitId));
         }
     }
 
@@ -107,20 +108,18 @@ public static class MetricGates
             + "Use a separate -savedatafolder; values recorded now are not published.");
     }
 
-    /// <summary>Configured open, its DLC active, and not failed.</summary>
-    public static bool IsOpen(string unitId)
+    /// <summary>
+    /// True when a unit may install its hooks or reader. This is deliberately
+    /// independent of the current user selection so enabling a unit in the
+    /// settings screen never requires a RimWorld restart.
+    /// </summary>
+    public static bool IsInstallEligible(string unitId)
     {
         AcquisitionUnit? unit;
         lock (Gate)
-            unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
-        if (unit is null)
-            return false;
-        lock (Gate)
         {
-            if (Failed.Contains(unitId))
-                return false;
-            if (unit.Status != AcquisitionStatus.Verified && !productionSelection.Contains(unitId)
-                && !OpenedForVerification.Contains(unitId))
+            unit = AcquisitionUnits.Find(unitId) ?? optionalUnits.GetValueOrDefault(unitId);
+            if (unit is null || unit.Kind == AcquisitionKind.Derived || Failed.Contains(unitId))
                 return false;
         }
         if (unit.RequiredDlc is not null && !ModsConfig.IsActive(unit.RequiredDlc))
@@ -147,6 +146,9 @@ public static class MetricGates
                 && (unitId == DbhStatistics.FixturesUnit || DbhActivityMetricPatch.Available);
         return true;
     }
+
+    /// <summary>Currently selected, compatible, and not failed.</summary>
+    public static bool IsOpen(string unitId) => IsSelected(unitId) && IsInstallEligible(unitId);
 
     /// <summary>Open and with its hooks in place.</summary>
     public static bool FailedThisSession(string unitId)
