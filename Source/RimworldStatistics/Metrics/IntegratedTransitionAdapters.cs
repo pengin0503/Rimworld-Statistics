@@ -23,6 +23,7 @@ using RimworldStatistics.VqeAncients;
 using RimworldStatistics.VfeSettlers;
 using RimworldStatistics.RimatomicsByproducts;
 using RimworldStatistics.CombatExtendedEvents;
+using RimworldStatistics.VfePirateHiring;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -62,6 +63,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeSettlersStatistics.Build());
         result.AddRange(RimatomicsByproductStatistics.Build());
         result.AddRange(CombatExtendedEventStatistics.Build());
+        result.AddRange(VfePirateHiringStatistics.Build());
         return result;
     }
 }
