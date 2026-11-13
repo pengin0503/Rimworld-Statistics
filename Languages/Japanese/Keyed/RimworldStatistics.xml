@@ -1063,6 +1063,12 @@
   <RWS_VaeAspirations_CompletedDesc>プレイヤー入植者が通常の達成判定で新たに完了した願望数（願望種類別）。デバッグ達成、既達成または未割当の願望、ロードによる復元は含みません。</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 プレイヤーの巣での誕生数</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>通常の時間経過で自勢力の巣から新たにスポーンした虫の累計（種類別）。繭による置換、既存個体の復元、開発用スポーン操作は含みません。</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VehicleFramework_OwnedPeak>所有車両の最多数</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>保存時に観測した自勢力の現存車両数のコロニー別最多値。マップ上、キャラバン、飛行中、退避中の車両を含みます。車種別の内訳は最多値を記録した保存時点のものです。</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VfeDeserters_IntelPaid>Deserters 支払った情報の数</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaidDesc>脱走兵ネットワークで支払いが受理され、自拠点の在庫から実際に減った通常の情報の数。</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Deserters 支払った重要情報の数</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>脱走兵ネットワークで支払いが受理され、自拠点の在庫から実際に減った重要情報の数。</RWS_VfeDeserters_CriticalIntelPaidDesc>
   <RWS_VfeClassical_SenatorFavors>VFE Classical 新規の元老院議員支持獲得数</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>通常の外交またはクエストで、未支持状態から新たに支持を得た議員の数（勢力別）。開発モード操作、すでに支持済みの議員、セーブ復元は含みません。</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>VFE Empire 儀式によって正式に授与された栄誉</RWS_VfeEmpire_HonorsBestowed>

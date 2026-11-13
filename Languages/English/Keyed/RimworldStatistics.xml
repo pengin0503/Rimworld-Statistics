@@ -1063,6 +1063,12 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VehicleFramework_OwnedPeak>Peak owned vehicles</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>Highest observed number of living player-owned Vehicle Framework vehicles per colony, including maps, caravans, flights and stashes. Recorded on successful saves. Vehicle types are shown for the save at the peak.</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VfeDeserters_IntelPaid>Deserters intelligence spent</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaidDesc>Ordinary intelligence items removed from player home-map stock by accepted Deserter Network payments.</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Deserters critical intelligence spent</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>Critical intelligence items removed from player home-map stock by accepted Deserter Network payments.</RWS_VfeDeserters_CriticalIntelPaidDesc>
   <RWS_VfeClassical_SenatorFavors>VFE Classical senator favors newly gained</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>Previously unfavored senators who become favored through normal diplomacy or quests, grouped by faction. Developer actions, already favored senators and historical save restoration do not count.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>VFE Empire honors formally bestowed</RWS_VfeEmpire_HonorsBestowed>
