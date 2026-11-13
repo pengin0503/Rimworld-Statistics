@@ -15,6 +15,7 @@ using RimworldStatistics.VqeDroneFactory;
 using RimworldStatistics.VceDeepchem;
 using RimworldStatistics.VgeExtraction;
 using RimworldStatistics.VnpeGrinder;
+using RimworldStatistics.VfeMedieval2;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -46,6 +47,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VceDeepchemStatistics.Build());
         result.AddRange(VgeExtractionStatistics.Build());
         result.AddRange(VnpeGrinderStatistics.Build());
+        result.AddRange(VfeMedieval2Statistics.Build());
         return result;
     }
 }
