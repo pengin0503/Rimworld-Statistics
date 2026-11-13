@@ -1065,4 +1065,6 @@
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VfeClassical_SenatorFavors>VFE Classical senator favors newly gained</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>Previously unfavored senators who become favored through normal diplomacy or quests, grouped by faction. Developer actions, already favored senators and historical save restoration do not count.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>VFE Empire honors formally bestowed</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>Pending VFE Empire honors actually bestowed on a player colonist at completion of a ritual, grouped by honor definition. Merely receiving an available honor or developer actions are excluded.</RWS_VfeEmpire_HonorsBestowedDesc>
 </LanguageData>
