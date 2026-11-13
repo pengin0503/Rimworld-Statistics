@@ -5,6 +5,7 @@ using RimworldStatistics.VfeInsectoids;
 using RimworldStatistics.VfeClassical;
 using RimworldStatistics.VfeEmpire;
 using RimworldStatistics.Vsie;
+using RimworldStatistics.GiddyUp;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -26,6 +27,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeClassicalStatistics.Build());
         result.AddRange(VfeEmpireStatistics.Build());
         result.AddRange(VsieStatistics.Build());
+        result.AddRange(GiddyUpMountStatistics.Build());
         return result;
     }
 }
