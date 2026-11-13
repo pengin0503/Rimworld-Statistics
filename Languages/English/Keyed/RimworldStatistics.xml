@@ -1091,4 +1091,6 @@
   <RWS_VqeDrones_AssembledDesc>Player-owned drones actually spawned by the automated drone assembler when its production timer finishes, by pawn kind. Mere timer progress, failed spawn and egg hatching are excluded.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory hatched drones</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Player drones actually born through successful egg hatching, by pawn kind. Destroyed eggs without a spawned drone and independently assembled drones are excluded.</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded Deepchem accepted into pipes</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>The actual fractional Deepchem units accepted into pipe storage by a player-owned pumpjack, measured at PipeSystem's successful storage call. Requested yield, ground placement and blocked storage do not count.</RWS_VceDeepchem_StoredUnitsDesc>
 </LanguageData>
