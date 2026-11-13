@@ -13,6 +13,8 @@ using RimworldStatistics.VseExpertise;
 using RimworldStatistics.VefProcessing;
 using RimworldStatistics.Gastronomy;
 using RimworldStatistics.SimpleWarrants;
+using RimworldStatistics.SaveOurShip2;
+using RimworldStatistics.RimWorldOfMagic;
 using RimworldStatistics.VqeDroneFactory;
 using RimworldStatistics.VqeGenerator;
 using RimworldStatistics.VqeCryptoforge;
@@ -61,6 +63,8 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VefProcessingStatistics.Build());
         result.AddRange(GastronomyPaymentStatistics.Build());
         result.AddRange(SimpleWarrantsStatistics.Build());
+        result.Add(SaveOurShip2Statistics.Build());
+        result.Add(RimWorldOfMagicStatistics.Build());
         result.AddRange(VqeDroneFactoryStatistics.Build());
         result.Add(VqeGeneratorStatistics.Build());
         result.Add(VqeCryptoforgeStatistics.Build());
