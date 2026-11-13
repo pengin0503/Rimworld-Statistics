@@ -1,6 +1,7 @@
 using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
+using RimworldStatistics.VfeInsectoids;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -18,6 +19,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VaeAchievementsStatistics.Build());
         result.AddRange(VfeTribalsStatistics.Build());
         result.AddRange(VaeAspirationsStatistics.Build());
+        result.AddRange(VfeInsectoidsStatistics.Build());
         return result;
     }
 }
