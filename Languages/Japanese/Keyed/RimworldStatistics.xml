@@ -1101,4 +1101,8 @@
   <RWS_VfeMedieval2_HoneyItemsDesc>自勢力の養蜂箱から入植者が取り出し、実際に配置またはスタックへ統合できた蜂蜜の個数（種類別）。収穫可能状態だけ、配置失敗、後続の運搬は含みません。</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security マップ外砲撃の弾着マップ射出成功数</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>自勢力のマップ外砲撃弾が目的地に到達し、対象マップで砲弾が実際に射出された数（砲弾種類別）。照準命令、未到着、弾生成失敗は含みません。命中数ではありません。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeFactory_Harvested>VFE Factory 自動収穫したアイテム数</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_HarvestedDesc>自勢力の自動農機が新たに収穫してバッファへ格納、または地面へ配置したアイテム数（収穫物種類別）。後続のホッパー搬出、配置失敗、通常の入植者の収穫は含みません。</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>VFE Factory 自動播種した植物数</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>自勢力の自動農機の処理行で新規スポーンし、播種状態になった設定作物の数（植物種類別）。失敗した播種と既存の植物は含みません。</RWS_VfeFactory_SownDesc>
 </LanguageData>
