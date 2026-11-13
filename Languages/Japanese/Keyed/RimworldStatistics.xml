@@ -1071,6 +1071,8 @@
   <RWS_VaeAspirations_CompletedDesc>プレイヤー入植者が通常の達成判定で新たに完了した願望数（願望種類別）。デバッグ達成、既達成または未割当の願望、ロードによる復元は含みません。</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 プレイヤーの巣での誕生数</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>通常の時間経過で自勢力の巣から新たにスポーンした虫の累計（種類別）。繭による置換、既存個体の復元、開発用スポーン操作は含みません。</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeGenerator_Upgrades>The Generator ARCアップグレード完了数</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_UpgradesDesc>自勢力の既存ARC発電機を同じ場所で置き換えた工事の完了数。アップグレード先の発電機の種類別に記録します。</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>所有車両の最多数</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>保存時に観測した自勢力の現存車両数のコロニー別最多値。マップ上、キャラバン、飛行中、退避中の車両を含みます。車種別の内訳は最多値を記録した保存時点のものです。</RWS_VehicleFramework_OwnedPeakDesc>
   <RWS_VfeDeserters_IntelPaid>Deserters 支払った情報の数</RWS_VfeDeserters_IntelPaid>
