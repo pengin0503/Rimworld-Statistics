@@ -1095,4 +1095,6 @@
   <RWS_VceDeepchem_StoredUnitsDesc>The actual fractional Deepchem units accepted into pipe storage by a player-owned pumpjack, measured at PipeSystem's successful storage call. Requested yield, ground placement and blocked storage do not count.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded DNA extraction outputs</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged by successful player-controlled extractions, by output ThingDef. Invalid targets, failed placements, charge consumption without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStoredDesc>The actual fractional nutrient slurry units accepted into the pipe network by player-owned Vanilla Nutrient Paste Expanded grinders. Grinder attempts, ingredient consumption without accepted slurry and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
 </LanguageData>
