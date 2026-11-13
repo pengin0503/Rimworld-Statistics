@@ -15,7 +15,7 @@ internal sealed record ModMetricAdapterRegistration(
     Func<MetricEntry?>? CaptureSnapshot = null,
     string ProviderVersion = "1.0.0");
 
-/// <summary>Frozen at the startup adapter pass; absent optional mods have no hooks or save-time work.</summary>
+/// <summary>Installed once for compatible optional mods; recording preference is mutable at runtime.</summary>
 internal static class ModProviderAdapters
 {
     private sealed record Enabled(ModMetricAdapterRegistration Registration, string? OwnerVersion);
@@ -72,7 +72,7 @@ internal static class ModProviderAdapters
             return;
         initialized = true;
         var declarations = Declarations.Value;
-        // Every external addon is opt-in; no third-party collector is built into the host.
+        // Only providers with installed target MODs are considered; user opt-in is a live gate.
         var installed = ModProviderGameDiscovery.ActivePackages();
         MetricGates.ConfigureOptionalUnits(KnownUnits, RimworldStatisticsMod.ActiveAcquisitionSelection);
         var registry = new ModMetricProviderRegistry();
@@ -90,16 +90,21 @@ internal static class ModProviderAdapters
                 continue;
             }
             var id = descriptor.AcquisitionId;
-            if (!MetricGates.IsOpen(id))
+            // Hook registration must not depend on a preference that can change
+            // in-game. Avoid even probing definitions for an absent target MOD.
+            if (!MetricGates.IsInstallEligible(id)
+                || !installed.Any(x => string.Equals(x.PackageId, descriptor.OwnerPackageId,
+                    StringComparison.OrdinalIgnoreCase)))
                 continue;
             var presentDefs = descriptor.RequiredDefNames.Count == 0 ? null
                 : ModProviderGameDiscovery.ExistingDefs(descriptor.RequiredDefNames);
             var eligibility = ModProviderDiscovery.Resolve(descriptor, installed, presentDefs);
             if (!eligibility.Available)
             {
-                Log.WarningOnce($"[RimworldStatistics] Selected optional acquisition '{id}' unavailable: "
-                    + $"{eligibility.State} ({eligibility.Detail ?? descriptor.OwnerPackageId}).",
-                    ("RWS.provider.unavailable." + id).GetHashCode());
+                if (MetricGates.IsSelected(id))
+                    Log.WarningOnce($"[RimworldStatistics] Selected optional acquisition '{id}' unavailable: "
+                        + $"{eligibility.State} ({eligibility.Detail ?? descriptor.OwnerPackageId}).",
+                        ("RWS.provider.unavailable." + id).GetHashCode());
                 continue;
             }
             if (descriptor.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
