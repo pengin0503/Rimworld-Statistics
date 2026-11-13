@@ -1105,4 +1105,6 @@
   <RWS_VfeFactory_HarvestedDesc>Items newly harvested by a player-owned Autofarmer, including real harvest-buffer increases and confirmed ground placement, grouped by output ThingDef. Later hopper offloading, rejected placement and generic pawn harvesting are excluded.</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory Autofarmer plants sown</RWS_VfeFactory_Sown>
   <RWS_VfeFactory_SownDesc>New plants actually spawned, marked sown and matched to the selected crop during a player Autofarmer ProcessRow, grouped by plant ThingDef. Unsuccessful rows and old plants are excluded.</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>VFE Pirates Warcasket fittings completed</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>Fully completed player Warcasket fittings through normal welding, confirmed by project clearing and three newly worn matching pieces, grouped by armor Def. Incomplete jobs, partial outfit application and developer completion are excluded.</RWS_VfePirates_WarcasketFitsDesc>
 </LanguageData>
