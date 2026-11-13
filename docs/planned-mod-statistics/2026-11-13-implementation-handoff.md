@@ -88,6 +88,10 @@ unzip -t /tmp/RimworldStatisticsVerifyHarness-planned-mods.zip
 - [ ] After implementing the planned slices, use the [VerifyHarness](../../tools/VerifyHarness/README.md) with RimWorld-for-mod-test for any available 1.7 target. Exercise successful action, failed action, save and checkpoint, reload and repeat, a second independent colony, then load Statistics with the target absent and inspect historical values. For VSIE, use a disposable copy of one supplied save for an existing-mod load baseline and trigger a fresh aspiration separately. Other MODs need a targeted fixture. Report build, IL, game parity and TPS evidence individually.
 - [ ] In each implementation PR, link the disposition row and report fulfilled outcomes and remaining secondary proposals. Candidate verification and implementation may land independently across targets. This plan itself carries no release or Workshop operation.
 
+## Tasks 23–25 — Supplied MODs
+
+Follow the [supplied MOD audit](2026-11-13-supplied-mod-audit.md) for Combat Extended, Gastronomy and Prison Expanded, plus the conditional Simple Warrants contract. Apply the same startup, opt-in, checkpoint, translation and package rules.
+
 ## Input priorities after the first slices
 
 Follow the popularity ranking for eligible candidates. Start with B03 using the locked Rimefeller binary and the traced production predicates, then schedule the remaining conditional rows by existing reach evidence. C07 already uses generic coverage for newspaper production. Resume the other rows as their listed evidence becomes available. For input-needed rows use public author archives or already authorized test inputs. A fresh archive is only needed when those sources lack the exact 1.7 release.
