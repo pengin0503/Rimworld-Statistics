@@ -1117,4 +1117,8 @@
   <RWS_VfeSettlers_BountySilverDesc>Silver actually added to the player caravan by the first reward transfer in a successful VFE Settlers wanted-person hand-in. Excludes the criminal's items and any silver in those belongings.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics reprocessing by-products actually placed</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>Items actually placed or merged as by-products during a player-owned plutonium processor's completed fuel unload, grouped by output ThingDef. Returned spent fuel, merely processed material and unrelated placements do not count.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Combat Extended ammunition rounds consumed</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>Real rounds deducted from player-colonist weapon magazines or destroyed through direct-feed shooting, grouped by AmmoDef. Reload movements, dry fires, turret consumption and debug ammo replenishment do not count.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_SuppressionReceived>Combat Extended new suppression on player colonists</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceivedDesc>Player-colony pawns newly entering the Combat Extended suppressed state, counted once per transition out of an unsuppressed state. Repeated suppression while already suppressed and developer test suppression are excluded. This measures suppression received, not suppression inflicted on enemies.</RWS_CE_SuppressionReceivedDesc>
 </LanguageData>
