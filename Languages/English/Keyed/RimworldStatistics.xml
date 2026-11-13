@@ -1071,4 +1071,6 @@
   <RWS_Vsie_AspirationsCompletedDesc>Newly completed aspirations tied to the colonist's active inspiration in Vanilla Social Interactions Expanded, grouped by inspiration. Incomplete progress, expiration and unrelated inspirations do not count.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 successful mount sessions</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Player colonists who successfully start riding owned animals through a completed Giddy-Up Mount job, grouped by animal kind. Pre-mounted arrivals, queued commands and repeat observations do not count.</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Combat Extended successful pawn reloads</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>Completed player-pawn reload actions that actually move ammunition into a weapon magazine. Each DoReload action counts once even when it loads several ammo stacks. Turrets, auto-loaders, disabled ammo and failed actions are excluded.</RWS_CombatExtended_ReloadsDesc>
 </LanguageData>
