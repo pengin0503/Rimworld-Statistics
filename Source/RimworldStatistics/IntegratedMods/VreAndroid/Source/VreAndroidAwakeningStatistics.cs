@@ -23,7 +23,7 @@ internal static class VreAndroidAwakeningStatistics
     private static FieldInfo? pawnField;
     private static MethodInfo? isAwakened;
 
-    private sealed record BeforeAwakening(Pawn Pawn, bool WasAwakened, bool NormalTick);
+    private sealed record AwakeningBefore(Pawn Pawn, bool WasAwakened, bool NormalTick);
 
     private static readonly LiveFamily Family = new()
     {
@@ -117,7 +117,7 @@ internal static class VreAndroidAwakeningStatistics
         return false;
     }
 
-    private static void BeforeAwakening(object __instance, out BeforeAwakening? __state)
+    private static void BeforeAwakening(object __instance, out AwakeningBefore? __state)
     {
         __state = null;
         if (!CanObserve())
@@ -127,12 +127,12 @@ internal static class VreAndroidAwakeningStatistics
             var pawn = pawnField?.GetValue(__instance) as Pawn;
             if (pawn is null || !GameFacts.IsMember(pawn) || IsAwakened(pawn))
                 return;
-            __state = new BeforeAwakening(pawn, WasAwakened: false, NormalTick: NaturalOrigin());
+            __state = new AwakeningBefore(pawn, WasAwakened: false, NormalTick: NaturalOrigin());
         }
         catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
-    private static void AfterAwakening(bool __runOriginal, BeforeAwakening? __state)
+    private static void AfterAwakening(bool __runOriginal, AwakeningBefore? __state)
     {
         if (!__runOriginal || __state is null || !CanObserve())
             return;
