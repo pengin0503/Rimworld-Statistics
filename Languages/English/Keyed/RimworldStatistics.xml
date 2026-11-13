@@ -1099,4 +1099,6 @@
   <RWS_VnpeGrinder_SlurryStoredDesc>The actual fractional nutrient slurry units accepted into the pipe network by player-owned Vanilla Nutrient Paste Expanded grinders. Grinder attempts, ingredient consumption without accepted slurry and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 honey actually harvested</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Honey units successfully placed or merged after a player colonist unloads a player-owned Medieval2 apiary, grouped by output ThingDef. Production readiness, failed placements and later hauling are excluded.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security cross-map artillery projectiles launched</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Successful target-map projectile launches from player-owned off-map artillery when a traveling world shell arrives, grouped by projectile definition. Target orders, transit without arrival and shots with no spawned projectile do not count. This does not measure target hits.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
 </LanguageData>
