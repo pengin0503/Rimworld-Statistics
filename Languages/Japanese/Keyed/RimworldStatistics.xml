@@ -1111,4 +1111,8 @@
   <RWS_VqeAncients_RejectedDesc>自勢力の注入装置で実際に拒絶結果となり、対象が生存状態で排出され注入昏睡を発症した回数。中断、未確定の結果、遺伝子選択待ちの成功は含みません。Biotechが必要です。</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients 注入による変異完了数</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>自勢力の注入装置で元の対象が消失し、選択された種類の変異体が実際に生成された回数（PawnKindDef別）。別のスポーン、中断、成功結果の遺伝子選択待ちは含みません。Biotechが必要です。</RWS_VqeAncients_MutationsDesc>
+  <RWS_VfeSettlers_BountyHandins>VFE Settlers 賞金首引き渡し成功回数</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandinsDesc>プレイヤーのキャラバンが賞金首またはその遺体を実際に引き渡し、銀の報酬を受領した回数。コマンド表示、対象不在、報酬受取失敗、所有物の引き渡しは含みません。</RWS_VfeSettlers_BountyHandinsDesc>
+  <RWS_VfeSettlers_BountySilver>VFE Settlers 賞金報酬の受領銀貨数</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilverDesc>賞金首引き渡し時、最初の報酬移動によってキャラバンに実際に加わった銀貨の累計。対象が持っていた品物や銀貨は含みません。</RWS_VfeSettlers_BountySilverDesc>
 </LanguageData>
