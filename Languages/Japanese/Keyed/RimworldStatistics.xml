@@ -1059,4 +1059,6 @@
   <RWS_VfeTribals_EraAdvancesDesc>プレイヤー勢力の技術時代が実際に上昇した回数（時代別）。初期化、同一・後退、ロード復元は含みません。</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>VFE Tribals コーナーストーン獲得数</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>通常プレイ中にポイントを消費して新規獲得したコーナーストーン数（種類別）。既存の取得状態やロード時の復元は含みません。</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded 願望達成数</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>プレイヤー入植者が通常の達成判定で新たに完了した願望数（願望種類別）。デバッグ達成、既達成または未割当の願望、ロードによる復元は含みません。</RWS_VaeAspirations_CompletedDesc>
 </LanguageData>
