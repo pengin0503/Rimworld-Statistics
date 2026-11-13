@@ -1099,4 +1099,6 @@
   <RWS_VnpeGrinder_SlurryStoredDesc>自勢力のVanilla Nutrient Paste Expanded粉砕機からパイプ網へ実際に受け入れられた栄養スラリーの累計（小数も記録）。加工試行、貯蔵を伴わない材料消費、他の装置による貯蔵は含みません。</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 養蜂箱からの蜂蜜収穫数</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>自勢力の養蜂箱から入植者が取り出し、実際に配置またはスタックへ統合できた蜂蜜の個数（種類別）。収穫可能状態だけ、配置失敗、後続の運搬は含みません。</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security マップ外砲撃の弾着マップ射出成功数</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>自勢力のマップ外砲撃弾が目的地に到達し、対象マップで砲弾が実際に射出された数（砲弾種類別）。照準命令、未到着、弾生成失敗は含みません。命中数ではありません。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
 </LanguageData>
