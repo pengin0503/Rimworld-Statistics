@@ -1071,4 +1071,6 @@
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで入植者の発想状態と一致した願望が新たに完了した回数（発想種類別）。未達成の進捗、期限切れ、別の発想は含みません。</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 騎乗開始成功回数</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>プレイヤー入植者がGiddy-Upの騎乗ジョブを完了し、自勢力の動物への騎乗を実際に開始した回数（動物種類別）。既に騎乗した状態での登場、予約指示、重複状態は除外します。</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Combat Extended 入植者の武器リロード成功回数</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>入植者の武器弾倉に弾薬が実際に追加されたリロード動作の累計。同じ動作中に複数の弾薬スタックを補充しても1回とします。砲塔、自動装填、弾薬無効、失敗した操作は含みません。</RWS_CombatExtended_ReloadsDesc>
 </LanguageData>
