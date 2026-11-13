@@ -13,8 +13,8 @@
 ## Global constraints
 
 - Use the selected DLL, PackageId and declaring type/signature from the lock. Validate method/field shape and assembly ownership before registering the affected family. Use reflection/delegates bound once, guarded callbacks and only actual required DLC. Source/IL evidence here is from the pinned public trees. Real-game compatibility is a separate result.
-- Use one checkpoint-based opt-in acquisition per family. Sum the representative observation of each independent colony through the existing aggregator. Same-colony saves and rewind branches must follow the existing checkpoint lineage. A missing, disabled, unsupported or interrupted target preserves prior data and coverage semantics.
-- Keep descriptors Unverified and opt-in. No retrospective inference from current pawn records, stock, loaded lists or enabled-MOD metadata. Use EN/JA labels and descriptions that describe the exact event and unit. Historical display follows the existing experimental settings.
+- Use one checkpoint-based acquisition per family, enabled by default for eligible units on new installations while preserving explicit user opt-outs. Sum the representative observation of each independent colony through the existing aggregator. Same-colony saves and rewind branches must follow the existing checkpoint lineage. A missing, disabled, unsupported or interrupted target preserves prior data and coverage semantics.
+- Keep descriptors Unverified; enable eligible acquisitions by default on new installations and honor saved opt-outs. No retrospective inference from current pawn records, stock, loaded lists or enabled-MOD metadata. Use EN/JA labels and descriptions that describe the exact event and unit. Historical display follows the existing experimental settings.
 - Keep build references optional. Use no compile-time assembly reference to the observed MOD. Store only numbers, qualified Def keys and existing provider metadata. Never store pawn names, player identifiers, third-party files or attached saves in the repository.
 - Save filtering and output packaging remain in the current pipeline. New live callbacks must return before reflection, allocations or collection traversal when their unit is closed. A task needs build/package evidence and reports in-game parity and performance separately where the 1.7 test host is usable.
 
@@ -90,7 +90,7 @@ unzip -t /tmp/RimworldStatisticsVerifyHarness-planned-mods.zip
 
 ## Tasks 23–25 — Supplied MODs
 
-Follow the [supplied MOD audit](2026-11-13-supplied-mod-audit.md) for Combat Extended, Gastronomy and Prison Expanded, plus the conditional Simple Warrants contract. Apply the same startup, opt-in, checkpoint, translation and package rules.
+Follow the [supplied MOD audit](2026-11-13-supplied-mod-audit.md) for Combat Extended, Gastronomy and Prison Expanded, plus the conditional Simple Warrants contract. Apply the same startup, default-on with preserved opt-outs, checkpoint, translation and package rules.
 
 ## Tasks 26–34 — Required second-wave MOD outcomes
 
