@@ -17,6 +17,7 @@ internal static class CoverageTab
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
     private static StatsView? builtFor;
     private static object? language;
+    private static long recordingRevision = -1;
     private static IReadOnlyList<MetricStatus> statuses = [];
     private static DisplayRow[] rows = [];
     private static bool rebuildRows = true;
@@ -33,15 +34,20 @@ internal static class CoverageTab
     public static void Draw(Rect rect, StatsView view)
     {
         var activeLanguage = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, activeLanguage))
+        var viewChanged = !ReferenceEquals(builtFor, view) || !ReferenceEquals(language, activeLanguage);
+        var currentRecordingRevision = MetricGates.RecordingRevision;
+        if (viewChanged || recordingRevision != currentRecordingRevision)
         {
             statuses = MetricStatusClassifier.Classify(view, UnitRecordingStates.Get);
             builtFor = view;
             language = activeLanguage;
-            var groups = statuses.Select(GroupId).Distinct(StringComparer.Ordinal).ToArray();
-            Expanded.UnionWith(groups);
+            recordingRevision = currentRecordingRevision;
+            if (viewChanged)
+            {
+                Expanded.UnionWith(statuses.Select(GroupId));
+                scroll = Vector2.zero;
+            }
             rebuildRows = true;
-            scroll = Vector2.zero;
             var countMeasured = statuses.Count(s => s.Availability == MetricAvailability.AllMeasuredColonies
                 && !MetricStatusClassifier.IsPartial(s));
             var countPartial = statuses.Count(s => s.Measured > 0 && MetricStatusClassifier.IsPartial(s));

@@ -10,6 +10,9 @@ public sealed record HistoricalCounterInterval(
     int StartTick, int EndTick, long RaidsIncrease, long ColonistDeathsIncrease)
 {
     public MetricCoverage Coverage => MetricCoverage.Partial;
+    public string? ColonyName { get; init; }
+    public string? ParentSaveName { get; init; }
+    public string? ChildSaveName { get; init; }
 }
 
 /// <summary>
@@ -23,11 +26,52 @@ public static class HistoricalCounterIntervals
 {
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
-    public static IReadOnlyList<HistoricalCounterInterval> Evaluate(Profile profile)
+    internal sealed record Point(MetricObservationSource Source, string Key, string? ParentKey,
+        string? PayloadHash, int SaveTick, string? GameVersion, string? ModSetHash, string[]? ActiveDlcIds,
+        ColonyIdentity Identity, bool Conflicted, SaveAlias[] Aliases, long? Raids, long? Deaths);
+
+    internal sealed record Inputs(Point[] Observations, IReadOnlyDictionary<string, string> ColonyNames);
+
+    // Capture only fields needed by the diagnostic, while the session lock is held.
+    internal static Inputs Capture(Profile profile)
     {
-        var all = profile.MetricObservations.Where(o => !o.IsQuarantined).ToArray();
-        var checkpoints = all.Where(o => o.Source == MetricObservationSource.Checkpoint).ToArray();
-        var saves = all.Where(o => o.Source == MetricObservationSource.SaveFile).ToArray();
+        var names = new Dictionary<string, (int Tick, string Name)>(Ord);
+        void Remember(ColonyIdentity identity, int tick, DisplayInfo display)
+        {
+            if (identity.ModCampaignId is not { Length: > 0 } id
+                || (display.FactionName ?? display.WorldName) is not { Length: > 0 } name)
+                return;
+            if (!names.TryGetValue(id, out var previous) || tick >= previous.Tick)
+                names[id] = (tick, name);
+        }
+        foreach (var save in profile.SaveObservations)
+            if (save.Status == ObservationStatus.Ok)
+                Remember(save.Identity, save.Values.TicksGame, save.Display);
+        foreach (var live in profile.LiveCampaigns)
+            if (live.HasObservation)
+                Remember(live.Identity, live.Max.TicksGame, live.Display);
+
+        var observations = profile.MetricObservations
+            .Where(o => !o.IsQuarantined && o.Source is MetricObservationSource.SaveFile or MetricObservationSource.Checkpoint)
+            .Select(o => new Point(o.Source, o.Key, o.ParentKey, o.PayloadHash, o.SaveTick, o.GameVersion,
+                o.ModSetHash, o.ActiveDlcIds?.ToArray(), o.Identity.Clone(), o.Conflicted,
+                o.FileAliases.Select(a => new SaveAlias(o.SaveTick, o.GameVersion, a.FileName, a.FileSize, a.LastWriteUtc)).ToArray(),
+                o.Source == MetricObservationSource.SaveFile ? Counter(o, MetricKeys.RaidsPerYear) : null,
+                o.Source == MetricObservationSource.SaveFile ? Counter(o, MetricKeys.DeathsPerYear) : null))
+            .ToArray();
+
+        return new Inputs(observations, names.ToDictionary(pair => pair.Key, pair => pair.Value.Name, Ord));
+    }
+
+    public static IReadOnlyList<HistoricalCounterInterval> Evaluate(Profile profile) => Evaluate(Capture(profile));
+
+    private static IReadOnlyList<HistoricalCounterInterval> Evaluate(Inputs inputs)
+    {
+        var checkpoints = inputs.Observations.Where(o => o.Source == MetricObservationSource.Checkpoint).ToArray();
+        // An indexed alias match preserves distinct source observations while allowing byte-identical copies.
+        var saves = inputs.Observations.Where(o => o.Source == MetricObservationSource.SaveFile)
+            .SelectMany(o => o.Aliases.Select(a => (Key: a, Save: o)))
+            .ToLookup(x => x.Key, x => x.Save);
         var uniqueCheckpoints = checkpoints.GroupBy(o => o.Key, Ord)
             .Where(g => !string.IsNullOrEmpty(g.Key) && g.Count() == 1)
             .ToDictionary(g => g.Key, g => g.Single(), Ord);
@@ -64,17 +108,22 @@ public static class HistoricalCounterIntervals
                 || !SameSavedDlc(through.ActiveDlcIds, child.ActiveDlcIds))
                 continue;
 
-            var fromRaids = Counter(from, MetricKeys.RaidsPerYear);
-            var toRaids = Counter(through, MetricKeys.RaidsPerYear);
-            var fromDeaths = Counter(from, MetricKeys.DeathsPerYear);
-            var toDeaths = Counter(through, MetricKeys.DeathsPerYear);
+            var fromRaids = from.Raids;
+            var toRaids = through.Raids;
+            var fromDeaths = from.Deaths;
+            var toDeaths = through.Deaths;
             if (fromRaids is null || toRaids is null || fromDeaths is null || toDeaths is null
                 || toRaids < fromRaids || toDeaths < fromDeaths)
                 continue;
 
             found.Add(new HistoricalCounterInterval(parent.Key, child.Key,
                 parent.SaveTick, child.SaveTick, toRaids.Value - fromRaids.Value,
-                toDeaths.Value - fromDeaths.Value));
+                toDeaths.Value - fromDeaths.Value)
+            {
+                ColonyName = inputs.ColonyNames.GetValueOrDefault(child.Identity.ModCampaignId!),
+                ParentSaveName = BoundaryName(parent, from),
+                ChildSaveName = BoundaryName(child, through),
+            });
         }
         return found.OrderBy(x => x.ParentCheckpointId, Ord)
             .ThenBy(x => x.ChildCheckpointId, Ord).ToArray();
@@ -85,27 +134,32 @@ public static class HistoricalCounterIntervals
     /// non-zero change are displayed, with no cumulative total across forks.
     /// </summary>
     public static IReadOnlyList<HistoricalCounterInterval> ForDiagnostics(Profile profile)
-        => Evaluate(profile).Where(row => row.RaidsIncrease > 0 || row.ColonistDeathsIncrease > 0)
+        => ForDiagnostics(Capture(profile));
+
+    internal static IReadOnlyList<HistoricalCounterInterval> ForDiagnostics(Inputs inputs)
+        => Evaluate(inputs).Where(row => row.RaidsIncrease > 0 || row.ColonistDeathsIncrease > 0)
             .OrderByDescending(row => row.EndTick).ThenByDescending(row => row.StartTick).ToArray();
 
-    private static MetricObservation? MatchSingleSave(
-        MetricObservation checkpoint, IEnumerable<MetricObservation> saves)
+    internal readonly record struct SaveAlias(int Tick, string? Version, string File, long Size, DateTime LastWriteUtc);
+
+    private static Point? MatchSingleSave(Point checkpoint, ILookup<SaveAlias, Point> saves)
     {
-        if (checkpoint.FileAliases.Count == 0)
-            return null;
-        // A saved checkpoint payload can be reused on later saves while
-        // recording is disabled. Its alias list then contains several .rws
-        // files, but only the one with the checkpoint's own tick is evidence
-        // of the original boundary. Filter candidates before uniqueness.
-        var matching = saves.Where(save =>
-            save.SaveTick == checkpoint.SaveTick
-            && save.GameVersion == checkpoint.GameVersion
-            && SameColony(save.Identity, checkpoint.Identity)
-            && save.FileAliases.Any(a => checkpoint.FileAliases.Any(
-                b => a.Same(b.FileName, b.FileSize, b.LastWriteUtc))))
-            .Take(2).ToList();
-        return matching.Count == 1 ? matching[0] : null;
+        Point? match = null;
+        foreach (var alias in checkpoint.Aliases)
+            foreach (var candidate in saves[alias])
+            {
+                if (ReferenceEquals(match, candidate) || !SameColony(candidate.Identity, checkpoint.Identity))
+                    continue;
+                if (match is not null)
+                    return null;
+                match = candidate;
+            }
+        return match;
     }
+
+    private static string? BoundaryName(Point checkpoint, Point save)
+        => checkpoint.Aliases.Intersect(save.Aliases).Select(a => a.File)
+            .Where(name => name.Length > 0).Order(Ord).FirstOrDefault();
 
     private static bool SameColony(ColonyIdentity a, ColonyIdentity b)
         => a.ModCampaignId is { Length: > 0 } id && id == b.ModCampaignId

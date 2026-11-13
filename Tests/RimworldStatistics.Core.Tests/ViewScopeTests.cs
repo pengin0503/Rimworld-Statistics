@@ -71,6 +71,8 @@ public sealed class ViewScopeTests
         }, SaveMode.None);
         var options = new StatsOptions();
         var all = session.GetView(options);
+        // Persist newly assigned colony keys before checking the nonblocking cache lookup.
+        session.Flush();
         var keys = all.Colonies.Select(c => c.Key).ToArray();
         var scopes = Enumerable.Range(0, 5).Select(i => ViewScope.ForGroup(new ColonyGroup
         {

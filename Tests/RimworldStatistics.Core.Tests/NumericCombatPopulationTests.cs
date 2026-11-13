@@ -236,6 +236,25 @@ public sealed class NumericCombatPopulationTests
     }
 
     [Fact]
+    public void Lifetime_LateBaselineDoesNotInventJoinTimeOrSkillLevel()
+    {
+        var acc = LiveMetricAccumulator.StartNew([LifetimeFamily.Family.Spec], 10 * Day);
+        var state = acc.Family(LifetimeFamily.Name)!;
+        Dictionary<string, int> skills = new() { ["Mining"] = 7 };
+        LifetimeFamily.Baseline(state, ["existing"], 10 * Day, _ => skills);
+        LifetimeFamily.SkillChanged(state, "existing", "Mining", 7, 15);
+        LifetimeFamily.Left(state, "existing", 12 * Day);
+
+        LifetimeFamily.Joined(state, "new", 12 * Day, skills);
+        LifetimeFamily.SkillChanged(state, "new", "Mining", 7, 8);
+        LifetimeFamily.Left(state, "new", 17 * Day);
+        var o = Save(acc, 17 * Day);
+        Assert.Equal(5.0, V(o, LifetimeFamily.TenureMean).RealValue);
+        Assert.Equal(1, V(o, LifetimeFamily.TenureMean).SampleCount);
+        Assert.Equal(1, V(o, LifetimeFamily.JoinGainPeak).IntegerValue);
+    }
+
+    [Fact]
     public void Lifetime_SkillTwentyOnceTenureAndGains()
     {
         var (acc, f) = NewGame(LifetimeFamily.Family);

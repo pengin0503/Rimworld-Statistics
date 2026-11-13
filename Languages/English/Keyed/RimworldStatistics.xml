@@ -95,6 +95,8 @@
   <RWS_HistoricalIntervals_Explanation>Partial evidence from directly linked saves. Each row shows a change between saved ticks. Forks remain separate, and these rows are excluded from lifetime totals.</RWS_HistoricalIntervals_Explanation>
   <RWS_HistoricalIntervals_Empty>No directly linked saves with a confirmed increase were found.</RWS_HistoricalIntervals_Empty>
   <RWS_HistoricalIntervals_Error>The historical intervals could not be read.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>Parent save</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>Child save</RWS_HistoricalIntervals_ChildSave>
   <RWS_HistoricalIntervals_Start>From game tick</RWS_HistoricalIntervals_Start>
   <RWS_HistoricalIntervals_End>Through game tick</RWS_HistoricalIntervals_End>
   <RWS_HistoricalIntervals_Raids>Enemy raids added</RWS_HistoricalIntervals_Raids>
