@@ -356,7 +356,7 @@ public static class MetricCalculator
         // raw value counts are no longer interchangeable with observation counts.
         var partial = applicable.Any(o => MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is null)
             || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
-        return Row(d, MetricEntry.Scalar, new NumericValue
+        var row = Row(d, MetricEntry.Scalar, new NumericValue
         {
             Number = best.Value!.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
@@ -365,6 +365,15 @@ public static class MetricCalculator
             SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
                 x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
         });
+        if (!d.HasBreakdown || Entry(best.Obs, d) is not { } witness)
+            return row;
+
+        // A breakdown describes the winning scalar's observation, so its
+        // counts refer to one actual save and remain valid after compaction.
+        var breakdowns = witness.Values.Where(kv => kv.Key != MetricEntry.Scalar)
+            .OrderBy(kv => kv.Key, Ord)
+            .Select(kv => Row(d, kv.Key, From(kv.Value, best.Obs, d))).ToArray();
+        return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
 
     /// <summary>

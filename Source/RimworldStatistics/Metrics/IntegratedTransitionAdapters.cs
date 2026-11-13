@@ -3,6 +3,7 @@ using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
 using RimworldStatistics.VfeInsectoids;
 using RimworldStatistics.VfeClassical;
+using RimworldStatistics.VfeDeserters;
 using RimworldStatistics.VfeEmpire;
 using RimworldStatistics.Vsie;
 using RimworldStatistics.GiddyUp;
@@ -46,6 +47,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VaeAspirationsStatistics.Build());
         result.AddRange(VfeInsectoidsStatistics.Build());
         result.AddRange(VfeClassicalStatistics.Build());
+        result.AddRange(VfeDesertersStatistics.Build());
         result.AddRange(VfeEmpireStatistics.Build());
         result.AddRange(VsieStatistics.Build());
         result.AddRange(GiddyUpMountStatistics.Build());

@@ -1,5 +1,6 @@
 using HarmonyLib;
 using RimworldStatistics.Core;
+using RimworldStatistics.VehicleFramework;
 using Verse;
 
 namespace RimworldStatistics.Metrics;
@@ -13,7 +14,8 @@ internal sealed record ModMetricAdapterRegistration(
     LiveFamily? EventFamily = null,
     Action<Harmony>? InstallEventHook = null,
     Func<MetricEntry?>? CaptureSnapshot = null,
-    string ProviderVersion = "1.0.0");
+    string ProviderVersion = "1.0.0",
+    Action? ValidateSnapshot = null);
 
 /// <summary>Installed once for compatible optional mods; recording preference is mutable at runtime.</summary>
 internal static class ModProviderAdapters
@@ -29,7 +31,11 @@ internal static class ModProviderAdapters
     private static IReadOnlyList<ModMetricAdapterRegistration> BuildAllAdapters()
     {
         var result = new List<ModMetricAdapterRegistration>();
-        try { result.AddRange(IntegratedTransitionAdapters.Build()); }
+        try
+        {
+            result.AddRange(IntegratedTransitionAdapters.Build());
+            result.Add(VehicleOwnershipSnapshot.Build());
+        }
         catch (Exception e)
         {
             Log.Error("[RimworldStatistics] Native optional metrics registration failed.\n" + e);
@@ -134,6 +140,9 @@ internal static class ModProviderAdapters
                 MetricGates.Fail(id, new InvalidOperationException("Optional snapshot has no reader"));
                 continue;
             }
+            if (registration.ValidateSnapshot is { } validate &&
+                !Guard.TryRun(id, validate, (unit, e) => MetricGates.Fail(unit, e)))
+                continue;
             MetricGates.MarkApplied(id);
             enabled.Add(new Enabled(registration, ownerVersion));
         }

@@ -61,6 +61,49 @@ public sealed class NumericSnapshotRetentionTests
     }
 
     [Fact]
+    public void OptionalSnapshotPeakRetainsBreakdownOfTheWinningSave()
+    {
+        var descriptor = new ModMetricDescriptor
+        {
+            ProviderId = "sample.vehicles", OwnerPackageId = "sample.mod",
+            FamilyId = "vehicles", MetricName = "peak", HasBreakdown = true,
+            Selection = ColonySelection.ObservationMax,
+        };
+        var profile = new Profile();
+        var id = Identity();
+        ProfileMutations.ApplyLiveObservation(profile, id.ModCampaignId!, id,
+            new ObservedValues { TicksGame = 3000 }, new DisplayInfo(), Epoch);
+        ProfileMutations.RememberModMetrics(profile, [descriptor]);
+
+        void Add(int tick, string kind, int count)
+        {
+            var observation = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Identity = id.Clone(),
+                Key = "vehicle-" + tick, ObservedUtc = Epoch.AddSeconds(tick), SaveTick = tick,
+            };
+            var value = new MetricValue { IntegerValue = count, Coverage = MetricCoverage.SnapshotOnly };
+            var entry = MetricEntry.Of(1, value);
+            entry.Values[kind] = value;
+            observation.Metrics[descriptor.StableKey] = entry;
+            ProfileMutations.UpsertMetricObservation(profile, observation);
+        }
+
+        Add(1000, "sample.mod/truck", 8);
+        Add(2000, "sample.mod/plane", 2);
+        Add(3000, "sample.mod/car", 3);
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(profile));
+        var colonies = CampaignMatcher.BuildColonies(restored);
+        var view = MetricCalculator.BuildView(restored, colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()), [descriptor.ToDefinition()]);
+        var row = Assert.Single(view.Overall);
+        Assert.Equal(8d, row.Value.Number);
+        var breakdown = Assert.Single(row.Breakdowns);
+        Assert.Equal("sample.mod/truck", breakdown.Breakdown);
+        Assert.Equal(8d, breakdown.Value.Number);
+    }
+
+    [Fact]
     public void MissingOutpostCaptureRetainsTheLastMeasuredValueIncludingZero()
     {
         var id = Identity();
