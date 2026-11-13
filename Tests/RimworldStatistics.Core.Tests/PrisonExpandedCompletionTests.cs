@@ -45,6 +45,6 @@ public sealed class PrisonExpandedCompletionTests
         Assert.True(first);
         Assert.False(reloaded);
         OptionalTransitionRecording.RecordCount(state, "sentences");
-        Assert.Equal(1, state.Peek("sentences")!.Sum!.Value);
+        Assert.Equal(1, state.Peek("sentences")!.N!.Value);
     }
 }
