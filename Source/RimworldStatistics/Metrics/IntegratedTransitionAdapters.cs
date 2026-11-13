@@ -12,6 +12,7 @@ using RimworldStatistics.VseExpertise;
 using RimworldStatistics.VefProcessing;
 using RimworldStatistics.Gastronomy;
 using RimworldStatistics.VqeDroneFactory;
+using RimworldStatistics.VceDeepchem;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -40,6 +41,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VefProcessingStatistics.Build());
         result.AddRange(GastronomyPaymentStatistics.Build());
         result.AddRange(VqeDroneFactoryStatistics.Build());
+        result.AddRange(VceDeepchemStatistics.Build());
         return result;
     }
 }
