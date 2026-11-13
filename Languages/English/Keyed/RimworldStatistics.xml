@@ -820,8 +820,7 @@
   <RWS_Exp_Event>Event</RWS_Exp_Event>
   <RWS_Exp_Snapshot>Successful save snapshot</RWS_Exp_Snapshot>
   <RWS_Exp_RequiresDlc>Requires DLC/package: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Restart>Recording changes only take effect after restarting RimWorld. Current session acquisition is unchanged.</RWS_Exp_Restart>
-  <RWS_Exp_Help>All units are selected for new installations. Uncheck an item to opt out of that collection; turning off a unit does not delete its recorded history. Changes require a restart.</RWS_Exp_Help>
+  <RWS_Exp_Help>All units are selected for new installations. Uncheck an item to opt out of that collection; turning off a unit does not delete its recorded history. Changes apply immediately, without restarting the game.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Evidence>Capture confidence: {0}</RWS_Exp_Evidence>
   <RWS_Exp_EvidenceExperimental>Unverified capture</RWS_Exp_EvidenceExperimental>
