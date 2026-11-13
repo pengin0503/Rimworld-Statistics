@@ -3,7 +3,7 @@
   <name>Rimworld Statistics</name>
   <author>pengin0503</author>
   <packageId>pengin0503.rimworldstatistics</packageId>
-  <modVersion>1.6.0</modVersion>
+  <modVersion>1.7.0</modVersion>
   <supportedVersions>
     <li>1.7</li>
   </supportedVersions>
@@ -18,7 +18,7 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面から表示します。MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。Hospitality、Recruitment、Dubs Bad Hygiene、Smart Apparel Upgrade、Vanilla Psycasts Expanded、Vanilla Trading Expanded、VEF Outpostsなどの対応統計を本体に内蔵しています。MOD固有の取得機能は実験的で既定OFF、別の統計アドオンは不要です。
+  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面から表示します。MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。Hospitality、Recruitment、Dubs Bad Hygiene、Smart Apparel Upgrade、Vanilla Psycasts Expanded、Vanilla Trading Expanded、VEF Outpostsなどの対応統計を本体に内蔵しています。対応MODの統計は新規導入時に既定で取得します。個別に設定でき、別の統計アドオンは不要です。
 
-Shows lifetime play statistics across all saves and colonies from the title screen. Includes experimental, opt-in statistics for Hospitality, Recruitment, Dubs Bad Hygiene, Smart Apparel Upgrade, Vanilla Psycasts Expanded, Vanilla Trading Expanded and VEF Outposts without separate statistics addons. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
+Shows lifetime play statistics across all saves and colonies from the title screen. Includes optional MOD statistics enabled by default on new installations for Hospitality, Recruitment, Dubs Bad Hygiene, Smart Apparel Upgrade, Vanilla Psycasts Expanded, Vanilla Trading Expanded and VEF Outposts without separate statistics addons. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
 </ModMetaData>
