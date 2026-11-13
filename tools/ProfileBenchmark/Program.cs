@@ -5,9 +5,65 @@
 // Results are measurements of this runner, not an in-game TPS claim. No threshold is
 // enforced, because machine load, filesystem and runtime variation are uncontrolled.
 using System.Diagnostics;
+using System.Text.Json;
 using System.Globalization;
 using System.Text;
 using RimworldStatistics.Core;
+
+// Optional large-profile mode exercises the actual atomic save/backup decision at
+// 5/10 MiB without inventing synthetic colony history that would be compacted.
+// The padding is deliberately a user-extension field, outside importState.
+if (args.Length > 0 && args[0] == "--large")
+{
+    var sizesMiB = args.Length == 1 ? new[] { 5, 10 }
+        : args.Skip(1).Select(a => int.Parse(a, CultureInfo.InvariantCulture)).ToArray();
+    if (sizesMiB.Any(n => n < 1 || n > 32))
+        throw new ArgumentOutOfRangeException(nameof(args), "Large-profile sizes must be 1..32 MiB.");
+    Console.WriteLine("profile_mib,profile_bytes,import_only_commit_median_ms,import_only_commit_alloc_bytes,backup_rotated");
+    foreach (var mib in sizesMiB)
+    {
+        var large = new Profile
+        {
+            ExtensionData = new Dictionary<string, JsonElement>
+            {
+                ["benchmarkPadding"] = JsonSerializer.SerializeToElement(new string('X', mib * 1024 * 1024)),
+            },
+        };
+        var directory = Path.Combine(Path.GetTempPath(), "rws-profile-large-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            var store = new ProfileStore(directory);
+            _ = store.Load(DateTime.UtcNow);
+            store.Save(large);
+            var elapsed = new List<double>();
+            var allocations = new List<long>();
+            for (var i = 0; i < 5; i++)
+            {
+                large.ImportState.LastScanUtc = new DateTime(2026, 11, 13, 0, 0, i + 1, DateTimeKind.Utc);
+                var next = ProfileJson.Serialize(large);
+                var before = GC.GetAllocatedBytesForCurrentThread();
+                var start = Stopwatch.GetTimestamp();
+                store.SaveSerialized(next);
+                elapsed.Add(Stopwatch.GetElapsedTime(start).TotalMilliseconds);
+                allocations.Add(GC.GetAllocatedBytesForCurrentThread() - before);
+            }
+            elapsed.Sort();
+            allocations.Sort();
+            Console.WriteLine(string.Join(",",
+                mib.ToString(CultureInfo.InvariantCulture),
+                new FileInfo(store.ProfilePath).Length.ToString(CultureInfo.InvariantCulture),
+                elapsed[elapsed.Count / 2].ToString("F4", CultureInfo.InvariantCulture),
+                allocations[allocations.Count / 2].ToString(CultureInfo.InvariantCulture),
+                File.Exists(store.ProfilePath + ".bak1") ? "true" : "false"));
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
+    }
+    return;
+}
 
 var sizes = args.Length == 0
     ? new[] { 100, 500, 1500, 3000 }
