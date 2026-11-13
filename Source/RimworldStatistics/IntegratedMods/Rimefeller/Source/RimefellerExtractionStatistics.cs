@@ -1,5 +1,6 @@
 using System.Reflection;
 using HarmonyLib;
+using RimWorld;
 using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using RimworldStatistics.Patches.Metrics;
