@@ -94,7 +94,7 @@ internal static class PrisonExpandedCompletionStatistics
         var served = record is null ? null : AccessTools.DeclaredField(record, "daysServed");
         var due = record is null ? null : AccessTools.DeclaredField(record, "paroleDue");
         if (serve?.ReturnType != typeof(void) || !serve.IsStatic ||
-            get?.ReturnType != record || !get.IsStatic ||
+            get is null || get.ReturnType != record || !get.IsStatic ||
             exit?.ReturnType != typeof(void) ||
             pawn?.FieldType != typeof(Pawn) ||
             sentence?.FieldType != typeof(float) ||
