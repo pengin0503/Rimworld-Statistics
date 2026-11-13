@@ -1171,4 +1171,16 @@
   <RWS_Rimefeller_RefineryFuelUsedDesc>Actual decrease in pipeline FuelAvailable caused by player-owned Rimefeller refinery processing, measured after the pipe component base tick. Excludes fuel transferred into on-site machines during the base tick and any scheduled or attempted consumption. Units are pipeline fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller powerplant fuel consumed (pipe units)</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>Actual decrease in pipeline FuelAvailable during successful fuel draws by player-owned Rimefeller powerplants. Dry or failed draws are excluded. Units are pipeline fuel units rather than inventory items.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_VreAndroid_Manufactured>Androids manufactured</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>Player androids created by completed work at an Android Creation Station.</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>Cryptogenerators restarted</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>Frozen cryptogenerators successfully restarted by player pawns after completing the restart job.</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>Effective teaching interactions</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>Teaching interactions that increased a player pupil’s experience or level in the taught skill.</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>Successful archogen injections</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>Archogen injections that actually added a new xenogene to a colonist after automatic application or confirmed gene selection.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>Classical perks acquired</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>New perks received through ordinary senator favor outcomes, including perks acquired again after removal.</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>Ship battles won</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>Ship battles that ended in a confirmed defeat of the opposing ship, including hacking victories.</RWS_Sos2_BattlesWonDesc>
 </LanguageData>
