@@ -16,19 +16,28 @@ public sealed class RimworldStatisticsMod : Mod
     public static RimworldStatisticsSettings Settings { get; private set; } = new();
     public static RimworldStatisticsMod? Instance { get; private set; }
 
-    /// <summary>Frozen at startup. Changes to desired settings never hot-patch Harmony.</summary>
+    /// <summary>Last applied recording selection; the compatible patches remain installed.</summary>
     public static ExperimentalSelection ActiveAcquisitionSelection { get; private set; } =
         new(false, Array.Empty<string>());
 
     private static Vector2 experimentalScroll;
     private static AcquisitionUnit[]? selectableUnits;
 
-    private static bool SelectionNeedsRestart()
+    private static void ApplyLiveSelectionIfChanged()
     {
         var desired = Settings.DesiredSelection;
-        return desired.Enabled != ActiveAcquisitionSelection.Enabled ||
-            !desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
-                .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds);
+        if (desired.Enabled == ActiveAcquisitionSelection.Enabled &&
+            desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
+                .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds))
+            return;
+
+        // Runtime capture selection is separate from one-time Harmony patch
+        // installation. Always update both built-in and optional MOD units.
+        MetricGates.ConfigureProductionSelection(
+            ExperimentalAcquisitionPolicy.Resolve(desired, AcquisitionUnits.All));
+        MetricGates.ConfigureOptionalUnits(ModProviderAdapters.KnownUnits, desired);
+        ActiveAcquisitionSelection = desired;
+        LiveMetrics.RefreshSelection();
     }
 
     public RimworldStatisticsMod(ModContentPack content)
@@ -146,8 +155,9 @@ public sealed class RimworldStatisticsMod : Mod
                 else if (!autoAll && !enabled)
                     Settings.experimentalUnitIds.RemoveAll(x => x == unit.Id);
             }
-            if (SelectionNeedsRestart())
-                listing.Label("RWS_Exp_Restart".Translate());
+            // Apply immediately, on this UI (game) thread. No restart or
+            // reinstallation of Harmony patches is necessary.
+            ApplyLiveSelectionIfChanged();
             listing.Label("RWS_Exp_Help".Translate());
             settingsContentHeight = listing.CurHeight;
             listing.End();
