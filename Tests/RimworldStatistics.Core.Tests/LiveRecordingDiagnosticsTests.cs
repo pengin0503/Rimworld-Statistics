@@ -6,6 +6,38 @@ namespace RimworldStatistics.Core.Tests
     public sealed class LiveRecordingDiagnosticsTests
     {
         [Fact]
+        public void SettingsToggleChangesActiveRecordingWithoutResettingCheckpointSession()
+        {
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            MetricGates.Selected = [new("test-diagnostics", 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var session = Assert.IsType<CheckpointSaveSession>(LiveMetrics.Session);
+                var original = Assert.IsType<FamilyState>(LiveMetrics.Family("test-diagnostics"));
+                original.Count("events");
+
+                MetricGates.Selected = [];
+                LiveMetrics.RefreshSelection();
+                Assert.Null(LiveMetrics.Family("test-diagnostics"));
+                Assert.Same(session, LiveMetrics.Session);
+
+                MetricGates.Selected = [new("test-diagnostics", 1)];
+                LiveMetrics.RefreshSelection();
+                var resumed = Assert.IsType<FamilyState>(LiveMetrics.Family("test-diagnostics"));
+                Assert.Equal(1, resumed.Peek("events")?.N);
+                Assert.False(resumed.Continuous);
+                Assert.Same(session, LiveMetrics.Session);
+            }
+            finally
+            {
+                MetricGates.Selected = [new("test-diagnostics", 1)];
+                LiveMetrics.StartNew(game);
+            }
+        }
+
+        [Fact]
         public void QueriesNeverCountOrCreateGapsButOffThreadEventsDo()
         {
             const string family = "test-diagnostics";
@@ -59,7 +91,8 @@ namespace RimworldStatistics.Metrics
 {
     internal static class MetricGates
     {
-        internal static FamilySpec[] RecordingFamilies() => [new("test-diagnostics", 1)];
+        internal static FamilySpec[] Selected = [new("test-diagnostics", 1)];
+        internal static FamilySpec[] RecordingFamilies() => Selected;
         internal static IReadOnlySet<string>? RecordingExperimentalUnits() => null;
         internal static void Fail(string unit, Exception error) { }
     }
