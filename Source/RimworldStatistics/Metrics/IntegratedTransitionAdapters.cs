@@ -1,4 +1,6 @@
+using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VfeSecurity;
+using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
 
@@ -9,5 +11,11 @@ namespace RimworldStatistics.Metrics;
 internal static class IntegratedTransitionAdapters
 {
     internal static IReadOnlyList<ModMetricAdapterRegistration> Build()
-        => VfeSecurityStatistics.Build();
+    {
+        var result = new List<ModMetricAdapterRegistration>();
+        result.AddRange(VfeSecurityStatistics.Build());
+        result.AddRange(VaeAchievementsStatistics.Build());
+        result.AddRange(VfeTribalsStatistics.Build());
+        return result;
+    }
 }
