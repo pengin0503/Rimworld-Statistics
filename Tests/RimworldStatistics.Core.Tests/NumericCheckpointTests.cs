@@ -889,7 +889,7 @@ public sealed class NumericCheckpointTests
     [Fact]
     public void LiveSelection_UnreadableFutureCheckpointCannotBeOverwrittenByToggle()
     {
-        var opaque = "{\\\"formatVersion\\\":10000,\\\"checkpointId\\\":\\\"future\\\"}";
+        var opaque = """{"formatVersion":10000,"checkpointId":"future"}""";
         var accumulator = LiveMetricAccumulator.Resume(opaque, Array.Empty<FamilySpec>(), 500);
         Assert.Empty(accumulator.Reconfigure(Recording, 600, new HashSet<string> { "test" }));
         Assert.Null(accumulator.Family("test"));
