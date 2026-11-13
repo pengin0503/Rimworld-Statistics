@@ -1105,4 +1105,6 @@
   <RWS_VfeFactory_HarvestedDesc>自勢力の自動農機が新たに収穫してバッファへ格納、または地面へ配置したアイテム数（収穫物種類別）。後続のホッパー搬出、配置失敗、通常の入植者の収穫は含みません。</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory 自動播種した植物数</RWS_VfeFactory_Sown>
   <RWS_VfeFactory_SownDesc>自勢力の自動農機の処理行で新規スポーンし、播種状態になった設定作物の数（植物種類別）。失敗した播種と既存の植物は含みません。</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>VFE Pirates ウォーキャスケット装着完了回数</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>通常の溶接作業でプロジェクトを完了し、アーマー・ヘルメット・肩当ての3部位を実際に装着した回数（装甲種類別）。途中で中断した作業、一部だけの装着、開発モードによる直接完了は含みません。</RWS_VfePirates_WarcasketFitsDesc>
 </LanguageData>
