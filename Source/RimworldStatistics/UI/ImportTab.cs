@@ -80,6 +80,15 @@ public static class ImportTab
         {
             ImportRunner.StartIfIdle();
         }
+        if (!ImportRunner.Running && rect.width > buttonRect.width + 45f)
+        {
+            var historicalLabel = (string)"RWS_HistoricalIntervals_Title".Translate();
+            var historicalRect = new Rect(buttonRect.xMax + 8f, y,
+                Math.Min(Math.Max(190f, Text.CalcSize(historicalLabel).x + 24f),
+                    rect.width - buttonRect.width - 8f), buttonRect.height);
+            if (Widgets.ButtonText(historicalRect, historicalLabel.Truncate(historicalRect.width - 12f)))
+                Find.WindowStack.Add(new Dialog_HistoricalCounterIntervals(session));
+        }
         y += 44f;
 
         // Record file, load source, backups, write errors.
