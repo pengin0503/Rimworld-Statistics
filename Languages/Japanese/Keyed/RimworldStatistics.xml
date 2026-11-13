@@ -1093,4 +1093,6 @@
   <RWS_VqeDrones_HatchedDesc>卵から実際にスポーンした自勢力のドローン数（種類別）。ドローン生成を伴わない卵の破壊、自動組立機での生産は含みません。</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded パイプ貯蔵Deepchem量</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>自勢力のポンプジャックからパイプ貯蔵へ実際に受け入れられたDeepchem量（小数単位も記録）。予定生産量、地面への排出、満杯による受入失敗は含みません。</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded DNA抽出による生成品数</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlacedDesc>入植者のDNA抽出により実際に地面へ配置またはスタックへ統合されたアイテム数（ThingDef別）。無効対象、配置失敗、成果物を伴わない使用回数、他のハイブリッド生成は含みません。</RWS_VgeExtraction_ItemsPlacedDesc>
 </LanguageData>
