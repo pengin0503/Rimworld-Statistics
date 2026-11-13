@@ -4,6 +4,7 @@ using RimworldStatistics.VfeSecurity;
 using RimworldStatistics.VfeInsectoids;
 using RimworldStatistics.VfeClassical;
 using RimworldStatistics.VfeEmpire;
+using RimworldStatistics.Vsie;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -24,6 +25,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfeInsectoidsStatistics.Build());
         result.AddRange(VfeClassicalStatistics.Build());
         result.AddRange(VfeEmpireStatistics.Build());
+        result.AddRange(VsieStatistics.Build());
         return result;
     }
 }
