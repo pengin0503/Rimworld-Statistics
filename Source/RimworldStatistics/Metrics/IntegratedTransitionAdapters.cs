@@ -24,6 +24,7 @@ using RimworldStatistics.VfeSettlers;
 using RimworldStatistics.RimatomicsByproducts;
 using RimworldStatistics.CombatExtendedEvents;
 using RimworldStatistics.VfePirateHiring;
+using RimworldStatistics.VgeHybridOutcomes;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -64,6 +65,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(RimatomicsByproductStatistics.Build());
         result.AddRange(CombatExtendedEventStatistics.Build());
         result.AddRange(VfePirateHiringStatistics.Build());
+        result.AddRange(VgeHybridOutcomeStatistics.Build());
         return result;
     }
 }
