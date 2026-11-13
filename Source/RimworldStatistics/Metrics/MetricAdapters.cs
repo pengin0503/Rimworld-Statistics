@@ -26,7 +26,7 @@ public sealed class MetricAdapterAttribute : Attribute
 [StaticConstructorOnStartup]
 public static class MetricAdapters
 {
-    /// <summary>The save-scope patch of the checkpoint (C0): applied only when at least one family records.</summary>
+    /// <summary>Checkpoint writer (C0), preinstalled so selection changes do not require a restart.</summary>
     public const string CheckpointUnit = "checkpoint";
 
     static MetricAdapters()
