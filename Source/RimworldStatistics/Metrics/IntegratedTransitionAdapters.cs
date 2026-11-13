@@ -10,6 +10,7 @@ using RimworldStatistics.CombatExtendedReload;
 using RimworldStatistics.VreAndroid;
 using RimworldStatistics.VseExpertise;
 using RimworldStatistics.VefProcessing;
+using RimworldStatistics.Gastronomy;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -36,6 +37,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VreAndroidAwakeningStatistics.Build());
         result.AddRange(VseExpertiseStatistics.Build());
         result.AddRange(VefProcessingStatistics.Build());
+        result.AddRange(GastronomyPaymentStatistics.Build());
         return result;
     }
 }
