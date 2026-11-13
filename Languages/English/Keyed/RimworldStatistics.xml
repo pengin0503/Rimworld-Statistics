@@ -1130,4 +1130,6 @@
   <RWS_VgeHybrid_ConversionsDesc>Successful player-owned mechahybridizer transformations that destroy the original subject and spawn one new player-owned converted pawn, by resulting pawn kind. Machine activation, waiting progress and failed spawn are excluded.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded parole approvals</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Parole-hearing Release decisions that successfully clear a due sentence for a living prisoner still in player custody, with the actual release interaction enabled. Mere hearings, extensions, recruit options, repeated choices and later physical departures do not count.</RWS_PrisonExpanded_ParoleApprovedDesc>
+  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller crude extracted from oil fields (field-capacity units)</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Actual reduction of an oil field's CurrentCap during successful processing of a player-owned oil derrick's Pump action. These are oil-field capacity units, NOT pipe-volume or inventory item units. No drilling progress, attempted pumping, passive field regeneration, tank transfer or refinery output is counted.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
 </LanguageData>
