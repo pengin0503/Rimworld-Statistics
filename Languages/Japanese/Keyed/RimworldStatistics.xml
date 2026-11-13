@@ -1132,4 +1132,12 @@
   <RWS_PrisonExpanded_ParoleApprovedDesc>自勢力の監禁中の生存囚人について、審査で正式に釈放を承認し、刑期と仮釈放待機が解除され釈放指示になった回数。審査発生、延長、勧誘、重複選択、その後の実際の退去は含みません。</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller 油田からの原油採取量（油田容量単位）</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>自勢力の油井ポンプ処理で、油田の CurrentCap が実際に減少した量を記録します。単位は油田容量であり、パイプ内の原油量やアイテム個数ではありません。掘削進捗、採取失敗、自然回復、タンク間移動、精製品の生成は含みません。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_PrisonExpanded_SentencesServed>Prison Expanded 刑期満了回数</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServedDesc>自勢力が収監している囚人の服役日数が所定の刑期に達し、仮釈放審査待ちに初めて移行した回数。保釈承認、釈放命令、重複した日数処理、ロード時の復元は含みません。</RWS_PrisonExpanded_SentencesServedDesc>
+  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 囚人の実際の退去回数</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded の記録がある自勢力の囚人が、プレイヤーの本拠地マップから実際に退出した回数。保釈の承認や釈放指示だけでは加算しません。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller 精製設備の燃料消費量（パイプ単位）</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>自勢力の精製設備による処理で、パイプ網の FuelAvailable が実際に減少した量。設備の通常補給による移送は基底の CompTick の後から測ることで除外し、未実行の予定消費も数えません。</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsed>Rimefeller 発電設備の燃料消費量（パイプ単位）</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsedDesc>自勢力の Rimefeller 発電設備が実際にパイプ網から引き出した燃料量。引き出し失敗や供給不足は加算しません。単位はパイプ内の燃料量でありアイテム数ではありません。</RWS_Rimefeller_PlantFuelUsedDesc>
 </LanguageData>
