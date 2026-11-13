@@ -132,4 +132,77 @@ public sealed class ProfileStoreTests
         store.Save(Tagged("b"));
         Assert.Equal(new[] { "profile.json", "profile.json.bak1", "profile.json.lock" }, Directory.EnumerateFiles(dir.Path).Select(Path.GetFileName).Order());
     }
+
+    [Fact]
+    public void ImportStateOnlyUpdatesDoNotRotateStatisticsBackups()
+    {
+        using var dir = new TempDir();
+        var store = new ProfileStore(dir.Path);
+        _ = store.Load(Now);
+        var profile = Tagged("unchanged");
+        store.Save(profile);
+        for (var i = 0; i < 12; i++)
+        {
+            profile.ImportState.LastScanUtc = Now.AddSeconds(i + 1);
+            store.Save(profile);
+        }
+        Assert.False(File.Exists(dir.File("profile.json.bak1")));
+        Assert.Equal(Now.AddSeconds(12), ProfileJson.Deserialize(
+            File.ReadAllText(store.ProfilePath)).ImportState.LastScanUtc);
+
+        profile.SaveObservations.Add(new SaveObservation { FileName = "real-stat-change" });
+        store.Save(profile);
+        Assert.True(File.Exists(dir.File("profile.json.bak1")));
+        Assert.Single(ProfileJson.Deserialize(
+            File.ReadAllText(dir.File("profile.json.bak1"))).SaveObservations);
+    }
+
+    [Fact]
+    public void ImportStateNestedPropertiesAreNotMisidentifiedAsStatistics()
+    {
+        using var dir = new TempDir();
+        var store = new ProfileStore(dir.Path);
+        _ = store.Load(Now);
+        var profile = Tagged("same");
+        store.Save(profile);
+        profile.ImportState.ExtensionData = new Dictionary<string, System.Text.Json.JsonElement>
+        {
+            ["custom"] = System.Text.Json.JsonSerializer.SerializeToElement(
+                new { nested = new { text = "safe nested value" } }),
+        };
+        store.Save(profile);
+        Assert.False(File.Exists(dir.File("profile.json.bak1")));
+    }
+
+    [Fact]
+    public void UnexpectedSiblingBetweenImportStateAndDescriptorIsNotIgnored()
+    {
+        using var dir = new TempDir();
+        var store = new ProfileStore(dir.Path);
+        _ = store.Load(Now);
+        var original = ProfileJson.Serialize(Tagged("same"));
+        store.SaveSerialized(original);
+        var unexpected = original.Replace(
+            "\n  \"modMetricDescriptors\": ",
+            "\n  \"unexpectedRootField\": 1,\n  \"modMetricDescriptors\": ",
+            StringComparison.Ordinal);
+        Assert.NotEqual(original, unexpected);
+        store.SaveSerialized(unexpected);
+        Assert.True(File.Exists(dir.File("profile.json.bak1")));
+    }
+
+    [Fact]
+    public void ConcurrentEditIsRejectedEvenWhenOnlyImportStateChanged()
+    {
+        using var dir = new TempDir();
+        var store = new ProfileStore(dir.Path);
+        _ = store.Load(Now);
+        var profile = Tagged("unchanged");
+        store.Save(profile);
+        File.AppendAllText(store.ProfilePath, " ");
+        profile.ImportState.LastScanUtc = Now;
+        Assert.Throws<IOException>(() => store.Save(profile));
+        Assert.False(File.Exists(dir.File("profile.json.bak1")));
+    }
+
 }
