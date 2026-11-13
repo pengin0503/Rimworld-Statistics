@@ -1,6 +1,6 @@
 # Implementation checklist — planned optional-MOD statistics
 
-Work sequencing: first consult [the Workshop popularity and feasibility ranking](2026-11-12-popularity-priority.md), which supersedes the legacy per-row High/Medium ratings for implementation ordering. Popularity is a reach proxy, **not** grounds for duplicate collectors.\n\nThis checklist applies to **every** target in [README.md](README.md), including compatibility-blocked and low-priority entries. A target remains planned if its proof is missing; record the blocker rather than hallucinating a metric or dropping the row.
+Work sequencing: first consult [the Workshop popularity and feasibility ranking](2026-11-12-popularity-priority.md), which supersedes the legacy per-row High/Medium ratings for implementation ordering. Popularity is a reach proxy, **not** grounds for duplicate collectors.\n\nThis checklist applies to **every** target in [README.md](README.md), including compatibility-blocked and low-priority entries. A target remains planned if its proof is missing, **unless the owner explicitly waives the unprovable metric**; record the blocker and waiver rather than hallucinating a metric or dropping the row silently. The specific 2026-11-13 waived second-wave outcomes are in [the disposition log](2026-11-13-evidence-gated-outcome-disposition.md).
 
 ## Pre-implementation acceptance gates
 
