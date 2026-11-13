@@ -1129,4 +1129,6 @@
   <RWS_VgeHybrid_BirthsDesc>自勢力の遺伝子培養槽で成長処理が成功し、新しい自勢力ハイブリッドが実際にスポーンした数（PawnKindDef別）。失敗、進捗のみ、ロード復元は含みません。</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE 生体機械ハイブリッドへの変換完了数</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>自勢力のメカハイブリッド化装置で元の対象が消滅し、変換後の自勢力ポーンが実際に生み出された回数（結果のPawnKindDef別）。起動のみ、待機時間、生成失敗は含みません。</RWS_VgeHybrid_ConversionsDesc>
+  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 仮釈放承認回数</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApprovedDesc>自勢力の監禁中の生存囚人について、審査で正式に釈放を承認し、刑期と仮釈放待機が解除され釈放指示になった回数。審査発生、延長、勧誘、重複選択、その後の実際の退去は含みません。</RWS_PrisonExpanded_ParoleApprovedDesc>
 </LanguageData>
