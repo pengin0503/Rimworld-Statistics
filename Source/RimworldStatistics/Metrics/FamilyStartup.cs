@@ -13,25 +13,32 @@ namespace RimworldStatistics.Metrics;
 /// </summary>
 internal static class FamilyStartup
 {
-    public static void Apply(LiveMetricAccumulator acc, int tick)
+    public static void Apply(LiveMetricAccumulator acc, int tick, IReadOnlySet<string>? onlyFamilies = null)
     {
-        // Per-game lookups of the adapters: never carried from another game.
-        ShrineProbe.Reset();
-        Run(acc, MembershipFamily.Name, tick, (s, fresh) =>
+        // On a hot selection update, initialize only the families newly started;
+        // never replay other families' baselines or condition probes.
+        if (onlyFamilies is null || onlyFamilies.Contains(CaravanFamily.Name))
+            ShrineProbe.Reset();
+        void RunSelected(string family, Action<FamilyState, bool> action)
+        {
+            if (onlyFamilies is null || onlyFamilies.Contains(family))
+                Run(acc, family, tick, action);
+        }
+        RunSelected(MembershipFamily.Name, (s, fresh) =>
         {
             if (fresh)
                 MembershipFamily.Baseline(s, Members().Select(GameFacts.Id));
         });
-        Run(acc, LifetimeFamily.Name, tick, (s, fresh) =>
+        RunSelected(LifetimeFamily.Name, (s, fresh) =>
         {
-            if (fresh && s.SinceTick == 0)
+            if (fresh)
                 LifetimeFamily.Baseline(s, Members().Select(GameFacts.Id).ToList(), tick,
                     id => Members().FirstOrDefault(p => GameFacts.Id(p) == id) is { } p ? GameFacts.Skills(p) : new Dictionary<string, int>());
         });
-        Run(acc, DisasterFamily.Name, tick, (s, _) => DisasterFamily.Reconcile(s, ConditionProbe.ActiveNow().ToList(), tick));
-        Run(acc, CaravanFamily.Name, tick, (s, _) => CaravanFamily.Concurrent(s, CaravanProbe.PlayerCaravans()));
-        Run(acc, CaravanFamily.Name, tick, (s, _) => ShrineProbe.Startup(s, tick));
-        Run(acc, FoodFamily.Name, tick, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
+        RunSelected(DisasterFamily.Name, (s, _) => DisasterFamily.Reconcile(s, ConditionProbe.ActiveNow().ToList(), tick));
+        RunSelected(CaravanFamily.Name, (s, _) => CaravanFamily.Concurrent(s, CaravanProbe.PlayerCaravans()));
+        RunSelected(CaravanFamily.Name, (s, _) => ShrineProbe.Startup(s, tick));
+        RunSelected(FoodFamily.Name, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
     }
 
     /// <summary>
