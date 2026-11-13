@@ -19,8 +19,9 @@ public sealed class MetricAdapterAttribute : Attribute
 }
 
 /// <summary>
-/// Applies the adapters of open units once, after every mod's constructor ran (so the verification harness can open units
-/// first) and after defs loaded (so DLC and def checks see the real game). With no unit open, nothing is patched at all.
+/// Installs compatible adapters once, independently of the user's recording
+/// selection. Each hook still checks the live gate, so disabled units do not
+/// collect data; newly enabled units can start during the current game.
 /// </summary>
 [StaticConstructorOnStartup]
 public static class MetricAdapters
@@ -57,7 +58,7 @@ public static class MetricAdapters
         var adapters = AdapterClasses();
         foreach (var unit in AcquisitionUnits.All)
         {
-            if (!MetricGates.IsOpen(unit.Id))
+            if (!MetricGates.IsInstallEligible(unit.Id))
                 continue;
             if (unit.Kind != AcquisitionKind.Family)
             {
@@ -76,7 +77,9 @@ public static class MetricAdapters
                 MetricGates.MarkApplied(unit.Id);
         }
 
-        if (!LiveFamilies.Active.Any(f => MetricGates.IsRecording(f.Name)))
+        // Always install the save checkpoint when any family can be enabled:
+        // an in-game settings change must not require patching SafeSaver later.
+        if (!LiveFamilies.Active.Any(f => MetricGates.IsInstallEligible(f.Name)))
             return;
         var checkpoint = adapters.Where(a => a.Units.Contains(CheckpointUnit)).Select(a => a.Type).ToList();
         CheckpointApplied = checkpoint.Count > 0 && checkpoint.All(t => TryApply(harmony, t, adapters));
