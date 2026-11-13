@@ -1069,4 +1069,6 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>Pending VFE Empire honors actually bestowed on a player colonist at completion of a ritual, grouped by honor definition. Merely receiving an available honor or developer actions are excluded.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>VSIE inspiration aspirations completed</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Newly completed aspirations tied to the colonist's active inspiration in Vanilla Social Interactions Expanded, grouped by inspiration. Incomplete progress, expiration and unrelated inspirations do not count.</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_GiddyUp_MountSessions>Giddy-Up 2 successful mount sessions</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessionsDesc>Player colonists who successfully start riding owned animals through a completed Giddy-Up Mount job, grouped by animal kind. Pre-mounted arrivals, queued commands and repeat observations do not count.</RWS_GiddyUp_MountSessionsDesc>
 </LanguageData>
