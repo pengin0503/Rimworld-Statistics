@@ -1071,6 +1071,10 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeCryptoforge_RelayScans>Cryptoforge relay scans completed</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScansDesc>Frozen Scanning Relay scans that reached completion while a player colonist was present on the quest map.</RWS_VqeCryptoforge_RelayScansDesc>
+  <RWS_RimFactory_GroundOutput>RimFactory Auto Machine Tool ground output</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutputDesc>Items confirmed placed on the map by player-owned Auto Machine Tools, grouped by item type. Direct transfers into conveyors or other machines are outside this statistic.</RWS_RimFactory_GroundOutputDesc>
   <RWS_SimpleWarrants_Completed>Simple Warrants completed hand-ins</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Warrants settled through a player caravan hand-in after the target was removed and the warrant closed.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Simple Warrants silver received</RWS_SimpleWarrants_Silver>
