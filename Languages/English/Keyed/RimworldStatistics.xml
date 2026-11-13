@@ -1081,4 +1081,8 @@
   <RWS_VseExpertise_LevelUpsDesc>Positive permanent increases in VSE expertise levels earned after recording was enabled, summed across all independent colonies and grouped by ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE highest expertise level ever reached</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>The largest expertise level actually attained through XP progression among independent colonies, not a sum of levels or a snapshot of the latest save.</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking independent processing batches</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Completed VEF soup, cheese and other independent processes owned by Vanilla Cooking Expanded, grouped by ProcessDef. Ordinary bill crafting and partially blocked output are excluded.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing fermentation and aging batches</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches owned by Vanilla Brewing Expanded, grouped by ProcessDef. Paused, blocked or unfinished output and generic bill crafting are excluded.</RWS_VefBrewing_BatchesDesc>
 </LanguageData>
