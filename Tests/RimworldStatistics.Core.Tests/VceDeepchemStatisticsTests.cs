@@ -26,6 +26,6 @@ public sealed class VceDeepchemStatisticsTests
             { Revision = 1, SinceTick = 0, ThroughTick = 10, Continuous = true };
         OptionalTransitionRecording.RecordReal(state, "stored", 0.4);
         OptionalTransitionRecording.RecordReal(state, "stored", 0.6);
-        Assert.Equal(1d, state.Peek("stored")!.Sum, 8);
+        Assert.Equal(1d, state.Peek("stored")!.Sum!.Value, 8);
     }
 }
