@@ -1071,6 +1071,8 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly completed by player colonists through the MOD's normal completion check, grouped by aspiration definition. Debug completions, already completed or unassigned aspirations, and save restoration do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal colony ticking, grouped by insect kind. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeGenerator_Upgrades>The Generator completed ARC upgrades</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_UpgradesDesc>Completed player construction that replaces an existing player-owned ARC generator in place, grouped by the new generator type.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Peak owned vehicles</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>Highest observed number of living player-owned Vehicle Framework vehicles per colony, including maps, caravans, flights and stashes. Recorded on successful saves. Vehicle types are shown for the save at the peak.</RWS_VehicleFramework_OwnedPeakDesc>
   <RWS_VfeDeserters_IntelPaid>Deserters intelligence spent</RWS_VfeDeserters_IntelPaid>
