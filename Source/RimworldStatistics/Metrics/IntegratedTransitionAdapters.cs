@@ -21,6 +21,7 @@ using RimworldStatistics.VfeFactory;
 using RimworldStatistics.VfePirates;
 using RimworldStatistics.VqeAncients;
 using RimworldStatistics.VfeSettlers;
+using RimworldStatistics.RimatomicsByproducts;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -58,6 +59,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfePiratesStatistics.Build());
         result.AddRange(VqeAncientsStatistics.Build());
         result.AddRange(VfeSettlersStatistics.Build());
+        result.AddRange(RimatomicsByproductStatistics.Build());
         return result;
     }
 }
