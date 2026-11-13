@@ -25,6 +25,7 @@ using RimworldStatistics.RimatomicsByproducts;
 using RimworldStatistics.CombatExtendedEvents;
 using RimworldStatistics.VfePirateHiring;
 using RimworldStatistics.VgeHybridOutcomes;
+using RimworldStatistics.PrisonExpandedParole;
 using RimworldStatistics.VfeTribals;
 
 namespace RimworldStatistics.Metrics;
@@ -66,6 +67,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(CombatExtendedEventStatistics.Build());
         result.AddRange(VfePirateHiringStatistics.Build());
         result.AddRange(VgeHybridOutcomeStatistics.Build());
+        result.AddRange(PrisonExpandedParoleStatistics.Build());
         return result;
     }
 }
