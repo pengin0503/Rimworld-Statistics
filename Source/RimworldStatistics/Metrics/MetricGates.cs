@@ -36,8 +36,15 @@ public static class MetricGates
                 .GroupBy(u => u.Id, StringComparer.Ordinal)
                 .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
             optionalUnits = valid;
+            // New installations default to all compatible acquisitions, including
+            // optional MOD units registered after the built-in catalog is resolved.
+            // Keeping "*" in the saved selection also includes newly added families
+            // after a MOD update; a cleared list remains a deliberate opt-out.
             var explicitIds = selection.Enabled
-                ? selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
+                ? selection.ExplicitUnitIds.Contains(ExperimentalAcquisitionPolicy.AllUnitsToken,
+                    StringComparer.Ordinal)
+                    ? valid.Keys.AsEnumerable()
+                    : selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
             productionSelection = productionSelection.Concat(explicitIds).ToHashSet(StringComparer.Ordinal);
         }
