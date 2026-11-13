@@ -820,8 +820,7 @@
   <RWS_Exp_Event>イベント取得</RWS_Exp_Event>
   <RWS_Exp_Snapshot>セーブ成功時取得</RWS_Exp_Snapshot>
   <RWS_Exp_RequiresDlc>必要なDLC/パッケージ: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Restart>取得設定の変更は次のゲーム再起動から適用されます。現在の記録処理には反映されません。</RWS_Exp_Restart>
-  <RWS_Exp_Help>新規導入では全項目が初期選択されています。不要な統計は個別に解除できます。解除しても過去の記録は消えません。変更の適用にはゲーム再起動が必要です。</RWS_Exp_Help>
+  <RWS_Exp_Help>新規導入では全項目が初期選択されています。不要な統計は個別に解除できます。解除しても過去の記録は消えません。変更はゲームを再起動せず即時反映されます。</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>実験的</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Evidence>取得時の信頼性: {0}</RWS_Exp_Evidence>
   <RWS_Exp_EvidenceExperimental>未検証の取得</RWS_Exp_EvidenceExperimental>
