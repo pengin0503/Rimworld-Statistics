@@ -1075,6 +1075,10 @@
   <RWS_VqeCryptoforge_RelayScansDesc>自勢力の入植者がクエストマップにいる間に、凍結スキャン中継器のスキャンが完了した回数。</RWS_VqeCryptoforge_RelayScansDesc>
   <RWS_RimFactory_GroundOutput>RimFactory 自動工作機の地面への出力数</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>自勢力の自動工作機がマップ上に実際に配置したアイテムの数を品目別に記録します。コンベアや別設備への直接転送はこの統計の対象外です。</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>RimWorld of Magic 治癒魔法の成功回数</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>自勢力の通常治癒・上級治癒で、対象の負傷が軽くなるか、新しい欠損部位の傷が安定した回数。</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Save Our Ship 2 軌道到達数</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>地表から離陸し、安定した軌道に到達した自勢力の船の回数。</RWS_Sos2_OrbitArrivalsDesc>
   <RWS_SimpleWarrants_Completed>Simple Warrants 引き渡し完了数</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>自勢力のキャラバンが対象を引き渡し、完了状態になった手配の件数。</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Simple Warrants 受け取った銀貨</RWS_SimpleWarrants_Silver>

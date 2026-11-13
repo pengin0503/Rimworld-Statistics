@@ -1075,6 +1075,10 @@
   <RWS_VqeCryptoforge_RelayScansDesc>Frozen Scanning Relay scans that reached completion while a player colonist was present on the quest map.</RWS_VqeCryptoforge_RelayScansDesc>
   <RWS_RimFactory_GroundOutput>RimFactory Auto Machine Tool ground output</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>Items confirmed placed on the map by player-owned Auto Machine Tools, grouped by item type. Direct transfers into conveyors or other machines are outside this statistic.</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>RimWorld of Magic successful healing casts</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>Player Heal and Advanced Heal casts that actually reduced a target’s injuries or stabilized a fresh missing body part.</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Save Our Ship 2 completed orbital arrivals</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>Player-controlled ships that reached a stable orbit after takeoff from the surface.</RWS_Sos2_OrbitArrivalsDesc>
   <RWS_SimpleWarrants_Completed>Simple Warrants completed hand-ins</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Warrants settled through a player caravan hand-in after the target was removed and the warrant closed.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Simple Warrants silver received</RWS_SimpleWarrants_Silver>
