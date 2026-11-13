@@ -30,6 +30,18 @@ internal sealed class ExternalSdkHost : IStatisticsHost
         }
     }
 
+    /// <summary>Current-game SDK ID-set saturation; historical profile evidence is separate.</summary>
+    internal bool IsEventDedupCapacityExceeded(string metricId)
+    {
+        RegisteredSdkMetric? metric;
+        lock (gate)
+            metric = registry.Find(metricId);
+        if (metric is null || metric.Api.Kind != ApiMetricKind.Event)
+            return false;
+        return LiveMetrics.Accumulator?.Family(metric.Descriptor.AcquisitionId)?
+            .Peek(metric.SeenAccumulatorKey)?.Overflow == true;
+    }
+
     public ApiRecordResult RecordEvent(string metricId, string uniqueEventId, double value = 1)
     {
         RegisteredSdkMetric? metric;
@@ -51,6 +63,11 @@ internal sealed class ExternalSdkHost : IStatisticsHost
             // Both invalid input and dedup-cap overflow must weaken coverage, never claim Complete.
             if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
                 LiveMetrics.Accumulator?.MarkGap(unit, Find.TickManager.TicksGame);
+            if (result == ApiRecordResult.CapExceeded)
+                Log.WarningOnce("[RimworldStatistics] SDK event ID deduplication limit (" +
+                    FamilyOps.KeyCap + ") reached for " + metricId +
+                    "; later event attempts are not counted and this metric has partial coverage.",
+                    ("RWS.sdk.cap." + metricId).GetHashCode());
             return result;
         }
         catch (Exception e)
