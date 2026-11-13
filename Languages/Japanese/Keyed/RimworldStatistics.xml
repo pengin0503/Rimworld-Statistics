@@ -1117,4 +1117,8 @@
   <RWS_VfeSettlers_BountySilverDesc>賞金首引き渡し時、最初の報酬移動によってキャラバンに実際に加わった銀貨の累計。対象が持っていた品物や銀貨は含みません。</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics 再処理副産物の生成数</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>自勢力のプルトニウム処理設備で燃料を取り出す際、実際に配置またはスタックへ統合された副産物の個数（種類別）。取り出した使用済み燃料、処理予定量、無関係な配置は含みません。</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Combat Extended 実際に消費した弾薬数</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>入植者の弾倉から減少した弾薬、または直接給弾で実際に消滅した弾薬の累計（AmmoDef別）。リロード時の弾薬移動、空撃ち、砲塔、デバッグ補充は含みません。</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_SuppressionReceived>Combat Extended 自勢力が新規制圧された回数</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceivedDesc>自勢力のポーンが非制圧状態からCombat Extendedの制圧状態に新たに移った回数。制圧継続中の追加被弾や開発用の制圧テストを除外します。敵に与えた制圧数ではありません。</RWS_CE_SuppressionReceivedDesc>
 </LanguageData>
