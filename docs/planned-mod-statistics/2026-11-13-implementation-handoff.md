@@ -92,6 +92,12 @@ unzip -t /tmp/RimworldStatisticsVerifyHarness-planned-mods.zip
 
 Follow the [supplied MOD audit](2026-11-13-supplied-mod-audit.md) for Combat Extended, Gastronomy and Prison Expanded, plus the conditional Simple Warrants contract. Apply the same startup, opt-in, checkpoint, translation and package rules.
 
+## Tasks 26–34 — Required second-wave MOD outcomes
+
+**Do not stop at the first-wave statistics.** The [secondary implementation scope](2026-11-13-secondary-implementation-scope.md) contains nine separately reviewable follow-on tasks. They are **required**, including the secondary items previously listed as outside the initial delivery: ammunition consumption and suppression (Combat Extended), paid orders (Gastronomy), prisoner departures/riot results/sentence completion (Prison Expanded), measured extraction/refining/consumption (Rimefeller), hire contracts/payments (Pirates), expertise levels and record maxima (Skills), artillery outcomes (Security), hybrid births and genetic transformations (Genetics), and successful hatching (Drone Factory).
+
+Each Task 26–34 must use Task 0's optional metric pipeline and the same build, packaging, save/reload, checkpoint/branch, cross-colony and runtime checks. The evidence gates in the linked document are research-and-implementation subtasks, **not permission to drop the feature**. Rimefeller's B03 production work is one shared outcome with Task 29, not an overlapping new metric. A first-wave slice is still complete independently when it meets its own acceptance tests, even if the additional scope remains open.
+
 ## Input priorities after the first slices
 
 Follow the popularity ranking for eligible candidates. Start with B03 using the locked Rimefeller binary and the traced production predicates, then schedule the remaining conditional rows by existing reach evidence. C07 already uses generic coverage for newspaper production. Resume the other rows as their listed evidence becomes available. For input-needed rows use public author archives or already authorized test inputs. A fresh archive is only needed when those sources lack the exact 1.7 release.
