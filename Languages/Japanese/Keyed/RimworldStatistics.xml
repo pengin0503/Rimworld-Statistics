@@ -812,16 +812,16 @@
   <RWS_MetricDesc_BiotechWasteDisposed>Biotechの対象操作が実際に完了したと確認できた無害化処分した毒性廃棄物パック数。</RWS_MetricDesc_BiotechWasteDisposed>
   <RWS_Metric_BiotechPollutionCleaned>入植者が除染したマップセル数</RWS_Metric_BiotechPollutionCleaned>
   <RWS_MetricDesc_BiotechPollutionCleaned>Biotechの対象操作が実際に完了したと確認できた入植者が除染したマップセル数。</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>実験的な統計取得を許可する（初期OFF）</RWS_Exp_Enable>
-  <RWS_Exp_Warning>未検証です。記録漏れ・重複計上・処理負荷が生じることがあります。取得開始前のイベントは復元できません。</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>利用可能な項目をすべて選択</RWS_Exp_SelectAll>
+  <RWS_Exp_Enable>利用可能な統計をすべて記録する（初期ON）</RWS_Exp_Enable>
+  <RWS_Exp_Warning>未検証の統計も初期設定で取得します。一部の統計は記録漏れ・重複計上・処理負荷が生じる可能性があります。未導入MODは対象外です。取得開始前のイベントは復元できません。</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>すべて選択（今後の項目も含む）</RWS_Exp_SelectAll>
   <RWS_Exp_SelectNone>すべて解除</RWS_Exp_SelectNone>
   <RWS_Exp_SelectEvents>イベントのみ選択</RWS_Exp_SelectEvents>
   <RWS_Exp_Event>イベント取得</RWS_Exp_Event>
   <RWS_Exp_Snapshot>セーブ成功時取得</RWS_Exp_Snapshot>
   <RWS_Exp_RequiresDlc>必要なDLC/パッケージ: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Restart>取得設定の変更は次のゲーム再起動から適用されます。現在の記録処理には反映されません。</RWS_Exp_Restart>
-  <RWS_Exp_Help>各項目は独立して有効化できます。項目名は保存上の安定IDです。既存の記録は無効化しても削除されません。</RWS_Exp_Help>
+  <RWS_Exp_Help>新規導入では全項目が初期選択されています。不要な統計は個別に解除できます。解除しても過去の記録は消えません。変更の適用にはゲーム再起動が必要です。</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>実験的</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Evidence>取得時の信頼性: {0}</RWS_Exp_Evidence>
   <RWS_Exp_EvidenceExperimental>未検証の取得</RWS_Exp_EvidenceExperimental>
