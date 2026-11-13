@@ -1101,4 +1101,8 @@
   <RWS_VfeMedieval2_HoneyItemsDesc>Honey units successfully placed or merged after a player colonist unloads a player-owned Medieval2 apiary, grouped by output ThingDef. Production readiness, failed placements and later hauling are excluded.</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security cross-map artillery projectiles launched</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>Successful target-map projectile launches from player-owned off-map artillery when a traveling world shell arrives, grouped by projectile definition. Target orders, transit without arrival and shots with no spawned projectile do not count. This does not measure target hits.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeFactory_Harvested>VFE Factory Autofarmer harvested items</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_HarvestedDesc>Items newly harvested by a player-owned Autofarmer, including real harvest-buffer increases and confirmed ground placement, grouped by output ThingDef. Later hopper offloading, rejected placement and generic pawn harvesting are excluded.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>VFE Factory Autofarmer plants sown</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>New plants actually spawned, marked sown and matched to the selected crop during a player Autofarmer ProcessRow, grouped by plant ThingDef. Unsuccessful rows and old plants are excluded.</RWS_VfeFactory_SownDesc>
 </LanguageData>
