@@ -1115,4 +1115,6 @@
   <RWS_VfeSettlers_BountyHandinsDesc>Player caravan wanted criminals or bodies actually turned in and removed while receiving a positive silver reward. Opening the command, missing subjects, failed transfers and unrelated belongings do not count.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers bounty silver actually received</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>Silver actually added to the player caravan by the first reward transfer in a successful VFE Settlers wanted-person hand-in. Excludes the criminal's items and any silver in those belongings.</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_Rimatomics_Byproducts>Dubs Rimatomics reprocessing by-products actually placed</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_ByproductsDesc>Items actually placed or merged as by-products during a player-owned plutonium processor's completed fuel unload, grouped by output ThingDef. Returned spent fuel, merely processed material and unrelated placements do not count.</RWS_Rimatomics_ByproductsDesc>
 </LanguageData>
