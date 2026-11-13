@@ -17,10 +17,23 @@ public sealed class ImportResult
 /// Reads new or changed saves in one folder into the profile (spec §7.1, §7.5). Runs on a background thread and
 /// touches no game API. Cancellation is checked between files; what was read is kept and the next run continues.
 /// </summary>
-public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
+public sealed class ImportEngine
 {
-    private readonly int _readAhead = readAhead < 0 ? Math.Clamp(Environment.ProcessorCount / 2, 1, 3) : readAhead;
-    private const int SaveEvery = 5;
+    private readonly SaveReader _reader;
+    private readonly TimeProvider _timeProvider;
+    private readonly int _readAhead;
+
+    public ImportEngine(SaveReader reader, int readAhead = -1)
+        : this(reader, readAhead, TimeProvider.System) { }
+
+    public ImportEngine(SaveReader reader, int readAhead, TimeProvider timeProvider)
+    {
+        _reader = reader;
+        _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
+        _readAhead = readAhead < 0 ? Math.Clamp(Environment.ProcessorCount / 2, 1, 3) : readAhead;
+    }
+
+    private static readonly TimeSpan SaveInterval = TimeSpan.FromSeconds(5);
 
     public static bool IsSaveFile(string fileName)
         => fileName.EndsWith(".rws", StringComparison.OrdinalIgnoreCase)
@@ -39,6 +52,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
 
         int read = 0, skipped = 0, failed = 0, done = 0;
         var cancelled = false;
+        var lastSaveRequest = _timeProvider.GetTimestamp();
         var present = new List<string>(files.Count);
 
         // Warm scans used to search the entire profile for every unchanged
@@ -101,7 +115,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                 }
                 pending[index] = Task.Run(() =>
                 {
-                    try { return ct.IsCancellationRequested ? null : reader.ReadDetailed(aheadPath); }
+                    try { return ct.IsCancellationRequested ? null : _reader.ReadDetailed(aheadPath); }
                     catch (Exception) { return null; }
                 });
             }
@@ -144,7 +158,7 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                         && prefetched.Observation.LastWriteUtc == time)
                         result = prefetched;
                     else
-                        result = reader.ReadDetailed(path);
+                        result = _reader.ReadDetailed(path);
                     var (obs, metrics) = result;
                     read++;
                     countedRead = true;
@@ -178,8 +192,14 @@ public sealed class ImportEngine(SaveReader reader, int readAhead = -1)
                     };
                     CommitCurrentFile(p => ProfileMutations.AddSaveObservation(p, error));
                 }
-                if (read > 0 && read % SaveEvery == 0)
+                // Bound how often the background writer serializes a large profile.
+                // Completion and cancellation both still request a final save.
+                var now = _timeProvider.GetTimestamp();
+                if (_timeProvider.GetElapsedTime(lastSaveRequest, now) >= SaveInterval)
+                {
+                    lastSaveRequest = now;
                     session.QueueSave();
+                }
             }
         }
         finally

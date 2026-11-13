@@ -211,9 +211,7 @@ public sealed class ProfileStore
             throw new InvalidOperationException("The record file is read-only for this session (written by a newer version, or unreadable).");
         Directory.CreateDirectory(_directory);
         using var writeLock = LockFile();
-        var current = File.Exists(ProfilePath) ? File.ReadAllText(ProfilePath, Encoding.UTF8) : null;
-        if (_hasExpectedPrimary && current != _expectedPrimary)
-            throw new IOException("The statistics file changed in another session. Reopen RimWorld before writing to it.");
+        var current = ReadVerifiedPrimary();
         ProtectV1Source(current);
 
         if (File.Exists(PendingBackup))
@@ -229,8 +227,9 @@ public sealed class ProfileStore
         {
             using (var fs = new FileStream(tmp, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                var bytes = Utf8NoBom.GetBytes(json);
-                fs.Write(bytes, 0, bytes.Length);
+                using var writer = new StreamWriter(fs, Utf8NoBom, bufferSize: 4096, leaveOpen: true);
+                writer.Write(json);
+                writer.Flush();
                 fs.Flush(flushToDisk: true);
             }
             if (current != null)
@@ -254,6 +253,37 @@ public sealed class ProfileStore
                 // A leftover temp file is overwritten by the next save.
             }
         }
+    }
+
+    private string? ReadVerifiedPrimary()
+    {
+        var exists = File.Exists(ProfilePath);
+        if (!_hasExpectedPrimary)
+            return exists ? File.ReadAllText(ProfilePath, Encoding.UTF8) : null;
+
+        if (exists && _expectedPrimary is { } expected)
+        {
+            // Reuse the known contents only after a full, ordinal comparison
+            // of the decoded file. StreamReader preserves ReadAllText's BOM handling.
+            using var reader = new StreamReader(ProfilePath, Encoding.UTF8);
+            Span<char> buffer = stackalloc char[2048];
+            var remaining = expected.AsSpan();
+            int read;
+            while ((read = reader.Read(buffer)) > 0)
+            {
+                if (!remaining.StartsWith(buffer[..read], StringComparison.Ordinal))
+                    break;
+                remaining = remaining[read..];
+            }
+            if (read == 0 && remaining.IsEmpty)
+                return expected;
+        }
+        else if (!exists && _expectedPrimary is null)
+        {
+            return null;
+        }
+
+        throw new IOException("The statistics file changed in another session. Reopen RimWorld before writing to it.");
     }
 
     /// <summary>

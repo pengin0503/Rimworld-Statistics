@@ -192,6 +192,25 @@ public sealed class ProfileStoreTests
     }
 
     [Fact]
+    public void ConcurrentSameLengthEditWithOriginalTimestampIsRejected()
+    {
+        using var dir = new TempDir();
+        var store = new ProfileStore(dir.Path);
+        _ = store.Load(Now);
+        store.Save(Tagged("before"));
+        var original = File.ReadAllText(store.ProfilePath);
+        var stamp = File.GetLastWriteTimeUtc(store.ProfilePath);
+        var edited = original.Replace("before", "edited", StringComparison.Ordinal);
+        Assert.NotEqual(original, edited);
+        File.WriteAllText(store.ProfilePath, edited);
+        File.SetLastWriteTimeUtc(store.ProfilePath, stamp);
+
+        Assert.Throws<IOException>(() => store.Save(Tagged("new")));
+        Assert.Equal(edited, File.ReadAllText(store.ProfilePath));
+        Assert.False(File.Exists(dir.File("profile.json.bak1")));
+    }
+
+    [Fact]
     public void ConcurrentEditIsRejectedEvenWhenOnlyImportStateChanged()
     {
         using var dir = new TempDir();

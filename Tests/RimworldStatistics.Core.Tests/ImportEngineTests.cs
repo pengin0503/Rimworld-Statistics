@@ -212,6 +212,54 @@ public sealed class ImportEngineTests
         Assert.Empty(r.PresentFiles);
     }
 
+    private sealed class ManualTimeProvider : TimeProvider
+    {
+        private long _ticks;
+        public override long TimestampFrequency => TimeSpan.TicksPerSecond;
+        public override long GetTimestamp() => _ticks;
+        public void Advance(TimeSpan time) => _ticks += time.Ticks;
+    }
+
+    [Fact]
+    public void Run_ThrottlesIntermediateWritesAndPersistsCancelledProgress()
+    {
+        using var saves = new TempDir();
+        using var store = new TempDir();
+        for (var i = 0; i < 10; i++)
+            Write(saves, $"s{i:00}.rws", Save("seed-" + i));
+
+        // Deliberately place a directory at the primary filename. This gives
+        // an unambiguous observable signal if a background save was requested.
+        var session = NewSession(store);
+        var primary = store.File("profile.json");
+        Directory.CreateDirectory(primary);
+        var clock = new ManualTimeProvider();
+        using var cts = CancellationTokenSource.CreateLinkedTokenSource(TestContext.Current.CancellationToken);
+        var progress = new SyncProgress(p =>
+        {
+            if (p.Done == 5)
+            {
+                Assert.False(SpinWait.SpinUntil(() => session.LastSaveError is not null, TimeSpan.FromMilliseconds(400)),
+                    "A fast batch queued an intermediate profile write.");
+                clock.Advance(TimeSpan.FromSeconds(6));
+            }
+            if (p.Done == 6)
+            {
+                Assert.True(SpinWait.SpinUntil(() => session.LastSaveError is not null, TimeSpan.FromSeconds(5)),
+                    "A slow batch did not queue an intermediate profile write.");
+                Directory.Delete(primary);
+                cts.Cancel();
+            }
+        });
+
+        var result = new ImportEngine(new SaveReader(), readAhead: 1, clock)
+            .Run(saves.Path, session, progress, cts.Token);
+        Assert.Equal((6, 0, true), (result.Read, result.Failed, result.Cancelled));
+        session.Flush();
+        Assert.Null(session.LastSaveError);
+        Assert.Equal(6, new ProfileStore(store.Path).Load(Now).Profile.SaveObservations.Count);
+    }
+
     [Fact]
     public void Run_FiveChangedThenSkippedFiles_DoesNotInvalidateCachedViewOnEachSkip()
     {

@@ -5,63 +5,21 @@
 // Results are measurements of this runner, not an in-game TPS claim. No threshold is
 // enforced, because machine load, filesystem and runtime variation are uncontrolled.
 using System.Diagnostics;
-using System.Text.Json;
 using System.Globalization;
 using System.Text;
 using RimworldStatistics.Core;
 
-// Optional large-profile mode exercises the actual atomic save/backup decision at
-// 5/10 MiB without inventing synthetic colony history that would be compacted.
-// The padding is deliberately a user-extension field, outside importState.
+// Exercise both a scan-timestamp update and a real statistics update against
+// the same profile, with enough ordinary observations to hit each size.
 if (args.Length > 0 && args[0] == "--large")
 {
     var sizesMiB = args.Length == 1 ? new[] { 5, 10 }
         : args.Skip(1).Select(a => int.Parse(a, CultureInfo.InvariantCulture)).ToArray();
     if (sizesMiB.Any(n => n < 1 || n > 32))
         throw new ArgumentOutOfRangeException(nameof(args), "Large-profile sizes must be 1..32 MiB.");
-    Console.WriteLine("profile_mib,profile_bytes,import_only_commit_median_ms,import_only_commit_alloc_bytes,backup_rotated");
+    Console.WriteLine("target_mib,profile_bytes,saves,serialize_p95_ms,import_only_commit_p95_ms,statistics_commit_p95_ms,import_only_alloc_median_bytes,statistics_alloc_median_bytes,logical_primary_write_bytes");
     foreach (var mib in sizesMiB)
-    {
-        var large = new Profile
-        {
-            ExtensionData = new Dictionary<string, JsonElement>
-            {
-                ["benchmarkPadding"] = JsonSerializer.SerializeToElement(new string('X', mib * 1024 * 1024)),
-            },
-        };
-        var directory = Path.Combine(Path.GetTempPath(), "rws-profile-large-" + Guid.NewGuid().ToString("N"));
-        try
-        {
-            var store = new ProfileStore(directory);
-            _ = store.Load(DateTime.UtcNow);
-            store.Save(large);
-            var elapsed = new List<double>();
-            var allocations = new List<long>();
-            for (var i = 0; i < 5; i++)
-            {
-                large.ImportState.LastScanUtc = new DateTime(2026, 11, 13, 0, 0, i + 1, DateTimeKind.Utc);
-                var next = ProfileJson.Serialize(large);
-                var before = GC.GetAllocatedBytesForCurrentThread();
-                var start = Stopwatch.GetTimestamp();
-                store.SaveSerialized(next);
-                elapsed.Add(Stopwatch.GetElapsedTime(start).TotalMilliseconds);
-                allocations.Add(GC.GetAllocatedBytesForCurrentThread() - before);
-            }
-            elapsed.Sort();
-            allocations.Sort();
-            Console.WriteLine(string.Join(",",
-                mib.ToString(CultureInfo.InvariantCulture),
-                new FileInfo(store.ProfilePath).Length.ToString(CultureInfo.InvariantCulture),
-                elapsed[elapsed.Count / 2].ToString("F4", CultureInfo.InvariantCulture),
-                allocations[allocations.Count / 2].ToString(CultureInfo.InvariantCulture),
-                File.Exists(store.ProfilePath + ".bak1") ? "true" : "false"));
-        }
-        finally
-        {
-            if (Directory.Exists(directory))
-                Directory.Delete(directory, recursive: true);
-        }
-    }
+        MeasureLargeProfile(mib);
     return;
 }
 
@@ -134,6 +92,120 @@ static (double Milliseconds, long AllocBytes) Measure(Action action, int repetit
 }
 
 static string Num(double n) => n.ToString("F4", CultureInfo.InvariantCulture);
+
+static void MeasureLargeProfile(int mib)
+{
+    var timestamp = new DateTime(2026, 11, 13, 0, 0, 0, DateTimeKind.Utc);
+    var profile = new Profile();
+    var targetBytes = mib * 1024 * 1024;
+    var snapshotDefinitions = SnapshotCatalog.Definitions.ToArray();
+    string serialized;
+    do
+    {
+        for (var i = 0; i < 100; i++)
+        {
+            var save = profile.SaveObservations.Count;
+            var colony = save / 12;
+            var campaign = "benchmark-campaign-" + colony;
+            var identity = new ColonyIdentity
+            {
+                ModCampaignId = campaign,
+                SeedString = "benchmark-seed-" + colony,
+                StartingTile = (100 + colony) + ",0",
+                PersistentRandomValue = colony + 1,
+                FirstWealthBits = (uint)(170 + colony),
+                StartingPawnIds = { "Thing_Human" + (1000 + colony) },
+            };
+            var observed = new ObservedValues
+            {
+                TicksGame = 60000 * (save % 12 + 1),
+                NumRaidsEnemy = save % 12,
+                WealthLast = 5000 + save * 25,
+                WealthMax = 5000 + save * 25,
+            };
+            profile.SaveObservations.Add(new SaveObservation
+            {
+                FileName = $"benchmark-colony-{colony:D4}-save-{save % 12:D2}.rws",
+                FileSize = 20 * 1024 * 1024 + save,
+                LastWriteUtc = timestamp.AddMinutes(save),
+                GameVersion = "1.7.5005 rev1082",
+                ReaderVersion = SaveReader.Version,
+                Status = ObservationStatus.Ok,
+                Identity = identity,
+                Values = observed,
+            });
+            if (save % 12 != 11)
+                continue;
+            ProfileMutations.ApplyLiveObservation(profile, campaign, identity, observed, new DisplayInfo(), timestamp);
+            var snapshot = Snapshot(identity, save, timestamp, snapshotDefinitions);
+            snapshot.SaveTick = observed.TicksGame;
+            profile.MetricObservations.Add(snapshot);
+        }
+        serialized = ProfileJson.Serialize(profile);
+    }
+    while (Encoding.UTF8.GetByteCount(serialized) < targetBytes);
+
+    var directory = Directory.CreateTempSubdirectory("rws-profile-large-");
+    try
+    {
+        var store = new ProfileStore(directory.FullName);
+        _ = store.Load(timestamp);
+        store.SaveSerialized(serialized);
+        var profileBytes = new FileInfo(store.ProfilePath).Length;
+        var session = new ProfileSession(new ProfileStore(directory.FullName), () => timestamp);
+        var serialization = new List<double>();
+        var scans = new List<double>();
+        var statistics = new List<double>();
+        var scanAllocations = new List<long>();
+        var statisticsAllocations = new List<long>();
+        long logicalBytes = 0;
+        for (var i = 0; i <= 10; i++)
+        {
+            // Match WriteLatest's serialization under the session lock while
+            // measuring the store separately on exactly the same JSON shape.
+            session.Mutate(p => p.ImportState.LastScanUtc = timestamp.AddSeconds(i + 1), SaveMode.None);
+            var start = Stopwatch.GetTimestamp();
+            var scan = session.Read(ProfileJson.Serialize);
+            var serializeMs = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
+            MeasureCommit(scan, scans, scanAllocations, i > 0);
+
+            if (i == 0 && File.Exists(store.ProfilePath + ".bak1"))
+                throw new InvalidOperationException("Scan-only update rotated a backup.");
+            session.Mutate(p => p.SaveObservations[^1].Values.NumRaidsEnemy++, SaveMode.None);
+            MeasureCommit(session.Read(ProfileJson.Serialize), statistics, statisticsAllocations, i > 0);
+            if (i == 0 && !File.Exists(store.ProfilePath + ".bak1"))
+                throw new InvalidOperationException("Statistics update did not rotate a backup.");
+            if (i > 0)
+                serialization.Add(serializeMs);
+        }
+        Console.WriteLine(FormattableString.Invariant(
+            $"{mib},{profileBytes},{profile.SaveObservations.Count},{Num(Percentile95(serialization))},{Num(Percentile95(scans))},{Num(Percentile95(statistics))},{scanAllocations.Order().ElementAt(5)},{statisticsAllocations.Order().ElementAt(5)},{logicalBytes}"));
+
+        void MeasureCommit(string json, List<double> times, List<long> allocations, bool record)
+        {
+            var start = Stopwatch.GetTimestamp();
+            var allocated = GC.GetAllocatedBytesForCurrentThread();
+            store.SaveSerialized(json);
+            var used = GC.GetAllocatedBytesForCurrentThread() - allocated;
+            var elapsed = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
+            if (!record)
+                return;
+            times.Add(elapsed);
+            allocations.Add(used);
+            logicalBytes += Encoding.UTF8.GetByteCount(json);
+        }
+    }
+    finally
+    {
+        directory.Delete(recursive: true);
+    }
+}
+
+static double Percentile95(List<double> samples)
+{
+    samples.Sort();
+    return samples[(int)Math.Ceiling(samples.Count * 0.95) - 1];
+}
 
 Console.WriteLine("saves,observations_stored,profile_bytes,append_tail_ms,serialize_ms,build_view_ms,build_view_alloc_bytes,disk_commit_ms");
 foreach (var size in sizes)
