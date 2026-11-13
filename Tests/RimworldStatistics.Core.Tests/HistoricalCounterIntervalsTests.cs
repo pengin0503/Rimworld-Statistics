@@ -59,6 +59,24 @@ public sealed class HistoricalCounterIntervalsTests
     }
 
     [Fact]
+    public void DiagnosticsShowNonZeroIntervalsSeparatelyNewestFirst()
+    {
+        var p = new Profile();
+        Point(p, "A", null, 60000, 3, 1);
+        Point(p, "B", "A", 120000, 5, 1);
+        Point(p, "C", "A", 180000, 3, 2);
+        Point(p, "D", "C", 240000, 3, 2);
+
+        var rows = HistoricalCounterIntervals.ForDiagnostics(p);
+        Assert.Collection(rows,
+            row => Assert.Equal(("C", 0L, 1L, MetricCoverage.Partial),
+                (row.ChildCheckpointId, row.RaidsIncrease, row.ColonistDeathsIncrease, row.Coverage)),
+            row => Assert.Equal(("B", 2L, 0L, MetricCoverage.Partial),
+                (row.ChildCheckpointId, row.RaidsIncrease, row.ColonistDeathsIncrease, row.Coverage)));
+        Assert.Equal(3, HistoricalCounterIntervals.Evaluate(p).Count);
+    }
+
+    [Fact]
     public void NoConfirmedParent_EvenSameCampaignAndLaterSave_IsNotCompared()
     {
         var p = new Profile();

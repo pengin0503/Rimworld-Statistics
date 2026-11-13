@@ -80,6 +80,14 @@ public static class HistoricalCounterIntervals
             .ThenBy(x => x.ChildCheckpointId, Ord).ToArray();
     }
 
+    /// <summary>
+    /// On-demand diagnostic rows, newest first. Only proven intervals with a
+    /// non-zero change are displayed, with no cumulative total across forks.
+    /// </summary>
+    public static IReadOnlyList<HistoricalCounterInterval> ForDiagnostics(Profile profile)
+        => Evaluate(profile).Where(row => row.RaidsIncrease > 0 || row.ColonistDeathsIncrease > 0)
+            .OrderByDescending(row => row.EndTick).ThenByDescending(row => row.StartTick).ToArray();
+
     private static MetricObservation? MatchSingleSave(
         MetricObservation checkpoint, IEnumerable<MetricObservation> saves)
     {

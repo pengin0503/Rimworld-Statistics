@@ -91,6 +91,14 @@
   <RWS_LiveRecord>(recorded in play)</RWS_LiveRecord>
   <RWS_Rescan>Rescan</RWS_Rescan>
   <RWS_Cancel>Cancel</RWS_Cancel>
+  <RWS_HistoricalIntervals_Title>Historical save intervals</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>Partial evidence from directly linked saves. Each row shows a change between saved ticks. Forks remain separate, and these rows are excluded from lifetime totals.</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>No directly linked saves with a confirmed increase were found.</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>The historical intervals could not be read.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_Start>From game tick</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>Through game tick</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>Enemy raids added</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>Colonist deaths added</RWS_HistoricalIntervals_Deaths>
   <RWS_Import_LastScan>Last scan: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>never</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>No import has run in this session yet.</RWS_Import_NotRunThisSession>

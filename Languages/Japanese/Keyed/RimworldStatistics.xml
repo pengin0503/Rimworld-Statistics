@@ -91,6 +91,14 @@
   <RWS_LiveRecord>（プレイ中の記録）</RWS_LiveRecord>
   <RWS_Rescan>再スキャン</RWS_Rescan>
   <RWS_Cancel>中止</RWS_Cancel>
+  <RWS_HistoricalIntervals_Title>過去セーブの区間差分</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>直接の親子関係を確認できたセーブ間の差分です。各行は保存時刻の間の部分的な記録です。分岐は別々に表示し、通算値には加算しません。</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>増加を確認できる直接の親子セーブはありません。</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>過去セーブの区間差分を読み込めませんでした。</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_Start>開始ゲームtick</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>終了ゲームtick</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>敵襲の増加数</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>入植者死亡の増加数</RWS_HistoricalIntervals_Deaths>
   <RWS_Import_LastScan>最後に読んだ日時: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>まだ読んでいません</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>このセッションではまだ取り込んでいません。</RWS_Import_NotRunThisSession>
