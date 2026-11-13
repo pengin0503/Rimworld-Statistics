@@ -20,7 +20,7 @@ The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-imple
 4. **No DLC assumptions:** gate optional DLC and optional gameplay MODs by actual presence; missing targets fail closed, previous records persist, gaps are Partial/Unknown rather than fabricated zero. In particular, Anomaly-only coverage is not a required acceptance test.
 5. **RimWorld 1.7 check:** inspect the active `loadFolders.xml` and *actual selected assembly* (sometimes version folder 1.6); confirm public source/IL signature and successful event. 1.7 branding or folder existence alone is insufficient.
 6. **Cross-MOD key identity:** use package identity plus Def identity/version where applicable; avoid treating a bare DefName as globally unique across unrelated MOD sets.
-7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture Experimental/opt-in.
+7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture classified Experimental/Unverified, but enable eligible statistics by default on new installations. Respect explicit existing opt-outs, and allow recording changes without restart.
 8. **No code changes in this documentation task.** Existing v1.6.0 release and Steam Workshop are untouched.
 
 ## Popularity-aware execution priority
