@@ -1075,4 +1075,10 @@
   <RWS_CombatExtended_ReloadsDesc>Completed player-pawn reload actions that actually move ammunition into a weapon magazine. Each DoReload action counts once even when it loads several ammo stacks. Turrets, auto-loaders, disabled ammo and failed actions are excluded.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android natural awakenings</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Player-owned synthetic-body androids that naturally become awakened through the mood-based gene tick, excluding direct developer awakening, startup and already-awakened state. Requires Biotech.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>VSE expertise specializations selected</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>New expertise specializations selected by player colonists in the normal expertise panel, by ExpertiseDef. Debug unlocks and restored records are excluded.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE expertise levels earned</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>Positive permanent increases in VSE expertise levels earned after recording was enabled, summed across all independent colonies and grouped by ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE highest expertise level ever reached</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>The largest expertise level actually attained through XP progression among independent colonies, not a sum of levels or a snapshot of the latest save.</RWS_VseExpertise_HighestDesc>
 </LanguageData>
