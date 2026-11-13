@@ -1065,4 +1065,6 @@
   <RWS_VfeInsectoids_HiveBirthsDesc>通常の時間経過で自勢力の巣から新たにスポーンした虫の累計（種類別）。繭による置換、既存個体の復元、開発用スポーン操作は含みません。</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VfeClassical_SenatorFavors>VFE Classical 新規の元老院議員支持獲得数</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>通常の外交またはクエストで、未支持状態から新たに支持を得た議員の数（勢力別）。開発モード操作、すでに支持済みの議員、セーブ復元は含みません。</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>VFE Empire 儀式によって正式に授与された栄誉</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>儀式が成功した際に、保留状態から入植者に正式授与された栄誉の累計（種類別）。栄誉候補の追加や開発用操作は含みません。</RWS_VfeEmpire_HonorsBestowedDesc>
 </LanguageData>
