@@ -18,8 +18,8 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 | `contract.sdk_cap` | #196 | 本体のSDK Policyを**非接続のメモリ上**で4096件まで呼び、再送の除外と上限後のfail-closedを確認 | 実MODの頻度・保存ロードや継続計数は未確認 |
 | `contract.pollution` | #63 | Biotechの汚染総量と全セルカウントの一致 | TPS比較ではない。DLCが無ければSKIP |
 | `contract.hospitality` | #165 | Hospitality有無と訪問・購入ゲート状態を調査 | 客の正常な退出/取引を実行せずINCONCLUSIVE |
-| `contract.rimefeller` | #167 | 未実装の確定イベント経路であることを明示 | SKIP。原油・燃料の成功イベントは未検証 |
-| `contract.vehicle` | #176 | Vehicle Framework 1.7対応ソース不足を明示 | SKIP。1.6専用ファイルでは実装できない |
+| `contract.rimefeller` | #176 | 精製品の配置と原油の正味投入量の扱いを確認 | SKIP。油田容量・燃料消費は別の取得単位 |
+| `contract.vehicle` | #167 | Vehicle Frameworkの有無と所有車両スナップショットの取得状態を確認 | 車両を持つテストセーブでの件数照合は別途必要 |
 
 **実行手順を最短にするには**、隔離プロファイルでMOD/セーブをロード → **1. Run guided full audit** → テストコピーを正常に1回保存 → **2. Read-only rescan after save** の順に操作します。Rescanは8件の診断契約を再評価します。**5. Run extra integration contracts (read-only)** ならゲーム内イベントの再実行なしに診断だけをやり直せます。**3. Retry** は失敗・SKIP・INCONCLUSIVEだけを再実行します。
 
@@ -31,7 +31,7 @@ Rimworld Statistics の未検証の取得単位（[実装記録](../../docs/rese
 - `PrerequisiteOnly`: 対象MODがあるか等を調べたのみ。PASSにはしない。
 - `ContractError`: 診断自体が例外で失敗。ゲーム側の統計が不正と断定しない。
 
-**実機による追加確認が残るもの:** #192の画面スクロール、#198の10文字編集→画面を閉じる→再起動による保存回数/永続化、#197の対象MOD版切替、#165の実際の宿泊客売買・退出、#167の正当な生産/消費の確定点の特定、#176の1.7版取得、#63の同一条件での5対TPS窓と10対成功保存、#64のMODセット切替と保存分岐、#72の真の分岐・巻戻しなど。すべて「自動検証済み」にはできません。
+**実機による追加確認が残るもの:** #192の画面スクロール、#198の10文字編集→画面を閉じる→再起動による保存回数/永続化、#197の対象MOD版切替、#165の実際の宿泊客売買・退出、#167のマップ・キャラバン・航空機・退避車両の実測件数照合、#63の同一条件での5対TPS窓と10対成功保存、#64のMODセット切替と保存分岐、#72の真の分岐・巻戻しなど。すべて「自動検証済み」にはできません。
 
 隔離マーカーが無い場合、**Run all automated cases / Run one case** からもゲーム内操作を拒否します。本体リリース・Steam WorkshopにVerifyHarnessを含めない方針は変更しません。個別ケースのPASSをもって未検証統計をVerifiedに昇格させません。
 

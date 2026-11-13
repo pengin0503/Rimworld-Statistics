@@ -25,8 +25,8 @@ internal static class VerifyAutomatedContracts
         new("contract.sdk_cap", "Exercise real SDK policy over 4096 distinct IDs in detached memory (#196)", SdkCap),
         new("contract.pollution", "Compare vanilla total pollution against full-grid count (#63)", Pollution),
         new("contract.hospitality", "Inspect Hospitality capture prerequisites (not a simulated guest visit) (#165)", Hospitality),
-        new("contract.rimefeller", "Identify missing production/consumption success-point adapter (#167)", Rimefeller),
-        new("contract.vehicle", "Identify missing RimWorld 1.7 vehicle source (#176)", Vehicles),
+        new("contract.rimefeller", "Identify remaining unverified refinery product and feedstock outcomes (#176)", Rimefeller),
+        new("contract.vehicle", "Inspect Vehicle Framework capture prerequisites (#167)", Vehicles),
     };
 
     public static CaseResult Run(Contract test)
@@ -273,9 +273,15 @@ internal static class VerifyAutomatedContracts
 
     private static CaseResult Rimefeller()
         => Skipped("contract.rimefeller",
-            "1.7 Rimefeller production/consumption success points not proven; runtime capture adapter not implemented");
+            "Rimefeller refinery product placement and net crude feedstock are not tracked; fuel debits and oilfield capacity have separate adapters");
 
     private static CaseResult Vehicles()
-        => Skipped("contract.vehicle",
-            "Vehicle Framework 1.7-compatible package not available; provided package is 1.6-only");
+    {
+        const string id = "contract.vehicle";
+        if (!ModsConfig.IsActive("SmashPhil.VehicleFramework"))
+            return Skipped(id, "Vehicle Framework is absent");
+        const string acquisition = "mod.smashphil.vehicleframework.ownership";
+        return Inconclusive(id, "Vehicle Framework installed; snapshotRecording=" + MetricGates.IsRecording(acquisition)
+            + ". Compare vehicle ownership in the game with the captured save snapshot.");
+    }
 }
