@@ -8,6 +8,10 @@
 
 Start with the [implementation handoff](2026-11-13-implementation-handoff.md). The [35-candidate disposition](2026-11-13-candidate-disposition.md) records the first implementation slices and the evidence each remaining proposal needs. Use the [pinned references](2026-11-13-reference-lock.md) to reproduce the source and assembly checks. These three documents carry the current decisions when an earlier research note describes a preliminary status.
 
+## Second-wave scope is also committed
+
+The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-implementation-scope.md) make the previously deferred secondary statistics **required implementation targets**, not excluded ideas. They cover Combat Extended ammunition/suppression; Gastronomy paid orders; Prison Expanded departures, riots and completed sentences; Rimefeller measured production/consumption; Pirates contracts/payments; Skills expertise-level records; Security artillery; Genetics hybrid births/transformations; and Drone Factory hatching. They augment, and never replace, the first 25 slices or the 35-MOD master register. Outcomes awaiting a proven 1.7 commit site remain explicitly tracked until implemented or evidenced as covered by an existing generic metric.
+
 ## Non-negotiable implementation contract
 
 1. **One MOD package:** implement directly in Rimworld-Statistics; no separate statistics add-on repository. Never turn existing generic captures into duplicate MOD-branded metric families.
