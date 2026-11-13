@@ -1051,4 +1051,12 @@
   <RWS_MetricDesc_VpeCasts>自勢力の自由入植者がVanilla Psycasts Expandedの能力を実際に発動・消費した累計回数。能力Def別の内訳を含み、詠唱指示・中断・NPCの発動は数えません。</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>VFE Security トラップの再装填成功回数</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>記録開始後にプレイヤー所有のトラップが解除状態から武装状態に変化した回数。仕事の指示、初期生成、デバッグ操作、元MODのポーン記録の読み取りは含みません。</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE 実績カード解除数</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>通常プレイ中に新しく解除した実績カードの数（実績定義別）。デバッグ解除とゲーム開始時の復元確認は含みません。</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>VAE 獲得実績ポイント</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>通常の実績解除に伴い実際に加算されたポイントの累計。ポイント管理側の値を取得できない場合は部分的な記録として扱います。</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>VFE Tribals 時代進歩回数</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>プレイヤー勢力の技術時代が実際に上昇した回数（時代別）。初期化、同一・後退、ロード復元は含みません。</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals コーナーストーン獲得数</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>通常プレイ中にポイントを消費して新規獲得したコーナーストーン数（種類別）。既存の取得状態やロード時の復元は含みません。</RWS_VfeTribals_CornerstonesDesc>
 </LanguageData>
