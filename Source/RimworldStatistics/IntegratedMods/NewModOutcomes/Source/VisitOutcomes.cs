@@ -25,7 +25,7 @@ internal static class VisitOutcomes
     private static object checkInDone = null!;
     private static FieldInfo investigated = null!;
     private static FieldInfo doctrineDef = null!;
-    private sealed record CampVisit(PlanetTile Tile, Pawn[] Travellers);
+    private sealed record CampVisit(CheckpointSaveSession Session, PlanetTile Tile, Pawn[] Travellers);
 
     internal static ModMetricAdapterRegistration HotelCheckouts() =>
         OutcomeMetric.Count("ROBTRG.HotelsAndRecreation", "hotelcheckouts", "RWS_NewMod_HotelCheckout",
@@ -90,16 +90,16 @@ internal static class VisitOutcomes
     private static void BeforeCamp(Caravan __0, out CampVisit? __state)
     {
         __state = null;
-        if (!OutcomeMetric.Observing(Camp) || __0.Faction != Faction.OfPlayer)
+        if (!OutcomeMetric.Observing(Camp) || LiveMetrics.Session is not { } session || __0.Faction != Faction.OfPlayer)
             return;
         try
         {
             var tile = __0.Tile;
             if (__0.PawnsListForReading.Count > 0 &&
                 !Find.WorldObjects.AllWorldObjects.Any(site => site.Tile == tile && site.def == WorldObjectDefOf.Camp))
-                __state = new CampVisit(tile, __0.PawnsListForReading.ToArray());
+                __state = new CampVisit(session, tile, __0.PawnsListForReading.ToArray());
         }
-        catch (Exception error) { LiveMetrics.Fail(Camp, error); }
+        catch (Exception error) { FailCamp(error); }
     }
 
     private static void AfterCamp(bool __runOriginal, CampVisit? __state)
@@ -110,9 +110,28 @@ internal static class VisitOutcomes
         {
             if (camp.Travellers.Any(pawn => pawn.Spawned && pawn.Map?.Parent is { } site &&
                 site.def == WorldObjectDefOf.Camp && site.Tile == camp.Tile && site.Faction == Faction.OfPlayer))
-                OutcomeMetric.Record(Camp);
+            {
+                // Set Up Camp runs GenerateCamp in an asynchronous long event.
+                CampCompletion.Record(camp.Session, () => LiveMetrics.Session, UnityData.IsInMainThread,
+                    LongEventHandler.ExecuteWhenFinished, RecordCamp);
+            }
         }
-        catch (Exception error) { LiveMetrics.Fail(Camp, error); }
+        catch (Exception error) { FailCamp(error); }
+    }
+
+    private static void RecordCamp()
+    {
+        if (OutcomeMetric.Observing(Camp))
+            OutcomeMetric.Record(Camp);
+    }
+
+    private static void FailCamp(Exception error)
+    {
+        if (UnityData.IsInMainThread)
+            LiveMetrics.Fail(Camp, error);
+        else if (LiveMetrics.Session is { } session)
+            CampCompletion.Record(session, () => LiveMetrics.Session, false,
+                LongEventHandler.ExecuteWhenFinished, () => LiveMetrics.Fail(Camp, error));
     }
 
     private static void InstallResearch(Harmony harmony)
