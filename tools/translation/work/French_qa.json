@@ -15,5 +15,7 @@
   "RWS_MetricDesc_OdysseyNewMaps": "Atterrissages de vaisseau gravitationnel achevés ayant nécessité la génération d'une nouvelle carte.",
   "RWS_NewMod_GravBoon": "Bonus de lancement de vaisseau gravitationnel",
   "RWS_NewMod_GravBoonDesc": "Bonus de lancement appliqués aux vaisseaux gravitationnels du joueur, par type de bonus.",
-  "RWS_Metric_BiotechMechsCreated": "Mécanoïdes produits par gestation"
+  "RWS_Metric_BiotechMechsCreated": "Mécanoïdes produits par gestation",
+  "RWS_Metric_CraftMasterwork": "Objets de qualité chef-d’œuvre fabriqués",
+  "RWS_MetricDesc_CraftMasterwork": "Objets fabriqués de qualité chef-d’œuvre."
 }
