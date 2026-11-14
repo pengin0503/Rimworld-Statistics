@@ -1243,4 +1243,16 @@
   <RWS_Chart_AddColony>Ajouter une colonie…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Observations par jour de jeu. Les coupures signalent des données manquantes.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} points de nutrition</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>Androïdes fabriqués</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>Androïdes du joueur créés en terminant le travail à la station de création.</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>Cryptogénérateurs redémarrés</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>Cryptogénérateurs gelés remis en service par un personnage du joueur après le travail prévu.</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>Enseignements efficaces</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>Enseignements qui ont augmenté l’expérience ou le niveau de la compétence de l’élève du joueur.</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>Injections d’archogènes réussies</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>Injections qui ont effectivement ajouté un xénogène au colon.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>Atouts de Classical acquis</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>Atouts accordés grâce à la faveur d’un sénateur, y compris ceux obtenus de nouveau.</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>Combats spatiaux gagnés</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>Combats où la défaite du vaisseau ennemi est confirmée, y compris par piratage.</RWS_Sos2_BattlesWonDesc>
 </LanguageData>

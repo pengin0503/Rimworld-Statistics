@@ -1243,4 +1243,16 @@
   <RWS_Chart_AddColony>Kolonie hinzufügen…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Messwerte nach Spieltagen. Lücken zeigen fehlende Werte.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>Hergestellte Androiden</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>Spielereigene Androiden nach abgeschlossener Arbeit an der Androidenstation.</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>Neu gestartete Kryptogeneratoren</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>Eingefrorene Kryptogeneratoren, die Spielfiguren nach abgeschlossener Arbeit erfolgreich neu gestartet haben.</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>Erfolgreiche Unterweisungen</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>Unterweisungen, die Erfahrung oder Stufe der gelehrten Fertigkeit eines eigenen Schülers erhöht haben.</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>Erfolgreiche Archogen-Injektionen</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>Injektionen, die einem Kolonisten tatsächlich ein neues Xenogen hinzugefügt haben.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>Erworbene Classical-Vorteile</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>Durch Senatorengunst erhaltene Vorteile, einschließlich erneut erworbener Vorteile.</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>Gewonnene Raumschiffkämpfe</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>Kämpfe mit bestätigter Niederlage des gegnerischen Schiffs, auch durch Hacking.</RWS_Sos2_BattlesWonDesc>
 </LanguageData>
