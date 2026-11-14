@@ -1000,131 +1000,131 @@
   <RWS_Status_FilterMeasured>측정값 있음</RWS_Status_FilterMeasured>
   <RWS_Status_FilterPartial>부분 기록</RWS_Status_FilterPartial>
   <RWS_Status_FilterMissing>측정값 없음</RWS_Status_FilterMissing>
-  <RWS_Status_FilterNA>적용되지 않음</RWS_Status_FilterNA>
-  <RWS_Status_Statistic>미터 / 취득 단위</RWS_Status_Statistic>
-  <RWS_Status_Recording>현재 수집</RWS_Status_Recording>
-  <RWS_Status_Coverage>기록된 적용</RWS_Status_Coverage>
-  <RWS_Status_Count>콜로니</RWS_Status_Count>
-  <RWS_Status_RecordingOn>관련 기사</RWS_Status_RecordingOn>
-  <RWS_Status_RecordingOff>녹음하기</RWS_Status_RecordingOff>
-  <RWS_Status_DlcMissing>필수 DLC가 없습니다</RWS_Status_DlcMissing>
-  <RWS_Status_ModMissing>대상 MOD 누락</RWS_Status_ModMissing>
-  <RWS_Status_TargetIncompatible>Target MOD 버전 또는 캡처 후크 unsupported</RWS_Status_TargetIncompatible>
-  <RWS_Status_RecordingFailed>이 세션을 실패</RWS_Status_RecordingFailed>
-  <RWS_Status_RecordingUnnecessary>자주 묻는 질문</RWS_Status_RecordingUnnecessary>
-  <RWS_Status_MissingColonies>{0} 식민지의 관측을 미스:</RWS_Status_MissingColonies>
-  <RWS_Details_StatusAll>모든 통계</RWS_Details_StatusAll>
-  <RWS_Details_StatusMeasured>측정된 수</RWS_Details_StatusMeasured>
-  <RWS_Details_StatusPartial>부분적인 기록</RWS_Details_StatusPartial>
-  <RWS_Details_StatusMissing>견적 요청</RWS_Details_StatusMissing>
-  <RWS_Details_StatusExperimental>회사 소개</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>VPE 심리스터 레벨 획득</RWS_Metric_VpeLevelsGained>
-  <RWS_MetricDesc_VpeLevelsGained>Player-faction VPE psycaster 레벨의 위쪽 변경을 확인한 후 녹화가 시작됩니다.</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>VPE 심리스터</RWS_Metric_VpePsycasters>
-  <RWS_MetricDesc_VpePsycasters>기록된 저장에 VPE psycaster 임플란트와 무료 식민지가 있습니다.</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>가장 높은 VPE 심층 수준</RWS_Metric_VpeMaxLevel>
-  <RWS_MetricDesc_VpeMaxLevel>가장 높은 VPE psycaster 수준은 기록 된 저장에 무료 식민지 중 하나입니다.</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>총 VPE 심리스터 레벨</RWS_Metric_VpeSumLevels>
-  <RWS_MetricDesc_VpeSumLevels>VPE psycaster의 합계는 기록 된 저장에 무료 식민지의 수준.</RWS_MetricDesc_VpeSumLevels>
-  <RWS_Metric_OutpostPawns>아웃 포스트 occupants</RWS_Metric_OutpostPawns>
-  <RWS_MetricDesc_OutpostPawns>Player-owned outpost는 기록된 저장에 보관합니다.</RWS_MetricDesc_OutpostPawns>
-  <RWS_Metric_OutpostByType>유형별 Outposts</RWS_Metric_OutpostByType>
-  <RWS_MetricDesc_OutpostByType>Player-owned outposts at a record save, 세계 객체 정의에 의해 그룹화.</RWS_MetricDesc_OutpostByType>
-  <RWS_Metric_OutpostDeliveries>Outpost 생산 납품</RWS_Metric_OutpostDeliveries>
-  <RWS_MetricDesc_OutpostDeliveries>아웃포스트 배송에 통과 된 비비싼 생산 배치. 로컬 또는 transit에서 개최 된 항목은 도착하지 않을 수 있습니다.</RWS_MetricDesc_OutpostDeliveries>
-  <RWS_Metric_OutpostProducts>Outpost 제품</RWS_Metric_OutpostProducts>
-  <RWS_MetricDesc_OutpostProducts>생산 단위는 outpost 납품에, 품목에 의하여 통과했습니다.</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>Dubs Bad Hygiene 타입의 설비</RWS_Metric_DbhFixtures>
-  <RWS_MetricDesc_DbhFixtures>성공적인 저축에 집 지도를 맞댄 플레이어 소유 Dubs Bad Hygiene 건물.</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>완료 Dubs Bad Hygiene 작업에 의해 활동</RWS_Metric_DbhActivities>
-  <RWS_MetricDesc_DbhActivities>화장실, 샤워 및 감사의 세척 작업의 플레이어 문자에 홈 맵을 선택 후.</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Smart Apparel 업그레이드 변경</RWS_SAU_CompletedSwaps>
-  <RWS_SAU_CompletedSwapsDesc>자동 Smart Apparel 업그레이드 주문은 선택된 항목을 장착했습니다.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE 은 은행에 신용</RWS_VTE_BankCredits>
-  <RWS_VTE_BankCreditsDesc>완료된 VTE 은행 예금에 의해 Net Silver, 은행 수수료 후, 이 실험 통계를 가능하게 하기 때문에. 계약 지불금은 제외.</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>VTE 은 은행에서 인출</RWS_VTE_BankDebits>
-  <RWS_VTE_BankDebitsDesc>VTE 은행 계좌에서 총 은은 성공적인 인출, 인출 수수료 전에, 통계를 가능하게하기 때문에.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE 대출 발행</RWS_VTE_LoansIssued>
-  <RWS_VTE_LoansIssuedDesc>성공적으로 녹음을 활성화 한 후 VTE 은행 대출을 발행; 실패 요청 및 상환은 제외됩니다.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE 대출 발행</RWS_VTE_LoanPrincipal>
-  <RWS_VTE_LoanPrincipalDesc>완료된 VTE 대출 문제의 실버 주; 상환 및 관심은 포함되지 않습니다.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>VTE 계약은 상품을 배달함으로써</RWS_VTE_ContractDeliveries>
-  <RWS_VTE_ContractDeliveriesDesc>VTE NPC는 상품이 실제로 소비되거나 운반 된 곳의 구매 주문 계약입니다. 계약은 제외됩니다. 보상 크레딧은이 메트릭에 의해 확인되지 않습니다.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>VTE 계약에 배달 된 상품</RWS_VTE_ContractItems>
-  <RWS_VTE_ContractItemsDesc>완료 또는 부분적으로 충족 된 VTE NPC 구매 주문 계약에 대한 항목 단위, 캐러밴 픽업을 포함. 실제 전송, 요청되지 않은 금액.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>VTE 플레이어 게시 계약 구매</RWS_VTE_ContractPurchases>
-  <RWS_VTE_ContractPurchasesDesc>Player-posted VTE 구매 계약은 VTE 은행 트랜잭션을 통해 지불하고 생성 된 항목으로 수행됩니다. 결제를 취소하거나 결제없이 계약을 수락하지 않습니다.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>VTE 컨트랙트를 통해 구매된 상품</RWS_VTE_ContractReceived>
-  <RWS_VTE_ContractReceivedDesc>성공적으로 유료 플레이어 게시 된 VTE 구매 계약에서 생성 된 항목의 단위, NPC 구매 주문 배달 및 일반 거래와 구별.</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>VPE 확인 psycasts</RWS_Metric_VpeCasts>
-  <RWS_MetricDesc_VpeCasts>성공적인 Vanilla Psycasts 확장 능력은 플레이어 무료 대장관에 의해 캐스팅, VPE의 능력 사용 소비 후 계산. 능력 유형에 의해 계산 포함. Queued 주문, 취소 캐스트 및 NPC 캐스트 제외.</RWS_MetricDesc_VpeCasts>
-  <RWS_VfeSecurity_TrapsRearmed>VFE 보안 트랩 성공적으로 리어메드</RWS_VfeSecurity_TrapsRearmed>
-  <RWS_VfeSecurity_TrapsRearmedDesc>플레이어 소유 함정의 수 성공적으로 활성 재생 중 훈제. 계산은 실제 멸종으로 전환, 작동하지 않는 주문, 스페인 초기화, 디버그 작업 또는 업스트림 문자 기록.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE 업적 카드 잠금 해제</RWS_VaeAchievements_Unlocked>
-  <RWS_VaeAchievements_UnlockedDesc>정상적인 놀이 도중 잠금 해제 된 새로운 업적 카드, 업적 정의에 의해 그룹화. Debug 잠금 해제 및 게임-startup 복원 체크는 카운트하지 않습니다.</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>VAE 업적 점수 획득</RWS_VaeAchievements_Points>
-  <RWS_VaeAchievements_PointsDesc>새로운 비 디버그 잠금 해제에 의해 실제로 획득 포인트. 포인트 관리자가 읽을 수없는 경우, 기록 된 금액은 부분 표시되어 있습니다.</RWS_VaeAchievements_PointsDesc>
-  <RWS_VfeTribals_EraAdvances>VFE Tribals 시대 전진</RWS_VfeTribals_EraAdvances>
-  <RWS_VfeTribals_EraAdvancesDesc>플레이어의 삼발 기술 시대의 성공적인 앞으로 증가. 초기화, 동등하거나 저수준을 저장하고 복원은 제외됩니다; 시대에 의해 그룹화.</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>VFE Tribals 코너스톤 인수</RWS_VfeTribals_Cornerstones>
-  <RWS_VfeTribals_CornerstonesDesc>새로운 코너스톤 정의는 활성 재생 중 사용 가능한 포인트로 추가됩니다. 기존 잠금 해제 및로드 복원은 제외됩니다. 코너스톤에 의해 그룹화됩니다.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations 확장 된 영감 완료</RWS_VaeAspirations_Completed>
-  <RWS_VaeAspirations_CompletedDesc>MOD의 정상적인 완료 체크를 통해 플레이어 식민지가 새로 완성 된 영감, 영감 정의에 의해 그룹화. 디버그 완료, 이미 완료 또는 할당 된 영감, 및 저장 복원 수 없습니다.</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2명의 선수 hive 출생</RWS_VfeInsectoids_HiveBirths>
-  <RWS_VfeInsectoids_HiveBirthsDesc>새로운 곤충은 정상적인 식민지 진드기 도중 선수 소유한 hives에 의해, 곤충 종류에 의해 그룹화했습니다. Cocoon 보충, 잔여 기존의 hive 일원 및 개발자 천막 활동은 조사하지 않습니다.</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Cryptoforge 릴레이 스캔 완료</RWS_VqeCryptoforge_RelayScans>
-  <RWS_VqeCryptoforge_RelayScansDesc>플레이어 식민지가 퀘스트 맵에 제시된 동안 완료된 언 스캔 릴레이 스캔.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory 자동 기계 공구 접지 출력</RWS_RimFactory_GroundOutput>
-  <RWS_RimFactory_GroundOutputDesc>품목은 품목 유형에 의해 분류된 선수 소유된 자동 기계 공구에 의해 지도에 두었습니다. 컨베이어로 직접 이동 또는 다른 기계는 이 통계의 외부입니다.</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld의 마법의 성공적인 치유 캐스팅</RWS_Rwom_HealingCasts>
-  <RWS_Rwom_HealingCastsDesc>Player Heal과 Advanced Heal은 실제로 대상의 부상을 줄이고 신선한 누락 된 신체 부위를 안정화시킵니다.</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>우리의 선박을 저장 2 완료 궤도 도착</RWS_Sos2_OrbitArrivals>
-  <RWS_Sos2_OrbitArrivalsDesc>플레이어 제어 배는 표면에서 테이크 아웃 후 안정적인 궤도에 도달했습니다.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants 완료 핸드 인</RWS_SimpleWarrants_Completed>
-  <RWS_SimpleWarrants_CompletedDesc>Warrants는 대상이 제거 된 후 플레이어 캐러밴 핸드 인을 통해 정착하고 보증을 닫았습니다.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants 은 수신</RWS_SimpleWarrants_Silver>
-  <RWS_SimpleWarrants_SilverDesc>실제 실버는 완성 된 보증 핸드 인에 대한 보상으로 플레이어 캐러밴에 추가됩니다.</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>발전기 완료 ARC 업그레이드</RWS_VqeGenerator_Upgrades>
-  <RWS_VqeGenerator_UpgradesDesc>기존 플레이어 소유 ARC 발전기를 대체하는 플레이어 건설을 완료하여 새로운 발전기 유형에 의해 그룹화했습니다.</RWS_VqeGenerator_UpgradesDesc>
-  <RWS_VehicleFramework_OwnedPeak>피크 소유 차량</RWS_VehicleFramework_OwnedPeak>
-  <RWS_VehicleFramework_OwnedPeakDesc>지도, 카바란, 항공편 및 스쿼시를 포함한 식민지 당 가장 높은 수준의 생활 선수 소유 차량 프레임 워크 차량 수. 성공적인 저장에 기록. 차량 유형은 피크에서 저장에 표시됩니다.</RWS_VehicleFramework_OwnedPeakDesc>
-  <RWS_VfeDeserters_IntelPaid>Deserters 정보 보류</RWS_VfeDeserters_IntelPaid>
-  <RWS_VfeDeserters_IntelPaidDesc>Ordinary Intelligence 아이템은 Deserter Network 결제를 통해 플레이어 홈 맵 주식에서 제거했습니다.</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Deserters 중요한 정보</RWS_VfeDeserters_CriticalIntelPaid>
-  <RWS_VfeDeserters_CriticalIntelPaidDesc>플레이어 홈 맵 주식에서 삭제 된 긴요한 정보 항목은 Deserter Network 지불을 허용했습니다.</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE 클래식 senator 새로 얻은</RWS_VfeClassical_SenatorFavors>
-  <RWS_VfeClassical_SenatorFavorsDesc>정상적인 diplomacy 또는 퀘스트를 통해 호의를 베푸는 이전의 노력. 개발자 행동, 이미 호의 senators 및 역사적인 저장 복원은 계산하지 않습니다.</RWS_VfeClassical_SenatorFavorsDesc>
-  <RWS_VfeEmpire_HonorsBestowed>VFE 제국은 공식적으로 bestowed를 명예</RWS_VfeEmpire_HonorsBestowed>
-  <RWS_VfeEmpire_HonorsBestowedDesc>VFE 제국은 실제로 의식의 완료에 플레이어 식민지에 가장 잘 존경, 명예 정의에 의해 그룹화. Merely 사용할 수있는 명예 또는 개발자 작업을 수신 제외됩니다.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE 영감 완료</RWS_Vsie_AspirationsCompleted>
-  <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions의 식민지의 활동 영감에 묶인 새로운 완성 된 영감은 영감에 의해 그룹화되었습니다. 불완전한 진행, 탐험 및 관련 영감은 계산하지 않습니다.</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Giddy-Up 2 성공적인 마운트 세션</RWS_GiddyUp_MountSessions>
-  <RWS_GiddyUp_MountSessionsDesc>성공적으로 완료 된 Giddy-Up Mount job을 통해 소유 된 동물을 타고 시작 플레이어 식민지는 동물의 종류에 의해 그룹화. 사전 마운트 도착, 누락 된 명령 및 반복 관찰은 계산하지 않습니다.</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Combat 확장 된 성공적인 문자 재로드</RWS_CombatExtended_Reloads>
-  <RWS_CombatExtended_ReloadsDesc>실제로 무기 잡지로 탄약을 이동하는 플레이어 충전기 재로드 동작을 완료했습니다. 각 DoReload 동작은 여러 ammo 스택을로드 할 때 한 번 계산합니다. Turrets, 자동로드, 장애인 ammo 및 실패한 행동은 제외됩니다.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE 안드로이드 자연 awakenings</RWS_VreAndroid_Awakenings>
-  <RWS_VreAndroid_AwakeningsDesc>자연스럽게 분위기 기반 유전자 진드기를 통해 awakened되는 플레이어 소유의 합성 바디 안드로이드, 직접 개발자 awakening, 시작 및 이미 awakened 국가 제외. Biotech을 필요로한다.</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>VSE 전문기업 선정</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>ExpertiseDef에 의해 정상적인 전문 패널에서 플레이어 식민지가 선택한 새로운 전문 기술 특수화. Debug 잠금 해제 및 복원 된 레코드는 제외됩니다.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE 전문 수준 획득</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>VSE 전문 지식 수준에서 긍정적 인 영구적 인 증가는 녹음이 활성화 된 후 적립 된 모든 독립적 인 식민지와 ExpertiseDef에 의해 그룹화되었습니다.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE 최고 전문성 수준에 도달</RWS_VseExpertise_Highest>
-  <RWS_VseExpertise_HighestDesc>가장 큰 전문 수준은 실제로 독립적 인 식민지 중 XP 진행을 통해 달성, 수준의 합계 또는 최신 저장의 스냅 샷.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking 독립적 인 처리 배치</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>VEF 수프, 치즈 및 기타 독립적 인 프로세스 Vanilla Cooking Expanded, ProcessDef에 의해 그룹화. 정규 요금 제작 및 부분적으로 차단 된 출력은 제외됩니다.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>바닐라 양조 발효 및 노후화 배치</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>VEF 발효 완료, 양조 및 노화 배치는 Vanilla Brewing에서 소유, ProcessDef에 의해 그룹화. Paused, 차단 또는 unfinished 출력 및 일반 청구 공예 제외.</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>숙박 플랜</RWS_Gastronomy_SilverCollected>
-  <RWS_Gastronomy_SilverCollectedDesc>은 실제로 플레이어 소유 레스토랑에서 식사를위한 비 플레이어 레스토랑 고객에 의해 전송됩니다. 부분 지불은 양의 양에 기여합니다. 부채, 무료 식사 및 관련 거래는 계산되지 않습니다.</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE 드론 공장 조립 드론</RWS_VqeDrones_Assembled>
-  <RWS_VqeDrones_AssembledDesc>플레이어 소유 한 무인 항공기는 실제로 캐릭터의 종류에 의해 생산 타이머가 완료 될 때 자동화 된 무인 항공기 조립기에 의해 스페인. Mere timer 진행, 실패 스페인과 계란 부화는 제외됩니다.</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE 무인비행기 공장</RWS_VqeDrones_Hatched>
-  <RWS_VqeDrones_HatchedDesc>플레이어는 실제로 성공적인 계란 모자를 씌우기를 통해 탄생했습니다. 캐릭터 종류에 의해 파괴 된 계란과 독립적으로 조립 된 드론이 제외됩니다.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel 확장 된 Deepchem 파이프로 허용</RWS_VceDeepchem_StoredUnits>
-  <RWS_VceDeepchem_StoredUnitsDesc>실제 분수 Deepchem 단위는 PipeSystem의 성공적인 저장 통화로 측정 된 플레이어 소유의 펌프 잭에 의해 파이프 저장으로 허용됩니다. 요청 된 수확량, 지상 배치 및 블록 스토리지는 계산되지 않습니다.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics 확장 된 DNA 추출 출력</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>DNA 항목은 실제로 수천 개의 출력으로 성공적인 플레이어 제어 추출에 의해 병합됩니다. 잘못된 대상, 실패한 배치, 출력하지 않고 충전 소비 및 기타 하이브리드 생성은 계산하지 않습니다.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE 영양 슬러리 파이프에 저장</RWS_VnpeGrinder_SlurryStored>
+  <RWS_Status_FilterNA>해당 없음</RWS_Status_FilterNA>
+  <RWS_Status_Statistic>통계 / 수집 단위</RWS_Status_Statistic>
+  <RWS_Status_Recording>현재 수집 상태</RWS_Status_Recording>
+  <RWS_Status_Coverage>기록 범위</RWS_Status_Coverage>
+  <RWS_Status_Count>정착지</RWS_Status_Count>
+  <RWS_Status_RecordingOn>기록 중</RWS_Status_RecordingOn>
+  <RWS_Status_RecordingOff>기록 안 함</RWS_Status_RecordingOff>
+  <RWS_Status_DlcMissing>필요한 DLC 없음</RWS_Status_DlcMissing>
+  <RWS_Status_ModMissing>대상 모드 없음</RWS_Status_ModMissing>
+  <RWS_Status_TargetIncompatible>대상 모드 버전 또는 수집 위치 미지원</RWS_Status_TargetIncompatible>
+  <RWS_Status_RecordingFailed>이번 세션에서 실패</RWS_Status_RecordingFailed>
+  <RWS_Status_RecordingUnnecessary>플레이 중 기록 불필요</RWS_Status_RecordingUnnecessary>
+  <RWS_Status_MissingColonies>관측값이 없는 정착지: {0}개</RWS_Status_MissingColonies>
+  <RWS_Details_StatusAll>전체 통계</RWS_Details_StatusAll>
+  <RWS_Details_StatusMeasured>측정값이 있는 항목</RWS_Details_StatusMeasured>
+  <RWS_Details_StatusPartial>부분 기록</RWS_Details_StatusPartial>
+  <RWS_Details_StatusMissing>미측정</RWS_Details_StatusMissing>
+  <RWS_Details_StatusExperimental>실험적</RWS_Details_StatusExperimental>
+  <RWS_Metric_VpeLevelsGained>VPE 초능력자 레벨 상승량</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>기록 시작 후 확인된 플레이어 세력 폰의 VPE 초능력자 레벨 상승량입니다.</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>VPE 초능력자 수</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>기록된 저장 파일에서 VPE 초능력자 이식물을 보유한 자유 정착민 수입니다.</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>VPE 초능력자 최고 레벨</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>기록된 저장 파일에서 자유 정착민의 VPE 초능력자 최고 레벨입니다.</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>VPE 초능력자 레벨 합계</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>기록된 저장 파일에서 자유 정착민의 VPE 초능력자 레벨을 합산한 값입니다.</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_OutpostPawns>전초기지 주둔 인원</RWS_Metric_OutpostPawns>
+  <RWS_MetricDesc_OutpostPawns>기록된 저장 파일에서 플레이어가 소유한 전초기지에 주둔하는 폰 수입니다.</RWS_MetricDesc_OutpostPawns>
+  <RWS_Metric_OutpostByType>유형별 전초기지 수</RWS_Metric_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>기록된 저장 파일에서 플레이어의 전초기지를 유형별로 집계합니다.</RWS_MetricDesc_OutpostByType>
+  <RWS_Metric_OutpostDeliveries>전초기지 생산물 배송 횟수</RWS_Metric_OutpostDeliveries>
+  <RWS_MetricDesc_OutpostDeliveries>전초기지 생산물이 비어 있지 않은 묶음으로 배송 처리에 전달된 횟수입니다. 전초기지에 보관 중이거나 운송 중인 물품은 아직 도착하지 않았을 수 있습니다.</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_Metric_OutpostProducts>아이템별 전초기지 생산량</RWS_Metric_OutpostProducts>
+  <RWS_MetricDesc_OutpostProducts>배송 처리에 전달된 전초기지 생산품의 아이템별 수량입니다.</RWS_MetricDesc_OutpostProducts>
+  <RWS_Metric_DbhFixtures>종류별 Dubs Bad Hygiene 설비 수</RWS_Metric_DbhFixtures>
+  <RWS_MetricDesc_DbhFixtures>저장에 성공한 시점에 플레이어 본거지 지도에 있는 플레이어 소유 Dubs Bad Hygiene 건축물 수입니다.</RWS_MetricDesc_DbhFixtures>
+  <RWS_Metric_DbhActivities>작업별 Dubs Bad Hygiene 위생 활동 완료 수</RWS_Metric_DbhActivities>
+  <RWS_MetricDesc_DbhActivities>이 통계를 활성화한 후 본거지 지도에서 플레이어 폰이 완료한 화장실, 샤워 및 확인된 세척 작업 횟수입니다.</RWS_MetricDesc_DbhActivities>
+  <RWS_SAU_CompletedSwaps>Smart Apparel Upgrade 의복 교체 완료 수</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwapsDesc>이 통계를 활성화한 후 Smart Apparel Upgrade 자동 지시에 따라 선택한 옷을 실제로 입는 작업을 완료한 횟수입니다.</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>VTE 은행 입금액 (수수료 제외)</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCreditsDesc>이 실험적 통계를 활성화한 후 완료된 VTE 은행 입금으로 계좌에 실제로 추가된 은의 순액입니다. 은행 수수료를 뺀 금액이며 계약 지급액은 포함하지 않습니다.</RWS_VTE_BankCreditsDesc>
+  <RWS_VTE_BankDebits>VTE 은행 출금액 (수수료 전)</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebitsDesc>이 통계를 활성화한 후 성공한 VTE 은행 인출로 계좌에서 차감된 은의 총액입니다. 인출 수수료를 빼기 전 금액입니다.</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>VTE 대출 실행 횟수</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>기록 활성화 후 실제 실행된 VTE 은행 대출 수입니다. 실패한 신청이나 상환은 제외합니다.</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>VTE 대출 원금 합계</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>실제로 실행된 VTE 대출의 은 원금 합계입니다. 상환금과 이자는 포함하지 않습니다.</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>VTE 물품 배송으로 이행한 계약</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>VTE NPC 매입 계약 중 물품이 실제로 소모되거나 운반된 계약 수입니다. 계약을 수락하기만 한 경우는 제외하며 보상 입금 여부는 확인하지 않습니다.</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>VTE 계약에 배송한 물품</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>완료 또는 일부 이행된 VTE NPC 매입 계약에 실제로 전달한 물품 수입니다. 상단이 수거한 물품도 포함하며 요청 수량이 아닌 실제 인도량을 셉니다.</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_ContractPurchases>VTE 플레이어 구매 계약 성립 수</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchasesDesc>플레이어가 게시한 구매 계약 중 VTE 은행 거래로 대금을 전액 지불하고 물품을 생성하여 이행한 계약 수입니다. 결제 취소나 대금 없이 수락한 계약은 제외합니다.</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>VTE 계약을 통해 구매한 물품</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>플레이어가 게시하고 결제를 성공적으로 완료한 VTE 구매 계약에서 생성된 물품 수입니다. NPC 매입 계약 배송 및 일반 거래와 별도로 집계합니다.</RWS_VTE_ContractReceivedDesc>
+  <RWS_Metric_VpeCasts>VPE 초능력 사용 횟수</RWS_Metric_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>플레이어 자유 정착민이 Vanilla Psycasts Expanded 능력을 실제로 성공적으로 사용한 횟수입니다. VPE가 능력 사용을 소비한 시점에 집계하고 능력별로도 표시합니다. 대기 지시, 취소된 사용 및 NPC 사용은 제외합니다.</RWS_MetricDesc_VpeCasts>
+  <RWS_VfeSecurity_TrapsRearmed>VFE Security 함정 재장전 횟수</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmedDesc>플레이어 소유 함정이 해제 상태에서 플레이 중 성공적으로 다시 무장한 횟수입니다. 해제에서 무장으로 바뀐 실제 상태 변화만 셉니다. 작업 지시, 함정 생성 시 초기 설정, 개발자 작업 및 모드 자체 폰 기록은 제외합니다.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE 업적 카드 잠금 해제 수</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>일반 플레이 중 새로 잠금 해제한 업적 카드 수입니다. 업적 정의별로 집계합니다. 개발자 도구로 해제하거나 게임 시작 시 복원 상태를 확인한 경우는 제외합니다.</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>VAE 획득 업적 점수</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>개발자 도구가 아닌 새로운 잠금 해제로 실제 지급된 업적 점수입니다. 점수 총계를 읽을 수 없으면 기록량은 부분 기록으로 표시합니다.</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>VFE Tribals 시대 발전 횟수</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>플레이어 부족의 기술 시대가 실제로 발전한 횟수를 시대별로 집계합니다. 초기화, 같은 시대 유지, 이전 시대로 후퇴, 저장 파일 복원은 제외합니다.</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals 획득 초석 수</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>플레이 중 사용 가능한 점수로 새로 구매한 초석 수입니다. 초석 종류별로 집계하며 기존에 소유하거나 불러오면서 복원된 초석은 제외합니다.</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded 소원 달성 수</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>플레이어 정착민이 모드의 정상적인 완료 검사로 새로 달성한 소원 수입니다. 소원별로 집계하며 개발자 도구 완료, 기존에 달성했거나 배정되지 않은 소원 및 저장 파일 복원은 제외합니다.</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 플레이어 벌레 둥지 출생 수</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>일반 플레이에서 플레이어 소유 벌레 둥지에서 새로 생성된 벌레 수입니다. 벌레 종류별로 집계하며 고치 교체, 기존 둥지 구성원 복원 및 개발자 도구 생성은 제외합니다.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeCryptoforge_RelayScans>Cryptoforge 중계기 스캔 완료 수</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScansDesc>플레이어 정착민이 임무 지도에 있을 때 완료한 Frozen Scanning Relay 스캔 횟수입니다.</RWS_VqeCryptoforge_RelayScansDesc>
+  <RWS_RimFactory_GroundOutput>RimFactory Auto Machine Tool 지면 출력 수</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutputDesc>플레이어 소유 Auto Machine Tool이 지도에 실제로 배치한 것으로 확인된 물품 수입니다. 물품 종류별로 집계하며 컨베이어나 다른 기계로 직접 전달한 물품은 제외합니다.</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>RimWorld of Magic 치료 주문 성공 수</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>플레이어가 시전한 Heal 또는 Advanced Heal이 목표의 부상을 실제로 줄이거나 새로 손실된 신체 부위의 상태를 안정시킨 횟수입니다.</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Save Our Ship 2 궤도 진입 횟수</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>플레이어가 조종하는 우주선이 지표에서 이륙한 뒤 안정적인 궤도에 도달한 횟수입니다.</RWS_Sos2_OrbitArrivalsDesc>
+  <RWS_SimpleWarrants_Completed>Simple Warrants 수배 대상 인도 완료 수</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_CompletedDesc>플레이어 상단이 수배 대상을 인도해 대상이 제거되고 수배 계약이 완료된 횟수입니다.</RWS_SimpleWarrants_CompletedDesc>
+  <RWS_SimpleWarrants_Silver>Simple Warrants 획득한 은</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_SilverDesc>수배 대상 인도 완료 보상으로 플레이어 상단에 실제로 추가된 은의 양입니다.</RWS_SimpleWarrants_SilverDesc>
+  <RWS_VqeGenerator_Upgrades>The Generator ARC 업그레이드 완료 수</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_UpgradesDesc>플레이어 소유 ARC 발전기를 같은 자리에서 새 발전기로 교체하는 건설을 완료한 수입니다. 새 발전기 유형별로 집계합니다.</RWS_VqeGenerator_UpgradesDesc>
+  <RWS_VehicleFramework_OwnedPeak>최대 보유 차량 수</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>한 정착지에서 플레이어가 동시에 소유한 Vehicle Framework 차량 최대 수입니다. 지도, 상단, 비행 중, 보관 중 차량도 포함하며 저장 성공 시점마다 기록합니다. 차량 종류는 최고값을 기록한 저장 시점 기준입니다.</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VfeDeserters_IntelPaid>Deserters 지불한 정보</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaidDesc>Deserter Network가 수락한 지불로 플레이어 본거지 재고에서 실제로 제거된 일반 정보 아이템 수입니다.</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Deserters 지불한 주요 정보</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>Deserter Network가 수락한 지불로 플레이어 본거지 재고에서 실제로 제거된 주요 정보 아이템 수입니다.</RWS_VfeDeserters_CriticalIntelPaidDesc>
+  <RWS_VfeClassical_SenatorFavors>VFE Classical 새로 확보한 원로원 지지</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>이전에 지지하지 않다가 일반 외교나 임무를 통해 새로 지지하게 된 원로원 의원 수입니다. 세력별로 집계하며 개발자 도구, 이미 지지 중인 의원, 이전 저장 파일 복원은 제외합니다.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>VFE Empire 수여한 명예</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>보류 중이던 VFE Empire 명예가 행사를 완료할 때 플레이어 정착민에게 실제로 수여된 횟수입니다. 명예별로 집계하며 수여 가능한 명예를 받기만 하거나 개발자 도구를 사용한 경우는 제외합니다.</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>VSIE 영감 소원 달성</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded에서 정착민의 활성 영감과 연결된 소원을 새로 달성한 횟수입니다. 영감별로 집계하며 미완료 진행, 기한 만료 및 관련 없는 영감은 제외합니다.</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_GiddyUp_MountSessions>Giddy-Up 2 승마 시작 횟수</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessionsDesc>플레이어 정착민이 Giddy-Up 탑승 작업을 완료해 자신이 소유한 동물에 실제로 타기 시작한 횟수입니다. 동물 종류별로 집계하며 이미 타고 도착한 경우, 예약 지시 및 반복 관측은 제외합니다.</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Combat Extended 정착민 재장전 횟수</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>플레이어 폰이 무기 탄창에 실제로 탄약을 넣고 완료한 재장전 횟수입니다. 여러 탄약 묶음을 넣어도 한 번만 셉니다. 포탑, 자동 장전기, 탄약 비활성화 상태 및 실패한 재장전은 제외합니다.</RWS_CombatExtended_ReloadsDesc>
+  <RWS_VreAndroid_Awakenings>VRE Android 자연 각성 수</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_AwakeningsDesc>합성 신체를 가진 플레이어 소유 안드로이드가 기분에 따른 유전자 검사로 자연스럽게 각성한 횟수입니다. 개발자 도구로 직접 각성, 게임 시작 설정 및 이미 각성한 안드로이드는 제외합니다. Biotech가 필요합니다.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>VSE 선택한 전문 기술</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>플레이어 정착민이 정상적인 전문 기술 화면에서 새로 선택한 전문 기술 수입니다. ExpertiseDef별로 집계하며 개발자 도구 해제 및 복원된 기록은 제외합니다.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE 전문 기술 레벨 상승량</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>기록을 활성화한 후 VSE 전문 기술 레벨의 영구적인 상승량을 독립 정착지 전체에 합산하고 ExpertiseDef별로 집계합니다.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE 전문 기술 최고 도달 레벨</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>독립 정착지 전체에서 경험으로 실제로 달성한 전문 기술 레벨의 최고값입니다. 레벨 합계나 가장 최근 저장 파일의 상태가 아닙니다.</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking Expanded 가공 완료 횟수</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded에서 수프, 치즈 등의 VEF 가공을 완료한 횟수입니다. ProcessDef별로 집계하며 일반 제작 작업 지시와 출력이 일부 막힌 경우는 제외합니다.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded 발효 및 숙성 완료</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded에서 발효, 양조, 숙성 등 VEF 처리 묶음을 완료한 횟수입니다. ProcessDef별로 집계하며 일시 중지, 막힘 또는 미완료 출력과 일반 제작 작업은 제외합니다.</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy 손님 식사 대금으로 받은 은</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>플레이어 소유 식당에서 비플레이어 손님이 식사 대금으로 실제로 지불한 은입니다. 일부만 결제한 경우 실제 금액만 더하며 미납금, 무료 식사 및 무관한 거래는 제외합니다.</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VqeDrones_Assembled>VQE Drone Factory 조립한 드론 수</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_AssembledDesc>자동 드론 조립기의 생산 타이머 종료 시 실제로 생성된 플레이어 소유 드론 수입니다. PawnKind별로 집계하며 타이머 진행만 한 경우, 생성 실패 및 알에서 부화한 드론은 제외합니다.</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_Hatched>VQE Drone Factory 부화한 드론 수</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_HatchedDesc>성공적으로 부화한 알에서 실제로 태어난 플레이어 드론 수입니다. PawnKind별로 집계하며 드론이 나오지 않고 파괴된 알과 조립기로 제작한 드론은 제외합니다.</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded 배관에 저장한 Deepchem</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>플레이어 소유 펌프잭에서 나온 Deepchem이 실제로 배관 저장소에 받아들여진 수량입니다. 소수량도 포함하며 배관망이 저장을 확인할 때 측정합니다. 예정 산출량, 지면에 놓인 출력 및 막힌 저장은 제외합니다.</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded 추출한 DNA</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlacedDesc>플레이어가 성공적으로 추출하여 지도에 놓이거나 기존 묶음에 합쳐진 DNA 아이템 수입니다. 출력 ThingDef별로 집계하며 유효하지 않은 대상, 배치 실패, 산출물 없이 사용한 충전량 및 다른 혼종 생성은 제외합니다.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>VNPE 배관에 저장한 영양 슬러리</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>실제적인 분수 양분 슬러리 단위는 선수 소유한 바닐라 Nutrient Paste에 의하여 관 네트워크로 받아들여집니다 그라인더는 그라인더를 확장했습니다. 다른 건물에 의하여 받아들여진 슬러리와 관 저장 없는 분쇄기 시도, 성분 소비는 조사하지 않습니다.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 꿀을 실제로 수확</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>허니 유닛은 플레이어 식민지가 플레이어 소유의 Medieval2 apiary를 언로드 한 후 성공적으로 배치하거나 합병하여 ThingDef를 출력했습니다. 생산 readiness, 실패한 배치 및 나중에 운반은 제외됩니다.</RWS_VfeMedieval2_HoneyItemsDesc>

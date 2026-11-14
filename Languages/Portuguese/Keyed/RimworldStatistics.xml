@@ -1001,130 +1001,130 @@
   <RWS_Status_FilterPartial>Cobertura parcial</RWS_Status_FilterPartial>
   <RWS_Status_FilterMissing>Sem medições</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>Não aplicável</RWS_Status_FilterNA>
-  <RWS_Status_Statistic>Unidade métrica/aquisição</RWS_Status_Statistic>
-  <RWS_Status_Recording>Colecção actual</RWS_Status_Recording>
+  <RWS_Status_Statistic>Estatística / unidade de recolha</RWS_Status_Statistic>
+  <RWS_Status_Recording>Recolha atual</RWS_Status_Recording>
   <RWS_Status_Coverage>Cobertura registada</RWS_Status_Coverage>
   <RWS_Status_Count>Colónias</RWS_Status_Count>
-  <RWS_Status_RecordingOn>Gravação</RWS_Status_RecordingOn>
-  <RWS_Status_RecordingOff>Não gravado</RWS_Status_RecordingOff>
-  <RWS_Status_DlcMissing>Falta um DLC necessário</RWS_Status_DlcMissing>
-  <RWS_Status_ModMissing>MOD alvo em falta</RWS_Status_ModMissing>
-  <RWS_Status_TargetIncompatible>Versão alvo MOD ou gancho de captura não suportado</RWS_Status_TargetIncompatible>
+  <RWS_Status_RecordingOn>A registar</RWS_Status_RecordingOn>
+  <RWS_Status_RecordingOff>Sem registo</RWS_Status_RecordingOff>
+  <RWS_Status_DlcMissing>Falta o DLC necessário</RWS_Status_DlcMissing>
+  <RWS_Status_ModMissing>Mod de destino em falta</RWS_Status_ModMissing>
+  <RWS_Status_TargetIncompatible>Versão do mod ou ponto de recolha não suportado</RWS_Status_TargetIncompatible>
   <RWS_Status_RecordingFailed>Falha nesta sessão</RWS_Status_RecordingFailed>
-  <RWS_Status_RecordingUnnecessary>Nenhuma coleção ao vivo necessária</RWS_Status_RecordingUnnecessary>
-  <RWS_Status_MissingColonies>Observações em falta em {0} colónias:</RWS_Status_MissingColonies>
+  <RWS_Status_RecordingUnnecessary>Não precisa de registo durante o jogo</RWS_Status_RecordingUnnecessary>
+  <RWS_Status_MissingColonies>Sem observações em {0} colónias:</RWS_Status_MissingColonies>
   <RWS_Details_StatusAll>Todas as estatísticas</RWS_Details_StatusAll>
-  <RWS_Details_StatusMeasured>Números medidos</RWS_Details_StatusMeasured>
+  <RWS_Details_StatusMeasured>Com valores medidos</RWS_Details_StatusMeasured>
   <RWS_Details_StatusPartial>Registos parciais</RWS_Details_StatusPartial>
-  <RWS_Details_StatusMissing>Não medidos</RWS_Details_StatusMissing>
+  <RWS_Details_StatusMissing>Não medido</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>Experimental</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>VPE níveis de psycaster ganhos</RWS_Metric_VpeLevelsGained>
-  <RWS_MetricDesc_VpeLevelsGained>Confirmadas mudanças ascendentes dos níveis de psycaster VPE player-faction, contados após o início da gravação.</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>VPE psycasters</RWS_Metric_VpePsycasters>
-  <RWS_MetricDesc_VpePsycasters>Colonistas livres com um implante de VPE psycaster numa gravação.</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>Nível mais elevado de VPE psycaster</RWS_Metric_VpeMaxLevel>
-  <RWS_MetricDesc_VpeMaxLevel>O nível mais elevado de Psycaster VPE entre os colonos livres numa poupança gravada.</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>Total VPE níveis de psycaster</RWS_Metric_VpeSumLevels>
-  <RWS_MetricDesc_VpeSumLevels>Soma de VPE níveis de psycaster de colonos livres em uma poupança gravada.</RWS_MetricDesc_VpeSumLevels>
-  <RWS_Metric_OutpostPawns>Ocupantes do posto avançado</RWS_Metric_OutpostPawns>
-  <RWS_MetricDesc_OutpostPawns>Ocupantes do posto avançado de jogador numa gravação de gravação.</RWS_MetricDesc_OutpostPawns>
+  <RWS_Metric_VpeLevelsGained>Níveis de psinjuradores VPE ganhos</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>Aumentos confirmados nos níveis de psinjurador VPE de peões da fação do jogador, contados após o início do registo.</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>Psinjuradores VPE</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>Colonos livres com um implante de psinjurador VPE numa gravação registada.</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>Maior nível de psinjurador VPE</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>Maior nível de psinjurador VPE entre colonos livres numa gravação registada.</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>Soma dos níveis de psinjuradores VPE</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>Soma dos níveis de psinjurador VPE de colonos livres numa gravação registada.</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_OutpostPawns>Ocupantes de postos avançados</RWS_Metric_OutpostPawns>
+  <RWS_MetricDesc_OutpostPawns>Peões presentes em postos avançados do jogador numa gravação registada.</RWS_MetricDesc_OutpostPawns>
   <RWS_Metric_OutpostByType>Postos avançados por tipo</RWS_Metric_OutpostByType>
-  <RWS_MetricDesc_OutpostByType>Postos avançados pertencentes ao jogador em uma gravação salva, agrupados por definição de objeto mundial.</RWS_MetricDesc_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>Postos avançados do jogador numa gravação registada, agrupados por tipo de posto.</RWS_MetricDesc_OutpostByType>
   <RWS_Metric_OutpostDeliveries>Entregas de produção de postos avançados</RWS_Metric_OutpostDeliveries>
-  <RWS_MetricDesc_OutpostDeliveries>Os lotes de produção não vazios passaram para a entrega do posto avançado. Itens mantidos localmente ou em trânsito podem não ter chegado.</RWS_MetricDesc_OutpostDeliveries>
-  <RWS_Metric_OutpostProducts>Produtos dos postos avançados por número</RWS_Metric_OutpostProducts>
-  <RWS_MetricDesc_OutpostProducts>As unidades de produção passaram para o posto avançado de entrega, por item.</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>Dubs Bad Hygiene dispositivos por tipo</RWS_Metric_DbhFixtures>
-  <RWS_MetricDesc_DbhFixtures>De propriedade do jogador Dubs Bad Hygiene edifícios através de mapas home em uma poupança bem sucedida.</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>Realizado Dubs Bad Hygiene atividades por trabalho</RWS_Metric_DbhActivities>
-  <RWS_MetricDesc_DbhActivities>Banheiro completo, chuveiro e trabalhos de lavagem auditada de personagens do jogador em mapas home desde opt-in.</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Alterações completas da atualização do Smart Apparel</RWS_SAU_CompletedSwaps>
-  <RWS_SAU_CompletedSwapsDesc>Automatic Smart Apparel Upgrade orders que terminou de equipar o item escolhido desde o opt-in.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>Prata VTE creditada aos bancos</RWS_VTE_BankCredits>
-  <RWS_VTE_BankCreditsDesc>Prata líquida creditada por depósitos bancários de TEV concluídos, após taxas bancárias, uma vez que permite esta estatística experimental.</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>Prata VTE retirada dos bancos</RWS_VTE_BankDebits>
-  <RWS_VTE_BankDebitsDesc>Prata bruta debitada de contas bancárias de TEV por levantamentos bem sucedidos, antes das taxas de retirada, uma vez que permite a estatística.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>Empréstimos de TEV emitidos</RWS_VTE_LoansIssued>
-  <RWS_VTE_LoansIssuedDesc>Empréstimos bancários de TEV emitidos com sucesso após permitir o registo; são excluídos os pedidos e reembolsos mal sucedidos.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>Principal do empréstimo de TEV emitido</RWS_VTE_LoanPrincipal>
-  <RWS_VTE_LoanPrincipalDesc>Principal prata das emissões de empréstimo de TEV concluídas; reembolso e juros não estão incluídos.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>Contratos de TEV cumpridos através da entrega de mercadorias</RWS_VTE_ContractDeliveries>
-  <RWS_VTE_ContractDeliveriesDesc>Contratos de compra-ordem VTE NPC onde os bens foram realmente consumidos ou levados; apenas aceitar um contrato é excluído. Crédito de recompensa não é confirmado por esta métrica.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>Mercadorias entregues em contratos de TEV</RWS_VTE_ContractItems>
-  <RWS_VTE_ContractItemsDesc>Unidades de itens entregues para contratos de compra concluídos ou parcialmente cumpridos VTE NPC, incluindo captadores de caravanas. Transferências reais, não pedidos de montantes.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>Contratos de colocação de jogadores de TEV adquiridos</RWS_VTE_ContractPurchases>
-  <RWS_VTE_ContractPurchasesDesc>Contratos de compra de TEV postados pelo jogador pagos na íntegra através de transações bancárias de TEV e cumpridos com itens gerados. Cancelar o pagamento ou aceitar um contrato sem liquidação não conta.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>Mercadorias compradas através de contratos de TEV</RWS_VTE_ContractReceived>
-  <RWS_VTE_ContractReceivedDesc>Unidades de itens gerados a partir de contratos de compra VTE pagos com sucesso por jogadores, distintos das entregas de compra de encomendas da NPC e do comércio normal.</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>VPE psycasts confirmados</RWS_Metric_VpeCasts>
-  <RWS_MetricDesc_VpeCasts>Psycasts Vanilla Expandida capacidade elencos por jogadores colonos livres, contados após o consumo de capacidade de uso de VPE. Inclui uma contagem por tipo de habilidade. Ordens em fila, elencos cancelados e elencos NPC são excluídos.</RWS_MetricDesc_VpeCasts>
-  <RWS_VfeSecurity_TrapsRearmed>Armadilhas de segurança VFE com sucesso rearmed</RWS_VfeSecurity_TrapsRearmed>
-  <RWS_VfeSecurity_TrapsRearmedDesc>Número de armadilhas desarmadas de propriedade do jogador com sucesso rearmed durante o jogo ativo. Conta apenas uma transição real desarmado-para-armado, não ordens de trabalho, inicialização de desova, operações de depuração ou o registo de caracteres upstream.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>Cartões de desempenho VAE desbloqueados</RWS_VaeAchievements_Unlocked>
-  <RWS_VaeAchievements_UnlockedDesc>Novas cartas de realização desbloqueadas durante o jogo normal, agrupadas por definição de realização. As verificações de depuração de desbloqueio e de restauração de arranque do jogo não contam.</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>Pontos de realização do VAE ganhos</RWS_VaeAchievements_Points>
-  <RWS_VaeAchievements_PointsDesc>Pontos de obtenção realmente creditados por novos desbloqueios de não- depuração. Quando o gerenciador de pontos não pode ser lido, a quantidade gravada é marcada como parcial.</RWS_VaeAchievements_PointsDesc>
-  <RWS_VfeTribals_EraAdvances>Avanços da era VFE Tribals</RWS_VfeTribals_EraAdvances>
-  <RWS_VfeTribals_EraAdvancesDesc>Aumentos avançados bem sucedidos da era da tecnologia tribal do jogador. Inicialização, níveis iguais ou inferiores e salvar restaurações são excluídos; agrupados por era.</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>Pedras angulares dos tribais VFE adquiridas</RWS_VfeTribals_Cornerstones>
-  <RWS_VfeTribals_CornerstonesDesc>Novas definições de pedra angular adicionadas com pontos disponíveis durante o jogo ativo. Os desbloqueios existentes e as restaurações de carga estão excluídos; agrupados por pedra angular.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Aspirações de Baunilha Aspirações expandidas concluídas</RWS_VaeAspirations_Completed>
-  <RWS_VaeAspirations_CompletedDesc>As aspirações recentemente concluídas pelos colonos do jogador através da verificação de conclusão normal do MOD, agrupadas por definição de aspiração. As completações de depuração, aspirações já concluídas ou não atribuídas, e salvar a restauração não contam.</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 nascimentos de colmeia de jogador</RWS_VfeInsectoids_HiveBirths>
-  <RWS_VfeInsectoids_HiveBirthsDesc>Novos insetos gerados por colmeias de propriedade do jogador durante o tique-taque normal da colónia, agrupados por tipo de inseto. Substituição de cocoon, restaurando membros de colmeia existentes e ações de desova do programador não contam.</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Escaneamentos de retransmissão da Criptoforge concluídos</RWS_VqeCryptoforge_RelayScans>
-  <RWS_VqeCryptoforge_RelayScansDesc>Frozen Scanning Relay scans que chegaram à conclusão enquanto um jogador colonista estava presente no mapa da quest.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory Auto Machine saída de terra da ferramenta</RWS_RimFactory_GroundOutput>
-  <RWS_RimFactory_GroundOutputDesc>Itens confirmados colocados no mapa por Auto Machine Tools de propriedade do jogador, agrupados por tipo de item. Transferências diretas em transportadores ou outras máquinas estão fora desta estatística.</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld de feitiços de cura bem-sucedidos</RWS_Rwom_HealingCasts>
-  <RWS_Rwom_HealingCastsDesc>Jogador Cura e avançado moldes Cura que realmente reduziu lesões de um alvo ou estabilizou uma nova parte do corpo faltando.</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>Salvar nossa nave 2 chegadas orbitais concluídas</RWS_Sos2_OrbitArrivals>
-  <RWS_Sos2_OrbitArrivalsDesc>Naves controladas por jogadores que alcançaram uma órbita estável após a decolagem da superfície.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants hand-ins completados</RWS_SimpleWarrants_Completed>
-  <RWS_SimpleWarrants_CompletedDesc>Mandados estabelecidos através de um jogador caravana entrega após o alvo foi removido eo mandado fechado.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants prata recebida</RWS_SimpleWarrants_Silver>
-  <RWS_SimpleWarrants_SilverDesc>Prata real adicionado a uma caravana jogador por recompensas por mandado completo hand-ins.</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>O Gerador completou atualizações ARC</RWS_VqeGenerator_Upgrades>
-  <RWS_VqeGenerator_UpgradesDesc>Completa a construção do jogador que substitui um gerador ARC existente, agrupado pelo novo tipo de gerador.</RWS_VqeGenerator_UpgradesDesc>
-  <RWS_VehicleFramework_OwnedPeak>Veículos próprios de pico</RWS_VehicleFramework_OwnedPeak>
-  <RWS_VehicleFramework_OwnedPeakDesc>Maior número observado de veículos de veículos de propriedade de jogadores vivos por colónia, incluindo mapas, caravanas, voos e esconderijos. Gravado em economias bem sucedidas. Tipos de veículos são mostrados para a poupança no pico.</RWS_VehicleFramework_OwnedPeakDesc>
-  <RWS_VfeDeserters_IntelPaid>Inteligência dos desertores gastada</RWS_VfeDeserters_IntelPaid>
-  <RWS_VfeDeserters_IntelPaidDesc>Itens de inteligência comuns removidos do estoque home-map do jogador por pagamentos de rede Deserter aceitos.</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Desertores inteligência crítica gasta</RWS_VfeDeserters_CriticalIntelPaid>
-  <RWS_VfeDeserters_CriticalIntelPaidDesc>Itens críticos de inteligência removidos do estoque home-map do jogador por pagamentos de rede Deserter aceitos.</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE Senador Clássico favorece recém-ganhado</RWS_VfeClassical_SenatorFavors>
-  <RWS_VfeClassical_SenatorFavorsDesc>Antes senadores não favorecidos que se tornam favorecidos através de diplomacia normal ou missões, agrupados por facção. As ações de programadores, senadores já favorecidos e restauração histórica salvar não contam.</RWS_VfeClassical_SenatorFavorsDesc>
-  <RWS_VfeEmpire_HonorsBestowed>Honras do Império VFE formalmente concedidas</RWS_VfeEmpire_HonorsBestowed>
-  <RWS_VfeEmpire_HonorsBestowedDesc>Honras do Império VFE pendentes realmente concedidas a um jogador colono na conclusão de um ritual, agrupados por definição de honra. Apenas receber uma honra ou ações de desenvolvimento disponíveis são excluídos.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>Aspirações de inspiração VSIE concluídas</RWS_Vsie_AspirationsCompleted>
-  <RWS_Vsie_AspirationsCompletedDesc>Aspirações recentemente concluídas ligadas à inspiração ativa do colonizador em Interações Sociais de Baunilha Expandidas, agrupadas por inspiração. Progresso incompleto, expiração e inspirações não relacionadas não contam.</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Giddy-Up 2 sessões de montagem bem sucedidas</RWS_GiddyUp_MountSessions>
-  <RWS_GiddyUp_MountSessionsDesc>Os colonos dos jogadores que começam a montar com sucesso os próprios animais através de uma tarefa completada do Giddy-Up Mount, agrupados por tipo animal. As chegadas pré-montadas, os comandos em fila e as observações repetidas não contam.</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Recarregamento de caracteres extendidos de combate</RWS_CombatExtended_Reloads>
-  <RWS_CombatExtended_ReloadsDesc>Completadas as ações de recarregamento do jogador que realmente movem munição para uma revista de armas. Cada ação DoReload conta uma vez, mesmo quando carrega várias pilhas de munição. Turrets, carregadores automáticos, munição desabilitada e ações falhadas são excluídas.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android despertares naturais</RWS_VreAndroid_Awakenings>
-  <RWS_VreAndroid_AwakeningsDesc>androides de corpo sintético de propriedade do jogador que naturalmente se tornam despertados através do carrapato genético baseado no humor, excluindo o despertar do programador direto, a inicialização e o estado já acordado. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>Especializações especializadas em VSE seleccionadas</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Novas especializações especializadas selecionadas por colonos de jogadores no painel de expertise normal, por ExpertiseDef. Debug desbloqueia e restabelece registos são excluídos.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>Níveis de especialização em VSE obtidos</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes positivos nos níveis de especialização de VSE obtidos após o registo foi ativado, somado em todas as colónias independentes e agrupados por ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE nível de especialização mais elevado já alcançado</RWS_VseExpertise_Highest>
-  <RWS_VseExpertise_HighestDesc>O maior nível de experiência realmente alcançado através da progressão do XP entre colónias independentes, não uma soma de níveis ou um instantâneo do último salvo.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Baunilha Cozinhar lotes de processamento independentes</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Completada VEF sopa, queijo e outros processos independentes de propriedade de Vanilla Cooking Expandida, agrupados por ProcessDef. Ordinária elaboração de projetos de lei e saída parcialmente bloqueada são excluídos.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Baunilha Fermentação de cerveja e lotes de envelhecimento</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Concluídos VEF lotes de fermentação, cerveja e envelhecimento de propriedade da Vanilla Brewing Expandida, agrupados por ProcessDef. Saída pausada, bloqueada ou inacabada e fabricação de faturas genéricas são excluídos.</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>Gastronomia guest meal silver recolhido</RWS_Gastronomy_SilverCollected>
-  <RWS_Gastronomy_SilverCollectedDesc>Prata realmente transferido por um cliente de restaurante não-jogador para uma refeição em um restaurante de propriedade do jogador. Pagamentos parciais contribuem com seus montantes transferidos; dívidas não cobradas, refeições gratuitas e comércio não relacionado não contam.</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE Drone Factory montado drones</RWS_VqeDrones_Assembled>
-  <RWS_VqeDrones_AssembledDesc>drones de propriedade do jogador realmente gerados pelo montador de drone automatizado quando seu temporizador de produção termina, por tipo de personagem. Apenas progresso timer, desova falhada e ovo eclodindo são excluídos.</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE Drone Fábrica eclodiu drones</RWS_VqeDrones_Hatched>
-  <RWS_VqeDrones_HatchedDesc>Os drones jogadores realmente nasceram através de ovos bem-sucedidos, por tipo de personagem. Os ovos destruídos sem um drone desovado e os drones montados independentemente são excluídos.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expandida Deepchem aceita em tubos</RWS_VceDeepchem_StoredUnits>
-  <RWS_VceDeepchem_StoredUnitsDesc>As unidades de Deepchem fracionárias aceitas no armazenamento de tubos por um bombete de propriedade do jogador, medido na chamada de armazenamento bem-sucedida do PipeSystem. Rendimento solicitado, colocação no solo e armazenamento bloqueado não contam.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genética Expandida saídas de extração de DNA</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>Itens de DNA realmente colocados ou fundidos por exitos bem sucedidos controlados pelo jogador, por saída ThingDef. Alvos inválidos, colocações falhadas, consumo de carga sem saída e outra criação híbrida não contam.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>Polpa nutritiva VNPE armazenada em tubos</RWS_VnpeGrinder_SlurryStored>
+  <RWS_MetricDesc_OutpostDeliveries>Lotes não vazios de produção de postos avançados enviados ao sistema de entregas. Artigos ainda guardados no posto ou em trânsito podem não ter chegado.</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_Metric_OutpostProducts>Produtos de postos avançados por artigo</RWS_Metric_OutpostProducts>
+  <RWS_MetricDesc_OutpostProducts>Unidades produzidas por postos avançados e entregues ao sistema de envio, agrupadas por artigo.</RWS_MetricDesc_OutpostProducts>
+  <RWS_Metric_DbhFixtures>Instalações Dubs Bad Hygiene por tipo</RWS_Metric_DbhFixtures>
+  <RWS_MetricDesc_DbhFixtures>Edifícios de Dubs Bad Hygiene pertencentes ao jogador nos mapas de base numa gravação bem-sucedida.</RWS_MetricDesc_DbhFixtures>
+  <RWS_Metric_DbhActivities>Atividades Dubs Bad Hygiene concluídas por trabalho</RWS_Metric_DbhActivities>
+  <RWS_MetricDesc_DbhActivities>Tarefas de casa de banho, duche e lavagem verificada concluídas por peões do jogador nos mapas de base desde a ativação desta estatística.</RWS_MetricDesc_DbhActivities>
+  <RWS_SAU_CompletedSwaps>Trocas Smart Apparel Upgrade concluídas</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwapsDesc>Ordens automáticas de Smart Apparel Upgrade que terminaram de vestir a peça escolhida desde a ativação desta estatística.</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>Prata creditada em bancos VTE</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCreditsDesc>Prata líquida creditada por depósitos bancários VTE concluídos, depois das comissões bancárias, desde a ativação desta estatística experimental. Não inclui pagamentos de contratos.</RWS_VTE_BankCreditsDesc>
+  <RWS_VTE_BankDebits>Prata levantada de bancos VTE</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebitsDesc>Prata bruta debitada de contas bancárias VTE por levantamentos bem-sucedidos, antes das comissões de levantamento, desde a ativação desta estatística.</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>Empréstimos VTE concedidos</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>Empréstimos bancários VTE efetivamente concedidos após a ativação do registo; pedidos falhados e reembolsos não contam.</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>Principal de empréstimos VTE concedidos</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>Valor principal, em prata, dos empréstimos VTE efetivamente concedidos; não se incluem amortizações nem juros.</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>Contratos VTE cumpridos com entrega</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>Contratos de compra de NPCs VTE cujos artigos foram realmente consumidos ou levados. Apenas aceitar o contrato não conta. Não confirma que a recompensa tenha sido creditada.</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>Mercadorias entregues a contratos VTE</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>Unidades entregues para contratos de compra de NPCs VTE concluídos ou parcialmente cumpridos, incluindo recolhas por caravanas. Transferências efetivas, não quantidades solicitadas.</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_ContractPurchases>Contratos de compra VTE do jogador concluídos</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchasesDesc>Contratos de compra publicados pelo jogador, totalmente pagos por transações bancárias VTE e cumpridos com artigos gerados. Cancelar o pagamento ou aceitar sem pagar não conta.</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>Mercadorias compradas por contratos VTE</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>Unidades de artigos geradas por contratos de compra VTE publicados pelo jogador e pagos com sucesso. Separadas de entregas a contratos de compra de NPCs e do comércio comum.</RWS_VTE_ContractReceivedDesc>
+  <RWS_Metric_VpeCasts>Psinjurações VPE lançadas</RWS_Metric_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>Utilizações bem-sucedidas de habilidades de Vanilla Psycasts Expanded por colonos livres do jogador, contadas quando VPE consome a utilização da habilidade; apresentadas também por habilidade. Ordens em fila, lançamentos cancelados e utilizações de NPCs não contam.</RWS_MetricDesc_VpeCasts>
+  <RWS_VfeSecurity_TrapsRearmed>Armadilhas VFE Security rearmadas</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmedDesc>Armadilhas desarmadas do jogador, efetivamente rearmadas durante a partida. Só conta a passagem real de desarmada a armada, não as ordens de trabalho, a preparação inicial, ações de desenvolvimento ou o registo interno do mod sobre peões.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>Cartões de conquistas VAE desbloqueados</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>Novos cartões de conquistas desbloqueados durante o jogo normal, agrupados por definição da conquista. Desbloqueios de desenvolvedor e verificações de restauração na inicialização não contam.</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>Pontos de conquistas VAE ganhos</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>Pontos realmente concedidos por novos desbloqueios que não vieram do modo desenvolvedor. Quando o total não pode ser lido, a quantidade registada é marcada como parcial.</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>Avanços de era VFE Tribals</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>Vezes em que a era tecnológica tribal do jogador realmente avançou, por era. Inicialização, permanência na mesma era, retrocessos e restauração de gravações não contam.</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>Pedras basilares VFE Tribals adquiridas</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>Novas pedras basilares compradas com pontos disponíveis durante o jogo, agrupadas por pedra basilar. As que já eram possuídas ou foram restauradas ao carregar não contam.</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Aspirações Vanilla Aspirations Expanded cumpridas</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>Aspirações recém-cumpridas por colonos do jogador na verificação normal de conclusão do mod, por aspiração. Conclusões do modo de desenvolvimento, aspirações já cumpridas ou não atribuídas e restauros de gravações não contam.</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>Insetos nascidos em colmeias VFE Insectoids 2 do jogador</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>Insetos novos gerados por colmeias do jogador no jogo normal, por tipo de inseto. Substituições de casulos, restaurações de membros existentes e geração por desenvolvedor não contam.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeCryptoforge_RelayScans>Varreduras de relé Cryptoforge concluídas</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScansDesc>Varreduras de Frozen Scanning Relay concluídas enquanto um colono do jogador estava no mapa da missão.</RWS_VqeCryptoforge_RelayScansDesc>
+  <RWS_RimFactory_GroundOutput>Saídas para o solo de Auto Machine Tools RimFactory</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutputDesc>Artigos que os Auto Machine Tools do jogador comprovadamente colocaram no mapa, por tipo de artigo. Não se incluem artigos enviados diretamente para tapetes transportadores ou outras máquinas.</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>Feitiços de cura RimWorld of Magic bem-sucedidas</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>Feitiços Heal e Advanced Heal do jogador que realmente diminuíram as lesões do alvo ou estabilizaram uma parte do corpo perdida recentemente.</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Chegadas à órbita Save Our Ship 2</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>Naves controladas pelo jogador que alcançaram órbita estável após descolar da superfície.</RWS_Sos2_OrbitArrivalsDesc>
+  <RWS_SimpleWarrants_Completed>Entregas Simple Warrants concluídas</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_CompletedDesc>Mandados concluídos pela entrega do alvo por uma caravana do jogador, depois que o alvo foi removido e o mandado encerrado.</RWS_SimpleWarrants_CompletedDesc>
+  <RWS_SimpleWarrants_Silver>Prata ganha com Simple Warrants</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_SilverDesc>Prata realmente adicionada a uma caravana do jogador como recompensa por entregas de mandados concluídas.</RWS_SimpleWarrants_SilverDesc>
+  <RWS_VqeGenerator_Upgrades>Aprimoramentos ARC de The Generator concluídos</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_UpgradesDesc>Construções do jogador concluídas que substituem no mesmo lugar um gerador ARC existente do jogador, agrupadas por tipo do novo gerador.</RWS_VqeGenerator_UpgradesDesc>
+  <RWS_VehicleFramework_OwnedPeak>Maior número de veículos possuídos</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>Maior número de veículos Vehicle Framework do jogador presentes ao mesmo tempo numa colónia, inclusive em mapas, caravanas, voos ou armazenados, registado em gravações bem-sucedidas. Os tipos são os do gravação de valor máximo.</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VfeDeserters_IntelPaid>Informações Deserters gastas</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaidDesc>Artigos de informação retirados das reservas nos mapas de base do jogador por pagamentos aceites pela Deserter Network.</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Informações críticas Deserters gastas</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>Artigos de informação crítica retirados das reservas nos mapas de base do jogador por pagamentos aceites pela Deserter Network.</RWS_VfeDeserters_CriticalIntelPaidDesc>
+  <RWS_VfeClassical_SenatorFavors>Senadores VFE Classical conquistados</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>Senadores que não apoiavam o jogador e passaram a apoiar por diplomacia normal ou missões, por fação. Ações de desenvolvedor, senadores já favoráveis e restauração de gravações antigos não contam.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>Honrarias VFE Empire concedidas</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>Honrarias VFE Empire pendentes efetivamente concedidas a um colono do jogador após o término de um ritual, por honraria. Simplesmente receber uma honraria disponível e ações de desenvolvedor não contam.</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>Aspirações de inspiração VSIE cumpridas</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Aspirações ligadas à inspiração ativa de um colono em Vanilla Social Interactions Expanded que foram recém-cumpridas, por inspiração. Progresso incompleto, expiração e inspirações sem relação não contam.</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_GiddyUp_MountSessions>Montarias Giddy-Up 2 iniciadas</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessionsDesc>Número de vezes que um colono do jogador começou efetivamente a montar um animal seu após concluir uma tarefa Giddy-Up de montar, por tipo de animal. Chegar já montado, ordens em fila e observações repetidas não contam.</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Recargas Combat Extended de colonos</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>Recargas concluídas por peões do jogador que realmente colocaram munição no carregador de uma arma. Cada recarga conta uma vez mesmo carregando vários reservas de munição. Torretas, carregadores automáticos, munição desativada e recargas malsucedidas não contam.</RWS_CombatExtended_ReloadsDesc>
+  <RWS_VreAndroid_Awakenings>Despertares naturais VRE Android</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_AwakeningsDesc>Androides do jogador com corpos sintéticos que despertaram naturalmente pela verificação genética baseada no humor. Despertar direto por ferramentas de desenvolvedor, configuração inicial e androides já despertos não contam. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>Especializações VSE escolhidas</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>Novas especializações escolhidas por colonos do jogador no painel normal de especializações, por ExpertiseDef. Desbloqueios de desenvolvedor e registos restaurados não contam.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>Níveis de especialização VSE ganhos</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes nos níveis de especialização VSE após a ativação do registo, somados entre colónias independentes e por ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>Maior nível de especialização VSE alcançado</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>Maior nível de especialização efetivamente alcançado por experiência entre colónias independentes, não a soma dos níveis nem um instantâneo da gravação mais recente.</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Lotes de processamento Vanilla Cooking Expanded concluídos</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Processos VEF de sopa, queijo e outros de Vanilla Cooking Expanded concluídos, por ProcessDef. Fabricação por ordens comuns e saídas parcialmente bloqueadas não contam.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Lotes de fermentação e maturação Vanilla Brewing Expanded</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentação, fabricação de bebidas e envelhecimento de Vanilla Brewing Expanded concluídos, por ProcessDef. Saídas pausadas, bloqueadas ou incompletas e fabricação por ordens comuns não contam.</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Prata Gastronomy recebida por refeições</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>Prata efetivamente paga por clientes não jogadores pelas refeições num restaurante do jogador. Os pagamentos parciais somam só o valor pago. Dívidas pendentes, refeições gratuitas e negociações não relacionadas não contam.</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VqeDrones_Assembled>Drones VQE Drone Factory montados</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_AssembledDesc>Drones do jogador gerados efetivamente pelo montador automático após terminar o temporizador de produção, por PawnKind. A passagem do tempo, falhas na geração e drones nascidos de ovos não contam.</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_Hatched>Drones VQE Drone Factory chocados</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_HatchedDesc>Drones do jogador nascidos efetivamente de ovos que eclodiram com sucesso, por PawnKind. Os ovos destruídos sem produzir drones e os drones fabricados pelo montador não contam.</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Deepchem Vanilla Chemfuel Expanded armazenado em tubulações</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>Deepchem efetivamente aceite pelo armazenamento das canalizações a partir de bombas extratoras do jogador, incluindo frações, medido quando a rede confirma a armazenagem. Produção prevista, saída colocada no chão e armazenagem impedida não contam.</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VgeExtraction_ItemsPlaced>DNA Vanilla Genetics Expanded extraído</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlacedDesc>Artigos de DNA efetivamente colocados ou juntados a pilhas por extrações bem-sucedidas do jogador, por ThingDef de saída. Alvos inválidos, falhas de colocação, cargas gastas sem produzir artigos e outras criações híbridas não contam.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>Pasta nutritiva VNPE armazenada em canalizações</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>As unidades de pasta de nutrientes fraccionadas aceitas na rede de tubulação pelo jogador de Vanilla Nutrient Paste Expandida moedores. Tentativas de moedor, consumo de ingredientes sem slurry aceito e armazenamento de tubulação por outros edifícios não contam.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval2 mel realmente colhido</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Unidades de mel colocadas ou fundidas com sucesso depois que um jogador colonista descarrega um apiário Medieval2, agrupado por saída ThingDef. Preparação de produção, colocações falhadas e transporte posterior são excluídos.</RWS_VfeMedieval2_HoneyItemsDesc>
