@@ -9,6 +9,14 @@ This audit is the **next research track after** [the 27-candidate popularity reg
 - The [Humanoid Alien Races](https://steamcommunity.com/sharedfiles/filedetails/?id=839005762) foundation was already recorded as candidate D01 in the preceding file and is **not** listed as a new MOD here.
 - Actual selected `LoadFolders.xml` and DLL, final success site, deduplication and performance must be checked before implementing. Use shared HAR + Biotech identity recording for ordinary race breakdowns, not one adapter for each merely cosmetic race.
 
+## Adopted implementation decision — common HAR coverage before bespoke integrations
+
+**Binding planning policy (2026-11-14):** use the **shared Humanoid Alien Races species-classification layer first**, integrated into the existing lifetime join/death/roster event capture. Optional Biotech xenotype breakdowns are separate dimensions; do not count the same pawn twice or confuse a xenotype with a HAR race. Preserve source package + race Def identity across checkpoint reloads/branches and after removal of a content MOD.
+
+**Individual race MOD integration is reserved for independently meaningful, verified completed outcomes that generic statistics cannot already express.** R02 (Archon successful reappearance) and R01 (NewRatkinPlus actual productive wheel work / measured output) are **potential** bespoke integrations after active RimWorld 1.7 DLL success-path and duplicate-capture verification; neither is yet implemented. R03 (Oberonia) remains conditional on a proven honor/campaign milestone. R04–R06 (Gloomy Dragonian, Rabbie, Yuran) should use shared HAR classification **without** separate adapters unless a further unique completed event is demonstrated.
+
+The engineering order is therefore **D01 common classification → R02/R01 distinct-event verification and implementation → conditional R03**, irrespective of the per-MOD source-audit order. Do not place candidates on the released supported-MOD list before implementation. Avoid high-frequency polling/reflection and incrementing generic totals from breakdown-only metrics.
+
 ## New candidate audit — 1.7 listed
 
 | ID | Race MOD (official Workshop) | Observed subscribers | Unique statistic, if provable | Source evidence / caveat | Recommendation |
@@ -41,11 +49,12 @@ This audit is the **next research track after** [the 27-candidate popularity reg
 | [Revia Race – Biotech](https://steamcommunity.com/sharedfiles/filedetails/?id=2893157989) | ~16k | Ritual/sacrifice tail-growth is mechanically attractive but official listing ends 1.6 and audience is smaller. |
 | [Kijin Race 3.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2884551646) | ~26k | Dedicated victory objective is attractive but lower priority than the large 1.7 groups; no independently proven 1.7 outcome code in this audit. |
 
-## Suggested order for next source/IL pass
+## Suggested implementation order (shared first)
 
-1. **R02 Archon** — exact post-resurrection reappearance is independently meaningful and has a clear source path.
-2. **R01 NewRatkinPlus** — very large audience and genuinely distinct wheel workflow; quantify only verified work/power output.
-3. **R03 Oberonia aurea** — real audience and unique honor mechanics, but binary/signature evidence is first prerequisite.
-4. **D01 HAR shared classification** — engineering-wise implement this before separate R04–R06 adapters; all three benefit immediately without fabricated new metrics.
+1. **D01 HAR / Biotech shared classification** — add one reusable race dimension to the existing confirmed pawn lifetime metrics; distinguish HAR race from xenotype and retain historical identities.
+2. **R02 Archon** — inspect the active 1.7 DLL and capture only verified successful transcendent pawn returns.
+3. **R01 NewRatkinPlus** — inspect the active 1.7 package; count only measured productive wheel work or proven delivered energy, not job starts or nominal power.
+4. **R03 Oberonia aurea** — after source/IL proof of an independently completed honor/campaign outcome, consider one narrow adapter.
+5. **R04–R06 Gloomy Dragonian, Rabbie, Yuran** — shared classification coverage suffices unless a new non-generic committed event is demonstrated.
 
-**Not automatically approved:** R04–R06 should remain registered as optional classification coverage targets, not mandatory individual metric implementations. The current evidence does not justify separate runtime adapters for their ordinary content.
+**No blanket per-race integration:** neither popularity nor a race-specific Def alone is sufficient to justify a bespoke adapter. These remain research candidates until implemented.
