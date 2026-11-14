@@ -40,6 +40,12 @@ jobs:
           while read -r nn start end; do
             bash tools/translation/apply_chunk.sh "$nn" "$start" "$end"
           done < /tmp/completed-translation-blocks.txt
+          for patch in tools/translation/work/*_qa.json; do
+            [ -f "$patch" ] || continue
+            lang="${patch##*/}"
+            lang="${lang%_qa.json}"
+            python3 tools/translation/apply_patch.py "$lang" "$patch"
+          done
           bash tools/check_keys.sh
           git add -u Languages
           if ! git diff --cached --quiet; then
