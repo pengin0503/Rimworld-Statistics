@@ -82,65 +82,75 @@
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "French": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "Spanish": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "SpanishLatin": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "Portuguese": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "PortugueseBrazilian": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "Russian": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "ChineseSimplified": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "ChineseTraditional": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ],
     "Korean": [
       "01",
       "02",
       "03",
-      "04"
+      "04",
+      "05"
     ]
   },
   "pending": [
-    "Blocks 05-10 (keys 501-1234) still require full retranslation in all ten languages.",
+    "Blocks 06-10 (keys 626-1234) still require full retranslation in all ten languages.",
     "Native-speaker review of every language before release (no in-game rendering check was done)."
   ]
 }
