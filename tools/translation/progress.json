@@ -2,36 +2,135 @@
   "description": "Retranslation progress for the ten machine-translated languages. Positions are 1-based in the English key order of Languages/English/Keyed/RimworldStatistics.xml (1234 keys). See docs/translation/2026-11-14-retranslation-handoff.md.",
   "keyCount": 1234,
   "blocks": [
-    {"id": "01", "start": 1, "end": 125, "firstKey": "RWS_SettingsCategory", "lastKey": "RWS_WealthCoverage"},
-    {"id": "02", "start": 126, "end": 250, "firstKey": "RWS_Source_RecoveredLineage", "lastKey": "RWS_MetricDesc_ModsMin"},
-    {"id": "03", "start": 251, "end": 375, "firstKey": "RWS_Metric_QuestSuccess", "lastKey": "RWS_Metric_DeathsByRaid"},
-    {"id": "04", "start": 376, "end": 500, "firstKey": "RWS_MetricDesc_DeathsByRaid", "lastKey": "RWS_MetricDesc_CraftQuality"},
-    {"id": "05", "start": 501, "end": 625, "firstKey": "RWS_Metric_CraftLegendary", "lastKey": "RWS_Metric_Resurrections"},
-    {"id": "06", "start": 626, "end": 750, "firstKey": "RWS_MetricDesc_Resurrections", "lastKey": "RWS_MetricDesc_FacilitiesBattery"},
-    {"id": "07", "start": 751, "end": 875, "firstKey": "RWS_Metric_FacilitiesOutdoorTempMin", "lastKey": "RWS_MetricDesc_CleaningJobsCompleted"},
-    {"id": "08", "start": 876, "end": 1000, "firstKey": "RWS_Metric_TreeWoodPlaced", "lastKey": "RWS_Status_FilterMissing"},
-    {"id": "09", "start": 1001, "end": 1125, "firstKey": "RWS_Status_FilterNA", "lastKey": "RWS_VnpeGrinder_SlurryStored"},
-    {"id": "10", "start": 1126, "end": 1234, "firstKey": "RWS_VnpeGrinder_SlurryStoredDesc", "lastKey": "RWS_Chart_NoData"}
+    {
+      "id": "01",
+      "start": 1,
+      "end": 125,
+      "firstKey": "RWS_SettingsCategory",
+      "lastKey": "RWS_WealthCoverage"
+    },
+    {
+      "id": "02",
+      "start": 126,
+      "end": 250,
+      "firstKey": "RWS_Source_RecoveredLineage",
+      "lastKey": "RWS_MetricDesc_ModsMin"
+    },
+    {
+      "id": "03",
+      "start": 251,
+      "end": 375,
+      "firstKey": "RWS_Metric_QuestSuccess",
+      "lastKey": "RWS_Metric_DeathsByRaid"
+    },
+    {
+      "id": "04",
+      "start": 376,
+      "end": 500,
+      "firstKey": "RWS_MetricDesc_DeathsByRaid",
+      "lastKey": "RWS_MetricDesc_CraftQuality"
+    },
+    {
+      "id": "05",
+      "start": 501,
+      "end": 625,
+      "firstKey": "RWS_Metric_CraftLegendary",
+      "lastKey": "RWS_Metric_Resurrections"
+    },
+    {
+      "id": "06",
+      "start": 626,
+      "end": 750,
+      "firstKey": "RWS_MetricDesc_Resurrections",
+      "lastKey": "RWS_MetricDesc_FacilitiesBattery"
+    },
+    {
+      "id": "07",
+      "start": 751,
+      "end": 875,
+      "firstKey": "RWS_Metric_FacilitiesOutdoorTempMin",
+      "lastKey": "RWS_MetricDesc_CleaningJobsCompleted"
+    },
+    {
+      "id": "08",
+      "start": 876,
+      "end": 1000,
+      "firstKey": "RWS_Metric_TreeWoodPlaced",
+      "lastKey": "RWS_Status_FilterMissing"
+    },
+    {
+      "id": "09",
+      "start": 1001,
+      "end": 1125,
+      "firstKey": "RWS_Status_FilterNA",
+      "lastKey": "RWS_VnpeGrinder_SlurryStored"
+    },
+    {
+      "id": "10",
+      "start": 1126,
+      "end": 1234,
+      "firstKey": "RWS_VnpeGrinder_SlurryStoredDesc",
+      "lastKey": "RWS_Chart_NoData"
+    }
   ],
   "sourceLanguages": {
-    "English": "revised (382 keys) in this work; it is the source for all retranslation",
-    "Japanese": "revised (715 keys) in this work; not part of the block retranslation"
+    "English": "Revised and official Commitment mode / Reload anytime mode names applied.",
+    "Japanese": "Revised and official コミットメントモード / 無制限リロードモード names applied."
   },
   "retranslatedBlocks": {
-    "German": ["01", "02"],
-    "French": ["01", "02"],
-    "Spanish": ["01", "02"],
-    "SpanishLatin": ["01", "02"],
-    "Portuguese": ["01", "02"],
-    "PortugueseBrazilian": ["01", "02"],
-    "Russian": ["01", "02"],
-    "ChineseSimplified": ["01", "02"],
-    "ChineseTraditional": ["01", "02"],
-    "Korean": ["01", "02"]
+    "German": [
+      "01",
+      "02",
+      "03"
+    ],
+    "French": [
+      "01",
+      "02",
+      "03"
+    ],
+    "Spanish": [
+      "01",
+      "02",
+      "03"
+    ],
+    "SpanishLatin": [
+      "01",
+      "02",
+      "03"
+    ],
+    "Portuguese": [
+      "01",
+      "02",
+      "03"
+    ],
+    "PortugueseBrazilian": [
+      "01",
+      "02",
+      "03"
+    ],
+    "Russian": [
+      "01",
+      "02",
+      "03"
+    ],
+    "ChineseSimplified": [
+      "01",
+      "02",
+      "03"
+    ],
+    "ChineseTraditional": [
+      "01",
+      "02",
+      "03"
+    ],
+    "Korean": [
+      "01",
+      "02",
+      "03"
+    ]
   },
   "pending": [
-    "Blocks 03-10 (keys 251-1234) in all ten languages: still the old machine translation of the OLD English text; retranslate from the current English.",
-    "English + Japanese: rename permadeath labels to the official 'Commitment mode' / 'Reload anytime mode' (JA: コミットメントモード / 無制限リロードモード) in RWS_Details_Permadeath, RWS_Details_NotPermadeath, RWS_Metric_RankByPermadeathDays, RWS_MetricDesc_RankByPermadeathDays, RWS_Metric_RankByPermadeathEndings, RWS_MetricDesc_RankByPermadeathEndings. The ten other languages should use their official mode names when blocks 03 are translated.",
+    "Blocks 04-10 (keys 376-1234) still require full retranslation in all ten languages.",
     "Native-speaker review of every language before release (no in-game rendering check was done)."
   ]
 }
