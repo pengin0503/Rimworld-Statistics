@@ -668,8 +668,8 @@
   <RWS_MetricDesc_VolcanicWinters>Nombre d'hivers volcaniques ayant commencé.</RWS_MetricDesc_VolcanicWinters>
   <RWS_Metric_Eclipses>Éclipses</RWS_Metric_Eclipses>
   <RWS_MetricDesc_Eclipses>Nombre d'éclipses ayant commencé.</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>Maladies des cultures</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>Incidents de maladie des cultures déclenchés avec succès, et non le nombre de plantes atteintes.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_CropBlights>Mildiou</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Incidents de mildiou déclenchés avec succès, et non le nombre de plantes atteintes.</RWS_MetricDesc_CropBlights>
   <RWS_Metric_Meteors>Impacts de météorites</RWS_Metric_Meteors>
   <RWS_MetricDesc_Meteors>Incidents de météorite déclenchés avec succès, et non le nombre de fragments.</RWS_MetricDesc_Meteors>
   <RWS_Metric_ShortCircuits>Courts-circuits</RWS_Metric_ShortCircuits>
@@ -697,9 +697,9 @@
   <RWS_Metric_SitesCleared>Implantations ennemies vaincues</RWS_Metric_SitesCleared>
   <RWS_MetricDesc_SitesCleared>Implantations de factions ennemies détruites à la suite d'une victoire du joueur.</RWS_MetricDesc_SitesCleared>
   <RWS_Metric_SettlementsFounded>Implantations fondées</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>Nouvelles implantations du joueur fondées depuis une caravane ou une carte existante. L'implantation initiale, les déménagements de colonie et les atterrissages de gravivaisseaux ne comptent pas.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>Nouvelles implantations du joueur fondées depuis une caravane ou une carte existante. L'implantation initiale, les déménagements de colonie et les atterrissages de vaisseaux gravitationnels ne comptent pas.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Implantations abandonnées</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Implantations du joueur abandonnées volontairement. Les suppressions automatiques, par exemple au décollage d'un gravivaisseau, sont exclues.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Implantations du joueur abandonnées volontairement. Les suppressions automatiques, par exemple au décollage d'un vaisseau gravitationnel, sont exclues.</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>Dangers antiques ouverts</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Sanctuaires antiques scellés (dangers antiques des cartes d'implantation du joueur) dont l'intérieur a été ouvert, comptés une fois chacun. Un sanctuaire compte lorsque le jeu le considère découvert, au moment où le brouillard au-dessus de son centre se dissipe. Détruire d'autres murs ou faire apparaître des ennemis ne compte pas.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Biome initial</RWS_Metric_ColonyStartingBiome>
@@ -766,8 +766,8 @@
   <RWS_MetricDesc_StockWeaponDefsPeak>Nombre maximal de types d'armes différents, équipées ou entreposées, sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.</RWS_MetricDesc_StockWeaponDefsPeak>
   <RWS_Metric_StockLegendaryWeaponsPeak>Maximum d'armes légendaires possédées</RWS_Metric_StockLegendaryWeaponsPeak>
   <RWS_MetricDesc_StockLegendaryWeaponsPeak>Nombre maximal d'armes de qualité légendaire, équipées ou entreposées, sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
-  <RWS_Metric_StockPersonaWeaponsPeak>Maximum d'armes personnifiées possédées</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>Nombre maximal d'armes personnifiées, équipées ou entreposées, sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>Maximum d'armes intelligentes possédées</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Nombre maximal d'armes intelligentes, équipées ou entreposées, sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.</RWS_MetricDesc_StockPersonaWeaponsPeak>
   <RWS_Metric_StockMedicinePeak>Maximum de médicaments en stock</RWS_Metric_StockMedicinePeak>
   <RWS_MetricDesc_StockMedicinePeak>Quantité maximale de médicaments transportés ou entreposés sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.</RWS_MetricDesc_StockMedicinePeak>
   <RWS_Metric_StockFoodMin>Minimum de nourriture en stock (nutrition)</RWS_Metric_StockFoodMin>
@@ -778,8 +778,8 @@
   <RWS_MetricDesc_BiotechPollutionPeak>Nombre maximal de cases polluées sur les cartes d'habitation lors d'une sauvegarde enregistrée. Nécessite Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>Bande passante maximale de mécaniteur utilisée</RWS_Metric_BiotechBandwidthPeak>
   <RWS_MetricDesc_BiotechBandwidthPeak>Plus grande bande passante utilisée par un mécaniteur lors d'une sauvegarde enregistrée. Nécessite Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
-  <RWS_Metric_RoyaltyPermitUses>Permissions royales utilisées</RWS_Metric_RoyaltyPermitUses>
-  <RWS_MetricDesc_RoyaltyPermitUses>Permissions royales réellement utilisées par un colon du joueur admissible. Les sélections annulées ne sont pas comptées.</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPermitUses>Licences royales utilisées</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>Licences royales réellement utilisées par un colon du joueur admissible. Les sélections annulées ne sont pas comptées.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Pouvoirs psychiques lancés avec succès</RWS_Metric_RoyaltyPsycasts>
   <RWS_MetricDesc_RoyaltyPsycasts>Pouvoirs psychiques (Royalty) lancés avec succès par des colons libres du joueur. Une sélection de cible non confirmée ne compte pas.</RWS_MetricDesc_RoyaltyPsycasts>
   <RWS_Metric_RoyaltyQuestSuccess>Quêtes liées à l'Empire réussies</RWS_Metric_RoyaltyQuestSuccess>
@@ -800,14 +800,14 @@
   <RWS_MetricDesc_IdeologyConversionDays>Nombre moyen de jours entre une tentative de conversion confirmée et l'adoption de l'idéoligion visée par le personnage.</RWS_MetricDesc_IdeologyConversionDays>
   <RWS_Metric_IdeologyAppointments>Nominations aux rôles</RWS_Metric_IdeologyAppointments>
   <RWS_MetricDesc_IdeologyAppointments>Nouvelles nominations confirmées de colons du joueur à un rôle de chef ou de spécialiste d'idéoligion ; renommer à un rôle identique ne compte pas.</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>Vols de gravivaisseau achevés</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>Vols de gravivaisseau confirmés achevés par un atterrissage du joueur. Les décollages seuls et les aperçus d'itinéraires sont exclus.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>Distance totale des vols de gravivaisseau</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>Distance totale des vols de gravivaisseau achevés (confirmés par un atterrissage du joueur).</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyFlights>Vols de vaisseau gravitationnel achevés</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Vols de vaisseau gravitationnel confirmés achevés par un atterrissage du joueur. Les décollages seuls et les aperçus d'itinéraires sont exclus.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>Distance totale des vols de vaisseau gravitationnel</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Distance totale des vols de vaisseau gravitationnel achevés (confirmés par un atterrissage du joueur).</RWS_MetricDesc_OdysseyDistance>
   <RWS_Metric_OdysseyUniqueTiles>Sites d'atterrissage distincts</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>Cases du monde distinctes où des vols de gravivaisseau achevés ont atterri.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Cases du monde distinctes où des vols de vaisseau gravitationnel achevés ont atterri.</RWS_MetricDesc_OdysseyUniqueTiles>
   <RWS_Metric_OdysseyNewMaps>Atterrissages sur de nouvelles cartes</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>Atterrissages de gravivaisseau achevés ayant nécessité la génération d'une nouvelle carte.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Atterrissages de vaisseau gravitationnel achevés ayant nécessité la génération d'une nouvelle carte.</RWS_MetricDesc_OdysseyNewMaps>
   <RWS_Metric_BiotechMechsCreated>Mécanoïdes produits par gestation</RWS_Metric_BiotechMechsCreated>
   <RWS_MetricDesc_BiotechMechsCreated>Mécanoïdes produits par des gestateurs de méca du joueur, comptés dès l'apparition réelle du méca vivant. Les résurrections sont exclues.</RWS_MetricDesc_BiotechMechsCreated>
   <RWS_Metric_BiotechBirthMothers>Colons ayant donné naissance</RWS_Metric_BiotechBirthMothers>
@@ -1125,113 +1125,113 @@
   <RWS_VgeExtraction_ItemsPlaced>ADN extrait par Vanilla Genetics Expanded</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Objets ADN réellement déposés ou fusionnés dans des piles par une extraction réussie du joueur, par ThingDef produit. Cibles invalides, dépôts échoués, charges dépensées sans produit et autres créations d'hybrides sont exclus.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>Bouillie nutritive VNPE stockée dans les conduites</RWS_VnpeGrinder_SlurryStored>
-  <RWS_VnpeGrinder_SlurryStoredDesc>Bouillie nutritive réellement admise dans le réseau de tuyaux depuis des broyeurs Vanilla Nutrient Paste Expanded du joueur, fractions comprises. Les tentatives de broyage, les ingrédients consommés sans admission de bouillie et le stockage par d'autres bâtiments sont exclus.</RWS_VnpeGrinder_SlurryStoredDesc>
+  <RWS_VnpeGrinder_SlurryStoredDesc>Quantité de bouillie nutritive réellement acceptée dans le réseau de conduites depuis les broyeurs du joueur dans Vanilla Nutrient Paste Expanded, fractions comprises. Les tentatives de broyage, les ingrédients consommés sans stockage de bouillie et les dépôts provenant d'autres bâtiments sont exclus.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Miel récolté VFE Medieval 2</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>Miel réellement déposé ou fusionné en piles après qu'un colon du joueur a vidé un rucher Medieval 2 lui appartenant, regroupé par ThingDef produit. Rucher seulement prêt à récolter, dépôt raté et transports ultérieurs exclus.</RWS_VfeMedieval2_HoneyItemsDesc>
-  <RWS_VfeSecurity_ArtilleryLaunched>Obus d'artillerie VFE Security arrivés hors carte</RWS_VfeSecurity_ArtilleryLaunched>
-  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Obus d'artillerie hors carte du joueur ayant atteint la carte cible et y ayant réellement été générés comme projectiles, par projectile. Les ordres de ciblage, obus encore en transit et tirs sans projectile généré sont exclus. Ne mesure pas les impacts réussis.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Miel réellement déposé ou ajouté à une pile après qu'un colon du joueur a vidé un rucher Medieval 2 lui appartenant, par ThingDef de sortie. La simple disponibilité du miel, un dépôt échoué ou son transport ultérieur ne comptent pas.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>Obus d'artillerie hors carte VFE Security arrivés</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Obus d'artillerie hors carte du joueur ayant atteint la carte cible et y étant réellement apparus comme projectiles, par projectile. Les ordres de tir, obus encore en transit et tirs n'ayant pas généré de projectile sont exclus. Il ne s'agit pas du nombre d'impacts.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>Récoltes des Autofarmers VFE Factory</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>Articles nouvellement récoltés par les Autofarmers du joueur, comptés par augmentation réelle du tampon de récolte et dépôt confirmé au sol, par ThingDef produit. Déchargement ultérieur dans les trémies, dépôt refusé et récolte ordinaire par des personnages sont exclus.</RWS_VfeFactory_HarvestedDesc>
-  <RWS_VfeFactory_Sown>Plantes semées par Autofarmers VFE Factory</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>Plantes nouvellement générées, marquées comme semées et correspondant à la culture sélectionnée pendant le cycle de travail d'un Autofarmer du joueur, par ThingDef de plante. Cycles ratés et plantes préexistantes exclus.</RWS_VfeFactory_SownDesc>
-  <RWS_VfePirates_WarcasketFits>Équipements warcasket VFE Pirates achevés</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Équipements warcasket du joueur achevés par soudage normal, confirmés à la clôture du projet et au port nouveau des trois pièces correspondantes, par Def d'armure. Travaux inachevés, équipement partiel et achèvements par outils de développement sont exclus.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>Injections archogènes VQE Ancients rejetées</RWS_VqeAncients_Rejected>
-  <RWS_VqeAncients_RejectedDesc>Résultats d'injecteurs archogènes du joueur où l'occupant a rejeté l'injection, a été libéré vivant et est tombé dans un coma d'injection. Travaux annulés, résultats choisis mais non achevés et choix de gènes en attente après réussite sont exclus. Nécessite Biotech.</RWS_VqeAncients_RejectedDesc>
+  <RWS_VfeFactory_HarvestedDesc>Objets nouvellement récoltés par des Autofarmers appartenant au joueur, comptés selon l'augmentation réelle du tampon de récolte et les dépôts au sol confirmés, par ThingDef de sortie. Le déchargement ultérieur dans des trémies, les dépôts refusés et la récolte ordinaire des personnages sont exclus.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>Plantes semées par Autofarmer VFE Factory</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>Plantes nouvelles réellement apparues, marquées comme semées et correspondant à la culture sélectionnée pendant le cycle de travail d'un Autofarmer du joueur, par ThingDef de plante. Les cycles ratés et les plantes déjà présentes sont exclus.</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>Installations de warcaskets VFE Pirates achevées</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>Installations de warcaskets du joueur achevées par soudure normale, confirmées lorsque le projet se termine et que les trois pièces correspondantes sont nouvellement portées, par Def d'armure. Tâches inachevées, ensembles partiellement équipés et achèvements par outils de développement sont exclus.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>Rejets d'injection VQE Ancients</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>Résultats d'injecteur d'archogènes du joueur où l'occupant a rejeté l'injection, a été libéré vivant et est tombé dans le coma de l'injection. Tâches annulées, résultats choisis mais non achevés et choix de gènes encore en attente après un succès sont exclus. Nécessite Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>Transformations mutantes VQE Ancients</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>Résultats de mutation d'un injecteur archogène du joueur détruisant le personnage d'origine et générant un mutant appartenant au joueur du PawnKindDef choisi, par type de mutant. Autres générations, annulations et choix en attente après réussite exclus. Nécessite Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>Résultats de mutation d'un injecteur d'archogènes du joueur détruisant le personnage original et générant un mutant du joueur de la PawnKindDef choisie, par type de mutant. Autres générations, annulations et choix en attente après succès sont exclus. Nécessite Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>Primes VFE Settlers remises</RWS_VfeSettlers_BountyHandins>
-  <RWS_VfeSettlers_BountyHandinsDesc>Criminels recherchés ou leurs corps remis et retirés effectivement d'une caravane du joueur contre une récompense positive en argent. Ouvrir la commande, cibles absentes, transferts ratés et biens sans rapport sont exclus.</RWS_VfeSettlers_BountyHandinsDesc>
-  <RWS_VfeSettlers_BountySilver>Argent de primes VFE Settlers reçu</RWS_VfeSettlers_BountySilver>
-  <RWS_VfeSettlers_BountySilverDesc>Argent réellement ajouté à la caravane du joueur lors du premier versement de récompense pour une remise de prime VFE Settlers réussie. Les biens du criminel, y compris leur argent, sont exclus.</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_VfeSettlers_BountyHandinsDesc>Criminels recherchés, ou leurs corps, réellement remis et retirés d'une caravane du joueur après réception d'une récompense positive en argent. Ouvrir seulement la commande, les cibles manquantes, transferts échoués et possessions sans rapport ne comptent pas.</RWS_VfeSettlers_BountyHandinsDesc>
+  <RWS_VfeSettlers_BountySilver>Argent reçu de primes VFE Settlers</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilverDesc>Argent réellement ajouté à une caravane du joueur lors du premier paiement pour une remise de prime VFE Settlers réussie. Les objets du criminel, même s'ils contiennent de l'argent, sont exclus.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Sous-produits du retraitement Dubs Rimatomics</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>Articles réellement déposés ou fusionnés en piles comme sous-produits à la fin du déchargement de combustible d'un processeur de plutonium du joueur, par ThingDef produit. Combustible usé retourné, matériaux seulement traités et dépôts sans lien exclus.</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>Munitions tirées Combat Extended</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Cartouches effectivement prises dans les chargeurs des armes de colons du joueur ou consommées lors d'un tir direct depuis l'inventaire, par AmmoDef. Déplacement de munitions au rechargement, tirs à vide, utilisation de tourelles et remplissage par outils de développement exclus.</RWS_CE_RoundsUsedDesc>
+  <RWS_Rimatomics_ByproductsDesc>Objets réellement déposés ou fusionnés avec des piles en tant que sous-produits lorsque le processeur de plutonium du joueur finit de décharger du combustible, par ThingDef de sortie. Le combustible usé restitué, les matériaux seulement traités et les dépôts sans rapport sont exclus.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Cartouches tirées dans Combat Extended</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>Cartouches réellement retirées des chargeurs d'armes de colons du joueur ou dépensées en tirant directement depuis l'inventaire, par AmmoDef. Les déplacements de munitions au rechargement, tirs à vide, tourelles et recharges de débogage sont exclus.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Suppressions subies par les colons Combat Extended</RWS_CE_SuppressionReceived>
-  <RWS_CE_SuppressionReceivedDesc>Nombre de fois où un personnage de la colonie est nouvellement entré en état de suppression dans Combat Extended, une fois par passage d'absence de suppression à suppression. La suppression supplémentaire pendant cet état et les tests de développement sont exclus. Il s'agit des suppressions subies, pas infligées aux ennemis.</RWS_CE_SuppressionReceivedDesc>
-  <RWS_VfePirates_HireContracts>Contrats d'embauche VFE Pirates</RWS_VfePirates_HireContracts>
-  <RWS_VfePirates_HireContractsDesc>Nouveaux contrats de pirates ou mercenaires réellement conclus dans l'interface de recrutement Vanilla Expanded Framework avec une faction de VFE Pirates. Afficher la fenêtre, offres annulées et paiements échoués ne comptent pas.</RWS_VfePirates_HireContractsDesc>
+  <RWS_CE_SuppressionReceivedDesc>Nombre de fois où un personnage de la colonie est devenu soumis au feu de suppression dans Combat Extended, compté à chaque passage d'absence de suppression à suppression. La suppression supplémentaire déjà en cours et les tests de développement sont exclus. Il s'agit de suppression subie, non infligée aux ennemis.</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>Contrats d'embauche VFE Pirates conclus</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>Nouveaux contrats de pirates ou mercenaires réellement conclus dans la fenêtre d'embauche de Vanilla Expanded Framework avec une faction employeuse de VFE Pirates. Afficher la fenêtre, annuler une offre et échouer au paiement ne compte pas.</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>Argent payé pour les embauches VFE Pirates</RWS_VfePirates_HireSilver>
-  <RWS_VfePirates_HireSilverDesc>Argent réellement retiré du stock de la carte du joueur à l'enregistrement d'un nouveau contrat d'embauche VFE Pirates, et non le prix estimé arrondi. Les contrats gratuits n'ajoutent pas d'argent.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>Naissances d'hybrides dans les utérus électriques VGE</RWS_VgeHybrid_Births>
-  <RWS_VgeHybrid_BirthsDesc>Nouveaux personnages hybrides appartenant au joueur, réellement générés un par un à la fin d'un cycle de croissance réussi dans un utérus électrique VGE du joueur, par type de personnage. Croissance ratée, progression du minuteur et restauration d'une sauvegarde exclues.</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VfePirates_HireSilverDesc>Argent réellement retiré des stocks des cartes du joueur lors de l'enregistrement d'un nouveau contrat d'embauche VFE Pirates, et non le prix annoncé arrondi. Les contrats gratuits n'ajoutent aucun argent.</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>Naissances d'hybrides en utérus électrique VGE</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>Nouveaux personnages hybrides du joueur réellement apparus un par un lorsqu'un utérus électrique VGE lui appartenant achève un cycle de croissance réussi, par type de personnage. Croissance ratée, simple progression du minuteur et restauration d'une sauvegarde sont exclus.</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>Transformations biomécaniques VGE</RWS_VgeHybrid_Conversions>
-  <RWS_VgeHybrid_ConversionsDesc>Transformations réussies dans des mécahybrideurs du joueur ayant détruit le sujet original et généré un nouveau personnage converti appartenant au joueur, par type de personnage résultant. Démarrer la machine, attendre ou échouer à générer ne compte pas.</RWS_VgeHybrid_ConversionsDesc>
+  <RWS_VgeHybrid_ConversionsDesc>Transformations réussies dans les hybridiseurs mécaniques du joueur, détruisant le sujet original et générant un nouveau personnage transformé lui appartenant, par type obtenu. Démarrer la machine, attendre et échouer à la génération ne comptent pas.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Libérations conditionnelles Prison Expanded approuvées</RWS_PrisonExpanded_ParoleApproved>
-  <RWS_PrisonExpanded_ParoleApprovedDesc>Décisions de libération prises aux audiences de libération conditionnelle ayant effectivement effacé une peine entièrement purgée pour un prisonnier vivant encore détenu par le joueur et ordonné la libération. Les audiences seules, prolongations, options de recrutement, choix répétés et départ ultérieur du prisonnier sont exclus.</RWS_PrisonExpanded_ParoleApprovedDesc>
-  <RWS_Rimefeller_ExtractedFieldUnits>Pétrole brut extrait Rimefeller (unités de gisement)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Diminution réelle de la capacité d'un gisement pétrolier (CurrentCap) lorsque la pompe à pétrole du joueur a réussi à extraire. Unités de capacité du gisement, PAS volume de tuyaux ni unités d'articles. Avancement du forage, tentatives de pompage, reconstitution naturelle du gisement, transferts entre réservoirs et production de raffinerie exclus.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_PrisonExpanded_ParoleApprovedDesc>Décisions de libération prises en audience de libération conditionnelle, ayant réellement effacé une peine terminée pour un prisonnier vivant encore détenu par le joueur, avec ordre de libération. Audiences seules, prolongations, options de recrutement, décisions répétées et départ ultérieur du prisonnier sont exclus.</RWS_PrisonExpanded_ParoleApprovedDesc>
+  <RWS_Rimefeller_ExtractedFieldUnits>Pétrole brut extrait des gisements Rimefeller (unités de gisement)</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Diminution réelle de la capacité d'un gisement pétrolier (CurrentCap) lors du pompage réussi par un derrick du joueur. L'unité est celle de la capacité du gisement, PAS un volume en conduites ni un nombre d'objets. Progression du forage, tentatives de pompage, reconstitution naturelle, transferts entre réservoirs et produits de raffinerie sont exclus.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Peines purgées Prison Expanded</RWS_PrisonExpanded_SentencesServed>
-  <RWS_PrisonExpanded_SentencesServedDesc>Peines de prisonniers détenus par le joueur ayant réellement atteint leur durée complète dans Prison Expanded et devenus admissibles pour la première fois à une audience de libération conditionnelle. Approbations, ordres de libération, ticks quotidiens répétés et valeurs restaurées au chargement sont exclus.</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prisonniers Prison Expanded effectivement partis</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisonniers suivis par Prison Expanded ayant physiquement quitté une carte d'habitation du joueur (Pawn.ExitMap réussi), par opposition à un simple ordre de libération ou de libération conditionnelle. Tout départ réel compte, quelle que soit la peine d'origine.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
-  <RWS_Rimefeller_RefineryFuelUsed>Combustible de raffinerie Rimefeller consommé (unités de tuyau)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>Diminution réelle du combustible disponible dans le réseau de tuyaux (FuelAvailable) due au traitement des raffineries Rimefeller du joueur, mesurée après le tick de base du composant de tuyau. Le combustible transféré aux machines sur place pendant ce tick et les consommations seulement prévues ou tentées sont exclus. Unités de combustible du réseau.</RWS_Rimefeller_RefineryFuelUsedDesc>
-  <RWS_Rimefeller_PlantFuelUsed>Combustible de centrale Rimefeller consommé (unités de tuyau)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>Diminution réelle du combustible disponible dans le réseau (FuelAvailable) lorsque les centrales Rimefeller du joueur prélèvent avec succès. Prélèvements vides ou échoués exclus. Unités de combustible du réseau, pas d'articles.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_PrisonExpanded_SentencesServedDesc>Peines de prisonniers du joueur arrivant réellement à leur durée totale dans Prison Expanded et devenant pour la première fois admissibles à une audience de libération conditionnelle. Approbations, ordres de libération, répétitions quotidiennes et données restaurées au chargement sont exclus.</RWS_PrisonExpanded_SentencesServedDesc>
+  <RWS_PrisonExpanded_PhysicalDepartures>Prisonniers Prison Expanded réellement partis</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisonniers suivis par Prison Expanded ayant physiquement quitté une carte d'habitation du joueur (Pawn.ExitMap réussi), plutôt que simplement recevoir un ordre de libération ou une approbation de libération conditionnelle. Chaque départ réel compte, quelle que soit la peine initiale.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_Rimefeller_RefineryFuelUsed>Combustible consommé par raffinerie Rimefeller (unités de conduites)</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>Diminution réelle du combustible disponible dans le réseau de conduites (FuelAvailable) due au traitement d'une raffinerie Rimefeller du joueur, mesurée après le tick de base du composant de conduites. Le combustible transféré aux machines pendant ce tick, ou seulement prévu ou tenté, est exclu. Unités de combustible du réseau.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsed>Combustible consommé par centrale Rimefeller (unités de conduites)</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsedDesc>Diminution réelle du combustible disponible dans le réseau de conduites (FuelAvailable) lorsque des centrales Rimefeller du joueur en prélèvent avec succès. Prélèvements vides ou ratés exclus. Unités de combustible du réseau, pas des objets.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>Combats d'arène décidés</RWS_NewMod_Arena>
-  <RWS_NewMod_ArenaDesc>Combats d'arène du joueur avec vainqueur officiellement enregistré.</RWS_NewMod_ArenaDesc>
-  <RWS_NewMod_Roads>Tronçons de route construits ou améliorés</RWS_NewMod_Roads>
-  <RWS_NewMod_RoadsDesc>Tronçons de route achevés sur la carte du monde, par type de route. Un tronçon bidirectionnel compte une fois.</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_ArenaDesc>Combats dans une arène du joueur avec vainqueur officiellement enregistré.</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>Segments de route construits ou améliorés</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>Segments de route achevés sur la carte du monde, par type de route. Un segment bidirectionnel ne compte qu'une fois.</RWS_NewMod_RoadsDesc>
   <RWS_NewMod_GravHack>Ordinateurs de guerre piratés</RWS_NewMod_GravHack>
   <RWS_NewMod_GravHackDesc>Ordinateurs de guerre ennemis remplacés après un piratage réussi par un personnage du joueur.</RWS_NewMod_GravHackDesc>
-  <RWS_NewMod_GravBoon>Bonus de lancement de gravivaisseau</RWS_NewMod_GravBoon>
-  <RWS_NewMod_GravBoonDesc>Bonus de lancement appliqués aux gravivaisseaux du joueur, par type de bonus.</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_GravBoon>Bonus de lancement de vaisseau gravitationnel</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>Bonus de lancement appliqués aux vaisseaux gravitationnels du joueur, par type de bonus.</RWS_NewMod_GravBoonDesc>
   <RWS_NewMod_Schisms>Schismes idéologiques achevés</RWS_NewMod_Schisms>
-  <RWS_NewMod_SchismsDesc>Nouvelles idéoligions schismatiques enregistrées avec au moins un personnage du joueur converti.</RWS_NewMod_SchismsDesc>
-  <RWS_NewMod_Funeral>Conversions par funérailles de dreadnought</RWS_NewMod_Funeral>
-  <RWS_NewMod_FuneralDesc>Personnages du joueur ramenés à la vie par des funérailles de dreadnought, avec soutien vital et armure warcasket installés.</RWS_NewMod_FuneralDesc>
-  <RWS_NewMod_Spa>Argent reçu des clients du spa</RWS_NewMod_Spa>
-  <RWS_NewMod_SpaDesc>Argent effectivement payé par des visiteurs aux installations de spa du joueur, par type d'installation.</RWS_NewMod_SpaDesc>
-  <RWS_NewMod_Museum>Visites et apprentissages au musée achevés</RWS_NewMod_Museum>
-  <RWS_NewMod_MuseumDesc>Tâches de musée réussies du joueur, distinguant les visites récréatives des séances d'apprentissage.</RWS_NewMod_MuseumDesc>
-  <RWS_NewMod_Storefront>Ventes en vitrine réalisées</RWS_NewMod_Storefront>
-  <RWS_NewMod_StorefrontDesc>Ventes de vitrine avec remise confirmée du produit à un visiteur, par produit.</RWS_NewMod_StorefrontDesc>
-  <RWS_NewMod_Boarding>Embarquements dans des véhicules</RWS_NewMod_Boarding>
-  <RWS_NewMod_BoardingDesc>Personnages du joueur nouvellement ajoutés au manifeste de passagers d'un véhicule du joueur.</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_SchismsDesc>Nouvelles idéoligions issues d'un schisme enregistrées après conversion d'au moins un personnage du joueur.</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>Conversions lors de funérailles de dreadnought</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>Personnages du joueur ramenés à la vie lors de funérailles de dreadnought, avec maintien en vie et armure warcasket appliqués.</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>Argent payé par les clients de spas</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>Argent réellement payé par les visiteurs aux installations de spa du joueur, par type d'installation.</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>Visites et séances d'apprentissage au musée achevées</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>Tâches de musée du joueur réussies, comptées séparément pour les visites récréatives et l'apprentissage.</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>Ventes de magasin réalisées</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>Ventes en magasin dont la remise du produit à un visiteur a été confirmée, par produit.</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>Embarquements en véhicule</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>Personnages du joueur nouvellement ajoutés à la liste des passagers d'un de ses véhicules.</RWS_NewMod_BoardingDesc>
   <RWS_NewMod_Upgrades>Améliorations de véhicules installées</RWS_NewMod_Upgrades>
-  <RWS_NewMod_UpgradesDesc>Nouvelles améliorations de véhicules installées à la suite de tâches achevées par le joueur, par type de véhicule.</RWS_NewMod_UpgradesDesc>
-  <RWS_NewMod_Wrecks>Véhicules restaurés d'épaves</RWS_NewMod_Wrecks>
-  <RWS_NewMod_WrecksDesc>Véhicules du joueur générés par la construction achevée d'une structure d'épave suivie.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Sites Real Ruins visités par caravanes</RWS_NewMod_RealRuins>
-  <RWS_NewMod_RealRuinsDesc>Caravanes du joueur ayant atteint un site Real Ruins dont la carte devait être générée, avec entrée des personnages confirmée.</RWS_NewMod_RealRuinsDesc>
-  <RWS_NewMod_Casino>Tours de machine à sous achevés</RWS_NewMod_Casino>
-  <RWS_NewMod_CasinoDesc>Tours achevés aux machines à sous du joueur, ventilés entre pertes et chaque type de gain.</RWS_NewMod_CasinoDesc>
-  <RWS_NewMod_Resleeving>Transferts de piles neuronales vers corps vides</RWS_NewMod_Resleeving>
-  <RWS_NewMod_ResleevingDesc>Opérations du joueur ayant placé une identité existante dans une enveloppe vivante jusque-là vide.</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_UpgradesDesc>Nouvelles améliorations de véhicule installées grâce à un travail du joueur achevé, par type de véhicule.</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>Véhicules restaurés depuis des épaves</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>Véhicules du joueur apparus après achèvement de la construction d'un châssis d'épave suivi.</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Sites Real Ruins visités par des caravanes</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>Caravanes du joueur arrivées à un site Real Ruins nécessitant la génération de sa carte et dont les personnages sont confirmés y être entrés.</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>Manches de machine à sous achevées</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>Manches achevées sur les machines à sous du joueur, séparées en pertes et différents types de gains.</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>Transferts d'empreintes neurales dans des corps vides</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>Opérations du joueur ayant transféré une identité existante dans un corps vivant auparavant vide.</RWS_NewMod_ResleevingDesc>
   <RWS_NewMod_AnimalPedigree>Animaux nés avec deux parents enregistrés</RWS_NewMod_AnimalPedigree>
-  <RWS_NewMod_AnimalPedigreeDesc>Animaux du joueur nés ou éclos avec succès et dont les deux parents sont enregistrés par Animal Genetics, par type d'animal.</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_AnimalPedigreeDesc>Animaux du joueur nés vivants ou éclos avec succès dont les deux parents étaient connus par Animal Genetics, par espèce animale.</RWS_NewMod_AnimalPedigreeDesc>
   <RWS_NewMod_Treaties>Nouveaux traités signés</RWS_NewMod_Treaties>
-  <RWS_NewMod_TreatiesDesc>Nouveaux accords RimPacts conclus avec une autre faction, par type de traité. Le renouvellement d'un accord existant est exclu.</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_TreatiesDesc>Nouveaux accords RimPacts conclus avec une autre faction, par type de traité. Le renouvellement d'un accord existant ne compte pas.</RWS_NewMod_TreatiesDesc>
   <RWS_NewMod_Vassalizations>Implantations devenues vassales</RWS_NewMod_Vassalizations>
-  <RWS_NewMod_VassalizationsDesc>Implantations devenues des vassales actives du joueur par Hegemony. Le rétablissement d'une vassalité compte à nouveau.</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_VassalizationsDesc>Implantations devenues vassales actives du joueur grâce à Hegemony. Une vassalité rétablie compte à nouveau.</RWS_NewMod_VassalizationsDesc>
   <RWS_NewMod_Semesters>Semestres scolaires achevés</RWS_NewMod_Semesters>
-  <RWS_NewMod_SemestersDesc>Semestres Another Education System ayant accompli toute leur durée et été enregistrés dans l'historique des semestres.</RWS_NewMod_SemestersDesc>
-  <RWS_NewMod_Graduations>Diplômes d'étudiants externes</RWS_NewMod_Graduations>
-  <RWS_NewMod_GraduationsDesc>Élèves externes repartis à la fin d'un semestre avec un résultat achevé ou excellent.</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SemestersDesc>Semestres Another Education System ayant suivi toute leur durée et été enregistrés dans l'historique des semestres.</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>Étudiants extérieurs diplômés</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>Étudiants extérieurs partis en fin de semestre avec un résultat achevé ou excellent.</RWS_NewMod_GraduationsDesc>
   <RWS_NewMod_SchoolEvents>Événements scolaires achevés</RWS_NewMod_SchoolEvents>
   <RWS_NewMod_SchoolEventsDesc>Événements AES School+ achevés et évalués sur les cartes d'habitation du joueur, par type d'événement.</RWS_NewMod_SchoolEventsDesc>
-  <RWS_NewMod_HotelCheckout>Groupes d'hôtel débutant leur départ</RWS_NewMod_HotelCheckout>
-  <RWS_NewMod_HotelCheckoutDesc>Groupes de visiteurs sur les cartes du joueur ayant commencé leur départ prévu après leur enregistrement à l'hôtel.</RWS_NewMod_HotelCheckoutDesc>
-  <RWS_NewMod_Camp>Campements de caravanes établis</RWS_NewMod_Camp>
-  <RWS_NewMod_CampDesc>Nouveaux sites Set Up Camp dont la caravane du joueur est entrée avec succès sur la carte de camp.</RWS_NewMod_CampDesc>
-  <RWS_NewMod_ExploreResearch>Avancées de recherche par expédition</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_HotelCheckout>Groupes hôteliers arrivés au départ prévu</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>Groupes de clients ayant commencé leur départ programmé après s'être enregistrés à l'hôtel sur les cartes du joueur.</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>Camps de caravane établis</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>Nouveaux camps Set Up Camp dont une caravane du joueur a réellement rejoint la carte.</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>Progressions de recherche par expédition</RWS_NewMod_ExploreResearch>
   <RWS_NewMod_ExploreResearchDesc>Demandes de recherche Go Explore! ayant réellement fait progresser un projet, par projet de recherche.</RWS_NewMod_ExploreResearchDesc>
   <RWS_NewMod_Doctrine>Doctrines de factions étudiées</RWS_NewMod_Doctrine>
-  <RWS_NewMod_DoctrineDesc>Investigations achevées sur les doctrines d'autres factions, par type de doctrine.</RWS_NewMod_DoctrineDesc>
-  <RWS_NewMod_VendingItems>Articles distribués aux visiteurs</RWS_NewMod_VendingItems>
-  <RWS_NewMod_VendingItemsDesc>Articles remis avec succès aux visiteurs par les distributeurs automatiques du joueur, par type d'article, y compris articles gratuits.</RWS_NewMod_VendingItemsDesc>
-  <RWS_NewMod_VendingSilver>Argent reçu par distributeurs automatiques</RWS_NewMod_VendingSilver>
-  <RWS_NewMod_VendingSilverDesc>Argent réellement transféré par les visiteurs aux distributeurs automatiques du joueur, par type de machine.</RWS_NewMod_VendingSilverDesc>
+  <RWS_NewMod_DoctrineDesc>Enquêtes achevées sur les doctrines d'autres factions, par type de doctrine.</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>Objets distribués aux visiteurs</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>Objets effectivement remis aux visiteurs par les distributeurs du joueur, par type d'objet. Les objets gratuits sont compris.</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>Argent reçu par les distributeurs</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>Argent réellement versé par des visiteurs dans les distributeurs du joueur, par type de machine.</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>Graphique : {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>Cliquez pour afficher le graphique de cette statistique.</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>Cliquez pour afficher un graphique de cette statistique.</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>Par colonie</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>Par catégorie</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Par catégorie ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Une valeur enregistrée par colonie incluse. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_ColonyNote>
-  <RWS_Chart_BreakdownNote>Catégories enregistrées de la statistique choisie. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_BreakdownNote>
-  <RWS_Chart_OverallNote>Une seule valeur combinée existe pour cette statistique.</RWS_Chart_OverallNote>
+  <RWS_Chart_ColonyNote>Une valeur enregistrée pour chaque colonie incluse. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Catégories enregistrées de la statistique sélectionnée. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Seule une valeur combinée est disponible pour cette statistique.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valeurs affichées : {0}</RWS_Chart_Points>
-  <RWS_Chart_NoData>Aucune valeur mesurée à afficher en graphique.</RWS_Chart_NoData>
+  <RWS_Chart_NoData>Aucune valeur mesurée ne peut être représentée graphiquement.</RWS_Chart_NoData>
 </LanguageData>
