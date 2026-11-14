@@ -2,7 +2,7 @@
 
 ## Purpose and relationship to existing plans
 
-This document saves **all 27 distinct candidates** from the four popularity-focused research rounds on 2026-11-14. They are **research candidates, not shipped integrations**. It does not reclassify the original 35 approved implementations, the 30 E/F/G/H third/fourth-wave research candidates, or the existing 40-item [supported gameplay MOD list](../supported-mods.md). The 27 names below were checked against those indexes; do not append names to the supported list before implementation.
+This document saves **all 27 distinct candidates** from the four popularity-focused research rounds on 2026-11-14. They are **research candidates, not shipped integrations**. It does not reclassify the original 35 approved implementations, the 27 retained E/F/G/H third/fourth-wave research candidates, or the existing [supported gameplay MOD list](../supported-mods.md). The 27 names below were checked against those indexes; do not append names to the supported list before implementation.
 
 **Research waves:** A = first 9, B = next 7, C = next 6, D = popularity-first re-evaluation 5. D03 and D04 were previously screened out, then expressly re-evaluated as candidates due to more specific unique outcomes. No rejected/low-value suggestions are silently treated as accepted.
 
