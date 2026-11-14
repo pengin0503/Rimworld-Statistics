@@ -8,6 +8,8 @@ public interface ICheckpointArchive
 {
     void Append(string campaignId, IReadOnlyList<string> jsonLines);
     IReadOnlyList<MetricObservation> Read(string campaignId, string checkpointKey);
+    IReadOnlyList<MetricObservation> ReadMany(string campaignId, IReadOnlySet<string> checkpointKeys)
+        => checkpointKeys.SelectMany(key => Read(campaignId, key)).ToArray();
 }
 
 public sealed class FileCheckpointArchive(string directory) : ICheckpointArchive
@@ -36,6 +38,9 @@ public sealed class FileCheckpointArchive(string directory) : ICheckpointArchive
     }
 
     public IReadOnlyList<MetricObservation> Read(string campaignId, string checkpointKey)
+        => ReadMany(campaignId, new HashSet<string>(StringComparer.Ordinal) { checkpointKey });
+
+    public IReadOnlyList<MetricObservation> ReadMany(string campaignId, IReadOnlySet<string> checkpointKeys)
     {
         try
         {
@@ -48,7 +53,7 @@ public sealed class FileCheckpointArchive(string directory) : ICheckpointArchive
                 {
                     var observation = JsonSerializer.Deserialize<MetricObservation>(line, ProfileJson.CompactOptions);
                     if (observation is { Source: MetricObservationSource.Checkpoint, Metrics: not null }
-                        && observation.Key == checkpointKey)
+                        && checkpointKeys.Contains(observation.Key))
                         matches.Add(observation);
                 }
                 catch (Exception e) when (e is JsonException or NotSupportedException or FormatException or InvalidOperationException)

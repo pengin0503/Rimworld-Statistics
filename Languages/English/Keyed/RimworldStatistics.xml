@@ -1230,7 +1230,13 @@
   <RWS_Chart_ByColony>By colony</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>By category</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>By category ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>One recorded value for each included colony. This is not a chart over time.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Select a colony to see its history.</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>Colony comparison value: {0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>No history is available for this statistic.</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>Only one reading is available. Hover over the point to see its value.</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>Recorded save readings by in-game day. Save branches may be mixed.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Save checkpoints on the selected lineage. Gaps indicate missing readings.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Running record of the largest 15-day wealth increase in this save.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Recorded categories of the selected statistic. This is not a chart over time.</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Only one combined value is available for this statistic.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Displayed values: {0}</RWS_Chart_Points>

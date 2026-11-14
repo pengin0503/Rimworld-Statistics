@@ -1229,7 +1229,13 @@
   <RWS_Chart_ByColony>정착지별</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>항목별</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>항목별 ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>포함된 각 정착지에서 기록한 값 하나씩을 표시합니다. 시간 경과 그래프가 아닙니다.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>정착지 행을 클릭하면 기록 추이를 볼 수 있습니다.</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>정착지 비교 값: {0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>이 통계에 대한 기록이 없습니다.</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>기록이 한 점뿐입니다. 점에 마우스를 올리면 값을 볼 수 있습니다.</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>게임 내 날짜별 저장 기록입니다. 서로 다른 저장 분기의 기록이 포함될 수 있습니다.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>선택한 저장 분기의 체크포인트입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>이 저장에서 각 시점까지 관측된 최대 15일 자산 증가량입니다.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>선택한 통계의 기록된 내역 항목을 표시합니다. 시간 경과 그래프가 아닙니다.</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>이 통계에는 합산된 값 하나만 있습니다.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>표시된 값: {0}</RWS_Chart_Points>

@@ -10,7 +10,7 @@ public enum SaveMode
     /// <summary>Write on a pool thread; requests made while a write runs are coalesced into one more write.</summary>
     Background,
 
-    /// <summary>Write before returning (endings, spec §8.4).</summary>
+    /// <summary>Write before returning (endings, spec ��8.4).</summary>
     Immediate,
 }
 
@@ -25,7 +25,7 @@ public sealed class StatsView
 }
 
 /// <summary>
-/// The one in-memory profile, shared by the UI, the import thread and the game hooks (spec §6.3).
+/// The one in-memory profile, shared by the UI, the import thread and the game hooks (spec ��6.3).
 /// Changes and reads run under one lock; JSON is produced under the lock, and the file is written outside it.
 /// Writes are ordered: a write never replaces a newer snapshot with an older one. Save errors are kept, never thrown.
 /// </summary>
@@ -154,6 +154,25 @@ public sealed class ProfileSession
     public IReadOnlyList<HistoricalCounterInterval> ReadHistoricalCounterIntervals()
         => HistoricalCounterIntervals.ForDiagnostics(Read(HistoricalCounterIntervals.Capture));
 
+    public MetricHistory ReadChartHistory(StatsView view, string colonyKey, MetricDefinition definition, string savesDirectory)
+    {
+        var history = Read(profile => MetricCalculator.BuildChartHistory(profile, view.Colonies, colonyKey, definition));
+        if (_archive is not null)
+            history = MetricCalculator.RestoreChartHistory(history, definition, _archive);
+        if (history.RecorderHash is not { } hash)
+            return history;
+
+        foreach (var file in history.RecorderFiles)
+        {
+            if (Path.GetFileName(file.FileName) != file.FileName || !ImportEngine.IsSaveFile(file.FileName))
+                continue;
+            var points = SaveReader.ReadWealthGain15DayHistory(Path.Combine(savesDirectory, file.FileName), file, hash);
+            if (points.LastOrDefault(p => p.Value is not null)?.Value?.Number == history.RecorderMaximum)
+                return new MetricHistory(MetricHistoryKind.WealthRecorder, points);
+        }
+        return history;
+    }
+
     /// <summary>
     /// A profile read with the exact mutation revision under the same lock.
     /// A scan may cache an index while the revision is stable and use mutation
@@ -243,7 +262,7 @@ public sealed class ProfileSession
             _views[cacheKey] = (view, ++_viewAccess);
         }
         if (ledgerChanged)
-            Save(SaveMode.Background);   // new colony keys must survive a restart (spec §6.2)
+            Save(SaveMode.Background);   // new colony keys must survive a restart (spec ��6.2)
         return view;
     }
 

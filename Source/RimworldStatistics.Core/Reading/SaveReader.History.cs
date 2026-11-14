@@ -133,7 +133,7 @@ public sealed partial class SaveReader
         });
     }
 
-    private static void ReadHistory(XmlReader r, ReadState s)
+    private static void ReadHistory(XmlReader r, ReadState s, bool wealthOnly = false)
     {
         ForEachChild(r, name =>
         {
@@ -142,12 +142,12 @@ public sealed partial class SaveReader
                 ForEachChild(r, groupChild =>
                 {
                     if (groupChild != "recorders") { r.Skip(); return; }
-                    ForEachChild(r, _ => ReadRecorder(r, s));      // recorders/li
+                    ForEachChild(r, _ => ReadRecorder(r, s, wealthOnly));      // recorders/li
                 }));
         });
     }
 
-    private static void ReadRecorder(XmlReader r, ReadState s)
+    private static void ReadRecorder(XmlReader r, ReadState s, bool wealthOnly)
     {
         string? def = null;
         (string? Payload, bool Deflate)? data = null;
@@ -161,6 +161,9 @@ public sealed partial class SaveReader
                 {
                     case "def":
                         def = r.ReadElementContentAsString().Trim();
+                        break;
+                    case "records" or "recordsDeflate" when wealthOnly && (def is null or "Wealth_Total"):
+                        data = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
                         break;
                     case "records" or "recordsDeflate" when def is null or "Wealth_Total":
                         overflow?.Dispose();
@@ -176,7 +179,7 @@ public sealed partial class SaveReader
                             data = (r.ReadElementContentAsString(), name == "recordsDeflate");
                         }
                         break;
-                    case "records" or "recordsDeflate" when HistoryMetricReader.Defs.Contains(def):
+                    case "records" or "recordsDeflate" when !wealthOnly && HistoryMetricReader.Defs.Contains(def):
                         extension = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
                         break;
                     default:
@@ -187,6 +190,16 @@ public sealed partial class SaveReader
             if (def == "Wealth_Total" && data is { } d)
             {
                 s.WealthTotalCount++;
+                if (wealthOnly)
+                {
+                    if (s.WealthTotalCount == 1 && d.Payload is { } text
+                        && RecordsCodec.TryDecodeLimited(text, d.Deflate, HistoryMetricReader.MaxPoints, out var wealth))
+                    {
+                        s.Wealth = wealth;
+                        s.WealthTotalWithinTextLimit = true;
+                    }
+                    return;
+                }
                 if (s.Wealth is null)
                 {
                     try
@@ -214,7 +227,7 @@ public sealed partial class SaveReader
         {
             overflow?.Dispose();
         }
-        if (def is null || def == "Wealth_Total" || !HistoryMetricReader.Defs.Contains(def))
+        if (wealthOnly || def is null || def == "Wealth_Total" || !HistoryMetricReader.Defs.Contains(def))
             return;
         if ((extension ?? data) is not { } e)
             return;
