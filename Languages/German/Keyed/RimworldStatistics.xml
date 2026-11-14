@@ -654,8 +654,8 @@
   <RWS_MetricDesc_InjuriesPerPawnMax>Höchste Zahl neuer Verletzungen eines freien Kolonisten; die Aufschlüsselung zeigt dessen ID.</RWS_MetricDesc_InjuriesPerPawnMax>
   <RWS_Metric_WildAnimalInjuries>Verletzungen durch Wildtiere</RWS_Metric_WildAnimalInjuries>
   <RWS_MetricDesc_WildAnimalInjuries>Neue Verletzungen freier Kolonisten durch Angriffe von Wildtieren.</RWS_MetricDesc_WildAnimalInjuries>
-  <RWS_Metric_ToxicFalloutDays>Tage mit giftigem Niederschlag</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>Tage, an denen mindestens ein giftiger Niederschlag aktiv war. Überlappende Zeiträume werden nur einmal gezählt.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_Metric_ToxicFalloutDays>Tage mit giftigem Fallout</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Tage, an denen mindestens ein giftiger Fallout aktiv war. Überlappende Zeiträume werden nur einmal gezählt.</RWS_MetricDesc_ToxicFalloutDays>
   <RWS_Metric_SolarFlares>Sonneneruptionen</RWS_Metric_SolarFlares>
   <RWS_MetricDesc_SolarFlares>Begonnene Sonneneruptionen. Bereits beim Aufzeichnungsbeginn aktive zählen nicht.</RWS_MetricDesc_SolarFlares>
   <RWS_Metric_SolarFlareDays>Tage mit Sonneneruption</RWS_Metric_SolarFlareDays>
@@ -751,9 +751,9 @@
   <RWS_Metric_FacilitiesBattery>Höchste Batteriekapazität</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Höchste gesamte Nennkapazität von Batterien auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur beim Speichern</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einer aufgezeichneten Speicherung. Temperaturen zwischen Speicherungen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einem aufgezeichneten Spielstand. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Höchste Außentemperatur beim Speichern</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Höchste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einer aufgezeichneten Speicherung. Temperaturen zwischen Speicherungen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Höchste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einem aufgezeichneten Spielstand. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
   <RWS_Metric_StockFoodLatest>Nahrungsvorrat (Nahrungseinheiten)</RWS_Metric_StockFoodLatest>
   <RWS_MetricDesc_StockFoodLatest>Gesamte Nahrungseinheiten aller Lebensmittel auf geladenen Heimatkarten, einschließlich Inventar von Pawns und Behältern, beim erfolgreichen Speichern.</RWS_MetricDesc_StockFoodLatest>
   <RWS_Metric_StockSilverLatest>Silbervorrat</RWS_Metric_StockSilverLatest>
@@ -761,29 +761,29 @@
   <RWS_Metric_StockMaterialsLatest>Stahl- und Komponentenvorrat</RWS_Metric_StockMaterialsLatest>
   <RWS_MetricDesc_StockMaterialsLatest>Stahl, Komponenten und Hightech-Bauteile auf geladenen Heimatkarten, einschließlich Inventar von Pawns und Behältern, beim erfolgreichen Speichern; nach Art angezeigt.</RWS_MetricDesc_StockMaterialsLatest>
   <RWS_Metric_StockWeaponsPeak>Meiste Waffen im Besitz</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>Höchste Zahl von Waffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Höchste Zahl von Waffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockWeaponsPeak>
   <RWS_Metric_StockWeaponDefsPeak>Meiste verschiedene Waffentypen</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>Höchste Zahl unterschiedlicher Waffentypen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Höchste Zahl unterschiedlicher Waffentypen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockWeaponDefsPeak>
   <RWS_Metric_StockLegendaryWeaponsPeak>Meiste legendäre Waffen</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Höchste Zahl legendärer Waffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Höchste Zahl legendärer Waffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
   <RWS_Metric_StockPersonaWeaponsPeak>Meiste Personawaffen</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>Höchste Zahl von Personawaffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Höchste Zahl von Personawaffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockPersonaWeaponsPeak>
   <RWS_Metric_StockMedicinePeak>Größter Medizinvorrat</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>Höchste Menge von Medizin, im Inventar oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Höchste Menge von Medizin, im Inventar oder gelagert, auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockMedicinePeak>
   <RWS_Metric_StockFoodMin>Kleinster Nahrungsvorrat (Nahrungseinheiten)</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>Niedrigste Gesamtmenge an Nahrungseinheiten von Lebensmitteln auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.</RWS_MetricDesc_StockFoodMin>
-  <RWS_Metric_RoyaltyPsylinkPeak>Höchste Psilinkstufe</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>Höchste Psilinkstufe eines Kolonisten bei einer aufgezeichneten Speicherung. Benötigt Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_StockFoodMin>Niedrigste Gesamtmenge an Nahrungseinheiten von Lebensmitteln auf geladenen Heimatkarten bei einem aufgezeichneten Spielstand.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>Höchste Psylink-Stufe</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Höchste Psylink-Stufe eines Kolonisten bei einem aufgezeichneten Spielstand. Benötigt Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
   <RWS_Metric_BiotechPollutionPeak>Meiste verschmutzte Felder</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>Höchste Zahl verschmutzter Felder auf Heimatkarten bei einer aufgezeichneten Speicherung. Benötigt Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Höchste Zahl verschmutzter Felder auf Heimatkarten bei einem aufgezeichneten Spielstand. Benötigt Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>Höchste genutzte Mechanitor-Bandbreite</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>Höchste genutzte Bandbreite eines Mechanitors bei einer aufgezeichneten Speicherung. Benötigt Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Höchste genutzte Bandbreite eines Mechanitors bei einem aufgezeichneten Spielstand. Benötigt Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
   <RWS_Metric_RoyaltyPermitUses>Verwendete königliche Genehmigungen</RWS_Metric_RoyaltyPermitUses>
   <RWS_MetricDesc_RoyaltyPermitUses>Königliche Genehmigungen, die ein berechtigter Spieler-Kolonist tatsächlich nutzte. Abgebrochene Auswahlen zählen nicht.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Erfolgreich gewirkte mentale Kräfte</RWS_Metric_RoyaltyPsycasts>
   <RWS_MetricDesc_RoyaltyPsycasts>Mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.</RWS_MetricDesc_RoyaltyPsycasts>
   <RWS_Metric_RoyaltyQuestSuccess>Erfolgreiche Kaiserreich-Quests</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>Angenommene, noch im Spielstand vorhandene Quests, die erfolgreich endeten und im Quest-Reiter als mit dem Kaiserreich verbunden angezeigt werden. Bei jeder erfolgreichen Speicherung gezählt. Vom Spiel entfernte Quests fehlen; daher kein Lebenszeit-Gesamtwert.</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>Angenommene, noch im Spielstand vorhandene Quests, die erfolgreich endeten und im Quest-Reiter als mit dem Kaiserreich verbunden angezeigt werden. Bei jedem erfolgreichen Spielstand gezählt. Vom Spiel entfernte Quests fehlen; daher kein Lebenszeit-Gesamtwert.</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>Verliehene königliche Titel</RWS_Metric_RoyaltyTitleGrants>
   <RWS_MetricDesc_RoyaltyTitleGrants>Königliche Titel, die Kolonisten während der Aufzeichnung von Royalty-Ereignissen nachweislich erhielten.</RWS_MetricDesc_RoyaltyTitleGrants>
   <RWS_Metric_RoyaltyHighestTitle>Höchster königlicher Titel</RWS_Metric_RoyaltyHighestTitle>
@@ -878,7 +878,7 @@
   <RWS_Metric_TreeWoodPlaced>Holz aus Baumfällung (Hauptertrag)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Holz, das ein Spieler-Pawn beim Baumfällen als Hauptertrag tatsächlich abgelegt oder mit einem Stapel vereint hat (gemessen beim Platzieren). Teilabdeckung: Zusätzliches Holz einiger Mods und andere Fällmethoden zählen nicht.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Geschlachtete und danach zerlegte Tiere</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Kadaver von Tieren, die ein Spieler-Pawn schlachtete und die später bei einem abgeschlossenen Vanilla-Zerlegeauftrag (ButcherCorpseFlesh) verbraucht wurden. Derselbe Kadaver wird über Speicherungen hinweg verfolgt. Gejagte Tiere, natürlich verendete Wildtiere und Feindkadaver zählen nicht. Teilabdeckung: Zerlegerezepte von Mods und bestimmte Wege, auf denen Kadaver verschwinden, werden nicht erkannt.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Kadaver von Tieren, die ein Spieler-Pawn schlachtete und die später bei einem abgeschlossenen Vanilla-Zerlegeauftrag (ButcherCorpseFlesh) verbraucht wurden. Derselbe Kadaver wird über Spielstände hinweg verfolgt. Gejagte Tiere, natürlich verendete Wildtiere und Feindkadaver zählen nicht. Teilabdeckung: Zerlegerezepte von Mods und bestimmte Wege, auf denen Kadaver verschwinden, werden nicht erkannt.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Kolonie mit Höchstwert: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Kolonie mit Mindestwert: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Häufigster Gegenstand aller Kolonien: {0}</RWS_Cross_TopType>
@@ -890,7 +890,7 @@
   <RWS_Cross_TopCategory>Häufigste Kategorie aller Kolonien: {0}</RWS_Cross_TopCategory>
   <RWS_CrossDesc_TopCategory>Zahlen je erfasster Kategorie werden über unabhängige Kolonien anhand einer repräsentativen Beobachtung je Kolonie summiert. Fehlende oder unvollständige Aufschlüsselungen bleiben unvollständig. Kategorien können Ereignisse oder Menschen statt Gegenstände zählen.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Summe der Kolonie-Momentaufnahmen: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Summe einer Menge, die bei der repräsentativen Speicherung jeder unabhängigen Kolonie getrennt gemessen wurde. Keine lebenszeitliche Ereignissumme. Unbekannte Messwerte werden niemals zu null.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Summe einer Menge, die beim repräsentativen Spielstand jeder unabhängigen Kolonie getrennt gemessen wurde. Keine lebenszeitliche Ereignissumme. Unbekannte Messwerte werden niemals zu null.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: angekommene Gästegruppen (seit Aktivierung)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Bestätigte Hospitality-Gästegruppen, die seit Aktivierung dieser Statistik auf Heimatkarten des Spielers ankamen. Ersatzgruppen für gerettete Gäste zählen nicht. Duplikate nach dem Laden werden durch Ereignis-IDs herausgefiltert. Besuche vor der Mod-Installation werden nicht geschätzt.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: angekommene Gäste (seit Aktivierung)</RWS_Hospitality_VisitGuests>
@@ -1087,7 +1087,7 @@
   <RWS_VqeGenerator_Upgrades>The Generator: abgeschlossene ARC-Upgrades</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Abgeschlossene Bauarbeiten des Spielers, bei denen ein bestehender ARC-Generator des Spielers an derselben Stelle ersetzt wurde, nach neuem Generatortyp.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Meiste Fahrzeuge im Besitz</RWS_VehicleFramework_OwnedPeak>
-  <RWS_VehicleFramework_OwnedPeakDesc>Höchste Zahl gleichzeitig vorhandener Fahrzeuge des Spielers aus Vehicle Framework innerhalb einer Kolonie, einschließlich der Fahrzeuge auf Karten, in Karawanen, im Flug und in Lagern. Gemessen bei erfolgreichen Speicherungen. Die Fahrzeugtypen stammen aus dem Spielstand mit dem Höchstwert.</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VehicleFramework_OwnedPeakDesc>Höchste Zahl gleichzeitig vorhandener Fahrzeuge des Spielers aus Vehicle Framework innerhalb einer Kolonie, einschließlich der Fahrzeuge auf Karten, in Karawanen, im Flug und in Lagern. Gemessen bei erfolgreichen Spielständen. Die Fahrzeugtypen stammen aus dem Spielstand mit dem Höchstwert.</RWS_VehicleFramework_OwnedPeakDesc>
   <RWS_VfeDeserters_IntelPaid>Deserters: verbrauchte Geheimdienstinformationen</RWS_VfeDeserters_IntelPaid>
   <RWS_VfeDeserters_IntelPaidDesc>Gewöhnliche Geheimdienstgegenstände, die bei angenommenen Zahlungen an das Deserter Network aus dem Lager auf Heimatkarten des Spielers entfernt wurden.</RWS_VfeDeserters_IntelPaidDesc>
   <RWS_VfeDeserters_CriticalIntelPaid>Deserters: verbrauchte kritische Geheimdienstinformationen</RWS_VfeDeserters_CriticalIntelPaid>
