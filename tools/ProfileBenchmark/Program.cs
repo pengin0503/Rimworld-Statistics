@@ -23,6 +23,22 @@ if (args.Length > 0 && args[0] == "--large")
     return;
 }
 
+// Issue #195: profiles shaped like imported real ones (per colony: 8 save files with every SaveFile metric,
+// a checkpoint chain whose tip holds every live family metric with breakdowns, compressed ancestors).
+if (args.Length > 0 && args[0] == "--representative")
+{
+    var targets = args.Length == 1 ? new[] { 0.2, 5d, 10d }
+        : args.Skip(1).Select(a => double.Parse(a, CultureInfo.InvariantCulture)).ToArray();
+    if (targets.Any(n => n is < 0.05 or > 32))
+        throw new ArgumentOutOfRangeException(nameof(args), "Representative sizes must be 0.05..32 MiB.");
+    Console.WriteLine("target_mib,profile_bytes,colonies,locked_serialize_median_ms,locked_serialize_p95_ms,serialize_alloc_median_bytes,"
+        + "statistics_commit_median_ms,statistics_commit_p95_ms,import_only_commit_median_ms,commit_read_bytes,commit_write_bytes,"
+        + "blocking_wait_p95_ms,blocking_wait_max_ms,nonblocking_wait_p95_ms,nonblocking_wait_max_ms");
+    foreach (var mib in targets)
+        RepresentativeBenchmark.Run(mib);
+    return;
+}
+
 var sizes = args.Length == 0
     ? new[] { 100, 500, 1500, 3000 }
     : args.Select(a => int.Parse(a, CultureInfo.InvariantCulture)).ToArray();
@@ -165,14 +181,14 @@ static void MeasureLargeProfile(int mib)
             // measuring the store separately on exactly the same JSON shape.
             session.Mutate(p => p.ImportState.LastScanUtc = timestamp.AddSeconds(i + 1), SaveMode.None);
             var start = Stopwatch.GetTimestamp();
-            var scan = session.Read(ProfileJson.Serialize);
+            var scan = session.Read(ProfileJson.SerializeToUtf8Bytes);
             var serializeMs = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
             MeasureCommit(scan, scans, scanAllocations, i > 0);
 
             if (i == 0 && File.Exists(store.ProfilePath + ".bak1"))
                 throw new InvalidOperationException("Scan-only update rotated a backup.");
             session.Mutate(p => p.SaveObservations[^1].Values.NumRaidsEnemy++, SaveMode.None);
-            MeasureCommit(session.Read(ProfileJson.Serialize), statistics, statisticsAllocations, i > 0);
+            MeasureCommit(session.Read(ProfileJson.SerializeToUtf8Bytes), statistics, statisticsAllocations, i > 0);
             if (i == 0 && !File.Exists(store.ProfilePath + ".bak1"))
                 throw new InvalidOperationException("Statistics update did not rotate a backup.");
             if (i > 0)
@@ -181,8 +197,9 @@ static void MeasureLargeProfile(int mib)
         Console.WriteLine(FormattableString.Invariant(
             $"{mib},{profileBytes},{profile.SaveObservations.Count},{Num(Percentile95(serialization))},{Num(Percentile95(scans))},{Num(Percentile95(statistics))},{scanAllocations.Order().ElementAt(5)},{statisticsAllocations.Order().ElementAt(5)},{logicalBytes}"));
 
-        void MeasureCommit(string json, List<double> times, List<long> allocations, bool record)
+        void MeasureCommit(byte[] json, List<double> times, List<long> allocations, bool record)
         {
+            // The session's own path: UTF-8 bytes from the serializer straight to the store.
             var start = Stopwatch.GetTimestamp();
             var allocated = GC.GetAllocatedBytesForCurrentThread();
             store.SaveSerialized(json);
@@ -192,7 +209,7 @@ static void MeasureLargeProfile(int mib)
                 return;
             times.Add(elapsed);
             allocations.Add(used);
-            logicalBytes += Encoding.UTF8.GetByteCount(json);
+            logicalBytes += json.Length;
         }
     }
     finally
@@ -226,9 +243,8 @@ foreach (var size in sizes)
     appendTail.Sort();
     var tailMs = appendTail[appendTail.Count / 2];
 
-    var serialized = ProfileJson.Serialize(profile);
-    var bytes = Encoding.UTF8.GetByteCount(serialized);
-    var ser = Measure(() => _ = ProfileJson.Serialize(profile));
+    var bytes = ProfileJson.SerializeToUtf8Bytes(profile).Length;
+    var ser = Measure(() => _ = ProfileJson.SerializeToUtf8Bytes(profile));
 
     var view = Measure(() =>
     {
@@ -248,7 +264,7 @@ foreach (var size in sizes)
             // Only importState changes: this forces a real atomic file replacement
             // without rotating a full backup, which would distort size scaling.
             profile.ImportState.LastScanUtc = epoch.AddSeconds(i + 1);
-            var json = ProfileJson.Serialize(profile);
+            var json = ProfileJson.SerializeToUtf8Bytes(profile);
             var start = Stopwatch.GetTimestamp();
             store.SaveSerialized(json);
             commits.Add(Stopwatch.GetElapsedTime(start).TotalMilliseconds);

@@ -129,7 +129,7 @@ public static class ProfileService
         var primary = Path.Combine(directory, "profile.json");
         var bytes = File.Exists(primary)
             ? File.ReadAllBytes(primary)
-            : session.Read(profile => System.Text.Encoding.UTF8.GetBytes(ProfileJson.Serialize(profile)));
+            : session.Read(ProfileJson.SerializeToUtf8Bytes);
         return ProfileBackup.Create(new BackupSource(bytes, Path.Combine(directory, "checkpoint-archive"), preferences),
             Path.Combine(directory, "backups"), metadata);
     }

@@ -13,6 +13,12 @@ public static class ProfileJson
 
     public static string Serialize(Profile profile) => JsonSerializer.Serialize(profile, Options);
 
+    /// <summary>
+    /// The same document as <see cref="Serialize"/>, already UTF-8 encoded (no byte order mark): the serializer writes
+    /// UTF-8 natively, so this skips building a UTF-16 string of the whole profile and encoding it again to write it.
+    /// </summary>
+    public static byte[] SerializeToUtf8Bytes(Profile profile) => JsonSerializer.SerializeToUtf8Bytes(profile, Options);
+
     /// <summary>Parses a profile. Null lists/objects become empty ones. Throws <see cref="JsonException"/> on invalid JSON.</summary>
     public static Profile Deserialize(string json)
     {

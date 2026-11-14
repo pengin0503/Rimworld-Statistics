@@ -37,12 +37,14 @@ public sealed class ProfileStore
     private readonly string _directory;
     private bool _readOnly;
     private bool _hasExpectedPrimary;
-    private string? _expectedPrimary;
+    // The exact bytes of the primary as this session last loaded or wrote it. Any other content means another
+    // session or tool changed the file, whatever its size, timestamp or decoded text.
+    private byte[]? _expectedPrimary;
 
     // A schema-1 file that was loaded (the primary or a backup): copied once to profile.v1.json before the first
     // schema-2 write, so the user can roll back to v1 (numeric expansion design §2).
     private string? _v1SourcePath;
-    private string? _v1SourceText;
+    private byte[]? _v1SourceBytes;
 
     public ProfileStore(string directory)
     {
@@ -67,7 +69,7 @@ public sealed class ProfileStore
         _hasExpectedPrimary = true;
         _expectedPrimary = null;
         _v1SourcePath = null;
-        _v1SourceText = null;
+        _v1SourceBytes = null;
         var candidates = new[]
         {
             (Path: ProfilePath, Source: ProfileLoadSource.Primary),
@@ -86,10 +88,10 @@ public sealed class ProfileStore
                     primaryUnreadable = true;
                 continue;
             }
-            string json;
+            byte[] raw;
             try
             {
-                json = File.ReadAllText(path, Encoding.UTF8);
+                raw = File.ReadAllBytes(path);
             }
             catch (Exception e) when (e is IOException or UnauthorizedAccessException)
             {
@@ -97,9 +99,10 @@ public sealed class ProfileStore
                     primaryUnreadable = true;
                 continue;
             }
+            var json = Decode(raw);
 
             if (source == ProfileLoadSource.Primary)
-                _expectedPrimary = json;
+                _expectedPrimary = raw;
             if (SchemaVersionOf(json) is not { } version)
             {
                 if (source == ProfileLoadSource.Primary)
@@ -121,7 +124,7 @@ public sealed class ProfileStore
             if (version < Profile.CurrentSchemaVersion)
             {
                 _v1SourcePath = path;
-                _v1SourceText = json;
+                _v1SourceBytes = raw;
             }
             profile.SchemaVersion = Profile.CurrentSchemaVersion;   // written as the current schema from the first change on
             return Finish(profile, source, primaryCorrupt, primaryUnreadable, utcNow);
@@ -149,7 +152,7 @@ public sealed class ProfileStore
             try
             {
                 using var writeLock = LockFile();
-                if (File.ReadAllText(ProfilePath, Encoding.UTF8) != _expectedPrimary)
+                if (_expectedPrimary is null || !File.ReadAllBytes(ProfilePath).AsSpan().SequenceEqual(_expectedPrimary))
                 {
                     _readOnly = true;
                     return null;
@@ -202,13 +205,16 @@ public sealed class ProfileStore
         }
     }
 
-    public void Save(Profile profile) => SaveSerialized(ProfileJson.Serialize(profile));
+    public void Save(Profile profile) => SaveSerialized(ProfileJson.SerializeToUtf8Bytes(profile));
 
     /// <summary>Commits the primary before rotating older recovery points.</summary>
-    public void SaveSerialized(string json) => SaveSerialized(() => json);
+    public void SaveSerialized(string json) => SaveSerialized(Utf8NoBom.GetBytes(json));
+
+    /// <summary>Commits UTF-8 profile JSON (no byte order mark) before rotating older recovery points.</summary>
+    public void SaveSerialized(byte[] utf8Json) => SaveSerialized(() => utf8Json);
 
     // The session prepares archive and primary changes under the same disk lock.
-    internal void SaveSerialized(Func<string> prepare)
+    internal void SaveSerialized(Func<byte[]> prepare)
     {
         if (_readOnly)
             throw new InvalidOperationException("The record file is read-only for this session (written by a newer version, or unreadable).");
@@ -220,7 +226,7 @@ public sealed class ProfileStore
 
         if (File.Exists(PendingBackup))
             RotateBackups();
-        if (current == json)
+        if (current is not null && current.AsSpan().SequenceEqual(json))
             return;
 
         var rotate = current != null && !SameStatistics(current, json);
@@ -231,9 +237,7 @@ public sealed class ProfileStore
         {
             using (var fs = new FileStream(tmp, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                using var writer = new StreamWriter(fs, Utf8NoBom, bufferSize: 4096, leaveOpen: true);
-                writer.Write(json);
-                writer.Flush();
+                fs.Write(json);
                 fs.Flush(flushToDisk: true);
             }
             if (current != null)
@@ -259,28 +263,40 @@ public sealed class ProfileStore
         }
     }
 
-    private string? ReadVerifiedPrimary()
+    private byte[]? ReadVerifiedPrimary()
     {
         var exists = File.Exists(ProfilePath);
         if (!_hasExpectedPrimary)
-            return exists ? File.ReadAllText(ProfilePath, Encoding.UTF8) : null;
+            return exists ? File.ReadAllBytes(ProfilePath) : null;
 
         if (exists && _expectedPrimary is { } expected)
         {
-            // Reuse the known contents only after a full, ordinal comparison
-            // of the decoded file. StreamReader preserves ReadAllText's BOM handling.
-            using var reader = new StreamReader(ProfilePath, Encoding.UTF8);
-            Span<char> buffer = stackalloc char[2048];
-            var remaining = expected.AsSpan();
-            int read;
-            while ((read = reader.Read(buffer)) > 0)
+            // Reuse the known contents only after a full byte-for-byte comparison of the file. Comparing bytes,
+            // not decoded text, also catches edits that decode to the same characters (e.g. invalid sequences).
+            using var file = new FileStream(ProfilePath, FileMode.Open, FileAccess.Read, FileShare.Read,
+                bufferSize: 1, FileOptions.SequentialScan);
+            if (file.Length == expected.Length)
             {
-                if (!remaining.StartsWith(buffer[..read], StringComparison.Ordinal))
-                    break;
-                remaining = remaining[read..];
+                var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(1 << 16);
+                try
+                {
+                    var offset = 0;
+                    int read;
+                    while (offset < expected.Length
+                        && (read = file.Read(buffer, 0, Math.Min(buffer.Length, expected.Length - offset))) > 0)
+                    {
+                        if (!buffer.AsSpan(0, read).SequenceEqual(expected.AsSpan(offset, read)))
+                            break;
+                        offset += read;
+                    }
+                    if (offset == expected.Length && file.Read(buffer, 0, 1) == 0)
+                        return expected;
+                }
+                finally
+                {
+                    System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                }
             }
-            if (read == 0 && remaining.IsEmpty)
-                return expected;
         }
         else if (!exists && _expectedPrimary is null)
         {
@@ -290,26 +306,33 @@ public sealed class ProfileStore
         throw new IOException("The statistics file changed in another session. Reopen RimWorld before writing to it.");
     }
 
-    /// <summary>
-    /// Before the first schema-2 write, copies the schema-1 file that was loaded to profile.v1.json, once. An existing copy
-    /// is never overwritten. Runs under the write lock; if the source changed or the copy fails, nothing is written.
-    /// </summary>
-    private void ProtectV1Source(string? currentPrimary)
+    /// <summary>As File.ReadAllText(path, Encoding.UTF8): a byte order mark selects the encoding, UTF-8 otherwise.</summary>
+    private static string Decode(byte[] raw)
     {
-        if (_v1SourceText is not { } text || _v1SourcePath is not { } source)
+        using var reader = new StreamReader(new MemoryStream(raw, writable: false), Encoding.UTF8, detectEncodingFromByteOrderMarks: true);
+        return reader.ReadToEnd();
+    }
+
+    /// <summary>
+    /// Before the first schema-2 write, copies the schema-1 file that was loaded to profile.v1.json, once, byte for byte.
+    /// An existing copy is never overwritten. Runs under the write lock; if the source changed or the copy fails, nothing
+    /// is written.
+    /// </summary>
+    private void ProtectV1Source(byte[]? currentPrimary)
+    {
+        if (_v1SourceBytes is not { } original || _v1SourcePath is not { } source)
             return;
         if (!File.Exists(V1CopyPath))
         {
-            var sourceNow = source == ProfilePath ? currentPrimary : File.Exists(source) ? File.ReadAllText(source, Encoding.UTF8) : null;
-            if (sourceNow != text)
+            var sourceNow = source == ProfilePath ? currentPrimary : File.Exists(source) ? File.ReadAllBytes(source) : null;
+            if (sourceNow is null || !sourceNow.AsSpan().SequenceEqual(original))
                 throw new IOException("The schema-1 statistics file changed before it could be copied. Reopen RimWorld before writing to it.");
             var tmp = V1CopyPath + ".tmp";
             try
             {
                 using (var fs = new FileStream(tmp, FileMode.Create, FileAccess.Write, FileShare.None))
                 {
-                    var bytes = Utf8NoBom.GetBytes(text);
-                    fs.Write(bytes, 0, bytes.Length);
+                    fs.Write(original);
                     fs.Flush(flushToDisk: true);
                 }
                 File.Move(tmp, V1CopyPath, overwrite: false);
@@ -327,7 +350,7 @@ public sealed class ProfileStore
             }
         }
         _v1SourcePath = null;
-        _v1SourceText = null;
+        _v1SourceBytes = null;
     }
 
     private void EnsureBackupPaths()
@@ -349,19 +372,21 @@ public sealed class ProfileStore
     // When only importState changes, comparing the byte-identical prefix and suffix
     // avoids parsing the entire (possibly multi-megabyte) profile twice for backup rotation.
     // A noncanonical layout or inserted sibling falls back to the structural comparison.
-    private static bool SameStatisticsExceptImportState(string previous, string next)
+    private static bool SameStatisticsExceptImportState(ReadOnlyMemory<byte> previous, ReadOnlyMemory<byte> next)
     {
-        const string startMarker = "\n  \"importState\": ";
-        const string endMarker = "\n  \"modMetricDescriptors\": ";
-        var a = previous.IndexOf(startMarker, StringComparison.Ordinal);
-        var b = next.IndexOf(startMarker, StringComparison.Ordinal);
+        var startMarker = "\n  \"importState\": "u8;
+        var endMarker = "\n  \"modMetricDescriptors\": "u8;
+        var a = previous.Span.IndexOf(startMarker);
+        var b = next.Span.IndexOf(startMarker);
         if (a < 0 || b < 0)
             return false;
-        var aEnd = previous.IndexOf(endMarker, a + startMarker.Length, StringComparison.Ordinal);
-        var bEnd = next.IndexOf(endMarker, b + startMarker.Length, StringComparison.Ordinal);
-        if (aEnd < 0 || bEnd < 0
-            || !previous.AsSpan(0, a).SequenceEqual(next.AsSpan(0, b))
-            || !previous.AsSpan(aEnd).SequenceEqual(next.AsSpan(bEnd)))
+        var aEnd = previous.Span[(a + startMarker.Length)..].IndexOf(endMarker);
+        var bEnd = next.Span[(b + startMarker.Length)..].IndexOf(endMarker);
+        if (aEnd < 0 || bEnd < 0)
+            return false;
+        aEnd += a + startMarker.Length;
+        bEnd += b + startMarker.Length;
+        if (!previous.Span[..a].SequenceEqual(next.Span[..b]) || !previous.Span[aEnd..].SequenceEqual(next.Span[bEnd..]))
             return false;
 
         // Ensure that the skipped region contains exactly one valid object value
@@ -370,19 +395,21 @@ public sealed class ProfileStore
             && HasOneImportStateValue(next, b + startMarker.Length, bEnd);
     }
 
-    private static bool HasOneImportStateValue(string json, int start, int end)
+    private static bool HasOneImportStateValue(ReadOnlyMemory<byte> json, int start, int end)
     {
-        while (end > start && char.IsWhiteSpace(json[end - 1]))
+        var span = json.Span;
+        static bool Space(byte c) => c is (byte)' ' or (byte)'\t' or (byte)'\r' or (byte)'\n';
+        while (end > start && Space(span[end - 1]))
             end--;
-        if (end <= start || json[--end] != ',')
+        if (end <= start || span[--end] != (byte)',')
             return false;
-        while (end > start && char.IsWhiteSpace(json[end - 1]))
+        while (end > start && Space(span[end - 1]))
             end--;
         if (end <= start)
             return false;
         try
         {
-            using var doc = JsonDocument.Parse(json.AsMemory(start, end - start));
+            using var doc = JsonDocument.Parse(json.Slice(start, end - start));
             return doc.RootElement.ValueKind == JsonValueKind.Object;
         }
         catch (JsonException)
@@ -391,8 +418,13 @@ public sealed class ProfileStore
         }
     }
 
-    private static bool SameStatistics(string previous, string next)
+    /// <summary>The JSON text of a file's bytes as Load decodes it: UTF-8 without its byte order mark.</summary>
+    private static ReadOnlyMemory<byte> Utf8Body(byte[] bytes)
+        => bytes.AsSpan().StartsWith(Encoding.UTF8.Preamble) ? bytes.AsMemory(Encoding.UTF8.Preamble.Length) : bytes;
+
+    private static bool SameStatistics(byte[] previousFile, byte[] next)
     {
+        var previous = Utf8Body(previousFile);
         if (SameStatisticsExceptImportState(previous, next))
             return true;
         try
