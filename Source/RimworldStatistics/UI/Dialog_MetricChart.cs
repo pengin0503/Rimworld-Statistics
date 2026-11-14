@@ -28,7 +28,7 @@ internal sealed class Dialog_MetricChart : Window
         definition = MetricLookup.Definition(view, metricKey)
             ?? throw new ArgumentException("Metric not found in the current view.", nameof(metricKey));
         colonyBars = MetricChartSeries.ByColony(view.Numeric, metricKey);
-        var selected = selectedColony is null ? [] : MetricChartSeries.Breakdowns(view.Numeric, metricKey, selectedColony);
+        IReadOnlyList<MetricChartBar> selected = selectedColony is null ? [] : MetricChartSeries.Breakdowns(view.Numeric, metricKey, selectedColony);
         breakdownColony = selected.Count > 0 ? selectedColony : null;
         breakdownBars = breakdownColony is null
             ? MetricChartSeries.Breakdowns(view.Numeric, metricKey) : selected;
