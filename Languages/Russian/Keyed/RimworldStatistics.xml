@@ -655,7 +655,7 @@
   <RWS_Metric_WildAnimalInjuries>Ранения от диких животных</RWS_Metric_WildAnimalInjuries>
   <RWS_MetricDesc_WildAnimalInjuries>Новые ранения свободных поселенцев от нападений диких животных.</RWS_MetricDesc_WildAnimalInjuries>
   <RWS_Metric_ToxicFalloutDays>Дни токсичных осадков</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>Дни с хотя бы одним активным токсичным выпадением. Перекрывающиеся периоды учитываются один раз.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Дни, когда были активны хотя бы одни токсичные осадки. Перекрывающиеся периоды учитываются один раз.</RWS_MetricDesc_ToxicFalloutDays>
   <RWS_Metric_SolarFlares>Солнечные вспышки</RWS_Metric_SolarFlares>
   <RWS_MetricDesc_SolarFlares>Число начавшихся солнечных вспышек; вспышки, уже действовавшие в начале записи, не учитываются.</RWS_MetricDesc_SolarFlares>
   <RWS_Metric_SolarFlareDays>Дни солнечной вспышки</RWS_Metric_SolarFlareDays>
@@ -791,15 +791,15 @@
   <RWS_Metric_RoyaltyHonor>Полученная и потраченная имперская честь</RWS_Metric_RoyaltyHonor>
   <RWS_MetricDesc_RoyaltyHonor>Имперская честь, полученная и потраченная во время подтверждённой записи событий Royalty.</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>Завершённые обращения</RWS_Metric_IdeologyConversions>
-  <RWS_MetricDesc_IdeologyConversions>Наблюдавшиеся переходы пешек игрока от одной существующей идеолигии к другой. Идеолигия, назначенная при создании пешки, не учитывается.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>Наблюдавшиеся переходы пешек игрока от одной существующей идеологии к другой. Идеология, назначенная при создании пешки, не учитывается.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Ритуалы по итогам</RWS_Metric_IdeologyRitualResults>
   <RWS_MetricDesc_IdeologyRitualResults>Подтверждённые ритуалы Ideology по конечным результатам (Def); прерванные ритуалы входят в отдельную категорию.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>Доля успешных ритуалов</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>Подтверждённые успешные ритуалы ÷ ритуалы, признанные успешными или неудачными; прерванные исключаются.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Средняя длительность обращения</RWS_Metric_IdeologyConversionDays>
-  <RWS_MetricDesc_IdeologyConversionDays>Среднее число дней от подтверждённой попытки обращения до принятия пешкой целевой идеолигии.</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>Среднее число дней от подтверждённой попытки обращения до принятия пешкой целевой идеологии.</RWS_MetricDesc_IdeologyConversionDays>
   <RWS_Metric_IdeologyAppointments>Назначения на идеологические должности</RWS_Metric_IdeologyAppointments>
-  <RWS_MetricDesc_IdeologyAppointments>Подтверждённые новые назначения поселенцев игрока лидерами или специалистами идеолигии; повторное назначение на ту же должность не учитывается.</RWS_MetricDesc_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>Подтверждённые новые назначения поселенцев игрока лидерами или специалистами идеологии; повторное назначение на ту же должность не учитывается.</RWS_MetricDesc_IdeologyAppointments>
   <RWS_Metric_OdysseyFlights>Завершённые полёты гравикорабля</RWS_Metric_OdysseyFlights>
   <RWS_MetricDesc_OdysseyFlights>Полёты гравикорабля, завершение которых подтверждено посадкой игрока. Одни только взлёты и предварительные маршруты не считаются.</RWS_MetricDesc_OdysseyFlights>
   <RWS_Metric_OdysseyDistance>Суммарное расстояние полётов гравикорабля</RWS_Metric_OdysseyDistance>
