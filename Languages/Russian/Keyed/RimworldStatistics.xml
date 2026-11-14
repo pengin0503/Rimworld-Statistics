@@ -625,131 +625,131 @@
   <RWS_Metric_AwayRescues>Спасения вне дома</RWS_Metric_AwayRescues>
   <RWS_MetricDesc_AwayRescues>Спасения на картах, которые не являются домашними картами игрока.</RWS_MetricDesc_AwayRescues>
   <RWS_Metric_Resurrections>Воскрешения</RWS_Metric_Resurrections>
-  <RWS_MetricDesc_Resurrections>Времена, когда свободный колонист возвращался после смерти.</RWS_MetricDesc_Resurrections>
-  <RWS_Metric_ResurrectionsPerPawnMax>Большинство воскрешений колонистов</RWS_Metric_ResurrectionsPerPawnMax>
-  <RWS_MetricDesc_ResurrectionsPerPawnMax>Наибольшее количество воскрешений одного персонажа; разбивка называет их (ид).</RWS_MetricDesc_ResurrectionsPerPawnMax>
-  <RWS_Metric_DiseaseOnsets>Новые болезни</RWS_Metric_DiseaseOnsets>
-  <RWS_MetricDesc_DiseaseOnsets>Вновь к свободным колонистам добавились болезни.</RWS_MetricDesc_DiseaseOnsets>
-  <RWS_Metric_DiseaseDurationMean>Средние дни больны</RWS_Metric_DiseaseDurationMean>
-  <RWS_MetricDesc_DiseaseDurationMean>Средние дни от начала до излечения болезней отслеживаются повсюду; те, которые были удалены смертью или ампутацией, остаются в стороне.</RWS_MetricDesc_DiseaseDurationMean>
-  <RWS_Metric_InfectionRecoveries>Восстановленные инфекции</RWS_Metric_InfectionRecoveries>
-  <RWS_MetricDesc_InfectionRecoveries>Инфекции, которые прошли путем заживления; удаление смерти или ампутация не учитываются.</RWS_MetricDesc_InfectionRecoveries>
-  <RWS_Metric_InfectionDurationMax>Самая длинная инфекция</RWS_Metric_InfectionDurationMax>
-  <RWS_MetricDesc_InfectionDurationMax>Большинство дней от начала до восстановления инфекции отслеживается на протяжении всего периода.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_MetricDesc_Resurrections>Случаи возвращения свободного поселенца к жизни после смерти.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>Максимум воскрешений одного поселенца</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>Наибольшее число воскрешений одной пешки; в разбивке указан её ID.</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>Новые заболевания</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>Болезни, которыми впервые за время записи заболели свободные поселенцы.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>Средняя длительность болезни</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>Среднее число дней от начала до излечения болезней, отслеженных полностью. Болезни, исчезнувшие после смерти или ампутации, исключаются.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>Излеченные инфекции</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>Инфекции, исчезнувшие в результате исцеления. Удаления после смерти или ампутации не учитываются.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_Metric_InfectionDurationMax>Самая долгая инфекция</RWS_Metric_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>Наибольшее число дней от начала до выздоровления от инфекции, отслеженной полностью.</RWS_MetricDesc_InfectionDurationMax>
   <RWS_Metric_FoodPoisonings>Пищевые отравления</RWS_Metric_FoodPoisonings>
-  <RWS_MetricDesc_FoodPoisonings>Однажды свободный колонист получил пищевое отравление.</RWS_MetricDesc_FoodPoisonings>
-  <RWS_Metric_Addictions>Новые пристрастия</RWS_Metric_Addictions>
-  <RWS_MetricDesc_Addictions>Зависимости, недавно добавленные к свободным колонистам, не учитываются.</RWS_MetricDesc_Addictions>
-  <RWS_Metric_Overdoses>Передозировка</RWS_Metric_Overdoses>
-  <RWS_MetricDesc_Overdoses>Временами свободный колонист только что переборщил.</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>Начало вывода средств</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>Время от времени наркомания свободного колониста вступала в стадию отмены (его химическая потребность впадала в изъятие). Каждая запись учитывается один раз; зависимость, уже находящаяся в изъятии, когда началась запись, не учитывается.</RWS_MetricDesc_Withdrawals>
-  <RWS_Metric_HospitalStayMean>Средний срок пребывания в больнице</RWS_Metric_HospitalStayMean>
-  <RWS_MetricDesc_HospitalStayMean>Средние дни свободный колонист лежал в одной и той же медицинской кровати, от лежания до вставания. Снова ложиться в одну и ту же кровать сразу же (переключатель работы в постели) продолжает пребывание; остается заканчивающимся смертью или начатым до записи, не дайте образец.</RWS_MetricDesc_HospitalStayMean>
-  <RWS_Metric_PartsLost>Потерянные части тела</RWS_Metric_PartsLost>
-  <RWS_MetricDesc_PartsLost>Временами свободный колонист терял часть тела. Детские части, потерянные вместе с ним, и части, удаленные хирургическим путем, не учитываются.</RWS_MetricDesc_PartsLost>
+  <RWS_MetricDesc_FoodPoisonings>Случаи пищевого отравления свободных поселенцев.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>Новые зависимости</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>Новые зависимости, появившиеся у свободных поселенцев. Изменения тяжести не учитываются.</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>Передозировки</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>Новые случаи передозировки у свободных поселенцев.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>Начало ломки</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>Случаи перехода наркотической зависимости свободного поселенца в фазу ломки (потребность в веществе упала до уровня ломки). Каждый переход учитывается один раз; ломка, уже бывшая в начале записи, не учитывается.</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>Среднее время в больнице</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>Среднее число дней, проведённых свободным поселенцем в одной медицинской кровати от укладывания до подъёма. Повторное укладывание в ту же кровать сразу после смены работы продолжает пребывание. Пребывания, закончившиеся смертью или начавшиеся до записи, исключаются.</RWS_MetricDesc_HospitalStayMean>
+  <RWS_Metric_PartsLost>Утраченные части тела</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>Случаи потери свободным поселенцем части тела. Подчинённые части, потерянные вместе с ней, и части, удалённые операцией, не считаются.</RWS_MetricDesc_PartsLost>
   <RWS_Metric_Scars>Постоянные шрамы</RWS_Metric_Scars>
-  <RWS_MetricDesc_Scars>Временами травма свободного колониста становилась постоянной.</RWS_MetricDesc_Scars>
-  <RWS_Metric_InjuriesPerPawnMax>Большинство раненых колонистов</RWS_Metric_InjuriesPerPawnMax>
-  <RWS_MetricDesc_InjuriesPerPawnMax>Новые раны свободного колониста с большинством; разбивка называет их (по Ид).</RWS_MetricDesc_InjuriesPerPawnMax>
-  <RWS_Metric_WildAnimalInjuries>Травмы диких животных</RWS_Metric_WildAnimalInjuries>
-  <RWS_MetricDesc_WildAnimalInjuries>Новые ранения свободных колонистов от нападений диких животных</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_MetricDesc_Scars>Случаи, когда повреждение свободного поселенца стало постоянным.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>Самый часто раненый поселенец</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>Максимальное число новых ранений одного свободного поселенца; разбивка показывает его ID.</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_Metric_WildAnimalInjuries>Ранения от диких животных</RWS_Metric_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>Новые ранения свободных поселенцев от нападений диких животных.</RWS_MetricDesc_WildAnimalInjuries>
   <RWS_Metric_ToxicFalloutDays>Дни токсичных осадков</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>Дни, в течение которых по крайней мере один токсичный осадок был активным, перекрытия засчитывались один раз.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Дни с хотя бы одним активным токсичным выпадением. Перекрывающиеся периоды учитываются один раз.</RWS_MetricDesc_ToxicFalloutDays>
   <RWS_Metric_SolarFlares>Солнечные вспышки</RWS_Metric_SolarFlares>
-  <RWS_MetricDesc_SolarFlares>Солнечные вспышки, которые начались; те, которые уже запущены при записи, не учитываются.</RWS_MetricDesc_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>Число начавшихся солнечных вспышек; вспышки, уже действовавшие в начале записи, не учитываются.</RWS_MetricDesc_SolarFlares>
   <RWS_Metric_SolarFlareDays>Дни солнечной вспышки</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>Дни, в течение которых по крайней мере одна солнечная вспышка была активной, перекрытия засчитывались один раз; не время простоя устройства.</RWS_MetricDesc_SolarFlareDays>
-  <RWS_Metric_ColdSnaps>Холодные щелчки</RWS_Metric_ColdSnaps>
-  <RWS_MetricDesc_ColdSnaps>Холодные скачки, которые начались.</RWS_MetricDesc_ColdSnaps>
-  <RWS_Metric_HeatWaves>Тепловые волны</RWS_Metric_HeatWaves>
-  <RWS_MetricDesc_HeatWaves>Тепловые волны, которые начались.</RWS_MetricDesc_HeatWaves>
+  <RWS_MetricDesc_SolarFlareDays>Дни с хотя бы одной активной солнечной вспышкой; перекрывающиеся периоды учитываются один раз. Это не время простоя отдельных устройств.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>Похолодания</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>Число начавшихся похолоданий.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>Волны жары</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>Число начавшихся волн жары.</RWS_MetricDesc_HeatWaves>
   <RWS_Metric_VolcanicWinters>Вулканические зимы</RWS_Metric_VolcanicWinters>
-  <RWS_MetricDesc_VolcanicWinters>Вулканические зимы, которые начались</RWS_MetricDesc_VolcanicWinters>
+  <RWS_MetricDesc_VolcanicWinters>Число начавшихся вулканических зим.</RWS_MetricDesc_VolcanicWinters>
   <RWS_Metric_Eclipses>Затмения</RWS_Metric_Eclipses>
-  <RWS_MetricDesc_Eclipses>Затмения, которые начались.</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>Сельскохозяйственные отходы</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>Успешные инциденты с вредителями сельскохозяйственных культур, а не количество поврежденных растений.</RWS_MetricDesc_CropBlights>
-  <RWS_Metric_Meteors>Воздействие метеоритов</RWS_Metric_Meteors>
-  <RWS_MetricDesc_Meteors>Успешные метеоритные инциденты, а не количество кусочков.</RWS_MetricDesc_Meteors>
+  <RWS_MetricDesc_Eclipses>Число начавшихся затмений.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>Болезни сельскохозяйственных культур</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Успешно запущенные события поражения посевов болезнью, а не число больных растений.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>Падения метеоритов</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>Успешно запущенные события падения метеоритов, не число осколков.</RWS_MetricDesc_Meteors>
   <RWS_Metric_ShortCircuits>Короткие замыкания</RWS_Metric_ShortCircuits>
-  <RWS_MetricDesc_ShortCircuits>Успешные инциденты короткого замыкания.</RWS_MetricDesc_ShortCircuits>
-  <RWS_Metric_Fires>Пожары начались</RWS_Metric_Fires>
-  <RWS_MetricDesc_Fires>Пожары начались, кроме распространения, в ячейке без огня на домашней карте игрока.</RWS_MetricDesc_Fires>
-  <RWS_Metric_BuildingsBurned>Здания, потерянные для пожара</RWS_Metric_BuildingsBurned>
-  <RWS_MetricDesc_BuildingsBurned>Завершенные игровые здания разрушены непосредственно огнем.</RWS_MetricDesc_BuildingsBurned>
-  <RWS_Metric_CaravanDepartures>Отъезд караванов</RWS_Metric_CaravanDepartures>
-  <RWS_MetricDesc_CaravanDepartures>Караваны игроков, только что сформированные, оставляя карту. Слияния и расколы не учитываются.</RWS_MetricDesc_CaravanDepartures>
-  <RWS_Metric_CaravansLost>Караваны проиграли</RWS_Metric_CaravansLost>
-  <RWS_MetricDesc_CaravansLost>Отслеживали караваны, каждый член которых погиб.</RWS_MetricDesc_CaravansLost>
-  <RWS_Metric_CaravanTiles>Расстояние каравана</RWS_Metric_CaravanTiles>
-  <RWS_MetricDesc_CaravanTiles>Шаги караванов игроков к соседней плитке пешком. Телепорты не засчитываются.</RWS_MetricDesc_CaravanTiles>
-  <RWS_Metric_CaravanUniqueTiles>Посещал Тильс</RWS_Metric_CaravanUniqueTiles>
-  <RWS_MetricDesc_CaravanUniqueTiles>Отличительные плитки (слой и плитка) достигали пешком; плитка, посещенная снова, считается один раз.</RWS_MetricDesc_CaravanUniqueTiles>
-  <RWS_Metric_CaravanLongestExpedition>Самая длинная экспедиция</RWS_Metric_CaravanLongestExpedition>
-  <RWS_MetricDesc_CaravanLongestExpedition>Большинство дней от вылета до возвращения игрока домой экспедиция отслеживается по всему; разделенные или объединенные.</RWS_MetricDesc_CaravanLongestExpedition>
-  <RWS_Metric_CaravanLongestDistance>Длинная дистанция экспедиции</RWS_Metric_CaravanLongestDistance>
-  <RWS_MetricDesc_CaravanLongestDistance>Больше всего плиток ходило в одной законченной экспедиции.</RWS_MetricDesc_CaravanLongestDistance>
-  <RWS_Metric_CaravanConcurrentMax>Большинство караванов сразу</RWS_Metric_CaravanConcurrentMax>
-  <RWS_MetricDesc_CaravanConcurrentMax>Наибольшее количество игроков караваны, которые существовали сразу, двигались или нет.</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>Засады караванов</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>Успешные засады караванов.</RWS_MetricDesc_CaravanAmbushes>
-  <RWS_Metric_SitesCleared>Побежденные вражеские поселения</RWS_Metric_SitesCleared>
-  <RWS_MetricDesc_SitesCleared>Вражеские фракционные поселения, разрушенные победой игрока.</RWS_MetricDesc_SitesCleared>
-  <RWS_Metric_SettlementsFounded>Поселения, основанные</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>Новые игровые поселения, основанные из каравана или существующей карты.Начало поселения, перемещение колонии и высадка гравиров не засчитываются.</RWS_MetricDesc_SettlementsFounded>
-  <RWS_Metric_SettlementsAbandoned>Заброшенные поселения</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Населенные пункты игроков, оставленные по собственному выбору. Автоматические удаления, такие как взлёт гравитации, не учитываются.</RWS_MetricDesc_SettlementsAbandoned>
-  <RWS_Metric_AncientDangersOpened>Древние опасности открылись</RWS_Metric_AncientDangersOpened>
-  <RWS_MetricDesc_AncientDangersOpened>Запечатанные древние святыни (древние опасности карт поселений игроков), интерьер которых был открыт, каждый раз. Храм считается, когда игра считает, что он раскрылся: туман над его центром очистился. Другие стены сломаны или появляются враги, не учитываются.</RWS_MetricDesc_AncientDangersOpened>
-  <RWS_Metric_ColonyStartingBiome>Оригинальный биом</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Biome DefName на неизменяемой стартовой плитке игры, а не на текущем месте колонии; неизвестно, когда мировая плитка не может быть решена.</RWS_MetricDesc_ColonyStartingBiome>
-  <RWS_Metric_ResearchSnapshotFinished>Завершенные исследовательские проекты</RWS_Metric_ResearchSnapshotFinished>
-  <RWS_MetricDesc_ResearchSnapshotFinished>Количество зарегистрированных исследовательских проектов, выполненных при последнем успешном сбережении.</RWS_MetricDesc_ResearchSnapshotFinished>
-  <RWS_Metric_ResearchSnapshotFinishedRate>Показатели завершения исследований</RWS_Metric_ResearchSnapshotFinishedRate>
-  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Завершенные проекты, разделенные по всем зарегистрированным исследовательским проектам при последнем успешном сбережении.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
-  <RWS_Metric_ResearchSnapshotTechPeak>Самый высокий завершенный уровень исследовательских технологий</RWS_Metric_ResearchSnapshotTechPeak>
-  <RWS_MetricDesc_ResearchSnapshotTechPeak>Высочайший технический уровень среди завершенных научно-исследовательских проектов на последнем успешном сбережении.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ShortCircuits>Успешно запущенные события короткого замыкания.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>Возникшие пожары</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>Возгорания на домашних картах игрока в клетке, где прежде не было огня, кроме распространения существующего пожара.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>Здания, сгоревшие в пожаре</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>Завершённые здания игрока, уничтоженные непосредственно уроном от огня.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>Отправления караванов</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>Новые караваны игрока, сформированные выходом за пределы карты. Объединения и разделения не учитываются.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>Потерянные караваны</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>Отслеженные караваны, у которых погибли все участники.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>Расстояние караванов</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>Переходы караванов игрока пешком на соседний мировой тайл. Телепортация не учитывается.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>Посещённые тайлы</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>Уникальные тайлы (слой и номер тайла), достигнутые пешком; повторное посещение одного тайла учитывается один раз.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>Самая долгая экспедиция</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>Максимум дней от выхода до возвращения в домашнее поселение игрока среди полностью отслеженных походов; разделившиеся или объединившиеся караваны исключаются.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>Максимальное расстояние экспедиции</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>Наибольшее число тайлов, пройденных пешком за одну завершённую экспедицию.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>Максимум одновременных караванов</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>Максимальное число караванов игрока, существовавших одновременно, независимо от движения.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>Засады на караваны</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>Успешно запущенные события засад на караваны.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>Разгромленные вражеские поселения</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>Поселения вражеских фракций, уничтоженные победой игрока.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>Основанные поселения</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>Новые поселения игрока, основанные из каравана или существующей карты. Стартовое поселение, переезд колонии и посадки гравикорабля не учитываются.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>Покинутые поселения</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Поселения игрока, оставленные по его выбору. Автоматические удаления, например при взлёте гравикорабля, не учитываются.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>Открытые древние опасности</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>Запечатанные древние святилища (древние опасности на картах поселений игрока), чьи помещения были открыты, по одному разу каждое. Святилище считается открытым, когда игра посчитала бы его обнаруженным: при рассеивании тумана над центром. Разрушение других стен и появление врагов не учитываются.</RWS_MetricDesc_AncientDangersOpened>
+  <RWS_Metric_ColonyStartingBiome>Первоначальный биом</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Биом (DefName) неизменной стартовой клетки мира, а не текущего поселения; неизвестен, если клетку мира нельзя определить.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_Metric_ResearchSnapshotFinished>Завершённые исследования</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>Число исследовательских проектов, завершённых на момент последнего успешного сохранения.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_Metric_ResearchSnapshotFinishedRate>Доля завершённых исследований</RWS_Metric_ResearchSnapshotFinishedRate>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Завершённые исследовательские проекты ÷ все исследовательские проекты на момент последнего успешного сохранения.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>Наивысший завершённый технологический уровень</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>Наивысший технологический уровень среди исследований, завершённых на момент последнего успешного сохранения.</RWS_MetricDesc_ResearchSnapshotTechPeak>
   <RWS_Metric_FactionSnapshotRelations>Союзные и враждебные фракции</RWS_Metric_FactionSnapshotRelations>
-  <RWS_MetricDesc_FactionSnapshotRelations>Счета подходящих активных фракций, союзных или враждебных игроку, при последнем успешном спасении.</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>Диапазон доброй воли фракции</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Минимальная и максимальная базовая добрая воля соответствующих действующих фракций, поддерживающих добрую волю. Постоянно враждебные фракции способствуют подсчету фракций, а не доброй воле.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
-  <RWS_Metric_RosterFree>Свободные колонисты</RWS_Metric_RosterFree>
-  <RWS_MetricDesc_RosterFree>Живые свободные колонисты при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterFree>
-  <RWS_Metric_RosterPrisoners>Живые заключенные колонии</RWS_Metric_RosterPrisoners>
-  <RWS_MetricDesc_RosterPrisoners>Живые заключенные колонии при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterPrisoners>
-  <RWS_Metric_RosterSlaves>Живые колониальные рабы</RWS_Metric_RosterSlaves>
-  <RWS_MetricDesc_RosterSlaves>Историческое восстановление сбережений сообщает о частичной нижней границе только тогда, когда подтвержден статус спасенного раба и владение игроком.</RWS_MetricDesc_RosterSlaves>
-  <RWS_Metric_RosterAnimals>Колония животных</RWS_Metric_RosterAnimals>
-  <RWS_MetricDesc_RosterAnimals>Колониальные животные при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterAnimals>
-  <RWS_Metric_RosterMechs>Механоиды колоний</RWS_Metric_RosterMechs>
-  <RWS_MetricDesc_RosterMechs>Механоиды колонии при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterMechs>
-  <RWS_Metric_RosterAugmentedPeak>Самые высокие расширенные колонисты</RWS_Metric_RosterAugmentedPeak>
-  <RWS_MetricDesc_RosterAugmentedPeak>Самые высокие расширенные колонисты при успешном спасении от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterAugmentedPeak>
-  <RWS_Metric_RosterSkill20PawnsPeak>Высочайшие колонисты с навыками 20</RWS_Metric_RosterSkill20PawnsPeak>
-  <RWS_MetricDesc_RosterSkill20PawnsPeak>Высочайшие колонисты с навыком 20 при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterSkill20PawnsPeak>
-  <RWS_Metric_RosterSkill20PerPawnPeak>Навыки максимального уровня для одного колониста</RWS_Metric_RosterSkill20PerPawnPeak>
-  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Большинство навыков максимального уровня у одного колониста при успешном спасении от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
-  <RWS_Metric_RosterOldest>Старейший из ныне живущих колонистов</RWS_Metric_RosterOldest>
-  <RWS_MetricDesc_RosterOldest>Старейший живой колонист в успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterOldest>
-  <RWS_Metric_RosterAnimalDefsPeak>Самые высокие колонии животных видов</RWS_Metric_RosterAnimalDefsPeak>
-  <RWS_MetricDesc_RosterAnimalDefsPeak>Самые высокие колонии видов животных при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterAnimalDefsPeak>
-  <RWS_Metric_RosterPassions>Колонистские страсти по мастерству</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>Колонистские страсти по мастерству в успешном спасении от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterPassions>
-  <RWS_Metric_RosterAgeMean>Средний возраст колонистов</RWS_Metric_RosterAgeMean>
-  <RWS_MetricDesc_RosterAgeMean>Средний возраст колонистов при успешном спасении от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterAgeMean>
-  <RWS_Metric_RosterInjuredPeak>Самая высокая рана одновременно у колонистов</RWS_Metric_RosterInjuredPeak>
-  <RWS_MetricDesc_RosterInjuredPeak>Самые высокие одновременно раненые колонисты при успешном спасении, от подходящих живых персонажей (пиковые значения охватывают сохраненные наблюдения).</RWS_MetricDesc_RosterInjuredPeak>
-  <RWS_Metric_FacilitiesHomeMaps>Самые загруженные домашние карты</RWS_Metric_FacilitiesHomeMaps>
-  <RWS_MetricDesc_FacilitiesHomeMaps>Большинство загруженных домашних карт по загруженным домашним картам игрока при успешном сбережении. Пики выбираются по записанным сейвам.</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesTurrets>Большинство установленных башен</RWS_Metric_FacilitiesTurrets>
-  <RWS_MetricDesc_FacilitiesTurrets>Большинство установленных башен на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на записанных сейвах.</RWS_MetricDesc_FacilitiesTurrets>
-  <RWS_Metric_FacilitiesGrowingCells>Самая большая зона роста</RWS_Metric_FacilitiesGrowingCells>
-  <RWS_MetricDesc_FacilitiesGrowingCells>Самая большая зона роста на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на записанных сейвах.</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesGeneration>Самая высокая номинальная генерирующая мощность</RWS_Metric_FacilitiesGeneration>
-  <RWS_MetricDesc_FacilitiesGeneration>Высочайшая номинальная генерирующая мощность на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на основе записанных сбережений.</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>Самая высокая номинальная емкость батареи</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>Максимальная номинальная емкость батареи на загруженных домашних картах игроков при успешном сохранении. Пики выбираются на записанных сохранениях.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_MetricDesc_FactionSnapshotRelations>Активные фракции, союзные либо враждебные игроку на момент последнего успешного сохранения.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Диапазон репутации фракций</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Наименьшая и наибольшая базовая репутация среди активных фракций, имеющих репутацию. Постоянно враждебные фракции включаются в число фракций, но не в диапазон репутации.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>Живые свободные поселенцы</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>Свободные поселенцы, живые при успешном сохранении.</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>Живые пленники колонии</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>Живые пленники колонии на момент успешного сохранения.</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>Живые рабы колонии</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>Живые рабы колонии на момент успешного сохранения. При восстановлении из старых сохранений показывается только частичная нижняя граница, и лишь там, где подтверждены и статус раба, и принадлежность игроку.</RWS_MetricDesc_RosterSlaves>
+  <RWS_Metric_RosterAnimals>Животные колонии</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>Живые животные колонии на момент успешного сохранения.</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>Механоиды колонии</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>Живые механоиды колонии на момент успешного сохранения.</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>Максимум поселенцев с искусственными частями тела</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>Наибольшее число свободных поселенцев с хотя бы одной искусственной частью тела в одном из записанных сохранений.</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>Максимум поселенцев с навыком 20</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>Наибольшее число свободных поселенцев с хотя бы одним навыком уровня 20 в одном из записанных сохранений.</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>Максимум навыков уровня 20 у одного поселенца</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Наибольшее число навыков уровня 20 у одного свободного поселенца в любом записанном сохранении.</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>Самый старый живой поселенец</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>Наибольший биологический возраст живого свободного поселенца в любом записанном сохранении.</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>Максимум видов животных колонии</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>Наибольшее число разных видов живых животных колонии в одном из записанных сохранений.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>Увлечённость поселенцев по навыкам</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Увлечённость свободных поселенцев по каждому навыку (нет, слабая, сильная) на момент успешного сохранения.</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>Средний возраст живых поселенцев</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>Средний биологический возраст живых свободных поселенцев на момент успешного сохранения.</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>Максимум одновременно раненых поселенцев</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>Наибольшее число свободных поселенцев с хотя бы одним ранением (включая постоянные) в одном записанном сохранении.</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>Максимум одновременных домашних карт</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>Наибольшее число загруженных одновременно домашних карт игрока в одном записанном сохранении.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesTurrets>Максимум турелей</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>Наибольшее число турелей игрока на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>Наибольшая площадь зон посадки</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>Максимальная суммарная площадь зон посадки (клеток) на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesGeneration>Максимальная номинальная выработка энергии</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>Наибольшая суммарная номинальная мощность генераторов на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>Максимальная ёмкость батарей</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>Наибольшая суммарная номинальная ёмкость батарей на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Самая низкая наблюдаемая температура наружного воздуха</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>Самая низкая наблюдаемая температура на открытом воздухе на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на записанных сейвах.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Самая высокая наблюдаемая температура наружного воздуха</RWS_Metric_FacilitiesOutdoorTempMax>

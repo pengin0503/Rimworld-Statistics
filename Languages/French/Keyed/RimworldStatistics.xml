@@ -625,131 +625,131 @@
   <RWS_Metric_AwayRescues>Sauvetages hors de la colonie</RWS_Metric_AwayRescues>
   <RWS_MetricDesc_AwayRescues>Sauvetages effectués sur une carte qui n'est pas un foyer du joueur.</RWS_MetricDesc_AwayRescues>
   <RWS_Metric_Resurrections>Résurrections</RWS_Metric_Resurrections>
-  <RWS_MetricDesc_Resurrections>Parfois, un coloniste libre est revenu de la mort.</RWS_MetricDesc_Resurrections>
-  <RWS_Metric_ResurrectionsPerPawnMax>La plupart des résurrections d'un seul colon</RWS_Metric_ResurrectionsPerPawnMax>
-  <RWS_MetricDesc_ResurrectionsPerPawnMax>Le plus grand nombre de résurrections d'un seul caractère ; la panne les nomme (par id).</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_Resurrections>Nombre de fois où un colon libre a été ramené à la vie après sa mort.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>Nombre maximal de résurrections d'un colon</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>Plus grand nombre de résurrections d'un même personnage ; le détail indique son ID.</RWS_MetricDesc_ResurrectionsPerPawnMax>
   <RWS_Metric_DiseaseOnsets>Nouvelles maladies</RWS_Metric_DiseaseOnsets>
-  <RWS_MetricDesc_DiseaseOnsets>Maladies nouvellement ajoutées aux colons libres.</RWS_MetricDesc_DiseaseOnsets>
-  <RWS_Metric_DiseaseDurationMean>Nombre moyen de jours de maladie</RWS_Metric_DiseaseDurationMean>
-  <RWS_MetricDesc_DiseaseDurationMean>Les jours moyens entre l'apparition et la guérison des maladies suivies tout au long; ceux enlevés par la mort ou l'amputation sont laissés de côté.</RWS_MetricDesc_DiseaseDurationMean>
-  <RWS_Metric_InfectionRecoveries>Infections retrouvées</RWS_Metric_InfectionRecoveries>
-  <RWS_MetricDesc_InfectionRecoveries>Les infections qui ont disparu par la guérison; les suppressions par la mort ou l'amputation ne sont pas comptées.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_MetricDesc_DiseaseOnsets>Maladies nouvellement contractées par des colons libres.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>Durée moyenne des maladies</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>Nombre moyen de jours entre le début et la guérison des maladies suivies intégralement ; celles disparues par décès ou amputation sont exclues.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>Infections guéries</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>Infections disparues grâce à la guérison ; celles supprimées par décès ou amputation sont exclues.</RWS_MetricDesc_InfectionRecoveries>
   <RWS_Metric_InfectionDurationMax>Infection la plus longue</RWS_Metric_InfectionDurationMax>
-  <RWS_MetricDesc_InfectionDurationMax>Le plus grand nombre de jours depuis l'apparition jusqu'à la récupération d'une infection suivie tout au long.</RWS_MetricDesc_InfectionDurationMax>
-  <RWS_Metric_FoodPoisonings>Empoisonnements alimentaires</RWS_Metric_FoodPoisonings>
-  <RWS_MetricDesc_FoodPoisonings>Des fois, un coloniste libre a été empoisonné par la nourriture.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_MetricDesc_InfectionDurationMax>Nombre maximal de jours entre le début et la guérison d'une infection suivie intégralement.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_Metric_FoodPoisonings>Intoxications alimentaires</RWS_Metric_FoodPoisonings>
+  <RWS_MetricDesc_FoodPoisonings>Nombre d'intoxications alimentaires de colons libres.</RWS_MetricDesc_FoodPoisonings>
   <RWS_Metric_Addictions>Nouvelles dépendances</RWS_Metric_Addictions>
-  <RWS_MetricDesc_Addictions>Les toxicomanies nouvellement ajoutées aux colons libres. Les changements de gravité ne sont pas comptés.</RWS_MetricDesc_Addictions>
+  <RWS_MetricDesc_Addictions>Dépendances nouvellement apparues chez les colons libres. Les changements de gravité ne sont pas comptés.</RWS_MetricDesc_Addictions>
   <RWS_Metric_Overdoses>Surdoses</RWS_Metric_Overdoses>
-  <RWS_MetricDesc_Overdoses>Des fois un coloniste libre récemment surdosé.</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>Débuts de retrait</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>Les temps où la toxicomanie d'un coloniste libre est entrée dans son stade de sevrage (son besoin chimique est tombé en sevrage).Chaque entrée compte une fois; une dépendance déjà en sevrage au début de l'enregistrement n'est pas comptée.</RWS_MetricDesc_Withdrawals>
-  <RWS_Metric_HospitalStayMean>Durée moyenne du séjour à l'hôpital</RWS_Metric_HospitalStayMean>
-  <RWS_MetricDesc_HospitalStayMean>Les jours moyens d'un coloniste libre s'allongent dans le même lit médical, de s'allonger jusqu'à se lever. Allonger de nouveau dans le même lit tout de suite (un changement de travail dans le lit) continue le séjour; reste se terminant dans la mort, ou commencé avant l'enregistrement, ne donne pas d'échantillon.</RWS_MetricDesc_HospitalStayMean>
-  <RWS_Metric_PartsLost>Pièces du corps perdues</RWS_Metric_PartsLost>
-  <RWS_MetricDesc_PartsLost>Parfois, un coloniste libre a perdu une partie du corps. Les parties d'enfant perdues avec elle et les parties enlevées par la chirurgie ne sont pas comptées.</RWS_MetricDesc_PartsLost>
-  <RWS_Metric_Scars>Les cicatrices permanentes</RWS_Metric_Scars>
-  <RWS_MetricDesc_Scars>La blessure d'un coloniste libre est devenue permanente.</RWS_MetricDesc_Scars>
-  <RWS_Metric_InjuriesPerPawnMax>La plupart des colons blessés</RWS_Metric_InjuriesPerPawnMax>
-  <RWS_MetricDesc_InjuriesPerPawnMax>Les nouvelles blessures du coloniste libre avec la plupart ; la panne les nomme (par id).</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_MetricDesc_Overdoses>Nombre de nouvelles surdoses chez les colons libres.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>Apparitions de symptômes de manque</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>Nombre de fois où une dépendance aux drogues d'un colon libre est entrée en phase de manque (besoin chimique tombé au seuil de manque). Chaque entrée compte une fois ; les états de manque déjà présents au début du suivi sont exclus.</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>Durée moyenne d'hospitalisation</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>Nombre moyen de jours passés par un colon libre dans le même lit médical, du coucher au lever. Se recoucher immédiatement dans ce lit après un changement de tâche ne termine pas le séjour. Les séjours conclus par un décès ou commencés avant l'enregistrement sont exclus.</RWS_MetricDesc_HospitalStayMean>
+  <RWS_Metric_PartsLost>Parties du corps perdues</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>Nombre de fois où un colon libre a perdu une partie du corps. Les sous-parties perdues avec elle et celles retirées par opération sont exclues.</RWS_MetricDesc_PartsLost>
+  <RWS_Metric_Scars>Cicatrices permanentes</RWS_Metric_Scars>
+  <RWS_MetricDesc_Scars>Nombre de blessures de colons libres devenues permanentes.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>Colon le plus souvent blessé</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>Plus grand nombre de nouvelles blessures d'un colon libre ; le détail indique son ID.</RWS_MetricDesc_InjuriesPerPawnMax>
   <RWS_Metric_WildAnimalInjuries>Blessures causées par des animaux sauvages</RWS_Metric_WildAnimalInjuries>
-  <RWS_MetricDesc_WildAnimalInjuries>Nouvelles blessures de colons libres suite à des attaques d'animaux sauvages.</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>Nouvelles blessures de colons libres causées par des attaques d'animaux sauvages.</RWS_MetricDesc_WildAnimalInjuries>
   <RWS_Metric_ToxicFalloutDays>Jours de retombées toxiques</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>Jours au cours desquels au moins un effet toxique était actif, les chevauchements ont été comptés une fois.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Nombre de jours pendant lesquels au moins une retombée toxique était active. Les périodes qui se chevauchent comptent une seule fois.</RWS_MetricDesc_ToxicFalloutDays>
   <RWS_Metric_SolarFlares>Éruptions solaires</RWS_Metric_SolarFlares>
-  <RWS_MetricDesc_SolarFlares>Les éruptions solaires qui ont commencé; celles qui sont déjà en cours d'enregistrement ne sont pas comptées.</RWS_MetricDesc_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>Éruptions solaires ayant commencé ; celles déjà actives au début de l'enregistrement ne comptent pas.</RWS_MetricDesc_SolarFlares>
   <RWS_Metric_SolarFlareDays>Jours d'éruption solaire</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>Jours au cours desquels au moins une éruption solaire était active, les chevauchements ont été comptés une fois; pas par appareil temps d'arrêt.</RWS_MetricDesc_SolarFlareDays>
-  <RWS_Metric_ColdSnaps>Boucliers froids</RWS_Metric_ColdSnaps>
-  <RWS_MetricDesc_ColdSnaps>C'est froid, ça a commencé.</RWS_MetricDesc_ColdSnaps>
-  <RWS_Metric_HeatWaves>Ondes de chaleur</RWS_Metric_HeatWaves>
-  <RWS_MetricDesc_HeatWaves>Des vagues de chaleur qui ont commencé.</RWS_MetricDesc_HeatWaves>
+  <RWS_MetricDesc_SolarFlareDays>Nombre de jours pendant lesquels au moins une éruption solaire était active, sans double compte en cas de chevauchement ; il ne s'agit pas du temps d'arrêt de chaque appareil.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>Vagues de froid</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>Nombre de vagues de froid ayant commencé.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>Vagues de chaleur</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>Nombre de vagues de chaleur ayant commencé.</RWS_MetricDesc_HeatWaves>
   <RWS_Metric_VolcanicWinters>Hivers volcaniques</RWS_Metric_VolcanicWinters>
-  <RWS_MetricDesc_VolcanicWinters>Des hivers volcaniques qui ont commencé.</RWS_MetricDesc_VolcanicWinters>
-  <RWS_Metric_Eclipses>Eclipses</RWS_Metric_Eclipses>
-  <RWS_MetricDesc_Eclipses>Des éclipses qui ont commencé.</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>Légumes de culture</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>Incidents de brûlures de cultures réussis, et non le nombre de plantes brûlées.</RWS_MetricDesc_CropBlights>
-  <RWS_Metric_Meteors>Impacts des météorites</RWS_Metric_Meteors>
-  <RWS_MetricDesc_Meteors>Réussir les incidents de météorite; pas le nombre de pièces.</RWS_MetricDesc_Meteors>
-  <RWS_Metric_ShortCircuits>Circuits courts</RWS_Metric_ShortCircuits>
-  <RWS_MetricDesc_ShortCircuits>Incidents de court-circuit réussis.</RWS_MetricDesc_ShortCircuits>
-  <RWS_Metric_Fires>Les incendies ont commencé</RWS_Metric_Fires>
-  <RWS_MetricDesc_Fires>Les incendies ont commencé, sauf en se répandant, dans une cellule sans feu sur la carte d'un joueur.</RWS_MetricDesc_Fires>
-  <RWS_Metric_BuildingsBurned>Bâtiments perdus par le feu</RWS_Metric_BuildingsBurned>
-  <RWS_MetricDesc_BuildingsBurned>Bâtiments de joueurs achevés détruits directement par des dommages au feu.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_MetricDesc_VolcanicWinters>Nombre d'hivers volcaniques ayant commencé.</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>Éclipses</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>Nombre d'éclipses ayant commencé.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>Maladies des cultures</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Incidents de maladie des cultures déclenchés avec succès, et non le nombre de plantes atteintes.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>Impacts de météorites</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>Incidents de météorite déclenchés avec succès, et non le nombre de fragments.</RWS_MetricDesc_Meteors>
+  <RWS_Metric_ShortCircuits>Courts-circuits</RWS_Metric_ShortCircuits>
+  <RWS_MetricDesc_ShortCircuits>Incidents de court-circuit déclenchés avec succès.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>Départs de feu</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>Feux apparus sur une carte d'habitation du joueur, dans une case auparavant sans feu et autrement que par propagation.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>Bâtiments détruits par le feu</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>Bâtiments achevés du joueur détruits directement par des dégâts de feu.</RWS_MetricDesc_BuildingsBurned>
   <RWS_Metric_CaravanDepartures>Départs de caravanes</RWS_Metric_CaravanDepartures>
-  <RWS_MetricDesc_CaravanDepartures>Les caravanes de joueurs nouvellement formées en laissant une carte. Merges et scissions ne sont pas comptées.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>Caravanes du joueur nouvellement constituées en quittant une carte. Les fusions et séparations sont exclues.</RWS_MetricDesc_CaravanDepartures>
   <RWS_Metric_CaravansLost>Caravanes perdues</RWS_Metric_CaravansLost>
-  <RWS_MetricDesc_CaravansLost>Des caravanes traquées dont chaque membre est mort.</RWS_MetricDesc_CaravansLost>
-  <RWS_Metric_CaravanTiles>Distance entre les caravanes</RWS_Metric_CaravanTiles>
-  <RWS_MetricDesc_CaravanTiles>Étapes des caravanes de joueur à une tuile adjacente à pied. Teleports ne sont pas comptés.</RWS_MetricDesc_CaravanTiles>
-  <RWS_Metric_CaravanUniqueTiles>Tuiles visitées</RWS_Metric_CaravanUniqueTiles>
-  <RWS_MetricDesc_CaravanUniqueTiles>Tuiles distinctes (couche et tuiles) atteintes à pied; une tuile visitée à nouveau compte une fois.</RWS_MetricDesc_CaravanUniqueTiles>
-  <RWS_Metric_CaravanLongestExpedition>La plus longue expédition</RWS_Metric_CaravanLongestExpedition>
-  <RWS_MetricDesc_CaravanLongestExpedition>La plupart des jours, depuis le départ jusqu'au retour à la maison d'un joueur d'une expédition suivie tout au long; les deux sont laissés de côté.</RWS_MetricDesc_CaravanLongestExpedition>
-  <RWS_Metric_CaravanLongestDistance>La plus longue distance d'expédition</RWS_Metric_CaravanLongestDistance>
-  <RWS_MetricDesc_CaravanLongestDistance>La plupart des tuiles marchaient dans une expédition achevée.</RWS_MetricDesc_CaravanLongestDistance>
-  <RWS_Metric_CaravanConcurrentMax>La plupart des caravanes à la fois</RWS_Metric_CaravanConcurrentMax>
-  <RWS_MetricDesc_CaravanConcurrentMax>La plupart des caravanes de joueurs qui existaient à la fois, se déplaçant ou non.</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>Caravanes embuscades</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>Des embuscades réussies de caravanes.</RWS_MetricDesc_CaravanAmbushes>
-  <RWS_Metric_SitesCleared>Les colonies ennemies vaincues</RWS_Metric_SitesCleared>
-  <RWS_MetricDesc_SitesCleared>Des colonies de faction ennemies détruites par la victoire du joueur.</RWS_MetricDesc_SitesCleared>
-  <RWS_Metric_SettlementsFounded>Établissements fondés</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>Les nouvelles colonies de joueurs fondées à partir d'une caravane ou d'une carte existante. La colonie de départ, le déplacement de la colonie et les débarquements de graviers ne sont pas comptés.</RWS_MetricDesc_SettlementsFounded>
-  <RWS_Metric_SettlementsAbandoned>Établissements abandonnés</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Les règlements des joueurs abandonnés par choix. Les suppressions automatiques telles qu'un décollage par gravitation ne sont pas comptées.</RWS_MetricDesc_SettlementsAbandoned>
-  <RWS_Metric_AncientDangersOpened>Les dangers anciens s'ouvrent</RWS_Metric_AncientDangersOpened>
-  <RWS_MetricDesc_AncientDangersOpened>Sanctuaires anciens scellés (les dangers antiques des cartes de peuplement des joueurs) dont l'intérieur a été ouvert, chaque fois. Un sanctuaire compte quand le jeu considérerait qu'il a révélé: le brouillard au-dessus de son centre dégagé. D'autres murs brisés ou ennemis apparaissant ne sont pas comptés.</RWS_MetricDesc_AncientDangersOpened>
-  <RWS_Metric_ColonyStartingBiome>Biome original</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Biome DefName à la tuile de départ immuable du jeu, pas le site de colonie actuel; inconnu quand la tuile du monde ne peut pas être résolu.</RWS_MetricDesc_ColonyStartingBiome>
-  <RWS_Metric_ResearchSnapshotFinished>Projets de recherche achevés</RWS_Metric_ResearchSnapshotFinished>
-  <RWS_MetricDesc_ResearchSnapshotFinished>Nombre de projets de recherche enregistrés achevés au dernier arrêt réussi.</RWS_MetricDesc_ResearchSnapshotFinished>
-  <RWS_Metric_ResearchSnapshotFinishedRate>Taux d'achèvement de la recherche</RWS_Metric_ResearchSnapshotFinishedRate>
-  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Projets achevés divisés par tous les projets de recherche enregistrés à la dernière épargne réussie.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
-  <RWS_Metric_ResearchSnapshotTechPeak>Niveau technologique de recherche le plus élevé</RWS_Metric_ResearchSnapshotTechPeak>
-  <RWS_MetricDesc_ResearchSnapshotTechPeak>Niveau technique le plus élevé parmi les projets de recherche enregistrés achevés au dernier succès de l'épargne.</RWS_MetricDesc_ResearchSnapshotTechPeak>
-  <RWS_Metric_FactionSnapshotRelations>factions alliées et hostiles</RWS_Metric_FactionSnapshotRelations>
-  <RWS_MetricDesc_FactionSnapshotRelations>Les comtes des factions actives éligibles alliées ou hostiles au joueur, au dernier succès de l'épargne.</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>Gamme de bonne volonté Faction</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>La bonne volonté de base minimale et maximale des factions actives admissibles qui soutiennent la bonne volonté, et les factions hostiles permanentes contribuent au compte des factions, et non à la bonne volonté.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
-  <RWS_Metric_RosterFree>Colonistes libres vivants</RWS_Metric_RosterFree>
-  <RWS_MetricDesc_RosterFree>Vivant des colons libres à une sauvegarde réussie, à partir de personnages vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterFree>
-  <RWS_Metric_RosterPrisoners>Prisonniers vivant de colonies</RWS_Metric_RosterPrisoners>
-  <RWS_MetricDesc_RosterPrisoners>Prisonniers vivant à un épargnant réussi, à partir de personnages vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterPrisoners>
-  <RWS_Metric_RosterSlaves>Esclaves vivant dans les colonies</RWS_Metric_RosterSlaves>
-  <RWS_MetricDesc_RosterSlaves>Des esclaves vivant dans une colonie à un sauvetage réussi. Historique sauver récupération signale une limite inférieure partielle seulement quand un statut d'esclave sauvé et la propriété du joueur sont confirmés.</RWS_MetricDesc_RosterSlaves>
-  <RWS_Metric_RosterAnimals>Animaux des colonies</RWS_Metric_RosterAnimals>
-  <RWS_MetricDesc_RosterAnimals>Les animaux colonisés à une sauvegarde réussie, à partir de caractères vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterAnimals>
-  <RWS_Metric_RosterMechs>Mécanoïdes des colonies</RWS_Metric_RosterMechs>
-  <RWS_MetricDesc_RosterMechs>Les mécanoïdes de colonies à un épargnant réussi, à partir de caractères vivants admissibles (valeurs de crête s'étendent les observations sauvegardées).</RWS_MetricDesc_RosterMechs>
-  <RWS_Metric_RosterAugmentedPeak>Colonistes les plus élevés augmentés</RWS_Metric_RosterAugmentedPeak>
-  <RWS_MetricDesc_RosterAugmentedPeak>Les colons les plus augmentés à un épargnant réussi, à partir de caractères vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterAugmentedPeak>
-  <RWS_Metric_RosterSkill20PawnsPeak>Les plus grands colons avec compétence 20</RWS_Metric_RosterSkill20PawnsPeak>
-  <RWS_MetricDesc_RosterSkill20PawnsPeak>Les plus grands colons ayant une compétence de 20 à une sauvegarde réussie, à partir de caractères vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterSkill20PawnsPeak>
-  <RWS_Metric_RosterSkill20PerPawnPeak>La plupart des compétences de niveau max sur un coloniste</RWS_Metric_RosterSkill20PerPawnPeak>
-  <RWS_MetricDesc_RosterSkill20PerPawnPeak>La plupart des compétences de niveau max sur un coloniste à un épargnant réussi, à partir de caractères vivants admissibles (valeurs de crête s'étendent les observations sauvegardées).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
-  <RWS_Metric_RosterOldest>Coloniste vivant le plus âgé</RWS_Metric_RosterOldest>
-  <RWS_MetricDesc_RosterOldest>Les plus vieux colonisateurs vivants à un épargnant réussi, à partir de personnages vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterOldest>
-  <RWS_Metric_RosterAnimalDefsPeak>Espèces animales de la colonie la plus élevée</RWS_Metric_RosterAnimalDefsPeak>
-  <RWS_MetricDesc_RosterAnimalDefsPeak>Les espèces animales de colonie les plus élevées à un épargnant réussi, à partir de caractères vivants admissibles (valeurs de crête par rapport à l'étendue des observations enregistrées).</RWS_MetricDesc_RosterAnimalDefsPeak>
-  <RWS_Metric_RosterPassions>Passions coloniales par compétence</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>Passions coloniales par la compétence à un épargnant réussi, à partir de personnages vivants admissibles (valeurs de crête s'étendent les observations sauvegardées).</RWS_MetricDesc_RosterPassions>
+  <RWS_MetricDesc_CaravansLost>Caravanes suivies dont tous les membres sont morts.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>Distance parcourue en caravane</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>Déplacements à pied des caravanes du joueur vers une case adjacente de la carte du monde. Les téléportations ne comptent pas.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>Cases visitées</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>Cases distinctes (couche et case) atteintes à pied ; revisiter une case ne la compte qu'une fois.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>Expédition la plus longue</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>Durée maximale entre le départ et le retour à une habitation du joueur, pour les expéditions suivies intégralement. Les caravanes divisées ou fusionnées sont exclues.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>Plus longue distance d'expédition</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>Nombre maximal de cases parcourues à pied lors d'une seule expédition terminée.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>Maximum de caravanes simultanées</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>Nombre maximal de caravanes du joueur existant au même moment, en mouvement ou non.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>Embuscades contre les caravanes</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>Embuscades de caravanes déclenchées avec succès.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>Implantations ennemies vaincues</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>Implantations de factions ennemies détruites à la suite d'une victoire du joueur.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>Implantations fondées</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>Nouvelles implantations du joueur fondées depuis une caravane ou une carte existante. L'implantation initiale, les déménagements de colonie et les atterrissages de gravivaisseaux ne comptent pas.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>Implantations abandonnées</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Implantations du joueur abandonnées volontairement. Les suppressions automatiques, par exemple au décollage d'un gravivaisseau, sont exclues.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>Dangers antiques ouverts</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>Sanctuaires antiques scellés (dangers antiques des cartes d'implantation du joueur) dont l'intérieur a été ouvert, comptés une fois chacun. Un sanctuaire compte lorsque le jeu le considère découvert, au moment où le brouillard au-dessus de son centre se dissipe. Détruire d'autres murs ou faire apparaître des ennemis ne compte pas.</RWS_MetricDesc_AncientDangersOpened>
+  <RWS_Metric_ColonyStartingBiome>Biome initial</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Biome (DefName) de la case où la partie a commencé, qui ne change jamais, et non celui de la colonie actuelle ; inconnu si la case du monde ne peut être identifiée.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_Metric_ResearchSnapshotFinished>Projets de recherche terminés</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>Nombre de projets de recherche terminés au dernier enregistrement réussi.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_Metric_ResearchSnapshotFinishedRate>Taux de recherches terminées</RWS_Metric_ResearchSnapshotFinishedRate>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Projets de recherche terminés ÷ ensemble des projets de recherche au dernier enregistrement réussi.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>Niveau technologique maximal des recherches achevées</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>Plus haut niveau technologique parmi les projets de recherche terminés au dernier enregistrement réussi.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>Factions alliées et hostiles</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>Factions actives alliées au joueur ou hostiles envers lui au dernier enregistrement réussi.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Étendue des relations avec les factions</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Valeurs de relations de base la plus basse et la plus élevée parmi les factions actives qui en ont une. Les factions hostiles en permanence sont comptées parmi les factions, mais pas dans les valeurs de relations.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>Colons libres vivants</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>Colons libres en vie lors d'un enregistrement réussi.</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>Prisonniers vivants de la colonie</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>Prisonniers vivants de la colonie lors d'un enregistrement réussi.</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>Esclaves vivants de la colonie</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>Esclaves vivants de la colonie lors d'un enregistrement réussi. En cas de récupération d'anciennes sauvegardes, seule une borne inférieure partielle est affichée, lorsque le statut d'esclave et la propriété par le joueur sont tous deux confirmés.</RWS_MetricDesc_RosterSlaves>
+  <RWS_Metric_RosterAnimals>Animaux de la colonie</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>Animaux vivants de la colonie lors d'un enregistrement réussi.</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>Mécanoïdes de la colonie</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>Mécanoïdes vivants de la colonie lors d'un enregistrement réussi.</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>Maximum de colons avec parties artificielles</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>Plus grand nombre de colons libres possédant au moins une partie du corps artificielle lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>Maximum de colons avec compétence niveau 20</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>Plus grand nombre de colons libres possédant au moins une compétence de niveau 20 lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>Maximum de compétences niveau 20 par colon</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Plus grand nombre de compétences de niveau 20 détenues par un même colon libre lors d'une sauvegarde enregistrée.</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>Colon vivant le plus âgé</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>Âge biologique maximal d'un colon libre vivant lors d'une sauvegarde enregistrée.</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>Maximum d'espèces animales de colonie</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>Plus grand nombre d'espèces distinctes parmi les animaux vivants de la colonie lors d'une sauvegarde enregistrée.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>Passions des colons par compétence</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Passions des colons libres (aucune, mineure, majeure) pour chaque compétence lors d'un enregistrement réussi.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Âge moyen des colons vivants</RWS_Metric_RosterAgeMean>
-  <RWS_MetricDesc_RosterAgeMean>Âge moyen des colonisateurs vivants à un épargnant réussi, à partir de caractères vivants admissibles (valeurs de crête par rapport à l'étendue des observations enregistrées).</RWS_MetricDesc_RosterAgeMean>
-  <RWS_Metric_RosterInjuredPeak>Les plus grands colons blessés simultanément</RWS_Metric_RosterInjuredPeak>
-  <RWS_MetricDesc_RosterInjuredPeak>Le plus grand nombre de colons blessés simultanément lors d'un sauvetage réussi, à partir de caractères vivants admissibles (valeurs de crête des observations sauvegardées).</RWS_MetricDesc_RosterInjuredPeak>
-  <RWS_Metric_FacilitiesHomeMaps>Les cartes les plus chargées à la maison</RWS_Metric_FacilitiesHomeMaps>
-  <RWS_MetricDesc_FacilitiesHomeMaps>La plupart des cartes à la maison chargées sur les cartes à la maison du joueur chargé lors d'une sauvegarde réussie. Les pics sont sélectionnés sur les sauvegardes enregistrées.</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesTurrets>La plupart des tourelles installées</RWS_Metric_FacilitiesTurrets>
-  <RWS_MetricDesc_FacilitiesTurrets>La plupart des tourelles installées sur les cartes à domicile des joueurs chargés lors d'une sauvegarde réussie. Les pics sont sélectionnés sur les sauvegardes enregistrées.</RWS_MetricDesc_FacilitiesTurrets>
-  <RWS_Metric_FacilitiesGrowingCells>Zone de croissance la plus importante</RWS_Metric_FacilitiesGrowingCells>
-  <RWS_MetricDesc_FacilitiesGrowingCells>La zone de croissance la plus grande sur les cartes à domicile des joueurs chargés à un succès d'épargne. Les pics sont sélectionnés sur les sauvegardes enregistrées.</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesGeneration>Capacité de production la plus élevée</RWS_Metric_FacilitiesGeneration>
-  <RWS_MetricDesc_FacilitiesGeneration>Capacité de production la plus élevée sur les cartes à domicile des joueurs chargés lors d'une économie réussie. Les pics sont sélectionnés sur les économies enregistrées.</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>Capacité de la batterie la plus élevée</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>Capacité de batterie la plus élevée sur les cartes à domicile des joueurs chargés lors d'une économie réussie. Les pics sont sélectionnés sur les économies enregistrées.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_MetricDesc_RosterAgeMean>Âge biologique moyen des colons libres vivants lors d'un enregistrement réussi.</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>Maximum de colons blessés simultanément</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>Plus grand nombre de colons libres ayant au moins une blessure (y compris permanente) lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>Maximum de cartes d'habitation simultanées</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>Plus grand nombre de cartes d'habitation du joueur chargées simultanément lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesTurrets>Maximum de tourelles</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>Plus grand nombre de tourelles du joueur sur les cartes d'habitation chargées lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>Surface maximale des zones agricoles</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>Surface totale maximale des zones agricoles (cases) sur les cartes d'habitation chargées lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesGeneration>Puissance nominale maximale de production</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>Plus grande somme des puissances nominales des générateurs électriques sur les cartes d'habitation chargées lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>Capacité maximale des batteries</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>Plus grande somme des capacités nominales des batteries sur les cartes d'habitation chargées lors d'une même sauvegarde enregistrée.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Température extérieure la plus faible observée</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>Température extérieure la plus faible observée sur les cartes de la maison du joueur chargé à une sauvegarde réussie. Les pics sont sélectionnés sur les arrêts enregistrés.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Température extérieure la plus élevée observée</RWS_Metric_FacilitiesOutdoorTempMax>

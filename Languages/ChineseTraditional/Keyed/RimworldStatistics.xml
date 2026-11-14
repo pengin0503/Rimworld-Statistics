@@ -625,131 +625,131 @@
   <RWS_Metric_AwayRescues>離開主基地時的救助次數</RWS_Metric_AwayRescues>
   <RWS_MetricDesc_AwayRescues>在非玩家主據點地圖上實施的救助次數。</RWS_MetricDesc_AwayRescues>
   <RWS_Metric_Resurrections>復活次數</RWS_Metric_Resurrections>
-  <RWS_MetricDesc_Resurrections>有時自由殖民者會死而復生</RWS_MetricDesc_Resurrections>
-  <RWS_Metric_ResurrectionsPerPawnMax>一個殖民者的大多數復活</RWS_Metric_ResurrectionsPerPawnMax>
-  <RWS_MetricDesc_ResurrectionsPerPawnMax>一個角色最復活; 分解名稱( by id) 。</RWS_MetricDesc_ResurrectionsPerPawnMax>
-  <RWS_Metric_DiseaseOnsets>新疾病</RWS_Metric_DiseaseOnsets>
-  <RWS_MetricDesc_DiseaseOnsets>新加入自由殖民者的疾病。</RWS_MetricDesc_DiseaseOnsets>
-  <RWS_Metric_DiseaseDurationMean>生病的平日</RWS_Metric_DiseaseDurationMean>
-  <RWS_MetricDesc_DiseaseDurationMean>由死亡或截肢取走的疾病被忽略。</RWS_MetricDesc_DiseaseDurationMean>
-  <RWS_Metric_InfectionRecoveries>已找到的感染</RWS_Metric_InfectionRecoveries>
-  <RWS_MetricDesc_InfectionRecoveries>死亡或截肢。</RWS_MetricDesc_InfectionRecoveries>
-  <RWS_Metric_InfectionDurationMax>最長的感染</RWS_Metric_InfectionDurationMax>
-  <RWS_MetricDesc_InfectionDurationMax>從一開始到恢復的最短的一天 一直追蹤到感染</RWS_MetricDesc_InfectionDurationMax>
-  <RWS_Metric_FoodPoisonings>食物中毒</RWS_Metric_FoodPoisonings>
-  <RWS_MetricDesc_FoodPoisonings>自由殖民者有食物中毒的時刻</RWS_MetricDesc_FoodPoisonings>
-  <RWS_Metric_Addictions>新成癮者</RWS_Metric_Addictions>
-  <RWS_MetricDesc_Addictions>新加入自由殖民者的成癮, 嚴重性變化不計入 。</RWS_MetricDesc_Addictions>
-  <RWS_Metric_Overdoses>過量</RWS_Metric_Overdoses>
-  <RWS_MetricDesc_Overdoses>時代自由殖民者新服藥過量</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>退出</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>自由殖民者吸毒成癮的時刻已進入戒除期(其化學需要已陷入戒除期 ) 。 每一次入境都算數一次;開始錄制時已經戒除的戒除期不算數。</RWS_MetricDesc_Withdrawals>
-  <RWS_Metric_HospitalStayMean>平均住院率</RWS_Metric_HospitalStayMean>
-  <RWS_MetricDesc_HospitalStayMean>自由殖民者躺在同一張醫療床上, 從躺到站起來。 立刻躺在同一張床上(在床上換工作) , 繼續逗留; 留在死亡中, 或在錄音前開始, 不提供樣本。</RWS_MetricDesc_HospitalStayMean>
-  <RWS_Metric_PartsLost>失去的身體部位</RWS_Metric_PartsLost>
-  <RWS_MetricDesc_PartsLost>有時自由殖民者會失去一具屍體,</RWS_MetricDesc_PartsLost>
-  <RWS_Metric_Scars>永久的疤痕</RWS_Metric_Scars>
-  <RWS_MetricDesc_Scars>有時自由殖民者的傷口會變成永久的</RWS_MetricDesc_Scars>
-  <RWS_Metric_InjuriesPerPawnMax>大多傷的殖民者</RWS_Metric_InjuriesPerPawnMax>
-  <RWS_MetricDesc_InjuriesPerPawnMax>自由殖民者的傷痕越大,</RWS_MetricDesc_InjuriesPerPawnMax>
-  <RWS_Metric_WildAnimalInjuries>野生動物的傷痕</RWS_Metric_WildAnimalInjuries>
-  <RWS_MetricDesc_WildAnimalInjuries>自由殖民者因野獸攻擊而受新傷。</RWS_MetricDesc_WildAnimalInjuries>
-  <RWS_Metric_ToxicFalloutDays>有毒沉降日</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>至少有一個有毒的沉降物存在,</RWS_MetricDesc_ToxicFalloutDays>
-  <RWS_Metric_SolarFlares>太陽耀斑</RWS_Metric_SolarFlares>
-  <RWS_MetricDesc_SolarFlares>啟動的太陽耀斑; 啟動錄音時已執行的耀斑不計數 。</RWS_MetricDesc_SolarFlares>
-  <RWS_Metric_SolarFlareDays>日光耀斑</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>至少有一顆太陽耀斑存在的日子,</RWS_MetricDesc_SolarFlareDays>
-  <RWS_Metric_ColdSnaps>冷 ⁇ 子</RWS_Metric_ColdSnaps>
-  <RWS_MetricDesc_ColdSnaps>寒冷的一角開始了。</RWS_MetricDesc_ColdSnaps>
-  <RWS_Metric_HeatWaves>熱浪</RWS_Metric_HeatWaves>
-  <RWS_MetricDesc_HeatWaves>開始的熱浪</RWS_MetricDesc_HeatWaves>
-  <RWS_Metric_VolcanicWinters>火山的冬天</RWS_Metric_VolcanicWinters>
-  <RWS_MetricDesc_VolcanicWinters>火山的冬天開始了。</RWS_MetricDesc_VolcanicWinters>
-  <RWS_Metric_Eclipses>剪下</RWS_Metric_Eclipses>
-  <RWS_MetricDesc_Eclipses>開始的剪下。</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>作物泡泡</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>作物衰落事件成功;而不是植物衰落的數量。</RWS_MetricDesc_CropBlights>
-  <RWS_Metric_Meteors>甲基撞擊</RWS_Metric_Meteors>
-  <RWS_MetricDesc_Meteors>成功隕石事件;而不是碎片數量。</RWS_MetricDesc_Meteors>
-  <RWS_Metric_ShortCircuits>短路</RWS_Metric_ShortCircuits>
-  <RWS_MetricDesc_ShortCircuits>短路事件成功 。</RWS_MetricDesc_ShortCircuits>
-  <RWS_Metric_Fires>起火了</RWS_Metric_Fires>
-  <RWS_MetricDesc_Fires>除了擴散之外, 火是在一個沒有在玩家家家用地圖上起火的牢房中發起的。</RWS_MetricDesc_Fires>
-  <RWS_Metric_BuildingsBurned>建築物失火</RWS_Metric_BuildingsBurned>
-  <RWS_MetricDesc_BuildingsBurned>已完成的玩家建築被火災直接毀壞。</RWS_MetricDesc_BuildingsBurned>
-  <RWS_Metric_CaravanDepartures>乘車離境</RWS_Metric_CaravanDepartures>
-  <RWS_MetricDesc_CaravanDepartures>玩家拖車新成型, 留下地圖。 合併和拆分不計算 。</RWS_MetricDesc_CaravanDepartures>
-  <RWS_Metric_CaravansLost>失去的車夫</RWS_Metric_CaravansLost>
-  <RWS_MetricDesc_CaravansLost>追蹤到每一個成員都死去的拖車</RWS_MetricDesc_CaravansLost>
-  <RWS_Metric_CaravanTiles>車廂距離</RWS_Metric_CaravanTiles>
-  <RWS_MetricDesc_CaravanTiles>玩家大篷車步行到相鄰的瓦片的步數。 電子埠不計數 。</RWS_MetricDesc_CaravanTiles>
-  <RWS_Metric_CaravanUniqueTiles>已訪問的梯子</RWS_Metric_CaravanUniqueTiles>
-  <RWS_MetricDesc_CaravanUniqueTiles>不同牌( 樓層 和 瓦片 ) 、 腳上 接觸 、 有 一 塊 牌 、 再次 算數 。</RWS_MetricDesc_CaravanUniqueTiles>
-  <RWS_Metric_CaravanLongestExpedition>最長的探險</RWS_Metric_CaravanLongestExpedition>
-  <RWS_MetricDesc_CaravanLongestExpedition>從離家到回到遊擊隊的家的 最多日數;</RWS_MetricDesc_CaravanLongestExpedition>
-  <RWS_Metric_CaravanLongestDistance>最長的探險距離</RWS_Metric_CaravanLongestDistance>
-  <RWS_MetricDesc_CaravanLongestDistance>最大的瓦片走在一個完成的探險。</RWS_MetricDesc_CaravanLongestDistance>
-  <RWS_Metric_CaravanConcurrentMax>大多數的旅遊車,一次</RWS_Metric_CaravanConcurrentMax>
-  <RWS_MetricDesc_CaravanConcurrentMax>最多玩家的大篷車 一次,移動與否。</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>木車伏擊</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>成功伏擊大篷車。</RWS_MetricDesc_CaravanAmbushes>
-  <RWS_Metric_SitesCleared>敵人定居點被擊敗</RWS_Metric_SitesCleared>
-  <RWS_MetricDesc_SitesCleared>被玩家的勝利摧毀的敵人派系定居點</RWS_MetricDesc_SitesCleared>
-  <RWS_Metric_SettlementsFounded>建立定居點</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>新建的玩家居住區由大篷車或現有地圖建立。 開始的居住區、 移動住地及重力船落地不計數 。</RWS_MetricDesc_SettlementsFounded>
-  <RWS_Metric_SettlementsAbandoned>廢棄的定居點</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>玩家和解被選擇放棄。 自動移動如重力飛行不計數 。</RWS_MetricDesc_SettlementsAbandoned>
-  <RWS_Metric_AncientDangersOpened>已開啟的古老危險</RWS_Metric_AncientDangersOpened>
-  <RWS_MetricDesc_AncientDangersOpened>封存的古代神社( 玩家定居地圖的古代危險) , 其內部被開啟了, 每個神社都會計數, 當遊戲被揭開時, 其中心部位的迷霧會被清除。 其他的牆壁破裂或敵人出現不計數 。</RWS_MetricDesc_AncientDangersOpened>
-  <RWS_Metric_ColonyStartingBiome>原始生物</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Biome DefName 在遊戲的永不變化的開局牌, 不是目前的聚居地站點; 世界牌無法解決時未知 。</RWS_MetricDesc_ColonyStartingBiome>
-  <RWS_Metric_ResearchSnapshotFinished>已完成的研究專案</RWS_Metric_ResearchSnapshotFinished>
-  <RWS_MetricDesc_ResearchSnapshotFinished>上次成功儲存完成的已登記研究專案數 。</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_MetricDesc_Resurrections>自由殖民者死亡後被復活的次數。</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>單名殖民者最多復活次數</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>同一個單位復活次數的最大值；明細顯示其ID。</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>新發疾病數</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>自由殖民者新患上的疾病數量。</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>平均患病天數</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>從發病到康復全程均有記錄的疾病的平均患病天數。因死亡或截肢而消失的疾病不計入。</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>治癒的感染症數</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>透過康復消除的感染症數量。因死亡或截肢而消失的感染症不計入。</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_Metric_InfectionDurationMax>最長感染症病程</RWS_Metric_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>全程追蹤的感染症從發病到康復的最長天數。</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_Metric_FoodPoisonings>食物中毒次數</RWS_Metric_FoodPoisonings>
+  <RWS_MetricDesc_FoodPoisonings>自由殖民者發生食物中毒的次數。</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>新增成癮次數</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>自由殖民者新出現的藥物成癮次數。嚴重程度的變化不計入。</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>藥物過量次數</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>自由殖民者新發生的藥物過量次數。</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>戒斷症狀開始次數</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>自由殖民者的藥物成癮進入戒斷階段的次數（對藥物的化學需求下降至戒斷程度）。每次進入計一次；開始記錄時已處於戒斷階段的不計入。</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>平均住院天數</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>自由殖民者從躺下到起床，在同一張醫療床上的平均天數。因床上工作切換而立即再次躺在同一張床上，視為住院繼續。以死亡結束或在記錄開始前已開始的住院不計入樣本。</RWS_MetricDesc_HospitalStayMean>
+  <RWS_Metric_PartsLost>失去的身體部位數</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>自由殖民者失去身體部位的次數。不包括隨該部位一同失去的下級部位或手術摘除的部位。</RWS_MetricDesc_PartsLost>
+  <RWS_Metric_Scars>永久傷疤數</RWS_Metric_Scars>
+  <RWS_MetricDesc_Scars>自由殖民者的傷勢變為永久傷疤的次數。</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>負傷最多的殖民者</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>新增傷勢次數最多的自由殖民者的負傷數；明細顯示其ID。</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_Metric_WildAnimalInjuries>野生動物造成的傷勢</RWS_Metric_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>自由殖民者受到野生動物攻擊而產生的新增傷勢數。</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_Metric_ToxicFalloutDays>毒霧發生天數</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>至少存在一次有效毒霧事件的天數；多個毒霧事件重疊的時間僅計算一次。</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_Metric_SolarFlares>太陽閃焰次數</RWS_Metric_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>新開始的太陽閃焰事件次數；記錄開始前已在進行中的不計入。</RWS_MetricDesc_SolarFlares>
+  <RWS_Metric_SolarFlareDays>太陽閃焰發生天數</RWS_Metric_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>至少存在一次有效太陽閃焰事件的天數；重疊的時間只計算一次，不是每臺設備停機的時間。</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>寒潮次數</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>新開始的寒潮次數。</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>熱浪次數</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>新開始的熱浪次數。</RWS_MetricDesc_HeatWaves>
+  <RWS_Metric_VolcanicWinters>火山冬季次數</RWS_Metric_VolcanicWinters>
+  <RWS_MetricDesc_VolcanicWinters>新開始的火山冬季次數。</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>日蝕次數</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>新開始的日蝕次數。</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>作物枯萎病次數</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>成功觸發的作物枯萎病事件次數，不是染病植物株數。</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>隕石墜落次數</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>成功觸發的隕石事件次數，不是墜落碎塊數。</RWS_MetricDesc_Meteors>
+  <RWS_Metric_ShortCircuits>短路次數</RWS_Metric_ShortCircuits>
+  <RWS_MetricDesc_ShortCircuits>成功觸發的短路事件次數。</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>火災起火次數</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>在玩家主據點地圖上，原本無火的格子中發生的非蔓延起火次數。</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>火災毀壞建築數</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>直接因火焰傷害而摧毀的已完工玩家建築數。</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>旅隊出發次數</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>玩家旅隊離開地圖時新建旅隊的次數。旅隊合併或拆分不計入。</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>全滅的旅隊數</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>追蹤中的旅隊所有成員均死亡的次數。</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>旅隊行走距離</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>玩家旅隊步行前往相鄰世界地圖地塊的移動步數。不包括傳送。</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>到訪過的世界地塊數</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>步行抵達的不同地塊（包括層級和地塊編號）數量，重複到訪同一地塊只計一次。</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>最長遠征時間</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>全程追蹤，從出發到返回玩家主據點的遠征最長天數。發生拆分或合併的旅隊不計入。</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>單次遠征最長距離</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>一趟已完成遠征中步行經過的最多地塊數。</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>同時存在最多旅隊數</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>任意時刻同時存在的玩家旅隊最大數量，無論是否移動。</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>旅隊遭伏擊次數</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>成功觸發的旅隊伏擊事件次數。</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>擊敗敵方據點次數</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>玩家獲勝並摧毀的敵對派系據點數量。</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>建立新據點次數</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>從旅隊或已有地圖中建立的新玩家據點數量，不包括初始據點、殖民地遷移或重力飛船著陸。</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>放棄據點次數</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>玩家主動選擇放棄的據點數量，不包括重力飛船起飛等自動移除情況。</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>開啟遠古危險區域數</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>玩家據點地圖上被開啟內部空間的封閉遠古神殿（遠古危險），每座僅計一次。遊戲判定其被發現的時刻，也就是中心區域的迷霧消失時才計入。破壞其他牆壁或出現敵人不算。</RWS_MetricDesc_AncientDangersOpened>
+  <RWS_Metric_ColonyStartingBiome>初始生態系統</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>遊戲開始地塊固定不變的生態系統（DefName），不是目前殖民地所在位置的生態系統。無法解析世界地塊時視為未知。</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_Metric_ResearchSnapshotFinished>已完成研究專案數</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>上次成功儲存時已完成的研究專案數量。</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>研究完成率</RWS_Metric_ResearchSnapshotFinishedRate>
-  <RWS_MetricDesc_ResearchSnapshotFinishedRate>已完成的專案由所有已登記的專案在最後一個成功的儲存中除以 。</RWS_MetricDesc_ResearchSnapshotFinishedRate>
-  <RWS_Metric_ResearchSnapshotTechPeak>完成水平最高的研究</RWS_Metric_ResearchSnapshotTechPeak>
-  <RWS_MetricDesc_ResearchSnapshotTechPeak>在最後一次成功的拯救中,完成的已登記的研究專案中,最高的技術水平。</RWS_MetricDesc_ResearchSnapshotTechPeak>
-  <RWS_Metric_FactionSnapshotRelations>同盟和敵對派別</RWS_Metric_FactionSnapshotRelations>
-  <RWS_MetricDesc_FactionSnapshotRelations>在最後一次成功儲存時, 數量與玩家有聯盟或敵意的參賽派系 。</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>派系商譽範圍</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>支援善意的有資格的團體的最小和最大基礎的善意。</RWS_MetricDesc_FactionSnapshotGoodwillRange>
-  <RWS_Metric_RosterFree>自由殖民者的生活</RWS_Metric_RosterFree>
-  <RWS_MetricDesc_RosterFree>活在自由殖民者手中,</RWS_MetricDesc_RosterFree>
-  <RWS_Metric_RosterPrisoners>生活在聚居地的囚犯</RWS_Metric_RosterPrisoners>
-  <RWS_MetricDesc_RosterPrisoners>活在殖民地的囚犯在成功拯救中,</RWS_MetricDesc_RosterPrisoners>
-  <RWS_Metric_RosterSlaves>活在殖民地的奴隸</RWS_Metric_RosterSlaves>
-  <RWS_MetricDesc_RosterSlaves>活在殖民地的奴隸在成功拯救中。 歷史拯救的恢復顯示, 只有在被拯救的奴隸地位和玩家所有權得到確認時, 才有部分的下限 。</RWS_MetricDesc_RosterSlaves>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>上次成功儲存時已完成研究專案數 ÷ 全部研究專案數。</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>已完成研究的最高科技等級</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>上次成功儲存時已完成的研究專案中，最高的科技等級。</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>盟友與敵對派系</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>上次成功儲存時，與玩家結盟或敵對的活躍派系數量。</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>派系友好度範圍</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>所有有友好度數值的活躍派系中，最低和最高基礎友好度。永久敵對派系計入派系數量，但不計入友好度。</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>存活的自由殖民者</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>成功儲存時仍存活的自由殖民者數量。</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>存活的殖民地俘虜</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>成功儲存時仍存活的殖民地俘虜數量。</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>存活的殖民地奴隸</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>成功儲存時仍存活的殖民地奴隸數量。由舊存檔恢復時，只顯示部分下限，且僅統計奴隸身分和玩家所屬關係都能確認的人員。</RWS_MetricDesc_RosterSlaves>
   <RWS_Metric_RosterAnimals>殖民地動物</RWS_Metric_RosterAnimals>
-  <RWS_MetricDesc_RosterAnimals>成功拯救的殖民地動物, 從符合條件的活字(峰值跨過已儲存的觀察) 。</RWS_MetricDesc_RosterAnimals>
-  <RWS_Metric_RosterMechs>殖民地機械人</RWS_Metric_RosterMechs>
-  <RWS_MetricDesc_RosterMechs>成功儲存的殖民地機械人, 來自符合條件的活字( 峰值跨過已儲存的觀察) 。</RWS_MetricDesc_RosterMechs>
-  <RWS_Metric_RosterAugmentedPeak>增加最多的殖民者</RWS_Metric_RosterAugmentedPeak>
-  <RWS_MetricDesc_RosterAugmentedPeak>最高的殖民者成功拯救了符合條件的活字(峰值跨過已儲存的觀察).</RWS_MetricDesc_RosterAugmentedPeak>
-  <RWS_Metric_RosterSkill20PawnsPeak>技能最高的殖民者 20</RWS_Metric_RosterSkill20PawnsPeak>
-  <RWS_MetricDesc_RosterSkill20PawnsPeak>最高的殖民者,</RWS_MetricDesc_RosterSkill20PawnsPeak>
-  <RWS_Metric_RosterSkill20PerPawnPeak>一個殖民者最優秀的技術</RWS_Metric_RosterSkill20PerPawnPeak>
-  <RWS_MetricDesc_RosterSkill20PerPawnPeak>一個殖民者在成功拯救時, 從符合條件的活字( 峰值跨過已儲存的觀察) , 所具備的最大的技能 。</RWS_MetricDesc_RosterSkill20PerPawnPeak>
-  <RWS_Metric_RosterOldest>古老的殖民者</RWS_Metric_RosterOldest>
-  <RWS_MetricDesc_RosterOldest>最古老的殖民者成功拯救了符合條件的活字(峰值跨過已儲存的觀察).</RWS_MetricDesc_RosterOldest>
-  <RWS_Metric_RosterAnimalDefsPeak>最高的聚居地動物物種</RWS_Metric_RosterAnimalDefsPeak>
-  <RWS_MetricDesc_RosterAnimalDefsPeak>最高的聚居地動物物種成功拯救,</RWS_MetricDesc_RosterAnimalDefsPeak>
-  <RWS_Metric_RosterPassions>殖民者的激情</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>以成功拯救的技巧, 來自符合條件的活字(峰值跨過已儲存的觀察),</RWS_MetricDesc_RosterPassions>
-  <RWS_Metric_RosterAgeMean>生活在殖民者的平均年齡</RWS_Metric_RosterAgeMean>
-  <RWS_MetricDesc_RosterAgeMean>正常的殖民者年齡,</RWS_MetricDesc_RosterAgeMean>
-  <RWS_Metric_RosterInjuredPeak>同時受傷最多的殖民者</RWS_Metric_RosterInjuredPeak>
-  <RWS_MetricDesc_RosterInjuredPeak>在成功拯救中, 從符合條件的活字( 峰值跨過已儲存的觀察) 中, 受傷最大的殖民者。</RWS_MetricDesc_RosterInjuredPeak>
-  <RWS_Metric_FacilitiesHomeMaps>最常載入的家用地圖</RWS_Metric_FacilitiesHomeMaps>
-  <RWS_MetricDesc_FacilitiesHomeMaps>在成功儲存時, 大部分已載入的玩家家家用地圖。 峰值會被選取為已錄入的儲存 。</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesTurrets>大部分已安裝的炮塔</RWS_Metric_FacilitiesTurrets>
-  <RWS_MetricDesc_FacilitiesTurrets>在成功儲存時, 大部分已安裝在玩家家家用地圖上的炮塔。 峰值選取在已記錄的儲存中 。</RWS_MetricDesc_FacilitiesTurrets>
-  <RWS_Metric_FacilitiesGrowingCells>最大的生長區域</RWS_Metric_FacilitiesGrowingCells>
-  <RWS_MetricDesc_FacilitiesGrowingCells>成功儲存的玩家家家地圖上最大生長區域 。 峰值會被選取為已記錄的儲存區 。</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesGeneration>最高分的發電能力</RWS_Metric_FacilitiesGeneration>
-  <RWS_MetricDesc_FacilitiesGeneration>在成功儲存時, 玩家家家圖中最高的標準產生能力。 峰值選取在錄制的儲存中 。</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>最高的電池容量</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>成功儲存的玩家家家用地圖上最高的標準電池容量。 峰值選取為已記錄的儲存 。</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_MetricDesc_RosterAnimals>成功儲存時仍存活的殖民地動物數量。</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>殖民地機械族</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>成功儲存時仍存活的玩家機械族數量。</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>有人工身體部位的最多殖民者人數</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>記錄的單次儲存中，具有至少一個人工身體部位的自由殖民者人數最大值。</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>技能達到20級的最多殖民者人數</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>記錄的單次儲存中，至少有一項技能達到20級的自由殖民者人數最大值。</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>單名殖民者擁有最多20級技能數</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>任一次已記錄的儲存中，一名自由殖民者擁有的20級技能數最大值。</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>最年長的存活殖民者</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>任一次已記錄的儲存中，存活自由殖民者的最高生物學年齡。</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>殖民地動物最多種類數</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>任一次已記錄的儲存中，存活殖民地動物的物種種類數最大值。</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>依技能統計的殖民者熱情</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>成功儲存時自由殖民者各技能的熱情（無、普通、強烈）數量。</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>存活殖民者平均年齡</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>成功儲存時仍存活的自由殖民者平均生物學年齡。</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>同時負傷的最多殖民者人數</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>單次已記錄的儲存中，至少有一處傷勢（包括永久傷勢）的自由殖民者人數最大值。</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>同時存在最多主據點地圖數</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>任一次已記錄的儲存中，同時載入的玩家主據點地圖數量最大值。</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesTurrets>最多砲塔數</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>任一次已記錄的儲存中，已載入主據點地圖上的玩家砲塔數量最大值。</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>最大種植區面積</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>任一次已記錄的儲存中，已載入主據點地圖上的種植區總面積（格子數）最大值。</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesGeneration>最大发电機額定輸出</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>任一次已記錄的儲存中，已載入主據點地圖上各發電機額定輸出總和的最大值。</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>最大蓄電池容量</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>任一次已記錄的儲存中，已載入主據點地圖上各蓄電池額定容量總和的最大值。</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>最低的室外溫度</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>成功儲存時, 玩家家家地圖上最低的室外溫度。 峰值選取為已記錄的儲存 。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>室外最高觀測溫度</RWS_Metric_FacilitiesOutdoorTempMax>

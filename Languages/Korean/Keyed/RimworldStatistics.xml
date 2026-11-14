@@ -625,131 +625,131 @@
   <RWS_Metric_AwayRescues>본거지 밖에서 구조한 횟수</RWS_Metric_AwayRescues>
   <RWS_MetricDesc_AwayRescues>플레이어의 본거지가 아닌 지도에서 수행한 구조 횟수입니다.</RWS_MetricDesc_AwayRescues>
   <RWS_Metric_Resurrections>부활 횟수</RWS_Metric_Resurrections>
-  <RWS_MetricDesc_Resurrections>무료 식민지가 죽음에서 돌아 왔습니다.</RWS_MetricDesc_Resurrections>
-  <RWS_Metric_ResurrectionsPerPawnMax>가장 부활 한 식민지의</RWS_Metric_ResurrectionsPerPawnMax>
-  <RWS_MetricDesc_ResurrectionsPerPawnMax>한 문자의 가장 부활; 고장은 그들에게 이름을 붙입니다 (id).</RWS_MetricDesc_ResurrectionsPerPawnMax>
-  <RWS_Metric_DiseaseOnsets>새로운 질병</RWS_Metric_DiseaseOnsets>
-  <RWS_MetricDesc_DiseaseOnsets>Sicknesses 새로 추가 된 무료 식민지.</RWS_MetricDesc_DiseaseOnsets>
-  <RWS_Metric_DiseaseDurationMean>평균 일 병</RWS_Metric_DiseaseDurationMean>
-  <RWS_MetricDesc_DiseaseDurationMean>질병을 치료하기 위해 onset의 평균 일; 죽음이나 분비에 의해 제거 된 사람들은 그만두고 있습니다.</RWS_MetricDesc_DiseaseDurationMean>
-  <RWS_Metric_InfectionRecoveries>감염</RWS_Metric_InfectionRecoveries>
-  <RWS_MetricDesc_InfectionRecoveries>치유에 의해 멀리 갔다 감염; 죽음 또는 분비에 의해 제거는 계산되지 않습니다.</RWS_MetricDesc_InfectionRecoveries>
-  <RWS_Metric_InfectionDurationMax>가장 긴 감염</RWS_Metric_InfectionDurationMax>
-  <RWS_MetricDesc_InfectionDurationMax>감염의 회복에 onset에서 가장 일.</RWS_MetricDesc_InfectionDurationMax>
-  <RWS_Metric_FoodPoisonings>식품 중독</RWS_Metric_FoodPoisonings>
-  <RWS_MetricDesc_FoodPoisonings>무료 식민지가 음식 중독을 얻은 시간.</RWS_MetricDesc_FoodPoisonings>
-  <RWS_Metric_Addictions>새로운 중독</RWS_Metric_Addictions>
-  <RWS_MetricDesc_Addictions>중독은 무료 식민지에 새로 추가되었습니다. Severity 변경은 계산되지 않습니다.</RWS_MetricDesc_Addictions>
-  <RWS_Metric_Overdoses>뚱 베어</RWS_Metric_Overdoses>
-  <RWS_MetricDesc_Overdoses>새로운 overdosed를 읽으십시오.</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>인출 Onsets</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>무료 식민지의 마약 중독은 인출 단계에 입력 (그것의 화학 필요는 인출에 떨어졌다). 각 항목은 한 번 계산; 기록이 계산되지 않을 때 이미 인출 중독.</RWS_MetricDesc_Withdrawals>
-  <RWS_Metric_HospitalStayMean>의료기관</RWS_Metric_HospitalStayMean>
-  <RWS_MetricDesc_HospitalStayMean>평균 일 같은 의료 침대에 놓은 무료 식민지, lying down to getting up. 같은 침대에서 다시 거짓말 (침대에 작업 스위치) 계속 체류; 죽음에서 끝나는 유지, 또는 기록하기 전에 시작, 샘플이 없습니다.</RWS_MetricDesc_HospitalStayMean>
-  <RWS_Metric_PartsLost>몸 부품 손실</RWS_Metric_PartsLost>
-  <RWS_MetricDesc_PartsLost>무료 식민지 시대는 신체 부위를 잃었습니다. 아이들은 수술에 의해 제거 및 부품으로 잃어 버렸습니다.</RWS_MetricDesc_PartsLost>
-  <RWS_Metric_Scars>스카프</RWS_Metric_Scars>
-  <RWS_MetricDesc_Scars>무료 식민지의 부상이 영구적 인 시간.</RWS_MetricDesc_Scars>
-  <RWS_Metric_InjuriesPerPawnMax>가장 부상된 식민지</RWS_Metric_InjuriesPerPawnMax>
-  <RWS_MetricDesc_InjuriesPerPawnMax>대부분의 무료 식민지주의의 새로운 부상; 고장은 그들을 지명 (id).</RWS_MetricDesc_InjuriesPerPawnMax>
-  <RWS_Metric_WildAnimalInjuries>야생 동물의 부상</RWS_Metric_WildAnimalInjuries>
-  <RWS_MetricDesc_WildAnimalInjuries>야생 동물 공격에서 무료 식민지의 새로운 부상.</RWS_MetricDesc_WildAnimalInjuries>
-  <RWS_Metric_ToxicFalloutDays>유독한 낙하의 일</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>적어도 1개의 유독한 낙하가 활동적, overlaps는 한 번 돌렸습니다.</RWS_MetricDesc_ToxicFalloutDays>
-  <RWS_Metric_SolarFlares>태양 빛</RWS_Metric_SolarFlares>
-  <RWS_MetricDesc_SolarFlares>시작된 태양 섬광; 기록이 시작될 때 이미 달리는 것은 계산되지 않습니다.</RWS_MetricDesc_SolarFlares>
-  <RWS_Metric_SolarFlareDays>태양 광의 날</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>적어도 하나의 태양 광 플레어가 활성화 된 동안 일, overlaps는 한 번 계산; 반대 가동불능시간이 아닙니다.</RWS_MetricDesc_SolarFlareDays>
-  <RWS_Metric_ColdSnaps>콜드 스냅</RWS_Metric_ColdSnaps>
-  <RWS_MetricDesc_ColdSnaps>시작된 콜드 스냅.</RWS_MetricDesc_ColdSnaps>
-  <RWS_Metric_HeatWaves>열파</RWS_Metric_HeatWaves>
-  <RWS_MetricDesc_HeatWaves>시작되는 열파.</RWS_MetricDesc_HeatWaves>
-  <RWS_Metric_VolcanicWinters>화산 겨울</RWS_Metric_VolcanicWinters>
-  <RWS_MetricDesc_VolcanicWinters>시작되는 화산 겨울.</RWS_MetricDesc_VolcanicWinters>
-  <RWS_Metric_Eclipses>Eclipses 정보</RWS_Metric_Eclipses>
-  <RWS_MetricDesc_Eclipses>시작된 Eclipses.</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>크롭 blights</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>성공적인 작물 blight 사건; blighted 식물의 수 아닙니다.</RWS_MetricDesc_CropBlights>
-  <RWS_Metric_Meteors>Meteorite 충격</RWS_Metric_Meteors>
-  <RWS_MetricDesc_Meteors>성공적인 meteorite 사건; 조각의 수 아닙니다.</RWS_MetricDesc_Meteors>
-  <RWS_Metric_ShortCircuits>단락</RWS_Metric_ShortCircuits>
-  <RWS_MetricDesc_ShortCircuits>성공적인 단락 사건.</RWS_MetricDesc_ShortCircuits>
-  <RWS_Metric_Fires>화재 시작</RWS_Metric_Fires>
-  <RWS_MetricDesc_Fires>Fires는 플레이어 홈 맵에 화재가없는 세포에서 확산하여 다른 것을 시작했습니다.</RWS_MetricDesc_Fires>
-  <RWS_Metric_BuildingsBurned>불에 잃어버린 건물</RWS_Metric_BuildingsBurned>
-  <RWS_MetricDesc_BuildingsBurned>화재 손상에 의해 직접 파괴 된 플레이어 건물.</RWS_MetricDesc_BuildingsBurned>
-  <RWS_Metric_CaravanDepartures>Caravan 출발</RWS_Metric_CaravanDepartures>
-  <RWS_MetricDesc_CaravanDepartures>플레이어 caravans 새로 형성하여 지도를 떠나. Merges 및 분할은 계산되지 않습니다.</RWS_MetricDesc_CaravanDepartures>
-  <RWS_Metric_CaravansLost>Caravans 분실</RWS_Metric_CaravansLost>
-  <RWS_MetricDesc_CaravansLost>모든 회원이 사망 한 Caravans 추적.</RWS_MetricDesc_CaravansLost>
-  <RWS_Metric_CaravanTiles>Caravan 거리</RWS_Metric_CaravanTiles>
-  <RWS_MetricDesc_CaravanTiles>발에 인접한 타일에 플레이어 caravans의 단계. Teleports는 계산되지 않습니다.</RWS_MetricDesc_CaravanTiles>
-  <RWS_Metric_CaravanUniqueTiles>회사 소개</RWS_Metric_CaravanUniqueTiles>
-  <RWS_MetricDesc_CaravanUniqueTiles>스트레칭 타일 (레이어 및 타일)는 발에 도달; 타일은 다시 한 번 카운트를 방문했다.</RWS_MetricDesc_CaravanUniqueTiles>
-  <RWS_Metric_CaravanLongestExpedition>가장 큰 expedition</RWS_Metric_CaravanLongestExpedition>
-  <RWS_MetricDesc_CaravanLongestExpedition>출발에서 가장 일들은 전반적으로 추적된 선수 가정으로 돌아갑니다. 분할하거나 합병한 사람은 왼쪽으로 나옵니다.</RWS_MetricDesc_CaravanLongestExpedition>
-  <RWS_Metric_CaravanLongestDistance>가장 긴 탐험 거리</RWS_Metric_CaravanLongestDistance>
-  <RWS_MetricDesc_CaravanLongestDistance>가장 타일은 한 번 완성 된 expedition에 걸렸습니다.</RWS_MetricDesc_CaravanLongestDistance>
-  <RWS_Metric_CaravanConcurrentMax>한 번에 대부분의 caravans</RWS_Metric_CaravanConcurrentMax>
-  <RWS_MetricDesc_CaravanConcurrentMax>한 번에 존재 한 대부분의 플레이어 caravans, 이동 또는 아닙니다.</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>캐러밴 ambushes</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>caravans의 성공적인 ambushes.</RWS_MetricDesc_CaravanAmbushes>
-  <RWS_Metric_SitesCleared>Enemy 결제 패배</RWS_Metric_SitesCleared>
-  <RWS_MetricDesc_SitesCleared>Enemy faction 결제는 플레이어의 승리에 의해 파괴.</RWS_MetricDesc_SitesCleared>
-  <RWS_Metric_SettlementsFounded>설립목적</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>caravan 또는 기존의지도에서 발견 된 새로운 플레이어 정착. 시작 합의, 식민지와 gravship 착륙을 이동하는 것은 계산되지 않습니다.</RWS_MetricDesc_SettlementsFounded>
-  <RWS_Metric_SettlementsAbandoned>버려진 정착</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>플레이어 합의 선택에 의해 포기. gravship takeoff와 같은 자동 제거는 계산되지 않습니다.</RWS_MetricDesc_SettlementsAbandoned>
-  <RWS_Metric_AncientDangersOpened>고대의 위험이 열렸다.</RWS_Metric_AncientDangersOpened>
-  <RWS_MetricDesc_AncientDangersOpened>고대의 신사 (전통의 고대 위험)는 내부가 열리고, 각각 한 번. 게임이 밝혀질 때 신사가 계산됩니다. 그 중심이 지났습니다. 다른 벽이 끊거나 적을 나타낸 것은 계산되지 않습니다.</RWS_MetricDesc_AncientDangersOpened>
-  <RWS_Metric_ColonyStartingBiome>본래 biome</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>게임의 immutable 시작 도와에 Biome DefName는, 현재 식민지가 아닙니다; 세계 타일이 해결 될 수 없을 때 알 수 없습니다.</RWS_MetricDesc_ColonyStartingBiome>
-  <RWS_Metric_ResearchSnapshotFinished>연구사업</RWS_Metric_ResearchSnapshotFinished>
-  <RWS_MetricDesc_ResearchSnapshotFinished>마지막 성공적인 저축에 완료된 등록한 연구 프로젝트의 수.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_MetricDesc_Resurrections>자유 정착민이 사망했다가 다시 살아난 횟수입니다.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>한 정착민의 최대 부활 횟수</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>한 폰이 부활한 횟수 중 최대값입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>새로 발생한 질병</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>자유 정착민이 새로 걸린 질병 수입니다.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>평균 질병 지속 일수</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>발병부터 완치까지 전 과정을 기록한 질병의 평균 일수입니다. 사망이나 절단으로 사라진 질병은 제외합니다.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>완치한 감염</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>치유되어 사라진 감염 수입니다. 사망이나 절단으로 제거된 감염은 제외합니다.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_Metric_InfectionDurationMax>최장 감염 기간</RWS_Metric_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>발병부터 회복까지 전 과정을 기록한 감염 중 가장 긴 기간입니다.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_Metric_FoodPoisonings>식중독 발생 횟수</RWS_Metric_FoodPoisonings>
+  <RWS_MetricDesc_FoodPoisonings>자유 정착민이 식중독에 걸린 횟수입니다.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>새로운 약물 중독</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>자유 정착민에게 새로 발생한 중독 수입니다. 중독 심각도 변화는 집계하지 않습니다.</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>약물 과다복용 횟수</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>자유 정착민에게 과다복용이 새로 발생한 횟수입니다.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>금단 증상 시작 횟수</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>자유 정착민의 약물 중독이 금단 단계에 들어간 횟수입니다(약물 욕구가 금단 기준으로 감소한 경우). 진입할 때마다 한 번 집계하며, 기록 시작 전부터 금단 상태였다면 제외합니다.</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_HospitalStayMean>평균 입원 기간</RWS_Metric_HospitalStayMean>
+  <RWS_MetricDesc_HospitalStayMean>자유 정착민이 같은 의료용 침대에 누웠다가 일어날 때까지의 평균 일수입니다. 침대에서 작업이 바뀌면서 즉시 같은 침대에 다시 누우면 입원이 이어진 것으로 봅니다. 사망으로 끝나거나 기록 시작 전에 시작된 입원은 제외합니다.</RWS_MetricDesc_HospitalStayMean>
+  <RWS_Metric_PartsLost>손실된 신체 부위 수</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>자유 정착민이 신체 부위를 잃은 횟수입니다. 함께 잃은 하위 부위와 수술로 제거한 부위는 제외합니다.</RWS_MetricDesc_PartsLost>
+  <RWS_Metric_Scars>영구 흉터 수</RWS_Metric_Scars>
+  <RWS_MetricDesc_Scars>자유 정착민의 상처가 영구적으로 바뀐 횟수입니다.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>가장 많이 다친 정착민</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>새로 발생한 부상 수가 가장 많은 자유 정착민의 부상 수입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_Metric_WildAnimalInjuries>야생동물에 의한 부상</RWS_Metric_WildAnimalInjuries>
+  <RWS_MetricDesc_WildAnimalInjuries>야생동물 공격으로 자유 정착민에게 발생한 새로운 부상 수입니다.</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_Metric_ToxicFalloutDays>독성 낙진 지속 일수</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>적어도 하나의 독성 낙진이 발생한 날의 수입니다. 겹치는 기간은 한 번만 셉니다.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_Metric_SolarFlares>태양 플레어 횟수</RWS_Metric_SolarFlares>
+  <RWS_MetricDesc_SolarFlares>새로 시작된 태양 플레어의 횟수입니다. 기록 시작 당시 이미 진행 중이던 것은 제외합니다.</RWS_MetricDesc_SolarFlares>
+  <RWS_Metric_SolarFlareDays>태양 플레어 지속 일수</RWS_Metric_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>적어도 하나의 태양 플레어가 발생한 날의 수입니다. 겹치는 기간은 한 번만 세며, 설비별 정지 시간은 아닙니다.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>한파 횟수</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>새로 시작된 한파 횟수입니다.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>폭염 횟수</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>새로 시작된 폭염 횟수입니다.</RWS_MetricDesc_HeatWaves>
+  <RWS_Metric_VolcanicWinters>화산 겨울 횟수</RWS_Metric_VolcanicWinters>
+  <RWS_MetricDesc_VolcanicWinters>새로 시작된 화산 겨울 횟수입니다.</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>일식 횟수</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>새로 시작된 일식 횟수입니다.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>작물 병충해 횟수</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>성공적으로 발생한 작물 병충해 사건의 횟수입니다. 병충해에 걸린 식물 수가 아닙니다.</RWS_MetricDesc_CropBlights>
+  <RWS_Metric_Meteors>운석 충돌 횟수</RWS_Metric_Meteors>
+  <RWS_MetricDesc_Meteors>성공적으로 발생한 운석 사건의 횟수입니다. 운석 조각 수는 아닙니다.</RWS_MetricDesc_Meteors>
+  <RWS_Metric_ShortCircuits>합선 횟수</RWS_Metric_ShortCircuits>
+  <RWS_MetricDesc_ShortCircuits>성공적으로 발생한 합선 사건의 횟수입니다.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>화재 발생 횟수</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>플레이어 본거지 지도에서 불이 없던 칸에 새로 발생한 화재 횟수입니다. 다른 불에서 번진 경우는 제외합니다.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>화재로 파괴된 건축물 수</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>플레이어가 완성한 건축물이 화재 피해로 직접 파괴된 수입니다.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>상단 출발 횟수</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>플레이어 상단이 지도를 떠나 새로 구성된 횟수입니다. 합병과 분리는 제외합니다.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>전멸한 상단 수</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>추적 중인 상단 구성원이 전부 사망한 경우의 수입니다.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>상단 이동 거리</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>플레이어 상단이 걸어서 인접한 세계 지도 타일로 이동한 횟수입니다. 순간이동은 제외합니다.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>방문한 세계 타일 수</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>걸어서 도달한 고유 타일(레이어와 타일)의 수입니다. 같은 타일에 여러 번 가도 한 번만 셉니다.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_Metric_CaravanLongestExpedition>최장 원정 기간</RWS_Metric_CaravanLongestExpedition>
+  <RWS_MetricDesc_CaravanLongestExpedition>출발부터 플레이어 본거지로 귀환할 때까지 전 구간을 기록한 원정의 최장 일수입니다. 분리하거나 합병한 상단은 제외합니다.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>최장 원정 거리</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>완료한 원정 한 번에서 걸어서 이동한 최대 타일 수입니다.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>최대 동시 상단 수</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>이동 여부와 관계없이 동시에 존재한 플레이어 상단의 최대 수입니다.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>상단 기습 횟수</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>성공적으로 발생한 상단 기습 사건 횟수입니다.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>격파한 적 정착지 수</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>플레이어의 승리로 파괴된 적대 세력 정착지 수입니다.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>설립한 정착지 수</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>상단이나 기존 지도에서 새로 설립한 플레이어 정착지 수입니다. 시작 정착지, 정착지 이동, 중력 우주선 착륙은 제외합니다.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>포기한 정착지 수</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>플레이어가 선택하여 포기한 정착지 수입니다. 중력 우주선 이륙처럼 자동으로 제거된 것은 제외합니다.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>개방한 고대 위험 수</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>플레이어 정착지 지도에서 내부를 개방한 봉인된 고대 사당(고대 위험)의 수입니다. 사당당 한 번만 집계합니다. 게임이 발견했다고 판단하는 시점, 즉 사당 중심의 안개가 걷힌 때 집계합니다. 다른 벽 파괴나 적 출현은 집계하지 않습니다.</RWS_MetricDesc_AncientDangersOpened>
+  <RWS_Metric_ColonyStartingBiome>시작 지형</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>게임 시작 타일의 지형(DefName)이며 절대 바뀌지 않습니다. 현재 정착지 지형은 사용하지 않으며, 세계 지도 타일을 확인할 수 없으면 알 수 없음으로 표시합니다.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_Metric_ResearchSnapshotFinished>완료된 연구 과제 수</RWS_Metric_ResearchSnapshotFinished>
+  <RWS_MetricDesc_ResearchSnapshotFinished>마지막으로 저장에 성공한 시점에 완료되어 있는 연구 과제 수입니다.</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>연구 완료율</RWS_Metric_ResearchSnapshotFinishedRate>
-  <RWS_MetricDesc_ResearchSnapshotFinishedRate>마지막 성공적인 저축에서 모든 등록된 연구 프로젝트에 의해 분할된 완성된 프로젝트.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
-  <RWS_Metric_ResearchSnapshotTechPeak>가장 높은 완성된 연구 기술 수준</RWS_Metric_ResearchSnapshotTechPeak>
-  <RWS_MetricDesc_ResearchSnapshotTechPeak>최근 성공적인 저축에 등록된 연구 프로젝트 중 가장 높은 기술적인 수준.</RWS_MetricDesc_ResearchSnapshotTechPeak>
-  <RWS_Metric_FactionSnapshotRelations>자주 묻는 질문</RWS_Metric_FactionSnapshotRelations>
-  <RWS_MetricDesc_FactionSnapshotRelations>플레이어에게 할당 된 활성 사실의 수 또는 hostile, 마지막 성공적인 저장에서.</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>Faction goodwill 범위</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>이 웹 사이트는 귀하가 웹 사이트를 탐색하는 동안 귀하의 경험을 향상시키기 위해 쿠키를 사용합니다. 이 쿠키들 중에서 필요에 따라 분류 된 쿠키는 웹 사이트의 기본적인 기능을 수행하는 데 필수적이므로 브라우저에 저장됩니다. 또한이 웹 사이트의 사용 방식을 분석하고 이해하는 데 도움이되는 제 3 자 쿠키를 사용합니다.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
-  <RWS_Metric_RosterFree>생활 무료 식민지</RWS_Metric_RosterFree>
-  <RWS_MetricDesc_RosterFree>성공적인 저축에 대한 생활 무료 서론가, 자격이 된 생활 문자 (크립 값은 관측을 저장)에서.</RWS_MetricDesc_RosterFree>
-  <RWS_Metric_RosterPrisoners>생활 식민지 감옥</RWS_Metric_RosterPrisoners>
-  <RWS_MetricDesc_RosterPrisoners>성공적인 저축에 대한 살아있는 식민지 형무소, 자격이 된 생활 문자 (크립 값은 관측을 저장)에서.</RWS_MetricDesc_RosterPrisoners>
-  <RWS_Metric_RosterSlaves>생활 식민지 노예</RWS_Metric_RosterSlaves>
-  <RWS_MetricDesc_RosterSlaves>성공적인 저장에 살아있는 식민지 노예. 역사 저장 회복은 저장된 노예 상태 및 선수 소유권이 확인될 때 부분적으로 낮은 경계를 보고합니다.</RWS_MetricDesc_RosterSlaves>
-  <RWS_Metric_RosterAnimals>콜론 동물</RWS_Metric_RosterAnimals>
-  <RWS_MetricDesc_RosterAnimals>콜로니 동물은 성공적인 저축에서, 자격이 된 생활 문자 (크래프트 값은 관측을 저장합니다).</RWS_MetricDesc_RosterAnimals>
-  <RWS_Metric_RosterMechs>콜론 mechanoids</RWS_Metric_RosterMechs>
-  <RWS_MetricDesc_RosterMechs>콜로니 mechanoids 성공적인 저축에서, 자격이 된 생활 문자 (크립 값은 관측을 저장합니다).</RWS_MetricDesc_RosterMechs>
-  <RWS_Metric_RosterAugmentedPeak>가장 높은 증강 식민지</RWS_Metric_RosterAugmentedPeak>
-  <RWS_MetricDesc_RosterAugmentedPeak>성공적인 저축에 가장 높은 증강 계장은, 자격이 된 생활 문자로부터 (첨단 가치는 관측을 저장합니다).</RWS_MetricDesc_RosterAugmentedPeak>
-  <RWS_Metric_RosterSkill20PawnsPeak>가장 높은 대장관과 기술 20</RWS_Metric_RosterSkill20PawnsPeak>
-  <RWS_MetricDesc_RosterSkill20PawnsPeak>숙련 된 저축에서 기술 20을 가진 가장 높은 식민지가, 자격이 된 생활 문자 (크립 값 스팬 저장 관측)에서.</RWS_MetricDesc_RosterSkill20PawnsPeak>
-  <RWS_Metric_RosterSkill20PerPawnPeak>1개의 식민지에 최대 수준의 기술</RWS_Metric_RosterSkill20PerPawnPeak>
-  <RWS_MetricDesc_RosterSkill20PerPawnPeak>가장 최대 수준의 능력은 성공적인 저축에 대한 한 대장관에서, 적격한 생활 문자로부터 (첨단 값은 관측을 저장합니다).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
-  <RWS_Metric_RosterOldest>가장 오래된 생활 식민지</RWS_Metric_RosterOldest>
-  <RWS_MetricDesc_RosterOldest>성공적인 저축에 가장 오래된 생활 식민지, 자격이 된 생활 문자로부터 (크립 값은 관측을 저장).</RWS_MetricDesc_RosterOldest>
-  <RWS_Metric_RosterAnimalDefsPeak>가장 높은 식민지 동물 종</RWS_Metric_RosterAnimalDefsPeak>
-  <RWS_MetricDesc_RosterAnimalDefsPeak>성공적인 저축에서 가장 높은 식민지 동물 종, 자격이 된 생활 문자 (크립 값은 관측을 저장)에서.</RWS_MetricDesc_RosterAnimalDefsPeak>
-  <RWS_Metric_RosterPassions>기술에 의한 대장 열정</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>성공적인 저축에 대한 기술에 대한 콜로니스트 열정, 적격한 생활 문자 (크릭 값 스팬 저장 관측)에서.</RWS_MetricDesc_RosterPassions>
-  <RWS_Metric_RosterAgeMean>평균 생활 식민지 시대</RWS_Metric_RosterAgeMean>
-  <RWS_MetricDesc_RosterAgeMean>성공적인 저축에 대한 평균 생활 식민지 시대, 자격이 된 생활 문자 (크립 값은 관측을 저장)에서.</RWS_MetricDesc_RosterAgeMean>
-  <RWS_Metric_RosterInjuredPeak>가장 많이 부상된 식민지</RWS_Metric_RosterInjuredPeak>
-  <RWS_MetricDesc_RosterInjuredPeak>가장 높은 손상된 식민지가 성공적인 저장에서, 적격한 생활 문자 (크립 값은 관측을 저장합니다).</RWS_MetricDesc_RosterInjuredPeak>
-  <RWS_Metric_FacilitiesHomeMaps>가장 많이 로드된 홈 맵</RWS_Metric_FacilitiesHomeMaps>
-  <RWS_MetricDesc_FacilitiesHomeMaps>로드된 플레이어 홈 맵을 통해 가장 로드된 홈 맵을 성공적으로 저장합니다. 피크는 기록된 저장에 걸쳐 선택됩니다.</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesTurrets>대부분의 설치 turrets</RWS_Metric_FacilitiesTurrets>
-  <RWS_MetricDesc_FacilitiesTurrets>로드 된 플레이어 홈 맵을 통해 가장 설치 된 포탑은 성공적인 저장에서. 피크는 기록 된 저장의 맞은편에 선택된다.</RWS_MetricDesc_FacilitiesTurrets>
-  <RWS_Metric_FacilitiesGrowingCells>가장 큰 성장 지역 지역</RWS_Metric_FacilitiesGrowingCells>
-  <RWS_MetricDesc_FacilitiesGrowingCells>로드 된 플레이어 홈 맵을 통해 가장 큰 성장 지역 성공적인 저장. 피크는 기록 된 저장을 통해 선택됩니다.</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesGeneration>가장 높은 정격 생성 능력</RWS_Metric_FacilitiesGeneration>
-  <RWS_MetricDesc_FacilitiesGeneration>로드 된 플레이어 홈 맵을 통해 가장 높은 정격 생성 용량은 성공적인 저장. 피크는 기록 된 저장에 걸쳐 선택된다.</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>가장 높은 정격 배터리 용량</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>로드 된 플레이어 홈 맵을 통해 가장 높은 정격 배터리 용량은 성공적인 저장에 있습니다. 피크는 기록 된 저장을 통해 선택됩니다.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>마지막으로 저장에 성공한 시점에 완료된 연구 과제 수 ÷ 전체 연구 과제 수입니다.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>완료한 연구의 최고 기술 수준</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>마지막으로 저장에 성공한 시점에 완료된 연구 과제 중 가장 높은 기술 수준입니다.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>동맹 및 적대 세력</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>마지막으로 저장에 성공한 시점에 플레이어와 동맹이거나 적대적인 활동 중인 세력 수입니다.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>세력 우호도 범위</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>우호도가 존재하는 활동 중인 세력의 기본 우호도 최솟값과 최댓값입니다. 영구 적대 세력은 세력 수에는 포함하지만 우호도에는 포함하지 않습니다.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>생존한 자유 정착민</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>저장에 성공한 시점에 살아 있는 자유 정착민 수입니다.</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>생존한 정착지 수감자</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>저장에 성공한 시점에 살아 있는 정착지 수감자 수입니다.</RWS_MetricDesc_RosterPrisoners>
+  <RWS_Metric_RosterSlaves>생존한 정착지 노예</RWS_Metric_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>저장에 성공한 시점에 살아 있는 정착지 노예 수입니다. 이전 저장 파일에서 복구한 경우 노예 신분과 플레이어 소유 여부가 모두 확인된 수만 집계한 부분적인 하한값을 표시합니다.</RWS_MetricDesc_RosterSlaves>
+  <RWS_Metric_RosterAnimals>정착지 동물</RWS_Metric_RosterAnimals>
+  <RWS_MetricDesc_RosterAnimals>저장에 성공한 시점에 살아 있는 정착지 동물 수입니다.</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>정착지 메카노이드</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>저장에 성공한 시점에 살아 있는 정착지 메카노이드 수입니다.</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>인공 신체 부위를 가진 최대 정착민 수</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>기록된 저장 파일 하나에서 인공 신체 부위를 하나 이상 가진 자유 정착민 수의 최대값입니다.</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>기술 레벨 20을 가진 최대 정착민 수</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>기록된 저장 파일 하나에서 기술 레벨 20을 하나 이상 가진 자유 정착민 수의 최대값입니다.</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>한 정착민의 레벨 20 기술 최대 수</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>기록된 저장 파일에서 자유 정착민 한 명이 보유한 레벨 20 기술 수의 최대값입니다.</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_Metric_RosterOldest>가장 나이 많은 생존 정착민</RWS_Metric_RosterOldest>
+  <RWS_MetricDesc_RosterOldest>기록된 저장 파일에서 살아 있는 자유 정착민의 최대 생물학적 나이입니다.</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>최대 정착지 동물 종 수</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>기록된 저장 파일 하나에서 살아 있는 정착지 동물의 서로 다른 종 수의 최대값입니다.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>기술별 정착민 열정</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>저장에 성공한 시점의 자유 정착민별 기술 열정(없음, 약함, 강함)을 집계합니다.</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>생존 정착민 평균 나이</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>저장에 성공한 시점에 살아 있는 자유 정착민의 평균 생물학적 나이입니다.</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>동시에 다친 최대 정착민 수</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>기록된 저장 파일 하나에서 부상(영구 부상 포함)을 하나 이상 가진 자유 정착민 수의 최대값입니다.</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>동시에 존재한 본거지 지도 최대 수</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>기록된 저장 파일 하나에서 동시에 불러온 플레이어 본거지 지도 수의 최대값입니다.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesTurrets>최대 포탑 수</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>기록된 저장 파일 하나에서 불러온 본거지 지도의 플레이어 포탑 수의 최대값입니다.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>최대 재배구역 면적</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>기록된 저장 파일 하나에서 불러온 본거지 지도의 재배구역 총면적(칸 수)의 최대값입니다.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesGeneration>최대 정격 발전량</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>기록된 저장 파일 하나에서 불러온 본거지 지도의 발전기 정격 출력 합계의 최대값입니다.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>최대 배터리 용량</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>기록된 저장 파일 하나에서 불러온 본거지 지도의 배터리 정격 용량 합계의 최대값입니다.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>가장 낮은 관측 옥외 온도</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>로드 된 플레이어 홈 맵을 통해 가장 낮은 관찰 된 야외 온도 성공적인 저장. 피크는 기록 된 저장을 통해 선택됩니다.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>가장 높은 관측된 옥외 온도</RWS_Metric_FacilitiesOutdoorTempMax>

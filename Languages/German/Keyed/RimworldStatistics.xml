@@ -625,131 +625,131 @@
   <RWS_Metric_AwayRescues>Rettungen außerhalb der Heimatbasis</RWS_Metric_AwayRescues>
   <RWS_MetricDesc_AwayRescues>Rettungen auf Karten, die keine Heimatkarte des Spielers sind.</RWS_MetricDesc_AwayRescues>
   <RWS_Metric_Resurrections>Wiederbelebungen</RWS_Metric_Resurrections>
-  <RWS_MetricDesc_Resurrections>Mal kam ein freier Kolonist vom Tod zurück.</RWS_MetricDesc_Resurrections>
-  <RWS_Metric_ResurrectionsPerPawnMax>Die meisten Auferstehungen eines Kolonisten</RWS_Metric_ResurrectionsPerPawnMax>
-  <RWS_MetricDesc_ResurrectionsPerPawnMax>Die meisten Auferstehungen eines Charakters; die Aufschlüsselung benennt sie (durch ID).</RWS_MetricDesc_ResurrectionsPerPawnMax>
-  <RWS_Metric_DiseaseOnsets>Neue Krankheiten</RWS_Metric_DiseaseOnsets>
-  <RWS_MetricDesc_DiseaseOnsets>Krankheiten, die den freien Kolonisten neu hinzugefügt wurden.</RWS_MetricDesc_DiseaseOnsets>
-  <RWS_Metric_DiseaseDurationMean>Mittlere Tage krank</RWS_Metric_DiseaseDurationMean>
-  <RWS_MetricDesc_DiseaseDurationMean>Die durchschnittlichen Tage vom Beginn bis zur Heilung von Krankheiten werden durchgehend verfolgt; diejenigen, die durch Tod oder Amputation entfernt wurden, werden ausgelassen.</RWS_MetricDesc_DiseaseDurationMean>
-  <RWS_Metric_InfectionRecoveries>Wiedergefundene Infektionen</RWS_Metric_InfectionRecoveries>
-  <RWS_MetricDesc_InfectionRecoveries>Infektionen, die durch Heilung verschwunden sind; Entfernungen durch Tod oder Amputation werden nicht gezählt.</RWS_MetricDesc_InfectionRecoveries>
+  <RWS_MetricDesc_Resurrections>Anzahl der Wiederbelebungen freier Kolonisten.</RWS_MetricDesc_Resurrections>
+  <RWS_Metric_ResurrectionsPerPawnMax>Meiste Wiederbelebungen eines Kolonisten</RWS_Metric_ResurrectionsPerPawnMax>
+  <RWS_MetricDesc_ResurrectionsPerPawnMax>Höchste Zahl von Wiederbelebungen eines einzelnen Pawns; die Aufschlüsselung zeigt dessen ID.</RWS_MetricDesc_ResurrectionsPerPawnMax>
+  <RWS_Metric_DiseaseOnsets>Neue Erkrankungen</RWS_Metric_DiseaseOnsets>
+  <RWS_MetricDesc_DiseaseOnsets>Neue Erkrankungen, an denen freie Kolonisten erkrankten.</RWS_MetricDesc_DiseaseOnsets>
+  <RWS_Metric_DiseaseDurationMean>Mittlere Krankheitsdauer</RWS_Metric_DiseaseDurationMean>
+  <RWS_MetricDesc_DiseaseDurationMean>Durchschnittliche Tage zwischen Erkrankungsbeginn und Heilung durchgehend verfolgter Krankheiten. Durch Tod oder Amputation entfernte Krankheiten zählen nicht.</RWS_MetricDesc_DiseaseDurationMean>
+  <RWS_Metric_InfectionRecoveries>Geheilte Infektionen</RWS_Metric_InfectionRecoveries>
+  <RWS_MetricDesc_InfectionRecoveries>Infektionen, die durch Heilung verschwanden. Durch Tod oder Amputation entfernte Infektionen zählen nicht.</RWS_MetricDesc_InfectionRecoveries>
   <RWS_Metric_InfectionDurationMax>Längste Infektion</RWS_Metric_InfectionDurationMax>
-  <RWS_MetricDesc_InfectionDurationMax>Die meisten Tage vom Beginn bis zur Genesung einer Infektion wurden durchgehend verfolgt.</RWS_MetricDesc_InfectionDurationMax>
+  <RWS_MetricDesc_InfectionDurationMax>Längste Zeit zwischen Beginn und Genesung einer durchgehend verfolgten Infektion.</RWS_MetricDesc_InfectionDurationMax>
   <RWS_Metric_FoodPoisonings>Lebensmittelvergiftungen</RWS_Metric_FoodPoisonings>
-  <RWS_MetricDesc_FoodPoisonings>Mal bekam ein freier Kolonist eine Lebensmittelvergiftung.</RWS_MetricDesc_FoodPoisonings>
-  <RWS_Metric_Addictions>Neue Süchte</RWS_Metric_Addictions>
-  <RWS_MetricDesc_Addictions>Süchte, die den freien Kolonisten neu hinzugefügt wurden; Schweregradänderungen werden nicht gezählt.</RWS_MetricDesc_Addictions>
-  <RWS_Metric_Overdoses>Überdosierung</RWS_Metric_Overdoses>
-  <RWS_MetricDesc_Overdoses>Mal ein freier Kolonist neu überdosiert.</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>Einsetzen der Rücknahme</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>Male trat die Drogenabhängigkeit eines freien Kolonisten in sein Entzugsstadium ein (sein chemischer Bedarf fiel in den Entzug). Jeder Eintrag zählt einmal; eine Sucht, die sich bereits beim Beginn der Aufnahme im Entzug befand, wird nicht gezählt.</RWS_MetricDesc_Withdrawals>
+  <RWS_MetricDesc_FoodPoisonings>Anzahl der Lebensmittelvergiftungen freier Kolonisten.</RWS_MetricDesc_FoodPoisonings>
+  <RWS_Metric_Addictions>Neue Abhängigkeiten</RWS_Metric_Addictions>
+  <RWS_MetricDesc_Addictions>Neu hinzugekommene Abhängigkeiten freier Kolonisten. Änderungen des Schweregrads werden nicht gezählt.</RWS_MetricDesc_Addictions>
+  <RWS_Metric_Overdoses>Überdosen</RWS_Metric_Overdoses>
+  <RWS_MetricDesc_Overdoses>Anzahl neu aufgetretener Überdosen bei freien Kolonisten.</RWS_MetricDesc_Overdoses>
+  <RWS_Metric_Withdrawals>Entzugsbeginne</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>Anzahl der Übergänge einer Drogenabhängigkeit freier Kolonisten in das Entzugsstadium (das chemische Bedürfnis sank bis zum Entzug). Jeder Übergang zählt einmal; bei Aufzeichnungsbeginn bereits bestehender Entzug wird nicht gezählt.</RWS_MetricDesc_Withdrawals>
   <RWS_Metric_HospitalStayMean>Mittlerer Krankenhausaufenthalt</RWS_Metric_HospitalStayMean>
-  <RWS_MetricDesc_HospitalStayMean>Bedeutende Tage, an denen ein freier Kolonist im selben medizinischen Bett lag, vom Liegen bis zum Aufstehen. Wieder im selben Bett liegend (ein Jobwechsel im Bett) setzt den Aufenthalt fort; Aufenthalte, die mit dem Tod enden oder vor der Aufnahme begonnen werden, geben keine Probe.</RWS_MetricDesc_HospitalStayMean>
-  <RWS_Metric_PartsLost>Körperteile verloren</RWS_Metric_PartsLost>
-  <RWS_MetricDesc_PartsLost>Mal hat ein freier Kolonist einen Körperteil verloren, Kinderteile, die damit verloren gegangen sind, und Teile, die durch eine Operation entfernt wurden, werden nicht gezählt.</RWS_MetricDesc_PartsLost>
+  <RWS_MetricDesc_HospitalStayMean>Mittlere Tage, die ein freier Kolonist vom Hinlegen bis zum Aufstehen in demselben medizinischen Bett verbrachte. Sofortiges erneutes Hinlegen bei einem Arbeitswechsel im Bett setzt den Aufenthalt fort. Aufenthalte mit Todesende oder Beginn vor der Aufzeichnung zählen nicht.</RWS_MetricDesc_HospitalStayMean>
+  <RWS_Metric_PartsLost>Verlorene Körperteile</RWS_Metric_PartsLost>
+  <RWS_MetricDesc_PartsLost>Anzahl der Körperteile, die freie Kolonisten verloren. Zusammen mit einem Körperteil verlorene Unterteile und operativ entfernte Teile zählen nicht.</RWS_MetricDesc_PartsLost>
   <RWS_Metric_Scars>Dauerhafte Narben</RWS_Metric_Scars>
-  <RWS_MetricDesc_Scars>Male wurde die Verletzung eines freien Kolonisten dauerhaft.</RWS_MetricDesc_Scars>
-  <RWS_Metric_InjuriesPerPawnMax>Die meisten verletzten Kolonisten</RWS_Metric_InjuriesPerPawnMax>
-  <RWS_MetricDesc_InjuriesPerPawnMax>Die neuen Verletzungen des freien Kolonisten mit den meisten; die Aufschlüsselung nennt sie (durch ID).</RWS_MetricDesc_InjuriesPerPawnMax>
+  <RWS_MetricDesc_Scars>Anzahl der Verletzungen freier Kolonisten, die dauerhaft wurden.</RWS_MetricDesc_Scars>
+  <RWS_Metric_InjuriesPerPawnMax>Am häufigsten verletzter Kolonist</RWS_Metric_InjuriesPerPawnMax>
+  <RWS_MetricDesc_InjuriesPerPawnMax>Höchste Zahl neuer Verletzungen eines freien Kolonisten; die Aufschlüsselung zeigt dessen ID.</RWS_MetricDesc_InjuriesPerPawnMax>
   <RWS_Metric_WildAnimalInjuries>Verletzungen durch Wildtiere</RWS_Metric_WildAnimalInjuries>
-  <RWS_MetricDesc_WildAnimalInjuries>Neue Verletzungen freier Kolonisten durch wilde Tierangriffe.</RWS_MetricDesc_WildAnimalInjuries>
-  <RWS_Metric_ToxicFalloutDays>Tage mit toxischem Fallout</RWS_Metric_ToxicFalloutDays>
-  <RWS_MetricDesc_ToxicFalloutDays>An Tagen, an denen mindestens ein toxischer Fallout aktiv war, werden Überlappungen einmal gezählt.</RWS_MetricDesc_ToxicFalloutDays>
+  <RWS_MetricDesc_WildAnimalInjuries>Neue Verletzungen freier Kolonisten durch Angriffe von Wildtieren.</RWS_MetricDesc_WildAnimalInjuries>
+  <RWS_Metric_ToxicFalloutDays>Tage mit giftigem Niederschlag</RWS_Metric_ToxicFalloutDays>
+  <RWS_MetricDesc_ToxicFalloutDays>Tage, an denen mindestens ein giftiger Niederschlag aktiv war. Überlappende Zeiträume werden nur einmal gezählt.</RWS_MetricDesc_ToxicFalloutDays>
   <RWS_Metric_SolarFlares>Sonneneruptionen</RWS_Metric_SolarFlares>
-  <RWS_MetricDesc_SolarFlares>Sonneneruptionen, die begannen; diejenigen, die bereits beim Beginn der Aufnahme ausgeführt wurden, werden nicht gezählt.</RWS_MetricDesc_SolarFlares>
-  <RWS_Metric_SolarFlareDays>Tage der Sonneneruption</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>Tage, an denen mindestens eine Sonneneruption aktiv war, werden einmal gezählt; nicht pro Geräteausfallzeit.</RWS_MetricDesc_SolarFlareDays>
-  <RWS_Metric_ColdSnaps>Kalte Schnappschüsse</RWS_Metric_ColdSnaps>
-  <RWS_MetricDesc_ColdSnaps>Kalte Schnappschüsse, die begannen.</RWS_MetricDesc_ColdSnaps>
-  <RWS_Metric_HeatWaves>Wärmewellen</RWS_Metric_HeatWaves>
-  <RWS_MetricDesc_HeatWaves>Hitzewellen, die begannen.</RWS_MetricDesc_HeatWaves>
+  <RWS_MetricDesc_SolarFlares>Begonnene Sonneneruptionen. Bereits beim Aufzeichnungsbeginn aktive zählen nicht.</RWS_MetricDesc_SolarFlares>
+  <RWS_Metric_SolarFlareDays>Tage mit Sonneneruption</RWS_Metric_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>Tage, an denen mindestens eine Sonneneruption aktiv war; überlappende Zeiträume zählen einmal. Keine Ausfallzeit einzelner Geräte.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_Metric_ColdSnaps>Kälteeinbrüche</RWS_Metric_ColdSnaps>
+  <RWS_MetricDesc_ColdSnaps>Anzahl begonnener Kälteeinbrüche.</RWS_MetricDesc_ColdSnaps>
+  <RWS_Metric_HeatWaves>Hitzewellen</RWS_Metric_HeatWaves>
+  <RWS_MetricDesc_HeatWaves>Anzahl begonnener Hitzewellen.</RWS_MetricDesc_HeatWaves>
   <RWS_Metric_VolcanicWinters>Vulkanische Winter</RWS_Metric_VolcanicWinters>
-  <RWS_MetricDesc_VolcanicWinters>Vulkanische Winter, die begonnen haben.</RWS_MetricDesc_VolcanicWinters>
-  <RWS_Metric_Eclipses>Finsternisse</RWS_Metric_Eclipses>
-  <RWS_MetricDesc_Eclipses>Finsternisse, die begonnen haben.</RWS_MetricDesc_Eclipses>
-  <RWS_Metric_CropBlights>Erntefäule</RWS_Metric_CropBlights>
-  <RWS_MetricDesc_CropBlights>Erfolgreiche Erntebrandvorfälle; nicht die Anzahl der verdorbenen Pflanzen.</RWS_MetricDesc_CropBlights>
+  <RWS_MetricDesc_VolcanicWinters>Anzahl begonnener vulkanischer Winter.</RWS_MetricDesc_VolcanicWinters>
+  <RWS_Metric_Eclipses>Sonnenfinsternisse</RWS_Metric_Eclipses>
+  <RWS_MetricDesc_Eclipses>Anzahl begonnener Sonnenfinsternisse.</RWS_MetricDesc_Eclipses>
+  <RWS_Metric_CropBlights>Pflanzenfäule</RWS_Metric_CropBlights>
+  <RWS_MetricDesc_CropBlights>Erfolgreich ausgelöste Pflanzenfäule-Ereignisse, nicht die Zahl befallener Pflanzen.</RWS_MetricDesc_CropBlights>
   <RWS_Metric_Meteors>Meteoriteneinschläge</RWS_Metric_Meteors>
-  <RWS_MetricDesc_Meteors>Erfolgreiche Meteoritenvorfälle; nicht die Anzahl der Stücke.</RWS_MetricDesc_Meteors>
+  <RWS_MetricDesc_Meteors>Erfolgreich ausgelöste Meteoriteneinschläge, nicht die Zahl der Fragmente.</RWS_MetricDesc_Meteors>
   <RWS_Metric_ShortCircuits>Kurzschlüsse</RWS_Metric_ShortCircuits>
-  <RWS_MetricDesc_ShortCircuits>Erfolgreiche Kurzschlussvorfälle.</RWS_MetricDesc_ShortCircuits>
-  <RWS_Metric_Fires>Brände begannen</RWS_Metric_Fires>
-  <RWS_MetricDesc_Fires>Feuer begannen, anders als durch die Ausbreitung, in einer Zelle ohne Feuer auf einer Spieler-Home-Map.</RWS_MetricDesc_Fires>
-  <RWS_Metric_BuildingsBurned>Gebäude durch Feuer verloren</RWS_Metric_BuildingsBurned>
-  <RWS_MetricDesc_BuildingsBurned>Abgeschlossene Spielergebäude, die direkt durch Brandschäden zerstört wurden.</RWS_MetricDesc_BuildingsBurned>
-  <RWS_Metric_CaravanDepartures>Abfahrten von Karawanen</RWS_Metric_CaravanDepartures>
-  <RWS_MetricDesc_CaravanDepartures>Spieler-Karawanen, die durch das Hinterlassen einer Karte neu gebildet wurden, Merges und Splits werden nicht gezählt.</RWS_MetricDesc_CaravanDepartures>
-  <RWS_Metric_CaravansLost>Karawanen verloren</RWS_Metric_CaravansLost>
-  <RWS_MetricDesc_CaravansLost>Gespurte Karawanen, deren jedes Mitglied starb.</RWS_MetricDesc_CaravansLost>
-  <RWS_Metric_CaravanTiles>Entfernung der Karawane</RWS_Metric_CaravanTiles>
-  <RWS_MetricDesc_CaravanTiles>Schritte von Spieler-Caravans zu einem benachbarten Kachel zu Fuß. Teleports werden nicht gezählt.</RWS_MetricDesc_CaravanTiles>
-  <RWS_Metric_CaravanUniqueTiles>Besichtigte Fliesen</RWS_Metric_CaravanUniqueTiles>
-  <RWS_MetricDesc_CaravanUniqueTiles>Deutliche Fliesen (Schicht und Fliese) erreicht zu Fuß; eine besuchte Fliese zählt wieder einmal.</RWS_MetricDesc_CaravanUniqueTiles>
+  <RWS_MetricDesc_ShortCircuits>Erfolgreich ausgelöste Kurzschluss-Ereignisse.</RWS_MetricDesc_ShortCircuits>
+  <RWS_Metric_Fires>Entstandene Brände</RWS_Metric_Fires>
+  <RWS_MetricDesc_Fires>Anzahl der Brände, die auf einer Heimatkarte des Spielers in zuvor feuerlosen Feldern entstanden, außer durch Ausbreitung.</RWS_MetricDesc_Fires>
+  <RWS_Metric_BuildingsBurned>Durch Feuer zerstörte Gebäude</RWS_Metric_BuildingsBurned>
+  <RWS_MetricDesc_BuildingsBurned>Fertiggestellte Gebäude des Spielers, die direkt durch Feuerschaden zerstört wurden.</RWS_MetricDesc_BuildingsBurned>
+  <RWS_Metric_CaravanDepartures>Karawanenabfahrten</RWS_Metric_CaravanDepartures>
+  <RWS_MetricDesc_CaravanDepartures>Neue Spielerkarawanen, die beim Verlassen einer Karte entstanden. Zusammenschlüsse und Aufteilungen zählen nicht.</RWS_MetricDesc_CaravanDepartures>
+  <RWS_Metric_CaravansLost>Verlorene Karawanen</RWS_Metric_CaravansLost>
+  <RWS_MetricDesc_CaravansLost>Verfolgte Karawanen, bei denen sämtliche Mitglieder starben.</RWS_MetricDesc_CaravansLost>
+  <RWS_Metric_CaravanTiles>Karawanenstrecke</RWS_Metric_CaravanTiles>
+  <RWS_MetricDesc_CaravanTiles>Schritte von Spielerkarawanen zu benachbarten Weltkartenfeldern zu Fuß. Teleportationen zählen nicht.</RWS_MetricDesc_CaravanTiles>
+  <RWS_Metric_CaravanUniqueTiles>Besuchte Weltkartenfelder</RWS_Metric_CaravanUniqueTiles>
+  <RWS_MetricDesc_CaravanUniqueTiles>Unterschiedliche zu Fuß erreichte Weltkartenfelder (Ebene und Feld); ein erneut besuchtes Feld zählt nur einmal.</RWS_MetricDesc_CaravanUniqueTiles>
   <RWS_Metric_CaravanLongestExpedition>Längste Expedition</RWS_Metric_CaravanLongestExpedition>
-  <RWS_MetricDesc_CaravanLongestExpedition>Die meisten Tage von der Abreise bis zur Rückkehr zu einem Spieler nach Hause einer Expedition durchweg verfolgt; geteilte oder zusammengeführte werden ausgelassen.</RWS_MetricDesc_CaravanLongestExpedition>
-  <RWS_Metric_CaravanLongestDistance>Längste Expeditionsdistanz</RWS_Metric_CaravanLongestDistance>
-  <RWS_MetricDesc_CaravanLongestDistance>Die meisten Fliesen gingen in einer abgeschlossenen Expedition.</RWS_MetricDesc_CaravanLongestDistance>
-  <RWS_Metric_CaravanConcurrentMax>Die meisten Karawanen auf einmal</RWS_Metric_CaravanConcurrentMax>
-  <RWS_MetricDesc_CaravanConcurrentMax>Die meisten Spieler-Caravans, die auf einmal existierten, sich bewegen oder nicht.</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>Karawanenhinterhalt</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>Erfolgreiche Hinterhalte von Karawanen.</RWS_MetricDesc_CaravanAmbushes>
-  <RWS_Metric_SitesCleared>Feindliche Siedlungen besiegt</RWS_Metric_SitesCleared>
-  <RWS_MetricDesc_SitesCleared>Feindliche Fraktion Siedlungen durch den Sieg des Spielers zerstört.</RWS_MetricDesc_SitesCleared>
-  <RWS_Metric_SettlementsFounded>Gründung von Siedlungen</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>Neue Spielersiedlungen, die aus einer Karawane oder einer bestehenden Karte gegründet wurden; die Startsiedlung, die sich bewegenden Kolonien und die Landungen der Gravitation werden nicht gezählt.</RWS_MetricDesc_SettlementsFounded>
-  <RWS_Metric_SettlementsAbandoned>aufgegebene Siedlungen</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Spielersiedlungen, die nach Wahl aufgegeben wurden. Automatische Entfernungen, wie z. B. ein Gravitationsstart, werden nicht gezählt.</RWS_MetricDesc_SettlementsAbandoned>
-  <RWS_Metric_AncientDangersOpened>Alte Gefahren eröffnet</RWS_Metric_AncientDangersOpened>
-  <RWS_MetricDesc_AncientDangersOpened>Alte, versiegelte Schreine (die uralten Gefahren von Spieler-Siedlungskarten), deren Inneres jeweils einmal geöffnet wurde. Ein Schrein zählt, wenn das Spiel es als aufgedeckt betrachtet: der Nebel über seinem Zentrum geräumt. Andere zerbrochene Wände oder auftauchende Feinde werden nicht gezählt.</RWS_MetricDesc_AncientDangersOpened>
-  <RWS_Metric_ColonyStartingBiome>Originalbiom</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Biome DefName an der unveränderlichen Startkachel des Spiels, nicht an der aktuellen Kolonieseite; unbekannt, wann die Weltkachel nicht aufgelöst werden kann.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_CaravanLongestExpedition>Längste Zeit von Aufbruch bis Rückkehr zu einer Spieler-Heimatbasis bei vollständig verfolgten Expeditionen. Aufgeteilte oder zusammengelegte Karawanen zählen nicht.</RWS_MetricDesc_CaravanLongestExpedition>
+  <RWS_Metric_CaravanLongestDistance>Längste Expeditionsstrecke</RWS_Metric_CaravanLongestDistance>
+  <RWS_MetricDesc_CaravanLongestDistance>Höchste Zahl zu Fuß zurückgelegter Weltkartenfelder innerhalb einer abgeschlossenen Expedition.</RWS_MetricDesc_CaravanLongestDistance>
+  <RWS_Metric_CaravanConcurrentMax>Meiste gleichzeitige Karawanen</RWS_Metric_CaravanConcurrentMax>
+  <RWS_MetricDesc_CaravanConcurrentMax>Höchste Zahl gleichzeitig bestehender Spielerkarawanen, unabhängig von ihrer Bewegung.</RWS_MetricDesc_CaravanConcurrentMax>
+  <RWS_Metric_CaravanAmbushes>Karawanenhinterhalte</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>Erfolgreich ausgelöste Hinterhalte auf Karawanen.</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_SitesCleared>Besiegte feindliche Siedlungen</RWS_Metric_SitesCleared>
+  <RWS_MetricDesc_SitesCleared>Durch einen Sieg des Spielers zerstörte Siedlungen feindlicher Fraktionen.</RWS_MetricDesc_SitesCleared>
+  <RWS_Metric_SettlementsFounded>Gegründete Siedlungen</RWS_Metric_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>Neue Siedlungen des Spielers, gegründet von einer Karawane oder bestehenden Karte aus. Anfangssiedlung, Umzug der Kolonie und Gravschiff-Landungen zählen nicht.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_Metric_SettlementsAbandoned>Aufgegebene Siedlungen</RWS_Metric_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Freiwillig aufgegebene Spielersiedlungen. Automatische Entfernungen wie der Start eines Gravschiffs zählen nicht.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_Metric_AncientDangersOpened>Geöffnete uralte Gefahren</RWS_Metric_AncientDangersOpened>
+  <RWS_MetricDesc_AncientDangersOpened>Versiegelte uralte Schreine (uralte Gefahren) auf Spielersiedlungskarten, deren Inneres geöffnet wurde, je einmal. Ein Schrein zählt, wenn das Spiel ihn beim Auflösen des Nebels über seiner Mitte als entdeckt betrachtet; andere Mauerbrüche oder erscheinende Feinde zählen nicht.</RWS_MetricDesc_AncientDangersOpened>
+  <RWS_Metric_ColonyStartingBiome>Ursprüngliches Biom</RWS_Metric_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Biom (DefName) des unveränderlichen Startfelds der Partie, nicht das Biom des aktuellen Koloniestandorts; unbekannt, wenn das Weltkartenfeld nicht bestimmt werden kann.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>Abgeschlossene Forschungsprojekte</RWS_Metric_ResearchSnapshotFinished>
-  <RWS_MetricDesc_ResearchSnapshotFinished>Anzahl der registrierten Forschungsprojekte, die bei der letzten erfolgreichen Überprüfung abgeschlossen wurden.</RWS_MetricDesc_ResearchSnapshotFinished>
-  <RWS_Metric_ResearchSnapshotFinishedRate>Abschlussquote der Forschungsarbeiten</RWS_Metric_ResearchSnapshotFinishedRate>
-  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Abgeschlossene Projekte geteilt durch alle registrierten Forschungsprojekte zum letzten erfolgreichen Save.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
-  <RWS_Metric_ResearchSnapshotTechPeak>Höchstes abgeschlossenes Research Tech Level</RWS_Metric_ResearchSnapshotTechPeak>
-  <RWS_MetricDesc_ResearchSnapshotTechPeak>Höchstes technisches Niveau unter abgeschlossenen registrierten Forschungsprojekten zum letzten erfolgreichen Save.</RWS_MetricDesc_ResearchSnapshotTechPeak>
-  <RWS_Metric_FactionSnapshotRelations>Alliierte und feindliche Fraktionen</RWS_Metric_FactionSnapshotRelations>
-  <RWS_MetricDesc_FactionSnapshotRelations>Anzahl der berechtigten aktiven Fraktionen verbündet oder feindlich gegenüber dem Spieler, zuletzt erfolgreich zu retten.</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>Geschäfts- oder Firmenwert</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Mindest- und Höchstwert des Geschäfts- oder Firmenwerts der in Frage kommenden aktiven Fraktionen, die den Geschäfts- oder Firmenwert unterstützen; dauerhaft feindliche Fraktionen tragen zur Anzahl der Fraktionen bei, nicht zum Geschäfts- oder Firmenwert.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
-  <RWS_Metric_RosterFree>Freie Kolonisten leben</RWS_Metric_RosterFree>
-  <RWS_MetricDesc_RosterFree>Lebende freie Kolonisten zu einem erfolgreichen Save, von förderfähigen lebenden Charakteren (Spitzenwerte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterFree>
-  <RWS_Metric_RosterPrisoners>Lebende Kolonien</RWS_Metric_RosterPrisoners>
-  <RWS_MetricDesc_RosterPrisoners>Lebende koloniegefangene bei einem erfolgreichen save, von geeigneten lebenden charakteren (spitzenwerte span gespeicherte beobachtungen).</RWS_MetricDesc_RosterPrisoners>
+  <RWS_MetricDesc_ResearchSnapshotFinished>Anzahl abgeschlossener Forschungsprojekte beim letzten erfolgreichen Speichern.</RWS_MetricDesc_ResearchSnapshotFinished>
+  <RWS_Metric_ResearchSnapshotFinishedRate>Forschungsabschlussquote</RWS_Metric_ResearchSnapshotFinishedRate>
+  <RWS_MetricDesc_ResearchSnapshotFinishedRate>Abgeschlossene Forschungsprojekte ÷ alle Forschungsprojekte beim letzten erfolgreichen Speichern.</RWS_MetricDesc_ResearchSnapshotFinishedRate>
+  <RWS_Metric_ResearchSnapshotTechPeak>Höchste abgeschlossene Forschungstechnologiestufe</RWS_Metric_ResearchSnapshotTechPeak>
+  <RWS_MetricDesc_ResearchSnapshotTechPeak>Höchste Technologiestufe unter den beim letzten erfolgreichen Speichern abgeschlossenen Forschungsprojekten.</RWS_MetricDesc_ResearchSnapshotTechPeak>
+  <RWS_Metric_FactionSnapshotRelations>Verbündete und feindliche Fraktionen</RWS_Metric_FactionSnapshotRelations>
+  <RWS_MetricDesc_FactionSnapshotRelations>Aktive Fraktionen, die beim letzten erfolgreichen Speichern mit dem Spieler verbündet oder verfeindet waren.</RWS_MetricDesc_FactionSnapshotRelations>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Rufspanne der Fraktionen</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Niedrigster und höchster Grundruf aktiver Fraktionen mit Rufwert. Dauerhaft feindliche Fraktionen zählen bei der Fraktionszahl mit, nicht jedoch beim Ruf.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_RosterFree>Lebende freie Kolonisten</RWS_Metric_RosterFree>
+  <RWS_MetricDesc_RosterFree>Freie Kolonisten, die beim erfolgreichen Speichern lebten.</RWS_MetricDesc_RosterFree>
+  <RWS_Metric_RosterPrisoners>Lebende Gefangene der Kolonie</RWS_Metric_RosterPrisoners>
+  <RWS_MetricDesc_RosterPrisoners>Lebende Gefangene der Kolonie beim erfolgreichen Speichern.</RWS_MetricDesc_RosterPrisoners>
   <RWS_Metric_RosterSlaves>Lebende Sklaven der Kolonie</RWS_Metric_RosterSlaves>
-  <RWS_MetricDesc_RosterSlaves>Lebende Kolonie-Sklaven bei einem erfolgreichen Save. Historische Save-Wiederherstellung meldet eine teilweise Untergrenze nur, wenn ein gespeicherter Slave-Status und Spielerbesitz bestätigt werden.</RWS_MetricDesc_RosterSlaves>
+  <RWS_MetricDesc_RosterSlaves>Lebende Sklaven der Kolonie beim erfolgreichen Speichern. Bei Wiederherstellung aus älteren Spielständen wird nur eine unvollständige Untergrenze angezeigt, wenn sowohl Sklavenstatus als auch Spielerbesitz nachweisbar sind.</RWS_MetricDesc_RosterSlaves>
   <RWS_Metric_RosterAnimals>Kolonietiere</RWS_Metric_RosterAnimals>
-  <RWS_MetricDesc_RosterAnimals>Colony animals at a successful save, from eligible living character (Spitzenwert-Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterAnimals>
-  <RWS_Metric_RosterMechs>Colony-Mechanoide</RWS_Metric_RosterMechs>
-  <RWS_MetricDesc_RosterMechs>Colony-Mechanoiden bei erfolgreicher Speicherung, von förderfähigen lebenden Charakteren (Spitzenwert-Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterMechs>
-  <RWS_Metric_RosterAugmentedPeak>Höchste erweiterte Kolonisten</RWS_Metric_RosterAugmentedPeak>
-  <RWS_MetricDesc_RosterAugmentedPeak>Höchste erweiterte Kolonisten bei einem erfolgreichen Save, von geeigneten lebenden Charakteren (Peak-Werte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterAugmentedPeak>
-  <RWS_Metric_RosterSkill20PawnsPeak>Höchste Kolonisten mit Geschick 20</RWS_Metric_RosterSkill20PawnsPeak>
-  <RWS_MetricDesc_RosterSkill20PawnsPeak>Höchste Kolonisten mit Geschicklichkeit 20 bei einem erfolgreichen Save, von geeigneten lebenden Charakteren (Spitzenwerte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterSkill20PawnsPeak>
-  <RWS_Metric_RosterSkill20PerPawnPeak>Die meisten max-level-fähigkeiten auf einem kolonisten.</RWS_Metric_RosterSkill20PerPawnPeak>
-  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Die meisten max-level-fähigkeiten auf einem kolonisten bei einem erfolgreichen save, von geeigneten lebenden charakteren (spitzenwerte span gespeicherte beobachtungen).</RWS_MetricDesc_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterAnimals>Lebende Kolonietiere beim erfolgreichen Speichern.</RWS_MetricDesc_RosterAnimals>
+  <RWS_Metric_RosterMechs>Kolonie-Mechanoiden</RWS_Metric_RosterMechs>
+  <RWS_MetricDesc_RosterMechs>Lebende Mechanoiden der Kolonie beim erfolgreichen Speichern.</RWS_MetricDesc_RosterMechs>
+  <RWS_Metric_RosterAugmentedPeak>Meiste Kolonisten mit künstlichen Körperteilen</RWS_Metric_RosterAugmentedPeak>
+  <RWS_MetricDesc_RosterAugmentedPeak>Höchste Zahl freier Kolonisten mit mindestens einem künstlichen Körperteil in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterAugmentedPeak>
+  <RWS_Metric_RosterSkill20PawnsPeak>Meiste Kolonisten mit Fertigkeitsstufe 20</RWS_Metric_RosterSkill20PawnsPeak>
+  <RWS_MetricDesc_RosterSkill20PawnsPeak>Höchste Zahl freier Kolonisten mit mindestens einer Fertigkeit auf Stufe 20 in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterSkill20PawnsPeak>
+  <RWS_Metric_RosterSkill20PerPawnPeak>Meiste Fertigkeiten auf Stufe 20 bei einem Kolonisten</RWS_Metric_RosterSkill20PerPawnPeak>
+  <RWS_MetricDesc_RosterSkill20PerPawnPeak>Höchste Zahl von Fertigkeiten auf Stufe 20 eines einzelnen freien Kolonisten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterSkill20PerPawnPeak>
   <RWS_Metric_RosterOldest>Ältester lebender Kolonist</RWS_Metric_RosterOldest>
-  <RWS_MetricDesc_RosterOldest>Ältester lebender Kolonist bei einem erfolgreichen Save, von förderfähigen lebenden Charakteren (Peak-Werte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterOldest>
-  <RWS_Metric_RosterAnimalDefsPeak>Höchste Kolonietierart</RWS_Metric_RosterAnimalDefsPeak>
-  <RWS_MetricDesc_RosterAnimalDefsPeak>Höchste Kolonietierart bei erfolgreicher Rettung, aus förderfähigen lebenden Charakteren (Spitzenwerte gespeicherte Beobachtungen).</RWS_MetricDesc_RosterAnimalDefsPeak>
-  <RWS_Metric_RosterPassions>Kolonistische Leidenschaften durch Geschick</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>Kolonistische Leidenschaften durch Geschick bei einem erfolgreichen Save, von geeigneten lebenden Charakteren (Peakwerte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterPassions>
-  <RWS_Metric_RosterAgeMean>Bedeutendes lebendes kolonistisches Alter</RWS_Metric_RosterAgeMean>
-  <RWS_MetricDesc_RosterAgeMean>Mittleres lebendes Kolonistenalter bei einem erfolgreichen Save, von förderfähigen lebenden Charakteren (Spitzenwerte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterAgeMean>
-  <RWS_Metric_RosterInjuredPeak>Höchste gleichzeitig verletzte Kolonisten</RWS_Metric_RosterInjuredPeak>
-  <RWS_MetricDesc_RosterInjuredPeak>Höchste gleichzeitig verletzte Kolonisten bei einem erfolgreichen Save, von geeigneten lebenden Charakteren (Peakwerte Spanne gespeicherte Beobachtungen).</RWS_MetricDesc_RosterInjuredPeak>
-  <RWS_Metric_FacilitiesHomeMaps>Die meisten geladenen Home Maps</RWS_Metric_FacilitiesHomeMaps>
-  <RWS_MetricDesc_FacilitiesHomeMaps>Die meisten geladenen Heimkarten über geladene Spieler-Heimkarten hinweg sind erfolgreich gespeichert.</RWS_MetricDesc_FacilitiesHomeMaps>
-  <RWS_Metric_FacilitiesTurrets>Die meisten installierten Türme</RWS_Metric_FacilitiesTurrets>
-  <RWS_MetricDesc_FacilitiesTurrets>Die meisten installierten Türme über geladene Spieler-Home-Maps zu einem erfolgreichen Save.</RWS_MetricDesc_FacilitiesTurrets>
-  <RWS_Metric_FacilitiesGrowingCells>Größtes Anbaugebiet</RWS_Metric_FacilitiesGrowingCells>
-  <RWS_MetricDesc_FacilitiesGrowingCells>Größtes Wachstumszonengebiet über geladene Spielerheimkarten mit erfolgreichem Save. Peaks werden über aufgezeichnete Saves ausgewählt.</RWS_MetricDesc_FacilitiesGrowingCells>
-  <RWS_Metric_FacilitiesGeneration>Höchste Nennerzeugungskapazität</RWS_Metric_FacilitiesGeneration>
-  <RWS_MetricDesc_FacilitiesGeneration>Höchste Nenn-Generierungskapazität über geladene Spieler-Heimkarten hinweg bei einem erfolgreichen Save.</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>Höchste Nenn-Batteriekapazität</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>Höchste Nenn-Akkukapazität über geladene Spieler-Home-Maps bei einem erfolgreichen Save. Peaks werden über aufgezeichnete Saves ausgewählt.</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_MetricDesc_RosterOldest>Höchstes biologisches Alter eines lebenden freien Kolonisten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterOldest>
+  <RWS_Metric_RosterAnimalDefsPeak>Größte Vielfalt der Kolonietiere</RWS_Metric_RosterAnimalDefsPeak>
+  <RWS_MetricDesc_RosterAnimalDefsPeak>Höchste Zahl unterschiedlicher Tierarten unter lebenden Kolonietieren in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterPassions>Leidenschaften nach Fertigkeit</RWS_Metric_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Leidenschaften (keine, gering, groß) freier Kolonisten je Fertigkeit beim erfolgreichen Speichern.</RWS_MetricDesc_RosterPassions>
+  <RWS_Metric_RosterAgeMean>Mittleres Alter lebender Kolonisten</RWS_Metric_RosterAgeMean>
+  <RWS_MetricDesc_RosterAgeMean>Mittleres biologisches Alter lebender freier Kolonisten beim erfolgreichen Speichern.</RWS_MetricDesc_RosterAgeMean>
+  <RWS_Metric_RosterInjuredPeak>Meiste gleichzeitig verletzte Kolonisten</RWS_Metric_RosterInjuredPeak>
+  <RWS_MetricDesc_RosterInjuredPeak>Höchste Zahl freier Kolonisten mit mindestens einer Verletzung (auch dauerhaft) in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterInjuredPeak>
+  <RWS_Metric_FacilitiesHomeMaps>Meiste gleichzeitige Heimatkarten</RWS_Metric_FacilitiesHomeMaps>
+  <RWS_MetricDesc_FacilitiesHomeMaps>Höchste Zahl gleichzeitig geladener Heimatkarten des Spielers in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesHomeMaps>
+  <RWS_Metric_FacilitiesTurrets>Meiste Geschütztürme</RWS_Metric_FacilitiesTurrets>
+  <RWS_MetricDesc_FacilitiesTurrets>Höchste Zahl von Geschütztürmen des Spielers auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesTurrets>
+  <RWS_Metric_FacilitiesGrowingCells>Größte Anbauzonenfläche</RWS_Metric_FacilitiesGrowingCells>
+  <RWS_MetricDesc_FacilitiesGrowingCells>Größte Gesamtfläche der Anbauzonen (Felder) auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesGrowingCells>
+  <RWS_Metric_FacilitiesGeneration>Höchste Nennleistung der Stromerzeugung</RWS_Metric_FacilitiesGeneration>
+  <RWS_MetricDesc_FacilitiesGeneration>Höchste gesamte Nennleistung der Stromgeneratoren auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesGeneration>
+  <RWS_Metric_FacilitiesBattery>Höchste Batteriekapazität</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>Höchste gesamte Nennkapazität von Batterien auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Niedrigste beobachtete Außentemperatur</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>Niedrigste beobachtete Außentemperatur über geladene Spielerheimkarten bei einem erfolgreichen Save. Peaks werden über aufgezeichnete Saves ausgewählt.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Höchste beobachtete Außentemperatur</RWS_Metric_FacilitiesOutdoorTempMax>
