@@ -200,7 +200,8 @@
     ]
   },
   "pending": [
-    "Native-speaker review of every language before release (no in-game rendering check was done).",
-    "Native-speaker review and in-game rendering check have not been performed."
+    "In-game rendering/layout checks have not been performed.",
+    "Native-speaker review has not been performed.",
+    "Full vanilla-language glossary was unavailable; official terms outside handoff §5 require review."
   ]
 }
