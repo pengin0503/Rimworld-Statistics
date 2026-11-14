@@ -22,6 +22,8 @@ The [27-candidate popularity-led research register](2026-11-14-popular-mod-disco
 
 The [popular race/xenotype audit (2026-11-14)](2026-11-14-popular-race-mod-audit.md) extends that research with six **separate preliminary 1.7 race candidates** and explicit 1.6-only exclusions, ranked by observed Workshop subscribers and independent post-success outcomes. These are not part of the original 27 popularity-led rows and are not additions to the released supported-MOD list.
 
+**第5波（2026-11-14）追加候補：**[日本語の追加MOD調査台帳](2026-11-14-fifthwave-additional-candidates-ja.md)に、既存の27件・種族6件と重複しない5候補（Winston Waves、Empire Refactored、Caravan Adventures、World Domination 2.0、Rim War維持版）を別枠で保存した。いずれも**調査候補であって対応済みではない**。[詳細なコード・実セーブの追加調査（日本語）](../research/2026-11-14-additional-investigation-ja.md)も参照。
+
 ## Race MOD integration policy — shared classification first (adopted 2026-11-14)
 
 **Decision:** Implement general race-specific statistics once in **Rimworld-Statistics** through a shared Humanoid Alien Races (HAR) classification path, rather than making one statistics adapter for every race MOD. Where Biotech xenotypes are present, retain xenotype as an **independent classification dimension**; HAR race and Biotech xenotype are not interchangeable and must never be added together as separate people.
@@ -49,7 +51,7 @@ The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-imple
 5. **RimWorld 1.7 check:** inspect the active `loadFolders.xml` and *actual selected assembly* (sometimes version folder 1.6); confirm public source/IL signature and successful event. 1.7 branding or folder existence alone is insufficient.
 6. **Cross-MOD key identity:** use package identity plus Def identity/version where applicable; avoid treating a bare DefName as globally unique across unrelated MOD sets.
 7. **Evidence gate:** source/IL audit, collision/duplication audit against existing families, negative/positive tests, build and packaged artifact checks; optional real-game confirmation when practical. Keep new unproven capture classified Experimental/Unverified, but enable eligible statistics by default on new installations. Respect explicit existing opt-outs, and allow recording changes without restart.
-8. **No code changes in this documentation task.** Existing v1.6.0 release and Steam Workshop are untouched.
+8. **No code changes in this documentation task.** 本調査で既存の正式リリース（現在v1.8.0）とSteam Workshopは変更しない。
 
 ## Popularity-aware execution priority
 
