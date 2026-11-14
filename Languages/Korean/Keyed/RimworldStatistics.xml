@@ -500,131 +500,131 @@
   <RWS_MetricDesc_CraftedUnits>플레이어의 완료된 작업 지시로 만들어진 주생산물과 부산물의 중첩 수량 합계입니다. 요리와 예술품을 포함하지만 채굴, 수확, 메카노이드 배양은 제외합니다.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>품질별 제작품 수</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>위 제작품을 품질별로 나눕니다. 품질이 없는 아이템은 “none”으로 표시합니다.</RWS_MetricDesc_CraftQuality>
-  <RWS_Metric_CraftLegendary>전설적인 아이템 제작</RWS_Metric_CraftLegendary>
-  <RWS_MetricDesc_CraftLegendary>전설적인 질의 숙련되는 품목.</RWS_MetricDesc_CraftLegendary>
-  <RWS_Metric_CraftMasterwork>마스터 워크 아이템 제작</RWS_Metric_CraftMasterwork>
-  <RWS_MetricDesc_CraftMasterwork>masterwork 질의 숙련되는 품목.</RWS_MetricDesc_CraftMasterwork>
-  <RWS_Metric_CraftBestQuality>좋은 품질 crafted</RWS_Metric_CraftBestQuality>
-  <RWS_MetricDesc_CraftBestQuality>공예 품목의 가장 높은 품질 (0 = awful ... 6 = 전설); 고장 이름은 그것.</RWS_MetricDesc_CraftBestQuality>
-  <RWS_Metric_CraftBestPrice>가장 가치있는 아이템</RWS_Metric_CraftBestPrice>
-  <RWS_MetricDesc_CraftBestPrice>한 장의 가장 높은 시장 가치는 만들었을 때 항목; 그것의 판매 가격.</RWS_MetricDesc_CraftBestPrice>
-  <RWS_Metric_Sculptures>예술 작품 완료</RWS_Metric_Sculptures>
-  <RWS_MetricDesc_Sculptures>미술품(물과 같은).</RWS_MetricDesc_Sculptures>
-  <RWS_Metric_MealsByDef>식사는 유형에 의해 요리</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>유형 (ThingDef)에 의해 만들어진 품목 중 완성 된 식사.</RWS_MetricDesc_MealsByDef>
-  <RWS_Metric_UniqueCraftedDefs>공예품의 종류</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>아이템 유형 (ThingDef)의 수가 적어도 한 번 제작되었습니다.</RWS_MetricDesc_UniqueCraftedDefs>
-  <RWS_Metric_CraftDailyPeak>하루를 보낸 대부분의 상품</RWS_Metric_CraftDailyPeak>
-  <RWS_MetricDesc_CraftDailyPeak>1개의 게임 일에서 만들어진 대부분의 품목; 시작에서 마지막 조사에 기록된 단지 일.</RWS_MetricDesc_CraftDailyPeak>
-  <RWS_Metric_BestCrafter>탑 크래커</RWS_Metric_BestCrafter>
-  <RWS_MetricDesc_BestCrafter>가장 공예품 인물의 수; 고장은 그들에게 이름을 붙입니다 (ID로).</RWS_MetricDesc_BestCrafter>
-  <RWS_Metric_BestCook>톱 요리</RWS_Metric_BestCook>
-  <RWS_MetricDesc_BestCook>가장 요리 한 문자의 식사 수; 고장은 (ID로) 이름을 지정합니다.</RWS_MetricDesc_BestCook>
-  <RWS_Metric_HarvestUnits>Crops 수확</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>수확 된 주요 제품 플레이어 문자의 스택 수; 추가 수율은 포함되지 않습니다.</RWS_MetricDesc_HarvestUnits>
-  <RWS_Metric_HarvestByCrop>작물에 의해 수확</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>작물에 의해 수확 (식물 ThingDef); 그 작물이 알려진 수확은 "알 수없는"입니다.</RWS_MetricDesc_HarvestByCrop>
-  <RWS_Metric_TopCrop>가장 수확 된 작물</RWS_Metric_TopCrop>
-  <RWS_MetricDesc_TopCrop>가장 큰 수확량과 그 양의 작물.</RWS_MetricDesc_TopCrop>
-  <RWS_Metric_HarvestYearPeak>매년 가장 큰 수확</RWS_Metric_HarvestYearPeak>
-  <RWS_MetricDesc_HarvestYearPeak>1 년 동안 가장 큰 수확; 수를 걸쳐 기록 된 만 년.</RWS_MetricDesc_HarvestYearPeak>
-  <RWS_Metric_BestHarvester>탑 수확기</RWS_Metric_BestHarvester>
-  <RWS_MetricDesc_BestHarvester>가장 수확 한 캐릭터의 수확; 고장은 그들에게 이름을 붙입니다 (id).</RWS_MetricDesc_BestHarvester>
-  <RWS_Metric_HarvestFailures>실패한 수확</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>플레이어 문자로 수확 한 식물은 실제로 실패했습니다. 식물과 동일하지 않습니다.</RWS_MetricDesc_HarvestFailures>
-  <RWS_Metric_CropsSown>큰 가슴</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>플레이어 캐릭터에 의해 sown 식물.</RWS_MetricDesc_CropsSown>
-  <RWS_Metric_CropsSownDefs>작물의 종류 sown</RWS_Metric_CropsSownDefs>
-  <RWS_MetricDesc_CropsSownDefs>작물 유형의 수는 적어도 한 번 몹니다.</RWS_MetricDesc_CropsSownDefs>
-  <RWS_Metric_MiningUnits>자원 mined</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>생성된 플레이어 문자의 마이닝의 스택 수.</RWS_MetricDesc_MiningUnits>
-  <RWS_Metric_BestMiner>맨 위로</RWS_Metric_BestMiner>
-  <RWS_MetricDesc_BestMiner>가장 분열한 문자에 의해 분량; 고장은 그들을 지명 (id로).</RWS_MetricDesc_BestMiner>
-  <RWS_Metric_Constructions>완료된 건물</RWS_Metric_Constructions>
-  <RWS_MetricDesc_Constructions>플레이어 건설 프레임은 건물로 완료되었습니다. 재설치 및 청사진은 계산되지 않습니다.</RWS_MetricDesc_Constructions>
-  <RWS_Metric_ConstructionMaterials>건설에 사용되는 재료</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>재료는 유형 (ThingDef)에 의해 개최 된 프레임을 완료했습니다. 다른 재료는 함께 추가되지 않습니다.</RWS_MetricDesc_ConstructionMaterials>
-  <RWS_Metric_BestBuilder>탑 빌더</RWS_Metric_BestBuilder>
-  <RWS_MetricDesc_BestBuilder>가장 완료된 문자의 완성된 건축; 고장은 그(id)를 명명합니다.</RWS_MetricDesc_BestBuilder>
-  <RWS_Metric_ConstructionFailures>건설 실패</RWS_Metric_ConstructionFailures>
-  <RWS_MetricDesc_ConstructionFailures>공사가 실패합니다. 취소는 계산되지 않습니다.</RWS_MetricDesc_ConstructionFailures>
-  <RWS_Metric_Deconstructions>건물 파괴</RWS_Metric_Deconstructions>
-  <RWS_MetricDesc_Deconstructions>완성 된 공조 주문이있는 플레이어 건물. Blueprint를 대체하기위한 개조는 계산되지 않습니다.</RWS_MetricDesc_Deconstructions>
-  <RWS_Metric_Repairs>수리 완료</RWS_Metric_Repairs>
-  <RWS_MetricDesc_Repairs>수리 작업은 플레이어가 전체 히트 포인트로 다시 건물을 가져 왔습니다.</RWS_MetricDesc_Repairs>
-  <RWS_Metric_PodsLaunched>운송 팟 출시</RWS_Metric_PodsLaunched>
-  <RWS_MetricDesc_PodsLaunched>플레이어 전송 팟 출시 (팟, 출시되지 않음).</RWS_MetricDesc_PodsLaunched>
-  <RWS_Metric_FoodSpoiled>음식은 스포일러 잃어버린</RWS_Metric_FoodSpoiled>
-  <RWS_MetricDesc_FoodSpoiled>rotting에 의해 파괴 된 플레이어 음식의 스택 수. 굽기 및 식사는 계산되지 않습니다.</RWS_MetricDesc_FoodSpoiled>
-  <RWS_Metric_FoodNutrition>영양 먹기</RWS_Metric_FoodNutrition>
-  <RWS_MetricDesc_FoodNutrition>영양 자유로운 식민지는 실제로 먹기에 의해 가지고 갔습니다.</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodHarvestPerCell>성장 지역 세포 일 당 수확량</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>수질의 주요 수확은 같은 시간 (cell-days)에 통합된 성장 지역 세포에 의해 분할된 성장 지역에서 서 있습니다. 수질과 야생 식물은 포함되지 않습니다.</RWS_MetricDesc_FoodHarvestPerCell>
-  <RWS_Metric_TradeDeals>무역 거래</RWS_Metric_TradeDeals>
-  <RWS_MetricDesc_TradeDeals>적어도 하나의 비 통화 항목이 손을 변경하는 거래. 빈 거래, 선물 및 실패는 계산되지 않습니다.</RWS_MetricDesc_TradeDeals>
-  <RWS_Metric_TradeOrbital>무역 배와 거래</RWS_Metric_TradeOrbital>
-  <RWS_MetricDesc_TradeOrbital>궤도 무역 선박과 거래.</RWS_MetricDesc_TradeOrbital>
-  <RWS_Metric_TradeVisitingCaravan>방문 caravans와 거래</RWS_Metric_TradeVisitingCaravan>
-  <RWS_MetricDesc_TradeVisitingCaravan>거래자가 발에 식민지를 방문합니다. 다른 결제 거래는 별도입니다.</RWS_MetricDesc_TradeVisitingCaravan>
-  <RWS_Metric_TradeSalesTotal>총 매출</RWS_Metric_TradeSalesTotal>
-  <RWS_MetricDesc_TradeSalesTotal>완료된 거래(silver)에서 판매되는 비화폐 품목의 계약 값.</RWS_MetricDesc_TradeSalesTotal>
-  <RWS_Metric_TradeBuysTotal>총 구매</RWS_Metric_TradeBuysTotal>
-  <RWS_MetricDesc_TradeBuysTotal>완료된 거래(silver)에서 구입한 비화폐 품목의 계약 값.</RWS_MetricDesc_TradeBuysTotal>
-  <RWS_Metric_TradeSalesPeak>하나의 거래에서 가장 큰 판매</RWS_Metric_TradeSalesPeak>
-  <RWS_MetricDesc_TradeSalesPeak>가장 큰 판매 총 하나의 거래.</RWS_MetricDesc_TradeSalesPeak>
-  <RWS_Metric_TradeBuysPeak>하나의 거래에서 가장 큰 구매</RWS_Metric_TradeBuysPeak>
-  <RWS_MetricDesc_TradeBuysPeak>하나의 거래의 가장 큰 구매 합계.</RWS_MetricDesc_TradeBuysPeak>
-  <RWS_Metric_TradeSalesPeakUnit>높은 단위 판매 가격</RWS_Metric_TradeSalesPeakUnit>
-  <RWS_MetricDesc_TradeSalesPeakUnit>가장 높은 계약 값 ÷ 판매된 선의 수.</RWS_MetricDesc_TradeSalesPeakUnit>
-  <RWS_Metric_TradeSalesUnits>상품 판매</RWS_Metric_TradeSalesUnits>
-  <RWS_MetricDesc_TradeSalesUnits>판매된 비화폐 품목의 스택 수.</RWS_MetricDesc_TradeSalesUnits>
-  <RWS_Metric_TradeBuysUnits>상품구매</RWS_Metric_TradeBuysUnits>
-  <RWS_MetricDesc_TradeBuysUnits>잃어버린 비 통화 항목의 스택 수.</RWS_MetricDesc_TradeBuysUnits>
-  <RWS_Metric_TradeTopSold>가장 많이 판매된 아이템</RWS_Metric_TradeTopSold>
-  <RWS_MetricDesc_TradeTopSold>아이템 유형은 대부분 판매, 그리고 얼마나 많은.</RWS_MetricDesc_TradeTopSold>
-  <RWS_Metric_TradeTopBought>가장 많이 샀다.</RWS_Metric_TradeTopBought>
-  <RWS_MetricDesc_TradeTopBought>아이템 유형은 대부분 구입, 그리고 얼마나 많은.</RWS_MetricDesc_TradeTopBought>
-  <RWS_Metric_TradeSoldDefs>판매되는 품목의 종류</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>판매되는 비화폐 품목 유형의 수.</RWS_MetricDesc_TradeSoldDefs>
-  <RWS_Metric_TradeBoughtDefs>상품의 종류</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>비 통화 항목 유형의 수가 샀습니다.</RWS_MetricDesc_TradeBoughtDefs>
-  <RWS_Metric_TradePartnerFactionDefs>거래의 종류와</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>알려진 사실 유형의 수와 함께 거래; 사실없이 파트너는 "알 수없는"로 출발합니다.</RWS_MetricDesc_TradePartnerFactionDefs>
-  <RWS_Metric_GiftGoodwill>Goodwill 을 얻은 선물</RWS_Metric_GiftGoodwill>
-  <RWS_MetricDesc_GiftGoodwill>각 선물 거래의 주위에 수신 사실의 진짜 굿 윌 증가; 0 한도에.</RWS_MetricDesc_GiftGoodwill>
-  <RWS_Metric_AllyToHostile>Allies는 hostile를 돌았습니다</RWS_Metric_AllyToHostile>
-  <RWS_MetricDesc_AllyToHostile>사실의 관계가 ally에서 hostile로 갔다.</RWS_MetricDesc_AllyToHostile>
-  <RWS_Metric_Reconciled>Hostile factions는 재건축했습니다</RWS_Metric_Reconciled>
-  <RWS_MetricDesc_Reconciled>hostile faction의 관계는 중립적 또는 ally가되었다.</RWS_MetricDesc_Reconciled>
-  <RWS_Metric_AidRequests>요청된 군 원조</RWS_Metric_AidRequests>
-  <RWS_MetricDesc_AidRequests>군 원조는 친절한 faction 받아들여집니다.</RWS_MetricDesc_AidRequests>
-  <RWS_Metric_AidArrivals>Reinforcements에 도착</RWS_Metric_AidArrivals>
-  <RWS_MetricDesc_AidArrivals>타임즈 친화적 인 강화는 실제로 도착했습니다. 요청과 동일하지 않습니다.</RWS_MetricDesc_AidArrivals>
-  <RWS_Metric_Tends>수행 종료</RWS_Metric_Tends>
-  <RWS_MetricDesc_Tends>한 번의 상처가 수행되었습니다. 한 번의 상처는 한 번씩 씩 씩씩 씩씩 씩씩 씩씩 씩씩 씩 씩씩 씩 씩씩씩씩 씩씩 씩씩 씩씩 씩씩씩 씩씩씩씩 씩씩씩 씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩씩</RWS_MetricDesc_Tends>
-  <RWS_Metric_TendQualityMean>좋은 품질</RWS_Metric_TendQualityMean>
-  <RWS_MetricDesc_TendQualityMean>각 상태에 적용되는 의미있는 질은 대우된 경향이 있습니다.</RWS_MetricDesc_TendQualityMean>
-  <RWS_Metric_BestTender>최고 의사 (tends)</RWS_Metric_BestTender>
-  <RWS_MetricDesc_BestTender>가장 무인한 문자의 경향이; 고장은 그들을 지명 (ID로). 알려진 의사없이 종료가 남습니다.</RWS_MetricDesc_BestTender>
-  <RWS_Metric_NeutralTends>중립 문자의 끝</RWS_Metric_NeutralTends>
-  <RWS_MetricDesc_NeutralTends>환자가 중립적 인 성격이었습니다.</RWS_MetricDesc_NeutralTends>
-  <RWS_Metric_MedicineUsed>약 사용</RWS_Metric_MedicineUsed>
-  <RWS_MetricDesc_MedicineUsed>의학은 실제로 경향이있다.</RWS_MetricDesc_MedicineUsed>
-  <RWS_Metric_Surgeries>팟캐스트</RWS_Metric_Surgeries>
-  <RWS_MetricDesc_Surgeries>결정 된 결과 (교육 또는 실패)로 서거. 취소는 계산되지 않습니다.</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_CraftLegendary>전설적 품질 제작품 수</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>전설적 품질로 제작한 아이템 수입니다.</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>걸작 품질 제작품 수</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>걸작 품질로 제작한 아이템 수입니다.</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>제작한 최고 품질</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>제작한 아이템의 최고 품질입니다(0 = 끔찍 … 6 = 전설적). 내역에 해당 품질을 표시합니다.</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>가장 비싸게 제작한 아이템</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>제작 당시 아이템 하나의 최고 시장 가치입니다. 판매 가격이 아닙니다.</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>완성한 예술품 수</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>제작품 중 조각품 등 예술품으로 분류되는 아이템 수입니다.</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>유형별 요리한 식사</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>제작품 중 완성한 식사를 종류(ThingDef)별로 집계합니다.</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>제작한 아이템의 종류 수</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>한 번 이상 제작한 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>하루 최다 제작 수</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>게임 내 하루 동안 제작한 최대 아이템 수입니다. 시작부터 끝까지 기록한 날짜만 집계합니다.</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>제작을 가장 많이 한 폰</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>제작 수가 가장 많은 폰의 제작량입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_BestCook>요리를 가장 많이 한 폰</RWS_Metric_BestCook>
+  <RWS_MetricDesc_BestCook>식사를 가장 많이 요리한 폰의 식사 제작 수입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestCook>
+  <RWS_Metric_HarvestUnits>수확한 작물 수</RWS_Metric_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>플레이어 측 폰이 수확한 주생산물의 중첩 수량입니다. 추가 산출물은 제외합니다.</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>작물별 수확량</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>수확량을 원래 작물(식물 ThingDef)별로 집계합니다. 작물을 알 수 없으면 “(알 수 없음)”으로 표시합니다.</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>가장 많이 수확한 작물</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>수확량이 가장 많은 작물의 종류와 수확량입니다.</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>연간 최대 수확량</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>게임 내 한 해의 최대 수확량입니다. 연초부터 연말까지 기록한 해만 집계합니다.</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>수확을 가장 많이 한 폰</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>수확량이 가장 많은 폰의 수확량입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>수확 실패 수</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>플레이어 측 폰이 실제로 수확에 실패한 식물의 수입니다. 식물이 죽은 경우는 포함하지 않습니다.</RWS_MetricDesc_HarvestFailures>
+  <RWS_Metric_CropsSown>심은 작물 수</RWS_Metric_CropsSown>
+  <RWS_MetricDesc_CropsSown>플레이어 측 폰이 파종한 식물 수입니다.</RWS_MetricDesc_CropsSown>
+  <RWS_Metric_CropsSownDefs>파종한 작물의 종류 수</RWS_Metric_CropsSownDefs>
+  <RWS_MetricDesc_CropsSownDefs>한 번 이상 파종한 작물 종류의 수입니다.</RWS_MetricDesc_CropsSownDefs>
+  <RWS_Metric_MiningUnits>채굴 자원 수량</RWS_Metric_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>플레이어 측 폰의 채굴로 나온 아이템의 중첩 수량입니다.</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>채굴을 가장 많이 한 폰</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>채굴량이 가장 많은 폰의 채굴량입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestMiner>
+  <RWS_Metric_Constructions>완성한 건축물 수</RWS_Metric_Constructions>
+  <RWS_MetricDesc_Constructions>플레이어의 건축 중인 뼈대가 완성되어 건물이 된 수입니다. 재설치 및 설계도는 제외합니다.</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>건설에 사용한 자재</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>완성된 건축 뼈대에 포함된 자재를 종류(ThingDef)별로 표시합니다. 서로 다른 자재를 합산하지 않습니다.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_Metric_BestBuilder>건설을 가장 많이 한 폰</RWS_Metric_BestBuilder>
+  <RWS_MetricDesc_BestBuilder>건축을 가장 많이 완성한 폰의 완료 수입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>건설 실패 수</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>건설 작업에 실패한 횟수입니다. 취소는 제외합니다.</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>해체한 건축물 수</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>플레이어 건축물에 내려진 해체 명령이 완료된 수입니다. 교체 설계도를 위한 해체는 제외합니다.</RWS_MetricDesc_Deconstructions>
+  <RWS_Metric_Repairs>완료한 수리 수</RWS_Metric_Repairs>
+  <RWS_MetricDesc_Repairs>수리 작업으로 플레이어 건축물의 내구도를 최대로 복구한 횟수입니다.</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>발사한 수송 포드 수</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>플레이어가 발사한 수송 포드의 수입니다. 발사 횟수가 아닌 포드 수를 셉니다.</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>부패로 잃은 식량</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>플레이어 소유 식량이 부패해 사라진 중첩 수량입니다. 불타거나 먹은 식량은 제외합니다.</RWS_MetricDesc_FoodSpoiled>
+  <RWS_Metric_FoodNutrition>섭취한 영양량</RWS_Metric_FoodNutrition>
+  <RWS_MetricDesc_FoodNutrition>자유 정착민이 실제로 식사하여 섭취한 영양량의 합계입니다.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodHarvestPerCell>재배구역 칸·일당 수확량</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>재배구역에서 자란 작물의 주생산물 수확량 ÷ 같은 기간 동안 시간에 따라 누적한 재배구역 칸 수(칸·일)입니다. 수경재배와 야생 식물은 제외합니다.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_Metric_TradeDeals>거래 체결 횟수</RWS_Metric_TradeDeals>
+  <RWS_MetricDesc_TradeDeals>화폐가 아닌 아이템을 한 개 이상 교환한 거래 횟수입니다. 빈 거래, 선물 및 실패한 거래는 제외합니다.</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>궤도 상선과의 거래</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>궤도 상선과 체결한 거래 수입니다.</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>방문 상단과의 거래</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>정착지로 걸어서 방문한 상인과 체결한 거래 수입니다. 다른 거점에서의 거래는 별도로 집계합니다.</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_Metric_TradeSalesTotal>총 판매액</RWS_Metric_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>완료한 거래에서 판매한 비화폐 아이템의 계약상 금액 합계(은)입니다.</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_Metric_TradeBuysTotal>총 구매액</RWS_Metric_TradeBuysTotal>
+  <RWS_MetricDesc_TradeBuysTotal>완료한 거래에서 구매한 비화폐 아이템의 계약상 금액 합계(은)입니다.</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>단일 거래 최대 판매액</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>한 번의 거래에서 판매한 최대 금액입니다.</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>단일 거래 최대 구매액</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>한 번의 거래에서 구매한 최대 금액입니다.</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>최고 개당 판매가</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>판매 명세의 계약 금액 ÷ 수량으로 계산한 최대값입니다.</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_Metric_TradeSalesUnits>판매한 아이템 수</RWS_Metric_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>판매한 비화폐 아이템의 중첩 수량 합계입니다.</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_Metric_TradeBuysUnits>구매한 아이템 수</RWS_Metric_TradeBuysUnits>
+  <RWS_MetricDesc_TradeBuysUnits>구매한 비화폐 아이템의 중첩 수량 합계입니다.</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>가장 많이 판매한 아이템</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>가장 많이 판매한 아이템 종류 및 판매 수량입니다.</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>가장 많이 구매한 아이템</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>가장 많이 구매한 아이템 종류 및 구매 수량입니다.</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>판매한 아이템의 종류 수</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>판매한 비화폐 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>구매한 아이템의 종류 수</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>구매한 비화폐 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>거래한 세력 종류 수</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>거래한 적이 있는 알려진 세력 종류의 수입니다. 세력이 없는 상대는 “(알 수 없음)”으로 따로 표시합니다.</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>선물로 얻은 우호도</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>선물을 받은 세력의 우호도가 실제로 증가한 양입니다. 이미 최대값이면 0입니다.</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>동맹에서 적대로 바뀐 횟수</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>세력 관계가 동맹에서 적대로 변경된 횟수입니다.</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>적대 세력과 화해한 횟수</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>적대 세력과의 관계가 중립 또는 동맹으로 변경된 횟수입니다.</RWS_MetricDesc_Reconciled>
+  <RWS_Metric_AidRequests>군사 지원 요청 횟수</RWS_Metric_AidRequests>
+  <RWS_MetricDesc_AidRequests>우호 세력이 수락한 군사 지원 요청 횟수입니다.</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>실제로 도착한 지원군 수</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>우호 세력의 지원군이 실제로 도착한 횟수입니다. 요청 횟수와는 다릅니다.</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>치료 횟수</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>치료를 수행한 횟수입니다. 여러 상처를 한 번에 치료해도 한 번으로 셉니다.</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>평균 치료 품질</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>한 번의 치료로 처치한 각 증상에 적용한 치료 품질의 평균입니다.</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>치료를 가장 많이 한 의사</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>가장 많이 치료한 폰의 치료 횟수입니다. 내역에 폰의 ID를 표시합니다. 의사를 알 수 없는 치료는 제외합니다.</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>중립 폰 치료 횟수</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>환자가 중립 폰이었던 치료 횟수입니다.</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>사용한 의약품 수</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>치료 중 실제로 소비한 의약품 수량입니다.</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>수술 횟수</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>성공 또는 실패 결과가 확정된 수술 횟수입니다. 취소된 수술은 제외합니다.</RWS_MetricDesc_Surgeries>
   <RWS_Metric_SurgerySuccessRate>수술 성공률</RWS_Metric_SurgerySuccessRate>
-  <RWS_MetricDesc_SurgerySuccessRate>성공적인 수술 ÷ 수술로 결정 된 결과.</RWS_MetricDesc_SurgerySuccessRate>
-  <RWS_Metric_BestSurgeon>큰 가슴</RWS_Metric_BestSurgeon>
-  <RWS_MetricDesc_BestSurgeon>대부분의 문자의 성공적인 서리; 고장은 그(id)를 명명합니다.</RWS_MetricDesc_BestSurgeon>
-  <RWS_Metric_Implants>임플란트</RWS_Metric_Implants>
-  <RWS_MetricDesc_Implants>인공 부품 및 임플란트에 의해 설치되었습니다.</RWS_MetricDesc_Implants>
-  <RWS_Metric_Rescues>구조상</RWS_Metric_Rescues>
-  <RWS_MetricDesc_Rescues>문자를 침대로 떼어낸 구조. 정규적인 운반 및 캡처는 계산되지 않습니다.</RWS_MetricDesc_Rescues>
-  <RWS_Metric_HostileRescues>구조 된 Hostile 문자</RWS_Metric_HostileRescues>
-  <RWS_MetricDesc_HostileRescues>문자의 구조는 플레이어에게 tucked 할 때.</RWS_MetricDesc_HostileRescues>
-  <RWS_Metric_AwayRescues>집에서 멀리</RWS_Metric_AwayRescues>
-  <RWS_MetricDesc_AwayRescues>플레이어가 아닌지도에 대한 구조.</RWS_MetricDesc_AwayRescues>
-  <RWS_Metric_Resurrections>부활절</RWS_Metric_Resurrections>
+  <RWS_MetricDesc_SurgerySuccessRate>성공한 수술 수 ÷ 결과가 확정된 수술 수입니다.</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_Metric_BestSurgeon>수술에 가장 많이 성공한 의사</RWS_Metric_BestSurgeon>
+  <RWS_MetricDesc_BestSurgeon>수술 성공 횟수가 가장 많은 폰의 성공 수입니다. 내역에 폰의 ID를 표시합니다.</RWS_MetricDesc_BestSurgeon>
+  <RWS_Metric_Implants>설치한 인공 부위와 이식물 수</RWS_Metric_Implants>
+  <RWS_MetricDesc_Implants>성공한 수술로 설치한 인공 신체 부위 및 이식물 수입니다.</RWS_MetricDesc_Implants>
+  <RWS_Metric_Rescues>구조 횟수</RWS_Metric_Rescues>
+  <RWS_MetricDesc_Rescues>폰을 침대에 눕혀 완료한 구조 횟수입니다. 일반 운반이나 포획은 포함하지 않습니다.</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>구조한 적대 폰 수</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>침대에 눕힐 때 플레이어와 적대 관계였던 폰을 구조한 횟수입니다.</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>본거지 밖에서 구조한 횟수</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>플레이어의 본거지가 아닌 지도에서 수행한 구조 횟수입니다.</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>부활 횟수</RWS_Metric_Resurrections>
   <RWS_MetricDesc_Resurrections>무료 식민지가 죽음에서 돌아 왔습니다.</RWS_MetricDesc_Resurrections>
   <RWS_Metric_ResurrectionsPerPawnMax>가장 부활 한 식민지의</RWS_Metric_ResurrectionsPerPawnMax>
   <RWS_MetricDesc_ResurrectionsPerPawnMax>한 문자의 가장 부활; 고장은 그들에게 이름을 붙입니다 (id).</RWS_MetricDesc_ResurrectionsPerPawnMax>

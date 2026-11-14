@@ -500,131 +500,131 @@
   <RWS_MetricDesc_CraftedUnits>Cantidades de pilas de productos principales y secundarios de las órdenes de trabajo completadas del jugador, incluidas cocina y arte. No se incluyen minería, cosechas ni gestación de mecas.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Objetos fabricados por calidad</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>Los objetos fabricados anteriores, por calidad. Los objetos sin calidad aparecen como «none».</RWS_MetricDesc_CraftQuality>
-  <RWS_Metric_CraftLegendary>Elementos legendarios diseñados</RWS_Metric_CraftLegendary>
-  <RWS_MetricDesc_CraftLegendary>Artículos diseñados de calidad legendaria.</RWS_MetricDesc_CraftLegendary>
-  <RWS_Metric_CraftMasterwork>Elementos de la obra maestra diseñados</RWS_Metric_CraftMasterwork>
-  <RWS_MetricDesc_CraftMasterwork>Artículos diseñados de calidad de trabajo maestro.</RWS_MetricDesc_CraftMasterwork>
-  <RWS_Metric_CraftBestQuality>La mejor calidad creada</RWS_Metric_CraftBestQuality>
-  <RWS_MetricDesc_CraftBestQuality>La más alta calidad de un elemento diseñado (0 = horrible ... 6 = legendario); el desglose lo denomina.</RWS_MetricDesc_CraftBestQuality>
-  <RWS_Metric_CraftBestPrice>Artículo más valioso diseñado</RWS_Metric_CraftBestPrice>
-  <RWS_MetricDesc_CraftBestPrice>El valor de mercado más alto de un elemento creado cuando se hizo; no su precio de venta.</RWS_MetricDesc_CraftBestPrice>
-  <RWS_Metric_Sculptures>Piezas de arte completadas</RWS_Metric_Sculptures>
-  <RWS_MetricDesc_Sculptures>Elementos diseñados que son arte (esculturas y similares).</RWS_MetricDesc_Sculptures>
-  <RWS_Metric_MealsByDef>Comidas cocinadas por tipo</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>Comidas terminadas entre los elementos diseñados, por tipo (ThingDef).</RWS_MetricDesc_MealsByDef>
-  <RWS_Metric_UniqueCraftedDefs>Tipos de elementos diseñados</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>El número de tipos de elementos (ThingDef) diseñados al menos una vez.</RWS_MetricDesc_UniqueCraftedDefs>
-  <RWS_Metric_CraftDailyPeak>La mayoría de los elementos diseñados en un día</RWS_Metric_CraftDailyPeak>
-  <RWS_MetricDesc_CraftDailyPeak>La mayoría de los elementos diseñados en un día de juego; sólo días registrados desde el comienzo hasta el final de la cuenta.</RWS_MetricDesc_CraftDailyPeak>
-  <RWS_Metric_BestCrafter>Construcción de la parte superior</RWS_Metric_BestCrafter>
-  <RWS_MetricDesc_BestCrafter>El recuento diseñado del personaje que más lo creó; el desglose los denomina (por id).</RWS_MetricDesc_BestCrafter>
-  <RWS_Metric_BestCook>Cocina superior</RWS_Metric_BestCook>
-  <RWS_MetricDesc_BestCook>El recuento de comidas del personaje que más cocinó; el desglose los denomina (por id).</RWS_MetricDesc_BestCook>
+  <RWS_Metric_CraftLegendary>Objetos legendarios fabricados</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>Objetos fabricados de calidad legendaria.</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>Objetos de obra maestra fabricados</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>Objetos fabricados de calidad obra maestra.</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>Mejor calidad de fabricación</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>Mayor calidad obtenida al fabricar un objeto (0 = horrible … 6 = legendaria); el desglose muestra la calidad.</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>Objeto fabricado de mayor valor</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>Mayor valor de mercado de un solo objeto al fabricarlo, no su precio de venta.</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>Obras de arte terminadas</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>Objetos fabricados que son obras de arte (esculturas y similares).</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>Comidas preparadas por tipo</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Comidas terminadas entre los objetos fabricados, agrupadas por tipo (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>Tipos de objetos fabricados</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>Número de tipos de objetos (ThingDef) que se han fabricado al menos una vez.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>Máximo de objetos fabricados en un día</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>Mayor cantidad fabricada durante un día de juego; solo cuentan los días registrados íntegramente de principio a fin.</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>Mejor artesano</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>Número de objetos fabricados por el personaje que más ha producido; el desglose muestra su ID.</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_BestCook>Mejor cocinero</RWS_Metric_BestCook>
+  <RWS_MetricDesc_BestCook>Número de comidas preparadas por el personaje que más ha cocinado; el desglose muestra su ID.</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>Cultivos cosechados</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Cuenta de pilas de los caracteres principales del jugador de productos cosechados; no se incluyen rendimientos adicionales.</RWS_MetricDesc_HarvestUnits>
-  <RWS_Metric_HarvestByCrop>Cosecha por cosecha</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>La cosecha por la cosecha de la que provenía (planta ThingDef); las cosechas cuya cosecha no se conoce son "desconocidas".</RWS_MetricDesc_HarvestByCrop>
-  <RWS_Metric_TopCrop>Campaña más cosechada</RWS_Metric_TopCrop>
-  <RWS_MetricDesc_TopCrop>La cosecha con la mayor cosecha, y esa cantidad.</RWS_MetricDesc_TopCrop>
-  <RWS_Metric_HarvestYearPeak>La cosecha más grande en un año</RWS_Metric_HarvestYearPeak>
-  <RWS_MetricDesc_HarvestYearPeak>La cosecha más grande en un año de juego; sólo años registrados durante todo el recuento.</RWS_MetricDesc_HarvestYearPeak>
-  <RWS_Metric_BestHarvester>cosechadora superior</RWS_Metric_BestHarvester>
-  <RWS_MetricDesc_BestHarvester>La cosecha del personaje que más recoltó; el desglose los denomina (por id).</RWS_MetricDesc_BestHarvester>
-  <RWS_Metric_HarvestFailures>cosechas falladas</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Plantas cuya cosecha por un personaje de jugador realmente falló. No es lo mismo que las plantas que mueren.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestUnits>Cantidades en pilas de los productos principales cosechados por los personajes del jugador; no se incluyen rendimientos adicionales.</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>Cosecha por cultivo</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>Cosechas agrupadas por el cultivo de origen (ThingDef de planta); las de cultivo desconocido aparecen como «(desconocido)».</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>Cultivo más cosechado</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>Cultivo con mayor cantidad cosechada y dicha cantidad.</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>Mayor cosecha en un año</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>Mayor cantidad cosechada en un año de juego; solo cuentan los años registrados íntegramente de principio a fin.</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>Mejor cosechador</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>Cantidad cosechada por el personaje que más ha cosechado; el desglose muestra su ID.</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>Cosechas fallidas</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Plantas cuya cosecha por un personaje del jugador realmente fracasó. No es lo mismo que las plantas que mueren.</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>Cultivos sembrados</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Plantas sembradas por caracteres de jugador.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>Plantas sembradas por personajes del jugador.</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>Tipos de cultivos sembrados</RWS_Metric_CropsSownDefs>
-  <RWS_MetricDesc_CropsSownDefs>El número de tipos de cultivos sembrados al menos una vez.</RWS_MetricDesc_CropsSownDefs>
-  <RWS_Metric_MiningUnits>Recursos minados</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>La pila cuenta de la minería producida por los personajes del jugador.</RWS_MetricDesc_MiningUnits>
-  <RWS_Metric_BestMiner>Minero superior</RWS_Metric_BestMiner>
-  <RWS_MetricDesc_BestMiner>La cantidad minada por el personaje que más minó; el desglose los denomina (por id).</RWS_MetricDesc_BestMiner>
+  <RWS_MetricDesc_CropsSownDefs>Número de tipos de cultivo sembrados al menos una vez.</RWS_MetricDesc_CropsSownDefs>
+  <RWS_Metric_MiningUnits>Recursos extraídos</RWS_Metric_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Cantidades en pilas obtenidas por la minería de personajes del jugador.</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>Mejor minero</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>Cantidad extraída por el personaje que más ha minado; el desglose muestra su ID.</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>Edificios terminados</RWS_Metric_Constructions>
-  <RWS_MetricDesc_Constructions>Marcos de construcción del reproductor completados en edificios. Las reinstalaciones y planos no se cuentan.</RWS_MetricDesc_Constructions>
-  <RWS_Metric_ConstructionMaterials>Materiales utilizados en la construcción</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>Los materiales completos de los marcos mantenidos, por tipo (ThingDef). Diferentes materiales no se agregan juntos.</RWS_MetricDesc_ConstructionMaterials>
-  <RWS_Metric_BestBuilder>Constructor superior</RWS_Metric_BestBuilder>
-  <RWS_MetricDesc_BestBuilder>Las construcciones completadas del personaje que más lo completó; el desglose las denomina (por id).</RWS_MetricDesc_BestBuilder>
-  <RWS_Metric_ConstructionFailures>Fallos en la construcción</RWS_Metric_ConstructionFailures>
-  <RWS_MetricDesc_ConstructionFailures>Tiempos en que la construcción falló. Las cancelaciones no se cuentan.</RWS_MetricDesc_ConstructionFailures>
-  <RWS_Metric_Deconstructions>Desconstrucción de edificios</RWS_Metric_Deconstructions>
-  <RWS_MetricDesc_Deconstructions>Edificios del reproductor cuya orden de desconstrucción finalizada. La desconstrucción de un plan de sustitución no se cuenta.</RWS_MetricDesc_Deconstructions>
+  <RWS_MetricDesc_Constructions>Estructuras de construcción del jugador terminadas como edificios. No se cuentan las reinstalaciones ni los planos.</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>Materiales utilizados en construcción</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>Materiales incluidos en estructuras terminadas, agrupados por tipo (ThingDef). No se suman materiales de tipos diferentes.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_Metric_BestBuilder>Mejor constructor</RWS_Metric_BestBuilder>
+  <RWS_MetricDesc_BestBuilder>Número de construcciones terminadas por el personaje que más ha completado; el desglose muestra su ID.</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>Fallos de construcción</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>Veces que una construcción ha fallado. No se cuentan cancelaciones.</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>Edificios deconstruidos</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>Edificios del jugador cuya orden de deconstrucción se ha completado. No se cuenta la deconstrucción para planos de sustitución.</RWS_MetricDesc_Deconstructions>
   <RWS_Metric_Repairs>Reparaciones completadas</RWS_Metric_Repairs>
-  <RWS_MetricDesc_Repairs>Tiempos en que un trabajo de reparación trajo un edificio de jugador de vuelta a los puntos de éxito completos.</RWS_MetricDesc_Repairs>
-  <RWS_Metric_PodsLaunched>Lanzamiento de las cápsulas de transporte</RWS_Metric_PodsLaunched>
-  <RWS_MetricDesc_PodsLaunched>Lanzamiento de las cápsulas de transporte de reproductores (pods, no lanzamientos).</RWS_MetricDesc_PodsLaunched>
-  <RWS_Metric_FoodSpoiled>Comida perdida a causa del deterioro</RWS_Metric_FoodSpoiled>
-  <RWS_MetricDesc_FoodSpoiled>Conteo de pilas de la comida del jugador destruida por la putrefacción. No se cuenta el quemar y comer.</RWS_MetricDesc_FoodSpoiled>
+  <RWS_MetricDesc_Repairs>Veces que una reparación devolvió un edificio del jugador a sus puntos de salud máximos.</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>Cápsulas de transporte lanzadas</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>Cápsulas de transporte del jugador lanzadas (cuenta cápsulas, no lanzamientos).</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>Comida perdida por descomposición</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>Cantidades en pilas de comida del jugador destruidas por pudrirse. No se cuentan pérdidas por incendio ni consumo.</RWS_MetricDesc_FoodSpoiled>
   <RWS_Metric_FoodNutrition>Nutrición consumida</RWS_Metric_FoodNutrition>
-  <RWS_MetricDesc_FoodNutrition>Los colonos libres de nutrición realmente recibieron al comer.</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodHarvestPerCell>Cosecha por día celular de zona de crecimiento</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Cosecha principal de cultivos de pie en zonas de cultivo divididas por las células de zona de crecimiento integradas durante el mismo tiempo (células-días). Hidropónicas y plantas silvestres no están incluidas.</RWS_MetricDesc_FoodHarvestPerCell>
-  <RWS_Metric_TradeDeals>Ofertas comerciales</RWS_Metric_TradeDeals>
-  <RWS_MetricDesc_TradeDeals>Ofertas en las que al menos un elemento no monetario cambió de manos. Ofertas, regalos y fallos vacíos no se cuentan.</RWS_MetricDesc_TradeDeals>
-  <RWS_Metric_TradeOrbital>Tratos con barcos comerciales</RWS_Metric_TradeOrbital>
-  <RWS_MetricDesc_TradeOrbital>Trata con los buques comerciales orbitales.</RWS_MetricDesc_TradeOrbital>
-  <RWS_Metric_TradeVisitingCaravan>Tratos con caravanas visitantes</RWS_Metric_TradeVisitingCaravan>
-  <RWS_MetricDesc_TradeVisitingCaravan>Trata con comerciantes que visitan la colonia a pie. El comercio en otros asentamientos está separado.</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_MetricDesc_FoodNutrition>Nutrición total realmente ingerida al comer por colonos libres.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodHarvestPerCell>Cosecha por casilla-día de área de cultivo</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Cosecha principal de los cultivos en áreas de cultivo ÷ casillas de dichas áreas acumuladas durante el mismo tiempo (casillas-día). Se excluyen la hidroponía y las plantas silvestres.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_Metric_TradeDeals>Transacciones comerciales</RWS_Metric_TradeDeals>
+  <RWS_MetricDesc_TradeDeals>Transacciones en las que se ha intercambiado al menos un objeto que no es moneda. No se cuentan transacciones vacías, regalos ni fracasos.</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>Transacciones con naves comerciales</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>Transacciones con naves comerciales orbitales.</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>Transacciones con caravanas visitantes</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>Transacciones con comerciantes que visitaron la colonia a pie. El comercio en otros asentamientos se cuenta por separado.</RWS_MetricDesc_TradeVisitingCaravan>
   <RWS_Metric_TradeSalesTotal>Total de ventas</RWS_Metric_TradeSalesTotal>
-  <RWS_MetricDesc_TradeSalesTotal>El valor del contrato de los artículos no monetarios vendidos en ofertas completadas (plata).</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>Valor contractual de objetos que no son moneda vendidos en transacciones completadas (en plata).</RWS_MetricDesc_TradeSalesTotal>
   <RWS_Metric_TradeBuysTotal>Total de compras</RWS_Metric_TradeBuysTotal>
-  <RWS_MetricDesc_TradeBuysTotal>El valor del contrato de los artículos no monetarios comprados en ofertas completadas (plata).</RWS_MetricDesc_TradeBuysTotal>
-  <RWS_Metric_TradeSalesPeak>Venta más grande en un negocio</RWS_Metric_TradeSalesPeak>
-  <RWS_MetricDesc_TradeSalesPeak>La mayor venta total de un acuerdo.</RWS_MetricDesc_TradeSalesPeak>
-  <RWS_Metric_TradeBuysPeak>Compra más grande en un negocio</RWS_Metric_TradeBuysPeak>
-  <RWS_MetricDesc_TradeBuysPeak>El total de compra más grande de un acuerdo.</RWS_MetricDesc_TradeBuysPeak>
-  <RWS_Metric_TradeSalesPeakUnit>Precio de venta unitario más alto</RWS_Metric_TradeSalesPeakUnit>
-  <RWS_MetricDesc_TradeSalesPeakUnit>El valor más alto del contrato ÷ cuenta de una línea vendida.</RWS_MetricDesc_TradeSalesPeakUnit>
-  <RWS_Metric_TradeSalesUnits>Artículos vendidos</RWS_Metric_TradeSalesUnits>
-  <RWS_MetricDesc_TradeSalesUnits>Cuenta de pilas de los artículos no moneda vendidos.</RWS_MetricDesc_TradeSalesUnits>
-  <RWS_Metric_TradeBuysUnits>Artículos comprados</RWS_Metric_TradeBuysUnits>
-  <RWS_MetricDesc_TradeBuysUnits>Contador de artículos no moneda comprados.</RWS_MetricDesc_TradeBuysUnits>
-  <RWS_Metric_TradeTopSold>Artículo más vendido</RWS_Metric_TradeTopSold>
-  <RWS_MetricDesc_TradeTopSold>El tipo de elemento más vendido, y cuántos.</RWS_MetricDesc_TradeTopSold>
-  <RWS_Metric_TradeTopBought>Producto más comprado</RWS_Metric_TradeTopBought>
-  <RWS_MetricDesc_TradeTopBought>El tipo de artículo compró más, y cuántos.</RWS_MetricDesc_TradeTopBought>
-  <RWS_Metric_TradeSoldDefs>Tipos de artículos vendidos</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>El número de tipos de artículos no monetarios vendidos.</RWS_MetricDesc_TradeSoldDefs>
-  <RWS_Metric_TradeBoughtDefs>Tipos de artículos comprados</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>El número de tipos de artículos no monetarios comprados.</RWS_MetricDesc_TradeBoughtDefs>
-  <RWS_Metric_TradePartnerFactionDefs>Tipos de facciones negociadas con</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>El número de tipos de facción conocidos negociados con; los socios sin una facción se muestran separados como "desconocidos".</RWS_MetricDesc_TradePartnerFactionDefs>
-  <RWS_Metric_GiftGoodwill>Buena voluntad obtenida de los regalos</RWS_Metric_GiftGoodwill>
-  <RWS_MetricDesc_GiftGoodwill>El verdadero aumento de buena voluntad de la facción receptora alrededor de cada oferta de regalo; 0 en el límite.</RWS_MetricDesc_GiftGoodwill>
-  <RWS_Metric_AllyToHostile>Aliados convertidos hostiles</RWS_Metric_AllyToHostile>
-  <RWS_MetricDesc_AllyToHostile>Tiempos en que la relación de una facción pasó de aliado a hostil.</RWS_MetricDesc_AllyToHostile>
-  <RWS_Metric_Reconciled>Reconciliación de facciones hostiles</RWS_Metric_Reconciled>
-  <RWS_MetricDesc_Reconciled>Tiempos en que la relación de una facción hostil se volvió neutral o aliada.</RWS_MetricDesc_Reconciled>
+  <RWS_MetricDesc_TradeBuysTotal>Valor contractual de objetos que no son moneda comprados en transacciones completadas (en plata).</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>Mayor venta en una transacción</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>Mayor importe de ventas de una sola transacción.</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>Mayor compra en una transacción</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>Mayor importe de compras de una sola transacción.</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>Mayor precio unitario de venta</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>Valor contractual máximo ÷ cantidad de una línea de productos vendidos.</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_Metric_TradeSalesUnits>Objetos vendidos</RWS_Metric_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>Cantidades en pilas de objetos que no son moneda vendidos.</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_Metric_TradeBuysUnits>Objetos comprados</RWS_Metric_TradeBuysUnits>
+  <RWS_MetricDesc_TradeBuysUnits>Cantidades en pilas de objetos que no son moneda comprados.</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>Objeto más vendido</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>Tipo de objeto del que más unidades se han vendido, y cantidad.</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>Objeto más comprado</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>Tipo de objeto del que más unidades se han comprado, y cantidad.</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>Tipos de objetos vendidos</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>Número de tipos de objetos que no son moneda vendidos (ThingDef).</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>Tipos de objetos comprados</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>Número de tipos de objetos que no son moneda comprados (ThingDef).</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>Tipos de facciones con las que se comerciaba</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>Número de tipos conocidos de facción con los que se ha comerciado; las contrapartes sin facción aparecen aparte como «(desconocido)».</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>Reputación obtenida por regalos</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>Aumento de reputación que realmente ha recibido la facción por cada regalo; es cero si ya estaba en el máximo.</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>Aliados convertidos en hostiles</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>Veces que la relación con una facción pasó de aliada a hostil.</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>Facciones hostiles reconciliadas</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>Veces que una facción hostil pasó a neutral o aliada.</RWS_MetricDesc_Reconciled>
   <RWS_Metric_AidRequests>Ayuda militar solicitada</RWS_Metric_AidRequests>
-  <RWS_MetricDesc_AidRequests>Ayuda militar solicita una facción amigable aceptada.</RWS_MetricDesc_AidRequests>
-  <RWS_Metric_AidArrivals>Llegaron refuerzos</RWS_Metric_AidArrivals>
-  <RWS_MetricDesc_AidArrivals>En realidad llegaron refuerzos amistosos de los tiempos. No es lo mismo que las solicitudes.</RWS_MetricDesc_AidArrivals>
-  <RWS_Metric_Tends>Tendencias ejecutadas</RWS_Metric_Tends>
-  <RWS_MetricDesc_Tends>Tiempos en que se realizó una tendencia; una tendencia de varias heridas cuenta una vez.</RWS_MetricDesc_Tends>
-  <RWS_Metric_TendQualityMean>Calidad media de la tendencia</RWS_Metric_TendQualityMean>
-  <RWS_MetricDesc_TendQualityMean>La calidad media aplicada a cada condición que una tend trata.</RWS_MetricDesc_TendQualityMean>
-  <RWS_Metric_BestTender>Médico superior (tendencias)</RWS_Metric_BestTender>
-  <RWS_MetricDesc_BestTender>Las tendencias del personaje que más tendió; el desglose los denomina (por id). Las tendencias sin un médico conocido son omitidas.</RWS_MetricDesc_BestTender>
-  <RWS_Metric_NeutralTends>Tendencias de caracteres neutros</RWS_Metric_NeutralTends>
-  <RWS_MetricDesc_NeutralTends>Tendencias cuyo paciente era un personaje neutro.</RWS_MetricDesc_NeutralTends>
-  <RWS_Metric_MedicineUsed>Medicamento utilizado</RWS_Metric_MedicineUsed>
-  <RWS_MetricDesc_MedicineUsed>La medicina consumida realmente por el cuidado.</RWS_MetricDesc_MedicineUsed>
-  <RWS_Metric_Surgeries>Cirugías</RWS_Metric_Surgeries>
-  <RWS_MetricDesc_Surgeries>Cirugías con un resultado decidido (héxito o fracaso). Las cancelaciones no se cuentan.</RWS_MetricDesc_Surgeries>
-  <RWS_Metric_SurgerySuccessRate>Tasa de éxito de la cirugía</RWS_Metric_SurgerySuccessRate>
-  <RWS_MetricDesc_SurgerySuccessRate>Cirugías exitosas ÷ cirugías con un resultado decidido.</RWS_MetricDesc_SurgerySuccessRate>
-  <RWS_Metric_BestSurgeon>Cirujano superior</RWS_Metric_BestSurgeon>
-  <RWS_MetricDesc_BestSurgeon>Las cirugías exitosas del personaje con la mayoría; el desglose los denomina (por id).</RWS_MetricDesc_BestSurgeon>
+  <RWS_MetricDesc_AidRequests>Solicitudes de ayuda militar aceptadas por una facción amiga.</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>Refuerzos llegados</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>Veces que realmente han llegado refuerzos de una facción amiga. No equivale al número de solicitudes.</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>Atenciones médicas realizadas</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>Veces que se han realizado curas; tratar varias heridas durante una sola cura cuenta una vez.</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>Calidad media de las curas</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>Media de la calidad aplicada a cada afección tratada en una cura.</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>Médico con más curas</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>Número de curas realizadas por el personaje que más ha atendido; el desglose muestra su ID. Se excluyen las curas sin médico conocido.</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>Curas de personajes neutrales</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>Curas cuyo paciente era un personaje neutral.</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>Medicina utilizada</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>Cantidad de medicina realmente consumida al realizar curas.</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>Operaciones quirúrgicas</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>Operaciones con resultado confirmado (éxito o fracaso). No se cuentan las cancelaciones.</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_SurgerySuccessRate>Tasa de éxito quirúrgico</RWS_Metric_SurgerySuccessRate>
+  <RWS_MetricDesc_SurgerySuccessRate>Operaciones exitosas ÷ operaciones con resultado confirmado.</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_Metric_BestSurgeon>Mejor cirujano</RWS_Metric_BestSurgeon>
+  <RWS_MetricDesc_BestSurgeon>Número máximo de operaciones exitosas de un personaje; el desglose muestra su ID.</RWS_MetricDesc_BestSurgeon>
   <RWS_Metric_Implants>Implantes instalados</RWS_Metric_Implants>
-  <RWS_MetricDesc_Implants>Piezas artificiales e implantes instalados por cirugías exitosas.</RWS_MetricDesc_Implants>
+  <RWS_MetricDesc_Implants>Partes artificiales e implantes instalados mediante operaciones exitosas.</RWS_MetricDesc_Implants>
   <RWS_Metric_Rescues>Rescates</RWS_Metric_Rescues>
-  <RWS_MetricDesc_Rescues>Rescates completados poniendo el personaje en una cama. El transporte ordinario y las capturas no se cuentan.</RWS_MetricDesc_Rescues>
-  <RWS_Metric_HostileRescues>Rescatamiento de caracteres hostiles</RWS_Metric_HostileRescues>
-  <RWS_MetricDesc_HostileRescues>Rescates de caracteres hostiles al jugador cuando se encuentra escondido.</RWS_MetricDesc_HostileRescues>
-  <RWS_Metric_AwayRescues>Rescates lejos del hogar</RWS_Metric_AwayRescues>
-  <RWS_MetricDesc_AwayRescues>Rescates en un mapa que no es un hogar de jugadores.</RWS_MetricDesc_AwayRescues>
-  <RWS_Metric_Resurrections>Resurrección</RWS_Metric_Resurrections>
+  <RWS_MetricDesc_Rescues>Rescates completados al poner al personaje en una cama. No se cuentan el transporte normal ni las capturas.</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>Enemigos rescatados</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>Rescates de personajes hostiles al jugador cuando fueron puestos en la cama.</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>Rescates fuera del hogar</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>Rescates en un mapa que no sea un hogar del jugador.</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>Resurrecciones</RWS_Metric_Resurrections>
   <RWS_MetricDesc_Resurrections>Tiempos en que un colonizador libre volvió de la muerte.</RWS_MetricDesc_Resurrections>
   <RWS_Metric_ResurrectionsPerPawnMax>La mayoría de resurrección de un colonizador</RWS_Metric_ResurrectionsPerPawnMax>
   <RWS_MetricDesc_ResurrectionsPerPawnMax>La mayoría de resurrecciones de un carácter; el desglose las denomina (por id).</RWS_MetricDesc_ResurrectionsPerPawnMax>

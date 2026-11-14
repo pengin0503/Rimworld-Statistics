@@ -500,131 +500,131 @@
   <RWS_MetricDesc_CraftedUnits>玩家完成的生產工作單中主要產品和副產品的堆疊數量總和，包括烹飪與藝術品。不包括採礦、收穫和機械族培養。</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>依品質統計的製造物品數</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>將上述製造物品依品質分類；沒有品質的物品顯示為「none」。</RWS_MetricDesc_CraftQuality>
-  <RWS_Metric_CraftLegendary>傳奇物品</RWS_Metric_CraftLegendary>
-  <RWS_MetricDesc_CraftLegendary>有傳奇特質的工藝品</RWS_MetricDesc_CraftLegendary>
-  <RWS_Metric_CraftMasterwork>主工器械</RWS_Metric_CraftMasterwork>
-  <RWS_MetricDesc_CraftMasterwork>手工品質精美</RWS_MetricDesc_CraftMasterwork>
-  <RWS_Metric_CraftBestQuality>最佳造型</RWS_Metric_CraftBestQuality>
-  <RWS_MetricDesc_CraftBestQuality>0 = 可怕 6 = 傳奇 ; 破碎的名稱 。</RWS_MetricDesc_CraftBestQuality>
-  <RWS_Metric_CraftBestPrice>最有價值的物品</RWS_Metric_CraftBestPrice>
-  <RWS_MetricDesc_CraftBestPrice>製作時, 最高的市面價, 而不是售價。</RWS_MetricDesc_CraftBestPrice>
-  <RWS_Metric_Sculptures>已完成的藝術作品</RWS_Metric_Sculptures>
-  <RWS_MetricDesc_Sculptures>藝術品(雕塑等)。</RWS_MetricDesc_Sculptures>
-  <RWS_Metric_MealsByDef>按型別煮的飯</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>按型別( ThingDef) ,</RWS_MetricDesc_MealsByDef>
-  <RWS_Metric_UniqueCraftedDefs>製作的物件</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>專案型態( ThingDef) 的數量至少已設計過一次 。</RWS_MetricDesc_UniqueCraftedDefs>
-  <RWS_Metric_CraftDailyPeak>一天內做的大多數物品</RWS_Metric_CraftDailyPeak>
-  <RWS_MetricDesc_CraftDailyPeak>最多在一個遊戲日內設計的專案; 只有從開始到結束計數的天數才有記錄 。</RWS_MetricDesc_CraftDailyPeak>
-  <RWS_Metric_BestCrafter>頂端裁剪器</RWS_Metric_BestCrafter>
-  <RWS_MetricDesc_BestCrafter>編譯的人物數目; 分解的名稱( 按 id ) 。</RWS_MetricDesc_BestCrafter>
-  <RWS_Metric_BestCook>最高的廚師</RWS_Metric_BestCook>
-  <RWS_MetricDesc_BestCook>做飯最多的人物的餐數;</RWS_MetricDesc_BestCook>
-  <RWS_Metric_HarvestUnits>收割的作物</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>收割的主要產品玩家角色的堆數; 不包括其他產值 。</RWS_MetricDesc_HarvestUnits>
-  <RWS_Metric_HarvestByCrop>按作物分列的收成</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>其作物的收成(植物的收成);其作物未知的收成是"未知的".</RWS_MetricDesc_HarvestByCrop>
-  <RWS_Metric_TopCrop>收成最多的作物</RWS_Metric_TopCrop>
-  <RWS_MetricDesc_TopCrop>收成最高的作物 和那份數量</RWS_MetricDesc_TopCrop>
-  <RWS_Metric_HarvestYearPeak>一年中收成最多</RWS_Metric_HarvestYearPeak>
-  <RWS_MetricDesc_HarvestYearPeak>一局之年收成最大;</RWS_MetricDesc_HarvestYearPeak>
-  <RWS_Metric_BestHarvester>收割機</RWS_Metric_BestHarvester>
-  <RWS_MetricDesc_BestHarvester>收割最多的人物的收成;</RWS_MetricDesc_BestHarvester>
-  <RWS_Metric_HarvestFailures>收成失敗</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>被玩家角色收成失敗的植物 和植物死亡不一樣</RWS_MetricDesc_HarvestFailures>
-  <RWS_Metric_CropsSown>播種作物</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>由玩家角色所種植的植物。</RWS_MetricDesc_CropsSown>
-  <RWS_Metric_CropsSownDefs>種種的作物</RWS_Metric_CropsSownDefs>
-  <RWS_MetricDesc_CropsSownDefs>至少播種一次的作物數量 。</RWS_MetricDesc_CropsSownDefs>
-  <RWS_Metric_MiningUnits>開採的資源</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>堆數玩家角色的挖掘結果 。</RWS_MetricDesc_MiningUnits>
-  <RWS_Metric_BestMiner>最大礦工</RWS_Metric_BestMiner>
-  <RWS_MetricDesc_BestMiner>最大埋雷的字元所埋雷的量; 分解名稱( 以 id 表示) 。</RWS_MetricDesc_BestMiner>
-  <RWS_Metric_Constructions>建築物完工</RWS_Metric_Constructions>
-  <RWS_MetricDesc_Constructions>玩家建築框架完成於建築, 重新建立和建構不計數 。</RWS_MetricDesc_Constructions>
-  <RWS_Metric_ConstructionMaterials>建築用材料</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>按型別( ThingDef) 所持有的材料完成框架 。 不同的材料不相加 。</RWS_MetricDesc_ConstructionMaterials>
-  <RWS_Metric_BestBuilder>頂部建構器</RWS_Metric_BestBuilder>
-  <RWS_MetricDesc_BestBuilder>完成最多角色的已完成建構; 分解名稱( by id) 。</RWS_MetricDesc_BestBuilder>
-  <RWS_Metric_ConstructionFailures>建築故障</RWS_Metric_ConstructionFailures>
-  <RWS_MetricDesc_ConstructionFailures>建構失敗時。 取消不計數 。</RWS_MetricDesc_ConstructionFailures>
-  <RWS_Metric_Deconstructions>建築物已拆除</RWS_Metric_Deconstructions>
-  <RWS_MetricDesc_Deconstructions>玩家建築完成拆解令 。 拆解替代藍圖不計數 。</RWS_MetricDesc_Deconstructions>
-  <RWS_Metric_Repairs>修復完成</RWS_Metric_Repairs>
-  <RWS_MetricDesc_Repairs>修理工作使玩家的建築回到了完全命中點。</RWS_MetricDesc_Repairs>
-  <RWS_Metric_PodsLaunched>啟動了運輸艙</RWS_Metric_PodsLaunched>
-  <RWS_MetricDesc_PodsLaunched>玩家傳輸艙( pods, 不是發射) 。</RWS_MetricDesc_PodsLaunched>
-  <RWS_Metric_FoodSpoiled>失物招領</RWS_Metric_FoodSpoiled>
-  <RWS_MetricDesc_FoodSpoiled>被腐爛毀的玩家食物堆數 。 燒燒和吃不計數 。</RWS_MetricDesc_FoodSpoiled>
-  <RWS_Metric_FoodNutrition>食用營養</RWS_Metric_FoodNutrition>
-  <RWS_MetricDesc_FoodNutrition>無營養的殖民者吃東西就吃東西了</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodHarvestPerCell>生產區內每一天的收成</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>由同時期(細胞日)整合的生長區分的作物的主要收成,不包括水生植物和野生植物。</RWS_MetricDesc_FoodHarvestPerCell>
-  <RWS_Metric_TradeDeals>交易</RWS_Metric_TradeDeals>
-  <RWS_MetricDesc_TradeDeals>至少一個非貨幣專案易手的交易。 空的成交、 禮物和失敗都不算 。</RWS_MetricDesc_TradeDeals>
-  <RWS_Metric_TradeOrbital>商船交易</RWS_Metric_TradeOrbital>
-  <RWS_MetricDesc_TradeOrbital>處理軌道交易船</RWS_MetricDesc_TradeOrbital>
-  <RWS_Metric_TradeVisitingCaravan>接待客車</RWS_Metric_TradeVisitingCaravan>
-  <RWS_MetricDesc_TradeVisitingCaravan>交易商徒步來到殖民地 交易是分別的</RWS_MetricDesc_TradeVisitingCaravan>
-  <RWS_Metric_TradeSalesTotal>售出</RWS_Metric_TradeSalesTotal>
-  <RWS_MetricDesc_TradeSalesTotal>在已完成交易中出售的非貨幣性物品(銀)的合同價值。</RWS_MetricDesc_TradeSalesTotal>
-  <RWS_Metric_TradeBuysTotal>採購</RWS_Metric_TradeBuysTotal>
-  <RWS_MetricDesc_TradeBuysTotal>已完成交易中購買的非貨幣性物品(銀)的合同價值。</RWS_MetricDesc_TradeBuysTotal>
-  <RWS_Metric_TradeSalesPeak>成交中最盛的一次交易</RWS_Metric_TradeSalesPeak>
-  <RWS_MetricDesc_TradeSalesPeak>一項交易中最大的一次銷售</RWS_MetricDesc_TradeSalesPeak>
-  <RWS_Metric_TradeBuysPeak>一次大買一筆</RWS_Metric_TradeBuysPeak>
-  <RWS_MetricDesc_TradeBuysPeak>一項交易中最大的買賣</RWS_MetricDesc_TradeBuysPeak>
-  <RWS_Metric_TradeSalesPeakUnit>最高單位售價</RWS_Metric_TradeSalesPeakUnit>
-  <RWS_MetricDesc_TradeSalesPeakUnit>最高的合約價值... 算上售出線線</RWS_MetricDesc_TradeSalesPeakUnit>
-  <RWS_Metric_TradeSalesUnits>出售的物品</RWS_Metric_TradeSalesUnits>
-  <RWS_MetricDesc_TradeSalesUnits>出售的非貨品的堆數</RWS_MetricDesc_TradeSalesUnits>
-  <RWS_Metric_TradeBuysUnits>已買到的專案</RWS_Metric_TradeBuysUnits>
-  <RWS_MetricDesc_TradeBuysUnits>買了一批非貨品</RWS_MetricDesc_TradeBuysUnits>
-  <RWS_Metric_TradeTopSold>大部分售出專案</RWS_Metric_TradeTopSold>
-  <RWS_MetricDesc_TradeTopSold>物品的售量最多, 有多少。</RWS_MetricDesc_TradeTopSold>
-  <RWS_Metric_TradeTopBought>大部分買下的物品</RWS_Metric_TradeTopBought>
-  <RWS_MetricDesc_TradeTopBought>物品型別買得最多, 有多少。</RWS_MetricDesc_TradeTopBought>
-  <RWS_Metric_TradeSoldDefs>出售的物品種類</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>出售的非貨幣專案的數量 。</RWS_MetricDesc_TradeSoldDefs>
-  <RWS_Metric_TradeBoughtDefs>已買到的物件</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>買入的非貨幣專案數量 。</RWS_MetricDesc_TradeBoughtDefs>
-  <RWS_Metric_TradePartnerFactionDefs>交易的派系</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>已知的派系型別數目 ; 沒有派系的夥伴被顯示為「 未知 」 。</RWS_MetricDesc_TradePartnerFactionDefs>
-  <RWS_Metric_GiftGoodwill>從禮物中得到的善意</RWS_Metric_GiftGoodwill>
-  <RWS_MetricDesc_GiftGoodwill>每份禮物交易的收受派的善意增加;</RWS_MetricDesc_GiftGoodwill>
-  <RWS_Metric_AllyToHostile>同盟會變成敵人</RWS_Metric_AllyToHostile>
-  <RWS_MetricDesc_AllyToHostile>有時某派系的關係會從盟友變成敵人</RWS_MetricDesc_AllyToHostile>
-  <RWS_Metric_Reconciled>敵對派別和解</RWS_Metric_Reconciled>
-  <RWS_MetricDesc_Reconciled>有時敵對派系的關係會變成中立或同盟</RWS_MetricDesc_Reconciled>
-  <RWS_Metric_AidRequests>要求的軍事援助</RWS_Metric_AidRequests>
-  <RWS_MetricDesc_AidRequests>軍事援助要求接受友好的派系</RWS_MetricDesc_AidRequests>
-  <RWS_Metric_AidArrivals>增援已到</RWS_Metric_AidArrivals>
-  <RWS_MetricDesc_AidArrivals>時代友好的援軍到達了 和要求不同</RWS_MetricDesc_AidArrivals>
-  <RWS_Metric_Tends>完成的租金</RWS_Metric_Tends>
-  <RWS_MetricDesc_Tends>有幾次被關閉,有一次被關閉</RWS_MetricDesc_Tends>
-  <RWS_Metric_TendQualityMean>平均質量</RWS_Metric_TendQualityMean>
-  <RWS_MetricDesc_TendQualityMean>平均品質對每個病情都適用</RWS_MetricDesc_TendQualityMean>
-  <RWS_Metric_BestTender>上位醫生( 末端)</RWS_Metric_BestTender>
-  <RWS_MetricDesc_BestTender>專注性人物的偏好; 分解的名稱( 由 id ) 。 沒有已知醫生的 tends 被忽略 。</RWS_MetricDesc_BestTender>
-  <RWS_Metric_NeutralTends>中性字元</RWS_Metric_NeutralTends>
-  <RWS_MetricDesc_NeutralTends>病人的性格是中立的</RWS_MetricDesc_NeutralTends>
-  <RWS_Metric_MedicineUsed>所用藥品</RWS_Metric_MedicineUsed>
-  <RWS_MetricDesc_MedicineUsed>醫藥實際上是用來治療的</RWS_MetricDesc_MedicineUsed>
-  <RWS_Metric_Surgeries>外科</RWS_Metric_Surgeries>
-  <RWS_MetricDesc_Surgeries>結果決定的外科醫生( 成功或失敗 ) 。 取消不計算 。</RWS_MetricDesc_Surgeries>
-  <RWS_Metric_SurgerySuccessRate>外科成功率</RWS_Metric_SurgerySuccessRate>
-  <RWS_MetricDesc_SurgerySuccessRate>成功做手術,</RWS_MetricDesc_SurgerySuccessRate>
-  <RWS_Metric_BestSurgeon>高階外科醫生</RWS_Metric_BestSurgeon>
-  <RWS_MetricDesc_BestSurgeon>角色最成功的手術( by id) 。</RWS_MetricDesc_BestSurgeon>
-  <RWS_Metric_Implants>植入已安裝</RWS_Metric_Implants>
-  <RWS_MetricDesc_Implants>人工零件和植入物 由成功的手術安裝</RWS_MetricDesc_Implants>
-  <RWS_Metric_Rescues>救援</RWS_Metric_Rescues>
-  <RWS_MetricDesc_Rescues>把角色套在床上完成救援 普通的拖拉和抓捕不算數</RWS_MetricDesc_Rescues>
-  <RWS_Metric_HostileRescues>救出敵人</RWS_Metric_HostileRescues>
-  <RWS_MetricDesc_HostileRescues>救出對玩家有敵意的人物</RWS_MetricDesc_HostileRescues>
-  <RWS_Metric_AwayRescues>離家出走</RWS_Metric_AwayRescues>
-  <RWS_MetricDesc_AwayRescues>救援在不是玩家家的地圖上</RWS_MetricDesc_AwayRescues>
-  <RWS_Metric_Resurrections>復活</RWS_Metric_Resurrections>
+  <RWS_Metric_CraftLegendary>製造的傳奇品質物品數</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>製造出的傳奇品質物品數。</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>製造的大師品質物品數</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>製造出的大師品質物品數。</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>製造物品的最高品質</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>製造物品達到的最高品質（0＝糟糕 … 6＝傳奇）；明細顯示具體品質。</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>價值最高的製造物品</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>單件物品完成製造時的最高市場價值，不是出售價格。</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>完成的藝術品數</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>製造物品中屬於藝術品（雕塑等）的數量。</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>依類型統計的烹飪食物數</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>將已完成的食物製品依類型（ThingDef）分類統計。</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>製造物品的種類數</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>至少製造過一次的物品種類（ThingDef）數量。</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>單日最多製造物品數</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>一個遊戲日內製造的最多物品數；只統計從開始到結束完整記錄的日期。</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>最多製造者</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>製造物品最多的單位所製造的數量；明細中顯示其ID。</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_BestCook>最多烹飪者</RWS_Metric_BestCook>
+  <RWS_MetricDesc_BestCook>烹飪食物最多的單位所完成的食物數量；明細中顯示其ID。</RWS_MetricDesc_BestCook>
+  <RWS_Metric_HarvestUnits>收穫的作物數</RWS_Metric_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>玩家單位收穫的主要產物堆疊數量；不包括額外產出。</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>依作物統計的收穫量</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>依原作物（植物ThingDef）分類統計收穫量；來源作物不明的收穫歸為「（未知）」。</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>收穫量最多的作物</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>收穫數量最高的作物及其數量。</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>單年最高收穫量</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>一個遊戲年內的最多收穫量；只統計從年初至年末完整記錄的年份。</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>最多收穫者</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>收穫最多的單位的收穫數量；明細中顯示其ID。</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>收穫失敗次數</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>玩家單位實際收穫失敗的植物株數，與植物死亡不同。</RWS_MetricDesc_HarvestFailures>
+  <RWS_Metric_CropsSown>種植作物數</RWS_Metric_CropsSown>
+  <RWS_MetricDesc_CropsSown>玩家單位種下的植物株數。</RWS_MetricDesc_CropsSown>
+  <RWS_Metric_CropsSownDefs>種植作物的種類數</RWS_Metric_CropsSownDefs>
+  <RWS_MetricDesc_CropsSownDefs>至少種過一次的作物種類數量。</RWS_MetricDesc_CropsSownDefs>
+  <RWS_Metric_MiningUnits>開採資源數量</RWS_Metric_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>玩家單位透過採礦產出的物品堆疊數量。</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>最多採礦者</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>採礦量最多的單位開採的數量；明細中顯示其ID。</RWS_MetricDesc_BestMiner>
+  <RWS_Metric_Constructions>完工建築數</RWS_Metric_Constructions>
+  <RWS_MetricDesc_Constructions>玩家建造框架最終完成為建築物的數量，不包括重新安裝與建築藍圖。</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>建造使用的材料</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>已完工框架使用的材料，依類型（ThingDef）列出；不同種類的材料不會合併相加。</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_Metric_BestBuilder>最多建造者</RWS_Metric_BestBuilder>
+  <RWS_MetricDesc_BestBuilder>完成建造次數最多的單位的完成數量；明細中顯示其ID。</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>建造失敗次數</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>實際建造失敗的次數，不包括取消建造。</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>拆除建築數</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>玩家建築按照拆除指令完成拆除的數量。不包括為替換藍圖進行的拆除。</RWS_MetricDesc_Deconstructions>
+  <RWS_Metric_Repairs>修理完成次數</RWS_Metric_Repairs>
+  <RWS_MetricDesc_Repairs>修理作業使玩家建築恢復到最大耐久度的次數。</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>發射運輸艙數</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>玩家發射的運輸艙數量，統計艙體數量而不是發射操作次數。</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>腐爛損失的食物數量</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>玩家食物因腐爛而銷毀的堆疊數量。不包括燃燒損失或被食用的食物。</RWS_MetricDesc_FoodSpoiled>
+  <RWS_Metric_FoodNutrition>攝取的營養量</RWS_Metric_FoodNutrition>
+  <RWS_MetricDesc_FoodNutrition>自由殖民者透過進食實際攝取的營養總量。</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodHarvestPerCell>每種植區格·天的收穫量</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>種植區中作物的主要收穫量 ÷ 同期依時間累積的種植區格子數（格·天）。不包括水耕植物盆和野生植物。</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_Metric_TradeDeals>交易次數</RWS_Metric_TradeDeals>
+  <RWS_MetricDesc_TradeDeals>至少交換過一件非貨幣物品的已完成交易次數。不包括空交易、贈禮和失敗交易。</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>與軌道商船的交易次數</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>與軌道商船達成的交易次數。</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>與來訪旅隊的交易次數</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>與徒步來訪殖民地的商人進行的交易次數。前往其他據點的交易另行統計。</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_Metric_TradeSalesTotal>銷售總額</RWS_Metric_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>已完成交易中出售非貨幣物品的契約價值總額（白銀）。</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_Metric_TradeBuysTotal>購買總額</RWS_Metric_TradeBuysTotal>
+  <RWS_MetricDesc_TradeBuysTotal>已完成交易中購買非貨幣物品的契約價值總額（白銀）。</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>單筆最高銷售額</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>單次交易中最高的銷售總額。</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>單筆最高購買額</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>單次交易中最高的購買總額。</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>最高單件銷售價格</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>單條已出售交易明細的契約價值 ÷ 件數所得的最大值。</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_Metric_TradeSalesUnits>出售物品數量</RWS_Metric_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>已出售的非貨幣物品堆疊數量合計。</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_Metric_TradeBuysUnits>購買物品數量</RWS_Metric_TradeBuysUnits>
+  <RWS_MetricDesc_TradeBuysUnits>已購買的非貨幣物品堆疊數量合計。</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>最常出售的物品</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>出售件數最多的物品種類及其數量。</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>購買最多的物品</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>購買件數最多的物品種類及其數量。</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>出售物品的種類數</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>已出售的非貨幣物品種類（ThingDef）數量。</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>購買物品的種類數</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>已購買的非貨幣物品種類（ThingDef）數量。</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>交易過的派系種類數</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>發生過交易的已知派系種類數；無派系的交易夥伴另外顯示為「（未知）」。</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>贈禮獲得的友好度</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>每次贈禮使接收派系的友好度實際提升的量；已達到上限時為零。</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>由盟友變為敵對的次數</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>派系關係從結盟變為敵對的次數。</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>與敵對派系和解的次數</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>派系關係從敵對變為中立或同盟的次數。</RWS_MetricDesc_Reconciled>
+  <RWS_Metric_AidRequests>請求軍事援助的次數</RWS_Metric_AidRequests>
+  <RWS_MetricDesc_AidRequests>友好派系接受軍事援助請求的次數。</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>援軍實際抵達次數</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>友好派系的援軍實際抵達的次數，與援助請求次數不同。</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>治療次數</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>進行治療的次數；同一次治療處理多處傷口仍計為一次。</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>平均治療品質</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>治療過程中對每種病症實際應用的治療品質平均值。</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>治療次數最多的醫生</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>治療最多的單位的治療次數；明細顯示其ID。無法確定醫生的治療不計入。</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>治療中立單位的次數</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>患者是中立單位的治療次數。</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>使用藥品數量</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>治療時實際消耗的藥品數量。</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>手術次數</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>已有確定結果（成功或失敗）的手術次數，不包括取消的手術。</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_SurgerySuccessRate>手術成功率</RWS_Metric_SurgerySuccessRate>
+  <RWS_MetricDesc_SurgerySuccessRate>成功手術次數 ÷ 結果已確定的手術次數。</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_Metric_BestSurgeon>最成功的外科醫生</RWS_Metric_BestSurgeon>
+  <RWS_MetricDesc_BestSurgeon>手術成功最多的單位的成功次數；明細顯示其ID。</RWS_MetricDesc_BestSurgeon>
+  <RWS_Metric_Implants>安裝的人工部位與植入物數</RWS_Metric_Implants>
+  <RWS_MetricDesc_Implants>透過成功手術安裝的人工身體部位和植入物數量。</RWS_MetricDesc_Implants>
+  <RWS_Metric_Rescues>救助次數</RWS_Metric_Rescues>
+  <RWS_MetricDesc_Rescues>將單位放到床上而完成的救助次數；不包括普通搬運或俘虜抓捕。</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>救助敵對單位的次數</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>放到床上時仍與玩家敵對的單位被救助的次數。</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>離開主基地時的救助次數</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>在非玩家主據點地圖上實施的救助次數。</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>復活次數</RWS_Metric_Resurrections>
   <RWS_MetricDesc_Resurrections>有時自由殖民者會死而復生</RWS_MetricDesc_Resurrections>
   <RWS_Metric_ResurrectionsPerPawnMax>一個殖民者的大多數復活</RWS_Metric_ResurrectionsPerPawnMax>
   <RWS_MetricDesc_ResurrectionsPerPawnMax>一個角色最復活; 分解名稱( by id) 。</RWS_MetricDesc_ResurrectionsPerPawnMax>

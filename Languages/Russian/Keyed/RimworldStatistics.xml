@@ -500,131 +500,131 @@
   <RWS_MetricDesc_CraftedUnits>Размеры стопок основных и побочных продуктов завершённых производственных заданий игрока, включая приготовление пищи и произведения искусства. Добыча руды, сбор урожая и выращивание механоидов не учитываются.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Изготовленные предметы по качеству</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>Указанные выше изготовленные предметы по качеству; изделия без качества указаны как «none».</RWS_MetricDesc_CraftQuality>
-  <RWS_Metric_CraftLegendary>Легендарные предметы, созданные</RWS_Metric_CraftLegendary>
-  <RWS_MetricDesc_CraftLegendary>Изготовленные изделия легендарного качества.</RWS_MetricDesc_CraftLegendary>
-  <RWS_Metric_CraftMasterwork>Мастер-объекты, созданные</RWS_Metric_CraftMasterwork>
-  <RWS_MetricDesc_CraftMasterwork>Изготовленные изделия мастерского качества.</RWS_MetricDesc_CraftMasterwork>
-  <RWS_Metric_CraftBestQuality>Лучший качественный крафт</RWS_Metric_CraftBestQuality>
-  <RWS_MetricDesc_CraftBestQuality>Наивысшее качество изготовленного изделия (0 = ужасный ... 6 = легендарный); поломка называет его.</RWS_MetricDesc_CraftBestQuality>
-  <RWS_Metric_CraftBestPrice>Самый ценный предмет, созданный</RWS_Metric_CraftBestPrice>
-  <RWS_MetricDesc_CraftBestPrice>Самая высокая рыночная стоимость одного изготовленного изделия, когда он был сделан, а не его цена продажи.</RWS_MetricDesc_CraftBestPrice>
-  <RWS_Metric_Sculptures>Завершены художественные произведения</RWS_Metric_Sculptures>
-  <RWS_MetricDesc_Sculptures>Изготовленные предметы, которые являются искусством (скульптуры и тому подобное).</RWS_MetricDesc_Sculptures>
-  <RWS_Metric_MealsByDef>Питание, приготовленное по типу</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>Готовые блюда среди обработанных предметов, по типу (ThingDef).</RWS_MetricDesc_MealsByDef>
-  <RWS_Metric_UniqueCraftedDefs>Виды предметов, созданных</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>Количество типов предметов (ThingDef), созданных по крайней мере один раз.</RWS_MetricDesc_UniqueCraftedDefs>
-  <RWS_Metric_CraftDailyPeak>Большинство предметов, созданных за один день</RWS_Metric_CraftDailyPeak>
-  <RWS_MetricDesc_CraftDailyPeak>Большинство предметов, созданных за один игровой день; только дни, записанные от начала до конца, считаются.</RWS_MetricDesc_CraftDailyPeak>
-  <RWS_Metric_BestCrafter>Лучшие мастера</RWS_Metric_BestCrafter>
-  <RWS_MetricDesc_BestCrafter>Названы имена тех, кто больше всего занимался творчеством, а также имена тех, кто больше всего занимался творчеством.</RWS_MetricDesc_BestCrafter>
+  <RWS_Metric_CraftLegendary>Изготовленные предметы качества «легенда»</RWS_Metric_CraftLegendary>
+  <RWS_MetricDesc_CraftLegendary>Изготовленные предметы легендарного качества.</RWS_MetricDesc_CraftLegendary>
+  <RWS_Metric_CraftMasterwork>Изготовленные предметы качества «шедевр»</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>Изготовленные предметы качества «шедевр».</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftBestQuality>Лучшее качество изготовления</RWS_Metric_CraftBestQuality>
+  <RWS_MetricDesc_CraftBestQuality>Самое высокое качество изготовленного предмета (0 = ужасно … 6 = легенда); разбивка показывает качество.</RWS_MetricDesc_CraftBestQuality>
+  <RWS_Metric_CraftBestPrice>Самый дорогой изготовленный предмет</RWS_Metric_CraftBestPrice>
+  <RWS_MetricDesc_CraftBestPrice>Наибольшая рыночная стоимость одного предмета на момент изготовления, не цена его продажи.</RWS_MetricDesc_CraftBestPrice>
+  <RWS_Metric_Sculptures>Созданные произведения искусства</RWS_Metric_Sculptures>
+  <RWS_MetricDesc_Sculptures>Изготовленные художественные предметы (скульптуры и прочее).</RWS_MetricDesc_Sculptures>
+  <RWS_Metric_MealsByDef>Приготовленные блюда по типам</RWS_Metric_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Готовые блюда среди изготовленных предметов, по типам (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_Metric_UniqueCraftedDefs>Виды изготовленных предметов</RWS_Metric_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>Количество типов предметов (ThingDef), изготовленных хотя бы один раз.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_Metric_CraftDailyPeak>Наибольший объём изготовления за день</RWS_Metric_CraftDailyPeak>
+  <RWS_MetricDesc_CraftDailyPeak>Максимум предметов, изготовленных за один игровой день; учитываются только дни, целиком записанные от начала до конца.</RWS_MetricDesc_CraftDailyPeak>
+  <RWS_Metric_BestCrafter>Лучший изготовитель</RWS_Metric_BestCrafter>
+  <RWS_MetricDesc_BestCrafter>Число предметов, изготовленных самой продуктивной пешкой; в разбивке указан её ID.</RWS_MetricDesc_BestCrafter>
   <RWS_Metric_BestCook>Лучший повар</RWS_Metric_BestCook>
-  <RWS_MetricDesc_BestCook>Съедобный счет персонажа, который приготовил больше всего; разбивка называет их (по Ид).</RWS_MetricDesc_BestCook>
-  <RWS_Metric_HarvestUnits>Урожай урожая</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Количество стеков основных продуктов, собранных персонажами игрока; дополнительные урожаи не включены.</RWS_MetricDesc_HarvestUnits>
-  <RWS_Metric_HarvestByCrop>Урожай по урожаю</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>Урожаи, из которых он был получен (растение ThingDef); урожаи, чей урожай не известен, являются «неизвестными».</RWS_MetricDesc_HarvestByCrop>
-  <RWS_Metric_TopCrop>Больше всего собранных культур</RWS_Metric_TopCrop>
-  <RWS_MetricDesc_TopCrop>Урожай с наибольшим урожаем, и это количество.</RWS_MetricDesc_TopCrop>
-  <RWS_Metric_HarvestYearPeak>Самый большой урожай за год</RWS_Metric_HarvestYearPeak>
-  <RWS_MetricDesc_HarvestYearPeak>Самый большой урожай за один игровой год; только годы записаны по всему счету.</RWS_MetricDesc_HarvestYearPeak>
-  <RWS_Metric_BestHarvester>Лучший уборщик</RWS_Metric_BestHarvester>
-  <RWS_MetricDesc_BestHarvester>Урожай персонажа, который собрал больше всего; разбивка называет их (ид).</RWS_MetricDesc_BestHarvester>
-  <RWS_Metric_HarvestFailures>Неудачный урожай</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Растения, чей урожай игроком на самом деле не удался, не то же самое, что растения, умирающие.</RWS_MetricDesc_HarvestFailures>
-  <RWS_Metric_CropsSown>Посеянные посевы</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Растения, посеянные персонажами игроков.</RWS_MetricDesc_CropsSown>
-  <RWS_Metric_CropsSownDefs>Виды посевных культур</RWS_Metric_CropsSownDefs>
-  <RWS_MetricDesc_CropsSownDefs>Количество видов сельскохозяйственных культур, посеянных не менее одного раза.</RWS_MetricDesc_CropsSownDefs>
+  <RWS_MetricDesc_BestCook>Число блюд, приготовленных самой продуктивной пешкой; в разбивке указан её ID.</RWS_MetricDesc_BestCook>
+  <RWS_Metric_HarvestUnits>Собранные урожаи</RWS_Metric_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Количество единиц основных продуктов, собранных пешками игрока; дополнительные выходы не учитываются.</RWS_MetricDesc_HarvestUnits>
+  <RWS_Metric_HarvestByCrop>Урожай по культурам</RWS_Metric_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>Урожай по исходной культуре (ThingDef растения); если культура неизвестна, запись попадает в «(неизвестно)».</RWS_MetricDesc_HarvestByCrop>
+  <RWS_Metric_TopCrop>Самая урожайная культура</RWS_Metric_TopCrop>
+  <RWS_MetricDesc_TopCrop>Культура с наибольшим собранным количеством и само количество.</RWS_MetricDesc_TopCrop>
+  <RWS_Metric_HarvestYearPeak>Наибольший урожай за год</RWS_Metric_HarvestYearPeak>
+  <RWS_MetricDesc_HarvestYearPeak>Максимум урожая за один игровой год; учитываются только годы, целиком записанные от начала до конца.</RWS_MetricDesc_HarvestYearPeak>
+  <RWS_Metric_BestHarvester>Лучший сборщик урожая</RWS_Metric_BestHarvester>
+  <RWS_MetricDesc_BestHarvester>Число собранных единиц самой продуктивной пешки; в разбивке указан её ID.</RWS_MetricDesc_BestHarvester>
+  <RWS_Metric_HarvestFailures>Неудачные попытки сбора урожая</RWS_Metric_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Растения, для которых сбор урожая пешкой игрока действительно завершился неудачей. Не то же самое, что гибель растений.</RWS_MetricDesc_HarvestFailures>
+  <RWS_Metric_CropsSown>Посаженные культуры</RWS_Metric_CropsSown>
+  <RWS_MetricDesc_CropsSown>Растения, посаженные пешками игрока.</RWS_MetricDesc_CropsSown>
+  <RWS_Metric_CropsSownDefs>Виды посаженных культур</RWS_Metric_CropsSownDefs>
+  <RWS_MetricDesc_CropsSownDefs>Число типов культур, посаженных хотя бы один раз.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>Добытые ресурсы</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>Стек подсчитывает, что добывали персонажи игроков.</RWS_MetricDesc_MiningUnits>
-  <RWS_Metric_BestMiner>Лучший шахтер</RWS_Metric_BestMiner>
-  <RWS_MetricDesc_BestMiner>Количество, добытое персонажем, который добыл больше всего; разбивка называет их (ид).</RWS_MetricDesc_BestMiner>
-  <RWS_Metric_Constructions>Здания завершены</RWS_Metric_Constructions>
-  <RWS_MetricDesc_Constructions>Строительные рамы игроков, выполненные в зданиях, переустановки и чертежи не учитываются.</RWS_MetricDesc_Constructions>
-  <RWS_Metric_ConstructionMaterials>Материалы, используемые в строительстве</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>Материалы, выполненные из рамок, удерживаются по типу (ThingDef). Различные материалы не добавляются вместе.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_MiningUnits>Число единиц ресурсов, добытых пешками игрока.</RWS_MetricDesc_MiningUnits>
+  <RWS_Metric_BestMiner>Лучший шахтёр</RWS_Metric_BestMiner>
+  <RWS_MetricDesc_BestMiner>Объём добычи самой продуктивной пешки; в разбивке указан её ID.</RWS_MetricDesc_BestMiner>
+  <RWS_Metric_Constructions>Завершённые постройки</RWS_Metric_Constructions>
+  <RWS_MetricDesc_Constructions>Строительные каркасы игрока, завершённые в виде зданий. Переустановка и чертежи не учитываются.</RWS_MetricDesc_Constructions>
+  <RWS_Metric_ConstructionMaterials>Материалы, использованные в строительстве</RWS_Metric_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>Материалы завершённых каркасов по типу (ThingDef). Разные материалы не суммируются вместе.</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>Лучший строитель</RWS_Metric_BestBuilder>
-  <RWS_MetricDesc_BestBuilder>Завершенные конструкции персонажа, который завершил большинство; разбивка называет их (по Ид).</RWS_MetricDesc_BestBuilder>
-  <RWS_Metric_ConstructionFailures>Неудачи в строительстве</RWS_Metric_ConstructionFailures>
-  <RWS_MetricDesc_ConstructionFailures>Времена, когда строительство провалилось, отмены не учитываются.</RWS_MetricDesc_ConstructionFailures>
-  <RWS_Metric_Deconstructions>Здания деконструированы</RWS_Metric_Deconstructions>
-  <RWS_MetricDesc_Deconstructions>Игровые здания, порядок деконструкции которых завершен. Деконструкция для замены чертежа не засчитывается.</RWS_MetricDesc_Deconstructions>
-  <RWS_Metric_Repairs>Ремонт завершен</RWS_Metric_Repairs>
-  <RWS_MetricDesc_Repairs>Временами ремонтная работа возвращала здание игрока к полным очкам.</RWS_MetricDesc_Repairs>
-  <RWS_Metric_PodsLaunched>Транспортные контейнеры запущены</RWS_Metric_PodsLaunched>
-  <RWS_MetricDesc_PodsLaunched>Запущены транспортные стручки игрока (поды, а не запуски).</RWS_MetricDesc_PodsLaunched>
-  <RWS_Metric_FoodSpoiled>Продукты, потерянные в порче</RWS_Metric_FoodSpoiled>
-  <RWS_MetricDesc_FoodSpoiled>Стек-счета продуктов игрока, уничтоженных гниением. Сжигание и поедание не учитываются.</RWS_MetricDesc_FoodSpoiled>
-  <RWS_Metric_FoodNutrition>Питание съедено</RWS_Metric_FoodNutrition>
-  <RWS_MetricDesc_FoodNutrition>На самом деле колонисты, свободные от питания, принимали пищу.</RWS_MetricDesc_FoodNutrition>
-  <RWS_Metric_FoodHarvestPerCell>Урожай за день ячейки растущей зоны</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Основной урожай культур, стоящих в зонах выращивания, разделенных клетками зоны выращивания, интегрированными за одно и то же время (клеточные дни). Гидропоника и дикие растения не включены.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_BestBuilder>Число построек, завершённых самой продуктивной пешкой; в разбивке указан её ID.</RWS_MetricDesc_BestBuilder>
+  <RWS_Metric_ConstructionFailures>Неудачи при строительстве</RWS_Metric_ConstructionFailures>
+  <RWS_MetricDesc_ConstructionFailures>Число неудачных попыток строительства. Отмены не учитываются.</RWS_MetricDesc_ConstructionFailures>
+  <RWS_Metric_Deconstructions>Разобранные постройки</RWS_Metric_Deconstructions>
+  <RWS_MetricDesc_Deconstructions>Здания игрока, демонтаж которых завершён по приказу. Демонтаж для замены по чертежу не учитывается.</RWS_MetricDesc_Deconstructions>
+  <RWS_Metric_Repairs>Завершённые ремонты</RWS_Metric_Repairs>
+  <RWS_MetricDesc_Repairs>Ремонтные задания, вернувшие зданию игрока полные очки прочности.</RWS_MetricDesc_Repairs>
+  <RWS_Metric_PodsLaunched>Запущенные транспортные капсулы</RWS_Metric_PodsLaunched>
+  <RWS_MetricDesc_PodsLaunched>Запущенные транспортные капсулы игрока (число капсул, а не запусков).</RWS_MetricDesc_PodsLaunched>
+  <RWS_Metric_FoodSpoiled>Пища, испортившаяся из-за гниения</RWS_Metric_FoodSpoiled>
+  <RWS_MetricDesc_FoodSpoiled>Число единиц пищи игрока, уничтоженных гниением. Сгорание и поедание не учитываются.</RWS_MetricDesc_FoodSpoiled>
+  <RWS_Metric_FoodNutrition>Полученная с пищей питательность</RWS_Metric_FoodNutrition>
+  <RWS_MetricDesc_FoodNutrition>Суммарная питательность, фактически полученная свободными поселенцами при приёме пищи.</RWS_MetricDesc_FoodNutrition>
+  <RWS_Metric_FoodHarvestPerCell>Урожай на клетко-день посадок</RWS_Metric_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Основной урожай растений в зонах посадки ÷ суммарная площадь зон посадки с учётом времени за тот же период (клетко-дни). Гидропоника и дикорастущие растения исключаются.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Торговые сделки</RWS_Metric_TradeDeals>
-  <RWS_MetricDesc_TradeDeals>Сделки, в которых хотя бы один невалютный предмет сменил руки. Пустые сделки, подарки и неудачи не учитываются.</RWS_MetricDesc_TradeDeals>
-  <RWS_Metric_TradeOrbital>Сделки с торговыми судами</RWS_Metric_TradeOrbital>
-  <RWS_MetricDesc_TradeOrbital>Сделки с орбитальными торговыми судами.</RWS_MetricDesc_TradeOrbital>
-  <RWS_Metric_TradeVisitingCaravan>Сделки с посещением караванов</RWS_Metric_TradeVisitingCaravan>
-  <RWS_MetricDesc_TradeVisitingCaravan>Сделки с торговцами, посещающими колонию пешком.Торговля в других населенных пунктах раздельная.</RWS_MetricDesc_TradeVisitingCaravan>
-  <RWS_Metric_TradeSalesTotal>Общие продажи</RWS_Metric_TradeSalesTotal>
-  <RWS_MetricDesc_TradeSalesTotal>Стоимость контракта невалютных товаров, проданных в завершенных сделках (серебро).</RWS_MetricDesc_TradeSalesTotal>
-  <RWS_Metric_TradeBuysTotal>Общие покупки</RWS_Metric_TradeBuysTotal>
-  <RWS_MetricDesc_TradeBuysTotal>Стоимость контракта невалютных товаров, купленных в завершенных сделках (серебро).</RWS_MetricDesc_TradeBuysTotal>
-  <RWS_Metric_TradeSalesPeak>Самая большая продажа в одной сделке</RWS_Metric_TradeSalesPeak>
-  <RWS_MetricDesc_TradeSalesPeak>Самая крупная продажа — одна сделка.</RWS_MetricDesc_TradeSalesPeak>
-  <RWS_Metric_TradeBuysPeak>Самая крупная покупка в одной сделке</RWS_Metric_TradeBuysPeak>
-  <RWS_MetricDesc_TradeBuysPeak>Самая крупная покупка — одна сделка.</RWS_MetricDesc_TradeBuysPeak>
-  <RWS_Metric_TradeSalesPeakUnit>Самая высокая цена продажи единицы</RWS_Metric_TradeSalesPeakUnit>
-  <RWS_MetricDesc_TradeSalesPeakUnit>Наивысшая контрактная стоимость - количество проданной линии.</RWS_MetricDesc_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeDeals>Завершённые сделки, в которых хотя бы один предмет, не являющийся валютой, сменил владельца. Пустые сделки, подарки и неудачные сделки исключаются.</RWS_MetricDesc_TradeDeals>
+  <RWS_Metric_TradeOrbital>Сделки с торговыми кораблями</RWS_Metric_TradeOrbital>
+  <RWS_MetricDesc_TradeOrbital>Сделки с орбитальными торговыми кораблями.</RWS_MetricDesc_TradeOrbital>
+  <RWS_Metric_TradeVisitingCaravan>Сделки с приезжими караванами</RWS_Metric_TradeVisitingCaravan>
+  <RWS_MetricDesc_TradeVisitingCaravan>Сделки с торговцами, посетившими колонию пешком. Торговля в других поселениях считается отдельно.</RWS_MetricDesc_TradeVisitingCaravan>
+  <RWS_Metric_TradeSalesTotal>Общая сумма продаж</RWS_Metric_TradeSalesTotal>
+  <RWS_MetricDesc_TradeSalesTotal>Договорная стоимость проданных предметов, не являющихся валютой, в завершённых сделках (серебро).</RWS_MetricDesc_TradeSalesTotal>
+  <RWS_Metric_TradeBuysTotal>Общая сумма покупок</RWS_Metric_TradeBuysTotal>
+  <RWS_MetricDesc_TradeBuysTotal>Договорная стоимость купленных предметов, не являющихся валютой, в завершённых сделках (серебро).</RWS_MetricDesc_TradeBuysTotal>
+  <RWS_Metric_TradeSalesPeak>Крупнейшая продажа за сделку</RWS_Metric_TradeSalesPeak>
+  <RWS_MetricDesc_TradeSalesPeak>Наибольшая сумма продаж в рамках одной сделки.</RWS_MetricDesc_TradeSalesPeak>
+  <RWS_Metric_TradeBuysPeak>Крупнейшая покупка за сделку</RWS_Metric_TradeBuysPeak>
+  <RWS_MetricDesc_TradeBuysPeak>Наибольшая сумма покупок в рамках одной сделки.</RWS_MetricDesc_TradeBuysPeak>
+  <RWS_Metric_TradeSalesPeakUnit>Максимальная цена продажи за единицу</RWS_Metric_TradeSalesPeakUnit>
+  <RWS_MetricDesc_TradeSalesPeakUnit>Максимум отношения договорной стоимости одной проданной позиции к числу единиц в ней.</RWS_MetricDesc_TradeSalesPeakUnit>
   <RWS_Metric_TradeSalesUnits>Проданные предметы</RWS_Metric_TradeSalesUnits>
-  <RWS_MetricDesc_TradeSalesUnits>Количество проданных невалютных предметов.</RWS_MetricDesc_TradeSalesUnits>
+  <RWS_MetricDesc_TradeSalesUnits>Число единиц проданных предметов, не являющихся валютой.</RWS_MetricDesc_TradeSalesUnits>
   <RWS_Metric_TradeBuysUnits>Купленные предметы</RWS_Metric_TradeBuysUnits>
-  <RWS_MetricDesc_TradeBuysUnits>Количество невалютных предметов, купленных.</RWS_MetricDesc_TradeBuysUnits>
-  <RWS_Metric_TradeTopSold>Самый продаваемый товар</RWS_Metric_TradeTopSold>
-  <RWS_MetricDesc_TradeTopSold>Тип товара продается больше всего, и сколько.</RWS_MetricDesc_TradeTopSold>
-  <RWS_Metric_TradeTopBought>Большинство купленных предметов</RWS_Metric_TradeTopBought>
-  <RWS_MetricDesc_TradeTopBought>Тип товара купили больше всего, и сколько.</RWS_MetricDesc_TradeTopBought>
-  <RWS_Metric_TradeSoldDefs>Виды предметов, проданных</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>Количество проданных невалютных товаров.</RWS_MetricDesc_TradeSoldDefs>
-  <RWS_Metric_TradeBoughtDefs>Виды предметов, купленных</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>Количество купленных невалютных товаров.</RWS_MetricDesc_TradeBoughtDefs>
-  <RWS_Metric_TradePartnerFactionDefs>Виды фракций, торгуемых</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>Количество известных типов фракций, которыми торгуют; партнеры без фракции показаны отдельно как «неизвестные».</RWS_MetricDesc_TradePartnerFactionDefs>
-  <RWS_Metric_GiftGoodwill>Доброжелательность, полученная от подарков</RWS_Metric_GiftGoodwill>
-  <RWS_MetricDesc_GiftGoodwill>Реальный рост доброй воли принимающей фракции вокруг каждой подарочной сделки; 0 на пределе.</RWS_MetricDesc_GiftGoodwill>
-  <RWS_Metric_AllyToHostile>Союзники стали враждебными</RWS_Metric_AllyToHostile>
-  <RWS_MetricDesc_AllyToHostile>Временами отношения фракции переходили от союзнических к враждебным.</RWS_MetricDesc_AllyToHostile>
-  <RWS_Metric_Reconciled>Враждебные группировки примирились</RWS_Metric_Reconciled>
-  <RWS_MetricDesc_Reconciled>Временами отношения враждебной фракции становились нейтральными или союзническими.</RWS_MetricDesc_Reconciled>
-  <RWS_Metric_AidRequests>Запрошенная военная помощь</RWS_Metric_AidRequests>
-  <RWS_MetricDesc_AidRequests>Запросы о военной помощи были приняты дружественной фракцией.</RWS_MetricDesc_AidRequests>
-  <RWS_Metric_AidArrivals>Прибыли подкрепления</RWS_Metric_AidArrivals>
-  <RWS_MetricDesc_AidArrivals>Времена дружеское подкрепление действительно прибыло.</RWS_MetricDesc_AidArrivals>
-  <RWS_Metric_Tends>Тенды выполнены</RWS_Metric_Tends>
-  <RWS_MetricDesc_Tends>Время от времени проводилась тенденция; одна тенденция из нескольких ран считается один раз.</RWS_MetricDesc_Tends>
-  <RWS_Metric_TendQualityMean>Средний стремится к качеству</RWS_Metric_TendQualityMean>
-  <RWS_MetricDesc_TendQualityMean>Среднее качество, применяемое к каждому условию, имеет тенденцию к лечению.</RWS_MetricDesc_TendQualityMean>
-  <RWS_Metric_BestTender>Лучший врач (Тендс)</RWS_Metric_BestTender>
-  <RWS_MetricDesc_BestTender>Тенденции персонажа, который ухаживал за большинством; разбивка называет их (по Ид). Тенденции без известного врача исключены.</RWS_MetricDesc_BestTender>
-  <RWS_Metric_NeutralTends>Тенденции нейтральных персонажей</RWS_Metric_NeutralTends>
-  <RWS_MetricDesc_NeutralTends>Тендс, чей пациент был нейтральным.</RWS_MetricDesc_NeutralTends>
-  <RWS_Metric_MedicineUsed>Медицина, используемая</RWS_Metric_MedicineUsed>
-  <RWS_MetricDesc_MedicineUsed>Медицина фактически потребляется путем ухаживания.</RWS_MetricDesc_MedicineUsed>
-  <RWS_Metric_Surgeries>хирургия</RWS_Metric_Surgeries>
-  <RWS_MetricDesc_Surgeries>Хирургические операции с определенным исходом (успех или неудача). Отмены не учитываются.</RWS_MetricDesc_Surgeries>
-  <RWS_Metric_SurgerySuccessRate>Скорость успеха хирургии</RWS_Metric_SurgerySuccessRate>
-  <RWS_MetricDesc_SurgerySuccessRate>Успешные операции - операции с определенным исходом.</RWS_MetricDesc_SurgerySuccessRate>
+  <RWS_MetricDesc_TradeBuysUnits>Число единиц купленных предметов, не являющихся валютой.</RWS_MetricDesc_TradeBuysUnits>
+  <RWS_Metric_TradeTopSold>Самый продаваемый предмет</RWS_Metric_TradeTopSold>
+  <RWS_MetricDesc_TradeTopSold>Тип предмета, проданный в наибольшем количестве, и само количество.</RWS_MetricDesc_TradeTopSold>
+  <RWS_Metric_TradeTopBought>Самый покупаемый предмет</RWS_Metric_TradeTopBought>
+  <RWS_MetricDesc_TradeTopBought>Тип предмета, купленный в наибольшем количестве, и само количество.</RWS_MetricDesc_TradeTopBought>
+  <RWS_Metric_TradeSoldDefs>Виды проданных предметов</RWS_Metric_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>Количество типов проданных невалютных предметов (ThingDef).</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_Metric_TradeBoughtDefs>Виды купленных предметов</RWS_Metric_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>Количество типов купленных невалютных предметов (ThingDef).</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_Metric_TradePartnerFactionDefs>Виды торговых фракций</RWS_Metric_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>Число известных типов фракций, с которыми велась торговля; партнёры без фракции показаны отдельно как «(неизвестно)».</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_Metric_GiftGoodwill>Репутация от подарков</RWS_Metric_GiftGoodwill>
+  <RWS_MetricDesc_GiftGoodwill>Фактический прирост репутации принимающей фракции от каждого подарка; ноль, если она уже была максимальной.</RWS_MetricDesc_GiftGoodwill>
+  <RWS_Metric_AllyToHostile>Союзники, ставшие врагами</RWS_Metric_AllyToHostile>
+  <RWS_MetricDesc_AllyToHostile>Случаи смены отношения фракции с союзного на враждебное.</RWS_MetricDesc_AllyToHostile>
+  <RWS_Metric_Reconciled>Примирение с враждебными фракциями</RWS_Metric_Reconciled>
+  <RWS_MetricDesc_Reconciled>Случаи смены враждебных отношений фракции на нейтральные или союзные.</RWS_MetricDesc_Reconciled>
+  <RWS_Metric_AidRequests>Запросы военной помощи</RWS_Metric_AidRequests>
+  <RWS_MetricDesc_AidRequests>Запросы военной помощи, принятые дружественной фракцией.</RWS_MetricDesc_AidRequests>
+  <RWS_Metric_AidArrivals>Прибывшие подкрепления</RWS_Metric_AidArrivals>
+  <RWS_MetricDesc_AidArrivals>Число случаев реального прибытия дружественных подкреплений. Не равно числу запросов.</RWS_MetricDesc_AidArrivals>
+  <RWS_Metric_Tends>Проведённые лечения</RWS_Metric_Tends>
+  <RWS_MetricDesc_Tends>Число проведённых лечений; обработка нескольких ран за один раз считается один раз.</RWS_MetricDesc_Tends>
+  <RWS_Metric_TendQualityMean>Среднее качество лечения</RWS_Metric_TendQualityMean>
+  <RWS_MetricDesc_TendQualityMean>Среднее качество, применённое к каждому состоянию, обработанному лечением.</RWS_MetricDesc_TendQualityMean>
+  <RWS_Metric_BestTender>Врач с наибольшим числом лечений</RWS_Metric_BestTender>
+  <RWS_MetricDesc_BestTender>Число лечений у самой активной пешки; в разбивке указан её ID. Лечения без известного врача исключаются.</RWS_MetricDesc_BestTender>
+  <RWS_Metric_NeutralTends>Лечение нейтральных пешек</RWS_Metric_NeutralTends>
+  <RWS_MetricDesc_NeutralTends>Лечения, в которых пациентом была нейтральная пешка.</RWS_MetricDesc_NeutralTends>
+  <RWS_Metric_MedicineUsed>Использованные медикаменты</RWS_Metric_MedicineUsed>
+  <RWS_MetricDesc_MedicineUsed>Количество медикаментов, фактически израсходованных на лечение.</RWS_MetricDesc_MedicineUsed>
+  <RWS_Metric_Surgeries>Операции</RWS_Metric_Surgeries>
+  <RWS_MetricDesc_Surgeries>Операции с установленным результатом (успех или неудача). Отмены не учитываются.</RWS_MetricDesc_Surgeries>
+  <RWS_Metric_SurgerySuccessRate>Доля успешных операций</RWS_Metric_SurgerySuccessRate>
+  <RWS_MetricDesc_SurgerySuccessRate>Успешные операции ÷ операции с установленным результатом.</RWS_MetricDesc_SurgerySuccessRate>
   <RWS_Metric_BestSurgeon>Лучший хирург</RWS_Metric_BestSurgeon>
-  <RWS_MetricDesc_BestSurgeon>Успешные операции персонажа с большинством; разбивка называет их (по Ид).</RWS_MetricDesc_BestSurgeon>
-  <RWS_Metric_Implants>Установленные имплантаты</RWS_Metric_Implants>
-  <RWS_MetricDesc_Implants>Искусственные детали и имплантаты, установленные успешными операциями.</RWS_MetricDesc_Implants>
-  <RWS_Metric_Rescues>Спасатели</RWS_Metric_Rescues>
-  <RWS_MetricDesc_Rescues>Спасения завершаются укладыванием персонажа в постель. Обычные вывозы и захваты не учитываются.</RWS_MetricDesc_Rescues>
-  <RWS_Metric_HostileRescues>Враждебные персонажи спасены</RWS_Metric_HostileRescues>
-  <RWS_MetricDesc_HostileRescues>Спасение персонажей, враждебных игроку, когда они спрятаны.</RWS_MetricDesc_HostileRescues>
-  <RWS_Metric_AwayRescues>Спасатели вдали от дома</RWS_Metric_AwayRescues>
-  <RWS_MetricDesc_AwayRescues>Спасение на карте, которая не является домом для игрока.</RWS_MetricDesc_AwayRescues>
-  <RWS_Metric_Resurrections>Воскресения</RWS_Metric_Resurrections>
+  <RWS_MetricDesc_BestSurgeon>Наибольшее число успешных операций у одной пешки; в разбивке указан её ID.</RWS_MetricDesc_BestSurgeon>
+  <RWS_Metric_Implants>Установленные импланты</RWS_Metric_Implants>
+  <RWS_MetricDesc_Implants>Искусственные части тела и импланты, установленные в результате успешных операций.</RWS_MetricDesc_Implants>
+  <RWS_Metric_Rescues>Спасения пострадавших</RWS_Metric_Rescues>
+  <RWS_MetricDesc_Rescues>Спасения, завершённые укладыванием пешки в кровать. Обычное перетаскивание и пленение не учитываются.</RWS_MetricDesc_Rescues>
+  <RWS_Metric_HostileRescues>Спасение враждебных пешек</RWS_Metric_HostileRescues>
+  <RWS_MetricDesc_HostileRescues>Спасения пешек, которые были враждебны игроку в момент укладывания в кровать.</RWS_MetricDesc_HostileRescues>
+  <RWS_Metric_AwayRescues>Спасения вне дома</RWS_Metric_AwayRescues>
+  <RWS_MetricDesc_AwayRescues>Спасения на картах, которые не являются домашними картами игрока.</RWS_MetricDesc_AwayRescues>
+  <RWS_Metric_Resurrections>Воскрешения</RWS_Metric_Resurrections>
   <RWS_MetricDesc_Resurrections>Времена, когда свободный колонист возвращался после смерти.</RWS_MetricDesc_Resurrections>
   <RWS_Metric_ResurrectionsPerPawnMax>Большинство воскрешений колонистов</RWS_Metric_ResurrectionsPerPawnMax>
   <RWS_MetricDesc_ResurrectionsPerPawnMax>Наибольшее количество воскрешений одного персонажа; разбивка называет их (ид).</RWS_MetricDesc_ResurrectionsPerPawnMax>
