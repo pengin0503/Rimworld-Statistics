@@ -16,6 +16,8 @@
 
 他のMOD固有の記録も、Rimworld Statistics**本体に統合**しています。対応するゲームプレイMODは、それぞれの統計を利用するときだけ必要です。別の統計アドオンを導入する必要はありません。
 
+**[対応MODの全一覧 / Full supported gameplay mod list（v1.7.0・40件）](docs/supported-mods.md)**
+
 | 対象 | 記録できる内容の例 |
 | --- | --- |
 | **Hospitality (Continued)** | 宿泊客・グループの来訪数、ゲストベッド数、客の加入成功数、客の購入、平穏な訪問の終了 |
