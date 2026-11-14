@@ -22,4 +22,7 @@ for d in Languages/*/Keyed; do
   [ -n "$unused" ] && { echo "$f unused:"; echo "$unused" | sed 's/^/  /'; status=1; }
 done
 [ $status -eq 0 ] && echo "translation keys: $(echo "$used" | wc -l) used, all present in every language"
-exit $status
+if [ "$status" -ne 0 ]; then
+  exit "$status"
+fi
+python3 tools/check_translation_formats.py
