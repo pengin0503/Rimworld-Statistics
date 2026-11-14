@@ -1171,4 +1171,34 @@
   <RWS_Rimefeller_RefineryFuelUsedDesc>Actual decrease in pipeline FuelAvailable caused by player-owned Rimefeller refinery processing, measured after the pipe component base tick. Excludes fuel transferred into on-site machines during the base tick and any scheduled or attempted consumption. Units are pipeline fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller powerplant fuel consumed (pipe units)</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>Actual decrease in pipeline FuelAvailable during successful fuel draws by player-owned Rimefeller powerplants. Dry or failed draws are excluded. Units are pipeline fuel units rather than inventory items.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>Arena bouts decided</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>Player arena bouts with an officially recorded winner.</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>Road segments built or improved</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>Completed world-map road segments, by road type. A bidirectional segment is counted once.</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>Warcomputers hacked</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>Hostile warcomputers replaced after a successful hack by a player pawn.</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>Gravship launch boons applied</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>Launch boons applied to player gravships, by boon type.</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>Ideological schisms completed</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>New schism ideologies registered with at least one player pawn converted.</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>Dreadnought funeral transformations</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>Player pawns resurrected by a dreadnought funeral with life support and warcasket armor applied.</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>Silver received from spa guests</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>Silver actually transferred into player spa facilities by visitors, by facility type.</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>Museum visits and learning sessions completed</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>Successful player museum jobs, separately by recreational visit and learning job.</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>Storefront sales fulfilled</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>Storefront transactions with confirmed delivery to a visitor, by product.</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>Vehicle boardings</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>Player pawns newly added to the passenger manifest of a player vehicle.</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>Vehicle upgrades installed</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>New vehicle upgrades installed through completed player work, by vehicle type.</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>Vehicles restored from wrecks</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>Player vehicles spawned by completed construction of a tracked wreck frame.</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Real Ruins caravans arriving at newly loaded sites</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>Player caravan arrivals with confirmed pawn entry into a Real Ruins site whose map had to be generated.</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>Slot machine rounds completed</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>Slot rounds completed on player machines, broken down by loss and win outcome.</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>Neural stack transfers to empty sleeves</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>Player surgery that installed an existing identity into a living, formerly empty sleeve.</RWS_NewMod_ResleevingDesc>
 </LanguageData>

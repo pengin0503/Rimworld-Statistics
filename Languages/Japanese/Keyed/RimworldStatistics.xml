@@ -1171,4 +1171,34 @@
   <RWS_Rimefeller_RefineryFuelUsedDesc>自勢力の精製設備による処理で、パイプ網の FuelAvailable が実際に減少した量。設備の通常補給による移送は基底の CompTick の後から測ることで除外し、未実行の予定消費も数えません。</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller 発電設備の燃料消費量（パイプ単位）</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>自勢力の Rimefeller 発電設備が実際にパイプ網から引き出した燃料量。引き出し失敗や供給不足は加算しません。単位はパイプ内の燃料量でありアイテム数ではありません。</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>勝者が確定した闘技場の試合</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>自勢力の闘技場で勝者が正式に記録された試合数。</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>新設・改良した道路区間</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>世界マップで新設または改良が完了した道路区間の数。道路種別ごとに、双方向の区間を1件として数えます。</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>ハッキングした戦闘コンピューター</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>自勢力のポーンのハッキング成功後、実際に置き換わった敵の戦闘コンピューターの数。</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>グラヴシップの航行ボーナス</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>自勢力のグラヴシップに適用された航行ボーナスの回数。ボーナスの種類別に集計します。</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>発生したイデオロギー分裂</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>新しいイデオロギーが登録され、自勢力のポーンが少なくとも1人改宗した分裂の数。</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>ドレッドノート葬儀での復活・変換</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>ドレッドノート葬儀で復活し、生命維持とウォーキャスケット装備が適用された自勢力のポーンの数。</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>スパで実際に受け取った銀貨</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>来訪者から自勢力のスパ設備に実際に移された銀貨の量。設備種別ごとに集計します。</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>博物館の見学・学習完了</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>自勢力のポーンが完了した博物館ジョブの数。娯楽の見学と学習を分けて集計します。</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>商品を引き渡した店頭取引</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>来訪者に実際に商品が渡った店頭取引の回数。商品別に集計します。</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>車両への搭乗</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>自勢力の車両の乗員リストに、自勢力のポーンが新たに加わった回数。</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>取り付けた車両アップグレード</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>自勢力のポーンの作業で車両に新たに取り付けられたアップグレードの数。車両種別で集計します。</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>残骸から復元した車両</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>残骸由来の建設枠から作業を完了し、実際に出現した自勢力の車両の数。</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Real Ruinsの遺跡到着</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>マップ生成が必要だったReal Ruinsの遺跡に自勢力のキャラバンが到着し、ポーンが実際に進入した回数。</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>スロットの完了ラウンド</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>自勢力のスロット台で完了したラウンドの数。負けと当たりの種類別に集計します。</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>空のスリーブへの神経スタック移植</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>自勢力の手術で、空だったスリーブに既存の人格を移し、生存した回数。</RWS_NewMod_ResleevingDesc>
 </LanguageData>

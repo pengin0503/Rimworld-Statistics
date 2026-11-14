@@ -1,3 +1,4 @@
+using RimworldStatistics.NewModOutcomes;
 using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
@@ -86,6 +87,21 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(RimefellerExtractionStatistics.Build());
         result.AddRange(RimefellerFuelUsageStatistics.Build());
         result.AddRange(PrisonExpandedCompletionStatistics.Build());
+        result.Add(ArenaOutcomes.Build());
+        result.Add(RealRuinsOutcomes.Build());
+        result.Add(ResleevingOutcomes.Build());
+        result.Add(CasinoOutcomes.Build());
+        result.Add(RoadOutcomes.Build());
+        result.Add(GravshipOutcomes.Hacking());
+        result.Add(GravshipOutcomes.Boons());
+        result.Add(IdeologyOutcomes.Schisms());
+        result.Add(IdeologyOutcomes.Funerals());
+        result.Add(ServiceOutcomes.SpaPayments());
+        result.Add(ServiceOutcomes.StorefrontSales());
+        result.Add(ServiceOutcomes.MuseumVisits());
+        result.Add(VehicleOutcomes.Boardings());
+        result.Add(VehicleOutcomes.CompletedUpgrades());
+        result.Add(VehicleOutcomes.Restorations());
         return result;
     }
 }
