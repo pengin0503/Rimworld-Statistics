@@ -250,131 +250,131 @@
   <RWS_MetricDesc_ModsPeak>該殖民地已匯入的存檔中最多的模組數量。僅限單一殖民地。</RWS_MetricDesc_ModsPeak>
   <RWS_Metric_ModsMin>最少模組數量</RWS_Metric_ModsMin>
   <RWS_MetricDesc_ModsMin>該殖民地已匯入的存檔中最少的模組數量。僅限單一殖民地。</RWS_MetricDesc_ModsMin>
-  <RWS_Metric_QuestSuccess>查詢成功( 保留)</RWS_Metric_QuestSuccess>
-  <RWS_MetricDesc_QuestSuccess>接受成功且仍在儲存中的求求求 。 查詢已移除的遊戲無法計算 。</RWS_MetricDesc_QuestSuccess>
-  <RWS_Metric_QuestFailure>查詢失敗( 保留 )</RWS_Metric_QuestFailure>
-  <RWS_MetricDesc_QuestFailure>接受失敗的追求 仍然在拯救中</RWS_MetricDesc_QuestFailure>
-  <RWS_Metric_QuestSuccessRate>成功率(保持)</RWS_Metric_QuestSuccessRate>
-  <RWS_MetricDesc_QuestSuccessRate>成功 + 失敗 。 所有殖民地: 總和數字 + 總和分母 。</RWS_MetricDesc_QuestSuccessRate>
-  <RWS_Metric_QuestSuccessByRoot>按型態( 保留) 查詢成功</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>按探險型別( 定義型別名稱) 成功尋找。 點選以顯示分類 。</RWS_MetricDesc_QuestSuccessByRoot>
-  <RWS_Metric_QuestExpired>逾期的徵求要約(保留)</RWS_Metric_QuestExpired>
-  <RWS_MetricDesc_QuestExpired>查詢出價仍然在未被接受而到期的保單中</RWS_MetricDesc_QuestExpired>
-  <RWS_Metric_QuestAccepted>已接受的查詢( 保留)</RWS_Metric_QuestAccepted>
-  <RWS_MetricDesc_QuestAccepted>已接受( 包括自動) 的存檔中仍然包含 。</RWS_MetricDesc_QuestAccepted>
-  <RWS_Metric_QuestSuccessDurationMean>成功探險的平日( 接受清理)</RWS_Metric_QuestSuccessDurationMean>
-  <RWS_MetricDesc_QuestSuccessDurationMean>從接受到成功追求的清理的短暫日子,</RWS_MetricDesc_QuestSuccessDurationMean>
-  <RWS_Metric_QuestSuccessDurationMin>最短的追求( 接受清理 )</RWS_Metric_QuestSuccessDurationMin>
-  <RWS_MetricDesc_QuestSuccessDurationMin>少數天在同樣的樣本裡</RWS_MetricDesc_QuestSuccessDurationMin>
-  <RWS_Metric_QuestSuccessDurationMax>最長的追求( 接受清理)</RWS_Metric_QuestSuccessDurationMax>
-  <RWS_MetricDesc_QuestSuccessDurationMax>大多數天的樣本都和壞人一樣</RWS_MetricDesc_QuestSuccessDurationMax>
-  <RWS_Unit_SilverPerYear>{0}/年</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>人造物</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>一般</RWS_Details_NotPermadeath>
-  <RWS_Metric_RankDaysByBiome>原始生物的存活日</RWS_Metric_RankDaysByBiome>
-  <RWS_MetricDesc_RankDaysByBiome>由遊戲最初開始的生物群組構成的群落生存日;從不使用目前的生物群組群落.</RWS_MetricDesc_RankDaysByBiome>
-  <RWS_Metric_RankEndingsByBiome>由原生生物完成</RWS_Metric_RankEndingsByBiome>
-  <RWS_MetricDesc_RankEndingsByBiome>被接受的結局由永不變化的起動瓦生物群落組成;來源不明的聚落被排除,而覆蓋率是部分的。</RWS_MetricDesc_RankEndingsByBiome>
-  <RWS_Metric_RankKillsToDeaths>每名殖民者死亡</RWS_Metric_RankKillsToDeaths>
-  <RWS_MetricDesc_RankKillsToDeaths>已確認的敵意殺人被自由殖民者的死亡除以相同的關卡間隔。 缺失的對數輸入被排除; 零分母未定義 。</RWS_MetricDesc_RankKillsToDeaths>
-  <RWS_Metric_RankMostKills>大多數敵人在一個聚居區殺人</RWS_Metric_RankMostKills>
-  <RWS_MetricDesc_RankMostKills>最大確認的敵意殺害數, 來自其選擇的檢查站; 缺少的輸入數不算為零 。</RWS_MetricDesc_RankMostKills>
-  <RWS_Metric_RankDeathFree>跨殖民地最長的無死期</RWS_Metric_RankDeathFree>
-  <RWS_MetricDesc_RankDeathFree>根據所選擇的檢查站完成的間隔,</RWS_MetricDesc_RankDeathFree>
-  <RWS_Metric_RankMostCrafting>一個聚居區的大多數人造物品</RWS_Metric_RankMostCrafting>
-  <RWS_MetricDesc_RankMostCrafting>已確認最大數量的專案 來自選定的檢查站</RWS_MetricDesc_RankMostCrafting>
-  <RWS_Metric_RankLargestSale>一個聚居區的銷售量最大</RWS_Metric_RankLargestSale>
-  <RWS_MetricDesc_RankLargestSale>在殖民地的一次交易中 最高確認的銷售量 相對於各殖民地</RWS_MetricDesc_RankLargestSale>
-  <RWS_Metric_RankMostResearch>在一個聚居區完成的研究大多數</RWS_Metric_RankMostResearch>
-  <RWS_MetricDesc_RankMostResearch>在一個殖民地的拯救時空快照中完成的研究專案數最多, 而不是數量的研究完成事件。</RWS_MetricDesc_RankMostResearch>
-  <RWS_Metric_RankMinPartyAtEnding>最小的聚會在結束</RWS_Metric_RankMinPartyAtEnding>
-  <RWS_MetricDesc_RankMinPartyAtEnding>當結束時, 遊戲確認的參與者很少:一艘飛船的被佔領的暗藏棺材, 殖民者送上皇家星座太空梭, 或是超過拱門的殖民者。 其他的結局和結局都沒有價值 。</RWS_MetricDesc_RankMinPartyAtEnding>
-  <RWS_Metric_RankByDifficultyDays>由難度播放的天數</RWS_Metric_RankByDifficultyDays>
-  <RWS_MetricDesc_RankByDifficultyDays>殖民地日以每個殖民地最遠點的困難為總和; 玩耍時的困難變化沒有追蹤。 點選以顯示分解 。</RWS_MetricDesc_RankByDifficultyDays>
-  <RWS_Metric_RankByDifficultyEndings>以困難結束</RWS_Metric_RankByDifficultyEndings>
-  <RWS_MetricDesc_RankByDifficultyEndings>總結資料以各殖民地最遠點的難度來計算(開發模式設定,</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>玩的天, 人造的天或不是</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>殖民日總計是 每個殖民地最遠的地方是否是人造的</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>結局, 是否是普通的</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>根據各殖民地最遠的地點是否為人造模式,</RWS_MetricDesc_RankByPermadeathEndings>
-  <RWS_Metric_RankPopulationPeak>人口最多(所有殖民地)</RWS_Metric_RankPopulationPeak>
-  <RWS_MetricDesc_RankPopulationPeak>遊戲中最繁多的 跨殖民地的對手 和它的殖民地</RWS_MetricDesc_RankPopulationPeak>
-  <RWS_Metric_RankFastestEnding>最快的結局</RWS_Metric_RankFastestEnding>
-  <RWS_MetricDesc_RankFastestEnding>在遊戲中收錄的結局數量最少, 以及它的聚居地。 建立前的痕跡( 時間不明 ) 被忽略了 。</RWS_MetricDesc_RankFastestEnding>
-  <RWS_Metric_RankNetWealthPerYear>年均財富收益</RWS_Metric_RankNetWealthPerYear>
-  <RWS_MetricDesc_RankNetWealthPerYear>殖民地的淨財產變化總和,</RWS_MetricDesc_RankNetWealthPerYear>
-  <RWS_Metric_RankTopScenario>最終的假想</RWS_Metric_RankTopScenario>
-  <RWS_MetricDesc_RankTopScenario>最終的結局是殖民地最遠的地點和名稱; 連結一起列出。 點選以顯示分解 。</RWS_MetricDesc_RankTopScenario>
-  <RWS_Metric_RankDaysByStoryteller>故事演講者扮演的日子</RWS_Metric_RankDaysByStoryteller>
-  <RWS_MetricDesc_RankDaysByStoryteller>每個殖民地最遠的地方的故事家 總算了殖民地的日子</RWS_MetricDesc_RankDaysByStoryteller>
-  <RWS_Metric_RankPlaytimePeak>玩得最開心的殖民地</RWS_Metric_RankPlaytimePeak>
-  <RWS_MetricDesc_RankPlaytimePeak>一個殖民地最久的 真正的遊戲時間 和殖民地</RWS_MetricDesc_RankPlaytimePeak>
-  <RWS_Metric_RankWealthPerColonist>每殖民者最富有</RWS_Metric_RankWealthPerColonist>
-  <RWS_MetricDesc_RankWealthPerColonist>自由殖民者(至少一個)在同樣的觀察下,</RWS_MetricDesc_RankWealthPerColonist>
-  <RWS_Metric_RankMinDeathsAtEnding>以最少的死亡結束</RWS_Metric_RankMinDeathsAtEnding>
-  <RWS_MetricDesc_RankMinDeathsAtEnding>殖民者死亡的數量是最少的, 而殖民地的數量也是最少的。</RWS_MetricDesc_RankMinDeathsAtEnding>
-  <RWS_Metric_RankZeroDeathEndings>沒有死亡的結局</RWS_Metric_RankZeroDeathEndings>
-  <RWS_MetricDesc_RankZeroDeathEndings>殖民者死數為0的結局 。 沒有死數的結局不計算 。</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Metric_QuestSuccess>成功的任務（存檔內）</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>已接受並成功完成，且仍保留在存檔中的任務。遊戲已刪除的任務無法統計。</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>失敗的任務（存檔內）</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>已接受但失敗，且仍保留在存檔中的任務。</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>任務成功率（存檔內）</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>成功次數 ÷（成功次數 + 失敗次數）。彙總所有殖民地時，先分別加總分子和分母，再計算比率。</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>依類型統計的成功任務（存檔內）</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>依任務類型（Def名稱）統計成功的任務。點擊查看明細。</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>過期的任務提議（存檔內）</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>仍保留在存檔中，未被接受就已過期的任務提議。</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>已接受的任務（存檔內）</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>仍保留在存檔中的已接受任務，包括自動接受和仍在進行中的任務。</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>成功任務的平均耗時（接受至清理）</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>成功任務從接受到開始清理程序的平均天數。缺少接受時間的任務不計入。</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>耗時最短的成功任務（接受至清理）</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>與上述平均值使用相同樣本，取其中最短的天數。</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>耗時最長的成功任務（接受至清理）</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>與上述平均值使用相同樣本，取其中最長的天數。</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Unit_SilverPerYear>{0} / 年</RWS_Unit_SilverPerYear>
+  <RWS_Details_Permadeath>無悔模式</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>自由讀檔模式</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankDaysByBiome>依初始生態系統統計的生存天數</RWS_Metric_RankDaysByBiome>
+  <RWS_MetricDesc_RankDaysByBiome>依遊戲最初起始位置的生態系統彙總殖民地生存天數，不使用目前據點的生態系統。</RWS_MetricDesc_RankDaysByBiome>
+  <RWS_Metric_RankEndingsByBiome>依初始生態系統統計的結局數</RWS_Metric_RankEndingsByBiome>
+  <RWS_MetricDesc_RankEndingsByBiome>依遊戲起始地塊的生態系統統計結局，該生態系統不會改變。起始地塊未知的殖民地不計入，因此結果可能不完整。</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>每名死亡殖民者對應的敵人擊殺數</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>同一段已記錄的檢查點區間內，確認的敵人擊殺數除以自由殖民者死亡數。缺少任一資料的殖民地不計入；死亡數為零時不計算結果。</RWS_MetricDesc_RankKillsToDeaths>
+  <RWS_Metric_RankMostKills>單一殖民地最多敵人擊殺數</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>根據選取的檢查點，統計單一殖民地已確認的最多敵人擊殺數。缺失資料不視為零。</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>最長無死亡期間</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>截至選取的檢查點已結束的無殖民者死亡期間中，單一殖民地持續時間最長的紀錄。</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>單一殖民地最多製造物品數</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>根據選取的檢查點，統計單一殖民地已確認的最多製造物品數。</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>單一殖民地最大單筆銷售額</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>在所有殖民地之間比較，取單筆交易中已確認的最大銷售額。</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>單一殖民地最多已完成研究數</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>單一殖民地在存檔快照中已完成的研究專案數最大值。此項不是研究完成事件的次數。</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>達成結局時的最少參與人數</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>發生結局時遊戲確認的最少參與人數：太空船發射時有人使用的休眠艙數量、榮譽提升中搭乘接駁艇離開的殖民者數量，或在遠古聯繫中超越的殖民者數量。其他結局及開始記錄此值以前的結局均無此資料。</RWS_MetricDesc_RankMinPartyAtEnding>
+  <RWS_Metric_RankByDifficultyDays>依難度統計的遊戲天數</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>依各殖民地進度最遠的紀錄所使用的難度，彙總殖民地天數。不會追蹤遊玩過程中更改難度的情況。點擊查看明細。</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>依難度統計的結局數</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>按照總覽頁面相同的規則統計結局（遵循開發者模式設定；痕跡至少計為一次），並依各殖民地進度最遠紀錄的難度分類。</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>依存檔模式統計的殖民地天數</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>依各殖民地進度最遠紀錄時的存檔模式彙總天數：無悔模式或自由讀檔模式。</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>依存檔模式統計的結局數</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>按照總覽頁面相同的規則統計結局，並依各殖民地進度最遠紀錄時的存檔模式分類：無悔模式或自由讀檔模式。</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>最大人口（所有殖民地）</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>比較遊戲為各殖民地記錄的最大人口計數，顯示其中的最高值及其所屬殖民地。</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>最快達成的結局</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>遊玩期間記錄的結局中，遊戲內天數最少的一次及其殖民地。未安裝本模組時留下、發生時間未知的結局痕跡不計入。</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>每年平均財富淨增長</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>各殖民地財富淨變化總和 ÷ 各自記錄歷史涵蓋的總年數。只有一個觀測點的歷史不計入。</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>結局數最多的腳本</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>依各殖民地進度最遠的紀錄確定腳本，顯示單一腳本的最多結局數及名稱。並列第一的腳本一同顯示。點擊查看明細。</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>依故事敘述者統計的遊戲天數</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>依各殖民地進度最遠紀錄時的故事敘述者，彙總殖民地天數。</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>實際遊玩時間最長的殖民地</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>單一殖民地最長的實際遊玩時間及其所屬殖民地。</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>每名殖民者對應的最高財富</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>同一觀測點的總財富 ÷ 自由殖民者數量（至少一人）所得的最大值及其所屬殖民地。僅在兩項歷史資料都從遊戲開始完整記錄時才計算。</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>死亡人數最少的結局</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>記錄結局時殖民者累計死亡人數的最小值及其所屬殖民地。此版本以前記錄的結局沒有死亡人數資料，因此不計入。</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>無人死亡的結局</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>記錄結局時殖民者死亡人數為零的結局數。死亡人數未知的結局不計入。</RWS_MetricDesc_RankZeroDeathEndings>
   <RWS_Category_Research>研究</RWS_Category_Research>
-  <RWS_Category_Mind>注意</RWS_Category_Mind>
-  <RWS_Category_Combat>戰鬥和死亡</RWS_Category_Combat>
-  <RWS_Category_Social>關係和囚犯</RWS_Category_Social>
-  <RWS_Category_Medicine>醫藥</RWS_Category_Medicine>
-  <RWS_Category_Work>工作和食物</RWS_Category_Work>
+  <RWS_Category_Mind>精神</RWS_Category_Mind>
+  <RWS_Category_Combat>戰鬥與死亡</RWS_Category_Combat>
+  <RWS_Category_Social>人際關係與俘虜</RWS_Category_Social>
+  <RWS_Category_Medicine>醫療</RWS_Category_Medicine>
+  <RWS_Category_Work>生產與食物</RWS_Category_Work>
   <RWS_Category_Animals>動物</RWS_Category_Animals>
-  <RWS_Category_Economy>貿易和外交</RWS_Category_Economy>
-  <RWS_Category_Environment>災害和環境</RWS_Category_Environment>
-  <RWS_Category_Exploration>車隊和定居點</RWS_Category_Exploration>
-  <RWS_Category_Facilities>設施和庫存</RWS_Category_Facilities>
-  <RWS_Category_Royalty>皇室</RWS_Category_Royalty>
-  <RWS_Category_Ideology>意識形態</RWS_Category_Ideology>
+  <RWS_Category_Economy>貿易與外交</RWS_Category_Economy>
+  <RWS_Category_Environment>災害與環境</RWS_Category_Environment>
+  <RWS_Category_Exploration>旅隊與據點</RWS_Category_Exploration>
+  <RWS_Category_Facilities>設施與庫存</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
   <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
   <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
-  <RWS_Metric_ResearchLiveCompleted>研究完成並收錄</RWS_Metric_ResearchLiveCompleted>
-  <RWS_MetricDesc_ResearchLiveCompleted>自錄制開始後, 研究專案從未完成到完成, 每個專案都算一次。 而不是儲存時完成的專案數 。</RWS_MetricDesc_ResearchLiveCompleted>
-  <RWS_Metric_ResearchLiveCompletedTicks>研究完成日(列表)</RWS_Metric_ResearchLiveCompletedTicks>
-  <RWS_MetricDesc_ResearchLiveCompletedTicks>每項專案在錄制時完成, 遊戲日是它第一次完成的。 只顯示每個聚落 。</RWS_MetricDesc_ResearchLiveCompletedTicks>
-  <RWS_Metric_ResearchLiveDurationMin>研究期限最短</RWS_Metric_ResearchLiveDurationMin>
-  <RWS_MetricDesc_ResearchLiveDurationMin>從一項專案的首次真正工作到完成最短的幾天, 包括暫停。 尚未看到開工的專案被忽略 。</RWS_MetricDesc_ResearchLiveDurationMin>
-  <RWS_Metric_ResearchLiveDurationMax>研究期限最長</RWS_Metric_ResearchLiveDurationMax>
-  <RWS_MetricDesc_ResearchLiveDurationMax>大多數天的樣本和最短的樣本一樣</RWS_MetricDesc_ResearchLiveDurationMax>
-  <RWS_Metric_ResearchLiveFirstDay>第一次研究完成的天數</RWS_Metric_ResearchLiveFirstDay>
-  <RWS_MetricDesc_ResearchLiveFirstDay>第一次完成的遊戲日, 只有在從遊戲開始紀錄的時候才有 。</RWS_MetricDesc_ResearchLiveFirstDay>
-  <RWS_Metric_MentalBreaks>精神休息</RWS_Metric_MentalBreaks>
-  <RWS_MetricDesc_MentalBreaks>自由殖民者的精神分裂 毒品、基因、神經病或神經病的分類都不算數</RWS_MetricDesc_MentalBreaks>
-  <RWS_Metric_MentalBreaksByDef>按型別分列的精神分裂症</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>按型別(MentalBreakDef),</RWS_MetricDesc_MentalBreaksByDef>
-  <RWS_Metric_Inspirations>靈感</RWS_Metric_Inspirations>
-  <RWS_MetricDesc_Inspirations>真正為自由殖民者啟動的啟動。 失敗的試驗、 已經啟動的字元和 dev 工具都不算 。</RWS_MetricDesc_Inspirations>
-  <RWS_Metric_InspirationsByDef>按型別分列的啟示</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>上面的靈感, 按型別( InspirenceDef) 。</RWS_MetricDesc_InspirationsByDef>
-  <RWS_Metric_HostileKills>敵人死了</RWS_Metric_HostileKills>
-  <RWS_MetricDesc_HostileKills>角色死亡對玩家不利, 在死亡前的死亡對玩家一方造成損失( 殖民者、 炮塔、 陷阱、 動物、 mechs ) 。 沒有已知的歸宿的死亡不計算 。</RWS_MetricDesc_HostileKills>
-  <RWS_Metric_KillsPerPawnMax>大多是殖民者殺害的</RWS_Metric_KillsPerPawnMax>
-  <RWS_MetricDesc_KillsPerPawnMax>殺人最多的是玩家的一個角色; 持有者( id) 的分類名稱。 殺人只因原因而知道, 沒有人可以算入 。</RWS_MetricDesc_KillsPerPawnMax>
-  <RWS_Metric_KillsByVictimKind>被殺的敵人</RWS_Metric_KillsByVictimKind>
-  <RWS_MetricDesc_KillsByVictimKind>敵人會殺人 昆蟲 機械人和其他</RWS_MetricDesc_KillsByVictimKind>
-  <RWS_Metric_RangedKills>使用射程武器致死</RWS_Metric_RangedKills>
-  <RWS_MetricDesc_RangedKills>用射程武器製造的敵人殺人(爆炸算作爆炸性).</RWS_MetricDesc_RangedKills>
-  <RWS_Metric_MeleeKills>用迷你武器殺人</RWS_Metric_MeleeKills>
-  <RWS_MetricDesc_MeleeKills>敵人用裝備的麻利武器殺人</RWS_MetricDesc_MeleeKills>
-  <RWS_Metric_UnarmedKills>無武器殺人</RWS_Metric_UnarmedKills>
-  <RWS_MetricDesc_UnarmedKills>敵人殺害了沒有武器 由我發動的攻擊</RWS_MetricDesc_UnarmedKills>
-  <RWS_Metric_ExplosiveKills>爆炸致死</RWS_Metric_ExplosiveKills>
-  <RWS_MetricDesc_ExplosiveKills>敵人會殺人 造成一場爆炸</RWS_MetricDesc_ExplosiveKills>
-  <RWS_Metric_EnvironmentKills>由火或環境造成的死亡</RWS_Metric_EnvironmentKills>
-  <RWS_MetricDesc_EnvironmentKills>敵人用火或者其他環境損害來殺人, 由記錄屬於玩家一方。 自然死亡和未屬性死亡不計數 。</RWS_MetricDesc_EnvironmentKills>
-  <RWS_Metric_TurretKills>由炮塔殺害</RWS_Metric_TurretKills>
-  <RWS_MetricDesc_TurretKills>敵人殺害攻擊者是玩家炮塔</RWS_MetricDesc_TurretKills>
-  <RWS_Metric_TrapKills>被陷阱殺死</RWS_Metric_TrapKills>
-  <RWS_MetricDesc_TrapKills>敵人殺人是玩家陷阱造成的</RWS_MetricDesc_TrapKills>
-  <RWS_Metric_TameAnimalKills>被馴服的動物殺死</RWS_Metric_TameAnimalKills>
-  <RWS_MetricDesc_TameAnimalKills>敵人殺害攻擊者是玩家動物</RWS_MetricDesc_TameAnimalKills>
-  <RWS_Metric_PlayerMechKills>由玩家 mechs 殺害</RWS_Metric_PlayerMechKills>
-  <RWS_MetricDesc_PlayerMechKills>攻擊者是玩家機械人(Biotech)</RWS_MetricDesc_PlayerMechKills>
-  <RWS_Metric_DeathCauses>按原因分列的殖民者死亡</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>自由殖民者死因是罪犯的健康狀況(hediff)或殺人損害型態。</RWS_MetricDesc_DeathCauses>
-  <RWS_Metric_DeathsByRaid>殖民者因突擊而死亡</RWS_Metric_DeathsByRaid>
+  <RWS_Metric_ResearchLiveCompleted>記錄期間完成的研究</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>自開始記錄以來，從未完成變為已完成的研究專案，每項只計一次。此項不是存檔時已完成專案的數量。</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>研究完成日期（清單）</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>記錄期間每個已完成研究專案首次完成時的遊戲內日期。僅依殖民地個別顯示。</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>最短研究耗時</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>從首次實際開始研究到專案完成的最短天數，包括中途暫停。未觀察到開始時間的研究專案不計入。</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>最長研究耗時</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>與最短耗時使用相同樣本，取其中最長的天數。</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>首次完成研究所需天數</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>僅在從遊戲開始就進行記錄時，統計首次完成研究的遊戲內日期。</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>精神崩潰次數</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>自由殖民者因心情引發的精神崩潰次數。不統計藥物、基因、心靈能力或開發工具引發的精神崩潰。</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>依類型統計的精神崩潰</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>將上述精神崩潰依類型（MentalBreakDef）分類統計。</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>靈感次數</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>自由殖民者實際獲得靈感的次數。不統計失敗的嘗試、已經處於靈感狀態的單位或開發工具造成的情況。</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_InspirationsByDef>依類型統計的靈感</RWS_Metric_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>將上述靈感依類型（InspirationDef）分類統計。</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>擊殺的敵人數</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>統計死亡前與玩家敵對，且傷害紀錄將其死亡歸因於玩家一方（殖民者、砲塔、陷阱、動物、機械族）的單位。不統計無法確定歸因的死亡。</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>單名殖民者最多擊殺數</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>歸於單一玩家單位名下的最多擊殺數；明細中依ID顯示該單位。只知道死因而不知道擊殺者的紀錄不歸於任何單位。</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>依種類統計的敵人擊殺</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>將擊殺的敵人分為人形生物、昆蟲、機械族及其他種類。</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>遠程武器擊殺數</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>使用遠程武器擊殺的敵人數（爆炸造成的擊殺歸入爆炸擊殺）。</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>近戰武器擊殺數</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>使用已裝備的近戰武器擊殺的敵人數。</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>徒手擊殺數</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>不使用武器，透過近戰攻擊擊殺的敵人數。</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>爆炸擊殺數</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>致命傷害來自爆炸的敵人擊殺數。</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>火焰或環境傷害擊殺數</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>由火焰或其他環境傷害造成，且紀錄將其歸因於玩家一方的敵人擊殺數。自然死亡或歸因不明的不計入。</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>砲塔擊殺數</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>攻擊者為玩家砲塔的敵人擊殺數。</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>陷阱擊殺數</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>由玩家陷阱造成的敵人擊殺數。</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>馴服動物擊殺數</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>攻擊者為玩家動物的敵人擊殺數。</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>玩家機械族擊殺數</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>攻擊者為玩家機械族的敵人擊殺數（Biotech）。</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>依死因統計的殖民者死亡</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>依導致死亡的健康狀況（hediff）或致命傷害類型，分類統計自由殖民者死亡。兩者皆無法確定的，歸入「（未知）」類別。</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>襲擊導致的殖民者死亡</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>自由殖民者死亡被分解成突擊者、其他已知原因和未知原因造成的死亡。 雖然突擊事件沒有被記錄,但卻是未知的。</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>殖民者死於疾病</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>自由殖民者死亡的罪魁禍首是疾病(遊戲將它看成是使角色生病的條件 ) 。 死亡只是伴有疾病。 死亡不計數 。</RWS_MetricDesc_DiseaseDeaths>

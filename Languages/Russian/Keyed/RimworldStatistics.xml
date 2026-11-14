@@ -250,131 +250,131 @@
   <RWS_MetricDesc_ModsPeak>Наибольшее число модов в одном из импортированных сохранений этой колонии. Только по отдельной колонии.</RWS_MetricDesc_ModsPeak>
   <RWS_Metric_ModsMin>Наименьшее число модов</RWS_Metric_ModsMin>
   <RWS_MetricDesc_ModsMin>Наименьшее число модов в одном из импортированных сохранений этой колонии. Только по отдельной колонии.</RWS_MetricDesc_ModsMin>
-  <RWS_Metric_QuestSuccess>Квесты удались (сохранились)</RWS_Metric_QuestSuccess>
-  <RWS_MetricDesc_QuestSuccess>Принятые квесты, которые увенчались успехом и до сих пор находятся в сейфе. Квесты, удаленные игрой, не подсчитываются.</RWS_MetricDesc_QuestSuccess>
-  <RWS_Metric_QuestFailure>Квесты не удались (сохранились)</RWS_Metric_QuestFailure>
-  <RWS_MetricDesc_QuestFailure>Принятые квесты, которые провалились и до сих пор находятся в сейфе.</RWS_MetricDesc_QuestFailure>
-  <RWS_Metric_QuestSuccessRate>Quest success rate (сохраняется)</RWS_Metric_QuestSuccessRate>
-  <RWS_MetricDesc_QuestSuccessRate>Успехи ÷ (успехи + неудачи) Все колонии: суммированные числители ÷ суммированные знаменатели.</RWS_MetricDesc_QuestSuccessRate>
-  <RWS_Metric_QuestSuccessByRoot>Квесты с последующим типом (сохранены)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>Успешные квесты по типу квеста (название типа определения). Нажмите, чтобы показать разбивку.</RWS_MetricDesc_QuestSuccessByRoot>
-  <RWS_Metric_QuestExpired>Завершенные квест-предложения (сохранены)</RWS_Metric_QuestExpired>
-  <RWS_MetricDesc_QuestExpired>Квест предлагает все еще в сейфе, который истек без принятия.</RWS_MetricDesc_QuestExpired>
-  <RWS_Metric_QuestAccepted>Квесты приняты (сохранены)</RWS_Metric_QuestAccepted>
-  <RWS_MetricDesc_QuestAccepted>Квесты по-прежнему в сейфе, которые были приняты (в том числе автоматически), включены текущие.</RWS_MetricDesc_QuestAccepted>
-  <RWS_Metric_QuestSuccessDurationMean>Средние дни успешных квестов (принятие уборки)</RWS_Metric_QuestSuccessDurationMean>
-  <RWS_MetricDesc_QuestSuccessDurationMean>Средние дни от принятия до начала очистки для успешных квестов; квесты без времени принятия остаются в стороне.</RWS_MetricDesc_QuestSuccessDurationMean>
-  <RWS_Metric_QuestSuccessDurationMin>Самый короткий успешный квест (принятие уборки)</RWS_Metric_QuestSuccessDurationMin>
-  <RWS_MetricDesc_QuestSuccessDurationMin>Средние дни в той же выборке, что и средние.</RWS_MetricDesc_QuestSuccessDurationMin>
-  <RWS_Metric_QuestSuccessDurationMax>Самый длительный успешный квест (принятие уборки)</RWS_Metric_QuestSuccessDurationMax>
-  <RWS_MetricDesc_QuestSuccessDurationMax>Большинство дней в той же выборке, что и в среднем.</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Metric_QuestSuccess>Успешные задания (сохранены)</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>Принятые и успешно завершённые задания, которые ещё присутствуют в сохранении. Задания, удалённые игрой, подсчитать нельзя.</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>Проваленные задания (сохранены)</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>Принятые задания, завершившиеся неудачей и всё ещё присутствующие в сохранении.</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>Доля успешных заданий (сохранены)</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>Успехи ÷ (успехи + неудачи). По всем колониям суммы числителей делятся на суммы знаменателей.</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>Успешные задания по типам (сохранены)</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Успешные задания по типу (имя Def). Нажмите, чтобы открыть разбивку.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>Просроченные предложения заданий (сохранены)</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>Предложения заданий, оставшиеся в сохранении после истечения срока без принятия.</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>Принятые задания (сохранены)</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>Принятые задания, которые ещё присутствуют в сохранении, в том числе принятые автоматически и находящиеся в процессе выполнения.</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>Средняя длительность успешного задания (от принятия до очистки)</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>Среднее число дней от принятия успешного задания до начала служебной очистки. Задания без известного времени принятия исключаются.</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>Кратчайшее успешное задание (от принятия до очистки)</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>Минимальное число дней из той же выборки, что и среднее.</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>Самое долгое успешное задание (от принятия до очистки)</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>Максимальное число дней из той же выборки, что и среднее.</RWS_MetricDesc_QuestSuccessDurationMax>
   <RWS_Unit_SilverPerYear>{0} / год</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>Пермадеат</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>Нормальная норма</RWS_Details_NotPermadeath>
-  <RWS_Metric_RankDaysByBiome>Дни выживания по оригинальному биому</RWS_Metric_RankDaysByBiome>
-  <RWS_MetricDesc_RankDaysByBiome>Общие дни выживания колонии, сгруппированные по исходному исходному биому игры; никогда не использует текущий биом поселения.</RWS_MetricDesc_RankDaysByBiome>
-  <RWS_Metric_RankEndingsByBiome>Концы оригинального биома</RWS_Metric_RankEndingsByBiome>
-  <RWS_MetricDesc_RankEndingsByBiome>Принятые окончания, сгруппированные неизменяемым биомом стартовой плитки; колонии неизвестного происхождения исключены и покрытие частичное.</RWS_MetricDesc_RankEndingsByBiome>
-  <RWS_Metric_RankKillsToDeaths>Враждебные убийства на смерть колонистов</RWS_Metric_RankKillsToDeaths>
-  <RWS_MetricDesc_RankKillsToDeaths>Подтвержденные враждебные убийства, разделенные на свободно-колониальные смерти в одном и том же зарегистрированном интервале контрольно-пропускных пунктов, исключены; нулевой знаменатель не определен.</RWS_MetricDesc_RankKillsToDeaths>
-  <RWS_Metric_RankMostKills>Большинство врагов погибает в одной колонии</RWS_Metric_RankMostKills>
-  <RWS_MetricDesc_RankMostKills>Максимально подтвержденные враждебные убийства в одной колонии, с ее выбранного контрольно-пропускного пункта; недостающий вход не считается нулевым.</RWS_MetricDesc_RankMostKills>
-  <RWS_Metric_RankDeathFree>Самый длительный период без смерти в колониях</RWS_Metric_RankDeathFree>
-  <RWS_MetricDesc_RankDeathFree>Самый большой измеренный безсмертный интервал в любой колонии, основанный на завершенных интервалах от выбранного контрольного пункта.</RWS_MetricDesc_RankDeathFree>
-  <RWS_Metric_RankMostCrafting>Большинство изготовленных изделий в одной колонии</RWS_Metric_RankMostCrafting>
-  <RWS_MetricDesc_RankMostCrafting>Максимально подтвержденное количество обработанных предметов в одной колонии с выбранного контрольно-пропускного пункта.</RWS_MetricDesc_RankMostCrafting>
-  <RWS_Metric_RankLargestSale>Самая большая распродажа в одной колонии</RWS_Metric_RankLargestSale>
-  <RWS_MetricDesc_RankLargestSale>Максимальная подтвержденная сумма продажи для одной сделки в колонии, по сравнению с другими колониями.</RWS_MetricDesc_RankLargestSale>
-  <RWS_Metric_RankMostResearch>Большинство завершенных исследований в одной колонии</RWS_Metric_RankMostResearch>
-  <RWS_MetricDesc_RankMostResearch>Наибольшее количество завершенных исследовательских проектов в режиме экономии времени колонии, а не количество событий завершения исследований.</RWS_MetricDesc_RankMostResearch>
-  <RWS_Metric_RankMinPartyAtEnding>Самая маленькая вечеринка в конце</RWS_Metric_RankMinPartyAtEnding>
-  <RWS_MetricDesc_RankMinPartyAtEnding>У западных участников игра подтвердила, когда случилась концовка: занятые криптоспящие гробы запуска корабля, колонисты, отправленные на шаттле Royal Ascent, или колонисты, вышедшие за пределы архонексуса.Другие концовки, и концовки, записанные до того, как это было сохранено, не имеют значения.</RWS_MetricDesc_RankMinPartyAtEnding>
-  <RWS_Metric_RankByDifficultyDays>Дни, в которые играют трудности</RWS_Metric_RankByDifficultyDays>
-  <RWS_MetricDesc_RankByDifficultyDays>Дни колонии суммируются сложностью самой дальней точки каждой колонии; изменения сложности во время игры не отслеживаются.</RWS_MetricDesc_RankByDifficultyDays>
-  <RWS_Metric_RankByDifficultyEndings>Окончание с трудом</RWS_Metric_RankByDifficultyEndings>
-  <RWS_MetricDesc_RankByDifficultyEndings>Концы засчитываются как на Обзоре (настройка режима разработчика, следы как минимум один раз), по сложности самой дальней точки каждой колонии.</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>Игровые дни, permadeath или нет</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>Дни колонии суммируются по тому, находится ли самая дальняя точка каждой колонии в режиме пермадата.</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>Концы, пермадеат или нет</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>Концы засчитываются как на Обзоре, по тому, находится ли самая дальняя точка каждой колонии в режиме пермадата.</RWS_MetricDesc_RankByPermadeathEndings>
-  <RWS_Metric_RankPopulationPeak>Самая большая популяция (все колонии)</RWS_Metric_RankPopulationPeak>
-  <RWS_MetricDesc_RankPopulationPeak>Самая высокая из самых больших популяций в игре противостоит колониям и их колониям.</RWS_MetricDesc_RankPopulationPeak>
-  <RWS_Metric_RankFastestEnding>Быстрый конец</RWS_Metric_RankFastestEnding>
-  <RWS_MetricDesc_RankFastestEnding>Окончание, записанное во время игры с наименьшим количеством внутриигровых дней, и его колония.Предустановленные следы, время которых неизвестно, остаются в стороне.</RWS_MetricDesc_RankFastestEnding>
-  <RWS_Metric_RankNetWealthPerYear>Средний прирост богатства в год</RWS_Metric_RankNetWealthPerYear>
-  <RWS_MetricDesc_RankNetWealthPerYear>Чистые изменения богатства колоний суммируются, годы их истории охватывают, суммируются (истории одного наблюдения остаются в стороне).</RWS_MetricDesc_RankNetWealthPerYear>
-  <RWS_Metric_RankTopScenario>Сценарий с наибольшим количеством концовок</RWS_Metric_RankTopScenario>
-  <RWS_MetricDesc_RankTopScenario>Самые концовки для одного сценария названия самых отдаленных точек колоний, и название; связи перечислены вместе.</RWS_MetricDesc_RankTopScenario>
-  <RWS_Metric_RankDaysByStoryteller>Дни, сыгранные рассказчиком</RWS_Metric_RankDaysByStoryteller>
-  <RWS_MetricDesc_RankDaysByStoryteller>Дни колоний, суммированные рассказчиком самой отдаленной точки каждой колонии.</RWS_MetricDesc_RankDaysByStoryteller>
-  <RWS_Metric_RankPlaytimePeak>Колония с наибольшим количеством игрового времени</RWS_Metric_RankPlaytimePeak>
-  <RWS_MetricDesc_RankPlaytimePeak>Самое длинное реальное игровое время одной колонии и колонии.</RWS_MetricDesc_RankPlaytimePeak>
-  <RWS_Metric_RankWealthPerColonist>Самое большое богатство на одного колониста</RWS_Metric_RankWealthPerColonist>
-  <RWS_MetricDesc_RankWealthPerColonist>Самое большое общее богатство — это свободные колонисты (по крайней мере, один) при одном наблюдении и его колония; только там, где обе истории завершены с самого начала.</RWS_MetricDesc_RankWealthPerColonist>
-  <RWS_Metric_RankMinDeathsAtEnding>Конец с наименьшим количеством смертей</RWS_Metric_RankMinDeathsAtEnding>
-  <RWS_MetricDesc_RankMinDeathsAtEnding>Наименьшее количество смертей колонистов на данный момент зафиксировано окончание, и колония.Концы, зафиксированные до этой версии, не имеют числа смертей и остаются за бортом.</RWS_MetricDesc_RankMinDeathsAtEnding>
-  <RWS_Metric_RankZeroDeathEndings>Конец без смертей</RWS_Metric_RankZeroDeathEndings>
-  <RWS_MetricDesc_RankZeroDeathEndings>Концы, число погибших колонистов которых было 0, когда они были зарегистрированы. Концы без числа погибших не учитываются.</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Details_Permadeath>«Ответственный» режим</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>Загрузка в любой момент</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankDaysByBiome>Дни выживания по начальному биому</RWS_Metric_RankDaysByBiome>
+  <RWS_MetricDesc_RankDaysByBiome>Сумма дней выживания колоний по биому исходной стартовой клетки. Биом текущего поселения не используется.</RWS_MetricDesc_RankDaysByBiome>
+  <RWS_Metric_RankEndingsByBiome>Концовки по начальному биому</RWS_Metric_RankEndingsByBiome>
+  <RWS_MetricDesc_RankEndingsByBiome>Концовки по биому стартовой клетки, который не меняется. Колонии с неизвестной стартовой клеткой исключаются, поэтому данные могут быть неполными.</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>Убийства врагов на одну смерть поселенца</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>Подтверждённые убийства врагов, разделённые на число смертей свободных поселенцев за один и тот же записанный промежуток между контрольными точками. Колонии с отсутствующими данными исключаются; при нулевом числе смертей значение не вычисляется.</RWS_MetricDesc_RankKillsToDeaths>
+  <RWS_Metric_RankMostKills>Наибольшее число убитых врагов в колонии</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>Максимум подтверждённых убийств врагов в одной колонии по выбранной контрольной точке. Отсутствующие данные не считаются нулём.</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>Самый долгий период без смертей</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>Наибольшая измеренная длительность периода без смерти поселенцев в одной колонии среди периодов, завершившихся до выбранной контрольной точки.</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>Максимум изготовленных предметов в колонии</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>Наибольшее подтверждённое число изготовленных предметов в одной колонии на выбранной контрольной точке.</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>Крупнейшая продажа в колонии</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>Максимальная подтверждённая сумма продажи за одну сделку среди всех колоний.</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>Максимум завершённых исследований в колонии</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>Наибольшее число завершённых исследовательских проектов в снимке состояния колонии при сохранении. Это не число событий завершения исследований.</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>Наименьшая группа при концовке</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>Наименьшее число участников, подтверждённое игрой при достижении концовки: занятые саркофаги криптосна при запуске корабля, поселенцы, отправленные шаттлом в ходе Знатного восхождения, или поселенцы, вознёсшиеся через архонексус. Другие концовки и концовки, записанные до появления этого показателя, значения не имеют.</RWS_MetricDesc_RankMinPartyAtEnding>
+  <RWS_Metric_RankByDifficultyDays>Дни игры по сложности</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>Сумма дней колоний по сложности на наиболее поздней записанной стадии каждой из них. Изменения сложности во время игры не отслеживаются. Нажмите, чтобы открыть разбивку.</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>Концовки по сложности</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>Концовки, подсчитанные как на вкладке обзора (с учётом настройки режима разработчика; следы учитываются не меньше одного раза), по сложности на самой поздней стадии каждой колонии.</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>Дни колоний по режиму сохранения</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>Сумма дней колоний по режиму в наиболее поздней записи каждой из них: «Ответственный» режим или Загрузка в любой момент.</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>Концовки по режиму сохранения</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>Концовки, подсчитанные как на вкладке обзора, по режиму в наиболее поздней записи каждой колонии: «Ответственный» режим или Загрузка в любой момент.</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>Максимальная численность (все колонии)</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>Наибольшее значение игровых счётчиков максимальной численности населения среди колоний, а также сама колония.</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>Самая быстрая концовка</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>Концовка, записанная во время игры за наименьшее число игровых дней, и соответствующая колония. Следы до установки мода с неизвестным временем исключаются.</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>Средний прирост богатства за год</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>Сумма чистых изменений богатства колоний ÷ сумма лет, охваченных их историями. Истории с одной записью исключаются.</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>Сценарий с наибольшим числом концовок</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>Максимальное число концовок одного сценария (по наиболее поздней точке каждой колонии) и название сценария. Совпадающие максимумы показаны вместе. Нажмите для разбивки.</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>Дни игры по рассказчику</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>Сумма дней колоний по рассказчику в наиболее поздней записи каждой из них.</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>Колония с наибольшим игровым временем</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>Наибольшее фактическое время игры в одной колонии и её название.</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>Наибольшее богатство на поселенца</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>Максимум отношения общего богатства к числу свободных поселенцев (не менее одного) в одной записи, а также колония. Учитываются только колонии с полными историями обоих показателей с начала игры.</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>Концовка с наименьшим числом смертей</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>Наименьшее число смертей поселенцев в момент записи концовки и соответствующая колония. Концовки, записанные до этой версии без счётчика смертей, исключаются.</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>Концовки без смертей</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>Концовки, при записи которых число погибших поселенцев равнялось нулю. Концовки без известного счётчика смертей не учитываются.</RWS_MetricDesc_RankZeroDeathEndings>
   <RWS_Category_Research>Исследования</RWS_Category_Research>
-  <RWS_Category_Mind>Размышления</RWS_Category_Mind>
+  <RWS_Category_Mind>Психика</RWS_Category_Mind>
   <RWS_Category_Combat>Бои и смерти</RWS_Category_Combat>
-  <RWS_Category_Social>Отношения с заключенными</RWS_Category_Social>
+  <RWS_Category_Social>Отношения и пленники</RWS_Category_Social>
   <RWS_Category_Medicine>Медицина</RWS_Category_Medicine>
-  <RWS_Category_Work>Работа и питание</RWS_Category_Work>
+  <RWS_Category_Work>Работа и пища</RWS_Category_Work>
   <RWS_Category_Animals>Животные</RWS_Category_Animals>
   <RWS_Category_Economy>Торговля и дипломатия</RWS_Category_Economy>
-  <RWS_Category_Environment>Катастрофы и окружающая среда</RWS_Category_Environment>
+  <RWS_Category_Environment>Бедствия и окружающая среда</RWS_Category_Environment>
   <RWS_Category_Exploration>Караваны и поселения</RWS_Category_Exploration>
-  <RWS_Category_Facilities>Помещения и запасы</RWS_Category_Facilities>
-  <RWS_Category_Royalty>Роялти</RWS_Category_Royalty>
-  <RWS_Category_Ideology>Идеология</RWS_Category_Ideology>
+  <RWS_Category_Facilities>Сооружения и запасы</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
   <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
   <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
-  <RWS_Metric_ResearchLiveCompleted>Завершенные исследования, записанные</RWS_Metric_ResearchLiveCompleted>
-  <RWS_MetricDesc_ResearchLiveCompleted>Исследовательские проекты, которые прошли путь от незавершенных до завершенных с момента начала записи, учитывались один раз, а не количество проектов, завершенных в сэкономленные сроки.</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompleted>Исследования, завершённые во время записи</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>Исследовательские проекты, перешедшие из незавершённых в завершённые после начала записи; каждый учитывается один раз. Это не число проектов, завершённых на момент сохранения.</RWS_MetricDesc_ResearchLiveCompleted>
   <RWS_Metric_ResearchLiveCompletedTicks>Дни завершения исследований (список)</RWS_Metric_ResearchLiveCompletedTicks>
-  <RWS_MetricDesc_ResearchLiveCompletedTicks>За один проект, завершенный во время записи, в день игры он был впервые завершен. Показан только на одну колонию.</RWS_MetricDesc_ResearchLiveCompletedTicks>
-  <RWS_Metric_ResearchLiveDurationMin>Самая короткая продолжительность исследования</RWS_Metric_ResearchLiveDurationMin>
-  <RWS_MetricDesc_ResearchLiveDurationMin>Всего несколько дней от первой реальной работы над проектом до его завершения, включая паузы. Проекты, старт которых не был замечен, остаются в стороне.</RWS_MetricDesc_ResearchLiveDurationMin>
-  <RWS_Metric_ResearchLiveDurationMax>Самая длительная продолжительность исследований</RWS_Metric_ResearchLiveDurationMax>
-  <RWS_MetricDesc_ResearchLiveDurationMax>Большинство дней в той же выборке, что и самые короткие.</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>Игровой день первого завершения каждого проекта за время записи. Только по отдельным колониям.</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>Кратчайшая длительность исследования</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>Минимальное число дней от начала реальной работы над проектом до завершения, включая перерывы. Проекты с ненаблюдавшимся началом исключаются.</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>Наибольшая длительность исследования</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>Максимальное число дней в той же выборке, что и кратчайшая длительность.</RWS_MetricDesc_ResearchLiveDurationMax>
   <RWS_Metric_ResearchLiveFirstDay>Дни до первого завершения исследования</RWS_Metric_ResearchLiveFirstDay>
-  <RWS_MetricDesc_ResearchLiveFirstDay>Игровой день первого завершения, только когда записан с самого начала игры.</RWS_MetricDesc_ResearchLiveFirstDay>
-  <RWS_Metric_MentalBreaks>Психические срывы</RWS_Metric_MentalBreaks>
-  <RWS_MetricDesc_MentalBreaks>Вызванные настроением умственные разрывы свободных колонистов. Отрывы от наркотиков, генов, псикастов или инструментов разработчика не учитываются.</RWS_MetricDesc_MentalBreaks>
-  <RWS_Metric_MentalBreaksByDef>Психические срывы по типам</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>Психические разрывы выше по типу (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
-  <RWS_Metric_Inspirations>Вдохновение</RWS_Metric_Inspirations>
-  <RWS_MetricDesc_Inspirations>Вдохновения, которые действительно начинались для свободных колонистов. Неудачные попытки, уже вдохновлённые персонажи и инструменты разработчика не учитываются.</RWS_MetricDesc_Inspirations>
-  <RWS_Metric_InspirationsByDef>Вдохновения по типу</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>Вдохновения выше, по типу (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
-  <RWS_Metric_HostileKills>Враги убиты</RWS_Metric_HostileKills>
-  <RWS_MetricDesc_HostileKills>Смерти персонажей, враждебных игроку непосредственно перед смертью, причиной повреждения которых является запись атрибутов на сторону игрока (колониалы, башенки, ловушки, животные, мехи).Смерти без известной атрибуции не учитываются.</RWS_MetricDesc_HostileKills>
-  <RWS_Metric_KillsPerPawnMax>Большинство убитых колонистами</RWS_Metric_KillsPerPawnMax>
-  <RWS_MetricDesc_KillsPerPawnMax>Больше всего убийств приписывается одному персонажу игрока; разбивка имен владельца (по id). Убийства, известные только по их причине, никому не приписываются.</RWS_MetricDesc_KillsPerPawnMax>
-  <RWS_Metric_KillsByVictimKind>Враги, убитые добром</RWS_Metric_KillsByVictimKind>
-  <RWS_MetricDesc_KillsByVictimKind>Враг убивает разделенных на человекоподобных, насекомых, механоидов и других.</RWS_MetricDesc_KillsByVictimKind>
-  <RWS_Metric_RangedKills>Убийства с применением оружия</RWS_Metric_RangedKills>
-  <RWS_MetricDesc_RangedKills>Враг убивает с помощью оружия дальнего радиуса действия (взрывы считаются взрывчатыми).</RWS_MetricDesc_RangedKills>
-  <RWS_Metric_MeleeKills>Убийства с оружием ближнего боя</RWS_Metric_MeleeKills>
-  <RWS_MetricDesc_MeleeKills>Враг убивает с помощью снаряженного оружия ближнего боя.</RWS_MetricDesc_MeleeKills>
-  <RWS_Metric_UnarmedKills>Безоружные убийства</RWS_Metric_UnarmedKills>
-  <RWS_MetricDesc_UnarmedKills>Враг убивает, совершая атаки ближнего боя без оружия.</RWS_MetricDesc_UnarmedKills>
-  <RWS_Metric_ExplosiveKills>Убийства в результате взрыва</RWS_Metric_ExplosiveKills>
-  <RWS_MetricDesc_ExplosiveKills>Враг убивает, чей смертельный ущерб был взрывом.</RWS_MetricDesc_ExplosiveKills>
-  <RWS_Metric_EnvironmentKills>Убийства огнем или окружающей средой</RWS_Metric_EnvironmentKills>
-  <RWS_MetricDesc_EnvironmentKills>Враг убивает огнем или другим экологическим ущербом, который запись приписывает стороне игрока.Естественные смерти и неприписанные не учитываются.</RWS_MetricDesc_EnvironmentKills>
-  <RWS_Metric_TurretKills>Убийства с помощью башен</RWS_Metric_TurretKills>
-  <RWS_MetricDesc_TurretKills>Враг убивает, нападавший которого был игроком башни.</RWS_MetricDesc_TurretKills>
-  <RWS_Metric_TrapKills>Убивает ловушками</RWS_Metric_TrapKills>
-  <RWS_MetricDesc_TrapKills>Враг убивает, вызванный ловушкой игрока.</RWS_MetricDesc_TrapKills>
-  <RWS_Metric_TameAnimalKills>Убийства ручными животными</RWS_Metric_TameAnimalKills>
-  <RWS_MetricDesc_TameAnimalKills>Враг убивает, нападавший которого был игроком-животным.</RWS_MetricDesc_TameAnimalKills>
-  <RWS_Metric_PlayerMechKills>Исполнитель: Player Mechs</RWS_Metric_PlayerMechKills>
-  <RWS_MetricDesc_PlayerMechKills>Враг убивает, нападавший которого был игроком-механоиком (Biotech).</RWS_MetricDesc_PlayerMechKills>
-  <RWS_Metric_DeathCauses>Колонистские смерти по причинам</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Свободные смерти колонистов по состоянию здоровья виновника (хедифф) или типу ущерба от убийства. Смерти ни с одним из них «неизвестны».</RWS_MetricDesc_DeathCauses>
-  <RWS_Metric_DeathsByRaid>Смертность колонистов в результате рейдов</RWS_Metric_DeathsByRaid>
+  <RWS_MetricDesc_ResearchLiveFirstDay>Игровой день первого завершения исследования, если запись велась с начала игры.</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>Нервные срывы</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>Нервные срывы свободных поселенцев, вызванные настроением. Срывы от наркотиков, генов, пси-способностей и инструментов разработчика не учитываются.</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>Нервные срывы по типам</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>Указанные выше нервные срывы по типу (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>Вдохновения</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>Вдохновения, действительно начавшиеся у свободных поселенцев. Неудачные попытки, уже вдохновлённые пешки и инструменты разработчика не учитываются.</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_InspirationsByDef>Вдохновения по типам</RWS_Metric_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>Указанные выше вдохновения по типу (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>Убитые враги</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>Смерти пешек, враждебных игроку непосредственно перед смертью, если запись об уроне связывает их гибель со стороной игрока (поселенцы, турели, ловушки, животные, механоиды). Смерти без известного виновника не учитываются.</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>Максимум убийств одним поселенцем</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>Наибольшее число убийств, приписанное одной пешке игрока; в разбивке указан её ID. Убийства, для которых известна только причина, никому не приписываются.</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>Убитые враги по видам</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>Убийства врагов по категориям: человекоподобные, насекомые, механоиды и прочие.</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>Убийства из дальнобойного оружия</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>Убийства врагов из дальнобойного оружия (взрывы относятся к убийствам взрывом).</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>Убийства оружием ближнего боя</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>Убийства врагов экипированным оружием ближнего боя.</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>Убийства без оружия</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>Убийства врагов рукопашными атаками без оружия.</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>Убийства взрывом</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>Убийства врагов, у которых смертельный урон был взрывом.</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>Убийства огнём или средой</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>Убийства врагов огнём или другим воздействием среды, приписанные записью стороне игрока. Естественные смерти и смерти с неизвестной принадлежностью не учитываются.</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>Убийства турелями</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>Убийства врагов, в которых атакующей стороной была турель игрока.</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>Убийства ловушками</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>Убийства врагов от ловушки игрока.</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>Убийства приручёнными животными</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>Убийства врагов, в которых атакующим было животное игрока.</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>Убийства механоидов игрока</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>Убийства врагов, в которых атакующим был механоид игрока (Biotech).</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>Причины смерти поселенцев</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Смерти свободных поселенцев по вызвавшему их состоянию здоровья (hediff) либо виду смертельного урона. Если оба неизвестны, категория называется «(неизвестно)».</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>Смерти поселенцев при налётах</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>Свободные смерти колонистов делятся на вызванные рейдером, другие известные причины и неизвестные.В то время как рейды не фиксируются, они неизвестны.</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Смертность колонистов от болезней</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>Свободные смерти колонистов, виновником которых была болезнь (состояние, которое игра рассматривает как то, что делает персонажа больным).</RWS_MetricDesc_DiseaseDeaths>

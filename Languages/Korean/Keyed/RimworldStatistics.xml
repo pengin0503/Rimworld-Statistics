@@ -250,131 +250,131 @@
   <RWS_MetricDesc_ModsPeak>이 정착지의 가져온 저장 파일 가운데 가장 많은 모드 수. 정착지별로만 표시.</RWS_MetricDesc_ModsPeak>
   <RWS_Metric_ModsMin>최소 모드 수</RWS_Metric_ModsMin>
   <RWS_MetricDesc_ModsMin>이 정착지의 가져온 저장 파일 가운데 가장 적은 모드 수. 정착지별로만 표시.</RWS_MetricDesc_ModsMin>
-  <RWS_Metric_QuestSuccess>퀘스트가 성공했습니다 (retained)</RWS_Metric_QuestSuccess>
-  <RWS_MetricDesc_QuestSuccess>성공한 퀘스트를 받아들이고 여전히 저장 중입니다. 퀘스트는 제거된 게임을 계산할 수 없습니다.</RWS_MetricDesc_QuestSuccess>
-  <RWS_Metric_QuestFailure>퀘스트 실패 (retained)</RWS_Metric_QuestFailure>
-  <RWS_MetricDesc_QuestFailure>실패한 퀘스트를 수락하고 여전히 저장에 있습니다.</RWS_MetricDesc_QuestFailure>
-  <RWS_Metric_QuestSuccessRate>퀘스트 성공률 (retained)</RWS_Metric_QuestSuccessRate>
-  <RWS_MetricDesc_QuestSuccessRate>성공 ÷ (successes + 실패). 모든 식민지 : 요약 numerators ÷ 요약 denominators.</RWS_MetricDesc_QuestSuccessRate>
-  <RWS_Metric_QuestSuccessByRoot>퀘스트가 유형에 의해 성공 (retained)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>퀘스트 타입의 퀘스트(definition type name)에 의해 퀘스트를 제출했습니다. 고장을 표시하려면 클릭하십시오.</RWS_MetricDesc_QuestSuccessByRoot>
-  <RWS_Metric_QuestExpired>Expired 퀘스트 제공 (지속된)</RWS_Metric_QuestExpired>
-  <RWS_MetricDesc_QuestExpired>Quest는 여전히 허용되지 않고 만료 된 저장에서 제공합니다.</RWS_MetricDesc_QuestExpired>
-  <RWS_Metric_QuestAccepted>받아들여지는 퀘스트(retained)</RWS_Metric_QuestAccepted>
-  <RWS_MetricDesc_QuestAccepted>여전히 퀘스트에서 허용 된 저장 (자동 포함), 진행되는 것들이 포함되어 있습니다.</RWS_MetricDesc_QuestAccepted>
-  <RWS_Metric_QuestSuccessDurationMean>성공한 퀘스트의 평균 일 (클립업에 따라)</RWS_Metric_QuestSuccessDurationMean>
-  <RWS_MetricDesc_QuestSuccessDurationMean>성공한 퀘스트를 위한 정리의 시작에 합격에서 평균 일; 합격 시간 없는 퀘스트는 떠나지 않습니다.</RWS_MetricDesc_QuestSuccessDurationMean>
-  <RWS_Metric_QuestSuccessDurationMin>가장 짧은 성공 퀘스트 (클립업에 따라)</RWS_Metric_QuestSuccessDurationMin>
-  <RWS_MetricDesc_QuestSuccessDurationMin>같은 샘플에서 Fewest 일은 의미.</RWS_MetricDesc_QuestSuccessDurationMin>
-  <RWS_Metric_QuestSuccessDurationMax>가장 긴 성공 퀘스트 (클립업에 따라 다름)</RWS_Metric_QuestSuccessDurationMax>
-  <RWS_MetricDesc_QuestSuccessDurationMax>같은 샘플의 대부분의 일은 의미로.</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Metric_QuestSuccess>성공한 임무 (저장 파일에 남음)</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>수락 후 성공했으며 저장 파일에 아직 남아 있는 임무 수입니다. 게임에서 삭제한 임무는 집계할 수 없습니다.</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>실패한 임무 (저장 파일에 남음)</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>수락 후 실패했으며 저장 파일에 아직 남아 있는 임무 수입니다.</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>임무 성공률 (저장 파일에 남음)</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>성공 ÷ (성공 + 실패)입니다. 모든 정착지를 합산할 때는 분자와 분모를 각각 합산한 뒤 나눕니다.</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>유형별 성공한 임무 (저장 파일에 남음)</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>성공한 임무를 임무 유형(Def 이름)별로 집계합니다. 클릭하면 내역을 표시합니다.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>기한이 지난 임무 제안 (저장 파일에 남음)</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>수락하지 않은 채 기한이 지났으며 저장 파일에 아직 남아 있는 임무 제안 수입니다.</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>수락한 임무 (저장 파일에 남음)</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>자동 수락한 임무와 진행 중인 임무를 포함하여 저장 파일에 아직 남아 있는 수락한 임무 수입니다.</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>성공한 임무의 평균 소요일 (수락부터 정리까지)</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>성공한 임무를 수락한 때부터 임무 정리 절차가 시작될 때까지의 평균 일수입니다. 수락 시각이 없는 임무는 제외합니다.</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>성공한 임무의 최소 소요일 (수락부터 정리까지)</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>위 평균을 계산할 때 사용한 표본에서 가장 짧은 일수입니다.</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>성공한 임무의 최대 소요일 (수락부터 정리까지)</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>위 평균을 계산할 때 사용한 표본에서 가장 긴 일수입니다.</RWS_MetricDesc_QuestSuccessDurationMax>
   <RWS_Unit_SilverPerYear>{0} / 년</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>페라다스</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>뚱 베어</RWS_Details_NotPermadeath>
-  <RWS_Metric_RankDaysByBiome>원래 biome에 의해 생존 일</RWS_Metric_RankDaysByBiome>
-  <RWS_MetricDesc_RankDaysByBiome>게임의 원래 시작 바이오 메에 의해 그룹화 된 총 식민지 생존 일; 결코 현재의 정착 바이오 메를 사용.</RWS_MetricDesc_RankDaysByBiome>
-  <RWS_Metric_RankEndingsByBiome>원래 biome에 의해 종료</RWS_Metric_RankEndingsByBiome>
-  <RWS_MetricDesc_RankEndingsByBiome>immutable start-tile biome 식민지에 의해 그룹화 된 종료; 알 수없는 기원과 함께 제외 및 적용은 부분입니다.</RWS_MetricDesc_RankEndingsByBiome>
-  <RWS_Metric_RankKillsToDeaths>대장인 사망률</RWS_Metric_RankKillsToDeaths>
-  <RWS_MetricDesc_RankKillsToDeaths>같은 기록 된 체크 포인트 간격에서 프리-코니스트 사망으로 나눌 수 있습니다. 쌍 입력을 미스는 제외됩니다; 0 denominator는 정의되지 않습니다.</RWS_MetricDesc_RankKillsToDeaths>
-  <RWS_Metric_RankMostKills>대부분의 적은 한 대장에서 죽는다.</RWS_Metric_RankMostKills>
-  <RWS_MetricDesc_RankMostKills>선택된 체크포인트에서 단일 식민지에서 최대 확인된 hostile kills; 누락된 입력은 0으로 계산되지 않습니다.</RWS_MetricDesc_RankMostKills>
-  <RWS_Metric_RankDeathFree>대장의 가장 긴 죽음없는 기간</RWS_Metric_RankDeathFree>
-  <RWS_MetricDesc_RankDeathFree>선택된 체크포인트에서 완성된 간격을 바탕으로 한 한 대장균에 있는 가장 큰 측정된 죽음 자유로운 간격.</RWS_MetricDesc_RankDeathFree>
-  <RWS_Metric_RankMostCrafting>대부분의 제조 항목에 한 대장</RWS_Metric_RankMostCrafting>
-  <RWS_MetricDesc_RankMostCrafting>선택된 체크포인트에서 1개의 식민지에 있는 최대 확인된 기술된 품목 조사.</RWS_MetricDesc_RankMostCrafting>
-  <RWS_Metric_RankLargestSale>가장 큰 판매에서 한 식민지</RWS_Metric_RankLargestSale>
-  <RWS_MetricDesc_RankLargestSale>대장관에 비해 한 거래에 대 한 최대 확인된 판매 금액.</RWS_MetricDesc_RankLargestSale>
-  <RWS_Metric_RankMostResearch>가장 완료된 연구에서 한 식민지</RWS_Metric_RankMostResearch>
-  <RWS_MetricDesc_RankMostResearch>대장의 절약 시간 스냅 샷에서 완성 된 연구 프로젝트의 가장 큰 수, 연구 완료 이벤트의 수 없습니다.</RWS_MetricDesc_RankMostResearch>
-  <RWS_Metric_RankMinPartyAtEnding>가장 작은 파티 에 the ending</RWS_Metric_RankMinPartyAtEnding>
-  <RWS_MetricDesc_RankMinPartyAtEnding>Fewest 참가자는 종료가 일어났을 때 확인 된 게임 : 배 발사의 점유 된 암호 수면 관, 왕 Ascent 셔틀 또는 archonexus에서 transcended 대장관에 보내진 대장관. 다른 종료 및이 저장되기 전에 기록 된 종료는 값이 없습니다.</RWS_MetricDesc_RankMinPartyAtEnding>
-  <RWS_Metric_RankByDifficultyDays>난이도에 의해 재생</RWS_Metric_RankByDifficultyDays>
-  <RWS_MetricDesc_RankByDifficultyDays>콜로니 데이는 각 식민지의 모피 포인트의 어려움에 의해 요약; 플레이 중에 어려움의 변경은 추적되지 않습니다. 고장을 표시하려면 클릭하십시오.</RWS_MetricDesc_RankByDifficultyDays>
-  <RWS_Metric_RankByDifficultyEndings>어려움에 의해 종료</RWS_Metric_RankByDifficultyEndings>
-  <RWS_MetricDesc_RankByDifficultyEndings>개요에 따라 계산 (개발자 모드 설정, 적어도 한 번 추적), 각 식민지의 furthest 포인트의 어려움에 의해.</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>연주, 타마스, 아니</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>콜로니 일은 각 식민지의 furthest 점이 permadeath 형태에 있다는 것을 합계합니다.</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>끝, permadeath 또는 아닙니다</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>각 식민지의 가장 모피 포인트가 permadeath 모드에서 있는지에 따라 개요에 따라 계산됩니다.</RWS_MetricDesc_RankByPermadeathEndings>
-  <RWS_Metric_RankPopulationPeak>가장 큰 인구 (모든 식민지)</RWS_Metric_RankPopulationPeak>
-  <RWS_MetricDesc_RankPopulationPeak>가장 높은 게임의 가장 큰 팝업 카운터 식민지, 그리고 그 식민지.</RWS_MetricDesc_RankPopulationPeak>
-  <RWS_Metric_RankFastestEnding>가장 빠른 종료</RWS_Metric_RankFastestEnding>
-  <RWS_MetricDesc_RankFastestEnding>게임에서 가장 적은 게임 일, 그리고 그 식민지와 함께 재생 중에 기록 된 종료. 사전 설치 추적, 그 시간이 알 수없는, 왼쪽.</RWS_MetricDesc_RankFastestEnding>
-  <RWS_Metric_RankNetWealthPerYear>1 년 당 평균 부 이득</RWS_Metric_RankNetWealthPerYear>
-  <RWS_MetricDesc_RankNetWealthPerYear>식민지의 그물 부는 요약 변경, ÷ 년 그들의 역사의 경간, summed (하나의 관측의 역사는 왼쪽).</RWS_MetricDesc_RankNetWealthPerYear>
-  <RWS_Metric_RankTopScenario>가장 endings를 가진 Scenario</RWS_Metric_RankTopScenario>
-  <RWS_MetricDesc_RankTopScenario>식민지의 가장 분노의 한 시나리오 이름을 위한 가장 종료, 그리고 이름; ties는 함께 나열됩니다. 고장을 표시하려면 클릭하십시오.</RWS_MetricDesc_RankTopScenario>
-  <RWS_Metric_RankDaysByStoryteller>일 재생 by storyteller</RWS_Metric_RankDaysByStoryteller>
-  <RWS_MetricDesc_RankDaysByStoryteller>콜로니 데이는 각 식민지의 모피 포인트의 이야기에 의해 요약.</RWS_MetricDesc_RankDaysByStoryteller>
-  <RWS_Metric_RankPlaytimePeak>Colony 와 가장 놀이 시간</RWS_Metric_RankPlaytimePeak>
-  <RWS_MetricDesc_RankPlaytimePeak>가장 긴 현실 놀이 시간 의 한 식민지, 과 식민지.</RWS_MetricDesc_RankPlaytimePeak>
-  <RWS_Metric_RankWealthPerColonist>높은 재산 당 식민지</RWS_Metric_RankWealthPerColonist>
-  <RWS_MetricDesc_RankWealthPerColonist>가장 큰 총 부 ÷ 무료 식민지 ( 적어도 하나) 같은 관측, 그리고 그 식민지; 모두 역사가 시작에서 완료되는 곳.</RWS_MetricDesc_RankWealthPerColonist>
-  <RWS_Metric_RankMinDeathsAtEnding>가장 소수의 죽음과 끝</RWS_Metric_RankMinDeathsAtEnding>
-  <RWS_MetricDesc_RankMinDeathsAtEnding>순간에 가장 적은 식민지 사망은 기록 된, 그리고 식민지. 이 버전의 앞에 기록 된 종료는 죽음의 수를 가지고 남아있다.</RWS_MetricDesc_RankMinDeathsAtEnding>
-  <RWS_Metric_RankZeroDeathEndings>죽음없이 종료</RWS_Metric_RankZeroDeathEndings>
-  <RWS_MetricDesc_RankZeroDeathEndings>대장 사망 수가 기록 될 때 0이었다. 사망 수없이 종료는 계산되지 않습니다.</RWS_MetricDesc_RankZeroDeathEndings>
-  <RWS_Category_Research>연구분야</RWS_Category_Research>
-  <RWS_Category_Mind>팟캐스트</RWS_Category_Mind>
-  <RWS_Category_Combat>전투와 죽음</RWS_Category_Combat>
-  <RWS_Category_Social>관계 및 형무소</RWS_Category_Social>
-  <RWS_Category_Medicine>의약</RWS_Category_Medicine>
-  <RWS_Category_Work>일과 음식</RWS_Category_Work>
-  <RWS_Category_Animals>동물들</RWS_Category_Animals>
-  <RWS_Category_Economy>무역 및 외교</RWS_Category_Economy>
+  <RWS_Details_Permadeath>철인 모드</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>기본 모드</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankDaysByBiome>시작 기후별 생존 일수</RWS_Metric_RankDaysByBiome>
+  <RWS_MetricDesc_RankDaysByBiome>게임을 처음 시작한 칸의 기후를 기준으로 정착지의 생존 일수를 합산합니다. 현재 거점의 기후는 사용하지 않습니다.</RWS_MetricDesc_RankDaysByBiome>
+  <RWS_Metric_RankEndingsByBiome>시작 기후별 엔딩 수</RWS_Metric_RankEndingsByBiome>
+  <RWS_MetricDesc_RankEndingsByBiome>변하지 않는 게임 시작 칸의 기후별로 엔딩을 집계합니다. 시작 칸을 알 수 없는 정착지는 제외하므로 결과가 일부만 반영될 수 있습니다.</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>정착민 사망 1명당 적 처치 수</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>같은 기록된 체크포인트 구간의 확인된 적 처치 수를 자유 정착민 사망 수로 나눕니다. 어느 한쪽의 기록이 없는 정착지는 제외하며, 사망자가 0명이면 값을 계산하지 않습니다.</RWS_MetricDesc_RankKillsToDeaths>
+  <RWS_Metric_RankMostKills>단일 정착지의 최대 적 처치 수</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>선택한 체크포인트에서 확인된 단일 정착지의 적 처치 수 중 최대값입니다. 기록이 없는 경우를 0으로 취급하지 않습니다.</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>최장 무사망 기간</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>선택한 체크포인트까지 종료된 무사망 기간 중 한 정착지에서 정착민 사망 없이 가장 오래 지속된 기간입니다.</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>단일 정착지의 최대 제작품 수</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>선택한 체크포인트에서 확인된 단일 정착지의 제작품 수 중 최대값입니다.</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>단일 정착지의 최대 판매액</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>모든 정착지에서 확인된 거래 중 한 번의 거래로 올린 최대 판매액입니다.</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>단일 정착지의 최대 연구 완료 수</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>정착지 저장 시점 스냅샷에서 완료된 연구 과제 수의 최대값입니다. 연구 완료 이벤트 횟수가 아닙니다.</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>엔딩 달성 시 최소 참여 인원</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>엔딩 발생 시 게임에서 확인된 최소 참여 인원입니다. 우주선 발사 때 사용 중인 동면관 수, 왕실의 승인 때 셔틀로 떠난 정착민 수 또는 초월 연결체에서 초월한 정착민 수를 셉니다. 다른 엔딩이나 이 값을 저장하기 전의 기록에는 값이 없습니다.</RWS_MetricDesc_RankMinPartyAtEnding>
+  <RWS_Metric_RankByDifficultyDays>난이도별 플레이 일수</RWS_Metric_RankByDifficultyDays>
+  <RWS_MetricDesc_RankByDifficultyDays>각 정착지에서 가장 진행된 시점의 난이도별로 정착지 일수를 합산합니다. 플레이 도중의 난이도 변경은 추적하지 않습니다. 클릭하면 내역을 표시합니다.</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>난이도별 엔딩 수</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>개요와 같은 기준(개발자 모드 설정 적용, 흔적은 최소 한 번으로 계산)으로 엔딩을 집계하고, 각 정착지에서 가장 진행된 시점의 난이도별로 나눕니다.</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>저장 모드별 정착지 일수</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>각 정착지에서 가장 진행된 기록의 저장 모드에 따라 일수를 합산합니다. 철인 모드와 기본 모드를 구분합니다.</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>저장 모드별 엔딩 수</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>개요와 같은 기준으로 엔딩을 집계하고 각 정착지에서 가장 진행된 기록의 모드인 철인 모드 또는 기본 모드에 따라 나눕니다.</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>최대 인구 (모든 정착지)</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>게임이 각 정착지에 기록한 최대 인구 수치 중 가장 높은 값과 해당 정착지입니다.</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>가장 빠른 엔딩</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>플레이 도중 기록한 엔딩 중 게임 내 경과 일수가 가장 적은 엔딩과 해당 정착지입니다. 모드 설치 전의 흔적은 시점을 모르므로 제외합니다.</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>연평균 자산 증가액</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>각 정착지 자산 순변화량의 합계 ÷ 각 기록 이력이 포괄하는 연수의 합계입니다. 관측값이 하나뿐인 이력은 제외합니다.</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>엔딩 수가 가장 많은 시나리오</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>각 정착지의 가장 진행된 시점을 기준으로 시나리오별 엔딩 수의 최대값과 해당 시나리오 이름을 표시합니다. 공동 1위는 모두 표시합니다. 클릭하면 내역을 표시합니다.</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>이야기꾼별 플레이 일수</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>각 정착지에서 가장 진행된 기록의 이야기꾼별로 정착지 일수를 합산합니다.</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>실제 플레이 시간이 가장 긴 정착지</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>한 정착지의 실제 플레이 시간 중 최대값과 해당 정착지입니다.</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>정착민 1인당 최대 자산</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>같은 관측 시점의 총자산 ÷ 자유 정착민 수(최소 1명)의 최대값과 해당 정착지입니다. 두 기록 이력이 게임 시작부터 완전한 경우에만 계산합니다.</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>사망자가 가장 적은 엔딩</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>엔딩 기록 당시 정착민 사망 수의 최소값과 해당 정착지입니다. 이 버전 이전에 기록한 엔딩에는 사망 수가 없어 제외합니다.</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>사망자 없는 엔딩</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>기록 당시 정착민 사망 수가 0명이었던 엔딩 수입니다. 사망 수를 알 수 없는 엔딩은 집계하지 않습니다.</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_Category_Research>연구</RWS_Category_Research>
+  <RWS_Category_Mind>정신</RWS_Category_Mind>
+  <RWS_Category_Combat>전투 및 사망</RWS_Category_Combat>
+  <RWS_Category_Social>관계 및 수감자</RWS_Category_Social>
+  <RWS_Category_Medicine>의료</RWS_Category_Medicine>
+  <RWS_Category_Work>작업 및 식량</RWS_Category_Work>
+  <RWS_Category_Animals>동물</RWS_Category_Animals>
+  <RWS_Category_Economy>거래 및 외교</RWS_Category_Economy>
   <RWS_Category_Environment>재해 및 환경</RWS_Category_Environment>
-  <RWS_Category_Exploration>Caravans 및 결제</RWS_Category_Exploration>
+  <RWS_Category_Exploration>상단 및 거점</RWS_Category_Exploration>
   <RWS_Category_Facilities>시설 및 재고</RWS_Category_Facilities>
-  <RWS_Category_Royalty>팟캐스트</RWS_Category_Royalty>
-  <RWS_Category_Ideology>학회소개</RWS_Category_Ideology>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
   <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
   <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
-  <RWS_Metric_ResearchLiveCompleted>연구 완료된 동안 기록</RWS_Metric_ResearchLiveCompleted>
-  <RWS_MetricDesc_ResearchLiveCompleted>기록이 시작되기 때문에 완성되지 않은 연구 프로젝트는 한 번 계산되었습니다. 저장 시간에 완료 된 프로젝트 수는 없습니다.</RWS_MetricDesc_ResearchLiveCompleted>
-  <RWS_Metric_ResearchLiveCompletedTicks>연구 완료 일 (list)</RWS_Metric_ResearchLiveCompletedTicks>
-  <RWS_MetricDesc_ResearchLiveCompletedTicks>기록 된 동안 완료 된 프로젝트 당, 게임 일 그것은 첫 번째 완료되었습니다. 식민지 당 쇼 만.</RWS_MetricDesc_ResearchLiveCompletedTicks>
-  <RWS_Metric_ResearchLiveDurationMin>가장 빠른 연구 내구</RWS_Metric_ResearchLiveDurationMin>
-  <RWS_MetricDesc_ResearchLiveDurationMin>프로젝트에서 첫 번째 실제 작업에서 일시 중지를 포함하여 완료합니다. 시작하지 않은 프로젝트는 그만두지 않았습니다.</RWS_MetricDesc_ResearchLiveDurationMin>
-  <RWS_Metric_ResearchLiveDurationMax>가장 긴 연구 내구</RWS_Metric_ResearchLiveDurationMax>
-  <RWS_MetricDesc_ResearchLiveDurationMax>가장 짧은 것과 같은 표본에 있는 대부분의 일.</RWS_MetricDesc_ResearchLiveDurationMax>
-  <RWS_Metric_ResearchLiveFirstDay>첫 연구 완료에 대한 일</RWS_Metric_ResearchLiveFirstDay>
-  <RWS_MetricDesc_ResearchLiveFirstDay>첫 번째 완료의 게임 일, 게임의 시작에서 기록 할 때.</RWS_MetricDesc_ResearchLiveFirstDay>
-  <RWS_Metric_MentalBreaks>남자의 휴식</RWS_Metric_MentalBreaks>
-  <RWS_MetricDesc_MentalBreaks>무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무드 - 무</RWS_MetricDesc_MentalBreaks>
-  <RWS_Metric_MentalBreaksByDef>mental breaks 로 유형</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>위의 정신 휴식, 유형 (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
-  <RWS_Metric_Inspirations>관련 상품</RWS_Metric_Inspirations>
-  <RWS_MetricDesc_Inspirations>실제로 무료 식민지를 위해 시작된 영감. 실패한 시도, 이미 영감을 받은 문자 및 dev 도구는 계산되지 않습니다.</RWS_MetricDesc_Inspirations>
+  <RWS_Metric_ResearchLiveCompleted>기록 중 완료한 연구</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>기록 시작 후 미완료에서 완료로 바뀐 연구 과제 수이며 과제당 한 번만 셉니다. 저장 시점에 완료되어 있는 연구 과제 수가 아닙니다.</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>연구 완료 날짜 (목록)</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>기록 중 완료한 각 연구 과제가 처음 완료된 게임 내 날짜입니다. 정착지별로만 표시합니다.</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>최단 연구 소요일</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>연구 과제를 실제로 처음 진행한 때부터 완료할 때까지의 최소 일수이며 중단 기간도 포함합니다. 시작을 관측하지 못한 과제는 제외합니다.</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>최장 연구 소요일</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>위 최단 소요일과 같은 표본에서 가장 긴 일수입니다.</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>첫 연구 완료까지의 일수</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>게임 시작부터 기록한 경우에만 첫 연구 완료의 게임 내 날짜를 집계합니다.</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>정신이상 발생 수</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>자유 정착민이 기분 때문에 겪은 정신이상 횟수입니다. 약물, 유전자, 초능력 또는 개발 도구로 인한 정신이상은 집계하지 않습니다.</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>유형별 정신이상</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>위 정신이상을 유형(MentalBreakDef)별로 집계합니다.</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_Inspirations>영감 발생 수</RWS_Metric_Inspirations>
+  <RWS_MetricDesc_Inspirations>자유 정착민에게 실제로 영감이 시작된 횟수입니다. 실패한 시도, 이미 영감을 얻은 폰, 개발 도구로 인한 영감은 집계하지 않습니다.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>유형별 영감</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>위의 영감, 유형 (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
-  <RWS_Metric_HostileKills>Enemies 살해</RWS_Metric_HostileKills>
-  <RWS_MetricDesc_HostileKills>플레이어의 죽음은 죽기 전에 플레이어에게 기인합니다. 공격자는 플레이어의 측면에 대한 피해 기록 속성을 유발합니다. (클론리스트, 포탑, 함정, 동물, 메크스). 알려진 공격이없는 죽음은 계산되지 않습니다.</RWS_MetricDesc_HostileKills>
-  <RWS_Metric_KillsPerPawnMax>가장 큰 kills 로 한 식민지</RWS_Metric_KillsPerPawnMax>
-  <RWS_MetricDesc_KillsPerPawnMax>가장 큰 살인은 하나의 플레이어 문자에 적립; 고장 이름은 홀더 (ID로). 그들의 원인에 의해 알려진 죽이는 누구에게도 적립되지 않습니다.</RWS_MetricDesc_KillsPerPawnMax>
-  <RWS_Metric_KillsByVictimKind>Enemies는 친절에 의해 살해</RWS_Metric_KillsByVictimKind>
-  <RWS_MetricDesc_KillsByVictimKind>Enemy는 인간, 곤충, mechanoid 및 다른 사람으로 나뉩니다.</RWS_MetricDesc_KillsByVictimKind>
-  <RWS_Metric_RangedKills>범위의 무기와 함께 죽이기</RWS_Metric_RangedKills>
-  <RWS_MetricDesc_RangedKills>Enemy kills made with ranged 무기 (폭발적으로 폭발성 조사).</RWS_MetricDesc_RangedKills>
-  <RWS_Metric_MeleeKills>melee 무기와 함께 죽는다.</RWS_Metric_MeleeKills>
-  <RWS_MetricDesc_MeleeKills>Enemy kills made 와 a 갖춰진 melee 무기.</RWS_MetricDesc_MeleeKills>
-  <RWS_Metric_UnarmedKills>무서운 살인</RWS_Metric_UnarmedKills>
-  <RWS_MetricDesc_UnarmedKills>무기없이 melee 공격으로 만든 Enemy kills.</RWS_MetricDesc_UnarmedKills>
-  <RWS_Metric_ExplosiveKills>폭발에 의해 죽일</RWS_Metric_ExplosiveKills>
-  <RWS_MetricDesc_ExplosiveKills>Enemy kills 그의 killing damage was a 폭발.</RWS_MetricDesc_ExplosiveKills>
-  <RWS_Metric_EnvironmentKills>화재 또는 환경에 의한 사망</RWS_Metric_EnvironmentKills>
-  <RWS_MetricDesc_EnvironmentKills>Enemy는 화재 또는 다른 환경 손상에 의해 플레이어의 측면에 기록 속성. 자연 죽음과 불멸된 것들은 계산되지 않습니다.</RWS_MetricDesc_EnvironmentKills>
-  <RWS_Metric_TurretKills>킬 로 turrets</RWS_Metric_TurretKills>
-  <RWS_MetricDesc_TurretKills>Enemy kills 그의 attacker was a 선수 turret.</RWS_MetricDesc_TurretKills>
-  <RWS_Metric_TrapKills>함정에 의해 죽일</RWS_Metric_TrapKills>
-  <RWS_MetricDesc_TrapKills>Enemy는 플레이어 함정에 기인합니다.</RWS_MetricDesc_TrapKills>
-  <RWS_Metric_TameAnimalKills>탬프 동물에 의해 죽일</RWS_Metric_TameAnimalKills>
-  <RWS_MetricDesc_TameAnimalKills>Enemy kills 그의 attacker was a 선수 동물.</RWS_MetricDesc_TameAnimalKills>
-  <RWS_Metric_PlayerMechKills>플레이어 mechs에 의해 죽일</RWS_Metric_PlayerMechKills>
-  <RWS_MetricDesc_PlayerMechKills>Enemy kills 그의 attacker was a 선수 mechanoid (Biotech).</RWS_MetricDesc_PlayerMechKills>
-  <RWS_Metric_DeathCauses>원인에 의한 콜로니즘 죽음</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>culprit 건강 상태 (hediff) 또는 살인 손상 유형에 의해 무료 식민지 사망. "unknown"과 죽음.</RWS_MetricDesc_DeathCauses>
-  <RWS_Metric_DeathsByRaid>라이즈에 의해 콜로니즘 죽음</RWS_Metric_DeathsByRaid>
+  <RWS_MetricDesc_InspirationsByDef>위 영감을 유형(InspirationDef)별로 집계합니다.</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>처치한 적</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>죽기 직전 플레이어와 적대 관계였으며 피해 기록에 따라 플레이어 측(정착민, 포탑, 함정, 동물, 메카노이드)이 죽인 것으로 확인된 폰의 사망 수입니다. 가해자를 판별할 수 없는 사망은 집계하지 않습니다.</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>정착민 한 명의 최대 처치 수</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>플레이어 측 폰 한 명에게 귀속된 최대 처치 수입니다. 내역에는 해당 폰의 ID를 표시합니다. 사망 원인만 알고 가해자를 모르는 처치는 누구에게도 귀속하지 않습니다.</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>종류별 적 처치 수</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>적 처치를 인간형, 곤충, 메카노이드 및 기타로 분류합니다.</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>원거리 무기 처치 수</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>원거리 무기로 처치한 적 수입니다. 폭발로 처치한 경우에는 폭발 처치로 집계합니다.</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>근접 무기 처치 수</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>장착한 근접 무기로 처치한 적 수입니다.</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>맨손 처치 수</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>무기를 쓰지 않은 근접 공격으로 처치한 적 수입니다.</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>폭발 처치 수</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>치명적인 피해가 폭발이었던 적 처치 수입니다.</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>화재 또는 환경 피해 처치 수</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>화재나 기타 환경 피해로 발생했고 기록상 플레이어 측에 귀속되는 적 처치 수입니다. 자연사나 귀속을 알 수 없는 사망은 집계하지 않습니다.</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>포탑 처치 수</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>공격자가 플레이어의 포탑이었던 적 처치 수입니다.</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>함정 처치 수</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>플레이어의 함정으로 처치한 적 수입니다.</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>길들인 동물 처치 수</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>공격자가 플레이어가 소유한 동물이었던 적 처치 수입니다.</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>플레이어 메카노이드 처치 수</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>공격자가 플레이어의 메카노이드였던 적 처치 수입니다(Biotech).</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>원인별 정착민 사망</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>자유 정착민의 사망을 사망 원인이 된 건강 상태(hediff) 또는 치명적인 피해 유형별로 분류합니다. 둘 다 알 수 없으면 “(알 수 없음)” 항목에 표시합니다.</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>습격으로 인한 정착민 사망</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>무료 식민지 죽음은 레이더, 다른 알려진 원인, 그리고 알 수없는 사람들로 나뉩니다. 토끼가 기록되지 않는 동안, 그들은 알 수 없습니다.</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>질병의 콜로니즘 죽음</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>culprit이 질병을 앓고있는 무료 식민지 사망 (게임은 문자 병을 만드는 것과 같이 치료합니다). 질병을 동반 한 죽음은 계산되지 않습니다.</RWS_MetricDesc_DiseaseDeaths>

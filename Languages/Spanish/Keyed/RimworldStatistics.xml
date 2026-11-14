@@ -250,71 +250,71 @@
   <RWS_MetricDesc_ModsPeak>Mayor número de mods en cualquier partida importada de esta colonia. Solo por colonia.</RWS_MetricDesc_ModsPeak>
   <RWS_Metric_ModsMin>Menor número de mods</RWS_Metric_ModsMin>
   <RWS_MetricDesc_ModsMin>Menor número de mods en cualquier partida importada de esta colonia. Solo por colonia.</RWS_MetricDesc_ModsMin>
-  <RWS_Metric_QuestSuccess>Las búsquedas han tenido éxito (retenido)</RWS_Metric_QuestSuccess>
-  <RWS_MetricDesc_QuestSuccess>Cuestas aceptadas que han tenido éxito y que todavía están en el salvamento. Cuestas que el juego eliminado no se pueden contar.</RWS_MetricDesc_QuestSuccess>
-  <RWS_Metric_QuestFailure>Falló la búsqueda (retenida)</RWS_Metric_QuestFailure>
-  <RWS_MetricDesc_QuestFailure>Las misiones aceptadas que fallaron y todavía están en el salvamento.</RWS_MetricDesc_QuestFailure>
-  <RWS_Metric_QuestSuccessRate>Tasa de éxito de la prueba (retenido)</RWS_Metric_QuestSuccessRate>
-  <RWS_MetricDesc_QuestSuccessRate>Sucesos ÷ (sucesos + fallos). Todas las colonias: los numeradores sumados ÷ los denominadores sumados.</RWS_MetricDesc_QuestSuccessRate>
-  <RWS_Metric_QuestSuccessByRoot>Quests sucedidas por tipo (retenido)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>Cuestas logradas por tipo de misión (tipo de definición). Haga clic para mostrar el desglose.</RWS_MetricDesc_QuestSuccessByRoot>
-  <RWS_Metric_QuestExpired>Ofertas de búsqueda vencidas (retenidas)</RWS_Metric_QuestExpired>
-  <RWS_MetricDesc_QuestExpired>Quest ofrece todavía en el salvamento que caducó sin ser aceptado.</RWS_MetricDesc_QuestExpired>
-  <RWS_Metric_QuestAccepted>Quests aceptadas (retenidas)</RWS_Metric_QuestAccepted>
-  <RWS_MetricDesc_QuestAccepted>Quests todavía en el registro que fueron aceptados (incluyendo automáticamente), los continuos incluidos.</RWS_MetricDesc_QuestAccepted>
-  <RWS_Metric_QuestSuccessDurationMean>Días medios de búsquedas sucesivas (aceptación de limpieza)</RWS_Metric_QuestSuccessDurationMean>
-  <RWS_MetricDesc_QuestSuccessDurationMean>Días medios desde la aceptación hasta el comienzo de la limpieza de las misiones sucedidas; las misiones sin un tiempo de aceptación se omiten.</RWS_MetricDesc_QuestSuccessDurationMean>
-  <RWS_Metric_QuestSuccessDurationMin>Más corta búsqueda con éxito (aceptación de limpieza)</RWS_Metric_QuestSuccessDurationMin>
-  <RWS_MetricDesc_QuestSuccessDurationMin>Pocos días en la misma muestra que la media.</RWS_MetricDesc_QuestSuccessDurationMin>
-  <RWS_Metric_QuestSuccessDurationMax>Busqueda con éxito más larga (aceptación de limpieza)</RWS_Metric_QuestSuccessDurationMax>
-  <RWS_MetricDesc_QuestSuccessDurationMax>La mayoría de los días en la misma muestra que la media.</RWS_MetricDesc_QuestSuccessDurationMax>
+  <RWS_Metric_QuestSuccess>Misiones completadas con éxito (conservadas)</RWS_Metric_QuestSuccess>
+  <RWS_MetricDesc_QuestSuccess>Misiones aceptadas y completadas con éxito que aún figuran en la partida guardada. No se pueden contar las misiones que el juego ha eliminado.</RWS_MetricDesc_QuestSuccess>
+  <RWS_Metric_QuestFailure>Misiones fallidas (conservadas)</RWS_Metric_QuestFailure>
+  <RWS_MetricDesc_QuestFailure>Misiones aceptadas que han fracasado y aún figuran en la partida guardada.</RWS_MetricDesc_QuestFailure>
+  <RWS_Metric_QuestSuccessRate>Tasa de éxito de misiones (conservadas)</RWS_Metric_QuestSuccessRate>
+  <RWS_MetricDesc_QuestSuccessRate>Éxitos ÷ (éxitos + fracasos). Para todas las colonias, se suman por separado los numeradores y los denominadores antes de dividir.</RWS_MetricDesc_QuestSuccessRate>
+  <RWS_Metric_QuestSuccessByRoot>Misiones completadas por tipo (conservadas)</RWS_Metric_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Misiones completadas con éxito, agrupadas por tipo de misión (nombre de Def). Haz clic para ver el desglose.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_Metric_QuestExpired>Ofertas de misión caducadas (conservadas)</RWS_Metric_QuestExpired>
+  <RWS_MetricDesc_QuestExpired>Ofertas de misión aún presentes en la partida guardada que han caducado sin ser aceptadas.</RWS_MetricDesc_QuestExpired>
+  <RWS_Metric_QuestAccepted>Misiones aceptadas (conservadas)</RWS_Metric_QuestAccepted>
+  <RWS_MetricDesc_QuestAccepted>Misiones aceptadas que aún están en la partida guardada, incluidas las aceptadas automáticamente y las que siguen en curso.</RWS_MetricDesc_QuestAccepted>
+  <RWS_Metric_QuestSuccessDurationMean>Duración media de misiones completadas (aceptación a cierre)</RWS_Metric_QuestSuccessDurationMean>
+  <RWS_MetricDesc_QuestSuccessDurationMean>Media de días desde la aceptación hasta el inicio del cierre de las misiones completadas con éxito. Se excluyen las que carecen de fecha de aceptación.</RWS_MetricDesc_QuestSuccessDurationMean>
+  <RWS_Metric_QuestSuccessDurationMin>Misión completada más breve (aceptación a cierre)</RWS_Metric_QuestSuccessDurationMin>
+  <RWS_MetricDesc_QuestSuccessDurationMin>Menor número de días en la misma muestra utilizada para la media.</RWS_MetricDesc_QuestSuccessDurationMin>
+  <RWS_Metric_QuestSuccessDurationMax>Misión completada más larga (aceptación a cierre)</RWS_Metric_QuestSuccessDurationMax>
+  <RWS_MetricDesc_QuestSuccessDurationMax>Mayor número de días en la misma muestra utilizada para la media.</RWS_MetricDesc_QuestSuccessDurationMax>
   <RWS_Unit_SilverPerYear>{0} / año</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>Permadeath</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>Normal</RWS_Details_NotPermadeath>
-  <RWS_Metric_RankDaysByBiome>Días de supervivencia por bioma original</RWS_Metric_RankDaysByBiome>
-  <RWS_MetricDesc_RankDaysByBiome>Días de supervivencia total de la colonia agrupados por el bioma inicial original del juego; nunca utiliza el bioma de asentamiento actual.</RWS_MetricDesc_RankDaysByBiome>
-  <RWS_Metric_RankEndingsByBiome>Termina por bioma original</RWS_Metric_RankEndingsByBiome>
-  <RWS_MetricDesc_RankEndingsByBiome>Finales aceptadas agrupadas por el bioma inicial inmutable; se excluyen colonias de origen desconocido y la cobertura es parcial.</RWS_MetricDesc_RankEndingsByBiome>
-  <RWS_Metric_RankKillsToDeaths>Hostiles mata por muerte colonista</RWS_Metric_RankKillsToDeaths>
-  <RWS_MetricDesc_RankKillsToDeaths>Las muertes hostiles confirmadas se dividen por muertes de colonistas libres en el mismo intervalo registrado de puntos de control. Se excluyen las entradas emparejadas desaparecidas; no se define un denominador cero.</RWS_MetricDesc_RankKillsToDeaths>
-  <RWS_Metric_RankMostKills>La mayoría de los enemigos matan en una colonia</RWS_Metric_RankMostKills>
-  <RWS_MetricDesc_RankMostKills>Máximas muertes hostiles confirmadas en una sola colonia, desde su punto de control seleccionado; la entrada faltante no cuenta como cero.</RWS_MetricDesc_RankMostKills>
-  <RWS_Metric_RankDeathFree>Período libre de muerte más largo entre las colonias</RWS_Metric_RankDeathFree>
-  <RWS_MetricDesc_RankDeathFree>Intervalo más grande medido libre de muerte en cualquier colonia, basado en intervalos completados desde el punto de control seleccionado.</RWS_MetricDesc_RankDeathFree>
-  <RWS_Metric_RankMostCrafting>La mayoría de los artículos fabricados en una colonia</RWS_Metric_RankMostCrafting>
-  <RWS_MetricDesc_RankMostCrafting>Conteo máximo de objetos confirmados en una colonia desde el punto de control seleccionado.</RWS_MetricDesc_RankMostCrafting>
-  <RWS_Metric_RankLargestSale>Venta más grande en una colonia</RWS_Metric_RankLargestSale>
-  <RWS_MetricDesc_RankLargestSale>Cantidad máxima de venta confirmada para una transacción en una colonia, comparada entre colonias.</RWS_MetricDesc_RankLargestSale>
-  <RWS_Metric_RankMostResearch>Investigación más completada en una colonia</RWS_Metric_RankMostResearch>
-  <RWS_MetricDesc_RankMostResearch>Mayor número de proyectos de investigación completados en la instantánea de ahorro de tiempo de una colonia, no un recuento de eventos de conclusión de investigación.</RWS_MetricDesc_RankMostResearch>
-  <RWS_Metric_RankMinPartyAtEnding>Fiesta más pequeña en un final</RWS_Metric_RankMinPartyAtEnding>
-  <RWS_MetricDesc_RankMinPartyAtEnding>Pocos participantes el juego confirmó cuando ocurrió una finalización: los ataúdes de criptografía ocupados de un lanzamiento de un buque, los colonos enviados en la nave auxiliar Royal Ascent, o los colonos que transcendieron en el arcónexo. Otros finales, y los finales registrados antes de esto se almacenaron, no tienen valor.</RWS_MetricDesc_RankMinPartyAtEnding>
+  <RWS_Details_Permadeath>Modo comprometido</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>Modo recarga libre</RWS_Details_NotPermadeath>
+  <RWS_Metric_RankDaysByBiome>Días de supervivencia por bioma inicial</RWS_Metric_RankDaysByBiome>
+  <RWS_MetricDesc_RankDaysByBiome>Total de días de supervivencia de las colonias, agrupados por el bioma original de inicio. Nunca se utiliza el bioma del asentamiento actual.</RWS_MetricDesc_RankDaysByBiome>
+  <RWS_Metric_RankEndingsByBiome>Finales por bioma inicial</RWS_Metric_RankEndingsByBiome>
+  <RWS_MetricDesc_RankEndingsByBiome>Finales contabilizados según el bioma de la casilla inicial, que nunca cambia. Se excluyen las colonias cuya casilla inicial se desconoce, así que el resultado puede ser parcial.</RWS_MetricDesc_RankEndingsByBiome>
+  <RWS_Metric_RankKillsToDeaths>Enemigos abatidos por colono fallecido</RWS_Metric_RankKillsToDeaths>
+  <RWS_MetricDesc_RankKillsToDeaths>Bajas enemigas confirmadas divididas entre las muertes de colonos libres durante el mismo intervalo registrado entre puntos de control. Se excluyen las colonias sin alguno de los datos; con cero muertes no hay valor.</RWS_MetricDesc_RankKillsToDeaths>
+  <RWS_Metric_RankMostKills>Máximo de enemigos abatidos en una colonia</RWS_Metric_RankMostKills>
+  <RWS_MetricDesc_RankMostKills>Mayor número de bajas enemigas confirmadas en una sola colonia, según su punto de control seleccionado. Los datos ausentes no se consideran cero.</RWS_MetricDesc_RankMostKills>
+  <RWS_Metric_RankDeathFree>Período más largo sin muertes</RWS_Metric_RankDeathFree>
+  <RWS_MetricDesc_RankDeathFree>Período medido más largo sin la muerte de ningún colono en una colonia, entre los períodos completados hasta el punto de control seleccionado.</RWS_MetricDesc_RankDeathFree>
+  <RWS_Metric_RankMostCrafting>Máximo de objetos fabricados en una colonia</RWS_Metric_RankMostCrafting>
+  <RWS_MetricDesc_RankMostCrafting>Mayor número confirmado de objetos fabricados en una colonia, según su punto de control seleccionado.</RWS_MetricDesc_RankMostCrafting>
+  <RWS_Metric_RankLargestSale>Mayor venta en una colonia</RWS_Metric_RankLargestSale>
+  <RWS_MetricDesc_RankLargestSale>Importe máximo confirmado de una venta en una sola transacción, comparado entre las colonias.</RWS_MetricDesc_RankLargestSale>
+  <RWS_Metric_RankMostResearch>Máximo de investigaciones completadas en una colonia</RWS_Metric_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>Mayor número de proyectos de investigación completados en una instantánea de guardado de una colonia. No es un recuento de eventos de finalización de investigaciones.</RWS_MetricDesc_RankMostResearch>
+  <RWS_Metric_RankMinPartyAtEnding>Grupo más pequeño al alcanzar un final</RWS_Metric_RankMinPartyAtEnding>
+  <RWS_MetricDesc_RankMinPartyAtEnding>Menor número de participantes confirmado por el juego al producirse un final: sarcófagos de criptosueño ocupados al lanzar una nave, colonos enviados en el transbordador de Ascensión real o colonos trascendidos en el arqueonexo. Los demás finales y los registrados antes de que se guardara este dato no tienen valor.</RWS_MetricDesc_RankMinPartyAtEnding>
   <RWS_Metric_RankByDifficultyDays>Días jugados por dificultad</RWS_Metric_RankByDifficultyDays>
-  <RWS_MetricDesc_RankByDifficultyDays>Días de colonia sumados por la dificultad del punto más lejano de cada colonia; los cambios de dificultad durante el juego no se siguen. Haga clic para mostrar el desglose.</RWS_MetricDesc_RankByDifficultyDays>
-  <RWS_Metric_RankByDifficultyEndings>Finalizaciones por dificultad</RWS_Metric_RankByDifficultyEndings>
-  <RWS_MetricDesc_RankByDifficultyEndings>Finales contados como en la vista general (configuración del modo de desarrollo, rastros como al menos una vez), por la dificultad del punto más alejado de cada colonia.</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>Días jugados, permadeath o no</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>Días de la colonia resumidos por si el punto más alejado de cada colonia está en modo permadeath.</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>Finalización, permadeath o no</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>Fines contados como en la Panorama general, por si el punto más alejado de cada colonia está en modo permadeath.</RWS_MetricDesc_RankByPermadeathEndings>
-  <RWS_Metric_RankPopulationPeak>Población más grande (todas las colonias)</RWS_Metric_RankPopulationPeak>
-  <RWS_MetricDesc_RankPopulationPeak>El más alto de los mayores contadores de población del juego a través de las colonias, y su colonia.</RWS_MetricDesc_RankPopulationPeak>
-  <RWS_Metric_RankFastestEnding>Finalización más rápida</RWS_Metric_RankFastestEnding>
-  <RWS_MetricDesc_RankFastestEnding>El final registrado durante el juego con el menor número de días en el juego y su colonia. Se omiten las huellas preinstaladas, cuyo tiempo es desconocido.</RWS_MetricDesc_RankFastestEnding>
-  <RWS_Metric_RankNetWealthPerYear>Ganancia media de riqueza por año</RWS_Metric_RankNetWealthPerYear>
-  <RWS_MetricDesc_RankNetWealthPerYear>Cambios de riqueza neta de las colonias sumados, ÷ los años que transcurren sus historias, sumados (las historias de una observación se omiten).</RWS_MetricDesc_RankNetWealthPerYear>
-  <RWS_Metric_RankTopScenario>Escenario con los más finales</RWS_Metric_RankTopScenario>
-  <RWS_MetricDesc_RankTopScenario>La mayoría de las terminaciones para un nombre de escenario de los puntos más lejanos de las colonias, y el nombre; los vínculos están listados juntos. Pulse para mostrar el desglose.</RWS_MetricDesc_RankTopScenario>
-  <RWS_Metric_RankDaysByStoryteller>Días jugados por el narrador de historias</RWS_Metric_RankDaysByStoryteller>
-  <RWS_MetricDesc_RankDaysByStoryteller>Días de colonia resumidos por el narrador del punto más lejano de cada colonia.</RWS_MetricDesc_RankDaysByStoryteller>
-  <RWS_Metric_RankPlaytimePeak>Colonia con la mayor parte del tiempo de juego</RWS_Metric_RankPlaytimePeak>
-  <RWS_MetricDesc_RankPlaytimePeak>El tiempo de juego real más largo de una colonia, y la colonia.</RWS_MetricDesc_RankPlaytimePeak>
-  <RWS_Metric_RankWealthPerColonist>Mayor riqueza por colonizador</RWS_Metric_RankWealthPerColonist>
-  <RWS_MetricDesc_RankWealthPerColonist>Mayor riqueza total ÷ colonos libres (al menos uno) en la misma observación, y su colonia; sólo cuando ambas historias están completas desde el principio.</RWS_MetricDesc_RankWealthPerColonist>
-  <RWS_Metric_RankMinDeathsAtEnding>Terminando con la menor cantidad de muertes</RWS_Metric_RankMinDeathsAtEnding>
-  <RWS_MetricDesc_RankMinDeathsAtEnding>La menor cantidad de muertes de colonos en el momento en que se registró un final, y la colonia. Los finales registrados antes de esta versión no tienen recuento de muertes y se omiten.</RWS_MetricDesc_RankMinDeathsAtEnding>
-  <RWS_Metric_RankZeroDeathEndings>Finalización sin muertes</RWS_Metric_RankZeroDeathEndings>
-  <RWS_MetricDesc_RankZeroDeathEndings>Fines cuyo recuento de muertes del colon fue 0 cuando se registró. No se cuentan los fines sin un recuento de muertes.</RWS_MetricDesc_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankByDifficultyDays>Suma de días de las colonias según la dificultad de su punto más avanzado. No se registran los cambios de dificultad durante la partida. Haz clic para ver el desglose.</RWS_MetricDesc_RankByDifficultyDays>
+  <RWS_Metric_RankByDifficultyEndings>Finales por dificultad</RWS_Metric_RankByDifficultyEndings>
+  <RWS_MetricDesc_RankByDifficultyEndings>Finales contabilizados como en Resumen (según la opción del modo desarrollador; los indicios cuentan al menos una vez), agrupados por la dificultad del punto más avanzado de cada colonia.</RWS_MetricDesc_RankByDifficultyEndings>
+  <RWS_Metric_RankByPermadeathDays>Días de colonia por modo de guardado</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>Suma de días de las colonias según el modo de su punto registrado más avanzado: Modo comprometido o Modo recarga libre.</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>Finales por modo de guardado</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>Finales contabilizados como en Resumen, agrupados por el modo del punto registrado más avanzado de cada colonia: Modo comprometido o Modo recarga libre.</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankPopulationPeak>Población máxima (todas las colonias)</RWS_Metric_RankPopulationPeak>
+  <RWS_MetricDesc_RankPopulationPeak>Mayor valor entre los contadores de población máxima del juego para todas las colonias, y la colonia correspondiente.</RWS_MetricDesc_RankPopulationPeak>
+  <RWS_Metric_RankFastestEnding>Final más rápido</RWS_Metric_RankFastestEnding>
+  <RWS_MetricDesc_RankFastestEnding>Final registrado durante la partida con el menor número de días de juego, y su colonia. Se excluyen los indicios anteriores a la instalación del mod cuyo momento se desconoce.</RWS_MetricDesc_RankFastestEnding>
+  <RWS_Metric_RankNetWealthPerYear>Aumento medio de riqueza por año</RWS_Metric_RankNetWealthPerYear>
+  <RWS_MetricDesc_RankNetWealthPerYear>Suma de los cambios netos de riqueza de las colonias ÷ suma de los años cubiertos por sus historiales. Se excluyen los historiales con una única observación.</RWS_MetricDesc_RankNetWealthPerYear>
+  <RWS_Metric_RankTopScenario>Escenario con más finales</RWS_Metric_RankTopScenario>
+  <RWS_MetricDesc_RankTopScenario>Mayor número de finales de un solo escenario (según el punto más avanzado de cada colonia) y nombre del escenario. Los empates aparecen juntos. Haz clic para ver el desglose.</RWS_MetricDesc_RankTopScenario>
+  <RWS_Metric_RankDaysByStoryteller>Días jugados por narrador</RWS_Metric_RankDaysByStoryteller>
+  <RWS_MetricDesc_RankDaysByStoryteller>Suma de días de las colonias según el narrador de su punto más avanzado.</RWS_MetricDesc_RankDaysByStoryteller>
+  <RWS_Metric_RankPlaytimePeak>Colonia con más tiempo de juego</RWS_Metric_RankPlaytimePeak>
+  <RWS_MetricDesc_RankPlaytimePeak>Mayor tiempo real de juego de una sola colonia, y la colonia correspondiente.</RWS_MetricDesc_RankPlaytimePeak>
+  <RWS_Metric_RankWealthPerColonist>Mayor riqueza por colono</RWS_Metric_RankWealthPerColonist>
+  <RWS_MetricDesc_RankWealthPerColonist>Máximo de riqueza total ÷ colonos libres (al menos uno) en una misma observación y su colonia; solo si ambos historiales están completos desde el principio.</RWS_MetricDesc_RankWealthPerColonist>
+  <RWS_Metric_RankMinDeathsAtEnding>Final con menos muertes</RWS_Metric_RankMinDeathsAtEnding>
+  <RWS_MetricDesc_RankMinDeathsAtEnding>Menor número de muertes de colonos en el momento de registrar un final, y su colonia. Se excluyen los finales registrados antes de esta versión, que carecen de recuento de muertes.</RWS_MetricDesc_RankMinDeathsAtEnding>
+  <RWS_Metric_RankZeroDeathEndings>Finales sin muertes</RWS_Metric_RankZeroDeathEndings>
+  <RWS_MetricDesc_RankZeroDeathEndings>Finales en los que se registraron cero muertes de colonos. No se cuentan los finales sin un recuento de muertes conocido.</RWS_MetricDesc_RankZeroDeathEndings>
   <RWS_Category_Research>Investigación</RWS_Category_Research>
   <RWS_Category_Mind>Mente</RWS_Category_Mind>
   <RWS_Category_Combat>Combate y muertes</RWS_Category_Combat>
@@ -323,58 +323,58 @@
   <RWS_Category_Work>Trabajo y comida</RWS_Category_Work>
   <RWS_Category_Animals>Animales</RWS_Category_Animals>
   <RWS_Category_Economy>Comercio y diplomacia</RWS_Category_Economy>
-  <RWS_Category_Environment>Desastres y medio ambiente</RWS_Category_Environment>
+  <RWS_Category_Environment>Desastres y entorno</RWS_Category_Environment>
   <RWS_Category_Exploration>Caravanas y asentamientos</RWS_Category_Exploration>
-  <RWS_Category_Facilities>Instalaciones y stock</RWS_Category_Facilities>
-  <RWS_Category_Royalty>Regalía</RWS_Category_Royalty>
-  <RWS_Category_Ideology>Ideología</RWS_Category_Ideology>
+  <RWS_Category_Facilities>Instalaciones y reservas</RWS_Category_Facilities>
+  <RWS_Category_Royalty>Royalty</RWS_Category_Royalty>
+  <RWS_Category_Ideology>Ideology</RWS_Category_Ideology>
   <RWS_Category_Biotech>Biotech</RWS_Category_Biotech>
   <RWS_Category_Odyssey>Odyssey</RWS_Category_Odyssey>
-  <RWS_Metric_ResearchLiveCompleted>Investigación completada mientras está grabada</RWS_Metric_ResearchLiveCompleted>
-  <RWS_MetricDesc_ResearchLiveCompleted>Proyectos de investigación que pasaron de inacabados a terminados desde que comenzó la grabación, cada uno contó una vez. No el número de proyectos terminados ahorrar tiempo.</RWS_MetricDesc_ResearchLiveCompleted>
-  <RWS_Metric_ResearchLiveCompletedTicks>Días de finalización de la investigación (lista)</RWS_Metric_ResearchLiveCompletedTicks>
-  <RWS_MetricDesc_ResearchLiveCompletedTicks>Por proyecto completado mientras estaba grabado, el día del juego fue terminado por primera vez. Mostrado sólo por colonia.</RWS_MetricDesc_ResearchLiveCompletedTicks>
-  <RWS_Metric_ResearchLiveDurationMin>Duración de investigación más corta</RWS_Metric_ResearchLiveDurationMin>
-  <RWS_MetricDesc_ResearchLiveDurationMin>Pocos días desde el primer trabajo real en un proyecto hasta su finalización, incluyendo pausas. Los proyectos cuyo inicio no se vio se omiten.</RWS_MetricDesc_ResearchLiveDurationMin>
-  <RWS_Metric_ResearchLiveDurationMax>Duración de investigación más larga</RWS_Metric_ResearchLiveDurationMax>
-  <RWS_MetricDesc_ResearchLiveDurationMax>La mayoría de los días en la misma muestra que la más corta.</RWS_MetricDesc_ResearchLiveDurationMax>
-  <RWS_Metric_ResearchLiveFirstDay>Días hasta la primera conclusión de la investigación</RWS_Metric_ResearchLiveFirstDay>
-  <RWS_MetricDesc_ResearchLiveFirstDay>El día del juego de la primera terminación, sólo cuando se graba desde el comienzo del juego.</RWS_MetricDesc_ResearchLiveFirstDay>
-  <RWS_Metric_MentalBreaks>Roturas mentales</RWS_Metric_MentalBreaks>
-  <RWS_MetricDesc_MentalBreaks>Roturas mentales causadas por el humor de colonos libres. Roturas de drogas, genes, psycasts o herramientas de desarrollo no se cuentan.</RWS_MetricDesc_MentalBreaks>
-  <RWS_Metric_MentalBreaksByDef>Roturas mentales por tipo</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>El mental se rompe arriba, por tipo (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_Metric_ResearchLiveCompleted>Investigaciones completadas durante el registro</RWS_Metric_ResearchLiveCompleted>
+  <RWS_MetricDesc_ResearchLiveCompleted>Proyectos de investigación que han pasado de incompletos a completos desde el inicio del registro, contados una sola vez cada uno. No es el número de proyectos terminados al guardar.</RWS_MetricDesc_ResearchLiveCompleted>
+  <RWS_Metric_ResearchLiveCompletedTicks>Días de finalización de investigaciones (lista)</RWS_Metric_ResearchLiveCompletedTicks>
+  <RWS_MetricDesc_ResearchLiveCompletedTicks>Día de juego de la primera finalización de cada proyecto completado durante el registro. Solo por colonia.</RWS_MetricDesc_ResearchLiveCompletedTicks>
+  <RWS_Metric_ResearchLiveDurationMin>Duración mínima de investigación</RWS_Metric_ResearchLiveDurationMin>
+  <RWS_MetricDesc_ResearchLiveDurationMin>Menor número de días desde el primer trabajo real en un proyecto hasta terminarlo, incluidas las pausas. Se excluyen los proyectos cuyo inicio no se ha observado.</RWS_MetricDesc_ResearchLiveDurationMin>
+  <RWS_Metric_ResearchLiveDurationMax>Duración máxima de investigación</RWS_Metric_ResearchLiveDurationMax>
+  <RWS_MetricDesc_ResearchLiveDurationMax>Mayor número de días de la misma muestra que la duración mínima.</RWS_MetricDesc_ResearchLiveDurationMax>
+  <RWS_Metric_ResearchLiveFirstDay>Días hasta la primera investigación completada</RWS_Metric_ResearchLiveFirstDay>
+  <RWS_MetricDesc_ResearchLiveFirstDay>Día de juego de la primera investigación completada, solo si se ha registrado desde el inicio de la partida.</RWS_MetricDesc_ResearchLiveFirstDay>
+  <RWS_Metric_MentalBreaks>Colapsos mentales</RWS_Metric_MentalBreaks>
+  <RWS_MetricDesc_MentalBreaks>Colapsos mentales causados por el humor de colonos libres. No se cuentan los causados por drogas, genes, habilidades psíquicas o herramientas de desarrollo.</RWS_MetricDesc_MentalBreaks>
+  <RWS_Metric_MentalBreaksByDef>Colapsos mentales por tipo</RWS_Metric_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>Los colapsos mentales anteriores, agrupados por tipo (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>Inspiraciones</RWS_Metric_Inspirations>
-  <RWS_MetricDesc_Inspirations>Inspiraciones que realmente comenzaron para colonos libres. No se cuentan los intentos fallados, los caracteres ya inspirados y las herramientas de desarrollo.</RWS_MetricDesc_Inspirations>
+  <RWS_MetricDesc_Inspirations>Inspiraciones que realmente han comenzado en colonos libres. No se cuentan los intentos fallidos, los personajes ya inspirados ni las herramientas de desarrollo.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>Inspiraciones por tipo</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>Las inspiraciones arriba, por tipo (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
-  <RWS_Metric_HostileKills>Enemigos asesinados</RWS_Metric_HostileKills>
-  <RWS_MetricDesc_HostileKills>Muertes de caracteres hostiles al jugador justo antes de morir, cuya causa el registro de daños atribuye al lado del jugador (colonistas, torretas, trampas, animales, mechs). Las muertes sin una atribución conocida no se cuentan.</RWS_MetricDesc_HostileKills>
-  <RWS_Metric_KillsPerPawnMax>La mayoría de las muertes por un colonizador</RWS_Metric_KillsPerPawnMax>
-  <RWS_MetricDesc_KillsPerPawnMax>La mayoría de las muertes acreditadas a un personaje de jugador; el desglose denomina al titular (por id). Las muertes conocidas sólo por su causa no se acreditan a nadie.</RWS_MetricDesc_KillsPerPawnMax>
-  <RWS_Metric_KillsByVictimKind>Enemigos asesinados por clase</RWS_Metric_KillsByVictimKind>
-  <RWS_MetricDesc_KillsByVictimKind>Enemigo mata dividido en humano, insecto, mecanoide y otros.</RWS_MetricDesc_KillsByVictimKind>
-  <RWS_Metric_RangedKills>Mata con armas a distancia</RWS_Metric_RangedKills>
-  <RWS_MetricDesc_RangedKills>El enemigo mata con armas a distancia (las explosiones cuentan como explosivas).</RWS_MetricDesc_RangedKills>
-  <RWS_Metric_MeleeKills>Mata con armas de melee</RWS_Metric_MeleeKills>
-  <RWS_MetricDesc_MeleeKills>El enemigo mata hecho con una arma melee equipada.</RWS_MetricDesc_MeleeKills>
-  <RWS_Metric_UnarmedKills>Mata sin armas</RWS_Metric_UnarmedKills>
-  <RWS_MetricDesc_UnarmedKills>Enemigo mata hecho con ataques melee sin una arma.</RWS_MetricDesc_UnarmedKills>
-  <RWS_Metric_ExplosiveKills>Mata por explosión</RWS_Metric_ExplosiveKills>
-  <RWS_MetricDesc_ExplosiveKills>Enemigo mata cuyo daño mortal fue una explosión.</RWS_MetricDesc_ExplosiveKills>
-  <RWS_Metric_EnvironmentKills>Mata por fuego o por medio ambiente</RWS_Metric_EnvironmentKills>
-  <RWS_MetricDesc_EnvironmentKills>El enemigo mata por fuego u otros daños ambientales que el registro atribuye al lado del jugador. Las muertes naturales y las no atribuidas no se cuentan.</RWS_MetricDesc_EnvironmentKills>
-  <RWS_Metric_TurretKills>Mata por torretas</RWS_Metric_TurretKills>
-  <RWS_MetricDesc_TurretKills>Enemigo mata cuyo atacante era una torreta de jugador.</RWS_MetricDesc_TurretKills>
-  <RWS_Metric_TrapKills>Mata por trampas</RWS_Metric_TrapKills>
-  <RWS_MetricDesc_TrapKills>Enemigo mata causado por una trampa de jugador.</RWS_MetricDesc_TrapKills>
-  <RWS_Metric_TameAnimalKills>Mata por animales domesticos</RWS_Metric_TameAnimalKills>
-  <RWS_MetricDesc_TameAnimalKills>Enemigo mata cuyo atacante era un animal jugador.</RWS_MetricDesc_TameAnimalKills>
-  <RWS_Metric_PlayerMechKills>Mata por mechs del jugador</RWS_Metric_PlayerMechKills>
-  <RWS_MetricDesc_PlayerMechKills>Enemigo mata cuyo atacante era un mecanoide de jugador (Biotech).</RWS_MetricDesc_PlayerMechKills>
-  <RWS_Metric_DeathCauses>Muertes de colonistas por causa</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Muertes de colonizadores libres por la condición de salud culpable (hediff) o el tipo de daño causado por la muerte. Las muertes con ninguno de los dos son "desconocidas".</RWS_MetricDesc_DeathCauses>
-  <RWS_Metric_DeathsByRaid>Muertes de colonistas por redadas</RWS_Metric_DeathsByRaid>
+  <RWS_MetricDesc_InspirationsByDef>Las inspiraciones anteriores, agrupadas por tipo (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_Metric_HostileKills>Enemigos abatidos</RWS_Metric_HostileKills>
+  <RWS_MetricDesc_HostileKills>Muertes de personajes que eran hostiles al jugador justo antes de morir, cuando el registro de daños atribuye la muerte al bando del jugador (colonos, torretas, trampas, animales, mecas). No se cuentan las muertes sin atribución conocida.</RWS_MetricDesc_HostileKills>
+  <RWS_Metric_KillsPerPawnMax>Máximo de bajas por un colono</RWS_Metric_KillsPerPawnMax>
+  <RWS_MetricDesc_KillsPerPawnMax>Mayor número de bajas atribuidas a un personaje del jugador; el desglose indica quién es (por ID). Las bajas cuya causa es lo único conocido no se atribuyen a nadie.</RWS_MetricDesc_KillsPerPawnMax>
+  <RWS_Metric_KillsByVictimKind>Enemigos abatidos por clase</RWS_Metric_KillsByVictimKind>
+  <RWS_MetricDesc_KillsByVictimKind>Bajas enemigas divididas entre humanoides, insectos, mecanoides y otros.</RWS_MetricDesc_KillsByVictimKind>
+  <RWS_Metric_RangedKills>Bajas con armas a distancia</RWS_Metric_RangedKills>
+  <RWS_MetricDesc_RangedKills>Enemigos abatidos con armas a distancia (las explosiones cuentan como bajas por explosión).</RWS_MetricDesc_RangedKills>
+  <RWS_Metric_MeleeKills>Bajas con armas cuerpo a cuerpo</RWS_Metric_MeleeKills>
+  <RWS_MetricDesc_MeleeKills>Enemigos abatidos con un arma cuerpo a cuerpo equipada.</RWS_MetricDesc_MeleeKills>
+  <RWS_Metric_UnarmedKills>Bajas sin armas</RWS_Metric_UnarmedKills>
+  <RWS_MetricDesc_UnarmedKills>Enemigos abatidos mediante ataques cuerpo a cuerpo sin armas.</RWS_MetricDesc_UnarmedKills>
+  <RWS_Metric_ExplosiveKills>Bajas por explosión</RWS_Metric_ExplosiveKills>
+  <RWS_MetricDesc_ExplosiveKills>Enemigos cuya muerte fue causada por daños de una explosión.</RWS_MetricDesc_ExplosiveKills>
+  <RWS_Metric_EnvironmentKills>Bajas por fuego o entorno</RWS_Metric_EnvironmentKills>
+  <RWS_MetricDesc_EnvironmentKills>Enemigos abatidos por fuego u otros daños ambientales que el registro atribuye al bando del jugador. No se cuentan las muertes naturales ni las de atribución desconocida.</RWS_MetricDesc_EnvironmentKills>
+  <RWS_Metric_TurretKills>Bajas por torretas</RWS_Metric_TurretKills>
+  <RWS_MetricDesc_TurretKills>Enemigos abatidos cuyo atacante era una torreta del jugador.</RWS_MetricDesc_TurretKills>
+  <RWS_Metric_TrapKills>Bajas por trampas</RWS_Metric_TrapKills>
+  <RWS_MetricDesc_TrapKills>Enemigos abatidos por una trampa del jugador.</RWS_MetricDesc_TrapKills>
+  <RWS_Metric_TameAnimalKills>Bajas por animales domesticados</RWS_Metric_TameAnimalKills>
+  <RWS_MetricDesc_TameAnimalKills>Enemigos abatidos cuyo atacante era un animal del jugador.</RWS_MetricDesc_TameAnimalKills>
+  <RWS_Metric_PlayerMechKills>Bajas por mecas del jugador</RWS_Metric_PlayerMechKills>
+  <RWS_MetricDesc_PlayerMechKills>Enemigos abatidos cuyo atacante era un mecanoide del jugador (Biotech).</RWS_MetricDesc_PlayerMechKills>
+  <RWS_Metric_DeathCauses>Muertes de colonos por causa</RWS_Metric_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Muertes de colonos libres agrupadas por condición de salud responsable (hediff) o tipo de daño mortal. Si se desconocen ambos, se muestra «(desconocido)».</RWS_MetricDesc_DeathCauses>
+  <RWS_Metric_DeathsByRaid>Muertes de colonos por asaltos</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>Las muertes de colonos libres se dividen en las causadas por un saqueador, otras causas conocidas, y desconocidas. Aunque no se registran, son desconocidas.</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Muertes de colonistas por enfermedad</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>Muertes de colonistas libres cuyo culpable fue una enfermedad (una condición que el juego trata como haciendo enferma al personaje). Las muertes simplemente acompañadas de una enfermedad no se cuentan.</RWS_MetricDesc_DiseaseDeaths>
