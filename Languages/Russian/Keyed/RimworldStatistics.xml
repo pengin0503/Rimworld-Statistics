@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>Значение для сравнения колоний: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>История для этого показателя недоступна.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Доступно одно измерение. Наведите курсор на точку, чтобы увидеть значение.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Данные сохранений по игровым дням. Могут включать разные ветки сохранений.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>Данные сохранений по игровым дням. Линией соединяются только сохранения, родитель которых подтверждён встроенными контрольными точками.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>Контрольные точки выбранной ветки сохранений. Разрывы обозначают пропущенные измерения.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>Рекордный прирост богатства за 15 дней, достигнутый к каждому моменту в этом сохранении.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Записанные категории выбранной статистики. Это не график изменений во времени.</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>Нет измеренных значений для построения графика.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Добавить колонию…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Наблюдения по игровым дням. Разрывы показывают пропуски в данных.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>Полые точки — сохранения, связь которых с более ранними данными не подтверждена (другая ветка или старое сохранение без контрольных точек).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>Связь с более ранними данными не подтверждена.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>Ветка, продолжающая данные дня {0}; точки между ними относятся к другой ветке.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>Эти данные без изменений содержались и в сохранении дня {0}; новых статистических данных в нём не записано.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>{0} ед. питательности</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Созданные андроиды</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Андроиды игрока, созданные после завершения работы на станции.</RWS_VreAndroid_ManufacturedDesc>

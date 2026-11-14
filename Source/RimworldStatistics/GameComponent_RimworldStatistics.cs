@@ -206,6 +206,10 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             var numeric = NumericObservation(checkpoint, identity, version);
             // Read detached snapshots only after the game file has successfully committed.
             var snapshot = SavedStateMetricReader.Read(identity, version, savedUtc);
+            // Both come from this one successful save: the checkpoint names the snapshot's place in the save lineage,
+            // so a history chart can join it only to snapshots of proven ancestor saves.
+            if (snapshot != null && numeric != null && numeric.SaveTick == snapshot.SaveTick)
+                snapshot.CheckpointKey = numeric.Key;
             ProfileService.Session.Mutate(p =>
             {
                 ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);

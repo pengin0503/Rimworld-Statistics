@@ -1234,7 +1234,7 @@
   <RWS_Chart_HistoryRecord>コロニー比較の値：{0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>この統計の履歴はありません。</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>記録は1点です。点にカーソルを合わせると値を確認できます。</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>セーブ時点の記録値をゲーム内日数順に表示します。別のセーブ分岐の記録が含まれる場合があります。</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>セーブ時点の記録値をゲーム内日数順に表示します。埋め込まれたチェックポイントで親子関係を確認できたセーブだけを線で結びます。</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>同じセーブ分岐のチェックポイントを表示します。線の途切れは記録の欠損を示します。</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>このセーブの資産履歴を使い、各時点までに観測された15日間の最大資産増加を表示します。</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>選択した統計の記録済みの内訳を表示します。時間の経過を示すグラフではありません。</RWS_Chart_BreakdownNote>
@@ -1243,6 +1243,10 @@
   <RWS_Chart_NoData>グラフにできる測定値がありません。</RWS_Chart_NoData>
   <RWS_Chart_AddColony>コロニーを追加…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>ゲーム内日数ごとの観測値です。記録がない区間では線が途切れます。</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>白抜きの点は、それより前の記録との親子関係を確認できないセーブです（別の分岐や、チェックポイントのない旧セーブなど）。</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>それより前の記録との親子関係は確認できません。</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>{0}日の記録から続く分岐です。間にある点は別の分岐の記録です。</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>この記録は{0}日のセーブにもそのまま含まれていました。そのセーブでは新しい統計は記録されていません。</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>製造したアンドロイド</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>アンドロイド製造台で通常の作業を完了し、自勢力のアンドロイドを製造した数。</RWS_VreAndroid_ManufacturedDesc>

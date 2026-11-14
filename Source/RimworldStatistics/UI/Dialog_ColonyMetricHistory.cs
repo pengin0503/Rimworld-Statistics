@@ -9,6 +9,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private static readonly Color SeriesColor = new(0.35f, 0.64f, 0.78f);
     private static readonly Color PartialColor = new(0.63f, 0.66f, 0.71f);
     private static readonly Color GridColor = new(0.7f, 0.7f, 0.7f, 0.28f);
+    private static readonly Color HollowFill = new(0.12f, 0.13f, 0.15f);
     private readonly MetricDefinition definition;
     private readonly string heading;
     private readonly string recordLabel;
@@ -123,7 +124,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             y = row.yMax;
         }
         body.yMin = y;
-        var note = historyNote ??= Describe(history.Kind, measured.Length);
+        var note = historyNote ??= Describe(history.Kind, measured.Length)
+            + (measured.Any(p => p.Unlinked) ? "\n" + (string)"RWS_Chart_LegendUnlinked".Translate() : "");
         var noteHeight = Text.CalcHeight(note, body.width);
         Widgets.Label(new Rect(body.x, body.y, body.width, noteHeight), note);
         var axisWidth = Math.Min(145f, body.width * 0.28f);
@@ -154,7 +156,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 && overlay.Task.Result.Kind == history.Kind && overlay.Task.Result.Points.Count != 0;
         if (refresh)
         {
-            plotPoints = PlotPoints(history.Points, pixelWidth);
+            plotPoints = MetricHistoryPlot.Thin(history.Points, pixelWidth);
             ticks = (history.Points[0].Tick, history.Points[^1].Tick);
             range = (measured!.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
             foreach (var overlay in overlays)
@@ -163,7 +165,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     || overlay.Task.Result.Points.Count == 0)
                     continue;
                 var data = overlay.Task.Result.Points;
-                overlay.Points = PlotPoints(data, pixelWidth);
+                overlay.Points = MetricHistoryPlot.Thin(data, pixelWidth);
                 ticks = (Math.Min(ticks.First, data[0].Tick), Math.Max(ticks.Last, data[^1].Tick));
                 foreach (var point in data)
                     if (point.Value?.Number is { } n)
@@ -208,23 +210,31 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
         void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor)
         {
-            Vector2? previous = null;
-            var previousPartial = false;
-            foreach (var point in points)
+            // A line joins two readings only where the later one continues the earlier (MetricHistoryPoint);
+            // a gap (no value) joins nothing, and a reading of unproven ancestry is drawn hollow.
+            var positions = new Vector2?[points.Count];
+            var partials = new bool[points.Count];
+            for (var i = 0; i < points.Count; i++)
             {
+                var point = points[i];
                 if (point.Value is not { Number: { } number } value)
-                {
-                    previous = null;
                     continue;
-                }
                 var position = new Vector2(X(point.Tick), Y(number));
                 var partial = value.Coverage == MetricCoverage.Partial;
-                if (previous is { } start && point.ConnectToPrevious)
-                    Widgets.DrawLine(start, position, partial || previousPartial ? partialColor : color, 2f);
-                var size = points.Count <= 90 || previous is null || !point.ConnectToPrevious ? 5f : 2f;
-                Widgets.DrawBoxSolid(new Rect(position.x - size / 2f, position.y - size / 2f, size, size), partial ? partialColor : color);
-                previous = position;
-                previousPartial = partial;
+                positions[i] = position;
+                partials[i] = partial;
+                var from = point.Predecessor(i);
+                var joined = from >= 0 && from < i && positions[from] is not null;
+                if (joined)
+                    Widgets.DrawLine(positions[from]!.Value, position, partial || partials[from] ? partialColor : color, 2f);
+                var marker = partial ? partialColor : color;
+                if (point.Unlinked)
+                {
+                    Widgets.DrawBoxSolidWithOutline(new Rect(position.x - 3.5f, position.y - 3.5f, 7f, 7f), HollowFill, marker, 1);
+                    continue;
+                }
+                var size = points.Count <= 90 || !joined ? 5f : 2f;
+                Widgets.DrawBoxSolid(new Rect(position.x - size / 2f, position.y - size / 2f, size, size), marker);
             }
         }
 
@@ -234,6 +244,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var hoverTick = ticks.First + (ticks.Last - ticks.First) * (double)Math.Clamp((mouse.x - plot.x) / plot.width, 0f, 1f);
         var nearest = Nearest(measured!, hoverTick);
         var hoverName = colonyName;
+        IReadOnlyList<MetricHistoryPoint> hoverSeries = history.Points;
         var bestDistance = (new Vector2(X(nearest.Tick), Y(nearest.Value!.Number!.Value)) - mouse).sqrMagnitude;
         foreach (var overlay in overlays)
         {
@@ -248,6 +259,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 nearest = candidate;
                 bestDistance = distance;
                 hoverName = overlay.Name;
+                hoverSeries = overlay.Points;
             }
         }
         var x = X(nearest.Tick);
@@ -258,7 +270,30 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Widgets.DrawBoxSolid(new Rect(x, plot.y, 1f, plot.height), GridColor);
         Widgets.DrawBoxSolid(new Rect(x - 3f, yPoint - 3f, 6f, 6f), Color.white);
         TooltipHandler.TipRegion(plot, hoverName + "\n" + (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(nearest.Tick))
-            + "\n" + MetricText.Format(definition, reading) + "\n" + MetricText.State(definition, reading.Coverage));
+            + "\n" + MetricText.Format(definition, reading) + "\n" + MetricText.State(definition, reading.Coverage)
+            + Lineage(hoverSeries, nearest));
+    }
+
+    /// <summary>What the chart knows about where a reading comes from, beyond its value.</summary>
+    private static string Lineage(IReadOnlyList<MetricHistoryPoint> series, MetricHistoryPoint point)
+    {
+        var text = "";
+        if (point.Unlinked)
+            text += "\n" + (string)"RWS_Chart_PointUnlinked".Translate();
+        if (point.ContinuesFrom >= 0 && FindIndex(series, point) is var index && index >= 0
+            && point.Predecessor(index) is var from && from >= 0 && from < series.Count)
+            text += "\n" + (string)"RWS_Chart_PointBranch".Translate(Dialog_RimworldStatistics.Days(series[from].Tick));
+        if (point.SavedTick is { } saved)
+            text += "\n" + (string)"RWS_Chart_PointSavedLater".Translate(Dialog_RimworldStatistics.Days(saved));
+        return text;
+    }
+
+    private static int FindIndex(IReadOnlyList<MetricHistoryPoint> series, MetricHistoryPoint point)
+    {
+        for (var i = 0; i < series.Count; i++)
+            if (ReferenceEquals(series[i], point))
+                return i;
+        return -1;
     }
 
     private static MetricHistoryPoint? NearestMeasured(IReadOnlyList<MetricHistoryPoint> points, double tick)
@@ -283,39 +318,5 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         }
         return left > 0 && Math.Abs(points[left - 1].Tick - tick) < Math.Abs(points[left].Tick - tick)
             ? points[left - 1] : points[left];
-    }
-
-    private static IReadOnlyList<MetricHistoryPoint> PlotPoints(IReadOnlyList<MetricHistoryPoint> points, int width)
-    {
-        if (points.Count <= width * 2)
-            return points;
-        // Preserve gaps and extrema while reducing redraw work for long dense histories.
-        var output = new List<MetricHistoryPoint>();
-        var step = Math.Max(1, points.Count / width);
-        for (var start = 0; start < points.Count;)
-        {
-            var first = points[start];
-            if (first.Value is null)
-            {
-                output.Add(first);
-                do { start++; } while (start < points.Count && points[start].Value is null);
-                continue;
-            }
-            var min = start;
-            var max = start;
-            var end = start + 1;
-            for (; end < Math.Min(start + step, points.Count) && points[end].ConnectToPrevious
-                && points[end].Value is { } value; end++)
-            {
-                if (value.Number < points[min].Value!.Number)
-                    min = end;
-                if (value.Number > points[max].Value!.Number)
-                    max = end;
-            }
-            foreach (var index in new[] { start, Math.Min(min, max), Math.Max(min, max), end - 1 }.Distinct())
-                output.Add(points[index]);
-            start = end;
-        }
-        return output;
     }
 }

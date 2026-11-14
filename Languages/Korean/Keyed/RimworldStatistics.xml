@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>정착지 비교 값: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>이 통계에 대한 기록이 없습니다.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>기록이 한 점뿐입니다. 점에 마우스를 올리면 값을 볼 수 있습니다.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>게임 내 날짜별 저장 기록입니다. 서로 다른 저장 분기의 기록이 포함될 수 있습니다.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>게임 내 날짜별 저장 기록입니다. 내장된 체크포인트로 부모 저장이 확인된 저장만 선으로 잇습니다.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>선택한 저장 분기의 체크포인트입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>이 저장에서 각 시점까지 관측된 최대 15일 자산 증가량입니다.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>선택한 통계의 기록된 내역 항목을 표시합니다. 시간 경과 그래프가 아닙니다.</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>차트로 표시할 측정값이 없습니다.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>정착지 추가…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>게임 내 날짜별 관측값입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>속이 빈 점은 이전 기록과의 부모-자식 관계를 확인할 수 없는 저장입니다(다른 분기이거나 체크포인트가 없는 이전 저장 등).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>이전 기록과의 부모-자식 관계를 확인할 수 없습니다.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>{0}일 기록에서 이어지는 분기입니다. 그 사이의 점은 다른 분기의 기록입니다.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>이 기록은 {0}일 저장에도 그대로 들어 있었습니다. 그 저장에는 새로운 통계가 기록되지 않았습니다.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>영양 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>제작한 안드로이드</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>안드로이드 제작대에서 작업을 완료해 만든 플레이어 측 안드로이드 수입니다.</RWS_VreAndroid_ManufacturedDesc>

@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>Vergleichswert der Kolonie: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Für diese Statistik ist kein Verlauf verfügbar.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Nur ein Messwert ist verfügbar. Bewege den Mauszeiger über den Punkt, um den Wert zu sehen.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Spielstandwerte nach Spieltagen. Werte aus verschiedenen Spielstandzweigen sind möglich.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>Spielstandwerte nach Spieltagen. Verbunden werden nur Spielstände, deren Vorgänger durch eingebettete Speicherpunkte belegt ist.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>Speicherpunkte des ausgewählten Spielstandzweigs. Lücken zeigen fehlende Messwerte.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>Jeweils größter bis dahin beobachteter Vermögenszuwachs über 15 Tage in diesem Spielstand.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Aufgezeichnete Kategorien der ausgewählten Statistik. Kein zeitlicher Verlauf.</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>Keine Messwerte für ein Diagramm vorhanden.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Kolonie hinzufügen…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Messwerte nach Spieltagen. Lücken zeigen fehlende Werte.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>Hohle Punkte sind Spielstände, deren Beziehung zu früheren Werten nicht belegt ist (anderer Zweig oder älterer Spielstand ohne Speicherpunkte).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>Die Beziehung zu früheren Werten ist nicht belegt.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>Ein Zweig, der an den Wert von Tag {0} anschließt; die Punkte dazwischen gehören zu einem anderen Zweig.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>Dieser Wert war unverändert auch in einem Spielstand von Tag {0} enthalten; dieser hat keine neueren Statistiken aufgezeichnet.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Hergestellte Androiden</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Spielereigene Androiden nach abgeschlossener Arbeit an der Androidenstation.</RWS_VreAndroid_ManufacturedDesc>
