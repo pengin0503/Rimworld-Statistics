@@ -1,0 +1,49 @@
+namespace RimworldStatistics.Core;
+
+/// <summary>
+/// A chart projects the already-computed numeric view. It never reinterprets checkpoint history,
+/// fills missing readings with zero, or changes which colonies participate in the current scope.
+/// </summary>
+public sealed record MetricChartBar(string Key, NumericValue Value);
+
+public static class MetricChartSeries
+{
+    /// <summary>One comparable observation per included colony, ordered from highest value to lowest.</summary>
+    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, string metricKey)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        return Sort(view.Colonies
+            .Where(c => !c.Excluded && !c.OutOfScope)
+            .Select(c => new { c.Key, Row = c.Rows.FirstOrDefault(r => r.Definition.Key == metricKey) })
+            .Where(c => c.Row is not null && Measured(c.Row.Value))
+            .Select(c => new MetricChartBar(c.Key, c.Row!.Value)));
+    }
+
+    /// <summary>Saved per-category contributions, not a series of successive save-time measurements.</summary>
+    public static IReadOnlyList<MetricChartBar> Breakdowns(NumericView view, string metricKey, string? colonyKey = null)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        var rows = colonyKey is null
+            ? view.Overall
+            : view.Colonies.FirstOrDefault(c => c.Key == colonyKey)?.Rows;
+        var row = rows?.FirstOrDefault(r => r.Definition.Key == metricKey);
+        return row is null ? [] : Sort(row.Breakdowns
+            .Where(r => Measured(r.Value))
+            .Select(r => new MetricChartBar(r.Breakdown, r.Value)));
+    }
+
+    /// <summary>Fallback for aggregate-only metrics that have neither comparable colonies nor breakdowns.</summary>
+    public static IReadOnlyList<MetricChartBar> Overall(NumericView view, string metricKey)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        var row = view.Overall.FirstOrDefault(r => r.Definition.Key == metricKey);
+        return row is not null && Measured(row.Value) ? [new MetricChartBar(metricKey, row.Value)] : [];
+    }
+
+    private static bool Measured(NumericValue value)
+        => value.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+            && value.Number is { } number && double.IsFinite(number);
+
+    private static IReadOnlyList<MetricChartBar> Sort(IEnumerable<MetricChartBar> bars)
+        => bars.OrderByDescending(b => b.Value.Number!.Value).ThenBy(b => b.Key, StringComparer.Ordinal).ToArray();
+}
