@@ -7,7 +7,8 @@ namespace RimworldStatistics;
 
 /// <summary>
 /// Stamps a campaign id and the lineage of endings into the save (spec §8.1) and records live observations (§8.2, §8.3).
-/// Never ticks. Every hook catches its own exceptions so saving and loading always continue.
+/// Never ticks; each frame it only reports failures of profile changes applied off the game thread. Every hook catches its
+/// own exceptions so saving and loading always continue.
 /// The full type name must equal <see cref="SaveReader.ComponentClassName"/>.
 /// </summary>
 public sealed class GameComponent_RimworldStatistics : GameComponent
@@ -188,7 +189,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
 
     /// <summary>
     /// Spec §8.3: on every save, refresh the live record; the file is written in the background. A committed checkpoint of the
-    /// same save is recorded under the same lock (numeric expansion design §2 "同じ成功入力でv1記録と拡張観測を一度のロックで反映").
+    /// same save is recorded in the same profile change (numeric expansion design §2 "同じ成功入力でv1記録と拡張観測を一度のロックで反映").
     /// </summary>
     internal void RecordSave(string path, SaveDraft? checkpoint)
     {
@@ -210,23 +211,42 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             // so a history chart can join it only to snapshots of proven ancestor saves.
             if (snapshot != null && numeric != null && numeric.SaveTick == snapshot.SaveTick)
                 snapshot.CheckpointKey = numeric.Key;
-            ProfileService.Session.Mutate(p =>
+            var providers = ModProviderAdapters.ActiveDescriptors;   // read here, on the game thread, for this save
+            // The game thread never waits for the profile (Issue #195): while a background write or an import holds it,
+            // this change is applied right after, in order, before anything else reads or writes the profile.
+            ProfileService.Session.MutateWithoutBlocking(p =>
             {
-                ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);
-                // Record the interpretation before snapshot compaction sees the new keys.
-                var providers = ModProviderAdapters.ActiveDescriptors;
-                if (providers.Count > 0 && (numeric != null || snapshot != null))
-                    ProfileMutations.RememberModMetrics(p, providers);
-                if (numeric != null)
-                    ProfileMutations.UpsertMetricObservation(p, numeric);
-                if (snapshot != null)
-                    ProfileMutations.UpsertMetricObservation(p, snapshot);
-            }, SaveMode.Background);
+                try
+                {
+                    ProfileMutations.ApplyLiveObservation(p, id, identity, values, display, savedUtc, version);
+                    // Record the interpretation before snapshot compaction sees the new keys.
+                    if (providers.Count > 0 && (numeric != null || snapshot != null))
+                        ProfileMutations.RememberModMetrics(p, providers);
+                    if (numeric != null)
+                        ProfileMutations.UpsertMetricObservation(p, numeric);
+                    if (snapshot != null)
+                        ProfileMutations.UpsertMetricObservation(p, snapshot);
+                }
+                catch (Exception e)
+                {
+                    DeferredFailures.Enqueue(e);   // this may run on a worker thread: report it from the game thread
+                }
+            });
         }
         catch (Exception e)
         {
             Fail("RecordSave", e);
         }
+    }
+
+    // Failures of RecordSave changes the profile applied after RecordSave returned. Log.Error can pause the game, so they
+    // are reported from the game thread.
+    private static readonly System.Collections.Concurrent.ConcurrentQueue<Exception> DeferredFailures = new();
+
+    public override void GameComponentUpdate()
+    {
+        while (DeferredFailures.TryDequeue(out var e))
+            Fail("RecordSave", e);
     }
 
     private static MetricObservation? NumericObservation(SaveDraft? checkpoint, ColonyIdentity identity, string version)

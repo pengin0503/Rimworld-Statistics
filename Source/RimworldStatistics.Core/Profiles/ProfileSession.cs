@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Text.Json;
 
 namespace RimworldStatistics.Core;
@@ -27,6 +28,8 @@ public sealed class StatsView
 /// <summary>
 /// The one in-memory profile, shared by the UI, the import thread and the game hooks (spec §6.3).
 /// Changes and reads run under one lock; JSON is produced under the lock, and the file is written outside it.
+/// The game thread records saves with <see cref="MutateWithoutBlocking"/>, which never waits for that lock: a change that
+/// finds it held is queued and applied, in order, before any later read, change or write.
 /// Writes are ordered: a write never replaces a newer snapshot with an older one. Save errors are kept, never thrown.
 /// </summary>
 public sealed class ProfileSession
@@ -50,6 +53,12 @@ public sealed class ProfileSession
     private Task? _backgroundTask;
     private volatile Exception? _lastSaveError;
     private volatile Exception? _lastArchiveError;
+    private volatile Exception? _lastQueuedError;
+
+    // Changes from MutateWithoutBlocking that found the profile busy, in order. Applied under _lock before any other
+    // use of the profile, so nothing ever sees a later change without an earlier one.
+    private readonly ConcurrentQueue<Action<Profile>> _queued = new();
+    private int _mutationDepth;   // changes running (under _lock, nested on one thread): queued changes wait for them
 
     public ProfileSession(ProfileStore store, Func<DateTime> utcNow, ICheckpointArchive? archive = null)
     {
@@ -65,31 +74,106 @@ public sealed class ProfileSession
     public Exception? LastSaveError => _lastSaveError;
     public Exception? LastArchiveError => _lastArchiveError;
 
+    /// <summary>The latest exception thrown by a change given to <see cref="MutateWithoutBlocking"/>.</summary>
+    public Exception? LastQueuedMutationError => _lastQueuedError;
+
     public void Mutate(Action<Profile> change, SaveMode mode)
     {
         MutateWithRevision(change);
         Save(mode);
     }
 
+    /// <summary>
+    /// For a caller that must not wait for the profile (the game thread recording a save, Issue #195 / F-14): applies
+    /// <paramref name="change"/> now and requests a background write when the profile is free. When another thread holds
+    /// it (a background write serializing it, an import, a view being built), the change is queued and returns at once;
+    /// it is applied, in order with every other change, before anything else reads or writes the profile, and a worker
+    /// applies it as soon as the profile is released. The change must only use the profile and data it captured; an
+    /// exception it throws is kept in <see cref="LastQueuedMutationError"/> and does not affect other changes.
+    /// </summary>
+    public void MutateWithoutBlocking(Action<Profile> change)
+    {
+        ArgumentNullException.ThrowIfNull(change);
+        _queued.Enqueue(change);
+        if (Monitor.TryEnter(_lock))
+        {
+            var insideChange = false;
+            try
+            {
+                insideChange = _mutationDepth > 0;   // called from a running change: it goes after that change
+                if (!insideChange)
+                    ApplyQueuedAndRequestSave();
+            }
+            finally
+            {
+                Monitor.Exit(_lock);
+            }
+            if (!insideChange)
+                return;
+        }
+        ThreadPool.UnsafeQueueUserWorkItem(static session =>
+        {
+            lock (session._lock)
+                session.ApplyQueuedAndRequestSave();
+        }, this, preferLocal: false);
+    }
+
     internal (long Before, long After) MutateWithRevision(Action<Profile> change)
     {
         lock (_lock)
         {
-            var before = _changeSeq;
-            if (_closed)
-                return (before, before);
+            ApplyQueuedAndRequestSave();
+            return MutateLocked(change);
+        }
+    }
+
+    /// <summary>Under _lock, at every use of the profile: queued changes first, then a background write for them.</summary>
+    private void ApplyQueuedAndRequestSave()
+    {
+        if (ApplyQueued())
+            Save(SaveMode.Background);   // re-entrant lock: starts or flags the writer, never waits
+    }
+
+    // Under _lock.
+    private (long Before, long After) MutateLocked(Action<Profile> change)
+    {
+        var before = _changeSeq;
+        if (_closed)
+            return (before, before);
+        _mutationDepth++;
+        try
+        {
+            change(_profile);
+            RestoreCheckpointMetrics();
+        }
+        finally
+        {
+            _mutationDepth--;
+            _views.Clear();
+            _changeSeq++;
+        }
+        return (before, _changeSeq);
+    }
+
+    /// <summary>Under _lock: applies queued changes in their order. False when there were none (or a change is running).</summary>
+    private bool ApplyQueued()
+    {
+        if (_mutationDepth > 0 || _queued.IsEmpty)
+            return false;
+        var applied = false;
+        while (_queued.TryDequeue(out var change))
+        {
+            applied = true;
             try
             {
-                change(_profile);
-                RestoreCheckpointMetrics();
+                MutateLocked(change);
             }
-            finally
+            catch (Exception e)
             {
-                _views.Clear();
-                _changeSeq++;
+                _lastQueuedError = e;
             }
-            return (before, _changeSeq);
         }
+        return applied;
     }
 
     internal void QueueSave() => Save(SaveMode.Background);
@@ -148,7 +232,10 @@ public sealed class ProfileSession
     public T Read<T>(Func<Profile, T> read)
     {
         lock (_lock)
+        {
+            ApplyQueuedAndRequestSave();
             return read(_profile);
+        }
     }
 
     public IReadOnlyList<HistoricalCounterInterval> ReadHistoricalCounterIntervals()
@@ -183,7 +270,10 @@ public sealed class ProfileSession
     internal T ReadWithRevision<T>(Func<Profile, long, T> read)
     {
         lock (_lock)
+        {
+            ApplyQueuedAndRequestSave();
             return read(_profile, _changeSeq);
+        }
     }
 
     public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null, ViewScope? scope = null)
@@ -192,6 +282,7 @@ public sealed class ProfileSession
             return null;
         try
         {
+            ApplyQueuedAndRequestSave();
             var key = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
             if (!_views.TryGetValue(key, out var entry))
                 return null;
@@ -216,6 +307,7 @@ public sealed class ProfileSession
         }
         try
         {
+            ApplyQueuedAndRequestSave();
             result = read(_profile, _changeSeq);
             return true;
         }
@@ -232,6 +324,7 @@ public sealed class ProfileSession
         StatsView view;
         lock (_lock)
         {
+            ApplyQueuedAndRequestSave();
             var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
             if (_views.TryGetValue(cacheKey, out var cached))
             {
@@ -378,6 +471,7 @@ public sealed class ProfileSession
             var serialized = new List<(ArchiveStep Step, string Json)>();
             lock (_lock)
             {
+                ApplyQueuedAndRequestSave();
                 plannedRevision = _changeSeq;
                 steps = CheckpointArchivePlanner.Plan(_profile);
                 foreach (var step in steps)
@@ -441,8 +535,11 @@ public sealed class ProfileSession
         lock (_ioLock)
         {
             lock (_lock)
+            {
+                ApplyQueuedAndRequestSave();
                 if (_closed || _changeSeq <= _writtenSeq)
                     return;
+            }
 
             long seq = 0;
             try
@@ -452,8 +549,9 @@ public sealed class ProfileSession
                     ArchiveCheckpoints();
                     lock (_lock)
                     {
+                        ApplyQueuedAndRequestSave();
                         seq = _changeSeq;
-                        return ProfileJson.Serialize(_profile);
+                        return ProfileJson.SerializeToUtf8Bytes(_profile);
                     }
                 });
                 _writtenSeq = seq;

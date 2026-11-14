@@ -213,6 +213,8 @@ jobs:
           cat "$RUNNER_TEMP/rws-profile-benchmark.csv"
       - name: Profile 5 and 10 MiB import-only write benchmark
         run: dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile -- --large
+      - name: Representative 0.2/5/10 MiB profile write and game-thread wait benchmark
+        run: dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile -- --representative
       - name: Synthetic historical .rws cold/warm scan (55 saves)
         shell: bash
         run: |

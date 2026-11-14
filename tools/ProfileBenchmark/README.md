@@ -29,6 +29,20 @@ The standard `numeric-verification.yml` GitHub Actions job produces `rws-profile
 - **`build_view_alloc_bytes`**: median managed allocations of the same view build, not process peak memory.
 - **`disk_commit_ms`**: median of five atomic profile writes to a local temporary directory with only `importState` changing; **does not measure backup rotation** or RimWorld's actual save file.
 
+### Representative profiles (`--representative`, Issue #195)
+
+```bash
+dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj -- --representative 0.2 5 10
+```
+
+Profiles are shaped like imported real ones (a read-only import of six private 1.7 saves gave about 51 KB per checkpoint tip and 8.8 KB per save-file observation): per colony, 8 save files carrying every SaveFile metric, a checkpoint chain whose tip carries every live family metric with breakdowns, and compressed ancestors. All data is synthetic.
+
+- **`locked_serialize_*`**: the UTF-8 serialization a background write performs while it holds the profile (game-thread changes cannot start meanwhile).
+- **`statistics_commit_*`**: one store commit after a statistics change: byte-exact check of the primary against the last write, write + flush, atomic replace and three-backup rotation.
+- **`import_only_commit_median_ms`**: a commit where only `importState` changed (no backup rotation).
+- **`commit_read_bytes` / `commit_write_bytes`**: bytes read to verify the primary and written per commit (backups are renames).
+- **`blocking_wait_*` / `nonblocking_wait_*`**: how long a game-thread change waited while background writes ran every 5 ms, with `Mutate` and with `MutateWithoutBlocking` (used by `RecordSave` since Issue #195). The non-blocking change is applied right after the current holder releases the profile, before any other read or write.
+
 There are no machine-dependent performance thresholds: a slowdown requires repeated measurements on the same type of GitHub Actions runner or an actual PC, and a correctness regression is still validated by unit tests.
 
 ## Example CI result (2026-11-08, GitHub Actions run #42478341384)

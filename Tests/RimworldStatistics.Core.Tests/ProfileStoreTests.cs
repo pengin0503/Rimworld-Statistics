@@ -224,4 +224,56 @@ public sealed class ProfileStoreTests
         Assert.False(File.Exists(dir.File("profile.json.bak1")));
     }
 
+    [Fact]
+    public void APrimaryWithAByteOrderMarkLoadedHereCanBeReplaced()
+    {
+        // e.g. saved once by an editor that adds a UTF-8 BOM: it is still the file this session loaded.
+        using var dir = new TempDir();
+        var json = ProfileJson.Serialize(Tagged("bom"));
+        File.WriteAllBytes(dir.File("profile.json"), [0xEF, 0xBB, 0xBF, .. System.Text.Encoding.UTF8.GetBytes(json)]);
+        var store = new ProfileStore(dir.Path);
+        var loaded = store.Load(Now);
+        Assert.Equal(ProfileLoadSource.Primary, loaded.Source);
+
+        loaded.Profile.SaveObservations.Add(new SaveObservation { FileName = "after-bom" });
+        store.Save(loaded.Profile);
+
+        Assert.Equal(2, ProfileJson.Deserialize(File.ReadAllText(store.ProfilePath)).SaveObservations.Count);
+        Assert.Equal(json, File.ReadAllText(dir.File("profile.json.bak1")));
+    }
+
+    [Fact]
+    public void AnEditThatDecodesToTheSameTextIsStillAnEdit()
+    {
+        // Two different invalid UTF-8 bytes both decode to U+FFFD: only the bytes show the other writer.
+        using var dir = new TempDir();
+        var bytes = System.Text.Encoding.UTF8.GetBytes(ProfileJson.Serialize(Tagged("ab")));
+        var at = bytes.AsSpan().IndexOf("ab"u8);
+        bytes[at] = 0xFF;
+        File.WriteAllBytes(dir.File("profile.json"), bytes);
+        var store = new ProfileStore(dir.Path);
+        var loaded = store.Load(Now);
+        Assert.Equal(ProfileLoadSource.Primary, loaded.Source);
+        bytes[at] = 0xFE;
+        File.WriteAllBytes(store.ProfilePath, bytes);
+
+        loaded.Profile.SaveObservations.Add(new SaveObservation { FileName = "new" });
+        Assert.Throws<IOException>(() => store.Save(loaded.Profile));
+        Assert.Equal(bytes, File.ReadAllBytes(store.ProfilePath));
+    }
+
+    [Fact]
+    public void TheUtf8SerializationIsTheTextSerializationEncoded()
+    {
+        var profile = Tagged("日本語 🐾 \u0001 \"quote\" \\ \ud800 end");
+        profile.ImportState.LastScanUtc = Now;
+        profile.MetricObservations.Add(new MetricObservation
+        {
+            Source = MetricObservationSource.Checkpoint, Key = "k", Identity = new ColonyIdentity { ModCampaignId = "c" },
+            Metrics = { ["m"] = MetricEntry.Of(1, new MetricValue { Coverage = MetricCoverage.Complete, RealValue = 0.1 + 0.2 }) },
+        });
+
+        Assert.Equal(System.Text.Encoding.UTF8.GetBytes(ProfileJson.Serialize(profile)), ProfileJson.SerializeToUtf8Bytes(profile));
+    }
+
 }
