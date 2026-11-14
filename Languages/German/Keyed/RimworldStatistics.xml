@@ -781,7 +781,7 @@
   <RWS_Metric_RoyaltyPermitUses>Verwendete königliche Genehmigungen</RWS_Metric_RoyaltyPermitUses>
   <RWS_MetricDesc_RoyaltyPermitUses>Königliche Genehmigungen, die ein berechtigter Spieler-Kolonist tatsächlich nutzte. Abgebrochene Auswahlen zählen nicht.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Erfolgreich gewirkte mentale Kräfte</RWS_Metric_RoyaltyPsycasts>
-  <RWS_MetricDesc_RoyaltyPsycasts>mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>Mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.</RWS_MetricDesc_RoyaltyPsycasts>
   <RWS_Metric_RoyaltyQuestSuccess>Erfolgreiche Kaiserreich-Quests</RWS_Metric_RoyaltyQuestSuccess>
   <RWS_MetricDesc_RoyaltyQuestSuccess>Angenommene, noch im Spielstand vorhandene Quests, die erfolgreich endeten und im Quest-Reiter als mit dem Kaiserreich verbunden angezeigt werden. Bei jeder erfolgreichen Speicherung gezählt. Vom Spiel entfernte Quests fehlen; daher kein Lebenszeit-Gesamtwert.</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>Verliehene königliche Titel</RWS_Metric_RoyaltyTitleGrants>

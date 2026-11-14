@@ -735,7 +735,7 @@
   <RWS_Metric_RosterAnimalDefsPeak>Maior diversidade de espécies de animais</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Maior número de espécies diferentes entre os animais vivos da colônia em um único jogo salvo registrado.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterPassions>Interesses dos colonos por habilidade</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>Interesses (nenhuma, menor, maior) de colonos livres por habilidade em um salvamento bem-sucedido.</RWS_MetricDesc_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>Interesses (nenhum, menor, maior) de colonos livres por habilidade em um salvamento bem-sucedido.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Idade média dos colonos vivos</RWS_Metric_RosterAgeMean>
   <RWS_MetricDesc_RosterAgeMean>Idade biológica média dos colonos livres vivos em um salvamento bem-sucedido.</RWS_MetricDesc_RosterAgeMean>
   <RWS_Metric_RosterInjuredPeak>Maior número de colonos feridos ao mesmo tempo</RWS_Metric_RosterInjuredPeak>

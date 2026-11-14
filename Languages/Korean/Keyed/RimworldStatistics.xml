@@ -659,7 +659,7 @@
   <RWS_Metric_SolarFlares>흑점 폭발 횟수</RWS_Metric_SolarFlares>
   <RWS_MetricDesc_SolarFlares>새로 시작된 흑점 폭발의 횟수입니다. 기록 시작 당시 이미 진행 중이던 것은 제외합니다.</RWS_MetricDesc_SolarFlares>
   <RWS_Metric_SolarFlareDays>흑점 폭발 지속 일수</RWS_Metric_SolarFlareDays>
-  <RWS_MetricDesc_SolarFlareDays>적어도 하나의 흑점 폭발가 발생한 날의 수입니다. 겹치는 기간은 한 번만 세며, 설비별 정지 시간은 아닙니다.</RWS_MetricDesc_SolarFlareDays>
+  <RWS_MetricDesc_SolarFlareDays>적어도 하나의 흑점 폭발이 발생한 날의 수입니다. 겹치는 기간은 한 번만 세며, 설비별 정지 시간은 아닙니다.</RWS_MetricDesc_SolarFlareDays>
   <RWS_Metric_ColdSnaps>한파 횟수</RWS_Metric_ColdSnaps>
   <RWS_MetricDesc_ColdSnaps>새로 시작된 한파 횟수입니다.</RWS_MetricDesc_ColdSnaps>
   <RWS_Metric_HeatWaves>폭염 횟수</RWS_Metric_HeatWaves>
