@@ -56,6 +56,8 @@ raid.duration.mean,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-B-008,RaidFamily.D
 raid.duration.max,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-004,RaidFamily.DurationMax
 raid.duration.min_repelled,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N5-B-008,RaidFamily.DurationMinRepelled
 membership.first_join,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-001,MembershipFamily.FirstJoin
+membership.joins_by_species,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-001,MembershipFamily.JoinsBySpecies
+population.deaths_by_species,health_death,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-004,HealthDeathFamily.DeathsBySpecies
 membership.route,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-C-003,MembershipFamily.Routes
 membership.prisoner_recruit,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-002,MembershipFamily.PrisonerRecruit
 membership.human_birth,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,"P-003, L-011",MembershipFamily.HumanBirths

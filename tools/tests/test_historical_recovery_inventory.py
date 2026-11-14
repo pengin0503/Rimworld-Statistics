@@ -1,4 +1,4 @@
-"""Regression checks for the conservative 268-output historical-recovery inventory."""
+"""Regression checks for the conservative 270-output historical-recovery inventory."""
 import collections
 import pathlib
 import sys
@@ -12,9 +12,9 @@ from historical_recovery_inventory import build_inventory, csv_text
 class HistoricalRecoveryInventoryTests(unittest.TestCase):
     def test_every_implemented_acquisition_output_has_one_recovery_decision(self):
         rows = build_inventory(ROOT)
-        self.assertEqual(268, len(rows))
+        self.assertEqual(270, len(rows))
         self.assertEqual(
-            {"live": 219, "snapshot": 40, "derived": 9},
+            {"live": 221, "snapshot": 40, "derived": 9},
             dict(collections.Counter(row["catalog"] for row in rows)),
         )
         keys = [row["metric_key"] for row in rows]
@@ -30,6 +30,8 @@ class HistoricalRecoveryInventoryTests(unittest.TestCase):
         by_key = {row["metric_key"]: row for row in build_inventory(ROOT)}
         self.assertEqual("EVENT_LOG_REQUIRED",
                          by_key["research.live.completed"]["recovery_decision"])
+        for key in ("membership.joins_by_species", "population.deaths_by_species"):
+            self.assertEqual("EVENT_LOG_REQUIRED", by_key[key]["recovery_decision"])
         self.assertEqual("SAVED_STATE_CANDIDATE",
                          by_key["research.snapshot.finished"]["recovery_decision"])
         self.assertEqual("DEPENDS_ON_INPUT",
