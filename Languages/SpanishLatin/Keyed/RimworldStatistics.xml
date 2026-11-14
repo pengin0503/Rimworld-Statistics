@@ -49,8 +49,8 @@
   <RWS_Ending_RoyalAscent>Ascensión real</RWS_Ending_RoyalAscent>
   <RWS_Ending_AmbiguousLaunch>Partida (tipo desconocido)</RWS_Ending_AmbiguousLaunch>
   <RWS_Ending_Archonexus>Arqueonexo</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Núcleo Cerébrex (saqueado)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Núcleo Cerébrex (destruido)</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_CerebrexScavenged>Núcleo Cerebrex (saqueado)</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>Núcleo Cerebrex (destruido)</RWS_Ending_CerebrexDestroyed>
   <RWS_Ending_VoidEmbraced>Vacío abrazado</RWS_Ending_VoidEmbraced>
   <RWS_Ending_VoidDisrupted>Vacío interrumpido</RWS_Ending_VoidDisrupted>
   <RWS_Ending_Other>Otro</RWS_Ending_Other>
@@ -286,7 +286,7 @@
   <RWS_Metric_RankLargestSale>Mayor venta en una colonia</RWS_Metric_RankLargestSale>
   <RWS_MetricDesc_RankLargestSale>Importe máximo confirmado de una venta en una sola transacción, comparado entre las colonias.</RWS_MetricDesc_RankLargestSale>
   <RWS_Metric_RankMostResearch>Máximo de investigaciones completadas en una colonia</RWS_Metric_RankMostResearch>
-  <RWS_MetricDesc_RankMostResearch>Mayor número de proyectos de investigación completados en una instantánea de guardado de una colonia. No es un recuento de eventos de finalización de investigaciones.</RWS_MetricDesc_RankMostResearch>
+  <RWS_MetricDesc_RankMostResearch>Mayor número de proyectos de investigación completados en una instantánea de partida guardada de una colonia. No es un recuento de eventos de finalización de investigaciones.</RWS_MetricDesc_RankMostResearch>
   <RWS_Metric_RankMinPartyAtEnding>Grupo más pequeño al alcanzar un final</RWS_Metric_RankMinPartyAtEnding>
   <RWS_MetricDesc_RankMinPartyAtEnding>Menor número de participantes confirmado por el juego al producirse un final: sarcófagos de criptosueño ocupados al lanzar una nave, colonos enviados en el transbordador de Ascensión real o colonos trascendidos en el arqueonexo. Los demás finales y los registrados antes de que se guardara este dato no tienen valor.</RWS_MetricDesc_RankMinPartyAtEnding>
   <RWS_Metric_RankByDifficultyDays>Días jugados por dificultad</RWS_Metric_RankByDifficultyDays>
@@ -697,9 +697,9 @@
   <RWS_Metric_SitesCleared>Asentamientos enemigos derrotados</RWS_Metric_SitesCleared>
   <RWS_MetricDesc_SitesCleared>Asentamientos de facciones enemigas destruidos gracias a una victoria del jugador.</RWS_MetricDesc_SitesCleared>
   <RWS_Metric_SettlementsFounded>Asentamientos fundados</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>Asentamientos nuevos del jugador fundados desde una caravana o mapa existente. No cuentan el asentamiento inicial, los mudanzas de colonia ni los aterrizajes de naves gravitatorias.</RWS_MetricDesc_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>Asentamientos nuevos del jugador fundados desde una caravana o mapa existente. No cuentan el asentamiento inicial, las mudanzas de colonia ni los aterrizajes de gravinaves.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Asentamientos abandonados</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Asentamientos del jugador abandonados voluntariamente. No se cuentan las eliminaciones automáticas, como el despegue de una nave gravitatoria.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Asentamientos del jugador abandonados voluntariamente. No se cuentan las eliminaciones automáticas, como el despegue de una gravinave.</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>Peligros ancestrales abiertos</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Santuarios antiguos sellados (peligros ancestrales en mapas de asentamientos del jugador) cuyo interior fue abierto, contados una vez cada uno. Se cuenta un santuario cuando el juego lo considera descubierto, es decir, cuando se disipa la niebla sobre su centro. Romper otros muros o hacer aparecer enemigos no cuenta.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Bioma original</RWS_Metric_ColonyStartingBiome>
@@ -712,8 +712,8 @@
   <RWS_MetricDesc_ResearchSnapshotTechPeak>Mayor nivel tecnológico entre los proyectos de investigación terminados en el último archivo guardado exitoso.</RWS_MetricDesc_ResearchSnapshotTechPeak>
   <RWS_Metric_FactionSnapshotRelations>Facciones aliadas y hostiles</RWS_Metric_FactionSnapshotRelations>
   <RWS_MetricDesc_FactionSnapshotRelations>Facciones activas aliadas o enemigas del jugador en el último archivo guardado exitoso.</RWS_MetricDesc_FactionSnapshotRelations>
-  <RWS_Metric_FactionSnapshotGoodwillRange>Intervalo de reputación entre facciones</RWS_Metric_FactionSnapshotGoodwillRange>
-  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Reputación básica mínima y máxima entre las facciones activas que tienen reputación. Las facciones permanentemente hostiles se incluyen en el número de facciones, pero no en el cálculo de reputación.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
+  <RWS_Metric_FactionSnapshotGoodwillRange>Intervalo de buena voluntad entre facciones</RWS_Metric_FactionSnapshotGoodwillRange>
+  <RWS_MetricDesc_FactionSnapshotGoodwillRange>Buena voluntad básica mínima y máxima entre las facciones activas que tienen buena voluntad. Las facciones permanentemente hostiles se incluyen en el número de facciones, pero no en el cálculo de buena voluntad.</RWS_MetricDesc_FactionSnapshotGoodwillRange>
   <RWS_Metric_RosterFree>Colonos libres vivos</RWS_Metric_RosterFree>
   <RWS_MetricDesc_RosterFree>Colonos libres que estaban vivos en un archivo guardado exitoso.</RWS_MetricDesc_RosterFree>
   <RWS_Metric_RosterPrisoners>Prisioneros vivos de la colonia</RWS_Metric_RosterPrisoners>
@@ -751,9 +751,9 @@
   <RWS_Metric_FacilitiesBattery>Mayor capacidad de baterías</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Mayor suma de capacidad nominal de baterías en mapas de hogar cargados en un mismo archivo guardado registrado.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Temperatura exterior mínima al guardar</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Temperatura exterior más baja en un mapa de hogar cargado al momento de un guardado registrado. No se conocen las temperaturas entre archivos guardados.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Temperatura exterior más baja en un mapa de hogar cargado al momento de una partida guardada registrada. No se conocen las temperaturas entre archivos guardados.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Temperatura exterior máxima al guardar</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Temperatura exterior más alta en un mapa de hogar cargado al momento de un guardado registrado. No se conocen las temperaturas entre archivos guardados.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Temperatura exterior más alta en un mapa de hogar cargado al momento de una partida guardada registrada. No se conocen las temperaturas entre archivos guardados.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
   <RWS_Metric_StockFoodLatest>Comida almacenada (nutrición)</RWS_Metric_StockFoodLatest>
   <RWS_MetricDesc_StockFoodLatest>Nutrición total de la comida en los mapas de hogar cargados, incluida la que llevan los personajes o guardan los contenedores, en un archivo guardado correctamente.</RWS_MetricDesc_StockFoodLatest>
   <RWS_Metric_StockSilverLatest>Plata almacenada</RWS_Metric_StockSilverLatest>
@@ -761,23 +761,23 @@
   <RWS_Metric_StockMaterialsLatest>Acero y componentes almacenados</RWS_Metric_StockMaterialsLatest>
   <RWS_MetricDesc_StockMaterialsLatest>Acero, componentes y componentes avanzados en mapas de hogar cargados, incluso los que llevan los personajes o guardan los contenedores, en un archivo guardado correctamente; se muestran por tipo.</RWS_MetricDesc_StockMaterialsLatest>
   <RWS_Metric_StockWeaponsPeak>Máximo de armas poseídas</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>Mayor número de armas, equipadas o almacenadas, en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Mayor número de armas, equipadas o almacenadas, en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockWeaponsPeak>
   <RWS_Metric_StockWeaponDefsPeak>Máximo de tipos de armas</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>Mayor número de tipos distintos de armas, equipadas o almacenadas, en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Mayor número de tipos distintos de armas, equipadas o almacenadas, en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockWeaponDefsPeak>
   <RWS_Metric_StockLegendaryWeaponsPeak>Máximo de armas legendarias</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Mayor número de armas de calidad legendaria, equipadas o almacenadas, en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Mayor número de armas de calidad legendaria, equipadas o almacenadas, en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
   <RWS_Metric_StockPersonaWeaponsPeak>Máximo de armas con IA</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>Mayor número de armas con IA, equipadas o almacenadas, en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Mayor número de armas con IA, equipadas o almacenadas, en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockPersonaWeaponsPeak>
   <RWS_Metric_StockMedicinePeak>Máximo de medicina almacenada</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>Mayor cantidad de medicina, almacenada o transportada, en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Mayor cantidad de medicina, almacenada o transportada, en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockMedicinePeak>
   <RWS_Metric_StockFoodMin>Mínimo de comida almacenada (nutrición)</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>Menor cantidad total de nutrición en mapas de hogar cargados en un mismo guardado registrado.</RWS_MetricDesc_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>Menor cantidad total de nutrición en mapas de hogar cargados en una misma partida guardada registrada.</RWS_MetricDesc_StockFoodMin>
   <RWS_Metric_RoyaltyPsylinkPeak>Nivel máximo de psicoenlace</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>Mayor nivel de psicoenlace de un colono observado en un guardado registrado. Requiere Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Mayor nivel de psicoenlace de un colono observado en una partida guardada registrada. Requiere Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
   <RWS_Metric_BiotechPollutionPeak>Máximo de casillas contaminadas</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>Mayor número de casillas contaminadas en mapas de hogar visto en un guardado registrado. Requiere Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>Máximo de ancho de banda usado por un mecanitor</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>Mayor ancho de banda utilizado por un mecanitor en un guardado registrado. Requiere Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Mayor número de casillas contaminadas en mapas de hogar visto en una partida guardada registrada. Requiere Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Máximo de ancho de banda usado por un mecanizador</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Mayor ancho de banda utilizado por un mecanizador en una partida guardada registrada. Requiere Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
   <RWS_Metric_RoyaltyPermitUses>Permisos reales utilizados</RWS_Metric_RoyaltyPermitUses>
   <RWS_MetricDesc_RoyaltyPermitUses>Permisos reales usados efectivamente por colonos elegibles del jugador. No cuentan las selecciones canceladas.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Poderes psíquicos lanzados con éxito</RWS_Metric_RoyaltyPsycasts>
@@ -800,14 +800,14 @@
   <RWS_MetricDesc_IdeologyConversionDays>Media de días desde un intento confirmado de conversión hasta que el personaje adoptó la ideoligión objetivo.</RWS_MetricDesc_IdeologyConversionDays>
   <RWS_Metric_IdeologyAppointments>Nombramientos de funciones</RWS_Metric_IdeologyAppointments>
   <RWS_MetricDesc_IdeologyAppointments>Nuevos nombramientos confirmados de colonos del jugador como líderes o especialistas de una ideoligión; volver a asignar la misma función no cuenta.</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>Vuelos de naves gravitatorias completados</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>Vuelos de naves gravitatorias confirmados como completados mediante un aterrizaje del jugador. No cuentan los despegues ni las vistas previas de rutas por sí solos.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyFlights>Vuelos de gravinaves completados</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Vuelos de gravinaves confirmados como completados mediante un aterrizaje del jugador. No cuentan los despegues ni las vistas previas de rutas por sí solos.</RWS_MetricDesc_OdysseyFlights>
   <RWS_Metric_OdysseyDistance>Distancia total de vuelos gravitatorios</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>Distancia total de vuelos completados de naves gravitatorias (confirmados por un aterrizaje del jugador).</RWS_MetricDesc_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Distancia total de vuelos completados de gravinaves (confirmados por un aterrizaje del jugador).</RWS_MetricDesc_OdysseyDistance>
   <RWS_Metric_OdysseyUniqueTiles>Lugares de aterrizaje distintos</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>Casillas del mundo distintas donde aterrizaron vuelos completados de naves gravitatorias.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Casillas del mundo distintas donde aterrizaron vuelos completados de gravinaves.</RWS_MetricDesc_OdysseyUniqueTiles>
   <RWS_Metric_OdysseyNewMaps>Aterrizajes en mapas nuevos</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>Aterrizajes de naves gravitatorias completados que requirieron generar un mapa nuevo.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Aterrizajes de gravinaves completados que requirieron generar un mapa nuevo.</RWS_MetricDesc_OdysseyNewMaps>
   <RWS_Metric_BiotechMechsCreated>Mecanoides gestados</RWS_Metric_BiotechMechsCreated>
   <RWS_MetricDesc_BiotechMechsCreated>Mecanoides producidos en gestadores de mecas del jugador; cuentan una vez que el meca vivo ha salido realmente. No cuentan resurrecciones.</RWS_MetricDesc_BiotechMechsCreated>
   <RWS_Metric_BiotechBirthMothers>Colonos que han dado a luz</RWS_Metric_BiotechBirthMothers>
@@ -1109,7 +1109,7 @@
   <RWS_VseExpertise_LevelUps>Niveles de especialización VSE ganados</RWS_VseExpertise_LevelUps>
   <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes de niveles VSE desde que se activó el registro, sumados entre todas las colonias independientes y agrupados por ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>Nivel de especialización VSE máximo alcanzado</RWS_VseExpertise_Highest>
-  <RWS_VseExpertise_HighestDesc>Mayor nivel de especialización alcanzado realmente por experiencia entre colonias independientes; no es suma de niveles ni instantánea del último guardado.</RWS_VseExpertise_HighestDesc>
+  <RWS_VseExpertise_HighestDesc>Mayor nivel de especialización alcanzado realmente por experiencia entre colonias independientes; no es suma de niveles ni instantánea de la última partida guardada.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Lotes procesados Vanilla Cooking Expanded</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Procesos VEF de sopa, queso y otros productos de Vanilla Cooking Expanded que se completaron, por ProcessDef. No cuentan producción normal mediante órdenes ni salidas parcialmente bloqueadas.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Lotes de fermentación y maduración Vanilla Brewing Expanded</RWS_VefBrewing_Batches>
