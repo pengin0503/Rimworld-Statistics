@@ -99,6 +99,13 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ParentKey { get; set; }
 
+    /// <summary>
+    /// A game-side SaveSnapshot: the checkpoint committed by the same successful save, i.e. that save's position in the
+    /// checkpoint lineage. Null for other sources, older records and saves that committed no new checkpoint.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? CheckpointKey { get; set; }
+
     /// <summary>A checkpoint's content hash: the same id with another hash is a conflict, never merged.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? PayloadHash { get; set; }

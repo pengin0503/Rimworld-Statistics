@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>Valor de comparação da colónia: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Não há histórico disponível para esta estatística.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Existe apenas um registo. Passe o cursor sobre o ponto para ver o valor.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Registos das gravações por dia de jogo. Podem incluir diferentes ramos da partida.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>Registos das gravações por dia de jogo. Só são ligadas as gravações cuja gravação-mãe é comprovada pelos pontos de controlo incorporados.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>Pontos de controlo do ramo selecionado. As lacunas indicam registos em falta.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>Maior aumento de riqueza em 15 dias observado até cada data nesta gravação.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Categorias registadas da estatística selecionada. Não é um gráfico de evolução ao longo do tempo.</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>Não há valores medidos para apresentar no gráfico.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Adicionar colónia…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registos em falta.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>Os pontos vazados são gravações cuja relação com registos anteriores não pode ser comprovada (outro ramo, ou gravação antiga sem pontos de controlo).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>Não é possível comprovar a relação com registos anteriores.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>Ramo que continua o registo do dia {0}; os pontos intermédios pertencem a outro ramo.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>Este registo também estava, sem alterações, numa gravação do dia {0}; essa gravação não registou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androides do jogador criados após concluir o trabalho na estação de criação.</RWS_VreAndroid_ManufacturedDesc>

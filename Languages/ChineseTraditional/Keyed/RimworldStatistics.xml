@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>殖民地比較值：{0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>此統計沒有可用的歷史記錄。</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>只有一個記錄點。將游標移到點上即可查看數值。</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>依遊戲內天數顯示存檔記錄，可能包含不同存檔分支。</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>依遊戲內天數顯示存檔記錄。僅連接已透過內嵌檢查點確認父子關係的存檔。</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>顯示所選存檔分支的檢查點。折線中斷處表示記錄缺失。</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>顯示此存檔截至各時點觀測到的最大15天財富增幅。</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>顯示所選統計的已記錄類別，並非隨時間變化的圖表。</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>沒有可用於繪圖的測量值。</RWS_Chart_NoData>
   <RWS_Chart_AddColony>新增殖民地…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>依遊戲內天數顯示觀測值。折線中斷表示記錄缺失。</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>空心點表示無法確認與更早記錄之間父子關係的存檔（可能是其他分支，或沒有檢查點的舊存檔）。</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>無法確認與更早記錄之間的父子關係。</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>這是從第 {0} 天的記錄延續的分支；中間的點屬於其他分支。</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>第 {0} 天的存檔也原樣包含此記錄；該存檔沒有記錄更新的統計。</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>營養值 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>已製造的安卓人</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>在安卓人製造台完成工作後製造的玩家安卓人數量。</RWS_VreAndroid_ManufacturedDesc>

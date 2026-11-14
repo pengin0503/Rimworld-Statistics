@@ -1233,7 +1233,7 @@
   <RWS_Chart_HistoryRecord>Valor de comparação da colônia: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Não há histórico disponível para esta estatística.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Há apenas um registro. Passe o cursor sobre o ponto para ver o valor.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Registros dos jogos salvos por dia de jogo. Podem incluir diferentes ramificações da partida.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>Registros dos jogos salvos por dia de jogo. Só são ligados os jogos salvos cuja origem é comprovada pelos pontos de controle incorporados.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>Pontos de controle da ramificação selecionada. As lacunas indicam registros ausentes.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>Maior aumento de riqueza em 15 dias observado até cada data neste jogo salvo.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Categorias registradas da estatística selecionada. Este não é um gráfico de evolução ao longo do tempo.</RWS_Chart_BreakdownNote>
@@ -1242,6 +1242,10 @@
   <RWS_Chart_NoData>Não há valores medidos para exibir no gráfico.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Adicionar colônia…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registros ausentes.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>Os pontos vazados são jogos salvos cuja relação com registros anteriores não pode ser comprovada (outra ramificação, ou jogo salvo antigo sem pontos de controle).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>Não é possível comprovar a relação com registros anteriores.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>Ramificação que continua o registro do dia {0}; os pontos intermediários pertencem a outra ramificação.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>Este registro também estava, sem alterações, em um jogo salvo do dia {0}; esse jogo salvo não registrou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androides do jogador criados ao concluir o trabalho na estação de criação.</RWS_VreAndroid_ManufacturedDesc>

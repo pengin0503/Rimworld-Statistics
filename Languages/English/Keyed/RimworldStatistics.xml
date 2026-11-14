@@ -1234,7 +1234,7 @@
   <RWS_Chart_HistoryRecord>Colony comparison value: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>No history is available for this statistic.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Only one reading is available. Hover over the point to see its value.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Recorded save readings by in-game day. Save branches may be mixed.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistorySaves>Recorded save readings by in-game day. Lines join only saves whose parent save is proven by embedded checkpoints.</RWS_Chart_HistorySaves>
   <RWS_Chart_HistoryLineage>Save checkpoints on the selected lineage. Gaps indicate missing readings.</RWS_Chart_HistoryLineage>
   <RWS_Chart_HistoryWealth>Running record of the largest 15-day wealth increase in this save.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Recorded categories of the selected statistic. This is not a chart over time.</RWS_Chart_BreakdownNote>
@@ -1243,6 +1243,10 @@
   <RWS_Chart_NoData>There are no measured values to chart.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Add colony…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Recorded in-game samples by day. Gaps indicate unavailable readings.</RWS_Chart_GameRecorder>
+  <RWS_Chart_LegendUnlinked>Hollow points are saves whose relation to earlier readings cannot be proven (another branch, or an older save without checkpoints).</RWS_Chart_LegendUnlinked>
+  <RWS_Chart_PointUnlinked>Its relation to earlier readings cannot be proven.</RWS_Chart_PointUnlinked>
+  <RWS_Chart_PointBranch>A branch continuing from the reading on day {0}; points in between belong to another branch.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointSavedLater>This reading was also carried unchanged by a save on day {0}; that save recorded no newer statistics.</RWS_Chart_PointSavedLater>
   <RWS_Unit_Nutrition>{0} nutrition</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androids manufactured</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Player androids created by completed work at an Android Creation Station.</RWS_VreAndroid_ManufacturedDesc>
