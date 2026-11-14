@@ -751,9 +751,9 @@
   <RWS_Metric_FacilitiesBattery>Höchste Batteriekapazität</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Höchste gesamte Nennkapazität von Batterien auf geladenen Heimatkarten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur beim Speichern</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einem aufgezeichneten Spielstand. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Niedrigste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt eines aufgezeichneten Spielstands. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>Höchste Außentemperatur beim Speichern</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Höchste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt einem aufgezeichneten Spielstand. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Höchste Außentemperatur auf einer geladenen Heimatkarte zum Zeitpunkt eines aufgezeichneten Spielstands. Temperaturen zwischen Spielständen werden nicht erfasst.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
   <RWS_Metric_StockFoodLatest>Nahrungsvorrat (Nahrungseinheiten)</RWS_Metric_StockFoodLatest>
   <RWS_MetricDesc_StockFoodLatest>Gesamte Nahrungseinheiten aller Lebensmittel auf geladenen Heimatkarten, einschließlich Inventar von Pawns und Behältern, beim erfolgreichen Speichern.</RWS_MetricDesc_StockFoodLatest>
   <RWS_Metric_StockSilverLatest>Silbervorrat</RWS_Metric_StockSilverLatest>
