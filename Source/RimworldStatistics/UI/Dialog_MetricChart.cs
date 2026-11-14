@@ -17,14 +17,15 @@ internal sealed class Dialog_MetricChart : Window
     private readonly IReadOnlyList<MetricChartBar> breakdownBars;
     private readonly IReadOnlyList<MetricChartBar> overallBars;
     private readonly string? breakdownColony;
-    private readonly string metricKey;
+    private readonly (double Min, double Max) colonyRange;
+    private readonly (double Min, double Max) breakdownRange;
+    private readonly (double Min, double Max) overallRange;
     private bool showBreakdown;
     private Vector2 scroll;
 
     internal Dialog_MetricChart(StatsView view, string metricKey, string? selectedColony)
     {
         this.view = view;
-        this.metricKey = metricKey;
         definition = MetricLookup.Definition(view, metricKey)
             ?? throw new ArgumentException("Metric not found in the current view.", nameof(metricKey));
         colonyBars = MetricChartSeries.ByColony(view.Numeric, metricKey);
@@ -33,13 +34,16 @@ internal sealed class Dialog_MetricChart : Window
         breakdownBars = breakdownColony is null
             ? MetricChartSeries.Breakdowns(view.Numeric, metricKey) : selected;
         overallBars = MetricChartSeries.Overall(view.Numeric, metricKey);
+        colonyRange = Range(colonyBars);
+        breakdownRange = Range(breakdownBars);
+        overallRange = Range(overallBars);
         showBreakdown = breakdownColony is not null || (colonyBars.Count == 0 && breakdownBars.Count > 0);
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
     }
 
-    public override Vector2 InitialSize => new(1050f, 650f);
+    public override Vector2 InitialSize => new(Math.Min(1050f, Verse.UI.screenWidth * 0.90f), Math.Min(650f, Verse.UI.screenHeight * 0.88f));
 
     public override void DoWindowContents(Rect rect)
     {
@@ -90,21 +94,21 @@ internal sealed class Dialog_MetricChart : Window
             Widgets.Label(area, "RWS_Chart_NoData".Translate());
             return;
         }
-        DrawBars(area, bars, isBreakdown, bars == overallBars);
+        var range = ReferenceEquals(bars, breakdownBars) ? breakdownRange
+            : ReferenceEquals(bars, colonyBars) ? colonyRange : overallRange;
+        DrawBars(area, bars, isBreakdown, ReferenceEquals(bars, overallBars), range);
     }
 
-    private void DrawBars(Rect rect, IReadOnlyList<MetricChartBar> bars, bool breakdown, bool overall)
+    private void DrawBars(Rect rect, IReadOnlyList<MetricChartBar> bars, bool breakdown, bool overall,
+        (double Min, double Max) range)
     {
         var width = Math.Max(0f, rect.width - 18f);
         var labelWidth = Math.Min(260f, width * 0.31f);
         var valueWidth = Math.Min(155f, Math.Max(90f, width * 0.19f));
         var plotWidth = Math.Max(1f, width - labelWidth - valueWidth - 16f);
         var plotX = labelWidth + 8f;
-        var minimum = Math.Min(0d, bars.Min(bar => bar.Value.Number!.Value));
-        var maximum = Math.Max(0d, bars.Max(bar => bar.Value.Number!.Value));
-        if (maximum == minimum)
-            maximum = minimum + 1d;
-        var span = maximum - minimum;
+        var minimum = range.Min;
+        var span = range.Max - minimum;
         float Position(double value) => plotX + plotWidth * (float)Math.Clamp((value - minimum) / span, 0d, 1d);
         var zero = Position(0d);
         var contentHeight = bars.Count * RowHeight;
@@ -148,6 +152,18 @@ internal sealed class Dialog_MetricChart : Window
         Widgets.EndScrollView();
     }
 
+    private static (double Min, double Max) Range(IReadOnlyList<MetricChartBar> bars)
+    {
+        var min = 0d;
+        var max = 0d;
+        foreach (var bar in bars)
+        {
+            min = Math.Min(min, bar.Value.Number!.Value);
+            max = Math.Max(max, bar.Value.Number.Value);
+        }
+        return (min, min == max ? min + 1d : max);
+    }
+
     private string ColonyName(string key)
         => view.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } colony
             ? Dialog_RimworldStatistics.ColonyName(colony) : key;
@@ -157,7 +173,7 @@ internal sealed class Dialog_MetricChart : Window
         var source = CrossColonyCatalog.IsDerived(definition)
             ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
         if (MetricDisplayPolicy.BreakdownLabelKey(source, key) is { } translation)
-            return translation.Translate();
+            return (string)translation.Translate();
         return DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key;
     }
 }
