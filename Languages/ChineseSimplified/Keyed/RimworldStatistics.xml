@@ -375,131 +375,131 @@
   <RWS_Metric_DeathCauses>按死因统计的殖民者死亡</RWS_Metric_DeathCauses>
   <RWS_MetricDesc_DeathCauses>按导致死亡的健康状况（hediff）或致命伤害类型分类统计自由殖民者死亡。两者均无法确定的，归入“（未知）”类别。</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>袭击导致的殖民者死亡</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>自由殖民者死亡被分割成突袭者、其他已知原因和未知原因造成的死亡。 虽然没有记录突袭,但却是未知的。</RWS_MetricDesc_DeathsByRaid>
-  <RWS_Metric_DiseaseDeaths>殖民者死于疾病</RWS_Metric_DiseaseDeaths>
-  <RWS_MetricDesc_DiseaseDeaths>自由殖民者死亡,其罪魁祸首是疾病(游戏将这一条件视为使角色生病 ) 。 仅仅伴随着疾病的死亡不计算在内。</RWS_MetricDesc_DiseaseDeaths>
-  <RWS_Metric_DiseaseDeathRate>死于疾病的比例</RWS_Metric_DiseaseDeathRate>
-  <RWS_MetricDesc_DiseaseDeathRate>死于疾病 自由殖民者死亡 原因已知</RWS_MetricDesc_DiseaseDeathRate>
-  <RWS_Metric_LongestDeathGap>没有殖民者死亡的最长时间</RWS_Metric_LongestDeathGap>
-  <RWS_MetricDesc_LongestDeathGap>在记录中连续两次自由殖民者死亡间隔时间最长。第一次死亡之前和最后一次死亡之后的时间不是间隔时间。</RWS_MetricDesc_LongestDeathGap>
-  <RWS_Metric_FirstDeathDay>第一次殖民者死亡的日子</RWS_Metric_FirstDeathDay>
-  <RWS_MetricDesc_FirstDeathDay>第一次自由殖民者死亡的游戏日,只有从游戏开始就录制.</RWS_MetricDesc_FirstDeathDay>
-  <RWS_Metric_OldestDeathAge>死时最老的殖民者</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>自由殖民者死亡前的最高生物年龄,与最长寿命的殖民者(P-010)具有同等价值.</RWS_MetricDesc_OldestDeathAge>
-  <RWS_Metric_CaravanMemberDeaths>死于大篷车的殖民者</RWS_Metric_CaravanMemberDeaths>
-  <RWS_MetricDesc_CaravanMemberDeaths>自由殖民者,在玩家大篷车中死去。</RWS_MetricDesc_CaravanMemberDeaths>
-  <RWS_Metric_ColonyAnimalDeaths>殖民地动物死亡</RWS_Metric_ColonyAnimalDeaths>
-  <RWS_MetricDesc_ColonyAnimalDeaths>死前属于玩家的动物死亡.</RWS_MetricDesc_ColonyAnimalDeaths>
-  <RWS_Metric_ColonyAnimalRaidDeaths>被突袭者杀害的殖民地动物</RWS_Metric_ColonyAnimalRaidDeaths>
-  <RWS_MetricDesc_ColonyAnimalRaidDeaths>袭击者是被跟踪袭击的</RWS_MetricDesc_ColonyAnimalRaidDeaths>
-  <RWS_Metric_ColonistsDowned>殖民者倒戈</RWS_Metric_ColonistsDowned>
-  <RWS_MetricDesc_ColonistsDowned>自由殖民者从不堕落到不堕落。 没有坠落的即时死亡不计算在内。</RWS_MetricDesc_ColonistsDowned>
-  <RWS_Metric_EnemiesDowned>敌人被击落(丧失能力)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>对玩家怀有敌意的字符时会下降;恢复后会再次下降是另一个时间。与敌人失去战斗能力(B-002)的值相同。</RWS_MetricDesc_EnemiesDowned>
-  <RWS_Metric_ToxicDowns>有毒积聚物减少</RWS_Metric_ToxicDowns>
-  <RWS_MetricDesc_ToxicDowns>由有毒积聚(Biotech)直接引起的自由殖民者降级.</RWS_MetricDesc_ToxicDowns>
-  <RWS_Metric_SocialFightDowns>社会斗争的失败</RWS_Metric_SocialFightDowns>
-  <RWS_MetricDesc_SocialFightDowns>自由殖民者被社会争斗的对手直接造成自由殖民者倒下.</RWS_MetricDesc_SocialFightDowns>
-  <RWS_Metric_RaidsByArrivalMode>按抵达模式进行的突袭</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>按抵达模式(Pawns-Arrive-ModeDef)成功的敌人突袭,共计是突袭次数.</RWS_MetricDesc_RaidsByArrivalMode>
-  <RWS_Metric_RaidsByFaction>派别袭击</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>攻击派别定义类型的敌人突袭成功.</RWS_MetricDesc_RaidsByFaction>
-  <RWS_Metric_RaidPawnsMax>最大的突袭(特征)</RWS_Metric_RaidPawnsMax>
-  <RWS_MetricDesc_RaidPawnsMax>一次成功突袭产生的敌方角色最多,突袭点是单独的一行.</RWS_MetricDesc_RaidPawnsMax>
-  <RWS_Metric_RaidPointsMax>最高突袭点</RWS_Metric_RaidPointsMax>
-  <RWS_MetricDesc_RaidPointsMax>用来产生成功突袭的最高最后突袭点.</RWS_MetricDesc_RaidPointsMax>
-  <RWS_Metric_RaidKillsMax>在一次突袭中杀死的多数人</RWS_Metric_RaidKillsMax>
-  <RWS_MetricDesc_RaidKillsMax>最能杀死玩家的一面 在一次追踪突袭的人物中 一直持续着</RWS_MetricDesc_RaidKillsMax>
-  <RWS_Metric_RaidSieges>包围</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>突袭与西格策略。</RWS_MetricDesc_RaidSieges>
-  <RWS_Metric_RaidBreaches>突袭</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>带有突破策略(Immediate AttackBmunch,即时AttackBmunchSmart)的突袭,Sappers不包括在内.</RWS_MetricDesc_RaidBreaches>
-  <RWS_Metric_RaidDrops>弃舱突袭</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>通过投放舱(EdgeDrop, EdgeDrop Groups, CenterDrop, RandomDrop)到达的突袭.</RWS_MetricDesc_RaidDrops>
-  <RWS_Metric_Infestations>虫害</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>成功的昆虫蜂巢虫(Infestorm, DeepDrillInfestorm),其他与昆虫相关的事件不计算在内.</RWS_MetricDesc_Infestations>
-  <RWS_Metric_MechClusters>网格组</RWS_Metric_MechClusters>
-  <RWS_MetricDesc_MechClusters>成功的 mech 集群事件( Royalty) 。 普通的机械突袭不计算在内 。</RWS_MetricDesc_MechClusters>
-  <RWS_Metric_ManhunterPacks>猎人包</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>成功的猎人包事件(ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
-  <RWS_Metric_RaidLongestGap>没有突袭时间最长</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>记录时两次连续突袭间隔最长, 在第一次或最后一次突袭之前不计算。 值与最大突袭间隔( N2- C-002) 相同 。</RWS_MetricDesc_RaidLongestGap>
-  <RWS_Metric_RaidMeanGap>袭击之间的平均时间</RWS_Metric_RaidMeanGap>
-  <RWS_MetricDesc_RaidMeanGap>相同间隔的平均值;总体,按间隔数加权.</RWS_MetricDesc_RaidMeanGap>
-  <RWS_Metric_RaidFirstDay>第一次突袭的日子</RWS_Metric_RaidFirstDay>
-  <RWS_MetricDesc_RaidFirstDay>第一次突袭的游戏日,只有从游戏开始就录制.</RWS_MetricDesc_RaidFirstDay>
-  <RWS_Metric_RaidsRetreated>撤退的突击队</RWS_Metric_RaidsRetreated>
-  <RWS_MetricDesc_RaidsRetreated>追踪到一些敌人留下地图的突袭</RWS_MetricDesc_RaidsRetreated>
-  <RWS_Metric_RaidsWiped>突袭被消灭了</RWS_Metric_RaidsWiped>
-  <RWS_MetricDesc_RaidsWiped>追踪到的突袭以每个敌人被杀和无人撤退告终,对囚犯的突袭有另一个结果。</RWS_MetricDesc_RaidsWiped>
-  <RWS_Metric_RaidRepelledRate>突击击退率</RWS_Metric_RaidRepelledRate>
-  <RWS_MetricDesc_RaidRepelledRate>撤退或被歼灭的突袭 — — 跟踪突袭并取得了决定性结果。 结果不明(例如地图消失了)的突袭被排除在外。</RWS_MetricDesc_RaidRepelledRate>
-  <RWS_Metric_RaidRepelledNoDown>没有殖民者就击退了突击队</RWS_Metric_RaidRepelledNoDown>
-  <RWS_MetricDesc_RaidRepelledNoDown>重新发动突袭,没有自由殖民者在同一地图上下架。</RWS_MetricDesc_RaidRepelledNoDown>
-  <RWS_Metric_RaidDurationMean>平均袭击时间</RWS_Metric_RaidDurationMean>
-  <RWS_MetricDesc_RaidDurationMean>从抵达到最后追踪到的敌人离开战斗的平日,在袭击之后取得了决定性的结果。</RWS_MetricDesc_RaidDurationMean>
-  <RWS_Metric_RaidDurationMax>最长时间的突袭</RWS_Metric_RaidDurationMax>
-  <RWS_MetricDesc_RaidDurationMax>同一样本中最多的日子</RWS_MetricDesc_RaidDurationMax>
-  <RWS_Metric_RaidDurationMinRepelled>最快击退的突袭</RWS_Metric_RaidDurationMinRepelled>
-  <RWS_MetricDesc_RaidDurationMinRepelled>最少的几天的突袭 撤退或被消灭。</RWS_MetricDesc_RaidDurationMinRepelled>
-  <RWS_Metric_FirstJoins>新成员</RWS_Metric_FirstJoins>
-  <RWS_MetricDesc_FirstJoins>第一次成为自由殖民者的人物,除了开始的殖民者和出生者之外,每个角色都算一次.</RWS_MetricDesc_FirstJoins>
-  <RWS_Metric_JoinRoutes>按路线排列的新成员</RWS_Metric_JoinRoutes>
-  <RWS_MetricDesc_JoinRoutes>新成员分裂为被招募的囚犯,解放奴隶和其他路线.</RWS_MetricDesc_JoinRoutes>
-  <RWS_Metric_PrisonerRecruits>被招募的囚犯</RWS_Metric_PrisonerRecruits>
-  <RWS_MetricDesc_PrisonerRecruits>成为殖民地囚犯的人物,并首次通过招募加入.</RWS_MetricDesc_PrisonerRecruits>
+  <RWS_MetricDesc_DeathsByRaid>将自由殖民者死亡分为袭击者造成、其他已知原因和“（未知）”三类。未记录袭击期间发生的死亡归入“（未知）”。</RWS_MetricDesc_DeathsByRaid>
+  <RWS_Metric_DiseaseDeaths>因疾病死亡的殖民者</RWS_Metric_DiseaseDeaths>
+  <RWS_MetricDesc_DiseaseDeaths>死因是疾病（游戏认定会使单位生病的健康状况）的自由殖民者死亡数。仅仅在死亡时患有疾病的不计入。</RWS_MetricDesc_DiseaseDeaths>
+  <RWS_Metric_DiseaseDeathRate>疾病死亡占比</RWS_Metric_DiseaseDeathRate>
+  <RWS_MetricDesc_DiseaseDeathRate>疾病导致的死亡数 ÷ 死因已知的自由殖民者死亡数。</RWS_MetricDesc_DiseaseDeathRate>
+  <RWS_Metric_LongestDeathGap>最长无殖民者死亡间隔</RWS_Metric_LongestDeathGap>
+  <RWS_MetricDesc_LongestDeathGap>记录期间连续两次自由殖民者死亡之间最长的间隔。不包括首次死亡之前和最后一次死亡之后的时间。</RWS_MetricDesc_LongestDeathGap>
+  <RWS_Metric_FirstDeathDay>首次殖民者死亡前的天数</RWS_Metric_FirstDeathDay>
+  <RWS_MetricDesc_FirstDeathDay>仅在从游戏开始记录时，统计首名自由殖民者死亡时的游戏内日期。</RWS_MetricDesc_FirstDeathDay>
+  <RWS_Metric_OldestDeathAge>死亡时年龄最大的殖民者</RWS_Metric_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>自由殖民者死亡前最高的生物学年龄。与最长寿殖民者（P-010）的数值相同。</RWS_MetricDesc_OldestDeathAge>
+  <RWS_Metric_CaravanMemberDeaths>远行队中死亡的殖民者</RWS_Metric_CaravanMemberDeaths>
+  <RWS_MetricDesc_CaravanMemberDeaths>加入玩家远行队期间死亡的自由殖民者数。</RWS_MetricDesc_CaravanMemberDeaths>
+  <RWS_Metric_ColonyAnimalDeaths>殖民地动物死亡数</RWS_Metric_ColonyAnimalDeaths>
+  <RWS_MetricDesc_ColonyAnimalDeaths>死亡前属于玩家的动物死亡数。</RWS_MetricDesc_ColonyAnimalDeaths>
+  <RWS_Metric_ColonyAnimalRaidDeaths>被袭击者杀死的殖民地动物</RWS_Metric_ColonyAnimalRaidDeaths>
+  <RWS_MetricDesc_ColonyAnimalRaidDeaths>被记录中的袭击所属攻击者杀死的殖民地动物数。</RWS_MetricDesc_ColonyAnimalRaidDeaths>
+  <RWS_Metric_ColonistsDowned>殖民者倒地次数</RWS_Metric_ColonistsDowned>
+  <RWS_MetricDesc_ColonistsDowned>自由殖民者从未倒地状态变为倒地状态的次数。未倒地就立即死亡的不计入。</RWS_MetricDesc_ColonistsDowned>
+  <RWS_Metric_EnemiesDowned>敌人倒地次数（失去行动能力）</RWS_Metric_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>与玩家敌对的单位倒地次数。恢复后再次倒地也会再次计数。与敌人失去行动能力次数（B-002）相同。</RWS_MetricDesc_EnemiesDowned>
+  <RWS_Metric_ToxicDowns>因毒素累积而倒地</RWS_Metric_ToxicDowns>
+  <RWS_MetricDesc_ToxicDowns>由毒素累积直接导致的自由殖民者倒地次数（Biotech）。</RWS_MetricDesc_ToxicDowns>
+  <RWS_Metric_SocialFightDowns>因打架而倒地</RWS_Metric_SocialFightDowns>
+  <RWS_MetricDesc_SocialFightDowns>由打架对手直接导致的自由殖民者倒地次数。</RWS_MetricDesc_SocialFightDowns>
+  <RWS_Metric_RaidsByArrivalMode>按到达方式统计的袭击</RWS_Metric_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>按到达方式（PawnsArrivalModeDef）统计成功触发的敌方袭击。总数即袭击次数。</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_Metric_RaidsByFaction>按派系统计的袭击</RWS_Metric_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>按袭击方派系的Def（FactionDef）统计成功触发的敌方袭击。</RWS_MetricDesc_RaidsByFaction>
+  <RWS_Metric_RaidPawnsMax>最大规模袭击（单位数）</RWS_Metric_RaidPawnsMax>
+  <RWS_MetricDesc_RaidPawnsMax>一次成功触发的袭击中生成的最多敌方单位数。袭击点数另行统计。</RWS_MetricDesc_RaidPawnsMax>
+  <RWS_Metric_RaidPointsMax>最高袭击点数</RWS_Metric_RaidPointsMax>
+  <RWS_MetricDesc_RaidPointsMax>一次成功触发的袭击生成时使用的最终袭击点数最大值。</RWS_MetricDesc_RaidPointsMax>
+  <RWS_Metric_RaidKillsMax>单次袭击最多敌人击杀数</RWS_Metric_RaidKillsMax>
+  <RWS_MetricDesc_RaidKillsMax>在同一次记录中的袭击持续期间，玩家一方击杀的该次袭击敌人最多数量。</RWS_MetricDesc_RaidKillsMax>
+  <RWS_Metric_RaidSieges>围攻次数</RWS_Metric_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>使用Siege（围攻）战术的袭击次数。</RWS_MetricDesc_RaidSieges>
+  <RWS_Metric_RaidBreaches>破墙袭击次数</RWS_Metric_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>采用破墙战术（ImmediateAttackBreaching、ImmediateAttackBreachingSmart）的袭击次数。不包括挖掘地道的工兵。</RWS_MetricDesc_RaidBreaches>
+  <RWS_Metric_RaidDrops>空投袭击次数</RWS_Metric_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>通过运输舱到达的袭击次数（EdgeDrop、EdgeDropGroups、CenterDrop、RandomDrop）。</RWS_MetricDesc_RaidDrops>
+  <RWS_Metric_Infestations>虫灾次数</RWS_Metric_Infestations>
+  <RWS_MetricDesc_Infestations>成功触发的虫巢虫灾（Infestation、DeepDrillInfestation）次数。其他昆虫相关事件不计入。</RWS_MetricDesc_Infestations>
+  <RWS_Metric_MechClusters>机械集群出现次数</RWS_Metric_MechClusters>
+  <RWS_MetricDesc_MechClusters>成功触发的机械集群事件（Royalty）次数。普通机械族袭击不计入。</RWS_MetricDesc_MechClusters>
+  <RWS_Metric_ManhunterPacks>人狩猎群出现次数</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>成功触发的人狩猎群（ManhunterPack）事件次数。</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_RaidLongestGap>最长无袭击间隔</RWS_Metric_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>连续两次已记录袭击之间最长的间隔，不包括首次袭击之前或末次袭击之后的时间。与最长袭击间隔（N2-C-002）的数值相同。</RWS_MetricDesc_RaidLongestGap>
+  <RWS_Metric_RaidMeanGap>袭击平均间隔</RWS_Metric_RaidMeanGap>
+  <RWS_MetricDesc_RaidMeanGap>上述间隔的平均值。汇总所有殖民地时按间隔数量加权。</RWS_MetricDesc_RaidMeanGap>
+  <RWS_Metric_RaidFirstDay>首次袭击前的天数</RWS_Metric_RaidFirstDay>
+  <RWS_MetricDesc_RaidFirstDay>仅在从游戏开始记录时，统计首次袭击发生时的游戏内日期。</RWS_MetricDesc_RaidFirstDay>
+  <RWS_Metric_RaidsRetreated>敌人撤退的袭击次数</RWS_Metric_RaidsRetreated>
+  <RWS_MetricDesc_RaidsRetreated>已记录袭击中，以部分敌人活着离开地图而结束的次数。</RWS_MetricDesc_RaidsRetreated>
+  <RWS_Metric_RaidsWiped>敌人全灭的袭击次数</RWS_Metric_RaidsWiped>
+  <RWS_MetricDesc_RaidsWiped>已记录袭击中，所有敌人死亡且无人撤退的次数。有敌人成为囚犯的袭击会归为其他结果。</RWS_MetricDesc_RaidsWiped>
+  <RWS_Metric_RaidRepelledRate>袭击击退率</RWS_Metric_RaidRepelledRate>
+  <RWS_MetricDesc_RaidRepelledRate>敌人撤退或全灭的袭击次数 ÷ 已记录且结果确定的袭击次数。结果未知（例如地图消失）的袭击不计入。</RWS_MetricDesc_RaidRepelledRate>
+  <RWS_Metric_RaidRepelledNoDown>无殖民者倒地的击退袭击</RWS_Metric_RaidRepelledNoDown>
+  <RWS_MetricDesc_RaidRepelledNoDown>击退的袭击中，在整个袭击期间同一地图上没有自由殖民者倒地的次数。</RWS_MetricDesc_RaidRepelledNoDown>
+  <RWS_Metric_RaidDurationMean>袭击平均持续天数</RWS_Metric_RaidDurationMean>
+  <RWS_MetricDesc_RaidDurationMean>对结果确定的袭击，计算从敌人到达到最后一名已追踪敌人退出战斗的平均天数。</RWS_MetricDesc_RaidDurationMean>
+  <RWS_Metric_RaidDurationMax>持续时间最长的袭击</RWS_Metric_RaidDurationMax>
+  <RWS_MetricDesc_RaidDurationMax>与上述平均值使用相同样本，取最长天数。</RWS_MetricDesc_RaidDurationMax>
+  <RWS_Metric_RaidDurationMinRepelled>最快击退的袭击</RWS_Metric_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMinRepelled>敌人撤退或全灭的袭击中，持续天数最短的一次。</RWS_MetricDesc_RaidDurationMinRepelled>
+  <RWS_Metric_FirstJoins>新加入成员数</RWS_Metric_FirstJoins>
+  <RWS_MetricDesc_FirstJoins>首次成为自由殖民者的单位数，不包括初始殖民者和出生单位。每个单位仅计一次。</RWS_MetricDesc_FirstJoins>
+  <RWS_Metric_JoinRoutes>按加入途径统计的新成员</RWS_Metric_JoinRoutes>
+  <RWS_MetricDesc_JoinRoutes>将新加入成员分为招募的囚犯、解放的奴隶和其他途径。</RWS_MetricDesc_JoinRoutes>
+  <RWS_Metric_PrisonerRecruits>招募的囚犯数</RWS_Metric_PrisonerRecruits>
+  <RWS_MetricDesc_PrisonerRecruits>原本是殖民地囚犯，后经招募首次加入的单位数。</RWS_MetricDesc_PrisonerRecruits>
   <RWS_Metric_HumanBirths>出生人数</RWS_Metric_HumanBirths>
-  <RWS_MetricDesc_HumanBirths>玩家侧生的人类般的孩子(Biotech),死胎不计算在内.</RWS_MetricDesc_HumanBirths>
+  <RWS_MetricDesc_HumanBirths>在玩家一方活产的人形幼儿数量（Biotech）。不包括死产。</RWS_MetricDesc_HumanBirths>
   <RWS_Metric_JoinAgeMean>加入时的平均年龄</RWS_Metric_JoinAgeMean>
-  <RWS_MetricDesc_JoinAgeMean>新成员加入时的平均生物年龄。</RWS_MetricDesc_JoinAgeMean>
-  <RWS_Metric_FirstJoinDay>给第一个新成员的天数</RWS_Metric_FirstJoinDay>
-  <RWS_MetricDesc_FirstJoinDay>首个新成员的游戏日,只有在游戏开始时才录制.</RWS_MetricDesc_FirstJoinDay>
-  <RWS_Metric_SlavesFreed>解放奴隶</RWS_Metric_SlavesFreed>
-  <RWS_MetricDesc_SlavesFreed>奴隶地位被解除(解除)的奴隶,与释放囚犯不同。</RWS_MetricDesc_SlavesFreed>
-  <RWS_Metric_Kidnaps>被绑架的殖民者</RWS_Metric_Kidnaps>
-  <RWS_MetricDesc_Kidnaps>时有自由殖民者被绑架到一个派别的俘虏中.</RWS_MetricDesc_Kidnaps>
-  <RWS_Metric_KidnapRescues>被绑架的殖民者返回</RWS_Metric_KidnapRescues>
-  <RWS_MetricDesc_KidnapRescues>被绑架的殖民者通过确认的路线(ransom)返回,其他路线不计算在内。</RWS_MetricDesc_KidnapRescues>
-  <RWS_Metric_CaptiveMax>关押时间最长</RWS_Metric_CaptiveMax>
-  <RWS_MetricDesc_CaptiveMax>从绑架到返回的时间最长的一次被跟踪。</RWS_MetricDesc_CaptiveMax>
-  <RWS_Metric_LifeMean>平均死亡年龄</RWS_Metric_LifeMean>
-  <RWS_MetricDesc_LifeMean>自由殖民者死亡时的平均生物年龄,活着的殖民者不包括在内.</RWS_MetricDesc_LifeMean>
-  <RWS_Metric_TenureMean>殖民地的平均时间</RWS_Metric_TenureMean>
-  <RWS_MetricDesc_TenureMean>从加入(或游戏开始)到死亡或离开的平日,这两端都跟踪到。持续停留不包括在内。</RWS_MetricDesc_TenureMean>
-  <RWS_Metric_FirstSkill20>技能首先达到20个</RWS_Metric_FirstSkill20>
-  <RWS_MetricDesc_FirstSkill20>(Character, 技能) 自由殖民者一对先通过学习达到20, 然后再记录一次。 丢弃和再达到20。</RWS_MetricDesc_FirstSkill20>
-  <RWS_Metric_JoinGainPeak>加入后获得最多技能</RWS_Metric_JoinGainPeak>
-  <RWS_MetricDesc_JoinGainPeak>加入时技能比其水平增长最大。 加入时级别不详的字符不包括在内。</RWS_MetricDesc_JoinGainPeak>
-  <RWS_Metric_Marriages>结婚</RWS_Metric_Marriages>
-  <RWS_MetricDesc_Marriages>成为配偶的对等;双方的通知为一。</RWS_MetricDesc_Marriages>
-  <RWS_Metric_Divorces>离婚情况</RWS_Metric_Divorces>
-  <RWS_MetricDesc_Divorces>夫妻关系因离婚而终止,丧偶和其他关系迁移不计算在内。</RWS_MetricDesc_Divorces>
-  <RWS_Metric_Lovers>新恋人</RWS_Metric_Lovers>
-  <RWS_MetricDesc_Lovers>成为情侣的对等;双方的通知都算为一体.</RWS_MetricDesc_Lovers>
-  <RWS_Metric_SocialFights>社会斗争</RWS_Metric_SocialFights>
-  <RWS_MetricDesc_SocialFights>社会斗争开始;两个角色使一个战斗.</RWS_MetricDesc_SocialFights>
-  <RWS_Metric_PrisonBreaks>越狱</RWS_Metric_PrisonBreaks>
-  <RWS_MetricDesc_PrisonBreaks>越狱事件开始,但许多囚犯逃脱。</RWS_MetricDesc_PrisonBreaks>
-  <RWS_Metric_PrisonersReleased>释放囚犯</RWS_Metric_PrisonersReleased>
-  <RWS_MetricDesc_PrisonersReleased>释放完毕的被囚禁者,逃生不计算在内.</RWS_MetricDesc_PrisonersReleased>
-  <RWS_Metric_PrisonersCaptured>被俘虏的敌人</RWS_Metric_PrisonersCaptured>
-  <RWS_MetricDesc_PrisonersCaptured>被俘虏的敌对人物</RWS_MetricDesc_PrisonersCaptured>
-  <RWS_Metric_AnimalBonds>动物债券</RWS_Metric_AnimalBonds>
-  <RWS_MetricDesc_AnimalBonds>债券在殖民者和殖民地动物之间形成.</RWS_MetricDesc_AnimalBonds>
-  <RWS_Metric_AnimalsTamed>驯服动物</RWS_Metric_AnimalsTamed>
-  <RWS_MetricDesc_AnimalsTamed>通过成功驯服而成为玩家的野生动物,收购不计算在内.</RWS_MetricDesc_AnimalsTamed>
-  <RWS_Metric_AnimalBirths>动物出生地</RWS_Metric_AnimalBirths>
-  <RWS_MetricDesc_AnimalBirths>玩家动物生或孵化为活生生的,与人形的出生相分离.</RWS_MetricDesc_AnimalBirths>
-  <RWS_Metric_AnimalsSlaughtered>宰杀的动物</RWS_Metric_AnimalsSlaughtered>
-  <RWS_MetricDesc_AnimalsSlaughtered>通过指定屠宰杀死殖民地动物.</RWS_MetricDesc_AnimalsSlaughtered>
-  <RWS_Metric_AnimalsHunted>猎杀的野生动物</RWS_Metric_AnimalsHunted>
-  <RWS_MetricDesc_AnimalsHunted>指定狩猎的野生动物被玩家角色杀死,意外的战斗不计算在内.</RWS_MetricDesc_AnimalsHunted>
-  <RWS_Unit_Years>{0}岁</RWS_Unit_Years>
-  <RWS_Unit_PerCellDay>每个单元格日{0}</RWS_Unit_PerCellDay>
-  <RWS_Metric_CraftedUnits>设计的项目</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>玩家成品账单的主要和侧面产品的堆积计数,包括烹饪和艺术;采矿,收获和 mech 酝酿不包括在内.</RWS_MetricDesc_CraftedUnits>
-  <RWS_Metric_CraftQuality>按质量分列的手工艺品</RWS_Metric_CraftQuality>
-  <RWS_MetricDesc_CraftQuality>按质量划分的以上设计项目;无质量的项目为"无".</RWS_MetricDesc_CraftQuality>
+  <RWS_MetricDesc_JoinAgeMean>新成员加入殖民地时的平均生物学年龄。</RWS_MetricDesc_JoinAgeMean>
+  <RWS_Metric_FirstJoinDay>首名新成员加入前的天数</RWS_Metric_FirstJoinDay>
+  <RWS_MetricDesc_FirstJoinDay>仅在从游戏开始记录时，统计首名新成员加入时的游戏内日期。</RWS_MetricDesc_FirstJoinDay>
+  <RWS_Metric_SlavesFreed>解放奴隶数</RWS_Metric_SlavesFreed>
+  <RWS_MetricDesc_SlavesFreed>取消奴隶身份（解放）的奴隶人数，与释放囚犯不同。</RWS_MetricDesc_SlavesFreed>
+  <RWS_Metric_Kidnaps>被绑架的殖民者数</RWS_Metric_Kidnaps>
+  <RWS_MetricDesc_Kidnaps>自由殖民者被绑架并成为某个派系俘虏的次数。</RWS_MetricDesc_Kidnaps>
+  <RWS_Metric_KidnapRescues>被绑架后返回的殖民者数</RWS_Metric_KidnapRescues>
+  <RWS_MetricDesc_KidnapRescues>被绑架的殖民者通过已确认的途径（赎金）返回的次数。其他返回途径不计入。</RWS_MetricDesc_KidnapRescues>
+  <RWS_Metric_CaptiveMax>最长被俘时间</RWS_Metric_CaptiveMax>
+  <RWS_MetricDesc_CaptiveMax>已追踪的从绑架到返回之间最长的被俘时间。</RWS_MetricDesc_CaptiveMax>
+  <RWS_Metric_LifeMean>死亡时的平均年龄</RWS_Metric_LifeMean>
+  <RWS_MetricDesc_LifeMean>自由殖民者死亡时的平均生物学年龄。不包括仍然活着的殖民者。</RWS_MetricDesc_LifeMean>
+  <RWS_Metric_TenureMean>平均在殖民地停留时间</RWS_Metric_TenureMean>
+  <RWS_MetricDesc_TenureMean>从加入（或游戏开始）到死亡或离开之间的平均天数，前提是两端时间都有记录。仍在殖民地的成员不计入。</RWS_MetricDesc_TenureMean>
+  <RWS_Metric_FirstSkill20>首次将技能提升到20级的次数</RWS_Metric_FirstSkill20>
+  <RWS_MetricDesc_FirstSkill20>自由殖民者的（单位、技能）组合在记录期间通过学习首次达到20级的次数。之后降低再升回20级也只计一次。</RWS_MetricDesc_FirstSkill20>
+  <RWS_Metric_JoinGainPeak>加入后技能最大提升幅度</RWS_Metric_JoinGainPeak>
+  <RWS_MetricDesc_JoinGainPeak>相对加入时技能等级的最大提升值。加入时等级未知的单位不计入。</RWS_MetricDesc_JoinGainPeak>
+  <RWS_Metric_Marriages>结婚次数</RWS_Metric_Marriages>
+  <RWS_MetricDesc_Marriages>成为配偶的伴侣对数，双方各自发出的通知只算一对。</RWS_MetricDesc_Marriages>
+  <RWS_Metric_Divorces>离婚次数</RWS_Metric_Divorces>
+  <RWS_MetricDesc_Divorces>因离婚而终止的婚姻关系数。不包括丧偶或其他关系解除。</RWS_MetricDesc_Divorces>
+  <RWS_Metric_Lovers>新恋人关系数</RWS_Metric_Lovers>
+  <RWS_MetricDesc_Lovers>成为恋人的伴侣对数，双方各自发出的通知只算一对。</RWS_MetricDesc_Lovers>
+  <RWS_Metric_SocialFights>打架次数</RWS_Metric_SocialFights>
+  <RWS_MetricDesc_SocialFights>开始打架的次数。两个单位之间的一次打架只计一次。</RWS_MetricDesc_SocialFights>
+  <RWS_Metric_PrisonBreaks>囚犯越狱次数</RWS_Metric_PrisonBreaks>
+  <RWS_MetricDesc_PrisonBreaks>开始越狱的次数，无论有多少囚犯逃脱都只计一次。</RWS_MetricDesc_PrisonBreaks>
+  <RWS_Metric_PrisonersReleased>释放囚犯数</RWS_Metric_PrisonersReleased>
+  <RWS_MetricDesc_PrisonersReleased>殖民地囚犯被正式释放的数量。不包括逃脱。</RWS_MetricDesc_PrisonersReleased>
+  <RWS_Metric_PrisonersCaptured>俘虏敌人数</RWS_Metric_PrisonersCaptured>
+  <RWS_MetricDesc_PrisonersCaptured>被俘获并成为殖民地囚犯的敌方单位数。</RWS_MetricDesc_PrisonersCaptured>
+  <RWS_Metric_AnimalBonds>人与动物结成牵绊次数</RWS_Metric_AnimalBonds>
+  <RWS_MetricDesc_AnimalBonds>殖民者与殖民地动物之间形成牵绊的次数。</RWS_MetricDesc_AnimalBonds>
+  <RWS_Metric_AnimalsTamed>驯服动物数</RWS_Metric_AnimalsTamed>
+  <RWS_MetricDesc_AnimalsTamed>成功驯服后归玩家所有的野生动物数。不包括购买的动物。</RWS_MetricDesc_AnimalsTamed>
+  <RWS_Metric_AnimalBirths>殖民地动物出生数</RWS_Metric_AnimalBirths>
+  <RWS_MetricDesc_AnimalBirths>属于玩家的动物活产或孵化存活的数量，与人形生物出生分开统计。</RWS_MetricDesc_AnimalBirths>
+  <RWS_Metric_AnimalsSlaughtered>屠宰动物数</RWS_Metric_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsSlaughtered>因指定屠宰而死亡的殖民地动物数。</RWS_MetricDesc_AnimalsSlaughtered>
+  <RWS_Metric_AnimalsHunted>狩猎野生动物数</RWS_Metric_AnimalsHunted>
+  <RWS_MetricDesc_AnimalsHunted>已指定狩猎且被玩家单位杀死的野生动物数。不包括偶然战斗中杀死的动物。</RWS_MetricDesc_AnimalsHunted>
+  <RWS_Unit_Years>{0} 岁</RWS_Unit_Years>
+  <RWS_Unit_PerCellDay>{0} / 格·天</RWS_Unit_PerCellDay>
+  <RWS_Metric_CraftedUnits>制造物品总数</RWS_Metric_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>玩家完成的生产工作单中主产品和副产品的堆叠数量总和，包括烹饪与艺术品。不包括采矿、收获和机械族培育。</RWS_MetricDesc_CraftedUnits>
+  <RWS_Metric_CraftQuality>按品质统计的制造物品数</RWS_Metric_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>将上述制造物品按品质分类；没有品质的物品显示为“none”。</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>传奇物品</RWS_Metric_CraftLegendary>
   <RWS_MetricDesc_CraftLegendary>工艺品的传奇品质.</RWS_MetricDesc_CraftLegendary>
   <RWS_Metric_CraftMasterwork>设计的总工件</RWS_Metric_CraftMasterwork>

@@ -375,131 +375,131 @@
   <RWS_Metric_DeathCauses>Mortes de colonos por causa</RWS_Metric_DeathCauses>
   <RWS_MetricDesc_DeathCauses>Mortes de colonos livres agrupadas pela condição de saúde responsável (hediff) ou pelo tipo de dano fatal. Quando nenhum dos dois é conhecido, a categoria exibida é “(desconhecido)”.</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Mortes de colonos em invasões</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>As mortes gratuitas dos colonos são divididas entre as causadas por um invasor, outras causas conhecidas e desconhecidas. Embora os invasivos não sejam registrados, eles são desconhecidos.</RWS_MetricDesc_DeathsByRaid>
-  <RWS_Metric_DiseaseDeaths>Morte de colonistas por doença</RWS_Metric_DiseaseDeaths>
-  <RWS_MetricDesc_DiseaseDeaths>Morte livre de colonistas cujo culpado foi uma doença (uma condição que o jogo trata como tornando o personagem doente). As mortes meramente acompanhadas por uma doença não são contadas.</RWS_MetricDesc_DiseaseDeaths>
-  <RWS_Metric_DiseaseDeathRate>Compartilha das mortes por doença</RWS_Metric_DiseaseDeathRate>
-  <RWS_MetricDesc_DiseaseDeathRate>Morte por doença ÷ mortes de colonos livres com uma causa conhecida.</RWS_MetricDesc_DiseaseDeathRate>
-  <RWS_Metric_LongestDeathGap>Tempo mais longo sem uma morte colonista</RWS_Metric_LongestDeathGap>
-  <RWS_MetricDesc_LongestDeathGap>O intervalo mais longo entre duas mortes consecutivas de colonistas livres enquanto gravadas. O tempo antes da primeira e após a última morte não é um intervalo.</RWS_MetricDesc_LongestDeathGap>
-  <RWS_Metric_FirstDeathDay>Dias até a primeira morte do colonizador</RWS_Metric_FirstDeathDay>
-  <RWS_MetricDesc_FirstDeathDay>O dia do jogo da primeira morte livre do colonista, somente quando gravado desde o início do jogo.</RWS_MetricDesc_FirstDeathDay>
-  <RWS_Metric_OldestDeathAge>Colonista mais velho na morte</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>A maior idade biológica de um colonizador livre pouco antes de morrer. O mesmo valor que o colonizador com vida mais longa (P-010).</RWS_MetricDesc_OldestDeathAge>
-  <RWS_Metric_CaravanMemberDeaths>Colonistas que morreram em caravanas</RWS_Metric_CaravanMemberDeaths>
-  <RWS_MetricDesc_CaravanMemberDeaths>Colonistas livres que morreram em uma caravana de jogador.</RWS_MetricDesc_CaravanMemberDeaths>
-  <RWS_Metric_ColonyAnimalDeaths>Morte de animais na colônia</RWS_Metric_ColonyAnimalDeaths>
-  <RWS_MetricDesc_ColonyAnimalDeaths>Morte de animais que pertenciam ao jogador pouco antes de morrer.</RWS_MetricDesc_ColonyAnimalDeaths>
+  <RWS_MetricDesc_DeathsByRaid>Mortes de colonos livres divididas entre as causadas por invasores, outras causas conhecidas e “(desconhecido)”. Quando as invasões não estão sendo registradas, as mortes entram em “(desconhecido)”.</RWS_MetricDesc_DeathsByRaid>
+  <RWS_Metric_DiseaseDeaths>Mortes de colonos por doença</RWS_Metric_DiseaseDeaths>
+  <RWS_MetricDesc_DiseaseDeaths>Mortes de colonos livres causadas por uma doença (condição que o jogo considera que deixa o peão doente). Não são contadas as mortes em que a doença estava apenas presente.</RWS_MetricDesc_DiseaseDeaths>
+  <RWS_Metric_DiseaseDeathRate>Proporção de mortes por doença</RWS_Metric_DiseaseDeathRate>
+  <RWS_MetricDesc_DiseaseDeathRate>Mortes por doença ÷ mortes de colonos livres com causa conhecida.</RWS_MetricDesc_DiseaseDeathRate>
+  <RWS_Metric_LongestDeathGap>Maior período sem morte de colono</RWS_Metric_LongestDeathGap>
+  <RWS_MetricDesc_LongestDeathGap>Maior intervalo entre duas mortes consecutivas de colonos livres durante o registro. O tempo anterior à primeira morte e posterior à última não conta como intervalo.</RWS_MetricDesc_LongestDeathGap>
+  <RWS_Metric_FirstDeathDay>Dias até a primeira morte de colono</RWS_Metric_FirstDeathDay>
+  <RWS_MetricDesc_FirstDeathDay>Dia do jogo da primeira morte de um colono livre, apenas quando o registro começou no início do jogo.</RWS_MetricDesc_FirstDeathDay>
+  <RWS_Metric_OldestDeathAge>Maior idade de um colono ao morrer</RWS_Metric_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Maior idade biológica de um colono livre imediatamente antes de morrer. Mesmo valor do colono mais longevo (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_Metric_CaravanMemberDeaths>Colonos mortos em caravanas</RWS_Metric_CaravanMemberDeaths>
+  <RWS_MetricDesc_CaravanMemberDeaths>Colonos livres que morreram enquanto faziam parte de uma caravana do jogador.</RWS_MetricDesc_CaravanMemberDeaths>
+  <RWS_Metric_ColonyAnimalDeaths>Mortes de animais da colônia</RWS_Metric_ColonyAnimalDeaths>
+  <RWS_MetricDesc_ColonyAnimalDeaths>Mortes de animais que pertenciam ao jogador imediatamente antes de morrer.</RWS_MetricDesc_ColonyAnimalDeaths>
   <RWS_Metric_ColonyAnimalRaidDeaths>Animais da colônia mortos por invasores</RWS_Metric_ColonyAnimalRaidDeaths>
-  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Morte de animais da colônia cujo atacante pertencia a um ataque rastreado.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
-  <RWS_Metric_ColonistsDowned>Colonistas derrubados</RWS_Metric_ColonistsDowned>
-  <RWS_MetricDesc_ColonistsDowned>Tempos em que um colonizador livre passou de não baixado para baixado. As mortes instantâneas sem uma baixada não são contadas.</RWS_MetricDesc_ColonistsDowned>
-  <RWS_Metric_EnemiesDowned>Inimigos derrubados (incapacitados)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Tempos em que um personagem hostil ao jogador caiu; voltar a cair depois de recuperar é outra vez. O mesmo valor que os inimigos incapacitados (B- 002).</RWS_MetricDesc_EnemiesDowned>
-  <RWS_Metric_ToxicDowns>Baixos da acumulação tóxica</RWS_Metric_ToxicDowns>
-  <RWS_MetricDesc_ToxicDowns>Downs colonistas livres diretamente causados por acumulação tóxica (Biotech).</RWS_MetricDesc_ToxicDowns>
-  <RWS_Metric_SocialFightDowns>Baixa das lutas sociais</RWS_Metric_SocialFightDowns>
-  <RWS_MetricDesc_SocialFightDowns>Downs colonistas gratuitos causados diretamente pelo adversário de uma luta social.</RWS_MetricDesc_SocialFightDowns>
-  <RWS_Metric_RaidsByArrivalMode>Raids pelo modo de chegada</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>Raids inimigos bem sucedidos por modo de chegada (PawnsArrivalModeDef). O total é o número de raids.</RWS_MetricDesc_RaidsByArrivalMode>
-  <RWS_Metric_RaidsByFaction>Raids por facção</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>Raids inimigos bem sucedidos pelo tipo de definição da facção atacante.</RWS_MetricDesc_RaidsByFaction>
-  <RWS_Metric_RaidPawnsMax>Maior ataque (características)</RWS_Metric_RaidPawnsMax>
-  <RWS_MetricDesc_RaidPawnsMax>Os personagens mais inimigos gerados para um ataque bem sucedido. Os pontos de raid são uma linha separada.</RWS_MetricDesc_RaidPawnsMax>
-  <RWS_Metric_RaidPointsMax>Pontos de invasão mais altos</RWS_Metric_RaidPointsMax>
-  <RWS_MetricDesc_RaidPointsMax>Os pontos finais mais altos usados para gerar um ataque bem sucedido.</RWS_MetricDesc_RaidPointsMax>
-  <RWS_Metric_RaidKillsMax>A maioria das mortes em um ataque</RWS_Metric_RaidKillsMax>
-  <RWS_MetricDesc_RaidKillsMax>A maioria mata o lado do jogador feito entre os personagens de um raid rastreado enquanto o raid durou.</RWS_MetricDesc_RaidKillsMax>
-  <RWS_Metric_RaidSieges>Sieges</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Raids com a estratégia de assentamento.</RWS_MetricDesc_RaidSieges>
-  <RWS_Metric_RaidBreaches>Raids de violação</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Raids com uma estratégia de violação (ImediateAttackBreaching, ImediateAttackBreachingSmart). Sappers não estão incluídos.</RWS_MetricDesc_RaidBreaches>
-  <RWS_Metric_RaidDrops>Largar as incursões da cápsula</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Raids chegando por pod drop (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Mortes de animais da colônia cujo atacante pertencia a uma invasão acompanhada.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
+  <RWS_Metric_ColonistsDowned>Colonos abatidos</RWS_Metric_ColonistsDowned>
+  <RWS_MetricDesc_ColonistsDowned>Vezes em que um colono livre passou de não abatido a abatido. Mortes instantâneas sem abatimento prévio não são contadas.</RWS_MetricDesc_ColonistsDowned>
+  <RWS_Metric_EnemiesDowned>Inimigos abatidos (incapacitados)</RWS_Metric_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Vezes em que um peão hostil ao jogador ficou abatido; se ele se recuperar e for abatido novamente, conta de novo. Mesmo valor dos inimigos incapacitados (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_Metric_ToxicDowns>Abatimentos por acúmulo tóxico</RWS_Metric_ToxicDowns>
+  <RWS_MetricDesc_ToxicDowns>Abatimentos de colonos livres causados diretamente por acúmulo tóxico (Biotech).</RWS_MetricDesc_ToxicDowns>
+  <RWS_Metric_SocialFightDowns>Abatimentos em brigas sociais</RWS_Metric_SocialFightDowns>
+  <RWS_MetricDesc_SocialFightDowns>Abatimentos de colonos livres causados diretamente pelo adversário de uma briga social.</RWS_MetricDesc_SocialFightDowns>
+  <RWS_Metric_RaidsByArrivalMode>Invasões por modo de chegada</RWS_Metric_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Invasões inimigas iniciadas com sucesso, por modo de chegada (PawnsArrivalModeDef). O total é o número de invasões.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_Metric_RaidsByFaction>Invasões por facção</RWS_Metric_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Invasões inimigas iniciadas com sucesso, pelo Def da facção atacante (FactionDef).</RWS_MetricDesc_RaidsByFaction>
+  <RWS_Metric_RaidPawnsMax>Maior invasão (peões)</RWS_Metric_RaidPawnsMax>
+  <RWS_MetricDesc_RaidPawnsMax>Maior número de peões inimigos gerados para uma invasão iniciada com sucesso. Os pontos de invasão são exibidos separadamente.</RWS_MetricDesc_RaidPawnsMax>
+  <RWS_Metric_RaidPointsMax>Maior pontuação de invasão</RWS_Metric_RaidPointsMax>
+  <RWS_MetricDesc_RaidPointsMax>Maior pontuação final usada para gerar uma invasão iniciada com sucesso.</RWS_MetricDesc_RaidPointsMax>
+  <RWS_Metric_RaidKillsMax>Maior número de mortes em uma invasão</RWS_Metric_RaidKillsMax>
+  <RWS_MetricDesc_RaidKillsMax>Maior número de inimigos de uma mesma invasão acompanhada que o lado do jogador matou durante a invasão.</RWS_MetricDesc_RaidKillsMax>
+  <RWS_Metric_RaidSieges>Cercos</RWS_Metric_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Invasões com a estratégia Siege (cerco).</RWS_MetricDesc_RaidSieges>
+  <RWS_Metric_RaidBreaches>Invasões de rompimento</RWS_Metric_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Invasões com estratégia de rompimento (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Sapadores não estão incluídos.</RWS_MetricDesc_RaidBreaches>
+  <RWS_Metric_RaidDrops>Invasões por cápsulas de transporte</RWS_Metric_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Invasões que chegaram por cápsulas de transporte (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Infestações</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Infestações de colmeia de insetos bem sucedidas (Infestação, DeepDrillInfestação). Outros eventos relacionados com os insetos não são contados.</RWS_MetricDesc_Infestations>
-  <RWS_Metric_MechClusters>Mech clusters</RWS_Metric_MechClusters>
-  <RWS_MetricDesc_MechClusters>Incidentes de cluster de mech bem sucedidos (Realidade). As incursões mecanóides ordinárias não são contadas.</RWS_MetricDesc_MechClusters>
-  <RWS_Metric_ManhunterPacks>Pacotes de Caçadores de Homens</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>incidentes de pacote de caçadores de homens bem sucedidos (Pacote de caçadores de homens).</RWS_MetricDesc_ManhunterPacks>
-  <RWS_Metric_RaidLongestGap>O tempo mais longo sem um ataque</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>O intervalo mais longo entre duas incursões consecutivas gravadas, sem contar antes do primeiro ou depois do último. O mesmo valor que o maior intervalo de incursões (N2- C- 002).</RWS_MetricDesc_RaidLongestGap>
-  <RWS_Metric_RaidMeanGap>Tempo médio entre as incursões</RWS_Metric_RaidMeanGap>
-  <RWS_MetricDesc_RaidMeanGap>A média dos mesmos intervalos; globalmente, ponderada pelo número de intervalos.</RWS_MetricDesc_RaidMeanGap>
-  <RWS_Metric_RaidFirstDay>Dias até o primeiro ataque</RWS_Metric_RaidFirstDay>
-  <RWS_MetricDesc_RaidFirstDay>O dia do jogo do primeiro ataque, somente quando gravado desde o início do jogo.</RWS_MetricDesc_RaidFirstDay>
-  <RWS_Metric_RaidsRetreated>Raids que recuaram</RWS_Metric_RaidsRetreated>
-  <RWS_MetricDesc_RaidsRetreated>Rastreou as incursões que terminaram com alguns inimigos deixando o mapa vivo.</RWS_MetricDesc_RaidsRetreated>
-  <RWS_Metric_RaidsWiped>Raids eliminados</RWS_Metric_RaidsWiped>
-  <RWS_MetricDesc_RaidsWiped>Rastreado as incursões que terminaram com todos os inimigos mortos e nenhum recuando. Um raid com prisioneiros tem outro resultado.</RWS_MetricDesc_RaidsWiped>
-  <RWS_Metric_RaidRepelledRate>Taxa de repelição do raid</RWS_Metric_RaidRepelledRate>
-  <RWS_MetricDesc_RaidRepelledRate>Raias que recuaram ou foram eliminadas ÷ Raias rastreadas com um resultado determinado. Raias cujo resultado é desconhecido (por exemplo, o mapa desapareceu) são deixadas de fora.</RWS_MetricDesc_RaidRepelledRate>
-  <RWS_Metric_RaidRepelledNoDown>Raids repelido sem um colonizador para baixo</RWS_Metric_RaidRepelledNoDown>
-  <RWS_MetricDesc_RaidRepelledNoDown>Raids repelidos durante os quais nenhum colonizador livre desceu no mesmo mapa.</RWS_MetricDesc_RaidRepelledNoDown>
-  <RWS_Metric_RaidDurationMean>Duração média do ataque</RWS_Metric_RaidDurationMean>
-  <RWS_MetricDesc_RaidDurationMean>Os dias médios desde a chegada até o último inimigo rastreado estava fora da luta, sobre as incursões com um resultado decidido.</RWS_MetricDesc_RaidDurationMean>
+  <RWS_MetricDesc_Infestations>Infestações de colmeias iniciadas com sucesso (Infestation, DeepDrillInfestation). Outros eventos ligados a insetos não são contados.</RWS_MetricDesc_Infestations>
+  <RWS_Metric_MechClusters>Aglomerados mecanoides</RWS_Metric_MechClusters>
+  <RWS_MetricDesc_MechClusters>Incidentes de aglomerados mecanoides iniciados com sucesso (Royalty). Invasões comuns de mecanoides não são contadas.</RWS_MetricDesc_MechClusters>
+  <RWS_Metric_ManhunterPacks>Grupos caçadores de humanos</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Incidentes de grupos caçadores de humanos iniciados com sucesso (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_RaidLongestGap>Maior período sem invasão</RWS_Metric_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Maior intervalo entre invasões consecutivas registradas, sem contar antes da primeira ou depois da última. Mesmo valor do maior intervalo entre invasões (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_Metric_RaidMeanGap>Intervalo médio entre invasões</RWS_Metric_RaidMeanGap>
+  <RWS_MetricDesc_RaidMeanGap>Média dos mesmos intervalos; no total, ponderada pela quantidade de intervalos.</RWS_MetricDesc_RaidMeanGap>
+  <RWS_Metric_RaidFirstDay>Dias até a primeira invasão</RWS_Metric_RaidFirstDay>
+  <RWS_MetricDesc_RaidFirstDay>Dia do jogo da primeira invasão, apenas quando o registro começou no início do jogo.</RWS_MetricDesc_RaidFirstDay>
+  <RWS_Metric_RaidsRetreated>Invasões com retirada dos inimigos</RWS_Metric_RaidsRetreated>
+  <RWS_MetricDesc_RaidsRetreated>Invasões acompanhadas que terminaram quando alguns inimigos deixaram o mapa com vida.</RWS_MetricDesc_RaidsRetreated>
+  <RWS_Metric_RaidsWiped>Invasões totalmente eliminadas</RWS_Metric_RaidsWiped>
+  <RWS_MetricDesc_RaidsWiped>Invasões acompanhadas que terminaram com todos os inimigos mortos e nenhum recuando. Uma invasão com prisioneiros tem outro resultado.</RWS_MetricDesc_RaidsWiped>
+  <RWS_Metric_RaidRepelledRate>Taxa de invasões repelidas</RWS_Metric_RaidRepelledRate>
+  <RWS_MetricDesc_RaidRepelledRate>Invasões terminadas com retirada ou eliminação total ÷ invasões acompanhadas com resultado definido. Invasões com resultado desconhecido (por exemplo, se o mapa desapareceu) são excluídas.</RWS_MetricDesc_RaidRepelledRate>
+  <RWS_Metric_RaidRepelledNoDown>Invasões repelidas sem colonos abatidos</RWS_Metric_RaidRepelledNoDown>
+  <RWS_MetricDesc_RaidRepelledNoDown>Invasões repelidas durante as quais nenhum colono livre ficou abatido no mesmo mapa.</RWS_MetricDesc_RaidRepelledNoDown>
+  <RWS_Metric_RaidDurationMean>Duração média das invasões</RWS_Metric_RaidDurationMean>
+  <RWS_MetricDesc_RaidDurationMean>Média de dias desde a chegada até o último inimigo acompanhado sair de combate, entre invasões com resultado definido.</RWS_MetricDesc_RaidDurationMean>
   <RWS_Metric_RaidDurationMax>Invasão mais longa</RWS_Metric_RaidDurationMax>
-  <RWS_MetricDesc_RaidDurationMax>A maioria dos dias na mesma amostra.</RWS_MetricDesc_RaidDurationMax>
-  <RWS_Metric_RaidDurationMinRepelled>Raid repelido mais rápido</RWS_Metric_RaidDurationMinRepelled>
-  <RWS_MetricDesc_RaidDurationMinRepelled>Os últimos dias de um ataque que recuou ou foi aniquilado.</RWS_MetricDesc_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMax>Maior número de dias na mesma amostra.</RWS_MetricDesc_RaidDurationMax>
+  <RWS_Metric_RaidDurationMinRepelled>Invasão repelida mais rapidamente</RWS_Metric_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMinRepelled>Menor número de dias entre as invasões que terminaram em retirada ou eliminação total.</RWS_MetricDesc_RaidDurationMinRepelled>
   <RWS_Metric_FirstJoins>Novos membros</RWS_Metric_FirstJoins>
-  <RWS_MetricDesc_FirstJoins>Caracteres que se tornaram colonizadores livres pela primeira vez, além dos colonizadores e nascimentos iniciais. Cada caractere conta uma vez.</RWS_MetricDesc_FirstJoins>
-  <RWS_Metric_JoinRoutes>Novos membros por rota</RWS_Metric_JoinRoutes>
-  <RWS_MetricDesc_JoinRoutes>Novos membros dividem- se em prisioneiros recrutados, escravos emancipados e outras rotas.</RWS_MetricDesc_JoinRoutes>
-  <RWS_Metric_PrisonerRecruits>Presos recrutados</RWS_Metric_PrisonerRecruits>
-  <RWS_MetricDesc_PrisonerRecruits>Caracters que foram prisioneiros da colônia e se juntaram pela primeira vez pelo recrutamento.</RWS_MetricDesc_PrisonerRecruits>
+  <RWS_MetricDesc_FirstJoins>Peões que se tornaram colonos livres pela primeira vez, excluindo os colonos iniciais e os nascimentos. Cada peão conta apenas uma vez.</RWS_MetricDesc_FirstJoins>
+  <RWS_Metric_JoinRoutes>Novos membros por forma de ingresso</RWS_Metric_JoinRoutes>
+  <RWS_MetricDesc_JoinRoutes>Novos membros divididos entre prisioneiros recrutados, escravos emancipados e outras formas de ingresso.</RWS_MetricDesc_JoinRoutes>
+  <RWS_Metric_PrisonerRecruits>Prisioneiros recrutados</RWS_Metric_PrisonerRecruits>
+  <RWS_MetricDesc_PrisonerRecruits>Peões que eram prisioneiros da colônia e ingressaram pela primeira vez por recrutamento.</RWS_MetricDesc_PrisonerRecruits>
   <RWS_Metric_HumanBirths>Nascimentos</RWS_Metric_HumanBirths>
-  <RWS_MetricDesc_HumanBirths>Crianças humanas nascidas vivas do lado do jogador (Biotech). Os partos não são contados.</RWS_MetricDesc_HumanBirths>
-  <RWS_Metric_JoinAgeMean>Edade média na adesão</RWS_Metric_JoinAgeMean>
-  <RWS_MetricDesc_JoinAgeMean>A idade biológica média dos novos membros quando se juntaram.</RWS_MetricDesc_JoinAgeMean>
-  <RWS_Metric_FirstJoinDay>Dias para o primeiro novo membro</RWS_Metric_FirstJoinDay>
-  <RWS_MetricDesc_FirstJoinDay>O dia do jogo do primeiro novo membro, somente quando gravado desde o início do jogo.</RWS_MetricDesc_FirstJoinDay>
+  <RWS_MetricDesc_HumanBirths>Crianças humanoides nascidas com vida no lado do jogador (Biotech). Natimortos não são contados.</RWS_MetricDesc_HumanBirths>
+  <RWS_Metric_JoinAgeMean>Idade média ao ingressar</RWS_Metric_JoinAgeMean>
+  <RWS_MetricDesc_JoinAgeMean>Idade biológica média dos novos membros quando ingressaram na colônia.</RWS_MetricDesc_JoinAgeMean>
+  <RWS_Metric_FirstJoinDay>Dias até o primeiro novo membro</RWS_Metric_FirstJoinDay>
+  <RWS_MetricDesc_FirstJoinDay>Dia do jogo da primeira entrada de um novo membro, apenas quando o registro começou no início do jogo.</RWS_MetricDesc_FirstJoinDay>
   <RWS_Metric_SlavesFreed>Escravos emancipados</RWS_Metric_SlavesFreed>
-  <RWS_MetricDesc_SlavesFreed>Escravos cujo status de escravo foi levantado (emancipado). Não é o mesmo que libertar prisioneiros.</RWS_MetricDesc_SlavesFreed>
-  <RWS_Metric_Kidnaps>Colonistas raptados</RWS_Metric_Kidnaps>
-  <RWS_MetricDesc_Kidnaps>Tempos em que um colonizador livre foi sequestrado para os cativos de uma facção.</RWS_MetricDesc_Kidnaps>
-  <RWS_Metric_KidnapRescues>Colonistas raptados retornaram</RWS_Metric_KidnapRescues>
-  <RWS_MetricDesc_KidnapRescues>Colonistas raptados que voltaram por uma rota confirmada (ransom). Outras rotas não são contadas.</RWS_MetricDesc_KidnapRescues>
-  <RWS_Metric_CaptiveMax>O cativeiro mais longo</RWS_Metric_CaptiveMax>
-  <RWS_MetricDesc_CaptiveMax>O cativeiro mais longo desde o sequestro até o retorno que foi rastreado.</RWS_MetricDesc_CaptiveMax>
-  <RWS_Metric_LifeMean>Edade média ao morrer</RWS_Metric_LifeMean>
-  <RWS_MetricDesc_LifeMean>A idade biológica média dos colonos livres na morte. Os colonos vivos não estão incluídos.</RWS_MetricDesc_LifeMean>
-  <RWS_Metric_TenureMean>Tempo médio na colônia</RWS_Metric_TenureMean>
-  <RWS_MetricDesc_TenureMean>Os dias médios entre a adesão (ou o início do jogo) à morte ou saída, onde ambos os fins foram rastreados. As estadias em andamento não estão incluídas.</RWS_MetricDesc_TenureMean>
-  <RWS_Metric_FirstSkill20>Habilidades chegando primeiro a 20</RWS_Metric_FirstSkill20>
-  <RWS_MetricDesc_FirstSkill20>(Caracter, habilidade) pares de colonizadores livres que atingiram os 20 primeiros através da aprendizagem durante a gravação. A queda e o alcance dos 20 novamente conta uma vez.</RWS_MetricDesc_FirstSkill20>
-  <RWS_Metric_JoinGainPeak>Maior ganho de habilidade desde a adesão</RWS_Metric_JoinGainPeak>
-  <RWS_MetricDesc_JoinGainPeak>O maior aumento de uma habilidade sobre o seu nível de adesão. Os caracteres cujo nível de adesão não é conhecido não estão incluídos.</RWS_MetricDesc_JoinGainPeak>
+  <RWS_MetricDesc_SlavesFreed>Escravos cujo estado de escravidão foi encerrado (emancipados). Diferente da libertação de prisioneiros.</RWS_MetricDesc_SlavesFreed>
+  <RWS_Metric_Kidnaps>Colonos sequestrados</RWS_Metric_Kidnaps>
+  <RWS_MetricDesc_Kidnaps>Vezes em que um colono livre foi sequestrado e se tornou cativo de uma facção.</RWS_MetricDesc_Kidnaps>
+  <RWS_Metric_KidnapRescues>Colonos sequestrados que voltaram</RWS_Metric_KidnapRescues>
+  <RWS_MetricDesc_KidnapRescues>Colonos sequestrados que voltaram por uma via confirmada (resgate mediante pagamento). Outras formas de retorno não são contadas.</RWS_MetricDesc_KidnapRescues>
+  <RWS_Metric_CaptiveMax>Cativeiro mais longo</RWS_Metric_CaptiveMax>
+  <RWS_MetricDesc_CaptiveMax>Maior período de cativeiro acompanhado desde o sequestro até o retorno.</RWS_MetricDesc_CaptiveMax>
+  <RWS_Metric_LifeMean>Idade média ao morrer</RWS_Metric_LifeMean>
+  <RWS_MetricDesc_LifeMean>Idade biológica média dos colonos livres ao morrer. Colonos vivos não são incluídos.</RWS_MetricDesc_LifeMean>
+  <RWS_Metric_TenureMean>Tempo médio de permanência na colônia</RWS_Metric_TenureMean>
+  <RWS_MetricDesc_TenureMean>Média de dias entre o ingresso (ou início do jogo) e a morte ou saída, quando ambos os momentos foram acompanhados. Permanências ainda em curso não são incluídas.</RWS_MetricDesc_TenureMean>
+  <RWS_Metric_FirstSkill20>Primeiras vezes atingindo habilidade 20</RWS_Metric_FirstSkill20>
+  <RWS_MetricDesc_FirstSkill20>Pares (peão, habilidade) de colonos livres que atingiram o nível 20 pela primeira vez por aprendizado durante o registro. Cair de nível e atingir 20 de novo conta apenas uma vez.</RWS_MetricDesc_FirstSkill20>
+  <RWS_Metric_JoinGainPeak>Maior aumento de habilidade desde o ingresso</RWS_Metric_JoinGainPeak>
+  <RWS_MetricDesc_JoinGainPeak>Maior aumento de uma habilidade em relação ao nível no ingresso. Peões sem nível inicial conhecido não são incluídos.</RWS_MetricDesc_JoinGainPeak>
   <RWS_Metric_Marriages>Casamentos</RWS_Metric_Marriages>
-  <RWS_MetricDesc_Marriages>Pares que se tornaram cônjuges; as notificações de ambos os lados contam como um.</RWS_MetricDesc_Marriages>
+  <RWS_MetricDesc_Marriages>Casais que se tornaram cônjuges; as notificações de ambos contam como um único casamento.</RWS_MetricDesc_Marriages>
   <RWS_Metric_Divorces>Divórcios</RWS_Metric_Divorces>
-  <RWS_MetricDesc_Divorces>Relações com o cônjuge terminadas com o divórcio. As remoções de luto e outras relações não são contadas.</RWS_MetricDesc_Divorces>
-  <RWS_Metric_Lovers>Novos amantes</RWS_Metric_Lovers>
-  <RWS_MetricDesc_Lovers>Pares que se tornaram amantes; as notificações de ambos os lados contam como um.</RWS_MetricDesc_Lovers>
-  <RWS_Metric_SocialFights>Lutas sociais</RWS_Metric_SocialFights>
-  <RWS_MetricDesc_SocialFights>As lutas sociais começaram; dois personagens fazem uma luta.</RWS_MetricDesc_SocialFights>
-  <RWS_Metric_PrisonBreaks>Interrupção da prisão</RWS_Metric_PrisonBreaks>
-  <RWS_MetricDesc_PrisonBreaks>As quebras na prisão começaram, por mais que muitos prisioneiros tenham escapado.</RWS_MetricDesc_PrisonBreaks>
-  <RWS_Metric_PrisonersReleased>Prisioneiros liberados</RWS_Metric_PrisonersReleased>
-  <RWS_MetricDesc_PrisonersReleased>Presos da colônia cuja liberação terminou. As fugas não são contadas.</RWS_MetricDesc_PrisonersReleased>
+  <RWS_MetricDesc_Divorces>Relações conjugais encerradas por divórcio. Viuvez e outras remoções de relacionamento não são contadas.</RWS_MetricDesc_Divorces>
+  <RWS_Metric_Lovers>Novos casais de namorados</RWS_Metric_Lovers>
+  <RWS_MetricDesc_Lovers>Casais que começaram a namorar; as notificações dos dois parceiros contam como um casal.</RWS_MetricDesc_Lovers>
+  <RWS_Metric_SocialFights>Brigas sociais</RWS_Metric_SocialFights>
+  <RWS_MetricDesc_SocialFights>Brigas sociais iniciadas; uma briga entre dois peões conta apenas uma vez.</RWS_MetricDesc_SocialFights>
+  <RWS_Metric_PrisonBreaks>Fugas de prisão</RWS_Metric_PrisonBreaks>
+  <RWS_MetricDesc_PrisonBreaks>Fugas de prisão iniciadas, independentemente de quantos prisioneiros escaparam.</RWS_MetricDesc_PrisonBreaks>
+  <RWS_Metric_PrisonersReleased>Prisioneiros libertados</RWS_Metric_PrisonersReleased>
+  <RWS_MetricDesc_PrisonersReleased>Prisioneiros da colônia cuja libertação foi concluída. Fugas não são contadas.</RWS_MetricDesc_PrisonersReleased>
   <RWS_Metric_PrisonersCaptured>Inimigos capturados</RWS_Metric_PrisonersCaptured>
-  <RWS_MetricDesc_PrisonersCaptured>Caracteres hostis capturados em prisioneiros da colônia.</RWS_MetricDesc_PrisonersCaptured>
-  <RWS_Metric_AnimalBonds>Ligações para animais</RWS_Metric_AnimalBonds>
-  <RWS_MetricDesc_AnimalBonds>Bonds formados entre um colono e um animal de colônia.</RWS_MetricDesc_AnimalBonds>
+  <RWS_MetricDesc_PrisonersCaptured>Peões hostis capturados e transformados em prisioneiros da colônia.</RWS_MetricDesc_PrisonersCaptured>
+  <RWS_Metric_AnimalBonds>Vínculos com animais</RWS_Metric_AnimalBonds>
+  <RWS_MetricDesc_AnimalBonds>Vínculos formados entre um colono e um animal da colônia.</RWS_MetricDesc_AnimalBonds>
   <RWS_Metric_AnimalsTamed>Animais domesticados</RWS_Metric_AnimalsTamed>
-  <RWS_MetricDesc_AnimalsTamed>Animais selvagens que se tornaram do jogador através de domesticação bem sucedida. As compras não são contadas.</RWS_MetricDesc_AnimalsTamed>
-  <RWS_Metric_AnimalBirths>Colônia de nascimentos de animais</RWS_Metric_AnimalBirths>
-  <RWS_MetricDesc_AnimalBirths>Animais do jogador nascidos ou eclodidos vivos. Separados dos nascimentos semelhantes a humanos.</RWS_MetricDesc_AnimalBirths>
-  <RWS_Metric_AnimalsSlaughtered>Animais abatidos</RWS_Metric_AnimalsSlaughtered>
-  <RWS_MetricDesc_AnimalsSlaughtered>Morte de animais na colônia por abate designado.</RWS_MetricDesc_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsTamed>Animais selvagens que passaram a pertencer ao jogador após domesticação bem-sucedida. Compras não são contadas.</RWS_MetricDesc_AnimalsTamed>
+  <RWS_Metric_AnimalBirths>Nascimentos de animais da colônia</RWS_Metric_AnimalBirths>
+  <RWS_MetricDesc_AnimalBirths>Animais do jogador nascidos ou chocados com vida. Separados dos nascimentos humanoides.</RWS_MetricDesc_AnimalBirths>
+  <RWS_Metric_AnimalsSlaughtered>Animais abatidos para carne</RWS_Metric_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsSlaughtered>Mortes de animais da colônia por abate designado.</RWS_MetricDesc_AnimalsSlaughtered>
   <RWS_Metric_AnimalsHunted>Animais selvagens caçados</RWS_Metric_AnimalsHunted>
-  <RWS_MetricDesc_AnimalsHunted>Animais selvagens designados para caçar e mortos por um personagem jogador. As lutas incidentes não são contadas.</RWS_MetricDesc_AnimalsHunted>
+  <RWS_MetricDesc_AnimalsHunted>Animais selvagens marcados para caça e mortos por um peão do jogador. Brigas incidentais não são contadas.</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} anos</RWS_Unit_Years>
-  <RWS_Unit_PerCellDay>{0} por celular- dia</RWS_Unit_PerCellDay>
-  <RWS_Metric_CraftedUnits>Itens criados</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Contagem de pilhas dos produtos principais e laterais das contas terminadas do jogador, incluindo cozinha e arte; mineração, colheitas e gestação mech não estão incluídos.</RWS_MetricDesc_CraftedUnits>
-  <RWS_Metric_CraftQuality>Itens criados por qualidade</RWS_Metric_CraftQuality>
-  <RWS_MetricDesc_CraftQuality>Os itens criados acima por qualidade; itens sem qualidade são "ninguém".</RWS_MetricDesc_CraftQuality>
+  <RWS_Unit_PerCellDay>{0} / célula-dia</RWS_Unit_PerCellDay>
+  <RWS_Metric_CraftedUnits>Itens fabricados</RWS_Metric_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Quantidades nas pilhas dos produtos principais e secundários das tarefas de produção concluídas pelo jogador, inclusive culinária e arte. Mineração, colheitas e gestação de mecas não são incluídas.</RWS_MetricDesc_CraftedUnits>
+  <RWS_Metric_CraftQuality>Itens fabricados por qualidade</RWS_Metric_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>Os itens fabricados acima, divididos por qualidade. Itens sem qualidade aparecem como “none”.</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Itens lendários criados</RWS_Metric_CraftLegendary>
   <RWS_MetricDesc_CraftLegendary>Itens criados de qualidade lendária.</RWS_MetricDesc_CraftLegendary>
   <RWS_Metric_CraftMasterwork>Itens de trabalho principal criados</RWS_Metric_CraftMasterwork>

@@ -375,131 +375,131 @@
   <RWS_Metric_DeathCauses>Причины смерти поселенцев</RWS_Metric_DeathCauses>
   <RWS_MetricDesc_DeathCauses>Смерти свободных поселенцев по вызвавшему их состоянию здоровья (hediff) либо виду смертельного урона. Если оба неизвестны, категория называется «(неизвестно)».</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Смерти поселенцев при налётах</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>Свободные смерти колонистов делятся на вызванные рейдером, другие известные причины и неизвестные.В то время как рейды не фиксируются, они неизвестны.</RWS_MetricDesc_DeathsByRaid>
-  <RWS_Metric_DiseaseDeaths>Смертность колонистов от болезней</RWS_Metric_DiseaseDeaths>
-  <RWS_MetricDesc_DiseaseDeaths>Свободные смерти колонистов, виновником которых была болезнь (состояние, которое игра рассматривает как то, что делает персонажа больным).</RWS_MetricDesc_DiseaseDeaths>
+  <RWS_MetricDesc_DeathsByRaid>Смерти свободных поселенцев по причинам: нападение участника налёта, другие известные причины и «(неизвестно)». Если налёты не записываются, смерти относятся к «(неизвестно)».</RWS_MetricDesc_DeathsByRaid>
+  <RWS_Metric_DiseaseDeaths>Смерти поселенцев от болезней</RWS_Metric_DiseaseDeaths>
+  <RWS_MetricDesc_DiseaseDeaths>Смерти свободных поселенцев, вызванные болезнью (состоянием, которое игра считает заболеванием пешки). Смерти, при которых болезнь лишь присутствовала, не учитываются.</RWS_MetricDesc_DiseaseDeaths>
   <RWS_Metric_DiseaseDeathRate>Доля смертей от болезней</RWS_Metric_DiseaseDeathRate>
-  <RWS_MetricDesc_DiseaseDeathRate>Смерти от болезней - свободные смерти колонистов с известной причиной.</RWS_MetricDesc_DiseaseDeathRate>
-  <RWS_Metric_LongestDeathGap>Самое долгое время без смерти колониста</RWS_Metric_LongestDeathGap>
-  <RWS_MetricDesc_LongestDeathGap>Самый длинный интервал между двумя последовательными свободными смертями колонистов при записи.Время до первой и после последней смерти не является интервалом.</RWS_MetricDesc_LongestDeathGap>
-  <RWS_Metric_FirstDeathDay>Дни до первой смерти колонистов</RWS_Metric_FirstDeathDay>
-  <RWS_MetricDesc_FirstDeathDay>Игровой день первой свободной колонистской смерти, только когда записан с самого начала игры.</RWS_MetricDesc_FirstDeathDay>
-  <RWS_Metric_OldestDeathAge>Старейший колонист на смерть</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>Наивысший биологический возраст свободного колониста непосредственно перед смертью.То же значение, что и самого долгоживущего колониста (P-010).</RWS_MetricDesc_OldestDeathAge>
-  <RWS_Metric_CaravanMemberDeaths>Колонисты, погибшие на караванах</RWS_Metric_CaravanMemberDeaths>
-  <RWS_MetricDesc_CaravanMemberDeaths>Свободные колонисты, погибшие в игровом караване.</RWS_MetricDesc_CaravanMemberDeaths>
-  <RWS_Metric_ColonyAnimalDeaths>Смертность животных колонии</RWS_Metric_ColonyAnimalDeaths>
-  <RWS_MetricDesc_ColonyAnimalDeaths>Гибель животных, принадлежавших игроку непосредственно перед смертью.</RWS_MetricDesc_ColonyAnimalDeaths>
-  <RWS_Metric_ColonyAnimalRaidDeaths>Колониальные животные, убитые рейдерами</RWS_Metric_ColonyAnimalRaidDeaths>
-  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Смерти животных в колонии, нападавший которых принадлежал к гусеничному рейду.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
-  <RWS_Metric_ColonistsDowned>Колонисты сбиты</RWS_Metric_ColonistsDowned>
-  <RWS_MetricDesc_ColonistsDowned>Время от времени свободный колонист переходил от не сбитого к сбитому. Мгновенные смерти без сбитого не засчитываются.</RWS_MetricDesc_ColonistsDowned>
-  <RWS_Metric_EnemiesDowned>Враги сбиты (недееспособны)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Временами персонаж, враждебный игроку, спускался вниз; спуск снова после восстановления — это другое время.То же значение, что и недееспособные враги (B-002).</RWS_MetricDesc_EnemiesDowned>
-  <RWS_Metric_ToxicDowns>Спады от токсичного накопления</RWS_Metric_ToxicDowns>
-  <RWS_MetricDesc_ToxicDowns>Сокращение численности свободных колонистов, непосредственно вызванное накоплением токсичных веществ (Biotech).</RWS_MetricDesc_ToxicDowns>
-  <RWS_Metric_SocialFightDowns>Падение социальных драк</RWS_Metric_SocialFightDowns>
-  <RWS_MetricDesc_SocialFightDowns>Свободные падения колонистов, вызванные непосредственно противником социальной борьбы.</RWS_MetricDesc_SocialFightDowns>
-  <RWS_Metric_RaidsByArrivalMode>Рейды по режиму прибытия</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>Успешные вражеские рейды по прибытию (PawnsArrivalModeDef).Общее количество рейдов.</RWS_MetricDesc_RaidsByArrivalMode>
-  <RWS_Metric_RaidsByFaction>Рейды по фракциям</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>Успешные рейды противника по типу определения атакующей фракции.</RWS_MetricDesc_RaidsByFaction>
-  <RWS_Metric_RaidPawnsMax>Крупнейший рейд (персонажи)</RWS_Metric_RaidPawnsMax>
-  <RWS_MetricDesc_RaidPawnsMax>Самые неприятельские персонажи, сгенерированные за один удачный рейд. Очки рейда - это отдельный ряд.</RWS_MetricDesc_RaidPawnsMax>
-  <RWS_Metric_RaidPointsMax>Самые высокие рейдовые точки</RWS_Metric_RaidPointsMax>
-  <RWS_MetricDesc_RaidPointsMax>Самые высокие конечные точки рейда используются для создания успешного рейда.</RWS_MetricDesc_RaidPointsMax>
-  <RWS_Metric_RaidKillsMax>Большинство убийств в одном рейде</RWS_Metric_RaidKillsMax>
-  <RWS_MetricDesc_RaidKillsMax>Больше всего убивает сторона игрока, сделанная среди персонажей одного гусеничного рейда, в то время как этот рейд продолжался.</RWS_MetricDesc_RaidKillsMax>
+  <RWS_MetricDesc_DiseaseDeathRate>Смерти от болезней ÷ смерти свободных поселенцев с известной причиной.</RWS_MetricDesc_DiseaseDeathRate>
+  <RWS_Metric_LongestDeathGap>Самый долгий период без смертей поселенцев</RWS_Metric_LongestDeathGap>
+  <RWS_MetricDesc_LongestDeathGap>Наибольший интервал между двумя последовательными смертями свободных поселенцев во время записи. Время до первой и после последней смерти в интервал не входит.</RWS_MetricDesc_LongestDeathGap>
+  <RWS_Metric_FirstDeathDay>Дни до первой смерти поселенца</RWS_Metric_FirstDeathDay>
+  <RWS_MetricDesc_FirstDeathDay>Игровой день первой смерти свободного поселенца, только если запись началась с начала игры.</RWS_MetricDesc_FirstDeathDay>
+  <RWS_Metric_OldestDeathAge>Самый старый умерший поселенец</RWS_Metric_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Наибольший биологический возраст свободного поселенца непосредственно перед смертью. То же значение, что у самого долгоживущего поселенца (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_Metric_CaravanMemberDeaths>Поселенцы, умершие в караванах</RWS_Metric_CaravanMemberDeaths>
+  <RWS_MetricDesc_CaravanMemberDeaths>Свободные поселенцы, умершие во время нахождения в караване игрока.</RWS_MetricDesc_CaravanMemberDeaths>
+  <RWS_Metric_ColonyAnimalDeaths>Смерти животных колонии</RWS_Metric_ColonyAnimalDeaths>
+  <RWS_MetricDesc_ColonyAnimalDeaths>Смерти животных, которые принадлежали игроку непосредственно перед гибелью.</RWS_MetricDesc_ColonyAnimalDeaths>
+  <RWS_Metric_ColonyAnimalRaidDeaths>Животные колонии, убитые налётчиками</RWS_Metric_ColonyAnimalRaidDeaths>
+  <RWS_MetricDesc_ColonyAnimalRaidDeaths>Смерти животных колонии от нападающего, относящегося к отслеживаемому налёту.</RWS_MetricDesc_ColonyAnimalRaidDeaths>
+  <RWS_Metric_ColonistsDowned>Обездвиживания поселенцев</RWS_Metric_ColonistsDowned>
+  <RWS_MetricDesc_ColonistsDowned>Случаи перехода свободного поселенца из состояния без обездвиживания в состояние обездвиживания. Мгновенные смерти без этого перехода не учитываются.</RWS_MetricDesc_ColonistsDowned>
+  <RWS_Metric_EnemiesDowned>Обездвиживания врагов</RWS_Metric_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Случаи обездвиживания враждебной игроку пешки. Повторное обездвиживание после восстановления учитывается снова. То же значение, что число обезвреженных врагов (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_Metric_ToxicDowns>Обездвиживания от токсического накопления</RWS_Metric_ToxicDowns>
+  <RWS_MetricDesc_ToxicDowns>Обездвиживания свободных поселенцев, непосредственно вызванные накоплением токсинов (Biotech).</RWS_MetricDesc_ToxicDowns>
+  <RWS_Metric_SocialFightDowns>Обездвиживания из-за потасовок</RWS_Metric_SocialFightDowns>
+  <RWS_MetricDesc_SocialFightDowns>Обездвиживания свободных поселенцев, непосредственно вызванные противником в потасовке.</RWS_MetricDesc_SocialFightDowns>
+  <RWS_Metric_RaidsByArrivalMode>Налёты по способу прибытия</RWS_Metric_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Успешно запущенные вражеские налёты по способу прибытия (PawnsArrivalModeDef). Сумма равна числу налётов.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_Metric_RaidsByFaction>Налёты по фракциям</RWS_Metric_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Успешно запущенные вражеские налёты по Def атакующей фракции (FactionDef).</RWS_MetricDesc_RaidsByFaction>
+  <RWS_Metric_RaidPawnsMax>Крупнейший налёт (число пешек)</RWS_Metric_RaidPawnsMax>
+  <RWS_MetricDesc_RaidPawnsMax>Наибольшее число вражеских пешек, созданных для одного успешно запущенного налёта. Очки налёта приведены отдельно.</RWS_MetricDesc_RaidPawnsMax>
+  <RWS_Metric_RaidPointsMax>Максимум очков налёта</RWS_Metric_RaidPointsMax>
+  <RWS_MetricDesc_RaidPointsMax>Наибольшее окончательное число очков, использованное для создания успешно запущенного налёта.</RWS_MetricDesc_RaidPointsMax>
+  <RWS_Metric_RaidKillsMax>Максимум убийств за один налёт</RWS_Metric_RaidKillsMax>
+  <RWS_MetricDesc_RaidKillsMax>Наибольшее число врагов из одного отслеживаемого налёта, убитых стороной игрока во время этого налёта.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Осады</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Рейды с осадной стратегией.</RWS_MetricDesc_RaidSieges>
-  <RWS_Metric_RaidBreaches>Налеты с нарушениями</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Рейды со стратегией взлома (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Саперы не включены.</RWS_MetricDesc_RaidBreaches>
-  <RWS_Metric_RaidDrops>Набеги на стручки</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Рейды, прибывающие по капле (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
-  <RWS_Metric_Infestations>Заражение</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Успешные инвазии ульев насекомых (Infestation, DeepDrillInfestation). Другие события, связанные с насекомыми, не учитываются.</RWS_MetricDesc_Infestations>
-  <RWS_Metric_MechClusters>Скопления мехов</RWS_Metric_MechClusters>
-  <RWS_MetricDesc_MechClusters>Успешные инциденты с мех-кластерами (Royalty). Обычные механоидные рейды не учитываются.</RWS_MetricDesc_MechClusters>
-  <RWS_Metric_ManhunterPacks>Охотник за стаей</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Успешные инциденты с пакетом Manhunter (ManhunterPack)</RWS_MetricDesc_ManhunterPacks>
-  <RWS_Metric_RaidLongestGap>Самое долгое время без рейда</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>Самый длинный интервал между двумя последовательными рейдами при этом зафиксирован, не считая до первого или после последнего.То же значение, что и самый большой рейдовый интервал (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
-  <RWS_Metric_RaidMeanGap>Среднее время между рейдами</RWS_Metric_RaidMeanGap>
-  <RWS_MetricDesc_RaidMeanGap>Среднее значение одних и тех же интервалов; в целом, взвешенное по количеству интервалов.</RWS_MetricDesc_RaidMeanGap>
-  <RWS_Metric_RaidFirstDay>Дни до первого рейда</RWS_Metric_RaidFirstDay>
-  <RWS_MetricDesc_RaidFirstDay>Игровой день первого рейда, только когда записан с самого начала игры.</RWS_MetricDesc_RaidFirstDay>
-  <RWS_Metric_RaidsRetreated>Рейды, которые отступили</RWS_Metric_RaidsRetreated>
-  <RWS_MetricDesc_RaidsRetreated>Отслежены рейды, которые закончились тем, что некоторые враги оставили карту живой.</RWS_MetricDesc_RaidsRetreated>
-  <RWS_Metric_RaidsWiped>Рейды стерты с лица земли</RWS_Metric_RaidsWiped>
-  <RWS_MetricDesc_RaidsWiped>Отслеженные рейды, которые заканчивались убийством каждого врага и ни одним отступлением. У рейда с пленными есть другой результат.</RWS_MetricDesc_RaidsWiped>
-  <RWS_Metric_RaidRepelledRate>Скорость отражения рейда</RWS_Metric_RaidRepelledRate>
-  <RWS_MetricDesc_RaidRepelledRate>Рейды, которые отступили или были уничтожены, отслеживаемые рейды с определенным результатом. Рейды, результат которых неизвестен (например, карта исчезла), остаются в стороне.</RWS_MetricDesc_RaidRepelledRate>
-  <RWS_Metric_RaidRepelledNoDown>Рейды отбили без колониста вниз</RWS_Metric_RaidRepelledNoDown>
-  <RWS_MetricDesc_RaidRepelledNoDown>Отбитые набеги, во время которых ни один свободный колонист не спустился на ту же карту.</RWS_MetricDesc_RaidRepelledNoDown>
-  <RWS_Metric_RaidDurationMean>Средняя продолжительность рейда</RWS_Metric_RaidDurationMean>
-  <RWS_MetricDesc_RaidDurationMean>Средние дни от прибытия до последнего выслеженного врага были вне борьбы, из-за рейдов с определенным исходом.</RWS_MetricDesc_RaidDurationMean>
-  <RWS_Metric_RaidDurationMax>Долгожданный рейд</RWS_Metric_RaidDurationMax>
-  <RWS_MetricDesc_RaidDurationMax>Большинство дней в одной и той же выборке.</RWS_MetricDesc_RaidDurationMax>
-  <RWS_Metric_RaidDurationMinRepelled>Самый быстрый отбитый рейд</RWS_Metric_RaidDurationMinRepelled>
-  <RWS_MetricDesc_RaidDurationMinRepelled>Несколько дней рейда, который отступил или был стерт с лица земли.</RWS_MetricDesc_RaidDurationMinRepelled>
-  <RWS_Metric_FirstJoins>Новые члены</RWS_Metric_FirstJoins>
-  <RWS_MetricDesc_FirstJoins>Персонажи, впервые ставшие свободными колонистами, кроме начинающих колонистов и рождений.Каждый персонаж имеет значение один раз.</RWS_MetricDesc_FirstJoins>
-  <RWS_Metric_JoinRoutes>Новые участники маршрута</RWS_Metric_JoinRoutes>
-  <RWS_MetricDesc_JoinRoutes>Новые члены разделились на вербованных заключенных, освобожденных рабов и другие маршруты.</RWS_MetricDesc_JoinRoutes>
-  <RWS_Metric_PrisonerRecruits>Вербовавшиеся заключенные</RWS_Metric_PrisonerRecruits>
-  <RWS_MetricDesc_PrisonerRecruits>Персонажи, которые были пленниками колонии и впервые присоединились к ней по вербовке.</RWS_MetricDesc_PrisonerRecruits>
-  <RWS_Metric_HumanBirths>Рождение</RWS_Metric_HumanBirths>
-  <RWS_MetricDesc_HumanBirths>Человеческие дети, рожденные живыми на стороне игрока (Biotech). Стиллборды не учитываются.</RWS_MetricDesc_HumanBirths>
-  <RWS_Metric_JoinAgeMean>Средний возраст для присоединения</RWS_Metric_JoinAgeMean>
-  <RWS_MetricDesc_JoinAgeMean>Средний биологический возраст новых членов, когда они присоединились.</RWS_MetricDesc_JoinAgeMean>
-  <RWS_Metric_FirstJoinDay>Дни первого нового участника</RWS_Metric_FirstJoinDay>
-  <RWS_MetricDesc_FirstJoinDay>Игровой день первого нового участника, только когда записан с самого начала игры.</RWS_MetricDesc_FirstJoinDay>
-  <RWS_Metric_SlavesFreed>Рабы эмансипированы</RWS_Metric_SlavesFreed>
-  <RWS_MetricDesc_SlavesFreed>Рабы, чей рабский статус был отменен (освобожден), не то же самое, что освобождение заключенных.</RWS_MetricDesc_SlavesFreed>
-  <RWS_Metric_Kidnaps>Похищены колонисты</RWS_Metric_Kidnaps>
-  <RWS_MetricDesc_Kidnaps>Временами свободный колонист был похищен в плен фракции.</RWS_MetricDesc_Kidnaps>
-  <RWS_Metric_KidnapRescues>Похищенные колонисты вернулись</RWS_Metric_KidnapRescues>
-  <RWS_MetricDesc_KidnapRescues>Похищенные колонисты, которые вернулись по подтвержденному маршруту (выкуп). Другие маршруты не засчитываются.</RWS_MetricDesc_KidnapRescues>
-  <RWS_Metric_CaptiveMax>Самый длинный плен</RWS_Metric_CaptiveMax>
-  <RWS_MetricDesc_CaptiveMax>Самый длинный плен от похищения до возвращения, который был отслежен.</RWS_MetricDesc_CaptiveMax>
-  <RWS_Metric_LifeMean>Средний возраст после смерти</RWS_Metric_LifeMean>
-  <RWS_MetricDesc_LifeMean>Средний биологический возраст свободных колонистов при смерти. Живые колонисты не включены.</RWS_MetricDesc_LifeMean>
-  <RWS_Metric_TenureMean>Средний срок в колонии</RWS_Metric_TenureMean>
-  <RWS_MetricDesc_TenureMean>Средние дни от вступления (или начала игры) до смерти или отъезда, где оба конца были отслежены.</RWS_MetricDesc_TenureMean>
-  <RWS_Metric_FirstSkill20>Навыки, впервые достигающие 20</RWS_Metric_FirstSkill20>
-  <RWS_MetricDesc_FirstSkill20>Пары свободных колонистов, которые впервые достигли 20 путем обучения во время записи. Сбрасывание и достижение 20 снова считается один раз.</RWS_MetricDesc_FirstSkill20>
-  <RWS_Metric_JoinGainPeak>Наибольшее повышение квалификации с момента присоединения</RWS_Metric_JoinGainPeak>
-  <RWS_MetricDesc_JoinGainPeak>Наибольшее повышение мастерства над его уровнем при присоединении.Персонажи, чей уровень при присоединении не известен, не включены.</RWS_MetricDesc_JoinGainPeak>
+  <RWS_MetricDesc_RaidSieges>Налёты со стратегией Siege (осада).</RWS_MetricDesc_RaidSieges>
+  <RWS_Metric_RaidBreaches>Налёты с проломом</RWS_Metric_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Налёты со стратегией пробивания укреплений (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Сапёры не включаются.</RWS_MetricDesc_RaidBreaches>
+  <RWS_Metric_RaidDrops>Налёты с транспортными капсулами</RWS_Metric_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Налёты с прибытием в транспортных капсулах (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_Metric_Infestations>Нашествия насекомых</RWS_Metric_Infestations>
+  <RWS_MetricDesc_Infestations>Успешно запущенные события появления ульев насекомых (Infestation, DeepDrillInfestation). Другие события с насекомыми не учитываются.</RWS_MetricDesc_Infestations>
+  <RWS_Metric_MechClusters>Кластеры механоидов</RWS_Metric_MechClusters>
+  <RWS_MetricDesc_MechClusters>Успешно запущенные события с кластерами механоидов (Royalty). Обычные налёты механоидов не учитываются.</RWS_MetricDesc_MechClusters>
+  <RWS_Metric_ManhunterPacks>Стаи агрессивных животных</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Успешно запущенные события со стаями агрессивных животных (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_RaidLongestGap>Самый долгий период без налётов</RWS_Metric_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Наибольший интервал между последовательными записанными налётами без времени до первого и после последнего. То же значение, что максимальный промежуток между налётами (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_Metric_RaidMeanGap>Средний интервал между налётами</RWS_Metric_RaidMeanGap>
+  <RWS_MetricDesc_RaidMeanGap>Среднее тех же интервалов; для всех колоний взвешивается по их количеству.</RWS_MetricDesc_RaidMeanGap>
+  <RWS_Metric_RaidFirstDay>Дни до первого налёта</RWS_Metric_RaidFirstDay>
+  <RWS_MetricDesc_RaidFirstDay>Игровой день первого налёта, только если запись велась с начала игры.</RWS_MetricDesc_RaidFirstDay>
+  <RWS_Metric_RaidsRetreated>Налёты с отступлением врагов</RWS_Metric_RaidsRetreated>
+  <RWS_MetricDesc_RaidsRetreated>Отслеживаемые налёты, закончившиеся уходом с карты части живых врагов.</RWS_MetricDesc_RaidsRetreated>
+  <RWS_Metric_RaidsWiped>Налёты с полным уничтожением врагов</RWS_Metric_RaidsWiped>
+  <RWS_MetricDesc_RaidsWiped>Отслеживаемые налёты, закончившиеся гибелью всех врагов без отступления. Налёт с пленными имеет другой исход.</RWS_MetricDesc_RaidsWiped>
+  <RWS_Metric_RaidRepelledRate>Доля отражённых налётов</RWS_Metric_RaidRepelledRate>
+  <RWS_MetricDesc_RaidRepelledRate>Налёты с отступлением или полным уничтожением врагов ÷ отслеживаемые налёты с известным исходом. Налёты с неизвестным исходом (например, после исчезновения карты) исключаются.</RWS_MetricDesc_RaidRepelledRate>
+  <RWS_Metric_RaidRepelledNoDown>Отражённые налёты без обездвиженных поселенцев</RWS_Metric_RaidRepelledNoDown>
+  <RWS_MetricDesc_RaidRepelledNoDown>Отражённые налёты, в ходе которых ни один свободный поселенец на той же карте не был обездвижен.</RWS_MetricDesc_RaidRepelledNoDown>
+  <RWS_Metric_RaidDurationMean>Средняя длительность налёта</RWS_Metric_RaidDurationMean>
+  <RWS_MetricDesc_RaidDurationMean>Среднее число дней от прибытия до выхода последнего отслеживаемого врага из боя для налётов с известным исходом.</RWS_MetricDesc_RaidDurationMean>
+  <RWS_Metric_RaidDurationMax>Самый долгий налёт</RWS_Metric_RaidDurationMax>
+  <RWS_MetricDesc_RaidDurationMax>Наибольшее число дней в той же выборке.</RWS_MetricDesc_RaidDurationMax>
+  <RWS_Metric_RaidDurationMinRepelled>Быстрее всего отражённый налёт</RWS_Metric_RaidDurationMinRepelled>
+  <RWS_MetricDesc_RaidDurationMinRepelled>Наименьшее число дней среди налётов, закончившихся отступлением или полным уничтожением врагов.</RWS_MetricDesc_RaidDurationMinRepelled>
+  <RWS_Metric_FirstJoins>Новые участники колонии</RWS_Metric_FirstJoins>
+  <RWS_MetricDesc_FirstJoins>Пешки, впервые ставшие свободными поселенцами, без начальных поселенцев и рождений. Каждая учитывается один раз.</RWS_MetricDesc_FirstJoins>
+  <RWS_Metric_JoinRoutes>Новые участники по способу вступления</RWS_Metric_JoinRoutes>
+  <RWS_MetricDesc_JoinRoutes>Новые участники по категориям: завербованные пленники, освобождённые рабы и другие способы.</RWS_MetricDesc_JoinRoutes>
+  <RWS_Metric_PrisonerRecruits>Завербованные пленники</RWS_Metric_PrisonerRecruits>
+  <RWS_MetricDesc_PrisonerRecruits>Пешки, бывшие пленниками колонии и впервые вступившие в неё через вербовку.</RWS_MetricDesc_PrisonerRecruits>
+  <RWS_Metric_HumanBirths>Рождения</RWS_Metric_HumanBirths>
+  <RWS_MetricDesc_HumanBirths>Живорождённые человекоподобные дети на стороне игрока (Biotech). Мертворождения не учитываются.</RWS_MetricDesc_HumanBirths>
+  <RWS_Metric_JoinAgeMean>Средний возраст при вступлении</RWS_Metric_JoinAgeMean>
+  <RWS_MetricDesc_JoinAgeMean>Средний биологический возраст новых участников при вступлении в колонию.</RWS_MetricDesc_JoinAgeMean>
+  <RWS_Metric_FirstJoinDay>Дни до первого нового участника</RWS_Metric_FirstJoinDay>
+  <RWS_MetricDesc_FirstJoinDay>Игровой день первого вступления нового участника, только если запись велась с начала игры.</RWS_MetricDesc_FirstJoinDay>
+  <RWS_Metric_SlavesFreed>Освобождённые рабы</RWS_Metric_SlavesFreed>
+  <RWS_MetricDesc_SlavesFreed>Рабы, утратившие статус рабов (освобождённые). Это не то же самое, что отпустить пленника.</RWS_MetricDesc_SlavesFreed>
+  <RWS_Metric_Kidnaps>Похищенные поселенцы</RWS_Metric_Kidnaps>
+  <RWS_MetricDesc_Kidnaps>Случаи похищения свободного поселенца, после которых он стал пленником другой фракции.</RWS_MetricDesc_Kidnaps>
+  <RWS_Metric_KidnapRescues>Вернувшиеся похищенные поселенцы</RWS_Metric_KidnapRescues>
+  <RWS_MetricDesc_KidnapRescues>Похищенные поселенцы, вернувшиеся подтверждённым путём (за выкуп). Другие пути возвращения не учитываются.</RWS_MetricDesc_KidnapRescues>
+  <RWS_Metric_CaptiveMax>Самая долгая неволя</RWS_Metric_CaptiveMax>
+  <RWS_MetricDesc_CaptiveMax>Наибольший отслеженный срок плена между похищением и возвращением.</RWS_MetricDesc_CaptiveMax>
+  <RWS_Metric_LifeMean>Средний возраст смерти</RWS_Metric_LifeMean>
+  <RWS_MetricDesc_LifeMean>Средний биологический возраст свободных поселенцев на момент смерти. Живые поселенцы не включаются.</RWS_MetricDesc_LifeMean>
+  <RWS_Metric_TenureMean>Среднее время в колонии</RWS_Metric_TenureMean>
+  <RWS_MetricDesc_TenureMean>Среднее число дней от вступления (или начала игры) до смерти или ухода, если оба момента отслежены. Продолжающееся пребывание не учитывается.</RWS_MetricDesc_TenureMean>
+  <RWS_Metric_FirstSkill20>Первые достижения навыка уровня 20</RWS_Metric_FirstSkill20>
+  <RWS_MetricDesc_FirstSkill20>Пары (пешка, навык) свободных поселенцев, впервые достигшие уровня 20 благодаря обучению во время записи. Снижение уровня и повторное достижение 20 учитывается один раз.</RWS_MetricDesc_FirstSkill20>
+  <RWS_Metric_JoinGainPeak>Максимальный прирост навыка после вступления</RWS_Metric_JoinGainPeak>
+  <RWS_MetricDesc_JoinGainPeak>Наибольший рост навыка относительно уровня при вступлении. Пешки с неизвестным начальным уровнем не включаются.</RWS_MetricDesc_JoinGainPeak>
   <RWS_Metric_Marriages>Браки</RWS_Metric_Marriages>
-  <RWS_MetricDesc_Marriages>Пары, которые стали супругами; уведомления обеих сторон считаются одним.</RWS_MetricDesc_Marriages>
-  <RWS_Metric_Divorces>развод</RWS_Metric_Divorces>
-  <RWS_MetricDesc_Divorces>Супружеские отношения, закончившиеся разводом, тяжелая утрата и другие отношения не учитываются.</RWS_MetricDesc_Divorces>
-  <RWS_Metric_Lovers>Новые любовники</RWS_Metric_Lovers>
-  <RWS_MetricDesc_Lovers>Пары, которые стали любовниками; уведомления обеих сторон считаются одним.</RWS_MetricDesc_Lovers>
-  <RWS_Metric_SocialFights>Социальные бои</RWS_Metric_SocialFights>
-  <RWS_MetricDesc_SocialFights>Начались социальные драки, два персонажа затеяли один бой.</RWS_MetricDesc_SocialFights>
-  <RWS_Metric_PrisonBreaks>Тюремные перерывы</RWS_Metric_PrisonBreaks>
-  <RWS_MetricDesc_PrisonBreaks>Начались тюремные каникулы, однако многие заключенные сбежали.</RWS_MetricDesc_PrisonBreaks>
-  <RWS_Metric_PrisonersReleased>Заключенные освобождены</RWS_Metric_PrisonersReleased>
-  <RWS_MetricDesc_PrisonersReleased>Заключенные колонии, освобождение которых завершено, побеги не учитываются.</RWS_MetricDesc_PrisonersReleased>
-  <RWS_Metric_PrisonersCaptured>Враги захвачены</RWS_Metric_PrisonersCaptured>
-  <RWS_MetricDesc_PrisonersCaptured>Враждебные персонажи, захваченные в плен в колонии.</RWS_MetricDesc_PrisonersCaptured>
-  <RWS_Metric_AnimalBonds>Животные связи</RWS_Metric_AnimalBonds>
-  <RWS_MetricDesc_AnimalBonds>Облигации образовались между колонистом и колониальным животным.</RWS_MetricDesc_AnimalBonds>
-  <RWS_Metric_AnimalsTamed>Животные приручают</RWS_Metric_AnimalsTamed>
-  <RWS_MetricDesc_AnimalsTamed>Дикие звери, ставшие игроками благодаря успешному укрощению.Покупки не учитываются.</RWS_MetricDesc_AnimalsTamed>
-  <RWS_Metric_AnimalBirths>Колония рождение животных</RWS_Metric_AnimalBirths>
-  <RWS_MetricDesc_AnimalBirths>Животные-игроки, рожденные или вылупившиеся живыми, отделенные от человеческих рождений.</RWS_MetricDesc_AnimalBirths>
-  <RWS_Metric_AnimalsSlaughtered>Животные забиты</RWS_Metric_AnimalsSlaughtered>
-  <RWS_MetricDesc_AnimalsSlaughtered>Смертность животных в колониях путем убоя.</RWS_MetricDesc_AnimalsSlaughtered>
-  <RWS_Metric_AnimalsHunted>Дикие животные охотятся</RWS_Metric_AnimalsHunted>
-  <RWS_MetricDesc_AnimalsHunted>Дикие животные, предназначенные для охоты и убитые персонажем игрока. Случайные бои не засчитываются.</RWS_MetricDesc_AnimalsHunted>
-  <RWS_Unit_Years>{0} лет</RWS_Unit_Years>
-  <RWS_Unit_PerCellDay>{0} в день</RWS_Unit_PerCellDay>
-  <RWS_Metric_CraftedUnits>Изделия, изготовленные</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Стек-счеты основных и побочных продуктов готовых счетов игрока, включая кулинарию и искусство; добыча полезных ископаемых, сбор урожая и вынашивание меха не включены.</RWS_MetricDesc_CraftedUnits>
-  <RWS_Metric_CraftQuality>Изготовленные изделия по качеству</RWS_Metric_CraftQuality>
-  <RWS_MetricDesc_CraftQuality>Изделия, созданные выше по качеству; предметы без качества — «ничто».</RWS_MetricDesc_CraftQuality>
+  <RWS_MetricDesc_Marriages>Пары, ставшие супругами; уведомления обоих партнёров считаются одним браком.</RWS_MetricDesc_Marriages>
+  <RWS_Metric_Divorces>Разводы</RWS_Metric_Divorces>
+  <RWS_MetricDesc_Divorces>Супружеские отношения, прекращённые разводом. Смерть супруга и другие разрывы отношений не учитываются.</RWS_MetricDesc_Divorces>
+  <RWS_Metric_Lovers>Новые влюблённые пары</RWS_Metric_Lovers>
+  <RWS_MetricDesc_Lovers>Пары, ставшие влюблёнными; уведомления обоих партнёров считаются одной парой.</RWS_MetricDesc_Lovers>
+  <RWS_Metric_SocialFights>Потасовки</RWS_Metric_SocialFights>
+  <RWS_MetricDesc_SocialFights>Начавшиеся потасовки; драка между двумя пешками учитывается один раз.</RWS_MetricDesc_SocialFights>
+  <RWS_Metric_PrisonBreaks>Побеги из тюрьмы</RWS_Metric_PrisonBreaks>
+  <RWS_MetricDesc_PrisonBreaks>Начавшиеся побеги из тюрьмы независимо от количества сбежавших пленников.</RWS_MetricDesc_PrisonBreaks>
+  <RWS_Metric_PrisonersReleased>Отпущенные пленники</RWS_Metric_PrisonersReleased>
+  <RWS_MetricDesc_PrisonersReleased>Пленники колонии, освобождение которых завершилось. Побеги не учитываются.</RWS_MetricDesc_PrisonersReleased>
+  <RWS_Metric_PrisonersCaptured>Захваченные враги</RWS_Metric_PrisonersCaptured>
+  <RWS_MetricDesc_PrisonersCaptured>Враждебные пешки, захваченные и ставшие пленниками колонии.</RWS_MetricDesc_PrisonersCaptured>
+  <RWS_Metric_AnimalBonds>Привязанность к животным</RWS_Metric_AnimalBonds>
+  <RWS_MetricDesc_AnimalBonds>Установившаяся привязанность между поселенцем и животным колонии.</RWS_MetricDesc_AnimalBonds>
+  <RWS_Metric_AnimalsTamed>Приручённые животные</RWS_Metric_AnimalsTamed>
+  <RWS_MetricDesc_AnimalsTamed>Дикие животные, успешно приручённые и перешедшие к игроку. Покупки не учитываются.</RWS_MetricDesc_AnimalsTamed>
+  <RWS_Metric_AnimalBirths>Рождения животных колонии</RWS_Metric_AnimalBirths>
+  <RWS_MetricDesc_AnimalBirths>Животные игрока, родившиеся или вылупившиеся живыми. Отдельно от рождений человекоподобных.</RWS_MetricDesc_AnimalBirths>
+  <RWS_Metric_AnimalsSlaughtered>Забитые животные</RWS_Metric_AnimalsSlaughtered>
+  <RWS_MetricDesc_AnimalsSlaughtered>Смерти животных колонии от назначенного забоя.</RWS_MetricDesc_AnimalsSlaughtered>
+  <RWS_Metric_AnimalsHunted>Добытые на охоте дикие животные</RWS_Metric_AnimalsHunted>
+  <RWS_MetricDesc_AnimalsHunted>Дикие животные с назначенной охотой, убитые пешкой игрока. Случайные схватки не учитываются.</RWS_MetricDesc_AnimalsHunted>
+  <RWS_Unit_Years>Лет: {0}</RWS_Unit_Years>
+  <RWS_Unit_PerCellDay>На клетко-день: {0}</RWS_Unit_PerCellDay>
+  <RWS_Metric_CraftedUnits>Изготовленные предметы</RWS_Metric_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Размеры стопок основных и побочных продуктов завершённых производственных заданий игрока, включая приготовление пищи и произведения искусства. Добыча руды, сбор урожая и выращивание механоидов не учитываются.</RWS_MetricDesc_CraftedUnits>
+  <RWS_Metric_CraftQuality>Изготовленные предметы по качеству</RWS_Metric_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>Указанные выше изготовленные предметы по качеству; изделия без качества указаны как «none».</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Легендарные предметы, созданные</RWS_Metric_CraftLegendary>
   <RWS_MetricDesc_CraftLegendary>Изготовленные изделия легендарного качества.</RWS_MetricDesc_CraftLegendary>
   <RWS_Metric_CraftMasterwork>Мастер-объекты, созданные</RWS_Metric_CraftMasterwork>
