@@ -1213,4 +1213,16 @@
   <RWS_NewMod_GraduationsDesc>学期満了で帰還し、学業成績が修了または優秀と記録された外部生徒の数。</RWS_NewMod_GraduationsDesc>
   <RWS_NewMod_SchoolEvents>完了した学校行事</RWS_NewMod_SchoolEvents>
   <RWS_NewMod_SchoolEventsDesc>自勢力の拠点で開催され、完了と評価が確定したAES School+の学校行事を種類別に集計します。</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>ホテルでチェックアウトを迎えた組数</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>自勢力のマップでチェックインを済ませ、予定どおりチェックアウトを開始した宿泊グループの数。</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>設営したキャラバンキャンプ</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>Set Up Campで新しく設営し、自勢力のキャラバンが実際に入ったキャンプの数。</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>遠征で研究が進んだ回数</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Go Explore!の研究依頼で実際に研究が進んだ回数。研究プロジェクト別に集計します。</RWS_NewMod_ExploreResearchDesc>
+  <RWS_NewMod_Doctrine>調査を完了した派閥ドクトリン</RWS_NewMod_Doctrine>
+  <RWS_NewMod_DoctrineDesc>他派閥のドクトリンの調査を完了した回数。ドクトリンの種類別に集計します。</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>自販機で来訪者に渡した品数</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>自勢力の自販機から来訪者に実際に渡した品数。無料分も含め、品目別に集計します。</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>自販機で受け取った銀貨</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>来訪者から自勢力の自販機に実際に移された銀貨の量。自販機の種類別に集計します。</RWS_NewMod_VendingSilverDesc>
 </LanguageData>

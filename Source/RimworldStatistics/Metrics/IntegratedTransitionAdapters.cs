@@ -108,6 +108,12 @@ internal static class IntegratedTransitionAdapters
         result.Add(EducationOutcomes.SemesterCompletions());
         result.Add(EducationOutcomes.ExternalGraduations());
         result.Add(EducationOutcomes.SchoolEvents());
+        result.Add(VisitOutcomes.HotelCheckouts());
+        result.Add(VisitOutcomes.CampsEstablished());
+        result.Add(VisitOutcomes.ResearchAdvances());
+        result.Add(VisitOutcomes.DoctrineInvestigations());
+        result.Add(VendingOutcomes.ItemsDispensed());
+        result.Add(VendingOutcomes.SilverReceived());
         return result;
     }
 }

@@ -65,6 +65,17 @@ internal static class OutcomeMetric
             : throw new InvalidOperationException($"Changed {type.FullName}.{name} signature");
     }
 
+    internal static void Transpile(Harmony harmony, MethodBase original, Type observer, string transpiler)
+    {
+        var method = AccessTools.DeclaredMethod(observer, transpiler);
+        try { harmony.Patch(original, transpiler: new HarmonyMethod(method)); }
+        catch
+        {
+            harmony.Unpatch(original, method);
+            throw;
+        }
+    }
+
     internal static void Patch(Harmony harmony, MethodBase original, Type observer,
         string? prefix = "Before", string postfix = "After")
     {

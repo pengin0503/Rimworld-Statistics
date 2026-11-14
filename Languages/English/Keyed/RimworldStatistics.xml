@@ -1213,4 +1213,16 @@
   <RWS_NewMod_GraduationsDesc>External enrollment departures completed at semester end with a completed or excellent academic result.</RWS_NewMod_GraduationsDesc>
   <RWS_NewMod_SchoolEvents>School events completed</RWS_NewMod_SchoolEvents>
   <RWS_NewMod_SchoolEventsDesc>AES School+ events completed and evaluated at player home maps, by event type.</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>Hotel groups reaching checkout</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>Guest groups on player maps that begin a scheduled checkout after checking in.</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>Caravan camps established</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>New Set Up Camp sites where a player caravan successfully entered the camp map.</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>Research advances from expeditions</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Go Explore! research requests that actually advance a project, by research project.</RWS_NewMod_ExploreResearchDesc>
+  <RWS_NewMod_Doctrine>Faction doctrines investigated</RWS_NewMod_Doctrine>
+  <RWS_NewMod_DoctrineDesc>Completed investigations into other factions’ doctrines, by doctrine type.</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>Items dispensed to visitors</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>Items successfully handed over at player vending machines, by item type. Includes free items.</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>Silver received by vending machines</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>Silver actually transferred by visitors into player vending machines, by machine type.</RWS_NewMod_VendingSilverDesc>
 </LanguageData>

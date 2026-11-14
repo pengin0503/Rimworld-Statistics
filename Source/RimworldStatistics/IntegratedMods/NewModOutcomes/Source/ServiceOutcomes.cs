@@ -48,7 +48,7 @@ internal static class ServiceOutcomes
             typeof(ServiceOutcomes), "BeforeSpa", "AfterSpa");
     }
 
-    private static long Silver(ThingOwner container)
+    internal static long CountSilver(ThingOwner container)
         => container.Where(item => item.def == ThingDefOf.Silver).Sum(item => (long)item.stackCount);
 
     private static void BeforeSpa(Pawn? __0, Thing? __1, out Payment? __state)
@@ -61,7 +61,7 @@ internal static class ServiceOutcomes
         {
             var comp = facility.AllComps.FirstOrDefault(spaComp.IsInstanceOfType);
             if (comp is not null && spaContainer.GetValue(comp) is ThingOwner cash)
-                __state = new Payment(cash, facility.def, Silver(cash));
+                __state = new Payment(cash, facility.def, CountSilver(cash));
         }
         catch (Exception error) { LiveMetrics.Fail(Spa, error); }
     }
@@ -72,7 +72,7 @@ internal static class ServiceOutcomes
             return;
         try
         {
-            long gained = Silver(payment.Cash) - payment.Before;
+            long gained = CountSilver(payment.Cash) - payment.Before;
             if (gained > 0)
                 OutcomeMetric.Record(Spa, payment.Facility, breakdown: true, amount: gained);
         }
