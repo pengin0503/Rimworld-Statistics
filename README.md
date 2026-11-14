@@ -34,6 +34,8 @@
 
 ## 導入と使い方
 
+ゲーム内の表示はRimWorldの言語設定に従います。対応言語は日本語、英語、ドイツ語、フランス語、スペイン語（スペイン・ラテンアメリカ）、ポルトガル語（ポルトガル・ブラジル）、ロシア語、中国語（簡体字・繁体字）、韓国語です。
+
 **動作環境：RimWorld 1.7 / 必須MOD：[Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077)**
 
 1. [Releases](https://github.com/pengin0503/Rimworld-Statistics/releases)から配布版を入手し、RimworldStatisticsフォルダをRimWorldの`Mods`フォルダに配置します。
