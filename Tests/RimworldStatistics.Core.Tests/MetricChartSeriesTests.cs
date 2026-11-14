@@ -62,6 +62,52 @@ public sealed class MetricChartSeriesTests
         Assert.Empty(MetricChartSeries.Overall(View([], Row(null, coverage: MetricCoverage.Unknown)), Definition.Key));
     }
 
+    [Fact]
+    public void BasicStatisticsUseExistingColonyValuesWithoutInventingMissingRecords()
+    {
+        var stats = BasicStats(
+            BasicColony("counted", 12),
+            BasicColony("zero", 0),
+            BasicColony("unreadable", 99, observed: false),
+            BasicColony("excluded", 88, excluded: true),
+            BasicColony("outside", 77, outOfScope: true));
+
+        var result = MetricChartSeries.BasicByColony(stats, BasicMetrics.Raids);
+
+        Assert.Equal(new[] { "counted", "zero" }, result.Select(bar => bar.Key));
+        Assert.Equal(new double[] { 12, 0 }, result.Select(bar => bar.Value.Number!.Value));
+    }
+
+    [Fact]
+    public void BasicWealthChartDoesNotTurnUnknownWealthIntoZero()
+    {
+        var stats = BasicStats(
+            new ColonyStats
+            {
+                Key = "known", HasObservedPoint = true, PeakWealthKnown = true, WealthMax = 10,
+                EndingCounts = new Dictionary<EndingType, int>(), GameVersions = [],
+            },
+            new ColonyStats
+            {
+                Key = "unknown", HasObservedPoint = true, WealthMax = 0,
+                EndingCounts = new Dictionary<EndingType, int>(), GameVersions = [],
+            });
+        Assert.Equal(new[] { "known" }, MetricChartSeries.BasicByColony(stats, BasicMetrics.PeakWealth).Select(bar => bar.Key));
+        Assert.Empty(MetricChartSeries.BasicByColony(stats, "basic.not-a-metric"));
+    }
+
+    private static StatsResult BasicStats(params ColonyStats[] colonies) => new()
+    {
+        Colonies = colonies,
+        EndingsByType = new Dictionary<EndingType, int>(),
+    };
+
+    private static ColonyStats BasicColony(string key, int raids, bool observed = true, bool excluded = false, bool outOfScope = false) => new()
+    {
+        Key = key, Raids = raids, HasObservedPoint = observed, Excluded = excluded, OutOfScope = outOfScope,
+        EndingCounts = new Dictionary<EndingType, int>(), GameVersions = [],
+    };
+
     private static NumericValue Number(double? n, MetricCoverage coverage = MetricCoverage.Complete)
         => new() { Number = n, Coverage = coverage };
 
