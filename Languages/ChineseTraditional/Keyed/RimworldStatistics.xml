@@ -697,9 +697,9 @@
   <RWS_Metric_SitesCleared>擊敗敵方據點次數</RWS_Metric_SitesCleared>
   <RWS_MetricDesc_SitesCleared>玩家獲勝並摧毀的敵對派系據點數量。</RWS_MetricDesc_SitesCleared>
   <RWS_Metric_SettlementsFounded>建立新據點次數</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>從旅隊或已有地圖中建立的新玩家據點數量，不包括初始據點、殖民地遷移或重力飛船著陸。</RWS_MetricDesc_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>從旅隊或已有地圖中建立的新玩家據點數量，不包括初始據點、殖民地遷移或重力船著陸。</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>放棄據點次數</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>玩家主動選擇放棄的據點數量，不包括重力飛船起飛等自動移除情況。</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>玩家主動選擇放棄的據點數量，不包括重力船起飛等自動移除情況。</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>開啟遠古危險區域數</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>玩家據點地圖上被開啟內部空間的封閉遠古神殿（遠古危險），每座僅計一次。遊戲判定其被發現的時刻，也就是中心區域的迷霧消失時才計入。破壞其他牆壁或出現敵人不算。</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>初始生態系統</RWS_Metric_ColonyStartingBiome>
