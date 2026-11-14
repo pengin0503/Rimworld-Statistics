@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>아이템은 플레이어 자동 판매기에 성공적으로 넣었습니다. 아이템 유형. 무료 아이템이 포함되어 있습니다.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>자판기로 받은 은화</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>은 실제로 방문자가 기계 유형에 의해 선수 자동 판매기로 옮겨집니다.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>차트: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>클릭하면 이 통계의 차트를 엽니다.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>정착지별</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>항목별</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>항목별 ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>포함된 정착지별 기록 값을 비교합니다. 시계열 차트가 아닙니다.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>기록된 통계 항목의 내역을 비교합니다. 시계열 차트가 아닙니다.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>이 통계에는 집계값 하나만 있습니다.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>표시된 값: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>차트에 표시할 측정 수치가 없습니다.</RWS_Chart_NoData>
 </LanguageData>

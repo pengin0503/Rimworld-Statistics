@@ -1225,4 +1225,14 @@
   <RWS_NewMod_VendingItemsDesc>Items successfully handed over at player vending machines, by item type. Includes free items.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Silver received by vending machines</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Silver actually transferred by visitors into player vending machines, by machine type.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Chart: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Click to open a chart for this statistic.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>By colony</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>By category</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>By category ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>One recorded value per included colony. This is not a time-series chart.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Recorded categories of the selected statistic. This is not a time-series chart.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Only one aggregate value is available for this statistic.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Displayed values: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>No measured numeric values are available for a chart.</RWS_Chart_NoData>
 </LanguageData>

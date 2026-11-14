@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>在玩家自动售货机上成功移交的项目, 按项目类型分列。 包括免费项目 。</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>售货机收到的白银</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>银器实际上被访客转移到玩家自动售货机,按机器类型.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>图表：{0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>点击查看此统计项的图表。</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>按殖民地</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>按类别</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>按类别（{0}）</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>比较各纳入统计的殖民地记录值。这不是时间序列图。</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>比较此统计项的已记录分类数据。这不是时间序列图。</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>此统计项仅有一个汇总值。</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>显示数值：{0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>没有可绘制的已测量数值。</RWS_Chart_NoData>
 </LanguageData>

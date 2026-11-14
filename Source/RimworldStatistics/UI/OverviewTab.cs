@@ -18,6 +18,15 @@ public static class OverviewTab
         private string label = "";
         private string value = "";
         private string tip = "";
+        private string chartTip = "";
+        private bool? chartable;
+
+        /// <summary>Cells are rebuilt whenever the view changes, so the lookup is made once per built view.</summary>
+        public bool Chartable(StatsView view)
+            => chartable ??= FavoriteKey is { } key && MetricLookup.IsKnownKey(view, key);
+
+        /// <summary>The tooltip over the area that opens the chart.</summary>
+        public string ChartTip => chartTip;
 
         public (string Label, string Value, string Tip) Fit(float width, GameFont font)
         {
@@ -30,6 +39,7 @@ public static class OverviewTab
             Text.Font = font;
             value = Value.Truncate(width);
             tip = label != Label || value != Value ? Label + " — " + Value + "\n\n" + Tip : Tip;
+            chartTip = FavoriteKey is null ? tip : tip + "\n\n" + "RWS_Chart_OpenTip".Translate();
             return (label, value, tip);
         }
     }
@@ -167,7 +177,13 @@ public static class OverviewTab
         Text.Font = valueFont;
         Widgets.Label(new Rect(inner.x, inner.y + 26f, inner.width, inner.height - 26f), value);
         Text.Font = GameFont.Small;
-        TooltipHandler.TipRegion(cell, tip);
+        // Do not cover the favourite star at the right edge of the card.
+        var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - 40f), cell.height - 4f);
+        var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
+        // A single tooltip region: a second overlapping one would be drawn as a second stacked copy.
+        TooltipHandler.TipRegion(cell, chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip);
+        if (chartView is not null && Widgets.ButtonInvisible(chartRect))
+            Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
         if (item.FavoriteKey is { } key && preferences is not null)
         {
             var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);

@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>Los artículos entregados con éxito en las máquinas expendedoras de reproductores, por tipo de elemento. Incluye elementos libres.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Plata recibida por las máquinas expendedoras</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Plata realmente transferida por los visitantes a máquinas expendedoras de reproductores, por tipo de máquina.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Gráfico: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Haz clic para abrir un gráfico de esta estadística.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>Por colonia</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>Por categoría</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>Por categoría ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>Compara los valores registrados de las colonias incluidas. No es un gráfico temporal.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Compara las categorías registradas de esta estadística. No es un gráfico temporal.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Solo hay un valor agregado disponible para esta estadística.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Valores mostrados: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>No hay valores numéricos medidos para el gráfico.</RWS_Chart_NoData>
 </LanguageData>

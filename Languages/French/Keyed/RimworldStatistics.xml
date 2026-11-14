@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>Les articles ont été remis avec succès aux distributeurs automatiques de lecteurs, par type d'article.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Argent reçu par les distributeurs</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Argent effectivement transféré par les visiteurs dans les distributeurs automatiques de joueurs, par type de machine.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Graphique : {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Cliquez pour afficher le graphique de cette statistique.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>Par colonie</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>Par catégorie</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>Par catégorie ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>Compare les valeurs enregistrées des colonies incluses. Ce n’est pas une série chronologique.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Compare les catégories enregistrées de cette statistique. Ce n’est pas une série chronologique.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Seule une valeur agrégée est disponible pour cette statistique.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Valeurs affichées : {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>Aucune valeur numérique mesurée à afficher.</RWS_Chart_NoData>
 </LanguageData>

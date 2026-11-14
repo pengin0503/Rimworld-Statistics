@@ -1225,4 +1225,14 @@
   <RWS_NewMod_VendingItemsDesc>自勢力の自販機から来訪者に実際に渡した品数。無料分も含め、品目別に集計します。</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>自販機で受け取った銀貨</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>来訪者から自勢力の自販機に実際に移された銀貨の量。自販機の種類別に集計します。</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>グラフ：{0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>クリックすると、この統計のグラフを表示します。</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>コロニー別</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>内訳別</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>内訳別（{0}）</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>対象コロニーごとの記録値を比較します。時系列グラフではありません。</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>統計の記録済み内訳を比較します。時系列グラフではありません。</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>この統計は集計値のみ記録されているため、1本の棒で表示します。</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>表示中の値：{0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>グラフに使用できる数値がありません。</RWS_Chart_NoData>
 </LanguageData>
