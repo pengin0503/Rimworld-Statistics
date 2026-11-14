@@ -149,7 +149,7 @@ public static class DetailsTab
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
         var last = Math.Min(lines.Count - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
         for (var i = first; i <= last; i++)
-            DrawLine(new Rect(0f, i * RowHeight, width, RowHeight), lines[i], i);
+            DrawLine(new Rect(0f, i * RowHeight, width, RowHeight), lines[i], i, view);
         Widgets.EndScrollView();
     }
 
@@ -287,7 +287,7 @@ public static class DetailsTab
         GUI.color = Color.white;
     }
 
-    private static void DrawLine(Rect rect, Line line, int index)
+    private static void DrawLine(Rect rect, Line line, int index, StatsView view)
     {
         if (index % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
@@ -339,13 +339,28 @@ public static class DetailsTab
             }
             TooltipHandler.TipRegion(starRect, "RWS_Fav_StarTip".Translate());
         }
-        if (line.ExpandKey is { } key && Widgets.ButtonInvisible(new Rect(
-                rect.x + (line.MetricKey is null ? 0f : 30f), rect.y,
-                rect.width - (line.MetricKey is null ? 0f : 30f), rect.height)))
+        // The star and disclosure triangle retain their own click targets. Clicking
+        // the remaining top-level metric row opens an on-demand chart.
+        if (line.MetricKey is { } chartKey)
         {
-            if (!Expanded.Remove(key))
-                Expanded.Add(key);
-            expandedVersion++;
+            var chartStart = rect.x + 30f + (line.ExpandKey is null ? 0f : 25f);
+            var chartRect = new Rect(chartStart, rect.y, Math.Max(0f, rect.xMax - chartStart), rect.height);
+            TooltipHandler.TipRegion(chartRect,
+                () => tipCache[index]!() + "\\n\\n" + "RWS_Chart_OpenTip".Translate(), line.TipId + 1);
+            if (Widgets.ButtonInvisible(chartRect))
+                Find.WindowStack.Add(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null));
+        }
+        if (line.ExpandKey is { } key)
+        {
+            var toggle = line.MetricKey is null
+                ? rect
+                : new Rect(rect.x + 30f, rect.y, 25f, rect.height);
+            if (Widgets.ButtonInvisible(toggle))
+            {
+                if (!Expanded.Remove(key))
+                    Expanded.Add(key);
+                expandedVersion++;
+            }
         }
     }
 
