@@ -1,0 +1,15 @@
+{
+  "RWS_Metric_ToxicFalloutDays": "有毒尘埃发生天数",
+  "RWS_MetricDesc_ToxicFalloutDays": "至少存在一次活跃有毒尘埃的天数；多个有毒尘埃事件重叠的时间仅计算一次。",
+  "RWS_Metric_ColdSnaps": "寒流次数",
+  "RWS_MetricDesc_ColdSnaps": "新开始的寒流次数。",
+  "RWS_Metric_VolcanicWinters": "火山冬天次数",
+  "RWS_MetricDesc_VolcanicWinters": "新开始的火山冬天次数。",
+  "RWS_Metric_Eclipses": "日蚀次数",
+  "RWS_MetricDesc_Eclipses": "新开始的日蚀次数。",
+  "RWS_Metric_CropBlights": "作物枯萎次数",
+  "RWS_MetricDesc_CropBlights": "成功触发的作物枯萎事件次数，不是染病植物株数。",
+  "RWS_Metric_Meteors": "陨石撞击次数",
+  "RWS_Metric_RosterPassions": "按技能统计的殖民者兴趣",
+  "RWS_MetricDesc_RosterPassions": "成功保存时自由殖民者各技能的兴趣（无、普通、强烈）数量。"
+}
