@@ -19,6 +19,28 @@ public static class MetricChartSeries
             .Select(c => new MetricChartBar(c.Key, c.Row!.Value)));
     }
 
+    /// <summary>
+    /// The colony comparison for a definition. A derived cross-colony maximum, minimum or sum
+    /// is computed only for all colonies; its per-colony inputs are the rows of the source metric.
+    /// </summary>
+    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, MetricDefinition definition)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        return ByColony(view, ColonyComparisonKey(definition));
+    }
+
+    /// <summary>
+    /// The per-colony row key that a colony comparison reads. A "most common type" ranking keeps
+    /// its own key: its source total is a different quantity from the ranked type.
+    /// </summary>
+    public static string ColonyComparisonKey(MetricDefinition definition)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        return CrossColonyCatalog.IsDerived(definition)
+            && !definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
+                ? definition.StoredKey : definition.Key;
+    }
+
     /// <summary>Basic Overview values use the same inclusion and evidence rules as BasicMetrics.</summary>
     public static IReadOnlyList<MetricChartBar> BasicByColony(StatsResult stats, string metricKey)
     {
