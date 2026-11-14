@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the conservative, source-derived 268-output historical recovery inventory.
+"""Regenerate the conservative, source-derived 270-output historical recovery inventory.
 
 This is a capability *triage*, not a confirmation that historical values can be
 reconstructed. It never touches .rws files, profiles or RimWorld. Run:
@@ -23,7 +23,7 @@ COLUMNS = (
     "metric_key", "acquisition_id", "catalog", "recovery_decision",
     "evidence", "ledger_id", "source_symbol",
 )
-EXPECTED_COUNTS = {"live": 219, "snapshot": 40, "derived": 9}
+EXPECTED_COUNTS = {"live": 221, "snapshot": 40, "derived": 9}
 SYMBOL = re.compile(r"^([A-Za-z_]\w*)\.([A-Za-z_]\w*)$")
 CONST = re.compile(r'\b(?:public|private|internal)\s+const\s+string\s+(\w+)\s*=\s*"([^"]+)"\s*;')
 
@@ -141,16 +141,17 @@ def main() -> int:
     opts = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
     path = root / "docs/research/2026-11-09-historical-recovery-inventory.csv"
-    body = csv_text(build_inventory(root))
+    rows = build_inventory(root)
+    body = csv_text(rows)
     if opts.write:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(body, encoding="utf-8")
-        print(f"wrote {path} (268 entries)")
+        print(f"wrote {path} ({len(rows)} entries)")
         return 0
     if not path.exists() or path.read_text(encoding="utf-8") != body:
         print(f"Inventory is stale or missing. Run: python3 tools/historical_recovery_inventory.py --write")
         return 1
-    print("Historical recovery inventory: 268 source-backed entries, all UNVERIFIED")
+    print(f"Historical recovery inventory: {len(rows)} source-backed entries, all UNVERIFIED")
     return 0
 
 

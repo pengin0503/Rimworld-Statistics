@@ -1256,4 +1256,8 @@
   <RWS_VfeClassical_PerksDesc>通常の議員後援で新たに獲得したパークの数。解除後の再獲得を含む。</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>艦船戦の勝利</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>相手側の敗北が確定した艦船戦の勝利数。ハッキングによる勝利を含む。</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>種族別の加入数</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>種族別の入植者死亡数</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>自由入植者の死亡記録を種族別に集計します。</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

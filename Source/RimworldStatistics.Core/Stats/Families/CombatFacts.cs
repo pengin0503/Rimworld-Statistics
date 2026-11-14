@@ -46,6 +46,7 @@ public sealed class DeathFacts
 
     /// <summary><see cref="Humanlike"/>, <see cref="Insect"/>, <see cref="Mechanoid"/> or <see cref="Other"/>.</summary>
     public required string VictimKind { get; init; }
+    public string? Species { get; init; }
 
     public double? AgeYears { get; init; }
     public bool InPlayerCaravan { get; init; }

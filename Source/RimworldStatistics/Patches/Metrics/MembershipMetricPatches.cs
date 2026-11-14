@@ -40,7 +40,7 @@ public static class SetFactionMetricPatch
             var route = __state.Prisoner ? MembershipFamily.RoutePrisoner : MembershipFamily.RouteOther;
             var age = (double?)__instance.ageTracker?.AgeBiologicalYearsFloat;
             var skills = GameFacts.Skills(__instance);
-            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Joined(s, id, route, age, tick));
+            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Joined(s, id, route, age, tick, GameFacts.Species(__instance)));
             GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
         }
         else if (!member && __state.Member)
@@ -72,7 +72,7 @@ public static class EmancipateSlaveMetricPatch
         {
             MembershipFamily.SlaveFreed(s, id);
             if (member && !__state.Member)
-                MembershipFamily.Joined(s, id, MembershipFamily.RouteSlave, age, tick);
+                MembershipFamily.Joined(s, id, MembershipFamily.RouteSlave, age, tick, GameFacts.Species(slave));
         });
         if (member && !__state.Member)
             GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));

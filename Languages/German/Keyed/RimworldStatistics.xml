@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>Durch Senatorengunst erhaltene Vorteile, einschließlich erneut erworbener Vorteile.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>Gewonnene Raumschiffkämpfe</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>Kämpfe mit bestätigter Niederlage des gegnerischen Schiffs, auch durch Hacking.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>Beitritte nach Spezies</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Erfasste erstmalige Beitritte nach Spezies.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Todesfälle von Kolonisten nach Spezies</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Erfasste Todesfälle freier Kolonisten nach Spezies.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

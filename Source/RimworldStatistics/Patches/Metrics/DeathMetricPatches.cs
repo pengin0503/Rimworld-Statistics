@@ -46,6 +46,7 @@ public static class PawnKillMetricPatch
                 Wild = p.RaceProps.Animal && p.Faction == null,
                 HostileToPlayer = Faction.OfPlayer != null && p.HostileTo(Faction.OfPlayer),
                 VictimKind = GameFacts.VictimKind(p),
+                Species = p.IsFreeColonist ? GameFacts.Species(p) : null,
                 AgeYears = p.ageTracker?.AgeBiologicalYearsFloat,
                 InPlayerCaravan = GameFacts.InPlayerCaravan(p),
                 Cause = exactCulprit?.def != null ? "hediff:" + exactCulprit.def.defName : dinfo?.Def != null ? "damage:" + dinfo.Value.Def.defName : null,

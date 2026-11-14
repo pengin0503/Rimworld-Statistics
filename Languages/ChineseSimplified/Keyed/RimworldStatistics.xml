@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>通过议员支持获授的特权次数，包括失去后重新获得。</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>赢得的舰船战斗</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>确认击败敌舰的战斗次数，包括通过入侵系统取得的胜利。</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>按种族统计的加入人数</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>按种族统计有记录的首次加入。</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>按种族统计的殖民者死亡数</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>按种族统计有记录的自由殖民者死亡。</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

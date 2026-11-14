@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>Atouts accordés grâce à la faveur d’un sénateur, y compris ceux obtenus de nouveau.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>Combats spatiaux gagnés</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>Combats où la défaite du vaisseau ennemi est confirmée, y compris par piratage.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>Arrivées par espèce</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Premières arrivées enregistrées par espèce.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Décès de colons par espèce</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Décès enregistrés de colons libres par espèce.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

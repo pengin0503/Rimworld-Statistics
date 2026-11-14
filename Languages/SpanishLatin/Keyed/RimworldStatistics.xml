@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>Beneficios concedidos por el favor de un senador, incluidos los recuperados después de perderlos.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>Combates espaciales ganados</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>Combates con derrota confirmada de la nave enemiga, incluidas las victorias mediante hackeo.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>Incorporaciones por especie</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Primeras incorporaciones registradas por especie.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Muertes de colonos por especie</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Muertes registradas de colonos libres por especie.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

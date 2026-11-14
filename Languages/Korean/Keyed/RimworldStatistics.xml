@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>의원의 후원으로 얻은 특전 수입니다. 잃은 뒤 다시 얻은 경우도 포함합니다.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>승리한 함선 전투</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>상대 함선의 패배가 확인된 전투 수입니다. 해킹으로 이긴 경우도 포함합니다.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>종족별 합류 수</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>첫 합류 기록을 종족별로 집계합니다.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>종족별 정착민 사망 수</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>자유 정착민의 사망 기록을 종족별로 집계합니다.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

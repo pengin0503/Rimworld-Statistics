@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>Привилегии, полученные благодаря одолжению сенатора, включая повторное получение.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>Победы в корабельных боях</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>Бои с подтверждённым поражением вражеского корабля, в том числе после взлома.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>Вступления по видам</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Первые вступления по видам согласно записям.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Смерти поселенцев по видам</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Зарегистрированные смерти свободных поселенцев по видам.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

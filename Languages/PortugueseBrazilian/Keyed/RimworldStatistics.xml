@@ -1255,4 +1255,8 @@
   <RWS_VfeClassical_PerksDesc>Benefícios obtidos por favor de um senador, inclusive os recuperados após perda.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>Batalhas entre naves vencidas</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>Batalhas com derrota confirmada da nave adversária, inclusive vitórias por hackeamento.</RWS_Sos2_BattlesWonDesc>
+  <RWS_Metric_JoinsBySpecies>Entradas por espécie</RWS_Metric_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Primeiras entradas registradas por espécie.</RWS_MetricDesc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Mortes de colonos por espécie</RWS_Metric_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Mortes registradas de colonos livres por espécie.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>
