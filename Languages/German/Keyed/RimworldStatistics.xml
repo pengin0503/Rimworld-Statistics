@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>Artikel, die erfolgreich an Spielerautomaten übergeben wurden, nach Artikeltyp. Enthält kostenlose Artikel.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Silber aus Verkaufsautomaten</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Silber wurde tatsächlich von Besuchern in Spielerautomaten transferiert, nach Maschinentyp.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Diagramm: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Klicken, um ein Diagramm dieser Statistik zu öffnen.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>Nach Kolonie</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>Nach Kategorie</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>Nach Kategorie ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>Vergleicht erfasste Werte der einbezogenen Kolonien. Kein Zeitverlaufsdiagramm.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Vergleicht erfasste Kategorien dieser Statistik. Kein Zeitverlaufsdiagramm.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Für diese Statistik ist nur ein Gesamtwert verfügbar.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Angezeigte Werte: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>Keine gemessenen Zahlenwerte für ein Diagramm verfügbar.</RWS_Chart_NoData>
 </LanguageData>

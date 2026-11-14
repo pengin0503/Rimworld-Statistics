@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>Предметы, успешно переданные в игровые автоматы, по типу предмета. Включает бесплатные предметы.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Серебро, полученное торговыми автоматами</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Серебро фактически переносится посетителями в игровые автоматы по типу машины.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>График: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Нажмите, чтобы открыть график этой статистики.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>По колониям</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>По категориям</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>По категориям ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>Сравнение записанных значений включённых колоний. Это не временной график.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Сравнение записанных категорий статистики. Это не временной график.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Для этой статистики доступно только одно сводное значение.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Показано значений: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>Нет измеренных числовых значений для графика.</RWS_Chart_NoData>
 </LanguageData>
