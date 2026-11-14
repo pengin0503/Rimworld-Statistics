@@ -1234,4 +1234,5 @@
   <RWS_Chart_OverallNote>Для этой статистики доступно только одно суммарное значение.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Показано значений: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Нет измеренных значений для построения графика.</RWS_Chart_NoData>
+  <RWS_Unit_Nutrition>{0} ед. питательности</RWS_Unit_Nutrition>
 </LanguageData>

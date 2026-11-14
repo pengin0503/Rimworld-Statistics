@@ -1234,4 +1234,5 @@
   <RWS_Chart_OverallNote>Há apenas um valor combinado disponível para esta estatística.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valores exibidos: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Não há valores medidos para exibir no gráfico.</RWS_Chart_NoData>
+  <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
 </LanguageData>

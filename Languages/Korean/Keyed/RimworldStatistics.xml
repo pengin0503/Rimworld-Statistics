@@ -1234,4 +1234,5 @@
   <RWS_Chart_OverallNote>이 통계에는 합산된 값 하나만 있습니다.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>표시된 값: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>차트로 표시할 측정값이 없습니다.</RWS_Chart_NoData>
+  <RWS_Unit_Nutrition>영양 {0}</RWS_Unit_Nutrition>
 </LanguageData>

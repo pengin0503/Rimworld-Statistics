@@ -1235,4 +1235,5 @@
   <RWS_Chart_OverallNote>この統計には合計値が1つしかありません。</RWS_Chart_OverallNote>
   <RWS_Chart_Points>表示中の値：{0}</RWS_Chart_Points>
   <RWS_Chart_NoData>グラフにできる測定値がありません。</RWS_Chart_NoData>
+  <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
 </LanguageData>
