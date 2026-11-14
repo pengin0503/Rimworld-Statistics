@@ -269,8 +269,8 @@
   <RWS_Metric_QuestSuccessDurationMax>成功クエストの最長日数（受諾から終了処理まで）</RWS_Metric_QuestSuccessDurationMax>
   <RWS_MetricDesc_QuestSuccessDurationMax>上の平均と同じサンプルにおける最長日数。</RWS_MetricDesc_QuestSuccessDurationMax>
   <RWS_Unit_SilverPerYear>{0}/年</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>パーマデス</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>通常</RWS_Details_NotPermadeath>
+  <RWS_Details_Permadeath>コミットメントモード</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>無制限リロードモード</RWS_Details_NotPermadeath>
   <RWS_Metric_RankDaysByBiome>開始バイオーム別の累計生存日数</RWS_Metric_RankDaysByBiome>
   <RWS_MetricDesc_RankDaysByBiome>ゲーム開始時のタイルのバイオーム別に、コロニーの経過日数を合計します。移住後の現在の拠点のバイオームは使いません。</RWS_MetricDesc_RankDaysByBiome>
   <RWS_Metric_RankEndingsByBiome>開始バイオーム別のエンディング数</RWS_Metric_RankEndingsByBiome>
@@ -293,10 +293,10 @@
   <RWS_MetricDesc_RankByDifficultyDays>各コロニーの最も進んだ時点（代表セーブ）の難易度ごとに、コロニーの経過日数を合計します。プレイ中の難易度変更は追跡しません。クリックで内訳を開きます。</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>難易度別のエンディング数</RWS_Metric_RankByDifficultyEndings>
   <RWS_MetricDesc_RankByDifficultyEndings>概要タブと同じ数え方（開発者モードの設定に従い、痕跡は1回以上として数える）のエンディング数を、代表セーブの難易度ごとに数えます。</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>パーマデスかどうか別の通算日数</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>代表セーブがパーマデスかどうかで、コロニーの経過日数を分けて合計します。</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>パーマデスかどうか別のエンディング数</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>概要タブと同じ数え方のエンディング数を、代表セーブがパーマデスかどうかで分けて数えます。</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankByPermadeathDays>モード別の通算ゲーム内日数</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>各コロニーの代表セーブが「コミットメントモード」「無制限リロードモード」のどちらかに応じて、コロニーの経過日数を合計します。</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>モード別のエンディング数</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>概要タブと同じ集計方法で数えたエンディングを、各コロニーの代表セーブが「コミットメントモード」「無制限リロードモード」のどちらかに応じて集計します。</RWS_MetricDesc_RankByPermadeathEndings>
   <RWS_Metric_RankPopulationPeak>最大人口（全コロニー）</RWS_Metric_RankPopulationPeak>
   <RWS_MetricDesc_RankPopulationPeak>ゲームが記録している最大人口のうち、コロニー横断で最も大きい値とそのコロニー。</RWS_MetricDesc_RankPopulationPeak>
   <RWS_Metric_RankFastestEnding>最速のエンディング到達</RWS_Metric_RankFastestEnding>
