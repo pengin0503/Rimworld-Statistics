@@ -54,14 +54,20 @@ public static partial class MetricCalculator
         var points = new List<MetricHistoryPoint>();
         var archived = new List<ArchivedChartPoint>();
         var current = representative;
-        while (true)
+        var visited = new HashSet<string>(Ord);
+        while (visited.Add(current.Key))
         {
-            var value = ChartValue(current, definition);
-            if (value is null && current.ArchivedMetrics && current.Identity.ModCampaignId is { Length: > 0 } campaign)
-                archived.Add(new(points.Count, campaign, current.Key, current.ParentKey, current.PayloadHash, current.SaveTick));
-            points.Add(new(current.SaveTick, value, current.ParentKey is not null));
+            // Saves made while paused can share a tick. Keep the last reading at that tick,
+            // but follow the intervening parents to retain the earlier history.
+            if (points.Count == 0 || points[^1].Tick != current.SaveTick)
+            {
+                var value = ChartValue(current, definition);
+                if (value is null && current.ArchivedMetrics && current.Identity.ModCampaignId is { Length: > 0 } campaign)
+                    archived.Add(new(points.Count, campaign, current.Key, current.ParentKey, current.PayloadHash, current.SaveTick));
+                points.Add(new(current.SaveTick, value, current.ParentKey is not null));
+            }
             if (current.ParentKey is not { } key || byKey[key].Take(2).ToArray() is not [var parent]
-                || parent.Conflicted || parent.SaveTick < 0 || parent.SaveTick >= current.SaveTick
+                || parent.Conflicted || parent.SaveTick < 0 || parent.SaveTick > current.SaveTick
                 || parent.Identity.ModCampaignId != current.Identity.ModCampaignId)
                 break;
             current = parent;

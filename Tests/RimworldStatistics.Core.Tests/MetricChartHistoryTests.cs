@@ -71,6 +71,38 @@ public sealed class MetricChartHistoryTests
     }
 
     [Fact]
+    public void RepeatedSavesWhilePausedKeepTheLatestReadingAndEarlierHistory()
+    {
+        var definition = MetricRegistry.Find(ResearchFamily.Completed)!;
+        var colony = new Colony { Key = "id:one" };
+        colony.LiveCampaigns.Add(new LiveCampaign { CampaignId = "one" });
+        var profile = new Profile
+        {
+            MetricObservations =
+            [
+                Checkpoint("a", null, 10, 1),
+                Checkpoint("b", "a", 20, 2),
+                Checkpoint("c", "b", 20, 3),
+                Checkpoint("d", "c", 40, 4),
+            ],
+        };
+
+        var result = MetricCalculator.BuildChartHistory(profile, [colony], colony.Key, definition);
+
+        Assert.Equal(new[] { 10, 20, 40 }, result.Points.Select(p => p.Tick));
+        Assert.Equal(new double?[] { 1, 3, 4 }, result.Points.Select(p => p.Value?.Number));
+        Assert.Equal(new[] { false, true, true }, result.Points.Select(p => p.ConnectToPrevious));
+
+        MetricObservation Checkpoint(string key, string? parent, int tick, int number) => new()
+        {
+            Key = key, ParentKey = parent, SaveTick = tick, Source = MetricObservationSource.Checkpoint,
+            Identity = new ColonyIdentity { ModCampaignId = "one" },
+            Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+                new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = number }) },
+        };
+    }
+
+    [Fact]
     public void UnverifiedSaveReadingsDoNotPickAnArbitraryValueAtTheSameTick()
     {
         var definition = MetricRegistry.Find(MetricKeys.WealthTotalMaxGain15D)!;
