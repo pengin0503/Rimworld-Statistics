@@ -1244,8 +1244,20 @@
   <RWS_Chart_AddColony>コロニーを追加…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>ゲーム内日数ごとの観測値です。記録がない区間では線が途切れます。</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>製造したアンドロイド</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>アンドロイド製造台で通常の作業を完了し、自勢力のアンドロイドを製造した数。</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>再起動したクリプト発電機</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>自勢力のポーンが作業を完了し、実際に再起動したクリプト発電機の数。</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>学習効果のあった指導</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>自勢力の生徒が指導を受け、対象技能の経験値またはレベルが上がった回数。</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>アルコジェン注入の成功</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>自動適用または遺伝子の選択確定後に、入植者に新しい異種遺伝子が付与された注入の回数。</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>獲得したクラシカルのパーク</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>通常の議員後援で新たに獲得したパークの数。解除後の再獲得を含む。</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>艦船戦の勝利</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>相手側の敗北が確定した艦船戦の勝利数。ハッキングによる勝利を含む。</RWS_Sos2_BattlesWonDesc>
   <RWS_Metric_JoinsBySpecies>種族別の加入数</RWS_Metric_JoinsBySpecies>
-  <RWS_Metric_Desc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>種族別の入植者死亡数</RWS_Metric_DeathsBySpecies>
-  <RWS_Metric_Desc_DeathsBySpecies>自由入植者の死亡記録を種族別に集計します。</RWS_Metric_Desc_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>自由入植者の死亡記録を種族別に集計します。</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

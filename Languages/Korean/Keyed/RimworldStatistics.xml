@@ -1243,8 +1243,20 @@
   <RWS_Chart_AddColony>정착지 추가…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>게임 내 날짜별 관측값입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>영양 {0}</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>제작한 안드로이드</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>안드로이드 제작대에서 작업을 완료해 만든 플레이어 측 안드로이드 수입니다.</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>재가동한 크립토 발전기</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>플레이어 측 인물이 작업을 마쳐 다시 가동한 동결 발전기 수입니다.</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>효과가 있었던 지도</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>플레이어 측 학습자의 해당 기술 경험치나 레벨이 오른 지도 횟수입니다.</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>성공한 아르코젠 주입</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>정착민에게 실제로 새 이종유전자가 추가된 주입 횟수입니다.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>획득한 Classical 특전</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>의원의 후원으로 얻은 특전 수입니다. 잃은 뒤 다시 얻은 경우도 포함합니다.</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>승리한 함선 전투</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>상대 함선의 패배가 확인된 전투 수입니다. 해킹으로 이긴 경우도 포함합니다.</RWS_Sos2_BattlesWonDesc>
   <RWS_Metric_JoinsBySpecies>종족별 합류 수</RWS_Metric_JoinsBySpecies>
-  <RWS_Metric_Desc_JoinsBySpecies>첫 합류 기록을 종족별로 집계합니다.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>첫 합류 기록을 종족별로 집계합니다.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>종족별 정착민 사망 수</RWS_Metric_DeathsBySpecies>
-  <RWS_Metric_Desc_DeathsBySpecies>자유 정착민의 사망 기록을 종족별로 집계합니다.</RWS_Metric_Desc_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>자유 정착민의 사망 기록을 종족별로 집계합니다.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

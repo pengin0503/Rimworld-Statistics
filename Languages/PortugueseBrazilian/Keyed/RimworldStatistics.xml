@@ -1243,8 +1243,20 @@
   <RWS_Chart_AddColony>Adicionar colônia…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registros ausentes.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>Androides do jogador criados ao concluir o trabalho na estação de criação.</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>Criptogeradores reiniciados</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>Criptogeradores congelados reiniciados por personagens do jogador após concluírem o trabalho.</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>Aulas eficazes</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>Aulas que aumentaram a experiência ou o nível do aluno do jogador na habilidade ensinada.</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>Injeções de arquogenes bem-sucedidas</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>Injeções que acrescentaram um xenogene novo ao colono.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>Benefícios de Classical adquiridos</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>Benefícios obtidos por favor de um senador, inclusive os recuperados após perda.</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>Batalhas entre naves vencidas</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>Batalhas com derrota confirmada da nave adversária, inclusive vitórias por hackeamento.</RWS_Sos2_BattlesWonDesc>
   <RWS_Metric_JoinsBySpecies>Entradas por espécie</RWS_Metric_JoinsBySpecies>
-  <RWS_Metric_Desc_JoinsBySpecies>Primeiras entradas registradas por espécie.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>Primeiras entradas registradas por espécie.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>Mortes de colonos por espécie</RWS_Metric_DeathsBySpecies>
-  <RWS_Metric_Desc_DeathsBySpecies>Mortes registradas de colonos livres por espécie.</RWS_Metric_Desc_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>Mortes registradas de colonos livres por espécie.</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>

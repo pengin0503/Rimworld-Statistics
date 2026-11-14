@@ -1243,8 +1243,20 @@
   <RWS_Chart_AddColony>添加殖民地…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>按游戏内天数显示观测值。折线中断表示记录缺失。</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>营养值 {0}</RWS_Unit_Nutrition>
+  <RWS_VreAndroid_Manufactured>已制造的安卓人</RWS_VreAndroid_Manufactured>
+  <RWS_VreAndroid_ManufacturedDesc>在安卓人制造台完成工作后制造的玩家安卓人数量。</RWS_VreAndroid_ManufacturedDesc>
+  <RWS_VqeCryptoforge_GeneratorRestarts>已重启的冷冻发电机</RWS_VqeCryptoforge_GeneratorRestarts>
+  <RWS_VqeCryptoforge_GeneratorRestartsDesc>玩家角色完成任务并成功重启的冷冻发电机数量。</RWS_VqeCryptoforge_GeneratorRestartsDesc>
+  <RWS_Vsie_Teaching>有效教学</RWS_Vsie_Teaching>
+  <RWS_Vsie_TeachingDesc>使玩家学员的相关技能经验或等级上升的教学次数。</RWS_Vsie_TeachingDesc>
+  <RWS_VqeAncients_SuccessfulInjections>成功的始祖基因注射</RWS_VqeAncients_SuccessfulInjections>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>向殖民者成功添加新异种基因的注射次数。</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VfeClassical_Perks>获得的古典阵营特权</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_PerksDesc>通过议员支持获授的特权次数，包括失去后重新获得。</RWS_VfeClassical_PerksDesc>
+  <RWS_Sos2_BattlesWon>赢得的舰船战斗</RWS_Sos2_BattlesWon>
+  <RWS_Sos2_BattlesWonDesc>确认击败敌舰的战斗次数，包括通过入侵系统取得的胜利。</RWS_Sos2_BattlesWonDesc>
   <RWS_Metric_JoinsBySpecies>按种族统计的加入人数</RWS_Metric_JoinsBySpecies>
-  <RWS_Metric_Desc_JoinsBySpecies>按种族统计有记录的首次加入。</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_MetricDesc_JoinsBySpecies>按种族统计有记录的首次加入。</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>按种族统计的殖民者死亡数</RWS_Metric_DeathsBySpecies>
-  <RWS_Metric_Desc_DeathsBySpecies>按种族统计有记录的自由殖民者死亡。</RWS_Metric_Desc_DeathsBySpecies>
+  <RWS_MetricDesc_DeathsBySpecies>按种族统计有记录的自由殖民者死亡。</RWS_MetricDesc_DeathsBySpecies>
 </LanguageData>
