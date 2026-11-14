@@ -1224,4 +1224,14 @@
   <RWS_NewMod_VendingItemsDesc>Itens entregues com sucesso nas máquinas de venda automática de jogadores, por tipo de item. Inclui itens livres.</RWS_NewMod_VendingItemsDesc>
   <RWS_NewMod_VendingSilver>Prata recebida nas máquinas de venda</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Prata realmente transferida pelos visitantes para máquinas de venda automática de jogadores, por tipo de máquina.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Gráfico: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Clique para abrir um gráfico desta estatística.</RWS_Chart_OpenTip>
+  <RWS_Chart_ByColony>Por colônia</RWS_Chart_ByColony>
+  <RWS_Chart_ByCategory>Por categoria</RWS_Chart_ByCategory>
+  <RWS_Chart_ByCategoryColony>Por categoria ({0})</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>Compara os valores registrados das colônias incluídas. Não é um gráfico temporal.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Compara as categorias registradas desta estatística. Não é um gráfico temporal.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Há apenas um valor agregado para esta estatística.</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>Valores exibidos: {0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>Não há valores numéricos medidos para exibir.</RWS_Chart_NoData>
 </LanguageData>
