@@ -642,8 +642,8 @@
   <RWS_MetricDesc_Addictions>Dépendances nouvellement apparues chez les colons libres. Les changements de gravité ne sont pas comptés.</RWS_MetricDesc_Addictions>
   <RWS_Metric_Overdoses>Surdoses</RWS_Metric_Overdoses>
   <RWS_MetricDesc_Overdoses>Nombre de nouvelles surdoses chez les colons libres.</RWS_MetricDesc_Overdoses>
-  <RWS_Metric_Withdrawals>Apparitions de symptômes de manque</RWS_Metric_Withdrawals>
-  <RWS_MetricDesc_Withdrawals>Nombre de fois où une dépendance aux drogues d'un colon libre est entrée en phase de manque (besoin chimique tombé au seuil de manque). Chaque entrée compte une fois ; les états de manque déjà présents au début du suivi sont exclus.</RWS_MetricDesc_Withdrawals>
+  <RWS_Metric_Withdrawals>Apparitions de sevrage</RWS_Metric_Withdrawals>
+  <RWS_MetricDesc_Withdrawals>Nombre de fois où une dépendance aux drogues d'un colon libre est entrée en phase de sevrage (besoin chimique tombé au seuil de sevrage). Chaque entrée compte une fois ; les états de sevrage déjà présents au début du suivi sont exclus.</RWS_MetricDesc_Withdrawals>
   <RWS_Metric_HospitalStayMean>Durée moyenne d'hospitalisation</RWS_Metric_HospitalStayMean>
   <RWS_MetricDesc_HospitalStayMean>Nombre moyen de jours passés par un colon libre dans le même lit médical, du coucher au lever. Se recoucher immédiatement dans ce lit après un changement de tâche ne termine pas le séjour. Les séjours conclus par un décès ou commencés avant l'enregistrement sont exclus.</RWS_MetricDesc_HospitalStayMean>
   <RWS_Metric_PartsLost>Parties du corps perdues</RWS_Metric_PartsLost>
@@ -776,8 +776,8 @@
   <RWS_MetricDesc_RoyaltyPsylinkPeak>Niveau de lien psychique le plus élevé d'un colon dans une sauvegarde enregistrée. Nécessite Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
   <RWS_Metric_BiotechPollutionPeak>Maximum de cases polluées</RWS_Metric_BiotechPollutionPeak>
   <RWS_MetricDesc_BiotechPollutionPeak>Nombre maximal de cases polluées sur les cartes d'habitation lors d'une sauvegarde enregistrée. Nécessite Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>Bande passante maximale de mécaniteur utilisée</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>Plus grande bande passante utilisée par un mécaniteur lors d'une sauvegarde enregistrée. Nécessite Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Bande passante maximale de méchanitor utilisée</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Plus grande bande passante utilisée par un méchanitor lors d'une sauvegarde enregistrée. Nécessite Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
   <RWS_Metric_RoyaltyPermitUses>Licences royales utilisées</RWS_Metric_RoyaltyPermitUses>
   <RWS_MetricDesc_RoyaltyPermitUses>Licences royales réellement utilisées par un colon du joueur admissible. Les sélections annulées ne sont pas comptées.</RWS_MetricDesc_RoyaltyPermitUses>
   <RWS_Metric_RoyaltyPsycasts>Pouvoirs psychiques lancés avec succès</RWS_Metric_RoyaltyPsycasts>
