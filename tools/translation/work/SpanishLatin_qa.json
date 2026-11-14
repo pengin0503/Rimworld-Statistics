@@ -1,0 +1,14 @@
+{
+  "RWS_Metric_SolarFlares": "Llamaradas solares",
+  "RWS_MetricDesc_SolarFlares": "Llamaradas solares que comenzaron; las ya activas al comenzar el registro se excluyen.",
+  "RWS_Metric_SolarFlareDays": "Días de llamarada solar",
+  "RWS_MetricDesc_SolarFlareDays": "Días durante los cuales hubo al menos una llamarada solar activa; los períodos superpuestos se cuentan una sola vez. No mide los días que estuvo parado cada aparato.",
+  "RWS_Metric_ColdSnaps": "Frentes fríos",
+  "RWS_MetricDesc_ColdSnaps": "Frentes fríos que comenzaron.",
+  "RWS_Metric_AncientDangersOpened": "Peligros ancestrales abiertos",
+  "RWS_MetricDesc_AncientDangersOpened": "Santuarios antiguos sellados (peligros ancestrales en mapas de asentamientos del jugador) cuyo interior fue abierto, contados una vez cada uno. Se cuenta un santuario cuando el juego lo considera descubierto, es decir, cuando se disipa la niebla sobre su centro. Romper otros muros o hacer aparecer enemigos no cuenta.",
+  "RWS_Metric_StockPersonaWeaponsPeak": "Máximo de armas con IA",
+  "RWS_MetricDesc_StockPersonaWeaponsPeak": "Mayor número de armas con IA, equipadas o almacenadas, en mapas de hogar cargados en un mismo guardado registrado.",
+  "RWS_Metric_RoyaltyPsylinkPeak": "Nivel máximo de psicoenlace",
+  "RWS_MetricDesc_RoyaltyPsylinkPeak": "Mayor nivel de psicoenlace de un colono observado en un guardado registrado. Requiere Royalty."
+}

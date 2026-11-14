@@ -269,8 +269,8 @@
   <RWS_Metric_QuestSuccessDurationMax>Longest succeeded quest (acceptance to cleanup)</RWS_Metric_QuestSuccessDurationMax>
   <RWS_MetricDesc_QuestSuccessDurationMax>Most days in the same sample as the mean.</RWS_MetricDesc_QuestSuccessDurationMax>
   <RWS_Unit_SilverPerYear>{0} / year</RWS_Unit_SilverPerYear>
-  <RWS_Details_Permadeath>Permadeath</RWS_Details_Permadeath>
-  <RWS_Details_NotPermadeath>Normal</RWS_Details_NotPermadeath>
+  <RWS_Details_Permadeath>Commitment mode</RWS_Details_Permadeath>
+  <RWS_Details_NotPermadeath>Reload anytime mode</RWS_Details_NotPermadeath>
   <RWS_Metric_RankDaysByBiome>Survival days by original biome</RWS_Metric_RankDaysByBiome>
   <RWS_MetricDesc_RankDaysByBiome>Total colony survival days grouped by the game's original starting biome; never uses the current settlement biome.</RWS_MetricDesc_RankDaysByBiome>
   <RWS_Metric_RankEndingsByBiome>Endings by original biome</RWS_Metric_RankEndingsByBiome>
@@ -293,10 +293,10 @@
   <RWS_MetricDesc_RankByDifficultyDays>Colony days summed by the difficulty of each colony's furthest point; changes of difficulty during play are not tracked. Click to show the breakdown.</RWS_MetricDesc_RankByDifficultyDays>
   <RWS_Metric_RankByDifficultyEndings>Endings by difficulty</RWS_Metric_RankByDifficultyEndings>
   <RWS_MetricDesc_RankByDifficultyEndings>Endings counted as on the Overview (dev-mode setting, traces as at least once), by the difficulty of each colony's furthest point.</RWS_MetricDesc_RankByDifficultyEndings>
-  <RWS_Metric_RankByPermadeathDays>Days played, permadeath or not</RWS_Metric_RankByPermadeathDays>
-  <RWS_MetricDesc_RankByPermadeathDays>Colony days summed by whether each colony's furthest point is in permadeath mode.</RWS_MetricDesc_RankByPermadeathDays>
-  <RWS_Metric_RankByPermadeathEndings>Endings, permadeath or not</RWS_Metric_RankByPermadeathEndings>
-  <RWS_MetricDesc_RankByPermadeathEndings>Endings counted as on the Overview, by whether each colony's furthest point is in permadeath mode.</RWS_MetricDesc_RankByPermadeathEndings>
+  <RWS_Metric_RankByPermadeathDays>Colony days by save mode</RWS_Metric_RankByPermadeathDays>
+  <RWS_MetricDesc_RankByPermadeathDays>Colony days summed by the mode at each colony's furthest recorded point: Commitment mode or Reload anytime mode.</RWS_MetricDesc_RankByPermadeathDays>
+  <RWS_Metric_RankByPermadeathEndings>Endings by save mode</RWS_Metric_RankByPermadeathEndings>
+  <RWS_MetricDesc_RankByPermadeathEndings>Endings counted as on the Overview tab, grouped by the mode at each colony's furthest recorded point: Commitment mode or Reload anytime mode.</RWS_MetricDesc_RankByPermadeathEndings>
   <RWS_Metric_RankPopulationPeak>Largest population (all colonies)</RWS_Metric_RankPopulationPeak>
   <RWS_MetricDesc_RankPopulationPeak>The highest of the game's greatest-population counters across colonies, and its colony.</RWS_MetricDesc_RankPopulationPeak>
   <RWS_Metric_RankFastestEnding>Fastest ending</RWS_Metric_RankFastestEnding>
