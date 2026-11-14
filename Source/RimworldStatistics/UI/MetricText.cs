@@ -45,4 +45,19 @@ internal static class MetricText
     public static string BasicLabel(string key) => OverviewTab.BasicLabel(key);
     public static string State(MetricDefinition definition, MetricCoverage coverage)
         => DetailsTab.CoverageLabel(definition, coverage);
+
+    /// <summary>
+    /// A tooltip line with the amount per game day over the value's own recorded days (<see cref="MetricRates"/>), or an
+    /// empty string when the value is not an additive total recorded completely over a known interval.
+    /// </summary>
+    public static string PerDay(MetricDefinition definition, NumericValue value)
+    {
+        if (MetricRates.PerDay(definition, value) is not { } rate)
+            return "";
+        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        var number = rate.PerDay.ToString(rate.PerDay >= 100 ? "N0" : rate.PerDay >= 1 ? "N1" : "N2", inv);
+        if (definition.Unit == MetricUnit.Nutrition)
+            number = "RWS_Unit_Nutrition".Translate(number);
+        return "\n" + (string)"RWS_PerDay".Translate(number, rate.Days.ToString("N1", inv));
+    }
 }
