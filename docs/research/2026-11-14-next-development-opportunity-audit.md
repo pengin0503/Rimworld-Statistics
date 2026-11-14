@@ -1,7 +1,7 @@
 # Rimworld Statistics：次期開発候補の調査（日本語版）
 
 作成日：2026-11-14  
-基準：main \`dc90d3cd99e4c1bdae5240ec24a049c010304b04\` / RimWorld 1.7 / v1.8.0公開後  
+基準：main `dc90d3cd99e4c1bdae5240ec24a049c010304b04` / RimWorld 1.7 / v1.8.0公開後  
 性質：**実装を伴わない調査**。コード・公開対応MOD一覧・Steam Workshop・リリースは変更しない。
 
 **追加調査**：[同日第2回の詳細調査と元セーブ分析](2026-11-14-additional-investigation-ja.md)  
@@ -15,18 +15,18 @@
 - [PR #256](https://github.com/pengin0503/Rimworld-Statistics/pull/256) により種族別の加入・自由入植者死亡の内訳は**実装済み**。今後の「HAR対応」は、これを再実装することではなく、在籍ピークやゼノタイプなどの追加次元を検討するもの。
 - [PR #237](https://github.com/pengin0503/Rimworld-Statistics/pull/237) のMOD固有統計6件も実装済み。
 - **検索/カテゴリ・状態フィルタ、並び替え、お気に入り、比較・ランキング、統計グラフ、CSV出力は存在する**。それらを「新規搭載」と書かない。
-- \`docs/supported-mods.md\` には当時**64件**の対応MOD名がある。研究候補をここに混在させない。
+- `docs/supported-mods.md` には当時**64件**の対応MOD名がある。研究候補をここに混在させない。
 
 ## 2. 修正・改善候補の根拠
 
 ### C1【P0】セーブ分岐をグラフの連続した歴史として描かない
 
-確認した箇所：\`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs\` の \`SaveChartPoints\`。
+確認した箇所：`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs` の `SaveChartPoints`。
 
 - 同一時刻の観測値が矛盾する場合は欠測扱いにする、という安全な実装が存在する。
-- 一方、別時刻の2点については、同じ \`ModCampaignId\` で数値が存在すれば \`ConnectToPrevious\` を真にし得る。
+- 一方、別時刻の2点については、同じ `ModCampaignId` で数値が存在すれば `ConnectToPrevious` を真にし得る。
 - 同一キャンペーンIDは**同じ親子セーブ枝に属することの証明ではない**。途中巻き戻し/兄弟枝を連続した履歴として表示する設計上のリスクがある。
-- \`CheckpointChartHistory\` は別途、明示的な \`ParentKey\` で親子をたどっており、違いがある。
+- `CheckpointChartHistory` は別途、明示的な `ParentKey` で親子をたどっており、違いがある。
 
 提案：直接親子が確定していないセーブ観測は、まず個別点として可視化する。証拠があるチェックポイント同士だけ線で結ぶ。Unknownをゼロに置き換えず、履歴元（save/checkpoint/recorder）を凡例で示す。実ゲームでの表示再現は未実施なので「確認済み描画バグ」とは扱わない。
 
@@ -34,9 +34,9 @@
 
 ### C2【P0】Issue #195を「現行実装」に合わせて再測定
 
-- Issueの説明「5ファイルごとに \`QueueSave\`」は古い。現在の \`Source/RimworldStatistics.Core/Import/ImportEngine.cs\` は \`SaveInterval = 5秒\` で保存要求を抑え、処理完了時にも保存する。
-- \`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs\` の \`WriteLatest\` は \`_lock\` 内で \`ProfileJson.Serialize\` を行う。
-- \`Source/RimworldStatistics.Core/Profiles/ProfileStore.cs\` は既存一次ファイルの内容を確認し、統計差分に応じたバックアップを行う。単純な更新日時比較に変えると、衝突検知が弱まる可能性がある。
+- Issueの説明「5ファイルごとに `QueueSave`」は古い。現在の `Source/RimworldStatistics.Core/Import/ImportEngine.cs` は `SaveInterval = 5秒` で保存要求を抑え、処理完了時にも保存する。
+- `Source/RimworldStatistics.Core/Profiles/ProfileSession.cs` の `WriteLatest` は `_lock` 内で `ProfileJson.Serialize` を行う。
+- `Source/RimworldStatistics.Core/Profiles/ProfileStore.cs` は既存一次ファイルの内容を確認し、統計差分に応じたバックアップを行う。単純な更新日時比較に変えると、衝突検知が弱まる可能性がある。
 - 5/10MB相当で書込のp50/p95、I/O、割当、ゲームスレッドのロック待機を比較し、実測で影響のある箇所だけ最適化する。
 
 受入テスト：別セッションによる上書き拒否、クラッシュ時の原子置換、3世代バックアップ、旧schemaの原本保護、壊れたprofileの復元、取込キャンセル。
@@ -49,11 +49,11 @@
 
 ### C4【P1】実測・状態観測・累積・順位の意味を混同させない
 
-\`MetricHistoryKind\`、\`NumericValue.Coverage\`、\`MetricStatus\` はすでに存在する。UI側で「時点の値」「期間の加算量」「史上最高値」「Partial」などが区別できるツールチップを付ける。別コロニーのグラフを重ねる場合も、経過日数・開始日・時点の整列条件を明記。
+`MetricHistoryKind`、`NumericValue.Coverage`、`MetricStatus` はすでに存在する。UI側で「時点の値」「期間の加算量」「史上最高値」「Partial」などが区別できるツールチップを付ける。別コロニーのグラフを重ねる場合も、経過日数・開始日・時点の整列条件を明記。
 
 ### C5【P1】インポート失敗理由と復旧を分かりやすくする
 
-\`ImportTab\`、\`CoverageTab\`、\`DataManagementTab\` はすでに実装済み。追加するなら、「スキップ/破損/変化中/未サポート/対象MODなし/取得OFF」を区別する**読み取り専用診断**と、安全なサポート情報のエクスポートを検討。ユーザーのキャンペーンID、チェックポイントID、生セーブ、MOD全一覧を公開Issueへ流出させない。
+`ImportTab`、`CoverageTab`、`DataManagementTab` はすでに実装済み。追加するなら、「スキップ/破損/変化中/未サポート/対象MODなし/取得OFF」を区別する**読み取り専用診断**と、安全なサポート情報のエクスポートを検討。ユーザーのキャンペーンID、チェックポイントID、生セーブ、MOD全一覧を公開Issueへ流出させない。
 
 ## 3. 新機能候補の優先順位
 
@@ -100,13 +100,13 @@ Workshopの購読者数は調査日時の概数で、1.7実利用者数を意味
 
 ## 5. 調査から実装へ移るときの共通規則
 
-1. **重複確認が先**：\`docs/supported-mods.md\`、\`Source/RimworldStatistics/Metrics/IntegratedTransitionAdapters.cs\`、既存 \`MetricRegistry\` と2026-11-13の27件対応状況を照合。既存35＋追加27の決定を尊重。
+1. **重複確認が先**：`docs/supported-mods.md`、`Source/RimworldStatistics/Metrics/IntegratedTransitionAdapters.cs`、既存 `MetricRegistry` と2026-11-13の27件対応状況を照合。既存35＋追加27の決定を尊重。
 2. **成功確証が必須**：着手/予定/見込み/瞬間的な所持数から生涯累計を捏造しない。Gastronomy個別支払完了、Prison Expanded暴動全体終結、Rimefeller不明精製経路は既存の見送り決定を維持。
-3. **共通HARを優先**：ただの種族専用アイテムや疾患は独立アダプターを作らない。既存の種族別加入・死亡は \`GameFacts.Species\` とパッケージ識別付き \`Pawn.def\` が取得済み。
+3. **共通HARを優先**：ただの種族専用アイテムや疾患は独立アダプターを作らない。既存の種族別加入・死亡は `GameFacts.Species` とパッケージ識別付き `Pawn.def` が取得済み。
 4. **安全と速度**：毎tick反射、ワールド全域の常時走査、保存値の過大加算は禁止。新規利用者の記録はデフォルトON、既存の明示的OFFは守り、設定変更に再起動を要求しない。
 5. **任意DLC/MOD**：未導入や版違いをゼロとしない。必要に応じてPartial/Unknown/NotApplicable。Anomaly不要。
-6. **RimWorld 1.7の実DLL**：\`LoadFolders.xml\`、選択される実アセンブリ、ソース/IL、成功後フック、負のテストの順に確証する。
-7. **実ゲーム**：使える場合は \`pengin0503/RimWorld-for-mod-test\` による最小構成とセーブの検証。完璧な実環境再現を口実に小さな完成可能な作業を止めない。
+6. **RimWorld 1.7の実DLL**：`LoadFolders.xml`、選択される実アセンブリ、ソース/IL、成功後フック、負のテストの順に確証する。
+7. **実ゲーム**：使える場合は `pengin0503/RimWorld-for-mod-test` による最小構成とセーブの検証。完璧な実環境再現を口実に小さな完成可能な作業を止めない。
 
 ## 6. 6担当の並列調査と安全な統合
 
@@ -121,10 +121,10 @@ Workshopの購読者数は調査日時の概数で、1.7実利用者数を意味
 
 ## 主なコード参照
 
-- 統計履歴：\`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs\`、\`MetricChartSeries.cs\`、\`HistoricalCounterIntervals.cs\`
-- 保存：\`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs\`、\`ProfileStore.cs\`、\`Import/ImportEngine.cs\`
-- UI：\`Source/RimworldStatistics/UI/DetailsTab.cs\`、\`CoverageTab.cs\`、\`OverviewTab.cs\`、\`RankingsTab.cs\`、\`Dialog_ColonyMetricHistory.cs\`
-- 種族：\`Source/RimworldStatistics/Patches/Metrics/GameFacts.cs\`、\`MembershipMetricPatches.cs\`、\`DeathMetricPatches.cs\`、\`Tests/RimworldStatistics.Core.Tests/SpeciesBreakdownTests.cs\`
+- 統計履歴：`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs`、`MetricChartSeries.cs`、`HistoricalCounterIntervals.cs`
+- 保存：`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs`、`ProfileStore.cs`、`Import/ImportEngine.cs`
+- UI：`Source/RimworldStatistics/UI/DetailsTab.cs`、`CoverageTab.cs`、`OverviewTab.cs`、`RankingsTab.cs`、`Dialog_ColonyMetricHistory.cs`
+- 種族：`Source/RimworldStatistics/Patches/Metrics/GameFacts.cs`、`MembershipMetricPatches.cs`、`DeathMetricPatches.cs`、`Tests/RimworldStatistics.Core.Tests/SpeciesBreakdownTests.cs`
 - 既存候補：[人気27件](../planned-mod-statistics/2026-11-14-popular-mod-discovery-register.md)、[種族6件](../planned-mod-statistics/2026-11-14-popular-race-mod-audit.md)、[追加27件の現状](../planned-mod-statistics/2026-11-13-additional-30-implementation.md)
 
 **公開の境界**：調査候補は対応済みではない。小さく完結する機能から実装可能だが、実ゲーム未検証の事項を「確認済み」と表示しない。
