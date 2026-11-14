@@ -495,6 +495,7 @@
   <RWS_Metric_AnimalsHunted>Animales salvajes cazados</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>Animales salvajes designados para cazar y asesinados por un personaje jugador. Las peleas incidentales no se cuentan.</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} años</RWS_Unit_Years>
+  <RWS_Unit_Nutrition>{0} de valor nutritivo</RWS_Unit_Nutrition>
   <RWS_Unit_PerCellDay>{0} por celda-día</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Artículos diseñados</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>Cuenta de pilas de los productos principales y laterales de las facturas terminadas del jugador, incluyendo la cocina y el arte; no se incluyen la minería, las cosechas y la gestación mech.</RWS_MetricDesc_CraftedUnits>

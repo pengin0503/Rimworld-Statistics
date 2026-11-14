@@ -495,6 +495,7 @@
   <RWS_Metric_AnimalsHunted>狩猟した野生動物の数</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>狩猟の指定をした野生動物がプレイヤーの人物に倒された数。偶然の戦闘は含めません。</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0} 歳</RWS_Unit_Years>
+  <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
   <RWS_Unit_PerCellDay>{0} 個/セル日</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>製作した品の総数</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>自軍の製作で完成した主・副の成果のスタック個数の合計。調理・芸術品を含み、採掘・収穫・メカノイドの製造は含めません。</RWS_MetricDesc_CraftedUnits>

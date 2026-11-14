@@ -17,6 +17,19 @@ public static class OptionalTransitionRecording
         return ownerPackageId.ToLowerInvariant() + "/" + defName;
     }
 
+    /// <summary>Splits an optional MOD breakdown key without changing its saved identity.</summary>
+    public static bool TryParseQualifiedDefKey(string key, out string? ownerPackageId, out string? defName)
+    {
+        ownerPackageId = defName = null;
+        int separator = key.IndexOf('/');
+        if (separator < 1 || separator == key.Length - 1 || key.IndexOf('/', separator + 1) >= 0)
+            return false;
+
+        ownerPackageId = key[..separator];
+        defName = key[(separator + 1)..];
+        return true;
+    }
+
     /// <summary>
     /// Count only a committed positive integer quantity. With a breakdown, a
     /// missing owner keeps the total but makes the breakdown and scalar partial.

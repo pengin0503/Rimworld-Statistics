@@ -181,16 +181,18 @@ public static class OverviewTab
         var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - 40f), cell.height - 4f);
         var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
         // A single tooltip region: a second overlapping one would be drawn as a second stacked copy.
-        TooltipHandler.TipRegion(cell, chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip);
+        var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
+        var activeTip = item.FavoriteKey is not null && preferences is not null && Mouse.IsOver(star)
+            ? (string)"RWS_Fav_StarTip".Translate()
+            : chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip;
+        TooltipHandler.TipRegion(cell, activeTip);
         if (chartView is not null && Widgets.ButtonInvisible(chartRect))
             Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
         if (item.FavoriteKey is { } key && preferences is not null)
         {
-            var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
             var selected = preferences.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal);
             if (Widgets.ButtonText(star, selected ? "★" : "☆"))
                 ToggleFavorite(key);
-            TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
         }
     }
 

@@ -495,6 +495,7 @@
   <RWS_Metric_AnimalsHunted>野生動物的捕獵</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>指定捕獵和被玩家角色殺害的野獸。 意外的戰鬥不計數 。</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0}年</RWS_Unit_Years>
+  <RWS_Unit_Nutrition>營養值 {0}</RWS_Unit_Nutrition>
   <RWS_Unit_PerCellDay>每工作日 {0}</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>設計的專案</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>包括烹飪與藝術; 礦業、收成與冰毒懷孕等。</RWS_MetricDesc_CraftedUnits>

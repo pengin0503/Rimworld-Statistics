@@ -340,11 +340,9 @@ public static class DetailsTab
         }
         // One tooltip per row: the same id keeps RimWorld from stacking a second copy,
         // and the chart hint is shown only over the area that opens the chart.
-        TooltipHandler.TipRegion(rect,
-            chartRect is { } hintArea && Mouse.IsOver(hintArea) ? chartTipCache[index]! : tipCache[index]!, line.TipId);
+        var starRect = new Rect(rect.x + 2f, rect.y + 2f, 25f, rect.height - 4f);
         if (line.MetricKey is { } metricKey && favoritePreferences is not null)
         {
-            var starRect = new Rect(rect.x + 2f, rect.y + 2f, 25f, rect.height - 4f);
             var saved = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
             if (Widgets.ButtonText(starRect, saved ? "★" : "☆"))
             {
@@ -354,8 +352,12 @@ public static class DetailsTab
                     favoritePreferences.FavoriteMetricKeys.Add(metricKey);
                 persistFavorites?.Invoke();
             }
-            TooltipHandler.TipRegion(starRect, "RWS_Fav_StarTip".Translate());
         }
+        if (line.MetricKey is not null && favoritePreferences is not null && Mouse.IsOver(starRect))
+            TooltipHandler.TipRegion(rect, () => "RWS_Fav_StarTip".Translate(), line.TipId);
+        else
+            TooltipHandler.TipRegion(rect,
+                chartRect is { } hintArea && Mouse.IsOver(hintArea) ? chartTipCache[index]! : tipCache[index]!, line.TipId);
         if (line.MetricKey is { } chartKey && chartRect is { } chartArea && Widgets.ButtonInvisible(chartArea))
             Find.WindowStack.Add(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null));
         if (line.ExpandKey is { } key)
@@ -428,9 +430,8 @@ public static class DetailsTab
             {
                 var childKey = crossTop && b.Breakdowns.Count > 0 ? expandKey + ":" + b.Breakdown : null;
                 var sourceDef = crossTop ? MetricRegistry.Find(row.Definition.StoredKey) ?? row.Definition : row.Definition;
-                var breakdownLabel = crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType"
-                    ? ItemLabel(b.Breakdown)
-                    : BreakdownLabel(sourceDef, b.Breakdown);
+                var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
+                    useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
                 result.Add(MakeLine(b, breakdownLabel, 1, childKey, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
                 if (childKey is not null && Expanded.Contains(childKey))
                     foreach (var contribution in b.Breakdowns)
@@ -579,7 +580,7 @@ public static class DetailsTab
             MetricUnit.Celsius => n.ToString("N1", Inv) + " °C",
             MetricUnit.Watts => n.ToString("N1", Inv) + " W",
             MetricUnit.WattDays => n.ToString("N1", Inv) + " Wd",
-            MetricUnit.Nutrition => n.ToString("N2", Inv) + " nutrition",
+            MetricUnit.Nutrition => "RWS_Unit_Nutrition".Translate(n.ToString("N2", Inv)),
             MetricUnit.PerCellDay => "RWS_Unit_PerCellDay".Translate(n.ToString("N3", Inv)),
             _ => n.ToString("N2", Inv),
         };
@@ -608,10 +609,6 @@ public static class DetailsTab
 
     private static string ItemLabel(string defName)
         => DefDatabase<ThingDef>.GetNamedSilentFail(defName)?.label ?? defName;
-
-    private static string BreakdownLabel(MetricDefinition definition, string key)
-        => MetricDisplayPolicy.BreakdownLabelKey(definition, key) is { } translation
-            ? (string)translation.Translate() : key;
 
     private static string Name(StatsResult stats, string key)
         => stats.Colonies.FirstOrDefault(c => c.Key == key) is { } s ? Dialog_RimworldStatistics.ColonyName(s) : key;

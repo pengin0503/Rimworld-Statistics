@@ -229,8 +229,6 @@ internal sealed class Dialog_MetricChart : Window
     {
         var source = CrossColonyCatalog.IsDerived(definition)
             ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
-        if (MetricDisplayPolicy.BreakdownLabelKey(source, key) is { } translation)
-            return (string)translation.Translate();
-        return DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key;
+        return MetricText.Breakdown(source, key, useThingLabel: true);
     }
 }

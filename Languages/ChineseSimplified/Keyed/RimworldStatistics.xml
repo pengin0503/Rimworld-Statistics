@@ -495,6 +495,7 @@
   <RWS_Metric_AnimalsHunted>猎杀的野生动物</RWS_Metric_AnimalsHunted>
   <RWS_MetricDesc_AnimalsHunted>指定狩猎的野生动物被玩家角色杀死,意外的战斗不计算在内.</RWS_MetricDesc_AnimalsHunted>
   <RWS_Unit_Years>{0}岁</RWS_Unit_Years>
+  <RWS_Unit_Nutrition>营养值 {0}</RWS_Unit_Nutrition>
   <RWS_Unit_PerCellDay>每个单元格日{0}</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>设计的项目</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>玩家成品账单的主要和侧面产品的堆积计数,包括烹饪和艺术;采矿,收获和 mech 酝酿不包括在内.</RWS_MetricDesc_CraftedUnits>
