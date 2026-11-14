@@ -775,7 +775,7 @@
   <RWS_Metric_RoyaltyPsylinkPeak>Nivel máximo de psienlace</RWS_Metric_RoyaltyPsylinkPeak>
   <RWS_MetricDesc_RoyaltyPsylinkPeak>Mayor nivel de psienlace de un colono observado en una partida guardada registrada. Requiere Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
   <RWS_Metric_BiotechPollutionPeak>Máximo de casillas contaminadas</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>Mayor número de casillas contaminadas en mapas de hogar visto en una partida guardada registrada. Requiere Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Máximo de casillas contaminadas en los mapas de hogar, observado en una partida guardada registrada. Requiere Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
   <RWS_Metric_BiotechBandwidthPeak>Máximo de ancho de banda usado por un mecanitor</RWS_Metric_BiotechBandwidthPeak>
   <RWS_MetricDesc_BiotechBandwidthPeak>Mayor ancho de banda utilizado por un mecanitor en una partida guardada registrada. Requiere Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
   <RWS_Metric_RoyaltyPermitUses>Permisos reales utilizados</RWS_Metric_RoyaltyPermitUses>
