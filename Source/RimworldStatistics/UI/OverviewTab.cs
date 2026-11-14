@@ -168,6 +168,15 @@ public static class OverviewTab
         Widgets.Label(new Rect(inner.x, inner.y + 26f, inner.width, inner.height - 26f), value);
         Text.Font = GameFont.Small;
         TooltipHandler.TipRegion(cell, tip);
+        if (item.FavoriteKey is { } chartKey && builtFor is { } current
+            && (BasicMetrics.Contains(chartKey) || MetricLookup.Definition(current, chartKey) is not null))
+        {
+            // Do not cover the favourite star at the right edge of the card.
+            var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - 40f), cell.height - 4f);
+            TooltipHandler.TipRegion(chartRect, tip + "\n\n" + "RWS_Chart_OpenTip".Translate());
+            if (Widgets.ButtonInvisible(chartRect))
+                Find.WindowStack.Add(new Dialog_MetricChart(current, chartKey, null));
+        }
         if (item.FavoriteKey is { } key && preferences is not null)
         {
             var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
