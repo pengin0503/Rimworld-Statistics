@@ -370,7 +370,7 @@
   <RWS_MetricDesc_TrapKills>Убийства врагов от ловушки игрока.</RWS_MetricDesc_TrapKills>
   <RWS_Metric_TameAnimalKills>Убийства приручёнными животными</RWS_Metric_TameAnimalKills>
   <RWS_MetricDesc_TameAnimalKills>Убийства врагов, в которых атакующим было животное игрока.</RWS_MetricDesc_TameAnimalKills>
-  <RWS_Metric_PlayerMechKills>Убийства механоидов игрока</RWS_Metric_PlayerMechKills>
+  <RWS_Metric_PlayerMechKills>Убийства силами механоидов игрока</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Убийства врагов, в которых атакующим был механоид игрока (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Причины смерти поселенцев</RWS_Metric_DeathCauses>
   <RWS_MetricDesc_DeathCauses>Смерти свободных поселенцев по вызвавшему их состоянию здоровья (hediff) либо виду смертельного урона. Если оба неизвестны, категория называется «(неизвестно)».</RWS_MetricDesc_DeathCauses>

@@ -502,8 +502,8 @@
   <RWS_MetricDesc_CraftQuality>Les objets fabriqués ci-dessus, répartis par qualité. Ceux sans qualité figurent sous «none».</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Objets de qualité légendaire fabriqués</RWS_Metric_CraftLegendary>
   <RWS_MetricDesc_CraftLegendary>Objets fabriqués de qualité légendaire.</RWS_MetricDesc_CraftLegendary>
-  <RWS_Metric_CraftMasterwork>Objets de qualité merveille fabriqués</RWS_Metric_CraftMasterwork>
-  <RWS_MetricDesc_CraftMasterwork>Objets fabriqués de qualité merveille.</RWS_MetricDesc_CraftMasterwork>
+  <RWS_Metric_CraftMasterwork>Objets de qualité chef-d’œuvre fabriqués</RWS_Metric_CraftMasterwork>
+  <RWS_MetricDesc_CraftMasterwork>Objets fabriqués de qualité chef-d’œuvre.</RWS_MetricDesc_CraftMasterwork>
   <RWS_Metric_CraftBestQuality>Meilleure qualité obtenue en fabrication</RWS_Metric_CraftBestQuality>
   <RWS_MetricDesc_CraftBestQuality>Qualité la plus élevée d'un objet fabriqué (0 = horrible … 6 = légendaire) ; le détail indique la qualité.</RWS_MetricDesc_CraftBestQuality>
   <RWS_Metric_CraftBestPrice>Objet fabriqué de plus grande valeur</RWS_Metric_CraftBestPrice>
