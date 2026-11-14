@@ -1,106 +1,130 @@
-# Rimworld Statistics: next-development opportunity audit (2026-11-14)
+# Rimworld Statistics：次期開発候補の調査（日本語版）
 
-**Type:** read-only design/research. **Baseline:** main at dc90d3cd99e4c1bdae5240ec24a049c010304b04, RimWorld 1.7. **Release baseline:** v1.8.0, published 2026-11-14. **No product code, supported-MOD list, Steam Workshop or release changes in this audit.**
+作成日：2026-11-14  
+基準：main \`dc90d3cd99e4c1bdae5240ec24a049c010304b04\` / RimWorld 1.7 / v1.8.0公開後  
+性質：**実装を伴わない調査**。コード・公開対応MOD一覧・Steam Workshop・リリースは変更しない。
 
-## Verified baseline and omissions to avoid
+**追加調査**：[同日第2回の詳細調査と元セーブ分析](2026-11-14-additional-investigation-ja.md)  
+**複数AIの担当指示**：[日本語の並列調査引き継ぎ](../superpowers/plans/2026-11-14-parallel-ai-research-handoff.md)
 
-- The GitHub search at investigation time returned exactly two open Issues: [#72](https://github.com/pengin0503/Rimworld-Statistics/issues/72) (historic recovery, ancestry and original-save/game acceptance) and [#195](https://github.com/pengin0503/Rimworld-Statistics/issues/195) (profile write amplification). There were no open PRs; the main-head numeric-verification workflow completed successfully.
-- [#255](https://github.com/pengin0503/Rimworld-Statistics/pull/255) already added per-colony metric history; [#256](https://github.com/pengin0503/Rimworld-Statistics/pull/256) added joins and free-colonist deaths by species. [#237](https://github.com/pengin0503/Rimworld-Statistics/pull/237) added six MOD-specific outcomes. Never propose these as wholly unimplemented.
-- Existing UI: DetailsTab has search, category/status filters, sorting, favourites, per-colony and comparison modes, and row virtualization; CoverageTab has measured/partial/missing and source-state filters; RankingsTab has search; OverviewTab has customizable favourites; chart dialogs show colony bars and optional history overlays. Proposals below are improvements, not claims of absence.
-- Existing CSV export already writes five CSVs plus a JSON manifest with coverage and evidence. An enhanced history/JSON export is additional functionality, not an initial export implementation.
-- The current user settings enable supported metric acquisition by default; explicit existing opt-outs are retained. Recording changes are intended not to require a game restart.
-- Current released support names live only in docs/supported-mods.md. The 27 proposed popular MODs and six race candidates in docs/planned-mod-statistics are **not supported integrations** solely because a research entry exists.
+## 1. 最新リポジトリを基準にした現状
 
-## Concrete correctness and maintenance findings
+- 調査開始時点の未解決Issueは**2件**：[#72](https://github.com/pengin0503/Rimworld-Statistics/issues/72)（過去セーブ・チェックポイントの直接親子証明、実ゲーム確認、55件以上の実セーブ負荷）と [#195](https://github.com/pengin0503/Rimworld-Statistics/issues/195)（プロフィール保存時の直列化/読み戻し負荷）。
+- 未マージPRは**0件**（PR #257の作成前）。最新mainの数値統計CIは成功済み。
+- [PR #255](https://github.com/pengin0503/Rimworld-Statistics/pull/255) によりコロニー別の統計履歴折れ線表示は**実装済み**。
+- [PR #256](https://github.com/pengin0503/Rimworld-Statistics/pull/256) により種族別の加入・自由入植者死亡の内訳は**実装済み**。今後の「HAR対応」は、これを再実装することではなく、在籍ピークやゼノタイプなどの追加次元を検討するもの。
+- [PR #237](https://github.com/pengin0503/Rimworld-Statistics/pull/237) のMOD固有統計6件も実装済み。
+- **検索/カテゴリ・状態フィルタ、並び替え、お気に入り、比較・ランキング、統計グラフ、CSV出力は存在する**。それらを「新規搭載」と書かない。
+- \`docs/supported-mods.md\` には当時**64件**の対応MOD名がある。研究候補をここに混在させない。
 
-### C1 / P0: an unproven save lineage can be drawn as a continuous line
+## 2. 修正・改善候補の根拠
 
-Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs, in SaveChartPoints, groups samples by game tick and makes ConnectToPrevious true when adjacent points have a value and equal ModCampaignId. A common campaign ID does not prove that two saves are on a parent/child branch. This can visually imply a continuous chronological trajectory across siblings. CheckpointChartHistory instead traces explicit parent keys. The current code also handles same-tick contradictory readings by leaving a gap, which should be retained.
+### C1【P0】セーブ分岐をグラフの連続した歴史として描かない
 
-**Decision proposal:** connected lines require proven lineage; unproven save-file/snapshot observations should display independent markers, or carry an explicit visual "unproven succession" legend. Preserve per-tick values and never interpolate a missing value as zero. Test same-campaign sibling branches, rewind, missing parents, same-tick contradicting values, and a positive proven direct-parent case. Do not label this as a reproduced in-game rendering defect before the harness confirms it.
+確認した箇所：\`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs\` の \`SaveChartPoints\`。
 
-### C2 / P0: Issue #195 must be rebased against current code
+- 同一時刻の観測値が矛盾する場合は欠測扱いにする、という安全な実装が存在する。
+- 一方、別時刻の2点については、同じ \`ModCampaignId\` で数値が存在すれば \`ConnectToPrevious\` を真にし得る。
+- 同一キャンペーンIDは**同じ親子セーブ枝に属することの証明ではない**。途中巻き戻し/兄弟枝を連続した履歴として表示する設計上のリスクがある。
+- \`CheckpointChartHistory\` は別途、明示的な \`ParentKey\` で親子をたどっており、違いがある。
 
-The Issue describes SaveEvery=5, but Source/RimworldStatistics.Core/Import/ImportEngine.cs now has a five-second SaveInterval and a final save. In contrast, ProfileSession.WriteLatest still serializes ProfileJson under _lock; ProfileStore.SaveSerialized still obtains and validates the full existing file, compares statistics, and commits atomically. Its optimized importState comparison is already present. Measure remaining problems before introducing a potentially unsafe timestamp/hash conflict detector.
+提案：直接親子が確定していないセーブ観測は、まず個別点として可視化する。証拠があるチェックポイント同士だけ線で結ぶ。Unknownをゼロに置き換えず、履歴元（save/checkpoint/recorder）を凡例で示す。実ゲームでの表示再現は未実施なので「確認済み描画バグ」とは扱わない。
 
-**Decision proposal:** synthetic 0.2MB, 5MB and 10MB profiles; collect p50/p95 save latency, bytes written, lock wait, allocations and collision tests for concurrent sessions. Optimize only a measured bottleneck while retaining source-v1 backup, three backup rotations, file conflict detection and crash safety. Update Issue #195 with the changed baseline.
+受入テスト：同一キャンペーンの別枝、巻き戻し、親欠落、同一tickの矛盾、連続した正当な親子、アーカイブ復元、別MOD/DLC構成。
 
-### C3 / P0: Issue #72 remains evidence-dependent, not a missing parser alone
+### C2【P0】Issue #195を「現行実装」に合わせて再測定
 
-Direct checkpoint ancestry has positive original-file evidence in prior reports, but the Issue still requests real-game UI acceptance, positive-delta real parent-chain evidence and a 55+ real-save benchmark. Do not backdate a counter delta to an exact day, do not infer branch ancestry from identical campaign IDs, and never aggregate sibling intervals as lifetime totals. Existing synthetic tests do not independently satisfy the remaining acceptance.
+- Issueの説明「5ファイルごとに \`QueueSave\`」は古い。現在の \`Source/RimworldStatistics.Core/Import/ImportEngine.cs\` は \`SaveInterval = 5秒\` で保存要求を抑え、処理完了時にも保存する。
+- \`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs\` の \`WriteLatest\` は \`_lock\` 内で \`ProfileJson.Serialize\` を行う。
+- \`Source/RimworldStatistics.Core/Profiles/ProfileStore.cs\` は既存一次ファイルの内容を確認し、統計差分に応じたバックアップを行う。単純な更新日時比較に変えると、衝突検知が弱まる可能性がある。
+- 5/10MB相当で書込のp50/p95、I/O、割当、ゲームスレッドのロック待機を比較し、実測で影響のある箇所だけ最適化する。
 
-### C4 / P1: distinguish time-series, snapshot, cumulative and rank semantics in UI
+受入テスト：別セッションによる上書き拒否、クラッシュ時の原子置換、3世代バックアップ、旧schemaの原本保護、壊れたprofileの復元、取込キャンセル。
 
-MetricHistoryKind distinguishes SaveObservations, CheckpointLineage, WealthRecorder, GameRecorder; NumericValue carries coverage. The history UI should make missing and partial measurements and the chosen X-axis explicit. A measured point is not automatically a provable intervening event. Colony overlays should not silently imply aligned founding dates or identical DLC/MOD availability.
+### C3【P0】Issue #72の残りの証明は実データに依存
 
-### C5 / P1: profile inspection and recovery diagnostics
+既存の原本による親子確認・.NET読込実績はIssueに残っているが、正の増分が存在する実チェックポイントの連続証拠、55件以上の実セーブ計測、ゲームUIの一部が未確認。親IDのない前後のセーブを「絶対に起きたイベント」として復元しない。同じイベントを複数枝で合計しない。
 
-DataManagementTab, ImportTab and CoverageTab exist. Consider a read-only diagnostic export that explains which files were skipped, failed or conflict-marked, which statistics are Unknown/Partial, and whether a history point came from an archive/recorder/save. Avoid exposing raw user identifiers or original saves in public issue reports.
+今回提供された6セーブからは、時刻が異なる2ファイルに同じチェックポイントが保存されている実例が確認された。詳細は[追加調査](2026-11-14-additional-investigation-ja.md)参照。これは欠陥の断定ではなく、欠測表示を整える根拠。
 
-## Prioritized feature proposals
+### C4【P1】実測・状態観測・累積・順位の意味を混同させない
 
-| Priority | Workstream | User-facing deliverable | Non-negotiable test/gate |
+\`MetricHistoryKind\`、\`NumericValue.Coverage\`、\`MetricStatus\` はすでに存在する。UI側で「時点の値」「期間の加算量」「史上最高値」「Partial」などが区別できるツールチップを付ける。別コロニーのグラフを重ねる場合も、経過日数・開始日・時点の整列条件を明記。
+
+### C5【P1】インポート失敗理由と復旧を分かりやすくする
+
+\`ImportTab\`、\`CoverageTab\`、\`DataManagementTab\` はすでに実装済み。追加するなら、「スキップ/破損/変化中/未サポート/対象MODなし/取得OFF」を区別する**読み取り専用診断**と、安全なサポート情報のエクスポートを検討。ユーザーのキャンペーンID、チェックポイントID、生セーブ、MOD全一覧を公開Issueへ流出させない。
+
+## 3. 新機能候補の優先順位
+
+| 優先 | 既存との差分がある提案 | 受入条件 |
+|---|---|---|
+| P0 | 履歴の親子証拠と連続線の意味を一致させる | 未証明の別枝が連続した確定履歴にならない |
+| P0 | プロフィール保存を定量的に最適化 | 5/10MBの実測、衝突検知・バックアップ破壊なし |
+| P0 | 過去セーブの証拠区分/時刻境界表示 | 古い埋込記録、未知、部分記録を誤認しない |
+| P1 | グラフの期間選択/欠測・Partialツールチップ | 表示のみの改善で元の観測値を消さない |
+| P1 | 集計可能な件数の1日当たり比較 | 取得期間を分母に使用、極値や断片記録には使わない |
+| P1 | 読込診断と個人情報を含まない診断出力 | 壊れたセーブ、変更途中、設定変更を説明可能 |
+| P1 | 種族/ゼノタイプ/地形の横断分類 | 汎用加入・死亡総数との二重計上がない |
+| P2 | CSV出力への履歴証拠の任意追加 | 既存5CSV＋manifestを破壊しない |
+| P2 | 長大な折れ線の描画点数削減 | 元データ、最大・最小・欠測の境界を維持 |
+
+**対象外とする重複案**：検索、お気に入り、基本のグラフ、CSV、既存のデフォルトON録画、PR #255/#256で実装済みの機能の再実装。
+
+## 4. 既存の人気MOD候補の再順位付け
+
+以下の候補はすでに[人気MOD調査登録](../planned-mod-statistics/2026-11-14-popular-mod-discovery-register.md)と[種族MOD調査](../planned-mod-statistics/2026-11-14-popular-race-mod-audit.md)に含まれる。これは**新しく見つけた数ではなく優先順の再評価**。対応済み一覧には追加しない。
+
+| 優先 | MOD | 実装するなら必須の独自結果 | 関門 |
 |---|---|---|---|
-| P0 | Chart evidence semantics | Connected only with proven parent links; unproven observations marked distinctly | Same-campaign sibling, rewind, missing chain, same-tick divergence |
-| P0 | Profile persistence scale | Reduced measured save overhead without weakened durability | 5/10MB benchmarks, backup/restore, stale writer, crash safety |
-| P0 | Original-save acceptance | Honest closure matrix for #72, with no fabricated exact events | Real saved parent-child samples, real UI, 55+ saves if available |
-| P1 | History UX | Coverage/point tooltip, optional zoom or range and clearer overlay axis | Missing/Partial labels, 12-language layout, narrow 1440p and smaller windows |
-| P1 | Comparison UX | Normalized per-day ratios only for mathematically valid metrics, plus easy switch to absolute values | Zero/unknown duration, independent colony inclusion, no ratio of maxima |
-| P1 | Import diagnostics | Reason-specific read-only diagnostics and non-sensitive support bundle | Corrupt file, unsupported format, changed file, missing DLC/MOD, privacy |
-| P1 | Race and geographical dimensions | HAR species + independent Biotech xenotype breakdown and map landform classification | Avoid double-count of pawn identities; stable package+Def identity |
-| P2 | Export extensions | Optional history/coverage JSON/CSV without changing existing CSV contract | Large exports, missing values blank/null, injection protection |
-| P2 | Large-chart performance | Viewport downsampling/LOD for render only | Preserve source data and extremes; deterministic UI on large profiles |
+| P0 | Humanoid Alien Races / Biotech | #256の加入・死亡の次に、在籍ピーク・囚人/奴隷・ゼノタイプ別分類 | 種族とゼノタイプを二重人数にしない |
+| P0 | Geological Landforms | 実際に開始/運営したコロニーの地形別記録 | ランダムプレビューを含めない、安定したLandform.Id |
+| P0 | Vanilla Events Expanded | 複数段階イベントの実完了 | 取消・失敗・一般incidentとの重複を除外 |
+| P0 | Vanilla Psycasts Expanded – Puppeteer | 傀儡成立・意識移動の成功 | 通常のサイキャスト使用回数と別 |
+| P0 | Vanilla Ideology Expanded – Dryads | 合成後の実ドライアド生成 | 合成要求や作成途中は不計上 |
+| P1 | Hospital | 患者受入、治療後退院、実際の治療費受領 | 単なる退院・支払予定を治療成功/売上としない |
+| P1 | Vanilla Fishing Expanded | Odysseyなし環境の釣果・実受取数 | 既存FishingFamilyとの二重計上を防ぐ |
+| P1 | Vanilla Furniture Expanded – Farming | 実際に増えた植物成長量 | 毎tickフックの負荷を避ける |
+| P1 | Vanilla Races Expanded – Archon | 超越ポーンの実帰還 | 消失予約・死亡だけでは計上しない |
+| P1 | NewRatkinPlus | 実際に働いた回し車の生産量 | 作業開始・定格発電を使わない |
+| P1 | Alpha Genes | 確定した独自遺伝子操作 | 一般のBiotech遺伝子変更と重複しない |
+| P2 | Vanilla Races Expanded – Lycanthrope/Fungoid/Insector | 真に確定した独自変身/進化 | 1.7選択DLLと成功経路を確認 |
+| P2 | Vanilla Landmarks Expanded | 最初に訪問したランドマーク | マップ生成回数ではない |
+| P2 | Vanilla Furniture Expanded – Power/Spacer | 独自の炉心事故・実際の修理量 | 通常の事故/修理統計との重複監査 |
+| 条件付き | Vanilla Traits Expanded / Non-Lethal | 明確に独立した強制退却/損害・特殊気絶 | Combat Extendedとの重複・ホットパス負荷 |
+| 共通分類のみ | Gloomy Dragonian、Rabbie、Yuran | HARの共通種族分類 | 個別成果が証明できるまで専用アダプタなし |
 
-**Not proposals:** wholesale reimplementation of search, favourites, basic charts, CSV, existing 64 listed supported-MOD entries or default-on acquisition.
+Workshopの購読者数は調査日時の概数で、1.7実利用者数を意味しない。1.7タグだけで適合DLLや成功経路が証明されたとは扱わない。
 
-## MOD opportunity register: next actionable batches
+**今回追加した別枠の新候補**：Winston Waves、Empire Refactored、Caravan Adventures、World Domination 2.0、Rim War (Continued)。詳細な選考/除外理由は[第2回調査](2026-11-14-additional-investigation-ja.md)。
 
-These names are primarily in the already-existing [27-candidate register](../planned-mod-statistics/2026-11-14-popular-mod-discovery-register.md) and [race audit](../planned-mod-statistics/2026-11-14-popular-race-mod-audit.md). This is a priority/scope reevaluation, not a claim that 33 entirely new MODs were discovered.
+## 5. 調査から実装へ移るときの共通規則
 
-| Priority | Candidate | Distinct successful outcome or classification | Proof needed before feature implementation |
-|---|---|---|---|
-| P0 | Humanoid Alien Races / Biotech | Extend **already shipped** joins/deaths-by-species to historical roster maxima and separate xenotype dimension | Stable package+ThingDef vs XenotypeDef keys, no doubled joins/deaths, removed-MOD history |
-| P0 | Geological Landforms | Real founded colony landform, colony counts/day and record breakdown by landform | Stable Landform.Id, attribution only to founded/played colonies, persistence when MOD absent |
-| P0 | Vanilla Events Expanded | Fully completed multi-stage event chain, by Def/stage | True terminal success, cancel/timeout/debug and generic incident overlap |
-| P0 | Vanilla Psycasts Expanded – Puppeteer | Confirmed puppet formation and consciousness transfer outcomes | Active 1.7 DLL post-success state; generic VPE casts already tracked |
-| P0 | Vanilla Ideology Expanded – Dryads | Actual player dryad spawned by successful merger | Check result spawn after CompSpawnAwakened.DoSpawn, avoid generic births |
-| P1 | Hospital | Patient arrivals, confirmed cured departures, silver actually collected | PatientLeaves != cured; payment attempt != actual silver received |
-| P1 | Vanilla Fishing Expanded | Non-Odyssey successful catches by fish Def and accepted amount | Existing FishingFamily requires Odyssey; Odyssey and VFE source can overlap |
-| P1 | Vanilla Furniture Expanded – Farming | Actual positive sprinkler-induced plant growth delta | 1.7 selected DLL, clamped delta; avoid frequent per-plant per-tick hooks |
-| P1 | Vanilla Races Expanded – Archon | Confirmed transcendent pawn return to player map | Spawn success rather than death/queue; no redundant joins |
-| P1 | NewRatkinPlus | Measured productive wheel work (not job started) | Interrupt-safe completion or measured energy; actual 1.7 DLL |
-| P1 | Alpha Genes | Successful unique gene operation | Isolate successful operation from generic Biotech edits |
-| P2 | Vanilla Races Expanded – Lycanthrope/Fungoid/Insector | Truly committed transformation by type | Selected 1.7 DLL and source-level distinct success from generic xenotype change |
-| P2 | Vanilla Landmarks Expanded | First actual discovery/visit classified by landmark | Persistent visited identity; no map-generation counting |
-| P2 | Vanilla Furniture Expanded – Power / Spacer | Distinct meltdown or completed repair amount | Existing incidents/repair metrics overlap; safe low-frequency signal |
-| Conditional | Vanilla Traits Expanded / Non-Lethal | Verified unusual forced flee, furniture damage or special stun | Vanilla combat overlap, Combat Extended interaction, hot-path risk |
-| Hold | Gloomy Dragonian, Rabbie, Yuran | Shared HAR classification only | Do not create one adapter per race without unique confirmed outcomes |
-| Hold | Unsupported-release or source-unproven candidates | No invented integration | Actual loaded RimWorld 1.7 package required |
+1. **重複確認が先**：\`docs/supported-mods.md\`、\`Source/RimworldStatistics/Metrics/IntegratedTransitionAdapters.cs\`、既存 \`MetricRegistry\` と2026-11-13の27件対応状況を照合。既存35＋追加27の決定を尊重。
+2. **成功確証が必須**：着手/予定/見込み/瞬間的な所持数から生涯累計を捏造しない。Gastronomy個別支払完了、Prison Expanded暴動全体終結、Rimefeller不明精製経路は既存の見送り決定を維持。
+3. **共通HARを優先**：ただの種族専用アイテムや疾患は独立アダプターを作らない。既存の種族別加入・死亡は \`GameFacts.Species\` とパッケージ識別付き \`Pawn.def\` が取得済み。
+4. **安全と速度**：毎tick反射、ワールド全域の常時走査、保存値の過大加算は禁止。新規利用者の記録はデフォルトON、既存の明示的OFFは守り、設定変更に再起動を要求しない。
+5. **任意DLC/MOD**：未導入や版違いをゼロとしない。必要に応じてPartial/Unknown/NotApplicable。Anomaly不要。
+6. **RimWorld 1.7の実DLL**：\`LoadFolders.xml\`、選択される実アセンブリ、ソース/IL、成功後フック、負のテストの順に確証する。
+7. **実ゲーム**：使える場合は \`pengin0503/RimWorld-for-mod-test\` による最小構成とセーブの検証。完璧な実環境再現を口実に小さな完成可能な作業を止めない。
 
-The source notes of prior research are evidence for *candidate selection*, not proof of game-side success. Workshop subscriber counts are approximate, dated interest proxies rather than active 1.7 users. Public Workshop 1.7 tags alone do not establish loaded-assembly or Harmony-target compatibility.
+## 6. 6担当の並列調査と安全な統合
 
-## Deduplication and exclusion decisions
+- **AI-A：履歴・親子関係・過去セーブ**。履歴接続の確定根拠と#72。
+- **AI-B：保存・性能・インポート**。#195の現行状態の再計測。
+- **AI-C：UI・グラフ・エクスポート**。既存機能の改善。
+- **AI-D：種族/ゼノタイプ/地形**。HARとGeological Landforms。
+- **AI-E：MOD固有の超能力/イベント/儀式**。Puppeteer、Vanilla Events、Dryads。
+- **AI-F：商業/サービス/製造MOD**。Hospital、Fishing、Farming。
 
-1. Check docs/supported-mods.md, Source/RimworldStatistics/Metrics/IntegratedTransitionAdapters.cs, optional adapters, built-in MetricRegistry and the 2026-11-13 additional-30 status before registering a metric key. Preserve original 35 + 27 delivered/conditional decisions.
-2. Do not resuscitate the waived Gastronomy individual settled-order, Prison Expanded whole-riot and Rimefeller refinery input/product proposals without new success-path evidence.
-3. Do not treat generic race goods, traits or diseases as reason for one-off integration; shared HAR identity is more scalable. Species joins/deaths already use GameFacts.Species and the package-qualified Pawn.def key as of #256; the additional requirements are roster/xenotype and unique race outcomes.
-4. Never add researched MODs to docs/supported-mods.md until implemented.
-5. Avoid per-tick reflection, broad high-frequency Harmony patches, guessed work/energy, unsafely summed snapshots or duplicate generic collectors.
-6. Existing opt-outs survive. New supported recordings default on, and switching recording settings should not require a restart.
-7. Missing optional DLC or absent/incompatible MOD is Unknown/Partial/NotApplicable as semantics require, never invented zero. Do not require Anomaly in acceptance.
-8. For hands-on game checks use pengin0503/RimWorld-for-mod-test when available; 1.7 patch versions are treated equivalently for task scope, but active selected DLL still must be checked.
+調査時は別々のMarkdownファイル・ブランチを用いる。**共有のMetricRegistry・Languages・プロファイル形式を6人が同時編集する実装は行わない**。統括役がレビュー後、独立してテストできる単位でPRを順番に統合。機能追加前に最小設計、TDD、CI、コードレビューを要求する。
 
-## Proposed execution architecture
+## 主なコード参照
 
-Six *independent read-only research* lanes (A ancestry/chart integrity; B storage/performance; C UI/exports; D shared race/geography; E special gameplay MOD outcomes; F economy/fishing/production MOD outcomes) run concurrently on separate branches and output different report paths. **A coordinator reviews and integrates; do not launch six independent implementation branches against shared MetricRegistry/Language files.** Each resulting feature gets its own design, TDD tests, code review, CI and PR after research approval. Merge order should be core correctness -> persistence -> shared dimensions -> separate MOD adapters -> UI -> integration regression, with rebasing on every merge.
+- 統計履歴：\`Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs\`、\`MetricChartSeries.cs\`、\`HistoricalCounterIntervals.cs\`
+- 保存：\`Source/RimworldStatistics.Core/Profiles/ProfileSession.cs\`、\`ProfileStore.cs\`、\`Import/ImportEngine.cs\`
+- UI：\`Source/RimworldStatistics/UI/DetailsTab.cs\`、\`CoverageTab.cs\`、\`OverviewTab.cs\`、\`RankingsTab.cs\`、\`Dialog_ColonyMetricHistory.cs\`
+- 種族：\`Source/RimworldStatistics/Patches/Metrics/GameFacts.cs\`、\`MembershipMetricPatches.cs\`、\`DeathMetricPatches.cs\`、\`Tests/RimworldStatistics.Core.Tests/SpeciesBreakdownTests.cs\`
+- 既存候補：[人気27件](../planned-mod-statistics/2026-11-14-popular-mod-discovery-register.md)、[種族6件](../planned-mod-statistics/2026-11-14-popular-race-mod-audit.md)、[追加27件の現状](../planned-mod-statistics/2026-11-13-additional-30-implementation.md)
 
-See [parallel-AI research handoff](../superpowers/plans/2026-11-14-parallel-ai-research-handoff.md) for copy-ready isolated assignments and research acceptance conditions.
-
-## Source pointers
-
-- Core chart: Source/RimworldStatistics.Core/Stats/MetricCalculator.ChartHistory.cs, MetricChartSeries.cs; Tests/RimworldStatistics.Core.Tests/MetricChartHistoryTests.cs.
-- Profile and import: Source/RimworldStatistics.Core/Profiles/ProfileSession.cs, ProfileStore.cs; Source/RimworldStatistics.Core/Import/ImportEngine.cs.
-- UI coverage: Source/RimworldStatistics/UI/{DetailsTab,CoverageTab,OverviewTab,RankingsTab,Dialog_ColonyMetricHistory}.cs; docs/csv-export.md.
-- Species: Source/RimworldStatistics/Patches/Metrics/GameFacts.cs, MembershipMetricPatches.cs, DeathMetricPatches.cs; Tests/RimworldStatistics.Core.Tests/SpeciesBreakdownTests.cs.
-- Candidate evidence: docs/planned-mod-statistics/2026-11-14-popular-mod-discovery-register.md, 2026-11-14-popular-race-mod-audit.md, 2026-11-13-additional-30-implementation.md, 2026-11-13-remaining-mod-statistics-design.md.
-- External verification: [Humanoid Alien Races Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=839005762), [Puppeteer Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3033779606), [Geological Landforms source](https://github.com/m00nl1ght-dev/GeologicalLandforms). Exact Workshop subscribers vary and require recheck before scheduling implementation.
+**公開の境界**：調査候補は対応済みではない。小さく完結する機能から実装可能だが、実ゲーム未検証の事項を「確認済み」と表示しない。
