@@ -420,8 +420,8 @@
   <RWS_MetricDesc_Infestations>成功触发的虫巢虫灾（Infestation、DeepDrillInfestation）次数。其他昆虫相关事件不计入。</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>机械集群出现次数</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>成功触发的机械集群事件（Royalty）次数。普通机械族袭击不计入。</RWS_MetricDesc_MechClusters>
-  <RWS_Metric_ManhunterPacks>人狩猎群出现次数</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>成功触发的人狩猎群（ManhunterPack）事件次数。</RWS_MetricDesc_ManhunterPacks>
+  <RWS_Metric_ManhunterPacks>猎杀人类动物群出现次数</RWS_Metric_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>成功触发的猎杀人类动物群（ManhunterPack）事件次数。</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>最长无袭击间隔</RWS_Metric_RaidLongestGap>
   <RWS_MetricDesc_RaidLongestGap>连续两次已记录袭击之间最长的间隔，不包括首次袭击之前或末次袭击之后的时间。与最长袭击间隔（N2-C-002）的数值相同。</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>袭击平均间隔</RWS_Metric_RaidMeanGap>
@@ -697,9 +697,9 @@
   <RWS_Metric_SitesCleared>击败敌方定居点次数</RWS_Metric_SitesCleared>
   <RWS_MetricDesc_SitesCleared>玩家取胜并摧毁的敌对派系定居点数量。</RWS_MetricDesc_SitesCleared>
   <RWS_Metric_SettlementsFounded>建立新定居点次数</RWS_Metric_SettlementsFounded>
-  <RWS_MetricDesc_SettlementsFounded>从远行队或已有地图中建立的新玩家定居点数量，不包括初始定居点、殖民地迁移或重力飞船着陆。</RWS_MetricDesc_SettlementsFounded>
+  <RWS_MetricDesc_SettlementsFounded>从远行队或已有地图中建立的新玩家定居点数量，不包括初始定居点、殖民地迁移或逆重飞船着陆。</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>放弃定居点次数</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>玩家主动选择放弃的定居点数量，不包括重力飞船起飞等自动移除情况。</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>玩家主动选择放弃的定居点数量，不包括逆重飞船起飞等自动移除情况。</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>开启远古危险区域数</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>玩家定居点地图上被开启内部空间的封闭远古神殿（远古危险），每座仅计一次。游戏判定其被发现的时刻，即中心区域的迷雾消失时，才计入。破坏其他墙壁或出现敌人不算。</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>初始生态群落</RWS_Metric_ColonyStartingBiome>
