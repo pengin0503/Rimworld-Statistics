@@ -1240,4 +1240,7 @@
   <RWS_Chart_OverallNote>Für diese Statistik ist nur ein zusammengefasster Wert verfügbar.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Angezeigte Werte: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Keine Messwerte für ein Diagramm vorhanden.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Kolonie hinzufügen…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Messwerte nach Spieltagen. Lücken zeigen fehlende Werte.</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
 </LanguageData>

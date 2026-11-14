@@ -5,6 +5,16 @@ namespace RimworldStatistics.Core.Tests;
 public sealed class MetricChartHistoryTests
 {
     [Fact]
+    public void RecorderChartsKeepGapsAndRequireAlignedTiming()
+    {
+        var points = HistoryMetricReader.RecorderHistory(HistoryMetricReader.ColonistMood, [55f, 0f, 70f, 75f], "1.7", 90000);
+        Assert.Equal(new double?[] { 55d, null, 70d, 75d }, points.Select(p => p.Value?.Number));
+        Assert.Equal(new[] { false, false, false, true }, points.Select(p => p.ConnectToPrevious));
+        Assert.Empty(HistoryMetricReader.RecorderHistory(HistoryMetricReader.FreeColonists, [0f, 3f], "1.7", 60000));
+        Assert.Equal(0d, HistoryMetricReader.RecorderHistory(HistoryMetricReader.FreeColonists, [0f, 3f], "1.7", 30000)[0].Value?.Number);
+    }
+
+    [Fact]
     public void FifteenDayGainShowsTheRunningMaximumWithoutInventingEarlyReadings()
     {
         var wealth = Enumerable.Repeat(100f, 34).ToArray();

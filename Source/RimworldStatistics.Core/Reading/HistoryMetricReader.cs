@@ -50,6 +50,28 @@ public static class HistoryMetricReader
 
     public static bool IsTimedVersion(string? gameVersion) => MajorMinor(gameVersion) is { } v && TimedVersions.Contains(v);
 
+    public static IReadOnlyList<MetricHistoryPoint> RecorderHistory(string recorder, float[] values, string? gameVersion, int tick)
+    {
+        if (recorder is not (WealthTotal or FreeColonists or ColonistMood) || tick <= 0
+            || !IsTimedVersion(gameVersion) || values.Length != tick / TicksPerPoint + 1)
+            return [];
+
+        bool Valid(float value) => float.IsFinite(value)
+            && (recorder == ColonistMood ? value is > 0 and <= 100 : value >= 0);
+        if (!Valid(values[0]))
+            return [];
+
+        var points = new MetricHistoryPoint[values.Length];
+        for (var i = 0; i < values.Length; i++)
+        {
+            var value = Valid(values[i])
+                ? new NumericValue { Number = values[i], Coverage = MetricCoverage.SnapshotOnly }
+                : null;
+            points[i] = new(i * TicksPerPoint, value, i > 0 && value is not null && points[i - 1].Value is not null);
+        }
+        return points;
+    }
+
     private sealed class Series
     {
         public required float[] X { get; init; }

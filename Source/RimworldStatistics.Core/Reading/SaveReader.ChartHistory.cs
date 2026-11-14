@@ -4,7 +4,7 @@ namespace RimworldStatistics.Core;
 
 public sealed partial class SaveReader
 {
-    internal static IReadOnlyList<MetricHistoryPoint> ReadWealthGain15DayHistory(string path, MetricFileAlias file, string expectedHash)
+    internal static IReadOnlyList<MetricHistoryPoint> ReadRecorderChart(string path, MetricFileAlias file, string expectedHash, string recorder, bool runningGain)
     {
         try
         {
@@ -30,7 +30,7 @@ public sealed partial class SaveReader
                             if (name == "tickManager")
                                 ReadTickManager(Load(reader), state.Obs);
                             else if (name == "history")
-                                ReadHistory(reader, state, wealthOnly: true);
+                                ReadHistory(reader, state, recorder);
                             else
                                 reader.Skip();
                         });
@@ -39,10 +39,16 @@ public sealed partial class SaveReader
                 });
             }
             hashing.ReadToEnd();
-            if (hashing.BytesRead != file.FileSize || Convert.ToHexStringLower(hashing.Hash()) != expectedHash
-                || state.WealthTotalCount != 1 || !state.WealthTotalWithinTextLimit || state.Wealth is not { } wealth)
+            if (hashing.BytesRead != file.FileSize || Convert.ToHexStringLower(hashing.Hash()) != expectedHash)
                 return [];
-            return HistoryMetricReader.WealthGain15DayHistory(wealth, state.Obs.GameVersion, state.Obs.Values.TicksGame);
+            var values = recorder == HistoryMetricReader.WealthTotal
+                ? state.WealthTotalCount == 1 && state.WealthTotalWithinTextLimit ? state.Wealth : null
+                : state.Series.GetValueOrDefault(recorder);
+            if (values is null)
+                return [];
+            return runningGain
+                ? HistoryMetricReader.WealthGain15DayHistory(values, state.Obs.GameVersion, state.Obs.Values.TicksGame)
+                : HistoryMetricReader.RecorderHistory(recorder, values, state.Obs.GameVersion, state.Obs.Values.TicksGame);
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or XmlException or ArgumentException
             or FormatException or InvalidDataException)

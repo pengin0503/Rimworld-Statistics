@@ -159,16 +159,18 @@ public sealed class ProfileSession
         var history = Read(profile => MetricCalculator.BuildChartHistory(profile, view.Colonies, colonyKey, definition));
         if (_archive is not null)
             history = MetricCalculator.RestoreChartHistory(history, definition, _archive);
-        if (history.RecorderHash is not { } hash)
+        if (history.RecorderHash is not { } hash || MetricCalculator.ChartRecorder(definition.Key) is not { } recorder)
             return history;
 
         foreach (var file in history.RecorderFiles)
         {
             if (Path.GetFileName(file.FileName) != file.FileName || !ImportEngine.IsSaveFile(file.FileName))
                 continue;
-            var points = SaveReader.ReadWealthGain15DayHistory(Path.Combine(savesDirectory, file.FileName), file, hash);
-            if (points.LastOrDefault(p => p.Value is not null)?.Value?.Number == history.RecorderMaximum)
-                return new MetricHistory(MetricHistoryKind.WealthRecorder, points);
+            var runningGain = definition.Key == MetricKeys.WealthTotalMaxGain15D;
+            var points = SaveReader.ReadRecorderChart(Path.Combine(savesDirectory, file.FileName), file, hash, recorder, runningGain);
+            if (points.Count > 0 && (!runningGain
+                || points.LastOrDefault(p => p.Value is not null)?.Value?.Number == history.RecorderMaximum))
+                return new MetricHistory(runningGain ? MetricHistoryKind.WealthRecorder : MetricHistoryKind.GameRecorder, points);
         }
         return history;
     }

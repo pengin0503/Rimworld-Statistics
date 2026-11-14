@@ -1240,4 +1240,7 @@
   <RWS_Chart_OverallNote>此統計只有一個合併值可用。</RWS_Chart_OverallNote>
   <RWS_Chart_Points>顯示值：{0}</RWS_Chart_Points>
   <RWS_Chart_NoData>沒有可用於繪圖的測量值。</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>新增殖民地…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>依遊戲內天數顯示觀測值。折線中斷表示記錄缺失。</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>營養值 {0}</RWS_Unit_Nutrition>
 </LanguageData>

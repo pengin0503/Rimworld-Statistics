@@ -1241,4 +1241,7 @@
   <RWS_Chart_OverallNote>この統計には合計値が1つしかありません。</RWS_Chart_OverallNote>
   <RWS_Chart_Points>表示中の値：{0}</RWS_Chart_Points>
   <RWS_Chart_NoData>グラフにできる測定値がありません。</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>コロニーを追加…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>ゲーム内日数ごとの観測値です。記録がない区間では線が途切れます。</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
 </LanguageData>

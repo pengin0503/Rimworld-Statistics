@@ -1,6 +1,6 @@
 namespace RimworldStatistics.Core;
 
-public enum MetricHistoryKind { SaveObservations, CheckpointLineage, WealthRecorder }
+public enum MetricHistoryKind { SaveObservations, CheckpointLineage, WealthRecorder, GameRecorder }
 
 public sealed record MetricHistoryPoint(int Tick, NumericValue? Value, bool ConnectToPrevious = false);
 
@@ -16,6 +16,14 @@ internal sealed record ArchivedChartPoint(int Index, string Campaign, string Key
 
 public static partial class MetricCalculator
 {
+    public static string? ChartRecorder(string key) => key switch
+    {
+        MetricKeys.WealthTotalMean or MetricKeys.WealthTotalMaxGain15D => HistoryMetricReader.WealthTotal,
+        MetricKeys.FreeColonistsMean => HistoryMetricReader.FreeColonists,
+        MetricKeys.MoodMean => HistoryMetricReader.ColonistMood,
+        _ => null,
+    };
+
     public static MetricHistory BuildChartHistory(Profile profile, IReadOnlyList<Colony> colonies,
         string colonyKey, MetricDefinition definition)
     {
@@ -37,7 +45,7 @@ public static partial class MetricCalculator
 
         var points = SaveChartPoints(source.Select(o => (o.SaveTick, o.Identity.ModCampaignId, ChartValue(o, definition))));
         var history = new MetricHistory(MetricHistoryKind.SaveObservations, points);
-        if (definition.Key == MetricKeys.WealthTotalMaxGain15D && MetricObservationOrder.Latest(source) is { } latest
+        if (ChartRecorder(definition.Key) is not null && MetricObservationOrder.Latest(source) is { } latest
             && ChartValue(latest, definition)?.Number is { } maximum)
             history = history with { RecorderFiles = latest.FileAliases.ToArray(), RecorderHash = latest.Key, RecorderMaximum = maximum };
         return history;

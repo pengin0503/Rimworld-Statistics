@@ -13,6 +13,18 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly string heading;
     private readonly string recordLabel;
     private readonly string colonyName;
+    private readonly StatsView view;
+    private readonly string directory;
+    private readonly HashSet<string> selected;
+    private readonly List<Overlay> overlays = [];
+    private sealed class Overlay(string name, Color color, Task<MetricHistory> task)
+    {
+        public string Name { get; } = name;
+        public Color Color { get; } = color;
+        public Task<MetricHistory> Task { get; } = task;
+        public IReadOnlyList<MetricHistoryPoint> Points { get; set; } = [];
+    }
+    private static readonly Color[] OverlayColors = [new(0.95f, 0.64f, 0.34f), new(0.65f, 0.8f, 0.42f)];
     private readonly Task<MetricHistory> pending;
     private string? historyNote;
     private MetricHistoryPoint[]? measured;
@@ -25,10 +37,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         MetricDefinition definition, string metricLabel, NumericValue comparison)
     {
         this.definition = definition;
+        this.view = view;
+        selected = new HashSet<string>(StringComparer.Ordinal) { colonyKey };
         this.colonyName = colonyName;
         heading = "RWS_Chart_Title".Translate(metricLabel);
         recordLabel = "RWS_Chart_HistoryRecord".Translate(MetricText.Format(definition, comparison));
-        var directory = GenFilePaths.SavedGamesFolderPath;
+        directory = GenFilePaths.SavedGamesFolderPath;
         pending = Task.Run(() => ProfileService.Session.ReadChartHistory(view, colonyKey, definition, directory));
         doCloseX = true;
         absorbInputAroundWindow = true;
@@ -66,7 +80,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             if (measured.Length > 0)
             {
                 ticks = (history.Points[0].Tick, history.Points[^1].Tick);
-                range = (measured.Min(p => p.Value!.Number!.Value), measured.Max(p => p.Value!.Number!.Value));
+                range = (measured.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
             }
         }
         if (measured.Length == 0)
@@ -75,6 +89,40 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             return;
         }
 
+        var add = new Rect(body.x, body.y, Math.Min(250f, body.width), 28f);
+        if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlays.Count < OverlayColors.Length))
+        {
+            var options = view.Stats.Colonies.Where(c => !c.Excluded && !c.OutOfScope && !selected.Contains(c.Key))
+                .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
+                .Select(c => new FloatMenuOption(Dialog_RimworldStatistics.ColonyName(c), () =>
+                {
+                    if (!selected.Add(c.Key))
+                        return;
+                    var name = Dialog_RimworldStatistics.ColonyName(c);
+                    overlays.Add(new(name, OverlayColors[overlays.Count], Task.Run(() =>
+                        ProfileService.Session.ReadChartHistory(view, c.Key, definition, directory))));
+                    plotWidth = 0;
+                })).ToList();
+            if (options.Count > 0)
+                Find.WindowStack.Add(new FloatMenu(options));
+        }
+
+        var y = add.yMax + 3f;
+        foreach (var overlay in overlays)
+        {
+            var row = new Rect(body.x, y, body.width, 23f);
+            Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), overlay.Color);
+            var status = !overlay.Task.IsCompleted ? (string)"RWS_Loading".Translate()
+                : !overlay.Task.IsCompletedSuccessfully || overlay.Task.Result.Kind != history.Kind
+                    || !overlay.Task.Result.Points.Any(p => p.Value is not null)
+                    ? (string)"RWS_Chart_HistoryEmpty".Translate() : "";
+            if (overlay.Task.IsFaulted)
+                _ = overlay.Task.Exception;
+            var label = status.Length == 0 ? overlay.Name : overlay.Name + " · " + status;
+            Widgets.Label(new Rect(row.x + 18f, row.y, row.width - 18f, row.height), label.Truncate(row.width - 18f));
+            y = row.yMax;
+        }
+        body.yMin = y;
         var note = historyNote ??= Describe(history.Kind, measured.Length);
         var noteHeight = Text.CalcHeight(note, body.width);
         Widgets.Label(new Rect(body.x, body.y, body.width, noteHeight), note);
@@ -82,13 +130,14 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var plot = new Rect(body.x + axisWidth, body.y + noteHeight + 13f,
             body.width - axisWidth - 16f, body.height - noteHeight - 57f);
         if (plot.width >= 10f && plot.height >= 10f)
-            DrawPlot(plot, axisWidth, history.Points);
+            DrawPlot(plot, axisWidth, history);
     }
 
     private static string Describe(MetricHistoryKind kind, int count)
     {
         var note = kind switch
         {
+            MetricHistoryKind.GameRecorder => (string)"RWS_Chart_GameRecorder".Translate(),
             MetricHistoryKind.WealthRecorder => (string)"RWS_Chart_HistoryWealth".Translate(),
             MetricHistoryKind.CheckpointLineage => (string)"RWS_Chart_HistoryLineage".Translate(),
             _ => (string)"RWS_Chart_HistorySaves".Translate(),
@@ -96,12 +145,30 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         return count == 1 ? note + "\n" + (string)"RWS_Chart_HistorySingle".Translate() : note;
     }
 
-    private void DrawPlot(Rect plot, float axisWidth, IReadOnlyList<MetricHistoryPoint> points)
+    private void DrawPlot(Rect plot, float axisWidth, MetricHistory history)
     {
         var pixelWidth = Math.Max(1, (int)plot.width);
-        if (plotWidth != pixelWidth)
+        var refresh = plotWidth != pixelWidth;
+        foreach (var overlay in overlays)
+            refresh |= overlay.Points.Count == 0 && overlay.Task.IsCompletedSuccessfully
+                && overlay.Task.Result.Kind == history.Kind && overlay.Task.Result.Points.Count != 0;
+        if (refresh)
         {
-            plotPoints = PlotPoints(points, pixelWidth);
+            plotPoints = PlotPoints(history.Points, pixelWidth);
+            ticks = (history.Points[0].Tick, history.Points[^1].Tick);
+            range = (measured!.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
+            foreach (var overlay in overlays)
+            {
+                if (!overlay.Task.IsCompletedSuccessfully || overlay.Task.Result.Kind != history.Kind
+                    || overlay.Task.Result.Points.Count == 0)
+                    continue;
+                var data = overlay.Task.Result.Points;
+                overlay.Points = PlotPoints(data, pixelWidth);
+                ticks = (Math.Min(ticks.First, data[0].Tick), Math.Max(ticks.Last, data[^1].Tick));
+                foreach (var point in data)
+                    if (point.Value?.Number is { } n)
+                        range = (Math.Min(range.Min, n), Math.Max(range.Max, n));
+            }
             plotWidth = pixelWidth;
         }
 
@@ -135,46 +202,77 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Widgets.Label(new Rect(plot.x, plot.yMax + 23f, plot.width, 21f), "RWS_Col_Days".Translate());
         Text.Anchor = anchor;
 
-        Vector2? previous = null;
-        var previousPartial = false;
-        foreach (var point in plotPoints)
+        DrawSeries(plotPoints, SeriesColor, PartialColor);
+        foreach (var overlay in overlays)
+            DrawSeries(overlay.Points, overlay.Color, Color.Lerp(overlay.Color, PartialColor, 0.5f));
+
+        void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor)
         {
-            if (point.Value is not { Number: { } number } value)
+            Vector2? previous = null;
+            var previousPartial = false;
+            foreach (var point in points)
             {
-                previous = null;
-                continue;
+                if (point.Value is not { Number: { } number } value)
+                {
+                    previous = null;
+                    continue;
+                }
+                var position = new Vector2(X(point.Tick), Y(number));
+                var partial = value.Coverage == MetricCoverage.Partial;
+                if (previous is { } start && point.ConnectToPrevious)
+                    Widgets.DrawLine(start, position, partial || previousPartial ? partialColor : color, 2f);
+                var size = points.Count <= 90 || previous is null || !point.ConnectToPrevious ? 5f : 2f;
+                Widgets.DrawBoxSolid(new Rect(position.x - size / 2f, position.y - size / 2f, size, size), partial ? partialColor : color);
+                previous = position;
+                previousPartial = partial;
             }
-            var position = new Vector2(X(point.Tick), Y(number));
-            var partial = value.Coverage == MetricCoverage.Partial;
-            if (previous is { } start && point.ConnectToPrevious)
-                Widgets.DrawLine(start, position, partial || previousPartial ? PartialColor : SeriesColor, 2f);
-            var size = plotPoints.Count <= 90 || previous is null || !point.ConnectToPrevious ? 5f : 2f;
-            Widgets.DrawBoxSolid(new Rect(position.x - size / 2f, position.y - size / 2f, size, size), partial ? PartialColor : SeriesColor);
-            previous = position;
-            previousPartial = partial;
         }
 
         if (!Mouse.IsOver(plot))
             return;
         var mouse = Event.current.mousePosition;
         var hoverTick = ticks.First + (ticks.Last - ticks.First) * (double)Math.Clamp((mouse.x - plot.x) / plot.width, 0f, 1f);
-        var nearest = Nearest(hoverTick);
+        var nearest = Nearest(measured!, hoverTick);
+        var hoverName = colonyName;
+        var bestDistance = (new Vector2(X(nearest.Tick), Y(nearest.Value!.Number!.Value)) - mouse).sqrMagnitude;
+        foreach (var overlay in overlays)
+        {
+            if (overlay.Points.Count == 0)
+                continue;
+            var candidate = NearestMeasured(overlay.Points, hoverTick);
+            if (candidate?.Value?.Number is not { } n)
+                continue;
+            var distance = (new Vector2(X(candidate.Tick), Y(n)) - mouse).sqrMagnitude;
+            if (distance < bestDistance)
+            {
+                nearest = candidate;
+                bestDistance = distance;
+                hoverName = overlay.Name;
+            }
+        }
         var x = X(nearest.Tick);
-        if (measured!.Length > 1 && Math.Abs(x - mouse.x) > 18f)
+        if ((measured!.Length > 1 || overlays.Count > 0) && Math.Abs(x - mouse.x) > 18f)
             return;
         var reading = nearest.Value!;
         var yPoint = Y(reading.Number!.Value);
         Widgets.DrawBoxSolid(new Rect(x, plot.y, 1f, plot.height), GridColor);
         Widgets.DrawBoxSolid(new Rect(x - 3f, yPoint - 3f, 6f, 6f), Color.white);
-        TooltipHandler.TipRegion(plot, (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(nearest.Tick))
+        TooltipHandler.TipRegion(plot, hoverName + "\n" + (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(nearest.Tick))
             + "\n" + MetricText.Format(definition, reading) + "\n" + MetricText.State(definition, reading.Coverage));
     }
 
-    private MetricHistoryPoint Nearest(double tick)
+    private static MetricHistoryPoint? NearestMeasured(IReadOnlyList<MetricHistoryPoint> points, double tick)
     {
-        var points = measured!;
+        if (points.Count == 0)
+            return null;
+        var nearest = Nearest(points, tick);
+        return nearest.Value is not null ? nearest : null;
+    }
+
+    private static MetricHistoryPoint Nearest(IReadOnlyList<MetricHistoryPoint> points, double tick)
+    {
         var left = 0;
-        var right = points.Length - 1;
+        var right = points.Count - 1;
         while (left < right)
         {
             var middle = (left + right) / 2;

@@ -1241,4 +1241,7 @@
   <RWS_Chart_OverallNote>Only one combined value is available for this statistic.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Displayed values: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>There are no measured values to chart.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Add colony…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Recorded in-game samples by day. Gaps indicate unavailable readings.</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>{0} nutrition</RWS_Unit_Nutrition>
 </LanguageData>

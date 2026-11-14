@@ -1240,4 +1240,7 @@
   <RWS_Chart_OverallNote>Existe apenas um valor combinado para esta estatística.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valores apresentados: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Não há valores medidos para apresentar no gráfico.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Adicionar colónia…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registos em falta.</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
 </LanguageData>
