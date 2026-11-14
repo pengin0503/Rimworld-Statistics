@@ -1,255 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
-  <RWS_Setting_IncludeDevMode>Mostrar e contar terminações gravadas no modo de desenvolvimento</RWS_Setting_IncludeDevMode>
-  <RWS_Setting_AutoImport>Importar salva automaticamente na tela do título</RWS_Setting_AutoImport>
+  <RWS_Setting_IncludeDevMode>Mostrar e contar finais registrados no modo desenvolvedor</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>Importar jogos salvos automaticamente na tela inicial</RWS_Setting_AutoImport>
   <RWS_Setting_WindowSize>Tamanho da janela de estatísticas</RWS_Setting_WindowSize>
   <RWS_Setting_WindowSizeStandard>Padrão (1000 × 720)</RWS_Setting_WindowSizeStandard>
   <RWS_Setting_WindowSizeLarge>Grande (1400 × 900)</RWS_Setting_WindowSizeLarge>
-  <RWS_Setting_WindowSizeExtraLarge>Extragrande (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
-  <RWS_Setting_WindowSizeFitScreen>Ajuste a tela (90%)</RWS_Setting_WindowSizeFitScreen>
-  <RWS_Setting_WindowSizeHelp>Aplicado na próxima vez que você abrir Estatísticas. O tamanho da fonte está inalterado; as janelas de tamanho excessivo se encaixam na tela.</RWS_Setting_WindowSizeHelp>
-  <RWS_MenuButton>Estatísticas acumuladas</RWS_MenuButton>
-  <RWS_WindowTitle>Estatísticas acumuladas</RWS_WindowTitle>
-  <RWS_WindowError>Não foi possível exibir a janela de estatísticas. Consulte o log para mais detalhes.</RWS_WindowError>
+  <RWS_Setting_WindowSizeExtraLarge>Muito grande (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>Ajustar à tela (90%)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>Aplicado na próxima vez que você abrir a janela de estatísticas. O tamanho do texto não muda; uma janela maior que a tela é reduzida para caber.</RWS_Setting_WindowSizeHelp>
+  <RWS_MenuButton>Estatísticas totais</RWS_MenuButton>
+  <RWS_WindowTitle>Estatísticas totais</RWS_WindowTitle>
+  <RWS_WindowError>Não foi possível exibir a janela de estatísticas. Veja o log para mais detalhes.</RWS_WindowError>
   <RWS_Tab_Overview>Visão geral</RWS_Tab_Overview>
   <RWS_Tab_Endings>Finais</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colônias</RWS_Tab_Colonies>
-  <RWS_Tab_Import>Gerenciamento de dados</RWS_Tab_Import>
+  <RWS_Tab_Import>Gerenciar dados</RWS_Tab_Import>
   <RWS_Export_Button>Exportar CSV · {0}</RWS_Export_Button>
-  <RWS_Export_Progress>Exportando arquivos ({0}/{1})...</RWS_Export_Progress>
-  <RWS_Export_Error>A exportação de CSV falhou: {0}</RWS_Export_Error>
-  <RWS_Export_Done>CSV salvo para {0}</RWS_Export_Done>
+  <RWS_Export_Progress>Exportando arquivos ({0}/{1})…</RWS_Export_Progress>
+  <RWS_Export_Error>Falha ao exportar CSV: {0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV salvo em {0}</RWS_Export_Done>
   <RWS_Compare_Mode>Comparar</RWS_Compare_Mode>
-  <RWS_Compare_Add>Adicionar coluna...</RWS_Compare_Add>
+  <RWS_Compare_Add>Adicionar coluna…</RWS_Compare_Add>
   <RWS_Compare_Group>Grupo</RWS_Compare_Group>
   <RWS_Compare_Colony>Colônia</RWS_Compare_Colony>
-  <RWS_Compare_Remove>Remover a coluna</RWS_Compare_Remove>
-  <RWS_Stat_Days>Dias no jogo</RWS_Stat_Days>
-  <RWS_Stat_Endings>Fim alcançada</RWS_Stat_Endings>
-  <RWS_Stat_Departed>Os colonizadores partiram</RWS_Stat_Departed>
-  <RWS_Stat_PeakWealthSum>Suma do pico de riqueza</RWS_Stat_PeakWealthSum>
+  <RWS_Compare_Remove>Remover coluna</RWS_Compare_Remove>
+  <RWS_Stat_Days>Dias de jogo</RWS_Stat_Days>
+  <RWS_Stat_Endings>Finais alcançados</RWS_Stat_Endings>
+  <RWS_Stat_Departed>Colonos que partiram</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>Soma das riquezas máximas</RWS_Stat_PeakWealthSum>
   <RWS_Stat_Colonies>Colônias</RWS_Stat_Colonies>
   <RWS_Stat_RealPlay>Tempo real de jogo</RWS_Stat_RealPlay>
-  <RWS_Stat_Raids>Ataques inimigos</RWS_Stat_Raids>
+  <RWS_Stat_Raids>Invasões inimigas</RWS_Stat_Raids>
   <RWS_Stat_Threats>Grandes ameaças</RWS_Stat_Threats>
-  <RWS_Stat_Killed>Colonistas mortos</RWS_Stat_Killed>
+  <RWS_Stat_Killed>Colonos mortos</RWS_Stat_Killed>
   <RWS_Stat_Longest>Colônia mais longa</RWS_Stat_Longest>
-  <RWS_Stat_SingleMaxWealth>Maior riqueza de uma única colônia</RWS_Stat_SingleMaxWealth>
-  <RWS_Stat_MaxPopulation>População maior</RWS_Stat_MaxPopulation>
-  <RWS_Stat_LastWealthSum>Suma da riqueza final</RWS_Stat_LastWealthSum>
+  <RWS_Stat_SingleMaxWealth>Maior riqueza de uma colônia</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_MaxPopulation>Maior população</RWS_Stat_MaxPopulation>
+  <RWS_Stat_LastWealthSum>Soma das riquezas finais</RWS_Stat_LastWealthSum>
   <RWS_DaysValue>{0} dias ({1} anos e {2} dias)</RWS_DaysValue>
   <RWS_HoursValue>{0} h</RWS_HoursValue>
-  <RWS_NoData>Nada gravado ainda. As figuras aparecem uma vez que a importação de salvação termina (Aba de Importação).</RWS_NoData>
-  <RWS_TooltipBasis>Computado a partir de {0} colônias ({1} excluídos dos totais)</RWS_TooltipBasis>
-  <RWS_TooltipMissing>{0} gravações que não puderam ser identificadas ou lidas não estão incluídas.</RWS_TooltipMissing>
-  <RWS_EndingsTooltipPreInstall>Reproduzir antes do mod ser instalado é contada apenas a partir de vestígios deixados nas gravações. Um vestígio significa "pelo menos uma vez"; Archonexus e outros finais não podem ser contados a partir das gravações.</RWS_EndingsTooltipPreInstall>
+  <RWS_NoData>Nada registrado ainda. Os números aparecem quando a importação dos jogos salvos terminar (aba “Gerenciar dados”).</RWS_NoData>
+  <RWS_TooltipBasis>Calculado com base em {0} colônias ({1} excluídas dos totais).</RWS_TooltipBasis>
+  <RWS_TooltipMissing>{0} jogos salvos que não puderam ser identificados ou lidos não estão incluídos.</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>O que foi jogado antes da instalação do mod é contado apenas pelos vestígios deixados nos jogos salvos. Um vestígio significa “pelo menos uma vez”; o final do arquonexo e outros finais não podem ser contados pelos jogos salvos.</RWS_EndingsTooltipPreInstall>
   <RWS_UnnamedColony>(sem nome) {0}</RWS_UnnamedColony>
   <RWS_Ending_Ship>Nave</RWS_Ending_Ship>
-  <RWS_Ending_RoyalAscent>Ascensão real</RWS_Ending_RoyalAscent>
-  <RWS_Ending_AmbiguousLaunch>Saída (tipo desconhecido)</RWS_Ending_AmbiguousLaunch>
-  <RWS_Ending_Archonexus>Archonexus</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Núcleo Cerebrex (escavado)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Cerebrex núcleo (destruído)</RWS_Ending_CerebrexDestroyed>
-  <RWS_Ending_VoidEmbraced>Abraçou o vazio</RWS_Ending_VoidEmbraced>
-  <RWS_Ending_VoidDisrupted>Interrompeu o vazio</RWS_Ending_VoidDisrupted>
-  <RWS_Ending_Other>Outros</RWS_Ending_Other>
-  <RWS_Source_Live>Gravado no jogo</RWS_Source_Live>
-  <RWS_Source_SeededTrace>Pré- instalar o traço (transmitido)</RWS_Source_SeededTrace>
-  <RWS_Source_SaveTrace>Salvar o traço</RWS_Source_SaveTrace>
-  <RWS_DevModeMark> (modo de desenvolvedor)</RWS_DevModeMark>
+  <RWS_Ending_RoyalAscent>Ascensão Real</RWS_Ending_RoyalAscent>
+  <RWS_Ending_AmbiguousLaunch>Partida (tipo desconhecido)</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_Archonexus>Arquonexo</RWS_Ending_Archonexus>
+  <RWS_Ending_CerebrexScavenged>Núcleo cerebrex (saqueado)</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>Núcleo cerebrex (destruído)</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>Vazio abraçado</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>Vazio interrompido</RWS_Ending_VoidDisrupted>
+  <RWS_Ending_Other>Outro</RWS_Ending_Other>
+  <RWS_Source_Live>Registrado durante o jogo</RWS_Source_Live>
+  <RWS_Source_SeededTrace>Vestígio anterior à instalação (transferido)</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>Vestígio no jogo salvo</RWS_Source_SaveTrace>
+  <RWS_DevModeMark> (modo desenvolvedor)</RWS_DevModeMark>
   <RWS_AtLeastOnce>1 ou mais</RWS_AtLeastOnce>
-  <RWS_Endings_None>Nenhum final gravado ainda.</RWS_Endings_None>
+  <RWS_Endings_None>Nenhum final registrado ainda.</RWS_Endings_None>
   <RWS_ExcludedMark> (excluída)</RWS_ExcludedMark>
   <RWS_Col_Date>Data</RWS_Col_Date>
   <RWS_Col_Colony>Colônia</RWS_Col_Colony>
   <RWS_Col_EndingType>Tipo</RWS_Col_EndingType>
-  <RWS_Col_Ordinal>Nth</RWS_Col_Ordinal>
-  <RWS_Col_Departed>Despedido</RWS_Col_Departed>
-  <RWS_Col_Source>Fonte</RWS_Col_Source>
+  <RWS_Col_Ordinal>Nº</RWS_Col_Ordinal>
+  <RWS_Col_Departed>Partiram</RWS_Col_Departed>
+  <RWS_Col_Source>Origem</RWS_Col_Source>
   <RWS_Col_Name>Nome</RWS_Col_Name>
   <RWS_Col_World>Mundo</RWS_Col_World>
   <RWS_Col_Scenario>Cenário / narrador</RWS_Col_Scenario>
   <RWS_Col_Days>Dias</RWS_Col_Days>
-  <RWS_Col_PeakWealth>Pico de riqueza</RWS_Col_PeakWealth>
-  <RWS_Col_LastWealth>Reccheza final</RWS_Col_LastWealth>
-  <RWS_Col_Raids>Raids</RWS_Col_Raids>
-  <RWS_Col_Killed>Morto</RWS_Col_Killed>
-  <RWS_Col_Endings>Fim</RWS_Col_Endings>
+  <RWS_Col_PeakWealth>Riqueza máx.</RWS_Col_PeakWealth>
+  <RWS_Col_LastWealth>Riqueza final</RWS_Col_LastWealth>
+  <RWS_Col_Raids>Invasões</RWS_Col_Raids>
+  <RWS_Col_Killed>Mortos</RWS_Col_Killed>
+  <RWS_Col_Endings>Finais</RWS_Col_Endings>
   <RWS_Col_Versions>Versões</RWS_Col_Versions>
-  <RWS_Col_Saves>Gravações importadas</RWS_Col_Saves>
-  <RWS_Col_LastPlayed>Última jogada</RWS_Col_LastPlayed>
+  <RWS_Col_Saves>Jogos salvos importados</RWS_Col_Saves>
+  <RWS_Col_LastPlayed>Última vez jogado</RWS_Col_LastPlayed>
   <RWS_Col_File>Arquivo</RWS_Col_File>
   <RWS_Col_Version>Versão</RWS_Col_Version>
   <RWS_Col_Superseded>Sobrescrito</RWS_Col_Superseded>
-  <RWS_Col_FilePresent>Arquivo fonte</RWS_Col_FilePresent>
+  <RWS_Col_FilePresent>Arquivo de origem</RWS_Col_FilePresent>
   <RWS_Exclude>Excluir</RWS_Exclude>
-  <RWS_ExcludeTip>Uma colônia verificada permanece na lista, mas é deixada fora de todos os totais.</RWS_ExcludeTip>
+  <RWS_ExcludeTip>Uma colônia marcada continua na lista, mas fica fora de todos os totais.</RWS_ExcludeTip>
   <RWS_Yes>Sim</RWS_Yes>
   <RWS_No>Não</RWS_No>
-  <RWS_FileMissing>Arquivo sumido</RWS_FileMissing>
-  <RWS_LiveRecord>(gravado no jogo)</RWS_LiveRecord>
-  <RWS_Rescan>Reanudar</RWS_Rescan>
+  <RWS_FileMissing>Arquivo ausente</RWS_FileMissing>
+  <RWS_LiveRecord>(registrado durante o jogo)</RWS_LiveRecord>
+  <RWS_Rescan>Verificar novamente</RWS_Rescan>
   <RWS_Cancel>Cancelar</RWS_Cancel>
-  <RWS_HistoricalIntervals_Title>Intervalos históricos de salvação</RWS_HistoricalIntervals_Title>
-  <RWS_HistoricalIntervals_Explanation>Evidência parcial de gravações diretamente ligadas. Cada linha mostra uma mudança entre os cartões salvos. Os garfos permanecem separados, e estas linhas são excluídas dos totais de vida.</RWS_HistoricalIntervals_Explanation>
-  <RWS_HistoricalIntervals_Empty>Não foram encontrados salvas diretamente ligadas com um aumento confirmado.</RWS_HistoricalIntervals_Empty>
-  <RWS_HistoricalIntervals_Error>Os intervalos históricos não puderam ser lidos.</RWS_HistoricalIntervals_Error>
-  <RWS_HistoricalIntervals_ParentSave>Salvar pai</RWS_HistoricalIntervals_ParentSave>
-  <RWS_HistoricalIntervals_ChildSave>Salvar a criança</RWS_HistoricalIntervals_ChildSave>
-  <RWS_HistoricalIntervals_Start>A partir da marcação do jogo</RWS_HistoricalIntervals_Start>
-  <RWS_HistoricalIntervals_End>Através da marcação do jogo</RWS_HistoricalIntervals_End>
-  <RWS_HistoricalIntervals_Raids>Raids inimigos adicionados</RWS_HistoricalIntervals_Raids>
-  <RWS_HistoricalIntervals_Deaths>As mortes dos colonos adicionadas</RWS_HistoricalIntervals_Deaths>
-  <RWS_Import_LastScan>Última digitalização: {0}</RWS_Import_LastScan>
+  <RWS_HistoricalIntervals_Title>Intervalos entre jogos salvos anteriores</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>Dados parciais de jogos salvos ligados diretamente. Cada linha mostra a mudança entre dois ticks salvos. Ramificações ficam separadas, e essas linhas não entram nos totais.</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>Nenhum jogo salvo ligado diretamente com aumento confirmado foi encontrado.</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>Não foi possível ler os intervalos dos jogos salvos anteriores.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>Jogo salvo anterior</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>Jogo salvo seguinte</RWS_HistoricalIntervals_ChildSave>
+  <RWS_HistoricalIntervals_Start>A partir do tick</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>Até o tick</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>Invasões inimigas adicionadas</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>Mortes de colonos adicionadas</RWS_HistoricalIntervals_Deaths>
+  <RWS_Import_LastScan>Última verificação: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>nunca</RWS_Import_Never>
-  <RWS_Import_NotRunThisSession>Nenhuma importação foi executada nesta sessão ainda.</RWS_Import_NotRunThisSession>
-  <RWS_Import_Counts>Lidos: {0} / ignorados: {1} / falhas: {2}</RWS_Import_Counts>
+  <RWS_Import_NotRunThisSession>Nenhuma importação foi feita nesta sessão ainda.</RWS_Import_NotRunThisSession>
+  <RWS_Import_Counts>Lidos: {0} / ignorados: {1} / com falha: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrompida)</RWS_Import_CancelledMark>
-  <RWS_Import_Error>Falha na importação: {0}</RWS_Import_Error>
-  <RWS_Import_Progress>{0} / {1} (falhas: {2}) {3}</RWS_Import_Progress>
-  <RWS_Import_ProfilePath>Arquivo de gravação: {0}</RWS_Import_ProfilePath>
-  <RWS_Import_LoadSource>Carregado a partir de: {0}</RWS_Import_LoadSource>
+  <RWS_Import_Error>A importação falhou: {0}</RWS_Import_Error>
+  <RWS_Import_Progress>{0} / {1} (com falha: {2}) {3}</RWS_Import_Progress>
+  <RWS_Import_ProfilePath>Arquivo de registro: {0}</RWS_Import_ProfilePath>
+  <RWS_Import_LoadSource>Carregado de: {0}</RWS_Import_LoadSource>
   <RWS_Import_CorruptRenamed>O arquivo danificado foi mantido como {0}.</RWS_Import_CorruptRenamed>
-  <RWS_Import_ReadOnly>Nada está escrito no arquivo de registro desta sessão.</RWS_Import_ReadOnly>
+  <RWS_Import_ReadOnly>Nada será gravado no arquivo de registro nesta sessão.</RWS_Import_ReadOnly>
   <RWS_Import_Backups>Backups: {0} de 3</RWS_Import_Backups>
   <RWS_Import_SaveError>Não foi possível gravar o arquivo de registro: {0}</RWS_Import_SaveError>
-  <RWS_Import_Problems>Salva que falhou ou não pôde ser identificado ({0})</RWS_Import_Problems>
-  <RWS_LoadSource_Primary>gravar o arquivo</RWS_LoadSource_Primary>
+  <RWS_Import_Problems>Jogos salvos com falha ou não identificados ({0})</RWS_Import_Problems>
+  <RWS_LoadSource_Primary>arquivo de registro</RWS_LoadSource_Primary>
   <RWS_LoadSource_Backup1>backup 1</RWS_LoadSource_Backup1>
   <RWS_LoadSource_Backup2>backup 2</RWS_LoadSource_Backup2>
   <RWS_LoadSource_Backup3>backup 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>novo (vazio)</RWS_LoadSource_Empty>
-  <RWS_LoadSource_NewerSchema>gravar o arquivo de uma versão mais recente (apenas leitura)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>falhou</RWS_Status_Error>
+  <RWS_LoadSource_NewerSchema>arquivo de registro de uma versão mais recente (somente leitura)</RWS_LoadSource_NewerSchema>
+  <RWS_Status_Error>com falha</RWS_Status_Error>
   <RWS_Status_Unidentifiable>não identificável</RWS_Status_Unidentifiable>
-  <RWS_Loading>Carregando estatísticas...</RWS_Loading>
+  <RWS_Loading>Carregando estatísticas…</RWS_Loading>
   <RWS_WealthCoverage>Dados de riqueza de {0} colônias ({1} sem dados).</RWS_WealthCoverage>
-  <RWS_Source_RecoveredLineage>Recuperado do salvamento (modo desenvolvedor desconhecido, excluído dos totais)</RWS_Source_RecoveredLineage>
+  <RWS_Source_RecoveredLineage>Recuperado do jogo salvo (modo desenvolvedor desconhecido, excluído dos totais)</RWS_Source_RecoveredLineage>
   <RWS_Tab_Details>Detalhes</RWS_Tab_Details>
   <RWS_Details_AllColonies>Todas as colônias</RWS_Details_AllColonies>
   <RWS_Details_PerColony>Uma colônia</RWS_Details_PerColony>
   <RWS_Details_AllCategories>Todas as categorias</RWS_Details_AllCategories>
-  <RWS_Details_Search>Filtro</RWS_Details_Search>
+  <RWS_Details_Search>Filtrar</RWS_Details_Search>
   <RWS_Details_Col_Name>Estatística</RWS_Details_Col_Name>
   <RWS_Details_Col_Value>Valor</RWS_Details_Col_Value>
-  <RWS_Details_Col_State>Fonte / estado</RWS_Details_Col_State>
-  <RWS_Details_Col_Colonies>Conhecido / colônias</RWS_Details_Col_Colonies>
-  <RWS_Details_Col_Through>Observado em</RWS_Details_Col_Through>
-  <RWS_Details_ThroughTip>Dia no jogo do salvamento do valor vem de.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>A partir de {0} colônias (excluídas dos totais: {1}). Os valores são calculados a partir das gravações importadas e podem incluir o que aconteceu através das ações do modo desenvolvedor.</RWS_Details_Note>
-  <RWS_Details_Unattributed>{0} observações que não puderam ser combinadas com uma colônia não estão incluídas.</RWS_Details_Unattributed>
-  <RWS_Details_NoMatch>Nenhuma correspondência estatística.</RWS_Details_NoMatch>
-  <RWS_Details_UnrankedTop>Nenhum vencedor da categoria pode ser estabelecido</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Nenhuma das colônias selecionadas é aplicável a esta métrica; um DLC em falta pode explicar isso somente quando suportado por um inventário salvado DLC.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>0 colônias elegíveis têm um valor capturado. A causa não está confirmada: a coleta pode estar desativada ou atrasada, o evento pode não ter sido capturado, ou a importação histórica pode não ser suportada. Não substitua zero.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Apenas algumas colônias elegíveis têm um valor capturado. As outras são desconhecidas, não zero; o valor combinado pode ser parcial.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Todas as colônias elegíveis têm um valor capturado. Só isso não prova a verificação de campanha completa ou de jogo real.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Um valor capturado pode cobrir apenas parte da campanha. Não interprete- o como um total verificado durante a vida.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Quantidade somada por tipo em colônias selecionadas de forma independente; a classificação pode ser parcial se faltar qualquer desagregação registrada.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Contribuição medida desta colônia para o tipo selecionado. As colônias não listadas ou faltantes não foram supostas ter zero.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Isto pode refletir salvar a aquisição anterior, a coleta desativada ou dados de fonte indisponíveis. Os eventos anteriores não devem ser preenchidos como zero.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_Col_State>Origem / estado</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>Conhecidas / colônias</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>Observado no dia</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>Dia de jogo do jogo salvo de onde vem o valor.</RWS_Details_ThroughTip>
+  <RWS_Details_Note>De {0} colônias (excluídas dos totais: {1}). Os valores são calculados a partir dos jogos salvos importados e podem incluir acontecimentos causados por ações no modo desenvolvedor.</RWS_Details_Note>
+  <RWS_Details_Unattributed>{0} observações que não puderam ser atribuídas a uma única colônia não estão incluídas.</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>Nenhuma estatística corresponde.</RWS_Details_NoMatch>
+  <RWS_Details_UnrankedTop>Nenhuma categoria principal única</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>Esta estatística não se aplica a nenhuma das colônias selecionadas. A falta de uma DLC só é indicada como motivo quando a lista de DLCs registrada no jogo salvo a confirma.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Nenhuma das colônias aplicáveis tem um valor registrado. A causa não está confirmada: a coleta pode estar desativada ou ter começado tarde, o evento pode não ter sido registrado ou a importação de jogos salvos antigos pode não ser suportada. Isso não é o mesmo que zero.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>Apenas algumas das colônias aplicáveis têm um valor registrado. As outras são desconhecidas, não zero, então o valor combinado pode ser parcial.</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>Todas as colônias aplicáveis têm um valor registrado. Isso, por si só, não significa que toda a partida foi coberta nem que o valor foi verificado em um jogo real.</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>Um valor registrado pode cobrir apenas parte da partida. Não o interprete como um total verificado.</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>Quantidades somadas por tipo entre colônias selecionadas de forma independente. A classificação pode ser parcial se faltar a divisão de alguma colônia.</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>Contribuição medida desta colônia para o tipo selecionado. Colônias não listadas ou sem dados não são consideradas como zero.</RWS_Cross_ContributionExplanation>
+  <RWS_Details_MissingAcquisitionTip>Isso pode ocorrer porque os jogos salvos são anteriores à coleta, a coleta estava desativada ou os dados de origem não estão disponíveis. Eventos passados não são preenchidos com zero.</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>Não alcançado</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(desconhecido)</RWS_Details_UnknownBucket>
-  <RWS_Details_Tip_Source>Fonte: {0} / estado: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>Observado no dia do jogo {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Medido a partir de: o início do jogo</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>O estado no momento da salvação.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Source>Origem: {0} / estado: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>Observado no dia de jogo {0}.</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Medido desde: o início do jogo</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>O estado no momento em que o jogo foi salvo.</RWS_Details_Tip_StartSnapshot>
   <RWS_Details_Tip_Observations>Observações desta colônia: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>Conhecido por {1} de {0} colônias.</RWS_Details_Tip_Colonies>
-  <RWS_Details_Tip_Holder>Mantido por: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Colonies>Conhecido em {1} de {0} colônias.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>Recorde de: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Amostras: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerador {0} ÷ denominador {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Não há dados para baseá- lo (guarda lidos antes desta versão, um arquivo faltando, uma versão de jogo não suportada, ou dados não legíveis).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Leader: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>Não há dados em que se basear (jogos salvos lidos antes desta versão, um arquivo ausente, uma versão do jogo não suportada ou dados ilegíveis).</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>Registro: {0} ({1})</RWS_Details_Tip_Ledger>
   <RWS_Unit_Days>{0} dias</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / ano</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Riqueza</RWS_Category_Wealth>
   <RWS_Category_Population>População e humor</RWS_Category_Population>
-  <RWS_Category_Defense>Raids e defesa</RWS_Category_Defense>
-  <RWS_Category_Quests>Quests</RWS_Category_Quests>
+  <RWS_Category_Defense>Invasões e defesa</RWS_Category_Defense>
+  <RWS_Category_Quests>Missões</RWS_Category_Quests>
   <RWS_Category_Colony>Colônia</RWS_Category_Colony>
-  <RWS_Category_Rankings>Rankings</RWS_Category_Rankings>
-  <RWS_Provenance_VanillaCounter>contador de jogos</RWS_Provenance_VanillaCounter>
-  <RWS_Provenance_SaveHistory>salvar o gráfico do histórico</RWS_Provenance_SaveHistory>
-  <RWS_Provenance_SaveSnapshot>estado no salvamento</RWS_Provenance_SaveSnapshot>
-  <RWS_Provenance_LiveAggregate>gravado durante a reprodução</RWS_Provenance_LiveAggregate>
-  <RWS_Coverage_Complete>completado</RWS_Coverage_Complete>
-  <RWS_Coverage_Partial>parcial (passos)</RWS_Coverage_Partial>
+  <RWS_Category_Rankings>Classificações</RWS_Category_Rankings>
+  <RWS_Provenance_VanillaCounter>contador do jogo</RWS_Provenance_VanillaCounter>
+  <RWS_Provenance_SaveHistory>gráfico de histórico do jogo salvo</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>estado no jogo salvo</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>registrado durante o jogo</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>completo</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>parcial (com lacunas)</RWS_Coverage_Partial>
   <RWS_Coverage_History>observação do histórico</RWS_Coverage_History>
   <RWS_Coverage_SnapshotOnly>como salvo</RWS_Coverage_SnapshotOnly>
   <RWS_Coverage_Unknown>desconhecido</RWS_Coverage_Unknown>
-  <RWS_Coverage_NotApplicable>não aplicável</RWS_Coverage_NotApplicable>
-  <RWS_Metric_WealthItemsPeak>Pico de riqueza do item</RWS_Metric_WealthItemsPeak>
-  <RWS_MetricDesc_WealthItemsPeak>Maior riqueza do item no gráfico do histórico (uma observação por meio dia). Todas as colônias: a única mais alta.</RWS_MetricDesc_WealthItemsPeak>
-  <RWS_Metric_WealthItemsLatest>Reccheza do item mais recente</RWS_Metric_WealthItemsLatest>
-  <RWS_MetricDesc_WealthItemsLatest>A riqueza do item na última observação do histórico. Todas as colônias: a soma.</RWS_MetricDesc_WealthItemsLatest>
-  <RWS_Metric_WealthBuildingsPeak>Pico de riqueza de construção</RWS_Metric_WealthBuildingsPeak>
-  <RWS_MetricDesc_WealthBuildingsPeak>Maior riqueza de edifícios no gráfico de história. Todas as colônias: a única mais alta.</RWS_MetricDesc_WealthBuildingsPeak>
-  <RWS_Metric_WealthBuildingsLatest>Reccheza de edifício mais recente</RWS_Metric_WealthBuildingsLatest>
-  <RWS_MetricDesc_WealthBuildingsLatest>Construir riqueza na última observação do histórico. Todas as colônias: a soma.</RWS_MetricDesc_WealthBuildingsLatest>
-  <RWS_Metric_WealthPawnsPeak>Pico de riqueza de caracteres</RWS_Metric_WealthPawnsPeak>
-  <RWS_MetricDesc_WealthPawnsPeak>Maior riqueza em caracteres e animais no gráfico de história. Todas as colônias: o único mais alto.</RWS_MetricDesc_WealthPawnsPeak>
-  <RWS_Metric_WealthPawnsLatest>Mais recente riqueza de caracteres</RWS_Metric_WealthPawnsLatest>
-  <RWS_MetricDesc_WealthPawnsLatest>Riqueza em caracteres e animais na última observação da história. Todas as colônias: a soma.</RWS_MetricDesc_WealthPawnsLatest>
-  <RWS_Metric_WealthTotalMean>Média da riqueza total (observada)</RWS_Metric_WealthTotalMean>
-  <RWS_MetricDesc_WealthTotalMean>Média das observações de riqueza total válidas. Todas as colônias: ponderadas pelo número de observações.</RWS_MetricDesc_WealthTotalMean>
-  <RWS_Metric_WealthTotalFirst>Início da riqueza (primeira observação)</RWS_Metric_WealthTotalFirst>
-  <RWS_MetricDesc_WealthTotalFirst>A riqueza total na primeira observação de um histórico que está completo desde o início. Uma única colônia.</RWS_MetricDesc_WealthTotalFirst>
-  <RWS_Metric_WealthTotalNet>Mudança de riqueza líquida (último − primeiro)</RWS_Metric_WealthTotalNet>
-  <RWS_MetricDesc_WealthTotalNet>A riqueza total na última observação menos a primeira; negativa se cair. Todas as colônias: a soma.</RWS_MetricDesc_WealthTotalNet>
-  <RWS_Metric_WealthTotalPeakDay>Dia de pico de riqueza (dia de observação)</RWS_Metric_WealthTotalPeakDay>
-  <RWS_MetricDesc_WealthTotalPeakDay>Dia nominal da primeira observação no pico total de riqueza (uma observação por meio dia). Uma única colônia.</RWS_MetricDesc_WealthTotalPeakDay>
-  <RWS_Metric_WealthTotalMaxGainHalfDay>Maior ganho de riqueza de meio dia (observado)</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_Coverage_NotApplicable>não se aplica</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>Riqueza máxima em itens</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>Maior riqueza em itens no gráfico de histórico (uma observação a cada meio dia). Todas as colônias: o maior valor.</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>Última riqueza em itens</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>Riqueza em itens na última observação do histórico. Todas as colônias: a soma.</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>Riqueza máxima em construções</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>Maior riqueza em construções no gráfico de histórico. Todas as colônias: o maior valor.</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>Última riqueza em construções</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>Riqueza em construções na última observação do histórico. Todas as colônias: a soma.</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>Riqueza máxima em seres vivos</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>Maior riqueza em pessoas e animais no gráfico de histórico. Todas as colônias: o maior valor.</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>Última riqueza em seres vivos</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>Riqueza em pessoas e animais na última observação do histórico. Todas as colônias: a soma.</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>Riqueza total média (observada)</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>Média das observações válidas de riqueza total. Todas as colônias: ponderada pelo número de observações.</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>Riqueza inicial (primeira observação)</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>Riqueza total na primeira observação de um histórico completo desde o início. Somente por colônia.</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>Variação líquida da riqueza (última − primeira)</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>Riqueza total na última observação menos a da primeira; negativa se caiu. Todas as colônias: a soma.</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>Dia da riqueza máxima (dia de observação)</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>Dia nominal da primeira observação com a riqueza total máxima (uma observação a cada meio dia). Somente por colônia.</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>Maior ganho de riqueza em meio dia (observado)</RWS_Metric_WealthTotalMaxGainHalfDay>
   <RWS_MetricDesc_WealthTotalMaxGainHalfDay>Maior aumento da riqueza total entre duas observações consecutivas; 0 se nunca aumentou.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
-  <RWS_Metric_WealthTotalMaxLossHalfDay>Maior perda de riqueza de meio dia (observada)</RWS_Metric_WealthTotalMaxLossHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Maior queda de riqueza total entre duas observações consecutivas; 0 se nunca caiu.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
-  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Maior taxa de perda de riqueza de meio dia (observado)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Maior (antes − depois) ÷ antes entre duas observações consecutivas, deixando para fora os intervalos que começam em 0.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
-  <RWS_Metric_WealthTotalMaxGain15D>Maior ganho de riqueza de 15 dias (observado)</RWS_Metric_WealthTotalMaxGain15D>
-  <RWS_MetricDesc_WealthTotalMaxGain15D>Maior aumento de riqueza total entre as observações 30 separadas (15 dias); os períodos com uma lacuna não são usados.</RWS_MetricDesc_WealthTotalMaxGain15D>
-  <RWS_Metric_WealthTotalMaxLoss15D>Maior perda de riqueza de 15 dias (observada)</RWS_Metric_WealthTotalMaxLoss15D>
-  <RWS_MetricDesc_WealthTotalMaxLoss15D>Maior queda de riqueza total entre as observações 30 separadas (15 dias); os períodos com uma lacuna não são usados.</RWS_MetricDesc_WealthTotalMaxLoss15D>
-  <RWS_Metric_WealthTotalMaxGrowthRateYear>Maior crescimento de riqueza de um ano (observado)</RWS_Metric_WealthTotalMaxGrowthRateYear>
-  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Maior (após − antes) ÷ antes entre as observações 120 separados (um ano); negativo se a riqueza sempre caiu.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
-  <RWS_Metric_WealthTotalLongestGrowth>Raia de crescimento de riqueza mais longa (observada)</RWS_Metric_WealthTotalLongestGrowth>
-  <RWS_MetricDesc_WealthTotalLongestGrowth>A maior série de observações em que a riqueza total aumentava a cada vez; valores iguais e lacunas terminam com uma execução.</RWS_MetricDesc_WealthTotalLongestGrowth>
-  <RWS_Metric_WealthTotalFirst100K>Riqueza alcançada 100.000 (dia de observação)</RWS_Metric_WealthTotalFirst100K>
-  <RWS_MetricDesc_WealthTotalFirst100K>Dia nominal da primeira observação com uma riqueza total de 100.000 ou mais. Todas as colônias: a primeira.</RWS_MetricDesc_WealthTotalFirst100K>
-  <RWS_Metric_WealthTotalFirst1M>Alcançada a riqueza de 1.000. 000 (dia de observação)</RWS_Metric_WealthTotalFirst1M>
-  <RWS_MetricDesc_WealthTotalFirst1M>Dia nominal da primeira observação com uma riqueza total de 1.000. 000 ou mais. Todas as colônias: a primeira.</RWS_MetricDesc_WealthTotalFirst1M>
-  <RWS_Metric_WealthBuildingsMaxShare>Maior parte do edifício da riqueza (observada)</RWS_Metric_WealthBuildingsMaxShare>
-  <RWS_MetricDesc_WealthBuildingsMaxShare>Maior riqueza do edifício ÷ riqueza total na mesma observação.</RWS_MetricDesc_WealthBuildingsMaxShare>
-  <RWS_Metric_FreeColonistsMean>Colonistas médios (observados)</RWS_Metric_FreeColonistsMean>
-  <RWS_MetricDesc_FreeColonistsMean>Média do número observado de colonizadores livres. Todas as colônias: ponderado pelo número de observações.</RWS_MetricDesc_FreeColonistsMean>
-  <RWS_Metric_FreeColonistsMin>Menos colonizadores (observados)</RWS_Metric_FreeColonistsMin>
-  <RWS_MetricDesc_FreeColonistsMin>Número mais pequeno observado de colonizadores livres. Todas as colônias: o menor.</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>Maior perda de riqueza em meio dia (observada)</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Maior queda da riqueza total entre duas observações consecutivas; 0 se nunca caiu.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Maior taxa de perda em meio dia (observada)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Maior valor de (antes − depois) ÷ antes entre duas observações consecutivas; intervalos que começam em 0 são ignorados.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>Maior ganho de riqueza em 15 dias (observado)</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>Maior aumento da riqueza total entre observações separadas por 30 (15 dias); períodos com lacunas não são usados.</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>Maior perda de riqueza em 15 dias (observada)</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>Maior queda da riqueza total entre observações separadas por 30 (15 dias); períodos com lacunas não são usados.</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>Maior crescimento de riqueza em um ano (observado)</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Maior valor de (depois − antes) ÷ antes entre observações separadas por 120 (um ano); negativo se a riqueza sempre caiu.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>Maior sequência de crescimento da riqueza (observada)</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>Maior sequência de observações consecutivas em que a riqueza total aumentou todas as vezes; um valor inalterado ou uma lacuna encerra a sequência.</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>Riqueza de 100.000 alcançada (dia de observação)</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>Dia nominal da primeira observação com riqueza total de 100.000 ou mais. Todas as colônias: o mais cedo.</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>Riqueza de 1.000.000 alcançada (dia de observação)</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>Dia nominal da primeira observação com riqueza total de 1.000.000 ou mais. Todas as colônias: o mais cedo.</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>Maior participação das construções na riqueza (observada)</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>Maior valor de riqueza em construções ÷ riqueza total na mesma observação.</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>Média de colonos (observada)</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>Média do número observado de colonos livres. Todas as colônias: ponderada pelo número de observações.</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>Menor número de colonos (observado)</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>Menor número observado de colonos livres. Todas as colônias: o menor.</RWS_MetricDesc_FreeColonistsMin>
   <RWS_Metric_FreeColonistsFirst10>10 colonos alcançados (dia de observação)</RWS_Metric_FreeColonistsFirst10>
-  <RWS_MetricDesc_FreeColonistsFirst10>Dia nominal da primeira observação com 10 ou mais colonos livres. Todas as colônias: a primeira.</RWS_MetricDesc_FreeColonistsFirst10>
-  <RWS_Metric_PrisonersPeak>A maioria dos prisioneiros (observados)</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_FreeColonistsFirst10>Dia nominal da primeira observação com 10 ou mais colonos livres. Todas as colônias: o mais cedo.</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>Maior número de prisioneiros (observado)</RWS_Metric_PrisonersPeak>
   <RWS_MetricDesc_PrisonersPeak>Maior número observado de prisioneiros.</RWS_MetricDesc_PrisonersPeak>
-  <RWS_Metric_PrisonersMean>Presos médios (observados)</RWS_Metric_PrisonersMean>
-  <RWS_MetricDesc_PrisonersMean>Média do número observado de prisioneiros. Todas as colônias: ponderado pelo número de observações.</RWS_MetricDesc_PrisonersMean>
-  <RWS_Metric_MoodMean>Modo médio do colonizador (observado)</RWS_Metric_MoodMean>
-  <RWS_MetricDesc_MoodMean>A média do humor médio do colonista observado (0- 100). Um 0, registrado quando não há colonizadores, é tratado como ausente. Não é ponderado pela contagem do colonista.</RWS_MetricDesc_MoodMean>
-  <RWS_Metric_MoodMin>Momento de colonizador mais baixo (observado)</RWS_Metric_MoodMin>
-  <RWS_MetricDesc_MoodMin>Observação válida mais baixa do humor médio do colonizador.</RWS_MetricDesc_MoodMin>
-  <RWS_Metric_MoodMax>Momento de colonizador mais alto (observado)</RWS_Metric_MoodMax>
-  <RWS_MetricDesc_MoodMax>Observação mais válida do humor médio do colonista.</RWS_MetricDesc_MoodMax>
-  <RWS_Metric_MoodBelow50Days>Dias com humor abaixo de 50% (observado)</RWS_Metric_MoodBelow50Days>
-  <RWS_MetricDesc_MoodBelow50Days>Intervalos de meio dia com ambas as extremidades válidas cujo humor inicial é inferior a 50, ÷ 2. Todas as colônias: a soma.</RWS_MetricDesc_MoodBelow50Days>
-  <RWS_Metric_MoodAtLeast80Days>Dias com humor em 80% ou mais (observado)</RWS_Metric_MoodAtLeast80Days>
-  <RWS_MetricDesc_MoodAtLeast80Days>Intervalos de meio dia com ambas as extremidades válidos cujo humor inicial é de 80 ou mais, ÷ 2. Todas as colônias: a soma.</RWS_MetricDesc_MoodAtLeast80Days>
-  <RWS_Metric_DeathsPerYear>Morte de colonistas por ano</RWS_Metric_DeathsPerYear>
-  <RWS_MetricDesc_DeathsPerYear>As mortes de colonistas ÷ passaram anos (1 ano = 60 dias) no mesmo salvamento. Todas as colônias: mortes totais ÷ anos totais.</RWS_MetricDesc_DeathsPerYear>
-  <RWS_Metric_RaidsPerYear>Raids inimigos por ano</RWS_Metric_RaidsPerYear>
-  <RWS_MetricDesc_RaidsPerYear>Inimigo invadiu ÷ anos decorridos (1 ano = 60 dias) no mesmo salvamento. Todas as colônias: invadimentos totais ÷ anos totais.</RWS_MetricDesc_RaidsPerYear>
-  <RWS_Metric_ModsLatest>Mods (mais recente salvação)</RWS_Metric_ModsLatest>
-  <RWS_MetricDesc_ModsLatest>Mods ativos listados na última gravação, incluindo Core e DLCs. Apenas uma colônia.</RWS_MetricDesc_ModsLatest>
-  <RWS_Metric_ModsPeak>A maioria dos mods</RWS_Metric_ModsPeak>
-  <RWS_MetricDesc_ModsPeak>A maioria dos mods em qualquer salva importada desta colônia. Apenas uma colônia.</RWS_MetricDesc_ModsPeak>
-  <RWS_Metric_ModsMin>Poucos mods</RWS_Metric_ModsMin>
-  <RWS_MetricDesc_ModsMin>Poucas modificações em qualquer salva importada desta colônia. Apenas uma colônia.</RWS_MetricDesc_ModsMin>
+  <RWS_Metric_PrisonersMean>Média de prisioneiros (observada)</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>Média do número observado de prisioneiros. Todas as colônias: ponderada pelo número de observações.</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>Humor médio dos colonos (observado)</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>Média do humor médio observado dos colonos (0–100). Um 0 registrado quando não havia colonos é tratado como ausente. Não é ponderado pelo número de colonos.</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>Menor humor dos colonos (observado)</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>Menor observação válida do humor médio dos colonos.</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>Maior humor dos colonos (observado)</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>Maior observação válida do humor médio dos colonos.</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>Dias com humor abaixo de 50% (observados)</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>Intervalos de meio dia com as duas pontas válidas cujo humor inicial está abaixo de 50, ÷ 2. Todas as colônias: a soma.</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>Dias com humor de 80% ou mais (observados)</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>Intervalos de meio dia com as duas pontas válidas cujo humor inicial é de 80 ou mais, ÷ 2. Todas as colônias: a soma.</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>Mortes de colonos por ano</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>Mortes de colonos ÷ anos decorridos (1 ano = 60 dias) no mesmo jogo salvo. Todas as colônias: total de mortes ÷ total de anos.</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>Invasões inimigas por ano</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>Invasões inimigas ÷ anos decorridos (1 ano = 60 dias) no mesmo jogo salvo. Todas as colônias: total de invasões ÷ total de anos.</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>Mods (último jogo salvo)</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>Mods ativos listados no último jogo salvo, incluindo Core e DLCs. Somente por colônia.</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>Maior número de mods</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>Maior número de mods em qualquer jogo salvo importado desta colônia. Somente por colônia.</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>Menor número de mods</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>Menor número de mods em qualquer jogo salvo importado desta colônia. Somente por colônia.</RWS_MetricDesc_ModsMin>
   <RWS_Metric_QuestSuccess>As buscas foram bem- sucedidas (retiradas)</RWS_Metric_QuestSuccess>
   <RWS_MetricDesc_QuestSuccess>Quests aceitas que tiveram sucesso e ainda estão na salvação. Quests que o jogo removido não pode ser contado.</RWS_MetricDesc_QuestSuccess>
   <RWS_Metric_QuestFailure>As buscas falharam (retiradas)</RWS_Metric_QuestFailure>

@@ -8,3 +8,5 @@ artifacts/
 .vs/
 .idea/
 tools/VerifyHarness/Mod/1.7/
+# Official RimWorld translations extracted for glossary lookups (Ludeon content; never commit)
+tools/translation/.cache/

@@ -1,255 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
-  <RWS_Setting_IncludeDevMode>顯示和計數發展模式下記錄的結局</RWS_Setting_IncludeDevMode>
-  <RWS_Setting_AutoImport>匯入在標題螢幕中自動儲存</RWS_Setting_AutoImport>
-  <RWS_Setting_WindowSize>資料視窗大小</RWS_Setting_WindowSize>
-  <RWS_Setting_WindowSizeStandard>標準 (1000 × 720)</RWS_Setting_WindowSizeStandard>
-  <RWS_Setting_WindowSizeLarge>大(1400×900)</RWS_Setting_WindowSizeLarge>
-  <RWS_Setting_WindowSizeExtraLarge>超大(1 000×1 000)</RWS_Setting_WindowSizeExtraLarge>
-  <RWS_Setting_WindowSizeFitScreen>適應螢幕 (90%)</RWS_Setting_WindowSizeFitScreen>
-  <RWS_Setting_WindowSizeHelp>下次開啟資料時應用。 字型大小未變; 視窗大小過大符合螢幕 。</RWS_Setting_WindowSizeHelp>
+  <RWS_Setting_IncludeDevMode>顯示並統計在開發者模式下記錄的結局</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>在標題畫面自動匯入存檔</RWS_Setting_AutoImport>
+  <RWS_Setting_WindowSize>統計視窗大小</RWS_Setting_WindowSize>
+  <RWS_Setting_WindowSizeStandard>標準（1000 × 720）</RWS_Setting_WindowSizeStandard>
+  <RWS_Setting_WindowSizeLarge>大（1400 × 900）</RWS_Setting_WindowSizeLarge>
+  <RWS_Setting_WindowSizeExtraLarge>特大（1600 × 1000）</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>符合螢幕（90%）</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>下次開啟統計視窗時生效。文字大小不會改變；超出螢幕的視窗會縮小至螢幕內。</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>累計統計</RWS_MenuButton>
   <RWS_WindowTitle>累計統計</RWS_WindowTitle>
-  <RWS_WindowError>無法顯示統計視窗。詳情請查看日誌。</RWS_WindowError>
-  <RWS_Tab_Overview>總覽</RWS_Tab_Overview>
+  <RWS_WindowError>無法顯示統計視窗。詳細資訊請參閱記錄檔。</RWS_WindowError>
+  <RWS_Tab_Overview>概覽</RWS_Tab_Overview>
   <RWS_Tab_Endings>結局</RWS_Tab_Endings>
   <RWS_Tab_Colonies>殖民地</RWS_Tab_Colonies>
   <RWS_Tab_Import>資料管理</RWS_Tab_Import>
-  <RWS_Export_Button>匯出 CSV − {0}</RWS_Export_Button>
-  <RWS_Export_Progress>匯出檔案( {0}/ {1})...</RWS_Export_Progress>
-  <RWS_Export_Error>CSV 匯出失敗: {0}</RWS_Export_Error>
-  <RWS_Export_Done>CSV 儲存到 {0}</RWS_Export_Done>
+  <RWS_Export_Button>匯出 CSV · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>正在匯出檔案（{0}/{1}）…</RWS_Export_Progress>
+  <RWS_Export_Error>CSV 匯出失敗：{0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV 已儲存至 {0}</RWS_Export_Done>
   <RWS_Compare_Mode>比較</RWS_Compare_Mode>
-  <RWS_Compare_Add>新增欄位...</RWS_Compare_Add>
+  <RWS_Compare_Add>新增欄…</RWS_Compare_Add>
   <RWS_Compare_Group>群組</RWS_Compare_Group>
   <RWS_Compare_Colony>殖民地</RWS_Compare_Colony>
-  <RWS_Compare_Remove>移除欄位</RWS_Compare_Remove>
-  <RWS_Stat_Days>遊戲中的日子</RWS_Stat_Days>
-  <RWS_Stat_Endings>已達尾端</RWS_Stat_Endings>
-  <RWS_Stat_Departed>殖民者走了</RWS_Stat_Departed>
-  <RWS_Stat_PeakWealthSum>峰值總和</RWS_Stat_PeakWealthSum>
+  <RWS_Compare_Remove>移除欄</RWS_Compare_Remove>
+  <RWS_Stat_Days>遊戲內天數</RWS_Stat_Days>
+  <RWS_Stat_Endings>達成的結局</RWS_Stat_Endings>
+  <RWS_Stat_Departed>離開的殖民者</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>最高財富總和</RWS_Stat_PeakWealthSum>
   <RWS_Stat_Colonies>殖民地</RWS_Stat_Colonies>
   <RWS_Stat_RealPlay>實際遊玩時間</RWS_Stat_RealPlay>
-  <RWS_Stat_Raids>敵襲</RWS_Stat_Raids>
-  <RWS_Stat_Threats>大威脅</RWS_Stat_Threats>
-  <RWS_Stat_Killed>殖民者遇害</RWS_Stat_Killed>
-  <RWS_Stat_Longest>最長的聚居地</RWS_Stat_Longest>
-  <RWS_Stat_SingleMaxWealth>最高的單殖民地財富</RWS_Stat_SingleMaxWealth>
-  <RWS_Stat_MaxPopulation>人口最多</RWS_Stat_MaxPopulation>
-  <RWS_Stat_LastWealthSum>最後財富的總和</RWS_Stat_LastWealthSum>
+  <RWS_Stat_Raids>敵人襲擊</RWS_Stat_Raids>
+  <RWS_Stat_Threats>重大威脅</RWS_Stat_Threats>
+  <RWS_Stat_Killed>殖民者死亡</RWS_Stat_Killed>
+  <RWS_Stat_Longest>最長的殖民地</RWS_Stat_Longest>
+  <RWS_Stat_SingleMaxWealth>單一殖民地的最高財富</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_MaxPopulation>最大人口</RWS_Stat_MaxPopulation>
+  <RWS_Stat_LastWealthSum>最終財富總和</RWS_Stat_LastWealthSum>
   <RWS_DaysValue>{0} 天（{1} 年 {2} 天）</RWS_DaysValue>
   <RWS_HoursValue>{0} 小時</RWS_HoursValue>
-  <RWS_NoData>尚未記錄。 儲存的匯入完成後數字會出現( 匯入分頁 ) 。</RWS_NoData>
-  <RWS_TooltipBasis>由{0}殖民地({1}不包括總群)推算.</RWS_TooltipBasis>
-  <RWS_TooltipMissing>{0} 無法辨識或讀取的儲存不在此列 。</RWS_TooltipMissing>
-  <RWS_EndingsTooltipPreInstall>模式安裝前的播放只從儲存中留下的痕跡來計算 。 追蹤表示「 至少一次 」 ; Archonexus 和其他結局不能從儲存中計算 。</RWS_EndingsTooltipPreInstall>
-  <RWS_UnnamedColony>(未命名) {0}</RWS_UnnamedColony>
-  <RWS_Ending_Ship>船舶</RWS_Ending_Ship>
-  <RWS_Ending_RoyalAscent>皇家升級</RWS_Ending_RoyalAscent>
-  <RWS_Ending_AmbiguousLaunch>離境( 未知 )</RWS_Ending_AmbiguousLaunch>
-  <RWS_Ending_Archonexus>Archonexus</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Cerebrex 核( 被掩埋)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Cerebrex 核心(已銷燬)</RWS_Ending_CerebrexDestroyed>
-  <RWS_Ending_VoidEmbraced>矇蔽了空虛</RWS_Ending_VoidEmbraced>
-  <RWS_Ending_VoidDisrupted>摧毀了空虛</RWS_Ending_VoidDisrupted>
+  <RWS_NoData>尚無記錄。存檔匯入完成後即會顯示數據（「資料管理」分頁）。</RWS_NoData>
+  <RWS_TooltipBasis>根據 {0} 個殖民地計算（{1} 個不計入合計）。</RWS_TooltipBasis>
+  <RWS_TooltipMissing>未包含 {0} 個無法辨識或讀取的存檔。</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>安裝本模組之前的遊戲只能根據存檔中留下的痕跡統計。一筆痕跡代表「至少一次」；遠古聯繫等結局無法從存檔中統計。</RWS_EndingsTooltipPreInstall>
+  <RWS_UnnamedColony>（未命名）{0}</RWS_UnnamedColony>
+  <RWS_Ending_Ship>飛船</RWS_Ending_Ship>
+  <RWS_Ending_RoyalAscent>榮譽提升</RWS_Ending_RoyalAscent>
+  <RWS_Ending_AmbiguousLaunch>離開（類型不明）</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_Archonexus>遠古聯繫</RWS_Ending_Archonexus>
+  <RWS_Ending_CerebrexScavenged>超智腦核心（拆解回收）</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>超智腦核心（摧毀）</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>擁抱虛空</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>瓦解虛空</RWS_Ending_VoidDisrupted>
   <RWS_Ending_Other>其他</RWS_Ending_Other>
-  <RWS_Source_Live>在播放中錄制</RWS_Source_Live>
-  <RWS_Source_SeededTrace>安置前的痕跡( 攜帶)</RWS_Source_SeededTrace>
-  <RWS_Source_SaveTrace>儲存追蹤</RWS_Source_SaveTrace>
-  <RWS_DevModeMark> （開發者模式）</RWS_DevModeMark>
-  <RWS_AtLeastOnce>1或以上</RWS_AtLeastOnce>
-  <RWS_Endings_None>尚未記錄結局 。</RWS_Endings_None>
-  <RWS_ExcludedMark> （已排除）</RWS_ExcludedMark>
+  <RWS_Source_Live>遊戲中記錄</RWS_Source_Live>
+  <RWS_Source_SeededTrace>安裝前的痕跡（沿用）</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>存檔痕跡</RWS_Source_SaveTrace>
+  <RWS_DevModeMark>（開發者模式）</RWS_DevModeMark>
+  <RWS_AtLeastOnce>1 次以上</RWS_AtLeastOnce>
+  <RWS_Endings_None>尚無結局記錄。</RWS_Endings_None>
+  <RWS_ExcludedMark>（不計入）</RWS_ExcludedMark>
   <RWS_Col_Date>日期</RWS_Col_Date>
   <RWS_Col_Colony>殖民地</RWS_Col_Colony>
-  <RWS_Col_EndingType>善良</RWS_Col_EndingType>
-  <RWS_Col_Ordinal>第 九</RWS_Col_Ordinal>
-  <RWS_Col_Departed>已離境</RWS_Col_Departed>
+  <RWS_Col_EndingType>類型</RWS_Col_EndingType>
+  <RWS_Col_Ordinal>第幾次</RWS_Col_Ordinal>
+  <RWS_Col_Departed>離開人數</RWS_Col_Departed>
   <RWS_Col_Source>來源</RWS_Col_Source>
-  <RWS_Col_Name>姓名</RWS_Col_Name>
+  <RWS_Col_Name>名稱</RWS_Col_Name>
   <RWS_Col_World>世界</RWS_Col_World>
-  <RWS_Col_Scenario>假想/ 故事演講者</RWS_Col_Scenario>
-  <RWS_Col_Days>天</RWS_Col_Days>
-  <RWS_Col_PeakWealth>峰值財富</RWS_Col_PeakWealth>
-  <RWS_Col_LastWealth>最後的財富</RWS_Col_LastWealth>
-  <RWS_Col_Raids>突擊</RWS_Col_Raids>
-  <RWS_Col_Killed>被殺</RWS_Col_Killed>
-  <RWS_Col_Endings>結束</RWS_Col_Endings>
+  <RWS_Col_Scenario>腳本 / 故事敘述者</RWS_Col_Scenario>
+  <RWS_Col_Days>天數</RWS_Col_Days>
+  <RWS_Col_PeakWealth>最高財富</RWS_Col_PeakWealth>
+  <RWS_Col_LastWealth>最終財富</RWS_Col_LastWealth>
+  <RWS_Col_Raids>襲擊</RWS_Col_Raids>
+  <RWS_Col_Killed>死亡</RWS_Col_Killed>
+  <RWS_Col_Endings>結局</RWS_Col_Endings>
   <RWS_Col_Versions>版本</RWS_Col_Versions>
-  <RWS_Col_Saves>已匯入儲存</RWS_Col_Saves>
-  <RWS_Col_LastPlayed>上次玩</RWS_Col_LastPlayed>
+  <RWS_Col_Saves>已匯入存檔</RWS_Col_Saves>
+  <RWS_Col_LastPlayed>上次遊玩</RWS_Col_LastPlayed>
   <RWS_Col_File>檔案</RWS_Col_File>
   <RWS_Col_Version>版本</RWS_Col_Version>
-  <RWS_Col_Superseded>覆寫</RWS_Col_Superseded>
+  <RWS_Col_Superseded>已覆寫</RWS_Col_Superseded>
   <RWS_Col_FilePresent>來源檔案</RWS_Col_FilePresent>
   <RWS_Exclude>排除</RWS_Exclude>
-  <RWS_ExcludeTip>被檢查的聚居地仍留在清單中,</RWS_ExcludeTip>
+  <RWS_ExcludeTip>勾選的殖民地仍會留在清單中，但不計入任何合計。</RWS_ExcludeTip>
   <RWS_Yes>是</RWS_Yes>
-  <RWS_No>不</RWS_No>
-  <RWS_FileMissing>檔案已消失</RWS_FileMissing>
-  <RWS_LiveRecord>(播放)</RWS_LiveRecord>
+  <RWS_No>否</RWS_No>
+  <RWS_FileMissing>檔案已遺失</RWS_FileMissing>
+  <RWS_LiveRecord>（遊戲中記錄）</RWS_LiveRecord>
   <RWS_Rescan>重新掃描</RWS_Rescan>
   <RWS_Cancel>取消</RWS_Cancel>
-  <RWS_HistoricalIntervals_Title>歷史儲存間隔</RWS_HistoricalIntervals_Title>
-  <RWS_HistoricalIntervals_Explanation>直接連結的部份證據儲存。 每列顯示已儲存的勾選之間有變更 。 Forks 仍會被分離, 這些列被排除於一生的總和中 。</RWS_HistoricalIntervals_Explanation>
-  <RWS_HistoricalIntervals_Empty>找不到與確認的增量直接連結的儲存 。</RWS_HistoricalIntervals_Empty>
-  <RWS_HistoricalIntervals_Error>歷史隔離無法讀取 。</RWS_HistoricalIntervals_Error>
-  <RWS_HistoricalIntervals_ParentSave>父母儲存</RWS_HistoricalIntervals_ParentSave>
-  <RWS_HistoricalIntervals_ChildSave>拯救孩子</RWS_HistoricalIntervals_ChildSave>
-  <RWS_HistoricalIntervals_Start>從遊戲中勾選</RWS_HistoricalIntervals_Start>
-  <RWS_HistoricalIntervals_End>透過遊戲勾選</RWS_HistoricalIntervals_End>
-  <RWS_HistoricalIntervals_Raids>增加了敵人突襲</RWS_HistoricalIntervals_Raids>
-  <RWS_HistoricalIntervals_Deaths>殖民者死亡</RWS_HistoricalIntervals_Deaths>
-  <RWS_Import_LastScan>最後一次掃描: {0}</RWS_Import_LastScan>
-  <RWS_Import_Never>從不</RWS_Import_Never>
-  <RWS_Import_NotRunThisSession>此片段尚未匯入 。</RWS_Import_NotRunThisSession>
+  <RWS_HistoricalIntervals_Title>歷史存檔區間</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>來自直接關聯存檔的部分數據。每一列表示兩個存檔時間點之間的變化。分支存檔會分開處理，這些列不計入累計合計。</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>找不到有確認增加的直接關聯存檔。</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>無法讀取歷史存檔區間。</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>前一個存檔</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>後一個存檔</RWS_HistoricalIntervals_ChildSave>
+  <RWS_HistoricalIntervals_Start>起始遊戲刻</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>結束遊戲刻</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>新增的敵人襲擊</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>新增的殖民者死亡</RWS_HistoricalIntervals_Deaths>
+  <RWS_Import_LastScan>上次掃描：{0}</RWS_Import_LastScan>
+  <RWS_Import_Never>從未</RWS_Import_Never>
+  <RWS_Import_NotRunThisSession>本次執行中尚未進行匯入。</RWS_Import_NotRunThisSession>
   <RWS_Import_Counts>已讀取 {0} / 已略過 {1} / 失敗 {2}</RWS_Import_Counts>
-  <RWS_Import_CancelledMark> （已中斷）</RWS_Import_CancelledMark>
+  <RWS_Import_CancelledMark>（已中斷）</RWS_Import_CancelledMark>
   <RWS_Import_Error>匯入失敗：{0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1}（失敗 {2}）{3}</RWS_Import_Progress>
-  <RWS_Import_ProfilePath>紀錄檔: {0}</RWS_Import_ProfilePath>
-  <RWS_Import_LoadSource>載入自 : {0}</RWS_Import_LoadSource>
-  <RWS_Import_CorruptRenamed>被損失的檔案被儲存到{0}.</RWS_Import_CorruptRenamed>
-  <RWS_Import_ReadOnly>此片段沒有寫入紀錄檔 。</RWS_Import_ReadOnly>
-  <RWS_Import_Backups>備份:3份中的{0}份</RWS_Import_Backups>
-  <RWS_Import_SaveError>無法寫入紀錄檔 : {0}</RWS_Import_SaveError>
-  <RWS_Import_Problems>失敗或無法辨識的儲存( {0})</RWS_Import_Problems>
-  <RWS_LoadSource_Primary>紀錄檔案</RWS_LoadSource_Primary>
+  <RWS_Import_ProfilePath>記錄檔案：{0}</RWS_Import_ProfilePath>
+  <RWS_Import_LoadSource>載入來源：{0}</RWS_Import_LoadSource>
+  <RWS_Import_CorruptRenamed>損毀的檔案已保留為 {0}。</RWS_Import_CorruptRenamed>
+  <RWS_Import_ReadOnly>本次執行中不會寫入記錄檔案。</RWS_Import_ReadOnly>
+  <RWS_Import_Backups>備份：{0} / 3</RWS_Import_Backups>
+  <RWS_Import_SaveError>無法寫入記錄檔案：{0}</RWS_Import_SaveError>
+  <RWS_Import_Problems>失敗或無法辨識的存檔（{0}）</RWS_Import_Problems>
+  <RWS_LoadSource_Primary>記錄檔案</RWS_LoadSource_Primary>
   <RWS_LoadSource_Backup1>備份 1</RWS_LoadSource_Backup1>
   <RWS_LoadSource_Backup2>備份 2</RWS_LoadSource_Backup2>
   <RWS_LoadSource_Backup3>備份 3</RWS_LoadSource_Backup3>
-  <RWS_LoadSource_Empty>新( 空 )</RWS_LoadSource_Empty>
-  <RWS_LoadSource_NewerSchema>從更新版本紀錄檔案( 只讀)</RWS_LoadSource_NewerSchema>
+  <RWS_LoadSource_Empty>新建（空白）</RWS_LoadSource_Empty>
+  <RWS_LoadSource_NewerSchema>來自較新版本的記錄檔案（唯讀）</RWS_LoadSource_NewerSchema>
   <RWS_Status_Error>失敗</RWS_Status_Error>
   <RWS_Status_Unidentifiable>無法辨識</RWS_Status_Unidentifiable>
-  <RWS_Loading>正在載入資料...</RWS_Loading>
-  <RWS_WealthCoverage>{0}殖民地的財富資料({1}沒有資料).</RWS_WealthCoverage>
-  <RWS_Source_RecoveredLineage>從儲存中收回( 開發模式未知, 不包括在總數內)</RWS_Source_RecoveredLineage>
+  <RWS_Loading>正在載入統計…</RWS_Loading>
+  <RWS_WealthCoverage>有財富數據的殖民地：{0} 個（無數據：{1} 個）。</RWS_WealthCoverage>
+  <RWS_Source_RecoveredLineage>從存檔恢復（無法確定是否為開發者模式，不計入合計）</RWS_Source_RecoveredLineage>
   <RWS_Tab_Details>詳細統計</RWS_Tab_Details>
-  <RWS_Details_AllColonies>所有殖民地</RWS_Details_AllColonies>
-  <RWS_Details_PerColony>一個殖民地</RWS_Details_PerColony>
-  <RWS_Details_AllCategories>所有類別</RWS_Details_AllCategories>
-  <RWS_Details_Search>過濾器</RWS_Details_Search>
-  <RWS_Details_Col_Name>資料</RWS_Details_Col_Name>
-  <RWS_Details_Col_Value>值</RWS_Details_Col_Value>
-  <RWS_Details_Col_State>來源/ 狀態</RWS_Details_Col_State>
-  <RWS_Details_Col_Colonies>已知/殖民地</RWS_Details_Col_Colonies>
-  <RWS_Details_Col_Through>觀察到</RWS_Details_Col_Through>
-  <RWS_Details_ThroughTip>儲存值的遊戲中日 。</RWS_Details_ThroughTip>
-  <RWS_Details_Note>從{0}殖民地(不包括總數:{1})來計算數值,</RWS_Details_Note>
-  <RWS_Details_Unattributed>無法匹配到一個殖民地的{0}觀察不在此列。</RWS_Details_Unattributed>
-  <RWS_Details_NoMatch>沒有資料匹配 。</RWS_Details_NoMatch>
-  <RWS_Details_UnrankedTop>不能建立類別贏家</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>一個缺失的DLC, 只有在有儲存的DLC的資料支援的情況下, 才能解釋這一點。</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>0 符合資格的聚居地有捕捉值。 原因未證實 : 收藏可能已關閉或晚到, 事件可能未被捕捉, 或是歷史匯入可能未支援。 不要取代 0 。</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>只有部分符合條件的殖民地才有捕捉值,其他的不明,不是零;合併值可能是部分的.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>所有符合條件的殖民地都有被抓住的價值,光是這不能證明是全場或實際的驗證。</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>抓取的數值可能只涵蓋選舉的一部分。 不要將它理解為確認的一生總和 。</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>數目相當於獨立的殖民地; 如果缺少任何記錄的分類, 排名可能會是部分的。</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>估計了這個殖民地對所選型別的貢獻。 未上市或失蹤的殖民地並非零 。</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>這可能會反映儲存預置的取得、 已關閉的收藏或沒有的來源資料。 過去的事件不能以零回填充 。</RWS_Details_MissingAcquisitionTip>
-  <RWS_Details_NotReached>未達</RWS_Details_NotReached>
-  <RWS_Details_UnknownBucket>(未知)</RWS_Details_UnknownBucket>
-  <RWS_Details_Tip_Source>資料來源:{0}/州:{1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>觀察了{0}的比賽日</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>計算自: 遊戲開始</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>省時之州.</RWS_Details_Tip_StartSnapshot>
-  <RWS_Details_Tip_Observations>本殖民地的觀測:{0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>已知於{0}殖民地中的{1}.</RWS_Details_Tip_Colonies>
-  <RWS_Details_Tip_Holder>{0}人</RWS_Details_Tip_Holder>
-  <RWS_Details_Tip_Samples>樣本:{0}</RWS_Details_Tip_Samples>
-  <RWS_Details_Tip_Ratio>數字 {0} 分母 {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>沒有資料可以根據( 此版本之前已讀取過, 缺少檔案, 不支援的遊戲版本, 或無法讀取的資料 ) 。</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>列車: {0}({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_AllColonies>全部殖民地</RWS_Details_AllColonies>
+  <RWS_Details_PerColony>單一殖民地</RWS_Details_PerColony>
+  <RWS_Details_AllCategories>全部類別</RWS_Details_AllCategories>
+  <RWS_Details_Search>篩選</RWS_Details_Search>
+  <RWS_Details_Col_Name>統計項</RWS_Details_Col_Name>
+  <RWS_Details_Col_Value>數值</RWS_Details_Col_Value>
+  <RWS_Details_Col_State>來源 / 狀態</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>有值 / 殖民地</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>觀測時間</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>該數值所在存檔的遊戲內天數。</RWS_Details_ThroughTip>
+  <RWS_Details_Note>基於 {0} 個殖民地（不計入合計：{1}）。數值根據已匯入的存檔計算，可能包含開發者模式操作造成的結果。</RWS_Details_Note>
+  <RWS_Details_Unattributed>未包含 {0} 條無法歸屬到單一殖民地的觀測。</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>沒有符合的統計項。</RWS_Details_NoMatch>
+  <RWS_Details_UnrankedTop>無法確定唯一的最多類別</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>此統計項不適用於所選的任何殖民地。只有當存檔中記錄的 DLC 清單能夠證實時，才會將缺少 DLC 顯示為原因。</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>所有適用的殖民地都沒有已採集的數值。原因尚未確定：可能是採集被關閉或開始得較晚、事件未被記錄，或不支援匯入舊存檔。這並不等於零。</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>只有部分適用的殖民地有已採集的數值。其餘殖民地視為未知而非零，因此合計值可能不完整。</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>所有適用的殖民地都有已採集的數值。但這本身並不代表已覆蓋整個遊戲流程，也不代表該數值已在實際遊戲中驗證。</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>已採集的數值可能只涵蓋遊戲流程的一部分。請勿將其視為經過驗證的累計總數。</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>在各自獨立選取的殖民地之間按類型彙總的數量。若有殖民地缺少細分資料，排名可能不完整。</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>該殖民地對所選類型的實測貢獻。未列出或沒有資料的殖民地不會被視為零。</RWS_Cross_ContributionExplanation>
+  <RWS_Details_MissingAcquisitionTip>可能是因為存檔早於開始採集、採集被關閉，或來源資料不可用。過去的事件不會以零補全。</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
+  <RWS_Details_UnknownBucket>（未知）</RWS_Details_UnknownBucket>
+  <RWS_Details_Tip_Source>來源：{0} / 狀態：{1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>觀測於遊戲內第 {0} 天。</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>計測起點：遊戲開始</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>儲存存檔時的狀態。</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Observations>該殖民地的觀測次數：{0}</RWS_Details_Tip_Observations>
+  <RWS_Details_Tip_Colonies>{0} 個殖民地中有 {1} 個有值。</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>紀錄保持者：{0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>樣本數：{0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Ratio>分子 {0} ÷ 分母 {1}</RWS_Details_Tip_Ratio>
+  <RWS_Details_Tip_Unknown>沒有可作為依據的資料（在此版本之前讀取的存檔、檔案缺失、不支援的遊戲版本或無法讀取的資料）。</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>台帳：{0}（{1}）</RWS_Details_Tip_Ledger>
   <RWS_Unit_Days>{0} 天</RWS_Unit_Days>
-  <RWS_Unit_PerYear>{0}/年</RWS_Unit_PerYear>
-  <RWS_Category_Wealth>財產</RWS_Category_Wealth>
-  <RWS_Category_Population>人口和心情</RWS_Category_Population>
-  <RWS_Category_Defense>突擊和防守</RWS_Category_Defense>
-  <RWS_Category_Quests>查詢</RWS_Category_Quests>
+  <RWS_Unit_PerYear>{0} / 年</RWS_Unit_PerYear>
+  <RWS_Category_Wealth>財富</RWS_Category_Wealth>
+  <RWS_Category_Population>人口與心情</RWS_Category_Population>
+  <RWS_Category_Defense>襲擊與防禦</RWS_Category_Defense>
+  <RWS_Category_Quests>任務</RWS_Category_Quests>
   <RWS_Category_Colony>殖民地</RWS_Category_Colony>
-  <RWS_Category_Rankings>排名</RWS_Category_Rankings>
-  <RWS_Provenance_VanillaCounter>遊戲資料庫</RWS_Provenance_VanillaCounter>
-  <RWS_Provenance_SaveHistory>儲存歷史圖</RWS_Provenance_SaveHistory>
-  <RWS_Provenance_SaveSnapshot>儲存中的狀態</RWS_Provenance_SaveSnapshot>
-  <RWS_Provenance_LiveAggregate>播放中錄制</RWS_Provenance_LiveAggregate>
-  <RWS_Coverage_Complete>完成</RWS_Coverage_Complete>
-  <RWS_Coverage_Partial>部分( 升)</RWS_Coverage_Partial>
-  <RWS_Coverage_History>歷史觀察</RWS_Coverage_History>
-  <RWS_Coverage_SnapshotOnly>已儲存</RWS_Coverage_SnapshotOnly>
+  <RWS_Category_Rankings>排行</RWS_Category_Rankings>
+  <RWS_Provenance_VanillaCounter>遊戲計數器</RWS_Provenance_VanillaCounter>
+  <RWS_Provenance_SaveHistory>存檔中的歷史圖表</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>存檔中的狀態</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>遊戲中記錄</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>完整</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>部分（有缺失）</RWS_Coverage_Partial>
+  <RWS_Coverage_History>歷史觀測</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>存檔時</RWS_Coverage_SnapshotOnly>
   <RWS_Coverage_Unknown>未知</RWS_Coverage_Unknown>
   <RWS_Coverage_NotApplicable>不適用</RWS_Coverage_NotApplicable>
-  <RWS_Metric_WealthItemsPeak>峰值財富</RWS_Metric_WealthItemsPeak>
-  <RWS_MetricDesc_WealthItemsPeak>歷史圖中最大的專案財富( 每半天一次) 。 所有殖民地: 單一最高 。</RWS_MetricDesc_WealthItemsPeak>
-  <RWS_Metric_WealthItemsLatest>最新專案</RWS_Metric_WealthItemsLatest>
-  <RWS_MetricDesc_WealthItemsLatest>上個歷史觀察區的財產 所有殖民地 總和</RWS_MetricDesc_WealthItemsLatest>
-  <RWS_Metric_WealthBuildingsPeak>山峰建築財富</RWS_Metric_WealthBuildingsPeak>
-  <RWS_MetricDesc_WealthBuildingsPeak>歷史圖上最大的建築財產 所有殖民地 單一最高</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthItemsPeak>物品財富最高值</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>歷史圖表中物品財富的最大值（每半天觀測一次）。全部殖民地：取單一最高值。</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>最新物品財富</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>歷史記錄最後一次觀測時的物品財富。全部殖民地：合計。</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>建築財富最高值</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>歷史圖表中建築財富的最大值。全部殖民地：取單一最高值。</RWS_MetricDesc_WealthBuildingsPeak>
   <RWS_Metric_WealthBuildingsLatest>最新建築財富</RWS_Metric_WealthBuildingsLatest>
-  <RWS_MetricDesc_WealthBuildingsLatest>上次歷史觀察時建立財產 所有殖民地 總和</RWS_MetricDesc_WealthBuildingsLatest>
-  <RWS_Metric_WealthPawnsPeak>峰形人物財富</RWS_Metric_WealthPawnsPeak>
-  <RWS_MetricDesc_WealthPawnsPeak>歷史圖上人物和動物的財富最多 所有殖民地都是最高的</RWS_MetricDesc_WealthPawnsPeak>
-  <RWS_Metric_WealthPawnsLatest>最新的性格財富</RWS_Metric_WealthPawnsLatest>
-  <RWS_MetricDesc_WealthPawnsLatest>上個歷史觀察期間的人物和動物的財富 所有殖民地 總和</RWS_MetricDesc_WealthPawnsLatest>
-  <RWS_Metric_WealthTotalMean>平均財產總和(觀察)</RWS_Metric_WealthTotalMean>
-  <RWS_MetricDesc_WealthTotalMean>所有殖民地: 以觀察數量加權。</RWS_MetricDesc_WealthTotalMean>
-  <RWS_Metric_WealthTotalFirst>開始財產( 第一次觀察)</RWS_Metric_WealthTotalFirst>
-  <RWS_MetricDesc_WealthTotalFirst>從一開始就已經完成的歷史的第一觀點 就只有一個聚居地</RWS_MetricDesc_WealthTotalFirst>
-  <RWS_Metric_WealthTotalNet>(最新-第一次)</RWS_Metric_WealthTotalNet>
-  <RWS_MetricDesc_WealthTotalNet>上次觀察時的財產總和減去第一個數值; 如果跌落則為負數。 所有殖民地:總和。</RWS_MetricDesc_WealthTotalNet>
-  <RWS_Metric_WealthTotalPeakDay>富貴之日,</RWS_Metric_WealthTotalPeakDay>
-  <RWS_MetricDesc_WealthTotalPeakDay>在峰值的首個觀察日(每半天一次觀察),只有一個聚落。</RWS_MetricDesc_WealthTotalPeakDay>
-  <RWS_Metric_WealthTotalMaxGainHalfDay>最大的半日的財產收益,</RWS_Metric_WealthTotalMaxGainHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>在 兩 次 的 觀察 中 、 總 財產 的 增長 最大 . 若 不 增高 、 就 是 0 。</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
-  <RWS_Metric_WealthTotalMaxLossHalfDay>最大的半天財產損失( 預測)</RWS_Metric_WealthTotalMaxLossHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>在連續兩次觀察中, 總財產跌得最多; 如果沒有跌倒, 則跌得最多。</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
-  <RWS_Metric_WealthTotalMaxLossRateHalfDay>最大半天財產損失率( 預測)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>最大( 在 − 之後 ) , 在 連續 兩次 觀察 之前 , 將從 0 開始的間隔留出 。</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
-  <RWS_Metric_WealthTotalMaxGain15D>最大的15天的財產收益,</RWS_Metric_WealthTotalMaxGain15D>
-  <RWS_MetricDesc_WealthTotalMaxGain15D>觀察總財產相差30天(15天),</RWS_MetricDesc_WealthTotalMaxGain15D>
-  <RWS_Metric_WealthTotalMaxLoss15D>最大 15 天 的 財產 損失( 觀察 )</RWS_Metric_WealthTotalMaxLoss15D>
-  <RWS_MetricDesc_WealthTotalMaxLoss15D>總財產相差30天(15天),</RWS_MetricDesc_WealthTotalMaxLoss15D>
-  <RWS_Metric_WealthTotalMaxGrowthRateYear>最大一年的財產增長(觀察)</RWS_Metric_WealthTotalMaxGrowthRateYear>
-  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>在120次(一年)的觀察之前,</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
-  <RWS_Metric_WealthTotalLongestGrowth>最長的財產增長</RWS_Metric_WealthTotalLongestGrowth>
-  <RWS_MetricDesc_WealthTotalLongestGrowth>平均價值和差距都結束了跑步。</RWS_MetricDesc_WealthTotalLongestGrowth>
-  <RWS_Metric_WealthTotalFirst100K>已到達的財產 10萬(觀察日)</RWS_Metric_WealthTotalFirst100K>
-  <RWS_MetricDesc_WealthTotalFirst100K>第一次觀察的冠名日 總財富10萬或更多 所有殖民地 最早的</RWS_MetricDesc_WealthTotalFirst100K>
-  <RWS_Metric_WealthTotalFirst1M>1 000 000人已到達(觀察日)</RWS_Metric_WealthTotalFirst1M>
-  <RWS_MetricDesc_WealthTotalFirst1M>第一次觀察的冠名日 總財富在100萬或更多 所有殖民地 最早的</RWS_MetricDesc_WealthTotalFirst1M>
-  <RWS_Metric_WealthBuildingsMaxShare>最大的建築財產份額(觀察)</RWS_Metric_WealthBuildingsMaxShare>
-  <RWS_MetricDesc_WealthBuildingsMaxShare>最大的建築財產 總的財產在同一觀點。</RWS_MetricDesc_WealthBuildingsMaxShare>
-  <RWS_Metric_FreeColonistsMean>平均殖民者( 觀察)</RWS_Metric_FreeColonistsMean>
-  <RWS_MetricDesc_FreeColonistsMean>所有殖民地: 以觀察數量加權。</RWS_MetricDesc_FreeColonistsMean>
-  <RWS_Metric_FreeColonistsMin>少數殖民者( 觀察)</RWS_Metric_FreeColonistsMin>
-  <RWS_MetricDesc_FreeColonistsMin>自由殖民者數量最小 所有殖民地 最小的</RWS_MetricDesc_FreeColonistsMin>
-  <RWS_Metric_FreeColonistsFirst10>10名殖民者已抵達(觀察日)</RWS_Metric_FreeColonistsFirst10>
-  <RWS_MetricDesc_FreeColonistsFirst10>10個或更多自由殖民者第一次觀察的冠名日 所有殖民地:最早的</RWS_MetricDesc_FreeColonistsFirst10>
-  <RWS_Metric_PrisonersPeak>大部分囚犯(觀察)</RWS_Metric_PrisonersPeak>
-  <RWS_MetricDesc_PrisonersPeak>所觀察到的囚犯最多</RWS_MetricDesc_PrisonersPeak>
-  <RWS_Metric_PrisonersMean>平均囚犯(觀察)</RWS_Metric_PrisonersMean>
-  <RWS_MetricDesc_PrisonersMean>所觀察的囚犯數量的平均值 所有殖民地 以觀察的數量加權</RWS_MetricDesc_PrisonersMean>
-  <RWS_Metric_MoodMean>平均殖民者心情( 觀察)</RWS_Metric_MoodMean>
-  <RWS_MetricDesc_MoodMean>所觀察的平均殖民情緒的平均值( 0– 100 ) 。 在沒有殖民者時, 記錄的0 被視為缺失。 而不是以殖民者的計數來加權。</RWS_MetricDesc_MoodMean>
-  <RWS_Metric_MoodMin>最低的殖民氣息( 觀察)</RWS_Metric_MoodMin>
-  <RWS_MetricDesc_MoodMin>平均殖民者的心情觀察率最低</RWS_MetricDesc_MoodMin>
-  <RWS_Metric_MoodMax>最高殖民者的心情( 觀察)</RWS_Metric_MoodMax>
-  <RWS_MetricDesc_MoodMax>觀察一般殖民者的心情</RWS_MetricDesc_MoodMax>
-  <RWS_Metric_MoodBelow50Days>心情低於50%的天(可觀察)</RWS_Metric_MoodBelow50Days>
-  <RWS_MetricDesc_MoodBelow50Days>半日間隔兩端都有效 其開始的心情在50以下,所有殖民地:總和。</RWS_MetricDesc_MoodBelow50Days>
-  <RWS_Metric_MoodAtLeast80Days>心情在80%或以上的天(可觀察)</RWS_Metric_MoodAtLeast80Days>
-  <RWS_MetricDesc_MoodAtLeast80Days>半天的間隔 兩端都有效 其開始的心情是80或80以上 所有殖民地:總和</RWS_MetricDesc_MoodAtLeast80Days>
-  <RWS_Metric_DeathsPerYear>每年殖民者死亡</RWS_Metric_DeathsPerYear>
-  <RWS_MetricDesc_DeathsPerYear>所有殖民地:總死亡數年。</RWS_MetricDesc_DeathsPerYear>
-  <RWS_Metric_RaidsPerYear>每年的敵人突襲</RWS_Metric_RaidsPerYear>
-  <RWS_MetricDesc_RaidsPerYear>敵人的突襲已經過去了一年(1年=60天),</RWS_MetricDesc_RaidsPerYear>
-  <RWS_Metric_ModsLatest>mods( 最晚儲存)</RWS_Metric_ModsLatest>
-  <RWS_MetricDesc_ModsLatest>包含 Core 和 DLCs 。 只有一個聚居地 。</RWS_MetricDesc_ModsLatest>
-  <RWS_Metric_ModsPeak>大部分模式</RWS_Metric_ModsPeak>
-  <RWS_MetricDesc_ModsPeak>除了這個殖民地之外 任何進口的大多數mods 只有一個殖民地</RWS_MetricDesc_ModsPeak>
-  <RWS_Metric_ModsMin>最少的款式</RWS_Metric_ModsMin>
-  <RWS_MetricDesc_ModsMin>除了這個聚居地之外 任何進口的模具都很少 只有一個聚居地</RWS_MetricDesc_ModsMin>
+  <RWS_MetricDesc_WealthBuildingsLatest>歷史記錄最後一次觀測時的建築財富。全部殖民地：合計。</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>人員與動物財富最高值</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>歷史圖表中人員與動物財富的最大值。全部殖民地：取單一最高值。</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>最新人員與動物財富</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>歷史記錄最後一次觀測時的人員與動物財富。全部殖民地：合計。</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>總財富平均值（觀測）</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>總財富有效觀測值的平均。全部殖民地：按觀測次數加權。</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>初始財富（首次觀測）</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>從遊戲開始就完整的歷史記錄中，首次觀測時的總財富。僅限單一殖民地。</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>財富淨變化（最新 − 首次）</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>最後一次觀測的總財富減去首次觀測的總財富；減少時為負數。全部殖民地：合計。</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>財富達到最高的日期（觀測日）</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>總財富首次達到最高值的那次觀測的名義日期（每半天觀測一次）。僅限單一殖民地。</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>半天內最大財富增長（觀測）</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>相鄰兩次觀測之間總財富的最大增長；從未增長則為 0。</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>半天內最大財富損失（觀測）</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>相鄰兩次觀測之間總財富的最大下降；從未下降則為 0。</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>半天內最大財富損失率（觀測）</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>相鄰兩次觀測之間（之前 − 之後）÷ 之前 的最大值；起點為 0 的區間不計。</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>15 天內最大財富增長（觀測）</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>間隔 30 次觀測（15 天）的兩點之間總財富的最大增長；含缺失的時段不使用。</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>15 天內最大財富損失（觀測）</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>間隔 30 次觀測（15 天）的兩點之間總財富的最大下降；含缺失的時段不使用。</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>一年內最大財富增長率（觀測）</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>間隔 120 次觀測（一年）的兩點之間（之後 − 之前）÷ 之前 的最大值；財富始終下降時為負數。</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>財富最長連續增長（觀測）</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>總財富每次都增長的最長連續觀測段；數值不變或出現缺失都會中斷連續。</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>財富達到 100,000（觀測日）</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>總財富首次達到 100,000 或以上的那次觀測的名義日期。全部殖民地：取最早。</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>財富達到 1,000,000（觀測日）</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>總財富首次達到 1,000,000 或以上的那次觀測的名義日期。全部殖民地：取最早。</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>建築佔財富的最大比例（觀測）</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>同一次觀測中建築財富 ÷ 總財富的最大值。</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>殖民者平均人數（觀測）</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>自由殖民者人數觀測值的平均。全部殖民地：按觀測次數加權。</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>殖民者最少人數（觀測）</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>自由殖民者人數的最小觀測值。全部殖民地：取最小。</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_FreeColonistsFirst10>殖民者達到 10 人（觀測日）</RWS_Metric_FreeColonistsFirst10>
+  <RWS_MetricDesc_FreeColonistsFirst10>自由殖民者首次達到 10 人或以上的那次觀測的名義日期。全部殖民地：取最早。</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>俘虜最多人數（觀測）</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>俘虜人數的最大觀測值。</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>俘虜平均人數（觀測）</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>俘虜人數觀測值的平均。全部殖民地：按觀測次數加權。</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>殖民者平均心情（觀測）</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>殖民者平均心情（0–100）觀測值的平均。沒有殖民者時記錄的 0 視為缺失。不按殖民者人數加權。</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>殖民者心情最低值（觀測）</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>殖民者平均心情的最低有效觀測值。</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>殖民者心情最高值（觀測）</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>殖民者平均心情的最高有效觀測值。</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>心情低於 50% 的天數（觀測）</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>兩端觀測均有效、且起始心情低於 50 的半天區間數 ÷ 2。全部殖民地：合計。</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>心情達到 80% 及以上的天數（觀測）</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>兩端觀測均有效、且起始心情為 80 或以上的半天區間數 ÷ 2。全部殖民地：合計。</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>每年殖民者死亡數</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>同一存檔中的殖民者死亡數 ÷ 經過年數（1 年 = 60 天）。全部殖民地：死亡總數 ÷ 年數總和。</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>每年敵人襲擊次數</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>同一存檔中的敵人襲擊次數 ÷ 經過年數（1 年 = 60 天）。全部殖民地：襲擊總數 ÷ 年數總和。</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>模組數量（最新存檔）</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>最新存檔中列出的已啟用模組數量，包括 Core 和 DLC。僅限單一殖民地。</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>最多模組數量</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>該殖民地已匯入的存檔中最多的模組數量。僅限單一殖民地。</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>最少模組數量</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>該殖民地已匯入的存檔中最少的模組數量。僅限單一殖民地。</RWS_MetricDesc_ModsMin>
   <RWS_Metric_QuestSuccess>查詢成功( 保留)</RWS_Metric_QuestSuccess>
   <RWS_MetricDesc_QuestSuccess>接受成功且仍在儲存中的求求求 。 查詢已移除的遊戲無法計算 。</RWS_MetricDesc_QuestSuccess>
   <RWS_Metric_QuestFailure>查詢失敗( 保留 )</RWS_Metric_QuestFailure>

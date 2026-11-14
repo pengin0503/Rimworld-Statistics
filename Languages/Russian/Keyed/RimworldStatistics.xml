@@ -1,255 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
-  <RWS_Setting_IncludeDevMode>Показать и посчитать окончания, записанные в режиме разработки</RWS_Setting_IncludeDevMode>
-  <RWS_Setting_AutoImport>Импорт автоматически сохраняется на экране заголовка</RWS_Setting_AutoImport>
-  <RWS_Setting_WindowSize>Статистический размер окна</RWS_Setting_WindowSize>
-  <RWS_Setting_WindowSizeStandard>Стандарт (1000 × 720)</RWS_Setting_WindowSizeStandard>
+  <RWS_Setting_IncludeDevMode>Показывать и учитывать концовки, записанные в режиме разработчика</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>Автоматически импортировать сохранения на титульном экране</RWS_Setting_AutoImport>
+  <RWS_Setting_WindowSize>Размер окна статистики</RWS_Setting_WindowSize>
+  <RWS_Setting_WindowSizeStandard>Обычный (1000 × 720)</RWS_Setting_WindowSizeStandard>
   <RWS_Setting_WindowSizeLarge>Большой (1400 × 900)</RWS_Setting_WindowSizeLarge>
-  <RWS_Setting_WindowSizeExtraLarge>Большой (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
-  <RWS_Setting_WindowSizeFitScreen>Фит-экран (90%)</RWS_Setting_WindowSizeFitScreen>
-  <RWS_Setting_WindowSizeHelp>Применяется при следующем открытии Статистики. Размер шрифта не изменился; негабаритные окна подходят к экрану.</RWS_Setting_WindowSizeHelp>
+  <RWS_Setting_WindowSizeExtraLarge>Очень большой (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>По размеру экрана (90%)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>Применяется при следующем открытии окна статистики. Размер текста не меняется; окно больше экрана уменьшается, чтобы поместиться.</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>Общая статистика</RWS_MenuButton>
   <RWS_WindowTitle>Общая статистика</RWS_WindowTitle>
-  <RWS_WindowError>Не удалось отобразить окно статистики. Подробности см. в журнале.</RWS_WindowError>
+  <RWS_WindowError>Не удалось отобразить окно статистики. Подробности смотрите в журнале.</RWS_WindowError>
   <RWS_Tab_Overview>Обзор</RWS_Tab_Overview>
   <RWS_Tab_Endings>Концовки</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Колонии</RWS_Tab_Colonies>
   <RWS_Tab_Import>Управление данными</RWS_Tab_Import>
-  <RWS_Export_Button>Экспорт CSV · {0}</RWS_Export_Button>
-  <RWS_Export_Progress>Экспорт файлов ({0}/{1})</RWS_Export_Progress>
-  <RWS_Export_Error>CSV экспорт провалился: {0}</RWS_Export_Error>
-  <RWS_Export_Done>CSV сохранено до {0}</RWS_Export_Done>
-  <RWS_Compare_Mode>Сравнить</RWS_Compare_Mode>
-  <RWS_Compare_Add>Добавить колонку...</RWS_Compare_Add>
+  <RWS_Export_Button>Экспорт в CSV · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>Экспорт файлов ({0}/{1})…</RWS_Export_Progress>
+  <RWS_Export_Error>Не удалось экспортировать CSV: {0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV сохранён: {0}</RWS_Export_Done>
+  <RWS_Compare_Mode>Сравнение</RWS_Compare_Mode>
+  <RWS_Compare_Add>Добавить столбец…</RWS_Compare_Add>
   <RWS_Compare_Group>Группа</RWS_Compare_Group>
-  <RWS_Compare_Colony>колония</RWS_Compare_Colony>
-  <RWS_Compare_Remove>Удалить колонку</RWS_Compare_Remove>
+  <RWS_Compare_Colony>Колония</RWS_Compare_Colony>
+  <RWS_Compare_Remove>Удалить столбец</RWS_Compare_Remove>
   <RWS_Stat_Days>Игровые дни</RWS_Stat_Days>
-  <RWS_Stat_Endings>Концы достигнутые</RWS_Stat_Endings>
-  <RWS_Stat_Departed>Колонисты ушли</RWS_Stat_Departed>
-  <RWS_Stat_PeakWealthSum>Сумма пикового богатства</RWS_Stat_PeakWealthSum>
+  <RWS_Stat_Endings>Достигнуто концовок</RWS_Stat_Endings>
+  <RWS_Stat_Departed>Улетевшие поселенцы</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>Сумма пиковых богатств</RWS_Stat_PeakWealthSum>
   <RWS_Stat_Colonies>Колонии</RWS_Stat_Colonies>
   <RWS_Stat_RealPlay>Реальное время игры</RWS_Stat_RealPlay>
-  <RWS_Stat_Raids>Вражеские рейды</RWS_Stat_Raids>
-  <RWS_Stat_Threats>Большие угрозы</RWS_Stat_Threats>
-  <RWS_Stat_Killed>Колонисты убиты</RWS_Stat_Killed>
-  <RWS_Stat_Longest>Самая длинная колония</RWS_Stat_Longest>
-  <RWS_Stat_SingleMaxWealth>Наивысшее богатство колонии</RWS_Stat_SingleMaxWealth>
-  <RWS_Stat_MaxPopulation>Самое большое население</RWS_Stat_MaxPopulation>
-  <RWS_Stat_LastWealthSum>Сумма конечного богатства</RWS_Stat_LastWealthSum>
+  <RWS_Stat_Raids>Налёты врагов</RWS_Stat_Raids>
+  <RWS_Stat_Threats>Крупные угрозы</RWS_Stat_Threats>
+  <RWS_Stat_Killed>Погибшие поселенцы</RWS_Stat_Killed>
+  <RWS_Stat_Longest>Самая долгая колония</RWS_Stat_Longest>
+  <RWS_Stat_SingleMaxWealth>Наибольшее богатство одной колонии</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_MaxPopulation>Наибольшее население</RWS_Stat_MaxPopulation>
+  <RWS_Stat_LastWealthSum>Сумма итоговых богатств</RWS_Stat_LastWealthSum>
   <RWS_DaysValue>{0} дн. ({1} г. {2} дн.)</RWS_DaysValue>
   <RWS_HoursValue>{0} ч</RWS_HoursValue>
-  <RWS_NoData>Пока ничего не записано. Цифры появляются после завершения сохранения импорта (Import tab).</RWS_NoData>
-  <RWS_TooltipBasis>Вычислен из {0} колоний ({1} исключен из итогов)</RWS_TooltipBasis>
-  <RWS_TooltipMissing>{0} сейвов, которые не могут быть идентифицированы или прочитаны, не включены.</RWS_TooltipMissing>
-  <RWS_EndingsTooltipPreInstall>Игра с момента установки мода отсчитывается только по следам, оставленным в сейвах, след означает «по крайней мере один раз»; Archonexus и другие окончания не могут быть отсчитаны из сэйвов.</RWS_EndingsTooltipPreInstall>
-  <RWS_UnnamedColony>(безымянный) {0}</RWS_UnnamedColony>
+  <RWS_NoData>Пока ничего не записано. Данные появятся после завершения импорта сохранений (вкладка «Управление данными»).</RWS_NoData>
+  <RWS_TooltipBasis>Колоний в расчёте: {0} (исключено из итогов: {1}).</RWS_TooltipBasis>
+  <RWS_TooltipMissing>Не учтено сохранений, которые не удалось распознать или прочитать: {0}.</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>Игра до установки мода учитывается только по следам, оставшимся в сохранениях. След означает «хотя бы один раз»; концовку архонексуса и другие концовки нельзя подсчитать по сохранениям.</RWS_EndingsTooltipPreInstall>
+  <RWS_UnnamedColony>(без названия) {0}</RWS_UnnamedColony>
   <RWS_Ending_Ship>Корабль</RWS_Ending_Ship>
-  <RWS_Ending_RoyalAscent>Королевское восхождение</RWS_Ending_RoyalAscent>
-  <RWS_Ending_AmbiguousLaunch>Уход (неизвестный)</RWS_Ending_AmbiguousLaunch>
-  <RWS_Ending_Archonexus>Archonexus</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Cerebrex ядро (отсечено)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Ядро Cerebrex (разрушено)</RWS_Ending_CerebrexDestroyed>
-  <RWS_Ending_VoidEmbraced>Обняли пустоту</RWS_Ending_VoidEmbraced>
-  <RWS_Ending_VoidDisrupted>Разрушил пустоту</RWS_Ending_VoidDisrupted>
-  <RWS_Ending_Other>другой</RWS_Ending_Other>
-  <RWS_Source_Live>Записано в игре</RWS_Source_Live>
-  <RWS_Source_SeededTrace>Предустановочный след (перевозится)</RWS_Source_SeededTrace>
-  <RWS_Source_SaveTrace>Сохранить следы</RWS_Source_SaveTrace>
+  <RWS_Ending_RoyalAscent>Знатное восхождение</RWS_Ending_RoyalAscent>
+  <RWS_Ending_AmbiguousLaunch>Отбытие (тип неизвестен)</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_Archonexus>Архонексус</RWS_Ending_Archonexus>
+  <RWS_Ending_CerebrexScavenged>Ядро церебрекса (разобрано)</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>Ядро церебрекса (уничтожено)</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>Принятие пустоты</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>Разрыв с пустотой</RWS_Ending_VoidDisrupted>
+  <RWS_Ending_Other>Другое</RWS_Ending_Other>
+  <RWS_Source_Live>Записано во время игры</RWS_Source_Live>
+  <RWS_Source_SeededTrace>След до установки (перенесён)</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>След в сохранении</RWS_Source_SaveTrace>
   <RWS_DevModeMark> (режим разработчика)</RWS_DevModeMark>
-  <RWS_AtLeastOnce>1 или более</RWS_AtLeastOnce>
-  <RWS_Endings_None>Окончаний пока не зафиксировано.</RWS_Endings_None>
-  <RWS_ExcludedMark> (исключено)</RWS_ExcludedMark>
+  <RWS_AtLeastOnce>1 или больше</RWS_AtLeastOnce>
+  <RWS_Endings_None>Концовки пока не записаны.</RWS_Endings_None>
+  <RWS_ExcludedMark> (исключена)</RWS_ExcludedMark>
   <RWS_Col_Date>Дата</RWS_Col_Date>
-  <RWS_Col_Colony>колония</RWS_Col_Colony>
-  <RWS_Col_EndingType>Добрый</RWS_Col_EndingType>
-  <RWS_Col_Ordinal>N N N</RWS_Col_Ordinal>
-  <RWS_Col_Departed>выбывший</RWS_Col_Departed>
+  <RWS_Col_Colony>Колония</RWS_Col_Colony>
+  <RWS_Col_EndingType>Тип</RWS_Col_EndingType>
+  <RWS_Col_Ordinal>№</RWS_Col_Ordinal>
+  <RWS_Col_Departed>Улетело</RWS_Col_Departed>
   <RWS_Col_Source>Источник</RWS_Col_Source>
-  <RWS_Col_Name>Имя</RWS_Col_Name>
+  <RWS_Col_Name>Название</RWS_Col_Name>
   <RWS_Col_World>Мир</RWS_Col_World>
-  <RWS_Col_Scenario>Сценарий/рассказчик</RWS_Col_Scenario>
+  <RWS_Col_Scenario>Сценарий / рассказчик</RWS_Col_Scenario>
   <RWS_Col_Days>Дни</RWS_Col_Days>
   <RWS_Col_PeakWealth>Пиковое богатство</RWS_Col_PeakWealth>
-  <RWS_Col_LastWealth>Финальное богатство</RWS_Col_LastWealth>
-  <RWS_Col_Raids>рейды</RWS_Col_Raids>
-  <RWS_Col_Killed>убитый</RWS_Col_Killed>
-  <RWS_Col_Endings>Завершение</RWS_Col_Endings>
+  <RWS_Col_LastWealth>Итоговое богатство</RWS_Col_LastWealth>
+  <RWS_Col_Raids>Налёты</RWS_Col_Raids>
+  <RWS_Col_Killed>Погибло</RWS_Col_Killed>
+  <RWS_Col_Endings>Концовки</RWS_Col_Endings>
   <RWS_Col_Versions>Версии</RWS_Col_Versions>
-  <RWS_Col_Saves>Импортные скидки</RWS_Col_Saves>
-  <RWS_Col_LastPlayed>Последний раз играл</RWS_Col_LastPlayed>
-  <RWS_Col_File>Файлы</RWS_Col_File>
+  <RWS_Col_Saves>Импортировано сохранений</RWS_Col_Saves>
+  <RWS_Col_LastPlayed>Последняя игра</RWS_Col_LastPlayed>
+  <RWS_Col_File>Файл</RWS_Col_File>
   <RWS_Col_Version>Версия</RWS_Col_Version>
-  <RWS_Col_Superseded>переписанный</RWS_Col_Superseded>
+  <RWS_Col_Superseded>Перезаписано</RWS_Col_Superseded>
   <RWS_Col_FilePresent>Исходный файл</RWS_Col_FilePresent>
-  <RWS_Exclude>Исключать</RWS_Exclude>
-  <RWS_ExcludeTip>Проверенная колония остается в списке, но не включена во все итоговые данные.</RWS_ExcludeTip>
-  <RWS_Yes>Да.</RWS_Yes>
-  <RWS_No>Нет.</RWS_No>
-  <RWS_FileMissing>Файл пропал</RWS_FileMissing>
-  <RWS_LiveRecord>(записано в игре)</RWS_LiveRecord>
-  <RWS_Rescan>сканировать</RWS_Rescan>
+  <RWS_Exclude>Исключить</RWS_Exclude>
+  <RWS_ExcludeTip>Отмеченная колония остаётся в списке, но не учитывается ни в одном итоге.</RWS_ExcludeTip>
+  <RWS_Yes>Да</RWS_Yes>
+  <RWS_No>Нет</RWS_No>
+  <RWS_FileMissing>Файл отсутствует</RWS_FileMissing>
+  <RWS_LiveRecord>(записано во время игры)</RWS_LiveRecord>
+  <RWS_Rescan>Пересканировать</RWS_Rescan>
   <RWS_Cancel>Отмена</RWS_Cancel>
-  <RWS_HistoricalIntervals_Title>Исторические интервалы сохранения</RWS_HistoricalIntervals_Title>
-  <RWS_HistoricalIntervals_Explanation>Частичные доказательства из непосредственно связанных сейвов. Каждая строка показывает изменение между сохраненными клещами. Вилки остаются отдельными, и эти строки исключаются из пожизненных итогов.</RWS_HistoricalIntervals_Explanation>
-  <RWS_HistoricalIntervals_Empty>Никаких напрямую связанных сейвов с подтвержденным увеличением обнаружено не было.</RWS_HistoricalIntervals_Empty>
-  <RWS_HistoricalIntervals_Error>Исторические интервалы читать было нельзя.</RWS_HistoricalIntervals_Error>
-  <RWS_HistoricalIntervals_ParentSave>Родитель спасает</RWS_HistoricalIntervals_ParentSave>
-  <RWS_HistoricalIntervals_ChildSave>Ребенок спасает</RWS_HistoricalIntervals_ChildSave>
-  <RWS_HistoricalIntervals_Start>Из игры Tick</RWS_HistoricalIntervals_Start>
-  <RWS_HistoricalIntervals_End>Сквозь игровой клещ</RWS_HistoricalIntervals_End>
-  <RWS_HistoricalIntervals_Raids>Вражеские рейды добавлены</RWS_HistoricalIntervals_Raids>
-  <RWS_HistoricalIntervals_Deaths>Смертность колонистов добавлена</RWS_HistoricalIntervals_Deaths>
+  <RWS_HistoricalIntervals_Title>Интервалы между прошлыми сохранениями</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>Частичные данные из напрямую связанных сохранений. Каждая строка показывает изменение между двумя сохранёнными тиками. Ответвления учитываются отдельно, а эти строки не добавляются к общим итогам.</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>Напрямую связанных сохранений с подтверждённым ростом не найдено.</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>Не удалось прочитать интервалы между прошлыми сохранениями.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>Предыдущее сохранение</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>Следующее сохранение</RWS_HistoricalIntervals_ChildSave>
+  <RWS_HistoricalIntervals_Start>С тика</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>По тик</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>Добавилось налётов</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>Добавилось смертей поселенцев</RWS_HistoricalIntervals_Deaths>
   <RWS_Import_LastScan>Последнее сканирование: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>никогда</RWS_Import_Never>
-  <RWS_Import_NotRunThisSession>Никакого импорта на этой сессии еще не было.</RWS_Import_NotRunThisSession>
-  <RWS_Import_Counts>Прочитано: {0} / пропущено: {1} / ошибок: {2}</RWS_Import_Counts>
+  <RWS_Import_NotRunThisSession>В этом сеансе импорт ещё не выполнялся.</RWS_Import_NotRunThisSession>
+  <RWS_Import_Counts>Прочитано: {0} / пропущено: {1} / с ошибкой: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (прервано)</RWS_Import_CancelledMark>
-  <RWS_Import_Error>Ошибка импорта: {0}</RWS_Import_Error>
-  <RWS_Import_Progress>{0} / {1} (ошибок: {2}) {3}</RWS_Import_Progress>
-  <RWS_Import_ProfilePath>Запись: {0}</RWS_Import_ProfilePath>
-  <RWS_Import_LoadSource>Загружено: {0}</RWS_Import_LoadSource>
-  <RWS_Import_CorruptRenamed>Поврежденный файл сохранился как {0}.</RWS_Import_CorruptRenamed>
-  <RWS_Import_ReadOnly>В файл записи этой сессии ничего не записано.</RWS_Import_ReadOnly>
-  <RWS_Import_Backups>Резервное копирование: {0} из 3</RWS_Import_Backups>
-  <RWS_Import_SaveError>Не удалось записать рекордный файл: {0}</RWS_Import_SaveError>
-  <RWS_Import_Problems>Сбережения, которые не удалось или не удалось идентифицировать ({0})</RWS_Import_Problems>
-  <RWS_LoadSource_Primary>файл записи</RWS_LoadSource_Primary>
+  <RWS_Import_Error>Импорт не удался: {0}</RWS_Import_Error>
+  <RWS_Import_Progress>{0} / {1} (с ошибкой: {2}) {3}</RWS_Import_Progress>
+  <RWS_Import_ProfilePath>Файл записей: {0}</RWS_Import_ProfilePath>
+  <RWS_Import_LoadSource>Загружено из: {0}</RWS_Import_LoadSource>
+  <RWS_Import_CorruptRenamed>Повреждённый файл сохранён как {0}.</RWS_Import_CorruptRenamed>
+  <RWS_Import_ReadOnly>В этом сеансе в файл записей ничего не записывается.</RWS_Import_ReadOnly>
+  <RWS_Import_Backups>Резервные копии: {0} из 3</RWS_Import_Backups>
+  <RWS_Import_SaveError>Не удалось записать файл записей: {0}</RWS_Import_SaveError>
+  <RWS_Import_Problems>Сохранения с ошибками или нераспознанные ({0})</RWS_Import_Problems>
+  <RWS_LoadSource_Primary>файл записей</RWS_LoadSource_Primary>
   <RWS_LoadSource_Backup1>резервная копия 1</RWS_LoadSource_Backup1>
-  <RWS_LoadSource_Backup2>Резервное копирование 2</RWS_LoadSource_Backup2>
-  <RWS_LoadSource_Backup3>Резервное копирование 3</RWS_LoadSource_Backup3>
-  <RWS_LoadSource_Empty>Новый (пустый)</RWS_LoadSource_Empty>
-  <RWS_LoadSource_NewerSchema>Запись файла из новой версии (только для чтения)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>неудачный</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>неопознаваемый</RWS_Status_Unidentifiable>
-  <RWS_Loading>Статистика загрузки...</RWS_Loading>
-  <RWS_WealthCoverage>Данные о богатстве из {0} колоний ({1} без данных).</RWS_WealthCoverage>
-  <RWS_Source_RecoveredLineage>Восстановленный из сейва (режим разработчика неизвестен, исключен из итогов)</RWS_Source_RecoveredLineage>
-  <RWS_Tab_Details>Подробности</RWS_Tab_Details>
+  <RWS_LoadSource_Backup2>резервная копия 2</RWS_LoadSource_Backup2>
+  <RWS_LoadSource_Backup3>резервная копия 3</RWS_LoadSource_Backup3>
+  <RWS_LoadSource_Empty>новый (пустой)</RWS_LoadSource_Empty>
+  <RWS_LoadSource_NewerSchema>файл записей более новой версии (только чтение)</RWS_LoadSource_NewerSchema>
+  <RWS_Status_Error>ошибка</RWS_Status_Error>
+  <RWS_Status_Unidentifiable>не распознано</RWS_Status_Unidentifiable>
+  <RWS_Loading>Загрузка статистики…</RWS_Loading>
+  <RWS_WealthCoverage>Колоний с данными о богатстве: {0} (без данных: {1}).</RWS_WealthCoverage>
+  <RWS_Source_RecoveredLineage>Восстановлено из сохранения (режим разработчика неизвестен, исключено из итогов)</RWS_Source_RecoveredLineage>
+  <RWS_Tab_Details>Подробно</RWS_Tab_Details>
   <RWS_Details_AllColonies>Все колонии</RWS_Details_AllColonies>
   <RWS_Details_PerColony>Одна колония</RWS_Details_PerColony>
   <RWS_Details_AllCategories>Все категории</RWS_Details_AllCategories>
-  <RWS_Details_Search>фильтр</RWS_Details_Search>
-  <RWS_Details_Col_Name>Статистика</RWS_Details_Col_Name>
-  <RWS_Details_Col_Value>ценность</RWS_Details_Col_Value>
-  <RWS_Details_Col_State>Источник / State</RWS_Details_Col_State>
-  <RWS_Details_Col_Colonies>Известные / Колонии</RWS_Details_Col_Colonies>
-  <RWS_Details_Col_Through>Наблюдение за</RWS_Details_Col_Through>
-  <RWS_Details_ThroughTip>В игре день сохранения ценности исходит от.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>Из {0} колоний (исключено из итогов: {1}). Значения вычисляются из импортных сейвов и могут включать в себя то, что произошло через действия режима разработчика.</RWS_Details_Note>
-  <RWS_Details_Unattributed>{0} наблюдений, которые не могли быть сопоставлены с одной колонией, не включены.</RWS_Details_Unattributed>
-  <RWS_Details_NoMatch>Никаких статистических совпадений.</RWS_Details_NoMatch>
-  <RWS_Details_UnrankedTop>Победитель категории не может быть установлен</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Ни одна из выбранных колоний не применима к этой метрике; недостающий DLC может объяснить это только при поддержке сохраненного инвентаря DLC.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>0 подходящих колоний имеют захваченное значение. Причина неподтверждена: сбор может быть отключен или опоздал, событие может не быть захвачено, или исторический импорт может быть неподдерживаемым. Не заменяйте ноль.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Только некоторые подходящие колонии имеют захваченное значение.Другие неизвестны, а не ноль; комбинированное значение может быть частичным.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Все подходящие колонии имеют захваченное значение. Это само по себе не доказывает полную кампанию или проверку реальной игры.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Захваченное значение может охватывать только часть кампании. Не интерпретируйте его как проверенную общую продолжительность жизни.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Количество, суммируемое по типу в независимо выбранных колониях; ранжирование может быть частичным, если какая-либо зарегистрированная поломка отсутствует.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Измеренный вклад этой колонии в выбранный тип.Неуказанные или отсутствующие колонии не предполагались нулевыми.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Это может отражать сохранение данных до приобретения, отключения сбора или недоступных исходных данных. Прошлые события не должны быть загружены как ноль.</RWS_Details_MissingAcquisitionTip>
-  <RWS_Details_NotReached>не достигнута</RWS_Details_NotReached>
+  <RWS_Details_Search>Фильтр</RWS_Details_Search>
+  <RWS_Details_Col_Name>Показатель</RWS_Details_Col_Name>
+  <RWS_Details_Col_Value>Значение</RWS_Details_Col_Value>
+  <RWS_Details_Col_State>Источник / состояние</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>Известно / колоний</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>Наблюдение</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>Игровой день сохранения, из которого взято значение.</RWS_Details_ThroughTip>
+  <RWS_Details_Note>Колоний: {0} (исключено из итогов: {1}). Значения рассчитываются по импортированным сохранениям и могут включать события, вызванные действиями в режиме разработчика.</RWS_Details_Note>
+  <RWS_Details_Unattributed>Не учтено наблюдений, которые не удалось отнести к одной колонии: {0}.</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>Подходящих показателей нет.</RWS_Details_NoMatch>
+  <RWS_Details_UnrankedTop>Нет единственной лидирующей категории</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>Этот показатель не относится ни к одной из выбранных колоний. Отсутствие DLC указывается как причина, только если это подтверждает список DLC, записанный в сохранении.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Ни у одной из подходящих колоний нет записанного значения. Причина не подтверждена: сбор данных мог быть отключён или начат поздно, событие могло не записаться, либо импорт старых сохранений может не поддерживаться. Это не то же самое, что ноль.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>Записанное значение есть лишь у некоторых подходящих колоний. Остальные неизвестны, а не равны нулю, поэтому общее значение может быть неполным.</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>У всех подходящих колоний есть записанное значение. Само по себе это не означает, что охвачена вся игра или что значение проверено в реальной игре.</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>Записанное значение может охватывать только часть игры. Не считайте его проверенным итогом за всё время.</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>Количества, просуммированные по типам среди независимо выбранных колоний. Рейтинг может быть неполным, если у какой-либо колонии нет разбивки.</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>Измеренный вклад этой колонии в выбранный тип. Колонии, которых нет в списке или у которых нет данных, не считаются равными нулю.</RWS_Cross_ContributionExplanation>
+  <RWS_Details_MissingAcquisitionTip>Возможные причины: сохранения сделаны до начала сбора данных, сбор был отключён или исходные данные недоступны. Прошлые события не заполняются нулями.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_NotReached>Не достигнуто</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(неизвестно)</RWS_Details_UnknownBucket>
-  <RWS_Details_Tip_Source>Источник: {0} / Состояние: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>Наблюдается в игровой день {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Измеряется от: начало игры</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>Государство в момент сбережения.</RWS_Details_Tip_StartSnapshot>
-  <RWS_Details_Tip_Observations>Наблюдения за этой колонией: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>Известен {1} колоний из {0}.</RWS_Details_Tip_Colonies>
-  <RWS_Details_Tip_Holder>Ведущий: {0}</RWS_Details_Tip_Holder>
-  <RWS_Details_Tip_Samples>Образцы: {0}</RWS_Details_Tip_Samples>
-  <RWS_Details_Tip_Ratio>Номер {0} ÷ знаменатель {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Нет никаких данных, на которых можно было бы основываться (сохранение прочитанного перед этой версией, отсутствующий файл, неподдерживаемая версия игры или нечитаемые данные).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Леджер: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Source>Источник: {0} / состояние: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>Наблюдение на игровой день {0}.</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Отсчёт: с начала игры</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>Состояние на момент сохранения.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Observations>Наблюдений этой колонии: {0}</RWS_Details_Tip_Observations>
+  <RWS_Details_Tip_Colonies>Известно для колоний: {1} из {0}.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>Рекордсмен: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>Выборка: {0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Ratio>Числитель {0} ÷ знаменатель {1}</RWS_Details_Tip_Ratio>
+  <RWS_Details_Tip_Unknown>Нет данных, на которые можно опереться (сохранения прочитаны до этой версии, файл отсутствует, версия игры не поддерживается или данные нечитаемы).</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>Реестр: {0} ({1})</RWS_Details_Tip_Ledger>
   <RWS_Unit_Days>{0} дн.</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / год</RWS_Unit_PerYear>
-  <RWS_Category_Wealth>богатство</RWS_Category_Wealth>
+  <RWS_Category_Wealth>Богатство</RWS_Category_Wealth>
   <RWS_Category_Population>Население и настроение</RWS_Category_Population>
-  <RWS_Category_Defense>Рейды и оборона</RWS_Category_Defense>
-  <RWS_Category_Quests>Квесты</RWS_Category_Quests>
-  <RWS_Category_Colony>колония</RWS_Category_Colony>
+  <RWS_Category_Defense>Налёты и оборона</RWS_Category_Defense>
+  <RWS_Category_Quests>Задания</RWS_Category_Quests>
+  <RWS_Category_Colony>Колония</RWS_Category_Colony>
   <RWS_Category_Rankings>Рейтинги</RWS_Category_Rankings>
-  <RWS_Provenance_VanillaCounter>игровой автомат</RWS_Provenance_VanillaCounter>
-  <RWS_Provenance_SaveHistory>Сохранить график истории</RWS_Provenance_SaveHistory>
-  <RWS_Provenance_SaveSnapshot>Государство в спасении</RWS_Provenance_SaveSnapshot>
-  <RWS_Provenance_LiveAggregate>Запись во время игры</RWS_Provenance_LiveAggregate>
-  <RWS_Coverage_Complete>полный</RWS_Coverage_Complete>
-  <RWS_Coverage_Partial>частичный (пробелы)</RWS_Coverage_Partial>
-  <RWS_Coverage_History>Историческое наблюдение</RWS_Coverage_History>
-  <RWS_Coverage_SnapshotOnly>Спасенный</RWS_Coverage_SnapshotOnly>
-  <RWS_Coverage_Unknown>неизвестный</RWS_Coverage_Unknown>
-  <RWS_Coverage_NotApplicable>не применимо</RWS_Coverage_NotApplicable>
-  <RWS_Metric_WealthItemsPeak>Пиковая статья Богатство</RWS_Metric_WealthItemsPeak>
-  <RWS_MetricDesc_WealthItemsPeak>Самый большой предмет богатства в истории граф (одно наблюдение за полдня). Все колонии: единичные высшие.</RWS_MetricDesc_WealthItemsPeak>
-  <RWS_Metric_WealthItemsLatest>Последний пункт богатства</RWS_Metric_WealthItemsLatest>
-  <RWS_MetricDesc_WealthItemsLatest>Богатство предметов при последнем историческом наблюдении Все колонии: сумма.</RWS_MetricDesc_WealthItemsLatest>
-  <RWS_Metric_WealthBuildingsPeak>Пик созидания богатства</RWS_Metric_WealthBuildingsPeak>
-  <RWS_MetricDesc_WealthBuildingsPeak>Крупнейшее строительное богатство в истории граф. Все колонии: единичные высшие.</RWS_MetricDesc_WealthBuildingsPeak>
-  <RWS_Metric_WealthBuildingsLatest>Последние строительные богатства</RWS_Metric_WealthBuildingsLatest>
-  <RWS_MetricDesc_WealthBuildingsLatest>Созидание богатства при последнем историческом наблюдении. Все колонии: сумма.</RWS_MetricDesc_WealthBuildingsLatest>
-  <RWS_Metric_WealthPawnsPeak>Пиковое богатство персонажа</RWS_Metric_WealthPawnsPeak>
-  <RWS_MetricDesc_WealthPawnsPeak>Наибольшее богатство персонажей и животных в истории графа Все колонии: единичные высшие.</RWS_MetricDesc_WealthPawnsPeak>
-  <RWS_Metric_WealthPawnsLatest>Последнее богатство персонажа</RWS_Metric_WealthPawnsLatest>
-  <RWS_MetricDesc_WealthPawnsLatest>Богатство персонажей и животных при последнем историческом наблюдении Все колонии: сумма.</RWS_MetricDesc_WealthPawnsLatest>
-  <RWS_Metric_WealthTotalMean>Полное богатство (наблюдается)</RWS_Metric_WealthTotalMean>
-  <RWS_MetricDesc_WealthTotalMean>Средство действительных наблюдений за совокупным богатством.Все колонии: взвешены по количеству наблюдений.</RWS_MetricDesc_WealthTotalMean>
-  <RWS_Metric_WealthTotalFirst>Начало богатства (первое наблюдение)</RWS_Metric_WealthTotalFirst>
-  <RWS_MetricDesc_WealthTotalFirst>Полное богатство при первом наблюдении истории, которая завершена с самого начала.</RWS_MetricDesc_WealthTotalFirst>
-  <RWS_Metric_WealthTotalNet>Изменение чистого богатства (последнее - первое)</RWS_Metric_WealthTotalNet>
-  <RWS_MetricDesc_WealthTotalNet>Общее богатство при последнем наблюдении минус первое; отрицательное, если оно упало.Все колонии: сумма.</RWS_MetricDesc_WealthTotalNet>
-  <RWS_Metric_WealthTotalPeakDay>День пикового богатства (День наблюдения)</RWS_Metric_WealthTotalPeakDay>
-  <RWS_MetricDesc_WealthTotalPeakDay>Номинальный день первого наблюдения на пике общего богатства (одно наблюдение за полдня).</RWS_MetricDesc_WealthTotalPeakDay>
-  <RWS_Metric_WealthTotalMaxGainHalfDay>Наибольший прирост богатства за полдня (наблюдается)</RWS_Metric_WealthTotalMaxGainHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>Наибольший рост совокупного богатства между двумя последовательными наблюдениями; 0, если он никогда не поднимался.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
-  <RWS_Metric_WealthTotalMaxLossHalfDay>Наибольшая потеря богатства за полдня (наблюдается)</RWS_Metric_WealthTotalMaxLossHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Наибольшее падение совокупного богатства между двумя последовательными наблюдениями; 0, если оно никогда не падало.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
-  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Самый большой показатель потери богатства за полдня (наблюдается)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Самые большие (до − после) ÷ перед двумя последовательными наблюдениями, исключая интервалы, начинающиеся с 0.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
-  <RWS_Metric_WealthTotalMaxGain15D>Самый большой 15-дневный прирост богатства (наблюдается)</RWS_Metric_WealthTotalMaxGain15D>
-  <RWS_MetricDesc_WealthTotalMaxGain15D>Наибольшее увеличение общего богатства между наблюдениями с интервалом 30 (15 дней); периоды с разрывом не используются.</RWS_MetricDesc_WealthTotalMaxGain15D>
-  <RWS_Metric_WealthTotalMaxLoss15D>Крупнейшая 15-дневная потеря богатства (наблюдается)</RWS_Metric_WealthTotalMaxLoss15D>
-  <RWS_MetricDesc_WealthTotalMaxLoss15D>Наибольшее падение общего богатства между наблюдениями с интервалом 30 (15 дней); периоды с разрывом не используются.</RWS_MetricDesc_WealthTotalMaxLoss15D>
-  <RWS_Metric_WealthTotalMaxGrowthRateYear>Наибольший годовой прирост богатства (наблюдается)</RWS_Metric_WealthTotalMaxGrowthRateYear>
-  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Самый большой (после − до) ÷ перед наблюдениями 120 раздельно (один год); отрицательный, если богатство всегда падало.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
-  <RWS_Metric_WealthTotalLongestGrowth>Самая длинная полоса роста богатства (наблюдается)</RWS_Metric_WealthTotalLongestGrowth>
-  <RWS_MetricDesc_WealthTotalLongestGrowth>Самый длинный цикл наблюдений, в котором общее богатство росло каждый раз; равные ценности и пробелы заканчиваются бегством.</RWS_MetricDesc_WealthTotalLongestGrowth>
-  <RWS_Metric_WealthTotalFirst100K>Достигнуто 100 000 богатства (день наблюдений)</RWS_Metric_WealthTotalFirst100K>
-  <RWS_MetricDesc_WealthTotalFirst100K>Номинальный день первого наблюдения с общим богатством 100 000 и более.Все колонии: самые ранние.</RWS_MetricDesc_WealthTotalFirst100K>
-  <RWS_Metric_WealthTotalFirst1M>Богатство 1 000 000 человек (день наблюдения)</RWS_Metric_WealthTotalFirst1M>
-  <RWS_MetricDesc_WealthTotalFirst1M>Номинальный день первого наблюдения с общим богатством 1 000 000 и более.Все колонии: самые ранние.</RWS_MetricDesc_WealthTotalFirst1M>
-  <RWS_Metric_WealthBuildingsMaxShare>Самая большая доля богатства в строительстве (наблюдается)</RWS_Metric_WealthBuildingsMaxShare>
-  <RWS_MetricDesc_WealthBuildingsMaxShare>Самое большое строительное богатство — общее богатство при том же наблюдении.</RWS_MetricDesc_WealthBuildingsMaxShare>
-  <RWS_Metric_FreeColonistsMean>Значимые колонисты (наблюдается)</RWS_Metric_FreeColonistsMean>
-  <RWS_MetricDesc_FreeColonistsMean>Средний из наблюдаемого числа свободных колонистов.Все колонии: взвешены по количеству наблюдений.</RWS_MetricDesc_FreeColonistsMean>
-  <RWS_Metric_FreeColonistsMin>Юго-западные колонисты (наблюдается)</RWS_Metric_FreeColonistsMin>
-  <RWS_MetricDesc_FreeColonistsMin>Наименьшее наблюдаемое число свободных колонистов Все колонии: наименьшее.</RWS_MetricDesc_FreeColonistsMin>
-  <RWS_Metric_FreeColonistsFirst10>Достигнуты 10 колонистов (день наблюдений)</RWS_Metric_FreeColonistsFirst10>
-  <RWS_MetricDesc_FreeColonistsFirst10>Номинальный день первого наблюдения с 10 и более свободными колонистами Все колонии: самые ранние.</RWS_MetricDesc_FreeColonistsFirst10>
-  <RWS_Metric_PrisonersPeak>Большинство заключенных (наблюдается)</RWS_Metric_PrisonersPeak>
-  <RWS_MetricDesc_PrisonersPeak>Наибольшее количество заключенных.</RWS_MetricDesc_PrisonersPeak>
-  <RWS_Metric_PrisonersMean>Средние заключенные (наблюдается)</RWS_Metric_PrisonersMean>
-  <RWS_MetricDesc_PrisonersMean>Средство наблюдаемого числа заключенных.Все колонии: взвешенное по количеству наблюдений.</RWS_MetricDesc_PrisonersMean>
-  <RWS_Metric_MoodMean>Настроение колонистов (наблюдается)</RWS_Metric_MoodMean>
-  <RWS_MetricDesc_MoodMean>Среднее наблюдаемое среднее настроение колонистов (0-100). 0, зарегистрированное, когда колонистов нет, считается пропавшим без вести.</RWS_MetricDesc_MoodMean>
-  <RWS_Metric_MoodMin>Низкое колонистское настроение (наблюдается)</RWS_Metric_MoodMin>
-  <RWS_MetricDesc_MoodMin>Наименьшее достоверное наблюдение среднего настроения колонистов.</RWS_MetricDesc_MoodMin>
-  <RWS_Metric_MoodMax>Высочайшее колонистское настроение (наблюдается)</RWS_Metric_MoodMax>
-  <RWS_MetricDesc_MoodMax>Наиболее достоверное наблюдение среднего настроения колонистов.</RWS_MetricDesc_MoodMax>
-  <RWS_Metric_MoodBelow50Days>Дни с настроением ниже 50% (наблюдается)</RWS_Metric_MoodBelow50Days>
-  <RWS_MetricDesc_MoodBelow50Days>Полудневные интервалы с обоими концами действительны, начальное настроение которых ниже 50, ÷ 2.Все колонии: сумма.</RWS_MetricDesc_MoodBelow50Days>
-  <RWS_Metric_MoodAtLeast80Days>Дни с настроением 80% и более (наблюдается)</RWS_Metric_MoodAtLeast80Days>
-  <RWS_MetricDesc_MoodAtLeast80Days>Полудневные интервалы с обоими концами действительны, начальное настроение которых составляет 80 и более, ÷ 2.Все колонии: сумма.</RWS_MetricDesc_MoodAtLeast80Days>
-  <RWS_Metric_DeathsPerYear>Смертность колонистов в год</RWS_Metric_DeathsPerYear>
-  <RWS_MetricDesc_DeathsPerYear>Колонистские смерти ÷ истекшие годы (1 год = 60 дней) в одном и том же спасении.Все колонии: общие смерти ÷ общие годы.</RWS_MetricDesc_DeathsPerYear>
-  <RWS_Metric_RaidsPerYear>Вражеские рейды в год</RWS_Metric_RaidsPerYear>
-  <RWS_MetricDesc_RaidsPerYear>Вражеские набеги — прошедшие годы (1 год = 60 дней) в одном и том же спасении Все колонии: полные набеги — полные годы.</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Provenance_VanillaCounter>счётчик игры</RWS_Provenance_VanillaCounter>
+  <RWS_Provenance_SaveHistory>график истории в сохранении</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>состояние в сохранении</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>записано во время игры</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>полностью</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>частично (есть пробелы)</RWS_Coverage_Partial>
+  <RWS_Coverage_History>наблюдение по истории</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>на момент сохранения</RWS_Coverage_SnapshotOnly>
+  <RWS_Coverage_Unknown>неизвестно</RWS_Coverage_Unknown>
+  <RWS_Coverage_NotApplicable>неприменимо</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>Пиковое богатство в предметах</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>Наибольшее богатство в предметах на графике истории (одно наблюдение за полдня). Все колонии: наибольшее значение.</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>Последнее богатство в предметах</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>Богатство в предметах при последнем наблюдении истории. Все колонии: сумма.</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>Пиковое богатство в постройках</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>Наибольшее богатство в постройках на графике истории. Все колонии: наибольшее значение.</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>Последнее богатство в постройках</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>Богатство в постройках при последнем наблюдении истории. Все колонии: сумма.</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>Пиковое богатство в существах</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>Наибольшее богатство в людях и животных на графике истории. Все колонии: наибольшее значение.</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>Последнее богатство в существах</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>Богатство в людях и животных при последнем наблюдении истории. Все колонии: сумма.</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>Среднее общее богатство (по наблюдениям)</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>Среднее по корректным наблюдениям общего богатства. Все колонии: с весом по числу наблюдений.</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>Начальное богатство (первое наблюдение)</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>Общее богатство при первом наблюдении истории, полной с самого начала. Только по отдельной колонии.</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>Чистое изменение богатства (последнее − первое)</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>Общее богатство при последнем наблюдении минус при первом; отрицательно, если оно уменьшилось. Все колонии: сумма.</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>День пикового богатства (день наблюдения)</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>Номинальный день первого наблюдения с наибольшим общим богатством (одно наблюдение за полдня). Только по отдельной колонии.</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>Наибольший рост богатства за полдня (по наблюдениям)</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>Наибольший рост общего богатства между двумя соседними наблюдениями; 0, если оно ни разу не росло.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>Наибольшая потеря богатства за полдня (по наблюдениям)</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Наибольшее снижение общего богатства между двумя соседними наблюдениями; 0, если оно ни разу не снижалось.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Наибольшая доля потери за полдня (по наблюдениям)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Наибольшее значение (до − после) ÷ до между двумя соседними наблюдениями; интервалы, начинающиеся с 0, не учитываются.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>Наибольший рост богатства за 15 дней (по наблюдениям)</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>Наибольший рост общего богатства между наблюдениями с разницей в 30 (15 дней); периоды с пропусками не используются.</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>Наибольшая потеря богатства за 15 дней (по наблюдениям)</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>Наибольшее снижение общего богатства между наблюдениями с разницей в 30 (15 дней); периоды с пропусками не используются.</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>Наибольший рост богатства за год (по наблюдениям)</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Наибольшее значение (после − до) ÷ до между наблюдениями с разницей в 120 (один год); отрицательно, если богатство всё время снижалось.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>Самая долгая серия роста богатства (по наблюдениям)</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>Самая длинная последовательность наблюдений, в которой общее богатство каждый раз росло; неизменившееся значение или пропуск прерывают серию.</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>Достигнуто богатство 100 000 (день наблюдения)</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>Номинальный день первого наблюдения с общим богатством 100 000 или больше. Все колонии: самый ранний.</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>Достигнуто богатство 1 000 000 (день наблюдения)</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>Номинальный день первого наблюдения с общим богатством 1 000 000 или больше. Все колонии: самый ранний.</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>Наибольшая доля построек в богатстве (по наблюдениям)</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>Наибольшее значение богатства в постройках ÷ общего богатства в одном наблюдении.</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>Среднее число поселенцев (по наблюдениям)</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>Среднее наблюдаемое число свободных поселенцев. Все колонии: с весом по числу наблюдений.</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>Наименьшее число поселенцев (по наблюдениям)</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>Наименьшее наблюдаемое число свободных поселенцев. Все колонии: наименьшее.</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_FreeColonistsFirst10>Достигнуто 10 поселенцев (день наблюдения)</RWS_Metric_FreeColonistsFirst10>
+  <RWS_MetricDesc_FreeColonistsFirst10>Номинальный день первого наблюдения с 10 или более свободными поселенцами. Все колонии: самый ранний.</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>Наибольшее число пленников (по наблюдениям)</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>Наибольшее наблюдаемое число пленников.</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>Среднее число пленников (по наблюдениям)</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>Среднее наблюдаемое число пленников. Все колонии: с весом по числу наблюдений.</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>Среднее настроение поселенцев (по наблюдениям)</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>Среднее по наблюдениям среднего настроения поселенцев (0–100). Ноль, записанный при отсутствии поселенцев, считается пропуском. Без учёта числа поселенцев.</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>Самое низкое настроение поселенцев (по наблюдениям)</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>Самое низкое корректное наблюдение среднего настроения поселенцев.</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>Самое высокое настроение поселенцев (по наблюдениям)</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>Самое высокое корректное наблюдение среднего настроения поселенцев.</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>Дни с настроением ниже 50% (по наблюдениям)</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>Число полусуточных интервалов с корректными концами, в начале которых настроение ниже 50, ÷ 2. Все колонии: сумма.</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>Дни с настроением от 80% (по наблюдениям)</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>Число полусуточных интервалов с корректными концами, в начале которых настроение 80 или выше, ÷ 2. Все колонии: сумма.</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>Смерти поселенцев в год</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>Смерти поселенцев ÷ прошедшие годы (1 год = 60 дней) в том же сохранении. Все колонии: все смерти ÷ все годы.</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>Налёты врагов в год</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>Налёты врагов ÷ прошедшие годы (1 год = 60 дней) в том же сохранении. Все колонии: все налёты ÷ все годы.</RWS_MetricDesc_RaidsPerYear>
   <RWS_Metric_ModsLatest>Моды (последнее сохранение)</RWS_Metric_ModsLatest>
-  <RWS_MetricDesc_ModsLatest>Активные моди, перечисленные в последнем сейфе, включая Core и DLC. Только одна колония.</RWS_MetricDesc_ModsLatest>
-  <RWS_Metric_ModsPeak>Большинство модов</RWS_Metric_ModsPeak>
-  <RWS_MetricDesc_ModsPeak>Большинство модов в любом импортном сейфе этой колонии.</RWS_MetricDesc_ModsPeak>
-  <RWS_Metric_ModsMin>Моды Fewest</RWS_Metric_ModsMin>
-  <RWS_MetricDesc_ModsMin>Наименьшее количество модов в любом импортном сейфе этой колонии.</RWS_MetricDesc_ModsMin>
+  <RWS_MetricDesc_ModsLatest>Активные моды, перечисленные в последнем сохранении, включая Core и DLC. Только по отдельной колонии.</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>Наибольшее число модов</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>Наибольшее число модов в одном из импортированных сохранений этой колонии. Только по отдельной колонии.</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>Наименьшее число модов</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>Наименьшее число модов в одном из импортированных сохранений этой колонии. Только по отдельной колонии.</RWS_MetricDesc_ModsMin>
   <RWS_Metric_QuestSuccess>Квесты удались (сохранились)</RWS_Metric_QuestSuccess>
   <RWS_MetricDesc_QuestSuccess>Принятые квесты, которые увенчались успехом и до сих пор находятся в сейфе. Квесты, удаленные игрой, не подсчитываются.</RWS_MetricDesc_QuestSuccess>
   <RWS_Metric_QuestFailure>Квесты не удались (сохранились)</RWS_Metric_QuestFailure>
