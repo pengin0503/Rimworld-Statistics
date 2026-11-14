@@ -202,6 +202,7 @@
   "pending": [
     "In-game rendering/layout checks have not been performed.",
     "Native-speaker review has not been performed.",
-    "Full vanilla-language glossary was unavailable; official terms outside handoff §5 require review."
+    "Full vanilla-language glossary was unavailable; official terms outside handoff §5 require review.",
+    "Vanilla glossary generator was not run locally: source terminology cross-checked against handoff §5; some newly added MOD-specific terms remain without a verified official translation."
   ]
 }

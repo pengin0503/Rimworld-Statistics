@@ -1,0 +1,19 @@
+{
+  "RWS_Metric_CropBlights": "Mildiou",
+  "RWS_MetricDesc_CropBlights": "Incidents de mildiou déclenchés avec succès, et non le nombre de plantes atteintes.",
+  "RWS_MetricDesc_SettlementsFounded": "Nouvelles implantations du joueur fondées depuis une caravane ou une carte existante. L'implantation initiale, les déménagements de colonie et les atterrissages de vaisseaux gravitationnels ne comptent pas.",
+  "RWS_MetricDesc_SettlementsAbandoned": "Implantations du joueur abandonnées volontairement. Les suppressions automatiques, par exemple au décollage d'un vaisseau gravitationnel, sont exclues.",
+  "RWS_Metric_StockPersonaWeaponsPeak": "Maximum d'armes intelligentes possédées",
+  "RWS_MetricDesc_StockPersonaWeaponsPeak": "Nombre maximal d'armes intelligentes, équipées ou entreposées, sur les cartes d'habitation chargées lors d'une sauvegarde enregistrée.",
+  "RWS_Metric_RoyaltyPermitUses": "Licences royales utilisées",
+  "RWS_MetricDesc_RoyaltyPermitUses": "Licences royales réellement utilisées par un colon du joueur admissible. Les sélections annulées ne sont pas comptées.",
+  "RWS_Metric_OdysseyFlights": "Vols de vaisseau gravitationnel achevés",
+  "RWS_MetricDesc_OdysseyFlights": "Vols de vaisseau gravitationnel confirmés achevés par un atterrissage du joueur. Les décollages seuls et les aperçus d'itinéraires sont exclus.",
+  "RWS_Metric_OdysseyDistance": "Distance totale des vols de vaisseau gravitationnel",
+  "RWS_MetricDesc_OdysseyDistance": "Distance totale des vols de vaisseau gravitationnel achevés (confirmés par un atterrissage du joueur).",
+  "RWS_MetricDesc_OdysseyUniqueTiles": "Cases du monde distinctes où des vols de vaisseau gravitationnel achevés ont atterri.",
+  "RWS_MetricDesc_OdysseyNewMaps": "Atterrissages de vaisseau gravitationnel achevés ayant nécessité la génération d'une nouvelle carte.",
+  "RWS_NewMod_GravBoon": "Bonus de lancement de vaisseau gravitationnel",
+  "RWS_NewMod_GravBoonDesc": "Bonus de lancement appliqués aux vaisseaux gravitationnels du joueur, par type de bonus.",
+  "RWS_Metric_BiotechMechsCreated": "Mécanoïdes produits par gestation"
+}

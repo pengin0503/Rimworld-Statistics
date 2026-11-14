@@ -1,0 +1,10 @@
+{
+  "RWS_Metric_SolarFlares": "Llamaradas solares",
+  "RWS_MetricDesc_SolarFlares": "Llamaradas solares que comenzaron; las ya activas al comenzar el registro se excluyen.",
+  "RWS_Metric_SolarFlareDays": "Días de llamarada solar",
+  "RWS_MetricDesc_SolarFlareDays": "Días durante los cuales hubo al menos una llamarada solar activa; los períodos superpuestos se cuentan una sola vez. No mide los días que estuvo parado cada aparato.",
+  "RWS_Metric_ColdSnaps": "Frentes fríos",
+  "RWS_MetricDesc_ColdSnaps": "Frentes fríos que comenzaron.",
+  "RWS_Metric_RoyaltyPsylinkPeak": "Nivel máximo de psienlace",
+  "RWS_MetricDesc_RoyaltyPsylinkPeak": "Mayor nivel de psienlace de un colono observado en un guardado registrado. Requiere Royalty."
+}

@@ -1,0 +1,16 @@
+{
+  "RWS_Metric_ColdSnaps": "Kältewellen",
+  "RWS_MetricDesc_ColdSnaps": "Anzahl begonnener Kältewellen.",
+  "RWS_Metric_RosterPassions": "Hingabe nach Fertigkeit",
+  "RWS_MetricDesc_RosterPassions": "Hingabe freier Kolonisten (keine, gering, groß) je Fertigkeit beim erfolgreichen Speichern.",
+  "RWS_MetricDesc_StockMaterialsLatest": "Stahl, Komponenten und Hightech-Bauteile auf geladenen Heimatkarten, einschließlich Inventar von Pawns und Behältern, beim erfolgreichen Speichern; nach Art angezeigt.",
+  "RWS_Metric_StockPersonaWeaponsPeak": "Meiste Personawaffen",
+  "RWS_MetricDesc_StockPersonaWeaponsPeak": "Höchste Zahl von Personawaffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.",
+  "RWS_Metric_RoyaltyPsycasts": "Erfolgreich gewirkte mentale Kräfte",
+  "RWS_MetricDesc_RoyaltyPsycasts": "mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.",
+  "RWS_Metric_BiotechWasteCreated": "Produzierte Giftmüllsäcke",
+  "RWS_MetricDesc_BiotechWasteCreated": "Giftmüllsäcke, die durch tatsächlich abgeschlossene Produktionsprozesse des Spielers neu entstanden.",
+  "RWS_Metric_BiotechWasteDisposed": "Neutralisierte Giftmüllsäcke",
+  "RWS_MetricDesc_BiotechWasteDisposed": "Giftmüllsäcke, die durch abgeschlossene Neutralisierung durch den Spieler vernichtet wurden. Export und natürlicher Zerfall zählen nicht.",
+  "RWS_Metric_VpeCasts": "Gewirkte VPE-mentale Kräfte"
+}
