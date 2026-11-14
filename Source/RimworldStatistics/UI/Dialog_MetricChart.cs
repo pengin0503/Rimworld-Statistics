@@ -13,6 +13,7 @@ internal sealed class Dialog_MetricChart : Window
     private const float RowHeight = 34f;
     private readonly StatsView view;
     private readonly MetricDefinition definition;
+    private readonly string chartLabel;
     private readonly IReadOnlyList<MetricChartBar> colonyBars;
     private readonly IReadOnlyList<MetricChartBar> breakdownBars;
     private readonly IReadOnlyList<MetricChartBar> overallBars;
@@ -26,14 +27,31 @@ internal sealed class Dialog_MetricChart : Window
     internal Dialog_MetricChart(StatsView view, string metricKey, string? selectedColony)
     {
         this.view = view;
-        definition = MetricLookup.Definition(view, metricKey)
-            ?? throw new ArgumentException("Metric not found in the current view.", nameof(metricKey));
-        colonyBars = MetricChartSeries.ByColony(view.Numeric, metricKey);
-        IReadOnlyList<MetricChartBar> selected = selectedColony is null ? [] : MetricChartSeries.Breakdowns(view.Numeric, metricKey, selectedColony);
-        breakdownColony = selected.Count > 0 ? selectedColony : null;
-        breakdownBars = breakdownColony is null
-            ? MetricChartSeries.Breakdowns(view.Numeric, metricKey) : selected;
-        overallBars = MetricChartSeries.Overall(view.Numeric, metricKey);
+        if (BasicMetrics.Contains(metricKey))
+        {
+            definition = BasicDefinition(metricKey);
+            chartLabel = OverviewTab.BasicLabel(metricKey);
+            colonyBars = MetricChartSeries.BasicByColony(view.Stats, metricKey);
+            breakdownBars = [];
+            breakdownColony = null;
+            var overall = BasicMetrics.OverallValue(view.Stats, metricKey);
+            overallBars = overall is { } n && double.IsFinite(n)
+                ? [new MetricChartBar(metricKey, new NumericValue { Number = n, Coverage = MetricCoverage.SnapshotOnly })]
+                : [];
+        }
+        else
+        {
+            definition = MetricLookup.Definition(view, metricKey)
+                ?? throw new ArgumentException("Metric not found in the current view.", nameof(metricKey));
+            chartLabel = MetricText.Label(definition);
+            colonyBars = MetricChartSeries.ByColony(view.Numeric, metricKey);
+            IReadOnlyList<MetricChartBar> selected = selectedColony is null ? []
+                : MetricChartSeries.Breakdowns(view.Numeric, metricKey, selectedColony);
+            breakdownColony = selected.Count > 0 ? selectedColony : null;
+            breakdownBars = breakdownColony is null
+                ? MetricChartSeries.Breakdowns(view.Numeric, metricKey) : selected;
+            overallBars = MetricChartSeries.Overall(view.Numeric, metricKey);
+        }
         colonyRange = Range(colonyBars);
         breakdownRange = Range(breakdownBars);
         overallRange = Range(overallBars);
@@ -47,7 +65,7 @@ internal sealed class Dialog_MetricChart : Window
 
     public override void DoWindowContents(Rect rect)
     {
-        var title = (string)"RWS_Chart_Title".Translate(MetricText.Label(definition));
+        var title = (string)"RWS_Chart_Title".Translate(chartLabel);
         Text.Font = GameFont.Medium;
         Widgets.Label(new Rect(rect.x, rect.y, rect.width - 35f, 32f), title.Truncate(rect.width - 35f));
         Text.Font = GameFont.Small;
@@ -151,6 +169,22 @@ internal sealed class Dialog_MetricChart : Window
         Text.Anchor = anchor;
         Widgets.EndScrollView();
     }
+
+    private static MetricDefinition BasicDefinition(string key) => new()
+    {
+        Key = key, StoredKey = key, LedgerIds = key,
+        Category = MetricCategory.Colony,
+        Unit = key switch
+        {
+            BasicMetrics.Days => MetricUnit.Days,
+            BasicMetrics.RealPlayHours => MetricUnit.Hours,
+            BasicMetrics.PeakWealth or BasicMetrics.LastWealth => MetricUnit.Silver,
+            _ => MetricUnit.Count,
+        },
+        Provenance = MetricProvenance.SaveHistory,
+        Overall = OverallAggregation.Sum,
+        LabelKey = key, DescriptionKey = key,
+    };
 
     private static (double Min, double Max) Range(IReadOnlyList<MetricChartBar> bars)
     {
