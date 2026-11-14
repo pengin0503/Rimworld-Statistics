@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
-  <RWS_Setting_IncludeDevMode>Im Entwicklungsmodus aufgezeichnete Enden anzeigen und zählen</RWS_Setting_IncludeDevMode>
-  <RWS_Setting_AutoImport>Import speichert automatisch auf dem Titelbildschirm</RWS_Setting_AutoImport>
-  <RWS_Setting_WindowSize>Fenstergröße des Statistikfensters</RWS_Setting_WindowSize>
+  <RWS_Setting_IncludeDevMode>Im Entwicklermodus aufgezeichnete Spielenden anzeigen und mitzählen</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>Spielstände automatisch im Titelbildschirm importieren</RWS_Setting_AutoImport>
+  <RWS_Setting_WindowSize>Größe des Statistikfensters</RWS_Setting_WindowSize>
   <RWS_Setting_WindowSizeStandard>Standard (1000 × 720)</RWS_Setting_WindowSizeStandard>
   <RWS_Setting_WindowSizeLarge>Groß (1400 × 900)</RWS_Setting_WindowSizeLarge>
-  <RWS_Setting_WindowSizeExtraLarge>Extragroß (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
-  <RWS_Setting_WindowSizeFitScreen>Fit Screen (90 %)</RWS_Setting_WindowSizeFitScreen>
-  <RWS_Setting_WindowSizeHelp>Beim nächsten Öffnen der Statistik wird die Schriftgröße unverändert angewendet; übergroße Fenster passen auf den Bildschirm.</RWS_Setting_WindowSizeHelp>
+  <RWS_Setting_WindowSizeExtraLarge>Sehr groß (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>An Bildschirm anpassen (90 %)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>Wird beim nächsten Öffnen des Statistikfensters übernommen. Die Schriftgröße ändert sich nicht; ein Fenster, das größer als der Bildschirm ist, wird passend verkleinert.</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>Gesamtstatistik</RWS_MenuButton>
   <RWS_WindowTitle>Gesamtstatistik</RWS_WindowTitle>
   <RWS_WindowError>Das Statistikfenster konnte nicht angezeigt werden. Details stehen im Protokoll.</RWS_WindowError>
@@ -16,240 +16,240 @@
   <RWS_Tab_Endings>Spielenden</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Kolonien</RWS_Tab_Colonies>
   <RWS_Tab_Import>Datenverwaltung</RWS_Tab_Import>
-  <RWS_Export_Button>Export CSV · {0}</RWS_Export_Button>
-  <RWS_Export_Progress>Akten exportieren ({0}/{1})...</RWS_Export_Progress>
-  <RWS_Export_Error>CSV Export fehlgeschlagen: {0}</RWS_Export_Error>
-  <RWS_Export_Done>CSV gerettet bis {0}</RWS_Export_Done>
+  <RWS_Export_Button>CSV exportieren · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>Dateien werden exportiert ({0}/{1}) …</RWS_Export_Progress>
+  <RWS_Export_Error>CSV-Export fehlgeschlagen: {0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV gespeichert unter {0}</RWS_Export_Done>
   <RWS_Compare_Mode>Vergleichen</RWS_Compare_Mode>
-  <RWS_Compare_Add>Spalte hinzufügen...</RWS_Compare_Add>
+  <RWS_Compare_Add>Spalte hinzufügen …</RWS_Compare_Add>
   <RWS_Compare_Group>Gruppe</RWS_Compare_Group>
   <RWS_Compare_Colony>Kolonie</RWS_Compare_Colony>
-  <RWS_Compare_Remove>Säule entfernen</RWS_Compare_Remove>
-  <RWS_Stat_Days>In-Game-Tage</RWS_Stat_Days>
-  <RWS_Stat_Endings>Endungen erreicht</RWS_Stat_Endings>
-  <RWS_Stat_Departed>Kolonisten verließen</RWS_Stat_Departed>
-  <RWS_Stat_PeakWealthSum>Summe des Spitzenvermögens</RWS_Stat_PeakWealthSum>
+  <RWS_Compare_Remove>Spalte entfernen</RWS_Compare_Remove>
+  <RWS_Stat_Days>Spieltage</RWS_Stat_Days>
+  <RWS_Stat_Endings>Erreichte Spielenden</RWS_Stat_Endings>
+  <RWS_Stat_Departed>Abgereiste Kolonisten</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>Summe der Höchstvermögen</RWS_Stat_PeakWealthSum>
   <RWS_Stat_Colonies>Kolonien</RWS_Stat_Colonies>
   <RWS_Stat_RealPlay>Tatsächliche Spielzeit</RWS_Stat_RealPlay>
   <RWS_Stat_Raids>Feindliche Überfälle</RWS_Stat_Raids>
   <RWS_Stat_Threats>Große Bedrohungen</RWS_Stat_Threats>
-  <RWS_Stat_Killed>Kolonisten getötet</RWS_Stat_Killed>
+  <RWS_Stat_Killed>Getötete Kolonisten</RWS_Stat_Killed>
   <RWS_Stat_Longest>Längste Kolonie</RWS_Stat_Longest>
-  <RWS_Stat_SingleMaxWealth>Höchster Einzelkolonie-Reichtum</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_SingleMaxWealth>Höchstes Vermögen einer Kolonie</RWS_Stat_SingleMaxWealth>
   <RWS_Stat_MaxPopulation>Größte Bevölkerung</RWS_Stat_MaxPopulation>
-  <RWS_Stat_LastWealthSum>Summe des Endvermögens</RWS_Stat_LastWealthSum>
-  <RWS_DaysValue>{0} Tage ({1} Jahre, {2} Tage)</RWS_DaysValue>
+  <RWS_Stat_LastWealthSum>Summe der Endvermögen</RWS_Stat_LastWealthSum>
+  <RWS_DaysValue>{0} Tage ({1} Jahre {2} Tage)</RWS_DaysValue>
   <RWS_HoursValue>{0} Std.</RWS_HoursValue>
-  <RWS_NoData>Zahlen erscheinen, sobald der Save-Import beendet ist (Import-Tab).</RWS_NoData>
-  <RWS_TooltipBasis>Berechnet aus {0} Kolonien ({1} ohne Gesamtsumme)</RWS_TooltipBasis>
-  <RWS_TooltipMissing>{0} Speicher, die nicht identifiziert oder gelesen werden konnten, sind nicht enthalten.</RWS_TooltipMissing>
-  <RWS_EndingsTooltipPreInstall>Das Abspielen, bevor der Mod installiert wurde, wird nur von Spuren gezählt, die in den Saves übrig geblieben sind. Eine Spur bedeutet "mindestens einmal"; Archonexus und andere Endungen können nicht von Saves gezählt werden.</RWS_EndingsTooltipPreInstall>
-  <RWS_UnnamedColony>(ungenannter Name) {0}</RWS_UnnamedColony>
+  <RWS_NoData>Noch nichts aufgezeichnet. Die Werte erscheinen, sobald der Import der Spielstände abgeschlossen ist (Reiter „Datenverwaltung“).</RWS_NoData>
+  <RWS_TooltipBasis>Berechnet aus {0} Kolonien ({1} aus den Summen ausgeschlossen).</RWS_TooltipBasis>
+  <RWS_TooltipMissing>{0} Spielstände, die nicht erkannt oder gelesen werden konnten, sind nicht enthalten.</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>Spielzeit vor der Installation der Mod wird nur anhand von Spuren in den Spielständen gezählt. Eine Spur bedeutet „mindestens einmal“; das Archonexus-Ende und andere Spielenden lassen sich nicht aus Spielständen zählen.</RWS_EndingsTooltipPreInstall>
+  <RWS_UnnamedColony>(unbenannt) {0}</RWS_UnnamedColony>
   <RWS_Ending_Ship>Schiff</RWS_Ending_Ship>
   <RWS_Ending_RoyalAscent>Königlicher Aufstieg</RWS_Ending_RoyalAscent>
-  <RWS_Ending_AmbiguousLaunch>Abfahrt (Art unbekannt)</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_AmbiguousLaunch>Abreise (Art unbekannt)</RWS_Ending_AmbiguousLaunch>
   <RWS_Ending_Archonexus>Archonexus</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Cerebrex Kern (gescavenged)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Cerebrex Kern (zerstört)</RWS_Ending_CerebrexDestroyed>
-  <RWS_Ending_VoidEmbraced>Umarmte die Leere</RWS_Ending_VoidEmbraced>
-  <RWS_Ending_VoidDisrupted>Stört die Leere</RWS_Ending_VoidDisrupted>
-  <RWS_Ending_Other>andere</RWS_Ending_Other>
-  <RWS_Source_Live>Aufgezeichnet im Spiel</RWS_Source_Live>
-  <RWS_Source_SeededTrace>Trace vor der Installation (übertragen)</RWS_Source_SeededTrace>
-  <RWS_Source_SaveTrace>Speicherspur</RWS_Source_SaveTrace>
+  <RWS_Ending_CerebrexScavenged>Cerebrex-Kern (ausgeschlachtet)</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>Cerebrex-Kern (zerstört)</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>Leere angenommen</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>Leere gestört</RWS_Ending_VoidDisrupted>
+  <RWS_Ending_Other>Sonstige</RWS_Ending_Other>
+  <RWS_Source_Live>Im Spiel aufgezeichnet</RWS_Source_Live>
+  <RWS_Source_SeededTrace>Spur vor der Installation (übernommen)</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>Spur im Spielstand</RWS_Source_SaveTrace>
   <RWS_DevModeMark> (Entwicklermodus)</RWS_DevModeMark>
   <RWS_AtLeastOnce>1 oder mehr</RWS_AtLeastOnce>
-  <RWS_Endings_None>Es wurden noch keine Endungen aufgezeichnet.</RWS_Endings_None>
+  <RWS_Endings_None>Noch keine Spielenden aufgezeichnet.</RWS_Endings_None>
   <RWS_ExcludedMark> (ausgeschlossen)</RWS_ExcludedMark>
   <RWS_Col_Date>Datum</RWS_Col_Date>
   <RWS_Col_Colony>Kolonie</RWS_Col_Colony>
-  <RWS_Col_EndingType>Art der</RWS_Col_EndingType>
-  <RWS_Col_Ordinal>Nth</RWS_Col_Ordinal>
-  <RWS_Col_Departed>Ausgeschieden</RWS_Col_Departed>
+  <RWS_Col_EndingType>Art</RWS_Col_EndingType>
+  <RWS_Col_Ordinal>Nr.</RWS_Col_Ordinal>
+  <RWS_Col_Departed>Abgereist</RWS_Col_Departed>
   <RWS_Col_Source>Quelle</RWS_Col_Source>
   <RWS_Col_Name>Name</RWS_Col_Name>
   <RWS_Col_World>Welt</RWS_Col_World>
-  <RWS_Col_Scenario>Szenario/Storyteller</RWS_Col_Scenario>
+  <RWS_Col_Scenario>Szenario / Erzähler</RWS_Col_Scenario>
   <RWS_Col_Days>Tage</RWS_Col_Days>
-  <RWS_Col_PeakWealth>Spitzenvermögen</RWS_Col_PeakWealth>
-  <RWS_Col_LastWealth>Endgültige Vermögensgegenstände</RWS_Col_LastWealth>
-  <RWS_Col_Raids>Razzien</RWS_Col_Raids>
+  <RWS_Col_PeakWealth>Höchstvermögen</RWS_Col_PeakWealth>
+  <RWS_Col_LastWealth>Endvermögen</RWS_Col_LastWealth>
+  <RWS_Col_Raids>Überfälle</RWS_Col_Raids>
   <RWS_Col_Killed>Getötet</RWS_Col_Killed>
-  <RWS_Col_Endings>Enden</RWS_Col_Endings>
-  <RWS_Col_Versions>Fassungen</RWS_Col_Versions>
-  <RWS_Col_Saves>Importierte Spareinlagen</RWS_Col_Saves>
+  <RWS_Col_Endings>Spielenden</RWS_Col_Endings>
+  <RWS_Col_Versions>Versionen</RWS_Col_Versions>
+  <RWS_Col_Saves>Importierte Spielstände</RWS_Col_Saves>
   <RWS_Col_LastPlayed>Zuletzt gespielt</RWS_Col_LastPlayed>
   <RWS_Col_File>Datei</RWS_Col_File>
   <RWS_Col_Version>Version</RWS_Col_Version>
   <RWS_Col_Superseded>Überschrieben</RWS_Col_Superseded>
-  <RWS_Col_FilePresent>Quelltext</RWS_Col_FilePresent>
+  <RWS_Col_FilePresent>Quelldatei</RWS_Col_FilePresent>
   <RWS_Exclude>Ausschließen</RWS_Exclude>
-  <RWS_ExcludeTip>Eine geprüfte Kolonie bleibt in der Liste, wird aber von allen Summen ausgelassen.</RWS_ExcludeTip>
+  <RWS_ExcludeTip>Eine markierte Kolonie bleibt in der Liste, wird aber in keiner Summe berücksichtigt.</RWS_ExcludeTip>
   <RWS_Yes>Ja</RWS_Yes>
   <RWS_No>Nein</RWS_No>
-  <RWS_FileMissing>Datei verschwunden</RWS_FileMissing>
+  <RWS_FileMissing>Datei fehlt</RWS_FileMissing>
   <RWS_LiveRecord>(im Spiel aufgezeichnet)</RWS_LiveRecord>
-  <RWS_Rescan>Rescan</RWS_Rescan>
+  <RWS_Rescan>Neu einlesen</RWS_Rescan>
   <RWS_Cancel>Abbrechen</RWS_Cancel>
-  <RWS_HistoricalIntervals_Title>Historische Speicherintervalle</RWS_HistoricalIntervals_Title>
-  <RWS_HistoricalIntervals_Explanation>Teilweiser Nachweis von direkt verknüpften Speichern. Jede Zeile zeigt einen Wechsel zwischen gespeicherten Zecken. Gabeln bleiben getrennt, und diese Zeilen werden von den Lebenszeitsummen ausgeschlossen.</RWS_HistoricalIntervals_Explanation>
-  <RWS_HistoricalIntervals_Empty>Es wurden keine direkt verknüpften Einsparungen mit einem bestätigten Anstieg festgestellt.</RWS_HistoricalIntervals_Empty>
-  <RWS_HistoricalIntervals_Error>Die historischen Intervalle konnten nicht gelesen werden.</RWS_HistoricalIntervals_Error>
-  <RWS_HistoricalIntervals_ParentSave>Eltern außer</RWS_HistoricalIntervals_ParentSave>
-  <RWS_HistoricalIntervals_ChildSave>Kind retten</RWS_HistoricalIntervals_ChildSave>
-  <RWS_HistoricalIntervals_Start>Vom Game Tick</RWS_HistoricalIntervals_Start>
-  <RWS_HistoricalIntervals_End>Durch Game Tick</RWS_HistoricalIntervals_End>
-  <RWS_HistoricalIntervals_Raids>Feindliche Razzien hinzugefügt</RWS_HistoricalIntervals_Raids>
-  <RWS_HistoricalIntervals_Deaths>Kolonisten-Todesfälle hinzugefügt</RWS_HistoricalIntervals_Deaths>
+  <RWS_HistoricalIntervals_Title>Intervalle früherer Spielstände</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>Teilweise Belege aus direkt verknüpften Spielständen. Jede Zeile zeigt die Änderung zwischen zwei gespeicherten Ticks. Verzweigungen bleiben getrennt, und diese Zeilen fließen nicht in die Gesamtsummen ein.</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>Es wurden keine direkt verknüpften Spielstände mit einem bestätigten Anstieg gefunden.</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>Die Intervalle früherer Spielstände konnten nicht gelesen werden.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>Vorheriger Spielstand</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>Folgender Spielstand</RWS_HistoricalIntervals_ChildSave>
+  <RWS_HistoricalIntervals_Start>Ab Spieltick</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>Bis Spieltick</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>Hinzugekommene feindliche Überfälle</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>Hinzugekommene Todesfälle von Kolonisten</RWS_HistoricalIntervals_Deaths>
   <RWS_Import_LastScan>Letzter Scan: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>nie</RWS_Import_Never>
-  <RWS_Import_NotRunThisSession>In dieser Sitzung ist noch kein Import ausgeführt worden.</RWS_Import_NotRunThisSession>
+  <RWS_Import_NotRunThisSession>In dieser Sitzung wurde noch kein Import ausgeführt.</RWS_Import_NotRunThisSession>
   <RWS_Import_Counts>Gelesen: {0} / übersprungen: {1} / fehlgeschlagen: {2}</RWS_Import_Counts>
-  <RWS_Import_CancelledMark> (unterbrochen)</RWS_Import_CancelledMark>
-  <RWS_Import_Error>Import fehlgeschlagen: {0}</RWS_Import_Error>
-  <RWS_Import_Progress>{0} / {1} (Fehler: {2}) {3}</RWS_Import_Progress>
-  <RWS_Import_ProfilePath>Datei: {0}</RWS_Import_ProfilePath>
-  <RWS_Import_LoadSource>Geladen ab: {0}</RWS_Import_LoadSource>
+  <RWS_Import_CancelledMark> (abgebrochen)</RWS_Import_CancelledMark>
+  <RWS_Import_Error>Der Import ist fehlgeschlagen: {0}</RWS_Import_Error>
+  <RWS_Import_Progress>{0} / {1} (fehlgeschlagen: {2}) {3}</RWS_Import_Progress>
+  <RWS_Import_ProfilePath>Aufzeichnungsdatei: {0}</RWS_Import_ProfilePath>
+  <RWS_Import_LoadSource>Geladen aus: {0}</RWS_Import_LoadSource>
   <RWS_Import_CorruptRenamed>Die beschädigte Datei wurde als {0} aufbewahrt.</RWS_Import_CorruptRenamed>
-  <RWS_Import_ReadOnly>In dieser Sitzung wird nichts in die Datensatzdatei geschrieben.</RWS_Import_ReadOnly>
-  <RWS_Import_Backups>Backups: {0} von 3</RWS_Import_Backups>
-  <RWS_Import_SaveError>Konnte die Datei nicht schreiben: {0}</RWS_Import_SaveError>
-  <RWS_Import_Problems>Speicher, die fehlgeschlagen sind oder nicht identifiziert werden konnten ({0})</RWS_Import_Problems>
-  <RWS_LoadSource_Primary>Datensatzdatei</RWS_LoadSource_Primary>
-  <RWS_LoadSource_Backup1>Backup 1</RWS_LoadSource_Backup1>
-  <RWS_LoadSource_Backup2>Backup 2</RWS_LoadSource_Backup2>
-  <RWS_LoadSource_Backup3>Backup 3</RWS_LoadSource_Backup3>
+  <RWS_Import_ReadOnly>In dieser Sitzung wird nichts in die Aufzeichnungsdatei geschrieben.</RWS_Import_ReadOnly>
+  <RWS_Import_Backups>Sicherungen: {0} von 3</RWS_Import_Backups>
+  <RWS_Import_SaveError>Die Aufzeichnungsdatei konnte nicht geschrieben werden: {0}</RWS_Import_SaveError>
+  <RWS_Import_Problems>Fehlgeschlagene oder nicht erkannte Spielstände ({0})</RWS_Import_Problems>
+  <RWS_LoadSource_Primary>Aufzeichnungsdatei</RWS_LoadSource_Primary>
+  <RWS_LoadSource_Backup1>Sicherung 1</RWS_LoadSource_Backup1>
+  <RWS_LoadSource_Backup2>Sicherung 2</RWS_LoadSource_Backup2>
+  <RWS_LoadSource_Backup3>Sicherung 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>neu (leer)</RWS_LoadSource_Empty>
-  <RWS_LoadSource_NewerSchema>Record-Datei aus einer neueren Version (read-only)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>Fehlgeschlagen</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>nicht identifizierbar</RWS_Status_Unidentifiable>
-  <RWS_Loading>Ladestatistiken...</RWS_Loading>
+  <RWS_LoadSource_NewerSchema>Aufzeichnungsdatei einer neueren Version (schreibgeschützt)</RWS_LoadSource_NewerSchema>
+  <RWS_Status_Error>fehlgeschlagen</RWS_Status_Error>
+  <RWS_Status_Unidentifiable>nicht erkennbar</RWS_Status_Unidentifiable>
+  <RWS_Loading>Statistiken werden geladen …</RWS_Loading>
   <RWS_WealthCoverage>Vermögensdaten aus {0} Kolonien ({1} ohne Daten).</RWS_WealthCoverage>
-  <RWS_Source_RecoveredLineage>Aus dem Speichern wiederhergestellt (Entwicklermodus unbekannt, von den Gesamtwerten ausgeschlossen)</RWS_Source_RecoveredLineage>
+  <RWS_Source_RecoveredLineage>Aus Spielstand wiederhergestellt (Entwicklermodus unbekannt, aus den Summen ausgeschlossen)</RWS_Source_RecoveredLineage>
   <RWS_Tab_Details>Details</RWS_Tab_Details>
   <RWS_Details_AllColonies>Alle Kolonien</RWS_Details_AllColonies>
-  <RWS_Details_PerColony>Eine Kolonie</RWS_Details_PerColony>
+  <RWS_Details_PerColony>Einzelne Kolonie</RWS_Details_PerColony>
   <RWS_Details_AllCategories>Alle Kategorien</RWS_Details_AllCategories>
   <RWS_Details_Search>Filter</RWS_Details_Search>
   <RWS_Details_Col_Name>Statistik</RWS_Details_Col_Name>
   <RWS_Details_Col_Value>Wert</RWS_Details_Col_Value>
-  <RWS_Details_Col_State>Quelle/Staat</RWS_Details_Col_State>
-  <RWS_Details_Col_Colonies>Bekannte Kolonien</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_State>Quelle / Status</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>Bekannt / Kolonien</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Beobachtet am</RWS_Details_Col_Through>
-  <RWS_Details_ThroughTip>In-Game-Tag des Speicherns kommt der Wert.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>Aus {0} Kolonien (ausgenommen aus der Gesamtsumme: {1}) werden die Werte aus den importierten Speichern berechnet und können beinhalten, was durch Aktionen im Entwicklermodus passiert ist.</RWS_Details_Note>
-  <RWS_Details_Unattributed>{0} Beobachtungen, die nicht mit einer Kolonie übereinstimmen konnten, sind nicht enthalten.</RWS_Details_Unattributed>
-  <RWS_Details_NoMatch>Keine statistischen Übereinstimmungen.</RWS_Details_NoMatch>
-  <RWS_Details_UnrankedTop>Kein Kategoriesieger kann festgelegt werden</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Keine der ausgewählten Kolonien ist auf diese Metrik anwendbar; ein fehlender DLC kann dies nur erklären, wenn er von einem gespeicherten DLC-Inventar unterstützt wird.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>0 förderfähige Kolonien haben einen erfassten Wert. Die Ursache ist nicht bestätigt: Die Sammlung kann deaktiviert oder verspätet sein, das Ereignis wurde möglicherweise nicht erfasst oder der historische Import wird möglicherweise nicht unterstützt.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Nur einige der in Frage kommenden Kolonien haben einen erfassten Wert; die anderen sind unbekannt, nicht Null; der kombinierte Wert kann teilweise sein.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Alle in Frage kommenden Kolonien haben einen erfassten Wert, was allein keine vollständige Kampagnen- oder Realspiel-Verifizierung beweist.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Ein erfasster Wert darf nur einen Teil der Kampagne abdecken und nicht als verifizierte Lebenszeit insgesamt interpretieren.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Aufsummierte Menge nach Art über unabhängig ausgewählte Kolonien; die Rangfolge kann teilweise sein, wenn eine aufgezeichnete Aufschlüsselung fehlt.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Gemessener Beitrag dieser Kolonie zum ausgewählten Typ Nicht aufgeführte oder fehlende Kolonien wurden nicht als Null angenommen.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Dies kann Speicher vor der Erfassung, deaktivierte Sammlung oder nicht verfügbare Quelldaten widerspiegeln, vergangene Ereignisse dürfen nicht als Null hinterlegt werden.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_ThroughTip>Spieltag des Spielstands, aus dem der Wert stammt.</RWS_Details_ThroughTip>
+  <RWS_Details_Note>Aus {0} Kolonien (aus den Summen ausgeschlossen: {1}). Die Werte werden aus den importierten Spielständen berechnet und können Ereignisse enthalten, die durch Aktionen im Entwicklermodus entstanden sind.</RWS_Details_Note>
+  <RWS_Details_Unattributed>{0} Beobachtungen, die keiner einzelnen Kolonie zugeordnet werden konnten, sind nicht enthalten.</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>Keine passende Statistik.</RWS_Details_NoMatch>
+  <RWS_Details_UnrankedTop>Keine eindeutige Spitzenkategorie</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>Diese Statistik trifft auf keine der ausgewählten Kolonien zu. Ein fehlendes DLC wird nur dann als Grund angegeben, wenn die im Spielstand gespeicherte DLC-Liste es bestätigt.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Keine der infrage kommenden Kolonien hat einen erfassten Wert. Die Ursache ist unbestätigt: Die Erfassung kann deaktiviert oder zu spät gestartet worden sein, das Ereignis wurde womöglich nicht erfasst, oder der Import älterer Spielstände wird nicht unterstützt. Das ist nicht dasselbe wie null.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>Nur einige der infrage kommenden Kolonien haben einen erfassten Wert. Die übrigen sind unbekannt, nicht null; der Gesamtwert kann daher unvollständig sein.</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>Alle infrage kommenden Kolonien haben einen erfassten Wert. Das allein bedeutet weder, dass der gesamte Spielverlauf abgedeckt ist, noch dass der Wert im echten Spiel überprüft wurde.</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>Ein erfasster Wert kann nur einen Teil des Spielverlaufs abdecken. Betrachte ihn nicht als überprüften Gesamtwert.</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>Mengen nach Art über unabhängig ausgewählte Kolonien summiert. Die Rangfolge kann unvollständig sein, wenn die Aufschlüsselung einer Kolonie fehlt.</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>Gemessener Beitrag dieser Kolonie zur ausgewählten Art. Nicht aufgeführte Kolonien oder Kolonien ohne Daten werden nicht als null angenommen.</RWS_Cross_ContributionExplanation>
+  <RWS_Details_MissingAcquisitionTip>Mögliche Gründe: Die Spielstände sind älter als die Erfassung, die Erfassung war deaktiviert oder die Quelldaten sind nicht verfügbar. Vergangene Ereignisse werden nicht mit null aufgefüllt.</RWS_Details_MissingAcquisitionTip>
   <RWS_Details_NotReached>Nicht erreicht</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unbekannt)</RWS_Details_UnknownBucket>
-  <RWS_Details_Tip_Source>Quelle: {0} / Staat: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Source>Quelle: {0} / Status: {1}</RWS_Details_Tip_Source>
   <RWS_Details_Tip_Through>Beobachtet am Spieltag {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Gemessen ab: der Beginn des Spiels</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>Der Staat zum Zeitpunkt der Rettung.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_StartGame>Gemessen ab: Spielbeginn</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>Zustand zum Zeitpunkt des Speicherns.</RWS_Details_Tip_StartSnapshot>
   <RWS_Details_Tip_Observations>Beobachtungen dieser Kolonie: {0}</RWS_Details_Tip_Observations>
   <RWS_Details_Tip_Colonies>Bekannt für {1} von {0} Kolonien.</RWS_Details_Tip_Colonies>
-  <RWS_Details_Tip_Holder>Geführt von: {0}</RWS_Details_Tip_Holder>
-  <RWS_Details_Tip_Samples>Proben: {0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Holder>Rekordhalter: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>Stichproben: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Zähler {0} ÷ Nenner {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Es gibt keine daten, auf denen sie basieren können (speichert vor dieser version eine fehlende datei, eine nicht unterstützte spielversion oder unlesbare daten).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Hauptbuch: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>Es gibt keine Daten als Grundlage (vor dieser Version gelesene Spielstände, eine fehlende Datei, eine nicht unterstützte Spielversion oder unlesbare Daten).</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>Register: {0} ({1})</RWS_Details_Tip_Ledger>
   <RWS_Unit_Days>{0} Tage</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / Jahr</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Vermögen</RWS_Category_Wealth>
   <RWS_Category_Population>Bevölkerung und Stimmung</RWS_Category_Population>
-  <RWS_Category_Defense>Raids und Verteidigung</RWS_Category_Defense>
+  <RWS_Category_Defense>Überfälle und Verteidigung</RWS_Category_Defense>
   <RWS_Category_Quests>Quests</RWS_Category_Quests>
   <RWS_Category_Colony>Kolonie</RWS_Category_Colony>
-  <RWS_Category_Rankings>Rangfolge</RWS_Category_Rankings>
+  <RWS_Category_Rankings>Ranglisten</RWS_Category_Rankings>
   <RWS_Provenance_VanillaCounter>Spielzähler</RWS_Provenance_VanillaCounter>
-  <RWS_Provenance_SaveHistory>Save History Graph Graph</RWS_Provenance_SaveHistory>
-  <RWS_Provenance_SaveSnapshot>Staat im Save</RWS_Provenance_SaveSnapshot>
-  <RWS_Provenance_LiveAggregate>aufgezeichnet während des Spiels</RWS_Provenance_LiveAggregate>
+  <RWS_Provenance_SaveHistory>Verlaufsdiagramm im Spielstand</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>Zustand im Spielstand</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>während des Spiels aufgezeichnet</RWS_Provenance_LiveAggregate>
   <RWS_Coverage_Complete>vollständig</RWS_Coverage_Complete>
   <RWS_Coverage_Partial>teilweise (Lücken)</RWS_Coverage_Partial>
-  <RWS_Coverage_History>Historische Beobachtung</RWS_Coverage_History>
-  <RWS_Coverage_SnapshotOnly>wie gespart</RWS_Coverage_SnapshotOnly>
+  <RWS_Coverage_History>Verlaufsbeobachtung</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>Stand beim Speichern</RWS_Coverage_SnapshotOnly>
   <RWS_Coverage_Unknown>unbekannt</RWS_Coverage_Unknown>
-  <RWS_Coverage_NotApplicable>nicht anwendbar</RWS_Coverage_NotApplicable>
-  <RWS_Metric_WealthItemsPeak>Spitzenpostenvermögen</RWS_Metric_WealthItemsPeak>
-  <RWS_MetricDesc_WealthItemsPeak>Größter Item-Reichtum in der History-Grafik (eine Beobachtung pro halben Tag), alle Kolonien: die höchste.</RWS_MetricDesc_WealthItemsPeak>
-  <RWS_Metric_WealthItemsLatest>Vermögen der letzten Posten</RWS_Metric_WealthItemsLatest>
-  <RWS_MetricDesc_WealthItemsLatest>Item Reichtum bei der letzten Geschichtsbeobachtung. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthItemsLatest>
-  <RWS_Metric_WealthBuildingsPeak>Peak Building Wealth</RWS_Metric_WealthBuildingsPeak>
-  <RWS_MetricDesc_WealthBuildingsPeak>Größter Gebäudereichtum in der Geschichtsgraphik. Alle Kolonien: die höchste.</RWS_MetricDesc_WealthBuildingsPeak>
-  <RWS_Metric_WealthBuildingsLatest>Letzter Bauvermögenswert</RWS_Metric_WealthBuildingsLatest>
-  <RWS_MetricDesc_WealthBuildingsLatest>Der Aufbau von Wohlstand bei der letzten Geschichtsbeobachtung. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthBuildingsLatest>
-  <RWS_Metric_WealthPawnsPeak>Spitzencharaktervermögen</RWS_Metric_WealthPawnsPeak>
-  <RWS_MetricDesc_WealthPawnsPeak>Größter Reichtum an Charakteren und Tieren in der Geschichtsgraphik. Alle Kolonien: die höchste.</RWS_MetricDesc_WealthPawnsPeak>
-  <RWS_Metric_WealthPawnsLatest>Vermögen des letzten Charakters</RWS_Metric_WealthPawnsLatest>
-  <RWS_MetricDesc_WealthPawnsLatest>Reichtum an Charakteren und Tieren bei der letzten Geschichtsbeobachtung.</RWS_MetricDesc_WealthPawnsLatest>
-  <RWS_Metric_WealthTotalMean>Mittleres Gesamtvermögen (beobachtet)</RWS_Metric_WealthTotalMean>
-  <RWS_MetricDesc_WealthTotalMean>Mittelwert der gültigen Beobachtungen zum Gesamtvermögen Alle Kolonien: gewichtet nach der Zahl der Beobachtungen.</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Coverage_NotApplicable>nicht zutreffend</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>Höchstes Gegenstandsvermögen</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>Größtes Gegenstandsvermögen im Verlaufsdiagramm (eine Beobachtung pro halbem Tag). Alle Kolonien: der einzelne Höchstwert.</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>Letztes Gegenstandsvermögen</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>Gegenstandsvermögen bei der letzten Verlaufsbeobachtung. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>Höchstes Gebäudevermögen</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>Größtes Gebäudevermögen im Verlaufsdiagramm. Alle Kolonien: der einzelne Höchstwert.</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>Letztes Gebäudevermögen</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>Gebäudevermögen bei der letzten Verlaufsbeobachtung. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>Höchstes Vermögen an Lebewesen</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>Größtes Vermögen an Personen und Tieren im Verlaufsdiagramm. Alle Kolonien: der einzelne Höchstwert.</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>Letztes Vermögen an Lebewesen</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>Vermögen an Personen und Tieren bei der letzten Verlaufsbeobachtung. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>Durchschnittliches Gesamtvermögen (beobachtet)</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>Durchschnitt der gültigen Beobachtungen des Gesamtvermögens. Alle Kolonien: gewichtet nach Anzahl der Beobachtungen.</RWS_MetricDesc_WealthTotalMean>
   <RWS_Metric_WealthTotalFirst>Startvermögen (erste Beobachtung)</RWS_Metric_WealthTotalFirst>
-  <RWS_MetricDesc_WealthTotalFirst>Totaler Reichtum bei der ersten Beobachtung einer Geschichte, die von Anfang an abgeschlossen ist.</RWS_MetricDesc_WealthTotalFirst>
-  <RWS_Metric_WealthTotalNet>Netto-Vermögensänderung (letzte – erste)</RWS_Metric_WealthTotalNet>
-  <RWS_MetricDesc_WealthTotalNet>Gesamtreichtum bei der letzten Beobachtung minus der ersten; negativ, wenn es fiel.</RWS_MetricDesc_WealthTotalNet>
-  <RWS_Metric_WealthTotalPeakDay>Tag des höchsten Reichtums (Beobachtungstag)</RWS_Metric_WealthTotalPeakDay>
-  <RWS_MetricDesc_WealthTotalPeakDay>Nominaltag der ersten Beobachtung am höchsten Gesamtvermögen (eine Beobachtung pro halben Tag), nur eine Kolonie.</RWS_MetricDesc_WealthTotalPeakDay>
-  <RWS_Metric_WealthTotalMaxGainHalfDay>Größter halbtägiger Vermögenszuwachs (beobachtet)</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalFirst>Gesamtvermögen bei der ersten Beobachtung eines Verlaufs, der ab Spielbeginn vollständig ist. Nur pro Kolonie.</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>Nettoveränderung des Vermögens (letzte − erste)</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>Gesamtvermögen bei der letzten Beobachtung minus dem bei der ersten; negativ, wenn es gesunken ist. Alle Kolonien: die Summe.</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>Tag des Höchstvermögens (Beobachtungstag)</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>Nomineller Tag der ersten Beobachtung mit dem höchsten Gesamtvermögen (eine Beobachtung pro halbem Tag). Nur pro Kolonie.</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>Größter Vermögenszuwachs in einem halben Tag (beobachtet)</RWS_Metric_WealthTotalMaxGainHalfDay>
   <RWS_MetricDesc_WealthTotalMaxGainHalfDay>Größter Anstieg des Gesamtvermögens zwischen zwei aufeinanderfolgenden Beobachtungen; 0, wenn es nie gestiegen ist.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
-  <RWS_Metric_WealthTotalMaxLossHalfDay>Größter halbtägiger Vermögensverlust (beobachtet)</RWS_Metric_WealthTotalMaxLossHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Größter Rückgang des Gesamtvermögens zwischen zwei aufeinanderfolgenden Beobachtungen; 0, wenn es nie gefallen ist.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
-  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Größte halbtägige Vermögensverlustquote (beobachtet)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Größter (vor - nachher) ÷ vorher zwischen zwei aufeinanderfolgenden Beobachtungen, wobei Intervalle weggelassen werden, die bei 0 beginnen.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
-  <RWS_Metric_WealthTotalMaxGain15D>Größter 15-tägiger Vermögenszuwachs (beobachtet)</RWS_Metric_WealthTotalMaxGain15D>
-  <RWS_MetricDesc_WealthTotalMaxGain15D>Größter Anstieg des Gesamtvermögens zwischen den Beobachtungen 30 (15 Tage); Perioden mit einer Lücke werden nicht verwendet.</RWS_MetricDesc_WealthTotalMaxGain15D>
-  <RWS_Metric_WealthTotalMaxLoss15D>Größter 15-tägiger Vermögensverlust (beobachtet)</RWS_Metric_WealthTotalMaxLoss15D>
-  <RWS_MetricDesc_WealthTotalMaxLoss15D>Größter Rückgang des Gesamtvermögens zwischen den Beobachtungen 30 (15 Tage); Perioden mit einer Lücke werden nicht verwendet.</RWS_MetricDesc_WealthTotalMaxLoss15D>
-  <RWS_Metric_WealthTotalMaxGrowthRateYear>Größtes einjähriges Vermögenswachstum (beobachtet)</RWS_Metric_WealthTotalMaxGrowthRateYear>
-  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Größter (nach - vorher) ÷ vorher zwischen den Beobachtungen 120 auseinander (ein Jahr); negativ, wenn der Reichtum immer fiel.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
-  <RWS_Metric_WealthTotalLongestGrowth>Längste Vermögenswachstumssträhne (beobachtet)</RWS_Metric_WealthTotalLongestGrowth>
-  <RWS_MetricDesc_WealthTotalLongestGrowth>Längster Beobachtungslauf, in dem der Gesamtreichtum jedes Mal stieg; gleiche Werte und Lücken beenden einen Lauf.</RWS_MetricDesc_WealthTotalLongestGrowth>
-  <RWS_Metric_WealthTotalFirst100K>Reichtum 100.000 erreicht (Beobachtungstag)</RWS_Metric_WealthTotalFirst100K>
-  <RWS_MetricDesc_WealthTotalFirst100K>Nominaltag der ersten Beobachtung mit einem Gesamtvermögen von 100.000 oder mehr.</RWS_MetricDesc_WealthTotalFirst100K>
-  <RWS_Metric_WealthTotalFirst1M>Reichtum 1.000.000 erreicht (Beobachtungstag)</RWS_Metric_WealthTotalFirst1M>
-  <RWS_MetricDesc_WealthTotalFirst1M>Nominal Tag der ersten Beobachtung mit einem Gesamtvermögen von 1.000.000 oder mehr.</RWS_MetricDesc_WealthTotalFirst1M>
-  <RWS_Metric_WealthBuildingsMaxShare>Größter Gebäudeanteil des Vermögens (beobachtet)</RWS_Metric_WealthBuildingsMaxShare>
-  <RWS_MetricDesc_WealthBuildingsMaxShare>Größter Gebäudereichtum ÷ Gesamtreichtum bei gleicher Beobachtung.</RWS_MetricDesc_WealthBuildingsMaxShare>
-  <RWS_Metric_FreeColonistsMean>Mittlere Kolonisten (beobachtet)</RWS_Metric_FreeColonistsMean>
-  <RWS_MetricDesc_FreeColonistsMean>Mittelwert der beobachteten Anzahl freier Kolonisten, alle Kolonien: gewichtet nach der Anzahl der Beobachtungen.</RWS_MetricDesc_FreeColonistsMean>
-  <RWS_Metric_FreeColonistsMin>Fewest Kolonisten (beobachtet)</RWS_Metric_FreeColonistsMin>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>Größter Vermögensverlust in einem halben Tag (beobachtet)</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>Größter Rückgang des Gesamtvermögens zwischen zwei aufeinanderfolgenden Beobachtungen; 0, wenn es nie gesunken ist.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>Größte Verlustrate in einem halben Tag (beobachtet)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>Größter Wert von (vorher − nachher) ÷ vorher zwischen zwei aufeinanderfolgenden Beobachtungen; Intervalle, die bei 0 beginnen, werden ausgelassen.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>Größter Vermögenszuwachs in 15 Tagen (beobachtet)</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>Größter Anstieg des Gesamtvermögens zwischen Beobachtungen im Abstand von 30 (15 Tage); Zeiträume mit Lücken werden nicht verwendet.</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>Größter Vermögensverlust in 15 Tagen (beobachtet)</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>Größter Rückgang des Gesamtvermögens zwischen Beobachtungen im Abstand von 30 (15 Tage); Zeiträume mit Lücken werden nicht verwendet.</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>Größtes Vermögenswachstum in einem Jahr (beobachtet)</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>Größter Wert von (nachher − vorher) ÷ vorher zwischen Beobachtungen im Abstand von 120 (ein Jahr); negativ, wenn das Vermögen stets gesunken ist.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>Längste Wachstumsserie des Vermögens (beobachtet)</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>Längste Folge aufeinanderfolgender Beobachtungen, in der das Gesamtvermögen jedes Mal gestiegen ist; ein unveränderter Wert oder eine Lücke beendet die Serie.</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>Vermögen von 100.000 erreicht (Beobachtungstag)</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>Nomineller Tag der ersten Beobachtung mit einem Gesamtvermögen von 100.000 oder mehr. Alle Kolonien: der früheste.</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>Vermögen von 1.000.000 erreicht (Beobachtungstag)</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>Nomineller Tag der ersten Beobachtung mit einem Gesamtvermögen von 1.000.000 oder mehr. Alle Kolonien: der früheste.</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>Größter Gebäudeanteil am Vermögen (beobachtet)</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>Größter Wert von Gebäudevermögen ÷ Gesamtvermögen bei derselben Beobachtung.</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>Durchschnittliche Kolonistenzahl (beobachtet)</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>Durchschnitt der beobachteten Anzahl freier Kolonisten. Alle Kolonien: gewichtet nach Anzahl der Beobachtungen.</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>Wenigste Kolonisten (beobachtet)</RWS_Metric_FreeColonistsMin>
   <RWS_MetricDesc_FreeColonistsMin>Kleinste beobachtete Anzahl freier Kolonisten. Alle Kolonien: die kleinste.</RWS_MetricDesc_FreeColonistsMin>
   <RWS_Metric_FreeColonistsFirst10>10 Kolonisten erreicht (Beobachtungstag)</RWS_Metric_FreeColonistsFirst10>
-  <RWS_MetricDesc_FreeColonistsFirst10>Nominaltag der ersten Beobachtung mit 10 oder mehr freien Kolonisten.</RWS_MetricDesc_FreeColonistsFirst10>
-  <RWS_Metric_PrisonersPeak>Die meisten Gefangenen (beobachtet)</RWS_Metric_PrisonersPeak>
-  <RWS_MetricDesc_PrisonersPeak>Größte beobachtete Anzahl von Gefangenen.</RWS_MetricDesc_PrisonersPeak>
-  <RWS_Metric_PrisonersMean>Mittlere Gefangene (beobachtet)</RWS_Metric_PrisonersMean>
-  <RWS_MetricDesc_PrisonersMean>Mittelwert der beobachteten Anzahl von Gefangenen, alle Kolonien: gewichtet nach der Anzahl der Beobachtungen.</RWS_MetricDesc_PrisonersMean>
-  <RWS_Metric_MoodMean>Mittlere Kolonistenstimmung (beobachtet)</RWS_Metric_MoodMean>
-  <RWS_MetricDesc_MoodMean>Mittelwert der beobachteten durchschnittlichen Kolonistenstimmung (0-100): Eine 0, die ohne Kolonisten registriert wird, wird als vermisst behandelt; nicht nach Kolonistenzahl gewichtet.</RWS_MetricDesc_MoodMean>
+  <RWS_MetricDesc_FreeColonistsFirst10>Nomineller Tag der ersten Beobachtung mit 10 oder mehr freien Kolonisten. Alle Kolonien: der früheste.</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>Meiste Gefangene (beobachtet)</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>Größte beobachtete Anzahl an Gefangenen.</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>Durchschnittliche Gefangenenzahl (beobachtet)</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>Durchschnitt der beobachteten Anzahl an Gefangenen. Alle Kolonien: gewichtet nach Anzahl der Beobachtungen.</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>Durchschnittliche Kolonistenstimmung (beobachtet)</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>Durchschnitt der beobachteten durchschnittlichen Kolonistenstimmung (0–100). Eine 0, die ohne Kolonisten aufgezeichnet wurde, gilt als fehlend. Nicht nach Kolonistenzahl gewichtet.</RWS_MetricDesc_MoodMean>
   <RWS_Metric_MoodMin>Niedrigste Kolonistenstimmung (beobachtet)</RWS_Metric_MoodMin>
   <RWS_MetricDesc_MoodMin>Niedrigste gültige Beobachtung der durchschnittlichen Kolonistenstimmung.</RWS_MetricDesc_MoodMin>
   <RWS_Metric_MoodMax>Höchste Kolonistenstimmung (beobachtet)</RWS_Metric_MoodMax>
   <RWS_MetricDesc_MoodMax>Höchste gültige Beobachtung der durchschnittlichen Kolonistenstimmung.</RWS_MetricDesc_MoodMax>
-  <RWS_Metric_MoodBelow50Days>Tage mit Stimmung unter 50% (beobachtet)</RWS_Metric_MoodBelow50Days>
-  <RWS_MetricDesc_MoodBelow50Days>Halbtagesintervalle mit beiden Enden gültig, deren Ausgangsstimmung unter 50 liegt, ÷ 2. Alle Kolonien: die Summe.</RWS_MetricDesc_MoodBelow50Days>
-  <RWS_Metric_MoodAtLeast80Days>Tage mit Stimmung von 80% oder mehr (beobachtet)</RWS_Metric_MoodAtLeast80Days>
-  <RWS_MetricDesc_MoodAtLeast80Days>Halbtagesintervalle mit beiden Enden gültig, deren Ausgangsstimmung 80 oder mehr beträgt, ÷ 2. Alle Kolonien: die Summe.</RWS_MetricDesc_MoodAtLeast80Days>
-  <RWS_Metric_DeathsPerYear>Kolonistische Todesfälle pro Jahr</RWS_Metric_DeathsPerYear>
-  <RWS_MetricDesc_DeathsPerYear>Kolonisten-Todesfälle ÷ verstrichene Jahre (1 Jahr = 60 Tage) im gleichen Speicher.</RWS_MetricDesc_DeathsPerYear>
-  <RWS_Metric_RaidsPerYear>Feindliche Razzien pro Jahr</RWS_Metric_RaidsPerYear>
-  <RWS_MetricDesc_RaidsPerYear>Feindliche Überfälle ÷ verstrichen Jahre (1 Jahr = 60 Tage) in der gleichen speichern.</RWS_MetricDesc_RaidsPerYear>
-  <RWS_Metric_ModsLatest>Mods (letztes Save)</RWS_Metric_ModsLatest>
-  <RWS_MetricDesc_ModsLatest>Aktive Mods, die in den neuesten Speichern aufgeführt sind, einschließlich Core und DLCs.</RWS_MetricDesc_ModsLatest>
-  <RWS_Metric_ModsPeak>Die meisten Mods</RWS_Metric_ModsPeak>
-  <RWS_MetricDesc_ModsPeak>Die meisten Mods in jedem importierten speichern diese Kolonie.</RWS_MetricDesc_ModsPeak>
-  <RWS_Metric_ModsMin>Fewest-Mods</RWS_Metric_ModsMin>
-  <RWS_MetricDesc_ModsMin>Wenigste Mods in jedem importierten Speicher dieser Kolonie.</RWS_MetricDesc_ModsMin>
+  <RWS_Metric_MoodBelow50Days>Tage mit Stimmung unter 50 % (beobachtet)</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>Halbtagesintervalle mit gültigen Endpunkten, deren Stimmung zu Beginn unter 50 liegt, ÷ 2. Alle Kolonien: die Summe.</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>Tage mit Stimmung ab 80 % (beobachtet)</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>Halbtagesintervalle mit gültigen Endpunkten, deren Stimmung zu Beginn bei 80 oder mehr liegt, ÷ 2. Alle Kolonien: die Summe.</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>Todesfälle von Kolonisten pro Jahr</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>Todesfälle von Kolonisten ÷ vergangene Jahre (1 Jahr = 60 Tage) im selben Spielstand. Alle Kolonien: alle Todesfälle ÷ alle Jahre.</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>Feindliche Überfälle pro Jahr</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>Feindliche Überfälle ÷ vergangene Jahre (1 Jahr = 60 Tage) im selben Spielstand. Alle Kolonien: alle Überfälle ÷ alle Jahre.</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>Mods (letzter Spielstand)</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>Im letzten Spielstand aufgeführte aktive Mods, einschließlich Core und DLCs. Nur pro Kolonie.</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>Meiste Mods</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>Höchste Anzahl an Mods in einem importierten Spielstand dieser Kolonie. Nur pro Kolonie.</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>Wenigste Mods</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>Geringste Anzahl an Mods in einem importierten Spielstand dieser Kolonie. Nur pro Kolonie.</RWS_MetricDesc_ModsMin>
   <RWS_Metric_QuestSuccess>Quests gelungen (behalten)</RWS_Metric_QuestSuccess>
   <RWS_MetricDesc_QuestSuccess>Akzeptierte Quests, die erfolgreich waren und immer noch im Speicher sind. Quests, die das Spiel entfernt hat, können nicht gezählt werden.</RWS_MetricDesc_QuestSuccess>
   <RWS_Metric_QuestFailure>Quests fehlgeschlagen (behalten)</RWS_Metric_QuestFailure>

@@ -1,255 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SettingsCategory>Rimworld Statistics</RWS_SettingsCategory>
-  <RWS_Setting_IncludeDevMode>개발 모드에 기록된 표시 및 계산</RWS_Setting_IncludeDevMode>
-  <RWS_Setting_AutoImport>수입은 제목 화면에서 자동으로 저장합니다.</RWS_Setting_AutoImport>
+  <RWS_Setting_IncludeDevMode>개발자 모드에서 기록된 엔딩을 표시하고 집계에 포함</RWS_Setting_IncludeDevMode>
+  <RWS_Setting_AutoImport>타이틀 화면에서 저장 파일 자동으로 가져오기</RWS_Setting_AutoImport>
   <RWS_Setting_WindowSize>통계 창 크기</RWS_Setting_WindowSize>
   <RWS_Setting_WindowSizeStandard>표준 (1000 × 720)</RWS_Setting_WindowSizeStandard>
-  <RWS_Setting_WindowSizeLarge>대형 (1400 × 900)</RWS_Setting_WindowSizeLarge>
-  <RWS_Setting_WindowSizeExtraLarge>여분 큰 (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
-  <RWS_Setting_WindowSizeFitScreen>적당한 스크린 (90%)</RWS_Setting_WindowSizeFitScreen>
-  <RWS_Setting_WindowSizeHelp>통계를 여는 다음 시간을 적용하십시오. 글꼴 크기는 변경되지 않습니다. 대형 창은 화면에 맞습니다.</RWS_Setting_WindowSizeHelp>
+  <RWS_Setting_WindowSizeLarge>크게 (1400 × 900)</RWS_Setting_WindowSizeLarge>
+  <RWS_Setting_WindowSizeExtraLarge>매우 크게 (1600 × 1000)</RWS_Setting_WindowSizeExtraLarge>
+  <RWS_Setting_WindowSizeFitScreen>화면에 맞춤 (90%)</RWS_Setting_WindowSizeFitScreen>
+  <RWS_Setting_WindowSizeHelp>다음에 통계 창을 열 때 적용됩니다. 글자 크기는 바뀌지 않으며, 화면보다 큰 창은 화면에 맞게 줄어듭니다.</RWS_Setting_WindowSizeHelp>
   <RWS_MenuButton>누적 통계</RWS_MenuButton>
   <RWS_WindowTitle>누적 통계</RWS_WindowTitle>
-  <RWS_WindowError>통계 창을 표시할 수 없습니다. 자세한 내용은 로그를 확인하세요.</RWS_WindowError>
+  <RWS_WindowError>통계 창을 표시하지 못했습니다. 자세한 내용은 로그를 확인하세요.</RWS_WindowError>
   <RWS_Tab_Overview>개요</RWS_Tab_Overview>
   <RWS_Tab_Endings>엔딩</RWS_Tab_Endings>
   <RWS_Tab_Colonies>정착지</RWS_Tab_Colonies>
   <RWS_Tab_Import>데이터 관리</RWS_Tab_Import>
-  <RWS_Export_Button>수출 CSV · {0}</RWS_Export_Button>
-  <RWS_Export_Progress>파일 내보내기 ({0}/{1}) ...</RWS_Export_Progress>
-  <RWS_Export_Error>CSV 수출 실패 : {0}</RWS_Export_Error>
-  <RWS_Export_Done>CSV 저장 {0}</RWS_Export_Done>
+  <RWS_Export_Button>CSV 내보내기 · {0}</RWS_Export_Button>
+  <RWS_Export_Progress>파일 내보내는 중 ({0}/{1})…</RWS_Export_Progress>
+  <RWS_Export_Error>CSV 내보내기 실패: {0}</RWS_Export_Error>
+  <RWS_Export_Done>CSV 저장 위치: {0}</RWS_Export_Done>
   <RWS_Compare_Mode>비교</RWS_Compare_Mode>
-  <RWS_Compare_Add>열을 추가 ...</RWS_Compare_Add>
-  <RWS_Compare_Group>(주)</RWS_Compare_Group>
-  <RWS_Compare_Colony>뚱 베어</RWS_Compare_Colony>
+  <RWS_Compare_Add>열 추가…</RWS_Compare_Add>
+  <RWS_Compare_Group>그룹</RWS_Compare_Group>
+  <RWS_Compare_Colony>정착지</RWS_Compare_Colony>
   <RWS_Compare_Remove>열 제거</RWS_Compare_Remove>
-  <RWS_Stat_Days>게임 일</RWS_Stat_Days>
-  <RWS_Stat_Endings>종료 도달</RWS_Stat_Endings>
-  <RWS_Stat_Departed>콜론스 출항</RWS_Stat_Departed>
-  <RWS_Stat_PeakWealthSum>최고봉부</RWS_Stat_PeakWealthSum>
-  <RWS_Stat_Colonies>콜로니</RWS_Stat_Colonies>
+  <RWS_Stat_Days>게임 내 일수</RWS_Stat_Days>
+  <RWS_Stat_Endings>달성한 엔딩</RWS_Stat_Endings>
+  <RWS_Stat_Departed>떠난 정착민</RWS_Stat_Departed>
+  <RWS_Stat_PeakWealthSum>최고 재산의 합계</RWS_Stat_PeakWealthSum>
+  <RWS_Stat_Colonies>정착지</RWS_Stat_Colonies>
   <RWS_Stat_RealPlay>실제 플레이 시간</RWS_Stat_RealPlay>
   <RWS_Stat_Raids>적 습격</RWS_Stat_Raids>
   <RWS_Stat_Threats>큰 위협</RWS_Stat_Threats>
-  <RWS_Stat_Killed>콜론스 사망</RWS_Stat_Killed>
-  <RWS_Stat_Longest>가장 긴 식민지</RWS_Stat_Longest>
-  <RWS_Stat_SingleMaxWealth>가장 높은 단일 색상의 부</RWS_Stat_SingleMaxWealth>
-  <RWS_Stat_MaxPopulation>가장 큰 인구</RWS_Stat_MaxPopulation>
-  <RWS_Stat_LastWealthSum>마지막 재산의 합계</RWS_Stat_LastWealthSum>
+  <RWS_Stat_Killed>사망한 정착민</RWS_Stat_Killed>
+  <RWS_Stat_Longest>가장 오래 유지된 정착지</RWS_Stat_Longest>
+  <RWS_Stat_SingleMaxWealth>단일 정착지 최고 재산</RWS_Stat_SingleMaxWealth>
+  <RWS_Stat_MaxPopulation>최대 인구</RWS_Stat_MaxPopulation>
+  <RWS_Stat_LastWealthSum>최종 재산의 합계</RWS_Stat_LastWealthSum>
   <RWS_DaysValue>{0}일 ({1}년 {2}일)</RWS_DaysValue>
   <RWS_HoursValue>{0}시간</RWS_HoursValue>
-  <RWS_NoData>아직 기록되지 않았습니다. 그림은 한번의 저장 가져 오기 완료 (Import 탭)를 나타납니다.</RWS_NoData>
-  <RWS_TooltipBasis>{0} 식민지에서 컴퓨터 ({1} 총에서 제외)</RWS_TooltipBasis>
-  <RWS_TooltipMissing>{0}는 식별되거나 읽을 수없는 저장은 포함되지 않습니다.</RWS_TooltipMissing>
-  <RWS_EndingsTooltipPreInstall>mod가 설치되기 전에 재생은 저장에서 왼쪽 추적에서만 계산됩니다. 추적은 "한 번에"; Archonexus 및 기타 종료는 저장에서 계산 될 수 없습니다.</RWS_EndingsTooltipPreInstall>
-  <RWS_UnnamedColony>(이름) {0}</RWS_UnnamedColony>
-  <RWS_Ending_Ship>배송안내</RWS_Ending_Ship>
-  <RWS_Ending_RoyalAscent>로얄 센트</RWS_Ending_RoyalAscent>
-  <RWS_Ending_AmbiguousLaunch>출발 (일명 알려지지 않음)</RWS_Ending_AmbiguousLaunch>
-  <RWS_Ending_Archonexus>Archonexus</RWS_Ending_Archonexus>
-  <RWS_Ending_CerebrexScavenged>Cerebrex 코어 (평균)</RWS_Ending_CerebrexScavenged>
-  <RWS_Ending_CerebrexDestroyed>Cerebrex 코어 (분동)</RWS_Ending_CerebrexDestroyed>
-  <RWS_Ending_VoidEmbraced>void를 자극</RWS_Ending_VoidEmbraced>
-  <RWS_Ending_VoidDisrupted>void를 분해</RWS_Ending_VoidDisrupted>
-  <RWS_Ending_Other>이름 *</RWS_Ending_Other>
-  <RWS_Source_Live>관련 동영상</RWS_Source_Live>
-  <RWS_Source_SeededTrace>사전 설치 추적 (이상)</RWS_Source_SeededTrace>
-  <RWS_Source_SaveTrace>관련 상품</RWS_Source_SaveTrace>
+  <RWS_NoData>아직 기록이 없습니다. 저장 파일 가져오기가 끝나면 수치가 표시됩니다(“데이터 관리” 탭).</RWS_NoData>
+  <RWS_TooltipBasis>정착지 {0}곳을 기준으로 계산(합계에서 제외: {1}곳).</RWS_TooltipBasis>
+  <RWS_TooltipMissing>식별하거나 읽을 수 없었던 저장 파일 {0}개는 포함되지 않았습니다.</RWS_TooltipMissing>
+  <RWS_EndingsTooltipPreInstall>모드를 설치하기 전의 플레이는 저장 파일에 남은 흔적으로만 집계합니다. 흔적은 “최소 1회”를 뜻하며, 초월 연결체 엔딩 등은 저장 파일로 집계할 수 없습니다.</RWS_EndingsTooltipPreInstall>
+  <RWS_UnnamedColony>(이름 없음) {0}</RWS_UnnamedColony>
+  <RWS_Ending_Ship>우주선</RWS_Ending_Ship>
+  <RWS_Ending_RoyalAscent>왕실의 승인</RWS_Ending_RoyalAscent>
+  <RWS_Ending_AmbiguousLaunch>출발 (종류 불명)</RWS_Ending_AmbiguousLaunch>
+  <RWS_Ending_Archonexus>초월 연결체</RWS_Ending_Archonexus>
+  <RWS_Ending_CerebrexScavenged>세레브렉스 코어 (회수)</RWS_Ending_CerebrexScavenged>
+  <RWS_Ending_CerebrexDestroyed>세레브렉스 코어 (파괴)</RWS_Ending_CerebrexDestroyed>
+  <RWS_Ending_VoidEmbraced>공허 수용</RWS_Ending_VoidEmbraced>
+  <RWS_Ending_VoidDisrupted>공허 교란</RWS_Ending_VoidDisrupted>
+  <RWS_Ending_Other>기타</RWS_Ending_Other>
+  <RWS_Source_Live>플레이 중 기록</RWS_Source_Live>
+  <RWS_Source_SeededTrace>설치 전 흔적 (이어받음)</RWS_Source_SeededTrace>
+  <RWS_Source_SaveTrace>저장 파일의 흔적</RWS_Source_SaveTrace>
   <RWS_DevModeMark> (개발자 모드)</RWS_DevModeMark>
-  <RWS_AtLeastOnce>1개 이상</RWS_AtLeastOnce>
-  <RWS_Endings_None>아직 기록되지 않았습니다.</RWS_Endings_None>
+  <RWS_AtLeastOnce>1회 이상</RWS_AtLeastOnce>
+  <RWS_Endings_None>아직 기록된 엔딩이 없습니다.</RWS_Endings_None>
   <RWS_ExcludedMark> (제외됨)</RWS_ExcludedMark>
-  <RWS_Col_Date>* 이름 *</RWS_Col_Date>
-  <RWS_Col_Colony>뚱 베어</RWS_Col_Colony>
-  <RWS_Col_EndingType>(주)</RWS_Col_EndingType>
-  <RWS_Col_Ordinal>₢ 킹</RWS_Col_Ordinal>
-  <RWS_Col_Departed>여행 정보</RWS_Col_Departed>
-  <RWS_Col_Source>(주)</RWS_Col_Source>
-  <RWS_Col_Name>이름 *</RWS_Col_Name>
-  <RWS_Col_World>(주)삼성</RWS_Col_World>
-  <RWS_Col_Scenario>Scenario / 스토리텔러</RWS_Col_Scenario>
-  <RWS_Col_Days>일 시</RWS_Col_Days>
-  <RWS_Col_PeakWealth>피크 부</RWS_Col_PeakWealth>
+  <RWS_Col_Date>날짜</RWS_Col_Date>
+  <RWS_Col_Colony>정착지</RWS_Col_Colony>
+  <RWS_Col_EndingType>종류</RWS_Col_EndingType>
+  <RWS_Col_Ordinal>회차</RWS_Col_Ordinal>
+  <RWS_Col_Departed>떠난 인원</RWS_Col_Departed>
+  <RWS_Col_Source>출처</RWS_Col_Source>
+  <RWS_Col_Name>이름</RWS_Col_Name>
+  <RWS_Col_World>세계</RWS_Col_World>
+  <RWS_Col_Scenario>시나리오 / 이야기꾼</RWS_Col_Scenario>
+  <RWS_Col_Days>일수</RWS_Col_Days>
+  <RWS_Col_PeakWealth>최고 재산</RWS_Col_PeakWealth>
   <RWS_Col_LastWealth>최종 재산</RWS_Col_LastWealth>
-  <RWS_Col_Raids>라이즈 (Raids)</RWS_Col_Raids>
-  <RWS_Col_Killed>뚱 베어</RWS_Col_Killed>
-  <RWS_Col_Endings>이름 *</RWS_Col_Endings>
-  <RWS_Col_Versions>이름 *</RWS_Col_Versions>
-  <RWS_Col_Saves>수입 된 저장</RWS_Col_Saves>
-  <RWS_Col_LastPlayed>최근 재생</RWS_Col_LastPlayed>
-  <RWS_Col_File>파일 형식</RWS_Col_File>
+  <RWS_Col_Raids>습격</RWS_Col_Raids>
+  <RWS_Col_Killed>사망</RWS_Col_Killed>
+  <RWS_Col_Endings>엔딩</RWS_Col_Endings>
+  <RWS_Col_Versions>버전</RWS_Col_Versions>
+  <RWS_Col_Saves>가져온 저장 파일</RWS_Col_Saves>
+  <RWS_Col_LastPlayed>마지막 플레이</RWS_Col_LastPlayed>
+  <RWS_Col_File>파일</RWS_Col_File>
   <RWS_Col_Version>버전</RWS_Col_Version>
-  <RWS_Col_Superseded>언어: English</RWS_Col_Superseded>
-  <RWS_Col_FilePresent>소스 파일</RWS_Col_FilePresent>
-  <RWS_Exclude>더 많은 정보</RWS_Exclude>
-  <RWS_ExcludeTip>목록에서 체크 된 식민지 체류하지만 모든 합계에서 왼쪽입니다.</RWS_ExcludeTip>
-  <RWS_Yes>이름 *</RWS_Yes>
-  <RWS_No>이름 *</RWS_No>
-  <RWS_FileMissing>파일 사라</RWS_FileMissing>
-  <RWS_LiveRecord>(플레이에 기록됨)</RWS_LiveRecord>
-  <RWS_Rescan>관련 상품</RWS_Rescan>
+  <RWS_Col_Superseded>덮어씀</RWS_Col_Superseded>
+  <RWS_Col_FilePresent>원본 파일</RWS_Col_FilePresent>
+  <RWS_Exclude>제외</RWS_Exclude>
+  <RWS_ExcludeTip>체크한 정착지는 목록에 남지만 모든 합계에서 제외됩니다.</RWS_ExcludeTip>
+  <RWS_Yes>예</RWS_Yes>
+  <RWS_No>아니요</RWS_No>
+  <RWS_FileMissing>파일 없음</RWS_FileMissing>
+  <RWS_LiveRecord>(플레이 중 기록)</RWS_LiveRecord>
+  <RWS_Rescan>다시 검색</RWS_Rescan>
   <RWS_Cancel>취소</RWS_Cancel>
-  <RWS_HistoricalIntervals_Title>역사 득점방해</RWS_HistoricalIntervals_Title>
-  <RWS_HistoricalIntervals_Explanation>직접 링크된 저장에서 부분적인 증거. 각 행은 저장된 진드기 사이 변화를 보여줍니다. 포크는 분리되고, 이 줄은 일생 합계에서 제외됩니다.</RWS_HistoricalIntervals_Explanation>
-  <RWS_HistoricalIntervals_Empty>직접 링크 된 저장은 확인 된 증가가 발견되었다.</RWS_HistoricalIntervals_Empty>
-  <RWS_HistoricalIntervals_Error>역사적인 간격은 읽을 수 없었다.</RWS_HistoricalIntervals_Error>
-  <RWS_HistoricalIntervals_ParentSave>육아 저장</RWS_HistoricalIntervals_ParentSave>
-  <RWS_HistoricalIntervals_ChildSave>아이 저장</RWS_HistoricalIntervals_ChildSave>
-  <RWS_HistoricalIntervals_Start>게임에서 tick</RWS_HistoricalIntervals_Start>
-  <RWS_HistoricalIntervals_End>게임 진드기를 통해</RWS_HistoricalIntervals_End>
-  <RWS_HistoricalIntervals_Raids>Enemy raids 추가</RWS_HistoricalIntervals_Raids>
-  <RWS_HistoricalIntervals_Deaths>콜로니즘 죽음 추가</RWS_HistoricalIntervals_Deaths>
-  <RWS_Import_LastScan>마지막 검사: {0}</RWS_Import_LastScan>
-  <RWS_Import_Never>지원하다</RWS_Import_Never>
-  <RWS_Import_NotRunThisSession>아직 이 세션에서 import가 실행되지 않았습니다.</RWS_Import_NotRunThisSession>
+  <RWS_HistoricalIntervals_Title>과거 저장 파일 구간</RWS_HistoricalIntervals_Title>
+  <RWS_HistoricalIntervals_Explanation>직접 연결된 저장 파일에서 얻은 부분적인 자료입니다. 각 행은 저장된 두 틱 사이의 변화를 나타냅니다. 분기된 저장 파일은 따로 다루며, 이 행들은 누적 합계에 더하지 않습니다.</RWS_HistoricalIntervals_Explanation>
+  <RWS_HistoricalIntervals_Empty>증가가 확인된 직접 연결 저장 파일을 찾지 못했습니다.</RWS_HistoricalIntervals_Empty>
+  <RWS_HistoricalIntervals_Error>과거 저장 파일 구간을 읽지 못했습니다.</RWS_HistoricalIntervals_Error>
+  <RWS_HistoricalIntervals_ParentSave>이전 저장 파일</RWS_HistoricalIntervals_ParentSave>
+  <RWS_HistoricalIntervals_ChildSave>다음 저장 파일</RWS_HistoricalIntervals_ChildSave>
+  <RWS_HistoricalIntervals_Start>시작 틱</RWS_HistoricalIntervals_Start>
+  <RWS_HistoricalIntervals_End>종료 틱</RWS_HistoricalIntervals_End>
+  <RWS_HistoricalIntervals_Raids>늘어난 적 습격</RWS_HistoricalIntervals_Raids>
+  <RWS_HistoricalIntervals_Deaths>늘어난 정착민 사망</RWS_HistoricalIntervals_Deaths>
+  <RWS_Import_LastScan>마지막 검색: {0}</RWS_Import_LastScan>
+  <RWS_Import_Never>없음</RWS_Import_Never>
+  <RWS_Import_NotRunThisSession>이번 실행에서는 아직 가져오기를 하지 않았습니다.</RWS_Import_NotRunThisSession>
   <RWS_Import_Counts>읽음 {0} / 건너뜀 {1} / 실패 {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (중단됨)</RWS_Import_CancelledMark>
   <RWS_Import_Error>가져오기에 실패했습니다: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (실패 {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>기록 파일: {0}</RWS_Import_ProfilePath>
-  <RWS_Import_LoadSource>로드 중: {0}</RWS_Import_LoadSource>
-  <RWS_Import_CorruptRenamed>손상된 파일은 {0}로 유지되었습니다.</RWS_Import_CorruptRenamed>
-  <RWS_Import_ReadOnly>이 세션의 기록 파일에 기록되지 않습니다.</RWS_Import_ReadOnly>
-  <RWS_Import_Backups>백업: {0} 의 3</RWS_Import_Backups>
-  <RWS_Import_SaveError>레코드 파일을 작성할 수 없습니다.: {0}</RWS_Import_SaveError>
-  <RWS_Import_Problems>실패하거나 식별 할 수없는 저장 ({0})</RWS_Import_Problems>
+  <RWS_Import_LoadSource>불러온 위치: {0}</RWS_Import_LoadSource>
+  <RWS_Import_CorruptRenamed>손상된 파일은 {0}(으)로 보관했습니다.</RWS_Import_CorruptRenamed>
+  <RWS_Import_ReadOnly>이번 실행에서는 기록 파일에 아무것도 쓰지 않습니다.</RWS_Import_ReadOnly>
+  <RWS_Import_Backups>백업: {0} / 3</RWS_Import_Backups>
+  <RWS_Import_SaveError>기록 파일을 쓰지 못했습니다: {0}</RWS_Import_SaveError>
+  <RWS_Import_Problems>실패했거나 식별할 수 없는 저장 파일 ({0})</RWS_Import_Problems>
   <RWS_LoadSource_Primary>기록 파일</RWS_LoadSource_Primary>
   <RWS_LoadSource_Backup1>백업 1</RWS_LoadSource_Backup1>
   <RWS_LoadSource_Backup2>백업 2</RWS_LoadSource_Backup2>
   <RWS_LoadSource_Backup3>백업 3</RWS_LoadSource_Backup3>
-  <RWS_LoadSource_Empty>새로운 (empty)</RWS_LoadSource_Empty>
-  <RWS_LoadSource_NewerSchema>새 버전의 기록 파일 (읽기 전용)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>뚱 베어</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>인증 및 인증</RWS_Status_Unidentifiable>
-  <RWS_Loading>로딩중...</RWS_Loading>
-  <RWS_WealthCoverage>{0} 식민지의 Wealth 데이터 (데이터없이 {1}).</RWS_WealthCoverage>
-  <RWS_Source_RecoveredLineage>저장에서 복구 (개발자 모드 알 수없는, 합계에서 제외)</RWS_Source_RecoveredLineage>
+  <RWS_LoadSource_Empty>새로 만듦 (비어 있음)</RWS_LoadSource_Empty>
+  <RWS_LoadSource_NewerSchema>더 새로운 버전의 기록 파일 (읽기 전용)</RWS_LoadSource_NewerSchema>
+  <RWS_Status_Error>실패</RWS_Status_Error>
+  <RWS_Status_Unidentifiable>식별 불가</RWS_Status_Unidentifiable>
+  <RWS_Loading>통계를 불러오는 중…</RWS_Loading>
+  <RWS_WealthCoverage>재산 데이터가 있는 정착지: {0}곳 (데이터 없음: {1}곳).</RWS_WealthCoverage>
+  <RWS_Source_RecoveredLineage>저장 파일에서 복구 (개발자 모드 여부 불명, 합계에서 제외)</RWS_Source_RecoveredLineage>
   <RWS_Tab_Details>상세 통계</RWS_Tab_Details>
-  <RWS_Details_AllColonies>모든 식민지</RWS_Details_AllColonies>
-  <RWS_Details_PerColony>1개의 식민지</RWS_Details_PerColony>
-  <RWS_Details_AllCategories>모든 카테고리</RWS_Details_AllCategories>
-  <RWS_Details_Search>제품정보</RWS_Details_Search>
-  <RWS_Details_Col_Name>통계 정보</RWS_Details_Col_Name>
-  <RWS_Details_Col_Value>주요 특징</RWS_Details_Col_Value>
-  <RWS_Details_Col_State>근원/국가</RWS_Details_Col_State>
-  <RWS_Details_Col_Colonies>알려진 / 식민지</RWS_Details_Col_Colonies>
-  <RWS_Details_Col_Through>오시는 길</RWS_Details_Col_Through>
-  <RWS_Details_ThroughTip>저장의 게임 일에서 값이 온다.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>{0} 식민지에서 (총 {1})를 제외하고. 가치는 수입 된 저장에서 계산되며 개발자 모드 작업을 통해 무슨 일이 있었는지 포함 할 수 있습니다.</RWS_Details_Note>
-  <RWS_Details_Unattributed>{0} 한 대장관과 일치 할 수없는 관측은 포함되지 않습니다.</RWS_Details_Unattributed>
-  <RWS_Details_NoMatch>통계적 일치 없음.</RWS_Details_NoMatch>
-  <RWS_Details_UnrankedTop>범주 수상자는 설치 될 수 있습니다</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>선택된 식민지의 아무도이 미터에 적용된다; 누락 된 DLC은 저장 된 DLC 재고에 의해 지원 될 때만 설명 할 수 있습니다.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>0 자격이 된 식민지는 캡처 된 값이 있습니다. 원인은 확인되지 않습니다. 수집은 비활성화되거나 늦을 수 있으며, 이벤트는 캡처되지 않았거나 역사적인 수입은 지원되지 않을 수 있습니다. 0을 대체하지 마십시오.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>일부 자격이 된 식민지는 캡처 된 값이 있습니다. 다른 사람은 알 수 없습니다, 제로; 결합 된 값은 부분 일 수 있습니다.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>모든 자격이 된 식민지는 캡처 된 가치를 가지고 있습니다. 이 혼자는 풀 - Campaign 또는 실제 게임 검증을 증명하지 않습니다.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>캡처 된 값은 캠페인의 일부 만 커버 할 수 있습니다. 확인 된 평생 합계로 해석하지 마십시오.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>독립적으로 선택된 식민지의 유형에 의해 요약 된 수량; 기록 된 고장이 누락 된 경우 순위가 부분 일 수 있습니다.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>선택된 유형에 대한이 식민지의 기여를 측정했습니다. Unlisted 또는 누락 된 식민지는 영을 가지고 가정하지 않았습니다.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>이 보상을 반영할 수 있습니다, 사용 가능한 수집, 또는 사용 가능한 소스 데이터. 과거 이벤트는 0으로 다시 채워지지 않아야 합니다.</RWS_Details_MissingAcquisitionTip>
-  <RWS_Details_NotReached>이름 *</RWS_Details_NotReached>
+  <RWS_Details_AllColonies>모든 정착지</RWS_Details_AllColonies>
+  <RWS_Details_PerColony>정착지별</RWS_Details_PerColony>
+  <RWS_Details_AllCategories>모든 분류</RWS_Details_AllCategories>
+  <RWS_Details_Search>필터</RWS_Details_Search>
+  <RWS_Details_Col_Name>항목</RWS_Details_Col_Name>
+  <RWS_Details_Col_Value>값</RWS_Details_Col_Value>
+  <RWS_Details_Col_State>출처 / 상태</RWS_Details_Col_State>
+  <RWS_Details_Col_Colonies>값 있음 / 정착지</RWS_Details_Col_Colonies>
+  <RWS_Details_Col_Through>관측 시점</RWS_Details_Col_Through>
+  <RWS_Details_ThroughTip>값을 가져온 저장 파일의 게임 내 일수입니다.</RWS_Details_ThroughTip>
+  <RWS_Details_Note>정착지 {0}곳 기준(합계에서 제외: {1}). 값은 가져온 저장 파일로 계산하며, 개발자 모드 조작으로 일어난 일이 포함될 수 있습니다.</RWS_Details_Note>
+  <RWS_Details_Unattributed>어느 한 정착지에 속하는지 판별할 수 없었던 관측 {0}건은 포함되지 않았습니다.</RWS_Details_Unattributed>
+  <RWS_Details_NoMatch>일치하는 항목이 없습니다.</RWS_Details_NoMatch>
+  <RWS_Details_UnrankedTop>최다 분류를 하나로 정할 수 없음</RWS_Details_UnrankedTop>
+  <RWS_Details_AvailabilityNone>이 통계는 선택한 정착지 중 어디에도 해당하지 않습니다. DLC가 없다는 것은 저장 파일에 기록된 DLC 목록으로 확인될 때만 원인으로 표시합니다.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>대상 정착지 중 값이 수집된 곳이 없습니다. 원인은 확인되지 않았습니다. 수집이 꺼져 있었거나 늦게 시작되었을 수도, 이벤트가 기록되지 않았을 수도, 과거 저장 파일 가져오기가 지원되지 않을 수도 있습니다. 0과 같은 뜻이 아닙니다.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilitySome>대상 정착지 중 일부에만 수집된 값이 있습니다. 나머지는 0이 아니라 알 수 없는 값으로 다루므로, 합산 값은 부분적일 수 있습니다.</RWS_Details_AvailabilitySome>
+  <RWS_Details_AvailabilityAll>모든 대상 정착지에 수집된 값이 있습니다. 하지만 그것만으로 플레이 전체가 기록되었다거나 실제 게임에서 값이 검증되었다는 뜻은 아닙니다.</RWS_Details_AvailabilityAll>
+  <RWS_Details_AvailabilityPartialPeriod>수집된 값은 플레이 기간의 일부만 다룰 수 있습니다. 검증된 누적 합계로 보지 마세요.</RWS_Details_AvailabilityPartialPeriod>
+  <RWS_Cross_RankedTypeExplanation>각각 독립적으로 선택한 정착지들에서 종류별로 합산한 수량입니다. 어떤 정착지의 세부 내역이 빠져 있으면 순위가 부분적일 수 있습니다.</RWS_Cross_RankedTypeExplanation>
+  <RWS_Cross_ContributionExplanation>선택한 종류에 대해 이 정착지가 실제로 측정된 기여분입니다. 목록에 없거나 데이터가 없는 정착지를 0으로 가정하지 않습니다.</RWS_Cross_ContributionExplanation>
+  <RWS_Details_MissingAcquisitionTip>저장 파일이 수집 시작 이전의 것이거나, 수집이 꺼져 있었거나, 원본 데이터를 사용할 수 없기 때문일 수 있습니다. 과거 이벤트를 0으로 채우지 않습니다.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_NotReached>미달성</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(알 수 없음)</RWS_Details_UnknownBucket>
-  <RWS_Details_Tip_Source>출처: {0} / 주: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>에서 게임 일 {0}에 관찰.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>에서 측정: 게임의 시작</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>저축의 시간에 국가.</RWS_Details_Tip_StartSnapshot>
-  <RWS_Details_Tip_Observations>이 식민지의 관측: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>{0} 식민지의 {1}에 대해 알고 있습니다.</RWS_Details_Tip_Colonies>
-  <RWS_Details_Tip_Holder>개최 : {0}</RWS_Details_Tip_Holder>
-  <RWS_Details_Tip_Samples>샘플: {0}</RWS_Details_Tip_Samples>
-  <RWS_Details_Tip_Ratio>Numerator {0} ÷ 디노미네이터 {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>이 버전, 누락 된 파일, 지원되지 않은 게임 버전, 또는 읽을 수없는 데이터 전에 기지에 데이터가 없습니다.</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>레이더 : {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Source>출처: {0} / 상태: {1}</RWS_Details_Tip_Source>
+  <RWS_Details_Tip_Through>게임 내 {0}일 시점의 관측입니다.</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>측정 시작: 게임 시작</RWS_Details_Tip_StartGame>
+  <RWS_Details_Tip_StartSnapshot>저장한 시점의 상태입니다.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Observations>이 정착지의 관측: {0}건</RWS_Details_Tip_Observations>
+  <RWS_Details_Tip_Colonies>정착지 {0}곳 중 {1}곳에서 값이 있습니다.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Holder>기록 보유: {0}</RWS_Details_Tip_Holder>
+  <RWS_Details_Tip_Samples>표본 수: {0}</RWS_Details_Tip_Samples>
+  <RWS_Details_Tip_Ratio>분자 {0} ÷ 분모 {1}</RWS_Details_Tip_Ratio>
+  <RWS_Details_Tip_Unknown>근거가 되는 데이터가 없습니다(이 버전 이전에 읽은 저장 파일, 파일 누락, 지원하지 않는 게임 버전, 읽을 수 없는 데이터 등).</RWS_Details_Tip_Unknown>
+  <RWS_Details_Tip_Ledger>원장: {0} ({1})</RWS_Details_Tip_Ledger>
   <RWS_Unit_Days>{0}일</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / 년</RWS_Unit_PerYear>
-  <RWS_Category_Wealth>뉴스 레터</RWS_Category_Wealth>
-  <RWS_Category_Population>인구와 정취</RWS_Category_Population>
-  <RWS_Category_Defense>Raids 및 방어</RWS_Category_Defense>
-  <RWS_Category_Quests>팟캐스트</RWS_Category_Quests>
-  <RWS_Category_Colony>뚱 베어</RWS_Category_Colony>
-  <RWS_Category_Rankings>회사연혁</RWS_Category_Rankings>
+  <RWS_Category_Wealth>재산</RWS_Category_Wealth>
+  <RWS_Category_Population>인구와 기분</RWS_Category_Population>
+  <RWS_Category_Defense>습격과 방어</RWS_Category_Defense>
+  <RWS_Category_Quests>임무</RWS_Category_Quests>
+  <RWS_Category_Colony>정착지</RWS_Category_Colony>
+  <RWS_Category_Rankings>순위</RWS_Category_Rankings>
   <RWS_Provenance_VanillaCounter>게임 카운터</RWS_Provenance_VanillaCounter>
-  <RWS_Provenance_SaveHistory>역사 그래프</RWS_Provenance_SaveHistory>
-  <RWS_Provenance_SaveSnapshot>저장 상태</RWS_Provenance_SaveSnapshot>
-  <RWS_Provenance_LiveAggregate>재생 중 기록</RWS_Provenance_LiveAggregate>
-  <RWS_Coverage_Complete>뚱 베어</RWS_Coverage_Complete>
-  <RWS_Coverage_Partial>부분 (gaps)</RWS_Coverage_Partial>
-  <RWS_Coverage_History>역사 관찰</RWS_Coverage_History>
-  <RWS_Coverage_SnapshotOnly>저장하기</RWS_Coverage_SnapshotOnly>
-  <RWS_Coverage_Unknown>이름 *</RWS_Coverage_Unknown>
-  <RWS_Coverage_NotApplicable>적용되지 않음</RWS_Coverage_NotApplicable>
-  <RWS_Metric_WealthItemsPeak>피크 아이템 부</RWS_Metric_WealthItemsPeak>
-  <RWS_MetricDesc_WealthItemsPeak>역사 그래프의 가장 큰 항목 부 (반 일 당 1 관측). 모든 식민지 : 단일 최고.</RWS_MetricDesc_WealthItemsPeak>
-  <RWS_Metric_WealthItemsLatest>최신 아이템 부</RWS_Metric_WealthItemsLatest>
-  <RWS_MetricDesc_WealthItemsLatest>마지막 역사 관측에 항목 부. 모든 식민지 : 합계.</RWS_MetricDesc_WealthItemsLatest>
-  <RWS_Metric_WealthBuildingsPeak>재산 객실 모두</RWS_Metric_WealthBuildingsPeak>
-  <RWS_MetricDesc_WealthBuildingsPeak>역사 그래프에서 가장 큰 건물 부. 모든 식민지 : 단일 최고입니다.</RWS_MetricDesc_WealthBuildingsPeak>
-  <RWS_Metric_WealthBuildingsLatest>최신 건물 부</RWS_Metric_WealthBuildingsLatest>
-  <RWS_MetricDesc_WealthBuildingsLatest>마지막 역사 관측에 부를 짓. 모든 식민지 : 합계.</RWS_MetricDesc_WealthBuildingsLatest>
-  <RWS_Metric_WealthPawnsPeak>피크 캐릭터 부</RWS_Metric_WealthPawnsPeak>
-  <RWS_MetricDesc_WealthPawnsPeak>역사 그래프에서 문자와 동물의 가장 큰 부. 모든 식민지 : 하나의 가장 높은.</RWS_MetricDesc_WealthPawnsPeak>
-  <RWS_Metric_WealthPawnsLatest>최근의 캐릭터 부</RWS_Metric_WealthPawnsLatest>
-  <RWS_MetricDesc_WealthPawnsLatest>마지막 역사 관찰에서 문자와 동물의 치유. 모든 식민지 : 합계.</RWS_MetricDesc_WealthPawnsLatest>
-  <RWS_Metric_WealthTotalMean>뜻의 총 재산 (예약 됨)</RWS_Metric_WealthTotalMean>
-  <RWS_MetricDesc_WealthTotalMean>유효한 총 재산 관측의 평균. 모든 식민지: 관측의 수에 의해 무게를 달.</RWS_MetricDesc_WealthTotalMean>
-  <RWS_Metric_WealthTotalFirst>재산 시작 (첫 번째 관측)</RWS_Metric_WealthTotalFirst>
-  <RWS_MetricDesc_WealthTotalFirst>시작에서 완료되는 역사의 첫 번째 관측에 총 부. 한 식민지 만.</RWS_MetricDesc_WealthTotalFirst>
-  <RWS_Metric_WealthTotalNet>순 부 변화 (최신 −)</RWS_Metric_WealthTotalNet>
-  <RWS_MetricDesc_WealthTotalNet>마지막 관측에 총 부는 첫 번째; 그것이 떨어졌다면 부정적인. 모든 식민지 : 합계.</RWS_MetricDesc_WealthTotalNet>
-  <RWS_Metric_WealthTotalPeakDay>피크 부의 날 (예약 일)</RWS_Metric_WealthTotalPeakDay>
-  <RWS_MetricDesc_WealthTotalPeakDay>최고봉 총부의 첫 번째 관측의 공칭 일 (반일 1 관측). 한 대장 만.</RWS_MetricDesc_WealthTotalPeakDay>
-  <RWS_Metric_WealthTotalMaxGainHalfDay>가장 큰 반일 부 이득 (예약)</RWS_Metric_WealthTotalMaxGainHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>2 연속 관측 사이 총 부의 가장 큰 상승; 0 만약 그것은 결코 장미.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
-  <RWS_Metric_WealthTotalMaxLossHalfDay>가장 큰 반일 부 손실 (예약)</RWS_Metric_WealthTotalMaxLossHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>2 연속 관측 사이 총 부의 가장 큰 가을; 0 만약 그것은 결코 떨어졌다.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
-  <RWS_Metric_WealthTotalMaxLossRateHalfDay>가장 큰 반일 부 손실 비율 (예약)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
-  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>가장 큰 (다음 − 후) ÷ 두 연속 관측 사이, 0에서 시작 간격을 떠나.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
-  <RWS_Metric_WealthTotalMaxGain15D>가장 큰 15 일 부 이득 (관세)</RWS_Metric_WealthTotalMaxGain15D>
-  <RWS_MetricDesc_WealthTotalMaxGain15D>관측 사이 총 재산의 가장 큰 상승 30 분 (15 일); 간격으로 기간은 사용되지 않습니다.</RWS_MetricDesc_WealthTotalMaxGain15D>
-  <RWS_Metric_WealthTotalMaxLoss15D>가장 큰 15 일 부 손실 (예약)</RWS_Metric_WealthTotalMaxLoss15D>
-  <RWS_MetricDesc_WealthTotalMaxLoss15D>관측 사이 총 재산의 가장 큰 가을 30 분 (15 일); 간격으로 기간은 사용되지 않습니다.</RWS_MetricDesc_WealthTotalMaxLoss15D>
-  <RWS_Metric_WealthTotalMaxGrowthRateYear>가장 큰 1 년의 재산 성장 (보통)</RWS_Metric_WealthTotalMaxGrowthRateYear>
-  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>가장 큰 (전후 −) ÷ 관측 120 분의 앞에 (1 년); 부가 항상 떨어졌다면 부정적인.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
-  <RWS_Metric_WealthTotalLongestGrowth>가장 긴 부 성장 streak (보통)</RWS_Metric_WealthTotalLongestGrowth>
-  <RWS_MetricDesc_WealthTotalLongestGrowth>모든 재산이 매번 상승하는 관측의 가장 긴 실행; 동등한 값과 격차는 실행 종료.</RWS_MetricDesc_WealthTotalLongestGrowth>
-  <RWS_Metric_WealthTotalFirst100K>100,000 도달 (예약 일)</RWS_Metric_WealthTotalFirst100K>
-  <RWS_MetricDesc_WealthTotalFirst100K>100,000 이상의 총 재산을 가진 첫번째 관측의 명목상 일. 모든 식민지: earliest.</RWS_MetricDesc_WealthTotalFirst100K>
-  <RWS_Metric_WealthTotalFirst1M>1,000,000 도달 (예약 일)</RWS_Metric_WealthTotalFirst1M>
-  <RWS_MetricDesc_WealthTotalFirst1M>1,000,000명 이상의 총 재산을 가진 첫번째 관측의 명목상 일. 모든 식민지: earliest.</RWS_MetricDesc_WealthTotalFirst1M>
-  <RWS_Metric_WealthBuildingsMaxShare>부의 가장 큰 건물 공유 (보통)</RWS_Metric_WealthBuildingsMaxShare>
-  <RWS_MetricDesc_WealthBuildingsMaxShare>가장 큰 건물 부 ÷ 같은 관측에 총 부.</RWS_MetricDesc_WealthBuildingsMaxShare>
-  <RWS_Metric_FreeColonistsMean>평균 대장관 (관절)</RWS_Metric_FreeColonistsMean>
-  <RWS_MetricDesc_FreeColonistsMean>무료 식민지의 관찰 된 수의 의미. 모든 식민지 : 관측의 수에 의해 무게.</RWS_MetricDesc_FreeColonistsMean>
-  <RWS_Metric_FreeColonistsMin>Fewest 대장관 (예약)</RWS_Metric_FreeColonistsMin>
-  <RWS_MetricDesc_FreeColonistsMin>가장 작은 관찰 된 무료 식민지의 수. 모든 식민지 : 가장 작은.</RWS_MetricDesc_FreeColonistsMin>
-  <RWS_Metric_FreeColonistsFirst10>10개의 식민지가 도달했습니다 (보통 일)</RWS_Metric_FreeColonistsFirst10>
-  <RWS_MetricDesc_FreeColonistsFirst10>10 개 이상의 무료 식민지가있는 첫 번째 관측의 공칭 일. 모든 식민지 : 귀.</RWS_MetricDesc_FreeColonistsFirst10>
-  <RWS_Metric_PrisonersPeak>대부분의 형무소 (관절)</RWS_Metric_PrisonersPeak>
-  <RWS_MetricDesc_PrisonersPeak>감옥의 가장 큰 관찰 수.</RWS_MetricDesc_PrisonersPeak>
-  <RWS_Metric_PrisonersMean>평균 감옥 (관절)</RWS_Metric_PrisonersMean>
-  <RWS_MetricDesc_PrisonersMean>감옥의 관찰 된 수의 의미. 모든 식민지: 관측의 수에 의해 무게.</RWS_MetricDesc_PrisonersMean>
-  <RWS_Metric_MoodMean>평균 식민지 정취 (예약 됨)</RWS_Metric_MoodMean>
-  <RWS_MetricDesc_MoodMean>관찰 된 평균 식민지 정취의 의미 (0-100). 0, 식민지가없는 경우 기록, 누락 된 것으로 치료됩니다. 식민지 조사에 의해 무게가 없습니다.</RWS_MetricDesc_MoodMean>
-  <RWS_Metric_MoodMin>가장 낮은 식민지 정취 (예약)</RWS_Metric_MoodMin>
-  <RWS_MetricDesc_MoodMin>평균 식민지 정취의 가장 낮은 검증 관측.</RWS_MetricDesc_MoodMin>
-  <RWS_Metric_MoodMax>가장 높은 식민지의 분위기 (보통)</RWS_Metric_MoodMax>
-  <RWS_MetricDesc_MoodMax>평균 식민지 정취의 가장 높은 검증 관측.</RWS_MetricDesc_MoodMax>
-  <RWS_Metric_MoodBelow50Days>50% 미만의 기분으로 하루 (예약)</RWS_Metric_MoodBelow50Days>
-  <RWS_MetricDesc_MoodBelow50Days>반일 간격은 시작 분위기가 50, ÷ 2 이하인 두 끝 모두 유효합니다. 모든 식민지 : 정상.</RWS_MetricDesc_MoodBelow50Days>
-  <RWS_Metric_MoodAtLeast80Days>80 % 이상의 기분을 가진 일 (예약)</RWS_Metric_MoodAtLeast80Days>
-  <RWS_MetricDesc_MoodAtLeast80Days>반일 간격은 시작 분위기가 80 개 이상의 유효하며, ÷ 2. 모든 식민지 : 합.</RWS_MetricDesc_MoodAtLeast80Days>
-  <RWS_Metric_DeathsPerYear>년 당 대장 사망</RWS_Metric_DeathsPerYear>
-  <RWS_MetricDesc_DeathsPerYear>대장 사망 ÷ 탈출 년 (1 년 = 60 일) 같은 저장. 모든 식민지 : 총 사망 ÷ 총 년.</RWS_MetricDesc_DeathsPerYear>
-  <RWS_Metric_RaidsPerYear>년 당 Enemy raids</RWS_Metric_RaidsPerYear>
-  <RWS_MetricDesc_RaidsPerYear>Enemy raids ÷ elapsed 년 (1 년 = 60 일) 같은 저장에. 모든 식민지: 총 raids ÷ 총 년.</RWS_MetricDesc_RaidsPerYear>
-  <RWS_Metric_ModsLatest>Mods (최신 저장)</RWS_Metric_ModsLatest>
-  <RWS_MetricDesc_ModsLatest>Core 및 DLC를 포함한 최신 저장 용량에 나열된 활성 모드. 하나의 식민지 만.</RWS_MetricDesc_ModsLatest>
-  <RWS_Metric_ModsPeak>가장 큰 mods</RWS_Metric_ModsPeak>
-  <RWS_MetricDesc_ModsPeak>이 식민지의 수입 된 저장에있는 대부분의 모드. 한 식민지 만.</RWS_MetricDesc_ModsPeak>
-  <RWS_Metric_ModsMin>Fewest 모드</RWS_Metric_ModsMin>
-  <RWS_MetricDesc_ModsMin>이 식민지의 수입 된 저장에있는 Fewest mods. 한 식민지 만.</RWS_MetricDesc_ModsMin>
+  <RWS_Provenance_SaveHistory>저장 파일의 기록 그래프</RWS_Provenance_SaveHistory>
+  <RWS_Provenance_SaveSnapshot>저장 파일의 상태</RWS_Provenance_SaveSnapshot>
+  <RWS_Provenance_LiveAggregate>플레이 중 기록</RWS_Provenance_LiveAggregate>
+  <RWS_Coverage_Complete>완전</RWS_Coverage_Complete>
+  <RWS_Coverage_Partial>부분 (누락 있음)</RWS_Coverage_Partial>
+  <RWS_Coverage_History>기록 관측</RWS_Coverage_History>
+  <RWS_Coverage_SnapshotOnly>저장 시점</RWS_Coverage_SnapshotOnly>
+  <RWS_Coverage_Unknown>알 수 없음</RWS_Coverage_Unknown>
+  <RWS_Coverage_NotApplicable>해당 없음</RWS_Coverage_NotApplicable>
+  <RWS_Metric_WealthItemsPeak>물품 재산 최고치</RWS_Metric_WealthItemsPeak>
+  <RWS_MetricDesc_WealthItemsPeak>기록 그래프(반나절마다 관측)에서 물품 재산의 최댓값. 모든 정착지: 가장 높은 하나.</RWS_MetricDesc_WealthItemsPeak>
+  <RWS_Metric_WealthItemsLatest>최근 물품 재산</RWS_Metric_WealthItemsLatest>
+  <RWS_MetricDesc_WealthItemsLatest>기록의 마지막 관측 시점의 물품 재산. 모든 정착지: 합계.</RWS_MetricDesc_WealthItemsLatest>
+  <RWS_Metric_WealthBuildingsPeak>건물 재산 최고치</RWS_Metric_WealthBuildingsPeak>
+  <RWS_MetricDesc_WealthBuildingsPeak>기록 그래프에서 건물 재산의 최댓값. 모든 정착지: 가장 높은 하나.</RWS_MetricDesc_WealthBuildingsPeak>
+  <RWS_Metric_WealthBuildingsLatest>최근 건물 재산</RWS_Metric_WealthBuildingsLatest>
+  <RWS_MetricDesc_WealthBuildingsLatest>기록의 마지막 관측 시점의 건물 재산. 모든 정착지: 합계.</RWS_MetricDesc_WealthBuildingsLatest>
+  <RWS_Metric_WealthPawnsPeak>인원·동물 재산 최고치</RWS_Metric_WealthPawnsPeak>
+  <RWS_MetricDesc_WealthPawnsPeak>기록 그래프에서 사람과 동물 재산의 최댓값. 모든 정착지: 가장 높은 하나.</RWS_MetricDesc_WealthPawnsPeak>
+  <RWS_Metric_WealthPawnsLatest>최근 인원·동물 재산</RWS_Metric_WealthPawnsLatest>
+  <RWS_MetricDesc_WealthPawnsLatest>기록의 마지막 관측 시점의 사람과 동물 재산. 모든 정착지: 합계.</RWS_MetricDesc_WealthPawnsLatest>
+  <RWS_Metric_WealthTotalMean>총재산 평균 (관측)</RWS_Metric_WealthTotalMean>
+  <RWS_MetricDesc_WealthTotalMean>총재산의 유효한 관측값 평균. 모든 정착지: 관측 수로 가중.</RWS_MetricDesc_WealthTotalMean>
+  <RWS_Metric_WealthTotalFirst>초기 재산 (첫 관측)</RWS_Metric_WealthTotalFirst>
+  <RWS_MetricDesc_WealthTotalFirst>게임 시작부터 빠짐없이 이어진 기록에서 첫 관측 시점의 총재산. 정착지별로만 표시.</RWS_MetricDesc_WealthTotalFirst>
+  <RWS_Metric_WealthTotalNet>재산 순변화 (최근 − 첫 관측)</RWS_Metric_WealthTotalNet>
+  <RWS_MetricDesc_WealthTotalNet>마지막 관측의 총재산에서 첫 관측의 총재산을 뺀 값. 줄었다면 음수. 모든 정착지: 합계.</RWS_MetricDesc_WealthTotalNet>
+  <RWS_Metric_WealthTotalPeakDay>재산 최고치 날짜 (관측일)</RWS_Metric_WealthTotalPeakDay>
+  <RWS_MetricDesc_WealthTotalPeakDay>총재산이 처음으로 최고치에 이른 관측의 명목상 날짜(반나절마다 관측). 정착지별로만 표시.</RWS_MetricDesc_WealthTotalPeakDay>
+  <RWS_Metric_WealthTotalMaxGainHalfDay>반나절 최대 재산 증가 (관측)</RWS_Metric_WealthTotalMaxGainHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxGainHalfDay>연속된 두 관측 사이에서 총재산이 가장 크게 늘어난 양. 한 번도 늘지 않았다면 0.</RWS_MetricDesc_WealthTotalMaxGainHalfDay>
+  <RWS_Metric_WealthTotalMaxLossHalfDay>반나절 최대 재산 감소 (관측)</RWS_Metric_WealthTotalMaxLossHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossHalfDay>연속된 두 관측 사이에서 총재산이 가장 크게 줄어든 양. 한 번도 줄지 않았다면 0.</RWS_MetricDesc_WealthTotalMaxLossHalfDay>
+  <RWS_Metric_WealthTotalMaxLossRateHalfDay>반나절 최대 재산 감소율 (관측)</RWS_Metric_WealthTotalMaxLossRateHalfDay>
+  <RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>연속된 두 관측 사이의 (이전 − 이후) ÷ 이전의 최댓값. 0에서 시작하는 구간은 제외합니다.</RWS_MetricDesc_WealthTotalMaxLossRateHalfDay>
+  <RWS_Metric_WealthTotalMaxGain15D>15일간 최대 재산 증가 (관측)</RWS_Metric_WealthTotalMaxGain15D>
+  <RWS_MetricDesc_WealthTotalMaxGain15D>관측 30회(15일) 떨어진 두 시점 사이에서 총재산이 가장 크게 늘어난 양. 누락이 있는 기간은 사용하지 않습니다.</RWS_MetricDesc_WealthTotalMaxGain15D>
+  <RWS_Metric_WealthTotalMaxLoss15D>15일간 최대 재산 감소 (관측)</RWS_Metric_WealthTotalMaxLoss15D>
+  <RWS_MetricDesc_WealthTotalMaxLoss15D>관측 30회(15일) 떨어진 두 시점 사이에서 총재산이 가장 크게 줄어든 양. 누락이 있는 기간은 사용하지 않습니다.</RWS_MetricDesc_WealthTotalMaxLoss15D>
+  <RWS_Metric_WealthTotalMaxGrowthRateYear>1년간 최대 재산 성장률 (관측)</RWS_Metric_WealthTotalMaxGrowthRateYear>
+  <RWS_MetricDesc_WealthTotalMaxGrowthRateYear>관측 120회(1년) 떨어진 두 시점 사이의 (이후 − 이전) ÷ 이전의 최댓값. 재산이 계속 줄기만 했다면 음수.</RWS_MetricDesc_WealthTotalMaxGrowthRateYear>
+  <RWS_Metric_WealthTotalLongestGrowth>재산 최장 연속 증가 (관측)</RWS_Metric_WealthTotalLongestGrowth>
+  <RWS_MetricDesc_WealthTotalLongestGrowth>관측할 때마다 총재산이 늘어난 가장 긴 연속 구간. 값이 그대로이거나 누락이 있으면 그 자리에서 끊깁니다.</RWS_MetricDesc_WealthTotalLongestGrowth>
+  <RWS_Metric_WealthTotalFirst100K>재산 100,000 달성 (관측일)</RWS_Metric_WealthTotalFirst100K>
+  <RWS_MetricDesc_WealthTotalFirst100K>총재산이 처음으로 100,000 이상이 된 관측의 명목상 날짜. 모든 정착지: 가장 이른 것.</RWS_MetricDesc_WealthTotalFirst100K>
+  <RWS_Metric_WealthTotalFirst1M>재산 1,000,000 달성 (관측일)</RWS_Metric_WealthTotalFirst1M>
+  <RWS_MetricDesc_WealthTotalFirst1M>총재산이 처음으로 1,000,000 이상이 된 관측의 명목상 날짜. 모든 정착지: 가장 이른 것.</RWS_MetricDesc_WealthTotalFirst1M>
+  <RWS_Metric_WealthBuildingsMaxShare>재산 중 건물 비중의 최댓값 (관측)</RWS_Metric_WealthBuildingsMaxShare>
+  <RWS_MetricDesc_WealthBuildingsMaxShare>같은 관측에서 건물 재산 ÷ 총재산의 최댓값.</RWS_MetricDesc_WealthBuildingsMaxShare>
+  <RWS_Metric_FreeColonistsMean>평균 정착민 수 (관측)</RWS_Metric_FreeColonistsMean>
+  <RWS_MetricDesc_FreeColonistsMean>관측된 자유 정착민 수의 평균. 모든 정착지: 관측 수로 가중.</RWS_MetricDesc_FreeColonistsMean>
+  <RWS_Metric_FreeColonistsMin>최소 정착민 수 (관측)</RWS_Metric_FreeColonistsMin>
+  <RWS_MetricDesc_FreeColonistsMin>관측된 자유 정착민 수의 최솟값. 모든 정착지: 가장 작은 값.</RWS_MetricDesc_FreeColonistsMin>
+  <RWS_Metric_FreeColonistsFirst10>정착민 10명 달성 (관측일)</RWS_Metric_FreeColonistsFirst10>
+  <RWS_MetricDesc_FreeColonistsFirst10>자유 정착민이 처음으로 10명 이상이 된 관측의 명목상 날짜. 모든 정착지: 가장 이른 것.</RWS_MetricDesc_FreeColonistsFirst10>
+  <RWS_Metric_PrisonersPeak>최다 수감자 수 (관측)</RWS_Metric_PrisonersPeak>
+  <RWS_MetricDesc_PrisonersPeak>관측된 수감자 수의 최댓값.</RWS_MetricDesc_PrisonersPeak>
+  <RWS_Metric_PrisonersMean>평균 수감자 수 (관측)</RWS_Metric_PrisonersMean>
+  <RWS_MetricDesc_PrisonersMean>관측된 수감자 수의 평균. 모든 정착지: 관측 수로 가중.</RWS_MetricDesc_PrisonersMean>
+  <RWS_Metric_MoodMean>정착민 평균 기분 (관측)</RWS_Metric_MoodMean>
+  <RWS_MetricDesc_MoodMean>관측된 정착민 평균 기분(0–100)의 평균. 정착민이 없을 때 기록된 0은 누락으로 처리합니다. 정착민 수로 가중하지 않습니다.</RWS_MetricDesc_MoodMean>
+  <RWS_Metric_MoodMin>정착민 기분 최저치 (관측)</RWS_Metric_MoodMin>
+  <RWS_MetricDesc_MoodMin>정착민 평균 기분의 유효한 관측값 중 가장 낮은 값.</RWS_MetricDesc_MoodMin>
+  <RWS_Metric_MoodMax>정착민 기분 최고치 (관측)</RWS_Metric_MoodMax>
+  <RWS_MetricDesc_MoodMax>정착민 평균 기분의 유효한 관측값 중 가장 높은 값.</RWS_MetricDesc_MoodMax>
+  <RWS_Metric_MoodBelow50Days>기분 50% 미만 일수 (관측)</RWS_Metric_MoodBelow50Days>
+  <RWS_MetricDesc_MoodBelow50Days>양 끝 관측이 유효한 반나절 구간 중 시작 시 기분이 50 미만인 구간 수 ÷ 2. 모든 정착지: 합계.</RWS_MetricDesc_MoodBelow50Days>
+  <RWS_Metric_MoodAtLeast80Days>기분 80% 이상 일수 (관측)</RWS_Metric_MoodAtLeast80Days>
+  <RWS_MetricDesc_MoodAtLeast80Days>양 끝 관측이 유효한 반나절 구간 중 시작 시 기분이 80 이상인 구간 수 ÷ 2. 모든 정착지: 합계.</RWS_MetricDesc_MoodAtLeast80Days>
+  <RWS_Metric_DeathsPerYear>연간 정착민 사망 수</RWS_Metric_DeathsPerYear>
+  <RWS_MetricDesc_DeathsPerYear>같은 저장 파일의 정착민 사망 수 ÷ 경과 연수(1년 = 60일). 모든 정착지: 전체 사망 수 ÷ 전체 연수.</RWS_MetricDesc_DeathsPerYear>
+  <RWS_Metric_RaidsPerYear>연간 적 습격 횟수</RWS_Metric_RaidsPerYear>
+  <RWS_MetricDesc_RaidsPerYear>같은 저장 파일의 적 습격 횟수 ÷ 경과 연수(1년 = 60일). 모든 정착지: 전체 습격 횟수 ÷ 전체 연수.</RWS_MetricDesc_RaidsPerYear>
+  <RWS_Metric_ModsLatest>모드 수 (최신 저장 파일)</RWS_Metric_ModsLatest>
+  <RWS_MetricDesc_ModsLatest>최신 저장 파일에 기록된 활성 모드 수(Core와 DLC 포함). 정착지별로만 표시.</RWS_MetricDesc_ModsLatest>
+  <RWS_Metric_ModsPeak>최다 모드 수</RWS_Metric_ModsPeak>
+  <RWS_MetricDesc_ModsPeak>이 정착지의 가져온 저장 파일 가운데 가장 많은 모드 수. 정착지별로만 표시.</RWS_MetricDesc_ModsPeak>
+  <RWS_Metric_ModsMin>최소 모드 수</RWS_Metric_ModsMin>
+  <RWS_MetricDesc_ModsMin>이 정착지의 가져온 저장 파일 가운데 가장 적은 모드 수. 정착지별로만 표시.</RWS_MetricDesc_ModsMin>
   <RWS_Metric_QuestSuccess>퀘스트가 성공했습니다 (retained)</RWS_Metric_QuestSuccess>
   <RWS_MetricDesc_QuestSuccess>성공한 퀘스트를 받아들이고 여전히 저장 중입니다. 퀘스트는 제거된 게임을 계산할 수 없습니다.</RWS_MetricDesc_QuestSuccess>
   <RWS_Metric_QuestFailure>퀘스트 실패 (retained)</RWS_Metric_QuestFailure>
