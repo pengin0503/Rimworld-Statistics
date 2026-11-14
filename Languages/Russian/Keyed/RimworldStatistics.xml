@@ -875,131 +875,131 @@
   <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока (HaulToCell), измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Завершённые задания уборки</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Работы по уборке игрока, успешно завершившиеся после полного удаления хотя бы одного следа грязи. Несколько следов за одну работу считаются одним заданием. Прерванные работы не учитываются.</RWS_MetricDesc_CleaningJobsCompleted>
-  <RWS_Metric_TreeWoodPlaced>древесина, полученная (первичная урожайность)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Количество первичных древесных блоков, фактически размещенных или слитых после вырубки деревьев игроком, измеряется действием GenPlace.Частичное покрытие: бонусная древесина из некоторых компонентов MOD и нестандартные пути резки исключены.</RWS_MetricDesc_TreeWoodPlaced>
-  <RWS_Metric_SlaughteredButchery>Убитые животные, впоследствии убитые</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Графики успешно завершенных ванильных рецептов мясника КорпсаПлоть поедания трупа животного, ранее зарегистрированного как забитого персонажем игрока. Идентифицирует точный труп через сейвы. Исключает выслеженные, дикие и вражеские трупы. Частично: рецепты мясника MOD и некоторые пути исчезновения трупов не признаются.</RWS_MetricDesc_SlaughteredButchery>
-  <RWS_Cross_MaxColony>Колония с большинством: {0}</RWS_Cross_MaxColony>
-  <RWS_Cross_MinColony>Колония с наименьшим количеством: {0}</RWS_Cross_MinColony>
-  <RWS_Cross_TopType>Лучший пункт в колониях: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>Наибольшее зарегистрированное значение в независимых колониях, с использованием одного репрезентативного наблюдения за колонией. Пропущенные показания не рассматриваются как ноль. Величины штатов относятся к зарегистрированным сбережениям каждой колонии, а не к совокупному производству.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>Самые низкие зарегистрированные значения в независимых колониях, используя одно репрезентативное наблюдение за колонией. Только фактически измеренные нули могут выиграть; неизвестные и неприменимые значения не выигрывают.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Суммарные количества по отдельности для каждого определения пункта в независимых колониях, затем ранжировать эти суммы. Подсчеты используют одно репрезентативное наблюдение за колонией. Отсутствующие, переполненные или неотслеживаемые определения дают частичное покрытие. Государственные кадастры и события жизни не являются взаимозаменяемыми.</RWS_CrossDesc_TopType>
-  <RWS_Cross_TiedHolders>Привязанные колонии: {0}</RWS_Cross_TiedHolders>
-  <RWS_Cross_RecordedAt>Рекорд, наблюдаемый в день игры: {0}</RWS_Cross_RecordedAt>
-  <RWS_Cross_TopCategory>Наиболее распространенная категория в колониях: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Резюмированные подсчеты по каждой зарегистрированной категории в независимых колониях с использованием одного репрезентативного наблюдения на колонию.Неполные и отсутствующие разделы категорий остаются частичными; категории не являются подсчетами пунктов.</RWS_CrossDesc_TopCategory>
-  <RWS_Cross_Sum>Комбинированные снимки колонии: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Сумма отдельно измеренных государственных величин в репрезентативном сэкономленном моменте каждой независимой колонии. Это не суммарное событие за всю жизнь. Неизвестные показания никогда не становятся нулевыми.</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>Гостеприимство: прибывшие группы гостей (с момента активации)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>Число подтвержденных посещений групп гостеприимства, прибывающих на домашние карты игроков, так как это дополнение было включено. Спасенные гости, предоставленные группы замены, исключены. Повторные воспроизведения используют хэшированные идентификаторы событий. Никакая предустановочная история не выводится.</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>Гостеприимство: прибытие гостей на всю жизнь (с момента активации)</RWS_Hospitality_VisitGuests>
-  <RWS_Hospitality_VisitGuestsDesc>Общее количество посещающих персонажей в подтвержденных группах гостеприимства, прибывающих на домашние карты игроков, так как этот аддон был включен. Повторите количество посещений снова; это не количество уникальных людей или текущее количество гостей. Исторические посетители до активации неизвестны.</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>Гостеприимство: мирно уехавшие посещающие группы (с момента активации)</RWS_Hospitality_VisitsCompleted>
-  <RWS_Hospitality_VisitsCompletedDesc>Подсчитывает невраждебные группы гостеприимства после окончания посещаемого труда, наблюдается фактический выход карты и лорд распускается без остающихся членов или других потерь. Отправленные и восстановленные группы исключаются. Нагрузка во время отъезда может не иметь достаточных доказательств и опускается, никогда не догадывается.</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>Гостеприимство: успешно набранные гости (с момента активации)</RWS_Hospitality_Recruited>
-  <RWS_Hospitality_RecruitedDesc>Подтверждённое принятие гостей Гостеприимства после регистрации, подсчитанное только после того, как действие Вербовки вверх по течению возвращается с персонажем игры.</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>Гостеприимство: принудительный набор гостей (с момента активации)</RWS_Hospitality_ForcedRecruit>
-  <RWS_Hospitality_ForcedRecruitDesc>Подтвержденный набор гостеприимных гостей, отмеченный вынужденной целью, начиная с выбора.</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>Гостеприимство: добровольный набор гостей (с момента активации)</RWS_Hospitality_VoluntaryRecruit>
-  <RWS_Hospitality_VoluntaryRecruitDesc>Подтвержденный набор гостеприимных гостей, не отмеченный вынужденной целью, с момента регистрации.</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>Предметы, купленные гостеприимными гостями</RWS_Hospitality_ShoppingUnits>
-  <RWS_Hospitality_ShoppingUnitsDesc>Предметы, добавленные к инвентарю или оборудованию гостей, путем заполнения рабочих мест на домашних картах игроков с момента входа в систему.</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>Серебро оплачено гостеприимными гостями</RWS_Hospitality_ShoppingSilver>
-  <RWS_Hospitality_ShoppingSilverDesc>Серебро, взятое у гостей теми же законченными рабочими местами после входа в систему.</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>Гостеприимство: кровати, назначенные гостями, в сейфе</RWS_Hospitality_AssignedBeds>
-  <RWS_Hospitality_AssignedBedsDesc>Количество отдельных гостевых кроватей, назначенных в настоящее время присутствующим посетителям Гостеприимства на домашних картах игроков при успешном сохранении. Общие кровати учитываются один раз. Это назначение кровати, а не мера гостей, физически спящих или пожизненных бронирований.</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>Начался прием заявок (период аддона)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>Подтвержденные запросы на подбор персонала после регистрации; отличается от устаревшей встроенной серии, потому что изменились ключи дедупликации событий / контрольной точки.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Набор: серебро, потраченное на запущенные запросы (с момента активации)</RWS_AddonRecruitment_SilverSpent>
-  <RWS_AddonRecruitment_SilverSpentDesc>Общее подтвержденное серебро, оплаченное за вновь созданные диски найма с момента выбора. Включает премии; не учитывает неудачные попытки или представляет собой чистое богатство.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Набор: запланированные кандидаты в запросах (с момента активации)</RWS_AddonRecruitment_PlannedApplicants>
-  <RWS_AddonRecruitment_PlannedApplicantsDesc>Совокупные кандидаты скатывались, когда начинались платные наборы, с момента выбора. Это запланированный подсчет кандидатов, а не людей, которые действительно прибыли, присоединились или стали колонистами; поколение может потерпеть неудачу.</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: хранимая водопроводная вода (L)</RWS_DBH_PipedStorage>
-  <RWS_DBH_PipedStorageDesc>Общий объем литров, физически хранимых в уникальных резервуарах с водой, подключенных к трубе, Dubs Bad Hygiene, на домашних картах игроков при успешном сохранении. Включает только доступные подключенные резервуары; не пожизненное производство или использование. Значения до включения аддона не реконструируются. Неизвестно, если исходные данные не могут быть прочитаны.</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: емкость резервуара (L)</RWS_DBH_PipedCapacity>
-  <RWS_DBH_PipedCapacityDesc>Общая максимальная вместимость воды в литрах отдельных компонентов резервуара, подключенных к трубе, на домашних картах игроков, по крайней мере, успешная экономия.</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene емкость насоса (L/день)</RWS_DBH_PumpCapacity>
-  <RWS_DBH_PumpCapacityDesc>Сумма определяемой источником потенциальной насосной мощности уникальных населенных трубопроводных сетей при успешном сбережении, в литрах за RimWorld день. Это емкость, а не фактическая произведенная вода.</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene Мощность подземных вод (L/день)</RWS_DBH_GroundwaterCapacity>
-  <RWS_DBH_GroundwaterCapacityDesc>Сумма впускной/подземной емкости воды, определяемой источником, в литрах за игровой день в населенных уникальных трубопроводных сетях при успешном сбережении.</RWS_DBH_GroundwaterCapacityDesc>
-  <RWS_SAU_OrdersIssued>Выданы автоматические заказы на одежду</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Количество автоматических ванильных рабочих мест, фактически выданных Smart Apparel Upgrade. Это НЕ количество успешно завершенных изменений одежды. Подсчитываются только события после включения сбора. Экспериментальная статистика.</RWS_SAU_OrdersIssuedDesc>
-  <RWS_Metric_ModdedIncidentsByDef>Успешные MOD-инциденты по типам</RWS_Metric_ModdedIncidentsByDef>
-  <RWS_MetricDesc_ModdedIncidentsByDef>Подтвержденные инциденты из не-ванильных MOD, которые преуспели на домашней карте игрока после того, как была включена экспериментальная коллекция. Разделение по идентификатору пакета и определению инцидента; не существующие счетчики ванильных катастроф. Исторические пробелы не заполняются.</RWS_MetricDesc_ModdedIncidentsByDef>
-  <RWS_Metric_OutpostsActive>Активные форпосты игроков (сохранённое состояние)</RWS_Metric_OutpostsActive>
-  <RWS_MetricDesc_OutpostsActive>Количество активных контролируемых игроком Vanilla Expanded фреймворков в успешном сейфе. В колониях суммы репрезентативных сохраненных состояний; не пожизненный подсчет или мера произведенных или полученных предметов. Экспериментальные; нет засыпки.</RWS_MetricDesc_OutpostsActive>
-  <RWS_Metric_FishingActions>Рыбалка с принятыми уловами</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Игрок, занимающийся рыбалкой, на домашних картах, на которых размещен хотя бы один улов. Бонусный улов с той же работы добавляет только предметы.</RWS_MetricDesc_FishingActions>
-  <RWS_Metric_FishingCatchByDef>Размещаются рыболовные уловы по пунктам</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Предметы, фактически размещенные игроками на домашних картах, включая редкие уловы и поддерживаемые бонусы Vanilla Fishing Expanded.</RWS_MetricDesc_FishingCatchByDef>
-  <RWS_Backup_Create>Назад сейчас</RWS_Backup_Create>
-  <RWS_Backup_Refresh>Обновить резервные копии</RWS_Backup_Refresh>
-  <RWS_Backup_OpenFolder>Открытая папка</RWS_Backup_OpenFolder>
-  <RWS_Backup_CopyPath>Путь копирования</RWS_Backup_CopyPath>
-  <RWS_Backup_Select>Выберите резервное копирование</RWS_Backup_Select>
-  <RWS_Backup_Restore>Восстановить...</RWS_Backup_Restore>
-  <RWS_Backup_Delete>Удалить...</RWS_Backup_Delete>
-  <RWS_Backup_ConfirmRestore>Восстановить резервную копию с {0} (MOD {1}, {2} колоний, {3} наблюдений)? Текущий рекорд будет подкреплён первым.</RWS_Backup_ConfirmRestore>
-  <RWS_Backup_ConfirmDelete>Удалить резервную копию? {0}</RWS_Backup_ConfirmDelete>
-  <RWS_Backup_BeforeRestore>Прежде чем восстанавливать</RWS_Backup_BeforeRestore>
-  <RWS_Backup_ImportBusy>Дождитесь окончания текущего импорта или отмените его.</RWS_Backup_ImportBusy>
-  <RWS_Backup_Working>Работа над резервными копиями...</RWS_Backup_Working>
-  <RWS_Backup_Error>Резервная операция не удалась: {0}</RWS_Backup_Error>
-  <RWS_Backup_Done>Резервная папка: {0}</RWS_Backup_Done>
-  <RWS_Backup_None>Никаких подкреплений не найдено.</RWS_Backup_None>
-  <RWS_Backup_Label>Ярлык / файл</RWS_Backup_Label>
+  <RWS_Metric_TreeWoodPlaced>Древесина от рубки деревьев (основной выход)</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Древесина, фактически размещённая или добавленная в стопки после рубки дерева пешкой игрока (основной продукт, измеряется при размещении игрой). Неполный охват: дополнительная древесина некоторых модов и нестандартные способы рубки не учитываются.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>Забитые, затем разделанные животные</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Трупы животных, забитых пешкой игрока, которые затем были израсходованы завершённым обычным заданием разделки (ButcherCorpseFlesh). Один и тот же труп отслеживается между сохранениями. Добытые на охоте, погибшие в дикой природе животные и трупы врагов исключаются. Неполный охват: рецепты разделки из модов и некоторые способы исчезновения трупов не распознаются.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>Колония с максимумом: {0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>Колония с минимумом: {0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>Самый частый предмет во всех колониях: {0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>Наибольшее записанное значение среди независимых колоний по одному представительному наблюдению от каждой. Отсутствующие данные не считаются нулём. Для показателей состояния используется значение из сохранения колонии, а не накопленная сумма.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Наименьшее записанное значение среди независимых колоний по одному представительному наблюдению от каждой. Минимумом может быть только фактически измеренный ноль; неизвестные и неприменимые значения игнорируются.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Количество каждого типа предмета отдельно суммируется по независимым колониям, затем итоги ранжируются. Используется одно представительное наблюдение от каждой колонии. Отсутствующие, переполненные или неотслеживаемые типы дают неполный результат. Запасы на момент сохранения никогда не смешиваются с накопленными счётчиками событий.</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>Колонии с равным результатом: {0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>Наблюдение, игровой день: {0}</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>Наиболее частая категория: {0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>Числа по каждой записанной категории суммируются между независимыми колониями по одному представительному наблюдению. Неполные или отсутствующие разбивки остаются частичными. Категории могут обозначать события или людей, не только предметы.</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>Сумма снимков колоний: {0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>Сумма величины, отдельно измеренной в представительном сохранении каждой независимой колонии. Это не накопленное число событий. Неизвестные данные никогда не превращаются в ноль.</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality: прибывшие группы гостей (после включения)</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>Подтверждённые группы посетителей Hospitality, прибывшие на домашние карты игрока после включения этой статистики. Замещающие группы для спасённых гостей не учитываются. Повторы после загрузки отсеиваются по ID события. Посещения до установки мода не оцениваются.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality: прибытия гостей (после включения)</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>Суммарное число гостей в подтверждённых группах Hospitality, прибывших на домашние карты игрока после включения. Повторные визиты учитываются снова, поэтому это не число уникальных людей и не текущая численность гостей. Предыдущие посетители неизвестны.</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality: мирно уехавшие группы (после включения)</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>Не враждебные группы Hospitality учитываются после окончания визита, когда подтверждены их уход с карты и роспуск группы без оставшихся или потерянных участников. Высланные и переорганизованные группы исключаются. Если игра загружена при отъезде группы, доказательств может не хватать; такие группы исключаются без предположений.</RWS_Hospitality_VisitsCompletedDesc>
+  <RWS_Hospitality_Recruited>Hospitality: завербованные гости (после включения)</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>Подтверждённые вербовки гостей Hospitality после включения; учитываются лишь когда действие вербовки Hospitality завершается пешкой фракции игрока. Более ранние вербовки не оцениваются.</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality: принудительно завербованные (после включения)</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>Подтверждённые вербовки гостей, помеченные Hospitality как принудительные после включения. Входят в число успешных вербовок.</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality: добровольно завербованные (после включения)</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>Подтверждённые вербовки гостей, не помеченные Hospitality как принудительные после включения. Входят в число успешных вербовок.</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_ShoppingUnits>Покупки гостей Hospitality (предметы)</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnitsDesc>Предметы, добавленные в инвентарь или экипировку гостей при выполнении заданий на покупки на домашних картах игрока после включения статистики.</RWS_Hospitality_ShoppingUnitsDesc>
+  <RWS_Hospitality_ShoppingSilver>Серебро, уплаченное гостями Hospitality</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilverDesc>Серебро, изъятое у гостей при тех же выполненных заданиях на покупки после включения статистики.</RWS_Hospitality_ShoppingSilverDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality: выделенные гостям кровати при сохранении</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>Число уникальных гостевых кроватей, назначенных гостям Hospitality на домашних картах игрока при успешном сохранении. Общая кровать учитывается один раз. Это число назначенных кроватей, а не фактически спящих гостей или бронирований за всю историю.</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>Начатые заявки Recruitment (после включения)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>Подтверждённые заявки Recruitment после включения этой статистики. Отдельный ряд от старой встроенной статистики, поскольку изменились устранение повторов событий и создание контрольных точек.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment: серебро на заявки (после включения)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>Вся подтверждённая сумма серебра, уплаченная за новые заявки Recruitment после включения, включая дополнительные сборы. Неудачные попытки исключаются; это не изменение чистого богатства.</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: запланированные кандидаты (после включения)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>Сумма рассчитанных при начале оплаченных заявок Recruitment кандидатов после включения. Это план, а не число действительно прибывших, вступивших или ставших колонистами; генерация кандидатов может завершиться неудачей.</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: запас воды в трубах (л)</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>Общее число литров воды в резервуарах Dubs Bad Hygiene, подключённых к трубам на домашних картах игрока при успешном сохранении; каждый резервуар считается один раз. Учитываются только подключённые резервуары с читаемыми данными. Это не накопленные производство или расход. Прошлые значения до включения не восстанавливаются, нечитаемые данные неизвестны.</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: ёмкость подключённых баков (л)</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>Сумма максимальной ёмкости разных баков, подключённых к трубам на домашних картах игрока при последнем успешном сохранении, в литрах. Не накопленное количество.</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: мощность насосов (л/день)</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>Сумма номинальной производительности насосов по определению Dubs Bad Hygiene для каждой используемой отдельной трубопроводной сети при успешном сохранении, в литрах за игровой день. Это мощность, а не фактически перекачанная вода.</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: мощность грунтовых вод (л/день)</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>Сумма номинальной мощности водозабора и грунтовых вод по определению Dubs Bad Hygiene для каждой отдельной используемой сети при успешном сохранении, в литрах за игровой день. Не фактическая прокачка.</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>Отданные приказы на автоматическую смену одежды</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Обычные задания Wear, действительно выданные модом Smart Apparel Upgrade. НЕ число завершённых переодеваний. Учитываются только события после включения сбора. Экспериментальная статистика.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>Успешные MOD-события по типам</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>Подтверждённые события неосновных модов, успешно запущенные на домашних картах игрока после включения сбора, по ID пакета и событию. Отдельно от счётчиков базовых катастроф. Пропуски в истории не заполняются.</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>Активные аванпосты игрока (сохранённое состояние)</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>Активные аванпосты Vanilla Expanded Framework под управлением игрока при успешном сохранении. По колониям суммируются представительные сохранения. Это не накопленная история и не число изготовленных или полученных предметов. Экспериментально; прежние периоды не восполняются.</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>Рыболовные задания с уловом</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>Рыболовные задания игрока на домашних картах, в которых размещён хотя бы один улов. Дополнительный улов того же задания увеличивает только число предметов.</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>Улов рыбы по предметам</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Предметы, фактически размещённые при рыбалке игрока на домашних картах, включая редкий улов и поддерживаемые бонусы Vanilla Fishing Expanded. Учитывается только записанный период.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>Создать копию</RWS_Backup_Create>
+  <RWS_Backup_Refresh>Обновить список копий</RWS_Backup_Refresh>
+  <RWS_Backup_OpenFolder>Открыть папку</RWS_Backup_OpenFolder>
+  <RWS_Backup_CopyPath>Скопировать путь</RWS_Backup_CopyPath>
+  <RWS_Backup_Select>Выбрать копию</RWS_Backup_Select>
+  <RWS_Backup_Restore>Восстановить…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>Удалить…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>Восстановить копию от {0} (мод {1}, колоний: {2}, наблюдений: {3})? Текущие данные сначала будут скопированы.</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>Удалить эту копию? {0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>Перед восстановлением</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>Дождитесь завершения текущего импорта или отмените его.</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>Обработка резервных копий…</RWS_Backup_Working>
+  <RWS_Backup_Error>Ошибка операции с копией: {0}</RWS_Backup_Error>
+  <RWS_Backup_Done>Готово. Папка копий: {0}</RWS_Backup_Done>
+  <RWS_Backup_None>Резервные копии не найдены.</RWS_Backup_None>
+  <RWS_Backup_Label>Метка / файл</RWS_Backup_Label>
   <RWS_Backup_Size>Размер</RWS_Backup_Size>
-  <RWS_Backup_Verification>проверка</RWS_Backup_Verification>
-  <RWS_Backup_Valid>проверенный</RWS_Backup_Valid>
-  <RWS_Backup_NewerSchema>Новая схема профиля</RWS_Backup_NewerSchema>
-  <RWS_Backup_UnknownFormat>Неизвестный формат резервной копии</RWS_Backup_UnknownFormat>
-  <RWS_Backup_Invalid>Проверка провалилась</RWS_Backup_Invalid>
-  <RWS_Groups_Title>Редактировать группы колоний</RWS_Groups_Title>
-  <RWS_Groups_Add>Создайте группу</RWS_Groups_Add>
+  <RWS_Backup_Verification>Проверка</RWS_Backup_Verification>
+  <RWS_Backup_Valid>Проверена</RWS_Backup_Valid>
+  <RWS_Backup_NewerSchema>Создана более новой версией</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>Неизвестный формат копии</RWS_Backup_UnknownFormat>
+  <RWS_Backup_Invalid>Проверка не пройдена</RWS_Backup_Invalid>
+  <RWS_Groups_Title>Изменить группы колоний</RWS_Groups_Title>
+  <RWS_Groups_Add>Создать группу</RWS_Groups_Add>
   <RWS_Groups_All>Все колонии</RWS_Groups_All>
-  <RWS_Groups_Edit>Редактировать группы...</RWS_Groups_Edit>
-  <RWS_Groups_None>Создайте группу для начала.</RWS_Groups_None>
-  <RWS_Groups_Members>Выбрано: {0} (отсутствующие ключи: {1})</RWS_Groups_Members>
-  <RWS_Groups_RemoveMissing>Удалить недостающие ключи</RWS_Groups_RemoveMissing>
-  <RWS_Groups_Excluded>исключать</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>Вне выбранной группы: {0} колоний</RWS_Groups_OutOfScope>
-  <RWS_Backup_RestorePreferences>Также восстановите любимые и настройки группы колоний.</RWS_Backup_RestorePreferences>
-  <RWS_Fav_Title>Любимая статистика</RWS_Fav_Title>
-  <RWS_Fav_Empty>Используйте звезду рядом со статистической или обзорной картой, чтобы добавить ее здесь.</RWS_Fav_Empty>
-  <RWS_Fav_StarTip>Добавить или удалить из избранных</RWS_Fav_StarTip>
-  <RWS_Fav_MoveUp>Любимое движение раньше</RWS_Fav_MoveUp>
-  <RWS_Fav_MoveDown>Любимое перемещение позже</RWS_Fav_MoveDown>
-  <RWS_Fav_Remove>Удалить любимое</RWS_Fav_Remove>
-  <RWS_Fav_Unknown>Ранее сохраненная метрика больше не доступна.</RWS_Fav_Unknown>
-  <RWS_Fav_NoOverall>Эта метрика не имеет комбинированного значения в колониях.</RWS_Fav_NoOverall>
+  <RWS_Groups_Edit>Изменить группы…</RWS_Groups_Edit>
+  <RWS_Groups_None>Сначала создайте группу.</RWS_Groups_None>
+  <RWS_Groups_Members>Выбрано: {0} (не найдено: {1})</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>Исключить отсутствующие колонии</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>исключена</RWS_Groups_Excluded>
+  <RWS_Groups_OutOfScope>Вне выбранной группы, колоний: {0}</RWS_Groups_OutOfScope>
+  <RWS_Backup_RestorePreferences>Восстановить также избранное и настройки групп колоний</RWS_Backup_RestorePreferences>
+  <RWS_Fav_Title>Избранные статистики</RWS_Fav_Title>
+  <RWS_Fav_Empty>Нажмите звёздочку рядом со статистикой или карточкой обзора, чтобы добавить её сюда.</RWS_Fav_Empty>
+  <RWS_Fav_StarTip>Добавить в избранное или убрать оттуда</RWS_Fav_StarTip>
+  <RWS_Fav_MoveUp>Вверх</RWS_Fav_MoveUp>
+  <RWS_Fav_MoveDown>Вниз</RWS_Fav_MoveDown>
+  <RWS_Fav_Remove>Убрать из избранного</RWS_Fav_Remove>
+  <RWS_Fav_Unknown>Эта сохранённая статистика больше недоступна.</RWS_Fav_Unknown>
+  <RWS_Fav_NoOverall>У этой статистики нет общего значения по колониям.</RWS_Fav_NoOverall>
   <RWS_Fav_AddBasic>Добавить базовую статистику</RWS_Fav_AddBasic>
   <RWS_Tab_Rankings>Рейтинги</RWS_Tab_Rankings>
-  <RWS_Rankings_Search>Поисковая статистика</RWS_Rankings_Search>
-  <RWS_Rankings_Desc>Самый первый</RWS_Rankings_Desc>
-  <RWS_Rankings_Asc>Маленький первый</RWS_Rankings_Asc>
-  <RWS_Rankings_All>Показать все ранги</RWS_Rankings_All>
-  <RWS_Rankings_Top10>Показать топ-10</RWS_Rankings_Top10>
-  <RWS_Rankings_Position>Ранг</RWS_Rankings_Position>
-  <RWS_Rankings_Coverage>Измерено {0} из {1} колоний</RWS_Rankings_Coverage>
-  <RWS_Rankings_PartialNote>Некоторые наблюдения отсутствуют или частичны.</RWS_Rankings_PartialNote>
-  <RWS_Rankings_NoMatches>Не доступны ранжированные значения.</RWS_Rankings_NoMatches>
-  <RWS_Tab_Coverage>Состояние сбора данных</RWS_Tab_Coverage>
-  <RWS_Status_Summary>Измерено: {0} · Частично: {1} · Нет данных: {2} · Неприменимо: {3} · Экспериментальные: {4}</RWS_Status_Summary>
-  <RWS_Status_SdkEventCapExceeded>SDK Идентификационный предел события достигнут для {0} метрики (лимит: {1}).Последние события не подсчитываются; итоговые значения являются частичными.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>Записанное значение не доказывает, что его числовая точность была проверена в игре.</RWS_Status_Caution>
-  <RWS_Status_VerificationAll>Все проверочные государства</RWS_Status_VerificationAll>
-  <RWS_Status_Experimental>экспериментальный</RWS_Status_Experimental>
-  <RWS_Status_Legacy>Доказательства наследия</RWS_Status_Legacy>
-  <RWS_Status_Standard>Стандарт</RWS_Status_Standard>
-  <RWS_Status_Measured>измеряемый</RWS_Status_Measured>
-  <RWS_Status_Partial>частичный</RWS_Status_Partial>
-  <RWS_Status_NotMeasured>не измеряется</RWS_Status_NotMeasured>
+  <RWS_Rankings_Search>Поиск статистики</RWS_Rankings_Search>
+  <RWS_Rankings_Desc>От больших к меньшим</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>От меньших к большим</RWS_Rankings_Asc>
+  <RWS_Rankings_All>Все места</RWS_Rankings_All>
+  <RWS_Rankings_Top10>Первые 10</RWS_Rankings_Top10>
+  <RWS_Rankings_Position>Место</RWS_Rankings_Position>
+  <RWS_Rankings_Coverage>Измерено колоний: {0} из {1}</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>Некоторые значения отсутствуют или неполны.</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>Нет доступных значений для рейтинга.</RWS_Rankings_NoMatches>
+  <RWS_Tab_Coverage>Статус сбора</RWS_Tab_Coverage>
+  <RWS_Status_Summary>Измерено: {0} · Частично: {1} · Нет данных: {2} · Н/П: {3} · Эксперим.: {4}</RWS_Status_Summary>
+  <RWS_Status_SdkEventCapExceeded>Статистик с превышением лимита ID событий SDK: {0} (предел {1}). Последующие события не считаются; итоговые значения неполны.</RWS_Status_SdkEventCapExceeded>
+  <RWS_Status_Caution>Наличие записи не означает, что точность проверена в настоящей игре.</RWS_Status_Caution>
+  <RWS_Status_VerificationAll>Все состояния проверки</RWS_Status_VerificationAll>
+  <RWS_Status_Experimental>Экспериментально</RWS_Status_Experimental>
+  <RWS_Status_Legacy>Старая запись</RWS_Status_Legacy>
+  <RWS_Status_Standard>Обычный</RWS_Status_Standard>
+  <RWS_Status_Measured>Измерено</RWS_Status_Measured>
+  <RWS_Status_Partial>Частично</RWS_Status_Partial>
+  <RWS_Status_NotMeasured>Не измерено</RWS_Status_NotMeasured>
   <RWS_Status_NotApplicable>Не применимо</RWS_Status_NotApplicable>
-  <RWS_Status_FilterAll>Все покрытия</RWS_Status_FilterAll>
-  <RWS_Status_FilterMeasured>имеет измерения</RWS_Status_FilterMeasured>
+  <RWS_Status_FilterAll>Все состояния охвата</RWS_Status_FilterAll>
+  <RWS_Status_FilterMeasured>Есть измерения</RWS_Status_FilterMeasured>
   <RWS_Status_FilterPartial>Частичный охват</RWS_Status_FilterPartial>
-  <RWS_Status_FilterMissing>Никаких измерений</RWS_Status_FilterMissing>
+  <RWS_Status_FilterMissing>Нет измерений</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>Не применимо</RWS_Status_FilterNA>
   <RWS_Status_Statistic>Метрика/приобретение</RWS_Status_Statistic>
   <RWS_Status_Recording>Текущая коллекция</RWS_Status_Recording>

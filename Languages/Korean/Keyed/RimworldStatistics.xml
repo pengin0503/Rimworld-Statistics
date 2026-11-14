@@ -875,131 +875,131 @@
   <RWS_MetricDesc_HauledUnits>플레이어 운반 작업(HaulToCell)으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>완료한 청소 작업 수</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>오염물을 한 개 이상 완전히 제거하고 정상적으로 끝난 플레이어 청소 작업 수입니다. 한 작업에서 여러 오염물을 치워도 한 번만 셉니다. 중단된 작업은 제외합니다.</RWS_MetricDesc_CleaningJobsCompleted>
-  <RWS_Metric_TreeWoodPlaced>나무 절단 나무 얻은 (primary 수확량)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>1 차적인 나무 단위의 수는 실제로 GenPlace의 placeAction에 의해 측정된 선수의 나무 절단 수확 후에, 병합했습니다. 부분적인 적용: 몇몇 단위 성분 및 비표준 절단 경로에서 보너스 나무는 입니다.</RWS_MetricDesc_TreeWoodPlaced>
-  <RWS_Metric_SlaughteredButchery>웃음 동물 연속적으로 butchered</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>이 웹 사이트는 애플 리케이션에 전념. 우리는 정품 앱과 게임을 제공 할 목적으로이 사이트를 만들었습니다. 4AppsApk 최고의 안드로이드 애플 리케이션을위한 무료 APK 파일 다운로드 서비스, 계략.</RWS_MetricDesc_SlaughteredButchery>
-  <RWS_Cross_MaxColony>대장관 : {0}</RWS_Cross_MaxColony>
-  <RWS_Cross_MinColony>콜로니 적어도 : {0}</RWS_Cross_MinColony>
-  <RWS_Cross_TopType>식민지의 맞은편에 최고 품목: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>독립적 인 식민지에 걸쳐 가장 높은 기록 된 값, 식민지 당 하나의 대표 관측을 사용하여. 독서를 미스는 제로로 처리되지 않습니다. 국가 수량은 각 식민지의 기록 된 저장을 참조, 누적되지 않은 생산.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>독립적 인 식민지의 맞은편에 가장 낮은 기록 값, 식민지 당 하나의 대표 관측을 사용하여. 실제로 0을 측정 할 수 있습니다; 알 수없는 비 응용 가능한 값은하지 않습니다.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>독립적 인 식민지의 각 항목 정의에 대해 별도로 요약 한 다음 총을 순위. 계산은 식민지 당 하나의 대표 관측을 사용합니다. 미스링, 과잉, 또는 추적되지 않은 정의는 부분적 적용을 제공합니다. 국가 재고 및 평생 이벤트는 교환 할 수 없습니다.</RWS_CrossDesc_TopType>
-  <RWS_Cross_TiedHolders>묶여 식민지: {0}</RWS_Cross_TiedHolders>
-  <RWS_Cross_RecordedAt>게임 일에 관찰 된 기록 : {0}</RWS_Cross_RecordedAt>
-  <RWS_Cross_TopCategory>식민지 전역의 대부분의 일반적인 범주: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>독립적 인 식민지 전역의 각 기록 된 카테고리에 대한 요약 수를 요약, 당 하나의 대표 관측 식민지를 사용하여. 불완전하고 누락 된 범주 분할은 Partial 남아있다; 범주는 항목 수 없습니다.</RWS_CrossDesc_TopCategory>
-  <RWS_Cross_Sum>결합 된 식민지 스냅 샷 : {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>각 독립적 인 식민지의 대표로 저장된 순간에 별도로 측정 된 상태의 요약. 이것은 평생 이벤트가 아닙니다. 알려진 판독은 제로가되지 않습니다.</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>환대: 평생 게스트 그룹 도착 (시즈 활성화)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>이 애드온이 활성화 된 이후로 플레이어 홈 맵에 도착하는 병원 그룹을 방문 할 수 있습니다. 교체 그룹이 제외 된 손님을 구출하십시오. 재생은 해시드 이벤트 ID를 사용합니다. 사전 설치 역사가 불립니다.</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>환대: 일생 손님 도착 (since 활성화)</RWS_Hospitality_VisitGuests>
-  <RWS_Hospitality_VisitGuestsDesc>이 애드온이 활성화 된 이후로 플레이어 홈 맵에 도착하는 확인 된 Hospitality 그룹의 총 방문 문자. 다시 방문을 반복; 이것은 고유 한 사람의 수 또는 현재 손님의 수는 아닙니다. 활성화 전에 역사 방문자는 알 수 없습니다.</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>환대: 평화롭게 방문 그룹을 출발 (since 활성화)</RWS_Hospitality_VisitsCompleted>
-  <RWS_Hospitality_VisitsCompletedDesc>이 웹 사이트는 귀하가 웹 사이트를 탐색하는 동안 귀하의 경험을 향상시키기 위해 쿠키를 사용합니다. 이 쿠키들 중에서 필요에 따라 분류 된 쿠키는 웹 사이트의 기본적인 기능을 수행하는 데 필수적이므로 브라우저에 저장됩니다. 또한이 웹 사이트의 사용 방식을 분석하고 이해하는 데 도움이되는 제 3 자 쿠키를 사용합니다.</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>환대: 성공적으로 모집된 손님 (주스 활성화)</RWS_Hospitality_Recruited>
-  <RWS_Hospitality_RecruitedDesc>옵트인 이후 확인된 Hospitality 게스트 채택은 업스트림 채용 액션이 플레이어 액션 캐릭터로 돌아갑니다. 역사적인 백필이 없습니다.</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>환대: forced guest 채용 (시세 활성화)</RWS_Hospitality_ForcedRecruit>
-  <RWS_Hospitality_ForcedRecruitDesc>확인 된 환대 손님 모집은 대상에 의해 강제로 표시되어 있습니다. 성공적인 채용의 subset.</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>Hospitality: 자발적인 고객 채용 (시세 활성화)</RWS_Hospitality_VoluntaryRecruit>
-  <RWS_Hospitality_VoluntaryRecruitDesc>확인 된 환대 손님 모집은 대상에 의해 강제되지 않습니다, 옵트 인 이후. 성공적인 채용의 하위 세트.</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>Hospitality 손님에 의해 구입 한 항목</RWS_Hospitality_ShoppingUnits>
-  <RWS_Hospitality_ShoppingUnitsDesc>고객님의 재고 또는 장비에 추가된 항목은 옵트인부터 플레이어 홈 맵에서 쇼핑 작업 완료.</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>은의료 손님에 의해 지불</RWS_Hospitality_ShoppingSilver>
-  <RWS_Hospitality_ShoppingSilverDesc>은은과 같은 완성 된 쇼핑 작업에 의해 선택 후.</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>환대: 숙박에 할당된 침대</RWS_Hospitality_AssignedBeds>
-  <RWS_Hospitality_AssignedBedsDesc>이 침대의 수는 현재 성공적으로 저장되어 플레이어 홈 맵을 통해 Hospitality 방문자에게 할당됩니다. 공유 침대는 한 번 계산됩니다. 이것은 침대 할당, 물리적으로 수면 또는 평생 예약의 측정이 아닙니다.</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>모집요청 시작 (addon period)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>옵트 인 후 확인 된 채용 요청; 이벤트 deduplication/checkpoint 키가 변경되기 때문에 레거시 내장 시리즈에서 구별됩니다.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>모집 : 시작된 요청에 따라 은 지출 (since 활성화)</RWS_AddonRecruitment_SilverSpent>
-  <RWS_AddonRecruitment_SilverSpentDesc>새로 만들어진 모집 드라이브에 대한 총 확인 실버 지급. 프리미엄 포함; 실패 시도 또는 순 부를 대표하지 않습니다.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>모집 : 요청에 대한 지원자 계획 (시세 활성화)</RWS_AddonRecruitment_PlannedApplicants>
-  <RWS_AddonRecruitment_PlannedApplicantsDesc>유료 모집 드라이브가 시작될 때 총 후보는 선택 후입니다. 이것은 실제로 도착한 사람들, 가입하거나 식민지가되지 않는 계획 된 신청자 수입니다. 세대는 실패 할 수 있습니다.</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene : 파이프 물 (L) 저장</RWS_DBH_PipedStorage>
-  <RWS_DBH_PipedStorageDesc>전체 리터는 플레이어 홈 맵을 성공적으로 저장하여 독특한 Dubs Bad Hygiene 파이프 연결 물 탱크에 물리적으로 저장됩니다. 사용 가능한 연결 탱크를 포함; 평생 생산 또는 사용. addon을 활성화하기 전에 값은 재구성되지 않습니다. 소스 데이터가 읽을 수없는 경우 알 수 없습니다.</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene : 파이프 탱크 용량 (L)</RWS_DBH_PipedCapacity>
-  <RWS_DBH_PipedCapacityDesc>최신 성공적인 저축에 선수 가정 지도의 맞은편에 명백한 관 연결한 탱크 성분의 리터에 있는 총 최대 물 수용량. 일생 양 없음.</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene : 펌프 용량 (L / 일)</RWS_DBH_PumpCapacity>
-  <RWS_DBH_PumpCapacityDesc>RimWorld 일 당 리터에서 성공적인 저장에 독특하고 포화 된 파이프 네트워크의 공급 능력의 요약. 이 용량은 실제 물이 생산되지 않습니다.</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene : 물 공급 용량 (L / 일)</RWS_DBH_GroundwaterCapacity>
-  <RWS_DBH_GroundwaterCapacityDesc>성공한 저축에 대중화한 유일한 관 네트워크의 맞은편에 게임 일 당 리터에 있는 근원 정의 물 인레트/groundwater 수용량의 합계. 실제적인 양이 펌핑되지 않는.</RWS_DBH_GroundwaterCapacityDesc>
-  <RWS_SAU_OrdersIssued>자동 apparel 주문 발행</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Smart Apparel 업그레이드가 실제로 발행 한 자동 바닐라웨어 작업의 수입니다. 이것은 성공적으로 완료된 의류 변경의 수가 아닙니다. 수집을 가능하게 한 후 만 이벤트 만 계산됩니다. 실험 통계.</RWS_SAU_OrdersIssuedDesc>
-  <RWS_Metric_ModdedIncidentsByDef>Successful MOD 사건 by 유형</RWS_Metric_ModdedIncidentsByDef>
-  <RWS_MetricDesc_ModdedIncidentsByDef>실험 컬렉션이 활성화된 후 플레이어 홈 맵에 성공한 비 바닐라 MOD의 사건을 확인했습니다. 패키지 ID 및 사건 정의로 분할하십시오. 기존 바닐라 재난 카운터가 아닌 기존 바닐라 재난 카운터가 아닙니다. 역사 격차는 다시 채워지지 않습니다.</RWS_MetricDesc_ModdedIncidentsByDef>
-  <RWS_Metric_OutpostsActive>Active Player Outposts (잘못된 상태)</RWS_Metric_OutpostsActive>
-  <RWS_MetricDesc_OutpostsActive>활성 플레이어 제어 Vanilla Expanded 프레임 워크 아웃 포스트의 수 성공적인 저장. 교차 식민지, 총 대표 저장 상태; 생성 또는 수신 된 항목의 수명 또는 측정이 아닙니다. 실험; backfilling 없음.</RWS_MetricDesc_OutpostsActive>
-  <RWS_Metric_FishingActions>낚시 작업과 허용된 catches</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>적어도 하나의 캐치를 배치 한 홈 맵에 선수 낚시 작업. 같은 작업에서 보너스 캐치를 추가 항목 만.</RWS_MetricDesc_FishingActions>
-  <RWS_Metric_FishingCatchByDef>아이템에 의해 배치 된 낚시</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>아이템은 실제로 플레이어 낚시 작업에 의해 배치, 드문 캐치와 지원 바닐라 낚시 확장 보너스를 포함. 만 기록 된 기간이 덮여있다.</RWS_MetricDesc_FishingCatchByDef>
-  <RWS_Backup_Create>지금 위로</RWS_Backup_Create>
-  <RWS_Backup_Refresh>백업 재설정</RWS_Backup_Refresh>
-  <RWS_Backup_OpenFolder>열린 폴더</RWS_Backup_OpenFolder>
-  <RWS_Backup_CopyPath>복사 경로</RWS_Backup_CopyPath>
+  <RWS_Metric_TreeWoodPlaced>벌목으로 얻은 목재 (주생산물)</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>플레이어 폰이 나무를 벤 후 주생산물 목재가 실제로 놓이거나 다른 묶음에 합쳐진 수량입니다(게임에서 놓을 때 측정). 일부만 집계하며 일부 모드의 추가 목재나 비표준 벌목 방법은 제외합니다.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>도축 후 해체한 동물</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>플레이어 폰이 도축한 동물의 시체가 나중에 완료된 기본 게임 해체 작업 지시(ButcherCorpseFlesh)로 소모된 수입니다. 같은 시체를 저장 파일 사이에서도 추적합니다. 사냥한 동물, 야생에서 죽은 동물, 적 시체는 포함하지 않습니다. 모드 해체 조리법과 일부 시체 소멸 경로는 인식하지 못하므로 일부만 집계합니다.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>값이 가장 큰 정착지: {0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>값이 가장 작은 정착지: {0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>모든 정착지에서 가장 많은 아이템: {0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>독립된 정착지마다 대표 관측값 하나를 사용해 기록된 최대값을 비교합니다. 기록 누락은 0으로 취급하지 않습니다. 상태를 나타내는 수량은 해당 정착지 저장 시점의 값이지 누적 합계가 아닙니다.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>독립된 정착지마다 대표 관측값 하나를 사용해 기록된 최소값을 비교합니다. 실제로 측정된 0만 최소값이 될 수 있으며 미확인 및 해당 없음 값은 제외합니다.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>독립된 정착지의 수량을 아이템 종류별로 따로 합산한 뒤 순위를 매깁니다. 정착지당 대표 관측값 하나를 사용합니다. 누락, 범위 초과 또는 미추적 종류가 있으면 결과가 일부만 반영됩니다. 저장 시점의 재고와 누적 사건 횟수는 섞지 않습니다.</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>동률 정착지: {0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>게임 내 {0}일째 관측</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>모든 정착지에서 가장 많은 범주: {0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>독립된 각 정착지의 대표 관측값 하나를 사용해 기록된 범주별 수량을 합산합니다. 누락되거나 불완전한 내역은 일부 기록으로 남습니다. 범주는 아이템이 아닌 사건 수나 인원을 셀 수도 있습니다.</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>정착지별 저장 시점 합계: {0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>각 독립 정착지의 대표 저장 파일에서 별도로 측정한 수량을 합산합니다. 평생 누적 사건 횟수가 아닙니다. 알 수 없는 수치를 0으로 바꾸지 않습니다.</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality: 도착한 손님 그룹 (활성화 후)</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에 도착한 것으로 확인된 Hospitality 손님 그룹 수입니다. 구조된 손님을 위해 만든 대체 그룹은 제외합니다. 다시 불러온 뒤 중복 사건은 사건 ID로 걸러 냅니다. 모드 설치 전 방문은 추정하지 않습니다.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality: 손님 도착 인원 (활성화 후)</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>이 통계를 활성화한 후 도착이 확인된 Hospitality 그룹의 손님 인원 합계입니다. 재방문도 다시 집계하므로 서로 다른 사람 수나 현재 손님 수가 아닙니다. 그 이전 방문은 알 수 없습니다.</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality: 평화롭게 떠난 그룹 (활성화 후)</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>비적대 Hospitality 그룹이 방문을 마치고 실제로 지도를 떠난 것이 확인됐으며 남거나 실종된 구성원 없이 그룹이 해산한 경우에만 집계합니다. 쫓겨나거나 재구성된 그룹은 제외합니다. 떠나는 중에 게임을 불러와 증거가 부족하면 추정하지 않고 제외합니다.</RWS_Hospitality_VisitsCompletedDesc>
+  <RWS_Hospitality_Recruited>Hospitality: 모집한 손님 (활성화 후)</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>이 통계를 활성화한 후 확인된 Hospitality 손님 모집 수입니다. Hospitality 모집 처리 후 폰이 플레이어 세력 소속이 된 경우만 집계합니다. 이전 모집은 추정하지 않습니다.</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality: 강제 모집한 손님 (활성화 후)</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>이 통계를 활성화한 후 Hospitality가 강제로 표시한 모집 성공 수입니다. 전체 모집 성공 수에 포함됩니다.</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality: 자발적으로 가입한 손님 (활성화 후)</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>이 통계를 활성화한 후 Hospitality가 강제로 표시하지 않은 모집 성공 수입니다. 전체 모집 성공 수에 포함됩니다.</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_ShoppingUnits>Hospitality 손님이 구매한 아이템</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnitsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에서 완료된 쇼핑 작업으로 손님의 소지품이나 장비에 추가된 아이템 수입니다.</RWS_Hospitality_ShoppingUnitsDesc>
+  <RWS_Hospitality_ShoppingSilver>Hospitality 손님이 지불한 은</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilverDesc>이 통계를 활성화한 후 같은 쇼핑 작업이 완료되면서 손님에게서 지불받은 은의 양입니다.</RWS_Hospitality_ShoppingSilverDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality: 저장 시 손님에게 배정된 침대</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머무는 Hospitality 손님에게 배정된 고유 손님용 침대 수입니다. 함께 쓰는 침대는 한 번만 셉니다. 실제로 자는 인원이나 누적 숙박 예약 수가 아닌 침대 배정 수입니다.</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>시작한 Recruitment 모집 요청 (활성화 후)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>이 통계를 활성화한 후 확인된 Recruitment 모집 요청 수입니다. 사건 중복 제거와 체크포인트 처리 방식이 달라졌으므로 이전에 내장된 통계와 별도의 계열로 표시합니다.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment: 요청에 지불한 은 (활성화 후)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>이 통계를 활성화한 후 새 Recruitment 요청을 생성할 때 실제로 지불했다고 확인된 은의 총량입니다. 추가 수수료를 포함하지만 실패한 시도는 제외하며 순자산 변화를 뜻하지 않습니다.</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: 예정 지원자 수 (활성화 후)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>이 통계를 활성화한 후 유료 Recruitment 요청이 시작될 때 추첨으로 정한 예정 지원자 수의 합계입니다. 실제 도착하거나 가입하거나 정착민이 된 인원 수가 아니며 생성 자체가 실패할 수 있습니다.</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: 배관 저장수량 (L)</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>저장에 성공한 시점에 플레이어 본거지 지도에서 배관에 연결된 Dubs Bad Hygiene 물탱크의 총저장량(리터)입니다. 탱크마다 한 번만 집계하고 읽을 수 있는 연결 탱크만 포함합니다. 평생 누적 생산량이나 사용량이 아닙니다. 활성화 이전 수치는 복원하지 않으며 데이터를 읽을 수 없으면 알 수 없음으로 표시합니다.</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: 연결 물탱크 용량 (L)</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>최근 저장 성공 시점에 플레이어 본거지 지도에서 배관에 연결된 서로 다른 물탱크의 최대 용량 합계(리터)입니다. 평생 누적값이 아닙니다.</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: 펌프 정격 용량 (L/일)</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>저장에 성공한 시점에 사용 중인 각 독립 배관망에 대해 Dubs Bad Hygiene에서 정의한 정격 펌프 용량을 합산합니다(게임 내 일당 리터). 실제로 퍼 올린 물이 아닌 용량입니다.</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: 지하수 공급 용량 (L/일)</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>저장에 성공한 시점에 사용 중인 각 독립 배관망에 대해 Dubs Bad Hygiene에서 정의한 유입수 및 지하수 정격 공급 용량을 합산합니다(게임 내 일당 리터). 실제로 퍼 올린 수량이 아닙니다.</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>자동 의복 교체 지시 횟수</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade가 실제로 지시한 기본 게임 착용(Wear) 작업의 횟수입니다. 의복 교체 완료 횟수가 아닙니다. 수집 활성화 이후의 사건만 집계합니다. 실험적 통계입니다.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>유형별 성공한 MOD 사건</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>수집 활성화 후 플레이어 본거지 지도에서 성공한 비기본 게임 MOD 사건을 패키지 ID와 사건별로 집계합니다. 기본 게임 재해 집계와는 별개입니다. 누락된 과거 기록은 보완하지 않습니다.</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>활성 플레이어 전초기지 (저장 상태)</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>저장에 성공한 시점에 플레이어가 관리하는 Vanilla Expanded Framework의 활성 전초기지 수입니다. 정착지 전체에서는 각 정착지 대표 저장 시점 값을 합산합니다. 평생 누적 개수도 생산하거나 받은 아이템 수량도 아닙니다. 실험적 통계이며 이전 기간은 보완하지 않습니다.</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>어획에 성공한 낚시 작업 수</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>플레이어 본거지 지도에서 한 개 이상의 어획물을 놓은 낚시 작업의 횟수입니다. 같은 작업의 추가 어획물은 아이템 수만 증가시킵니다.</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>아이템별 낚시 어획량</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>플레이어 본거지 지도에서 낚시 작업으로 실제로 놓은 아이템 수입니다. 희귀한 어획물 및 지원되는 Vanilla Fishing Expanded 추가 어획물을 포함합니다. 기록한 기간에만 적용됩니다.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>지금 백업</RWS_Backup_Create>
+  <RWS_Backup_Refresh>백업 목록 새로 고침</RWS_Backup_Refresh>
+  <RWS_Backup_OpenFolder>폴더 열기</RWS_Backup_OpenFolder>
+  <RWS_Backup_CopyPath>경로 복사</RWS_Backup_CopyPath>
   <RWS_Backup_Select>백업 선택</RWS_Backup_Select>
-  <RWS_Backup_Restore>관련 기사</RWS_Backup_Restore>
-  <RWS_Backup_Delete>...을...</RWS_Backup_Delete>
-  <RWS_Backup_ConfirmRestore>{0}에서 백업 복원 (MOD {1}, {2} 식민지, {3} 관측)? 현재 기록은 첫 번째 백업됩니다.</RWS_Backup_ConfirmRestore>
-  <RWS_Backup_ConfirmDelete>이 백업을 삭제? {0}</RWS_Backup_ConfirmDelete>
-  <RWS_Backup_BeforeRestore>복구하기</RWS_Backup_BeforeRestore>
-  <RWS_Backup_ImportBusy>현재 가져 오기를 완료하거나 취소하십시오.</RWS_Backup_ImportBusy>
-  <RWS_Backup_Working>백업에서 작업 ...</RWS_Backup_Working>
-  <RWS_Backup_Error>백업 작업 실패 : {0}</RWS_Backup_Error>
-  <RWS_Backup_Done>작업 완료. 백업 폴더: {0}</RWS_Backup_Done>
+  <RWS_Backup_Restore>복원…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>삭제…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>{0}의 백업(모드 {1}, 정착지 {2}개, 관측 {3}건)을 복원하시겠습니까? 현재 기록을 먼저 백업합니다.</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>이 백업을 삭제하시겠습니까? {0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>복원 전</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>진행 중인 가져오기를 마치거나 취소하세요.</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>백업 처리 중…</RWS_Backup_Working>
+  <RWS_Backup_Error>백업 작업 실패: {0}</RWS_Backup_Error>
+  <RWS_Backup_Done>완료. 백업 폴더: {0}</RWS_Backup_Done>
   <RWS_Backup_None>백업이 없습니다.</RWS_Backup_None>
-  <RWS_Backup_Label>상표/파일</RWS_Backup_Label>
-  <RWS_Backup_Size>크기 (mm)</RWS_Backup_Size>
-  <RWS_Backup_Verification>인증 및 인증</RWS_Backup_Verification>
-  <RWS_Backup_Valid>인증 및 인증</RWS_Backup_Valid>
-  <RWS_Backup_NewerSchema>Newer 프로필 schema</RWS_Backup_NewerSchema>
-  <RWS_Backup_UnknownFormat>Unknown 백업 형식</RWS_Backup_UnknownFormat>
+  <RWS_Backup_Label>레이블 / 파일</RWS_Backup_Label>
+  <RWS_Backup_Size>크기</RWS_Backup_Size>
+  <RWS_Backup_Verification>검증</RWS_Backup_Verification>
+  <RWS_Backup_Valid>검증됨</RWS_Backup_Valid>
+  <RWS_Backup_NewerSchema>더 최신 버전에서 생성함</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>알 수 없는 백업 형식</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>검증 실패</RWS_Backup_Invalid>
-  <RWS_Groups_Title>편집 식민지 그룹</RWS_Groups_Title>
-  <RWS_Groups_Add>그룹 만들기</RWS_Groups_Add>
-  <RWS_Groups_All>모든 식민지</RWS_Groups_All>
-  <RWS_Groups_Edit>편집 그룹 ...</RWS_Groups_Edit>
-  <RWS_Groups_None>그룹을 시작으로 만듭니다.</RWS_Groups_None>
-  <RWS_Groups_Members>선택: {0} (문자 키: {1})</RWS_Groups_Members>
-  <RWS_Groups_RemoveMissing>누락된 키를 제거</RWS_Groups_RemoveMissing>
-  <RWS_Groups_Excluded>제외 사항</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>외부 선택 그룹: {0} 식민지</RWS_Groups_OutOfScope>
-  <RWS_Backup_RestorePreferences>또한 즐겨 찾기 및 식민지 그룹 설정을 복원</RWS_Backup_RestorePreferences>
-  <RWS_Fav_Title>관련 통계</RWS_Fav_Title>
-  <RWS_Fav_Empty>통계 또는 개요 카드 옆에 별을 사용하여 여기에서 추가하십시오.</RWS_Fav_Empty>
-  <RWS_Fav_StarTip>즐겨 찾기에서 추가 또는 제거</RWS_Fav_StarTip>
-  <RWS_Fav_MoveUp>자주 묻는 질문</RWS_Fav_MoveUp>
-  <RWS_Fav_MoveDown>자주 묻는 질문</RWS_Fav_MoveDown>
-  <RWS_Fav_Remove>자주 묻는 질문</RWS_Fav_Remove>
-  <RWS_Fav_Unknown>이전에 저장된 메트릭은 더 이상 사용할 수 없습니다.</RWS_Fav_Unknown>
-  <RWS_Fav_NoOverall>이 미터는 식민지의 맞은편에 결합된 값이 없습니다.</RWS_Fav_NoOverall>
-  <RWS_Fav_AddBasic>기본 통계를 추가</RWS_Fav_AddBasic>
+  <RWS_Groups_Title>정착지 그룹 편집</RWS_Groups_Title>
+  <RWS_Groups_Add>그룹 생성</RWS_Groups_Add>
+  <RWS_Groups_All>전체 정착지</RWS_Groups_All>
+  <RWS_Groups_Edit>그룹 편집…</RWS_Groups_Edit>
+  <RWS_Groups_None>먼저 그룹을 생성하세요.</RWS_Groups_None>
+  <RWS_Groups_Members>선택: {0} (누락: {1})</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>누락된 정착지 제거</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>제외됨</RWS_Groups_Excluded>
+  <RWS_Groups_OutOfScope>선택한 그룹 밖: {0}개 정착지</RWS_Groups_OutOfScope>
+  <RWS_Backup_RestorePreferences>즐겨찾기와 정착지 그룹 설정도 복원</RWS_Backup_RestorePreferences>
+  <RWS_Fav_Title>즐겨찾는 통계</RWS_Fav_Title>
+  <RWS_Fav_Empty>통계 항목이나 개요 카드 옆의 별표를 누르면 여기에 추가됩니다.</RWS_Fav_Empty>
+  <RWS_Fav_StarTip>즐겨찾기에 추가하거나 제거</RWS_Fav_StarTip>
+  <RWS_Fav_MoveUp>위로</RWS_Fav_MoveUp>
+  <RWS_Fav_MoveDown>아래로</RWS_Fav_MoveDown>
+  <RWS_Fav_Remove>즐겨찾기 제거</RWS_Fav_Remove>
+  <RWS_Fav_Unknown>저장한 통계 항목은 이제 사용할 수 없습니다.</RWS_Fav_Unknown>
+  <RWS_Fav_NoOverall>이 통계에는 정착지 전체의 합산 값이 없습니다.</RWS_Fav_NoOverall>
+  <RWS_Fav_AddBasic>기본 통계 추가</RWS_Fav_AddBasic>
   <RWS_Tab_Rankings>순위</RWS_Tab_Rankings>
-  <RWS_Rankings_Search>검색 통계</RWS_Rankings_Search>
-  <RWS_Rankings_Desc>가장 큰</RWS_Rankings_Desc>
-  <RWS_Rankings_Asc>가장 먼저</RWS_Rankings_Asc>
-  <RWS_Rankings_All>모든 순위보기</RWS_Rankings_All>
-  <RWS_Rankings_Top10>상위 10위</RWS_Rankings_Top10>
-  <RWS_Rankings_Position>팟캐스트</RWS_Rankings_Position>
-  <RWS_Rankings_Coverage>측정 {0} 의 {1} 식민지</RWS_Rankings_Coverage>
-  <RWS_Rankings_PartialNote>몇몇 관측은 누락되거나 부분적입니다.</RWS_Rankings_PartialNote>
-  <RWS_Rankings_NoMatches>랭크된 값은 없습니다.</RWS_Rankings_NoMatches>
-  <RWS_Tab_Coverage>통계 수집 상태</RWS_Tab_Coverage>
-  <RWS_Status_Summary>수집 완료 {0} · 부분 수집 {1} · 누락 {2} · 해당 없음 {3} · 실험적 {4}</RWS_Status_Summary>
-  <RWS_Status_SdkEventCapExceeded>SDK 이벤트 ID 제한은 {0} 메트릭 (s)에 도달했습니다 (제한 : {1}). 나중에 이벤트는 계산되지 않습니다; 총은 부분입니다.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>기록 된 값은 숫자 정확도가 검증 된 것을 증명하지 않습니다.</RWS_Status_Caution>
+  <RWS_Rankings_Search>통계 검색</RWS_Rankings_Search>
+  <RWS_Rankings_Desc>큰 값부터</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>작은 값부터</RWS_Rankings_Asc>
+  <RWS_Rankings_All>전체 순위</RWS_Rankings_All>
+  <RWS_Rankings_Top10>상위 10개</RWS_Rankings_Top10>
+  <RWS_Rankings_Position>순위</RWS_Rankings_Position>
+  <RWS_Rankings_Coverage>측정: {0}/{1}개 정착지</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>일부 값이 없거나 부분적으로만 기록되었습니다.</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>순위를 매길 수 있는 값이 없습니다.</RWS_Rankings_NoMatches>
+  <RWS_Tab_Coverage>수집 상태</RWS_Tab_Coverage>
+  <RWS_Status_Summary>측정 {0} · 부분 {1} · 없음 {2} · 해당 없음 {3} · 실험적 {4}</RWS_Status_Summary>
+  <RWS_Status_SdkEventCapExceeded>{0}개 통계가 SDK 사건 ID 상한({1})에 도달했습니다. 이후 사건은 집계되지 않으므로 합계가 일부만 반영됩니다.</RWS_Status_SdkEventCapExceeded>
+  <RWS_Status_Caution>기록된 값이 있어도 실제 게임에서 정확성이 검증된 것은 아닙니다.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>모든 검증 상태</RWS_Status_VerificationAll>
-  <RWS_Status_Experimental>회사 소개</RWS_Status_Experimental>
-  <RWS_Status_Legacy>법적고지</RWS_Status_Legacy>
-  <RWS_Status_Standard>(주)</RWS_Status_Standard>
-  <RWS_Status_Measured>연구분야</RWS_Status_Measured>
-  <RWS_Status_Partial>회사연혁</RWS_Status_Partial>
-  <RWS_Status_NotMeasured>측정되지 않음</RWS_Status_NotMeasured>
-  <RWS_Status_NotApplicable>적용되지 않음</RWS_Status_NotApplicable>
-  <RWS_Status_FilterAll>모든 적용</RWS_Status_FilterAll>
-  <RWS_Status_FilterMeasured>측정값</RWS_Status_FilterMeasured>
-  <RWS_Status_FilterPartial>부분적인 적용</RWS_Status_FilterPartial>
-  <RWS_Status_FilterMissing>측정 없음</RWS_Status_FilterMissing>
+  <RWS_Status_Experimental>실험적</RWS_Status_Experimental>
+  <RWS_Status_Legacy>이전 기록</RWS_Status_Legacy>
+  <RWS_Status_Standard>표준</RWS_Status_Standard>
+  <RWS_Status_Measured>측정됨</RWS_Status_Measured>
+  <RWS_Status_Partial>부분 기록</RWS_Status_Partial>
+  <RWS_Status_NotMeasured>측정 안 됨</RWS_Status_NotMeasured>
+  <RWS_Status_NotApplicable>해당 없음</RWS_Status_NotApplicable>
+  <RWS_Status_FilterAll>전체 수집 상태</RWS_Status_FilterAll>
+  <RWS_Status_FilterMeasured>측정값 있음</RWS_Status_FilterMeasured>
+  <RWS_Status_FilterPartial>부분 기록</RWS_Status_FilterPartial>
+  <RWS_Status_FilterMissing>측정값 없음</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>적용되지 않음</RWS_Status_FilterNA>
   <RWS_Status_Statistic>미터 / 취득 단위</RWS_Status_Statistic>
   <RWS_Status_Recording>현재 수집</RWS_Status_Recording>

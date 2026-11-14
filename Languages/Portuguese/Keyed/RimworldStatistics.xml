@@ -875,129 +875,129 @@
   <RWS_MetricDesc_HauledUnits>Total de artigos efetivamente depositados por tarefas de transporte do jogador (HaulToCell), medido pela redução da pilha transportada. Cobertura parcial: os transportes para contentores e outros métodos de movimentação não contam.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Trabalhos de limpeza concluídos</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Trabalhos de limpeza do jogador concluídos com sucesso após remover totalmente pelo menos uma porção de sujeira. Várias porções removidas no mesmo trabalho contam como um trabalho. Trabalhos interrompidos não contam.</RWS_MetricDesc_CleaningJobsCompleted>
-  <RWS_Metric_TreeWoodPlaced>Madeira para corte de árvores obtida (rendimento primário)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Número de unidades primárias de madeira realmente colocadas ou fundidas após a colheita de corte de árvores de um jogador, medida pela ação de GenPlace. Cobertura parcial: madeira bônus de alguns componentes MOD e caminhos de corte não padrão são excluídos.</RWS_MetricDesc_TreeWoodPlaced>
-  <RWS_Metric_SlaughteredButchery>Animais abatidos subsequentemente abatidos</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Condes com sucesso completaram o Butcher de baunilhaCorpseFlesh receita consumos de um corpo de animal previamente registrado como abatido por um personagem jogador. Identifica o cadáver exato através de salvas. Exclui caçado, selvagem-morte e inimigos cadáveres. Parcial: MOD receitas de açougueiro e alguns caminhos de desaparecimento de cadáver não são reconhecidos.</RWS_MetricDesc_SlaughteredButchery>
-  <RWS_Cross_MaxColony>Colónia com mais: {0}</RWS_Cross_MaxColony>
-  <RWS_Cross_MinColony>Colónia com menos: {0}</RWS_Cross_MinColony>
-  <RWS_Cross_TopType>O item principal entre as colónias: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>O maior valor registrado em colónias independentes, usando uma observação representativa por colónia. As leituras em falta não são tratadas como zero. As quantidades de estado referem-se à economia registrada de cada colónia, não à produção cumulativa.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>O valor mais baixo registrado em colónias independentes, usando uma observação representativa por colónia. Somente os zeros medidos podem ganhar; valores desconhecidos e não aplicáveis não.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Somar quantidades separadamente para cada definição de item em colónias independentes, em seguida, classificar esses totais. Contagens usar uma observação representativa por colónia. Faltando, transbordado, ou não rastreado definições dar cobertura parcial. inventários de estado e eventos de vida não são intercambiáveis.</RWS_CrossDesc_TopType>
-  <RWS_Cross_TiedHolders>Colónias amarradas: {0}</RWS_Cross_TiedHolders>
-  <RWS_Cross_RecordedAt>Registo observado no dia do jogo: {0}</RWS_Cross_RecordedAt>
-  <RWS_Cross_TopCategory>Categoria mais comum entre as colónias: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Contagens resumidas para cada categoria registrada em colónias independentes, usando uma observação representativa por colónia. Frações de categoria incompletas e ausentes permanecem parciais; categorias não são contagens de itens.</RWS_CrossDesc_TopCategory>
-  <RWS_Cross_Sum>Instantâneos de colónias combinadas: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Soma das quantidades de estado medidas separadamente no momento representativo salvo de cada colónia independente. Isto não é um total de eventos ao longo da vida. As leituras desconhecidas nunca se tornam zero.</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>Hospitalidade: Chegaram grupos convidados (desde a ativação)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>Número de grupos de hospitalidade que chegam aos mapas home do jogador desde que este addon foi ativado. Convidados resgatados dados grupos de substituição estão excluídos. Repetições usam IDs de eventos hashed. Nenhum histórico de pré-instalação é inferido.</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>Hospitalidade: chegadas de hóspedes ao longo da vida (desde a ativação)</RWS_Hospitality_VisitGuests>
-  <RWS_Hospitality_VisitGuestsDesc>Personagens visitantes totais em grupos de Hospitalidade confirmados que chegam aos mapas home do jogador desde que este addon foi ativado. Repetir visitas contam novamente; esta não é uma contagem de pessoa única ou o número atual de convidados. Visitantes históricos antes da ativação são desconhecidos.</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>Hospitalidade: partiram pacificamente grupos de visitas (desde a ativação)</RWS_Hospitality_VisitsCompleted>
-  <RWS_Hospitality_VisitsCompletedDesc>Conta grupos não hostis de Hospitalidade após o fim do trabalho de visita, observa-se uma saída real do mapa e o lorde desfaz-se sem membros restantes ou outras perdas. Grupos enviados e recuperados são excluídos. Uma carga durante a partida pode não ter provas suficientes e é omitida, nunca adivinhada.</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>Hospitalidade: recrutados com sucesso convidados (desde a ativação)</RWS_Hospitality_Recruited>
-  <RWS_Hospitality_RecruitedDesc>Adoções confirmadas de hóspedes do Hospitality desde opt-in, contadas apenas após a ação upstream Recruit retorna com um personagem de jogador-facção. Sem backfill histórico.</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>Hospitalidade: recrutamento forçado de convidados (desde a activação)</RWS_Hospitality_ForcedRecruit>
-  <RWS_Hospitality_ForcedRecruitDesc>Recrutamentos confirmados de hóspedes hospitalizados marcados pelo alvo, desde o opt-in. Um subconjunto de recrutamentos bem sucedidos.</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>Hospitalidade: recrutamento voluntário de convidados (desde a activação)</RWS_Hospitality_VoluntaryRecruit>
-  <RWS_Hospitality_VoluntaryRecruitDesc>Recrutamentos de hóspedes de Hospitalidade confirmados não marcados forçados pelo alvo, desde o opt-in. Um subconjunto de recrutamentos bem sucedidos.</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>Itens comprados por hóspedes do Hospitality</RWS_Hospitality_ShoppingUnits>
-  <RWS_Hospitality_ShoppingUnitsDesc>Itens adicionados ao inventário ou equipamento dos hóspedes através de trabalhos de compras concluídos em mapas home do jogador desde o opt-in.</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>Prata paga pelos hóspedes da Hospitalidade</RWS_Hospitality_ShoppingSilver>
-  <RWS_Hospitality_ShoppingSilverDesc>Prata tirada dos hóspedes pelos mesmos trabalhos de compras concluídos desde o opt-in.</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>Hospitalidade: camas reservadas para hóspedes em salvo</RWS_Hospitality_AssignedBeds>
-  <RWS_Hospitality_AssignedBedsDesc>Número de camas de hóspedes distintas atribuídas aos visitantes de Hospitalidade atualmente presentes em todos os mapas de casa jogador em economia bem sucedida. Camas compartilhadas são contadas uma vez. Esta é uma tarefa de cama, não uma medida de hóspedes fisicamente dormindo ou de reservas vitalícias.</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>Pedidos de recrutamento iniciados (período addon)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>Pedidos de recrutamento confirmados após o opt-in; distinto da série legada incorporada porque a deduplicação/checkpoint de eventos mudou.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recrutamento: prata gasta em pedidos iniciais (desde a ativação)</RWS_AddonRecruitment_SilverSpent>
-  <RWS_AddonRecruitment_SilverSpentDesc>Total de prata confirmada paga por unidades de recrutamento recém-criadas desde a opção em. Inclui prémios; não conta tentativas falhadas ou representam riqueza líquida.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recrutamento: candidatos planeados em pedidos (desde a activação)</RWS_AddonRecruitment_PlannedApplicants>
-  <RWS_AddonRecruitment_PlannedApplicantsDesc>Total de candidatos rolou quando as unidades de recrutamento pagas começam, desde o opt-in. Esta é a contagem de candidatos planejados, não as pessoas que realmente chegou, juntou-se, ou tornou-se colonos; geração pode falhar.</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: água encanada armazenada (L)</RWS_DBH_PipedStorage>
-  <RWS_DBH_PipedStorageDesc>Total de litros armazenados fisicamente em tanques de água únicos conectados a tubos Dubs Bad Hygiene através de mapas home do jogador em uma poupança bem sucedida. Inclui apenas tanques conectados disponíveis; não produção ou uso vitalício. Os valores de antes de habilitar o addon não são reconstruídos. Desconhecido se os dados fonte não podem ser lidos.</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: capacidade do tanque canalizado (L)</RWS_DBH_PipedCapacity>
-  <RWS_DBH_PipedCapacityDesc>Capacidade máxima total de água em litros de diferentes componentes de tanque conectados a tubos em todos os mapas home do jogador na mais recente economia bem sucedida.</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: capacidade da bomba (L/dia)</RWS_DBH_PumpCapacity>
-  <RWS_DBH_PumpCapacityDesc>Soma da capacidade de bombeamento potencial de fonte definida de redes de tubulação povoadas únicas em uma economia bem sucedida, em litros por RimWorld dia. Esta é a capacidade, não a água real produzida.</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: capacidade de abastecimento de água subterrânea (L/dia)</RWS_DBH_GroundwaterCapacity>
-  <RWS_DBH_GroundwaterCapacityDesc>Soma da fonte-definida água de entrada / capacidade de água subterrânea em litros por dia de jogo em redes de tubulação exclusiva povoadas em uma economia bem sucedida. Não a quantidade real bombeada.</RWS_DBH_GroundwaterCapacityDesc>
-  <RWS_SAU_OrdersIssued>Ordens automáticas de vestuário emitidas</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Número de trabalhos de desgaste automático de baunilha realmente emitidos pelo Smart Apparel Upgrade. Este não é o número de mudanças de vestuário concluídas com sucesso. Apenas os eventos depois de habilitar a coleção são contados. Estatísticas experimentais.</RWS_SAU_OrdersIssuedDesc>
-  <RWS_Metric_ModdedIncidentsByDef>Incidentes de MOD bem sucedidos por tipo</RWS_Metric_ModdedIncidentsByDef>
-  <RWS_MetricDesc_ModdedIncidentsByDef>Incidentes confirmados de MODs não- baunilha que tiveram sucesso num mapa home do jogador após a recolha experimental ter sido activada. Dividir por ID do pacote e definição de incidente; não os contadores de desastres de baunilha existentes. As lacunas históricas não são recheadas.</RWS_MetricDesc_ModdedIncidentsByDef>
-  <RWS_Metric_OutpostsActive>Postos avançados ativos do jogador (estado salvo)</RWS_Metric_OutpostsActive>
-  <RWS_MetricDesc_OutpostsActive>Número de postos avançados de jogo ativo controlado Vanilla Expanded em uma poupança bem sucedida. Em todas as colónias, soma estados salvos representativos; não uma contagem vitalícia ou uma medida de itens produzidos ou recebidos. Experimental; sem enchimento.</RWS_MetricDesc_OutpostsActive>
-  <RWS_Metric_FishingActions>Empregos de pesca com capturas aceites</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Empregos de pesca jogador em mapas domésticos que colocaram pelo menos uma captura. Uma captura bônus do mesmo trabalho adiciona itens apenas.</RWS_MetricDesc_FishingActions>
-  <RWS_Metric_FishingCatchByDef>Peixes capturados por unidade de captura</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Itens realmente colocados por trabalhos de pesca jogador em mapas domésticos, incluindo raras capturas e apoiado Vanilla Pesca bônus expandidos. Apenas períodos registrados são cobertos.</RWS_MetricDesc_FishingCatchByDef>
-  <RWS_Backup_Create>Recua agora.</RWS_Backup_Create>
-  <RWS_Backup_Refresh>Actualizar as cópias de segurança</RWS_Backup_Refresh>
+  <RWS_Metric_TreeWoodPlaced>Madeira do corte de árvores (produto principal)</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Madeira efetivamente colocada ou juntada a pilhas após um peão do jogador cortar uma árvore (produto principal, medido quando o jogo a coloca). Cobertura parcial: não contam a madeira extra de certos mods nem formas não convencionais de cortar árvores.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>Animais abatidos e depois esquartejados</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Cadáveres de animais abatidos por um peão do jogador, posteriormente consumidos por uma ordem de esquartejamento normal concluída (ButcherCorpseFlesh). O mesmo cadáver é acompanhado entre gravações. Animais caçados, mortes na natureza e cadáveres inimigos não contam. Cobertura parcial: receitas de mods e algumas formas de desaparecimento de cadáveres não são reconhecidas.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>Colónia com maior valor: {0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>Colónia com menor valor: {0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>Artigo mais comum entre colónias: {0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>Maior valor registado entre colónias independentes, com uma observação representativa por colónia. Valores ausentes não são tratados como zero. Para quantidades que descrevnum estado, vale a medição no jogo guardado da colónia, não um total acumulado.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Menor valor registado entre colónias independentes, com uma observação representativa por colónia. Apenas um zero realmente medido pode ser o menor valor; valores desconhecidos ou não aplicáveis são ignorados.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>As quantidades de cada tipo de artigo são somadas separadamente entre colónias independentes, e os totais são classificados. Usa-se uma observação representativa por colónia. Tipos ausentes, acima do limite ou não acompanhados tornam o resultado parcial. Estoques em gravaçãos e contagens vitalícias de eventos nunca são misturados.</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>Colónias empatadas: {0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>Observado no dia de jogo {0}</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>Categoria mais comum entre colónias: {0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>Contagens somadas por categoria registada entre colónias independentes, usando uma observação representativa por colónia. Detalhamentos ausentes ou incompletos permanecem parciais. Categorias podem contar eventos ou pessoas em vez de artigos.</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>Soma das observações das colónias: {0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>Soma de uma quantidade medida separadamente na gravação representativa de cada colónia independente. Não é um total acumulado de eventos. Os valores desconhecidos nunca passam a zero.</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality: grupos de hóspedes que chegaram (desde a ativação)</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>Grupos de visitantes de Hospitality cuja chegada a mapas de base do jogador foi confirmada desde a ativação desta estatística. Grupos substitutos criados para hóspedes resgatados não contam. As duplicações após recarregar são filtradas pelo ID do evento. Não se estimam visitas anteriores à instalação do mod.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality: chegadas de hóspedes (desde a ativação)</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>Total de visitantes dos grupos de Hospitality com chegada confirmada a mapas de lar do jogador desde a ativação. Visitas repetidas são contadas de novo, portanto não é o número de pessoas distintas nem o total atual de hóspedes. Visitas anteriores são desconhecidas.</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality: grupos que saíram em paz (desde a ativação)</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>Grupos não hostis de Hospitality contados após o fim da visita, depois de ser confirmada a saída efetiva do mapa e a dissolução sem membros deixados para trás nem perdidos. Os grupos expulsos ou reorganizados não contam. Se o jogo tiver sido carregado durante a saída, pode faltar confirmação; nesses casos não se estimam valores.</RWS_Hospitality_VisitsCompletedDesc>
+  <RWS_Hospitality_Recruited>Hospitality: hóspedes recrutados (desde a ativação)</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>Recrutamentos de hóspedes de Hospitality confirmados desde a ativação, contados somente quando a ação de recrutar de Hospitality terminou com um peão da fação do jogador. Recrutamentos anteriores não são estimados.</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality: recrutamentos forçados (desde a ativação)</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>Recrutamentos confirmados de hóspedes que Hospitality marcou como forçados, desde a ativação. Fazem parte dos recrutamentos bem-sucedidas.</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality: recrutamentos voluntários (desde a ativação)</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>Recrutamentos confirmados de hóspedes que Hospitality não marcou como forçados, desde a ativação. Fazem parte dos recrutamentos bem-sucedidas.</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_ShoppingUnits>Artigos comprados por hóspedes Hospitality</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnitsDesc>Artigos adicionados ao inventário ou equipamento dos hóspedes por tarefas de compra concluídas nos mapas de lar do jogador desde a ativação.</RWS_Hospitality_ShoppingUnitsDesc>
+  <RWS_Hospitality_ShoppingSilver>Prata paga por hóspedes Hospitality</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilverDesc>Prata retirada dos hóspedes por essas mesmas tarefas de compra concluídas desde a ativação.</RWS_Hospitality_ShoppingSilverDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality: camas atribuídas a hóspedes ao salvar</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>Número de camas distintas atribuídas a hóspedes de Hospitality presentes em mapas de base do jogador numa gravação bem-sucedida. Uma cama partilhada conta uma vez. Conta atribuições de cama, não hóspedes a dormir nem reservas acumuladas.</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>Solicitações de recrutamento iniciadas (desde a ativação)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>Solicitações de Recruitment confirmadas desde a ativação. Série separada da série antiga integrada, pois o método de remover eventos duplicados e gerar pontos de controle mudou.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment: prata gasta em solicitações (desde a ativação)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>Total de prata comprovadamente paga por solicitações novas de Recruitment desde a ativação, inclusive taxas extras. Tentativas malsucedidas não contam; isso não representa mudança na riqueza líquida.</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: candidatos previstos (desde a ativação)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>Total de candidatos sorteados quando começaram pedidos pagos de Recruitment desde a ativação. É a quantidade prevista, não o número de pessoas que realmente chegaram, se juntaram ou se tornaram colonos; a geração pode falhar.</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: água armazenada em tubulações (L)</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>Total de litros guardados em depósitos de água Dubs Bad Hygiene ligados a canalizações nos mapas de base do jogador numa gravação bem-sucedida, contando cada depósito uma vez. Incluem-se apenas os depósitos ligados e com dados legíveis. Não é produção nem consumo acumulado. Os valores anteriores à ativação não são reconstruídos; dados ilegíveis são desconhecidos.</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: capacidade dos tanques conectados (L)</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>Capacidade máxima total, em litros, dos diferentes depósitos de água ligados a canalizações nos mapas de base do jogador na última gravação bem-sucedida. Não é uma quantidade acumulada.</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: capacidade de bombeamento (L/dia)</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>Soma da capacidade nominal de bombagem definida por Dubs Bad Hygiene para cada rede de canalizações distinta em uso numa gravação bem-sucedida, em litros por dia de jogo. Mede a capacidade, não a água efetivamente bombeada.</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: capacidade de água subterrânea (L/dia)</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>Soma das capacidades nominais de entrada de água e de água subterrânea definidas por Dubs Bad Hygiene para cada rede distinta de canalizações em uso numa gravação bem-sucedida, em litros por dia de jogo. Não representa a quantidade realmente bombeada.</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>Trocas automáticas de roupa ordenadas</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Tarefas normais Wear efetivamente emitidas por Smart Apparel Upgrade. NÃO é o número de trocas de roupa concluídas. Só contam os eventos posteriores à ativação da recolha. Estatística experimental.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>Incidentes de MOD bem-sucedidas por tipo</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>Incidentes confirmados de mods que não pertencem ao jogo base, bem-sucedidos em mapas de base do jogador após ativar a recolha, por ID de pacote e incidente. Separados dos contadores de desastres do jogo base. Não se preenchem lacunas anteriores.</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>Postos avançados ativos do jogador (gravação)</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>Postos avançados ativos de Vanilla Expanded Framework controlados pelo jogador numa gravação bem-sucedida. Entre colónias, somam-se as gravações representativas. Não é um total acumulado nem a quantidade produzida ou recebida. Experimental; não se preenchem períodos anteriores.</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>Trabalhos de pesca com captura</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>Trabalhos de pesca do jogador nos mapas de lar que depositaram pelo menos uma captura. Capturas extras do mesmo trabalho só aumentam a quantidade de artigos.</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>Capturas de pesca por artigo</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Artigos realmente depositados por tarefas de pesca do jogador nos mapas de base, incluindo capturas raras e bónus compatíveis de Vanilla Fishing Expanded. Só os períodos registados são abrangidos.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>Criar cópia agora</RWS_Backup_Create>
+  <RWS_Backup_Refresh>Atualizar cópias</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>Abrir pasta</RWS_Backup_OpenFolder>
-  <RWS_Backup_CopyPath>Copiar o caminho</RWS_Backup_CopyPath>
-  <RWS_Backup_Select>Seleccionar cópia de segurança</RWS_Backup_Select>
-  <RWS_Backup_Restore>Restaurar...</RWS_Backup_Restore>
-  <RWS_Backup_Delete>Apagar...</RWS_Backup_Delete>
-  <RWS_Backup_ConfirmRestore>Restaurar o backup de {0} (MOD {1}, {2} colónias, {3} observações)? O registo atual será feito primeiro.</RWS_Backup_ConfirmRestore>
-  <RWS_Backup_ConfirmDelete>Apagar este backup? {0}</RWS_Backup_ConfirmDelete>
-  <RWS_Backup_BeforeRestore>Antes de restaurar</RWS_Backup_BeforeRestore>
-  <RWS_Backup_ImportBusy>Espere até que a importação atual termine, ou cancele- a.</RWS_Backup_ImportBusy>
-  <RWS_Backup_Working>A trabalhar em backups...</RWS_Backup_Working>
-  <RWS_Backup_Error>A operação de backup falhou: {0}</RWS_Backup_Error>
-  <RWS_Backup_Done>Operação concluída. Pasta de backup: {0}</RWS_Backup_Done>
-  <RWS_Backup_None>Nenhum backup encontrado.</RWS_Backup_None>
-  <RWS_Backup_Label>Rótulo / ficheiro</RWS_Backup_Label>
+  <RWS_Backup_CopyPath>Copiar caminho</RWS_Backup_CopyPath>
+  <RWS_Backup_Select>Escolher cópia</RWS_Backup_Select>
+  <RWS_Backup_Restore>Restaurar…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>Eliminar…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>Restaurar a cópia de {0} (mod {1}, {2} colónias, {3} observações)? Primeiro será criada uma cópia dos registos atuais.</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>Eliminar esta cópia de segurança? {0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>Antes do restauro</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>Aguarde que termine a importação atual ou cancele-a.</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>A processar cópias de segurança…</RWS_Backup_Working>
+  <RWS_Backup_Error>Falha ao criar ou gerir a cópia de segurança: {0}</RWS_Backup_Error>
+  <RWS_Backup_Done>Concluído. Pasta de cópias de segurança: {0}</RWS_Backup_Done>
+  <RWS_Backup_None>Não foram encontradas cópias de segurança.</RWS_Backup_None>
+  <RWS_Backup_Label>Etiqueta / ficheiro</RWS_Backup_Label>
   <RWS_Backup_Size>Tamanho</RWS_Backup_Size>
   <RWS_Backup_Verification>Verificação</RWS_Backup_Verification>
   <RWS_Backup_Valid>Verificado</RWS_Backup_Valid>
-  <RWS_Backup_NewerSchema>Esquema de perfil mais recente</RWS_Backup_NewerSchema>
-  <RWS_Backup_UnknownFormat>Formato de backup desconhecido</RWS_Backup_UnknownFormat>
+  <RWS_Backup_NewerSchema>Criada por uma versão mais recente</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>Formato de cópia de segurança desconhecido</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>Falha na verificação</RWS_Backup_Invalid>
   <RWS_Groups_Title>Editar grupos de colónias</RWS_Groups_Title>
   <RWS_Groups_Add>Criar grupo</RWS_Groups_Add>
   <RWS_Groups_All>Todas as colónias</RWS_Groups_All>
-  <RWS_Groups_Edit>Editar grupos...</RWS_Groups_Edit>
+  <RWS_Groups_Edit>Editar grupos…</RWS_Groups_Edit>
   <RWS_Groups_None>Crie um grupo para começar.</RWS_Groups_None>
-  <RWS_Groups_Members>Seleccionado: {0} (chaves em falta: {1})</RWS_Groups_Members>
-  <RWS_Groups_RemoveMissing>Remover as chaves em falta</RWS_Groups_RemoveMissing>
-  <RWS_Groups_Excluded>excluído</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>Grupo selecionado exterior: {0} colónias</RWS_Groups_OutOfScope>
-  <RWS_Backup_RestorePreferences>Também restaurar favoritos e configurações de grupo de colónia</RWS_Backup_RestorePreferences>
+  <RWS_Groups_Members>Selecionadas: {0} (em falta: {1})</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>Remover colónias em falta</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>excluída</RWS_Groups_Excluded>
+  <RWS_Groups_OutOfScope>Fora do grupo selecionado: {0} colónias</RWS_Groups_OutOfScope>
+  <RWS_Backup_RestorePreferences>Restaurar também favoritos e configurações de grupos</RWS_Backup_RestorePreferences>
   <RWS_Fav_Title>Estatísticas favoritas</RWS_Fav_Title>
-  <RWS_Fav_Empty>Use a estrela ao lado de uma estatística ou cartão de visão geral para adicioná-la aqui.</RWS_Fav_Empty>
+  <RWS_Fav_Empty>Clique na estrela junto de uma estatística ou cartão da visão geral para a adicionar aqui.</RWS_Fav_Empty>
   <RWS_Fav_StarTip>Adicionar ou remover dos favoritos</RWS_Fav_StarTip>
-  <RWS_Fav_MoveUp>Mover o favorito mais cedo</RWS_Fav_MoveUp>
-  <RWS_Fav_MoveDown>Mover favorito mais tarde</RWS_Fav_MoveDown>
-  <RWS_Fav_Remove>Remover o favorito</RWS_Fav_Remove>
-  <RWS_Fav_Unknown>A métrica salva anteriormente não está mais disponível.</RWS_Fav_Unknown>
-  <RWS_Fav_NoOverall>Esta métrica não tem valor combinado entre as colónias.</RWS_Fav_NoOverall>
+  <RWS_Fav_MoveUp>Mover para cima</RWS_Fav_MoveUp>
+  <RWS_Fav_MoveDown>Mover para baixo</RWS_Fav_MoveDown>
+  <RWS_Fav_Remove>Remover favorito</RWS_Fav_Remove>
+  <RWS_Fav_Unknown>Esta estatística salva não está mais disponível.</RWS_Fav_Unknown>
+  <RWS_Fav_NoOverall>Esta estatística não tem valor combinado entre colónias.</RWS_Fav_NoOverall>
   <RWS_Fav_AddBasic>Adicionar estatística básica</RWS_Fav_AddBasic>
   <RWS_Tab_Rankings>Classificações</RWS_Tab_Rankings>
   <RWS_Rankings_Search>Procurar estatísticas</RWS_Rankings_Search>
-  <RWS_Rankings_Desc>O maior primeiro</RWS_Rankings_Desc>
-  <RWS_Rankings_Asc>O mais pequeno primeiro</RWS_Rankings_Asc>
-  <RWS_Rankings_All>Mostrar todas as fileiras</RWS_Rankings_All>
-  <RWS_Rankings_Top10>Mostrar o top 10</RWS_Rankings_Top10>
+  <RWS_Rankings_Desc>Maiores primeiro</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>Menores primeiro</RWS_Rankings_Asc>
+  <RWS_Rankings_All>Mostrar todas</RWS_Rankings_All>
+  <RWS_Rankings_Top10>Primeiras 10</RWS_Rankings_Top10>
   <RWS_Rankings_Position>Posição</RWS_Rankings_Position>
-  <RWS_Rankings_Coverage>Medida {0} de {1} colónias</RWS_Rankings_Coverage>
-  <RWS_Rankings_PartialNote>Algumas observações estão faltando ou parciais.</RWS_Rankings_PartialNote>
-  <RWS_Rankings_NoMatches>Nenhum valor classificado está disponível.</RWS_Rankings_NoMatches>
-  <RWS_Tab_Coverage>Estado da recolha</RWS_Tab_Coverage>
-  <RWS_Status_Summary>Medidas: {0} · Parciais: {1} · Em falta: {2} · N/A: {3} · Experimentais: {4}</RWS_Status_Summary>
-  <RWS_Status_SdkEventCapExceeded>O limite de identificação de eventos SDK atingiu {0} métricas (limite: {1}). Eventos posteriores não são contados; os totais são parciais.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>Um valor registrado não prova sua precisão numérica foi verificada no jogo.</RWS_Status_Caution>
+  <RWS_Rankings_Coverage>Medidas: {0} de {1} colónias</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>Alguns valores estão ausentes ou parciais.</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>Não há valores para classificar.</RWS_Rankings_NoMatches>
+  <RWS_Tab_Coverage>Estado da coleta</RWS_Tab_Coverage>
+  <RWS_Status_Summary>Medidas {0} · Parciais {1} · Em falta {2} · N/A {3} · Experimentais {4}</RWS_Status_Summary>
+  <RWS_Status_SdkEventCapExceeded>{0} estatísticas atingiram o limite de IDs de eventos do SDK ({1}). Eventos posteriores não são contados, portanto os totais são parciais.</RWS_Status_SdkEventCapExceeded>
+  <RWS_Status_Caution>Um valor registado não significa que a sua precisão tenha sido verificada num jogo real.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>Todos os estados de verificação</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>
-  <RWS_Status_Legacy>Provas legítimas</RWS_Status_Legacy>
+  <RWS_Status_Legacy>Registro antigo</RWS_Status_Legacy>
   <RWS_Status_Standard>Padrão</RWS_Status_Standard>
-  <RWS_Status_Measured>Medida</RWS_Status_Measured>
+  <RWS_Status_Measured>Medido</RWS_Status_Measured>
   <RWS_Status_Partial>Parcial</RWS_Status_Partial>
   <RWS_Status_NotMeasured>Não medido</RWS_Status_NotMeasured>
-  <RWS_Status_NotApplicable>Não aplicável</RWS_Status_NotApplicable>
+  <RWS_Status_NotApplicable>Não se aplica</RWS_Status_NotApplicable>
   <RWS_Status_FilterAll>Todas as coberturas</RWS_Status_FilterAll>
-  <RWS_Status_FilterMeasured>Tem medições</RWS_Status_FilterMeasured>
+  <RWS_Status_FilterMeasured>Com medições</RWS_Status_FilterMeasured>
   <RWS_Status_FilterPartial>Cobertura parcial</RWS_Status_FilterPartial>
   <RWS_Status_FilterMissing>Sem medições</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>Não aplicável</RWS_Status_FilterNA>

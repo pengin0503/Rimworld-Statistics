@@ -875,131 +875,131 @@
   <RWS_MetricDesc_HauledUnits>玩家搬運工作（HaulToCell）實際放置的物品總數量，以攜帶堆疊的減少量測定。僅部分涵蓋：不統計放入容器或其他移動物品方式。</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>完成清潔工作次數</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>玩家清潔工作在徹底清除至少一處污垢後成功結束的次數。同一工作清除多處污垢只算一項工作。中斷的工作不計入。</RWS_MetricDesc_CleaningJobsCompleted>
-  <RWS_Metric_TreeWoodPlaced>獲得的砍伐樹木的木材(主要產量)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>按 GenPlace 的設定動作計算, 玩家在剪樹收割後, 實際上放置或合併的原始木製單位數目。 部分覆蓋率: 不包括一些MOD 元件的獎金木料和一些非標準剪樹路 。</RWS_MetricDesc_TreeWoodPlaced>
-  <RWS_Metric_SlaughteredButchery>屠宰的動物被屠殺</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>數目成功完成了 vanilla ButcherCorpseFlesh 食譜中以前被玩家角色屠宰的動物屍體的食譜。 辨識出精確的屍體, 包括獵物、 野生死亡和敵人屍體。 部分: MOD 屠夫食譜和一些屍體消失的路徑不被認同 。</RWS_MetricDesc_SlaughteredButchery>
-  <RWS_Cross_MaxColony>最多殖民地:{0}</RWS_Cross_MaxColony>
-  <RWS_Cross_MinColony>最少的殖民地:{0}</RWS_Cross_MinColony>
-  <RWS_Cross_TopType>跨殖民地的首品:{0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>數量是指每個殖民地的儲存量, 而不是累計產量。</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>單獨的殖民地中記錄最低的數值, 每一個殖民地都使用一個代表性的觀察。 只有實際上的零數值才能贏得; 未知的和不適用的數值不能贏得 。</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>數目使用每個殖民地的一個代表性觀察。 缺失、 溢位或未追蹤到的定義都包含部分。 國家數目和生平事件是不可互換的。</RWS_CrossDesc_TopType>
-  <RWS_Cross_TiedHolders>被捆綁的殖民地:{0}</RWS_Cross_TiedHolders>
-  <RWS_Cross_RecordedAt>遊戲日紀錄 : {0}</RWS_Cross_RecordedAt>
-  <RWS_Cross_TopCategory>各殖民地最常見的類別:{0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>使用一個代表性的觀察, 總計出各獨立殖民地中的每一類數目。 不完整和缺失的類別分拆仍為部分; 類別不是專案計數 。</RWS_CrossDesc_TopCategory>
-  <RWS_Cross_Sum>聚居地合集快照:{0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>代表所單獨計算的狀態數量總和, 儲存了每個獨立聚居地的瞬間。 這不是一生的事件總和。 未知的讀數永遠不會變成零 。</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>(自啟動起)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>自此加登啟用後, 已確認的訪問招待團隊已抵達玩家家家圖。 已救援的來賓不包含替補團隊。 重播時會使用雜湊事件程式碼。 沒有預設的歷史 。</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>招待:一生到達的客人(自啟動起)</RWS_Hospitality_VisitGuests>
-  <RWS_Hospitality_VisitGuestsDesc>自此加登啟用後, 已確認的招待團體中共有來玩家家家圖的訪客角色。 重複訪客數次數次, 這不是獨有的人數或目前來客數 。 啟動前的歷史訪客未知 。</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>招待:和平地離開探訪團體(自啟動至今)</RWS_Hospitality_VisitsCompleted>
-  <RWS_Hospitality_VisitsCompletedDesc>觀察完畢後, 數點非敵方招待團體, 觀察到實際的地圖出口, 領主解散, 沒有剩下的成員或其他損失。 送走的團體和收復的團體被排除在外。 出發時的負載可能缺乏足夠的證據, 被忽略, 永遠不會猜測 。</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>招待:成功徵聘客人(自啟用)</RWS_Hospitality_Recruited>
-  <RWS_Hospitality_RecruitedDesc>自選入後已確認招待客人的領養, 只在上游招募動作有玩家形狀的回復後才算入。 沒有歷史回填 。</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>招待:強行招募客人(自啟動起)</RWS_Hospitality_ForcedRecruit>
-  <RWS_Hospitality_ForcedRecruitDesc>經證實是被目標強迫的招待客人招募 一批成功的招募</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>招待:自願招客(自啟動)</RWS_Hospitality_VoluntaryRecruit>
-  <RWS_Hospitality_VoluntaryRecruitDesc>經證實,自選入後,沒有被目標所強迫的招待客人招募,是成功招募的一部分。</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>招待客人買的東西</RWS_Hospitality_ShoppingUnits>
-  <RWS_Hospitality_ShoppingUnitsDesc>自選入後, 在玩家家用地圖上完成購物工作,</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>招待客人付的銀子</RWS_Hospitality_ShoppingSilver>
-  <RWS_Hospitality_ShoppingSilverDesc>自選入後, 由同一個購物工作完成的客人拿來的銀子。</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>招待:客座指定床位,節省</RWS_Hospitality_AssignedBeds>
-  <RWS_Hospitality_AssignedBedsDesc>目前指定在玩家家家地圖上訪客的客人床位數已成功儲存。 共享的床位數已計算一次。 這是床位分配, 不是量度客人的身體睡眠或一生的訂房 。</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>徵聘要求已提出(附加期)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>選入後已確認徵聘要求; 不同於遺傳的記憶體序列, 因為事件減少/檢查點按鍵變了 。</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>招生:用白銀提出(自啟動起)</RWS_AddonRecruitment_SilverSpent>
-  <RWS_AddonRecruitment_SilverSpentDesc>包括保費; 不包括失敗的試圖或代表淨財產。</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>徵聘:有請求的申請人(自啟動)</RWS_AddonRecruitment_PlannedApplicants>
-  <RWS_AddonRecruitment_PlannedApplicantsDesc>自選入後, 招生運動開始後, 總的候選人就開始了。 這是計劃中的申請者數目, 不是真正到達、加入或成為殖民者的人; 一代人可能失敗。</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene:儲存的自來水(L)</RWS_DBH_PipedStorage>
-  <RWS_DBH_PipedStorageDesc>已成功儲存時, 物理上儲存在玩家家家用地圖上獨特的 Dubs Bad Hygiene 管道連線的水箱中。 包括可用的連線水箱; 不包括生產或使用。 啟用加法前的數值不重建 。 如果無法讀取來源資料, 未知 。</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene:管道罐容量(L)</RWS_DBH_PipedCapacity>
-  <RWS_DBH_PipedCapacityDesc>在玩家家家用地圖上以不同的管線連線水箱元件的升計算的總最大水容量, 最遲可以成功儲存。 不是一生的量 。</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene:泵容量(L/天)</RWS_DBH_PumpCapacity>
-  <RWS_DBH_PumpCapacityDesc>在每RimWorld天成功節省一升的水量下, 獨有的供水管網的源定水泵容量總和。 這是容量, 不是真正的水量 。</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene:地下水供應能力(日/日)</RWS_DBH_GroundwaterCapacity>
-  <RWS_DBH_GroundwaterCapacityDesc>成功儲存下, 每遊戲日每玩1升自來水/ 地面水容量總和。 實際上沒有抽取的量 。</RWS_DBH_GroundwaterCapacityDesc>
-  <RWS_SAU_OrdersIssued>自動發布的服裝定單</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Smart Apparel 升級實際上發行的自動香草穿戴工作數量。 這不是成功完成的服裝變更數量。 只有啟動收藏後的事件才算數。 實驗資料 。</RWS_SAU_OrdersIssuedDesc>
-  <RWS_Metric_ModdedIncidentsByDef>按型別分列的MOD事件成功</RWS_Metric_ModdedIncidentsByDef>
-  <RWS_MetricDesc_ModdedIncidentsByDef>在實驗收藏啟用後, 非vanilla MODs 在玩家家家用地圖上成功被證實的事件。 由套件ID與事件定義分割, 而不是現有的vanilla 災難計數器。 歷史空白沒有回填 。</RWS_MetricDesc_ModdedIncidentsByDef>
-  <RWS_Metric_OutpostsActive>正在使用的玩家外站( 儲存狀態 )</RWS_Metric_OutpostsActive>
-  <RWS_MetricDesc_OutpostsActive>成功儲存的玩家控制的 Vanilla Expanded 框架外站數 。 跨殖民地, 總和被拯救的狀態 ; 不是一生的數量, 或是產生或接收的專案的量度 。 實驗; 沒有回填 。</RWS_MetricDesc_OutpostsActive>
-  <RWS_Metric_FishingActions>捕撈已接受的漁獲物</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>玩家在家用地圖上釣魚, 至少會放一個漁獲物。 同一工作的獎金漁獲物只會增加一些專案 。</RWS_MetricDesc_FishingActions>
-  <RWS_Metric_FishingCatchByDef>按專案排列的漁獲量</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>包括稀有的漁獲量與支援的香草捕撈擴張獎金。</RWS_MetricDesc_FishingCatchByDef>
-  <RWS_Backup_Create>退後</RWS_Backup_Create>
+  <RWS_Metric_TreeWoodPlaced>伐樹取得的木材（主要產物）</RWS_Metric_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>玩家單位砍伐樹木後，主要產出的木材實際放到地面或併入堆疊的數量（在遊戲放置木材時測量）。僅部分涵蓋：某些模組增加的額外木材及非標準伐樹方式不計入。</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_Metric_SlaughteredButchery>屠宰後又完成分割的動物數</RWS_Metric_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>玩家單位屠宰的動物屍體，隨後被完整執行的原版屠宰工作單（ButcherCorpseFlesh）消耗的數量。同一屍體跨存檔持續追蹤。狩獵的動物、野外死亡動物及敵人屍體不計入。僅部分涵蓋：模組屠宰配方及屍體消失的部分途徑無法辨識。</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_Cross_MaxColony>數值最高的殖民地：{0}</RWS_Cross_MaxColony>
+  <RWS_Cross_MinColony>數值最低的殖民地：{0}</RWS_Cross_MinColony>
+  <RWS_Cross_TopType>所有殖民地中最多的物品：{0}</RWS_Cross_TopType>
+  <RWS_CrossDesc_MaxColony>使用每個獨立殖民地的一次代表性觀測值進行比較，取最高的已記錄數值。缺失資料不當作零。描述狀態的數量是該殖民地存檔時的值，而不是歷史累計量。</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>使用每個獨立殖民地的一次代表性觀測值進行比較，取最低的已記錄數值。只有實際測得的零才可能是最小值；忽略未知和不適用的數值。</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>依物品種類分別彙總各獨立殖民地的數量，再依合計值排名。每個殖民地只取一次代表性觀測。缺失、溢出或未追蹤的種類會使結果不完整。存檔時庫存和歷史事件累計數絕不混合統計。</RWS_CrossDesc_TopType>
+  <RWS_Cross_TiedHolders>並列的殖民地：{0}</RWS_Cross_TiedHolders>
+  <RWS_Cross_RecordedAt>記錄發生於遊戲內第{0}天</RWS_Cross_RecordedAt>
+  <RWS_Cross_TopCategory>所有殖民地中最多的類別：{0}</RWS_Cross_TopCategory>
+  <RWS_CrossDesc_TopCategory>依已記錄的類別，使用各獨立殖民地的一次代表性觀測值彙總數量。缺失或不完整的明細仍視為部分記錄。類別可能統計事件次數或人數，而不只是物品數量。</RWS_CrossDesc_TopCategory>
+  <RWS_Cross_Sum>殖民地快照數值合計：{0}</RWS_Cross_Sum>
+  <RWS_CrossDesc_Sum>分別測量各獨立殖民地的代表性存檔數值後加總。不是歷史事件的累計數量。未知數值不會視為零。</RWS_CrossDesc_Sum>
+  <RWS_Hospitality_VisitGroups>Hospitality：到訪的客人群組數（啟用後）</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroupsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組數量。不包括為了安置獲救客人而建立的替代群組。讀取存檔後的重複事件透過事件ID過濾。不會推算模組安裝前的來訪。</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGuests>Hospitality：客人到訪人次（啟用後）</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuestsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組中訪客人數合計。同一客人再次來訪會重複計數，因此既不是獨立人數，也不是目前客人人數。更早的來訪情況未知。</RWS_Hospitality_VisitGuestsDesc>
+  <RWS_Hospitality_VisitsCompleted>Hospitality：平安離開的客人群組數（啟用後）</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompletedDesc>非敵對的Hospitality訪客群組結束訪問、實際離開地圖且解散時，沒有成員被遺留或失蹤的群組數。被驅逐或重組的群組不計入。如果在群組離開途中載入遊戲，證據可能不足；此類群組直接略過，不作推算。</RWS_Hospitality_VisitsCompletedDesc>
+  <RWS_Hospitality_Recruited>Hospitality：招募的客人數（啟用後）</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_RecruitedDesc>啟用此統計後，經確認的Hospitality客人招募數。僅在Hospitality的招募操作結束後，目標成為玩家派系單位時才計入。不推算更早的招募。</RWS_Hospitality_RecruitedDesc>
+  <RWS_Hospitality_ForcedRecruit>Hospitality：強制招募客人數（啟用後）</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruitDesc>啟用此統計後，經確認且被Hospitality標記為強制的客人招募數，是成功招募總數的一部分。</RWS_Hospitality_ForcedRecruitDesc>
+  <RWS_Hospitality_VoluntaryRecruit>Hospitality：自願加入客人數（啟用後）</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruitDesc>啟用此統計後，經確認且未被Hospitality標記為強制的客人招募數，是成功招募總數的一部分。</RWS_Hospitality_VoluntaryRecruitDesc>
+  <RWS_Hospitality_ShoppingUnits>Hospitality客人購買物品數</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnitsDesc>啟用此統計後，玩家主據點地圖上已完成的購物工作為客人的物品欄或裝備增加的物品數量。</RWS_Hospitality_ShoppingUnitsDesc>
+  <RWS_Hospitality_ShoppingSilver>Hospitality客人支付的白銀</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilverDesc>啟用此統計後，在上述已完成的購物工作中從客人身上扣除的白銀數量。</RWS_Hospitality_ShoppingSilverDesc>
+  <RWS_Hospitality_AssignedBeds>Hospitality：存檔時客人分配床位數</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBedsDesc>成功儲存時，玩家主據點地圖上分配給在訪Hospitality客人的不重複客用床位數。共用床位只計一次。統計的是床位分配，不是實際睡在床上的客人數或累計住宿訂單數。</RWS_Hospitality_AssignedBedsDesc>
+  <RWS_AddonRecruitment_Started>開始的Recruitment招募請求（啟用後）</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_StartedDesc>啟用此統計後經確認的Recruitment招募請求數。由於事件去重和檢查點機制發生變化，與較早的內建統計系列分開記錄。</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_SilverSpent>Recruitment：招募請求花費的白銀（啟用後）</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpentDesc>啟用此統計後，新建立Recruitment招募請求時經確認實際支付的白銀總額，包含額外費用。不計入失敗嘗試，也不代表淨財富變化。</RWS_AddonRecruitment_SilverSpentDesc>
+  <RWS_AddonRecruitment_PlannedApplicants>Recruitment：計畫招募人數（啟用後）</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicantsDesc>啟用此統計後，開始付費Recruitment請求時隨機確定的計畫應徵人數合計。不是實際抵達、加入或成為殖民者的人數；產生應徵者也可能失敗。</RWS_AddonRecruitment_PlannedApplicantsDesc>
+  <RWS_DBH_PipedStorage>Dubs Bad Hygiene：管線蓄水量（L）</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorageDesc>成功儲存時，玩家主據點地圖上接入管線的Dubs Bad Hygiene水箱儲水總量（公升），每個水箱只計一次。僅包括能夠讀取資料的已連接水箱。不是歷史累計產水量或耗水量。啟用統計前的資料不重建，無法讀取時顯示未知。</RWS_DBH_PipedStorageDesc>
+  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene：管線水箱容量（L）</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacityDesc>最近一次成功儲存時，玩家主據點地圖上各個已連接管線水箱的最大容量總和（公升），不重複計數。不是歷史累計值。</RWS_DBH_PipedCapacityDesc>
+  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene：抽水能力（L／天）</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacityDesc>成功儲存時，對所有正在使用的獨立管線網路，彙總Dubs Bad Hygiene定義的額定抽水能力（每遊戲日多少公升）。這是理論供給能力，不是實際抽取的水量。</RWS_DBH_PumpCapacityDesc>
+  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene：地下水供水能力（L／天）</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacityDesc>成功儲存時，對所有正在使用的獨立管線網路，彙總Dubs Bad Hygiene定義的進水與地下水額定供水能力（每遊戲日多少公升）。不是實際抽取的水量。</RWS_DBH_GroundwaterCapacityDesc>
+  <RWS_SAU_OrdersIssued>自動換裝指令次數</RWS_SAU_OrdersIssued>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade實際發出的原版穿戴（Wear）工作指令次數。並非已完成換裝的次數。僅統計啟用收集後發生的事件。實驗性統計。</RWS_SAU_OrdersIssuedDesc>
+  <RWS_Metric_ModdedIncidentsByDef>依類型統計的MOD事件成功數</RWS_Metric_ModdedIncidentsByDef>
+  <RWS_MetricDesc_ModdedIncidentsByDef>啟用收集後，在玩家主據點地圖上成功觸發的非原版MOD事件，依套件ID和事件類型分類統計。與原版災害計數分開。不會填補缺失的歷史記錄。</RWS_MetricDesc_ModdedIncidentsByDef>
+  <RWS_Metric_OutpostsActive>活躍的玩家哨站（存檔狀態）</RWS_Metric_OutpostsActive>
+  <RWS_MetricDesc_OutpostsActive>成功儲存時，玩家控制的Vanilla Expanded Framework活躍哨站數量。跨殖民地合計各自代表性存檔的數值。不是歷史累計數量，也不是生產或接收物品的數量。屬於實驗性統計，不會補錄較早資料。</RWS_MetricDesc_OutpostsActive>
+  <RWS_Metric_FishingActions>成功釣到魚的釣魚工作次數</RWS_Metric_FishingActions>
+  <RWS_MetricDesc_FishingActions>玩家在主據點地圖上進行的釣魚工作中，實際放下至少一件漁獲的次數。同一工作獲得的額外漁獲只增加物品數。</RWS_MetricDesc_FishingActions>
+  <RWS_Metric_FishingCatchByDef>依物品統計的漁獲</RWS_Metric_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>玩家主據點地圖上釣魚工作實際放置的物品數量，包括稀有漁獲及受支援的Vanilla Fishing Expanded額外漁獲。只統計已記錄的時段。</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_Backup_Create>立即備份</RWS_Backup_Create>
   <RWS_Backup_Refresh>重新整理備份</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>開啟資料夾</RWS_Backup_OpenFolder>
   <RWS_Backup_CopyPath>複製路徑</RWS_Backup_CopyPath>
-  <RWS_Backup_Select>選擇備份</RWS_Backup_Select>
-  <RWS_Backup_Restore>恢復( R)...</RWS_Backup_Restore>
-  <RWS_Backup_Delete>刪除...</RWS_Backup_Delete>
-  <RWS_Backup_ConfirmRestore>{0}(MOD {1}, {2}殖民地, {3}觀察)的備份恢復 ?</RWS_Backup_ConfirmRestore>
-  <RWS_Backup_ConfirmDelete>刪除此備份 ? {0}</RWS_Backup_ConfirmDelete>
-  <RWS_Backup_BeforeRestore>復原前</RWS_Backup_BeforeRestore>
-  <RWS_Backup_ImportBusy>等待目前的匯入完成, 或是取消它 。</RWS_Backup_ImportBusy>
-  <RWS_Backup_Working>正在進行備份...</RWS_Backup_Working>
-  <RWS_Backup_Error>備份操作失敗: {0}</RWS_Backup_Error>
-  <RWS_Backup_Done>操作已完成。 備份資料夾 : {0}</RWS_Backup_Done>
-  <RWS_Backup_None>沒有找到備份 。</RWS_Backup_None>
-  <RWS_Backup_Label>標籤/ 檔案</RWS_Backup_Label>
+  <RWS_Backup_Select>選取備份</RWS_Backup_Select>
+  <RWS_Backup_Restore>還原…</RWS_Backup_Restore>
+  <RWS_Backup_Delete>刪除…</RWS_Backup_Delete>
+  <RWS_Backup_ConfirmRestore>還原{0}的備份（模組{1}、殖民地{2}個、觀測值{3}筆）？還原前會先備份目前記錄。</RWS_Backup_ConfirmRestore>
+  <RWS_Backup_ConfirmDelete>確定刪除此備份嗎？{0}</RWS_Backup_ConfirmDelete>
+  <RWS_Backup_BeforeRestore>還原前</RWS_Backup_BeforeRestore>
+  <RWS_Backup_ImportBusy>請等待目前匯入完成，或取消匯入。</RWS_Backup_ImportBusy>
+  <RWS_Backup_Working>正在處理備份…</RWS_Backup_Working>
+  <RWS_Backup_Error>備份操作失敗：{0}</RWS_Backup_Error>
+  <RWS_Backup_Done>完成。備份資料夾：{0}</RWS_Backup_Done>
+  <RWS_Backup_None>找不到備份。</RWS_Backup_None>
+  <RWS_Backup_Label>標籤／檔案</RWS_Backup_Label>
   <RWS_Backup_Size>大小</RWS_Backup_Size>
-  <RWS_Backup_Verification>核查</RWS_Backup_Verification>
+  <RWS_Backup_Verification>驗證</RWS_Backup_Verification>
   <RWS_Backup_Valid>已驗證</RWS_Backup_Valid>
-  <RWS_Backup_NewerSchema>更新剖面圖樣式</RWS_Backup_NewerSchema>
-  <RWS_Backup_UnknownFormat>未知的備份格式</RWS_Backup_UnknownFormat>
+  <RWS_Backup_NewerSchema>由更新版本建立</RWS_Backup_NewerSchema>
+  <RWS_Backup_UnknownFormat>未知備份格式</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>驗證失敗</RWS_Backup_Invalid>
-  <RWS_Groups_Title>編輯聚居區群組</RWS_Groups_Title>
+  <RWS_Groups_Title>編輯殖民地群組</RWS_Groups_Title>
   <RWS_Groups_Add>建立群組</RWS_Groups_Add>
   <RWS_Groups_All>所有殖民地</RWS_Groups_All>
-  <RWS_Groups_Edit>編輯群組...</RWS_Groups_Edit>
-  <RWS_Groups_None>建立群組開始 。</RWS_Groups_None>
-  <RWS_Groups_Members>選取 : {0}( 丟失金鑰 : {1})</RWS_Groups_Members>
-  <RWS_Groups_RemoveMissing>移除缺失的金鑰</RWS_Groups_RemoveMissing>
-  <RWS_Groups_Excluded>排除</RWS_Groups_Excluded>
-  <RWS_Groups_OutOfScope>{0} 殖民地</RWS_Groups_OutOfScope>
-  <RWS_Backup_RestorePreferences>還原最愛和聚落群組設定值</RWS_Backup_RestorePreferences>
-  <RWS_Fav_Title>最愛的資料</RWS_Fav_Title>
-  <RWS_Fav_Empty>用統計或概觀卡旁的星星來加入到這裡 。</RWS_Fav_Empty>
-  <RWS_Fav_StarTip>新增或移除最愛的</RWS_Fav_StarTip>
-  <RWS_Fav_MoveUp>移到前面最喜歡的地方</RWS_Fav_MoveUp>
-  <RWS_Fav_MoveDown>稍後移動最愛的</RWS_Fav_MoveDown>
-  <RWS_Fav_Remove>移除最愛的</RWS_Fav_Remove>
-  <RWS_Fav_Unknown>以前儲存的公尺已不可用。</RWS_Fav_Unknown>
-  <RWS_Fav_NoOverall>這個標準對各殖民地來說毫無價值</RWS_Fav_NoOverall>
-  <RWS_Fav_AddBasic>新增基本資料</RWS_Fav_AddBasic>
+  <RWS_Groups_Edit>編輯群組…</RWS_Groups_Edit>
+  <RWS_Groups_None>請先建立群組。</RWS_Groups_None>
+  <RWS_Groups_Members>已選取：{0}（缺失：{1}）</RWS_Groups_Members>
+  <RWS_Groups_RemoveMissing>移除缺失的殖民地</RWS_Groups_RemoveMissing>
+  <RWS_Groups_Excluded>已排除</RWS_Groups_Excluded>
+  <RWS_Groups_OutOfScope>不在選取群組內：{0}個殖民地</RWS_Groups_OutOfScope>
+  <RWS_Backup_RestorePreferences>同時還原收藏與殖民地群組設定</RWS_Backup_RestorePreferences>
+  <RWS_Fav_Title>收藏的統計資料</RWS_Fav_Title>
+  <RWS_Fav_Empty>點擊統計項目或總覽卡片旁的星號，即可將其加入此處。</RWS_Fav_Empty>
+  <RWS_Fav_StarTip>加入收藏或取消收藏</RWS_Fav_StarTip>
+  <RWS_Fav_MoveUp>上移</RWS_Fav_MoveUp>
+  <RWS_Fav_MoveDown>下移</RWS_Fav_MoveDown>
+  <RWS_Fav_Remove>取消收藏</RWS_Fav_Remove>
+  <RWS_Fav_Unknown>這項已儲存的統計目前無法使用。</RWS_Fav_Unknown>
+  <RWS_Fav_NoOverall>這項統計沒有跨殖民地合計數值。</RWS_Fav_NoOverall>
+  <RWS_Fav_AddBasic>新增基本統計</RWS_Fav_AddBasic>
   <RWS_Tab_Rankings>排行榜</RWS_Tab_Rankings>
-  <RWS_Rankings_Search>搜尋資料</RWS_Rankings_Search>
-  <RWS_Rankings_Desc>最大第一</RWS_Rankings_Desc>
-  <RWS_Rankings_Asc>最小的第一</RWS_Rankings_Asc>
-  <RWS_Rankings_All>顯示所有排位</RWS_Rankings_All>
-  <RWS_Rankings_Top10>顯示前十名</RWS_Rankings_Top10>
-  <RWS_Rankings_Position>排名</RWS_Rankings_Position>
-  <RWS_Rankings_Coverage>測量了{1}殖民地中的{0}</RWS_Rankings_Coverage>
-  <RWS_Rankings_PartialNote>某些觀察缺失或部分缺失 。</RWS_Rankings_PartialNote>
-  <RWS_Rankings_NoMatches>沒有可使用的排名值 。</RWS_Rankings_NoMatches>
-  <RWS_Tab_Coverage>統計收集狀態</RWS_Tab_Coverage>
+  <RWS_Rankings_Search>搜尋統計項目</RWS_Rankings_Search>
+  <RWS_Rankings_Desc>由大到小</RWS_Rankings_Desc>
+  <RWS_Rankings_Asc>由小到大</RWS_Rankings_Asc>
+  <RWS_Rankings_All>顯示全部名次</RWS_Rankings_All>
+  <RWS_Rankings_Top10>顯示前10名</RWS_Rankings_Top10>
+  <RWS_Rankings_Position>名次</RWS_Rankings_Position>
+  <RWS_Rankings_Coverage>已測量{0}個，共{1}個殖民地</RWS_Rankings_Coverage>
+  <RWS_Rankings_PartialNote>部分數值缺失或只記錄了一部分。</RWS_Rankings_PartialNote>
+  <RWS_Rankings_NoMatches>沒有可排名的數值。</RWS_Rankings_NoMatches>
+  <RWS_Tab_Coverage>擷取狀態</RWS_Tab_Coverage>
   <RWS_Status_Summary>已測量 {0} · 部分記錄 {1} · 缺失 {2} · 不適用 {3} · 實驗性 {4}</RWS_Status_Summary>
-  <RWS_Status_SdkEventCapExceeded>SDK 事件ID限制達到{0} 公尺( 限值 : {1} ) 。 後來的事件不計算; 總和是部分的 。</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>錄入的數值無法證明數值的精度已經在遊戲中驗證 。</RWS_Status_Caution>
-  <RWS_Status_VerificationAll>所有核查狀態</RWS_Status_VerificationAll>
-  <RWS_Status_Experimental>實驗</RWS_Status_Experimental>
-  <RWS_Status_Legacy>遺產證據</RWS_Status_Legacy>
+  <RWS_Status_SdkEventCapExceeded>{0}項統計達到SDK事件ID數量上限（{1}）。後續事件不再計數，因此總計是不完整的。</RWS_Status_SdkEventCapExceeded>
+  <RWS_Status_Caution>記錄有數值不表示已在實際遊戲中驗證其準確性。</RWS_Status_Caution>
+  <RWS_Status_VerificationAll>全部驗證狀態</RWS_Status_VerificationAll>
+  <RWS_Status_Experimental>實驗性</RWS_Status_Experimental>
+  <RWS_Status_Legacy>舊版記錄</RWS_Status_Legacy>
   <RWS_Status_Standard>標準</RWS_Status_Standard>
-  <RWS_Status_Measured>量度</RWS_Status_Measured>
-  <RWS_Status_Partial>部分</RWS_Status_Partial>
-  <RWS_Status_NotMeasured>未量度</RWS_Status_NotMeasured>
+  <RWS_Status_Measured>已測量</RWS_Status_Measured>
+  <RWS_Status_Partial>部分記錄</RWS_Status_Partial>
+  <RWS_Status_NotMeasured>未測量</RWS_Status_NotMeasured>
   <RWS_Status_NotApplicable>不適用</RWS_Status_NotApplicable>
-  <RWS_Status_FilterAll>全部覆蓋</RWS_Status_FilterAll>
-  <RWS_Status_FilterMeasured>有量度</RWS_Status_FilterMeasured>
-  <RWS_Status_FilterPartial>部分覆蓋率</RWS_Status_FilterPartial>
-  <RWS_Status_FilterMissing>沒有量度</RWS_Status_FilterMissing>
+  <RWS_Status_FilterAll>所有擷取狀態</RWS_Status_FilterAll>
+  <RWS_Status_FilterMeasured>有測量數值</RWS_Status_FilterMeasured>
+  <RWS_Status_FilterPartial>部分記錄</RWS_Status_FilterPartial>
+  <RWS_Status_FilterMissing>無測量數值</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>不適用</RWS_Status_FilterNA>
   <RWS_Status_Statistic>量子/ 取得器</RWS_Status_Statistic>
   <RWS_Status_Recording>目前收藏</RWS_Status_Recording>
