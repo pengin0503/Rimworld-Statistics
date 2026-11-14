@@ -7,7 +7,7 @@
   "RWS_Metric_StockPersonaWeaponsPeak": "Meiste Personawaffen",
   "RWS_MetricDesc_StockPersonaWeaponsPeak": "Höchste Zahl von Personawaffen, ausgerüstet oder gelagert, auf geladenen Heimatkarten bei einer aufgezeichneten Speicherung.",
   "RWS_Metric_RoyaltyPsycasts": "Erfolgreich gewirkte mentale Kräfte",
-  "RWS_MetricDesc_RoyaltyPsycasts": "mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.",
+  "RWS_MetricDesc_RoyaltyPsycasts": "Mentale Kräfte (Royalty), die freie Kolonisten des Spielers erfolgreich wirkten. Eine nicht bestätigte Zielauswahl zählt nicht.",
   "RWS_Metric_BiotechWasteCreated": "Produzierte Giftmüllsäcke",
   "RWS_MetricDesc_BiotechWasteCreated": "Giftmüllsäcke, die durch tatsächlich abgeschlossene Produktionsprozesse des Spielers neu entstanden.",
   "RWS_Metric_BiotechWasteDisposed": "Neutralisierte Giftmüllsäcke",
