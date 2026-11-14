@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>備份 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>新建（空白）</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>來自較新版本的記錄檔案（唯讀）</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>失敗</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>無法辨識</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>讀取時被更改（例如遊戲正在存檔）</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>無法開啟（使用中或無權限）</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>檔案損壞或不完整</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>不是 RimWorld 存檔</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>沒有可用於辨識殖民地的資訊</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>意外錯誤</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>依原因：{0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>讀取失敗的存檔會在下次掃描時重新讀取。</RWS_Import_RetriedOnRescan>
   <RWS_Loading>正在載入統計…</RWS_Loading>
   <RWS_WealthCoverage>有財富數據的殖民地：{0} 個（無數據：{1} 個）。</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>從存檔恢復（無法確定是否為開發者模式，不計入合計）</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>無法確認與更早記錄之間的父子關係。</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>這是從第 {0} 天的記錄延續的分支；中間的點屬於其他分支。</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>第 {0} 天的存檔也原樣包含此記錄；該存檔沒有記錄更新的統計。</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>記錄方式不同，無法疊加顯示</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>記錄 {0} 個（部分記錄 {1} 個），無數值的時間點 {2} 個</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>統計最後記錄於第 {0} 天。該殖民地進度最遠的存檔在第 {1} 天，但之後沒有記錄新的統計（該存檔可能屬於其他分支）。</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>記錄值</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>部分記錄</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>父子關係未確認</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>無數值的時間點</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>第 {0} 天：此存檔或檢查點沒有該統計的數值（記錄已關閉、MOD 或 DLC 未啟用、舊格式等）。這不是 0。</RWS_Chart_GapTip>
+  <RWS_PerDay>每天：{0}（記錄期間 {1} 天）</RWS_PerDay>
   <RWS_Unit_Nutrition>營養值 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>已製造的安卓人</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>在安卓人製造台完成工作後製造的玩家安卓人數量。</RWS_VreAndroid_ManufacturedDesc>

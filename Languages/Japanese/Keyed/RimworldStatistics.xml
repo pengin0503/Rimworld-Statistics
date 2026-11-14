@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>バックアップ 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>新規（空の状態）</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>新しいバージョンの記録ファイル（読み取り専用）</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>失敗</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>識別不可</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>読込中に変更された（ゲームが保存中だったなど）</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>開けなかった（使用中・権限なし）</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>破損・不完全なファイル</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>RimWorldのセーブではない</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>コロニーを識別する情報がない</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>予期しないエラー</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>原因別：{0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>読み込みに失敗したセーブは、次回のスキャンで読み直します。</RWS_Import_RetriedOnRescan>
   <RWS_Loading>統計を読み込み中…</RWS_Loading>
   <RWS_WealthCoverage>資産データのあるコロニー: {0}件（データなし: {1}件）</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>セーブから復元（開発者モードか不明のため合計から除外）</RWS_Source_RecoveredLineage>
@@ -1247,6 +1253,15 @@
   <RWS_Chart_PointUnlinked>それより前の記録との親子関係は確認できません。</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>{0}日の記録から続く分岐です。間にある点は別の分岐の記録です。</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>この記録は{0}日のセーブにもそのまま含まれていました。そのセーブでは新しい統計は記録されていません。</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>記録元が異なるため重ねて表示できません</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>記録 {0}点（一部のみ {1}点）、値のない時点 {2}点</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>統計の最終記録は{0}日です。このコロニーで最も進んだセーブは{1}日ですが、それ以降の統計は記録されていません（別の分岐のセーブの場合もあります）。</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>記録値</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>一部のみの記録</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>親子関係が未確認</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>値のない時点</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>{0}日：このセーブ／チェックポイントにはこの統計の値がありません（取得OFF、MOD・DLCが無効、旧形式など）。0ではありません。</RWS_Chart_GapTip>
+  <RWS_PerDay>1日あたり：{0}（記録期間 {1}日）</RWS_PerDay>
   <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>製造したアンドロイド</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>アンドロイド製造台で通常の作業を完了し、自勢力のアンドロイドを製造した数。</RWS_VreAndroid_ManufacturedDesc>

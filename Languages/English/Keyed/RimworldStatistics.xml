@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>backup 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>new (empty)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>record file from a newer version (read-only)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>failed</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>unidentifiable</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>changed while being read (for example, the game was saving)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>could not be opened (in use or no permission)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>damaged or incomplete file</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>not a RimWorld save</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>no colony identity to match</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>unexpected error</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>By cause: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Saves that failed to load are read again on the next scan.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>Loading statistics…</RWS_Loading>
   <RWS_WealthCoverage>Wealth data from {0} colonies ({1} without data).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Recovered from save (dev mode unknown, excluded from totals)</RWS_Source_RecoveredLineage>
@@ -1247,6 +1253,15 @@
   <RWS_Chart_PointUnlinked>Its relation to earlier readings cannot be proven.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>A branch continuing from the reading on day {0}; points in between belong to another branch.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>This reading was also carried unchanged by a save on day {0}; that save recorded no newer statistics.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>recorded in a different way; not drawn together</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>{0} readings ({1} partial); {2} points without a value</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>Statistics were last recorded on day {0}. The colony's furthest save is on day {1}, but nothing newer was recorded (that save may be on another branch).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Recorded value</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Partial record</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Relation not proven</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>No value here</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>Day {0}: this save or checkpoint holds no value for this statistic (recording off, MOD or DLC not active, older format, and so on). It is not zero.</RWS_Chart_GapTip>
+  <RWS_PerDay>Per day: {0} (over {1} recorded days)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} nutrition</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androids manufactured</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Player androids created by completed work at an Android Creation Station.</RWS_VreAndroid_ManufacturedDesc>
