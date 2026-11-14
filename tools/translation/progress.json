@@ -85,7 +85,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "French": [
       "01",
@@ -94,7 +95,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "Spanish": [
       "01",
@@ -103,7 +105,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "SpanishLatin": [
       "01",
@@ -112,7 +115,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "Portuguese": [
       "01",
@@ -121,7 +125,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "PortugueseBrazilian": [
       "01",
@@ -130,7 +135,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "Russian": [
       "01",
@@ -139,7 +145,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "ChineseSimplified": [
       "01",
@@ -148,7 +155,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "ChineseTraditional": [
       "01",
@@ -157,7 +165,8 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ],
     "Korean": [
       "01",
@@ -166,11 +175,12 @@
       "04",
       "05",
       "06",
-      "07"
+      "07",
+      "08"
     ]
   },
   "pending": [
-    "Blocks 08-10 (keys 876-1234) still require full retranslation in all ten languages.",
+    "Blocks 09-10 (keys 1001-1234) still require full retranslation in all ten languages.",
     "Native-speaker review of every language before release (no in-game rendering check was done)."
   ]
 }
