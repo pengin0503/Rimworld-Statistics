@@ -699,7 +699,7 @@
   <RWS_Metric_SettlementsFounded>Assentamentos fundados</RWS_Metric_SettlementsFounded>
   <RWS_MetricDesc_SettlementsFounded>Novos assentamentos do jogador fundados a partir de uma caravana ou mapa existente. O assentamento inicial, mudanças de colónia e pousos de naves gravitacionais não são contados.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Assentamentos abandonados</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Assentamentos do jogador abandonados por escolha. Remoções automáticas como a decolagem de nave gravitacional não são contadas.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Assentamentos do jogador abandonados por escolha. Remoções automáticas como a descolagem de gravinave não são contadas.</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>Perigos antigos abertos</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Santuários antigos selados (perigos antigos nos mapas de assentamento do jogador) cujo interior foi aberto, cada um contado uma vez. O santuário conta quando o jogo o considera descoberto, ou seja, quando o nevoeiro sobre o seu centro desaparece. Romper outras paredes ou o aparecimento de inimigos não conta.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Bioma original</RWS_Metric_ColonyStartingBiome>
@@ -837,7 +837,7 @@
   <RWS_Exp_EvidenceVerified>Verificada durante a captação</RWS_Exp_EvidenceVerified>
   <RWS_Exp_EvidenceMixed>Mistura de captações verificadas e não verificadas</RWS_Exp_EvidenceMixed>
   <RWS_Exp_EvidenceUnknown>Proveniência desconhecida da captação (incluindo dados antigos)</RWS_Exp_EvidenceUnknown>
-  <RWS_Exp_Since>Registro iniciado no dia {0}</RWS_Exp_Since>
+  <RWS_Exp_Since>Registo iniciado no dia {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>MOD necessário: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>MOD de origem: {0} (provedor: {1})</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>O mod de origem não está instalado atualmente. Os valores registados são mantidos, mas não são recolhidos novos valores.</RWS_Mod_SourceUnavailable>
@@ -907,7 +907,7 @@
   <RWS_Hospitality_ShoppingUnitsDesc>Artigos adicionados ao inventário ou equipamento dos hóspedes por tarefas de compra concluídas nos mapas de lar do jogador desde a ativação.</RWS_Hospitality_ShoppingUnitsDesc>
   <RWS_Hospitality_ShoppingSilver>Prata paga por hóspedes Hospitality</RWS_Hospitality_ShoppingSilver>
   <RWS_Hospitality_ShoppingSilverDesc>Prata retirada dos hóspedes por essas mesmas tarefas de compra concluídas desde a ativação.</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>Hospitality: camas atribuídas a hóspedes ao salvar</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBeds>Hospitality: camas atribuídas a hóspedes ao guardar</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Número de camas distintas atribuídas a hóspedes de Hospitality presentes em mapas de base do jogador numa gravação bem-sucedida. Uma cama partilhada conta uma vez. Conta atribuições de cama, não hóspedes a dormir nem reservas acumuladas.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Solicitações de recrutamento iniciadas (desde a ativação)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>Solicitações de Recruitment confirmadas desde a ativação. Série separada da série antiga integrada, pois o método de remover eventos duplicados e gerar pontos de controle mudou.</RWS_AddonRecruitment_StartedDesc>
@@ -984,13 +984,13 @@
   <RWS_Rankings_Coverage>Medidas: {0} de {1} colónias</RWS_Rankings_Coverage>
   <RWS_Rankings_PartialNote>Alguns valores estão ausentes ou parciais.</RWS_Rankings_PartialNote>
   <RWS_Rankings_NoMatches>Não há valores para classificar.</RWS_Rankings_NoMatches>
-  <RWS_Tab_Coverage>Estado da coleta</RWS_Tab_Coverage>
+  <RWS_Tab_Coverage>Estado da recolha</RWS_Tab_Coverage>
   <RWS_Status_Summary>Medidas {0} · Parciais {1} · Em falta {2} · N/A {3} · Experimentais {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>{0} estatísticas atingiram o limite de IDs de eventos do SDK ({1}). Eventos posteriores não são contados, portanto os totais são parciais.</RWS_Status_SdkEventCapExceeded>
   <RWS_Status_Caution>Um valor registado não significa que a sua precisão tenha sido verificada num jogo real.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>Todos os estados de verificação</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>
-  <RWS_Status_Legacy>Registro antigo</RWS_Status_Legacy>
+  <RWS_Status_Legacy>Registo antigo</RWS_Status_Legacy>
   <RWS_Status_Standard>Padrão</RWS_Status_Standard>
   <RWS_Status_Measured>Medido</RWS_Status_Measured>
   <RWS_Status_Partial>Parcial</RWS_Status_Partial>
@@ -1057,9 +1057,9 @@
   <RWS_VTE_ContractReceived>Mercadorias compradas por contratos VTE</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>Quantidade de artigos gerados por contratos de compra VTE publicados pelo jogador e pagos com sucesso. Separada de entregas a NPCs e do comércio normal.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>Psinjurações VPE lançadas</RWS_Metric_VpeCasts>
-  <RWS_MetricDesc_VpeCasts>Usos bem-sucedidos de habilidades do Vanilla Psycasts Expanded por colonos livres do jogador, contados quando o VPE consome de fato o uso da habilidade, por habilidade. Ordens na fila, usos cancelados e usos de NPCs não contam.</RWS_MetricDesc_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>Usos bem-sucedidos de habilidades do Vanilla Psycasts Expanded por colonos livres do jogador, contados quando o VPE consome de facto o uso da habilidade, por habilidade. Ordens na fila, usos cancelados e usos de NPCs não contam.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>Armadilhas VFE Security rearmadas</RWS_VfeSecurity_TrapsRearmed>
-  <RWS_VfeSecurity_TrapsRearmedDesc>Armadilhas do jogador desarmadas que foram efetivamente rearmadas durante o jogo. Só conta a mudança real de desarmada para armada, não ordens de trabalho, configuração ao surgir a armadilha, ações do programador ou o registo de peões do próprio mod.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VfeSecurity_TrapsRearmedDesc>Armadilhas do jogador desarmadas que foram efetivamente rearmadas durante o jogo. Só conta a mudança real de desarmada para armada, não ordens de trabalho, configuração ao surgir a armadilha, ações de desenvolvimento ou o registo de peões do próprio mod.</RWS_VfeSecurity_TrapsRearmedDesc>
   <RWS_VaeAchievements_Unlocked>Cartões de conquistas VAE desbloqueados</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>Novos cartões de conquistas desbloqueados no jogo normal, por definição de conquista. Desbloqueios por depuração e verificações de restauração na inicialização não contam.</RWS_VaeAchievements_UnlockedDesc>
   <RWS_VaeAchievements_Points>Pontos de conquistas VAE obtidos</RWS_VaeAchievements_Points>
@@ -1071,7 +1071,7 @@
   <RWS_VaeAspirations_Completed>Aspirações Vanilla Aspirations Expanded realizadas</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Aspirações recém-realizadas por colonos do jogador segundo a verificação normal de conclusão do mod, por aspiração. Conclusões de depuração, aspirações já realizadas ou não atribuídas e restauração de jogos guardados não contam.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Nascimentos em colmeias do jogador VFE Insectoids 2</RWS_VfeInsectoids_HiveBirths>
-  <RWS_VfeInsectoids_HiveBirthsDesc>Novos insetos gerados por colmeias do jogador no jogo normal, por tipo de inseto. Substituição de casulos, restauração de habitantes existentes e geração por ferramentas do programador não contam.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VfeInsectoids_HiveBirthsDesc>Novos insetos gerados por colmeias do jogador no jogo normal, por tipo de inseto. Substituição de casulos, restauração de habitantes existentes e geração por ferramentas de desenvolvimento não contam.</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VqeCryptoforge_RelayScans>Varreduras do retransmissor Cryptoforge concluídas</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>Varrimentos do Frozen Scanning Relay concluídos enquanto um colono do jogador se encontrava no mapa da missão.</RWS_VqeCryptoforge_RelayScansDesc>
   <RWS_RimFactory_GroundOutput>Saída no chão das Auto Machine Tools RimFactory</RWS_RimFactory_GroundOutput>
@@ -1093,9 +1093,9 @@
   <RWS_VfeDeserters_CriticalIntelPaid>Informações críticas Deserters gastas</RWS_VfeDeserters_CriticalIntelPaid>
   <RWS_VfeDeserters_CriticalIntelPaidDesc>Artigos de informação crítica removidos das reservas dos mapas de base do jogador por pagamentos aceites pela Deserter Network.</RWS_VfeDeserters_CriticalIntelPaidDesc>
   <RWS_VfeClassical_SenatorFavors>Senadores VFE Classical conquistados</RWS_VfeClassical_SenatorFavors>
-  <RWS_VfeClassical_SenatorFavorsDesc>Senadores antes contrários que passaram a apoiar o jogador por diplomacia normal ou missões, por fação. Ações de programador, senadores que já apoiavam e restauração de jogos guardados antigos não contam.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeClassical_SenatorFavorsDesc>Senadores antes contrários que passaram a apoiar o jogador por diplomacia normal ou missões, por fação. Ações de desenvolvimento, senadores que já apoiavam e restauração de jogos guardados antigos não contam.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Honrarias VFE Empire concedidas</RWS_VfeEmpire_HonorsBestowed>
-  <RWS_VfeEmpire_HonorsBestowedDesc>Honrarias pendentes de VFE Empire efetivamente concedidas a colonos do jogador quando um ritual termina, por honraria. Apenas receber uma honraria disponível e ações do programador não contam.</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_VfeEmpire_HonorsBestowedDesc>Honrarias pendentes de VFE Empire efetivamente concedidas a colonos do jogador quando um ritual termina, por honraria. Apenas receber uma honraria disponível e ações de desenvolvimento não contam.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>Aspirações de inspiração VSIE realizadas</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Aspirações ligadas à inspiração ativa de um colono em Vanilla Social Interactions Expanded e recém-realizadas, por inspiração. Progresso inacabado, expiração e inspirações sem relação não contam.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Montarias iniciadas em Giddy-Up 2</RWS_GiddyUp_MountSessions>
@@ -1103,7 +1103,7 @@
   <RWS_CombatExtended_Reloads>Recargas de Combat Extended por colonos</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Recargas concluídas por peões do jogador que realmente colocaram munição no carregador de uma arma. Cada recarga conta uma vez, mesmo com várias pilhas de munição. Torres, carregadores automáticos, munição desativada e recargas fracassadas não contam.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>Despertares naturais de androides VRE</RWS_VreAndroid_Awakenings>
-  <RWS_VreAndroid_AwakeningsDesc>Androides do jogador com corpo sintético que despertaram naturalmente pela verificação genética baseada no humor. Despertar por ferramentas do programador, configuração inicial e androides já despertos não contam. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VreAndroid_AwakeningsDesc>Androides do jogador com corpo sintético que despertaram naturalmente pela verificação genética baseada no humor. Despertar por ferramentas de desenvolvimento, configuração inicial e androides já despertos não contam. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializações VSE escolhidas</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Novas especializações escolhidas por colonos do jogador no painel normal, por ExpertiseDef. Desbloqueios de depuração e registos restaurados não contam.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>Níveis de especialização VSE obtidos</RWS_VseExpertise_LevelUps>
@@ -1135,7 +1135,7 @@
   <RWS_VfeFactory_Sown>Plantas semeadas por Autofarmers VFE Factory</RWS_VfeFactory_Sown>
   <RWS_VfeFactory_SownDesc>Plantas novas realmente geradas, marcadas como semeadas e correspondentes ao cultivo escolhido durante o ciclo de trabalho de um Autofarmer do jogador, por ThingDef da planta. Ciclos malsucedidos e plantas existentes não contam.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>Instalações de warcasket VFE Pirates concluídas</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Instalações de warcasket do jogador concluídas por soldadura normal, confirmadas quando o projeto termina e as três peças correspondentes são vestidas pela primeira vez, por Def de armadura. Trabalhos inacabados, conjunto parcialmente equipado e conclusão por ferramentas do programador não contam.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>Instalações de warcasket do jogador concluídas por soldadura normal, confirmadas quando o projeto termina e as três peças correspondentes são vestidas pela primeira vez, por Def de armadura. Trabalhos inacabados, conjunto parcialmente equipado e conclusão por ferramentas de desenvolvimento não contam.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>Rejeições de injeção VQE Ancients</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Resultados do injetor de arcogenes do jogador em que o ocupante rejeitou a injeção, foi libertado vivo e entrou em coma de injeção. Trabalho cancelado, resultado escolhido mas não concluído e escolhas de genes pendentes após um sucesso não contam. Requer Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>Transformações mutantes VQE Ancients</RWS_VqeAncients_Mutations>
@@ -1149,7 +1149,7 @@
   <RWS_CE_RoundsUsed>Cartuchos disparados em Combat Extended</RWS_CE_RoundsUsed>
   <RWS_CE_RoundsUsedDesc>Cartuchos efetivamente retirados de carregadores de armas de colonos do jogador, ou gastos disparando diretamente do inventário, por AmmoDef. Movimentação de munição ao recarregar, disparos sem munição, uso de torretas e reposições por depuração não contam.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Vezes que colonos receberam supressão em Combat Extended</RWS_CE_SuppressionReceived>
-  <RWS_CE_SuppressionReceivedDesc>Vezes em que um peão da colónia do jogador passou de não suprimido para suprimido em Combat Extended. Supressão adicional enquanto já estava suprimido e testes de programador não contam. Mede supressão recebida, não a imposta aos inimigos.</RWS_CE_SuppressionReceivedDesc>
+  <RWS_CE_SuppressionReceivedDesc>Vezes em que um peão da colónia do jogador passou de não suprimido para suprimido em Combat Extended. Supressão adicional enquanto já estava suprimido e testes de desenvolvimento não contam. Mede supressão recebida, não a imposta aos inimigos.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>Contratos de contratação VFE Pirates</RWS_VfePirates_HireContracts>
   <RWS_VfePirates_HireContractsDesc>Novos contratos de piratas ou mercenários realmente fechados na janela de contratação do Vanilla Expanded Framework com uma fação contratante de VFE Pirates. Apenas abrir a janela, ofertas canceladas e pagamentos fracassados não contam.</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>Prata paga em contratações VFE Pirates</RWS_VfePirates_HireSilver>
