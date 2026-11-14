@@ -1229,10 +1229,18 @@
   <RWS_Chart_ByColony>Par colonie</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>Par catégorie</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Par catégorie ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Une valeur enregistrée pour chaque colonie incluse. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Cliquez sur une colonie pour voir son historique.</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>Valeur comparée pour cette colonie : {0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>Aucun historique disponible pour cette statistique.</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>Un seul relevé est disponible. Survolez le point pour afficher sa valeur.</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>Relevés des sauvegardes par jour de jeu. Plusieurs branches peuvent se côtoyer.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Points de contrôle de la branche sélectionnée. Les coupures signalent des relevés manquants.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Record de hausse de richesse sur 15 jours atteint à chaque date dans cette sauvegarde.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Catégories enregistrées de la statistique sélectionnée. Ce graphique ne représente pas une évolution dans le temps.</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Seule une valeur combinée est disponible pour cette statistique.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valeurs affichées : {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Aucune valeur mesurée ne peut être représentée graphiquement.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Ajouter une colonie…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Observations par jour de jeu. Les coupures signalent des données manquantes.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} points de nutrition</RWS_Unit_Nutrition>
 </LanguageData>

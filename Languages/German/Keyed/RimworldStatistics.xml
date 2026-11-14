@@ -1229,10 +1229,18 @@
   <RWS_Chart_ByColony>Nach Kolonie</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>Nach Kategorie</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Nach Kategorie ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Je eine aufgezeichnete Zahl für jede berücksichtigte Kolonie. Kein zeitlicher Verlauf.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Klicke auf eine Kolonie, um ihren Verlauf zu sehen.</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>Vergleichswert der Kolonie: {0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>Für diese Statistik ist kein Verlauf verfügbar.</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>Nur ein Messwert ist verfügbar. Bewege den Mauszeiger über den Punkt, um den Wert zu sehen.</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>Spielstandwerte nach Spieltagen. Werte aus verschiedenen Spielstandzweigen sind möglich.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Speicherpunkte des ausgewählten Spielstandzweigs. Lücken zeigen fehlende Messwerte.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Jeweils größter bis dahin beobachteter Vermögenszuwachs über 15 Tage in diesem Spielstand.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Aufgezeichnete Kategorien der ausgewählten Statistik. Kein zeitlicher Verlauf.</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Für diese Statistik ist nur ein zusammengefasster Wert verfügbar.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Angezeigte Werte: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Keine Messwerte für ein Diagramm vorhanden.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Kolonie hinzufügen…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Messwerte nach Spieltagen. Lücken zeigen fehlende Werte.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
 </LanguageData>
