@@ -1,0 +1,8 @@
+{
+  "RWS_Details_Permadeath": "コミットメントモード",
+  "RWS_Details_NotPermadeath": "無制限リロードモード",
+  "RWS_Metric_RankByPermadeathDays": "モード別の通算ゲーム内日数",
+  "RWS_MetricDesc_RankByPermadeathDays": "各コロニーの代表セーブが「コミットメントモード」「無制限リロードモード」のどちらかに応じて、コロニーの経過日数を合計します。",
+  "RWS_Metric_RankByPermadeathEndings": "モード別のエンディング数",
+  "RWS_MetricDesc_RankByPermadeathEndings": "概要タブと同じ集計方法で数えたエンディングを、各コロニーの代表セーブが「コミットメントモード」「無制限リロードモード」のどちらかに応じて集計します。"
+}
