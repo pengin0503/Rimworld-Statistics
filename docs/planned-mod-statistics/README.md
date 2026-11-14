@@ -16,6 +16,10 @@ The [distinct-genre register](2026-11-13-fourthwave-distinct-genres.md) tracks s
 
 The [implementation register](2026-11-13-additional-30-implementation.md) records the current status of these 27 candidates separately from the original 35.
 
+## Popular MOD follow-up candidates (2026-11-14)
+
+The [27-candidate popularity-led research register](2026-11-14-popular-mod-discovery-register.md) preserves four additional research rounds (A01–A09, B01–B07, C01–C06, D01–D05). These **27 new proposals** are separate from both the original 35 targets and the 27 previously retained E/F/G/H additions; they are **not entries in the released supported-MOD list**. Priority uses approximate dated Workshop subscriptions, unique outcome potential and code-level feasibility. The next investigation is focused on popular HAR/Biotech race content.
+
 ## Second-wave scope is also committed
 
 The [nine second-wave implementation tasks (26–34)](2026-11-13-secondary-implementation-scope.md) originally made the previously deferred secondary statistics **required implementation targets** (subsequently amended only for evidence-gated Tasks 27–29), not excluded ideas. They cover Combat Extended ammunition/suppression; Gastronomy paid orders; Prison Expanded departures, riots and completed sentences; Rimefeller measured production/consumption; Pirates contracts/payments; Skills expertise-level records; Security artillery; Genetics hybrid births/transformations; and Drone Factory hatching. They augment, and never replace, the first 25 slices or the 35-MOD master register. Outcomes awaiting a proven 1.7 commit site remain explicitly tracked until implemented or evidenced as covered by an existing generic metric.
