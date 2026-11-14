@@ -4,8 +4,9 @@
 
 Keep **RimWorld Statistics** numeric-first, but let players inspect the existing
 statistics visually without leaving the Details tab or importing saves again.
-Clicking a top-level metric row opens a separate chart dialog. The favourite
-star and disclosure triangle remain independent click targets.
+Clicking a top-level Details metric row, a supported Overview card, or a
+favourite metric card opens a separate chart dialog. The favourite star and
+Details disclosure triangle remain independent click targets.
 
 ## Alternatives considered
 
@@ -21,6 +22,8 @@ star and disclosure triangle remain independent click targets.
 
 - The default chart compares a **single recorded numeric value for each included
   colony**, using the same precomputed per-colony result shown by Details.
+  Overview's basic lifetime metrics use their existing `BasicMetrics.Value`
+  projections, not newly invented observation data.
 - Where a metric has recorded breakdown rows, the dialog can instead show
   category/component values. From per-colony mode it initially shows that
   colony's breakdown, when available.
@@ -55,6 +58,6 @@ and gap/coverage labelling. They are intentionally deferred rather than invented
 ## Verification
 
 Unit tests specify scope/exclusion filtering, real zero and negative values,
-partial readings, per-colony breakdown selection, and absence of fabricated
-aggregate values. GitHub Actions builds the RimWorld assembly, runs Core tests,
+partial readings, basic Overview values, per-colony breakdown selection, and
+absence of fabricated aggregate values. GitHub Actions builds the RimWorld assembly, runs Core tests,
 and checks translation consistency. Actual game UI validation is separate.
