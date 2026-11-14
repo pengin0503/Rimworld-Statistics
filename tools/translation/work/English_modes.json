@@ -1,0 +1,8 @@
+{
+  "RWS_Details_Permadeath": "Commitment mode",
+  "RWS_Details_NotPermadeath": "Reload anytime mode",
+  "RWS_Metric_RankByPermadeathDays": "Colony days by save mode",
+  "RWS_MetricDesc_RankByPermadeathDays": "Colony days summed by the mode at each colony's furthest recorded point: Commitment mode or Reload anytime mode.",
+  "RWS_Metric_RankByPermadeathEndings": "Endings by save mode",
+  "RWS_MetricDesc_RankByPermadeathEndings": "Endings counted as on the Overview tab, grouped by the mode at each colony's furthest recorded point: Commitment mode or Reload anytime mode."
+}

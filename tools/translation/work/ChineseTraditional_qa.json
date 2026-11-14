@@ -1,0 +1,11 @@
+{
+  "RWS_Metric_ToxicFalloutDays": "毒霧霾發生天數",
+  "RWS_MetricDesc_ToxicFalloutDays": "至少存在一次有效毒霧霾事件的天數；多個毒霧霾事件重疊的時間僅計算一次。",
+  "RWS_Metric_ColdSnaps": "寒流次數",
+  "RWS_MetricDesc_ColdSnaps": "新開始的寒流次數。",
+  "RWS_Metric_VolcanicWinters": "火山冬天次數",
+  "RWS_MetricDesc_VolcanicWinters": "新開始的火山冬天次數。",
+  "RWS_Metric_CropBlights": "作物枯萎次數",
+  "RWS_MetricDesc_CropBlights": "成功觸發的作物枯萎事件次數，不是染病植物株數。",
+  "RWS_Metric_Meteors": "隕石撞擊次數"
+}
