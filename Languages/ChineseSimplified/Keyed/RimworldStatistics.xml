@@ -1001,130 +1001,130 @@
   <RWS_Status_FilterPartial>部分记录</RWS_Status_FilterPartial>
   <RWS_Status_FilterMissing>无测量数值</RWS_Status_FilterMissing>
   <RWS_Status_FilterNA>不适用</RWS_Status_FilterNA>
-  <RWS_Status_Statistic>统计项／采集单位</RWS_Status_Statistic>
+  <RWS_Status_Statistic>统计项／采集单元</RWS_Status_Statistic>
   <RWS_Status_Recording>当前采集状态</RWS_Status_Recording>
   <RWS_Status_Coverage>已记录范围</RWS_Status_Coverage>
-  <RWS_Status_Count>殖民地</RWS_Status_Count>
+  <RWS_Status_Count>殖民地数</RWS_Status_Count>
   <RWS_Status_RecordingOn>正在记录</RWS_Status_RecordingOn>
-  <RWS_Status_RecordingOff>未在记录</RWS_Status_RecordingOff>
-  <RWS_Status_DlcMissing>缺少必要DLC</RWS_Status_DlcMissing>
+  <RWS_Status_RecordingOff>未记录</RWS_Status_RecordingOff>
+  <RWS_Status_DlcMissing>缺少所需DLC</RWS_Status_DlcMissing>
   <RWS_Status_ModMissing>未安装目标模组</RWS_Status_ModMissing>
-  <RWS_Status_TargetIncompatible>不支持目标模组版本或采集位置</RWS_Status_TargetIncompatible>
-  <RWS_Status_RecordingFailed>本次游戏会话采集失败</RWS_Status_RecordingFailed>
-  <RWS_Status_RecordingUnnecessary>无须在游戏过程中记录</RWS_Status_RecordingUnnecessary>
-  <RWS_Status_MissingColonies>以下{0}个殖民地没有观测记录：</RWS_Status_MissingColonies>
-  <RWS_Details_StatusAll>所有统计项</RWS_Details_StatusAll>
-  <RWS_Details_StatusMeasured>有测量数值</RWS_Details_StatusMeasured>
+  <RWS_Status_TargetIncompatible>目标模组版本或采集位置不受支持</RWS_Status_TargetIncompatible>
+  <RWS_Status_RecordingFailed>本次游戏期间采集失败</RWS_Status_RecordingFailed>
+  <RWS_Status_RecordingUnnecessary>无需在游戏中记录</RWS_Status_RecordingUnnecessary>
+  <RWS_Status_MissingColonies>有{0}个殖民地没有观测记录：</RWS_Status_MissingColonies>
+  <RWS_Details_StatusAll>全部统计</RWS_Details_StatusAll>
+  <RWS_Details_StatusMeasured>有测量值</RWS_Details_StatusMeasured>
   <RWS_Details_StatusPartial>部分记录</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>未测量</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>实验性</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>VPE心灵能力者等级提升总数</RWS_Metric_VpeLevelsGained>
-  <RWS_MetricDesc_VpeLevelsGained>记录开始后，经确认的玩家派系单位VPE心灵能力者等级提升量。</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>VPE心灵能力者数</RWS_Metric_VpePsycasters>
-  <RWS_MetricDesc_VpePsycasters>已记录的存档时，拥有VPE心灵能力者植入物的自由殖民者数量。</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>最高VPE心灵能力者等级</RWS_Metric_VpeMaxLevel>
-  <RWS_MetricDesc_VpeMaxLevel>已记录的存档时，自由殖民者中最高的VPE心灵能力者等级。</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>VPE心灵能力者等级总和</RWS_Metric_VpeSumLevels>
-  <RWS_MetricDesc_VpeSumLevels>已记录的存档时，自由殖民者VPE心灵能力者等级的总和。</RWS_MetricDesc_VpeSumLevels>
-  <RWS_Metric_OutpostPawns>哨所驻扎人员数</RWS_Metric_OutpostPawns>
-  <RWS_MetricDesc_OutpostPawns>已记录的存档时，玩家所属哨所内的单位数量。</RWS_MetricDesc_OutpostPawns>
-  <RWS_Metric_OutpostByType>按类型统计的哨所数</RWS_Metric_OutpostByType>
-  <RWS_MetricDesc_OutpostByType>已记录的存档时，玩家拥有的哨所按哨所类型分类的数量。</RWS_MetricDesc_OutpostByType>
-  <RWS_Metric_OutpostDeliveries>哨所生产物资交付批次数</RWS_Metric_OutpostDeliveries>
-  <RWS_MetricDesc_OutpostDeliveries>哨所生产完成后交给配送系统的非空批次数。仍存放在哨所或运输途中的物品可能尚未抵达。</RWS_MetricDesc_OutpostDeliveries>
-  <RWS_Metric_OutpostProducts>按物品统计的哨所生产量</RWS_Metric_OutpostProducts>
-  <RWS_MetricDesc_OutpostProducts>按物品种类统计已交给配送系统的哨所产物数量。</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>按类型统计的Dubs Bad Hygiene设备</RWS_Metric_DbhFixtures>
+  <RWS_Metric_VpeLevelsGained>VPE灵能者获得的等级</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>记录开始后，玩家派系单位的VPE灵能者等级经确认的提升总量。</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>VPE灵能者数</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>某次已记录的保存中，装有VPE灵能者植入体的自由殖民者人数。</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>VPE灵能者最高等级</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>某次已记录的保存中，自由殖民者的VPE灵能者等级最大值。</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>VPE灵能者等级总和</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>某次已记录的保存中，自由殖民者VPE灵能者等级之和。</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_OutpostPawns>哨所驻扎人数</RWS_Metric_OutpostPawns>
+  <RWS_MetricDesc_OutpostPawns>某次已记录的保存中，玩家拥有的哨所内驻扎的单位数量。</RWS_MetricDesc_OutpostPawns>
+  <RWS_Metric_OutpostByType>按类型统计的哨所</RWS_Metric_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>某次已记录的保存中，玩家拥有的哨所数量，按哨所类型分类。</RWS_MetricDesc_OutpostByType>
+  <RWS_Metric_OutpostDeliveries>哨所生产物的配送批次</RWS_Metric_OutpostDeliveries>
+  <RWS_MetricDesc_OutpostDeliveries>哨所交付配送的非空生产批次数量。仍留在哨所或正在运输途中的物品可能尚未送达。</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_Metric_OutpostProducts>按物品统计的哨所产品</RWS_Metric_OutpostProducts>
+  <RWS_MetricDesc_OutpostProducts>哨所交付配送的生产物品数量，按物品种类统计。</RWS_MetricDesc_OutpostProducts>
+  <RWS_Metric_DbhFixtures>按类型统计的Dubs Bad Hygiene设施</RWS_Metric_DbhFixtures>
   <RWS_MetricDesc_DbhFixtures>成功保存时，玩家主基地地图上属于玩家的Dubs Bad Hygiene建筑数量。</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>按工作统计的Dubs Bad Hygiene卫生行为完成次数</RWS_Metric_DbhActivities>
-  <RWS_MetricDesc_DbhActivities>启用此统计后，玩家单位在主基地地图上完成的上厕所、淋浴及已验证洗涤工作的次数。</RWS_MetricDesc_DbhActivities>
+  <RWS_Metric_DbhActivities>按工作统计的Dubs Bad Hygiene活动完成次数</RWS_Metric_DbhActivities>
+  <RWS_MetricDesc_DbhActivities>启用此统计后，玩家单位在主基地地图上完成的如厕、淋浴及经过确认的清洗工作次数。</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>Smart Apparel Upgrade自动换装完成次数</RWS_SAU_CompletedSwaps>
-  <RWS_SAU_CompletedSwapsDesc>启用此统计后，Smart Apparel Upgrade自动指令最终使选定服装实际穿上的次数。</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE银行入账白银数</RWS_VTE_BankCredits>
+  <RWS_SAU_CompletedSwapsDesc>启用此统计后，Smart Apparel Upgrade自动指令使单位实际穿上选定物品的次数。</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>VTE银行入账的白银</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>启用此实验性统计后，完成VTE银行存款并扣除银行手续费后实际入账的白银净额。不包括合同报酬入账。</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>VTE银行取出白银数</RWS_VTE_BankDebits>
-  <RWS_VTE_BankDebitsDesc>启用此统计后，成功从VTE银行账户提款时扣除的白银总额，取提款手续费扣除前的金额。</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE银行放贷次数</RWS_VTE_LoansIssued>
-  <RWS_VTE_LoansIssuedDesc>启用记录后实际发放的VTE银行贷款次数。不包括失败申请或还款。</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE贷款发放本金</RWS_VTE_LoanPrincipal>
-  <RWS_VTE_LoanPrincipalDesc>实际发放的VTE贷款白银本金总额。不包括偿还的本金及利息。</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>VTE交货完成合同数</RWS_VTE_ContractDeliveries>
-  <RWS_VTE_ContractDeliveriesDesc>VTE NPC收购合同中，商品实际被消耗或搬走而达成的合同数。仅接受合同不计入。此项不保证报酬已到账。</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>交付给VTE合同的商品数</RWS_VTE_ContractItems>
-  <RWS_VTE_ContractItemsDesc>VTE NPC收购合同中，已完成或部分完成的实际交货数量，包括远行队提货。统计实际转交数量，而不是合同要求数量。</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_BankDebits>从VTE银行取出的白银</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebitsDesc>启用此统计后，成功提款从VTE银行账户扣除的白银总额，计算时尚未扣除提款手续费。</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>VTE发放贷款次数</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>启用记录后，VTE银行贷款实际成功发放的次数。不包括失败申请或还款。</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>VTE已发放贷款本金</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>VTE贷款实际发放的白银本金总额，不包括还款和利息。</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>通过交货完成的VTE合同</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>VTE的NPC收购合同中，货物实际被消耗或带走的合同数。仅接受合同不计入。此项不能证明合同奖励已入账。</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>交付VTE合同的货物数量</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>为全部或部分履行VTE的NPC收购合同而实际交付的货物数量，包括远行队取货。按实际交付量而非要求量计算。</RWS_VTE_ContractItemsDesc>
   <RWS_VTE_ContractPurchases>玩家发布的VTE购买合同成交数</RWS_VTE_ContractPurchases>
-  <RWS_VTE_ContractPurchasesDesc>玩家发布的购买合同中，已通过VTE银行交易付清全款，并生成对应物品而完成的合同数。取消付款或只接受合同但未付款的不计入。</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>通过VTE合同购买的商品数</RWS_VTE_ContractReceived>
-  <RWS_VTE_ContractReceivedDesc>玩家发布并成功付款的VTE购买合同所生成的物品数量。与交付给NPC收购合同的物品及普通交易分别统计。</RWS_VTE_ContractReceivedDesc>
+  <RWS_VTE_ContractPurchasesDesc>玩家发布、经VTE银行交易全额支付并生成物品完成履行的购买合同数。不包括取消付款或仅接受合同而未付款的情况。</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>通过VTE合同购买的物品数</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>玩家发布并成功付款的VTE购买合同生成的物品数量，与NPC收购合同交货和普通交易分开统计。</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>VPE心灵能力施放次数</RWS_Metric_VpeCasts>
-  <RWS_MetricDesc_VpeCasts>玩家自由殖民者成功施放Vanilla Psycasts Expanded能力的次数，在VPE实际消耗能力使用次数时计入，并按能力分类。排队指令、取消施放和NPC施放不计入。</RWS_MetricDesc_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>玩家的自由殖民者成功使用Vanilla Psycasts Expanded能力的次数，在VPE实际消耗能力使用次数时计数，并按能力分类。不包括排队指令、取消施放或NPC的施放。</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>VFE Security陷阱重新装填次数</RWS_VfeSecurity_TrapsRearmed>
-  <RWS_VfeSecurity_TrapsRearmedDesc>玩家所有、处于解除状态的陷阱在游玩中成功重新装填的次数。仅在陷阱确实从解除状态切换到启用状态时计入。不包括工作指令、陷阱生成时的初始化、开发者操作或模组自身的单位记录。</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE实绩卡解锁数</RWS_VaeAchievements_Unlocked>
-  <RWS_VaeAchievements_UnlockedDesc>正常游玩中新增解锁的实绩卡数量，按实绩定义分类。开发者解锁及游戏启动时的恢复检查不计入。</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>VAE获得的实绩点数</RWS_VaeAchievements_Points>
-  <RWS_VaeAchievements_PointsDesc>非开发者方式新增解锁实绩时实际获得的实绩点数。无法读取实绩点数总额时，记录会标记为部分记录。</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeSecurity_TrapsRearmedDesc>游玩期间，玩家所有的已解除陷阱成功恢复可用状态的次数。仅计从解除到武装状态的实际变化，不包括工作指令、陷阱生成时的初始化、开发者操作或模组自身的单位记录。</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE解锁的成就卡数</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>正常游玩时新解锁的成就卡，按成就定义分类。不包括调试解锁或游戏启动时的恢复检查。</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VaeAchievements_Points>VAE获得的成就点数</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_PointsDesc>非调试方式新解锁成就后实际发放的点数。无法读取点数总额时，所记录数量标记为部分记录。</RWS_VaeAchievements_PointsDesc>
   <RWS_VfeTribals_EraAdvances>VFE Tribals时代进步次数</RWS_VfeTribals_EraAdvances>
-  <RWS_VfeTribals_EraAdvancesDesc>玩家部落的技术时代实际向前发展时，按时代统计的次数。不包括初始化、停留在相同时代、退回更低时代或加载存档。</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>VFE Tribals获得的基石数</RWS_VfeTribals_Cornerstones>
-  <RWS_VfeTribals_CornerstonesDesc>游玩期间用可用点数购买的新基石数，按基石类型分类。已经拥有或载入时恢复的基石不计入。</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded达成愿望数</RWS_VaeAspirations_Completed>
-  <RWS_VaeAspirations_CompletedDesc>玩家殖民者通过模组的正常完成检查新达成的愿望数量，按愿望分类。不包括开发者达成、原本已达成或未分配的愿望，以及加载存档恢复的记录。</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2玩家虫巢新生虫数</RWS_VfeInsectoids_HiveBirths>
-  <RWS_VfeInsectoids_HiveBirthsDesc>正常游玩期间，由玩家拥有的虫巢新生成的虫子数量，按虫类分类。不包括虫茧替换、恢复已有的虫巢成员或通过开发者工具生成。</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Cryptoforge中继扫描完成次数</RWS_VqeCryptoforge_RelayScans>
-  <RWS_VqeCryptoforge_RelayScansDesc>玩家殖民者身处任务地图时完成的Frozen Scanning Relay扫描次数。</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory自动工作机地面产出量</RWS_RimFactory_GroundOutput>
-  <RWS_RimFactory_GroundOutputDesc>已确认由玩家拥有的Auto Machine Tool实际放到地图上的物品数量，按物品种类分类。直接传送到传送带或其他机器的物品不计入。</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld of Magic治疗魔法成功次数</RWS_Rwom_HealingCasts>
-  <RWS_Rwom_HealingCastsDesc>玩家施放的Heal及Advanced Heal魔法中，确实减轻了目标伤势或稳定了刚失去的身体部位的次数。</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>Save Our Ship 2进入轨道次数</RWS_Sos2_OrbitArrivals>
-  <RWS_Sos2_OrbitArrivalsDesc>玩家控制的飞船从地面起飞后，进入稳定轨道的次数。</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants交付通缉目标完成次数</RWS_SimpleWarrants_Completed>
-  <RWS_SimpleWarrants_CompletedDesc>玩家远行队交付通缉目标，目标被移除且通缉令正式结案的次数。</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants获得白银数</RWS_SimpleWarrants_Silver>
-  <RWS_SimpleWarrants_SilverDesc>完成交付通缉目标后，作为奖励实际加入玩家远行队的白银数量。</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>The Generator ARC升级完成次数</RWS_VqeGenerator_Upgrades>
-  <RWS_VqeGenerator_UpgradesDesc>玩家通过完成建造，在原地替换已有的玩家ARC发电机的次数，按新发电机类型分类。</RWS_VqeGenerator_UpgradesDesc>
-  <RWS_VehicleFramework_OwnedPeak>最多同时拥有车辆数</RWS_VehicleFramework_OwnedPeak>
-  <RWS_VehicleFramework_OwnedPeakDesc>单个殖民地中，玩家同时拥有的Vehicle Framework车辆数量最大值，包括地图上、远行队中、飞行中或已储存的车辆，在成功保存时记录。车型分类取最大值出现时的存档。</RWS_VehicleFramework_OwnedPeakDesc>
-  <RWS_VfeDeserters_IntelPaid>Deserters消耗的情报数</RWS_VfeDeserters_IntelPaid>
-  <RWS_VfeDeserters_IntelPaidDesc>向Deserter Network支付费用并获接受后，实际从玩家主基地库存移除的普通情报物品数量。</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Deserters消耗的重要情报数</RWS_VfeDeserters_CriticalIntelPaid>
-  <RWS_VfeDeserters_CriticalIntelPaidDesc>向Deserter Network支付费用并获接受后，实际从玩家主基地库存移除的重要情报物品数量。</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE Classical获得支持的元老院议员数</RWS_VfeClassical_SenatorFavors>
-  <RWS_VfeClassical_SenatorFavorsDesc>以前不支持玩家的元老院议员通过正常外交或任务转而支持玩家的数量，按派系分类。开发者操作、原本已支持的议员和旧存档恢复不计入。</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeTribals_EraAdvancesDesc>玩家部落的科技时代实际向前推进的次数，按时代分类。初始化、时代不变、时代倒退或恢复存档不计入。</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals获得的基石</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>游玩期间使用可用点数新购买的基石数量，按基石类型分类。已拥有的基石或加载时恢复的基石不计入。</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded实现的愿望</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>玩家殖民者通过模组正常完成判定新实现的愿望数量，按愿望分类。不包括调试完成、已经实现或未分配的愿望，也不包括恢复存档。</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2玩家虫巢新生昆虫数</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>正常游玩时玩家拥有的虫巢新生成的昆虫数量，按昆虫种类分类。不包括虫茧替换、恢复已有虫巢成员或开发者生成操作。</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VqeCryptoforge_RelayScans>Cryptoforge中继器扫描完成次数</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScansDesc>玩家殖民者位于任务地图期间，Frozen Scanning Relay完成的扫描次数。</RWS_VqeCryptoforge_RelayScansDesc>
+  <RWS_RimFactory_GroundOutput>RimFactory自动工作机放置到地面的产物</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutputDesc>玩家拥有的Auto Machine Tool实际放置在地图上的物品数，按物品类型分类。直接传入传送带或其他机器的物品不计入。</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>RimWorld of Magic成功施放治疗法术次数</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>玩家施放Heal或Advanced Heal后，实际减少目标伤势或稳定刚失去的身体部位伤口的次数。</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Save Our Ship 2抵达轨道次数</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>玩家操纵的飞船从地表起飞后成功进入稳定轨道的次数。</RWS_Sos2_OrbitArrivalsDesc>
+  <RWS_SimpleWarrants_Completed>Simple Warrants交付手配目标完成次数</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_CompletedDesc>玩家远行队实际交付通缉目标，目标被移除且通缉令结案的次数。</RWS_SimpleWarrants_CompletedDesc>
+  <RWS_SimpleWarrants_Silver>Simple Warrants获得的白银</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_SilverDesc>完成通缉目标交付后，实际作为报酬加入玩家远行队的白银总额。</RWS_SimpleWarrants_SilverDesc>
+  <RWS_VqeGenerator_Upgrades>The Generator ARC升级完成数</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_UpgradesDesc>玩家完成建造，将其已有ARC发电机原地替换的次数，按新发电机类型分类。</RWS_VqeGenerator_UpgradesDesc>
+  <RWS_VehicleFramework_OwnedPeak>最多拥有车辆数</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>每个殖民地同时存在的玩家所有Vehicle Framework车辆最大数，包括地图上、远行队中、飞行中和存放的车辆，记录于成功保存时。车辆类型取达到最大值的那次保存记录。</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VfeDeserters_IntelPaid>Deserters消耗的情报数量</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaidDesc>向Deserter Network支付成功后，从玩家主基地地图库存扣除的普通情报物品数量。</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Deserters消耗的重要情报数量</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>向Deserter Network支付成功后，从玩家主基地地图库存扣除的重要情报物品数量。</RWS_VfeDeserters_CriticalIntelPaidDesc>
+  <RWS_VfeClassical_SenatorFavors>VFE Classical新获得支持的元老院议员</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>原本不支持玩家的议员通过正常外交或任务转为支持玩家的人数，按派系分类。不包括开发者操作、已经支持的议员或旧存档恢复。</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>VFE Empire授予的荣誉数</RWS_VfeEmpire_HonorsBestowed>
-  <RWS_VfeEmpire_HonorsBestowedDesc>VFE Empire中原本待授予的荣誉，在仪式完成时确实授予玩家殖民者的数量，按荣誉分类。仅获取可用荣誉或开发者操作不计入。</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE达成的灵感愿望数</RWS_Vsie_AspirationsCompleted>
-  <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded中与殖民者正在进行的灵感相关、并新达成的愿望数量，按灵感分类。未完成的进度、到期及无关的灵感不计入。</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_VfeEmpire_HonorsBestowedDesc>仪式完成时实际授予玩家殖民者的待授VFE Empire荣誉数量，按荣誉分类。仅获得可用荣誉资格或开发者操作不计入。</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>VSIE完成的灵感愿望</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded中，与殖民者当前灵感关联并新完成的愿望数量，按灵感分类。不包括未完成的进度、到期或无关的灵感。</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2开始骑乘次数</RWS_GiddyUp_MountSessions>
-  <RWS_GiddyUp_MountSessionsDesc>玩家殖民者完成Giddy-Up骑乘工作并实际开始骑乘自己拥有的动物的次数，按动物种类分类。抵达时已经骑乘、排队指令或重复观测不计入。</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_GiddyUp_MountSessionsDesc>玩家殖民者完成Giddy-Up骑乘工作后实际开始骑乘自有动物的次数，按动物种类分类。到达时已在骑乘、排队指令或重复观测不计入。</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Combat Extended殖民者装弹次数</RWS_CombatExtended_Reloads>
-  <RWS_CombatExtended_ReloadsDesc>玩家单位完成并确实将弹药装入武器弹匣的装弹次数。一次装弹即使装入多个弹药堆叠也只计一次。不包括炮塔、自动装弹机、关闭弹药机制或装弹失败的情况。</RWS_CombatExtended_ReloadsDesc>
+  <RWS_CombatExtended_ReloadsDesc>玩家单位成功完成装弹并实际将弹药装入武器弹匣的次数。每次装弹只计一次，即使装入多个弹药堆叠。不包括炮塔、自动装弹机、关闭弹药功能或装弹失败的情况。</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android自然觉醒次数</RWS_VreAndroid_Awakenings>
-  <RWS_VreAndroid_AwakeningsDesc>玩家拥有的合成人形身体安卓机器人通过基于心情的基因检查而自然觉醒的次数。开发者工具直接觉醒、游戏开始时的初始化及早已觉醒的不计入。需要Biotech。</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>VSE选定专精数</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>玩家殖民者在正常的专精面板中选择的新专精数量，按ExpertiseDef分类。开发者解锁和加载时恢复的记录不计入。</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE专精等级提升总数</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>启用记录后，VSE专精等级的永久提升量，在所有独立殖民地之间求和，并按ExpertiseDef分类。</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE专精实际达到的最高等级</RWS_VseExpertise_Highest>
-  <RWS_VseExpertise_HighestDesc>所有独立殖民地中，通过经验值实际达到的专精最高等级。不是等级总和，也不是最近存档中的状态快照。</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded加工完成批次数</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded中汤、奶酪及其他VEF独立加工流程完成的批次数，按ProcessDef分类。普通工作单制造及部分产出被阻止的情况不计入。</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded发酵酿造成熟批次数</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded中已完成的VEF发酵、酿造及熟成批次数，按ProcessDef分类。暂停、阻塞或未完成的产出，以及普通工作单制造不计入。</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>Gastronomy收取的客人餐费</RWS_Gastronomy_SilverCollected>
-  <RWS_Gastronomy_SilverCollectedDesc>玩家餐厅中，非玩家顾客实际为餐食支付的白银数。部分付款只加上实际支付额；未付欠款、免费餐食及无关交易不计入。</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE Drone Factory组装无人机数</RWS_VqeDrones_Assembled>
-  <RWS_VqeDrones_AssembledDesc>自动无人机组装机的生产计时结束后，确实生成并归玩家所有的无人机数量，按PawnKind分类。仅计时进度、生成失败或从卵中孵化的不计入。</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE Drone Factory孵化无人机数</RWS_VqeDrones_Hatched>
-  <RWS_VqeDrones_HatchedDesc>成功孵化的卵中实际出生、归玩家所有的无人机数量，按PawnKind分类。未产生无人机就被摧毁的卵，以及组装机制造的无人机不计入。</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded管道储存深层燃料</RWS_VceDeepchem_StoredUnits>
-  <RWS_VceDeepchem_StoredUnitsDesc>玩家所有的抽油机产出的Deepchem确实被管道网络接收并储存的数量，包括小数，在管网确认入库时测量。预计产量、掉落地面的产物及被阻止的储存不计入。</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VreAndroid_AwakeningsDesc>具有合成人工身体的玩家安卓人，通过基于心情的基因检查自然觉醒的次数。不包括开发者工具直接觉醒、开局初始化或已经觉醒的安卓人。需要Biotech。</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VseExpertise_Selected>VSE选定的专业技能</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_SelectedDesc>玩家殖民者在正常的专业技能面板中新选定的专业技能数量，按ExpertiseDef分类。不包括调试解锁或恢复的记录。</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE专业技能等级提升总数</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>启用记录后VSE专业技能等级的永久提升量，在各独立殖民地间汇总，并按ExpertiseDef分类。</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE实际达到的最高专业等级</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>所有独立殖民地中通过经验实际达到的最高专业技能等级，不是等级之和，也不是最新存档的单次快照。</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking Expanded加工批次</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded中实际完成的汤、奶酪等VEF加工批次，按ProcessDef分类。不包括普通工作单生产或部分产物输出受阻的情况。</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded发酵及陈酿批次</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded中实际完成的VEF发酵、酿造和陈酿批次，按ProcessDef分类。不包括暂停、受阻或未完成的输出，也不包括普通工作单生产。</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy客人支付的餐费</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>非玩家顾客在玩家餐厅用餐时实际支付的白银。部分付款只累计实付额，不包括欠款、免费餐食或无关的交易。</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VqeDrones_Assembled>VQE Drone Factory组装的无人机数</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_AssembledDesc>自动无人机装配机的生产计时完成后实际生成的玩家所有无人机数量，按单位种类分类。不包括仅计时推进、生成失败或从蛋中孵化。</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_Hatched>VQE Drone Factory孵化的无人机数</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_HatchedDesc>成功从蛋中孵化并实际出生的玩家无人机数量，按单位种类分类。不包括未生成无人机就被摧毁的蛋或装配机制造的无人机。</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded管道储存的深层化合物</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>玩家所有的抽油机将Deepchem实际送入管道储存的数量，包括小数部分，以管网确认储存为准。不包括计划产量、落在地面的产物或受阻而未能储存的量。</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded提取的DNA</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取后，实际放到地上或并入堆叠的DNA物品数量，按产出ThingDef分类。不包括无效目标、放置失败、消耗充能却无产物或其他杂交生物的创建。</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE管道储存的营养浆量</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取后实际放置或合并进堆叠的DNA物品数量，按产出ThingDef分类。不包括无效目标、放置失败、消耗次数却未产出物品或其他杂交体制造。</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>VNPE管道中储存的营养浆</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>玩家拥有的Vanilla Nutrient Paste Explosed 研磨机所接受的管道网络中的实际分量营养浆单位。 Grinder 尝试、未经接受的浆液的成分消耗和其他建筑物的管道存储都不算。</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE 中世纪2 实际收获的蜂蜜</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者卸下玩家拥有的中世纪2号油管后,蜂蜜单位成功布置或合并,按输出ThingDef进行分组,生产准备,失败的放置以及后来的拖放被排除在外.</RWS_VfeMedieval2_HoneyItemsDesc>

@@ -1000,131 +1000,131 @@
   <RWS_Status_FilterMeasured>Есть измерения</RWS_Status_FilterMeasured>
   <RWS_Status_FilterPartial>Частичный охват</RWS_Status_FilterPartial>
   <RWS_Status_FilterMissing>Нет измерений</RWS_Status_FilterMissing>
-  <RWS_Status_FilterNA>Не применимо</RWS_Status_FilterNA>
-  <RWS_Status_Statistic>Статистика / единица сбора</RWS_Status_Statistic>
+  <RWS_Status_FilterNA>Не применяется</RWS_Status_FilterNA>
+  <RWS_Status_Statistic>Показатель / единица сбора</RWS_Status_Statistic>
   <RWS_Status_Recording>Текущий сбор</RWS_Status_Recording>
-  <RWS_Status_Coverage>Охват записей</RWS_Status_Coverage>
+  <RWS_Status_Coverage>Охват записи</RWS_Status_Coverage>
   <RWS_Status_Count>Колонии</RWS_Status_Count>
   <RWS_Status_RecordingOn>Записывается</RWS_Status_RecordingOn>
   <RWS_Status_RecordingOff>Не записывается</RWS_Status_RecordingOff>
-  <RWS_Status_DlcMissing>Отсутствует нужное DLC</RWS_Status_DlcMissing>
-  <RWS_Status_ModMissing>Отсутствует целевой мод</RWS_Status_ModMissing>
-  <RWS_Status_TargetIncompatible>Версия мода или точка сбора не поддерживается</RWS_Status_TargetIncompatible>
-  <RWS_Status_RecordingFailed>Сбой в этом сеансе</RWS_Status_RecordingFailed>
-  <RWS_Status_RecordingUnnecessary>Запись во время игры не нужна</RWS_Status_RecordingUnnecessary>
-  <RWS_Status_MissingColonies>Колонии без наблюдений: {0}</RWS_Status_MissingColonies>
-  <RWS_Details_StatusAll>Все статистики</RWS_Details_StatusAll>
-  <RWS_Details_StatusMeasured>С измеренными значениями</RWS_Details_StatusMeasured>
+  <RWS_Status_DlcMissing>Нет необходимого DLC</RWS_Status_DlcMissing>
+  <RWS_Status_ModMissing>Нет целевого мода</RWS_Status_ModMissing>
+  <RWS_Status_TargetIncompatible>Версия целевого мода или место сбора не поддерживается</RWS_Status_TargetIncompatible>
+  <RWS_Status_RecordingFailed>Ошибка в этой сессии</RWS_Status_RecordingFailed>
+  <RWS_Status_RecordingUnnecessary>Запись во время игры не требуется</RWS_Status_RecordingUnnecessary>
+  <RWS_Status_MissingColonies>Колоний без наблюдений: {0}</RWS_Status_MissingColonies>
+  <RWS_Details_StatusAll>Все показатели</RWS_Details_StatusAll>
+  <RWS_Details_StatusMeasured>Есть измеренные значения</RWS_Details_StatusMeasured>
   <RWS_Details_StatusPartial>Частичные записи</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>Не измерено</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>Экспериментально</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>VPE: полученные уровни псиоников</RWS_Metric_VpeLevelsGained>
-  <RWS_MetricDesc_VpeLevelsGained>Подтверждённые повышения уровней псиоников VPE у пешек фракции игрока после начала записи.</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpeLevelsGained>Полученные уровни псиоников VPE</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>Подтверждённые повышения уровня псионика VPE у пешек фракции игрока после начала записи.</RWS_MetricDesc_VpeLevelsGained>
   <RWS_Metric_VpePsycasters>Псионики VPE</RWS_Metric_VpePsycasters>
   <RWS_MetricDesc_VpePsycasters>Свободные поселенцы с имплантом псионика VPE в записанном сохранении.</RWS_MetricDesc_VpePsycasters>
   <RWS_Metric_VpeMaxLevel>Максимальный уровень псионика VPE</RWS_Metric_VpeMaxLevel>
-  <RWS_MetricDesc_VpeMaxLevel>Наивысший уровень псионика VPE у свободных поселенцев в записанном сохранении.</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>Наибольший уровень псионика VPE среди свободных поселенцев в записанном сохранении.</RWS_MetricDesc_VpeMaxLevel>
   <RWS_Metric_VpeSumLevels>Сумма уровней псиоников VPE</RWS_Metric_VpeSumLevels>
-  <RWS_MetricDesc_VpeSumLevels>Сумма уровней псиоников VPE у свободных поселенцев в записанном сохранении.</RWS_MetricDesc_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>Сумма уровней псионика VPE свободных поселенцев в записанном сохранении.</RWS_MetricDesc_VpeSumLevels>
   <RWS_Metric_OutpostPawns>Обитатели аванпостов</RWS_Metric_OutpostPawns>
   <RWS_MetricDesc_OutpostPawns>Пешки, находившиеся на аванпостах игрока в записанном сохранении.</RWS_MetricDesc_OutpostPawns>
   <RWS_Metric_OutpostByType>Аванпосты по типам</RWS_Metric_OutpostByType>
-  <RWS_MetricDesc_OutpostByType>Аванпосты игрока в записанном сохранении, по их типу.</RWS_MetricDesc_OutpostByType>
+  <RWS_MetricDesc_OutpostByType>Аванпосты игрока в записанном сохранении, по типам аванпостов.</RWS_MetricDesc_OutpostByType>
   <RWS_Metric_OutpostDeliveries>Поставки продукции аванпостов</RWS_Metric_OutpostDeliveries>
-  <RWS_MetricDesc_OutpostDeliveries>Непустые партии продукции аванпостов, переданные в доставку. Товары, остающиеся на аванпосте или в пути, могли ещё не прибыть.</RWS_MetricDesc_OutpostDeliveries>
+  <RWS_MetricDesc_OutpostDeliveries>Непустые партии продукции аванпостов, переданные на доставку. Предметы, оставленные на аванпосте или ещё находящиеся в пути, могли не прибыть.</RWS_MetricDesc_OutpostDeliveries>
   <RWS_Metric_OutpostProducts>Продукция аванпостов по предметам</RWS_Metric_OutpostProducts>
-  <RWS_MetricDesc_OutpostProducts>Количество продукции аванпостов, переданной на доставку, по предметам.</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>Устройства Dubs Bad Hygiene по типам</RWS_Metric_DbhFixtures>
-  <RWS_MetricDesc_DbhFixtures>Здания Dubs Bad Hygiene во владении игрока на домашних картах при успешном сохранении.</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>Завершённые действия Dubs Bad Hygiene по заданиям</RWS_Metric_DbhActivities>
-  <RWS_MetricDesc_DbhActivities>Туалет, душ и проверенные работы по мытью, завершённые пешками игрока на домашних картах после включения статистики.</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Smart Apparel Upgrade: завершённые переодевания</RWS_SAU_CompletedSwaps>
-  <RWS_SAU_CompletedSwapsDesc>Автоматические приказы Smart Apparel Upgrade, завершившиеся надеванием выбранной одежды после включения статистики.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE: серебро, зачисленное на счета банков</RWS_VTE_BankCredits>
-  <RWS_VTE_BankCreditsDesc>Чистая сумма серебра, зачисленная после завершённых вкладов в банки VTE с вычетом банковских сборов, после включения экспериментальной статистики. Выплаты по контрактам исключаются.</RWS_VTE_BankCreditsDesc>
+  <RWS_MetricDesc_OutpostProducts>Число единиц продукции аванпостов, переданных на доставку, по предметам.</RWS_MetricDesc_OutpostProducts>
+  <RWS_Metric_DbhFixtures>Оборудование Dubs Bad Hygiene по типам</RWS_Metric_DbhFixtures>
+  <RWS_MetricDesc_DbhFixtures>Принадлежащие игроку здания Dubs Bad Hygiene на домашних картах на момент успешного сохранения.</RWS_MetricDesc_DbhFixtures>
+  <RWS_Metric_DbhActivities>Завершённые действия Dubs Bad Hygiene по работам</RWS_Metric_DbhActivities>
+  <RWS_MetricDesc_DbhActivities>Завершённые пешками игрока посещения туалета, душа и подтверждённые работы по мытью на домашних картах после включения этого показателя.</RWS_MetricDesc_DbhActivities>
+  <RWS_SAU_CompletedSwaps>Завершённые переодевания Smart Apparel Upgrade</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwapsDesc>Автоматические задания Smart Apparel Upgrade, в ходе которых выбранный предмет одежды был действительно надет после включения этого показателя.</RWS_SAU_CompletedSwapsDesc>
+  <RWS_VTE_BankCredits>VTE: серебро, зачисленное в банки</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCreditsDesc>Чистая сумма серебра, зачисленная при завершённых вкладах в банки VTE после вычета комиссий с момента включения экспериментального показателя. Выплаты по контрактам исключаются.</RWS_VTE_BankCreditsDesc>
   <RWS_VTE_BankDebits>VTE: серебро, снятое со счетов</RWS_VTE_BankDebits>
-  <RWS_VTE_BankDebitsDesc>Полная сумма серебра, списанная при успешных снятиях со счетов банков VTE до вычета комиссий, после включения статистики.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE: выданные займы</RWS_VTE_LoansIssued>
-  <RWS_VTE_LoansIssuedDesc>Займы банков VTE, фактически выданные после включения записи; неудачные заявки и погашения не учитываются.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE: выданный основной долг</RWS_VTE_LoanPrincipal>
-  <RWS_VTE_LoanPrincipalDesc>Сумма основного долга в серебре по фактически выданным займам VTE. Выплаты по погашению и проценты исключаются.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>VTE: контракты, выполненные поставкой товаров</RWS_VTE_ContractDeliveries>
-  <RWS_VTE_ContractDeliveriesDesc>Заказы на покупку от NPC в VTE, по которым товары были действительно потреблены или увезены. Принятие контракта без передачи не учитывается. Зачисление вознаграждения этим не подтверждается.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>Товары, переданные по контрактам VTE</RWS_VTE_ContractItems>
-  <RWS_VTE_ContractItemsDesc>Число единиц товаров, переданных по выполненным или частично выполненным заказам NPC на покупку в VTE, включая получение караванами. Учитываются реальные передачи, а не запрошенное количество.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>VTE: покупки по контрактам игрока</RWS_VTE_ContractPurchases>
-  <RWS_VTE_ContractPurchasesDesc>Контракты на покупку, размещённые игроком, полностью оплаченные через банковские операции VTE и выполненные созданием предметов. Отмена оплаты и принятие контракта без оплаты не учитываются.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>Товары, купленные по контрактам VTE</RWS_VTE_ContractReceived>
-  <RWS_VTE_ContractReceivedDesc>Число предметов, созданных по успешно оплаченным контрактам на покупку, размещённым игроком в VTE. Отдельно от поставок по заказам NPC и обычной торговли.</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>Применения пси-способностей VPE</RWS_Metric_VpeCasts>
-  <RWS_MetricDesc_VpeCasts>Успешные применения способностей Vanilla Psycasts Expanded свободными поселенцами игрока, когда VPE расходует использование способности; разбивка по способности. Команды в очереди, отменённые применения и применения NPC исключаются.</RWS_MetricDesc_VpeCasts>
+  <RWS_VTE_BankDebitsDesc>Валовая сумма серебра, списанная с банковских счетов VTE при успешном снятии до удержания комиссий, после включения этого показателя.</RWS_VTE_BankDebitsDesc>
+  <RWS_VTE_LoansIssued>VTE: выданные кредиты</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssuedDesc>Банковские кредиты VTE, фактически выданные после включения записи. Неудачные заявки и выплаты по кредиту не учитываются.</RWS_VTE_LoansIssuedDesc>
+  <RWS_VTE_LoanPrincipal>VTE: выданная основная сумма кредитов</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipalDesc>Основная сумма серебра по фактически выданным кредитам VTE. Погашения и проценты исключаются.</RWS_VTE_LoanPrincipalDesc>
+  <RWS_VTE_ContractDeliveries>VTE: контракты, исполненные поставкой товаров</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveriesDesc>Контракты на покупку товаров NPC в VTE, по которым товары действительно были израсходованы или увезены. Простое принятие контракта не учитывается. Это не подтверждает зачисление вознаграждения.</RWS_VTE_ContractDeliveriesDesc>
+  <RWS_VTE_ContractItems>Товары, поставленные по контрактам VTE</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItemsDesc>Число единиц товаров, реально переданных по полностью или частично исполненным контрактам на покупку товаров NPC в VTE, включая вывоз караванами. Учитывается фактическая передача, не запрошенное количество.</RWS_VTE_ContractItemsDesc>
+  <RWS_VTE_ContractPurchases>VTE: исполненные контракты покупки игрока</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchasesDesc>Контракты покупки, размещённые игроком, полностью оплаченные через банк VTE и исполненные созданием предметов. Отменённая оплата и принятие контракта без оплаты не учитываются.</RWS_VTE_ContractPurchasesDesc>
+  <RWS_VTE_ContractReceived>Товары, купленные через контракты VTE</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceivedDesc>Число единиц предметов, созданных по успешно оплаченным контрактам покупки VTE, размещённым игроком. Отдельно от поставок NPC и обычной торговли.</RWS_VTE_ContractReceivedDesc>
+  <RWS_Metric_VpeCasts>Применённые пси-способности VPE</RWS_Metric_VpeCasts>
+  <RWS_MetricDesc_VpeCasts>Успешные применения способностей Vanilla Psycasts Expanded свободными поселенцами игрока, подсчитанные при фактическом расходовании применения VPE, с разбивкой по способности. Задания в очереди, отменённые применения и способности NPC исключаются.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>VFE Security: повторно взведённые ловушки</RWS_VfeSecurity_TrapsRearmed>
-  <RWS_VfeSecurity_TrapsRearmedDesc>Обезвреженные ловушки игрока, успешно повторно взведённые во время игры. Учитывается только реальный переход из обезвреженного состояния во взведённое; приказы, начальное размещение, действия разработчика и собственные записи мода о пешках исключаются.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE: открытые карточки достижений</RWS_VaeAchievements_Unlocked>
-  <RWS_VaeAchievements_UnlockedDesc>Новые карточки достижений, открытые в обычной игре, по определению достижения. Отладочные открытия и проверки восстановления при запуске исключаются.</RWS_VaeAchievements_UnlockedDesc>
+  <RWS_VfeSecurity_TrapsRearmedDesc>Обезвреженные ловушки игрока, повторно взведённые в ходе игры. Считается только фактический переход из обезвреженного в активное состояние; задания, настройка при появлении, действия разработчика и собственный учёт пешек мода исключаются.</RWS_VfeSecurity_TrapsRearmedDesc>
+  <RWS_VaeAchievements_Unlocked>VAE: разблокированные карточки достижений</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_UnlockedDesc>Карточки достижений, впервые открытые в обычной игре, по определению достижения. Открытия отладки и проверки восстановления при запуске игры не учитываются.</RWS_VaeAchievements_UnlockedDesc>
   <RWS_VaeAchievements_Points>VAE: полученные очки достижений</RWS_VaeAchievements_Points>
-  <RWS_VaeAchievements_PointsDesc>Очки, действительно начисленные за новые открытия не через режим разработчика. Если общий счёт очков нельзя прочитать, запись помечается частичной.</RWS_VaeAchievements_PointsDesc>
-  <RWS_VfeTribals_EraAdvances>VFE Tribals: переходы к новым эпохам</RWS_VfeTribals_EraAdvances>
-  <RWS_VfeTribals_EraAdvancesDesc>Число фактических продвижений технологической эпохи племени игрока по эпохам. Инициализация, сохранение прежней или возврат к более ранней эпохе и загрузка сохранения не учитываются.</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>VFE Tribals: приобретённые краеугольные основы</RWS_VfeTribals_Cornerstones>
-  <RWS_VfeTribals_CornerstonesDesc>Новые краеугольные основы, купленные в игре за имеющиеся очки, по типу основы. Уже имевшиеся и восстановленные при загрузке основы не учитываются.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded: выполненные стремления</RWS_VaeAspirations_Completed>
-  <RWS_VaeAspirations_CompletedDesc>Новые стремления, выполненные поселенцами игрока через обычную проверку мода, по стремлению. Отладочные выполнения, уже выполненные или не назначенные стремления и восстановление сохранения исключаются.</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2: рождённые насекомые в ульях игрока</RWS_VfeInsectoids_HiveBirths>
-  <RWS_VfeInsectoids_HiveBirthsDesc>Новые насекомые из ульев игрока во время обычной игры, по виду насекомого. Замена кокона, восстановление прежних жителей улья и создание инструментами разработчика исключаются.</RWS_VfeInsectoids_HiveBirthsDesc>
+  <RWS_VaeAchievements_PointsDesc>Очки достижений, фактически начисленные за новые открытия без отладки. Когда общую сумму очков невозможно прочесть, записанное количество помечается как частичное.</RWS_VaeAchievements_PointsDesc>
+  <RWS_VfeTribals_EraAdvances>VFE Tribals: переходы в новую эпоху</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvancesDesc>Подтверждённые переходы племени игрока к более поздней технологической эпохе, по эпохам. Инициализация, сохранение или понижение эпохи и загрузка сохранения не учитываются.</RWS_VfeTribals_EraAdvancesDesc>
+  <RWS_VfeTribals_Cornerstones>VFE Tribals: приобретённые краеугольные камни</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_CornerstonesDesc>Новые краеугольные камни, приобретённые за доступные очки в ходе игры, по камням. Ранее принадлежавшие камни и восстановленные при загрузке исключаются.</RWS_VfeTribals_CornerstonesDesc>
+  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded: исполненные стремления</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_CompletedDesc>Стремления, впервые выполненные поселенцами игрока при обычной проверке выполнения модом, по стремлениям. Отладочные выполнения, уже выполненные или не назначенные стремления и восстановление сохранений исключаются.</RWS_VaeAspirations_CompletedDesc>
+  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2: рождения в ульях игрока</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirthsDesc>Новые насекомые, появившиеся из ульев игрока во время обычной игры, по виду насекомого. Замена кокона, восстановление существующих жителей улья и появление через инструменты разработчика не учитываются.</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VqeCryptoforge_RelayScans>Cryptoforge: завершённые сканирования реле</RWS_VqeCryptoforge_RelayScans>
-  <RWS_VqeCryptoforge_RelayScansDesc>Сканирования Frozen Scanning Relay, завершённые пока поселенец игрока находился на карте задания.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory: изделия Auto Machine Tool, выложенные на карту</RWS_RimFactory_GroundOutput>
-  <RWS_RimFactory_GroundOutputDesc>Предметы, фактическое размещение которых на карте подтверждено для Auto Machine Tools игрока, по типу предмета. Передача напрямую на конвейер или в другую машину не учитывается.</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld of Magic: успешные исцеляющие заклинания</RWS_Rwom_HealingCasts>
-  <RWS_Rwom_HealingCastsDesc>Заклинания Heal и Advanced Heal игрока, действительно уменьшившие ранения цели или стабилизировавшие недавно утраченную часть тела.</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>Save Our Ship 2: выходы на орбиту</RWS_Sos2_OrbitArrivals>
-  <RWS_Sos2_OrbitArrivalsDesc>Корабли игрока, достигшие стабильной орбиты после взлёта с поверхности.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants: завершённые сдачи целей</RWS_SimpleWarrants_Completed>
-  <RWS_SimpleWarrants_CompletedDesc>Ордера, исполненные сдачей цели караваном игрока, после удаления цели и закрытия ордера.</RWS_SimpleWarrants_CompletedDesc>
+  <RWS_VqeCryptoforge_RelayScansDesc>Сканирования Frozen Scanning Relay, завершённые, пока поселенец игрока находился на карте задания.</RWS_VqeCryptoforge_RelayScansDesc>
+  <RWS_RimFactory_GroundOutput>RimFactory: предметы от Auto Machine Tool на земле</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutputDesc>Предметы, действительно размещённые Auto Machine Tools игрока на карте, по типу предмета. Предметы, напрямую переданные на конвейер или другим машинам, исключаются.</RWS_RimFactory_GroundOutputDesc>
+  <RWS_Rwom_HealingCasts>RimWorld of Magic: успешные заклинания лечения</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCastsDesc>Применения игроком Heal и Advanced Heal, которые действительно уменьшили раны цели или стабилизировали недавно утраченную часть тела.</RWS_Rwom_HealingCastsDesc>
+  <RWS_Sos2_OrbitArrivals>Save Our Ship 2: прибытия на орбиту</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivalsDesc>Корабли под управлением игрока, достигшие устойчивой орбиты после взлёта с поверхности.</RWS_Sos2_OrbitArrivalsDesc>
+  <RWS_SimpleWarrants_Completed>Simple Warrants: завершённые сдачи по ордерам</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_CompletedDesc>Ордера, закрытые сдачей цели караваном игрока после удаления цели и закрытия ордера.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Simple Warrants: заработанное серебро</RWS_SimpleWarrants_Silver>
-  <RWS_SimpleWarrants_SilverDesc>Серебро, реально добавленное каравану игрока в награду за успешно сданные цели ордеров.</RWS_SimpleWarrants_SilverDesc>
+  <RWS_SimpleWarrants_SilverDesc>Серебро, действительно добавленное каравану игрока как награда за завершённые сдачи по ордерам.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator: завершённые улучшения ARC</RWS_VqeGenerator_Upgrades>
-  <RWS_VqeGenerator_UpgradesDesc>Завершённые постройки игрока, заменившие на месте существующий ARC-генератор, по новому типу генератора.</RWS_VqeGenerator_UpgradesDesc>
-  <RWS_VehicleFramework_OwnedPeak>Максимум принадлежащих игроку машин</RWS_VehicleFramework_OwnedPeak>
-  <RWS_VehicleFramework_OwnedPeakDesc>Максимальное число одновременно существовавших в одной колонии машин Vehicle Framework во владении игрока, включая карты, караваны, полёт и хранение, по успешным сохранениям. Типы машин указаны для сохранения с максимумом.</RWS_VehicleFramework_OwnedPeakDesc>
+  <RWS_VqeGenerator_UpgradesDesc>Завершённое строительство игрока, при котором его существующий генератор ARC заменили на том же месте; разбивка по новому типу генератора.</RWS_VqeGenerator_UpgradesDesc>
+  <RWS_VehicleFramework_OwnedPeak>Максимум автомобилей во владении</RWS_VehicleFramework_OwnedPeak>
+  <RWS_VehicleFramework_OwnedPeakDesc>Наибольшее число одновременно существовавших в одной колонии машин Vehicle Framework игрока, включая карты, караваны, полёт и хранение, зафиксированное при успешном сохранении. Типы машин указаны для сохранения с максимумом.</RWS_VehicleFramework_OwnedPeakDesc>
   <RWS_VfeDeserters_IntelPaid>Deserters: потраченные разведданные</RWS_VfeDeserters_IntelPaid>
-  <RWS_VfeDeserters_IntelPaidDesc>Предметы Intel, списанные из запасов на домашних картах игрока в результате принятых платежей сети Deserter Network.</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Deserters: потраченные важные разведданные</RWS_VfeDeserters_CriticalIntelPaid>
-  <RWS_VfeDeserters_CriticalIntelPaidDesc>Предметы Critical intel, списанные из запасов на домашних картах игрока в результате принятых платежей сети Deserter Network.</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE Classical: поддержавшие сенаторы</RWS_VfeClassical_SenatorFavors>
-  <RWS_VfeClassical_SenatorFavorsDesc>Сенаторы, которые прежде не поддерживали игрока, но стали поддерживать его после обычной дипломатии или заданий, по фракциям. Действия разработчика, ранее поддерживавшие сенаторы и восстановление старых сохранений исключаются.</RWS_VfeClassical_SenatorFavorsDesc>
-  <RWS_VfeEmpire_HonorsBestowed>VFE Empire: присвоенные почести</RWS_VfeEmpire_HonorsBestowed>
-  <RWS_VfeEmpire_HonorsBestowedDesc>Ожидавшие вручения почести VFE Empire, реально присвоенные поселенцу игрока при завершении ритуала, по почести. Простое появление доступной почести и действия разработчика не учитываются.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE: исполненные стремления вдохновения</RWS_Vsie_AspirationsCompleted>
-  <RWS_Vsie_AspirationsCompletedDesc>Новые исполнения стремлений, связанных с действующим вдохновением поселенца в Vanilla Social Interactions Expanded, по вдохновению. Незавершённый прогресс, истечение срока и не связанные с ним вдохновения исключаются.</RWS_Vsie_AspirationsCompletedDesc>
+  <RWS_VfeDeserters_IntelPaidDesc>Обычные предметы разведданных, списанные со складов домашних карт игрока при принятых оплатах Deserter Network.</RWS_VfeDeserters_IntelPaidDesc>
+  <RWS_VfeDeserters_CriticalIntelPaid>Deserters: потраченные критические разведданные</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaidDesc>Критические предметы разведданных, списанные со складов домашних карт игрока при принятых оплатах Deserter Network.</RWS_VfeDeserters_CriticalIntelPaidDesc>
+  <RWS_VfeClassical_SenatorFavors>VFE Classical: полученная поддержка сенаторов</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavorsDesc>Сенаторы, ранее не поддерживавшие игрока, но ставшие сторонниками через обычную дипломатию или задания, с разбивкой по фракции. Действия разработчика, уже поддерживавшие сенаторы и восстановление старых сохранений исключаются.</RWS_VfeClassical_SenatorFavorsDesc>
+  <RWS_VfeEmpire_HonorsBestowed>VFE Empire: пожалованные почести</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowedDesc>Ожидавшие присвоения почести VFE Empire, которые действительно были вручены поселенцу игрока при завершении ритуала, по виду почести. Получение доступного выбора почести и действия разработчика не учитываются.</RWS_VfeEmpire_HonorsBestowedDesc>
+  <RWS_Vsie_AspirationsCompleted>VSIE: выполненные стремления вдохновения</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompletedDesc>Стремления, связанные с активным вдохновением поселенца в Vanilla Social Interactions Expanded и впервые выполненные, по вдохновению. Незавершённый прогресс, истечение срока и посторонние вдохновения не учитываются.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2: начатые поездки верхом</RWS_GiddyUp_MountSessions>
-  <RWS_GiddyUp_MountSessionsDesc>Фактические начала поездок поселенцев игрока верхом на собственных животных после завершённого задания посадки Giddy-Up, по типам животных. Прибытие уже верхом, команды в очереди и повторы наблюдения не учитываются.</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Combat Extended: перезарядки колонистов</RWS_CombatExtended_Reloads>
-  <RWS_CombatExtended_ReloadsDesc>Завершённые перезарядки пешками игрока, в ходе которых боеприпасы действительно попали в магазин оружия. Одна перезарядка считается один раз даже при загрузке нескольких стопок. Турели, автозарядчики, выключенные боеприпасы и неудачные перезарядки исключаются.</RWS_CombatExtended_ReloadsDesc>
+  <RWS_GiddyUp_MountSessionsDesc>Случаи, когда поселенец игрока действительно начал верховую езду на собственном животном после завершённого задания Giddy-Up, по виду животного. Прибытие уже верхом, отложенные приказы и повторные наблюдения исключаются.</RWS_GiddyUp_MountSessionsDesc>
+  <RWS_CombatExtended_Reloads>Combat Extended: перезарядки поселенцев</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_ReloadsDesc>Завершённые перезарядки пешек игрока, при которых патроны действительно попали в магазин оружия. Каждая перезарядка считается один раз, даже при загрузке нескольких стопок. Турели, автозарядчики, отключённые боеприпасы и неудачные перезарядки исключаются.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android: естественные пробуждения</RWS_VreAndroid_Awakenings>
-  <RWS_VreAndroid_AwakeningsDesc>Андроиды игрока с синтетическими телами, естественно пробудившиеся после проверки гена, связанной с настроением. Прямое пробуждение через инструменты разработчика, настройка в начале игры и уже пробудившиеся андроиды исключаются. Требуется Biotech.</RWS_VreAndroid_AwakeningsDesc>
+  <RWS_VreAndroid_AwakeningsDesc>Андроиды игрока с синтетическими телами, естественно пробудившиеся после проверки генов с учётом настроения. Пробуждение инструментами разработчика, начальная настройка и уже бодрствовавшие андроиды не учитываются. Требуется Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE: выбранные специализации</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Новые специализации, выбранные поселенцами игрока в обычном меню специализаций, по ExpertiseDef. Отладочная разблокировка и восстановленные записи не учитываются.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE: полученные уровни специализаций</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Постоянные повышения уровней специализации VSE после включения записи, суммированные по независимым колониям и разбитые по ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE: наивысший уровень специализации</RWS_VseExpertise_Highest>
-  <RWS_VseExpertise_HighestDesc>Наивысший уровень специализации, фактически достигнутый за счёт опыта во всех независимых колониях. Не сумма уровней и не снимок последнего сохранения.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded: завершённые партии обработки</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Завершённые процессы VEF по приготовлению супа, сыра и другого для Vanilla Cooking Expanded, по ProcessDef. Обычное изготовление по заданиям и частично заблокированный выход продукции не учитываются.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded: завершённые партии брожения и выдержки</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Завершённые партии брожения, приготовления напитков и выдержки VEF для Vanilla Brewing Expanded, по ProcessDef. Паузы, блокировка или незавершённая выдача продукции и обычные задания на изготовление исключаются.</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>Gastronomy: серебро за блюда гостей</RWS_Gastronomy_SilverCollected>
-  <RWS_Gastronomy_SilverCollectedDesc>Серебро, реально заплаченное клиентами не из фракции игрока за блюда в ресторане игрока. Частичная оплата прибавляет только выплаченную сумму; долги, бесплатные блюда и сторонняя торговля не учитываются.</RWS_Gastronomy_SilverCollectedDesc>
+  <RWS_VseExpertise_SelectedDesc>Новые специализации, выбранные поселенцами игрока в обычном окне специализаций, по ExpertiseDef. Отладочные открытия и восстановленные записи исключаются.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_LevelUps>VSE: полученные уровни специализации</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUpsDesc>Постоянный прирост уровней специализации VSE после включения записи, суммарно по независимым колониям и с разбивкой по ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_Highest>VSE: наивысший достигнутый уровень специализации</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_HighestDesc>Наивысший уровень специализации, достигнутый благодаря опыту среди независимых колоний; это не сумма уровней и не снимок последнего сохранения.</RWS_VseExpertise_HighestDesc>
+  <RWS_VefCooking_Batches>Vanilla Cooking Expanded: партии обработки</RWS_VefCooking_Batches>
+  <RWS_VefCooking_BatchesDesc>Завершённые партии супа, сыра и другие процессы VEF из Vanilla Cooking Expanded, по ProcessDef. Обычное изготовление по заданию и частично блокированный выход продукции исключаются.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded: партии брожения и выдержки</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_BatchesDesc>Завершённые партии брожения, варки и выдержки VEF из Vanilla Brewing Expanded, по ProcessDef. Приостановленный, блокированный или незавершённый выход продукции и обычные задания изготовления исключаются.</RWS_VefBrewing_BatchesDesc>
+  <RWS_Gastronomy_SilverCollected>Gastronomy: серебро за еду гостей</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollectedDesc>Серебро, фактически уплаченное посторонними посетителями за блюда в ресторане игрока. Частичные платежи добавляют только уплаченное; долги, бесплатные блюда и посторонняя торговля исключаются.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory: собранные дроны</RWS_VqeDrones_Assembled>
-  <RWS_VqeDrones_AssembledDesc>Дроны игрока, фактически созданные автоматическим сборщиком после завершения производственного таймера, по PawnKind. Прогресс таймера без завершения, неудачные создания и вылупление из яиц исключаются.</RWS_VqeDrones_AssembledDesc>
+  <RWS_VqeDrones_AssembledDesc>Дроны игрока, действительно появившиеся из автоматического сборщика после окончания таймера производства, по виду пешки. Простой ход таймера, неудачные появления и вылупление из яиц исключаются.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory: вылупившиеся дроны</RWS_VqeDrones_Hatched>
-  <RWS_VqeDrones_HatchedDesc>Дроны игрока, фактически вылупившиеся из яиц, по PawnKind. Разрушенные без появления дрона яйца и дроны от сборщика исключаются.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded: Deepchem, сохранённый в трубах</RWS_VceDeepchem_StoredUnits>
-  <RWS_VceDeepchem_StoredUnitsDesc>Deepchem, фактически принятый из нефтяных насосов игрока в хранилище труб, включая дробные количества, при подтверждении хранения сетью. Запланированная добыча, сброшенная на землю продукция и заблокированное хранение не учитываются.</RWS_VceDeepchem_StoredUnitsDesc>
+  <RWS_VqeDrones_HatchedDesc>Дроны игрока, действительно вылупившиеся из яиц, по виду пешки. Разрушенные без появления дрона яйца и дроны из сборщика исключаются.</RWS_VqeDrones_HatchedDesc>
+  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded: Deepchem в трубах</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnitsDesc>Объём Deepchem, фактически принятый на хранение в трубы из насосов игрока, включая дробные единицы, измеренный после подтверждения хранения сетью. Плановая добыча, продукция на земле и заблокированное хранение исключаются.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded: извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, реально размещённые или добавленные в стопки при успешной экстракции игрока, по выходному ThingDef. Недопустимые цели, неудачное размещение, затраченные заряды без результата и другое создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE: питательная суспензия в трубах</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по выходному ThingDef. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VnpeGrinder_SlurryStored>VNPE: питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Фактические единицы дробной питательной суспензии, принятые в сеть труб игроками, - это расширенные шлифовальные машины Vanilla Nutrient Paste. Попытки шлифовальных машин, потребление ингредиентов без принятой суспензии и хранение труб другими зданиями не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Мед VFE Medieval2 действительно собран</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Медовые юниты успешно размещаются или объединяются после того, как колонист игрока разгружает пасеку Medieval2, принадлежащую игроку, сгруппированную по выходу ThingDef. Производственная готовность, неудачные размещения и более поздние перевозки исключены.</RWS_VfeMedieval2_HoneyItemsDesc>
