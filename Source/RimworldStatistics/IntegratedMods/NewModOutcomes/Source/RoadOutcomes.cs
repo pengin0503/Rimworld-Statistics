@@ -19,7 +19,8 @@ internal static class RoadOutcomes
     private sealed record Segment(PlanetTile From, PlanetTile To, RoadDef Road);
 
     internal static ModMetricAdapterRegistration Build() =>
-        OutcomeMetric.Count(Owner, "roadsegments", "RWS_NewMod_Roads", MetricCategory.Exploration, Install, breakdown: true);
+        OutcomeMetric.Count(Owner, "roadsegments", "RWS_NewMod_Roads", "RWS_NewMod_RoadsDesc",
+            MetricCategory.Exploration, Install, breakdown: true);
 
     private static void Install(Harmony harmony)
     {

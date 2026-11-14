@@ -20,7 +20,7 @@ internal static class ResleevingOutcomes
     private sealed record Transfer(Thing Source, object Data);
 
     internal static ModMetricAdapterRegistration Build() =>
-        OutcomeMetric.Count("hlx.UltratechAlteredCarbon", "resleeving", "RWS_NewMod_Resleeving",
+        OutcomeMetric.Count("hlx.UltratechAlteredCarbon", "resleeving", "RWS_NewMod_Resleeving", "RWS_NewMod_ResleevingDesc",
             MetricCategory.Medicine, Install, dlc: "Ludeon.RimWorld.Biotech",
             dependencies: ["OskarPotocki.VanillaFactionsExpanded.Core"]);
 

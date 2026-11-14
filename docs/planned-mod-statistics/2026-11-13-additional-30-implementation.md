@@ -1,6 +1,6 @@
 # Implementation status for the 30 additional MOD candidates
 
-This register covers the 30 candidates recorded after the original 35-MOD plan. It records 15 new statistics across 14 MODs. Each integrated row lists the first event implemented and any remaining proposals. Public source and selected DLL metadata/IL were examined for the implemented events. The Vehicle Framework binary came from the previously supplied 1.7 package. The game was not launched.
+This register covers the 30 candidates recorded after the original 35-MOD plan. It records 16 new statistics across 15 MODs. Each integrated row lists the first event implemented and any remaining proposals. Public source and selected DLL metadata/IL were examined for the implemented events. The Vehicle Framework binary came from the previously supplied 1.7 package. The game was not launched.
 
 The host uses the existing optional acquisition settings, localized descriptors and checkpoint aggregation. Counts use a representative timeline per colony and add independent colonies. Disabled, absent or incompatible targets use the existing coverage handling. Target DLLs are not distributed with Rimworld Statistics.
 
@@ -27,7 +27,7 @@ The host uses the existing optional acquisition settings, localized descriptors 
 | G02 | Hegemony | **Input needed.** Exact 1.7 package and its Jaeger's Utility Framework dependency. Establish committed vassalization or transfer ownership. |
 | G03 | Another Education System | **Input needed.** 1.7 package with semester/course identity and graduation transition. |
 | G04 | Prisoner Arena (Continued) | **Implemented.** A fight at a player bell registered a new winner. Suspension and fights without a recorded winner do not add a count. Release outcomes remain separate. [04566ec](https://github.com/emipa606/PrisonerArena/tree/04566ecd63e11f699d3979a6331b9010e79378f5), 1.7 DLL. |
-| G05 | Animal Genetics (Continued) | **Further audit.** Public 1.7 DLL is available. Parent scopes establish inheritance context only, and reading GeneRecords can generate values and consume RNG. Find a successful spawn boundary that can observe already-assigned values without changing the breeding simulation. |
+| G05 | Animal Genetics (Continued) | **Implemented.** Successful player-animal births or hatchings with both parental genetic references present, by PawnKindDef. The observer only reads the assigned references. Genetic-value peaks remain pending because the public GeneRecords getter can generate values and consume RNG. [410094c](https://github.com/emipa606/AnimalGenetics/tree/410094c1e3fc620a9d9ad29bfd1fd35b4b6cfc1e), 1.7 DLL. |
 | G06 | Biomes! Fossils | **Implemented.** Successful cleanup of the two distinct museum drivers for player pawns, separately by the job Def. Child learning and recreational visits are separate jobs. [c7a084e](https://github.com/biomes-team/BiomesFossils/tree/c7a084e), 1.7 DLL. |
 | G07 | Alpha Memes | **Implemented.** A player corpse became a live pawn with life support and a warcasket after the dedicated funeral outcome. Includes the Pirates dependency. [d1e0827](https://github.com/juanosarg/AlphaMemes/tree/d1e0827), 1.7 DLL. |
 | G08 | Ancestral Ruins | **Input needed.** Exact 1.7 beta package for an origin ID and committed discovery or arrival. |

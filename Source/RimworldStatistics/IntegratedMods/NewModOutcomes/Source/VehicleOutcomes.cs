@@ -28,15 +28,17 @@ internal static class VehicleOutcomes
     private sealed record Wreck(Frame Frame, Map Map, IntVec3 Cell, ThingDef Vehicle);
 
     internal static ModMetricAdapterRegistration Boardings() =>
-        OutcomeMetric.Count(Framework, "boarding", "RWS_NewMod_Boarding", MetricCategory.Exploration,
+        OutcomeMetric.Count(Framework, "boarding", "RWS_NewMod_Boarding", "RWS_NewMod_BoardingDesc",
+            MetricCategory.Exploration,
             InstallBoarding, breakdown: true);
 
     internal static ModMetricAdapterRegistration CompletedUpgrades() =>
-        OutcomeMetric.Count(Framework, "workshopupgrades", "RWS_NewMod_Upgrades", MetricCategory.Work,
+        OutcomeMetric.Count(Framework, "workshopupgrades", "RWS_NewMod_Upgrades", "RWS_NewMod_UpgradesDesc",
+            MetricCategory.Work,
             InstallUpgrades, breakdown: true);
 
     internal static ModMetricAdapterRegistration Restorations() =>
-        OutcomeMetric.Count("OskarPotocki.VanillaVehiclesExpanded", "wreckrestorations", "RWS_NewMod_Wrecks",
+        OutcomeMetric.Count("OskarPotocki.VanillaVehiclesExpanded", "wreckrestorations", "RWS_NewMod_Wrecks", "RWS_NewMod_WrecksDesc",
             MetricCategory.Work, InstallRestoration, breakdown: true,
             dependencies: [Framework, "OskarPotocki.VanillaFactionsExpanded.Core"]);
 

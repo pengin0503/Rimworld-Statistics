@@ -15,7 +15,7 @@ internal static class RealRuinsOutcomes
     private sealed record Arrival(MapParent Site, Pawn[] Travellers);
 
     internal static ModMetricAdapterRegistration Build() =>
-        OutcomeMetric.Count("Woolstrand.RealRuins", "poiarrivals", "RWS_NewMod_RealRuins",
+        OutcomeMetric.Count("Woolstrand.RealRuins", "poiarrivals", "RWS_NewMod_RealRuins", "RWS_NewMod_RealRuinsDesc",
             MetricCategory.Exploration, Install);
 
     private static void Install(Harmony harmony)

@@ -9,7 +9,7 @@ namespace RimworldStatistics.NewModOutcomes;
 
 internal static class OutcomeMetric
 {
-    internal static ModMetricAdapterRegistration Count(string owner, string family, string label,
+    internal static ModMetricAdapterRegistration Count(string owner, string family, string label, string description,
         MetricCategory category, Action<Harmony> install, bool breakdown = false,
         string? dlc = null, MetricUnit unit = MetricUnit.Count, params string[] dependencies)
     {
@@ -30,7 +30,7 @@ internal static class OutcomeMetric
             RequiredPackages = [new ModPackageRequirement(owner),
                 .. dependencies.Select(package => new ModPackageRequirement(package))],
             LabelKey = label,
-            DescriptionKey = label + "Desc",
+            DescriptionKey = description,
         };
         return new ModMetricAdapterRegistration(descriptor, new LiveFamily
         {

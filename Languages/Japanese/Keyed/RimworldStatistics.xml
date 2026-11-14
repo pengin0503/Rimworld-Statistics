@@ -1201,4 +1201,6 @@
   <RWS_NewMod_CasinoDesc>自勢力のスロット台で完了したラウンドの数。負けと当たりの種類別に集計します。</RWS_NewMod_CasinoDesc>
   <RWS_NewMod_Resleeving>空のスリーブへの神経スタック移植</RWS_NewMod_Resleeving>
   <RWS_NewMod_ResleevingDesc>自勢力の手術で、空だったスリーブに既存の人格を移し、生存した回数。</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>両親の系譜がある出生・孵化</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>Animal Geneticsで両親の記録が割り当てられ、出生・孵化に成功した自勢力の動物の数。動物の種類別に集計します。</RWS_NewMod_AnimalPedigreeDesc>
 </LanguageData>

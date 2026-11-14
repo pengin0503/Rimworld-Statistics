@@ -1201,4 +1201,6 @@
   <RWS_NewMod_CasinoDesc>Slot rounds completed on player machines, broken down by loss and win outcome.</RWS_NewMod_CasinoDesc>
   <RWS_NewMod_Resleeving>Neural stack transfers to empty sleeves</RWS_NewMod_Resleeving>
   <RWS_NewMod_ResleevingDesc>Player surgery that installed an existing identity into a living, formerly empty sleeve.</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>Offspring with both genetic parents recorded</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>Successfully born or hatched player animals with both parental records assigned by Animal Genetics, by animal kind.</RWS_NewMod_AnimalPedigreeDesc>
 </LanguageData>

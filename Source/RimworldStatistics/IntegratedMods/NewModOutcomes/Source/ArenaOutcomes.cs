@@ -16,7 +16,8 @@ internal static class ArenaOutcomes
     private static object fight = null!;
 
     internal static ModMetricAdapterRegistration Build() =>
-        OutcomeMetric.Count(Owner, "bouts", "RWS_NewMod_Arena", MetricCategory.Social, Install);
+        OutcomeMetric.Count(Owner, "bouts", "RWS_NewMod_Arena", "RWS_NewMod_ArenaDesc",
+            MetricCategory.Social, Install);
 
     private static void Install(Harmony harmony)
     {

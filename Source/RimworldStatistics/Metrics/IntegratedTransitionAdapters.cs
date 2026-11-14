@@ -89,6 +89,7 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(PrisonExpandedCompletionStatistics.Build());
         result.Add(ArenaOutcomes.Build());
         result.Add(RealRuinsOutcomes.Build());
+        result.Add(AnimalPedigreeOutcomes.Build());
         result.Add(ResleevingOutcomes.Build());
         result.Add(CasinoOutcomes.Build());
         result.Add(RoadOutcomes.Build());

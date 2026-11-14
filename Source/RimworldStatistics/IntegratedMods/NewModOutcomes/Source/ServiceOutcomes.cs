@@ -22,15 +22,18 @@ internal static class ServiceOutcomes
     private sealed record Payment(ThingOwner Cash, Def Facility, long Before);
 
     internal static ModMetricAdapterRegistration SpaPayments() =>
-        OutcomeMetric.Count("Adamas.HospitalitySpa", "guestsilver", "RWS_NewMod_Spa", MetricCategory.Economy,
+        OutcomeMetric.Count("Adamas.HospitalitySpa", "guestsilver", "RWS_NewMod_Spa", "RWS_NewMod_SpaDesc",
+            MetricCategory.Economy,
             InstallSpa, breakdown: true, unit: MetricUnit.Silver, dependencies: ["Orion.Hospitality", "Dubwise.DubsBadHygiene"]);
 
     internal static ModMetricAdapterRegistration StorefrontSales() =>
-        OutcomeMetric.Count("Adamas.Storefront", "sales", "RWS_NewMod_Storefront", MetricCategory.Economy,
+        OutcomeMetric.Count("Adamas.Storefront", "sales", "RWS_NewMod_Storefront", "RWS_NewMod_StorefrontDesc",
+            MetricCategory.Economy,
             InstallStorefront, breakdown: true, dependencies: ["Orion.CashRegister"]);
 
     internal static ModMetricAdapterRegistration MuseumVisits() =>
-        OutcomeMetric.Count("BiomesTeam.BiomesFossils", "museumvisits", "RWS_NewMod_Museum", MetricCategory.Social,
+        OutcomeMetric.Count("BiomesTeam.BiomesFossils", "museumvisits", "RWS_NewMod_Museum", "RWS_NewMod_MuseumDesc",
+            MetricCategory.Social,
             InstallMuseum, breakdown: true);
 
     private static void InstallSpa(Harmony harmony)

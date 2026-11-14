@@ -19,11 +19,11 @@ internal static class IdeologyOutcomes
     private sealed record Schism(Ideo NewIdeo, Pawn[] Converts);
 
     internal static ModMetricAdapterRegistration Schisms() =>
-        OutcomeMetric.Count("VanillaExpanded.VIESAS", "schisms", "RWS_NewMod_Schisms",
+        OutcomeMetric.Count("VanillaExpanded.VIESAS", "schisms", "RWS_NewMod_Schisms", "RWS_NewMod_SchismsDesc",
             MetricCategory.Social, InstallSchism, dlc: Ideology);
 
     internal static ModMetricAdapterRegistration Funerals() =>
-        OutcomeMetric.Count("Sarg.AlphaMemes", "dreadnoughtfunerals", "RWS_NewMod_Funeral",
+        OutcomeMetric.Count("Sarg.AlphaMemes", "dreadnoughtfunerals", "RWS_NewMod_Funeral", "RWS_NewMod_FuneralDesc",
             MetricCategory.Social, InstallFuneral, dlc: Ideology, dependencies: ["OskarPotocki.VFE.Pirates"]);
 
     private static void InstallSchism(Harmony harmony)

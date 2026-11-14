@@ -18,7 +18,8 @@ internal static class CasinoOutcomes
     private static FieldInfo outcome = null!;
 
     internal static ModMetricAdapterRegistration Build() =>
-        OutcomeMetric.Count(Owner, "slotrounds", "RWS_NewMod_Casino", MetricCategory.Economy,
+        OutcomeMetric.Count(Owner, "slotrounds", "RWS_NewMod_Casino", "RWS_NewMod_CasinoDesc",
+            MetricCategory.Economy,
             Install, breakdown: true);
 
     private static void Install(Harmony harmony)

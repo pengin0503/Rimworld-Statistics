@@ -25,11 +25,13 @@ internal static class GravshipOutcomes
     private sealed record Hack(Thing Original, Map Map, IntVec3 Cell, ThingDef Replacement);
 
     internal static ModMetricAdapterRegistration Hacking() =>
-        OutcomeMetric.Count(Chapter2, "warcomputerhacks", "RWS_NewMod_GravHack", MetricCategory.Exploration,
+        OutcomeMetric.Count(Chapter2, "warcomputerhacks", "RWS_NewMod_GravHack", "RWS_NewMod_GravHackDesc",
+            MetricCategory.Exploration,
             InstallHack, dlc: Odyssey, dependencies: [Chapter1, "OskarPotocki.VanillaFactionsExpanded.Core"]);
 
     internal static ModMetricAdapterRegistration Boons() =>
-        OutcomeMetric.Count(Chapter1, "launchboons", "RWS_NewMod_GravBoon", MetricCategory.Exploration,
+        OutcomeMetric.Count(Chapter1, "launchboons", "RWS_NewMod_GravBoon", "RWS_NewMod_GravBoonDesc",
+            MetricCategory.Exploration,
             InstallBoon, breakdown: true, dlc: Odyssey, dependencies: ["OskarPotocki.VanillaFactionsExpanded.Core"]);
 
     private static void InstallHack(Harmony harmony)
