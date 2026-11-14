@@ -51,7 +51,7 @@ DataManagementTab, ImportTab and CoverageTab exist. Consider a read-only diagnos
 | P2 | Export extensions | Optional history/coverage JSON/CSV without changing existing CSV contract | Large exports, missing values blank/null, injection protection |
 | P2 | Large-chart performance | Viewport downsampling/LOD for render only | Preserve source data and extremes; deterministic UI on large profiles |
 
-**Not proposals:** wholesale reimplementation of search, favourites, basic charts, CSV, existing 65-ish listed MOD integrations or default-on acquisition.
+**Not proposals:** wholesale reimplementation of search, favourites, basic charts, CSV, existing 64 listed supported-MOD entries or default-on acquisition.
 
 ## MOD opportunity register: next actionable batches
 
