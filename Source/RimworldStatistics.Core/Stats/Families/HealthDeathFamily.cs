@@ -13,6 +13,7 @@ public static class HealthDeathFamily
     public const string LongestDeathGap = "population.death.longest_gap";
     public const string DeathsByRaid = "population.death.raid_causes";
     public const string KillsPerPawnMax = "combat.hostile_kills.per_pawn_max";
+    public const string DeathsBySpecies = "population.deaths_by_species";
     public const string DeathCauses = "population.death.causes";
     public const string TrapKills = "combat.kills.trap";
     public const string KillsByVictimKind = "combat.kills.victim_kind";
@@ -43,6 +44,7 @@ public static class HealthDeathFamily
     private const string ByActor = "kills_by_actor";
     private const string ByMethod = "kills_by_method";
     private const string ColonistDeaths = "colonist_deaths";   // gaps and first tick
+    private const string Species = "death_species";
     private const string Causes = "causes";
     private const string RaidCauses = "raid_causes";
     private const string Classified = "classified";
@@ -69,6 +71,11 @@ public static class HealthDeathFamily
         if (d.FreeColonist)
         {
             s.Gap(ColonistDeaths, tick);
+            if (d.Species is { } species)
+            {
+                s.Count(Species);
+                s.CountBy(Species, species);
+            }
             s.CountBy(Causes, d.Cause ?? MetricKeys.UnknownBucket);
             if (d.Cause != null)
             {
@@ -123,6 +130,11 @@ public static class HealthDeathFamily
         // The total comes from the raid-cause breakdown: it gets every death and has three keys, so its cap is never reached
         // (a cause dropped at the cause breakdown's cap would shorten a total taken from that one).
         var deaths = (long)(s.Peek(RaidCauses)?.By?.Values.Sum() ?? 0);
+        var species = s.Peek(Species);
+        c.PutBreakdown(DeathsBySpecies, c.Counts(species), c.Value(integer: species?.N ?? 0,
+            partial: species?.Overflow == true || (species?.N ?? 0) != deaths));
+        if ((species?.N ?? 0) != deaths)
+            c.MarkPartial(DeathsBySpecies);
         c.PutBreakdown(DeathCauses, c.Counts(s.Peek(Causes)), c.Value(integer: deaths));   // the per-cause values carry the cap
         c.PutBreakdown(DeathsByRaid, c.Counts(s.Peek(RaidCauses)), c.Value(integer: deaths));
         var classified = s.Peek(Classified)?.N ?? 0;

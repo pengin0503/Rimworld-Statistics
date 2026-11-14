@@ -1244,4 +1244,8 @@
   <RWS_Chart_AddColony>コロニーを追加…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>ゲーム内日数ごとの観測値です。記録がない区間では線が途切れます。</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>栄養量 {0}</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>種族別の加入数</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>種族別の入植者死亡数</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>自由入植者の死亡記録を種族別に集計します。</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>

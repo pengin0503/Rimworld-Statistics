@@ -1243,4 +1243,8 @@
   <RWS_Chart_AddColony>정착지 추가…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>게임 내 날짜별 관측값입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>영양 {0}</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>종족별 합류 수</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>첫 합류 기록을 종족별로 집계합니다.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>종족별 정착민 사망 수</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>자유 정착민의 사망 기록을 종족별로 집계합니다.</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>

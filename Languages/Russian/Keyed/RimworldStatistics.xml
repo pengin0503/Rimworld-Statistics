@@ -1243,4 +1243,8 @@
   <RWS_Chart_AddColony>Добавить колонию…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Наблюдения по игровым дням. Разрывы показывают пропуски в данных.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} ед. питательности</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>Вступления по видам</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>Первые вступления по видам согласно записям.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Смерти поселенцев по видам</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>Зарегистрированные смерти свободных поселенцев по видам.</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>

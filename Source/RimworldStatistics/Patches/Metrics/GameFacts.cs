@@ -20,6 +20,12 @@ internal static class GameFacts
 
     public static bool IsColonyAnimal(Pawn p) => p.RaceProps.Animal && p.Faction == Faction.OfPlayer;
 
+    // HAR races and vanilla humans both expose their owning race through Pawn.def.
+    // Xenotypes use a separate game identity and are deliberately not part of this key.
+    public static string? Species(Pawn pawn)
+        => pawn.RaceProps.Humanlike
+            ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName) : null;
+
     public static string MapId(Map? map) => map == null ? "?" : "Map_" + map.uniqueID;
 
     public static string VictimKind(Pawn p)

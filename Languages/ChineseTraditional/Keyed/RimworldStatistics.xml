@@ -1243,4 +1243,8 @@
   <RWS_Chart_AddColony>新增殖民地…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>依遊戲內天數顯示觀測值。折線中斷表示記錄缺失。</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>營養值 {0}</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>按種族統計的加入人數</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>按種族統計有記錄的首次加入。</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>按種族統計的殖民者死亡數</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>按種族統計有記錄的自由殖民者死亡。</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>

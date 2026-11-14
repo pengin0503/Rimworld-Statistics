@@ -1243,4 +1243,8 @@
   <RWS_Chart_AddColony>Ajouter une colonie…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Observations par jour de jeu. Les coupures signalent des données manquantes.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} points de nutrition</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>Arrivées par espèce</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>Premières arrivées enregistrées par espèce.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Décès de colons par espèce</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>Décès enregistrés de colons libres par espèce.</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>

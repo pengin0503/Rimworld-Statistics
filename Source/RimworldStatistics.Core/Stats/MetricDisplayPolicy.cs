@@ -78,7 +78,7 @@ public static class MetricDisplayPolicy
         CaravanFamily.AncientDangersOpened,
         HealthDeathFamily.KillsByVictimKind, HealthDeathFamily.DeathCauses,
         HealthDeathFamily.DeathsByRaid, RaidFamily.ByArrivalMode, RaidFamily.ByFaction,
-        MembershipFamily.Routes,
+        MembershipFamily.Routes, MembershipFamily.JoinsBySpecies, HealthDeathFamily.DeathsBySpecies,
         WorkFamily.QualityBreakdown, WorkFamily.Legendary, WorkFamily.Masterwork,
         WorkFamily.Sculptures, WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs,
         WorkFamily.HarvestByCrop, WorkFamily.SownDefs, WorkFamily.ConstructionMaterials,

@@ -113,6 +113,10 @@ public static class LiveCatalog
 
         // C2 · membership
         Live(MembershipFamily.FirstJoin, "P-001", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_FirstJoins", "RWS_MetricDesc_FirstJoins"),
+        Live(MembershipFamily.JoinsBySpecies, "P-001", Pop, Count, Sum, MembershipFamily.Name,
+            "RWS_Metric_JoinsBySpecies", "RWS_MetricDesc_JoinsBySpecies", breakdown: true),
+        Live(HealthDeathFamily.DeathsBySpecies, "P-004", Pop, Count, Sum, HealthDeathFamily.Name,
+            "RWS_Metric_DeathsBySpecies", "RWS_MetricDesc_DeathsBySpecies", breakdown: true),
         Live(MembershipFamily.Routes, "N1-C-003", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_JoinRoutes", "RWS_MetricDesc_JoinRoutes", breakdown: true),
         Live(MembershipFamily.PrisonerRecruit, "P-002", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_PrisonerRecruits", "RWS_MetricDesc_PrisonerRecruits"),
         Live(MembershipFamily.HumanBirths, "P-003, L-011", Pop, Count, Sum, MembershipFamily.Name, "RWS_Metric_HumanBirths", "RWS_MetricDesc_HumanBirths", dlc: Biotech),

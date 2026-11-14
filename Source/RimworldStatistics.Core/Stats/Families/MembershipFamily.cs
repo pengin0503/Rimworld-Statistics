@@ -12,6 +12,7 @@ public static class MembershipFamily
     public const string FirstJoin = "membership.first_join";
     public const string PrisonerRecruit = "membership.prisoner_recruit";
     public const string HumanBirths = "membership.human_birth";
+    public const string JoinsBySpecies = "membership.joins_by_species";
     public const string Routes = "membership.route";
     public const string JoinAgeMean = "membership.join_age_mean";
     public const string SlavesFreed = "membership.slave_freed";
@@ -29,6 +30,7 @@ public static class MembershipFamily
     // Internal dedup state is still required for first-join and birth counts; it is NOT a public lifetime-unique member statistic.
     private const string Members = "members";
     private const string Joins = "first_joins";        // N and routes; First is the first join tick
+    private const string Species = "join_species";
     private const string Recruits = "recruits";
     private const string Births = "births";
     private const string JoinAge = "join_age";
@@ -46,13 +48,18 @@ public static class MembershipFamily
     }
 
     /// <summary>The pawn became a member by <paramref name="route"/> (a prisoner recruited, a slave emancipated, any other).</summary>
-    public static void Joined(FamilyState s, string id, string route, double? ageYears, int tick)
+    public static void Joined(FamilyState s, string id, string route, double? ageYears, int tick, string? species = null)
     {
         if (s.Distinct(Members, id))
         {
             s.Count(Joins);
             s.Mark(Joins, tick);
             s.CountBy(Joins, route);
+            if (species is not null)
+            {
+                s.Count(Species);
+                s.CountBy(Species, species);
+            }
             if (ageYears is { } age)
                 s.Observe(JoinAge, age);
             if (route == RoutePrisoner)
@@ -96,6 +103,11 @@ public static class MembershipFamily
         var s = c.State;
         var joins = s.Peek(Joins);
         c.Put(FirstJoin, c.Value(integer: joins?.N ?? 0));
+        var species = s.Peek(Species);
+        c.PutBreakdown(JoinsBySpecies, c.Counts(species), c.Value(integer: species?.N ?? 0,
+            partial: species?.Overflow == true || (species?.N ?? 0) != (joins?.N ?? 0)));
+        if ((species?.N ?? 0) != (joins?.N ?? 0))
+            c.MarkPartial(JoinsBySpecies);
         c.PutBreakdown(Routes, c.Counts(joins), c.Value(integer: joins?.N ?? 0));
         c.PutCount(Recruits, PrisonerRecruit);
         c.PutCount(Births, HumanBirths);
@@ -107,7 +119,7 @@ public static class MembershipFamily
         c.PutFirstDay(Joins, FirstJoinDay);
         // Past the member cap a new pawn cannot be told from a known one: every output that needs that is partial.
         if (s.Peek(Members)?.Overflow == true)
-            c.MarkPartial(FirstJoin, Routes, PrisonerRecruit, HumanBirths, JoinAgeMean, FirstJoinDay);
+            c.MarkPartial(FirstJoin, Routes, JoinsBySpecies, PrisonerRecruit, HumanBirths, JoinAgeMean, FirstJoinDay);
         if (s.TrackerOverflowed(KidnappedSince))
             c.MarkPartial(KidnapRescues, CaptiveMax);
     }

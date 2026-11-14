@@ -1243,4 +1243,8 @@
   <RWS_Chart_AddColony>Kolonie hinzufügen…</RWS_Chart_AddColony>
   <RWS_Chart_GameRecorder>Messwerte nach Spieltagen. Lücken zeigen fehlende Werte.</RWS_Chart_GameRecorder>
   <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
+  <RWS_Metric_JoinsBySpecies>Beitritte nach Spezies</RWS_Metric_JoinsBySpecies>
+  <RWS_Metric_Desc_JoinsBySpecies>Erfasste erstmalige Beitritte nach Spezies.</RWS_Metric_Desc_JoinsBySpecies>
+  <RWS_Metric_DeathsBySpecies>Todesfälle von Kolonisten nach Spezies</RWS_Metric_DeathsBySpecies>
+  <RWS_Metric_Desc_DeathsBySpecies>Erfasste Todesfälle freier Kolonisten nach Spezies.</RWS_Metric_Desc_DeathsBySpecies>
 </LanguageData>
