@@ -30,10 +30,10 @@ public sealed class NumericValue
     /// <summary>For a ranking over labels (e.g. the scenario with most endings): the label(s) holding it, ties joined.</summary>
     public string? Label { get; init; }
 
-    /// <summary>Known range, no value: a threshold that was not reached (a 0 �� 0 rate is not this: it has a denominator).</summary>
+    /// <summary>Known range, no value: a threshold that was not reached (a 0 ÷ 0 rate is not this: it has a denominator).</summary>
     public bool NotReached => Number is null && Denominator is null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
 
-    /// <summary>A value, a threshold not reached, or a known 0 �� 0.</summary>
+    /// <summary>A value, a threshold not reached, or a known 0 ÷ 0.</summary>
     public bool Known => Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
         && (Number is not null || NotReached || (Numerator is not null && Denominator is not null));
 }
@@ -72,7 +72,7 @@ public sealed class NumericColony
     public required IReadOnlyList<NumericRow> Rows { get; init; }
 }
 
-/// <summary>The numeric projection of the profile for the Details tab (numeric expansion design ��4).</summary>
+/// <summary>The numeric projection of the profile for the Details tab (numeric expansion design §4).</summary>
 public sealed class NumericView
 {
     public static readonly NumericView Empty = new() { Overall = Array.Empty<NumericRow>(), Colonies = Array.Empty<NumericColony>() };
@@ -86,7 +86,7 @@ public sealed class NumericView
 
 /// <summary>
 /// Builds the <see cref="NumericView"/> from the v1 colonies (after manual merges and exclusions) and the numeric
-/// observations (numeric expansion design ��2 "�R���j�[�ƍ�", ��3 "�ߋ��ϑ��̑I�ѕ�").
+/// observations (numeric expansion design §2 "コロニー照合", §3 "過去観測の選び方").
 /// </summary>
 public static partial class MetricCalculator
 {
@@ -447,7 +447,7 @@ public static partial class MetricCalculator
         {
             // Each colony's per-Def dictionary is indexed once. Previously every
             // global key searched all children and re-summed the source to decide
-            // whether a missing key was a *known zero* (O(colonies * keys2)).
+            // whether a missing key was a *known zero* (O(colonies * keys²)).
             // Preserve the first-child-wins behavior for malformed duplicate keys.
             var lookups = colonies.Select(c =>
             {
@@ -537,7 +537,7 @@ public static partial class MetricCalculator
             case OverallAggregation.Ratio:
                 var num = known.Sum(k => k.Value.Numerator!.Value);
                 var den = known.Sum(k => k.Value.Denominator!.Value);
-                // 0 �� 0 over known colonies stays known: no value, but the colonies count as read.
+                // 0 ÷ 0 over known colonies stays known: no value, but the colonies count as read.
                 value = Result(den > 0 ? num / den : null, num: num, den: den);
                 break;
             case OverallAggregation.Max or OverallAggregation.Min:

@@ -1,7 +1,7 @@
 namespace RimworldStatistics.Core;
 
 /// <summary>
-/// Summarizes the history recorder series of one save into Phase A metrics (numeric expansion design ��3 "�����̋��E",
+/// Summarizes the history recorder series of one save into Phase A metrics (numeric expansion design §3 "履歴の境界",
 /// ledger sections wealth and population). Only summaries are kept; the series themselves stay in this call's memory.
 /// </summary>
 /// <remarks>
@@ -37,7 +37,7 @@ public static class HistoryMetricReader
     /// </summary>
     private static readonly HashSet<string> TimedVersions = new(StringComparer.Ordinal) { "1.5", "1.6", "1.7" };
 
-    /// <summary>"1.6.4566 rev607" �� "1.6"; null when it has no major.minor.</summary>
+    /// <summary>"1.6.4566 rev607" → "1.6"; null when it has no major.minor.</summary>
     public static string? MajorMinor(string? gameVersion)
     {
         if (gameVersion is null)
@@ -190,7 +190,7 @@ public static class HistoryMetricReader
         return v;
     }
 
-    /// <summary>Last ? first; needs both ends, a gap in between makes it Partial. The point count gives the years spanned.</summary>
+    /// <summary>Last − first; needs both ends, a gap in between makes it Partial. The point count gives the years spanned.</summary>
     private static MetricValue? Net(Series s)
     {
         if (!s.Valid[^1])
@@ -279,7 +279,7 @@ public static class HistoryMetricReader
         return points;
     }
 
-    /// <summary>max(0, (before ? after) �� before) over consecutive valid points with before &gt; 0.</summary>
+    /// <summary>max(0, (before − after) ÷ before) over consecutive valid points with before &gt; 0.</summary>
     private static MetricValue? MaxLossRate(Series s)
     {
         if (s.N < 2)
@@ -308,7 +308,7 @@ public static class HistoryMetricReader
         return v;
     }
 
-    /// <summary>Largest (after ? before) �� before over windows <paramref name="span"/> points apart without a gap; may be negative.</summary>
+    /// <summary>Largest (after − before) ÷ before over windows <paramref name="span"/> points apart without a gap; may be negative.</summary>
     private static MetricValue? MaxGrowthRate(Series s, int[]? invalid, int span)
     {
         if (s.N <= span)
@@ -337,7 +337,7 @@ public static class HistoryMetricReader
         return v;
     }
 
-    /// <summary>Longest run of strictly increasing consecutive points �� 2 days; equal values and gaps end a run.</summary>
+    /// <summary>Longest run of strictly increasing consecutive points ÷ 2 days; equal values and gaps end a run.</summary>
     private static MetricValue? LongestGrowth(Series s)
     {
         if (s.N < 2)
@@ -370,7 +370,7 @@ public static class HistoryMetricReader
         return new MetricValue { Coverage = MetricCoverage.SnapshotOnly };
     }
 
-    /// <summary>Half-day intervals with both ends valid whose left end matches, �� 2.</summary>
+    /// <summary>Half-day intervals with both ends valid whose left end matches, ÷ 2.</summary>
     private static MetricValue? IntervalDays(Series s, Func<float, bool> left)
     {
         if (s.N < 2)
@@ -388,7 +388,7 @@ public static class HistoryMetricReader
     }
 
     /// <summary>
-    /// Largest numerator �� denominator at the same index (denominator &gt; 0). Both series must be start-aligned with the same
+    /// Largest numerator ÷ denominator at the same index (denominator &gt; 0). Both series must be start-aligned with the same
     /// number of points, so an index means the same time in both.
     /// </summary>
     private static MetricValue? MaxRatio(Series? numerator, Series? denominator)
