@@ -87,7 +87,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "French": [
       "01",
@@ -98,7 +99,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "Spanish": [
       "01",
@@ -109,7 +111,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "SpanishLatin": [
       "01",
@@ -120,7 +123,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "Portuguese": [
       "01",
@@ -131,7 +135,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "PortugueseBrazilian": [
       "01",
@@ -142,7 +147,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "Russian": [
       "01",
@@ -153,7 +159,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "ChineseSimplified": [
       "01",
@@ -164,7 +171,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "ChineseTraditional": [
       "01",
@@ -175,7 +183,8 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ],
     "Korean": [
       "01",
@@ -186,11 +195,12 @@
       "06",
       "07",
       "08",
-      "09"
+      "09",
+      "10"
     ]
   },
   "pending": [
-    "Block 10 (keys 1126-1234) still require full retranslation in all ten languages.",
-    "Native-speaker review of every language before release (no in-game rendering check was done)."
+    "Native-speaker review of every language before release (no in-game rendering check was done).",
+    "Native-speaker review and in-game rendering check have not been performed."
   ]
 }
