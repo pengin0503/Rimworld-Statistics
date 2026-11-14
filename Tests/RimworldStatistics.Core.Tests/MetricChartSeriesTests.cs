@@ -96,6 +96,41 @@ public sealed class MetricChartSeriesTests
         Assert.Empty(MetricChartSeries.BasicByColony(stats, "basic.not-a-metric"));
     }
 
+    [Theory]
+    [InlineData(CrossColonyCatalog.MaxPrefix)]
+    [InlineData(CrossColonyCatalog.MinPrefix)]
+    public void DerivedExtremeComparesTheSourceValuesItSummarizes(string prefix)
+    {
+        var source = MetricRegistry.Find(RosterSnapshot.Free)!;
+        var derived = MetricRegistry.Find(prefix + RosterSnapshot.Free)!;
+        NumericColony SourceColony(string key, double number, bool excluded = false) => new()
+        {
+            Key = key, Excluded = excluded,
+            Rows = [new NumericRow { Definition = source, Value = Number(number) }],
+        };
+        var view = new NumericView
+        {
+            Colonies = [SourceColony("a", 4), SourceColony("b", 9), SourceColony("hidden", 50, excluded: true)],
+            Overall = [new NumericRow { Definition = derived, Value = Number(9) }],
+        };
+
+        var series = MetricChartSeries.ByColony(view, derived);
+
+        Assert.Equal(new[] { "b", "a" }, series.Select(bar => bar.Key));
+        // The derived key itself is never stored per colony.
+        Assert.Empty(MetricChartSeries.ByColony(view, derived.Key));
+    }
+
+    [Fact]
+    public void DerivedTopRankingAndOrdinaryMetricsKeepTheirOwnColonyKey()
+    {
+        var top = MetricRegistry.Find(CrossColonyCatalog.TopPrefix + WorkFamily.HarvestByCrop)!;
+        Assert.Equal(top.Key, MetricChartSeries.ColonyComparisonKey(top));
+        Assert.Equal(Definition.Key, MetricChartSeries.ColonyComparisonKey(Definition));
+        Assert.Equal(RosterSnapshot.Free,
+            MetricChartSeries.ColonyComparisonKey(MetricRegistry.Find(CrossColonyCatalog.MaxPrefix + RosterSnapshot.Free)!));
+    }
+
     private static StatsResult BasicStats(params ColonyStats[] colonies) => new()
     {
         Colonies = colonies,
