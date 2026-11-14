@@ -1125,113 +1125,113 @@
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded提取的DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取后实际放置或合并进堆叠的DNA物品数量，按产出ThingDef分类。不包括无效目标、放置失败、消耗次数却未产出物品或其他杂交体制造。</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE管道中储存的营养浆</RWS_VnpeGrinder_SlurryStored>
-  <RWS_VnpeGrinder_SlurryStoredDesc>玩家拥有的Vanilla Nutrient Paste Explosed 研磨机所接受的管道网络中的实际分量营养浆单位。 Grinder 尝试、未经接受的浆液的成分消耗和其他建筑物的管道存储都不算。</RWS_VnpeGrinder_SlurryStoredDesc>
-  <RWS_VfeMedieval2_HoneyItems>VFE 中世纪2 实际收获的蜂蜜</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者卸下玩家拥有的中世纪2号油管后,蜂蜜单位成功布置或合并,按输出ThingDef进行分组,生产准备,失败的放置以及后来的拖放被排除在外.</RWS_VfeMedieval2_HoneyItemsDesc>
-  <RWS_VfeSecurity_ArtilleryLaunched>VFE 发射的安全跨地图炮弹</RWS_VfeSecurity_ArtilleryLaunched>
-  <RWS_VfeSecurity_ArtilleryLaunchedDesc>成功的目标地图发射来自玩家拥有的离地图火炮,当一个行驶世界的炮弹到达时,按照射弹定义分组。目标指令、未到达的中转和没有产卵弹的射击都不算数。这不能衡量目标命中率。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
-  <RWS_VfeFactory_Harvested>VFE 工厂自动农户收获项目</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>由玩家拥有的自动农户新收获的物品,包括实际收获-缓冲增加和确认的地面布置,按产出ThingDef归类. 之后的 ⁇ 卸载,被拒绝的布置和通用字符收割不在此列.</RWS_VfeFactory_HarvestedDesc>
-  <RWS_VfeFactory_Sown>VFE 工厂 自动农庄</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>在玩家Autofarmer ProcessRow(英语:Autofarmer ProcessRow)期间,新植物实际产卵,标记撒种,并与所选作物配对,由植物 ThingDef(英语:Plant ThingDef)组合,不成功行和旧植物被排除在外.</RWS_VfeFactory_SownDesc>
-  <RWS_VfePirates_WarcasketFits>VFE 海盗战斧配件完成</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>完全完成的玩家 Warcaket 配件通过正常的焊接,通过项目清理确认,以及三个新磨损的配对部件,按装甲定义类型分组. 不完整的工作,部分装配应用和开发者完成不在此列.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>VQE 古代人完成注射拒绝</RWS_VqeAncients_Rejected>
-  <RWS_VqeAncients_RejectedDesc>被拒绝的玩家 Archogen 注射器结果, 其占用者在实际注射昏迷时被活释放。 取消工作, 未成功完成的选定结果, 以及等待的基因成功选择被排除在外 。 需要 Biotech 。</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>VQE 古代人完成了变异变异变异</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>玩家Archigen喷射器突变结果破坏原字符,并产下被选中的PawnKindDef的一个玩家拥有的突变者,由变种分类,其他的产卵,取消和待定的成功选择被排除在外. Requireds Biotech.</RWS_VqeAncients_MutationsDesc>
-  <RWS_VfeSettlers_BountyHandins>VFE 定居者成功投案</RWS_VfeSettlers_BountyHandins>
-  <RWS_VfeSettlers_BountyHandinsDesc>玩家大篷车想要罪犯或尸体在得到正面银奖的同时实际上交并移除. 打开命令,缺失的科目,失败的转移和无关的财物都不算.</RWS_VfeSettlers_BountyHandinsDesc>
-  <RWS_VfeSettlers_BountySilver>VFE 定居者实际得到的赏金银</RWS_VfeSettlers_BountySilver>
-  <RWS_VfeSettlers_BountySilverDesc>银牌实际上通过成功VFE定居者通缉犯的首次奖励转让而增加了玩家大篷车,不包括罪犯的物品和这些物品中的任何银牌。</RWS_VfeSettlers_BountySilverDesc>
-  <RWS_Rimatomics_Byproducts>Dubs Rimatomics 后处理副产品实际投放</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>在玩家拥有的钚处理器完成燃料卸货时,实际作为副产品放置或合并的物品,按输出ThingDef分类. 返回的乏燃料,仅加工的材料和无关的放置不计数.</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>消耗的扩大弹药</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>从玩家殖民武器弹匣中扣除或通过直接饲料射击而摧毁的真弹,由AmmoDef分组,重新装填动作,干火,炮塔消耗和调试弹药补充都不计数.</RWS_CE_RoundsUsedDesc>
-  <RWS_CE_SuppressionReceived>对玩家殖民者施加新的镇压</RWS_CE_SuppressionReceived>
-  <RWS_CE_SuppressionReceivedDesc>玩家-殖民角色新进入战斗扩展被压制状态,每一次从未压制状态过渡一次,重复压制同时已经压制和开发者测试压制被排除在外。这些措施是接收压制,而不是对敌人施加压制。</RWS_CE_SuppressionReceivedDesc>
-  <RWS_VfePirates_HireContracts>VFE 海盗公司完成的雇用合同</RWS_VfePirates_HireContracts>
-  <RWS_VfePirates_HireContractsDesc>新的海盗或雇佣兵合同实际上由Vanilla Expanded框架公司为海盗拥有的雇佣派别雇用的窗口所实施。 对话浏览、取消报价和失败的付款都不算数。</RWS_VfePirates_HireContractsDesc>
-  <RWS_VfePirates_HireSilver>VFE 海盗的银子 实际支付雇佣</RWS_VfePirates_HireSilver>
-  <RWS_VfePirates_HireSilverDesc>当新的VFE Pirates雇佣合同注册时,而不是其四舍五入的报价时,白银实际上从玩家-地图库存中移除. 免费合同贡献了零白银.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>VGE 成功混合生育</RWS_VgeHybrid_Births>
-  <RWS_VgeHybrid_BirthsDesc>当一个玩家拥有的 VGE 电子womb 完成成功生长周期,按角色类型分组时,一个新的玩家拥有的混合字符实际上就诞生了。失败生长、定时器进化和负载恢复被排除在外。</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>VGE 生物机械转化完成</RWS_VgeHybrid_Conversions>
-  <RWS_VgeHybrid_ConversionsDesc>成功玩家拥有的 mechahybridizer 转换器摧毁了原主体,并通过生成的字符类型培育出一个新的玩家拥有的转换角色. 机器激活,等待进展和失败的产卵被排除在外.</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>扩大假释批准范围</RWS_PrisonExpanded_ParoleApproved>
-  <RWS_PrisonExpanded_ParoleApprovedDesc>假释释放决定成功清除了对仍在玩家羁押中的活囚犯的应有刑期,并启用了实际释放互动. 仅仅听证,扩展,招募选项,重复选择以及后来的身体离开都不算.</RWS_PrisonExpanded_ParoleApprovedDesc>
-  <RWS_Rimefeller_ExtractedFieldUnits>从油田开采的Rimefeller件原油(油田生产能力单位)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>在成功处理玩家拥有的油轮泵操作时实际减少油田的海流Cap,即油田容量单位、非管道量单位或库存物品单位,不计算钻井进度、试图抽水、被动油田再生、油箱转移或炼油厂产出。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>囚犯刑期延长</RWS_PrisonExpanded_SentencesServed>
-  <RWS_PrisonExpanded_SentencesServedDesc>玩家持有的囚犯刑期实际达到监狱延长期,并首先进入假释-听证会到期状态的数量。假释批准、释放令、重复天数和加载值不算。</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>囚犯实际离境人数增加</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>被录制的监狱扩展囚犯通过成功的字符离开玩家家地图. ExitMap,而不是接受释放或假释指示. 包括实际离开,无论原判如何.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
-  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller 炼油厂燃料消耗量(管道装置)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>管道燃料可消耗性实际减少,原因是在管道部件底盘抽选后,玩家拥有的Rimefeller炼油厂加工,不包括在底盘抽选期间转入现场机器的燃料以及任何预定或试图消耗的燃料,单位是管道燃料单位。</RWS_Rimefeller_RefineryFuelUsedDesc>
-  <RWS_Rimefeller_PlantFuelUsed>Rimefeller 所消耗的发电厂燃料(管道装置)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>在玩家拥有的Rimefeller个发电厂成功抽取燃料时,管道燃料可挥发性实际减少,干法或失败抽取不包括在内,单位是管道燃料单元,而不是库存物品。</RWS_Rimefeller_PlantFuelUsedDesc>
-  <RWS_NewMod_Arena>竞技场决定了</RWS_NewMod_Arena>
-  <RWS_NewMod_ArenaDesc>玩家竞技场有正式记录的赢家</RWS_NewMod_ArenaDesc>
-  <RWS_NewMod_Roads>修建或改进的路段</RWS_NewMod_Roads>
-  <RWS_NewMod_RoadsDesc>按道路类型分列的已完成的世界地图路段,双向路段计算一次。</RWS_NewMod_RoadsDesc>
-  <RWS_NewMod_GravHack>战争计算机被黑了</RWS_NewMod_GravHack>
-  <RWS_NewMod_GravHackDesc>敌对战争计算机在成功入侵后被玩家角色取代.</RWS_NewMod_GravHackDesc>
-  <RWS_NewMod_GravBoon>应用了重力发射装置</RWS_NewMod_GravBoon>
-  <RWS_NewMod_GravBoonDesc>发射宝适用于玩家重力飞船,按宝恩类型划分.</RWS_NewMod_GravBoonDesc>
-  <RWS_NewMod_Schisms>完成意识形态分裂</RWS_NewMod_Schisms>
-  <RWS_NewMod_SchismsDesc>注册了至少一个玩家角色的新的 schism 意识形态转换 。</RWS_NewMod_SchismsDesc>
-  <RWS_NewMod_Funeral>丧葬改革失败</RWS_NewMod_Funeral>
-  <RWS_NewMod_FuneralDesc>玩家角色复活 一场可怕的葬礼 生命支持和战斧盔甲应用。</RWS_NewMod_FuneralDesc>
-  <RWS_NewMod_Spa>温泉客人送来的银子</RWS_NewMod_Spa>
-  <RWS_NewMod_SpaDesc>银器实际上转移到了玩家温泉设施 游客,按设施类型。</RWS_NewMod_SpaDesc>
-  <RWS_NewMod_Museum>完成博物馆参观和学习课程</RWS_NewMod_Museum>
-  <RWS_NewMod_MuseumDesc>成功的玩家博物馆工作,通过娱乐访问和学习工作分别进行.</RWS_NewMod_MuseumDesc>
-  <RWS_NewMod_Storefront>完成库存前期销售</RWS_NewMod_Storefront>
-  <RWS_NewMod_StorefrontDesc>按产品分列,向来访者确认交货的库存前期交易。</RWS_NewMod_StorefrontDesc>
-  <RWS_NewMod_Boarding>车辆登机</RWS_NewMod_Boarding>
-  <RWS_NewMod_BoardingDesc>玩家角色新加入玩家车辆乘客名单.</RWS_NewMod_BoardingDesc>
-  <RWS_NewMod_Upgrades>安装车辆升级装置</RWS_NewMod_Upgrades>
-  <RWS_NewMod_UpgradesDesc>通过完成的玩家工作安装了新的车辆升级,按车辆类型分列.</RWS_NewMod_UpgradesDesc>
-  <RWS_NewMod_Wrecks>从残骸中修复的车辆</RWS_NewMod_Wrecks>
-  <RWS_NewMod_WrecksDesc>玩家车辆通过完成履带式残骸框架的建造而产卵.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Real Ruins辆大篷车抵达新装货地点</RWS_NewMod_RealRuins>
-  <RWS_NewMod_RealRuinsDesc>玩家大篷车抵达 已确认的人物进入一个Real Ruins 的站点 其地图必须生成。</RWS_NewMod_RealRuinsDesc>
-  <RWS_NewMod_Casino>完成槽式机弹</RWS_NewMod_Casino>
-  <RWS_NewMod_CasinoDesc>在玩家机器上完成的分档回合,按损失细分,并取得结果.</RWS_NewMod_CasinoDesc>
-  <RWS_NewMod_Resleeving>神经堆栈向空袖子转移</RWS_NewMod_Resleeving>
-  <RWS_NewMod_ResleevingDesc>玩家手术,将现有身份安装到生活,原为空袖子.</RWS_NewMod_ResleevingDesc>
-  <RWS_NewMod_AnimalPedigree>与遗传父母共同记录的后代</RWS_NewMod_AnimalPedigree>
-  <RWS_NewMod_AnimalPedigreeDesc>成功出生或孵化的玩家动物,其双亲记录均由动物遗传学指定,动物种类.</RWS_NewMod_AnimalPedigreeDesc>
-  <RWS_NewMod_Treaties>已签署的新条约</RWS_NewMod_Treaties>
-  <RWS_NewMod_TreatiesDesc>与另一派别签订的新协议, 按条约类型分列。 延长现有协议不会增加一个数 。</RWS_NewMod_TreatiesDesc>
-  <RWS_NewMod_Vassalizations>定居点</RWS_NewMod_Vassalizations>
-  <RWS_NewMod_VassalizationsDesc>通过Hegemony进入活跃玩家Vassalage的定居点,重新建立的Vassals再次计数.</RWS_NewMod_VassalizationsDesc>
-  <RWS_NewMod_Semesters>完成学期</RWS_NewMod_Semesters>
-  <RWS_NewMod_SemestersDesc>另一个教育系统学期在完全活跃学期后完成,并存档于学期历史.</RWS_NewMod_SemestersDesc>
-  <RWS_NewMod_Graduations>毕业的外部学生</RWS_NewMod_Graduations>
-  <RWS_NewMod_GraduationsDesc>学期结束时完成的外聘生离校,取得完成或优异的学业成绩.</RWS_NewMod_GraduationsDesc>
-  <RWS_NewMod_SchoolEvents>完成学校活动</RWS_NewMod_SchoolEvents>
-  <RWS_NewMod_SchoolEventsDesc>AES School+活动在玩家家庭地图上完成并评价,按活动类型分类.</RWS_NewMod_SchoolEventsDesc>
-  <RWS_NewMod_HotelCheckout>办理退房的旅客团体</RWS_NewMod_HotelCheckout>
-  <RWS_NewMod_HotelCheckoutDesc>玩家地图上的客座小组,在报到后开始预定的报到.</RWS_NewMod_HotelCheckoutDesc>
-  <RWS_NewMod_Camp>建立的商队营地</RWS_NewMod_Camp>
-  <RWS_NewMod_CampDesc>新增Set Up Camp个站点,玩家大篷车成功进入营地地图.</RWS_NewMod_CampDesc>
-  <RWS_NewMod_ExploreResearch>远征取得的研究进展</RWS_NewMod_ExploreResearch>
-  <RWS_NewMod_ExploreResearchDesc>Go Explore!研究要求通过研究项目实际推进一个项目。</RWS_NewMod_ExploreResearchDesc>
-  <RWS_NewMod_Doctrine>调查完成的派系教义</RWS_NewMod_Doctrine>
-  <RWS_NewMod_DoctrineDesc>按理论类型完成了对其他派别理论的调查。</RWS_NewMod_DoctrineDesc>
-  <RWS_NewMod_VendingItems>售货机向访客交付的物品</RWS_NewMod_VendingItems>
-  <RWS_NewMod_VendingItemsDesc>在玩家自动售货机上成功移交的项目, 按项目类型分列。 包括免费项目 。</RWS_NewMod_VendingItemsDesc>
-  <RWS_NewMod_VendingSilver>售货机收到的白银</RWS_NewMod_VendingSilver>
-  <RWS_NewMod_VendingSilverDesc>银器实际上被访客转移到玩家自动售货机,按机器类型.</RWS_NewMod_VendingSilverDesc>
+  <RWS_VnpeGrinder_SlurryStoredDesc>玩家的Vanilla Nutrient Paste Expanded粉碎机实际向管道网络输送并被接收的营养浆数量，包含小数。粉碎尝试、消耗材料却未被管网接收的产物及其他建筑输送的营养浆不计入。</RWS_VnpeGrinder_SlurryStoredDesc>
+  <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2收获蜂蜜数</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者清空自己拥有的Medieval 2蜂箱后，实际放到地面或并入堆叠的蜂蜜数量，按产出ThingDef分类。蜂箱只是达到可收获状态、放置失败及之后的搬运均不计入。</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security跨地图炮弹抵达数</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>玩家的地图外火炮发射的炮弹抵达目标地图并实际生成为弹体的数量，按弹体类型分类。仅下达瞄准指令、仍在途中或没有生成弹体的射击不计入。此数不等于命中次数。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeFactory_Harvested>VFE Factory自动农机收获量</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_HarvestedDesc>玩家拥有的Autofarmer新收获的物品数量，根据收获缓冲区实际增加量及在地面确认放置的产物统计，按产出ThingDef分类。之后卸入料斗、放置被拒绝或由单位进行的普通收获不计入。</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>VFE Factory自动农机种植数</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>玩家的Autofarmer工作周期中实际新生成、标记为已播种且匹配选定作物的植物数量，按植物ThingDef分类。失败的周期和原有植物不计入。</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>VFE Pirates战斗装甲套装穿戴完成数</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>玩家通过正常焊接完成的warcasket装甲套装穿戴，须确认项目结束且新穿上匹配的三件装甲，按装甲Def分类。未完成的工作、只穿上部分组件以及开发者直接完成的不计入。</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>VQE Ancients超凡基因注射排斥次数</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>玩家的超凡基因注射器中，受试者拒绝注射、活着获释并陷入注射昏迷的次数。取消的工作、选择结果却未完成或成功后等待基因选择的情况不计入。需要Biotech。</RWS_VqeAncients_RejectedDesc>
+  <RWS_VqeAncients_Mutations>VQE Ancients变异体转化次数</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_MutationsDesc>玩家的超凡基因注射器产生变异结果，使原单位消失并生成一个属于玩家、具有指定PawnKindDef的变异体的次数，按变异体类型分类。其他生成方式、取消及成功后的待选项目不计入。需要Biotech。</RWS_VqeAncients_MutationsDesc>
+  <RWS_VfeSettlers_BountyHandins>VFE Settlers赏金目标交付次数</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandinsDesc>玩家远行队实际交出并移除通缉犯或其尸体，同时收到大于零的白银奖励的次数。只打开指令、目标缺失、交付失败或无关物品不计入。</RWS_VfeSettlers_BountyHandinsDesc>
+  <RWS_VfeSettlers_BountySilver>VFE Settlers收到的悬赏白银</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilverDesc>成功交付VFE Settlers赏金目标时，首次奖励发放中实际加入玩家远行队的白银数量。不包括通缉犯身上的物品或其中的白银。</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_Rimatomics_Byproducts>Dubs Rimatomics再处理副产物</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_ByproductsDesc>玩家的钚处理设备完成燃料卸载时，副产物实际放到地面或并入堆叠的物品数量，按产出ThingDef分类。返还的乏燃料、只经过处理但未产出的材料及无关物品放置不计入。</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Combat Extended发射弹药数</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>从玩家殖民者的武器弹匣中实际减少、或直接从物品栏射击时消耗的弹药数量，按AmmoDef分类。换弹时搬动弹药、空枪、炮塔射击和开发者补充弹药均不计入。</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_SuppressionReceived>Combat Extended殖民者受压制次数</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceivedDesc>玩家殖民地的单位在Combat Extended中从未被压制转为被压制的次数，每次状态转变只计一次。已经受到压制后的进一步压制及开发者测试压制不计入。统计的是受到压制的次数，不是对敌人施加压制的次数。</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>VFE Pirates雇佣合同成立数</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>通过Vanilla Expanded Framework的雇佣界面，与VFE Pirates雇佣派系实际达成的新海盗或雇佣兵合同数。只是查看界面、取消报价或付款失败不计入。</RWS_VfePirates_HireContractsDesc>
+  <RWS_VfePirates_HireSilver>VFE Pirates雇佣支付白银</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilverDesc>注册一份新的VFE Pirates雇佣合同时，玩家地图库存中实际扣除的白银，而不是四舍五入后的报价。免费合同不消耗白银。</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>VGE电子子宫杂交体出生数</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>玩家拥有的VGE电子子宫成功完成生长周期后，实际逐个生成的玩家所属杂交单位数，按单位种类分类。生长失败、计时器进度或加载存档恢复不计入。</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_Conversions>VGE生物机械转化次数</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_ConversionsDesc>玩家所有的机械杂交装置成功转化，使原对象消失并生成一个属于玩家的新转化单位的次数，按生成的单位种类分类。只启动设备、等待或生成失败不计入。</RWS_VgeHybrid_ConversionsDesc>
+  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded批准假释次数</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApprovedDesc>假释听证中作出释放决定，实际清除仍由玩家拘禁的活囚犯已服满的刑期并下达释放指令的次数。仅举行听证、延长刑期、选择招募、重复操作及囚犯之后实际离开均不计入。</RWS_PrisonExpanded_ParoleApprovedDesc>
+  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller油田开采原油量（油田单位）</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>玩家油井成功抽取原油时，油田储量（CurrentCap）实际减少的数量。单位是油田容量单位，并非管道体积或物品数量。钻探进度、抽油尝试、油田自然回补、油罐之间转移及炼油厂产出不计入。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_PrisonExpanded_SentencesServed>Prison Expanded服满刑期次数</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServedDesc>玩家拘禁的囚犯在Prison Expanded中实际达到全部刑期，并首次符合假释听证条件的次数。假释批准、下达释放指令、每日重复处理及加载时恢复的数值均不计入。</RWS_PrisonExpanded_SentencesServedDesc>
+  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded囚犯实际离开数</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>由Prison Expanded记录、实际离开玩家主基地地图的囚犯数（Pawn.ExitMap执行成功），不同于仅收到释放或假释指令。只要实际离开就计入，不论原刑期如何。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller炼油厂燃料消耗（管道单位）</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>玩家的Rimefeller炼油厂处理导致管网可用燃料（FuelAvailable）实际减少的数量，在管道组件的基础tick之后测量。同一tick内转移进现场设备的燃料，以及仅计划或尝试消耗的燃料不计入。单位为管网燃料单位。</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsed>Rimefeller发电厂燃料消耗（管道单位）</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsedDesc>玩家Rimefeller发电厂成功抽取燃料时，管网可用燃料（FuelAvailable）实际减少的数量。空抽或失败的抽取不计入。单位为管网燃料单位，而非物品数。</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>决出胜负的竞技场比赛</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>玩家竞技场中正式记录了获胜者的比赛次数。</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>修建或升级的道路区段</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>世界地图上完成修建或升级的道路区段数量，按道路类型分类。双向道路区段只计一次。</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>成功入侵的战斗计算机</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>玩家单位成功入侵敌对战斗计算机后，该计算机被替换的次数。</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>逆重飞船发射增益</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>实际应用于玩家逆重飞船的发射增益数量，按增益类型分类。</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>完成的意识形态分裂</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>新注册分裂意识形态，并且至少有一名玩家单位改信的次数。</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>无畏舰葬礼复活转化数</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>玩家单位通过无畏舰葬礼复活，并获得生命维持和warcasket装甲的数量。</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>水疗客人支付的白银</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>来访者实际向玩家水疗设施支付的白银数，按设施类型分类。</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>完成的博物馆参观及学习活动</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>玩家单位成功完成的博物馆工作次数，分别统计娱乐参观和学习活动。</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>完成的店面商品销售</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>确认商品已实际交给来访者的店面销售次数，按商品类型分类。</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>登上车辆的次数</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>玩家单位新加入玩家车辆乘客名单的次数。</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>安装车辆升级的次数</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>玩家工作完成时新安装的车辆升级数量，按车辆类型分类。</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>从残骸中恢复的车辆数</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>完成受追踪车辆残骸框架的建造后生成的玩家车辆数量。</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>远行队进入Real Ruins遗迹的次数</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>玩家远行队抵达Real Ruins遗迹，生成其地图并确认单位实际进入的次数。</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>老虎机完成局数</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>玩家老虎机上完成的局数，分别统计失败及不同中奖类型。</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>向空白躯体移植神经栈的次数</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>玩家通过手术将已有的人格转移到此前空白但仍活着的躯体中的次数。</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>双亲均有记录的动物出生数</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>玩家动物顺利出生或孵化，且Animal Genetics记录了双亲的数量，按动物种类分类。</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>签订的新条约数</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>通过RimPacts与其他派系新达成的协议数量，按条约类型分类。续签已有协议不计入。</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>成为附庸的定居点数</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>通过Hegemony成为玩家有效附庸的定居点数量。附庸关系重新建立时再次计数。</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>完成的学校学期数</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Another Education System中按规定完成整个学期并保存到学期历史的学期数。</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>校外学生毕业人数</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>在学期结束时，以完成或优秀成绩离开的外部学生数量。</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>完成的校园活动数</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>玩家主基地地图上已完成且进行评估的AES School+校园活动，按活动类型分类。</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>开始酒店退房的客人组数</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>玩家地图上的酒店客人组完成入住后，开始按计划退房的组数。</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>建立的远行队营地数</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>使用Set Up Camp新设营地，玩家远行队成功进入营地地图的次数。</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>远征带来的研究进展次数</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Go Explore!研究请求实际推进研究项目的次数，按研究项目分类。</RWS_NewMod_ExploreResearchDesc>
+  <RWS_NewMod_Doctrine>完成调查的派系教义</RWS_NewMod_Doctrine>
+  <RWS_NewMod_DoctrineDesc>完成对其他派系教义调查的次数，按教义类型分类。</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>自动售货机交付给访客的物品数</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>玩家自动售货机成功交付给访客的物品数量，按物品类型分类，包括免费物品。</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>自动售货机收到的白银</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>来访者实际转入玩家自动售货机的白银数量，按机器类型分类。</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>图表：{0}</RWS_Chart_Title>
   <RWS_Chart_OpenTip>点击查看此统计项的图表。</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>按殖民地</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>按类别</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>按类别（{0}）</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>比较各纳入统计的殖民地记录值。这不是时间序列图。</RWS_Chart_ColonyNote>
-  <RWS_Chart_BreakdownNote>比较此统计项的已记录分类数据。这不是时间序列图。</RWS_Chart_BreakdownNote>
-  <RWS_Chart_OverallNote>此统计项仅有一个汇总值。</RWS_Chart_OverallNote>
-  <RWS_Chart_Points>显示数值：{0}</RWS_Chart_Points>
-  <RWS_Chart_NoData>没有可绘制的已测量数值。</RWS_Chart_NoData>
+  <RWS_Chart_ColonyNote>每个纳入的殖民地显示一个已记录数值。这不是随时间变化的图表。</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>显示所选统计项已记录的分类。这不是随时间变化的图表。</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>此统计项只有一个跨殖民地合计值。</RWS_Chart_OverallNote>
+  <RWS_Chart_Points>显示的数值：{0}</RWS_Chart_Points>
+  <RWS_Chart_NoData>没有可绘制成图表的测量值。</RWS_Chart_NoData>
 </LanguageData>

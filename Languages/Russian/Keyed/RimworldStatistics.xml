@@ -1125,113 +1125,113 @@
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded: извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по выходному ThingDef. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE: питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
-  <RWS_VnpeGrinder_SlurryStoredDesc>Фактические единицы дробной питательной суспензии, принятые в сеть труб игроками, - это расширенные шлифовальные машины Vanilla Nutrient Paste. Попытки шлифовальных машин, потребление ингредиентов без принятой суспензии и хранение труб другими зданиями не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
-  <RWS_VfeMedieval2_HoneyItems>Мед VFE Medieval2 действительно собран</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>Медовые юниты успешно размещаются или объединяются после того, как колонист игрока разгружает пасеку Medieval2, принадлежащую игроку, сгруппированную по выходу ThingDef. Производственная готовность, неудачные размещения и более поздние перевозки исключены.</RWS_VfeMedieval2_HoneyItemsDesc>
-  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security запустила кросс-картовые артиллерийские снаряды</RWS_VfeSecurity_ArtilleryLaunched>
-  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Успешные пуски снарядов-мишеней из принадлежащей игроку внекарточной артиллерии при появлении путешествующего мирового снаряда, сгруппированного по определению снаряда. Приказы цели, транзит без прибытия и выстрелы без нерестового снаряда не учитываются. Это не измеряет попадания цели.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
-  <RWS_VfeFactory_Harvested>VFE Factory Autofarmer собрала урожай</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>Предметы, недавно собранные принадлежавшим игроку Autofarmer, включая реальное увеличение буфера сбора урожая и подтвержденное размещение на земле, сгруппированные по выходу ThingDef.Поздняя выгрузка бункера, отклоненное размещение и сбор общего характера исключены.</RWS_VfeFactory_HarvestedDesc>
-  <RWS_VfeFactory_Sown>Фабрика VFE Автофермерские заводы посеяны</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>Новые растения на самом деле нерестятся, помечены посеянными и подобранными к выбранному урожаю во время плеера Autofarmer ProcessRow, сгруппированного по растению ThingDef. Неудачные ряды и старые растения исключены.</RWS_VfeFactory_SownDesc>
-  <RWS_VfePirates_WarcasketFits>Оборудование VFE Pirates Warcasket завершено</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Полностью комплектуемая игроком арматура Warcasket посредством обычной сварки, подтвержденная проектной очисткой и тремя вновь изношенными совпадающими фигурами, сгруппированными по типу бронирования Definition.Неполные задания, частичное наложение наряда и завершение разработчика исключены.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>VQE Ancients завершил отказ от инъекций</RWS_VqeAncients_Rejected>
-  <RWS_VqeAncients_RejectedDesc>Отвергнутый игрок Архоген Инжектор исходы, чей обитатель был выпущен живым с фактической инъекционной комой. Отмененная работа, выбранный результат без успешного завершения, и ожидание выбора гена-успеха исключены. Требуется Biotech.</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>VQE Древние завершили мутантные преобразования</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>Результаты мутаций инжектора архогена игрока, которые разрушают исходный персонаж и порождают одного мутанта выбранного игрока PawnKindDef, сгруппированного по типу мутанта. Другие нерестилища, отмены и ожидающие успеха варианты исключены. Требуется Biotech.</RWS_VqeAncients_MutationsDesc>
-  <RWS_VfeSettlers_BountyHandins>Поселенцы VFE успешно превратились в</RWS_VfeSettlers_BountyHandins>
-  <RWS_VfeSettlers_BountyHandinsDesc>Караван игроков хотел, чтобы преступники или тела действительно свернули и удалили, получая положительное серебряное вознаграждение.Открытие команды, пропавшие подданные, неудачные передачи и не связанные с ними вещи не учитываются.</RWS_VfeSettlers_BountyHandinsDesc>
-  <RWS_VfeSettlers_BountySilver>VFE Settlers наградили серебром</RWS_VfeSettlers_BountySilver>
-  <RWS_VfeSettlers_BountySilverDesc>Серебро фактически добавлено к каравану игрока первой передачей вознаграждения в успешной рукоятке поселенца VFE, исключающей предметы преступника и любое серебро в этих вещах.</RWS_VfeSettlers_BountySilverDesc>
-  <RWS_Rimatomics_Byproducts>Dubs Rimatomics переработка побочных продуктов</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>Предметы, фактически размещенные или объединенные в качестве побочных продуктов во время полной разгрузки плутониевого процессора, принадлежащего игроку, сгруппированные по выходу ThingDef. Возвращенное отработанное топливо, просто обработанный материал и несвязанные размещения не учитываются.</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>Расширенные боеприпасы патронов, потребляемые</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Реальные патроны, вычитаемые из оружейных журналов игрока-колониста или уничтожаемые посредством прямой подпитки, сгруппированные AmmoDef.Перезарядка движений, сухие пожары, расход башен и отладка боеприпасов пополнения не учитываются.</RWS_CE_RoundsUsedDesc>
-  <RWS_CE_SuppressionReceived>Расширенное подавление игроков колонистов</RWS_CE_SuppressionReceived>
-  <RWS_CE_SuppressionReceivedDesc>Игрок-колония персонажей, вновь входящих в Расширенное боевое подавленное состояние, засчитывается один раз за переход из неподавленного состояния. Повторное подавление при уже подавленном и подавление теста разработчика исключены. Эти меры подавления получены, а не подавления нанесены врагам.</RWS_CE_SuppressionReceivedDesc>
-  <RWS_VfePirates_HireContracts>Контракты VFE Pirates по найму завершены</RWS_VfePirates_HireContracts>
-  <RWS_VfePirates_HireContractsDesc>Новые пиратские или наемные контракты, фактически совершенные Vanilla Expanded Framework для найма принадлежащей пиратам фракции найма. Взгляды на диалог, отмененные предложения и неудавшиеся платежи не учитываются.</RWS_VfePirates_HireContractsDesc>
-  <RWS_VfePirates_HireSilver>Серебро VFE Pirates фактически оплачено за аренду</RWS_VfePirates_HireSilver>
-  <RWS_VfePirates_HireSilverDesc>Серебро фактически удаляется из запасов карт игрока, когда регистрируется новый контракт на аренду VFE Pirates, а не его округленная котируемая цена. Бесплатные контракты дают ноль серебра.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>Успешные гибридные роды VGE Electro-womb</RWS_VgeHybrid_Births>
-  <RWS_VgeHybrid_BirthsDesc>Ровно один новый гибридный персонаж, принадлежащий игроку, фактически возник, когда принадлежащий игроку VGE электро-матка завершает успешный цикл роста, сгруппированный по типу персонажа. Неудачный рост, прогрессирование таймера и восстановление нагрузки исключены.</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>Биомеханические преобразования VGE завершены</RWS_VgeHybrid_Conversions>
-  <RWS_VgeHybrid_ConversionsDesc>Успешные принадлежащие игроку преобразования мехахибридайзера, которые разрушают исходный объект и порождают одного нового игрока, принадлежащего преобразованному персонажу, в результате чего тип персонажа. Активация машины, ожидание прогресса и неудачный нерест исключаются.</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Тюрьма Расширенные разрешения на условно-досрочное освобождение</RWS_PrisonExpanded_ParoleApproved>
-  <RWS_PrisonExpanded_ParoleApprovedDesc>Решения о досрочном освобождении, которые успешно освобождают от должного наказания живого заключенного, все еще находящегося под стражей игрока, с включенным фактическим взаимодействием с освобождением. Простые слушания, продления, варианты вербовки, повторный выбор и более поздние физические отъезды не учитываются.</RWS_PrisonExpanded_ParoleApprovedDesc>
-  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller сырая нефть, добытая с нефтяных месторождений (полевые установки)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Фактическое сокращение нефтяного месторождения CurrentCap во время успешной обработки Pump-экшена принадлежащего игроку нефтяного деррика. Это единицы мощности нефтяного месторождения, НЕ объем труб или единицы инвентаризации. Никакого прогресса в бурении, попытки прокачки, пассивной регенерации месторождения, переноса резервуаров или выхода НПЗ не учитывается.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Тюрьма Расширенные завершенные приговоры заключенным</RWS_PrisonExpanded_SentencesServed>
-  <RWS_PrisonExpanded_SentencesServedDesc>Количество заключенных, удерживаемых игроками, которые фактически достигают своей установленной продолжительности в расширенной тюрьме и сначала входят в состояние условно-досрочного освобождения, одобрение условно-досрочного освобождения, приказы об освобождении, повторяющиеся дни и загруженные значения не учитываются.</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Расширенный фактический выезд заключенных</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Записанные заключенные, которые физически покидают домашнюю карту игрока через успешный Character.ExitMap, вместо того, чтобы получать инструкции по освобождению или условно-досрочному освобождению.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
-  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller потребленное топливо нефтеперерабатывающего завода (трубопроводные агрегаты)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>Фактическое снижение расхода топлива в трубопроводе, вызванное переработкой Rimefeller нефтеперерабатывающего завода, осуществляемой игроком, измеренной после клещей на основе компонентов трубы. Исключает топливо, передаваемое в машины на месте во время базового клеща, и любое запланированное или предпринятое потребление. Блоки являются топливными блоками трубопровода.</RWS_Rimefeller_RefineryFuelUsedDesc>
-  <RWS_Rimefeller_PlantFuelUsed>Rimefeller потребляемое топливо (трубные агрегаты)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>Фактическое снижение расхода топлива по трубопроводу Доступно во время успешного отбора топлива на принадлежащих игрокам электростанциях Rimefeller. Сухие или неудавшиеся отборы исключены. Единицы являются трубопроводными топливными единицами, а не товарными запасами.</RWS_Rimefeller_PlantFuelUsedDesc>
-  <RWS_NewMod_Arena>Арена поединков решена</RWS_NewMod_Arena>
-  <RWS_NewMod_ArenaDesc>Игрок сражается на арене с официально зарегистрированным победителем.</RWS_NewMod_ArenaDesc>
-  <RWS_NewMod_Roads>Дорожные сегменты построены или улучшены</RWS_NewMod_Roads>
-  <RWS_NewMod_RoadsDesc>Завершенные дорожные сегменты карты мира по типу дороги Двунаправленный сегмент засчитывается один раз.</RWS_NewMod_RoadsDesc>
-  <RWS_NewMod_GravHack>Военные компьютеры взломаны</RWS_NewMod_GravHack>
-  <RWS_NewMod_GravHackDesc>Враждебные военные компьютеры были заменены после успешного взлома персонажем игрока.</RWS_NewMod_GravHackDesc>
-  <RWS_NewMod_GravBoon>Применяется Gravship Launch Boons</RWS_NewMod_GravBoon>
-  <RWS_NewMod_GravBoonDesc>Пусковые бонусы, применяемые к гравирам игроков, по типу boon.</RWS_NewMod_GravBoonDesc>
-  <RWS_NewMod_Schisms>Идеологические расколы завершены</RWS_NewMod_Schisms>
-  <RWS_NewMod_SchismsDesc>Новые идеологии раскола, зарегистрированные по крайней мере с одним персонажем игрока, были преобразованы.</RWS_NewMod_SchismsDesc>
-  <RWS_NewMod_Funeral>Похоронные трансформации Dreadnought</RWS_NewMod_Funeral>
-  <RWS_NewMod_FuneralDesc>Персонажи игроков, воскресшие в результате дредноутовых похорон с приложенной спасательной и варкаскетной броней.</RWS_NewMod_FuneralDesc>
-  <RWS_NewMod_Spa>Серебро поступило от гостей СПА</RWS_NewMod_Spa>
-  <RWS_NewMod_SpaDesc>Серебро фактически передается в спа-центры игрока посетителями по типу объекта.</RWS_NewMod_SpaDesc>
-  <RWS_NewMod_Museum>Посещения музеев и учебные занятия завершены</RWS_NewMod_Museum>
-  <RWS_NewMod_MuseumDesc>Успешная работа в музее игроков, отдельное посещение и учеба.</RWS_NewMod_MuseumDesc>
-  <RWS_NewMod_Storefront>Продажа в магазине завершена</RWS_NewMod_Storefront>
-  <RWS_NewMod_StorefrontDesc>Транзакции в магазине с подтвержденной доставкой посетителю по продукту.</RWS_NewMod_StorefrontDesc>
-  <RWS_NewMod_Boarding>Посадка транспортных средств</RWS_NewMod_Boarding>
-  <RWS_NewMod_BoardingDesc>Персонажи игроков, недавно добавленные в пассажирский манифест игрового автомобиля.</RWS_NewMod_BoardingDesc>
-  <RWS_NewMod_Upgrades>Установка обновлений автомобилей</RWS_NewMod_Upgrades>
-  <RWS_NewMod_UpgradesDesc>Модернизация нового транспортного средства, установленная через завершенную работу игрока, по типу транспортного средства.</RWS_NewMod_UpgradesDesc>
-  <RWS_NewMod_Wrecks>Автомобили, восстановленные после крушения</RWS_NewMod_Wrecks>
-  <RWS_NewMod_WrecksDesc>Игровые автомобили, порожденные завершенной конструкцией гусеничной рамы крушения.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Real Ruins караванов, прибывающих на новые загруженные площадки</RWS_NewMod_RealRuins>
-  <RWS_NewMod_RealRuinsDesc>Прибытие каравана игрока с подтвержденным входом персонажа на сайт Real Ruins, карта которого должна была быть сгенерирована.</RWS_NewMod_RealRuinsDesc>
-  <RWS_NewMod_Casino>Слот-машины завершены</RWS_NewMod_Casino>
-  <RWS_NewMod_CasinoDesc>Слот-раунды завершаются на игровых автоматах, разбитых на проигрыш и результат победы.</RWS_NewMod_CasinoDesc>
-  <RWS_NewMod_Resleeving>Нейронный стек переходит в пустые рукава</RWS_NewMod_Resleeving>
-  <RWS_NewMod_ResleevingDesc>Операция игрока, которая установила существующую личность в живой, ранее пустой рукав.</RWS_NewMod_ResleevingDesc>
-  <RWS_NewMod_AnimalPedigree>Воспитание у обоих генетических родителей зафиксировано</RWS_NewMod_AnimalPedigree>
-  <RWS_NewMod_AnimalPedigreeDesc>Успешно родившиеся или вылупившиеся животные с обоими родительскими записями, присвоенными Animal Genetics.</RWS_NewMod_AnimalPedigreeDesc>
-  <RWS_NewMod_Treaties>Подписаны новые договоры</RWS_NewMod_Treaties>
-  <RWS_NewMod_TreatiesDesc>Новые соглашения RimPacts, заключенные с другой фракцией, по типу договора. Обновление существующего соглашения не добавляет подсчета.</RWS_NewMod_TreatiesDesc>
-  <RWS_NewMod_Vassalizations>Поселения, сделанные вассалами</RWS_NewMod_Vassalizations>
-  <RWS_NewMod_VassalizationsDesc>Поселения, вступившие в активную вассализацию игрока через Гегемонию.Восстановленные вассалы снова подсчитывают.</RWS_NewMod_VassalizationsDesc>
-  <RWS_NewMod_Semesters>Школьные семестры завершены</RWS_NewMod_Semesters>
-  <RWS_NewMod_SemestersDesc>Другие семестры системы образования завершены после полного активного семестра и заархивированы в истории семестра.</RWS_NewMod_SemestersDesc>
-  <RWS_NewMod_Graduations>Иностранные студенты закончили обучение</RWS_NewMod_Graduations>
-  <RWS_NewMod_GraduationsDesc>Внешние поступления завершены в конце семестра с завершенным или отличным академическим результатом.</RWS_NewMod_GraduationsDesc>
-  <RWS_NewMod_SchoolEvents>Школьные мероприятия завершены</RWS_NewMod_SchoolEvents>
-  <RWS_NewMod_SchoolEventsDesc>События AES School+ завершаются и оцениваются на домашних картах игроков по типу события.</RWS_NewMod_SchoolEventsDesc>
-  <RWS_NewMod_HotelCheckout>Группы гостей, начавшие выезд</RWS_NewMod_HotelCheckout>
-  <RWS_NewMod_HotelCheckoutDesc>Группы гостей на картах игроков, которые начинают запланированный кассовый сбор после регистрации.</RWS_NewMod_HotelCheckoutDesc>
-  <RWS_NewMod_Camp>Разбитые лагеря караванов</RWS_NewMod_Camp>
-  <RWS_NewMod_CampDesc>Новые Set Up Camp площадок, где караван игроков успешно вошел в лагерную карту.</RWS_NewMod_CampDesc>
-  <RWS_NewMod_ExploreResearch>Продвижение исследований в экспедициях</RWS_NewMod_ExploreResearch>
-  <RWS_NewMod_ExploreResearchDesc>Go Explore! исследовательских запросов, которые фактически продвигают проект, исследовательским проектом.</RWS_NewMod_ExploreResearchDesc>
+  <RWS_VnpeGrinder_SlurryStoredDesc>Питательная суспензия, фактически принятая в сеть труб из измельчителей Vanilla Nutrient Paste Expanded игрока, включая дробные количества. Попытки измельчения, расход ингредиентов без принятия суспензии и хранение в трубах от других зданий не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
+  <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2: собранный мёд</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Мёд, фактически размещённый или добавленный в стопки после опустошения колонистом игрока принадлежащей ему пасеки Medieval 2, по выходному ThingDef. Одна лишь готовность пасеки, неудачное размещение и дальнейшая переноска не учитываются.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security: прибывшие артиллерийские снаряды</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunchedDesc>Снаряды артиллерии игрока за пределами карты, достигшие целевой карты и действительно созданные там как снаряды, по виду снаряда. Приказы о наведении, снаряды в пути и выстрелы без создания снаряда не учитываются. Это не число попаданий.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
+  <RWS_VfeFactory_Harvested>VFE Factory: урожай автофермеров</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_HarvestedDesc>Новые предметы, собранные автофермерами игрока, по действительному увеличению буфера урожая или подтверждённому размещению на земле, по выходному ThingDef. Позднейшая выгрузка в бункеры, отклонённое размещение и обычная уборка урожая пешками не учитываются.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_Sown>VFE Factory: посевы автофермеров</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_SownDesc>Новые растения, действительно созданные, помеченные как посаженные и соответствующие выбранной культуре во время рабочего цикла автофермера игрока, по ThingDef растения. Неудачные циклы и уже существующие растения не учитываются.</RWS_VfeFactory_SownDesc>
+  <RWS_VfePirates_WarcasketFits>VFE Pirates: завершённое облачение в варкаскеты</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFitsDesc>Облачения в варкаскеты игрока, завершённые обычной сваркой и подтверждённые закрытием проекта и надеванием трёх соответствующих новых частей брони, по Def брони. Незавершённые работы, частичное облачение и действия разработчика не учитываются.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VqeAncients_Rejected>VQE Ancients: отторжения инъекции архогена</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_RejectedDesc>Результаты инъектора архогена игрока, когда находившаяся внутри пешка отвергла инъекцию, была выпущена живой и впала в инъекционную кому. Отменённые действия, выбранные, но не завершённые результаты и ещё не сделанный выбор генов после успеха не учитываются. Требуется Biotech.</RWS_VqeAncients_RejectedDesc>
+  <RWS_VqeAncients_Mutations>VQE Ancients: превращения в мутантов</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_MutationsDesc>Результаты мутации в инъекторе архогена игрока, при которых исходная пешка уничтожается и появляется один мутант выбранного PawnKindDef, принадлежащий игроку, по виду мутанта. Другие создания, отмены и ожидающий выбор после успеха не учитываются. Требуется Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VfeSettlers_BountyHandins>VFE Settlers: сданные цели с наградой</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandinsDesc>Разыскиваемые преступники или их тела, действительно сданные и удалённые из каравана игрока при получении положительной награды серебром. Открытие команды, отсутствующая цель, неудачная передача и посторонние вещи не учитываются.</RWS_VfeSettlers_BountyHandinsDesc>
+  <RWS_VfeSettlers_BountySilver>VFE Settlers: серебро за награды</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilverDesc>Серебро, действительно добавленное каравану игрока при первой выплате награды за успешную сдачу цели VFE Settlers. Вещи преступника, включая его серебро, не учитываются.</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_Rimatomics_Byproducts>Dubs Rimatomics: побочные продукты переработки</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_ByproductsDesc>Предметы, фактически размещённые или добавленные в стопки как побочные продукты при завершении выгрузки топлива плутониевым переработчиком игрока, по выходному ThingDef. Возвращённое отработанное топливо, только переработанные материалы и посторонние размещения не учитываются.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_CE_RoundsUsed>Combat Extended: выпущенные патроны</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsedDesc>Патроны, действительно израсходованные из магазинов оружия поселенцев игрока либо при стрельбе непосредственно из инвентаря, по AmmoDef. Перенос патронов при перезарядке, холостые выстрелы, применение турелей и отладочное пополнение не учитываются.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_SuppressionReceived>Combat Extended: подавление поселенцев</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceivedDesc>Случаи нового перехода пешки колонии игрока в состояние подавления Combat Extended из неподаленного состояния. Дальнейшее подавление уже подавленной пешки и тестовые подавления разработчика не учитываются. Измеряется полученное подавление, а не нанесённое врагам.</RWS_CE_SuppressionReceivedDesc>
+  <RWS_VfePirates_HireContracts>VFE Pirates: заключённые договоры найма</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContractsDesc>Новые договоры найма пиратов и наёмников, действительно заключённые через окно найма Vanilla Expanded Framework с фракцией найма VFE Pirates. Простое открытие окна, отменённые предложения и неудачные оплаты не учитываются.</RWS_VfePirates_HireContractsDesc>
+  <RWS_VfePirates_HireSilver>VFE Pirates: серебро, потраченное на наём</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilverDesc>Серебро, действительно списанное с карты игрока при регистрации нового договора найма VFE Pirates, а не округлённая заявленная цена. Бесплатные договоры не расходуют серебро.</RWS_VfePirates_HireSilverDesc>
+  <RWS_VgeHybrid_Births>VGE: рождение гибридов в электроматке</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_BirthsDesc>Новые гибридные пешки игрока, действительно появившиеся по одной после успешного цикла роста в принадлежащей игроку электроматке VGE, по типу пешки. Неудачный рост, ход таймера и восстановление сохранения не учитываются.</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_Conversions>VGE: биомеханические превращения</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_ConversionsDesc>Успешные превращения в мехагибридизаторах игрока, когда исходная пешка уничтожается и создаётся одна новая преобразованная пешка игрока, по итоговому виду пешки. Запуск аппарата, ожидание и неудачные появления не учитываются.</RWS_VgeHybrid_ConversionsDesc>
+  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded: одобренные условные освобождения</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApprovedDesc>Решения об освобождении на слушаниях, реально снявшие полностью отбытый срок живого пленника под стражей игрока и назначившие его освобождение. Одни слушания, продления срока, варианты вербовки, повторные решения и последующий уход заключённого не учитываются.</RWS_PrisonExpanded_ParoleApprovedDesc>
+  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller: добытая нефть (единицы месторождения)</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Фактическое уменьшение ёмкости нефтяного месторождения (CurrentCap) при успешной работе нефтяной вышки игрока. Единицы ёмкости месторождения, НЕ объём труб и не число предметов. Ход бурения, попытки качать, естественное пополнение, переливы между баками и продукты переработки не учитываются.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_PrisonExpanded_SentencesServed>Prison Expanded: отбытые сроки</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServedDesc>Сроки заключённых под стражей игрока, которые в Prison Expanded действительно достигли полной длительности и впервые стали подлежать слушанию об условном освобождении. Одобрения, приказы об освобождении, повторные ежедневные тики и восстановленные при загрузке значения не учитываются.</RWS_PrisonExpanded_SentencesServedDesc>
+  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded: реально ушедшие заключённые</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Заключённые, отслеживаемые Prison Expanded и физически покинувшие домашнюю карту игрока (успешный Pawn.ExitMap), в отличие от получивших лишь приказ об освобождении. Любой фактический уход учитывается независимо от исходного срока.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller: топливо для переработки (единицы труб)</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>Фактическое уменьшение доступного топлива трубной сети (FuelAvailable) из-за работы перерабатывающего завода игрока, измеренное после базового тика компонента труб. Топливо, перемещённое в местные машины в течение того же тика, и только запланированные или предпринятые расходы не учитываются. Единицы топлива трубной сети.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsed>Rimefeller: топливо электростанций (единицы труб)</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsedDesc>Фактическое уменьшение доступного топлива трубной сети (FuelAvailable) при успешном заборе топлива электростанциями Rimefeller игрока. Пустые и неудачные заборы не учитываются. Единицы топлива трубной сети, не предметы.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>Арены: поединки с установленным победителем</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>Поединки на аренах игрока, для которых официально записан победитель.</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>Построенные или улучшенные дорожные участки</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>Завершённые участки дорог на карте мира, по типу дороги. Двусторонний участок учитывается один раз.</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>Взломанные боевые компьютеры</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>Враждебные боевые компьютеры, заменённые после успешного взлома пешкой игрока.</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>Бонусы запуска гравикораблей</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>Бонусы запуска, применённые к гравикораблям игрока, по виду бонуса.</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>Завершённые идеологические расколы</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>Новые раскольнические идеологии, зарегистрированные после обращения хотя бы одной пешки игрока.</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>Возрождения при похоронах дредноута</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>Пешки игрока, возвращённые к жизни на похоронах дредноута с подключением жизнеобеспечения и надеванием брони варкаскета.</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>Серебро от посетителей спа</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>Серебро, фактически уплаченное посетителями в спа-учреждения игрока, по виду учреждения.</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>Завершённые посещения музея и занятия</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>Успешные музейные работы пешек игрока, отдельно для развлекательных посещений и обучения.</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>Завершённые продажи в магазине</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>Продажи в магазине, при которых подтверждена передача товара посетителю, по виду товара.</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>Посадки в транспорт</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>Пешки игрока, вновь внесённые в пассажирский список транспорта игрока.</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>Установленные улучшения транспорта</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>Новые улучшения транспорта, установленные при завершении работы игрока, по виду транспорта.</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>Транспорт, восстановленный из обломков</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>Транспорт игрока, появившийся после завершения строительства из отслеживаемого каркаса обломков.</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Real Ruins: руины, посещённые караванами</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>Караваны игрока, прибывшие на участок Real Ruins, для которого пришлось создавать карту, с подтверждённым входом пешек.</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>Завершённые раунды игровых автоматов</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>Завершённые раунды на игровых автоматах игрока, отдельно по проигрышам и каждому виду выигрыша.</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>Передачи нейростеков в пустые оболочки</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>Операции игрока, перенёсшие существующую личность в прежде пустую живую оболочку.</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>Животные с зарегистрированными обоими родителями</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>Животные игрока, успешно родившиеся или вылупившиеся с двумя родителями, зарегистрированными Animal Genetics, по виду животного.</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>Новые подписанные договоры</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>Новые соглашения RimPacts с другой фракцией, по типу договора. Продление существующего соглашения не учитывается.</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>Поселения, ставшие вассалами</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>Поселения, ставшие действующими вассалами игрока через Hegemony. Повторное установление вассальных отношений снова учитывается.</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>Завершённые учебные семестры</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Семестры Another Education System, полностью завершившие обучение и сохранённые в истории семестров.</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>Выпуск внешних учеников</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>Внешние ученики, уехавшие по окончании семестра с результатом «завершено» или «отлично».</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>Завершённые школьные события</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>События AES School+ на домашних картах игрока, завершённые и оценённые, по виду события.</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>Гостевые группы, начавшие выезд из отеля</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>Группы гостей на картах игрока, начавшие запланированный выезд из отеля после заселения.</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>Основанные караванные лагеря</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>Новые лагеря Set Up Camp, на карты которых караваны игрока успешно вошли.</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>Продвижение исследований во время экспедиций</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Исследовательские заявки Go Explore!, которые действительно продвинули проект, по исследовательскому проекту.</RWS_NewMod_ExploreResearchDesc>
   <RWS_NewMod_Doctrine>Изученные доктрины фракций</RWS_NewMod_Doctrine>
-  <RWS_NewMod_DoctrineDesc>Завершены исследования доктрин других фракций по типу доктрины.</RWS_NewMod_DoctrineDesc>
-  <RWS_NewMod_VendingItems>Товары, выданные посетителям</RWS_NewMod_VendingItems>
-  <RWS_NewMod_VendingItemsDesc>Предметы, успешно переданные в игровые автоматы, по типу предмета. Включает бесплатные предметы.</RWS_NewMod_VendingItemsDesc>
-  <RWS_NewMod_VendingSilver>Серебро, полученное торговыми автоматами</RWS_NewMod_VendingSilver>
-  <RWS_NewMod_VendingSilverDesc>Серебро фактически переносится посетителями в игровые автоматы по типу машины.</RWS_NewMod_VendingSilverDesc>
-  <RWS_Chart_Title>График: {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>Нажмите, чтобы открыть график этой статистики.</RWS_Chart_OpenTip>
+  <RWS_NewMod_DoctrineDesc>Завершённые расследования доктрин других фракций, по виду доктрины.</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>Выданные посетителям товары</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>Предметы, успешно выданные посетителям автоматами игрока, по виду предмета. Бесплатные товары также включены.</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>Серебро из торговых автоматов</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>Серебро, фактически переданное посетителями в торговые автоматы игрока, по виду автомата.</RWS_NewMod_VendingSilverDesc>
+  <RWS_Chart_Title>Диаграмма: {0}</RWS_Chart_Title>
+  <RWS_Chart_OpenTip>Нажмите, чтобы открыть диаграмму для этой статистики.</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>По колониям</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>По категориям</RWS_Chart_ByCategory>
-  <RWS_Chart_ByCategoryColony>По категориям ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Сравнение записанных значений включённых колоний. Это не временной график.</RWS_Chart_ColonyNote>
-  <RWS_Chart_BreakdownNote>Сравнение записанных категорий статистики. Это не временной график.</RWS_Chart_BreakdownNote>
-  <RWS_Chart_OverallNote>Для этой статистики доступно только одно сводное значение.</RWS_Chart_OverallNote>
+  <RWS_Chart_ByCategoryColony>По категориям: {0}</RWS_Chart_ByCategoryColony>
+  <RWS_Chart_ColonyNote>По одному записанному значению для каждой выбранной колонии. Это не временной график.</RWS_Chart_ColonyNote>
+  <RWS_Chart_BreakdownNote>Записанные категории выбранной статистики. Это не временной график.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_OverallNote>Для этой статистики доступно лишь одно общее значение.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Показано значений: {0}</RWS_Chart_Points>
-  <RWS_Chart_NoData>Нет измеренных числовых значений для графика.</RWS_Chart_NoData>
+  <RWS_Chart_NoData>Нет измеренных значений для диаграммы.</RWS_Chart_NoData>
 </LanguageData>
