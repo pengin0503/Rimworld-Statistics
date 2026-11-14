@@ -19,6 +19,23 @@ public static class MetricChartSeries
             .Select(c => new MetricChartBar(c.Key, c.Row!.Value)));
     }
 
+    /// <summary>Basic Overview values use the same inclusion and evidence rules as BasicMetrics.</summary>
+    public static IReadOnlyList<MetricChartBar> BasicByColony(StatsResult stats, string metricKey)
+    {
+        ArgumentNullException.ThrowIfNull(stats);
+        if (!BasicMetrics.Contains(metricKey))
+            return [];
+        return Sort(stats.Colonies
+            .Where(c => !c.Excluded && !c.OutOfScope)
+            .Select(c => new { c.Key, Number = BasicMetrics.Value(c, metricKey) })
+            .Where(c => c.Number is { } number && double.IsFinite(number))
+            .Select(c => new MetricChartBar(c.Key, new NumericValue
+            {
+                Number = c.Number,
+                Coverage = MetricCoverage.SnapshotOnly,
+            })));
+    }
+
     /// <summary>Saved per-category contributions, not a series of successive save-time measurements.</summary>
     public static IReadOnlyList<MetricChartBar> Breakdowns(NumericView view, string metricKey, string? colonyKey = null)
     {
