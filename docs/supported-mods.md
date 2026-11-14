@@ -1,16 +1,35 @@
 # 対応MOD一覧 / Supported Mods
 
 - A RimWorld of Magic
+- AES School+
+- Alpha Memes
+- Altered Carbon 2: ReSleeved
+- Animal Genetics (Continued)
+- Another Education System
+- Biomes! Fossils
 - Combat Extended
 - Dubs Bad Hygiene
 - Dubs Rimatomics
 - Gastronomy (Continued)
 - Giddy-Up 2 – Continued
+- Go Explore!
+- Hegemony
 - Hospitality (Continued)
+- Hospitality: Casino
+- Hospitality: Spa
+- Hospitality: Storefront
+- Hospitality: Vending machines
+- Hotels and Recreation
 - Prison Expanded
+- Prisoner Arena (Continued)
 - Project RimFactory Revived
+- Real Ruins
 - Rimefeller
+- RimPacts
+- Roads of the Rim (Continued)
 - Save Our Ship 2
+- Set Up Camp
+- Simple Leadership
 - Simple Warrants
 - Vanilla Achievements Expanded
 - Vanilla Aspirations Expanded
@@ -28,6 +47,9 @@
 - Vanilla Furniture Expanded – Factory
 - Vanilla Furniture Expanded – Security
 - Vanilla Genetics Expanded
+- Vanilla Gravship Expanded – Chapter 1
+- Vanilla Gravship Expanded – Chapter 2
+- Vanilla Ideology Expanded – Splits and Schisms
 - Vanilla Nutrient Paste Expanded
 - Vanilla Outposts Expanded
 - Vanilla Psycasts Expanded
@@ -39,4 +61,6 @@
 - Vanilla Skills Expanded
 - Vanilla Social Interactions Expanded
 - Vanilla Trading Expanded
+- Vanilla Vehicles Expanded
+- Vanilla Vehicles Expanded – Upgrades
 - Vehicle Framework

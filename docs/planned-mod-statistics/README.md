@@ -10,13 +10,11 @@ Start with the [implementation handoff](2026-11-13-implementation-handoff.md). T
 
 ## New research candidates, not part of the approved 35
 
-On 2026-11-13, the existing 35-MOD implementation register was kept intact and **8 separately proposed MOD candidates** were preserved in the [third-wave candidate register](2026-11-13-thirdwave-candidate-register.md). A further **9 candidates outside the Vanilla Expanded family**, plus explicit 1.7 compatibility exclusions, were researched in the [non-Vanilla Expanded discovery audit](2026-11-13-non-ve-discovery.md). These files are **investigation-only**: the 35 planned rows remain 35, neither group is counted as implemented, and neither group automatically becomes a mandatory engineering task. Candidate status is subject to active 1.7 binary / successful commit point proof and no generic-statistic duplication.
+The [third-wave candidate register](2026-11-13-thirdwave-candidate-register.md) and [non-Vanilla Expanded discovery audit](2026-11-13-non-ve-discovery.md) each track eight additional MODs.
 
-## Distinct gameplay genres: further research (2026-11-13)
+The [distinct-genre register](2026-11-13-fourthwave-distinct-genres.md) tracks seven candidates covering diplomacy, vassals, education, arenas, animal inheritance, museums and religious transformation. The [follow-on audit](2026-11-13-fourthwave-follow-on-research.md) tracks four more candidates covering school operations, expeditions, ruins and pollination.
 
-The owner also requested **8 ideas in previously underrepresented statistical genres** (G01–G08: diplomacy, vassals/territory, education, organized arenas, animal inheritance, museums, religious transformation and the archaeology of past colonies). These are preserved in the [fourth-wave distinct-genre register](2026-11-13-fourthwave-distinct-genres.md). A subsequent wider investigation found **5 more separate MOD candidates** (H01–H05: school operations, expedition quests, other players' ruins, urban campaigns and ecological pollination), in the [fourth-wave follow-on audit](2026-11-13-fourthwave-follow-on-research.md).
-
-**Bookkeeping:** the original **35 approved MODs are unchanged**; earlier third-wave research is **8 + 9 = 17** additional candidates; this fourth-wave research is **8 + 5 = 13** distinct entries. Total **30 separately recorded newer candidates**, not 30 new runtime integrations or commitments. Conditional/hold entries require an actual 1.7 active binary and an independent confirmed outcome; no stats may be fabricated from generic quest/trade/snapshot data. As before, difficult-to-measure outcomes may be waived with explicit evidence.
+The [implementation register](2026-11-13-additional-30-implementation.md) records the current status of these 27 candidates separately from the original 35.
 
 ## Second-wave scope is also committed
 

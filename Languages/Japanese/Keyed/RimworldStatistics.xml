@@ -1171,4 +1171,58 @@
   <RWS_Rimefeller_RefineryFuelUsedDesc>自勢力の精製設備による処理で、パイプ網の FuelAvailable が実際に減少した量。設備の通常補給による移送は基底の CompTick の後から測ることで除外し、未実行の予定消費も数えません。</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller 発電設備の燃料消費量（パイプ単位）</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>自勢力の Rimefeller 発電設備が実際にパイプ網から引き出した燃料量。引き出し失敗や供給不足は加算しません。単位はパイプ内の燃料量でありアイテム数ではありません。</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>勝者が確定した闘技場の試合</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>自勢力の闘技場で勝者が正式に記録された試合数。</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>新設・改良した道路区間</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>世界マップで新設または改良が完了した道路区間の数。道路種別ごとに、双方向の区間を1件として数えます。</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>ハッキングした戦闘コンピューター</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>自勢力のポーンのハッキング成功後、実際に置き換わった敵の戦闘コンピューターの数。</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>グラヴシップの航行ボーナス</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>自勢力のグラヴシップに適用された航行ボーナスの回数。ボーナスの種類別に集計します。</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>発生したイデオロギー分裂</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>新しいイデオロギーが登録され、自勢力のポーンが少なくとも1人改宗した分裂の数。</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>ドレッドノート葬儀での復活・変換</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>ドレッドノート葬儀で復活し、生命維持とウォーキャスケット装備が適用された自勢力のポーンの数。</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>スパで実際に受け取った銀貨</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>来訪者から自勢力のスパ設備に実際に移された銀貨の量。設備種別ごとに集計します。</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>博物館の見学・学習完了</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>自勢力のポーンが完了した博物館ジョブの数。娯楽の見学と学習を分けて集計します。</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>商品を引き渡した店頭取引</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>来訪者に実際に商品が渡った店頭取引の回数。商品別に集計します。</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>車両への搭乗</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>自勢力の車両の乗員リストに、自勢力のポーンが新たに加わった回数。</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>取り付けた車両アップグレード</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>自勢力のポーンの作業で車両に新たに取り付けられたアップグレードの数。車両種別で集計します。</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>残骸から復元した車両</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>残骸由来の建設枠から作業を完了し、実際に出現した自勢力の車両の数。</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Real Ruinsの遺跡到着</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>マップ生成が必要だったReal Ruinsの遺跡に自勢力のキャラバンが到着し、ポーンが実際に進入した回数。</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>スロットの完了ラウンド</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>自勢力のスロット台で完了したラウンドの数。負けと当たりの種類別に集計します。</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>空のスリーブへの神経スタック移植</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>自勢力の手術で、空だったスリーブに既存の人格を移し、生存した回数。</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>両親の系譜がある出生・孵化</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>Animal Geneticsで両親の記録が割り当てられ、出生・孵化に成功した自勢力の動物の数。動物の種類別に集計します。</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>新たに締結した条約</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>RimPactsで他派閥と新たに締結した条約を種類別に集計します。既存条約の更新は含みません。</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>属国化した集落</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>Hegemonyで自勢力の属国になった集落の数。離反後に再び属国になった場合も数えます。</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>完了した学期</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Another Education Systemで所定の授業期間に達し、履歴に保存された学期の数。</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>卒業した外部生徒</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>学期満了で帰還し、学業成績が修了または優秀と記録された外部生徒の数。</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>完了した学校行事</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>自勢力の拠点で開催され、完了と評価が確定したAES School+の学校行事を種類別に集計します。</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>ホテルでチェックアウトを迎えた組数</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>自勢力のマップでチェックインを済ませ、予定どおりチェックアウトを開始した宿泊グループの数。</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>設営したキャラバンキャンプ</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>Set Up Campで新しく設営し、自勢力のキャラバンが実際に入ったキャンプの数。</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>遠征で研究が進んだ回数</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Go Explore!の研究依頼で実際に研究が進んだ回数。研究プロジェクト別に集計します。</RWS_NewMod_ExploreResearchDesc>
+  <RWS_NewMod_Doctrine>調査を完了した派閥ドクトリン</RWS_NewMod_Doctrine>
+  <RWS_NewMod_DoctrineDesc>他派閥のドクトリンの調査を完了した回数。ドクトリンの種類別に集計します。</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>自販機で来訪者に渡した品数</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>自勢力の自販機から来訪者に実際に渡した品数。無料分も含め、品目別に集計します。</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>自販機で受け取った銀貨</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>来訪者から自勢力の自販機に実際に移された銀貨の量。自販機の種類別に集計します。</RWS_NewMod_VendingSilverDesc>
 </LanguageData>

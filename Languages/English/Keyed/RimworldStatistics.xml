@@ -1171,4 +1171,58 @@
   <RWS_Rimefeller_RefineryFuelUsedDesc>Actual decrease in pipeline FuelAvailable caused by player-owned Rimefeller refinery processing, measured after the pipe component base tick. Excludes fuel transferred into on-site machines during the base tick and any scheduled or attempted consumption. Units are pipeline fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller powerplant fuel consumed (pipe units)</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>Actual decrease in pipeline FuelAvailable during successful fuel draws by player-owned Rimefeller powerplants. Dry or failed draws are excluded. Units are pipeline fuel units rather than inventory items.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_NewMod_Arena>Arena bouts decided</RWS_NewMod_Arena>
+  <RWS_NewMod_ArenaDesc>Player arena bouts with an officially recorded winner.</RWS_NewMod_ArenaDesc>
+  <RWS_NewMod_Roads>Road segments built or improved</RWS_NewMod_Roads>
+  <RWS_NewMod_RoadsDesc>Completed world-map road segments, by road type. A bidirectional segment is counted once.</RWS_NewMod_RoadsDesc>
+  <RWS_NewMod_GravHack>Warcomputers hacked</RWS_NewMod_GravHack>
+  <RWS_NewMod_GravHackDesc>Hostile warcomputers replaced after a successful hack by a player pawn.</RWS_NewMod_GravHackDesc>
+  <RWS_NewMod_GravBoon>Gravship launch boons applied</RWS_NewMod_GravBoon>
+  <RWS_NewMod_GravBoonDesc>Launch boons applied to player gravships, by boon type.</RWS_NewMod_GravBoonDesc>
+  <RWS_NewMod_Schisms>Ideological schisms completed</RWS_NewMod_Schisms>
+  <RWS_NewMod_SchismsDesc>New schism ideologies registered with at least one player pawn converted.</RWS_NewMod_SchismsDesc>
+  <RWS_NewMod_Funeral>Dreadnought funeral transformations</RWS_NewMod_Funeral>
+  <RWS_NewMod_FuneralDesc>Player pawns resurrected by a dreadnought funeral with life support and warcasket armor applied.</RWS_NewMod_FuneralDesc>
+  <RWS_NewMod_Spa>Silver received from spa guests</RWS_NewMod_Spa>
+  <RWS_NewMod_SpaDesc>Silver actually transferred into player spa facilities by visitors, by facility type.</RWS_NewMod_SpaDesc>
+  <RWS_NewMod_Museum>Museum visits and learning sessions completed</RWS_NewMod_Museum>
+  <RWS_NewMod_MuseumDesc>Successful player museum jobs, separately by recreational visit and learning job.</RWS_NewMod_MuseumDesc>
+  <RWS_NewMod_Storefront>Storefront sales fulfilled</RWS_NewMod_Storefront>
+  <RWS_NewMod_StorefrontDesc>Storefront transactions with confirmed delivery to a visitor, by product.</RWS_NewMod_StorefrontDesc>
+  <RWS_NewMod_Boarding>Vehicle boardings</RWS_NewMod_Boarding>
+  <RWS_NewMod_BoardingDesc>Player pawns newly added to the passenger manifest of a player vehicle.</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_Upgrades>Vehicle upgrades installed</RWS_NewMod_Upgrades>
+  <RWS_NewMod_UpgradesDesc>New vehicle upgrades installed through completed player work, by vehicle type.</RWS_NewMod_UpgradesDesc>
+  <RWS_NewMod_Wrecks>Vehicles restored from wrecks</RWS_NewMod_Wrecks>
+  <RWS_NewMod_WrecksDesc>Player vehicles spawned by completed construction of a tracked wreck frame.</RWS_NewMod_WrecksDesc>
+  <RWS_NewMod_RealRuins>Real Ruins caravans arriving at newly loaded sites</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuinsDesc>Player caravan arrivals with confirmed pawn entry into a Real Ruins site whose map had to be generated.</RWS_NewMod_RealRuinsDesc>
+  <RWS_NewMod_Casino>Slot machine rounds completed</RWS_NewMod_Casino>
+  <RWS_NewMod_CasinoDesc>Slot rounds completed on player machines, broken down by loss and win outcome.</RWS_NewMod_CasinoDesc>
+  <RWS_NewMod_Resleeving>Neural stack transfers to empty sleeves</RWS_NewMod_Resleeving>
+  <RWS_NewMod_ResleevingDesc>Player surgery that installed an existing identity into a living, formerly empty sleeve.</RWS_NewMod_ResleevingDesc>
+  <RWS_NewMod_AnimalPedigree>Offspring with both genetic parents recorded</RWS_NewMod_AnimalPedigree>
+  <RWS_NewMod_AnimalPedigreeDesc>Successfully born or hatched player animals with both parental records assigned by Animal Genetics, by animal kind.</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>New treaties signed</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>New RimPacts agreements entered with another faction, by treaty type. Renewing an existing agreement does not add a count.</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>Settlements made vassals</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>Settlements that entered active player vassalage through Hegemony. Re-established vassals count again.</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>School semesters completed</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Another Education System semesters completed after the full active term and archived in semester history.</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>External students graduated</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>External enrollment departures completed at semester end with a completed or excellent academic result.</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>School events completed</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>AES School+ events completed and evaluated at player home maps, by event type.</RWS_NewMod_SchoolEventsDesc>
+  <RWS_NewMod_HotelCheckout>Hotel groups reaching checkout</RWS_NewMod_HotelCheckout>
+  <RWS_NewMod_HotelCheckoutDesc>Guest groups on player maps that begin a scheduled checkout after checking in.</RWS_NewMod_HotelCheckoutDesc>
+  <RWS_NewMod_Camp>Caravan camps established</RWS_NewMod_Camp>
+  <RWS_NewMod_CampDesc>New Set Up Camp sites where a player caravan successfully entered the camp map.</RWS_NewMod_CampDesc>
+  <RWS_NewMod_ExploreResearch>Research advances from expeditions</RWS_NewMod_ExploreResearch>
+  <RWS_NewMod_ExploreResearchDesc>Go Explore! research requests that actually advance a project, by research project.</RWS_NewMod_ExploreResearchDesc>
+  <RWS_NewMod_Doctrine>Faction doctrines investigated</RWS_NewMod_Doctrine>
+  <RWS_NewMod_DoctrineDesc>Completed investigations into other factions’ doctrines, by doctrine type.</RWS_NewMod_DoctrineDesc>
+  <RWS_NewMod_VendingItems>Items dispensed to visitors</RWS_NewMod_VendingItems>
+  <RWS_NewMod_VendingItemsDesc>Items successfully handed over at player vending machines, by item type. Includes free items.</RWS_NewMod_VendingItemsDesc>
+  <RWS_NewMod_VendingSilver>Silver received by vending machines</RWS_NewMod_VendingSilver>
+  <RWS_NewMod_VendingSilverDesc>Silver actually transferred by visitors into player vending machines, by machine type.</RWS_NewMod_VendingSilverDesc>
 </LanguageData>
