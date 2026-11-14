@@ -699,7 +699,7 @@
   <RWS_Metric_SettlementsFounded>Assentamentos fundados</RWS_Metric_SettlementsFounded>
   <RWS_MetricDesc_SettlementsFounded>Novos assentamentos do jogador fundados a partir de uma caravana ou mapa existente. O assentamento inicial, mudanças de colônia e pousos de naves gravitacionais não são contados.</RWS_MetricDesc_SettlementsFounded>
   <RWS_Metric_SettlementsAbandoned>Assentamentos abandonados</RWS_Metric_SettlementsAbandoned>
-  <RWS_MetricDesc_SettlementsAbandoned>Assentamentos do jogador abandonados por escolha. Remoções automáticas como a decolagem de nave gravitacional não são contadas.</RWS_MetricDesc_SettlementsAbandoned>
+  <RWS_MetricDesc_SettlementsAbandoned>Assentamentos do jogador abandonados por escolha. Remoções automáticas como a decolagem de gravinave não são contadas.</RWS_MetricDesc_SettlementsAbandoned>
   <RWS_Metric_AncientDangersOpened>Perigos antigos abertos</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Santuários antigos selados (perigos antigos nos mapas de assentamento do jogador) cujo interior foi aberto, cada um contado uma vez. O santuário conta quando o jogo o consideraria descoberto, ou seja, quando a névoa sobre seu centro desaparece. Romper outras paredes ou aparecerem inimigos não conta.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Bioma original</RWS_Metric_ColonyStartingBiome>
