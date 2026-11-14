@@ -5,8 +5,8 @@ using Verse;
 namespace RimworldStatistics.UI;
 
 /// <summary>
-/// On-demand bar chart for existing numeric statistics. The charts compare saved
-/// colony readings or the recorded breakdown of one aggregate; neither is a time series.
+/// On-demand comparison of colony readings or the breakdown of one aggregate.
+/// A colony row opens the recorded history of that metric.
 /// </summary>
 internal sealed class Dialog_MetricChart : Window
 {
@@ -29,6 +29,7 @@ internal sealed class Dialog_MetricChart : Window
     private readonly MetricDefinition definition;
     private readonly MetricDefinition breakdownDefinition;
     private readonly string title;
+    private readonly string metricLabel;
     private readonly Series colony;
     private readonly Series breakdown;
     private readonly Series overall;
@@ -68,6 +69,7 @@ internal sealed class Dialog_MetricChart : Window
             overallBars = MetricChartSeries.Overall(view.Numeric, metricKey);
         }
         breakdownDefinition = definition.BreakdownUnit is { } unit ? definition with { Unit = unit } : definition;
+        metricLabel = chartLabel;
         title = "RWS_Chart_Title".Translate(chartLabel);
         colony = new Series(ChartMode.Colony, colonyBars);
         breakdown = new Series(ChartMode.Breakdown, breakdownBars);
@@ -150,6 +152,7 @@ internal sealed class Dialog_MetricChart : Window
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
         var last = Math.Min(bars.Count - 1, (int)((scroll.y + rect.height) / RowHeight) + 1);
         var anchor = Text.Anchor;
+        MetricChartBar? selected = null;
         Text.Anchor = TextAnchor.MiddleLeft;
         for (var i = first; i <= last; i++)
         {
@@ -160,6 +163,8 @@ internal sealed class Dialog_MetricChart : Window
             if (i % 2 == 1)
                 Widgets.DrawHighlight(row, 0.2f);
             Widgets.DrawHighlightIfMouseover(row);
+            if (series.Mode == ChartMode.Colony && Widgets.ButtonInvisible(row))
+                selected = bar;
             var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
             Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
             var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
@@ -179,6 +184,13 @@ internal sealed class Dialog_MetricChart : Window
         }
         Text.Anchor = anchor;
         Widgets.EndScrollView();
+        if (selected is not null)
+        {
+            var key = MetricChartSeries.ColonyComparisonKey(definition);
+            var source = key == definition.Key ? definition : MetricLookup.Definition(view, key) ?? definition;
+            var label = key == definition.Key ? metricLabel : MetricText.Label(source);
+            Find.WindowStack.Add(new Dialog_ColonyMetricHistory(view, selected.Key, ColonyName(selected.Key), source, label, selected.Value));
+        }
     }
 
     private BarText Describe(ChartMode mode, MetricChartBar bar)
@@ -229,8 +241,6 @@ internal sealed class Dialog_MetricChart : Window
     {
         var source = CrossColonyCatalog.IsDerived(definition)
             ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
-        if (MetricDisplayPolicy.BreakdownLabelKey(source, key) is { } translation)
-            return (string)translation.Translate();
-        return DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key;
+        return MetricText.Breakdown(source, key, useThingLabel: true);
     }
 }

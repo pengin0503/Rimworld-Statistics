@@ -1229,11 +1229,20 @@
   <RWS_Chart_ByColony>按殖民地</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>按类别</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>按类别（{0}）</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>每个纳入统计的殖民地各显示一项已记录值，并非随时间变化的图表。</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>点击殖民地行可查看历史趋势。</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>殖民地比较值：{0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>此统计没有可用的历史记录。</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>只有一个记录点。将鼠标悬停在点上可查看数值。</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>按游戏内天数显示存档记录，可能包含不同存档分支。</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>显示所选存档分支的检查点。折线断开处表示记录缺失。</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>显示此存档截至各时点观测到的最大15天财富增幅。</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>显示所选统计的已记录类别，并非随时间变化的图表。</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>此统计只有一个合并值可用。</RWS_Chart_OverallNote>
   <RWS_Chart_Points>显示值：{0}</RWS_Chart_Points>
   <RWS_Chart_NoData>没有可用于绘图的测量值。</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>添加殖民地…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>按游戏内天数显示观测值。折线中断表示记录缺失。</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>营养值 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>已制造的安卓人</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>在安卓人制造台完成工作后制造的玩家安卓人数量。</RWS_VreAndroid_ManufacturedDesc>
   <RWS_VqeCryptoforge_GeneratorRestarts>已重启的冷冻发电机</RWS_VqeCryptoforge_GeneratorRestarts>

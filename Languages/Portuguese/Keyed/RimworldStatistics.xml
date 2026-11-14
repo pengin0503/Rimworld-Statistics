@@ -1229,11 +1229,20 @@
   <RWS_Chart_ByColony>Por colónia</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>Por categoria</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Por categoria ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Um valor registado para cada colónia incluída. Não é um gráfico de evolução ao longo do tempo.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Clique numa colónia para ver o seu histórico.</RWS_Chart_ColonyNote>
+  <RWS_Chart_HistoryRecord>Valor de comparação da colónia: {0}</RWS_Chart_HistoryRecord>
+  <RWS_Chart_HistoryEmpty>Não há histórico disponível para esta estatística.</RWS_Chart_HistoryEmpty>
+  <RWS_Chart_HistorySingle>Existe apenas um registo. Passe o cursor sobre o ponto para ver o valor.</RWS_Chart_HistorySingle>
+  <RWS_Chart_HistorySaves>Registos das gravações por dia de jogo. Podem incluir diferentes ramos da partida.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Pontos de controlo do ramo selecionado. As lacunas indicam registos em falta.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Maior aumento de riqueza em 15 dias observado até cada data nesta gravação.</RWS_Chart_HistoryWealth>
   <RWS_Chart_BreakdownNote>Categorias registadas da estatística selecionada. Não é um gráfico de evolução ao longo do tempo.</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Existe apenas um valor combinado para esta estatística.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valores apresentados: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Não há valores medidos para apresentar no gráfico.</RWS_Chart_NoData>
+  <RWS_Chart_AddColony>Adicionar colónia…</RWS_Chart_AddColony>
+  <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registos em falta.</RWS_Chart_GameRecorder>
+  <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androides do jogador criados após concluir o trabalho na estação de criação.</RWS_VreAndroid_ManufacturedDesc>
   <RWS_VqeCryptoforge_GeneratorRestarts>Criptogeradores reiniciados</RWS_VqeCryptoforge_GeneratorRestarts>

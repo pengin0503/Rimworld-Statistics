@@ -88,7 +88,7 @@ public sealed class NumericView
 /// Builds the <see cref="NumericView"/> from the v1 colonies (after manual merges and exclusions) and the numeric
 /// observations (numeric expansion design §2 "コロニー照合", §3 "過去観測の選び方").
 /// </summary>
-public static class MetricCalculator
+public static partial class MetricCalculator
 {
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 

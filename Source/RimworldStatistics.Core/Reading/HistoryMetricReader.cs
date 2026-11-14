@@ -50,6 +50,28 @@ public static class HistoryMetricReader
 
     public static bool IsTimedVersion(string? gameVersion) => MajorMinor(gameVersion) is { } v && TimedVersions.Contains(v);
 
+    public static IReadOnlyList<MetricHistoryPoint> RecorderHistory(string recorder, float[] values, string? gameVersion, int tick)
+    {
+        if (recorder is not (WealthTotal or FreeColonists or ColonistMood) || tick <= 0
+            || !IsTimedVersion(gameVersion) || values.Length != tick / TicksPerPoint + 1)
+            return [];
+
+        bool Valid(float value) => float.IsFinite(value)
+            && (recorder == ColonistMood ? value is > 0 and <= 100 : value >= 0);
+        if (!Valid(values[0]))
+            return [];
+
+        var points = new MetricHistoryPoint[values.Length];
+        for (var i = 0; i < values.Length; i++)
+        {
+            var value = Valid(values[i])
+                ? new NumericValue { Number = values[i], Coverage = MetricCoverage.SnapshotOnly }
+                : null;
+            points[i] = new(i * TicksPerPoint, value, i > 0 && value is not null && points[i - 1].Value is not null);
+        }
+        return points;
+    }
+
     private sealed class Series
     {
         public required float[] X { get; init; }
@@ -231,10 +253,52 @@ public static class HistoryMetricReader
             if (invalid is not null && invalid[i + span + 1] != invalid[i])
                 continue;
             used++;
-            var d = gain ? (double)s.X[i + span] - s.X[i] : (double)s.X[i] - s.X[i + span];
+            var d = WindowChange(s.X, i, span, gain);
             best = Math.Max(best, d);
         }
         return used == 0 ? null : Snap(best, used < windows);
+    }
+
+    private static double WindowChange(float[] values, int start, int span, bool gain)
+        => gain ? (double)values[start + span] - values[start] : (double)values[start] - values[start + span];
+
+    /// <summary>The running record of the same valid 15-day windows used by the saved summary.</summary>
+    public static IReadOnlyList<MetricHistoryPoint> WealthGain15DayHistory(float[] wealth, string? gameVersion, int ticksGame)
+    {
+        static bool Valid(float value) => float.IsFinite(value) && value >= 0f;
+        if (!IsTimedVersion(gameVersion) || ticksGame <= 0 || wealth.Length != ticksGame / TicksPerPoint + 1
+            || wealth.Length <= PointsPer15Days || !Valid(wealth[0]))
+            return [];
+
+        var invalid = 0;
+        for (var i = 0; i < PointsPer15Days; i++)
+            if (!Valid(wealth[i]))
+                invalid++;
+
+        var points = new List<MetricHistoryPoint>(wealth.Length - PointsPer15Days);
+        var best = 0d;
+        var partial = false;
+        for (var i = PointsPer15Days; i < wealth.Length; i++)
+        {
+            if (!Valid(wealth[i]))
+                invalid++;
+            if (invalid == 0)
+            {
+                best = Math.Max(best, WindowChange(wealth, i - PointsPer15Days, PointsPer15Days, gain: true));
+                points.Add(new(i * TicksPerPoint, new NumericValue
+                {
+                    Number = best, Coverage = partial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly,
+                }, ConnectToPrevious: points.Count > 0 && points[^1].Value is not null));
+            }
+            else
+            {
+                partial = true;
+                points.Add(new(i * TicksPerPoint, null));
+            }
+            if (!Valid(wealth[i - PointsPer15Days]))
+                invalid--;
+        }
+        return points;
     }
 
     /// <summary>max(0, (before − after) ÷ before) over consecutive valid points with before &gt; 0.</summary>
