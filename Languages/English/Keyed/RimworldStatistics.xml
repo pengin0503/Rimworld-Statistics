@@ -1203,4 +1203,14 @@
   <RWS_NewMod_ResleevingDesc>Player surgery that installed an existing identity into a living, formerly empty sleeve.</RWS_NewMod_ResleevingDesc>
   <RWS_NewMod_AnimalPedigree>Offspring with both genetic parents recorded</RWS_NewMod_AnimalPedigree>
   <RWS_NewMod_AnimalPedigreeDesc>Successfully born or hatched player animals with both parental records assigned by Animal Genetics, by animal kind.</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>New treaties signed</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>New RimPacts agreements entered with another faction, by treaty type. Renewing an existing agreement does not add a count.</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>Settlements made vassals</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>Settlements that entered active player vassalage through Hegemony. Re-established vassals count again.</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>School semesters completed</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Another Education System semesters completed after the full active term and archived in semester history.</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>External students graduated</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>External enrollment departures completed at semester end with a completed or excellent academic result.</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>School events completed</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>AES School+ events completed and evaluated at player home maps, by event type.</RWS_NewMod_SchoolEventsDesc>
 </LanguageData>

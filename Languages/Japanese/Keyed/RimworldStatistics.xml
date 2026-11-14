@@ -1203,4 +1203,14 @@
   <RWS_NewMod_ResleevingDesc>自勢力の手術で、空だったスリーブに既存の人格を移し、生存した回数。</RWS_NewMod_ResleevingDesc>
   <RWS_NewMod_AnimalPedigree>両親の系譜がある出生・孵化</RWS_NewMod_AnimalPedigree>
   <RWS_NewMod_AnimalPedigreeDesc>Animal Geneticsで両親の記録が割り当てられ、出生・孵化に成功した自勢力の動物の数。動物の種類別に集計します。</RWS_NewMod_AnimalPedigreeDesc>
+  <RWS_NewMod_Treaties>新たに締結した条約</RWS_NewMod_Treaties>
+  <RWS_NewMod_TreatiesDesc>RimPactsで他派閥と新たに締結した条約を種類別に集計します。既存条約の更新は含みません。</RWS_NewMod_TreatiesDesc>
+  <RWS_NewMod_Vassalizations>属国化した集落</RWS_NewMod_Vassalizations>
+  <RWS_NewMod_VassalizationsDesc>Hegemonyで自勢力の属国になった集落の数。離反後に再び属国になった場合も数えます。</RWS_NewMod_VassalizationsDesc>
+  <RWS_NewMod_Semesters>完了した学期</RWS_NewMod_Semesters>
+  <RWS_NewMod_SemestersDesc>Another Education Systemで所定の授業期間に達し、履歴に保存された学期の数。</RWS_NewMod_SemestersDesc>
+  <RWS_NewMod_Graduations>卒業した外部生徒</RWS_NewMod_Graduations>
+  <RWS_NewMod_GraduationsDesc>学期満了で帰還し、学業成績が修了または優秀と記録された外部生徒の数。</RWS_NewMod_GraduationsDesc>
+  <RWS_NewMod_SchoolEvents>完了した学校行事</RWS_NewMod_SchoolEvents>
+  <RWS_NewMod_SchoolEventsDesc>自勢力の拠点で開催され、完了と評価が確定したAES School+の学校行事を種類別に集計します。</RWS_NewMod_SchoolEventsDesc>
 </LanguageData>

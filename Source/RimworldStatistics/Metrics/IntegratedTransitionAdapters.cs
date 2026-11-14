@@ -103,6 +103,11 @@ internal static class IntegratedTransitionAdapters
         result.Add(VehicleOutcomes.Boardings());
         result.Add(VehicleOutcomes.CompletedUpgrades());
         result.Add(VehicleOutcomes.Restorations());
+        result.Add(DiplomacyOutcomes.Treaties());
+        result.Add(DiplomacyOutcomes.Vassalizations());
+        result.Add(EducationOutcomes.SemesterCompletions());
+        result.Add(EducationOutcomes.ExternalGraduations());
+        result.Add(EducationOutcomes.SchoolEvents());
         return result;
     }
 }
