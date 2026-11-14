@@ -346,7 +346,7 @@ public static class DetailsTab
             var chartStart = rect.x + 30f + (line.ExpandKey is null ? 0f : 25f);
             var chartRect = new Rect(chartStart, rect.y, Math.Max(0f, rect.xMax - chartStart), rect.height);
             TooltipHandler.TipRegion(chartRect,
-                () => tipCache[index]!() + "\\n\\n" + "RWS_Chart_OpenTip".Translate(), line.TipId + 1);
+                () => tipCache[index]!() + "\n\n" + "RWS_Chart_OpenTip".Translate(), line.TipId + 1);
             if (Widgets.ButtonInvisible(chartRect))
                 Find.WindowStack.Add(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null));
         }
