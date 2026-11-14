@@ -750,131 +750,131 @@
   <RWS_MetricDesc_FacilitiesGeneration>기록된 저장 파일 하나에서 불러온 본거지 지도의 발전기 정격 출력 합계의 최대값입니다.</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>최대 배터리 용량</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>기록된 저장 파일 하나에서 불러온 본거지 지도의 배터리 정격 용량 합계의 최대값입니다.</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesOutdoorTempMin>가장 낮은 관측 옥외 온도</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>로드 된 플레이어 홈 맵을 통해 가장 낮은 관찰 된 야외 온도 성공적인 저장. 피크는 기록 된 저장을 통해 선택됩니다.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
-  <RWS_Metric_FacilitiesOutdoorTempMax>가장 높은 관측된 옥외 온도</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>로드 된 플레이어 홈 맵을 통해 가장 높은 관찰 된 야외 온도 성공적인 저장. 피크는 기록 된 저장에 걸쳐 선택된다.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
-  <RWS_Metric_StockFoodLatest>식품 영양 에 마지막 save</RWS_Metric_StockFoodLatest>
-  <RWS_MetricDesc_StockFoodLatest>마지막 저축에 음식 영양은 적재한 선수 가정 지도에 측정되고 성공적인 저축에 자격이 된 콘테이너를 소유합니다.</RWS_MetricDesc_StockFoodLatest>
-  <RWS_Metric_StockSilverLatest>Silver 에 마지막 저장</RWS_Metric_StockSilverLatest>
-  <RWS_MetricDesc_StockSilverLatest>Silver at last save 로드된 플레이어 홈 맵에 측정 및 성공적인 저장에 대한 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockSilverLatest>
-  <RWS_Metric_StockMaterialsLatest>건축 자재 by type</RWS_Metric_StockMaterialsLatest>
-  <RWS_MetricDesc_StockMaterialsLatest>로드 된 플레이어 홈 맵에 측정 된 유형의 건설 재료 및 성공적인 저장에 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockMaterialsLatest>
-  <RWS_Metric_StockWeaponsPeak>최대 소유 무기</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>로드 된 플레이어 홈 맵에 측정 된 최대의 무기와 성공적인 저장에 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockWeaponsPeak>
-  <RWS_Metric_StockWeaponDefsPeak>최대 무기 유형</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>로드 된 플레이어 홈 맵에 측정 된 최대 무기 유형 및 성공적인 저장에 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockWeaponDefsPeak>
-  <RWS_Metric_StockLegendaryWeaponsPeak>최대 전설적인 무기</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>로드 된 플레이어 홈 맵에 측정 된 최대 전설적인 무기와 성공적인 저장에 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
-  <RWS_Metric_StockPersonaWeaponsPeak>최대 무기</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>로드 된 플레이어 홈 맵에 측정 된 최대 인승 무기 및 성공적인 저장에 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockPersonaWeaponsPeak>
-  <RWS_Metric_StockMedicinePeak>주식에 있는 최대 약</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>로드 된 플레이어 홈 맵에 측정 된 재고의 최대 의약품 및 성공적인 저장시 자격이있는 소유 된 컨테이너.</RWS_MetricDesc_StockMedicinePeak>
-  <RWS_Metric_StockFoodMin>최소 음식 영양</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>로드 된 플레이어 홈 맵에 측정 된 최소 음식 영양 및 성공적인 저장시 자격이있는 소유 된 용기.</RWS_MetricDesc_StockFoodMin>
-  <RWS_Metric_RoyaltyPsylinkPeak>가장 높은 psylink 수준</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>성공적인 저축에 가장 높은 psylink 수준; 관련 DLC을 요구합니다.</RWS_MetricDesc_RoyaltyPsylinkPeak>
-  <RWS_Metric_BiotechPollutionPeak>최대 오염된 세포</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>성공적인 저축에 관찰된 최대 오염된 세포; 관련 DLC를 요구합니다.</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>가장 높은 사용 mechanitor 대역폭</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>가장 높은 중고 기계 대역폭은 성공적인 저장에서 관찰; 관련 DLC을 필요로한다.</RWS_MetricDesc_BiotechBandwidthPeak>
-  <RWS_Metric_RoyaltyPermitUses>Royal은 성공적으로 사용</RWS_Metric_RoyaltyPermitUses>
-  <RWS_MetricDesc_RoyaltyPermitUses>적격 플레이어 식민지주의에 의해 사용 된 Royal Permits; 취소 된 선택은 계산되지 않습니다.</RWS_MetricDesc_RoyaltyPermitUses>
-  <RWS_Metric_RoyaltyPsycasts>성공적인 psycasts</RWS_Metric_RoyaltyPsycasts>
-  <RWS_MetricDesc_RoyaltyPsycasts>로열티 심령 능력은 무료 플레이어 식민지가 성공적으로 활성화; unconfirmed 대상은 계산하지 않습니다.</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>제국 관련 퀘스트 완료</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>퀘스트는 여전히 성공을 끝내고 퀘스트 탭이 제국과 관련되었는지, 각 성공적인 저장에 계산 된 저장에 보관했습니다. 퀘스트는 게임이 제거되지 않았습니다. 평생 합계가 아닙니다.</RWS_MetricDesc_RoyaltyQuestSuccess>
-  <RWS_Metric_RoyaltyTitleGrants>로열 타이틀 부여</RWS_Metric_RoyaltyTitleGrants>
-  <RWS_MetricDesc_RoyaltyTitleGrants>기록 된 로열티 이벤트 기간 동안 확인 된 Royal titles.</RWS_MetricDesc_RoyaltyTitleGrants>
-  <RWS_Metric_RoyaltyHighestTitle>가장 높은 왕 제목</RWS_Metric_RoyaltyHighestTitle>
-  <RWS_MetricDesc_RoyaltyHighestTitle>기록 된 로열티 이벤트 기간 동안 가장 높은 왕 타이틀을 확인했습니다.</RWS_MetricDesc_RoyaltyHighestTitle>
-  <RWS_Metric_RoyaltyHonor>제국의 명예 얻고 보냈다</RWS_Metric_RoyaltyHonor>
-  <RWS_MetricDesc_RoyaltyHonor>제국 명예는 기록 된 로열티 이벤트 기간 동안 확인 및 보냈다.</RWS_MetricDesc_RoyaltyHonor>
-  <RWS_Metric_IdeologyConversions>완료된 변환</RWS_Metric_IdeologyConversions>
-  <RWS_MetricDesc_IdeologyConversions>기존의 ideology에서 다른 ideology에 관찰 된 플레이어 측 전환 수; 문자 초기화를 제외합니다.</RWS_MetricDesc_IdeologyConversions>
-  <RWS_Metric_IdeologyRitualResults>마지막 결과에 의한 Rituals</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>outcome 정의 유형에 의해 확인 된 Ideology 의식; 중단 된 의식은 별도의 물통을 사용합니다.</RWS_MetricDesc_IdeologyRitualResults>
-  <RWS_Metric_IdeologyRitualRate>Ritual 성공률</RWS_Metric_IdeologyRitualRate>
-  <RWS_MetricDesc_IdeologyRitualRate>분류된 성공 또는 실패로 의식에 의해 나타낸; 중단은 제외됩니다.</RWS_MetricDesc_IdeologyRitualRate>
-  <RWS_Metric_IdeologyConversionDays>평균 변환 기간</RWS_Metric_IdeologyConversionDays>
-  <RWS_MetricDesc_IdeologyConversionDays>명시된 변환 작업에서 평균 일은 일치하는 대상 ideology에 도달합니다.</RWS_MetricDesc_IdeologyConversionDays>
-  <RWS_Metric_IdeologyAppointments>역할 약속</RWS_Metric_IdeologyAppointments>
-  <RWS_MetricDesc_IdeologyAppointments>ideology 리더 또는 전문 역할의 새로운 할당을 플레이어 측면에 확인; 반복 할당 제외.</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>그라비네이션 비행</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>승인 완료된 플레이어 항공편에서 gravship 항공편을 완료, 시작 또는 미리보기 데이터.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>총 완성된 비행 거리</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>공인 완료된 플레이어 항공편에서 총 완성된 비행 거리, 시작 또는 미리보기 데이터가 아닙니다.</RWS_MetricDesc_OdysseyDistance>
-  <RWS_Metric_OdysseyUniqueTiles>Distinct 착륙 위치</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>적정 완료된 플레이어 항공편, 시작 또는 미리보기 데이터에서 배포되는 Distinct 착륙 위치.</RWS_MetricDesc_OdysseyUniqueTiles>
-  <RWS_Metric_OdysseyNewMaps>새로 생성 된지도에 착륙</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>새로 생성 된지도에 착륙 저자 완료 플레이어 항공편, 시작 또는 미리보기 데이터.</RWS_MetricDesc_OdysseyNewMaps>
-  <RWS_Metric_BiotechMechsCreated>Mechanoids 제조</RWS_Metric_BiotechMechsCreated>
-  <RWS_MetricDesc_BiotechMechsCreated>Mechanoids는 관련 Biotech 활동이 실제로 완료한 후에만 제조했습니다.</RWS_MetricDesc_BiotechMechsCreated>
-  <RWS_Metric_BiotechBirthMothers>출생을 준 대변인</RWS_Metric_BiotechBirthMothers>
-  <RWS_MetricDesc_BiotechBirthMothers>관련된 Biotech 액션이 실제로 완료 한 후 만 출산 한 대성공.</RWS_MetricDesc_BiotechBirthMothers>
-  <RWS_Metric_BiotechChildStages>어린이 성장 이정표</RWS_Metric_BiotechChildStages>
-  <RWS_MetricDesc_BiotechChildStages>관련 Biotech 액션이 실제로 완료 한 후 만 어린이 성장 이정표.</RWS_MetricDesc_BiotechChildStages>
-  <RWS_Metric_BiotechMechRepairs>완전한 mech 수선</RWS_Metric_BiotechMechRepairs>
-  <RWS_MetricDesc_BiotechMechRepairs>완전히 완료된 mech는 관련 Biotech 활동이 실제로 완료한 후에만 수리합니다.</RWS_MetricDesc_BiotechMechRepairs>
-  <RWS_Metric_BiotechWasteCreated>Toxic Wastepack은 실제로 생산되었습니다.</RWS_Metric_BiotechWasteCreated>
-  <RWS_MetricDesc_BiotechWasteCreated>Toxic Wastepacks는 실제로 관련 Biotech 행동이 완료된 후만 실제로 생산되었습니다.</RWS_MetricDesc_BiotechWasteCreated>
-  <RWS_Metric_BiotechWasteDisposed>폐기물 포장은 안전하게 중화</RWS_Metric_BiotechWasteDisposed>
-  <RWS_MetricDesc_BiotechWasteDisposed>관련된 Biotech 액션이 실제로 완료 한 후 안전하게 분리 된 낭비.</RWS_MetricDesc_BiotechWasteDisposed>
-  <RWS_Metric_BiotechPollutionCleaned>세포는 식민지에 의해 청소</RWS_Metric_BiotechPollutionCleaned>
-  <RWS_MetricDesc_BiotechPollutionCleaned>세포는 관련 Biotech 행동이 실제로 완료 한 후 식민지가 만 청소했습니다.</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>모든 사용 가능한 통계 기록 (기본값에 따라)</RWS_Exp_Enable>
-  <RWS_Exp_Warning>Unverified 캡처는 기본적으로 수집됩니다. 일부 통합은 놓거나 이중 계정 레코드를 놓거나 CPU 오버 헤드를 추가 할 수 있습니다. 사용할 수없는 MOD는 건너 뛰지 않습니다. 사전 이벤트는 재구성 할 수 없습니다.</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>모든 (를 포함하여 미래 단위)</RWS_Exp_SelectAll>
-  <RWS_Exp_SelectNone>모든 것</RWS_Exp_SelectNone>
-  <RWS_Exp_SelectEvents>이벤트 단위 선택</RWS_Exp_SelectEvents>
-  <RWS_Exp_Event>(주)태영</RWS_Exp_Event>
-  <RWS_Exp_Snapshot>성공적으로 저장 snapshot</RWS_Exp_Snapshot>
-  <RWS_Exp_RequiresDlc>필요 DLC/패키지: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Help>모든 단위는 새로운 임명을 위해 선정됩니다. 그 수집을 선택하기 위하여 품목을 검사하지 마십시오; 단위를 도는 것은 그것의 기록적인 역사를 삭제하지 않습니다. 변화는 즉시, 게임을 재시작하지 않고 적용합니다.</RWS_Exp_Help>
-  <RWS_Exp_ExperimentalRow>회사 소개</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>캡처 신뢰: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Unverified 캡처</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>캡처에서 인증</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>검증 및 실험 캡처</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>알 수없는 캡처 입증 (특성 포함)</RWS_Exp_EvidenceUnknown>
-  <RWS_Exp_Since>녹음은 하루에 시작 {0}</RWS_Exp_Since>
-  <RWS_Mod_RequiresMod>필수 형태: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>소스 모드: {0} (제공자: {1})</RWS_Mod_Provider>
-  <RWS_Mod_SourceUnavailable>Source MOD는 현재 설치되지 않습니다. 역사 값은 보존되어 있습니다. 새로운 샘플이 기록되지 않습니다.</RWS_Mod_SourceUnavailable>
-  <RWS_ModRecruitment_Started>채용 요청 시작</RWS_ModRecruitment_Started>
-  <RWS_ModRecruitment_StartedDesc>성공적 모집 1.1.2 녹음이 시작된 후 만들어진 요청. 선택하기 전에 역사 기간은 부분입니다. 생성 후 취소는 여전히 카운트를 시작으로 합니다.</RWS_ModRecruitment_StartedDesc>
-  <RWS_ModRecruitment_Active>Active 채용 요청</RWS_ModRecruitment_Active>
-  <RWS_ModRecruitment_ActiveDesc>가장 최근의 성공적인 저축에 대한 채용 요청을 종료합니다. 이것은 항상 합계가 아닙니다.</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>환대: 방문 손님에 저장</RWS_ModHospitality_PresentGuests>
-  <RWS_ModHospitality_PresentGuestsDesc>성공적인 저축에 선수 가정 지도의 맞은편에 활동적인 환대 손님의 수. 일생 방문 합계 아닙니다. 손님 MOD에 변화는 요구됩니다.</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>Hospitality: 득점방해에 방문 그룹</RWS_ModHospitality_PresentGroups>
-  <RWS_ModHospitality_PresentGroupsDesc>성공적인 저축에 선수 가정 지도의 맞은편에 활동적인 환대 손님 그룹의 수. 일생 방문 조사 없음.</RWS_ModHospitality_PresentGroupsDesc>
-  <RWS_Details_ViewLifetime>일생 (에 따라)</RWS_Details_ViewLifetime>
-  <RWS_Details_ViewOther>이름 *</RWS_Details_ViewOther>
-  <RWS_Details_ViewAll>(주)</RWS_Details_ViewAll>
-  <RWS_Details_SurgerySuccess>성공적인 수술</RWS_Details_SurgerySuccess>
+  <RWS_Metric_FacilitiesOutdoorTempMin>저장 시 최저 야외 온도</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>기록된 저장 시점에 불러온 본거지 지도에서 가장 낮은 야외 온도입니다. 저장 시점 사이의 온도는 알 수 없습니다.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>저장 시 최고 야외 온도</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>기록된 저장 시점에 불러온 본거지 지도에서 가장 높은 야외 온도입니다. 저장 시점 사이의 온도는 알 수 없습니다.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>보유 식량 (영양량)</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>저장에 성공한 시점에 불러온 본거지 지도에 있는 식량의 총영양량입니다. 폰이 소지하거나 용기 안에 있는 식량도 포함합니다.</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>보유 은</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>저장에 성공한 시점에 불러온 본거지 지도에 있는 은의 수량입니다. 폰이 소지하거나 용기 안에 있는 은도 포함합니다.</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>보유 강철 및 부품</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>저장에 성공한 시점에 불러온 본거지 지도에 있는 강철, 부품, 고급 부품의 수량입니다. 폰이 소지하거나 용기 안에 있는 자재도 포함하며 종류별로 표시합니다.</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>최대 보유 무기 수</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>기록된 저장 파일 하나에서 불러온 본거지 지도의 장착 또는 보관된 무기 수 중 최대값입니다.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>최대 보유 무기 종류 수</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>기록된 저장 파일 하나에서 불러온 본거지 지도의 장착 또는 보관된 무기 종류 수 중 최대값입니다.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>최대 전설적 무기 수</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>기록된 저장 파일 하나에서 불러온 본거지 지도의 장착 또는 보관된 전설적 품질 무기 수 중 최대값입니다.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>최대 결속 무기 수</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>기록된 저장 파일 하나에서 불러온 본거지 지도의 장착 또는 보관된 결속 무기 수 중 최대값입니다.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>최대 의약품 보유량</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>기록된 저장 파일 하나에서 불러온 본거지 지도에 소지하거나 보관한 의약품 수 중 최대값입니다.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>최소 보유 식량 (영양량)</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>기록된 저장 파일 하나에서 불러온 본거지 지도의 식량 총영양량 중 최소값입니다.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>최고 정신력 증폭 수준</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>기록된 저장 파일에서 관측한 정착민 정신력 증폭 수준 중 최고값입니다. Royalty가 필요합니다.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>최대 오염 칸 수</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>기록된 저장 파일에서 관측한 본거지 지도의 오염 칸 수 중 최대값입니다. Biotech가 필요합니다.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>메카나이터 최대 사용 대역폭</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>기록된 저장 파일에서 관측한 메카나이터의 사용 대역폭 중 최대값입니다. Biotech가 필요합니다.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>왕실 지원 요청 사용 횟수</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>자격이 있는 플레이어 정착민이 실제로 사용한 왕실 지원 요청의 횟수입니다. 선택을 취소한 경우는 제외합니다.</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>초능력 사용 성공 횟수</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>플레이어의 자유 정착민이 실제로 성공적으로 사용한 초능력(Royalty)의 횟수입니다. 대상만 선택하고 확정하지 않았다면 제외합니다.</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_Metric_RoyaltyQuestSuccess>제국 관련 임무 완료 수</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>수락했고 저장 파일에 남아 있으며 성공적으로 끝나고 임무 탭에서 제국 관련으로 표시된 임무 수입니다. 저장에 성공할 때마다 집계합니다. 게임이 삭제한 임무는 포함하지 않으므로 평생 누적값이 아닙니다.</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_RoyaltyTitleGrants>왕실 작위 수여 횟수</RWS_Metric_RoyaltyTitleGrants>
+  <RWS_MetricDesc_RoyaltyTitleGrants>Royalty 사건을 기록하는 동안 확인된 정착민의 왕실 작위 수여 횟수입니다.</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>최고 왕실 작위</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>Royalty 사건을 기록하는 동안 확인된 최고 왕실 작위입니다.</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>제국 신임장 획득 및 소비</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>Royalty 사건을 기록하는 동안 확인된 제국 신임장의 획득량과 소비량입니다.</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>완료된 개종 수</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>플레이어 측 폰이 기존 사상에서 다른 사상으로 실제로 바뀐 횟수입니다. 폰 생성 시 지정된 사상은 포함하지 않습니다.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_IdeologyRitualResults>최종 결과별 행사 수</RWS_Metric_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>확인된 Ideology 행사를 최종 결과(Def)별로 나눕니다. 중단된 행사는 별도로 집계합니다.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>행사 성공률</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>확인된 성공 행사 수 ÷ 성공 또는 실패로 분류된 행사 수입니다. 중단된 행사는 제외합니다.</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_Metric_IdeologyConversionDays>평균 개종 소요일</RWS_Metric_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>개종 시도가 확인된 때부터 폰이 목표 사상을 받아들일 때까지의 평균 일수입니다.</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>사상 역할 임명 횟수</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>플레이어 정착민을 사상 지도자나 전문가 역할에 새로 임명한 것으로 확인된 횟수입니다. 같은 역할에 다시 임명한 경우는 제외합니다.</RWS_MetricDesc_IdeologyAppointments>
+  <RWS_Metric_OdysseyFlights>중력부양선 비행 완료 횟수</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>플레이어의 착륙으로 완료가 확인된 중력부양선 비행 수입니다. 이륙이나 경로 미리보기만으로는 집계하지 않습니다.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>중력부양선 총 비행 거리</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>완료한 중력부양선 비행(플레이어의 착륙으로 확인됨)의 총거리입니다.</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>고유 착륙 지점 수</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>완료한 중력부양선 비행이 착륙한 서로 다른 세계 지도 타일의 수입니다.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>새 지도 착륙 횟수</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>새 지도를 생성해야 했던 중력부양선 착륙 완료 횟수입니다.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>배양한 메카노이드 수</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>플레이어의 메카노이드 배양기에서 생산된 메카노이드 수입니다. 살아 있는 메카노이드가 실제로 나온 시점에 집계하며 부활은 제외합니다.</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>출산한 정착민 수</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>살아 있는 아기를 출산한 자유 정착민의 고유 인원수입니다.</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>아이의 성장 단계 도달 수</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>정착지 아이들이 실제로 도달한 성장 단계 수입니다. 아이와 단계의 각 조합은 한 번만 집계하며 단계별로 표시합니다.</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>메카노이드 수리 완료 횟수</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>정착지 메카노이드의 마지막 부상까지 치료한 수리 횟수입니다. 수리 한 번당 하나씩 집계합니다.</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>생산한 독성 폐기물 수</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>플레이어의 생산 작업이 실제로 완료되어 새로 만들어진 독성 폐기물 묶음 수입니다.</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>무해화한 독성 폐기물 수</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>플레이어가 무해화 작업을 완료하여 파괴한 독성 폐기물 묶음 수입니다. 외부로 반출하거나 자연적으로 부패한 것은 제외합니다.</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>정화한 오염 칸 수</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>플레이어가 오염 제거 작업을 완료하여 깨끗하게 만든 지도 칸 수입니다.</RWS_MetricDesc_BiotechPollutionCleaned>
+  <RWS_Exp_Enable>사용 가능한 모든 통계 기록 (기본 켜짐)</RWS_Exp_Enable>
+  <RWS_Exp_Warning>검증되지 않은 기록도 기본으로 수집합니다. 일부는 기록 누락, 중복 집계 또는 CPU 부하 증가가 발생할 수 있습니다. 설치하지 않은 모드의 항목은 건너뜁니다. 기록 시작 전의 사건은 복원할 수 없습니다.</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>모두 (향후 항목 포함)</RWS_Exp_SelectAll>
+  <RWS_Exp_SelectNone>모두 해제</RWS_Exp_SelectNone>
+  <RWS_Exp_SelectEvents>사건 항목만</RWS_Exp_SelectEvents>
+  <RWS_Exp_Event>사건 (플레이 중)</RWS_Exp_Event>
+  <RWS_Exp_Snapshot>스냅샷 (저장 성공 시)</RWS_Exp_Snapshot>
+  <RWS_Exp_RequiresDlc>필요한 DLC/패키지: {0}</RWS_Exp_RequiresDlc>
+  <RWS_Exp_Help>새로 설치하면 모든 항목이 선택됩니다. 항목의 선택을 해제하면 수집을 중지하지만 기록된 내역은 삭제되지 않습니다. 변경 사항은 게임 재시작 없이 즉시 적용됩니다.</RWS_Exp_Help>
+  <RWS_Exp_ExperimentalRow>실험적</RWS_Exp_ExperimentalRow>
+  <RWS_Exp_Evidence>기록 신뢰도: {0}</RWS_Exp_Evidence>
+  <RWS_Exp_EvidenceExperimental>검증되지 않은 기록</RWS_Exp_EvidenceExperimental>
+  <RWS_Exp_EvidenceVerified>기록 시 검증됨</RWS_Exp_EvidenceVerified>
+  <RWS_Exp_EvidenceMixed>검증된 기록과 미검증 기록 혼합</RWS_Exp_EvidenceMixed>
+  <RWS_Exp_EvidenceUnknown>기록 출처 불명 (이전 기록 포함)</RWS_Exp_EvidenceUnknown>
+  <RWS_Exp_Since>게임 내 {0}일째부터 기록</RWS_Exp_Since>
+  <RWS_Mod_RequiresMod>필요한 MOD: {0}</RWS_Mod_RequiresMod>
+  <RWS_Mod_Provider>출처 MOD: {0} (제공자: {1})</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>출처 모드가 현재 설치되어 있지 않습니다. 기록된 값은 유지되지만 새 값은 기록하지 않습니다.</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>시작한 모집 요청 수</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>기록 시작 후 성공적으로 생성된 Recruitment 1.1.2 모집 요청 수입니다. 기록 활성화 전 기간은 일부만 포함합니다. 생성 후 취소한 요청도 시작된 것으로 셉니다.</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>진행 중인 모집 요청 수</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>최근 저장 성공 시점에 대기 중이던 모집 요청 수입니다. 평생 누적값이 아닙니다.</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality: 저장 시 방문객 수</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머물던 Hospitality 방문객 수입니다. 총 누적 방문 수가 아닙니다.</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality: 저장 시 방문객 그룹 수</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머물던 Hospitality 방문객 그룹 수입니다. 총 누적 방문 수가 아닙니다.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>누적 (기록 기간)</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>기타</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>전체</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>성공한 수술</RWS_Details_SurgerySuccess>
   <RWS_Details_SurgeryFailure>실패한 수술</RWS_Details_SurgeryFailure>
-  <RWS_Details_TradeKindOrbital>Orbital 상인</RWS_Details_TradeKindOrbital>
-  <RWS_Details_TradeKindCaravan>방문 caravan</RWS_Details_TradeKindCaravan>
-  <RWS_Details_TradeKindSettlement>결제하기</RWS_Details_TradeKindSettlement>
-  <RWS_Details_TradeKindOther>다른 상인</RWS_Details_TradeKindOther>
-  <RWS_Details_Other>이름 *</RWS_Details_Other>
-  <RWS_Metric_CraftedByDef>완제품에 의하여 완제품</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>기록된 기간 동안 품목에 의하여 성공적으로 완성되는 제품 단위. 독립적인 시리즈; 활성화의 앞에 시간 동안 역사적인 추정치.</RWS_MetricDesc_CraftedByDef>
-  <RWS_Metric_MinedByDef>Mined 자원 단위로 항목</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>성공적으로 기록 된 기간 동안 항목에 의해 광산 수확량을 배치. 독립적 인 시리즈; 활성화하기 전에 시간에 대한 역사적인 견적.</RWS_MetricDesc_MinedByDef>
-  <RWS_Metric_FilthRemoved>Filth 완전 제거</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>플레이어 문자의 청소 작업 (vanilla MessesCleaned record)에 의해 완전히 제거되는 filth 객체 당 하나. 부분 두께 감소 또는 전체 청소 작업의 수 없습니다. 활성화 동안만 기록.</RWS_MetricDesc_FilthRemoved>
-  <RWS_Metric_FiresExtinguished>소화기 소화기</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>불에 의해 파괴 된 플레이어 캐릭터에 의해 파괴 한 바닐라 소방 또는 자기 진화 (FiresExtinguished record). 환경 화재 멸종은 제외됩니다. 활성화 동안 기록 된.</RWS_MetricDesc_FiresExtinguished>
-  <RWS_Metric_MealIngestions>식사 ingestion 이벤트</RWS_Metric_MealIngestions>
-  <RWS_MetricDesc_MealIngestions>플레이어 액션 인문자에 의해 먹는 식사를위한 성공적인 긍정적 인 영양 섭취 통화. 각 통화는 caravan의 소비를 포함하여 한 번 계산되지만 비 메트 푸드, 마약 또는 비 플레이어 문자가 아닙니다.</RWS_MetricDesc_MealIngestions>
-  <RWS_Metric_HaulPlacements>Hauls는 저장 세포로 증착</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>플레이어 HaulToCell 작업에 대한 성공적인 배치 작업은 선택한 대상 셀에서 작업합니다. 부분적 적용 : 컨테이너 예금 및 mod-specific hauling 방법은 계산되지 않습니다. 혼자 픽업은 결코 계산되지 않습니다.</RWS_MetricDesc_HaulPlacements>
-  <RWS_Metric_HauledUnits>저장 세포로 예금되는 품목</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>총 항목은 플레이어 HaulToCell 배송 중에 성공적으로 떨어졌다, 수행 된 스택 카운트의 변화에 의해 측정. 부분적 적용 : 컨테이너 운반 및 기타 운송 모드는 계산되지 않습니다.</RWS_MetricDesc_HauledUnits>
-  <RWS_Metric_CleaningJobsCompleted>청소 작업 완료</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>적어도 하나의 filth 객체가 완전히 제거 된 후 플레이어 문자의 청소 작업의 성공적인 완료. 하나의 작업으로 하나의 작업에 여러 filth 개체. Interrupted 작업은 제외됩니다.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_Details_TradeKindOrbital>궤도 상인</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>방문 상단</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>정착지</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>기타 상인</RWS_Details_TradeKindOther>
+  <RWS_Details_Other>기타</RWS_Details_Other>
+  <RWS_Metric_CraftedByDef>아이템별 완성품 수</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>기록 기간에 성공적으로 완성된 생산품의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다.</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>아이템별 채굴 자원 수</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>기록 기간에 실제로 놓인 채굴 산출물의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다.</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>완전히 제거한 오염물 수</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>플레이어 폰이 청소로 오염물 한 개를 완전히 제거할 때마다 한 번 집계합니다(기본 게임의 “청소한 오염물” 기록). 두께만 줄인 경우나 청소 작업 전체 횟수를 센 것이 아닙니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>불을 끈 횟수</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>플레이어 폰이 정상적인 소방 작업이나 몸에 붙은 불꽃을 털어 끄면서 제거한 불 한 건당 한 번 집계합니다(“진화한 불” 기록). 저절로 꺼진 불은 제외합니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>먹은 식사 수</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>플레이어 세력의 인간형 폰이 실제로 먹고 영양을 얻은 식사의 수입니다. 상단에서 먹은 식사를 포함하여 한 끼당 한 번 집계합니다. 다른 음식, 약물, 비플레이어 폰은 제외합니다.</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>저장 칸으로 운반한 횟수</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>플레이어 운반 작업(HaulToCell)이 지정한 칸에 실제로 화물을 내려놓은 횟수입니다. 일부만 포함합니다. 용기에 넣거나 모드 고유 방식으로 운반하는 경우는 제외하며, 물건을 집어 들기만 해서는 집계하지 않습니다.</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>저장 칸으로 운반한 아이템 수</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>플레이어 운반 작업(HaulToCell)으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다.</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>완료한 청소 작업 수</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>오염물을 한 개 이상 완전히 제거하고 정상적으로 끝난 플레이어 청소 작업 수입니다. 한 작업에서 여러 오염물을 치워도 한 번만 셉니다. 중단된 작업은 제외합니다.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>나무 절단 나무 얻은 (primary 수확량)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>1 차적인 나무 단위의 수는 실제로 GenPlace의 placeAction에 의해 측정된 선수의 나무 절단 수확 후에, 병합했습니다. 부분적인 적용: 몇몇 단위 성분 및 비표준 절단 경로에서 보너스 나무는 입니다.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>웃음 동물 연속적으로 butchered</RWS_Metric_SlaughteredButchery>

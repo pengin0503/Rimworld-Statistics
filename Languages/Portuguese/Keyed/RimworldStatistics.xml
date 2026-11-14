@@ -750,131 +750,131 @@
   <RWS_MetricDesc_FacilitiesGeneration>Maior soma das potências nominais dos geradores elétricos nos mapas de lar carregados num único jogo guardado registado.</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>Maior capacidade das baterias</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Maior soma das capacidades nominais das baterias nos mapas de lar carregados num único jogo guardado registado.</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesOutdoorTempMin>Temperatura exterior mais baixa observada</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>A temperatura exterior mais baixa observada nos mapas caseiros dos jogadores carregados, com uma poupança bem sucedida. Os picos são seleccionados entre as poupanças gravadas.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
-  <RWS_Metric_FacilitiesOutdoorTempMax>Temperatura exterior mais elevada observada</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>A temperatura exterior mais elevada observada nos mapas domésticos dos jogadores carregados com sucesso. Os picos são seleccionados através das poupanças gravadas.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
-  <RWS_Metric_StockFoodLatest>Nutrição alimentar, enfim, excepto</RWS_Metric_StockFoodLatest>
-  <RWS_MetricDesc_StockFoodLatest>Nutrição alimentar finalmente salvar medido em mapas home do jogador carregado e recipientes de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockFoodLatest>
-  <RWS_Metric_StockSilverLatest>Prata, finalmente salva</RWS_Metric_StockSilverLatest>
-  <RWS_MetricDesc_StockSilverLatest>Silver finalmente salvar medido em mapas home do jogador carregado e recipientes de propriedade elegíveis em uma poupança bem sucedida.</RWS_MetricDesc_StockSilverLatest>
-  <RWS_Metric_StockMaterialsLatest>Materiais de construção por tipo</RWS_Metric_StockMaterialsLatest>
-  <RWS_MetricDesc_StockMaterialsLatest>Materiais de construção por tipo medidos em mapas caseiros de jogadores carregados e recipientes de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockMaterialsLatest>
-  <RWS_Metric_StockWeaponsPeak>Armas máximas de propriedade</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>Máximas armas de propriedade medidas em mapas domésticos de jogadores carregados e containers próprios elegíveis em uma poupança bem sucedida.</RWS_MetricDesc_StockWeaponsPeak>
-  <RWS_Metric_StockWeaponDefsPeak>Tipos máximos de armas</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>Tipos de armas máximas medidos em mapas domésticos de jogadores carregados e containers de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockWeaponDefsPeak>
-  <RWS_Metric_StockLegendaryWeaponsPeak>Máximas armas lendárias</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Máximas armas lendárias medidas em mapas caseiros de jogadores carregados e containers de propriedade elegíveis em uma poupança bem sucedida.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
-  <RWS_Metric_StockPersonaWeaponsPeak>Máximas armas persona</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>Máximas armas persona medidas em mapas caseiros de jogadores carregados e recipientes de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockPersonaWeaponsPeak>
-  <RWS_Metric_StockMedicinePeak>Máximo de medicamentos em stock</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>Máximo de medicamentos em estoque medidos em mapas caseiros de jogadores carregados e recipientes de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockMedicinePeak>
-  <RWS_Metric_StockFoodMin>Nutrição alimentar mínima</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>Nutrição alimentar mínima medida em mapas caseiros de jogadores carregados e recipientes de propriedade elegíveis em uma economia bem sucedida.</RWS_MetricDesc_StockFoodMin>
-  <RWS_Metric_RoyaltyPsylinkPeak>Nível de ligação psylink mais elevado</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>Nível de psylink mais elevado observado em uma economia bem sucedida; requer o DLC relevante.</RWS_MetricDesc_RoyaltyPsylinkPeak>
-  <RWS_Metric_BiotechPollutionPeak>Células máximas poluídas</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>Células poluídas máximas observadas numa poupança bem sucedida; requer as DLC relevantes.</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>Largura de banda do mecanismo mais elevado usado</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>Largura de banda de mecanitor mais usada observada em uma economia bem sucedida; requer o DLC relevante.</RWS_MetricDesc_BiotechBandwidthPeak>
-  <RWS_Metric_RoyaltyPermitUses>Licenças reais utilizadas com sucesso</RWS_Metric_RoyaltyPermitUses>
-  <RWS_MetricDesc_RoyaltyPermitUses>Licenças reais confirmadas usadas por um jogador elegível; seleções canceladas não contam.</RWS_MetricDesc_RoyaltyPermitUses>
-  <RWS_Metric_RoyaltyPsycasts>Psycasts de sucesso</RWS_Metric_RoyaltyPsycasts>
-  <RWS_MetricDesc_RoyaltyPsycasts>Habilidades psíquicas da realeza ativadas com sucesso por colonos de jogadores livres; alvo não confirmado não conta.</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>Buscas relacionadas com o Império concluídas</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>Buscas aceitas ainda mantidas no gravação que terminou em sucesso e que a aba Quests mostra como relacionado com o Império, contado em cada gravação bem-sucedido. Quests o jogo foi removido não estão incluídos; não é um total vitalício.</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_FacilitiesOutdoorTempMin>Temperatura exterior mínima ao guardar</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Temperatura exterior mais baixa num mapa de base carregado no momento de uma gravação registada. Não são observadas as temperaturas entre gravações.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>Temperatura exterior máxima ao guardar</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Temperatura exterior mais alta num mapa de base carregado no momento de uma gravação registada. Não são observadas as temperaturas entre gravações.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>Alimentos armazenados (nutrição)</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>Nutrição total dos alimentos nos mapas de base carregados, incluindo o que os peões transportam ou está guardado em contentores, numa gravação bem-sucedida.</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>Prata armazenada</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>Quantidade de prata nos mapas de base carregados, incluindo a transportada por peões ou guardada em contentores, numa gravação bem-sucedida.</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>Aço e componentes armazenados</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>Aço, componentes e componentes avançados nos mapas de base carregados, incluindo os transportados por peões ou guardados em contentores, numa gravação bem-sucedida; apresentados por tipo.</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>Maior número de armas possuídas</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Maior número de armas equipadas ou armazenadas nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>Maior variedade de armas possuídas</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Maior número de tipos diferentes de armas equipadas ou armazenadas nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>Maior número de armas lendárias possuídas</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Maior número de armas de qualidade lendária equipadas ou armazenadas nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>Maior número de armas persona possuídas</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Maior número de armas persona equipadas ou armazenadas nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>Maior armazenamento de medicamentos</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Maior quantidade de medicamentos transportados ou armazenados nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>Quantidade mínima de alimentos (nutrição)</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>Menor nutrição total dos alimentos nos mapas de lar carregados num gravação registado.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>Maior nível de psínculo</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Maior nível de psínculo de um colono observado num gravação registado. Requer Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>Maior número de células poluídas</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Maior número de células poluídas nos mapas de lar observado num gravação registado. Requer Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Maior banda-larga usada por um mecanizador</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Maior banda-larga usada por um mecanizador num gravação registado. Requer Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>Permissões reais utilizadas</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>Permissões reais efetivamente utilizadas por colonos do jogador elegíveis. As seleções canceladas não contam.</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>Psinjurações lançadas com sucesso</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>Psinjurações (Royalty) lançadas com sucesso por colonos livres do jogador. A seleção de um alvo não confirmada não conta.</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_Metric_RoyaltyQuestSuccess>Missões ligadas ao Império concluídas</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>Missões aceites que ainda constam do jogo guardado, terminaram com sucesso e aparecem no separador Missões como ligadas ao Império, contadas em cada gravação bem-sucedida. As missões removidas pelo jogo são excluídas; não é um total acumulado.</RWS_MetricDesc_RoyaltyQuestSuccess>
   <RWS_Metric_RoyaltyTitleGrants>Títulos reais concedidos</RWS_Metric_RoyaltyTitleGrants>
-  <RWS_MetricDesc_RoyaltyTitleGrants>Títulos reais concedidos confirmados durante o período de evento de Royalty gravado.</RWS_MetricDesc_RoyaltyTitleGrants>
-  <RWS_Metric_RoyaltyHighestTitle>Título real mais alto</RWS_Metric_RoyaltyHighestTitle>
-  <RWS_MetricDesc_RoyaltyHighestTitle>Título real mais alto confirmado durante o período gravado Royalty evento.</RWS_MetricDesc_RoyaltyHighestTitle>
-  <RWS_Metric_RoyaltyHonor>Honra imperial ganha e gasta</RWS_Metric_RoyaltyHonor>
-  <RWS_MetricDesc_RoyaltyHonor>A honra imperial ganhou e gastou confirmado durante o registo Royalty evento período.</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyTitleGrants>Títulos reais concedidos a colonos, confirmados durante o registo dos eventos de Royalty.</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>Maior título real</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>Maior título real confirmado durante o registo de eventos de Royalty.</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>Favor real ganho e gasto</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>Favor real ganho e gasto, confirmado durante o registo de eventos de Royalty.</RWS_MetricDesc_RoyaltyHonor>
   <RWS_Metric_IdeologyConversions>Conversões concluídas</RWS_Metric_IdeologyConversions>
-  <RWS_MetricDesc_IdeologyConversions>Número de transições observadas do lado do jogador de uma ideologia existente para uma ideologia diferente; exclui a inicialização do caráter.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>Mudanças observadas de ideologia de um peão do lado do jogador entre duas ideologias existentes. A ideologia atribuída ao criar o peão não conta.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Rituais por resultado final</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Rituais de ideologia confirmados por resultado Tipo de definição; rituais interrompidos usam um balde separado.</RWS_MetricDesc_IdeologyRitualResults>
-  <RWS_Metric_IdeologyRitualRate>Taxa de sucesso ritual</RWS_Metric_IdeologyRitualRate>
-  <RWS_MetricDesc_IdeologyRitualRate>Sucessos confirmados divididos por rituais com sucesso ou fracasso classificado; interrupções são excluídas.</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualResults>Rituais de Ideology confirmados, agrupados por resultado (Def); rituais interrompidos entram em categoria separada.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>Taxa de sucesso dos rituais</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>Sucessos confirmados ÷ rituais classificados como sucesso ou falha; rituais interrompidos são excluídos.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Duração média da conversão</RWS_Metric_IdeologyConversionDays>
-  <RWS_MetricDesc_IdeologyConversionDays>Dias médios de uma ação de conversão explícita confirmada para alcançar sua ideologia alvo correspondente.</RWS_MetricDesc_IdeologyConversionDays>
-  <RWS_Metric_IdeologyAppointments>Nomeações de funções</RWS_Metric_IdeologyAppointments>
-  <RWS_MetricDesc_IdeologyAppointments>Confirmadas novas atribuições de líder de ideologia ou papéis especializados para os colonos do lado do jogador; tarefas repetidas excluídas.</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>Passagens de gravship concluídas</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>Os voos de gravship completados a partir de vôos de jogador autoritários concluídos, não lançar ou visualizar dados.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>Distância total completa do voo</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>Distância total de voo completada de voos de jogador autorizados, não lançar ou visualizar dados.</RWS_MetricDesc_OdysseyDistance>
-  <RWS_Metric_OdysseyUniqueTiles>Locais de aterragem distintos</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>Locais de aterragem distintos de voos de jogadores autorizados completados, não lançar ou visualizar dados.</RWS_MetricDesc_OdysseyUniqueTiles>
-  <RWS_Metric_OdysseyNewMaps>Desembarque em mapas recém-criados</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>Aterrissagens em mapas recém-criados a partir de vôos de jogadores autorizados concluídos, não lançar ou visualizar dados.</RWS_MetricDesc_OdysseyNewMaps>
-  <RWS_Metric_BiotechMechsCreated>Mecanóides fabricados</RWS_Metric_BiotechMechsCreated>
-  <RWS_MetricDesc_BiotechMechsCreated>Os mecanóides fabricados apenas após a ação Biotech relevante realmente completa.</RWS_MetricDesc_BiotechMechsCreated>
-  <RWS_Metric_BiotechBirthMothers>Colonistas que deram à luz</RWS_Metric_BiotechBirthMothers>
-  <RWS_MetricDesc_BiotechBirthMothers>Colonistas que só deram à luz após a ação Biotech relevante realmente completa.</RWS_MetricDesc_BiotechBirthMothers>
-  <RWS_Metric_BiotechChildStages>Objetivos de crescimento infantil</RWS_Metric_BiotechChildStages>
-  <RWS_MetricDesc_BiotechChildStages>Os marcos do crescimento da criança apenas após a ação Biotech relevante realmente completa.</RWS_MetricDesc_BiotechChildStages>
-  <RWS_Metric_BiotechMechRepairs>Reparação completa de mechas</RWS_Metric_BiotechMechRepairs>
-  <RWS_MetricDesc_BiotechMechRepairs>Reparações completas do mech somente após a ação Biotech relevante realmente completa.</RWS_MetricDesc_BiotechMechRepairs>
-  <RWS_Metric_BiotechWasteCreated>Pacotes de resíduos tóxicos realmente produzidos</RWS_Metric_BiotechWasteCreated>
-  <RWS_MetricDesc_BiotechWasteCreated>As embalagens tóxicas de resíduos só foram efectivamente produzidas após a conclusão efectiva da acção Biotech.</RWS_MetricDesc_BiotechWasteCreated>
-  <RWS_Metric_BiotechWasteDisposed>Sacos de lixo neutralizados com segurança</RWS_Metric_BiotechWasteDisposed>
-  <RWS_MetricDesc_BiotechWasteDisposed>As embalagens de lixo neutralizadas com segurança apenas após a ação Biotech relevante realmente terminar.</RWS_MetricDesc_BiotechWasteDisposed>
-  <RWS_Metric_BiotechPollutionCleaned>Células limpas por colonos</RWS_Metric_BiotechPollutionCleaned>
-  <RWS_MetricDesc_BiotechPollutionCleaned>Células limpas pelos colonos apenas após a ação Biotech relevante realmente completa.</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>Gravar todas as estatísticas disponíveis (por omissão)</RWS_Exp_Enable>
-  <RWS_Exp_Warning>As capturas não verificadas são recolhidas por omissão. Algumas integrações podem falhar ou duplicar os registos ou adicionar a sobrecarga da CPU; os MODs não disponíveis são ignorados. Os eventos anteriores não podem ser reconstruídos.</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>Todos (incluindo unidades futuras)</RWS_Exp_SelectAll>
-  <RWS_Exp_SelectNone>Limpar tudo</RWS_Exp_SelectNone>
-  <RWS_Exp_SelectEvents>Selecionar unidades de eventos</RWS_Exp_SelectEvents>
-  <RWS_Exp_Event>Evento</RWS_Exp_Event>
-  <RWS_Exp_Snapshot>Gravar o instantâneo com sucesso</RWS_Exp_Snapshot>
+  <RWS_MetricDesc_IdeologyConversionDays>Média de dias entre uma tentativa de conversão confirmada e o peão adotar a ideologia desejada.</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>Nomeações para papéis da ideologia</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>Novas nomeações confirmadas de colonos do jogador para líderes ou especialistas da ideologia; reatribuir o mesmo papel não conta.</RWS_MetricDesc_IdeologyAppointments>
+  <RWS_Metric_OdysseyFlights>Voos de gravinave concluídos</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Voos de gravinave confirmados como concluídos por um aterragem do jogador. Decolagens e pré-visualizaçãos de rota sozinhas não contam.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>Distância total dos voos de gravinave</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Distância total dos voos de gravinave concluídos (confirmados por um aterragem do jogador).</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>Locais de aterragem diferentes</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Células diferentes do mapa do mundo onde voos de gravinave concluídos pousaram.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>Aterragens em mapas novos</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Aterragens concluídos de gravinave que exigiram gerar um mapa novo.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>Mecanoides gestados</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>Mecanoides produzidos por gestadores mecanoides do jogador, contados após o meca vivo realmente emergir. Ressurreições não contam.</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>Colonos que deram à luz</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>Número de colonas livres distintas que deram à luz bebês vivos.</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>Marcos de crescimento infantil</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>Etapas de crescimento realmente alcançadas por crianças da colónia; cada combinação de criança e etapa conta uma vez, discriminada por etapa.</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>Reparações de mecas concluídos</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>Reparações de mecas da colónia que removeram a última lesão; cada reparo conta uma vez.</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>Pacotes de resíduos tóxicos produzidos</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>Pacotes de resíduos tóxicos recém-produzidos por processos de fabricação do jogador realmente concluídos.</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>Pacotes de resíduos neutralizados</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>Pacotes de resíduos tóxicos destruídos por neutralização concluída pelo jogador. Exportação e decomposição natural não contam.</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>Células poluídas limpas</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>Células poluídas do mapa que ficaram limpas após a conclusão de um trabalho de limpeza do jogador.</RWS_MetricDesc_BiotechPollutionCleaned>
+  <RWS_Exp_Enable>Registar todas as estatísticas disponíveis (ativado por predefinição)</RWS_Exp_Enable>
+  <RWS_Exp_Warning>As captações não verificadas são recolhidas por predefinição. Algumas podem omitir registos, contar duas vezes ou aumentar a utilização do processador; os mods não instalados são ignorados. Os eventos anteriores ao início do registo não podem ser reconstruídos.</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>Todas (incluindo unidades futuras)</RWS_Exp_SelectAll>
+  <RWS_Exp_SelectNone>Desmarcar todas</RWS_Exp_SelectNone>
+  <RWS_Exp_SelectEvents>Só unidades de eventos</RWS_Exp_SelectEvents>
+  <RWS_Exp_Event>Evento (durante o jogo)</RWS_Exp_Event>
+  <RWS_Exp_Snapshot>Instantâneo (ao guardar)</RWS_Exp_Snapshot>
   <RWS_Exp_RequiresDlc>Requer DLC/pacote: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Help>Todas as unidades são seleccionadas para novas instalações. Desmarque um item para optar por sair dessa colecção; desligar uma unidade não apaga o seu histórico gravado. As alterações aplicam- se imediatamente, sem reiniciar o jogo.</RWS_Exp_Help>
+  <RWS_Exp_Help>Todas as unidades ficam selecionadas numa nova instalação. Desmarque um item para interromper a recolha; o histórico registado não é apagado. As alterações aplicam-se imediatamente, sem reiniciar o jogo.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Confiança de captura: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Captura não verificada</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Verificado na captura</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Captação mista verificada e experimental</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Procedência de captura desconhecida (incluindo legado)</RWS_Exp_EvidenceUnknown>
-  <RWS_Exp_Since>A gravação começou no dia {0}</RWS_Exp_Since>
-  <RWS_Mod_RequiresMod>MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>Fonte MOD: {0} (fornecedor: {1})</RWS_Mod_Provider>
-  <RWS_Mod_SourceUnavailable>O MOD de origem não está atualmente instalado. Os valores históricos estão preservados; nenhuma nova amostra é gravada.</RWS_Mod_SourceUnavailable>
-  <RWS_ModRecruitment_Started>Pedidos de recrutamento iniciados</RWS_ModRecruitment_Started>
-  <RWS_ModRecruitment_StartedDesc>Recrutamento bem sucedido 1.1.2 pedidos criados após a gravação começou. Períodos históricos antes de opt-in são parciais. Um cancelamento após a criação ainda conta como começou.</RWS_ModRecruitment_StartedDesc>
-  <RWS_ModRecruitment_Active>Pedidos de recrutamento activos</RWS_ModRecruitment_Active>
-  <RWS_ModRecruitment_ActiveDesc>Aguardando pedidos de recrutamento na mais recente poupança bem sucedida. Este não é um total de todos os tempos.</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>Hospitalidade: visitando hóspedes em salvo</RWS_ModHospitality_PresentGuests>
-  <RWS_ModHospitality_PresentGuestsDesc>Número de hóspedes de Hospitalidade ativos em todos os mapas home do jogador em uma economia bem sucedida. Não é necessário uma visita vitalícia total. Nenhuma mudança para o MOD convidado.</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>Hospitalidade: grupos de visitas em gravação</RWS_ModHospitality_PresentGroups>
-  <RWS_ModHospitality_PresentGroupsDesc>Número de grupos de hóspedes de Hospitalidade ativos em todos os mapas home do jogador em uma poupança bem sucedida. Não uma contagem de visita vitalícia.</RWS_ModHospitality_PresentGroupsDesc>
-  <RWS_Details_ViewLifetime>Tempo de vida (gravado)</RWS_Details_ViewLifetime>
+  <RWS_Exp_Evidence>Confiança da captação: {0}</RWS_Exp_Evidence>
+  <RWS_Exp_EvidenceExperimental>Captação não verificada</RWS_Exp_EvidenceExperimental>
+  <RWS_Exp_EvidenceVerified>Verificada durante a captação</RWS_Exp_EvidenceVerified>
+  <RWS_Exp_EvidenceMixed>Mistura de captações verificadas e não verificadas</RWS_Exp_EvidenceMixed>
+  <RWS_Exp_EvidenceUnknown>Proveniência desconhecida da captação (incluindo dados antigos)</RWS_Exp_EvidenceUnknown>
+  <RWS_Exp_Since>Registro iniciado no dia {0}</RWS_Exp_Since>
+  <RWS_Mod_RequiresMod>MOD necessário: {0}</RWS_Mod_RequiresMod>
+  <RWS_Mod_Provider>MOD de origem: {0} (provedor: {1})</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>O mod de origem não está instalado atualmente. Os valores registados são mantidos, mas não são recolhidos novos valores.</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>Solicitações de recrutamento iniciadas</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>Pedidos de Recruitment 1.1.2 criados com sucesso após o início do registo. Os períodos anteriores à ativação só estão parcialmente abrangidos. Um pedido cancelado após a criação continua a contar como iniciado.</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>Solicitações de recrutamento ativas</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>Pedidos de recrutamento pendentes na gravação bem-sucedida mais recente. Não é um total acumulado.</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality: hóspedes presentes ao guardar</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>Número de hóspedes de Hospitality alojados nos mapas de base do jogador numa gravação bem-sucedida. Não representa o total acumulado de visitas.</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality: grupos de hóspedes ao guardar</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>Número de grupos de hóspedes de Hospitality nos mapas de base do jogador numa gravação bem-sucedida. Não representa o total acumulado de visitas.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>Acumulado (período registado)</RWS_Details_ViewLifetime>
   <RWS_Details_ViewOther>Outros</RWS_Details_ViewOther>
-  <RWS_Details_ViewAll>Tudo</RWS_Details_ViewAll>
-  <RWS_Details_SurgerySuccess>Cirurgias de sucesso</RWS_Details_SurgerySuccess>
-  <RWS_Details_SurgeryFailure>Cirurgias falhadas</RWS_Details_SurgeryFailure>
-  <RWS_Details_TradeKindOrbital>Transportador orbital</RWS_Details_TradeKindOrbital>
-  <RWS_Details_TradeKindCaravan>Caravana de visita</RWS_Details_TradeKindCaravan>
-  <RWS_Details_TradeKindSettlement>Liquidação</RWS_Details_TradeKindSettlement>
-  <RWS_Details_TradeKindOther>Outros comerciantes</RWS_Details_TradeKindOther>
+  <RWS_Details_ViewAll>Todas</RWS_Details_ViewAll>
+  <RWS_Details_SurgerySuccess>Cirurgias bem-sucedidas</RWS_Details_SurgerySuccess>
+  <RWS_Details_SurgeryFailure>Cirurgias com falha</RWS_Details_SurgeryFailure>
+  <RWS_Details_TradeKindOrbital>Comerciante orbital</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>Caravana visitante</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>Assentamento</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>Outro comerciante</RWS_Details_TradeKindOther>
   <RWS_Details_Other>Outros</RWS_Details_Other>
-  <RWS_Metric_CraftedByDef>Produtos acabados por item</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Unidades de produto concluídas com sucesso por item durante o período registrado. Uma série independente; nenhuma estimativa histórica para o tempo antes da ativação.</RWS_MetricDesc_CraftedByDef>
-  <RWS_Metric_MinedByDef>Unidades de recursos minadas por item</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Rendimento de mineração com sucesso colocado por item durante o período registrado. Uma série independente; nenhuma estimativa histórica para o tempo antes da ativação.</RWS_MetricDesc_MinedByDef>
-  <RWS_Metric_FilthRemoved>Sujeira completamente removida</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Um por objeto sujo completamente removido pelo trabalho de limpeza de um personagem do jogador (vanilla MessesLimpou o registo). Não é uma contagem de reduções de espessura parcial ou trabalhos de limpeza inteiros. Gravado apenas enquanto habilitado.</RWS_MetricDesc_FilthRemoved>
-  <RWS_Metric_FiresExtinguished>Incêndios extintos</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Um por fogo destruído por um personagem jogador através de combate a incêndios de baunilha ou auto-extinção (FogosExtinção de registo). Extinção de fogo ambiental é excluída. Gravado apenas enquanto habilitado.</RWS_MetricDesc_FiresExtinguished>
-  <RWS_Metric_MealIngestions>Eventos de ingestão de refeições</RWS_Metric_MealIngestions>
-  <RWS_MetricDesc_MealIngestions>O sucesso da ingestão de nutrição positiva requer refeições compulsórias por personagens humanos que fazem parte do jogo. Cada chamada conta uma vez, incluindo o consumo em uma caravana, mas não em alimentos, drogas ou personagens não-jogadores.</RWS_MetricDesc_MealIngestions>
-  <RWS_Metric_HaulPlacements>Carregamento depositado em células de armazenamento</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Ações de colocação bem-sucedidas para os trabalhos do jogador HaulToCell na célula de destino selecionada. Cobertura parcial: os depósitos de contêineres e os métodos de transporte mod-específicos não são contados. Um captador sozinho nunca é contado.</RWS_MetricDesc_HaulPlacements>
-  <RWS_Metric_HauledUnits>Itens depositados em células de armazenamento</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total de itens caiu com sucesso durante as entregas do jogador HaulToCell, medidos pela mudança na contagem de pilha transportada. Cobertura parcial: transporte de contêineres e outros modos de transporte não são contados.</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CraftedByDef>Produtos concluídos por artigo</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Unidades de produtos concluídos com sucesso no período registado, por artigo. Série independente; não se estima nada antes da ativação.</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>Recursos minerados por artigo</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Produtos da mineração efetivamente colocados durante o período registado, por artigo. Série independente; não se estima nada antes da ativação.</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>Sujeira removida completamente</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>Um registo por cada porção de sujidade completamente removida pela limpeza de um peão do jogador (estatística base de «sujidade limpa»). Reduzir apenas a espessura ou contar tarefas inteiras não equivale a removê-la. Registado apenas enquanto ativo.</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>Incêndios apagados</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>Um registo por cada fogo apagado por um peão do jogador ao combater incêndios ou ao apagar chamas sobre si próprio (estatística de «fogos apagados»). Os fogos que se apagam por si próprios não contam. Registado apenas enquanto ativo.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>Refeições consumidas</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>Refeições efetivamente consumidas com nutrição positiva por peões humanoides da fação do jogador. Cada refeição conta uma vez, inclusive em caravanas. Outros alimentos, drogas e peões de outras fações não contam.</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>Transportes para células de armazenamento</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Tarefas de transporte do jogador (HaulToCell) que efetivamente depositaram a carga na célula escolhida. Cobertura parcial: depósitos em contentores e transportes específicos de mods não contam. Só recolher o artigo não conta.</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>Artigos transportados para armazenamento</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total de artigos efetivamente depositados por tarefas de transporte do jogador (HaulToCell), medido pela redução da pilha transportada. Cobertura parcial: os transportes para contentores e outros métodos de movimentação não contam.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Trabalhos de limpeza concluídos</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>A conclusão bem sucedida do trabalho de limpeza de um personagem do jogador após pelo menos um objeto sujo ter sido removido completamente. Vários objetos sujos em uma tarefa contam como uma tarefa. Os trabalhos interrompidos são excluídos.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Trabalhos de limpeza do jogador concluídos com sucesso após remover totalmente pelo menos uma porção de sujeira. Várias porções removidas no mesmo trabalho contam como um trabalho. Trabalhos interrompidos não contam.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Madeira para corte de árvores obtida (rendimento primário)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Número de unidades primárias de madeira realmente colocadas ou fundidas após a colheita de corte de árvores de um jogador, medida pela ação de GenPlace. Cobertura parcial: madeira bônus de alguns componentes MOD e caminhos de corte não padrão são excluídos.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Animais abatidos subsequentemente abatidos</RWS_Metric_SlaughteredButchery>

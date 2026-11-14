@@ -750,131 +750,131 @@
   <RWS_MetricDesc_FacilitiesGeneration>Наибольшая суммарная номинальная мощность генераторов на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>Максимальная ёмкость батарей</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>Наибольшая суммарная номинальная ёмкость батарей на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesOutdoorTempMin>Самая низкая наблюдаемая температура наружного воздуха</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Самая низкая наблюдаемая температура на открытом воздухе на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на записанных сейвах.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
-  <RWS_Metric_FacilitiesOutdoorTempMax>Самая высокая наблюдаемая температура наружного воздуха</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Самая высокая наблюдаемая температура на открытом воздухе на загруженных домашних картах игроков при успешном сбережении. Пики выбираются на записанных сейвах.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
-  <RWS_Metric_StockFoodLatest>Пищевое питание наконец-то спасет</RWS_Metric_StockFoodLatest>
-  <RWS_MetricDesc_StockFoodLatest>Пищевое питание, наконец, экономит, измеренное на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockFoodLatest>
-  <RWS_Metric_StockSilverLatest>Серебро наконец-то спасло</RWS_Metric_StockSilverLatest>
-  <RWS_MetricDesc_StockSilverLatest>Серебро, наконец, экономит, измеренное на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockSilverLatest>
-  <RWS_Metric_StockMaterialsLatest>Строительные материалы по типу</RWS_Metric_StockMaterialsLatest>
-  <RWS_MetricDesc_StockMaterialsLatest>Строительные материалы по типу измеряются на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockMaterialsLatest>
-  <RWS_Metric_StockWeaponsPeak>Максимальное владение оружием</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>Максимальное владение оружием измеряется на загруженных домашних картах игроков и соответствующих собственных контейнерах при успешной экономии.</RWS_MetricDesc_StockWeaponsPeak>
-  <RWS_Metric_StockWeaponDefsPeak>Максимальные типы оружия</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>Максимальные типы оружия измеряются на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockWeaponDefsPeak>
-  <RWS_Metric_StockLegendaryWeaponsPeak>Максимальное легендарное оружие</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Максимальное легендарное оружие измеряется на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
-  <RWS_Metric_StockPersonaWeaponsPeak>Максимальное оружие персоны</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>Максимальное персонифицированное оружие, измеренное на загруженных домашних картах игроков и соответствующих собственных контейнерах при успешной экономии.</RWS_MetricDesc_StockPersonaWeaponsPeak>
-  <RWS_Metric_StockMedicinePeak>Максимальное количество медикаментов на складе</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>Максимальное количество лекарств в запасе измеряется на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockMedicinePeak>
-  <RWS_Metric_StockFoodMin>Минимальное питание</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>Минимальное питание измеряется на загруженных домашних картах игроков и соответствующих контейнерах при успешной экономии.</RWS_MetricDesc_StockFoodMin>
-  <RWS_Metric_RoyaltyPsylinkPeak>Самый высокий уровень psylink</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>Наивысший уровень psylink, наблюдаемый при успешном сбережении, требует соответствующего DLC.</RWS_MetricDesc_RoyaltyPsylinkPeak>
-  <RWS_Metric_BiotechPollutionPeak>Максимально загрязненные клетки</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>Максимально загрязненные клетки наблюдаются при успешном сохранении; требуется соответствующий DLC.</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>Самая высокая используемая механическая полоса пропускания</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>Максимально используемая механическая полоса пропускания наблюдается при успешном сбережении; требуется соответствующий DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
-  <RWS_Metric_RoyaltyPermitUses>Королевские разрешения, успешно используемые</RWS_Metric_RoyaltyPermitUses>
-  <RWS_MetricDesc_RoyaltyPermitUses>Королевские разрешения, подтвержденные правомочным игроком-колонистом; отмененные выборы не учитываются.</RWS_MetricDesc_RoyaltyPermitUses>
-  <RWS_Metric_RoyaltyPsycasts>Успешные Psycasts</RWS_Metric_RoyaltyPsycasts>
-  <RWS_MetricDesc_RoyaltyPsycasts>Королевские экстрасенсорные способности успешно активируются свободными игроками-колонистами; неподтвержденный таргетинг не считается.</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>Имперские квесты завершены</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>Принятые квесты все еще хранятся в сейфе, который закончился успехом, и что вкладка Quests показывает, как связанная с Империей, засчитывается при каждом успешном сейве. Квесты, которые игра удалила, не включены; не общая продолжительность жизни.</RWS_MetricDesc_RoyaltyQuestSuccess>
-  <RWS_Metric_RoyaltyTitleGrants>Королевские титулы предоставлены</RWS_Metric_RoyaltyTitleGrants>
-  <RWS_MetricDesc_RoyaltyTitleGrants>Королевские титулы были подтверждены во время зарегистрированного периода роялти.</RWS_MetricDesc_RoyaltyTitleGrants>
-  <RWS_Metric_RoyaltyHighestTitle>Самый высокий королевский титул</RWS_Metric_RoyaltyHighestTitle>
-  <RWS_MetricDesc_RoyaltyHighestTitle>Высший королевский титул был подтвержден во время зарегистрированного периода роялти.</RWS_MetricDesc_RoyaltyHighestTitle>
-  <RWS_Metric_RoyaltyHonor>Имперская честь была завоевана и потрачена</RWS_Metric_RoyaltyHonor>
-  <RWS_MetricDesc_RoyaltyHonor>Имперская честь, полученная и потраченная подтвержденная во время зарегистрированного периода события Роялти.</RWS_MetricDesc_RoyaltyHonor>
-  <RWS_Metric_IdeologyConversions>Завершенные конверсии</RWS_Metric_IdeologyConversions>
-  <RWS_MetricDesc_IdeologyConversions>Количество наблюдаемых переходов игрока от существующей идеологии к другой идеологии; исключает инициализацию персонажа.</RWS_MetricDesc_IdeologyConversions>
-  <RWS_Metric_IdeologyRitualResults>Ритуалы с конечным результатом</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Подтверждённые идеологические ритуалы по типу определения исхода; прерванные ритуалы используют отдельное ведро.</RWS_MetricDesc_IdeologyRitualResults>
-  <RWS_Metric_IdeologyRitualRate>Ритуальный уровень успеха</RWS_Metric_IdeologyRitualRate>
-  <RWS_MetricDesc_IdeologyRitualRate>Подтвержденные успехи, разделенные ритуалами с засекреченным успехом или неудачей; прерывания исключаются.</RWS_MetricDesc_IdeologyRitualRate>
-  <RWS_Metric_IdeologyConversionDays>Средняя продолжительность конверсии</RWS_Metric_IdeologyConversionDays>
-  <RWS_MetricDesc_IdeologyConversionDays>Средние дни от подтвержденных явных действий по преобразованию до достижения соответствующей целевой идеологии.</RWS_MetricDesc_IdeologyConversionDays>
-  <RWS_Metric_IdeologyAppointments>Ролевые назначения</RWS_Metric_IdeologyAppointments>
-  <RWS_MetricDesc_IdeologyAppointments>Подтверждены новые задания лидера идеологии или специальные роли игрокам-колонистам; повторные задания исключены.</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>Завершенные гравировочные рейсы</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>Завершенные гравировочные рейсы из авторитетных завершенных рейсов игроков, а не данные запуска или предварительного просмотра.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>Полная пройденная дальность полета</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>Полное завершенное расстояние полета от авторитетных завершенных полетов игрока, а не данные запуска или предварительного просмотра.</RWS_MetricDesc_OdysseyDistance>
-  <RWS_Metric_OdysseyUniqueTiles>Отдельные места посадки</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>Отличительные места посадки от авторитетных завершенных полетов игроков, а не данные запуска или предварительного просмотра.</RWS_MetricDesc_OdysseyUniqueTiles>
-  <RWS_Metric_OdysseyNewMaps>Посадки на вновь созданные карты</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>Посадки на недавно созданные карты из авторитетных завершенных полётов игроков, а не данные запуска или предварительного просмотра.</RWS_MetricDesc_OdysseyNewMaps>
-  <RWS_Metric_BiotechMechsCreated>Производимые механоиды</RWS_Metric_BiotechMechsCreated>
-  <RWS_MetricDesc_BiotechMechsCreated>Механоиды, изготовленные только после соответствующего действия Biotech, фактически завершаются.</RWS_MetricDesc_BiotechMechsCreated>
-  <RWS_Metric_BiotechBirthMothers>Колонисты, родившие</RWS_Metric_BiotechBirthMothers>
-  <RWS_MetricDesc_BiotechBirthMothers>Колонисты, родившие только после соответствующего Biotech действа, фактически завершают.</RWS_MetricDesc_BiotechBirthMothers>
-  <RWS_Metric_BiotechChildStages>Вехи роста детей</RWS_Metric_BiotechChildStages>
-  <RWS_MetricDesc_BiotechChildStages>Вехи роста детей только после того, как соответствующее действие Biotech фактически завершится.</RWS_MetricDesc_BiotechChildStages>
-  <RWS_Metric_BiotechMechRepairs>Полностью завершен ремонт меха</RWS_Metric_BiotechMechRepairs>
-  <RWS_MetricDesc_BiotechMechRepairs>Полностью завершен ремонт меха только после фактического завершения соответствующей акции Biotech.</RWS_MetricDesc_BiotechMechRepairs>
-  <RWS_Metric_BiotechWasteCreated>Токсичные отходы, фактически произведенные</RWS_Metric_BiotechWasteCreated>
-  <RWS_MetricDesc_BiotechWasteCreated>Токсичные пакеты для отходов фактически производятся только после завершения соответствующего действия Biotech.</RWS_MetricDesc_BiotechWasteCreated>
-  <RWS_Metric_BiotechWasteDisposed>Упаковки отходов безопасно нейтрализованы</RWS_Metric_BiotechWasteDisposed>
-  <RWS_MetricDesc_BiotechWasteDisposed>Упаковки с отходами были безопасно нейтрализованы только после того, как соответствующее действие Biotech фактически завершено.</RWS_MetricDesc_BiotechWasteDisposed>
-  <RWS_Metric_BiotechPollutionCleaned>Клетки, очищенные колонистами</RWS_Metric_BiotechPollutionCleaned>
-  <RWS_MetricDesc_BiotechPollutionCleaned>Клетки, очищенные колонистами только после того, как соответствующее действие Biotech фактически завершится.</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>Запись всех доступных статистических данных (по умолчанию)</RWS_Exp_Enable>
-  <RWS_Exp_Warning>Непроверенные захваты собираются по умолчанию. Некоторые интеграции могут пропустить или двойной счет записей или добавить накладные расходы на процессор; недоступные MOD пропущены. Предыдущие события не могут быть восстановлены.</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>Все (включая будущие подразделения)</RWS_Exp_SelectAll>
-  <RWS_Exp_SelectNone>Все чисто.</RWS_Exp_SelectNone>
-  <RWS_Exp_SelectEvents>Выберите события</RWS_Exp_SelectEvents>
-  <RWS_Exp_Event>Событие</RWS_Exp_Event>
-  <RWS_Exp_Snapshot>Успешный снимок Save</RWS_Exp_Snapshot>
-  <RWS_Exp_RequiresDlc>Требуется DLC/упаковка: {0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Help>Все блоки отбираются для новых установок. Отключите элемент, чтобы отказаться от этой коллекции; выключение блока не удаляет его записанную историю. Изменения применяются немедленно, без перезапуска игры.</RWS_Exp_Help>
-  <RWS_Exp_ExperimentalRow>экспериментальный</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Захват доверия: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Непроверенный захват</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Проверено при захвате</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Смешанный проверенный и экспериментальный захват</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Неизвестное происхождение захвата (включая наследие)</RWS_Exp_EvidenceUnknown>
-  <RWS_Exp_Since>Запись началась в день {0}</RWS_Exp_Since>
+  <RWS_Metric_FacilitiesOutdoorTempMin>Минимальная температура снаружи при сохранении</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>Наименьшая температура снаружи на загруженной домашней карте в момент записанного сохранения. Температура между сохранениями неизвестна.</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>Максимальная температура снаружи при сохранении</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>Наибольшая температура снаружи на загруженной домашней карте в момент записанного сохранения. Температура между сохранениями неизвестна.</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>Запасы еды (питательность)</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>Суммарная питательность еды на загруженных домашних картах, включая еду в инвентаре пешек и контейнерах, на момент успешного сохранения.</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>Запасы серебра</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>Серебро на загруженных домашних картах, включая серебро у пешек и в контейнерах, на момент успешного сохранения.</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>Запасы стали и компонентов</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>Сталь, компоненты и продвинутые компоненты на загруженных домашних картах, включая инвентари пешек и контейнеры, на момент успешного сохранения; разбивка по типам.</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>Максимум оружия во владении</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>Наибольшее число единиц оружия, экипированного или хранимого, на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>Максимум разновидностей оружия</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>Наибольшее число разных типов оружия, экипированного или хранимого, на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>Максимум легендарного оружия</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>Наибольшее число единиц оружия легендарного качества, экипированного или хранимого, на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>Максимум оружия с личностью</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>Наибольшее число единиц оружия с личностью, экипированного или хранимого, на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>Максимум запасов медикаментов</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>Наибольшее число медикаментов в инвентаре или хранилищах на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>Минимум запасов еды (питательность)</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>Наименьшая суммарная питательность еды на загруженных домашних картах в одном записанном сохранении.</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>Максимальная пси-связь</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>Наивысший уровень пси-связи поселенца в записанном сохранении. Требуется Royalty.</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>Максимум загрязнённых клеток</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>Наибольшее число загрязнённых клеток на домашних картах в записанном сохранении. Требуется Biotech.</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>Максимум использованной пропускной способности механитора</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>Наибольшая использованная механитором пропускная способность в записанном сохранении. Требуется Biotech.</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>Использованные королевские привилегии</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>Королевские привилегии, фактически применённые подходящими поселенцами игрока. Отменённый выбор не учитывается.</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>Успешные пси-способности</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>Пси-способности (Royalty), успешно применённые свободными поселенцами игрока. Выбор цели без подтверждения не учитывается.</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_Metric_RoyaltyQuestSuccess>Завершённые задания Империи</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>Принятые задания, сохранившиеся в сохранении, которые завершились успешно и отмечены на вкладке заданий как связанные с Империей. Учитываются при каждом успешном сохранении. Удалённые игрой задания исключаются, поэтому это не накопленный показатель за всю историю.</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_RoyaltyTitleGrants>Присвоенные дворянские титулы</RWS_Metric_RoyaltyTitleGrants>
+  <RWS_MetricDesc_RoyaltyTitleGrants>Дворянские титулы, присвоение которых поселенцам подтверждено во время записи событий Royalty.</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>Наивысший дворянский титул</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>Наивысший дворянский титул, подтверждённый во время записи событий Royalty.</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>Полученная и потраченная имперская честь</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>Имперская честь, полученная и потраченная во время подтверждённой записи событий Royalty.</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>Завершённые обращения</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>Наблюдавшиеся переходы пешек игрока от одной существующей идеолигии к другой. Идеолигия, назначенная при создании пешки, не учитывается.</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_IdeologyRitualResults>Ритуалы по итогам</RWS_Metric_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Подтверждённые ритуалы Ideology по конечным результатам (Def); прерванные ритуалы входят в отдельную категорию.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>Доля успешных ритуалов</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>Подтверждённые успешные ритуалы ÷ ритуалы, признанные успешными или неудачными; прерванные исключаются.</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_Metric_IdeologyConversionDays>Средняя длительность обращения</RWS_Metric_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>Среднее число дней от подтверждённой попытки обращения до принятия пешкой целевой идеолигии.</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>Назначения на идеологические должности</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>Подтверждённые новые назначения поселенцев игрока лидерами или специалистами идеолигии; повторное назначение на ту же должность не учитывается.</RWS_MetricDesc_IdeologyAppointments>
+  <RWS_Metric_OdysseyFlights>Завершённые полёты гравикорабля</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>Полёты гравикорабля, завершение которых подтверждено посадкой игрока. Одни только взлёты и предварительные маршруты не считаются.</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>Суммарное расстояние полётов гравикорабля</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>Сумма расстояний завершённых полётов гравикорабля (подтверждённых посадкой игрока).</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>Уникальные места посадки</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>Различные клетки мира, на которые завершённые полёты гравикорабля привели к посадке.</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>Посадки на новые карты</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>Завершённые посадки гравикорабля, для которых потребовалось создать новую карту.</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>Выращенные механоиды</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>Механоиды, созданные гестаторами игрока; учитываются только после фактического появления живого меха. Воскрешения исключаются.</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>Рожавшие поселенцы</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>Число разных свободных поселенцев, родивших живых детей.</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>Этапы взросления детей</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>Этапы роста, фактически достигнутые детьми колонии. Каждая пара (ребёнок, этап) учитывается единожды; разбивка по этапам.</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>Завершённые ремонты механоидов</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>Ремонты механоидов колонии, полностью устранившие последнюю рану; каждый ремонт учитывается один раз.</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>Произведённые мешки отходов</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>Мешки токсичных отходов, вновь созданные фактически завершившимися производственными процессами игрока.</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>Утилизированные мешки отходов</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>Мешки токсичных отходов, уничтоженные завершённой утилизацией игрока. Вывоз и естественное разложение не считаются.</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>Очищенные загрязнённые клетки</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>Загрязнённые клетки карты, очищенные завершённой работой игрока по устранению загрязнения.</RWS_MetricDesc_BiotechPollutionCleaned>
+  <RWS_Exp_Enable>Записывать всю доступную статистику (включено по умолчанию)</RWS_Exp_Enable>
+  <RWS_Exp_Warning>Непроверенные данные собираются по умолчанию. При некоторых способах сбора возможны пропуски, двойной подсчёт или повышенная нагрузка на процессор; отсутствующие моды пропускаются. Прошлые события до начала записи восстановить нельзя.</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>Все (в том числе будущие показатели)</RWS_Exp_SelectAll>
+  <RWS_Exp_SelectNone>Снять все отметки</RWS_Exp_SelectNone>
+  <RWS_Exp_SelectEvents>Только событийные показатели</RWS_Exp_SelectEvents>
+  <RWS_Exp_Event>Событие (во время игры)</RWS_Exp_Event>
+  <RWS_Exp_Snapshot>Снимок (при успешном сохранении)</RWS_Exp_Snapshot>
+  <RWS_Exp_RequiresDlc>Требуется DLC/пакет: {0}</RWS_Exp_RequiresDlc>
+  <RWS_Exp_Help>При новой установке выбираются все показатели. Снимите отметку с ненужного показателя, чтобы остановить сбор; сохранённая история не удалится. Изменения применяются сразу, без перезапуска игры.</RWS_Exp_Help>
+  <RWS_Exp_ExperimentalRow>Экспериментально</RWS_Exp_ExperimentalRow>
+  <RWS_Exp_Evidence>Достоверность сбора: {0}</RWS_Exp_Evidence>
+  <RWS_Exp_EvidenceExperimental>Непроверенный сбор</RWS_Exp_EvidenceExperimental>
+  <RWS_Exp_EvidenceVerified>Проверен при сборе</RWS_Exp_EvidenceVerified>
+  <RWS_Exp_EvidenceMixed>Смешанные проверенные и непроверенные данные</RWS_Exp_EvidenceMixed>
+  <RWS_Exp_EvidenceUnknown>Неизвестное происхождение данных (включая старые записи)</RWS_Exp_EvidenceUnknown>
+  <RWS_Exp_Since>Начало записи, игровой день: {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Требуемый MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>Источник: {0} (поставщик: {1})</RWS_Mod_Provider>
-  <RWS_Mod_SourceUnavailable>Источник MOD в настоящее время не установлен.Исторические ценности сохранены; новых образцов не зафиксировано.</RWS_Mod_SourceUnavailable>
-  <RWS_ModRecruitment_Started>Запросы на подбор персонала начались</RWS_ModRecruitment_Started>
-  <RWS_ModRecruitment_StartedDesc>Успешный набор 1.1.2 запросы, созданные после начала записи. Исторические периоды до регистрации являются частичными. Отмена после создания по-прежнему считается начатой.</RWS_ModRecruitment_StartedDesc>
-  <RWS_ModRecruitment_Active>Активные просьбы о наборе персонала</RWS_ModRecruitment_Active>
-  <RWS_ModRecruitment_ActiveDesc>В ожидании поступления заявок на самые последние успешные сейвы.</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>Гостеприимство: посещение гостей за счет экономии</RWS_ModHospitality_PresentGuests>
-  <RWS_ModHospitality_PresentGuestsDesc>Количество активных гостей гостеприимства на домашних картах игроков при успешном сбережении. Не общее количество посещений в течение всей жизни. Не требуется никаких изменений в MOD гостей.</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>Гостеприимство: посещение групп в спасении</RWS_ModHospitality_PresentGroups>
-  <RWS_ModHospitality_PresentGroupsDesc>Количество активных гостевых групп гостеприимства на домашних картах игроков при успешном спасении.</RWS_ModHospitality_PresentGroupsDesc>
-  <RWS_Details_ViewLifetime>Lifetime (запись)</RWS_Details_ViewLifetime>
-  <RWS_Details_ViewOther>другой</RWS_Details_ViewOther>
+  <RWS_Mod_Provider>Исходный MOD: {0} (поставщик: {1})</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>Исходный мод сейчас не установлен. Записанные значения остаются, новые данные не собираются.</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>Начатые запросы на вербовку</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>Запросы Recruitment 1.1.2, успешно созданные после начала записи. Периоды до включения записи охвачены не полностью. Запросы, отменённые после создания, всё равно считаются начатыми.</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>Активные запросы на вербовку</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>Незавершённые запросы на вербовку на момент последнего успешного сохранения. Это не суммарное значение за всю историю.</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality: гости при сохранении</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>Число гостей Hospitality, проживающих на домашних картах игрока на момент успешного сохранения. Это не число посещений за всю историю.</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality: группы гостей при сохранении</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>Число групп гостей Hospitality, проживающих на домашних картах игрока на момент успешного сохранения. Это не число посещений за всю историю.</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>За весь период записи</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>Прочее</RWS_Details_ViewOther>
   <RWS_Details_ViewAll>Все</RWS_Details_ViewAll>
   <RWS_Details_SurgerySuccess>Успешные операции</RWS_Details_SurgerySuccess>
   <RWS_Details_SurgeryFailure>Неудачные операции</RWS_Details_SurgeryFailure>
-  <RWS_Details_TradeKindOrbital>Орбитальный трейдер</RWS_Details_TradeKindOrbital>
-  <RWS_Details_TradeKindCaravan>Посещение каравана</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindOrbital>Орбитальный торговец</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>Приезжий караван</RWS_Details_TradeKindCaravan>
   <RWS_Details_TradeKindSettlement>Поселение</RWS_Details_TradeKindSettlement>
-  <RWS_Details_TradeKindOther>Другой трейдер</RWS_Details_TradeKindOther>
-  <RWS_Details_Other>другой</RWS_Details_Other>
-  <RWS_Metric_CraftedByDef>Готовые изделия поштучно</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Успешно завершенные единицы продукции поштучно в течение отчетного периода.Независимая серия; никакой исторической оценки за время до активации.</RWS_MetricDesc_CraftedByDef>
-  <RWS_Metric_MinedByDef>Единицы добытых ресурсов по пунктам</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Успешно размещенная доходность добычи по статьям в течение зарегистрированного периода.Независимая серия; никакой исторической оценки за время до активации.</RWS_MetricDesc_MinedByDef>
-  <RWS_Metric_FilthRemoved>Грязь полностью удалена</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Один на грязный объект, полностью удаленный уборкой персонажа игрока (vanilla MessesCleaned record). Не считая частичного уменьшения толщины или полной уборки. Записано только при включении.</RWS_MetricDesc_FilthRemoved>
-  <RWS_Metric_FiresExtinguished>Пожары потушены</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Один на огонь, уничтоженный персонажем игрока в результате пожара ванили или самозатухания (FiresExtinguished record). Исчезновение пожара в окружающей среде исключено. Записано только при включении.</RWS_MetricDesc_FiresExtinguished>
-  <RWS_Metric_MealIngestions>Мероприятия по приему пищи</RWS_Metric_MealIngestions>
-  <RWS_MetricDesc_MealIngestions>Успешный прием пищи с положительным питанием требует еды, съеденной персонажами, похожими на людей, играющих в игры. Каждый звонок считается один раз, включая потребление в караване, но не без еды, наркотиков или неигровых персонажей.</RWS_MetricDesc_MealIngestions>
-  <RWS_Metric_HaulPlacements>Хаулы отложены в ячейки для хранения</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Успешные действия по размещению для игроков HaulToCell на выбранной ячейке назначения. Частичное покрытие: контейнерные депозиты и мод-специфические методы перевозки не учитываются. Один только пикап никогда не учитывается.</RWS_MetricDesc_HaulPlacements>
-  <RWS_Metric_HauledUnits>Предметы, помещенные в ячейки для хранения</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Общие предметы, успешно сброшенные во время доставки игрока HaulToCell, измеряются изменением количества перевозимых стеков.Частичное покрытие: перевозка контейнеров и другие виды транспорта не учитываются.</RWS_MetricDesc_HauledUnits>
-  <RWS_Metric_CleaningJobsCompleted>Завершены работы по уборке</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>Успешное завершение уборки персонажа игрока после того, как по крайней мере один грязный предмет был полностью удален. Несколько грязных предметов в одной работе считаются одной работой. Прерванные работы исключаются.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_Details_TradeKindOther>Другой торговец</RWS_Details_TradeKindOther>
+  <RWS_Details_Other>Прочее</RWS_Details_Other>
+  <RWS_Metric_CraftedByDef>Готовая продукция по предметам</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Число успешно изготовленных изделий по типам за записанный период. Отдельный ряд данных; время до включения не оценивается.</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>Добытые ресурсы по предметам</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Число единиц добытых ресурсов по типам, фактически размещённых в записанный период. Отдельный ряд данных; время до включения не оценивается.</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>Полностью убранная грязь</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>По одному за каждый полностью убранный пешкой игрока след грязи (обычная статистика игры «убранный мусор»). Частичное уменьшение толщины и целые задания уборки сюда не входят. Записывается только при включённом сборе.</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>Потушенные пожары</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>По одному за каждый огонь, потушенный пешкой игрока при тушении пожара или сбивании пламени с себя (обычная статистика «потушенные пожары»). Самопроизвольно угасший огонь не учитывается. Записывается только при включённом сборе.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>Съеденные блюда</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>Фактически съеденные блюда с положительной питательностью человекоподобными пешками фракции игрока. Каждое блюдо считается один раз, в том числе в караване. Прочая пища, наркотики и пешки других фракций исключаются.</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>Переноски в клетки хранилища</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Работы по переноске игрока (HaulToCell), в которых груз действительно положен в выбранную клетку. Неполный охват: укладка в контейнеры и модифицированные переноски исключаются. Само поднятие предмета не учитывается.</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>Предметы, перенесённые в хранилище</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока (HaulToCell), измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются.</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>Завершённые задания уборки</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Работы по уборке игрока, успешно завершившиеся после полного удаления хотя бы одного следа грязи. Несколько следов за одну работу считаются одним заданием. Прерванные работы не учитываются.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>древесина, полученная (первичная урожайность)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Количество первичных древесных блоков, фактически размещенных или слитых после вырубки деревьев игроком, измеряется действием GenPlace.Частичное покрытие: бонусная древесина из некоторых компонентов MOD и нестандартные пути резки исключены.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Убитые животные, впоследствии убитые</RWS_Metric_SlaughteredButchery>

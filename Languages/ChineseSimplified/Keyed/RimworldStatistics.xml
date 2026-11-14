@@ -750,131 +750,131 @@
   <RWS_MetricDesc_FacilitiesGeneration>任一次已记录的保存中，已载入主基地地图上各发电机额定输出总和的最大值。</RWS_MetricDesc_FacilitiesGeneration>
   <RWS_Metric_FacilitiesBattery>最大蓄电池容量</RWS_Metric_FacilitiesBattery>
   <RWS_MetricDesc_FacilitiesBattery>任一次已记录的保存中，已载入主基地地图上各蓄电池额定容量总和的最大值。</RWS_MetricDesc_FacilitiesBattery>
-  <RWS_Metric_FacilitiesOutdoorTempMin>观测到的室外温度最低</RWS_Metric_FacilitiesOutdoorTempMin>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMin>成功保存时, 玩家家家地图上观察到的最低室外温度。 峰值是记录保存中选择的 。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
-  <RWS_Metric_FacilitiesOutdoorTempMax>最高观测室外温度</RWS_Metric_FacilitiesOutdoorTempMax>
-  <RWS_MetricDesc_FacilitiesOutdoorTempMax>成功保存时, 在已装入的玩家家家地图上观察到的最高室外温度。 峰值选择在记录保存上 。</RWS_MetricDesc_FacilitiesOutdoorTempMax>
-  <RWS_Metric_StockFoodLatest>食物营养最终节省</RWS_Metric_StockFoodLatest>
-  <RWS_MetricDesc_StockFoodLatest>食物营养最终节省在已装填的玩家家庭地图上测量,合格拥有的容器则节省在成功节省中.</RWS_MetricDesc_StockFoodLatest>
-  <RWS_Metric_StockSilverLatest>银子最后保存</RWS_Metric_StockSilverLatest>
-  <RWS_MetricDesc_StockSilverLatest>银器最终保存在已装入的玩家家家地图和成功保存的合格自有容器上.</RWS_MetricDesc_StockSilverLatest>
-  <RWS_Metric_StockMaterialsLatest>按类型分列的建筑材料</RWS_Metric_StockMaterialsLatest>
-  <RWS_MetricDesc_StockMaterialsLatest>按已装满的玩家家庭地图测量的建筑材料和成功节省的合格自有容器。</RWS_MetricDesc_StockMaterialsLatest>
-  <RWS_Metric_StockWeaponsPeak>最大拥有武器</RWS_Metric_StockWeaponsPeak>
-  <RWS_MetricDesc_StockWeaponsPeak>在装满的玩家家家地图上测量的最大自有武器,在成功节省时测量合格的自有容器.</RWS_MetricDesc_StockWeaponsPeak>
-  <RWS_Metric_StockWeaponDefsPeak>最大武器类型</RWS_Metric_StockWeaponDefsPeak>
-  <RWS_MetricDesc_StockWeaponDefsPeak>在装满的玩家家家庭地图上测得的最大武器类型,以及成功保存时符合资格的自有容器.</RWS_MetricDesc_StockWeaponDefsPeak>
-  <RWS_Metric_StockLegendaryWeaponsPeak>最大传奇武器</RWS_Metric_StockLegendaryWeaponsPeak>
-  <RWS_MetricDesc_StockLegendaryWeaponsPeak>在已装入的玩家家家地图上测得的最大传奇武器,以及成功保存的合格自有容器.</RWS_MetricDesc_StockLegendaryWeaponsPeak>
-  <RWS_Metric_StockPersonaWeaponsPeak>最大个人a 武器</RWS_Metric_StockPersonaWeaponsPeak>
-  <RWS_MetricDesc_StockPersonaWeaponsPeak>在装满的玩家家庭地图上测得的最大个人武器,以及成功保存的合格自有容器。</RWS_MetricDesc_StockPersonaWeaponsPeak>
-  <RWS_Metric_StockMedicinePeak>库存最大药品</RWS_Metric_StockMedicinePeak>
-  <RWS_MetricDesc_StockMedicinePeak>在装满的玩家家庭地图和合格自有容器上测量的库存最大药品,以成功节省。</RWS_MetricDesc_StockMedicinePeak>
-  <RWS_Metric_StockFoodMin>最低食物营养</RWS_Metric_StockFoodMin>
-  <RWS_MetricDesc_StockFoodMin>在装满的玩家家庭地图和合格自有容器上测量的最低食物营养量,以成功节省.</RWS_MetricDesc_StockFoodMin>
-  <RWS_Metric_RoyaltyPsylinkPeak>最高的心理联系水平</RWS_Metric_RoyaltyPsylinkPeak>
-  <RWS_MetricDesc_RoyaltyPsylinkPeak>在成功保存时观测到的最高精神链素水平;需要相关的DLC.</RWS_MetricDesc_RoyaltyPsylinkPeak>
-  <RWS_Metric_BiotechPollutionPeak>最大污染细胞</RWS_Metric_BiotechPollutionPeak>
-  <RWS_MetricDesc_BiotechPollutionPeak>在成功节约时观察到的受污染最大的细胞;需要相关的DLC。</RWS_MetricDesc_BiotechPollutionPeak>
-  <RWS_Metric_BiotechBandwidthPeak>使用最高的机械带宽</RWS_Metric_BiotechBandwidthPeak>
-  <RWS_MetricDesc_BiotechBandwidthPeak>在成功保存时观察到的最高使用量的机械化带宽;需要相关的DLC.</RWS_MetricDesc_BiotechBandwidthPeak>
-  <RWS_Metric_RoyaltyPermitUses>成功使用皇家许可证</RWS_Metric_RoyaltyPermitUses>
-  <RWS_MetricDesc_RoyaltyPermitUses>获得资格的玩家殖民者使用的皇家许可;取消的选拔不算数.</RWS_MetricDesc_RoyaltyPermitUses>
-  <RWS_Metric_RoyaltyPsycasts>成功的精神病患者</RWS_Metric_RoyaltyPsycasts>
-  <RWS_MetricDesc_RoyaltyPsycasts>自由玩家殖民者成功激活了皇室通灵能力;未经证实的瞄准不算数.</RWS_MetricDesc_RoyaltyPsycasts>
-  <RWS_Metric_RoyaltyQuestSuccess>完成与帝国有关的任务</RWS_Metric_RoyaltyQuestSuccess>
-  <RWS_MetricDesc_RoyaltyQuestSuccess>接受的求求仍然保存在以成功告终的保存中,并且Quests标签显示与帝国有关,在每个成功的保存中计数. Quests 游戏已删除的不包含; 不包括终生总计 。</RWS_MetricDesc_RoyaltyQuestSuccess>
-  <RWS_Metric_RoyaltyTitleGrants>授予的皇家头衔</RWS_Metric_RoyaltyTitleGrants>
-  <RWS_MetricDesc_RoyaltyTitleGrants>在录制的皇家活动期间,获得的皇家头衔得到确认。</RWS_MetricDesc_RoyaltyTitleGrants>
-  <RWS_Metric_RoyaltyHighestTitle>最高的王室头衔</RWS_Metric_RoyaltyHighestTitle>
-  <RWS_MetricDesc_RoyaltyHighestTitle>最高的王室头衔在有记录的皇家活动期间得到确认.</RWS_MetricDesc_RoyaltyHighestTitle>
-  <RWS_Metric_RoyaltyHonor>皇上荣耀的获得和花费</RWS_Metric_RoyaltyHonor>
-  <RWS_MetricDesc_RoyaltyHonor>帝国荣誉在有记录的皇家活动期间获得并花费了确认.</RWS_MetricDesc_RoyaltyHonor>
-  <RWS_Metric_IdeologyConversions>已完成的改划</RWS_Metric_IdeologyConversions>
-  <RWS_MetricDesc_IdeologyConversions>观察到的玩家侧从现有意识形态向不同意识形态的过渡数量;排除角色初始化.</RWS_MetricDesc_IdeologyConversions>
-  <RWS_Metric_IdeologyRitualResults>最终结果的礼仪</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>通过结果确认的意识形态仪式 定义类型;中断的仪式使用单独的桶.</RWS_MetricDesc_IdeologyRitualResults>
-  <RWS_Metric_IdeologyRitualRate>程序成功率</RWS_Metric_IdeologyRitualRate>
-  <RWS_MetricDesc_IdeologyRitualRate>经确认的成功被仪式划分为分类的成败;中断被排除.</RWS_MetricDesc_IdeologyRitualRate>
-  <RWS_Metric_IdeologyConversionDays>平均换算期限</RWS_Metric_IdeologyConversionDays>
-  <RWS_MetricDesc_IdeologyConversionDays>从确认明确的转换行动到达到相应的目标意识形态的平均天数。</RWS_MetricDesc_IdeologyConversionDays>
-  <RWS_Metric_IdeologyAppointments>角色任命</RWS_Metric_IdeologyAppointments>
-  <RWS_MetricDesc_IdeologyAppointments>确认将意识形态领导人或专家角色的新任务交给玩家方殖民者;不再重复任务。</RWS_MetricDesc_IdeologyAppointments>
-  <RWS_Metric_OdysseyFlights>完成重力飞行</RWS_Metric_OdysseyFlights>
-  <RWS_MetricDesc_OdysseyFlights>从权威完成的玩家飞行中完成重力飞行,而不是发射或预览数据.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>完成飞行距离共计</RWS_Metric_OdysseyDistance>
-  <RWS_MetricDesc_OdysseyDistance>完成的飞行距离权威完成的玩家飞行总距离,而非发射或预览数据.</RWS_MetricDesc_OdysseyDistance>
-  <RWS_Metric_OdysseyUniqueTiles>不同的着陆地点</RWS_Metric_OdysseyUniqueTiles>
-  <RWS_MetricDesc_OdysseyUniqueTiles>与权威完成的玩家飞行区分着陆地点,而不是发射或预览数据.</RWS_MetricDesc_OdysseyUniqueTiles>
-  <RWS_Metric_OdysseyNewMaps>在新绘制的地图上着陆</RWS_Metric_OdysseyNewMaps>
-  <RWS_MetricDesc_OdysseyNewMaps>从权威完成的玩家飞行中登陆新创造的地图,而不是发射或预览数据.</RWS_MetricDesc_OdysseyNewMaps>
-  <RWS_Metric_BiotechMechsCreated>制造的机械产品</RWS_Metric_BiotechMechsCreated>
-  <RWS_MetricDesc_BiotechMechsCreated>只有在相关的Biotech动作实际完成之后,才生产出机械人。</RWS_MetricDesc_BiotechMechsCreated>
-  <RWS_Metric_BiotechBirthMothers>分娩的殖民者</RWS_Metric_BiotechBirthMothers>
-  <RWS_MetricDesc_BiotechBirthMothers>在Biotech相关行动实际完成后才分娩的殖民者.</RWS_MetricDesc_BiotechBirthMothers>
-  <RWS_Metric_BiotechChildStages>儿童成长里程碑</RWS_Metric_BiotechChildStages>
-  <RWS_MetricDesc_BiotechChildStages>只有在Biotech相关行动实际完成之后,儿童成长阶段才达到。</RWS_MetricDesc_BiotechChildStages>
-  <RWS_Metric_BiotechMechRepairs>完全完成的甲壳体修理</RWS_Metric_BiotechMechRepairs>
-  <RWS_MetricDesc_BiotechMechRepairs>只有在相关的Biotech动作实际完成后,才完成全网修复.</RWS_MetricDesc_BiotechMechRepairs>
-  <RWS_Metric_BiotechWasteCreated>实际生产的有毒废物包</RWS_Metric_BiotechWasteCreated>
-  <RWS_MetricDesc_BiotechWasteCreated>只有在相关的Biotech动作实际完成之后,才实际生产出有毒废物。</RWS_MetricDesc_BiotechWasteCreated>
-  <RWS_Metric_BiotechWasteDisposed>安全中和的废物包</RWS_Metric_BiotechWasteDisposed>
-  <RWS_MetricDesc_BiotechWasteDisposed>只有在相关的Biotech行动实际完成后,废物袋才被安全地中和。</RWS_MetricDesc_BiotechWasteDisposed>
-  <RWS_Metric_BiotechPollutionCleaned>殖民者清理的牢房</RWS_Metric_BiotechPollutionCleaned>
-  <RWS_MetricDesc_BiotechPollutionCleaned>殖民者在Biotech相关动作实际完成后才清理的细胞.</RWS_MetricDesc_BiotechPollutionCleaned>
-  <RWS_Exp_Enable>记录所有可用的统计(默认情况下)</RWS_Exp_Enable>
-  <RWS_Exp_Warning>未验证的抓取默认会被收集。 有些集成会丢失或重复计数记录, 或者添加 CPU 的间接费用; 无法使用的 MOD 被跳过。 无法重建先前的事件 。</RWS_Exp_Warning>
-  <RWS_Exp_SelectAll>全部(包括未来单位)</RWS_Exp_SelectAll>
-  <RWS_Exp_SelectNone>全部清除</RWS_Exp_SelectNone>
-  <RWS_Exp_SelectEvents>选择事件单位</RWS_Exp_SelectEvents>
-  <RWS_Exp_Event>活动</RWS_Exp_Event>
-  <RWS_Exp_Snapshot>成功保存快照</RWS_Exp_Snapshot>
-  <RWS_Exp_RequiresDlc>需要DLC/包件:{0}</RWS_Exp_RequiresDlc>
-  <RWS_Exp_Help>所有单位都会被选中用于新的安装。 请取消选中要选择退出该收藏的项目; 关闭一个单位不会删除其记录的历史。 更改立即适用, 不重新启动游戏 。</RWS_Exp_Help>
-  <RWS_Exp_ExperimentalRow>实验</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>捕捉信心:{0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>未验证的捕获</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>在抓取时验证</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>核查和实验性捕获的混合</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>未知的捕捉来源(包括遗产)</RWS_Exp_EvidenceUnknown>
-  <RWS_Exp_Since>录音从第{0}天开始</RWS_Exp_Since>
-  <RWS_Mod_RequiresMod>所需国防部:{0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>资料来源:教育部:{0}(提供者:{1})</RWS_Mod_Provider>
-  <RWS_Mod_SourceUnavailable>源代码 MOD 目前尚未安装。 历史值被保存; 没有记录新的样本 。</RWS_Mod_SourceUnavailable>
-  <RWS_ModRecruitment_Started>征聘请求已启动</RWS_ModRecruitment_Started>
-  <RWS_ModRecruitment_StartedDesc>成功录制后创建的 1.1.2 征聘请求。 选入前的历史时间为部分时间。 创建后取消仍然算作开始时间 。</RWS_ModRecruitment_StartedDesc>
-  <RWS_ModRecruitment_Active>主动征聘请求</RWS_ModRecruitment_Active>
-  <RWS_ModRecruitment_ActiveDesc>在最近成功节约的情况下等待征聘请求。</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>招待费:来访嘉宾储蓄</RWS_ModHospitality_PresentGuests>
-  <RWS_ModHospitality_PresentGuestsDesc>成功保存时, 整个玩家家地图的活跃招待嘉宾数量。 并非总的终身访问。 不需要更改嘉宾 MOD 。</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>招待费:来访团体节省费用</RWS_ModHospitality_PresentGroups>
-  <RWS_ModHospitality_PresentGroupsDesc>成功保存时跨玩家家地图的活跃招待嘉宾组数量。 终生访问不算数 。</RWS_ModHospitality_PresentGroupsDesc>
-  <RWS_Details_ViewLifetime>寿命(记录)</RWS_Details_ViewLifetime>
-  <RWS_Details_ViewOther>其他人员</RWS_Details_ViewOther>
-  <RWS_Details_ViewAll>全部人员</RWS_Details_ViewAll>
+  <RWS_Metric_FacilitiesOutdoorTempMin>存档时的最低室外温度</RWS_Metric_FacilitiesOutdoorTempMin>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMin>已记录的存档时，已加载主基地地图上的最低室外温度。无法观测存档之间的温度变化。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
+  <RWS_Metric_FacilitiesOutdoorTempMax>存档时的最高室外温度</RWS_Metric_FacilitiesOutdoorTempMax>
+  <RWS_MetricDesc_FacilitiesOutdoorTempMax>已记录的存档时，已加载主基地地图上的最高室外温度。无法观测存档之间的温度变化。</RWS_MetricDesc_FacilitiesOutdoorTempMax>
+  <RWS_Metric_StockFoodLatest>库存食物（营养）</RWS_Metric_StockFoodLatest>
+  <RWS_MetricDesc_StockFoodLatest>成功保存时，已加载主基地地图中食物的总营养量，包括单位携带及容器内的食物。</RWS_MetricDesc_StockFoodLatest>
+  <RWS_Metric_StockSilverLatest>库存白银</RWS_Metric_StockSilverLatest>
+  <RWS_MetricDesc_StockSilverLatest>成功保存时，已加载主基地地图中的白银数量，包括单位携带及容器内的白银。</RWS_MetricDesc_StockSilverLatest>
+  <RWS_Metric_StockMaterialsLatest>库存钢铁和零部件</RWS_Metric_StockMaterialsLatest>
+  <RWS_MetricDesc_StockMaterialsLatest>成功保存时，已加载主基地地图中的钢铁、零部件及高级零部件数量，包括单位携带及容器内的部分；按类型显示。</RWS_MetricDesc_StockMaterialsLatest>
+  <RWS_Metric_StockWeaponsPeak>最多持有武器数</RWS_Metric_StockWeaponsPeak>
+  <RWS_MetricDesc_StockWeaponsPeak>任一次已记录的存档中，已加载主基地地图上装备或储存的武器数量最大值。</RWS_MetricDesc_StockWeaponsPeak>
+  <RWS_Metric_StockWeaponDefsPeak>最多持有武器种类数</RWS_Metric_StockWeaponDefsPeak>
+  <RWS_MetricDesc_StockWeaponDefsPeak>任一次已记录的存档中，已加载主基地地图上装备或储存的不同武器种类数最大值。</RWS_MetricDesc_StockWeaponDefsPeak>
+  <RWS_Metric_StockLegendaryWeaponsPeak>最多持有传奇级武器数</RWS_Metric_StockLegendaryWeaponsPeak>
+  <RWS_MetricDesc_StockLegendaryWeaponsPeak>任一次已记录的存档中，已加载主基地地图上装备或储存的传奇级武器数量最大值。</RWS_MetricDesc_StockLegendaryWeaponsPeak>
+  <RWS_Metric_StockPersonaWeaponsPeak>最多持有人格武器数</RWS_Metric_StockPersonaWeaponsPeak>
+  <RWS_MetricDesc_StockPersonaWeaponsPeak>任一次已记录的存档中，已加载主基地地图上装备或储存的人格武器数量最大值。</RWS_MetricDesc_StockPersonaWeaponsPeak>
+  <RWS_Metric_StockMedicinePeak>最多库存医药数</RWS_Metric_StockMedicinePeak>
+  <RWS_MetricDesc_StockMedicinePeak>任一次已记录的存档中，已加载主基地地图上携带或储存的医药数量最大值。</RWS_MetricDesc_StockMedicinePeak>
+  <RWS_Metric_StockFoodMin>最少库存食物（营养）</RWS_Metric_StockFoodMin>
+  <RWS_MetricDesc_StockFoodMin>任一次已记录的存档中，已加载主基地地图上食物总营养量的最小值。</RWS_MetricDesc_StockFoodMin>
+  <RWS_Metric_RoyaltyPsylinkPeak>最高启灵神经等级</RWS_Metric_RoyaltyPsylinkPeak>
+  <RWS_MetricDesc_RoyaltyPsylinkPeak>已记录的存档中，殖民者启灵神经等级的最高值。需要Royalty。</RWS_MetricDesc_RoyaltyPsylinkPeak>
+  <RWS_Metric_BiotechPollutionPeak>最多污染格子数</RWS_Metric_BiotechPollutionPeak>
+  <RWS_MetricDesc_BiotechPollutionPeak>已记录的存档中，主基地地图上受污染格子的最大数量。需要Biotech。</RWS_MetricDesc_BiotechPollutionPeak>
+  <RWS_Metric_BiotechBandwidthPeak>机械师使用带宽最大值</RWS_Metric_BiotechBandwidthPeak>
+  <RWS_MetricDesc_BiotechBandwidthPeak>已记录的存档中，机械师实际占用带宽的最大值。需要Biotech。</RWS_MetricDesc_BiotechBandwidthPeak>
+  <RWS_Metric_RoyaltyPermitUses>使用帝国许可次数</RWS_Metric_RoyaltyPermitUses>
+  <RWS_MetricDesc_RoyaltyPermitUses>符合条件的玩家殖民者实际使用帝国许可的次数。不包括取消的选择。</RWS_MetricDesc_RoyaltyPermitUses>
+  <RWS_Metric_RoyaltyPsycasts>成功施放心灵能力次数</RWS_Metric_RoyaltyPsycasts>
+  <RWS_MetricDesc_RoyaltyPsycasts>玩家的自由殖民者成功施放心灵能力（Royalty）的次数。只选择目标但没有确认施放的不计入。</RWS_MetricDesc_RoyaltyPsycasts>
+  <RWS_Metric_RoyaltyQuestSuccess>完成帝国相关任务数</RWS_Metric_RoyaltyQuestSuccess>
+  <RWS_MetricDesc_RoyaltyQuestSuccess>已接受、仍保留在存档中且成功完成的任务中，任务页面显示与帝国有关的任务数量，每次成功保存时统计。游戏已删除的任务不计入，因此不是历史累计次数。</RWS_MetricDesc_RoyaltyQuestSuccess>
+  <RWS_Metric_RoyaltyTitleGrants>授予帝国头衔次数</RWS_Metric_RoyaltyTitleGrants>
+  <RWS_MetricDesc_RoyaltyTitleGrants>记录Royalty事件期间，经确认授予殖民者的帝国头衔次数。</RWS_MetricDesc_RoyaltyTitleGrants>
+  <RWS_Metric_RoyaltyHighestTitle>获得的最高帝国头衔</RWS_Metric_RoyaltyHighestTitle>
+  <RWS_MetricDesc_RoyaltyHighestTitle>记录Royalty事件期间，经确认获得的最高帝国头衔。</RWS_MetricDesc_RoyaltyHighestTitle>
+  <RWS_Metric_RoyaltyHonor>获得及消耗的帝国荣誉</RWS_Metric_RoyaltyHonor>
+  <RWS_MetricDesc_RoyaltyHonor>记录Royalty事件期间，经确认获得及消耗的帝国荣誉数量。</RWS_MetricDesc_RoyaltyHonor>
+  <RWS_Metric_IdeologyConversions>完成改信次数</RWS_Metric_IdeologyConversions>
+  <RWS_MetricDesc_IdeologyConversions>记录到玩家一方的单位从一种已有文化转向另一种不同文化的次数。单位生成时被指定的文化不计入。</RWS_MetricDesc_IdeologyConversions>
+  <RWS_Metric_IdeologyRitualResults>按最终结果统计的仪式</RWS_Metric_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>将已确认的Ideology仪式按结果（Def）统计；中断的仪式单独归类。</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_Metric_IdeologyRitualRate>仪式成功率</RWS_Metric_IdeologyRitualRate>
+  <RWS_MetricDesc_IdeologyRitualRate>确认成功的仪式数 ÷ 被归类为成功或失败的仪式数；不包括中断的仪式。</RWS_MetricDesc_IdeologyRitualRate>
+  <RWS_Metric_IdeologyConversionDays>平均改信耗时</RWS_Metric_IdeologyConversionDays>
+  <RWS_MetricDesc_IdeologyConversionDays>从确认改信尝试到单位接受目标文化的平均天数。</RWS_MetricDesc_IdeologyConversionDays>
+  <RWS_Metric_IdeologyAppointments>文化职位任命次数</RWS_Metric_IdeologyAppointments>
+  <RWS_MetricDesc_IdeologyAppointments>经确认玩家殖民者新任文化领袖或专家职位的次数。重复任命相同职位不计入。</RWS_MetricDesc_IdeologyAppointments>
+  <RWS_Metric_OdysseyFlights>完成逆重飞船飞行次数</RWS_Metric_OdysseyFlights>
+  <RWS_MetricDesc_OdysseyFlights>通过玩家着陆确认完成的逆重飞船飞行次数。仅起飞或预览路线不计入。</RWS_MetricDesc_OdysseyFlights>
+  <RWS_Metric_OdysseyDistance>逆重飞船总飞行距离</RWS_Metric_OdysseyDistance>
+  <RWS_MetricDesc_OdysseyDistance>通过玩家着陆确认完成的逆重飞船飞行距离总和。</RWS_MetricDesc_OdysseyDistance>
+  <RWS_Metric_OdysseyUniqueTiles>不同着陆点数量</RWS_Metric_OdysseyUniqueTiles>
+  <RWS_MetricDesc_OdysseyUniqueTiles>已完成逆重飞船飞行所到达的不同世界地图地块数量。</RWS_MetricDesc_OdysseyUniqueTiles>
+  <RWS_Metric_OdysseyNewMaps>降落在新地图的次数</RWS_Metric_OdysseyNewMaps>
+  <RWS_MetricDesc_OdysseyNewMaps>已完成的逆重飞船着陆中，需要生成新地图的次数。</RWS_MetricDesc_OdysseyNewMaps>
+  <RWS_Metric_BiotechMechsCreated>培育的机械族数量</RWS_Metric_BiotechMechsCreated>
+  <RWS_MetricDesc_BiotechMechsCreated>玩家的机械培育器产出的机械族数量，在活机械族实际出现时才计入。不包括复活。</RWS_MetricDesc_BiotechMechsCreated>
+  <RWS_Metric_BiotechBirthMothers>分娩过的殖民者人数</RWS_Metric_BiotechBirthMothers>
+  <RWS_MetricDesc_BiotechBirthMothers>至少活产过一名婴儿的不同自由殖民者人数，同一人只计一次。</RWS_MetricDesc_BiotechBirthMothers>
+  <RWS_Metric_BiotechChildStages>儿童成长阶段达成次数</RWS_Metric_BiotechChildStages>
+  <RWS_MetricDesc_BiotechChildStages>殖民地儿童实际达成的成长阶段，每名儿童的每个阶段只计一次，并按阶段分类。</RWS_MetricDesc_BiotechChildStages>
+  <RWS_Metric_BiotechMechRepairs>完成机械族修理次数</RWS_Metric_BiotechMechRepairs>
+  <RWS_MetricDesc_BiotechMechRepairs>殖民地机械族的修理中，消除了最后一处伤势的修理次数。每次修理只计一次。</RWS_MetricDesc_BiotechMechRepairs>
+  <RWS_Metric_BiotechWasteCreated>生产的有毒垃圾包数量</RWS_Metric_BiotechWasteCreated>
+  <RWS_MetricDesc_BiotechWasteCreated>玩家成功完成生产后新产生的有毒垃圾包数量。</RWS_MetricDesc_BiotechWasteCreated>
+  <RWS_Metric_BiotechWasteDisposed>无害化处理的有毒垃圾包数</RWS_Metric_BiotechWasteDisposed>
+  <RWS_MetricDesc_BiotechWasteDisposed>玩家成功完成无害化处理而销毁的有毒垃圾包数量。运出或自然腐坏的不计入。</RWS_MetricDesc_BiotechWasteDisposed>
+  <RWS_Metric_BiotechPollutionCleaned>清理的污染格子数</RWS_Metric_BiotechPollutionCleaned>
+  <RWS_MetricDesc_BiotechPollutionCleaned>玩家完成除污工作后清洁的地图污染格子数量。</RWS_MetricDesc_BiotechPollutionCleaned>
+  <RWS_Exp_Enable>记录所有可用统计数据（默认开启）</RWS_Exp_Enable>
+  <RWS_Exp_Warning>默认收集尚未验证的记录。有些记录可能遗漏、重复统计或增加CPU负载；未安装的模组会跳过。记录开始前的事件无法重建。</RWS_Exp_Warning>
+  <RWS_Exp_SelectAll>全选（包括今后新增项目）</RWS_Exp_SelectAll>
+  <RWS_Exp_SelectNone>全部取消</RWS_Exp_SelectNone>
+  <RWS_Exp_SelectEvents>仅选择事件项目</RWS_Exp_SelectEvents>
+  <RWS_Exp_Event>事件（游玩期间）</RWS_Exp_Event>
+  <RWS_Exp_Snapshot>快照（成功保存时）</RWS_Exp_Snapshot>
+  <RWS_Exp_RequiresDlc>需要DLC/内容包：{0}</RWS_Exp_RequiresDlc>
+  <RWS_Exp_Help>新安装时默认选中全部项目。取消勾选即可停止收集对应项目；已保存的历史不会删除。设置更改立即生效，无需重启游戏。</RWS_Exp_Help>
+  <RWS_Exp_ExperimentalRow>实验性</RWS_Exp_ExperimentalRow>
+  <RWS_Exp_Evidence>记录可靠性：{0}</RWS_Exp_Evidence>
+  <RWS_Exp_EvidenceExperimental>尚未验证的记录</RWS_Exp_EvidenceExperimental>
+  <RWS_Exp_EvidenceVerified>记录时已验证</RWS_Exp_EvidenceVerified>
+  <RWS_Exp_EvidenceMixed>混合已验证和未验证的记录</RWS_Exp_EvidenceMixed>
+  <RWS_Exp_EvidenceUnknown>记录来源不明（包括旧版数据）</RWS_Exp_EvidenceUnknown>
+  <RWS_Exp_Since>开始记录于游戏内第{0}天</RWS_Exp_Since>
+  <RWS_Mod_RequiresMod>需要MOD：{0}</RWS_Mod_RequiresMod>
+  <RWS_Mod_Provider>来源MOD：{0}（提供者：{1}）</RWS_Mod_Provider>
+  <RWS_Mod_SourceUnavailable>目前未安装来源模组。已记录的数值保留，但不再产生新的统计数据。</RWS_Mod_SourceUnavailable>
+  <RWS_ModRecruitment_Started>开始的招募请求数</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_StartedDesc>记录开始后成功创建的Recruitment 1.1.2招募请求数量。启用记录前的时段仅有部分数据。创建后取消的请求仍计为已开始。</RWS_ModRecruitment_StartedDesc>
+  <RWS_ModRecruitment_Active>进行中的招募请求数</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_ActiveDesc>上次成功保存时仍在等待处理的招募请求数。此值不是历史累计总数。</RWS_ModRecruitment_ActiveDesc>
+  <RWS_ModHospitality_PresentGuests>Hospitality：存档时的在访客人数</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuestsDesc>成功保存时，玩家主基地地图上留宿的Hospitality访客数量。不是累计来访人数。</RWS_ModHospitality_PresentGuestsDesc>
+  <RWS_ModHospitality_PresentGroups>Hospitality：存档时的在访客组数</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroupsDesc>成功保存时，玩家主基地地图上留宿的Hospitality访客组数量。不是累计来访组数。</RWS_ModHospitality_PresentGroupsDesc>
+  <RWS_Details_ViewLifetime>累计（已记录时段）</RWS_Details_ViewLifetime>
+  <RWS_Details_ViewOther>其他</RWS_Details_ViewOther>
+  <RWS_Details_ViewAll>全部</RWS_Details_ViewAll>
   <RWS_Details_SurgerySuccess>手术成功</RWS_Details_SurgerySuccess>
   <RWS_Details_SurgeryFailure>手术失败</RWS_Details_SurgeryFailure>
-  <RWS_Details_TradeKindOrbital>轨道交易商</RWS_Details_TradeKindOrbital>
-  <RWS_Details_TradeKindCaravan>来访的车队</RWS_Details_TradeKindCaravan>
-  <RWS_Details_TradeKindSettlement>结算</RWS_Details_TradeKindSettlement>
-  <RWS_Details_TradeKindOther>其他交易商</RWS_Details_TradeKindOther>
-  <RWS_Details_Other>其他人员</RWS_Details_Other>
-  <RWS_Metric_CraftedByDef>按项目分列的已完成产品</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>在记录期内按项目成功完成的产品单位。独立系列;激活前没有历史估计。</RWS_MetricDesc_CraftedByDef>
-  <RWS_Metric_MinedByDef>按项目分列的地雷资源单位</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>在记录期内按项目成功排列了采矿产量。独立系列;在启动前没有历史估计。</RWS_MetricDesc_MinedByDef>
-  <RWS_Metric_FilthRemoved>污点已完全清除</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>玩家角色的清洁工作( vanilla MessesCleaned record) 完全删除了每个污秽对象一个。 不是部分厚度减少或整个清洁工作的计数。 只有在启用时才录制 。</RWS_MetricDesc_FilthRemoved>
-  <RWS_Metric_FiresExtinguished>灭火</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>每场由玩家角色通过香草灭火或自我灭火(FiresExtinguished record)摧毁的火灾中,就排除了环境灭火,仅在启用时才录制.</RWS_MetricDesc_FiresExtinguished>
-  <RWS_Metric_MealIngestions>摄入食物事件</RWS_Metric_MealIngestions>
-  <RWS_MetricDesc_MealIngestions>成功的正营养摄入需要玩家形的人类角色吃餐,每次呼叫都算数一次,包括大篷车的消费,但不包括非食用的食物,药物,或非玩家角色.</RWS_MetricDesc_MealIngestions>
-  <RWS_Metric_HaulPlacements>沉积在储存室的豪尔人</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>玩家 HaulToCell 任务的成功放置动作在选定的目的地单元格中。 部分覆盖: 集装箱矿床和特定模式的拖放方法不计算。 单是皮卡永远不会计算 。</RWS_MetricDesc_HaulPlacements>
-  <RWS_Metric_HauledUnits>存入储存室的物品</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>玩家 HaulToCell 交付过程中成功投放的总量, 以载货堆数的变化来计量。 部分覆盖: 集装箱搬运和其他运输模式不计算 。</RWS_MetricDesc_HauledUnits>
-  <RWS_Metric_CleaningJobsCompleted>完成清洁工作</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>玩家角色的清洁工作在至少一个污秽对象被完全清除后成功完成。 在一个任务中, 多个污秽对象算作一个任务。 中断的任务被排除 。</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_Details_TradeKindOrbital>轨道商人</RWS_Details_TradeKindOrbital>
+  <RWS_Details_TradeKindCaravan>来访远行队</RWS_Details_TradeKindCaravan>
+  <RWS_Details_TradeKindSettlement>定居点</RWS_Details_TradeKindSettlement>
+  <RWS_Details_TradeKindOther>其他商人</RWS_Details_TradeKindOther>
+  <RWS_Details_Other>其他</RWS_Details_Other>
+  <RWS_Metric_CraftedByDef>按物品统计完成的制品数</RWS_Metric_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>记录期间按物品种类统计成功完成的制品数量。属于独立的数据系列，不会推算启用前的数值。</RWS_MetricDesc_CraftedByDef>
+  <RWS_Metric_MinedByDef>按物品统计的开采资源数</RWS_Metric_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>记录期间按物品种类统计实际放置的采矿产物数量。属于独立的数据系列，不会推算启用前的数值。</RWS_MetricDesc_MinedByDef>
+  <RWS_Metric_FilthRemoved>完全清除的污垢数</RWS_Metric_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>玩家单位每彻底清除一处污垢计一次（原版“清理污垢”记录）。仅减少污垢厚度或完成一次清洁任务不等于此项。仅在启用时记录。</RWS_MetricDesc_FilthRemoved>
+  <RWS_Metric_FiresExtinguished>扑灭火焰数量</RWS_Metric_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>玩家单位通过正常灭火或拍灭自己身上的火焰，每扑灭一处火焰计一次（原版“扑灭火焰”记录）。自行熄灭的火焰不计入。仅在启用时记录。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_Metric_MealIngestions>吃下的餐食份数</RWS_Metric_MealIngestions>
+  <RWS_MetricDesc_MealIngestions>玩家派系的人形单位实际吃下并获得正营养值的餐食份数。每份餐食计一次，包括远行队中吃的餐食。其他食物、药物及非玩家单位不计入。</RWS_MetricDesc_MealIngestions>
+  <RWS_Metric_HaulPlacements>运到储存格子的次数</RWS_Metric_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>玩家运送工作（HaulToCell）实际将负载放入指定格子的次数。仅部分覆盖：不统计放入容器或模组特有的搬运。只拿起物品不计入。</RWS_MetricDesc_HaulPlacements>
+  <RWS_Metric_HauledUnits>运到储存格子的物品数</RWS_Metric_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>玩家运送工作（HaulToCell）实际放置的物品总数量，以所携带堆叠的减少量测定。仅部分覆盖：不统计放入容器或其他移动物品方式。</RWS_MetricDesc_HauledUnits>
+  <RWS_Metric_CleaningJobsCompleted>完成清洁工作次数</RWS_Metric_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>玩家清洁工作在彻底清除至少一处污垢后成功结束的次数。同一工作清除多处污垢只算一项工作。中断的工作不计入。</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>获得的砍伐树木的木材(主要产量)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>玩家在切树收获后实际放置或合并的原木单位数量,以GenPlace的放置Action(GenPlace Place Action)来衡量. 部分覆盖:部分MOD组件的奖金木材和非标准剪切路径被排除在外.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>屠宰的动物随后被屠宰</RWS_Metric_SlaughteredButchery>
