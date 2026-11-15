@@ -163,8 +163,9 @@ public sealed class CheckpointArchiveTests
 
     [Theory]
     [InlineData(ColonySelection.ObservationMax)]
-    [InlineData(ColonySelection.Representative)]
-    public void Plan_KeepsProviderFallbackAndNonRepresentativeDefinitions(ColonySelection selection)
+    [InlineData(ColonySelection.ObservationMin)]
+    [InlineData(ColonySelection.ObservationMaxByBreakdown)]
+    public void Plan_KeepsNonRepresentativeProviderDefinitions(ColonySelection selection)
     {
         var (profile, parent, child) = Pair();
         var descriptor = Provider(selection);
@@ -173,6 +174,29 @@ public sealed class CheckpointArchiveTests
         parent.Metrics.Add(descriptor.StableKey, Count(4, 1));
         child.Metrics.Add(descriptor.StableKey, Count(5, 1));
         Assert.Equal(BuiltIn.StoredKey, Assert.Single(Assert.Single(CheckpointArchivePlanner.Plan(profile)).Drops).Key);
+    }
+
+    [Fact]
+    public void Plan_ArchivesRepresentativeProviderMetricsOnlyWhenAllValidChildrenConfirm()
+    {
+        var (profile, parent, child) = Pair();
+        var descriptor = Provider(ColonySelection.Representative);
+        ProfileMutations.RememberModMetrics(profile, new[] { descriptor });
+        parent.Metrics.Add(descriptor.StableKey, Count(4, 1));
+        child.Metrics.Add(descriptor.StableKey, Count(5, 1));
+
+        var drops = Assert.Single(CheckpointArchivePlanner.Plan(profile)).Drops.Select(d => d.Key).ToHashSet(StringComparer.Ordinal);
+        Assert.Contains(BuiltIn.StoredKey, drops);
+        Assert.Contains(descriptor.StableKey, drops);
+
+        // If a sibling branch does not carry this optional MOD metric, keep it at the branch point.
+        var branchWithoutMod = Observation("B", "P", 15);
+        branchWithoutMod.Metrics.Add(BuiltIn.StoredKey, Count(2));
+        ProfileMutations.UpsertMetricObservation(profile, branchWithoutMod);
+
+        drops = Assert.Single(CheckpointArchivePlanner.Plan(profile)).Drops.Select(d => d.Key).ToHashSet(StringComparer.Ordinal);
+        Assert.Contains(BuiltIn.StoredKey, drops);
+        Assert.DoesNotContain(descriptor.StableKey, drops);
     }
 
     [Theory]
@@ -534,5 +558,380 @@ public sealed class CheckpointArchiveTests
     {
         [System.Text.Json.Serialization.JsonExtensionData]
         public Dictionary<string, JsonElement> ExtensionData { get; set; } = new(StringComparer.Ordinal);
+    }
+
+    [Fact]
+    public void OptionalModCheckpoints_AreArchivedWithoutChangingValuesOrCharts()
+    {
+        using var plainDir = new TempDir();
+        using var tieredDir = new TempDir();
+        var archive = new FileCheckpointArchive(tieredDir.File("checkpoint-archive"));
+        var ordinary = new ProfileSession(new ProfileStore(plainDir.Path), () => Now);
+        var tiered = new ProfileSession(new ProfileStore(tieredDir.Path), () => Now, archive);
+
+        var scalarDesc = Provider(ColonySelection.Representative);
+        var breakdownDesc = scalarDesc with
+        {
+            FamilyId = "crafted", MetricName = "by_def", HasBreakdown = true,
+            ProviderId = "test.crafted", OwnerPackageId = "test.crafted",
+        };
+        var maxDesc = scalarDesc with
+        {
+            FamilyId = "peak", MetricName = "max_val", Selection = ColonySelection.ObservationMax,
+            Overall = OverallAggregation.Max, ProviderId = "test.peak", OwnerPackageId = "test.peak",
+        };
+        var descriptors = new[] { scalarDesc, breakdownDesc, maxDesc };
+
+        void Init(ProfileSession s) => s.Mutate(p =>
+        {
+            ProfileMutations.ApplyLiveObservation(p, Campaign, Observation("P").Identity,
+                new ObservedValues { TicksGame = 1000 }, new DisplayInfo(), Now);
+            ProfileMutations.RememberModMetrics(p, descriptors);
+        }, SaveMode.None);
+
+        Init(ordinary);
+        Init(tiered);
+
+        string? parent = null;
+        for (var i = 1; i <= 25; i++)
+        {
+            var key = $"cp-{i:D3}";
+            MetricObservation MakeObs()
+            {
+                var obs = Observation(key, parent, i * 100);
+                obs.EvidenceByAcquisition = new Dictionary<string, MetricEvidence>(StringComparer.Ordinal)
+                {
+                    [scalarDesc.AcquisitionId] = MetricEvidence.Verified,
+                    [breakdownDesc.AcquisitionId] = MetricEvidence.Experimental,
+                    [maxDesc.AcquisitionId] = MetricEvidence.Verified,
+                };
+                obs.ProviderCaptures = new Dictionary<string, ModProviderCapture>(StringComparer.Ordinal)
+                {
+                    [scalarDesc.ProviderId] = new(scalarDesc.OwnerPackageId, "1.0.0", "1.0.0"),
+                    [breakdownDesc.ProviderId] = new(breakdownDesc.OwnerPackageId, "1.0.0", "1.0.0"),
+                    [maxDesc.ProviderId] = new(maxDesc.OwnerPackageId, "1.0.0", "1.0.0"),
+                };
+                obs.Metrics[BuiltIn.StoredKey] = Count(i);
+                obs.Metrics[scalarDesc.StableKey] = MetricEntry.Of(1, new MetricValue
+                {
+                    IntegerValue = i * 10, Coverage = i == 5 ? MetricCoverage.Partial : MetricCoverage.Complete,
+                    SinceTick = 0, ThroughTick = i * 100,
+                });
+                var bd = MetricEntry.Of(1, new MetricValue
+                {
+                    IntegerValue = i * 3, Coverage = MetricCoverage.Complete, SinceTick = 0, ThroughTick = i * 100,
+                });
+                bd.Values["test.crafted/Widget"] = new MetricValue { IntegerValue = i * 2, Coverage = MetricCoverage.Complete };
+                bd.Values["test.crafted/Gadget"] = new MetricValue { IntegerValue = i, Coverage = MetricCoverage.Complete };
+                obs.Metrics[breakdownDesc.StableKey] = bd;
+                obs.Metrics[maxDesc.StableKey] = MetricEntry.Of(1, new MetricValue
+                {
+                    IntegerValue = i == 12 ? 999 : i, Coverage = MetricCoverage.Complete, SinceTick = 0, ThroughTick = i * 100,
+                });
+                return obs;
+            }
+            Add(ordinary, MakeObs());
+            Add(tiered, MakeObs());
+            parent = key;
+        }
+        ordinary.Flush();
+        tiered.Flush();
+
+        var plainSize = new FileInfo(plainDir.File("profile.json")).Length;
+        var tieredSize = new FileInfo(tieredDir.File("profile.json")).Length;
+        Assert.True(tieredSize < plainSize, $"Expected archived profile ({tieredSize}) < plain ({plainSize})");
+
+        // Reload both and compare views and chart history
+        var ordinaryReloaded = new ProfileSession(new ProfileStore(plainDir.Path), () => Now);
+        var tieredReloaded = new ProfileSession(new ProfileStore(tieredDir.Path), () => Now, archive);
+
+        Assert.Equal(Rows(ordinaryReloaded), Rows(tieredReloaded));
+
+        // Representative + breakdown keys were dropped from compressed ancestors while ObservationMax stayed in profile
+        var archivedAncestors = tieredReloaded.Read(p => p.MetricObservations.Where(o => o.Compressed).ToList());
+        Assert.Equal(24, archivedAncestors.Count);
+        Assert.All(archivedAncestors, o =>
+        {
+            Assert.True(o.ArchivedMetrics);
+            Assert.DoesNotContain(scalarDesc.StableKey, o.Metrics.Keys);
+            Assert.DoesNotContain(breakdownDesc.StableKey, o.Metrics.Keys);
+            Assert.Contains(maxDesc.StableKey, o.Metrics.Keys);
+            // Evidence/capture for remaining ObservationMax is retained, while dropped ones are trimmed
+            Assert.False(o.EvidenceByAcquisition?.ContainsKey(scalarDesc.AcquisitionId) ?? false);
+            Assert.False(o.ProviderCaptures?.ContainsKey(scalarDesc.ProviderId) ?? false);
+            Assert.Equal(MetricEvidence.Verified, o.EvidenceByAcquisition![maxDesc.AcquisitionId]);
+            Assert.NotNull(o.ProviderCaptures![maxDesc.ProviderId]);
+        });
+
+        // Chart history matches point-by-point including Partial point at i=5
+        var ordView = ordinaryReloaded.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var tierView = tieredReloaded.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var defs = MetricRegistry.Compose(descriptors, MetricDisplayPolicy.AllDetailsVisibleUnits);
+        foreach (var targetDef in defs.Where(d => d.ProviderId is not null))
+        {
+            var ordHist = ordinaryReloaded.ReadChartHistory(ordView, ordView.Colonies[0].Key, targetDef, plainDir.Path);
+            var tierHist = tieredReloaded.ReadChartHistory(tierView, tierView.Colonies[0].Key, targetDef, tieredDir.Path);
+            Assert.Equal(ordHist.Points.Select(p => (p.Tick, p.Value?.Number, p.Value?.Coverage, p.Value?.Evidence)),
+                tierHist.Points.Select(p => (p.Tick, p.Value?.Number, p.Value?.Coverage, p.Value?.Evidence)));
+        }
+    }
+
+    [Fact]
+    public void OptionalMod_BranchConflictAfterArchiving_PreservesFallbackValue()
+    {
+        using var plainDir = new TempDir();
+        using var tieredDir = new TempDir();
+        var archive = new MemoryArchive();
+        var ordinary = new ProfileSession(new ProfileStore(plainDir.Path), () => Now);
+        var tiered = new ProfileSession(new ProfileStore(tieredDir.Path), () => Now, archive);
+        var provider = Provider(ColonySelection.Representative);
+        Seed(ordinary, provider);
+        Seed(tiered, provider);
+
+        void AddBoth(MetricObservation o)
+        {
+            Add(ordinary, o);
+            Add(tiered, JsonSerializer.Deserialize<MetricObservation>(Line(o), ProfileJson.CompactOptions)!);
+        }
+
+        // P (has provider) -> C1 (has provider): flush archives P (including provider)
+        var pObs = WithCount("P", null, 10, 1);
+        pObs.Metrics[provider.StableKey] = Count(42, 1);
+        pObs.EvidenceByAcquisition = new() { [provider.AcquisitionId] = MetricEvidence.Experimental };
+        var c1 = WithCount("C1", "P", 20, 2);
+        c1.Metrics[provider.StableKey] = Count(50, 1);
+        AddBoth(pObs);
+        AddBoth(c1);
+        tiered.Flush();
+        Assert.True(tiered.Read(Parent).ArchivedMetrics);
+
+        // Later a sibling branch B without the optional MOD is imported, then C1 conflicts.
+        var b = WithCount("B", "P", 15, 3);
+        AddBoth(b);
+        var c1Conflict = WithCount("C1", "P", 20, 99);
+        c1Conflict.PayloadHash = "different-hash";
+        AddBoth(c1Conflict);
+
+        ordinary.Flush();
+        tiered.Flush();
+        Assert.Equal(Rows(ordinary), Rows(tiered));
+        var restoredRow = tiered.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits)
+            .Numeric.Colonies.Single().Rows.Single(r => r.Definition.Key == provider.StableKey);
+        Assert.Equal(42, restoredRow.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, restoredRow.Value.Coverage);
+        Assert.Equal(MetricEvidence.Experimental, restoredRow.Value.Evidence);
+    }
+
+    [Fact]
+    public void OptionalMod_RemovalReadditionAndRewind_MatchOrdinaryProfile()
+    {
+        using var plainDir = new TempDir();
+        using var tieredDir = new TempDir();
+        var archive = new FileCheckpointArchive(tieredDir.File("archive"));
+        var ordinary = new ProfileSession(new ProfileStore(plainDir.Path), () => Now);
+        var tiered = new ProfileSession(new ProfileStore(tieredDir.Path), () => Now, archive);
+        var provider = Provider(ColonySelection.Representative);
+        Seed(ordinary, provider);
+        Seed(tiered, provider);
+
+        void AddBoth(MetricObservation o)
+        {
+            Add(ordinary, o);
+            Add(tiered, JsonSerializer.Deserialize<MetricObservation>(Line(o), ProfileJson.CompactOptions)!);
+        }
+
+        MetricObservation Step(string key, string? parent, int tick, int count, int? modVal)
+        {
+            var o = WithCount(key, parent, tick, count);
+            if (modVal is { } mv)
+            {
+                o.Metrics[provider.StableKey] = Count(mv, 1);
+                o.EvidenceByAcquisition = new() { [provider.AcquisitionId] = MetricEvidence.Verified };
+            }
+            return o;
+        }
+
+        // Phase 1: MOD present (s1 -> s2 -> s3)
+        AddBoth(Step("s1", null, 100, 1, 10));
+        AddBoth(Step("s2", "s1", 200, 2, 20));
+        AddBoth(Step("s3", "s2", 300, 3, 30));
+        tiered.Flush();
+
+        // Phase 2: MOD removed (s4 -> s5), s3 must keep modVal=30 so fallback works
+        AddBoth(Step("s4", "s3", 400, 4, null));
+        AddBoth(Step("s5", "s4", 500, 5, null));
+        tiered.Flush();
+        Assert.Equal(Rows(ordinary), Rows(tiered));
+
+        // Phase 3: MOD re-added (s6)
+        AddBoth(Step("s6", "s5", 600, 6, 35));
+        tiered.Flush();
+        Assert.Equal(Rows(ordinary), Rows(tiered));
+
+        // Phase 4: Rewind to s2 and save s7 (earlier tick than s6, then later s8 > s6)
+        AddBoth(Step("s7", "s2", 350, 10, 25));
+        tiered.Flush();
+        Assert.Equal(Rows(ordinary), Rows(tiered));
+
+        AddBoth(Step("s8", "s7", 700, 11, 28));
+        ordinary.Flush();
+        tiered.Flush();
+        Assert.Equal(Rows(ordinary), Rows(tiered));
+
+        var def = MetricRegistry.Compose([provider], MetricDisplayPolicy.AllDetailsVisibleUnits).Single(d => d.Key == provider.StableKey);
+        var ov = ordinary.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var tv = tiered.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var oh = ordinary.ReadChartHistory(ov, ov.Colonies[0].Key, def, plainDir.Path);
+        var th = tiered.ReadChartHistory(tv, tv.Colonies[0].Key, def, tieredDir.Path);
+        Assert.Equal(oh.Points.Select(p => (p.Tick, p.Value?.Number, p.ConnectToPrevious)),
+            th.Points.Select(p => (p.Tick, p.Value?.Number, p.ConnectToPrevious)));
+    }
+
+    [Fact]
+    public void OptionalMod_ArchiveCorruptionAndOldSchemaV1Upgrade_HandledSafely()
+    {
+        using var dir = new TempDir();
+        var archiveDir = dir.File("archive");
+        var archive = new FileCheckpointArchive(archiveDir);
+        var provider = Provider(ColonySelection.Representative);
+
+        // Start from a schemaVersion 1 legacy profile
+        File.WriteAllText(dir.File("profile.json"), "{\"schemaVersion\":1,\"saveObservations\":[],\"liveCampaigns\":[]}");
+        var session = new ProfileSession(new ProfileStore(dir.Path), () => Now, archive);
+        Seed(session, provider);
+        var p = WithCount("P", null, 100, 1);
+        p.Metrics[provider.StableKey] = Count(15, 1);
+        var c = WithCount("C", "P", 200, 2);
+        c.Metrics[provider.StableKey] = Count(25, 1);
+        Add(session, p);
+        Add(session, c);
+        session.Flush();
+        Assert.True(session.Read(Parent).ArchivedMetrics);
+
+        // Corrupt the archive file (append partial JSON line, then delete file for conflict test)
+        var archiveFile = Assert.Single(Directory.GetFiles(archiveDir));
+        File.AppendAllText(archiveFile, "{\"corrupt\":");
+        var view = session.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var def = MetricRegistry.Compose([provider], MetricDisplayPolicy.AllDetailsVisibleUnits).Single(d => d.Key == provider.StableKey);
+        var hist = session.ReadChartHistory(view, view.Colonies[0].Key, def, dir.Path);
+        Assert.Equal(new double?[] { 15, 25 }, hist.Points.Select(pt => pt.Value?.Number));
+
+        // Now delete archive and invalidate child: must degrade cleanly to Unknown, never 0
+        File.Delete(archiveFile);
+        var conflict = WithCount("C", "P", 200, 2);
+        conflict.PayloadHash = "changed";
+        Add(session, conflict);
+        var row = session.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits)
+            .Numeric.Colonies.Single().Rows.Single(r => r.Definition.Key == provider.StableKey);
+        Assert.Null(row.Value.Number);
+        Assert.Equal(MetricCoverage.Unknown, row.Value.Coverage);
+    }
+
+    [Fact]
+    public void Plan_KeepsMetadataWhenUnknownKeysRemainInAncestor()
+    {
+        var (profile, parent, child) = Pair();
+        var provider = Provider(ColonySelection.Representative);
+        ProfileMutations.RememberModMetrics(profile, new[] { provider });
+        parent.Metrics.Add(provider.StableKey, Count(4, 1));
+        child.Metrics.Add(provider.StableKey, Count(5, 1));
+        parent.Metrics.Add("mod.unknown.future.metric", Count(9, 1));
+        parent.EvidenceByAcquisition = new() { [provider.AcquisitionId] = MetricEvidence.Experimental };
+        parent.ProviderCaptures = new() { [provider.ProviderId] = new(provider.OwnerPackageId, "1.0", "1.0") };
+
+        var step = Assert.Single(CheckpointArchivePlanner.Plan(profile));
+        CheckpointArchivePlanner.Apply(step);
+
+        Assert.DoesNotContain(provider.StableKey, parent.Metrics.Keys);
+        Assert.Contains("mod.unknown.future.metric", parent.Metrics.Keys);
+        // Because an unknown key remains, metadata cannot be proved unused and must stay
+        Assert.True(parent.EvidenceByAcquisition.ContainsKey(provider.AcquisitionId));
+        Assert.True(parent.ProviderCaptures.ContainsKey(provider.ProviderId));
+    }
+
+    [Fact]
+    public void Plan_KeepsSharedSiblingMetadataAndProviderCaptureExtensionData()
+    {
+        var (profile, parent, child) = Pair();
+        var repDesc = Provider(ColonySelection.Representative);
+        var sharedMaxDesc = repDesc with
+        {
+            MetricName = "peak_counter",
+            Selection = ColonySelection.ObservationMax,
+            Overall = OverallAggregation.Max,
+        };
+        var extDesc = new ModMetricDescriptor
+        {
+            OwnerPackageId = "test.ext",
+            ProviderId = "test.ext.provider",
+            FamilyId = "ext",
+            MetricName = "val",
+            Revision = 1,
+            Source = MetricObservationSource.Checkpoint,
+            Selection = ColonySelection.Representative,
+            Overall = OverallAggregation.Sum,
+            LabelKey = "L",
+            DescriptionKey = "D",
+        };
+        ProfileMutations.RememberModMetrics(profile, new[] { repDesc, sharedMaxDesc, extDesc });
+
+        parent.Metrics[repDesc.StableKey] = Count(1, 1);
+        child.Metrics[repDesc.StableKey] = Count(2, 1);
+        parent.Metrics[sharedMaxDesc.StableKey] = Count(10, 1);
+        child.Metrics[sharedMaxDesc.StableKey] = Count(5, 1);
+        parent.Metrics[extDesc.StableKey] = Count(3, 1);
+        child.Metrics[extDesc.StableKey] = Count(4, 1);
+
+        var extra = JsonSerializer.SerializeToElement("keep-me");
+        parent.EvidenceByAcquisition = new(StringComparer.Ordinal)
+        {
+            [repDesc.AcquisitionId] = MetricEvidence.Verified,
+            [extDesc.AcquisitionId] = MetricEvidence.Verified,
+        };
+        parent.ProviderCaptures = new(StringComparer.Ordinal)
+        {
+            [repDesc.ProviderId] = new(repDesc.OwnerPackageId, "1.0", "1.0"),
+            [extDesc.ProviderId] = new(extDesc.OwnerPackageId, "1.0", "1.0")
+            {
+                ExtensionData = new() { ["future"] = extra },
+            },
+        };
+
+        var step = Assert.Single(CheckpointArchivePlanner.Plan(profile));
+        CheckpointArchivePlanner.Apply(step);
+
+        Assert.DoesNotContain(repDesc.StableKey, parent.Metrics.Keys);
+        Assert.DoesNotContain(extDesc.StableKey, parent.Metrics.Keys);
+        Assert.Contains(sharedMaxDesc.StableKey, parent.Metrics.Keys);
+        // Shared unit/provider with remaining sharedMaxDesc is kept
+        Assert.True(parent.EvidenceByAcquisition.ContainsKey(repDesc.AcquisitionId));
+        Assert.True(parent.ProviderCaptures.ContainsKey(repDesc.ProviderId));
+        // ExtensionData on ProviderCapture protects it while its EvidenceByAcquisition was trimmed
+        Assert.False(parent.EvidenceByAcquisition.ContainsKey(extDesc.AcquisitionId));
+        Assert.True(parent.ProviderCaptures.ContainsKey(extDesc.ProviderId));
+    }
+
+    [Fact]
+    public void Apply_SkipsMetadataDropsWhenAnyMetricDropWasSkipped()
+    {
+        var (profile, parent, child) = Pair();
+        var provider = Provider(ColonySelection.Representative);
+        ProfileMutations.RememberModMetrics(profile, new[] { provider });
+        parent.Metrics.Add(provider.StableKey, Count(4, 1));
+        child.Metrics.Add(provider.StableKey, Count(5, 1));
+        parent.EvidenceByAcquisition = new() { [provider.AcquisitionId] = MetricEvidence.Verified };
+        parent.ProviderCaptures = new() { [provider.ProviderId] = new(provider.OwnerPackageId, "1.0", "1.0") };
+
+        var step = Assert.Single(CheckpointArchivePlanner.Plan(profile));
+        // Mutate BuiltIn entry after planning so that one drop is skipped while provider drop succeeds
+        parent.Metrics[BuiltIn.StoredKey] = Count(99);
+        CheckpointArchivePlanner.Apply(step);
+
+        Assert.Contains(BuiltIn.StoredKey, parent.Metrics.Keys);
+        Assert.DoesNotContain(provider.StableKey, parent.Metrics.Keys);
+        Assert.True(parent.ArchivedMetrics);
+        // Since not all planned drops were applied, metadata stays intact
+        Assert.True(parent.EvidenceByAcquisition.ContainsKey(provider.AcquisitionId));
+        Assert.True(parent.ProviderCaptures.ContainsKey(provider.ProviderId));
     }
 }

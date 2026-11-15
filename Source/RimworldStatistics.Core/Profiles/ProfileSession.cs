@@ -66,7 +66,7 @@ public sealed class ProfileSession
         LoadResult = store.Load(utcNow());
         _profile = LoadResult.Profile;
         _archive = LoadResult.ReadOnly ? null : archive;
-        RestoreCheckpointMetrics();
+        RestoreCheckpointMetrics(initialLoad: true);
     }
 
     public ProfileLoadResult LoadResult { get; }
@@ -144,7 +144,7 @@ public sealed class ProfileSession
         try
         {
             change(_profile);
-            RestoreCheckpointMetrics();
+            RestoreCheckpointMetrics(initialLoad: false);
         }
         finally
         {
@@ -178,7 +178,7 @@ public sealed class ProfileSession
 
     internal void QueueSave() => Save(SaveMode.Background);
 
-    private void RestoreCheckpointMetrics()
+    private void RestoreCheckpointMetrics(bool initialLoad)
     {
         // Re-decoding the same checkpoint can add visible evidence, even if
         // the ancestor is still compressed. Merge before saving the profile,
@@ -195,10 +195,97 @@ public sealed class ProfileSession
         }
         _profile.PendingCheckpointArchive.Clear();
 
-        if (_archive is not null)
-            foreach (var observation in _profile.MetricObservations)
-                if (!observation.IsQuarantined && observation.ArchivedMetrics && !observation.Compressed)
-                    RestoreCheckpointMetrics(observation);
+        if (_archive is null)
+        {
+            _profile.PendingCheckpointRestorations.Clear();
+            return;
+        }
+
+        if (_profile.PendingCheckpointRestorations.Count > 0)
+        {
+            foreach (var target in _profile.PendingCheckpointRestorations)
+                if (!target.IsQuarantined && target.ArchivedMetrics)
+                    RestoreCheckpointMetrics(target);
+            _profile.PendingCheckpointRestorations.Clear();
+        }
+
+        foreach (var observation in _profile.MetricObservations)
+            if (!observation.IsQuarantined && observation.ArchivedMetrics && !observation.Compressed)
+                RestoreCheckpointMetrics(observation);
+
+        if (initialLoad)
+            RestoreBranchFallbackParents();
+    }
+
+    private void RestoreBranchFallbackParents()
+    {
+        var hasCandidate = _profile.MetricObservations.Any(o => !o.IsQuarantined
+            && o.Source == MetricObservationSource.Checkpoint && o.ArchivedMetrics && o.Compressed
+            && !o.Conflicted && o.Identity.ModCampaignId is { Length: > 0 });
+        if (!hasCandidate)
+            return;
+
+        var childrenByParent = _profile.MetricObservations
+            .Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint
+                && o.ParentKey is not null && o.Identity.ModCampaignId is { Length: > 0 })
+            .ToLookup(o => (o.Identity.ModCampaignId!, o.ParentKey!));
+        HashSet<string>? lastCaptureKeys = null;
+
+        foreach (var observation in _profile.MetricObservations)
+        {
+            if (observation.IsQuarantined || observation.Source != MetricObservationSource.Checkpoint
+                || !observation.ArchivedMetrics || !observation.Compressed || observation.Conflicted
+                || observation.Identity.ModCampaignId is not { Length: > 0 } campaign)
+                continue;
+
+            var hasConflictedChild = false;
+            List<MetricObservation>? validChildren = null;
+            foreach (var child in childrenByParent[(campaign, observation.Key)])
+            {
+                if (child.SaveTick <= observation.SaveTick)
+                    continue;
+                if (child.Conflicted)
+                {
+                    hasConflictedChild = true;
+                    break;
+                }
+                (validChildren ??= new List<MetricObservation>()).Add(child);
+            }
+
+            if (hasConflictedChild)
+            {
+                RestoreCheckpointMetrics(observation);
+                continue;
+            }
+
+            if (validChildren is not { Count: > 1 })
+                continue;
+
+            lastCaptureKeys ??= CheckpointArchivePlanner.LastCaptureCheckpointKeys(_profile);
+            if (lastCaptureKeys.Count == 0)
+                continue;
+
+            var first = validChildren[0];
+            var mismatch = false;
+            foreach (var key in lastCaptureKeys)
+            {
+                var firstHas = first.Metrics.TryGetValue(key, out var fe) && !fe.IsQuarantined;
+                for (var i = 1; i < validChildren.Count; i++)
+                {
+                    var otherHas = validChildren[i].Metrics.TryGetValue(key, out var oe) && !oe.IsQuarantined;
+                    if (firstHas != otherHas || (firstHas && fe!.Revision != oe!.Revision))
+                    {
+                        mismatch = true;
+                        break;
+                    }
+                }
+                if (mismatch)
+                    break;
+            }
+
+            if (mismatch)
+                RestoreCheckpointMetrics(observation);
+        }
     }
 
     private void RestoreCheckpointMetrics(MetricObservation target)
@@ -511,6 +598,9 @@ public sealed class ProfileSession
                         if (stillPlanned is null || !step.Drops.All(drop => stillPlanned.Drops.Any(now =>
                                 now.Key == drop.Key && ReferenceEquals(now.Entry, drop.Entry)
                                 && now.ValueCount == drop.ValueCount)))
+                            continue;
+                        if (step.DropEvidenceUnits.Any(u => !stillPlanned.DropEvidenceUnits.Contains(u, StringComparer.Ordinal))
+                            || step.DropProviderIds.Any(p => !stillPlanned.DropProviderIds.Contains(p, StringComparer.Ordinal)))
                             continue;
                         if (!string.Equals(JsonSerializer.Serialize(step.Observation, ProfileJson.CompactOptions),
                                 json, StringComparison.Ordinal))

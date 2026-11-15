@@ -287,7 +287,7 @@ public static partial class MetricCalculator
         if (SnapshotSelectionPolicy.UsesLastCapture(d)
             && (rep is null || Entry(rep, d) is null))
         {
-            var historical = MetricObservationOrder.Latest(observations.Where(o => Entry(o, d) is not null));
+            var historical = MetricObservationOrder.Latest(observations.Where(o => !o.Conflicted && Entry(o, d) is not null));
             if (historical is not null)
             {
                 rep = historical;
@@ -340,10 +340,14 @@ public static partial class MetricCalculator
 
     private static NumericRow AcrossObservations(MetricDefinition d, IReadOnlyList<MetricObservation> observations)
     {
+        var nonConflicted = observations.Where(o => !o.Conflicted).ToList();
+        if (nonConflicted.Count == 0)
+            return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
+
         // A zero emitted while the DLC was absent is not an observed zero and must not
         // take part in a historical maximum/minimum. A nonzero, explicitly recorded
         // value remains evidence even when the DLC list says it was absent.
-        var applicable = observations.Where(o => !DlcAbsent(d, o)
+        var applicable = nonConflicted.Where(o => !DlcAbsent(d, o)
             || MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is { } recorded && recorded != 0).ToList();
         if (applicable.Count == 0)
             return Row(d, MetricEntry.Scalar, new NumericValue { Coverage = MetricCoverage.NotApplicable });
@@ -362,7 +366,7 @@ public static partial class MetricCalculator
         {
             Number = best.Value!.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
-            ThroughTick = observations.Max(o => o.SaveTick),
+            ThroughTick = nonConflicted.Max(o => o.SaveTick),
             Evidence = MetricEvidencePolicy.Combine(values.Select(x => EvidenceFor(x.Obs, d))),
             SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
                 x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
