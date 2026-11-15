@@ -141,6 +141,34 @@ public sealed class MetricChartLineageTests
         Assert.All(points, p => Assert.False(p.Unlinked));
     }
 
+    [Theory]
+    [InlineData(true)]
+    // Only the re-save's file was imported: the earlier save at that tick is known from the re-save's parent id alone.
+    [InlineData(false)]
+    public void ASaveLoadedFromEitherPausedResaveContinuesTheirOneState(bool earlierFileImported)
+    {
+        // b, then its paused re-save c (both tick 20) are one state. d was played on from b, and e from c.
+        var observations = new List<MetricObservation>
+        {
+            Save("a.rws", 10, 100), CheckpointIn("a.rws", "a", null, 10),
+            Save("c.rws", 20, 120), CheckpointIn("c.rws", "c", "b", 20),
+            Save("d.rws", 30, 140), CheckpointIn("d.rws", "d", "b", 30),
+            Save("e.rws", 40, 160), CheckpointIn("e.rws", "e", "c", 40),
+        };
+        observations.AddRange(earlierFileImported
+            ? [Save("b.rws", 20, 120), CheckpointIn("b.rws", "b", "a", 20)]
+            : [Checkpoint("b", "a", 20)]);
+
+        var points = History(Profile([.. observations])).Points;
+
+        Assert.Equal(new[] { 10, 20, 30, 40 }, points.Select(p => p.Tick));
+        Assert.Equal(new[] { -1, 0, 1, 1 }, points.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { false, true, true, false }, points.Select(p => p.ConnectToPrevious));
+        // e skips d, which holds its own checkpoint off e's chain: another branch.
+        Assert.True(points[3].SkipsOnlyOtherBranches);
+        Assert.All(points, p => Assert.False(p.Unlinked));
+    }
+
     [Fact]
     public void SavesCarryingTheSameOlderCheckpointDescendFromItButNotFromEachOther()
     {
@@ -427,6 +455,24 @@ public sealed class MetricChartLineageTests
         Assert.Equal(new[] { -1, 0, -1 }, points.Select((p, i) => p.Predecessor(i)));
         // The file written at that time holds tick 60, not 61: not the same save, so nothing is proven.
         Assert.Equal(new[] { false, false, true }, points.Select(p => p.Unlinked));
+    }
+
+    [Fact]
+    public void AnOlderSnapshotProvesNothingWhenTheFileWrittenAtItsTimeWasReadWithTwoTicks()
+    {
+        // Two different saves share one file version (name, size and write time): which of them the snapshot belongs to,
+        // and so which checkpoint it holds, is not proven, even though a checkpoint of its tick lists that file.
+        var definition = MetricRegistry.Find(ResearchStateSnapshot.Finished)!;
+        var otherSave = Save("b.rws", 25, 130);
+        otherSave.Key = "sha-b.rws-at-25";
+        var profile = Profile(
+            Save("a.rws", 10, 100), CheckpointIn("a.rws", "a", null, 10), GameSnapshot(definition, 10, "a.rws", null),
+            Save("b.rws", 20, 120), otherSave, CheckpointIn("b.rws", "b", "a", 20), GameSnapshot(definition, 20, "b.rws", null));
+
+        var points = History(profile, definition).Points;
+
+        Assert.Equal(new[] { 10, 20 }, points.Select(p => p.Tick));
+        Assert.Equal(new[] { false, true }, points.Select(p => p.Unlinked));
     }
 
     [Fact]

@@ -6,7 +6,7 @@ public static class MetricHistoryPlot
     /// <summary>
     /// For a history much denser than <paramref name="width"/> pixels: within each run of readings that each continue the
     /// previous one, keeps the first, lowest, highest and last reading of every pixel-sized chunk. Gaps, unlinked readings,
-    /// branch starts and every reading another branch continues from are always kept, and branch references are
+    /// branch starts and every reading a non-adjacent one continues from are always kept, and branch references are
     /// renumbered, so no line is drawn between readings that were not joined before. Returns the same list when it is
     /// already sparse enough.
     /// </summary>

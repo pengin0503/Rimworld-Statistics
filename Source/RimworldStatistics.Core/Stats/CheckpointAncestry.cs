@@ -131,12 +131,11 @@ internal sealed class CheckpointAncestry
                 return null;
         foreach (var file in _filesByWriteTime[snapshot.ObservedUtc])
         {
-            if (_fileTicks[file] != snapshot.SaveTick)
-                continue;
             var held = _byFile[file];
             if (held is not null && _nodes[held].Identity.ModCampaignId != campaign)
                 continue;
-            if (!Accept(held))
+            // A file version read with two ticks is two saves under one name, size and write time: either may be this one.
+            if (_fileTicks[file] is not { } tick || (tick == snapshot.SaveTick && !Accept(held)))
                 return null;
         }
         return match is null ? null : At(match, snapshot.SaveTick);
@@ -199,8 +198,10 @@ internal sealed class CheckpointAncestry
 
     /// <summary>
     /// For each anchor in tick order, the index of the nearest earlier reading that is a proven ancestor state, or -1.
-    /// Only exact anchors can be ancestors. A later reading can never be the ancestor of an earlier one, so a key's
-    /// answer is cached once found: readings added afterwards are later than every checkpoint on that key's chain.
+    /// Only exact anchors can be ancestors. An exact anchor is also the state of its parents at its own tick: re-saves made
+    /// while paused are one state (<see cref="Same"/>), so a save played on from any of them continues that reading.
+    /// A later reading can never be the ancestor of an earlier one, so a key's answer is cached once found: readings
+    /// added afterwards are later than every checkpoint on that key's chain.
     /// </summary>
     public int[] NearestAncestors(IReadOnlyList<Anchor?> anchors)
     {
@@ -228,8 +229,12 @@ internal sealed class CheckpointAncestry
                 foreach (var key in path)
                     nearest[key] = found;
             result[i] = found;
-            if (anchor.Exact)
-                exactAt.TryAdd(anchor.Key, i);
+            if (!anchor.Exact)
+                continue;
+            var tick = _nodes[anchor.Key].SaveTick;
+            seen.Clear();
+            for (var key = anchor.Key; key is not null && seen.Add(key) && _nodes[key].SaveTick == tick; key = Parent(key))
+                exactAt.TryAdd(key, i);
         }
         return result;
     }

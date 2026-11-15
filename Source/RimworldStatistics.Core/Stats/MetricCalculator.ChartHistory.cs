@@ -11,8 +11,9 @@ public enum MetricHistoryKind { SaveObservations, CheckpointLineage, WealthRecor
 public sealed record MetricHistoryPoint(int Tick, NumericValue? Value, bool ConnectToPrevious = false)
 {
     /// <summary>
-    /// The index of an earlier, non-adjacent reading this one continues (readings of another branch lie between them);
-    /// -1 when there is none or when <see cref="ConnectToPrevious"/> applies.
+    /// The index of an earlier, non-adjacent reading this one continues; -1 when there is none or when
+    /// <see cref="ConnectToPrevious"/> applies. The readings between them are not proven to be ancestors of this one;
+    /// only <see cref="SkipsOnlyOtherBranches"/> says they lie on other branches.
     /// </summary>
     public int ContinuesFrom { get; init; } = -1;
 
