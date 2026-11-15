@@ -40,6 +40,11 @@ using RimworldStatistics.VgeHybridOutcomes;
 using RimworldStatistics.VfeTribals;
 using RimworldStatistics.Rimefeller;
 using RimworldStatistics.PrisonExpandedParole;
+using RimworldStatistics.VreLycanthrope;
+using RimworldStatistics.VreFungoid;
+using RimworldStatistics.VreInsector;
+using RimworldStatistics.AlphaAnimals;
+using RimworldStatistics.VreSanguophage;
 
 namespace RimworldStatistics.Metrics;
 
@@ -130,6 +135,11 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(PopularOutcomes.Build());
         result.Add(WorldCampaignOutcomes.WorldDominationVictory());
         result.Add(WorldCampaignOutcomes.RimWarVictory());
+        result.AddRange(VreLycanthropeStatistics.Build());
+        result.AddRange(VreFungoidStatistics.Build());
+        result.AddRange(VreInsectorStatistics.Build());
+        result.AddRange(AlphaAnimalsStatistics.Build());
+        result.AddRange(VreSanguophageStatistics.Build());
         return result;
     }
 }

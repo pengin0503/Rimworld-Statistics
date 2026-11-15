@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VreLycanthrope_Morphs>Transformações de licantropo</RWS_VreLycanthrope_Morphs>
+  <RWS_VreLycanthrope_MorphsDesc>Conta as transições de forma concluídas por licantropos do jogador (manuais ou por condição), detalhadas pelo xenótipo resultante. Retornos para um xenótipo personalizado não identificável contam apenas no total.</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_GermlineReimplants>Reimplantes germinativos</RWS_VreLycanthrope_GermlineReimplants>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>Conta reimplantes ou absorções germinativas de licantropo confirmados envolvendo um peão do jogador que alteraram genes, xenótipo ou aplicaram coma endogerminativo.</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreFungoid_InfectionConversions>Conversões por infecção fúngica</RWS_VreFungoid_InfectionConversions>
+  <RWS_VreFungoid_InfectionConversionsDesc>Conta colonos, escravos e prisioneiros vivos da colônia cuja infecção genética Fungoid concluiu a conversão.</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreInsector_GenelineEvolutions>Evoluções de linhagem genética</RWS_VreInsector_GenelineEvolutions>
+  <RWS_VreInsector_GenelineEvolutionsDesc>Conta insetores vivos do jogador que concluíram uma evolução ou mudança de linhagem genética no metapode.</RWS_VreInsector_GenelineEvolutionsDesc>
+  <RWS_VreInsector_GenelineReversions>Reversões de linhagem genética</RWS_VreInsector_GenelineReversions>
+  <RWS_VreInsector_GenelineReversionsDesc>Conta insetores vivos do jogador que concluíram uma reversão no metapode para a genética base.</RWS_VreInsector_GenelineReversionsDesc>
+  <RWS_AlphaAnimals_CocoonMetamorphoses>Metamorfoses em casulo</RWS_AlphaAnimals_CocoonMetamorphoses>
+  <RWS_AlphaAnimals_CocoonMetamorphosesDesc>Conta larvas ou enxameadores do jogador em Alpha Animals que realmente concluíram a metamorfose para casulo, por tipo de casulo.</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
+  <RWS_AlphaAnimals_CocoonHatches>Eclosões de casulo</RWS_AlphaAnimals_CocoonHatches>
+  <RWS_AlphaAnimals_CocoonHatchesDesc>Conta insetoides negros vivos do jogador que realmente emergiram de casulos de Alpha Animals, por espécie.</RWS_AlphaAnimals_CocoonHatchesDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>Hemogênio armazenado por draincasket</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Total de unidades de hemogênio realmente aceitas pelo armazenamento da rede VRE_HemogenNet vindas de draincaskets do jogador.</RWS_VreSanguophage_DraincasketHemogenDesc>
+</LanguageData>

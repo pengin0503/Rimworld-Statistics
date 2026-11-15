@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VreLycanthrope_Morphs>Превращения ликантропов</RWS_VreLycanthrope_Morphs>
+  <RWS_VreLycanthrope_MorphsDesc>Учитывает завершённые смены формы ликантропов игрока (вручную или по условию) с разбивкой по итоговому ксенотипу. Возвраты к неидентифицируемому пользовательскому ксенотипу учитываются только в общем итоге.</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_GermlineReimplants>Реимплантации зародышевой линии</RWS_VreLycanthrope_GermlineReimplants>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>Учитывает подтверждённые реимплантации или поглощения зародышевой линии с участием пешки игрока, изменившие гены, ксенотип или вызвавшие эндогерминационную кому.</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreFungoid_InfectionConversions>Превращения от грибковой инфекции</RWS_VreFungoid_InfectionConversions>
+  <RWS_VreFungoid_InfectionConversionsDesc>Учитывает живых поселенцев, рабов и пленников колонии, у которых грибковая генная инфекция Fungoid завершила превращение.</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreInsector_GenelineEvolutions>Эволюции генной линии инсекторов</RWS_VreInsector_GenelineEvolutions>
+  <RWS_VreInsector_GenelineEvolutionsDesc>Учитывает живых инсекторов игрока, завершивших эволюцию или смену генной линии в метаподе.</RWS_VreInsector_GenelineEvolutionsDesc>
+  <RWS_VreInsector_GenelineReversions>Обратные превращения инсекторов</RWS_VreInsector_GenelineReversions>
+  <RWS_VreInsector_GenelineReversionsDesc>Учитывает живых инсекторов игрока, завершивших в метаподе возврат к базовой генетике.</RWS_VreInsector_GenelineReversionsDesc>
+  <RWS_AlphaAnimals_CocoonMetamorphoses>Превращения в кокон</RWS_AlphaAnimals_CocoonMetamorphoses>
+  <RWS_AlphaAnimals_CocoonMetamorphosesDesc>Учитывает личинок и роевиков игрока из Alpha Animals, фактически завершивших превращение в кокон, по виду кокона.</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
+  <RWS_AlphaAnimals_CocoonHatches>Выходы из коконов</RWS_AlphaAnimals_CocoonHatches>
+  <RWS_AlphaAnimals_CocoonHatchesDesc>Учитывает живых чёрных инсектоидов игрока, фактически вышедших из коконов Alpha Animals, по виду существа.</RWS_AlphaAnimals_CocoonHatchesDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>Гемоген в хранилище от Draincasket</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Суммарный объём гемогена, фактически принятый трубным хранилищем VRE_HemogenNet из дренажных саркофагов игрока.</RWS_VreSanguophage_DraincasketHemogenDesc>
+</LanguageData>
