@@ -83,6 +83,9 @@ public enum ColonySelection
 
     /// <summary>The smallest value over all observations of the colony.</summary>
     ObservationMin,
+
+    /// <summary>Independently select the highest scalar and highest value of each breakdown key.</summary>
+    ObservationMaxByBreakdown,
 }
 
 /// <summary>How colony values combine into the all-colonies value (numeric expansion design §3).</summary>

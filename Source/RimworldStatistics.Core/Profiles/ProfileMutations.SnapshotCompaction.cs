@@ -54,10 +54,13 @@ public static partial class ProfileMutations
                 || kv.Value.IsQuarantined || kv.Value.Revision != d.Revision))
                 kept.Add(o);
 
-        MetricValue? Scalar(MetricObservation o, MetricDefinition d)
+        MetricEntry? Entry(MetricObservation o, MetricDefinition d)
             => o.Metrics.TryGetValue(d.StoredKey, out var e)
                 && !e.IsQuarantined && e.Revision == d.Revision
-                ? e.Values.GetValueOrDefault(MetricEntry.Scalar) : null;
+                ? e : null;
+
+        MetricValue? Scalar(MetricObservation o, MetricDefinition d)
+            => Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar);
 
         bool Applicable(MetricObservation o, MetricDefinition d)
             => d.RequiredDlc is not { } dlc || o.ActiveDlcIds is null
@@ -92,10 +95,18 @@ public static partial class ProfileMutations
                 continue;
             }
             // Stable LINQ ordering preserves the original earliest winner on a tie.
-            var best = d.Selection == ColonySelection.ObservationMax
-                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
-                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            var best = d.Selection == ColonySelection.ObservationMin
+                ? valid.MinBy(o => Scalar(o, d)!.Number)!
+                : valid.MaxBy(o => Scalar(o, d)!.Number)!;
             kept.Add(best);
+            if (d.Selection == ColonySelection.ObservationMaxByBreakdown)
+            {
+                var buckets = valid.SelectMany(o => Entry(o, d)!.Values
+                    .Where(kv => kv.Key != MetricEntry.Scalar && MetricCalculator.MeasuredNumber(kv.Value) is not null)
+                    .Select(kv => (kv.Key, kv.Value, Observation: o)));
+                foreach (var bucket in buckets.GroupBy(sample => sample.Key, Ord))
+                    kept.Add(bucket.MaxBy(sample => sample.Value.Number).Observation);
+            }
             var partial = valid.FirstOrDefault(o => Scalar(o, d)!.Coverage == MetricCoverage.Partial);
             if (partial is not null)
                 kept.Add(partial);
@@ -113,9 +124,9 @@ public static partial class ProfileMutations
             var valid = snapshots.Where(o => Applicable(o, d) && MetricCalculator.MeasuredNumber(Scalar(o, d)) is not null).ToList();
             if (valid.Count == 0)
                 continue;
-            var best = d.Selection == ColonySelection.ObservationMax
-                ? valid.OrderByDescending(o => Scalar(o, d)!.Number).First()
-                : valid.OrderBy(o => Scalar(o, d)!.Number).First();
+            var best = d.Selection == ColonySelection.ObservationMin
+                ? valid.MinBy(o => Scalar(o, d)!.Number)!
+                : valid.MaxBy(o => Scalar(o, d)!.Number)!;
             long Weight(MetricObservation o) => Math.Max(1, o.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1);
             var removedRows = valid.Where(o => !kept.Contains(o)).ToList();
             var removed = removedRows.Sum(Weight);

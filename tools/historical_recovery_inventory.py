@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the conservative, source-derived 270-output historical recovery inventory.
+"""Regenerate the conservative, source-derived 275-output historical recovery inventory.
 
 This is a capability *triage*, not a confirmation that historical values can be
 reconstructed. It never touches .rws files, profiles or RimWorld. Run:
@@ -23,7 +23,7 @@ COLUMNS = (
     "metric_key", "acquisition_id", "catalog", "recovery_decision",
     "evidence", "ledger_id", "source_symbol",
 )
-EXPECTED_COUNTS = {"live": 221, "snapshot": 40, "derived": 9}
+EXPECTED_COUNTS = {"live": 223, "snapshot": 43, "derived": 9}
 SYMBOL = re.compile(r"^([A-Za-z_]\w*)\.([A-Za-z_]\w*)$")
 CONST = re.compile(r'\b(?:public|private|internal)\s+const\s+string\s+(\w+)\s*=\s*"([^"]+)"\s*;')
 

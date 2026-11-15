@@ -10,6 +10,7 @@ public sealed record RosterPawnFact
     public required string Id { get; init; }
     public RosterKind Kind { get; init; }
     public string? RaceDef { get; init; }
+    public string? Species { get; init; }
     public double? AgeYears { get; init; }
     public bool Augmented { get; init; }
     public bool Injured { get; init; }
@@ -22,6 +23,9 @@ public static class RosterSnapshot
     public const string Free = "population.snapshot.free";
     public const string Prisoners = "population.snapshot.prisoners";
     public const string Slaves = "population.snapshot.slaves";
+    public const string FreeSpeciesPeak = "population.snapshot.free_species_peak";
+    public const string PrisonerSpeciesPeak = "population.snapshot.prisoner_species_peak";
+    public const string SlaveSpeciesPeak = "population.snapshot.slave_species_peak";
     public const string Animals = "population.snapshot.animals";
     public const string Mechs = "population.snapshot.mechs";
     public const string AugmentedPeak = "population.snapshot.augmented_peak";
@@ -45,6 +49,9 @@ public static class RosterSnapshot
         var skill20Pawns = 0L;
         var skill20PerPawn = 0L;
         var injured = 0L;
+        var freeSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
+        var prisonerSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
+        var slaveSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
         var animalDefs = new HashSet<string>(StringComparer.Ordinal);
         var passions = new Dictionary<string, long>(StringComparer.Ordinal);
         double oldest = 0, sumAge = 0;
@@ -63,6 +70,7 @@ public static class RosterSnapshot
             {
                 case RosterKind.FreeColonist:
                     free++;
+                    CountSpecies(freeSpecies, p.Species);
                     if (p.Augmented) augmented++;
                     if (p.Injured) injured++;
                     var n20 = 0;
@@ -93,9 +101,11 @@ public static class RosterSnapshot
                     break;
                 case RosterKind.Prisoner:
                     prisoners++;
+                    CountSpecies(prisonerSpecies, p.Species);
                     break;
                 case RosterKind.Slave:
                     slaves++;
+                    CountSpecies(slaveSpecies, p.Species);
                     break;
                 case RosterKind.ColonyAnimal:
                     animals++;
@@ -121,6 +131,9 @@ public static class RosterSnapshot
         Count(Free, free);
         Count(Prisoners, prisoners);
         Count(Slaves, slaves);
+        SpeciesPeak(FreeSpeciesPeak, free, freeSpecies);
+        SpeciesPeak(PrisonerSpeciesPeak, prisoners, prisonerSpecies);
+        SpeciesPeak(SlaveSpeciesPeak, slaves, slaveSpecies);
         Count(Animals, animals);
         Count(Mechs, mechs);
         Count(AugmentedPeak, augmented);
@@ -140,5 +153,21 @@ public static class RosterSnapshot
             passion.Values[k] = new MetricValue { Coverage = c, IntegerValue = value };
         result[Passions] = passion;
         return result;
+
+        void SpeciesPeak(string key, long total, Dictionary<string, long> species)
+        {
+            var coverage = partial || species.ContainsKey(MetricKeys.UnknownBucket)
+                ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly;
+            var entry = MetricEntry.Of(MetricKeys.Revision(key), new MetricValue { Coverage = coverage, IntegerValue = total });
+            foreach (var (bucket, count) in species)
+                entry.Values[bucket] = new MetricValue { Coverage = coverage, IntegerValue = count };
+            result[key] = entry;
+        }
+    }
+
+    private static void CountSpecies(Dictionary<string, long> counts, string? species)
+    {
+        var key = species ?? MetricKeys.UnknownBucket;
+        counts[key] = counts.GetValueOrDefault(key) + 1;
     }
 }

@@ -53,7 +53,7 @@ public sealed class NumericSnapshotRetentionTests
     {
         var defs = SnapshotCatalog.Definitions.Where(d => d.Key is
             FacilitiesSnapshot.OutdoorTempMax or FacilitiesSnapshot.OutdoorTempMin
-            or RosterSnapshot.Slaves or RosterSnapshot.AugmentedPeak
+            or RosterSnapshot.Slaves or RosterSnapshot.AugmentedPeak or "population.snapshot.free_species_peak"
             or StockSnapshot.PersonaWeaponsPeak).ToList();
         var colonies = CampaignMatcher.BuildColonies(p);
         return Assert.Single(MetricCalculator.BuildView(p, colonies,
@@ -195,6 +195,44 @@ public sealed class NumericSnapshotRetentionTests
         Assert.Equal(250, rowsAfter[FacilitiesSnapshot.OutdoorTempMax].Value.SampleCount);
         Assert.Equal(249, rowsAfter[RosterSnapshot.AugmentedPeak].Value.SampleCount);
         Assert.Equal(MetricCoverage.Partial, rowsAfter[RosterSnapshot.AugmentedPeak].Value.Coverage);
+    }
+
+    [Fact]
+    public void SpeciesPeaksPreserveSeparateWitnessesAcrossSavesAndReload()
+    {
+        const string metric = "population.snapshot.free_species_peak";
+        var id = Identity();
+        var profile = new Profile();
+        ProfileMutations.ApplyLiveObservation(profile, id.ModCampaignId!, id, new ObservedValues { TicksGame = 100 },
+            new DisplayInfo(), Epoch);
+        var rows = new (long? Count, string? Species, long Number)[]
+        {
+            (null, null, 0), (9, "core/Human", 9), (4, "mod/Ratkin", 4), (5, "core/Human", 5),
+        };
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var snapshot = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Key = $"species-{i}",
+                Identity = id.Clone(), SaveTick = i + 1, ObservedUtc = Epoch.AddMinutes(i),
+            };
+            var (count, species, number) = rows[i];
+            if (count.HasValue)
+            {
+                var entry = MetricEntry.Of(1, new MetricValue { IntegerValue = count, Coverage = MetricCoverage.SnapshotOnly });
+                if (species != null)
+                    entry.Values[species] = new MetricValue { IntegerValue = number, Coverage = MetricCoverage.SnapshotOnly };
+                snapshot.Metrics[metric] = entry;
+            }
+            ProfileMutations.UpsertMetricObservation(profile, snapshot);
+        }
+        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(profile));
+        var result = Assert.Single(Rows(restored), r => r.Definition.Key == metric);
+        Assert.Equal(9d, result.Value.Number);
+        Assert.Equal(3, result.Value.SampleCount);
+        Assert.Equal(MetricCoverage.Partial, result.Value.Coverage);
+        Assert.Equal(9d, Assert.Single(result.Breakdowns, r => r.Breakdown == "core/Human").Value.Number);
+        Assert.Equal(4d, Assert.Single(result.Breakdowns, r => r.Breakdown == "mod/Ratkin").Value.Number);
     }
 
     [Fact]

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>Pico de colonos livres por espécie</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>Pico de prisioneiros por espécie</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>Pico de escravos por espécie</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>Maior número observado numa gravação bem-sucedida, calculado separadamente para cada espécie.</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>Entradas por xenótipo</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>Mortes de colonos por xenótipo</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>Classifica cada evento pelo xenótipo do Biotech no momento em que ocorreu.</RWS_MetricDesc_ByXenotype>
+</LanguageData>

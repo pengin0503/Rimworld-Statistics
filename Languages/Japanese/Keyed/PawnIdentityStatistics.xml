@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>種族別の自由入植者数ピーク</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>種族別の囚人数ピーク</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>種族別の奴隷数ピーク</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>保存が成功した時点の人数から、種族ごとに最大値を求めます。</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>ゼノタイプ別の加入数</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>ゼノタイプ別の入植者死亡数</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>各イベントを発生時点のBiotechゼノタイプで分類します。</RWS_MetricDesc_ByXenotype>
+</LanguageData>
