@@ -32,6 +32,9 @@ public static class CampaignMatcher
         colonies.RemoveAll(c => c.Endings.Count == 0 && c.Observations.Count == 0 && c.LiveCampaigns.All(l => !l.HasObservation));
         AssignKeys(profile, colonies);
         ApplyManualMerges(profile, colonies);
+        var excludedKeys = profile.UserDecisions.ExcludedCampaignKeys.Count > 0
+            ? new HashSet<string>(profile.UserDecisions.ExcludedCampaignKeys, Ord)
+            : null;
         foreach (var c in colonies)
         {
             foreach (var o in c.Observations)
@@ -48,7 +51,22 @@ public static class CampaignMatcher
             c.RecoveredEndings.AddRange(c.Observations.SelectMany(o => o.Lineage)
                 .Where(e => !recorded.Contains((e.Type, e.Ordinal)))
                 .OrderBy(e => e.TicksGame).DistinctBy(e => (e.Type, e.Ordinal)));
-            c.Excluded = profile.UserDecisions.ExcludedCampaignKeys.Any(k => k == c.Key || c.AliasKeys.Contains(k, Ord));
+            if (excludedKeys is not null)
+            {
+                var excluded = excludedKeys.Contains(c.Key);
+                if (!excluded)
+                {
+                    for (var i = 0; i < c.AliasKeys.Count; i++)
+                    {
+                        if (excludedKeys.Contains(c.AliasKeys[i]))
+                        {
+                            excluded = true;
+                            break;
+                        }
+                    }
+                }
+                c.Excluded = excluded;
+            }
         }
         return colonies;
     }
@@ -127,15 +145,32 @@ public static class CampaignMatcher
             .ThenBy(g => g.PawnText, Ord);
 
         var colonies = new List<Colony>();
+        var byHash = new Dictionary<string, List<Colony>>(Ord);
         foreach (var g in ordered)
         {
-            var target = g.Hash is null
-                ? null
-                : colonies.FirstOrDefault(c => c.FingerprintHash == g.Hash && SubsetEitherWay(c.StartingPawnUnion, g.Pawns));
+            Colony? target = null;
+            if (g.Hash is { } hash && byHash.TryGetValue(hash, out var candidates))
+            {
+                for (var i = 0; i < candidates.Count; i++)
+                {
+                    var candidate = candidates[i];
+                    if (SubsetEitherWay(candidate.StartingPawnUnion, g.Pawns))
+                    {
+                        target = candidate;
+                        break;
+                    }
+                }
+            }
             if (target is null)
             {
                 target = new Colony { FingerprintHash = g.Hash };
                 colonies.Add(target);
+                if (g.Hash is { } newHash)
+                {
+                    if (!byHash.TryGetValue(newHash, out var list))
+                        byHash[newHash] = list = new List<Colony>(1);
+                    list.Add(target);
+                }
             }
             target.Observations.AddRange(g.Obs);
             target.LiveCampaigns.AddRange(g.Live);
@@ -152,8 +187,21 @@ public static class CampaignMatcher
     /// </summary>
     private static void AssignKeys(Profile profile, List<Colony> colonies)
     {
+        var ledgerByHash = new Dictionary<string, List<(ColonyKeyEntry Entry, int Index)>>(Ord);
+        for (var i = 0; i < profile.ColonyKeys.Count; i++)
+        {
+            var e = profile.ColonyKeys[i];
+            if (!ledgerByHash.TryGetValue(e.FingerprintHash, out var list))
+                ledgerByHash[e.FingerprintHash] = list = new List<(ColonyKeyEntry, int)>(1);
+            list.Add((e, i));
+        }
+
         var claimed = new HashSet<ColonyKeyEntry>();
-        var usedKeys = new HashSet<string>(Ord);
+        var usedKeys = new SortedSet<string>(Ord);
+        var compatibleHashes = new HashSet<string>(Ord);
+        var entries = new List<(ColonyKeyEntry Entry, int Index)>();
+        var matches = new List<(ColonyKeyEntry Entry, int Index)>();
+
         foreach (var c in colonies)
         {
             if (c.FingerprintHash is not { } hash)
@@ -164,35 +212,98 @@ public static class CampaignMatcher
             // A live campaign is keyed id:<campaignId> until its first wealth record completes the fingerprint; keep
             // those keys as aliases so a decision made in the meantime still applies after the key becomes fp:<hash>.
             c.AliasKeys.AddRange(c.CampaignIds().OrderBy(i => i, Ord).Select(i => "id:" + i));
-            var compatibleHashes = c.Observations.Select(o => o.Identity)
-                .Concat(c.LiveCampaigns.Select(l => l.Identity))
-                .Where(identity => identity.FingerprintHash() == hash)
-                .SelectMany(identity => identity.LegacyFingerprints())
-                .Append(hash).ToHashSet(Ord);
-            var entries = profile.ColonyKeys.Where(e => compatibleHashes.Contains(e.FingerprintHash)).ToList();
-            var matches = entries
-                .Where(e => !claimed.Contains(e) && SubsetEitherWay(new HashSet<string>(e.StartingPawnIds, Ord), c.StartingPawnUnion))
-                .OrderBy(e => KeyNumber(e.Key))
-                .ToList();
+
+            compatibleHashes.Clear();
+            compatibleHashes.Add(hash);
+            foreach (var o in c.Observations)
+            {
+                var id = o.Identity;
+                if (id.FingerprintHash() == hash)
+                    foreach (var legacy in id.LegacyFingerprints())
+                        compatibleHashes.Add(legacy);
+            }
+            foreach (var l in c.LiveCampaigns)
+            {
+                var id = l.Identity;
+                if (id.FingerprintHash() == hash)
+                    foreach (var legacy in id.LegacyFingerprints())
+                        compatibleHashes.Add(legacy);
+            }
+
+            entries.Clear();
+            matches.Clear();
+            foreach (var compatHash in compatibleHashes)
+            {
+                if (!ledgerByHash.TryGetValue(compatHash, out var bucket))
+                    continue;
+                for (var i = 0; i < bucket.Count; i++)
+                {
+                    var item = bucket[i];
+                    entries.Add(item);
+                    if (!claimed.Contains(item.Entry) && SubsetEitherWay(item.Entry.StartingPawnIds, c.StartingPawnUnion))
+                        matches.Add(item);
+                }
+            }
+
             if (matches.Count > 0)
             {
-                c.Key = matches[0].Key;
-                c.AliasKeys.AddRange(matches.Skip(1).Select(e => e.Key));
-                foreach (var e in matches)
+                if (matches.Count > 1)
                 {
+                    matches.Sort(static (a, b) =>
+                    {
+                        var cmp = KeyNumber(a.Entry.Key).CompareTo(KeyNumber(b.Entry.Key));
+                        return cmp != 0 ? cmp : a.Index.CompareTo(b.Index);
+                    });
+                }
+                c.Key = matches[0].Entry.Key;
+                for (var i = 1; i < matches.Count; i++)
+                    c.AliasKeys.Add(matches[i].Entry.Key);
+                for (var i = 0; i < matches.Count; i++)
+                {
+                    var e = matches[i].Entry;
                     claimed.Add(e);
                     e.StartingPawnIds = e.StartingPawnIds.Union(c.StartingPawnUnion, Ord).OrderBy(p => p, Ord).ToList();
                 }
                 usedKeys.Add(c.Key);
                 continue;
             }
+
             var plain = "fp:" + hash;
-            var taken = entries.Select(e => e.Key).Concat(usedKeys.Where(k => k.StartsWith(plain, StringComparison.Ordinal))).ToList();
-            var key = taken.Contains(plain, Ord) ? $"{plain}#{Math.Max(2, taken.Select(KeyNumber).Max() + 1)}" : plain;
+            var hasPlain = false;
+            var maxNum = 0;
+            for (var i = 0; i < entries.Count; i++)
+            {
+                var k = entries[i].Entry.Key;
+                if (Ord.Equals(k, plain))
+                    hasPlain = true;
+                var n = KeyNumber(k);
+                if (n > maxNum)
+                    maxNum = n;
+            }
+
+            var prefixRange = plain.IndexOf('\uffff') < 0
+                ? (IEnumerable<string>)usedKeys.GetViewBetween(plain, plain + "\uffff")
+                : usedKeys;
+            foreach (var k in prefixRange)
+            {
+                if (!k.StartsWith(plain, StringComparison.Ordinal))
+                    continue;
+                if (Ord.Equals(k, plain))
+                    hasPlain = true;
+                var n = KeyNumber(k);
+                if (n > maxNum)
+                    maxNum = n;
+            }
+
+            var key = hasPlain ? $"{plain}#{Math.Max(2, maxNum + 1)}" : plain;
             c.Key = key;
             usedKeys.Add(key);
             var entry = new ColonyKeyEntry { Key = key, FingerprintHash = hash, StartingPawnIds = c.StartingPawnUnion.OrderBy(p => p, Ord).ToList() };
+            var index = profile.ColonyKeys.Count;
             profile.ColonyKeys.Add(entry);
+            if (!ledgerByHash.TryGetValue(hash, out var hashBucket))
+                ledgerByHash[hash] = hashBucket = new List<(ColonyKeyEntry, int)>(1);
+            hashBucket.Add((entry, index));
             claimed.Add(entry);
         }
     }
@@ -251,4 +362,41 @@ public static class CampaignMatcher
     }
 
     private static bool SubsetEitherWay(HashSet<string> a, HashSet<string> b) => a.IsSubsetOf(b) || b.IsSubsetOf(a);
+
+    private static bool SubsetEitherWay(List<string> list, HashSet<string> set)
+    {
+        var listInSet = true;
+        for (var i = 0; i < list.Count; i++)
+        {
+            if (!set.Contains(list[i]))
+            {
+                listInSet = false;
+                break;
+            }
+        }
+        if (listInSet)
+            return true;
+
+        if (list.Count < set.Count)
+            return false;
+        if (list.Count <= 16)
+        {
+            foreach (var item in set)
+            {
+                var found = false;
+                for (var i = 0; i < list.Count; i++)
+                {
+                    if (Ord.Equals(item, list[i]))
+                    {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    return false;
+            }
+            return true;
+        }
+        return set.IsSubsetOf(new HashSet<string>(list, Ord));
+    }
 }
