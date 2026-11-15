@@ -93,15 +93,22 @@ public sealed class IntegratedAdapterContractTests
 
     private static (IReadOnlyList<Declared> Declared, IReadOnlyList<string> NotChecked, IReadOnlyList<string> Unregistered) Declarations()
     {
-        var game = Environment.GetEnvironmentVariable("RWS_GAME_MANAGED_DIR");
-        var harmony = Environment.GetEnvironmentVariable("RWS_HARMONY_DLL");
-        if (string.IsNullOrWhiteSpace(game) || string.IsNullOrWhiteSpace(harmony))
+        var rawGame = Environment.GetEnvironmentVariable("RWS_GAME_MANAGED_DIR");
+        var rawHarmony = Environment.GetEnvironmentVariable("RWS_HARMONY_DLL");
+        if (string.IsNullOrWhiteSpace(rawGame) || string.IsNullOrWhiteSpace(rawHarmony))
             Assert.Skip("Set RWS_GAME_MANAGED_DIR and RWS_HARMONY_DLL locally; game assemblies are never stored in CI.");
-        var statistics = Environment.GetEnvironmentVariable("RWS_STATISTICS_DLL") is { Length: > 0 } path ? path
+        var game = ResolvePath(rawGame!, isDirectory: true);
+        var harmony = ResolvePath(rawHarmony!, isDirectory: false);
+        Assert.True(File.Exists(Path.Combine(game, "Assembly-CSharp.dll")), "Assembly-CSharp.dll not found in RWS_GAME_MANAGED_DIR: " + game);
+        Assert.True(File.Exists(Path.Combine(game, "UnityStubs.dll")), "UnityStubs.dll not found in RWS_GAME_MANAGED_DIR: " + game);
+        Assert.True(File.Exists(harmony), "0Harmony.dll not found at RWS_HARMONY_DLL: " + harmony);
+
+        var statistics = Environment.GetEnvironmentVariable("RWS_STATISTICS_DLL") is { Length: > 0 } path
+            ? ResolvePath(path, isDirectory: false)
             : Path.Combine(RepositoryRoot(), "1.7", "Assemblies", "RimworldStatistics.dll");
         Assert.True(File.Exists(statistics), "Build the game DLL first: " + statistics);
 
-        var folders = new[] { game!, Path.GetDirectoryName(Path.GetFullPath(harmony!))!, Path.GetDirectoryName(Path.GetFullPath(statistics))! };
+        var folders = new[] { game, Path.GetDirectoryName(harmony)!, Path.GetDirectoryName(statistics)! };
         Assembly? Resolve(AssemblyLoadContext context, AssemblyName name)
         {
             if (!Allowed.Contains(name.Name, StringComparer.Ordinal))
@@ -114,17 +121,16 @@ public sealed class IntegratedAdapterContractTests
         try
         {
             // The default context, so the game DLL shares this process's Core types (descriptors, families).
-            var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(statistics));
+            var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(statistics);
             var registration = assembly.GetType("RimworldStatistics.Metrics.ModMetricAdapterRegistration", throwOnError: true)!;
             bool Declares(MethodInfo m) => m.IsStatic && m.GetParameters().Length == 0
                 && (m.ReturnType == registration || typeof(IEnumerable<>).MakeGenericType(registration).IsAssignableFrom(m.ReturnType));
 
+            var buildAll = assembly.GetType("RimworldStatistics.Metrics.ModProviderAdapters", throwOnError: true)!
+                .GetMethod("BuildAllAdapters", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
             var root = assembly.GetType("RimworldStatistics.Metrics.IntegratedTransitionAdapters", throwOnError: true)!
                 .GetMethod("Build", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
-            var modules = Calls(root).OfType<MethodInfo>().Where(Declares)
-                .Append(assembly.GetType("RimworldStatistics.VehicleFramework.VehicleOwnershipSnapshot", throwOnError: true)!
-                    .GetMethod("Build", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!)
-                .Distinct().ToArray();
+            var modules = CollectRegisteredModules(assembly, buildAll, root, Declares);
 
             var declared = new List<Declared>();
             var notChecked = new List<string>();
@@ -145,22 +151,71 @@ public sealed class IntegratedAdapterContractTests
                 }
             }
 
-            // A module whose statistics nobody registers never records anything: its Build is called from nowhere.
+            // A module whose statistics nobody registers never records anything: its declaration method is called from nowhere.
             var types = assembly.GetTypes();
             var called = types.SelectMany(t => t.GetMethods(BindingFlags.Static | BindingFlags.Instance | BindingFlags.Public
                     | BindingFlags.NonPublic | BindingFlags.DeclaredOnly).Cast<MethodBase>().Concat(t.GetConstructors(BindingFlags.Static
                     | BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)))
                 .SelectMany(Calls).ToHashSet();
             var unregistered = types.Where(t => t.Namespace?.StartsWith("RimworldStatistics.", StringComparison.Ordinal) == true)
-                .Select(t => t.GetMethod("Build", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, Type.EmptyTypes))
-                .OfType<MethodInfo>().Where(m => Declares(m) && m != root && !called.Contains(m))
-                .Select(m => m.DeclaringType!.FullName!).Order(StringComparer.Ordinal).ToArray();
+                .SelectMany(t => t.GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.DeclaredOnly))
+                .Where(m => m.GetParameters().Length == 0 && Declares(m) && m != root && m != buildAll && !called.Contains(m))
+                .Select(m => m.DeclaringType!.FullName + "." + m.Name)
+                .Order(StringComparer.Ordinal).ToArray();
             return (declared, notChecked, unregistered);
         }
         finally
         {
             AssemblyLoadContext.Default.Resolving -= Resolve;
         }
+    }
+
+    private static IReadOnlyList<MethodInfo> CollectRegisteredModules(
+        Assembly assembly, MethodInfo buildAll, MethodInfo root, Func<MethodInfo, bool> declares)
+    {
+        var seen = new HashSet<MethodBase>();
+        var queue = new Queue<MethodBase>();
+        var modules = new List<MethodInfo>();
+        var seenModules = new HashSet<MethodInfo>();
+        bool IsAggregatorHost(Type? type)
+        {
+            for (var current = type; current is not null; current = current.DeclaringType)
+                if (current == buildAll.DeclaringType || current == root.DeclaringType)
+                    return true;
+            return false;
+        }
+
+        foreach (var entry in new MethodBase[] { buildAll, root })
+        {
+            if (seen.Add(entry))
+                queue.Enqueue(entry);
+        }
+        while (queue.Count > 0)
+        {
+            var current = queue.Dequeue();
+            foreach (var target in Calls(current))
+            {
+                if (target.DeclaringType?.Assembly != assembly)
+                    continue;
+                if (target is MethodInfo method && method != buildAll && method != root && declares(method))
+                {
+                    if (seenModules.Add(method))
+                        modules.Add(method);
+                    continue;
+                }
+                if ((target == root || IsAggregatorHost(target.DeclaringType)) && seen.Add(target))
+                    queue.Enqueue(target);
+            }
+        }
+        return modules;
+    }
+
+    private static string ResolvePath(string path, bool isDirectory)
+    {
+        var full = Path.GetFullPath(path);
+        if (Path.IsPathRooted(path) || (isDirectory ? Directory.Exists(full) : File.Exists(full)))
+            return full;
+        return Path.GetFullPath(Path.Combine(RepositoryRoot(), path));
     }
 
     private static Declared Read(string module, object registration)
