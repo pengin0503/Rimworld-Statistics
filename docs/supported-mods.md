@@ -65,3 +65,4 @@
 - Vanilla Vehicles Expanded
 - Vanilla Vehicles Expanded – Upgrades
 - Vehicle Framework
+- Vanilla Storytellers Expanded – Winston Waves

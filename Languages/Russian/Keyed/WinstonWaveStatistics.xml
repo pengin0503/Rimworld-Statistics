@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>Отбитые волны Уинстона</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Наивысшая отбитая волна Уинстона</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Отбитые волны Уинстона с боссом</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>Учитывает волны, отбитые до начала следующей. Переход по истечении времени не засчитывается.</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>Подтверждённые награды Уинстона</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>Учитывает подтверждённый выбор наград по типам, включая автоматический выбор и награды после истечения времени.</RWS_WinstonRewardsDesc>
+</LanguageData>

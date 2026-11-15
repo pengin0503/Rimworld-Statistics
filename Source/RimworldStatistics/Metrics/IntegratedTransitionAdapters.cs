@@ -1,4 +1,5 @@
 using RimworldStatistics.NewModOutcomes;
+using RimworldStatistics.WinstonWave;
 using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
@@ -120,6 +121,7 @@ internal static class IntegratedTransitionAdapters
         result.Add(VisitOutcomes.DoctrineInvestigations());
         result.Add(VendingOutcomes.ItemsDispensed());
         result.Add(VendingOutcomes.SilverReceived());
+        result.AddRange(WinstonWaveOutcomes.Build());
         return result;
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>Vagues de Winston repoussées</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Plus haute vague de Winston repoussée</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Vagues de boss de Winston repoussées</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>Compte les vagues repoussées avant le début de la suivante. Les passages au terme du délai sont exclus.</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>Récompenses de Winston confirmées</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>Compte les choix validés par type, y compris les choix automatiques et ceux proposés après expiration du délai.</RWS_WinstonRewardsDesc>
+</LanguageData>
