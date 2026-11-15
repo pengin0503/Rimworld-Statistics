@@ -70,6 +70,8 @@
 - Vanilla Quests Expanded – The Generator
 - Vanilla Races Expanded – Android
 - Vanilla Races Expanded – Archon
+- Vanilla Races Expanded – Phytokin
+- Vanilla Races Expanded – Saurid
 - Vanilla Skills Expanded
 - Vanilla Social Interactions Expanded
 - Vanilla Storytellers Expanded – Winston Waves

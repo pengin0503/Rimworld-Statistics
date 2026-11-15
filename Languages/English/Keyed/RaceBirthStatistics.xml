@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Saurid egg births</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Counts living player pawns hatched from Saurid eggs by final xenotype. Unidentified custom xenotypes are included in the total only.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Phytokin sapling births</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Counts living player pawns born from Phytokin saplings after gene assignment, by final xenotype. Unidentified custom xenotypes are included in the total only.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

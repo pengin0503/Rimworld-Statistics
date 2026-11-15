@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Geburten aus Saurid-Eiern</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Zählt tatsächlich aus Saurid-Eiern geschlüpfte, lebende Spieler-Pawns nach endgültigem Xenotyp. Nicht identifizierbare eigene Xenotypen zählen nur zur Gesamtsumme.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Geburten aus Phytokin-Setzlingen</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Zählt tatsächlich aus Phytokin-Setzlingen geborene, lebende Spieler-Pawns nach Abschluss der Genänderungen, aufgeschlüsselt nach Xenotyp. Nicht identifizierbare eigene Xenotypen zählen nur zur Gesamtsumme.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

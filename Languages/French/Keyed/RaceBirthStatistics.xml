@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Naissances issues des œufs saurides</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Compte les pions alliés vivants réellement éclos d’œufs saurides, par xénotype final. Les xénotypes personnalisés non identifiés ne figurent que dans le total.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Naissances issues des jeunes pousses phytokines</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Compte les pions alliés vivants réellement nés des jeunes pousses phytokines après attribution des gènes, par xénotype final. Les xénotypes personnalisés non identifiés ne figurent que dans le total.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

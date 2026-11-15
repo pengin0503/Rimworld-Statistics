@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Saurid 蛋孵化出生數</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>統計實際從 Saurid 蛋孵化的我方存活角色，按最終異種基因型分類；無法識別的自訂類型僅計入總數。</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Phytokin 樹苗出生數</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>統計實際從 Phytokin 樹苗誕生且基因已確定的我方存活角色，按最終異種基因型分類；無法識別的自訂類型僅計入總數。</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Рождения из яиц сауридов</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Считает живых пешек игрока, действительно вылупившихся из яиц сауридов, с разбивкой по итоговому ксенотипу. Неопознанные пользовательские ксенотипы учитываются только в общем числе.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Рождения из саженцев фитокинов</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Считает живых пешек игрока, действительно родившихся из саженцев фитокинов после завершения настройки генов, с разбивкой по итоговому ксенотипу. Неопознанные пользовательские ксенотипы учитываются только в общем числе.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

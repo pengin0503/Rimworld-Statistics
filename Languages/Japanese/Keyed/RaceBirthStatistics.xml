@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Sauridの卵からの出生数</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Sauridの卵から実際に孵化した生存中のプレイヤー側ポーンを、確定したゼノタイプ別に数えます。識別できないカスタムゼノタイプは総数のみ計上します。</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Phytokinの苗木からの出生数</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Phytokinの苗木から実際に誕生し、遺伝子が確定した生存中のプレイヤー側ポーンをゼノタイプ別に数えます。識別できないカスタムゼノタイプは総数のみ計上します。</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

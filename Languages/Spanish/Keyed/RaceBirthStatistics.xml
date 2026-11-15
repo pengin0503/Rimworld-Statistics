@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Nacimientos de huevos sauridos</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Cuenta los peones vivos del jugador nacidos de huevos sauridos, por xenotipo final. Los xenotipos personalizados no identificados solo se incluyen en el total.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Nacimientos de brotes fitocines</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Cuenta los peones vivos del jugador nacidos de brotes fitocines después de fijar los genes, por xenotipo final. Los xenotipos personalizados no identificados solo se incluyen en el total.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>

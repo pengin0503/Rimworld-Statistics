@@ -25,6 +25,8 @@ internal static class PopularOutcomes
         yield return LandformOutcomes.Build();
         if (!ModsConfig.OdysseyActive)
             yield return FishCatchOutcomes.Build();
+        yield return RaceBirthOutcomes.SauridEggs();
+        yield return RaceBirthOutcomes.PhytokinSaplings();
         yield return GeneAndPuppetOutcomes.GeneImplants();
         yield return GeneAndPuppetOutcomes.Puppets();
         yield return GeneAndPuppetOutcomes.MindTransfers();
