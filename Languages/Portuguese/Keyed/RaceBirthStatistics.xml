@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SauridEggBirths>Nascimentos de ovos Saurid</RWS_SauridEggBirths>
+  <RWS_SauridEggBirthsDesc>Conta peões vivos do jogador que realmente nasceram de ovos Saurid, por xenótipo final. Xenótipos personalizados não identificados contam apenas para o total.</RWS_SauridEggBirthsDesc>
+  <RWS_PhytokinSaplingBirths>Nascimentos de rebentos Phytokin</RWS_PhytokinSaplingBirths>
+  <RWS_PhytokinSaplingBirthsDesc>Conta peões vivos do jogador que realmente nasceram de rebentos Phytokin após a definição dos genes, por xenótipo final. Xenótipos personalizados não identificados contam apenas para o total.</RWS_PhytokinSaplingBirthsDesc>
+</LanguageData>
