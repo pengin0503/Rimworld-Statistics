@@ -5,12 +5,39 @@ using RimworldStatistics.Core;
 /// <summary>
 /// Issue #195 measurements on profiles shaped like imported real ones (a read-only import of six private 1.7 saves gave
 /// ~51 KB per checkpoint tip and ~8.8 KB per save-file observation). Synthetic data only; machine-dependent timings,
-/// no thresholds. "Locked" is the serialization a background write does while it holds the profile; "wait" is how long a
-/// game-thread change waits while background writes run (each 5 ms) with a blocking or a non-blocking call.
+/// no thresholds. Every write goes through <see cref="ProfileSession"/> (its real path, public API only, so the same
+/// code measures an older build): "hold" is how long another thread could not get the profile during the write, found
+/// by a second thread that keeps trying; "wait" is how long a game-thread change waits while background writes run
+/// (each 5 ms) with a blocking or a non-blocking call.
 /// </summary>
 internal static class RepresentativeBenchmark
 {
     private static readonly DateTime Epoch = new(2026, 11, 1, 0, 0, 0, DateTimeKind.Utc);
+    private const int Writes = 12;
+
+    public const string Header = "target_mib,profile_bytes,colonies,write,writes,wall_median_ms,wall_p95_ms,cpu_median_ms,"
+        + "alloc_median_bytes,gen2_collections,hold_median_ms,hold_max_ms,read_bytes_per_write,written_bytes_per_write,"
+        + "backup_rotations,blocking_wait_p95_ms,blocking_wait_max_ms,nonblocking_wait_p95_ms,nonblocking_wait_max_ms";
+
+    /// <summary>The three kinds of change a write follows. Each writes the whole profile.</summary>
+    private static readonly (string Name, Action<Profile, int> Change)[] Kinds =
+    [
+        // A save recorded or a file imported: something is added.
+        ("statistics_added", (p, i) => p.SaveObservations.Add(new SaveObservation
+        {
+            FileName = $"benchmark-added-{i:D4}.rws", FileSize = 20_000_000 + i, LastWriteUtc = Epoch.AddDays(1).AddMinutes(i),
+            GameVersion = "1.7.5005 rev1082", ReaderVersion = SaveReader.Version, Status = ObservationStatus.Ok,
+            Values = new ObservedValues { TicksGame = 2_400_000 + i, NumRaidsEnemy = 18 },
+        })),
+        // One counter goes up without the file growing (e.g. 18 -> 19 raids).
+        ("statistics_same_size", (p, i) =>
+        {
+            var values = p.SaveObservations[i % 8].Values;
+            values.NumRaidsEnemy = values.NumRaidsEnemy % 10 == 9 ? values.NumRaidsEnemy - 1 : values.NumRaidsEnemy + 1;
+        }),
+        // Only the scan time: no backup rotation.
+        ("import_state_only", (p, i) => p.ImportState.LastScanUtc = Epoch.AddSeconds(i + 1)),
+    ];
 
     public static void Run(double mib)
     {
@@ -20,56 +47,103 @@ internal static class RepresentativeBenchmark
         {
             var store = new ProfileStore(directory.FullName);
             _ = store.Load(Epoch);
-            store.SaveSerialized(ProfileJson.SerializeToUtf8Bytes(profile));
+            store.Save(profile);
             var bytes = new FileInfo(store.ProfilePath).Length;
-            var loaded = profile;
-
-            var serialize = new List<double>();
-            var serializeAlloc = new List<long>();
-            var statistics = new List<double>();
-            var importOnly = new List<double>();
-            for (var i = 0; i < 16; i++)
-            {
-                Settle();
-                var allocated = GC.GetAllocatedBytesForCurrentThread();
-                var start = Stopwatch.GetTimestamp();
-                loaded.SaveObservations[^1].Values.NumRaidsEnemy++;
-                var json = ProfileJson.SerializeToUtf8Bytes(loaded);
-                var elapsed = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
-                var used = GC.GetAllocatedBytesForCurrentThread() - allocated;
-                Settle();
-                start = Stopwatch.GetTimestamp();
-                store.SaveSerialized(json);   // a statistics change: compared, written, three backups rotated
-                var commit = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
-                loaded.ImportState.LastScanUtc = Epoch.AddSeconds(i + 1);
-                json = ProfileJson.SerializeToUtf8Bytes(loaded);
-                Settle();
-                start = Stopwatch.GetTimestamp();
-                store.SaveSerialized(json);   // an import-state-only change: no backup rotation
-                var scan = Stopwatch.GetElapsedTime(start).TotalMilliseconds;
-                if (i < 4)
-                    continue;
-                serialize.Add(elapsed);
-                serializeAlloc.Add(used);
-                statistics.Add(commit);
-                importOnly.Add(scan);
-            }
-            if (!File.Exists(store.ProfilePath + ".bak3"))
-                throw new InvalidOperationException("Statistics commits did not rotate three backups.");
-
+            // Each of these opens and closes its own session on the file, so they run before the measured one opens.
             var blocking = Contend(directory.FullName, mib, nonBlocking: false);
             var nonBlocking = Contend(directory.FullName, mib, nonBlocking: true);
-            Console.WriteLine(string.Join(",",
-                mib.ToString("0.##", CultureInfo.InvariantCulture), bytes, profile.LiveCampaigns.Count,
-                F(Percentile(serialize, 0.5)), F(Percentile(serialize, 0.95)), serializeAlloc.Order().ElementAt(serializeAlloc.Count / 2),
-                F(Percentile(statistics, 0.5)), F(Percentile(statistics, 0.95)), F(Percentile(importOnly, 0.5)),
-                bytes, bytes,
-                F(Percentile(blocking, 0.95)), F(blocking.Max()), F(Percentile(nonBlocking, 0.95)), F(nonBlocking.Max())));
+            var session = new ProfileSession(new ProfileStore(directory.FullName), () => Epoch);
+            var k = 0;
+            for (var i = 0; i < 4; i++)   // warm up both buffers and the JIT on every path
+                foreach (var (_, change) in Kinds)
+                    session.Mutate(p => change(p, k++), SaveMode.Immediate);
+            foreach (var (name, change) in Kinds)
+            {
+                var (wall, cpu, alloc, gen2, rotations) = MeasureWrites(session, store.ProfilePath, change, ref k);
+                var hold = MeasureHold(session, change, ref k);
+                if (session.LastSaveError is { } error)
+                    throw new InvalidOperationException("A write failed.", error);
+                var size = new FileInfo(store.ProfilePath).Length;
+                Console.WriteLine(string.Join(",",
+                    mib.ToString("0.##", CultureInfo.InvariantCulture), bytes, profile.LiveCampaigns.Count, name, Writes,
+                    F(Percentile(wall, 0.5)), F(Percentile(wall, 0.95)), F(Percentile(cpu, 0.5)),
+                    alloc.Order().ElementAt(alloc.Count / 2), gen2, F(Percentile(hold, 0.5)), F(hold.Max()),
+                    size, size, rotations,
+                    F(Percentile(blocking, 0.95)), F(blocking.Max()), F(Percentile(nonBlocking, 0.95)), F(nonBlocking.Max())));
+            }
+            session.Close();
         }
         finally
         {
             directory.Delete(recursive: true);
         }
+    }
+
+    /// <summary>Writes on this thread (Immediate): wall and CPU time, allocations of all threads, gen2 collections.</summary>
+    private static (List<double> Wall, List<double> Cpu, List<long> Alloc, int Gen2, int Rotations) MeasureWrites(
+        ProfileSession session, string path, Action<Profile, int> change, ref int k)
+    {
+        var wall = new List<double>();
+        var cpu = new List<double>();
+        var alloc = new List<long>();
+        var rotations = 0;
+        Settle();
+        var gen2 = GC.CollectionCount(2);
+        var process = Process.GetCurrentProcess();
+        for (var i = 0; i < Writes; i++)
+        {
+            var n = k++;
+            var bak1 = File.GetLastWriteTimeUtc(path + ".bak1");
+            process.Refresh();
+            var cpu0 = process.TotalProcessorTime;
+            var alloc0 = GC.GetTotalAllocatedBytes(precise: true);
+            var start = Stopwatch.GetTimestamp();
+            session.Mutate(p => change(p, n), SaveMode.Immediate);
+            wall.Add(Stopwatch.GetElapsedTime(start).TotalMilliseconds);
+            alloc.Add(GC.GetTotalAllocatedBytes(precise: true) - alloc0);
+            process.Refresh();
+            cpu.Add((process.TotalProcessorTime - cpu0).TotalMilliseconds);
+            if (File.GetLastWriteTimeUtc(path + ".bak1") != bak1)
+                rotations++;
+        }
+        return (wall, cpu, alloc, GC.CollectionCount(2) - gen2, rotations);
+    }
+
+    /// <summary>The longest time, per write, that another thread trying again and again could not get the profile.</summary>
+    private static List<double> MeasureHold(ProfileSession session, Action<Profile, int> change, ref int k)
+    {
+        var holds = new List<double>();
+        for (var i = 0; i < Writes; i++)
+        {
+            var n = k++;
+            var running = 1;
+            var longest = 0L;
+            var probe = new Thread(() =>
+            {
+                long? since = null;
+                while (Volatile.Read(ref running) == 1)
+                {
+                    var now = Stopwatch.GetTimestamp();
+                    if (session.TryRead(_ => 0, out _))
+                    {
+                        if (since is { } s)
+                            longest = Math.Max(longest, now - s);
+                        since = null;
+                    }
+                    else
+                    {
+                        since ??= now;
+                    }
+                }
+            });
+            probe.Start();
+            Thread.Sleep(2);
+            session.Mutate(p => change(p, n), SaveMode.Immediate);
+            Volatile.Write(ref running, 0);
+            probe.Join();
+            holds.Add(longest * 1000.0 / Stopwatch.Frequency);
+        }
+        return holds;
     }
 
     private static List<double> Contend(string directory, double mib, bool nonBlocking)

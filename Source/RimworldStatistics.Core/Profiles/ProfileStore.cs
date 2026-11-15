@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Globalization;
 using System.Text;
 using System.Text.Json;
@@ -39,7 +40,14 @@ public sealed class ProfileStore
     private bool _hasExpectedPrimary;
     // The exact bytes of the primary as this session last loaded or wrote it. Any other content means another
     // session or tool changed the file, whatever its size, timestamp or decoded text.
-    private byte[]? _expectedPrimary;
+    private ReadOnlyMemory<byte>? _expectedPrimary;
+
+    // Issue #195: the profile is serialized into one of two buffers that are kept between writes, so a write does not
+    // allocate an array of the whole profile. _expectedOwner holds _expectedPrimary when this store serialized it;
+    // the spare one is written next. _expectedCanonical: _expectedPrimary is ProfileJson output this store wrote.
+    private ProfileBuffer? _expectedOwner;
+    private ProfileBuffer? _spare;
+    private bool _expectedCanonical;
 
     // A schema-1 file that was loaded (the primary or a backup): copied once to profile.v1.json before the first
     // schema-2 write, so the user can roll back to v1 (numeric expansion design §2).
@@ -68,6 +76,9 @@ public sealed class ProfileStore
     {
         _hasExpectedPrimary = true;
         _expectedPrimary = null;
+        _expectedOwner = null;
+        _spare = null;
+        _expectedCanonical = false;
         _v1SourcePath = null;
         _v1SourceBytes = null;
         var candidates = new[]
@@ -152,7 +163,7 @@ public sealed class ProfileStore
             try
             {
                 using var writeLock = LockFile();
-                if (_expectedPrimary is null || !File.ReadAllBytes(ProfilePath).AsSpan().SequenceEqual(_expectedPrimary))
+                if (_expectedPrimary is not { } expected || !File.ReadAllBytes(ProfilePath).AsSpan().SequenceEqual(expected.Span))
                 {
                     _readOnly = true;
                     return null;
@@ -205,31 +216,58 @@ public sealed class ProfileStore
         }
     }
 
-    public void Save(Profile profile) => SaveSerialized(ProfileJson.SerializeToUtf8Bytes(profile));
+    public void Save(Profile profile) => SaveCanonical(output => ProfileJson.SerializeTo(output, profile));
 
     /// <summary>Commits the primary before rotating older recovery points.</summary>
     public void SaveSerialized(string json) => SaveSerialized(Utf8NoBom.GetBytes(json));
 
     /// <summary>Commits UTF-8 profile JSON (no byte order mark) before rotating older recovery points.</summary>
-    public void SaveSerialized(byte[] utf8Json) => SaveSerialized(() => utf8Json);
+    public void SaveSerialized(byte[] utf8Json) => Commit(() => utf8Json, canonical: null);
 
-    // The session prepares archive and primary changes under the same disk lock.
-    internal void SaveSerialized(Func<byte[]> prepare)
+    /// <summary>
+    /// Commits the profile <paramref name="serialize"/> writes with <see cref="ProfileJson.SerializeTo"/>. The session
+    /// prepares archive and primary changes in it, under the same disk lock. The bytes go to a buffer kept for the
+    /// next write (Issue #195), so <paramref name="serialize"/> must write nothing else.
+    /// </summary>
+    internal void SaveCanonical(Action<IBufferWriter<byte>> serialize)
+    {
+        var buffer = _spare ?? new ProfileBuffer(_expectedPrimary is { Length: var n } ? n + n / 8 : 0);
+        _spare = null;
+        try
+        {
+            Commit(() =>
+            {
+                buffer.Clear();
+                serialize(buffer);
+                return buffer.WrittenMemory;
+            }, buffer);
+        }
+        finally
+        {
+            if (!ReferenceEquals(buffer, _expectedOwner))
+                _spare ??= buffer;   // not committed (unchanged or failed): written into again next time
+        }
+    }
+
+    /// <param name="canonical">The buffer <paramref name="prepare"/> serializes into, for ProfileJson output; null for any other JSON.</param>
+    private void Commit(Func<ReadOnlyMemory<byte>> prepare, ProfileBuffer? canonical)
     {
         if (_readOnly)
             throw new InvalidOperationException("The record file is read-only for this session (written by a newer version, or unreadable).");
         Directory.CreateDirectory(_directory);
         using var writeLock = LockFile();
         var current = ReadVerifiedPrimary();
+        // Only when both are the serializer's output can a difference in their bytes be read without parsing them.
+        var bothCanonical = canonical is not null && current is not null && _expectedCanonical;
         ProtectV1Source(current);
         var json = prepare();
 
         if (File.Exists(PendingBackup))
             RotateBackups();
-        if (current is not null && current.AsSpan().SequenceEqual(json))
+        if (current is { } same && same.Span.SequenceEqual(json.Span))
             return;
 
-        var rotate = current != null && !SameStatistics(current, json);
+        var rotate = current is { } previous && !SameStatistics(previous, json, bothCanonical);
         if (rotate)
             EnsureBackupPaths();
         var tmp = TmpPath;
@@ -237,7 +275,7 @@ public sealed class ProfileStore
         {
             using (var fs = new FileStream(tmp, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                fs.Write(json);
+                fs.Write(json.Span);
                 fs.Flush(flushToDisk: true);
             }
             if (current != null)
@@ -247,6 +285,10 @@ public sealed class ProfileStore
 
             _expectedPrimary = json;
             _hasExpectedPrimary = true;
+            // The buffer that held the previous primary is free now; the one just written must not be written into.
+            _spare ??= _expectedOwner;
+            _expectedOwner = canonical;
+            _expectedCanonical = canonical is not null;
             if (rotate)
                 RotateBackups();
         }
@@ -263,11 +305,11 @@ public sealed class ProfileStore
         }
     }
 
-    private byte[]? ReadVerifiedPrimary()
+    private ReadOnlyMemory<byte>? ReadVerifiedPrimary()
     {
         var exists = File.Exists(ProfilePath);
         if (!_hasExpectedPrimary)
-            return exists ? File.ReadAllBytes(ProfilePath) : null;
+            return exists ? File.ReadAllBytes(ProfilePath) : (ReadOnlyMemory<byte>?)null;   // not an empty file
 
         if (exists && _expectedPrimary is { } expected)
         {
@@ -277,7 +319,7 @@ public sealed class ProfileStore
                 bufferSize: 1, FileOptions.SequentialScan);
             if (file.Length == expected.Length)
             {
-                var buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(1 << 16);
+                var buffer = ArrayPool<byte>.Shared.Rent(1 << 16);
                 try
                 {
                     var offset = 0;
@@ -285,7 +327,7 @@ public sealed class ProfileStore
                     while (offset < expected.Length
                         && (read = file.Read(buffer, 0, Math.Min(buffer.Length, expected.Length - offset))) > 0)
                     {
-                        if (!buffer.AsSpan(0, read).SequenceEqual(expected.AsSpan(offset, read)))
+                        if (!buffer.AsSpan(0, read).SequenceEqual(expected.Span.Slice(offset, read)))
                             break;
                         offset += read;
                     }
@@ -294,7 +336,7 @@ public sealed class ProfileStore
                 }
                 finally
                 {
-                    System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+                    ArrayPool<byte>.Shared.Return(buffer);
                 }
             }
         }
@@ -318,14 +360,15 @@ public sealed class ProfileStore
     /// An existing copy is never overwritten. Runs under the write lock; if the source changed or the copy fails, nothing
     /// is written.
     /// </summary>
-    private void ProtectV1Source(byte[]? currentPrimary)
+    private void ProtectV1Source(ReadOnlyMemory<byte>? currentPrimary)
     {
         if (_v1SourceBytes is not { } original || _v1SourcePath is not { } source)
             return;
         if (!File.Exists(V1CopyPath))
         {
-            var sourceNow = source == ProfilePath ? currentPrimary : File.Exists(source) ? File.ReadAllBytes(source) : null;
-            if (sourceNow is null || !sourceNow.AsSpan().SequenceEqual(original))
+            var sourceNow = source == ProfilePath ? currentPrimary
+                : File.Exists(source) ? File.ReadAllBytes(source) : (ReadOnlyMemory<byte>?)null;
+            if (sourceNow is not { } now || !now.Span.SequenceEqual(original))
                 throw new IOException("The schema-1 statistics file changed before it could be copied. Reopen RimWorld before writing to it.");
             var tmp = V1CopyPath + ".tmp";
             try
@@ -369,30 +412,35 @@ public sealed class ProfileStore
     }
 
     // The normal serializer emits these two adjacent, top-level properties in this order.
+    private static ReadOnlySpan<byte> ImportStateMarker => "\n  \"importState\": "u8;
+    private static ReadOnlySpan<byte> AfterImportStateMarker => "\n  \"modMetricDescriptors\": "u8;
+
+    /// <summary>
+    /// Where the importState value and its separator are in serializer output: from after <see cref="ImportStateMarker"/>
+    /// to the next <see cref="AfterImportStateMarker"/>. Null when either marker is missing (another layout).
+    /// </summary>
+    private static (int Start, int End)? ImportStateRegion(ReadOnlySpan<byte> json)
+    {
+        var at = json.IndexOf(ImportStateMarker);
+        if (at < 0)
+            return null;
+        var start = at + ImportStateMarker.Length;
+        var end = json[start..].IndexOf(AfterImportStateMarker);
+        return end < 0 ? null : (start, start + end);
+    }
+
     // When only importState changes, comparing the byte-identical prefix and suffix
     // avoids parsing the entire (possibly multi-megabyte) profile twice for backup rotation.
     // A noncanonical layout or inserted sibling falls back to the structural comparison.
-    private static bool SameStatisticsExceptImportState(ReadOnlyMemory<byte> previous, ReadOnlyMemory<byte> next)
+    private static bool SameStatisticsExceptImportState(ReadOnlyMemory<byte> previous, (int Start, int End) a,
+        ReadOnlyMemory<byte> next, (int Start, int End) b)
     {
-        var startMarker = "\n  \"importState\": "u8;
-        var endMarker = "\n  \"modMetricDescriptors\": "u8;
-        var a = previous.Span.IndexOf(startMarker);
-        var b = next.Span.IndexOf(startMarker);
-        if (a < 0 || b < 0)
-            return false;
-        var aEnd = previous.Span[(a + startMarker.Length)..].IndexOf(endMarker);
-        var bEnd = next.Span[(b + startMarker.Length)..].IndexOf(endMarker);
-        if (aEnd < 0 || bEnd < 0)
-            return false;
-        aEnd += a + startMarker.Length;
-        bEnd += b + startMarker.Length;
-        if (!previous.Span[..a].SequenceEqual(next.Span[..b]) || !previous.Span[aEnd..].SequenceEqual(next.Span[bEnd..]))
+        if (!previous.Span[..a.Start].SequenceEqual(next.Span[..b.Start]) || !previous.Span[a.End..].SequenceEqual(next.Span[b.End..]))
             return false;
 
         // Ensure that the skipped region contains exactly one valid object value
         // followed by its property separator, not a changed sibling property.
-        return HasOneImportStateValue(previous, a + startMarker.Length, aEnd)
-            && HasOneImportStateValue(next, b + startMarker.Length, bEnd);
+        return HasOneImportStateValue(previous, a.Start, a.End) && HasOneImportStateValue(next, b.Start, b.End);
     }
 
     private static bool HasOneImportStateValue(ReadOnlyMemory<byte> json, int start, int end)
@@ -419,14 +467,23 @@ public sealed class ProfileStore
     }
 
     /// <summary>The JSON text of a file's bytes as Load decodes it: UTF-8 without its byte order mark.</summary>
-    private static ReadOnlyMemory<byte> Utf8Body(byte[] bytes)
-        => bytes.AsSpan().StartsWith(Encoding.UTF8.Preamble) ? bytes.AsMemory(Encoding.UTF8.Preamble.Length) : bytes;
+    private static ReadOnlyMemory<byte> Utf8Body(ReadOnlyMemory<byte> bytes)
+        => bytes.Span.StartsWith(Encoding.UTF8.Preamble) ? bytes[Encoding.UTF8.Preamble.Length..] : bytes;
 
-    private static bool SameStatistics(byte[] previousFile, byte[] next)
+    /// <summary>
+    /// Whether the statistics (everything but importState) are the same: when they are not, the backups rotate.
+    /// <paramref name="bothCanonical"/>: both are serializer output (<see cref="ProfileJson.SerializeTo"/>).
+    /// </summary>
+    private static bool SameStatistics(ReadOnlyMemory<byte> previousFile, ReadOnlyMemory<byte> next, bool bothCanonical)
     {
         var previous = Utf8Body(previousFile);
-        if (SameStatisticsExceptImportState(previous, next))
-            return true;
+        if (ImportStateRegion(previous.Span) is { } a && ImportStateRegion(next.Span) is { } b)
+        {
+            if (SameStatisticsExceptImportState(previous, a, next, b))
+                return true;
+            if (bothCanonical && CanonicalStatisticsDiffer(previous.Span, a, next.Span, b))
+                return false;
+        }
         try
         {
             using var before = JsonDocument.Parse(previous);
@@ -439,6 +496,125 @@ public sealed class ProfileStore
         catch (Exception e) when (e is JsonException or InvalidOperationException)
         {
             return false;
+        }
+    }
+
+    /// <summary>
+    /// Issue #195: for two outputs of the serializer, proves without parsing that the structural comparison above finds
+    /// a difference outside importState. That comparison treats objects with the same properties in another order as
+    /// equal, and numbers by value. The serializer writes a value with the same bytes every time; the only number it can
+    /// spell two ways is zero (0 and -0, equal by value); JSON kept from a file (unknown fields, set-aside entries) is
+    /// written back as it was read. So equal statistics outside importState consist of the same bytes with some
+    /// properties moved and some '-' added or removed: every other byte value occurs as often in both. A byte value
+    /// other than '-' that occurs a different number of times (counted between the common prefix and suffix) is a real
+    /// change. False means not proven, and the caller parses both.
+    /// </summary>
+    private static bool CanonicalStatisticsDiffer(ReadOnlySpan<byte> previous, (int Start, int End) a,
+        ReadOnlySpan<byte> next, (int Start, int End) b)
+    {
+        var x = new Rest(previous, a);
+        var y = new Rest(next, b);
+        var prefix = Rest.CommonPrefix(x, y);
+        var suffix = Math.Min(Rest.CommonSuffix(x, y), Math.Min(x.Length, y.Length) - prefix);
+        var (xFrom, xTo, yFrom, yTo) = (prefix, x.Length - suffix, prefix, y.Length - suffix);
+
+        // Cheap, vectorized first: a length difference that the '-' signs cannot account for.
+        var lengthDifference = (xTo - xFrom) - (yTo - yFrom);
+        if (lengthDifference != 0 && x.CountOf((byte)'-', xFrom, xTo) - y.CountOf((byte)'-', yFrom, yTo) != lengthDifference)
+            return true;
+
+        Span<int> counts = stackalloc int[256];
+        counts.Clear();
+        x.Count(xFrom, xTo, counts, +1);
+        y.Count(yFrom, yTo, counts, -1);
+        counts[(byte)'-'] = 0;
+        foreach (var count in counts)
+            if (count != 0)
+                return true;
+        return false;
+    }
+
+    /// <summary>A profile's bytes without the importState value: the part before it, then the part after it.</summary>
+    private readonly ref struct Rest
+    {
+        private readonly ReadOnlySpan<byte> _head;
+        private readonly ReadOnlySpan<byte> _tail;
+
+        public Rest(ReadOnlySpan<byte> json, (int Start, int End) importState)
+        {
+            _head = json[..importState.Start];
+            _tail = json[importState.End..];
+        }
+
+        public int Length => _head.Length + _tail.Length;
+
+        /// <summary>Bytes [from, to) as the part in the head and the part in the tail.</summary>
+        private ReadOnlySpan<byte> HeadPart(int from, int to) => from < _head.Length ? _head[from..Math.Min(to, _head.Length)] : default;
+
+        private ReadOnlySpan<byte> TailPart(int from, int to)
+            => to > _head.Length ? _tail[Math.Max(from - _head.Length, 0)..(to - _head.Length)] : default;
+
+        /// <summary>Adds <paramref name="sign"/> to the count of each byte value in [from, to).</summary>
+        public void Count(int from, int to, Span<int> counts, int sign)
+        {
+            foreach (var value in HeadPart(from, to))
+                counts[value] += sign;
+            foreach (var value in TailPart(from, to))
+                counts[value] += sign;
+        }
+
+        public int CountOf(byte value, int from, int to) => HeadPart(from, to).Count(value) + TailPart(from, to).Count(value);
+
+        /// <summary>The contiguous bytes from <paramref name="offset"/> on (to the end of the part it is in).</summary>
+        private ReadOnlySpan<byte> From(int offset) => offset < _head.Length ? _head[offset..] : _tail[(offset - _head.Length)..];
+
+        /// <summary>The contiguous bytes before <paramref name="end"/> (from the start of the part it is in).</summary>
+        private ReadOnlySpan<byte> Before(int end) => end > _head.Length ? _tail[..(end - _head.Length)] : _head[..end];
+
+        public static int CommonPrefix(Rest x, Rest y)
+        {
+            var common = 0;
+            var length = Math.Min(x.Length, y.Length);
+            while (common < length)
+            {
+                var p = x.From(common);
+                var q = y.From(common);
+                var n = Math.Min(p.Length, q.Length);
+                var same = p[..n].CommonPrefixLength(q[..n]);
+                common += same;
+                if (same < n)
+                    break;
+            }
+            return common;
+        }
+
+        public static int CommonSuffix(Rest x, Rest y)
+        {
+            var common = 0;
+            var length = Math.Min(x.Length, y.Length);
+            while (common < length)
+            {
+                var p = x.Before(x.Length - common);
+                var q = y.Before(y.Length - common);
+                var n = Math.Min(p.Length, q.Length);
+                var same = CommonSuffixLength(p[^n..], q[^n..]);
+                common += same;
+                if (same < n)
+                    break;
+            }
+            return common;
+        }
+
+        /// <summary>For two spans of the same length: how many of their last bytes are equal.</summary>
+        private static int CommonSuffixLength(ReadOnlySpan<byte> p, ReadOnlySpan<byte> q)
+        {
+            const int Block = 4096;
+            var same = 0;
+            while (p.Length - same >= Block && p.Slice(p.Length - same - Block, Block).SequenceEqual(q.Slice(q.Length - same - Block, Block)))
+                same += Block;
+            while (same < p.Length && p[p.Length - 1 - same] == q[q.Length - 1 - same])
+                same++;
+            return same;
         }
     }
 }

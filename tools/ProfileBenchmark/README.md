@@ -37,11 +37,16 @@ dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj -
 
 Profiles are shaped like imported real ones (a read-only import of six private 1.7 saves gave about 51 KB per checkpoint tip and 8.8 KB per save-file observation): per colony, 8 save files carrying every SaveFile metric, a checkpoint chain whose tip carries every live family metric with breakdowns, and compressed ancestors. All data is synthetic.
 
-- **`locked_serialize_*`**: the UTF-8 serialization a background write performs while it holds the profile (game-thread changes cannot start meanwhile).
-- **`statistics_commit_*`**: one store commit after a statistics change: byte-exact check of the primary against the last write, write + flush, atomic replace and three-backup rotation.
-- **`import_only_commit_median_ms`**: a commit where only `importState` changed (no backup rotation).
-- **`commit_read_bytes` / `commit_write_bytes`**: bytes read to verify the primary and written per commit (backups are renames).
-- **`blocking_wait_*` / `nonblocking_wait_*`**: how long a game-thread change waited while background writes ran every 5 ms, with `Mutate` and with `MutateWithoutBlocking` (used by `RecordSave` since Issue #195). The non-blocking change is applied right after the current holder releases the profile, before any other read or write.
+Every measured write goes through `ProfileSession` with public API only, so the same benchmark source can be built against an older Core to compare builds. Each row is one kind of change followed by a whole-profile write (`writes` of them, after warm-up):
+
+- **`write`**: `statistics_added` (a save observation is added), `statistics_same_size` (one counter changes and the file keeps its size), `import_state_only` (only `importState.lastScanUtc` changes, so no backup rotation).
+- **`wall_*` / `cpu_median_ms`**: one `Mutate(…, SaveMode.Immediate)` on the calling thread: change, serialization, byte-exact check of the primary against the last write, backup decision, write + flush, atomic replace and rotation. CPU is the process's, so it includes the runtime's own threads.
+- **`alloc_median_bytes`**: managed allocations of all threads during one write.
+- **`gen2_collections`**: gen2 collections during the `writes` measured writes (after a full collection), not a rate.
+- **`hold_*`**: per write, the longest time a second thread that keeps calling `TryRead` could not get the profile: what a game-thread change would wait for with a blocking call.
+- **`read_bytes_per_write` / `written_bytes_per_write`**: the primary is read in full to verify it and written in full each time (backups are renames).
+- **`backup_rotations`**: writes, of the `writes` measured, after which `.bak1` changed.
+- **`blocking_wait_*` / `nonblocking_wait_*`** (same for every row of a size): how long a game-thread change waited while background writes ran every 5 ms, with `Mutate` and with `MutateWithoutBlocking` (used by `RecordSave` since Issue #195). The non-blocking change is applied right after the current holder releases the profile, before any other read or write.
 
 There are no machine-dependent performance thresholds: a slowdown requires repeated measurements on the same type of GitHub Actions runner or an actual PC, and a correctness regression is still validated by unit tests.
 

@@ -544,14 +544,14 @@ public sealed class ProfileSession
             long seq = 0;
             try
             {
-                _store.SaveSerialized(() =>
+                _store.SaveCanonical(output =>
                 {
                     ArchiveCheckpoints();
                     lock (_lock)
                     {
                         ApplyQueuedAndRequestSave();
                         seq = _changeSeq;
-                        return ProfileJson.SerializeToUtf8Bytes(_profile);
+                        ProfileJson.SerializeTo(output, _profile);   // into the store's reused buffer (Issue #195)
                     }
                 });
                 _writtenSeq = seq;
