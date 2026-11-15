@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>copie de sécurité 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>nouveau (vide)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>fichier d'enregistrement d'une version plus récente (lecture seule)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>échec</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>non identifiable</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>modifiée pendant la lecture (par exemple, le jeu sauvegardait)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>impossible à ouvrir (en cours d'utilisation ou sans autorisation)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>fichier endommagé ou incomplet</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>pas une sauvegarde RimWorld</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>aucune identité de colonie à associer</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>erreur inattendue</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>Par cause : {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Les sauvegardes dont la lecture a échoué sont relues à la prochaine analyse.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>Chargement des statistiques…</RWS_Loading>
   <RWS_WealthCoverage>Données de richesse issues de {0} colonies ({1} sans données).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Récupéré depuis une sauvegarde (mode développement inconnu, exclu des totaux)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>Son lien avec les relevés antérieurs ne peut pas être prouvé.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Branche qui prolonge le relevé du jour {0} ; les points intermédiaires appartiennent à une autre branche.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>Ce relevé figurait aussi, inchangé, dans une sauvegarde du jour {0} ; celle-ci n'a enregistré aucune statistique plus récente.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>enregistrée autrement ; non superposée</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>{0} relevés ({1} partiels) ; {2} points sans valeur</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>Les statistiques ont été enregistrées pour la dernière fois le jour {0}. La sauvegarde la plus avancée de la colonie date du jour {1}, mais rien de plus récent n'a été enregistré (cette sauvegarde peut appartenir à une autre branche).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Valeur enregistrée</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Relevé partiel</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Lien non prouvé</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>Pas de valeur ici</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>Jour {0} : cette sauvegarde ou ce point de contrôle ne contient aucune valeur pour cette statistique (enregistrement désactivé, MOD ou DLC inactif, ancien format, etc.). Ce n'est pas zéro.</RWS_Chart_GapTip>
+  <RWS_PerDay>Par jour : {0} (sur {1} jours enregistrés)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} points de nutrition</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androïdes fabriqués</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androïdes du joueur créés en terminant le travail à la station de création.</RWS_VreAndroid_ManufacturedDesc>

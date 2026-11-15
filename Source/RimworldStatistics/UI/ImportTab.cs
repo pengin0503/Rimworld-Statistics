@@ -12,7 +12,8 @@ public static class ImportTab
     private static DateTime backupsCheckedUtc;
     private static int backupCount;
 
-    private sealed record Snapshot(ProfileSession Session, long Revision, object? Language, DateTime? LastScan, string[][] Problems);
+    private sealed record Snapshot(ProfileSession Session, long Revision, object? Language, DateTime? LastScan, string[][] Problems,
+        string? ProblemSummary);
     private static Snapshot? cached;
     private static readonly StatsTable ProblemsTable = new(24f, new ColumnSpec(0f, 1f));
 
@@ -25,14 +26,22 @@ public static class ImportTab
                 && ReferenceEquals(previous.Language, language))
                 return previous;
 
-            var problems = profile.SaveObservations.Where(o => !o.Superseded && o.Status != ObservationStatus.Ok)
+            // Grouped by what the player can do about it; the reader's own reason stays visible after the group.
+            var failed = profile.SaveObservations.Where(o => !o.Superseded && o.Status != ObservationStatus.Ok)
                 .OrderBy(o => o.FileName, StringComparer.Ordinal)
-                .Select(o =>
-                {
-                    string status = o.Status == ObservationStatus.Error ? "RWS_Status_Error".Translate() : "RWS_Status_Unidentifiable".Translate();
-                    return new[] { $"{o.FileName}  —  {status}: {o.ErrorReason ?? ""}" };
-                }).ToArray();
-            return new Snapshot(session, revision, language, profile.ImportState.LastScanUtc, problems);
+                .Select(o => (Observation: o, Kind: ImportProblems.Classify(o) ?? ImportProblemKind.Unexpected))
+                .ToArray();
+            var problems = failed.Select(p => new[] { $"{p.Observation.FileName}  —  {ProblemLabel(p.Kind)}: {p.Observation.ErrorReason ?? ""}" })
+                .ToArray();
+            string? summary = null;
+            if (failed.Length > 0)
+            {
+                summary = (string)"RWS_Import_ProblemSummary".Translate(string.Join(" / ", failed.GroupBy(p => p.Kind)
+                    .OrderBy(g => g.Key).Select(g => ProblemLabel(g.Key) + ": " + g.Count().ToString(CultureInfo.InvariantCulture))));
+                if (failed.Any(p => ImportProblems.RetriedOnRescan(p.Kind)))
+                    summary += " " + (string)"RWS_Import_RetriedOnRescan".Translate();
+            }
+            return new Snapshot(session, revision, language, profile.ImportState.LastScanUtc, problems, summary);
         }, out var snapshot))
         {
             if (cached is not { } previous || !ReferenceEquals(previous.Session, session) || !ReferenceEquals(previous.Language, language))
@@ -110,9 +119,21 @@ public static class ImportTab
 
         y += 8f;
         Text.Font = GameFont.Small;
+        if (snapshot.ProblemSummary is { } summary)
+            Line(rect, ref y, summary);
         var title = (string)"RWS_Import_Problems".Translate(problems.Length);
         ProblemsTable.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), ref scroll, [title], problems);
     }
+
+    private static string ProblemLabel(ImportProblemKind kind) => kind switch
+    {
+        ImportProblemKind.ChangedDuringRead => "RWS_ImportProblem_ChangedDuringRead".Translate(),
+        ImportProblemKind.Unreadable => "RWS_ImportProblem_Unreadable".Translate(),
+        ImportProblemKind.Damaged => "RWS_ImportProblem_Damaged".Translate(),
+        ImportProblemKind.NotASave => "RWS_ImportProblem_NotASave".Translate(),
+        ImportProblemKind.MissingIdentity => "RWS_ImportProblem_MissingIdentity".Translate(),
+        _ => "RWS_ImportProblem_Unexpected".Translate(),
+    };
 
     private static readonly Dictionary<string, float> LineHeights = new(StringComparer.Ordinal);
     private static float lineWidth;

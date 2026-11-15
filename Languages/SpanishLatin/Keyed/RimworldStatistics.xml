@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>copia de seguridad 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>nuevo (vacío)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>archivo de registro de una versión más reciente (solo lectura)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>con error</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>no identificable</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>cambió durante la lectura (por ejemplo, el juego estaba guardando)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>no se pudo abrir (en uso o sin permiso)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>archivo dañado o incompleto</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>no es una partida guardada de RimWorld</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>sin identidad de colonia para asociar</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>error inesperado</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>Por causa: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Las partidas que no se pudieron leer se vuelven a leer en el siguiente análisis.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>Cargando estadísticas…</RWS_Loading>
   <RWS_WealthCoverage>Datos de riqueza de {0} colonias ({1} sin datos).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Recuperado de una partida guardada (modo desarrollador desconocido, excluido de los totales)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>No puede demostrarse su relación con los datos anteriores.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Rama que continúa el dato del día {0}; los puntos intermedios pertenecen a otra rama.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>Este dato también figuraba, sin cambios, en una partida del día {0}; esa partida no registró estadísticas más recientes.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>registrado de otra forma; no se superpone</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>{0} datos ({1} parciales); {2} puntos sin valor</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>Las estadísticas se registraron por última vez el día {0}. La partida más avanzada de la colonia es del día {1}, pero no se registró nada más reciente (esa partida puede pertenecer a otra rama).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Valor registrado</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Registro parcial</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Relación no demostrada</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>Sin valor</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>Día {0}: esta partida o punto de control no tiene valor para esta estadística (registro desactivado, MOD o DLC inactivo, formato antiguo, etc.). No es cero.</RWS_Chart_GapTip>
+  <RWS_PerDay>Por día: {0} (en {1} días registrados)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} de valor nutritivo</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androides del jugador creados al terminar el trabajo en la estación de creación.</RWS_VreAndroid_ManufacturedDesc>

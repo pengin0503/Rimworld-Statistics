@@ -202,8 +202,15 @@ internal sealed class Dialog_MetricChart : Window
             _ => ColonyName(bar.Key),
         };
         var value = MetricText.Format(mode == ChartMode.Breakdown ? breakdownDefinition : definition, bar.Value);
-        return new BarText(name, value, name + ": " + value + "\n" + MetricText.State(definition, bar.Value.Coverage));
+        // Colonies recorded for different lengths of time: a complete additive total also per recorded day of that colony.
+        var perDay = mode == ChartMode.Colony ? MetricText.PerDay(ColonySource, bar.Value) : "";
+        return new BarText(name, value, name + ": " + value + "\n" + MetricText.State(definition, bar.Value.Coverage) + perDay);
     }
+
+    /// <summary>The per-colony rows a colony comparison shows (a derived cross-colony record reads its source metric).</summary>
+    private MetricDefinition ColonySource => colonySource ??= MetricChartSeries.ColonyComparisonKey(definition) is var key
+        && key != definition.Key && MetricLookup.Definition(view, key) is { } source ? source : definition;
+    private MetricDefinition? colonySource;
 
     private static MetricDefinition BasicDefinition(string key) => new()
     {

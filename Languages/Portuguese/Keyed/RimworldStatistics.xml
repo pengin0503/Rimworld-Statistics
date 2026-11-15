@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>cópia de segurança 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>novo (vazio)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>ficheiro de registo de uma versão mais recente (só de leitura)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>com falha</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>não identificável</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>alterado durante a leitura (por exemplo, o jogo estava a gravar)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>não foi possível abrir (em uso ou sem permissão)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>ficheiro danificado ou incompleto</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>não é um jogo guardado do RimWorld</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>sem identidade de colónia para associar</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>erro inesperado</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>Por causa: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Os jogos guardados que não foi possível ler são lidos novamente na próxima análise.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>A carregar as estatísticas…</RWS_Loading>
   <RWS_WealthCoverage>Dados de riqueza de {0} colónias ({1} sem dados).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Recuperado do jogo guardado (modo de desenvolvimento desconhecido, excluído dos totais)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>Não é possível comprovar a relação com registos anteriores.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ramo que continua o registo do dia {0}; os pontos intermédios pertencem a outro ramo.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>Este registo também estava, sem alterações, numa gravação do dia {0}; essa gravação não registou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>registado de outra forma; não sobreposto</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>{0} registos ({1} parciais); {2} pontos sem valor</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>As estatísticas foram registadas pela última vez no dia {0}. A gravação mais avançada da colónia é do dia {1}, mas nada mais recente foi registado (essa gravação pode pertencer a outro ramo).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Valor registado</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Registo parcial</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Relação não comprovada</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>Sem valor</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>Dia {0}: esta gravação ou ponto de controlo não tem valor para esta estatística (registo desligado, MOD ou DLC inativo, formato antigo, etc.). Não é zero.</RWS_Chart_GapTip>
+  <RWS_PerDay>Por dia: {0} (em {1} dias registados)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} de valor nutricional</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Androides fabricados</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Androides do jogador criados após concluir o trabalho na estação de criação.</RWS_VreAndroid_ManufacturedDesc>

@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>백업 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>새로 만듦 (비어 있음)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>더 새로운 버전의 기록 파일 (읽기 전용)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>실패</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>식별 불가</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>읽는 도중 변경됨(예: 게임이 저장 중)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>열 수 없음(사용 중이거나 권한 없음)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>손상되었거나 불완전한 파일</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>RimWorld 저장 파일이 아님</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>정착지를 식별할 정보가 없음</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>예기치 않은 오류</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>원인별: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>읽기에 실패한 저장 파일은 다음 검색 때 다시 읽습니다.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>통계를 불러오는 중…</RWS_Loading>
   <RWS_WealthCoverage>재산 데이터가 있는 정착지: {0}곳 (데이터 없음: {1}곳)입니다.</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>저장 파일에서 복구 (개발자 모드 여부 불명, 합계에서 제외)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>이전 기록과의 부모-자식 관계를 확인할 수 없습니다.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>{0}일 기록에서 이어지는 분기입니다. 그 사이의 점은 다른 분기의 기록입니다.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>이 기록은 {0}일 저장에도 그대로 들어 있었습니다. 그 저장에는 새로운 통계가 기록되지 않았습니다.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>기록 방식이 달라 겹쳐 표시할 수 없습니다</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>기록 {0}개(일부 기록 {1}개), 값이 없는 시점 {2}개</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>통계는 {0}일에 마지막으로 기록되었습니다. 이 정착지에서 가장 진행된 저장은 {1}일이지만 그 이후의 통계는 기록되지 않았습니다(다른 분기의 저장일 수도 있습니다).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>기록값</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>일부 기록</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>관계 미확인</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>값이 없는 시점</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>{0}일: 이 저장/체크포인트에는 이 통계의 값이 없습니다(기록 꺼짐, MOD·DLC 비활성, 이전 형식 등). 0이 아닙니다.</RWS_Chart_GapTip>
+  <RWS_PerDay>하루당: {0}(기록 기간 {1}일)</RWS_PerDay>
   <RWS_Unit_Nutrition>영양 {0}</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>제작한 안드로이드</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>안드로이드 제작대에서 작업을 완료해 만든 플레이어 측 안드로이드 수입니다.</RWS_VreAndroid_ManufacturedDesc>

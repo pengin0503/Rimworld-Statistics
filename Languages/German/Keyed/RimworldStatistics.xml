@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>Sicherung 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>neu (leer)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>Aufzeichnungsdatei einer neueren Version (schreibgeschützt)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>fehlgeschlagen</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>nicht erkennbar</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>während des Lesens geändert (zum Beispiel speicherte das Spiel gerade)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>konnte nicht geöffnet werden (in Verwendung oder keine Berechtigung)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>beschädigte oder unvollständige Datei</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>kein RimWorld-Spielstand</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>keine Kolonie-Kennung zum Zuordnen</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>unerwarteter Fehler</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>Nach Ursache: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Spielstände, die nicht geladen werden konnten, werden beim nächsten Einlesen erneut gelesen.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>Statistiken werden geladen …</RWS_Loading>
   <RWS_WealthCoverage>Vermögensdaten aus {0} Kolonien ({1} ohne Daten).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Aus Spielstand wiederhergestellt (Entwicklermodus unbekannt, aus den Summen ausgeschlossen)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>Die Beziehung zu früheren Werten ist nicht belegt.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ein Zweig, der an den Wert von Tag {0} anschließt; die Punkte dazwischen gehören zu einem anderen Zweig.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>Dieser Wert war unverändert auch in einem Spielstand von Tag {0} enthalten; dieser hat keine neueren Statistiken aufgezeichnet.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>anders aufgezeichnet; nicht gemeinsam dargestellt</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>{0} Messwerte ({1} teilweise); {2} Punkte ohne Wert</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>Statistiken wurden zuletzt an Tag {0} aufgezeichnet. Der am weitesten fortgeschrittene Spielstand der Kolonie ist von Tag {1}, doch danach wurde nichts Neueres aufgezeichnet (dieser Spielstand kann zu einem anderen Zweig gehören).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Aufgezeichneter Wert</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Teilweise aufgezeichnet</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Beziehung nicht belegt</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>Kein Wert</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>Tag {0}: Dieser Spielstand oder Speicherpunkt enthält keinen Wert für diese Statistik (Aufzeichnung aus, MOD oder DLC nicht aktiv, älteres Format usw.). Das ist nicht null.</RWS_Chart_GapTip>
+  <RWS_PerDay>Pro Tag: {0} (über {1} aufgezeichnete Tage)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} Nährwert</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Hergestellte Androiden</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Spielereigene Androiden nach abgeschlossener Arbeit an der Androidenstation.</RWS_VreAndroid_ManufacturedDesc>

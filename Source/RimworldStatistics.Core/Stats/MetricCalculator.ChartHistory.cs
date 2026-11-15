@@ -31,6 +31,12 @@ public sealed record MetricHistoryPoint(int Tick, NumericValue? Value, bool Conn
 
 public sealed record MetricHistory(MetricHistoryKind Kind, IReadOnlyList<MetricHistoryPoint> Points)
 {
+    /// <summary>
+    /// For checkpoint statistics: the furthest game tick any save or live record of the colony reached, which can be later
+    /// than the last checkpoint (recording off, or the checkpoint carried unchanged). It may belong to another branch.
+    /// </summary>
+    public int? LatestSaveTick { get; init; }
+
     internal IReadOnlyList<MetricFileAlias> RecorderFiles { get; init; } = [];
     internal string? RecorderHash { get; init; }
     internal double? RecorderMaximum { get; init; }
@@ -130,9 +136,13 @@ public static partial class MetricCalculator
         }
         points.Reverse();
         points[0] = points[0] with { ConnectToPrevious = false };
+        var furthest = colony.Observations.Where(o => o.Status == ObservationStatus.Ok).Select(o => o.Values.TicksGame)
+            .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => l.Max.TicksGame))
+            .DefaultIfEmpty(-1).Max();
         return new(MetricHistoryKind.CheckpointLineage, points)
         {
             ArchivedPoints = archived.Select(a => a with { Index = points.Count - 1 - a.Index }).ToArray(),
+            LatestSaveTick = furthest >= 0 ? furthest : null,
         };
     }
 

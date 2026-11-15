@@ -10,6 +10,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private static readonly Color PartialColor = new(0.63f, 0.66f, 0.71f);
     private static readonly Color GridColor = new(0.7f, 0.7f, 0.7f, 0.28f);
     private static readonly Color HollowFill = new(0.12f, 0.13f, 0.15f);
+    private static readonly Color GapColor = new(0.7f, 0.7f, 0.7f, 0.6f);
     private readonly MetricDefinition definition;
     private readonly string heading;
     private readonly string recordLabel;
@@ -32,6 +33,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private (int First, int Last) ticks;
     private (double Min, double Max) range;
     private IReadOnlyList<MetricHistoryPoint> plotPoints = [];
+    private int[]? gapTicks;   // ticks of drawn readings without a value, ascending
     private int plotWidth;
 
     internal Dialog_ColonyMetricHistory(StatsView view, string colonyKey, string colonyName,
@@ -114,9 +116,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             var row = new Rect(body.x, y, body.width, 23f);
             Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), overlay.Color);
             var status = !overlay.Task.IsCompleted ? (string)"RWS_Loading".Translate()
-                : !overlay.Task.IsCompletedSuccessfully || overlay.Task.Result.Kind != history.Kind
-                    || !overlay.Task.Result.Points.Any(p => p.Value is not null)
-                    ? (string)"RWS_Chart_HistoryEmpty".Translate() : "";
+                : !overlay.Task.IsCompletedSuccessfully || !overlay.Task.Result.Points.Any(p => p.Value is not null)
+                    ? (string)"RWS_Chart_HistoryEmpty".Translate()
+                    // A history exists, but it was recorded another way (e.g. checkpoints vs saved readings):
+                    // its points are not on the same footing, so they are not drawn together.
+                    : overlay.Task.Result.Kind != history.Kind ? (string)"RWS_Chart_OverlayOtherSource".Translate() : "";
             if (overlay.Task.IsFaulted)
                 _ = overlay.Task.Exception;
             var label = status.Length == 0 ? overlay.Name : overlay.Name + " · " + status;
@@ -124,27 +128,71 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             y = row.yMax;
         }
         body.yMin = y;
-        var note = historyNote ??= Describe(history.Kind, measured.Length)
-            + (measured.Any(p => p.Unlinked) ? "\n" + (string)"RWS_Chart_LegendUnlinked".Translate() : "");
+        var note = historyNote ??= Describe(history, measured);
         var noteHeight = Text.CalcHeight(note, body.width);
         Widgets.Label(new Rect(body.x, body.y, body.width, noteHeight), note);
         var axisWidth = Math.Min(145f, body.width * 0.28f);
         var plot = new Rect(body.x + axisWidth, body.y + noteHeight + 13f,
-            body.width - axisWidth - 16f, body.height - noteHeight - 57f);
+            body.width - axisWidth - 16f, body.height - noteHeight - 57f - LegendHeight);
         if (plot.width >= 10f && plot.height >= 10f)
+        {
             DrawPlot(plot, axisWidth, history);
+            DrawLegend(new Rect(body.x, plot.yMax + 46f, body.width, LegendHeight), history);
+        }
     }
 
-    private static string Describe(MetricHistoryKind kind, int count)
+    private const float LegendHeight = 22f;
+
+    private static string Describe(MetricHistory history, IReadOnlyList<MetricHistoryPoint> measured)
     {
-        var note = kind switch
+        var note = history.Kind switch
         {
             MetricHistoryKind.GameRecorder => (string)"RWS_Chart_GameRecorder".Translate(),
             MetricHistoryKind.WealthRecorder => (string)"RWS_Chart_HistoryWealth".Translate(),
             MetricHistoryKind.CheckpointLineage => (string)"RWS_Chart_HistoryLineage".Translate(),
             _ => (string)"RWS_Chart_HistorySaves".Translate(),
         };
-        return count == 1 ? note + "\n" + (string)"RWS_Chart_HistorySingle".Translate() : note;
+        if (measured.Count == 1)
+            note += "\n" + (string)"RWS_Chart_HistorySingle".Translate();
+        if (measured.Any(p => p.Unlinked))
+            note += "\n" + (string)"RWS_Chart_LegendUnlinked".Translate();
+        var gaps = history.Points.Count(p => p.Value is null);
+        var partial = measured.Count(p => p.Value!.Coverage == MetricCoverage.Partial);
+        if (gaps > 0 || partial > 0)
+            note += "\n" + (string)"RWS_Chart_PointCounts".Translate(measured.Count, partial, gaps);
+        // The statistics stop at the last checkpoint; a later save carried no newer ones (recording off, or the
+        // checkpoint written unchanged). That save may be on another branch, so it is named, not joined.
+        if (history.Kind == MetricHistoryKind.CheckpointLineage && history.LatestSaveTick is { } latest
+            && history.Points.Count > 0 && latest > history.Points[^1].Tick)
+            note += "\n" + (string)"RWS_Chart_LastCapture".Translate(
+                Dialog_RimworldStatistics.Days(history.Points[^1].Tick), Dialog_RimworldStatistics.Days(latest));
+        return note;
+    }
+
+    private List<(string Label, Action<Rect> Swatch)>? legend;
+
+    private void DrawLegend(Rect rect, MetricHistory history)
+    {
+        if (legend is null)
+        {
+            legend = [("RWS_Chart_LegendMeasured".Translate(), r => Widgets.DrawBoxSolid(r, SeriesColor))];
+            if (measured!.Any(p => p.Value!.Coverage == MetricCoverage.Partial))
+                legend.Add(("RWS_Chart_LegendPartial".Translate(), r => Widgets.DrawBoxSolid(r, PartialColor)));
+            if (measured!.Any(p => p.Unlinked))
+                legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1)));
+            if (history.Points.Any(p => p.Value is null))
+                legend.Add(("RWS_Chart_LegendGap".Translate(), r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor)));
+        }
+        var x = rect.x;
+        foreach (var (label, swatch) in legend)
+        {
+            if (x >= rect.xMax - 20f)
+                break;
+            swatch(new Rect(x, rect.y + 6f, 9f, 9f));
+            var width = Math.Min(Text.CalcSize(label).x, rect.xMax - x - 14f);
+            Widgets.Label(new Rect(x + 14f, rect.y, width, rect.height), label.Truncate(width));
+            x += 14f + width + 16f;
+        }
     }
 
     private void DrawPlot(Rect plot, float axisWidth, MetricHistory history)
@@ -157,6 +205,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         if (refresh)
         {
             plotPoints = MetricHistoryPlot.Thin(history.Points, pixelWidth);
+            gapTicks = null;
             ticks = (history.Points[0].Tick, history.Points[^1].Tick);
             range = (measured!.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
             foreach (var overlay in overlays)
@@ -207,6 +256,10 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         DrawSeries(plotPoints, SeriesColor, PartialColor);
         foreach (var overlay in overlays)
             DrawSeries(overlay.Points, overlay.Color, Color.Lerp(overlay.Color, PartialColor, 0.5f));
+        // A save or checkpoint exists here, but it holds no value for this statistic: marked on the axis, never as zero.
+        gapTicks ??= plotPoints.Where(p => p.Value is null).Select(p => p.Tick).ToArray();
+        foreach (var tick in gapTicks)
+            Widgets.DrawBoxSolid(new Rect(X(tick) - 1f, plot.yMax - 7f, 2f, 7f), GapColor);
 
         void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor)
         {
@@ -242,6 +295,13 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             return;
         var mouse = Event.current.mousePosition;
         var hoverTick = ticks.First + (ticks.Last - ticks.First) * (double)Math.Clamp((mouse.x - plot.x) / plot.width, 0f, 1f);
+        if (mouse.y >= plot.yMax - 12f && NearestGap(hoverTick) is { } gap && Math.Abs(X(gap) - mouse.x) <= 5f)
+        {
+            // One tooltip region at a time: RimWorld stacks overlapping ones.
+            Widgets.DrawBoxSolid(new Rect(X(gap) - 1.5f, plot.yMax - 9f, 3f, 9f), Color.white);
+            TooltipHandler.TipRegion(plot, (string)"RWS_Chart_GapTip".Translate(Dialog_RimworldStatistics.Days(gap)));
+            return;
+        }
         var nearest = Nearest(measured!, hoverTick);
         var hoverName = colonyName;
         IReadOnlyList<MetricHistoryPoint> hoverSeries = history.Points;
@@ -271,7 +331,22 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Widgets.DrawBoxSolid(new Rect(x - 3f, yPoint - 3f, 6f, 6f), Color.white);
         TooltipHandler.TipRegion(plot, hoverName + "\n" + (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(nearest.Tick))
             + "\n" + MetricText.Format(definition, reading) + "\n" + MetricText.State(definition, reading.Coverage)
-            + Lineage(hoverSeries, nearest));
+            + MetricText.PerDay(definition, reading) + Lineage(hoverSeries, nearest));
+    }
+
+    private int? NearestGap(double tick)
+    {
+        if (gapTicks is not { Length: > 0 } gaps)
+            return null;
+        var index = Array.BinarySearch(gaps, (int)Math.Round(tick));
+        if (index >= 0)
+            return gaps[index];
+        index = ~index;
+        if (index == 0)
+            return gaps[0];
+        if (index == gaps.Length)
+            return gaps[^1];
+        return tick - gaps[index - 1] <= gaps[index] - tick ? gaps[index - 1] : gaps[index];
     }
 
     /// <summary>What the chart knows about where a reading comes from, beyond its value.</summary>

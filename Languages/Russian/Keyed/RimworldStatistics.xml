@@ -121,8 +121,14 @@
   <RWS_LoadSource_Backup3>резервная копия 3</RWS_LoadSource_Backup3>
   <RWS_LoadSource_Empty>новый (пустой)</RWS_LoadSource_Empty>
   <RWS_LoadSource_NewerSchema>файл записей более новой версии (только чтение)</RWS_LoadSource_NewerSchema>
-  <RWS_Status_Error>ошибка</RWS_Status_Error>
-  <RWS_Status_Unidentifiable>не распознано</RWS_Status_Unidentifiable>
+  <RWS_ImportProblem_ChangedDuringRead>изменено во время чтения (например, игра сохранялась)</RWS_ImportProblem_ChangedDuringRead>
+  <RWS_ImportProblem_Unreadable>не удалось открыть (используется или нет прав)</RWS_ImportProblem_Unreadable>
+  <RWS_ImportProblem_Damaged>файл повреждён или неполон</RWS_ImportProblem_Damaged>
+  <RWS_ImportProblem_NotASave>не сохранение RimWorld</RWS_ImportProblem_NotASave>
+  <RWS_ImportProblem_MissingIdentity>нет данных для распознавания колонии</RWS_ImportProblem_MissingIdentity>
+  <RWS_ImportProblem_Unexpected>непредвиденная ошибка</RWS_ImportProblem_Unexpected>
+  <RWS_Import_ProblemSummary>По причинам: {0}</RWS_Import_ProblemSummary>
+  <RWS_Import_RetriedOnRescan>Сохранения, которые не удалось прочитать, будут прочитаны снова при следующем сканировании.</RWS_Import_RetriedOnRescan>
   <RWS_Loading>Загрузка статистики…</RWS_Loading>
   <RWS_WealthCoverage>Колоний с данными о богатстве: {0} (без данных: {1}).</RWS_WealthCoverage>
   <RWS_Source_RecoveredLineage>Восстановлено из сохранения (режим разработчика неизвестен, исключено из итогов)</RWS_Source_RecoveredLineage>
@@ -1246,6 +1252,15 @@
   <RWS_Chart_PointUnlinked>Связь с более ранними данными не подтверждена.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ветка, продолжающая данные дня {0}; точки между ними относятся к другой ветке.</RWS_Chart_PointBranch>
   <RWS_Chart_PointSavedLater>Эти данные без изменений содержались и в сохранении дня {0}; новых статистических данных в нём не записано.</RWS_Chart_PointSavedLater>
+  <RWS_Chart_OverlayOtherSource>записано другим способом; совместно не отображается</RWS_Chart_OverlayOtherSource>
+  <RWS_Chart_PointCounts>Измерений: {0} (частичных: {1}); точек без значения: {2}</RWS_Chart_PointCounts>
+  <RWS_Chart_LastCapture>Статистика последний раз записана в день {0}. Самое дальнее сохранение колонии — день {1}, но более новых данных не записано (это сохранение может относиться к другой ветке).</RWS_Chart_LastCapture>
+  <RWS_Chart_LegendMeasured>Записанное значение</RWS_Chart_LegendMeasured>
+  <RWS_Chart_LegendPartial>Частичная запись</RWS_Chart_LegendPartial>
+  <RWS_Chart_LegendUnlinkedShort>Связь не подтверждена</RWS_Chart_LegendUnlinkedShort>
+  <RWS_Chart_LegendGap>Нет значения</RWS_Chart_LegendGap>
+  <RWS_Chart_GapTip>День {0}: в этом сохранении или контрольной точке нет значения этой статистики (запись выключена, MOD или DLC не активны, старый формат и т. п.). Это не ноль.</RWS_Chart_GapTip>
+  <RWS_PerDay>В день: {0} (за {1} записанных дн.)</RWS_PerDay>
   <RWS_Unit_Nutrition>{0} ед. питательности</RWS_Unit_Nutrition>
   <RWS_VreAndroid_Manufactured>Созданные андроиды</RWS_VreAndroid_Manufactured>
   <RWS_VreAndroid_ManufacturedDesc>Андроиды игрока, созданные после завершения работы на станции.</RWS_VreAndroid_ManufacturedDesc>
