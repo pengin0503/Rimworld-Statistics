@@ -62,6 +62,44 @@ public sealed class ProfileWriteCostTests
     }
 
     [Fact]
+    public void OversizedObservationScratchBufferIsDroppedWithoutAffectingSubsequentWrites()
+    {
+        var large = new Profile
+        {
+            MetricObservations =
+            [
+                new MetricObservation
+                {
+                    Source = MetricObservationSource.Checkpoint,
+                    Key = "large-obs",
+                    SaveTick = 60000,
+                    ObservedUtc = Now,
+                    Identity = new ColonyIdentity { ModCampaignId = "c1" },
+                    Metrics =
+                    {
+                        ["work.total"] = new MetricEntry
+                        {
+                            Revision = 1,
+                            Values = Enumerable.Range(0, 25000).ToDictionary(
+                                i => "Item_" + i.ToString("D5", System.Globalization.CultureInfo.InvariantCulture) + "_" + new string('a', 30),
+                                i => new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = i }),
+                        },
+                    },
+                },
+            ],
+        };
+        var small = Diverse(2, "after-large");
+
+        var largeBytes = ProfileJson.SerializeToUtf8Bytes(large);
+        Assert.True(largeBytes.Length > (1 << 20), $"expected >1 MiB, got {largeBytes.Length}");
+        using var doc = JsonDocument.Parse(largeBytes);
+        Assert.Equal("large-obs", doc.RootElement.GetProperty("metricObservations")[0].GetProperty("key").GetString());
+
+        var smallBytes = ProfileJson.SerializeToUtf8Bytes(small);
+        Assert.Equal(Encoding.UTF8.GetBytes(ProfileJson.Serialize(small)), smallBytes);
+    }
+
+    [Fact]
     public void EachObservationLineIsItsCompactSerialization()
     {
         var profile = Diverse(4);

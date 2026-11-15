@@ -84,7 +84,7 @@ public static partial class MetricCalculator
             source = observations.Where(o => o.Source == MetricObservationSource.SaveFile && o.SaveTick >= 0
                 && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental).ToArray();
 
-        var points = SaveChartPoints(source.Select(o => new ChartReading(o.SaveTick, o.Identity.ModCampaignId,
+        var points = SaveChartPoints(source.Select(o => new ChartReading(o.SaveTick, o.Identity?.ModCampaignId,
             ChartValue(o, definition), o.Source == MetricObservationSource.SaveSnapshot
                 ? ancestry.OfSnapshot(o) : ancestry.OfFile(o.FileAliases, o.SaveTick))), ancestry);
         var history = new MetricHistory(MetricHistoryKind.SaveObservations, points);
@@ -134,13 +134,13 @@ public static partial class MetricCalculator
             if (points.Count == 0 || points[^1].Tick != current.SaveTick)
             {
                 var value = ChartValue(current, definition);
-                if (value is null && current.ArchivedMetrics && current.Identity.ModCampaignId is { Length: > 0 } campaign)
+                if (value is null && current.ArchivedMetrics && current.Identity?.ModCampaignId is { Length: > 0 } campaign)
                     archived.Add(new(points.Count, campaign, current.Key, current.ParentKey, current.PayloadHash, current.SaveTick));
                 points.Add(new(current.SaveTick, value, current.ParentKey is not null) { SavedTick = SavedLater(current) });
             }
             if (current.ParentKey is not { } key || byKey[key].Take(2).ToArray() is not [var parent]
                 || parent.Conflicted || parent.SaveTick < 0 || parent.SaveTick > current.SaveTick
-                || parent.Identity.ModCampaignId != current.Identity.ModCampaignId)
+                || parent.Identity?.ModCampaignId != current.Identity?.ModCampaignId)
                 break;
             current = parent;
         }
@@ -153,7 +153,7 @@ public static partial class MetricCalculator
         // they stay on the chart, joined only where their own parents are proven; the lineage's first reading then stands
         // alone. A checkpoint at or after that reading's tick cannot be its ancestor: another branch, left out.
         var (before, beforeArchived) = ReadingsBefore(observations, definition, ancestry,
-            representative.Identity.ModCampaignId, visited, points[0].Tick, SavedLater);
+            representative.Identity?.ModCampaignId, visited, points[0].Tick, SavedLater);
         if (before.Length > 0)
             points[0] = points[0] with { Unlinked = true };
 
@@ -179,7 +179,7 @@ public static partial class MetricCalculator
         if (campaign is not { Length: > 0 })
             return ([], []);
         var earlier = observations.Where(o => o.Source == MetricObservationSource.Checkpoint && o.SaveTick >= 0
-                && o.SaveTick < beforeTick && !lineage.Contains(o.Key) && o.Identity.ModCampaignId == campaign
+                && o.SaveTick < beforeTick && !lineage.Contains(o.Key) && o.Identity?.ModCampaignId == campaign
                 && ReferenceEquals(ancestry.Node(o.Key), o))
             .ToArray();
         if (earlier.Length == 0)
@@ -248,7 +248,7 @@ public static partial class MetricCalculator
     private static MetricHistory BasicChartHistory(Colony colony, string key, CheckpointAncestry ancestry)
     {
         var points = colony.Observations.Where(o => o.Values.TicksGame >= 0)
-            .Select(o => new ChartReading(o.Values.TicksGame, o.Identity.ModCampaignId, BasicChartValue(o.Values, key),
+            .Select(o => new ChartReading(o.Values.TicksGame, o.Identity?.ModCampaignId, BasicChartValue(o.Values, key),
                 ancestry.OfFile(o.FileName, o.FileSize, o.LastWriteUtc, o.Values.TicksGame)));
         return new(MetricHistoryKind.SaveObservations, SaveChartPoints(points, ancestry));
     }
@@ -291,7 +291,7 @@ public static partial class MetricCalculator
                 ? measured.OrderBy(v => v!.Coverage == MetricCoverage.Partial).First() : null;
             anchors[i] = campaigns is [{ Length: > 0 } campaign]
                 && ancestry.Same(group.Select(o => o.Anchor).ToArray()) is { } anchor
-                && ancestry.Node(anchor.Key)?.Identity.ModCampaignId == campaign ? anchor : null;
+                && ancestry.Node(anchor.Key)?.Identity?.ModCampaignId == campaign ? anchor : null;
         }
 
         var from = ancestry.IsEmpty ? Enumerable.Repeat(-1, groups.Length).ToArray() : ancestry.NearestAncestors(anchors);
@@ -306,7 +306,7 @@ public static partial class MetricCalculator
             var known = true;
             foreach (var reading in groups[i])
                 if (reading.Anchor is { Exact: true } exact && reading.Campaign is { Length: > 0 } campaign
-                    && ancestry.Node(exact.Key)?.Identity.ModCampaignId == campaign)
+                    && ancestry.Node(exact.Key)?.Identity?.ModCampaignId == campaign)
                     exactGroup.TryAdd(exact.Key, i);
                 else
                     known = false;
