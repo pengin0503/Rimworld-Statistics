@@ -80,7 +80,9 @@ public sealed class StatisticRegistrationContractTests
             min.Length == 0 ? null : min, maxExclusive.Length == 0 ? null : maxExclusive));
         var mods = installed.Split(';', StringSplitOptions.RemoveEmptyEntries).Select(entry =>
         {
-            var (name, version) = (entry[..entry.IndexOf('=')], entry[(entry.IndexOf('=') + 1)..]);
+            var parts = entry.Split('=', 2);
+            var name = parts[0];
+            var version = parts.Length > 1 ? parts[1] : "";
             var id = name.Equals("owner", StringComparison.OrdinalIgnoreCase) ? TestShapes.Owner : "example.dependency";
             return new ModPackageInfo(name == name.ToUpperInvariant() ? id.ToUpperInvariant() : id,
                 version.Length == 0 ? null : version);

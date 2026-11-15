@@ -111,7 +111,7 @@ public sealed class IntegratedAdapterContractTests
         var folders = new[] { game, Path.GetDirectoryName(harmony)!, Path.GetDirectoryName(statistics)! };
         Assembly? Resolve(AssemblyLoadContext context, AssemblyName name)
         {
-            if (!Allowed.Contains(name.Name, StringComparer.Ordinal))
+            if (name.Name is null || !Allowed.Contains(name.Name, StringComparer.Ordinal))
                 return null;   // refused: game start-up code cannot run without the engine
             return folders.Select(f => Path.Combine(f, name.Name + ".dll")).Where(File.Exists)
                 .Select(context.LoadFromAssemblyPath).FirstOrDefault();
@@ -239,10 +239,36 @@ public sealed class IntegratedAdapterContractTests
             yield break;
         for (var i = 0; i < il.Length;)
         {
-            var value = il[i] == 0xFE && i + 1 < il.Length ? (short)(0xFE00 | il[i + 1]) : il[i];
-            i += il[i] == 0xFE ? 2 : 1;
+            short value;
+            if (il[i] == 0xFE)
+            {
+                if (i + 1 >= il.Length)
+                    yield break;
+                value = (short)(0xFE00 | il[i + 1]);
+                i += 2;
+            }
+            else
+            {
+                value = il[i];
+                i += 1;
+            }
             if (!OpCodesByValue.TryGetValue(value, out var code))
                 yield break;   // not IL we can follow: stop rather than misread
+            var operandSize = code.OperandType switch
+            {
+                OperandType.InlineNone => 0,
+                OperandType.ShortInlineBrTarget or OperandType.ShortInlineI or OperandType.ShortInlineVar => 1,
+                OperandType.InlineVar => 2,
+                OperandType.InlineI8 or OperandType.InlineR => 8,
+                OperandType.InlineSwitch => i + 4 <= il.Length
+                    && BitConverter.ToInt32(il, i) is >= 0 and var count
+                    && 4L + 4L * count <= il.Length - i
+                        ? 4 + 4 * count
+                        : -1,
+                _ => 4,
+            };
+            if (operandSize < 0 || i + operandSize > il.Length)
+                yield break;
             if (code.OperandType == OperandType.InlineMethod)
             {
                 MethodBase? target = null;
@@ -256,15 +282,7 @@ public sealed class IntegratedAdapterContractTests
                 if (target is not null)
                     yield return target;
             }
-            i += code.OperandType switch
-            {
-                OperandType.InlineNone => 0,
-                OperandType.ShortInlineBrTarget or OperandType.ShortInlineI or OperandType.ShortInlineVar => 1,
-                OperandType.InlineVar => 2,
-                OperandType.InlineI8 or OperandType.InlineR => 8,
-                OperandType.InlineSwitch => 4 + 4 * BitConverter.ToInt32(il, i),
-                _ => 4,
-            };
+            i += operandSize;
         }
     }
 
