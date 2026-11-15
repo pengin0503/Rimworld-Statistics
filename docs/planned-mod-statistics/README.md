@@ -7,6 +7,10 @@
 
 **Authoritative for these proposals:** this folder. For pre-existing host integration status use the current source and README; older documents such as [generic-first audit](../research/2026-11-11-content-mod-coverage-and-priority-audit.md), [optional MOD audit](../research/2026-11-12-m7-optional-mod-audit.md), and [next MOD metric backlog](../research/2026-11-11-next-modded-statistics-backlog.md) contain dated evidence, **not a claim of present implementation state**.
 
+## 87件の実装事前調査（2026-11-15）
+
+[87件すべての実装アプローチ・成功判定・重複防止・互換性ゲート調査（日本語）](2026-11-15-87-mod-implementation-research-ja.md)を保存した。**全87件を1件ずつ調査台帳と照合した事前設計**であり、上流の実ソースを確認できた候補と、配布DLL/メソッド署名を追加確認する候補を明確に分離している。コード未検証の案を実装済みと扱わない。
+
 ## Implementation entry point
 
 Start with the [implementation handoff](2026-11-13-implementation-handoff.md). The [35-candidate disposition](2026-11-13-candidate-disposition.md) records the first implementation slices and the evidence each remaining proposal needs. Use the [pinned references](2026-11-13-reference-lock.md) to reproduce the source and assembly checks. These three documents carry the current decisions when an earlier research note describes a preliminary status.
