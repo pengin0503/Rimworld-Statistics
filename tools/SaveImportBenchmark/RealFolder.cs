@@ -64,8 +64,8 @@ internal static class RealFolder
                 var (saves, checkpoints, intervals) = session.Read(p => (p.SaveObservations.Count,
                     p.MetricObservations.Count(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint),
                     HistoricalCounterIntervals.Evaluate(p).Count));
-                session.Close();
                 closed = true;
+                session.Close();
                 var profileBytes = new FileInfo(Path.Combine(profileDir.FullName, "profile.json")).Length;
                 return string.Join(",", I(run), I(files), I(cold.Result.Read), I(cold.Result.Failed), F(cold.Ms), F(cold.CpuMs),
                     I(cold.Allocated), I(warm.Result.Skipped), I(warm.Result.Failed), F(warm.Ms), F(warm.CpuMs), I(warm.Allocated),
