@@ -18,6 +18,7 @@ internal static class VefProcessingStatistics
     private const string VefOwner = "OskarPotocki.VanillaFactionsExpanded.Core";
     private const string CookingOwner = "VanillaExpanded.VCookE";
     private const string BrewingOwner = "VanillaExpanded.VBrewE";
+    private const string StewsOwner = "VanillaExpanded.VCookEStews";
     private static FieldInfo? parentField;
     private static FieldInfo? definitionField;
     private static FieldInfo? processCountField;
@@ -42,12 +43,20 @@ internal static class VefProcessingStatistics
             output, "batches", VefProcessingRules.BrewingUnit + ".batches", withBreakdown: true),
     };
 
+    private static readonly LiveFamily Stews = new()
+    {
+        Name = VefProcessingRules.StewsUnit,
+        Revision = 1,
+        Build = output => OptionalTransitionRecording.PutCount(
+            output, "batches", VefProcessingRules.StewsUnit + ".batches", withBreakdown: true),
+    };
+
     internal static IReadOnlyList<ModMetricAdapterRegistration> Build()
     {
-        static ModMetricDescriptor Descriptor(string owner, string family,
-            string label, string desc) => new()
+        static ModMetricDescriptor Descriptor(string providerId, string owner, string family,
+            string label, string desc, params string[] extraDeps) => new()
         {
-            ProviderId = family == "cookingprocess" ? "rws.cookingprocess" : "rws.brewingprocess",
+            ProviderId = providerId,
             OwnerPackageId = owner,
             FamilyId = family,
             MetricName = "batches",
@@ -58,18 +67,26 @@ internal static class VefProcessingStatistics
             Overall = OverallAggregation.Sum,
             Selection = ColonySelection.Representative,
             HasBreakdown = true,
-            RequiredPackages = [new ModPackageRequirement(owner), new ModPackageRequirement(VefOwner)],
+            RequiredPackages =
+            [
+                new ModPackageRequirement(owner),
+                new ModPackageRequirement(VefOwner),
+                .. extraDeps.Select(dep => new ModPackageRequirement(dep)),
+            ],
             LabelKey = label,
             DescriptionKey = desc,
         };
         return
         [
             new ModMetricAdapterRegistration(
-                Descriptor(CookingOwner, "cookingprocess", "RWS_VefCooking_Batches",
+                Descriptor("rws.cookingprocess", CookingOwner, "cookingprocess", "RWS_VefCooking_Batches",
                     "RWS_VefCooking_BatchesDesc"), Cooking, Install),
             new ModMetricAdapterRegistration(
-                Descriptor(BrewingOwner, "brewingprocess", "RWS_VefBrewing_Batches",
+                Descriptor("rws.brewingprocess", BrewingOwner, "brewingprocess", "RWS_VefBrewing_Batches",
                     "RWS_VefBrewing_BatchesDesc"), Brewing, Install),
+            new ModMetricAdapterRegistration(
+                Descriptor("rws.stewprocess", StewsOwner, "stewprocess", "RWS_VefStews_Batches",
+                    "RWS_VefStews_BatchesDesc", CookingOwner), Stews, Install),
         ];
     }
 
@@ -120,7 +137,8 @@ internal static class VefProcessingStatistics
            && Scribe.mode == LoadSaveMode.Inactive
            && Find.TickManager is not null
            && (MetricGates.IsRecording(VefProcessingRules.CookingUnit) ||
-               MetricGates.IsRecording(VefProcessingRules.BrewingUnit));
+               MetricGates.IsRecording(VefProcessingRules.BrewingUnit) ||
+               MetricGates.IsRecording(VefProcessingRules.StewsUnit));
 
     private static void BeforeProcess(object __instance, out BatchBefore? __state)
     {
@@ -134,7 +152,7 @@ internal static class VefProcessingStatistics
                 definitionField?.GetValue(__instance) is not Def process ||
                 processCountField?.GetValue(__instance) is not int count)
                 return;
-            // ProcessDefs are shipped by Cooking/Brewing, while the processor
+            // ProcessDefs are shipped by Cooking/Brewing/Stews, while the processor
             // building may be defined in the common VEF framework. Matching
             // the machine's own package to the recipe owner would silently
             // discard valid completed batches on shared processors.
@@ -144,7 +162,9 @@ internal static class VefProcessingStatistics
             var unit = string.Equals(processOwner, CookingOwner, StringComparison.OrdinalIgnoreCase)
                 ? VefProcessingRules.CookingUnit
                 : string.Equals(processOwner, BrewingOwner, StringComparison.OrdinalIgnoreCase)
-                    ? VefProcessingRules.BrewingUnit : null;
+                    ? VefProcessingRules.BrewingUnit
+                    : string.Equals(processOwner, StewsOwner, StringComparison.OrdinalIgnoreCase)
+                        ? VefProcessingRules.StewsUnit : null;
             if (unit is null || !MetricGates.IsRecording(unit))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(processOwner, process.defName);
@@ -154,6 +174,7 @@ internal static class VefProcessingStatistics
         {
             LiveMetrics.Fail(VefProcessingRules.CookingUnit, e);
             LiveMetrics.Fail(VefProcessingRules.BrewingUnit, e);
+            LiveMetrics.Fail(VefProcessingRules.StewsUnit, e);
         }
     }
 

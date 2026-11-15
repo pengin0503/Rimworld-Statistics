@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Lotes de ensopados preparados</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Conta os lotes concluídos de ensopados preparados em panelas da colônia em Vanilla Cooking Expanded - Stews, discriminados por processo.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Receita de barracas de mercado</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Conta o total de prata ganha ao vender itens da colônia em barracas pertencentes ao jogador no RimMarket, discriminado por item vendido.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Taxas de mercado cobradas</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Conta o total de taxas de barraca e comissões de vendas cobradas de caravanas comerciantes visitantes no RimMarket, discriminado por facção.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Créditos de recompensa mecanoide ganhos</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Conta os créditos de recompensa ganhos ao abater mecanoides hostis em Caravan Adventures, discriminados por tipo de mecanoide.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Santuários antigos concluídos</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Conta os santuários antigos e o julgamento final concluídos na história de Caravan Adventures.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

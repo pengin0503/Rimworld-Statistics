@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Lotes de estofado cocinados</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Cuenta los lotes de estofado completados en ollas de propiedad del jugador de Vanilla Cooking Expanded - Stews, desglosados por proceso.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Ingresos de puestos del mercado</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Cuenta el total de plata obtenida vendiendo productos de la colonia en puestos del jugador en RimMarket, desglosado por tipo de artículo.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Tasas de mercado recaudadas</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Cuenta el total de tarifas de puesto y comisiones recaudadas de caravanas comerciales visitantes en RimMarket, desglosado por facción.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Créditos de recompensa mecanoide obtenidos</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Cuenta los créditos de recompensa obtenidos al destruir mecanoides hostiles en Caravan Adventures, desglosados por tipo de mecanoide.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Santuarios antiguos completados</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Cuenta los santuarios antiguos y el juicio final completados en la historia de Caravan Adventures.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

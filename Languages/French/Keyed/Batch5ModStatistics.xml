@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Lots de ragoûts mijotés</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Compte les lots de ragoûts terminés dans les marmites appartenant au joueur avec Vanilla Cooking Expanded - Stews, ventilés par recette.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Revenus des étals de colonie</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Compte le total d'argent gagné en vendant des biens de la colonie sur les étals du joueur dans RimMarket, ventilé par objet vendu.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Taxes et parts de marché perçues</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Compte le total des frais d'étal et parts de ventes perçus auprès des caravanes marchandes dans RimMarket, ventilé par faction.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Crédits de prime mécanoïde gagnés</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Compte les crédits de prime attribués pour l'élimination de mécanoïdes hostiles dans Caravan Adventures, ventilés par type de mécanoïde.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Sanctuaires anciens achevés</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Compte le nombre de sanctuaires anciens et d'épreuves finales accomplis dans la trame de Caravan Adventures.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

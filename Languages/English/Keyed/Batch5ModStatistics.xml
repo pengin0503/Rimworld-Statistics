@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Stew batches cooked</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Counts completed stew processing batches finished in player-owned stew pots from Vanilla Cooking Expanded - Stews, broken down by process definition.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Market stall revenue</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Counts total silver earned from selling colony goods at player-owned market stalls in RimMarket, broken down by sold item type.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Market fees collected</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Counts total market stall fees and revenue shares collected from visiting merchant caravans in RimMarket, broken down by faction.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Mechanoid bounty credits earned</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Counts mechanoid bounty credits awarded for killing hostile mechanoids in Caravan Adventures, broken down by mechanoid type.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Ancient shrines completed</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Counts ancient master shrines and the final judgment portal cleared to completion in Caravan Adventures.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

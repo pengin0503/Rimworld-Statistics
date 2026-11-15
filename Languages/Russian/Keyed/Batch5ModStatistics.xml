@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Приготовлено партий рагу</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Учитывает завершённые партии приготовления рагу в котелках игрока из Vanilla Cooking Expanded - Stews с разбивкой по рецепту процесса.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Выручка прилавков колонии</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Учитывает общее количество серебра, полученного от продажи товаров колонии через прилавки игрока в RimMarket, с разбивкой по видам товаров.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Собранные рыночные сборы</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Учитывает сборы за место и долю с продаж, полученные от приезжих торговых караванов в RimMarket, с разбивкой по фракциям.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Заработано кредитов за механоидов</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Учитывает начисленные кредиты награды за уничтожение враждебных механоидов в Caravan Adventures с разбивкой по типу механоида.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Пройдено древних святилищ</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Учитывает количество древних святилищ и финального испытания, успешно завершённых в сюжетной линии Caravan Adventures.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

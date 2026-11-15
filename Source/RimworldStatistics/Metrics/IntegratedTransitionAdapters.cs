@@ -60,6 +60,8 @@ using RimworldStatistics.BiomesCaverns;
 using RimworldStatistics.VqeDeadlife;
 using RimworldStatistics.AnomaliesExpected;
 using RimworldStatistics.WayBetterRomance;
+using RimworldStatistics.RimMarket;
+using RimworldStatistics.CaravanAdventures;
 
 namespace RimworldStatistics.Metrics;
 
@@ -170,6 +172,8 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VqeDeadlifeStatistics.Build());
         result.AddRange(AnomaliesExpectedStatistics.Build());
         result.AddRange(WayBetterRomanceStatistics.Build());
+        result.AddRange(RimMarketStatistics.Build());
+        result.AddRange(CaravanAdventuresStatistics.Build());
         return result;
     }
 }

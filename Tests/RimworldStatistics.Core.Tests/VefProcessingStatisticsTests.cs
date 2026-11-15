@@ -16,14 +16,19 @@ public sealed class VefProcessingStatisticsTests
             before, after, ownerMatches, player));
 
     [Fact]
-    public void CookingAndBrewingHaveIndependentNativeFamilies()
+    public void CookingBrewingAndStewsHaveIndependentNativeFamilies()
     {
         Assert.NotEqual(VefProcessingRules.CookingUnit, VefProcessingRules.BrewingUnit);
+        Assert.NotEqual(VefProcessingRules.CookingUnit, VefProcessingRules.StewsUnit);
+        Assert.NotEqual(VefProcessingRules.BrewingUnit, VefProcessingRules.StewsUnit);
         var cooking = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
         var brewing = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
+        var stews = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
         OptionalTransitionRecording.RecordCount(cooking, "batches", key: "cooking/ProcessA", withBreakdown: true);
         OptionalTransitionRecording.RecordCount(brewing, "batches", key: "brewing/ProcessB", withBreakdown: true);
+        OptionalTransitionRecording.RecordCount(stews, "batches", key: "vanillaexpanded.vcookestews/VCE_SimpleStewRecipe", withBreakdown: true);
         Assert.Equal(1L, cooking.Peek("batches")!.N);
         Assert.Equal(1L, brewing.Peek("batches")!.N);
+        Assert.Equal(1L, stews.Peek("batches")!.N);
     }
 }

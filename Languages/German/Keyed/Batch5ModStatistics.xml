@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VefStews_Batches>Fertige Eintopf-Chargen</RWS_VefStews_Batches>
+  <RWS_VefStews_BatchesDesc>Zählt abgeschlossene Eintopf-Verarbeitungsdurchläufe in spielereigenen Eintopftöpfen aus Vanilla Cooking Expanded - Stews, aufgeschlüsselt nach Prozess.</RWS_VefStews_BatchesDesc>
+  <RWS_RimMarket_StallSales>Einnahmen aus Marktständen</RWS_RimMarket_StallSales>
+  <RWS_RimMarket_StallSalesDesc>Zählt das gesamte Silber, das durch den Verkauf von Koloniewaren an spielereigenen Ständen in RimMarket verdient wurde, aufgeschlüsselt nach Artikeltyp.</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_MarketFees>Erhobene Marktgebühren</RWS_RimMarket_MarketFees>
+  <RWS_RimMarket_MarketFeesDesc>Zählt die gesamten Standgebühren und Umsatzbeteiligungen, die in RimMarket von besuchenden Handelskarawanen eingezogen wurden, aufgeschlüsselt nach Fraktion.</RWS_RimMarket_MarketFeesDesc>
+  <RWS_CaravanAdventures_BountyCredits>Erhaltene Mechanoiden-Kopfgeldpunkte</RWS_CaravanAdventures_BountyCredits>
+  <RWS_CaravanAdventures_BountyCreditsDesc>Zählt die durch das Besiegen feindlicher Mechanoiden in Caravan Adventures verdienten Kopfgeldpunkte, aufgeschlüsselt nach Mechanoidentyp.</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_ShrinesCompleted>Uralte Schreine abgeschlossen</RWS_CaravanAdventures_ShrinesCompleted>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>Zählt die in Caravan Adventures erfolgreich abgeschlossenen uralten Schreine und die finale Prüfung.</RWS_CaravanAdventures_ShrinesCompletedDesc>
+</LanguageData>

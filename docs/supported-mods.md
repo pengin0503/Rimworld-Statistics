@@ -14,6 +14,7 @@
 - Biomes! Bees
 - Biomes! Caverns
 - Biomes! Fossils
+- Caravan Adventures
 - Combat Extended
 - Dubs Bad Hygiene
 - Dubs Rimatomics
@@ -38,6 +39,7 @@
 - Real Ruins
 - Rim War (Continued)
 - Rimefeller
+- RimMarket
 - RimPacts
 - RimTalk
 - Roads of the Rim (Continued)
@@ -50,6 +52,7 @@
 - Vanilla Brewing Expanded
 - Vanilla Chemfuel Expanded
 - Vanilla Cooking Expanded
+- Vanilla Cooking Expanded – Stews
 - Vanilla Events Expanded
 - Vanilla Factions Expanded – Classical
 - Vanilla Factions Expanded – Deserters
