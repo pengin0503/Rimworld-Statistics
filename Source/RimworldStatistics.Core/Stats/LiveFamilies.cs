@@ -285,9 +285,11 @@ public static class CheckpointMetrics
             {
                 family.Build(new FamilyOutputContext(state, payload.SaveTick, built));
             }
-            catch (Exception e) when (e is ArithmeticException or InvalidOperationException or ArgumentException or KeyNotFoundException or NullReferenceException)
+            catch (Exception e) when (e is not OutOfMemoryException)
             {
-                continue;   // one family's broken totals never take the others with them
+                // One family's broken totals or builder never take the others with them, whatever it throws (an optional
+                // MOD's builder too); its totals stay in the checkpoint unread.
+                continue;
             }
             if (state.Evidence is { } evidence)
             {
