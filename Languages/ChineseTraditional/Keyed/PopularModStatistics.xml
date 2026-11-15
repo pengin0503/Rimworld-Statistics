@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>各地貌基地地圖數峰值</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>從成功存檔的觀察結果中按已記錄的地貌分別取基地地圖數量的最大值。</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>有效灑水促生次數</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>按植物種類統計確實促進生長的灑水次數。</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>醫院收治人數</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>統計 Hospital 在基地地圖上登記的病患。</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>已完成的多階段事件</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>按類型統計完成最終階段後結束的事件。</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>已出現的覺醒樹精</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>按種類統計實際出現在基地地圖上的覺醒樹精。</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>超越執政官回歸次數</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>統計玩家一方的執政官超越後實際返回基地地圖的次數。</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>已生效的螫針植入</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>統計 Alpha Genes 螫針實際改變目標基因或異種型態的次數。</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>已建立的傀儡</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>統計成功與玩家傀儡師建立連結的新傀儡。</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>傀儡師意識轉移</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>統計玩家傀儡師成功將意識移至另一角色的次數。</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Vanilla Fishing Expanded 漁獲</RWS_VFECatches>
+  <RWS_VFECatchesDesc>未啟用 Odyssey 時，按類型統計玩家釣魚工作實際產生的物品。</RWS_VFECatchesDesc>
+</LanguageData>

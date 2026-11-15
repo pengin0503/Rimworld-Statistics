@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Máximo de mapas base por relieve</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Mayor número de mapas base observado al guardar correctamente, calculado por cada relieve registrado.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Impulsos de aspersión eficaces</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Cuenta por planta los impulsos de aspersión que aumentaron el crecimiento.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Admisiones hospitalarias</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Cuenta los pacientes registrados por el mod Hospital en un mapa base.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Eventos de varias etapas completados</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Cuenta por tipo los eventos que terminaron tras la última etapa.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Dríades despertadas aparecidas</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Cuenta por tipo las dríades despertadas que aparecieron en un mapa base.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Regresos de arcontes trascendentes</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Cuenta los arcontes del jugador que han regresado de la trascendencia a un mapa base.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Implantes por aguijón aplicados</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Cuenta los implantes de Alpha Genes que cambiaron los genes o el xenotipo del objetivo.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Títeres creados</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Cuenta los nuevos títeres vinculados correctamente a un titiritero del jugador.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Transferencias de mente de titiriteros</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Cuenta las transferencias exitosas de la mente de un titiritero del jugador a otro peón.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Capturas de Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Cuenta por tipo los objetos que aparecieron al pescar con Vanilla Fishing Expanded sin Odyssey.</RWS_VFECatchesDesc>
+</LanguageData>

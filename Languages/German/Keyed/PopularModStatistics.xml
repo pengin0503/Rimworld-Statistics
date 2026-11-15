@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Höchstzahl der Heimatkarten nach Geländeform</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Höchstzahl aktiver Heimatkarten in einem erfolgreichen Spielstand, getrennt nach erfasster Geländeform.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Wirksame Sprinkler-Schübe</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Zählt Sprinkler-Schübe mit tatsächlichem Wachstum nach Pflanzenart.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Krankenhausaufnahmen</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Zählt die vom Hospital-Mod auf einer Heimatkarte registrierten Patienten.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Abgeschlossene mehrstufige Ereignisse</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Zählt nach Typ die Ereignisse, die nach ihrer letzten Stufe endeten.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Erschienene erwachte Dryaden</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Zählt erwachte Dryaden nach Art, die auf einer Heimatkarte erschienen sind.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Rückkehr transzendenter Archonten</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Zählt Archonten des Spielers, die aus der Transzendenz auf eine Heimatkarte zurückkehrten.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Angewandte Stachelimplantate</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Zählt Alpha-Genes-Stachelimplantate, die Gene oder Xenotyp des Ziels verändert haben.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Erstellte Marionetten</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Zählt neue Marionetten, die erfolgreich mit einem Marionettenspieler der Spielerfraktion verbunden wurden.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Bewusstseinsübertragungen</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Zählt erfolgreiche Bewusstseinsübertragungen eines Marionettenspielers der Spielerfraktion.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Fänge in Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Zählt nach Gegenstandstyp, was beim Angeln der Spielerfraktion mit Vanilla Fishing Expanded ohne Odyssey tatsächlich gespawnt ist.</RWS_VFECatchesDesc>
+</LanguageData>

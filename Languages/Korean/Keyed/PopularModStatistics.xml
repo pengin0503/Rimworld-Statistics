@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>지형별 본거지 맵 최대 수</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>저장에 성공했을 때 관측한 활성 본거지 맵 수의 최댓값을 기록된 지형별로 계산합니다.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>스프링클러 성장 촉진 횟수</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>스프링클러로 실제 성장이 증가한 횟수를 식물 종류별로 셉니다.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>병원 환자 수용 수</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Hospital이 본거지 맵에 환자로 등록한 인원을 셉니다.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>다단계 사건 완료 수</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>최종 단계를 마치고 종료된 사건을 종류별로 셉니다.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>각성 드라이어드 출현 수</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>본거지 맵에 실제로 출현한 각성 드라이어드를 종류별로 셉니다.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>초월한 아르콘 귀환 수</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>플레이어 편의 초월한 아르콘이 실제로 본거지에 돌아온 횟수를 셉니다.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>독침 유전자 이식 수</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Alpha Genes의 독침으로 대상의 유전자나 제노타입이 바뀐 횟수를 셉니다.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>꼭두각시 생성 수</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>플레이어 편의 꼭두각시술사에게 연결된 새 꼭두각시를 셉니다.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>꼭두각시술사 의식 전이 수</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>플레이어 편의 꼭두각시술사 의식이 다른 폰으로 옮겨진 횟수를 셉니다.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Vanilla Fishing Expanded 어획량</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Odyssey가 비활성화된 경우 Vanilla Fishing Expanded의 낚시 작업으로 실제 생성된 아이템을 종류별로 셉니다.</RWS_VFECatchesDesc>
+</LanguageData>
