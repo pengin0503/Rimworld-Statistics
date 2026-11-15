@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Максимум домашних карт по форме рельефа</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Наибольшее число активных домашних карт при успешном сохранении отдельно для каждой зафиксированной формы рельефа.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Эффективное орошение</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Учитывает случаи увеличения роста после орошения по видам растений.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Приём пациентов</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Учитывает пациентов, зарегистрированных модом Hospital на домашней карте.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Завершённые многоэтапные события</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Учитывает по типам события, завершившиеся после последнего этапа.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Появившиеся пробуждённые дриады</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Учитывает по видам пробуждённых дриад, появившихся на домашней карте.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Возвращения трансцендентных архонтов</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Учитывает возвращения архонтов игрока из трансцендентного состояния на домашнюю карту.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Успешные имплантации жалом</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Учитывает имплантации Alpha Genes, которые изменили гены или ксенотип цели.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Созданные марионетки</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Учитывает новых марионеток, успешно связанных с кукловодом игрока.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Переносы сознания кукловодов</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Учитывает успешные переносы сознания кукловода игрока в другого персонажа.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Улов в Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Учитывает по типам предметы, появившиеся при рыбалке персонажей игрока в Vanilla Fishing Expanded без Odyssey.</RWS_VFECatchesDesc>
+</LanguageData>

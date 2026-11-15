@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Pic de cartes de base par relief</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Nombre maximal de cartes de base observées lors d’une sauvegarde réussie, par relief enregistré.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Arrosages ayant stimulé la croissance</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Compte, par plante, les arrosages qui ont augmenté la croissance.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Admissions à l’hôpital</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Compte les patients enregistrés par Hospital sur une carte de base.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Événements à étapes terminés</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Compte par type les événements terminés après leur dernière étape.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Dryades éveillées apparues</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Compte par type les dryades éveillées apparues sur une carte de base.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Retours d’Archontes transcendés</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Compte les Archontes du joueur revenus de la transcendance sur une carte de base.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Implants par aiguillon appliqués</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Compte les implants d’Alpha Genes qui ont modifié les gènes ou le xénotype de la cible.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Marionnettes créées</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Compte les nouvelles marionnettes effectivement liées à un marionnettiste du joueur.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Transferts d’esprit des marionnettistes</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Compte les transferts réussis de l’esprit d’un marionnettiste du joueur.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Prises de Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Compte par type les objets générés par la pêche du joueur avec Vanilla Fishing Expanded sans Odyssey.</RWS_VFECatchesDesc>
+</LanguageData>

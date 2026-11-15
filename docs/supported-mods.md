@@ -2,6 +2,7 @@
 
 - A RimWorld of Magic
 - AES School+
+- Alpha Genes
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
 - Animal Genetics (Continued)
@@ -11,9 +12,11 @@
 - Dubs Bad Hygiene
 - Dubs Rimatomics
 - Gastronomy (Continued)
+- Geological Landforms
 - Giddy-Up 2 – Continued
 - Go Explore!
 - Hegemony
+- Hospital
 - Hospitality (Continued)
 - Hospitality: Casino
 - Hospitality: Spa
@@ -37,6 +40,7 @@
 - Vanilla Brewing Expanded
 - Vanilla Chemfuel Expanded
 - Vanilla Cooking Expanded
+- Vanilla Events Expanded
 - Vanilla Factions Expanded – Classical
 - Vanilla Factions Expanded – Deserters
 - Vanilla Factions Expanded – Empire
@@ -45,20 +49,25 @@
 - Vanilla Factions Expanded – Pirates
 - Vanilla Factions Expanded – Settlers
 - Vanilla Factions Expanded – Tribals
+- Vanilla Fishing Expanded
 - Vanilla Furniture Expanded – Factory
+- Vanilla Furniture Expanded – Farming
 - Vanilla Furniture Expanded – Security
 - Vanilla Genetics Expanded
 - Vanilla Gravship Expanded – Chapter 1
 - Vanilla Gravship Expanded – Chapter 2
+- Vanilla Ideology Expanded – Dryads
 - Vanilla Ideology Expanded – Splits and Schisms
 - Vanilla Nutrient Paste Expanded
 - Vanilla Outposts Expanded
 - Vanilla Psycasts Expanded
+- Vanilla Psycasts Expanded – Puppeteer
 - Vanilla Quests Expanded – Ancients
 - Vanilla Quests Expanded – Cryptoforge
 - Vanilla Quests Expanded – Drone Factory
 - Vanilla Quests Expanded – The Generator
 - Vanilla Races Expanded – Android
+- Vanilla Races Expanded – Archon
 - Vanilla Skills Expanded
 - Vanilla Social Interactions Expanded
 - Vanilla Trading Expanded

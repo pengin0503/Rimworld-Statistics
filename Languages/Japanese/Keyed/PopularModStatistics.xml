@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>地形別の本拠地マップ数ピーク</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>保存が成功した時点の本拠地マップ数から、記録済みの地形ごとに最大値を求めます。</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>スプリンクラーの成長促進回数</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>スプリンクラーで実際に成長が進んだ回数を植物の種類別に数えます。</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>病院の患者受入数</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Hospitalで本拠地の患者として登録された人数を数えます。</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>複数段階イベントの完了数</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>最終段階を経て終了したイベントを種類別に数えます。</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>覚醒ドライアドの誕生数</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>本拠地に実際に出現した覚醒ドライアドを種類別に数えます。</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>超越したアルコンの帰還数</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>超越したプレイヤー側のアルコンが実際に本拠地へ帰還した回数を数えます。</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>毒針による遺伝子移植数</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Alpha Genesの毒針で対象の遺伝子やゼノタイプが変化した回数を数えます。</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>傀儡の作成数</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>プレイヤー側の傀儡使いに紐づいた新しい傀儡を数えます。</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>傀儡使いの意識転送数</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>プレイヤー側の傀儡使いの意識が別のポーンに移った回数を数えます。</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Vanilla Fishing Expandedの釣果</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Odysseyが無効のとき、Vanilla Fishing Expandedの釣り作業で実際に出現した品目を種類別に数えます。</RWS_VFECatchesDesc>
+</LanguageData>

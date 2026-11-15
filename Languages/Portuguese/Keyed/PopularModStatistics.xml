@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Pico de mapas da base por formação do terreno</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Maior número de mapas da base observado numa gravação bem-sucedida, por formação registada.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Impulsos de rega eficazes</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Conta por planta os impulsos de rega que aumentaram o crescimento.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Admissões hospitalares</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Conta os doentes registados pelo mod Hospital num mapa da base.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Eventos com várias fases concluídos</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Conta por tipo os eventos que terminaram após a fase final.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Dríades despertas surgidas</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Conta por tipo as dríades despertas que surgiram num mapa da base.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Regressos de Arcontes transcendentes</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Conta os Arcontes do jogador que regressaram da transcendência a um mapa da base.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Implantes por ferrão aplicados</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Conta os implantes de Alpha Genes que alteraram os genes ou o xenótipo do alvo.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Marionetas criadas</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Conta as novas marionetas ligadas com sucesso a um manipulador do jogador.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Transferências de consciência</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Conta as transferências bem-sucedidas da consciência de um manipulador do jogador.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Capturas em Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Conta por tipo os itens que apareceram devido a tarefas de pesca do jogador com Vanilla Fishing Expanded sem Odyssey.</RWS_VFECatchesDesc>
+</LanguageData>
