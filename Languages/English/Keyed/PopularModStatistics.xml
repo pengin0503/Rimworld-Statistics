@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_LandformHomes>Peak home maps by landform</RWS_LandformHomes>
+  <RWS_LandformHomesDesc>Highest number of active home maps seen in a successful save, measured separately for each recorded landform.</RWS_LandformHomesDesc>
+  <RWS_SprinklerGrowth>Effective sprinkler boosts</RWS_SprinklerGrowth>
+  <RWS_SprinklerGrowthDesc>Counts sprinkler boosts that increased plant growth, by plant type.</RWS_SprinklerGrowthDesc>
+  <RWS_HospitalAdmissions>Hospital admissions</RWS_HospitalAdmissions>
+  <RWS_HospitalAdmissionsDesc>Counts patients registered by the Hospital mod at a home map.</RWS_HospitalAdmissionsDesc>
+  <RWS_MultistageEvents>Multistage events completed</RWS_MultistageEvents>
+  <RWS_MultistageEventsDesc>Counts events that ended after their final stage, by event type.</RWS_MultistageEventsDesc>
+  <RWS_AwakenedDryads>Awakened dryads spawned</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>Counts awakened dryads that actually spawned at a home map, by kind.</RWS_AwakenedDryadsDesc>
+  <RWS_ArchonReturns>Transcendent Archon returns</RWS_ArchonReturns>
+  <RWS_ArchonReturnsDesc>Counts player Archons that actually returned to a home map from transcendence.</RWS_ArchonReturnsDesc>
+  <RWS_StingerImplants>Stinger implants applied</RWS_StingerImplants>
+  <RWS_StingerImplantsDesc>Counts Alpha Genes stinger implants that changed the target’s genes or xenotype.</RWS_StingerImplantsDesc>
+  <RWS_PuppetsCreated>Puppets created</RWS_PuppetsCreated>
+  <RWS_PuppetsCreatedDesc>Counts new puppets successfully linked to a player puppeteer.</RWS_PuppetsCreatedDesc>
+  <RWS_PuppetTransfers>Puppeteer mind transfers</RWS_PuppetTransfers>
+  <RWS_PuppetTransfersDesc>Counts successful transfers of a player puppeteer’s mind to another pawn.</RWS_PuppetTransfersDesc>
+  <RWS_VFECatches>Vanilla Fishing Expanded catches</RWS_VFECatches>
+  <RWS_VFECatchesDesc>Counts items spawned by player fishing jobs in Vanilla Fishing Expanded without Odyssey, by item type.</RWS_VFECatchesDesc>
+</LanguageData>
