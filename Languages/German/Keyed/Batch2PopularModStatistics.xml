@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>Wiederhergestellte LP im Reparaturregal</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Gesamte Trefferpunkte, die durch stromversorgte Reparaturregale des Spielers aus Vanilla Furniture Expanded - Spacer Module bei gelagerten Gegenständen wiederhergestellt wurden.</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>Vollständige Reparaturen im Reparaturregal</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Zählt Gegenstände, die durch Reparaturregale von Vanilla Furniture Expanded - Spacer Module vollständig repariert wurden, aufgeschlüsselt nach Gegenstandstyp.</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>Nichttödliche Feind-Ausschaltungen</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Zählt feindliche Spielfiguren, die durch Waffen, Schadensarten oder Zustände von Vanilla Weapons Expanded - Non-Lethal lebend zu Boden gebracht wurden, aufgeschlüsselt nach Ursache.</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Höchstwert Heimatkarten in Alpha Biomes</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>Höchste Anzahl aktiver Heimatkarten des Spielers in Biomen von Alpha Biomes bei einer erfolgreichen Speicherung, aufgeschlüsselt nach Biom.</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>Brocken durch Kernbohrer</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>Zählt Steinbrocken, die durch spielereigene Kernbohrer von Alpha Biomes gefördert und abgelegt wurden, aufgeschlüsselt nach Art.</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Höchstwert Heimatkarten mit Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>Höchste Anzahl aktiver Heimatkarten des Spielers mit Wahrzeichen oder Kachelmutatoren aus Vanilla Landmarks Expanded bei einer erfolgreichen Speicherung, aufgeschlüsselt nach Merkmal.</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

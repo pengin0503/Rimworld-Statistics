@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>修复架恢复的耐久度</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>统计玩家拥有的Vanilla Furniture Expanded - Spacer Module通电修复架为存放物品实际恢复的耐久度总计。</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>修复架完全修复次数</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>按物品种类统计通过Vanilla Furniture Expanded - Spacer Module修复架恢复至满耐久的物品数量。</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>非致命武器击倒敌人数</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>按原因统计使用Vanilla Weapons Expanded - Non-Lethal武器、伤害或非致命状态将敌对角色击倒且存活的次数。</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Alpha Biomes玩家据点地图峰值</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>按生态群系记录成功存档时位于Alpha Biomes生态群系中的玩家据点地图数量最大值。</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>岩芯采样钻机开采石块数</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>按石块种类统计玩家拥有的Alpha Biomes岩芯采样钻机实际钻出并放置的石块数量。</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Vanilla Landmarks玩家据点地图峰值</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>按特征统计成功存档时包含Vanilla Landmarks Expanded地标或地块词条的玩家据点地图数量最大值。</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>PV restaurados por estante de reparo</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Total de pontos de vida restaurados em itens armazenados por estantes de reparo energizados do jogador de Vanilla Furniture Expanded - Spacer Module.</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>Reparos completos em estante</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Conta os itens restaurados totalmente pelos estantes de reparo de Vanilla Furniture Expanded - Spacer Module, detalhado por tipo.</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>Neutralizações não letais de inimigos</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Conta peões hostis derrubados vivos por armas, danos ou efeitos de Vanilla Weapons Expanded - Non-Lethal, detalhado por causa.</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Pico de mapas-base em Alpha Biomes</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>Maior número de mapas-base ativos do jogador em biomas de Alpha Biomes em um salvamento bem-sucedido, detalhado por bioma.</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>Blocos extraídos por perfuratriz de testemunho</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>Conta blocos de pedra extraídos e colocados por perfuratrizes de testemunho de Alpha Biomes do jogador, detalhado por tipo.</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Pico de mapas-base Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>Maior número de mapas-base ativos do jogador com marcos ou mutadores de Vanilla Landmarks Expanded em um salvamento bem-sucedido, detalhado por característica.</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

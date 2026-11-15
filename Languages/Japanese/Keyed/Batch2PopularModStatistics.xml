@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>修復シェルフの耐久回復量</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Vanilla Furniture Expanded - Spacer Moduleのプレイヤー所有・通電中修復シェルフが保管アイテムに対して実際に回復させた耐久値の合計を記録します。</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>修復シェルフの完全修復数</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Vanilla Furniture Expanded - Spacer Moduleの修復シェルフにより最大耐久まで完全に修復されたアイテム数を品目別に数えます。</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>非致死武器による敵の無力化数</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Vanilla Weapons Expanded - Non-Lethalの武器・損傷・専用状態異常によって敵対ポーンを生存状態でダウンさせた回数を要因別に数えます。</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Alpha Biomesの本拠地マップ数ピーク</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>保存成功時点におけるAlpha Biomes固有バイオームのプレイヤー本拠地マップ数の最大値を、バイオーム別に記録します。</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>コアサンプルドリルの採掘塊数</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>プレイヤー所有のAlpha Biomes製コアサンプルドリルが実際に掘り出して配置した石材チャンク数を種類別に数えます。</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Vanilla Landmarksの本拠地マップ数ピーク</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>保存成功時点におけるVanilla Landmarks Expanded固有のランドマークまたはタイル変異を持つプレイヤー本拠地マップ数の最大値を、特徴別に記録します。</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

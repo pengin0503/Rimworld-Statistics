@@ -1,8 +1,8 @@
 # 現在のMOD実装候補（2026-11-15時点）
 
-**現行の未対応・未完了候補：84件。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
+**現行の未対応・未完了候補：79件。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
 
-2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMODを順次[対応MOD一覧](../supported-mods.md)へ移行している。
+2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMOD（A02/B07/S28/B06/C02/D05/S03）を順次[対応MOD一覧](../supported-mods.md)へ移行し、既存基盤で網羅済みのS34（Vanilla Vehicles Expanded – Tier 3：車両の搭乗・アップグレード・残骸修復・所有スナップショットは既存のVehicle FrameworkおよびVanilla Vehicles ExpandedアダプターがDef別内訳付きでそのまま取得しており、Tier 3独自C#は心情Thoughtのみのため専用統計見送り）を除外している。
 
 ## 第3・第4波の未対応候補（2件）
 
@@ -12,19 +12,16 @@
 | H05 | [Biomes! Bees](2026-11-13-fourthwave-follow-on-research.md) | [調査台帳](2026-11-13-fourthwave-follow-on-research.md) |
 
 
-## 人気MOD追加調査の未対応候補（9件）
+## 人気MOD追加調査の未対応候補（6件）
 
 | ID | MOD | 詳細資料 |
 |---|---|---|
 | A04 | [Vanilla Cooking Expanded – Stews](https://steamcommunity.com/sharedfiles/filedetails/?id=2134312965) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
-| B06 | [Vanilla Landmarks Expanded](https://github.com/Vanilla-Expanded/VanillaLandmarksExpanded) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
-| C02 | [Vanilla Furniture Expanded – Spacer Module](https://github.com/Vanilla-Expanded/VanillaFurnitureExpanded-Spacer) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C03 | [Vanilla Races Expanded – Highmate](https://github.com/Vanilla-Expanded/VanillaRacesExpanded-Highmate) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C05 | [Mechanoid Upgrades](https://steamcommunity.com/sharedfiles/filedetails/?id=3365118555) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C06 | [The Dead Man's Switch II](https://steamcommunity.com/sharedfiles/filedetails/?id=3819799478) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | D03 | [Vanilla Ideology Expanded – Memes and Structures](https://github.com/Vanilla-Expanded/VanillaIdeologyExpanded-Memes) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | D04 | [Vanilla Traits Expanded](https://github.com/Vanilla-Expanded/VanillaTraitsExpanded) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
-| D05 | [Vanilla Weapons Expanded – Non-Lethal](https://github.com/Vanilla-Expanded/VanillaWeaponsExpanded-NonLethal) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 
 
 ## 種族・ゼノタイプの未対応候補（5件）
@@ -45,13 +42,12 @@
 | N03 | [Caravan Adventures](https://steamcommunity.com/sharedfiles/filedetails/?id=2558957509) | [調査台帳](2026-11-14-fifthwave-additional-candidates-ja.md) |
 
 
-## 第6波の未対応候補（59件）
+## 第6波の未対応候補（57件）
 
 | ID | MOD | 詳細資料 |
 |---|---|---|
 | S01 | [Vanilla Quests Expanded – Deadlife](https://steamcommunity.com/sharedfiles/filedetails/?id=3497226454) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S02 | [Gravship Voyage](https://steamcommunity.com/sharedfiles/filedetails/?id=3790613573) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
-| S03 | [Alpha Biomes](https://github.com/juanosarg/AlphaBiomes) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S04 | [Biomes! Caverns](https://steamcommunity.com/sharedfiles/filedetails/?id=2969748433) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S05 | [ReGrowth 2](https://steamcommunity.com/sharedfiles/filedetails/?id=2260097569) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S06 | [GravTide](https://steamcommunity.com/sharedfiles/filedetails/?id=3779600989) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
@@ -81,7 +77,6 @@
 | S31 | [Quarry [Adopted]](https://steamcommunity.com/workshop/filedetails/?id=2007576583) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S32 | [RimMarket](https://steamcommunity.com/sharedfiles/filedetails/?id=3817820660) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S33 | [Rimsential - Spaceports (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3225120958) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
-| S34 | [Vanilla Vehicles Expanded – Tier 3](https://github.com/Vanilla-Expanded/VanillaVehiclesExpanded-Tier3) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S35 | [Vanilla Base Generation Expanded](https://steamcommunity.com/workshop/filedetails/?id=3209927822) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S36 | [VGP Vegetable Garden](https://steamcommunity.com/sharedfiles/filedetails/?id=2007061826) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S37 | [Biotech Cloning (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3348781223) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |

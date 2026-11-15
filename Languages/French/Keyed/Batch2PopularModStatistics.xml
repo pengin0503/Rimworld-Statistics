@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>PV restaurés par l'étagère de réparation</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Total des points de vie restaurés aux objets stockés sur les étagères de réparation alimentées du joueur de Vanilla Furniture Expanded - Spacer Module.</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>Réparations complètes sur étagère</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Nombre d'objets entièrement restaurés par les étagères de réparation de Vanilla Furniture Expanded - Spacer Module, détaillé par type d'objet.</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>Neutralisations non létales d'ennemis</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Nombre d'ennemis mis à terre vivants par des armes, dégâts ou états de Vanilla Weapons Expanded - Non-Lethal, détaillé par cause.</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Pic de cartes de colonie Alpha Biomes</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>Nombre maximal de cartes de colonie actives dans des biomes d'Alpha Biomes lors d'une sauvegarde réussie, détaillé par biome.</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>Blocs extraits par foreuse carottière</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>Nombre de blocs de pierre extraits et placés par les foreuses carottières d'Alpha Biomes du joueur, détaillé par type.</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Pic de cartes de colonie Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>Nombre maximal de cartes de colonie actives comportant des repères ou modificateurs de Vanilla Landmarks Expanded lors d'une sauvegarde réussie, détaillé par caractéristique.</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

@@ -3,6 +3,7 @@
 - A RimWorld of Magic
 - AES School+
 - Alpha Animals
+- Alpha Biomes
 - Alpha Genes
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
@@ -57,12 +58,14 @@
 - Vanilla Furniture Expanded – Farming
 - Vanilla Furniture Expanded – Power
 - Vanilla Furniture Expanded – Security
+- Vanilla Furniture Expanded – Spacer Module
 - Vanilla Genetics Expanded
 - Vanilla Gravship Expanded – Chapter 1
 - Vanilla Gravship Expanded – Chapter 2
 - Vanilla Helixien Gas Expanded
 - Vanilla Ideology Expanded – Dryads
 - Vanilla Ideology Expanded – Splits and Schisms
+- Vanilla Landmarks Expanded
 - Vanilla Nutrient Paste Expanded
 - Vanilla Outposts Expanded
 - Vanilla Psycasts Expanded
@@ -86,5 +89,6 @@
 - Vanilla Trading Expanded
 - Vanilla Vehicles Expanded
 - Vanilla Vehicles Expanded – Upgrades
+- Vanilla Weapons Expanded – Non-Lethal
 - Vehicle Framework
 - World Domination 2.0

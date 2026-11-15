@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>Очки прочности, восстановленные полкой ремонта</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Общее количество очков прочности, восстановленных запитанными полками ремонта игрока из Vanilla Furniture Expanded - Spacer Module.</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>Полные ремонты на полке</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Количество предметов, полностью восстановленных полками ремонта Vanilla Furniture Expanded - Spacer Module, с разбивкой по типу предмета.</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>Нелетальные обезвреживания врагов</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Количество враждебных пешек, сбитых с ног живыми с помощью оружия, урона или эффектов Vanilla Weapons Expanded - Non-Lethal, с разбивкой по причине.</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Максимум домашних карт в Alpha Biomes</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>Наибольшее число активных домашних карт игрока в биомах Alpha Biomes при успешном сохранении, с разбивкой по биому.</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>Обломки от кернового бура</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>Количество каменных обломков, добытых и размещённых керновыми бурами игрока из Alpha Biomes, с разбивкой по типу.</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Максимум домашних карт Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>Наибольшее число активных домашних карт игрока с ориентирами или мутаторами Vanilla Landmarks Expanded при успешном сохранении, с разбивкой по особенности.</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>

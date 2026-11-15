@@ -48,6 +48,10 @@ using RimworldStatistics.VreSanguophage;
 using RimworldStatistics.VfePower;
 using RimworldStatistics.VheHelixienGas;
 using RimworldStatistics.VreRecycling;
+using RimworldStatistics.VfeSpacer;
+using RimworldStatistics.VweNonLethal;
+using RimworldStatistics.AlphaBiomes;
+using RimworldStatistics.VleLandmarks;
 
 namespace RimworldStatistics.Metrics;
 
@@ -146,6 +150,10 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VfePowerStatistics.Build());
         result.AddRange(VheHelixienGasStatistics.Build());
         result.AddRange(VreRecyclingStatistics.Build());
+        result.AddRange(VfeSpacerStatistics.Build());
+        result.AddRange(VweNonLethalStatistics.Build());
+        result.AddRange(AlphaBiomesStatistics.Build());
+        result.AddRange(VleLandmarksStatistics.Build());
         return result;
     }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfeSpacer_RepairShelfHp>Repair shelf HP restored</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>Total hit points restored to stored items by powered player repair shelves from Vanilla Furniture Expanded - Spacer Module.</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfItems>Repair shelf full restorations</RWS_VfeSpacer_RepairShelfItems>
+  <RWS_VfeSpacer_RepairShelfItemsDesc>Counts items restored to full hit points by powered player repair shelves from Vanilla Furniture Expanded - Spacer Module, broken down by item type.</RWS_VfeSpacer_RepairShelfItemsDesc>
+  <RWS_VweNonLethal_Downs>Non-lethal enemy takedowns</RWS_VweNonLethal_Downs>
+  <RWS_VweNonLethal_DownsDesc>Counts hostile pawns downed alive by Vanilla Weapons Expanded - Non-Lethal weapons, damage types, or non-lethal hediffs, broken down by cause.</RWS_VweNonLethal_DownsDesc>
+  <RWS_AlphaBiomes_HomeMaps>Peak Alpha Biomes home maps</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMapsDesc>Highest number of active player home maps settled in Alpha Biomes observed in a successful save, broken down by biome.</RWS_AlphaBiomes_HomeMapsDesc>
+  <RWS_AlphaBiomes_CoreDrill>Core sample drill chunks</RWS_AlphaBiomes_CoreDrill>
+  <RWS_AlphaBiomes_CoreDrillDesc>Counts stone chunks extracted and placed by player-owned Alpha Biomes core sample drills, broken down by chunk type.</RWS_AlphaBiomes_CoreDrillDesc>
+  <RWS_VleLandmarks_HomeMaps>Peak Vanilla Landmarks home maps</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMapsDesc>Highest number of active player home maps containing Vanilla Landmarks Expanded landmarks or mutators observed in a successful save, broken down by feature.</RWS_VleLandmarks_HomeMapsDesc>
+</LanguageData>
