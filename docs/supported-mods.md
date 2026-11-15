@@ -2,6 +2,7 @@
 
 - A RimWorld of Magic
 - AES School+
+- Alpha Animals
 - Alpha Genes
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
@@ -70,7 +71,11 @@
 - Vanilla Quests Expanded – The Generator
 - Vanilla Races Expanded – Android
 - Vanilla Races Expanded – Archon
+- Vanilla Races Expanded – Fungoid
+- Vanilla Races Expanded – Insector
+- Vanilla Races Expanded – Lycanthrope
 - Vanilla Races Expanded – Phytokin
+- Vanilla Races Expanded – Sanguophage
 - Vanilla Races Expanded – Saurid
 - Vanilla Skills Expanded
 - Vanilla Social Interactions Expanded

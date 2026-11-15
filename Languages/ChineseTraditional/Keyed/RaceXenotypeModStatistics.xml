@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VreLycanthrope_Morphs>狼人變身成功次數</RWS_VreLycanthrope_Morphs>
+  <RWS_VreLycanthrope_MorphsDesc>統計我方角色完成狼人形態轉換（含手動與條件觸發）的次數，依變身後的異種分類。無法辨識的自訂異種僅計入總數。</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_GermlineReimplants>種系基因再植入次數</RWS_VreLycanthrope_GermlineReimplants>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>統計我方角色參與並成功變更基因、異種或施加內生芽昏迷的狼人種系再植入或吸收次數。</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreFungoid_InfectionConversions>真菌感染轉化次數</RWS_VreFungoid_InfectionConversions>
+  <RWS_VreFungoid_InfectionConversionsDesc>統計存活的殖民者、奴隸與囚犯完成Fungoid基因感染轉化的次數。</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreInsector_GenelineEvolutions>蟲族基因系進化次數</RWS_VreInsector_GenelineEvolutions>
+  <RWS_VreInsector_GenelineEvolutionsDesc>統計存活的我方蟲族角色完成蛻變繭進化或基因系變更的次數。</RWS_VreInsector_GenelineEvolutionsDesc>
+  <RWS_VreInsector_GenelineReversions>蟲族基因系逆進化次數</RWS_VreInsector_GenelineReversions>
+  <RWS_VreInsector_GenelineReversionsDesc>統計存活的我方蟲族角色透過蛻變繭還原為基礎基因的次數。</RWS_VreInsector_GenelineReversionsDesc>
+  <RWS_AlphaAnimals_CocoonMetamorphoses>化繭蛻變次數</RWS_AlphaAnimals_CocoonMetamorphoses>
+  <RWS_AlphaAnimals_CocoonMetamorphosesDesc>統計Alpha Animals中我方幼蟲或群蟲實際完成化繭蛻變的次數，依繭類型分類。</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
+  <RWS_AlphaAnimals_CocoonHatches>蟲繭孵化數量</RWS_AlphaAnimals_CocoonHatches>
+  <RWS_AlphaAnimals_CocoonHatchesDesc>統計Alpha Animals中我方蟲繭實際孵化的存活黑蟲數量，依生物種類分類。</RWS_AlphaAnimals_CocoonHatchesDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>汲血棺實際入庫血原質</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>累計我方汲血棺實際存入VRE_HemogenNet管網儲存的血原質總量。</RWS_VreSanguophage_DraincasketHemogenDesc>
+</LanguageData>

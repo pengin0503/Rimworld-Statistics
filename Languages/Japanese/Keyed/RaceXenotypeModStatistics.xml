@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VreLycanthrope_Morphs>ライカンスロープの変身成功数</RWS_VreLycanthrope_Morphs>
+  <RWS_VreLycanthrope_MorphsDesc>プレイヤー側ポーンが完了したライカンスロープの形態変化（手動・条件発動を含む）を、変身後のゼノタイプ別に数えます。識別できないカスタムゼノタイプへの復帰は総数のみ計上します。</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_GermlineReimplants>生殖細胞系の再移植数</RWS_VreLycanthrope_GermlineReimplants>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>プレイヤー側ポーンが関与し、遺伝子・ゼノタイプの変更または昏睡の付与が完了した生殖細胞系の再移植・吸収を数えます。</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreFungoid_InfectionConversions>真菌感染による変換数</RWS_VreFungoid_InfectionConversions>
+  <RWS_VreFungoid_InfectionConversionsDesc>コロニーの入植者・奴隷・囚人が生存したままFungoidの遺伝子感染によるゼノタイプ変換を完了した回数を数えます。</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreInsector_GenelineEvolutions>インセクターの遺伝系統進化数</RWS_VreInsector_GenelineEvolutions>
+  <RWS_VreInsector_GenelineEvolutionsDesc>プレイヤー側のインセクターが生存したままメタポッドによる遺伝系統の進化または変更を完了した回数を数えます。</RWS_VreInsector_GenelineEvolutionsDesc>
+  <RWS_VreInsector_GenelineReversions>インセクターの逆進化数</RWS_VreInsector_GenelineReversions>
+  <RWS_VreInsector_GenelineReversionsDesc>プレイヤー側のインセクターが生存したままメタポッドで基本遺伝子への逆進化を完了した回数を数えます。</RWS_VreInsector_GenelineReversionsDesc>
+  <RWS_AlphaAnimals_CocoonMetamorphoses>繭への変態数</RWS_AlphaAnimals_CocoonMetamorphoses>
+  <RWS_AlphaAnimals_CocoonMetamorphosesDesc>Alpha Animalsでプレイヤー側の幼虫やスウォームリングが実際に繭へ変態完了した回数を、繭の種類別に数えます。</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
+  <RWS_AlphaAnimals_CocoonHatches>繭からの羽化数</RWS_AlphaAnimals_CocoonHatches>
+  <RWS_AlphaAnimals_CocoonHatchesDesc>Alpha Animalsでプレイヤー側の繭から実際に出現した生存中のインセクトイドを、生物の種類別に数えます。</RWS_AlphaAnimals_CocoonHatchesDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>Draincasketのヘモゲン貯蔵量</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>プレイヤー側のDraincasketからVRE_HemogenNet配管貯蔵へ実際に受け入れられたヘモゲンの合計量を記録します。</RWS_VreSanguophage_DraincasketHemogenDesc>
+</LanguageData>

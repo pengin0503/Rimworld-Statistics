@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VreLycanthrope_Morphs>Lykanthropen-Gestaltwechsel</RWS_VreLycanthrope_Morphs>
+  <RWS_VreLycanthrope_MorphsDesc>Zählt abgeschlossene Gestaltwechsel von Spieler-Lykanthropen (manuell oder durch Bedingungen ausgelöst), aufgeschlüsselt nach resultierendem Xenotyp. Rückverwandlungen in nicht identifizierbare eigene Xenotypen zählen nur im Gesamtwert.</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_GermlineReimplants>Keimbahn-Reimplantationen</RWS_VreLycanthrope_GermlineReimplants>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>Zählt bestätigte Lykanthropen-Keimbahn-Reimplantationen oder -Absorptionen mit Spielerbeteiligung, bei denen Gene, Xenotyp oder ein Endogerminationskoma angewendet wurden.</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreFungoid_InfectionConversions>Pilzinfektions-Konvertierungen</RWS_VreFungoid_InfectionConversions>
+  <RWS_VreFungoid_InfectionConversionsDesc>Zählt lebende Kolonisten, Sklaven und Gefangene der Kolonie, deren Fungoid-Geninfektion abgeschlossen wurde.</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreInsector_GenelineEvolutions>Insektor-Genlinien-Evolutionen</RWS_VreInsector_GenelineEvolutions>
+  <RWS_VreInsector_GenelineEvolutionsDesc>Zählt lebende Spieler-Insektoren, die eine Metapod-Evolution oder einen Genlinienwechsel abgeschlossen haben.</RWS_VreInsector_GenelineEvolutionsDesc>
+  <RWS_VreInsector_GenelineReversions>Insektor-Genlinien-Rückbildungen</RWS_VreInsector_GenelineReversions>
+  <RWS_VreInsector_GenelineReversionsDesc>Zählt lebende Spieler-Insektoren, die eine Metapod-Rückbildung zu ihrer Basisgenetik abgeschlossen haben.</RWS_VreInsector_GenelineReversionsDesc>
+  <RWS_AlphaAnimals_CocoonMetamorphoses>Kokon-Metamorphosen</RWS_AlphaAnimals_CocoonMetamorphoses>
+  <RWS_AlphaAnimals_CocoonMetamorphosesDesc>Zählt Spieler-Larven oder -Schwarmlinge aus Alpha Animals, die sich tatsächlich in einen Kokon verwandelt haben, nach Kokontyp.</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
+  <RWS_AlphaAnimals_CocoonHatches>Kokon-Schlüpfe</RWS_AlphaAnimals_CocoonHatches>
+  <RWS_AlphaAnimals_CocoonHatchesDesc>Zählt lebende schwarze Insektoiden der Spielerfraktion, die tatsächlich aus Alpha-Animals-Kokons geschlüpft sind, nach Tierart.</RWS_AlphaAnimals_CocoonHatchesDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>Draincasket-Hämogen gespeichert</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Gesamtmenge an Hämogen, die tatsächlich von Spieler-Draincaskets in VRE_HemogenNet-Rohrspeicher aufgenommen wurde.</RWS_VreSanguophage_DraincasketHemogenDesc>
+</LanguageData>
