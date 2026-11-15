@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_MechanoidUpgrades_Installed>Установленные улучшения механоидов</RWS_MechanoidUpgrades_Installed>
+  <RWS_MechanoidUpgrades_InstalledDesc>Подсчитывает улучшения, успешно установленные на механоидов игрока в улучшателе игрока, с разбивкой по типу улучшения.</RWS_MechanoidUpgrades_InstalledDesc>
+  <RWS_RimTalk_Conversations>Диалоги RimTalk</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_ConversationsDesc>Подсчитывает завершённые динамические диалоги RimTalk с участием персонажей игрока, записанные в игровой журнал, с разбивкой по категории.</RWS_RimTalk_ConversationsDesc>
+  <RWS_AlphaMechs_MechConversions>Обращённые механоиды (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversionsDesc>Подсчитывает враждебных и чужих механоидов, обращённых во фракцию игрока способностью Alpha Mechs, с разбивкой по типу.</RWS_AlphaMechs_MechConversionsDesc>
+</LanguageData>

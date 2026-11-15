@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_MechanoidUpgrades_Installed>Mejoras de mecanoide instaladas</RWS_MechanoidUpgrades_Installed>
+  <RWS_MechanoidUpgrades_InstalledDesc>Cuenta las mejoras recién instaladas en mecanoides del jugador mediante un mejorador del jugador, desglosado por tipo.</RWS_MechanoidUpgrades_InstalledDesc>
+  <RWS_RimTalk_Conversations>Conversaciones de RimTalk</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_ConversationsDesc>Cuenta las conversaciones dinámicas de RimTalk completadas que involucran a colonos del jugador registradas en el historial, desglosado por categoría.</RWS_RimTalk_ConversationsDesc>
+  <RWS_AlphaMechs_MechConversions>Mecanoides convertidos (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversionsDesc>Cuenta los mecanoides hostiles o ajenos convertidos a la facción del jugador con la habilidad de Alpha Mechs, desglosado por tipo.</RWS_AlphaMechs_MechConversionsDesc>
+</LanguageData>

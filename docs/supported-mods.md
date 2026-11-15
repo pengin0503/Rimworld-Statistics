@@ -5,6 +5,7 @@
 - Alpha Animals
 - Alpha Biomes
 - Alpha Genes
+- Alpha Mechs
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
 - Animal Genetics (Continued)
@@ -27,6 +28,7 @@
 - Hospitality: Vending machines
 - Hotels and Recreation
 - Humanoid Alien Races
+- Mechanoid Upgrades
 - Prison Expanded
 - Prisoner Arena (Continued)
 - Project RimFactory Revived
@@ -34,6 +36,7 @@
 - Rim War (Continued)
 - Rimefeller
 - RimPacts
+- RimTalk
 - Roads of the Rim (Continued)
 - Save Our Ship 2
 - Set Up Camp

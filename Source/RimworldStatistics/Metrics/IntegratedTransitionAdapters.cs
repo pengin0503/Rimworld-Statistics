@@ -52,6 +52,9 @@ using RimworldStatistics.VfeSpacer;
 using RimworldStatistics.VweNonLethal;
 using RimworldStatistics.AlphaBiomes;
 using RimworldStatistics.VleLandmarks;
+using RimworldStatistics.MechanoidUpgrades;
+using RimworldStatistics.RimTalk;
+using RimworldStatistics.AlphaMechs;
 
 namespace RimworldStatistics.Metrics;
 
@@ -154,6 +157,9 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VweNonLethalStatistics.Build());
         result.AddRange(AlphaBiomesStatistics.Build());
         result.AddRange(VleLandmarksStatistics.Build());
+        result.AddRange(MechanoidUpgradesStatistics.Build());
+        result.AddRange(RimTalkStatistics.Build());
+        result.AddRange(AlphaMechsStatistics.Build());
         return result;
     }
 }
