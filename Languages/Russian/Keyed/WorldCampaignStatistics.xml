@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WorldDominationVictory>Победы в World Domination</RWS_WorldDominationVictory>
+  <RWS_WorldDominationVictoryDesc>Учитывает успешное завершение задания на победу в World Domination 2.0.</RWS_WorldDominationVictoryDesc>
+  <RWS_RimWarVictory>Победы над соперником в Rim War</RWS_RimWarVictory>
+  <RWS_RimWarVictoryDesc>Учитывает объявленные в Rim War победы после потери выбранным соперником последнего поселения.</RWS_RimWarVictoryDesc>
+</LanguageData>

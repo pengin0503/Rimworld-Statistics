@@ -1,5 +1,6 @@
 using RimworldStatistics.NewModOutcomes;
 using RimworldStatistics.WinstonWave;
+using RimworldStatistics.WorldCampaigns;
 using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
@@ -122,6 +123,8 @@ internal static class IntegratedTransitionAdapters
         result.Add(VendingOutcomes.ItemsDispensed());
         result.Add(VendingOutcomes.SilverReceived());
         result.AddRange(WinstonWaveOutcomes.Build());
+        result.Add(WorldCampaignOutcomes.WorldDominationVictory());
+        result.Add(WorldCampaignOutcomes.RimWarVictory());
         return result;
     }
 }
