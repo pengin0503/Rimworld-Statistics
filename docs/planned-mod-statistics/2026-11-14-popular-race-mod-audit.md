@@ -1,5 +1,8 @@
 # Popular race / xenotype MODs — research audit (2026-11-14)
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 This audit is the **next research track after** [the 27-candidate popularity register](2026-11-14-popular-mod-discovery-register.md). Only the earlier 27 have already been accepted into that register; the race findings below are **new preliminary proposals**, not supported MODs or implementation commitments. No runtime/statistics implementations, releases, or Workshop updates are made here.
 
 ## Source selection and criteria

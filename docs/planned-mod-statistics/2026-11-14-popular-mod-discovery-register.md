@@ -1,5 +1,8 @@
 # Popular MOD-specific statistics — follow-up research register (2026-11-14)
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 ## Purpose and relationship to existing plans
 
 This document saves **all 27 distinct candidates** from the four popularity-focused research rounds on 2026-11-14. They are **research candidates, not shipped integrations**. It does not reclassify the original 35 approved implementations, the 27 retained E/F/G/H third/fourth-wave research candidates, or the existing [supported gameplay MOD list](../supported-mods.md). The 27 names below were checked against those indexes; do not append names to the supported list before implementation.

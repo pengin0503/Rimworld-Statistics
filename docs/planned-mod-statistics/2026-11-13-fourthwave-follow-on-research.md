@@ -1,5 +1,8 @@
 # Fourth-wave follow-on: five further cross-genre MOD candidates (2026-11-13)
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 This read-only research **extends** [G01–G07](2026-11-13-fourthwave-distinct-genres.md), [E01–E08](2026-11-13-thirdwave-candidate-register.md) and [F01–F08](2026-11-13-non-ve-discovery.md), without changing the approved original 35. The four H-series entries record the original proposals. See the [implementation status](2026-11-13-additional-30-implementation.md) for the outcomes selected from this research. Priority reflects distinct confirmed gameplay outcomes, evidence quality and cost, not just subscriber reach.
 
 ## Further candidates

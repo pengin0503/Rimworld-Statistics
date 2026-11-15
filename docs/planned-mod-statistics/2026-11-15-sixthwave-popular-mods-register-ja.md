@@ -1,5 +1,8 @@
 # 2026-11-15：追加MOD候補の調査台帳（第6波・人気MOD中心・日本語）
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 この文書は、既存の[公開対応MOD一覧](../supported-mods.md)（80件）および[人気27候補](2026-11-14-popular-mod-discovery-register.md)、[種族6候補](2026-11-14-popular-race-mod-audit.md)、[第5波5候補](2026-11-14-fifthwave-additional-candidates-ja.md)と**重複しない、新規調査のRimWorld 1.7対応候補60件**を記録する。**S01〜S60の60件すべてを実装候補として登録する**。末尾に記載された当初見送り・保留の8件も、除外せず**再評価対象の実装候補**として登録する（合計68件）。優先度と懸念点は調査時点の情報であり、実装済み・検証済みを意味しない。
 
 - 配置想定パス：`docs/planned-mod-statistics/2026-11-15-sixthwave-popular-mods-register-ja.md`

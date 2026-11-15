@@ -1,5 +1,8 @@
 # Non-Vanilla Expanded statistics opportunities — source/compatibility audit (2026-11-13)
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 Companion to the [eight third-wave candidates](2026-11-13-thirdwave-candidate-register.md), which remain separate from the original 35-candidate backlog. **No new metric has been implemented in this research.** Source audits used published repositories and descriptions available on 2026-11-13; **a 1.7 Workshop tag is not proof of the loaded assembly or of the hook.** Ranking prioritizes accurate, unique lifetime event counters over snapshots or hot-path polling.
 
 ## Additional candidates outside the Vanilla Expanded family

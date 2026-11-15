@@ -1,6 +1,9 @@
 # Planned MOD-specific statistics — master index (2026-11-12)
 
-**Scope:** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 35 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets + 9 popularity-selected follow-ups). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.
+> **Current backlog (2026-11-15): [実装候補87件（未対応・未完了のみ）](active-candidates.md)**。実装済みの候補80件は既に[対応MOD一覧](../supported-mods.md)に記載済み。Vanilla Books Expanded は汎用統計による扱いのため新規専用キーを作らない。**本READMEの旧表および日付付き調査台帳は、実装状況を判定するための現行候補一覧ではなく履歴資料です。**
+
+
+**Historical scope (original plan, not the current backlog):** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 35 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets + 9 popularity-selected follow-ups). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.
 
 **Authoritative for these proposals:** this folder. For pre-existing host integration status use the current source and README; older documents such as [generic-first audit](../research/2026-11-11-content-mod-coverage-and-priority-audit.md), [optional MOD audit](../research/2026-11-12-m7-optional-mod-audit.md), and [next MOD metric backlog](../research/2026-11-11-next-modded-statistics-backlog.md) contain dated evidence, **not a claim of present implementation state**.
 
@@ -127,4 +130,4 @@ These are also **planned**; the source/method status is not a promise that all p
 - [Detailed source/method evidence and cautions](2026-11-12-source-research.md)
 - [Implementation and deduplication checklist](implementation-checklist.md)
 - [Popularity-first execution priority, source references and explicit exclusions](2026-11-12-popularity-priority.md)
-- This index is the planning register for all **35** targets; additions must be appended with an evidence level and a clear success-path audit requirement.
+- This index preserves the original **35**-target historical plan. Current unimplemented candidates must be maintained in [active-candidates.md](active-candidates.md) with evidence and a clear success-path requirement.

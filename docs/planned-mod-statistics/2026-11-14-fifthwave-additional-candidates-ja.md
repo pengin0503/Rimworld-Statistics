@@ -1,5 +1,8 @@
 # 2026-11-14：追加MOD候補の調査台帳（第5波・日本語）
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 この文書は、既存[人気27候補](2026-11-14-popular-mod-discovery-register.md)、[種族6候補](2026-11-14-popular-race-mod-audit.md)、および[公開対応MOD一覧](../supported-mods.md)と**重複しない、今回新しく調査した5候補**を記録する。**実装予定の確約や対応済みという意味ではない**。
 
 詳細な実コード・元セーブ分析、比較設計、根拠URLは[追加調査日本語版](../research/2026-11-14-additional-investigation-ja.md)を参照。

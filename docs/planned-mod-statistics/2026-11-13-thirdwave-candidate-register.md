@@ -1,5 +1,8 @@
 # New MOD statistics candidates — third-wave register (2026-11-13)
 
+> **履歴資料（2026-11-15整理）**：本文の「候補」「予定」「未確認」は調査当時の記録であり、現在の未実装候補一覧ではありません。実装済みの項目は[対応MOD一覧](../supported-mods.md)へ整理済み。現行の未実装項目は[active-candidates.md](active-candidates.md)を参照してください。原資料の技術的な根拠は保存します。
+
+
 ## Scope and invariants
 
 This is an **append-only candidate register separate from the existing 35-candidate plan**, introduced after main `ac0fcab959e280af405a282e00c91eb314de147f`. None of these proposals is a committed or released statistic. Do not renumber the 35 prior IDs. A `source inspected` mark confirms inspection of selected public source only, **not** proof of the exact binary selected by the RimWorld 1.7 loader or a successful Harmony installation. Inspect actual `loadFolders.xml`, package ID, active 1.7 assembly and the final success site before coding.
