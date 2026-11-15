@@ -20,6 +20,7 @@
 - Hospitality: Storefront
 - Hospitality: Vending machines
 - Hotels and Recreation
+- Humanoid Alien Races
 - Prison Expanded
 - Prisoner Arena (Continued)
 - Project RimFactory Revived
