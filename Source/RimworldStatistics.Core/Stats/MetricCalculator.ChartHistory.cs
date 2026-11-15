@@ -76,7 +76,7 @@ public static partial class MetricCalculator
         if (BasicMetrics.Contains(definition.Key))
             return BasicChartHistory(colony, definition.Key, ancestry);
         if (definition.Source == MetricObservationSource.Checkpoint)
-            return CheckpointChartHistory(colony, observations, definition);
+            return CheckpointChartHistory(colony, observations, definition, ancestry);
 
         var source = observations.Where(o => o.Source == definition.Source && o.SaveTick >= 0).ToArray();
         if (definition.Source == MetricObservationSource.SaveSnapshot
@@ -94,7 +94,8 @@ public static partial class MetricCalculator
         return history;
     }
 
-    private static MetricHistory CheckpointChartHistory(Colony colony, List<MetricObservation> observations, MetricDefinition definition)
+    private static MetricHistory CheckpointChartHistory(Colony colony, List<MetricObservation> observations, MetricDefinition definition,
+        CheckpointAncestry ancestry)
     {
         var representative = CheckpointSelector.Select(observations).Representative;
         if (representative is null || representative.SaveTick < 0)
@@ -145,14 +146,64 @@ public static partial class MetricCalculator
         }
         points.Reverse();
         points[0] = points[0] with { ConnectToPrevious = false };
+        var lineageArchived = archived.Select(a => a with { Index = points.Count - 1 - a.Index }).ToArray();
+
+        // The lineage ends at a parent that is missing (no save holding it was imported), duplicated or conflicting, or at
+        // its first checkpoint. Earlier checkpoints of the colony may still lead to it through such a gap (Issue #72), so
+        // they stay on the chart, joined only where their own parents are proven; the lineage's first reading then stands
+        // alone. A checkpoint at or after that reading's tick cannot be its ancestor: another branch, left out.
+        var (before, beforeArchived) = ReadingsBefore(observations, definition, ancestry,
+            representative.Identity.ModCampaignId, visited, points[0].Tick, SavedLater);
+        if (before.Length > 0)
+            points[0] = points[0] with { Unlinked = true };
+
         var furthest = colony.Observations.Where(o => o.Status == ObservationStatus.Ok).Select(o => o.Values.TicksGame)
             .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => l.Max.TicksGame))
             .DefaultIfEmpty(-1).Max();
-        return new(MetricHistoryKind.CheckpointLineage, points)
+        return new(MetricHistoryKind.CheckpointLineage, [.. before, .. points])
         {
-            ArchivedPoints = archived.Select(a => a with { Index = points.Count - 1 - a.Index }).ToArray(),
+            ArchivedPoints = [.. beforeArchived, .. lineageArchived.Select(a => a with { Index = a.Index + before.Length })],
             LatestSaveTick = furthest >= 0 ? furthest : null,
         };
+    }
+
+    /// <summary>
+    /// The readings of a colony's checkpoints before <paramref name="beforeTick"/> that are not on the lineage, one point
+    /// per tick and linked like save readings (each checkpoint is its own state). Duplicated or conflicting checkpoints
+    /// prove nothing and are left out, as on the lineage.
+    /// </summary>
+    private static (MetricHistoryPoint[] Points, ArchivedChartPoint[] Archived) ReadingsBefore(
+        List<MetricObservation> observations, MetricDefinition definition, CheckpointAncestry ancestry, string? campaign,
+        IReadOnlySet<string> lineage, int beforeTick, Func<MetricObservation, int?> savedLater)
+    {
+        if (campaign is not { Length: > 0 })
+            return ([], []);
+        var earlier = observations.Where(o => o.Source == MetricObservationSource.Checkpoint && o.SaveTick >= 0
+                && o.SaveTick < beforeTick && !lineage.Contains(o.Key) && o.Identity.ModCampaignId == campaign
+                && ReferenceEquals(ancestry.Node(o.Key), o))
+            .ToArray();
+        if (earlier.Length == 0)
+            return ([], []);
+
+        static CheckpointAncestry.Anchor? Own(MetricObservation o) => new CheckpointAncestry.Anchor(o.Key, Exact: true);
+        var points = SaveChartPoints(earlier.Select(o => new ChartReading(o.SaveTick, campaign, ChartValue(o, definition), Own(o))),
+            ancestry).ToArray();
+        var archived = new List<ArchivedChartPoint>();
+        // SaveChartPoints makes one point per tick, in tick order. Re-saves made while paused are one state: the
+        // descendant-most of them stands for the tick, as on the lineage.
+        var ticks = earlier.GroupBy(o => o.SaveTick).OrderBy(g => g.Key).ToArray();
+        for (var i = 0; i < ticks.Length; i++)
+        {
+            var group = ticks[i].ToArray();
+            var node = group.Length == 1 ? group[0]
+                : ancestry.Same(group.Select(Own).ToArray()) is { } same ? ancestry.Node(same.Key) : null;
+            if (node is null)
+                continue;
+            points[i] = points[i] with { SavedTick = savedLater(node) };
+            if (points[i].Value is null && node.ArchivedMetrics)
+                archived.Add(new(i, campaign, node.Key, node.ParentKey, node.PayloadHash, node.SaveTick));
+        }
+        return (points, archived.ToArray());
     }
 
     internal static MetricHistory RestoreChartHistory(MetricHistory history, MetricDefinition definition, ICheckpointArchive archive)

@@ -76,6 +76,78 @@ public sealed class MetricChartLineageTests
     }
 
     [Fact]
+    public void ACheckpointChartKeepsTheReadingsBeforeAMissingParentWithoutJoiningThem()
+    {
+        // a ── b ┄┄ c (no save holding it was imported) ┄┄ d ── e
+        var profile = Profile(
+            CheckpointIn("a.rws", "a", null, 10), CheckpointIn("b.rws", "b", "a", 20),
+            CheckpointIn("d.rws", "d", "c-not-imported", 40), CheckpointIn("e.rws", "e", "d", 50));
+
+        var history = History(profile, CheckpointMetric);
+
+        Assert.Equal(MetricHistoryKind.CheckpointLineage, history.Kind);
+        Assert.Equal(new[] { 10, 20, 40, 50 }, history.Points.Select(p => p.Tick));
+        Assert.Equal(new double?[] { 10, 20, 40, 50 }, history.Points.Select(p => p.Value?.Number));
+        Assert.Equal(new[] { -1, 0, -1, 2 }, history.Points.Select((p, i) => p.Predecessor(i)));
+        // d may descend from b through c or from another branch: nothing says which, so no line and a hollow point.
+        Assert.Equal(new[] { false, false, true, false }, history.Points.Select(p => p.Unlinked));
+        Assert.All(history.Points, p => Assert.False(p.SkipsOnlyOtherBranches));
+    }
+
+    [Fact]
+    public void BeforeAMissingParentOnlyEarlierCheckpointsAreShownAndTheirOwnBranchesStaySeparate()
+    {
+        // a ─┬─ b1(20)
+        //    ├─ b2(30)                      earlier than the gap: either may lead to d
+        //    └─ x(45)                       later than d: another branch, not on this chart
+        // ┄┄ d(40, parent missing) ── e(50)
+        var conflicted = CheckpointIn("y.rws", "y", "a", 25);
+        conflicted.Conflicted = true;
+        var profile = Profile(
+            CheckpointIn("a.rws", "a", null, 10), CheckpointIn("b1.rws", "b1", "a", 20),
+            CheckpointIn("b2.rws", "b2", "a", 30), CheckpointIn("x.rws", "x", "a", 45), conflicted,
+            CheckpointIn("d.rws", "d", "c-not-imported", 40), CheckpointIn("e.rws", "e", "d", 50));
+
+        var points = History(profile, CheckpointMetric).Points;
+
+        Assert.Equal(new[] { 10, 20, 30, 40, 50 }, points.Select(p => p.Tick));
+        Assert.Equal(new[] { -1, 0, 0, -1, 3 }, points.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { false, false, false, true, false }, points.Select(p => p.Unlinked));
+        Assert.True(points[2].SkipsOnlyOtherBranches);   // b1 holds its own checkpoint, not on b2's chain
+    }
+
+    [Fact]
+    public void BeforeAMissingParentAPausedReSaveStandsForItsTickAndKeepsItsLaterSave()
+    {
+        // a ── b(20) ── b'(20, re-saved while paused, carried unchanged into a save at 35) ┄┄ d(40, parent missing) ── e
+        var profile = Profile(
+            CheckpointIn("a.rws", "a", null, 10), CheckpointIn("b.rws", "b", "a", 20),
+            Save("late.rws", 35, 100), CheckpointIn(["b2.rws", "late.rws"], "b2", "b", 20),
+            CheckpointIn("d.rws", "d", "c-not-imported", 40), CheckpointIn("e.rws", "e", "d", 50));
+
+        var points = History(profile, CheckpointMetric).Points;
+
+        Assert.Equal(new[] { 10, 20, 40, 50 }, points.Select(p => p.Tick));
+        Assert.Equal(new[] { -1, 0, -1, 2 }, points.Select((p, i) => p.Predecessor(i)));
+        // The tick-20 point is b', the descendant of the two, so it shows that b' was saved again at 35.
+        Assert.Equal(new int?[] { null, 35, null, null }, points.Select(p => p.SavedTick));
+        Assert.Equal(new[] { false, false, true, false }, points.Select(p => p.Unlinked));
+    }
+
+    [Fact]
+    public void AnUnbrokenCheckpointLineageIsUnchanged()
+    {
+        var profile = Profile(
+            CheckpointIn("a.rws", "a", null, 10), CheckpointIn("b.rws", "b", "a", 20), CheckpointIn("x.rws", "x", "a", 15));
+
+        var points = History(profile, CheckpointMetric).Points;
+
+        Assert.Equal(new[] { 10, 20 }, points.Select(p => p.Tick));   // x is another branch of the same start
+        Assert.Equal(new[] { false, true }, points.Select(p => p.ConnectToPrevious));
+        Assert.All(points, p => Assert.False(p.Unlinked));
+    }
+
+    [Fact]
     public void AnAncestorWithoutItsOwnSaveStillProvesTheLine()
     {
         // b's file was overwritten; its checkpoint, kept in the profile, still links c to a.

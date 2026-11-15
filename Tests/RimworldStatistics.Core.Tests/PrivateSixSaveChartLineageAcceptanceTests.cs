@@ -53,10 +53,14 @@ public sealed class PrivateSixSaveChartLineageAcceptanceTests
 
         var checkpoint = session.ReadChartHistory(view, colony.Key, MetricRegistry.Find(ResearchFamily.Completed)!, folder);
         Assert.Equal(MetricHistoryKind.CheckpointLineage, checkpoint.Kind);
-        Assert.Equal(4, checkpoint.Points.Count);
-        Assert.Equal(ticks[1..4], checkpoint.Points.Take(3).Select(p => p.Tick));
-        Assert.True(checkpoint.Points[3].Tick > ticks[3] && checkpoint.Points[3].Tick < ticks[4]);
-        Assert.Equal(new int?[] { null, null, null, ticks[5] }, checkpoint.Points.Select(p => p.SavedTick));
+        // A's checkpoint stays on the chart before the missing parent of B's; B's reading is hollow (not joined to A).
+        Assert.Equal(5, checkpoint.Points.Count);
+        Assert.Equal(ticks[..4], checkpoint.Points.Take(4).Select(p => p.Tick));
+        Assert.True(checkpoint.Points[4].Tick > ticks[3] && checkpoint.Points[4].Tick < ticks[4]);
+        Assert.Equal(new[] { -1, -1, 1, 2, 3 }, checkpoint.Points.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { false, true, false, false, false }, checkpoint.Points.Select(p => p.Unlinked));
+        Assert.All(checkpoint.Points, p => Assert.NotNull(p.Value));
+        Assert.Equal(new int?[] { null, null, null, null, ticks[5] }, checkpoint.Points.Select(p => p.SavedTick));
 
         Assert.Equal(before, files.Select(Fingerprint).ToArray());
     }
@@ -169,15 +173,18 @@ public sealed class PrivateSixSaveChartLineageAcceptanceTests
             Assert.All(points, p => Assert.Equal(-1, p.ContinuesFrom));
         }
 
-        // The older checkpoint and the two new ones, each once: totals copied unchanged after the older checkpoint's tick.
+        // A's checkpoint (before the missing parent of B's), then the older checkpoint and the two new ones, each once:
+        // totals copied unchanged after the older checkpoint's tick.
         var lineage = session.ReadChartHistory(view, colony.Key, MetricRegistry.Find(ResearchFamily.Completed)!, copies.Path).Points;
-        Assert.Equal(6, lineage.Count);
-        Assert.Equal(parent.SaveTick, lineage[3].Tick);
-        Assert.Equal(new[] { ticks[Path.GetFileName(e)], ticks[Path.GetFileName(f)] }, lineage.Skip(4).Select(p => p.Tick));
+        Assert.Equal(7, lineage.Count);
+        Assert.Equal(new[] { -1, -1, 1, 2, 3, 4, 5 }, lineage.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { false, true, false, false, false, false, false }, lineage.Select(p => p.Unlinked));
+        Assert.Equal(parent.SaveTick, lineage[4].Tick);
+        Assert.Equal(new[] { ticks[Path.GetFileName(e)], ticks[Path.GetFileName(f)] }, lineage.Skip(5).Select(p => p.Tick));
         Assert.All(lineage, p => Assert.Null(p.SavedTick));
-        Assert.NotNull(lineage[3].Value);
-        Assert.Equal(lineage[3].Value!.Number, lineage[5].Value!.Number);
-        Assert.Equal(new[] { MetricCoverage.Partial, MetricCoverage.Partial }, lineage.Skip(4).Select(p => p.Value!.Coverage));
+        Assert.NotNull(lineage[4].Value);
+        Assert.Equal(lineage[4].Value!.Number, lineage[6].Value!.Number);
+        Assert.Equal(new[] { MetricCoverage.Partial, MetricCoverage.Partial }, lineage.Skip(5).Select(p => p.Value!.Coverage));
 
         Assert.Equal(before, files.Select(Fingerprint).ToArray());
     }

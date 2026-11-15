@@ -49,3 +49,17 @@ The benchmark prints first-scan elapsed time and process-wide managed
 allocation, second-scan elapsed time and allocation, and peak working set.
 It uses generated XML only. A successful synthetic run is not a substitute
 for 55+ private full-size saves, actual game play, or observed TPS.
+
+## Real save folder benchmark (2026-11-15)
+
+The same tool measures a folder of real saves with `--dir` (Issue #72: 55+ real saves, cold and repeat scan):
+
+```powershell
+dotnet run -c Release --project tools/SaveImportBenchmark/SaveImportBenchmark.csproj --no-launch-profile -- --dir "D:\RimWorld-test-saves" 3
+```
+
+- Each run imports every `.rws` / `.rws.old` of the folder into a new temporary profile (cold), then scans again (repeat, every file skipped). Run 1 includes the .NET JIT, like the first import after starting the game; later runs in the same process do not.
+- Columns: wall and process CPU time, managed allocations, peak working set, kept save observations, checkpoints, proven raid/death intervals and the profile size. No file names, identifiers, MOD lists or values are printed.
+- The folder is only read. SHA-256, size and write time of every save are compared before and after; any change makes the run fail (exit code 1).
+- To compare builds, run the same command from a checkout of each on the same machine and folder (builds before this one have no `--dir`). The OS file cache is not dropped, so "cold" means an empty profile, not an empty disk cache.
+- A run in the cloud container on 55 owner saves is recorded in [the Issue #72 note of 2026-11-15](../research/2026-11-15-issue72-real-save-scan-and-chart-gap.md). It is not a measurement on the owner's PC.
