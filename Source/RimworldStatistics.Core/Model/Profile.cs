@@ -59,6 +59,9 @@ public sealed class Profile
     [JsonIgnore]
     public List<MetricObservation> PendingCheckpointArchive { get; } = new();
 
+    [JsonIgnore]
+    internal HashSet<MetricObservation> PendingCheckpointRestorations { get; } = new(ReferenceEqualityComparer.Instance);
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 }
