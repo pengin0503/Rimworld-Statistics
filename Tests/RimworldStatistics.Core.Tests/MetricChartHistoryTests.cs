@@ -251,4 +251,44 @@ public sealed class MetricChartHistoryTests
         Assert.Equal(new[] { false, false, true, false }, result.Points.Select(p => p.Unlinked));
         Assert.Equal(new[] { false, true, false, true }, result.Points.Select(p => p.ConnectToPrevious));
     }
+
+    [Fact]
+    public void NullObservationIdentityDoesNotThrowWhenBuildingChartHistory()
+    {
+        var definition = MetricRegistry.Find(ResearchFamily.Completed)!;
+        var colony = new Colony { Key = "id:one" };
+        colony.LiveCampaigns.Add(new LiveCampaign { CampaignId = "one" });
+        var profile = new Profile
+        {
+            MetricObservations =
+            [
+                new MetricObservation
+                {
+                    Key = "root", SaveTick = 100, Source = MetricObservationSource.Checkpoint,
+                    Identity = null!,
+                    Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+                        new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = 2 }) },
+                },
+                new MetricObservation
+                {
+                    Key = "child", ParentKey = "root", SaveTick = 200, Source = MetricObservationSource.Checkpoint,
+                    Identity = new ColonyIdentity { ModCampaignId = "one" },
+                    Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+                        new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = 5 }) },
+                },
+                new MetricObservation
+                {
+                    Key = "unlinked-null", SaveTick = 50, Source = MetricObservationSource.Checkpoint,
+                    Identity = null!,
+                    Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+                        new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = 1 }) },
+                },
+            ],
+        };
+
+        var result = MetricCalculator.BuildChartHistory(profile, [colony], colony.Key, definition);
+        Assert.Equal(MetricHistoryKind.CheckpointLineage, result.Kind);
+        Assert.Equal(new[] { 200 }, result.Points.Select(p => p.Tick));
+        Assert.Equal(new double?[] { 5 }, result.Points.Select(p => p.Value?.Number));
+    }
 }

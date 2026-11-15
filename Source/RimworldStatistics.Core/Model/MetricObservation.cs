@@ -254,13 +254,15 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
         {
             if (scratch.Reusable)
                 threadScratch = scratch;
+            else
+                scratch.Dispose();
         }
     }
 
     [ThreadStatic]
     private static Scratch? threadScratch;
 
-    private sealed class Scratch
+    private sealed class Scratch : IDisposable
     {
         // Larger buffers are dropped after use, so a thread never keeps more than this for an unusually large observation.
         private const int KeepCapacity = 1 << 20;
@@ -269,6 +271,12 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
         private CompactOptions? _for;
 
         public bool Reusable => _buffer.Capacity <= KeepCapacity;
+
+        public void Dispose()
+        {
+            _writer?.Dispose();
+            _writer = null;
+        }
 
         public ReadOnlySpan<byte> Serialize(MetricObservation observation, CompactOptions compact)
         {

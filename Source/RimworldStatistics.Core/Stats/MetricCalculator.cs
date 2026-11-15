@@ -236,6 +236,8 @@ public static partial class MetricCalculator
     private static Colony? Find(MetricObservation m, IReadOnlyList<Colony> colonies, Dictionary<string, HashSet<Colony>> byCampaign,
         Dictionary<(string, long, DateTime), List<(Colony Colony, SaveObservation Obs)>> byFile)
     {
+        if (m.Identity is null)
+            return null;
         if (m.Identity.ModCampaignId is { } cid)
             return byCampaign.TryGetValue(cid, out var set) && set.Count == 1 ? set.First() : null;
 

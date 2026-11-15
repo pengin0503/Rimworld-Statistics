@@ -47,25 +47,38 @@ internal static class RealFolder
         try
         {
             var session = new ProfileSession(new ProfileStore(profileDir.FullName), () => DateTime.UtcNow);
-            var importer = new ImportEngine(new SaveReader());
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
+            var closed = false;
+            try
+            {
+                var importer = new ImportEngine(new SaveReader());
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
 
-            var cold = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
-            var warm = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
-            // A save the reader cannot read is counted as failed each time; any other file is read once, then skipped.
-            if (cold.Result.Read + cold.Result.Skipped + cold.Result.Failed != files || warm.Result.Read != 0
-                || warm.Result.Skipped + warm.Result.Failed != files)
-                throw new InvalidOperationException("The repeat scan read a file again, or a file was not counted.");
-            var (saves, checkpoints, intervals) = session.Read(p => (p.SaveObservations.Count,
-                p.MetricObservations.Count(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint),
-                HistoricalCounterIntervals.Evaluate(p).Count));
-            session.Close();
-            var profileBytes = new FileInfo(Path.Combine(profileDir.FullName, "profile.json")).Length;
-            return string.Join(",", I(run), I(files), I(cold.Result.Read), I(cold.Result.Failed), F(cold.Ms), F(cold.CpuMs),
-                I(cold.Allocated), I(warm.Result.Skipped), I(warm.Result.Failed), F(warm.Ms), F(warm.CpuMs), I(warm.Allocated),
-                I(Process.GetCurrentProcess().PeakWorkingSet64), I(saves), I(checkpoints), I(intervals), I(profileBytes));
+                var cold = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
+                var warm = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
+                // A save the reader cannot read is counted as failed each time; any other file is read once, then skipped.
+                if (cold.Result.Read + cold.Result.Skipped + cold.Result.Failed != files || warm.Result.Read != 0
+                    || warm.Result.Skipped + warm.Result.Failed != files)
+                    throw new InvalidOperationException("The repeat scan read a file again, or a file was not counted.");
+                var (saves, checkpoints, intervals) = session.Read(p => (p.SaveObservations.Count,
+                    p.MetricObservations.Count(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint),
+                    HistoricalCounterIntervals.Evaluate(p).Count));
+                session.Close();
+                closed = true;
+                var profileBytes = new FileInfo(Path.Combine(profileDir.FullName, "profile.json")).Length;
+                return string.Join(",", I(run), I(files), I(cold.Result.Read), I(cold.Result.Failed), F(cold.Ms), F(cold.CpuMs),
+                    I(cold.Allocated), I(warm.Result.Skipped), I(warm.Result.Failed), F(warm.Ms), F(warm.CpuMs), I(warm.Allocated),
+                    I(Process.GetCurrentProcess().PeakWorkingSet64), I(saves), I(checkpoints), I(intervals), I(profileBytes));
+            }
+            finally
+            {
+                if (!closed)
+                {
+                    try { session.Close(); }
+                    catch { /* keep any primary failure while releasing file locks before deleting profileDir */ }
+                }
+            }
         }
         finally
         {
