@@ -31,9 +31,7 @@ if (args.Length > 0 && args[0] == "--representative")
         : args.Skip(1).Select(a => double.Parse(a, CultureInfo.InvariantCulture)).ToArray();
     if (targets.Any(n => n is < 0.05 or > 32))
         throw new ArgumentOutOfRangeException(nameof(args), "Representative sizes must be 0.05..32 MiB.");
-    Console.WriteLine("target_mib,profile_bytes,colonies,locked_serialize_median_ms,locked_serialize_p95_ms,serialize_alloc_median_bytes,"
-        + "statistics_commit_median_ms,statistics_commit_p95_ms,import_only_commit_median_ms,commit_read_bytes,commit_write_bytes,"
-        + "blocking_wait_p95_ms,blocking_wait_max_ms,nonblocking_wait_p95_ms,nonblocking_wait_max_ms");
+    Console.WriteLine(RepresentativeBenchmark.Header);
     foreach (var mib in targets)
         RepresentativeBenchmark.Run(mib);
     return;

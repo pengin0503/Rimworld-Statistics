@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
@@ -230,29 +231,78 @@ internal sealed class MetricObservationsConverter : JsonConverter<List<MetricObs
     public override void Write(Utf8JsonWriter writer, List<MetricObservation> value, JsonSerializerOptions options)
     {
         var compact = Compact(options);
-        writer.WriteStartArray();
-        foreach (var obs in value)
+        // Each line is first written to this thread's scratch buffer: the same bytes JsonSerializer.SerializeToUtf8Bytes
+        // returns, without a new array per observation on every profile write (Issue #195).
+        var scratch = threadScratch;
+        threadScratch = null;   // a nested profile write on this thread (none today) gets its own
+        scratch ??= new Scratch();
+        try
         {
-            if (obs.Quarantined is { } raw)
-                raw.WriteTo(writer);
-            else
-                writer.WriteRawValue(JsonSerializer.SerializeToUtf8Bytes(obs, compact), skipInputValidation: true);
+            writer.WriteStartArray();
+            foreach (var obs in value)
+            {
+                if (obs.Quarantined is { } raw)
+                {
+                    raw.WriteTo(writer);
+                    continue;
+                }
+                writer.WriteRawValue(scratch.Serialize(obs, compact), skipInputValidation: true);
+            }
+            writer.WriteEndArray();
         }
-        writer.WriteEndArray();
+        finally
+        {
+            if (scratch.Reusable)
+                threadScratch = scratch;
+        }
     }
 
-    private sealed record CompactOptions(JsonSerializerOptions Source, JsonSerializerOptions Compact);
+    [ThreadStatic]
+    private static Scratch? threadScratch;
+
+    private sealed class Scratch
+    {
+        // Larger buffers are dropped after use, so a thread never keeps more than this for an unusually large observation.
+        private const int KeepCapacity = 1 << 20;
+        private readonly ArrayBufferWriter<byte> _buffer = new(16 * 1024);
+        private Utf8JsonWriter? _writer;
+        private CompactOptions? _for;
+
+        public bool Reusable => _buffer.Capacity <= KeepCapacity;
+
+        public ReadOnlySpan<byte> Serialize(MetricObservation observation, CompactOptions compact)
+        {
+            _buffer.ResetWrittenCount();
+            if (_writer is null || !ReferenceEquals(_for, compact))
+            {
+                _writer?.Dispose();
+                _writer = new Utf8JsonWriter(_buffer, compact.WriterOptions);
+                _for = compact;
+            }
+            else
+            {
+                _writer.Reset(_buffer);
+            }
+            JsonSerializer.Serialize(_writer, observation, compact.Options);
+            _writer.Flush();
+            return _buffer.WrittenSpan;
+        }
+    }
+
+    /// <summary>The compact copy of a profile's options, and the writer options JsonSerializer derives from them.</summary>
+    private sealed record CompactOptions(JsonSerializerOptions Source, JsonSerializerOptions Options, JsonWriterOptions WriterOptions);
 
     // One reference, replaced atomically, so concurrent writers never pair one options instance with another's copy.
     private static volatile CompactOptions? cached;
 
-    private static JsonSerializerOptions Compact(JsonSerializerOptions options)
+    private static CompactOptions Compact(JsonSerializerOptions options)
     {
         if (cached is { } c && ReferenceEquals(c.Source, options))
-            return c.Compact;
+            return c;
         var compact = new JsonSerializerOptions(options) { WriteIndented = false };
         compact.MakeReadOnly(populateMissingResolver: true);
-        cached = new CompactOptions(options, compact);
-        return compact;
+        var created = new CompactOptions(options, compact, ProfileJson.WriterOptionsFor(compact));
+        cached = created;
+        return created;
     }
 }

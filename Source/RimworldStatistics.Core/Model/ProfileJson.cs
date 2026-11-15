@@ -1,3 +1,4 @@
+using System.Buffers;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -18,6 +19,31 @@ public static class ProfileJson
     /// UTF-8 natively, so this skips building a UTF-16 string of the whole profile and encoding it again to write it.
     /// </summary>
     public static byte[] SerializeToUtf8Bytes(Profile profile) => JsonSerializer.SerializeToUtf8Bytes(profile, Options);
+
+    /// <summary>
+    /// Writes the bytes of <see cref="SerializeToUtf8Bytes"/> to <paramref name="output"/>, so a caller that writes the
+    /// profile again and again can reuse one buffer instead of a new array of the whole profile each time (Issue #195).
+    /// </summary>
+    internal static void SerializeTo(IBufferWriter<byte> output, Profile profile)
+    {
+        using var writer = new Utf8JsonWriter(output, WriterOptions);
+        JsonSerializer.Serialize(writer, profile, Options);
+    }
+
+    /// <summary>The writer options <see cref="JsonSerializer.SerializeToUtf8Bytes{T}(T, JsonSerializerOptions)"/> uses for <paramref name="options"/>.</summary>
+    internal static JsonWriterOptions WriterOptionsFor(JsonSerializerOptions options) => new()
+    {
+        // As JsonSerializerOptions.GetWriterOptions (internal) builds them.
+        Encoder = options.Encoder,
+        Indented = options.WriteIndented,
+        IndentCharacter = options.IndentCharacter,
+        IndentSize = options.IndentSize,
+        MaxDepth = options.MaxDepth == 0 ? 64 : options.MaxDepth,
+        NewLine = options.NewLine,
+        SkipValidation = true,
+    };
+
+    private static readonly JsonWriterOptions WriterOptions = WriterOptionsFor(Options);
 
     /// <summary>Parses a profile. Null lists/objects become empty ones. Throws <see cref="JsonException"/> on invalid JSON.</summary>
     public static Profile Deserialize(string json)
