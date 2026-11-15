@@ -9,7 +9,31 @@ public static partial class ProfileMutations
     /// </summary>
     private static void UpsertCheckpoint(Profile p, MetricObservation obs)
     {
-        var existing = p.MetricObservations.FirstOrDefault(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint && o.Key == obs.Key);
+        var observations = p.MetricObservations;
+        var campaign = obs.Identity.ModCampaignId;
+        var parentKey = obs.ParentKey;
+        MetricObservation? existing = null;
+        MetricObservation? parent = null;
+        var obsHasLaterChild = false;
+
+        for (var i = 0; i < observations.Count; i++)
+        {
+            var o = observations[i];
+            if (o.IsQuarantined || o.Source != MetricObservationSource.Checkpoint)
+                continue;
+            if (o.Key == obs.Key)
+            {
+                existing = o;
+                break;
+            }
+            if (o.Identity.ModCampaignId != campaign || o.Conflicted)
+                continue;
+            if (parentKey is not null && o.Key == parentKey && parent is null)
+                parent = o;
+            if (o.ParentKey == obs.Key && o.SaveTick > obs.SaveTick)
+                obsHasLaterChild = true;
+        }
+
         if (existing is not null)
         {
             if (existing.PayloadHash != obs.PayloadHash || existing.ParentKey != obs.ParentKey || existing.SaveTick != obs.SaveTick)
@@ -19,16 +43,22 @@ public static partial class ProfileMutations
                 if (existing.ParentKey is { } conflictedParentKey
                     && existing.Identity.ModCampaignId is { Length: > 0 } conflictCampaign)
                 {
-                    var parent = p.MetricObservations.FirstOrDefault(o => !o.IsQuarantined
-                        && o.Source == MetricObservationSource.Checkpoint
-                        && o.Identity.ModCampaignId == conflictCampaign && o.Key == conflictedParentKey);
-                    if (parent is not null && parent.ArchivedMetrics)
-                        p.PendingCheckpointRestorations.Add(parent);
+                    for (var i = 0; i < observations.Count; i++)
+                    {
+                        var candidate = observations[i];
+                        if (!candidate.IsQuarantined && candidate.Source == MetricObservationSource.Checkpoint
+                            && candidate.Identity.ModCampaignId == conflictCampaign && candidate.Key == conflictedParentKey)
+                        {
+                            if (candidate.ArchivedMetrics)
+                                p.PendingCheckpointRestorations.Add(candidate);
+                            break;
+                        }
+                    }
                 }
                 return;
             }
             foreach (var alias in obs.FileAliases)
-                if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
+                if (!ContainsFileAlias(existing.FileAliases, alias))
                     existing.FileAliases.Add(alias);
             if (!existing.Conflicted)
             {
@@ -40,38 +70,30 @@ public static partial class ProfileMutations
             }
             return;
         }
-        p.MetricObservations.Add(obs);
-        UpdateAncestorCompression(p, obs.Identity.ModCampaignId, recover: false);
-        QueueParentRestorationIfBranchOmitsLastCapture(p, obs);
+
+        observations.Add(obs);
+        if (!obs.IsQuarantined && !obs.Conflicted)
+        {
+            if (obsHasLaterChild && !obs.Compressed)
+                obs.Compressed = true;
+            if (parent is not null && !parent.Compressed && obs.SaveTick > parent.SaveTick)
+                parent.Compressed = true;
+            if (parent is { ArchivedMetrics: true } && campaign is { Length: > 0 } && obs.SaveTick > parent.SaveTick)
+                QueueParentRestorationIfBranchOmitsLastCapture(p, obs, parent, campaign, parentKey!);
+        }
     }
 
-    private static void QueueParentRestorationIfBranchOmitsLastCapture(Profile p, MetricObservation obs)
+    private static void QueueParentRestorationIfBranchOmitsLastCapture(Profile p, MetricObservation obs,
+        MetricObservation parent, string campaign, string parentKey)
     {
-        if (obs.Conflicted || obs.IsQuarantined || obs.ParentKey is not { } parentKey
-            || obs.Identity.ModCampaignId is not { Length: > 0 } campaign)
-            return;
-
-        MetricObservation? parent = null;
-        List<MetricObservation>? otherChildren = null;
-        foreach (var o in p.MetricObservations)
-        {
-            if (ReferenceEquals(o, obs) || o.IsQuarantined || o.Source != MetricObservationSource.Checkpoint
-                || o.Identity.ModCampaignId != campaign)
-                continue;
-            if (o.Key == parentKey && parent is null)
-                parent = o;
-            else if (!o.Conflicted && o.ParentKey == parentKey)
-                (otherChildren ??= new List<MetricObservation>()).Add(o);
-        }
-
-        if (parent is null || !parent.ArchivedMetrics || parent.Conflicted
-            || obs.SaveTick <= parent.SaveTick || otherChildren is null)
-            return;
-
         HashSet<string>? lastCaptureKeys = null;
-        foreach (var other in otherChildren)
+        var observations = p.MetricObservations;
+        for (var i = 0; i < observations.Count; i++)
         {
-            if (other.SaveTick <= parent.SaveTick)
+            var other = observations[i];
+            if (ReferenceEquals(other, obs) || other.IsQuarantined || other.Source != MetricObservationSource.Checkpoint
+                || other.Conflicted || other.Identity.ModCampaignId != campaign
+                || other.ParentKey != parentKey || other.SaveTick <= parent.SaveTick)
                 continue;
             lastCaptureKeys ??= CheckpointArchivePlanner.LastCaptureCheckpointKeys(p);
             if (lastCaptureKeys.Count == 0)
@@ -135,7 +157,11 @@ public static partial class ProfileMutations
                 continue;
             var hasLaterChild = latestChildTick.TryGetValue(node.Key, out var tick) && tick > node.SaveTick;
             if (recover != hasLaterChild)
+            {
                 node.Compressed = hasLaterChild;
+                if (!hasLaterChild && node.ArchivedMetrics)
+                    p.PendingCheckpointRestorations.Add(node);
+            }
         }
     }
 }

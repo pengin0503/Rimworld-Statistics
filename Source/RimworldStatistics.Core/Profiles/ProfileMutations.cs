@@ -147,4 +147,45 @@ public static partial class ProfileMutations
             list.RemoveAll(k => colonyKeys.Contains(k, Ord));
         }
     }
+
+    internal static bool SameStringSet(List<string> a, List<string> b)
+    {
+        if (a.Count == 0 && b.Count == 0)
+            return true;
+        if (a.Count == 0 || b.Count == 0)
+            return false;
+        if (a.Count <= 16 && b.Count <= 16)
+            return ContainsAllOrdinal(a, b) && ContainsAllOrdinal(b, a);
+        return new HashSet<string>(a, Ord).SetEquals(b);
+    }
+
+    private static bool ContainsAllOrdinal(List<string> required, List<string> container)
+    {
+        for (var i = 0; i < required.Count; i++)
+        {
+            var needle = required[i];
+            var found = false;
+            for (var j = 0; j < container.Count; j++)
+            {
+                if (Ord.Equals(needle, container[j]))
+                {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+                return false;
+        }
+        return true;
+    }
+
+    private static bool ContainsFileAlias(List<MetricFileAlias> aliases, MetricFileAlias alias)
+    {
+        for (var i = 0; i < aliases.Count; i++)
+        {
+            if (aliases[i].Same(alias.FileName, alias.FileSize, alias.LastWriteUtc))
+                return true;
+        }
+        return false;
+    }
 }

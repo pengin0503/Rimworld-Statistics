@@ -13,27 +13,56 @@ public static partial class ProfileMutations
             UpsertCheckpoint(p, obs);
             return;
         }
-        var existing = p.MetricObservations.FirstOrDefault(o => !o.IsQuarantined && o.Source == obs.Source && o.Key == obs.Key);
+        var observations = p.MetricObservations;
+        var isSaveFile = obs.Source == MetricObservationSource.SaveFile;
+        MetricObservation? existing = null;
+        var obsSharesCheckpointFile = false;
+        var hasAnyCheckpoint = false;
+
+        for (var i = 0; i < observations.Count; i++)
+        {
+            var o = observations[i];
+            if (o.IsQuarantined)
+                continue;
+            if (o.Source == obs.Source && o.Key == obs.Key)
+            {
+                existing = o;
+                break;
+            }
+            if (isSaveFile && o.Source == MetricObservationSource.Checkpoint)
+            {
+                hasAnyCheckpoint = true;
+                if (!obsSharesCheckpointFile && SharesAnyFileAlias(o.FileAliases, obs.FileAliases))
+                    obsSharesCheckpointFile = true;
+            }
+        }
+
         if (existing is null)
         {
-            // Imported checkpoint links must survive regardless of scan order.
-            // Build the alias index once; checking every checkpoint for every
-            // potential save-file compaction would be quadratic on large profiles.
-            var protectedFiles = obs.Source == MetricObservationSource.SaveFile
-                ? p.MetricObservations.Where(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint)
-                    .SelectMany(o => o.FileAliases)
-                    .Select(a => (a.FileName, a.FileSize, a.LastWriteUtc)).ToHashSet()
-                : null;
-            if (p.MetricObservations.Any(o => Supersedes(o, obs, protectedFiles)))
-                return;
-            p.MetricObservations.RemoveAll(o => Supersedes(obs, o, protectedFiles));
-            p.MetricObservations.Add(obs);
+            // When a SaveFile shares any file alias with a confirmed checkpoint,
+            // Supersedes(other, obs, ...) and Supersedes(obs, other, ...) are both
+            // guaranteed false because checkpoint-linked SaveFiles are protected.
+            if (isSaveFile && !obsSharesCheckpointFile)
+            {
+                HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>? protectedFiles = null;
+                for (var i = 0; i < observations.Count; i++)
+                {
+                    if (Supersedes(observations[i], obs, observations, hasAnyCheckpoint, ref protectedFiles))
+                        return;
+                }
+                for (var i = observations.Count - 1; i >= 0; i--)
+                {
+                    if (Supersedes(obs, observations[i], observations, hasAnyCheckpoint, ref protectedFiles))
+                        observations.RemoveAt(i);
+                }
+            }
+            observations.Add(obs);
             if (obs.Source == MetricObservationSource.SaveSnapshot)
                 CompactSaveSnapshots(p, obs);
             return;
         }
         foreach (var alias in obs.FileAliases)
-            if (!existing.FileAliases.Any(a => a.Same(alias.FileName, alias.FileSize, alias.LastWriteUtc)))
+            if (!ContainsFileAlias(existing.FileAliases, alias))
                 existing.FileAliases.Add(alias);
         if (obs.ObservedUtc < existing.ObservedUtc)
             existing.ObservedUtc = obs.ObservedUtc;
@@ -102,37 +131,99 @@ public static partial class ProfileMutations
 
     /// <summary>Whether a later equivalent save can replace the older representative without discarding independent evidence.</summary>
     private static bool Supersedes(MetricObservation newer, MetricObservation older,
-        IReadOnlySet<(string FileName, long FileSize, DateTime LastWriteUtc)>? checkpointFiles)
+        List<MetricObservation> observations, bool hasAnyCheckpoint,
+        ref HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>? checkpointFiles)
     {
         if (newer.IsQuarantined || older.IsQuarantined || ReferenceEquals(newer, older)
             || newer.Source != MetricObservationSource.SaveFile || older.Source != MetricObservationSource.SaveFile
             || newer.SaveTick <= older.SaveTick)
             return false;
-        ColonyIdentity a = newer.Identity, b = older.Identity;
-        if (a.FingerprintHash() is not { } hash || hash != b.FingerprintHash() || a.ModCampaignId != b.ModCampaignId
-            || !a.StartingPawnIds.ToHashSet(Ord).SetEquals(b.StartingPawnIds))
-            return false;
-
         // A pair of different or unavailable saved MOD sets cannot prove
         // equivalence. Preserve both observations instead of compacting them.
         if (newer.ModSetHash != older.ModSetHash)
             return false;
-        // A checkpoint may represent a direct parent of another checkpoint.
-        // Its exact .rws counter observation must not be compacted away, even
-        // when the later save has the same MOD count and higher tick.
-        if (checkpointFiles is not null && (newer.FileAliases.Any(a =>
-                checkpointFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))
-            || older.FileAliases.Any(a =>
-                checkpointFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))))
+        if (ModCount(newer) != ModCount(older))
             return false;
+        ColonyIdentity a = newer.Identity, b = older.Identity;
+        if (a.FingerprintHash() is not { } hash || hash != b.FingerprintHash() || a.ModCampaignId != b.ModCampaignId
+            || !SameStringSet(a.StartingPawnIds, b.StartingPawnIds))
+            return false;
+
         // Historical fallback uses independently captured SaveFile rows for
         // snapshot metrics (including extrema). Preserve every such sample.
         // Also retain anything this reader cannot prove it understands.
         if (older.EvidenceByAcquisition is { Count: > 0 } || HasOpaqueData(older)
-            || older.Metrics.Any(kv => !SaveFileRevisions.TryGetValue(kv.Key, out var revision)
-                || kv.Value.IsQuarantined || kv.Value.Revision != revision))
+            || HasUnknownOrOldSaveFileMetrics(older))
             return false;
-        return ModCount(newer) == ModCount(older);
+
+        // A checkpoint may represent a direct parent of another checkpoint.
+        // Its exact .rws counter observation must not be compacted away, even
+        // when the later save has the same MOD count and higher tick.
+        if (hasAnyCheckpoint)
+        {
+            checkpointFiles ??= BuildProtectedCheckpointFiles(observations);
+            if (SharesProtectedFile(newer.FileAliases, checkpointFiles)
+                || SharesProtectedFile(older.FileAliases, checkpointFiles))
+                return false;
+        }
+        return true;
+    }
+
+    private static bool SharesAnyFileAlias(List<MetricFileAlias> a, List<MetricFileAlias> b)
+    {
+        for (var i = 0; i < a.Count; i++)
+        {
+            var x = a[i];
+            for (var j = 0; j < b.Count; j++)
+            {
+                var y = b[j];
+                if (x.Same(y.FileName, y.FileSize, y.LastWriteUtc))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private static HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)> BuildProtectedCheckpointFiles(
+        List<MetricObservation> observations)
+    {
+        var set = new HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>();
+        for (var i = 0; i < observations.Count; i++)
+        {
+            var o = observations[i];
+            if (o.IsQuarantined || o.Source != MetricObservationSource.Checkpoint)
+                continue;
+            var aliases = o.FileAliases;
+            for (var j = 0; j < aliases.Count; j++)
+            {
+                var a = aliases[j];
+                set.Add((a.FileName, a.FileSize, a.LastWriteUtc));
+            }
+        }
+        return set;
+    }
+
+    private static bool SharesProtectedFile(List<MetricFileAlias> aliases,
+        HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)> protectedFiles)
+    {
+        for (var i = 0; i < aliases.Count; i++)
+        {
+            var a = aliases[i];
+            if (protectedFiles.Contains((a.FileName, a.FileSize, a.LastWriteUtc)))
+                return true;
+        }
+        return false;
+    }
+
+    private static bool HasUnknownOrOldSaveFileMetrics(MetricObservation older)
+    {
+        foreach (var kv in older.Metrics)
+        {
+            if (!SaveFileRevisions.TryGetValue(kv.Key, out var revision)
+                || kv.Value.IsQuarantined || kv.Value.Revision != revision)
+                return true;
+        }
+        return false;
     }
 
     /// <summary>The stored mod count and its revision; a missing or unreadable entry is its own state.</summary>
@@ -149,5 +240,4 @@ public static partial class ProfileMutations
             MetricCoverage.Partial => 1,
             _ => 2,
         });
-
 }
