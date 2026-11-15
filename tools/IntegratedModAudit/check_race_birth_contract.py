@@ -47,4 +47,10 @@ assert re.search(r"finally\s*\{\s*successfulBirth\s*=\s*true;", phytokin)
 assert "successfulBirth" not in (Path("Source/RimworldStatistics/IntegratedMods/PopularModOutcomes/Source/RaceBirthOutcomes.cs")
     .read_text(encoding="utf-8").split("private static void AfterPhytokin")[1].split("private static bool OnOriginalPlayerHome")[0]
     .replace("// successfulBirth is set in an upstream finally block even on failure.", ""))
+# The compiled MODs call the three-argument overload (third value is optional in
+# C# source but baked into the IL). Keep the replacement call stack-compatible.
+hook = Path("Source/RimworldStatistics/IntegratedMods/PopularModOutcomes/Source/RaceBirthOutcomes.cs").read_text(encoding="utf-8")
+assert "[typeof(Pawn), typeof(Thing), typeof(IntVec3?)]" in hook
+assert "TrySpawnVerified(Pawn pawn, Thing source, IntVec3? positionOverride)" in hook
+assert "TrySpawnHatchedOrBornPawn(pawn, source, positionOverride)" in hook
 print("Selected 1.7 Saurid and Phytokin source, dependencies, loadFolders and hatch order: PASS")
