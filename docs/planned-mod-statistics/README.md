@@ -24,6 +24,14 @@ The [popular race/xenotype audit (2026-11-14)](2026-11-14-popular-race-mod-audit
 
 **第5波（2026-11-14）追加候補：**[日本語の追加MOD調査台帳](2026-11-14-fifthwave-additional-candidates-ja.md)に、既存の27件・種族6件と重複しない5候補（Winston Waves、Empire Refactored、Caravan Adventures、World Domination 2.0、Rim War維持版）を別枠で保存した。いずれも**調査候補であって対応済みではない**。[詳細なコード・実セーブの追加調査（日本語）](../research/2026-11-14-additional-investigation-ja.md)も参照。
 
+## 第6波（2026-11-15）：追加MOD実装候補68件
+
+[第6波の人気MOD中心・日本語調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md)を実装候補として登録した。**S01〜S60の60件に加え、同ファイル末尾の当初見送り・保留8件も再評価対象の実装候補に含める（合計68件）**。元資料のジャンル、1.7対応状況、参照URL、提案統計、実装上の障壁、優先度、保留理由を保持する。
+
+- **位置付け：** すべて将来の実装・ソース監査・再評価の対象。保留理由は候補からの除外ではなく、実装前に解消・確認する条件を表す。
+- **優先度：** 台帳のP0/P1/P2/条件付き/要検証は調査時点の相対順位。実装済み・互換確認済みの宣言ではない。
+- **公開一覧との区別：** 専用統計または汎用機能での適切な対応が実装・確認されるまで、`docs/supported-mods.md` に追加しない。
+
 ## Race MOD integration policy — shared classification first (adopted 2026-11-14)
 
 **Decision:** Implement general race-specific statistics once in **Rimworld-Statistics** through a shared Humanoid Alien Races (HAR) classification path, rather than making one statistics adapter for every race MOD. Where Biotech xenotypes are present, retain xenotype as an **independent classification dimension**; HAR race and Biotech xenotype are not interchangeable and must never be added together as separate people.
