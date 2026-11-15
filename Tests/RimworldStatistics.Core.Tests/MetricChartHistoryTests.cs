@@ -208,4 +208,47 @@ public sealed class MetricChartHistoryTests
         Assert.Equal(new double?[] { 3, 7 }, result.Points.Select(p => p.Value?.Number));
         Assert.Empty(parent.Metrics);
     }
+
+    [Fact]
+    public void AnArchivedReadingBeforeAMissingParentIsRestoredToo()
+    {
+        using var directory = new TempDir();
+        var archive = new FileCheckpointArchive(directory.File("archive"));
+        var session = new ProfileSession(new ProfileStore(directory.Path), () => DateTime.UtcNow, archive);
+        var definition = MetricRegistry.Find(ResearchFamily.Completed)!;
+        var identity = new ColonyIdentity { ModCampaignId = "one" };
+        MetricObservation Checkpoint(string key, string? parent, int tick, int number) => new()
+        {
+            Key = key, ParentKey = parent, SaveTick = tick, Source = MetricObservationSource.Checkpoint,
+            Identity = identity, PayloadHash = key,
+            Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+                new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = number }) },
+        };
+
+        // a ── b ┄┄ (missing) ┄┄ d ── e: a's values were moved to the archive once b confirmed it, d's once e did.
+        var a = Checkpoint("a", null, 100, 3);
+        var d = Checkpoint("d", "missing", 400, 9);
+        archive.Append("one", [System.Text.Json.JsonSerializer.Serialize(a, ProfileJson.CompactOptions),
+            System.Text.Json.JsonSerializer.Serialize(d, ProfileJson.CompactOptions)]);
+        foreach (var moved in new[] { a, d })
+        {
+            moved.Metrics.Clear();
+            moved.Compressed = true;
+            moved.ArchivedMetrics = true;
+        }
+        session.Mutate(profile =>
+        {
+            ProfileMutations.ApplyLiveObservation(profile, "one", identity,
+                new ObservedValues { TicksGame = 500 }, new DisplayInfo(), DateTime.UtcNow, "1.7.4985");
+            profile.MetricObservations.AddRange([a, Checkpoint("b", "a", 200, 5), d, Checkpoint("e", "d", 500, 11)]);
+        }, SaveMode.None);
+
+        var view = session.GetView(new StatsOptions());
+        var result = session.ReadChartHistory(view, Assert.Single(view.Colonies).Key, definition, directory.Path);
+        // Each archived reading goes back to its own point, before and after the gap.
+        Assert.Equal(new[] { 100, 200, 400, 500 }, result.Points.Select(p => p.Tick));
+        Assert.Equal(new double?[] { 3, 5, 9, 11 }, result.Points.Select(p => p.Value?.Number));
+        Assert.Equal(new[] { false, false, true, false }, result.Points.Select(p => p.Unlinked));
+        Assert.Equal(new[] { false, true, false, true }, result.Points.Select(p => p.ConnectToPrevious));
+    }
 }

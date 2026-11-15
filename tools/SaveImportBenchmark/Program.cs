@@ -1,9 +1,13 @@
 // Synthetic .rws cold/warm importer benchmark. No real saves or RimWorld runtime.
 // The build creates only temporary files and prints aggregate counters.
+// `--dir <folder> [runs]` measures a folder of real saves instead (read-only; see RealFolder.cs).
 using System.Diagnostics;
 using System.Globalization;
 using System.Text;
 using RimworldStatistics.Core;
+
+if (args is ["--dir", var folder, ..])
+    return RealFolder.Run(folder, args.Length > 2 ? int.Parse(args[2], CultureInfo.InvariantCulture) : 1);
 
 var count = args.Length > 0 ? int.Parse(args[0], CultureInfo.InvariantCulture) : 55;
 var paddingBytes = args.Length > 1 ? int.Parse(args[1], CultureInfo.InvariantCulture) : 256 * 1024;
@@ -81,3 +85,4 @@ finally
     Directory.Delete(savesDir, recursive: true);
     Directory.Delete(profileDir, recursive: true);
 }
+return 0;
