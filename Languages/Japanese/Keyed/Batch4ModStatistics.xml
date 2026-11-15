@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>ハチの受粉完了数</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>Biomes! Beesで実際に植物の成長を進行させた自勢力関連の受粉完了数を植物種別ごとに集計します。</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>地底洞窟の本拠地マップ</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>Biomes! Cavernsが追加するバイオーム上の有効なプレイヤー本拠地マップ数をバイオーム別に記録します。</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>古代サイロ計画卓の解読完了数</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>Vanilla Quests Expanded - Deadlifeで自勢力ポーンが古代計画卓の解析を完了し新たな古代サイロを特定した回数を集計します。</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>バーンアウト発電機の始動成功数</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>Vanilla Quests Expanded - Deadlifeで自勢力ポーンがバーンアウト発電機の再始動に成功した回数を発電機種別ごとに集計します。</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected 研究済みアノマリー種別</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>Anomalies Expectedのエンティティデータベース上で調査ノートが解放済みの固有アノマリー種別数を記録します。</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>デート・外出完了数</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>Way Better Romanceで自勢力ポーンが参加し最後まで完了したデートおよび外出の回数を種別ごとに集計します。</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>

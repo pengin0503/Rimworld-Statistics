@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>蜜蜂授粉完成次数</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>统计 Biomes! Bees 中实际促进玩家相关植物生长的已完成蜜蜂授粉次数（按植物类型分类）。</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>洞穴生态家园地图</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>记录位于 Biomes! Caverns 生态群系上的有效玩家家园地图数量（按生态群系分类）。</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>古代发射井规划台破译次数</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>统计在 Vanilla Quests Expanded - Deadlife 中玩家殖民者完成古代规划台研究并揭示新发射井的次数。</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>应急发电机启动成功次数</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>统计在 Vanilla Quests Expanded - Deadlife 中玩家殖民者成功启动应急发电机的次数（按发电机类型分类）。</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected 已研究异常条目</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>记录 Anomalies Expected 实体数据库中已解锁研究笔记的独立异常实体种类数量。</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>约会与外出完成次数</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>统计 Way Better Romance 中玩家角色参与并顺利完成的约会与外出次数（按活动类型分类）。</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>

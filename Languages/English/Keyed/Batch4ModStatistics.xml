@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>Bee pollinations completed</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>Counts completed bee pollinations from Biomes! Bees that actually increased plant growth for the player, broken down by plant type.</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>Cavern home maps</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>Records active player home maps settled in Biomes! Caverns biomes, broken down by biome.</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>Ancient silo planning desks decrypted</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>Counts ancient planning desks studied to completion by player pawns in Vanilla Quests Expanded - Deadlife, revealing another ancient silo.</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>Burnout generators kickstarted</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>Counts ancient burnout generators successfully kickstarted by player pawns in Vanilla Quests Expanded - Deadlife, broken down by generator type.</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected database entries studied</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>Records unique root entities owned by Anomalies Expected whose study notes have been unlocked in the Entity Database snapshot.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>Dates and hangouts completed</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>Counts completed dates and hangouts involving player pawns in Way Better Romance, broken down by activity type.</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>

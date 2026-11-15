@@ -55,6 +55,11 @@ using RimworldStatistics.VleLandmarks;
 using RimworldStatistics.MechanoidUpgrades;
 using RimworldStatistics.RimTalk;
 using RimworldStatistics.AlphaMechs;
+using RimworldStatistics.BiomesBees;
+using RimworldStatistics.BiomesCaverns;
+using RimworldStatistics.VqeDeadlife;
+using RimworldStatistics.AnomaliesExpected;
+using RimworldStatistics.WayBetterRomance;
 
 namespace RimworldStatistics.Metrics;
 
@@ -160,6 +165,11 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(MechanoidUpgradesStatistics.Build());
         result.AddRange(RimTalkStatistics.Build());
         result.AddRange(AlphaMechsStatistics.Build());
+        result.AddRange(BiomesBeesStatistics.Build());
+        result.AddRange(BiomesCavernsStatistics.Build());
+        result.AddRange(VqeDeadlifeStatistics.Build());
+        result.AddRange(AnomaliesExpectedStatistics.Build());
+        result.AddRange(WayBetterRomanceStatistics.Build());
         return result;
     }
 }

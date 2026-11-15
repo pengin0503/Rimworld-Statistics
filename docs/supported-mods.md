@@ -9,7 +9,10 @@
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
 - Animal Genetics (Continued)
+- Anomalies Expected
 - Another Education System
+- Biomes! Bees
+- Biomes! Caverns
 - Biomes! Fossils
 - Combat Extended
 - Dubs Bad Hygiene
@@ -75,6 +78,7 @@
 - Vanilla Psycasts Expanded – Puppeteer
 - Vanilla Quests Expanded – Ancients
 - Vanilla Quests Expanded – Cryptoforge
+- Vanilla Quests Expanded – Deadlife
 - Vanilla Quests Expanded – Drone Factory
 - Vanilla Quests Expanded – The Generator
 - Vanilla Races Expanded – Android
@@ -94,4 +98,5 @@
 - Vanilla Vehicles Expanded – Upgrades
 - Vanilla Weapons Expanded – Non-Lethal
 - Vehicle Framework
+- Way Better Romance
 - World Domination 2.0

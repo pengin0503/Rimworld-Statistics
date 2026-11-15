@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>蜜蜂授粉完成次數</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>統計 Biomes! Bees 中實際促進玩家相關植物生長的已完成蜜蜂授粉次數（依植物類型分類）。</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>洞穴生態家園地圖</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>記錄位於 Biomes! Caverns 生態群系上的有效玩家家園地圖數量（依生態群系分類）。</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>古代發射井規劃台破譯次數</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>統計在 Vanilla Quests Expanded - Deadlife 中玩家殖民者完成古代規劃台研究並揭示新發射井的次數。</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>應急發電機啟動成功次數</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>統計在 Vanilla Quests Expanded - Deadlife 中玩家殖民者成功啟動應急發電機的次數（依發電機類型分類）。</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected 已研究異常條目</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>記錄 Anomalies Expected 實體資料庫中已解鎖研究筆記的獨立異常實體種類數量。</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>約會與外出完成次數</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>統計 Way Better Romance 中玩家角色參與並順利完成的約會與外出次數（依活動類型分類）。</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>

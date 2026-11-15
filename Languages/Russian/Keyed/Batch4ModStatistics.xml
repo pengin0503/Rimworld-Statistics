@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>Завершённые опыления пчёлами</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>Подсчитывает завершённые опыления из Biomes! Bees, которые действительно ускорили рост растений игрока, с разбивкой по видам растений.</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>Домашние карты в пещерах</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>Учитывает активные домашние карты игрока в биомах Biomes! Caverns с разбивкой по биомам.</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>Расшифрованные древние карты бункеров</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>Подсчитывает древние столы планирования, полностью изученные поселенцами игрока в Vanilla Quests Expanded - Deadlife для открытия нового бункера.</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>Запущенные аварийные генераторы</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>Подсчитывает древние аварийные генераторы, успешно запущенные поселенцами игрока в Vanilla Quests Expanded - Deadlife, с разбивкой по типам.</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Изученные аномалии Anomalies Expected</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>Фиксирует количество уникальных основных сущностей Anomalies Expected, для которых открыты исследовательские заметки в базе данных.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>Завершённые свидания и прогулки</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>Подсчитывает успешно завершённые свидания и совместные прогулки с участием колонистов игрока в Way Better Romance с разбивкой по типу.</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>

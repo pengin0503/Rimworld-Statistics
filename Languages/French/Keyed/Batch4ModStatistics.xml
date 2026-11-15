@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_BiomesBees_Pollinations>Pollinisations d'abeilles terminées</RWS_BiomesBees_Pollinations>
+  <RWS_BiomesBees_PollinationsDesc>Compte les pollinisations d'abeilles de Biomes! Bees ayant augmenté la croissance de plantes liées au joueur, ventilées par type de plante.</RWS_BiomesBees_PollinationsDesc>
+  <RWS_BiomesCaverns_HomeMaps>Cartes de colonie en cavernes</RWS_BiomesCaverns_HomeMaps>
+  <RWS_BiomesCaverns_HomeMapsDesc>Enregistre les cartes de colonie actives établies dans des biomes de Biomes! Caverns, ventilées par biome.</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_VqeDeadlife_SiloDecryptions>Tables de planification de silo décryptées</RWS_VqeDeadlife_SiloDecryptions>
+  <RWS_VqeDeadlife_SiloDecryptionsDesc>Compte les tables de planification anciennes entièrement étudiées par les colons dans Vanilla Quests Expanded - Deadlife pour révéler un autre silo.</RWS_VqeDeadlife_SiloDecryptionsDesc>
+  <RWS_VqeDeadlife_PowerKickstarts>Générateurs d'urgence démarrés</RWS_VqeDeadlife_PowerKickstarts>
+  <RWS_VqeDeadlife_PowerKickstartsDesc>Compte les générateurs d'urgence anciens démarrés avec succès par les colons dans Vanilla Quests Expanded - Deadlife, ventilés par type.</RWS_VqeDeadlife_PowerKickstartsDesc>
+  <RWS_AnomaliesExpected_StudiedEntities>Entrées Anomalies Expected étudiées</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntitiesDesc>Enregistre le nombre d'entités uniques propres à Anomalies Expected dont les notes d'étude ont été débloquées dans la base de données d'entités.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
+  <RWS_WayBetterRomance_Dates>Rendez-vous et sorties terminés</RWS_WayBetterRomance_Dates>
+  <RWS_WayBetterRomance_DatesDesc>Compte les rendez-vous et sorties menés à terme impliquant des colons du joueur dans Way Better Romance, ventilés par type d'activité.</RWS_WayBetterRomance_DatesDesc>
+</LanguageData>
