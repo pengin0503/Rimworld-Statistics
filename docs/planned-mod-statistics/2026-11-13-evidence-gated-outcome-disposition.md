@@ -24,3 +24,21 @@ Following the 1.7 DLL audit in [the second-wave evidence report](2026-11-13-seco
 PR #214 briefly introduced failing behavioral specifications for refinery delivered items and crude input. Those tests are withdrawn rather than merging tests against nonexistent production types or inventing inaccurate recording hooks. **PR #214 is repurposed for this documentation-only final disposition.**
 
 The previously evidenced fully implemented metrics and their tests remain unchanged. No novel product code, metric keys, observer patches, binary dependencies, or optional settings changes are introduced. No release, Steam Workshop deployment or Cloudflare change is requested by this decision.
+
+## 2026-11-15 Race & Xenotype MOD Outcomes (PR #269)
+
+Following the RimWorld 1.7 assembly/IL verification and implementation in PR #269 (`0ad3327`), the following breakdown dimensions from the [2026-11-14 popular MOD discovery register](2026-11-14-popular-mod-discovery-register.md) are **explicitly waived** so they are not re-attempted without an upstream data-model change:
+
+| Candidate | Outcome | Disposition | Evidence / reason |
+|---|---|---|---|
+| A08 Vanilla Races Expanded – Fungoid | Infection conversion breakdown **by destination xenotype**（変換結果ゼノタイプ別内訳） | **Waived — not implemented** | In 1.7 `VanillaRacesExpanded-Fungoid.dll`, `DamageWorker_ExtraFungoidInfection` and `DamageWorker_ExtraFungoidInfection_Bite` discard the source `XenotypeDef` and attacking pawn, storing only the gene list, localized/custom string label, and icon on the hediff. `HediffComp_GeneInfection.CompPostTickInterval` always calls `SetXenotype(XenotypeDefOf.Baseliner)` and assigns a freeform `xenotypeName` string. No stable `QualifiedDefKey` (`packageId/defName`) exists for the conversion result. |
+| A09 Vanilla Races Expanded – Insector | Evolution and reversion breakdown **by geneline type**（プレイヤー作成遺伝系統別内訳） | **Waived — not implemented** | In 1.7-selected `1.6/Assemblies/VanillaRacesExpanded-Insector.dll`, `MetapodHediff.curGeneline` and `Gene_GenelineEvolution.geneline` reference runtime `VanillaRacesExpandedInsector.Geneline` instances customized dynamically by the player rather than immutable `Def` assets (`packageId/defName`). Only confirmed aggregate evolution/change and reversion counts are recorded. |
+
+### Implemented in PR #269 (retain unchanged)
+
+- **A07 Vanilla Races Expanded – Lycanthrope**: `mod.vanillaracesexpanded.lycanthrope.morphs.completed` (with resulting xenotype breakdown; custom-xenotype reversions omit breakdown key and keep total as `Partial`), `mod.vanillaracesexpanded.lycanthrope.germline_reimplants.completed`.
+- **A08 Vanilla Races Expanded – Fungoid**: `mod.vanillaracesexpanded.fungoid.infection_conversions.completed` (`HasBreakdown = false`, total committed conversions on living colonists, slaves, and colony prisoners).
+- **A09 Vanilla Races Expanded – Insector**: `mod.vanillaracesexpanded.insector.geneline_evolutions.completed` and `mod.vanillaracesexpanded.insector.geneline_reversions.completed` (`HasBreakdown = false`).
+- **B04 Alpha Animals**: `mod.sarg.alphaanimals.cocoon_metamorphoses.completed` (by cocoon `ThingDef`) and `mod.sarg.alphaanimals.cocoon_hatches.completed` (by hatched `PawnKindDef`).
+- **B05 Vanilla Races Expanded – Sanguophage**: `mod.vanillaracesexpanded.sanguophage.draincasket_hemogen.stored_units` (actual hemogen accepted into `VRE_HemogenNet` pipe storage).
+
