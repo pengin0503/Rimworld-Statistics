@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>Winston waves cleared</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Highest Winston wave cleared</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Winston boss waves cleared</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>Counts dispatched waves cleared before the next wave begins. Advancing on a timeout does not count.</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>Confirmed Winston rewards</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>Counts committed reward selections by definition, including automatic selections and selections offered after a timeout.</RWS_WinstonRewardsDesc>
+</LanguageData>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>ウィンストンの撃退ウェーブ数</RWS_WinstonCleared>
+  <RWS_WinstonHighest>ウィンストンの最高撃退ウェーブ</RWS_WinstonHighest>
+  <RWS_WinstonBoss>ウィンストンのボスウェーブ撃退数</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>次のウェーブへ進む前に撃退したウェーブを集計します。時間切れによる進行は集計対象外です。</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>ウィンストンの確定報酬数</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>確定した報酬を種類別に数えます。自動選択や時間切れ後に確定した報酬も含みます。</RWS_WinstonRewardsDesc>
+</LanguageData>

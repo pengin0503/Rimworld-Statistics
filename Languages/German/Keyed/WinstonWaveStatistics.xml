@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>Abgewehrte Winston-Wellen</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Höchste abgewehrte Winston-Welle</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Abgewehrte Winston-Bosswellen</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>Zählt Wellen, die vor Beginn der nächsten abgewehrt wurden. Der reine Zeitablauf zählt nicht.</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>Bestätigte Winston-Belohnungen</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>Zählt bestätigte Belohnungen nach Typ, einschließlich automatischer Auswahlen und Auswahlen nach Zeitablauf.</RWS_WinstonRewardsDesc>
+</LanguageData>

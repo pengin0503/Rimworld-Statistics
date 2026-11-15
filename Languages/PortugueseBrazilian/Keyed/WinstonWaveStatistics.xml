@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WinstonCleared>Ondas de Winston repelidas</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Maior onda de Winston repelida</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Ondas de chefes de Winston repelidas</RWS_WinstonBoss>
+  <RWS_WinstonClearDesc>Conta as ondas repelidas antes do início da próxima. Exclui avanços por limite de tempo.</RWS_WinstonClearDesc>
+  <RWS_WinstonRewards>Recompensas de Winston confirmadas</RWS_WinstonRewards>
+  <RWS_WinstonRewardsDesc>Conta as recompensas confirmadas por tipo, incluindo escolhas automáticas e após o limite de tempo.</RWS_WinstonRewardsDesc>
+</LanguageData>
