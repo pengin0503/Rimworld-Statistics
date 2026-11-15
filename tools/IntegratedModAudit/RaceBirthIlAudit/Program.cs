@@ -33,11 +33,12 @@ static (int Call, IList<Instruction> Il) SpawnCall(MethodDefinition method)
     var match = il.Select((instruction, index) => (instruction, index))
         .Where(x => x.instruction.Operand is MethodReference callee &&
             callee.Name == "TrySpawnHatchedOrBornPawn" &&
-            callee.DeclaringType.Name == "PawnUtility" &&
+            callee.DeclaringType.FullName == "RimWorld.PawnUtility" &&
             callee.ReturnType.FullName == "System.Boolean" &&
-            callee.Parameters.Count == 2 &&
+            callee.Parameters.Count == 3 &&
             callee.Parameters[0].ParameterType.FullName == "Verse.Pawn" &&
-            callee.Parameters[1].ParameterType.FullName == "Verse.Thing")
+            callee.Parameters[1].ParameterType.FullName == "Verse.Thing" &&
+            callee.Parameters[2].ParameterType.FullName == "System.Nullable`1<Verse.IntVec3>")
         .Select(x => x.index).ToArray();
     if (match.Length != 1)
     {
@@ -47,7 +48,7 @@ static (int Call, IList<Instruction> Il) SpawnCall(MethodDefinition method)
             Console.WriteLine("Observed Hatch IL call: " + callee.FullName);
     }
     Require(match.Length == 1, method.FullName +
-        ": expected exactly one boolean PawnUtility.TrySpawnHatchedOrBornPawn(Pawn, Thing) call");
+        ": expected exactly one boolean PawnUtility.TrySpawnHatchedOrBornPawn(Pawn, Thing, IntVec3?) call");
     int index = match[0];
     // Both upstream methods test the boolean before running the success body.
     // The compiler may insert a local store/load before the conditional branch.
