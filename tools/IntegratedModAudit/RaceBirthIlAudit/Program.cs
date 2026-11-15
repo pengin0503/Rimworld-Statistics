@@ -39,6 +39,13 @@ static (int Call, IList<Instruction> Il) SpawnCall(MethodDefinition method)
             callee.Parameters[0].ParameterType.FullName == "Verse.Pawn" &&
             callee.Parameters[1].ParameterType.FullName == "Verse.Thing")
         .Select(x => x.index).ToArray();
+    if (match.Length != 1)
+    {
+        foreach (var callee in il.Select(i => i.Operand).OfType<MethodReference>()
+                     .Where(m => m.Name.Contains("Spawn", StringComparison.Ordinal)
+                              || m.Name.Contains("Hatch", StringComparison.Ordinal)))
+            Console.WriteLine("Observed Hatch IL call: " + callee.FullName);
+    }
     Require(match.Length == 1, method.FullName +
         ": expected exactly one boolean PawnUtility.TrySpawnHatchedOrBornPawn(Pawn, Thing) call");
     int index = match[0];
