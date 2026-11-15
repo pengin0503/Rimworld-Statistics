@@ -11,10 +11,19 @@ public enum MetricHistoryKind { SaveObservations, CheckpointLineage, WealthRecor
 public sealed record MetricHistoryPoint(int Tick, NumericValue? Value, bool ConnectToPrevious = false)
 {
     /// <summary>
-    /// The index of an earlier, non-adjacent reading this one continues (readings of another branch lie between them);
-    /// -1 when there is none or when <see cref="ConnectToPrevious"/> applies.
+    /// The index of an earlier, non-adjacent reading this one continues; -1 when there is none or when
+    /// <see cref="ConnectToPrevious"/> applies. The readings between them are not proven to be ancestors of this one;
+    /// only <see cref="SkipsOnlyOtherBranches"/> says they lie on other branches.
     /// </summary>
     public int ContinuesFrom { get; init; } = -1;
+
+    /// <summary>
+    /// With <see cref="ContinuesFrom"/>: every reading between that one and this one is proven not to be this save's
+    /// ancestor (each holds its own checkpoint, and none of those is on this save's chain), so they lie on other branches.
+    /// False when any of them may still be an ancestor: a save without a checkpoint, a save that only carried an older
+    /// checkpoint, or several saves at one tick where one of them is unproven or is in fact the ancestor.
+    /// </summary>
+    public bool SkipsOnlyOtherBranches { get; init; }
 
     /// <summary>Earlier readings exist, but none is a proven ancestor of this save: another branch, or an older save.</summary>
     public bool Unlinked { get; init; }
@@ -235,13 +244,39 @@ public static partial class MetricCalculator
         }
 
         var from = ancestry.IsEmpty ? Enumerable.Repeat(-1, groups.Length).ToArray() : ancestry.NearestAncestors(anchors);
+
+        // What each single reading proves, apart from how its tick was merged: a reading that is exactly its own checkpoint's
+        // state is an ancestor of a later save only if that checkpoint is on the later save's chain. Any other reading (no
+        // checkpoint, a carried one) may be an ancestor of anything after it.
+        var exactGroup = new Dictionary<string, int>(Ord);
+        var unproven = new int[groups.Length + 1];
+        for (var i = 0; i < groups.Length; i++)
+        {
+            var known = true;
+            foreach (var reading in groups[i])
+                if (reading.Anchor is { Exact: true } exact && reading.Campaign is { Length: > 0 } campaign
+                    && ancestry.Node(exact.Key)?.Identity.ModCampaignId == campaign)
+                    exactGroup.TryAdd(exact.Key, i);
+                else
+                    known = false;
+            unproven[i + 1] = unproven[i] + (known ? 0 : 1);
+        }
+        bool SkipsOnlyOtherBranches(int i, int source)
+            => unproven[i] - unproven[source + 1] == 0 && anchors[i] is { } anchor
+                && !ancestry.AncestorsAfter(anchor, groups[source].Key)
+                    .Any(key => exactGroup.TryGetValue(key, out var at) && at > source && at < i);
+
         var points = new MetricHistoryPoint[groups.Length];
         for (var i = 0; i < groups.Length; i++)
+        {
+            var skips = from[i] >= 0 && from[i] != i - 1;
             points[i] = new MetricHistoryPoint(groups[i].Key, values[i], from[i] >= 0 && from[i] == i - 1)
             {
-                ContinuesFrom = from[i] >= 0 && from[i] != i - 1 ? from[i] : -1,
+                ContinuesFrom = skips ? from[i] : -1,
+                SkipsOnlyOtherBranches = skips && SkipsOnlyOtherBranches(i, from[i]),
                 Unlinked = i > 0 && from[i] < 0,
             };
+        }
         return points;
     }
 }

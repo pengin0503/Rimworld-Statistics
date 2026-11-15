@@ -18,8 +18,9 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
     public int dataVersion = 1;
 
     /// <summary>
-    /// The checkpoint text of the numeric statistics (Phase C): as loaded, then what each save writes. Data this version
-    /// cannot read, or written while no family records, passes through unchanged (numeric expansion design §3 step 5).
+    /// The checkpoint text of the numeric statistics (Phase C): as loaded, then what each save writes. Each save of a
+    /// readable checkpoint writes a new child, even while no family records; data this version cannot read passes through
+    /// unchanged (numeric expansion design §3 step 5).
     /// </summary>
     public string? numericStatistics;
 
@@ -207,10 +208,13 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             var numeric = NumericObservation(checkpoint, identity, version);
             // Read detached snapshots only after the game file has successfully committed.
             var snapshot = SavedStateMetricReader.Read(identity, version, savedUtc);
-            // Both come from this one successful save: the checkpoint names the snapshot's place in the save lineage,
-            // so a history chart can join it only to snapshots of proven ancestor saves.
-            if (snapshot != null && numeric != null && numeric.SaveTick == snapshot.SaveTick)
-                snapshot.CheckpointKey = numeric.Key;
+            // Both come from this one successful save: the checkpoint the file holds names the snapshot's place in the save
+            // lineage, so a history chart joins it only to snapshots of proven ancestor saves. That is the checkpoint this
+            // save committed, or, when it committed none (a nested save, or the save scope off after an error), the one it
+            // wrote back unchanged: the snapshot then descends from that one, exactly as a later read of the same file
+            // places it. Unreadable data names no checkpoint.
+            if (snapshot != null)
+                snapshot.CheckpointKey = checkpoint?.Payload?.CheckpointId ?? CheckpointJson.IdOf(numericStatistics);
             var providers = ModProviderAdapters.ActiveDescriptors;   // read here, on the game thread, for this save
             // The game thread never waits for the profile (Issue #195): while a background write or an import holds it,
             // this change is applied right after, in order, before anything else reads or writes the profile.

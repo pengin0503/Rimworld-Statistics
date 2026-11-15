@@ -62,6 +62,10 @@ public static class CheckpointJson
         }
     }
 
+    /// <summary>The id of the checkpoint that <paramref name="json"/> holds, when it is one this version reads (as an import would); null otherwise.</summary>
+    public static string? IdOf(string? json)
+        => Parse(json) is { Status: CheckpointParseStatus.Ok, Payload: { } payload } ? payload.CheckpointId : null;
+
     /// <summary>SHA-256 (lowercase hex) of the exact UTF-8 text a save holds: the identity of a checkpoint's content.</summary>
     public static string Hash(string json) => Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(json)));
 }

@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>Hohle Punkte sind Spielstände, deren Beziehung zu früheren Werten nicht belegt ist (anderer Zweig oder älterer Spielstand ohne Speicherpunkte).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Die Beziehung zu früheren Werten ist nicht belegt.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ein Zweig, der an den Wert von Tag {0} anschließt; die Punkte dazwischen gehören zu einem anderen Zweig.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Schließt an den Wert von Tag {0} an. Bei manchen Punkten dazwischen ist die Beziehung zu diesem Wert nicht belegt (sie gehören nicht unbedingt zu einem anderen Zweig).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>Dieser Wert war unverändert auch in einem Spielstand von Tag {0} enthalten; dieser hat keine neueren Statistiken aufgezeichnet.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>anders aufgezeichnet; nicht gemeinsam dargestellt</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} Messwerte ({1} teilweise); {2} Punkte ohne Wert</RWS_Chart_PointCounts>

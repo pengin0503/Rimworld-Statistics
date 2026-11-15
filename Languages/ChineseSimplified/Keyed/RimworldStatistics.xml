@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>空心点表示无法确认与更早记录之间父子关系的存档（可能是其他分支，或没有检查点的旧存档）。</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>无法确认与更早记录之间的父子关系。</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>这是从第 {0} 天的记录延续的分支；中间的点属于其他分支。</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>延续自第 {0} 天的记录；中间的点中有些无法确认与此记录的父子关系（不一定属于其他分支）。</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>第 {0} 天的存档也原样包含此记录；该存档没有记录更新的统计。</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>记录方式不同，无法叠加显示</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>记录 {0} 个（部分记录 {1} 个），无数值的时间点 {2} 个</RWS_Chart_PointCounts>

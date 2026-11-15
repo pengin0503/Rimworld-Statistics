@@ -6,7 +6,7 @@ public static class MetricHistoryPlot
     /// <summary>
     /// For a history much denser than <paramref name="width"/> pixels: within each run of readings that each continue the
     /// previous one, keeps the first, lowest, highest and last reading of every pixel-sized chunk. Gaps, unlinked readings,
-    /// branch starts and every reading another branch continues from are always kept, and branch references are
+    /// branch starts and every reading a non-adjacent one continues from are always kept, and branch references are
     /// renumbered, so no line is drawn between readings that were not joined before. Returns the same list when it is
     /// already sparse enough.
     /// </summary>
@@ -62,9 +62,14 @@ public static class MetricHistoryPlot
             var original = point.ContinuesFrom is var from && from >= 0 && from < i ? from : -1;
             var mapped = original >= 0 ? index[original] : -1;
             index[i] = output.Count;
+            var adjacent = mapped >= 0 && mapped == output.Count - 1;
             output.Add(mapped < 0
-                ? point with { ContinuesFrom = -1 }
-                : point with { ConnectToPrevious = mapped == output.Count - 1, ContinuesFrom = mapped == output.Count - 1 ? -1 : mapped });
+                ? point with { ContinuesFrom = -1, SkipsOnlyOtherBranches = false }
+                : point with
+                {
+                    ConnectToPrevious = adjacent, ContinuesFrom = adjacent ? -1 : mapped,
+                    SkipsOnlyOtherBranches = !adjacent && point.SkipsOnlyOtherBranches,
+                });
         }
         return output;
     }

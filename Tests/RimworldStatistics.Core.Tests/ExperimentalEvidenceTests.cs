@@ -67,9 +67,10 @@ public sealed class ExperimentalEvidenceTests
         var a = parent.PrepareSave(100, DateTime.UtcNow, "P")!;
         parent.Commit(a);
         var off = LiveMetricAccumulator.Resume(a.Json, Array.Empty<FamilySpec>(), 100, experimental);
-        var draft = off.PrepareSave(150, DateTime.UtcNow, "off");
-        Assert.False(draft?.IsNew ?? false);
-        var resumed = LiveMetricAccumulator.Resume(draft?.Json ?? a.Json, units, 150, experimental);
+        var draft = off.PrepareSave(150, DateTime.UtcNow, "off")!;
+        Assert.True(draft.IsNew);   // a save with nothing recording still names its own checkpoint
+        Assert.Equal(("P", 100), (draft.Payload!.ParentCheckpointId, draft.Payload.Families["research"].ThroughTick));
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, units, 150, experimental);
         Assert.False(resumed.Family("research")!.Continuous);
         Assert.Equal(1, resumed.Family("research")!.Peek("events")?.N);
     }

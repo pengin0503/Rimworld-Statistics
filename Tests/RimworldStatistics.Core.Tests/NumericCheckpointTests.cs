@@ -329,19 +329,44 @@ public sealed class NumericCheckpointTests
     }
 
     [Fact]
-    public void NoRecordingFamily_WritesNothingOrTheLoadedCheckpointUnchanged()
+    public void NoRecordingFamily_WritesNothingWithoutACheckpoint()
     {
         Assert.Null(LiveMetricAccumulator.StartNew(Array.Empty<FamilySpec>(), 0).PrepareSave(10, T0, "X"));
         Assert.Null(LiveMetricAccumulator.Resume(null, Array.Empty<FamilySpec>(), 10).PrepareSave(20, T0, "X"));
+    }
 
+    /// <summary>
+    /// The supplied 21:07/21:19 saves: with no family recording, the MOD wrote the loaded checkpoint back unchanged, so the
+    /// two saves named no place of their own in the save lineage and could not be joined. Every save now commits a child.
+    /// </summary>
+    [Fact]
+    public void NoRecordingFamily_EachSaveCommitsANewChildThatKeepsTheTotalsMeasuredOnlyThroughTheirTick()
+    {
         var acc = LiveMetricAccumulator.StartNew(Recording, 0);
         Events(acc, 2);
         var p = Save(acc, "P", 100);
         var off = LiveMetricAccumulator.Resume(p.Json, Array.Empty<FamilySpec>(), 100);
-        var d = off.PrepareSave(900, T0, "X")!;
-        Assert.Equal((p.Json, false), (d.Json, d.IsNew));
-        off.Commit(d);
-        Assert.Equal("P", off.ParentId);
+        Assert.Null(off.Family("test"));
+
+        var first = Save(off, "X", 900);
+        var second = Save(off, "Y", 1200);
+
+        Assert.True(first.IsNew);
+        Assert.Equal(("X", "P", 900), (first.Payload!.CheckpointId, first.Payload.ParentCheckpointId, first.Payload.SaveTick));
+        Assert.Equal(("Y", "X", 1200), (second.Payload!.CheckpointId, second.Payload.ParentCheckpointId, second.Payload.SaveTick));
+        Assert.Equal("Y", off.ParentId);
+        // The family did not record: its totals are copied unchanged and measured only through tick 100, hence partial.
+        var kept = second.Payload.Families["test"];
+        Assert.Equal((100, 2L), (kept.ThroughTick, kept.Metrics["events"].N!.Value));
+        static string FamiliesText(SaveDraft d) => d.Json[d.Json.IndexOf("\"families\":", StringComparison.Ordinal)..];
+        Assert.Equal(FamiliesText(p), FamiliesText(second));
+        Assert.Equal(MetricCoverage.Complete, Obs(p).Scalar("test.count", 1)!.Coverage);
+        Assert.Equal((MetricCoverage.Partial, 2L), (Obs(second).Scalar("test.count", 1)!.Coverage, Count(Obs(second))));
+
+        // Turning the family back on continues the same totals, not continuously.
+        var resumed = LiveMetricAccumulator.Resume(second.Json, Recording, 1200);
+        Assert.False(resumed.Family("test")!.Continuous);
+        Assert.Equal(2, resumed.Family("test")!.Metrics["events"].N);
     }
 
     [Fact]
@@ -392,9 +417,12 @@ public sealed class NumericCheckpointTests
         Assert.Equal(commitEarlierDraft ? "P" : null, saved.Payload!.ParentCheckpointId);
         Assert.Equal(400, saved.Payload.Families["test"].ThroughTick);
         Assert.Equal(5, Count(Obs(saved)));
-        var unchanged = acc.PrepareSave(1100, T0, "Next")!;
-        Assert.False(unchanged.IsNew);
-        Assert.Equal(saved.Json, unchanged.Json);
+        // With nothing recording any more, the next save is still a child of its own, holding the same stopped totals.
+        var next = acc.PrepareSave(1100, T0, "Next")!;
+        Assert.True(next.IsNew);
+        Assert.Equal(("S", 1100), (next.Payload!.ParentCheckpointId, next.Payload.SaveTick));
+        Assert.Equal(400, next.Payload.Families["test"].ThroughTick);
+        Assert.Equal(5, Count(Obs(next)));
     }
 
     /// <summary>Codex review: an interval open before a gap must not become a completed sample after it.</summary>
