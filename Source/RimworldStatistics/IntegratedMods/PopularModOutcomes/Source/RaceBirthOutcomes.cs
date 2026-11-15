@@ -88,7 +88,7 @@ internal static class RaceBirthOutcomes
     private static IEnumerable<CodeInstruction> CaptureSpawnReturn(IEnumerable<CodeInstruction> instructions)
     {
         var original = AccessTools.DeclaredMethod(typeof(PawnUtility),
-            nameof(PawnUtility.TrySpawnHatchedOrBornPawn), [typeof(Pawn), typeof(Thing)]);
+            nameof(PawnUtility.TrySpawnHatchedOrBornPawn), [typeof(Pawn), typeof(Thing), typeof(IntVec3?)]);
         if (original?.ReturnType != typeof(bool))
             throw new InvalidOperationException("RimWorld newborn spawn API changed");
         var code = instructions.ToList();
@@ -101,9 +101,9 @@ internal static class RaceBirthOutcomes
         return code;
     }
 
-    private static bool TrySpawnVerified(Pawn pawn, Thing source)
+    private static bool TrySpawnVerified(Pawn pawn, Thing source, IntVec3? positionOverride)
     {
-        bool succeeded = PawnUtility.TrySpawnHatchedOrBornPawn(pawn, source);
+        bool succeeded = PawnUtility.TrySpawnHatchedOrBornPawn(pawn, source, positionOverride);
         if (succeeded && pending is { Count: > 0 } &&
             ReferenceEquals(pending.Peek().Source, source))
         {
