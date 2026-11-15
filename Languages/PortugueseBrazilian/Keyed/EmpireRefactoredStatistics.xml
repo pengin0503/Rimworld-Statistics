@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Assentamentos imperiais fundados</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Conta os assentamentos registrados pelo Empire Refactored, incluindo os fundados após uma conquista.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Melhorias dos assentamentos imperiais</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Conta as operações concluídas que aumentaram o nível de um assentamento.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Edifícios imperiais concluídos</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Conta os edifícios concluídos nos assentamentos, por tipo.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Vitórias militares imperiais</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Conta as vitórias confirmadas nas batalhas dos assentamentos imperiais.</RWS_EmpireVictoriesDesc>
+</LanguageData>

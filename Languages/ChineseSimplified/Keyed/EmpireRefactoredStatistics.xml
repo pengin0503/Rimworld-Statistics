@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>帝国附属定居点建成数</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>统计 Empire Refactored 中已注册的附属定居点，也包括征服后建立的定居点。</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>帝国定居点升级次数</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>统计确实提升了定居点等级的升级次数。</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>帝国定居点建筑完工数</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>按建筑类型统计定居点已完工的建筑。</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>帝国军事胜利次数</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>统计帝国定居点作战中已确认的胜利。</RWS_EmpireVictoriesDesc>
+</LanguageData>

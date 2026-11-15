@@ -1,5 +1,6 @@
 using RimworldStatistics.NewModOutcomes;
 using RimworldStatistics.WinstonWave;
+using RimworldStatistics.EmpireRefactored;
 using RimworldStatistics.VaeAchievements;
 using RimworldStatistics.VaeAspirations;
 using RimworldStatistics.VfeSecurity;
@@ -58,6 +59,8 @@ internal static class IntegratedTransitionAdapters
         result.Add(VfeClassicalPerkStatistics.Build());
         result.AddRange(VfeDesertersStatistics.Build());
         result.AddRange(VfeEmpireStatistics.Build());
+        result.AddRange(EmpireOutcomes.Build());
+        result.Add(EmpireBattleOutcomes.Build());
         result.AddRange(VsieStatistics.Build());
         result.Add(VsieTeachingStatistics.Build());
         result.AddRange(GiddyUpMountStatistics.Build());
