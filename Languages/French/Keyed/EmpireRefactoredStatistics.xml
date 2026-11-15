@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Colonies impériales fondées</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Compte les colonies enregistrées par Empire Refactored, y compris après une conquête.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Améliorations de colonies impériales</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Compte les opérations qui ont effectivement augmenté le niveau d’une colonie.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Bâtiments impériaux achevés</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Compte les bâtiments de colonie achevés, par type.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Victoires militaires impériales</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Compte les victoires confirmées lors des batailles des colonies impériales.</RWS_EmpireVictoriesDesc>
+</LanguageData>

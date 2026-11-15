@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Povoações imperiais fundadas</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Conta as povoações registadas pelo Empire Refactored, incluindo as fundadas após uma conquista.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Melhorias das povoações imperiais</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Conta as operações concluídas que aumentaram o nível de uma povoação.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Edifícios imperiais concluídos</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Conta os edifícios concluídos nas povoações, por tipo.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Vitórias militares imperiais</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Conta as vitórias confirmadas nas batalhas das povoações imperiais.</RWS_EmpireVictoriesDesc>
+</LanguageData>

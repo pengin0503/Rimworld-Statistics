@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>帝国の従属入植地創設数</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>征服後に設立されたものを含め、Empire Refactoredで登録が完了した従属入植地を数えます。</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>帝国の従属入植地アップグレード数</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>従属入植地のレベルが実際に上昇した回数を数えます。</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>帝国の従属施設建設完了数</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>従属入植地で完成した施設を種類別に数えます。</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>帝国の軍事作戦勝利数</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>帝国の従属入植地に関わる戦闘で、確定した勝利を数えます。</RWS_EmpireVictoriesDesc>
+</LanguageData>

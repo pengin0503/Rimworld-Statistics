@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>제국 종속 정착지 설립 수</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>정복 후 설립된 정착지를 포함해 Empire Refactored에 등록된 종속 정착지를 셉니다.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>제국 종속 정착지 업그레이드 수</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>정착지 레벨이 실제로 오른 횟수를 셉니다.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>제국 정착지 건물 완공 수</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>정착지에서 완공된 건물을 종류별로 셉니다.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>제국 군사 작전 승리 수</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>제국 정착지와 관련된 전투에서 확정된 승리를 셉니다.</RWS_EmpireVictoriesDesc>
+</LanguageData>

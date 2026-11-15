@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Empire settlements founded</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Counts newly registered Empire Refactored settlements, including those formed after a conquest.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Empire settlement upgrades</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Counts completed changes that increase a settlement’s level.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Empire buildings completed</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Counts completed settlement buildings by building definition.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Empire military victories</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Counts resolved victories in Empire settlement battles.</RWS_EmpireVictoriesDesc>
+</LanguageData>

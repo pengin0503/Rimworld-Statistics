@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Gegründete Imperiumssiedlungen</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Zählt registrierte Siedlungen aus Empire Refactored, einschließlich Gründungen nach Eroberungen.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Ausbauten von Imperiumssiedlungen</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Zählt abgeschlossene Ausbauten, die die Siedlungsstufe tatsächlich erhöhen.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Fertiggestellte Imperiumsgebäude</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Zählt fertiggestellte Siedlungsgebäude nach Gebäudetyp.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Militärische Siege des Imperiums</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Zählt bestätigte Siege in Schlachten um Imperiumssiedlungen.</RWS_EmpireVictoriesDesc>
+</LanguageData>

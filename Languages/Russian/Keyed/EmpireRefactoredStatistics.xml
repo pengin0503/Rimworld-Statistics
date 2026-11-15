@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_EmpireFounding>Основанные имперские поселения</RWS_EmpireFounding>
+  <RWS_EmpireFoundingDesc>Учитывает зарегистрированные поселения Empire Refactored, в том числе основанные после завоевания.</RWS_EmpireFoundingDesc>
+  <RWS_EmpireUpgrades>Улучшения имперских поселений</RWS_EmpireUpgrades>
+  <RWS_EmpireUpgradesDesc>Учитывает завершённые улучшения, повысившие уровень поселения.</RWS_EmpireUpgradesDesc>
+  <RWS_EmpireBuildings>Построенные имперские здания</RWS_EmpireBuildings>
+  <RWS_EmpireBuildingsDesc>Учитывает завершённые постройки в поселениях по типу.</RWS_EmpireBuildingsDesc>
+  <RWS_EmpireVictories>Военные победы империи</RWS_EmpireVictories>
+  <RWS_EmpireVictoriesDesc>Учитывает подтверждённые победы в сражениях за имперские поселения.</RWS_EmpireVictoriesDesc>
+</LanguageData>
