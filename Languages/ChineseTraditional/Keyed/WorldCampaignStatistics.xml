@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_WorldDominationVictory>世界征服勝利次數</RWS_WorldDominationVictory>
+  <RWS_WorldDominationVictoryDesc>統計 World Domination 2.0 的勝利任務成功完成的次數。</RWS_WorldDominationVictoryDesc>
+  <RWS_RimWarVictory>Rim War 宿敵挑戰勝利</RWS_RimWarVictory>
+  <RWS_RimWarVictoryDesc>統計指定宿敵派系失去最後一個定居點後 Rim War 宣布勝利的次數。</RWS_RimWarVictoryDesc>
+</LanguageData>

@@ -29,6 +29,7 @@
 - Prisoner Arena (Continued)
 - Project RimFactory Revived
 - Real Ruins
+- Rim War (Continued)
 - Rimefeller
 - RimPacts
 - Roads of the Rim (Continued)
@@ -76,3 +77,4 @@
 - Vanilla Vehicles Expanded
 - Vanilla Vehicles Expanded – Upgrades
 - Vehicle Framework
+- World Domination 2.0
