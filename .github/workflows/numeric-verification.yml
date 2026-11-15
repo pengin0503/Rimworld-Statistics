@@ -159,6 +159,47 @@ jobs:
             1.6/Assemblies/VanillaTradingExpanded.dll
           sparse-checkout-cone-mode: false
           persist-credentials: false
+      # These are the exact 1.6 binaries selected by each upstream 1.7 loadFolders.xml.
+      - uses: actions/checkout@v4
+        with:
+          repository: Vanilla-Expanded/VanillaRacesExpanded-Saurid
+          ref: 021b9f684c7670ef325bc33e17e0a692367913a5
+          path: .devinputs/integrated/saurid
+          sparse-checkout: |
+            About/About.xml
+            loadFolders.xml
+            1.6/Source/VRESaurids/Comp_HumanHatcher.cs
+            1.6/Assemblies/VRESaurids.dll
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          repository: Vanilla-Expanded/VanillaRacesExpanded-Phytokin
+          ref: 2c2eb8dd18cc0cad02b6f68b5b5b657aec25d62b
+          path: .devinputs/integrated/phytokin
+          sparse-checkout: |
+            About/About.xml
+            loadFolders.xml
+            1.6/Source/VanillaRacesExpanded-Phytokin/VanillaRacesExpanded-Phytokin/Building/Building_SaplingChild.cs
+            1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Audit actual 1.7-selected Saurid and Phytokin DLLs (read-only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          s=.devinputs/integrated/saurid
+          p=.devinputs/integrated/phytokin
+          python3 tools/IntegratedModAudit/check_race_birth_contract.py "$s" "$p"
+          sha256sum "$s/1.6/Assemblies/VRESaurids.dll" "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll"
+          dotnet run -c Release --project tools/IntegratedModAudit/RaceBirthIlAudit/RaceBirthIlAudit.csproj -- \
+            "$s/1.6/Assemblies/VRESaurids.dll" "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll"
+          # Wrong target versions must fail closed, not silently pass an unrelated DLL.
+          if dotnet run --no-build -c Release --project tools/IntegratedModAudit/RaceBirthIlAudit/RaceBirthIlAudit.csproj -- \
+            "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll" "$s/1.6/Assemblies/VRESaurids.dll"; then
+            echo "Race birth IL audit accepted swapped/incorrect target assemblies" >&2
+            exit 1
+          fi
       - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
         shell: bash
         run: |
