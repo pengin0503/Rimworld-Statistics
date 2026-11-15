@@ -27,7 +27,7 @@ static bool Calls(Instruction instruction, string name) =>
 static bool HasField(TypeDefinition type, string name, string kind) =>
     type.Fields.Any(f => f.Name == name && f.FieldType.FullName == kind);
 
-static (int Call, IReadOnlyList<Instruction> Il) SpawnCall(MethodDefinition method)
+static (int Call, IList<Instruction> Il) SpawnCall(MethodDefinition method)
 {
     var il = method.Body.Instructions;
     var match = il.Select((instruction, index) => (instruction, index))
