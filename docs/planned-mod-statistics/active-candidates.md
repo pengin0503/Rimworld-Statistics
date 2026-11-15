@@ -1,8 +1,8 @@
 # 現在のMOD実装候補（2026-11-15時点）
 
-**現行の未対応・未完了候補：87件。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
+**現行の未対応・未完了候補：84件。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
 
-2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。元台帳は技術情報・根拠を失わないよう履歴資料として保持する。対応MOD一覧の登録数は85種類（本候補以外に起源を持つMODも含む）。
+2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMODを順次[対応MOD一覧](../supported-mods.md)へ移行している。
 
 ## 第3・第4波の未対応候補（2件）
 
@@ -12,14 +12,12 @@
 | H05 | [Biomes! Bees](2026-11-13-fourthwave-follow-on-research.md) | [調査台帳](2026-11-13-fourthwave-follow-on-research.md) |
 
 
-## 人気MOD追加調査の未対応候補（11件）
+## 人気MOD追加調査の未対応候補（9件）
 
 | ID | MOD | 詳細資料 |
 |---|---|---|
-| A02 | [Vanilla Furniture Expanded – Power](https://steamcommunity.com/sharedfiles/filedetails/?id=2062943477) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | A04 | [Vanilla Cooking Expanded – Stews](https://steamcommunity.com/sharedfiles/filedetails/?id=2134312965) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | B06 | [Vanilla Landmarks Expanded](https://github.com/Vanilla-Expanded/VanillaLandmarksExpanded) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
-| B07 | [Vanilla Helixien Gas Expanded](https://github.com/Vanilla-Expanded/VanillaHelixienGasExpanded) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C02 | [Vanilla Furniture Expanded – Spacer Module](https://github.com/Vanilla-Expanded/VanillaFurnitureExpanded-Spacer) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C03 | [Vanilla Races Expanded – Highmate](https://github.com/Vanilla-Expanded/VanillaRacesExpanded-Highmate) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
 | C05 | [Mechanoid Upgrades](https://steamcommunity.com/sharedfiles/filedetails/?id=3365118555) | [調査台帳](2026-11-14-popular-mod-discovery-register.md) |
@@ -47,7 +45,7 @@
 | N03 | [Caravan Adventures](https://steamcommunity.com/sharedfiles/filedetails/?id=2558957509) | [調査台帳](2026-11-14-fifthwave-additional-candidates-ja.md) |
 
 
-## 第6波の未対応候補（60件）
+## 第6波の未対応候補（59件）
 
 | ID | MOD | 詳細資料 |
 |---|---|---|
@@ -78,7 +76,6 @@
 | S25 | [Zombieland 1.7 (Unofficial)](https://steamcommunity.com/sharedfiles/filedetails/?id=3827574769) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S26 | [Dynamic Diplomacy - Continued](https://steamcommunity.com/sharedfiles/filedetails/?id=3220299022) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S27 | [Hearts of RimWorld - Grand Strategy Overhaul](https://steamcommunity.com/sharedfiles/filedetails/?id=3833698946) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
-| S28 | [Vanilla Recycling Expanded](https://github.com/Vanilla-Expanded/VanillaRecyclingExpanded) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S29 | [Mines 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2503894706) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S30 | [Misc. Robots](https://steamcommunity.com/sharedfiles/filedetails/?id=724602224) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |
 | S31 | [Quarry [Adopted]](https://steamcommunity.com/workshop/filedetails/?id=2007576583) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) |

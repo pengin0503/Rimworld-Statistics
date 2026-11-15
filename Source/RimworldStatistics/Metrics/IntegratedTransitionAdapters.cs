@@ -45,6 +45,9 @@ using RimworldStatistics.VreFungoid;
 using RimworldStatistics.VreInsector;
 using RimworldStatistics.AlphaAnimals;
 using RimworldStatistics.VreSanguophage;
+using RimworldStatistics.VfePower;
+using RimworldStatistics.VheHelixienGas;
+using RimworldStatistics.VreRecycling;
 
 namespace RimworldStatistics.Metrics;
 
@@ -140,6 +143,9 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(VreInsectorStatistics.Build());
         result.AddRange(AlphaAnimalsStatistics.Build());
         result.AddRange(VreSanguophageStatistics.Build());
+        result.AddRange(VfePowerStatistics.Build());
+        result.AddRange(VheHelixienGasStatistics.Build());
+        result.AddRange(VreRecyclingStatistics.Build());
         return result;
     }
 }

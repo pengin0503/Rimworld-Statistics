@@ -55,10 +55,12 @@
 - Vanilla Fishing Expanded
 - Vanilla Furniture Expanded – Factory
 - Vanilla Furniture Expanded – Farming
+- Vanilla Furniture Expanded – Power
 - Vanilla Furniture Expanded – Security
 - Vanilla Genetics Expanded
 - Vanilla Gravship Expanded – Chapter 1
 - Vanilla Gravship Expanded – Chapter 2
+- Vanilla Helixien Gas Expanded
 - Vanilla Ideology Expanded – Dryads
 - Vanilla Ideology Expanded – Splits and Schisms
 - Vanilla Nutrient Paste Expanded
@@ -77,6 +79,7 @@
 - Vanilla Races Expanded – Phytokin
 - Vanilla Races Expanded – Sanguophage
 - Vanilla Races Expanded – Saurid
+- Vanilla Recycling Expanded
 - Vanilla Skills Expanded
 - Vanilla Social Interactions Expanded
 - Vanilla Storytellers Expanded – Winston Waves

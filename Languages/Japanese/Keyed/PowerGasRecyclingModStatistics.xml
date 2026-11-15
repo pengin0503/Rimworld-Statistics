@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfePower_NuclearMeltdowns>原子炉のメルトダウン回数</RWS_VfePower_NuclearMeltdowns>
+  <RWS_VfePower_NuclearMeltdownsDesc>Vanilla Furniture Expanded - Powerのプレイヤー所有の原子炉が実際にメルトダウン状態へ移行して故障した回数を数えます。</RWS_VfePower_NuclearMeltdownsDesc>
+  <RWS_VheHelixienGas_StoredUnits>ヘリキシエンガスの貯蔵量</RWS_VheHelixienGas_StoredUnits>
+  <RWS_VheHelixienGas_StoredUnitsDesc>プレイヤー所有のヘリキシエンポンプからVHGE_HelixienNet配管貯蔵へ実際に受け入れられたガスの合計量を記録します。</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VreRecycling_ProcessedItems>リサイクル・圧縮による生成数</RWS_VreRecycling_ProcessedItems>
+  <RWS_VreRecycling_ProcessedItemsDesc>Vanilla Recycling Expandedのプレイヤー所有処理設備（ごみ圧縮機や合金パック分解機）が実際に生成・配置したアイテム数を品目別に数えます。</RWS_VreRecycling_ProcessedItemsDesc>
+</LanguageData>

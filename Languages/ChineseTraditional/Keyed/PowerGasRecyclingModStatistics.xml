@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_VfePower_NuclearMeltdowns>核反應爐熔毀次數</RWS_VfePower_NuclearMeltdowns>
+  <RWS_VfePower_NuclearMeltdownsDesc>統計玩家在 Vanilla Furniture Expanded - Power 中的核電機組實際發生爐心熔毀並故障的次數。</RWS_VfePower_NuclearMeltdownsDesc>
+  <RWS_VheHelixienGas_StoredUnits>Helixien 氣體儲存量</RWS_VheHelixienGas_StoredUnits>
+  <RWS_VheHelixienGas_StoredUnitsDesc>記錄玩家的 Helixien 氣泵實際存入 VHGE_HelixienNet 管線儲存網路的氣體總量。</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VreRecycling_ProcessedItems>回收與壓實產出數量</RWS_VreRecycling_ProcessedItems>
+  <RWS_VreRecycling_ProcessedItemsDesc>依產出物品分類，統計玩家在 Vanilla Recycling Expanded 的處理設備（垃圾壓實機與合金包分離機）實際生成並放置的物品數量。</RWS_VreRecycling_ProcessedItemsDesc>
+</LanguageData>
