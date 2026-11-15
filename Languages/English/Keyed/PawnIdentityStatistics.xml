@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>Peak free colonists by species</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>Peak prisoners by species</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>Peak slaves by species</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>The highest count observed in a successful save, calculated separately for each species.</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>Joins by xenotype</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>Colonist deaths by xenotype</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>Classifies each recorded event using the Biotech xenotype at the time.</RWS_MetricDesc_ByXenotype>
+</LanguageData>

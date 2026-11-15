@@ -349,9 +349,9 @@ public static partial class MetricCalculator
             .Where(x => MeasuredNumber(x.Value) is not null).ToList();
         if (values.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
-        var best = d.Selection == ColonySelection.ObservationMax
-            ? values.OrderByDescending(x => x.Value!.Number).First()
-            : values.OrderBy(x => x.Value!.Number).First();
+        var best = d.Selection == ColonySelection.ObservationMin
+            ? values.MinBy(x => x.Value!.Number)
+            : values.MaxBy(x => x.Value!.Number);
         // A compacted history retains a witness for any missing applicable reading;
         // raw value counts are no longer interchangeable with observation counts.
         var partial = applicable.Any(o => MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is null)
@@ -370,11 +370,33 @@ public static partial class MetricCalculator
 
         // A breakdown describes the winning scalar's observation, so its
         // counts refer to one actual save and remain valid after compaction.
-        var breakdowns = witness.Values.Where(kv => kv.Key != MetricEntry.Scalar)
-            .OrderBy(kv => kv.Key, Ord)
-            .Select(kv => Row(d, kv.Key, From(kv.Value, best.Obs, d))).ToArray();
+        var breakdowns = d.Selection == ColonySelection.ObservationMaxByBreakdown
+            ? BreakdownMaxima(d, values.Select(x => x.Obs), row.Value)
+            : witness.Values.Where(kv => kv.Key != MetricEntry.Scalar)
+                .OrderBy(kv => kv.Key, Ord)
+                .Select(kv => Row(d, kv.Key, From(kv.Value, best.Obs, d))).ToArray();
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
+
+    private static NumericRow[] BreakdownMaxima(MetricDefinition definition,
+        IEnumerable<MetricObservation> observations, NumericValue scalar)
+        => observations.SelectMany(obs => Entry(obs, definition)!.Values
+                .Where(kv => kv.Key != MetricEntry.Scalar && MeasuredNumber(kv.Value) is not null)
+                .Select(kv => (kv.Key, Value: kv.Value, Observation: obs)))
+            .GroupBy(sample => sample.Key, Ord)
+            .OrderBy(group => group.Key, Ord)
+            .Select(group =>
+            {
+                var peak = group.MaxBy(sample => sample.Value.Number);
+                return Row(definition, group.Key, new NumericValue
+                {
+                    Number = peak.Value.Number,
+                    Coverage = scalar.Coverage,
+                    Evidence = scalar.Evidence,
+                    SinceTick = peak.Value.SinceTick,
+                    ThroughTick = peak.Observation.SaveTick,
+                });
+            }).ToArray();
 
     /// <summary>
     /// No value, and the observation's mod list shows the output's DLC was not active: the output does not apply. A value that
@@ -476,6 +498,7 @@ public static partial class MetricCalculator
         WorkFamily.Sown_, WorkFamily.HarvestByCrop, WorkFamily.MealsByDef,
         WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
         MedicineFamily.Surgeries, FishingFamily.AcceptedUnitsByDef, ModdedIncidentFamily.ByDef,
+        MembershipFamily.JoinsByXenotype, HealthDeathFamily.DeathsByXenotype,
     };
 
     /// <summary>
@@ -486,6 +509,14 @@ public static partial class MetricCalculator
     {
         if (row.Value.Number is null)
             return row.Value;
+
+        if (row.Definition.Selection == ColonySelection.ObservationMaxByBreakdown &&
+            row.Value.Coverage == MetricCoverage.Partial)
+            return new NumericValue
+            {
+                Coverage = MetricCoverage.Unknown, Evidence = row.Value.Evidence,
+                SinceTick = row.Value.SinceTick, ThroughTick = row.Value.ThroughTick,
+            };
 
         if (ExhaustiveEventBreakdowns.Contains(row.Definition.Key))
         {

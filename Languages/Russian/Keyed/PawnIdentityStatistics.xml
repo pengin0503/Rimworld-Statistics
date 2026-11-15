@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>Максимум свободных колонистов по видам</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>Максимум пленников по видам</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>Максимум рабов по видам</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>Наибольшая численность, зафиксированная при успешном сохранении, отдельно для каждого вида.</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>Вступления по ксенотипам</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>Смерти колонистов по ксенотипам</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>Каждое событие классифицируется по ксенотипу Biotech на момент события.</RWS_MetricDesc_ByXenotype>
+</LanguageData>

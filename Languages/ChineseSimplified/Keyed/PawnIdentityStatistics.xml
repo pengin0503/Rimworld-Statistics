@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>各物种自由殖民者人数峰值</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>各物种囚犯人数峰值</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>各物种奴隶人数峰值</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>按物种分别计算成功存档时观测到的最高人数。</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>按异种类型统计加入人数</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>按异种类型统计殖民者死亡人数</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>根据事件发生时的生物技术异种类型对记录分类。</RWS_MetricDesc_ByXenotype>
+</LanguageData>

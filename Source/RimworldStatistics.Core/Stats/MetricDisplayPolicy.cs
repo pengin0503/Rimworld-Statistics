@@ -79,6 +79,7 @@ public static class MetricDisplayPolicy
         HealthDeathFamily.KillsByVictimKind, HealthDeathFamily.DeathCauses,
         HealthDeathFamily.DeathsByRaid, RaidFamily.ByArrivalMode, RaidFamily.ByFaction,
         MembershipFamily.Routes, MembershipFamily.JoinsBySpecies, HealthDeathFamily.DeathsBySpecies,
+        MembershipFamily.JoinsByXenotype, HealthDeathFamily.DeathsByXenotype,
         WorkFamily.QualityBreakdown, WorkFamily.Legendary, WorkFamily.Masterwork,
         WorkFamily.Sculptures, WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs,
         WorkFamily.HarvestByCrop, WorkFamily.SownDefs, WorkFamily.ConstructionMaterials,

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_FreeSpeciesPeak>Höchstzahl freier Kolonisten nach Spezies</RWS_Metric_FreeSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>Höchstzahl der Gefangenen nach Spezies</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_SlaveSpeciesPeak>Höchstzahl der Sklaven nach Spezies</RWS_Metric_SlaveSpeciesPeak>
+  <RWS_MetricDesc_SpeciesPeak>Die höchste bei einem erfolgreichen Speichervorgang erfasste Anzahl, getrennt nach Spezies.</RWS_MetricDesc_SpeciesPeak>
+  <RWS_Metric_JoinsByXenotype>Beitritte nach Xenotyp</RWS_Metric_JoinsByXenotype>
+  <RWS_Metric_DeathsByXenotype>Todesfälle von Kolonisten nach Xenotyp</RWS_Metric_DeathsByXenotype>
+  <RWS_MetricDesc_ByXenotype>Jedes erfasste Ereignis wird nach dem Biotech-Xenotyp zum Zeitpunkt des Ereignisses zugeordnet.</RWS_MetricDesc_ByXenotype>
+</LanguageData>

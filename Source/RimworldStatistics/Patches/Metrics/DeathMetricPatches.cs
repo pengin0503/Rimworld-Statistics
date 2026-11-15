@@ -9,7 +9,7 @@ namespace RimworldStatistics.Patches.Metrics;
 /// <summary>
 /// A confirmed death (evidence #health-death): the prefix reads the victim's state from before the death (side, hostility,
 /// age, caravan, designations, killer), the postfix confirms a living pawn is now dead. Re-entrant calls of the same pawn
-/// count once (the prefix of an already dead pawn records nothing).
+/// count once (only the outermost call reads the death facts).
 /// </summary>
 [MetricAdapter(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)]
 [HarmonyPatch(typeof(Pawn), nameof(Pawn.Kill))]
@@ -17,6 +17,9 @@ public static class PawnKillMetricPatch
 {
     [ThreadStatic]
     private static Dictionary<Pawn, RaidDeathScope>? activeRaidDeaths;
+
+    [ThreadStatic]
+    private static HashSet<Pawn>? activeDeaths;
 
     internal static bool TryDeferRaidLoss(Pawn pawn, int tick)
     {
@@ -29,11 +32,12 @@ public static class PawnKillMetricPatch
     public static void Prefix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, out DeathFacts? __state)
     {
         __state = null;
+        if (__instance == null || __instance.Dead
+            || !GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)
+            || !(activeDeaths ??= new(ReferenceEqualityComparer.Instance)).Add(__instance))
+            return;
         try
         {
-            if (__instance == null || __instance.Dead || activeRaidDeaths?.ContainsKey(__instance) == true
-                || !GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name))
-                return;
             var p = __instance;
             var instigator = dinfo?.Instigator;
             var raid = LiveMetrics.Family(RaidFamily.Name);
@@ -47,6 +51,7 @@ public static class PawnKillMetricPatch
                 HostileToPlayer = Faction.OfPlayer != null && p.HostileTo(Faction.OfPlayer),
                 VictimKind = GameFacts.VictimKind(p),
                 Species = p.IsFreeColonist ? GameFacts.Species(p) : null,
+                Xenotype = p.IsFreeColonist ? GameFacts.Xenotype(p) : null,
                 AgeYears = p.ageTracker?.AgeBiologicalYearsFloat,
                 InPlayerCaravan = GameFacts.InPlayerCaravan(p),
                 Cause = exactCulprit?.def != null ? "hediff:" + exactCulprit.def.defName : dinfo?.Def != null ? "damage:" + dinfo.Value.Def.defName : null,
@@ -67,14 +72,15 @@ public static class PawnKillMetricPatch
         }
         catch (Exception e)
         {
+            activeDeaths.Remove(__instance);
             LiveMetrics.Fail(HealthDeathFamily.Name, e);
             __state = null;
         }
     }
 
-    public static void Postfix(Pawn __instance, DeathFacts? __state)
+    public static void Postfix(Pawn __instance, DeathFacts? __state, bool __runOriginal)
     {
-        if (__state is not { } d || __instance == null || !__instance.Dead)
+        if (!__runOriginal || __state is not { } d || __instance == null || !__instance.Dead)
             return;
         var tick = GameFacts.Tick;
         GameFacts.Record(HealthDeathFamily.Name, s => HealthDeathFamily.Died(s, d, tick));
@@ -85,7 +91,10 @@ public static class PawnKillMetricPatch
 
     public static Exception? Finalizer(Pawn __instance, DeathFacts? __state, Exception? __exception)
     {
-        if (__state != null && activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope))
+        if (__state is null)
+            return __exception;
+        activeDeaths?.Remove(__instance);
+        if (activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope))
             GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
         return __exception;
     }

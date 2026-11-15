@@ -71,6 +71,26 @@ public sealed class NumericSnapshotRosterTests
     }
 
     [Fact]
+    public void SpeciesCountsAreExclusiveAcrossStatusesAndMissingOwnershipIsPartial()
+    {
+        var colonist = new RosterPawnFact { Id = "A", Kind = RosterKind.FreeColonist,
+            Species = "race.one/Fox", AgeYears = 24 };
+        var snapshot = RosterSnapshot.Build([
+            colonist, colonist,
+            new RosterPawnFact { Id = "B", Kind = RosterKind.Prisoner, Species = "race.two/Fox" },
+            new RosterPawnFact { Id = "C", Kind = RosterKind.Slave },
+        ]);
+        var free = snapshot[RosterSnapshot.FreeSpeciesPeak].Values;
+        var prisoner = snapshot[RosterSnapshot.PrisonerSpeciesPeak].Values;
+        var slave = snapshot[RosterSnapshot.SlaveSpeciesPeak].Values;
+        Assert.Equal(1, free["race.one/Fox"].IntegerValue);
+        Assert.DoesNotContain("race.two/Fox", free.Keys);
+        Assert.Equal(1, prisoner["race.two/Fox"].IntegerValue);
+        Assert.Equal(1, slave[MetricKeys.UnknownBucket].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, slave[MetricEntry.Scalar].Coverage);
+    }
+
+    [Fact]
     public void CatalogRetainsPeakSelectionWithoutPublishing()
     {
         Assert.Equal(ColonySelection.ObservationMax, MetricRegistry.Find(RosterSnapshot.InjuredPeak)!.Selection);

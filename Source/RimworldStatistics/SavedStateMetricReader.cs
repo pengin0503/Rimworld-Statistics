@@ -204,7 +204,7 @@ internal static class SavedStateMetricReader
                 var hediffs = pawn.health?.hediffSet?.hediffs;
                 facts.Add(new RosterPawnFact
                 {
-                    Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName,
+                    Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName, Species = GameFacts.Species(pawn),
                     AgeYears = kind == RosterKind.FreeColonist ? pawn.ageTracker?.AgeBiologicalYearsFloat : null,
                     Augmented = hediffs?.Any(h => h is Hediff_AddedPart) == true,
                     Injured = hediffs?.Any(h => h is Hediff_Injury) == true,
