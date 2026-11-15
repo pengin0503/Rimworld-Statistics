@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>Полые точки — сохранения, связь которых с более ранними данными не подтверждена (другая ветка или старое сохранение без контрольных точек).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Связь с более ранними данными не подтверждена.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ветка, продолжающая данные дня {0}; точки между ними относятся к другой ветке.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Продолжает данные дня {0}. Связь некоторых точек между ними с этой точкой не подтверждена (они не обязательно относятся к другой ветке).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>Эти данные без изменений содержались и в сохранении дня {0}; новых статистических данных в нём не записано.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>записано другим способом; совместно не отображается</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>Измерений: {0} (частичных: {1}); точек без значения: {2}</RWS_Chart_PointCounts>

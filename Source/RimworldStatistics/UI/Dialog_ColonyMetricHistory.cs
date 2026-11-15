@@ -355,9 +355,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var text = "";
         if (point.Unlinked)
             text += "\n" + (string)"RWS_Chart_PointUnlinked".Translate();
+        // "Another branch" only when every skipped reading is proven not to be this save's ancestor; a skipped save that
+        // carried an older checkpoint, or has none, may be one, so its relation is called unproven instead.
         if (point.ContinuesFrom >= 0 && FindIndex(series, point) is var index && index >= 0
             && point.Predecessor(index) is var from && from >= 0 && from < series.Count)
-            text += "\n" + (string)"RWS_Chart_PointBranch".Translate(Dialog_RimworldStatistics.Days(series[from].Tick));
+            text += "\n" + (string)(point.SkipsOnlyOtherBranches ? "RWS_Chart_PointBranch" : "RWS_Chart_PointContinues")
+                .Translate(Dialog_RimworldStatistics.Days(series[from].Tick));
         if (point.SavedTick is { } saved)
             text += "\n" + (string)"RWS_Chart_PointSavedLater".Translate(Dialog_RimworldStatistics.Days(saved));
         return text;

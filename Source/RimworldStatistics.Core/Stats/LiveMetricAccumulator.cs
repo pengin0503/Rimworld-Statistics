@@ -11,13 +11,11 @@ public sealed class SaveDraft
     /// <summary>The exact text written into the save.</summary>
     public required string Json { get; init; }
 
-    /// <summary>A new checkpoint of this session; false when an earlier checkpoint (or unknown data) is written back unchanged.</summary>
+    /// <summary>A new checkpoint of this session; false when unknown data is written back unchanged.</summary>
     public required bool IsNew { get; init; }
 
     /// <summary>The checkpoint, when <see cref="IsNew"/>: a detached copy that later events do not change.</summary>
     public CheckpointPayload? Payload { get; init; }
-
-    internal int StopVersion { get; init; }
 }
 
 /// <summary>
@@ -38,8 +36,6 @@ public sealed class LiveMetricAccumulator
     private readonly string? _opaque;   // unknown or unreadable data: written back unchanged, nothing recorded on top
     private string? _lastJson;          // the last committed (or loaded) checkpoint text
     private CheckpointPayload? _last;
-    private int _stopVersion;
-    private int _committedStopVersion;
 
     private LiveMetricAccumulator(string? opaque, IReadOnlySet<string>? experimentalUnits = null)
     {
@@ -232,17 +228,20 @@ public sealed class LiveMetricAccumulator
         Interrupt(name, family, tick, tick);
         family.ThroughTick = tick;
         _kept[name] = family;
-        _stopVersion++;
     }
 
     /// <summary>
-    /// What a save at <paramref name="tick"/> writes. Recording or newly stopped families produce a new checkpoint
-    /// (<paramref name="newId"/>) with <see cref="ParentId"/>. Otherwise the last committed or loaded text is reused.
+    /// What a save at <paramref name="tick"/> writes: a new checkpoint (<paramref name="newId"/>) with <see cref="ParentId"/>,
+    /// even when no family records now, so every save names its own place in the save lineage (a history chart can then
+    /// join it to the next save). Families that do not record are copied unchanged, measured only through their
+    /// <c>throughTick</c>. Unknown data is written back unchanged; with no checkpoint and nothing recorded, nothing is written.
     /// </summary>
     public SaveDraft? PrepareSave(int tick, DateTime utc, string newId)
     {
-        if (_opaque is not null || (_recording.Count == 0 && _stopVersion == _committedStopVersion))
-            return _lastJson is null ? null : new SaveDraft { Json = _lastJson, IsNew = false };
+        if (_opaque is not null)
+            return new SaveDraft { Json = _opaque, IsNew = false };
+        if (_last is null && _recording.Count == 0 && _kept.Count == 0)
+            return null;
 
         var payload = new CheckpointPayload
         {
@@ -269,7 +268,7 @@ public sealed class LiveMetricAccumulator
                 payload.Families[name] = kept.Clone();
             }
         }
-        return new SaveDraft { Json = CheckpointJson.Serialize(payload), IsNew = true, Payload = payload, StopVersion = _stopVersion };
+        return new SaveDraft { Json = CheckpointJson.Serialize(payload), IsNew = true, Payload = payload };
     }
 
     /// <summary>A save holding <paramref name="draft"/> succeeded: it becomes the parent of the next checkpoint.</summary>
@@ -279,6 +278,5 @@ public sealed class LiveMetricAccumulator
             return;
         _last = draft.Payload;
         _lastJson = draft.Json;
-        _committedStopVersion = draft.StopVersion;
     }
 }

@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>Os pontos vazados são jogos salvos cuja relação com registros anteriores não pode ser comprovada (outra ramificação, ou jogo salvo antigo sem pontos de controle).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Não é possível comprovar a relação com registros anteriores.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ramificação que continua o registro do dia {0}; os pontos intermediários pertencem a outra ramificação.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Continua o registro do dia {0}. A relação de alguns pontos intermediários com este não pode ser comprovada (não pertencem necessariamente a outra ramificação).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>Este registro também estava, sem alterações, em um jogo salvo do dia {0}; esse jogo salvo não registrou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>registrado de outra forma; não sobreposto</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} registros ({1} parciais); {2} pontos sem valor</RWS_Chart_PointCounts>

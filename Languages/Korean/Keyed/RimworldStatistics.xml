@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>속이 빈 점은 이전 기록과의 부모-자식 관계를 확인할 수 없는 저장입니다(다른 분기이거나 체크포인트가 없는 이전 저장 등).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>이전 기록과의 부모-자식 관계를 확인할 수 없습니다.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>{0}일 기록에서 이어지는 분기입니다. 그 사이의 점은 다른 분기의 기록입니다.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>{0}일 기록에서 이어집니다. 그 사이의 점 중에는 이 기록과의 부모-자식 관계를 확인할 수 없는 점이 있습니다(다른 분기라고 단정할 수 없습니다).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>이 기록은 {0}일 저장에도 그대로 들어 있었습니다. 그 저장에는 새로운 통계가 기록되지 않았습니다.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>기록 방식이 달라 겹쳐 표시할 수 없습니다</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>기록 {0}개(일부 기록 {1}개), 값이 없는 시점 {2}개</RWS_Chart_PointCounts>

@@ -334,6 +334,113 @@ public sealed class MetricChartLineageTests
     }
 
     [Fact]
+    public void ABranchThatSkipsOnlyProvenOtherBranchesSaysSo()
+    {
+        // b1 and b2 hold their own checkpoints, so b2 is proven not to be c1's ancestor.
+        var profile = Profile(
+            Save("a.rws", 10, 100), CheckpointIn("a.rws", "a", null, 10),
+            Save("b1.rws", 20, 120), CheckpointIn("b1.rws", "b1", "a", 20),
+            Save("b2.rws", 30, 300), CheckpointIn("b2.rws", "b2", "a", 30),
+            Save("c1.rws", 40, 130), CheckpointIn("c1.rws", "c1", "b1", 40));
+
+        var points = History(profile).Points;
+
+        Assert.Equal(new[] { -1, 0, 0, 1 }, points.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { -1, -1, 0, 1 }, points.Select(p => p.ContinuesFrom));
+        // b2 skips b1 and c1 skips b2: each skipped save holds its own checkpoint, which is not on the later save's chain.
+        Assert.Equal(new[] { false, false, true, true }, points.Select(p => p.SkipsOnlyOtherBranches));
+    }
+
+    [Theory]
+    // The 21:07/21:19 shape: the save in between only carried an older checkpoint, so it may be the ancestor.
+    [InlineData("carried", false)]
+    // A save in between without any checkpoint (before the MOD recorded them).
+    [InlineData("no-checkpoint", false)]
+    // Saves in between at one tick, one of them without a checkpoint.
+    [InlineData("same-tick-unproven", false)]
+    // Saves in between at one tick with checkpoints of their own: the tick is a gap, yet neither is the ancestor.
+    [InlineData("same-tick-siblings", true)]
+    // The same, but one of the two is the ancestor: mixing them at one tick hides it, it does not disprove it.
+    [InlineData("same-tick-ancestor", false)]
+    public void ABranchClaimsToSkipOtherBranchesOnlyWhenEveryReadingInBetweenIsProvenNotToBeItsAncestor(
+        string between, bool otherBranches)
+    {
+        var observations = new List<MetricObservation> { Save("d.rws", 30, 100), CheckpointIn("d.rws", "d", null, 30) };
+        observations.AddRange(between switch
+        {
+            "carried" => [Save("late1.rws", 50, 140), Save("late2.rws", 60, 150),
+                CheckpointIn(["late1.rws", "late2.rws"], "e", "d", 40)],
+            "no-checkpoint" => [Save("x.rws", 50, 140), Save("late2.rws", 60, 150), CheckpointIn("late2.rws", "e", "d", 60)],
+            "same-tick-unproven" => [Save("s1.rws", 50, 140), CheckpointIn("s1.rws", "s1", "d", 50), Save("x.rws", 50, 140),
+                Save("late2.rws", 60, 150), CheckpointIn("late2.rws", "e", "d", 60)],
+            "same-tick-siblings" => [Save("s1.rws", 50, 140), CheckpointIn("s1.rws", "s1", "d", 50),
+                Save("s2.rws", 50, 140), CheckpointIn("s2.rws", "s2", "d", 50),
+                Save("late2.rws", 60, 150), CheckpointIn("late2.rws", "e", "d", 60)],
+            _ => [Save("s1.rws", 50, 140), CheckpointIn("s1.rws", "s1", "d", 50),
+                Save("s2.rws", 50, 140), CheckpointIn("s2.rws", "s2", "d", 50),
+                Save("late2.rws", 60, 150), CheckpointIn("late2.rws", "e", "s1", 60)],
+        });
+
+        var points = History(Profile([.. observations])).Points;
+
+        Assert.Equal(new[] { 30, 50, 60 }, points.Select(p => p.Tick));
+        Assert.Equal(0, points[2].ContinuesFrom);
+        Assert.Equal(otherBranches, points[2].SkipsOnlyOtherBranches);
+    }
+
+    [Fact]
+    public void AGameSideSnapshotOfASaveThatCarriedAnOlderCheckpointLinksLikeItsSaveFile()
+    {
+        // Recorded since checkpoint keys were stored: a save that committed no new checkpoint names the one it carried.
+        var definition = MetricRegistry.Find(ResearchStateSnapshot.Finished)!;
+        var profile = Profile(
+            Save("d.rws", 30, 100), CheckpointIn("d.rws", "d", null, 30), GameSnapshot(definition, 30, "d.rws", "d"),
+            Save("late1.rws", 50, 140), GameSnapshot(definition, 50, "late1.rws", "e"),
+            Save("late2.rws", 60, 150), GameSnapshot(definition, 60, "late2.rws", "e"),
+            CheckpointIn(["late1.rws", "late2.rws"], "e", "d", 40));
+
+        var snapshots = History(profile, definition).Points;
+        var files = History(profile).Points;
+
+        Assert.Equal(new[] { 30, 50, 60 }, snapshots.Select(p => p.Tick));
+        Assert.Equal(files.Select((p, i) => p.Predecessor(i)), snapshots.Select((p, i) => p.Predecessor(i)));
+        Assert.Equal(new[] { -1, 0, 0 }, snapshots.Select((p, i) => p.Predecessor(i)));
+        Assert.All(snapshots, p => Assert.False(p.Unlinked));
+    }
+
+    [Fact]
+    public void AnOlderGameSideSnapshotOfACarriedSaveLinksThroughItsImportedFile()
+    {
+        // Recorded before checkpoint keys were stored: the imported file with exactly the snapshot's tick and write time
+        // is the same save, and it holds checkpoint e from an earlier tick.
+        var definition = MetricRegistry.Find(ResearchStateSnapshot.Finished)!;
+        var otherTick = GameSnapshot(definition, 61, "late2.rws", null);
+        var profile = Profile(
+            Save("d.rws", 30, 100), CheckpointIn("d.rws", "d", null, 30), GameSnapshot(definition, 30, "d.rws", null),
+            Save("late1.rws", 50, 140), GameSnapshot(definition, 50, "late1.rws", null),
+            Save("late2.rws", 60, 150), otherTick,
+            CheckpointIn(["late1.rws", "late2.rws"], "e", "d", 40));
+
+        var points = History(profile, definition).Points;
+
+        Assert.Equal(new[] { 30, 50, 61 }, points.Select(p => p.Tick));
+        Assert.Equal(new[] { -1, 0, -1 }, points.Select((p, i) => p.Predecessor(i)));
+        // The file written at that time holds tick 60, not 61: not the same save, so nothing is proven.
+        Assert.Equal(new[] { false, false, true }, points.Select(p => p.Unlinked));
+    }
+
+    [Fact]
+    public void ASnapshotNamingACheckpointLaterThanItselfProvesNothing()
+    {
+        var definition = MetricRegistry.Find(ResearchStateSnapshot.Finished)!;
+        var profile = Profile(
+            Checkpoint("d", null, 30), GameSnapshot(definition, 30, "d.rws", "d"),
+            Checkpoint("e", "d", 55), GameSnapshot(definition, 50, "e.rws", "e"));
+
+        Assert.True(History(profile, definition).Points[1].Unlinked);
+    }
+
+    [Fact]
     public void TheSnapshotCheckpointLinkRoundTripsAndIsOmittedWhenAbsent()
     {
         var profile = new Profile
@@ -361,7 +468,7 @@ public sealed class MetricChartLineageTests
             points.Add(new MetricHistoryPoint(i * 10, Value(i == 123 ? 900 : i == 321 ? -50 : i % 7), i > 0 && i != 200));
         points[200] = points[200] with { Value = null };
         points[250] = points[250] with { ConnectToPrevious = false, Unlinked = true };
-        points.Add(new MetricHistoryPoint(4000, Value(5)) { ContinuesFrom = 77 });
+        points.Add(new MetricHistoryPoint(4000, Value(5)) { ContinuesFrom = 77, SkipsOnlyOtherBranches = true });
 
         var thin = MetricHistoryPlot.Thin(points, 50);
 
@@ -373,6 +480,8 @@ public sealed class MetricChartLineageTests
         var branch = thin[^1];
         Assert.Equal(4000, branch.Tick);
         Assert.Equal(770, thin[branch.ContinuesFrom].Tick);
+        Assert.True(branch.SkipsOnlyOtherBranches);
+        Assert.All(thin.Where(p => p.ContinuesFrom < 0), p => Assert.False(p.SkipsOnlyOtherBranches));
         // Every kept line still joins the same two original readings.
         var original = points.ToDictionary(p => p.Tick);
         for (var i = 1; i < thin.Count; i++)
@@ -391,6 +500,16 @@ public sealed class MetricChartLineageTests
     }
 
     private static NumericValue Value(double number) => new() { Number = number, Coverage = MetricCoverage.SnapshotOnly };
+
+    /// <summary>A game-side snapshot of the save that wrote <paramref name="file"/> (its write time is the snapshot's).</summary>
+    private static MetricObservation GameSnapshot(MetricDefinition definition, int tick, string file, string? checkpoint) => new()
+    {
+        Source = MetricObservationSource.SaveSnapshot, Key = "snapshot-" + tick, SaveTick = tick,
+        ObservedUtc = Alias(file).LastWriteUtc, CheckpointKey = checkpoint,
+        Identity = new ColonyIdentity { ModCampaignId = Campaign },
+        Metrics = { [definition.StoredKey] = MetricEntry.Of(definition.Revision,
+            new MetricValue { Coverage = MetricCoverage.SnapshotOnly, IntegerValue = tick }) },
+    };
 
     private static MetricHistory History(Profile profile, MetricDefinition? definition = null)
     {

@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>Los puntos huecos son partidas cuya relación con los datos anteriores no puede demostrarse (otra rama, o una partida antigua sin puntos de control).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>No puede demostrarse su relación con los datos anteriores.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Rama que continúa el dato del día {0}; los puntos intermedios pertenecen a otra rama.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Continúa el dato del día {0}. No puede demostrarse la relación de algunos puntos intermedios con este (no pertenecen necesariamente a otra rama).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>Este dato también figuraba, sin cambios, en una partida del día {0}; esa partida no registró estadísticas más recientes.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>registrado de otra forma; no se superpone</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} datos ({1} parciales); {2} puntos sin valor</RWS_Chart_PointCounts>

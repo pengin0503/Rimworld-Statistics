@@ -62,9 +62,14 @@ public static class MetricHistoryPlot
             var original = point.ContinuesFrom is var from && from >= 0 && from < i ? from : -1;
             var mapped = original >= 0 ? index[original] : -1;
             index[i] = output.Count;
+            var adjacent = mapped >= 0 && mapped == output.Count - 1;
             output.Add(mapped < 0
-                ? point with { ContinuesFrom = -1 }
-                : point with { ConnectToPrevious = mapped == output.Count - 1, ContinuesFrom = mapped == output.Count - 1 ? -1 : mapped });
+                ? point with { ContinuesFrom = -1, SkipsOnlyOtherBranches = false }
+                : point with
+                {
+                    ConnectToPrevious = adjacent, ContinuesFrom = adjacent ? -1 : mapped,
+                    SkipsOnlyOtherBranches = !adjacent && point.SkipsOnlyOtherBranches,
+                });
         }
         return output;
     }

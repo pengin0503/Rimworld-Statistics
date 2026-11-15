@@ -1252,6 +1252,7 @@
   <RWS_Chart_LegendUnlinked>白抜きの点は、それより前の記録との親子関係を確認できないセーブです（別の分岐や、チェックポイントのない旧セーブなど）。</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>それより前の記録との親子関係は確認できません。</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>{0}日の記録から続く分岐です。間にある点は別の分岐の記録です。</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>{0}日の記録から続いています。間にある点には、この記録との親子関係を確認できないものがあります（別の分岐とは限りません）。</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>この記録は{0}日のセーブにもそのまま含まれていました。そのセーブでは新しい統計は記録されていません。</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>記録元が異なるため重ねて表示できません</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>記録 {0}点（一部のみ {1}点）、値のない時点 {2}点</RWS_Chart_PointCounts>

@@ -1252,6 +1252,7 @@
   <RWS_Chart_LegendUnlinked>Hollow points are saves whose relation to earlier readings cannot be proven (another branch, or an older save without checkpoints).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Its relation to earlier readings cannot be proven.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>A branch continuing from the reading on day {0}; points in between belong to another branch.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Continues from the reading on day {0}. The relation of some points in between to this one cannot be proven (they do not necessarily belong to another branch).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>This reading was also carried unchanged by a save on day {0}; that save recorded no newer statistics.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>recorded in a different way; not drawn together</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} readings ({1} partial); {2} points without a value</RWS_Chart_PointCounts>

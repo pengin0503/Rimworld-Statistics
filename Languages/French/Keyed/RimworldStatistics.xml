@@ -1251,6 +1251,7 @@
   <RWS_Chart_LegendUnlinked>Les points creux sont des sauvegardes dont le lien avec les relevés antérieurs ne peut pas être prouvé (autre branche, ou ancienne sauvegarde sans point de contrôle).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Son lien avec les relevés antérieurs ne peut pas être prouvé.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Branche qui prolonge le relevé du jour {0} ; les points intermédiaires appartiennent à une autre branche.</RWS_Chart_PointBranch>
+  <RWS_Chart_PointContinues>Prolonge le relevé du jour {0}. Le lien de certains points intermédiaires avec celui-ci ne peut pas être prouvé (ils n'appartiennent pas forcément à une autre branche).</RWS_Chart_PointContinues>
   <RWS_Chart_PointSavedLater>Ce relevé figurait aussi, inchangé, dans une sauvegarde du jour {0} ; celle-ci n'a enregistré aucune statistique plus récente.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>enregistrée autrement ; non superposée</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} relevés ({1} partiels) ; {2} points sans valeur</RWS_Chart_PointCounts>
