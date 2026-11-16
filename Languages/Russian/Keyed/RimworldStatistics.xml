@@ -1266,4 +1266,52 @@
   <RWS_MetricDesc_JoinsBySpecies>Первые вступления по видам согласно записям.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>Смерти поселенцев по видам</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>Зарегистрированные смерти свободных поселенцев по видам.</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} пунк.</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>Внешний мод</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>Внешний мод ({0})</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>Счётчик игры</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>График истории сохранений</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>Состояние в сохранении</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>Записано во время игры</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>Прогресс исследований</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>Нервные срывы и вдохновения</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>Бой и смерти</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>Падения</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>Появление и уход поселенцев</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>Налёты и оборона</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>Итоги за всё время</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>Социальные взаимодействия</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>Животные</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>Ремесло, строительство и горное дело</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>Детальная работа и земледелие</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>Повседневные дела и переноска</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>Еда и блюда</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>Торговля</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>Дипломатия и задания</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>Медицина и лечение</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>Бедствия и происшествия</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>События модов</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>Караваны</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>Исследования (на момент сохранения)</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>Фракции (на момент сохранения)</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>Поселенцы и навыки (на момент сохранения)</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>Сооружения и энергия (на момент сохранения)</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>Запасы (на момент сохранения)</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>Условия старта (на момент сохранения)</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: аванпосты (на момент сохранения)</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: производство</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: сантехника (на момент сохранения)</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: гигиена</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: события</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: повышение уровней</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: пси-способности</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: псионики (на момент сохранения)</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: титулы и способности (на момент сохранения)</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: задания и постройки (на момент сохранения)</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: события</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: события</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: состояние (на момент сохранения)</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: события</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: рыбалка</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>Участники финала</RWS_AcqUnit_ending_party>
 </LanguageData>

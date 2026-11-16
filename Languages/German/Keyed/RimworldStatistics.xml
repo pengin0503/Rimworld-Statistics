@@ -1266,4 +1266,52 @@
   <RWS_MetricDesc_JoinsBySpecies>Erfasste erstmalige Beitritte nach Spezies.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>Todesfälle von Kolonisten nach Spezies</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>Erfasste Todesfälle freier Kolonisten nach Spezies.</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} Einträge</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>Externer Mod</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>Externer Mod ({0})</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>Spielzähler</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>Verlaufsgrafik</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>Zustand im Spielstand</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>Während des Spiels erfasst</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>Forschungsfortschritt</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>Nervenzusammenbrüche &amp; Inspirationen</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>Kampf &amp; Todesfälle</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>Kampfunfähigkeiten</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>Kolonisten-Zugänge &amp; Abgänge</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>Überfälle &amp; Verteidigung</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>Lebenszeitwerte</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>Soziale Interaktionen</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>Tiere</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>Herstellung, Bau &amp; Bergbau</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>Detailarbeit &amp; Landwirtschaft</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>Alltagsarbeiten &amp; Transport</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>Nahrung &amp; Mahlzeiten</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>Handel</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>Diplomatie &amp; Quests</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>Medizin &amp; Pflege</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>Katastrophen &amp; Vorfälle</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>Mod-Ereignisse</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>Karawanen</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>Forschungsstand (im Spielstand)</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>Fraktionen (im Spielstand)</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>Kolonisten &amp; Fähigkeiten (im Spielstand)</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>Anlagen &amp; Strom (im Spielstand)</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>Lagerbestände (im Spielstand)</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>Startbedingungen (im Spielstand)</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: Außenposten (im Spielstand)</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: Produktion</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: Anlagen (im Spielstand)</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: Hygieneaktionen</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: Ereignisse</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: Stufenaufstiege</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: Psycasts</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: Psycaster (im Spielstand)</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: Titel &amp; Kräfte (im Spielstand)</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: Quests &amp; Bauten (im Spielstand)</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: Ereignisse</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: Ereignisse</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: Zustand (im Spielstand)</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: Ereignisse</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: Angeln</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>Teilnehmer am Spielende</RWS_AcqUnit_ending_party>
 </LanguageData>

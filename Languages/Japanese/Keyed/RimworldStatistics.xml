@@ -1267,4 +1267,52 @@
   <RWS_MetricDesc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>種族別の入植者死亡数</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>自由入植者の死亡記録を種族別に集計します。</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} 項目</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>外部MOD</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>外部MOD（{0}）</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>ゲームの累計カウンター</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>セーブの履歴グラフ</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>セーブ時点の状態</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>プレイ中の記録</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>研究の進行</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>精神崩壊・ひらめき</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>戦闘・死亡</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>ダウン・無力化</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>加入・離脱</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>襲撃・防衛</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>生存記録</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>人間関係・交流</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>動物・家畜</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>製作・建築・採掘</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>詳細作業・農作業</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>日常作業・運搬</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>食事・食料</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>交易</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>外交・クエスト</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>医療・治療</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>災害・事件</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>MOD追加の事件</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>キャラバン・遠征</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>研究状態（セーブ時点）</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>派閥関係（セーブ時点）</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>入植者名簿・スキル（セーブ時点）</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>設備・電力（セーブ時点）</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>備蓄在庫（セーブ時点）</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>開始条件（セーブ時点）</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: 前哨基地（セーブ時点）</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: 生産・配送</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: 設備（セーブ時点）</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: 衛生行動</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: 出来事</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: レベル成長</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: 超能力使用</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: サイキャスター（セーブ時点）</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: 爵位・能力（セーブ時点）</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: クエスト・施設（セーブ時点）</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: 出来事</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: 出来事</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: 状態（セーブ時点）</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: 出来事</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: 釣り</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>エンディング参加人数</RWS_AcqUnit_ending_party>
 </LanguageData>
