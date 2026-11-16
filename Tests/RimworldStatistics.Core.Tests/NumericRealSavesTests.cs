@@ -1,10 +1,11 @@
+using System.Diagnostics;
 using System.Security.Cryptography;
 using RimworldStatistics.Core.Tests.Fixtures;
 
 namespace RimworldStatistics.Core.Tests;
 
 /// <summary>
-/// Opt-in Phase A check against the author's 49 real saves (RWSTATS_REAL_SAVES_DIR, as RealSavesRegressionTests).
+/// Opt-in consolidated regression check against the author's 49 real saves (RWSTATS_REAL_SAVES_DIR).
 /// Only anonymous aggregates are asserted or reported; nothing from the saves is stored in the repository.
 /// </summary>
 public sealed class NumericRealSavesTests
@@ -20,13 +21,24 @@ public sealed class NumericRealSavesTests
         var session = new ProfileSession(new ProfileStore(tmp.Path), () => DateTime.UtcNow);
         var hashesBefore = Directory.EnumerateFiles(dir).ToDictionary(f => f, f => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(f))));
 
+        var sw = Stopwatch.StartNew();
         var r = new ImportEngine(new SaveReader()).Run(dir, session, null, ct);
+        sw.Stop();
+        TestContext.Current.SendDiagnosticMessage($"import {r.Read} files in {sw.Elapsed.TotalSeconds:F1}s");
         Assert.Equal((49, 0), (r.Read, r.Failed));
+        Assert.True(sw.Elapsed < TimeSpan.FromSeconds(60));
 
-        // v1 totals are those of RealSavesRegressionTests.
+        // Both the original v1 research totals and the numeric extensions are checked in this one import.
         var s = session.GetView(new StatsOptions()).Stats;
         Assert.Equal((33, 135723149L, 190L, 29L), (s.ColonyCount, s.TotalTicks, s.Raids, s.Killed));
+        Assert.Equal(950114.07, s.TotalRealPlay, 0);
+        Assert.Equal((311, 0), (s.Threats, s.TotalDeparted));
         Assert.Equal(4364583.06, s.PeakWealthSum, 0);
+        Assert.Equal(4294287.26, s.LastWealthSum, 0);
+        Assert.Equal(20835213L, s.LongestTicks);
+        Assert.Equal(925789.69, s.SingleMaxWealth, 0);
+        Assert.Equal(20, s.MaxPopulation);
+        Assert.Equal(0, s.TotalEndings);
 
         var metrics = session.Read(p => p.MetricObservations.ToList());
         // Earlier saves superseded by a later one of the same identity are dropped; every identity keeps its latest.
