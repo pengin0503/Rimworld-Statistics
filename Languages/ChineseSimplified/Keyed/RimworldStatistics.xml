@@ -1317,4 +1317,7 @@
   <RWS_Details_GroupDerived>合并衍生统计</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>按名称排序时，将跨殖民地的最大值、最小值、最多与总和行归入对应统计下。</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>搜索或按数值排序时暂时显示为平铺列表，以便查看全部结果与顺序。</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>显示：{0}/{1}项</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>筛选：{0}项</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>重置筛选</RWS_Filter_Reset>
 </LanguageData>

@@ -1317,4 +1317,7 @@
   <RWS_Details_GroupDerived>Группировать производные</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>Группирует строки макс., мин., топ и суммы под исходной статистикой при сортировке по имени.</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>Группировка временно отключена при поиске или сортировке по значению, чтобы не скрывать результаты и порядок.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>Показано: {0}/{1}</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>Фильтров: {0}</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Сбросить фильтры</RWS_Filter_Reset>
 </LanguageData>

@@ -10,7 +10,7 @@ internal static class ComparisonPanel
     private sealed record Choice(Kind Kind, string Id = "");
     private sealed record Request(ProfileSession Session, StatsView Current, string Preferences, int Selection, bool IncludeDev);
     private sealed record Column(Choice Choice, ComparisonTarget Target, StatsView View);
-    private sealed record TableRow(ComparisonRow Record, string Label, string[] Text);
+    private sealed record TableRow(ComparisonRow Record, string Label, string[] Text, MetricVisualKind[] VisualKinds);
 
     private const float RowHeight = 27f;
     private static readonly List<Choice> Choices = [new(Kind.All)];
@@ -25,6 +25,8 @@ internal static class ComparisonPanel
     private static object? language;
     private static TableRow[] rows = [];
     private static Vector2 scroll;
+
+    public static void ResetScroll() => scroll = Vector2.zero;
 
     public static void Draw(Rect rect, ProfileSession session, StatsView view, ViewPreferences? preferences, object filter,
         Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
@@ -133,6 +135,8 @@ internal static class ComparisonPanel
             {
                 var cell = new Rect(labelWidth + c * columnWidth, line.y, columnWidth, RowHeight);
                 var text = row.Text[c];
+                var visualKind = row.VisualKinds[c];
+                GUI.color = visualKind == MetricVisualKind.Complete ? Color.white : MetricVisualStyle.StateColor(visualKind);
                 DrawCell(cell, text);
                 var value = row.Record.Values[c];
                 var column = current[c];
@@ -146,6 +150,7 @@ internal static class ComparisonPanel
                         : text + "\n" + MetricText.Tip(original, column.View.Stats);
                 }, tipId);
             }
+            GUI.color = Color.white;
         }
         Widgets.EndScrollView();
     }
@@ -179,18 +184,26 @@ internal static class ComparisonPanel
         return ordered.Select(row =>
         {
             var (definition, label) = definitions[row.MetricKey];
-            var text = row.Values.Select(v =>
+            var text = new string[row.Values.Count];
+            var visualKinds = new MetricVisualKind[row.Values.Count];
+            for (var i = 0; i < row.Values.Count; i++)
             {
+                var v = row.Values[i];
                 if (v is null)
-                    return Dialog_RimworldStatistics.Dash;
+                {
+                    text[i] = Dialog_RimworldStatistics.Dash;
+                    visualKinds[i] = MetricVisualKind.Missing;
+                    continue;
+                }
                 var formatted = MetricText.Format(definition, v);
                 if (v.Coverage is MetricCoverage.Partial or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                     formatted += " · " + MetricText.State(definition, v.Coverage);
                 if (v.Evidence is MetricEvidence.Experimental or MetricEvidence.Mixed || definition.Acquisition is not null && !definition.Published)
                     formatted += " · " + "RWS_Exp_ExperimentalRow".Translate();
-                return formatted;
-            }).ToArray();
-            return new TableRow(row, label, text);
+                text[i] = formatted;
+                visualKinds[i] = MetricVisualState.Classify(definition, v);
+            }
+            return new TableRow(row, label, text, visualKinds);
         }).ToArray();
     }
 

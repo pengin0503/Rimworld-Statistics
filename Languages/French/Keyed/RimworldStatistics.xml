@@ -1317,4 +1317,7 @@
   <RWS_Details_GroupDerived>Grouper les statistiques dérivées</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>Regroupe les lignes max, min, top et somme sous chaque statistique source lorsque la liste est triée par nom.</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>Le regroupement est suspendu pendant une recherche ou un tri par valeur afin de garder tous les résultats et leur ordre visibles.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>{0}/{1} affichés</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>{0} filtre(s)</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Réinitialiser</RWS_Filter_Reset>
 </LanguageData>
