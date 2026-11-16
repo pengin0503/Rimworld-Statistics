@@ -21,12 +21,12 @@ public sealed class NumericRealSavesTests
         var session = new ProfileSession(new ProfileStore(tmp.Path), () => DateTime.UtcNow);
         var hashesBefore = Directory.EnumerateFiles(dir).ToDictionary(f => f, f => Convert.ToHexString(SHA256.HashData(File.ReadAllBytes(f))));
 
-        var sw = Stopwatch.StartNew();
+        var importWatch = Stopwatch.StartNew();
         var r = new ImportEngine(new SaveReader()).Run(dir, session, null, ct);
-        sw.Stop();
-        TestContext.Current.SendDiagnosticMessage($"import {r.Read} files in {sw.Elapsed.TotalSeconds:F1}s");
+        importWatch.Stop();
+        TestContext.Current.SendDiagnosticMessage($"import {r.Read} files in {importWatch.Elapsed.TotalSeconds:F1}s");
         Assert.Equal((49, 0), (r.Read, r.Failed));
-        Assert.True(sw.Elapsed < TimeSpan.FromSeconds(60));
+        Assert.True(importWatch.Elapsed < TimeSpan.FromSeconds(60));
 
         // Both the original v1 research totals and the numeric extensions are checked in this one import.
         var s = session.GetView(new StatsOptions()).Stats;
