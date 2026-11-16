@@ -1314,4 +1314,7 @@
   <RWS_AcqUnit_odyssey>Odyssey: события</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey: рыбалка</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>Участники финала</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>Группировать производные</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>Группирует строки макс., мин., топ и суммы под исходной статистикой при сортировке по имени.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>Группировка временно отключена при поиске или сортировке по значению, чтобы не скрывать результаты и порядок.</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>

@@ -1314,4 +1314,7 @@
   <RWS_AcqUnit_odyssey>Odyssey: eventos</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey: pesca</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>Participantes en el final</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>Agrupar métricas derivadas</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>Agrupa los valores máximo, mínimo, principal y suma bajo cada estadística origen al ordenar por nombre.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>La agrupación se pausa al buscar o ordenar por valor para mostrar todos los resultados en orden.</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>

@@ -1315,4 +1315,7 @@
   <RWS_AcqUnit_odyssey>Odyssey: 出来事</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey: 釣り</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>エンディング参加人数</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>派生統計をまとめる</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>名前順の表示中、関連する最大・最小・最多・合計の派生統計を元の統計の下にまとめます。</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>検索中や値順の並び替え中は、結果や順位が分かりやすいようフラット表示になります。</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>
