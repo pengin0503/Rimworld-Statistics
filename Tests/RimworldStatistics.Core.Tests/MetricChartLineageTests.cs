@@ -617,6 +617,41 @@ public sealed class MetricChartLineageTests
         Assert.Same(points, MetricHistoryPlot.Thin(points, 1000));
     }
 
+    [Fact]
+    public void ThinningKeepsPartialCoverageBoundariesAndGapRunEndpoints()
+    {
+        var points = new List<MetricHistoryPoint>();
+        for (var i = 0; i < 200; i++)
+            points.Add(new MetricHistoryPoint(i * 10, Value(i % 10), i > 0));
+
+        // Single partial reading in the middle of a chunk where its value (5) is neither local min (0) nor max (9).
+        points[55] = points[55] with { Value = new NumericValue { Number = 5, Coverage = MetricCoverage.Partial } };
+
+        // Contiguous partial run inside a chunk.
+        for (var i = 82; i <= 86; i++)
+            points[i] = points[i] with { Value = new NumericValue { Number = 4, Coverage = MetricCoverage.Partial } };
+
+        // Multi-tick contiguous gap run spanning more than one chunk.
+        for (var i = 120; i <= 135; i++)
+            points[i] = points[i] with { Value = null };
+        points[136] = points[136] with { ConnectToPrevious = false };
+
+        var thin = MetricHistoryPlot.Thin(points, 20);
+
+        Assert.Contains(thin, p => p.Tick == 540 && p.Value?.Coverage == MetricCoverage.SnapshotOnly);
+        Assert.Contains(thin, p => p.Tick == 550 && p.Value?.Coverage == MetricCoverage.Partial);
+        Assert.Contains(thin, p => p.Tick == 560 && p.Value?.Coverage == MetricCoverage.SnapshotOnly);
+
+        Assert.Contains(thin, p => p.Tick == 810 && p.Value?.Coverage == MetricCoverage.SnapshotOnly);
+        Assert.Contains(thin, p => p.Tick == 820 && p.Value?.Coverage == MetricCoverage.Partial);
+        Assert.Contains(thin, p => p.Tick == 860 && p.Value?.Coverage == MetricCoverage.Partial);
+        Assert.Contains(thin, p => p.Tick == 870 && p.Value?.Coverage == MetricCoverage.SnapshotOnly);
+
+        Assert.Contains(thin, p => p.Tick == 1200 && p.Value is null);
+        Assert.Contains(thin, p => p.Tick == 1350 && p.Value is null);
+        Assert.True(thin.Count(p => p.Value is null) >= 3);
+    }
+
     private static NumericValue Value(double number) => new() { Number = number, Coverage = MetricCoverage.SnapshotOnly };
 
     /// <summary>A game-side snapshot of the save that wrote <paramref name="file"/> (its write time is the snapshot's).</summary>

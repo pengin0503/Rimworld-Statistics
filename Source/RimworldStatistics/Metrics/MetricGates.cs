@@ -136,8 +136,7 @@ public static class MetricGates
         // Without a content MOD defining new incidents there is no live source.
         // Keep old checkpoints/descriptors: this only closes current acquisition.
         if (unitId == ModdedIncidentFamily.Name)
-            return DefDatabase<RimWorld.IncidentDef>.AllDefsListForReading.Any(def =>
-                ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
+            return HasModdedIncidentDefs();
         if (unitId == VpeStatistics.EventUnit)
             return VpeMetricPatch.HasLevelTarget;
         if (unitId == VpeStatistics.CastUnit)
@@ -147,14 +146,24 @@ public static class MetricGates
         if (unitId == OutpostProduction.Unit)
             return ModsConfig.IsActive(OutpostSnapshot.PackageId) && OutpostContract.Available;
         if (unitId == OutpostSnapshot.Unit)
-            return DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
-                OutpostSnapshot.IsOutpostType(def.worldObjectClass));
+            return HasOutpostWorldObjectDefs();
         if (unitId is DbhStatistics.FixturesUnit or DbhStatistics.ActivitiesUnit)
             return ModsConfig.IsActive(DbhStatistics.PackageId)
-                && !ModsConfig.IsActive("pengin0503.rws.dubsbadhygieneaddon")
+                && !IsExternalDbhAddonActive()
                 && (unitId == DbhStatistics.FixturesUnit || DbhActivityMetricPatch.Available);
         return true;
     }
+
+    internal static bool HasModdedIncidentDefs()
+        => DefDatabase<RimWorld.IncidentDef>.AllDefsListForReading.Any(def =>
+            ModdedIncidentFamily.IsModded(def.modContentPack?.PackageId, def.defName));
+
+    internal static bool HasOutpostWorldObjectDefs()
+        => DefDatabase<RimWorld.WorldObjectDef>.AllDefsListForReading.Any(def =>
+            OutpostSnapshot.IsOutpostType(def.worldObjectClass));
+
+    internal static bool IsExternalDbhAddonActive()
+        => ModsConfig.IsActive("pengin0503.rws.dubsbadhygieneaddon");
 
     /// <summary>Currently selected, compatible, and not failed.</summary>
     public static bool IsOpen(string unitId) => IsSelected(unitId) && IsInstallEligible(unitId);
