@@ -312,6 +312,15 @@ jobs:
           from pathlib import Path
           with zipfile.ZipFile(sys.argv[1]) as z:
               path_set = set(z.namelist())
+              for about_file in ("About/About.xml", "About/Preview.png", "About/PublishedFileId.txt"):
+                  member = f"RimworldStatistics/{about_file}"
+                  if member not in path_set:
+                      raise SystemExit(f"Missing About file in production ZIP: {member}")
+                  if z.read(member) != Path(about_file).read_bytes():
+                      raise SystemExit(f"About file content mismatch in production ZIP: {member}")
+              published_id = z.read("RimworldStatistics/About/PublishedFileId.txt").decode("ascii").strip()
+              if not published_id.isdigit():
+                  raise SystemExit(f"Invalid PublishedFileId.txt content: {published_id!r}")
           expected = {
               f"RimworldStatistics/{p.as_posix()}"
               for p in Path("Languages").glob("*/Keyed/*.xml")
