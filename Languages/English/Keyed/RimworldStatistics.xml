@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>Known / colonies</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Observed at</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>In-game day of the save the value comes from.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>From {0} colonies (excluded from totals: {1}). Values are computed from the imported saves and may include what happened through dev-mode actions.</RWS_Details_Note>
+  <RWS_Details_Note>From {0} colonies (excluded from totals: {1}). Values are calculated from imported saves.</RWS_Details_Note>
   <RWS_Details_Unattributed>{0} observations that could not be matched to one colony are not included.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>No single top category</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>This statistic does not apply to any of the selected colonies. A missing DLC is given as the reason only when the save's recorded DLC list confirms it.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>None of the eligible colonies has a captured value. The cause is unconfirmed: collection may be disabled or may have started late, the event may not have been captured, or historical import may be unsupported. This is not the same as zero.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Only some eligible colonies have a captured value. The others are unknown, not zero, so the combined value may be partial.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>All eligible colonies have a captured value. This alone does not mean the whole campaign was covered or that the value was verified in a real game.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>A captured value may cover only part of the campaign. Do not read it as a verified lifetime total.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Quantities summed by type across independently selected colonies. The ranking may be partial if any colony's breakdown is missing.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>This colony's measured contribution to the selected type. Colonies that are not listed or have no data are not assumed to be zero.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>This may be because the saves predate collection, collection was disabled, or the source data is unavailable. Past events are not filled in as zero.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>No eligible colonies.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>No recorded data for this statistic.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Source: {0} / state: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>Held by: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Samples: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerator {0} ÷ denominator {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>There is no data to base this on (saves read before this version, a missing file, an unsupported game version, or unreadable data).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Ledger: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>No data available.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} days</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / year</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Wealth</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>Requires DLC/package: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>All units are selected for new installations. Uncheck an item to stop that collection; turning off a unit does not delete its recorded history. Changes apply immediately, without restarting the game.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Capture confidence: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Unverified capture</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Verified at capture</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Mix of verified and unverified captures</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Unknown capture provenance (including legacy)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>Recording began on day {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Required MOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>Source MOD: {0} (provider: {1})</RWS_Mod_Provider>
@@ -889,15 +877,15 @@
   <RWS_Cross_MaxColony>Colony with most: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colony with least: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Top item across colonies: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>The highest recorded value across independent colonies, using one representative observation per colony. Missing readings are not treated as zero. For quantities that describe a state, this is the value in each colony's recorded save, not a cumulative total.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>The lowest recorded value across independent colonies, using one representative observation per colony. Only a zero that was actually measured can be the lowest; unknown and not-applicable values are ignored.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Quantities are summed separately for each item type across independent colonies, then the totals are ranked. One representative observation per colony is used. Missing, overflowed or untracked types make the result partial. Stock at a save and lifetime event counts are never mixed.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>The highest representative value across colonies.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>The lowest representative value across colonies.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Compares item totals across all colonies.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Tied colonies: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Record observed on game day {0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>Most common category across colonies: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Counts summed for each recorded category across independent colonies, using one representative observation per colony. Incomplete or missing breakdowns stay partial. Categories may count events or people rather than items.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>Compares totals by category across all colonies.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Total of colony snapshots: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Sum of a quantity measured separately at the representative save of each independent colony. This is not a lifetime event total. Unknown readings never become zero.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Adds the values recorded at each colony's saved point.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: guest groups arrived (since enabled)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Confirmed Hospitality visitor groups that arrived on player home maps since this statistic was enabled. Replacement groups formed for rescued guests are not counted. Duplicates after reloading are filtered out by event ID. Visits from before the mod was installed are not estimated.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: guest arrivals (since enabled)</RWS_Hospitality_VisitGuests>

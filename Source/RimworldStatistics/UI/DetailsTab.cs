@@ -127,7 +127,7 @@ public static class DetailsTab
             tableWidth = available;
             tableLanguage = language;
             string partial = "RWS_Coverage_Partial".Translate();
-            var experimental = EvidenceLabel(MetricEvidence.Experimental);
+            var experimental = (string)"RWS_Exp_ExperimentalRow".Translate();
             var stateWidth = Text.CalcSize(experimental + " · " + partial).x + 12f;
             tablePlan = ColumnLayout.Resolve([new(150, 4), new(90, 3), new(Math.Max(115, stateWidth), 2), new(96, 1)], available);
             Array.Clear(cellCache);
@@ -474,10 +474,9 @@ public static class DetailsTab
                 tip.Append((string)"RWS_Mod_SourceUnavailable".Translate()).Append('\n');
         }
         tip.Append((string)"RWS_Details_Tip_Source".Translate(ProvenanceLabel(d.Provenance), CoverageLabel(d, v.Coverage))).Append('\n');
-        if (d.Acquisition is { } id && !d.Published)
+        if (d.Acquisition is not null && !d.Published)
         {
-            tip.Append((string)"RWS_Exp_ExperimentalRow".Translate()).Append(" (").Append(id).Append(")\n");
-            tip.Append("RWS_Exp_Evidence".Translate(EvidenceLabel(v.Evidence))).Append('\n');
+            tip.Append((string)"RWS_Exp_ExperimentalRow".Translate()).Append('\n');
             if (v.SinceTick is { } first)
                 tip.Append("RWS_Exp_Since".Translate(Dialog_RimworldStatistics.Days(first))).Append('\n');
             if (d.RequiredDlc is { } dlc)
@@ -496,22 +495,17 @@ public static class DetailsTab
             tip.Append((string)"RWS_Details_Tip_Colonies".Translate(row.Targets, row.Valid)).Append('\n');
             if (depth == 0)
             {
-                var stateOfCapture = MetricAvailabilityPolicy.Classify(row) switch
+                // Show a concise message only when there are no applicable or measured colonies.
+                switch (MetricAvailabilityPolicy.Classify(row))
                 {
-                    MetricAvailability.NoApplicableColonies => "RWS_Details_AvailabilityNone".Translate(),
-                    MetricAvailability.NoMeasuredColonies => "RWS_Details_AvailabilityMissing".Translate(),
-                    MetricAvailability.SomeMeasuredColonies => "RWS_Details_AvailabilitySome".Translate(),
-                    _ => "RWS_Details_AvailabilityAll".Translate(),
-                };
-                tip.Append(stateOfCapture).Append('\n');
-                if (MetricAvailabilityPolicy.IsPeriodIncomplete(row))
-                    tip.Append((string)"RWS_Details_AvailabilityPartialPeriod".Translate()).Append('\n');
+                    case MetricAvailability.NoApplicableColonies:
+                        tip.Append((string)"RWS_Details_AvailabilityNone".Translate()).Append('\n');
+                        break;
+                    case MetricAvailability.NoMeasuredColonies:
+                        tip.Append((string)"RWS_Details_AvailabilityMissing".Translate()).Append('\n');
+                        break;
+                }
             }
-            if (depth == 1 && CrossColonyCatalog.IsDerived(d)
-                && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal))
-                tip.Append((string)"RWS_Cross_RankedTypeExplanation".Translate()).Append('\n');
-            if (depth == 2 && CrossColonyCatalog.IsDerived(d))
-                tip.Append((string)"RWS_Cross_ContributionExplanation".Translate()).Append('\n');
             if (v.ColonyKey is { } holder)
                 tip.Append((string)"RWS_Details_Tip_Holder".Translate(Name(input.Stats, holder))).Append('\n');
             if (v.HolderKeys is { Count: > 1 } tied)
@@ -526,11 +520,8 @@ public static class DetailsTab
         if (v.Coverage == MetricCoverage.Unknown)
         {
             tip.Append((string)"RWS_Details_Tip_Unknown".Translate()).Append('\n');
-            if (d.Acquisition is not null)
-                tip.Append((string)"RWS_Details_MissingAcquisitionTip".Translate()).Append('\n');
         }
-        tip.Append((string)"RWS_Details_Tip_Ledger".Translate(d.LedgerIds, d.Key));
-        return tip.ToString();
+        return tip.ToString().TrimEnd('\n');
     }
 
     // ----- formatting -----
@@ -637,14 +628,6 @@ public static class DetailsTab
         MetricCategory.Biotech => "RWS_Category_Biotech".Translate(),
         MetricCategory.Odyssey => "RWS_Category_Odyssey".Translate(),
         _ => "RWS_Category_Rankings".Translate(),
-    };
-
-    private static string EvidenceLabel(MetricEvidence evidence) => evidence switch
-    {
-        MetricEvidence.Experimental => "RWS_Exp_EvidenceExperimental".Translate(),
-        MetricEvidence.Verified => "RWS_Exp_EvidenceVerified".Translate(),
-        MetricEvidence.Mixed => "RWS_Exp_EvidenceMixed".Translate(),
-        _ => "RWS_Exp_EvidenceUnknown".Translate(),
     };
 
     private static string ProvenanceLabel(MetricProvenance p) => p switch

@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>Bekannt / Kolonien</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Beobachtet am</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>Spieltag des Spielstands, aus dem der Wert stammt.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>Aus {0} Kolonien (aus den Summen ausgeschlossen: {1}). Die Werte werden aus den importierten Spielständen berechnet und können Ereignisse enthalten, die durch Aktionen im Entwicklermodus entstanden sind.</RWS_Details_Note>
+  <RWS_Details_Note>Aus {0} Kolonien (aus den Summen ausgeschlossen: {1}). Die Werte werden aus importierten Spielständen berechnet.</RWS_Details_Note>
   <RWS_Details_Unattributed>{0} Beobachtungen, die keiner einzelnen Kolonie zugeordnet werden konnten, sind nicht enthalten.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>Keine passende Statistik.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>Keine eindeutige Spitzenkategorie</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Diese Statistik trifft auf keine der ausgewählten Kolonien zu. Ein fehlendes DLC wird nur dann als Grund angegeben, wenn die im Spielstand gespeicherte DLC-Liste es bestätigt.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Keine der infrage kommenden Kolonien hat einen erfassten Wert. Die Ursache ist unbestätigt: Die Erfassung kann deaktiviert oder zu spät gestartet worden sein, das Ereignis wurde womöglich nicht erfasst, oder der Import älterer Spielstände wird nicht unterstützt. Das ist nicht dasselbe wie null.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Nur einige der infrage kommenden Kolonien haben einen erfassten Wert. Die übrigen sind unbekannt, nicht null; der Gesamtwert kann daher unvollständig sein.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Alle infrage kommenden Kolonien haben einen erfassten Wert. Das allein bedeutet weder, dass der gesamte Spielverlauf abgedeckt ist, noch dass der Wert im echten Spiel überprüft wurde.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Ein erfasster Wert kann nur einen Teil des Spielverlaufs abdecken. Betrachte ihn nicht als überprüften Gesamtwert.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Mengen nach Art über unabhängig ausgewählte Kolonien summiert. Die Rangfolge kann unvollständig sein, wenn die Aufschlüsselung einer Kolonie fehlt.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Gemessener Beitrag dieser Kolonie zur ausgewählten Art. Nicht aufgeführte Kolonien oder Kolonien ohne Daten werden nicht als null angenommen.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Mögliche Gründe: Die Spielstände sind älter als die Erfassung, die Erfassung war deaktiviert oder die Quelldaten sind nicht verfügbar. Vergangene Ereignisse werden nicht mit null aufgefüllt.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>Keine zutreffenden Kolonien.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Für diese Statistik liegen keine Aufzeichnungen vor.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Nicht erreicht</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unbekannt)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Quelle: {0} / Status: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>Rekordhalter: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Stichproben: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Zähler {0} ÷ Nenner {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Es gibt keine Daten als Grundlage (vor dieser Version gelesene Spielstände, eine fehlende Datei, eine nicht unterstützte Spielversion oder unlesbare Daten).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Register: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>Keine Daten verfügbar.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} Tage</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / Jahr</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Vermögen</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>Benötigt DLC/Paket: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>Bei Neuinstallation sind alle Einheiten ausgewählt. Deaktiviere unerwünschte Einheiten, um die Erfassung zu beenden; bereits aufgezeichnete Daten bleiben erhalten. Änderungen gelten sofort ohne Neustart.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimentell</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Erfassungssicherheit: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Unverifizierte Erfassung</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Bei Erfassung verifiziert</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Mischung aus verifizierten und unverifizierten Erfassungen</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Herkunft der Erfassung unbekannt (einschließlich Altdaten)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>Aufzeichnung begann an Spieltag {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Benötigter MOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>Quell-MOD: {0} (Anbieter: {1})</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>Kolonie mit Höchstwert: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Kolonie mit Mindestwert: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Häufigster Gegenstand aller Kolonien: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>Höchster aufgezeichneter Wert unter unabhängigen Kolonien, anhand einer repräsentativen Beobachtung je Kolonie. Fehlende Messwerte sind nicht null. Bei Zustandswerten handelt es sich um den Wert des gespeicherten Spielstands, nicht eine kumulierte Summe.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>Niedrigster aufgezeichneter Wert unter unabhängigen Kolonien, anhand einer repräsentativen Beobachtung je Kolonie. Nur tatsächlich gemessene Nullen können Mindestwerte sein; unbekannte und nicht anwendbare Werte werden ignoriert.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Mengen werden für jede Gegenstandsart getrennt über unabhängige Kolonien summiert und dann nach ihren Gesamtsummen geordnet. Eine repräsentative Beobachtung je Kolonie. Fehlende, übergelaufene oder nicht erfasste Arten machen das Ergebnis unvollständig. Lagerbestände beim Speichern und lebenszeitliche Ereigniszahlen werden niemals vermischt.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>Höchster repräsentativer Wert unter den Kolonien.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Niedrigster repräsentativer Wert unter den Kolonien.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Vergleicht die Summen je Gegenstandsart über alle Kolonien.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Kolonien mit Gleichstand: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Beobachtet an Spieltag {0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>Häufigste Kategorie aller Kolonien: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Zahlen je erfasster Kategorie werden über unabhängige Kolonien anhand einer repräsentativen Beobachtung je Kolonie summiert. Fehlende oder unvollständige Aufschlüsselungen bleiben unvollständig. Kategorien können Ereignisse oder Menschen statt Gegenstände zählen.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>Vergleicht die Summen je Kategorie über alle Kolonien.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Summe der Kolonie-Momentaufnahmen: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Summe einer Menge, die beim repräsentativen Spielstand jeder unabhängigen Kolonie getrennt gemessen wurde. Keine lebenszeitliche Ereignissumme. Unbekannte Messwerte werden niemals zu null.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Addiert die Werte zum jeweiligen gespeicherten Stand der Kolonien.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: angekommene Gästegruppen (seit Aktivierung)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Bestätigte Hospitality-Gästegruppen, die seit Aktivierung dieser Statistik auf Heimatkarten des Spielers ankamen. Ersatzgruppen für gerettete Gäste zählen nicht. Duplikate nach dem Laden werden durch Ereignis-IDs herausgefiltert. Besuche vor der Mod-Installation werden nicht geschätzt.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: angekommene Gäste (seit Aktivierung)</RWS_Hospitality_VisitGuests>

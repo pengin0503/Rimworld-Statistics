@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>값 있음 / 정착지</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>관측 시점</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>값을 가져온 저장 파일의 게임 내 일수입니다.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>정착지 {0}곳 기준(합계에서 제외: {1}). 값은 가져온 저장 파일로 계산하며, 개발자 모드 조작으로 일어난 일이 포함될 수 있습니다.</RWS_Details_Note>
+  <RWS_Details_Note>정착지 {0}곳 기준(합계에서 제외: {1}). 값은 가져온 저장 파일로 계산합니다.</RWS_Details_Note>
   <RWS_Details_Unattributed>어느 한 정착지에 속하는지 판별할 수 없었던 관측 {0}건은 포함되지 않았습니다.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>일치하는 항목이 없습니다.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>최다 분류를 하나로 정할 수 없음</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>이 통계는 선택한 정착지 중 어디에도 해당하지 않습니다. DLC가 없다는 것은 저장 파일에 기록된 DLC 목록으로 확인될 때만 원인으로 표시합니다.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>대상 정착지 중 값이 수집된 곳이 없습니다. 원인은 확인되지 않았습니다. 수집이 꺼져 있었거나 늦게 시작되었을 수도, 이벤트가 기록되지 않았을 수도, 과거 저장 파일 가져오기가 지원되지 않을 수도 있습니다. 0과 같은 뜻이 아닙니다.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>대상 정착지 중 일부에만 수집된 값이 있습니다. 나머지는 0이 아니라 알 수 없는 값으로 다루므로, 합산 값은 부분적일 수 있습니다.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>모든 대상 정착지에 수집된 값이 있습니다. 하지만 그것만으로 플레이 전체가 기록되었다거나 실제 게임에서 값이 검증되었다는 뜻은 아닙니다.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>수집된 값은 플레이 기간의 일부만 다룰 수 있습니다. 검증된 누적 합계로 보지 마세요.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>각각 독립적으로 선택한 정착지들에서 종류별로 합산한 수량입니다. 어떤 정착지의 세부 내역이 빠져 있으면 순위가 부분적일 수 있습니다.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>선택한 종류에 대해 이 정착지가 실제로 측정된 기여분입니다. 목록에 없거나 데이터가 없는 정착지를 0으로 가정하지 않습니다.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>저장 파일이 수집 시작 이전의 것이거나, 수집이 꺼져 있었거나, 원본 데이터를 사용할 수 없기 때문일 수 있습니다. 과거 이벤트를 0으로 채우지 않습니다.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>해당하는 정착지가 없습니다.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>이 통계에 기록된 데이터가 없습니다.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>미달성</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(알 수 없음)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>출처: {0} / 상태: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>기록 보유: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>표본 수: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>분자 {0} ÷ 분모 {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>근거가 되는 데이터가 없습니다(이 버전 이전에 읽은 저장 파일, 파일 누락, 지원하지 않는 게임 버전, 읽을 수 없는 데이터 등).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>원장: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>데이터가 없습니다.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0}일</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / 년</RWS_Unit_PerYear>
   <RWS_Category_Wealth>재산</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>필요한 DLC/패키지: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>새로 설치하면 모든 항목이 선택됩니다. 항목의 선택을 해제하면 수집을 중지하지만 기록된 내역은 삭제되지 않습니다. 변경 사항은 게임 재시작 없이 즉시 적용됩니다.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>실험적</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>기록 신뢰도: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>검증되지 않은 기록</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>기록 시 검증됨</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>검증된 기록과 미검증 기록 혼합</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>기록 출처 불명 (이전 기록 포함)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>게임 내 {0}일째부터 기록</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>필요한 MOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>출처 MOD: {0} (제공자: {1})</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>값이 가장 큰 정착지: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>값이 가장 작은 정착지: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>모든 정착지에서 가장 많은 아이템: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>독립된 정착지마다 대표 관측값 하나를 사용해 기록된 최대값을 비교합니다. 기록 누락은 0으로 취급하지 않습니다. 상태를 나타내는 수량은 해당 정착지 저장 시점의 값이지 누적 합계가 아닙니다.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>독립된 정착지마다 대표 관측값 하나를 사용해 기록된 최소값을 비교합니다. 실제로 측정된 0만 최소값이 될 수 있으며 미확인 및 해당 없음 값은 제외합니다.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>독립된 정착지의 수량을 아이템 종류별로 따로 합산한 뒤 순위를 매깁니다. 정착지당 대표 관측값 하나를 사용합니다. 누락, 범위 초과 또는 미추적 종류가 있으면 결과가 일부만 반영됩니다. 저장 시점의 재고와 누적 사건 횟수는 섞지 않습니다.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>정착지별 대표값 중 최대값입니다.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>정착지별 대표값 중 최소값입니다.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>모든 정착지의 아이템 종류별 합계를 비교합니다.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>동률 정착지: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>게임 내 {0}일째 관측</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>모든 정착지에서 가장 많은 범주: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>독립된 각 정착지의 대표 관측값 하나를 사용해 기록된 범주별 수량을 합산합니다. 누락되거나 불완전한 내역은 일부 기록으로 남습니다. 범주는 아이템이 아닌 사건 수나 인원을 셀 수도 있습니다.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>모든 정착지의 범주별 합계를 비교합니다.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>정착지별 저장 시점 합계: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>각 독립 정착지의 대표 저장 파일에서 별도로 측정한 수량을 합산합니다. 평생 누적 사건 횟수가 아닙니다. 알 수 없는 수치를 0으로 바꾸지 않습니다.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>각 정착지의 기록 시점 값을 합산합니다.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: 도착한 손님 그룹 (활성화 후)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에 도착한 것으로 확인된 Hospitality 손님 그룹 수입니다. 구조된 손님을 위해 만든 대체 그룹은 제외합니다. 다시 불러온 뒤 중복 사건은 사건 ID로 걸러 냅니다. 모드 설치 전 방문은 추정하지 않습니다.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: 손님 도착 인원 (활성화 후)</RWS_Hospitality_VisitGuests>

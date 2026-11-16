@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>Conocidas / colonias</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Observado el día</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>Día de juego de la partida guardada de la que procede el valor.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>De {0} colonias (excluidas de los totales: {1}). Los valores se calculan a partir de las partidas guardadas importadas y pueden incluir hechos causados por acciones en modo desarrollador.</RWS_Details_Note>
+  <RWS_Details_Note>De {0} colonias (excluidas de los totales: {1}). Los valores se calculan a partir de las partidas guardadas importadas.</RWS_Details_Note>
   <RWS_Details_Unattributed>No se incluyen {0} observaciones que no se pudieron asignar a una sola colonia.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>Ninguna estadística coincide.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>No hay una categoría principal única</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Esta estadística no se aplica a ninguna de las colonias seleccionadas. Solo se indica la falta de un DLC como causa cuando lo confirma la lista de DLC registrada en la partida guardada.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Ninguna de las colonias aplicables tiene un valor registrado. La causa no está confirmada: puede que la recogida de datos esté desactivada o empezara tarde, que el evento no se registrara o que la importación de partidas antiguas no sea compatible. Esto no equivale a cero.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Solo algunas de las colonias aplicables tienen un valor registrado. Las demás son desconocidas, no cero, así que el valor combinado puede ser parcial.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Todas las colonias aplicables tienen un valor registrado. Esto por sí solo no significa que se haya cubierto toda la partida ni que el valor se haya verificado en una partida real.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Un valor registrado puede cubrir solo una parte de la partida. No lo interpretes como un total verificado.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Cantidades sumadas por tipo entre colonias seleccionadas de forma independiente. La clasificación puede ser parcial si falta el desglose de alguna colonia.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Aportación medida de esta colonia al tipo seleccionado. No se supone que las colonias que no aparecen o no tienen datos valgan cero.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Puede deberse a que las partidas guardadas sean anteriores a la recogida de datos, a que esta estuviera desactivada o a que los datos de origen no estén disponibles. Los eventos pasados no se rellenan con ceros.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>No hay colonias aplicables.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>No hay datos registrados para esta estadística.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>No alcanzado</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(desconocido)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Origen: {0} / estado: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>Récord de: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Muestras: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerador {0} ÷ denominador {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>No hay datos en los que basarse (partidas guardadas leídas antes de esta versión, un archivo ausente, una versión del juego no compatible o datos ilegibles).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Registro: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>No hay datos disponibles.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} días</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / año</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Riqueza</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>Requiere DLC o paquete: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>Todas las unidades están seleccionadas tras instalar el mod por primera vez. Desmarca una para detener su recopilación; los datos históricos ya registrados no se borran. Los cambios se aplican al instante sin reiniciar el juego.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Fiabilidad de captura: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Captura sin verificar</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Verificada al capturar</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Combinación de capturas verificadas y sin verificar</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Procedencia de captura desconocida (incluidos datos antiguos)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>El registro comenzó el día {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>MOD necesario: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>MOD de origen: {0} (proveedor: {1})</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>Colonia con el máximo: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colonia con el mínimo: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Artículo más común entre colonias: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>Valor registrado máximo entre colonias independientes, con una observación representativa por colonia. Los datos ausentes no valen cero. Para cantidades que describen un estado, es el valor de la partida guardada de la colonia, no un total acumulado.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>Valor registrado mínimo entre colonias independientes, con una observación representativa por colonia. Solo un cero medido realmente puede ser el mínimo; se ignoran los valores desconocidos o no aplicables.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Las cantidades se suman por cada tipo de artículo entre colonias independientes y después se ordenan los totales. Se usa una observación representativa por colonia. Los tipos ausentes, desbordados o no registrados dejan el resultado parcial. Nunca se mezclan existencias al guardar con recuentos acumulados de eventos.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>Valor representativo máximo entre las colonias.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Valor representativo mínimo entre las colonias.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Compara los totales por tipo de objeto de todas las colonias.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Colonias empatadas: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Observado el día de juego {0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>Categoría más común entre colonias: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Los recuentos se suman por cada categoría registrada entre colonias independientes con una observación por colonia. Los desgloses incompletos o ausentes siguen siendo parciales. Las categorías pueden contar eventos o personas en lugar de artículos.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>Compara los totales por categoría de todas las colonias.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Suma de instantáneas de colonias: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Suma de la cantidad medida por separado al guardar una observación representativa de cada colonia independiente. No es un total acumulado de eventos. Los valores desconocidos nunca pasan a cero.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Suma los valores registrados al guardar cada colonia.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: grupos de huéspedes llegados (desde activación)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Grupos de visitantes Hospitality cuya llegada a mapas de hogar del jugador se confirmó desde la activación de esta estadística. No se incluyen los grupos sustitutos creados para huéspedes rescatados. Se filtran duplicados tras recargar por ID de evento. No se estiman visitas anteriores a la instalación del mod.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: llegadas de huéspedes (desde activación)</RWS_Hospitality_VisitGuests>

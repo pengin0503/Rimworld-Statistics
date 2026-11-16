@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>有值 / 殖民地</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>觀測時間</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>該數值所在存檔的遊戲內天數。</RWS_Details_ThroughTip>
-  <RWS_Details_Note>基於 {0} 個殖民地（不計入合計：{1}）。數值根據已匯入的存檔計算，可能包含開發者模式操作造成的結果。</RWS_Details_Note>
+  <RWS_Details_Note>基於 {0} 個殖民地（不計入合計：{1}）。數值根據已匯入的存檔計算。</RWS_Details_Note>
   <RWS_Details_Unattributed>未包含 {0} 條無法歸屬到單一殖民地的觀測。</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>沒有符合的統計項。</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>無法確定唯一的最多類別</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>此統計項不適用於所選的任何殖民地。只有當存檔中記錄的 DLC 清單能夠證實時，才會將缺少 DLC 顯示為原因。</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>所有適用的殖民地都沒有已採集的數值。原因尚未確定：可能是採集被關閉或開始得較晚、事件未被記錄，或不支援匯入舊存檔。這並不等於零。</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>只有部分適用的殖民地有已採集的數值。其餘殖民地視為未知而非零，因此合計值可能不完整。</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>所有適用的殖民地都有已採集的數值。但這本身並不代表已覆蓋整個遊戲流程，也不代表該數值已在實際遊戲中驗證。</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>已採集的數值可能只涵蓋遊戲流程的一部分。請勿將其視為經過驗證的累計總數。</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>在各自獨立選取的殖民地之間按類型彙總的數量。若有殖民地缺少細分資料，排名可能不完整。</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>該殖民地對所選類型的實測貢獻。未列出或沒有資料的殖民地不會被視為零。</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>可能是因為存檔早於開始採集、採集被關閉，或來源資料不可用。過去的事件不會以零補全。</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>沒有適用的殖民地。</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>此統計項沒有已記錄的資料。</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（未知）</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>來源：{0} / 狀態：{1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>紀錄保持者：{0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>樣本數：{0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>分子 {0} ÷ 分母 {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>沒有可作為依據的資料（在此版本之前讀取的存檔、檔案缺失、不支援的遊戲版本或無法讀取的資料）。</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>台帳：{0}（{1}）</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>沒有可用資料。</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} 天</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / 年</RWS_Unit_PerYear>
   <RWS_Category_Wealth>財富</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>需要DLC／內容包：{0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>新安裝時預設選取全部項目。取消選取即可停止收集對應項目；已儲存的歷史不會刪除。設定變更立即生效，無須重新啟動遊戲。</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>實驗性</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>記錄可靠性：{0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>尚未驗證的記錄</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>記錄時已驗證</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>混合已驗證和未驗證的記錄</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>記錄來源不明（包含舊版資料）</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>開始記錄於遊戲內第{0}天</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>需要MOD：{0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>來源MOD：{0}（提供者：{1}）</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>數值最高的殖民地：{0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>數值最低的殖民地：{0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>所有殖民地中最多的物品：{0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>使用每個獨立殖民地的一次代表性觀測值進行比較，取最高的已記錄數值。缺失資料不當作零。描述狀態的數量是該殖民地存檔時的值，而不是歷史累計量。</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>使用每個獨立殖民地的一次代表性觀測值進行比較，取最低的已記錄數值。只有實際測得的零才可能是最小值；忽略未知和不適用的數值。</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>依物品種類分別彙總各獨立殖民地的數量，再依合計值排名。每個殖民地只取一次代表性觀測。缺失、溢出或未追蹤的種類會使結果不完整。存檔時庫存和歷史事件累計數絕不混合統計。</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>各殖民地代表值中的最大值。</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>各殖民地代表值中的最小值。</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>比較所有殖民地依物品種類彙總的數量。</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>並列的殖民地：{0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>記錄發生於遊戲內第{0}天</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>所有殖民地中最多的類別：{0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>依已記錄的類別，使用各獨立殖民地的一次代表性觀測值彙總數量。缺失或不完整的明細仍視為部分記錄。類別可能統計事件次數或人數，而不只是物品數量。</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>比較所有殖民地依類別彙總的數量。</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>殖民地快照數值合計：{0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>分別測量各獨立殖民地的代表性存檔數值後加總。不是歷史事件的累計數量。未知數值不會視為零。</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>加總各殖民地存檔時記錄的數值。</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality：到訪的客人群組數（啟用後）</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組數量。不包括為了安置獲救客人而建立的替代群組。讀取存檔後的重複事件透過事件ID過濾。不會推算模組安裝前的來訪。</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality：客人到訪人次（啟用後）</RWS_Hospitality_VisitGuests>

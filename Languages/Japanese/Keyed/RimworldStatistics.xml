@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>値あり / 対象</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>観測時点</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>値の取得元となったセーブ時点のゲーム内日数です。</RWS_Details_ThroughTip>
-  <RWS_Details_Note>{0}コロニー分（合計から除外：{1}）。数値は取り込んだセーブの内容から計算しており、開発者モードの操作による出来事が含まれることがあります。</RWS_Details_Note>
+  <RWS_Details_Note>{0}コロニー分（合計から除外：{1}）。数値は取り込んだセーブの内容から計算しています。</RWS_Details_Note>
   <RWS_Details_Unattributed>どのコロニーのものか特定できなかった観測{0}件は含まれていません。</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>条件に合う項目はありません。</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>最多の種類を1つに決められません</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>選択したコロニーには、この統計の対象となるコロニーがありません。DLC未導入が原因と表示するのは、セーブに記録されたDLC構成で確認できる場合だけです。</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>対象コロニーのいずれにも取得済みの値がありません。取得の無効化や開始の遅れ、イベントの未記録、過去セーブの解析が未対応であることなどが考えられ、原因は確定していません。0と同じ意味ではありません。</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>値を取得できたのは対象コロニーの一部だけです。それ以外のコロニーは0ではなく不明として扱うため、合計値は部分的な記録である可能性があります。</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>すべての対象コロニーに取得済みの値があります。ただし、それだけでプレイ期間全体を記録できたことや、実際のゲームで正確さを検証済みであることを意味しません。</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>取得済みの値はプレイ期間の一部だけを対象にしている可能性があります。検証済みの通算値とは見なさないでください。</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>独立して選んだ各コロニーの数量を種類別に合計しています。いずれかのコロニーの内訳が欠けている場合、順位は部分的なものです。</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>選択した種類へのこのコロニーの実測の寄与分です。表示されていないコロニーやデータのないコロニーを0とは見なしていません。</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>取得開始前のセーブである、取得を無効にしていた、元データが利用できないなどの理由が考えられます。過去のイベントを0で補完することはありません。</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>対象となるコロニーがありません。</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>この統計の記録はありません。</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（不明）</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>記録元: {0} ／ 状態: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>記録保持: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>サンプル数: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>分子 {0} ÷ 分母 {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>根拠となるデータがありません（このバージョンより前に読み込んだセーブ、元ファイルの欠落、未対応のゲームバージョン、読み込めないデータなど）。</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>台帳: {0}（{1}）</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>データがありません。</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0}日</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0}回/年</RWS_Unit_PerYear>
   <RWS_Category_Wealth>資産</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>必要なDLC/パッケージ: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>新規導入時はすべての項目が選択されています。不要な統計はチェックを外すと取得を停止します。停止しても記録済みの履歴は消えません。変更はゲームを再起動せずにすぐ反映されます。</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>実験的</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>取得の信頼性: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>未検証の取得</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>取得時に検証済み</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>検証済みと未検証が混在</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>取得の経緯が不明（旧データを含む）</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>記録開始: ゲーム内{0}日目</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>必要なMOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>提供元MOD: {0}（プロバイダーID: {1}）</RWS_Mod_Provider>
@@ -889,15 +877,15 @@
   <RWS_Cross_MaxColony>最大のコロニー：{0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>最小のコロニー：{0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>全コロニーで最も多い品目：{0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>独立したコロニーを、各コロニー1件の代表観測値で比べたときの最大値です。欠測は0とみなしません。状態を表す数量は各コロニーの記録したセーブ時点の値で、累計ではありません。</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>独立したコロニーを、各コロニー1件の代表観測値で比べたときの最小値です。実際に測定された0だけが最小値になり得ます。不明や対象外の値は除きます。</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>独立した各コロニーの数量を品目ごとに合計し、その合計で順位を付けます。各コロニー1件の代表観測値を使います。欠測・上限超過・追跡していない品目がある場合は部分的な記録になります。セーブ時点の在庫と通算のイベント数を混ぜることはありません。</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>各コロニーの代表値の最大値です。</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>各コロニーの代表値の最小値です。</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>全コロニーの品目別合計を比較します。</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>同率のコロニー：{0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>記録を観測したゲーム内日：{0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>全コロニーで最も多い種類：{0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>独立した各コロニーの代表観測値を使い、記録された分類ごとに件数を合計します。不完全または欠けている内訳は部分的な記録のまま扱います。分類は品目の個数ではなく、出来事の回数や人数を表す場合があります。</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>全コロニーの種類別合計を比較します。</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>各コロニーのセーブ時点の合計：{0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>独立した各コロニーの代表セーブ時点でそれぞれ測定した数量の合計です。通算のイベント数ではありません。不明な値を0に置き換えることはありません。</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>各コロニーの記録時点の値を合計します。</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality：到着した宿泊グループ（有効化後）</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>この統計を有効にしてから、プレイヤーの拠点マップに到着したことを確認したHospitalityの訪問グループの数。救助された客のために作られた代わりのグループは含めません。ロード後の重複はイベントIDで除外します。MOD導入前の来訪は推定しません。</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality：到着した宿泊客の延べ人数（有効化後）</RWS_Hospitality_VisitGuests>

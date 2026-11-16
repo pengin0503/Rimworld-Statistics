@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>Известно / колоний</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Наблюдение</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>Игровой день сохранения, из которого взято значение.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>Колоний: {0} (исключено из итогов: {1}). Значения рассчитываются по импортированным сохранениям и могут включать события, вызванные действиями в режиме разработчика.</RWS_Details_Note>
+  <RWS_Details_Note>Колоний: {0} (исключено из итогов: {1}). Значения рассчитаны по импортированным сохранениям.</RWS_Details_Note>
   <RWS_Details_Unattributed>Не учтено наблюдений, которые не удалось отнести к одной колонии: {0}.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>Подходящих показателей нет.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>Нет единственной лидирующей категории</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Этот показатель не относится ни к одной из выбранных колоний. Отсутствие DLC указывается как причина, только если это подтверждает список DLC, записанный в сохранении.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Ни у одной из подходящих колоний нет записанного значения. Причина не подтверждена: сбор данных мог быть отключён или начат поздно, событие могло не записаться, либо импорт старых сохранений может не поддерживаться. Это не то же самое, что ноль.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Записанное значение есть лишь у некоторых подходящих колоний. Остальные неизвестны, а не равны нулю, поэтому общее значение может быть неполным.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>У всех подходящих колоний есть записанное значение. Само по себе это не означает, что охвачена вся игра или что значение проверено в реальной игре.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Записанное значение может охватывать только часть игры. Не считайте его проверенным итогом за всё время.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Количества, просуммированные по типам среди независимо выбранных колоний. Рейтинг может быть неполным, если у какой-либо колонии нет разбивки.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Измеренный вклад этой колонии в выбранный тип. Колонии, которых нет в списке или у которых нет данных, не считаются равными нулю.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Возможные причины: сохранения сделаны до начала сбора данных, сбор был отключён или исходные данные недоступны. Прошлые события не заполняются нулями.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>Нет подходящих колоний.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Для этой статистики нет записанных данных.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Не достигнуто</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(неизвестно)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Источник: {0} / состояние: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>Рекордсмен: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Выборка: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Числитель {0} ÷ знаменатель {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Нет данных, на которые можно опереться (сохранения прочитаны до этой версии, файл отсутствует, версия игры не поддерживается или данные нечитаемы).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Реестр: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>Нет данных.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} дн.</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / год</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Богатство</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>Требуется DLC/пакет: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>При новой установке выбираются все показатели. Снимите отметку с ненужного показателя, чтобы остановить сбор; сохранённая история не удалится. Изменения применяются сразу, без перезапуска игры.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Экспериментально</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Достоверность сбора: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Непроверенный сбор</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Проверен при сборе</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Смешанные проверенные и непроверенные данные</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Неизвестное происхождение данных (включая старые записи)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>Начало записи, игровой день: {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Требуемый MOD: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>Исходный MOD: {0} (поставщик: {1})</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>Колония с максимумом: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Колония с минимумом: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Самый частый предмет во всех колониях: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>Наибольшее записанное значение среди независимых колоний по одному представительному наблюдению от каждой. Отсутствующие данные не считаются нулём. Для показателей состояния используется значение из сохранения колонии, а не накопленная сумма.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>Наименьшее записанное значение среди независимых колоний по одному представительному наблюдению от каждой. Минимумом может быть только фактически измеренный ноль; неизвестные и неприменимые значения игнорируются.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>Количество каждого типа предмета отдельно суммируется по независимым колониям, затем итоги ранжируются. Используется одно представительное наблюдение от каждой колонии. Отсутствующие, переполненные или неотслеживаемые типы дают неполный результат. Запасы на момент сохранения никогда не смешиваются с накопленными счётчиками событий.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>Наибольшее представительное значение среди колоний.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Наименьшее представительное значение среди колоний.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Сравнение сумм по типам предметов во всех колониях.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Колонии с равным результатом: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Наблюдение, игровой день: {0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>Наиболее частая категория: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Числа по каждой записанной категории суммируются между независимыми колониями по одному представительному наблюдению. Неполные или отсутствующие разбивки остаются частичными. Категории могут обозначать события или людей, не только предметы.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>Сравнение сумм по категориям во всех колониях.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Сумма снимков колоний: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Сумма величины, отдельно измеренной в представительном сохранении каждой независимой колонии. Это не накопленное число событий. Неизвестные данные никогда не превращаются в ноль.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Сумма значений, записанных для каждой колонии в момент сохранения.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: прибывшие группы гостей (после включения)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Подтверждённые группы посетителей Hospitality, прибывшие на домашние карты игрока после включения этой статистики. Замещающие группы для спасённых гостей не учитываются. Повторы после загрузки отсеиваются по ID события. Посещения до установки мода не оцениваются.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: прибытия гостей (после включения)</RWS_Hospitality_VisitGuests>

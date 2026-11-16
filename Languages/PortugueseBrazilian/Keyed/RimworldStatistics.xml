@@ -143,18 +143,12 @@
   <RWS_Details_Col_Colonies>Conhecidas / colônias</RWS_Details_Col_Colonies>
   <RWS_Details_Col_Through>Observado no dia</RWS_Details_Col_Through>
   <RWS_Details_ThroughTip>Dia de jogo do jogo salvo de onde vem o valor.</RWS_Details_ThroughTip>
-  <RWS_Details_Note>De {0} colônias (excluídas dos totais: {1}). Os valores são calculados a partir dos jogos salvos importados e podem incluir acontecimentos causados por ações no modo desenvolvedor.</RWS_Details_Note>
+  <RWS_Details_Note>De {0} colônias (excluídas dos totais: {1}). Os valores são calculados a partir dos jogos salvos importados.</RWS_Details_Note>
   <RWS_Details_Unattributed>{0} observações que não puderam ser atribuídas a uma única colônia não estão incluídas.</RWS_Details_Unattributed>
   <RWS_Details_NoMatch>Nenhuma estatística corresponde.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>Nenhuma categoria principal única</RWS_Details_UnrankedTop>
-  <RWS_Details_AvailabilityNone>Esta estatística não se aplica a nenhuma das colônias selecionadas. A falta de uma DLC só é indicada como motivo quando a lista de DLCs registrada no jogo salvo a confirma.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Nenhuma das colônias aplicáveis tem um valor registrado. A causa não está confirmada: a coleta pode estar desativada ou ter começado tarde, o evento pode não ter sido registrado ou a importação de jogos salvos antigos pode não ser suportada. Isso não é o mesmo que zero.</RWS_Details_AvailabilityMissing>
-  <RWS_Details_AvailabilitySome>Apenas algumas das colônias aplicáveis têm um valor registrado. As outras são desconhecidas, não zero, então o valor combinado pode ser parcial.</RWS_Details_AvailabilitySome>
-  <RWS_Details_AvailabilityAll>Todas as colônias aplicáveis têm um valor registrado. Isso, por si só, não significa que toda a partida foi coberta nem que o valor foi verificado em um jogo real.</RWS_Details_AvailabilityAll>
-  <RWS_Details_AvailabilityPartialPeriod>Um valor registrado pode cobrir apenas parte da partida. Não o interprete como um total verificado.</RWS_Details_AvailabilityPartialPeriod>
-  <RWS_Cross_RankedTypeExplanation>Quantidades somadas por tipo entre colônias selecionadas de forma independente. A classificação pode ser parcial se faltar a divisão de alguma colônia.</RWS_Cross_RankedTypeExplanation>
-  <RWS_Cross_ContributionExplanation>Contribuição medida desta colônia para o tipo selecionado. Colônias não listadas ou sem dados não são consideradas como zero.</RWS_Cross_ContributionExplanation>
-  <RWS_Details_MissingAcquisitionTip>Isso pode ocorrer porque os jogos salvos são anteriores à coleta, a coleta estava desativada ou os dados de origem não estão disponíveis. Eventos passados não são preenchidos com zero.</RWS_Details_MissingAcquisitionTip>
+  <RWS_Details_AvailabilityNone>Não há colônias aplicáveis.</RWS_Details_AvailabilityNone>
+  <RWS_Details_AvailabilityMissing>Não há registros desta estatística.</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Não alcançado</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(desconhecido)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Origem: {0} / estado: {1}</RWS_Details_Tip_Source>
@@ -166,8 +160,7 @@
   <RWS_Details_Tip_Holder>Recorde de: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Amostras: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerador {0} ÷ denominador {1}</RWS_Details_Tip_Ratio>
-  <RWS_Details_Tip_Unknown>Não há dados em que se basear (jogos salvos lidos antes desta versão, um arquivo ausente, uma versão do jogo não suportada ou dados ilegíveis).</RWS_Details_Tip_Unknown>
-  <RWS_Details_Tip_Ledger>Registro: {0} ({1})</RWS_Details_Tip_Ledger>
+  <RWS_Details_Tip_Unknown>Não há dados disponíveis.</RWS_Details_Tip_Unknown>
   <RWS_Unit_Days>{0} dias</RWS_Unit_Days>
   <RWS_Unit_PerYear>{0} / ano</RWS_Unit_PerYear>
   <RWS_Category_Wealth>Riqueza</RWS_Category_Wealth>
@@ -838,11 +831,6 @@
   <RWS_Exp_RequiresDlc>Requer DLC/pacote: {0}</RWS_Exp_RequiresDlc>
   <RWS_Exp_Help>Todas as unidades são selecionadas em instalações novas. Desmarque um item para interromper sua coleta; desativá-lo não apaga o histórico. Alterações são aplicadas imediatamente, sem reiniciar o jogo.</RWS_Exp_Help>
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
-  <RWS_Exp_Evidence>Confiabilidade da captura: {0}</RWS_Exp_Evidence>
-  <RWS_Exp_EvidenceExperimental>Captura não verificada</RWS_Exp_EvidenceExperimental>
-  <RWS_Exp_EvidenceVerified>Verificada na captura</RWS_Exp_EvidenceVerified>
-  <RWS_Exp_EvidenceMixed>Capturas verificadas e não verificadas misturadas</RWS_Exp_EvidenceMixed>
-  <RWS_Exp_EvidenceUnknown>Origem da captura desconhecida (inclusive dados antigos)</RWS_Exp_EvidenceUnknown>
   <RWS_Exp_Since>Registro iniciado no dia {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>MOD necessário: {0}</RWS_Mod_RequiresMod>
   <RWS_Mod_Provider>MOD de origem: {0} (provedor: {1})</RWS_Mod_Provider>
@@ -888,15 +876,15 @@
   <RWS_Cross_MaxColony>Colônia com maior valor: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colônia com menor valor: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Item mais comum entre colônias: {0}</RWS_Cross_TopType>
-  <RWS_CrossDesc_MaxColony>Maior valor registrado entre colônias independentes, com uma observação representativa por colônia. Valores ausentes não são tratados como zero. Para quantidades que descrevem um estado, vale a medição no jogo salvo da colônia, não um total acumulado.</RWS_CrossDesc_MaxColony>
-  <RWS_CrossDesc_MinColony>Menor valor registrado entre colônias independentes, com uma observação representativa por colônia. Apenas um zero realmente medido pode ser o menor valor; valores desconhecidos ou não aplicáveis são ignorados.</RWS_CrossDesc_MinColony>
-  <RWS_CrossDesc_TopType>As quantidades de cada tipo de item são somadas separadamente entre colônias independentes, e os totais são classificados. Usa-se uma observação representativa por colônia. Tipos ausentes, acima do limite ou não acompanhados tornam o resultado parcial. Estoques em salvamentos e contagens vitalícias de eventos nunca são misturados.</RWS_CrossDesc_TopType>
+  <RWS_CrossDesc_MaxColony>Maior valor representativo entre as colônias.</RWS_CrossDesc_MaxColony>
+  <RWS_CrossDesc_MinColony>Menor valor representativo entre as colônias.</RWS_CrossDesc_MinColony>
+  <RWS_CrossDesc_TopType>Compara os totais por tipo de item de todas as colônias.</RWS_CrossDesc_TopType>
   <RWS_Cross_TiedHolders>Colônias empatadas: {0}</RWS_Cross_TiedHolders>
   <RWS_Cross_RecordedAt>Observado no dia de jogo {0}</RWS_Cross_RecordedAt>
   <RWS_Cross_TopCategory>Categoria mais comum entre colônias: {0}</RWS_Cross_TopCategory>
-  <RWS_CrossDesc_TopCategory>Contagens somadas por categoria registrada entre colônias independentes, usando uma observação representativa por colônia. Detalhamentos ausentes ou incompletos permanecem parciais. Categorias podem contar eventos ou pessoas em vez de itens.</RWS_CrossDesc_TopCategory>
+  <RWS_CrossDesc_TopCategory>Compara os totais por categoria de todas as colônias.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>Soma dos retratos de colônias: {0}</RWS_Cross_Sum>
-  <RWS_CrossDesc_Sum>Soma de uma quantidade medida separadamente no salvamento representativo de cada colônia independente. Não é um total vitalício de eventos. Leituras desconhecidas nunca viram zero.</RWS_CrossDesc_Sum>
+  <RWS_CrossDesc_Sum>Soma os valores registrados ao salvar cada colônia.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: grupos de hóspedes que chegaram (desde a ativação)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>Grupos de visitantes de Hospitality cuja chegada a mapas de lar do jogador foi confirmada desde a ativação desta estatística. Grupos substitutos formados para hóspedes resgatados não contam. Duplicatas após recarregar são filtradas pelo ID do evento. Visitas anteriores à instalação do mod não são estimadas.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: chegadas de hóspedes (desde a ativação)</RWS_Hospitality_VisitGuests>
