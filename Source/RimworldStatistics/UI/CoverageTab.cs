@@ -43,10 +43,7 @@ internal static class CoverageTab
             language = activeLanguage;
             recordingRevision = currentRecordingRevision;
             if (viewChanged)
-            {
-                Expanded.UnionWith(statuses.Select(GroupId));
                 scroll = Vector2.zero;
-            }
             rebuildRows = true;
             var countMeasured = statuses.Count(s => s.Availability == MetricAvailability.AllMeasuredColonies
                 && !MetricStatusClassifier.IsPartial(s));
@@ -158,7 +155,7 @@ internal static class CoverageTab
             if (row.Status is null)
             {
                 Widgets.DrawHighlightIfMouseover(rowRect);
-                if (Widgets.ButtonInvisible(rowRect))
+                if (Widgets.ButtonInvisible(rowRect) && string.IsNullOrWhiteSpace(search))
                 {
                     if (!Expanded.Remove(row.Group))
                         Expanded.Add(row.Group);
@@ -192,29 +189,59 @@ internal static class CoverageTab
                 s.Definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
                 || MetricText.Label(s.Definition).Contains(term, StringComparison.CurrentCultureIgnoreCase))
             .ToArray();
-        var results = new List<DisplayRow>(filtered.Length + 30);
-        foreach (var group in filtered.GroupBy(GroupId).OrderBy(g => g.Key, StringComparer.Ordinal))
+
+        var groups = MetricAcquisitionLabels.BuildGroups(
+            filtered,
+            MetricText.ActiveModTitle,
+            key => (string)key.Translate(),
+            DetailsTab.CategoryLabel,
+            cat => (string)"RWS_Status_ExternalModCategory".Translate(cat),
+            StringComparer.CurrentCulture);
+
+        var duplicateLabels = groups
+            .GroupBy(g => g.Label, StringComparer.CurrentCulture)
+            .Where(g => g.Count() > 1)
+            .Select(g => g.Key)
+            .ToHashSet(StringComparer.CurrentCulture);
+
+        var results = new List<DisplayRow>(filtered.Length + groups.Count);
+        foreach (var group in groups)
         {
-            var first = group.First();
-            var state = first.Recording;
-            var requirement = string.Join(" · ", new[] { first.Definition.RequiredDlc, first.Definition.OwnerPackageId }
-                .Where(value => !string.IsNullOrEmpty(value)));
-            var num = group.Count();
-            var measured = group.Count(s => s.Measured > 0);
-            results.Add(new DisplayRow(group.Key, (Expanded.Contains(group.Key) ? "▾ " : "▸ ") + group.Key,
-                RecordingLabel(state), requirement, measured + "/" + num, null));
-            if (!Expanded.Contains(group.Key))
+            var expanded = MetricAcquisitionLabels.IsGroupExpanded(group.GroupId, Expanded, term);
+            var reqParts = new List<string>(2);
+            if (!string.IsNullOrEmpty(group.RequiredDlc))
+                reqParts.Add(MetricText.DlcDisplayName(group.RequiredDlc!));
+            if (!string.IsNullOrEmpty(group.OwnerPackageId)
+                && MetricAcquisitionLabels.SafeModDisplayName(group.OwnerPackageId, MetricText.ActiveModTitle) is { } modTitle)
+                reqParts.Add(modTitle);
+            var requirement = string.Join(" · ", reqParts);
+
+            var displayLabel = duplicateLabels.Contains(group.Label) && group.Items.Count > 0
+                ? group.Label + " · " + MetricText.Label(group.Items[0].Definition)
+                : group.Label;
+
+            results.Add(new DisplayRow(
+                group.GroupId,
+                (expanded ? "▾ " : "▸ ") + displayLabel,
+                RecordingLabel(group.Recording),
+                requirement,
+                "RWS_Status_GroupCount".Translate(group.MeasuredCount, group.TotalCount),
+                null));
+
+            if (!expanded)
                 continue;
-            foreach (var status in group.OrderBy(s => MetricText.Label(s.Definition), StringComparer.CurrentCulture))
-                results.Add(new DisplayRow(group.Key, "    " + MetricText.Label(status.Definition),
-                    RecordingLabel(status.Recording), CoverageLabel(status) + " · " + VerificationLabel(status.Verification),
-                    status.Measured + "/" + status.Targets, status));
+
+            foreach (var status in group.Items.OrderBy(s => MetricText.Label(s.Definition), StringComparer.CurrentCulture))
+                results.Add(new DisplayRow(
+                    group.GroupId,
+                    "    " + MetricText.Label(status.Definition),
+                    RecordingLabel(status.Recording),
+                    CoverageLabel(status) + " · " + VerificationLabel(status.Verification),
+                    status.Measured + "/" + status.Targets,
+                    status));
         }
         return results.ToArray();
     }
-
-    private static string GroupId(MetricStatus s) =>
-        s.Definition.Acquisition ?? s.Definition.Provenance.ToString();
 
     private static string CoverageLabel(MetricStatus s)
     {
@@ -256,27 +283,36 @@ internal static class CoverageTab
 
     private static string Tooltip(MetricStatus status, StatsResult stats)
     {
-        var text = MetricText.Label(status.Definition) + "\n" + status.Definition.Key + "\n"
-            + CoverageLabel(status) + " · " + VerificationLabel(status.Verification) + "\n"
-            + RecordingLabel(status.Recording) + "\n"
-            + status.Measured + " / " + status.Targets + "\n"
-            + status.Definition.Provenance + " · " + status.Definition.Source + "\n";
-        if (status.Definition.Acquisition is { } unit)
-            text += unit + "\n";
+        var lines = new List<string>
+        {
+            MetricText.Label(status.Definition),
+            CoverageLabel(status) + " · " + VerificationLabel(status.Verification),
+            RecordingLabel(status.Recording),
+        };
+        if (status.Targets > 0)
+            lines.Add("RWS_Details_Tip_Colonies".Translate(status.Targets, status.Measured));
+        lines.Add(MetricAcquisitionLabels.ResolveGroupLabel(
+            status.Definition,
+            MetricText.ActiveModTitle,
+            key => (string)key.Translate(),
+            DetailsTab.CategoryLabel,
+            cat => (string)"RWS_Status_ExternalModCategory".Translate(cat)));
         if (status.Definition.RequiredDlc is { } dlc)
-            text += dlc + "\n";
+            lines.Add("RWS_Exp_RequiresDlc".Translate(MetricText.DlcDisplayName(dlc)));
         if (status.Definition.OwnerPackageId is { } owner)
-            text += owner + "\n";
+            lines.Add("RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(owner)));
+        if (ExternalSdkHost.Instance.IsEventDedupCapacityExceeded(status.Definition.Key))
+            lines.Add("RWS_Status_SdkEventCapExceeded".Translate(1, FamilyOps.KeyCap));
         if (status.MissingColonyKeys.Count > 0)
         {
-            text += "RWS_Status_MissingColonies".Translate(status.MissingColonyKeys.Count) + "\n";
+            lines.Add("RWS_Status_MissingColonies".Translate(status.MissingColonyKeys.Count));
             foreach (var key in status.MissingColonyKeys.Take(10))
             {
                 var colony = stats.Colonies.FirstOrDefault(c => c.Key == key);
-                text += (colony is null ? key : Dialog_RimworldStatistics.ColonyName(colony)) + "\n";
+                lines.Add(colony is null ? key : Dialog_RimworldStatistics.ColonyName(colony));
             }
         }
-        return text;
+        return string.Join("\n", lines);
     }
 
     private static void DrawCells(Rect rect, string[] cells, float[] widths)

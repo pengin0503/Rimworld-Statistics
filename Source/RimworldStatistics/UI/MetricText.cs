@@ -76,12 +76,19 @@ internal static class MetricText
         return ModDisplayName(packageId);
     }
 
-    public static string ModDisplayName(string packageId)
+    public static string? ActiveModTitle(string? packageId)
     {
+        if (string.IsNullOrWhiteSpace(packageId))
+            return null;
         var pack = LoadedModManager.RunningMods.FirstOrDefault(mod =>
             string.Equals(mod.PackageId, packageId, StringComparison.OrdinalIgnoreCase));
-        if (!string.IsNullOrWhiteSpace(pack?.Name))
-            return pack!.Name;
-        return packageId;
+        return string.IsNullOrWhiteSpace(pack?.Name) ? null : pack!.Name;
     }
+
+    public static string ModDisplayName(string packageId)
+        => ActiveModTitle(packageId) ?? MetricAcquisitionLabels.KnownModDisplayName(packageId) ?? packageId;
+
+    public static string SafeModDisplayName(string packageId)
+        => MetricAcquisitionLabels.SafeModDisplayName(packageId, ActiveModTitle)
+            ?? (string)"RWS_Status_ExternalMod".Translate();
 }

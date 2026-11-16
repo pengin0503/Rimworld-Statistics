@@ -1267,4 +1267,52 @@
   <RWS_MetricDesc_JoinsBySpecies>Recorded first-time joins by the pawn’s species.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>Colonist deaths by species</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>Recorded free colonist deaths by the pawn’s species.</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} items</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>External mod</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>External mod ({0})</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>Game counter</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>Save history graph</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>State in save</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>Recorded during play</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>Research progress</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>Mental breaks and inspirations</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>Combat and deaths</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>Downings</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>Colonist membership</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>Raids and defense</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>Lifetime records</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>Social interactions</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>Animals</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>Crafting, building, and mining</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>Detailed work and farming</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>Daily chores and hauling</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>Food and meals</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>Trade</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>Diplomacy and quests</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>Medicine and health care</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>Disasters and incidents</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>Modded incidents</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>Caravans</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>Research status (at save)</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>Factions (at save)</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>Colonist roster and skills (at save)</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>Facilities and power (at save)</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>Stockpiles (at save)</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>Colony start settings (at save)</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: Outposts (at save)</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: Production</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: Fixtures (at save)</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: Hygiene activities</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: Events</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: Level gains</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: Psycasts</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: Psycasters (at save)</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: Titles and abilities (at save)</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: Quests and structures (at save)</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: Events</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: Events</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: State (at save)</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: Events</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: Fishing</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>Ending participants</RWS_AcqUnit_ending_party>
 </LanguageData>
