@@ -1320,4 +1320,6 @@
   <RWS_Filter_Shown>顯示：{0}/{1}項</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>篩選：{0}項</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>重設篩選</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« 隱藏統計清單</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» 顯示統計清單</RWS_Rankings_ShowSelector>
 </LanguageData>

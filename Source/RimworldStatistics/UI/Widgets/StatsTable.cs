@@ -13,7 +13,7 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
     private string[][] display = [];
     private string?[][] tips = [];
 
-    public void Draw(Rect rect, ref Vector2 scroll, string[] headers, IReadOnlyList<string[]> rows)
+    public void Draw(Rect rect, ref Vector2 scroll, string[] headers, IReadOnlyList<string[]> rows, IReadOnlyList<bool>? rightAligned = null)
     {
         if (rect.height <= rowHeight)
             return;
@@ -39,7 +39,7 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
         Text.Anchor = TextAnchor.MiddleLeft;
         GUI.BeginGroup(new Rect(rect.x, rect.y, width, rowHeight));
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null);
+        DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null, rightAligned);
         GUI.EndGroup();
         GUI.color = previousColor;
 
@@ -65,19 +65,22 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
                         tips[i][c] = source[c];
                 }
             }
-            DrawCells(row, display[i], tips[i]);
+            DrawCells(row, display[i], tips[i], rightAligned);
         }
         Widgets.EndScrollView();
         Text.Anchor = previousAnchor;
     }
 
-    private void DrawCells(Rect row, string[] cells, string?[]? fullText)
+    private void DrawCells(Rect row, string[] cells, string?[]? fullText, IReadOnlyList<bool>? rightAligned)
     {
         var x = row.x;
         for (var i = 0; i < cells.Length; i++)
         {
             var width = plan!.Widths[i];
             var cell = new Rect(x + 4f, row.y, Math.Max(0, width - 8f), row.height);
+            Text.Anchor = rightAligned is not null && i < rightAligned.Count && rightAligned[i]
+                ? TextAnchor.MiddleRight
+                : TextAnchor.MiddleLeft;
             var shown = fullText is null ? cells[i].Truncate(cell.width) : cells[i];
             Widgets.Label(cell, shown);
             var tip = fullText is null && shown != cells[i] ? cells[i] : fullText?[i];

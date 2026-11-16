@@ -68,15 +68,25 @@ public sealed class Dialog_RimworldStatistics : Window
         try
         {
             RefreshSavedPreferences();
+            var header = StatisticsWindowLayout.ResolveHeader(inRect.width);
             Text.Font = GameFont.Medium;
-            var selectorWidth = Math.Min(245f, Math.Max(135f, inRect.width * 0.30f));
-            var selectorX = inRect.xMax - selectorWidth - 32f;
-            Widgets.Label(new Rect(inRect.x, inRect.y, Math.Max(0f, selectorX - inRect.x - 8f), TitleHeight), "RWS_WindowTitle".Translate());
-            if (Widgets.ButtonText(new Rect(selectorX, inRect.y + 4f, selectorWidth, 30f), ScopeLabel().Truncate(selectorWidth - 12f)))
-                ShowScopeMenu();
+            string titleText = "RWS_WindowTitle".Translate();
+            var titleRect = new Rect(inRect.x, inRect.y, header.TitleWidth, TitleHeight);
+            var shownTitle = titleText.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+            if (shownTitle != titleText)
+                TooltipHandler.TipRegion(titleRect, titleText);
             Text.Font = GameFont.Small;
 
-            var body = new Rect(inRect.x, inRect.y + TitleHeight + TabHeight, inRect.width, inRect.height - TitleHeight - TabHeight);
+            var scopeText = ScopeLabel();
+            var scopeRect = new Rect(inRect.x + header.SelectorX, inRect.y + 4f, header.SelectorWidth, 30f);
+            var shownScope = scopeText.Truncate(Math.Max(0f, scopeRect.width - 12f));
+            if (scopeRect.width > 0f && Widgets.ButtonText(scopeRect, shownScope))
+                ShowScopeMenu();
+            if (shownScope != scopeText)
+                TooltipHandler.TipRegion(scopeRect, scopeText);
+
+            var body = new Rect(inRect.x, inRect.y + TitleHeight + TabHeight, inRect.width, Math.Max(0f, inRect.height - TitleHeight - TabHeight));
             Widgets.DrawMenuSection(body);
             var tabs = new List<TabRecord>
             {
@@ -95,14 +105,18 @@ public sealed class Dialog_RimworldStatistics : Window
                 (string)"RWS_Tab_Rankings".Translate(), (string)"RWS_Tab_Coverage".Translate(),
                 (string)"RWS_Tab_Import".Translate(),
             };
-            if (tabNames.Sum(x => Text.CalcSize(x).x + 33f) > body.width - 16f)
+            if (body.width <= 16f || tabNames.Sum(x => Text.CalcSize(x).x + 33f) > body.width - 16f)
             {
-                var tabRect = new Rect(body.x + 8f, body.y - 30f, Math.Min(230f, body.width - 16f), 28f);
-                if (Widgets.ButtonText(tabRect, tabNames[(int)current].Truncate(tabRect.width - 12f)))
+                var tabRect = new Rect(body.x + 8f, body.y - 30f, Math.Max(0f, Math.Min(230f, body.width - 16f)), 28f);
+                var activeTabName = tabNames[(int)current];
+                var shownTab = activeTabName.Truncate(Math.Max(0f, tabRect.width - 12f));
+                if (tabRect.width > 0f && Widgets.ButtonText(tabRect, shownTab))
                 {
                     Find.WindowStack.Add(new FloatMenu(tabNames.Select((label, index) =>
                         new FloatMenuOption(label, () => current = (Tab)index)).ToList()));
                 }
+                if (shownTab != activeTabName)
+                    TooltipHandler.TipRegion(tabRect, activeTabName);
             }
             else
             {

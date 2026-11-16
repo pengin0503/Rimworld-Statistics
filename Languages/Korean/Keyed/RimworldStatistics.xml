@@ -1320,4 +1320,6 @@
   <RWS_Filter_Shown>표시: {0}/{1}개</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>필터: {0}개</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>필터 초기화</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« 목록 숨기기</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» 목록 표시</RWS_Rankings_ShowSelector>
 </LanguageData>

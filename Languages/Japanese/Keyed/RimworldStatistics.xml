@@ -1321,4 +1321,6 @@
   <RWS_Filter_Shown>表示：{0}/{1}件</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>絞り込み：{0}件</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>条件をリセット</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« 項目選択を隠す</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» 項目選択を表示</RWS_Rankings_ShowSelector>
 </LanguageData>

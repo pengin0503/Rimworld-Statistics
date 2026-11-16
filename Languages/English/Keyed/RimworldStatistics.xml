@@ -1321,4 +1321,6 @@
   <RWS_Filter_Shown>{0}/{1} shown</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>{0} filter(s)</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>Reset filters</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« Hide list</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» Show list</RWS_Rankings_ShowSelector>
 </LanguageData>
