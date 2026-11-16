@@ -32,6 +32,9 @@ on:
       - 'Directory.Build.props'
       - 'global.json'
   workflow_dispatch:
+  # Full performance measurements remain available manually and run weekly.
+  schedule:
+    - cron: '0 18 * * 0' # Monday 03:00 JST
 
 permissions:
   contents: read
@@ -243,9 +246,13 @@ jobs:
         run: dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+      # The complete benchmark suite is intentionally opt-in / weekly: on PRs and regular pushes
+      # preserve fast compile, all xUnit cases, API audits, key checks and package verification.
       - name: External SDK event allocation and throughput benchmark
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/SdkEventBenchmark/SdkEventBenchmark.csproj --no-launch-profile
       - name: Profile scaling benchmark (100–3000 synthetic saves)
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         shell: bash
         run: |
           set -euo pipefail
@@ -253,17 +260,22 @@ jobs:
             > "$RUNNER_TEMP/rws-profile-benchmark.csv"
           cat "$RUNNER_TEMP/rws-profile-benchmark.csv"
       - name: Profile 5 and 10 MiB import-only write benchmark
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile -- --large
       - name: Representative 0.2/5/10 MiB profile write and game-thread wait benchmark
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/ProfileBenchmark/ProfileBenchmark.csproj --no-launch-profile -- --representative
       - name: Synthetic historical .rws cold/warm scan (55 saves)
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         shell: bash
         run: |
           set -euo pipefail
           dotnet run -c Release --project tools/SaveImportBenchmark/SaveImportBenchmark.csproj --no-launch-profile -- 55 262144
       - name: Synthetic 35-colony by-item leaderboard benchmark
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/CrossColonyBenchmark/CrossColonyBenchmark.csproj --no-launch-profile
       - name: Matched synthetic breakdown lookup A/B benchmark
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/BreakdownLookupBenchmark/BreakdownLookupBenchmark.csproj --no-launch-profile
       - name: Translation key consistency
         run: bash tools/check_keys.sh
