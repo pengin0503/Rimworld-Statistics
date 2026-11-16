@@ -11,7 +11,7 @@ internal static class CoverageTab
     private enum CoverageFilter { All, Measured, Partial, Missing, NotApplicable }
     private sealed record DisplayRow(
         string Group, string Label, string Capture, string Coverage, string Count,
-        MetricStatus? Status);
+        MetricStatus? Status, MetricVisualKind VisualKind);
 
     private const float RowHeight = 27f;
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
@@ -20,6 +20,7 @@ internal static class CoverageTab
     private static long recordingRevision = -1;
     private static IReadOnlyList<MetricStatus> statuses = [];
     private static DisplayRow[] rows = [];
+    private static int matchedMetricCount;
     private static bool rebuildRows = true;
     private static string search = "";
     private static MetricCategory? category;
@@ -111,13 +112,45 @@ internal static class CoverageTab
             }));
         }
 
-        var searchY = rect.y + 63f + controls.Height + 4f;
-        var nextSearch = Widgets.TextField(new Rect(rect.x, searchY, rect.width, 28f), search) ?? "";
+        if (rebuildRows)
+        {
+            rows = BuildRows();
+            rebuildRows = false;
+        }
+
+        var activeFilters = FilterSummary.CountActiveFilters(
+            filter != CoverageFilter.All, category is not null, verification is not null, search);
+        var shownText = (string)"RWS_Filter_Shown".Translate(matchedMetricCount, statuses.Count);
+        var activeText = activeFilters > 0 ? (string)"RWS_Filter_ActiveCount".Translate(activeFilters) : "";
+        var summaryLabelText = activeFilters > 0 ? shownText + " · " + activeText : shownText;
+
+        var searchRowY = rect.y + 63f + controls.Height + 4f;
+        var searchRow = new ControlRow(new Rect(rect.x, searchRowY, rect.width, 28f));
+        var searchWidth = Math.Max(140f, Math.Min(rect.width * 0.48f, 360f));
+        var searchFieldRect = searchRow.Next(searchWidth);
+        var nextSearch = Widgets.TextField(searchFieldRect, search) ?? "";
         if (nextSearch != search)
         {
             search = nextSearch;
             rebuildRows = true;
             scroll = Vector2.zero;
+        }
+        var summaryRect2 = searchRow.Next(summaryLabelText, 95f, 240f);
+        var priorAnchor = Text.Anchor;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        GUI.color = new Color(0.8f, 0.8f, 0.8f);
+        Widgets.Label(summaryRect2, summaryLabelText.Truncate(summaryRect2.width));
+        GUI.color = Color.white;
+        Text.Anchor = priorAnchor;
+        TooltipHandler.TipRegion(summaryRect2, summaryLabelText);
+        if (activeFilters > 0)
+        {
+            var resetLabel = (string)"RWS_Filter_Reset".Translate();
+            var resetRect = searchRow.Next(resetLabel, 95f, 175f);
+            if (Widgets.ButtonText(resetRect, resetLabel.Truncate(Math.Max(0f, resetRect.width - 10f))))
+            {
+                ResetFilters();
+            }
         }
         if (rebuildRows)
         {
@@ -125,7 +158,7 @@ internal static class CoverageTab
             rebuildRows = false;
         }
 
-        var start = searchY + 34f;
+        var start = searchRowY + searchRow.Height + 6f;
         if (tablePlan is null || layoutWidth != rect.width)
         {
             layoutWidth = rect.width;
@@ -137,10 +170,17 @@ internal static class CoverageTab
         GUI.BeginGroup(titleRect);
         DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
             ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
-                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths);
+                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths, null);
         GUI.EndGroup();
 
         var viewport = new Rect(rect.x, start + RowHeight, rect.width, Math.Max(0, rect.yMax - start - RowHeight));
+        if (viewport.height <= 0)
+            return;
+        if (rows.Length == 0)
+        {
+            Widgets.Label(viewport, "RWS_Details_NoMatch".Translate());
+            return;
+        }
         Widgets.BeginScrollView(viewport, ref scroll,
             new Rect(0, 0, tableWidth, rows.Length * RowHeight));
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
@@ -151,7 +191,8 @@ internal static class CoverageTab
             var rowRect = new Rect(0f, i * RowHeight, tableWidth, RowHeight);
             if (i % 2 == 1)
                 Widgets.DrawHighlight(rowRect, 0.2f);
-            DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths);
+            DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths,
+                row.Status is null ? null : row.VisualKind);
             if (row.Status is null)
             {
                 Widgets.DrawHighlightIfMouseover(rowRect);
@@ -172,6 +213,16 @@ internal static class CoverageTab
         Widgets.EndScrollView();
     }
 
+    private static void ResetFilters()
+    {
+        filter = CoverageFilter.All;
+        category = null;
+        verification = null;
+        search = "";
+        rebuildRows = true;
+        scroll = Vector2.zero;
+    }
+
     private static DisplayRow[] BuildRows()
     {
         var term = search.Trim();
@@ -189,6 +240,7 @@ internal static class CoverageTab
                 s.Definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
                 || MetricText.Label(s.Definition).Contains(term, StringComparison.CurrentCultureIgnoreCase))
             .ToArray();
+        matchedMetricCount = filtered.Length;
 
         var groups = MetricAcquisitionLabels.BuildGroups(
             filtered,
@@ -226,7 +278,8 @@ internal static class CoverageTab
                 RecordingLabel(group.Recording),
                 requirement,
                 "RWS_Status_GroupCount".Translate(group.MeasuredCount, group.TotalCount),
-                null));
+                null,
+                MetricVisualKind.Complete));
 
             if (!expanded)
                 continue;
@@ -238,7 +291,8 @@ internal static class CoverageTab
                     RecordingLabel(status.Recording),
                     CoverageLabel(status) + " · " + VerificationLabel(status.Verification),
                     status.Measured + "/" + status.Targets,
-                    status));
+                    status,
+                    MetricVisualState.Classify(status)));
         }
         return results.ToArray();
     }
@@ -315,20 +369,23 @@ internal static class CoverageTab
         return string.Join("\n", lines);
     }
 
-    private static void DrawCells(Rect rect, string[] cells, float[] widths)
+    private static void DrawCells(Rect rect, string[] cells, float[] widths, MetricVisualKind? visualKind)
     {
         var x = rect.x;
         var priorAnchor = Text.Anchor;
-        Text.Anchor = TextAnchor.MiddleLeft;
+        var priorColor = GUI.color;
         for (var i = 0; i < cells.Length; i++)
         {
+            Text.Anchor = i == 3 ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+            GUI.color = i == 2 && visualKind is { } kind ? MetricVisualStyle.StateColor(kind) : Color.white;
             var cell = new Rect(x + 4f, rect.y, Math.Max(0, widths[i] - 8f), rect.height);
             var shown = cells[i].Truncate(cell.width);
             Widgets.Label(cell, shown);
-            if (shown != cells[i])
+            if (visualKind is null && shown != cells[i])
                 TooltipHandler.TipRegion(cell, cells[i]);
             x += widths[i];
         }
+        GUI.color = priorColor;
         Text.Anchor = priorAnchor;
     }
 }

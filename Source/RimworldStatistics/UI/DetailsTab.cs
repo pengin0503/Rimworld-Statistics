@@ -25,7 +25,7 @@ public static class DetailsTab
     private static Func<string>?[] chartTipCache = [];
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, bool Dim, string? MetricKey);
+    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, MetricVisualKind VisualKind, string? MetricKey);
 
     private sealed class LazyTip(Func<string> build)
     {
@@ -57,6 +57,8 @@ public static class DetailsTab
     private static Vector2 scroll;
     private static Inputs? builtFor;
     private static List<Line> lines = new();
+    private static int totalMetricCount;
+    private static int matchedMetricCount;
 
     public static void Draw(Rect rect, StatsView view, ProfileSession session, ViewPreferences? favorites = null, Action? saveFavorites = null)
     {
@@ -123,6 +125,49 @@ public static class DetailsTab
                 scroll = Vector2.zero;
             }
         }
+
+        var language = LanguageDatabase.activeLanguage;
+        if (!comparing)
+        {
+            var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
+            if (builtFor != inputs)
+            {
+                if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
+                    scroll = Vector2.zero;
+                builtFor = inputs;
+                lines = Build(inputs);
+                cellCache = new (string, string?)[lines.Count][];
+                tipCache = new Func<string>?[lines.Count];
+                chartTipCache = new Func<string>?[lines.Count];
+            }
+        }
+
+        var activeFilters = FilterSummary.CountActiveFilters(
+            viewMode != DetailsViewMode.All, category is not null, statusFilter != DetailsStatusFilter.All, search);
+        var summaryText = comparing
+            ? (activeFilters > 0 ? (string)"RWS_Filter_ActiveCount".Translate(activeFilters) : "")
+            : activeFilters > 0
+                ? (string)"RWS_Filter_Shown".Translate(matchedMetricCount, totalMetricCount) + " · " + (string)"RWS_Filter_ActiveCount".Translate(activeFilters)
+                : (string)"RWS_Filter_Shown".Translate(matchedMetricCount, totalMetricCount);
+        if (summaryText.Length > 0)
+        {
+            var summaryRect = filterRow.Next(summaryText, 90f, Math.Min(rect.width, 250f));
+            var previousAnchor = Text.Anchor;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            Widgets.Label(summaryRect, summaryText.Truncate(summaryRect.width));
+            GUI.color = Color.white;
+            Text.Anchor = previousAnchor;
+            TooltipHandler.TipRegion(summaryRect, summaryText);
+        }
+        if (activeFilters > 0)
+        {
+            var resetLabel = (string)"RWS_Filter_Reset".Translate();
+            var resetRect = filterRow.Next(resetLabel, 95f, Math.Min(rect.width, 175f));
+            if (Widgets.ButtonText(resetRect, resetLabel.Truncate(Math.Max(0f, resetRect.width - 10f))))
+                ResetFilters(numeric, view.Stats, language);
+        }
+
         y += filterRow.Height + 4f;
         if (comparing)
         {
@@ -134,28 +179,23 @@ public static class DetailsTab
             return;
         }
 
-        var language = LanguageDatabase.activeLanguage;
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
-        if (builtFor != inputs)
-        {
-            if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
-                scroll = Vector2.zero;
-            builtFor = inputs;
-            lines = Build(inputs);
-            cellCache = new (string, string?)[lines.Count][];
-            tipCache = new Func<string>?[lines.Count];
-            chartTipCache = new Func<string>?[lines.Count];
-        }
-
         var available = Math.Max(0, rect.width - 16f);
         if (tablePlan is null || tableWidth != available || !ReferenceEquals(tableLanguage, language))
         {
             tableWidth = available;
             tableLanguage = language;
-            string partial = "RWS_Coverage_Partial".Translate();
             var experimental = (string)"RWS_Exp_ExperimentalRow".Translate();
-            var stateWidth = Text.CalcSize(experimental + " · " + partial).x + 12f;
-            tablePlan = ColumnLayout.Resolve([new(150, 4), new(90, 3), new(Math.Max(115, stateWidth), 2), new(96, 1)], available);
+            var widestState = new[]
+            {
+                (string)"RWS_Coverage_Complete".Translate(),
+                (string)"RWS_Coverage_Partial".Translate(),
+                (string)"RWS_Coverage_History".Translate(),
+                (string)"RWS_Coverage_SnapshotOnly".Translate(),
+                (string)"RWS_Coverage_NotApplicable".Translate(),
+                (string)"RWS_Coverage_Unknown".Translate(),
+            }.Max(s => Text.CalcSize(experimental + " · " + s).x);
+            var stateWidth = Math.Clamp(widestState + 12f, 115f, Math.Max(145f, available * 0.30f));
+            tablePlan = ColumnLayout.Resolve([new(150, 4), new(90, 3), new(stateWidth, 2), new(96, 1)], available);
             Array.Clear(cellCache);
             Array.Clear(tipCache);
             Array.Clear(chartTipCache);
@@ -170,7 +210,12 @@ public static class DetailsTab
             return;
         if (lines.Count == 0)
         {
-            Widgets.Label(outRect, "RWS_Details_NoMatch".Translate());
+            Widgets.Label(new Rect(outRect.x, outRect.y, outRect.width, 28f), "RWS_Details_NoMatch".Translate());
+            if (activeFilters > 0 && outRect.height >= 64f
+                && Widgets.ButtonText(new Rect(outRect.x, outRect.y + 32f, Math.Min(180f, outRect.width), 28f), "RWS_Filter_Reset".Translate()))
+            {
+                ResetFilters(numeric, view.Stats, language);
+            }
             return;
         }
         var viewRect = new Rect(0f, 0f, width, lines.Count * RowHeight);
@@ -180,6 +225,26 @@ public static class DetailsTab
         for (var i = first; i <= last; i++)
             DrawLine(new Rect(0f, i * RowHeight, width, RowHeight), lines[i], i, view);
         Widgets.EndScrollView();
+    }
+
+    private static void ResetFilters(NumericView numeric, StatsResult stats, object? language)
+    {
+        viewMode = DetailsViewMode.All;
+        category = null;
+        statusFilter = DetailsStatusFilter.All;
+        search = "";
+        scroll = Vector2.zero;
+        if (comparing)
+        {
+            ComparisonPanel.ResetScroll();
+            return;
+        }
+        var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
+        builtFor = inputs;
+        lines = Build(inputs);
+        cellCache = new (string, string?)[lines.Count][];
+        tipCache = new Func<string>?[lines.Count];
+        chartTipCache = new Func<string>?[lines.Count];
     }
 
     private static float DrawControls(Rect rect, StatsView view)
@@ -291,11 +356,16 @@ public static class DetailsTab
         };
         var x = rect.x;
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < headers.Length; c++)
         {
             var cell = new Rect(x, rect.y, tablePlan!.Widths[c], rect.height);
-            Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), headers[c]);
+            var metrics = DetailsTableLayout.MeasureColumn(c, x, cell.width, 0f, isMetricRow: false, hasExpand: false);
+            var labelRect = new Rect(x + metrics.LeftOffset, cell.y, metrics.ContentWidth, cell.height);
+            Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
+                ? TextAnchor.MiddleRight
+                : TextAnchor.MiddleLeft;
+            var shown = headers[c].Truncate(Math.Max(1f, labelRect.width));
+            Widgets.Label(labelRect, shown);
             if (c <= 1)
             {
                 Widgets.DrawHighlightIfMouseover(cell);
@@ -308,10 +378,17 @@ public static class DetailsTab
                         (byValue, ascending) = (wantValue, !wantValue);   // values start largest first
                 }
             }
+            if (c == 3 && perColony)
+            {
+                var tip = shown != headers[c] ? headers[c] + "\n" + (string)"RWS_Details_ThroughTip".Translate() : (string)"RWS_Details_ThroughTip".Translate();
+                TooltipHandler.TipRegion(cell, tip);
+            }
+            else if (shown != headers[c])
+            {
+                TooltipHandler.TipRegion(cell, headers[c]);
+            }
             x += cell.width;
         }
-        if (perColony)
-            TooltipHandler.TipRegion(new Rect(x - tablePlan!.Widths[3], rect.y, tablePlan.Widths[3], rect.height), "RWS_Details_ThroughTip".Translate());
         Text.Anchor = TextAnchor.UpperLeft;
         GUI.color = Color.white;
     }
@@ -323,6 +400,7 @@ public static class DetailsTab
         Widgets.DrawHighlightIfMouseover(rect);
         var widths = tablePlan!.Widths;
         var hit = DerivedMetricGroups.ComputeHitboxes(rect.x, rect.width, line.Depth, line.MetricKey is not null, line.ExpandKey is not null);
+        var nameMetrics = DetailsTableLayout.MeasureColumn(0, rect.x, widths[0], hit.Indent, line.MetricKey is not null, line.ExpandKey is not null);
         if (cellCache[index] is not { } cells)
         {
             var values = new[]
@@ -331,13 +409,13 @@ public static class DetailsTab
                 line.Value, line.State, line.Count,
             };
             cells = new (string Text, string? Full)[values.Length];
+            var cx = rect.x;
             for (var c = 0; c < values.Length; c++)
             {
-                var leftOffset = c == 0 ? (line.MetricKey is not null ? 30f : 3f) + hit.Indent : 3f;
-                var rightPad = c == 0 ? 4f : 3f;
-                var space = widths[c] - leftOffset - rightPad;
-                var shown = values[c].Truncate(Math.Max(1f, space));
+                var col = c == 0 ? nameMetrics : DetailsTableLayout.MeasureColumn(c, cx, widths[c], hit.Indent, line.MetricKey is not null, line.ExpandKey is not null);
+                var shown = values[c].Truncate(Math.Max(1f, col.ContentWidth));
                 cells[c] = (shown, shown == values[c] ? null : values[c]);
+                cx += widths[c];
             }
             cellCache[index] = cells;
             var fullText = string.Join("\n", cells.Where(c => c.Full is not null).Select(c => c.Full));
@@ -347,14 +425,16 @@ public static class DetailsTab
                 : new LazyTip(() => tip() + "\n\n" + "RWS_Chart_OpenTip".Translate()).Get;
         }
         var x = rect.x;
-        Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < cells.Length; c++)
         {
-            var leftOffset = c == 0 ? (line.MetricKey is not null ? 30f : 3f) + hit.Indent : 3f;
-            var rightPad = c == 0 ? 4f : 3f;
-            var cell = new Rect(x + leftOffset, rect.y,
-                Math.Max(0f, widths[c] - leftOffset - rightPad), rect.height);
-            GUI.color = c == 1 && line.Dim ? new Color(0.75f, 0.75f, 0.75f) : Color.white;
+            var col = c == 0 ? nameMetrics : DetailsTableLayout.MeasureColumn(c, x, widths[c], hit.Indent, line.MetricKey is not null, line.ExpandKey is not null);
+            var cell = new Rect(x + col.LeftOffset, rect.y, col.ContentWidth, rect.height);
+            Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
+                ? TextAnchor.MiddleRight
+                : TextAnchor.MiddleLeft;
+            GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind)
+                : c == 1 ? MetricVisualStyle.ValueColor(line.VisualKind)
+                : Color.white;
             Widgets.Label(cell, cells[c].Text);
             x += widths[c];
         }
@@ -364,6 +444,15 @@ public static class DetailsTab
         Rect? chartRect = !hit.Chart.IsEmpty
             ? new Rect(hit.Chart.X, rect.y, hit.Chart.Width, rect.height)
             : null;
+        if (line.MetricKey is not null && !nameMetrics.ChartIcon.IsEmpty)
+        {
+            var iconRect = new Rect(
+                nameMetrics.ChartIcon.X,
+                rect.y + (RowHeight - DetailsTableLayout.ChartIconSize) * 0.5f,
+                nameMetrics.ChartIcon.Width,
+                DetailsTableLayout.ChartIconSize);
+            MetricVisualStyle.DrawMiniChartIcon(iconRect, chartRect is { } hoverArea && Mouse.IsOver(hoverArea));
+        }
         // One tooltip per row: the same id keeps RimWorld from stacking a second copy,
         // and the chart hint is shown only over the area that opens the chart.
         var starRect = new Rect(hit.Star.X, rect.y + 2f, hit.Star.Width, rect.height - 4f);
@@ -423,6 +512,8 @@ public static class DetailsTab
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
             .Where(x => MatchesSearch(x.Row.Definition, x.Label, term))
             .ToList();
+        totalMetricCount = rows.Count;
+        matchedMetricCount = selected.Count;
 
         List<(NumericRow Row, string Label)> ordered;
         if (input.ByValue)
@@ -507,7 +598,7 @@ public static class DetailsTab
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
         var lazy = new LazyTip(() => BuildTip(row, label, isMetricRow, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
-            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown, isMetricRow ? d.Key : null);
+            MetricVisualState.Classify(row), isMetricRow ? d.Key : null);
     }
 
     private static string BuildTip(NumericRow row, string label, bool isMetricRow, Inputs input, NumericColony? colony)

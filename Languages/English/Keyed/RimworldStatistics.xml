@@ -1318,4 +1318,7 @@
   <RWS_Details_GroupDerived>Group derived metrics</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>Nest cross-colony max, min, top, and sum rows under each source statistic while sorted by name.</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>Grouping is paused while searching or sorting by value so every row and its order remain visible.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>{0}/{1} shown</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>{0} filter(s)</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Reset filters</RWS_Filter_Reset>
 </LanguageData>

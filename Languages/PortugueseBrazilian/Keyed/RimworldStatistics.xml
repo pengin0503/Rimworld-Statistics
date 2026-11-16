@@ -1317,4 +1317,7 @@
   <RWS_Details_GroupDerived>Agrupar métricas derivadas</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>Agrupa máximo, mínimo, principal e soma sob cada estatística de origem ao ordenar por nome.</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>O agrupamento fica em pausa ao pesquisar ou ordenar por valor para manter todos os resultados visíveis na ordem.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>{0}/{1} exibidos</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>{0} filtro(s)</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Limpar filtros</RWS_Filter_Reset>
 </LanguageData>

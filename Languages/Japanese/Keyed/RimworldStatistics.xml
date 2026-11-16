@@ -1318,4 +1318,7 @@
   <RWS_Details_GroupDerived>派生統計をまとめる</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>名前順の表示中、関連する最大・最小・最多・合計の派生統計を元の統計の下にまとめます。</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>検索中や値順の並び替え中は、結果や順位が分かりやすいようフラット表示になります。</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>表示：{0}/{1}件</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>絞り込み：{0}件</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>条件をリセット</RWS_Filter_Reset>
 </LanguageData>

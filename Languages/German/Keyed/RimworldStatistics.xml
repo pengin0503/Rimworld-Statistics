@@ -1317,4 +1317,7 @@
   <RWS_Details_GroupDerived>Abgeleitete Werte gruppieren</RWS_Details_GroupDerived>
   <RWS_Details_GroupDerivedTip>Ordnet Max-, Min-, Top- und Summenzeilen bei Namenssortierung unter der jeweiligen Ausgangsstatistik ein.</RWS_Details_GroupDerivedTip>
   <RWS_Details_GroupDerivedFlatTip>Während der Suche oder Wertsortierung wird vorübergehend flach angezeigt, damit alle Treffer und ihre Reihenfolge klar bleiben.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>{0}/{1} angezeigt</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>{0} Filter</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Zurücksetzen</RWS_Filter_Reset>
 </LanguageData>
