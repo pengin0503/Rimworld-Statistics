@@ -17,26 +17,14 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly string colonyName;
     private readonly StatsView view;
     private readonly string directory;
-    private readonly HashSet<string> selected;
-    private readonly List<Overlay> overlays = [];
-    private sealed class Overlay(string name, Color color, Task<MetricHistory> task)
-    {
-        public string Name { get; } = name;
-        public Color Color { get; } = color;
-        public Task<MetricHistory> Task { get; } = task;
-        public IReadOnlyList<MetricHistoryPoint> RawPoints { get; set; } = [];
-        public MetricHistoryPoint[] Measured { get; set; } = [];
-        public IReadOnlyList<MetricHistoryPoint> Points { get; set; } = [];
-
-        public bool HasCompatiblePlot(MetricHistoryKind kind)
-            => Task.IsCompletedSuccessfully && Task.Result.Kind == kind && Task.Result.Points.Any(p => p.Value is not null);
-    }
+    private readonly HistoryOverlayTracker overlayTracker;
+    private readonly Dictionary<long, Task<MetricHistory>> overlayTasks = [];
     private static readonly Color[] OverlayColors = [new(0.95f, 0.64f, 0.34f), new(0.65f, 0.8f, 0.42f)];
     private readonly Task<MetricHistory> pending;
     private string? historyNote;
     private MetricHistoryPoint[]? measured;
-    private (int First, int Last) ticks;
-    private (double Min, double Max) range;
+    private HistoryPlotBounds bounds;
+    private bool boundsDirty = true;
     private IReadOnlyList<MetricHistoryPoint> plotPoints = [];
     private int[]? gapTicks;   // ticks of drawn readings without a value, ascending
     private int plotWidth;
@@ -46,7 +34,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     {
         this.definition = definition;
         this.view = view;
-        selected = new HashSet<string>(StringComparer.Ordinal) { colonyKey };
+        overlayTracker = new HistoryOverlayTracker(colonyKey, OverlayColors.Length);
         this.colonyName = colonyName;
         heading = "RWS_Chart_Title".Translate(metricLabel);
         recordLabel = "RWS_Chart_HistoryRecord".Translate(MetricText.Format(definition, comparison));
@@ -85,11 +73,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         if (measured is null)
         {
             measured = history.Points.Where(p => p.Value is not null).ToArray();
-            if (measured.Length > 0)
-            {
-                ticks = (history.Points[0].Tick, history.Points[^1].Tick);
-                range = (measured.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
-            }
+            boundsDirty = true;
         }
         if (measured.Length == 0)
         {
@@ -97,56 +81,122 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             return;
         }
 
+        PollOverlayTasks(history.Kind);
+
         var add = new Rect(body.x, body.y, Math.Min(250f, body.width), 28f);
-        if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlays.Count < OverlayColors.Length))
+        if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlayTracker.CanAdd))
         {
-            var options = view.Stats.Colonies.Where(c => !c.Excluded && !c.OutOfScope && !selected.Contains(c.Key))
+            var options = view.Stats.Colonies
+                .Where(c => !c.Excluded && !c.OutOfScope && !overlayTracker.IsSelected(c.Key))
                 .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
                 .Select(c => new FloatMenuOption(Dialog_RimworldStatistics.ColonyName(c), () =>
                 {
-                    if (!selected.Add(c.Key))
-                        return;
                     var name = Dialog_RimworldStatistics.ColonyName(c);
-                    overlays.Add(new(name, OverlayColors[overlays.Count], Task.Run(() =>
-                        ProfileService.Session.ReadChartHistory(view, c.Key, definition, directory))));
-                    plotWidth = 0;
+                    if (!overlayTracker.TryAdd(c.Key, name, out var entry) || entry is null)
+                        return;
+                    var task = Task.Run(() => ProfileService.Session.ReadChartHistory(view, c.Key, definition, directory));
+                    task.ContinueWith(t => _ = t.Exception, TaskContinuationOptions.OnlyOnFaulted);
+                    overlayTasks[entry.RequestId] = task;
+                    InvalidateOverlays();
                 })).ToList();
             if (options.Count > 0)
                 Find.WindowStack.Add(new FloatMenu(options));
         }
 
         var y = add.yMax + 3f;
-        foreach (var overlay in overlays)
+        string? removeKey = null;
+        foreach (var overlay in overlayTracker.Entries)
         {
             var row = new Rect(body.x, y, body.width, 23f);
-            Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), overlay.Color);
-            var status = !overlay.Task.IsCompleted ? (string)"RWS_Loading".Translate()
-                : !overlay.Task.IsCompletedSuccessfully || !overlay.Task.Result.Points.Any(p => p.Value is not null)
-                    ? (string)"RWS_Chart_HistoryEmpty".Translate()
-                    // A history exists, but it was recorded another way (e.g. checkpoints vs saved readings):
-                    // its points are not on the same footing, so they are not drawn together.
-                    : overlay.Task.Result.Kind != history.Kind ? (string)"RWS_Chart_OverlayOtherSource".Translate() : "";
-            if (overlay.Task.IsFaulted)
-                _ = overlay.Task.Exception;
-            var label = status.Length == 0 ? overlay.Name : overlay.Name + " · " + status;
-            Widgets.Label(new Rect(row.x + 18f, row.y, row.width - 18f, row.height), label.Truncate(row.width - 18f));
+            var color = OverlayColors[overlay.ColorIndex];
+            Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), color);
+
+            var status = overlay.Status switch
+            {
+                HistoryOverlayStatus.Loading => (string)"RWS_Loading".Translate(),
+                HistoryOverlayStatus.Empty => (string)"RWS_Chart_HistoryEmpty".Translate(),
+                // A history exists, but it was recorded another way (e.g. checkpoints vs saved readings):
+                // its points are not on the same footing, so it is not drawn together.
+                HistoryOverlayStatus.Incompatible => (string)"RWS_Chart_OverlayOtherSource".Translate(),
+                _ => "",
+            };
+            var label = status.Length == 0 ? overlay.ColonyName : overlay.ColonyName + " · " + status;
+
+            const float removeWidth = 24f;
+            var removeRect = new Rect(row.xMax - removeWidth, row.y + 1f, removeWidth, 21f);
+            if (Widgets.ButtonText(removeRect, "×"))
+                removeKey = overlay.ColonyKey;
+            TooltipHandler.TipRegion(removeRect, "RWS_Chart_RemoveOverlay".Translate());
+
+            var labelWidth = Math.Max(0f, removeRect.x - (row.x + 18f) - 6f);
+            var labelRect = new Rect(row.x + 18f, row.y, labelWidth, row.height);
+            Widgets.Label(labelRect, label.Truncate(labelRect.width));
+            if (Text.CalcSize(label).x > labelRect.width)
+                TooltipHandler.TipRegion(labelRect, label);
+
             y = row.yMax;
         }
+
+        if (removeKey is not null)
+        {
+            var removed = overlayTracker.Entries.FirstOrDefault(e => string.Equals(e.ColonyKey, removeKey, StringComparison.Ordinal));
+            if (removed is not null)
+                overlayTasks.Remove(removed.RequestId);
+            if (overlayTracker.Remove(removeKey))
+                InvalidateOverlays();
+        }
+
         body.yMin = y;
         var note = historyNote ??= Describe(history, measured);
         var noteHeight = Text.CalcHeight(note, body.width);
         Widgets.Label(new Rect(body.x, body.y, body.width, noteHeight), note);
+
+        EnsureBoundsAndLegend(history, body.width);
+        var legendHeight = Math.Max(LegendRowHeight, legendPlan?.TotalHeight ?? LegendRowHeight);
         var axisWidth = Math.Min(145f, body.width * 0.28f);
         var plot = new Rect(body.x + axisWidth, body.y + noteHeight + 13f,
-            body.width - axisWidth - 16f, body.height - noteHeight - 57f - LegendHeight);
+            body.width - axisWidth - 16f, body.height - noteHeight - 57f - legendHeight);
         if (plot.width >= 10f && plot.height >= 10f)
         {
             DrawPlot(plot, axisWidth, history);
-            DrawLegend(new Rect(body.x, plot.yMax + 46f, body.width, LegendHeight), history);
+            DrawLegend(new Rect(body.x, plot.yMax + 46f, body.width, legendHeight));
         }
     }
 
-    private const float LegendHeight = 22f;
+    private void PollOverlayTasks(MetricHistoryKind primaryKind)
+    {
+        var changed = false;
+        foreach (var entry in overlayTracker.Entries)
+        {
+            if (entry.Status != HistoryOverlayStatus.Loading)
+                continue;
+            if (!overlayTasks.TryGetValue(entry.RequestId, out var task) || !task.IsCompleted)
+                continue;
+
+            overlayTasks.Remove(entry.RequestId);
+            if (task.IsCompletedSuccessfully)
+                changed |= overlayTracker.TryComplete(entry.RequestId, task.Result, primaryKind);
+            else
+            {
+                _ = task.Exception;
+                changed |= overlayTracker.TryFail(entry.RequestId);
+            }
+        }
+        if (changed)
+            InvalidateOverlays();
+    }
+
+    private void InvalidateOverlays()
+    {
+        boundsDirty = true;
+        legend = null;
+        legendPlan = null;
+        legendWidth = -1f;
+    }
+
+    private const float LegendRowHeight = 22f;
+    private const float LegendItemGap = 16f;
+    private const float LegendRowGap = 2f;
 
     private static string Describe(MetricHistory history, IReadOnlyList<MetricHistoryPoint> measured)
     {
@@ -173,67 +223,77 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     }
 
     private List<(string Label, Action<Rect> Swatch, string? Tip)>? legend;
+    private HistoryLegendPlan? legendPlan;
+    private float legendWidth = -1f;
 
-    private void DrawLegend(Rect rect, MetricHistory history)
+    private void EnsureBoundsAndLegend(MetricHistory history, float availableWidth)
     {
+        if (boundsDirty)
+        {
+            bounds = overlayTracker.ComputeBounds(history, measured!);
+            boundsDirty = false;
+            legend = null;
+            legendPlan = null;
+        }
+
         if (legend is null)
         {
             legend = [("RWS_Chart_LegendMeasured".Translate(), r => Widgets.DrawBoxSolid(r, SeriesColor), null)];
-            if (measured!.Any(p => p.Value!.Coverage == MetricCoverage.Partial)
-                || overlays.Any(o => o.Measured.Any(p => p.Value!.Coverage == MetricCoverage.Partial)))
+            if (bounds.HasPartial)
                 legend.Add(("RWS_Chart_LegendPartial".Translate(), r => Widgets.DrawBoxSolid(r, PartialColor), null));
-            if (measured!.Any(p => p.Unlinked) || overlays.Any(o => o.Measured.Any(p => p.Unlinked)))
+            if (bounds.HasUnlinked)
                 legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(),
                     r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1),
                     "RWS_Chart_LegendUnlinked".Translate()));
             if (history.Points.Any(p => p.Value is null))
                 legend.Add(("RWS_Chart_LegendGap".Translate(),
                     r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor), null));
+            legendPlan = null;
         }
-        var x = rect.x;
-        foreach (var (label, swatch, tip) in legend)
+
+        if (legendPlan is null || Math.Abs(legendWidth - availableWidth) > 0.5f)
         {
-            if (x >= rect.xMax - 20f)
-                break;
-            swatch(new Rect(x, rect.y + 6f, 9f, 9f));
-            var width = Math.Min(Text.CalcSize(label).x, rect.xMax - x - 14f);
-            var itemRect = new Rect(x, rect.y, 14f + width, rect.height);
-            Widgets.Label(new Rect(x + 14f, rect.y, width, rect.height), label.Truncate(width));
+            var widths = new float[legend.Count];
+            for (var i = 0; i < legend.Count; i++)
+                widths[i] = 16f + Text.CalcSize(legend[i].Label).x;
+            legendPlan = HistoryLegendLayout.Resolve(widths, availableWidth, LegendRowHeight, LegendItemGap, LegendRowGap);
+            legendWidth = availableWidth;
+        }
+    }
+
+    private void DrawLegend(Rect rect)
+    {
+        if (legend is null || legendPlan is null)
+            return;
+
+        foreach (var placement in legendPlan.Items)
+        {
+            var (label, swatch, tip) = legend[placement.Index];
+            var x = rect.x + placement.X;
+            var y = rect.y + placement.Y;
+            var labelWidth = Math.Max(0f, placement.Width - 14f);
+            swatch(new Rect(x, y + 6f, 9f, 9f));
+            var itemRect = new Rect(x, y, placement.Width, LegendRowHeight);
+            Widgets.Label(new Rect(x + 14f, y, labelWidth, LegendRowHeight), label.Truncate(labelWidth));
             if (tip is not null)
                 TooltipHandler.TipRegion(itemRect, tip);
-            x += 14f + width + 16f;
+            else if (Text.CalcSize(label).x > labelWidth)
+                TooltipHandler.TipRegion(itemRect, label);
         }
     }
 
     private void DrawPlot(Rect plot, float axisWidth, MetricHistory history)
     {
         var pixelWidth = Math.Max(1, (int)plot.width);
-        var refresh = plotWidth != pixelWidth;
-        foreach (var overlay in overlays)
-            refresh |= overlay.Points.Count == 0 && overlay.HasCompatiblePlot(history.Kind);
-        if (refresh)
+        if (plotWidth != pixelWidth)
         {
             plotPoints = MetricHistoryPlot.Thin(history.Points, pixelWidth);
             gapTicks = null;
-            legend = null;
-            ticks = (history.Points[0].Tick, history.Points[^1].Tick);
-            range = (measured!.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
-            foreach (var overlay in overlays)
-            {
-                if (!overlay.HasCompatiblePlot(history.Kind))
-                    continue;
-                var data = overlay.Task.Result.Points;
-                overlay.RawPoints = data;
-                overlay.Measured = data.Where(p => p.Value is not null).ToArray();
-                overlay.Points = MetricHistoryPlot.Thin(data, pixelWidth);
-                ticks = (Math.Min(ticks.First, data[0].Tick), Math.Max(ticks.Last, data[^1].Tick));
-                foreach (var point in overlay.Measured)
-                    if (point.Value?.Number is { } n)
-                        range = (Math.Min(range.Min, n), Math.Max(range.Max, n));
-            }
             plotWidth = pixelWidth;
         }
 
+        var ticks = (First: bounds.FirstTick, Last: bounds.LastTick);
+        var range = (Min: bounds.MinValue, Max: bounds.MaxValue);
         float X(int tick) => plot.x + plot.width * (ticks.First == ticks.Last ? 0.5f
             : (float)((tick - ticks.First) / (double)(ticks.Last - ticks.First)));
         // Scale before subtracting to keep even opposite-sign finite extremes representable.
@@ -265,8 +325,14 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Text.Anchor = anchor;
 
         DrawSeries(plotPoints, SeriesColor, PartialColor);
-        foreach (var overlay in overlays)
-            DrawSeries(overlay.Points, overlay.Color, Color.Lerp(overlay.Color, PartialColor, 0.5f));
+        foreach (var overlay in overlayTracker.Entries)
+        {
+            var overlayPoints = overlay.GetOrThinPoints(pixelWidth);
+            if (overlayPoints.Count == 0)
+                continue;
+            var color = OverlayColors[overlay.ColorIndex];
+            DrawSeries(overlayPoints, color, Color.Lerp(color, PartialColor, 0.5f));
+        }
         // A save or checkpoint exists here, but it holds no value for this statistic: marked on the axis, never as zero.
         gapTicks ??= plotPoints.Where(p => p.Value is null).Select(p => p.Tick).ToArray();
         foreach (var tick in gapTicks)
@@ -317,10 +383,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var hoverName = colonyName;
         IReadOnlyList<MetricHistoryPoint> hoverSeries = history.Points;
         var bestDistance = (new Vector2(X(nearest.Tick), Y(nearest.Value!.Number!.Value)) - mouse).sqrMagnitude;
-        foreach (var overlay in overlays)
+        var hasOverlayPoints = false;
+        foreach (var overlay in overlayTracker.Entries)
         {
-            if (overlay.Measured.Length == 0)
+            if (overlay.Status != HistoryOverlayStatus.Completed || overlay.Measured.Length == 0)
                 continue;
+            hasOverlayPoints = true;
             var candidate = Nearest(overlay.Measured, hoverTick);
             if (candidate.Value?.Number is not { } n)
                 continue;
@@ -329,12 +397,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             {
                 nearest = candidate;
                 bestDistance = distance;
-                hoverName = overlay.Name;
+                hoverName = overlay.ColonyName;
                 hoverSeries = overlay.RawPoints;
             }
         }
         var x = X(nearest.Tick);
-        if ((measured!.Length > 1 || overlays.Count > 0) && Math.Abs(x - mouse.x) > 18f)
+        if ((measured!.Length > 1 || hasOverlayPoints) && Math.Abs(x - mouse.x) > 18f)
             return;
         var reading = nearest.Value!;
         var yPoint = Y(reading.Number!.Value);
