@@ -102,10 +102,18 @@ jobs:
           unzip -t "$zip"
           python3 - "$zip" "$RELEASE_TAG" <<'PY'
           import sys, zipfile, xml.etree.ElementTree as ET
+          from pathlib import Path
           with zipfile.ZipFile(sys.argv[1]) as z:
               root = ET.fromstring(z.read("RimworldStatistics/About/About.xml"))
               assert root.findtext("modVersion") == sys.argv[2][1:]
               paths = z.namelist()
+              path_set = set(paths)
+              expected_keyed = {
+                  f"RimworldStatistics/{p.as_posix()}"
+                  for p in Path("Languages").glob("*/Keyed/*.xml")
+              }
+              missing_keyed = sorted(expected_keyed - path_set)
+              assert not missing_keyed, f"Missing keyed XMLs in release zip: {missing_keyed}"
               assert all(p.startswith("RimworldStatistics/") for p in paths)
               assert not any(term in p.lower() for p in paths for term in (
                   "verifyharness", "smartapparel", "recruitment", "hospitality", "addon"

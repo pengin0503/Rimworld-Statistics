@@ -307,6 +307,19 @@ jobs:
             echo 'Development harness leaked into production ZIP' >&2
             exit 1
           fi
+          python3 - "$RUNNER_TEMP/RimworldStatistics-unverified.zip" <<'PY'
+          import sys, zipfile
+          from pathlib import Path
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              path_set = set(z.namelist())
+          expected = {
+              f"RimworldStatistics/{p.as_posix()}"
+              for p in Path("Languages").glob("*/Keyed/*.xml")
+          }
+          missing = sorted(expected - path_set)
+          if missing:
+              raise SystemExit(f"Missing keyed XMLs in production ZIP: {missing}")
+          PY
       - uses: actions/upload-artifact@v4
         with:
           name: RimworldStatistics-unverified-${{ github.sha }}
