@@ -17,11 +17,17 @@ mod="$stage/RimworldStatistics"
 mkdir -p "$mod/About" "$mod/1.7/Assemblies"
 cp About/About.xml "$mod/About/"
 cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll 1.7/Assemblies/RimworldStatistics.Api.dll "$mod/1.7/Assemblies/"
+shopt -s nullglob
 for lang in Languages/*/; do
-  name=$(basename "$lang")
-  mkdir -p "$mod/Languages/$name/Keyed"
-  cp "$lang/Keyed/RimworldStatistics.xml" "$mod/Languages/$name/Keyed/"
+  xmls=("${lang}Keyed/"*.xml)
+  if [ "${#xmls[@]}" -eq 0 ]; then
+    echo "No Keyed XML files found in ${lang}Keyed" >&2
+    exit 1
+  fi
+  mkdir -p "$mod/${lang}Keyed"
+  cp "${xmls[@]}" "$mod/${lang}Keyed/"
 done
+shopt -u nullglob
 
 # -D: no directory entries, -X: no extra file attributes, so the archive holds exactly the mod files.
 (cd "$stage" && zip -q -r -D -X "$out_abs" RimworldStatistics)
