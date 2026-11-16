@@ -30,6 +30,13 @@ internal static class ComparisonPanel
         Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
     {
         var groups = preferences?.Groups;
+        if (Choices.RemoveAll(choice => choice.Kind == Kind.Group && groups?.Any(g => g.Id == choice.Id) != true) > 0)
+        {
+            if (Choices.Count == 0)
+                Choices.Add(new Choice(Kind.All));
+            sortColumn = -1;
+            selectionVersion++;
+        }
         var controls = new ControlRow(new Rect(rect.x, rect.y, rect.width, 27f));
         for (var i = 0; i < Choices.Count; i++)
         {

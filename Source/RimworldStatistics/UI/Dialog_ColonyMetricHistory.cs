@@ -24,7 +24,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         public string Name { get; } = name;
         public Color Color { get; } = color;
         public Task<MetricHistory> Task { get; } = task;
+        public IReadOnlyList<MetricHistoryPoint> RawPoints { get; set; } = [];
+        public MetricHistoryPoint[] Measured { get; set; } = [];
         public IReadOnlyList<MetricHistoryPoint> Points { get; set; } = [];
+
+        public bool HasCompatiblePlot(MetricHistoryKind kind)
+            => Task.IsCompletedSuccessfully && Task.Result.Kind == kind && Task.Result.Points.Any(p => p.Value is not null);
     }
     private static readonly Color[] OverlayColors = [new(0.95f, 0.64f, 0.34f), new(0.65f, 0.8f, 0.42f)];
     private readonly Task<MetricHistory> pending;
@@ -176,9 +181,10 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         if (legend is null)
         {
             legend = [("RWS_Chart_LegendMeasured".Translate(), r => Widgets.DrawBoxSolid(r, SeriesColor))];
-            if (measured!.Any(p => p.Value!.Coverage == MetricCoverage.Partial))
+            if (measured!.Any(p => p.Value!.Coverage == MetricCoverage.Partial)
+                || overlays.Any(o => o.Measured.Any(p => p.Value!.Coverage == MetricCoverage.Partial)))
                 legend.Add(("RWS_Chart_LegendPartial".Translate(), r => Widgets.DrawBoxSolid(r, PartialColor)));
-            if (measured!.Any(p => p.Unlinked))
+            if (measured!.Any(p => p.Unlinked) || overlays.Any(o => o.Measured.Any(p => p.Unlinked)))
                 legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1)));
             if (history.Points.Any(p => p.Value is null))
                 legend.Add(("RWS_Chart_LegendGap".Translate(), r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor)));
@@ -200,23 +206,24 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var pixelWidth = Math.Max(1, (int)plot.width);
         var refresh = plotWidth != pixelWidth;
         foreach (var overlay in overlays)
-            refresh |= overlay.Points.Count == 0 && overlay.Task.IsCompletedSuccessfully
-                && overlay.Task.Result.Kind == history.Kind && overlay.Task.Result.Points.Count != 0;
+            refresh |= overlay.Points.Count == 0 && overlay.HasCompatiblePlot(history.Kind);
         if (refresh)
         {
             plotPoints = MetricHistoryPlot.Thin(history.Points, pixelWidth);
             gapTicks = null;
+            legend = null;
             ticks = (history.Points[0].Tick, history.Points[^1].Tick);
             range = (measured!.Min(p => p.Value!.Number!.Value), measured!.Max(p => p.Value!.Number!.Value));
             foreach (var overlay in overlays)
             {
-                if (!overlay.Task.IsCompletedSuccessfully || overlay.Task.Result.Kind != history.Kind
-                    || overlay.Task.Result.Points.Count == 0)
+                if (!overlay.HasCompatiblePlot(history.Kind))
                     continue;
                 var data = overlay.Task.Result.Points;
+                overlay.RawPoints = data;
+                overlay.Measured = data.Where(p => p.Value is not null).ToArray();
                 overlay.Points = MetricHistoryPlot.Thin(data, pixelWidth);
                 ticks = (Math.Min(ticks.First, data[0].Tick), Math.Max(ticks.Last, data[^1].Tick));
-                foreach (var point in data)
+                foreach (var point in overlay.Measured)
                     if (point.Value?.Number is { } n)
                         range = (Math.Min(range.Min, n), Math.Max(range.Max, n));
             }
@@ -308,10 +315,10 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var bestDistance = (new Vector2(X(nearest.Tick), Y(nearest.Value!.Number!.Value)) - mouse).sqrMagnitude;
         foreach (var overlay in overlays)
         {
-            if (overlay.Points.Count == 0)
+            if (overlay.Measured.Length == 0)
                 continue;
-            var candidate = NearestMeasured(overlay.Points, hoverTick);
-            if (candidate?.Value?.Number is not { } n)
+            var candidate = Nearest(overlay.Measured, hoverTick);
+            if (candidate.Value?.Number is not { } n)
                 continue;
             var distance = (new Vector2(X(candidate.Tick), Y(n)) - mouse).sqrMagnitude;
             if (distance < bestDistance)
@@ -319,7 +326,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 nearest = candidate;
                 bestDistance = distance;
                 hoverName = overlay.Name;
-                hoverSeries = overlay.Points;
+                hoverSeries = overlay.RawPoints;
             }
         }
         var x = X(nearest.Tick);
@@ -372,14 +379,6 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             if (ReferenceEquals(series[i], point))
                 return i;
         return -1;
-    }
-
-    private static MetricHistoryPoint? NearestMeasured(IReadOnlyList<MetricHistoryPoint> points, double tick)
-    {
-        if (points.Count == 0)
-            return null;
-        var nearest = Nearest(points, tick);
-        return nearest.Value is not null ? nearest : null;
     }
 
     private static MetricHistoryPoint Nearest(IReadOnlyList<MetricHistoryPoint> points, double tick)

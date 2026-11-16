@@ -8,8 +8,10 @@ namespace RimworldStatistics.UI;
 public sealed class Dialog_ColonyGroups : Window
 {
     private readonly ViewPreferences preferences;
+    private readonly bool viewLoaded;
     private readonly IReadOnlyList<Colony> colonies;
     private readonly IReadOnlyDictionary<string, string> names;
+    private readonly Dictionary<string, string> savedNames = new(StringComparer.Ordinal);
     private readonly Action onChange;
     private Vector2 groupScroll;
     private Vector2 memberScroll;
@@ -20,9 +22,13 @@ public sealed class Dialog_ColonyGroups : Window
     public Dialog_ColonyGroups(ViewPreferences preferences, StatsView? view, Action onChange)
     {
         this.preferences = preferences;
+        viewLoaded = view is not null;
         colonies = view?.Colonies ?? Array.Empty<Colony>();
         names = view?.Stats.Colonies.ToDictionary(s => s.Key, Dialog_RimworldStatistics.ColonyName)
             ?? new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var group in preferences.Groups)
+            if (!string.IsNullOrWhiteSpace(group.Name))
+                savedNames[group.Id] = group.Name.Trim();
         this.onChange = onChange;
         selectedId = preferences.Groups.FirstOrDefault()?.Id;
         doCloseX = true;
@@ -36,15 +42,36 @@ public sealed class Dialog_ColonyGroups : Window
     {
         // A completed rename is persisted once, not after every TextField keystroke.
         if (nameDirty)
+        {
+            NormalizeGroupNames();
             onChange();
+        }
         base.PostClose();
     }
 
     private void SaveStructuralChange()
     {
         // A structural operation persists an earlier rename as part of the same write.
+        NormalizeGroupNames();
         nameDirty = false;
         onChange();
+    }
+
+    private void NormalizeGroupNames()
+    {
+        foreach (var group in preferences.Groups)
+        {
+            var trimmed = group.Name.Trim();
+            if (trimmed.Length == 0)
+            {
+                group.Name = savedNames.GetValueOrDefault(group.Id) is { Length: > 0 } previous ? previous : group.Id;
+            }
+            else
+            {
+                group.Name = trimmed.Length > 64 ? trimmed[..64] : trimmed;
+                savedNames[group.Id] = group.Name;
+            }
+        }
     }
 
     public override void DoWindowContents(Rect rect)
@@ -55,11 +82,13 @@ public sealed class Dialog_ColonyGroups : Window
         if (Widgets.ButtonText(new Rect(input.xMax + 8f, input.y, 140f, 30f), "RWS_Groups_Add".Translate())
             && !string.IsNullOrWhiteSpace(newGroupName) && preferences.Groups.Count < 64)
         {
+            var trimmed = newGroupName.Trim();
             var group = new ColonyGroup
             {
                 Id = Guid.NewGuid().ToString("N"),
-                Name = newGroupName.Trim()[..Math.Min(64, newGroupName.Trim().Length)],
+                Name = trimmed[..Math.Min(64, trimmed.Length)],
             };
+            savedNames[group.Id] = group.Name;
             preferences.Groups.Add(group);
             selectedId = group.Id;
             newGroupName = "";
@@ -80,11 +109,17 @@ public sealed class Dialog_ColonyGroups : Window
             var group = preferences.Groups[i];
             var y = i * 34f;
             var choose = new Rect(0, y, groupsView.width - 34f, 30f);
-            if (Widgets.ButtonText(choose, group.Name.Truncate(choose.width)))
+            var displayName = string.IsNullOrWhiteSpace(group.Name)
+                ? savedNames.GetValueOrDefault(group.Id, group.Id) : group.Name;
+            if (Widgets.ButtonText(choose, displayName.Truncate(choose.width)))
+            {
+                NormalizeGroupNames();
                 selectedId = group.Id;
+            }
             if (Widgets.ButtonText(new Rect(choose.xMax + 2f, y, 30f, 30f), "×"))
             {
                 preferences.Groups.RemoveAt(i);
+                savedNames.Remove(group.Id);
                 if (selectedId == group.Id)
                     selectedId = preferences.Groups.FirstOrDefault()?.Id;
                 SaveStructuralChange();
@@ -109,7 +144,9 @@ public sealed class Dialog_ColonyGroups : Window
             nameDirty = true;
         }
         var filtered = new HashSet<string>(selected.ColonyKeys, StringComparer.Ordinal);
-        var unavailable = selected.ColonyKeys.Count(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)));
+        var unavailable = viewLoaded
+            ? selected.ColonyKeys.Count(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)))
+            : 0;
         var notice = new Rect(nameRect.x, nameRect.yMax + 4f, width, 32f);
         Widgets.Label(notice, "RWS_Groups_Members".Translate(selected.ColonyKeys.Count, unavailable));
         if (unavailable > 0 && Widgets.ButtonText(new Rect(nameRect.x, notice.yMax, width, 26f), "RWS_Groups_RemoveMissing".Translate()))

@@ -21,9 +21,12 @@ public static class MetricHistoryPlot
             if (points[i].ContinuesFrom is var from && from >= 0 && from < i)
                 referenced[from] = true;
 
-        // A plain reading only continues the one before it: it can be merged into that run.
+        // A plain reading only continues the one before it with the same coverage: it can be merged into that run.
         bool Plain(int i) => i > 0 && points[i].ConnectToPrevious && points[i].ContinuesFrom < 0 && !points[i].Unlinked
-            && !referenced[i] && points[i].Value?.Number is not null && points[i - 1].Value?.Number is not null;
+            && !referenced[i] && points[i].Value?.Number is not null && points[i - 1].Value?.Number is not null
+            && points[i].Value!.Coverage == points[i - 1].Value!.Coverage;
+        bool PlainGap(int i) => i > 0 && points[i].Value?.Number is null && points[i - 1].Value?.Number is null
+            && !referenced[i] && !points[i].Unlinked && points[i].ContinuesFrom < 0;
 
         var keep = new bool[points.Count];
         var step = Math.Max(1, points.Count / width);
@@ -31,10 +34,12 @@ public static class MetricHistoryPlot
         {
             if (points[start].Value?.Number is null)
             {
-                // A run of gaps draws nothing: one gap marker is enough unless a reading refers to another one.
-                keep[start] = start == 0 || points[start - 1].Value?.Number is not null || referenced[start]
-                    || points[start].Unlinked || points[start].ContinuesFrom >= 0;
-                start++;
+                var gapEnd = start + 1;
+                for (; gapEnd < Math.Min(start + step, points.Count) && PlainGap(gapEnd); gapEnd++)
+                {
+                }
+                keep[start] = keep[gapEnd - 1] = true;
+                start = gapEnd;
                 continue;
             }
             var end = start + 1;

@@ -12,7 +12,7 @@ public static class OverviewTab
     private const float TopCellHeight = 92f;
     private const float BottomCellHeight = 70f;
 
-    private sealed record Cell(string Label, string Value, string Tip, string? FavoriteKey = null)
+    private sealed record Cell(string Label, string Value, string Tip, string? FavoriteKey = null, bool ShowStar = true)
     {
         private float lastWidth = -1;
         private string label = "";
@@ -169,7 +169,8 @@ public static class OverviewTab
         Widgets.DrawHighlight(cell, 0.35f);
         Widgets.DrawHighlightIfMouseover(cell);
         var inner = cell.ContractedBy(8f);
-        var (label, value, tip) = item.Fit(inner.width - (item.FavoriteKey is null ? 0f : 27f), valueFont);
+        var hasStar = item.ShowStar && item.FavoriteKey is not null && preferences is not null;
+        var (label, value, tip) = item.Fit(inner.width - (hasStar ? 27f : 0f), valueFont);
         Text.Font = GameFont.Small;
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
@@ -178,19 +179,19 @@ public static class OverviewTab
         Widgets.Label(new Rect(inner.x, inner.y + 26f, inner.width, inner.height - 26f), value);
         Text.Font = GameFont.Small;
         // Do not cover the favourite star at the right edge of the card.
-        var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - 40f), cell.height - 4f);
+        var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - (hasStar ? 40f : 8f)), cell.height - 4f);
         var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
         // A single tooltip region: a second overlapping one would be drawn as a second stacked copy.
         var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
-        var activeTip = item.FavoriteKey is not null && preferences is not null && Mouse.IsOver(star)
+        var activeTip = hasStar && Mouse.IsOver(star)
             ? (string)"RWS_Fav_StarTip".Translate()
             : chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip;
         TooltipHandler.TipRegion(cell, activeTip);
         if (chartView is not null && Widgets.ButtonInvisible(chartRect))
             Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
-        if (item.FavoriteKey is { } key && preferences is not null)
+        if (hasStar && item.FavoriteKey is { } key)
         {
-            var selected = preferences.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal);
+            var selected = preferences!.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal);
             if (Widgets.ButtonText(star, selected ? "★" : "☆"))
                 ToggleFavorite(key);
         }
@@ -241,18 +242,18 @@ public static class OverviewTab
                             ? (string)"RWS_HoursValue".Translate(number.Value.ToString("N1", CultureInfo.InvariantCulture))
                             : StatFormat.Group(number.Value);
                 return new FavoriteCell(key,
-                    new Cell(BasicLabel(key), formatted, Basis(view)));
+                    new Cell(BasicLabel(key), formatted, Basis(view), key, ShowStar: false));
             }
 
             if (MetricLookup.Overall(view, key) is { } row)
                 return new FavoriteCell(key, new Cell(MetricText.Label(row.Definition),
-                    MetricText.Format(row.Definition, row.Value), MetricText.Tip(row, view.Stats)));
+                    MetricText.Format(row.Definition, row.Value), MetricText.Tip(row, view.Stats), key, ShowStar: false));
 
             var definition = MetricLookup.Definition(view, key);
             return new FavoriteCell(key, new Cell(definition is null ? key : MetricText.Label(definition),
                 Dialog_RimworldStatistics.Dash,
                 definition is null ? (string)"RWS_Fav_Unknown".Translate()
-                    : (string)"RWS_Fav_NoOverall".Translate()));
+                    : (string)"RWS_Fav_NoOverall".Translate(), key, ShowStar: false));
         }).ToArray();
     }
 

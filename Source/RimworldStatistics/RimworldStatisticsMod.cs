@@ -110,7 +110,9 @@ public sealed class RimworldStatisticsMod : Mod
                 Settings.experimentalUnitIds.Clear();
             if (Widgets.ButtonText(new Rect(buttons.x + (width + 6f) * 2f, buttons.y, width, buttons.height), "RWS_Exp_SelectEvents".Translate()))
                 Settings.experimentalUnitIds = selectable
-                    .Where(u => u.Kind == AcquisitionKind.Family && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc)))
+                    .Where(u => u.Kind == AcquisitionKind.Family
+                        && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc))
+                        && (UnitRecordingStates.OwnerPackageId(u.Id) is not { } reqMod || ModsConfig.IsActive(reqMod)))
                     .Select(u => u.Id).ToList();
             // The wildcard marks every current and future unit selected. When a
             // user unticks an individual item, materialize the current catalog
@@ -126,10 +128,9 @@ public sealed class RimworldStatisticsMod : Mod
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
                 var label = unit.Id + " · " + kind;
-                var provider = ModProviderAdapters.FirstDescriptorFor(unit.Id);
-                if (provider is not null && !ModsConfig.IsActive(provider.OwnerPackageId))
+                if (UnitRecordingStates.OwnerPackageId(unit.Id) is { } owner && !ModsConfig.IsActive(owner))
                 {
-                    listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(provider.OwnerPackageId));
+                    listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(owner));
                     continue;
                 }
                 if (unit.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
@@ -137,8 +138,11 @@ public sealed class RimworldStatisticsMod : Mod
                     listing.Label(label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(dlc));
                     continue;
                 }
-                if (enabled && UnitRecordingStates.Get(unit.Id) == UnitRecordingState.TargetIncompatible)
+                var state = UnitRecordingStates.Get(unit.Id);
+                if (enabled && state == UnitRecordingState.TargetIncompatible)
                     label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
+                else if (enabled && state == UnitRecordingState.TargetModMissing)
+                    label += " · " + (string)"RWS_Status_ModMissing".Translate();
                 listing.CheckboxLabeled(label, ref enabled);
                 if (autoAll && !enabled)
                 {

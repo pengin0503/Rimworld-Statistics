@@ -13,18 +13,24 @@ public static class ColoniesTab
     // Additional per-colony fields must remain readable in smaller windows.
     private const float MinTableWidth = 1260f;
 
-    private sealed record Column(string LabelKey, float Width, Func<ColonyStats, IComparable> Sort, Func<ColonyStats, string> Text);
+    private sealed record Column(string LabelKey, float Width, Func<ColonyStats, IComparable> Sort,
+        Func<ColonyStats, string> Text, Func<ColonyStats, bool>? HasValue = null);
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     private static readonly Column[] Columns =
     {
         new("RWS_Col_Name", 0.15f, s => Dialog_RimworldStatistics.ColonyName(s), Dialog_RimworldStatistics.ColonyName),
-        new("RWS_Col_World", 0.10f, s => s.WorldName ?? "", s => s.WorldName ?? Dialog_RimworldStatistics.Dash),
-        new("RWS_Col_Scenario", 0.13f, s => (s.Scenario ?? "") + "/" + (s.Storyteller ?? ""), s => $"{s.Scenario ?? Dialog_RimworldStatistics.Dash} / {s.Storyteller ?? Dialog_RimworldStatistics.Dash}"),
+        new("RWS_Col_World", 0.10f, s => s.WorldName ?? "", s => s.WorldName ?? Dialog_RimworldStatistics.Dash,
+            s => !string.IsNullOrEmpty(s.WorldName)),
+        new("RWS_Col_Scenario", 0.13f, s => (s.Scenario ?? "") + "/" + (s.Storyteller ?? ""),
+            s => $"{s.Scenario ?? Dialog_RimworldStatistics.Dash} / {s.Storyteller ?? Dialog_RimworldStatistics.Dash}",
+            s => !string.IsNullOrEmpty(s.Scenario) || !string.IsNullOrEmpty(s.Storyteller)),
         new("RWS_Col_Days", 0.06f, s => s.MaxTicks, s => Dialog_RimworldStatistics.Days(s.MaxTicks)),
-        new("RWS_Col_PeakWealth", 0.08f, s => s.WealthMax, s => s.PeakWealthKnown ? StatFormat.Group(s.WealthMax) : Dialog_RimworldStatistics.Dash),
-        new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => s.LastWealthKnown ? StatFormat.Group(s.WealthLast) : Dialog_RimworldStatistics.Dash),
+        new("RWS_Col_PeakWealth", 0.08f, s => s.WealthMax, s => s.PeakWealthKnown ? StatFormat.Group(s.WealthMax) : Dialog_RimworldStatistics.Dash,
+            s => s.PeakWealthKnown),
+        new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => s.LastWealthKnown ? StatFormat.Group(s.WealthLast) : Dialog_RimworldStatistics.Dash,
+            s => s.LastWealthKnown),
         new("RWS_Col_Raids", 0.05f, s => s.Raids, s => s.Raids.ToString(Inv)),
         new("RWS_Col_Killed", 0.05f, s => s.Killed, s => s.Killed.ToString(Inv)),
         new("RWS_Stat_Threats", 0.06f, s => s.Threats, s => s.Threats.ToString(Inv)),
@@ -33,9 +39,11 @@ public static class ColoniesTab
         new("RWS_Stat_RealPlay", 0.08f, s => s.MaxRealPlay,
             s => "RWS_HoursValue".Translate(StatFormat.Hours(s.MaxRealPlay).ToString("N1", Inv))),
         new("RWS_Col_Endings", 0.05f, s => s.EndingCounts.Values.Sum(), s => s.EndingCounts.Values.Sum().ToString(Inv)),
-        new("RWS_Col_Versions", 0.07f, s => string.Join(",", s.GameVersions), s => Dialog_RimworldStatistics.ShortVersions(s.GameVersions)),
+        new("RWS_Col_Versions", 0.07f, s => string.Join(",", s.GameVersions), s => Dialog_RimworldStatistics.ShortVersions(s.GameVersions),
+            s => s.GameVersions.Count > 0),
         new("RWS_Col_Saves", 0.05f, s => s.SaveCount, s => s.SaveCount.ToString(Inv)),
-        new("RWS_Col_LastPlayed", 0.08f, s => s.LastPlayedUtc ?? DateTime.MinValue, s => Dialog_RimworldStatistics.Local(s.LastPlayedUtc)),
+        new("RWS_Col_LastPlayed", 0.08f, s => s.LastPlayedUtc ?? DateTime.MinValue, s => Dialog_RimworldStatistics.Local(s.LastPlayedUtc),
+            s => s.LastPlayedUtc.HasValue),
     };
 
     private const float ExcludeWidth = 0.05f;
@@ -95,8 +103,15 @@ public static class ColoniesTab
         if (cache is null || !ReferenceEquals(cache.View, view) || cache.SortColumn != sortColumn || cache.Ascending != ascending)
         {
             var indices = Enumerable.Range(0, view.Colonies.Count);
-            var key = Columns[sortColumn].Sort;
-            var sorted = (ascending ? indices.OrderBy(i => key(view.Stats.Colonies[i])) : indices.OrderByDescending(i => key(view.Stats.Colonies[i]))).ToArray();
+            var col = Columns[sortColumn];
+            var key = col.Sort;
+            var hasValue = col.HasValue;
+            var primary = hasValue is null
+                ? indices.OrderBy(_ => 0)
+                : indices.OrderBy(i => hasValue(view.Stats.Colonies[i]) ? 0 : 1);
+            var sorted = (ascending
+                ? primary.ThenBy(i => key(view.Stats.Colonies[i]))
+                : primary.ThenByDescending(i => key(view.Stats.Colonies[i]))).ToArray();
             cache = new TableCache(view, sortColumn, ascending, sorted);
         }
         var table = cache;
