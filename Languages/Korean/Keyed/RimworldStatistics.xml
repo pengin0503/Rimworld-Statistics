@@ -1314,4 +1314,7 @@
   <RWS_AcqUnit_odyssey>Odyssey: 사건</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey: 낚시</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>엔딩 참가 인원</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>파생 통계 묶기</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>이름순 정렬 시 관련된 최대·최소·최다·합계 파생 통계를 원래 통계 아래에 묶습니다.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>검색 중이거나 값순 정렬 중에는 결과와 순서를 정확히 볼 수 있도록 평면 목록으로 표시합니다.</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>

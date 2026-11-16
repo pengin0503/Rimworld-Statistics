@@ -1315,4 +1315,7 @@
   <RWS_AcqUnit_odyssey>Odyssey: Events</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey: Fishing</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>Ending participants</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>Group derived metrics</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>Nest cross-colony max, min, top, and sum rows under each source statistic while sorted by name.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>Grouping is paused while searching or sorting by value so every row and its order remain visible.</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>

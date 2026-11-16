@@ -1314,4 +1314,7 @@
   <RWS_AcqUnit_odyssey>Odyssey：事件</RWS_AcqUnit_odyssey>
   <RWS_AcqUnit_fishing>Odyssey：釣魚</RWS_AcqUnit_fishing>
   <RWS_AcqUnit_ending_party>結局參與人數</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>合併衍生統計</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>依名稱排序時，將跨殖民地的最大值、最小值、最多與總和列歸入對應統計下。</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>搜尋或依數值排序時暫時顯示為平鋪列表，以便查看全部結果與順序。</RWS_Details_GroupDerivedFlatTip>
 </LanguageData>

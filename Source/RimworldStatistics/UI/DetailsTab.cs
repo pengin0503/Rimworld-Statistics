@@ -39,7 +39,7 @@ public static class DetailsTab
     private enum DetailsStatusFilter { All, Measured, Partial, Missing, Experimental }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, object? Language);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, bool GroupDerived, object? Language);
 
     // Show all metrics immediately, including optional MOD outputs and non-lifetime readings.
     private static DetailsViewMode viewMode = DetailsViewMode.All;
@@ -51,6 +51,7 @@ public static class DetailsTab
     private static bool byValue;
     private static bool ascending = true;
     private static DetailsStatusFilter statusFilter;
+    private static bool groupDerived = true;
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
     private static int expandedVersion;
     private static Vector2 scroll;
@@ -88,9 +89,13 @@ public static class DetailsTab
         }
 
         const float filterHeight = 25f;
-        var filterRect = new Rect(rect.x, y, Math.Min(rect.width, 230f), filterHeight);
+        var filterRow = new ControlRow(new Rect(rect.x, y, rect.width, filterHeight));
         var filterLabel = StatusFilterLabel(statusFilter);
-        if (Widgets.ButtonText(filterRect, filterLabel.Truncate(filterRect.width - 10f)))
+        var filterRect = filterRow.Next(filterLabel, 140f, Math.Min(rect.width, 230f));
+        var shownFilter = filterLabel.Truncate(Math.Max(0f, filterRect.width - 10f));
+        if (shownFilter != filterLabel)
+            TooltipHandler.TipRegion(filterRect, filterLabel);
+        if (Widgets.ButtonText(filterRect, shownFilter))
         {
             Find.WindowStack.Add(new FloatMenu(Enum.GetValues<DetailsStatusFilter>()
                 .Select(value => new FloatMenuOption(StatusFilterLabel(value), () =>
@@ -99,7 +104,26 @@ public static class DetailsTab
                     scroll = Vector2.zero;
                 })).ToList()));
         }
-        y += filterHeight + 4f;
+        if (!comparing && !perColony)
+        {
+            var canGroupNow = DerivedMetricGroups.ShouldGroup(true, perColony, byValue, search);
+            string groupLabel = "RWS_Details_GroupDerived".Translate();
+            var toggleRect = filterRow.Next(groupLabel + "   ", 145f, Math.Min(rect.width, 260f));
+            var previousColor = GUI.color;
+            if (!canGroupNow)
+                GUI.color = new Color(0.65f, 0.65f, 0.65f);
+            var nextGroup = groupDerived;
+            Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup);
+            GUI.color = previousColor;
+            TooltipHandler.TipRegion(toggleRect,
+                canGroupNow ? "RWS_Details_GroupDerivedTip".Translate() : "RWS_Details_GroupDerivedFlatTip".Translate());
+            if (nextGroup != groupDerived)
+            {
+                groupDerived = nextGroup;
+                scroll = Vector2.zero;
+            }
+        }
+        y += filterRow.Height + 4f;
         if (comparing)
         {
             var filter = (viewMode, category, search: search.Trim(), statusFilter);
@@ -111,9 +135,11 @@ public static class DetailsTab
         }
 
         var language = LanguageDatabase.activeLanguage;
-        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, language);
+        var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
         if (builtFor != inputs)
         {
+            if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
+                scroll = Vector2.zero;
             builtFor = inputs;
             lines = Build(inputs);
             cellCache = new (string, string?)[lines.Count][];
@@ -296,17 +322,20 @@ public static class DetailsTab
             Widgets.DrawHighlight(rect, 0.25f);
         Widgets.DrawHighlightIfMouseover(rect);
         var widths = tablePlan!.Widths;
+        var hit = DerivedMetricGroups.ComputeHitboxes(rect.x, rect.width, line.Depth, line.MetricKey is not null, line.ExpandKey is not null);
         if (cellCache[index] is not { } cells)
         {
             var values = new[]
             {
-                new string(' ', line.Depth * 4) + (line.ExpandKey is { } k ? (Expanded.Contains(k) ? "▾ " : "▸ ") : "") + line.Label,
+                (line.ExpandKey is { } k ? (Expanded.Contains(k) ? "▾ " : "▸ ") : "") + line.Label,
                 line.Value, line.State, line.Count,
             };
             cells = new (string Text, string? Full)[values.Length];
             for (var c = 0; c < values.Length; c++)
             {
-                var space = widths[c] - 6f - (c == 0 && line.MetricKey is not null ? 28f : 0f);
+                var leftOffset = c == 0 ? (line.MetricKey is not null ? 30f : 3f) + hit.Indent : 3f;
+                var rightPad = c == 0 ? 4f : 3f;
+                var space = widths[c] - leftOffset - rightPad;
                 var shown = values[c].Truncate(Math.Max(1f, space));
                 cells[c] = (shown, shown == values[c] ? null : values[c]);
             }
@@ -321,27 +350,24 @@ public static class DetailsTab
         Text.Anchor = TextAnchor.MiddleLeft;
         for (var c = 0; c < cells.Length; c++)
         {
-            var hasStar = c == 0 && line.MetricKey is not null;
-            var cell = new Rect(x + (hasStar ? 30f : 3f), rect.y,
-                widths[c] - (hasStar ? 34f : 6f), rect.height);
+            var leftOffset = c == 0 ? (line.MetricKey is not null ? 30f : 3f) + hit.Indent : 3f;
+            var rightPad = c == 0 ? 4f : 3f;
+            var cell = new Rect(x + leftOffset, rect.y,
+                Math.Max(0f, widths[c] - leftOffset - rightPad), rect.height);
             GUI.color = c == 1 && line.Dim ? new Color(0.75f, 0.75f, 0.75f) : Color.white;
             Widgets.Label(cell, cells[c].Text);
             x += widths[c];
         }
         GUI.color = Color.white;
         Text.Anchor = TextAnchor.UpperLeft;
-        // The star and disclosure triangle retain their own click targets. Clicking
-        // the remaining top-level metric row opens an on-demand chart.
-        Rect? chartRect = null;
-        if (line.MetricKey is not null)
-        {
-            var chartStart = rect.x + 30f + (line.ExpandKey is null ? 0f : 25f);
-            chartRect = new Rect(chartStart, rect.y, Math.Max(0f, rect.xMax - chartStart), rect.height);
-        }
+        // The star, disclosure triangle, and chart click area remain strictly disjoint.
+        Rect? chartRect = !hit.Chart.IsEmpty
+            ? new Rect(hit.Chart.X, rect.y, hit.Chart.Width, rect.height)
+            : null;
         // One tooltip per row: the same id keeps RimWorld from stacking a second copy,
         // and the chart hint is shown only over the area that opens the chart.
-        var starRect = new Rect(rect.x + 2f, rect.y + 2f, 25f, rect.height - 4f);
-        if (line.MetricKey is { } metricKey && favoritePreferences is not null)
+        var starRect = new Rect(hit.Star.X, rect.y + 2f, hit.Star.Width, rect.height - 4f);
+        if (line.MetricKey is { } metricKey && favoritePreferences is not null && !hit.Star.IsEmpty)
         {
             var saved = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
             if (Widgets.ButtonText(starRect, saved ? "★" : "☆"))
@@ -353,18 +379,16 @@ public static class DetailsTab
                 persistFavorites?.Invoke();
             }
         }
-        if (line.MetricKey is not null && favoritePreferences is not null && Mouse.IsOver(starRect))
+        if (line.MetricKey is not null && favoritePreferences is not null && !hit.Star.IsEmpty && Mouse.IsOver(starRect))
             TooltipHandler.TipRegion(rect, () => "RWS_Fav_StarTip".Translate(), line.TipId);
         else
             TooltipHandler.TipRegion(rect,
                 chartRect is { } hintArea && Mouse.IsOver(hintArea) ? chartTipCache[index]! : tipCache[index]!, line.TipId);
         if (line.MetricKey is { } chartKey && chartRect is { } chartArea && Widgets.ButtonInvisible(chartArea))
             Find.WindowStack.Add(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null));
-        if (line.ExpandKey is { } key)
+        if (line.ExpandKey is { } key && !hit.Toggle.IsEmpty)
         {
-            var toggle = line.MetricKey is null
-                ? rect
-                : new Rect(rect.x + 30f, rect.y, 25f, rect.height);
+            var toggle = new Rect(hit.Toggle.X, rect.y, hit.Toggle.Width, rect.height);
             if (Widgets.ButtonInvisible(toggle))
             {
                 if (!Expanded.Remove(key))
@@ -400,49 +424,76 @@ public static class DetailsTab
             .Where(x => MatchesSearch(x.Row.Definition, x.Label, term))
             .ToList();
 
-        IEnumerable<(NumericRow Row, string Label)> ordered;
+        List<(NumericRow Row, string Label)> ordered;
         if (input.ByValue)
         {
             // Unknown values go last in either direction.
             var known = selected.Where(x => x.Row.Value.Number is not null);
             var unknown = selected.Where(x => x.Row.Value.Number is null).OrderBy(x => x.Label, StringComparer.CurrentCulture);
             ordered = (input.Ascending ? known.OrderBy(x => x.Row.Value.Number) : known.OrderByDescending(x => x.Row.Value.Number))
-                .ThenBy(x => x.Label, StringComparer.CurrentCulture).Concat(unknown);
+                .ThenBy(x => x.Label, StringComparer.CurrentCulture).Concat(unknown).ToList();
         }
         else
         {
-            ordered = input.Ascending
+            ordered = (input.Ascending
                 ? selected.OrderBy(x => x.Label, StringComparer.CurrentCulture)
-                : selected.OrderByDescending(x => x.Label, StringComparer.CurrentCulture);
+                : selected.OrderByDescending(x => x.Label, StringComparer.CurrentCulture)).ToList();
         }
 
+        var enableGrouping = DerivedMetricGroups.ShouldGroup(input.GroupDerived, input.PerColony, input.ByValue, term);
+        var grouped = DerivedMetricGroups.Group(ordered, x => x.Row.Definition, enableGrouping);
         var result = new List<Line>();
-        foreach (var (row, label) in ordered)
+        foreach (var node in grouped)
         {
+            var (row, label) = node.Item;
             var crossTop = CrossColonyCatalog.IsDerived(row.Definition)
                 && row.Definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal);
-            var expandable = row.Breakdowns.Count > 0 && (row.Definition.HasBreakdown || crossTop);
+            var hasBreakdowns = row.Breakdowns.Count > 0 && (row.Definition.HasBreakdown || crossTop);
+            var expandable = hasBreakdowns || node.Children.Count > 0;
             var expandKey = expandable ? (input.PerColony ? "c:" : "a:") + row.Definition.Key : null;
-            result.Add(MakeLine(row, label, 0, expandKey, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
+            result.Add(MakeLine(row, label, 0, expandKey, input, colony,
+                tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: true));
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
-            foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
+
+            foreach (var child in node.Children)
             {
-                var childKey = crossTop && b.Breakdowns.Count > 0 ? expandKey + ":" + b.Breakdown : null;
-                var sourceDef = crossTop ? MetricRegistry.Find(row.Definition.StoredKey) ?? row.Definition : row.Definition;
-                var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
-                    useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
-                result.Add(MakeLine(b, breakdownLabel, 1, childKey, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
-                if (childKey is not null && Expanded.Contains(childKey))
-                    foreach (var contribution in b.Breakdowns)
-                        result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
-                            2, null, input, colony, tipId: unchecked(0x52570000 + version * 4099 + result.Count)));
+                var childCrossTop = CrossColonyCatalog.IsDerived(child.Row.Definition)
+                    && child.Row.Definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal);
+                var childHasBreakdowns = child.Row.Breakdowns.Count > 0 && (child.Row.Definition.HasBreakdown || childCrossTop);
+                var childExpandKey = childHasBreakdowns ? (input.PerColony ? "c:" : "a:") + child.Row.Definition.Key : null;
+                result.Add(MakeLine(child.Row, child.Label, 1, childExpandKey, input, colony,
+                    tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: true));
+                if (childExpandKey is not null && Expanded.Contains(childExpandKey))
+                    AppendBreakdowns(child.Row, childExpandKey, 2, childCrossTop, input, colony, version, result);
             }
+
+            if (hasBreakdowns)
+                AppendBreakdowns(row, expandKey, 1, crossTop, input, colony, version, result);
         }
         return result;
     }
 
-    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony, int tipId)
+    private static void AppendBreakdowns(NumericRow row, string parentExpandKey, int depth, bool crossTop,
+        Inputs input, NumericColony? colony, int version, List<Line> result)
+    {
+        var sourceDef = crossTop ? MetricRegistry.Find(row.Definition.StoredKey) ?? row.Definition : row.Definition;
+        foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
+        {
+            var childKey = crossTop && b.Breakdowns.Count > 0 ? parentExpandKey + ":" + b.Breakdown : null;
+            var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
+                useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
+            result.Add(MakeLine(b, breakdownLabel, depth, childKey, input, colony,
+                tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
+            if (childKey is not null && Expanded.Contains(childKey))
+                foreach (var contribution in b.Breakdowns)
+                    result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
+                        depth + 1, null, input, colony,
+                        tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
+        }
+    }
+
+    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony, int tipId, bool isMetricRow)
     {
         var d = row.Definition;
         var v = row.Value;
@@ -454,12 +505,12 @@ public static class DetailsTab
         var state = CoverageLabel(d, v.Coverage);
         if (d.Acquisition is not null && !d.Published)
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
-        var lazy = new LazyTip(() => BuildTip(row, label, depth, input, colony));
+        var lazy = new LazyTip(() => BuildTip(row, label, isMetricRow, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
-            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown, depth == 0 ? d.Key : null);
+            v.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown, isMetricRow ? d.Key : null);
     }
 
-    private static string BuildTip(NumericRow row, string label, int depth, Inputs input, NumericColony? colony)
+    private static string BuildTip(NumericRow row, string label, bool isMetricRow, Inputs input, NumericColony? colony)
     {
         var d = row.Definition;
         var v = row.Value;
@@ -497,7 +548,7 @@ public static class DetailsTab
         else
         {
             tip.Append((string)"RWS_Details_Tip_Colonies".Translate(row.Targets, row.Valid)).Append('\n');
-            if (depth == 0)
+            if (isMetricRow)
             {
                 // Show a concise message only when there are no applicable or measured colonies.
                 switch (MetricAvailabilityPolicy.Classify(row))
@@ -584,9 +635,9 @@ public static class DetailsTab
     }
 
     internal static string OverallTip(NumericRow row, StatsResult stats)
-        => BuildTip(row, DefinitionLabel(row.Definition), 0,
+        => BuildTip(row, DefinitionLabel(row.Definition), true,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
-                DetailsViewMode.All, DetailsStatusFilter.All, null), null);
+                DetailsViewMode.All, DetailsStatusFilter.All, true, null), null);
 
     internal static string DefinitionLabel(MetricDefinition d)
     {
