@@ -15,7 +15,7 @@ trap 'rm -rf "$stage"' EXIT
 
 mod="$stage/RimworldStatistics"
 mkdir -p "$mod/About" "$mod/1.7/Assemblies"
-cp About/About.xml "$mod/About/"
+cp About/About.xml About/Preview.png About/PublishedFileId.txt "$mod/About/"
 cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll 1.7/Assemblies/RimworldStatistics.Api.dll "$mod/1.7/Assemblies/"
 shopt -s nullglob
 for lang in Languages/*/; do

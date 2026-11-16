@@ -108,6 +108,12 @@ jobs:
               assert root.findtext("modVersion") == sys.argv[2][1:]
               paths = z.namelist()
               path_set = set(paths)
+              for about_file in ("About/About.xml", "About/Preview.png", "About/PublishedFileId.txt"):
+                  member = f"RimworldStatistics/{about_file}"
+                  assert member in path_set, f"Missing About file in release zip: {member}"
+                  assert z.read(member) == Path(about_file).read_bytes(), f"About file mismatch in release zip: {member}"
+              published_id = z.read("RimworldStatistics/About/PublishedFileId.txt").decode("ascii").strip()
+              assert published_id.isdigit(), f"Invalid PublishedFileId.txt content: {published_id!r}"
               expected_keyed = {
                   f"RimworldStatistics/{p.as_posix()}"
                   for p in Path("Languages").glob("*/Keyed/*.xml")
