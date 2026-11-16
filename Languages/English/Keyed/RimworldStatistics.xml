@@ -1323,4 +1323,5 @@
   <RWS_Filter_Reset>Reset filters</RWS_Filter_Reset>
   <RWS_Rankings_HideSelector>« Hide list</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Show list</RWS_Rankings_ShowSelector>
+  <RWS_Chart_RemoveOverlay>Remove comparison colony</RWS_Chart_RemoveOverlay>
 </LanguageData>
