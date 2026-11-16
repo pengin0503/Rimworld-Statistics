@@ -148,15 +148,14 @@
   <RWS_Details_NoMatch>沒有符合的統計項。</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>無法確定唯一的最多類別</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>沒有適用的殖民地。</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>此統計項沒有已記錄的資料。</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilityMissing>無記錄</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>未達成</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>（未知）</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>來源：{0} / 狀態：{1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>觀測於遊戲內第 {0} 天。</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>計測起點：遊戲開始</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>儲存存檔時的狀態。</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Through>記錄日：第 {0} 天</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>從遊戲開始記錄</RWS_Details_Tip_StartGame>
   <RWS_Details_Tip_Observations>該殖民地的觀測次數：{0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>{0} 個殖民地中有 {1} 個有值。</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Colonies>已有記錄：{1}/{0} 個殖民地</RWS_Details_Tip_Colonies>
   <RWS_Details_Tip_Holder>紀錄保持者：{0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>樣本數：{0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>分子 {0} ÷ 分母 {1}</RWS_Details_Tip_Ratio>
@@ -256,7 +255,7 @@
   <RWS_Metric_QuestSuccessRate>任務成功率（存檔內）</RWS_Metric_QuestSuccessRate>
   <RWS_MetricDesc_QuestSuccessRate>成功次數 ÷（成功次數 + 失敗次數）。彙總所有殖民地時，先分別加總分子和分母，再計算比率。</RWS_MetricDesc_QuestSuccessRate>
   <RWS_Metric_QuestSuccessByRoot>依類型統計的成功任務（存檔內）</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>依任務類型（Def名稱）統計成功的任務。點擊查看明細。</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>依任務類型統計成功的任務。點擊查看明細。</RWS_MetricDesc_QuestSuccessByRoot>
   <RWS_Metric_QuestExpired>過期的任務提議（存檔內）</RWS_Metric_QuestExpired>
   <RWS_MetricDesc_QuestExpired>仍保留在存檔中，未被接受就已過期的任務提議。</RWS_MetricDesc_QuestExpired>
   <RWS_Metric_QuestAccepted>已接受的任務（存檔內）</RWS_Metric_QuestAccepted>
@@ -342,11 +341,11 @@
   <RWS_Metric_MentalBreaks>精神崩潰次數</RWS_Metric_MentalBreaks>
   <RWS_MetricDesc_MentalBreaks>自由殖民者因心情引發的精神崩潰次數。不統計藥物、基因、心靈能力或開發工具引發的精神崩潰。</RWS_MetricDesc_MentalBreaks>
   <RWS_Metric_MentalBreaksByDef>依類型統計的精神崩潰</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>將上述精神崩潰依類型（MentalBreakDef）分類統計。</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>將上述精神崩潰依類型分類統計。</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>靈感次數</RWS_Metric_Inspirations>
   <RWS_MetricDesc_Inspirations>自由殖民者實際獲得靈感的次數。不統計失敗的嘗試、已經處於靈感狀態的單位或開發工具造成的情況。</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>依類型統計的靈感</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>將上述靈感依類型（InspirationDef）分類統計。</RWS_MetricDesc_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>將上述靈感依類型分類統計。</RWS_MetricDesc_InspirationsByDef>
   <RWS_Metric_HostileKills>擊殺的敵人數</RWS_Metric_HostileKills>
   <RWS_MetricDesc_HostileKills>統計死亡前與玩家敵對，且傷害紀錄將其死亡歸因於玩家一方（殖民者、砲塔、陷阱、動物、機械族）的單位。不統計無法確定歸因的死亡。</RWS_MetricDesc_HostileKills>
   <RWS_Metric_KillsPerPawnMax>單名殖民者最多擊殺數</RWS_Metric_KillsPerPawnMax>
@@ -372,7 +371,7 @@
   <RWS_Metric_PlayerMechKills>玩家機械族擊殺數</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>攻擊者為玩家機械族的敵人擊殺數（Biotech）。</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>依死因統計的殖民者死亡</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>依導致死亡的健康狀況（hediff）或致命傷害類型，分類統計自由殖民者死亡。兩者皆無法確定的，歸入「（未知）」類別。</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>依導致死亡的健康狀況或致命傷害類型，分類統計自由殖民者死亡。兩者皆無法確定的，歸入「（未知）」類別。</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>襲擊導致的殖民者死亡</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>將自由殖民者死亡分為襲擊者造成、其他已知原因和「（未知）」三類。未記錄襲擊期間發生的死亡歸入「（未知）」。</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>因疾病死亡的殖民者</RWS_Metric_DiseaseDeaths>
@@ -400,9 +399,9 @@
   <RWS_Metric_SocialFightDowns>因吵架而倒地</RWS_Metric_SocialFightDowns>
   <RWS_MetricDesc_SocialFightDowns>由吵架對手直接導致的自由殖民者倒地次數。</RWS_MetricDesc_SocialFightDowns>
   <RWS_Metric_RaidsByArrivalMode>依抵達方式統計的襲擊</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>依抵達方式（PawnsArrivalModeDef）統計成功觸發的敵方襲擊。總數即襲擊次數。</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>依抵達方式統計成功觸發的敵方襲擊。總數即襲擊次數。</RWS_MetricDesc_RaidsByArrivalMode>
   <RWS_Metric_RaidsByFaction>依派系統計的襲擊</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>依襲擊方派系的Def（FactionDef）統計成功觸發的敵方襲擊。</RWS_MetricDesc_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>依襲擊方派系種類統計成功觸發的敵方襲擊。</RWS_MetricDesc_RaidsByFaction>
   <RWS_Metric_RaidPawnsMax>最大規模襲擊（單位數）</RWS_Metric_RaidPawnsMax>
   <RWS_MetricDesc_RaidPawnsMax>一次成功觸發的襲擊中產生的最多敵方單位數。襲擊點數另行統計。</RWS_MetricDesc_RaidPawnsMax>
   <RWS_Metric_RaidPointsMax>最高襲擊點數</RWS_Metric_RaidPointsMax>
@@ -510,9 +509,9 @@
   <RWS_Metric_Sculptures>完成的藝術品數</RWS_Metric_Sculptures>
   <RWS_MetricDesc_Sculptures>製造物品中屬於藝術品（雕塑等）的數量。</RWS_MetricDesc_Sculptures>
   <RWS_Metric_MealsByDef>依類型統計的烹飪食物數</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>將已完成的食物製品依類型（ThingDef）分類統計。</RWS_MetricDesc_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>將已完成的食物製品依類型分類統計。</RWS_MetricDesc_MealsByDef>
   <RWS_Metric_UniqueCraftedDefs>製造物品的種類數</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>至少製造過一次的物品種類（ThingDef）數量。</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>至少製造過一次的物品種類數量。</RWS_MetricDesc_UniqueCraftedDefs>
   <RWS_Metric_CraftDailyPeak>單日最多製造物品數</RWS_Metric_CraftDailyPeak>
   <RWS_MetricDesc_CraftDailyPeak>一個遊戲日內製造的最多物品數；只統計從開始到結束完整記錄的日期。</RWS_MetricDesc_CraftDailyPeak>
   <RWS_Metric_BestCrafter>最多製造者</RWS_Metric_BestCrafter>
@@ -522,7 +521,7 @@
   <RWS_Metric_HarvestUnits>收穫的作物數</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>玩家單位收穫的主要產物堆疊數量；不包括額外產出。</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>依作物統計的收穫量</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>依原作物（植物ThingDef）分類統計收穫量；來源作物不明的收穫歸為「（未知）」。</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>依原作物種類統計收穫量；來源作物不明的收穫歸為「（未知）」。</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>收穫量最多的作物</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>收穫數量最高的作物及其數量。</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>單年最高收穫量</RWS_Metric_HarvestYearPeak>
@@ -542,7 +541,7 @@
   <RWS_Metric_Constructions>完工建築數</RWS_Metric_Constructions>
   <RWS_MetricDesc_Constructions>玩家建造框架最終完成為建築物的數量，不包括重新安裝與建築藍圖。</RWS_MetricDesc_Constructions>
   <RWS_Metric_ConstructionMaterials>建造使用的材料</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>已完工框架使用的材料，依類型（ThingDef）列出；不同種類的材料不會合併相加。</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>已完工框架使用的材料，依類型列出；不同種類的材料不會合併相加。</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>最多建造者</RWS_Metric_BestBuilder>
   <RWS_MetricDesc_BestBuilder>完成建造次數最多的單位的完成數量；明細中顯示其ID。</RWS_MetricDesc_BestBuilder>
   <RWS_Metric_ConstructionFailures>建造失敗次數</RWS_Metric_ConstructionFailures>
@@ -584,9 +583,9 @@
   <RWS_Metric_TradeTopBought>購買最多的物品</RWS_Metric_TradeTopBought>
   <RWS_MetricDesc_TradeTopBought>購買件數最多的物品種類及其數量。</RWS_MetricDesc_TradeTopBought>
   <RWS_Metric_TradeSoldDefs>出售物品的種類數</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>已出售的非貨幣物品種類（ThingDef）數量。</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>已出售的非貨幣物品種類數量。</RWS_MetricDesc_TradeSoldDefs>
   <RWS_Metric_TradeBoughtDefs>購買物品的種類數</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>已購買的非貨幣物品種類（ThingDef）數量。</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>已購買的非貨幣物品種類數量。</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>交易過的派系種類數</RWS_Metric_TradePartnerFactionDefs>
   <RWS_MetricDesc_TradePartnerFactionDefs>發生過交易的已知派系種類數；無派系的交易夥伴另外顯示為「（未知）」。</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>贈禮獲得的友好度</RWS_Metric_GiftGoodwill>
@@ -702,7 +701,7 @@
   <RWS_Metric_AncientDangersOpened>開啟遠古危險區域數</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>玩家據點地圖上被開啟內部空間的封閉遠古神殿（遠古危險），每座僅計一次。遊戲判定其被發現的時刻，也就是中心區域的迷霧消失時才計入。破壞其他牆壁或出現敵人不算。</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>初始生態系統</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>遊戲開始地塊固定不變的生態系統（DefName），不是目前殖民地所在位置的生態系統。無法解析世界地塊時視為未知。</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>遊戲開始地塊固定不變的生態系統，不是目前殖民地所在位置的生態系統。無法解析世界地塊時視為未知。</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>已完成研究專案數</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>上次成功儲存時已完成的研究專案數量。</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>研究完成率</RWS_Metric_ResearchSnapshotFinishedRate>
@@ -792,7 +791,7 @@
   <RWS_Metric_IdeologyConversions>完成改信次數</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>記錄到玩家一方的單位從一種既有理念轉向另一種不同理念的次數。單位生成時被指定的理念不計入。</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>依最終結果統計的儀式</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>將已確認的Ideology儀式依結果（Def）統計；中斷的儀式單獨歸類。</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>將已確認的Ideology儀式依結果統計；中斷的儀式單獨歸類。</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>儀式成功率</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>確認成功的儀式數 ÷ 被歸類為成功或失敗的儀式數；不包括中斷的儀式。</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>平均改信耗時</RWS_Metric_IdeologyConversionDays>
@@ -833,7 +832,7 @@
   <RWS_Exp_ExperimentalRow>實驗性</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>開始記錄於遊戲內第{0}天</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>需要MOD：{0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>來源MOD：{0}（提供者：{1}）</RWS_Mod_Provider>
+  <RWS_Mod_Provider>來源MOD：{0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>目前未安裝來源模組。已記錄的數值保留，但不再產生新的統計資料。</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>開始的招募請求數</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>記錄開始後成功建立的Recruitment 1.1.2招募請求數量。啟用記錄前的時段僅有部分資料。建立後取消的請求仍計為已開始。</RWS_ModRecruitment_StartedDesc>
@@ -864,15 +863,15 @@
   <RWS_Metric_MealIngestions>吃下的餐食份數</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>玩家派系的人形單位實際吃下並獲得正營養值的餐食份數。每份餐食計一次，包括旅隊中吃的餐食。其他食物、藥物及非玩家單位不計入。</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>運到儲存格子的次數</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>玩家搬運工作（HaulToCell）實際將物品放入指定格子的次數。僅部分涵蓋：不統計放入容器或模組特有的搬運。只拿起物品不計入。</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>玩家搬運工作實際將物品放入指定格子的次數。僅部分涵蓋：不統計放入容器或模組特有的搬運。只拿起物品不計入。</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>運到儲存格子的物品數</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>玩家搬運工作（HaulToCell）實際放置的物品總數量，以攜帶堆疊的減少量測定。僅部分涵蓋：不統計放入容器或其他移動物品方式。</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>玩家搬運工作實際放置的物品總數量，以攜帶堆疊的減少量測定。僅部分涵蓋：不統計放入容器或其他移動物品方式。</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>完成清潔工作次數</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>玩家清潔工作在徹底清除至少一處污垢後成功結束的次數。同一工作清除多處污垢只算一項工作。中斷的工作不計入。</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>伐樹取得的木材（主要產物）</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>玩家單位砍伐樹木後，主要產出的木材實際放到地面或併入堆疊的數量（在遊戲放置木材時測量）。僅部分涵蓋：某些模組增加的額外木材及非標準伐樹方式不計入。</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>屠宰後又完成分割的動物數</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>玩家單位屠宰的動物屍體，隨後被完整執行的原版屠宰工作單（ButcherCorpseFlesh）消耗的數量。同一屍體跨存檔持續追蹤。狩獵的動物、野外死亡動物及敵人屍體不計入。僅部分涵蓋：模組屠宰配方及屍體消失的部分途徑無法辨識。</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>玩家單位屠宰的動物屍體，隨後被完整執行的原版屠宰工作單消耗的數量。同一屍體跨存檔持續追蹤。狩獵的動物、野外死亡動物及敵人屍體不計入。僅部分涵蓋：模組屠宰配方及屍體消失的部分途徑無法辨識。</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>數值最高的殖民地：{0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>數值最低的殖民地：{0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>所有殖民地中最多的物品：{0}</RWS_Cross_TopType>
@@ -886,7 +885,7 @@
   <RWS_Cross_Sum>殖民地快照數值合計：{0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>加總各殖民地存檔時記錄的數值。</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality：到訪的客人群組數（啟用後）</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組數量。不包括為了安置獲救客人而建立的替代群組。讀取存檔後的重複事件透過事件ID過濾。不會推算模組安裝前的來訪。</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGroupsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組數量。不包括為了安置獲救客人而建立的替代群組。讀取存檔後的重複記錄會自動過濾。不會推算模組安裝前的來訪。</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality：客人到訪人次（啟用後）</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>啟用此統計後，經確認抵達玩家主據點地圖的Hospitality訪客群組中訪客人數合計。同一客人再次來訪會重複計數，因此既不是獨立人數，也不是目前客人人數。更早的來訪情況未知。</RWS_Hospitality_VisitGuestsDesc>
   <RWS_Hospitality_VisitsCompleted>Hospitality：平安離開的客人群組數（啟用後）</RWS_Hospitality_VisitsCompleted>
@@ -904,7 +903,7 @@
   <RWS_Hospitality_AssignedBeds>Hospitality：存檔時客人分配床位數</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>成功儲存時，玩家主據點地圖上分配給在訪Hospitality客人的不重複客用床位數。共用床位只計一次。統計的是床位分配，不是實際睡在床上的客人數或累計住宿訂單數。</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>開始的Recruitment招募請求（啟用後）</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>啟用此統計後經確認的Recruitment招募請求數。由於事件去重和檢查點機制發生變化，與較早的內建統計系列分開記錄。</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_StartedDesc>啟用此統計後經確認的Recruitment招募請求數。由於追蹤方式發生變化，與較早的內建統計系列分開顯示。</RWS_AddonRecruitment_StartedDesc>
   <RWS_AddonRecruitment_SilverSpent>Recruitment：招募請求花費的白銀（啟用後）</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>啟用此統計後，新建立Recruitment招募請求時經確認實際支付的白銀總額，包含額外費用。不計入失敗嘗試，也不代表淨財富變化。</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment：計畫招募人數（啟用後）</RWS_AddonRecruitment_PlannedApplicants>
@@ -918,7 +917,7 @@
   <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene：地下水供水能力（L／天）</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>成功儲存時，對所有正在使用的獨立管線網路，彙總Dubs Bad Hygiene定義的進水與地下水額定供水能力（每遊戲日多少公升）。不是實際抽取的水量。</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>自動換裝指令次數</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade實際發出的原版穿戴（Wear）工作指令次數。並非已完成換裝的次數。僅統計啟用收集後發生的事件。實驗性統計。</RWS_SAU_OrdersIssuedDesc>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade實際發出的自動換裝指令次數。並非已完成換裝的次數。僅統計啟用收集後發生的事件。實驗性統計。</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>依類型統計的MOD事件成功數</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>啟用收集後，在玩家主據點地圖上成功觸發的非原版MOD事件，依套件ID和事件類型分類統計。與原版災害計數分開。不會填補缺失的歷史記錄。</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>活躍的玩家哨站（存檔狀態）</RWS_Metric_OutpostsActive>
@@ -981,7 +980,7 @@
   <RWS_Tab_Coverage>擷取狀態</RWS_Tab_Coverage>
   <RWS_Status_Summary>已測量 {0} · 部分記錄 {1} · 缺失 {2} · 不適用 {3} · 實驗性 {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>{0}項統計達到SDK事件ID數量上限（{1}）。後續事件不再計數，因此總計是不完整的。</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>記錄有數值不表示已在實際遊戲中驗證其準確性。</RWS_Status_Caution>
+  <RWS_Status_Caution>有記錄並不代表已在真實遊戲中驗證過準確性。</RWS_Status_Caution>
   <RWS_Status_VerificationAll>全部驗證狀態</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>實驗性</RWS_Status_Experimental>
   <RWS_Status_Legacy>舊版記錄</RWS_Status_Legacy>
@@ -1099,15 +1098,15 @@
   <RWS_VreAndroid_Awakenings>VRE Android自然覺醒次數</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>具有合成人工身體的玩家仿生人，透過根據心情的基因檢查自然覺醒的次數。不包括開發者工具直接覺醒、開局初始化或已經覺醒的仿生人。需要Biotech。</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE選定的專業技能</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>玩家殖民者在正常的專業技能介面中新選定的專業技能數量，依ExpertiseDef分類。不包括除錯解鎖或還原的記錄。</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>玩家殖民者在正常的專業技能介面中新選定的專業技能數量，依專業技能分類。不包括除錯解鎖或還原的記錄。</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>VSE專業技能等級提升總數</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>啟用記錄後VSE專業技能等級的永久提升量，在各獨立殖民地之間彙總，並依ExpertiseDef分類。</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>啟用記錄後VSE專業技能等級的永久提升量，在各獨立殖民地之間彙總，並依專業技能分類。</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE實際達到的最高專業等級</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>所有獨立殖民地中透過經驗實際達到的最高專業技能等級，不是等級之和，也不是最新存檔的單次快照。</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Vanilla Cooking Expanded加工批次</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded中實際完成的湯、起司等VEF加工批次，依ProcessDef分類。不包括一般工作單生產或部分產物輸出受阻的情況。</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded中實際完成的湯、起司等VEF加工批次，依加工類型分類。不包括一般工作單生產或部分產物輸出受阻的情況。</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded發酵及熟成批次</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded中實際完成的VEF發酵、釀造及熟成批次，依ProcessDef分類。不包括暫停、受阻或未完成的輸出，也不包括一般工作單生產。</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded中實際完成的VEF發酵、釀造及熟成批次，依加工類型分類。不包括暫停、受阻或未完成的輸出，也不包括一般工作單生產。</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Gastronomy客人支付的餐費</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>非玩家顧客在玩家餐廳用餐時實際支付的白銀。部分付款只累計實付額，不包括欠款、免費餐點或無關的交易。</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory組裝的無人機數</RWS_VqeDrones_Assembled>
@@ -1117,31 +1116,31 @@
   <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded管線儲存的Deepchem</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>玩家所有的抽油機將Deepchem實際送入管線儲存的數量，包含小數部分，以管網確認儲存為準。不包括計畫產量、落在地面的產物或受阻而未能儲存的量。</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded提取的DNA</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取後實際放置或合併進堆疊的DNA物品數量，依產出ThingDef分類。不包括無效目標、放置失敗、消耗次數卻未產出物品或其他雜交體製造。</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取後實際放置或合併進堆疊的DNA物品數量，依產出物品分類。不包括無效目標、放置失敗、消耗次數卻未產出物品或其他雜交體製造。</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE管線中儲存的營養漿</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>玩家所有的Vanilla Nutrient Paste Expanded粉碎機實際向管網輸送並被接收的營養漿數量，包括小數部分。不包括粉碎嘗試、消耗材料但未成功儲存營養漿的情況，或其他建築的管線儲存量。</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2採集的蜂蜜數</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者清空玩家所有的Medieval 2養蜂箱後，實際放置或合併進堆疊的蜂蜜數量，依產出ThingDef分類。僅達到可收穫狀態、放置失敗或後續搬運不計入。</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者清空玩家所有的Medieval 2養蜂箱後，實際放置或合併進堆疊的蜂蜜數量，依產出物品分類。僅達到可收穫狀態、放置失敗或後續搬運不計入。</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security跨地圖砲擊抵達的砲彈數</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>玩家所有的地圖外火砲發射的砲彈抵達目標地圖，並實際作為彈體產生的次數，依彈體類型分類。瞄準指令、仍在途中或未產生彈體的射擊不計入。此項不統計命中次數。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>VFE Factory自動農機收穫量</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>玩家所有的Autofarmer新收穫的物品數量，統計收穫緩衝區的實際增量和確認放在地面的產物，依產出ThingDef分類。不包括之後卸入料斗、放置被拒絕或單位一般收穫的情況。</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_HarvestedDesc>玩家所有的Autofarmer新收穫的物品數量，統計收穫緩衝區的實際增量和確認放在地面的產物，依產出物品分類。不包括之後卸入料斗、放置被拒絕或單位一般收穫的情況。</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory自動農機播種的植物數</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>玩家Autofarmer的工作週期內實際新產生、標記為已播種且與選定作物相符的植物數量，依植物ThingDef分類。不包括失敗的工作週期或既有植物。</RWS_VfeFactory_SownDesc>
+  <RWS_VfeFactory_SownDesc>玩家Autofarmer的工作週期內實際新產生、標記為已播種且與選定作物相符的植物數量，依植物種類分類。不包括失敗的工作週期或既有植物。</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates戰鬥棺裝甲穿戴完成次數</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>玩家透過正常焊接完成的warcasket裝甲裝配，必須確認專案結束且三件相符的部件均新穿戴成功，依裝甲Def分類。不包括未完成工作、只穿戴部分裝備或開發者直接完成。</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>玩家透過正常焊接完成的warcasket裝甲裝配，必須確認專案結束且三件相符的部件均新穿戴成功，依裝甲類型分類。不包括未完成工作、只穿戴部分裝備或開發者直接完成。</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients注射排斥次數</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>玩家的遠古基因注入器中，使用者拒絕注射、活著被釋放並陷入注射昏迷的結果次數。不包括取消的工作、選定但未完成的結果，或成功後仍待選擇的基因。需要Biotech。</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients變異體轉化次數</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>玩家的遠古基因注入器引發的變異結果中，原單位被銷毀並產生一名玩家所屬的指定PawnKindDef變異體的次數，依變異體類型分類。不包括其他產生、取消或成功後待處理的選擇。需要Biotech。</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>玩家的遠古基因注入器引發的變異結果中，原單位被銷毀並產生一名玩家所屬的指定種類變異體的次數，依變異體類型分類。不包括其他產生、取消或成功後待處理的選擇。需要Biotech。</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>VFE Settlers賞金目標交付次數</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>被通緝的罪犯或其屍體實際從玩家旅隊中移交並移除，且收到大於零的白銀獎勵的次數。只開啟指令、目標缺失、移交失敗或無關財物不計入。</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers收到的賞金白銀</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>成功交付VFE Settlers賞金目標後，首次發放的獎勵中實際加入玩家旅隊的白銀。不包括罪犯攜帶的物品或其中的白銀。</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics再處理副產物</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>玩家所有的鈽處理設備完成燃料卸載後，作為副產物實際放置或合併進堆疊的物品數量，依產出ThingDef分類。不包括返還的乏燃料、僅經過處理的材料或無關的物品放置。</RWS_Rimatomics_ByproductsDesc>
+  <RWS_Rimatomics_ByproductsDesc>玩家所有的鈽處理設備完成燃料卸載後，作為副產物實際放置或合併進堆疊的物品數量，依產出物品分類。不包括返還的乏燃料、僅經過處理的材料或無關的物品放置。</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Combat Extended實際發射的子彈數</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>從玩家殖民者武器彈匣實際消耗的子彈，或直接從物品欄供彈並射出的子彈數，依AmmoDef分類。不包括裝彈時的彈藥移動、空槍、砲塔使用或除錯補充彈藥。</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>從玩家殖民者武器彈匣實際消耗的子彈，或直接從物品欄供彈並射出的子彈數，依彈藥類型分類。不包括裝彈時的彈藥移動、空槍、砲塔使用或除錯補充彈藥。</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended殖民者被壓制次數</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>玩家殖民地單位在Combat Extended中從未被壓制變為被壓制狀態的次數。已被壓制時繼續受到的壓制、開發者測試壓制不計入。統計的是受到的壓制而非施加給敵人的壓制。</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>VFE Pirates雇傭合約成立數</RWS_VfePirates_HireContracts>
@@ -1155,15 +1154,15 @@
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded核准的假釋次數</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>假釋聽證會中實際清除仍受玩家拘禁的存活俘虜已服滿刑期，並正式下令釋放的決定次數。僅舉行聽證、延長期限、招募選項、重複選擇或之後的俘虜離開不計入。</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller油田開採原油（油田單位）</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>玩家所有的油井成功抽油後，油田容量（CurrentCap）的實際減少量。單位為油田容量，不是管線體積或物品數量。不包括鑽探進度、抽油嘗試、油田自然恢復、油罐之間的轉移或煉油產物。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>玩家所有的油井成功抽油後，油田容量的實際減少量。單位為油田容量，不是管線體積或物品數量。不包括鑽探進度、抽油嘗試、油田自然恢復、油罐之間的轉移或煉油產物。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded刑期服滿次數</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>玩家拘禁的俘虜在Prison Expanded中實際服滿完整刑期，並首次進入需要假釋聽證階段的次數。不包括假釋核准、釋放指令、重複的每日tick或載入存檔時還原的數值。</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded俘虜實際離開人數</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded記錄的俘虜實際離開玩家主據點地圖（Pawn.ExitMap成功）的次數，而不是僅收到釋放或假釋指令。不論原始刑期如何，只要實際離開就計入。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded記錄的俘虜實際離開玩家主據點地圖的次數，而不是僅收到釋放或假釋指令。不論原始刑期如何，只要實際離開就計入。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Rimefeller煉油設備消耗燃料（管線單位）</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>玩家所有的Rimefeller煉油設備處理導致管網可用燃料（FuelAvailable）的實際減少量，在管線組件基礎tick後測量。不包括同一tick內轉入現場設備的燃料，或僅計畫、嘗試消耗的燃料。單位為管網燃料單位。</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>玩家所有的Rimefeller煉油設備處理導致管網可用燃料的實際減少量。不包括同一時間轉入現場設備的燃料，或僅計畫、嘗試消耗的燃料。單位為管網燃料單位。</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller發電設備消耗燃料（管線單位）</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>玩家所有的Rimefeller發電設備成功取用燃料時，管網可用燃料（FuelAvailable）的實際減少量。不包括空取用或失敗取用。單位為管網燃料單位而不是物品數量。</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsedDesc>玩家所有的Rimefeller發電設備成功取用燃料時，管網可用燃料的實際減少量。不包括空取用或失敗取用。單位為管網燃料單位而不是物品數量。</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>決出勝者的競技場比賽</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>玩家競技場中正式記錄了獲勝者的比賽次數。</RWS_NewMod_ArenaDesc>
   <RWS_NewMod_Roads>新建或改良的道路區段</RWS_NewMod_Roads>
@@ -1219,23 +1218,23 @@
   <RWS_NewMod_VendingSilver>自動販賣機收到的白銀</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>來訪者實際轉入玩家自動販賣機的白銀，依機器類型分類。</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>圖表：{0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>點擊查看此統計的圖表。</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>點擊查看圖表</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>依殖民地</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>依類別</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>依類別（{0}）</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>點擊殖民地列即可查看歷史趨勢。</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>選擇殖民地查看趨勢</RWS_Chart_ColonyNote>
   <RWS_Chart_HistoryRecord>殖民地比較值：{0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>此統計沒有可用的歷史記錄。</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>只有一個記錄點。將游標移到點上即可查看數值。</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>依遊戲內天數顯示存檔記錄。僅連接已透過內嵌檢查點確認父子關係的存檔。</RWS_Chart_HistorySaves>
-  <RWS_Chart_HistoryLineage>顯示所選存檔分支的檢查點。折線中斷處表示記錄缺失。</RWS_Chart_HistoryLineage>
-  <RWS_Chart_HistoryWealth>顯示此存檔截至各時點觀測到的最大15天財富增幅。</RWS_Chart_HistoryWealth>
-  <RWS_Chart_BreakdownNote>顯示所選統計的已記錄類別，並非隨時間變化的圖表。</RWS_Chart_BreakdownNote>
+  <RWS_Chart_HistorySaves>顯示存檔時的值。僅連接已確認連續性的記錄。</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>所選分支的記錄。中斷表示缺失。</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>顯示截至各時點記錄到的最大15天財富增幅。</RWS_Chart_HistoryWealth>
+  <RWS_Chart_BreakdownNote>已記錄的明細（非時間趨勢圖）。</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>此統計只有一個合併值可用。</RWS_Chart_OverallNote>
   <RWS_Chart_Points>顯示值：{0}</RWS_Chart_Points>
   <RWS_Chart_NoData>沒有可用於繪圖的測量值。</RWS_Chart_NoData>
   <RWS_Chart_AddColony>新增殖民地…</RWS_Chart_AddColony>
-  <RWS_Chart_GameRecorder>依遊戲內天數顯示觀測值。折線中斷表示記錄缺失。</RWS_Chart_GameRecorder>
+  <RWS_Chart_GameRecorder>按天記錄的值。中斷表示缺失。</RWS_Chart_GameRecorder>
   <RWS_Chart_LegendUnlinked>空心點表示無法確認與更早記錄之間父子關係的存檔（可能是其他分支，或沒有檢查點的舊存檔）。</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>無法確認與更早記錄之間的父子關係。</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>這是從第 {0} 天的記錄延續的分支；中間的點屬於其他分支。</RWS_Chart_PointBranch>
@@ -1243,7 +1242,7 @@
   <RWS_Chart_PointSavedLater>第 {0} 天的存檔也原樣包含此記錄；該存檔沒有記錄更新的統計。</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>記錄方式不同，無法疊加顯示</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>記錄 {0} 個（部分記錄 {1} 個），無數值的時間點 {2} 個</RWS_Chart_PointCounts>
-  <RWS_Chart_LastCapture>統計最後記錄於第 {0} 天。該殖民地進度最遠的存檔在第 {1} 天，但之後沒有記錄新的統計（該存檔可能屬於其他分支）。</RWS_Chart_LastCapture>
+  <RWS_Chart_LastCapture>最後記錄：第 {0} 天 / 最遠存檔：第 {1} 天（可能屬其他分支）</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>記錄值</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>部分記錄</RWS_Chart_LegendPartial>
   <RWS_Chart_LegendUnlinkedShort>父子關係未確認</RWS_Chart_LegendUnlinkedShort>

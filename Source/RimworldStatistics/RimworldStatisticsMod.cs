@@ -135,7 +135,7 @@ public sealed class RimworldStatisticsMod : Mod
                 }
                 if (unit.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
                 {
-                    listing.Label(label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(dlc));
+                    listing.Label(label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(UI.MetricText.DlcDisplayName(dlc)));
                     continue;
                 }
                 var state = UnitRecordingStates.Get(unit.Id);

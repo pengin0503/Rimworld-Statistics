@@ -469,24 +469,28 @@ public static class DetailsTab
                 : (string)d.DescriptionKey.Translate()).Append("\n\n");
         if (d.OwnerPackageId is { } owner)
         {
-            tip.Append((string)"RWS_Mod_Provider".Translate(owner, d.ProviderId ?? owner)).Append('\n');
+            tip.Append((string)"RWS_Mod_Provider".Translate(MetricText.ModDisplayName(owner))).Append('\n');
             if (!ModsConfig.IsActive(owner))
                 tip.Append((string)"RWS_Mod_SourceUnavailable".Translate()).Append('\n');
         }
-        tip.Append((string)"RWS_Details_Tip_Source".Translate(ProvenanceLabel(d.Provenance), CoverageLabel(d, v.Coverage))).Append('\n');
+        var stateText = d.Acquisition is not null && !d.Published
+            ? (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + CoverageLabel(d, v.Coverage)
+            : CoverageLabel(d, v.Coverage);
+        tip.Append((string)"RWS_Details_Tip_Source".Translate(ProvenanceLabel(d.Provenance), stateText)).Append('\n');
         if (d.Acquisition is not null && !d.Published)
         {
-            tip.Append((string)"RWS_Exp_ExperimentalRow".Translate()).Append('\n');
             if (v.SinceTick is { } first)
                 tip.Append("RWS_Exp_Since".Translate(Dialog_RimworldStatistics.Days(first))).Append('\n');
             if (d.RequiredDlc is { } dlc)
-                tip.Append("RWS_Exp_RequiresDlc".Translate(dlc)).Append('\n');
+                tip.Append("RWS_Exp_RequiresDlc".Translate(MetricText.DlcDisplayName(dlc))).Append('\n');
         }
+        var availabilityMessageShown = false;
         if (input.PerColony)
         {
             if (v.ThroughTick is { } through)
                 tip.Append((string)"RWS_Details_Tip_Through".Translate(Dialog_RimworldStatistics.Days(through))).Append('\n');
-            tip.Append(d.Provenance == MetricProvenance.SaveSnapshot ? (string)"RWS_Details_Tip_StartSnapshot".Translate() : (string)"RWS_Details_Tip_StartGame".Translate()).Append('\n');
+            if (d.Provenance != MetricProvenance.SaveSnapshot)
+                tip.Append((string)"RWS_Details_Tip_StartGame".Translate()).Append('\n');
             if (colony is not null)
                 tip.Append((string)"RWS_Details_Tip_Observations".Translate(colony.Observations)).Append('\n');
         }
@@ -500,9 +504,11 @@ public static class DetailsTab
                 {
                     case MetricAvailability.NoApplicableColonies:
                         tip.Append((string)"RWS_Details_AvailabilityNone".Translate()).Append('\n');
+                        availabilityMessageShown = true;
                         break;
                     case MetricAvailability.NoMeasuredColonies:
                         tip.Append((string)"RWS_Details_AvailabilityMissing".Translate()).Append('\n');
+                        availabilityMessageShown = true;
                         break;
                 }
             }
@@ -517,7 +523,7 @@ public static class DetailsTab
             tip.Append((string)"RWS_Details_Tip_Samples".Translate(n)).Append('\n');
         if (v.Numerator is { } num && v.Denominator is { } den && d.Overall == OverallAggregation.Ratio)
             tip.Append((string)"RWS_Details_Tip_Ratio".Translate(Number(num), Number(den))).Append('\n');
-        if (v.Coverage == MetricCoverage.Unknown)
+        if (v.Coverage == MetricCoverage.Unknown && !availabilityMessageShown)
         {
             tip.Append((string)"RWS_Details_Tip_Unknown".Translate()).Append('\n');
         }

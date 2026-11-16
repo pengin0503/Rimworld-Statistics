@@ -159,8 +159,6 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         };
         if (measured.Count == 1)
             note += "\n" + (string)"RWS_Chart_HistorySingle".Translate();
-        if (measured.Any(p => p.Unlinked))
-            note += "\n" + (string)"RWS_Chart_LegendUnlinked".Translate();
         var gaps = history.Points.Count(p => p.Value is null);
         var partial = measured.Count(p => p.Value!.Coverage == MetricCoverage.Partial);
         if (gaps > 0 || partial > 0)
@@ -174,29 +172,35 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         return note;
     }
 
-    private List<(string Label, Action<Rect> Swatch)>? legend;
+    private List<(string Label, Action<Rect> Swatch, string? Tip)>? legend;
 
     private void DrawLegend(Rect rect, MetricHistory history)
     {
         if (legend is null)
         {
-            legend = [("RWS_Chart_LegendMeasured".Translate(), r => Widgets.DrawBoxSolid(r, SeriesColor))];
+            legend = [("RWS_Chart_LegendMeasured".Translate(), r => Widgets.DrawBoxSolid(r, SeriesColor), null)];
             if (measured!.Any(p => p.Value!.Coverage == MetricCoverage.Partial)
                 || overlays.Any(o => o.Measured.Any(p => p.Value!.Coverage == MetricCoverage.Partial)))
-                legend.Add(("RWS_Chart_LegendPartial".Translate(), r => Widgets.DrawBoxSolid(r, PartialColor)));
+                legend.Add(("RWS_Chart_LegendPartial".Translate(), r => Widgets.DrawBoxSolid(r, PartialColor), null));
             if (measured!.Any(p => p.Unlinked) || overlays.Any(o => o.Measured.Any(p => p.Unlinked)))
-                legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1)));
+                legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(),
+                    r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1),
+                    "RWS_Chart_LegendUnlinked".Translate()));
             if (history.Points.Any(p => p.Value is null))
-                legend.Add(("RWS_Chart_LegendGap".Translate(), r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor)));
+                legend.Add(("RWS_Chart_LegendGap".Translate(),
+                    r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor), null));
         }
         var x = rect.x;
-        foreach (var (label, swatch) in legend)
+        foreach (var (label, swatch, tip) in legend)
         {
             if (x >= rect.xMax - 20f)
                 break;
             swatch(new Rect(x, rect.y + 6f, 9f, 9f));
             var width = Math.Min(Text.CalcSize(label).x, rect.xMax - x - 14f);
+            var itemRect = new Rect(x, rect.y, 14f + width, rect.height);
             Widgets.Label(new Rect(x + 14f, rect.y, width, rect.height), label.Truncate(width));
+            if (tip is not null)
+                TooltipHandler.TipRegion(itemRect, tip);
             x += 14f + width + 16f;
         }
     }
