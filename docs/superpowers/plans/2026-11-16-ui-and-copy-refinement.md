@@ -113,10 +113,10 @@ bash tools/check_keys.sh
 
 **Files:** Modify: UI/RankingsTab.cs、UI/Dialog_RimworldStatistics.cs、UI/Widgets/ControlRow.cs。Test: Tests/RimworldStatistics.Core.Tests/StatisticsWindowLayoutTests.cs、手動UI。
 
-- [ ] Step 1：左パネル表示／非表示を切り替えても selectedKey、検索結果、順位表の縦スクロール・横幅が壊れないことを定義。
-- [ ] Step 2：ランキングのパネル折りたたみと復帰ボタンを追加。値と順位の選択状態は変えず、最小幅で操作できる。
-- [ ] Step 3：タイトル、タブ、フィルタの余白と選択状態のスタイルを整える。既存の「狭幅でタブをメニューにする」挙動を維持。
-- [ ] Step 4：WindowLayoutの各プリセット、長い訳、0件、RimWorldのUIスケール変更で検証し、コミット。
+- [x] Step 1：左パネル表示／非表示を切り替えても selectedKey、検索結果、順位表の縦スクロール・横幅が壊れないことを定義。
+- [x] Step 2：ランキングのパネル折りたたみと復帰ボタンを追加。値と順位の選択状態は変えず、最小幅で操作できる。
+- [x] Step 3：タイトル、タブ、フィルタの余白と選択状態のスタイルを整える。既存の「狭幅でタブをメニューにする」挙動を維持。
+- [x] Step 4：WindowLayoutの各プリセット、長い訳、0件、RimWorldのUIスケール変更で検証し、コミット。
 
 ## Track P4 — グラフ
 

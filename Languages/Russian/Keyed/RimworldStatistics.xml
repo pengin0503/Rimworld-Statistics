@@ -1320,4 +1320,6 @@
   <RWS_Filter_Shown>Показано: {0}/{1}</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>Фильтров: {0}</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>Сбросить фильтры</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« Скрыть список</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» Показать список</RWS_Rankings_ShowSelector>
 </LanguageData>

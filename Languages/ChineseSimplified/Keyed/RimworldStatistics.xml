@@ -1320,4 +1320,6 @@
   <RWS_Filter_Shown>显示：{0}/{1}项</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>筛选：{0}项</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>重置筛选</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« 隐藏统计列表</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» 显示统计列表</RWS_Rankings_ShowSelector>
 </LanguageData>

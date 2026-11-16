@@ -1320,4 +1320,6 @@
   <RWS_Filter_Shown>{0}/{1} angezeigt</RWS_Filter_Shown>
   <RWS_Filter_ActiveCount>{0} Filter</RWS_Filter_ActiveCount>
   <RWS_Filter_Reset>Zurücksetzen</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« Liste ausblenden</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» Liste einblenden</RWS_Rankings_ShowSelector>
 </LanguageData>
