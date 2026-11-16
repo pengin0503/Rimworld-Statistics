@@ -148,15 +148,14 @@
   <RWS_Details_NoMatch>No statistic matches.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>No single top category</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>No eligible colonies.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>No recorded data for this statistic.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilityMissing>No recorded data</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Not reached</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(unknown)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Source: {0} / state: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>Observed at in-game day {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Measured from: the start of the game</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>The state at the time of saving.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Through>Recorded: day {0}</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Recorded from game start</RWS_Details_Tip_StartGame>
   <RWS_Details_Tip_Observations>Observations of this colony: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>Known for {1} of {0} colonies.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Colonies>Measured: {1}/{0} colonies</RWS_Details_Tip_Colonies>
   <RWS_Details_Tip_Holder>Held by: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Samples: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerator {0} ÷ denominator {1}</RWS_Details_Tip_Ratio>
@@ -256,7 +255,7 @@
   <RWS_Metric_QuestSuccessRate>Quest success rate (retained)</RWS_Metric_QuestSuccessRate>
   <RWS_MetricDesc_QuestSuccessRate>Successes ÷ (successes + failures). All colonies: the summed numerators ÷ the summed denominators.</RWS_MetricDesc_QuestSuccessRate>
   <RWS_Metric_QuestSuccessByRoot>Quests succeeded by type (retained)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>Succeeded quests by quest type (def name). Click to show the breakdown.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Succeeded quests by quest type. Click to show the breakdown.</RWS_MetricDesc_QuestSuccessByRoot>
   <RWS_Metric_QuestExpired>Expired quest offers (retained)</RWS_Metric_QuestExpired>
   <RWS_MetricDesc_QuestExpired>Quest offers still in the save that expired without being accepted.</RWS_MetricDesc_QuestExpired>
   <RWS_Metric_QuestAccepted>Quests accepted (retained)</RWS_Metric_QuestAccepted>
@@ -342,11 +341,11 @@
   <RWS_Metric_MentalBreaks>Mental breaks</RWS_Metric_MentalBreaks>
   <RWS_MetricDesc_MentalBreaks>Mood-caused mental breaks of free colonists. Breaks from drugs, genes, psycasts or dev tools are not counted.</RWS_MetricDesc_MentalBreaks>
   <RWS_Metric_MentalBreaksByDef>Mental breaks by type</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>The mental breaks above, by type (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>The mental breaks above, by type.</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>Inspirations</RWS_Metric_Inspirations>
   <RWS_MetricDesc_Inspirations>Inspirations that actually started for free colonists. Failed attempts, pawns that were already inspired, and dev tools are not counted.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>Inspirations by type</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>The inspirations above, by type (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>The inspirations above, by type.</RWS_MetricDesc_InspirationsByDef>
   <RWS_Metric_HostileKills>Enemies killed</RWS_Metric_HostileKills>
   <RWS_MetricDesc_HostileKills>Deaths of pawns that were hostile to the player just before dying, where the damage record attributes the death to the player's side (colonists, turrets, traps, animals, mechs). Deaths without a known attribution are not counted.</RWS_MetricDesc_HostileKills>
   <RWS_Metric_KillsPerPawnMax>Most kills by one colonist</RWS_Metric_KillsPerPawnMax>
@@ -372,7 +371,7 @@
   <RWS_Metric_PlayerMechKills>Kills by player mechs</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Enemy kills whose attacker was a player mechanoid (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Colonist deaths by cause</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition (hediff) or the killing damage type. Deaths with neither are "unknown".</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition or the killing damage type. Deaths with neither are "unknown".</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Colonist deaths by raids</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>Free colonist deaths split into those caused by a raider, other known causes, and unknown. While raids are not being recorded, deaths count as unknown.</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Colonist deaths from disease</RWS_Metric_DiseaseDeaths>
@@ -400,9 +399,9 @@
   <RWS_Metric_SocialFightDowns>Downs from social fights</RWS_Metric_SocialFightDowns>
   <RWS_MetricDesc_SocialFightDowns>Free colonist downs caused directly by the opponent of a social fight.</RWS_MetricDesc_SocialFightDowns>
   <RWS_Metric_RaidsByArrivalMode>Raids by arrival mode</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>Successful enemy raids by arrival mode (PawnsArrivalModeDef). The total is the number of raids.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Successful enemy raids by arrival mode. The total is the number of raids.</RWS_MetricDesc_RaidsByArrivalMode>
   <RWS_Metric_RaidsByFaction>Raids by faction</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>Successful enemy raids by the attacking faction's def.</RWS_MetricDesc_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Successful enemy raids by the attacking faction.</RWS_MetricDesc_RaidsByFaction>
   <RWS_Metric_RaidPawnsMax>Largest raid (pawns)</RWS_Metric_RaidPawnsMax>
   <RWS_MetricDesc_RaidPawnsMax>The most enemy pawns generated for one successful raid. Raid points are a separate row.</RWS_MetricDesc_RaidPawnsMax>
   <RWS_Metric_RaidPointsMax>Highest raid points</RWS_Metric_RaidPointsMax>
@@ -510,9 +509,9 @@
   <RWS_Metric_Sculptures>Art pieces completed</RWS_Metric_Sculptures>
   <RWS_MetricDesc_Sculptures>Crafted items that are art (sculptures and the like).</RWS_MetricDesc_Sculptures>
   <RWS_Metric_MealsByDef>Meals cooked by type</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>Finished meals among the crafted items, by type (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Finished meals among the crafted items, by type.</RWS_MetricDesc_MealsByDef>
   <RWS_Metric_UniqueCraftedDefs>Kinds of items crafted</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>The number of item types (ThingDef) crafted at least once.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>The number of item types crafted at least once.</RWS_MetricDesc_UniqueCraftedDefs>
   <RWS_Metric_CraftDailyPeak>Most items crafted in a day</RWS_Metric_CraftDailyPeak>
   <RWS_MetricDesc_CraftDailyPeak>The most items crafted in one game day; only days recorded from start to end count.</RWS_MetricDesc_CraftDailyPeak>
   <RWS_Metric_BestCrafter>Top crafter</RWS_Metric_BestCrafter>
@@ -522,7 +521,7 @@
   <RWS_Metric_HarvestUnits>Crops harvested</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Harvest by crop</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>The harvest by the crop it came from (plant ThingDef); harvests whose crop is not known are "unknown".</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>The harvest by crop; harvests whose crop is not known are "unknown".</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Most harvested crop</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>The crop with the largest harvest, and that amount.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>Largest harvest in a year</RWS_Metric_HarvestYearPeak>
@@ -542,7 +541,7 @@
   <RWS_Metric_Constructions>Buildings completed</RWS_Metric_Constructions>
   <RWS_MetricDesc_Constructions>Player construction frames completed into buildings. Reinstallations and blueprints are not counted.</RWS_MetricDesc_Constructions>
   <RWS_Metric_ConstructionMaterials>Materials used in construction</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>The materials completed frames held, by type (ThingDef). Different materials are not added together.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>The materials completed frames held, by type. Different materials are not added together.</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>Top builder</RWS_Metric_BestBuilder>
   <RWS_MetricDesc_BestBuilder>The completed constructions of the pawn who completed the most; the breakdown shows who (by ID).</RWS_MetricDesc_BestBuilder>
   <RWS_Metric_ConstructionFailures>Construction failures</RWS_Metric_ConstructionFailures>
@@ -702,7 +701,7 @@
   <RWS_Metric_AncientDangersOpened>Ancient dangers opened</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Sealed ancient shrines (the ancient dangers on player settlement maps) whose interior was opened, each counted once. A shrine counts when the game would consider it revealed, that is, when the fog over its centre clears. Breaking other walls or enemies appearing does not count.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Original biome</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Biome (DefName) of the game's starting tile, which never changes, rather than the current colony site; unknown when the world tile cannot be resolved.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Biome of the game's starting tile, which never changes, rather than the current colony site; unknown when the world tile cannot be resolved.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>Completed research projects</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>Number of research projects completed at the last successful save.</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>Research completion rate</RWS_Metric_ResearchSnapshotFinishedRate>
@@ -792,7 +791,7 @@
   <RWS_Metric_IdeologyConversions>Completed conversions</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Observed changes of a player-side pawn from one existing ideoligion to a different one. The ideoligion a pawn is given when created does not count.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Rituals by final outcome</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Confirmed Ideology rituals by outcome (Def); interrupted rituals are counted in a separate bucket.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Confirmed Ideology rituals by outcome; interrupted rituals are counted in a separate bucket.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>Ritual success rate</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>Confirmed successes divided by rituals classified as a success or a failure; interrupted rituals are left out.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Mean conversion duration</RWS_Metric_IdeologyConversionDays>
@@ -833,7 +832,7 @@
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>Recording began on day {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Required MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>Source MOD: {0} (provider: {1})</RWS_Mod_Provider>
+  <RWS_Mod_Provider>Source MOD: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>The source mod is not currently installed. Recorded values are kept, but no new values are recorded.</RWS_Mod_SourceUnavailable>
   <!-- Legacy labels: historical records remain readable when optional addons are absent. -->
   <RWS_ModRecruitment_Started>Recruitment requests started</RWS_ModRecruitment_Started>
@@ -865,15 +864,15 @@
   <RWS_Metric_MealIngestions>Meals eaten</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Meals successfully eaten, with positive nutrition, by humanlike pawns of the player faction. Each meal counts once, including meals eaten in a caravan; other food, drugs and non-player pawns are not counted.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Hauls into storage cells</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Player hauling jobs (HaulToCell) that actually put their load down in the chosen cell. Partial coverage: deposits into containers and mod-specific hauling are not counted. Picking something up alone never counts.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Player hauling jobs that actually put their load down in the chosen cell. Partial coverage: deposits into containers and mod-specific hauling are not counted. Picking something up alone never counts.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Items hauled into storage cells</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total items successfully put down by player hauling jobs (HaulToCell), measured by the decrease of the carried stack. Partial coverage: hauling into containers and other ways of moving items are not counted.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total items successfully put down by player hauling jobs, measured by the decrease of the carried stack. Partial coverage: hauling into containers and other ways of moving items are not counted.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Cleaning jobs completed</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Player cleaning jobs that finished successfully after completely removing at least one piece of filth. Several pieces removed in one job count as one job. Interrupted jobs are not counted.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Wood from tree cutting (main yield)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Wood actually placed or merged into stacks after a player pawn cut down a tree (the main yield, measured when the game places it). Partial coverage: extra wood from some mods and non-standard ways of cutting are not counted.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Slaughtered animals later butchered</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Corpses of animals slaughtered by a player pawn that were later used up by a completed vanilla butchering bill (ButcherCorpseFlesh). The same corpse is tracked across saves. Hunted animals, wild deaths and enemy corpses are not counted. Partial: mod butchering recipes and some ways a corpse can disappear are not recognized.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Corpses of animals slaughtered by a player pawn that were later used up by a completed vanilla butchering bill. The same corpse is tracked across saves. Hunted animals, wild deaths and enemy corpses are not counted. Partial: mod butchering recipes and some ways a corpse can disappear are not recognized.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Colony with most: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colony with least: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Top item across colonies: {0}</RWS_Cross_TopType>
@@ -887,7 +886,7 @@
   <RWS_Cross_Sum>Total of colony snapshots: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>Adds the values recorded at each colony's saved point.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: guest groups arrived (since enabled)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>Confirmed Hospitality visitor groups that arrived on player home maps since this statistic was enabled. Replacement groups formed for rescued guests are not counted. Duplicates after reloading are filtered out by event ID. Visits from before the mod was installed are not estimated.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGroupsDesc>Confirmed Hospitality visitor groups that arrived on player home maps since this statistic was enabled. Replacement groups formed for rescued guests are not counted. Duplicates after reloading are filtered out. Visits from before the mod was installed are not estimated.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: guest arrivals (since enabled)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>Total visitors in confirmed Hospitality groups that arrived on player home maps since this statistic was enabled. Repeat visits count again, so this is neither a count of different people nor the current number of guests. Earlier visitors are unknown.</RWS_Hospitality_VisitGuestsDesc>
   <RWS_Hospitality_VisitsCompleted>Hospitality: groups that left peacefully (since enabled)</RWS_Hospitality_VisitsCompleted>
@@ -905,7 +904,7 @@
   <RWS_Hospitality_AssignedBeds>Hospitality: beds assigned to guests at save</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Distinct guest beds assigned to Hospitality visitors present on player home maps at a successful save. A shared bed counts once. This counts bed assignments, not guests actually sleeping or lifetime bookings.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Recruitment requests started (since enabled)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>Confirmed Recruitment requests since this statistic was enabled. Kept separate from the older built-in series because the way events are deduplicated and checkpointed changed.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_StartedDesc>Confirmed Recruitment requests since this statistic was enabled. Kept separate from the older built-in series because the tracking method changed.</RWS_AddonRecruitment_StartedDesc>
   <RWS_AddonRecruitment_SilverSpent>Recruitment: silver spent on requests (since enabled)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Total confirmed silver paid for newly created Recruitment requests since this statistic was enabled. Includes extra fees; failed attempts are not counted, and this is not a change in net wealth.</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment: planned applicants (since enabled)</RWS_AddonRecruitment_PlannedApplicants>
@@ -919,7 +918,7 @@
   <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: groundwater supply capacity (L/day)</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>Sum of the rated water inlet and groundwater capacity, as defined by Dubs Bad Hygiene, of each distinct pipe network in use at a successful save, in liters per game day. Not the amount actually pumped.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>Automatic apparel changes ordered</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Automatic vanilla Wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of apparel changes completed. Only events after collection was enabled are counted. Experimental statistic.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_SAU_OrdersIssuedDesc>Automatic apparel wear jobs actually issued by Smart Apparel Upgrade. This is NOT the number of apparel changes completed. Only events after collection was enabled are counted. Experimental statistic.</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>Successful MOD incidents by type</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>Confirmed incidents from non-vanilla mods that succeeded on a player home map after collection was enabled, by package ID and incident. Separate from the vanilla disaster counters. Gaps in the history are not filled in.</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>Active player Outposts (saved state)</RWS_Metric_OutpostsActive>
@@ -982,7 +981,7 @@
   <RWS_Tab_Coverage>Acquisition status</RWS_Tab_Coverage>
   <RWS_Status_Summary>Measured {0} · Partial {1} · Missing {2} · N/A {3} · Experimental {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>{0} statistic(s) reached the SDK event ID limit ({1}). Later events are not counted, so the totals are partial.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>A recorded value does not mean its accuracy has been verified in a real game.</RWS_Status_Caution>
+  <RWS_Status_Caution>A recorded value does not mean its accuracy has been verified in a live game.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>All verification states</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>
   <RWS_Status_Legacy>Legacy record</RWS_Status_Legacy>
@@ -1100,15 +1099,15 @@
   <RWS_VreAndroid_Awakenings>VRE Android natural awakenings</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Player-owned androids with synthetic bodies that awakened naturally through the mood-based gene check. Awakening directly through developer tools, setup at game start, and androids that were already awake do not count. Requires Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE expertise chosen</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>New expertise chosen by player colonists in the normal expertise panel, by ExpertiseDef. Debug unlocks and restored records do not count.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>New expertise chosen by player colonists in the normal expertise panel, by expertise type. Debug unlocks and restored records do not count.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>VSE expertise levels gained</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Permanent increases in VSE expertise levels gained after recording was enabled, summed across all independent colonies and grouped by ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>Permanent increases in VSE expertise levels gained after recording was enabled, summed across all independent colonies and grouped by expertise type.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE highest expertise level reached</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>The highest expertise level actually reached through experience across independent colonies; not a sum of levels or a snapshot of the latest save.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Vanilla Cooking Expanded processing batches</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Completed soup, cheese and other VEF processes belonging to Vanilla Cooking Expanded, grouped by ProcessDef. Ordinary bill crafting and output that was partly blocked are not counted.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Completed soup, cheese and other VEF processes belonging to Vanilla Cooking Expanded, grouped by process. Ordinary bill crafting and output that was partly blocked are not counted.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded fermentation and aging batches</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches belonging to Vanilla Brewing Expanded, grouped by ProcessDef. Paused, blocked or unfinished output and ordinary bill crafting are not counted.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches belonging to Vanilla Brewing Expanded, grouped by process. Paused, blocked or unfinished output and ordinary bill crafting are not counted.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Gastronomy silver from guests' meals</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Silver actually paid by non-player customers for meals at a player-owned restaurant. Partial payments add the amount actually paid; unpaid debts, free meals and unrelated trade do not count.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory drones assembled</RWS_VqeDrones_Assembled>
@@ -1118,31 +1117,31 @@
   <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded deepchem stored in pipes</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem actually accepted into pipe storage from player-owned pumpjacks, fractions included, measured when the pipe network confirms storage. Planned yield, output dropped on the ground and storage that was blocked do not count.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded DNA extracted</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged into stacks by successful player extractions, by output ThingDef. Invalid targets, failed placement, charges used without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged into stacks by successful player extractions, by output item. Invalid targets, failed placement, charges used without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Nutrient slurry actually accepted into the pipe network from player-owned Vanilla Nutrient Paste Expanded grinders, fractions included. Grinding attempts, ingredients used without slurry being accepted, and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2 honey harvested</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>Honey actually placed or merged into stacks after a player colonist empties a player-owned Medieval 2 apiary, grouped by output ThingDef. An apiary merely being ready, failed placement and later hauling do not count.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Honey actually placed or merged into stacks after a player colonist empties a player-owned Medieval 2 apiary, grouped by output item. An apiary merely being ready, failed placement and later hauling do not count.</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security off-map artillery shells arrived</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>Shells from player-owned off-map artillery that reached the target map and actually spawned there as projectiles, grouped by projectile. Targeting orders, shells still in transit and shots that never spawned a projectile do not count. This does not measure hits.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>VFE Factory Autofarmer harvest</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>Items newly harvested by player-owned Autofarmers, counting real increases of the harvest buffer and confirmed placement on the ground, grouped by output ThingDef. Later unloading into hoppers, rejected placement and ordinary harvesting by pawns are not counted.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_HarvestedDesc>Items newly harvested by player-owned Autofarmers, counting real increases of the harvest buffer and confirmed placement on the ground, grouped by output item. Later unloading into hoppers, rejected placement and ordinary harvesting by pawns are not counted.</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory Autofarmer plants sown</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>New plants actually spawned, marked as sown and matching the selected crop during a player Autofarmer's work cycle, grouped by plant ThingDef. Unsuccessful cycles and existing plants do not count.</RWS_VfeFactory_SownDesc>
+  <RWS_VfeFactory_SownDesc>New plants actually spawned, marked as sown and matching the selected crop during a player Autofarmer's work cycle, grouped by plant. Unsuccessful cycles and existing plants do not count.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates warcasket fittings completed</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Player warcasket fittings completed through normal welding, confirmed when the project clears and the three matching pieces are newly worn, grouped by armor Def. Unfinished jobs, applying only part of the set and developer completion do not count.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>Player warcasket fittings completed through normal welding, confirmed when the project clears and the three matching pieces are newly worn, grouped by armor type. Unfinished jobs, applying only part of the set and developer completion do not count.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients injection rejections</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Player archogen injector results in which the occupant rejected the injection, was released alive and fell into an injection coma. Cancelled work, a chosen result that never completed, and pending gene choices after success do not count. Requires Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients mutant transformations</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>Player archogen injector mutation results that destroy the original pawn and spawn one player-owned mutant of the chosen PawnKindDef, grouped by mutant kind. Other spawns, cancellations and pending choices after success do not count. Requires Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>Player archogen injector mutation results that destroy the original pawn and spawn one player-owned mutant of the chosen kind, grouped by mutant kind. Other spawns, cancellations and pending choices after success do not count. Requires Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>VFE Settlers bounties turned in</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Wanted criminals, or their bodies, actually turned in and removed from a player caravan while a positive silver reward was received. Opening the command, missing targets, failed transfers and unrelated belongings do not count.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers bounty silver received</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>Silver actually added to the player caravan by the first reward payment of a successful VFE Settlers bounty hand-in. The criminal's items, and any silver among them, are not included.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics reprocessing by-products</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>Items actually placed or merged into stacks as by-products when a player-owned plutonium processor finishes unloading fuel, grouped by output ThingDef. Returned spent fuel, material that was only processed, and unrelated placements do not count.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_Rimatomics_ByproductsDesc>Items actually placed or merged into stacks as by-products when a player-owned plutonium processor finishes unloading fuel, grouped by output item. Returned spent fuel, material that was only processed, and unrelated placements do not count.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Combat Extended rounds fired</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Rounds actually taken from player colonists' weapon magazines, or used up when firing directly from inventory, grouped by AmmoDef. Moving ammo while reloading, dry fires, turret use and debug ammo refills do not count.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>Rounds actually taken from player colonists' weapon magazines, or used up when firing directly from inventory, grouped by ammo type. Moving ammo while reloading, dry fires, turret use and debug ammo refills do not count.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended times colonists were suppressed</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Times a player-colony pawn newly became suppressed in Combat Extended, counted once each time it goes from not suppressed to suppressed. Further suppression while already suppressed and developer test suppression do not count. This measures suppression received, not suppression inflicted on enemies.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>VFE Pirates hiring contracts</RWS_VfePirates_HireContracts>
@@ -1156,15 +1155,15 @@
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded paroles approved</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Release decisions at parole hearings that actually cleared a completed sentence for a living prisoner still in player custody, with the release itself ordered. Hearings alone, extensions, recruitment options, repeated choices and the prisoner's later departure do not count.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller crude extracted from oil fields (field units)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>The actual decrease of an oil field's capacity (CurrentCap) when a player-owned oil derrick successfully pumps. These are oil-field capacity units, NOT pipe volume or item units. Drilling progress, attempted pumping, the field refilling on its own, transfers between tanks and refinery output are not counted.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>The actual decrease of an oil field's capacity when a player-owned oil derrick successfully pumps. These are oil-field capacity units, NOT pipe volume or item units. Drilling progress, attempted pumping, the field refilling on its own, transfers between tanks and refinery output are not counted.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded sentences served</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>Sentences of prisoners held by the player that actually reach their full length in Prison Expanded and become due for a parole hearing for the first time. Parole approvals, release orders, repeated day ticks and values restored on load do not count.</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded prisoners who actually left</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisoners recorded by Prison Expanded who physically left a player home map (a successful Pawn.ExitMap), as opposed to only receiving a release or parole order. Any actual departure counts, whatever the original sentence.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisoners recorded by Prison Expanded who physically left a player home map, as opposed to only receiving a release or parole order. Any actual departure counts, whatever the original sentence.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Rimefeller refinery fuel consumed (pipe units)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>The actual decrease in the pipe network's available fuel (FuelAvailable) caused by player-owned Rimefeller refinery processing, measured after the pipe component's base tick. Fuel moved into machines on site during that tick and fuel that was only scheduled or attempted are not counted. Units are pipe-network fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>The actual decrease in the pipe network's available fuel caused by player-owned Rimefeller refinery processing. Fuel moved into machines on site and fuel that was only scheduled or attempted are not counted. Units are pipe-network fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller powerplant fuel consumed (pipe units)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>The actual decrease in the pipe network's available fuel (FuelAvailable) when player-owned Rimefeller power plants successfully draw fuel. Empty or failed draws are not counted. Units are pipe-network fuel units, not items.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsedDesc>The actual decrease in the pipe network's available fuel when player-owned Rimefeller power plants successfully draw fuel. Empty or failed draws are not counted. Units are pipe-network fuel units, not items.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>Arena bouts decided</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>Player arena bouts with an officially recorded winner.</RWS_NewMod_ArenaDesc>
   <RWS_NewMod_Roads>Road segments built or improved</RWS_NewMod_Roads>
@@ -1220,23 +1219,23 @@
   <RWS_NewMod_VendingSilver>Silver received by vending machines</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Silver actually transferred by visitors into player vending machines, by machine type.</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>Chart: {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>Click to open a chart for this statistic.</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>Click to open chart</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>By colony</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>By category</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>By category ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Select a colony to see its history.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Select a colony to view history</RWS_Chart_ColonyNote>
   <RWS_Chart_HistoryRecord>Colony comparison value: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>No history is available for this statistic.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Only one reading is available. Hover over the point to see its value.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Recorded save readings by in-game day. Lines join only saves whose parent save is proven by embedded checkpoints.</RWS_Chart_HistorySaves>
-  <RWS_Chart_HistoryLineage>Save checkpoints on the selected lineage. Gaps indicate missing readings.</RWS_Chart_HistoryLineage>
-  <RWS_Chart_HistoryWealth>Running record of the largest 15-day wealth increase in this save.</RWS_Chart_HistoryWealth>
-  <RWS_Chart_BreakdownNote>Recorded categories of the selected statistic. This is not a chart over time.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_HistorySaves>Values at each save. Only saves with proven continuity are connected.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Readings on the selected branch. Gaps indicate missing values.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Largest 15-day wealth increase recorded up to each point.</RWS_Chart_HistoryWealth>
+  <RWS_Chart_BreakdownNote>Recorded breakdown (not a timeline).</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Only one combined value is available for this statistic.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Displayed values: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>There are no measured values to chart.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Add colony…</RWS_Chart_AddColony>
-  <RWS_Chart_GameRecorder>Recorded in-game samples by day. Gaps indicate unavailable readings.</RWS_Chart_GameRecorder>
+  <RWS_Chart_GameRecorder>Recorded values by day. Gaps indicate missing values.</RWS_Chart_GameRecorder>
   <RWS_Chart_LegendUnlinked>Hollow points are saves whose relation to earlier readings cannot be proven (another branch, or an older save without checkpoints).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Its relation to earlier readings cannot be proven.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>A branch continuing from the reading on day {0}; points in between belong to another branch.</RWS_Chart_PointBranch>
@@ -1244,7 +1243,7 @@
   <RWS_Chart_PointSavedLater>This reading was also carried unchanged by a save on day {0}; that save recorded no newer statistics.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>recorded in a different way; not drawn together</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} readings ({1} partial); {2} points without a value</RWS_Chart_PointCounts>
-  <RWS_Chart_LastCapture>Statistics were last recorded on day {0}. The colony's furthest save is on day {1}, but nothing newer was recorded (that save may be on another branch).</RWS_Chart_LastCapture>
+  <RWS_Chart_LastCapture>Last recorded: day {0} / Furthest save: day {1} (may be another branch)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Recorded value</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Partial record</RWS_Chart_LegendPartial>
   <RWS_Chart_LegendUnlinkedShort>Relation not proven</RWS_Chart_LegendUnlinkedShort>

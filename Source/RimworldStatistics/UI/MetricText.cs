@@ -60,4 +60,28 @@ internal static class MetricText
             number = "RWS_Unit_Nutrition".Translate(number);
         return "\n" + (string)"RWS_PerDay".Translate(number, rate.Days.ToString("N1", inv));
     }
+
+    public static string DlcDisplayName(string packageId)
+    {
+        if (string.Equals(packageId, AcquisitionUnits.Royalty, StringComparison.OrdinalIgnoreCase))
+            return "Royalty";
+        if (string.Equals(packageId, AcquisitionUnits.Ideology, StringComparison.OrdinalIgnoreCase))
+            return "Ideology";
+        if (string.Equals(packageId, AcquisitionUnits.Biotech, StringComparison.OrdinalIgnoreCase))
+            return "Biotech";
+        if (string.Equals(packageId, AcquisitionUnits.Odyssey, StringComparison.OrdinalIgnoreCase))
+            return "Odyssey";
+        if (string.Equals(packageId, "ludeon.rimworld.anomaly", StringComparison.OrdinalIgnoreCase))
+            return "Anomaly";
+        return ModDisplayName(packageId);
+    }
+
+    public static string ModDisplayName(string packageId)
+    {
+        var pack = LoadedModManager.RunningMods.FirstOrDefault(mod =>
+            string.Equals(mod.PackageId, packageId, StringComparison.OrdinalIgnoreCase));
+        if (!string.IsNullOrWhiteSpace(pack?.Name))
+            return pack!.Name;
+        return packageId;
+    }
 }

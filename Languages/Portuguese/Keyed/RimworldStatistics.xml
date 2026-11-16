@@ -148,15 +148,14 @@
   <RWS_Details_NoMatch>Nenhuma estatística corresponde.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>Nenhuma categoria principal única</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>Não há colónias abrangidas.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Não existem registos desta estatística.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilityMissing>Sem registos</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Não alcançado</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(desconhecido)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Origem: {0} / estado: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>Observado no dia de jogo {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Medido desde: o início do jogo</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>O estado no momento em que o jogo foi guardado.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Through>Registado: dia {0}</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Registado desde o início</RWS_Details_Tip_StartGame>
   <RWS_Details_Tip_Observations>Observações desta colónia: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>Conhecido em {1} de {0} colónias.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Colonies>Com registo: {1}/{0} colónias</RWS_Details_Tip_Colonies>
   <RWS_Details_Tip_Holder>Recorde de: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Amostras: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Numerador {0} ÷ denominador {1}</RWS_Details_Tip_Ratio>
@@ -256,7 +255,7 @@
   <RWS_Metric_QuestSuccessRate>Taxa de sucesso das missões (conservadas)</RWS_Metric_QuestSuccessRate>
   <RWS_MetricDesc_QuestSuccessRate>Sucessos ÷ (sucessos + falhas). Para todas as colónias, somam-se separadamente os numeradores e os denominadores antes de dividir.</RWS_MetricDesc_QuestSuccessRate>
   <RWS_Metric_QuestSuccessByRoot>Missões concluídas por tipo (mantidas)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>Missões concluídas com sucesso por tipo de missão (nome da Def). Clique para consultar a discriminação.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Missões concluídas com sucesso por tipo de missão. Clique para consultar a discriminação.</RWS_MetricDesc_QuestSuccessByRoot>
   <RWS_Metric_QuestExpired>Ofertas de missão expiradas (mantidas)</RWS_Metric_QuestExpired>
   <RWS_MetricDesc_QuestExpired>Ofertas de missão ainda presentes no jogo guardado que expiraram sem terem sido aceites.</RWS_MetricDesc_QuestExpired>
   <RWS_Metric_QuestAccepted>Missões aceites (mantidas)</RWS_Metric_QuestAccepted>
@@ -342,11 +341,11 @@
   <RWS_Metric_MentalBreaks>Colapsos mentais</RWS_Metric_MentalBreaks>
   <RWS_MetricDesc_MentalBreaks>Colapsos mentais de colonos livres causados pelo humor. Não são contados os causados por drogas, genes, psinjurações ou ferramentas de desenvolvimento.</RWS_MetricDesc_MentalBreaks>
   <RWS_Metric_MentalBreaksByDef>Colapsos mentais por tipo</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>Os colapsos mentais acima, agrupados por tipo (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>Os colapsos mentais acima, agrupados por tipo.</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>Inspirações</RWS_Metric_Inspirations>
   <RWS_MetricDesc_Inspirations>Inspirações que realmente começaram em colonos livres. Tentativas malsucedidas, peões já inspirados e ferramentas de desenvolvimento não são contados.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>Inspirações por tipo</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>As inspirações acima, agrupadas por tipo (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>As inspirações acima, agrupadas por tipo.</RWS_MetricDesc_InspirationsByDef>
   <RWS_Metric_HostileKills>Inimigos mortos</RWS_Metric_HostileKills>
   <RWS_MetricDesc_HostileKills>Mortes de peões hostis ao jogador imediatamente antes de morrer, quando o registo de dano atribui a morte ao lado do jogador (colonos, torretas, armadilhas, animais, mecas). Mortes sem atribuição conhecida não são contadas.</RWS_MetricDesc_HostileKills>
   <RWS_Metric_KillsPerPawnMax>Maior número de mortes causadas por um colono</RWS_Metric_KillsPerPawnMax>
@@ -372,7 +371,7 @@
   <RWS_Metric_PlayerMechKills>Mortes por mecas do jogador</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Inimigos mortos cujo atacante era um mecanoide do jogador (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Mortes de colonos por causa</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Mortes de colonos livres agrupadas pela condição de saúde responsável (hediff) ou pelo tipo de dano fatal. Quando nenhum dos dois é conhecido, a categoria exibida é «(desconhecido)».</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Mortes de colonos livres agrupadas pela condição de saúde responsável ou pelo tipo de dano fatal. Quando nenhum dos dois é conhecido, a categoria exibida é «(desconhecido)».</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Mortes de colonos em invasões</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>Mortes de colonos livres divididas entre as causadas por invasores, outras causas conhecidas e «(desconhecido)». Quando as invasões não estão a ser registadas, as mortes entram em «(desconhecido)».</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Mortes de colonos por doença</RWS_Metric_DiseaseDeaths>
@@ -400,9 +399,9 @@
   <RWS_Metric_SocialFightDowns>Incapacitações em brigas sociais</RWS_Metric_SocialFightDowns>
   <RWS_MetricDesc_SocialFightDowns>Incapacitações de colonos livres causadas diretamente pelo adversário de uma briga social.</RWS_MetricDesc_SocialFightDowns>
   <RWS_Metric_RaidsByArrivalMode>Invasões por modo de chegada</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>Invasões inimigas iniciadas com sucesso, por modo de chegada (PawnsArrivalModeDef). O total é o número de invasões.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Invasões inimigas iniciadas com sucesso, por modo de chegada. O total é o número de invasões.</RWS_MetricDesc_RaidsByArrivalMode>
   <RWS_Metric_RaidsByFaction>Invasões por fação</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>Invasões inimigas iniciadas com sucesso, pelo Def da fação atacante (FactionDef).</RWS_MetricDesc_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Invasões inimigas iniciadas com sucesso, por fação atacante.</RWS_MetricDesc_RaidsByFaction>
   <RWS_Metric_RaidPawnsMax>Maior invasão (peões)</RWS_Metric_RaidPawnsMax>
   <RWS_MetricDesc_RaidPawnsMax>Maior número de peões inimigos gerados para uma invasão iniciada com sucesso. Os pontos de invasão são exibidos separadamente.</RWS_MetricDesc_RaidPawnsMax>
   <RWS_Metric_RaidPointsMax>Maior pontuação de invasão</RWS_Metric_RaidPointsMax>
@@ -510,9 +509,9 @@
   <RWS_Metric_Sculptures>Obras de arte concluídas</RWS_Metric_Sculptures>
   <RWS_MetricDesc_Sculptures>Artigos fabricados considerados arte (esculturas e similares).</RWS_MetricDesc_Sculptures>
   <RWS_Metric_MealsByDef>Refeições preparadas por tipo</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>Refeições concluídas entre os artigos fabricados, agrupadas por tipo (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Refeições concluídas entre os artigos fabricados, agrupadas por tipo.</RWS_MetricDesc_MealsByDef>
   <RWS_Metric_UniqueCraftedDefs>Tipos de artigos fabricados</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>Número de tipos de artigo (ThingDef) fabricados pelo menos uma vez.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>Número de tipos de artigo fabricados pelo menos uma vez.</RWS_MetricDesc_UniqueCraftedDefs>
   <RWS_Metric_CraftDailyPeak>Maior produção num dia</RWS_Metric_CraftDailyPeak>
   <RWS_MetricDesc_CraftDailyPeak>Maior quantidade de artigos fabricados num dia do jogo; apenas dias registados inteiramente do início ao fim são considerados.</RWS_MetricDesc_CraftDailyPeak>
   <RWS_Metric_BestCrafter>Melhor fabricante</RWS_Metric_BestCrafter>
@@ -522,7 +521,7 @@
   <RWS_Metric_HarvestUnits>Cultivos colhidos</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>Quantidades em pilhas dos produtos principais colhidos por peões do jogador; produções adicionais são excluídas.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Colheita por cultivo</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>Quantidades colhidas agrupadas pelo cultivo de origem (ThingDef de planta); colheitas de cultivo desconhecido aparecem como «(desconhecido)».</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>Quantidades colhidas por cultivo de origem; colheitas de cultivo desconhecido aparecem como «(desconhecido)».</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Cultivo mais colhido</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>Cultivo com maior quantidade colhida e o respectivo valor.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>Maior colheita num ano</RWS_Metric_HarvestYearPeak>
@@ -542,7 +541,7 @@
   <RWS_Metric_Constructions>Construções concluídas</RWS_Metric_Constructions>
   <RWS_MetricDesc_Constructions>Estruturas em construção do jogador concluídas como edifícios. Reinstalações e projetos de construção não são contados.</RWS_MetricDesc_Constructions>
   <RWS_Metric_ConstructionMaterials>Materiais usados na construção</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>Materiais contidos nas estruturas concluídas, agrupados por tipo (ThingDef). Materiais de tipos diferentes não são somados.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>Materiais contidos nas estruturas concluídas, agrupados por tipo. Materiais de tipos diferentes não são somados.</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>Melhor construtor</RWS_Metric_BestBuilder>
   <RWS_MetricDesc_BestBuilder>Número de construções concluídas pelo peão que mais concluiu obras; a discriminação mostra respetivo ID.</RWS_MetricDesc_BestBuilder>
   <RWS_Metric_ConstructionFailures>Falhas de construção</RWS_Metric_ConstructionFailures>
@@ -584,9 +583,9 @@
   <RWS_Metric_TradeTopBought>Artigo mais comprado</RWS_Metric_TradeTopBought>
   <RWS_MetricDesc_TradeTopBought>Tipo de artigo comprado em maior quantidade e essa quantidade.</RWS_MetricDesc_TradeTopBought>
   <RWS_Metric_TradeSoldDefs>Tipos de artigos vendidos</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>Número de tipos de artigos não monetários vendidos (ThingDef).</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>Número de tipos de artigos não monetários vendidos.</RWS_MetricDesc_TradeSoldDefs>
   <RWS_Metric_TradeBoughtDefs>Tipos de artigos comprados</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>Número de tipos de artigos não monetários comprados (ThingDef).</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>Número de tipos de artigos não monetários comprados.</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>Tipos de fações com que houve comércio</RWS_Metric_TradePartnerFactionDefs>
   <RWS_MetricDesc_TradePartnerFactionDefs>Número de tipos conhecidos de fações com que foram feitas negociações; os parceiros sem fação aparecem separadamente como «(desconhecido)».</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>Boa vontade obtida com presentes</RWS_Metric_GiftGoodwill>
@@ -702,7 +701,7 @@
   <RWS_Metric_AncientDangersOpened>Perigos antigos abertos</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Santuários antigos selados (perigos antigos nos mapas de assentamento do jogador) cujo interior foi aberto, cada um contado uma vez. O santuário conta quando o jogo o considera descoberto, ou seja, quando o nevoeiro sobre o seu centro desaparece. Romper outras paredes ou o aparecimento de inimigos não conta.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Bioma original</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Bioma (DefName) da célula onde o jogo começou, que nunca muda, e não do assentamento atual; desconhecido quando não é possível identificar a célula do mundo.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Bioma da célula onde o jogo começou, que nunca muda, e não do assentamento atual; desconhecido quando não é possível identificar a célula do mundo.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>Projetos de investigação concluídos</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>Número de projetos de investigação concluídos na última gravação bem-sucedida.</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>Taxa de conclusão da investigação</RWS_Metric_ResearchSnapshotFinishedRate>
@@ -792,7 +791,7 @@
   <RWS_Metric_IdeologyConversions>Conversões concluídas</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Mudanças observadas de ideologia de um peão do lado do jogador entre duas ideologias existentes. A ideologia atribuída ao criar o peão não conta.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Rituais por resultado final</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Rituais de Ideology confirmados, agrupados por resultado (Def); rituais interrompidos entram em categoria separada.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Rituais de Ideology confirmados, agrupados por resultado; rituais interrompidos entram em categoria separada.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>Taxa de sucesso dos rituais</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>Sucessos confirmados ÷ rituais classificados como sucesso ou falha; rituais interrompidos são excluídos.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Duração média da conversão</RWS_Metric_IdeologyConversionDays>
@@ -833,7 +832,7 @@
   <RWS_Exp_ExperimentalRow>Experimental</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>Registo iniciado no dia {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>MOD necessário: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>MOD de origem: {0} (provedor: {1})</RWS_Mod_Provider>
+  <RWS_Mod_Provider>MOD de origem: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>O mod de origem não está instalado atualmente. Os valores registados são mantidos, mas não são recolhidos novos valores.</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>Solicitações de recrutamento iniciadas</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>Pedidos de Recruitment 1.1.2 criados com sucesso após o início do registo. Os períodos anteriores à ativação só estão parcialmente abrangidos. Um pedido cancelado após a criação continua a contar como iniciado.</RWS_ModRecruitment_StartedDesc>
@@ -864,15 +863,15 @@
   <RWS_Metric_MealIngestions>Refeições consumidas</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Refeições efetivamente consumidas com nutrição positiva por peões humanoides da fação do jogador. Cada refeição conta uma vez, inclusive em caravanas. Outros alimentos, drogas e peões de outras fações não contam.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Transportes para células de armazenamento</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Tarefas de transporte do jogador (HaulToCell) que efetivamente depositaram a carga na célula escolhida. Cobertura parcial: depósitos em contentores e transportes específicos de mods não contam. Só recolher o artigo não conta.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Tarefas de transporte do jogador que efetivamente depositaram a carga na célula escolhida. Cobertura parcial: depósitos em contentores e transportes específicos de mods não contam. Só recolher o artigo não conta.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Artigos transportados para armazenamento</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total de artigos efetivamente depositados por tarefas de transporte do jogador (HaulToCell), medido pela redução da pilha transportada. Cobertura parcial: os transportes para contentores e outros métodos de movimentação não contam.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total de artigos efetivamente depositados por tarefas de transporte do jogador, medido pela redução da pilha transportada. Cobertura parcial: os transportes para contentores e outros métodos de movimentação não contam.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Trabalhos de limpeza concluídos</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Trabalhos de limpeza do jogador concluídos com sucesso após remover totalmente pelo menos uma porção de sujeira. Várias porções removidas no mesmo trabalho contam como um trabalho. Trabalhos interrompidos não contam.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Madeira do corte de árvores (produto principal)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Madeira efetivamente colocada ou juntada a pilhas após um peão do jogador cortar uma árvore (produto principal, medido quando o jogo a coloca). Cobertura parcial: não contam a madeira extra de certos mods nem formas não convencionais de cortar árvores.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Animais abatidos e depois esquartejados</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Cadáveres de animais abatidos por um peão do jogador, posteriormente consumidos por uma ordem de esquartejamento normal concluída (ButcherCorpseFlesh). O mesmo cadáver é acompanhado entre gravações. Animais caçados, mortes na natureza e cadáveres inimigos não contam. Cobertura parcial: receitas de mods e algumas formas de desaparecimento de cadáveres não são reconhecidas.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Cadáveres de animais abatidos por um peão do jogador, posteriormente consumidos por uma ordem de esquartejamento normal concluída. O mesmo cadáver é acompanhado entre gravações. Animais caçados, mortes na natureza e cadáveres inimigos não contam. Cobertura parcial: receitas de mods e algumas formas de desaparecimento de cadáveres não são reconhecidas.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Colónia com maior valor: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colónia com menor valor: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Artigo mais comum entre colónias: {0}</RWS_Cross_TopType>
@@ -886,7 +885,7 @@
   <RWS_Cross_Sum>Soma das observações das colónias: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>Soma os valores registados ao guardar cada colónia.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: grupos de hóspedes que chegaram (desde a ativação)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>Grupos de visitantes de Hospitality cuja chegada a mapas de base do jogador foi confirmada desde a ativação desta estatística. Grupos substitutos criados para hóspedes resgatados não contam. As duplicações após recarregar são filtradas pelo ID do evento. Não se estimam visitas anteriores à instalação do mod.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGroupsDesc>Grupos de visitantes de Hospitality cuja chegada a mapas de base do jogador foi confirmada desde a ativação desta estatística. Grupos substitutos criados para hóspedes resgatados não contam. As duplicações após recarregar são filtradas. Não se estimam visitas anteriores à instalação do mod.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: chegadas de hóspedes (desde a ativação)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>Total de visitantes dos grupos de Hospitality com chegada confirmada a mapas de lar do jogador desde a ativação. Visitas repetidas são contadas de novo, portanto não é o número de pessoas distintas nem o total atual de hóspedes. Visitas anteriores são desconhecidas.</RWS_Hospitality_VisitGuestsDesc>
   <RWS_Hospitality_VisitsCompleted>Hospitality: grupos que saíram em paz (desde a ativação)</RWS_Hospitality_VisitsCompleted>
@@ -904,7 +903,7 @@
   <RWS_Hospitality_AssignedBeds>Hospitality: camas atribuídas a hóspedes ao guardar</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Número de camas distintas atribuídas a hóspedes de Hospitality presentes em mapas de base do jogador numa gravação bem-sucedida. Uma cama partilhada conta uma vez. Conta atribuições de cama, não hóspedes a dormir nem reservas acumuladas.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Solicitações de recrutamento iniciadas (desde a ativação)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>Solicitações de Recruitment confirmadas desde a ativação. Série separada da série antiga integrada, pois o método de remover eventos duplicados e gerar pontos de controle mudou.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_StartedDesc>Solicitações de Recruitment confirmadas desde a ativação. Série separada da série antiga integrada, pois o método de registo mudou.</RWS_AddonRecruitment_StartedDesc>
   <RWS_AddonRecruitment_SilverSpent>Recruitment: prata gasta em solicitações (desde a ativação)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Total de prata comprovadamente paga por solicitações novas de Recruitment desde a ativação, inclusive taxas extras. Tentativas malsucedidas não contam; isto não representa mudança na riqueza líquida.</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment: candidatos previstos (desde a ativação)</RWS_AddonRecruitment_PlannedApplicants>
@@ -918,7 +917,7 @@
   <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: capacidade de água subterrânea (L/dia)</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>Soma das capacidades nominais de entrada de água e de água subterrânea definidas por Dubs Bad Hygiene para cada rede distinta de canalizações em uso numa gravação bem-sucedida, em litros por dia de jogo. Não representa a quantidade realmente bombeada.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>Trocas automáticas de roupa ordenadas</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Tarefas normais Wear efetivamente emitidas por Smart Apparel Upgrade. NÃO é o número de trocas de roupa concluídas. Só contam os eventos posteriores à ativação da recolha. Estatística experimental.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_SAU_OrdersIssuedDesc>Ordens automáticas de vestir roupa efetivamente emitidas por Smart Apparel Upgrade. NÃO é o número de trocas concluídas. Só contam os eventos posteriores à ativação da recolha. Estatística experimental.</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>Incidentes de MOD bem-sucedidas por tipo</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>Incidentes confirmados de mods que não pertencem ao jogo base, bem-sucedidos em mapas de base do jogador após ativar a recolha, por ID de pacote e incidente. Separados dos contadores de desastres do jogo base. Não se preenchem lacunas anteriores.</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>Postos avançados ativos do jogador (gravação)</RWS_Metric_OutpostsActive>
@@ -981,7 +980,7 @@
   <RWS_Tab_Coverage>Estado da recolha</RWS_Tab_Coverage>
   <RWS_Status_Summary>Medidas {0} · Parciais {1} · Em falta {2} · N/A {3} · Experimentais {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>{0} estatísticas atingiram o limite de IDs de eventos do SDK ({1}). Eventos posteriores não são contados, portanto os totais são parciais.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>Um valor registado não significa que a sua precisão tenha sido verificada num jogo real.</RWS_Status_Caution>
+  <RWS_Status_Caution>Um valor registado não garante verificação num jogo real.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>Todos os estados de verificação</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Experimental</RWS_Status_Experimental>
   <RWS_Status_Legacy>Registo antigo</RWS_Status_Legacy>
@@ -1099,15 +1098,15 @@
   <RWS_VreAndroid_Awakenings>Despertares naturais de androides VRE</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androides do jogador com corpo sintético que despertaram naturalmente pela verificação genética baseada no humor. Despertar por ferramentas de desenvolvimento, configuração inicial e androides já despertos não contam. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializações VSE escolhidas</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Novas especializações escolhidas por colonos do jogador no painel normal, por ExpertiseDef. Desbloqueios de depuração e registos restaurados não contam.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>Novas especializações escolhidas por colonos do jogador no painel normal, por especialização. Desbloqueios de depuração e registos restaurados não contam.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>Níveis de especialização VSE obtidos</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes dos níveis de especialização VSE após a ativação do registo, somados entre todas as colónias independentes, por ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes dos níveis de especialização VSE após a ativação do registo, somados entre todas as colónias independentes, por especialização.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>Maior nível de especialização VSE alcançado</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Maior nível de especialização realmente alcançado através da experiência entre colónias independentes; não é uma soma de níveis nem um instantâneo do último jogo guardado.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Lotes processados em Vanilla Cooking Expanded</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Lotes concluídos de sopa, queijo e outros processos VEF de Vanilla Cooking Expanded, por ProcessDef. O fabrico normal por ordens e as saídas parcialmente bloqueadas não contam.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Lotes concluídos de sopa, queijo e outros processos VEF de Vanilla Cooking Expanded, por processo. O fabrico normal por ordens e as saídas parcialmente bloqueadas não contam.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Lotes de fermentação e maturação em Vanilla Brewing Expanded</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentação, produção de cerveja e maturação de Vanilla Brewing Expanded concluídos, por ProcessDef. Saídas pausadas, bloqueadas ou inacabadas e fabrico normal por ordens não contam.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentação, produção de cerveja e maturação de Vanilla Brewing Expanded concluídos, por processo. Saídas pausadas, bloqueadas ou inacabadas e fabrico normal por ordens não contam.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Prata de refeições de clientes Gastronomy</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Prata realmente paga por clientes que não pertencem ao jogador por refeições num restaurante deste. Os pagamentos parciais somam apenas o valor pago; dívidas, refeições gratuitas e negócios sem relação não contam.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>Drones VQE Drone Factory montados</RWS_VqeDrones_Assembled>
@@ -1117,31 +1116,31 @@
   <RWS_VceDeepchem_StoredUnits>Deepchem Vanilla Chemfuel Expanded armazenado em tubagens</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem realmente recebido no armazenamento das tubagens a partir de bombas extratoras do jogador, incluindo frações, medido quando a rede confirma o armazenamento. Produção prevista, saída no chão e armazenamento bloqueado não contam.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>DNA extraído em Vanilla Genetics Expanded</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>Artigos de DNA realmente colocados ou incorporados em pilhas por extrações bem-sucedidas do jogador, por ThingDef de saída. Alvos inválidos, falhas de colocação, cargas gastas sem produto e outras criações híbridas não contam.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VgeExtraction_ItemsPlacedDesc>Artigos de DNA realmente colocados ou incorporados em pilhas por extrações bem-sucedidas do jogador, por tipo de saída. Alvos inválidos, falhas de colocação, cargas gastas sem produto e outras criações híbridas não contam.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>Mistura nutritiva VNPE armazenada nas tubagens</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Mistura nutritiva realmente recebida na rede de tubagens pelos trituradores do jogador de Vanilla Nutrient Paste Expanded, incluindo frações. Tentativas de trituração, ingredientes gastos sem mistura aceite e armazenamento nas tubagens por outros edifícios não contam.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Mel colhido em VFE Medieval 2</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>Mel realmente colocado ou incorporado em pilhas depois de um colono do jogador ter esvaziado um apiário Medieval 2 seu, por ThingDef de saída. O apiário estar apenas pronto, falhas de colocação e transporte posterior não contam.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Mel realmente colocado ou incorporado em pilhas depois de um colono do jogador ter esvaziado um apiário Medieval 2 seu, por tipo de saída. O apiário estar apenas pronto, falhas de colocação e transporte posterior não contam.</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>Projéteis de artilharia fora do mapa VFE Security recebidos</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>Projéteis de artilharia fora do mapa do jogador que chegaram ao mapa-alvo e realmente surgiram nele como projéteis, por tipo. Ordens de mira, projéteis em trânsito e disparos que não geraram projétil não contam. Não mede os acertos.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>Colheita de Autofarmers VFE Factory</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>Artigos recém-colhidos por Autofarmers do jogador, contando aumentos reais da reserva temporária de colheita e colocação confirmada no solo, por ThingDef de saída. Descarregamento posterior em funis, colocação rejeitada e colheita normal por peões não contam.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_HarvestedDesc>Artigos recém-colhidos por Autofarmers do jogador, contando aumentos reais da reserva temporária de colheita e colocação confirmada no solo, por tipo de saída. Descarregamento posterior em funis, colocação rejeitada e colheita normal por peões não contam.</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>Plantas semeadas por Autofarmers VFE Factory</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>Plantas novas realmente geradas, marcadas como semeadas e correspondentes ao cultivo escolhido durante o ciclo de trabalho de um Autofarmer do jogador, por ThingDef da planta. Ciclos malsucedidos e plantas existentes não contam.</RWS_VfeFactory_SownDesc>
+  <RWS_VfeFactory_SownDesc>Plantas novas realmente geradas, marcadas como semeadas e correspondentes ao cultivo escolhido durante o ciclo de trabalho de um Autofarmer do jogador, por tipo de planta. Ciclos malsucedidos e plantas existentes não contam.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>Instalações de warcasket VFE Pirates concluídas</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Instalações de warcasket do jogador concluídas por soldadura normal, confirmadas quando o projeto termina e as três peças correspondentes são vestidas pela primeira vez, por Def de armadura. Trabalhos inacabados, conjunto parcialmente equipado e conclusão por ferramentas de desenvolvimento não contam.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>Instalações de warcasket do jogador concluídas por soldadura normal, confirmadas quando o projeto termina e as três peças correspondentes são vestidas pela primeira vez, por tipo de armadura. Trabalhos inacabados, conjunto parcialmente equipado e conclusão por ferramentas de desenvolvimento não contam.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>Rejeições de injeção VQE Ancients</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Resultados do injetor de arcogenes do jogador em que o ocupante rejeitou a injeção, foi libertado vivo e entrou em coma de injeção. Trabalho cancelado, resultado escolhido mas não concluído e escolhas de genes pendentes após um sucesso não contam. Requer Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>Transformações mutantes VQE Ancients</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>Resultados de mutação do injetor de arcogenes do jogador que destroem o peão original e geram um mutante do jogador da PawnKindDef escolhida, por tipo de mutante. Outras gerações, cancelamentos e escolhas pendentes após sucesso não contam. Requer Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>Resultados de mutação do injetor de arcogenes do jogador que destroem o peão original e geram um mutante do jogador do tipo escolhido, por tipo de mutante. Outras gerações, cancelamentos e escolhas pendentes após sucesso não contam. Requer Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>Alvos de recompensa VFE Settlers entregues</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Criminosos procurados ou seus corpos efetivamente entregues e removidos de uma caravana do jogador após o recebimento de recompensa positiva em prata. Só abrir o comando, alvos ausentes, transferências fracassadas e pertences sem relação não contam.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>Prata recebida em recompensas VFE Settlers</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>Prata realmente adicionada à caravana do jogador no primeiro pagamento de uma recompensa por entrega VFE Settlers bem-sucedida. Artigos do criminoso, inclusive prata entre eles, não são incluídos.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Subprodutos de reprocessamento Dubs Rimatomics</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>Artigos realmente colocados ou incorporados em pilhas como subprodutos quando um processador de plutónio do jogador termina de descarregar combustível, por ThingDef de saída. Combustível gasto devolvido, material apenas processado e colocações sem relação não contam.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_Rimatomics_ByproductsDesc>Artigos realmente colocados ou incorporados em pilhas como subprodutos quando um processador de plutónio do jogador termina de descarregar combustível, por tipo de saída. Combustível gasto devolvido, material apenas processado e colocações sem relação não contam.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Cartuchos disparados em Combat Extended</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Cartuchos efetivamente retirados de carregadores de armas de colonos do jogador, ou gastos disparando diretamente do inventário, por AmmoDef. Movimentação de munição ao recarregar, disparos sem munição, uso de torretas e reposições por depuração não contam.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>Cartuchos efetivamente retirados de carregadores de armas de colonos do jogador, ou gastos disparando diretamente do inventário, por tipo de munição. Movimentação de munição ao recarregar, disparos sem munição, uso de torretas e reposições por depuração não contam.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Vezes que colonos receberam supressão em Combat Extended</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Vezes em que um peão da colónia do jogador passou de não suprimido para suprimido em Combat Extended. Supressão adicional enquanto já estava suprimido e testes de desenvolvimento não contam. Mede supressão recebida, não a imposta aos inimigos.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>Contratos de contratação VFE Pirates</RWS_VfePirates_HireContracts>
@@ -1155,15 +1154,15 @@
   <RWS_PrisonExpanded_ParoleApproved>Liberdades condicionais Prison Expanded aprovadas</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Decisões de libertação em audiências de liberdade condicional que efetivamente encerraram uma pena já cumprida de um prisioneiro vivo ainda sob custódia do jogador, com a libertação ordenada. Só realizar a audiência, prorrogações, opções de recrutamento, escolhas repetidas e saída posterior do prisioneiro não contam.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Petróleo bruto extraído de campos Rimefeller (unidades do campo)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Redução real da capacidade de um campo petrolífero (CurrentCap) quando uma torre de extração do jogador bombeia com sucesso. As unidades são de capacidade do campo, NÃO volume das tubagens nem unidades de artigos. Avanço da perfuração, tentativas de bombagem, reposição natural do campo, transferências entre depósitos e saída da refinaria não contam.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Redução real da capacidade de um campo petrolífero quando uma torre de extração do jogador bombeia com sucesso. As unidades são de capacidade do campo, NÃO volume das tubagens nem unidades de artigos. Avanço da perfuração, tentativas de bombagem, reposição natural do campo, transferências entre depósitos e saída da refinaria não contam.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Sentenças cumpridas Prison Expanded</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>Penas de prisioneiros sob custódia do jogador que efetivamente atingiram a duração total em Prison Expanded e passaram a requerer uma audiência de liberdade condicional pela primeira vez. Aprovações de libertação, ordens de soltura, atualizações diárias repetidas e valores restaurados ao carregar não contam.</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prisioneiros Prison Expanded que realmente saíram</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisioneiros registados por Prison Expanded que saíram fisicamente de um mapa de base do jogador (Pawn.ExitMap bem-sucedido), em vez de apenas receberem uma ordem de libertação ou liberdade condicional. Qualquer saída real conta, independentemente da pena original.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisioneiros registados por Prison Expanded que saíram fisicamente de um mapa de base do jogador, em vez de apenas receberem uma ordem de libertação ou liberdade condicional. Qualquer saída real conta, independentemente da pena original.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Combustível consumido pela refinaria Rimefeller (unidades da tubagem)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>Redução real do combustível disponível na rede de tubagens (FuelAvailable) causada pelo processamento em refinarias Rimefeller do jogador, medida após o tick base do componente das tubagens. Combustível transferido para máquinas durante esse tick e consumo apenas previsto ou tentado não contam. Unidades de combustível da rede de tubagens.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>Redução real do combustível disponível na rede de tubagens causada pelo processamento em refinarias Rimefeller do jogador. Combustível transferido para máquinas e consumo apenas previsto ou tentado não contam. Unidades de combustível da rede de tubagens.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Combustível consumido pela central Rimefeller (unidades das tubagens)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>Redução real do combustível disponível na rede de tubagens (FuelAvailable) quando centrais elétricas Rimefeller do jogador retiram combustível com sucesso. Retiradas vazias ou falhadas não contam. Unidades de combustível das tubagens, não artigos.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsedDesc>Redução real do combustível disponível na rede de tubagens quando centrais elétricas Rimefeller do jogador retiram combustível com sucesso. Retiradas vazias ou falhadas não contam. Unidades de combustível das tubagens, não artigos.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>Combates de arena decididos</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>Combates na arena do jogador com vencedor registado oficialmente.</RWS_NewMod_ArenaDesc>
   <RWS_NewMod_Roads>Trechos de estrada construídos ou melhorados</RWS_NewMod_Roads>
@@ -1219,23 +1218,23 @@
   <RWS_NewMod_VendingSilver>Prata recebida por máquinas de venda automática</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Prata realmente transferida por visitantes para máquinas de venda automática do jogador, por tipo de máquina.</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>Gráfico: {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>Clique para abrir um gráfico desta estatística.</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>Clique para ver o gráfico</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>Por colónia</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>Por categoria</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Por categoria ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Clique numa colónia para ver o seu histórico.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Selecione uma colónia para ver o histórico</RWS_Chart_ColonyNote>
   <RWS_Chart_HistoryRecord>Valor de comparação da colónia: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Não há histórico disponível para esta estatística.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Existe apenas um registo. Passe o cursor sobre o ponto para ver o valor.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Registos das gravações por dia de jogo. Só são ligadas as gravações cuja gravação-mãe é comprovada pelos pontos de controlo incorporados.</RWS_Chart_HistorySaves>
-  <RWS_Chart_HistoryLineage>Pontos de controlo do ramo selecionado. As lacunas indicam registos em falta.</RWS_Chart_HistoryLineage>
-  <RWS_Chart_HistoryWealth>Maior aumento de riqueza em 15 dias observado até cada data nesta gravação.</RWS_Chart_HistoryWealth>
-  <RWS_Chart_BreakdownNote>Categorias registadas da estatística selecionada. Não é um gráfico de evolução ao longo do tempo.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_HistorySaves>Valores das gravações. Só as de continuidade comprovada são ligadas.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Registos do ramo selecionado. Lacunas indicam valores em falta.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Maior aumento de riqueza em 15 dias registado até cada data.</RWS_Chart_HistoryWealth>
+  <RWS_Chart_BreakdownNote>Detalhe registado (não é evolução temporal).</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Existe apenas um valor combinado para esta estatística.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Valores apresentados: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Não há valores medidos para apresentar no gráfico.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Adicionar colónia…</RWS_Chart_AddColony>
-  <RWS_Chart_GameRecorder>Observações por dia de jogo. As lacunas indicam registos em falta.</RWS_Chart_GameRecorder>
+  <RWS_Chart_GameRecorder>Valores por dia de jogo. Lacunas indicam valores em falta.</RWS_Chart_GameRecorder>
   <RWS_Chart_LegendUnlinked>Os pontos vazados são gravações cuja relação com registos anteriores não pode ser comprovada (outro ramo, ou gravação antiga sem pontos de controlo).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Não é possível comprovar a relação com registos anteriores.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ramo que continua o registo do dia {0}; os pontos intermédios pertencem a outro ramo.</RWS_Chart_PointBranch>
@@ -1243,7 +1242,7 @@
   <RWS_Chart_PointSavedLater>Este registo também estava, sem alterações, numa gravação do dia {0}; essa gravação não registou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>registado de outra forma; não sobreposto</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} registos ({1} parciais); {2} pontos sem valor</RWS_Chart_PointCounts>
-  <RWS_Chart_LastCapture>As estatísticas foram registadas pela última vez no dia {0}. A gravação mais avançada da colónia é do dia {1}, mas nada mais recente foi registado (essa gravação pode pertencer a outro ramo).</RWS_Chart_LastCapture>
+  <RWS_Chart_LastCapture>Último registo: dia {0} / Gravação mais avançada: dia {1} (pode ser outro ramo)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Valor registado</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Registo parcial</RWS_Chart_LegendPartial>
   <RWS_Chart_LegendUnlinkedShort>Relação não comprovada</RWS_Chart_LegendUnlinkedShort>

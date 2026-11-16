@@ -148,15 +148,14 @@
   <RWS_Details_NoMatch>일치하는 항목이 없습니다.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>최다 분류를 하나로 정할 수 없음</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>해당하는 정착지가 없습니다.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>이 통계에 기록된 데이터가 없습니다.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilityMissing>기록 없음</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>미달성</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(알 수 없음)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>출처: {0} / 상태: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>게임 내 {0}일 시점의 관측입니다.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>측정 시작: 게임 시작</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>저장한 시점의 상태입니다.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Through>기록일: {0}일</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>게임 시작부터 기록</RWS_Details_Tip_StartGame>
   <RWS_Details_Tip_Observations>이 정착지의 관측: {0}건</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>정착지 {0}곳 중 {1}곳에서 값이 있습니다.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Colonies>기록 있음: {1}/{0}개 정착지</RWS_Details_Tip_Colonies>
   <RWS_Details_Tip_Holder>기록 보유: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>표본 수: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>분자 {0} ÷ 분모 {1}</RWS_Details_Tip_Ratio>
@@ -256,7 +255,7 @@
   <RWS_Metric_QuestSuccessRate>임무 성공률 (저장 파일에 남음)</RWS_Metric_QuestSuccessRate>
   <RWS_MetricDesc_QuestSuccessRate>성공 ÷ (성공 + 실패)입니다. 모든 정착지를 합산할 때는 분자와 분모를 각각 합산한 뒤 나눕니다.</RWS_MetricDesc_QuestSuccessRate>
   <RWS_Metric_QuestSuccessByRoot>유형별 성공한 임무 (저장 파일에 남음)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>성공한 임무를 임무 유형(Def 이름)별로 집계합니다. 클릭하면 내역을 표시합니다.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>성공한 임무를 임무 유형별로 집계합니다. 클릭하면 내역을 표시합니다.</RWS_MetricDesc_QuestSuccessByRoot>
   <RWS_Metric_QuestExpired>기한이 지난 임무 제안 (저장 파일에 남음)</RWS_Metric_QuestExpired>
   <RWS_MetricDesc_QuestExpired>수락하지 않은 채 기한이 지났으며 저장 파일에 아직 남아 있는 임무 제안 수입니다.</RWS_MetricDesc_QuestExpired>
   <RWS_Metric_QuestAccepted>수락한 임무 (저장 파일에 남음)</RWS_Metric_QuestAccepted>
@@ -342,11 +341,11 @@
   <RWS_Metric_MentalBreaks>정신이상 발생 수</RWS_Metric_MentalBreaks>
   <RWS_MetricDesc_MentalBreaks>자유 정착민이 기분 때문에 겪은 정신이상 횟수입니다. 약물, 유전자, 초능력 또는 개발 도구로 인한 정신이상은 집계하지 않습니다.</RWS_MetricDesc_MentalBreaks>
   <RWS_Metric_MentalBreaksByDef>유형별 정신이상</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>위 정신이상을 유형(MentalBreakDef)별로 집계합니다.</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>위 정신이상을 유형별로 집계합니다.</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>영감 발생 수</RWS_Metric_Inspirations>
   <RWS_MetricDesc_Inspirations>자유 정착민에게 실제로 영감이 시작된 횟수입니다. 실패한 시도, 이미 영감을 얻은 폰, 개발 도구로 인한 영감은 집계하지 않습니다.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>유형별 영감</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>위 영감을 유형(InspirationDef)별로 집계합니다.</RWS_MetricDesc_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>위 영감을 유형별로 집계합니다.</RWS_MetricDesc_InspirationsByDef>
   <RWS_Metric_HostileKills>처치한 적</RWS_Metric_HostileKills>
   <RWS_MetricDesc_HostileKills>죽기 직전 플레이어와 적대 관계였으며 피해 기록에 따라 플레이어 측(정착민, 포탑, 함정, 동물, 메카노이드)이 죽인 것으로 확인된 폰의 사망 수입니다. 가해자를 판별할 수 없는 사망은 집계하지 않습니다.</RWS_MetricDesc_HostileKills>
   <RWS_Metric_KillsPerPawnMax>정착민 한 명의 최대 처치 수</RWS_Metric_KillsPerPawnMax>
@@ -372,7 +371,7 @@
   <RWS_Metric_PlayerMechKills>플레이어 메카노이드 처치 수</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>공격자가 플레이어의 메카노이드였던 적 처치 수입니다(Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>원인별 정착민 사망</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>자유 정착민의 사망을 사망 원인이 된 건강 상태(hediff) 또는 치명적인 피해 유형별로 분류합니다. 둘 다 알 수 없으면 “(알 수 없음)” 항목에 표시합니다.</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>자유 정착민의 사망을 사망 원인이 된 건강 상태 또는 치명적인 피해 유형별로 분류합니다. 둘 다 알 수 없으면 “(알 수 없음)” 항목에 표시합니다.</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>습격으로 인한 정착민 사망</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>자유 정착민의 사망을 습격자에 의한 사망, 그 밖의 원인이 확인된 사망, “(알 수 없음)”으로 나눕니다. 습격을 기록하지 않는 동안 발생한 사망은 “(알 수 없음)”으로 분류합니다.</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>질병으로 사망한 정착민</RWS_Metric_DiseaseDeaths>
@@ -400,9 +399,9 @@
   <RWS_Metric_SocialFightDowns>말다툼으로 쓰러짐</RWS_Metric_SocialFightDowns>
   <RWS_MetricDesc_SocialFightDowns>말다툼 상대방에게 직접 쓰러진 자유 정착민 수입니다.</RWS_MetricDesc_SocialFightDowns>
   <RWS_Metric_RaidsByArrivalMode>도착 방식별 습격</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>성공적으로 발생한 적의 습격을 도착 방식(PawnsArrivalModeDef)별로 집계합니다. 합계는 습격 횟수입니다.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>성공적으로 발생한 적의 습격을 도착 방식별로 집계합니다. 합계는 습격 횟수입니다.</RWS_MetricDesc_RaidsByArrivalMode>
   <RWS_Metric_RaidsByFaction>세력별 습격</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>성공적으로 발생한 적의 습격을 공격한 세력의 Def(FactionDef)별로 집계합니다.</RWS_MetricDesc_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>성공적으로 발생한 적의 습격을 공격한 세력별로 집계합니다.</RWS_MetricDesc_RaidsByFaction>
   <RWS_Metric_RaidPawnsMax>최대 규모 습격 (폰 수)</RWS_Metric_RaidPawnsMax>
   <RWS_MetricDesc_RaidPawnsMax>성공적으로 발생한 습격 한 번에 생성된 적 폰의 최대 수입니다. 습격 점수는 따로 표시합니다.</RWS_MetricDesc_RaidPawnsMax>
   <RWS_Metric_RaidPointsMax>최고 습격 점수</RWS_Metric_RaidPointsMax>
@@ -510,9 +509,9 @@
   <RWS_Metric_Sculptures>완성한 예술품 수</RWS_Metric_Sculptures>
   <RWS_MetricDesc_Sculptures>제작품 중 조각품 등 예술품으로 분류되는 아이템 수입니다.</RWS_MetricDesc_Sculptures>
   <RWS_Metric_MealsByDef>유형별 요리한 식사</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>제작품 중 완성한 식사를 종류(ThingDef)별로 집계합니다.</RWS_MetricDesc_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>제작품 중 완성한 식사를 종류별로 집계합니다.</RWS_MetricDesc_MealsByDef>
   <RWS_Metric_UniqueCraftedDefs>제작한 아이템의 종류 수</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>한 번 이상 제작한 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>한 번 이상 제작한 아이템 종류의 수입니다.</RWS_MetricDesc_UniqueCraftedDefs>
   <RWS_Metric_CraftDailyPeak>하루 최다 제작 수</RWS_Metric_CraftDailyPeak>
   <RWS_MetricDesc_CraftDailyPeak>게임 내 하루 동안 제작한 최대 아이템 수입니다. 시작부터 끝까지 기록한 날짜만 집계합니다.</RWS_MetricDesc_CraftDailyPeak>
   <RWS_Metric_BestCrafter>제작을 가장 많이 한 폰</RWS_Metric_BestCrafter>
@@ -522,7 +521,7 @@
   <RWS_Metric_HarvestUnits>수확한 작물 수</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>플레이어 측 폰이 수확한 주생산물의 중첩 수량입니다. 추가 산출물은 제외합니다.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>작물별 수확량</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>수확량을 원래 작물(식물 ThingDef)별로 집계합니다. 작물을 알 수 없으면 “(알 수 없음)”으로 표시합니다.</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>수확량을 원래 작물별로 집계합니다. 작물을 알 수 없으면 “(알 수 없음)”으로 표시합니다.</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>가장 많이 수확한 작물</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>수확량이 가장 많은 작물의 종류와 수확량입니다.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>연간 최대 수확량</RWS_Metric_HarvestYearPeak>
@@ -542,7 +541,7 @@
   <RWS_Metric_Constructions>완성한 건축물 수</RWS_Metric_Constructions>
   <RWS_MetricDesc_Constructions>플레이어의 건축 중인 뼈대가 완성되어 건물이 된 수입니다. 재설치 및 설계도는 제외합니다.</RWS_MetricDesc_Constructions>
   <RWS_Metric_ConstructionMaterials>건설에 사용한 자재</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>완성된 건축 뼈대에 포함된 자재를 종류(ThingDef)별로 표시합니다. 서로 다른 자재를 합산하지 않습니다.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>완성된 건축 뼈대에 포함된 자재를 종류별로 표시합니다. 서로 다른 자재를 합산하지 않습니다.</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>건설을 가장 많이 한 폰</RWS_Metric_BestBuilder>
   <RWS_MetricDesc_BestBuilder>건축을 가장 많이 완성한 폰의 완료 수입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestBuilder>
   <RWS_Metric_ConstructionFailures>건설 실패 수</RWS_Metric_ConstructionFailures>
@@ -584,9 +583,9 @@
   <RWS_Metric_TradeTopBought>가장 많이 구매한 아이템</RWS_Metric_TradeTopBought>
   <RWS_MetricDesc_TradeTopBought>가장 많이 구매한 아이템 종류 및 구매 수량입니다.</RWS_MetricDesc_TradeTopBought>
   <RWS_Metric_TradeSoldDefs>판매한 아이템의 종류 수</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>판매한 비화폐 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>판매한 비화폐 아이템 종류의 수입니다.</RWS_MetricDesc_TradeSoldDefs>
   <RWS_Metric_TradeBoughtDefs>구매한 아이템의 종류 수</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>구매한 비화폐 아이템 종류(ThingDef)의 수입니다.</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>구매한 비화폐 아이템 종류의 수입니다.</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>거래한 세력 종류 수</RWS_Metric_TradePartnerFactionDefs>
   <RWS_MetricDesc_TradePartnerFactionDefs>거래한 적이 있는 알려진 세력 종류의 수입니다. 세력이 없는 상대는 “(알 수 없음)”으로 따로 표시합니다.</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>선물로 얻은 우호도</RWS_Metric_GiftGoodwill>
@@ -702,7 +701,7 @@
   <RWS_Metric_AncientDangersOpened>개방한 고대 위험 수</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>플레이어 정착지 지도에서 내부를 개방한 봉인된 고대 사당(고대 위험)의 수입니다. 사당당 한 번만 집계합니다. 게임이 발견했다고 판단하는 시점, 즉 사당 중심의 안개가 걷힌 때 집계합니다. 다른 벽 파괴나 적 출현은 집계하지 않습니다.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>시작 지형</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>게임 시작 타일의 지형(DefName)이며 절대 바뀌지 않습니다. 현재 정착지 지형은 사용하지 않으며, 세계 지도 타일을 확인할 수 없으면 알 수 없음으로 표시합니다.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>게임 시작 타일의 지형이며 절대 바뀌지 않습니다. 현재 정착지 지형은 사용하지 않으며, 세계 지도 타일을 확인할 수 없으면 알 수 없음으로 표시합니다.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>완료된 연구 과제 수</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>마지막으로 저장에 성공한 시점에 완료되어 있는 연구 과제 수입니다.</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>연구 완료율</RWS_Metric_ResearchSnapshotFinishedRate>
@@ -792,7 +791,7 @@
   <RWS_Metric_IdeologyConversions>완료된 개종 수</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>플레이어 측 폰이 기존 사상에서 다른 사상으로 실제로 바뀐 횟수입니다. 폰 생성 시 지정된 사상은 포함하지 않습니다.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>최종 결과별 행사 수</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>확인된 Ideology 행사를 최종 결과(Def)별로 나눕니다. 중단된 행사는 별도로 집계합니다.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>확인된 Ideology 행사를 최종 결과별로 나눕니다. 중단된 행사는 별도로 집계합니다.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>행사 성공률</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>확인된 성공 행사 수 ÷ 성공 또는 실패로 분류된 행사 수입니다. 중단된 행사는 제외합니다.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>평균 개종 소요일</RWS_Metric_IdeologyConversionDays>
@@ -833,7 +832,7 @@
   <RWS_Exp_ExperimentalRow>실험적</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>게임 내 {0}일째부터 기록</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>필요한 MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>출처 MOD: {0} (제공자: {1})</RWS_Mod_Provider>
+  <RWS_Mod_Provider>출처 MOD: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>출처 모드가 현재 설치되어 있지 않습니다. 기록된 값은 유지되지만 새 값은 기록하지 않습니다.</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>시작한 모집 요청 수</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>기록 시작 후 성공적으로 생성된 Recruitment 1.1.2 모집 요청 수입니다. 기록 활성화 전 기간은 일부만 포함합니다. 생성 후 취소한 요청도 시작된 것으로 셉니다.</RWS_ModRecruitment_StartedDesc>
@@ -864,15 +863,15 @@
   <RWS_Metric_MealIngestions>먹은 식사 수</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>플레이어 세력의 인간형 폰이 실제로 먹고 영양을 얻은 식사의 수입니다. 상단에서 먹은 식사를 포함하여 한 끼당 한 번 집계합니다. 다른 음식, 약물, 비플레이어 폰은 제외합니다.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>저장 칸으로 운반한 횟수</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>플레이어 운반 작업(HaulToCell)이 지정한 칸에 실제로 화물을 내려놓은 횟수입니다. 일부만 포함합니다. 용기에 넣거나 모드 고유 방식으로 운반하는 경우는 제외하며, 물건을 집어 들기만 해서는 집계하지 않습니다.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>플레이어 운반 작업이 지정한 칸에 실제로 화물을 내려놓은 횟수입니다. 일부만 포함합니다. 용기에 넣거나 모드 고유 방식으로 운반하는 경우는 제외하며, 물건을 집어 들기만 해서는 집계하지 않습니다.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>저장 칸으로 운반한 아이템 수</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>플레이어 운반 작업(HaulToCell)으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>플레이어 운반 작업으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>완료한 청소 작업 수</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>오염물을 한 개 이상 완전히 제거하고 정상적으로 끝난 플레이어 청소 작업 수입니다. 한 작업에서 여러 오염물을 치워도 한 번만 셉니다. 중단된 작업은 제외합니다.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>벌목으로 얻은 목재 (주생산물)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>플레이어 폰이 나무를 벤 후 주생산물 목재가 실제로 놓이거나 다른 묶음에 합쳐진 수량입니다(게임에서 놓을 때 측정). 일부만 집계하며 일부 모드의 추가 목재나 비표준 벌목 방법은 제외합니다.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>도축 후 해체한 동물</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>플레이어 폰이 도축한 동물의 시체가 나중에 완료된 기본 게임 해체 작업 지시(ButcherCorpseFlesh)로 소모된 수입니다. 같은 시체를 저장 파일 사이에서도 추적합니다. 사냥한 동물, 야생에서 죽은 동물, 적 시체는 포함하지 않습니다. 모드 해체 조리법과 일부 시체 소멸 경로는 인식하지 못하므로 일부만 집계합니다.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>플레이어 폰이 도축한 동물의 시체가 나중에 완료된 기본 게임 해체 작업 지시로 소모된 수입니다. 같은 시체를 저장 파일 사이에서도 추적합니다. 사냥한 동물, 야생에서 죽은 동물, 적 시체는 포함하지 않습니다. 모드 해체 조리법과 일부 시체 소멸 경로는 인식하지 못하므로 일부만 집계합니다.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>값이 가장 큰 정착지: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>값이 가장 작은 정착지: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>모든 정착지에서 가장 많은 아이템: {0}</RWS_Cross_TopType>
@@ -886,7 +885,7 @@
   <RWS_Cross_Sum>정착지별 저장 시점 합계: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>각 정착지의 기록 시점 값을 합산합니다.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: 도착한 손님 그룹 (활성화 후)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에 도착한 것으로 확인된 Hospitality 손님 그룹 수입니다. 구조된 손님을 위해 만든 대체 그룹은 제외합니다. 다시 불러온 뒤 중복 사건은 사건 ID로 걸러 냅니다. 모드 설치 전 방문은 추정하지 않습니다.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGroupsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에 도착한 것으로 확인된 Hospitality 손님 그룹 수입니다. 구조된 손님을 위해 만든 대체 그룹은 제외합니다. 다시 불러온 뒤 중복 기록은 걸러 냅니다. 모드 설치 전 방문은 추정하지 않습니다.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: 손님 도착 인원 (활성화 후)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>이 통계를 활성화한 후 도착이 확인된 Hospitality 그룹의 손님 인원 합계입니다. 재방문도 다시 집계하므로 서로 다른 사람 수나 현재 손님 수가 아닙니다. 그 이전 방문은 알 수 없습니다.</RWS_Hospitality_VisitGuestsDesc>
   <RWS_Hospitality_VisitsCompleted>Hospitality: 평화롭게 떠난 그룹 (활성화 후)</RWS_Hospitality_VisitsCompleted>
@@ -904,7 +903,7 @@
   <RWS_Hospitality_AssignedBeds>Hospitality: 저장 시 손님에게 배정된 침대</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머무는 Hospitality 손님에게 배정된 고유 손님용 침대 수입니다. 함께 쓰는 침대는 한 번만 셉니다. 실제로 자는 인원이나 누적 숙박 예약 수가 아닌 침대 배정 수입니다.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>시작한 Recruitment 모집 요청 (활성화 후)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>이 통계를 활성화한 후 확인된 Recruitment 모집 요청 수입니다. 사건 중복 제거와 체크포인트 처리 방식이 달라졌으므로 이전에 내장된 통계와 별도의 계열로 표시합니다.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_StartedDesc>이 통계를 활성화한 후 확인된 Recruitment 모집 요청 수입니다. 추적 방식이 달라졌으므로 이전에 내장된 통계와 별도의 계열로 표시합니다.</RWS_AddonRecruitment_StartedDesc>
   <RWS_AddonRecruitment_SilverSpent>Recruitment: 요청에 지불한 은 (활성화 후)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>이 통계를 활성화한 후 새 Recruitment 요청을 생성할 때 실제로 지불했다고 확인된 은의 총량입니다. 추가 수수료를 포함하지만 실패한 시도는 제외하며 순자산 변화를 뜻하지 않습니다.</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment: 예정 지원자 수 (활성화 후)</RWS_AddonRecruitment_PlannedApplicants>
@@ -918,7 +917,7 @@
   <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: 지하수 공급 용량 (L/일)</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>저장에 성공한 시점에 사용 중인 각 독립 배관망에 대해 Dubs Bad Hygiene에서 정의한 유입수 및 지하수 정격 공급 용량을 합산합니다(게임 내 일당 리터). 실제로 퍼 올린 수량이 아닙니다.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>자동 의복 교체 지시 횟수</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade가 실제로 지시한 기본 게임 착용(Wear) 작업의 횟수입니다. 의복 교체 완료 횟수가 아닙니다. 수집 활성화 이후의 사건만 집계합니다. 실험적 통계입니다.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade가 실제로 내린 자동 의복 착용 지시 횟수입니다. 의복 교체 완료 횟수가 아닙니다. 수집 활성화 이후의 사건만 집계합니다. 실험적 통계입니다.</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>유형별 성공한 MOD 사건</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>수집 활성화 후 플레이어 본거지 지도에서 성공한 비기본 게임 MOD 사건을 패키지 ID와 사건별로 집계합니다. 기본 게임 재해 집계와는 별개입니다. 누락된 과거 기록은 보완하지 않습니다.</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>활성 플레이어 전초기지 (저장 상태)</RWS_Metric_OutpostsActive>
@@ -981,7 +980,7 @@
   <RWS_Tab_Coverage>수집 상태</RWS_Tab_Coverage>
   <RWS_Status_Summary>측정 {0} · 부분 {1} · 없음 {2} · 해당 없음 {3} · 실험적 {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>{0}개 통계가 SDK 사건 ID 상한({1})에 도달했습니다. 이후 사건은 집계되지 않으므로 합계가 일부만 반영됩니다.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>기록된 값이 있어도 실제 게임에서 정확성이 검증된 것은 아닙니다.</RWS_Status_Caution>
+  <RWS_Status_Caution>기록값이 있어도 실제 게임 검증을 거쳤다는 뜻은 아닙니다.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>모든 검증 상태</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>실험적</RWS_Status_Experimental>
   <RWS_Status_Legacy>이전 기록</RWS_Status_Legacy>
@@ -1099,15 +1098,15 @@
   <RWS_VreAndroid_Awakenings>VRE Android 자연 각성 횟수</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>합성 신체를 가진 플레이어 소유 안드로이드가 기분에 따른 유전자 검사로 자연스럽게 각성한 횟수입니다. 개발자 도구로 직접 각성하거나 시작 시 설정, 이미 각성한 안드로이드는 제외합니다. Biotech가 필요합니다.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE 선택한 전문 기술</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>플레이어 정착민이 일반 전문 기술 창에서 새로 선택한 전문 기술 수이며 ExpertiseDef별로 집계합니다. 디버그 해금과 복원된 기록은 제외합니다.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>플레이어 정착민이 일반 전문 기술 창에서 새로 선택한 전문 기술 수이며 전문 기술별로 집계합니다. 디버그 해금과 복원된 기록은 제외합니다.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>VSE 전문 기술 레벨 상승량</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>기록 활성화 후 영구적으로 높아진 VSE 전문 기술 레벨의 합계이며 서로 독립된 모든 정착지를 합산하고 ExpertiseDef별로 나눕니다.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>기록 활성화 후 영구적으로 높아진 VSE 전문 기술 레벨의 합계이며 서로 독립된 모든 정착지를 합산하고 전문 기술별로 나눕니다.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE 최고 도달 전문 기술 레벨</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>서로 독립된 정착지 전체에서 경험을 통해 실제로 도달한 전문 기술 최고 레벨입니다. 레벨 총합이나 최신 저장 파일의 상태만 나타내는 값이 아닙니다.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Vanilla Cooking Expanded 가공 완료 묶음</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded에 속한 수프, 치즈 및 기타 VEF 가공 작업이 완료된 묶음 수이며 ProcessDef별로 집계합니다. 일반 제작 지시나 출력이 일부 막힌 경우는 제외합니다.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded에 속한 수프, 치즈 및 기타 VEF 가공 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일반 제작 지시나 출력이 일부 막힌 경우는 제외합니다.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded 발효 및 숙성 묶음</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded에 속한 VEF 발효, 양조 및 숙성 작업이 완료된 묶음 수이며 ProcessDef별로 집계합니다. 일시정지, 막힘, 미완료 출력 및 일반 제작 지시는 제외합니다.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded에 속한 VEF 발효, 양조 및 숙성 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일시정지, 막힘, 미완료 출력 및 일반 제작 지시는 제외합니다.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Gastronomy 손님 식사 대금</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>플레이어 식당에서 다른 세력 손님이 식사비로 실제 지불한 은입니다. 일부만 지불했다면 실제 금액만 더하며, 미지불 외상, 무료 식사 및 관련 없는 거래는 제외합니다.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory 조립한 드론</RWS_VqeDrones_Assembled>
@@ -1117,31 +1116,31 @@
   <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded 배관에 저장한 Deepchem</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>플레이어 소유 원유 펌프에서 배관 저장소로 실제 받아들여진 Deepchem의 양이며 소수도 포함합니다. 배관망에서 저장을 확인한 시점에 측정합니다. 예상 산출량, 땅에 떨어진 산출물 및 저장 실패는 제외합니다.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded 추출한 DNA</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>플레이어가 DNA 추출에 성공해 실제로 배치하거나 중첩에 합친 DNA 아이템 수이며 출력 ThingDef별로 집계합니다. 잘못된 대상, 배치 실패, 산출물 없이 소모한 사용 횟수 및 다른 잡종 생성은 제외합니다.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VgeExtraction_ItemsPlacedDesc>플레이어가 DNA 추출에 성공해 실제로 배치하거나 중첩에 합친 DNA 아이템 수이며 출력 아이템별로 집계합니다. 잘못된 대상, 배치 실패, 산출물 없이 소모한 사용 횟수 및 다른 잡종 생성은 제외합니다.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE 배관에 저장한 영양 슬러리</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>플레이어 소유 Vanilla Nutrient Paste Expanded 분쇄기에서 배관망으로 실제 받아들여진 영양 슬러리의 양입니다. 소수 단위도 포함합니다. 분쇄 시도, 슬러리를 받지 못한 재료 소비 및 다른 건물의 배관 저장은 제외합니다.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2 수확한 꿀 수</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>플레이어 정착민이 소유한 Medieval 2 벌통을 비운 뒤 실제로 배치하거나 중첩에 합친 꿀의 수량이며 출력 ThingDef별로 집계합니다. 수확 준비만 된 벌통, 배치 실패 및 이후 운반은 제외합니다.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>플레이어 정착민이 소유한 Medieval 2 벌통을 비운 뒤 실제로 배치하거나 중첩에 합친 꿀의 수량이며 출력 아이템별로 집계합니다. 수확 준비만 된 벌통, 배치 실패 및 이후 운반은 제외합니다.</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security 지도 밖 포탄 도착 횟수</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>플레이어의 지도 밖 포병이 쏜 포탄이 목표 지도에 도착해 실제 발사체로 생성된 수이며 발사체별로 집계합니다. 조준 명령, 이동 중인 포탄 및 발사체가 생성되지 않은 사격은 제외합니다. 명중 수가 아닙니다.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>VFE Factory 자동 농기계 수확량</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>플레이어 소유 Autofarmer가 새로 수확한 아이템 수입니다. 수확 버퍼의 실제 증가분과 지상 배치를 확인한 생산물을 출력 ThingDef별로 집계합니다. 나중에 호퍼로 내보낸 물품, 거부된 배치 및 폰의 일반 수확은 제외합니다.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_HarvestedDesc>플레이어 소유 Autofarmer가 새로 수확한 아이템 수입니다. 수확 버퍼의 실제 증가분과 지상 배치를 확인한 생산물을 출력 아이템별로 집계합니다. 나중에 호퍼로 내보낸 물품, 거부된 배치 및 폰의 일반 수확은 제외합니다.</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory 자동 농기계 파종 수</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>플레이어 소유 Autofarmer의 작업 주기 중 실제로 생성되어 파종된 것으로 표시되고 선택 작물과 일치하는 새 식물 수입니다. 식물 ThingDef별로 집계하며 실패한 주기와 기존 식물은 제외합니다.</RWS_VfeFactory_SownDesc>
+  <RWS_VfeFactory_SownDesc>플레이어 소유 Autofarmer의 작업 주기 중 실제로 생성되어 파종된 것으로 표시되고 선택 작물과 일치하는 새 식물 수입니다. 식물별로 집계하며 실패한 주기와 기존 식물은 제외합니다.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates 워캐스킷 장착 완료 횟수</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>일반 용접으로 완료한 플레이어 워캐스킷 장착 작업입니다. 프로젝트가 완료되고 일치하는 세 부위를 새로 착용한 경우에만 확인하며 방어구 Def별로 집계합니다. 미완료 작업, 일부만 착용한 세트 및 개발자 완료는 제외합니다.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>일반 용접으로 완료한 플레이어 워캐스킷 장착 작업입니다. 프로젝트가 완료되고 일치하는 세 부위를 새로 착용한 경우에만 확인하며 방어구 유형별로 집계합니다. 미완료 작업, 일부만 착용한 세트 및 개발자 완료는 제외합니다.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients 주입 거부 횟수</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>플레이어의 아르코진 주입기에서 폰이 주입을 거부하고 살아서 풀려나 주입 혼수에 빠진 결과의 수입니다. 취소한 작업, 선택했지만 완료되지 않은 결과, 성공 후 남은 유전자 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients 돌연변이 변신 횟수</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>플레이어 아르코진 주입기의 돌연변이 결과로 원래 폰이 사라지고 선택한 PawnKindDef의 플레이어 소유 돌연변이가 하나 생성된 횟수이며 돌연변이 종류별로 집계합니다. 다른 생성, 취소 및 성공 후 대기 중인 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>플레이어 아르코진 주입기의 돌연변이 결과로 원래 폰이 사라지고 선택한 종류의 플레이어 소유 돌연변이가 하나 생성된 횟수이며 돌연변이 종류별로 집계합니다. 다른 생성, 취소 및 성공 후 대기 중인 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>VFE Settlers 현상금 대상 인도 횟수</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>수배 범죄자나 시체를 플레이어 상단에서 실제로 인도하고 제거하면서 은 보상을 0보다 많이 받은 횟수입니다. 명령만 열거나 대상 없음, 인도 실패 및 관련 없는 소지품은 제외합니다.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers 받은 현상금 은</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>VFE Settlers 현상금 대상을 성공적으로 인도하고 첫 보상 지급으로 플레이어 상단에 실제 추가된 은입니다. 범죄자의 물품이나 그 안의 은은 포함하지 않습니다.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics 재처리 부산물</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>플레이어의 플루토늄 처리기가 연료 배출을 끝낼 때 부산물로 실제 배치하거나 중첩에 합친 아이템 수이며 출력 ThingDef별로 집계합니다. 되돌려준 사용 후 연료, 가공만 된 재료, 관계없는 배치는 제외합니다.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_Rimatomics_ByproductsDesc>플레이어의 플루토늄 처리기가 연료 배출을 끝낼 때 부산물로 실제 배치하거나 중첩에 합친 아이템 수이며 출력 아이템별로 집계합니다. 되돌려준 사용 후 연료, 가공만 된 재료, 관계없는 배치는 제외합니다.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Combat Extended 발사한 탄환 수</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>플레이어 정착민 무기 탄창에서 실제로 소모했거나 소지품에서 직접 발사해 소비한 탄환 수이며 AmmoDef별로 집계합니다. 재장전 중 탄약 이동, 탄약 없이 발사한 경우, 포탑 사용 및 디버그 탄약 보충은 제외합니다.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>플레이어 정착민 무기 탄창에서 실제로 소모했거나 소지품에서 직접 발사해 소비한 탄환 수이며 탄약 종류별로 집계합니다. 재장전 중 탄약 이동, 탄약 없이 발사한 경우, 포탑 사용 및 디버그 탄약 보충은 제외합니다.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended 정착민이 제압된 횟수</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>플레이어 정착지 폰이 Combat Extended에서 제압되지 않은 상태에서 제압 상태로 새로 진입한 횟수입니다. 이미 제압된 상태에서 추가로 받은 제압과 개발자 테스트 제압은 제외합니다. 적에게 가한 제압이 아니라 받은 제압입니다.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>VFE Pirates 고용 계약 체결 횟수</RWS_VfePirates_HireContracts>
@@ -1155,15 +1154,15 @@
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 가석방 승인 횟수</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>가석방 심사에서 플레이어가 구금 중인 살아 있는 수감자의 만료된 형기를 실제로 종료하고 석방 명령을 내린 결정의 수입니다. 심사만 개최한 경우, 형기 연장, 모집 선택지, 반복 결정 및 이후 실제 출소는 제외합니다.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller 유전 원유 추출량 (유전 단위)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>플레이어 소유 유정에서 성공적으로 원유를 퍼 올렸을 때 유전 용량(CurrentCap)이 실제 감소한 양입니다. 유전 용량 단위이며 배관 부피나 아이템 수가 아닙니다. 시추 진행, 펌프 시도, 유전 자연 회복, 탱크 간 이동 및 정유소 출력은 제외합니다.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>플레이어 소유 유정에서 성공적으로 원유를 퍼 올렸을 때 유전 용량이 실제 감소한 양입니다. 유전 용량 단위이며 배관 부피나 아이템 수가 아닙니다. 시추 진행, 펌프 시도, 유전 자연 회복, 탱크 간 이동 및 정유소 출력은 제외합니다.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded 형기 만료 횟수</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>플레이어가 구금한 수감자의 형기가 Prison Expanded에서 실제로 전체 기간에 도달해 처음으로 가석방 심사 대상이 된 횟수입니다. 가석방 승인, 석방 명령, 중복된 날짜 틱 및 불러올 때 복구한 값은 제외합니다.</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 실제 출소한 수감자 수</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded가 기록한 수감자가 플레이어 본거지 지도에서 실제로 나간 횟수(Pawn.ExitMap 성공)입니다. 석방이나 가석방 명령만 받은 경우는 제외합니다. 원래 형기와 관계없이 실제 나갔다면 집계합니다.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded가 기록한 수감자가 플레이어 본거지 지도에서 실제로 나간 횟수입니다. 석방이나 가석방 명령만 받은 경우는 제외합니다. 원래 형기와 관계없이 실제 나갔다면 집계합니다.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Rimefeller 정유 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>플레이어 소유 Rimefeller 정유 시설의 처리로 배관망에서 사용 가능한 연료(FuelAvailable)가 실제 감소한 양이며 배관 구성 요소의 기본 틱 이후 측정합니다. 해당 틱 중 현장 기계로 이동한 연료와 예정되거나 시도만 한 소비는 제외합니다. 배관망 연료 단위입니다.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>플레이어 소유 Rimefeller 정유 시설의 처리로 배관망에서 사용 가능한 연료가 실제 감소한 양입니다. 현장 기계로 이동한 연료와 예정되거나 시도만 한 소비는 제외합니다. 배관망 연료 단위입니다.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller 발전 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>플레이어 소유 Rimefeller 발전소에서 연료를 성공적으로 가져갈 때 배관망의 사용 가능한 연료(FuelAvailable)가 실제 감소한 양입니다. 빈 인출이나 실패한 인출은 제외합니다. 아이템 수가 아니라 배관망 연료 단위입니다.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsedDesc>플레이어 소유 Rimefeller 발전소에서 연료를 성공적으로 가져갈 때 배관망의 사용 가능한 연료가 실제 감소한 양입니다. 빈 인출이나 실패한 인출은 제외합니다. 아이템 수가 아니라 배관망 연료 단위입니다.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>승자가 결정된 투기장 경기</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>플레이어 투기장에서 공식 승자가 기록된 경기 수입니다.</RWS_NewMod_ArenaDesc>
   <RWS_NewMod_Roads>건설하거나 개량한 도로 구간</RWS_NewMod_Roads>
@@ -1219,23 +1218,23 @@
   <RWS_NewMod_VendingSilver>자판기가 받은 은</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>방문자가 플레이어 자판기에 실제로 지불한 은의 양이며 자판기 종류별로 집계합니다.</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>차트: {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>클릭하면 이 통계의 차트를 표시합니다.</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>클릭하여 차트 보기</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>정착지별</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>항목별</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>항목별 ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>정착지 행을 클릭하면 기록 추이를 볼 수 있습니다.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>정착지를 선택해 추이 보기</RWS_Chart_ColonyNote>
   <RWS_Chart_HistoryRecord>정착지 비교 값: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>이 통계에 대한 기록이 없습니다.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>기록이 한 점뿐입니다. 점에 마우스를 올리면 값을 볼 수 있습니다.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>게임 내 날짜별 저장 기록입니다. 내장된 체크포인트로 부모 저장이 확인된 저장만 선으로 잇습니다.</RWS_Chart_HistorySaves>
-  <RWS_Chart_HistoryLineage>선택한 저장 분기의 체크포인트입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_HistoryLineage>
-  <RWS_Chart_HistoryWealth>이 저장에서 각 시점까지 관측된 최대 15일 자산 증가량입니다.</RWS_Chart_HistoryWealth>
-  <RWS_Chart_BreakdownNote>선택한 통계의 기록된 내역 항목을 표시합니다. 시간 경과 그래프가 아닙니다.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_HistorySaves>저장 시점의 값입니다. 연속성이 확인된 기록만 선으로 잇습니다.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>선택한 분기의 기록입니다. 끊긴 곳은 누락입니다.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>각 시점까지 기록된 최대 15일 자산 증가량입니다.</RWS_Chart_HistoryWealth>
+  <RWS_Chart_BreakdownNote>기록된 내역(시간 추이 아님).</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>이 통계에는 합산된 값 하나만 있습니다.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>표시된 값: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>차트로 표시할 측정값이 없습니다.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>정착지 추가…</RWS_Chart_AddColony>
-  <RWS_Chart_GameRecorder>게임 내 날짜별 관측값입니다. 선이 끊긴 곳은 기록이 없는 구간입니다.</RWS_Chart_GameRecorder>
+  <RWS_Chart_GameRecorder>일수별 기록값입니다. 끊긴 곳은 누락입니다.</RWS_Chart_GameRecorder>
   <RWS_Chart_LegendUnlinked>속이 빈 점은 이전 기록과의 부모-자식 관계를 확인할 수 없는 저장입니다(다른 분기이거나 체크포인트가 없는 이전 저장 등).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>이전 기록과의 부모-자식 관계를 확인할 수 없습니다.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>{0}일 기록에서 이어지는 분기입니다. 그 사이의 점은 다른 분기의 기록입니다.</RWS_Chart_PointBranch>
@@ -1243,7 +1242,7 @@
   <RWS_Chart_PointSavedLater>이 기록은 {0}일 저장에도 그대로 들어 있었습니다. 그 저장에는 새로운 통계가 기록되지 않았습니다.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>기록 방식이 달라 겹쳐 표시할 수 없습니다</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>기록 {0}개(일부 기록 {1}개), 값이 없는 시점 {2}개</RWS_Chart_PointCounts>
-  <RWS_Chart_LastCapture>통계는 {0}일에 마지막으로 기록되었습니다. 이 정착지에서 가장 진행된 저장은 {1}일이지만 그 이후의 통계는 기록되지 않았습니다(다른 분기의 저장일 수도 있습니다).</RWS_Chart_LastCapture>
+  <RWS_Chart_LastCapture>마지막 기록: {0}일 / 가장 진행된 저장: {1}일 (다른 분기일 수 있음)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>기록값</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>일부 기록</RWS_Chart_LegendPartial>
   <RWS_Chart_LegendUnlinkedShort>관계 미확인</RWS_Chart_LegendUnlinkedShort>

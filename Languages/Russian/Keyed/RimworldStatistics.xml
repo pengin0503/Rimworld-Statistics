@@ -148,15 +148,14 @@
   <RWS_Details_NoMatch>Подходящих показателей нет.</RWS_Details_NoMatch>
   <RWS_Details_UnrankedTop>Нет единственной лидирующей категории</RWS_Details_UnrankedTop>
   <RWS_Details_AvailabilityNone>Нет подходящих колоний.</RWS_Details_AvailabilityNone>
-  <RWS_Details_AvailabilityMissing>Для этой статистики нет записанных данных.</RWS_Details_AvailabilityMissing>
+  <RWS_Details_AvailabilityMissing>Нет записей</RWS_Details_AvailabilityMissing>
   <RWS_Details_NotReached>Не достигнуто</RWS_Details_NotReached>
   <RWS_Details_UnknownBucket>(неизвестно)</RWS_Details_UnknownBucket>
   <RWS_Details_Tip_Source>Источник: {0} / состояние: {1}</RWS_Details_Tip_Source>
-  <RWS_Details_Tip_Through>Наблюдение на игровой день {0}.</RWS_Details_Tip_Through>
-  <RWS_Details_Tip_StartGame>Отсчёт: с начала игры</RWS_Details_Tip_StartGame>
-  <RWS_Details_Tip_StartSnapshot>Состояние на момент сохранения.</RWS_Details_Tip_StartSnapshot>
+  <RWS_Details_Tip_Through>Записано: день {0}</RWS_Details_Tip_Through>
+  <RWS_Details_Tip_StartGame>Запись с начала игры</RWS_Details_Tip_StartGame>
   <RWS_Details_Tip_Observations>Наблюдений этой колонии: {0}</RWS_Details_Tip_Observations>
-  <RWS_Details_Tip_Colonies>Известно для колоний: {1} из {0}.</RWS_Details_Tip_Colonies>
+  <RWS_Details_Tip_Colonies>Записано: {1}/{0} колоний</RWS_Details_Tip_Colonies>
   <RWS_Details_Tip_Holder>Рекордсмен: {0}</RWS_Details_Tip_Holder>
   <RWS_Details_Tip_Samples>Выборка: {0}</RWS_Details_Tip_Samples>
   <RWS_Details_Tip_Ratio>Числитель {0} ÷ знаменатель {1}</RWS_Details_Tip_Ratio>
@@ -256,7 +255,7 @@
   <RWS_Metric_QuestSuccessRate>Доля успешных заданий (сохранены)</RWS_Metric_QuestSuccessRate>
   <RWS_MetricDesc_QuestSuccessRate>Успехи ÷ (успехи + неудачи). По всем колониям суммы числителей делятся на суммы знаменателей.</RWS_MetricDesc_QuestSuccessRate>
   <RWS_Metric_QuestSuccessByRoot>Успешные задания по типам (сохранены)</RWS_Metric_QuestSuccessByRoot>
-  <RWS_MetricDesc_QuestSuccessByRoot>Успешные задания по типу (имя Def). Нажмите, чтобы открыть разбивку.</RWS_MetricDesc_QuestSuccessByRoot>
+  <RWS_MetricDesc_QuestSuccessByRoot>Успешные задания по типу. Нажмите, чтобы открыть разбивку.</RWS_MetricDesc_QuestSuccessByRoot>
   <RWS_Metric_QuestExpired>Просроченные предложения заданий (сохранены)</RWS_Metric_QuestExpired>
   <RWS_MetricDesc_QuestExpired>Предложения заданий, оставшиеся в сохранении после истечения срока без принятия.</RWS_MetricDesc_QuestExpired>
   <RWS_Metric_QuestAccepted>Принятые задания (сохранены)</RWS_Metric_QuestAccepted>
@@ -342,11 +341,11 @@
   <RWS_Metric_MentalBreaks>Нервные срывы</RWS_Metric_MentalBreaks>
   <RWS_MetricDesc_MentalBreaks>Нервные срывы свободных поселенцев, вызванные настроением. Срывы от наркотиков, генов, пси-способностей и инструментов разработчика не учитываются.</RWS_MetricDesc_MentalBreaks>
   <RWS_Metric_MentalBreaksByDef>Нервные срывы по типам</RWS_Metric_MentalBreaksByDef>
-  <RWS_MetricDesc_MentalBreaksByDef>Указанные выше нервные срывы по типу (MentalBreakDef).</RWS_MetricDesc_MentalBreaksByDef>
+  <RWS_MetricDesc_MentalBreaksByDef>Указанные выше нервные срывы по типу.</RWS_MetricDesc_MentalBreaksByDef>
   <RWS_Metric_Inspirations>Вдохновения</RWS_Metric_Inspirations>
   <RWS_MetricDesc_Inspirations>Вдохновения, действительно начавшиеся у свободных поселенцев. Неудачные попытки, уже вдохновлённые пешки и инструменты разработчика не учитываются.</RWS_MetricDesc_Inspirations>
   <RWS_Metric_InspirationsByDef>Вдохновения по типам</RWS_Metric_InspirationsByDef>
-  <RWS_MetricDesc_InspirationsByDef>Указанные выше вдохновения по типу (InspirationDef).</RWS_MetricDesc_InspirationsByDef>
+  <RWS_MetricDesc_InspirationsByDef>Указанные выше вдохновения по типу.</RWS_MetricDesc_InspirationsByDef>
   <RWS_Metric_HostileKills>Убитые враги</RWS_Metric_HostileKills>
   <RWS_MetricDesc_HostileKills>Смерти пешек, враждебных игроку непосредственно перед смертью, если запись об уроне связывает их гибель со стороной игрока (поселенцы, турели, ловушки, животные, механоиды). Смерти без известного виновника не учитываются.</RWS_MetricDesc_HostileKills>
   <RWS_Metric_KillsPerPawnMax>Максимум убийств одним поселенцем</RWS_Metric_KillsPerPawnMax>
@@ -372,7 +371,7 @@
   <RWS_Metric_PlayerMechKills>Убийства силами механоидов игрока</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Убийства врагов, в которых атакующим был механоид игрока (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Причины смерти поселенцев</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Смерти свободных поселенцев по вызвавшему их состоянию здоровья (hediff) либо виду смертельного урона. Если оба неизвестны, категория называется «(неизвестно)».</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Смерти свободных поселенцев по вызвавшему их состоянию здоровья либо виду смертельного урона. Если оба неизвестны, категория называется «(неизвестно)».</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Смерти поселенцев при налётах</RWS_Metric_DeathsByRaid>
   <RWS_MetricDesc_DeathsByRaid>Смерти свободных поселенцев по причинам: нападение участника налёта, другие известные причины и «(неизвестно)». Если налёты не записываются, смерти относятся к «(неизвестно)».</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Смерти поселенцев от болезней</RWS_Metric_DiseaseDeaths>
@@ -400,9 +399,9 @@
   <RWS_Metric_SocialFightDowns>Обездвиживания из-за потасовок</RWS_Metric_SocialFightDowns>
   <RWS_MetricDesc_SocialFightDowns>Обездвиживания свободных поселенцев, непосредственно вызванные противником в потасовке.</RWS_MetricDesc_SocialFightDowns>
   <RWS_Metric_RaidsByArrivalMode>Налёты по способу прибытия</RWS_Metric_RaidsByArrivalMode>
-  <RWS_MetricDesc_RaidsByArrivalMode>Успешно запущенные вражеские налёты по способу прибытия (PawnsArrivalModeDef). Сумма равна числу налётов.</RWS_MetricDesc_RaidsByArrivalMode>
+  <RWS_MetricDesc_RaidsByArrivalMode>Успешно запущенные вражеские налёты по способу прибытия. Сумма равна числу налётов.</RWS_MetricDesc_RaidsByArrivalMode>
   <RWS_Metric_RaidsByFaction>Налёты по фракциям</RWS_Metric_RaidsByFaction>
-  <RWS_MetricDesc_RaidsByFaction>Успешно запущенные вражеские налёты по Def атакующей фракции (FactionDef).</RWS_MetricDesc_RaidsByFaction>
+  <RWS_MetricDesc_RaidsByFaction>Успешно запущенные вражеские налёты по атакующей фракции.</RWS_MetricDesc_RaidsByFaction>
   <RWS_Metric_RaidPawnsMax>Крупнейший налёт (число пешек)</RWS_Metric_RaidPawnsMax>
   <RWS_MetricDesc_RaidPawnsMax>Наибольшее число вражеских пешек, созданных для одного успешно запущенного налёта. Очки налёта приведены отдельно.</RWS_MetricDesc_RaidPawnsMax>
   <RWS_Metric_RaidPointsMax>Максимум очков налёта</RWS_Metric_RaidPointsMax>
@@ -510,9 +509,9 @@
   <RWS_Metric_Sculptures>Созданные произведения искусства</RWS_Metric_Sculptures>
   <RWS_MetricDesc_Sculptures>Изготовленные художественные предметы (скульптуры и прочее).</RWS_MetricDesc_Sculptures>
   <RWS_Metric_MealsByDef>Приготовленные блюда по типам</RWS_Metric_MealsByDef>
-  <RWS_MetricDesc_MealsByDef>Готовые блюда среди изготовленных предметов, по типам (ThingDef).</RWS_MetricDesc_MealsByDef>
+  <RWS_MetricDesc_MealsByDef>Готовые блюда среди изготовленных предметов, по типам.</RWS_MetricDesc_MealsByDef>
   <RWS_Metric_UniqueCraftedDefs>Виды изготовленных предметов</RWS_Metric_UniqueCraftedDefs>
-  <RWS_MetricDesc_UniqueCraftedDefs>Количество типов предметов (ThingDef), изготовленных хотя бы один раз.</RWS_MetricDesc_UniqueCraftedDefs>
+  <RWS_MetricDesc_UniqueCraftedDefs>Количество типов предметов, изготовленных хотя бы один раз.</RWS_MetricDesc_UniqueCraftedDefs>
   <RWS_Metric_CraftDailyPeak>Наибольший объём изготовления за день</RWS_Metric_CraftDailyPeak>
   <RWS_MetricDesc_CraftDailyPeak>Максимум предметов, изготовленных за один игровой день; учитываются только дни, целиком записанные от начала до конца.</RWS_MetricDesc_CraftDailyPeak>
   <RWS_Metric_BestCrafter>Лучший изготовитель</RWS_Metric_BestCrafter>
@@ -522,7 +521,7 @@
   <RWS_Metric_HarvestUnits>Собранные урожаи</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>Количество единиц основных продуктов, собранных пешками игрока; дополнительные выходы не учитываются.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Урожай по культурам</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>Урожай по исходной культуре (ThingDef растения); если культура неизвестна, запись попадает в «(неизвестно)».</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>Урожай по исходной культуре; если культура неизвестна, запись попадает в «(неизвестно)».</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Самая урожайная культура</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>Культура с наибольшим собранным количеством и само количество.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>Наибольший урожай за год</RWS_Metric_HarvestYearPeak>
@@ -542,7 +541,7 @@
   <RWS_Metric_Constructions>Завершённые постройки</RWS_Metric_Constructions>
   <RWS_MetricDesc_Constructions>Строительные каркасы игрока, завершённые в виде зданий. Переустановка и чертежи не учитываются.</RWS_MetricDesc_Constructions>
   <RWS_Metric_ConstructionMaterials>Материалы, использованные в строительстве</RWS_Metric_ConstructionMaterials>
-  <RWS_MetricDesc_ConstructionMaterials>Материалы завершённых каркасов по типу (ThingDef). Разные материалы не суммируются вместе.</RWS_MetricDesc_ConstructionMaterials>
+  <RWS_MetricDesc_ConstructionMaterials>Материалы завершённых каркасов по типу. Разные материалы не суммируются вместе.</RWS_MetricDesc_ConstructionMaterials>
   <RWS_Metric_BestBuilder>Лучший строитель</RWS_Metric_BestBuilder>
   <RWS_MetricDesc_BestBuilder>Число построек, завершённых самой продуктивной пешкой; в разбивке указан её ID.</RWS_MetricDesc_BestBuilder>
   <RWS_Metric_ConstructionFailures>Неудачи при строительстве</RWS_Metric_ConstructionFailures>
@@ -584,9 +583,9 @@
   <RWS_Metric_TradeTopBought>Самый покупаемый предмет</RWS_Metric_TradeTopBought>
   <RWS_MetricDesc_TradeTopBought>Тип предмета, купленный в наибольшем количестве, и само количество.</RWS_MetricDesc_TradeTopBought>
   <RWS_Metric_TradeSoldDefs>Виды проданных предметов</RWS_Metric_TradeSoldDefs>
-  <RWS_MetricDesc_TradeSoldDefs>Количество типов проданных невалютных предметов (ThingDef).</RWS_MetricDesc_TradeSoldDefs>
+  <RWS_MetricDesc_TradeSoldDefs>Количество типов проданных невалютных предметов.</RWS_MetricDesc_TradeSoldDefs>
   <RWS_Metric_TradeBoughtDefs>Виды купленных предметов</RWS_Metric_TradeBoughtDefs>
-  <RWS_MetricDesc_TradeBoughtDefs>Количество типов купленных невалютных предметов (ThingDef).</RWS_MetricDesc_TradeBoughtDefs>
+  <RWS_MetricDesc_TradeBoughtDefs>Количество типов купленных невалютных предметов.</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>Виды торговых фракций</RWS_Metric_TradePartnerFactionDefs>
   <RWS_MetricDesc_TradePartnerFactionDefs>Число известных типов фракций, с которыми велась торговля; партнёры без фракции показаны отдельно как «(неизвестно)».</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>Репутация от подарков</RWS_Metric_GiftGoodwill>
@@ -702,7 +701,7 @@
   <RWS_Metric_AncientDangersOpened>Открытые древние опасности</RWS_Metric_AncientDangersOpened>
   <RWS_MetricDesc_AncientDangersOpened>Запечатанные древние святилища (древние опасности на картах поселений игрока), чьи помещения были открыты, по одному разу каждое. Святилище считается открытым, когда игра посчитала бы его обнаруженным: при рассеивании тумана над центром. Разрушение других стен и появление врагов не учитываются.</RWS_MetricDesc_AncientDangersOpened>
   <RWS_Metric_ColonyStartingBiome>Первоначальный биом</RWS_Metric_ColonyStartingBiome>
-  <RWS_MetricDesc_ColonyStartingBiome>Биом (DefName) неизменной стартовой клетки мира, а не текущего поселения; неизвестен, если клетку мира нельзя определить.</RWS_MetricDesc_ColonyStartingBiome>
+  <RWS_MetricDesc_ColonyStartingBiome>Биом неизменной стартовой клетки мира, а не текущего поселения; неизвестен, если клетку мира нельзя определить.</RWS_MetricDesc_ColonyStartingBiome>
   <RWS_Metric_ResearchSnapshotFinished>Завершённые исследования</RWS_Metric_ResearchSnapshotFinished>
   <RWS_MetricDesc_ResearchSnapshotFinished>Число исследовательских проектов, завершённых на момент последнего успешного сохранения.</RWS_MetricDesc_ResearchSnapshotFinished>
   <RWS_Metric_ResearchSnapshotFinishedRate>Доля завершённых исследований</RWS_Metric_ResearchSnapshotFinishedRate>
@@ -792,7 +791,7 @@
   <RWS_Metric_IdeologyConversions>Завершённые обращения</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Наблюдавшиеся переходы пешек игрока от одной существующей идеологии к другой. Идеология, назначенная при создании пешки, не учитывается.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Ритуалы по итогам</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Подтверждённые ритуалы Ideology по конечным результатам (Def); прерванные ритуалы входят в отдельную категорию.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Подтверждённые ритуалы Ideology по конечным результатам; прерванные ритуалы входят в отдельную категорию.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>Доля успешных ритуалов</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>Подтверждённые успешные ритуалы ÷ ритуалы, признанные успешными или неудачными; прерванные исключаются.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Средняя длительность обращения</RWS_Metric_IdeologyConversionDays>
@@ -833,7 +832,7 @@
   <RWS_Exp_ExperimentalRow>Экспериментально</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>Начало записи, игровой день: {0}</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>Требуемый MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>Исходный MOD: {0} (поставщик: {1})</RWS_Mod_Provider>
+  <RWS_Mod_Provider>Исходный MOD: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>Исходный мод сейчас не установлен. Записанные значения остаются, новые данные не собираются.</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>Начатые запросы на вербовку</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>Запросы Recruitment 1.1.2, успешно созданные после начала записи. Периоды до включения записи охвачены не полностью. Запросы, отменённые после создания, всё равно считаются начатыми.</RWS_ModRecruitment_StartedDesc>
@@ -864,15 +863,15 @@
   <RWS_Metric_MealIngestions>Съеденные блюда</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Фактически съеденные блюда с положительной питательностью человекоподобными пешками фракции игрока. Каждое блюдо считается один раз, в том числе в караване. Прочая пища, наркотики и пешки других фракций исключаются.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Переноски в клетки хранилища</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Работы по переноске игрока (HaulToCell), в которых груз действительно положен в выбранную клетку. Неполный охват: укладка в контейнеры и модифицированные переноски исключаются. Само поднятие предмета не учитывается.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Работы по переноске игрока, в которых груз действительно положен в выбранную клетку. Неполный охват: укладка в контейнеры и модифицированные переноски исключаются. Само поднятие предмета не учитывается.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Предметы, перенесённые в хранилище</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока (HaulToCell), измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока, измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Завершённые задания уборки</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Работы по уборке игрока, успешно завершившиеся после полного удаления хотя бы одного следа грязи. Несколько следов за одну работу считаются одним заданием. Прерванные работы не учитываются.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Древесина от рубки деревьев (основной выход)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Древесина, фактически размещённая или добавленная в стопки после рубки дерева пешкой игрока (основной продукт, измеряется при размещении игрой). Неполный охват: дополнительная древесина некоторых модов и нестандартные способы рубки не учитываются.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Забитые, затем разделанные животные</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Трупы животных, забитых пешкой игрока, которые затем были израсходованы завершённым обычным заданием разделки (ButcherCorpseFlesh). Один и тот же труп отслеживается между сохранениями. Добытые на охоте, погибшие в дикой природе животные и трупы врагов исключаются. Неполный охват: рецепты разделки из модов и некоторые способы исчезновения трупов не распознаются.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Трупы животных, забитых пешкой игрока, которые затем были израсходованы завершённым обычным заданием разделки. Один и тот же труп отслеживается между сохранениями. Добытые на охоте, погибшие в дикой природе животные и трупы врагов исключаются. Неполный охват: рецепты разделки из модов и некоторые способы исчезновения трупов не распознаются.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Колония с максимумом: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Колония с минимумом: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Самый частый предмет во всех колониях: {0}</RWS_Cross_TopType>
@@ -886,7 +885,7 @@
   <RWS_Cross_Sum>Сумма снимков колоний: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>Сумма значений, записанных для каждой колонии в момент сохранения.</RWS_CrossDesc_Sum>
   <RWS_Hospitality_VisitGroups>Hospitality: прибывшие группы гостей (после включения)</RWS_Hospitality_VisitGroups>
-  <RWS_Hospitality_VisitGroupsDesc>Подтверждённые группы посетителей Hospitality, прибывшие на домашние карты игрока после включения этой статистики. Замещающие группы для спасённых гостей не учитываются. Повторы после загрузки отсеиваются по ID события. Посещения до установки мода не оцениваются.</RWS_Hospitality_VisitGroupsDesc>
+  <RWS_Hospitality_VisitGroupsDesc>Подтверждённые группы посетителей Hospitality, прибывшие на домашние карты игрока после включения этой статистики. Замещающие группы для спасённых гостей не учитываются. Повторы после загрузки отсеиваются. Посещения до установки мода не оцениваются.</RWS_Hospitality_VisitGroupsDesc>
   <RWS_Hospitality_VisitGuests>Hospitality: прибытия гостей (после включения)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>Суммарное число гостей в подтверждённых группах Hospitality, прибывших на домашние карты игрока после включения. Повторные визиты учитываются снова, поэтому это не число уникальных людей и не текущая численность гостей. Предыдущие посетители неизвестны.</RWS_Hospitality_VisitGuestsDesc>
   <RWS_Hospitality_VisitsCompleted>Hospitality: мирно уехавшие группы (после включения)</RWS_Hospitality_VisitsCompleted>
@@ -904,7 +903,7 @@
   <RWS_Hospitality_AssignedBeds>Hospitality: выделенные гостям кровати при сохранении</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Число уникальных гостевых кроватей, назначенных гостям Hospitality на домашних картах игрока при успешном сохранении. Общая кровать учитывается один раз. Это число назначенных кроватей, а не фактически спящих гостей или бронирований за всю историю.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Начатые заявки Recruitment (после включения)</RWS_AddonRecruitment_Started>
-  <RWS_AddonRecruitment_StartedDesc>Подтверждённые заявки Recruitment после включения этой статистики. Отдельный ряд от старой встроенной статистики, поскольку изменились устранение повторов событий и создание контрольных точек.</RWS_AddonRecruitment_StartedDesc>
+  <RWS_AddonRecruitment_StartedDesc>Подтверждённые заявки Recruitment после включения этой статистики. Отдельный ряд от старой встроенной статистики, поскольку изменился способ учёта.</RWS_AddonRecruitment_StartedDesc>
   <RWS_AddonRecruitment_SilverSpent>Recruitment: серебро на заявки (после включения)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Вся подтверждённая сумма серебра, уплаченная за новые заявки Recruitment после включения, включая дополнительные сборы. Неудачные попытки исключаются; это не изменение чистого богатства.</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment: запланированные кандидаты (после включения)</RWS_AddonRecruitment_PlannedApplicants>
@@ -918,7 +917,7 @@
   <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: мощность грунтовых вод (л/день)</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>Сумма номинальной мощности водозабора и грунтовых вод по определению Dubs Bad Hygiene для каждой отдельной используемой сети при успешном сохранении, в литрах за игровой день. Не фактическая прокачка.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>Отданные приказы на автоматическую смену одежды</RWS_SAU_OrdersIssued>
-  <RWS_SAU_OrdersIssuedDesc>Обычные задания Wear, действительно выданные модом Smart Apparel Upgrade. НЕ число завершённых переодеваний. Учитываются только события после включения сбора. Экспериментальная статистика.</RWS_SAU_OrdersIssuedDesc>
+  <RWS_SAU_OrdersIssuedDesc>Автоматические задания смены одежды, действительно выданные модом Smart Apparel Upgrade. НЕ число завершённых переодеваний. Учитываются только события после включения сбора. Экспериментальная статистика.</RWS_SAU_OrdersIssuedDesc>
   <RWS_Metric_ModdedIncidentsByDef>Успешные MOD-события по типам</RWS_Metric_ModdedIncidentsByDef>
   <RWS_MetricDesc_ModdedIncidentsByDef>Подтверждённые события неосновных модов, успешно запущенные на домашних картах игрока после включения сбора, по ID пакета и событию. Отдельно от счётчиков базовых катастроф. Пропуски в истории не заполняются.</RWS_MetricDesc_ModdedIncidentsByDef>
   <RWS_Metric_OutpostsActive>Активные аванпосты игрока (сохранённое состояние)</RWS_Metric_OutpostsActive>
@@ -981,7 +980,7 @@
   <RWS_Tab_Coverage>Статус сбора</RWS_Tab_Coverage>
   <RWS_Status_Summary>Измерено: {0} · Частично: {1} · Нет данных: {2} · Н/П: {3} · Эксперим.: {4}</RWS_Status_Summary>
   <RWS_Status_SdkEventCapExceeded>Статистик с превышением лимита ID событий SDK: {0} (предел {1}). Последующие события не считаются; итоговые значения неполны.</RWS_Status_SdkEventCapExceeded>
-  <RWS_Status_Caution>Наличие записи не означает, что точность проверена в настоящей игре.</RWS_Status_Caution>
+  <RWS_Status_Caution>Наличие записи не означает проверку точности в реальной игре.</RWS_Status_Caution>
   <RWS_Status_VerificationAll>Все состояния проверки</RWS_Status_VerificationAll>
   <RWS_Status_Experimental>Экспериментально</RWS_Status_Experimental>
   <RWS_Status_Legacy>Старая запись</RWS_Status_Legacy>
@@ -1099,15 +1098,15 @@
   <RWS_VreAndroid_Awakenings>VRE Android: естественные пробуждения</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Андроиды игрока с синтетическими телами, естественно пробудившиеся после проверки генов с учётом настроения. Пробуждение инструментами разработчика, начальная настройка и уже бодрствовавшие андроиды не учитываются. Требуется Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE: выбранные специализации</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Новые специализации, выбранные поселенцами игрока в обычном окне специализаций, по ExpertiseDef. Отладочные открытия и восстановленные записи исключаются.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>Новые специализации, выбранные поселенцами игрока в обычном окне специализаций, по специализации. Отладочные открытия и восстановленные записи исключаются.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>VSE: полученные уровни специализации</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Постоянный прирост уровней специализации VSE после включения записи, суммарно по независимым колониям и с разбивкой по ExpertiseDef.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>Постоянный прирост уровней специализации VSE после включения записи, суммарно по независимым колониям и с разбивкой по специализации.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE: наивысший достигнутый уровень специализации</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Наивысший уровень специализации, достигнутый благодаря опыту среди независимых колоний; это не сумма уровней и не снимок последнего сохранения.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Vanilla Cooking Expanded: партии обработки</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Завершённые партии супа, сыра и другие процессы VEF из Vanilla Cooking Expanded, по ProcessDef. Обычное изготовление по заданию и частично блокированный выход продукции исключаются.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Завершённые партии супа, сыра и другие процессы VEF из Vanilla Cooking Expanded, по процессу. Обычное изготовление по заданию и частично блокированный выход продукции исключаются.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded: партии брожения и выдержки</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Завершённые партии брожения, варки и выдержки VEF из Vanilla Brewing Expanded, по ProcessDef. Приостановленный, блокированный или незавершённый выход продукции и обычные задания изготовления исключаются.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Завершённые партии брожения, варки и выдержки VEF из Vanilla Brewing Expanded, по процессу. Приостановленный, блокированный или незавершённый выход продукции и обычные задания изготовления исключаются.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Gastronomy: серебро за еду гостей</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Серебро, фактически уплаченное посторонними посетителями за блюда в ресторане игрока. Частичные платежи добавляют только уплаченное; долги, бесплатные блюда и посторонняя торговля исключаются.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory: собранные дроны</RWS_VqeDrones_Assembled>
@@ -1117,31 +1116,31 @@
   <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded: Deepchem в трубах</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Объём Deepchem, фактически принятый на хранение в трубы из насосов игрока, включая дробные единицы, измеренный после подтверждения хранения сетью. Плановая добыча, продукция на земле и заблокированное хранение исключаются.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded: извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
-  <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по выходному ThingDef. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
+  <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по виду предмета. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE: питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Питательная смесь, действительно принятая в трубопроводную сеть от измельчителей Vanilla Nutrient Paste Expanded игрока, включая дробные количества. Попытки измельчения, расход ингредиентов без принятой смеси и хранение в трубах из других зданий не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2: собранный мёд</RWS_VfeMedieval2_HoneyItems>
-  <RWS_VfeMedieval2_HoneyItemsDesc>Мёд, действительно размещённый или добавленный к стопкам после опустошения принадлежащей игроку пасеки Medieval 2 его поселенцем, по выходному ThingDef. Готовность пасеки к сбору, неудачное размещение и последующая переноска исключаются.</RWS_VfeMedieval2_HoneyItemsDesc>
+  <RWS_VfeMedieval2_HoneyItemsDesc>Мёд, действительно размещённый или добавленный к стопкам после опустошения принадлежащей игроку пасеки Medieval 2 его поселенцем, по виду предмета. Готовность пасеки к сбору, неудачное размещение и последующая переноска исключаются.</RWS_VfeMedieval2_HoneyItemsDesc>
   <RWS_VfeSecurity_ArtilleryLaunched>VFE Security: прибывшие снаряды внекартовой артиллерии</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>Снаряды внекартовой артиллерии игрока, достигшие целевой карты и действительно появившиеся на ней как снаряды, по виду снаряда. Приказы наведения, снаряды в пути и выстрелы без созданного снаряда не учитываются. Попадания не измеряются.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
   <RWS_VfeFactory_Harvested>VFE Factory: урожай автокомбайнов</RWS_VfeFactory_Harvested>
-  <RWS_VfeFactory_HarvestedDesc>Предметы, впервые собранные автокомбайнами игрока, по фактическому приросту буфера урожая и подтверждённому размещению на земле, по выходному ThingDef. Поздняя выгрузка в бункеры, отказанное размещение и обычный сбор урожая пешками исключаются.</RWS_VfeFactory_HarvestedDesc>
+  <RWS_VfeFactory_HarvestedDesc>Предметы, впервые собранные автокомбайнами игрока, по фактическому приросту буфера урожая и подтверждённому размещению на земле, по виду предмета. Поздняя выгрузка в бункеры, отказанное размещение и обычный сбор урожая пешками исключаются.</RWS_VfeFactory_HarvestedDesc>
   <RWS_VfeFactory_Sown>VFE Factory: посеянные автокомбайном растения</RWS_VfeFactory_Sown>
-  <RWS_VfeFactory_SownDesc>Новые растения, действительно созданные и отмеченные как посеянные во время рабочего цикла автокомбайна игрока и соответствующие выбранной культуре, по ThingDef растения. Неудачные циклы и уже существующие растения не учитываются.</RWS_VfeFactory_SownDesc>
+  <RWS_VfeFactory_SownDesc>Новые растения, действительно созданные и отмеченные как посеянные во время рабочего цикла автокомбайна игрока и соответствующие выбранной культуре, по виду растения. Неудачные циклы и уже существующие растения не учитываются.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>VFE Pirates: завершённые установки warcasket</RWS_VfePirates_WarcasketFits>
-  <RWS_VfePirates_WarcasketFitsDesc>Установки warcasket игрока, завершённые обычной сваркой, подтверждённые окончанием проекта и новым надеванием всех трёх подходящих элементов, по Def брони. Незавершённая работа, частичное оснащение и завершение инструментами разработчика не учитываются.</RWS_VfePirates_WarcasketFitsDesc>
+  <RWS_VfePirates_WarcasketFitsDesc>Установки warcasket игрока, завершённые обычной сваркой, подтверждённые окончанием проекта и новым надеванием всех трёх подходящих элементов, по типу брони. Незавершённая работа, частичное оснащение и завершение инструментами разработчика не учитываются.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients: отторжения инъекций</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Результаты работы архогенного инъектора игрока, при которых находившаяся внутри пешка отвергла инъекцию, вышла живой и впала в инъекционную кому. Отменённые операции, выбранные, но не завершённые результаты и ожидающие решения о генах после успеха не учитываются. Требуется Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients: превращения в мутантов</RWS_VqeAncients_Mutations>
-  <RWS_VqeAncients_MutationsDesc>Результаты мутаций архогенного инъектора игрока, уничтожившие исходную пешку и породившие одного мутанта игрока с выбранной PawnKindDef, по типу мутанта. Другие появления, отмены и ожидающие решения после успешного результата исключаются. Требуется Biotech.</RWS_VqeAncients_MutationsDesc>
+  <RWS_VqeAncients_MutationsDesc>Результаты мутаций архогенного инъектора игрока, уничтожившие исходную пешку и породившие одного мутанта игрока выбранного вида, по типу мутанта. Другие появления, отмены и ожидающие решения после успешного результата исключаются. Требуется Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>VFE Settlers: сданные преступники за награду</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Разыскиваемые преступники или их тела, действительно сданные и удалённые из каравана игрока одновременно с получением положительной награды серебром. Одно лишь открытие команды, отсутствие цели, неудачная передача и посторонние вещи не учитываются.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>VFE Settlers: полученное серебро за награды</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>Серебро, действительно добавленное каравану игрока первым платежом за успешную сдачу цели VFE Settlers. Вещи преступника и серебро среди них исключаются.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Dubs Rimatomics: побочные продукты переработки</RWS_Rimatomics_Byproducts>
-  <RWS_Rimatomics_ByproductsDesc>Предметы, действительно размещённые или присоединённые к стопкам как побочные продукты после завершения выгрузки топлива из процессора плутония игрока, по выходному ThingDef. Возвращённое отработанное топливо, только обработанный материал и посторонние размещения исключаются.</RWS_Rimatomics_ByproductsDesc>
+  <RWS_Rimatomics_ByproductsDesc>Предметы, действительно размещённые или присоединённые к стопкам как побочные продукты после завершения выгрузки топлива из процессора плутония игрока, по виду предмета. Возвращённое отработанное топливо, только обработанный материал и посторонние размещения исключаются.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Combat Extended: израсходованные патроны</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Патроны, действительно взятые из магазинов оружия поселенцев игрока или израсходованные при стрельбе напрямую из инвентаря, по AmmoDef. Перемещение патронов при перезарядке, холостые спуски, турели и пополнение патронов через отладку исключаются.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>Патроны, действительно взятые из магазинов оружия поселенцев игрока или израсходованные при стрельбе напрямую из инвентаря, по типу боеприпасов. Перемещение патронов при перезарядке, холостые спуски, турели и пополнение патронов через отладку исключаются.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Combat Extended: случаи подавления поселенцев</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Случаи нового перехода пешки колонии игрока в состояние подавления Combat Extended из неподавленного состояния. Дальнейшее подавление уже подавленной пешки и тестовые подавления разработчика не учитываются. Измеряется полученное подавление, а не нанесённое врагам.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>VFE Pirates: заключённые договоры найма</RWS_VfePirates_HireContracts>
@@ -1155,15 +1154,15 @@
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded: одобренные условные освобождения</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Решения о выпуске на слушаниях об условном освобождении, которые действительно завершили полностью отбытую меру наказания живого пленника игрока и назначили освобождение. Сами слушания, продления срока, варианты вербовки, повторные решения и последующий уход пленника исключаются.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller: добытая сырая нефть (единицы месторождения)</RWS_Rimefeller_ExtractedFieldUnits>
-  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Фактическое уменьшение запаса нефтяного месторождения (CurrentCap) при успешной откачке нефтяной вышкой игрока. Это единицы ёмкости месторождения, НЕ объём в трубах и не число предметов. Ход бурения, попытки откачки, природное пополнение, перемещения между резервуарами и выпуск НПЗ исключаются.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
+  <RWS_Rimefeller_ExtractedFieldUnitsDesc>Фактическое уменьшение запаса нефтяного месторождения при успешной откачке нефтяной вышкой игрока. Это единицы ёмкости месторождения, НЕ объём в трубах и не число предметов. Ход бурения, попытки откачки, природное пополнение, перемещения между резервуарами и выпуск НПЗ исключаются.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded: отбытые сроки</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>Наказания пленников игрока, действительно достигшие полной длительности в Prison Expanded и впервые ставшие основанием для слушаний об условном освобождении. Одобрение условного освобождения, приказы отпустить, повторные дневные тики и значения, восстановленные при загрузке, исключаются.</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded: действительно ушедшие пленники</RWS_PrisonExpanded_PhysicalDepartures>
-  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Пленники, отслеживаемые Prison Expanded, которые физически покинули домашнюю карту игрока (успешный Pawn.ExitMap), а не просто получили приказ об освобождении. Каждый фактический уход учитывается независимо от исходного срока.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
+  <RWS_PrisonExpanded_PhysicalDeparturesDesc>Пленники, отслеживаемые Prison Expanded, которые физически покинули домашнюю карту игрока, а не просто получили приказ об освобождении. Каждый фактический уход учитывается независимо от исходного срока.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Rimefeller: расход топлива НПЗ (единицы труб)</RWS_Rimefeller_RefineryFuelUsed>
-  <RWS_Rimefeller_RefineryFuelUsedDesc>Фактическое уменьшение доступного топлива трубопроводной сети (FuelAvailable) от обработки на НПЗ Rimefeller игрока, измеренное после базового тика компонента труб. Топливо, перенесённое в установки в ходе этого тика, и только запланированный или попытанный расход исключаются. Единицы топлива трубопроводной сети.</RWS_Rimefeller_RefineryFuelUsedDesc>
+  <RWS_Rimefeller_RefineryFuelUsedDesc>Фактическое уменьшение доступного топлива трубопроводной сети от обработки на НПЗ Rimefeller игрока. Топливо, перенесённое в установки, и только запланированный или попытанный расход исключаются. Единицы топлива трубопроводной сети.</RWS_Rimefeller_RefineryFuelUsedDesc>
   <RWS_Rimefeller_PlantFuelUsed>Rimefeller: расход топлива электростанций (единицы труб)</RWS_Rimefeller_PlantFuelUsed>
-  <RWS_Rimefeller_PlantFuelUsedDesc>Фактическое уменьшение доступного топлива трубопроводной сети (FuelAvailable) при успешном заборе топлива электростанциями Rimefeller игрока. Пустые или неудачные заборы исключаются. Единицы топлива трубопроводной сети, не предметы.</RWS_Rimefeller_PlantFuelUsedDesc>
+  <RWS_Rimefeller_PlantFuelUsedDesc>Фактическое уменьшение доступного топлива трубопроводной сети при успешном заборе топлива электростанциями Rimefeller игрока. Пустые или неудачные заборы исключаются. Единицы топлива трубопроводной сети, не предметы.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>Бои арены с установленным победителем</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>Бои на арене игрока, у которых официально записан победитель.</RWS_NewMod_ArenaDesc>
   <RWS_NewMod_Roads>Построенные или улучшенные участки дорог</RWS_NewMod_Roads>
@@ -1219,23 +1218,23 @@
   <RWS_NewMod_VendingSilver>Серебро из торговых автоматов</RWS_NewMod_VendingSilver>
   <RWS_NewMod_VendingSilverDesc>Серебро, действительно переданное посетителями в торговые автоматы игрока, по типу автомата.</RWS_NewMod_VendingSilverDesc>
   <RWS_Chart_Title>График: {0}</RWS_Chart_Title>
-  <RWS_Chart_OpenTip>Нажмите, чтобы открыть график этой статистики.</RWS_Chart_OpenTip>
+  <RWS_Chart_OpenTip>Нажмите, чтобы открыть график</RWS_Chart_OpenTip>
   <RWS_Chart_ByColony>По колониям</RWS_Chart_ByColony>
   <RWS_Chart_ByCategory>По категориям</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>По категориям ({0})</RWS_Chart_ByCategoryColony>
-  <RWS_Chart_ColonyNote>Нажмите на строку колонии, чтобы увидеть её историю.</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNote>Выберите колонию для просмотра истории</RWS_Chart_ColonyNote>
   <RWS_Chart_HistoryRecord>Значение для сравнения колоний: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>История для этого показателя недоступна.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Доступно одно измерение. Наведите курсор на точку, чтобы увидеть значение.</RWS_Chart_HistorySingle>
-  <RWS_Chart_HistorySaves>Данные сохранений по игровым дням. Линией соединяются только сохранения, родитель которых подтверждён встроенными контрольными точками.</RWS_Chart_HistorySaves>
-  <RWS_Chart_HistoryLineage>Контрольные точки выбранной ветки сохранений. Разрывы обозначают пропущенные измерения.</RWS_Chart_HistoryLineage>
-  <RWS_Chart_HistoryWealth>Рекордный прирост богатства за 15 дней, достигнутый к каждому моменту в этом сохранении.</RWS_Chart_HistoryWealth>
-  <RWS_Chart_BreakdownNote>Записанные категории выбранной статистики. Это не график изменений во времени.</RWS_Chart_BreakdownNote>
+  <RWS_Chart_HistorySaves>Значения сохранений. Соединяются только записи с подтверждённой преемственностью.</RWS_Chart_HistorySaves>
+  <RWS_Chart_HistoryLineage>Записи выбранной ветки. Разрывы означают пропуски.</RWS_Chart_HistoryLineage>
+  <RWS_Chart_HistoryWealth>Макс. прирост богатства за 15 дней к каждому моменту.</RWS_Chart_HistoryWealth>
+  <RWS_Chart_BreakdownNote>Записанная разбивка (не график по времени).</RWS_Chart_BreakdownNote>
   <RWS_Chart_OverallNote>Для этой статистики доступно только одно суммарное значение.</RWS_Chart_OverallNote>
   <RWS_Chart_Points>Показано значений: {0}</RWS_Chart_Points>
   <RWS_Chart_NoData>Нет измеренных значений для построения графика.</RWS_Chart_NoData>
   <RWS_Chart_AddColony>Добавить колонию…</RWS_Chart_AddColony>
-  <RWS_Chart_GameRecorder>Наблюдения по игровым дням. Разрывы показывают пропуски в данных.</RWS_Chart_GameRecorder>
+  <RWS_Chart_GameRecorder>Записи по игровым дням. Разрывы означают пропуски.</RWS_Chart_GameRecorder>
   <RWS_Chart_LegendUnlinked>Полые точки — сохранения, связь которых с более ранними данными не подтверждена (другая ветка или старое сохранение без контрольных точек).</RWS_Chart_LegendUnlinked>
   <RWS_Chart_PointUnlinked>Связь с более ранними данными не подтверждена.</RWS_Chart_PointUnlinked>
   <RWS_Chart_PointBranch>Ветка, продолжающая данные дня {0}; точки между ними относятся к другой ветке.</RWS_Chart_PointBranch>
@@ -1243,7 +1242,7 @@
   <RWS_Chart_PointSavedLater>Эти данные без изменений содержались и в сохранении дня {0}; новых статистических данных в нём не записано.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>записано другим способом; совместно не отображается</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>Измерений: {0} (частичных: {1}); точек без значения: {2}</RWS_Chart_PointCounts>
-  <RWS_Chart_LastCapture>Статистика последний раз записана в день {0}. Самое дальнее сохранение колонии — день {1}, но более новых данных не записано (это сохранение может относиться к другой ветке).</RWS_Chart_LastCapture>
+  <RWS_Chart_LastCapture>Последняя запись: день {0} / Дальнейшее сохранение: день {1} (возможна другая ветка)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Записанное значение</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Частичная запись</RWS_Chart_LegendPartial>
   <RWS_Chart_LegendUnlinkedShort>Связь не подтверждена</RWS_Chart_LegendUnlinkedShort>
