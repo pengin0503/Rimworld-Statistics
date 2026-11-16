@@ -19,14 +19,13 @@ cp About/About.xml "$mod/About/"
 cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll 1.7/Assemblies/RimworldStatistics.Api.dll "$mod/1.7/Assemblies/"
 shopt -s nullglob
 for lang in Languages/*/; do
-  name=$(basename "$lang")
-  xmls=("Languages/$name/Keyed/"*.xml)
+  xmls=("${lang}Keyed/"*.xml)
   if [ "${#xmls[@]}" -eq 0 ]; then
-    echo "No Keyed XML files found in Languages/$name/Keyed" >&2
+    echo "No Keyed XML files found in ${lang}Keyed" >&2
     exit 1
   fi
-  mkdir -p "$mod/Languages/$name/Keyed"
-  cp "${xmls[@]}" "$mod/Languages/$name/Keyed/"
+  mkdir -p "$mod/${lang}Keyed"
+  cp "${xmls[@]}" "$mod/${lang}Keyed/"
 done
 shopt -u nullglob
 
