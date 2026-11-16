@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_VefStews_Batches>完成燉菜批次</RWS_VefStews_Batches>
-  <RWS_VefStews_BatchesDesc>統計《Vanilla Cooking Expanded - Stews》中己方燉鍋實際完成燉煮的批次，依配方定義細分。</RWS_VefStews_BatchesDesc>
+  <RWS_VefStews_BatchesDesc>統計 Vanilla Cooking Expanded - Stews 中己方燉鍋實際完成燉煮的批次，依配方定義細分。</RWS_VefStews_BatchesDesc>
   <RWS_RimMarket_StallSales>攤位銷售收入</RWS_RimMarket_StallSales>
-  <RWS_RimMarket_StallSalesDesc>統計在《RimMarket》中透過殖民地所屬攤位向訪客出售物品獲得的白銀總額，依出售物品細分。</RWS_RimMarket_StallSalesDesc>
+  <RWS_RimMarket_StallSalesDesc>統計在 RimMarket 中透過殖民地所屬攤位向訪客出售物品獲得的白銀總額，依出售物品細分。</RWS_RimMarket_StallSalesDesc>
   <RWS_RimMarket_MarketFees>市場攤位費與抽成收入</RWS_RimMarket_MarketFees>
-  <RWS_RimMarket_MarketFeesDesc>統計在《RimMarket》中向來訪商隊收取的攤位費與銷售抽成總額，依派系細分。</RWS_RimMarket_MarketFeesDesc>
+  <RWS_RimMarket_MarketFeesDesc>統計在 RimMarket 中向來訪商隊收取的攤位費與銷售抽成總額，依派系細分。</RWS_RimMarket_MarketFeesDesc>
   <RWS_CaravanAdventures_BountyCredits>機械體懸賞積分獲取</RWS_CaravanAdventures_BountyCredits>
-  <RWS_CaravanAdventures_BountyCreditsDesc>統計在《Caravan Adventures》中擊殺敵對機械體實際獲得的懸賞積分總量，依機械體種類細分。</RWS_CaravanAdventures_BountyCreditsDesc>
+  <RWS_CaravanAdventures_BountyCreditsDesc>統計在 Caravan Adventures 中擊殺敵對機械體實際獲得的懸賞積分總量，依機械體種類細分。</RWS_CaravanAdventures_BountyCreditsDesc>
   <RWS_CaravanAdventures_ShrinesCompleted>古代神殿攻略完成數</RWS_CaravanAdventures_ShrinesCompleted>
-  <RWS_CaravanAdventures_ShrinesCompletedDesc>統計在《Caravan Adventures》劇情線中成功通關古代神殿與最終試煉的次數。</RWS_CaravanAdventures_ShrinesCompletedDesc>
+  <RWS_CaravanAdventures_ShrinesCompletedDesc>統計在 Caravan Adventures 劇情線中成功通關古代神殿與最終試煉的次數。</RWS_CaravanAdventures_ShrinesCompletedDesc>
 </LanguageData>

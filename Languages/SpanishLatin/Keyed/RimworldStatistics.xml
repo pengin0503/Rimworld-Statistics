@@ -1089,7 +1089,7 @@
   <RWS_SimpleWarrants_Completed>Entregas Simple Warrants completadas</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Órdenes de búsqueda resueltas al entregar la caravana del jugador al objetivo, una vez retirado este y cerrada la orden.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Plata ganada con Simple Warrants</RWS_SimpleWarrants_Silver>
-  <RWS_SimpleWarrants_SilverDesc>Plata realmente añadida a la caravana del jugador como recompensa por entregas completadas de órdenes de búsqueda.</RWS_SimpleWarrants_SilverDesc>
+  <RWS_SimpleWarrants_SilverDesc>Plata realmente agregada a la caravana del jugador como recompensa por entregas completadas de órdenes de búsqueda.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>Mejoras ARC de The Generator completadas</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Obras del jugador terminadas que sustituyeron en el mismo lugar un generador ARC del jugador, agrupadas por tipo de generador nuevo.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Máximo de vehículos poseídos</RWS_VehicleFramework_OwnedPeak>
@@ -1149,7 +1149,7 @@
   <RWS_VfeSettlers_BountyHandins>Objetivos de recompensa VFE Settlers entregados</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Criminales buscados, o sus cadáveres, realmente entregados y retirados de una caravana del jugador al recibir una recompensa positiva en plata. No cuentan abrir la orden, objetivos ausentes, transferencias fallidas ni pertenencias ajenas.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>Plata recibida por recompensas VFE Settlers</RWS_VfeSettlers_BountySilver>
-  <RWS_VfeSettlers_BountySilverDesc>Plata realmente añadida a la caravana del jugador con el primer pago de recompensa por una entrega de VFE Settlers exitosa. No se incluyen los objetos del criminal ni la plata que lleven.</RWS_VfeSettlers_BountySilverDesc>
+  <RWS_VfeSettlers_BountySilverDesc>Plata realmente agregada a la caravana del jugador con el primer pago de recompensa por una entrega de VFE Settlers exitosa. No se incluyen los objetos del criminal ni la plata que lleven.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Subproductos de reprocesado Dubs Rimatomics</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>Objetos realmente colocados o fusionados con pilas como subproductos cuando el procesador de plutonio del jugador termina de descargar combustible, por ThingDef producido. No cuentan combustible gastado devuelto, materiales solo procesados ni colocaciones sin relación.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Cartuchos disparados en Combat Extended</RWS_CE_RoundsUsed>
@@ -1195,7 +1195,7 @@
   <RWS_NewMod_Storefront>Ventas de tienda completadas</RWS_NewMod_Storefront>
   <RWS_NewMod_StorefrontDesc>Ventas en tienda en las que se confirmó la entrega del producto al visitante, por producto.</RWS_NewMod_StorefrontDesc>
   <RWS_NewMod_Boarding>Embarques en vehículos</RWS_NewMod_Boarding>
-  <RWS_NewMod_BoardingDesc>Personajes del jugador añadidos por primera vez a la lista de pasajeros de un vehículo del jugador.</RWS_NewMod_BoardingDesc>
+  <RWS_NewMod_BoardingDesc>Personajes del jugador agregados por primera vez a la lista de pasajeros de un vehículo del jugador.</RWS_NewMod_BoardingDesc>
   <RWS_NewMod_Upgrades>Mejoras de vehículos instaladas</RWS_NewMod_Upgrades>
   <RWS_NewMod_UpgradesDesc>Mejoras nuevas instaladas mediante trabajo del jugador completado, por tipo de vehículo.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Vehículos restaurados de restos</RWS_NewMod_Wrecks>

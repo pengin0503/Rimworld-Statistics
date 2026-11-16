@@ -698,8 +698,8 @@
   <RWS_MetricDesc_CaravanLongestDistance>一趟已完成遠征中步行經過的最多地塊數。</RWS_MetricDesc_CaravanLongestDistance>
   <RWS_Metric_CaravanConcurrentMax>同時存在最多旅隊數</RWS_Metric_CaravanConcurrentMax>
   <RWS_MetricDesc_CaravanConcurrentMax>任意時刻同時存在的玩家旅隊最大數量，無論是否移動。</RWS_MetricDesc_CaravanConcurrentMax>
-  <RWS_Metric_CaravanAmbushes>旅隊遭伏擊次數</RWS_Metric_CaravanAmbushes>
-  <RWS_MetricDesc_CaravanAmbushes>成功觸發的旅隊伏擊事件次數。</RWS_MetricDesc_CaravanAmbushes>
+  <RWS_Metric_CaravanAmbushes>旅隊遭埋伏次數</RWS_Metric_CaravanAmbushes>
+  <RWS_MetricDesc_CaravanAmbushes>成功觸發的旅隊埋伏事件次數。</RWS_MetricDesc_CaravanAmbushes>
   <RWS_Metric_SitesCleared>擊敗敵方據點次數</RWS_Metric_SitesCleared>
   <RWS_MetricDesc_SitesCleared>玩家獲勝並摧毀的敵對派系據點數量。</RWS_MetricDesc_SitesCleared>
   <RWS_Metric_SettlementsFounded>建立新據點次數</RWS_Metric_SettlementsFounded>
@@ -754,8 +754,8 @@
   <RWS_MetricDesc_FacilitiesGrowingCells>任一次已記錄的儲存中，已載入主據點地圖上的種植區總面積（格子數）最大值。</RWS_MetricDesc_FacilitiesGrowingCells>
   <RWS_Metric_FacilitiesGeneration>最大发电機額定輸出</RWS_Metric_FacilitiesGeneration>
   <RWS_MetricDesc_FacilitiesGeneration>任一次已記錄的儲存中，已載入主據點地圖上各發電機額定輸出總和的最大值。</RWS_MetricDesc_FacilitiesGeneration>
-  <RWS_Metric_FacilitiesBattery>最大蓄電池容量</RWS_Metric_FacilitiesBattery>
-  <RWS_MetricDesc_FacilitiesBattery>任一次已記錄的儲存中，已載入主據點地圖上各蓄電池額定容量總和的最大值。</RWS_MetricDesc_FacilitiesBattery>
+  <RWS_Metric_FacilitiesBattery>最大電池容量</RWS_Metric_FacilitiesBattery>
+  <RWS_MetricDesc_FacilitiesBattery>任一次已記錄的存檔中，已載入主據點地圖上各電池額定容量總和的最大值。</RWS_MetricDesc_FacilitiesBattery>
   <RWS_Metric_FacilitiesOutdoorTempMin>存檔時的最低室外溫度</RWS_Metric_FacilitiesOutdoorTempMin>
   <RWS_MetricDesc_FacilitiesOutdoorTempMin>已記錄的存檔時，已載入主據點地圖上的最低室外溫度。無法觀測存檔之間的溫度變化。</RWS_MetricDesc_FacilitiesOutdoorTempMin>
   <RWS_Metric_FacilitiesOutdoorTempMax>存檔時的最高室外溫度</RWS_Metric_FacilitiesOutdoorTempMax>
@@ -958,7 +958,7 @@
   <RWS_Backup_Size>大小</RWS_Backup_Size>
   <RWS_Backup_Verification>驗證</RWS_Backup_Verification>
   <RWS_Backup_Valid>已驗證</RWS_Backup_Valid>
-  <RWS_Backup_NewerSchema>由更新版本建立</RWS_Backup_NewerSchema>
+  <RWS_Backup_NewerSchema>由較新版本建立</RWS_Backup_NewerSchema>
   <RWS_Backup_UnknownFormat>未知備份格式</RWS_Backup_UnknownFormat>
   <RWS_Backup_Invalid>驗證失敗</RWS_Backup_Invalid>
   <RWS_Groups_Title>編輯殖民地群組</RWS_Groups_Title>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_Metric_FreeSpeciesPeak>各物種自由殖民者人數峰值</RWS_Metric_FreeSpeciesPeak>
-  <RWS_Metric_PrisonerSpeciesPeak>各物種囚犯人數峰值</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>各物種俘虜人數峰值</RWS_Metric_PrisonerSpeciesPeak>
   <RWS_Metric_SlaveSpeciesPeak>各物種奴隸人數峰值</RWS_Metric_SlaveSpeciesPeak>
   <RWS_MetricDesc_SpeciesPeak>按物種分別計算成功存檔時觀察到的最高人數。</RWS_MetricDesc_SpeciesPeak>
   <RWS_Metric_JoinsByXenotype>按異種型態統計加入人數</RWS_Metric_JoinsByXenotype>

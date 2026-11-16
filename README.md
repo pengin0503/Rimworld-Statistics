@@ -16,7 +16,7 @@
 
 他のMOD固有の記録も、Rimworld Statistics**本体に統合**しています。対応するゲームプレイMODは、それぞれの統計を利用するときだけ必要です。別の統計アドオンを導入する必要はありません。
 
-**[対応MODの全一覧 / Full supported gameplay mod list（v1.9.0・103件）](docs/supported-mods.md)**
+**[対応MODの全一覧 / Full supported gameplay mod list（v1.9.1・103件）](docs/supported-mods.md)**
 
 | 対象 | 記録できる内容の例 |
 | --- | --- |
