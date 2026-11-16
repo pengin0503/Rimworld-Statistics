@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_WorldDominationVictory>Victoires de World Domination</RWS_WorldDominationVictory>
-  <RWS_WorldDominationVictoryDesc>Compte les réussites de la quête de victoire de World Domination 2.0.</RWS_WorldDominationVictoryDesc>
+  <RWS_WorldDominationVictoryDesc>Conserve la victoire de campagne une fois le défi de maintien de World Domination 2.0 accompli, même si la quête est ensuite supprimée.</RWS_WorldDominationVictoryDesc>
   <RWS_RimWarVictory>Victoires du défi rival de Rim War</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>Compte les victoires déclarées par Rim War quand la faction rivale perd sa dernière colonie.</RWS_RimWarVictoryDesc>
 </LanguageData>

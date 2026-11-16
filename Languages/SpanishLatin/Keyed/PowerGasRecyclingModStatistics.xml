@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_VfePower_NuclearMeltdowns>Fusiones de reactores nucleares</RWS_VfePower_NuclearMeltdowns>
-  <RWS_VfePower_NuclearMeltdownsDesc>Cuenta los generadores nucleares del jugador en Vanilla Furniture Expanded - Power que sufrieron una fusión confirmada con avería.</RWS_VfePower_NuclearMeltdownsDesc>
+  <RWS_VfePower_NuclearMeltdownsDesc>Cuenta los generadores nucleares del jugador en Vanilla Furniture Expanded - Power que sufrieron una fusión confirmada con falla.</RWS_VfePower_NuclearMeltdownsDesc>
   <RWS_VheHelixienGas_StoredUnits>Gas Helixien almacenado</RWS_VheHelixienGas_StoredUnits>
   <RWS_VheHelixienGas_StoredUnitsDesc>Cantidad total de gas Helixien aceptada realmente en el almacenamiento de red VHGE_HelixienNet desde las bombas del jugador.</RWS_VheHelixienGas_StoredUnitsDesc>
   <RWS_VreRecycling_ProcessedItems>Objetos reciclados y compactados</RWS_VreRecycling_ProcessedItems>

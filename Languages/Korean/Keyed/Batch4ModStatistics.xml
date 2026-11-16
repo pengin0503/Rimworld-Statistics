@@ -3,7 +3,7 @@
   <RWS_BiomesBees_Pollinations>꿀벌 수분 완료 수</RWS_BiomesBees_Pollinations>
   <RWS_BiomesBees_PollinationsDesc>Biomes! Bees에서 플레이어 관련 식물의 성장을 실제로 증가시킨 완료된 수분 횟수를 식물 종류별로 집계합니다.</RWS_BiomesBees_PollinationsDesc>
   <RWS_BiomesCaverns_HomeMaps>동굴 정착지 본거지 맵</RWS_BiomesCaverns_HomeMaps>
-  <RWS_BiomesCaverns_HomeMapsDesc>Biomes! Caverns 바이옴에 위치한 활성 플레이어 본거지 맵 수를 바이옴별로 기록합니다.</RWS_BiomesCaverns_HomeMapsDesc>
+  <RWS_BiomesCaverns_HomeMapsDesc>Biomes! Caverns 생물군계에 위치한 활성 플레이어 본거지 맵 수를 생물군계별로 기록합니다.</RWS_BiomesCaverns_HomeMapsDesc>
   <RWS_VqeDeadlife_SiloDecryptions>고대 사일로 계획 탁자 해독 수</RWS_VqeDeadlife_SiloDecryptions>
   <RWS_VqeDeadlife_SiloDecryptionsDesc>Vanilla Quests Expanded - Deadlife에서 플레이어 폰이 고대 계획 탁자 연구를 완료해 새 사일로 위치를 밝혀낸 횟수를 집계합니다.</RWS_VqeDeadlife_SiloDecryptionsDesc>
   <RWS_VqeDeadlife_PowerKickstarts>비상 발전기 시동 성공 수</RWS_VqeDeadlife_PowerKickstarts>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_Metric_FreeSpeciesPeak>종족별 자유 정착민 최대 인원</RWS_Metric_FreeSpeciesPeak>
-  <RWS_Metric_PrisonerSpeciesPeak>종족별 포로 최대 인원</RWS_Metric_PrisonerSpeciesPeak>
+  <RWS_Metric_PrisonerSpeciesPeak>종족별 수감자 최대 인원</RWS_Metric_PrisonerSpeciesPeak>
   <RWS_Metric_SlaveSpeciesPeak>종족별 노예 최대 인원</RWS_Metric_SlaveSpeciesPeak>
   <RWS_MetricDesc_SpeciesPeak>저장에 성공했을 때 관측한 인원 중 최댓값을 종족별로 계산합니다.</RWS_MetricDesc_SpeciesPeak>
   <RWS_Metric_JoinsByXenotype>제노타입별 합류 수</RWS_Metric_JoinsByXenotype>

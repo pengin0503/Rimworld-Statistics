@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_WorldDominationVictory>Victorias en World Domination</RWS_WorldDominationVictory>
-  <RWS_WorldDominationVictoryDesc>Cuenta las veces que se completa con éxito la misión de victoria de World Domination 2.0.</RWS_WorldDominationVictoryDesc>
+  <RWS_WorldDominationVictoryDesc>Conserva la victoria de campaña tras completar el desafío de retención de World Domination 2.0, aunque luego se elimine la misión.</RWS_WorldDominationVictoryDesc>
   <RWS_RimWarVictory>Victorias en el desafío rival de Rim War</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>Cuenta las victorias declaradas por Rim War cuando la facción rival pierde su último asentamiento.</RWS_RimWarVictoryDesc>
 </LanguageData>

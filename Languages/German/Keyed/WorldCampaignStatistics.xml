@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_WorldDominationVictory>Siege in World Domination</RWS_WorldDominationVictory>
-  <RWS_WorldDominationVictoryDesc>Zählt erfolgreiche Abschlüsse der Siegesquest aus World Domination 2.0.</RWS_WorldDominationVictoryDesc>
+  <RWS_WorldDominationVictoryDesc>Behält den Kampagnensieg nach Abschluss der Halte-Herausforderung in World Domination 2.0 bei, auch wenn die Quest später entfernt wird.</RWS_WorldDominationVictoryDesc>
   <RWS_RimWarVictory>Siege in der Rivalenherausforderung von Rim War</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>Zählt die von Rim War erklärten Siege, wenn die ausgewählte Rivalenfraktion ihre letzte Siedlung verliert.</RWS_RimWarVictoryDesc>
 </LanguageData>

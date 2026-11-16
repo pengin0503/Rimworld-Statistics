@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_WorldDominationVictory>세계 제패 승리 수</RWS_WorldDominationVictory>
-  <RWS_WorldDominationVictoryDesc>World Domination 2.0의 승리 퀘스트를 성공적으로 완료한 횟수를 셉니다.</RWS_WorldDominationVictoryDesc>
+  <RWS_WorldDominationVictoryDesc>World Domination 2.0에서 지배 기간 조건을 달성해 승리한 기록을 퀘스트가 제거된 뒤에도 유지합니다.</RWS_WorldDominationVictoryDesc>
   <RWS_RimWarVictory>Rim War 숙적 도전 승리 수</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>지정된 숙적 세력이 마지막 정착지를 잃어 Rim War가 승리를 선언한 횟수를 셉니다.</RWS_RimWarVictoryDesc>
 </LanguageData>
