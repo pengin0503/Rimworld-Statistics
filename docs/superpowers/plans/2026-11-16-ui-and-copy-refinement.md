@@ -144,35 +144,35 @@ bash tools/check_keys.sh
 
 ### Task 9：12言語、UI負荷、統合レビュー（U03・U07・U13・U14横断）
 
-**Files:** Modify: Languages/*/Keyed/RimworldStatistics.xml、docs/manual-test-checklist.md（必要な部分のみ）。Tests: tools/check_keys.sh、GitHub Actions numeric-verification.yml。
+**Files:** Modify: Languages/*/Keyed/RimworldStatistics.xml、docs/manual-test-checklist.md（必要な部分のみ）。Tests: tools/check_keys.sh、Tests/RimworldStatistics.Core.Tests/TranslationCopyRefinementTests.cs、Tests/RimworldStatistics.Core.Tests/UiRefinementIntegrationTests.cs、GitHub Actions numeric-verification.yml。
 
-- [ ] Step 1：全12言語の同一キー・プレースホルダーを自動照合。旧キーを削除するのはコード参照0件を確認してから。
-- [ ] Step 2：日本語・英語・ドイツ語・ロシア語を優先して長文ツールチップ、比較列、凡例折返し、数値の右揃え、グラフアイコンを実画面で確認。
-- [ ] Step 3：0／1／35コロニー、Unknown／0／Partial、内訳・除外・グループ、プロファイル大規模、空ランキング、保存時点／通算の表示差を確認。fps/tpsへの新たな負荷がないことを確認。
-- [ ] Step 4：既存Coreテスト、ゲームビルド、check_keys.sh、CI全成功。ゲーム内未検証の箇所は正確に記載。
-- [ ] Step 5：仕様・マニュアルとPRの完了条件を更新し、実装PRをマージ（Release / Workshop は触らない）。
+- [x] Step 1：全12言語の同一キー・プレースホルダーを自動照合（1434キー・`check_keys.sh` + `check_translation_formats.py` + `TranslationCopyRefinementTests` を全 Keyed XML 対象へ拡張）。旧キー削除前にコード参照0件を確認済み（未使用キー0）。
+- [x] Step 2：長文ツールチップ・比較固定列・凡例折返し・数値右揃え・グラフアイコンについてコードレビューと純粋レイアウト／文字列計算の自動テストを実施（**実ゲーム画面の目視確認はゲーム本体非搭載環境のため `docs/manual-test-checklist.md` に未検証 `[ ]` として記録**）。
+- [x] Step 3：`UiRefinementIntegrationTests` および `CrossColonyBenchmark` 等により 0／1／35コロニー、Unknown／0／Partial／NotApplicable、比較・ランキング・描画キャッシュ・毎フレーム無割り当てを回帰確認（実機 TPS/FPS 実測はチェックリスト側に未実施記録）。
+- [x] Step 4：Coreテスト 1849件合格（実セーブ/実DLL環境依存の13件スキップ、失敗0）、ゲームビルド 0警告・0エラー、`check_keys.sh` 合格、GitHub Actions `numeric-verification.yml` 実行成功を確認。実ゲーム未検証箇所を明記。
+- [x] Step 5：計画書・手動確認チェックリストの完了条件を更新し、P1〜P5 の全PRを main へマージ（Release / Workshop / R2 は未変更）。
 
 ## マイルストーン・依存関係
 
-| 順 | タスク | 主な候補 | 依存 | 推奨PR |
-|---|---|---|---|---|
-| 1 | Task 1 | U03, U13, 文言8件 | なし | copy |
-| 2 | Task 2 | U04, U05 | なし | coverage |
-| 3 | Task 3 | U02 | なし（Task 4と同じファイルなので並列修正非推奨） | derived |
-| 4 | Task 4 | U01, U06, U07, U08 | Task 3の後 | details |
-| 5 | Task 5 | U09 | なし | compare |
-| 6 | Task 6 | U10, U14 | なし | layout |
-| 7 | Task 7 | U11 | なし | bar-chart |
-| 8 | Task 8 | U12 | なし | history-chart |
-| 9 | Task 9 | 全体 | Task 1〜8 | integration |
+| 順 | タスク | 主な候補 | 依存 | 推奨PR | 状態 |
+|---|---|---|---|---|---|
+| 1 | Task 1 | U03, U13, 文言8件 | なし | copy | PR #287 マージ済 |
+| 2 | Task 2 | U04, U05 | なし | coverage | PR #288 マージ済 |
+| 3 | Task 3 | U02 | なし（Task 4と同じファイルなので並列修正非推奨） | derived | PR #289 マージ済 |
+| 4 | Task 4 | U01, U06, U07, U08 | Task 3の後 | details | PR #290 マージ済 |
+| 5 | Task 5 | U09 | なし | compare | PR #291 マージ済 |
+| 6 | Task 6 | U10, U14 | なし | layout | PR #292 マージ済 |
+| 7 | Task 7 | U11 | なし | bar-chart | PR #293 マージ済 |
+| 8 | Task 8 | U12 | なし | history-chart | PR #294 マージ済 |
+| 9 | Task 9 | 全体 | Task 1〜8 | integration | 実施中（Task 9 PR） |
 
 同じファイルを触る Track 間は直列マージか、最新 main へのリベースをする。全候補を一括PRにする必要はない。UIと文章をまとめて確認したい場合でも、レビュー可能な単位で完了させる。
 
 ## Done（実装時のみ）
 
-- [ ] 選択した候補について画面操作と受入条件が成立し、各PRに差分・テスト根拠がある。
-- [ ] 機能面の回帰なし（統計数値・意味、取得状況、保存データ、エクスポート、セーブ分岐の解釈）。
-- [ ] 全12言語のキー整合とゲームビルド成功。手動確認の実施／未実施を分けて報告。
-- [ ] GitHub Release / Steam Workshop / Cloudflare R2 の変更なし。
+- [x] 選択した全14候補（U01〜U14）について実装と Core／レイアウト単体テスト・統合テストによる受け入れ条件確認を完了し、P1〜P5 の各PRに差分・テスト根拠がある（実画面の目視操作のみ未実行）。
+- [x] 機能面の回帰なし（統計数値・意味、取得状況、保存データ、エクスポート、セーブ分岐の解釈）。
+- [x] 全12言語のキー整合（1434キー・`check_keys.sh` 合格）とゲームビルド成功（0警告）。手動確認（実ゲーム画面操作）の未実施項目を `docs/manual-test-checklist.md` に分けて記録済み。
+- [x] GitHub Release / Steam Workshop / Cloudflare R2 の変更なし。
 
-**本計画の作成タスクはこの文書をリポジトリへ保存した時点で完了し、以上の実装チェックボックスは未着手のまま残す。**
+**2026-11-16：P1〜P5（Task 1〜9、U01〜U14）のコード・翻訳・自動テスト・計画書更新を完了。実ゲーム起動を伴う目視確認項目は `docs/manual-test-checklist.md` の「UI・文章改善（2026-11-16 P1〜P5・実機未検証）」に残存。**
