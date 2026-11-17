@@ -1229,6 +1229,7 @@
   <RWS_Chart_ByCategory>Nach Kategorie</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Nach Kategorie ({0})</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>Kolonie für Verlauf wählen</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>Vergleich nach Kolonie (für diese Statistik gibt es keinen Verlauf)</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>Vergleichswert der Kolonie: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Für diese Statistik ist kein Verlauf verfügbar.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Nur ein Messwert ist verfügbar. Bewege den Mauszeiger über den Punkt, um den Wert zu sehen.</RWS_Chart_HistorySingle>

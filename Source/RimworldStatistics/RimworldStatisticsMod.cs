@@ -22,6 +22,8 @@ public sealed class RimworldStatisticsMod : Mod
 
     private static Vector2 experimentalScroll;
     private static AcquisitionUnit[]? selectableUnits;
+    private static string[]? selectableUnitLabels;
+    private static LoadedLanguage? selectableUnitLabelsLanguage;
 
     private static void ApplyLiveSelectionIfChanged()
     {
@@ -72,6 +74,7 @@ public sealed class RimworldStatisticsMod : Mod
     {
         const float rowHeight = 27f;
         var selectable = selectableUnits ??= AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
+        var unitLabels = UnitLabels(selectable);
         var viewRect = new Rect(0f, 0f, inRect.width - 20f, settingsContentHeight > 0 ? settingsContentHeight : 440f + selectable.Length * rowHeight);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
         try
@@ -119,23 +122,29 @@ public sealed class RimworldStatisticsMod : Mod
             // to preserve their choice without silently restoring all on restart.
             var autoAll = Settings.experimentalUnitIds.Contains(
                 ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
-            foreach (var unit in selectable)
+            for (var index = 0; index < selectable.Length; index++)
             {
+                var unit = selectable[index];
                 if (unit.Kind == AcquisitionKind.Derived)
                     continue;
                 var enabled = autoAll ||
                     Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
                 var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
                     : (string)"RWS_Exp_Snapshot".Translate();
-                var label = unit.Id + " · " + kind;
+                // The unit's name as the Coverage tab shows it; its ID only in the tooltip (#320).
+                var label = unitLabels[index] + " · " + kind;
                 if (UnitRecordingStates.OwnerPackageId(unit.Id) is { } owner && !ModsConfig.IsActive(owner))
                 {
-                    listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(owner));
+                    // The MOD to install: its name, or its package ID when no name is known (an external provider's target).
+                    var required = ModProviderNames.Resolve(owner, UI.MetricText.ActiveModTitle) ?? owner;
+                    TooltipHandler.TipRegion(listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(required)),
+                        unit.Id);
                     continue;
                 }
                 if (unit.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
                 {
-                    listing.Label(label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(UI.MetricText.DlcDisplayName(dlc)));
+                    TooltipHandler.TipRegion(listing.Label(label + " · " +
+                        (string)"RWS_Exp_RequiresDlc".Translate(UI.MetricText.DlcDisplayName(dlc))), unit.Id);
                     continue;
                 }
                 var state = UnitRecordingStates.Get(unit.Id);
@@ -143,7 +152,7 @@ public sealed class RimworldStatisticsMod : Mod
                     label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
                 else if (enabled && state == UnitRecordingState.TargetModMissing)
                     label += " · " + (string)"RWS_Status_ModMissing".Translate();
-                listing.CheckboxLabeled(label, ref enabled);
+                listing.CheckboxLabeled(label, ref enabled, unit.Id);
                 if (autoAll && !enabled)
                 {
                     Settings.experimentalUnitIds = selectable
@@ -171,6 +180,28 @@ public sealed class RimworldStatisticsMod : Mod
             Widgets.EndScrollView();
         }
     }
+
+    /// <summary>
+    /// The units' names, as the Coverage tab names them (#320). They are worked out again only when the language changes:
+    /// the units and the loaded MODs stay the same while the game runs.
+    /// </summary>
+    private static string[] UnitLabels(AcquisitionUnit[] units)
+    {
+        if (selectableUnitLabels is { } cached && cached.Length == units.Length
+            && ReferenceEquals(selectableUnitLabelsLanguage, LanguageDatabase.activeLanguage))
+            return cached;
+        var names = units.Select(u => MetricAcquisitionLabels.UnitLabel(u.Id, UnitRecordingStates.OwnerPackageId(u.Id),
+            UI.MetricText.ActiveModTitle, key => (string)key.Translate()) ?? u.Id).ToArray();
+        selectableUnitLabels = MetricAcquisitionLabels.Distinguish(names, i => UnitStatisticLabels(units[i].Id),
+            StringComparer.CurrentCulture);
+        selectableUnitLabelsLanguage = LanguageDatabase.activeLanguage;
+        return selectableUnitLabels;
+    }
+
+    private static IEnumerable<string> UnitStatisticLabels(string unitId)
+        => MetricRegistry.ImplementedCatalog.Where(d => d.Acquisition == unitId)
+            .Concat(ModProviderAdapters.KnownDescriptors.Where(d => d.AcquisitionId == unitId).Select(d => d.ToDefinition()))
+            .Select(UI.MetricText.Label);
 
     private static string WindowSizeLabel(StatisticsWindowSizePreset preset) => preset switch
     {

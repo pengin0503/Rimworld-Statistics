@@ -1229,6 +1229,7 @@
   <RWS_Chart_ByCategory>По категориям</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>По категориям ({0})</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>Выберите колонию для просмотра истории</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>Сравнение по колониям (у этого показателя нет истории)</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>Значение для сравнения колоний: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>История для этого показателя недоступна.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Доступно одно измерение. Наведите курсор на точку, чтобы увидеть значение.</RWS_Chart_HistorySingle>

@@ -154,18 +154,94 @@ public sealed class MetricAcquisitionLabelTests
             FakeTranslate,
             c => c.ToString(),
             FakeExternalModCategory);
-        Assert.Equal("Hospitality", label);
+        Assert.Equal("Hospitality (Continued)", label);
+    }
+
+    [Theory]
+    [InlineData("vanillaracesexpanded.saurid", "Vanilla Races Expanded - Saurid")]
+    [InlineData("vanillaracesexpanded.phytokin", "Vanilla Races Expanded - Phytokin")]
+    [InlineData("Dubwise.Rimefeller", "Rimefeller")]
+    [InlineData("VanillaExpanded.VExplorationE", "Vanilla Landmarks Expanded")]
+    public void ABuiltInProviderKeepsItsNameWhenLoadedRemovedOrLoadedUnderAnotherName(string packageId, string name)
+    {
+        // #303: the MOD is loaded, removed, or loaded in another MOD set whose title differs (another release or language).
+        Assert.Equal(name, MetricAcquisitionLabels.SafeModDisplayName(packageId, _ => name));
+        Assert.Equal(name, MetricAcquisitionLabels.SafeModDisplayName(packageId, _ => null));
+        Assert.Equal(name, MetricAcquisitionLabels.SafeModDisplayName(packageId.ToUpperInvariant(), _ => name + " [1.6]"));
+    }
+
+    [Theory]
+    [InlineData("English")]
+    [InlineData("Japanese")]
+    public void EveryBuiltInUnitIsNamedByItsTranslationNotItsId(string language)
+    {
+        // #320: the MOD settings and the Coverage tab name a unit with the same function.
+        var strings = TranslationCopyRefinementTests.LoadLanguage(TranslationCopyRefinementTests.LanguagesRoot(), language);
+        var owners = BuiltInModMetricCatalog.Definitions.Where(d => d.Acquisition is not null && d.OwnerPackageId is not null)
+            .GroupBy(d => d.Acquisition!).ToDictionary(g => g.Key, g => g.First().OwnerPackageId);
+        foreach (var unit in AcquisitionUnits.All)
+        {
+            var label = MetricAcquisitionLabels.UnitLabel(unit.Id, owners.GetValueOrDefault(unit.Id), _ => null,
+                key => strings.GetValueOrDefault(key) ?? "");
+            Assert.False(string.IsNullOrWhiteSpace(label), unit.Id);
+            Assert.NotEqual(unit.Id, label);
+            if (unit.Id.IndexOfAny(['_', '.']) >= 0)
+                Assert.DoesNotContain(unit.Id, label!, StringComparison.OrdinalIgnoreCase);
+        }
     }
 
     [Fact]
-    public void ModDisplayNamesPreferInstalledNamesThenKnownNamesAndNeverEchoUnknownIds()
+    public void AModUnitWithoutItsOwnNameIsNamedByItsModAndAnUnknownOneByNothing()
     {
-        Assert.Equal("Active Hospitality", MetricAcquisitionLabels.SafeModDisplayName(
+        Assert.Equal("Vanilla Races Expanded - Saurid", MetricAcquisitionLabels.UnitLabel(
+            "mod.vanillaracesexpanded.saurid.births", "vanillaracesexpanded.saurid", _ => null, FakeTranslate));
+        Assert.Equal("Sample statistics", MetricAcquisitionLabels.UnitLabel(
+            "mod.pengin0503.rws.sdksample.events", "pengin0503.rws.sdksample", _ => "Sample statistics", FakeTranslate));
+        Assert.Null(MetricAcquisitionLabels.UnitLabel(
+            "mod.unknown.publisher.events", "unknown.publisher", _ => null, FakeTranslate));
+        // A unit name that translates to nothing falls back to the MOD's name.
+        Assert.Equal("Dubs Bad Hygiene", MetricAcquisitionLabels.UnitLabel(
+            DbhStatistics.FixturesUnit, DbhStatistics.PackageId, _ => null, _ => " "));
+    }
+
+    [Fact]
+    public void UnitsThatShareANameAreToldApartByTheirFirstStatistic()
+    {
+        var labels = MetricAcquisitionLabels.Distinguish(
+            ["Hospitality (Continued)", "Research", "Hospitality (Continued)", "Shared", "Shared"],
+            i => i switch
+            {
+                0 => ["Guest spending", "Bed income"],
+                2 => ["Guests recruited"],
+                3 => [" ", ""],
+                _ => ["Ignored"],
+            },
+            StringComparer.Ordinal);
+        Assert.Equal(
+            ["Hospitality (Continued) · Bed income", "Research", "Hospitality (Continued) · Guests recruited", "Shared", "Shared · Ignored"],
+            labels);
+    }
+
+    [Fact]
+    public void EveryCatalogNameIsShownAsGivenAndNamesOneProvider()
+    {
+        var names = ModProviderNames.PackageIds.Select(id => ModProviderNames.Known(id)!).ToArray();
+        Assert.All(names, name => Assert.False(string.IsNullOrWhiteSpace(name) || name != name.Trim()));
+        Assert.Equal(names.Length, names.Distinct(StringComparer.OrdinalIgnoreCase).Count());
+        Assert.All(ModProviderNames.NotOnSupportedList, id => Assert.NotNull(ModProviderNames.Known(id)));
+    }
+
+    [Fact]
+    public void ModDisplayNamesUseTheCatalogThenTheLoadedNameAndNeverEchoUnknownIds()
+    {
+        Assert.Equal("Hospitality (Continued)", MetricAcquisitionLabels.SafeModDisplayName(
             "orion.hospitality", _ => "Active Hospitality"));
-        Assert.Equal("Hospitality", MetricAcquisitionLabels.SafeModDisplayName(
-            "orion.hospitality", _ => null));
+        Assert.Equal("Sample statistics", MetricAcquisitionLabels.SafeModDisplayName(
+            "pengin0503.rws.sdksample", _ => " Sample statistics "));
+        Assert.Null(MetricAcquisitionLabels.SafeModDisplayName("pengin0503.rws.sdksample", _ => null));
         Assert.Null(MetricAcquisitionLabels.SafeModDisplayName(
-            "unknown.publisher.hiddenid", id => id));
+            "unknown.publisher.hiddenid", id => id.ToUpperInvariant()));
+        Assert.Null(MetricAcquisitionLabels.SafeModDisplayName(" ", _ => "Anything"));
     }
 
     [Fact]

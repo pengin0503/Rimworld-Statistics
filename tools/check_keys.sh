@@ -27,3 +27,4 @@ if [ "$status" -ne 0 ]; then
 fi
 python3 tools/check_translation_formats.py
 python3 tools/check_mod_source_labels.py
+python3 tools/check_mod_provider_names.py

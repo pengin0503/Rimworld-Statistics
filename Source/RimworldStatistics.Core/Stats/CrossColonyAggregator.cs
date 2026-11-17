@@ -223,18 +223,30 @@ public static class CrossColonyAggregator
 
         var best = ranking[0].Value.Number!.Value;
         var keys = ranking.Where(r => r.Value.Number == best).Select(r => r.Breakdown).Order(Ord).ToArray();
-        var label = string.Join(" / ", keys.Take(4));
-        if (keys.Length > 4)
-            label += " (+" + (keys.Length - 4).ToString(System.Globalization.CultureInfo.InvariantCulture) + ")";
         return new NumericRow
         {
             Definition = definition, Targets = targets, Valid = valid, Breakdowns = ranking,
             Value = new NumericValue
             {
-                Number = best, Label = label,
+                Number = best, Label = TiedLabel(keys, key => key), LabelKeys = keys,
                 Coverage = overallCoverage, Evidence = overallEvidence,
             },
         };
+    }
+
+    /// <summary>How many of the keys tied at the top are named; the rest are counted as "(+N)".</summary>
+    public const int NamedTies = 4;
+
+    /// <summary>
+    /// The keys tied at the top as one label: the first <see cref="NamedTies"/>, each named by <paramref name="name"/>,
+    /// joined with " / ", then " (+N)" for the others. The count is never part of a name (#334).
+    /// </summary>
+    public static string TiedLabel(IReadOnlyList<string> keys, Func<string, string> name)
+    {
+        var label = string.Join(" / ", keys.Take(NamedTies).Select(name));
+        return keys.Count > NamedTies
+            ? label + " (+" + (keys.Count - NamedTies).ToString(System.Globalization.CultureInfo.InvariantCulture) + ")"
+            : label;
     }
 
     private static NumericRow Empty(MetricDefinition definition, int targets, int total)

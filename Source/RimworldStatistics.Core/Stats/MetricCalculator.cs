@@ -31,6 +31,13 @@ public sealed class NumericValue
     public string? Label { get; init; }
 
     /// <summary>
+    /// For a cross-colony top item or category (<c>cross.top.*</c>): every breakdown key tied at the top, in stable key
+    /// order, so the UI names each key as its breakdown row does (#334). <see cref="Label"/> joins the same keys
+    /// (<see cref="CrossColonyAggregator.TiedLabel"/>). In memory only.
+    /// </summary>
+    public IReadOnlyList<string>? LabelKeys { get; init; }
+
+    /// <summary>
     /// The output has no additive scalar (e.g. a goodwill min/max range) and is measured through its breakdown rows. It has no
     /// number of its own, but it is a known reading, never a threshold that was not reached (#329). In memory only.
     /// </summary>

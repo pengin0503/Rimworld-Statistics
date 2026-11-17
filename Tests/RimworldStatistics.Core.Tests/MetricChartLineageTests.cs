@@ -383,6 +383,39 @@ public sealed class MetricChartLineageTests
     }
 
     [Fact]
+    public void ABasicStatisticOffersAColonyHistoryOnlyWhenASaveHoldsIt()
+    {
+        // #333: the chart opens a colony's history only for these keys, so none of them may come back empty.
+        var colony = Colony();
+        colony.Observations.Add(new SaveObservation
+        {
+            FileName = "a.rws", FileSize = Size("a.rws"), LastWriteUtc = Alias("a.rws").LastWriteUtc,
+            Identity = new ColonyIdentity { ModCampaignId = Campaign },
+            Values = new ObservedValues
+            {
+                TicksGame = 60000, RealPlayTime = 3600, NumRaidsEnemy = 2, NumThreatsQueued = 3, ColonistsKilled = 1,
+                ColonistsLaunched = 4, GreatestPopulation = 7, WealthMax = 900, WealthLast = 800, WealthPoints = 1,
+            },
+        });
+        foreach (var key in BasicMetrics.Keys)
+        {
+            var points = MetricCalculator.BuildChartHistory(new Profile(), [colony], colony.Key, BasicMetrics.Definition(key)).Points;
+            Assert.True(BasicMetrics.HasSaveHistory(key) == points.Any(p => p.Value?.Number is not null), key);
+        }
+        Assert.Equal(new[] { BasicMetrics.Departed, BasicMetrics.Endings, BasicMetrics.Saves },
+            BasicMetrics.Keys.Where(k => !BasicMetrics.HasSaveHistory(k)));
+    }
+
+    [Fact]
+    public void BasicChartDefinitionsAggregateAsTheirAllColonyValues()
+    {
+        Assert.Equal(OverallAggregation.Max, BasicMetrics.Definition(BasicMetrics.MaxPopulation).Overall);
+        Assert.All(BasicMetrics.Keys.Where(k => k != BasicMetrics.MaxPopulation),
+            k => Assert.Equal(OverallAggregation.Sum, BasicMetrics.Definition(k).Overall));
+        Assert.Equal(MetricUnit.Silver, BasicMetrics.Definition(BasicMetrics.PeakWealth).Unit);
+    }
+
+    [Fact]
     public void GameSideSnapshotsLinkThroughTheCheckpointOfTheSameSave()
     {
         var definition = MetricRegistry.Find(ResearchStateSnapshot.Finished)!;

@@ -24,6 +24,37 @@ public static class BasicMetrics
 
     public static bool Contains(string key) => Keys.Contains(key, StringComparer.Ordinal);
 
+    /// <summary>
+    /// The basic statistics a colony's history can show: each save holds the value as of its tick (#333). Endings,
+    /// departures and the save count are not read from one save (endings are counted once per type and ordinal across saves,
+    /// departures adjust the launched count by the endings counted, and the save count counts files), so a colony's chart
+    /// does not offer a history of them.
+    /// </summary>
+    public static IReadOnlyList<string> SaveHistoryKeys { get; } =
+        [Days, RealPlayHours, PeakWealth, LastWealth, Raids, Threats, Killed, MaxPopulation];
+
+    public static bool HasSaveHistory(string key) => SaveHistoryKeys.Contains(key, StringComparer.Ordinal);
+
+    /// <summary>
+    /// The definition a chart of a basic statistic uses: its unit, and its all-colonies aggregation as
+    /// <see cref="OverallValue"/> computes it (the largest population is a maximum, the rest are sums).
+    /// </summary>
+    public static MetricDefinition Definition(string key) => new()
+    {
+        Key = key, StoredKey = key, LedgerIds = key,
+        Category = MetricCategory.Colony,
+        Unit = key switch
+        {
+            Days => MetricUnit.Days,
+            RealPlayHours => MetricUnit.Hours,
+            PeakWealth or LastWealth => MetricUnit.Silver,
+            _ => MetricUnit.Count,
+        },
+        Provenance = MetricProvenance.SaveHistory,
+        Overall = key == MaxPopulation ? OverallAggregation.Max : OverallAggregation.Sum,
+        LabelKey = key, DescriptionKey = key,
+    };
+
     public static double? Value(ColonyStats colony, string key)
     {
         if (!colony.HasObservedPoint || !Contains(key))

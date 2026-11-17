@@ -1229,6 +1229,7 @@
   <RWS_Chart_ByCategory>依類別</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>依類別（{0}）</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>選擇殖民地查看趨勢</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>按殖民地比較（此統計沒有歷史記錄）</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>殖民地比較值：{0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>此統計沒有可用的歷史記錄。</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>只有一個記錄點。將游標移到點上即可查看數值。</RWS_Chart_HistorySingle>

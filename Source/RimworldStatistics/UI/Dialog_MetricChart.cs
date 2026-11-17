@@ -62,7 +62,7 @@ internal sealed class Dialog_MetricChart : Window
         IReadOnlyList<MetricChartBar> colonyBars, breakdownBars, overallBars;
         if (BasicMetrics.Contains(metricKey))
         {
-            definition = BasicDefinition(metricKey);
+            definition = BasicMetrics.Definition(metricKey);
             chartLabel = OverviewTab.BasicLabel(metricKey);
             colonyBars = MetricChartSeries.BasicByColony(view.Stats, metricKey);
             breakdownBars = [];
@@ -156,7 +156,7 @@ internal sealed class Dialog_MetricChart : Window
         {
             ChartMode.Breakdown => (string)"RWS_Chart_BreakdownNote".Translate(),
             ChartMode.Overall => (string)"RWS_Chart_OverallNote".Translate(),
-            _ => (string)"RWS_Chart_ColonyNote".Translate(),
+            _ => OpensHistory ? (string)"RWS_Chart_ColonyNote".Translate() : (string)"RWS_Chart_ColonyNoHistory".Translate(),
         };
         var noteHeight = Math.Max(27f, Text.CalcHeight(note, rect.width - 6f));
         Widgets.Label(new Rect(rect.x, y, rect.width, noteHeight), note);
@@ -204,7 +204,7 @@ internal sealed class Dialog_MetricChart : Window
             if (i % 2 == 1)
                 Widgets.DrawHighlight(row, 0.2f);
             Widgets.DrawHighlightIfMouseover(row);
-            if (series.Mode == ChartMode.Colony && Widgets.ButtonInvisible(row))
+            if (series.Mode == ChartMode.Colony && OpensHistory && Widgets.ButtonInvisible(row))
                 selected = bar;
 
             Text.Anchor = TextAnchor.MiddleLeft;
@@ -317,26 +317,16 @@ internal sealed class Dialog_MetricChart : Window
         return new BarText(name, value, name + ": " + value + "\n" + MetricText.State(definition, bar.Value.Coverage) + perDay);
     }
 
+    /// <summary>
+    /// A colony's bar opens its history, except for a basic statistic no save holds (endings, departures, the save count),
+    /// whose history would always be empty (#333).
+    /// </summary>
+    private bool OpensHistory => !BasicMetrics.Contains(definition.Key) || BasicMetrics.HasSaveHistory(definition.Key);
+
     /// <summary>The per-colony rows a colony comparison shows (a derived cross-colony record reads its source metric).</summary>
     private MetricDefinition ColonySource => colonySource ??= MetricChartSeries.ColonyComparisonKey(definition) is var key
         && key != definition.Key && MetricLookup.Definition(view, key) is { } source ? source : definition;
     private MetricDefinition? colonySource;
-
-    private static MetricDefinition BasicDefinition(string key) => new()
-    {
-        Key = key, StoredKey = key, LedgerIds = key,
-        Category = MetricCategory.Colony,
-        Unit = key switch
-        {
-            BasicMetrics.Days => MetricUnit.Days,
-            BasicMetrics.RealPlayHours => MetricUnit.Hours,
-            BasicMetrics.PeakWealth or BasicMetrics.LastWealth => MetricUnit.Silver,
-            _ => MetricUnit.Count,
-        },
-        Provenance = MetricProvenance.SaveHistory,
-        Overall = OverallAggregation.Sum,
-        LabelKey = key, DescriptionKey = key,
-    };
 
     private static (double Min, double Max) RangeOf(IReadOnlyList<MetricChartBar> bars)
     {
