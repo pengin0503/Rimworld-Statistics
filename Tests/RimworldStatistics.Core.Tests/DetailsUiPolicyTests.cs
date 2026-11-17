@@ -121,6 +121,120 @@ public sealed class DetailsUiPolicyTests
     }
 
     [Fact]
+    public void DetailsRowHeights_PlainRowsAreLowerAndTheProviderRowKeepsBothLines()
+    {
+        Assert.True(DetailsRowHeights.Row(hasSource: false) < DetailsRowHeights.Row(hasSource: true));
+        Assert.True(DetailsRowHeights.Plain >= DetailsRowHeights.TitleLineHeight + 4f);
+        Assert.True(DetailsRowHeights.TitleLineHeight <= DetailsRowHeights.WithSource);
+        Assert.True(DetailsRowHeights.SourceLineTop + DetailsRowHeights.SourceLineHeight <= DetailsRowHeights.WithSource);
+        Assert.True(DetailsRowHeights.Plain >= DetailsTableLayout.ChartIconSize + 4f);
+    }
+
+    [Fact]
+    public void RowOffsets_EmptyAndSingleRow()
+    {
+        Assert.Equal(0, RowOffsets.Empty.Count);
+        Assert.Equal(0f, RowOffsets.Empty.Total);
+        Assert.Equal((0, -1), RowOffsets.Empty.Visible(0f, 500f));
+        Assert.Equal(-1, RowOffsets.Empty.RowAt(0f));
+
+        var one = new RowOffsets([28f]);
+        Assert.Equal(28f, one.Total);
+        Assert.Equal((0, 0), one.Visible(0f, 500f));
+        Assert.Equal((0, 0), one.Visible(27.5f, 1f));
+        Assert.Equal((0, -1), one.Visible(28f, 500f));
+        Assert.Equal((0, 0), one.Visible(-10f, 11f));
+        Assert.Equal((0, -1), one.Visible(-10f, 10f));
+        Assert.Equal((0, -1), one.Visible(0f, 0f));
+        Assert.Equal((0, -1), one.Visible(float.NaN, 100f));
+        Assert.Equal((0, -1), one.Visible(0f, float.NaN));
+    }
+
+    [Fact]
+    public void RowOffsets_MixedRowsStartAtTheirPrefixSumAndOnlyOverlappingRowsAreVisible()
+    {
+        // Plain, MOD, plain, MOD, MOD, plain.
+        var offsets = new RowOffsets([28f, 36f, 28f, 36f, 36f, 28f]);
+        Assert.Equal(6, offsets.Count);
+        Assert.Equal(new[] { 0f, 28f, 64f, 92f, 128f, 164f }, Enumerable.Range(0, 6).Select(offsets.Top));
+        Assert.Equal(new[] { 28f, 36f, 28f, 36f, 36f, 28f }, Enumerable.Range(0, 6).Select(offsets.Height));
+        Assert.Equal(192f, offsets.Total);
+
+        Assert.Equal((0, 0), offsets.Visible(0f, 28f));     // row 1 starts exactly at the bottom edge
+        Assert.Equal((0, 1), offsets.Visible(0f, 28.5f));
+        Assert.Equal((2, 3), offsets.Visible(64f, 64f));    // middle
+        Assert.Equal((1, 3), offsets.Visible(63.9f, 28.2f));
+        Assert.Equal((4, 5), offsets.Visible(150f, 1000f)); // end, the view taller than what is left
+        Assert.Equal((0, 5), offsets.Visible(0f, 192f));
+        Assert.Equal((0, -1), offsets.Visible(192f, 50f));
+
+        Assert.Equal(0, offsets.RowAt(-5f));
+        Assert.Equal(1, offsets.RowAt(28f));
+        Assert.Equal(4, offsets.RowAt(163.9f));
+        Assert.Equal(5, offsets.RowAt(500f));
+    }
+
+    [Fact]
+    public void RowOffsets_AllPlainAllProviderAndRandomListsMatchAScanOfEveryRow()
+    {
+        var random = new Random(306);
+        var lists = new List<float[]>
+        {
+            Enumerable.Repeat(DetailsRowHeights.Plain, 50).ToArray(),
+            Enumerable.Repeat(DetailsRowHeights.WithSource, 50).ToArray(),
+        };
+        for (var n = 0; n < 40; n++)
+            lists.Add(Enumerable.Range(0, random.Next(1, 120))
+                .Select(_ => DetailsRowHeights.Row(random.Next(3) == 0)).ToArray());
+
+        foreach (var heights in lists)
+        {
+            var offsets = new RowOffsets(heights);
+            Assert.Equal(heights.Sum(), offsets.Total);
+            for (var probe = 0; probe < 60; probe++)
+            {
+                var scrollY = (float)(random.NextDouble() * (offsets.Total + 80) - 40);
+                var view = (float)(random.NextDouble() * 400);
+                var (first, last) = offsets.Visible(scrollY, view);
+
+                // Every row that overlaps [scrollY, scrollY + view) of the list, found row by row.
+                var visible = new List<int>();
+                float top = 0f;
+                for (var i = 0; i < heights.Length; i++)
+                {
+                    if (top < scrollY + view && top + heights[i] > Math.Max(0f, scrollY) && view > 0f)
+                        visible.Add(i);
+                    top += heights[i];
+                }
+                if (visible.Count == 0)
+                {
+                    Assert.Equal((0, -1), (first, last));
+                }
+                else
+                {
+                    Assert.Equal(visible[0], first);
+                    Assert.Equal(visible[^1], last);
+                    Assert.Equal(visible.Count, last - first + 1);
+                }
+            }
+        }
+    }
+
+    [Fact]
+    public void RowOffsets_LongListDrawsOnlyTheRowsInTheView()
+    {
+        var heights = Enumerable.Range(0, 20_000).Select(i => DetailsRowHeights.Row(i % 7 == 0)).ToArray();
+        var offsets = new RowOffsets(heights);
+        foreach (var scrollY in new[] { 0f, offsets.Total / 2f, offsets.Total - 600f })
+        {
+            var (first, last) = offsets.Visible(scrollY, 600f);
+            Assert.True(last - first + 1 <= 600f / DetailsRowHeights.Plain + 2f);
+            Assert.True(offsets.Top(first) <= scrollY);
+            Assert.True(offsets.Top(last) + offsets.Height(last) >= scrollY + 600f);
+        }
+    }
+
+    [Fact]
     public void FilterSummary_CountsActiveFiltersIgnoringWhitespaceSearch()
     {
         Assert.Equal(0, FilterSummary.CountActiveFilters(false, false, false, null));

@@ -122,6 +122,102 @@ public static class DetailsTableLayout
     }
 }
 
+/// <summary>
+/// Row heights of the Details table (#306): a statistic shown with its provider ("MOD: name") under the title needs two
+/// lines; every other row (and the header) needs one, so it is lower and more rows fit.
+/// </summary>
+public static class DetailsRowHeights
+{
+    public const float Header = 30f;
+    // One line of text, with room above and below: the provider row fits the same line into TitleLineHeight.
+    public const float Plain = 28f;
+    // The title line, then the provider line from SourceLineTop.
+    public const float WithSource = 36f;
+    public const float TitleLineHeight = 19f;
+    public const float SourceLineTop = 18f;
+    public const float SourceLineHeight = 18f;
+
+    public static float Row(bool hasSource) => hasSource ? WithSource : Plain;
+}
+
+/// <summary>
+/// The top of each row of a list whose rows have different heights (prefix sums), and the rows a scroll position shows,
+/// found by binary search, so that only the visible rows are drawn however long the list is.
+/// </summary>
+public sealed class RowOffsets
+{
+    public static RowOffsets Empty { get; } = new([]);
+
+    // tops[i] is the top of row i; tops[Count] is the height of the whole list.
+    private readonly float[] tops;
+
+    public RowOffsets(IReadOnlyList<float> heights)
+    {
+        tops = new float[heights.Count + 1];
+        for (var i = 0; i < heights.Count; i++)
+            tops[i + 1] = tops[i] + Math.Max(0f, heights[i]);
+    }
+
+    public int Count => tops.Length - 1;
+
+    public float Total => tops[^1];
+
+    public float Top(int row) => tops[row];
+
+    public float Height(int row) => tops[row + 1] - tops[row];
+
+    /// <summary>
+    /// The first and last row that overlap [scrollY, scrollY + viewHeight), the range the scroll view shows;
+    /// (0, -1) when none does.
+    /// </summary>
+    public (int First, int Last) Visible(float scrollY, float viewHeight)
+    {
+        if (Count == 0 || !(viewHeight > 0f) || float.IsNaN(scrollY) || float.IsInfinity(scrollY))
+            return (0, -1);
+        var top = Math.Max(0f, scrollY);
+        var bottom = scrollY + viewHeight;
+        if (top >= Total || bottom <= 0f)
+            return (0, -1);
+        var first = RowAt(top);
+        // The last row that starts above the bottom edge; a row that starts exactly there is not shown.
+        var last = LastStartingBefore(bottom);
+        return first <= last ? (first, last) : (0, -1);
+    }
+
+    /// <summary>The row that contains y: the last row whose top is at or above y (y is clamped to the list).</summary>
+    public int RowAt(float y)
+    {
+        if (Count == 0)
+            return -1;
+        int lo = 0, hi = Count - 1;
+        while (lo < hi)
+        {
+            var mid = lo + (hi - lo + 1) / 2;
+            if (tops[mid] <= y)
+                lo = mid;
+            else
+                hi = mid - 1;
+        }
+        return lo;
+    }
+
+    private int LastStartingBefore(float y)
+    {
+        int lo = 0, hi = Count - 1;
+        if (!(tops[0] < y))
+            return -1;
+        while (lo < hi)
+        {
+            var mid = lo + (hi - lo + 1) / 2;
+            if (tops[mid] < y)
+                lo = mid;
+            else
+                hi = mid - 1;
+        }
+        return lo;
+    }
+}
+
 public static class FilterSummary
 {
     public static int CountActiveFilters(
