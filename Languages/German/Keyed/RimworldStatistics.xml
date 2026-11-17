@@ -904,9 +904,9 @@
   <RWS_Hospitality_AssignedBedsDesc>Anzahl verschiedener Gästebetten, die beim erfolgreichen Speichern Hospitality-Gästen auf Heimatkarten des Spielers zugewiesen waren. Gemeinsam genutzte Betten zählen einmal. Bettzuweisungen, nicht tatsächlich Schlafende oder Buchungen über die gesamte Spielzeit.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Begonnene Rekrutierungsanfragen (seit Aktivierung)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>Bestätigte Recruitment-Anfragen seit Aktivierung dieser Statistik. Getrennt von der älteren eingebauten Datenreihe, da sich die Erfassungsmethode geändert hat.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment: Für Anfragen gezahltes Silber (seit Aktivierung)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>Für Anfragen gezahltes Silber (seit Aktivierung)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Gesamtes bestätigt gezahltes Silber für neu angelegte Recruitment-Anfragen seit Aktivierung dieser Statistik, einschließlich Zusatzgebühren. Fehlgeschlagene Versuche zählen nicht; der Wert ist keine Veränderung des Nettovermögens.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: geplante Bewerber (seit Aktivierung)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>Geplante Bewerber (seit Aktivierung)</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>Summe der bei Beginn bezahlter Recruitment-Anfragen ausgewürfelten Bewerberzahlen seit Aktivierung dieser Statistik. Geplante Zahl, nicht die tatsächlich Angekommenen, Beigetretenen oder Kolonisten; ihre Generierung kann fehlschlagen.</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>Wasservorrat in Rohrleitungen (L)</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>Gesamte gespeicherte Liter in an Rohrleitungen angeschlossenen Dubs Bad Hygiene-Wassertanks auf Heimatkarten des Spielers beim erfolgreichen Speichern, jeder Tank nur einmal. Nur auslesbare angeschlossene Tanks zählen. Weder lebenszeitliche Produktion noch Verbrauch. Vor Aktivierung liegende Werte werden nicht rekonstruiert; unlesbare Daten bleiben unbekannt.</RWS_DBH_PipedStorageDesc>
@@ -1061,7 +1061,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>Tatsächliche Fortschritte des Technologiezeitalters des Spielerstamms, nach Zeitalter. Initialisierung, unveränderte oder zurückfallende Zeitalter sowie das Wiederherstellen von Spielständen zählen nicht.</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>Erworbene Grundsteine</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>Neue Grundsteine, die im Spiel mit verfügbaren Punkten gekauft wurden, nach Grundstein. Bereits vorhandene Grundsteine und beim Laden wiederhergestellte zählen nicht.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Erfüllte Wünsche aus Vanilla Aspirations Expanded</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>Erfüllte Wünsche</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Wünsche, die Kolonisten des Spielers durch die normale Erfüllungsprüfung des Mods erstmals erfüllten, nach Wunsch. Debug-Abschlüsse, zuvor erfüllte oder nicht zugewiesene Wünsche sowie das Wiederherstellen eines Spielstands zählen nicht.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Geburten in Spielerschwärmen</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>Neue Insekten, die während des normalen Spiels in Nestern des Spielers entstanden, nach Insektenart. Kokonersatz, wiederhergestellte bestehende Nestbewohner und Erzeugung durch Entwickleraktionen zählen nicht.</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1073,9 +1073,9 @@
   <RWS_Rwom_HealingCastsDesc>Vom Spieler gewirkte Heal- und Advanced Heal-Zauber, die Verletzungen des Ziels tatsächlich verminderten oder eine frisch verlorene Körperstelle stabilisierten.</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>Erreichte Umlaufbahnen</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>Schiffe unter Kontrolle des Spielers, die nach dem Start von der Oberfläche eine stabile Umlaufbahn erreichten.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants: abgeschlossene Übergaben</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>Abgeschlossene Übergaben</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Steckbriefe, die durch die Übergabe des Ziels durch eine Spielerkarawane erledigt wurden, nachdem das Ziel entfernt und der Steckbrief geschlossen war.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants: erhaltenes Silber</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>Erhaltenes Silber</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Silber, das als Belohnung für abgeschlossene Steckbrief-Übergaben tatsächlich einer Spielerkarawane hinzugefügt wurde.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator: abgeschlossene ARC-Upgrades</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Abgeschlossene Bauarbeiten des Spielers, bei denen ein bestehender ARC-Generator des Spielers an derselben Stelle ersetzt wurde, nach neuem Generatortyp.</RWS_VqeGenerator_UpgradesDesc>
@@ -1103,9 +1103,9 @@
   <RWS_VseExpertise_LevelUpsDesc>Permanente Erhöhungen der VSE-Spezialisierungsstufen seit Aktivierung der Aufzeichnung, aufsummiert über alle unabhängigen Kolonien und nach Spezialisierung gruppiert.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE: höchste erreichte Spezialisierungsstufe</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Höchste Spezialisierungsstufe, die durch Erfahrung in unabhängigen Kolonien tatsächlich erreicht wurde; keine Stufensumme und kein Schnappschuss des neuesten Spielstands.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded: verarbeitete Chargen</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>Verarbeitete Chargen</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Abgeschlossene VEF-Verarbeitungen für Suppen, Käse und andere Prozesse von Vanilla Cooking Expanded, nach Prozess. Gewöhnliche Herstellungsaufträge und teilweise blockierte Ausgaben zählen nicht.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded: Gär- und Reifungschargen</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>Gär- und Reifungschargen</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Abgeschlossene VEF-Gär-, Brau- und Reifungschargen von Vanilla Brewing Expanded, nach Prozess. Pausierte, blockierte oder unvollständige Ausgaben und normale Herstellungsaufträge zählen nicht.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Silber für Gästemahlzeiten</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Silber, das auswärtige Gäste für Mahlzeiten in einem Restaurant des Spielers tatsächlich bezahlten. Teilzahlungen zählen nur in Höhe des bezahlten Betrags; offene Rechnungen, kostenlose Mahlzeiten und fremde Geschäfte nicht.</RWS_Gastronomy_SilverCollectedDesc>
@@ -1113,9 +1113,9 @@
   <RWS_VqeDrones_AssembledDesc>Drohnen des Spielers, die nach Ablauf des Produktionstimers tatsächlich vom automatischen Drohnenmontierer erzeugt wurden, nach Pawn-Art. Fortschritt des Timers allein, fehlgeschlagene Erzeugung und Schlüpfen aus Eiern zählen nicht.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory: geschlüpfte Drohnen</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Drohnen des Spielers, die nach erfolgreichem Schlüpfen tatsächlich aus Eiern geboren wurden, nach Pawn-Art. Ohne Drohne zerstörte Eier und im Montierer gefertigte Drohnen zählen nicht.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded: Deepchem in Rohren gelagert</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>Deepchem in Rohren gelagert</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem, das aus Förderpumpen des Spielers tatsächlich in Rohrspeicher aufgenommen wurde, einschließlich Bruchteilen, gemessen bei der Speicherbestätigung des Rohrnetzes. Geplante Produktion, auf den Boden abgegebene Erzeugnisse und blockierte Lagerung zählen nicht.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded: extrahierte DNA</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>Extrahierte DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA-Gegenstände, die bei erfolgreichen Extraktionen des Spielers tatsächlich platziert oder zu Stapeln hinzugefügt wurden, nach Ausgabe-Gegenstand. Ungültige Ziele, fehlgeschlagene Platzierungen, ohne Erzeugnis verbrauchte Ladungen und andere Hybriderzeugung zählen nicht.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE: Nährschlamm in Rohren gelagert</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Nährschlamm, der aus Nährstoffmühlen des Spielers aus Vanilla Nutrient Paste Expanded tatsächlich in das Rohrnetz aufgenommen wurde, einschließlich Bruchteilen. Mahlversuche, verbrauchte Zutaten ohne angenommene Schlammmenge und Rohrlagerung durch andere Gebäude zählen nicht.</RWS_VnpeGrinder_SlurryStoredDesc>
