@@ -7,7 +7,7 @@
 - Use an isolated RimWorld 1.7 `-savedatafolder`, separate from personal saves. Keep a copy of the original profile and save directory.
 - Use the PR #44 **unverified** Statistics ZIP and independent `StatisticsSdkSample.zip` produced by the same CI run. Do not install any `RimworldStatistics.Api.dll` from the sample: only the Statistics host ZIP owns it.
 - Load Harmony before Statistics and the sample MOD after Statistics. With host missing, the sample must still load.
-- Under Statistics experimental settings, explicitly enable `mod.pengin0503.rws.sdksample.events` and `mod.pengin0503.rws.sdksample.state`, including display of recorded experimental values; **restart** after changing settings. No other optional acquisition need be enabled.
+- In Rimworld Statistics' MOD settings, make sure `mod.pengin0503.rws.sdksample.events` and `mod.pengin0503.rws.sdksample.state` are selected (a new installation selects every unit; the list shows them under the sample MOD's name, with the ID in the tooltip). Selection changes apply at once, without a restart; recorded values are always shown. No other optional acquisition need be enabled.
 - Record game build, PR SHA, enabled mods/DLC, save-file hash, error log, checkpoint JSON, selection settings and measured values per case. Do not edit production profile files by hand.
 
 ## Functional acceptance
@@ -15,14 +15,14 @@
 | ID | Procedure | Expected evidence / failure criteria |
 | --- | --- | --- |
 | SDK-01 | Launch with **sample only**, Statistics absent. Open sample settings and press the confirmed-action button, save and reload. | No missing-assembly/type-load exception, sample local count increases, no SDK metric claimed. |
-| SDK-02 | Launch with Statistics + sample but **no opt-in**. Press button and save. | No optional event/snapshot produced; historical entries, if any, are not overwritten. |
-| SDK-03 | Enable both acquisitions, restart. New colony: press confirmed-action once, save A, inspect profile and checkpoint. | Event `...events.completed=1` once; snapshot `...state.count=1`; no duplicate SDK DLLs; only experimental evidence. |
+| SDK-02 | Launch with Statistics + sample, and untick both sample units (or "Clear all"). Press button and save. | No optional event/snapshot produced; historical entries, if any, are not overwritten. |
+| SDK-03 | Select both units again (no restart). New colony: press confirmed-action once, save A, inspect profile and checkpoint. | Event `...events.completed=1` once; snapshot `...state.count=1`; no duplicate SDK DLLs; only experimental evidence. |
 | SDK-04 | Reload save A, press once, save B; reload B, save again **without pressing**. | Event total 2, then 2 again; snapshot local count stays 2. Event IDs are deduplicated. |
 | SDK-05 | From save A create two independent branches by pressing once and saving to B1/B2; import both saves. | Each branch records one event beyond A; profile aggregation follows existing branch/lineage rules and does not count parent A twice. |
-| SDK-06 | With positive data saved, remove sample, restart and save; reinstall and restart. | Old descriptors and earlier observations remain visible when configured. Event coverage becomes partial across unobserved time; no fabricated zero for unavailable snapshots. |
-| SDK-07 | Disable/enable the acquisition selection between sessions, and vary DLC installation without changing the source of the test event. | A closed unit captures nothing; existing saved records remain intact and missing intervals are not called complete. |
-| SDK-08 | Press **Arm snapshot exception for the next save**, then save. | Snapshot acquisition fails and is off for the session; event acquisition and base game save survive. A restart can re-enable the snapshot after opt-in. |
-| SDK-09 | Use the 1.0-compiled probe against host 1.1; test older 1.0 host rejecting a 1.1 requirement and a major 2 request. | CI probe passes; additionally ensure actual game loads SDK binaries without type-loader errors. |
+| SDK-06 | With positive data saved, remove sample, restart and save; reinstall and restart. | Old descriptors and earlier observations remain visible. Event coverage becomes partial across unobserved time; no fabricated zero for unavailable snapshots. |
+| SDK-07 | Untick/tick the acquisition selection during play and between sessions, and vary DLC installation without changing the source of the test event. | A closed unit captures nothing; existing saved records remain intact and missing intervals are not called complete. |
+| SDK-08 | Press **Arm snapshot exception for the next save**, then save. | Snapshot acquisition fails and is off for the session; event acquisition and base game save survive. A restart re-enables the snapshot while it stays selected. |
+| SDK-09 | Build the sample for minor 0 (default) and for minor 1 (`-p:RequiredApiMinor=1`) and load each against the host 1.1. | Both register; the game loads the SDK binaries without type-loader errors. No CI probe covers this: the negotiation (`StatisticsApi.TryGetHost` rejects minor 2+ and other majors) is checked only by reading the code. |
 | SDK-10 | Load a pre-SDK save/profile, save with SDK enabled, restore previous config and import old save. | No original numeric or v1 profile values change or disappear; unknown newer formats remain opaque. |
 
 The sample creates a stable random per-colony token and monotonic action counter **inside its game component**. Each press emits one synthetic confirmed event; it is not a test of Hospitality hooks or any other MOD's real event source. A callback failure is injected only for testing; it should never be enabled for normal play.
@@ -32,7 +32,7 @@ The sample creates a stable random per-colony token and monotonic action counter
 Use the same fixed colony and game version, no speed-changing debug controls, the same MOD/DLC list apart from the SDK sample, identical autosave state and measured time window. Capture independent baselines:
 
 1. **Baseline:** Statistics present with SDK units closed; wait for stabilization, then measure median TPS over at least five repeated fixed-duration trials under the same in-game speed and pawn workload.
-2. **SDK enabled:** Opt in to the sample event/snapshot units, restart, and repeat the exact workload. Produce a known fixed event count in each trial. Compare TPS medians; target is **≤2% median degradation** relative to baseline.
+2. **SDK enabled:** Select the sample event/snapshot units (they are selected by default) and repeat the exact workload. Produce a known fixed event count in each trial. Compare TPS medians; target is **≤2% median degradation** relative to baseline.
 3. **Save overhead:** For each paired case perform at least ten saves of identical or equivalently restored state, measuring wall-clock time from `SafeSaver.Save` entry to completion including SDK callbacks, while separately recording baseline costs. Target additional overhead is **≤50 ms or ≤5%** (report both absolute and relative). Compare distributions and separate disk/OS cache effects.
 4. **Stress cases:** 0, 1, 100 and 4096 unique events; duplicate events; one snapshot callback returning null; one intentional snapshot failure. Check allocation growth and ensure no per-tick provider work appears.
 5. Preserve raw timings, profiler screenshots/logs, median and sample count. Synthetic benchmark results **do not** establish actual TPS performance.

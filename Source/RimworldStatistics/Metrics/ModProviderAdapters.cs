@@ -27,8 +27,9 @@ internal static class ModProviderAdapters
     private static Enabled[] active = Array.Empty<Enabled>();
     private static bool initialized;
 
-    /// <summary>Both embedded optional integrations and separately loaded SDK consumers register in the existing host during Mod construction.</summary>
-    private static IReadOnlyList<ModMetricAdapterRegistration> BuildAllAdapters()
+    // Declarations only: no MOD is probed and nothing is patched until Initialize. The SDK registry reads the same list,
+    // so a unit an SDK provider is refused is exactly a unit declared here (#314).
+    private static readonly Lazy<IReadOnlyList<ModMetricAdapterRegistration>> BuiltIn = new(() =>
     {
         var result = new List<ModMetricAdapterRegistration>();
         try
@@ -40,6 +41,16 @@ internal static class ModProviderAdapters
         {
             Log.Error("[RimworldStatistics] Native optional metrics registration failed.\n" + e);
         }
+        return result;
+    });
+
+    /// <summary>The descriptors of the built-in (non-SDK) integrations, whose acquisition units SDK providers cannot use.</summary>
+    internal static IEnumerable<ModMetricDescriptor> BuiltInDescriptors => BuiltIn.Value.Select(x => x.Descriptor);
+
+    /// <summary>Both embedded optional integrations and separately loaded SDK consumers register in the existing host during Mod construction.</summary>
+    private static IReadOnlyList<ModMetricAdapterRegistration> BuildAllAdapters()
+    {
+        var result = new List<ModMetricAdapterRegistration>(BuiltIn.Value);
         try { result.AddRange(ExternalSdkHost.Instance.BuildAdapters()); }
         catch (Exception e)
         {
@@ -84,7 +95,8 @@ internal static class ModProviderAdapters
         var registry = new ModMetricProviderRegistry();
         var enabled = new List<Enabled>();
         var families = new List<LiveFamily>();
-        // A family with several output descriptors owns one hook and state.
+        // A family with several output descriptors owns one hook and state. Descriptors share a unit only within one
+        // provider: the SDK registry refuses a unit of a built-in integration or of another SDK provider (#314).
         var installedEventFamilies = new HashSet<string>(StringComparer.Ordinal);
         foreach (var registration in declarations)
         {

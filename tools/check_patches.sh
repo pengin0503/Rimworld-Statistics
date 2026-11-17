@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Every [HarmonyPatch] target of the built mod exists in the audited 1.7.4985 index, resolves to one method, and
-# accepts the parameters our Prefix/Postfix inject. Also checks fields read by reflection (AccessTools.Field).
+# accepts the parameters our Prefix/Postfix/Finalizer inject, with types Harmony can bind (tools/PatchTargetCheckSelfTest
+# holds the synthetic cases). Also checks fields read by reflection (AccessTools.Field).
 # Needs: tools/fetch_dev_inputs.py audit .devinputs/audit, and a Release build.
 set -euo pipefail
 cd "$(dirname "$0")/.."

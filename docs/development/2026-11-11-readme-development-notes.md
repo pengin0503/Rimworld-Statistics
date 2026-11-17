@@ -106,5 +106,6 @@ bash tools/refcheck.sh && bash tools/check_patches.sh && bash tools/check_keys.s
 | ツール | 内容 |
 |---|---|
 | `tools/refcheck.sh` | 作った DLL が参照するゲームの型とメンバーが、1.7.4985 に存在するか |
-| `tools/check_patches.sh` | Harmony のパッチ対象と、注入する引数名が 1.7.4985 に存在するか |
+| `tools/check_patches.sh` | Harmony のパッチ対象と、注入する引数（対象の引数・`__instance`・`___field`・`__result` など）が 1.7.4985 に存在し、型と参照渡しが合うか。パッチメソッドの戻り値の型も見る |
+| `tools/PatchTargetCheckSelfTest/run.sh` | 上の検査そのものの確認。合成DLLの正しいパッチを通し、型の違うパッチを1件ずつ拒否するか（ゲーム不要、CIでも実行） |
 | `tools/check_keys.sh` | コードで使う翻訳キーが、日本語と英語の両方にあるか |

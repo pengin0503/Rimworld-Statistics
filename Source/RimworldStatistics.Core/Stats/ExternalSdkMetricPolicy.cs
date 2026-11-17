@@ -13,15 +13,36 @@ public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescr
     public string ValueAccumulatorKey { get; } = "sdk.value." + Descriptor.MetricName.ToLowerInvariant();
 }
 
+/// <summary>
+/// SDK registrations, frozen once at startup. An acquisition unit (<c>mod.owner.family</c>) has one hook, one family state
+/// and one recording choice, so it belongs to one provider: a built-in integration's units are reserved here, and an SDK
+/// metric in such a unit is refused (#314) instead of being accepted into a family whose output never includes it.
+/// </summary>
 public sealed class ExternalSdkMetricRegistry
 {
     private readonly ModMetricProviderRegistry registry =
         new(MetricRegistry.ImplementedCatalog.Select(d => d.Key));
     private readonly Dictionary<string, RegisteredSdkMetric> entries = new(StringComparer.Ordinal);
+    private readonly Func<IEnumerable<ModMetricDescriptor>>? builtIn;
+    private HashSet<string>? builtInUnits;
+    private HashSet<string>? builtInKeys;
     private bool sealedForStartup;
 
+    /// <param name="builtIn">
+    /// The descriptors of the host's built-in (non-SDK) integrations, read once at the first registration, whether or not
+    /// their MODs are loaded: the units they own are refused to SDK providers.
+    /// </param>
+    public ExternalSdkMetricRegistry(Func<IEnumerable<ModMetricDescriptor>>? builtIn = null) => this.builtIn = builtIn;
+
     public ApiRegistrationResult Register(ApiMetricDefinition? api, Func<double?>? snapshot)
+        => Register(api, snapshot, out _);
+
+    /// <param name="builtInUnit">
+    /// When the metric is refused because a built-in integration owns its acquisition unit, that unit; otherwise null.
+    /// </param>
+    public ApiRegistrationResult Register(ApiMetricDefinition? api, Func<double?>? snapshot, out string? builtInUnit)
     {
+        builtInUnit = null;
         if (sealedForStartup)
             return ApiRegistrationResult.Closed;
         if (api is null || !Enum.IsDefined(api.Kind) || !Enum.IsDefined(api.EventMode)
@@ -51,6 +72,14 @@ public sealed class ExternalSdkMetricRegistry
         };
         if (!descriptor.IsValid())
             return ApiRegistrationResult.InvalidDefinition;
+        LoadBuiltIn();
+        if (builtInUnits!.Contains(descriptor.AcquisitionId))
+        {
+            // Same metric: a duplicate; another metric in that unit: a family the built-in provider already defines.
+            builtInUnit = descriptor.AcquisitionId;
+            return builtInKeys!.Contains(descriptor.StableKey)
+                ? ApiRegistrationResult.DuplicateMetric : ApiRegistrationResult.ConflictingFamily;
+        }
         if (entries.ContainsKey(descriptor.StableKey))
             return ApiRegistrationResult.DuplicateMetric;
         if (entries.Values.Any(x => x.Descriptor.AcquisitionId == descriptor.AcquisitionId &&
@@ -68,6 +97,23 @@ public sealed class ExternalSdkMetricRegistry
         var frozen = api with { RequiredPackages = api.RequiredPackages.ToArray() };
         entries.Add(descriptor.StableKey, new RegisteredSdkMetric(frozen, descriptor, snapshot));
         return ApiRegistrationResult.Accepted;
+    }
+
+    private void LoadBuiltIn()
+    {
+        if (builtInUnits is not null)
+            return;
+        var units = new HashSet<string>(StringComparer.Ordinal);
+        var keys = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var descriptor in builtIn?.Invoke() ?? [])
+        {
+            if (descriptor is null || !descriptor.IsValid())
+                continue;
+            units.Add(descriptor.AcquisitionId);
+            keys.Add(descriptor.StableKey);
+        }
+        builtInKeys = keys;
+        builtInUnits = units;
     }
 
     public RegisteredSdkMetric? Find(string id)
