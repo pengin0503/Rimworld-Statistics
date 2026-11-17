@@ -12,6 +12,11 @@
   <RWS_MenuButton>Lifetime stats</RWS_MenuButton>
   <RWS_WindowTitle>Lifetime statistics</RWS_WindowTitle>
   <RWS_WindowError>The statistics window could not be drawn. See the log for details.</RWS_WindowError>
+  <RWS_ViewBuildFailed>The statistics could not be calculated. They are calculated again when the record changes, or when you press Retry.</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>The record file could not be opened. It is opened again when you press Retry or reopen this window.</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>The comparison could not be calculated. It is calculated again when the selection or the record changes, or when you press Retry.</RWS_ComparisonFailed>
+  <RWS_Retry>Retry</RWS_Retry>
+  <RWS_Retrying>Retrying…</RWS_Retrying>
   <RWS_Tab_Overview>Overview</RWS_Tab_Overview>
   <RWS_Tab_Endings>Endings</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colonies</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>Last scan: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>never</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>No import has run in this session yet.</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>A scan is running. Its counts appear when it finishes.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Read {0} / skipped {1} / failed {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrupted)</RWS_Import_CancelledMark>
   <RWS_Import_Error>The import failed: {0}</RWS_Import_Error>

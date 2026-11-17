@@ -12,6 +12,11 @@
   <RWS_MenuButton>Estadísticas totales</RWS_MenuButton>
   <RWS_WindowTitle>Estadísticas totales</RWS_WindowTitle>
   <RWS_WindowError>No se pudo mostrar la ventana de estadísticas. Consulta el registro para más detalles.</RWS_WindowError>
+  <RWS_ViewBuildFailed>No se pudieron calcular las estadísticas. Se volverán a calcular cuando cambie el registro o cuando presiones Reintentar.</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>No se pudo abrir el archivo de registro. Se volverá a abrir cuando presiones Reintentar o vuelvas a abrir esta ventana.</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>No se pudo calcular la comparación. Se volverá a calcular cuando cambie la selección o el registro, o cuando presiones Reintentar.</RWS_ComparisonFailed>
+  <RWS_Retry>Reintentar</RWS_Retry>
+  <RWS_Retrying>Reintentando…</RWS_Retrying>
   <RWS_Tab_Overview>Resumen</RWS_Tab_Overview>
   <RWS_Tab_Endings>Finales</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colonias</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>Último análisis: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>nunca</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>Todavía no se realizó ninguna importación en esta sesión.</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>Hay un análisis en curso. Sus recuentos aparecerán cuando termine.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Leídas: {0} / omitidas: {1} / con error: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrumpida)</RWS_Import_CancelledMark>
   <RWS_Import_Error>La importación falló: {0}</RWS_Import_Error>

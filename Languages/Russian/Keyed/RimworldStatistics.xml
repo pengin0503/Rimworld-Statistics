@@ -12,6 +12,11 @@
   <RWS_MenuButton>Общая статистика</RWS_MenuButton>
   <RWS_WindowTitle>Общая статистика</RWS_WindowTitle>
   <RWS_WindowError>Не удалось отобразить окно статистики. Подробности смотрите в журнале.</RWS_WindowError>
+  <RWS_ViewBuildFailed>Не удалось рассчитать статистику. Она будет рассчитана заново, когда изменится запись или вы нажмёте «Повторить».</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>Не удалось открыть файл записи. Он будет открыт снова, когда вы нажмёте «Повторить» или заново откроете это окно.</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>Не удалось рассчитать сравнение. Оно будет рассчитано заново, когда изменится выбор или запись, или когда вы нажмёте «Повторить».</RWS_ComparisonFailed>
+  <RWS_Retry>Повторить</RWS_Retry>
+  <RWS_Retrying>Повтор…</RWS_Retrying>
   <RWS_Tab_Overview>Обзор</RWS_Tab_Overview>
   <RWS_Tab_Endings>Концовки</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Колонии</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>Последнее сканирование: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>никогда</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>В этом сеансе импорт ещё не выполнялся.</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>Идёт сканирование. Его итоги появятся, когда оно завершится.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Прочитано: {0} / пропущено: {1} / с ошибкой: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (прервано)</RWS_Import_CancelledMark>
   <RWS_Import_Error>Импорт не удался: {0}</RWS_Import_Error>

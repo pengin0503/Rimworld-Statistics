@@ -12,6 +12,11 @@
   <RWS_MenuButton>累计统计</RWS_MenuButton>
   <RWS_WindowTitle>累计统计</RWS_WindowTitle>
   <RWS_WindowError>无法显示统计窗口。详情请查看日志。</RWS_WindowError>
+  <RWS_ViewBuildFailed>无法计算统计。记录发生变化或按下“重试”时会重新计算。</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>无法打开记录文件。按下“重试”或重新打开此窗口时会再次尝试打开。</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>无法计算比较。选择或记录发生变化，或按下“重试”时会重新计算。</RWS_ComparisonFailed>
+  <RWS_Retry>重试</RWS_Retry>
+  <RWS_Retrying>正在重试…</RWS_Retrying>
   <RWS_Tab_Overview>概览</RWS_Tab_Overview>
   <RWS_Tab_Endings>结局</RWS_Tab_Endings>
   <RWS_Tab_Colonies>殖民地</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>上次扫描：{0}</RWS_Import_LastScan>
   <RWS_Import_Never>从未</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>本次运行中尚未进行导入。</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>正在导入。本次的数量将在完成后显示。</RWS_Import_RunningNow>
   <RWS_Import_Counts>已读取 {0} / 已跳过 {1} / 失败 {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark>（已中断）</RWS_Import_CancelledMark>
   <RWS_Import_Error>导入失败：{0}</RWS_Import_Error>

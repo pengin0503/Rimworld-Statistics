@@ -53,25 +53,35 @@ public static class ImportTab
         }
         cached = snapshot;
         var (lastScan, problems) = (snapshot.LastScan, snapshot.Problems);
-        var result = ImportRunner.LastResult;
+        var run = ImportRunner.State;
         var y = rect.y;
 
         Line(rect, ref y, "RWS_Import_LastScan".Translate(lastScan is null ? (string)"RWS_Import_Never".Translate() : Dialog_RimworldStatistics.Local(lastScan)));
-        Line(rect, ref y, result is null
-            ? (string)"RWS_Import_NotRunThisSession".Translate()
-            : (string)"RWS_Import_Counts".Translate(result.Read, result.Skipped, result.Failed) + (result.Cancelled ? (string)"RWS_Import_CancelledMark".Translate() : ""));
-        if (ImportRunner.LastError is { } error)
+        // Only the latest scan's own outcome (#337): a scan that runs or failed shows no counts of an earlier one.
+        switch (run.Phase)
         {
-            GUI.color = ColorLibrary.RedReadable;
-            Line(rect, ref y, "RWS_Import_Error".Translate(error.GetType().Name + ": " + error.Message));
-            GUI.color = Color.white;
+            case ImportRunPhase.NotRun:
+                Line(rect, ref y, "RWS_Import_NotRunThisSession".Translate());
+                break;
+            case ImportRunPhase.Running:
+                Line(rect, ref y, "RWS_Import_RunningNow".Translate());
+                break;
+            case ImportRunPhase.Completed or ImportRunPhase.Cancelled when run.Result is { } result:
+                Line(rect, ref y, (string)"RWS_Import_Counts".Translate(result.Read, result.Skipped, result.Failed)
+                    + (run.Phase == ImportRunPhase.Cancelled ? (string)"RWS_Import_CancelledMark".Translate() : ""));
+                break;
+            default:
+                GUI.color = ColorLibrary.RedReadable;
+                Line(rect, ref y, "RWS_Import_Error".Translate(run.Error is { } error ? error.GetType().Name + ": " + error.Message : ""));
+                GUI.color = Color.white;
+                break;
         }
 
         y += 6f;
         var buttonRect = new Rect(rect.x, y, 180f, 32f);
         if (ImportRunner.Running)
         {
-            var p = ImportRunner.Progress;
+            var p = run.Progress;
             var fraction = p is { Total: > 0 } ? p.Done / (float)p.Total : 0f;
             var bar = new Rect(rect.x, y, Math.Max(0, rect.width - 200f), 32f);
             Widgets.FillableBar(bar, fraction);
