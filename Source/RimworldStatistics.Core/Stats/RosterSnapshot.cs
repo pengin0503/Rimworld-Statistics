@@ -10,11 +10,19 @@ public sealed record RosterPawnFact
     public required string Id { get; init; }
     public RosterKind Kind { get; init; }
     public string? RaceDef { get; init; }
+
+    /// <summary>The race as a qualified def key (owner package / defName): of a humanlike, or of a colony animal.</summary>
     public string? Species { get; init; }
     public double? AgeYears { get; init; }
     public bool Augmented { get; init; }
     public bool Injured { get; init; }
     public IReadOnlyList<RosterSkillFact> Skills { get; init; } = Array.Empty<RosterSkillFact>();
+
+    /// <summary>
+    /// A colony animal's nutrition eaten per game day when fed, as the game itself computes it (#311); 0 for one that eats
+    /// nothing now (no food need, suspended); null when it could not be read. Breakdowns use <see cref="Species"/>.
+    /// </summary>
+    public double? NutritionPerDay { get; init; }
 }
 
 /// <summary>All Phase B roster outputs describe a single successful-save observation.</summary>
@@ -37,6 +45,12 @@ public static class RosterSnapshot
     public const string AgeMean = "population.snapshot.age_mean";
     public const string InjuredPeak = "medicine.injured_peak";
 
+    /// <summary>
+    /// The colony animals' nutrition need per game day at the save (#311): the sum of each animal's
+    /// <see cref="RosterPawnFact.NutritionPerDay"/>, by race (qualified def key). Not compared with the food in stock.
+    /// </summary>
+    public const string AnimalNutritionPerDay = "population.snapshot.animal_nutrition_per_day";
+
     public static Dictionary<string, MetricEntry> Build(IEnumerable<RosterPawnFact> pawns, bool partial = false)
     {
         var seen = new HashSet<string>(StringComparer.Ordinal);
@@ -54,6 +68,9 @@ public static class RosterSnapshot
         var slaveSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
         var animalDefs = new HashSet<string>(StringComparer.Ordinal);
         var passions = new Dictionary<string, long>(StringComparer.Ordinal);
+        var nutrition = 0d;
+        var nutritionByRace = new Dictionary<string, double>(StringComparer.Ordinal);
+        var nutritionPartial = false;
         double oldest = 0, sumAge = 0;
         var ageN = 0L;
         foreach (var p in pawns)
@@ -111,6 +128,20 @@ public static class RosterSnapshot
                     animals++;
                     if (!string.IsNullOrEmpty(p.RaceDef)) animalDefs.Add(p.RaceDef);
                     else partial = true;
+                    // An animal whose need could not be read is left out, and the total is then a lower bound.
+                    if (p.NutritionPerDay is not { } need || !double.IsFinite(need) || need < 0)
+                    {
+                        nutritionPartial = true;
+                        break;
+                    }
+                    nutrition += need;
+                    var race = p.Species ?? MetricKeys.UnknownBucket;
+                    if (race == MetricKeys.UnknownBucket)
+                        nutritionPartial = true;
+                    if (nutritionByRace.ContainsKey(race) || nutritionByRace.Count < FamilyOps.KeyCap)
+                        nutritionByRace[race] = nutritionByRace.GetValueOrDefault(race) + need;
+                    else
+                        nutritionPartial = true;
                     break;
                 case RosterKind.ColonyMech:
                     mechs++;
@@ -152,6 +183,11 @@ public static class RosterSnapshot
         foreach (var (k, value) in passions)
             passion.Values[k] = new MetricValue { Coverage = c, IntegerValue = value };
         result[Passions] = passion;
+        var needCoverage = partial || nutritionPartial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly;
+        var needs = MetricEntry.Of(MetricKeys.Revision(AnimalNutritionPerDay), new MetricValue { Coverage = needCoverage, RealValue = nutrition });
+        foreach (var (race, value) in nutritionByRace)
+            needs.Values[race] = new MetricValue { Coverage = needCoverage, RealValue = value };
+        result[AnimalNutritionPerDay] = needs;
         return result;
 
         void SpeciesPeak(string key, long total, Dictionary<string, long> species)

@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>Наибольший биологический возраст живого свободного поселенца в любом записанном сохранении.</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>Максимум видов животных колонии</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Наибольшее число разных видов живых животных колонии в одном из записанных сохранений.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>Суточная потребность животных колонии в питании</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Общее питание, которое живые животные колонии (на картах, в караванах и в пути — как в числе животных колонии) съедают за день, будучи сытыми, на момент успешного сохранения. Это расчёт самой игры, который показывается для каждого животного при загрузке каравана или транспортных капсул: он учитывает стадию жизни (детёныши едят меньше), беременность, лактацию и подобные состояния. Животные, которым не нужна еда, и животные в криокапсуле считаются как 0. Значение не сравнивается с запасами еды, поэтому дни запаса не показываются. Частично, если какое-то животное не удалось прочитать. Значение по всем колониям складывает последнее записанное сохранение каждой колонии.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Интерес поселенцев по навыкам</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Интерес свободных поселенцев к каждому навыку (нет, слабый, сильный) на момент успешного сохранения.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Средний возраст живых поселенцев</RWS_Metric_RosterAgeMean>

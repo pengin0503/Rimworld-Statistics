@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>記録したセーブにおける、生存中の自由入植者の生物学的年齢の最大値。</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>飼育動物の最多種類数</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>生存中の飼育動物の種類数を記録したセーブごとに数え、その最大値を示します。</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>飼育動物の1日あたり栄養需要</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>正常にセーブした時点で生存している飼育動物（マップ上・キャラバン・輸送中。飼育動物の数と同じ範囲）が、満腹のときに1日に食べる栄養の合計。キャラバンや輸送ポッドの積み込み画面で動物ごとに出る「一日に摂取する栄養素」と同じゲーム自身の計算で、成長段階（幼獣は少ない）・妊娠・授乳などを含みます。食事の必要がない動物と冬眠カプセルの中の動物は0として数えます。食料の備蓄とは比べないため、何日もつかは表示しません。読み取れなかった動物があるときは部分記録です。全コロニーの値は、各コロニーで最後に記録したセーブ時点の値の合計です。</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>スキル別の入植者の情熱</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>正常にセーブした時点の自由入植者について、スキルごとの情熱（なし・小・大）の人数。</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>生存中の入植者の平均年齢</RWS_Metric_RosterAgeMean>

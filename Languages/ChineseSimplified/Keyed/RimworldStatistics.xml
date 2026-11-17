@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>任一次已记录的保存中，存活的自由殖民者的最高生物学年龄。</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>殖民地动物最多种类数</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>任一次已记录的保存中，存活的殖民地动物物种种类数最大值。</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>殖民地动物每日营养需求</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>成功存档时，存活的殖民地动物（地图上、远行队中和运输途中，与殖民地动物数量的范围相同）在吃饱状态下每天食用的营养总和。这是游戏自身的计算，即装载远行队或运输舱时为每只动物显示的数值：包括生命阶段（幼崽吃得较少）、怀孕、哺乳等状态。不需要进食的动物和冬眠舱中的动物计为 0。不与食物储备比较，因此不显示可维持天数。若有动物无法读取，则为部分记录。所有殖民地的数值为各殖民地最后记录的存档时数值之和。</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>按技能统计的殖民者兴趣</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>成功保存时自由殖民者各技能的兴趣（无、普通、强烈）数量。</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>存活殖民者平均年龄</RWS_Metric_RosterAgeMean>

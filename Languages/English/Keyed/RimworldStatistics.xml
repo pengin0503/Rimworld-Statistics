@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>The highest biological age of a living free colonist at any recorded save.</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>Most colony animal species</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>The most distinct species among living colony animals at any one recorded save.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>Colony animals' nutrition need per day</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Total nutrition that living colony animals (on maps, in caravans and in transit, as counted for colony animals) eat per day while fed, at a successful save. It is the game's own "nutrition eaten per day", shown for each animal when loading caravans or transport pods: it includes the life stage (young animals eat less), pregnancy, lactation and similar conditions. Animals that need no food, and animals in a cryptosleep casket, count as 0. It is not compared with the food in stock, so no days of food are shown. Partial when an animal could not be read. The all-colony value adds up each colony's latest recorded save.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Colonist passions by skill</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Free colonists' passions (none, minor, major) for each skill at a successful save.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Mean living colonist age</RWS_Metric_RosterAgeMean>
