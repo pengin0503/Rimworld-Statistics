@@ -51,7 +51,7 @@ public sealed partial class TranslationCopyRefinementTests
     [GeneratedRegex(@"\{\d+\}")]
     private static partial Regex PlaceholderRegex();
 
-    private static DirectoryInfo LanguagesRoot()
+    internal static DirectoryInfo LanguagesRoot()
     {
         for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
         {
@@ -62,7 +62,7 @@ public sealed partial class TranslationCopyRefinementTests
         throw new DirectoryNotFoundException("Languages directory not found above " + AppContext.BaseDirectory);
     }
 
-    private static Dictionary<string, string> LoadLanguage(DirectoryInfo languagesRoot, string language)
+    internal static Dictionary<string, string> LoadLanguage(DirectoryInfo languagesRoot, string language)
     {
         var keyedDir = Path.Combine(languagesRoot.FullName, language, "Keyed");
         var result = new Dictionary<string, string>(StringComparer.Ordinal);

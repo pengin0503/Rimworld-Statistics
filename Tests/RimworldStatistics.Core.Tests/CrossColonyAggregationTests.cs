@@ -84,6 +84,26 @@ public sealed class CrossColonyAggregationTests
     }
 
     [Fact]
+    public void TopTies_CarryEachTiedKeyApartFromTheCountOfTheOthers()
+    {
+        // #334: six categories tied, one of them a MOD-qualified Def; the label names four and counts two.
+        var key = MedicineFamily.Surgeries;
+        var row = Derived(CrossColonyCatalog.TopPrefix + key,
+            ("a", [Record(key, 6, MetricCoverage.Complete,
+                ("success", 1), ("failure", 1), ("some.mod:Surgery_A", 1), ("b", 1), ("c", 1), ("d", 1))]));
+        Assert.Equal(["b", "c", "d", "failure", "some.mod:Surgery_A", "success"], row.Value.LabelKeys);
+        Assert.Equal("b / c / d / failure (+2)", row.Value.Label);
+
+        // The UI names every key as its breakdown row does: the category's translation, never "failure (+2)" as one key.
+        var source = MetricRegistry.Find(row.Definition.StoredKey)!;
+        var named = CrossColonyAggregator.TiedLabel(row.Value.LabelKeys!,
+            k => MetricDisplayPolicy.BreakdownLabelKey(source, k) is { } translation ? "T[" + translation + "]" : k);
+        Assert.Equal("b / c / d / T[RWS_Details_SurgeryFailure] (+2)", named);
+        Assert.Equal("success", CrossColonyAggregator.TiedLabel(["success"], k => k));
+        Assert.Equal("a / b / c / d", CrossColonyAggregator.TiedLabel(["a", "b", "c", "d"], k => k));
+    }
+
+    [Fact]
     public void SnapshotExtrema_ExcludeUnknownRatherThanTreatingAsZero()
     {
         var colonies = new (string Colony, NumericRow[] Rows)[]

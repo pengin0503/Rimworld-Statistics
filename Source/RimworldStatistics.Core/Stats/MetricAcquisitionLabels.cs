@@ -17,82 +17,6 @@ public sealed record CoverageGroup(
 /// </summary>
 public static class MetricAcquisitionLabels
 {
-    private static readonly Dictionary<string, string> KnownModNames = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["oskarpotocki.vanillafactionsexpanded.core"] = "Vanilla Expanded Framework",
-        ["vanillaexpanded.vpsycastse"] = "Vanilla Psycasts Expanded",
-        ["dubwise.dubsbadhygiene"] = "Dubs Bad Hygiene",
-        ["dubwise.rimefeller"] = "Rimefeller",
-        ["dubwise.rimatomics"] = "Rimatomics",
-        ["orion.hospitality"] = "Hospitality",
-        ["orion.gastronomy"] = "Gastronomy",
-        ["pengin0503.recruitment"] = "Recruitment",
-        ["pengin0503.smartapparelupgrade"] = "Smart Apparel Upgrade",
-        ["vanillaexpanded.vanillatradingexpanded"] = "Vanilla Trading Expanded",
-        ["ceteam.combatextended"] = "Combat Extended",
-        ["sarg.alphaanimals"] = "Alpha Animals",
-        ["sarg.alphabiomes"] = "Alpha Biomes",
-        ["sarg.alphamechs"] = "Alpha Mechs",
-        ["mrhydralisk.anomaliesexpected"] = "Anomalies Expected",
-        ["biomesteam.biomesbees"] = "Biomes! Bees",
-        ["biomesteam.biomescaverns"] = "Biomes! Caverns",
-        ["iforgotmysocks.caravanadventures"] = "Caravan Adventures",
-        ["matathias.empire"] = "Empire",
-        ["memegoddess.giddyup"] = "Giddy-up!",
-        ["gogatio.mechanoidupgrades"] = "Mechanoid Upgrades",
-        ["mlie.prisonerarena"] = "Prisoner Arena",
-        ["adamas.hospitalitycasino"] = "Hospitality Casino",
-        ["mlie.roadsoftherim"] = "Roads of the Rim",
-        ["adamas.vendingmachines"] = "Vending Machines",
-        ["zipender.prisonexpanded"] = "Prisoner Expanded",
-        ["spdskatr.projectrimfactory"] = "Project RimFactory Revived",
-        ["forti.rimmarket"] = "RimMarket",
-        ["cj.rimtalk"] = "RimTalk",
-        ["torann.arimworldofmagic"] = "A RimWorld of Magic",
-        ["kentington.saveourship2"] = "Save Our Ship 2",
-        ["pb3n.simplewarrants"] = "Simple Warrants",
-        ["smashphil.vehicleframework"] = "Vehicle Framework",
-        ["divinederivative.romance"] = "Way Better Romance",
-        ["vanillastorytellersexpanded.winstonwave"] = "Winston Wave",
-        ["vanillaexpanded.achievements"] = "Vanilla Achievements Expanded",
-        ["vanillaexpanded.vanillaaspirations"] = "Vanilla Aspirations Expanded",
-        ["vanillaexpanded.vanillaaspirationsexpanded"] = "Vanilla Aspirations Expanded",
-        ["vanillaexpanded.vchemfuele"] = "Vanilla Chemfuel Expanded",
-        ["vanillaexpanded.vcooke"] = "Vanilla Cooking Expanded",
-        ["vanillaexpanded.vbrewe"] = "Vanilla Brewing Expanded",
-        ["vanillaexpanded.vcookestews"] = "Vanilla Cooking Expanded - Stews",
-        ["oskarPotocki.vfe.classical"] = "Vanilla Factions Expanded - Classical",
-        ["oskarPotocki.vfe.deserters"] = "Vanilla Factions Expanded - Deserters",
-        ["oskarPotocki.vfe.empire"] = "Vanilla Factions Expanded - Empire",
-        ["vanillaexpanded.vfefactory"] = "Vanilla Factions Expanded - Mechanoids",
-        ["oskarpotocki.vfe.insectoid2"] = "Vanilla Factions Expanded - Insectoids 2",
-        ["oskarpotocki.vfe.medieval2"] = "Vanilla Factions Expanded - Medieval 2",
-        ["oskarpotocki.vfe.pirates"] = "Vanilla Factions Expanded - Pirates",
-        ["vanillaexpanded.vfepower"] = "Vanilla Furniture Expanded - Power",
-        ["vanillaexpanded.vfesecurity"] = "Vanilla Furniture Expanded - Security",
-        ["oskarpotocki.vanillafactionsexpanded.settlersmodule"] = "Vanilla Factions Expanded - Settlers",
-        ["vanillaexpanded.vfespacer"] = "Vanilla Furniture Expanded - Spacer Module",
-        ["oskarpotocki.vfe.tribals"] = "Vanilla Factions Expanded - Tribals",
-        ["vanillaexpanded.vgeneticse"] = "Vanilla Genetics Expanded",
-        ["vanillaexpanded.helixiengas"] = "Vanilla Helixien Gas Expanded",
-        ["vanillaexpanded.vexploratione"] = "Vanilla Exploration Expanded",
-        ["vanillaexpanded.vnutriente"] = "Vanilla Nutrient Paste Expanded",
-        ["vanillaquestsexpanded.ancients"] = "Vanilla Quests Expanded - Ancients",
-        ["vanillaquestsexpanded.cryptoforge"] = "Vanilla Quests Expanded - Cryptoforge",
-        ["vanillaquestsexpanded.deadlife"] = "Vanilla Quests Expanded - Deadlife",
-        ["vanillaquestsexpanded.dronefactory"] = "Vanilla Quests Expanded - Drone Factory",
-        ["vanillaquestsexpanded.generator"] = "Vanilla Quests Expanded - Generator",
-        ["vanillaracesexpanded.android"] = "Vanilla Races Expanded - Android",
-        ["vanillaracesexpanded.fungoid"] = "Vanilla Races Expanded - Fungoid",
-        ["vanillaracesexpanded.insector"] = "Vanilla Races Expanded - Insector",
-        ["vanillaracesexpanded.lycanthrope"] = "Vanilla Races Expanded - Lycanthrope",
-        ["vanillaexpanded.recycling"] = "Vanilla Recycling Expanded",
-        ["vanillaracesexpanded.sanguophage"] = "Vanilla Races Expanded - Sanguophage",
-        ["vanillaexpanded.skills"] = "Vanilla Skills Expanded",
-        ["vanillaexpanded.vanillasocialinteractionsexpanded"] = "Vanilla Social Interactions Expanded",
-        ["vanillaexpanded.vwenl"] = "Vanilla Weapons Expanded - Non-Lethal",
-    };
-
     public static string GroupId(MetricStatus status)
         => status.Definition.Acquisition ?? status.Definition.Provenance.ToString();
 
@@ -150,22 +74,51 @@ public static class MetricAcquisitionLabels
         _ => null,
     };
 
-    public static string? KnownModDisplayName(string? packageId)
+    /// <summary>
+    /// The provider name shown as "MOD: name": the catalog name of a built-in provider, whether or not the MOD is loaded,
+    /// else the loaded MOD's own name, else null (#303). A package ID is never shown as a name.
+    /// </summary>
+    public static string? SafeModDisplayName(string? packageId, Func<string, string?>? activeModNameLookup)
+        => ModProviderNames.Resolve(packageId, activeModNameLookup);
+
+    /// <summary>
+    /// The name of an acquisition unit, the same in the Coverage tab and the MOD settings (#320): its translated name, else
+    /// the name of the MOD that provides it (<see cref="SafeModDisplayName"/>), else null. Only then does a caller fall back
+    /// to something else.
+    /// </summary>
+    public static string? UnitLabel(
+        string? acquisitionId,
+        string? ownerPackageId,
+        Func<string, string?>? activeModNameLookup,
+        Func<string, string> translateKey)
     {
-        if (string.IsNullOrWhiteSpace(packageId))
-            return null;
-        return KnownModNames.GetValueOrDefault(packageId.Trim());
+        if (UnitLabelKey(acquisitionId) is { } key && translateKey(key) is { } text && !string.IsNullOrWhiteSpace(text))
+            return text.Trim();
+        return SafeModDisplayName(ownerPackageId, activeModNameLookup);
     }
 
-    public static string? SafeModDisplayName(string? packageId, Func<string, string?>? activeModNameLookup)
+    /// <summary>
+    /// Unit names told apart (#320): a name that two units share (two units of one MOD) is followed by " · " and the first
+    /// of that unit's statistic names in <paramref name="comparer"/> order, the first statistic the Coverage tab lists under it.
+    /// A unit with no statistic names keeps the shared name.
+    /// </summary>
+    public static string[] Distinguish(
+        IReadOnlyList<string> labels,
+        Func<int, IEnumerable<string>> statisticLabels,
+        StringComparer comparer)
     {
-        if (string.IsNullOrWhiteSpace(packageId))
-            return null;
-        var trimmed = packageId.Trim();
-        var active = activeModNameLookup?.Invoke(trimmed)?.Trim();
-        if (!string.IsNullOrEmpty(active) && !string.Equals(active, trimmed, StringComparison.OrdinalIgnoreCase))
-            return active;
-        return KnownModDisplayName(trimmed);
+        var shared = labels.GroupBy(l => l, comparer).Where(g => g.Count() > 1).Select(g => g.Key).ToHashSet(comparer);
+        var result = new string[labels.Count];
+        for (var i = 0; i < labels.Count; i++)
+        {
+            result[i] = labels[i];
+            if (!shared.Contains(labels[i]))
+                continue;
+            var first = statisticLabels(i).Where(s => !string.IsNullOrWhiteSpace(s)).OrderBy(s => s, comparer).FirstOrDefault();
+            if (first is not null)
+                result[i] = labels[i] + " · " + first;
+        }
+        return result;
     }
 
     public static string ResolveGroupLabel(
@@ -178,11 +131,8 @@ public static class MetricAcquisitionLabels
         if (definition.Acquisition is null)
             return NonEmpty(translateKey(ProvenanceGroupLabelKey(definition.Provenance)), "Statistics");
 
-        if (UnitLabelKey(definition.Acquisition) is { } unitKey)
-            return NonEmpty(translateKey(unitKey), "Statistics");
-
-        if (SafeModDisplayName(definition.OwnerPackageId, activeModNameLookup) is { } modTitle)
-            return modTitle;
+        if (UnitLabel(definition.Acquisition, definition.OwnerPackageId, activeModNameLookup, translateKey) is { } unitLabel)
+            return unitLabel;
 
         if (Enum.IsDefined(definition.Category))
         {

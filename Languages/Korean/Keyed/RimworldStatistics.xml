@@ -1229,6 +1229,7 @@
   <RWS_Chart_ByCategory>항목별</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>항목별 ({0})</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>정착지를 선택해 추이 보기</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>정착지별 비교 (이 통계에는 기록이 없습니다)</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>정착지 비교 값: {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>이 통계에 대한 기록이 없습니다.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>기록이 한 점뿐입니다. 점에 마우스를 올리면 값을 볼 수 있습니다.</RWS_Chart_HistorySingle>

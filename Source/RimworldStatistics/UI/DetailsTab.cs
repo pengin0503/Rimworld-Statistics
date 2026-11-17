@@ -116,7 +116,9 @@ public static class DetailsTab
             if (!canGroupNow)
                 GUI.color = new Color(0.65f, 0.65f, 0.65f);
             var nextGroup = groupDerived;
-            Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup);
+            // Greyed out while searching or sorting by value, and then it does not take clicks either (#336).
+            Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup,
+                disabled: !canGroupNow);
             GUI.color = previousColor;
             TooltipHandler.TipRegion(toggleRect,
                 canGroupNow ? "RWS_Details_GroupDerivedTip".Translate() : "RWS_Details_GroupDerivedFlatTip".Translate());
@@ -619,9 +621,13 @@ public static class DetailsTab
         var d = row.Definition;
         var v = row.Value;
         var tip = new StringBuilder();
-        tip.Append(label).Append('\n')
-            .Append(d.ProviderId is not null && d.DescriptionKey == d.Key ? d.Key
-                : (string)d.DescriptionKey.Translate()).Append("\n\n");
+        // A provider's statistic without a translated description shows none, never its key (#336).
+        var description = d.ProviderId is not null ? ProviderMetricText.Description(d, TryTranslate)
+            : (string)d.DescriptionKey.Translate();
+        tip.Append(label).Append('\n');
+        if (description is not null)
+            tip.Append(description).Append('\n');
+        tip.Append('\n');
         if (d.OwnerPackageId is { } owner)
         {
             tip.Append((string)"RWS_Mod_Provider".Translate(MetricText.ModDisplayName(owner))).Append('\n');
@@ -703,10 +709,16 @@ public static class DetailsTab
         {
             // Cross-colony records retain their original category but still
             // show the winning item or the colony holding the record.
-            if (v.Label is { } holderLabel)
-                value += " · " + (CrossColonyCatalog.IsDerived(d) && d.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal)
-                    ? string.Join(" / ", holderLabel.Split(new[] { " / " }, StringSplitOptions.None).Select(ItemLabel))
-                    : holderLabel);
+            if (v.LabelKeys is { Count: > 0 } tied)
+            {
+                // The top items or categories named as their breakdown rows name them (#334).
+                var source = MetricRegistry.Find(d.StoredKey) ?? d;
+                var useThingLabel = d.DescriptionKey == "RWS_CrossDesc_TopType";
+                value += " · " + CrossColonyAggregator.TiedLabel(tied,
+                    key => MetricText.Breakdown(source, key, useThingLabel));
+            }
+            else if (v.Label is { } holderLabel)
+                value += " · " + holderLabel;
             else if (v.ColonyKey is { } holderColony)
                 value += " · " + colonyName(holderColony);
         }
@@ -761,18 +773,22 @@ public static class DetailsTab
                             ? (string)"RWS_Cross_TopCategory".Translate((string)source.LabelKey.Translate())
                             : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
         else
-            label = d.ProviderId is not null && d.LabelKey == d.Key
-                // An unlabeled third-party SDK metric must not leak 'mod.owner.family.name'
-                // into the visible statistic title. Keep the last metric identifier only.
-                ? d.Key[(d.Key.LastIndexOf('.') + 1)..].Replace('_', ' ').Replace('-', ' ')
+            label = d.ProviderId is not null
+                // A provider's statistic without a translation must not show 'mod.owner.family.name' (#336).
+                ? ProviderMetricText.Label(d, TryTranslate)
                 : (string)d.LabelKey.Translate();
 
         // Show only the measured statistic; source MOD attribution is separate UI metadata.
         return label;
     }
 
-    private static string ItemLabel(string defName)
-        => DefDatabase<ThingDef>.GetNamedSilentFail(defName)?.label ?? defName;
+    /// <summary>The key's text in the active language, else in the default language (as <c>Translate()</c> falls back), else null.</summary>
+    private static string? TryTranslate(string key)
+    {
+        if (key.TryTranslate(out var text))
+            return text;
+        return LanguageDatabase.defaultLanguage is { } fallback && fallback.TryGetTextFromKey(key, out text) ? (string)text : null;
+    }
 
     private static string Name(StatsResult stats, string key)
         => stats.Colonies.FirstOrDefault(c => c.Key == key) is { } s ? Dialog_RimworldStatistics.ColonyName(s) : key;

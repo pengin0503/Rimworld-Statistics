@@ -1230,6 +1230,7 @@
   <RWS_Chart_ByCategory>内訳別</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>内訳別（{0}）</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>コロニーを選択して推移を見る</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>コロニー別の比較（この統計には推移がありません）</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>コロニー比較の値：{0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>この統計の履歴はありません。</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>記録は1点です。点にカーソルを合わせると値を確認できます。</RWS_Chart_HistorySingle>

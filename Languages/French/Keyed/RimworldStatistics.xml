@@ -1229,6 +1229,7 @@
   <RWS_Chart_ByCategory>Par catégorie</RWS_Chart_ByCategory>
   <RWS_Chart_ByCategoryColony>Par catégorie ({0})</RWS_Chart_ByCategoryColony>
   <RWS_Chart_ColonyNote>Sélectionnez une colonie pour voir l'historique</RWS_Chart_ColonyNote>
+  <RWS_Chart_ColonyNoHistory>Comparaison par colonie (cette statistique n'a pas d'historique)</RWS_Chart_ColonyNoHistory>
   <RWS_Chart_HistoryRecord>Valeur comparée pour cette colonie : {0}</RWS_Chart_HistoryRecord>
   <RWS_Chart_HistoryEmpty>Aucun historique disponible pour cette statistique.</RWS_Chart_HistoryEmpty>
   <RWS_Chart_HistorySingle>Un seul relevé est disponible. Survolez le point pour afficher sa valeur.</RWS_Chart_HistorySingle>

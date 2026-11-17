@@ -251,27 +251,26 @@ internal static class CoverageTab
             cat => (string)"RWS_Status_ExternalModCategory".Translate(cat),
             StringComparer.CurrentCulture);
 
-        var duplicateLabels = groups
-            .GroupBy(g => g.Label, StringComparer.CurrentCulture)
-            .Where(g => g.Count() > 1)
-            .Select(g => g.Key)
-            .ToHashSet(StringComparer.CurrentCulture);
+        // Two units with one name (two units of one MOD) are told apart as in the MOD settings (#320).
+        var displayLabels = MetricAcquisitionLabels.Distinguish(
+            groups.Select(g => g.Label).ToArray(),
+            i => groups[i].Items.Select(s => MetricText.Label(s.Definition)),
+            StringComparer.CurrentCulture);
 
         var results = new List<DisplayRow>(filtered.Length + groups.Count);
-        foreach (var group in groups)
+        for (var index = 0; index < groups.Count; index++)
         {
+            var group = groups[index];
             var expanded = MetricAcquisitionLabels.IsGroupExpanded(group.GroupId, Expanded, term);
             var reqParts = new List<string>(2);
             if (!string.IsNullOrEmpty(group.RequiredDlc))
                 reqParts.Add(MetricText.DlcDisplayName(group.RequiredDlc!));
-            if (!string.IsNullOrEmpty(group.OwnerPackageId)
-                && MetricAcquisitionLabels.SafeModDisplayName(group.OwnerPackageId, MetricText.ActiveModTitle) is { } modTitle)
-                reqParts.Add((string)"RWS_Mod_Provider".Translate(modTitle));
+            // The same "MOD: name" as each statistic's row and tooltip, with the generic label for an unknown provider (#303).
+            if (!string.IsNullOrEmpty(group.OwnerPackageId))
+                reqParts.Add((string)"RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(group.OwnerPackageId!)));
             var requirement = string.Join(" · ", reqParts);
 
-            var displayLabel = duplicateLabels.Contains(group.Label) && group.Items.Count > 0
-                ? group.Label + " · " + MetricText.Label(group.Items[0].Definition)
-                : group.Label;
+            var displayLabel = displayLabels[index];
 
             results.Add(new DisplayRow(
                 group.GroupId,
