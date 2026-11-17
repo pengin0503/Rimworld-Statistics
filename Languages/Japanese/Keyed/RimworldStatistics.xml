@@ -832,16 +832,16 @@
   <RWS_Exp_ExperimentalRow>実験的</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>記録開始: ゲーム内{0}日目</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>必要なMOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>提供元MOD：{0}</RWS_Mod_Provider>
+  <RWS_Mod_Provider>MOD：{0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>提供元のMODが現在導入されていません。記録済みの値は保持されますが、新しい値は記録されません。</RWS_Mod_SourceUnavailable>
   <!-- Legacy labels: historical records remain readable when optional addons are absent. -->
   <RWS_ModRecruitment_Started>募集依頼の開始回数</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>記録開始後に正常に作成されたRecruitment 1.1.2の募集依頼の数。記録を有効にする前の期間は部分的な記録です。作成後にキャンセルした依頼も開始として数えます。</RWS_ModRecruitment_StartedDesc>
   <RWS_ModRecruitment_Active>進行中の募集依頼数</RWS_ModRecruitment_Active>
   <RWS_ModRecruitment_ActiveDesc>最新の正常なセーブの時点で進行中だった募集依頼の数。通算値ではありません。</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>Hospitality：滞在中の宿泊客（セーブ時点）</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuests>滞在中の宿泊客（セーブ時点）</RWS_ModHospitality_PresentGuests>
   <RWS_ModHospitality_PresentGuestsDesc>正常にセーブした時点でプレイヤーの拠点マップに滞在していたHospitalityの宿泊客の数。通算の来訪数ではありません。</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>Hospitality：滞在中の宿泊グループ（セーブ時点）</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroups>滞在中の宿泊グループ（セーブ時点）</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>正常にセーブした時点でプレイヤーの拠点マップに滞在していたHospitalityの宿泊グループの数。通算の来訪数ではありません。</RWS_ModHospitality_PresentGroupsDesc>
   <RWS_Details_ViewLifetime>通算（記録期間）</RWS_Details_ViewLifetime>
   <RWS_Details_ViewOther>その他</RWS_Details_ViewOther>
@@ -885,23 +885,23 @@
   <RWS_CrossDesc_TopCategory>全コロニーの種類別合計を比較します。</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>各コロニーのセーブ時点の合計：{0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>各コロニーの記録時点の値を合計します。</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>Hospitality：到着した宿泊グループ（有効化後）</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroups>到着した宿泊グループ（有効化後）</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>この統計を有効にしてから、プレイヤーの拠点マップに到着したことを確認したHospitalityの訪問グループの数。救助された客のために作られた代わりのグループは含めません。ロード後の重複は除外します。MOD導入前の来訪は推定しません。</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>Hospitality：到着した宿泊客の延べ人数（有効化後）</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuests>到着した宿泊客の延べ人数（有効化後）</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>この統計を有効にしてから、プレイヤーの拠点マップに到着したことを確認したHospitalityのグループの所属人数の合計。同じ人の再訪も数えるため、異なる人の数でも現在の宿泊客の数でもありません。それ以前の来訪者は不明です。</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>Hospitality：平穏に帰った宿泊グループ（有効化後）</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompleted>平穏に帰った宿泊グループ（有効化後）</RWS_Hospitality_VisitsCompleted>
   <RWS_Hospitality_VisitsCompletedDesc>敵対していないHospitalityのグループについて、滞在が終わり、実際にマップから出たことを確認し、残った人や失われた人がないままグループが解散した時点で数えます。追い返されたグループや再編成されたグループは含めません。帰る途中でロードした場合は判断材料が足りないことがあり、その場合は推測せずに除外します。</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>Hospitality：加入した宿泊客（有効化後）</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_Recruited>加入した宿泊客（有効化後）</RWS_Hospitality_Recruited>
   <RWS_Hospitality_RecruitedDesc>この統計を有効にしてから確認されたHospitalityの宿泊客の加入の数。Hospitalityの勧誘処理がプレイヤー派閥のポーンとして完了した場合にだけ数えます。それ以前の加入は推定しません。</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>Hospitality：強制的に加入させた宿泊客（有効化後）</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruit>強制的に加入させた宿泊客（有効化後）</RWS_Hospitality_ForcedRecruit>
   <RWS_Hospitality_ForcedRecruitDesc>この統計を有効にしてから確認された宿泊客の加入のうち、Hospitalityが強制として扱ったもの。加入成功数の内訳です。</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>Hospitality：自発的に加入した宿泊客（有効化後）</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruit>自発的に加入した宿泊客（有効化後）</RWS_Hospitality_VoluntaryRecruit>
   <RWS_Hospitality_VoluntaryRecruitDesc>この統計を有効にしてから確認された宿泊客の加入のうち、Hospitalityが強制として扱わなかったもの。加入成功数の内訳です。</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>Hospitalityの宿泊客が買った品の数</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnits>宿泊客が買った品の数</RWS_Hospitality_ShoppingUnits>
   <RWS_Hospitality_ShoppingUnitsDesc>この統計を有効にしてから、プレイヤーの拠点マップで完了した買い物ジョブによって宿泊客の所持品や装備に加わった品の数。</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>Hospitalityの宿泊客が支払ったシルバー</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilver>宿泊客が支払ったシルバー</RWS_Hospitality_ShoppingSilver>
   <RWS_Hospitality_ShoppingSilverDesc>この統計を有効にしてから、同じ買い物ジョブで宿泊客から受け取ったシルバー。</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>Hospitality：宿泊客に割り当てたベッド（セーブ時点）</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBeds>宿泊客に割り当てたベッド（セーブ時点）</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>正常にセーブした時点で、プレイヤーの拠点マップにいるHospitalityの宿泊客に割り当てられていたゲスト用ベッドの数（重複なし）。共用のベッドは1台と数えます。ベッドの割り当て数であり、実際に寝ている人数や通算の宿泊件数ではありません。</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>募集依頼の開始回数（有効化後）</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>この統計を有効にしてから確認されたRecruitmentの募集依頼の数。記録方式が変わったため、以前の本体内蔵の系列とは別に表示します。</RWS_AddonRecruitment_StartedDesc>
@@ -909,13 +909,13 @@
   <RWS_AddonRecruitment_SilverSpentDesc>この統計を有効にしてから、新たに作成したRecruitmentの募集依頼に実際に支払ったシルバーの合計。追加料金を含みます。失敗した依頼は含まず、純資産の増減を表すものでもありません。</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment：予定応募者数（有効化後）</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>この統計を有効にしてから、有料のRecruitmentの募集を開始したときに決まった予定応募者数の合計。実際に到着・加入した人数や入植者になった人数ではなく、生成に失敗することもあります。</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene：配管内の貯水量（L）</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorage>配管内の貯水量（L）</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>正常にセーブした時点で、プレイヤーの拠点マップにある配管に接続されたDubs Bad Hygieneの貯水タンクの水量（リットル）の合計。タンクは重複して数えません。読み取れる接続済みのタンクだけが対象で、通算の生産量や使用量ではありません。統計を有効にする前の値は復元せず、データを読み取れない場合は不明になります。</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene：配管接続タンク容量（L）</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacity>配管接続タンク容量（L）</RWS_DBH_PipedCapacity>
   <RWS_DBH_PipedCapacityDesc>最新の正常なセーブの時点で、プレイヤーの拠点マップにある配管接続済みの貯水タンクの最大容量（リットル）の合計（重複なし）。通算の量ではありません。</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene：ポンプ供給能力（L/日）</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacity>ポンプ供給能力（L/日）</RWS_DBH_PumpCapacity>
   <RWS_DBH_PumpCapacityDesc>正常にセーブした時点で使用中の各配管網について、Dubs Bad Hygieneが定めるポンプの定格能力を重複なく合計した値（L/ゲーム内日）。実際に汲み上げた水量ではなく、能力を表します。</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene：地下水供給能力（L/日）</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacity>地下水供給能力（L/日）</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>正常にセーブした時点で使用中の各配管網について、Dubs Bad Hygieneが定める取水口・地下水の定格能力を重複なく合計した値（L/ゲーム内日）。実際に汲み上げた量ではありません。</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>自動着替えの指示回数</RWS_SAU_OrdersIssued>
   <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgradeが実際に出した自動着替えの指示数。着替えが完了した回数ではありません。取得を有効にした後の出来事だけを数えます。実験的な統計です。</RWS_SAU_OrdersIssuedDesc>
@@ -1012,13 +1012,13 @@
   <RWS_Details_StatusPartial>部分記録</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>未取得</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>実験的</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>VPE サイキャスターのレベル上昇</RWS_Metric_VpeLevelsGained>
+  <RWS_Metric_VpeLevelsGained>サイキャスターのレベル上昇</RWS_Metric_VpeLevelsGained>
   <RWS_MetricDesc_VpeLevelsGained>記録開始後に確認された、プレイヤー派閥のポーンのVPEサイキャスターレベルの上昇の合計。</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>VPE サイキャスター数</RWS_Metric_VpePsycasters>
+  <RWS_Metric_VpePsycasters>サイキャスター数</RWS_Metric_VpePsycasters>
   <RWS_MetricDesc_VpePsycasters>記録したセーブの時点で、VPEのサイキャスターのインプラントを持つ自由入植者の数。</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>VPE サイキャスターの最高レベル</RWS_Metric_VpeMaxLevel>
+  <RWS_Metric_VpeMaxLevel>サイキャスターの最高レベル</RWS_Metric_VpeMaxLevel>
   <RWS_MetricDesc_VpeMaxLevel>記録したセーブの時点での、自由入植者のVPEサイキャスターレベルの最高値。</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>VPE サイキャスターのレベル合計</RWS_Metric_VpeSumLevels>
+  <RWS_Metric_VpeSumLevels>サイキャスターのレベル合計</RWS_Metric_VpeSumLevels>
   <RWS_MetricDesc_VpeSumLevels>記録したセーブの時点での、自由入植者のVPEサイキャスターレベルの合計。</RWS_MetricDesc_VpeSumLevels>
   <RWS_Metric_OutpostPawns>前哨基地の駐在人数</RWS_Metric_OutpostPawns>
   <RWS_MetricDesc_OutpostPawns>記録したセーブの時点で、プレイヤーが所有する前哨基地に駐在しているポーンの数。</RWS_MetricDesc_OutpostPawns>
@@ -1028,11 +1028,11 @@
   <RWS_MetricDesc_OutpostDeliveries>前哨基地の配送処理に渡された、空でない生産品のまとまりの数。前哨基地に保管中のものや輸送中のものは、まだ届いていない場合があります。</RWS_MetricDesc_OutpostDeliveries>
   <RWS_Metric_OutpostProducts>品目別の前哨基地の生産品</RWS_Metric_OutpostProducts>
   <RWS_MetricDesc_OutpostProducts>前哨基地の配送処理に渡された生産品の数を品目別に集計したもの。</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>種類別のDubs Bad Hygieneの設備数</RWS_Metric_DbhFixtures>
+  <RWS_Metric_DbhFixtures>種類別の設備数</RWS_Metric_DbhFixtures>
   <RWS_MetricDesc_DbhFixtures>正常にセーブした時点で、拠点マップにあるプレイヤー所有のDubs Bad Hygieneの建物の数。</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>ジョブ別のDubs Bad Hygieneの衛生行動の完了数</RWS_Metric_DbhActivities>
+  <RWS_Metric_DbhActivities>ジョブ別の衛生行動の完了数</RWS_Metric_DbhActivities>
   <RWS_MetricDesc_DbhActivities>この統計を有効にしてから、拠点マップでプレイヤーのポーンが完了したトイレ・シャワー・確認済みの洗浄ジョブの回数。</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Smart Apparel Upgradeの着替え完了数</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwaps>着替え完了数</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>この統計を有効にしてから、Smart Apparel Upgradeの自動指示によって選ばれた服を実際に着終えた回数。</RWS_SAU_CompletedSwapsDesc>
   <RWS_VTE_BankCredits>VTE 銀行への入金額（手数料控除後）</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>この実験的な統計を有効にしてから、完了したVTE銀行への預け入れによって口座に入金された正味のシルバー（銀行手数料の控除後）。契約の報酬の入金は含めません。</RWS_VTE_BankCreditsDesc>
@@ -1050,29 +1050,29 @@
   <RWS_VTE_ContractPurchasesDesc>プレイヤーが出したVTEの購入契約のうち、VTEの銀行取引で代金を全額支払い、生成された品物で達成されたものの数。支払いのキャンセルや、支払わずに契約を受けただけでは数えません。</RWS_VTE_ContractPurchasesDesc>
   <RWS_VTE_ContractReceived>VTE 契約で購入した品物の数</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>支払いが完了したプレイヤーのVTE購入契約によって生成された品物の数。NPCの買い取り契約への納品や通常の交易とは別です。</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>VPE サイキャストの使用回数</RWS_Metric_VpeCasts>
+  <RWS_Metric_VpeCasts>サイキャストの使用回数</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>プレイヤーの自由入植者がVanilla Psycasts Expandedの能力を実際に使用した回数（VPEが能力の使用を消費した時点で数えます）。能力別の内訳もあります。予約した指示、キャンセルした使用、NPCの使用は数えません。</RWS_MetricDesc_VpeCasts>
-  <RWS_VfeSecurity_TrapsRearmed>VFE Security 罠の再装填回数</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmed>罠の再装填回数</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>プレイ中に、解除状態だったプレイヤー所有の罠が再装填に成功した回数。解除状態から作動可能な状態への実際の変化だけを数え、作業の指示、罠の設置時の初期化、デバッグ操作、MOD側のポーンの記録は含めません。</RWS_VfeSecurity_TrapsRearmedDesc>
   <RWS_VaeAchievements_Unlocked>VAE 実績カードの解除数</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>通常のプレイ中に新たに解除した実績カードの数（実績別）。デバッグによる解除や、ゲーム起動時の復元確認は数えません。</RWS_VaeAchievements_UnlockedDesc>
   <RWS_VaeAchievements_Points>VAE 獲得した実績ポイント</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>デバッグ以外の新たな解除によって実際に加算された実績ポイントの合計。ポイントの合計値を読み取れない場合は、部分的な記録として扱います。</RWS_VaeAchievements_PointsDesc>
-  <RWS_VfeTribals_EraAdvances>VFE Tribals 時代の進歩回数</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvances>時代の進歩回数</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>プレイヤーの部族の技術時代が実際に進んだ回数（時代別）。初期化、同じ時代のままの場合や後退した場合、セーブの復元は数えません。</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>VFE Tribals 獲得した礎石</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_Cornerstones>獲得した礎石</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>プレイ中に利用可能なポイントで新たに獲得した礎石の数（礎石別）。すでに獲得していたものやロード時に復元されたものは数えません。</RWS_VfeTribals_CornerstonesDesc>
   <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded 達成した願望</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>プレイヤーの入植者がMODの通常の達成判定で新たに達成した願望の数（願望別）。デバッグによる達成、すでに達成済みや未割り当ての願望、セーブの復元は数えません。</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 プレイヤーの巣で生まれた虫</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirths>プレイヤーの巣で生まれた虫</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>通常のプレイ中にプレイヤー所有の巣から新たに生まれた虫の数（種類別）。繭による置き換え、既存の巣の虫の復元、開発者によるスポーン操作は数えません。</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VqeCryptoforge_RelayScans>Cryptoforge 中継器のスキャン完了数</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>プレイヤーの入植者がクエストマップにいる間に完了した、凍結スキャン中継器（Frozen Scanning Relay）のスキャンの回数。</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory 自動工作機械が地面に出力した数</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutput>自動工作機械が地面に出力した数</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>プレイヤー所有の自動工作機械（Auto Machine Tool）がマップ上に置いたことを確認したアイテムの数（種類別）。コンベアや他の機械へ直接渡したものは含めません。</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld of Magic 治癒魔法の成功回数</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCasts>治癒魔法の成功回数</RWS_Rwom_HealingCasts>
   <RWS_Rwom_HealingCastsDesc>プレイヤーの「ヒール」「アドバンスドヒール」の詠唱のうち、対象の負傷を実際に軽くしたか、失ったばかりの部位の傷を安定させたものの回数。</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>Save Our Ship 2 軌道への到達回数</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivals>軌道への到達回数</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>プレイヤーが操縦する船が地表から離陸し、安定した軌道に到達した回数。</RWS_Sos2_OrbitArrivalsDesc>
   <RWS_SimpleWarrants_Completed>Simple Warrants 手配書の引き渡し完了数</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>プレイヤーのキャラバンが対象を引き渡し、対象が取り除かれて手配書が完了した件数。</RWS_SimpleWarrants_CompletedDesc>
@@ -1082,19 +1082,19 @@
   <RWS_VqeGenerator_UpgradesDesc>プレイヤー所有の既存のARC発電機を同じ場所で置き換えた建設の完了数。新しい発電機の種類別に集計します。</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>所有車両の最多数</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>コロニーごとに、プレイヤーが所有するVehicle Frameworkの車両が同時に存在した数の最大値。マップ上・キャラバン中・飛行中・保管中の車両を含み、正常なセーブの時点で記録します。車両の種類は最大値を記録したセーブのものを表示します。</RWS_VehicleFramework_OwnedPeakDesc>
-  <RWS_VfeDeserters_IntelPaid>Deserters 支払ったインテル</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaid>支払ったインテル</RWS_VfeDeserters_IntelPaid>
   <RWS_VfeDeserters_IntelPaidDesc>脱走兵ネットワークへの支払いが受け入れられ、プレイヤーの拠点マップの在庫から減った通常のインテルの数。</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Deserters 支払った重要インテル</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaid>支払った重要インテル</RWS_VfeDeserters_CriticalIntelPaid>
   <RWS_VfeDeserters_CriticalIntelPaidDesc>脱走兵ネットワークへの支払いが受け入れられ、プレイヤーの拠点マップの在庫から減った重要インテルの数。</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE Classical 新たに支持を得た元老院議員</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavors>新たに支持を得た元老院議員</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>通常の外交やクエストによって、支持していなかった状態から新たに支持するようになった議員の数（派閥別）。開発者の操作、すでに支持していた議員、古いセーブの復元は数えません。</RWS_VfeClassical_SenatorFavorsDesc>
-  <RWS_VfeEmpire_HonorsBestowed>VFE Empire 授与された栄誉</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowed>授与された栄誉</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>保留中だったVFE Empireの栄誉のうち、儀式の完了時にプレイヤーの入植者へ実際に授与されたものの数（栄誉別）。授与可能な栄誉を受け取っただけの場合や開発者の操作は数えません。</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>VSIE ひらめきに伴う願望の達成数</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで、入植者のひらめきに結びついた願望が新たに達成された回数（ひらめき別）。未完了の進捗、期限切れ、関係のないひらめきは数えません。</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 騎乗した回数</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>プレイヤーの入植者がGiddy-Upの騎乗ジョブを完了し、所有する動物に実際に乗り始めた回数（動物の種類別）。騎乗した状態での到着、予約した指示、重複した観測は数えません。</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Combat Extended 入植者のリロード回数</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_Reloads>入植者のリロード回数</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>プレイヤーのポーンが武器の弾倉に実際に弾薬を込めたリロードの完了回数。1回のリロードで複数の弾薬スタックを込めても1回です。タレット、自動装填装置、弾薬を無効にした武器、失敗したリロードは数えません。</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android 自然な覚醒の回数</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>人工の身体を持つプレイヤー所有のアンドロイドが、心情に基づく遺伝子の判定によって自然に覚醒した回数。開発者ツールによる直接の覚醒、ゲーム開始時の設定、すでに覚醒していたものは数えません。Biotechが必要です。</RWS_VreAndroid_AwakeningsDesc>
@@ -1108,7 +1108,7 @@
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expandedのスープやチーズなど、VEFの独自加工が完了した回数（加工別）。通常の作業指示による製作や、出力が一部止まったものは数えません。</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded 発酵・熟成の完了数</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing ExpandedのVEFによる発酵・醸造・熟成が完了した回数（加工別）。一時停止・出力の停止・未完了のものや、通常の作業指示による製作は数えません。</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>Gastronomy 客から受け取った食事代</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollected>客から受け取った食事代</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>プレイヤー所有のレストランで、プレイヤー以外の客が食事代として実際に支払ったシルバー。一部だけの支払いは実際に支払われた額だけを加算します。未払いのツケ、無料の食事、関係のない取引は数えません。</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory 組み立てたドローン</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>自動ドローン組立機の生産タイマーが終わり、実際にスポーンしたプレイヤー所有のドローンの数（種類別）。タイマーの進行だけの場合、スポーンの失敗、卵からの孵化は数えません。</RWS_VqeDrones_AssembledDesc>
@@ -1120,33 +1120,33 @@
   <RWS_VgeExtraction_ItemsPlacedDesc>プレイヤーによるDNA抽出が成功し、実際に置かれたかスタックに統合されたDNAアイテムの数（種類別）。無効な対象、配置の失敗、成果物のないチャージの消費、その他のハイブリッドの作成は数えません。</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE パイプに貯蔵した栄養スラリー</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>プレイヤー所有のVanilla Nutrient Paste Expandedの粉砕機から、パイプ網に実際に受け入れられた栄養スラリーの量（小数を含む）。粉砕の試行、スラリーが受け入れられなかった材料の消費、他の建物によるパイプへの貯蔵は数えません。</RWS_VnpeGrinder_SlurryStoredDesc>
-  <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2 収穫した蜂蜜</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItems>収穫した蜂蜜</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>プレイヤーの入植者がプレイヤー所有の養蜂箱（Medieval 2）から取り出し、実際に置かれたかスタックに統合された蜂蜜の数（種類別）。養蜂箱が収穫可能になっただけの場合、配置の失敗、その後の運搬は数えません。</RWS_VfeMedieval2_HoneyItemsDesc>
-  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security マップ外砲撃の着弾数</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunched>マップ外砲撃の着弾数</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>プレイヤー所有のマップ外砲撃の砲弾が目標のマップに届き、実際に弾体として出現した数（弾体別）。照準の指示、移動中の砲弾、弾体が出現しなかった射撃は数えません。命中数を表すものではありません。</RWS_VfeSecurity_ArtilleryLaunchedDesc>
-  <RWS_VfeFactory_Harvested>VFE Factory 自動農機の収穫</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_Harvested>自動農機の収穫</RWS_VfeFactory_Harvested>
   <RWS_VfeFactory_HarvestedDesc>プレイヤー所有の自動農機（Autofarmer）が新たに収穫したアイテムの数。収穫バッファの実際の増加と、地面への配置の確認を数えます（種類別）。その後のホッパーへの搬出、配置の失敗、ポーンによる通常の収穫は数えません。</RWS_VfeFactory_HarvestedDesc>
-  <RWS_VfeFactory_Sown>VFE Factory 自動農機で植えた植物</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_Sown>自動農機で植えた植物</RWS_VfeFactory_Sown>
   <RWS_VfeFactory_SownDesc>プレイヤーの自動農機の作業サイクル中に実際に生成され、植え付け済みとなり、選択した作物と一致した新しい植物の数（植物別）。失敗したサイクルと既存の植物は数えません。</RWS_VfeFactory_SownDesc>
-  <RWS_VfePirates_WarcasketFits>VFE Pirates ウォーキャスケットの装着完了数</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFits>ウォーキャスケットの装着完了数</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>通常の溶接作業で完了したプレイヤーのウォーキャスケットの装着の数。プロジェクトが完了し、対応する3部位を新たに着用したことで確認します（装甲の種類別）。未完了の作業、一部だけの装着、開発者による完了は数えません。</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients アルコジェン注入の拒絶数</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>プレイヤーのアルコジェン注入装置で、入っていたポーンが注入を拒絶し、生きたまま出てきて注入昏睡に陥った回数。中止した作業、選ばれた結果が完了しなかったもの、成功後の遺伝子の選択待ちは数えません。Biotechが必要です。</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients 変異体への変化</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>プレイヤーのアルコジェン注入装置の変異の結果、元のポーンが消え、選ばれた種類のプレイヤー所有の変異体が1体生まれた回数（変異体の種類別）。その他のスポーン、中止、成功後の選択待ちは数えません。Biotechが必要です。</RWS_VqeAncients_MutationsDesc>
-  <RWS_VfeSettlers_BountyHandins>VFE Settlers 賞金首の引き渡し数</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandins>賞金首の引き渡し数</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>プレイヤーのキャラバンが手配中の犯罪者またはその遺体を実際に引き渡し、0より多いシルバーの報酬を受け取った回数。コマンドを開いただけの場合、対象の不在、引き渡しの失敗、関係のない所持品は数えません。</RWS_VfeSettlers_BountyHandinsDesc>
-  <RWS_VfeSettlers_BountySilver>VFE Settlers 受け取った賞金</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilver>受け取った賞金</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>VFE Settlersの賞金首の引き渡しが成功したときに、最初の報酬の支払いでプレイヤーのキャラバンに実際に加わったシルバー。犯罪者の所持品や、その中のシルバーは含めません。</RWS_VfeSettlers_BountySilverDesc>
-  <RWS_Rimatomics_Byproducts>Dubs Rimatomics 再処理の副産物</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_Byproducts>再処理の副産物</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>プレイヤー所有のプルトニウム処理装置が燃料の取り出しを終えたときに、副産物として実際に置かれたかスタックに統合されたアイテムの数（種類別）。返却された使用済み燃料、処理されただけの素材、関係のない配置は数えません。</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>Combat Extended 発射した弾薬</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsed>発射した弾薬</RWS_CE_RoundsUsed>
   <RWS_CE_RoundsUsedDesc>プレイヤーの入植者の武器の弾倉から実際に減った弾薬、または所持品から直接給弾して撃った弾薬の数（弾薬の種類別）。リロード時の弾薬の移動、空撃ち、タレットの使用、デバッグによる補充は数えません。</RWS_CE_RoundsUsedDesc>
-  <RWS_CE_SuppressionReceived>Combat Extended 入植者が制圧された回数</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceived>入植者が制圧された回数</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>プレイヤーのコロニーのポーンがCombat Extendedの制圧状態に新たに入った回数。制圧されていない状態から制圧状態に変わるたびに1回と数えます。制圧中のさらなる制圧や、開発者によるテスト用の制圧は数えません。受けた制圧の数であり、敵に与えた制圧ではありません。</RWS_CE_SuppressionReceivedDesc>
-  <RWS_VfePirates_HireContracts>VFE Pirates 雇用契約の成立数</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContracts>雇用契約の成立数</RWS_VfePirates_HireContracts>
   <RWS_VfePirates_HireContractsDesc>Vanilla Expanded Frameworkの雇用画面で、VFE Piratesの雇用派閥と実際に結んだ海賊または傭兵の新しい契約の数。画面を開いただけの場合、キャンセルした申し出、支払いの失敗は数えません。</RWS_VfePirates_HireContractsDesc>
-  <RWS_VfePirates_HireSilver>VFE Pirates 雇用に支払ったシルバー</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilver>雇用に支払ったシルバー</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>VFE Piratesの新しい雇用契約が登録されたときに、プレイヤーのマップの在庫から実際に減ったシルバー。端数を丸めた見積額ではありません。無料の契約は0になります。</RWS_VfePirates_HireSilverDesc>
   <RWS_VgeHybrid_Births>VGE 電子子宮でのハイブリッドの誕生</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>プレイヤー所有のVGEの電子子宮が成長サイクルを成功させたときに、実際に1体ずつ生まれたプレイヤー所有のハイブリッドの数（種類別）。成長の失敗、タイマーの進行、セーブの復元は数えません。</RWS_VgeHybrid_BirthsDesc>
@@ -1154,15 +1154,15 @@
   <RWS_VgeHybrid_ConversionsDesc>プレイヤー所有のメカハイブリッド化装置による変換のうち、元の対象が消え、変換後のプレイヤー所有のポーンが1体新たに生まれたものの数（結果の種類別）。装置の起動、待機、生成の失敗は数えません。</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 仮釈放の承認数</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>仮釈放審査での釈放の決定のうち、プレイヤーが拘束している生存中の囚人の満了した刑期を実際に解除し、釈放そのものが指示されたものの数。審査だけの場合、刑期の延長、勧誘の選択、繰り返しの選択、その後の実際の退去は数えません。</RWS_PrisonExpanded_ParoleApprovedDesc>
-  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller 油田から採掘した原油（油田単位）</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnits>油田から採掘した原油（油田単位）</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>プレイヤー所有の油井がポンプ処理に成功したときの、油田の容量の実際の減少量。単位は油田の容量であり、パイプ内の量やアイテムの数ではありません。掘削の進捗、ポンプの試行、油田の自然回復、タンク間の移送、精製所の生産物は数えません。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded 刑期の満了数</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>プレイヤーが拘束している囚人の刑期がPrison Expandedで定められた長さに達し、初めて仮釈放審査の対象になった回数。仮釈放の承認、釈放の指示、日数の重複処理、ロード時に復元された値は数えません。</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 実際に去った囚人</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expandedに記録された囚人のうち、プレイヤーの拠点マップから実際に出ていった人数。釈放や仮釈放の指示を受けただけでは数えません。元の刑期にかかわらず、実際に去れば数えます。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
-  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller 精製設備の燃料消費量（パイプ単位）</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsed>精製設備の燃料消費量（パイプ単位）</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>プレイヤー所有のRimefellerの精製所の処理によって、パイプ網の利用可能な燃料が実際に減った量。その処理中に設備へ移された燃料や、予定・試行だけの消費は数えません。単位はパイプ網の燃料単位です。</RWS_Rimefeller_RefineryFuelUsedDesc>
-  <RWS_Rimefeller_PlantFuelUsed>Rimefeller 発電設備の燃料消費量（パイプ単位）</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsed>発電設備の燃料消費量（パイプ単位）</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>プレイヤー所有のRimefellerの発電所が燃料の引き出しに成功したときの、パイプ網の利用可能な燃料の実際の減少量。空振りや失敗した引き出しは数えません。単位はパイプ網の燃料単位で、アイテムの数ではありません。</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>勝者が確定した闘技場の試合</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>自勢力の闘技場で勝者が正式に記録された試合数。</RWS_NewMod_ArenaDesc>
