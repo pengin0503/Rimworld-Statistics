@@ -176,9 +176,9 @@ public static class OverviewTab
         Text.Font = GameFont.Small;
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
-        var valueOffset = item.Source is null ? 26f : 41f;
+        var valueOffset = item.Source is null ? 26f : 35f;
         if (item.Source is { } source)
-            Widgets.Label(new Rect(inner.x, inner.y + 21f, inner.width, 18f), source.Truncate(inner.width));
+            Widgets.Label(new Rect(inner.x, inner.y + 18f, inner.width, 18f), source.Truncate(inner.width));
         GUI.color = Color.white;
         Text.Font = valueFont;
         Widgets.Label(new Rect(inner.x, inner.y + valueOffset, inner.width, Math.Max(0f, inner.height - valueOffset)), value);
@@ -195,8 +195,10 @@ public static class OverviewTab
         var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
         var activeTip = hasStar && Mouse.IsOver(star)
             ? (string)"RWS_Fav_StarTip".Translate()
-            : (chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip)
-                + (item.Source is null ? "" : "\n" + item.Source);
+            : chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip;
+        if (item.Source is { } sourceName && !activeTip.Contains(sourceName, StringComparison.Ordinal)
+            && !(hasStar && Mouse.IsOver(star)))
+            activeTip += "\n" + sourceName;
         TooltipHandler.TipRegion(cell, activeTip);
         if (chartView is not null && Widgets.ButtonInvisible(chartRect))
             Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
