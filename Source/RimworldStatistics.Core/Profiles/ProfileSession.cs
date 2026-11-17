@@ -37,6 +37,7 @@ public sealed class ProfileSession
     private readonly ProfileStore _store;
     private readonly Profile _profile;
     private readonly ICheckpointArchive? _archive;
+    private readonly RecorderChartCache _recorderCharts;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
     // The active scope and up to four comparison columns must coexist with the all-colony view.
@@ -61,9 +62,12 @@ public sealed class ProfileSession
     private readonly ConcurrentQueue<Action<Profile>> _queued = new();
     private int _mutationDepth;   // changes running (under _lock, nested on one thread): queued changes wait for them
 
-    public ProfileSession(ProfileStore store, Func<DateTime> utcNow, ICheckpointArchive? archive = null)
+    /// <param name="recorderCharts">Where chart series parsed from saves are kept (#305); <see cref="RecorderChartCache.Shared"/> by default.</param>
+    public ProfileSession(ProfileStore store, Func<DateTime> utcNow, ICheckpointArchive? archive = null,
+        RecorderChartCache? recorderCharts = null)
     {
         _store = store;
+        _recorderCharts = recorderCharts ?? RecorderChartCache.Shared;
         LoadResult = store.Load(utcNow());
         _profile = LoadResult.Profile;
         _archive = LoadResult.ReadOnly ? null : archive;
@@ -349,7 +353,7 @@ public sealed class ProfileSession
             if (Path.GetFileName(file.FileName) != file.FileName || !ImportEngine.IsSaveFile(file.FileName))
                 continue;
             var runningGain = definition.Key == MetricKeys.WealthTotalMaxGain15D;
-            var points = SaveReader.ReadRecorderChart(Path.Combine(savesDirectory, file.FileName), file, hash, recorder, runningGain);
+            var points = _recorderCharts.Read(Path.Combine(savesDirectory, file.FileName), file, hash, recorder, runningGain);
             if (points.Count > 0 && (!runningGain
                 || points.LastOrDefault(p => p.Value is not null)?.Value?.Number == history.RecorderMaximum))
                 return new MetricHistory(runningGain ? MetricHistoryKind.WealthRecorder : MetricHistoryKind.GameRecorder, points);
