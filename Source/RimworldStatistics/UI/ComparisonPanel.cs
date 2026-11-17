@@ -19,8 +19,8 @@ internal static class ComparisonPanel
     private static int sortColumn = -1;
     private static bool descending;
     private static Request? request;
-    private static Task<Column[]>? pending;
-    private static Column[]? columns;
+    // The columns of the current request, built once; a failed build waits for Retry or another request (#326).
+    private static readonly RetainedBuild<Request, Column[]> ColumnBuild = new();
     private static Column[]? builtFor;
     private static object? builtFilter;
     private static object? language;
@@ -61,22 +61,28 @@ internal static class ComparisonPanel
         if (request != next)
         {
             request = next;
-            columns = null;
+            ColumnBuild.Reset();
             builtFor = null;
             scroll = Vector2.zero;
+        }
+        var failure = ColumnBuild.Update(next, () =>
+        {
             var choices = Choices.ToArray();
             var targets = choices.Select(choice => Target(choice, groups)).ToArray();
-            pending = Task.Run(() => choices.Select((choice, i) => new Column(choice, targets[i],
+            return Task.Run(() => choices.Select((choice, i) => new Column(choice, targets[i],
                 targets[i] is ScopeTarget { Scope: var scope }
                     ? session.GetView(new StatsOptions { IncludeDevMode = next.IncludeDev }, MetricDisplayPolicy.AllDetailsVisibleUnits, scope)
                     : view)).ToArray());
-        }
-        if (pending is { IsCompleted: true } loaded)
+        });
+        if (failure is not null)
+            Log.Error($"[RimworldStatistics] The comparison could not be calculated.\n{failure}");
+        if (ColumnBuild.Failure is { } error)
         {
-            pending = null;
-            columns = loaded.GetAwaiter().GetResult();
+            Dialog_RimworldStatistics.DrawFailure(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)),
+                "RWS_ComparisonFailed".Translate(), error, ColumnBuild.Running, ColumnBuild.Retry);
+            return;
         }
-        if (columns is not { } current)
+        if (ColumnBuild.Value is not { } current)
         {
             Widgets.Label(new Rect(rect.x, y, rect.width, RowHeight), "RWS_Loading".Translate());
             return;

@@ -12,6 +12,11 @@
   <RWS_MenuButton>通算統計</RWS_MenuButton>
   <RWS_WindowTitle>通算統計</RWS_WindowTitle>
   <RWS_WindowError>統計ウィンドウを表示できませんでした。詳しくはログを確認してください。</RWS_WindowError>
+  <RWS_ViewBuildFailed>統計を計算できませんでした。記録が変わったとき、または「再試行」を押したときに計算し直します。</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>記録ファイルを開けませんでした。「再試行」を押すか、このウィンドウを開き直すと、もう一度開きます。</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>比較を計算できませんでした。選択や記録が変わったとき、または「再試行」を押したときに計算し直します。</RWS_ComparisonFailed>
+  <RWS_Retry>再試行</RWS_Retry>
+  <RWS_Retrying>再試行中…</RWS_Retrying>
   <RWS_Tab_Overview>概要</RWS_Tab_Overview>
   <RWS_Tab_Endings>エンディング</RWS_Tab_Endings>
   <RWS_Tab_Colonies>コロニー</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>最終スキャン: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>未実施</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>このセッションではまだ取り込んでいません。</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>取り込み中です。今回の件数は終了後に表示します。</RWS_Import_RunningNow>
   <RWS_Import_Counts>読み込み {0}件／スキップ {1}件／失敗 {2}件</RWS_Import_Counts>
   <RWS_Import_CancelledMark>（中断）</RWS_Import_CancelledMark>
   <RWS_Import_Error>取り込みに失敗しました: {0}</RWS_Import_Error>

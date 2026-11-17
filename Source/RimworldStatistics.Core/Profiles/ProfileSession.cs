@@ -72,6 +72,12 @@ public sealed class ProfileSession
 
     public ProfileLoadResult LoadResult { get; }
 
+    /// <summary>
+    /// The number of changes applied so far, read without the profile lock (a window polls it every frame). Changes queued by
+    /// <see cref="MutateWithoutBlocking"/> count once they are applied, which every read of the profile does first.
+    /// </summary>
+    public long Revision => Interlocked.Read(ref _changeSeq);
+
     public Exception? LastSaveError => _lastSaveError;
     public Exception? LastArchiveError => _lastArchiveError ?? _lastArchiveReadError;
 

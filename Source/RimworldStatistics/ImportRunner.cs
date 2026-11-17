@@ -14,9 +14,7 @@ public static class ImportRunner
     private static Task? task;
     private static readonly AutoImportGate AutoGate = new();
 
-    private static volatile ImportProgress? progress;
-    private static volatile ImportResult? lastResult;
-    private static volatile Exception? lastError;
+    private static readonly ImportRunStatus Status = new();
 
     public static bool Running
     {
@@ -27,9 +25,11 @@ public static class ImportRunner
         }
     }
 
-    public static ImportProgress? Progress => progress;
-    public static ImportResult? LastResult => lastResult;
-    public static Exception? LastError => lastError;
+    /// <summary>The latest scan of this session: running, its outcome, or why it failed (#337).</summary>
+    public static ImportRunState State => Status.Current;
+
+    /// <summary>The outcome of the latest scan once it finished; null while one runs, after a failure, or before the first.</summary>
+    public static ImportResult? LastResult => Status.Current.Result;
 
     /// <summary>Main thread. Starts a scan unless one is running.</summary>
     public static void StartIfIdle() => Start(manual: true);
@@ -44,18 +44,18 @@ public static class ImportRunner
                 AutoGate.StartedManually();
             cts?.Dispose();
             cts = null;
-            progress = null;
-            lastError = null;
+            // Forget the previous scan's outcome: its counts are not this scan's.
+            var run = Status.Begin();
             try
             {
                 var savesDir = GenFilePaths.SavedGamesFolderPath;
                 var source = new CancellationTokenSource();
                 cts = source;
-                task = Task.Run(() => Run(savesDir, source.Token));
+                task = Task.Run(() => Run(run, savesDir, source.Token));
             }
             catch (Exception e)
             {
-                lastError = e;
+                Status.Fail(run, e);
             }
         }
     }
@@ -93,20 +93,20 @@ public static class ImportRunner
                 Start(manual: false);
     }
 
-    private static void Run(string savesDir, CancellationToken ct)
+    private static void Run(long run, string savesDir, CancellationToken ct)
     {
         try
         {
-            lastResult = new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(), ct);
+            Status.Complete(run, new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(run), ct));
         }
         catch (Exception e)
         {
-            lastError = e;   // shown by the Import tab on the main thread
+            Status.Fail(run, e);   // shown by the Import tab on the main thread
         }
     }
 
-    private sealed class ProgressSink : IProgress<ImportProgress>
+    private sealed class ProgressSink(long run) : IProgress<ImportProgress>
     {
-        public void Report(ImportProgress value) => progress = value;
+        public void Report(ImportProgress value) => Status.Report(run, value);
     }
 }

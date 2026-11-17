@@ -12,6 +12,11 @@
   <RWS_MenuButton>Statistiques globales</RWS_MenuButton>
   <RWS_WindowTitle>Statistiques globales</RWS_WindowTitle>
   <RWS_WindowError>Impossible d'afficher la fenêtre des statistiques. Consultez le journal pour plus de détails.</RWS_WindowError>
+  <RWS_ViewBuildFailed>Impossible de calculer les statistiques. Elles seront recalculées quand le registre changera ou quand vous appuierez sur Réessayer.</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>Impossible d'ouvrir le fichier du registre. Il sera rouvert quand vous appuierez sur Réessayer ou rouvrirez cette fenêtre.</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>Impossible de calculer la comparaison. Elle sera recalculée quand la sélection ou le registre changera, ou quand vous appuierez sur Réessayer.</RWS_ComparisonFailed>
+  <RWS_Retry>Réessayer</RWS_Retry>
+  <RWS_Retrying>Nouvel essai…</RWS_Retrying>
   <RWS_Tab_Overview>Vue d'ensemble</RWS_Tab_Overview>
   <RWS_Tab_Endings>Fins</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Colonies</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>Dernière analyse : {0}</RWS_Import_LastScan>
   <RWS_Import_Never>jamais</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>Aucune importation n'a encore été lancée pendant cette session.</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>Une analyse est en cours. Ses chiffres s'afficheront à la fin.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Lues : {0} / ignorées : {1} / échecs : {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrompue)</RWS_Import_CancelledMark>
   <RWS_Import_Error>L'importation a échoué : {0}</RWS_Import_Error>

@@ -9,34 +9,54 @@ namespace RimworldStatistics;
 /// </summary>
 public static class ProfileService
 {
-    private static readonly object Gate = new();
-    private static Task<ProfileSession>? sessionTask;
+    private static readonly RetryableLoad<ProfileSession> Loader = new(() =>
+    {
+        var path = DirectoryPath;
+        return Task.Run(() => OpenSession(path));
+    });
+    private static readonly RestoredPreferences PendingPreferences = new();
     private static int dataOperationRunning;
     public static bool DataOperationRunning => Volatile.Read(ref dataOperationRunning) != 0;
 
     public static string DirectoryPath => Path.Combine(GenFilePaths.SaveDataFolderPath, "RimworldStatistics");
 
-    private static Task<ProfileSession> StartLoading(bool retry = false)
+    /// <summary>The session, waiting for it; a load that failed is tried again (the caller reports a failure).</summary>
+    public static ProfileSession Session => Loader.Start(retryFailed: true).GetAwaiter().GetResult();
+
+    /// <summary>Opening the window starts the load, or tries a failed one again.</summary>
+    public static void PrepareForDialog() => Loader.Start(retryFailed: true);
+
+    /// <summary>The window's retry button (#326): tries a failed load again.</summary>
+    public static void RetryLoading() => Loader.Start(retryFailed: true);
+
+    /// <summary>
+    /// Every frame of the window: the session once loaded, or null while it loads or after it failed, with the failure. A
+    /// failed load stays failed until <see cref="RetryLoading"/> or <see cref="PrepareForDialog"/> (#326).
+    /// </summary>
+    public static ProfileSession? TryGetSession(out Exception? failure) => Loader.TryGet(out failure);
+
+    /// <summary>Restored presentation settings are waiting for the main thread (#325).</summary>
+    internal static bool RestoredPreferencesPending => PendingPreferences.Pending;
+
+    /// <summary>
+    /// Main thread: applies and writes the presentation settings a successful restore brought back, once (#325). Called every
+    /// frame by <see cref="Patches.RestoredPreferencesPatch"/> and by the statistics window, so it does not depend on which
+    /// window or tab is open when the restore finishes.
+    /// </summary>
+    internal static void ApplyRestoredPreferences()
     {
-        lock (Gate)
+        PendingPreferences.ApplyTo(json =>
         {
-            if (sessionTask == null || (retry && sessionTask.IsFaulted))
+            RimworldStatisticsMod.Settings.viewPreferencesJson = json;
+            try
             {
-                var path = DirectoryPath;
-                sessionTask = Task.Run(() => OpenSession(path));
+                RimworldStatisticsMod.Instance?.WriteSettings();
             }
-            return sessionTask;
-        }
-    }
-
-    public static ProfileSession Session => StartLoading(retry: true).GetAwaiter().GetResult();
-
-    public static void PrepareForDialog() => StartLoading(retry: true);
-
-    public static ProfileSession? TryGetSession()
-    {
-        var task = StartLoading();
-        return task.IsCompleted ? task.GetAwaiter().GetResult() : null;
+            catch (Exception e)
+            {
+                Log.Error($"[RimworldStatistics] The restored view settings are in use but could not be written to the settings file.\n{e}");
+            }
+        });
     }
 
     private static ProfileSession OpenSession(string path)
@@ -69,14 +89,16 @@ public static class ProfileService
         });
     }
 
-    internal static Task<RestoreResult> RestoreBackup(ProfileSession current, string zip, BackupMetadata metadata, string? preferences = null)
+    /// <param name="preferences">The settings in use, kept in the backup written before the restore.</param>
+    /// <param name="restorePreferences">Apply the backup's settings once the restore succeeded (#325).</param>
+    internal static Task<RestoreResult> RestoreBackup(ProfileSession current, string zip, BackupMetadata metadata, string? preferences,
+        bool restorePreferences)
     {
         if (current.LoadResult.ReadOnly)
             throw new InvalidOperationException("The current profile is read-only.");
         var directory = BeginDataOperation();
         var replacement = new TaskCompletionSource<ProfileSession>(TaskCreationOptions.RunContinuationsAsynchronously);
-        lock (Gate)
-            sessionTask = replacement.Task;
+        Loader.Replace(replacement.Task);
 
         return Task.Run(() =>
         {
@@ -98,6 +120,8 @@ public static class ProfileService
                     if (!ProfileBackup.Validate(recovery.Path, Profile.CurrentSchemaVersion).Ok)
                         throw new IOException("The pre-restore backup cannot be restored by this version.");
                 });
+                // The main thread applies them whatever window is open by then (#325); nothing is applied on failure.
+                PendingPreferences.Offer(result, restorePreferences);
                 replacement.SetResult(restored!);
                 return result;
             }

@@ -28,9 +28,10 @@ public sealed class Dialog_RimworldStatistics : Window
     private Task<SaveFileIndex?>? indexTask;
     private SaveFileIndex? fileIndex;
     private DateTime nextIndexRefresh;
-    private Task<StatsView>? viewTask;
+    // The view of the current session, options and scope, built once per profile revision; a failed build waits (#322).
+    private readonly RetainedBuild<long, StatsView> viewBuild = new();
     private bool viewIncludesDevMode;
-    private StatsView? lastView;
+    private static Exception? loggedLoadFailure;
     private ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings.viewPreferencesJson);
     private string loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
     private string? selectedGroupId;
@@ -67,6 +68,9 @@ public sealed class Dialog_RimworldStatistics : Window
     {
         try
         {
+            // Normally applied by RestoredPreferencesPatch; also here in case that patch is off (#325).
+            if (ProfileService.RestoredPreferencesPending)
+                ProfileService.ApplyRestoredPreferences();
             RefreshSavedPreferences();
             var header = StatisticsWindowLayout.ResolveHeader(inRect.width);
             Text.Font = GameFont.Medium;
@@ -129,10 +133,21 @@ public sealed class Dialog_RimworldStatistics : Window
                 Widgets.Label(content, "RWS_Backup_Working".Translate());
                 return;
             }
-            var session = ProfileService.TryGetSession();
+            var session = ProfileService.TryGetSession(out var loadFailure);
             if (session == null)
             {
-                Widgets.Label(content, "RWS_Loading".Translate());
+                if (loadFailure is null)
+                {
+                    Widgets.Label(content, "RWS_Loading".Translate());
+                    return;
+                }
+                // A failed load is not started again every frame (#326): it waits for Retry or the next opening of this window.
+                if (!ReferenceEquals(loggedLoadFailure, loadFailure))
+                {
+                    loggedLoadFailure = loadFailure;
+                    Log.Error($"[RimworldStatistics] The record file could not be opened.\n{loadFailure}");
+                }
+                DrawFailure(content, "RWS_SessionLoadFailed".Translate(), loadFailure, running: false, ProfileService.RetryLoading);
                 return;
             }
             if (current == Tab.Import)
@@ -144,7 +159,10 @@ public sealed class Dialog_RimworldStatistics : Window
             var view = GetView(session);
             if (view == null)
             {
-                Widgets.Label(content, "RWS_Loading".Translate());
+                if (viewBuild.Failure is { } failure)
+                    DrawFailure(content, "RWS_ViewBuildFailed".Translate(), failure, viewBuild.Running, viewBuild.Retry);
+                else
+                    Widgets.Label(content, "RWS_Loading".Translate());
                 return;
             }
 
@@ -186,22 +204,36 @@ public sealed class Dialog_RimworldStatistics : Window
         if (!ReferenceEquals(viewSession, session) || viewIncludesDevMode != options.IncludeDevMode || activeScopeKey != scope.CacheKey)
         {
             viewSession = session;
-            lastView = null;
-            viewTask = null;
+            viewBuild.Reset();
             viewIncludesDevMode = options.IncludeDevMode;
             activeScopeKey = scope.CacheKey;
         }
-        if (viewTask is { IsCompleted: true } completed)
-        {
-            viewTask = null;
-            lastView = completed.GetAwaiter().GetResult();
-        }
 
         var cached = session.TryGetCachedView(options, visibleUnits, scope);
-        if (cached != null)
-            return lastView = cached;
-        viewTask ??= Task.Run(() => session.GetView(options, visibleUnits, scope));
-        return lastView;
+        // Read after the cache lookup, which applies queued changes first. A failed build is retried when this changes (#322).
+        var revision = session.Revision;
+        var failure = viewBuild.Update(revision, () => Task.Run(() => session.GetView(options, visibleUnits, scope)), cached);
+        if (failure is not null)
+            Log.Error("[RimworldStatistics] The statistics could not be calculated. They are calculated again when the record "
+                + $"changes or on Retry.\n{failure}");
+        // While a build fails, the window shows the failure rather than an older view as if it were current.
+        return viewBuild.Failure is null ? viewBuild.Value : null;
+    }
+
+    /// <summary>A failure in place of the content (#322, #326): what failed, its cause, and a retry button.</summary>
+    internal static void DrawFailure(Rect rect, string message, Exception failure, bool running, Action retry)
+    {
+        var cause = failure.Message ?? "";
+        var newline = cause.IndexOf('\n');
+        var text = message + "\n" + failure.GetType().Name + ": " + (newline < 0 ? cause : cause[..newline]).Trim();
+        var height = Math.Min(Text.CalcHeight(text, rect.width), Math.Max(0f, rect.height - 40f));
+        GUI.color = ColorLibrary.RedReadable;
+        Widgets.Label(new Rect(rect.x, rect.y, rect.width, height), text);
+        GUI.color = Color.white;
+        string label = running ? "RWS_Retrying".Translate() : "RWS_Retry".Translate();
+        var button = new Rect(rect.x, rect.y + height + 6f, Math.Min(rect.width, Math.Max(160f, Text.CalcSize(label).x + 24f)), 32f);
+        if (Widgets.ButtonText(button, label, active: !running) && !running)
+            retry();
     }
 
     private void RefreshSavedPreferences()
@@ -231,15 +263,14 @@ public sealed class Dialog_RimworldStatistics : Window
         };
         choices.AddRange(preferences.Groups.Select(g => new FloatMenuOption(g.Name, () => SelectScope(g.Id))));
         choices.Add(new FloatMenuOption("RWS_Groups_Edit".Translate(), () =>
-            Find.WindowStack.Add(new Dialog_ColonyGroups(preferences, lastView, SavePreferences))));
+            Find.WindowStack.Add(new Dialog_ColonyGroups(preferences, viewBuild.Value, SavePreferences))));
         Find.WindowStack.Add(new FloatMenu(choices));
     }
 
     private void SelectScope(string? id)
     {
         selectedGroupId = id;
-        viewTask = null;
-        lastView = null;
+        viewBuild.Reset();
         activeScopeKey = "";
     }
 
@@ -250,8 +281,7 @@ public sealed class Dialog_RimworldStatistics : Window
         RimworldStatisticsMod.Instance?.WriteSettings();
         if (preferences.Groups.All(g => g.Id != selectedGroupId))
             selectedGroupId = null;
-        viewTask = null;
-        lastView = null;
+        viewBuild.Reset();
         activeScopeKey = "";
     }
 

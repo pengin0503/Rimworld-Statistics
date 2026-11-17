@@ -12,6 +12,11 @@
   <RWS_MenuButton>Gesamtstatistik</RWS_MenuButton>
   <RWS_WindowTitle>Gesamtstatistik</RWS_WindowTitle>
   <RWS_WindowError>Das Statistikfenster konnte nicht angezeigt werden. Details stehen im Protokoll.</RWS_WindowError>
+  <RWS_ViewBuildFailed>Die Statistiken konnten nicht berechnet werden. Sie werden neu berechnet, wenn sich die Aufzeichnung ändert oder du auf „Erneut versuchen“ drückst.</RWS_ViewBuildFailed>
+  <RWS_SessionLoadFailed>Die Aufzeichnungsdatei konnte nicht geöffnet werden. Sie wird erneut geöffnet, wenn du auf „Erneut versuchen“ drückst oder dieses Fenster neu öffnest.</RWS_SessionLoadFailed>
+  <RWS_ComparisonFailed>Der Vergleich konnte nicht berechnet werden. Er wird neu berechnet, wenn sich die Auswahl oder die Aufzeichnung ändert oder du auf „Erneut versuchen“ drückst.</RWS_ComparisonFailed>
+  <RWS_Retry>Erneut versuchen</RWS_Retry>
+  <RWS_Retrying>Neuer Versuch …</RWS_Retrying>
   <RWS_Tab_Overview>Übersicht</RWS_Tab_Overview>
   <RWS_Tab_Endings>Spielenden</RWS_Tab_Endings>
   <RWS_Tab_Colonies>Kolonien</RWS_Tab_Colonies>
@@ -104,6 +109,7 @@
   <RWS_Import_LastScan>Letzter Scan: {0}</RWS_Import_LastScan>
   <RWS_Import_Never>nie</RWS_Import_Never>
   <RWS_Import_NotRunThisSession>In dieser Sitzung wurde noch kein Import ausgeführt.</RWS_Import_NotRunThisSession>
+  <RWS_Import_RunningNow>Ein Scan läuft. Seine Zahlen erscheinen, wenn er fertig ist.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Gelesen: {0} / übersprungen: {1} / fehlgeschlagen: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (abgebrochen)</RWS_Import_CancelledMark>
   <RWS_Import_Error>Der Import ist fehlgeschlagen: {0}</RWS_Import_Error>
