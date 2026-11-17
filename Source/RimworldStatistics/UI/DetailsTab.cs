@@ -14,7 +14,8 @@ namespace RimworldStatistics.UI;
 public static class DetailsTab
 {
     private const float ControlHeight = 30f;
-    private const float RowHeight = 26f;
+    // MOD-owned metrics use a second, separate attribution line in the name column.
+    private const float RowHeight = 36f;
     private static ColumnPlan? tablePlan;
     private static ViewPreferences? favoritePreferences;
     private static Action? persistFavorites;
@@ -25,7 +26,7 @@ public static class DetailsTab
     private static Func<string>?[] chartTipCache = [];
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, MetricVisualKind VisualKind, string? MetricKey);
+    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, MetricVisualKind VisualKind, string? MetricKey, string? ModSource);
 
     private sealed class LazyTip(Func<string> build)
     {
@@ -436,7 +437,16 @@ public static class DetailsTab
             GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind)
                 : c == 1 ? MetricVisualStyle.ValueColor(line.VisualKind)
                 : Color.white;
-            Widgets.Label(cell, cells[c].Text);
+            if (c == 0 && line.ModSource is { } source)
+            {
+                Widgets.Label(new Rect(cell.x, cell.y, cell.width, 19f), cells[c].Text);
+                GUI.color = new Color(0.78f, 0.78f, 0.81f);
+                Widgets.Label(new Rect(cell.x, cell.y + 18f, cell.width, 18f), source.Truncate(cell.width));
+            }
+            else
+            {
+                Widgets.Label(cell, cells[c].Text);
+            }
             x += widths[c];
         }
         GUI.color = Color.white;
@@ -597,11 +607,11 @@ public static class DetailsTab
         var state = CoverageLabel(d, v.Coverage);
         if (d.Acquisition is not null && !d.Published)
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
-        if (isMetricRow && MetricText.ModSourceLabel(d) is { } modSource)
-            state = modSource + " · " + state;
+
         var lazy = new LazyTip(() => BuildTip(row, label, isMetricRow, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
-            MetricVisualState.Classify(row), isMetricRow ? d.Key : null);
+            MetricVisualState.Classify(row), isMetricRow ? d.Key : null,
+            isMetricRow ? MetricText.ModSourceLabel(d) : null);
     }
 
     private static string BuildTip(NumericRow row, string label, bool isMetricRow, Inputs input, NumericColony? colony)
