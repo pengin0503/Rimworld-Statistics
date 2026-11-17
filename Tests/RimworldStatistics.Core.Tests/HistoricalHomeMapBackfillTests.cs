@@ -281,7 +281,7 @@ public sealed class HistoricalHomeMapBackfillTests
     // joinStatus is a requested future joining mode, NOT current enslavement.
     private static XElement SavedHuman(string id, string? faction,
         string? guestStatus = null, string hostFaction = "null",
-        string joinStatus = "JoinAsSlave", string kind = "Colonist")
+        string joinStatus = "JoinAsSlave", string kind = "Colonist", params XElement[] healthStates)
     {
         return new XElement("thing", new XAttribute("Class", "Pawn"),
             new XElement("def", "Human"), new XElement("kindDef", kind),
@@ -290,7 +290,34 @@ public sealed class HistoricalHomeMapBackfillTests
                 new XElement("hostFaction", hostFaction),
                 guestStatus is null ? null : new XElement("guestStatus", guestStatus),
                 new XElement("joinStatus", joinStatus)),
-            new XElement("healthTracker", new XElement("hediffSet")));
+            new XElement("healthTracker", healthStates, new XElement("hediffSet")));
+    }
+
+    private static XElement Health(string state) => new("healthState", state);
+
+    [Fact]
+    public void HistoricalRoster_UsesTheSavedHealthStateEnum()
+    {
+        // #335: 1.7 Pawn_HealthTracker.ExposeData writes healthState (Dead/Down/Mobile, Mobile omitted), not <dead>.
+        var bytes = Save(maps: new[] {
+            TurretMap(0, "WorldObject_42",
+                SavedHuman("Omitted", "Faction_14"),
+                SavedHuman("Mobile", "Faction_14", healthStates: Health("Mobile")),
+                SavedHuman("Downed", "Faction_14", healthStates: Health("Down")),
+                SavedHuman("DeadOnMap", "Faction_14", healthStates: Health("Dead")),
+                SavedHuman("DeadPrisoner", "Faction_99", guestStatus: "Prisoner", hostFaction: "Faction_14",
+                    healthStates: Health("Dead")),
+                SavedHuman("BadState", "Faction_14", healthStates: Health("dead")),
+                SavedHuman("Repeated", "Faction_14", healthStates: new[] { Health("Mobile"), Health("Mobile") }),
+                SavedHuman("LegacyElement", "Faction_14", healthStates: new XElement("dead", "True")))
+        });
+        var read = Read(bytes);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        var metrics = read.Metrics!.Metrics;
+        // Omitted, Mobile, Down and the unknown <dead> element (skipped like any other child) count; dead, malformed
+        // and repeated states do not.
+        Assert.Equal(4L, metrics[RosterSnapshot.Free].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.DoesNotContain(RosterSnapshot.Prisoners, metrics);
     }
 
     [Fact]
