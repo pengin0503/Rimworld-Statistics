@@ -1243,6 +1243,7 @@
   <RWS_Chart_PointSavedLater>This reading was also carried unchanged by a save on day {0}; that save recorded no newer statistics.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>recorded in a different way; not drawn together</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} readings ({1} partial); {2} points without a value</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Saves without a point: {0}. Their readings were thinned out to keep the profile small (or removed by an older version); the shape of the line is kept.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Last recorded: day {0} / Furthest save: day {1} (may be another branch)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Recorded value</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Partial record</RWS_Chart_LegendPartial>

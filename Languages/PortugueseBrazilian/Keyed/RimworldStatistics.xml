@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>Este registro também estava, sem alterações, em um jogo salvo do dia {0}; esse jogo salvo não registrou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>registrado de outra forma; não sobreposto</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} registros ({1} parciais); {2} pontos sem valor</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Jogos salvos sem ponto: {0}. Os registros foram reduzidos para manter o perfil pequeno (ou removidos por uma versão anterior); o formato da linha é mantido.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Último registro: dia {0} / Jogo mais avançado: dia {1} (pode ser outro ramo)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Valor registrado</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Registro parcial</RWS_Chart_LegendPartial>

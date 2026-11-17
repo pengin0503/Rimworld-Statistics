@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>Эти данные без изменений содержались и в сохранении дня {0}; новых статистических данных в нём не записано.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>записано другим способом; совместно не отображается</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>Измерений: {0} (частичных: {1}); точек без значения: {2}</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Сохранений без точки: {0}. Их значения прорежены, чтобы профиль оставался небольшим (или удалены более старой версией); форма линии сохранена.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Последняя запись: день {0} / Дальнейшее сохранение: день {1} (возможна другая ветка)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Записанное значение</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Частичная запись</RWS_Chart_LegendPartial>

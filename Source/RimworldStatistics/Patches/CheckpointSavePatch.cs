@@ -61,13 +61,7 @@ public static class CheckpointSavePatch
         }
     }
 
-    /// <summary>The text the component writes into this save; null leaves what was loaded (see the component).</summary>
-    internal static bool TryGetText(out string? text)
-    {
-        text = null;
-        if (PatchRunner.IsDisabled(typeof(CheckpointSavePatch)) || LiveMetrics.Session is not { } session)
-            return false;
-        text = session.TextToWrite(Environment.CurrentManagedThreadId);
-        return true;
-    }
+    /// <summary>The save scope of the current game while this patch runs; null once it has stopped (see the component).</summary>
+    internal static CheckpointSaveSession? ActiveSession
+        => PatchRunner.IsDisabled(typeof(CheckpointSavePatch)) ? null : LiveMetrics.Session;
 }

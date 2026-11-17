@@ -96,6 +96,13 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? CompactedObservationCount { get; set; }
 
+    /// <summary>
+    /// On the latest SaveSnapshot of a compacted campaign: the history chart readings of the snapshots compaction removed
+    /// (#318). Null on every other record.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public SnapshotChartSeries? CompactedChart { get; set; }
+
     /// <summary>A checkpoint's parent checkpoint id (Phase C); null for a lineage root and for other sources.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? ParentKey { get; set; }

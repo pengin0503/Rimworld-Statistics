@@ -2,11 +2,13 @@ namespace RimworldStatistics.Core;
 public static partial class ProfileMutations
 {
     /// <summary>
-    /// SaveSnapshot selection has two kinds of consumers: a single latest observation,
-    /// and per-key historical maxima/minima. Keep each selection's actual witness,
-    /// plus one missing/partial witness when required for coverage. Accumulate the
-    /// sample multiplicity of removed observations on the winning witness so the
-    /// historical row still reports the real number of measurements.
+    /// SaveSnapshot selection has three kinds of consumers: a single latest observation,
+    /// per-key historical maxima/minima, and the colony history chart (one reading per
+    /// save). Keep each selection's actual witness, plus one missing/partial witness when
+    /// required for coverage. Accumulate the sample multiplicity of removed observations
+    /// on the winning witness so the historical row still reports the real number of
+    /// measurements, and move their chart readings into the bounded series carried by
+    /// the latest snapshot (#318).
     ///
     /// This is limited to a fully identified live campaign and the exact starting
     /// pawn set. Unknown future metric keys are never compacted away.
@@ -34,6 +36,9 @@ public static partial class ProfileMutations
             && o.Identity.FingerprintHash() == hash
             && pawns.SetEquals(o.Identity.StartingPawnIds)).ToList();
         if (snapshots.Count < 2)
+            return;
+        // A chart series written by a newer version may hold fields this one cannot rebuild: compact nothing.
+        if (snapshots.Any(o => HasOpaqueChart(o.CompactedChart)))
             return;
 
         var definitions = SnapshotCatalog.Definitions
@@ -173,8 +178,143 @@ public static partial class ProfileMutations
                 + removedObservations.Sum(o => (long)Math.Max(1, o.CompactedObservationCount ?? 1));
             representative.CompactedObservationCount = (int)Math.Min(int.MaxValue, total);
         }
+        MoveChartReadings(snapshots, kept, representative, definitions);
         p.MetricObservations.RemoveAll(o => snapshots.Contains(o) && !kept.Contains(o));
     }
+
+    private readonly record struct ChartReading(int Revision, double Value, MetricCoverage Coverage);
+
+    /// <summary>
+    /// #318: the chart readings of the snapshots about to be removed, and those already carried, go to one series on the
+    /// latest snapshot. Each reading is what the chart would show for that save (<see cref="MetricCalculator.ChartValue"/>),
+    /// with the revision it was taken with. Beyond <see cref="SnapshotChartSeries.MaxRows"/> rows the series is thinned.
+    /// </summary>
+    private static void MoveChartReadings(List<MetricObservation> snapshots, HashSet<MetricObservation> kept,
+        MetricObservation representative, IReadOnlyList<MetricDefinition> definitions)
+    {
+        var removed = snapshots.Where(o => !kept.Contains(o)).ToList();
+        var carriers = snapshots.Where(o => o.CompactedChart is not null).ToList();
+        if (removed.Count == 0 && carriers.All(o => ReferenceEquals(o, representative)))
+            return;
+
+        var rows = new List<(SnapshotChartRow Row, Dictionary<string, ChartReading> Readings)>();
+        var thinned = 0;
+        foreach (var carrier in carriers)
+        {
+            var series = carrier.CompactedChart!;
+            carrier.CompactedChart = null;
+            thinned += Math.Max(0, series.Thinned);
+            var count = series.Rows?.Count ?? 0;
+            var keys = (series.Metrics ?? new Dictionary<string, SnapshotChartKey>())
+                .Where(kv => kv.Value?.Fits(count) == true).ToList();
+            for (var i = 0; i < count; i++)
+            {
+                if (series.Rows![i] is not { } row)
+                    continue;
+                var readings = new Dictionary<string, ChartReading>(Ord);
+                foreach (var (key, metric) in keys)
+                    if (metric.Values[i] is { } v && double.IsFinite(v))
+                        readings[key] = new(metric.Revision, v, metric.Coverage?[i] ?? MetricCoverage.SnapshotOnly);
+                rows.Add((row, readings));
+            }
+        }
+        foreach (var o in removed)
+        {
+            var readings = new Dictionary<string, ChartReading>(Ord);
+            foreach (var d in definitions)
+                if (MetricCalculator.ChartValue(o, d) is { Number: { } n } value)
+                    readings[d.StoredKey] = new(d.Revision, n, value.Coverage);
+            rows.Add((new SnapshotChartRow { Tick = o.SaveTick, ObservedUtc = o.ObservedUtc, CheckpointKey = o.CheckpointKey }, readings));
+        }
+        if (rows.Count == 0)
+            return;
+
+        rows = rows.OrderBy(r => r.Row.Tick).ThenBy(r => r.Row.ObservedUtc).ToList();
+        while (rows.Count > SnapshotChartSeries.MaxRows)
+        {
+            rows.RemoveAt(LeastShapeChange(rows.Select(r => (r.Row.Tick, r.Readings)).ToList()));
+            thinned++;
+        }
+
+        // One revision per key: the current definition's, else (a provider no longer described) the newest stored one.
+        var current = definitions.GroupBy(d => d.StoredKey, Ord).ToDictionary(g => g.Key, g => g.First().Revision, Ord);
+        var result = new SnapshotChartSeries { Rows = rows.Select(r => r.Row).ToList(), Thinned = thinned };
+        foreach (var key in rows.SelectMany(r => r.Readings.Keys).Distinct(Ord).Order(Ord))
+        {
+            var revision = current.TryGetValue(key, out var known) ? known
+                : rows.Where(r => r.Readings.ContainsKey(key)).Max(r => r.Readings[key].Revision);
+            var at = rows.Select(r => r.Readings.TryGetValue(key, out var x) && x.Revision == revision ? x : (ChartReading?)null).ToList();
+            if (at.All(x => x is null))
+                continue;
+            result.Metrics[key] = new SnapshotChartKey
+            {
+                Revision = revision,
+                Values = at.Select(x => x?.Value).ToList(),
+                Coverage = at.Any(x => x is { } r && r.Coverage != MetricCoverage.SnapshotOnly)
+                    ? at.Select(x => x?.Coverage ?? MetricCoverage.SnapshotOnly).ToList() : null,
+            };
+        }
+        representative.CompactedChart = result;
+    }
+
+    /// <summary>
+    /// The interior row whose removal changes the series least: for each statistic it holds, the distance between its reading
+    /// and the straight line through that statistic's neighbouring readings, as a share of the statistic's range; the row's
+    /// cost is the largest. The first and last reading of a statistic cost the whole range, so peaks, valleys and ends stay.
+    /// On a tie, the row closest in time to its neighbours goes. The first and last rows are never removed.
+    /// </summary>
+    private static int LeastShapeChange(IReadOnlyList<(int Tick, Dictionary<string, ChartReading> Readings)> rows)
+    {
+        var ranges = new Dictionary<string, (double Min, double Max)>(Ord);
+        foreach (var (_, readings) in rows)
+            foreach (var (key, r) in readings)
+                ranges[key] = ranges.TryGetValue(key, out var range)
+                    ? (Math.Min(range.Min, r.Value), Math.Max(range.Max, r.Value)) : (r.Value, r.Value);
+
+        var best = 1;
+        var bestCost = double.PositiveInfinity;
+        var bestSpan = long.MaxValue;
+        for (var i = 1; i < rows.Count - 1; i++)
+        {
+            double cost = 0;
+            foreach (var (key, r) in rows[i].Readings)
+            {
+                var (min, max) = ranges[key];
+                if (max <= min)
+                    continue;
+                var before = Neighbour(rows, i, key, -1);
+                var after = Neighbour(rows, i, key, +1);
+                double share;
+                if (before is not { } b || after is not { } a)
+                    share = 1;
+                else
+                {
+                    var span = a.Tick - (double)b.Tick;
+                    var line = span <= 0 ? (a.Value + b.Value) / 2 : b.Value + (a.Value - b.Value) * ((rows[i].Tick - (double)b.Tick) / span);
+                    share = Math.Abs(r.Value - line) / (max - min);
+                }
+                cost = Math.Max(cost, share);
+            }
+            var gap = (long)rows[i + 1].Tick - rows[i - 1].Tick;
+            if (cost < bestCost || cost == bestCost && gap < bestSpan)
+                (best, bestCost, bestSpan) = (i, cost, gap);
+        }
+        return best;
+    }
+
+    private static (int Tick, double Value)? Neighbour(IReadOnlyList<(int Tick, Dictionary<string, ChartReading> Readings)> rows,
+        int from, string key, int step)
+    {
+        for (var j = from + step; j >= 0 && j < rows.Count; j += step)
+            if (rows[j].Readings.TryGetValue(key, out var r))
+                return (rows[j].Tick, r.Value);
+        return null;
+    }
+
+    private static bool HasOpaqueChart(SnapshotChartSeries? series)
+        => series is not null && (series.ExtensionData is { Count: > 0 }
+            || series.Rows?.Any(r => r?.ExtensionData is { Count: > 0 }) == true
+            || series.Metrics?.Values.Any(m => m?.ExtensionData is { Count: > 0 }) == true);
 
     // JsonExtensionData represents fields from a minor version this binary does
     // not understand. Discarding their owner would silently destroy information.

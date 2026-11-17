@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>Dieser Wert war unverändert auch in einem Spielstand von Tag {0} enthalten; dieser hat keine neueren Statistiken aufgezeichnet.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>anders aufgezeichnet; nicht gemeinsam dargestellt</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} Messwerte ({1} teilweise); {2} Punkte ohne Wert</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Spielstände ohne Punkt: {0}. Ihre Messwerte wurden ausgedünnt, um das Profil klein zu halten (oder von einer älteren Version entfernt); die Form der Linie bleibt erhalten.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Letzte Erfassung: Tag {0} / Weitester Stand: Tag {1} (evtl. anderer Zweig)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Aufgezeichneter Wert</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Teilweise aufgezeichnet</RWS_Chart_LegendPartial>
