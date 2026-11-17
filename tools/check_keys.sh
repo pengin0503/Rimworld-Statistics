@@ -26,3 +26,4 @@ if [ "$status" -ne 0 ]; then
   exit "$status"
 fi
 python3 tools/check_translation_formats.py
+python3 tools/check_mod_source_labels.py
