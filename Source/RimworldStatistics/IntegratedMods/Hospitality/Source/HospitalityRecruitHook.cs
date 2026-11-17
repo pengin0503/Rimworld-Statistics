@@ -2,6 +2,7 @@ using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.HospitalityAddon;
 
@@ -50,7 +51,7 @@ internal static class HospitalityRecruitHook
         {
             // Upstream RecruitingSuccess called by Recruit() changes the pawn faction
             // on successful adoption; the guarded postfix fires after it returns.
-            if (guest.Faction != Faction.OfPlayer || guest.MapHeld is not { IsPlayerHome: true })
+            if (!GameFacts.IsPlayerFaction(guest.Faction) || guest.MapHeld is not { IsPlayerHome: true })
                 return;
             var id = HospitalityRecruitEventId.Create(guest.GetUniqueLoadID(),
                 Find.TickManager.TicksGame);

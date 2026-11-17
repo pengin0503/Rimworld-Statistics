@@ -25,7 +25,7 @@ public static class SetFactionMetricPatch
     public static void Prefix(Pawn __instance, out Before __state)
         => __state = __instance == null ? default : new Before
         {
-            Member = GameFacts.IsMember(__instance), Prisoner = __instance.IsPrisonerOfColony, Player = __instance.Faction == Faction.OfPlayer,
+            Member = GameFacts.IsMember(__instance), Prisoner = __instance.IsPrisonerOfColony, Player = GameFacts.IsPlayerFaction(__instance.Faction),
         };
 
     public static void Postfix(Pawn __instance, Before __state)
@@ -47,7 +47,7 @@ public static class SetFactionMetricPatch
         {
             GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Left(s, id, tick));
         }
-        if (__state.Player && __instance.Faction != Faction.OfPlayer)
+        if (__state.Player && !GameFacts.IsPlayerFaction(__instance.Faction))
             GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, id));   // e.g. a captive who joined the kidnappers
     }
 }
@@ -91,7 +91,7 @@ public static class BirthMetricPatch
 {
     public static void Postfix(Thing __result, Thing birtherThing)
     {
-        if (__result is not Pawn baby || baby.Dead || baby.Faction != Faction.OfPlayer || !baby.RaceProps.Humanlike)
+        if (__result is not Pawn baby || baby.Dead || !GameFacts.IsPlayerFaction(baby.Faction) || !baby.RaceProps.Humanlike)
             return;
         var id = GameFacts.Id(baby);
         var tick = GameFacts.Tick;
@@ -128,7 +128,7 @@ public static class KidnapReturnMetricPatch
 {
     public static void Postfix(Pawn pawn)
     {
-        if (pawn == null || pawn.Dead || pawn.Faction != Faction.OfPlayer)
+        if (pawn == null || pawn.Dead || !GameFacts.IsPlayerFaction(pawn.Faction))
             return;
         var id = GameFacts.Id(pawn);
         var tick = GameFacts.Tick;
@@ -142,11 +142,11 @@ public static class KidnapReturnMetricPatch
 public static class CapturedMetricPatch
 {
     public static void Prefix(Pawn ___pawn, out (bool Hostile, bool Prisoner) __state)
-        => __state = ___pawn == null ? default : (Faction.OfPlayer != null && ___pawn.HostileTo(Faction.OfPlayer), ___pawn.IsPrisonerOfColony);
+        => __state = ___pawn == null ? default : (___pawn.HostileTo(GameFacts.PlayerFaction), ___pawn.IsPrisonerOfColony);
 
     public static void Postfix(Pawn ___pawn, Faction by, (bool Hostile, bool Prisoner) __state)
     {
-        if (___pawn == null || by != Faction.OfPlayer || __state.Prisoner || !___pawn.IsPrisonerOfColony)
+        if (___pawn == null || !GameFacts.IsPlayerFaction(by) || __state.Prisoner || !___pawn.IsPrisonerOfColony)
             return;
         if (__state.Hostile)
             GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);

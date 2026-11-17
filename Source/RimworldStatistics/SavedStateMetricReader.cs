@@ -188,7 +188,7 @@ internal static class SavedStateMetricReader
                 continue;
             try
             {
-                var owned = pawn.Faction == Faction.OfPlayer;
+                var owned = GameFacts.IsPlayerFaction(pawn.Faction);
                 var kind = owned && pawn.IsFreeNonSlaveColonist ? RosterKind.FreeColonist
                     : pawn.IsPrisonerOfColony ? RosterKind.Prisoner
                     : pawn.IsSlaveOfColony ? RosterKind.Slave

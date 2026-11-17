@@ -8,6 +8,7 @@ using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using Verse;
 using Verse.AI.Group;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.NewModOutcomes;
 
@@ -90,7 +91,7 @@ internal static class VisitOutcomes
     private static void BeforeCamp(Caravan __0, out CampVisit? __state)
     {
         __state = null;
-        if (!OutcomeMetric.Observing(Camp) || LiveMetrics.Session is not { } session || __0.Faction != Faction.OfPlayer)
+        if (!OutcomeMetric.Observing(Camp) || LiveMetrics.Session is not { } session || !GameFacts.IsPlayerFaction(__0.Faction))
             return;
         try
         {
@@ -109,7 +110,7 @@ internal static class VisitOutcomes
         try
         {
             if (camp.Travellers.Any(pawn => pawn.Spawned && pawn.Map?.Parent is { } site &&
-                site.def == WorldObjectDefOf.Camp && site.Tile == camp.Tile && site.Faction == Faction.OfPlayer))
+                site.def == WorldObjectDefOf.Camp && site.Tile == camp.Tile && GameFacts.IsPlayerFaction(site.Faction)))
             {
                 // Set Up Camp runs GenerateCamp in an asynchronous long event.
                 CampCompletion.Record(camp.Session, () => LiveMetrics.Session, UnityData.IsInMainThread,

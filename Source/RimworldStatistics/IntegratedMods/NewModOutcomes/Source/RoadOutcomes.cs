@@ -39,7 +39,7 @@ internal static class RoadOutcomes
     private static void Before(WorldObjectComp __instance, Caravan? __0, out Segment? __state)
     {
         __state = null;
-        if (!OutcomeMetric.Observing(Unit) || __0 is not null && __0.Faction != Faction.OfPlayer)
+        if (!OutcomeMetric.Observing(Unit) || __0 is not null && !GameFacts.IsPlayerFaction(__0.Faction))
             return;
         try
         {

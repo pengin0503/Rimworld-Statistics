@@ -46,7 +46,7 @@ public static class IncidentExecuteMetricPatch
         {
             RaidFamily.Incident(s, def);
             if (__instance is IncidentWorker_RaidEnemy && scope.Pawns != null && parms?.faction != null
-                && Faction.OfPlayer != null && parms.faction.HostileTo(Faction.OfPlayer))
+                && parms.faction.HostileTo(GameFacts.PlayerFaction))
             {
                 RaidFamily.Arrived(s, new RaidArrival
                 {

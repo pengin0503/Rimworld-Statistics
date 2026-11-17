@@ -159,7 +159,7 @@ internal static class VqeDroneFactoryStatistics
     {
         __state = null;
         if (!CanObserve(AssemblyUnit) || __instance is not Building { Spawned: true } building ||
-            building.Faction != Faction.OfPlayer || building.Map is not { } map)
+            !GameFacts.IsPlayerFaction(building.Faction) || building.Map is not { } map)
             return;
         try
         {
@@ -179,7 +179,7 @@ internal static class VqeDroneFactoryStatistics
     {
         if (!__runOriginal || __state is null || !CanObserve(AssemblyUnit) ||
             __instance is not Building { Spawned: true } building ||
-            building.Map != __state.Map || building.Faction != Faction.OfPlayer)
+            building.Map != __state.Map || !GameFacts.IsPlayerFaction(building.Faction))
             return;
         try
         {
@@ -188,7 +188,7 @@ internal static class VqeDroneFactoryStatistics
             var produced = __state.Map.mapPawns.AllPawnsSpawned
                 .Where(p => !__state.Existing.Contains(p)
                     && p.Spawned && p.Map == __state.Map &&
-                    p.Faction == Faction.OfPlayer &&
+                    GameFacts.IsPlayerFaction(p.Faction) &&
                     ReferenceEquals(p.kindDef, __state.Kind)).ToArray();
             if (!VqeDroneRules.AssemblerSuccess(
                     __state.CountBefore, __state.Target,
@@ -228,7 +228,7 @@ internal static class VqeDroneFactoryStatistics
             return;
         try
         {
-            var player = child.Faction == Faction.OfPlayer;
+            var player = GameFacts.IsPlayerFaction(child.Faction);
             var born = child.Spawned && child.MapHeld?.IsPlayerHome == true;
             // The upstream hatcher tags the child as a player drone *after*
             // the successful vanilla spawn call, before Hatch returns.

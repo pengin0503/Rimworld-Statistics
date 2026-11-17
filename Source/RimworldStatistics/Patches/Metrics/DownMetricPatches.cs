@@ -32,7 +32,7 @@ public static class MakeDownedMetricPatch
             __state = new DownFacts
             {
                 FreeColonist = ___pawn.IsFreeColonist,
-                HostileToPlayer = Faction.OfPlayer != null && ___pawn.HostileTo(Faction.OfPlayer),
+                HostileToPlayer = ___pawn.HostileTo(GameFacts.PlayerFaction),
                 Toxic = hediff?.def?.defName == ToxicBuildup,
                 SocialFight = ___pawn.MentalStateDef?.defName == SocialFighting && attacker?.MentalStateDef?.defName == SocialFighting
                     && (attacker.MentalState as MentalState_SocialFighting)?.otherPawn == ___pawn,

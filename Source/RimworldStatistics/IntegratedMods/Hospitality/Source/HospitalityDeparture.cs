@@ -5,6 +5,7 @@ using RimWorld;
 using RimworldStatistics.Metrics;
 using Verse;
 using Verse.AI.Group;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.HospitalityAddon;
 
@@ -112,7 +113,7 @@ internal static class HospitalityDeparture
             state.Finished = leavingField?.GetValue(__instance) is true &&
                 lord.Map is { IsPlayerHome: true } && pawns is { Count: > 0 };
             if (recoveredField?.GetValue(__instance) is true ||
-                lord.faction is null || lord.faction.HostileTo(Faction.OfPlayer))
+                lord.faction is null || lord.faction.HostileTo(GameFacts.PlayerFaction))
                 state.Finished = false;
 
             // A guest sent away, or a guest lacking the expected component,
@@ -156,7 +157,7 @@ internal static class HospitalityDeparture
                 VisitFinished: state.Finished,
                 SawActualExit: state.SawExit,
                 SentAway: state.SentAway,
-                Hostile: lord.faction is null || lord.faction.HostileTo(Faction.OfPlayer),
+                Hostile: lord.faction is null || lord.faction.HostileTo(GameFacts.PlayerFaction),
                 RecoveredVisitor: recoveredField?.GetValue(__instance) is true,
                 OtherLossOccurred: state.OtherLoss,
                 ViolentLosses: lord.numPawnsLostViolently,

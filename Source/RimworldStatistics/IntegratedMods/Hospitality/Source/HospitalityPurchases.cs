@@ -4,6 +4,7 @@ using RimworldStatistics.Api;
 using RimworldStatistics.Metrics;
 using Verse;
 using Verse.AI;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.HospitalityAddon;
 
@@ -71,7 +72,7 @@ internal static class HospitalityPurchases
         try
         {
             var guest = __0.actor;
-            if (guest is null || guest != __instance.pawn || guest.Faction == Faction.OfPlayer ||
+            if (guest is null || guest != __instance.pawn || GameFacts.IsPlayerFaction(guest.Faction) ||
                 guest.MapHeld is not { IsPlayerHome: true } || guest.CurJob is not { } job ||
                 job.targetA.Thing?.def is not { } item || item == ThingDefOf.Silver ||
                 HospitalityPurchaseMath.EventId(job.loadID, job.startTick) is not { } id)

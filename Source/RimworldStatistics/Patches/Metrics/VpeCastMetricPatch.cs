@@ -50,7 +50,7 @@ internal static class VpeCastMetricPatch
         {
             var contract = Target.Value;
             if (contract.Pawn?.GetValue(__1) is not Pawn pawn ||
-                !pawn.IsFreeNonSlaveColonist || pawn.Faction != Faction.OfPlayer ||
+                !pawn.IsFreeNonSlaveColonist || !GameFacts.IsPlayerFaction(pawn.Faction) ||
                 contract.Definition?.GetValue(__1) is not Def abilityDef)
                 return;
             GameFacts.Record(VpeStatistics.CastUnit,

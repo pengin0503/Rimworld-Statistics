@@ -5,6 +5,7 @@ using RimWorld.Planet;
 using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using Verse;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.NewModOutcomes;
 
@@ -31,7 +32,7 @@ internal static class RealRuinsOutcomes
     private static void Before(object __instance, Caravan __0, out Arrival? __state)
     {
         __state = null;
-        if (!OutcomeMetric.Observing(Unit) || __0.Faction != Faction.OfPlayer)
+        if (!OutcomeMetric.Observing(Unit) || !GameFacts.IsPlayerFaction(__0.Faction))
             return;
         try
         {

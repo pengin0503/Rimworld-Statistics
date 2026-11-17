@@ -48,8 +48,8 @@ public static class DoTendMetricPatch
         {
             DoctorId = doctorId,
             ColonyPatient = colonyPatient,
-            NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && Faction.OfPlayer != null
-                && patient.RaceProps.Humanlike && !patient.HostileTo(Faction.OfPlayer),
+            NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && GameFacts.PlayerFaction != null
+                && patient.RaceProps.Humanlike && !patient.HostileTo(GameFacts.PlayerFaction),
             Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0,
         };
         foreach (var h in patient.health.hediffSet.hediffs)
@@ -105,7 +105,7 @@ public static class SurgeryOutcomeMetricPatch
 public static class RescueMetricPatch
 {
     public static void Prefix(Pawn taker, Pawn takee, bool rescued, out bool __state)
-        => __state = rescued && takee != null && taker != null && GameFacts.IsPlayer(taker) && Faction.OfPlayer != null && takee.HostileTo(Faction.OfPlayer);
+        => __state = rescued && takee != null && taker != null && GameFacts.IsPlayer(taker) && takee.HostileTo(GameFacts.PlayerFaction);
 
     public static void Postfix(Building_Bed bed, Pawn taker, Pawn takee, bool rescued, bool __state)
     {

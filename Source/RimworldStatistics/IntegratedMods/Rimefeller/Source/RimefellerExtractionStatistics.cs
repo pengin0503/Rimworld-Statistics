@@ -105,7 +105,7 @@ internal static class RimefellerExtractionStatistics
         if (!CanObserve() || __instance is not ThingComp
             {
                 parent: { Spawned: true } building
-            } || building.Faction != Faction.OfPlayer ||
+            } || !GameFacts.IsPlayerFaction(building.Faction) ||
             building.Map is not { IsPlayerHome: true } ||
             !string.Equals(building.def?.modContentPack?.PackageId, Owner,
                 StringComparison.OrdinalIgnoreCase))

@@ -146,7 +146,7 @@ internal static class VfeFactoryStatistics
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } building ||
-            building.Faction != Faction.OfPlayer ||
+            !GameFacts.IsPlayerFaction(building.Faction) ||
             !string.Equals(building.def?.modContentPack?.PackageId, Owner,
                 StringComparison.OrdinalIgnoreCase) ||
             building.Map is not { IsPlayerHome: true } map)

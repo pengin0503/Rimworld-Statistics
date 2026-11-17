@@ -121,7 +121,7 @@ internal static class RimatomicsByproductStatistics
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } building ||
-            building.Faction != Faction.OfPlayer || building.Map is not { IsPlayerHome:true } map ||
+            !GameFacts.IsPlayerFaction(building.Faction) || building.Map is not { IsPlayerHome:true } map ||
             !IsNormalUnload())
             return;
         __state = new ByproductScope { Map = map, Parent = active };

@@ -148,7 +148,7 @@ internal static class VefProcessingStatistics
         try
         {
             if (parentField?.GetValue(__instance) is not ThingWithComps machine ||
-                !machine.Spawned || machine.Faction != Faction.OfPlayer ||
+                !machine.Spawned || !GameFacts.IsPlayerFaction(machine.Faction) ||
                 definitionField?.GetValue(__instance) is not Def process ||
                 processCountField?.GetValue(__instance) is not int count)
                 return;

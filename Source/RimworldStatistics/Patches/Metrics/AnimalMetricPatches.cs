@@ -19,7 +19,7 @@ public static class TameMetricPatch
     {
         if (recruitee == null || !recruitee.RaceProps.Animal)
             return;
-        var now = recruitee.Faction == Faction.OfPlayer;
+        var now = GameFacts.IsPlayerFaction(recruitee.Faction);
         GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Tamed(s, __state, now));
     }
 }
@@ -33,7 +33,7 @@ public static class AnimalBornMetricPatch
     {
         if (!__result || pawn == null || pawn.Dead || !pawn.RaceProps.Animal)
             return;
-        var player = pawn.Faction == Faction.OfPlayer;
+        var player = GameFacts.IsPlayerFaction(pawn.Faction);
         GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Born(s, player));
     }
 }

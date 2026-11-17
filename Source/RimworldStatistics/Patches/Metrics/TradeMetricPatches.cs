@@ -73,7 +73,7 @@ public static class RelationKindMetricPatch
 {
     public static void Postfix(Faction __instance, Faction other, FactionRelationKind previousKind)
     {
-        var player = Faction.OfPlayer;
+        var player = GameFacts.PlayerFaction;
         if (player == null || other == null)
             return;
         var npc = __instance == player ? other : other == player ? __instance : null;

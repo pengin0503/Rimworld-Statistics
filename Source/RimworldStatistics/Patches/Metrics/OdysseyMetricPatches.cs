@@ -63,7 +63,7 @@ public static class OdysseyPreflightMapsMetricPatch
 {
     public static void Prefix(Building_GravEngine engine)
     {
-        if (engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer
+        if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
             || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
             return;
         var maps = Find.Maps?.Where(m => m is not null)
@@ -82,7 +82,7 @@ public static class OdysseyTakeoffMetricPatch
     public static void Postfix(Building_GravEngine? __state)
     {
         var engine = __state;
-        if (engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer)
+        if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction))
             return;
         GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedTakeoff(
             s, GameFacts.Id(engine), GameFacts.Tick, playerShip: true));
@@ -104,7 +104,7 @@ public static class OdysseyNewLandingMapMetricPatch
             return;
         var ship = Find.CurrentGravship;
         var engine = ship?.Engine;
-        if (ship is null || engine is null || engine.Destroyed || engine.Faction != Faction.OfPlayer
+        if (ship is null || engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
             || !ship.destinationTile.Valid || !__result.Tile.Equals(ship.destinationTile))
             return;
         GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedMapGenerated(
@@ -131,7 +131,7 @@ public static class OdysseyLandingMetricPatch
     {
         var (engine, from, to, targetMap) = __state;
         if (engine is null || engine.Destroyed || !engine.Spawned
-            || engine.Faction != Faction.OfPlayer || engine.Map != targetMap
+            || !GameFacts.IsPlayerFaction(engine.Faction) || engine.Map != targetMap
             || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
             return;
         // The landing has completed and the original player engine is spawned

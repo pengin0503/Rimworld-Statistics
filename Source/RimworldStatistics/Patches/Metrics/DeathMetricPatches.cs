@@ -48,7 +48,7 @@ public static class PawnKillMetricPatch
                 FreeColonist = p.IsFreeColonist,
                 ColonyAnimal = GameFacts.IsColonyAnimal(p),
                 Wild = p.RaceProps.Animal && p.Faction == null,
-                HostileToPlayer = Faction.OfPlayer != null && p.HostileTo(Faction.OfPlayer),
+                HostileToPlayer = p.HostileTo(GameFacts.PlayerFaction),
                 VictimKind = GameFacts.VictimKind(p),
                 Species = p.IsFreeColonist ? GameFacts.Species(p) : null,
                 Xenotype = p.IsFreeColonist ? GameFacts.Xenotype(p) : null,

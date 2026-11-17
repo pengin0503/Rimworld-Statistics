@@ -121,7 +121,7 @@ internal static class GiddyUpMountStatistics
         => Convert.ToInt32(method) == instantValue &&
            rider.CurJobDef == mountJob &&
            GameFacts.IsMember(rider) &&
-           animal.Faction == Faction.OfPlayer &&
+           GameFacts.IsPlayerFaction(animal.Faction) &&
            animal.RaceProps.Animal &&
            rider.MapHeld is { IsPlayerHome: true } map &&
            animal.MapHeld == map;

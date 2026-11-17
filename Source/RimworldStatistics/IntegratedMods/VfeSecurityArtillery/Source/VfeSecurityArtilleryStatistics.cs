@@ -111,7 +111,7 @@ internal static class VfeSecurityArtilleryStatistics
         try
         {
             if (launcherField?.GetValue(__instance) is not Thing launcher ||
-                launcher.Faction != Faction.OfPlayer ||
+                !GameFacts.IsPlayerFaction(launcher.Faction) ||
                 sourceTileField?.GetValue(__instance) is not PlanetTile source ||
                 targetTileField?.GetValue(__instance) is not PlanetTile target ||
                 source == target ||

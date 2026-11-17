@@ -5,6 +5,7 @@ using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using RimworldStatistics.NewModOutcomes;
 using Verse;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.VfePower;
 
@@ -68,7 +69,7 @@ internal static class VfePowerStatistics
         __state = default;
         if (!OutcomeMetric.Observing(Unit) ||
             __instance is not ThingComp { parent: Building { Spawned: true } building } ||
-            building.Faction != Faction.OfPlayer ||
+            !GameFacts.IsPlayerFaction(building.Faction) ||
             !string.Equals(building.def?.modContentPack?.PackageId, Owner, StringComparison.OrdinalIgnoreCase))
             return;
 
@@ -95,7 +96,7 @@ internal static class VfePowerStatistics
                     wasSignaled: false,
                     isSignaled: signaledNow,
                     isBrokenDown: breakdownable?.BrokenDown == true,
-                    playerOwned: building.Faction == Faction.OfPlayer,
+                    playerOwned: GameFacts.IsPlayerFaction(building.Faction),
                     spawned: building.Spawned))
                 return;
 

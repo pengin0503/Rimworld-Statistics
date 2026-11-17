@@ -123,7 +123,7 @@ internal static class VqeAncientsStatistics
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } injector ||
-            injector.Faction != Faction.OfPlayer ||
+            !GameFacts.IsPlayerFaction(injector.Faction) ||
             injector.Map is not { IsPlayerHome: true } map)
             return;
         try
@@ -174,7 +174,7 @@ internal static class VqeAncientsStatistics
             {
                 var spawned = __state.Map.mapPawns.AllPawnsSpawned
                     .Where(p => !before.Contains(p) && p.Spawned &&
-                        p.Faction == Faction.OfPlayer &&
+                        GameFacts.IsPlayerFaction(p.Faction) &&
                         ReferenceEquals(p.kindDef, kind)).ToArray();
                 if (spawned.Length != 1 ||
                     !VqeAncientsRules.Mutated(

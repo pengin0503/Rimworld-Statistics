@@ -136,7 +136,7 @@ internal static class VfePiratesStatistics
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } foundry ||
-            foundry.Faction != Faction.OfPlayer || !FromNormalWelding())
+            !GameFacts.IsPlayerFaction(foundry.Faction) || !FromNormalWelding())
             return;
         try
         {
