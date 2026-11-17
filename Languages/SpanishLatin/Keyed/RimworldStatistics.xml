@@ -1098,15 +1098,15 @@
   <RWS_VreAndroid_Awakenings>Despertares naturales de androides VRE</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androides del jugador de cuerpo sintético que despertaron naturalmente mediante la comprobación genética basada en el humor. No cuentan despertar con herramientas de desarrollo, configuración inicial ni androides ya despiertos. Requiere Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializaciones VSE elegidas</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Especializaciones nuevas elegidas por colonos del jugador en el panel normal de especializaciones, por especialização. No cuentan desbloqueos de depuración ni registros restaurados.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>Especializaciones nuevas elegidas por colonos del jugador en el panel normal de especializaciones, por especialización. No cuentan desbloqueos de depuración ni registros restaurados.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>Niveles de especialización VSE ganados</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes de niveles VSE desde que se activó el registro, sumados entre todas las colonias independientes y agrupados por especialização.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes de niveles VSE desde que se activó el registro, sumados entre todas las colonias independientes y agrupados por especialización.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>Nivel de especialización VSE máximo alcanzado</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Mayor nivel de especialización alcanzado realmente por experiencia entre colonias independientes; no es suma de niveles ni instantánea de la última partida guardada.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Lotes procesados Vanilla Cooking Expanded</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Procesos VEF de sopa, queso y otros productos de Vanilla Cooking Expanded que se completaron, por processo. No cuentan producción normal mediante órdenes ni salidas parcialmente bloqueadas.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Procesos VEF de sopa, queso y otros productos de Vanilla Cooking Expanded que se completaron, por proceso. No cuentan producción normal mediante órdenes ni salidas parcialmente bloqueadas.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Lotes de fermentación y maduración Vanilla Brewing Expanded</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentación, elaboración y envejecimiento de Vanilla Brewing Expanded completados, por processo. No cuentan salidas pausadas, bloqueadas o incompletas ni producción normal mediante órdenes.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentación, elaboración y envejecimiento de Vanilla Brewing Expanded completados, por proceso. No cuentan salidas pausadas, bloqueadas o incompletas ni producción normal mediante órdenes.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Plata de comidas de clientes Gastronomy</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Plata realmente pagada por clientes ajenos al jugador por comidas en un restaurante del jugador. Los pagos parciales suman solo lo pagado; se excluyen deudas sin pagar, comidas gratis y otras transacciones.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>Drones VQE Drone Factory ensamblados</RWS_VqeDrones_Assembled>
@@ -1140,7 +1140,7 @@
   <RWS_Rimatomics_Byproducts>Subproductos de reprocesado Dubs Rimatomics</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>Objetos realmente colocados o fusionados con pilas como subproductos cuando el procesador de plutonio del jugador termina de descargar combustible, por tipo producido. No cuentan combustible gastado devuelto, materiales solo procesados ni colocaciones sin relación.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Cartuchos disparados en Combat Extended</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Cartuchos realmente gastados de cargadores de armas de colonos del jugador, o al disparar directamente desde el inventario, por tipo de munição. No cuentan mover munición al recargar, disparos en seco, uso de torretas ni recargas de depuración.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>Cartuchos realmente gastados de cargadores de armas de colonos del jugador, o al disparar directamente desde el inventario, por tipo de munición. No cuentan mover munición al recargar, disparos en seco, uso de torretas ni recargas de depuración.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Veces que los colonos recibieron supresión Combat Extended</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Veces que un peón de la colonia del jugador pasó de no estar bajo supresión a estarlo en Combat Extended. No cuentan más supresión mientras ya lo está ni pruebas de desarrollador. Mide la supresión recibida, no la infligida a los enemigos.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>Contratos de contratación VFE Pirates</RWS_VfePirates_HireContracts>
