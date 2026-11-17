@@ -24,14 +24,24 @@ public static class MetricRates
         WorkFamily.ConstructionMaterials,
     };
 
+    /// <summary>
+    /// A live total that adds up amounts of events (counts, silver, nutrition) over the interval it was recorded in: what
+    /// <see cref="PerDay"/> divides, and what a colony's history can count between two of its readings (#307).
+    /// </summary>
+    public static bool IsAdditiveTotal(MetricDefinition definition)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        return definition.Source == MetricObservationSource.Checkpoint && definition.Overall == OverallAggregation.Sum
+            && !NotAdditive.Contains(definition.Key) && !NotAdditive.Contains(definition.StoredKey)
+            && definition.Selection == ColonySelection.Representative && !definition.Signed
+            && definition.Unit is (MetricUnit.Count or MetricUnit.Silver or MetricUnit.Nutrition);
+    }
+
     public static DailyRate? PerDay(MetricDefinition definition, NumericValue value)
     {
         ArgumentNullException.ThrowIfNull(definition);
         ArgumentNullException.ThrowIfNull(value);
-        if (definition.Source != MetricObservationSource.Checkpoint || definition.Overall != OverallAggregation.Sum
-            || NotAdditive.Contains(definition.Key) || NotAdditive.Contains(definition.StoredKey)
-            || definition.Selection != ColonySelection.Representative || definition.Signed
-            || definition.Unit is not (MetricUnit.Count or MetricUnit.Silver or MetricUnit.Nutrition)
+        if (!IsAdditiveTotal(definition)
             || value.Coverage != MetricCoverage.Complete || value.Number is not { } total || !double.IsFinite(total)
             || total < 0 || value.SinceTick is not { } since || value.ThroughTick is not { } through
             || since < 0 || through - (long)since < StatFormat.TicksPerDay)

@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« Ocultar lista</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Mostrar lista</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Remover colónia comparada</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>Primeiro e último</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Compara o último registo com o registo mais antigo que comprovadamente continua. Se não houver nenhum, indica porque o primeiro e o último registo não podem ser comparados.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Limpar seleção</RWS_Change_Clear>
+  <RWS_Change_Hint>Clique em dois registos desta colónia no gráfico para ver a variação entre eles.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Só um registo tem valor, por isso não há nada com que o comparar.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>A partir do dia {0} ({1}). Clique noutro registo para comparar.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>Dia {0} ({1}) → dia {2} ({3}), em {4} dias</RWS_Change_Interval>
+  <RWS_Change_Difference>Variação: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>Contado neste período: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Variação relativa: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Variação relativa: indisponível (o valor anterior é 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Variação relativa: indisponível (nesta escala uma proporção não tem significado)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Variação relativa: indisponível (demasiado grande para mostrar)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} pontos percentuais</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>Pelo menos um destes valores é um registo parcial; a variação abrange apenas o que foi registado.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Os dois registos são do mesmo momento; escolha registos de momentos diferentes.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>Não é possível comparar: um registo não tem valor.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>Não é possível comparar: não está comprovado que o registo posterior continua o anterior (outro ramo, uma gravação anterior carregada de novo, um registo pai em falta ou gravações sem checkpoints).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>Contado neste período: indisponível (não é possível confirmar que o registo decorreu sem falhas, paragens nem reinícios até ambos os pontos; inclui valores incompletos por um limite e valores iniciados tarde registados por uma versão anterior)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>Contado neste período: indisponível (o total acumulado é menor no registo posterior, o que uma contagem não pode produzir)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>Não é possível comparar: a variação é demasiado grande para mostrar.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>O valor posterior manteve-se inalterado até uma gravação do dia {0}; o período termina onde foi registado.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>O registo desta estatística começou no dia {0}. O aumento é o que foi contado desde então; um evento já em curso nessa altura pode não ser contado.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Clique para escolher este registo para uma comparação</RWS_Change_ClickTip>
 </LanguageData>

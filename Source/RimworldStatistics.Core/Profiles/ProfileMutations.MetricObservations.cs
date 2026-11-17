@@ -99,6 +99,9 @@ public static partial class ProfileMutations
                 existing.CompactedEvidenceByMetric[key] = existing.CompactedEvidenceByMetric.TryGetValue(key, out var previous)
                     ? MetricEvidencePolicy.Combine(previous, evidence) : evidence;
         }
+        // A value taken from a record without the list of continuous families may be weakened without saying so (#307).
+        var unmarked = obs.ContinuousFamilies is null;
+        var tookUnmarked = false;
         foreach (var (key, entry) in obs.Metrics)
         {
             if (entry.IsQuarantined)
@@ -107,6 +110,7 @@ public static partial class ProfileMutations
                 || (entry.Revision == old.Revision && Quality(entry) > Quality(old)))
             {
                 existing.Metrics[key] = entry;
+                tookUnmarked |= unmarked;
             }
             else if (existing.Source == MetricObservationSource.Checkpoint && entry.Revision == old.Revision
                 && old.Values.TryGetValue(MetricEntry.Scalar, out var previous)
@@ -119,8 +123,23 @@ public static partial class ProfileMutations
             {
                 foreach (var (child, value) in entry.Values)
                     if (child != MetricEntry.Scalar && !old.Values.ContainsKey(child))
+                    {
                         old.Values.Add(child, value);
+                        tookUnmarked |= unmarked;
+                    }
             }
+        }
+        // Checkpoints merge only with the same content, whose families' continuity is the same: the lists add up. A record
+        // without the list never gains one (its values were read before weakenings were marked), and loses it on taking an
+        // unmarked value.
+        if (existing.ContinuousFamilies is { } continuous)
+        {
+            if (tookUnmarked)
+                existing.ContinuousFamilies = null;
+            else if (obs.ContinuousFamilies is { } more)
+                foreach (var family in more)
+                    if (!continuous.Contains(family, StringComparer.Ordinal))
+                        continuous.Add(family);
         }
     }
 

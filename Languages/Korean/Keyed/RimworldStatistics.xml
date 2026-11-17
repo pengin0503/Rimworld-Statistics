@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« 목록 숨기기</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» 목록 표시</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>비교 정착지 제거</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>처음과 마지막</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>마지막 점과, 그 점이 이어진다고 확인된 가장 오래된 점을 비교합니다. 그런 점이 없으면 처음과 마지막 점을 비교할 수 없는 이유를 표시합니다.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>선택 해제</RWS_Change_Clear>
+  <RWS_Change_Hint>그래프에서 이 정착지의 점 두 개를 클릭하면 그 사이의 변화를 표시합니다.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>값이 있는 점이 하나뿐이라 비교할 수 없습니다.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>시작점: {0}일 ({1}). 비교할 다른 점을 클릭하세요.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>{0}일 ({1}) → {2}일 ({3}), 기간 {4}일</RWS_Change_Interval>
+  <RWS_Change_Difference>차이: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>기간 증가분: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>변화율: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>변화율: 계산 불가 (시작점의 값이 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>변화율: 계산 불가 (이 단위에서는 비율이 의미가 없습니다)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>변화율: 계산 불가 (값이 너무 큽니다)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0}%p</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>부분 기록인 값이 포함된 차이입니다. 기록되지 않은 부분은 포함되지 않습니다.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>같은 시점의 점입니다. 다른 시점의 점을 선택하세요.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>비교 불가: 값이 없는 점이 포함되어 있습니다.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>비교 불가: 나중 점이 이전 점에서 이어진다는 것을 기록으로 확인할 수 없습니다 (다른 분기, 이전 저장에서 다시 시작, 부모 기록 누락, 체크포인트가 없는 저장 등).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>기간 증가분: 계산 불가 (두 시점까지 기록이 공백·중지·재시작 없이 이어졌는지 확인할 수 없습니다. 상한 도달 등으로 불완전한 값과 이전 버전에서 기록된 도중 시작 값도 포함됩니다)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>기간 증가분: 계산 불가 (누적 값이 나중 점에서 줄어들어 센 수로 다룰 수 없습니다)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>비교 불가: 차이가 너무 커서 표시할 수 없습니다.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>나중 값은 {0}일 저장까지 변하지 않고 이어졌습니다. 기간은 값이 기록된 시점까지로 계산합니다.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>이 통계의 기록은 {0}일에 시작되었습니다. 기간 증가분은 그 이후에 센 수이며, 그 시점에 이미 진행 중이던 사건은 세지 않았을 수 있습니다.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>클릭하여 비교할 점으로 선택</RWS_Change_ClickTip>
 </LanguageData>

@@ -118,6 +118,16 @@ public sealed class MetricObservation
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? PayloadHash { get; set; }
 
+    /// <summary>
+    /// A checkpoint (#307): the families whose totals were recorded without a gap from their own start through this save,
+    /// possibly empty. Every value of such an observation marks a weakening of its own (<see cref="MetricValue.Weakened"/>),
+    /// so a partial value that is not weakened counts exactly what happened since its family started. Null for other sources
+    /// and for checkpoints read before this was kept (and for one that took values from such a record): their partial
+    /// values cannot be told apart.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public List<string>? ContinuousFamilies { get; set; }
+
     /// <summary>The same checkpoint id was seen with different contents: neither is used, and the lineage is unknown.</summary>
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
     public bool Conflicted { get; set; }

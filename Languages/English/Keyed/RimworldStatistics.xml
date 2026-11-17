@@ -1338,4 +1338,28 @@
   <RWS_Rankings_HideSelector>« Hide list</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Show list</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Remove comparison colony</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>First and last</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Compares the last reading with the earliest reading it is proven to continue. If there is none, shows why the first and last readings cannot be compared.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Clear selection</RWS_Change_Clear>
+  <RWS_Change_Hint>Click two of this colony's readings on the chart to see the change between them.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Only one reading has a value, so there is nothing to compare it with.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>From day {0} ({1}). Click another reading to compare.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>Day {0} ({1}) → day {2} ({3}), over {4} days</RWS_Change_Interval>
+  <RWS_Change_Difference>Change: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>Counted in this interval: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Relative change: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Relative change: not available (the earlier value is 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Relative change: not available (a ratio means nothing on this scale)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Relative change: not available (too large to show)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} percentage points</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>At least one of these values is a partial record; the change covers only what was recorded.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Both readings are at the same moment; pick readings at different times.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>Cannot compare: a reading has no value.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>Cannot compare: the later reading is not proven to continue the earlier one (another branch, a reload of an earlier save, a missing parent record, or saves without checkpoints).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>Counted in this interval: not available (recording is not proven to have run without a gap, stop or restart through both readings; this includes values left incomplete by a cap and late-started values recorded by an earlier version)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>Counted in this interval: not available (the running total is lower at the later reading, which counting cannot give)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>Cannot compare: the change is too large to show.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>The later value was carried unchanged until a save on day {0}; the interval ends where it was recorded.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>Recording of this statistic began on day {0}. The increase is what was counted since; an event already under way then may not be counted.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Click to pick this reading for a comparison</RWS_Change_ClickTip>
 </LanguageData>

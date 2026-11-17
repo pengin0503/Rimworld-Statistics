@@ -18,6 +18,13 @@ public sealed class NumericValue
     /// <summary>The game tick the value runs to (the representative observation's save tick).</summary>
     public int? ThroughTick { get; init; }
 
+    /// <summary>
+    /// A live total recorded without a gap from <see cref="SinceTick"/> through its save and not weakened by its family: it
+    /// counts exactly what was recorded in that range, even when recording started after the game did (#307). Complete
+    /// values are gapless too; a partial value from a checkpoint read before this was kept is not. In memory only.
+    /// </summary>
+    public bool Gapless { get; init; }
+
     /// <summary>Saved MOD inventory fingerprint, in memory only; never shown or persisted as a new output.</summary>
     public string? ModSetHash { get; init; }
 
@@ -475,7 +482,19 @@ public static partial class MetricCalculator
         SinceTick = v.SinceTick,
         ThroughTick = v.ThroughTick ?? observation.SaveTick,
         ModSetHash = observation.ModSetHash,
+        Gapless = Gapless(v, observation, definition),
     };
+
+    private static bool Gapless(MetricValue v, MetricObservation observation, MetricDefinition definition)
+    {
+        if (v.Coverage == MetricCoverage.Complete)
+            return true;
+        return v.Coverage == MetricCoverage.Partial && v.Weakened != true
+            && definition.Source == MetricObservationSource.Checkpoint && observation.Source == MetricObservationSource.Checkpoint
+            && v.SinceTick is not null && v.ThroughTick == observation.SaveTick
+            && definition.Acquisition is { Length: > 0 } family
+            && observation.ContinuousFamilies is { } continuous && continuous.Contains(family, StringComparer.Ordinal);
+    }
 
     private static NumericRow Row(MetricDefinition d, string breakdown, NumericValue v) => new()
     {

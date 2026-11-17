@@ -46,11 +46,16 @@ public sealed class FamilyOutputContext
     /// <summary>Complete when recorded from the start without a gap up to this save; otherwise partial.</summary>
     public MetricCoverage Coverage => FromStart && State.ThroughTick == SaveTick ? MetricCoverage.Complete : MetricCoverage.Partial;
 
-    /// <summary>A value carrying this family's measured range and coverage (weakened to partial when <paramref name="partial"/>).</summary>
+    /// <summary>
+    /// A value carrying this family's measured range and coverage (weakened to partial when <paramref name="partial"/>).
+    /// A family weakens a value only here or with <see cref="MarkPartial"/>, which mark it <see cref="MetricValue.Weakened"/>:
+    /// a partial value without that mark counts exactly what was recorded in its range (#307).
+    /// </summary>
     public MetricValue Value(long? integer = null, double? real = null, double? numerator = null, double? denominator = null,
         int? samples = null, bool partial = false, MetricCoverage? coverage = null) => new()
     {
         Coverage = coverage ?? (partial ? MetricCoverage.Partial : Coverage),
+        Weakened = partial || coverage == MetricCoverage.Partial ? true : null,
         IntegerValue = integer,
         RealValue = real is { } r && double.IsFinite(r) ? r : null,
         Numerator = numerator,
@@ -81,8 +86,12 @@ public sealed class FamilyOutputContext
         foreach (var key in keys)
             if (Into.TryGetValue(key, out var entry))
                 foreach (var v in entry.Values.Values)
+                {
+                    // A value already partial because its recording started late is weakened too.
+                    v.Weakened = true;
                     if (v.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                         v.Coverage = MetricCoverage.Partial;
+                }
     }
 
     // ----- shapes shared by the families -----
@@ -274,6 +283,7 @@ public static class CheckpointMetrics
             SaveTick = payload.SaveTick,
             ObservedUtc = payload.SavedUtc,
             ActiveDlcIds = activeDlcIds?.ToList(),
+            ContinuousFamilies = new List<string>(),
         };
         families ??= LiveFamilies.Active;
         foreach (var (name, state) in payload.Families)
@@ -303,6 +313,10 @@ public static class CheckpointMetrics
             }
             foreach (var (key, entry) in built)
                 obs.Metrics[key] = entry;
+            // Recorded without a gap from its own start through this save (a family kept from an earlier session stops
+            // before it): its values that are not weakened count exactly what happened in that range (#307).
+            if (state.Continuous && state.ThroughTick == payload.SaveTick)
+                obs.ContinuousFamilies.Add(name);
         }
         return obs;
     }

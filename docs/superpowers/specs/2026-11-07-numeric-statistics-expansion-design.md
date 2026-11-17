@@ -66,6 +66,8 @@ v1の `ObservedValues` と枝刈りを拡張値の保存に流用しない。 `P
 
 Cのセーブ内JSONは `formatVersion=1, checkpointId, parentCheckpointId, saveTick, savedUtc, families`。 `families` は有効な取得単位名から `revision, sinceTick, throughTick, continuous, metrics, active` への辞書。 `active` は同じセーブで再開が必要なID・開始tick・最小の遷移状態のみ。イベントや操作の順序列は持たない。機能登録時の取得単位は台帳の節名に合わせる。旧版や未知機能の値を保持できるよう、読取はファミリーごとに分離する。
 
+Cのプロファイル観測は、#307以降 `continuousFamilies`（そのセーブまで自身の開始時点から欠落なく記録した取得単位名の一覧。該当なしは空配列）を持ち、各ファミリーが上限到達・未分類などで自ら部分に落とした値には `weakened: true` を付ける。途中導入だけが理由の部分値と区別するためで、一覧がない旧観測の部分値は区別できないものとして扱う。同一チェックポイントの再読込では一覧を和集合で統合し、一覧のない記録から値を取り込んだ観測は一覧を失う（一覧のない観測が後から一覧を得ることはない）。
+
 ## 3. 数値集計と巻き戻し
 
 ### 過去観測の選び方
