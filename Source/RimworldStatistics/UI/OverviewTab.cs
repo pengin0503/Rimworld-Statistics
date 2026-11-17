@@ -12,7 +12,7 @@ public static class OverviewTab
     private const float TopCellHeight = 92f;
     private const float BottomCellHeight = 70f;
 
-    private sealed record Cell(string Label, string Value, string Tip, string? FavoriteKey = null, bool ShowStar = true)
+    private sealed record Cell(string Label, string Value, string Tip, string? FavoriteKey = null, bool ShowStar = true, string? Source = null)
     {
         private float lastWidth = -1;
         private string label = "";
@@ -176,9 +176,12 @@ public static class OverviewTab
         Text.Font = GameFont.Small;
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
+        var valueOffset = item.Source is null ? 26f : 41f;
+        if (item.Source is { } source)
+            Widgets.Label(new Rect(inner.x, inner.y + 21f, inner.width, 18f), source.Truncate(inner.width));
         GUI.color = Color.white;
         Text.Font = valueFont;
-        Widgets.Label(new Rect(inner.x, inner.y + 26f, inner.width, inner.height - 26f), value);
+        Widgets.Label(new Rect(inner.x, inner.y + valueOffset, inner.width, Math.Max(0f, inner.height - valueOffset)), value);
         Text.Font = GameFont.Small;
         // Do not cover the favourite star at the right edge of the card.
         var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - (hasStar ? 40f : 8f)), cell.height - 4f);
@@ -192,7 +195,8 @@ public static class OverviewTab
         var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
         var activeTip = hasStar && Mouse.IsOver(star)
             ? (string)"RWS_Fav_StarTip".Translate()
-            : chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip;
+            : (chartView is not null && Mouse.IsOver(chartRect) ? item.ChartTip : tip)
+                + (item.Source is null ? "" : "\n" + item.Source);
         TooltipHandler.TipRegion(cell, activeTip);
         if (chartView is not null && Widgets.ButtonInvisible(chartRect))
             Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
@@ -254,13 +258,15 @@ public static class OverviewTab
 
             if (MetricLookup.Overall(view, key) is { } row)
                 return new FavoriteCell(key, new Cell(MetricText.Label(row.Definition),
-                    MetricText.Format(row.Definition, row.Value), MetricText.Tip(row, view.Stats), key, ShowStar: false));
+                    MetricText.Format(row.Definition, row.Value), MetricText.Tip(row, view.Stats), key, ShowStar: false,
+                    Source: MetricText.ModSourceLabel(row.Definition)));
 
             var definition = MetricLookup.Definition(view, key);
             return new FavoriteCell(key, new Cell(definition is null ? key : MetricText.Label(definition),
                 Dialog_RimworldStatistics.Dash,
                 definition is null ? (string)"RWS_Fav_Unknown".Translate()
-                    : (string)"RWS_Fav_NoOverall".Translate(), key, ShowStar: false));
+                    : (string)"RWS_Fav_NoOverall".Translate(), key, ShowStar: false,
+                Source: definition is null ? null : MetricText.ModSourceLabel(definition)));
         }).ToArray();
     }
 
