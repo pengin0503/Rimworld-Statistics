@@ -85,8 +85,9 @@ internal static class MetricText
         return string.IsNullOrWhiteSpace(pack?.Name) ? null : pack!.Name;
     }
 
+    // Saved metrics may outlive their source mod. Never expose an unknown package ID in the UI.
     public static string ModDisplayName(string packageId)
-        => ActiveModTitle(packageId) ?? MetricAcquisitionLabels.KnownModDisplayName(packageId) ?? packageId;
+        => SafeModDisplayName(packageId);
 
     public static string SafeModDisplayName(string packageId)
         => MetricAcquisitionLabels.SafeModDisplayName(packageId, ActiveModTitle)
