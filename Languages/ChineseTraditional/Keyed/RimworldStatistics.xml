@@ -1151,13 +1151,13 @@
   <RWS_VgeHybrid_BirthsDesc>玩家所有的VGE電子子宮成功完成一次成長週期後，實際新產生的玩家所屬混種單位數量，每次產生一名，依單位種類分類。不包括成長失敗、僅計時推進或還原存檔。</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE生體機械轉換次數</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>玩家的機械混種轉化設備成功將原對象銷毀，並新產生一名玩家所屬的轉換後單位的次數，依結果單位種類分類。不包括啟動機器、等待或產生失敗。</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded核准的假釋次數</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>核准的假釋次數</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>假釋聽證會中實際清除仍受玩家拘禁的存活俘虜已服滿刑期，並正式下令釋放的決定次數。僅舉行聽證、延長期限、招募選項、重複選擇或之後的俘虜離開不計入。</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>油田開採原油（油田單位）</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>玩家所有的油井成功抽油後，油田容量的實際減少量。單位為油田容量，不是管線體積或物品數量。不包括鑽探進度、抽油嘗試、油田自然恢復、油罐之間的轉移或煉油產物。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded刑期服滿次數</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>刑期服滿次數</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>玩家拘禁的俘虜在Prison Expanded中實際服滿完整刑期，並首次進入需要假釋聽證階段的次數。不包括假釋核准、釋放指令、重複的每日tick或載入存檔時還原的數值。</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded俘虜實際離開人數</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>俘虜實際離開人數</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded記錄的俘虜實際離開玩家主據點地圖的次數，而不是僅收到釋放或假釋指令。不論原始刑期如何，只要實際離開就計入。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>煉油設備消耗燃料（管線單位）</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>玩家所有的Rimefeller煉油設備處理導致管網可用燃料的實際減少量。不包括同一時間轉入現場設備的燃料，或僅計畫、嘗試消耗的燃料。單位為管網燃料單位。</RWS_Rimefeller_RefineryFuelUsedDesc>
