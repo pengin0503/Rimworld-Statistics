@@ -84,6 +84,20 @@ public static class BiotechFamily
             s.Distinct(CompletedRepairs, repairOperationId);
     }
 
+    /// <summary>
+    /// The wastepacks a waste producer holds: the stack counts of every wastepack in its container (#323). 1.7.5011
+    /// <c>CompWasteProducer.ProduceWaste</c> adds stacks of at most the stack limit, so a container can hold several, while
+    /// <c>CompWasteProducer.Waste</c> is only the first. Its inspect string sums them the same way.
+    /// </summary>
+    public static int Wastepacks(IEnumerable<(bool Wastepack, int Count)> held)
+    {
+        long total = 0;
+        foreach (var (wastepack, count) in held)
+            if (wastepack && count > 0)
+                total += count;
+        return (int)Math.Min(int.MaxValue, total);
+    }
+
     /// <summary>Only positive stack count newly spawned by a confirmed production path.</summary>
     public static void WastePackProduced(FamilyState s, int amount, bool playerProductionComplete)
     {

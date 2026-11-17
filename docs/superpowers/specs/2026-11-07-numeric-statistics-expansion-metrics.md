@@ -102,7 +102,7 @@
 
 | ID | 原候補 | 一次分類 | 優先 | メトリクスキー | 定義・集計 |
 |---|---|---|---|---|---|
-| `S-009` | 最後に観測した食料備蓄量 | 維持 | 中 | `stock.food_nutrition.latest` | ホームマップの食用栄養を持つ食品のスタック数×一個栄養。全体は合計 |
+| `S-009` | 最後に観測した食料備蓄量 | 維持 | 中 | `stock.food_nutrition.latest` | ホームマップの食品のスタック数×一個栄養。全体は合計。食品はゲームの `ResourceCounter.TotalHumanEdibleNutrition`（食料不足警告）と同じ定義：`ThingCategory.Item` で `IsNutritionGivingIngestible` かつ `ingestible.HumanEdible`、さらに新鮮（`!IsNotFresh()`）。生えている草木・作物、干し草・サイコイドの葉（foodType Plant）、死体は含めない。キブルと栄養を持つ薬物（ビール、アンブロシア）はゲームと同じく含める。ゲームと異なり保管区域・未探索セルに限定しない。revision 2（revision 1 は植物を含んでいたため比較しない。#317） |
 | `S-010` | 最後に観測したシルバー所持量 | 維持 | 中 | `stock.silver.latest` | ホームマップの Silver 個数。全体は合計 |
 | `S-011` | 最後に観測したスチール・コンポーネント所持量 | 維持 | 中 | `stock.materials.latest` | Steel / ComponentIndustrial / ComponentSpacer を別行で各個数。全体は合計 |
 | `S-017` | 最大武器保有数 | 装備・所持物 | 中 | `stock.weapons.peak` | ホームマップ保有武器の最大観測個数 |
@@ -110,7 +110,7 @@
 | `S-019` | 最大レジェンダリー武器保有数 | 装備・所持物 | 中 | `stock.legendary_weapons.peak` | Legendary の保有武器最大観測個数 |
 | `S-020` | 最大ペルソナ武器保有数 | 装備・所持物 | 中 | `stock.persona_weapons.peak` | ペルソナ用バインドCompを持つ保有武器最大観測個数。Royalty |
 | `N1-A-004` | 最大医薬品備蓄量 | 維持 | 中 | `stock.medicine.peak` | 医薬品分類の最大観測個数 |
-| `N1-A-005` | 最低食料備蓄量 | 維持 | 高 | `stock.food_nutrition.min` | S-009と同じ範囲で最小観測量 |
+| `N1-A-005` | 最低食料備蓄量 | 維持 | 高 | `stock.food_nutrition.min` | S-009と同じ範囲で最小観測量。revision 2 の観測だけで最小を取る（#317） |
 
 ## Phase B · facilities
 

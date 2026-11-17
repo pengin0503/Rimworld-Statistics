@@ -57,7 +57,7 @@
 
 ## stock
 
-`Verse.Map.ExposeData` は `maps/li/things/thing` に非圧縮オブジェクトだけを書き、`MapFileCompressor` に別途圧縮対象を保存。ThingDefやスタック情報だけでは栄養、食品・武器分類、Quality/Compの値を保証しない。ホームマップのプレイヤー保有、非禁制、非死体の地上Thingと自軍Pawnの装備・装着・インベントリ、バニラ保管設備の中身を対象。商人在庫、非プレイヤー所有者、遠征・輸送中は除外。ThingIDを1回、MinifiedThingは内部を1回、スタック個数を数える。ゲーム側分類と栄養、品質Comp、RoyaltyのバインドCompを参照する。Deep Storage系MODの独自保持がバニラ列挙に現れない場合はその環境で該当指標を部分扱い。1つの品を床→保管→装備へ移して不変、禁制変更・食料劣化・商人在庫で境界を確認。
+`Verse.Map.ExposeData` は `maps/li/things/thing` に非圧縮オブジェクトだけを書き、`MapFileCompressor` に別途圧縮対象を保存。ThingDefやスタック情報だけでは栄養、食品・武器分類、Quality/Compの値を保証しない。ホームマップのプレイヤー保有、非禁制、非死体の地上Thingと自軍Pawnの装備・装着・インベントリ、バニラ保管設備の中身を対象。商人在庫、非プレイヤー所有者、遠征・輸送中は除外。ThingIDを1回、MinifiedThingは内部を1回、スタック個数を数える。ゲーム側分類と栄養、品質Comp、RoyaltyのバインドCompを参照する。Deep Storage系MODの独自保持がバニラ列挙に現れない場合はその環境で該当指標を部分扱い。1つの品を床→保管→装備へ移して不変、禁制変更・食料劣化・商人在庫で境界を確認。食料の栄養は、ゲームの `ResourceCounter.TotalHumanEdibleNutrition` と同じく、物資（`ThingCategory.Item`）で人が食べられ栄養を持つ新鮮な品だけ。生えている草木・作物は物資ではないので数えない（#317、1.7.5011 で確認）。
 
 ## facilities
 
