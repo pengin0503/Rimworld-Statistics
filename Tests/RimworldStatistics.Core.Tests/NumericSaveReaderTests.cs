@@ -542,6 +542,46 @@ public sealed class NumericSaveReaderTests
         Assert.Equal((MetricCoverage.Partial, 0L), (byRoot.Coverage, byRoot.IntegerValue));
     }
 
+    [Theory]
+    [InlineData("invalid")]
+    [InlineData("")]
+    [InlineData("1")]
+    public void Quests_MalformedEnded_SkipsOnlyThatQuest(string ended)
+    {
+        // #324: bool.Parse used to fail the whole save; one bad <ended> must only make that quest unreadable.
+        var b = Base(600000).WealthTotal(1f)
+            .QuestFull(1, "EndGame_RoyalAscent", acceptanceTick: 1, ended: true, outcome: "Success", cleanupTick: 60001)
+            .QuestFull(2, "TradeRequest", acceptanceTick: 1, ended: true, outcome: "Success", cleanupTick: 60001);
+        var xml = System.Text.Encoding.UTF8.GetString(b.Build());
+        var first = xml.IndexOf("<ended>True</ended>", StringComparison.Ordinal);
+        xml = xml[..first] + "<ended>" + ended + "</ended>" + xml[(first + "<ended>True</ended>".Length)..];
+        var bytes = System.Text.Encoding.UTF8.GetBytes(xml);
+        using var ms = new MemoryStream(bytes);
+        var read = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length, DateTime.UnixEpoch);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.Equal(600000, read.Observation.Values.TicksGame);
+        var success = V(read.Metrics!, MetricKeys.QuestSuccess);
+        Assert.Equal((MetricCoverage.Partial, 1L), (success.Coverage, success.IntegerValue));
+        Assert.Equal(1L, V(read.Metrics!, MetricKeys.QuestSuccessByRoot, "TradeRequest").IntegerValue);
+        // The malformed row is the royal ascent: it must not leave an ending trace.
+        Assert.Empty(read.Observation.EndingTraces);
+    }
+
+    [Fact]
+    public void Quests_MalformedUnrelatedField_KeepsEndingTraceLikeTheGame()
+    {
+        // Quest.State reads only ended and endOutcome, so a bad tick does not hide a recorded success (#324).
+        var b = Base(600000).WealthTotal(1f).Stats(launched: 2)
+            .QuestFull(1, "EndGame_RoyalAscent", acceptanceTick: 5, ended: true, outcome: "Success", cleanupTick: 60005);
+        var xml = System.Text.Encoding.UTF8.GetString(b.Build()).Replace("<acceptanceTick>5</acceptanceTick>", "<acceptanceTick>five</acceptanceTick>");
+        var bytes = System.Text.Encoding.UTF8.GetBytes(xml);
+        using var ms = new MemoryStream(bytes);
+        var read = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length, DateTime.UnixEpoch);
+        Assert.Equal(ObservationStatus.Ok, read.Observation.Status);
+        Assert.Equal(new[] { EndingType.AmbiguousLaunch }, read.Observation.EndingTraces);
+        Assert.Equal(MetricCoverage.Partial, V(read.Metrics!, MetricKeys.QuestSuccess).Coverage);
+    }
+
     [Fact]
     public void Quests_NegativeDuration_IsExcluded()
     {

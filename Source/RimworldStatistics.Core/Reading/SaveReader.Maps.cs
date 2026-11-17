@@ -261,12 +261,17 @@ public sealed partial class SaveReader
                 case "healthTracker":
                     if (healthSeen) { valid = false; r.Skip(); break; }
                     healthSeen = true;
+                    // 1.7.5011 Pawn_HealthTracker.ExposeData: Scribe_Values.Look(ref healthState, "healthState",
+                    // PawnHealthState.Mobile). The enum is written by name and omitted at its Mobile default (#335).
+                    var stateSeen = false;
                     ForEachChild(r, healthField =>
                     {
-                        if (healthField != "dead") { r.Skip(); return; }
-                        var deadText = ReadHistoricalAtom(r, s);
-                        if (!bool.TryParse(deadText, out var explicitDead)) valid = false;
-                        else dead |= explicitDead;
+                        if (healthField != "healthState") { r.Skip(); return; }
+                        var stateText = ReadHistoricalAtom(r, s);
+                        if (stateSeen || stateText is not ("Dead" or "Down" or "Mobile"))
+                            valid = false;
+                        stateSeen = true;
+                        dead |= stateText == "Dead";
                     });
                     break;
                 default: r.Skip(); break;

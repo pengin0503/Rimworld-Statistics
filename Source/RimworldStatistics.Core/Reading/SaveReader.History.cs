@@ -57,7 +57,15 @@ public sealed partial class SaveReader
                     switch (child)
                     {
                         case "root": root = r.ReadElementContentAsString().Trim(); break;
-                        case "ended": ended = bool.Parse(r.ReadElementContentAsString().Trim()); break;
+                        case "ended":
+                            // Scribe writes True/False. A malformed value loses this quest's metrics only, and ended stays
+                            // false so the row cannot become an ending trace (#324).
+                            if (!bool.TryParse(r.ReadElementContentAsString().Trim(), out ended))
+                            {
+                                ended = false;
+                                readable = false;
+                            }
+                            break;
                         case "endOutcome": outcome = r.ReadElementContentAsString().Trim(); break;
                         case "id": Int(ref id); break;
                         case "acceptanceTick": Int(ref accepted); break;
@@ -74,7 +82,8 @@ public sealed partial class SaveReader
                     s.Quests.Add(new RetainedQuest(id, root, accepted, expire, initially, ended, outcome ?? "Unknown", cleanup));
                 else
                     s.UnreadableQuests++;
-                // Quest.State == EndedSuccess requires ended && endOutcome == Success (1.7.4985).
+                // Quest.State == EndedSuccess requires ended && endOutcome == Success (1.7.4985). The trace uses only those
+                // two fields and root, like the game, which keeps a quest whose unrelated tick or id field is malformed.
                 if (!ended || outcome != "Success")
                     return;
                 if (root == "EndGame_RoyalAscent") s.RoyalAscentSucceeded = true;
