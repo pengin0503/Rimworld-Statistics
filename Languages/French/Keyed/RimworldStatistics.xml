@@ -904,9 +904,9 @@
   <RWS_Hospitality_AssignedBedsDesc>Lits de visiteurs distincts attribués aux clients Hospitality présents sur les cartes d'habitation du joueur lors d'une sauvegarde réussie. Un lit partagé compte une fois. Il s'agit des attributions de lits, et non des personnes qui y dorment ou des réservations cumulées.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>Demandes de recrutement commencées (depuis activation)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>Demandes Recruitment confirmées depuis l'activation de cette statistique. Série séparée de l'ancienne série intégrée, car la méthode de suivi a changé.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment : argent dépensé en demandes (depuis activation)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>Argent dépensé en demandes (depuis activation)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Argent total payé et confirmé pour de nouvelles demandes Recruitment depuis l'activation, frais supplémentaires compris. Les tentatives ratées sont exclues et il ne s'agit pas d'une variation de richesse nette.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment : candidats prévus (depuis activation)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>Candidats prévus (depuis activation)</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>Total des candidats tirés au sort au lancement de demandes Recruitment payantes depuis l'activation. Nombre prévu, et non nombre de personnes réellement arrivées, recrutées ou devenues colons ; leur génération peut échouer.</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>Eau stockée dans les tuyaux (L)</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>Total des litres stockés dans les réservoirs Dubs Bad Hygiene raccordés aux tuyaux sur les cartes d'habitation du joueur lors d'une sauvegarde réussie, chaque réservoir une seule fois. Seuls les réservoirs connectés et lisibles sont inclus. Ni production ni consommation cumulée. Les valeurs antérieures à l'activation ne sont pas reconstruites ; la donnée est inconnue si elle est illisible.</RWS_DBH_PipedStorageDesc>
@@ -1061,7 +1061,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>Passages réels à une nouvelle ère technologique pour la tribu du joueur, par ère. Initialisation, maintien ou recul d'ère et restauration d'une sauvegarde ne comptent pas.</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>Pierres angulaires acquises</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>Nouvelles pierres angulaires achetées en jeu avec des points disponibles, par pierre angulaire. Les acquisitions antérieures et celles restaurées au chargement sont exclues.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Aspirations Vanilla Aspirations Expanded accomplies</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>Aspirations accomplies</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Aspirations nouvellement accomplies par des colons du joueur via la vérification normale du mod, par aspiration. Accomplissements de débogage, aspirations déjà accomplies ou non attribuées et restauration de sauvegarde sont exclus.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Naissances dans les ruches du joueur</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>Nouveaux insectes apparus dans des ruches du joueur pendant le jeu normal, par type d'insecte. Remplacements de cocons, restauration de membres existants de la ruche et apparitions par outils de développement sont exclus.</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1073,9 +1073,9 @@
   <RWS_Rwom_HealingCastsDesc>Sorts Heal et Advanced Heal du joueur qui ont réellement réduit les blessures d'une cible ou stabilisé une partie du corps récemment perdue.</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>Arrivées en orbite</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>Vaisseaux contrôlés par le joueur ayant atteint une orbite stable après avoir décollé de la surface.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Remises de mandats Simple Warrants achevées</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>Remises de mandats achevées</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Mandats réglés par la remise de la cible par une caravane du joueur, après suppression de la cible et clôture du mandat.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Argent gagné via Simple Warrants</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>Argent gagné</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Argent réellement ajouté à une caravane du joueur en récompense de remises de mandats achevées.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>Améliorations ARC de The Generator achevées</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Constructions achevées par le joueur remplaçant sur place un générateur ARC qui lui appartenait, par nouveau type de générateur.</RWS_VqeGenerator_UpgradesDesc>
@@ -1103,9 +1103,9 @@
   <RWS_VseExpertise_LevelUpsDesc>Augmentations permanentes de niveaux d'expertise VSE depuis l'activation de l'enregistrement, additionnées entre toutes les colonies indépendantes, par type d'expertise.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>Niveau d'expertise VSE maximal atteint</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Plus haut niveau d'expertise réellement atteint par expérience entre les colonies indépendantes ; ni une somme de niveaux ni un instantané de la dernière sauvegarde.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Lots de traitement Vanilla Cooking Expanded</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>Lots de traitement</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Lots de soupe, fromage et autres procédés VEF de Vanilla Cooking Expanded effectivement achevés, par procédé. La fabrication ordinaire sur ordre et les sorties partiellement bloquées sont exclues.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Lots de fermentation et de maturation Vanilla Brewing Expanded</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>Lots de fermentation et de maturation</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Lots VEF de fermentation, brassage et maturation de Vanilla Brewing Expanded effectivement achevés, par procédé. Sorties interrompues, bloquées ou inachevées et fabrication ordinaire sur ordre sont exclues.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Argent payé par les clients pour les repas</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Argent réellement payé par des clients extérieurs pour des repas dans un restaurant du joueur. Les paiements partiels ajoutent seulement la somme versée ; dettes impayées, repas gratuits et échanges sans rapport sont exclus.</RWS_Gastronomy_SilverCollectedDesc>
@@ -1113,9 +1113,9 @@
   <RWS_VqeDrones_AssembledDesc>Drones du joueur réellement apparus dans l'assembleur automatique après la fin de sa minuterie de production, par type de personnage. La progression de la minuterie seule, les échecs d'apparition et les éclosions d'œufs sont exclus.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>Drones VQE Drone Factory éclos</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Drones du joueur réellement nés d'œufs éclos avec succès, par type. Les œufs détruits sans naissance et les drones créés par assembleur sont exclus.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Deepchem Vanilla Chemfuel Expanded stocké dans les conduites</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>Deepchem stocké dans les conduites</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Quantité de Deepchem réellement acceptée dans le stockage des conduites depuis des pompes du joueur, fractions comprises, mesurée lorsque le réseau confirme le stockage. Production prévue, produits déposés au sol et stockage bloqué sont exclus.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>ADN extrait par Vanilla Genetics Expanded</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>ADN extrait par</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Objets ADN réellement déposés ou fusionnés dans des piles par une extraction réussie du joueur, par objet produit. Cibles invalides, dépôts échoués, charges dépensées sans produit et autres créations d'hybrides sont exclus.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>Bouillie nutritive VNPE stockée dans les conduites</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Quantité de bouillie nutritive réellement acceptée dans le réseau de conduites depuis les broyeurs du joueur dans Vanilla Nutrient Paste Expanded, fractions comprises. Les tentatives de broyage, les ingrédients consommés sans stockage de bouillie et les dépôts provenant d'autres bâtiments sont exclus.</RWS_VnpeGrinder_SlurryStoredDesc>
