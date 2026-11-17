@@ -1,6 +1,6 @@
 # GEN-INC-001: generic incident success contract (2026-11-11)
 
-- Source: RimWorld 1.7 `IncidentWorker.TryExecute(IncidentParms)`, already patched in `ConditionMetricPatches.cs`; observe only `__result == true` at the single outer callback. A failed attempt and a non-home map do not contribute.
+- Source: RimWorld 1.7 `IncidentWorker.TryExecute(IncidentParms)`, already patched in `ConditionMetricPatches.cs`; observe only `__result == true` at the single outer callback. A failed attempt and a non-home map do not contribute. `TryExecute` also returns `true` without running the worker when the def has `requireColonistsPresent` and the target map has no spawned free colonist (1.7.4985 and 1.7.5011); that call is decided before the call and does not contribute either (#352).
 - External pinned example: Vanilla Events Expanded [EarthQuake.cs at 9b20c84da823](https://github.com/Vanilla-Expanded/VanillaEventsExpanded/blob/9b20c84da823/1.7/Source/VEE/IncidentWorker/EarthQuake.cs): the implementation overrides `TryExecuteWorker(IncidentParms)`, creates a world effect on its target map and returns `true`.
 - Identity: `(def.modContentPack.PackageId, IncidentDef.defName)` to distinguish equal Def names in different MOD packages; filtered to non-`ludeon.rimworld*` packages. The outer call itself is the one-event success boundary, **not** an incident-start notification or nested worker callback.
 - Availability: `modded_incidents` experimental acquisition opens only when installed definitions include a MOD-owned `IncidentDef`. No VEE dependency is introduced.

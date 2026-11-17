@@ -8,7 +8,8 @@ using Verse.AI.Group;
 namespace RimworldStatistics.Patches.Metrics;
 
 /// <summary>
-/// Raids and threat incidents (evidence #raid). An incident counts only when IncidentWorker.TryExecute returns true; a raid's
+/// Raids and threat incidents (evidence #raid). An incident counts only when IncidentWorker.TryExecute returns true after running
+/// the incident (not the true it returns for a map without colonists, #352); a raid's
 /// pawns are those TryGenerateRaidInfo returned inside that call (a debug test generation outside it is ignored), held until the
 /// outer call succeeds. Scopes are a stack on the game thread.
 /// </summary>
@@ -17,6 +18,9 @@ internal static class RaidProbe
     public sealed class Scope
     {
         public List<string>? Pawns;
+
+        /// <summary>The call returns true without running the incident (no colonists on the map, #352).</summary>
+        public bool SkippedForNoColonists;
     }
 
     public static readonly List<Scope> Stack = new();
@@ -26,19 +30,19 @@ internal static class RaidProbe
 [HarmonyPatch(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute))]
 public static class IncidentExecuteMetricPatch
 {
-    public static void Prefix(out object? __state)
+    public static void Prefix(IncidentWorker __instance, IncidentParms parms, out object? __state)
     {
         __state = null;
         if (!LiveMetrics.CanCaptureEvent(RaidFamily.Name))
             return;
-        var scope = new RaidProbe.Scope();
+        var scope = new RaidProbe.Scope { SkippedForNoColonists = GameFacts.SkippedForNoColonists(__instance, parms) };
         RaidProbe.Stack.Add(scope);
         __state = scope;
     }
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, object? __state)
     {
-        if (__state is not RaidProbe.Scope scope || !__result || __instance?.def == null)
+        if (__state is not RaidProbe.Scope scope || !__result || scope.SkippedForNoColonists || __instance?.def == null)
             return;
         var tick = GameFacts.Tick;
         var def = __instance.def.defName;

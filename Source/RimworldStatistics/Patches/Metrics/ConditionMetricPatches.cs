@@ -8,7 +8,7 @@ namespace RimworldStatistics.Patches.Metrics;
 
 /// <summary>
 /// Disasters (evidence #disaster): game conditions of the player's homes or the world from RegisterCondition to End; incidents
-/// by IncidentWorker.TryExecute success; fires started outside Fire.TrySpread on a player home map in a cell without fire; and
+/// by IncidentWorker.TryExecute success (not the true it returns for a map without colonists, #352); fires started outside Fire.TrySpread on a player home map in a cell without fire; and
 /// completed player buildings killed by flame damage.
 /// </summary>
 internal static class ConditionProbe
@@ -71,9 +71,12 @@ public static class EndConditionMetricPatch
 [HarmonyPatch(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute))]
 public static class DisasterIncidentMetricPatch
 {
-    public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms)
+    public static void Prefix(IncidentWorker __instance, IncidentParms parms, out bool __state)
+        => __state = GameFacts.SkippedForNoColonists(__instance, parms);
+
+    public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, bool __state)
     {
-        if (!__result || __instance?.def is not { } definition)
+        if (!__result || __state || __instance?.def is not { } definition)
             return;
 
         // Preserve the exact legacy three-def counters, independent of incident provenance.
