@@ -17,6 +17,19 @@ public enum CellAlignment
 
 public static class MetricVisualState
 {
+    /// <summary>A group is complete only when every member is complete; mixed states are partial.</summary>
+    public static MetricVisualKind ClassifyGroup(IReadOnlyList<MetricStatus> statuses)
+    {
+        ArgumentNullException.ThrowIfNull(statuses);
+        if (statuses.Count == 0)
+            return MetricVisualKind.Missing;
+        var first = Classify(statuses[0]);
+        for (var i = 1; i < statuses.Count; i++)
+            if (Classify(statuses[i]) != first)
+                return MetricVisualKind.Partial;
+        return first;
+    }
+
     public static MetricVisualKind Classify(MetricStatus status)
     {
         ArgumentNullException.ThrowIfNull(status);

@@ -192,7 +192,7 @@ internal static class CoverageTab
             if (i % 2 == 1)
                 Widgets.DrawHighlight(rowRect, 0.2f);
             DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths,
-                row.Status is null ? null : row.VisualKind);
+                row.VisualKind, isGroup: row.Status is null);
             if (row.Status is null)
             {
                 Widgets.DrawHighlightIfMouseover(rowRect);
@@ -279,7 +279,7 @@ internal static class CoverageTab
                 requirement,
                 "RWS_Status_GroupCount".Translate(group.MeasuredCount, group.TotalCount),
                 null,
-                MetricVisualKind.Complete));
+                group.VisualKind));
 
             if (!expanded)
                 continue;
@@ -369,7 +369,7 @@ internal static class CoverageTab
         return string.Join("\n", lines);
     }
 
-    private static void DrawCells(Rect rect, string[] cells, float[] widths, MetricVisualKind? visualKind)
+    private static void DrawCells(Rect rect, string[] cells, float[] widths, MetricVisualKind? visualKind, bool isGroup = false)
     {
         var x = rect.x;
         var priorAnchor = Text.Anchor;
@@ -377,11 +377,14 @@ internal static class CoverageTab
         for (var i = 0; i < cells.Length; i++)
         {
             Text.Anchor = i == 3 ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
-            GUI.color = i == 2 && visualKind is { } kind ? MetricVisualStyle.StateColor(kind) : Color.white;
+            GUI.color = visualKind is { } kind && (isGroup ? i == 3 : i == 2)
+                ? MetricVisualStyle.StateColor(kind) : Color.white;
             var cell = new Rect(x + 4f, rect.y, Math.Max(0, widths[i] - 8f), rect.height);
             var shown = cells[i].Truncate(cell.width);
             Widgets.Label(cell, shown);
-            if (visualKind is null && shown != cells[i])
+            // Metric rows use one full-row tooltip (which contains the untruncated label,
+            // recording, coverage and counts). Group/header rows have no such tooltip.
+            if ((isGroup || visualKind is null) && shown != cells[i])
                 TooltipHandler.TipRegion(cell, cells[i]);
             x += widths[i];
         }

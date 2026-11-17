@@ -8,7 +8,8 @@ public sealed record CoverageGroup(
     string? OwnerPackageId,
     IReadOnlyList<MetricStatus> Items,
     int MeasuredCount,
-    int TotalCount);
+    int TotalCount,
+    MetricVisualKind VisualKind);
 
 /// <summary>
 /// Maps internal acquisition/provenance identifiers to user-facing display labels
@@ -222,7 +223,8 @@ public static class MetricAcquisitionLabels
                 first.Definition.OwnerPackageId,
                 items,
                 measured,
-                items.Length));
+                items.Length,
+                MetricVisualState.ClassifyGroup(items)));
         }
 
         groups.Sort((a, b) =>

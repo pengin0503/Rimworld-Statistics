@@ -28,6 +28,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private IReadOnlyList<MetricHistoryPoint> plotPoints = [];
     private int[]? gapTicks;   // ticks of drawn readings without a value, ascending
     private int plotWidth;
+    private Vector2 chartScroll;
 
     internal Dialog_ColonyMetricHistory(StatsView view, string colonyKey, string colonyName,
         MetricDefinition definition, string metricLabel, NumericValue comparison)
@@ -50,7 +51,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     public override void DoWindowContents(Rect rect)
     {
         Text.Font = GameFont.Medium;
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width - 32f, 32f), heading.Truncate(rect.width - 32f));
+        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 32f), 32f);
+        var shownTitle = heading.Truncate(titleRect.width);
+        Widgets.Label(titleRect, shownTitle);
+        if (shownTitle != heading)
+            TooltipHandler.TipRegion(titleRect, heading);
         Text.Font = GameFont.Small;
         var colony = new Rect(rect.x, rect.y + 35f, rect.width, 26f);
         Widgets.Label(colony, colonyName.Truncate(colony.width));
@@ -83,7 +88,26 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
         PollOverlayTasks(history.Kind);
 
-        var add = new Rect(body.x, body.y, Math.Min(250f, body.width), 28f);
+        if (body.width <= 20f || body.height <= 0f)
+            return;
+
+        var contentWidth = Math.Max(1f, body.width - 16f);
+        var note = historyNote ??= Describe(history, measured);
+        var noteHeight = Text.CalcHeight(note, contentWidth);
+        EnsureBoundsAndLegend(history, contentWidth);
+        var legendHeight = Math.Max(LegendRowHeight, legendPlan?.TotalHeight ?? LegendRowHeight);
+        const float overlayRowHeight = 23f;
+        var controlsHeight = 31f + overlayRowHeight * overlayTracker.Entries.Count;
+        var vertical = HistoryLegendLayout.ResolveVertical(
+            body.height - controlsHeight, noteHeight, legendHeight);
+        var scrollHeight = controlsHeight + vertical.ContentHeight;
+
+        // The whole dynamic content scrolls: adding overlays or using a longer
+        // translation cannot silently remove the graph or the legend on small screens.
+        Widgets.BeginScrollView(body, ref chartScroll,
+            new Rect(0f, 0f, contentWidth, scrollHeight));
+
+        var add = new Rect(0f, 0f, Math.Min(250f, contentWidth), 28f);
         if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlayTracker.CanAdd))
         {
             var options = view.Stats.Colonies
@@ -107,7 +131,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         string? removeKey = null;
         foreach (var overlay in overlayTracker.Entries)
         {
-            var row = new Rect(body.x, y, body.width, 23f);
+            var row = new Rect(0f, y, contentWidth, overlayRowHeight);
             var color = OverlayColors[overlay.ColorIndex];
             Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), color);
 
@@ -115,8 +139,6 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             {
                 HistoryOverlayStatus.Loading => (string)"RWS_Loading".Translate(),
                 HistoryOverlayStatus.Empty => (string)"RWS_Chart_HistoryEmpty".Translate(),
-                // A history exists, but it was recorded another way (e.g. checkpoints vs saved readings):
-                // its points are not on the same footing, so it is not drawn together.
                 HistoryOverlayStatus.Incompatible => (string)"RWS_Chart_OverlayOtherSource".Translate(),
                 _ => "",
             };
@@ -146,21 +168,16 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 InvalidateOverlays();
         }
 
-        body.yMin = y;
-        var note = historyNote ??= Describe(history, measured);
-        var noteHeight = Text.CalcHeight(note, body.width);
-        Widgets.Label(new Rect(body.x, body.y, body.width, noteHeight), note);
-
-        EnsureBoundsAndLegend(history, body.width);
-        var legendHeight = Math.Max(LegendRowHeight, legendPlan?.TotalHeight ?? LegendRowHeight);
-        var axisWidth = Math.Min(145f, body.width * 0.28f);
-        var plot = new Rect(body.x + axisWidth, body.y + noteHeight + 13f,
-            body.width - axisWidth - 16f, body.height - noteHeight - 57f - legendHeight);
-        if (plot.width >= 10f && plot.height >= 10f)
+        Widgets.Label(new Rect(0f, y, contentWidth, noteHeight), note);
+        var axisWidth = Math.Min(145f, contentWidth * 0.28f);
+        var plot = new Rect(axisWidth, y + noteHeight + 13f,
+            contentWidth - axisWidth - 16f, vertical.PlotHeight);
+        if (plot.width >= 10f)
         {
             DrawPlot(plot, axisWidth, history);
-            DrawLegend(new Rect(body.x, plot.yMax + 46f, body.width, legendHeight));
+            DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
         }
+        Widgets.EndScrollView();
     }
 
     private void PollOverlayTasks(MetricHistoryKind primaryKind)

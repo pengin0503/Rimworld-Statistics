@@ -68,6 +68,21 @@ public sealed class DetailsUiPolicyTests
     }
 
     [Fact]
+    public void GroupVisualStateReflectsMissingCompleteAndMixedCoverage()
+    {
+        var def = Def();
+        MetricStatus Status(MetricAvailability availability, int measured, int targets)
+            => new(def, availability, false, MetricVerification.Standard, UnitRecordingState.Recording,
+                measured, targets, []);
+        var missing = Status(MetricAvailability.NoMeasuredColonies, 0, 2);
+        var complete = Status(MetricAvailability.AllMeasuredColonies, 2, 2);
+        Assert.Equal(MetricVisualKind.Missing, MetricVisualState.ClassifyGroup([missing]));
+        Assert.Equal(MetricVisualKind.Complete, MetricVisualState.ClassifyGroup([complete]));
+        Assert.Equal(MetricVisualKind.Partial, MetricVisualState.ClassifyGroup([missing, complete]));
+        Assert.Equal(MetricVisualKind.Missing, MetricVisualState.ClassifyGroup([]));
+    }
+
+    [Fact]
     public void DetailsTableLayout_RightAlignsNumericAndCountColumnsOnly()
     {
         Assert.Equal(CellAlignment.Left, DetailsTableLayout.ColumnAlignment(0));

@@ -732,8 +732,9 @@ public static class DetailsTab
 
     internal static string DefinitionLabel(MetricDefinition d)
     {
+        string label;
         if (CrossColonyCatalog.IsDerived(d) && MetricRegistry.Find(d.StoredKey) is { } source)
-            return d.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
+            label = d.Key.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
                 ? (string)"RWS_Cross_MaxColony".Translate((string)source.LabelKey.Translate())
                 : d.Key.StartsWith(CrossColonyCatalog.MinPrefix, StringComparison.Ordinal)
                     ? (string)"RWS_Cross_MinColony".Translate((string)source.LabelKey.Translate())
@@ -742,8 +743,14 @@ public static class DetailsTab
                         : d.DescriptionKey == "RWS_CrossDesc_TopCategory"
                             ? (string)"RWS_Cross_TopCategory".Translate((string)source.LabelKey.Translate())
                             : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
-        return d.ProviderId is not null && d.LabelKey == d.Key
-            ? d.Key : (string)d.LabelKey.Translate();
+        else
+            label = d.ProviderId is not null && d.LabelKey == d.Key
+                ? d.Key : (string)d.LabelKey.Translate();
+
+        // This shared label reaches Details, Coverage, Comparison, Rankings, charts and favorites.
+        // Only mod-owned metrics receive a source annotation; vanilla metrics remain unchanged.
+        return string.IsNullOrWhiteSpace(d.OwnerPackageId) ? label
+            : label + " · " + (string)"RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(d.OwnerPackageId));
     }
 
     private static string ItemLabel(string defName)

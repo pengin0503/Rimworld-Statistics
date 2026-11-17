@@ -158,6 +158,36 @@ public sealed class MetricAcquisitionLabelTests
     }
 
     [Fact]
+    public void ModDisplayNamesPreferInstalledNamesThenKnownNamesAndNeverEchoUnknownIds()
+    {
+        Assert.Equal("Active Hospitality", MetricAcquisitionLabels.SafeModDisplayName(
+            "orion.hospitality", _ => "Active Hospitality"));
+        Assert.Equal("Hospitality", MetricAcquisitionLabels.SafeModDisplayName(
+            "orion.hospitality", _ => null));
+        Assert.Null(MetricAcquisitionLabels.SafeModDisplayName(
+            "unknown.publisher.hiddenid", id => id));
+    }
+
+    [Fact]
+    public void CoverageGroupShowsMissingOrMixedStateWithoutClaimingCompletion()
+    {
+        var statuses = new[]
+        {
+            Status(BaseDef with { Key = "test.one", Acquisition = "test" }, measured: 0, targets: 2),
+            Status(BaseDef with { Key = "test.two", Acquisition = "test" }, measured: 2, targets: 2),
+        };
+        IReadOnlyList<CoverageGroup> Build(IReadOnlyList<MetricStatus> entries)
+            => MetricAcquisitionLabels.BuildGroups(entries, _ => null, FakeTranslate,
+                c => c.ToString(), FakeExternalModCategory, StringComparer.Ordinal);
+        var mixed = Assert.Single(Build(statuses));
+        Assert.Equal(MetricVisualKind.Partial, mixed.VisualKind);
+        Assert.Equal(MetricVisualKind.Missing, Assert.Single(Build([statuses[0]])).VisualKind);
+        // These test definitions are unpublished acquisition metrics, so a fully
+        // observed member is Experimental (not Complete) by existing policy.
+        Assert.Equal(MetricVisualKind.Experimental, Assert.Single(Build([statuses[1]])).VisualKind);
+    }
+
+    [Fact]
     public void EmptyStatusesReturnsEmptyGroups()
     {
         var groups = MetricAcquisitionLabels.BuildGroups(

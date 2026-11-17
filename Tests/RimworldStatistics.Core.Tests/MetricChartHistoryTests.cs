@@ -419,4 +419,19 @@ public sealed class MetricChartHistoryTests
         Assert.Empty(entry.Measured);
         Assert.Equal(new HistoryPlotBounds(50, 50, 5d, 5d, false, false), tracker.ComputeBounds(primary, primaryMeasured));
     }
+    [Theory]
+    [InlineData(120f, 75f, 68f)]
+    [InlineData(280f, 160f, 70f)]
+    [InlineData(500f, 45f, 22f)]
+    public void HistoryChartReservesPlotHeightAndScrollableContentForSmallWindows(
+        float availableHeight, float noteHeight, float legendHeight)
+    {
+        var layout = HistoryLegendLayout.ResolveVertical(availableHeight, noteHeight, legendHeight);
+        Assert.True(layout.PlotHeight >= 160f);
+        Assert.Equal(noteHeight + layout.PlotHeight + legendHeight + 59f, layout.ContentHeight, 3);
+        if (availableHeight < noteHeight + legendHeight + 59f + 160f)
+            Assert.True(layout.ContentHeight > availableHeight);
+    }
+
+
 }
