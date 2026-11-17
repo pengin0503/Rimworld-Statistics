@@ -230,4 +230,21 @@ public sealed class LifetimeCumulativeTests
             MetricRegistry.Catalog.Single(d => d.Key == MetricRankings.ByPermadeathDays), MetricRankings.PermadeathOn));
     }
 
+    [Fact]
+    public void EveryBuiltInLiveEventTotal_IsInTheLifetimeFilter()
+    {
+        // #331: 20 DLC event totals were missing. The list is explicit, so a new built-in live Sum output must either be
+        // added to it or be named here with the reason it is not a monotone event accumulation.
+        var notLifetime = new HashSet<string>(StringComparer.Ordinal);
+        var missing = MetricRegistry.Catalog
+            .Where(d => d.Provenance == MetricProvenance.LiveAggregate && d.Overall == OverallAggregation.Sum
+                && d.ProviderId is null && d.OwnerPackageId is null && !notLifetime.Contains(d.Key))
+            .Where(d => !MetricDisplayPolicy.IsLifetimeCumulative(d))
+            .Select(d => d.Key).ToList();
+        Assert.Empty(missing);
+        foreach (var key in new[] { IdeologyFamily.RitualSuccessRate, IdeologyFamily.ConversionDaysMean, RoyaltyFamily.HighestTitle })
+            Assert.False(MetricDisplayPolicy.IsLifetimeCumulative(MetricRegistry.Catalog.Single(d => d.Key == key)), key);
+        foreach (var key in new[] { OdysseyFamily.UniqueTiles, CaravanFamily.UniqueTiles, BiotechFamily.WasteCreated, RoyaltyFamily.Honor })
+            Assert.True(MetricDisplayPolicy.IsLifetimePrimaryRow(MetricRegistry.Catalog.Single(d => d.Key == key)), key);
+    }
 }

@@ -198,4 +198,76 @@ public sealed class NumericEconomyTests
         Assert.Null(MetricRegistry.Find("food.no_shortage.longest"));
         Assert.Equal("N1-A-008", MetricRegistry.Find("food.harvest.per_growing_cell")!.LedgerIds);
     }
+
+    private static NumericRow ColonyRow(MetricObservation o, string key)
+    {
+        var id = new ColonyIdentity
+        {
+            SeedString = "s", PersistentRandomValue = 1, StartingTile = "1,0", GameStartAbsTick = 0, FirstWealthBits = 7,
+            StartingPawnIds = new List<string> { "Thing_Human1" }, ModCampaignId = "c",
+        };
+        o.Identity = id;
+        var p = new Profile();
+        p.SaveObservations.Add(new SaveObservation
+        {
+            FileName = "c.rws", FileSize = 1, LastWriteUtc = T0, ReaderVersion = SaveReader.Version,
+            Status = ObservationStatus.Ok, Identity = id, Values = { TicksGame = o.SaveTick },
+        });
+        p.MetricObservations.Add(o);
+        var colonies = CampaignMatcher.BuildColonies(p);
+        var view = MetricCalculator.BuildView(p, colonies, StatsCalculator.Calculate(colonies, new StatsOptions()), MetricRegistry.Catalog);
+        return view.Colonies.Single().Rows.Single(r => r.Definition.Key == key);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void ConstructionMaterials_ParentKeepsTheFamilysRangeAndCoverage(bool built)
+    {
+        // #330: without a stored scalar the parent lost SinceTick and an empty breakdown became SnapshotOnly.
+        var (acc, s) = NewGame(WorkFamily.Family);
+        if (built)
+        {
+            WorkFamily.Constructed(s, "Thing_A", new Dictionary<string, int> { ["WoodLog"] = 25 });
+            WorkFamily.Constructed(s, "Thing_A", new Dictionary<string, int> { ["Steel"] = 5, ["ComponentIndustrial"] = 1 });
+        }
+        var o = Save(acc, 3 * Day);
+        var scalar = V(o, WorkFamily.ConstructionMaterials);
+        // The total of material units the parent row already showed, not the number of constructions (2).
+        Assert.Equal(built ? 31 : 0, scalar.IntegerValue);
+        Assert.Equal((MetricCoverage.Complete, 0, 3 * Day), (scalar.Coverage, scalar.SinceTick, scalar.ThroughTick));
+        var row = ColonyRow(o, WorkFamily.ConstructionMaterials);
+        Assert.Equal(((double?)(built ? 31 : 0), MetricCoverage.Complete, (int?)0), (row.Value.Number, row.Value.Coverage, row.Value.SinceTick));
+        // Different materials are not added into a daily rate.
+        Assert.Null(MetricRates.PerDay(row.Definition, row.Value));
+    }
+
+    [Fact]
+    public void ConstructionMaterials_OverflowedTypesMakeTheTotalALowerBound()
+    {
+        var (acc, s) = NewGame(WorkFamily.Family);
+        for (var i = 0; i <= FamilyOps.KeyCap; i++)
+            WorkFamily.Constructed(s, null, new Dictionary<string, int> { ["Def" + i] = 1 });
+        var scalar = V(Save(acc, Day), WorkFamily.ConstructionMaterials);
+        Assert.Equal((MetricCoverage.Partial, (long)FamilyOps.KeyCap), (scalar.Coverage, scalar.IntegerValue!.Value));
+    }
+
+    [Fact]
+    public void ConstructionMaterials_OlderCheckpointWithoutScalar_IsNotASnapshot()
+    {
+        // A checkpoint written before the scalar existed: the parent takes the breakdowns' range, and an empty live
+        // breakdown is a lower bound (Partial), not a save-time snapshot.
+        var (acc, s) = NewGame(WorkFamily.Family);
+        WorkFamily.Constructed(s, null, new Dictionary<string, int> { ["Steel"] = 5 });
+        var withTypes = Save(acc, Day);
+        withTypes.Metrics[WorkFamily.ConstructionMaterials].Values.Remove(MetricEntry.Scalar);
+        var row = ColonyRow(withTypes, WorkFamily.ConstructionMaterials);
+        Assert.Equal((5d, MetricCoverage.Complete, (int?)0), (row.Value.Number!.Value, row.Value.Coverage, row.Value.SinceTick));
+
+        var (emptyAcc, _) = NewGame(WorkFamily.Family);
+        var empty = Save(emptyAcc, Day);
+        empty.Metrics[WorkFamily.ConstructionMaterials].Values.Remove(MetricEntry.Scalar);
+        var emptyRow = ColonyRow(empty, WorkFamily.ConstructionMaterials);
+        Assert.Equal((0d, MetricCoverage.Partial), (emptyRow.Value.Number!.Value, emptyRow.Value.Coverage));
+    }
 }

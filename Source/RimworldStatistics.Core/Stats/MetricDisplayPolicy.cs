@@ -84,6 +84,13 @@ public static class MetricDisplayPolicy
         WorkFamily.Sculptures, WorkFamily.MealsByDef, WorkFamily.UniqueCraftedDefs,
         WorkFamily.HarvestByCrop, WorkFamily.SownDefs, WorkFamily.ConstructionMaterials,
         TradeFamily.SoldDefs, TradeFamily.BoughtDefs, TradeFamily.PartnerFactionDefs,
+        // DLC event streams (#331): each counts confirmed events, or a distinct set that only grows, along the lineage.
+        MentalFamily.BreaksByDef, MentalFamily.InspirationsByDef,
+        RoyaltyFamily.TitleGrants, RoyaltyFamily.PermitUses, RoyaltyFamily.Psycasts, RoyaltyFamily.Honor,
+        IdeologyFamily.Conversions, IdeologyFamily.RitualResults, IdeologyFamily.RoleAppointments,
+        OdysseyFamily.Flights, OdysseyFamily.Distance, OdysseyFamily.UniqueTiles, OdysseyFamily.NewMapLandings,
+        BiotechFamily.MechsCreated, BiotechFamily.BirthMothers, BiotechFamily.ChildStages, BiotechFamily.MechRepairs,
+        BiotechFamily.WasteCreated, BiotechFamily.WasteDisposed, BiotechFamily.PollutionCleaned,
     };
 
     /// <summary>A monotone event accumulation along one recorded checkpoint lineage, not
@@ -104,8 +111,26 @@ public static class MetricDisplayPolicy
     /// <summary>A captured numeric reading, including an observed zero. Missing,
     /// non-applicable and non-finite values never qualify for the optional UI filter.</summary>
     public static bool HasMeasuredNumber(NumericRow row)
-        => row.Value.Number is { } n && double.IsFinite(n)
-            && row.Value.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+        => row.Value.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+            && (row.Value.Number is { } n && double.IsFinite(n)
+                // A parent without an additive scalar is measured when one of its breakdowns is (#329).
+                || row.Value.BreakdownOnly && row.Breakdowns.Any(HasMeasuredNumber));
+
+    /// <summary>The measured "min" and "max" breakdowns of a breakdown-only range output, for its parent row (#329).</summary>
+    public static (double Min, double Max)? BreakdownRange(NumericRow row)
+    {
+        if (!row.Value.BreakdownOnly)
+            return null;
+        double? min = null, max = null;
+        foreach (var b in row.Breakdowns)
+        {
+            if (!HasMeasuredNumber(b))
+                continue;
+            if (b.Breakdown == "min") min = b.Value.Number;
+            else if (b.Breakdown == "max") max = b.Value.Number;
+        }
+        return min is { } lo && max is { } hi ? (lo, hi) : null;
+    }
 
     /// <summary>A cross-colony top-category output with no ranked winner is
     /// not a time or wealth threshold that a colony has failed to reach.</summary>

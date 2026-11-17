@@ -52,13 +52,17 @@ public static class MetricRankings
         var ordered = colonies.OrderBy(c => c.Key, Ord).ToList();
         int Endings(ColonyStats c) => c.EndingCounts.Values.Sum();
         double Days(ColonyStats c) => c.MaxTicks / (double)StatFormat.TicksPerDay;
+        // A colony known only from ending records has no observed save or live point: its days, population and play time
+        // are unknown, not 0 (#332). It stays a target, so the ranking becomes Partial instead of Complete.
+        static bool Observed(ColonyStats c) => c.HasObservedPoint;
+        var observed = ordered.Where(Observed).ToList();
 
-        yield return SplitSum(Def(ByDifficultyDays), ordered, c => c.Difficulty, Days);
+        yield return SplitSum(Def(ByDifficultyDays), ordered, c => c.Difficulty, Days, Observed);
         yield return SplitSum(Def(ByDifficultyEndings), ordered, c => c.Difficulty, c => Endings(c));
-        yield return SplitSum(Def(ByPermadeathDays), ordered, Permadeath, Days);
+        yield return SplitSum(Def(ByPermadeathDays), ordered, Permadeath, Days, Observed);
         yield return SplitSum(Def(ByPermadeathEndings), ordered, Permadeath, c => Endings(c));
-        yield return Extreme(Def(PopulationPeak), ordered.Select(c => (c.Key, (double?)c.MaxPopulation, MetricCoverage.Complete)).ToList(), max: true, ordered.Count);
-        yield return Extreme(Def(PlaytimePeak), ordered.Select(c => (c.Key, (double?)(c.MaxRealPlay / 3600.0), MetricCoverage.Complete)).ToList(), max: true, ordered.Count);
+        yield return Extreme(Def(PopulationPeak), observed.Select(c => (c.Key, (double?)c.MaxPopulation, MetricCoverage.Complete)).ToList(), max: true, ordered.Count);
+        yield return Extreme(Def(PlaytimePeak), observed.Select(c => (c.Key, (double?)(c.MaxRealPlay / 3600.0), MetricCoverage.Complete)).ToList(), max: true, ordered.Count);
 
         // R-007: measured ticks of recorded endings only; seeded traces and save traces have no measured time.
         var fastest = ordered.Select(c => (c.Key, Days: c.CountedEndings.Where(e => e.Source == EndingSource.Live && e.TicksGame > 0)
@@ -109,7 +113,7 @@ public static class MetricRankings
             Breakdowns = byScenario.Breakdowns,
         };
 
-        yield return SplitSum(Def(DaysByStoryteller), ordered, c => c.Storyteller, Days);
+        yield return SplitSum(Def(DaysByStoryteller), ordered, c => c.Storyteller, Days, Observed);
 
         // R-010: summed net change ÷ summed years spanned ((points − 1) ÷ 120). A series of one point spans no time and is
         // not a target; a colony without a known net change is missing.
@@ -142,6 +146,14 @@ public static class MetricRankings
     }
 
     /// <summary>
+    /// Evidence of a dependency ranking is the combined capture evidence of the input rows that took part (#328), so an
+    /// Experimental input is never shown as Legacy and a Legacy input is never upgraded. v1 rankings have no acquisition
+    /// unit and keep <see cref="MetricEvidence.UnknownLegacy"/>, which the classifier ignores for them.
+    /// </summary>
+    private static MetricEvidence InputEvidence(IEnumerable<NumericRow?> inputs)
+        => MetricEvidencePolicy.Combine(inputs.Where(r => r is not null).Select(r => r!.Value.Evidence));
+
+    /// <summary>
     /// N1-F-004: the fewest confirmed participants of a counted ending, over the ending types with a participation definition.
     /// One value per (type, ordinal) as v1 counts it (the smallest party stored with its records); a colony whose counted
     /// endings of those types lack a stored party is a target without a value. No party anywhere is unknown, never 0.
@@ -154,9 +166,11 @@ public static class MetricRankings
             .Where(x => x.Endings.Count > 0)
             .Select(x => (x.Key, Min: x.Endings.Min(), AllKnown: x.Endings.All(n => n is not null)))
             .ToList();
+        // An ending record stores no capture-time evidence. A party is only written by the unverified ending_party unit of
+        // this MOD (older records leave it null), so a known party is Experimental evidence, never Legacy.
         return Extreme(def,
             byColony.Where(x => x.Min is not null).Select(x => (x.Key, (double?)x.Min, x.AllKnown ? MetricCoverage.Complete : MetricCoverage.Partial)).ToList(),
-            max: false, byColony.Count);
+            max: false, byColony.Count, MetricEvidence.Experimental);
     }
 
     /// <summary>
@@ -181,6 +195,7 @@ public static class MetricRankings
         double kills = 0, deaths = 0;
         var valid = 0;
         var weak = false;
+        var inputs = new List<NumericRow?>();
         foreach (var colony in colonies)
         {
             var k = RowOf(rows, colony.Key, HealthDeathFamily.HostileKills);
@@ -192,6 +207,8 @@ public static class MetricRankings
             valid++;
             kills += kv;
             deaths += dv;
+            inputs.Add(k);
+            inputs.Add(d);
             if (k.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown
                 || d.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown)
                 weak = true;
@@ -207,6 +224,7 @@ public static class MetricRankings
                 Number = deaths > 0 ? kills / deaths : null,
                 Numerator = kills, Denominator = deaths,
                 Coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.Complete,
+                Evidence = InputEvidence(inputs),
             },
         };
     }
@@ -214,7 +232,7 @@ public static class MetricRankings
     private static NumericRow BiomeSplit(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, Func<ColonyStats, double> quantity)
     {
-        var known = new List<(ColonyStats Colony, string Biome, MetricCoverage Coverage)>();
+        var known = new List<(ColonyStats Colony, string Biome, MetricCoverage Coverage, NumericRow Source)>();
         foreach (var colony in colonies)
         {
             var source = RowOf(rows, colony.Key, ColonyStartSnapshot.Biome);
@@ -223,7 +241,7 @@ public static class MetricRankings
             var biome = source.Breakdowns[0];
             if (biome.Value.Number != 1 || string.IsNullOrWhiteSpace(biome.Breakdown))
                 continue;
-            known.Add((colony, biome.Breakdown, source.Value.Coverage));
+            known.Add((colony, biome.Breakdown, source.Value.Coverage, source));
         }
         if (known.Count == 0)
             return new NumericRow { Definition = def, Value = NumericValue.Unknown, Targets = colonies.Count };
@@ -235,13 +253,21 @@ public static class MetricRankings
             {
                 Definition = def,
                 Breakdown = g.Key,
-                Value = new NumericValue { Number = g.Sum(x => quantity(x.Colony)), Coverage = coverage },
+                Value = new NumericValue
+                {
+                    Number = g.Sum(x => quantity(x.Colony)), Coverage = coverage,
+                    Evidence = InputEvidence(g.Select(x => x.Source)),
+                },
                 Targets = g.Count(), Valid = g.Count(),
             }).ToList();
         return new NumericRow
         {
             Definition = def,
-            Value = new NumericValue { Number = known.Sum(x => quantity(x.Colony)), Coverage = coverage },
+            Value = new NumericValue
+            {
+                Number = known.Sum(x => quantity(x.Colony)), Coverage = coverage,
+                Evidence = InputEvidence(known.Select(x => x.Source)),
+            },
             Targets = colonies.Count, Valid = known.Count, Breakdowns = breakdowns,
         };
     }
@@ -249,11 +275,11 @@ public static class MetricRankings
     private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
     {
-        var candidates = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
+        var inputs = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
             .Where(x => x.Row?.Value.Number is not null)
-            .Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage))
             .ToList();
-        return Extreme(definition, candidates, max: true, colonies.Count);
+        var candidates = inputs.Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage)).ToList();
+        return Extreme(definition, candidates, max: true, colonies.Count, InputEvidence(inputs.Select(x => x.Row)));
     }
 
     private static string? Permadeath(ColonyStats c) => c.Permadeath switch
@@ -280,24 +306,39 @@ public static class MetricRankings
         };
     }
 
-    /// <summary>Per-label sums; colonies without the label count under the unknown bucket. Every colony has a label or "?", so the split is complete.</summary>
-    private static NumericRow SplitSum(MetricDefinition d, IReadOnlyList<ColonyStats> colonies, Func<ColonyStats, string?> label, Func<ColonyStats, double> value)
+    /// <summary>
+    /// Per-label sums; colonies without the label count under the unknown bucket. Every colony has a label or "?", so the
+    /// split is complete. A colony for which <paramref name="measured"/> is false has no value: it stays a target of its
+    /// bucket and of the total, adds nothing, and makes them Partial (a bucket with no measured colony is Unknown).
+    /// </summary>
+    private static NumericRow SplitSum(MetricDefinition d, IReadOnlyList<ColonyStats> colonies, Func<ColonyStats, string?> label,
+        Func<ColonyStats, double> value, Func<ColonyStats, bool>? measured = null)
     {
+        measured ??= static _ => true;
+        NumericValue Sum(IReadOnlyCollection<ColonyStats> group)
+        {
+            var known = group.Where(measured).ToList();
+            return known.Count == 0 ? NumericValue.Unknown : new NumericValue
+            {
+                Number = known.Sum(value),
+                Coverage = known.Count < group.Count ? MetricCoverage.Partial : MetricCoverage.Complete,
+            };
+        }
         var groups = colonies.GroupBy(c => string.IsNullOrEmpty(label(c)) ? MetricKeys.UnknownBucket : label(c)!, Ord).OrderBy(g => g.Key, Ord).ToList();
-        var breakdowns = groups.Select(g => new NumericRow
+        var breakdowns = groups.Select(g => (g.Key, Members: g.ToList())).Select(g => new NumericRow
         {
             Definition = d,
             Breakdown = g.Key,
-            Value = new NumericValue { Number = g.Sum(value), Coverage = MetricCoverage.Complete },
-            Targets = g.Count(),
-            Valid = g.Count(),
+            Value = Sum(g.Members),
+            Targets = g.Members.Count,
+            Valid = g.Members.Count(measured),
         }).ToList();
         return new NumericRow
         {
             Definition = d,
-            Value = colonies.Count == 0 ? NumericValue.Unknown : new NumericValue { Number = colonies.Sum(value), Coverage = MetricCoverage.Complete },
+            Value = colonies.Count == 0 ? NumericValue.Unknown : Sum(colonies.ToList()),
             Targets = colonies.Count,
-            Valid = colonies.Count,
+            Valid = colonies.Count(measured),
             Breakdowns = breakdowns,
         };
     }
@@ -306,7 +347,8 @@ public static class MetricRankings
     /// The largest (or smallest) candidate and its colony. Partial when a candidate is Partial or fewer than
     /// <paramref name="targets"/> colonies have a value (callers pass the colonies the value is defined for).
     /// </summary>
-    private static NumericRow Extreme(MetricDefinition d, List<(string Key, double? Value, MetricCoverage Coverage)> candidates, bool max, int targets)
+    private static NumericRow Extreme(MetricDefinition d, List<(string Key, double? Value, MetricCoverage Coverage)> candidates, bool max, int targets,
+        MetricEvidence evidence = MetricEvidence.UnknownLegacy)
     {
         if (candidates.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = targets };
@@ -318,7 +360,7 @@ public static class MetricRankings
         return new NumericRow
         {
             Definition = d,
-            Value = new NumericValue { Number = best, Coverage = coverage, ColonyKey = holder },
+            Value = new NumericValue { Number = best, Coverage = coverage, ColonyKey = holder, Evidence = evidence },
             Targets = targets,
             Valid = valid,
         };

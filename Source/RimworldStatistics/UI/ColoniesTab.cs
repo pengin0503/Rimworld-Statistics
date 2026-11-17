@@ -26,18 +26,19 @@ public static class ColoniesTab
         new("RWS_Col_Scenario", 0.13f, s => (s.Scenario ?? "") + "/" + (s.Storyteller ?? ""),
             s => $"{s.Scenario ?? Dialog_RimworldStatistics.Dash} / {s.Storyteller ?? Dialog_RimworldStatistics.Dash}",
             s => !string.IsNullOrEmpty(s.Scenario) || !string.IsNullOrEmpty(s.Storyteller)),
-        new("RWS_Col_Days", 0.06f, s => s.MaxTicks, s => Dialog_RimworldStatistics.Days(s.MaxTicks)),
+        // A colony known only from ending records has no observed save or live point: its counters are unknown, not 0 (#332).
+        new("RWS_Col_Days", 0.06f, s => s.MaxTicks, s => Observed(s, Dialog_RimworldStatistics.Days(s.MaxTicks)), Observed),
         new("RWS_Col_PeakWealth", 0.08f, s => s.WealthMax, s => s.PeakWealthKnown ? StatFormat.Group(s.WealthMax) : Dialog_RimworldStatistics.Dash,
             s => s.PeakWealthKnown),
         new("RWS_Col_LastWealth", 0.08f, s => s.WealthLast, s => s.LastWealthKnown ? StatFormat.Group(s.WealthLast) : Dialog_RimworldStatistics.Dash,
             s => s.LastWealthKnown),
-        new("RWS_Col_Raids", 0.05f, s => s.Raids, s => s.Raids.ToString(Inv)),
-        new("RWS_Col_Killed", 0.05f, s => s.Killed, s => s.Killed.ToString(Inv)),
-        new("RWS_Stat_Threats", 0.06f, s => s.Threats, s => s.Threats.ToString(Inv)),
+        new("RWS_Col_Raids", 0.05f, s => s.Raids, s => Observed(s, s.Raids.ToString(Inv)), Observed),
+        new("RWS_Col_Killed", 0.05f, s => s.Killed, s => Observed(s, s.Killed.ToString(Inv)), Observed),
+        new("RWS_Stat_Threats", 0.06f, s => s.Threats, s => Observed(s, s.Threats.ToString(Inv)), Observed),
         new("RWS_Stat_Departed", 0.06f, s => s.Departed, s => s.Departed.ToString(Inv)),
-        new("RWS_Stat_MaxPopulation", 0.07f, s => s.MaxPopulation, s => s.MaxPopulation.ToString(Inv)),
+        new("RWS_Stat_MaxPopulation", 0.07f, s => s.MaxPopulation, s => Observed(s, s.MaxPopulation.ToString(Inv)), Observed),
         new("RWS_Stat_RealPlay", 0.08f, s => s.MaxRealPlay,
-            s => "RWS_HoursValue".Translate(StatFormat.Hours(s.MaxRealPlay).ToString("N1", Inv))),
+            s => Observed(s, "RWS_HoursValue".Translate(StatFormat.Hours(s.MaxRealPlay).ToString("N1", Inv))), Observed),
         new("RWS_Col_Endings", 0.05f, s => s.EndingCounts.Values.Sum(), s => s.EndingCounts.Values.Sum().ToString(Inv)),
         new("RWS_Col_Versions", 0.07f, s => string.Join(",", s.GameVersions), s => Dialog_RimworldStatistics.ShortVersions(s.GameVersions),
             s => s.GameVersions.Count > 0),
@@ -45,6 +46,10 @@ public static class ColoniesTab
         new("RWS_Col_LastPlayed", 0.08f, s => s.LastPlayedUtc ?? DateTime.MinValue, s => Dialog_RimworldStatistics.Local(s.LastPlayedUtc),
             s => s.LastPlayedUtc.HasValue),
     };
+
+    private static bool Observed(ColonyStats s) => s.HasObservedPoint;
+
+    private static string Observed(ColonyStats s, string text) => s.HasObservedPoint ? text : Dialog_RimworldStatistics.Dash;
 
     private const float ExcludeWidth = 0.05f;
     private static readonly float TotalColumnWeight = Columns.Sum(c => c.Width) + ExcludeWidth;

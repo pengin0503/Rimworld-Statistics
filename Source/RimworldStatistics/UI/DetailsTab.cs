@@ -694,7 +694,11 @@ public static class DetailsTab
     {
         var d = row.Definition;
         var v = row.Value;
-        var value = Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
+        // A range without an additive total (the goodwill range) shows its measured ends instead of a dash (#329).
+        var value = MetricDisplayPolicy.BreakdownRange(row) is { } range
+            ? Format(d, new NumericValue { Number = range.Min, Coverage = v.Coverage }) + " – "
+                + Format(d, new NumericValue { Number = range.Max, Coverage = v.Coverage })
+            : Format(row.Breakdown.Length > 0 && d.BreakdownUnit is { } bu ? d with { Unit = bu } : d, v);
         if ((d.Category == MetricCategory.Rankings || CrossColonyCatalog.IsDerived(d)) && row.Breakdown.Length == 0)
         {
             // Cross-colony records retain their original category but still
