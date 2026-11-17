@@ -1151,13 +1151,13 @@
   <RWS_VgeHybrid_BirthsDesc>Новые гибридные пешки игрока, по одной действительно появившиеся после успешного цикла роста в электрической матке VGE игрока, по виду пешки. Неудачный рост, ход таймера и восстановление сохранения не учитываются.</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE: биомеханические превращения</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>Успешные преобразования в механогибридизаторах игрока, уничтожившие исходное существо и создавшие одну новую преобразованную пешку игрока, по виду результата. Запуск машины, ожидание и неудачное создание не учитываются.</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded: одобренные условные освобождения</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>Одобренные условные освобождения</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Решения о выпуске на слушаниях об условном освобождении, которые действительно завершили полностью отбытую меру наказания живого пленника игрока и назначили освобождение. Сами слушания, продления срока, варианты вербовки, повторные решения и последующий уход пленника исключаются.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Добытая сырая нефть (единицы месторождения)</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>Фактическое уменьшение запаса нефтяного месторождения при успешной откачке нефтяной вышкой игрока. Это единицы ёмкости месторождения, НЕ объём в трубах и не число предметов. Ход бурения, попытки откачки, природное пополнение, перемещения между резервуарами и выпуск НПЗ исключаются.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded: отбытые сроки</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>Отбытые сроки</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>Наказания пленников игрока, действительно достигшие полной длительности в Prison Expanded и впервые ставшие основанием для слушаний об условном освобождении. Одобрение условного освобождения, приказы отпустить, повторные дневные тики и значения, восстановленные при загрузке, исключаются.</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded: действительно ушедшие пленники</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>Действительно ушедшие пленники</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Пленники, отслеживаемые Prison Expanded, которые физически покинули домашнюю карту игрока, а не просто получили приказ об освобождении. Каждый фактический уход учитывается независимо от исходного срока.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Расход топлива НПЗ (единицы труб)</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>Фактическое уменьшение доступного топлива трубопроводной сети от обработки на НПЗ Rimefeller игрока. Топливо, перенесённое в установки, и только запланированный или попытанный расход исключаются. Единицы топлива трубопроводной сети.</RWS_Rimefeller_RefineryFuelUsedDesc>
