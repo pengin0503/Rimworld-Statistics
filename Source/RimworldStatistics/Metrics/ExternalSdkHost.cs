@@ -9,7 +9,9 @@ internal sealed class ExternalSdkHost : IStatisticsHost
 {
     public static ExternalSdkHost Instance { get; } = new();
     internal DeferredHookRegistry IntegratedHooks { get; } = new();
-    private readonly ExternalSdkMetricRegistry registry = new();
+    // A built-in integration's acquisition units are refused to SDK providers (#314). The list is read at the first
+    // registration, during MOD construction: declarations only, nothing is probed or patched.
+    private readonly ExternalSdkMetricRegistry registry = new(() => ModProviderAdapters.BuiltInDescriptors);
     private readonly object gate = new();
 
     public int ApiMajor => StatisticsApi.ApiVersionMajor;
@@ -19,8 +21,16 @@ internal sealed class ExternalSdkHost : IStatisticsHost
     {
         try
         {
+            ApiRegistrationResult result;
+            string? builtInUnit;
             lock (gate)
-                return registry.Register(metric, captureSnapshot);
+                result = registry.Register(metric, captureSnapshot, out builtInUnit);
+            if (builtInUnit is not null)
+                Log.ErrorOnce($"[RimworldStatistics] External SDK metric '{metric.ProviderId}/{metric.MetricName}' was refused "
+                    + $"({result}): its acquisition unit '{builtInUnit}' belongs to a statistic built into Rimworld Statistics. "
+                    + "Register it under another familyId; the provider's other units are unaffected.",
+                    ("RWS.sdk.builtin." + builtInUnit).GetHashCode());
+            return result;
         }
         catch (Exception e)
         {

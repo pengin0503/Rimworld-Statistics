@@ -1,0 +1,6 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Development-only fixture for tools/PatchTargetCheckSelfTest/run.sh: the methods the synthetic patches target. -->
+  <PropertyGroup>
+    <AssemblyName>SyntheticTarget</AssemblyName>
+  </PropertyGroup>
+</Project>

@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Development-only fixture for tools/PatchTargetCheckSelfTest/run.sh: Harmony patches the checker must refuse. -->
+  <PropertyGroup>
+    <AssemblyName>SyntheticBadPatches</AssemblyName>
+    <NoWarn>$(NoWarn);IDE0051;IDE0060</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.4" PrivateAssets="all" ExcludeAssets="runtime" />
+    <ProjectReference Include="../Target/SyntheticTarget.csproj" />
+  </ItemGroup>
+</Project>

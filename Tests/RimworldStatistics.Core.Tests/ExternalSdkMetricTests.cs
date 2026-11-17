@@ -29,6 +29,73 @@ public sealed class ExternalSdkMetricTests
         Assert.Equal(ApiRegistrationResult.Closed, registry.Register(Metric("new"), null));
     }
 
+    // The built-in VFE Security integration (VfeSecurityStatistics): one unit, one metric.
+    private static ModMetricDescriptor BuiltInTrapRearm() => new()
+    {
+        ProviderId = "rws.traprearm", OwnerPackageId = "VanillaExpanded.VFESecurity", FamilyId = "traprearm",
+        MetricName = "completed", Revision = 1, Category = MetricCategory.Defense, Unit = MetricUnit.Count,
+        Source = MetricObservationSource.Checkpoint, Overall = OverallAggregation.Sum,
+        Selection = ColonySelection.Representative,
+        RequiredPackages = [new ModPackageRequirement("VanillaExpanded.VFESecurity")],
+    };
+
+    private static ApiMetricDefinition SecurityMetric(string family, string name) => Metric(name) with
+    {
+        ProviderId = "third.party.security", OwnerPackageId = "VanillaExpanded.VFESecurity", FamilyId = family,
+    };
+
+    [Fact]
+    public void BuiltInUnitIsRefusedToSdkWhileTheBuiltInAndOtherSdkUnitsKeepRecording()
+    {
+        var builtIn = BuiltInTrapRearm();
+        var reads = 0;
+        var registry = new ExternalSdkMetricRegistry(() => { reads++; return [builtIn]; });
+
+        // An SDK metric in the built-in unit is refused, whatever provider ID it claims: the built-in family reads only its own.
+        Assert.Equal(ApiRegistrationResult.ConflictingFamily,
+            registry.Register(SecurityMetric("traprearm", "extra"), null, out var unit));
+        Assert.Equal(builtIn.AcquisitionId, unit);
+        Assert.Equal(ApiRegistrationResult.ConflictingFamily,
+            registry.Register(SecurityMetric("traprearm", "extra") with { ProviderId = builtIn.ProviderId }, null, out _));
+        Assert.Equal(ApiRegistrationResult.ConflictingFamily, registry.Register(
+            SecurityMetric("traprearm", "stock") with { Kind = ApiMetricKind.SaveSnapshot }, () => 1, out _));
+        Assert.Equal(ApiRegistrationResult.DuplicateMetric,
+            registry.Register(SecurityMetric("TrapRearm", "Completed"), null, out unit));
+        Assert.Equal(builtIn.AcquisitionId, unit);
+        // Another unit of the same MOD and an unrelated provider are not affected.
+        Assert.Equal(ApiRegistrationResult.Accepted,
+            registry.Register(SecurityMetric("traprearm_sdk", "extra"), null, out unit));
+        Assert.Null(unit);
+        Assert.Equal(ApiRegistrationResult.Accepted, registry.Register(Metric(), null, out unit));
+        Assert.Null(unit);
+        Assert.Equal(1, reads);
+        var accepted = registry.Seal();
+        Assert.Equal(["mod.other.hospitality.stays.checkouts", "mod.vanillaexpanded.vfesecurity.traprearm_sdk.extra"],
+            accepted.Select(x => x.Descriptor.StableKey));
+        Assert.Null(registry.Find(builtIn.AcquisitionId + ".extra"));
+
+        // Every event the SDK is told was Recorded is read back from the checkpoint, next to the built-in count.
+        var extra = accepted[1];
+        var spec = new[]
+        {
+            new FamilySpec(builtIn.AcquisitionId, builtIn.Revision),
+            new FamilySpec(extra.Descriptor.AcquisitionId, extra.Descriptor.Revision),
+        };
+        var experimental = spec.Select(x => x.Name).ToHashSet();
+        var live = LiveMetricAccumulator.StartNew(spec, 0, experimental);
+        Assert.True(OptionalTransitionRecording.RecordCount(live.Family(builtIn.AcquisitionId)!, "completed"));
+        Assert.Equal(ApiRecordResult.Recorded,
+            ExternalSdkMetricPolicy.Record(live.Family(extra.Descriptor.AcquisitionId)!, extra, "trap-1", 10, 1));
+        var draft = live.PrepareSave(100, DateTime.UtcNow, "parent")!;
+        var resumed = LiveMetricAccumulator.Resume(draft.Json, spec, 100, experimental);
+        var output = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        OptionalTransitionRecording.PutCount(new FamilyOutputContext(resumed.Family(builtIn.AcquisitionId)!, 100, output),
+            "completed", builtIn.StableKey);
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(resumed.Family(extra.Descriptor.AcquisitionId)!, 100, output), extra);
+        Assert.Equal(1, output[builtIn.StableKey].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(1, output[extra.Descriptor.StableKey].Values[MetricEntry.Scalar].IntegerValue);
+    }
+
     [Fact]
     public void RegistrySupportsMultipleMetricsPerFamilyAndDeterministicOrdering()
     {

@@ -3,4 +3,8 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
+  <ItemGroup>
+    <!-- Patch parameter types are rendered exactly as the index renders the game's. -->
+    <Compile Include="../RefMetadataIndex/TypeRenderer.cs" Link="TypeRenderer.cs" />
+  </ItemGroup>
 </Project>

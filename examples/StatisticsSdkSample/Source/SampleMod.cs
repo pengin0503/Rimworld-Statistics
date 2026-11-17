@@ -39,7 +39,7 @@ public sealed class SampleMod : Mod
             Log.Message("[StatisticsSdkSample] The next SDK snapshot will deliberately throw. Other families must continue.");
         }
         Widgets.Label(new Rect(inRect.x, inRect.y + 130f, inRect.width, 70f),
-            "Enable mod.pengin0503.rws.sdksample.events and .state in the host's experimental settings, " +
-            "then restart the game. Save and reload to verify stable counters and partial coverage.");
+            "The host records mod.pengin0503.rws.sdksample.events and .state unless they are unticked in its MOD " +
+            "settings (changes apply without a restart). Save and reload to verify stable counters and partial coverage.");
     }
 }

@@ -5,5 +5,5 @@
   <packageId>pengin0503.rws.sdksample</packageId>
   <supportedVersions><li>1.7</li></supportedVersions>
   <loadAfter><li>pengin0503.rimworldstatistics</li></loadAfter>
-  <description>Development-only optional SDK consumer. Does not bundle RimworldStatistics.Api.dll. Registration is opt-in and not verified in-game.</description>
+  <description>Development-only optional SDK consumer. Does not bundle RimworldStatistics.Api.dll. The host records its units by default unless they are unticked in its MOD settings; not verified in-game.</description>
 </ModMetaData>

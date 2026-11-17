@@ -1,6 +1,9 @@
 // Checks every [HarmonyPatch(typeof(T), "Method")] class in a built mod DLL against the audited RimWorld index:
 // the target type and method exist, the name resolves to exactly one method (as AccessTools.Method needs), and every
-// argument a Prefix/Postfix asks Harmony to inject (by parameter name, __instance, ___field) exists on the target.
+// argument a Prefix/Postfix/Finalizer asks Harmony to inject exists on the target with a type it can be bound to
+// (#313): a target parameter (by name or __N), __instance, ___field, __result and the other special arguments, by value
+// or by reference, and the patch method's own return type. The rules are stricter than Harmony's own where Harmony would
+// reinterpret memory (two different value types) or a type cannot be proven assignable from the index.
 // The reference checker (refcheck.py) cannot do this: a patch target is a type token plus a string, not a member reference.
 //
 // usage: PatchTargetCheck <mod.dll> <index dir> [--index directory] [--target PatchClass:Type:method:type|type] [--field Type:field]...
@@ -52,12 +55,25 @@ for (var i = 2; i < args.Length; i++)
 }
 
 // Compiler-generated helper types are shared by unrelated assemblies.
-// Only import explicitly audited target types from optional indexes.
+// Only import explicitly audited target types from optional indexes, and the base types and interfaces they derive
+// from that the main index lacks (a MOD class deriving from a framework class), so __instance can be checked.
 var targetTypes = optional.Values.SelectMany(targets => targets).Select(target => target.Type).ToHashSet(StringComparer.Ordinal);
+var extraEntries = new Dictionary<string, JsonElement>(StringComparer.Ordinal);
 foreach (var directory in extraIndexes)
     foreach (var (name, entry) in LoadIndex(directory))
         if (targetTypes.Contains(name) && !index.TryAdd(name, entry))
             failures.Add($"duplicate target type {name} in {directory}");
+        else
+            extraEntries.TryAdd(name, entry);
+var importing = new Queue<string>(targetTypes);
+while (importing.TryDequeue(out var imported))
+    if (index.TryGetValue(imported, out var importedEntry))
+        foreach (var parent in Parents(importedEntry).Select(GenericDefinition))
+            if (!index.ContainsKey(parent) && extraEntries.TryGetValue(parent, out var parentEntry))
+            {
+                index.Add(parent, parentEntry);
+                importing.Enqueue(parent);
+            }
 
 using (var pe = new PEReader(File.OpenRead(args[0])))
 {
@@ -119,7 +135,7 @@ foreach (var f in failures)
     Console.WriteLine("FAIL " + f);
 return failures.Count == 0 && checkedTargets > 0 ? 0 : 1;
 
-void Check(string patchClass, string targetType, string methodName, List<string>? argTypes, List<(string Name, List<string> Params)> patchMethods)
+void Check(string patchClass, string targetType, string methodName, List<string>? argTypes, List<PatchMethod> patchMethods)
 {
     var candidates = new List<(JsonElement Method, string Owner)>();
     for (var t = targetType; t != null && index.TryGetValue(t, out var entry); t = BaseOf(entry))
@@ -144,31 +160,136 @@ void Check(string patchClass, string targetType, string methodName, List<string>
     }
     var (method, owner) = candidates[0];
     var targetParams = method.GetProperty("parameters").EnumerateArray().Select(p => p.GetProperty("name").GetString()!).ToList();
+    var targetParamTypes = ParamTypes(method).ToList();
+    var returnType = method.GetProperty("signature").GetProperty("returnType").GetString()!;
     var isStatic = method.GetProperty("attributes").GetString()!.Contains("Static");
-    foreach (var (patchMethod, names) in patchMethods)
+    var target = $"{targetType}::{methodName}";
+    foreach (var patch in patchMethods)
     {
-        foreach (var n in names)
+        var where = $"{patchClass}.{patch.Name}";
+        CheckPatchReturn(where, patch);
+        foreach (var (n, type) in patch.Parameters)
         {
-            if (n is "__state" or "__result" or "__originalMethod" or "__args" or "__runOriginal" or "__exception")
-                continue;
-            if (n == "__instance")
+            switch (n)
             {
-                if (isStatic) failures.Add($"{patchClass}.{patchMethod}: __instance on static {targetType}::{methodName}");
-                continue;
+                case "__state":
+                    continue;   // the patch's own storage
+                case "__result":
+                    if (Norm(returnType) == "void")
+                        failures.Add($"{where}: __result on void {target}");
+                    else if (!Binds(returnType, type, boxedRef: true))
+                        failures.Add($"{where}: __result {type} cannot bind the {returnType} result of {target}{Unindexed(returnType)}");
+                    continue;
+                case "__originalMethod":
+                    Special(where, n, type, "System.Reflection.MethodBase", "System.Reflection.MethodInfo", "object");
+                    continue;
+                case "__args":
+                    Special(where, n, type, "object[]");
+                    continue;
+                case "__runOriginal":
+                    Special(where, n, type, "bool");
+                    continue;
+                case "__exception":
+                    Special(where, n, type, "System.Exception", "object");
+                    continue;
+                case "__instance":
+                    if (isStatic)
+                        failures.Add($"{where}: __instance on static {target}");
+                    else if (!Binds(owner, type))
+                        failures.Add($"{where}: __instance {type} cannot bind {owner}, the declaring type of {target}{Unindexed(owner)}");
+                    continue;
             }
             if (n.StartsWith("___", StringComparison.Ordinal))
             {
-                if (FindField(targetType, n[3..]) is null) failures.Add($"{patchClass}.{patchMethod}: field {n[3..]} not on {targetType}");
+                // Harmony looks the field up from the declaring type of the patched method.
+                var name = n[3..];
+                if (FindField(owner, name) is not { } field)
+                    failures.Add($"{where}: field {name} not on {owner}");
+                else if (!field.TryGetProperty("type", out var fieldType) || fieldType.GetString() is not { } fieldTypeName)
+                    failures.Add($"{where}: the index has no type for field {owner}.{name} (rebuild it with tools/RefMetadataIndex)");
+                else if (isStatic && !(field.TryGetProperty("attributes", out var a) && a.GetString()!.Contains("Static")))
+                    failures.Add($"{where}: instance field {name} injected into static {target}");
+                else if (!Binds(fieldTypeName, type))
+                    failures.Add($"{where}: {n} {type} cannot bind field {owner}.{name} of type {fieldTypeName}{Unindexed(fieldTypeName)}");
                 continue;
             }
-            if (n.StartsWith("__", StringComparison.Ordinal) && int.TryParse(n.AsSpan(2), out var position)
-                && position >= 0 && position < targetParams.Count)
-                continue;
-            if (!targetParams.Contains(n))
-                failures.Add($"{patchClass}.{patchMethod}: parameter '{n}' is not a parameter of {targetType}::{methodName}({string.Join(", ", targetParams)})");
+            var position = n.StartsWith("__", StringComparison.Ordinal) && int.TryParse(n.AsSpan(2), out var p) ? p : targetParams.IndexOf(n);
+            if (position < 0 || position >= targetParams.Count)
+                failures.Add($"{where}: parameter '{n}' is not a parameter of {target}({string.Join(", ", targetParams)})");
+            else if (!Binds(targetParamTypes[position], type))
+                failures.Add($"{where}: parameter '{n}' {type} cannot bind {targetParamTypes[position]} {targetParams[position]} of {target}{Unindexed(targetParamTypes[position])}");
         }
     }
     Console.WriteLine($"matched        {owner}::{methodName}({string.Join(", ", ParamTypes(method))})  <- {patchClass} [{string.Join(", ", patchMethods.Select(p => p.Name))}]");
+}
+
+// Harmony calls a Prefix for its bool (run the original or not), a Finalizer for the exception to rethrow, and a
+// Postfix that returns a value only as a pass-through of its first argument.
+void CheckPatchReturn(string where, PatchMethod patch)
+{
+    var returned = Norm(patch.ReturnType);
+    if (returned == "void")
+        return;
+    var valid = patch.Name switch
+    {
+        "Prefix" => returned == "bool",
+        "Finalizer" => returned == "System.Exception",
+        _ => patch.Parameters.Count > 0 && Norm(patch.Parameters[0].Type) == returned,
+    };
+    if (!valid)
+        failures.Add($"{where}: returns {patch.ReturnType}, which Harmony does not accept from a {patch.Name}");
+}
+
+void Special(string where, string name, string type, params string[] allowed)
+{
+    if (type.EndsWith('&') || !allowed.Contains(Norm(type)))
+        failures.Add($"{where}: {name} must be {string.Join(" or ", allowed)} by value, not {type}");
+}
+
+// Whether Harmony can pass a value of type source (a target parameter, the instance, a field or the result) to a patch
+// parameter of type requested. By reference, the types must be the same (Harmony boxes a value into "ref object" only for
+// __result); by value, the requested type may also be object or a base type or interface of an indexed source type.
+bool Binds(string source, string requested, bool boxedRef = false)
+{
+    var have = Norm(source.TrimEnd('&'));
+    var want = Norm(requested.TrimEnd('&'));
+    if (have == want || IsGenericParameter(have) || IsGenericParameter(want))
+        return true;
+    // The declaring type of a method of a generic class is its definition (List`1); the patch names an instance of it.
+    if (have.Contains('`') && !have.Contains('<') && want.StartsWith(have + "<", StringComparison.Ordinal))
+        return true;
+    if (requested.EndsWith('&'))
+        return boxedRef && want == "object";
+    return want == "object" || Ancestors(have).Contains(want);
+}
+
+// For a failure: the types in the source's hierarchy that the index lacks (add their assembly's index with --index).
+string Unindexed(string source)
+{
+    var unknown = new SortedSet<string>(StringComparer.Ordinal);
+    Ancestors(Norm(source.TrimEnd('&')), unknown);
+    return unknown.Count == 0 ? "" : $" (not in the index: {string.Join(", ", unknown)})";
+}
+
+// The type, its base types and interfaces, as far as the index knows them; types the index lacks are added to unknown.
+HashSet<string> Ancestors(string type, ISet<string>? unknown = null)
+{
+    var found = new HashSet<string>(StringComparer.Ordinal) { type };
+    var pending = new Stack<string>();
+    pending.Push(type);
+    while (pending.TryPop(out var current))
+    {
+        if (!index.TryGetValue(GenericDefinition(current), out var entry))
+        {
+            if (current.Contains('.') && !current.StartsWith("System.", StringComparison.Ordinal))
+                unknown?.Add(current);
+            continue;
+        }
+        foreach (var parent in Parents(entry))
+            if (found.Add(parent))
+                pending.Push(parent);
+    }
+    return found;
 }
 
 JsonElement? FindField(string typeName, string field)
@@ -246,20 +367,55 @@ static string AttributeTypeName(MetadataReader md, CustomAttribute attr)
     return md.GetString(tr.Namespace) + "." + md.GetString(tr.Name);
 }
 
-static List<(string, List<string>)> PatchMethods(MetadataReader md, TypeDefinition type)
+static List<PatchMethod> PatchMethods(MetadataReader md, TypeDefinition type)
 {
-    var list = new List<(string, List<string>)>();
+    var list = new List<PatchMethod>();
+    var types = new TypeRenderer(md);
     foreach (var mh in type.GetMethods())
     {
         var m = md.GetMethodDefinition(mh);
         var name = md.GetString(m.Name);
         if (name is not ("Prefix" or "Postfix" or "Finalizer"))
             continue;
+        var signature = m.DecodeSignature(types, null);
         var names = m.GetParameters().Select(ph => md.GetParameter(ph)).Where(p => p.SequenceNumber > 0)
             .OrderBy(p => p.SequenceNumber).Select(p => md.GetString(p.Name)).ToList();
-        list.Add((name, names));
+        list.Add(new PatchMethod(name, signature.ReturnType,
+            names.Select((n, i) => (n, signature.ParameterTypes[i])).ToList()));
     }
     return list;
+}
+
+// Type names without their assembly ("[Assembly-CSharp]Verse.Pawn" → "Verse.Pawn"): reference assemblies, the game and
+// MOD indexes and the patch DLL name the same type from different assemblies (facades, mscorlib, netstandard). BCL types
+// named in a base type list are written as the signature primitives ("System.Object" → "object").
+static string Norm(string name)
+{
+    var bare = System.Text.RegularExpressions.Regex.Replace(name, @"\[[A-Za-z0-9_.\-]+\]", "");
+    return System.Text.RegularExpressions.Regex.Replace(bare, @"(?<![\w.+`])System\.(Object|String|Boolean|Int32|Int64|Single|Double|Char|Byte|SByte|Int16|UInt16|UInt32|UInt64|Void)(?![\w.`])",
+        m => m.Groups[1].Value switch
+        {
+            "Object" => "object", "String" => "string", "Boolean" => "bool", "Int32" => "int32", "Int64" => "int64",
+            "Single" => "float32", "Double" => "float64", "Char" => "char", "Byte" => "uint8", "SByte" => "int8",
+            "Int16" => "int16", "UInt16" => "uint16", "UInt32" => "uint32", "UInt64" => "uint64", _ => "void",
+        });
+}
+
+static bool IsGenericParameter(string name) => name.Contains('!');
+
+static string GenericDefinition(string name) => name.IndexOf('<') is var lt and >= 0 ? name[..lt] : name;
+
+// The base type and interfaces of an index entry (the audited index may write an interface as {"type": …}).
+static IEnumerable<string> Parents(JsonElement entry)
+{
+    if (entry.TryGetProperty("baseType", out var b) && b.ValueKind == JsonValueKind.String)
+        yield return Norm(b.GetString()!);
+    if (entry.TryGetProperty("interfaces", out var interfaces) && interfaces.ValueKind == JsonValueKind.Array)
+        foreach (var i in interfaces.EnumerateArray())
+            if (i.ValueKind == JsonValueKind.String)
+                yield return Norm(i.GetString()!);
+            else if (i.ValueKind == JsonValueKind.Object && i.TryGetProperty("type", out var t) && t.ValueKind == JsonValueKind.String)
+                yield return Norm(t.GetString()!);
 }
 
 static Dictionary<string, JsonElement> LoadIndex(string dir)
@@ -277,6 +433,9 @@ static Dictionary<string, JsonElement> LoadIndex(string dir)
         throw new InvalidOperationException($"no index chunks in {dir}");
     return map;
 }
+
+/// <summary>A Prefix, Postfix or Finalizer: its return type and its parameters (name, type as the index writes it).</summary>
+sealed record PatchMethod(string Name, string ReturnType, List<(string Name, string Type)> Parameters);
 
 /// <summary>Represents types in decoded attribute arguments by their (serialized) names.</summary>
 sealed class AttributeTypeProvider : ICustomAttributeTypeProvider<string>
