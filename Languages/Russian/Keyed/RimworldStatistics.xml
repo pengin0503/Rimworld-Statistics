@@ -902,11 +902,11 @@
   <RWS_Hospitality_ShoppingSilverDesc>Серебро, изъятое у гостей при тех же выполненных заданиях на покупки после включения статистики.</RWS_Hospitality_ShoppingSilverDesc>
   <RWS_Hospitality_AssignedBeds>Выделенные гостям кровати при сохранении</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Число уникальных гостевых кроватей, назначенных гостям Hospitality на домашних картах игрока при успешном сохранении. Общая кровать учитывается один раз. Это число назначенных кроватей, а не фактически спящих гостей или бронирований за всю историю.</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>Начатые заявки Recruitment (после включения)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_Started>Начатые заявки (после включения)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>Подтверждённые заявки Recruitment после включения этой статистики. Отдельный ряд от старой встроенной статистики, поскольку изменился способ учёта.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment: серебро на заявки (после включения)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>Серебро на заявки (после включения)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Вся подтверждённая сумма серебра, уплаченная за новые заявки Recruitment после включения, включая дополнительные сборы. Неудачные попытки исключаются; это не изменение чистого богатства.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: запланированные кандидаты (после включения)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>Запланированные кандидаты (после включения)</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>Сумма рассчитанных при начале оплаченных заявок Recruitment кандидатов после включения. Это план, а не число действительно прибывших, вступивших или ставших колонистами; генерация кандидатов может завершиться неудачей.</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>Запас воды в трубах (л)</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>Общее число литров воды в резервуарах Dubs Bad Hygiene, подключённых к трубам на домашних картах игрока при успешном сохранении; каждый резервуар считается один раз. Учитываются только подключённые резервуары с читаемыми данными. Это не накопленные производство или расход. Прошлые значения до включения не восстанавливаются, нечитаемые данные неизвестны.</RWS_DBH_PipedStorageDesc>
@@ -1061,7 +1061,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>Подтверждённые переходы племени игрока к более поздней технологической эпохе, по эпохам. Инициализация, сохранение или понижение эпохи и загрузка сохранения не учитываются.</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>Приобретённые краеугольные камни</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>Новые краеугольные камни, приобретённые за доступные очки в ходе игры, по камням. Ранее принадлежавшие камни и восстановленные при загрузке исключаются.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded: исполненные стремления</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>Исполненные стремления</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Стремления, впервые выполненные поселенцами игрока при обычной проверке выполнения модом, по стремлениям. Отладочные выполнения, уже выполненные или не назначенные стремления и восстановление сохранений исключаются.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Рождения в ульях игрока</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>Новые насекомые, появившиеся из ульев игрока во время обычной игры, по виду насекомого. Замена кокона, восстановление существующих жителей улья и появление через инструменты разработчика не учитываются.</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1073,9 +1073,9 @@
   <RWS_Rwom_HealingCastsDesc>Применения игроком Heal и Advanced Heal, которые действительно уменьшили раны цели или стабилизировали недавно утраченную часть тела.</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>Прибытия на орбиту</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>Корабли под управлением игрока, достигшие устойчивой орбиты после взлёта с поверхности.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants: завершённые сдачи по ордерам</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>Завершённые сдачи по ордерам</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Ордера, закрытые сдачей цели караваном игрока после удаления цели и закрытия ордера.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants: заработанное серебро</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>Заработанное серебро</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Серебро, действительно добавленное каравану игрока как награда за завершённые сдачи по ордерам.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator: завершённые улучшения ARC</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Завершённое строительство игрока, при котором его существующий генератор ARC заменили на том же месте; разбивка по новому типу генератора.</RWS_VqeGenerator_UpgradesDesc>
@@ -1103,9 +1103,9 @@
   <RWS_VseExpertise_LevelUpsDesc>Постоянный прирост уровней специализации VSE после включения записи, суммарно по независимым колониям и с разбивкой по специализации.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE: наивысший достигнутый уровень специализации</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Наивысший уровень специализации, достигнутый благодаря опыту среди независимых колоний; это не сумма уровней и не снимок последнего сохранения.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded: партии обработки</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>Партии обработки</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Завершённые партии супа, сыра и другие процессы VEF из Vanilla Cooking Expanded, по процессу. Обычное изготовление по заданию и частично блокированный выход продукции исключаются.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded: партии брожения и выдержки</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>Партии брожения и выдержки</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Завершённые партии брожения, варки и выдержки VEF из Vanilla Brewing Expanded, по процессу. Приостановленный, блокированный или незавершённый выход продукции и обычные задания изготовления исключаются.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Серебро за еду гостей</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Серебро, фактически уплаченное посторонними посетителями за блюда в ресторане игрока. Частичные платежи добавляют только уплаченное; долги, бесплатные блюда и посторонняя торговля исключаются.</RWS_Gastronomy_SilverCollectedDesc>
@@ -1113,9 +1113,9 @@
   <RWS_VqeDrones_AssembledDesc>Дроны игрока, действительно появившиеся из автоматического сборщика после окончания таймера производства, по виду пешки. Простой ход таймера, неудачные появления и вылупление из яиц исключаются.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory: вылупившиеся дроны</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Дроны игрока, действительно вылупившиеся из яиц, по виду пешки. Разрушенные без появления дрона яйца и дроны из сборщика исключаются.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded: Deepchem в трубах</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>Deepchem в трубах</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Объём Deepchem, фактически принятый на хранение в трубы из насосов игрока, включая дробные единицы, измеренный после подтверждения хранения сетью. Плановая добыча, продукция на земле и заблокированное хранение исключаются.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded: извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>Извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по виду предмета. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE: питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Питательная смесь, действительно принятая в трубопроводную сеть от измельчителей Vanilla Nutrient Paste Expanded игрока, включая дробные количества. Попытки измельчения, расход ингредиентов без принятой смеси и хранение в трубах из других зданий не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
