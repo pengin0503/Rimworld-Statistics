@@ -39,7 +39,12 @@ internal static class MetricText
         return defs.TryGetValue(name!, out var match) ? match.label : key;
     }
 
+    // Metric titles and MOD attribution are separate presentation fields.
     public static string Label(MetricDefinition definition) => DetailsTab.DefinitionLabel(definition);
+
+    public static string? ModSourceLabel(MetricDefinition definition)
+        => string.IsNullOrWhiteSpace(definition.OwnerPackageId) ? null
+            : (string)"RWS_Mod_Provider".Translate(SafeModDisplayName(definition.OwnerPackageId));
     public static string Format(MetricDefinition definition, NumericValue value) => DetailsTab.Format(definition, value);
     public static string Tip(NumericRow row, StatsResult stats) => DetailsTab.OverallTip(row, stats);
     public static string BasicLabel(string key) => OverviewTab.BasicLabel(key);
