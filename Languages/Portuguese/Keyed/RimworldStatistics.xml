@@ -1139,7 +1139,7 @@
   <RWS_VfeSettlers_BountySilverDesc>Prata realmente adicionada à caravana do jogador no primeiro pagamento de uma recompensa por entrega VFE Settlers bem-sucedida. Artigos do criminoso, inclusive prata entre eles, não são incluídos.</RWS_VfeSettlers_BountySilverDesc>
   <RWS_Rimatomics_Byproducts>Subprodutos de reprocessamento</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>Artigos realmente colocados ou incorporados em pilhas como subprodutos quando um processador de plutónio do jogador termina de descarregar combustível, por tipo de saída. Combustível gasto devolvido, material apenas processado e colocações sem relação não contam.</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>Cartuchos disparados em</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsed>Cartuchos disparados</RWS_CE_RoundsUsed>
   <RWS_CE_RoundsUsedDesc>Cartuchos efetivamente retirados de carregadores de armas de colonos do jogador, ou gastos disparando diretamente do inventário, por tipo de munição. Movimentação de munição ao recarregar, disparos sem munição, uso de torretas e reposições por depuração não contam.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Vezes que colonos receberam supressão em</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Vezes em que um peão da colónia do jogador passou de não suprimido para suprimido em Combat Extended. Supressão adicional enquanto já estava suprimido e testes de desenvolvimento não contam. Mede supressão recebida, não a imposta aos inimigos.</RWS_CE_SuppressionReceivedDesc>
