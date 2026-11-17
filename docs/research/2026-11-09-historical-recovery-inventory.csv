@@ -241,6 +241,7 @@ population.snapshot.skill20_pawns_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNV
 population.snapshot.skill20_per_pawn_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-023,RosterSnapshot.Skill20PerPawnPeak
 population.snapshot.oldest,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-C-001,RosterSnapshot.Oldest
 population.snapshot.animal_defs_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-D-008,RosterSnapshot.AnimalDefsPeak
+population.snapshot.animal_nutrition_per_day,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-007-NUTRITION,RosterSnapshot.AnimalNutritionPerDay
 population.snapshot.passion,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N3-W-010,RosterSnapshot.Passions
 population.snapshot.age_mean,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N4-P-011,RosterSnapshot.AgeMean
 medicine.injured_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,P-019,RosterSnapshot.InjuredPeak

@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>Höchstes biologisches Alter eines lebenden freien Kolonisten in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>Größte Vielfalt der Kolonietiere</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Höchste Zahl unterschiedlicher Tierarten unter lebenden Kolonietieren in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>Nahrungsbedarf der Kolonietiere pro Tag</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Gesamte Nahrung, die die lebenden Kolonietiere (auf Karten, in Karawanen und unterwegs, wie bei der Zahl der Kolonietiere) bei einem erfolgreichen Speichern pro Tag essen, wenn sie satt sind. Es ist die Berechnung des Spiels selbst, die beim Beladen von Karawanen oder Transportkapseln für jedes Tier angezeigt wird: Sie berücksichtigt den Lebensabschnitt (Jungtiere essen weniger), Trächtigkeit, Laktation und Ähnliches. Tiere ohne Nahrungsbedarf und Tiere in einer Kryoschlafkapsel zählen als 0. Der Wert wird nicht mit dem Nahrungsvorrat verglichen, daher werden keine Vorratstage angezeigt. Teilweise, wenn ein Tier nicht gelesen werden konnte. Der Wert aller Kolonien addiert den zuletzt aufgezeichneten Spielstand jeder Kolonie.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Hingabe nach Fertigkeit</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Hingabe freier Kolonisten (keine, gering, groß) je Fertigkeit beim erfolgreichen Speichern.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Mittleres Alter lebender Kolonisten</RWS_Metric_RosterAgeMean>

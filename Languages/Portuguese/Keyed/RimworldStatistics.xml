@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>Maior idade biológica de um colono livre vivo em qualquer jogo guardado registado.</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>Maior diversidade de espécies de animais</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Maior número de espécies diferentes entre os animais vivos da colónia num único jogo guardado registado.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>Necessidade diária de nutrição dos animais da colónia</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Nutrição total que os animais vivos da colónia (nos mapas, em caravanas e em trânsito, tal como no número de animais da colónia) comem por dia quando saciados, numa gravação bem-sucedida. É o cálculo do próprio jogo, mostrado para cada animal ao carregar caravanas ou cápsulas de transporte: inclui a fase de vida (as crias comem menos), a gestação, a lactação e estados semelhantes. Animais que não precisam de comida e animais numa cápsula de criossono contam como 0. Não é comparado com a comida em stock, por isso não são mostrados dias de comida. Parcial se não foi possível ler algum animal. O valor de todas as colónias soma a última gravação registada de cada colónia.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Interesses dos colonos por habilidade</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Interesses (nenhum, menor, maior) dos colonos livres por habilidade numa gravação bem-sucedida.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Idade média dos colonos vivos</RWS_Metric_RosterAgeMean>

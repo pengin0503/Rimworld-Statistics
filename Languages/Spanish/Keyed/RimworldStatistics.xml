@@ -744,6 +744,8 @@
   <RWS_MetricDesc_RosterOldest>Mayor edad biológica de un colono libre vivo en cualquier partida guardada registrada.</RWS_MetricDesc_RosterOldest>
   <RWS_Metric_RosterAnimalDefsPeak>Máximo de especies animales de la colonia</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Mayor número de especies distintas entre los animales vivos de la colonia en una misma partida guardada registrada.</RWS_MetricDesc_RosterAnimalDefsPeak>
+  <RWS_Metric_RosterAnimalNutrition>Necesidad diaria de nutrición de los animales de la colonia</RWS_Metric_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Nutrición total que los animales vivos de la colonia (en mapas, en caravanas y en tránsito, igual que en el número de animales de la colonia) comen al día cuando están saciados, en un guardado correcto. Es el cálculo del propio juego, el que se muestra para cada animal al cargar caravanas o cápsulas de transporte: incluye la etapa de vida (las crías comen menos), la gestación, la lactancia y estados similares. Los animales que no necesitan comida y los que están en una cápsula de criosueño cuentan como 0. No se compara con la comida almacenada, así que no se muestran días de comida. Parcial si no se pudo leer algún animal. El valor de todas las colonias suma el último guardado registrado de cada colonia.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Pasiones de colonos por habilidad</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Pasiones de colonos libres (ninguna, menor, mayor) para cada habilidad en una partida guardada exitosa.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Edad media de colonos vivos</RWS_Metric_RosterAgeMean>

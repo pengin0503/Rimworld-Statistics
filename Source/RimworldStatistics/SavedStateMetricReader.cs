@@ -202,9 +202,13 @@ internal static class SavedStateMetricReader
                         .Select(x => new RosterSkillFact(x.def.defName, x.levelInt, x.passion.ToString())).ToArray()
                     : Array.Empty<RosterSkillFact>();
                 var hediffs = pawn.health?.hediffSet?.hediffs;
+                var animal = kind == RosterKind.ColonyAnimal;
                 facts.Add(new RosterPawnFact
                 {
-                    Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName, Species = GameFacts.Species(pawn),
+                    Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName,
+                    Species = animal ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName)
+                        : GameFacts.Species(pawn),
+                    NutritionPerDay = animal ? AnimalNutritionPerDay(pawn) : null,
                     AgeYears = kind == RosterKind.FreeColonist ? pawn.ageTracker?.AgeBiologicalYearsFloat : null,
                     Augmented = hediffs?.Any(h => h is Hediff_AddedPart) == true,
                     Injured = hediffs?.Any(h => h is Hediff_Injury) == true,
@@ -217,6 +221,24 @@ internal static class SavedStateMetricReader
             }
         }
         return RosterSnapshot.Build(facts, partial);
+    }
+
+    /// <summary>
+    /// The nutrition a colony animal eats per game day when fed, computed as the game shows it in the caravan and transport
+    /// dialogs (<c>RaceProperties.NutritionEatenPerDay</c>, 1.7.5011): <c>Need_Food.FoodFallPerTickAssumingCategory(Fed)</c>
+    /// per tick, which covers the race's base hunger rate, the life stage (a juvenile eats less), hunger-rate hediffs such as
+    /// pregnancy or lactation, the bed and a holding platform. Not what it can eat (diet) and not the food in stock (#311).
+    /// An animal without a food need never gets hungry, and a suspended one (cryptosleep) eats nothing now: 0. Null when the
+    /// game gives no finite rate, so that the total is then partial instead of a false 0.
+    /// </summary>
+    private static double? AnimalNutritionPerDay(Pawn pawn)
+    {
+        if (pawn.needs is not { } needs)
+            return null;
+        if (needs.food is not { } food || pawn.Suspended)
+            return 0;
+        var perDay = (double)food.FoodFallPerTickAssumingCategory(HungerCategory.Fed) * GenDate.TicksPerDay;
+        return double.IsFinite(perDay) && perDay >= 0 ? perDay : null;
     }
 
     private static Dictionary<string, MetricEntry> ReadFacilities()

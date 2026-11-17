@@ -92,6 +92,7 @@
 | `S-023` | 1人が同時に持ったスキル20の最多数 | 装備・所持物 | 中 | `population.snapshot.skill20_per_pawn_peak` | 個人の同時レベル>=20スキル数の最大 |
 | `N1-C-001` | 最高齢の入植者 | 維持 | 中 | `population.snapshot.oldest` | 自由入植者の最大観測生物年齢（tickを年換算）。死者は含まない |
 | `N1-D-008` | 最多飼育動物種数 | 動物・狩猟 | 中 | `population.snapshot.animal_defs_peak` | 同じ観測で飼育中の動物種（race ThingDef）の種類数の最大 |
+| `S-007-NUTRITION` | 飼育動物の1日あたり栄養需要（#311） | 動物・狩猟 | 中 | `population.snapshot.animal_nutrition_per_day` | S-007と同じ範囲（全マップ・キャラバン・輸送中の生存するプレイヤー所属動物、ThingIDで一意）が満腹時に1日に食べる栄養の合計。各動物はゲームの `RaceProperties.NutritionEatenPerDay`（キャラバン・輸送の積み込み画面の値）と同じ `Need_Food.FoodFallPerTickAssumingCategory(Fed)×60000`：種族の基本空腹率×成長段階、空腹率を変えるHediff（妊娠・授乳・栄養失調など）、寝床、保持台。1.7.4985と1.7.5011で同一。食事Needがない動物と `Suspended`（冬眠カプセルなど）は0。読めない値・非有限・負の値は除外して部分。内訳は種族（所有パッケージ/defName）。食性、飼料に届くか、在庫は考慮せず、不足日数は出さない。全体は代表値合計（同時刻の需要ではない）。#308の Animal Management 固有統計は採用しない |
 | `N3-W-010` | スキルへの情熱なし・小・大の人数構成 | 維持 | 中 | `population.snapshot.passion` | 自由入植者の有効スキル別に None/Minor/Major/Other を人数カウント。個別代表のみ |
 | `N4-P-011` | 最終観測時点の生存入植者の平均年齢 | 維持 | 中 | `population.snapshot.age_mean` | 自由入植者の生物年齢の合計÷有効人数。全体は人数加重 |
 | `P-019` | 最大同時負傷者数 | 維持 | 中 | `medicine.injured_peak` | 生存自由入植者で未治癒 Injury を持つ人数の保存時観測最大。逐次更新しない |
