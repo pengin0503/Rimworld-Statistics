@@ -902,11 +902,11 @@
   <RWS_Hospitality_ShoppingSilverDesc>启用此统计后，在上述已完成的购物工作中从客人身上扣除的白银数量。</RWS_Hospitality_ShoppingSilverDesc>
   <RWS_Hospitality_AssignedBeds>存档时客人分配床位数</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>成功保存时，玩家主基地地图上分配给在访Hospitality客人的不重复客用床位数。共用床位只计一次。统计的是床位分配，不是实际睡在床上的客人数或累计住宿订单数。</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>开始的Recruitment招募请求（启用后）</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_Started>开始的招募请求（启用后）</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>启用此统计后经确认的Recruitment招募请求数。由于跟踪方式发生变化，与较早的内置统计系列分开显示。</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment：招募请求花费的白银（启用后）</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>招募请求花费的白银（启用后）</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>启用此统计后，新建立Recruitment招募请求时经确认实际支付的白银总额，包含额外费用。不计入失败尝试，也不代表净财富变化。</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment：计划招募人数（启用后）</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>计划招募人数（启用后）</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>启用此统计后，开始付费Recruitment请求时随机确定的计划应征人数合计。不是实际到达、加入或成为殖民者的人数；生成应征者也可能失败。</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>管道蓄水量（L）</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>成功保存时，玩家主基地地图上接入管道的Dubs Bad Hygiene水箱储水总量（升），每个水箱只计一次。仅包括能够读取数据的已连接水箱。不是历史累计产水量或耗水量。启用统计前的数据不重建，无法读取时显示未知。</RWS_DBH_PipedStorageDesc>
@@ -1061,7 +1061,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>玩家部落的科技时代实际向前推进的次数，按时代分类。初始化、时代不变、时代倒退或恢复存档不计入。</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>获得的基石</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>游玩期间使用可用点数新购买的基石数量，按基石类型分类。已拥有的基石或加载时恢复的基石不计入。</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded实现的愿望</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>实现的愿望</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>玩家殖民者通过模组正常完成判定新实现的愿望数量，按愿望分类。不包括调试完成、已经实现或未分配的愿望，也不包括恢复存档。</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>玩家虫巢新生昆虫数</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>正常游玩时玩家拥有的虫巢新生成的昆虫数量，按昆虫种类分类。不包括虫茧替换、恢复已有虫巢成员或开发者生成操作。</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1073,9 +1073,9 @@
   <RWS_Rwom_HealingCastsDesc>玩家施放Heal或Advanced Heal后，实际减少目标伤势或稳定刚失去的身体部位伤口的次数。</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>抵达轨道次数</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>玩家操纵的飞船从地表起飞后成功进入稳定轨道的次数。</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants交付手配目标完成次数</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>交付手配目标完成次数</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>玩家远行队实际交付通缉目标，目标被移除且通缉令结案的次数。</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants获得的白银</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>获得的白银</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>完成通缉目标交付后，实际作为报酬加入玩家远行队的白银总额。</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator ARC升级完成数</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>玩家完成建造，将其已有ARC发电机原地替换的次数，按新发电机类型分类。</RWS_VqeGenerator_UpgradesDesc>
@@ -1103,9 +1103,9 @@
   <RWS_VseExpertise_LevelUpsDesc>启用记录后VSE专业技能等级的永久提升量，在各独立殖民地间汇总，并按专业技能分类。</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE实际达到的最高专业等级</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>所有独立殖民地中通过经验实际达到的最高专业技能等级，不是等级之和，也不是最新存档的单次快照。</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded加工批次</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>加工批次</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded中实际完成的汤、奶酪等VEF加工批次，按加工类型分类。不包括普通工作单生产或部分产物输出受阻的情况。</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded发酵及陈酿批次</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>发酵及陈酿批次</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded中实际完成的VEF发酵、酿造和陈酿批次，按加工类型分类。不包括暂停、受阻或未完成的输出，也不包括普通工作单生产。</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>客人支付的餐费</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>非玩家顾客在玩家餐厅用餐时实际支付的白银。部分付款只累计实付额，不包括欠款、免费餐食或无关的交易。</RWS_Gastronomy_SilverCollectedDesc>
@@ -1113,9 +1113,9 @@
   <RWS_VqeDrones_AssembledDesc>自动无人机装配机的生产计时完成后实际生成的玩家所有无人机数量，按单位种类分类。不包括仅计时推进、生成失败或从蛋中孵化。</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory孵化的无人机数</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>成功从蛋中孵化并实际出生的玩家无人机数量，按单位种类分类。不包括未生成无人机就被摧毁的蛋或装配机制造的无人机。</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded管道储存的深层化合物</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>管道储存的深层化合物</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>玩家所有的抽油机将Deepchem实际送入管道储存的数量，包括小数部分，以管网确认储存为准。不包括计划产量、落在地面的产物或受阻而未能储存的量。</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded提取的DNA</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>提取的DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取后实际放置或合并进堆叠的DNA物品数量，按产出物品分类。不包括无效目标、放置失败、消耗次数却未产出物品或其他杂交体制造。</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE管道中储存的营养浆</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>玩家所有的Vanilla Nutrient Paste Expanded粉碎机实际向管网输送并被接收的营养浆数量，包括小数部分。不包括粉碎尝试、消耗材料但未成功储存营养浆的情况，或其他建筑的管道储存量。</RWS_VnpeGrinder_SlurryStoredDesc>
