@@ -14,8 +14,6 @@ namespace RimworldStatistics.UI;
 public static class DetailsTab
 {
     private const float ControlHeight = 30f;
-    // MOD-owned metrics use a second, separate attribution line in the name column.
-    private const float RowHeight = 36f;
     private static ColumnPlan? tablePlan;
     private static ViewPreferences? favoritePreferences;
     private static Action? persistFavorites;
@@ -58,6 +56,8 @@ public static class DetailsTab
     private static Vector2 scroll;
     private static Inputs? builtFor;
     private static List<Line> lines = new();
+    // Row tops, rebuilt with the rows: a MOD-owned statistic has a second line for its provider (#306).
+    private static RowOffsets offsets = RowOffsets.Empty;
     private static int totalMetricCount;
     private static int matchedMetricCount;
 
@@ -138,10 +138,7 @@ public static class DetailsTab
                 if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
                     scroll = Vector2.zero;
                 builtFor = inputs;
-                lines = Build(inputs);
-                cellCache = new (string, string?)[lines.Count][];
-                tipCache = new Func<string>?[lines.Count];
-                chartTipCache = new Func<string>?[lines.Count];
+                SetLines(Build(inputs));
             }
         }
 
@@ -204,10 +201,10 @@ public static class DetailsTab
             Array.Clear(chartTipCache);
         }
         var width = tablePlan.TotalWidth;
-        GUI.BeginGroup(new Rect(rect.x, y, available, RowHeight));
-        DrawHeader(new Rect(-scroll.x, 0, width, RowHeight));
+        GUI.BeginGroup(new Rect(rect.x, y, available, DetailsRowHeights.Header));
+        DrawHeader(new Rect(-scroll.x, 0, width, DetailsRowHeights.Header));
         GUI.EndGroup();
-        y += RowHeight;
+        y += DetailsRowHeights.Header;
         var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         if (outRect.height <= 0)
             return;
@@ -221,13 +218,21 @@ public static class DetailsTab
             }
             return;
         }
-        var viewRect = new Rect(0f, 0f, width, lines.Count * RowHeight);
+        var viewRect = new Rect(0f, 0f, width, offsets.Total);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(lines.Count - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
+        var (first, last) = offsets.Visible(scroll.y, outRect.height);
         for (var i = first; i <= last; i++)
-            DrawLine(new Rect(0f, i * RowHeight, width, RowHeight), lines[i], i, view);
+            DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view);
         Widgets.EndScrollView();
+    }
+
+    private static void SetLines(List<Line> built)
+    {
+        lines = built;
+        offsets = new RowOffsets(built.Select(line => DetailsRowHeights.Row(line.ModSource is not null)).ToArray());
+        cellCache = new (string, string?)[built.Count][];
+        tipCache = new Func<string>?[built.Count];
+        chartTipCache = new Func<string>?[built.Count];
     }
 
     private static void ResetFilters(NumericView numeric, StatsResult stats, object? language)
@@ -244,10 +249,7 @@ public static class DetailsTab
         }
         var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
         builtFor = inputs;
-        lines = Build(inputs);
-        cellCache = new (string, string?)[lines.Count][];
-        tipCache = new Func<string>?[lines.Count];
-        chartTipCache = new Func<string>?[lines.Count];
+        SetLines(Build(inputs));
     }
 
     private static float DrawControls(Rect rect, StatsView view)
@@ -441,9 +443,10 @@ public static class DetailsTab
                 : Color.white;
             if (c == 0 && line.ModSource is { } source)
             {
-                Widgets.Label(new Rect(cell.x, cell.y, cell.width, 19f), cells[c].Text);
+                Widgets.Label(new Rect(cell.x, cell.y, cell.width, DetailsRowHeights.TitleLineHeight), cells[c].Text);
                 GUI.color = new Color(0.78f, 0.78f, 0.81f);
-                Widgets.Label(new Rect(cell.x, cell.y + 18f, cell.width, 18f), source.Truncate(cell.width));
+                Widgets.Label(new Rect(cell.x, cell.y + DetailsRowHeights.SourceLineTop, cell.width, DetailsRowHeights.SourceLineHeight),
+                    source.Truncate(cell.width));
             }
             else
             {
@@ -461,7 +464,7 @@ public static class DetailsTab
         {
             var iconRect = new Rect(
                 nameMetrics.ChartIcon.X,
-                rect.y + (RowHeight - DetailsTableLayout.ChartIconSize) * 0.5f,
+                rect.y + (rect.height - DetailsTableLayout.ChartIconSize) * 0.5f,
                 nameMetrics.ChartIcon.Width,
                 DetailsTableLayout.ChartIconSize);
             MetricVisualStyle.DrawMiniChartIcon(iconRect, chartRect is { } hoverArea && Mouse.IsOver(hoverArea));
