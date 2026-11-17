@@ -1,0 +1,46 @@
+name: Synchronize published release notes
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'docs/releases/*.md'
+      - '.github/workflows/sync-release-notes.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-published-release-notes
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    if: github.repository == 'pengin0503/Rimworld-Statistics'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update existing releases only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          count=0
+          for notes in docs/releases/v*.md; do
+            tag="${notes##*/}"
+            tag="${tag%.md}"
+            if [[ ! "$tag" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-rc\.[0-9]+)?$ ]]; then
+              echo "Skipping unexpected tag: $tag"
+              continue
+            fi
+            if gh release view "$tag" >/dev/null 2>&1; then
+              gh release edit "$tag" --notes-file "$notes"
+              echo "Synchronized $tag"
+              count=$((count + 1))
+            else
+              echo "Skipping $tag (no published release)"
+            fi
+          done
+          echo "Updated $count existing releases"
