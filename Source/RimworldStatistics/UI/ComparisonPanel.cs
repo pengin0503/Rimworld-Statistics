@@ -10,9 +10,10 @@ internal static class ComparisonPanel
     private sealed record Choice(Kind Kind, string Id = "");
     private sealed record Request(ProfileSession Session, StatsView Current, string Preferences, int Selection, bool IncludeDev);
     private sealed record Column(Choice Choice, ComparisonTarget Target, StatsView View);
-    private sealed record TableRow(ComparisonRow Record, string Label, string[] Text, MetricVisualKind[] VisualKinds);
+    private sealed record TableRow(ComparisonRow Record, string Label, string? Source, string[] Text, MetricVisualKind[] VisualKinds);
 
-    private const float RowHeight = 27f;
+    // Space for the statistic title plus a separate MOD attribution line.
+    private const float RowHeight = 40f;
     private static readonly List<Choice> Choices = [new(Kind.All)];
     private static int selectionVersion;
     private static int sortColumn = -1;
@@ -169,9 +170,23 @@ internal static class ComparisonPanel
                 var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
                 if (i % 2 == 1)
                     Widgets.DrawHighlight(nameRect, 0.25f);
-                var shownName = DrawCell(nameRect, row.Label);
-                if (shownName != row.Label)
-                    TooltipHandler.TipRegion(nameRect, row.Label);
+                var titleRect = row.Source is null ? nameRect
+                    : new Rect(nameRect.x, nameRect.y, nameRect.width, 20f);
+                var shownName = DrawCell(titleRect, row.Label);
+                if (row.Source is null)
+                {
+                    if (shownName != row.Label)
+                        TooltipHandler.TipRegion(nameRect, row.Label);
+                }
+                else
+                {
+                    var sourceRect = new Rect(nameRect.x, nameRect.y + 20f, nameRect.width, 19f);
+                    var shownSource = DrawCell(sourceRect, row.Source);
+                    if (shownName != row.Label)
+                        TooltipHandler.TipRegion(titleRect, row.Label);
+                    if (shownSource != row.Source)
+                        TooltipHandler.TipRegion(sourceRect, row.Source);
+                }
             }
             GUI.EndGroup();
         }
@@ -248,7 +263,7 @@ internal static class ComparisonPanel
                 text[i] = formatted;
                 visualKinds[i] = MetricVisualState.Classify(definition, v);
             }
-            return new TableRow(row, label, text, visualKinds);
+            return new TableRow(row, label, MetricText.ModSourceLabel(definition), text, visualKinds);
         }).ToArray();
     }
 

@@ -238,7 +238,8 @@ internal static class CoverageTab
             })
             .Where(s => term.Length == 0 ||
                 s.Definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
-                || MetricText.Label(s.Definition).Contains(term, StringComparison.CurrentCultureIgnoreCase))
+                || MetricText.Label(s.Definition).Contains(term, StringComparison.CurrentCultureIgnoreCase)
+                || (MetricText.ModSourceLabel(s.Definition)?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false))
             .ToArray();
         matchedMetricCount = filtered.Length;
 
@@ -265,7 +266,7 @@ internal static class CoverageTab
                 reqParts.Add(MetricText.DlcDisplayName(group.RequiredDlc!));
             if (!string.IsNullOrEmpty(group.OwnerPackageId)
                 && MetricAcquisitionLabels.SafeModDisplayName(group.OwnerPackageId, MetricText.ActiveModTitle) is { } modTitle)
-                reqParts.Add(modTitle);
+                reqParts.Add((string)"RWS_Mod_Provider".Translate(modTitle));
             var requirement = string.Join(" · ", reqParts);
 
             var displayLabel = duplicateLabels.Contains(group.Label) && group.Items.Count > 0
@@ -288,7 +289,8 @@ internal static class CoverageTab
                 results.Add(new DisplayRow(
                     group.GroupId,
                     "    " + MetricText.Label(status.Definition),
-                    RecordingLabel(status.Recording),
+                    (MetricText.ModSourceLabel(status.Definition) is { } modSource
+                        ? modSource + " · " : "") + RecordingLabel(status.Recording),
                     CoverageLabel(status) + " · " + VerificationLabel(status.Verification),
                     status.Measured + "/" + status.Targets,
                     status,

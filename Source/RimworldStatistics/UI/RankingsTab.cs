@@ -11,7 +11,7 @@ internal static class RankingsTab
     private static readonly StatsTable Table = new(26f,
         new(52, 1), new(170, 4), new(105, 2), new(130, 2), new(100, 2));
 
-    private sealed record Choice(string Key, string Label, MetricCategory? Category);
+    private sealed record Choice(string Key, string Label, MetricCategory? Category, string? Source);
 
     private static StatsView? selectorView;
     private static object? selectorLanguage;
@@ -49,7 +49,7 @@ internal static class RankingsTab
                 var def = MetricLookup.Definition(view, key);
                 return new Choice(key,
                     def is null ? MetricText.BasicLabel(key) : MetricText.Label(def),
-                    def?.Category);
+                    def?.Category, def is null ? null : MetricText.ModSourceLabel(def));
             }).OrderBy(c => c.Label, StringComparer.CurrentCulture)
               .ThenBy(c => c.Key, StringComparer.Ordinal).ToArray();
             priorSearch = null;
@@ -98,9 +98,18 @@ internal static class RankingsTab
         Text.Font = GameFont.Small;
         if (shownTitle != active.Label)
             TooltipHandler.TipRegion(titleRect, active.Label);
-        Widgets.DrawBoxSolid(new Rect(body.x, titleRect.yMax + 2f, body.width, 1f), new Color(1f, 1f, 1f, 0.14f));
+        var sourceOffset = active.Source is null ? 0f : 21f;
+        if (active.Source is { } source)
+        {
+            var sourceRect = new Rect(body.x, titleRect.yMax, body.width, 19f);
+            var shownSource = source.Truncate(sourceRect.width);
+            Widgets.Label(sourceRect, shownSource);
+            if (shownSource != source)
+                TooltipHandler.TipRegion(sourceRect, source);
+        }
+        Widgets.DrawBoxSolid(new Rect(body.x, titleRect.yMax + sourceOffset + 2f, body.width, 1f), new Color(1f, 1f, 1f, 0.14f));
 
-        var controls = new ControlRow(new Rect(body.x, titleRect.yMax + 7f, body.width, 28f));
+        var controls = new ControlRow(new Rect(body.x, titleRect.yMax + sourceOffset + 7f, body.width, 28f));
         var selectorToggleRect = controls.Next(toggleLabel, 118f, Math.Min(body.width, 195f));
         var shownSelectorToggle = toggleLabel.Truncate(Math.Max(0f, selectorToggleRect.width - 12f));
         if (Widgets.ButtonText(selectorToggleRect, shownSelectorToggle))
@@ -160,7 +169,7 @@ internal static class RankingsTab
             if (board.HasPartial)
                 coverage += " — " + (string)"RWS_Rankings_PartialNote".Translate();
         }
-        var infoY = titleRect.yMax + 7f + controls.Height + 4f;
+        var infoY = titleRect.yMax + sourceOffset + 7f + controls.Height + 4f;
         var infoRect = new Rect(body.x, infoY, body.width, 26f);
         var prevColor = GUI.color;
         GUI.color = new Color(0.84f, 0.86f, 0.90f);
@@ -218,7 +227,8 @@ internal static class RankingsTab
             priorCategory = category;
             filtered = choices.Where(c => (category is null || c.Category == category)
                 && (search.Length == 0 || c.Label.Contains(search, StringComparison.CurrentCultureIgnoreCase)
-                    || c.Key.Contains(search, StringComparison.OrdinalIgnoreCase))).ToArray();
+                    || c.Key.Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || (c.Source?.Contains(search, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
         }
 
         var activeFilters = FilterSummary.CountActiveFilters(false, category is not null, false, search);
@@ -292,7 +302,8 @@ internal static class RankingsTab
             if (isSelected)
                 Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
             TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
-            TooltipHandler.TipRegion(button, option.Label);
+            TooltipHandler.TipRegion(button, option.Source is null ? option.Label
+                : option.Label + "\n" + option.Source);
         }
         Widgets.EndScrollView();
     }

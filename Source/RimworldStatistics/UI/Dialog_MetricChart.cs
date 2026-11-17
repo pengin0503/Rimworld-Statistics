@@ -46,6 +46,7 @@ internal sealed class Dialog_MetricChart : Window
     private readonly MetricDefinition breakdownDefinition;
     private readonly string title;
     private readonly string metricLabel;
+    private readonly string? modSource;
     private readonly Series colony;
     private readonly Series breakdown;
     private readonly Series overall;
@@ -86,6 +87,7 @@ internal sealed class Dialog_MetricChart : Window
         }
         breakdownDefinition = definition.BreakdownUnit is { } unit ? definition with { Unit = unit } : definition;
         metricLabel = chartLabel;
+        modSource = MetricText.ModSourceLabel(definition);
         title = "RWS_Chart_Title".Translate(chartLabel);
         colony = new Series(ChartMode.Colony, colonyBars, definition.Unit);
         breakdown = new Series(ChartMode.Breakdown, breakdownBars, breakdownDefinition.Unit);
@@ -115,6 +117,15 @@ internal sealed class Dialog_MetricChart : Window
         var canCompare = colony.Bars.Count > 0;
         var canBreakdown = breakdown.Bars.Count > 0;
         var y = rect.y + 38f;
+        if (modSource is { } source)
+        {
+            var sourceRect = new Rect(rect.x, y, rect.width, 20f);
+            var shown = source.Truncate(sourceRect.width);
+            Widgets.Label(sourceRect, shown);
+            if (shown != source)
+                TooltipHandler.TipRegion(sourceRect, source);
+            y += 22f;
+        }
         if (canCompare && canBreakdown)
         {
             var compareRect = new Rect(rect.x, y, Math.Min(205f, rect.width * 0.42f), 29f);

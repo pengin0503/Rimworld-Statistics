@@ -15,6 +15,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly string heading;
     private readonly string recordLabel;
     private readonly string colonyName;
+    private readonly string? modSource;
     private readonly StatsView view;
     private readonly string directory;
     private readonly HistoryOverlayTracker overlayTracker;
@@ -37,6 +38,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         this.view = view;
         overlayTracker = new HistoryOverlayTracker(colonyKey, OverlayColors.Length);
         this.colonyName = colonyName;
+        modSource = MetricText.ModSourceLabel(definition);
         heading = "RWS_Chart_Title".Translate(metricLabel);
         recordLabel = "RWS_Chart_HistoryRecord".Translate(MetricText.Format(definition, comparison));
         directory = GenFilePaths.SavedGamesFolderPath;
@@ -60,8 +62,18 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var colony = new Rect(rect.x, rect.y + 35f, rect.width, 26f);
         Widgets.Label(colony, colonyName.Truncate(colony.width));
         TooltipHandler.TipRegion(colony, colonyName);
-        Widgets.Label(new Rect(rect.x, rect.y + 63f, rect.width, 26f), recordLabel);
-        var body = new Rect(rect.x, rect.y + 94f, rect.width, Math.Max(0, rect.height - 94f));
+        var sourceOffset = modSource is null ? 0f : 20f;
+        if (modSource is { } source)
+        {
+            var sourceRect = new Rect(rect.x, rect.y + 62f, rect.width, 20f);
+            var shownSource = source.Truncate(sourceRect.width);
+            Widgets.Label(sourceRect, shownSource);
+            if (shownSource != source)
+                TooltipHandler.TipRegion(sourceRect, source);
+        }
+        Widgets.Label(new Rect(rect.x, rect.y + 63f + sourceOffset, rect.width, 26f), recordLabel);
+        var bodyY = rect.y + 94f + sourceOffset;
+        var body = new Rect(rect.x, bodyY, rect.width, Math.Max(0, rect.yMax - bodyY));
         if (!pending.IsCompleted)
         {
             Widgets.Label(body, "RWS_Loading".Translate());
