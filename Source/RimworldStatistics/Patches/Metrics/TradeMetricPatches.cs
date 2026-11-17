@@ -103,9 +103,12 @@ public static class CallForAidMetricPatch
 [HarmonyPatch(typeof(IncidentWorker), nameof(IncidentWorker.TryExecute))]
 public static class AidArrivedMetricPatch
 {
-    public static void Postfix(bool __result, IncidentWorker __instance)
+    public static void Prefix(IncidentWorker __instance, IncidentParms parms, out bool __state)
+        => __state = GameFacts.SkippedForNoColonists(__instance, parms);
+
+    public static void Postfix(bool __result, IncidentWorker __instance, bool __state)
     {
-        if (__result && __instance is IncidentWorker_RaidFriendly)
+        if (__result && !__state && __instance is IncidentWorker_RaidFriendly)
             GameFacts.Record(DiplomacyFamily.Name, DiplomacyFamily.AidArrived);
     }
 }

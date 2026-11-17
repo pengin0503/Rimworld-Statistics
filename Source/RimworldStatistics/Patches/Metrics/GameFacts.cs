@@ -44,6 +44,14 @@ internal static class GameFacts
 
     public static string MapId(Map? map) => map == null ? "?" : "Map_" + map.uniqueID;
 
+    /// <summary>
+    /// Whether <see cref="IncidentWorker.TryExecute"/> will return true without running the incident: it needs colonists
+    /// (<c>requireColonistsPresent</c>) and none is spawned on the target map (1.7.4985 and 1.7.5011). Such a call is not an
+    /// incident that happened (#352). Read it before the call, since the worker itself can add colonists.
+    /// </summary>
+    public static bool SkippedForNoColonists(IncidentWorker? worker, IncidentParms? parms)
+        => worker?.def is { requireColonistsPresent: true } && parms?.target is Map map && map.mapPawns.FreeColonistsSpawnedCount == 0;
+
     public static string VictimKind(Pawn p)
         => p.RaceProps.Humanlike ? DeathFacts.Humanlike : p.RaceProps.Insect ? DeathFacts.Insect : p.RaceProps.IsMechanoid ? DeathFacts.Mechanoid : DeathFacts.Other;
 
