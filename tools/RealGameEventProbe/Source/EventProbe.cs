@@ -92,7 +92,8 @@ public sealed class ProbeComponent : GameComponent
         var project = DefDatabase<ResearchProjectDef>.AllDefsListForReading
             .Where(p => !p.IsFinished && p.prerequisites.NullOrEmpty() && p.hiddenPrerequisites.NullOrEmpty() && p.baseCost > 0f
                 && p.TechprintCount == 0 && p.RequiredAnalyzedThingCount == 0)
-            .OrderBy(p => p.defName, StringComparer.Ordinal).First();
+            .OrderBy(p => p.defName, StringComparer.Ordinal).FirstOrDefault()
+            ?? throw new InvalidOperationException("no unfinished research project without prerequisites");
         foreach (var step in new[] { "research.finish", "research.finish.again" })
             Step(step, () =>
             {
@@ -103,8 +104,10 @@ public sealed class ProbeComponent : GameComponent
         var enemy = Find.FactionManager.AllFactionsListForReading
             .Where(f => !f.IsPlayer && f.def.humanlikeFaction && !f.Hidden && !f.defeated && !f.deactivated && f.HostileTo(player)
                 && f.def.pawnGroupMakers != null && f.def.pawnGroupMakers.Any(g => g.kindDef == PawnGroupKindDefOf.Combat))
-            .OrderBy(f => f.loadID).First();
-        var shooter = map.mapPawns.FreeColonistsSpawned.OrderBy(p => p.thingIDNumber).First();
+            .OrderBy(f => f.loadID).FirstOrDefault()
+            ?? throw new InvalidOperationException("no hostile humanlike faction with a combat group");
+        var shooter = map.mapPawns.FreeColonistsSpawned.OrderBy(p => p.thingIDNumber).FirstOrDefault()
+            ?? throw new InvalidOperationException("no spawned free colonist");
 
         // Death: a hostile pawn shot by a colonist with a rifle, then the same Kill on the dead pawn (the game logs errors
         // for that second call itself, in both runs).

@@ -75,25 +75,32 @@ try
 {
     foreach (var file in Directory.EnumerateFiles(args[1]))
         File.Copy(file, Path.Combine(copy, Path.GetFileName(file)));
+    // Closed even when the analysis throws, so the copy is not held open when it is deleted.
     var session = new ProfileSession(new ProfileStore(copy), () => DateTime.UtcNow);
-    Console.WriteLine($"== profile load={session.LoadResult.Source} readOnly={session.LoadResult.ReadOnly}");
-    Console.WriteLine("   observations " + session.Read(p => string.Join(" ", p.MetricObservations.GroupBy(o => o.Source).OrderBy(g => g.Key)
-        .Select(g => $"{g.Key}={g.Count()}")) + $" saveObservations={p.SaveObservations.Count}"));
-    var units = MetricRegistry.ImplementedCatalog.Select(d => d.Acquisition).OfType<string>().Distinct(StringComparer.Ordinal).ToList();
-    var view = session.GetView(new StatsOptions(), units);
-    foreach (var colony in view.Numeric.Colonies)
-        Console.WriteLine($"   colony {colony.Key} observations={colony.Observations} lineage={colony.Lineage}");
-    foreach (var row in view.Numeric.Overall.Where(r => changedKeys.Contains(r.Definition.Key)).OrderBy(r => r.Definition.Key, StringComparer.Ordinal))
+    try
     {
-        var v = row.Value;
-        var parts = string.Join(", ", row.Breakdowns.Select(b => b.Breakdown + "=" + (b.Value.Number?.ToString("G6", inv) ?? "null")));
-        Console.WriteLine($"   {row.Definition.Key}: {v.Number?.ToString("G6", inv) ?? "null"} ({v.Coverage}) [{parts}]");
+        Console.WriteLine($"== profile load={session.LoadResult.Source} readOnly={session.LoadResult.ReadOnly}");
+        Console.WriteLine("   observations " + session.Read(p => string.Join(" ", p.MetricObservations.GroupBy(o => o.Source).OrderBy(g => g.Key)
+            .Select(g => $"{g.Key}={g.Count()}")) + $" saveObservations={p.SaveObservations.Count}"));
+        var units = MetricRegistry.ImplementedCatalog.Select(d => d.Acquisition).OfType<string>().Distinct(StringComparer.Ordinal).ToList();
+        var view = session.GetView(new StatsOptions(), units);
+        foreach (var colony in view.Numeric.Colonies)
+            Console.WriteLine($"   colony {colony.Key} observations={colony.Observations} lineage={colony.Lineage}");
+        foreach (var row in view.Numeric.Overall.Where(r => changedKeys.Contains(r.Definition.Key)).OrderBy(r => r.Definition.Key, StringComparer.Ordinal))
+        {
+            var v = row.Value;
+            var parts = string.Join(", ", row.Breakdowns.Select(b => b.Breakdown + "=" + (b.Value.Number?.ToString("G6", inv) ?? "null")));
+            Console.WriteLine($"   {row.Definition.Key}: {v.Number?.ToString("G6", inv) ?? "null"} ({v.Coverage}) [{parts}]");
+        }
+        // The vanilla cumulative counters between saves with a direct checkpoint parent edge (a bounded interval, never a total).
+        foreach (var i in session.ReadHistoricalCounterIntervals().OrderBy(i => i.StartTick).ThenBy(i => i.ChildSaveName, StringComparer.Ordinal))
+            Console.WriteLine($"   interval {i.ParentSaveName} -> {i.ChildSaveName} ticks={i.StartTick}..{i.EndTick} "
+                + $"raids+={i.RaidsIncrease} colonistDeaths+={i.ColonistDeathsIncrease} ({i.Coverage})");
     }
-    // The vanilla cumulative counters between saves with a direct checkpoint parent edge (a bounded interval, never a total).
-    foreach (var i in session.ReadHistoricalCounterIntervals().OrderBy(i => i.StartTick).ThenBy(i => i.ChildSaveName, StringComparer.Ordinal))
-        Console.WriteLine($"   interval {i.ParentSaveName} -> {i.ChildSaveName} ticks={i.StartTick}..{i.EndTick} "
-            + $"raids+={i.RaidsIncrease} colonistDeaths+={i.ColonistDeathsIncrease} ({i.Coverage})");
-    session.Close();
+    finally
+    {
+        session.Close();
+    }
 }
 finally
 {
