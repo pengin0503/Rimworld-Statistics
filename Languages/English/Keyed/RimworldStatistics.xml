@@ -1152,13 +1152,13 @@
   <RWS_VgeHybrid_BirthsDesc>New player-owned hybrid pawns actually spawned, one each, when a player-owned VGE electro-womb completes a successful growth cycle, grouped by pawn kind. Failed growth, timer progress and restoring a save do not count.</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE biomechanical transformations</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>Successful transformations in player-owned mechahybridizers that destroy the original subject and spawn one new player-owned converted pawn, by resulting pawn kind. Starting the machine, waiting and failed spawns do not count.</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded paroles approved</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>Paroles approved</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Release decisions at parole hearings that actually cleared a completed sentence for a living prisoner still in player custody, with the release itself ordered. Hearings alone, extensions, recruitment options, repeated choices and the prisoner's later departure do not count.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>Crude extracted from oil fields (field units)</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>The actual decrease of an oil field's capacity when a player-owned oil derrick successfully pumps. These are oil-field capacity units, NOT pipe volume or item units. Drilling progress, attempted pumping, the field refilling on its own, transfers between tanks and refinery output are not counted.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded sentences served</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>Sentences served</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>Sentences of prisoners held by the player that actually reach their full length in Prison Expanded and become due for a parole hearing for the first time. Parole approvals, release orders, repeated day ticks and values restored on load do not count.</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded prisoners who actually left</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>Prisoners who actually left</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prisoners recorded by Prison Expanded who physically left a player home map, as opposed to only receiving a release or parole order. Any actual departure counts, whatever the original sentence.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>Refinery fuel consumed (pipe units)</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>The actual decrease in the pipe network's available fuel caused by player-owned Rimefeller refinery processing. Fuel moved into machines on site and fuel that was only scheduled or attempted are not counted. Units are pipe-network fuel units.</RWS_Rimefeller_RefineryFuelUsedDesc>
