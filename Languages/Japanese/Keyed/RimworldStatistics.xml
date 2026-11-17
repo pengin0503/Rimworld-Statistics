@@ -905,9 +905,9 @@
   <RWS_Hospitality_AssignedBedsDesc>正常にセーブした時点で、プレイヤーの拠点マップにいるHospitalityの宿泊客に割り当てられていたゲスト用ベッドの数（重複なし）。共用のベッドは1台と数えます。ベッドの割り当て数であり、実際に寝ている人数や通算の宿泊件数ではありません。</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>募集依頼の開始回数（有効化後）</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>この統計を有効にしてから確認されたRecruitmentの募集依頼の数。記録方式が変わったため、以前の本体内蔵の系列とは別に表示します。</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment：募集に支払ったシルバー（有効化後）</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>募集に支払ったシルバー（有効化後）</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>この統計を有効にしてから、新たに作成したRecruitmentの募集依頼に実際に支払ったシルバーの合計。追加料金を含みます。失敗した依頼は含まず、純資産の増減を表すものでもありません。</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment：予定応募者数（有効化後）</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>予定応募者数（有効化後）</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>この統計を有効にしてから、有料のRecruitmentの募集を開始したときに決まった予定応募者数の合計。実際に到着・加入した人数や入植者になった人数ではなく、生成に失敗することもあります。</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>配管内の貯水量（L）</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>正常にセーブした時点で、プレイヤーの拠点マップにある配管に接続されたDubs Bad Hygieneの貯水タンクの水量（リットル）の合計。タンクは重複して数えません。読み取れる接続済みのタンクだけが対象で、通算の生産量や使用量ではありません。統計を有効にする前の値は復元せず、データを読み取れない場合は不明になります。</RWS_DBH_PipedStorageDesc>
@@ -1062,7 +1062,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>プレイヤーの部族の技術時代が実際に進んだ回数（時代別）。初期化、同じ時代のままの場合や後退した場合、セーブの復元は数えません。</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>獲得した礎石</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>プレイ中に利用可能なポイントで新たに獲得した礎石の数（礎石別）。すでに獲得していたものやロード時に復元されたものは数えません。</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded 達成した願望</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>達成した願望</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>プレイヤーの入植者がMODの通常の達成判定で新たに達成した願望の数（願望別）。デバッグによる達成、すでに達成済みや未割り当ての願望、セーブの復元は数えません。</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>プレイヤーの巣で生まれた虫</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>通常のプレイ中にプレイヤー所有の巣から新たに生まれた虫の数（種類別）。繭による置き換え、既存の巣の虫の復元、開発者によるスポーン操作は数えません。</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1074,9 +1074,9 @@
   <RWS_Rwom_HealingCastsDesc>プレイヤーの「ヒール」「アドバンスドヒール」の詠唱のうち、対象の負傷を実際に軽くしたか、失ったばかりの部位の傷を安定させたものの回数。</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>軌道への到達回数</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>プレイヤーが操縦する船が地表から離陸し、安定した軌道に到達した回数。</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants 手配書の引き渡し完了数</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>手配書の引き渡し完了数</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>プレイヤーのキャラバンが対象を引き渡し、対象が取り除かれて手配書が完了した件数。</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants 獲得したシルバー</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>獲得したシルバー</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>手配書の引き渡しの完了による報酬として、プレイヤーのキャラバンに実際に加わったシルバー。</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator ARCのアップグレード完了数</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>プレイヤー所有の既存のARC発電機を同じ場所で置き換えた建設の完了数。新しい発電機の種類別に集計します。</RWS_VqeGenerator_UpgradesDesc>
@@ -1104,9 +1104,9 @@
   <RWS_VseExpertise_LevelUpsDesc>記録を有効にしてから増えたVSEの専門技能レベルの合計（恒久的な上昇のみ）。独立したすべてのコロニーで合計し、専門技能別に集計します。</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE 専門技能の最高到達レベル</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>独立したコロニー全体で、経験値によって実際に到達した専門技能レベルの最高値。レベルの合計や最新のセーブだけの状態ではありません。</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded 加工の完了数</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>加工の完了数</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expandedのスープやチーズなど、VEFの独自加工が完了した回数（加工別）。通常の作業指示による製作や、出力が一部止まったものは数えません。</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded 発酵・熟成の完了数</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>発酵・熟成の完了数</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing ExpandedのVEFによる発酵・醸造・熟成が完了した回数（加工別）。一時停止・出力の停止・未完了のものや、通常の作業指示による製作は数えません。</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>客から受け取った食事代</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>プレイヤー所有のレストランで、プレイヤー以外の客が食事代として実際に支払ったシルバー。一部だけの支払いは実際に支払われた額だけを加算します。未払いのツケ、無料の食事、関係のない取引は数えません。</RWS_Gastronomy_SilverCollectedDesc>
@@ -1114,9 +1114,9 @@
   <RWS_VqeDrones_AssembledDesc>自動ドローン組立機の生産タイマーが終わり、実際にスポーンしたプレイヤー所有のドローンの数（種類別）。タイマーの進行だけの場合、スポーンの失敗、卵からの孵化は数えません。</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory 孵化したドローン</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>卵が無事に孵化して実際に生まれたプレイヤーのドローンの数（種類別）。ドローンが生まれずに壊れた卵や、組立機で作られたドローンは数えません。</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded パイプに貯蔵したディープケム</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>パイプに貯蔵したディープケム</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>プレイヤー所有のポンプジャックからパイプの貯蔵に実際に受け入れられたディープケムの量（小数を含む）。パイプ網が貯蔵を確定した時点で測ります。予定産出量、地面への排出、満杯などで貯蔵できなかった分は数えません。</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded 抽出したDNA</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>抽出したDNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>プレイヤーによるDNA抽出が成功し、実際に置かれたかスタックに統合されたDNAアイテムの数（種類別）。無効な対象、配置の失敗、成果物のないチャージの消費、その他のハイブリッドの作成は数えません。</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE パイプに貯蔵した栄養スラリー</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>プレイヤー所有のVanilla Nutrient Paste Expandedの粉砕機から、パイプ網に実際に受け入れられた栄養スラリーの量（小数を含む）。粉砕の試行、スラリーが受け入れられなかった材料の消費、他の建物によるパイプへの貯蔵は数えません。</RWS_VnpeGrinder_SlurryStoredDesc>
