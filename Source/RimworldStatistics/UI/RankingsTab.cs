@@ -22,6 +22,7 @@ internal static class RankingsTab
     private static string search = "";
     private static MetricCategory? category;
     private static string? selectedKey;
+    private static bool selectorCollapsed;
     private static bool descending = true;
     private static bool showAll;
     private static Vector2 choicesScroll;
@@ -34,6 +35,7 @@ internal static class RankingsTab
     private static bool tableShowAll;
     private static string[][] rows = [];
     private static string coverage = "";
+    private static readonly bool[] RightAlignedColumns = [true, false, true, false, true];
 
     public static void Draw(Rect rect, StatsView view, ViewPreferences preferences, Action persist)
     {
@@ -55,35 +57,78 @@ internal static class RankingsTab
                 selectedKey = choices.FirstOrDefault()?.Key;
         }
 
-        var selectorWidth = Math.Min(350f, Math.Max(200f, rect.width * 0.34f));
-        var left = new Rect(rect.x, rect.y, selectorWidth, rect.height);
-        var right = new Rect(left.xMax + 10f, rect.y, Math.Max(0, rect.width - selectorWidth - 10f), rect.height);
-        Widgets.DrawMenuSection(left);
-        Widgets.DrawMenuSection(right);
-        DrawSelector(left.ContractedBy(7f), preferences, persist);
+        var split = StatisticsWindowLayout.ResolveCollapsibleSplit(rect.width, selectorCollapsed);
+        if (!selectorCollapsed && split.LeftWidth > 0f)
+        {
+            var left = new Rect(rect.x, rect.y, split.LeftWidth, rect.height);
+            Widgets.DrawMenuSection(left);
+            DrawSelector(left.ContractedBy(8f), preferences, persist);
+        }
 
-        var body = right.ContractedBy(7f);
+        if (split.RightWidth <= 0f)
+            return;
+
+        var right = new Rect(rect.x + split.RightXOffset, rect.y, split.RightWidth, rect.height);
+        Widgets.DrawMenuSection(right);
+
+        var body = right.ContractedBy(8f);
         var active = choices.FirstOrDefault(c => c.Key == selectedKey);
+        var toggleLabel = selectorCollapsed
+            ? (string)"RWS_Rankings_ShowSelector".Translate()
+            : (string)"RWS_Rankings_HideSelector".Translate();
+
         if (active is null)
         {
-            Widgets.Label(body, "RWS_Rankings_NoMatches".Translate());
+            var emptyControls = new ControlRow(new Rect(body.x, body.y, body.width, 28f));
+            var toggleRect = emptyControls.Next(toggleLabel, 118f, Math.Min(body.width, 200f));
+            var shownToggle = toggleLabel.Truncate(Math.Max(0f, toggleRect.width - 12f));
+            if (Widgets.ButtonText(toggleRect, shownToggle))
+                selectorCollapsed = !selectorCollapsed;
+            if (shownToggle != toggleLabel)
+                TooltipHandler.TipRegion(toggleRect, toggleLabel);
+            Widgets.Label(new Rect(body.x, body.y + emptyControls.Height + 6f, body.width, Math.Max(0f, body.height - emptyControls.Height - 6f)),
+                "RWS_Rankings_NoMatches".Translate());
             return;
         }
 
-        Widgets.Label(new Rect(body.x, body.y, body.width, 26f), active.Label.Truncate(body.width));
-        var controls = new ControlRow(new Rect(body.x, body.y + 30f, body.width, 28f));
+        var titleRect = new Rect(body.x, body.y, body.width, 28f);
+        Text.Font = GameFont.Medium;
+        var shownTitle = active.Label.Truncate(titleRect.width);
+        Widgets.Label(titleRect, shownTitle);
+        Text.Font = GameFont.Small;
+        if (shownTitle != active.Label)
+            TooltipHandler.TipRegion(titleRect, active.Label);
+        Widgets.DrawBoxSolid(new Rect(body.x, titleRect.yMax + 2f, body.width, 1f), new Color(1f, 1f, 1f, 0.14f));
+
+        var controls = new ControlRow(new Rect(body.x, titleRect.yMax + 7f, body.width, 28f));
+        var selectorToggleRect = controls.Next(toggleLabel, 118f, Math.Min(body.width, 195f));
+        var shownSelectorToggle = toggleLabel.Truncate(Math.Max(0f, selectorToggleRect.width - 12f));
+        if (Widgets.ButtonText(selectorToggleRect, shownSelectorToggle))
+            selectorCollapsed = !selectorCollapsed;
+        if (shownSelectorToggle != toggleLabel)
+            TooltipHandler.TipRegion(selectorToggleRect, toggleLabel);
+
         var label = descending ? (string)"RWS_Rankings_Desc".Translate() : (string)"RWS_Rankings_Asc".Translate();
-        if (Widgets.ButtonText(controls.Next(label, 112f, 185f), label))
+        var orderRect = controls.Next(label, 112f, 185f);
+        var shownOrder = label.Truncate(Math.Max(0f, orderRect.width - 12f));
+        if (Widgets.ButtonText(orderRect, shownOrder))
         {
             descending = !descending;
             tableScroll = Vector2.zero;
         }
+        if (shownOrder != label)
+            TooltipHandler.TipRegion(orderRect, label);
+
         label = showAll ? (string)"RWS_Rankings_Top10".Translate() : (string)"RWS_Rankings_All".Translate();
-        if (Widgets.ButtonText(controls.Next(label, 112f, 170f), label))
+        var countRect = controls.Next(label, 112f, 175f);
+        var shownCount = label.Truncate(Math.Max(0f, countRect.width - 12f));
+        if (Widgets.ButtonText(countRect, shownCount))
         {
             showAll = !showAll;
             tableScroll = Vector2.zero;
         }
+        if (shownCount != label)
+            TooltipHandler.TipRegion(countRect, label);
 
         if (!ReferenceEquals(tableView, view) || !ReferenceEquals(tableLanguage, lang)
             || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll)
@@ -115,10 +160,17 @@ internal static class RankingsTab
             if (board.HasPartial)
                 coverage += " — " + (string)"RWS_Rankings_PartialNote".Translate();
         }
-        var infoY = body.y + 30f + controls.Height + 4f;
-        Widgets.Label(new Rect(body.x, infoY, body.width, 30f), coverage.Truncate(body.width));
-        TooltipHandler.TipRegion(new Rect(body.x, infoY, body.width, 30f), coverage);
-        var table = new Rect(body.x, infoY + 30f, body.width, Math.Max(0f, body.yMax - infoY - 30f));
+        var infoY = titleRect.yMax + 7f + controls.Height + 4f;
+        var infoRect = new Rect(body.x, infoY, body.width, 26f);
+        var prevColor = GUI.color;
+        GUI.color = new Color(0.84f, 0.86f, 0.90f);
+        var shownInfo = coverage.Truncate(infoRect.width);
+        Widgets.Label(infoRect, shownInfo);
+        GUI.color = prevColor;
+        if (shownInfo != coverage)
+            TooltipHandler.TipRegion(infoRect, coverage);
+
+        var table = new Rect(body.x, infoY + 28f, body.width, Math.Max(0f, body.yMax - infoY - 28f));
         if (rows.Length == 0)
             Widgets.Label(table, "RWS_Rankings_NoMatches".Translate());
         else
@@ -127,21 +179,23 @@ internal static class RankingsTab
                 "RWS_Rankings_Position".Translate(), "RWS_Details_Col_Name".Translate(),
                 "RWS_Details_Col_Value".Translate(), "RWS_Details_Col_State".Translate(),
                 "RWS_Details_Col_Through".Translate(),
-            ], rows);
+            ], rows, RightAlignedColumns);
     }
 
     private static void DrawSelector(Rect rect, ViewPreferences preferences, Action persist)
     {
         var label = (string)"RWS_Rankings_Search".Translate();
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width, 23f), label);
-        var newSearch = Widgets.TextField(new Rect(rect.x, rect.y + 26f, rect.width, 27f), search) ?? "";
+        Widgets.Label(new Rect(rect.x, rect.y, rect.width, 23f), label.Truncate(rect.width));
+        var newSearch = Widgets.TextField(new Rect(rect.x, rect.y + 25f, rect.width, 27f), search) ?? "";
         if (newSearch != search)
         {
             search = newSearch;
             choicesScroll = Vector2.zero;
         }
         var categoryText = category is { } c ? DetailsTab.CategoryLabel(c) : (string)"RWS_Details_AllCategories".Translate();
-        if (Widgets.ButtonText(new Rect(rect.x, rect.y + 57f, rect.width, 27f), categoryText.Truncate(rect.width)))
+        var catRect = new Rect(rect.x, rect.y + 56f, rect.width, 27f);
+        var shownCategory = categoryText.Truncate(Math.Max(0f, catRect.width - 12f));
+        if (Widgets.ButtonText(catRect, shownCategory))
         {
             var menu = new List<FloatMenuOption>
             {
@@ -155,6 +209,9 @@ internal static class RankingsTab
                 })));
             Find.WindowStack.Add(new FloatMenu(menu));
         }
+        if (shownCategory != categoryText)
+            TooltipHandler.TipRegion(catRect, categoryText);
+
         if (priorSearch != search || priorCategory != category)
         {
             priorSearch = search;
@@ -164,7 +221,48 @@ internal static class RankingsTab
                     || c.Key.Contains(search, StringComparison.OrdinalIgnoreCase))).ToArray();
         }
 
-        var viewport = new Rect(rect.x, rect.y + 90f, rect.width, Math.Max(0, rect.height - 90f));
+        var activeFilters = FilterSummary.CountActiveFilters(false, category is not null, false, search);
+        var statusRow = new ControlRow(new Rect(rect.x, rect.y + 87f, rect.width, 24f));
+        var countText = activeFilters > 0
+            ? (string)"RWS_Filter_Shown".Translate(filtered.Length, choices.Length) + " · " + (string)"RWS_Filter_ActiveCount".Translate(activeFilters)
+            : (string)"RWS_Filter_Shown".Translate(filtered.Length, choices.Length);
+        var countRect = statusRow.Next(countText, 85f, rect.width);
+        var anchor = Text.Anchor;
+        var prevColor = GUI.color;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        GUI.color = new Color(0.8f, 0.8f, 0.8f);
+        var shownCountText = countText.Truncate(countRect.width);
+        Widgets.Label(countRect, shownCountText);
+        GUI.color = prevColor;
+        Text.Anchor = anchor;
+        if (shownCountText != countText)
+            TooltipHandler.TipRegion(countRect, countText);
+
+        if (activeFilters > 0)
+        {
+            var resetLabel = (string)"RWS_Filter_Reset".Translate();
+            var resetRect = statusRow.Next(resetLabel, 85f, rect.width);
+            var shownReset = resetLabel.Truncate(Math.Max(0f, resetRect.width - 10f));
+            if (Widgets.ButtonText(resetRect, shownReset))
+            {
+                search = "";
+                category = null;
+                choicesScroll = Vector2.zero;
+                filtered = choices;
+                priorSearch = search;
+                priorCategory = category;
+            }
+            if (shownReset != resetLabel)
+                TooltipHandler.TipRegion(resetRect, resetLabel);
+        }
+
+        var listY = rect.y + 87f + statusRow.Height + 4f;
+        var viewport = new Rect(rect.x, listY, rect.width, Math.Max(0, rect.yMax - listY));
+        if (filtered.Length == 0)
+        {
+            Widgets.Label(viewport, "RWS_Details_NoMatch".Translate());
+            return;
+        }
         var totalWidth = Math.Max(0f, viewport.width - 16f);
         Widgets.BeginScrollView(viewport, ref choicesScroll, new Rect(0, 0, totalWidth, filtered.Length * 30f));
         var first = Math.Max(0, (int)(choicesScroll.y / 30f));
@@ -183,11 +281,16 @@ internal static class RankingsTab
                 persist();
             }
             var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
-            if (Widgets.ButtonText(button, option.Label.Truncate(button.width - 10f)))
+            var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);
+            if (isSelected)
+                Widgets.DrawBoxSolid(button, new Color(0.26f, 0.44f, 0.56f, 0.35f));
+            if (Widgets.ButtonText(button, option.Label.Truncate(Math.Max(0f, button.width - 10f))))
             {
                 selectedKey = option.Key;
                 tableScroll = Vector2.zero;
             }
+            if (isSelected)
+                Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
             TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
             TooltipHandler.TipRegion(button, option.Label);
         }

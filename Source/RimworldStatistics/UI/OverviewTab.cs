@@ -170,7 +170,9 @@ public static class OverviewTab
         Widgets.DrawHighlightIfMouseover(cell);
         var inner = cell.ContractedBy(8f);
         var hasStar = item.ShowStar && item.FavoriteKey is not null && preferences is not null;
-        var (label, value, tip) = item.Fit(inner.width - (hasStar ? 27f : 0f), valueFont);
+        var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
+        var labelReserved = (hasStar ? 27f : 0f) + (chartView is not null ? 18f : 0f);
+        var (label, value, tip) = item.Fit(Math.Max(1f, inner.width - labelReserved), valueFont);
         Text.Font = GameFont.Small;
         GUI.color = new Color(0.8f, 0.8f, 0.8f);
         Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
@@ -180,7 +182,12 @@ public static class OverviewTab
         Text.Font = GameFont.Small;
         // Do not cover the favourite star at the right edge of the card.
         var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - (hasStar ? 40f : 8f)), cell.height - 4f);
-        var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
+        if (chartView is not null)
+        {
+            var iconX = hasStar ? cell.xMax - 46f : cell.xMax - 20f;
+            if (iconX >= cell.x + 12f)
+                MetricVisualStyle.DrawMiniChartIcon(new Rect(iconX, cell.y + 9f, 12f, 12f), Mouse.IsOver(chartRect));
+        }
         // A single tooltip region: a second overlapping one would be drawn as a second stacked copy.
         var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
         var activeTip = hasStar && Mouse.IsOver(star)

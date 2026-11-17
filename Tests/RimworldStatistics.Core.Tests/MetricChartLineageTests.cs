@@ -652,6 +652,43 @@ public sealed class MetricChartLineageTests
         Assert.True(thin.Count(p => p.Value is null) >= 3);
     }
 
+    [Fact]
+    public void AddingAndRemovingComparisonOverlaysPreservesPrimaryLineageConnectionRules()
+    {
+        var primaryProfile = Profile(
+            Save("a.rws", 10, 100), CheckpointIn("a.rws", "a", null, 10),
+            Save("b1.rws", 20, 120), CheckpointIn("b1.rws", "b1", "a", 20),
+            Save("b2.rws", 30, 300), CheckpointIn("b2.rws", "b2", "a", 30),
+            Save("c1.rws", 40, 130), CheckpointIn("c1.rws", "c1", "b1", 40));
+        var primaryHistory = History(primaryProfile);
+        var primaryMeasured = primaryHistory.Points.Where(p => p.Value is not null).ToArray();
+        var expectedPredecessors = primaryHistory.Points.Select((p, i) => p.Predecessor(i)).ToArray();
+        var expectedUnlinked = primaryHistory.Points.Select(p => p.Unlinked).ToArray();
+        var expectedBranches = primaryHistory.Points.Select(p => p.SkipsOnlyOtherBranches).ToArray();
+
+        var overlayHistory = new MetricHistory(primaryHistory.Kind,
+        [
+            new MetricHistoryPoint(20, new NumericValue { Number = 500d, Coverage = MetricCoverage.SnapshotOnly }) { Unlinked = true },
+            new MetricHistoryPoint(35, null),
+        ]);
+
+        var tracker = new HistoryOverlayTracker("id:one");
+        Assert.True(tracker.TryAdd("id:two", "Colony Two", out var overlay));
+        Assert.True(tracker.TryComplete(overlay!.RequestId, overlayHistory, primaryHistory.Kind));
+        var boundsWithOverlay = tracker.ComputeBounds(primaryHistory, primaryMeasured);
+        Assert.Equal(500d, boundsWithOverlay.MaxValue);
+        Assert.True(boundsWithOverlay.HasUnlinked);
+
+        Assert.True(tracker.Remove("id:two"));
+        var boundsAfterRemove = tracker.ComputeBounds(primaryHistory, primaryMeasured);
+        Assert.Equal(300d, boundsAfterRemove.MaxValue);
+        Assert.False(boundsAfterRemove.HasUnlinked);
+
+        Assert.Equal(expectedPredecessors, primaryHistory.Points.Select((p, i) => p.Predecessor(i)).ToArray());
+        Assert.Equal(expectedUnlinked, primaryHistory.Points.Select(p => p.Unlinked).ToArray());
+        Assert.Equal(expectedBranches, primaryHistory.Points.Select(p => p.SkipsOnlyOtherBranches).ToArray());
+    }
+
     private static NumericValue Value(double number) => new() { Number = number, Coverage = MetricCoverage.SnapshotOnly };
 
     /// <summary>A game-side snapshot of the save that wrote <paramref name="file"/> (its write time is the snapshot's).</summary>

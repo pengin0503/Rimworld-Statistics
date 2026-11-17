@@ -10,7 +10,7 @@ internal static class ComparisonPanel
     private sealed record Choice(Kind Kind, string Id = "");
     private sealed record Request(ProfileSession Session, StatsView Current, string Preferences, int Selection, bool IncludeDev);
     private sealed record Column(Choice Choice, ComparisonTarget Target, StatsView View);
-    private sealed record TableRow(ComparisonRow Record, string Label, string[] Text);
+    private sealed record TableRow(ComparisonRow Record, string Label, string[] Text, MetricVisualKind[] VisualKinds);
 
     private const float RowHeight = 27f;
     private static readonly List<Choice> Choices = [new(Kind.All)];
@@ -25,6 +25,8 @@ internal static class ComparisonPanel
     private static object? language;
     private static TableRow[] rows = [];
     private static Vector2 scroll;
+
+    public static void ResetScroll() => scroll = Vector2.zero;
 
     public static void Draw(Rect rect, ProfileSession session, StatsView view, ViewPreferences? preferences, object filter,
         Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
@@ -93,19 +95,29 @@ internal static class ComparisonPanel
             return;
         }
 
-        var available = Math.Max(0, rect.width - 16f);
-        var width = Math.Max(available, 255f + current.Length * 155f);
-        var labelWidth = Math.Max(255f, width * 0.33f);
-        var columnWidth = (width - labelWidth) / current.Length;
-        GUI.BeginGroup(new Rect(rect.x, y, available, RowHeight));
-        DrawCell(new Rect(-scroll.x, 0, labelWidth, RowHeight), "RWS_Details_Col_Name".Translate());
-        for (var i = 0; i < current.Length; i++)
+        var plan = ColumnLayout.ResolvePinned(rect.width, current.Length);
+        if (plan.NameWidth <= 0f || plan.DataViewportWidth <= 0f)
+            return;
+
+        string nameHeader = "RWS_Details_Col_Name".Translate();
+        var leftHeader = new Rect(rect.x, y, plan.NameWidth, RowHeight);
+        if (DrawCell(leftHeader, nameHeader) != nameHeader)
+            TooltipHandler.TipRegion(leftHeader, nameHeader);
+
+        var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
+            current.Length,
+            plan.ColumnWidth,
+            scroll.x,
+            plan.DataViewportWidth);
+
+        GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
+        for (var i = firstCol; i < lastCol; i++)
         {
             var label = Label(current[i].Choice, view.Stats, groups);
-            var header = new Rect(labelWidth + i * columnWidth - scroll.x, 0, columnWidth, RowHeight);
+            var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
             if (sortColumn == i)
                 label += descending ? " ▼" : " ▲";
-            if (Widgets.ButtonText(header, label.Truncate(columnWidth - 12f)))
+            if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
             {
                 descending = sortColumn != i || !descending;
                 sortColumn = i;
@@ -116,24 +128,57 @@ internal static class ComparisonPanel
         }
         GUI.EndGroup();
 
-        var viewport = new Rect(rect.x, y + RowHeight, rect.width, rect.yMax - y - RowHeight);
-        if (viewport.height <= 0)
+        var bodyY = y + RowHeight;
+        var bodyHeight = Math.Max(0f, rect.yMax - bodyY);
+        if (bodyHeight <= 0f)
             return;
-        Widgets.BeginScrollView(viewport, ref scroll, new Rect(0, 0, width, rows.Length * RowHeight));
+
+        var bottomHScrollReserve = plan.NeedsHorizontalScroll ? 16f : 0f;
+        var visibleBodyHeight = Math.Max(0f, bodyHeight - bottomHScrollReserve);
+        var contentHeight = rows.Length * RowHeight;
+        var leftViewport = new Rect(rect.x, bodyY, plan.NameWidth, visibleBodyHeight);
+        var maxScrollY = Math.Max(0f, contentHeight - visibleBodyHeight);
+        if (Event.current.type == EventType.ScrollWheel && leftViewport.Contains(Event.current.mousePosition))
+        {
+            scroll.y = Math.Clamp(scroll.y + Event.current.delta.y * 20f, 0f, maxScrollY);
+            Event.current.Use();
+        }
+
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(rows.Length - 1, (int)((scroll.y + viewport.height) / RowHeight) + 1);
+        var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
+
+        if (leftViewport.height > 0f)
+        {
+            GUI.BeginGroup(leftViewport);
+            for (var i = first; i <= last; i++)
+            {
+                var row = rows[i];
+                var rowY = i * RowHeight - scroll.y;
+                var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
+                if (i % 2 == 1)
+                    Widgets.DrawHighlight(nameRect, 0.25f);
+                var shownName = DrawCell(nameRect, row.Label);
+                if (shownName != row.Label)
+                    TooltipHandler.TipRegion(nameRect, row.Label);
+            }
+            GUI.EndGroup();
+        }
+
+        var rightViewport = new Rect(rect.x + plan.NameWidth, bodyY, Math.Max(0f, rect.width - plan.NameWidth), bodyHeight);
+        Widgets.BeginScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight));
         for (var i = first; i <= last; i++)
         {
             var row = rows[i];
-            var line = new Rect(0, i * RowHeight, width, RowHeight);
+            var line = new Rect(0f, i * RowHeight, plan.DataTotalWidth, RowHeight);
             if (i % 2 == 1)
                 Widgets.DrawHighlight(line, 0.25f);
-            DrawCell(new Rect(0, line.y, labelWidth, RowHeight), row.Label);
-            for (var c = 0; c < current.Length; c++)
+            for (var c = firstCol; c < lastCol; c++)
             {
-                var cell = new Rect(labelWidth + c * columnWidth, line.y, columnWidth, RowHeight);
+                var cell = new Rect(c * plan.ColumnWidth, line.y, plan.ColumnWidth, RowHeight);
                 var text = row.Text[c];
-                DrawCell(cell, text);
+                var visualKind = row.VisualKinds[c];
+                GUI.color = visualKind == MetricVisualKind.Complete ? Color.white : MetricVisualStyle.StateColor(visualKind);
+                DrawCell(cell, text, TextAnchor.MiddleRight);
                 var value = row.Record.Values[c];
                 var column = current[c];
                 var tipId = unchecked(0x60500000 + i * Comparison.MaxColumns + c);
@@ -146,18 +191,22 @@ internal static class ComparisonPanel
                         : text + "\n" + MetricText.Tip(original, column.View.Stats);
                 }, tipId);
             }
+            GUI.color = Color.white;
         }
         Widgets.EndScrollView();
+        Widgets.DrawBoxSolid(new Rect(rect.x + plan.NameWidth - 1f, y, 1f, Math.Max(0f, rect.yMax - y - bottomHScrollReserve)), new Color(1f, 1f, 1f, 0.14f));
     }
 
-    private static void DrawCell(Rect cell, string text)
+    private static string DrawCell(Rect cell, string text, TextAnchor cellAnchor = TextAnchor.MiddleLeft)
     {
         var anchor = Text.Anchor;
-        Text.Anchor = TextAnchor.MiddleLeft;
+        Text.Anchor = cellAnchor;
         cell.x += 4f;
-        cell.width -= 8f;
-        Widgets.Label(cell, text.Truncate(cell.width));
+        cell.width = Math.Max(0f, cell.width - 8f);
+        var shown = text.Truncate(cell.width);
+        Widgets.Label(cell, shown);
         Text.Anchor = anchor;
+        return shown;
     }
 
     private static TableRow[] Build(Column[] current, Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
@@ -179,18 +228,26 @@ internal static class ComparisonPanel
         return ordered.Select(row =>
         {
             var (definition, label) = definitions[row.MetricKey];
-            var text = row.Values.Select(v =>
+            var text = new string[row.Values.Count];
+            var visualKinds = new MetricVisualKind[row.Values.Count];
+            for (var i = 0; i < row.Values.Count; i++)
             {
+                var v = row.Values[i];
                 if (v is null)
-                    return Dialog_RimworldStatistics.Dash;
+                {
+                    text[i] = Dialog_RimworldStatistics.Dash;
+                    visualKinds[i] = MetricVisualKind.Missing;
+                    continue;
+                }
                 var formatted = MetricText.Format(definition, v);
                 if (v.Coverage is MetricCoverage.Partial or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                     formatted += " · " + MetricText.State(definition, v.Coverage);
                 if (v.Evidence is MetricEvidence.Experimental or MetricEvidence.Mixed || definition.Acquisition is not null && !definition.Published)
                     formatted += " · " + "RWS_Exp_ExperimentalRow".Translate();
-                return formatted;
-            }).ToArray();
-            return new TableRow(row, label, text);
+                text[i] = formatted;
+                visualKinds[i] = MetricVisualState.Classify(definition, v);
+            }
+            return new TableRow(row, label, text, visualKinds);
         }).ToArray();
     }
 

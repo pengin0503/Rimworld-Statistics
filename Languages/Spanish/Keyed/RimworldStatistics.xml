@@ -1266,4 +1266,61 @@
   <RWS_MetricDesc_JoinsBySpecies>Primeras incorporaciones registradas por especie.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>Muertes de colonos por especie</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>Muertes registradas de colonos libres por especie.</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} elem.</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>Mod externo</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>Mod externo ({0})</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>Contador del juego</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>Gráfico histórico</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>Estado en el guardado</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>Registrado en partida</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>Progreso de investigación</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>Crisis mentales e inspiraciones</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>Combate y muertes</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>Derribos</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>Altas y bajas de colonos</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>Asaltos y defensa</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>Registros acumulados</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>Interacciones sociales</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>Animales</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>Fabricación, construcción y minería</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>Trabajo detallado y agricultura</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>Tareas diarias y acarreo</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>Comida y alimento</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>Comercio</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>Diplomacia y misiones</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>Medicina y cuidados</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>Desastres e incidentes</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>Incidentes de mods</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>Caravanas</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>Investigación (al guardar)</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>Facciones (al guardar)</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>Colonos y habilidades (al guardar)</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>Instalaciones y energía (al guardar)</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>Existencias (al guardar)</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>Inicio de colonia (al guardar)</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: puestos (al guardar)</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: producción</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: instalaciones (al guardar)</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: higiene</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: eventos</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: subidas de nivel</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: poderes psíquicos</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: psíquicos (al guardar)</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: títulos y poderes (al guardar)</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: misiones y estructuras (al guardar)</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: eventos</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: eventos</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: estado (al guardar)</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: eventos</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: pesca</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>Participantes en el final</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>Agrupar métricas derivadas</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>Agrupa los valores máximo, mínimo, principal y suma bajo cada estadística origen al ordenar por nombre.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>La agrupación se pausa al buscar o ordenar por valor para mostrar todos los resultados en orden.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>{0}/{1} mostrados</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>{0} filtro(s)</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>Restablecer</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« Ocultar lista</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» Mostrar lista</RWS_Rankings_ShowSelector>
+  <RWS_Chart_RemoveOverlay>Quitar colonia comparada</RWS_Chart_RemoveOverlay>
 </LanguageData>

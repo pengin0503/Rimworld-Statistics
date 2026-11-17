@@ -11,18 +11,34 @@ namespace RimworldStatistics.UI;
 internal sealed class Dialog_MetricChart : Window
 {
     private const float RowHeight = 34f;
+    private const float AxisHeaderHeight = 24f;
 
     private enum ChartMode { Colony, Breakdown, Overall }
 
     private sealed record BarText(string Name, string Value, string Tip);
 
     /// <summary>One immutable series with its axis range; row text is built once, when the row is first shown.</summary>
-    private sealed class Series(ChartMode mode, IReadOnlyList<MetricChartBar> bars)
+    private sealed class Series
     {
-        public ChartMode Mode { get; } = mode;
-        public IReadOnlyList<MetricChartBar> Bars { get; } = bars;
-        public (double Min, double Max) Range { get; } = RangeOf(bars);
-        public BarText?[] Text { get; } = new BarText?[bars.Count];
+        public Series(ChartMode mode, IReadOnlyList<MetricChartBar> bars, MetricUnit unit)
+        {
+            Mode = mode;
+            Bars = bars;
+            var (rawMin, rawMax) = RangeOf(bars);
+            Ticks = MetricChartTicks.Generate(rawMin, rawMax);
+            Range = (Ticks[0], Ticks[^1]);
+            var percent = unit == MetricUnit.Percent;
+            var suffix = unit == MetricUnit.Mood ? "%" : "";
+            TickLabels = Ticks.Select(t => MetricChartTicks.FormatAxisValue(t, percent) + suffix).ToArray();
+            Text = new BarText?[bars.Count];
+        }
+
+        public ChartMode Mode { get; }
+        public IReadOnlyList<MetricChartBar> Bars { get; }
+        public IReadOnlyList<double> Ticks { get; }
+        public string[] TickLabels { get; }
+        public (double Min, double Max) Range { get; }
+        public BarText?[] Text { get; }
     }
 
     private readonly StatsView view;
@@ -71,9 +87,9 @@ internal sealed class Dialog_MetricChart : Window
         breakdownDefinition = definition.BreakdownUnit is { } unit ? definition with { Unit = unit } : definition;
         metricLabel = chartLabel;
         title = "RWS_Chart_Title".Translate(chartLabel);
-        colony = new Series(ChartMode.Colony, colonyBars);
-        breakdown = new Series(ChartMode.Breakdown, breakdownBars);
-        overall = new Series(ChartMode.Overall, overallBars);
+        colony = new Series(ChartMode.Colony, colonyBars, definition.Unit);
+        breakdown = new Series(ChartMode.Breakdown, breakdownBars, breakdownDefinition.Unit);
+        overall = new Series(ChartMode.Overall, overallBars, definition.Unit);
         if (breakdownBars.Count > 0)
             breakdownButtonLabel = breakdownColony is null
                 ? (string)"RWS_Chart_ByCategory".Translate()
@@ -137,40 +153,62 @@ internal sealed class Dialog_MetricChart : Window
 
     private void DrawBars(Rect rect, Series series)
     {
+        if (rect.height <= AxisHeaderHeight)
+            return;
+
         var bars = series.Bars;
         var width = Math.Max(0f, rect.width - 18f);
         var labelWidth = Math.Min(260f, width * 0.31f);
-        var valueWidth = Math.Min(155f, Math.Max(90f, width * 0.19f));
-        var plotWidth = Math.Max(1f, width - labelWidth - valueWidth - 16f);
+        var valueWidth = Math.Min(160f, Math.Max(92f, width * 0.19f));
+        var plotWidth = Math.Max(1f, width - labelWidth - valueWidth - 18f);
         var plotX = labelWidth + 8f;
         var minimum = series.Range.Min;
-        var span = series.Range.Max - minimum;
-        float Position(double value) => plotX + plotWidth * (float)Math.Clamp((value - minimum) / span, 0d, 1d);
+        var maximum = series.Range.Max;
+        var scale = Math.Max(1d, Math.Max(Math.Abs(minimum), Math.Abs(maximum)));
+        var minScaled = minimum / scale;
+        var spanScaled = maximum / scale - minScaled;
+        float Position(double value) => spanScaled <= 0d ? plotX
+            : plotX + plotWidth * (float)Math.Clamp((value / scale - minScaled) / spanScaled, 0d, 1d);
         var zero = Position(0d);
 
-        Widgets.BeginScrollView(rect, ref scroll, new Rect(0f, 0f, width, bars.Count * RowHeight));
+        DrawAxisHeader(new Rect(rect.x, rect.y, width, AxisHeaderHeight), plotX, plotWidth, series, Position);
+
+        var bodyRect = new Rect(rect.x, rect.y + AxisHeaderHeight, rect.width, Math.Max(0f, rect.height - AxisHeaderHeight));
+        Widgets.BeginScrollView(bodyRect, ref scroll, new Rect(0f, 0f, width, bars.Count * RowHeight));
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(bars.Count - 1, (int)((scroll.y + rect.height) / RowHeight) + 1);
+        var last = Math.Min(bars.Count - 1, (int)((scroll.y + bodyRect.height) / RowHeight) + 1);
         var anchor = Text.Anchor;
         MetricChartBar? selected = null;
-        Text.Anchor = TextAnchor.MiddleLeft;
         for (var i = first; i <= last; i++)
         {
             var bar = bars[i];
+            if (bar.Value.Number is not { } value || !double.IsFinite(value))
+                continue;
             var text = series.Text[i] ??= Describe(series.Mode, bar);
-            var value = bar.Value.Number!.Value;
             var row = new Rect(0, i * RowHeight, width, RowHeight);
             if (i % 2 == 1)
                 Widgets.DrawHighlight(row, 0.2f);
             Widgets.DrawHighlightIfMouseover(row);
             if (series.Mode == ChartMode.Colony && Widgets.ButtonInvisible(row))
                 selected = bar;
+
+            Text.Anchor = TextAnchor.MiddleLeft;
             var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
             Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
+
             var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
-            Widgets.DrawBoxSolid(new Rect(zero, plotRow.y, 1f, plotRow.height), new Color(0.67f, 0.67f, 0.67f, 0.65f));
+            for (var t = 0; t < series.Ticks.Count; t++)
+            {
+                var tickValue = series.Ticks[t];
+                var tx = Position(tickValue);
+                if (tickValue == 0d)
+                    continue;
+                Widgets.DrawBoxSolid(new Rect(tx, row.y, 1f, RowHeight), new Color(0.7f, 0.7f, 0.7f, 0.16f));
+            }
+            Widgets.DrawBoxSolid(new Rect(zero - 0.5f, row.y, 1.5f, RowHeight), new Color(0.86f, 0.88f, 0.92f, 0.85f));
+
             var end = Position(value);
-            if (value != 0)
+            if (value != 0d)
             {
                 var start = Math.Min(zero, end);
                 var length = Math.Max(1f, Math.Abs(end - zero));
@@ -178,7 +216,9 @@ internal sealed class Dialog_MetricChart : Window
                     bar.Value.Coverage == MetricCoverage.Partial
                         ? new Color(0.63f, 0.66f, 0.71f) : new Color(0.35f, 0.64f, 0.78f));
             }
-            var valueRect = new Rect(plotX + plotWidth + 8f, row.y, valueWidth - 5f, RowHeight);
+
+            Text.Anchor = TextAnchor.MiddleRight;
+            var valueRect = new Rect(plotX + plotWidth + 10f, row.y, Math.Max(0f, valueWidth - 10f), RowHeight);
             Widgets.Label(valueRect, text.Value.Truncate(valueRect.width));
             TooltipHandler.TipRegion(row, text.Tip);
         }
@@ -191,6 +231,61 @@ internal sealed class Dialog_MetricChart : Window
             var label = key == definition.Key ? metricLabel : MetricText.Label(source);
             Find.WindowStack.Add(new Dialog_ColonyMetricHistory(view, selected.Key, ColonyName(selected.Key), source, label, selected.Value));
         }
+    }
+
+    private static void DrawAxisHeader(Rect headerRect, float plotX, float plotWidth, Series series, Func<double, float> position)
+    {
+        var axisStart = headerRect.x + plotX;
+        var axisEnd = axisStart + plotWidth;
+        Widgets.DrawBoxSolid(new Rect(axisStart, headerRect.yMax - 2f, plotWidth, 1f), new Color(0.75f, 0.77f, 0.82f, 0.50f));
+
+        var prevAnchor = Text.Anchor;
+        var prevColor = GUI.color;
+        GUI.color = new Color(0.80f, 0.82f, 0.86f);
+        var lastRight = float.NegativeInfinity;
+        var tickCount = series.Ticks.Count;
+        var rightmostReserved = tickCount > 1
+            ? Math.Max(axisStart, axisEnd - Text.CalcSize(series.TickLabels[^1]).x - 8f)
+            : float.PositiveInfinity;
+
+        for (var i = 0; i < tickCount; i++)
+        {
+            var tickValue = series.Ticks[i];
+            var tickLabel = series.TickLabels[i];
+            var tx = headerRect.x + position(tickValue);
+            var isZero = tickValue == 0d;
+            Widgets.DrawBoxSolid(new Rect(tx - (isZero ? 0.5f : 0f), headerRect.yMax - 6f, isZero ? 1.5f : 1f, 5f),
+                isZero ? new Color(0.90f, 0.92f, 0.96f, 0.90f) : new Color(0.75f, 0.77f, 0.82f, 0.65f));
+
+            var textWidth = Math.Min(plotWidth, Text.CalcSize(tickLabel).x + 4f);
+            float labelX;
+            if (i == 0)
+            {
+                Text.Anchor = TextAnchor.MiddleLeft;
+                labelX = Math.Clamp(tx, axisStart, Math.Max(axisStart, axisEnd - textWidth));
+            }
+            else if (i == tickCount - 1)
+            {
+                Text.Anchor = TextAnchor.MiddleRight;
+                labelX = Math.Clamp(tx - textWidth, axisStart, Math.Max(axisStart, axisEnd - textWidth));
+            }
+            else
+            {
+                Text.Anchor = TextAnchor.MiddleCenter;
+                labelX = Math.Clamp(tx - textWidth / 2f, axisStart, Math.Max(axisStart, axisEnd - textWidth));
+            }
+
+            if (i > 0 && labelX < lastRight + 6f)
+                continue;
+            if (i > 0 && i < tickCount - 1 && labelX + textWidth > rightmostReserved)
+                continue;
+
+            Widgets.Label(new Rect(labelX, headerRect.y, textWidth, headerRect.height - 4f), tickLabel);
+            lastRight = labelX + textWidth;
+        }
+
+        GUI.color = prevColor;
+        Text.Anchor = prevAnchor;
     }
 
     private BarText Describe(ChartMode mode, MetricChartBar bar)
@@ -234,10 +329,12 @@ internal sealed class Dialog_MetricChart : Window
         var max = 0d;
         foreach (var bar in bars)
         {
-            min = Math.Min(min, bar.Value.Number!.Value);
-            max = Math.Max(max, bar.Value.Number.Value);
+            if (bar.Value.Number is not { } n || !double.IsFinite(n))
+                continue;
+            min = Math.Min(min, n);
+            max = Math.Max(max, n);
         }
-        return (min, min == max ? min + 1d : max);
+        return (min, max);
     }
 
     private string ColonyName(string key)

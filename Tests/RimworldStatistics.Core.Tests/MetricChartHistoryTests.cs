@@ -291,4 +291,132 @@ public sealed class MetricChartHistoryTests
         Assert.Equal(new[] { 200 }, result.Points.Select(p => p.Tick));
         Assert.Equal(new double?[] { 5 }, result.Points.Select(p => p.Value?.Number));
     }
+
+    [Fact]
+    public void LegendLayoutWrapsLongItemsOntoMultipleRowsWithoutDroppingAnyItem()
+    {
+        var singleRow = HistoryLegendLayout.Resolve([90f, 110f, 120f], 400f);
+        Assert.Equal(1, singleRow.RowCount);
+        Assert.Equal(22f, singleRow.TotalHeight);
+        Assert.Equal(3, singleRow.Items.Count);
+        Assert.All(singleRow.Items, item => Assert.Equal(0f, item.Y));
+
+        var wrapped = HistoryLegendLayout.Resolve([120f, 130f, 140f, 95f], 280f, rowHeight: 22f, itemGap: 16f, rowGap: 2f);
+        Assert.Equal(4, wrapped.Items.Count);
+        Assert.Equal(2, wrapped.RowCount);
+        Assert.Equal(0f, wrapped.Items[0].X);
+        Assert.Equal(0f, wrapped.Items[0].Y);
+        Assert.Equal(136f, wrapped.Items[1].X);
+        Assert.Equal(0f, wrapped.Items[1].Y);
+        Assert.Equal(0f, wrapped.Items[2].X);
+        Assert.Equal(24f, wrapped.Items[2].Y);
+        Assert.Equal(156f, wrapped.Items[3].X);
+        Assert.Equal(24f, wrapped.Items[3].Y);
+        Assert.Equal(46f, wrapped.TotalHeight);
+
+        var threeRows = HistoryLegendLayout.Resolve([120f, 130f, 140f, 140f], 280f, rowHeight: 22f, itemGap: 16f, rowGap: 2f);
+        Assert.Equal(3, threeRows.RowCount);
+        Assert.Equal(70f, threeRows.TotalHeight);
+
+        Assert.Equal(0, HistoryLegendLayout.Resolve([], 200f).RowCount);
+        Assert.Equal(0, HistoryLegendLayout.Resolve([50f], 0f).RowCount);
+    }
+
+    [Fact]
+    public void OverlayTrackerAssignsDistinctColorsAndReopensSelectionWhenRemovingOneOrAll()
+    {
+        var tracker = new HistoryOverlayTracker("primary", maxOverlays: 2);
+        Assert.True(tracker.IsSelected("primary"));
+        Assert.False(tracker.TryAdd("primary", "Primary", out _));
+
+        Assert.True(tracker.TryAdd("c1", "Colony 1", out var e1));
+        Assert.Equal(0, e1!.ColorIndex);
+        Assert.True(tracker.TryAdd("c2", "Colony 2", out var e2));
+        Assert.Equal(1, e2!.ColorIndex);
+        Assert.False(tracker.CanAdd);
+        Assert.False(tracker.TryAdd("c3", "Colony 3", out _));
+
+        // Removing first overlay frees color slot 0 and c1 selection without touching c2
+        Assert.True(tracker.Remove("c1"));
+        Assert.False(tracker.IsSelected("c1"));
+        Assert.True(tracker.IsSelected("c2"));
+        Assert.True(tracker.CanAdd);
+
+        Assert.True(tracker.TryAdd("c3", "Colony 3", out var e3));
+        Assert.Equal(0, e3!.ColorIndex);
+        Assert.Equal([1, 0], tracker.Entries.Select(e => e.ColorIndex));
+
+        // Removing all returns to primary-only and allows re-adding c1 later
+        Assert.True(tracker.Remove("c2"));
+        Assert.True(tracker.Remove("c3"));
+        Assert.Empty(tracker.Entries);
+        Assert.True(tracker.CanAdd);
+        Assert.True(tracker.TryAdd("c1", "Colony 1", out var readded));
+        Assert.Equal(0, readded!.ColorIndex);
+    }
+
+    [Fact]
+    public void OverlayTrackerIgnoresLateAsyncCompletionAfterRemovalAndRestoresPrimaryBounds()
+    {
+        var primary = new MetricHistory(MetricHistoryKind.SaveObservations,
+        [
+            new MetricHistoryPoint(100, new NumericValue { Number = 10d, Coverage = MetricCoverage.SnapshotOnly }),
+            new MetricHistoryPoint(200, new NumericValue { Number = 20d, Coverage = MetricCoverage.SnapshotOnly }),
+        ]);
+        var primaryMeasured = primary.Points.Where(p => p.Value is not null).ToArray();
+        var baseBounds = new HistoryPlotBounds(100, 200, 10d, 20d, HasPartial: false, HasUnlinked: false);
+
+        var tracker = new HistoryOverlayTracker("p", maxOverlays: 2);
+        Assert.True(tracker.TryAdd("late", "Late Colony", out var late));
+        var staleRequestId = late!.RequestId;
+        Assert.True(tracker.Remove("late"));
+
+        // Late completion arrives for removed request -> must be ignored and never alter bounds or entries
+        var lateHistory = new MetricHistory(MetricHistoryKind.SaveObservations,
+        [
+            new MetricHistoryPoint(10, new NumericValue { Number = -500d, Coverage = MetricCoverage.Partial }) { Unlinked = true },
+            new MetricHistoryPoint(999, new NumericValue { Number = 5000d, Coverage = MetricCoverage.Partial }),
+        ]);
+        Assert.False(tracker.TryComplete(staleRequestId, lateHistory, primary.Kind));
+        Assert.Empty(tracker.Entries);
+        Assert.Equal(baseBounds, tracker.ComputeBounds(primary, primaryMeasured));
+
+        // Re-add gets a fresh RequestId; completing widens bounds, and removing restores base bounds cleanly
+        Assert.True(tracker.TryAdd("late", "Late Colony", out var fresh));
+        Assert.NotEqual(staleRequestId, fresh!.RequestId);
+        Assert.False(tracker.TryComplete(staleRequestId, lateHistory, primary.Kind));
+        Assert.True(tracker.TryComplete(fresh.RequestId, lateHistory, primary.Kind));
+
+        var expanded = tracker.ComputeBounds(primary, primaryMeasured);
+        Assert.Equal(10, expanded.FirstTick);
+        Assert.Equal(999, expanded.LastTick);
+        Assert.Equal(-500d, expanded.MinValue);
+        Assert.Equal(5000d, expanded.MaxValue);
+        Assert.True(expanded.HasPartial);
+        Assert.True(expanded.HasUnlinked);
+
+        Assert.True(tracker.Remove("late"));
+        Assert.Equal(baseBounds, tracker.ComputeBounds(primary, primaryMeasured));
+    }
+
+    [Fact]
+    public void OverlayTrackerMarksIncompatibleKindWithoutAffectingPlotBounds()
+    {
+        var primary = new MetricHistory(MetricHistoryKind.CheckpointLineage,
+        [
+            new MetricHistoryPoint(50, new NumericValue { Number = 5d, Coverage = MetricCoverage.Complete }),
+        ]);
+        var primaryMeasured = primary.Points.ToArray();
+        var tracker = new HistoryOverlayTracker("p");
+        Assert.True(tracker.TryAdd("other", "Other", out var entry));
+
+        var otherHistory = new MetricHistory(MetricHistoryKind.SaveObservations,
+        [
+            new MetricHistoryPoint(10, new NumericValue { Number = 999d, Coverage = MetricCoverage.SnapshotOnly }),
+        ]);
+        Assert.True(tracker.TryComplete(entry!.RequestId, otherHistory, primary.Kind));
+        Assert.Equal(HistoryOverlayStatus.Incompatible, entry.Status);
+        Assert.Empty(entry.Measured);
+        Assert.Equal(new HistoryPlotBounds(50, 50, 5d, 5d, false, false), tracker.ComputeBounds(primary, primaryMeasured));
+    }
 }

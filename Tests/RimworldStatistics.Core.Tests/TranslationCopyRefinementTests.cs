@@ -158,7 +158,7 @@ public sealed partial class TranslationCopyRefinementTests
         var root = LanguagesRoot();
         foreach (var lang in AllLanguages)
         {
-            var strings = LoadMainKeyed(root, lang);
+            var strings = LoadLanguage(root, lang);
             foreach (var (key, text) in strings)
             {
                 if (key == "RWS_Status_SdkEventCapExceeded")
@@ -168,6 +168,50 @@ public sealed partial class TranslationCopyRefinementTests
                     Assert.False(text.Contains(forbidden, StringComparison.Ordinal),
                         $"{lang}/{key} still contains internal identifier '{forbidden}': {text}");
                 }
+            }
+        }
+    }
+
+    [Fact]
+    public void UiRefinementKeysAndInvariantWarningsArePreservedAcrossAllTwelveLanguages()
+    {
+        var requiredNewKeys = new[]
+        {
+            "RWS_Status_GroupCount",
+            "RWS_Details_GroupDerived",
+            "RWS_Details_GroupDerivedTip",
+            "RWS_Details_GroupDerivedFlatTip",
+            "RWS_Filter_Shown",
+            "RWS_Filter_ActiveCount",
+            "RWS_Filter_Reset",
+            "RWS_Rankings_HideSelector",
+            "RWS_Rankings_ShowSelector",
+            "RWS_Chart_RemoveOverlay",
+        };
+        var invariantKeys = new[]
+        {
+            "RWS_Status_Caution",
+            "RWS_Status_SdkEventCapExceeded",
+            "RWS_Chart_PointUnlinked",
+            "RWS_Chart_PointBranch",
+            "RWS_Chart_PointContinues",
+            "RWS_Chart_PointSavedLater",
+            "RWS_Chart_PointCounts",
+            "RWS_Chart_LegendUnlinkedShort",
+            "RWS_Chart_LegendUnlinked",
+        };
+
+        var root = LanguagesRoot();
+        var english = LoadLanguage(root, "English");
+
+        foreach (var lang in AllLanguages)
+        {
+            var strings = LoadLanguage(root, lang);
+            foreach (var key in requiredNewKeys.Concat(invariantKeys))
+            {
+                Assert.True(strings.TryGetValue(key, out var text), $"{lang} missing {key}");
+                Assert.False(string.IsNullOrWhiteSpace(text), $"{lang}/{key} is blank");
+                Assert.Equal(Placeholders(english[key]), Placeholders(text!));
             }
         }
     }

@@ -1266,4 +1266,61 @@
   <RWS_MetricDesc_JoinsBySpecies>첫 합류 기록을 종족별로 집계합니다.</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>종족별 정착민 사망 수</RWS_Metric_DeathsBySpecies>
   <RWS_MetricDesc_DeathsBySpecies>자유 정착민의 사망 기록을 종족별로 집계합니다.</RWS_MetricDesc_DeathsBySpecies>
+  <RWS_Status_GroupCount>{0}/{1} 항목</RWS_Status_GroupCount>
+  <RWS_Status_ExternalMod>외부 모드</RWS_Status_ExternalMod>
+  <RWS_Status_ExternalModCategory>외부 모드 ({0})</RWS_Status_ExternalModCategory>
+  <RWS_AcqUnit_VanillaCounter>게임 카운터</RWS_AcqUnit_VanillaCounter>
+  <RWS_AcqUnit_SaveHistory>저장 기록 그래프</RWS_AcqUnit_SaveHistory>
+  <RWS_AcqUnit_SaveSnapshot>저장 시점 상태</RWS_AcqUnit_SaveSnapshot>
+  <RWS_AcqUnit_LiveAggregate>플레이 중 기록</RWS_AcqUnit_LiveAggregate>
+  <RWS_AcqUnit_research>연구 진행</RWS_AcqUnit_research>
+  <RWS_AcqUnit_mental>정신 붕괴 및 영감</RWS_AcqUnit_mental>
+  <RWS_AcqUnit_health_death>전투 및 사망</RWS_AcqUnit_health_death>
+  <RWS_AcqUnit_down>쓰러짐</RWS_AcqUnit_down>
+  <RWS_AcqUnit_membership>정착민 합류 및 이탈</RWS_AcqUnit_membership>
+  <RWS_AcqUnit_raid>습격 및 방어</RWS_AcqUnit_raid>
+  <RWS_AcqUnit_lifetime>생애 기록</RWS_AcqUnit_lifetime>
+  <RWS_AcqUnit_social>사교 활동</RWS_AcqUnit_social>
+  <RWS_AcqUnit_animals>동물</RWS_AcqUnit_animals>
+  <RWS_AcqUnit_work>제작, 건설 및 채굴</RWS_AcqUnit_work>
+  <RWS_AcqUnit_work_details>세부 작업 및 농사</RWS_AcqUnit_work_details>
+  <RWS_AcqUnit_chore>일상 작업 및 운반</RWS_AcqUnit_chore>
+  <RWS_AcqUnit_food>음식 및 식량</RWS_AcqUnit_food>
+  <RWS_AcqUnit_trade>무역</RWS_AcqUnit_trade>
+  <RWS_AcqUnit_diplomacy>외교 및 퀘스트</RWS_AcqUnit_diplomacy>
+  <RWS_AcqUnit_medicine>의료 및 치료</RWS_AcqUnit_medicine>
+  <RWS_AcqUnit_disaster>재난 및 사건</RWS_AcqUnit_disaster>
+  <RWS_AcqUnit_modded_incident>모드 추가 사건</RWS_AcqUnit_modded_incident>
+  <RWS_AcqUnit_caravan>상단</RWS_AcqUnit_caravan>
+  <RWS_AcqUnit_research_state>연구 상태 (저장 시점)</RWS_AcqUnit_research_state>
+  <RWS_AcqUnit_factions>세력 관계 (저장 시점)</RWS_AcqUnit_factions>
+  <RWS_AcqUnit_roster>정착민 명단 및 능력 (저장 시점)</RWS_AcqUnit_roster>
+  <RWS_AcqUnit_facilities>시설 및 전력 (저장 시점)</RWS_AcqUnit_facilities>
+  <RWS_AcqUnit_stock>비축 물자 (저장 시점)</RWS_AcqUnit_stock>
+  <RWS_AcqUnit_colony_start>정착지 시작 설정 (저장 시점)</RWS_AcqUnit_colony_start>
+  <RWS_AcqUnit_outposts_snapshot>VEF Outposts: 전초기지 (저장 시점)</RWS_AcqUnit_outposts_snapshot>
+  <RWS_AcqUnit_outposts_production>VEF Outposts: 생산</RWS_AcqUnit_outposts_production>
+  <RWS_AcqUnit_dbh_fixtures>Dubs Bad Hygiene: 위생 설비 (저장 시점)</RWS_AcqUnit_dbh_fixtures>
+  <RWS_AcqUnit_dbh_activities>Dubs Bad Hygiene: 위생 행동</RWS_AcqUnit_dbh_activities>
+  <RWS_AcqUnit_royalty>Royalty: 사건</RWS_AcqUnit_royalty>
+  <RWS_AcqUnit_vpe_events>VPE: 레벨 성장</RWS_AcqUnit_vpe_events>
+  <RWS_AcqUnit_vpe_casts>VPE: 초능력 시전</RWS_AcqUnit_vpe_casts>
+  <RWS_AcqUnit_vpe_snapshot>VPE: 초능력자 (저장 시점)</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_royalty_state>Royalty: 작위 및 능력 (저장 시점)</RWS_AcqUnit_royalty_state>
+  <RWS_AcqUnit_royalty_quests>Royalty: 퀘스트 및 구조물 (저장 시점)</RWS_AcqUnit_royalty_quests>
+  <RWS_AcqUnit_ideology>Ideology: 사건</RWS_AcqUnit_ideology>
+  <RWS_AcqUnit_biotech>Biotech: 사건</RWS_AcqUnit_biotech>
+  <RWS_AcqUnit_biotech_state>Biotech: 상태 (저장 시점)</RWS_AcqUnit_biotech_state>
+  <RWS_AcqUnit_odyssey>Odyssey: 사건</RWS_AcqUnit_odyssey>
+  <RWS_AcqUnit_fishing>Odyssey: 낚시</RWS_AcqUnit_fishing>
+  <RWS_AcqUnit_ending_party>엔딩 참가 인원</RWS_AcqUnit_ending_party>
+  <RWS_Details_GroupDerived>파생 통계 묶기</RWS_Details_GroupDerived>
+  <RWS_Details_GroupDerivedTip>이름순 정렬 시 관련된 최대·최소·최다·합계 파생 통계를 원래 통계 아래에 묶습니다.</RWS_Details_GroupDerivedTip>
+  <RWS_Details_GroupDerivedFlatTip>검색 중이거나 값순 정렬 중에는 결과와 순서를 정확히 볼 수 있도록 평면 목록으로 표시합니다.</RWS_Details_GroupDerivedFlatTip>
+  <RWS_Filter_Shown>표시: {0}/{1}개</RWS_Filter_Shown>
+  <RWS_Filter_ActiveCount>필터: {0}개</RWS_Filter_ActiveCount>
+  <RWS_Filter_Reset>필터 초기화</RWS_Filter_Reset>
+  <RWS_Rankings_HideSelector>« 목록 숨기기</RWS_Rankings_HideSelector>
+  <RWS_Rankings_ShowSelector>» 목록 표시</RWS_Rankings_ShowSelector>
+  <RWS_Chart_RemoveOverlay>비교 정착지 제거</RWS_Chart_RemoveOverlay>
 </LanguageData>
