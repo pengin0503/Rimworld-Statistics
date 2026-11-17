@@ -1243,6 +1243,7 @@
   <RWS_Chart_PointSavedLater>この記録は{0}日のセーブにもそのまま含まれていました。そのセーブでは新しい統計は記録されていません。</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>記録元が異なるため重ねて表示できません</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>記録 {0}点（一部のみ {1}点）、値のない時点 {2}点</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>点のないセーブ：{0}回。プロフィールを小さく保つために記録を間引きました（または以前のバージョンで削除されました）。線の形は保っています。</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>最終記録：{0}日／最も進んだセーブ：{1}日（同じ分岐とは限りません）</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>記録値</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>一部のみの記録</RWS_Chart_LegendPartial>

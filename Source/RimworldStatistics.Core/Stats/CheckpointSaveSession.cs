@@ -41,6 +41,26 @@ public sealed class CheckpointSaveSession
         }
     }
 
+    /// <summary>
+    /// The <c>numericStatistics</c> text a save of the component writes (#319). Another game's component writes what its save
+    /// held. With the save scope working, the scope decides (<see cref="TextToWrite"/>). When the scope has stopped but this
+    /// game's totals exist, the last committed (or loaded) checkpoint is written, as a nested save would, so checkpoints
+    /// committed before the stop stay the parent of the next session; only with no totals at all is the loaded text kept.
+    /// </summary>
+    /// <param name="sameGame">The game being saved is the component's game.</param>
+    /// <param name="activeSession">The save scope, or null when there is none or its patch has stopped.</param>
+    /// <param name="accumulator">This game's totals, or null.</param>
+    /// <param name="loaded">What the save held when it was loaded (null for a new game or a save without data).</param>
+    public static string? TextForSave(bool sameGame, CheckpointSaveSession? activeSession, int threadId,
+        LiveMetricAccumulator? accumulator, string? loaded)
+    {
+        if (!sameGame)
+            return loaded;
+        if (activeSession is not null)
+            return activeSession.TextToWrite(threadId);
+        return accumulator is not null ? accumulator.LoadedJson : loaded;
+    }
+
     /// <summary>The text the component writes now (null: write nothing).</summary>
     public string? TextToWrite(int threadId)
     {

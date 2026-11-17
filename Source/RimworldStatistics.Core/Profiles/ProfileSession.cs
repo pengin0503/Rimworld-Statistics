@@ -52,7 +52,8 @@ public sealed class ProfileSession
     private bool _backgroundPending;
     private Task? _backgroundTask;
     private volatile Exception? _lastSaveError;
-    private volatile Exception? _lastArchiveError;
+    private volatile Exception? _lastArchiveError;       // the last append to the archive failed: inline data not yet moved
+    private volatile Exception? _lastArchiveReadError;   // the last read of archived metrics failed: the files are unchanged
     private volatile Exception? _lastQueuedError;
 
     // Changes from MutateWithoutBlocking that found the profile busy, in order. Applied under _lock before any other
@@ -72,7 +73,7 @@ public sealed class ProfileSession
     public ProfileLoadResult LoadResult { get; }
 
     public Exception? LastSaveError => _lastSaveError;
-    public Exception? LastArchiveError => _lastArchiveError;
+    public Exception? LastArchiveError => _lastArchiveError ?? _lastArchiveReadError;
 
     /// <summary>The latest exception thrown by a change given to <see cref="MutateWithoutBlocking"/>.</summary>
     public Exception? LastQueuedMutationError => _lastQueuedError;
@@ -309,10 +310,11 @@ public sealed class ProfileSession
             }
             if (restored)
                 target.ArchivedMetrics = false;
+            _lastArchiveReadError = null;
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException)
         {
-            _lastArchiveError = e;
+            _lastArchiveReadError = e;
         }
     }
 
@@ -472,11 +474,15 @@ public sealed class ProfileSession
         WriteLatest();
     }
 
+    /// <summary>
+    /// Runs <paramref name="action"/> (a backup) with everything on disk. A checkpoint archive append that failed earlier is
+    /// tried again first, even when the profile has not changed since (#315), so fixing the archive folder is enough.
+    /// </summary>
     public T WithWritesPaused<T>(Func<T> action)
     {
         lock (_ioLock)
         {
-            WriteLatest();
+            WriteLatest(retryArchive: true);
             EnsureFlushed();
             return action();
         }
@@ -489,12 +495,16 @@ public sealed class ProfileSession
         {
             if (_closed)
                 return;
-            WriteLatest();
+            WriteLatest(retryArchive: true);   // a restore closes the session first (#315)
             EnsureFlushed();
             _closed = true;
         }
     }
 
+    /// <summary>
+    /// The profile and the archive append it depends on reached the disk. A failed read of archived metrics leaves both files
+    /// as they were, so it does not block a backup (it stays in <see cref="LastArchiveError"/>).
+    /// </summary>
     private void EnsureFlushed()
     {
         if (_lastSaveError is { } saveError)
@@ -610,8 +620,8 @@ public sealed class ProfileSession
                 }
             }
 
-            if (batches.Count > 0)
-                _lastArchiveError = null;
+            // Every planned append succeeded, or nothing is left to move: no inline data waits for the archive.
+            _lastArchiveError = null;
         }
         catch (Exception e)
         {
@@ -619,15 +629,19 @@ public sealed class ProfileSession
         }
     }
 
-    /// <summary>Serializes the current profile and writes it, unless the file already holds this or a newer snapshot.</summary>
-    private void WriteLatest()
+    /// <summary>
+    /// Serializes the current profile and writes it, unless the file already holds this or a newer snapshot. With
+    /// <paramref name="retryArchive"/> (a backup or a restore) an archive append that failed is retried and the trimmed
+    /// profile written even when nothing changed since: the failure was the archive's, not the profile's (#315).
+    /// </summary>
+    private void WriteLatest(bool retryArchive = false)
     {
         lock (_ioLock)
         {
             lock (_lock)
             {
                 ApplyQueuedAndRequestSave();
-                if (_closed || _changeSeq <= _writtenSeq)
+                if (_closed || _changeSeq <= _writtenSeq && !(retryArchive && _archive is not null && _lastArchiveError is not null))
                     return;
             }
 

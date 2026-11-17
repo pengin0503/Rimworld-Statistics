@@ -46,6 +46,12 @@ public sealed record MetricHistory(MetricHistoryKind Kind, IReadOnlyList<MetricH
     /// </summary>
     public int? LatestSaveTick { get; init; }
 
+    /// <summary>
+    /// For save-time snapshot statistics: saves of this colony that have no point, because compaction thinned their reading
+    /// out of the bounded chart series or (before #318) removed it. 0 when every save has its point.
+    /// </summary>
+    public int OmittedSaves { get; init; }
+
     internal IReadOnlyList<MetricFileAlias> RecorderFiles { get; init; } = [];
     internal string? RecorderHash { get; init; }
     internal double? RecorderMaximum { get; init; }
@@ -79,15 +85,30 @@ public static partial class MetricCalculator
             return CheckpointChartHistory(colony, observations, definition, ancestry);
 
         var source = observations.Where(o => o.Source == definition.Source && o.SaveTick >= 0).ToArray();
+        // #318: the readings of snapshots compaction removed, carried by the latest snapshot of their campaign.
+        var compacted = definition.Source == MetricObservationSource.SaveSnapshot
+            ? source.SelectMany(o => CompactedReadings(o, definition)).ToArray() : [];
         if (definition.Source == MetricObservationSource.SaveSnapshot
-            && definition.Acquisition is { } unit && !source.Any(o => Entry(o, definition) is not null))
+            && definition.Acquisition is { } unit && !source.Any(o => Entry(o, definition) is not null)
+            && !compacted.Any(c => c.Value is not null))
+        {
             source = observations.Where(o => o.Source == MetricObservationSource.SaveFile && o.SaveTick >= 0
                 && o.EvidenceByAcquisition?.GetValueOrDefault(unit) == MetricEvidence.Experimental).ToArray();
+            compacted = [];
+        }
 
+        var omitted = 0;
+        if (source.All(o => o.Source == MetricObservationSource.SaveSnapshot))
+        {
+            var saves = source.Sum(o => (long)Math.Max(1, o.CompactedObservationCount ?? 1));
+            omitted = (int)Math.Clamp(saves - source.Length - compacted.Length, 0, int.MaxValue);
+        }
         var points = SaveChartPoints(source.Select(o => new ChartReading(o.SaveTick, o.Identity?.ModCampaignId,
             ChartValue(o, definition), o.Source == MetricObservationSource.SaveSnapshot
-                ? ancestry.OfSnapshot(o) : ancestry.OfFile(o.FileAliases, o.SaveTick))), ancestry);
-        var history = new MetricHistory(MetricHistoryKind.SaveObservations, points);
+                ? ancestry.OfSnapshot(o) : ancestry.OfFile(o.FileAliases, o.SaveTick)))
+            .Concat(compacted.Select(c => new ChartReading(c.Row.SaveTick, c.Row.Identity?.ModCampaignId, c.Value,
+                ancestry.OfSnapshot(c.Row)))), ancestry);
+        var history = new MetricHistory(MetricHistoryKind.SaveObservations, points) { OmittedSaves = omitted };
         if (ChartRecorder(definition.Key) is not null && MetricObservationOrder.Latest(source) is { } latest
             && ChartValue(latest, definition)?.Number is { } maximum)
             history = history with { RecorderFiles = latest.FileAliases.ToArray(), RecorderHash = latest.Key, RecorderMaximum = maximum };
@@ -235,7 +256,35 @@ public static partial class MetricCalculator
         return history with { Points = points, ArchivedPoints = [] };
     }
 
-    private static NumericValue? ChartValue(MetricObservation observation, MetricDefinition definition)
+    /// <summary>
+    /// The removed saves a snapshot's chart series holds, each as the snapshot row the chart would have read (only what
+    /// <see cref="CheckpointAncestry.OfSnapshot"/> uses) with its reading of <paramref name="definition"/>; a reading of
+    /// another definition revision is a gap.
+    /// </summary>
+    private static IEnumerable<(MetricObservation Row, NumericValue? Value)> CompactedReadings(MetricObservation carrier,
+        MetricDefinition definition)
+    {
+        if (carrier.CompactedChart is not { Rows: { } rows } series)
+            yield break;
+        var metric = series.Metrics?.GetValueOrDefault(definition.StoredKey) is { } m && m.Revision == definition.Revision
+            && m.Fits(rows.Count) ? m : null;
+        for (var i = 0; i < rows.Count; i++)
+        {
+            if (rows[i] is not { } row || row.Tick < 0)
+                continue;
+            var ghost = new MetricObservation
+            {
+                Source = MetricObservationSource.SaveSnapshot, Identity = carrier.Identity, SaveTick = row.Tick,
+                ObservedUtc = row.ObservedUtc, CheckpointKey = row.CheckpointKey,
+            };
+            var value = metric?.Values[i] is { } n && double.IsFinite(n)
+                ? new NumericValue { Number = n, Coverage = metric.Coverage?[i] ?? MetricCoverage.SnapshotOnly }
+                : null;
+            yield return (ghost, value is { Coverage: not (MetricCoverage.Unknown or MetricCoverage.NotApplicable) } ? value : null);
+        }
+    }
+
+    internal static NumericValue? ChartValue(MetricObservation observation, MetricDefinition definition)
     {
         // Each point is the measured value in that save. Cross-save min/max selection belongs to the bar chart.
         var actual = definition.Selection == ColonySelection.Representative

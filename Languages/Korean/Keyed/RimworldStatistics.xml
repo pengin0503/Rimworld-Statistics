@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>이 기록은 {0}일 저장에도 그대로 들어 있었습니다. 그 저장에는 새로운 통계가 기록되지 않았습니다.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>기록 방식이 달라 겹쳐 표시할 수 없습니다</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>기록 {0}개(일부 기록 {1}개), 값이 없는 시점 {2}개</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>점이 없는 저장: {0}회. 프로필 크기를 작게 유지하려고 기록을 솎아냈습니다(또는 이전 버전에서 삭제되었습니다). 선의 모양은 유지됩니다.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>마지막 기록: {0}일 / 가장 진행된 저장: {1}일 (다른 분기일 수 있음)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>기록값</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>일부 기록</RWS_Chart_LegendPartial>

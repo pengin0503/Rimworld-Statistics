@@ -567,6 +567,68 @@ public sealed class NumericCheckpointTests
         session.Exit("savegame", 1);
     }
 
+    /// <summary>Two saves Y1, Y2 commit; the save scope then stops (its patch disabled for the session).</summary>
+    private static (LiveMetricAccumulator Acc, string Y2) CommittedTwiceThenStopped(string? loaded)
+    {
+        var acc = LiveMetricAccumulator.Resume(loaded, Recording, 0);
+        var session = new CheckpointSaveSession(acc);
+        string? y2 = null;
+        foreach (var (tick, id) in new[] { (100, "Y1"), (200, "Y2") })
+        {
+            Events(acc, 1);
+            session.Enter("savegame", 1, true, tick, T0, () => id);
+            y2 = CheckpointSaveSession.TextForSave(true, session, 1, acc, loaded);
+            Assert.NotNull(session.Complete("savegame", 1, true, true));
+            session.Exit("savegame", 1);
+        }
+        Events(acc, 4);   // recorded after the stop: lost with the stopped session, as designed
+        return (acc, y2!);
+    }
+
+    [Fact]
+    public void StoppedScope_WritesTheLastCommittedCheckpoint_NotTheLoadedOne()
+    {
+        // #319: the loaded checkpoint X would make the next load a child of X and drop Y1 and Y2 from the lineage.
+        var x = LiveMetricAccumulator.StartNew(Recording, 0).PrepareSave(50, T0, "X")!.Json;
+        var (acc, y2) = CommittedTwiceThenStopped(x);
+        var written = CheckpointSaveSession.TextForSave(true, activeSession: null, 1, acc, loaded: x);
+        Assert.Equal(y2, written);
+        var resumed = LiveMetricAccumulator.Resume(written, Recording, 300);
+        Assert.Equal("Y2", resumed.ParentId);
+        Assert.Equal(2L, resumed.Family(Dummy.Name)!.Peek("events")!.N);   // Y1 and Y2 are kept, not rolled back to X
+    }
+
+    [Fact]
+    public void StoppedScope_NewGameAfterCommits_WritesTheLastCommit_NotNothing()
+    {
+        var (acc, y2) = CommittedTwiceThenStopped(loaded: null);
+        Assert.Equal(y2, CheckpointSaveSession.TextForSave(true, null, 1, acc, loaded: null));
+    }
+
+    [Fact]
+    public void StoppedScope_WithoutACommit_KeepsTheLoadedTextAndANewGameWritesNothing()
+    {
+        var x = LiveMetricAccumulator.StartNew(Recording, 0).PrepareSave(50, T0, "X")!.Json;
+        var loadedOnly = LiveMetricAccumulator.Resume(x, Recording, 50);
+        Events(loadedOnly, 3);
+        Assert.Equal(x, CheckpointSaveSession.TextForSave(true, null, 1, loadedOnly, loaded: x));
+        Assert.Null(CheckpointSaveSession.TextForSave(true, null, 1, LiveMetricAccumulator.StartNew(Recording, 0), loaded: null));
+        Assert.Null(CheckpointSaveSession.TextForSave(true, null, 1, accumulator: null, loaded: null));
+        // Unknown data is written back unchanged whether or not the scope runs.
+        const string future = """{"formatVersion":99}""";
+        Assert.Equal(future, CheckpointSaveSession.TextForSave(true, null, 1, LiveMetricAccumulator.Resume(future, Recording, 0), future));
+    }
+
+    [Fact]
+    public void AnotherGamesSave_WritesItsLoadedTextWhatever_TheScope()
+    {
+        var x = LiveMetricAccumulator.StartNew(Recording, 0).PrepareSave(50, T0, "X")!.Json;
+        var (acc, _) = CommittedTwiceThenStopped(loaded: null);
+        var session = new CheckpointSaveSession(acc);
+        Assert.Equal(x, CheckpointSaveSession.TextForSave(false, session, 1, acc, loaded: x));
+        Assert.Equal(x, CheckpointSaveSession.TextForSave(false, null, 1, acc, loaded: x));
+    }
+
     // ----- profile records, lineage and the representative -----
 
     /// <summary>P has 3; A continues P with +2; B is P reloaded with +1.</summary>

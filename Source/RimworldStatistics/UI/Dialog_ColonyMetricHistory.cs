@@ -242,6 +242,9 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var partial = measured.Count(p => p.Value!.Coverage == MetricCoverage.Partial);
         if (gaps > 0 || partial > 0)
             note += "\n" + (string)"RWS_Chart_PointCounts".Translate(measured.Count, partial, gaps);
+        // Saves whose snapshot reading was thinned out of the bounded series, or removed before it was kept (#318).
+        if (history.OmittedSaves > 0)
+            note += "\n" + (string)"RWS_Chart_HistoryOmitted".Translate(history.OmittedSaves);
         // The statistics stop at the last checkpoint; a later save carried no newer ones (recording off, or the
         // checkpoint written unchanged). That save may be on another branch, so it is named, not joined.
         if (history.Kind == MetricHistoryKind.CheckpointLineage && history.LatestSaveTick is { } latest

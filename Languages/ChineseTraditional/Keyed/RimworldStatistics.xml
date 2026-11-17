@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>第 {0} 天的存檔也原樣包含此記錄；該存檔沒有記錄更新的統計。</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>記錄方式不同，無法疊加顯示</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>記錄 {0} 個（部分記錄 {1} 個），無數值的時間點 {2} 個</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>沒有資料點的存檔：{0} 次。為保持檔案體積較小，這些記錄已被精簡（或被舊版本刪除）；曲線的形狀保持不變。</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>最後記錄：第 {0} 天 / 最遠存檔：第 {1} 天（可能屬其他分支）</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>記錄值</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>部分記錄</RWS_Chart_LegendPartial>

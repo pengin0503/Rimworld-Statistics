@@ -172,13 +172,16 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
             lineageTokens = new List<string>();
     }
 
-    /// <summary>The text of this save: the scope's checkpoint, or (no scope, another game, an error) what was loaded, unchanged.</summary>
+    /// <summary>
+    /// The text of this save: the scope's checkpoint; with the scope stopped, the last checkpoint committed in this game (#319);
+    /// for another game or without totals, what was loaded, unchanged.
+    /// </summary>
     private void PrepareNumericForSave()
     {
         try
         {
-            // With a scope its text is the answer, null included (nothing committed yet). Without one, what the save held.
-            numericStatistics = ReferenceEquals(Current.Game, _game) && CheckpointSavePatch.TryGetText(out var text) ? text : _loadedNumericStatistics;
+            numericStatistics = CheckpointSaveSession.TextForSave(ReferenceEquals(Current.Game, _game), CheckpointSavePatch.ActiveSession,
+                Environment.CurrentManagedThreadId, LiveMetrics.Accumulator, _loadedNumericStatistics);
             if (numericStatistics != null)
                 dataVersion = Math.Max(dataVersion, 2);
         }

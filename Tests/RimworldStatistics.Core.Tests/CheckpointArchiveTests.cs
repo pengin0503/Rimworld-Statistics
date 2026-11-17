@@ -254,6 +254,7 @@ public sealed class CheckpointArchiveTests
     {
         public readonly Dictionary<string, List<string>> Lines = new(StringComparer.Ordinal);
         public bool FailAppend { get; set; }
+        public bool FailRead { get; set; }
         public bool Missing { get; set; }
         public Action? OnAppend { get; set; }
 
@@ -268,7 +269,8 @@ public sealed class CheckpointArchiveTests
         }
 
         public IReadOnlyList<MetricObservation> Read(string campaignId, string checkpointKey)
-            => Missing || !Lines.TryGetValue(campaignId, out var lines) ? Array.Empty<MetricObservation>()
+            => FailRead ? throw new IOException("Archive unreadable.")
+                : Missing || !Lines.TryGetValue(campaignId, out var lines) ? Array.Empty<MetricObservation>()
                 : lines.Select(line => JsonSerializer.Deserialize<MetricObservation>(line, ProfileJson.CompactOptions)!)
                     .Where(o => o.Key == checkpointKey).ToArray();
     }
@@ -467,6 +469,59 @@ public sealed class CheckpointArchiveTests
         Assert.Contains(BuiltIn.StoredKey, saved.Metrics.Keys);
         Assert.IsType<IOException>(session.LastArchiveError);
         Assert.Null(session.LastSaveError);
+    }
+
+    [Fact]
+    public void Backup_AfterTheArchiveIsFixed_RetriesTheAppendWithoutAnotherChange()
+    {
+        // #315: the failed append left full inline metrics on disk; nothing changes before the user retries the backup.
+        using var temp = new TempDir();
+        var archive = new MemoryArchive { FailAppend = true };
+        var session = Start(temp, archive);
+        session.Flush();
+        Assert.Throws<IOException>(() => session.WithWritesPaused(() => 0));   // still failing: still blocked
+        var onDisk = Parent(new ProfileStore(temp.Path).Load(Now).Profile);
+        Assert.False(onDisk.ArchivedMetrics);
+        Assert.Contains(BuiltIn.StoredKey, onDisk.Metrics.Keys);
+
+        archive.FailAppend = false;
+        Assert.Equal(1, session.WithWritesPaused(() => 1));
+        Assert.Null(session.LastArchiveError);
+        Assert.Single(archive.Read(Campaign, "P"));
+        var saved = new ProfileStore(temp.Path).Load(Now).Profile;
+        Assert.True(Parent(saved).ArchivedMetrics);   // the archive reference and the trimmed parent are written together
+        Assert.Contains(BuiltIn.StoredKey, saved.MetricObservations.Single(o => o.Key == "C").Metrics.Keys);
+        Assert.Equal(2, Overall(new ProfileSession(new ProfileStore(temp.Path), () => Now, archive)).Value.Number);   // C's total
+
+        session.WithWritesPaused(() => 0);   // nothing left to retry: no second copy in the archive
+        Assert.Single(archive.Read(Campaign, "P"));
+    }
+
+    [Fact]
+    public void Restore_AfterTheArchiveIsFixed_ClosesWithoutAnotherChange()
+    {
+        using var temp = new TempDir();
+        var archive = new MemoryArchive { FailAppend = true };
+        var session = Start(temp, archive);
+        session.Flush();
+        archive.FailAppend = false;
+        session.Close();   // a restore closes the current session first
+        Assert.Single(archive.Read(Campaign, "P"));
+        Assert.True(Parent(new ProfileStore(temp.Path).Load(Now).Profile).ArchivedMetrics);
+    }
+
+    [Fact]
+    public void ArchiveReadFailure_IsReportedButDoesNotBlockABackup()
+    {
+        using var temp = new TempDir();
+        var archive = new MemoryArchive();
+        var session = Start(temp, archive);
+        session.Flush();
+        archive.FailRead = true;
+        Conflict(session);   // the archived parent must be read back
+        Assert.IsType<IOException>(session.LastArchiveError);
+        Assert.Equal(1, session.WithWritesPaused(() => 1));   // the files are as they were: nothing waits for the archive
+        archive.FailRead = false;
     }
 
     private static void Conflict(ProfileSession session)

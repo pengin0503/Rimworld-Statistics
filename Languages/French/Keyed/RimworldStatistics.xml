@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>Ce relevé figurait aussi, inchangé, dans une sauvegarde du jour {0} ; celle-ci n'a enregistré aucune statistique plus récente.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>enregistrée autrement ; non superposée</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} relevés ({1} partiels) ; {2} points sans valeur</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Sauvegardes sans point : {0}. Leurs relevés ont été éclaircis pour garder le profil léger (ou supprimés par une version antérieure) ; la forme de la courbe est conservée.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Dernier relevé : jour {0} / Sauvegarde la plus avancée : jour {1} (autre branche possible)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Valeur enregistrée</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Relevé partiel</RWS_Chart_LegendPartial>

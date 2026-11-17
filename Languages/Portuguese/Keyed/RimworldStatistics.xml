@@ -1242,6 +1242,7 @@
   <RWS_Chart_PointSavedLater>Este registo também estava, sem alterações, numa gravação do dia {0}; essa gravação não registou estatísticas mais recentes.</RWS_Chart_PointSavedLater>
   <RWS_Chart_OverlayOtherSource>registado de outra forma; não sobreposto</RWS_Chart_OverlayOtherSource>
   <RWS_Chart_PointCounts>{0} registos ({1} parciais); {2} pontos sem valor</RWS_Chart_PointCounts>
+  <RWS_Chart_HistoryOmitted>Gravações sem ponto: {0}. Os seus registos foram reduzidos para manter o perfil pequeno (ou removidos por uma versão anterior); a forma da linha é mantida.</RWS_Chart_HistoryOmitted>
   <RWS_Chart_LastCapture>Último registo: dia {0} / Gravação mais avançada: dia {1} (pode ser outro ramo)</RWS_Chart_LastCapture>
   <RWS_Chart_LegendMeasured>Valor registado</RWS_Chart_LegendMeasured>
   <RWS_Chart_LegendPartial>Registo parcial</RWS_Chart_LegendPartial>
