@@ -246,6 +246,10 @@ jobs:
         run: dotnet build tools/RealSaveImport/RealSaveImport.csproj -c Release --nologo -p:UseNuGetRefs=true
       - name: Build preserved independent SDK development sample
         run: dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release --nologo -p:UseNuGetRefs=true
+      - name: Compile development-only real-game event probe and its analyzer (not packaged)
+        run: |
+          dotnet build tools/RealGameEventProbe/RealGameEventProbe.csproj -c Release --nologo -p:UseNuGetRefs=true
+          dotnet build tools/RealGameEventProbe/Analyzer/RealGameEventAnalyzer.csproj -c Release --nologo
       - name: Core unit tests (no game launch)
         run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
       # The complete benchmark suite is intentionally opt-in / weekly: on PRs and regular pushes

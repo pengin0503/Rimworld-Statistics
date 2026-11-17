@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- A raid strategy with no arrival mode: IncidentWorker_Raid.TryGenerateRaidInfo returns false for it. Never selected (weight 0). -->
+  <RaidStrategyDef>
+    <defName>RwsProbe_NoArrival</defName>
+    <label>probe without arrival</label>
+    <workerClass>RaidStrategyWorker_ImmediateAttack</workerClass>
+    <selectionWeightPerPointsCurve>
+      <points>
+        <li>(0, 0)</li>
+        <li>(100000, 0)</li>
+      </points>
+    </selectionWeightPerPointsCurve>
+    <arriveModes />
+    <letterLabelEnemy>Raid</letterLabelEnemy>
+    <arrivalTextEnemy>They are attacking.</arrivalTextEnemy>
+    <letterLabelFriendly>Friendlies</letterLabelFriendly>
+    <arrivalTextFriendly>They are coming to help.</arrivalTextFriendly>
+  </RaidStrategyDef>
+</Defs>

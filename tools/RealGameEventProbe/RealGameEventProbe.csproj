@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!--
+    Development-only probe MOD for the real-game acceptance run of #304 (README.md). It is never part of tools/package.sh or
+    the publish workflow, and it does not reference the statistics MOD: it reaches the MOD's import by reflection when loaded.
+  -->
+  <PropertyGroup>
+    <RootNamespace>RimworldStatistics.RealGameEventProbe</RootNamespace>
+    <AssemblyName>RimworldStatistics.RealGameEventProbe</AssemblyName>
+    <OutputPath>$(MSBuildThisFileDirectory)Mod/Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
+    <DebugType>embedded</DebugType>
+    <AllowedReferenceRelatedFileExtensions>none</AllowedReferenceRelatedFileExtensions>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(UseNuGetRefs)' == 'true'">
+    <PackageReference Include="Krafs.Rimworld.Ref" Version="1.7.4985-unstable" PrivateAssets="all" ExcludeAssets="runtime" />
+  </ItemGroup>
+  <ItemGroup Condition="'$(UseNuGetRefs)' != 'true'">
+    <Reference Include="Assembly-CSharp" HintPath="$(GameDir)/Assembly-CSharp.dll" Private="false" />
+    <Reference Include="UnityStubs" HintPath="$(GameDir)/UnityStubs.dll" Private="false" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Mod/**;Analyzer/**" />
+  </ItemGroup>
+</Project>

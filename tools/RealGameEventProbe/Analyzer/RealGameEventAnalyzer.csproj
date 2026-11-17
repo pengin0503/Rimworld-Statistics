@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Reads a probe run's saves with the production SaveReader and its profile with the production ProfileSession (README.md). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <AssemblyName>RealGameEventAnalyzer</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="../../../Source/RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
+  </ItemGroup>
+</Project>

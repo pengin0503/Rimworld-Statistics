@@ -1,0 +1,22 @@
+{
+  "recordType": "modValidationRequest",
+  "schemaVersion": 1,
+  "levels": ["A", "D"],
+  "official": ["Core", "Royalty", "Ideology", "Biotech", "Odyssey"],
+  "language": "English",
+  "mods": [
+    {"path": "/private/mods/Harmony", "packageId": "brrainz.harmony", "target": false, "expectedLoadFolders": ["1.7", ""]},
+    {"path": "/private/mods/RealGameEventProbe", "packageId": "pengin0503.rimworldstatistics.realgameeventprobe", "target": false, "expectedLoadFolders": [""]},
+    {"path": "/private/mods/RimworldStatistics", "packageId": "pengin0503.rimworldstatistics", "target": true, "expectedLoadFolders": ["1.7", ""]}
+  ],
+  "expectations": {
+    "tickObservations": [
+      {"tick": 0, "id": "game.tick", "equals": 0},
+      {"tick": 900, "id": "game.tick", "equals": 900}
+    ]
+  },
+  "limits": {"timeoutSeconds": 600, "memoryMiB": 6144, "logMiB": 32, "diagnostics": 2000, "messageKiB": 16},
+  "map": {"seed": "rws-304-events"},
+  "tests": ["bounded-tick.v2"],
+  "tick": {"count": 900, "observeAt": [0, 900], "observers": ["game.tick"]}
+}

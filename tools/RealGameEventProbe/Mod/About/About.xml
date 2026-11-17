@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Rimworld Statistics real-game event probe (development only)</name>
+  <author>pengin0503</author>
+  <packageId>pengin0503.rimworldstatistics.realgameeventprobe</packageId>
+  <supportedVersions>
+    <li>1.7</li>
+  </supportedVersions>
+  <description>Development only. Performs representative events, saves and imports at one tick of a new game for the validation host. Never use it with a real colony.</description>
+</ModMetaData>
