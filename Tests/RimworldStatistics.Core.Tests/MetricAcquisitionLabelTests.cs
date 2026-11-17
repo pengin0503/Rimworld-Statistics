@@ -182,7 +182,9 @@ public sealed class MetricAcquisitionLabelTests
         var mixed = Assert.Single(Build(statuses));
         Assert.Equal(MetricVisualKind.Partial, mixed.VisualKind);
         Assert.Equal(MetricVisualKind.Missing, Assert.Single(Build([statuses[0]])).VisualKind);
-        Assert.Equal(MetricVisualKind.Complete, Assert.Single(Build([statuses[1]])).VisualKind);
+        // These test definitions are unpublished acquisition metrics, so a fully
+        // observed member is Experimental (not Complete) by existing policy.
+        Assert.Equal(MetricVisualKind.Experimental, Assert.Single(Build([statuses[1]])).VisualKind);
     }
 
     [Fact]
