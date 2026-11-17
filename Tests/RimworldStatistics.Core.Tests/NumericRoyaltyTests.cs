@@ -42,4 +42,23 @@ public sealed class NumericRoyaltyTests
         Assert.Equal("royalty", d.Acquisition);
         Assert.False(d.Published);
     }
+
+    [Fact]
+    public void HonorParentCarriesTheFamilysRangeAndCoverage()
+    {
+        // #330: the parent is the honor moved (gained + spent, never netted) with the family's measured range.
+        var a = LiveMetricAccumulator.StartNew(new[] { RoyaltyFamily.Family.Spec }, 0);
+        var s = a.Family(RoyaltyFamily.Name)!;
+        RoyaltyFamily.HonorChanged(s, 5, 17, true, false);
+        RoyaltyFamily.HonorChanged(s, 17, 12, true, true);
+        var d = a.PrepareSave(120000, DateTime.UtcNow, "royalty")!;
+        var o = CheckpointMetrics.ToObservation(d.Payload!, d.Json, new ColonyIdentity { ModCampaignId = "royalty" }, null, null);
+        var honor = o.Metrics[RoyaltyFamily.Honor].Values;
+        Assert.Equal((12L, 5L), (honor["gained"].IntegerValue!.Value, honor["spent"].IntegerValue!.Value));
+        var scalar = honor[MetricEntry.Scalar];
+        Assert.Equal((17L, MetricCoverage.Complete, (int?)0, (int?)120000),
+            (scalar.IntegerValue!.Value, scalar.Coverage, scalar.SinceTick, scalar.ThroughTick));
+        Assert.Null(MetricRates.PerDay(MetricRegistry.Find(RoyaltyFamily.Honor)!,
+            new NumericValue { Number = 17, Coverage = MetricCoverage.Complete, SinceTick = 0, ThroughTick = 120000 }));
+    }
 }

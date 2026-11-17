@@ -184,4 +184,62 @@ public sealed class NumericRankingDependencyTests
         Assert.Equal(0, unknown.Valid);
     }
 
+    private static MetricObservation WithEvidence(MetricObservation o, string unit, MetricEvidence evidence)
+    {
+        o.EvidenceByAcquisition = new Dictionary<string, MetricEvidence>(StringComparer.Ordinal) { [unit] = evidence };
+        return o;
+    }
+
+    private static MetricStatus StatusOf(NumericView numeric, string key)
+    {
+        var view = new StatsView { Colonies = [], Stats = new StatsResult { Colonies = [], EndingsByType = new Dictionary<EndingType, int>() }, Numeric = numeric };
+        return MetricStatusClassifier.Classify(view, _ => UnitRecordingState.Recording).Single(s => s.Definition.Key == key);
+    }
+
+    [Fact]
+    public void DependencyRankingsCarryTheirInputsCaptureEvidence()
+    {
+        // #328: an Experimental input made every dependency ranking look Legacy in the coverage view.
+        var p = new Profile();
+        p.SaveObservations.Add(Save("A"));
+        p.SaveObservations.Add(Save("B"));
+        p.MetricObservations.Add(WithEvidence(Event("A", (HealthDeathFamily.HostileKills, 12), (HealthDeathFamily.DeathsByRaid, 2)),
+            HealthDeathFamily.Name, MetricEvidence.Experimental));
+        p.MetricObservations.Add(WithEvidence(Event("B", (HealthDeathFamily.HostileKills, 6), (HealthDeathFamily.DeathsByRaid, 1)),
+            HealthDeathFamily.Name, MetricEvidence.Experimental));
+        p.MetricObservations.Add(WithEvidence(Snapshot("A", (ResearchStateSnapshot.Finished, 10)), "research_state", MetricEvidence.Experimental));
+        p.EndingEvents.Add(new EndingEvent { CampaignId = "rank-A", Type = EndingType.Ship, TicksGame = 60000, Source = EndingSource.Live, PartyAtEnding = 3 });
+        var view = View(p, developmentCatalog: true);
+        foreach (var key in new[] { MetricRankings.MostKills, MetricRankings.KillsToDeaths, MetricRankings.MostResearch, MetricRankings.MinPartyAtEnding })
+        {
+            var row = view.Overall.Single(r => r.Definition.Key == key);
+            Assert.Equal(MetricEvidence.Experimental, row.Value.Evidence);
+            Assert.Equal(MetricVerification.Experimental, StatusOf(view, key).Verification);
+        }
+
+        // An input captured before evidence was stored is never upgraded by a newer Experimental one.
+        p.MetricObservations[1].EvidenceByAcquisition = null;
+        var mixed = View(p, developmentCatalog: true);
+        Assert.Equal(MetricEvidence.UnknownLegacy, mixed.Overall.Single(r => r.Definition.Key == MetricRankings.MostKills).Value.Evidence);
+        Assert.Equal(MetricVerification.Legacy, StatusOf(mixed, MetricRankings.MostKills).Verification);
+    }
+
+    [Fact]
+    public void BiomeRankingsCarryTheStartSnapshotEvidence()
+    {
+        var p = new Profile();
+        p.SaveObservations.Add(Save("A"));
+        var o = new MetricObservation
+        {
+            Source = MetricObservationSource.SaveSnapshot, Key = "biome-A", Identity = Id("A"), SaveTick = 60000,
+            ObservedUtc = DateTime.UtcNow,
+        };
+        o.Metrics[ColonyStartSnapshot.Biome] = ColonyStartSnapshot.Build("TemperateForest")[ColonyStartSnapshot.Biome];
+        p.MetricObservations.Add(WithEvidence(o, "colony_start", MetricEvidence.Experimental));
+        var view = View(p, developmentCatalog: true);
+        var days = view.Overall.Single(r => r.Definition.Key == MetricRankings.DaysByBiome);
+        Assert.Equal(MetricEvidence.Experimental, days.Value.Evidence);
+        Assert.All(days.Breakdowns, b => Assert.Equal(MetricEvidence.Experimental, b.Value.Evidence));
+        Assert.Equal(MetricVerification.Experimental, StatusOf(view, MetricRankings.DaysByBiome).Verification);
+    }
 }

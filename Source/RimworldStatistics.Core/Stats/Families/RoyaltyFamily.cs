@@ -82,6 +82,8 @@ public static class RoyaltyFamily
             ["gained"] = c.Value(integer: got),
             ["spent"] = c.Value(integer: spent),
         };
-        c.PutBreakdown(Honor, values);
+        // The scalar is the honor moved (gained + spent), the total the parent row has always shown; the signed amounts stay in
+        // the breakdown and are never netted. It carries the family's range and coverage (#330); it has no per-day rate.
+        c.PutBreakdown(Honor, values, c.Value(integer: got + spent));
     }
 }

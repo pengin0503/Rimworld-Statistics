@@ -264,4 +264,36 @@ public sealed class NumericRankingTests
         Assert.Equal((1, 1), (s.TotalEndings, s.EndingsByType[EndingType.Ship]));
         Assert.True(s.Colonies.Single().HasDevOnlyEndings);
     }
+
+    [Fact]
+    public void EndingOnlyColony_IsAMissingTarget_NotAMeasuredZero()
+    {
+        // #332: a colony known only from an ending record has no observed point. Its days, population and play time are
+        // unknown: it must not hold a "0" record or make a ranking Complete, but its ending still counts.
+        var p = new Profile();
+        p.SaveObservations.Add(V1("A", 600000, population: 0, realPlay: 0));
+        p.EndingEvents.Add(Ending("Z", EndingType.Ship, 500000));
+        var v = View(p);
+        var stats = StatsCalculator.Calculate(CampaignMatcher.BuildColonies(p), new StatsOptions());
+        Assert.False(stats.Colonies.Single(c => c.Key == "id:cid-Z").HasObservedPoint);
+
+        foreach (var key in new[] { MetricRankings.PopulationPeak, MetricRankings.PlaytimePeak })
+        {
+            var peak = R(v, key);
+            Assert.Equal((0d, KeyOf(p, "A")), (peak.Value.Number, peak.Value.ColonyKey));
+            Assert.Equal((2, 1, MetricCoverage.Partial), (peak.Targets, peak.Valid, peak.Value.Coverage));
+        }
+        foreach (var key in new[] { MetricRankings.ByDifficultyDays, MetricRankings.ByPermadeathDays, MetricRankings.DaysByStoryteller })
+        {
+            var days = R(v, key);
+            Assert.Equal((10d, 2, 1, MetricCoverage.Partial), (days.Value.Number, days.Targets, days.Valid, days.Value.Coverage));
+            var unknown = days.Breakdowns.Single(b => b.Breakdown == MetricKeys.UnknownBucket);
+            Assert.Equal((MetricCoverage.Unknown, 1, 0), (unknown.Value.Coverage, unknown.Targets, unknown.Valid));
+            Assert.All(days.Breakdowns.Where(b => b.Breakdown != MetricKeys.UnknownBucket),
+                b => Assert.Equal(MetricCoverage.Complete, b.Value.Coverage));
+        }
+        var endings = R(v, MetricRankings.ByDifficultyEndings);
+        Assert.Equal((1d, 2, 2, MetricCoverage.Complete), (endings.Value.Number, endings.Targets, endings.Valid, endings.Value.Coverage));
+        Assert.Equal(1d, endings.Breakdowns.Single(b => b.Breakdown == MetricKeys.UnknownBucket).Value.Number);
+    }
 }

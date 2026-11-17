@@ -30,12 +30,19 @@ public sealed class NumericValue
     /// <summary>For a ranking over labels (e.g. the scenario with most endings): the label(s) holding it, ties joined.</summary>
     public string? Label { get; init; }
 
-    /// <summary>Known range, no value: a threshold that was not reached (a 0 ÷ 0 rate is not this: it has a denominator).</summary>
-    public bool NotReached => Number is null && Denominator is null && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+    /// <summary>
+    /// The output has no additive scalar (e.g. a goodwill min/max range) and is measured through its breakdown rows. It has no
+    /// number of its own, but it is a known reading, never a threshold that was not reached (#329). In memory only.
+    /// </summary>
+    public bool BreakdownOnly { get; init; }
 
-    /// <summary>A value, a threshold not reached, or a known 0 ÷ 0.</summary>
+    /// <summary>Known range, no value: a threshold that was not reached (a 0 ÷ 0 rate is not this: it has a denominator).</summary>
+    public bool NotReached => Number is null && Denominator is null && !BreakdownOnly
+        && Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable);
+
+    /// <summary>A value, a threshold not reached, a known 0 ÷ 0, or a reading measured through its breakdowns.</summary>
     public bool Known => Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
-        && (Number is not null || NotReached || (Numerator is not null && Denominator is not null));
+        && (Number is not null || NotReached || BreakdownOnly || (Numerator is not null && Denominator is not null));
 }
 
 /// <summary>One metric (or one breakdown entry) for all colonies or for one colony.</summary>
@@ -306,12 +313,31 @@ public static partial class MetricCalculator
             : new List<NumericRow>();
         NumericValue value;
         if (entry.Values.TryGetValue(MetricEntry.Scalar, out var scalar))
+        {
             value = From(scalar, rep, d);
+            // A scalar written as "not applicable" over measured breakdowns means the output has no additive total, not
+            // that it does not apply: the parent is a known reading of its breakdowns (#329, the goodwill range).
+            if (d.HasBreakdown && scalar.Coverage == MetricCoverage.NotApplicable
+                && breakdowns.Where(b => b.Value.Known).ToList() is { Count: > 0 } measured)
+                value = new NumericValue
+                {
+                    BreakdownOnly = true,
+                    Coverage = Weakest(measured.Select(b => b.Value.Coverage)),
+                    Evidence = value.Evidence,
+                    SinceTick = value.SinceTick,
+                    ThroughTick = value.ThroughTick,
+                    ModSetHash = value.ModSetHash,
+                };
+        }
         else if (d.HasBreakdown)
             value = new NumericValue
             {
                 Number = breakdowns.Count == 0 || breakdowns.Any(b => b.Value.Known) ? breakdowns.Sum(b => b.Value.Number ?? 0) : null,
-                Coverage = Weakest(breakdowns.Select(b => b.Value.Coverage).DefaultIfEmpty(MetricCoverage.SnapshotOnly)),
+                // A checkpoint written before its family stored this scalar (#330): the family's range is carried by every
+                // breakdown, and an empty breakdown of a live total is a lower bound, not a save-time snapshot.
+                Coverage = Weakest(breakdowns.Select(b => b.Value.Coverage).DefaultIfEmpty(
+                    d.Source == MetricObservationSource.Checkpoint ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly)),
+                SinceTick = breakdowns.Select(b => b.Value.SinceTick).Where(t => t is not null).DefaultIfEmpty(null).Min(),
                 ThroughTick = rep.SaveTick,
                 Evidence = EvidenceFor(rep, d),
             };
@@ -322,6 +348,7 @@ public static partial class MetricCalculator
             value = new NumericValue
             {
                 Number = value.Number,
+                BreakdownOnly = value.BreakdownOnly,
                 Coverage = MetricCoverage.Partial,
                 Evidence = value.Evidence,
                 Numerator = value.Numerator, Denominator = value.Denominator,

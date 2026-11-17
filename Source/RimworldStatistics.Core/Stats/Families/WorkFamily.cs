@@ -197,7 +197,11 @@ public static class WorkFamily
 
         var build = s.Peek(Build_);
         c.Put(Constructions, c.Value(integer: build?.N ?? 0));
-        c.PutBreakdown(ConstructionMaterials, c.Counts(build), null);
+        // The scalar is the material units of all types, the total the parent row has always shown; storing it gives the row
+        // the family's measured range and coverage (#330). It is not a count of constructions (that is Constructions).
+        var materials = c.Counts(build);
+        c.PutBreakdown(ConstructionMaterials, materials,
+            c.Value(integer: materials.Values.Sum(v => v.IntegerValue ?? 0), partial: build?.Overflow == true));
         c.PutTop(BuildByWorker, BestBuilder);
         c.PutCount(BuildFail, ConstructionFailures);
         c.PutCount(Deconstruct, Deconstructions);
