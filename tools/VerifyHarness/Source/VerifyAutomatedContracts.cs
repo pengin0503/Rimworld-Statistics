@@ -136,7 +136,9 @@ internal static class VerifyAutomatedContracts
     private static CaseResult ViewCache()
     {
         const string id = "contract.view_cache";
-        var session = ProfileService.TryGetSession();
+        var session = ProfileService.TryGetSession(out var failure);
+        if (failure is not null)
+            return CaseCheck.Error(id, Unit, failure) with { Evidence = "ContractError" };
         if (session is null)
             return Skipped(id, "profile session not ready");
         var options = new StatsOptions();
@@ -169,7 +171,9 @@ internal static class VerifyAutomatedContracts
     {
         const string id = "contract.lineage";
         var campaign = GameComponent_RimworldStatistics.CurrentOrNull?.campaignId;
-        var session = ProfileService.TryGetSession();
+        var session = ProfileService.TryGetSession(out var failure);
+        if (failure is not null)
+            return CaseCheck.Error(id, Unit, failure) with { Evidence = "ContractError" };
         if (string.IsNullOrWhiteSpace(campaign) || session is null)
             return Skipped(id, "campaign or profile not ready");
         // Keep all reads and CheckpointSelector operations under the session lock.

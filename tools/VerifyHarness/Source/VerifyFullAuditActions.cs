@@ -147,7 +147,10 @@ public static class VerifyFullAuditActions
 
         // Only this game's campaign is considered. Do not infer a zero from
         // missing snapshots or from a different game's saved records.
-        var session = ProfileService.TryGetSession();
+        // A profile that failed to load stops the dossier, as before, instead of reading as "not observed".
+        var session = ProfileService.TryGetSession(out var failure);
+        if (failure is not null)
+            System.Runtime.ExceptionServices.ExceptionDispatchInfo.Capture(failure).Throw();
         if (session is not null && !string.IsNullOrEmpty(campaign))
             session.Read(p =>
             {

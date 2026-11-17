@@ -125,9 +125,11 @@ internal static class VerifyProbe
         sb.AppendLine($"{CaseCheck.LogPrefix} lineage campaign={campaign ?? "(none)"} parent-in-game={LiveMetrics.Accumulator?.ParentId ?? "(none)"}");
         if (campaign is null)
             return sb.ToString().TrimEnd();
-        if (ProfileService.TryGetSession() is not { } session)
+        if (ProfileService.TryGetSession(out var failure) is not { } session)
         {
-            sb.AppendLine("  the profile is still loading; try again");
+            sb.AppendLine(failure is null
+                ? "  the profile is still loading; try again"
+                : $"  the profile failed to load: {failure.GetType().Name}: {failure.Message}");
             return sb.ToString().TrimEnd();
         }
         // Everything is read under the session's lock: the profile may change on its background thread.
