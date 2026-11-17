@@ -51,7 +51,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     public override void DoWindowContents(Rect rect)
     {
         Text.Font = GameFont.Medium;
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width - 32f, 32f), heading.Truncate(rect.width - 32f));
+        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 32f), 32f);
+        var shownTitle = heading.Truncate(titleRect.width);
+        Widgets.Label(titleRect, shownTitle);
+        if (shownTitle != heading)
+            TooltipHandler.TipRegion(titleRect, heading);
         Text.Font = GameFont.Small;
         var colony = new Rect(rect.x, rect.y + 35f, rect.width, 26f);
         Widgets.Label(colony, colonyName.Truncate(colony.width));

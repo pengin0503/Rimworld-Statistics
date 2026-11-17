@@ -105,7 +105,11 @@ internal sealed class Dialog_MetricChart : Window
     public override void DoWindowContents(Rect rect)
     {
         Text.Font = GameFont.Medium;
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width - 35f, 32f), title.Truncate(rect.width - 35f));
+        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 35f), 32f);
+        var shownTitle = title.Truncate(titleRect.width);
+        Widgets.Label(titleRect, shownTitle);
+        if (shownTitle != title)
+            TooltipHandler.TipRegion(titleRect, title);
         Text.Font = GameFont.Small;
 
         var canCompare = colony.Bars.Count > 0;
