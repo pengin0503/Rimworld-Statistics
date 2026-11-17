@@ -1151,13 +1151,13 @@
   <RWS_VgeHybrid_BirthsDesc>플레이어 소유 VGE 전자 자궁의 성장 주기가 성공적으로 끝나 실제로 하나씩 생성된 플레이어 소유 잡종 폰 수이며 폰 종류별로 집계합니다. 성장 실패, 단순 시간 경과 및 저장 파일 복원은 제외합니다.</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE 생체 기계 변환 횟수</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>플레이어 소유 메카 잡종 변환기가 원래 대상을 제거하고 플레이어 소유 변환 폰을 새로 하나 생성하는 데 성공한 횟수이며 결과 폰 종류별로 집계합니다. 기계 작동 시작, 대기 및 생성 실패는 제외합니다.</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 가석방 승인 횟수</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>가석방 승인 횟수</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>가석방 심사에서 플레이어가 구금 중인 살아 있는 수감자의 만료된 형기를 실제로 종료하고 석방 명령을 내린 결정의 수입니다. 심사만 개최한 경우, 형기 연장, 모집 선택지, 반복 결정 및 이후 실제 출소는 제외합니다.</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>유전 원유 추출량 (유전 단위)</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>플레이어 소유 유정에서 성공적으로 원유를 퍼 올렸을 때 유전 용량이 실제 감소한 양입니다. 유전 용량 단위이며 배관 부피나 아이템 수가 아닙니다. 시추 진행, 펌프 시도, 유전 자연 회복, 탱크 간 이동 및 정유소 출력은 제외합니다.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded 형기 만료 횟수</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>형기 만료 횟수</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>플레이어가 구금한 수감자의 형기가 Prison Expanded에서 실제로 전체 기간에 도달해 처음으로 가석방 심사 대상이 된 횟수입니다. 가석방 승인, 석방 명령, 중복된 날짜 틱 및 불러올 때 복구한 값은 제외합니다.</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 실제 출소한 수감자 수</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>실제 출소한 수감자 수</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded가 기록한 수감자가 플레이어 본거지 지도에서 실제로 나간 횟수입니다. 석방이나 가석방 명령만 받은 경우는 제외합니다. 원래 형기와 관계없이 실제 나갔다면 집계합니다.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>정유 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>플레이어 소유 Rimefeller 정유 시설의 처리로 배관망에서 사용 가능한 연료가 실제 감소한 양입니다. 현장 기계로 이동한 연료와 예정되거나 시도만 한 소비는 제외합니다. 배관망 연료 단위입니다.</RWS_Rimefeller_RefineryFuelUsedDesc>
