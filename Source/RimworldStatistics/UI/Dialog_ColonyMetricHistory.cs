@@ -499,14 +499,21 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             Widgets.DrawBoxSolid(new Rect(X(tick) - 1f, plot.yMax - 7f, 2f, 7f), GapColor);
 
         // The readings picked for a comparison (#307), from the full series: thinning may not have kept them.
-        foreach (var picked in new[] { pickFrom, change?.FromIndex, change?.ToIndex })
+        // A local function, not an array of the indices: this runs every frame.
+        void DrawPicked(int? picked)
         {
             if (picked is not { } index || index >= history.Points.Count
                 || history.Points[index].Value is not { Number: { } pickedNumber })
-                continue;
+                return;
             var at = new Vector2(X(history.Points[index].Tick), Y(pickedNumber));
             Widgets.DrawBoxSolid(new Rect(at.x, plot.y, 1f, plot.height), PickColor);
             Widgets.DrawBox(new Rect(at.x - 5f, at.y - 5f, 10f, 10f), 1);
+        }
+        DrawPicked(pickFrom);
+        if (change is not null)
+        {
+            DrawPicked(change.FromIndex);
+            DrawPicked(change.ToIndex);
         }
 
         void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor)
