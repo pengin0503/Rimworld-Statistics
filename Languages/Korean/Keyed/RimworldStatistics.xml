@@ -832,15 +832,15 @@
   <RWS_Exp_ExperimentalRow>실험적</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>게임 내 {0}일째부터 기록</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>필요한 MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>출처 MOD: {0}</RWS_Mod_Provider>
+  <RWS_Mod_Provider>MOD：{0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>출처 모드가 현재 설치되어 있지 않습니다. 기록된 값은 유지되지만 새 값은 기록하지 않습니다.</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>시작한 모집 요청 수</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>기록 시작 후 성공적으로 생성된 Recruitment 1.1.2 모집 요청 수입니다. 기록 활성화 전 기간은 일부만 포함합니다. 생성 후 취소한 요청도 시작된 것으로 셉니다.</RWS_ModRecruitment_StartedDesc>
   <RWS_ModRecruitment_Active>진행 중인 모집 요청 수</RWS_ModRecruitment_Active>
   <RWS_ModRecruitment_ActiveDesc>최근 저장 성공 시점에 대기 중이던 모집 요청 수입니다. 평생 누적값이 아닙니다.</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>Hospitality: 저장 시 방문객 수</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuests>저장 시 방문객 수</RWS_ModHospitality_PresentGuests>
   <RWS_ModHospitality_PresentGuestsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머물던 Hospitality 방문객 수입니다. 총 누적 방문 수가 아닙니다.</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>Hospitality: 저장 시 방문객 그룹 수</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroups>저장 시 방문객 그룹 수</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머물던 Hospitality 방문객 그룹 수입니다. 총 누적 방문 수가 아닙니다.</RWS_ModHospitality_PresentGroupsDesc>
   <RWS_Details_ViewLifetime>누적 (기록 기간)</RWS_Details_ViewLifetime>
   <RWS_Details_ViewOther>기타</RWS_Details_ViewOther>
@@ -884,23 +884,23 @@
   <RWS_CrossDesc_TopCategory>모든 정착지의 범주별 합계를 비교합니다.</RWS_CrossDesc_TopCategory>
   <RWS_Cross_Sum>정착지별 저장 시점 합계: {0}</RWS_Cross_Sum>
   <RWS_CrossDesc_Sum>각 정착지의 기록 시점 값을 합산합니다.</RWS_CrossDesc_Sum>
-  <RWS_Hospitality_VisitGroups>Hospitality: 도착한 손님 그룹 (활성화 후)</RWS_Hospitality_VisitGroups>
+  <RWS_Hospitality_VisitGroups>도착한 손님 그룹 (활성화 후)</RWS_Hospitality_VisitGroups>
   <RWS_Hospitality_VisitGroupsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에 도착한 것으로 확인된 Hospitality 손님 그룹 수입니다. 구조된 손님을 위해 만든 대체 그룹은 제외합니다. 다시 불러온 뒤 중복 기록은 걸러 냅니다. 모드 설치 전 방문은 추정하지 않습니다.</RWS_Hospitality_VisitGroupsDesc>
-  <RWS_Hospitality_VisitGuests>Hospitality: 손님 도착 인원 (활성화 후)</RWS_Hospitality_VisitGuests>
+  <RWS_Hospitality_VisitGuests>손님 도착 인원 (활성화 후)</RWS_Hospitality_VisitGuests>
   <RWS_Hospitality_VisitGuestsDesc>이 통계를 활성화한 후 도착이 확인된 Hospitality 그룹의 손님 인원 합계입니다. 재방문도 다시 집계하므로 서로 다른 사람 수나 현재 손님 수가 아닙니다. 그 이전 방문은 알 수 없습니다.</RWS_Hospitality_VisitGuestsDesc>
-  <RWS_Hospitality_VisitsCompleted>Hospitality: 평화롭게 떠난 그룹 (활성화 후)</RWS_Hospitality_VisitsCompleted>
+  <RWS_Hospitality_VisitsCompleted>평화롭게 떠난 그룹 (활성화 후)</RWS_Hospitality_VisitsCompleted>
   <RWS_Hospitality_VisitsCompletedDesc>비적대 Hospitality 그룹이 방문을 마치고 실제로 지도를 떠난 것이 확인됐으며 남거나 실종된 구성원 없이 그룹이 해산한 경우에만 집계합니다. 쫓겨나거나 재구성된 그룹은 제외합니다. 떠나는 중에 게임을 불러와 증거가 부족하면 추정하지 않고 제외합니다.</RWS_Hospitality_VisitsCompletedDesc>
-  <RWS_Hospitality_Recruited>Hospitality: 모집한 손님 (활성화 후)</RWS_Hospitality_Recruited>
+  <RWS_Hospitality_Recruited>모집한 손님 (활성화 후)</RWS_Hospitality_Recruited>
   <RWS_Hospitality_RecruitedDesc>이 통계를 활성화한 후 확인된 Hospitality 손님 모집 수입니다. Hospitality 모집 처리 후 폰이 플레이어 세력 소속이 된 경우만 집계합니다. 이전 모집은 추정하지 않습니다.</RWS_Hospitality_RecruitedDesc>
-  <RWS_Hospitality_ForcedRecruit>Hospitality: 강제 모집한 손님 (활성화 후)</RWS_Hospitality_ForcedRecruit>
+  <RWS_Hospitality_ForcedRecruit>강제 모집한 손님 (활성화 후)</RWS_Hospitality_ForcedRecruit>
   <RWS_Hospitality_ForcedRecruitDesc>이 통계를 활성화한 후 Hospitality가 강제로 표시한 모집 성공 수입니다. 전체 모집 성공 수에 포함됩니다.</RWS_Hospitality_ForcedRecruitDesc>
-  <RWS_Hospitality_VoluntaryRecruit>Hospitality: 자발적으로 가입한 손님 (활성화 후)</RWS_Hospitality_VoluntaryRecruit>
+  <RWS_Hospitality_VoluntaryRecruit>자발적으로 가입한 손님 (활성화 후)</RWS_Hospitality_VoluntaryRecruit>
   <RWS_Hospitality_VoluntaryRecruitDesc>이 통계를 활성화한 후 Hospitality가 강제로 표시하지 않은 모집 성공 수입니다. 전체 모집 성공 수에 포함됩니다.</RWS_Hospitality_VoluntaryRecruitDesc>
-  <RWS_Hospitality_ShoppingUnits>Hospitality 손님이 구매한 아이템</RWS_Hospitality_ShoppingUnits>
+  <RWS_Hospitality_ShoppingUnits>손님이 구매한 아이템</RWS_Hospitality_ShoppingUnits>
   <RWS_Hospitality_ShoppingUnitsDesc>이 통계를 활성화한 후 플레이어 본거지 지도에서 완료된 쇼핑 작업으로 손님의 소지품이나 장비에 추가된 아이템 수입니다.</RWS_Hospitality_ShoppingUnitsDesc>
-  <RWS_Hospitality_ShoppingSilver>Hospitality 손님이 지불한 은</RWS_Hospitality_ShoppingSilver>
+  <RWS_Hospitality_ShoppingSilver>손님이 지불한 은</RWS_Hospitality_ShoppingSilver>
   <RWS_Hospitality_ShoppingSilverDesc>이 통계를 활성화한 후 같은 쇼핑 작업이 완료되면서 손님에게서 지불받은 은의 양입니다.</RWS_Hospitality_ShoppingSilverDesc>
-  <RWS_Hospitality_AssignedBeds>Hospitality: 저장 시 손님에게 배정된 침대</RWS_Hospitality_AssignedBeds>
+  <RWS_Hospitality_AssignedBeds>저장 시 손님에게 배정된 침대</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>저장에 성공한 시점에 플레이어 본거지 지도에 머무는 Hospitality 손님에게 배정된 고유 손님용 침대 수입니다. 함께 쓰는 침대는 한 번만 셉니다. 실제로 자는 인원이나 누적 숙박 예약 수가 아닌 침대 배정 수입니다.</RWS_Hospitality_AssignedBedsDesc>
   <RWS_AddonRecruitment_Started>시작한 Recruitment 모집 요청 (활성화 후)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>이 통계를 활성화한 후 확인된 Recruitment 모집 요청 수입니다. 추적 방식이 달라졌으므로 이전에 내장된 통계와 별도의 계열로 표시합니다.</RWS_AddonRecruitment_StartedDesc>
@@ -908,13 +908,13 @@
   <RWS_AddonRecruitment_SilverSpentDesc>이 통계를 활성화한 후 새 Recruitment 요청을 생성할 때 실제로 지불했다고 확인된 은의 총량입니다. 추가 수수료를 포함하지만 실패한 시도는 제외하며 순자산 변화를 뜻하지 않습니다.</RWS_AddonRecruitment_SilverSpentDesc>
   <RWS_AddonRecruitment_PlannedApplicants>Recruitment: 예정 지원자 수 (활성화 후)</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>이 통계를 활성화한 후 유료 Recruitment 요청이 시작될 때 추첨으로 정한 예정 지원자 수의 합계입니다. 실제 도착하거나 가입하거나 정착민이 된 인원 수가 아니며 생성 자체가 실패할 수 있습니다.</RWS_AddonRecruitment_PlannedApplicantsDesc>
-  <RWS_DBH_PipedStorage>Dubs Bad Hygiene: 배관 저장수량 (L)</RWS_DBH_PipedStorage>
+  <RWS_DBH_PipedStorage>배관 저장수량 (L)</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>저장에 성공한 시점에 플레이어 본거지 지도에서 배관에 연결된 Dubs Bad Hygiene 물탱크의 총저장량(리터)입니다. 탱크마다 한 번만 집계하고 읽을 수 있는 연결 탱크만 포함합니다. 평생 누적 생산량이나 사용량이 아닙니다. 활성화 이전 수치는 복원하지 않으며 데이터를 읽을 수 없으면 알 수 없음으로 표시합니다.</RWS_DBH_PipedStorageDesc>
-  <RWS_DBH_PipedCapacity>Dubs Bad Hygiene: 연결 물탱크 용량 (L)</RWS_DBH_PipedCapacity>
+  <RWS_DBH_PipedCapacity>연결 물탱크 용량 (L)</RWS_DBH_PipedCapacity>
   <RWS_DBH_PipedCapacityDesc>최근 저장 성공 시점에 플레이어 본거지 지도에서 배관에 연결된 서로 다른 물탱크의 최대 용량 합계(리터)입니다. 평생 누적값이 아닙니다.</RWS_DBH_PipedCapacityDesc>
-  <RWS_DBH_PumpCapacity>Dubs Bad Hygiene: 펌프 정격 용량 (L/일)</RWS_DBH_PumpCapacity>
+  <RWS_DBH_PumpCapacity>펌프 정격 용량 (L/일)</RWS_DBH_PumpCapacity>
   <RWS_DBH_PumpCapacityDesc>저장에 성공한 시점에 사용 중인 각 독립 배관망에 대해 Dubs Bad Hygiene에서 정의한 정격 펌프 용량을 합산합니다(게임 내 일당 리터). 실제로 퍼 올린 물이 아닌 용량입니다.</RWS_DBH_PumpCapacityDesc>
-  <RWS_DBH_GroundwaterCapacity>Dubs Bad Hygiene: 지하수 공급 용량 (L/일)</RWS_DBH_GroundwaterCapacity>
+  <RWS_DBH_GroundwaterCapacity>지하수 공급 용량 (L/일)</RWS_DBH_GroundwaterCapacity>
   <RWS_DBH_GroundwaterCapacityDesc>저장에 성공한 시점에 사용 중인 각 독립 배관망에 대해 Dubs Bad Hygiene에서 정의한 유입수 및 지하수 정격 공급 용량을 합산합니다(게임 내 일당 리터). 실제로 퍼 올린 수량이 아닙니다.</RWS_DBH_GroundwaterCapacityDesc>
   <RWS_SAU_OrdersIssued>자동 의복 교체 지시 횟수</RWS_SAU_OrdersIssued>
   <RWS_SAU_OrdersIssuedDesc>Smart Apparel Upgrade가 실제로 내린 자동 의복 착용 지시 횟수입니다. 의복 교체 완료 횟수가 아닙니다. 수집 활성화 이후의 사건만 집계합니다. 실험적 통계입니다.</RWS_SAU_OrdersIssuedDesc>
@@ -1011,13 +1011,13 @@
   <RWS_Details_StatusPartial>일부만 기록</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>미측정</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>실험적</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>획득한 VPE 초능력자 레벨</RWS_Metric_VpeLevelsGained>
+  <RWS_Metric_VpeLevelsGained>획득한 초능력자 레벨</RWS_Metric_VpeLevelsGained>
   <RWS_MetricDesc_VpeLevelsGained>기록 시작 후 확인된 플레이어 세력 폰의 VPE 초능력자 레벨 상승량입니다.</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>VPE 초능력자 수</RWS_Metric_VpePsycasters>
+  <RWS_Metric_VpePsycasters>초능력자 수</RWS_Metric_VpePsycasters>
   <RWS_MetricDesc_VpePsycasters>기록된 저장 시점에 VPE 초능력자 이식물을 보유한 자유 정착민 수입니다.</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>최고 VPE 초능력자 레벨</RWS_Metric_VpeMaxLevel>
+  <RWS_Metric_VpeMaxLevel>최고 초능력자 레벨</RWS_Metric_VpeMaxLevel>
   <RWS_MetricDesc_VpeMaxLevel>기록된 저장 시점에 자유 정착민의 VPE 초능력자 레벨 중 최고값입니다.</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>VPE 초능력자 레벨 합계</RWS_Metric_VpeSumLevels>
+  <RWS_Metric_VpeSumLevels>초능력자 레벨 합계</RWS_Metric_VpeSumLevels>
   <RWS_MetricDesc_VpeSumLevels>기록된 저장 시점에 자유 정착민의 VPE 초능력자 레벨을 모두 합산한 값입니다.</RWS_MetricDesc_VpeSumLevels>
   <RWS_Metric_OutpostPawns>전초기지 주둔 인원</RWS_Metric_OutpostPawns>
   <RWS_MetricDesc_OutpostPawns>기록된 저장 시점에 플레이어가 소유한 전초기지에 주둔한 폰 수입니다.</RWS_MetricDesc_OutpostPawns>
@@ -1027,11 +1027,11 @@
   <RWS_MetricDesc_OutpostDeliveries>전초기지에서 배송 처리로 넘긴 내용물이 있는 생산품 묶음의 수입니다. 전초기지에 남아 있거나 아직 운송 중인 물품은 도착하지 않았을 수 있습니다.</RWS_MetricDesc_OutpostDeliveries>
   <RWS_Metric_OutpostProducts>아이템별 전초기지 생산품</RWS_Metric_OutpostProducts>
   <RWS_MetricDesc_OutpostProducts>전초기지가 배송 처리로 넘긴 생산품 수량을 아이템 종류별로 집계합니다.</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>종류별 Dubs Bad Hygiene 시설 수</RWS_Metric_DbhFixtures>
+  <RWS_Metric_DbhFixtures>종류별 시설 수</RWS_Metric_DbhFixtures>
   <RWS_MetricDesc_DbhFixtures>저장에 성공한 시점에 플레이어의 본거지 지도에 있는 Dubs Bad Hygiene 소유 건축물 수입니다.</RWS_MetricDesc_DbhFixtures>
-  <RWS_Metric_DbhActivities>작업별 Dubs Bad Hygiene 활동 완료 수</RWS_Metric_DbhActivities>
+  <RWS_Metric_DbhActivities>작업별 활동 완료 수</RWS_Metric_DbhActivities>
   <RWS_MetricDesc_DbhActivities>이 통계를 활성화한 후 플레이어 폰이 본거지 지도에서 완료한 화장실, 샤워 및 확인된 세척 작업의 수입니다.</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Smart Apparel Upgrade 갈아입기 완료 횟수</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwaps>갈아입기 완료 횟수</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>이 통계를 활성화한 후 Smart Apparel Upgrade의 자동 지시로 선택된 옷을 실제로 입는 작업을 끝낸 횟수입니다.</RWS_SAU_CompletedSwapsDesc>
   <RWS_VTE_BankCredits>VTE 은행 입금액</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>이 실험적 통계를 활성화한 후 완료한 VTE 은행 예금에서 수수료를 제외하고 실제로 계좌에 입금된 은입니다. 계약 보상 입금은 제외합니다.</RWS_VTE_BankCreditsDesc>
@@ -1049,29 +1049,29 @@
   <RWS_VTE_ContractPurchasesDesc>플레이어가 게시하고 VTE 은행 거래를 통해 대금을 전액 지불한 뒤 생성된 아이템으로 이행한 구매 계약 수입니다. 지불 취소나 돈을 내지 않고 수락만 한 계약은 제외합니다.</RWS_VTE_ContractPurchasesDesc>
   <RWS_VTE_ContractReceived>VTE 계약으로 구매한 물품 수</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>플레이어가 올려 대금 지불을 완료한 VTE 구매 계약에서 생성된 아이템 수량입니다. NPC 구매 계약 납품이나 일반 거래와 구분합니다.</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>VPE 초능력 사용 횟수</RWS_Metric_VpeCasts>
+  <RWS_Metric_VpeCasts>초능력 사용 횟수</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>플레이어의 자유 정착민이 Vanilla Psycasts Expanded 능력을 실제로 사용한 횟수입니다. VPE에서 능력 사용을 소비한 시점에 세며 능력별로도 표시합니다. 대기 명령, 취소한 사용 및 NPC의 사용은 제외합니다.</RWS_MetricDesc_VpeCasts>
-  <RWS_VfeSecurity_TrapsRearmed>VFE Security 함정 재장전 횟수</RWS_VfeSecurity_TrapsRearmed>
+  <RWS_VfeSecurity_TrapsRearmed>함정 재장전 횟수</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>플레이 중 플레이어의 해제된 함정을 실제로 다시 작동 상태로 만든 횟수입니다. 해제에서 장전으로 바뀐 경우만 세며, 작업 지시, 함정 생성 시 초기화, 개발자 작업, 모드 자체의 폰 기록은 제외합니다.</RWS_VfeSecurity_TrapsRearmedDesc>
   <RWS_VaeAchievements_Unlocked>VAE 업적 카드 해금 수</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>정상적인 플레이 중 새로 해금한 업적 카드를 업적 정의별로 집계합니다. 디버그 해금과 게임 시작 시 복원 확인은 제외합니다.</RWS_VaeAchievements_UnlockedDesc>
   <RWS_VaeAchievements_Points>VAE 획득 업적 점수</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>디버그가 아닌 새 업적 해금으로 실제 지급된 점수입니다. 점수 합계를 읽지 못하면 기록량을 부분 기록으로 표시합니다.</RWS_VaeAchievements_PointsDesc>
-  <RWS_VfeTribals_EraAdvances>VFE Tribals 시대 발전 횟수</RWS_VfeTribals_EraAdvances>
+  <RWS_VfeTribals_EraAdvances>시대 발전 횟수</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>플레이어 부족의 기술 시대가 실제로 발전한 횟수이며 시대별로 집계합니다. 초기화, 같은 시대 유지, 이전 시대로 후퇴 및 저장 파일 복원은 제외합니다.</RWS_VfeTribals_EraAdvancesDesc>
-  <RWS_VfeTribals_Cornerstones>VFE Tribals 획득한 초석</RWS_VfeTribals_Cornerstones>
+  <RWS_VfeTribals_Cornerstones>획득한 초석</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>플레이 중 사용 가능한 점수로 새로 구매한 초석의 수이며 종류별로 집계합니다. 이미 보유했거나 불러오며 복원된 초석은 제외합니다.</RWS_VfeTribals_CornerstonesDesc>
   <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded 달성한 열망</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>플레이어 정착민이 모드의 정상 완료 확인을 통해 새로 달성한 열망의 수이며 열망별로 집계합니다. 디버그로 완료한 경우, 이미 달성했거나 배정되지 않은 열망 및 저장 파일 복원은 제외합니다.</RWS_VaeAspirations_CompletedDesc>
-  <RWS_VfeInsectoids_HiveBirths>VFE Insectoids 2 플레이어 둥지에서 태어난 곤충</RWS_VfeInsectoids_HiveBirths>
+  <RWS_VfeInsectoids_HiveBirths>플레이어 둥지에서 태어난 곤충</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>정상 플레이 중 플레이어 소유 둥지에서 새로 생성된 곤충 수이며 곤충 종류별로 집계합니다. 고치 교체, 기존 둥지 구성원 복원 및 개발자 생성은 제외합니다.</RWS_VfeInsectoids_HiveBirthsDesc>
   <RWS_VqeCryptoforge_RelayScans>Cryptoforge 중계기 스캔 완료 횟수</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>플레이어 정착민이 임무 지도에 있는 동안 완료된 Frozen Scanning Relay의 스캔 횟수입니다.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>RimFactory Auto Machine Tool 지상 출력 수</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutput>Auto Machine Tool 지상 출력 수</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>플레이어 소유 Auto Machine Tool이 지도 위에 실제로 배치한 아이템 수이며 종류별로 집계합니다. 컨베이어나 다른 기계로 직접 전달한 아이템은 제외합니다.</RWS_RimFactory_GroundOutputDesc>
-  <RWS_Rwom_HealingCasts>RimWorld of Magic 치유 마법 성공 횟수</RWS_Rwom_HealingCasts>
+  <RWS_Rwom_HealingCasts>치유 마법 성공 횟수</RWS_Rwom_HealingCasts>
   <RWS_Rwom_HealingCastsDesc>플레이어가 Heal 또는 Advanced Heal을 사용해 대상의 부상을 실제로 완화하거나 갓 잃은 신체 부위를 안정시킨 횟수입니다.</RWS_Rwom_HealingCastsDesc>
-  <RWS_Sos2_OrbitArrivals>Save Our Ship 2 궤도 도달 횟수</RWS_Sos2_OrbitArrivals>
+  <RWS_Sos2_OrbitArrivals>궤도 도달 횟수</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>플레이어가 조종하는 우주선이 지표에서 이륙한 뒤 안정된 궤도에 도달한 횟수입니다.</RWS_Sos2_OrbitArrivalsDesc>
   <RWS_SimpleWarrants_Completed>Simple Warrants 현상수배 인도 완료 횟수</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>플레이어 상단이 수배 대상을 실제로 인도해 대상이 제거되고 수배가 완료된 횟수입니다.</RWS_SimpleWarrants_CompletedDesc>
@@ -1081,19 +1081,19 @@
   <RWS_VqeGenerator_UpgradesDesc>플레이어가 소유한 기존 ARC 발전기를 같은 자리에 교체하는 건설이 완료된 횟수이며 새 발전기 종류별로 집계합니다.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>최대 소유 차량 수</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>한 정착지에서 플레이어가 동시에 소유한 Vehicle Framework 차량의 최대 수입니다. 지도, 상단, 비행 중, 보관 중 차량을 모두 포함하며 저장 성공 시에 기록합니다. 차량 종류는 최댓값을 기록한 저장 시점의 구성입니다.</RWS_VehicleFramework_OwnedPeakDesc>
-  <RWS_VfeDeserters_IntelPaid>Deserters 사용한 정보</RWS_VfeDeserters_IntelPaid>
+  <RWS_VfeDeserters_IntelPaid>사용한 정보</RWS_VfeDeserters_IntelPaid>
   <RWS_VfeDeserters_IntelPaidDesc>Deserter Network에서 승인된 결제를 위해 플레이어 본거지 재고에서 실제로 제거한 일반 정보 아이템 수입니다.</RWS_VfeDeserters_IntelPaidDesc>
-  <RWS_VfeDeserters_CriticalIntelPaid>Deserters 사용한 중요 정보</RWS_VfeDeserters_CriticalIntelPaid>
+  <RWS_VfeDeserters_CriticalIntelPaid>사용한 중요 정보</RWS_VfeDeserters_CriticalIntelPaid>
   <RWS_VfeDeserters_CriticalIntelPaidDesc>Deserter Network에서 승인된 결제를 위해 플레이어 본거지 재고에서 실제로 제거한 중요 정보 아이템 수입니다.</RWS_VfeDeserters_CriticalIntelPaidDesc>
-  <RWS_VfeClassical_SenatorFavors>VFE Classical 새로 지지를 얻은 원로원 의원</RWS_VfeClassical_SenatorFavors>
+  <RWS_VfeClassical_SenatorFavors>새로 지지를 얻은 원로원 의원</RWS_VfeClassical_SenatorFavors>
   <RWS_VfeClassical_SenatorFavorsDesc>일반 외교나 임무로 이전에는 반대하던 원로원 의원이 새로 지지하게 된 수이며 세력별로 집계합니다. 개발자 조작, 원래 지지하던 의원 및 이전 저장 파일 복원은 제외합니다.</RWS_VfeClassical_SenatorFavorsDesc>
-  <RWS_VfeEmpire_HonorsBestowed>VFE Empire 수여한 영예</RWS_VfeEmpire_HonorsBestowed>
+  <RWS_VfeEmpire_HonorsBestowed>수여한 영예</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>행사가 끝날 때 보류 중이던 VFE Empire 영예가 플레이어 정착민에게 실제로 수여된 횟수이며 영예별로 집계합니다. 사용 가능한 영예를 받기만 한 경우와 개발자 조작은 제외합니다.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>VSIE 영감 열망 달성 횟수</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded에서 정착민의 활성 영감과 연결된 열망을 새로 달성한 횟수이며 영감별로 집계합니다. 미완료 진행, 기한 만료 및 관련 없는 영감은 제외합니다.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 탑승 시작 횟수</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>플레이어 정착민이 Giddy-Up 탑승 작업을 완료하고 소유 동물에 실제로 타기 시작한 횟수이며 동물 종류별로 집계합니다. 이미 탄 채로 도착하거나 대기 중인 명령 또는 중복 관측은 제외합니다.</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Combat Extended 정착민 재장전 횟수</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_Reloads>정착민 재장전 횟수</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>플레이어 측 폰이 무기 탄창에 실제로 탄약을 넣고 완료한 재장전 횟수입니다. 여러 탄약 중첩을 넣어도 한 번으로 셉니다. 포탑, 자동 장전기, 탄약 비활성화 상태 및 실패한 재장전은 제외합니다.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>VRE Android 자연 각성 횟수</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>합성 신체를 가진 플레이어 소유 안드로이드가 기분에 따른 유전자 검사로 자연스럽게 각성한 횟수입니다. 개발자 도구로 직접 각성하거나 시작 시 설정, 이미 각성한 안드로이드는 제외합니다. Biotech가 필요합니다.</RWS_VreAndroid_AwakeningsDesc>
@@ -1107,7 +1107,7 @@
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded에 속한 수프, 치즈 및 기타 VEF 가공 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일반 제작 지시나 출력이 일부 막힌 경우는 제외합니다.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Vanilla Brewing Expanded 발효 및 숙성 묶음</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded에 속한 VEF 발효, 양조 및 숙성 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일시정지, 막힘, 미완료 출력 및 일반 제작 지시는 제외합니다.</RWS_VefBrewing_BatchesDesc>
-  <RWS_Gastronomy_SilverCollected>Gastronomy 손님 식사 대금</RWS_Gastronomy_SilverCollected>
+  <RWS_Gastronomy_SilverCollected>손님 식사 대금</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>플레이어 식당에서 다른 세력 손님이 식사비로 실제 지불한 은입니다. 일부만 지불했다면 실제 금액만 더하며, 미지불 외상, 무료 식사 및 관련 없는 거래는 제외합니다.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>VQE Drone Factory 조립한 드론</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>자동 드론 조립기의 생산 시간이 끝나 실제로 생성된 플레이어 소유 드론 수이며 폰 종류별로 집계합니다. 시간 경과만 이루어진 경우, 생성 실패, 알에서 부화한 경우는 제외합니다.</RWS_VqeDrones_AssembledDesc>
@@ -1119,33 +1119,33 @@
   <RWS_VgeExtraction_ItemsPlacedDesc>플레이어가 DNA 추출에 성공해 실제로 배치하거나 중첩에 합친 DNA 아이템 수이며 출력 아이템별로 집계합니다. 잘못된 대상, 배치 실패, 산출물 없이 소모한 사용 횟수 및 다른 잡종 생성은 제외합니다.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE 배관에 저장한 영양 슬러리</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>플레이어 소유 Vanilla Nutrient Paste Expanded 분쇄기에서 배관망으로 실제 받아들여진 영양 슬러리의 양입니다. 소수 단위도 포함합니다. 분쇄 시도, 슬러리를 받지 못한 재료 소비 및 다른 건물의 배관 저장은 제외합니다.</RWS_VnpeGrinder_SlurryStoredDesc>
-  <RWS_VfeMedieval2_HoneyItems>VFE Medieval 2 수확한 꿀 수</RWS_VfeMedieval2_HoneyItems>
+  <RWS_VfeMedieval2_HoneyItems>수확한 꿀 수</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>플레이어 정착민이 소유한 Medieval 2 벌통을 비운 뒤 실제로 배치하거나 중첩에 합친 꿀의 수량이며 출력 아이템별로 집계합니다. 수확 준비만 된 벌통, 배치 실패 및 이후 운반은 제외합니다.</RWS_VfeMedieval2_HoneyItemsDesc>
-  <RWS_VfeSecurity_ArtilleryLaunched>VFE Security 지도 밖 포탄 도착 횟수</RWS_VfeSecurity_ArtilleryLaunched>
+  <RWS_VfeSecurity_ArtilleryLaunched>지도 밖 포탄 도착 횟수</RWS_VfeSecurity_ArtilleryLaunched>
   <RWS_VfeSecurity_ArtilleryLaunchedDesc>플레이어의 지도 밖 포병이 쏜 포탄이 목표 지도에 도착해 실제 발사체로 생성된 수이며 발사체별로 집계합니다. 조준 명령, 이동 중인 포탄 및 발사체가 생성되지 않은 사격은 제외합니다. 명중 수가 아닙니다.</RWS_VfeSecurity_ArtilleryLaunchedDesc>
-  <RWS_VfeFactory_Harvested>VFE Factory 자동 농기계 수확량</RWS_VfeFactory_Harvested>
+  <RWS_VfeFactory_Harvested>자동 농기계 수확량</RWS_VfeFactory_Harvested>
   <RWS_VfeFactory_HarvestedDesc>플레이어 소유 Autofarmer가 새로 수확한 아이템 수입니다. 수확 버퍼의 실제 증가분과 지상 배치를 확인한 생산물을 출력 아이템별로 집계합니다. 나중에 호퍼로 내보낸 물품, 거부된 배치 및 폰의 일반 수확은 제외합니다.</RWS_VfeFactory_HarvestedDesc>
-  <RWS_VfeFactory_Sown>VFE Factory 자동 농기계 파종 수</RWS_VfeFactory_Sown>
+  <RWS_VfeFactory_Sown>자동 농기계 파종 수</RWS_VfeFactory_Sown>
   <RWS_VfeFactory_SownDesc>플레이어 소유 Autofarmer의 작업 주기 중 실제로 생성되어 파종된 것으로 표시되고 선택 작물과 일치하는 새 식물 수입니다. 식물별로 집계하며 실패한 주기와 기존 식물은 제외합니다.</RWS_VfeFactory_SownDesc>
-  <RWS_VfePirates_WarcasketFits>VFE Pirates 워캐스킷 장착 완료 횟수</RWS_VfePirates_WarcasketFits>
+  <RWS_VfePirates_WarcasketFits>워캐스킷 장착 완료 횟수</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>일반 용접으로 완료한 플레이어 워캐스킷 장착 작업입니다. 프로젝트가 완료되고 일치하는 세 부위를 새로 착용한 경우에만 확인하며 방어구 유형별로 집계합니다. 미완료 작업, 일부만 착용한 세트 및 개발자 완료는 제외합니다.</RWS_VfePirates_WarcasketFitsDesc>
   <RWS_VqeAncients_Rejected>VQE Ancients 주입 거부 횟수</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>플레이어의 아르코진 주입기에서 폰이 주입을 거부하고 살아서 풀려나 주입 혼수에 빠진 결과의 수입니다. 취소한 작업, 선택했지만 완료되지 않은 결과, 성공 후 남은 유전자 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients 돌연변이 변신 횟수</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>플레이어 아르코진 주입기의 돌연변이 결과로 원래 폰이 사라지고 선택한 종류의 플레이어 소유 돌연변이가 하나 생성된 횟수이며 돌연변이 종류별로 집계합니다. 다른 생성, 취소 및 성공 후 대기 중인 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_MutationsDesc>
-  <RWS_VfeSettlers_BountyHandins>VFE Settlers 현상금 대상 인도 횟수</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandins>현상금 대상 인도 횟수</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>수배 범죄자나 시체를 플레이어 상단에서 실제로 인도하고 제거하면서 은 보상을 0보다 많이 받은 횟수입니다. 명령만 열거나 대상 없음, 인도 실패 및 관련 없는 소지품은 제외합니다.</RWS_VfeSettlers_BountyHandinsDesc>
-  <RWS_VfeSettlers_BountySilver>VFE Settlers 받은 현상금 은</RWS_VfeSettlers_BountySilver>
+  <RWS_VfeSettlers_BountySilver>받은 현상금 은</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>VFE Settlers 현상금 대상을 성공적으로 인도하고 첫 보상 지급으로 플레이어 상단에 실제 추가된 은입니다. 범죄자의 물품이나 그 안의 은은 포함하지 않습니다.</RWS_VfeSettlers_BountySilverDesc>
-  <RWS_Rimatomics_Byproducts>Dubs Rimatomics 재처리 부산물</RWS_Rimatomics_Byproducts>
+  <RWS_Rimatomics_Byproducts>재처리 부산물</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>플레이어의 플루토늄 처리기가 연료 배출을 끝낼 때 부산물로 실제 배치하거나 중첩에 합친 아이템 수이며 출력 아이템별로 집계합니다. 되돌려준 사용 후 연료, 가공만 된 재료, 관계없는 배치는 제외합니다.</RWS_Rimatomics_ByproductsDesc>
-  <RWS_CE_RoundsUsed>Combat Extended 발사한 탄환 수</RWS_CE_RoundsUsed>
+  <RWS_CE_RoundsUsed>발사한 탄환 수</RWS_CE_RoundsUsed>
   <RWS_CE_RoundsUsedDesc>플레이어 정착민 무기 탄창에서 실제로 소모했거나 소지품에서 직접 발사해 소비한 탄환 수이며 탄약 종류별로 집계합니다. 재장전 중 탄약 이동, 탄약 없이 발사한 경우, 포탑 사용 및 디버그 탄약 보충은 제외합니다.</RWS_CE_RoundsUsedDesc>
-  <RWS_CE_SuppressionReceived>Combat Extended 정착민이 제압된 횟수</RWS_CE_SuppressionReceived>
+  <RWS_CE_SuppressionReceived>정착민이 제압된 횟수</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>플레이어 정착지 폰이 Combat Extended에서 제압되지 않은 상태에서 제압 상태로 새로 진입한 횟수입니다. 이미 제압된 상태에서 추가로 받은 제압과 개발자 테스트 제압은 제외합니다. 적에게 가한 제압이 아니라 받은 제압입니다.</RWS_CE_SuppressionReceivedDesc>
-  <RWS_VfePirates_HireContracts>VFE Pirates 고용 계약 체결 횟수</RWS_VfePirates_HireContracts>
+  <RWS_VfePirates_HireContracts>고용 계약 체결 횟수</RWS_VfePirates_HireContracts>
   <RWS_VfePirates_HireContractsDesc>Vanilla Expanded Framework의 고용 창에서 VFE Pirates의 고용 세력과 실제로 체결한 새 해적 또는 용병 계약 수입니다. 창을 보기만 하거나 취소한 제안 또는 결제 실패는 제외합니다.</RWS_VfePirates_HireContractsDesc>
-  <RWS_VfePirates_HireSilver>VFE Pirates 고용에 지불한 은</RWS_VfePirates_HireSilver>
+  <RWS_VfePirates_HireSilver>고용에 지불한 은</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>새 VFE Pirates 고용 계약을 등록할 때 플레이어 지도 재고에서 실제 차감한 은입니다. 반올림한 견적 가격이 아닙니다. 무료 계약은 은을 더하지 않습니다.</RWS_VfePirates_HireSilverDesc>
   <RWS_VgeHybrid_Births>VGE 전자 자궁에서 태어난 잡종</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>플레이어 소유 VGE 전자 자궁의 성장 주기가 성공적으로 끝나 실제로 하나씩 생성된 플레이어 소유 잡종 폰 수이며 폰 종류별로 집계합니다. 성장 실패, 단순 시간 경과 및 저장 파일 복원은 제외합니다.</RWS_VgeHybrid_BirthsDesc>
@@ -1153,15 +1153,15 @@
   <RWS_VgeHybrid_ConversionsDesc>플레이어 소유 메카 잡종 변환기가 원래 대상을 제거하고 플레이어 소유 변환 폰을 새로 하나 생성하는 데 성공한 횟수이며 결과 폰 종류별로 집계합니다. 기계 작동 시작, 대기 및 생성 실패는 제외합니다.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 가석방 승인 횟수</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>가석방 심사에서 플레이어가 구금 중인 살아 있는 수감자의 만료된 형기를 실제로 종료하고 석방 명령을 내린 결정의 수입니다. 심사만 개최한 경우, 형기 연장, 모집 선택지, 반복 결정 및 이후 실제 출소는 제외합니다.</RWS_PrisonExpanded_ParoleApprovedDesc>
-  <RWS_Rimefeller_ExtractedFieldUnits>Rimefeller 유전 원유 추출량 (유전 단위)</RWS_Rimefeller_ExtractedFieldUnits>
+  <RWS_Rimefeller_ExtractedFieldUnits>유전 원유 추출량 (유전 단위)</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>플레이어 소유 유정에서 성공적으로 원유를 퍼 올렸을 때 유전 용량이 실제 감소한 양입니다. 유전 용량 단위이며 배관 부피나 아이템 수가 아닙니다. 시추 진행, 펌프 시도, 유전 자연 회복, 탱크 간 이동 및 정유소 출력은 제외합니다.</RWS_Rimefeller_ExtractedFieldUnitsDesc>
   <RWS_PrisonExpanded_SentencesServed>Prison Expanded 형기 만료 횟수</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>플레이어가 구금한 수감자의 형기가 Prison Expanded에서 실제로 전체 기간에 도달해 처음으로 가석방 심사 대상이 된 횟수입니다. 가석방 승인, 석방 명령, 중복된 날짜 틱 및 불러올 때 복구한 값은 제외합니다.</RWS_PrisonExpanded_SentencesServedDesc>
   <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 실제 출소한 수감자 수</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded가 기록한 수감자가 플레이어 본거지 지도에서 실제로 나간 횟수입니다. 석방이나 가석방 명령만 받은 경우는 제외합니다. 원래 형기와 관계없이 실제 나갔다면 집계합니다.</RWS_PrisonExpanded_PhysicalDeparturesDesc>
-  <RWS_Rimefeller_RefineryFuelUsed>Rimefeller 정유 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_RefineryFuelUsed>
+  <RWS_Rimefeller_RefineryFuelUsed>정유 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>플레이어 소유 Rimefeller 정유 시설의 처리로 배관망에서 사용 가능한 연료가 실제 감소한 양입니다. 현장 기계로 이동한 연료와 예정되거나 시도만 한 소비는 제외합니다. 배관망 연료 단위입니다.</RWS_Rimefeller_RefineryFuelUsedDesc>
-  <RWS_Rimefeller_PlantFuelUsed>Rimefeller 발전 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_PlantFuelUsed>
+  <RWS_Rimefeller_PlantFuelUsed>발전 시설 연료 소비량 (배관 단위)</RWS_Rimefeller_PlantFuelUsed>
   <RWS_Rimefeller_PlantFuelUsedDesc>플레이어 소유 Rimefeller 발전소에서 연료를 성공적으로 가져갈 때 배관망의 사용 가능한 연료가 실제 감소한 양입니다. 빈 인출이나 실패한 인출은 제외합니다. 아이템 수가 아니라 배관망 연료 단위입니다.</RWS_Rimefeller_PlantFuelUsedDesc>
   <RWS_NewMod_Arena>승자가 결정된 투기장 경기</RWS_NewMod_Arena>
   <RWS_NewMod_ArenaDesc>플레이어 투기장에서 공식 승자가 기록된 경기 수입니다.</RWS_NewMod_ArenaDesc>
@@ -1258,7 +1258,7 @@
   <RWS_Vsie_TeachingDesc>플레이어 측 학습자의 해당 기술 경험치나 레벨이 오른 지도 횟수입니다.</RWS_Vsie_TeachingDesc>
   <RWS_VqeAncients_SuccessfulInjections>성공한 아르코젠 주입</RWS_VqeAncients_SuccessfulInjections>
   <RWS_VqeAncients_SuccessfulInjectionsDesc>정착민에게 실제로 새 이종유전자가 추가된 주입 횟수입니다.</RWS_VqeAncients_SuccessfulInjectionsDesc>
-  <RWS_VfeClassical_Perks>획득한 Classical 특전</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_Perks>획득한 특전</RWS_VfeClassical_Perks>
   <RWS_VfeClassical_PerksDesc>의원의 후원으로 얻은 특전 수입니다. 잃은 뒤 다시 얻은 경우도 포함합니다.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>승리한 함선 전투</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>상대 함선의 패배가 확인된 전투 수입니다. 해킹으로 이긴 경우도 포함합니다.</RWS_Sos2_BattlesWonDesc>
