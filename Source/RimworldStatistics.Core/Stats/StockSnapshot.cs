@@ -6,6 +6,25 @@ public readonly record struct StockItemFact(
     bool Weapon, bool Medicine, bool Legendary, bool Persona, bool InPlayerHome = true);
 
 /// <summary>
+/// What S-009/N1-A-005 count as food (#317): the definition of the game's own
+/// <c>ResourceCounter.TotalHumanEdibleNutrition</c> (1.7.5011), which the low-food alert uses. An item
+/// (<c>ThingCategory.Item</c>, so never a growing plant or tree) whose def gives nutrition
+/// (<c>IsNutritionGivingIngestible</c>) and that humans can eat (<c>ingestible.HumanEdible</c>), and that is fresh
+/// (<c>!IsNotFresh()</c>). Kibble and nutrition-giving drugs such as beer count, as they do for the game; hay, raw
+/// plant leaves and corpses do not. Unlike the game's counter it is not limited to stockpiles or explored cells.
+/// </summary>
+public static class StockFood
+{
+    /// <param name="isItem">The def's category is <c>ThingCategory.Item</c>.</param>
+    /// <param name="foodType">The def's <c>ingestible.foodType</c> flags.</param>
+    /// <param name="humanFoodTypes">The game's <c>FoodTypeFlags.OmnivoreHuman</c>, the mask behind <c>HumanEdible</c>.</param>
+    /// <param name="defNutrition">The def's <c>ingestible.CachedNutrition</c>, the test behind <c>IsNutritionGivingIngestible</c>.</param>
+    /// <param name="fresh">Not rotting or dessicated (<c>!IsNotFresh()</c>); a thing without rot is fresh.</param>
+    public static bool Counts(bool isItem, int foodType, int humanFoodTypes, float defNutrition, bool fresh)
+        => isItem && fresh && defNutrition > 0 && (foodType & humanFoodTypes) != 0;
+}
+
+/// <summary>
 /// Stock measured at one save. No direct game Thing or ThingOwner reference is retained.
 /// Equipped and minified items are counted once by their actual ThingID.
 /// </summary>

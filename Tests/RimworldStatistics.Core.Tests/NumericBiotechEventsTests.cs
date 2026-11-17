@@ -58,6 +58,61 @@ public sealed class NumericBiotechEventsTests
         Assert.Equal(1, o.Scalar(BiotechFamily.PollutionCleaned, MetricKeys.Revision(BiotechFamily.PollutionCleaned))!.IntegerValue);
     }
 
+    /// <summary>
+    /// A model of 1.7.5011 CompWasteProducer.ProduceWaste: ceil(amount ÷ 5) new stacks of at most 5, each TryAdd merging into
+    /// an existing non-full stack first and stopping at the first refusal. Waste is the first wastepack of the container.
+    /// </summary>
+    private static void ProduceWaste(List<(bool Wastepack, int Count)> held, int amount, int capacity)
+    {
+        const int stackLimit = 5;
+        var stacks = (int)Math.Ceiling(amount / (double)stackLimit);
+        for (var i = 0; i < stacks; i++)
+        {
+            var count = Math.Min(amount, stackLimit);
+            var room = capacity - BiotechFamily.Wastepacks(held);
+            if (room < count)
+                break;
+            amount -= count;
+            for (var j = 0; j < held.Count && count > 0; j++)
+            {
+                if (!held[j].Wastepack || held[j].Count >= stackLimit)
+                    continue;
+                var moved = Math.Min(count, stackLimit - held[j].Count);
+                held[j] = (true, held[j].Count + moved);
+                count -= moved;
+            }
+            if (count > 0)
+                held.Add((true, count));
+        }
+    }
+
+    private static int First(List<(bool Wastepack, int Count)> held) => held.FirstOrDefault(t => t.Wastepack).Count;
+
+    [Theory]
+    [InlineData("first stack already full", new[] { 5 }, 5, 20, 5, 0)]
+    [InlineData("one call makes several stacks", new int[0], 12, 20, 12, 5)]
+    [InlineData("later stack grows", new[] { 5, 2 }, 3, 20, 3, 0)]
+    [InlineData("container refuses", new[] { 5, 5 }, 5, 10, 0, 0)]
+    public void ProducedWaste_IsTheIncreaseOfEveryWastepackStack(string kind, int[] before, int amount, int capacity,
+        int expectedProduced, int firstStackDelta)
+    {
+        _ = kind;
+        var held = before.Select(n => (true, n)).Prepend((false, 1)).ToList();   // a non-wastepack thing is never counted
+        var (total, first) = (BiotechFamily.Wastepacks(held), First(held));
+        ProduceWaste(held, amount, capacity);
+        Assert.Equal(expectedProduced, BiotechFamily.Wastepacks(held) - total);
+        Assert.Equal(firstStackDelta, First(held) - first);   // what the first-stack reading saw (#323)
+    }
+
+    [Fact]
+    public void HeldWastepacks_DoNotDependOnStackOrder()
+    {
+        var held = new List<(bool, int)> { (true, 5), (true, 2), (false, 9) };
+        var reordered = new List<(bool, int)> { (true, 2), (false, 9), (true, 5) };
+        Assert.Equal(7, BiotechFamily.Wastepacks(held));
+        Assert.Equal(BiotechFamily.Wastepacks(held), BiotechFamily.Wastepacks(reordered));
+    }
+
     [Fact]
     public void BiotechEventOutputsStayDlcGatedAndUnverified()
     {

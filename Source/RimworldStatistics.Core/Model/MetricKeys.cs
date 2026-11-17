@@ -68,6 +68,10 @@ public static class MetricKeys
     {
         // Revision 1 was a lower bound from an allow-list of saved quest roots; 2 counts the game's involved factions at a save.
         [RoyaltyQuestSnapshot.Success] = 2,
+        // Revision 1 added the nutrition of every ingestible thing on a home map, growing plants and trees included; 2 counts
+        // fresh human-edible food items only (StockFood, #317).
+        [StockSnapshot.FoodLatest] = 2,
+        [StockSnapshot.FoodMin] = 2,
     };
 
     /// <summary>The current definition revision of a stored key. Every key starts at 1.</summary>

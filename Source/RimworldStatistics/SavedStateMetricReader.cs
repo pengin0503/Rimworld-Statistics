@@ -295,7 +295,10 @@ internal static class SavedStateMetricReader
                 if (string.IsNullOrEmpty(id) || !visited.Add(id))
                     return;
                 double nutrition = 0;
-                if (item.def.ingestible != null)
+                // Only fresh human-edible food items, as the game's TotalHumanEdibleNutrition (#317).
+                if (item.def.ingestible is { } ingestible
+                    && StockFood.Counts(item.def.category == ThingCategory.Item, (int)ingestible.foodType,
+                        (int)FoodTypeFlags.OmnivoreHuman, ingestible.CachedNutrition, !item.IsNotFresh()))
                 {
                     var value = item.GetStatValue(StatDefOf.Nutrition);
                     if (float.IsFinite(value) && value > 0)
@@ -316,8 +319,11 @@ internal static class SavedStateMetricReader
         {
             if (!map.IsPlayerHome)
                 continue;
+            // Stock is items. Growing plants, buildings and filth count toward no stock value, so they are not visited
+            // (a home map holds thousands of plants; #317). A minified building is an item and is unwrapped by Gather.
             foreach (var thing in map.listerThings.AllThings)
-                Gather(thing);
+                if (thing?.def?.category == ThingCategory.Item)
+                    Gather(thing);
         }
         // Stock deliberately excludes nested storage-holder contents, caravans, transport pods and
         // non-home maps. Pawn gear and carried inventory remain distinct, direct-owned sources.
@@ -375,13 +381,29 @@ internal static class SavedStateMetricReader
         return RoyaltyQuestSnapshot.Build(count, partial);
     }
 
+    /// <summary>
+    /// The living free, non-slave colonists on maps, in caravans and in travelling transporters, each once, including those in
+    /// cryptosleep caskets (#327): the same population as ReadRoster's free colonists. A suspended mechanitor still oversees
+    /// its mechs (1.7.5011 Pawn_MechanitorTracker.UsedBandwidthFromSubjects sums every overseen pawn), and a sleeping
+    /// psycaster keeps its psylink. The game's result list is shared, so it is copied before any per-pawn reading.
+    /// </summary>
+    private static List<Pawn> FreeNonSlaveColonists()
+    {
+        var seen = new HashSet<Pawn>();
+        var result = new List<Pawn>();
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists)
+            if (pawn is not null && !pawn.Dead && pawn.IsFreeNonSlaveColonist && seen.Add(pawn))
+                result.Add(pawn);
+        return result;
+    }
+
     private static Dictionary<string, MetricEntry> ReadVpe()
     {
         var type = VpeMetricPatch.ImplantType ?? throw new InvalidOperationException("VPE implant type unavailable.");
         var levels = new List<int>();
-        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        foreach (var pawn in FreeNonSlaveColonists())
         {
-            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist || pawn.health?.hediffSet is not { } hediffs)
+            if (pawn.health?.hediffSet is not { } hediffs)
                 continue;
             foreach (var hediff in hediffs.hediffs)
             {
@@ -400,10 +422,8 @@ internal static class SavedStateMetricReader
             throw new InvalidOperationException("Royalty DLC is disabled");
         var levels = new List<int>();
         var partial = false;
-        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        foreach (var pawn in FreeNonSlaveColonists())
         {
-            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist)
-                continue;
             try { levels.Add(pawn.GetPsylinkLevel()); }
             catch (Exception) { partial = true; }
         }
@@ -436,10 +456,8 @@ internal static class SavedStateMetricReader
                 partial = true;
             }
         }
-        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep)
+        foreach (var pawn in FreeNonSlaveColonists())
         {
-            if (pawn is null || pawn.Dead || !pawn.IsFreeNonSlaveColonist)
-                continue;
             try
             {
                 if (pawn.mechanitor is { } tracker)
