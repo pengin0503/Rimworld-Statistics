@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« Masquer la liste</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Afficher la liste</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Retirer cette colonie comparée</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>Premier et dernier</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Compare le dernier relevé au plus ancien relevé qu'il prolonge de façon prouvée. S'il n'y en a aucun, indique pourquoi le premier et le dernier relevé ne peuvent pas être comparés.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Effacer la sélection</RWS_Change_Clear>
+  <RWS_Change_Hint>Cliquez sur deux relevés de cette colonie dans le graphique pour voir l'évolution entre eux.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Un seul relevé a une valeur : il n'y a rien à comparer.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>À partir du jour {0} ({1}). Cliquez sur un autre relevé pour comparer.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>Jour {0} ({1}) → jour {2} ({3}), sur {4} jours</RWS_Change_Interval>
+  <RWS_Change_Difference>Évolution : {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>Compté sur cette période : {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Variation relative : {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Variation relative : indisponible (la valeur antérieure est 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Variation relative : indisponible (un rapport n'a pas de sens sur cette échelle)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Variation relative : indisponible (trop grande pour être affichée)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} points de pourcentage</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>Au moins une de ces valeurs est un relevé partiel ; l'évolution ne couvre que ce qui a été enregistré.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Les deux relevés datent du même moment ; choisissez des relevés à des moments différents.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>Comparaison impossible : un relevé n'a pas de valeur.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>Comparaison impossible : il n'est pas prouvé que le relevé ultérieur prolonge le précédent (autre branche, rechargement d'une sauvegarde antérieure, enregistrement parent manquant ou sauvegardes sans checkpoint).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>Compté sur cette période : indisponible (rien ne prouve que l'enregistrement s'est poursuivi sans lacune, arrêt ni redémarrage jusqu'aux deux relevés ; cela inclut les valeurs rendues incomplètes par une limite et les valeurs commencées en retard enregistrées par une version antérieure)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>Compté sur cette période : indisponible (le total cumulé est plus bas au relevé ultérieur, ce qu'un comptage ne peut pas produire)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>Comparaison impossible : l'évolution est trop grande pour être affichée.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>La valeur ultérieure a été reprise sans changement jusqu'à une sauvegarde du jour {0} ; la période s'arrête là où elle a été enregistrée.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>L'enregistrement de cette statistique a commencé le jour {0}. La hausse correspond à ce qui a été compté depuis ; un événement déjà en cours à ce moment-là peut ne pas être compté.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Cliquez pour choisir ce relevé pour une comparaison</RWS_Change_ClickTip>
 </LanguageData>

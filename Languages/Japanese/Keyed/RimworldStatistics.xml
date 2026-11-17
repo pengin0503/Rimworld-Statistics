@@ -1338,4 +1338,28 @@
   <RWS_Rankings_HideSelector>« 項目選択を隠す</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» 項目選択を表示</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>この比較コロニーを削除</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>最初と最後</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>最後の点と、それが続いていると証明された最も古い点を比較します。そのような点がなければ、最初と最後の点を比較できない理由を表示します。</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>選択を解除</RWS_Change_Clear>
+  <RWS_Change_Hint>グラフ上のこのコロニーの点を2つクリックすると、その間の変化を表示します。</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>値のある点が1つしかないため、比較できません。</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>始点：{0}日（{1}）。比較するもう1点をクリックしてください。</RWS_Change_PickSecond>
+  <RWS_Change_Interval>{0}日（{1}）→ {2}日（{3}）、期間 {4}日</RWS_Change_Interval>
+  <RWS_Change_Difference>差分：{0}　{1}</RWS_Change_Difference>
+  <RWS_Change_Increase>期間の増分：{0}　{1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>変化率：{0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>変化率：算出不可（始点の値が0）</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>変化率：算出不可（この単位では比率に意味がありません）</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>変化率：算出不可（数値が大きすぎます）</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0}ポイント</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>部分記録を含む値どうしの差です。記録されていない分は含まれません。</RWS_Change_Partial>
+  <RWS_Change_SamePoint>同じ時点の点です。別の時点の点を選んでください。</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>比較不可：値のない点が含まれています。</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>比較不可：後の点が前の点から続いていることを記録で証明できません（別の分岐、以前のセーブからのやり直し、親の記録の欠落、チェックポイントのないセーブなど）。</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>期間の増分：算出不可（両方の時点まで記録が欠落・停止・再開始なく続いたことを確認できません。上限到達などで不完全な値や、以前の版で記録された途中開始の値も含みます）</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>期間の増分：算出不可（通算の値が後の点で減っており、数えた数として扱えません）</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>比較不可：差が大きすぎて表示できません。</RWS_Change_TooLarge>
+  <RWS_Change_Carried>終点の値は{0}日のセーブまで変化なく持ち越されています。期間は記録された時点までで数えています。</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>この統計の記録は{0}日に始まりました。期間の増分はその後に数えた分で、その時点ですでに進行中だった出来事は含まれない場合があります。</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>クリックで比較する点に選ぶ</RWS_Change_ClickTip>
 </LanguageData>

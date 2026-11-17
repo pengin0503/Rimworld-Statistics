@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« Liste ausblenden</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Liste einblenden</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Vergleichskolonie entfernen</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>Erster und letzter</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Vergleicht den letzten Wert mit dem frühesten, an den er nachweislich anschließt. Gibt es keinen, wird angezeigt, warum der erste und der letzte Wert nicht verglichen werden können.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Auswahl aufheben</RWS_Change_Clear>
+  <RWS_Change_Hint>Klicke im Diagramm auf zwei Werte dieser Kolonie, um die Veränderung dazwischen zu sehen.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Nur ein Wert ist vorhanden, daher gibt es nichts zu vergleichen.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>Ab Tag {0} ({1}). Klicke auf einen weiteren Wert zum Vergleich.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>Tag {0} ({1}) → Tag {2} ({3}), über {4} Tage</RWS_Change_Interval>
+  <RWS_Change_Difference>Veränderung: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>In diesem Zeitraum gezählt: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Relative Veränderung: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Relative Veränderung: nicht verfügbar (der frühere Wert ist 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Relative Veränderung: nicht verfügbar (auf dieser Skala ist ein Verhältnis bedeutungslos)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Relative Veränderung: nicht verfügbar (zu groß zum Anzeigen)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} Prozentpunkte</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>Mindestens einer der Werte ist teilweise aufgezeichnet; die Veränderung umfasst nur das Aufgezeichnete.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Beide Werte stammen vom selben Zeitpunkt; wähle Werte zu verschiedenen Zeitpunkten.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>Vergleich nicht möglich: Ein Wert fehlt.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>Vergleich nicht möglich: Es ist nicht belegt, dass der spätere Wert an den früheren anschließt (ein anderer Zweig, ein neu geladener früherer Spielstand, ein fehlender Elterneintrag oder Spielstände ohne Checkpoints).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>In diesem Zeitraum gezählt: nicht verfügbar (es ist nicht belegt, dass die Aufzeichnung bis zu beiden Werten ohne Lücke, Stopp oder Neustart lief; dazu zählen auch durch eine Obergrenze unvollständige Werte und später begonnene Werte einer früheren Version)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>In diesem Zeitraum gezählt: nicht verfügbar (die laufende Summe ist beim späteren Wert niedriger, was durch Zählen nicht entstehen kann)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>Vergleich nicht möglich: Die Veränderung ist zu groß zum Anzeigen.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>Der spätere Wert wurde unverändert bis zu einem Spielstand von Tag {0} übernommen; der Zeitraum endet dort, wo er aufgezeichnet wurde.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>Die Aufzeichnung dieser Statistik begann an Tag {0}. Der Zuwachs ist das seitdem Gezählte; ein damals bereits laufendes Ereignis wird möglicherweise nicht gezählt.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Klicken, um diesen Wert für einen Vergleich auszuwählen</RWS_Change_ClickTip>
 </LanguageData>

@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« 隱藏統計清單</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» 顯示統計清單</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>移除此比較殖民地</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>首尾比較</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>比較最後一個點與已確認其延續自的最早的點。若沒有這樣的點，則顯示第一個點與最後一個點無法比較的原因。</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>取消選擇</RWS_Change_Clear>
+  <RWS_Change_Hint>在圖表上點擊此殖民地的兩個點，即可顯示兩者之間的變化。</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>只有一個點有數值，無法進行比較。</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>起點：第 {0} 天（{1}）。請點擊另一個點進行比較。</RWS_Change_PickSecond>
+  <RWS_Change_Interval>第 {0} 天（{1}）→ 第 {2} 天（{3}），期間 {4} 天</RWS_Change_Interval>
+  <RWS_Change_Difference>差值：{0}　{1}</RWS_Change_Difference>
+  <RWS_Change_Increase>期間增量：{0}　{1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>變化率：{0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>變化率：無法計算（起點的值為 0）</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>變化率：無法計算（此單位的比率沒有意義）</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>變化率：無法計算（數值過大）</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0}個百分點</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>其中至少有一個值是部分記錄；差值只包含已記錄的部分。</RWS_Change_Partial>
+  <RWS_Change_SamePoint>兩個點屬於同一時刻，請選擇不同時刻的點。</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>無法比較：其中有沒有數值的點。</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>無法比較：無法透過記錄確認後一個點延續自前一個點（其他分支、從更早的存檔重新開始、父記錄缺失或存檔沒有檢查點等）。</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>期間增量：無法計算（無法確認記錄在兩個時刻之前均無中斷、停止或重新開始；包括因達到上限而不完整的值，以及由舊版本記錄的中途開始的值）</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>期間增量：無法計算（累計值在後一個點減少，不能作為計數的數量）</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>無法比較：差值過大，無法顯示。</RWS_Change_TooLarge>
+  <RWS_Change_Carried>後一個值原樣保留到第 {0} 天的存檔；期間按記錄該值的時刻計算。</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>此統計從第 {0} 天開始記錄。期間增量為此後計數的數量；當時已在進行中的事件可能不會被計入。</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>點擊以選為比較的點</RWS_Change_ClickTip>
 </LanguageData>

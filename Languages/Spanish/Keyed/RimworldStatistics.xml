@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« Ocultar lista</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Mostrar lista</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Quitar colonia comparada</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>Primero y último</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Compara el último dato con el dato más antiguo del que se demuestra que continúa. Si no hay ninguno, indica por qué no se pueden comparar el primero y el último.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Quitar selección</RWS_Change_Clear>
+  <RWS_Change_Hint>Haz clic en dos datos de esta colonia en el gráfico para ver el cambio entre ellos.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Solo un dato tiene valor, así que no hay nada con qué compararlo.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>Desde el día {0} ({1}). Haz clic en otro dato para comparar.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>Día {0} ({1}) → día {2} ({3}), en {4} días</RWS_Change_Interval>
+  <RWS_Change_Difference>Cambio: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>Contado en este periodo: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Cambio relativo: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Cambio relativo: no disponible (el valor anterior es 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Cambio relativo: no disponible (en esta escala una proporción no tiene sentido)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Cambio relativo: no disponible (demasiado grande para mostrarlo)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} puntos porcentuales</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>Al menos uno de estos valores es un registro parcial; el cambio solo abarca lo registrado.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Ambos datos son del mismo momento; elige datos de momentos distintos.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>No se puede comparar: un dato no tiene valor.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>No se puede comparar: no está demostrado que el dato posterior continúe el anterior (otra rama, una partida anterior cargada de nuevo, un registro padre ausente o partidas sin checkpoints).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>Contado en este periodo: no disponible (no se puede comprobar que el registro siguió sin interrupciones, paradas ni reinicios hasta ambos datos; incluye valores incompletos por un límite y valores iniciados tarde registrados por una versión anterior)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>Contado en este periodo: no disponible (el total acumulado es menor en el dato posterior, algo que contar no puede producir)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>No se puede comparar: el cambio es demasiado grande para mostrarlo.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>El valor posterior se mantuvo sin cambios hasta una partida del día {0}; el periodo termina donde se registró.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>El registro de esta estadística comenzó el día {0}. El aumento es lo contado desde entonces; un evento que ya estaba en curso en ese momento puede no contarse.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Haz clic para elegir este dato para una comparación</RWS_Change_ClickTip>
 </LanguageData>

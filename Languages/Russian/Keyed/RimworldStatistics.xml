@@ -1337,4 +1337,28 @@
   <RWS_Rankings_HideSelector>« Скрыть список</RWS_Rankings_HideSelector>
   <RWS_Rankings_ShowSelector>» Показать список</RWS_Rankings_ShowSelector>
   <RWS_Chart_RemoveOverlay>Убрать колонию из сравнения</RWS_Chart_RemoveOverlay>
+  <RWS_Change_FirstLast>Первая и последняя</RWS_Change_FirstLast>
+  <RWS_Change_FirstLastTip>Сравнивает последнюю точку с самой ранней точкой, продолжение которой подтверждено. Если такой нет, показывает, почему первую и последнюю точки нельзя сравнить.</RWS_Change_FirstLastTip>
+  <RWS_Change_Clear>Сбросить выбор</RWS_Change_Clear>
+  <RWS_Change_Hint>Щёлкните по двум точкам этой колонии на графике, чтобы увидеть изменение между ними.</RWS_Change_Hint>
+  <RWS_Change_OnlyOne>Значение есть только у одной точки, сравнивать не с чем.</RWS_Change_OnlyOne>
+  <RWS_Change_PickSecond>Начало: день {0} ({1}). Щёлкните по другой точке для сравнения.</RWS_Change_PickSecond>
+  <RWS_Change_Interval>День {0} ({1}) → день {2} ({3}), за {4} дн.</RWS_Change_Interval>
+  <RWS_Change_Difference>Изменение: {0}   {1}</RWS_Change_Difference>
+  <RWS_Change_Increase>Подсчитано за период: {0}   {1}</RWS_Change_Increase>
+  <RWS_Change_Ratio>Относительное изменение: {0}</RWS_Change_Ratio>
+  <RWS_Change_RatioZero>Относительное изменение: недоступно (прежнее значение равно 0)</RWS_Change_RatioZero>
+  <RWS_Change_RatioUnit>Относительное изменение: недоступно (на этой шкале отношение не имеет смысла)</RWS_Change_RatioUnit>
+  <RWS_Change_RatioTooLarge>Относительное изменение: недоступно (слишком большое для отображения)</RWS_Change_RatioTooLarge>
+  <RWS_Change_PercentPoints>{0} п. п.</RWS_Change_PercentPoints>
+  <RWS_Change_Partial>Хотя бы одно из значений — частичная запись; изменение охватывает только записанное.</RWS_Change_Partial>
+  <RWS_Change_SamePoint>Обе точки относятся к одному моменту; выберите точки в разное время.</RWS_Change_SamePoint>
+  <RWS_Change_NoValue>Сравнение невозможно: у одной из точек нет значения.</RWS_Change_NoValue>
+  <RWS_Change_NotLinked>Сравнение невозможно: не подтверждено, что более поздняя точка продолжает более раннюю (другая ветка, повторная загрузка более раннего сохранения, отсутствующая родительская запись или сохранения без контрольных точек).</RWS_Change_NotLinked>
+  <RWS_Change_CounterGap>Подсчитано за период: недоступно (не подтверждено, что запись шла без пропусков, остановок и перезапусков до обеих точек; сюда относятся значения, неполные из-за лимита, и начатые позже значения, записанные более ранней версией)</RWS_Change_CounterGap>
+  <RWS_Change_CounterDecrease>Подсчитано за период: недоступно (накопленный итог в более поздней точке меньше, чего при подсчёте быть не может)</RWS_Change_CounterDecrease>
+  <RWS_Change_TooLarge>Сравнение невозможно: изменение слишком велико для отображения.</RWS_Change_TooLarge>
+  <RWS_Change_Carried>Более позднее значение без изменений сохранялось до сохранения дня {0}; период заканчивается там, где оно было записано.</RWS_Change_Carried>
+  <RWS_Change_RecordedSince>Запись этой статистики началась в день {0}. Прирост — это подсчитанное с тех пор; событие, уже шедшее в тот момент, может быть не учтено.</RWS_Change_RecordedSince>
+  <RWS_Change_ClickTip>Щёлкните, чтобы выбрать эту точку для сравнения</RWS_Change_ClickTip>
 </LanguageData>

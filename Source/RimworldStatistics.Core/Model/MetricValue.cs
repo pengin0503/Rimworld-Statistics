@@ -52,6 +52,15 @@ public sealed class MetricValue
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? SampleCount { get; set; }
 
+    /// <summary>
+    /// A live family's value made partial by the family itself, not only by where its recording started (#307): a cap was
+    /// reached, an event could not be classified, a route is not counted. It does not count exactly what happened in its
+    /// measured range. Written only when true, and only by checkpoints that also keep
+    /// <see cref="MetricObservation.ContinuousFamilies"/>: in an older checkpoint the two kinds of partial cannot be told apart.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public bool? Weakened { get; set; }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
