@@ -1151,13 +1151,13 @@
   <RWS_VgeHybrid_BirthsDesc>玩家所有的VGE电子子宫成功完成一次成长周期后，实际新生成的玩家所属杂交单位数量，每次生成一名，按单位种类分类。不包括成长失败、仅计时推进或恢复存档。</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE生体机械转换次数</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>玩家的机械杂交转化设备成功将原对象销毁，并新生成一名玩家所属的转换后单位的次数，按结果单位种类分类。不包括启动机器、等待或生成失败。</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded批准的假释次数</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>批准的假释次数</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>假释听证会中实际清除仍受玩家拘禁的存活囚犯已服满刑期，并正式下令释放的决定次数。仅举行听证、延长期限、招募选项、重复选择或之后的囚犯离开不计入。</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>油田开采原油（油田单位）</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>玩家所有的油井成功抽油后，油田容量的实际减少量。单位为油田容量，不是管道体积或物品数量。不包括钻探进度、抽油尝试、油田自然恢复、油罐之间的转移或炼油产物。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded刑期服满次数</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>刑期服满次数</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>玩家拘禁的囚犯在Prison Expanded中实际服满完整刑期，并首次进入需要假释听证的阶段的次数。不包括假释批准、释放指令、重复的每日tick或加载存档时恢复的数值。</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded囚犯实际离开人数</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>囚犯实际离开人数</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expanded记录的囚犯实际离开玩家主基地地图的次数，而不是仅收到释放或假释指令。不论原始刑期如何，只要实际离开就计入。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>炼油设备消耗燃料（管道单位）</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>玩家所有的Rimefeller炼油设备处理导致管网可用燃料的实际减少量。不包括同一时间转入现场设备的燃料，或仅计划、尝试消耗的燃料。单位为管网燃料单位。</RWS_Rimefeller_RefineryFuelUsedDesc>
