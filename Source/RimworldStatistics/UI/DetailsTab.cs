@@ -758,7 +758,10 @@ public static class DetailsTab
                             : (string)"RWS_Cross_TopType".Translate((string)source.LabelKey.Translate());
         else
             label = d.ProviderId is not null && d.LabelKey == d.Key
-                ? d.Key : (string)d.LabelKey.Translate();
+                // An unlabeled third-party SDK metric must not leak 'mod.owner.family.name'
+                // into the visible statistic title. Keep the last metric identifier only.
+                ? d.Key[(d.Key.LastIndexOf('.') + 1)..].Replace('_', ' ').Replace('-', ' ')
+                : (string)d.LabelKey.Translate();
 
         // Show only the measured statistic; source MOD attribution is separate UI metadata.
         return label;
