@@ -6,13 +6,26 @@ public sealed partial class SaveReader
     /// <summary>
     /// The numeric observation once a complete read is confirmed; optional numeric failures do not invalidate the v1 observation.
     /// </summary>
-    private static MetricObservation? TryBuildMetrics(ReadState state, HashingStream hashing)
+    /// <summary>The SHA-256 of every byte read, or null when it cannot be computed (then nothing is built from it).</summary>
+    private static string? TryHash(HashingStream hashing)
+    {
+        try
+        {
+            return Convert.ToHexStringLower(hashing.Hash());
+        }
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    private static MetricObservation? TryBuildMetrics(ReadState state, string hash)
     {
         if (state.Obs.Status != ObservationStatus.Ok)
             return null;
         try
         {
-            return BuildMetrics(state, Convert.ToHexStringLower(hashing.Hash()));
+            return BuildMetrics(state, hash);
         }
         catch (Exception)
         {

@@ -32,9 +32,15 @@ public static class ImportRunner
     public static ImportResult? LastResult => Status.Current.Result;
 
     /// <summary>Main thread. Starts a scan unless one is running.</summary>
-    public static void StartIfIdle() => Start(manual: true);
+    public static void StartIfIdle() => Start(manual: true, ImportMode.Incremental);
 
-    private static void Start(bool manual)
+    /// <summary>
+    /// Main thread, after the player confirmed it. Reads every save again and compares it with its record (#310). A game
+    /// start interrupts it like any scan; what automatic import then continues on the title screen is an ordinary scan.
+    /// </summary>
+    public static void StartForcedRecheckIfIdle() => Start(manual: true, ImportMode.ForcedRecheck);
+
+    private static void Start(bool manual, ImportMode mode = ImportMode.Incremental)
     {
         lock (Gate)
         {
@@ -45,13 +51,13 @@ public static class ImportRunner
             cts?.Dispose();
             cts = null;
             // Forget the previous scan's outcome: its counts are not this scan's.
-            var run = Status.Begin();
+            var run = Status.Begin(mode);
             try
             {
                 var savesDir = GenFilePaths.SavedGamesFolderPath;
                 var source = new CancellationTokenSource();
                 cts = source;
-                task = Task.Run(() => Run(run, savesDir, source.Token));
+                task = Task.Run(() => Run(run, savesDir, mode, source.Token));
             }
             catch (Exception e)
             {
@@ -93,11 +99,11 @@ public static class ImportRunner
                 Start(manual: false);
     }
 
-    private static void Run(long run, string savesDir, CancellationToken ct)
+    private static void Run(long run, string savesDir, ImportMode mode, CancellationToken ct)
     {
         try
         {
-            Status.Complete(run, new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(run), ct));
+            Status.Complete(run, new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(run), ct, mode));
         }
         catch (Exception e)
         {

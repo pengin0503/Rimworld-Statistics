@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Une analyse est en cours. Ses chiffres s'afficheront à la fin.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Lues : {0} / ignorées : {1} / échecs : {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrompue)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Vérification complète</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Relit entièrement chaque sauvegarde et la compare à son enregistrement. « Réanalyser » ne lit pas une sauvegarde dont le nom, la taille et la date de modification n'ont pas changé.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Chaque sauvegarde sera relue entièrement et comparée à son enregistrement. La durée dépend du nombre et de la taille de vos sauvegardes. Les fichiers de sauvegarde ne sont pas modifiés. Une sauvegarde identique à son enregistrement le laisse tel quel. Une sauvegarde au même nom, à la même taille et à la même date de modification mais au contenu différent met à jour son enregistrement comme une sauvegarde écrasée, et l'ancien enregistrement est gardé dans l'historique. Une sauvegarde illisible garde son ancien enregistrement. Lancer la vérification complète ?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Une vérification complète est en cours. Ses chiffres s'afficheront à la fin.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Vérification complète : lues {0} / inchangées {1} / mises à jour {2} / nouvelles {3} / échecs {4} / ignorées {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} des sauvegardes illisibles gardent leur ancien enregistrement.</RWS_Import_RecheckKept>
   <RWS_Import_Error>L'importation a échoué : {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (échecs : {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Fichier d'enregistrement : {0}</RWS_Import_ProfilePath>

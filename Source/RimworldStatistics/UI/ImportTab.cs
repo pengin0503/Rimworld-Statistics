@@ -64,11 +64,22 @@ public static class ImportTab
                 Line(rect, ref y, "RWS_Import_NotRunThisSession".Translate());
                 break;
             case ImportRunPhase.Running:
-                Line(rect, ref y, "RWS_Import_RunningNow".Translate());
+                Line(rect, ref y, run.Mode == ImportMode.ForcedRecheck
+                    ? "RWS_Import_RecheckRunningNow".Translate() : "RWS_Import_RunningNow".Translate());
                 break;
             case ImportRunPhase.Completed or ImportRunPhase.Cancelled when run.Result is { } result:
-                Line(rect, ref y, (string)"RWS_Import_Counts".Translate(result.Read, result.Skipped, result.Failed)
-                    + (run.Phase == ImportRunPhase.Cancelled ? (string)"RWS_Import_CancelledMark".Translate() : ""));
+                var cancelledMark = run.Phase == ImportRunPhase.Cancelled ? (string)"RWS_Import_CancelledMark".Translate() : "";
+                if (result.Mode == ImportMode.ForcedRecheck)
+                {
+                    Line(rect, ref y, (string)"RWS_Import_RecheckCounts".Translate(result.Read, result.Unchanged, result.Replaced,
+                        result.Added, result.Failed, result.Skipped) + cancelledMark);
+                    if (result.KeptAfterFailure > 0)
+                        Line(rect, ref y, "RWS_Import_RecheckKept".Translate(result.KeptAfterFailure));
+                }
+                else
+                {
+                    Line(rect, ref y, (string)"RWS_Import_Counts".Translate(result.Read, result.Skipped, result.Failed) + cancelledMark);
+                }
                 break;
             default:
                 GUI.color = ColorLibrary.RedReadable;
@@ -99,12 +110,24 @@ public static class ImportTab
         {
             ImportRunner.StartIfIdle();
         }
-        if (!ImportRunner.Running && rect.width > buttonRect.width + 45f)
+        var nextX = buttonRect.xMax + 8f;
+        if (!ImportRunner.Running && rect.xMax - nextX > 45f)
+        {
+            // A forced re-check reads every save in full, so it only runs after the player confirms it (#310).
+            var recheckLabel = (string)"RWS_ForceRecheck".Translate();
+            var recheckRect = new Rect(nextX, y, Math.Min(Math.Max(160f, Text.CalcSize(recheckLabel).x + 24f), rect.xMax - nextX),
+                buttonRect.height);
+            if (Widgets.ButtonText(recheckRect, recheckLabel.Truncate(recheckRect.width - 12f)))
+                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RWS_ForceRecheck_Confirm".Translate(),
+                    ImportRunner.StartForcedRecheckIfIdle));
+            TooltipHandler.TipRegion(recheckRect, "RWS_ForceRecheckTip".Translate());
+            nextX = recheckRect.xMax + 8f;
+        }
+        if (!ImportRunner.Running && rect.xMax - nextX > 45f)
         {
             var historicalLabel = (string)"RWS_HistoricalIntervals_Title".Translate();
-            var historicalRect = new Rect(buttonRect.xMax + 8f, y,
-                Math.Min(Math.Max(190f, Text.CalcSize(historicalLabel).x + 24f),
-                    rect.width - buttonRect.width - 8f), buttonRect.height);
+            var historicalRect = new Rect(nextX, y,
+                Math.Min(Math.Max(190f, Text.CalcSize(historicalLabel).x + 24f), rect.xMax - nextX), buttonRect.height);
             if (Widgets.ButtonText(historicalRect, historicalLabel.Truncate(historicalRect.width - 12f)))
                 Find.WindowStack.Add(new Dialog_HistoricalCounterIntervals(session));
         }

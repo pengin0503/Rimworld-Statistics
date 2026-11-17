@@ -20,8 +20,13 @@ public static partial class ProfileMutations
     public static bool IsCurrentRead(SaveObservation o, int readerVersion)
         => !o.Superseded && o.Status != ObservationStatus.Error && o.ReaderVersion >= readerVersion;
 
-    /// <summary>Appends an observation; earlier ones are kept as superseded history unless provably redundant (spec §7.1).</summary>
-    public static void AddSaveObservation(Profile p, SaveObservation obs)
+    /// <summary>
+    /// Appends an observation; earlier ones are kept as superseded history unless provably redundant (spec §7.1).
+    /// <paramref name="otherContent"/>: a forced re-check proved that the file, although its name, size and time are
+    /// unchanged, no longer holds the bytes the current record was read from (#310); the record is then superseded as for
+    /// a changed file.
+    /// </summary>
+    public static void AddSaveObservation(Profile p, SaveObservation obs, bool otherContent = false)
     {
         var observations = p.SaveObservations;
         SaveObservation? singleCurrent = null;
@@ -47,27 +52,31 @@ public static partial class ProfileMutations
         }
         if (multipleCurrent is null)
         {
-            if (ProcessCurrentSaveObservation(p, observations, singleCurrent, obs))
+            if (ProcessCurrentSaveObservation(p, observations, singleCurrent, obs, otherContent))
                 return;
             observations.Add(obs);
             return;
         }
         for (var i = 0; i < multipleCurrent.Count; i++)
         {
-            if (ProcessCurrentSaveObservation(p, observations, multipleCurrent[i], obs))
+            if (ProcessCurrentSaveObservation(p, observations, multipleCurrent[i], obs, otherContent))
                 return;
         }
         observations.Add(obs);
     }
 
-    private static bool ProcessCurrentSaveObservation(Profile p, List<SaveObservation> observations, SaveObservation old, SaveObservation obs)
+    private static bool ProcessCurrentSaveObservation(Profile p, List<SaveObservation> observations, SaveObservation old, SaveObservation obs,
+        bool otherContent)
     {
         if (old.Status == ObservationStatus.Error)
         {
             observations.Remove(old);        // a failure carries no data: any new read replaces it
             return false;
         }
-        if (old.SameFileContent(obs.FileSize, obs.LastWriteUtc))
+        // Different content hashes, or a forced re-check's proof, mean other bytes under the same name, size and time.
+        // A failed read proves nothing about the content.
+        var sameContent = old.SameFileContent(obs) && !(otherContent && obs.Status != ObservationStatus.Error);
+        if (sameContent)
         {
             if (obs.ReaderVersion <= old.ReaderVersion)
                 return true;                 // same file read again by the same reader: nothing new

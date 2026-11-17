@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>取り込み中です。今回の件数は終了後に表示します。</RWS_Import_RunningNow>
   <RWS_Import_Counts>読み込み {0}件／スキップ {1}件／失敗 {2}件</RWS_Import_Counts>
   <RWS_Import_CancelledMark>（中断）</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>強制再検査</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>すべてのセーブを最後まで読み直して、記録と照合します。再スキャンは、名前・サイズ・更新日時が前回と同じセーブを読みません。</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>すべてのセーブを最後まで読み直して、記録と照合します。セーブの数と大きさに比例して時間がかかります。セーブファイルは変更しません。内容が記録と同じセーブは、記録を書き換えません。名前・サイズ・更新日時が同じでも内容が違うセーブは、上書きされたセーブと同じように記録を更新し、前の記録は履歴として残します。読めなかったセーブは、前の記録をそのまま残します。実行しますか？</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>強制再検査中です。今回の件数は終了後に表示します。</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>強制再検査：読み直し {0}件／変更なし {1}件／更新 {2}件／新規 {3}件／失敗 {4}件／スキップ {5}件</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>読めなかったセーブのうち {0}件は、前の記録をそのまま残しています。</RWS_Import_RecheckKept>
   <RWS_Import_Error>取り込みに失敗しました: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1}件（失敗 {2}） {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>記録ファイル: {0}</RWS_Import_ProfilePath>

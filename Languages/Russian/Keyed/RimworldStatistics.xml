@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Идёт сканирование. Его итоги появятся, когда оно завершится.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Прочитано: {0} / пропущено: {1} / с ошибкой: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (прервано)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Полная проверка</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Заново полностью читает каждое сохранение и сверяет его с записью. «Пересканировать» не читает сохранение, у которого не изменились имя, размер и время изменения.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Каждое сохранение будет заново прочитано полностью и сверено со своей записью. Время зависит от количества и размера сохранений. Файлы сохранений не изменяются. Если сохранение совпадает со своей записью, запись не меняется. Если у сохранения те же имя, размер и время изменения, но другое содержимое, его запись обновляется, как у перезаписанного сохранения, а прежняя запись остаётся в истории. Если сохранение не удаётся прочитать, у него остаётся прежняя запись. Начать полную проверку?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Идёт полная проверка. Её итоги появятся, когда она завершится.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Полная проверка: прочитано {0} / без изменений {1} / обновлено {2} / новых {3} / с ошибкой {4} / пропущено {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>У {0} сохранений, которые не удалось прочитать, осталась прежняя запись.</RWS_Import_RecheckKept>
   <RWS_Import_Error>Импорт не удался: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (с ошибкой: {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Файл записей: {0}</RWS_Import_ProfilePath>

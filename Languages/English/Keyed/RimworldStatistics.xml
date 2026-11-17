@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>A scan is running. Its counts appear when it finishes.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Read {0} / skipped {1} / failed {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrupted)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Full re-check</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Reads every save again in full and compares it with its record. Rescan does not read a save whose name, size and modification time are the same as before.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Every save will be read again in full and compared with its record. This takes time in proportion to the number and size of your saves. Save files are not changed. A save that matches its record leaves the record as it is. A save with the same name, size and modification time but different content updates its record as an overwritten save does, and the earlier record is kept as history. A save that cannot be read keeps its earlier record. Start the full re-check?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>A full re-check is running. Its counts appear when it finishes.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Full re-check: read {0} / unchanged {1} / updated {2} / new {3} / failed {4} / skipped {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} of the saves that could not be read keep their earlier record.</RWS_Import_RecheckKept>
   <RWS_Import_Error>The import failed: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (failed {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Record file: {0}</RWS_Import_ProfilePath>

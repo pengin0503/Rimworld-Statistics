@@ -122,7 +122,9 @@ public sealed partial class SaveReader
             if (hashing.BytesRead != fileSize)
                 throw new IOException("save length changed during read");
             Finish(state);
-            var metrics = TryBuildMetrics(state, hashing);
+            var hash = TryHash(hashing);
+            obs.ContentHash = hash;
+            var metrics = hash is null ? null : TryBuildMetrics(state, hash);
             return new SaveReadResult(obs, metrics) { Checkpoint = metrics is null ? null : TryBuildCheckpoint(state, metrics) };
         }
         catch (Exception e)

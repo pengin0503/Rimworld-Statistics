@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Uma varredura está em andamento. As contagens aparecem quando ela terminar.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Lidos: {0} / ignorados: {1} / com falha: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrompida)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Verificação completa</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Lê de novo, por inteiro, cada jogo salvo e o compara com o seu registro. "Verificar novamente" não lê um jogo salvo cujo nome, tamanho e data de modificação não mudaram.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Cada jogo salvo será lido de novo por inteiro e comparado com o seu registro. Leva um tempo proporcional à quantidade e ao tamanho dos jogos salvos. Os arquivos dos jogos salvos não são alterados. Um jogo salvo igual ao seu registro deixa o registro como está. Um jogo salvo com o mesmo nome, tamanho e data de modificação, mas com outro conteúdo, atualiza o seu registro como um jogo salvo sobrescrito, e o registro anterior fica no histórico. Um jogo salvo que não pode ser lido mantém o registro anterior. Iniciar a verificação completa?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Uma verificação completa está em andamento. As contagens aparecem quando ela terminar.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Verificação completa: lidos {0} / sem alterações {1} / atualizados {2} / novos {3} / com falha {4} / ignorados {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} dos jogos salvos que não puderam ser lidos mantêm o registro anterior.</RWS_Import_RecheckKept>
   <RWS_Import_Error>A importação falhou: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (com falha: {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Arquivo de registro: {0}</RWS_Import_ProfilePath>

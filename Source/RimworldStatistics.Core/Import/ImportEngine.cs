@@ -4,9 +4,29 @@ public sealed record ImportProgress(int Total, int Done, int Failed, string? Cur
 
 public sealed class ImportResult
 {
+    public ImportMode Mode { get; init; }
+
+    /// <summary>Saves read in this scan, failed reads included.</summary>
     public int Read { get; init; }
+
+    /// <summary>Saves not read (already read), or, in a forced re-check, read but recorded by a newer version of this MOD.</summary>
     public int Skipped { get; init; }
+
+    /// <summary>Reads that failed. In a forced re-check, a good earlier record of the same file is kept (<see cref="KeptAfterFailure"/>).</summary>
     public int Failed { get; init; }
+
+    /// <summary>Forced re-check: saves that hold what their record was read from; nothing was written for them.</summary>
+    public int Unchanged { get; init; }
+
+    /// <summary>Forced re-check: saves whose bytes differ from their record although name, size and time are the same.</summary>
+    public int Replaced { get; init; }
+
+    /// <summary>Forced re-check: failed reads of saves with a good record, which was kept.</summary>
+    public int KeptAfterFailure { get; init; }
+
+    /// <summary>Saves read and committed as new: not failed, not unchanged, not replaced.</summary>
+    public int Added => Math.Max(0, Read - Failed - Unchanged - Replaced);
+
     public bool Cancelled { get; init; }
 
     /// <summary>Save file names present in the folder at scan time (for "元ファイルの有無", spec §7.5).</summary>
@@ -14,8 +34,9 @@ public sealed class ImportResult
 }
 
 /// <summary>
-/// Reads new or changed saves in one folder into the profile (spec §7.1, §7.5). Runs on a background thread and
-/// touches no game API. Cancellation is checked between files; what was read is kept and the next run continues.
+/// Reads new or changed saves in one folder into the profile (spec §7.1, §7.5), or, in a forced re-check, every save
+/// (#310). Runs on a background thread and touches no game API and no save file (read only). Cancellation is checked
+/// between files; what was read is kept and the next run continues.
 /// </summary>
 public sealed class ImportEngine
 {
@@ -35,14 +56,41 @@ public sealed class ImportEngine
 
     private static readonly TimeSpan SaveInterval = TimeSpan.FromSeconds(5);
 
+    private static void Commit(Profile p, SaveReadResult result, bool otherContent)
+    {
+        // A successful v1 read must not be committed before the numeric observations:
+        // if their mutation fails, leave an Error observation so the file is retried.
+        // Record the embedded checkpoint before its matching
+        // SaveFile counters. Compaction then knows this .rws is an
+        // ancestry witness even when files are scanned out of order.
+        if (result.Checkpoint is not null)
+            ProfileMutations.UpsertMetricObservation(p, result.Checkpoint);
+        if (result.Metrics is not null)
+            ProfileMutations.UpsertMetricObservation(p, result.Metrics);
+        ProfileMutations.AddSaveObservation(p, result.Observation, otherContent);
+    }
+
+    private static bool HasGoodRecord(Profile p, string name, long size, DateTime time)
+    {
+        foreach (var o in p.SaveObservations)
+            if (!o.Superseded && o.Status != ObservationStatus.Error && o.FileName == name && o.SameFileContent(size, time))
+                return true;
+        return false;
+    }
+
     public static bool IsSaveFile(string fileName)
         => fileName.EndsWith(".rws", StringComparison.OrdinalIgnoreCase)
             || fileName.EndsWith(".rws.old", StringComparison.OrdinalIgnoreCase);
 
     public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct)
+        => Run(savesDir, session, progress, ct, ImportMode.Incremental);
+
+    public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct,
+        ImportMode mode)
     {
         if (!Directory.Exists(savesDir))
-            return new ImportResult { PresentFiles = Array.Empty<string>() };
+            return new ImportResult { Mode = mode, PresentFiles = Array.Empty<string>() };
+        var forced = mode == ImportMode.ForcedRecheck;
 
         var files = Directory.EnumerateFiles(savesDir)
             .Select(path => (Path: path, Name: Path.GetFileName(path)))
@@ -50,7 +98,7 @@ public sealed class ImportEngine
             .OrderBy(f => f.Name, StringComparer.Ordinal)
             .ToList();
 
-        int read = 0, skipped = 0, failed = 0, done = 0;
+        int read = 0, skipped = 0, failed = 0, done = 0, unchanged = 0, replaced = 0, keptAfterFailure = 0;
         var cancelled = false;
         var lastSaveRequest = _timeProvider.GetTimestamp();
         var present = new List<string>(files.Count);
@@ -64,7 +112,8 @@ public sealed class ImportEngine
         List<Task<SaveReadResult?>>? discarded = null;
         var nextToSchedule = 0;
 
-        bool AlreadyRead(string name, long size, DateTime time) => session.ReadWithRevision((p, revision) =>
+        // A forced re-check reads every save: whether one holds what its record was read from is decided after reading it.
+        bool AlreadyRead(string name, long size, DateTime time) => !forced && session.ReadWithRevision((p, revision) =>
         {
             if (revision != indexedRevision)
             {
@@ -142,10 +191,12 @@ public sealed class ImportEngine
                 }
                 present.Add(name);
                 var countedRead = false;
+                (long Size, DateTime Time)? identity = null;
                 try
                 {
                     long size = info.Length;
                     var time = info.LastWriteTimeUtc;
+                    identity = (size, time);
                     if (AlreadyRead(name, size, time))
                     {
                         skipped++;
@@ -159,24 +210,43 @@ public sealed class ImportEngine
                         result = prefetched;
                     else
                         result = _reader.ReadDetailed(path);
-                    var (obs, metrics) = result;
+                    var obs = result.Observation;
                     read++;
                     countedRead = true;
                     if (obs.Status == ObservationStatus.Error)
                         failed++;
+                    if (forced)
+                    {
+                        // A save that holds what its record was read from is not written at all, so a re-check of
+                        // unchanged saves changes nothing. What is written is decided again under the lock.
+                        switch (session.ReadWithRevision((p, _) => ForcedRecheck.Classify(p, result)))
+                        {
+                            case RecheckOutcome.Unchanged:
+                                unchanged++;
+                                continue;
+                            case RecheckOutcome.FailedKept:
+                                keptAfterFailure++;
+                                continue;
+                            case RecheckOutcome.NewerRecord:
+                                read--;
+                                skipped++;
+                                continue;
+                        }
+                    }
+                    var outcome = RecheckOutcome.New;
                     CommitCurrentFile(p =>
                     {
-                        // A successful v1 read must not be committed before the numeric observations:
-                        // if their mutation fails, leave an Error observation so the file is retried.
-                        // Record the embedded checkpoint before its matching
-                        // SaveFile counters. Compaction then knows this .rws is an
-                        // ancestry witness even when files are scanned out of order.
-                        if (result.Checkpoint is not null)
-                            ProfileMutations.UpsertMetricObservation(p, result.Checkpoint);
-                        if (metrics is not null)
-                            ProfileMutations.UpsertMetricObservation(p, metrics);
-                        ProfileMutations.AddSaveObservation(p, obs);
+                        outcome = forced ? ForcedRecheck.Classify(p, result) : RecheckOutcome.New;
+                        if (outcome is RecheckOutcome.New or RecheckOutcome.Changed)
+                            Commit(p, result, otherContent: outcome == RecheckOutcome.Changed);
                     });
+                    switch (outcome)
+                    {
+                        case RecheckOutcome.Changed: replaced++; break;
+                        case RecheckOutcome.Unchanged: unchanged++; break;
+                        case RecheckOutcome.FailedKept: keptAfterFailure++; break;
+                        case RecheckOutcome.NewerRecord: read--; skipped++; break;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -190,7 +260,11 @@ public sealed class ImportEngine
                         FileName = name, ReaderVersion = SaveReader.Version, Status = ObservationStatus.Error,
                         ErrorReason = $"{e.GetType().Name}: {e.Message}",
                     };
-                    CommitCurrentFile(p => ProfileMutations.AddSaveObservation(p, error));
+                    if (forced && identity is { } known && session.ReadWithRevision((p, _) =>
+                            HasGoodRecord(p, name, known.Size, known.Time)))
+                        keptAfterFailure++;   // a forced re-check never hides a good record behind a failure
+                    else
+                        CommitCurrentFile(p => ProfileMutations.AddSaveObservation(p, error));
                 }
                 // Bound how often the background writer serializes a large profile.
                 // Completion and cancellation both still request a final save.
@@ -223,6 +297,10 @@ public sealed class ImportEngine
 
         if (cancelled)
             present.AddRange(files.Skip(done).Select(f => f.Name).Where(n => File.Exists(Path.Combine(savesDir, n))));
-        return new ImportResult { Read = read, Skipped = skipped, Failed = failed, Cancelled = cancelled, PresentFiles = present };
+        return new ImportResult
+        {
+            Mode = mode, Read = read, Skipped = skipped, Failed = failed, Unchanged = unchanged, Replaced = replaced,
+            KeptAfterFailure = keptAfterFailure, Cancelled = cancelled, PresentFiles = present,
+        };
     }
 }

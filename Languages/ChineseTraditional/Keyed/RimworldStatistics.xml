@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>正在匯入。本次的數量將在完成後顯示。</RWS_Import_RunningNow>
   <RWS_Import_Counts>已讀取 {0} / 已略過 {1} / 失敗 {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark>（已中斷）</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>完整複查</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>重新完整讀取每個存檔，並與記錄核對。重新掃描不會讀取名稱、大小和修改時間與上次相同的存檔。</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>將重新完整讀取每個存檔，並與記錄核對。所需時間與存檔的數量和大小成正比。不會修改存檔檔案。內容與記錄相同的存檔不會改寫記錄。名稱、大小和修改時間相同但內容不同的存檔，會像被覆寫的存檔一樣更新記錄，之前的記錄作為歷史保留。無法讀取的存檔保留之前的記錄。要開始嗎？</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>正在完整複查。本次的數量將在完成後顯示。</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>完整複查：已讀取 {0} / 未變化 {1} / 已更新 {2} / 新增 {3} / 失敗 {4} / 已略過 {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>無法讀取的存檔中有 {0} 個保留了之前的記錄。</RWS_Import_RecheckKept>
   <RWS_Import_Error>匯入失敗：{0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1}（失敗 {2}）{3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>記錄檔案：{0}</RWS_Import_ProfilePath>
