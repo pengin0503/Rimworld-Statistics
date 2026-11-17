@@ -1152,13 +1152,13 @@
   <RWS_VgeHybrid_BirthsDesc>プレイヤー所有のVGEの電子子宮が成長サイクルを成功させたときに、実際に1体ずつ生まれたプレイヤー所有のハイブリッドの数（種類別）。成長の失敗、タイマーの進行、セーブの復元は数えません。</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE 生体機械への変換</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>プレイヤー所有のメカハイブリッド化装置による変換のうち、元の対象が消え、変換後のプレイヤー所有のポーンが1体新たに生まれたものの数（結果の種類別）。装置の起動、待機、生成の失敗は数えません。</RWS_VgeHybrid_ConversionsDesc>
-  <RWS_PrisonExpanded_ParoleApproved>Prison Expanded 仮釈放の承認数</RWS_PrisonExpanded_ParoleApproved>
+  <RWS_PrisonExpanded_ParoleApproved>仮釈放の承認数</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>仮釈放審査での釈放の決定のうち、プレイヤーが拘束している生存中の囚人の満了した刑期を実際に解除し、釈放そのものが指示されたものの数。審査だけの場合、刑期の延長、勧誘の選択、繰り返しの選択、その後の実際の退去は数えません。</RWS_PrisonExpanded_ParoleApprovedDesc>
   <RWS_Rimefeller_ExtractedFieldUnits>油田から採掘した原油（油田単位）</RWS_Rimefeller_ExtractedFieldUnits>
   <RWS_Rimefeller_ExtractedFieldUnitsDesc>プレイヤー所有の油井がポンプ処理に成功したときの、油田の容量の実際の減少量。単位は油田の容量であり、パイプ内の量やアイテムの数ではありません。掘削の進捗、ポンプの試行、油田の自然回復、タンク間の移送、精製所の生産物は数えません。</RWS_Rimefeller_ExtractedFieldUnitsDesc>
-  <RWS_PrisonExpanded_SentencesServed>Prison Expanded 刑期の満了数</RWS_PrisonExpanded_SentencesServed>
+  <RWS_PrisonExpanded_SentencesServed>刑期の満了数</RWS_PrisonExpanded_SentencesServed>
   <RWS_PrisonExpanded_SentencesServedDesc>プレイヤーが拘束している囚人の刑期がPrison Expandedで定められた長さに達し、初めて仮釈放審査の対象になった回数。仮釈放の承認、釈放の指示、日数の重複処理、ロード時に復元された値は数えません。</RWS_PrisonExpanded_SentencesServedDesc>
-  <RWS_PrisonExpanded_PhysicalDepartures>Prison Expanded 実際に去った囚人</RWS_PrisonExpanded_PhysicalDepartures>
+  <RWS_PrisonExpanded_PhysicalDepartures>実際に去った囚人</RWS_PrisonExpanded_PhysicalDepartures>
   <RWS_PrisonExpanded_PhysicalDeparturesDesc>Prison Expandedに記録された囚人のうち、プレイヤーの拠点マップから実際に出ていった人数。釈放や仮釈放の指示を受けただけでは数えません。元の刑期にかかわらず、実際に去れば数えます。</RWS_PrisonExpanded_PhysicalDeparturesDesc>
   <RWS_Rimefeller_RefineryFuelUsed>精製設備の燃料消費量（パイプ単位）</RWS_Rimefeller_RefineryFuelUsed>
   <RWS_Rimefeller_RefineryFuelUsedDesc>プレイヤー所有のRimefellerの精製所の処理によって、パイプ網の利用可能な燃料が実際に減った量。その処理中に設備へ移された燃料や、予定・試行だけの消費は数えません。単位はパイプ網の燃料単位です。</RWS_Rimefeller_RefineryFuelUsedDesc>
