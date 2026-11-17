@@ -835,9 +835,9 @@
   <RWS_Mod_Provider>MOD: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>The source mod is not currently installed. Recorded values are kept, but no new values are recorded.</RWS_Mod_SourceUnavailable>
   <!-- Legacy labels: historical records remain readable when optional addons are absent. -->
-  <RWS_ModRecruitment_Started>Recruitment requests started</RWS_ModRecruitment_Started>
+  <RWS_ModRecruitment_Started>Colonist join requests started</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>Recruitment 1.1.2 requests successfully created after recording began. Periods from before recording was enabled are partial. A request cancelled after creation still counts as started.</RWS_ModRecruitment_StartedDesc>
-  <RWS_ModRecruitment_Active>Active recruitment requests</RWS_ModRecruitment_Active>
+  <RWS_ModRecruitment_Active>Active colonist join requests</RWS_ModRecruitment_Active>
   <RWS_ModRecruitment_ActiveDesc>Pending recruitment requests at the most recent successful save. This is not an all-time total.</RWS_ModRecruitment_ActiveDesc>
   <RWS_ModHospitality_PresentGuests>Visiting guests at save</RWS_ModHospitality_PresentGuests>
   <RWS_ModHospitality_PresentGuestsDesc>Number of Hospitality guests staying on player home maps at a successful save. Not a lifetime visit total.</RWS_ModHospitality_PresentGuestsDesc>
@@ -903,11 +903,11 @@
   <RWS_Hospitality_ShoppingSilverDesc>Silver taken from guests by the same completed shopping jobs since this statistic was enabled.</RWS_Hospitality_ShoppingSilverDesc>
   <RWS_Hospitality_AssignedBeds>Beds assigned to guests at save</RWS_Hospitality_AssignedBeds>
   <RWS_Hospitality_AssignedBedsDesc>Distinct guest beds assigned to Hospitality visitors present on player home maps at a successful save. A shared bed counts once. This counts bed assignments, not guests actually sleeping or lifetime bookings.</RWS_Hospitality_AssignedBedsDesc>
-  <RWS_AddonRecruitment_Started>Recruitment requests started (since enabled)</RWS_AddonRecruitment_Started>
+  <RWS_AddonRecruitment_Started>Colonist join requests started (since enabled)</RWS_AddonRecruitment_Started>
   <RWS_AddonRecruitment_StartedDesc>Confirmed Recruitment requests since this statistic was enabled. Kept separate from the older built-in series because the tracking method changed.</RWS_AddonRecruitment_StartedDesc>
-  <RWS_AddonRecruitment_SilverSpent>Recruitment: silver spent on requests (since enabled)</RWS_AddonRecruitment_SilverSpent>
+  <RWS_AddonRecruitment_SilverSpent>Silver spent on requests (since enabled)</RWS_AddonRecruitment_SilverSpent>
   <RWS_AddonRecruitment_SilverSpentDesc>Total confirmed silver paid for newly created Recruitment requests since this statistic was enabled. Includes extra fees; failed attempts are not counted, and this is not a change in net wealth.</RWS_AddonRecruitment_SilverSpentDesc>
-  <RWS_AddonRecruitment_PlannedApplicants>Recruitment: planned applicants (since enabled)</RWS_AddonRecruitment_PlannedApplicants>
+  <RWS_AddonRecruitment_PlannedApplicants>Planned applicants (since enabled)</RWS_AddonRecruitment_PlannedApplicants>
   <RWS_AddonRecruitment_PlannedApplicantsDesc>Total applicants rolled when paid Recruitment requests start, since this statistic was enabled. This is the planned number, not people who actually arrived, joined or became colonists; generating them may fail.</RWS_AddonRecruitment_PlannedApplicantsDesc>
   <RWS_DBH_PipedStorage>Stored piped water (L)</RWS_DBH_PipedStorage>
   <RWS_DBH_PipedStorageDesc>Total liters stored in Dubs Bad Hygiene water tanks connected to pipes on player home maps at a successful save, each tank counted once. Only connected tanks that can be read are included; this is not lifetime production or use. Values from before the statistic was enabled are not reconstructed, and the value is unknown if the data cannot be read.</RWS_DBH_PipedStorageDesc>
@@ -1062,7 +1062,7 @@
   <RWS_VfeTribals_EraAdvancesDesc>Times the player's tribal technology era actually moved forward, grouped by era. Initialization, staying at or dropping to a lower era, and restoring a save do not count.</RWS_VfeTribals_EraAdvancesDesc>
   <RWS_VfeTribals_Cornerstones>Cornerstones acquired</RWS_VfeTribals_Cornerstones>
   <RWS_VfeTribals_CornerstonesDesc>New cornerstones bought with available points during play, grouped by cornerstone. Cornerstones already owned and ones restored on load do not count.</RWS_VfeTribals_CornerstonesDesc>
-  <RWS_VaeAspirations_Completed>Vanilla Aspirations Expanded aspirations fulfilled</RWS_VaeAspirations_Completed>
+  <RWS_VaeAspirations_Completed>Aspirations fulfilled</RWS_VaeAspirations_Completed>
   <RWS_VaeAspirations_CompletedDesc>Aspirations newly fulfilled by player colonists through the mod's normal completion check, grouped by aspiration. Debug completions, aspirations already fulfilled or not assigned, and restoring a save do not count.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Player-hive births</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>New insects spawned by player-owned hives during normal play, grouped by insect type. Cocoon replacement, restoring existing hive members and developer spawn actions do not count.</RWS_VfeInsectoids_HiveBirthsDesc>
@@ -1074,9 +1074,9 @@
   <RWS_Rwom_HealingCastsDesc>Player Heal and Advanced Heal casts that actually reduced a target's injuries or stabilized a freshly lost body part.</RWS_Rwom_HealingCastsDesc>
   <RWS_Sos2_OrbitArrivals>Orbit arrivals</RWS_Sos2_OrbitArrivals>
   <RWS_Sos2_OrbitArrivalsDesc>Player-controlled ships that reached a stable orbit after taking off from the surface.</RWS_Sos2_OrbitArrivalsDesc>
-  <RWS_SimpleWarrants_Completed>Simple Warrants hand-ins completed</RWS_SimpleWarrants_Completed>
+  <RWS_SimpleWarrants_Completed>Hand-ins completed</RWS_SimpleWarrants_Completed>
   <RWS_SimpleWarrants_CompletedDesc>Warrants settled by a player caravan handing in the target, after the target was removed and the warrant closed.</RWS_SimpleWarrants_CompletedDesc>
-  <RWS_SimpleWarrants_Silver>Simple Warrants silver earned</RWS_SimpleWarrants_Silver>
+  <RWS_SimpleWarrants_Silver>Silver earned</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Silver actually added to a player caravan as rewards for completed warrant hand-ins.</RWS_SimpleWarrants_SilverDesc>
   <RWS_VqeGenerator_Upgrades>The Generator ARC upgrades completed</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Completed player construction that replaces an existing player-owned ARC generator in place, grouped by the new generator type.</RWS_VqeGenerator_UpgradesDesc>
@@ -1104,9 +1104,9 @@
   <RWS_VseExpertise_LevelUpsDesc>Permanent increases in VSE expertise levels gained after recording was enabled, summed across all independent colonies and grouped by expertise type.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>VSE highest expertise level reached</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>The highest expertise level actually reached through experience across independent colonies; not a sum of levels or a snapshot of the latest save.</RWS_VseExpertise_HighestDesc>
-  <RWS_VefCooking_Batches>Vanilla Cooking Expanded processing batches</RWS_VefCooking_Batches>
+  <RWS_VefCooking_Batches>Processing batches</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Completed soup, cheese and other VEF processes belonging to Vanilla Cooking Expanded, grouped by process. Ordinary bill crafting and output that was partly blocked are not counted.</RWS_VefCooking_BatchesDesc>
-  <RWS_VefBrewing_Batches>Vanilla Brewing Expanded fermentation and aging batches</RWS_VefBrewing_Batches>
+  <RWS_VefBrewing_Batches>Fermentation and aging batches</RWS_VefBrewing_Batches>
   <RWS_VefBrewing_BatchesDesc>Completed VEF fermentation, brewing and aging batches belonging to Vanilla Brewing Expanded, grouped by process. Paused, blocked or unfinished output and ordinary bill crafting are not counted.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Silver from guests' meals</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Silver actually paid by non-player customers for meals at a player-owned restaurant. Partial payments add the amount actually paid; unpaid debts, free meals and unrelated trade do not count.</RWS_Gastronomy_SilverCollectedDesc>
@@ -1114,9 +1114,9 @@
   <RWS_VqeDrones_AssembledDesc>Player-owned drones actually spawned by the automated drone assembler when its production timer finishes, by pawn kind. Timer progress alone, failed spawns and hatching from eggs are not counted.</RWS_VqeDrones_AssembledDesc>
   <RWS_VqeDrones_Hatched>VQE Drone Factory drones hatched</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Player drones actually born from eggs that hatched successfully, by pawn kind. Eggs destroyed without producing a drone, and drones made by the assembler, are not counted.</RWS_VqeDrones_HatchedDesc>
-  <RWS_VceDeepchem_StoredUnits>Vanilla Chemfuel Expanded deepchem stored in pipes</RWS_VceDeepchem_StoredUnits>
+  <RWS_VceDeepchem_StoredUnits>Deepchem stored in pipes</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem actually accepted into pipe storage from player-owned pumpjacks, fractions included, measured when the pipe network confirms storage. Planned yield, output dropped on the ground and storage that was blocked do not count.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>Vanilla Genetics Expanded DNA extracted</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>DNA extracted</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged into stacks by successful player extractions, by output item. Invalid targets, failed placement, charges used without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Nutrient slurry actually accepted into the pipe network from player-owned Vanilla Nutrient Paste Expanded grinders, fractions included. Grinding attempts, ingredients used without slurry being accepted, and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
