@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+  <!-- The probe's own MOD incident (#352). Never chosen by the storyteller (baseChance 0); the probe runs it directly. -->
+  <IncidentDef>
+    <defName>RwsProbe_ColonistsRequired</defName>
+    <label>probe incident</label>
+    <category>Misc</category>
+    <targetTags>
+      <li>Map_PlayerHome</li>
+    </targetTags>
+    <workerClass>RimworldStatistics.RealGameEventProbe.IncidentWorker_Probe</workerClass>
+    <baseChance>0</baseChance>
+    <requireColonistsPresent>true</requireColonistsPresent>
+  </IncidentDef>
+</Defs>

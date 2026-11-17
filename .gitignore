@@ -10,3 +10,6 @@ artifacts/
 tools/VerifyHarness/Mod/1.7/
 # Official RimWorld translations extracted for glossary lookups (Ludeon content; never commit)
 tools/translation/.cache/
+
+# Development-only real-game event probe build output (tools/RealGameEventProbe/README.md)
+tools/RealGameEventProbe/Mod/Assemblies/
