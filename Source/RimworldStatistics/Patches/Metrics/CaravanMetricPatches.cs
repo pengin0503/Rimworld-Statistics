@@ -125,7 +125,7 @@ public static class CaravanAmbushMetricPatch
 public static class SettlementDefeatedMetricPatch
 {
     public static void Prefix(Settlement factionBase, out bool __state)
-        => __state = factionBase is { Destroyed: false } && factionBase.Faction != null && Faction.OfPlayer != null && factionBase.Faction.HostileTo(Faction.OfPlayer);
+        => __state = factionBase is { Destroyed: false } && factionBase.Faction != null && factionBase.Faction.HostileTo(GameFacts.PlayerFaction);
 
     public static void Postfix(Settlement factionBase, bool __state)
     {

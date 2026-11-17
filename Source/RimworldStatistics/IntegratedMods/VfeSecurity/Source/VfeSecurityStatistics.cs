@@ -82,7 +82,7 @@ internal static class VfeSecurityStatistics
            && Scribe.mode == LoadSaveMode.Inactive
            && Find.TickManager is not null
            && instance is ThingComp { parent: { Spawned: true } parent }
-           && parent.Faction == Faction.OfPlayer;
+           && GameFacts.IsPlayerFaction(parent.Faction);
 
     private static void BeforeRearm(object __instance, out bool? __state)
     {

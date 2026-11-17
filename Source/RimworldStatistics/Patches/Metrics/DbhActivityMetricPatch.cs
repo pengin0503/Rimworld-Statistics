@@ -54,7 +54,7 @@ internal static class DbhActivityMetricPatch
             targets?.Contains(job.def) != true)
             return;
         if (__instance.curDriver?.pawn is { MapHeld.IsPlayerHome: true } pawn &&
-            pawn.Faction == Faction.OfPlayer && LiveMetrics.CanCaptureEvent(DbhStatistics.ActivitiesUnit))
+            GameFacts.IsPlayerFaction(pawn.Faction) && LiveMetrics.CanCaptureEvent(DbhStatistics.ActivitiesUnit))
             __state = (job, job.def.defName);
     }
 

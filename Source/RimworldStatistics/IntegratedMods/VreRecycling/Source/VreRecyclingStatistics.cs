@@ -122,7 +122,7 @@ internal static class VreRecyclingStatistics
         __state = null;
         if (!CanObserve() ||
             __instance is not ThingComp { parent: Building { Spawned: true } building } ||
-            building.Faction != Faction.OfPlayer ||
+            !GameFacts.IsPlayerFaction(building.Faction) ||
             building.Map is not { } map ||
             !string.Equals(building.def?.modContentPack?.PackageId, Owner, StringComparison.OrdinalIgnoreCase))
             return;
@@ -196,7 +196,7 @@ internal static class VreRecyclingStatistics
         {
             var confirmed = VreRecyclingRules.ConfirmedOutputCount(
                 spawned: __state.Owner.Building.Spawned,
-                playerOwned: __state.Owner.Building.Faction == Faction.OfPlayer,
+                playerOwned: GameFacts.IsPlayerFaction(__state.Owner.Building.Faction),
                 tryPlaceCalled: __state.TryPlaceCalled,
                 placedActionCount: __state.PlacedActionCount,
                 existingBeforeCount: __state.ExistingBeforeCount,

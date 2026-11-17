@@ -6,6 +6,7 @@ using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using RimworldStatistics.NewModOutcomes;
 using Verse;
+using RimworldStatistics.Patches.Metrics;
 
 namespace RimworldStatistics.AlphaAnimals;
 
@@ -176,7 +177,7 @@ internal static class AlphaAnimalsStatistics
         {
             source = comp?.parent;
             playerSource = source is not null && source.Spawned && !source.Destroyed &&
-                source.Faction == Faction.OfPlayer;
+                GameFacts.IsPlayerFaction(source.Faction);
         }
 
         var spawned = GenSpawn.Spawn(thing, cell, map, mode);
@@ -234,7 +235,7 @@ internal static class AlphaAnimalsStatistics
     {
         bool observe = OutcomeMetric.Observing(HatchUnit);
         bool playerCocoon = observe && cocoon is { Spawned: true, Destroyed: false } &&
-            cocoon.Faction == Faction.OfPlayer;
+            GameFacts.IsPlayerFaction(cocoon.Faction);
 
         var spawned = GenSpawn.Spawn(thing, cell, map, mode);
 
@@ -263,7 +264,7 @@ internal static class AlphaAnimalsStatistics
         {
             var pawn = pending.Pawn;
             bool liveSpawned = pawn is { Dead: false, Spawned: true };
-            bool playerPawn = pawn is not null && pawn.Faction == Faction.OfPlayer;
+            bool playerPawn = pawn is not null && GameFacts.IsPlayerFaction(pawn.Faction);
             bool sameMap = pawn is not null && ReferenceEquals(pawn.Map, pending.Map);
 
             if (AlphaAnimalsRules.CocoonHatchCommitted(

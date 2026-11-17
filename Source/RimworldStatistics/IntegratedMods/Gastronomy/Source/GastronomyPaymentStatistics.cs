@@ -125,7 +125,7 @@ internal static class GastronomyPaymentStatistics
         try
         {
             var patron = driverPawnField?.GetValue(__instance) as Pawn;
-            if (patron is null || patron.Faction == Faction.OfPlayer ||
+            if (patron is null || GameFacts.IsPlayerFaction(patron.Faction) ||
                 patron.MapHeld?.IsPlayerHome != true || patron.inventory is null)
                 return;
             __state = new DineScope { Patron = patron, Recipient = __1, Parent = activeDine };

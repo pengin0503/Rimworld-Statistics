@@ -168,7 +168,7 @@ internal static class VgeHybridOutcomeStatistics
     {
         map = comp.parent?.Map;
         return comp.parent is { Spawned: true } parent &&
-               parent.Faction == Faction.OfPlayer && map is { IsPlayerHome: true };
+               GameFacts.IsPlayerFaction(parent.Faction) && map is { IsPlayerHome: true };
     }
 
     private static void BeforeBirth(object __instance, out BirthBefore? __state)
@@ -205,7 +205,7 @@ internal static class VgeHybridOutcomeStatistics
                 return;
             var children = __state.Map.mapPawns.AllPawnsSpawned
                 .Where(p => p.Spawned && p.Map == __state.Map &&
-                    p.Faction == Faction.OfPlayer &&
+                    GameFacts.IsPlayerFaction(p.Faction) &&
                     ReferenceEquals(p.kindDef, __state.Kind) &&
                     !__state.Previous.Contains(p)).ToArray();
             if (children.Length != 1 ||
@@ -228,7 +228,7 @@ internal static class VgeHybridOutcomeStatistics
         __state = null;
         if (!CanObserve(ConversionUnit) ||
             __instance is not Building { Spawned: true } building ||
-            building.Faction != Faction.OfPlayer ||
+            !GameFacts.IsPlayerFaction(building.Faction) ||
             building.Map is not { IsPlayerHome: true } map)
             return;
         try
@@ -240,7 +240,7 @@ internal static class VgeHybridOutcomeStatistics
                 converterContents?.GetValue(__instance) is not IEnumerable contents)
                 return;
             var pawn = contents.Cast<object>().OfType<Pawn>().FirstOrDefault();
-            if (pawn is null || pawn.Destroyed || pawn.Faction != Faction.OfPlayer)
+            if (pawn is null || pawn.Destroyed || !GameFacts.IsPlayerFaction(pawn.Faction))
                 return;
             __state = new ConversionBefore(map, pawn,
                 new HashSet<Pawn>(map.mapPawns.AllPawnsSpawned,
@@ -260,7 +260,7 @@ internal static class VgeHybridOutcomeStatistics
                 end >= 0f || !__state.Original.Destroyed)
                 return;
             var created = __state.Map.mapPawns.AllPawnsSpawned
-                .Where(p => p.Spawned && p.Faction == Faction.OfPlayer &&
+                .Where(p => p.Spawned && GameFacts.IsPlayerFaction(p.Faction) &&
                     p.Map == __state.Map && !__state.Previous.Contains(p)).ToArray();
             if (created.Length != 1 ||
                 !VgeHybridOutcomeRules.MechTransformed(

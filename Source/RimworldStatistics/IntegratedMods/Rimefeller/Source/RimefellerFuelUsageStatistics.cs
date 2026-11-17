@@ -169,7 +169,7 @@ internal static class RimefellerFuelUsageStatistics
 
     private static bool OwnedAndHome(object instance)
         => instance is ThingComp { parent: { Spawned: true } building }
-           && building.Faction == Faction.OfPlayer
+           && GameFacts.IsPlayerFaction(building.Faction)
            && building.Map is { IsPlayerHome: true }
            && string.Equals(building.def?.modContentPack?.PackageId, Owner,
                StringComparison.OrdinalIgnoreCase);

@@ -19,12 +19,12 @@ public static class BiotechProducedWasteMetricPatch
 {
     public static void Prefix(CompWasteProducer __instance, out int __state)
         => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-            && __instance.parent?.Faction == Faction.OfPlayer
+            && GameFacts.IsPlayerFaction(__instance.parent?.Faction)
                 ? Held(__instance) : -1;
 
     public static void Postfix(CompWasteProducer __instance, int __state)
     {
-        if (__state < 0 || __instance.parent?.Faction != Faction.OfPlayer)
+        if (__state < 0 || !GameFacts.IsPlayerFaction(__instance.parent?.Faction))
             return;
         var produced = Held(__instance) - __state;
         GameFacts.Record(BiotechFamily.Name, s =>
@@ -54,11 +54,11 @@ public static class BiotechAtomizedWasteMetricPatch
 {
     public static void Prefix(CompAtomizer __instance, out int __state)
         => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-            && __instance.parent?.Faction == Faction.OfPlayer ? __instance.SpaceLeft : -1;
+            && GameFacts.IsPlayerFaction(__instance.parent?.Faction) ? __instance.SpaceLeft : -1;
 
     public static void Postfix(CompAtomizer __instance, int __state)
     {
-        if (__state < 0 || __instance.parent?.Faction != Faction.OfPlayer)
+        if (__state < 0 || !GameFacts.IsPlayerFaction(__instance.parent?.Faction))
             return;
         var destroyed = __instance.SpaceLeft - __state;
         GameFacts.Record(BiotechFamily.Name, s =>

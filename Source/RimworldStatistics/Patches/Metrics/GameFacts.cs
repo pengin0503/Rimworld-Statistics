@@ -16,9 +16,19 @@ internal static class GameFacts
     /// <summary>A member of the colony (membership family): a free, non-slave colonist.</summary>
     public static bool IsMember(Pawn p) => p.IsFreeNonSlaveColonist;
 
-    public static bool IsPlayer(Thing? t) => t?.Faction != null && t.Faction == Faction.OfPlayer;
+    /// <summary>
+    /// The player's faction, or null while there is none. World generation makes the other factions and their leaders
+    /// (with injuries that are tended, records, relations, titles) before the scenario adds the player faction, and the
+    /// hooks run then too. <c>Faction.OfPlayer</c> logs "Could not find player faction." in that case, so it is not used.
+    /// </summary>
+    public static Faction? PlayerFaction => Faction.OfPlayerSilentFail;
 
-    public static bool IsColonyAnimal(Pawn p) => p.RaceProps.Animal && p.Faction == Faction.OfPlayer;
+    /// <summary>Whether a faction is the player's; a missing faction (null) never is, even while there is no player faction.</summary>
+    public static bool IsPlayerFaction(Faction? faction) => faction is not null && faction == Faction.OfPlayerSilentFail;
+
+    public static bool IsPlayer(Thing? t) => IsPlayerFaction(t?.Faction);
+
+    public static bool IsColonyAnimal(Pawn p) => p.RaceProps.Animal && IsPlayerFaction(p.Faction);
 
     // HAR races and vanilla humans both expose their owning race through Pawn.def.
     // Xenotypes use a separate game identity and are deliberately not part of this key.

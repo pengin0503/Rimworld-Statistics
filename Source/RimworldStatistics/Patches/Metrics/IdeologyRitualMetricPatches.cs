@@ -28,7 +28,7 @@ internal static class IdeologyRitualFacts
 
     public static bool IsPlayerRitual(LordJob_Ritual job)
         => job?.Ritual != null && LordField?.GetValue(job) is Lord lord
-            && lord.faction == Faction.OfPlayer;
+            && GameFacts.IsPlayerFaction(lord.faction);
 
     [ThreadStatic] private static LordJob_Ritual? active;
     [ThreadStatic] private static RitualOutcomePossibility? selected;

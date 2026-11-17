@@ -156,7 +156,7 @@ internal static class VfeSettlersStatistics
                 wantedField?.GetValue(__instance) is not Pawn wanted ||
                 rewardField?.GetValue(__instance) is not int originalReward ||
                 originalReward <= 0 ||
-                caravan.Faction != Faction.OfPlayer ||
+                !GameFacts.IsPlayerFaction(caravan.Faction) ||
                 !HasWanted(caravan, wanted))
                 return;
             __state = new HandinScope
@@ -207,7 +207,7 @@ internal static class VfeSettlersStatistics
         {
             var accepted = VfeSettlersBountyRules.RewardReceived(
                 __state.WantedPresent, !HasWanted(__state.Caravan, __state.Wanted),
-                __state.Caravan.Faction == Faction.OfPlayer,
+                GameFacts.IsPlayerFaction(__state.Caravan.Faction),
                 __state.RewardOffered, __state.DeliveredSilver);
             if (accepted <= 0)
                 return;

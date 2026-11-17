@@ -107,7 +107,7 @@ internal static class VfeInsectoidsStatistics
 
     private static bool PlayerHive(object instance)
         => instance is ThingComp { parent: { Spawned: true } parent }
-           && parent.Faction == Faction.OfPlayer
+           && GameFacts.IsPlayerFaction(parent.Faction)
            && parent.Map != null;
 
     private static void BeforeSpawn(object __instance, out BirthBefore? __state)
@@ -136,7 +136,7 @@ internal static class VfeInsectoidsStatistics
                 __instance is not ThingComp comp)
                 return;
             var sameMap = child.Map != null && child.Map == comp.parent.Map;
-            var owner = child.Faction == Faction.OfPlayer && comp.parent.Faction == Faction.OfPlayer;
+            var owner = GameFacts.IsPlayerFaction(child.Faction) && GameFacts.IsPlayerFaction(comp.parent.Faction);
             if (!VfeInsectoidsRules.NewBirth(__state.Count, insects.Count,
                     child.Spawned, owner, sameMap, normalTickScope: true))
                 return;

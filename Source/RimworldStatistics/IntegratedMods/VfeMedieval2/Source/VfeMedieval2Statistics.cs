@@ -121,7 +121,7 @@ internal static class VfeMedieval2Statistics
                 !GameFacts.IsMember(pawn) ||
                 apiaryProperty?.GetValue(__instance) is not Building apiary ||
                 readyProperty?.GetValue(apiary) is not true ||
-                !apiary.Spawned || apiary.Faction != Faction.OfPlayer ||
+                !apiary.Spawned || !GameFacts.IsPlayerFaction(apiary.Faction) ||
                 apiary.Map is not { IsPlayerHome:true } map ||
                 pawn.MapHeld != map)
                 return;

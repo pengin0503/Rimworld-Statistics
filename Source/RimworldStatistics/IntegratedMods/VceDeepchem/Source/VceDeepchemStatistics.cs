@@ -129,7 +129,7 @@ internal static class VceDeepchemStatistics
         if (!CanObserve() || __instance is not ThingComp
             {
                 parent: { Spawned: true } building
-            } || building.Faction != Faction.OfPlayer ||
+            } || !GameFacts.IsPlayerFaction(building.Faction) ||
             !string.Equals(building.def?.modContentPack?.PackageId, Owner,
                 StringComparison.OrdinalIgnoreCase))
             return;

@@ -43,12 +43,12 @@ internal static class MechRepairMetricFacts
 {
     public static bool WasInjured(Pawn mech)
         => LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-           && mech is { Dead: false } && mech.Faction == Faction.OfPlayer && mech.RaceProps.IsMechanoid
+           && mech is { Dead: false } && GameFacts.IsPlayerFaction(mech.Faction) && mech.RaceProps.IsMechanoid
            && mech.health?.hediffSet?.hediffs?.Any(h => h is Hediff_Injury) == true;
 
     public static void Repaired(Pawn mech, bool hadInjury)
     {
-        if (!hadInjury || mech is null || mech.Dead || mech.Faction != Faction.OfPlayer
+        if (!hadInjury || mech is null || mech.Dead || !GameFacts.IsPlayerFaction(mech.Faction)
             || mech.health?.hediffSet?.hediffs?.Any(h => h is Hediff_Injury) == true)
             return;
         // Both overloads may run for the same repair and same tick: deterministic
