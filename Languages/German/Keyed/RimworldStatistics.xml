@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Ein Scan läuft. Seine Zahlen erscheinen, wenn er fertig ist.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Gelesen: {0} / übersprungen: {1} / fehlgeschlagen: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (abgebrochen)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Vollständige Prüfung</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Liest jeden Spielstand erneut vollständig und vergleicht ihn mit seinem Eintrag. „Neu einlesen“ liest keinen Spielstand, dessen Name, Größe und Änderungszeit gleich geblieben sind.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Jeder Spielstand wird erneut vollständig gelesen und mit seinem Eintrag verglichen. Das dauert je nach Anzahl und Größe der Spielstände. Die Spielstanddateien werden nicht verändert. Stimmt ein Spielstand mit seinem Eintrag überein, bleibt der Eintrag unverändert. Hat ein Spielstand denselben Namen, dieselbe Größe und Änderungszeit, aber einen anderen Inhalt, wird sein Eintrag wie bei einem überschriebenen Spielstand aktualisiert, und der frühere Eintrag bleibt als Verlauf erhalten. Kann ein Spielstand nicht gelesen werden, bleibt sein früherer Eintrag erhalten. Vollständige Prüfung starten?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Eine vollständige Prüfung läuft. Ihre Zahlen erscheinen, wenn sie fertig ist.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Vollständige Prüfung: gelesen {0} / unverändert {1} / aktualisiert {2} / neu {3} / fehlgeschlagen {4} / übersprungen {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} der nicht lesbaren Spielstände behalten ihren früheren Eintrag.</RWS_Import_RecheckKept>
   <RWS_Import_Error>Der Import ist fehlgeschlagen: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (fehlgeschlagen: {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Aufzeichnungsdatei: {0}</RWS_Import_ProfilePath>

@@ -14,7 +14,11 @@ public enum ImportRunPhase
 }
 
 /// <summary>What the Import tab shows about the latest scan: its phase and the outcome of that scan only.</summary>
-public sealed record ImportRunState(ImportRunPhase Phase, ImportResult? Result, Exception? Error, ImportProgress? Progress);
+public sealed record ImportRunState(ImportRunPhase Phase, ImportResult? Result, Exception? Error, ImportProgress? Progress)
+{
+    /// <summary>Whether the latest scan is an ordinary scan or a forced re-check (#310).</summary>
+    public ImportMode Mode { get; init; }
+}
 
 /// <summary>
 /// The latest scan of this game session and its outcome (#337). Starting a scan forgets the outcome of the one before, so
@@ -38,11 +42,11 @@ public sealed class ImportRunStatus
     }
 
     /// <summary>A scan starts; returns the number its reports carry.</summary>
-    public long Begin()
+    public long Begin(ImportMode mode = ImportMode.Incremental)
     {
         lock (_gate)
         {
-            _state = new ImportRunState(ImportRunPhase.Running, null, null, null);
+            _state = new ImportRunState(ImportRunPhase.Running, null, null, null) { Mode = mode };
             return ++_run;
         }
     }
@@ -59,7 +63,7 @@ public sealed class ImportRunStatus
         lock (_gate)
             if (run == _run && _state.Phase == ImportRunPhase.Running)
                 _state = new ImportRunState(result.Cancelled ? ImportRunPhase.Cancelled : ImportRunPhase.Completed, result, null,
-                    _state.Progress);
+                    _state.Progress) { Mode = _state.Mode };
     }
 
     /// <summary>The scan failed as a whole (an exception out of the engine), or could not start.</summary>
@@ -67,6 +71,6 @@ public sealed class ImportRunStatus
     {
         lock (_gate)
             if (run == _run && _state.Phase == ImportRunPhase.Running)
-                _state = new ImportRunState(ImportRunPhase.Failed, null, error, _state.Progress);
+                _state = new ImportRunState(ImportRunPhase.Failed, null, error, _state.Progress) { Mode = _state.Mode };
     }
 }

@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Está a decorrer uma análise. As contagens aparecem quando terminar.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Lidos: {0} / ignorados: {1} / com falha: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrompida)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Verificação completa</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Volta a ler integralmente cada jogo guardado e compara-o com o seu registo. «Voltar a analisar» não lê um jogo guardado cujo nome, tamanho e data de modificação não mudaram.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Cada jogo guardado vai ser lido novamente por inteiro e comparado com o seu registo. Demora em proporção ao número e ao tamanho dos jogos guardados. Os ficheiros dos jogos guardados não são alterados. Um jogo guardado igual ao seu registo deixa o registo como está. Um jogo guardado com o mesmo nome, tamanho e data de modificação, mas com outro conteúdo, atualiza o seu registo como um jogo guardado substituído, e o registo anterior fica no histórico. Um jogo guardado que não pode ser lido mantém o registo anterior. Iniciar a verificação completa?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Está a decorrer uma verificação completa. As contagens aparecem quando terminar.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Verificação completa: lidos {0} / sem alterações {1} / atualizados {2} / novos {3} / com falha {4} / ignorados {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} dos jogos guardados que não puderam ser lidos mantêm o registo anterior.</RWS_Import_RecheckKept>
   <RWS_Import_Error>A importação falhou: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (com falha: {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Ficheiro de registo: {0}</RWS_Import_ProfilePath>

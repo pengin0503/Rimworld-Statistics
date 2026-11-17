@@ -28,9 +28,25 @@ public sealed class SaveObservation
 
     public DisplayInfo Display { get; set; } = new();
 
+    /// <summary>
+    /// SHA-256 (lowercase hex) of every byte of the file this record was read from, the same as the key of the save's
+    /// numeric observation; set by every complete read (#310). Null for a failed read and for records read before it was
+    /// added (no reader version bump: it changes no statistic, so those files are not read again for it).
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public string? ContentHash { get; set; }
+
     /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
     [System.Text.Json.Serialization.JsonExtensionData]
     public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
 
     public bool SameFileContent(long size, DateTime lastWriteUtc) => FileSize == size && LastWriteUtc == lastWriteUtc;
+
+    /// <summary>
+    /// The same file name, size and time, and no proof of other bytes: the content hashes are equal or one is unknown.
+    /// Name, size and time are the identity a scan skips by; only a forced re-check reads such a file again (#310).
+    /// </summary>
+    public bool SameFileContent(SaveObservation other)
+        => FileName == other.FileName && SameFileContent(other.FileSize, other.LastWriteUtc)
+            && (ContentHash is null || other.ContentHash is null || ContentHash == other.ContentHash);
 }

@@ -112,6 +112,12 @@
   <RWS_Import_RunningNow>Hay un análisis en curso. Sus recuentos aparecerán cuando termine.</RWS_Import_RunningNow>
   <RWS_Import_Counts>Leídas: {0} / omitidas: {1} / con error: {2}</RWS_Import_Counts>
   <RWS_Import_CancelledMark> (interrumpida)</RWS_Import_CancelledMark>
+  <RWS_ForceRecheck>Comprobación completa</RWS_ForceRecheck>
+  <RWS_ForceRecheckTip>Vuelve a leer por completo cada partida guardada y la compara con su registro. «Volver a analizar» no lee una partida cuyo nombre, tamaño y fecha de modificación no han cambiado.</RWS_ForceRecheckTip>
+  <RWS_ForceRecheck_Confirm>Se volverá a leer por completo cada partida guardada y se comparará con su registro. El tiempo depende del número y del tamaño de tus partidas. Los archivos de partida no se modifican. Si una partida coincide con su registro, el registro no cambia. Si una partida tiene el mismo nombre, tamaño y fecha de modificación pero otro contenido, su registro se actualiza como el de una partida sobrescrita y el registro anterior se conserva como historial. Si una partida no se puede leer, conserva su registro anterior. ¿Iniciar la comprobación completa?</RWS_ForceRecheck_Confirm>
+  <RWS_Import_RecheckRunningNow>Hay una comprobación completa en curso. Sus recuentos aparecerán cuando termine.</RWS_Import_RecheckRunningNow>
+  <RWS_Import_RecheckCounts>Comprobación completa: leídas {0} / sin cambios {1} / actualizadas {2} / nuevas {3} / con error {4} / omitidas {5}</RWS_Import_RecheckCounts>
+  <RWS_Import_RecheckKept>{0} de las partidas que no se pudieron leer conservan su registro anterior.</RWS_Import_RecheckKept>
   <RWS_Import_Error>La importación falló: {0}</RWS_Import_Error>
   <RWS_Import_Progress>{0} / {1} (con error: {2}) {3}</RWS_Import_Progress>
   <RWS_Import_ProfilePath>Archivo de registro: {0}</RWS_Import_ProfilePath>
