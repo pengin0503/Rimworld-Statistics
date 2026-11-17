@@ -7,9 +7,24 @@ public sealed record HistoryLegendPlan(
     float TotalHeight,
     int RowCount);
 
+public readonly record struct HistoryChartVerticalLayout(float PlotHeight, float ContentHeight);
+
 /// <summary>Computes wrapped multi-line placements for chart legend items so narrow windows never drop items.</summary>
 public static class HistoryLegendLayout
 {
+    /// <summary>Reserve a readable plot; overflow is handled by the containing scroll view.</summary>
+    public static HistoryChartVerticalLayout ResolveVertical(
+        float viewportHeight, float noteHeight, float legendHeight, float minimumPlotHeight = 160f)
+    {
+        var viewport = float.IsFinite(viewportHeight) ? Math.Max(0f, viewportHeight) : 0f;
+        var note = float.IsFinite(noteHeight) ? Math.Max(0f, noteHeight) : 0f;
+        var legend = float.IsFinite(legendHeight) ? Math.Max(0f, legendHeight) : 0f;
+        var minimum = float.IsFinite(minimumPlotHeight) ? Math.Max(10f, minimumPlotHeight) : 160f;
+        const float Spacing = 59f; // 13px before plot, 46px before legend
+        var plotHeight = Math.Max(minimum, viewport - note - legend - Spacing);
+        return new HistoryChartVerticalLayout(plotHeight, note + plotHeight + legend + Spacing);
+    }
+
     public static HistoryLegendPlan Resolve(
         IReadOnlyList<float> itemWidths,
         float maxWidth,

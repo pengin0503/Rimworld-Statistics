@@ -104,30 +104,6 @@ internal static class ComparisonPanel
         if (DrawCell(leftHeader, nameHeader) != nameHeader)
             TooltipHandler.TipRegion(leftHeader, nameHeader);
 
-        var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
-            current.Length,
-            plan.ColumnWidth,
-            scroll.x,
-            plan.DataViewportWidth);
-
-        GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
-        for (var i = firstCol; i < lastCol; i++)
-        {
-            var label = Label(current[i].Choice, view.Stats, groups);
-            var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
-            if (sortColumn == i)
-                label += descending ? " ▼" : " ▲";
-            if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
-            {
-                descending = sortColumn != i || !descending;
-                sortColumn = i;
-                builtFor = null;
-                scroll = Vector2.zero;
-            }
-            TooltipHandler.TipRegion(header, label);
-        }
-        GUI.EndGroup();
-
         var bodyY = y + RowHeight;
         var bodyHeight = Math.Max(0f, rect.yMax - bodyY);
         if (bodyHeight <= 0f)
@@ -144,28 +120,15 @@ internal static class ComparisonPanel
             Event.current.Use();
         }
 
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
-
-        if (leftViewport.height > 0f)
-        {
-            GUI.BeginGroup(leftViewport);
-            for (var i = first; i <= last; i++)
-            {
-                var row = rows[i];
-                var rowY = i * RowHeight - scroll.y;
-                var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
-                if (i % 2 == 1)
-                    Widgets.DrawHighlight(nameRect, 0.25f);
-                var shownName = DrawCell(nameRect, row.Label);
-                if (shownName != row.Label)
-                    TooltipHandler.TipRegion(nameRect, row.Label);
-            }
-            GUI.EndGroup();
-        }
-
         var rightViewport = new Rect(rect.x + plan.NameWidth, bodyY, Math.Max(0f, rect.width - plan.NameWidth), bodyHeight);
         Widgets.BeginScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight));
+        // BeginScrollView may update the scroll position for the current input event.
+        // Calculate all visible ranges after that update, then paint pinned columns and
+        // the header with the same scroll snapshot as the data cells.
+        var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
+            current.Length, plan.ColumnWidth, scroll.x, plan.DataViewportWidth);
+        var first = Math.Max(0, (int)(scroll.y / RowHeight));
+        var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
         for (var i = first; i <= last; i++)
         {
             var row = rows[i];
@@ -194,6 +157,44 @@ internal static class ComparisonPanel
             GUI.color = Color.white;
         }
         Widgets.EndScrollView();
+
+        // Pinned names and header are drawn last to use the final scroll position.
+        if (leftViewport.height > 0f)
+        {
+            GUI.BeginGroup(leftViewport);
+            for (var i = first; i <= last; i++)
+            {
+                var row = rows[i];
+                var rowY = i * RowHeight - scroll.y;
+                var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
+                if (i % 2 == 1)
+                    Widgets.DrawHighlight(nameRect, 0.25f);
+                var shownName = DrawCell(nameRect, row.Label);
+                if (shownName != row.Label)
+                    TooltipHandler.TipRegion(nameRect, row.Label);
+            }
+            GUI.EndGroup();
+        }
+
+        GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
+        for (var i = firstCol; i < lastCol; i++)
+        {
+            var label = Label(current[i].Choice, view.Stats, groups);
+            var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
+            if (sortColumn == i)
+                label += descending ? " ▼" : " ▲";
+            if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+            {
+                descending = sortColumn != i || !descending;
+                sortColumn = i;
+                builtFor = null;
+                scroll = Vector2.zero;
+            }
+            TooltipHandler.TipRegion(header, label);
+        }
+        GUI.EndGroup();
+
+
         Widgets.DrawBoxSolid(new Rect(rect.x + plan.NameWidth - 1f, y, 1f, Math.Max(0f, rect.yMax - y - bottomHScrollReserve)), new Color(1f, 1f, 1f, 0.14f));
     }
 

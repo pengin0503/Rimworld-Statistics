@@ -285,4 +285,15 @@ public sealed class UiRefinementIntegrationTests
         Assert.True(primary.Points[2].Unlinked);
         Assert.True(primary.Points[2].SkipsOnlyOtherBranches);
     }
+    [Fact]
+    public void OverflowLegendAndLongExplanationKeepChartReadable()
+    {
+        var legend = HistoryLegendLayout.Resolve([205f, 310f, 250f, 170f], 340f);
+        Assert.True(legend.RowCount >= 3);
+        var layout = HistoryLegendLayout.ResolveVertical(175f, 135f, legend.TotalHeight);
+        Assert.True(layout.PlotHeight >= 160f);
+        Assert.True(layout.ContentHeight > 175f);
+    }
+
+
 }
