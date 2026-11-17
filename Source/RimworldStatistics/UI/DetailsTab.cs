@@ -327,7 +327,8 @@ public static class DetailsTab
     private static bool MatchesSearch(MetricDefinition definition, string label, string term) =>
         term.Length == 0 || label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
         || definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
-        || definition.LedgerIds.Contains(term, StringComparison.OrdinalIgnoreCase);
+        || definition.LedgerIds.Contains(term, StringComparison.OrdinalIgnoreCase)
+        || (MetricText.ModSourceLabel(definition)?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false);
 
     private static string StatusFilterLabel(DetailsStatusFilter filter) => filter switch
     {
@@ -596,6 +597,8 @@ public static class DetailsTab
         var state = CoverageLabel(d, v.Coverage);
         if (d.Acquisition is not null && !d.Published)
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
+        if (isMetricRow && MetricText.ModSourceLabel(d) is { } modSource)
+            state = modSource + " · " + state;
         var lazy = new LazyTip(() => BuildTip(row, label, isMetricRow, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
             MetricVisualState.Classify(row), isMetricRow ? d.Key : null);
@@ -747,10 +750,8 @@ public static class DetailsTab
             label = d.ProviderId is not null && d.LabelKey == d.Key
                 ? d.Key : (string)d.LabelKey.Translate();
 
-        // This shared label reaches Details, Coverage, Comparison, Rankings, charts and favorites.
-        // Only mod-owned metrics receive a source annotation; vanilla metrics remain unchanged.
-        return string.IsNullOrWhiteSpace(d.OwnerPackageId) ? label
-            : label + " · " + (string)"RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(d.OwnerPackageId));
+        // Show only the measured statistic; source MOD attribution is separate UI metadata.
+        return label;
     }
 
     private static string ItemLabel(string defName)
