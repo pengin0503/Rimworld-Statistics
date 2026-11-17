@@ -1258,7 +1258,7 @@
   <RWS_Vsie_TeachingDesc>使玩家学员的相关技能经验或等级上升的教学次数。</RWS_Vsie_TeachingDesc>
   <RWS_VqeAncients_SuccessfulInjections>成功的始祖基因注射</RWS_VqeAncients_SuccessfulInjections>
   <RWS_VqeAncients_SuccessfulInjectionsDesc>向殖民者成功添加新异种基因的注射次数。</RWS_VqeAncients_SuccessfulInjectionsDesc>
-  <RWS_VfeClassical_Perks>获得的古典阵营特权</RWS_VfeClassical_Perks>
+  <RWS_VfeClassical_Perks>获得的特权</RWS_VfeClassical_Perks>
   <RWS_VfeClassical_PerksDesc>通过议员支持获授的特权次数，包括失去后重新获得。</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>赢得的舰船战斗</RWS_Sos2_BattlesWon>
   <RWS_Sos2_BattlesWonDesc>确认击败敌舰的战斗次数，包括通过入侵系统取得的胜利。</RWS_Sos2_BattlesWonDesc>
