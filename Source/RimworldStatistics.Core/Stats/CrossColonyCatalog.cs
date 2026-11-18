@@ -46,6 +46,25 @@ public static class CrossColonyCatalog
         FishingFamily.AcceptedUnitsByDef,
     };
 
+    private static readonly HashSet<string> ThingDefBreakdownKeys = new(StringComparer.Ordinal)
+    {
+        WorkFamily.HarvestByCrop, WorkFamily.TopCrop,
+        TradeFamily.SalesUnits, TradeFamily.BuysUnits, TradeFamily.TopSold, TradeFamily.TopBought,
+        WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
+        WorkFamily.MealsByDef, WorkFamily.Sown_,
+        StockSnapshot.MaterialsLatest,
+        WorkFamily.ConstructionMaterials,
+        FishingFamily.AcceptedUnitsByDef,
+        MembershipFamily.JoinsBySpecies, MembershipFamily.DeathsBySpecies,
+        RosterSnapshot.FreeSpeciesPeak, RosterSnapshot.PrisonerSpeciesPeak, RosterSnapshot.SlaveSpeciesPeak,
+        OutpostProduction.ByDef,
+    };
+
+    public static bool UsesThingDefBreakdown(MetricDefinition definition)
+        => IsDerived(definition)
+            ? definition.DescriptionKey == "RWS_CrossDesc_TopType"
+            : ThingDefBreakdownKeys.Contains(definition.Key);
+
     // Categorical (not ThingDef) splits: most frequent form, status, or cause.
     private static readonly string[] TopCategoryKeys =
     {
