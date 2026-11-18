@@ -36,6 +36,20 @@ internal sealed class MetricPickerDialog : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         var y = rect.y;
         if (heading is { } text)
         {
@@ -71,30 +85,37 @@ internal sealed class MetricPickerDialog : Window
             return;
         }
         var viewWidth = Math.Max(0f, listRect.width - 16f);
-        Widgets.BeginScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Count * ItemHeight));
-        var first = Math.Max(0, (int)(scroll.y / ItemHeight));
-        var last = Math.Min(filtered.Count - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
         var anchor = Text.Anchor;
-        for (var i = first; i <= last; i++)
+        Widgets.BeginScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Count * ItemHeight));
+        try
         {
-            var choice = filtered[i];
-            var row = new Rect(0f, i * ItemHeight, viewWidth, ItemHeight - 1f);
-            if (string.Equals(choice.Key, selectedKey, StringComparison.Ordinal))
-                Widgets.DrawBoxSolid(row, new Color(0.26f, 0.44f, 0.56f, 0.35f));
-            Widgets.DrawHighlightIfMouseover(row);
-            var label = choice.Source is null ? choice.Label : $"{choice.Label} · {choice.Source}";
-            var shown = label.Truncate(Math.Max(0f, row.width - 8f));
-            Text.Anchor = TextAnchor.MiddleLeft;
-            Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
-            Text.Anchor = anchor;
-            if (shown != label)
-                TooltipHandler.TipRegion(row, label);
-            if (Widgets.ButtonInvisible(row))
+            var first = Math.Max(0, (int)(scroll.y / ItemHeight));
+            var last = Math.Min(filtered.Count - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
+            for (var i = first; i <= last; i++)
             {
-                onPick(choice.Key);
-                Close();
+                var choice = filtered[i];
+                var row = new Rect(0f, i * ItemHeight, viewWidth, ItemHeight - 1f);
+                if (string.Equals(choice.Key, selectedKey, StringComparison.Ordinal))
+                    Widgets.DrawBoxSolid(row, new Color(0.26f, 0.44f, 0.56f, 0.35f));
+                Widgets.DrawHighlightIfMouseover(row);
+                var label = choice.Source is null ? choice.Label : $"{choice.Label} · {choice.Source}";
+                var shown = label.Truncate(Math.Max(0f, row.width - 8f));
+                Text.Anchor = TextAnchor.MiddleLeft;
+                Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
+                Text.Anchor = anchor;
+                if (shown != label)
+                    TooltipHandler.TipRegion(row, label);
+                if (Widgets.ButtonInvisible(row))
+                {
+                    onPick(choice.Key);
+                    Close();
+                }
             }
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Text.Anchor = anchor;
+            Widgets.EndScrollView();
+        }
     }
 }
