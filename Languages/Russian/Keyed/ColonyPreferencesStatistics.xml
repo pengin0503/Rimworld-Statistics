@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>Поиск:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>Поиск поселений по отображаемому имени, исходному названию фракции или названию мира.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>Отображаемое имя:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>Задать</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>Сброс</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>Исходное название фракции: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>Пользовательское имя отображается только в таблицах и графиках статистики. Сохранения, ключи поселений, объединение и итоги не изменяются.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>Избранные графики поселений</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>Добавить график…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>Избранных графиков поселений пока нет. Добавьте здесь, во вкладке «Поселения» или кнопкой ☆ в «Подробностях» по поселению.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>Выберите поселение</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>Выберите линейный график для {0}</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>Избранные графики…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>Добавить или убрать линейные графики этого поселения в избранном на вкладке «Обзор».</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>Нажмите, чтобы открыть линейный график истории для {0}.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>Неучтённое поселение</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>Это поселение отсутствует в текущей записи статистики. Удалить из избранного можно кнопкой ×.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>Это поселение исключено из статистики. Снимите флажок исключения в «Поселениях», чтобы открыть график, или удалите кнопкой ×.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>Это поселение не входит в выбранную группу. Переключите область на «Все поселения», чтобы открыть график.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>Этот показатель сейчас не зарегистрирован (возможно, мод-источник отключён). Удалить можно кнопкой ×.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>Для этого показателя нет линейного графика истории по сохранениям поселения. Удалить можно кнопкой ×.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>Для этого поселения пока нет измеренного значения (или мод-источник не использовался). Удалить можно кнопкой ×.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>Мод-источник сейчас неактивен: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>Добавить показатель в избранное «Обзора»</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>Убрать показатель из избранного «Обзора»</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>Добавить график {0} в избранное «Обзора»</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>Убрать график {0} из избранного «Обзора»</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>Добавить или убрать этот показатель либо линейный график выбранного поселения в избранном «Обзора»</RWS_ColonyFav_StarMenuTip>
+</LanguageData>
