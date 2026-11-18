@@ -63,6 +63,7 @@ using RimworldStatistics.WayBetterRomance;
 using RimworldStatistics.RimMarket;
 using RimworldStatistics.CaravanAdventures;
 using RimworldStatistics.Stage2ModOutcomes;
+using RimworldStatistics.SeventhWaveModOutcomes;
 
 namespace RimworldStatistics.Metrics;
 
@@ -183,6 +184,12 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(AlphaMechsStage2Outcomes.Build());
         result.AddRange(GravshipStage2Outcomes.Build());
         result.AddRange(WorldDominationStage2Outcomes.Build());
+        result.AddRange(PrisonLaborOutcomes.Build());
+        result.AddRange(MedPodOutcomes.Build());
+        result.AddRange(AlphaImplantsOutcomes.Build());
+        result.AddRange(BiomesIslandsOutcomes.Build());
+        result.AddRange(RimQuestOutcomes.Build());
+        result.AddRange(HorrorsOutcomes.Build());
         return result;
     }
 }

@@ -275,6 +275,31 @@ queue_fetch worlddom Likewise87/World-Domination-2.0 feb106d0b34fc9587957129f95d
   About/About.xml \
   1.7/Assemblies/TSA_WorldDomination.dll
 
+# Wave 3: Seventh-wave pinned 1.7 MOD assemblies.
+queue_fetch prison-labor Aviuz/PrisonLabor 1e836017121c705ae47abdf82fb3a963bb43a027 \
+  About/About.xml \
+  1.7/Assemblies/PrisonLabor.dll
+
+queue_fetch medpod sumghai/MedPod f5a7d452553672597868eb57bf1f2dd8ab77944f \
+  About/About.xml \
+  1.7/Assemblies/MedPod.dll
+
+queue_fetch alpha-implants juanosarg/AlphaImplants d1baceff76d8cb898eea841f4a3ed052167a8f30 \
+  About/About.xml \
+  1.6/Assemblies/AlphaImplants.dll
+
+queue_fetch biomes-islands biomes-team/BiomesIslands d70b47d6565c6eb977a7457ee87d28af6f60056b \
+  About/About.xml \
+  1.7/Assemblies/BiomesIslands.dll
+
+queue_fetch rimquest emipa606/RimQuest d6dca26bab57945fc83dfb6f011619acb02598c2 \
+  About/About.xml \
+  1.7/Assemblies/RimQuest.dll
+
+queue_fetch horrors emipa606/Horrors 8e6b6ad89792aac021dc6c7693185c36cb85a854 \
+  About/About.xml \
+  1.7/Assemblies/Horrors.dll
+
 wait_wave
 
 (

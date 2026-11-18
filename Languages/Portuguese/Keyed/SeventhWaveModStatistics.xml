@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>Prisioneiros ressocializados</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Conta prisioneiros da colónia reabilitados como colonos livres através de tratamento humano em Prison Labor.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>Informações extraídas em interrogatório</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Conta rituais de interrogatório bem-sucedidos conduzidos por guardas da colónia que extraem informações de missão em Prison Labor.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>Tratamentos automatizados em cápsula</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>Conta ciclos completos de cura médica automatizada em mapas principais do jogador em MedPod, discriminados por tipo de cápsula e excluindo interrupções.</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>Habilidades de implantes ativadas</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Conta ativações confirmadas de habilidades de implantes biónicos e animais por colonos e animais da colónia em Alpha Implants, discriminadas por habilidade.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>Cicatrizes permanentes curadas</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Conta cicatrizes permanentes curadas em peões do jogador, animais da colónia e prisioneiros por implantes regeneradores em Alpha Implants.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>Mapas principais insulares</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Regista mapas principais ativos do jogador estabelecidos em biomas de Biomes! Islands, discriminados por bioma.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>Missões compradas a informadores</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>Conta missões e pistas de incidentes compradas a informadores visitantes por negociadores do jogador em RimQuest (Continued), discriminadas por missão ou incidente.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>Prata gasta em pistas de missão</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>Conta o total de prata pago diretamente a informadores visitantes ao comprar pistas de missão em RimQuest (Continued).</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>Colmeias e covis aberrantes destruídos</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Conta colmeias e covis hostis destruídos em mapas com presença da colónia em Horrors (Continued), discriminados por tipo de estrutura.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>Mapas principais em ermos contaminados</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Regista mapas principais ativos do jogador estabelecidos em biomas de ermo de Horrors (Continued), discriminados por bioma.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

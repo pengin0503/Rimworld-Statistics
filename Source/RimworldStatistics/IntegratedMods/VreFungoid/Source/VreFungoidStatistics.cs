@@ -60,7 +60,7 @@ internal static class VreFungoidStatistics
     }
 
     private static bool IsColonyAffected(Pawn pawn)
-        => GameFacts.IsPlayer(pawn) || pawn.IsPrisonerOfColony;
+        => GameFacts.IsColonyWorker(pawn);
 
     private static void BeforeTick(object __instance, out InfectionBefore? __state)
     {

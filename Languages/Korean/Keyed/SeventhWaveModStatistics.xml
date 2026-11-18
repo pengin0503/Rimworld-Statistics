@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>수감자 교화 복귀</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Prison Labor에서 인도적인 수감자 처우를 통해 교화를 마치고 자유 정착민으로 합류한 정착지 수감자 수를 집계합니다.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>심문 첩보 확보</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Prison Labor에서 정착지 간수가 수감자 심문 의식을 통해 퀘스트 첩보를 성공적으로 확보한 횟수를 집계합니다.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>자동 의료 포드 치료 완료</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>MedPod에서 플레이어 본거지 맵의 자동 의료 포드가 정상 완료한 치료 주기를 포드 종류별로 집계합니다(중단 및 빈 진단 제외).</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>임플란트 능력 발동</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Alpha Implants의 정착민 및 정착지 동물용 임플란트 능력이 실제로 발동된 횟수를 능력별로 집계합니다.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>영구 흉터 완치 수</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Alpha Implants의 흉터 치료 임플란트로 플레이어 폰, 정착지 동물 및 수감자에게서 완치된 영구 흉터 수를 집계합니다.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>섬 정착지 본거지 맵</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Biomes! Islands 섬 생물군계에 위치한 활성 플레이어 본거지 맵 수를 생물군계별로 기록합니다.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>정보원에게 구매한 퀘스트</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>RimQuest (Continued)에서 방문한 정보원으로부터 플레이어 협상가가 구매한 퀘스트 및 사건 단서 수를 종류별로 집계합니다.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>퀘스트 단서 구매 은</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>RimQuest (Continued)에서 방문한 정보원에게 퀘스트 단서를 구매할 때 직접 지불한 총 은을 집계합니다.</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>괴이 군락 및 굴 파괴</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Horrors (Continued)에서 정착지 병력이 존재하는 맵에서 파괴된 적대 군락과 굴 수를 구조물 종류별로 집계합니다.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>오염 황무지 본거지 맵</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Horrors (Continued) 황무지 생물군계에 위치한 활성 플레이어 본거지 맵 수를 생물군계별로 기록합니다.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

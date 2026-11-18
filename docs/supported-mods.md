@@ -5,6 +5,7 @@
 - Alpha Animals
 - Alpha Biomes
 - Alpha Genes
+- Alpha Implants
 - Alpha Mechs
 - Alpha Memes
 - Altered Carbon 2: ReSleeved
@@ -14,6 +15,7 @@
 - Biomes! Bees
 - Biomes! Caverns
 - Biomes! Fossils
+- Biomes! Islands
 - Caravan Adventures
 - Combat Extended
 - Dubs Bad Hygiene
@@ -24,6 +26,7 @@
 - Giddy-Up 2 – Continued
 - Go Explore!
 - Hegemony
+- Horrors (Continued)
 - Hospital
 - Hospitality (Continued)
 - Hospitality: Casino
@@ -33,7 +36,9 @@
 - Hotels and Recreation
 - Humanoid Alien Races
 - Mechanoid Upgrades
+- MedPod
 - Prison Expanded
+- Prison Labor
 - Prisoner Arena (Continued)
 - Project RimFactory Revived
 - Real Ruins
@@ -41,6 +46,7 @@
 - Rimefeller
 - RimMarket
 - RimPacts
+- RimQuest (Continued)
 - RimTalk
 - Roads of the Rim (Continued)
 - Save Our Ship 2

@@ -99,6 +99,10 @@
 | `W11` | [Faction Traits: Quests & Visitors](https://steamcommunity.com/sharedfiles/filedetails/?id=3829919233) | 派閥特性・契約 | 1.7 新作 | 派閥特性に基づく専門人材派遣受入、鉱脈取引契約、古代遺跡共同探査クエストの完了数。 | **P1** |
 | `W12` | [Cash Register](https://steamcommunity.com/sharedfiles/filedetails/?id=2506046833) | 店舗運営基盤 | 1.7 対応済 | レジ担当シフト完了回数（※売上シルバー自体は既存の `Gastronomy` / `Storefront` 側と二重計上になるため、計測する場合はシフト完了等の非重複単位に限定）。 | **P2** |
 
+> **2026-11-18 第7波・Tier候補 実装・IL監査状況メモ**：
+> - **実装完了（6 MOD・10指標、`SeventhWaveModOutcomes`）**：1.7実選択DLLと公開ソースで非重複の確定成功点が検証できた **`W01` Prison Labor**（社会復帰・尋問機密入手；あわせて `WorkMetricPatches` / `FishingMetricPatches` 等のコロニー囚人労働帰属 `GameFacts.IsColonyWorker` を整備）、**`W02` MedPod**（自動医療ポッド正常完了サイクル・ポッド種別内訳）、**`W03` Alpha Implants**（インプラント能力発動・古傷完治数）、**`W05` Biomes! Islands**（島嶼バイオーム本拠地スナップショット）、**`W09` RimQuest (Continued)**（情報屋クエスト購入数・支払シルバー）、および Tier 2 **`S24` Horrors (Continued)**（巣穴・繁殖巣破壊数・荒野バイオーム本拠地スナップショット）を実装し、[supported-mods.md](../supported-mods.md) へ移行済み。
+> - **汎用／既存基盤網羅により専用キー見送り確定（3件）**：**`W04` Alpha Vehicles - Neolithic / Early Cars**（`Vehicle Framework` 既存統計で完全網羅）、**`W06` Biomes! Prehistoric**（1.7版に独自 `BiomeDef` なし・調教／有精卵孵化／営巣地クエストは汎用動物・クエスト統計で収集済）、**`W12` Cash Register (Continued)**（R2 `3509487668` 1.7 DLL 監査の結果、売上は `Gastronomy`/`Storefront`、銀回収は汎用運搬で計測済であり独立シフト完了遷移を持たない共通基盤）。
+
 ---
 
 ## 4. 旧 1.6 止まり除外からの 1.7 復活ウォッチリスト（`RW01`〜`RW08`、8件）

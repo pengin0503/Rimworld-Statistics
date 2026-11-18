@@ -1,8 +1,8 @@
 # 現在のMOD実装候補（2026-11-18時点）
 
-**現行の未対応・未完了候補：70件（既存58件 ＋ 第7波新規12件）。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。各候補の実装優先度ティア分類（Tier 1〜3・保留再評価）および対応済みMODの第2段階拡張候補については[第7波調査・全候補ティア分類台帳（2026-11-18）](2026-11-18-seventhwave-and-tier-roadmap-ja.md)を参照。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
+**現行の未対応・未完了候補：61件（既存57件 ＋ 第7波残4件）。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。各候補の実装優先度ティア分類（Tier 1〜3・保留再評価）および対応済みMODの第2段階拡張候補については[第7波調査・全候補ティア分類台帳（2026-11-18）](2026-11-18-seventhwave-and-tier-roadmap-ja.md)を参照。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
 
-2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMOD（A02/B07/S28/B06/C02/D05/S03/C05/S13/S58/H05/S01/S04/S38/S59/A04/N03/S32）を順次[対応MOD一覧](../supported-mods.md)へ移行し、既存基盤・汎用統計で網羅済みの以下11件を見送り（除外）とした：
+2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMOD（A02/B07/S28/B06/C02/D05/S03/C05/S13/S58/H05/S01/S04/S38/S59/A04/N03/S32/S24/W01/W02/W03/W05/W09）を順次[対応MOD一覧](../supported-mods.md)へ移行し、既存基盤・汎用統計で網羅済みの以下14件を見送り（除外）とした：
 - **S34 Vanilla Vehicles Expanded – Tier 3**：車両の搭乗・アップグレード・残骸修復・所有スナップショットは既存のVehicle FrameworkおよびVanilla Vehicles ExpandedアダプターがDef別内訳付きで取得しており、Tier 3独自C#は心情Thoughtのみ。
 - **C03 Vanilla Races Expanded – Highmate**：1.7/1.6アセンブリ監査の結果、ゼノタイプ・遺伝子分布は既存のMembership/Roster基盤が収集しており、C#機能（`CompAbilityEffect_InitiateLovin`・`InteractionWorker_FlirtingAttempt`・`PsychicBond`追加特性）は汎用恋愛・交際・精神絆と重複するため専用統計を見送り。
 - **D03 Vanilla Ideology Expanded – Memes and Structures**：1.7配布DLL（`VanillaMemesExpanded.dll`）監査の結果、全追加儀式（`RitualOutcomeEffectWorker_*`）はバニラ`RitualOutcomeEffectWorker_FromQuality`継承のため既存Ideology儀式収集器が結果・内訳とも自動収集しており、`CompAbility*`も既存汎用統計（取引・調教・集会等）と重複するため専用統計を見送り。
@@ -12,6 +12,9 @@
 - **S53 Vanilla Storytellers Expanded - Perry Persistent**：公開ソース監査の結果、独自DLLを持たない純粋XMLストーリーテラー・インシデント定義拡張であり、イベント発生は既存汎用統計で取得されるため専用統計を見送り。
 - **S20 Dire Raids (Continued)**：1.7公開ソースおよび`1.7/Assemblies/DireRaids.dll`監査の結果、唯一の独自イベント実装である`DireRaids.IncidentWorker_DireRaidEnemy`がバニラ`IncidentWorker_RaidEnemy`を継承しており、既存の`RaidMetricPatches.cs`（`IncidentWorker.TryExecute`）が`DireRaidEnemy`のDef別回数・規模・戦略・派閥まで完全収集しているため、二重計上回避のため専用統計を見送り。
 - **R04 Gloomy Dragonian race / R05 Rabbie The Moonrabbit race / R06 Yuran race**：[人気種族・ゼノタイプMOD監査（2026-11-14）](2026-11-14-popular-race-mod-audit.md)の確定方針に基づき、既存の共通`Humanoid Alien Races`分類層（`GameFacts.Species`）が加入・死亡・在籍統計を種族Def別に収集済みであり、1.7固有の確定成果イベントが公開ソース上未確認・専用アダプター不要のため新規実装を見送り（※本ページのルールに従い、固有統計未実装のため[対応MOD一覧](../supported-mods.md)への個別移動は行わない）。
+- **W04 Alpha Vehicles - Neolithic / Alpha Vehicles - Early Cars**：1.7公開ソースおよび`<v1.7>`選択DLL（`1.6/Assemblies/*.dll`）監査の結果、独自C#実装は搭乗者Hediff付与（`CompAddHediffToVehiclePassenger`）と効果音のみであり、車両搭乗・改修・残骸復元・所有スナップショットは既存の`Vehicle Framework`アダプター群がDef別内訳付きで完全収集済みのため専用統計を見送り。
+- **W06 Biomes! Prehistoric**：1.7公開ソースおよび`1.7/Assemblies/BiomesPrehistoric.dll`・Def監査の結果、1.7版に独自`BiomeDef`は存在せず、恐竜の調教（`TameMetricPatch`）・有精卵孵化（`AnimalBornMetricPatch`）・営巣地クエスト完遂（`OpportunitySite_NestingSite`→`QuestMetricPatches`）はいずれも既存の汎用動物・クエスト統計で収集済みのため専用統計を見送り。
+- **W12 Cash Register (Continued)**：RimWorld 1.7 Workshop実配布DLL（`3509487668`、`1.7/Assemblies/CashRegister.dll`）監査の結果、店舗MOD向けの共通フレームワークであり、売上シルバーは下流の`Gastronomy` / `Hospitality: Storefront`側で計上済み、唯一のジョブ`JobDriver_EmptyRegister`も既存の汎用運搬統計で計測済みのため二重計上回避により専用統計を見送り。
 
 ## 第3・第4波の未対応候補（1件）
 
@@ -35,7 +38,7 @@
 | R03 | [[OA]Ratkin Faction: Oberonia aurea](https://steamcommunity.com/sharedfiles/filedetails/?id=3159926804) | [調査台帳](2026-11-14-popular-race-mod-audit.md) | Steam限定1.7配布DLL/XML未提供。独自Honor/キャンペーンの確定遷移点と通常派閥/クエスト統計との重複分離が未検証。 |
 
 
-## 第6波の未対応候補（46件）
+## 第6波の未対応候補（45件）
 
 | ID | MOD | 詳細資料 | 未対応理由・必要情報 |
 |---|---|---|---|
@@ -57,20 +60,19 @@
 | S21 | [VVE Raid](https://steamcommunity.com/sharedfiles/filedetails/?id=3720926003) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（車両襲撃・破壊確定とVehicle Framework統計の切り分け確認が必要）。 |
 | S22 | [Rimsenal Faction Pack - Federation](https://steamcommunity.com/workshop/filedetails/?id=736172213) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実アセンブリ/Def未提供（汎用襲撃・キル統計との区別確認が必要）。 |
 | S23 | [Rimsenal Faction Pack - Feral](https://steamcommunity.com/sharedfiles/filedetails/?id=736207111) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実アセンブリ/Def未提供（汎用襲撃・キル統計との区別確認が必要）。 |
-| S24 | [Horrors (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3839223635) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（巣窟サイト制圧等の成功確定地点の確認が必要）。 |
 | S25 | [Zombieland 1.7 (Unofficial)](https://steamcommunity.com/sharedfiles/filedetails/?id=3827574769) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 非公式1.7移植のSteam配布DLL未提供（ゾンビ治療・固有イベントの版差確認が必要）。 |
 | S26 | [Dynamic Diplomacy - Continued](https://steamcommunity.com/sharedfiles/filedetails/?id=3220299022) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（プレイヤー関与外交とNPC間外交の分離仕様確認が必要）。 |
 | S27 | [Hearts of RimWorld - Grand Strategy Overhaul](https://steamcommunity.com/sharedfiles/filedetails/?id=3833698946) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（師団勝利・停戦状態フィールドのAPI確認が必要）。 |
 | S29 | [Mines 2.0](https://steamcommunity.com/sharedfiles/filedetails/?id=2503894706) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（通常作業ビルとの差異・独自採掘フック確認が必要）。 |
 | S30 | [Misc. Robots](https://steamcommunity.com/sharedfiles/filedetails/?id=724602224) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（ロボット作業完了・ベース起動単位のAPI確認が必要）。 |
-| S31 | [Quarry [Adopted]](https://steamcommunity.com/workshop/filedetails/?id=2007576583) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（実ドロップ生成フックと資源採掘量のAPI確認が必要）。 |
+| S31 | [Quarry [Adopted]](https://steamcommunity.com/workshop/filedetails/?id=2007576583) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開GitHub（`Ogliss/Quarry`）は1.6以前止まり。Steam配布1.7実DLL未提供（実ドロップ生成フックと資源採掘量のAPI確認が必要）。 |
 | S33 | [Rimsential - Spaceports (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3225120958) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開GitHubは1.6止まり。1.7配布版DLLの提供待ち（汎用交易・輸送シャトルとの切り分けが必要）。 |
 | S36 | [VGP Vegetable Garden](https://steamcommunity.com/sharedfiles/filedetails/?id=2007061826) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実XML/DLL未提供（固有作業・通常栽培との重複可否確認が必要）。 |
 | S37 | [Biotech Cloning (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=3348781223) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開ソースは1.4以前のみ。1.7維持版の選択DLL未提供（版差・通常培養との重複検証が必須）。 |
 | S39 | [Dark Psychic Rituals: The Following](https://steamcommunity.com/sharedfiles/filedetails/?id=3596468709) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（Anomaly固有儀式と汎用儀式収集の重複確認が必要）。 |
 | S40 | [Expanded Prosthetics and Organ Engineering - Forked](https://steamcommunity.com/sharedfiles/filedetails/?id=1949064302) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開ソースは1.4止まり。1.7配布版DLL/XML未提供（汎用製作・医療手術統計で網羅可能か確認が必要）。 |
-| S41 | [Integrated Implants](https://steamcommunity.com/sharedfiles/filedetails/?id=3223443793) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開ソースは1.6止まり。1.7配布版DLL未提供（独自インプラント動作と汎用手術・アビリティ統計の区別確認が必要）。 |
-| S42 | [Gene Remover Continued](https://steamcommunity.com/sharedfiles/filedetails/?id=3280784251) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（遺伝子除去完了フックの確認が必要）。 |
+| S41 | [Integrated Implants](https://steamcommunity.com/sharedfiles/filedetails/?id=3223443793) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開GitHub（`sophietheopossum/integrated-implants`）は1.6止まり。1.7配布版DLL未提供（独自インプラント動作と汎用手術・アビリティ統計の区別確認が必要）。 |
+| S42 | [Gene Remover Continued](https://steamcommunity.com/sharedfiles/filedetails/?id=3280784251) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | 公開GitHub（`Nalzurin/Gene-Remover-Continued`）は1.6止まり。Steam配布1.7実DLL未提供（遺伝子除去完了フックの確認が必要）。 |
 | S43 | [Gene Ripper](https://steamcommunity.com/sharedfiles/filedetails/?id=3524806362) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（遺伝子抽出完了フック・対象生死判定の確認が必要）。 |
 | S44 | [[AA] Empire Expanded Forces](https://steamcommunity.com/sharedfiles/filedetails/?id=3837526614) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL/Def未提供（Empire関連既存統計との重複回避検証が必要）。 |
 | S45 | [Enhanced Ideology](https://steamcommunity.com/sharedfiles/filedetails/?id=3793123680) | [調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md) | Steam配布1.7実DLL未提供（汎用Ideology統計との重複切り分けが必要）。 |
@@ -104,22 +106,14 @@
 
 詳細： [第6波調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md)
 
-## 第7波の未対応候補（12件）
+## 第7波の未対応候補（4件）
 
 | ID | MOD | 詳細資料 | 未対応理由・必要情報 |
 |---|---|---|---|
-| W01 | [Prison Labor](https://steamcommunity.com/sharedfiles/filedetails/?id=1899474310) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL未確認（囚人作業ジョブの実産出確定点および汎用`WorkMetricPatches`の帰属フィルタとの関係整理が必要）。 |
-| W02 | [MedPod](https://steamcommunity.com/sharedfiles/filedetails/?id=2153065191) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL未確認（自動治療・部位再生サイクルの正常完了メソッド署名確認が必要）。 |
-| W03 | [Alpha Implants](https://steamcommunity.com/sharedfiles/filedetails/?id=3275091331) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7上流ソース・実DLLでの汎用医療手術統計との重複分離および固有アビリティ完了点確認が必要。 |
-| W04 | [Alpha Vehicles - Neolithic](https://steamcommunity.com/sharedfiles/filedetails/?id=3028675048) / [Early Cars](https://steamcommunity.com/sharedfiles/filedetails/?id=3337198188) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 既存`Vehicle Framework`汎用統計での完全網羅可否、および動物牽引等の独自確定イベント有無のソース確認が必要。 |
-| W05 | [Biomes! Islands](https://steamcommunity.com/sharedfiles/filedetails/?id=2038001322) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL/Def確認（既存`Biomes! Caverns`等と同方式のBiomeDef分類・固有資源採取イベント確認が必要）。 |
-| W06 | [Biomes! Prehistoric](https://steamcommunity.com/sharedfiles/filedetails/?id=2860715703) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7選択アセンブリ確認および既存`Biomes! Fossils`統計との二重計上防止確認が必要。 |
-| W07 | [RimNauts 2](https://steamcommunity.com/sharedfiles/filedetails/?id=2880599514) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL確認およびOdyssey軌道層・SOS2との重複切り分けが必要。 |
+| W07 | [RimNauts 2](https://steamcommunity.com/sharedfiles/filedetails/?id=2880599514) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 公開GitHub（`DGZ-DEV/Rimnauts-2-Reforged`）は1.6止まり。1.7配布DLL確認およびOdyssey軌道層・SOS2との重複切り分けが必要。 |
 | W08 | [Universum](https://steamcommunity.com/sharedfiles/filedetails/?id=2954266198) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL確認および`RimNauts 2`併用時の宇宙拠点創設・真空設備イベントの境界確認が必要。 |
-| W09 | [RimQuest (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2263331727) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（来訪者からのクエスト情報購入確定・シルバー支払決済フックの確認が必要）。 |
 | W10 | [Custom Base Framework](https://steamcommunity.com/sharedfiles/filedetails/?id=3813689040) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（カスタム多階層敵拠点・ダンジョンの完全制圧確定フックの確認が必要）。 |
 | W11 | [Faction Traits: Quests & Visitors](https://steamcommunity.com/sharedfiles/filedetails/?id=3829919233) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（人材派遣・鉱脈取引・遺跡共同探査契約の成功完了点確認が必要）。 |
-| W12 | [Cash Register](https://steamcommunity.com/sharedfiles/filedetails/?id=2506046833) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（既存`Gastronomy`/`Storefront`売上との二重計上を避けたシフト完了単位の切り出しが必要）。 |
 
 ## 状態判定と更新ルール
 

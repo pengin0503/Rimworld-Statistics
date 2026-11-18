@@ -661,6 +661,80 @@ using (var asm = OpenModAssembly("worlddom", "1.7/Assemblies/TSA_WorldDomination
     RequireField(clash, "enemyFaction", "RimWorld.Faction");
 }
 
+// 33. Prison Labor (PrisonLaborOutcomes)
+using (var asm = OpenModAssembly("prison-labor", "1.7/Assemblies/PrisonLabor.dll", "PrisonLabor", "avius.prisonlabor"))
+{
+    var resoc = RequireType(asm, "PrisonLabor.Core.MainButton_Window.ColumnWorker_Resocialization");
+    var needTreatment = RequireType(asm, "PrisonLabor.Core.Needs.Need_Treatment");
+    var interrogation = RequireType(asm, "PrisonLabor.Core.Interrogation.Ritual.RitualOutcomeEffectWorker_Interrogation");
+    var prisonerComp = RequireType(asm, "PrisonLabor.Core.Components.PrisonerComp");
+
+    var convert = RequireMethod(resoc, "ConvertPrisoner", "System.Void", "Verse.Pawn");
+    Ensure(CallsMethod(convert, "Recruit", "RimWorld.RecruitUtility"), "PrisonLabor", "ConvertPrisoner must recruit via RecruitUtility.Recruit");
+    RequireProperty(needTreatment, "ResocializationReady", "System.Boolean");
+
+    var apply = RequireMethod(interrogation, "Apply", "System.Void",
+        "System.Single", "System.Collections.Generic.Dictionary`2<Verse.Pawn,System.Int32>", "RimWorld.LordJob_Ritual");
+    Ensure(CallsMethod(apply, "set_HasIntel", "PrisonLabor.Core.Components.PrisonerComp"), "PrisonLabor", "Interrogation Apply must update PrisonerComp.HasIntel");
+    RequireProperty(prisonerComp, "HasIntel", "System.Boolean");
+}
+
+// 34. MedPod (MedPodOutcomes)
+using (var asm = OpenModAssembly("medpod", "1.7/Assemblies/MedPod.dll", "MedPod", "sumghai.Medpod"))
+{
+    var pod = RequireType(asm, "MedPod.Building_BedMedPod");
+    var statusEnum = pod.NestedTypes.FirstOrDefault(t => t.Name == "MedPodStatus");
+    Ensure(statusEnum is { IsEnum: true }, "MedPod", "Nested enum MedPodStatus missing");
+    checkedAssertions++;
+    var healingFinished = statusEnum!.Fields.FirstOrDefault(f => f.Name == "HealingFinished" && f.HasConstant);
+    Ensure(healingFinished is not null && Convert.ToInt32(healingFinished.Constant) == 4, "MedPod", "MedPodStatus.HealingFinished must equal 4");
+    checkedAssertions++;
+    RequireField(pod, "status", "MedPod.Building_BedMedPod/MedPodStatus");
+    RequireMethod(pod, "DischargePatient", "System.Void", "Verse.Pawn", "System.Boolean");
+}
+
+// 35. Alpha Implants (AlphaImplantsOutcomes)
+using (var asm = OpenModAssembly("alpha-implants", "1.6/Assemblies/AlphaImplants.dll", "AlphaImplants", "sarg.alphaimplants"))
+{
+    var cureScars = RequireType(asm, "AlphaImplants.Hediff_CureScars");
+    var postMake = RequireMethod(cureScars, "PostMake", "System.Void");
+    Ensure(CallsMethod(postMake, "Cure", "Verse.HealthUtility"), "AlphaImplants", "Hediff_CureScars.PostMake must cure injuries via HealthUtility.Cure");
+}
+
+// 36. Biomes! Islands (BiomesIslandsOutcomes)
+using (var asm = OpenModAssembly("biomes-islands", "1.7/Assemblies/BiomesIslands.dll", "BiomesIslands", "BiomesTeam.BiomesIslands"))
+{
+    Ensure(asm.MainModule.Types.Count > 1, "BiomesIslands", "BiomesIslands 1.7 assembly must contain compiled types");
+    checkedAssertions++;
+}
+
+// 37. RimQuest (Continued) (RimQuestOutcomes)
+using (var asm = OpenModAssembly("rimquest", "1.7/Assemblies/RimQuest.dll", "RimQuest", "Mlie.RimQuest"))
+{
+    var dialog = RequireType(asm, "RimQuest.Dialog_QuestGiver");
+    var tracker = RequireType(asm, "RimQuest.RimQuestTracker");
+    RequireType(asm, "RimQuest.QuestPawn");
+
+    var execute = RequireMethod(dialog, "ExecuteSelectedQuest", "System.Void");
+    Ensure(CallsMethod(execute, "RemoveQuestPawnFromTracker", "RimQuest.Dialog_QuestGiver"), "RimQuest", "ExecuteSelectedQuest must remove questPawn from tracker");
+    Ensure(CallsMethod(execute, "receiveSilver", "RimQuest.Dialog_QuestGiver"), "RimQuest", "ExecuteSelectedQuest must call receiveSilver");
+    RequireField(dialog, "questPawn", "RimQuest.QuestPawn");
+    RequireField(dialog, "interactor", "Verse.Pawn");
+    RequireField(dialog, "selectedQuest", "System.Object");
+    RequireField(dialog, "actualSilverCost", "System.Int32");
+    RequireField(tracker, "Instance", "RimQuest.RimQuestTracker");
+    RequireField(tracker, "questPawns", "System.Collections.Generic.List`1<RimQuest.QuestPawn>");
+}
+
+// 38. Horrors (Continued) (HorrorsOutcomes)
+using (var asm = OpenModAssembly("horrors", "1.7/Assemblies/Horrors.dll", "Horrors", "Mlie.Horrors"))
+{
+    var hive = RequireType(asm, "Horrors.HorrorHive");
+    var den = RequireType(asm, "Horrors.HorrorDen");
+    RequireMethod(hive, "DeSpawn", "System.Void", "Verse.DestroyMode");
+    RequireMethod(den, "DeSpawn", "System.Void", "Verse.DestroyMode");
+}
+
 // Optional Steam-only Workshop override check: Hospital (Adamas.Hospital)
 if (overrides.ContainsKey("hospital"))
 {
@@ -719,6 +793,11 @@ if (gameDll is not null)
     var bossgroup = RequireType(game, "RimWorld.GameComponent_Bossgroup");
     RequireMethod(bossgroup, "Notify_PawnKilled", "System.Void", "Verse.Pawn");
     RequireProperty(bossgroup, "AllBosses");
+
+    var ability = RequireType(game, "RimWorld.Ability");
+    RequireMethod(ability, "Activate", "System.Boolean", "Verse.LocalTargetInfo", "Verse.LocalTargetInfo");
+    RequireMethod(ability, "Activate", "System.Boolean", "RimWorld.Planet.GlobalTargetInfo");
+    RequireField(ability, "lastCastTick", "System.Int32");
 }
 
 Console.WriteLine($"AdapterSignatureAudit: verified {checkedAssertions} contract assertions across {checkedAssemblies} assemblies: PASS");

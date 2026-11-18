@@ -1,6 +1,6 @@
 # Planned MOD-specific statistics — master index (2026-11-12)
 
-> **Current backlog (2026-11-18): [実装候補70件（未対応・未完了のみ）](active-candidates.md)**。実装済みの候補は既に[対応MOD一覧](../supported-mods.md)に記載済み。Vanilla Books Expanded 等、汎用統計で網羅済みの項目は新規専用キーを作らない。**本READMEの旧表および日付付き調査台帳は、実装状況を判定するための現行候補一覧ではなく履歴資料です。**
+> **Current backlog (2026-11-18): [実装候補61件（未対応・未完了のみ）](active-candidates.md)**。実装済みの候補は既に[対応MOD一覧](../supported-mods.md)に記載済み。Vanilla Books Expanded 等、汎用統計で網羅済みの項目は新規専用キーを作らない。**本READMEの旧表および日付付き調査台帳は、実装状況を判定するための現行候補一覧ではなく履歴資料です。**
 
 
 **Historical scope (original plan, not the current backlog):** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 35 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets + 9 popularity-selected follow-ups). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.

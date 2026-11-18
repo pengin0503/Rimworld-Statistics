@@ -19,8 +19,21 @@ internal static class GameFacts
     /// <summary>Free colonist check guarded by <see cref="IsPlayerFaction"/> so <c>Faction.OfPlayer</c> is never read before player faction exists.</summary>
     public static bool IsFreeColonistSafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.Faction) && p.IsFreeColonist;
 
-    /// <summary>Colony prisoner check guarded by <see cref="IsPlayerFaction"/> on <c>HostFaction</c> so <c>Faction.OfPlayer</c> is never read when absent.</summary>
-    public static bool IsPrisonerOfColonySafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.HostFaction) && p.IsPrisonerOfColony;
+    /// <summary>Colony prisoner check guarded by <see cref="IsPlayerFaction"/> on <c>guest.HostFaction</c> so <c>Faction.OfPlayer</c> is never read when absent.</summary>
+    public static bool IsPrisonerOfColonySafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p)
+        => p is not null && p.guest is { IsPrisoner: true } && IsPlayerFaction(p.guest.HostFaction);
+
+    /// <summary>
+    /// Whether a pawn performs labor on behalf of the player's colony: player-faction non-prisoners
+    /// (free colonists, colony slaves, colony mechanoids/animals) plus colony-custody prisoners
+    /// (<c>guest.IsPrisoner</c> with player <c>HostFaction</c>), while excluding player pawns held
+    /// prisoner by another faction and never touching <c>Faction.OfPlayer</c>.
+    /// </summary>
+    public static bool IsColonyWorker([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p)
+        => p is not null && ColonyWorkAttribution.IsColonyWorker(
+            isPlayerFaction: IsPlayerFaction(p.Faction),
+            isPrisoner: p.guest is { IsPrisoner: true },
+            isHostPlayerFaction: IsPlayerFaction(p.guest?.HostFaction));
 
     /// <summary>
     /// The player's faction, or null while there is none. World generation makes the other factions and their leaders

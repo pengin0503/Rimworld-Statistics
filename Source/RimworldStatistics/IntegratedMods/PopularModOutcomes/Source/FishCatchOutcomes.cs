@@ -50,7 +50,7 @@ internal static class FishCatchOutcomes
     private static Thing SpawningCatch(Thing thing, IntVec3 cell, Map map, WipeMode mode, JobDriver driver)
     {
         var result = GenSpawn.Spawn(thing, cell, map, mode);
-        if (ReferenceEquals(thing, result) && result.Spawned && result.Map == map && GameFacts.IsPlayer(driver.pawn) &&
+        if (ReferenceEquals(thing, result) && result.Spawned && result.Map == map && GameFacts.IsColonyWorker(driver.pawn) &&
             OutcomeMetric.Observing(Unit))
             OutcomeMetric.Record(Unit, result.def, breakdown: true, amount: result.stackCount);
         return result;

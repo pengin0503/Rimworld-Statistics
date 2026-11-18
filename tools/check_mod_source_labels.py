@@ -52,6 +52,12 @@ BRANDS_BY_PREFIX = {
     "RWS_AlphaMechsBoss": ("Alpha Mechs",),
     "RWS_WorldDominationConquests": ("World Domination",),
     "RWS_WorldDominationPlayer": ("World Domination",),
+    "RWS_PrisonLabor": ("Prison Labor",),
+    "RWS_MedPod": ("MedPod",),
+    "RWS_AlphaImplants": ("Alpha Implants",),
+    "RWS_BiomesIslands_": ("Biomes! Islands", "Biomes Islands"),
+    "RWS_RimQuest": ("RimQuest",),
+    "RWS_Horrors": ("Horrors",),
 }
 MOD_LABEL = re.compile(r"^MOD[:：]\s*\{0\}$")
 issues: list[str] = []

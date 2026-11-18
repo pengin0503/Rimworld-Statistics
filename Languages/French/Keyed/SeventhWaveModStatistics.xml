@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>Prisonniers réinsérés</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Compte les prisonniers de la colonie réhabilités en colons libres grâce à un traitement humain dans Prison Labor.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>Renseignements extraits en interrogatoire</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Compte les rituels d'interrogatoire réussis menés par les geôliers de la colonie ayant permis d'obtenir des renseignements de quête dans Prison Labor.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>Soins automatisés en capsule</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>Compte les cycles complets de soins médicaux automatisés sur les cartes principales du joueur dans MedPod, ventilés par type de capsule et hors interruptions.</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>Capacités d'implant activées</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Compte les activations confirmées de capacités d'implants bioniques et animaux par les colons et animaux de la colonie dans Alpha Implants, ventilées par capacité.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>Cicatrices permanentes guéries</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Compte les cicatrices permanentes guéries sur les pions du joueur, animaux de la colonie et prisonniers par les implants régénérants d'Alpha Implants.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>Cartes de colonie insulaires</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Enregistre les cartes de colonie actives établies dans des biomes de Biomes! Islands, ventilées par biome.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>Quêtes achetées aux informateurs</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>Compte les quêtes et pistes d'incidents achetées auprès d'informateurs en visite par les négociateurs du joueur dans RimQuest (Continued), ventilées par quête ou incident.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>Argent dépensé en pistes de quête</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>Compte le total d'argent versé directement aux informateurs en visite lors de l'achat de pistes de quête dans RimQuest (Continued).</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>Ruches et tanières aberrantes détruites</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Compte les ruches et tanières hostiles détruites sur les cartes où la colonie est présente dans Horrors (Continued), ventilées par type de structure.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>Cartes de colonie en terres désolées</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Enregistre les cartes de colonie actives établies dans les biomes désolés de Horrors (Continued), ventilées par biome.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>
