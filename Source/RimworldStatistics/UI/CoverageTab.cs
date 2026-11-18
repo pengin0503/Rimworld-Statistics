@@ -74,15 +74,23 @@ internal static class CoverageTab
             : cautionText + "\n" + string.Join("\n", cappedMetrics) + "\n" + caution);
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 63f, rect.width, 28f));
+        bool FilterButton(string text, float min, float max)
+        {
+            var btn = controls.Next(text, min, max);
+            var shown = text.Truncate(Math.Max(0f, btn.width - 12f));
+            if (shown != text)
+                TooltipHandler.TipRegion(btn, text);
+            return Widgets.ButtonText(btn, shown);
+        }
         var filterText = FilterLabel(filter);
-        if (Widgets.ButtonText(controls.Next(filterText, 140f, 185f), filterText))
+        if (FilterButton(filterText, 140f, 240f))
         {
             var menu = Enum.GetValues<CoverageFilter>().Select(s =>
                 new FloatMenuOption(FilterLabel(s), () => { filter = s; rebuildRows = true; scroll = Vector2.zero; })).ToList();
             Find.WindowStack.Add(new FloatMenu(menu));
         }
         var categoryText = category is { } cat ? DetailsTab.CategoryLabel(cat) : (string)"RWS_Details_AllCategories".Translate();
-        if (Widgets.ButtonText(controls.Next(categoryText, 135f, 200f), categoryText.Truncate(192f)))
+        if (FilterButton(categoryText, 135f, 240f))
         {
             var menu = new List<FloatMenuOption>
             {
@@ -97,7 +105,7 @@ internal static class CoverageTab
         var verificationText = verification is null
             ? (string)"RWS_Status_VerificationAll".Translate()
             : VerificationLabel(verification.Value);
-        if (Widgets.ButtonText(controls.Next(verificationText, 135f, 200f), verificationText.Truncate(192f)))
+        if (FilterButton(verificationText, 135f, 240f))
         {
             Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
             {
@@ -168,10 +176,16 @@ internal static class CoverageTab
         var tableWidth = tablePlan.TotalWidth;
         var titleRect = new Rect(rect.x, start, rect.width, 27f);
         GUI.BeginGroup(titleRect);
-        DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
-            ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
-                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths, null);
-        GUI.EndGroup();
+        try
+        {
+            DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
+                ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
+                    "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths, null);
+        }
+        finally
+        {
+            GUI.EndGroup();
+        }
 
         var viewport = new Rect(rect.x, start + RowHeight, rect.width, Math.Max(0, rect.yMax - start - RowHeight));
         if (viewport.height <= 0)
@@ -183,6 +197,7 @@ internal static class CoverageTab
         }
         Widgets.BeginScrollView(viewport, ref scroll,
             new Rect(0, 0, tableWidth, rows.Length * RowHeight));
+        try {
         var first = Math.Max(0, (int)(scroll.y / RowHeight));
         var last = Math.Min(rows.Length - 1, (int)((scroll.y + viewport.height) / RowHeight) + 1);
         for (var i = first; i <= last; i++)
@@ -210,7 +225,7 @@ internal static class CoverageTab
                 TooltipHandler.TipRegion(rowRect, () => Tooltip(metric, view.Stats), id);
             }
         }
-        Widgets.EndScrollView();
+        } finally { Widgets.EndScrollView(); }
     }
 
     private static void ResetFilters()

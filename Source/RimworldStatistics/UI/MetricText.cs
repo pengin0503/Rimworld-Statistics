@@ -8,12 +8,13 @@ internal static class MetricText
 {
     private static readonly Dictionary<ModContentPack, Dictionary<string, Def>> DefsByPack = new();
 
-    public static string Breakdown(MetricDefinition definition, string key, bool useThingLabel = false)
+    public static string Breakdown(MetricDefinition definition, string key, bool? useThingLabel = null)
     {
         if (MetricDisplayPolicy.BreakdownLabelKey(definition, key) is { } translation)
             return translation.Translate();
+        var resolveThing = useThingLabel ?? CrossColonyCatalog.UsesThingDefBreakdown(definition);
         if (!OptionalTransitionRecording.TryParseQualifiedDefKey(key, out var owner, out var name))
-            return useThingLabel ? DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key : key;
+            return resolveThing ? DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key : key;
 
         var pack = LoadedModManager.RunningMods.FirstOrDefault(mod =>
             string.Equals(mod.PackageId, owner, StringComparison.OrdinalIgnoreCase));
@@ -47,6 +48,8 @@ internal static class MetricText
             : (string)"RWS_Mod_Provider".Translate(SafeModDisplayName(definition.OwnerPackageId));
     public static string Format(MetricDefinition definition, NumericValue value) => DetailsTab.Format(definition, value);
     public static string Tip(NumericRow row, StatsResult stats) => DetailsTab.OverallTip(row, stats);
+    public static string ColonyTip(NumericRow row, StatsResult stats, string colonyKey, NumericColony? colony)
+        => DetailsTab.ColonyTip(row, stats, colonyKey, colony);
     public static string BasicLabel(string key) => OverviewTab.BasicLabel(key);
     public static string State(MetricDefinition definition, MetricCoverage coverage)
         => DetailsTab.CoverageLabel(definition, coverage);

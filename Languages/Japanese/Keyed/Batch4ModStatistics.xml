@@ -8,7 +8,7 @@
   <RWS_VqeDeadlife_SiloDecryptionsDesc>Vanilla Quests Expanded - Deadlifeで自勢力ポーンが古代計画卓の解析を完了し新たな古代サイロを特定した回数を集計します。</RWS_VqeDeadlife_SiloDecryptionsDesc>
   <RWS_VqeDeadlife_PowerKickstarts>バーンアウト発電機の始動成功数</RWS_VqeDeadlife_PowerKickstarts>
   <RWS_VqeDeadlife_PowerKickstartsDesc>Vanilla Quests Expanded - Deadlifeで自勢力ポーンがバーンアウト発電機の再始動に成功した回数を発電機種別ごとに集計します。</RWS_VqeDeadlife_PowerKickstartsDesc>
-  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected 研究済みアノマリー種別</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntities>研究済みアノマリー種別</RWS_AnomaliesExpected_StudiedEntities>
   <RWS_AnomaliesExpected_StudiedEntitiesDesc>Anomalies Expectedのエンティティデータベース上で調査ノートが解放済みの固有アノマリー種別数を記録します。</RWS_AnomaliesExpected_StudiedEntitiesDesc>
   <RWS_WayBetterRomance_Dates>デート・外出完了数</RWS_WayBetterRomance_Dates>
   <RWS_WayBetterRomance_DatesDesc>Way Better Romanceで自勢力ポーンが参加し最後まで完了したデートおよび外出の回数を種別ごとに集計します。</RWS_WayBetterRomance_DatesDesc>

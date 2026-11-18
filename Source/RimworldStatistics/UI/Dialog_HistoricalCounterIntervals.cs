@@ -27,6 +27,21 @@ internal sealed class Dialog_HistoricalCounterIntervals : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+
+    private void DrawWindowContents(Rect rect)
+    {
         var heading = (string)"RWS_HistoricalIntervals_Title".Translate();
         var explanation = (string)"RWS_HistoricalIntervals_Explanation".Translate();
         Widgets.Label(new Rect(rect.x, rect.y, rect.width - 34f, 28f), heading);

@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>Учитывает новых марионеток, успешно связанных с кукловодом игрока.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>Переносы сознания кукловодов</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Учитывает успешные переносы сознания кукловода игрока в другого персонажа.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Улов в Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatches>Рыбный улов</RWS_VFECatches>
   <RWS_VFECatchesDesc>Учитывает по типам предметы, появившиеся при рыбалке персонажей игрока в Vanilla Fishing Expanded без Odyssey.</RWS_VFECatchesDesc>
 </LanguageData>

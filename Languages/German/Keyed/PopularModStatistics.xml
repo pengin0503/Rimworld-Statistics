@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>Zählt neue Marionetten, die erfolgreich mit einem Marionettenspieler der Spielerfraktion verbunden wurden.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>Bewusstseinsübertragungen</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Zählt erfolgreiche Bewusstseinsübertragungen eines Marionettenspielers der Spielerfraktion.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Fänge in Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatches>Fischfänge</RWS_VFECatches>
   <RWS_VFECatchesDesc>Zählt nach Gegenstandstyp, was beim Angeln der Spielerfraktion mit Vanilla Fishing Expanded ohne Odyssey tatsächlich gespawnt ist.</RWS_VFECatchesDesc>
 </LanguageData>

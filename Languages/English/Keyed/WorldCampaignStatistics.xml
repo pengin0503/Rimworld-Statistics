@@ -2,6 +2,6 @@
 <LanguageData>
   <RWS_WorldDominationVictory>World Domination victories</RWS_WorldDominationVictory>
   <RWS_WorldDominationVictoryDesc>Keeps the campaign victory after the World Domination 2.0 hold challenge completes, even if the quest is removed.</RWS_WorldDominationVictoryDesc>
-  <RWS_RimWarVictory>Rim War rival challenge victories</RWS_RimWarVictory>
+  <RWS_RimWarVictory>Rival challenge victories</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>Counts Rim War’s declared victory when the chosen rival faction has no settlements.</RWS_RimWarVictoryDesc>
 </LanguageData>

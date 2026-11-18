@@ -2,8 +2,8 @@
 <LanguageData>
   <RWS_MechanoidUpgrades_Installed>Mechanoid upgrades installed</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>Counts upgrades newly installed onto player mechanoids inside a player-owned mechanoid upgrader, broken down by upgrade type.</RWS_MechanoidUpgrades_InstalledDesc>
-  <RWS_RimTalk_Conversations>RimTalk conversations</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_Conversations>Completed conversations</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>Counts completed dynamic RimTalk conversations involving player pawns recorded to the play log, broken down by conversation category.</RWS_RimTalk_ConversationsDesc>
-  <RWS_AlphaMechs_MechConversions>Mechanoids converted (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversions>Mechanoids converted</RWS_AlphaMechs_MechConversions>
   <RWS_AlphaMechs_MechConversionsDesc>Counts hostile or non-player mechanoids converted to the player faction via Alpha Mechs' mechanoid conversion ability, broken down by mechanoid type.</RWS_AlphaMechs_MechConversionsDesc>
 </LanguageData>

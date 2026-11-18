@@ -18,23 +18,30 @@ public sealed class PerformanceContractTests
     {
         var state = new FamilyState { Revision = 1 };
         var key = TestShapes.DefKey("MealFine");
-        // Warm up past .NET Tiered Compilation / Dynamic PGO Tier-1 promotion so JIT metadata is not allocated mid-measurement.
-        for (var i = 0; i < 2_000; i++)
+        void RunPlain(int count)
         {
-            OptionalTransitionRecording.RecordCount(state, TestShapes.Counter);
-            OptionalTransitionRecording.RecordCount(state, "by_def", 1, key, withBreakdown: true);
+            for (var i = 0; i < count; i++)
+                OptionalTransitionRecording.RecordCount(state, TestShapes.Counter);
+        }
+        void RunByDef(int count)
+        {
+            for (var i = 0; i < count; i++)
+                OptionalTransitionRecording.RecordCount(state, "by_def", 1, key, withBreakdown: true);
         }
 
-        var plain = Allocations.OnThisThread(() =>
+        // Warm up both the recording methods and the loop/delegate bodies past Tier-0 / OSR / Dynamic PGO promotion.
+        var warmupPlain = () => RunPlain(50);
+        var warmupByDef = () => RunByDef(50);
+        for (var round = 0; round < 40; round++)
         {
-            for (var i = 0; i < 10_000; i++)
-                OptionalTransitionRecording.RecordCount(state, TestShapes.Counter);
-        });
-        var byDef = Allocations.OnThisThread(() =>
-        {
-            for (var i = 0; i < 10_000; i++)
-                OptionalTransitionRecording.RecordCount(state, "by_def", 1, key, withBreakdown: true);
-        });
+            warmupPlain();
+            warmupByDef();
+        }
+
+        var measurePlain = () => RunPlain(10_000);
+        var measureByDef = () => RunByDef(10_000);
+        var plain = Allocations.OnThisThread(measurePlain);
+        var byDef = Allocations.OnThisThread(measureByDef);
 
         Assert.Equal(0, plain);
         Assert.Equal(0, byDef);

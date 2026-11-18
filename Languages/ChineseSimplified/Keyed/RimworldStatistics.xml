@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>原本不支持玩家的议员通过正常外交或任务转为支持玩家的人数，按派系分类。不包括开发者操作、已经支持的议员或旧存档恢复。</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>授予的荣誉数</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>仪式完成时实际授予玩家殖民者的待授VFE Empire荣誉数量，按荣誉分类。仅获得可用荣誉资格或开发者操作不计入。</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE完成的灵感愿望</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>完成的灵感愿望</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded中，与殖民者当前灵感关联并新完成的愿望数量，按灵感分类。不包括未完成的进度、到期或无关的灵感。</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2开始骑乘次数</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>玩家殖民者完成Giddy-Up骑乘工作后实际开始骑乘自有动物的次数，按动物种类分类。到达时已在骑乘、排队指令或重复观测不计入。</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>殖民者装弹次数</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>玩家单位成功完成装弹并实际将弹药装入武器弹匣的次数。每次装弹只计一次，即使装入多个弹药堆叠。不包括炮塔、自动装弹机、关闭弹药功能或装弹失败的情况。</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android自然觉醒次数</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>安卓人自然觉醒次数</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>具有合成人工身体的玩家安卓人，通过基于心情的基因检查自然觉醒的次数。不包括开发者工具直接觉醒、开局初始化或已经觉醒的安卓人。需要Biotech。</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE选定的专业技能</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>玩家殖民者在正常的专业技能面板中新选定的专业技能数量，按专业技能分类。不包括调试解锁或恢复的记录。</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>玩家所有的抽油机将Deepchem实际送入管道储存的数量，包括小数部分，以管网确认储存为准。不包括计划产量、落在地面的产物或受阻而未能储存的量。</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>提取的DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>玩家成功提取后实际放置或合并进堆叠的DNA物品数量，按产出物品分类。不包括无效目标、放置失败、消耗次数却未产出物品或其他杂交体制造。</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE管道中储存的营养浆</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>管道中储存的营养浆</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>玩家所有的Vanilla Nutrient Paste Expanded粉碎机实际向管网输送并被接收的营养浆数量，包括小数部分。不包括粉碎尝试、消耗材料但未成功储存营养浆的情况，或其他建筑的管道储存量。</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>采集的蜂蜜数</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>玩家殖民者清空玩家所有的Medieval 2养蜂箱后，实际放置或合并进堆叠的蜂蜜数量，按产出物品分类。仅达到可收获状态、放置失败或之后的搬运不计入。</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>玩家完成工作后新安装的车辆升级数量，按车辆种类分类。</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>从残骸修复的车辆数</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>完成已追踪残骸框架建造后生成的玩家车辆数量。</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>远行队进入Real Ruins遗迹次数</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>远行队进入遗迹次数</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>玩家远行队抵达需要生成地图的Real Ruins遗迹，并确认单位实际进入的次数。</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>完成的老虎机回合</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>玩家所有的老虎机完成回合数，按失败和各类获胜结果分别统计。</RWS_NewMod_CasinoDesc>

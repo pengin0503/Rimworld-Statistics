@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>일반 외교나 임무로 이전에는 반대하던 원로원 의원이 새로 지지하게 된 수이며 세력별로 집계합니다. 개발자 조작, 원래 지지하던 의원 및 이전 저장 파일 복원은 제외합니다.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>수여한 영예</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>행사가 끝날 때 보류 중이던 VFE Empire 영예가 플레이어 정착민에게 실제로 수여된 횟수이며 영예별로 집계합니다. 사용 가능한 영예를 받기만 한 경우와 개발자 조작은 제외합니다.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE 영감 열망 달성 횟수</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>영감 열망 달성 횟수</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded에서 정착민의 활성 영감과 연결된 열망을 새로 달성한 횟수이며 영감별로 집계합니다. 미완료 진행, 기한 만료 및 관련 없는 영감은 제외합니다.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 탑승 시작 횟수</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>플레이어 정착민이 Giddy-Up 탑승 작업을 완료하고 소유 동물에 실제로 타기 시작한 횟수이며 동물 종류별로 집계합니다. 이미 탄 채로 도착하거나 대기 중인 명령 또는 중복 관측은 제외합니다.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>정착민 재장전 횟수</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>플레이어 측 폰이 무기 탄창에 실제로 탄약을 넣고 완료한 재장전 횟수입니다. 여러 탄약 중첩을 넣어도 한 번으로 셉니다. 포탑, 자동 장전기, 탄약 비활성화 상태 및 실패한 재장전은 제외합니다.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android 자연 각성 횟수</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>안드로이드 자연 각성 횟수</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>합성 신체를 가진 플레이어 소유 안드로이드가 기분에 따른 유전자 검사로 자연스럽게 각성한 횟수입니다. 개발자 도구로 직접 각성하거나 시작 시 설정, 이미 각성한 안드로이드는 제외합니다. Biotech가 필요합니다.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE 선택한 전문 기술</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>플레이어 정착민이 일반 전문 기술 창에서 새로 선택한 전문 기술 수이며 전문 기술별로 집계합니다. 디버그 해금과 복원된 기록은 제외합니다.</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>플레이어 소유 원유 펌프에서 배관 저장소로 실제 받아들여진 Deepchem의 양이며 소수도 포함합니다. 배관망에서 저장을 확인한 시점에 측정합니다. 예상 산출량, 땅에 떨어진 산출물 및 저장 실패는 제외합니다.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>추출한 DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>플레이어가 DNA 추출에 성공해 실제로 배치하거나 중첩에 합친 DNA 아이템 수이며 출력 아이템별로 집계합니다. 잘못된 대상, 배치 실패, 산출물 없이 소모한 사용 횟수 및 다른 잡종 생성은 제외합니다.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE 배관에 저장한 영양 슬러리</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>배관에 저장한 영양 슬러리</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>플레이어 소유 Vanilla Nutrient Paste Expanded 분쇄기에서 배관망으로 실제 받아들여진 영양 슬러리의 양입니다. 소수 단위도 포함합니다. 분쇄 시도, 슬러리를 받지 못한 재료 소비 및 다른 건물의 배관 저장은 제외합니다.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>수확한 꿀 수</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>플레이어 정착민이 소유한 Medieval 2 벌통을 비운 뒤 실제로 배치하거나 중첩에 합친 꿀의 수량이며 출력 아이템별로 집계합니다. 수확 준비만 된 벌통, 배치 실패 및 이후 운반은 제외합니다.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>플레이어의 작업 완료로 새로 설치된 차량 개량 수이며 차량 종류별로 집계합니다.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>잔해에서 복구한 차량 수</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>추적 중인 차량 잔해 뼈대의 건설을 완료해 생성한 플레이어 차량 수입니다.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>상단이 들어간 Real Ruins 유적 수</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>상단이 들어간 유적 수</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>새 지도를 생성해야 했던 Real Ruins 유적에 플레이어 상단이 도착해 폰이 실제로 들어갔음을 확인한 횟수입니다.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>슬롯머신 완료 라운드</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>플레이어의 슬롯머신에서 완료된 라운드 수이며 패배와 각 당첨 종류를 나눠 집계합니다.</RWS_NewMod_CasinoDesc>

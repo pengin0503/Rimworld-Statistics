@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>Compte les nouvelles marionnettes effectivement liées à un marionnettiste du joueur.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>Transferts d’esprit des marionnettistes</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Compte les transferts réussis de l’esprit d’un marionnettiste du joueur.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Prises de Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatches>Prises de pêche</RWS_VFECatches>
   <RWS_VFECatchesDesc>Compte par type les objets générés par la pêche du joueur avec Vanilla Fishing Expanded sans Odyssey.</RWS_VFECatchesDesc>
 </LanguageData>

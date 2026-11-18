@@ -17,7 +17,6 @@ public static class EndingsTab
 
     private static StatsView? builtFor;
     private static object? language;
-    private static string nameSignature = "";
     private static string[][] rows = [];
     private static string[] headers = [];
     private static readonly StatsTable Table = new(RowHeight, new(112, 2), new(136, 4), new(104, 3),
@@ -27,12 +26,10 @@ public static class EndingsTab
     public static void Draw(Rect rect, StatsView view)
     {
         var currentLanguage = LanguageDatabase.activeLanguage;
-        var currentNameSignature = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
-        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage) || nameSignature != currentNameSignature)
+        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage))
         {
             builtFor = view;
             language = currentLanguage;
-            nameSignature = currentNameSignature;
             rows = Build(view, ProfileService.Options.IncludeDevMode).Select(r => new[]
             {
                 Dialog_RimworldStatistics.Local(r.Time), r.Colony, Dialog_RimworldStatistics.EndingLabel(r.Type),
@@ -68,7 +65,7 @@ public static class EndingsTab
                 if (visible.Count == 0)
                     continue;   // dev-mode-only and the setting is off
                 shownTypes.Add(pair.Key.Type);
-                var best = visible.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+                var best = visible.OrderByDescending(e => e.Departed).ThenBy(e => e.Source).ThenBy(e => e.DevMode).First();
                 var source = best.Source == EndingSource.SeededTrace ? "RWS_Source_SeededTrace".Translate() : "RWS_Source_Live".Translate();
                 if (best.DevMode)
                     source += "RWS_DevModeMark".Translate();
@@ -76,11 +73,18 @@ public static class EndingsTab
                     best.Source == EndingSource.SeededTrace ? Dialog_RimworldStatistics.Dash : best.Departed.ToString(CultureInfo.InvariantCulture), source));
             }
             foreach (var recovered in colony.RecoveredEndings)
+            {
+                shownTypes.Add(recovered.Type);
                 list.Add(new Row(null, name, recovered.Type, (recovered.Ordinal + 1L).ToString(CultureInfo.InvariantCulture),
                     Dialog_RimworldStatistics.Dash, "RWS_Source_RecoveredLineage".Translate()));
-            foreach (var trace in colony.Traces.Where(t => !shownTypes.Contains(t)).OrderBy(t => t))
+            }
+            foreach (var trace in colony.Traces.Where(t => !shownTypes.Any(k => k == t || EndingTraces.Explains(k, t))).OrderBy(t => t))
             {
-                var first = colony.Observations.Where(o => o.EndingTraces.Contains(trace)).Select(o => (DateTime?)o.LastWriteUtc).DefaultIfEmpty(null).Min();
+                var first = colony.Observations
+                    .Where(o => o.EndingTraces.Contains(trace) || o.ExplainedTraces.Contains(trace))
+                    .Select(o => (DateTime?)o.LastWriteUtc)
+                    .DefaultIfEmpty(null)
+                    .Min();
                 list.Add(new Row(first, name, trace, "RWS_AtLeastOnce".Translate(), Dialog_RimworldStatistics.Dash, "RWS_Source_SaveTrace".Translate()));
             }
         }

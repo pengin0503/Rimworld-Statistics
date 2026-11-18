@@ -43,34 +43,51 @@ BRANDS_BY_PREFIX = {
     "RWS_VgeExtraction_": ("Vanilla Genetics Expanded",),
     "RWS_AddonRecruitment_": ("Recruitment",),
     "RWS_PrisonExpanded_": ("Prison Expanded",),
+    "RWS_VFECatches": ("Vanilla Fishing Expanded",),
+    "RWS_AlphaBiomes_": ("Alpha Biomes",),
+    "RWS_VleLandmarks_": ("Vanilla Landmarks",),
+    "RWS_RimTalk_": ("RimTalk",),
+    "RWS_AlphaMechs_": ("Alpha Mechs",),
+    "RWS_AnomaliesExpected_": ("Anomalies Expected",),
+    "RWS_NewMod_RealRuins": ("Real Ruins",),
+    "RWS_RimWar": ("Rim War",),
+    "RWS_VnpeGrinder_": ("VNPE", "Vanilla Nutrient Paste Expanded"),
+    "RWS_VreAndroid_": ("VRE Android", "VRE", "Vanilla Races Expanded"),
+    "RWS_Vsie_": ("VSIE", "Vanilla Social Interactions Expanded"),
 }
 MOD_LABEL = re.compile(r"^MOD[:：]\s*\{0\}$")
 issues: list[str] = []
 count = 0
-for source in sorted((ROOT / "Languages").glob("*/Keyed/RimworldStatistics.xml")):
-    try:
-        root = ET.parse(source).getroot()
-    except ET.ParseError as exc:
-        issues.append(f"{source}: invalid XML: {exc}")
+for lang_dir in sorted((ROOT / "Languages").glob("*/Keyed")):
+    main_xml = lang_dir / "RimworldStatistics.xml"
+    if not main_xml.is_file():
+        issues.append(f"{lang_dir}: missing RimworldStatistics.xml")
         continue
-    provider = root.find("RWS_Mod_Provider")
-    if provider is None or not MOD_LABEL.fullmatch(provider.text or ""):
-        issues.append(f"{source}: RWS_Mod_Provider must be MOD: {{0}} or MOD：{{0}}")
-    for item in root:
-        key = item.tag
-        if key.endswith("Desc") or key.startswith("RWS_MetricDesc"):
+    for source in sorted(lang_dir.glob("*.xml")):
+        try:
+            root = ET.parse(source).getroot()
+        except ET.ParseError as exc:
+            issues.append(f"{source}: invalid XML: {exc}")
             continue
-        for prefix, names in BRANDS_BY_PREFIX.items():
-            if not key.startswith(prefix):
+        if source.name == "RimworldStatistics.xml":
+            provider = root.find("RWS_Mod_Provider")
+            if provider is None or not MOD_LABEL.fullmatch(provider.text or ""):
+                issues.append(f"{source}: RWS_Mod_Provider must be MOD: {{0}} or MOD：{{0}}")
+        for item in root:
+            key = item.tag
+            if key.endswith("Desc") or key.startswith("RWS_MetricDesc"):
                 continue
-            value = (item.text or "").casefold()
-            for name in names:
-                if name.casefold() in value:
-                    issues.append(f"{source}: {key} still contains source name {name!r}")
-            count += 1
-            break
+            for prefix, names in BRANDS_BY_PREFIX.items():
+                if not key.startswith(prefix):
+                    continue
+                value = (item.text or "").casefold()
+                for name in names:
+                    if name.casefold() in value:
+                        issues.append(f"{source}: {key} still contains source name {name!r}")
+                count += 1
+                break
 
 if issues:
     print("\n".join(issues), file=sys.stderr)
     sys.exit(1)
-print(f"MOD source/title separation: {count} localized metric titles checked; passed")
+print(f"MOD source/title separation: {count} localized metric titles checked across all Keyed XMLs; passed")
