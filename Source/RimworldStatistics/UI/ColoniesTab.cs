@@ -129,27 +129,43 @@ public static class ColoniesTab
 
         var selectedRow = Array.FindIndex(order, i => view.Colonies[i].Key == selectedKey);
         var selected = selectedRow < 0 ? -1 : order[selectedRow];
-        var tableHeight = rect.height - (selected >= 0 ? DetailHeight + 8f : 0f);
+        var detailSpace = selected >= 0 ? Math.Min(DetailHeight + 8f, Math.Max(0f, rect.height - RowHeight * 2f)) : 0f;
+        var tableHeight = Math.Max(0f, rect.height - detailSpace);
         var width = columnPlan.TotalWidth;
         // Keep the sortable header fixed vertically while tracking horizontal body scroll.
-        GUI.BeginGroup(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 16f), RowHeight));
-        var headerColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, available);
-        DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight), headerColumns.First, headerColumns.LastExclusive);
-        GUI.EndGroup();
+        GUI.BeginGroup(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 16f), Math.Min(RowHeight, tableHeight)));
+        try
+        {
+            var headerColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, available);
+            DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight), headerColumns.First, headerColumns.LastExclusive);
+        }
+        finally
+        {
+            GUI.EndGroup();
+        }
 
-        var outRect = new Rect(rect.x, rect.y + RowHeight, rect.width, tableHeight - RowHeight);
-        var viewRect = new Rect(0f, 0f, width, order.Length * RowHeight);
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        var visibleColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, outRect.width);
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(order.Length - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
-        for (var row = first; row <= last; row++)
-            DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]],
-                row, table, visibleColumns.First, visibleColumns.LastExclusive);
-        Widgets.EndScrollView();
+        var outRect = new Rect(rect.x, rect.y + RowHeight, rect.width, Math.Max(0f, tableHeight - RowHeight));
+        if (outRect.height > 0f)
+        {
+            var viewRect = new Rect(0f, 0f, width, order.Length * RowHeight);
+            Widgets.BeginScrollView(outRect, ref scroll, viewRect);
+            try
+            {
+                var visibleColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, outRect.width);
+                var first = Math.Max(0, (int)(scroll.y / RowHeight));
+                var last = Math.Min(order.Length - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
+                for (var row = first; row <= last; row++)
+                    DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]],
+                        row, table, visibleColumns.First, visibleColumns.LastExclusive);
+            }
+            finally
+            {
+                Widgets.EndScrollView();
+            }
+        }
 
-        if (selected >= 0)
-            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, DetailHeight), view, view.Colonies[selected], files);
+        if (selected >= 0 && detailSpace > 8f)
+            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, Math.Max(0f, detailSpace - 8f)), view, view.Colonies[selected], files);
     }
 
     private static void DrawHeader(Rect rect, int firstVisible, int lastVisible)
@@ -223,7 +239,7 @@ public static class ColoniesTab
         if (excluded != s.Excluded)
         {
             var keys = colony.AliasKeys.Prepend(colony.Key).ToList();
-            ProfileService.Session.Mutate(p => ProfileMutations.SetExcluded(p, keys, excluded), SaveMode.Background);
+            ProfileService.Session.MutateWithoutBlocking(p => ProfileMutations.SetExcluded(p, keys, excluded));
         }
         else if (Widgets.ButtonInvisible(new Rect(rect.x, rect.y, x - rect.x, rect.height)))
         {
