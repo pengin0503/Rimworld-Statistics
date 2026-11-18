@@ -315,8 +315,8 @@ public sealed class NumericSaveReaderTests
         using var source = new MemoryStream(bytes);
         var reader = new SaveReader();
         // Warm up static initialization and JIT on the first ReadDetailed call before measuring steady-state allocations.
-        using (var warmup = new MemoryStream(bytes))
-            _ = reader.ReadDetailed(warmup, "early.rws", bytes.Length, DateTime.UnixEpoch);
+        using var warmup = new MemoryStream(bytes);
+        _ = reader.ReadDetailed(warmup, "early.rws", bytes.Length, DateTime.UnixEpoch);
         var before = GC.GetAllocatedBytesForCurrentThread();
         var result = reader.ReadDetailed(source, "early.rws", bytes.Length, DateTime.UnixEpoch);
         var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
