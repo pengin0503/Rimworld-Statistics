@@ -352,6 +352,16 @@ public sealed class ProfileSession
         return ColonySummaryReport.Build(view, colonyKey, lineage);
     }
 
+    public ColonyChronicle? ReadColonyChronicle(
+        StatsView view,
+        string colonyKey,
+        int? selectedLeafNodeIndex = null,
+        bool includeDevMode = false)
+    {
+        var lineage = ReadColonySaveLineage(view, colonyKey);
+        return ColonyChronicle.Build(view, colonyKey, lineage, selectedLeafNodeIndex, includeDevMode);
+    }
+
     public MetricHistory ReadChartHistory(StatsView view, string colonyKey, MetricDefinition definition, string savesDirectory)
     {
         var history = Read(profile => MetricCalculator.BuildChartHistory(profile, view.Colonies, colonyKey, definition));

@@ -126,6 +126,12 @@ internal sealed class Dialog_ColonySummaryReport : Window
             Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey));
         TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
 
+        var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
+        var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
+        if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colonyKey));
+        TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
+
         var exportLabel = (string)"RWS_Report_ExportHtml".Translate();
         var exportRect = controls.Next(exportLabel, 140f, 250f);
         if (Widgets.ButtonText(exportRect, exportLabel.Truncate(Math.Max(0f, exportRect.width - 12f)),
