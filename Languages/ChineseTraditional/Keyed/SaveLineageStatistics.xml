@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Lineage_Open>存檔譜系</RWS_Lineage_Open>
+  <RWS_Lineage_OpenTip>以唯讀方式檢視此殖民地已證實的父子存檔鏈、分支、沿用檢查點與未證實存檔。</RWS_Lineage_OpenTip>
+  <RWS_Lineage_Title>存檔譜系 · {0}</RWS_Lineage_Title>
+  <RWS_Lineage_SwitchColony>切換殖民地…</RWS_Lineage_SwitchColony>
+  <RWS_Lineage_MetricButton>統計項: {0}</RWS_Lineage_MetricButton>
+  <RWS_Lineage_OpenChart>開啟趨勢圖</RWS_Lineage_OpenChart>
+  <RWS_Lineage_ClearSelection>清除選擇</RWS_Lineage_ClearSelection>
+  <RWS_Lineage_Empty>此殖民地尚無帶有遊戲時間的已儲存觀測紀錄。</RWS_Lineage_Empty>
+  <RWS_Lineage_State_SingleChain>單一已證實鏈</RWS_Lineage_State_SingleChain>
+  <RWS_Lineage_State_Branched>存在分支</RWS_Lineage_State_Branched>
+  <RWS_Lineage_State_Gaps>存在缺漏或未連接</RWS_Lineage_State_Gaps>
+  <RWS_Lineage_State_None>無檢查點鏈</RWS_Lineage_State_None>
+  <RWS_Lineage_SummaryNodes>{0} 筆紀錄</RWS_Lineage_SummaryNodes>
+  <RWS_Lineage_SummaryBranches>{0} 個分支點</RWS_Lineage_SummaryBranches>
+  <RWS_Lineage_SummaryCarried>{0} 個沿用檢查點</RWS_Lineage_SummaryCarried>
+  <RWS_Lineage_SummaryMissingParents>{0} 個缺漏父節點</RWS_Lineage_SummaryMissingParents>
+  <RWS_Lineage_SummaryUnproven>{0} 個未證實存檔</RWS_Lineage_SummaryUnproven>
+  <RWS_Lineage_SummaryConflicted>{0} 個衝突檢查點</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryCompacted>{0} 個已壓縮舊快照</RWS_Lineage_SummaryCompacted>
+  <RWS_Lineage_ReadOnlyNote>唯讀檢視；絕不憑猜測連接未證實的存檔</RWS_Lineage_ReadOnlyNote>
+  <RWS_Lineage_LegendProven>已證實鏈</RWS_Lineage_LegendProven>
+  <RWS_Lineage_LegendBranch>分支</RWS_Lineage_LegendBranch>
+  <RWS_Lineage_LegendCarried>沿用檢查點</RWS_Lineage_LegendCarried>
+  <RWS_Lineage_LegendUnproven>未證實 / 父節點缺漏</RWS_Lineage_LegendUnproven>
+  <RWS_Lineage_Col_Graph>譜系</RWS_Lineage_Col_Graph>
+  <RWS_Lineage_Col_Day>遊戲天數</RWS_Lineage_Col_Day>
+  <RWS_Lineage_Col_Save>存檔 / 紀錄</RWS_Lineage_Col_Save>
+  <RWS_Lineage_Col_Status>證據與標記</RWS_Lineage_Col_Status>
+  <RWS_Lineage_Col_Recorded>儲存時間</RWS_Lineage_Col_Recorded>
+  <RWS_Lineage_DayCarried>{0} (CP {1})</RWS_Lineage_DayCarried>
+  <RWS_Lineage_Badge_Representative>代表節點</RWS_Lineage_Badge_Representative>
+  <RWS_Lineage_Badge_Root>鏈起點</RWS_Lineage_Badge_Root>
+  <RWS_Lineage_Badge_Checkpoint>父節點已證實</RWS_Lineage_Badge_Checkpoint>
+  <RWS_Lineage_Badge_MissingParent>父節點缺漏</RWS_Lineage_Badge_MissingParent>
+  <RWS_Lineage_Badge_InvalidParent>父節點未連接</RWS_Lineage_Badge_InvalidParent>
+  <RWS_Lineage_Badge_Carried>沿用檢查點</RWS_Lineage_Badge_Carried>
+  <RWS_Lineage_Badge_Conflicted>衝突ID</RWS_Lineage_Badge_Conflicted>
+  <RWS_Lineage_Badge_Unproven>未證實存檔</RWS_Lineage_Badge_Unproven>
+  <RWS_Lineage_Badge_BranchPoint>分支點</RWS_Lineage_Badge_BranchPoint>
+  <RWS_Lineage_Badge_Branch>其他分支</RWS_Lineage_Badge_Branch>
+  <RWS_Lineage_Badge_Rewind>讀檔回溯證據</RWS_Lineage_Badge_Rewind>
+  <RWS_Lineage_Badge_SameTick>同Tick重存</RWS_Lineage_Badge_SameTick>
+  <RWS_Lineage_Badge_RestoredArchive>已從封存還原</RWS_Lineage_Badge_RestoredArchive>
+  <RWS_Lineage_Badge_ArchivedMissing>封存不可用</RWS_Lineage_Badge_ArchivedMissing>
+  <RWS_Lineage_Badge_VersionChanged>版本變更</RWS_Lineage_Badge_VersionChanged>
+  <RWS_Lineage_Badge_ModChanged>MOD清單變更</RWS_Lineage_Badge_ModChanged>
+  <RWS_Lineage_Badge_DlcChanged>DLC變更</RWS_Lineage_Badge_DlcChanged>
+  <RWS_Lineage_Badge_VerifiedInterval>+{0} 襲擊 / +{1} 死亡</RWS_Lineage_Badge_VerifiedInterval>
+  <RWS_Lineage_SelectHint>點擊一列檢視存檔證據詳情，或點擊兩列比較它們的譜系關係與統計變化。</RWS_Lineage_SelectHint>
+  <RWS_Lineage_CompareHint>再點擊另一列即可比較兩個存檔之間已證實的譜系關係與統計變化。</RWS_Lineage_CompareHint>
+  <RWS_Lineage_Detail_Header>遊戲時間: {0} ({1} tick) · 儲存於: {2}</RWS_Lineage_Detail_Header>
+  <RWS_Lineage_Detail_Status>狀態: {0}</RWS_Lineage_Detail_Status>
+  <RWS_Lineage_Detail_CapturedAt>檢查點記錄於第 {0} 天 ({1} tick)，原樣沿用至此存檔。</RWS_Lineage_Detail_CapturedAt>
+  <RWS_Lineage_Detail_CarriedThrough>後續存檔同樣原樣沿用了此檢查點直至第 {0} 天 ({1} tick)。</RWS_Lineage_Detail_CarriedThrough>
+  <RWS_Lineage_Detail_CheckpointId>檢查點ID: {0}</RWS_Lineage_Detail_CheckpointId>
+  <RWS_Lineage_Detail_MissingParentId>參照的父檢查點 (未收錄): {0}</RWS_Lineage_Detail_MissingParentId>
+  <RWS_Lineage_Detail_Environment>遊戲版本: {0} · 啟用DLC: {1}</RWS_Lineage_Detail_Environment>
+  <RWS_Lineage_Detail_VerifiedInterval>自父節點起的已驗證區間 (第 {0} → {1} 天): 敵襲 +{2}，殖民者死亡 +{3}</RWS_Lineage_Detail_VerifiedInterval>
+  <RWS_Lineage_Detail_Files>存檔檔案: {0}</RWS_Lineage_Detail_Files>
+  <RWS_Lineage_Rel_DirectParent>直接父子檢查點 (第 {0} 天 → 第 {1} 天)。</RWS_Lineage_Rel_DirectParent>
+  <RWS_Lineage_Rel_ProvenChain>跨越 {2} 步的已證實檢查點鏈 (第 {0} 天 → 第 {1} 天)。</RWS_Lineage_Rel_ProvenChain>
+  <RWS_Lineage_Rel_CarriedSame>第 {1} 天的存檔原樣沿用了第 {0} 天的檢查點（無新檢查點讀數）。</RWS_Lineage_Rel_CarriedSame>
+  <RWS_Lineage_Rel_SiblingBranches>自第 {0} 天共同檢查點分出的不同分支——數值屬於平行時間線，絕不相加。</RWS_Lineage_Rel_SiblingBranches>
+  <RWS_Lineage_Rel_SharedCarriedOrigin>兩筆紀錄均追溯至第 {0} 天的檢查點（含沿用檢查點）；無法證實其中一筆是否延續自另一筆。</RWS_Lineage_Rel_SharedCarriedOrigin>
+  <RWS_Lineage_Rel_Unproven>這兩個存檔之間沒有已證實的檢查點路徑。</RWS_Lineage_Rel_Unproven>
+  <RWS_Lineage_Rel_EnvChanges>路徑上的環境變更: {0}</RWS_Lineage_Rel_EnvChanges>
+</LanguageData>

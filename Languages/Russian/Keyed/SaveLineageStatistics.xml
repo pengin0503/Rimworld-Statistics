@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Lineage_Open>Родословная сохранений</RWS_Lineage_Open>
+  <RWS_Lineage_OpenTip>Просмотр доказанных цепочек сохранений, ветвлений, перенесённых контрольных точек и недоказанных сохранений этого поселения (только чтение).</RWS_Lineage_OpenTip>
+  <RWS_Lineage_Title>Родословная сохранений · {0}</RWS_Lineage_Title>
+  <RWS_Lineage_SwitchColony>Сменить поселение…</RWS_Lineage_SwitchColony>
+  <RWS_Lineage_MetricButton>Показатель: {0}</RWS_Lineage_MetricButton>
+  <RWS_Lineage_OpenChart>Открыть график</RWS_Lineage_OpenChart>
+  <RWS_Lineage_ClearSelection>Сбросить выбор</RWS_Lineage_ClearSelection>
+  <RWS_Lineage_Empty>Для этого поселения пока нет записей сохранений с игровым временем.</RWS_Lineage_Empty>
+  <RWS_Lineage_State_SingleChain>Единая доказанная цепь</RWS_Lineage_State_SingleChain>
+  <RWS_Lineage_State_Branched>Разветвлённая история</RWS_Lineage_State_Branched>
+  <RWS_Lineage_State_Gaps>Неполная цепь или пропуски</RWS_Lineage_State_Gaps>
+  <RWS_Lineage_State_None>Нет цепи контрольных точек</RWS_Lineage_State_None>
+  <RWS_Lineage_SummaryNodes>записей: {0}</RWS_Lineage_SummaryNodes>
+  <RWS_Lineage_SummaryBranches>развилок: {0}</RWS_Lineage_SummaryBranches>
+  <RWS_Lineage_SummaryCarried>перенесённых точек: {0}</RWS_Lineage_SummaryCarried>
+  <RWS_Lineage_SummaryMissingParents>нет предка: {0}</RWS_Lineage_SummaryMissingParents>
+  <RWS_Lineage_SummaryUnproven>недоказанных: {0}</RWS_Lineage_SummaryUnproven>
+  <RWS_Lineage_SummaryConflicted>конфликтов: {0}</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryCompacted>сжато старых снимков: {0}</RWS_Lineage_SummaryCompacted>
+  <RWS_Lineage_ReadOnlyNote>Только чтение; недоказанные сохранения не связываются догадками</RWS_Lineage_ReadOnlyNote>
+  <RWS_Lineage_LegendProven>Доказанная цепь</RWS_Lineage_LegendProven>
+  <RWS_Lineage_LegendBranch>Ветвь</RWS_Lineage_LegendBranch>
+  <RWS_Lineage_LegendCarried>Перенесённая точка</RWS_Lineage_LegendCarried>
+  <RWS_Lineage_LegendUnproven>Не доказано / нет предка</RWS_Lineage_LegendUnproven>
+  <RWS_Lineage_Col_Graph>Линия</RWS_Lineage_Col_Graph>
+  <RWS_Lineage_Col_Day>Игровой день</RWS_Lineage_Col_Day>
+  <RWS_Lineage_Col_Save>Сохранение / запись</RWS_Lineage_Col_Save>
+  <RWS_Lineage_Col_Status>Свидетельства и метки</RWS_Lineage_Col_Status>
+  <RWS_Lineage_Col_Recorded>Сохранено (лок.)</RWS_Lineage_Col_Recorded>
+  <RWS_Lineage_DayCarried>{0} (КТ {1})</RWS_Lineage_DayCarried>
+  <RWS_Lineage_Badge_Representative>Основная</RWS_Lineage_Badge_Representative>
+  <RWS_Lineage_Badge_Root>Начало цепи</RWS_Lineage_Badge_Root>
+  <RWS_Lineage_Badge_Checkpoint>Предок доказан</RWS_Lineage_Badge_Checkpoint>
+  <RWS_Lineage_Badge_MissingParent>Предок отсутствует</RWS_Lineage_Badge_MissingParent>
+  <RWS_Lineage_Badge_InvalidParent>Предок не связан</RWS_Lineage_Badge_InvalidParent>
+  <RWS_Lineage_Badge_Carried>Перенесённая КТ</RWS_Lineage_Badge_Carried>
+  <RWS_Lineage_Badge_Conflicted>Конфликт ID</RWS_Lineage_Badge_Conflicted>
+  <RWS_Lineage_Badge_Unproven>Не доказано</RWS_Lineage_Badge_Unproven>
+  <RWS_Lineage_Badge_BranchPoint>Развилка</RWS_Lineage_Badge_BranchPoint>
+  <RWS_Lineage_Badge_Branch>Боковая ветвь</RWS_Lineage_Badge_Branch>
+  <RWS_Lineage_Badge_Rewind>Откат / ранний тик</RWS_Lineage_Badge_Rewind>
+  <RWS_Lineage_Badge_SameTick>Тот же тик</RWS_Lineage_Badge_SameTick>
+  <RWS_Lineage_Badge_RestoredArchive>Из архива</RWS_Lineage_Badge_RestoredArchive>
+  <RWS_Lineage_Badge_ArchivedMissing>Архив недоступен</RWS_Lineage_Badge_ArchivedMissing>
+  <RWS_Lineage_Badge_VersionChanged>Смена версии</RWS_Lineage_Badge_VersionChanged>
+  <RWS_Lineage_Badge_ModChanged>Смена модов</RWS_Lineage_Badge_ModChanged>
+  <RWS_Lineage_Badge_DlcChanged>Смена DLC</RWS_Lineage_Badge_DlcChanged>
+  <RWS_Lineage_Badge_VerifiedInterval>+{0} налётов / +{1} смертей</RWS_Lineage_Badge_VerifiedInterval>
+  <RWS_Lineage_SelectHint>Нажмите на строку для просмотра сведений о сохранении или выберите две строки для сравнения связи и изменения показателя.</RWS_Lineage_SelectHint>
+  <RWS_Lineage_CompareHint>Нажмите на другую строку, чтобы сравнить доказанную связь и изменение показателя между двумя сохранениями.</RWS_Lineage_CompareHint>
+  <RWS_Lineage_Detail_Header>Игровое время: {0} ({1} тиков) · Сохранено: {2}</RWS_Lineage_Detail_Header>
+  <RWS_Lineage_Detail_Status>Статус: {0}</RWS_Lineage_Detail_Status>
+  <RWS_Lineage_Detail_CapturedAt>Контрольная точка снята на день {0} ({1} тиков) и перенесена без изменений в это сохранение.</RWS_Lineage_Detail_CapturedAt>
+  <RWS_Lineage_Detail_CarriedThrough>Более поздние сохранения также перенесли эту точку без изменений до дня {0} ({1} тиков).</RWS_Lineage_Detail_CarriedThrough>
+  <RWS_Lineage_Detail_CheckpointId>ID контрольной точки: {0}</RWS_Lineage_Detail_CheckpointId>
+  <RWS_Lineage_Detail_MissingParentId>Указанная родительская точка (нет в профиле): {0}</RWS_Lineage_Detail_MissingParentId>
+  <RWS_Lineage_Detail_Environment>Версия игры: {0} · Активные DLC: {1}</RWS_Lineage_Detail_Environment>
+  <RWS_Lineage_Detail_VerifiedInterval>Подтверждённый интервал от предка (день {0} → {1}): +{2} вражеских налётов, +{3} смертей поселенцев</RWS_Lineage_Detail_VerifiedInterval>
+  <RWS_Lineage_Detail_Files>Файлы сохранений: {0}</RWS_Lineage_Detail_Files>
+  <RWS_Lineage_Rel_DirectParent>Прямая связь предок → потомок (день {0} → день {1}).</RWS_Lineage_Rel_DirectParent>
+  <RWS_Lineage_Rel_ProvenChain>Доказанная цепочка через {2} шаг(а/ов) (день {0} → день {1}).</RWS_Lineage_Rel_ProvenChain>
+  <RWS_Lineage_Rel_CarriedSame>Сохранение на день {1} переносит точку дня {0} без изменений (нового замера точки нет).</RWS_Lineage_Rel_CarriedSame>
+  <RWS_Lineage_Rel_SiblingBranches>Разные ветви от общей точки на день {0} — параллельные линии времени никогда не суммируются.</RWS_Lineage_Rel_SiblingBranches>
+  <RWS_Lineage_Rel_SharedCarriedOrigin>Обе записи восходят к точке дня {0} (включая перенос); доказать, что одна продолжает другую, невозможно.</RWS_Lineage_Rel_SharedCarriedOrigin>
+  <RWS_Lineage_Rel_Unproven>Между этими двумя сохранениями нет доказанного пути контрольных точек.</RWS_Lineage_Rel_Unproven>
+  <RWS_Lineage_Rel_EnvChanges>Изменения окружения на пути: {0}</RWS_Lineage_Rel_EnvChanges>
+</LanguageData>

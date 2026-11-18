@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Lineage_Open>セーブ系統</RWS_Lineage_Open>
+  <RWS_Lineage_OpenTip>このコロニーの確定した親子チェーン、分岐、持ち越しチェックポイント、未証明セーブを読み取り専用で表示します。</RWS_Lineage_OpenTip>
+  <RWS_Lineage_Title>セーブ系統 · {0}</RWS_Lineage_Title>
+  <RWS_Lineage_SwitchColony>コロニー切替…</RWS_Lineage_SwitchColony>
+  <RWS_Lineage_MetricButton>統計項目: {0}</RWS_Lineage_MetricButton>
+  <RWS_Lineage_OpenChart>推移グラフを開く</RWS_Lineage_OpenChart>
+  <RWS_Lineage_ClearSelection>選択解除</RWS_Lineage_ClearSelection>
+  <RWS_Lineage_Empty>このコロニーにはゲーム内時刻を持つ保存済み観測がまだありません。</RWS_Lineage_Empty>
+  <RWS_Lineage_State_SingleChain>単一の確定チェーン</RWS_Lineage_State_SingleChain>
+  <RWS_Lineage_State_Branched>分岐あり</RWS_Lineage_State_Branched>
+  <RWS_Lineage_State_Gaps>欠損・未接続あり</RWS_Lineage_State_Gaps>
+  <RWS_Lineage_State_None>チェックポイント系統なし</RWS_Lineage_State_None>
+  <RWS_Lineage_SummaryNodes>記録 {0} 件</RWS_Lineage_SummaryNodes>
+  <RWS_Lineage_SummaryBranches>分岐点 {0} 箇所</RWS_Lineage_SummaryBranches>
+  <RWS_Lineage_SummaryCarried>持ち越し {0} 件</RWS_Lineage_SummaryCarried>
+  <RWS_Lineage_SummaryMissingParents>親欠損 {0} 件</RWS_Lineage_SummaryMissingParents>
+  <RWS_Lineage_SummaryUnproven>未証明 {0} 件</RWS_Lineage_SummaryUnproven>
+  <RWS_Lineage_SummaryConflicted>競合ID {0} 件</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryCompacted>圧縮済み旧スナップショット {0} 件</RWS_Lineage_SummaryCompacted>
+  <RWS_Lineage_ReadOnlyNote>読み取り専用・未証明セーブを推測で接続しません</RWS_Lineage_ReadOnlyNote>
+  <RWS_Lineage_LegendProven>確定チェーン</RWS_Lineage_LegendProven>
+  <RWS_Lineage_LegendBranch>分岐</RWS_Lineage_LegendBranch>
+  <RWS_Lineage_LegendCarried>持ち越しチェックポイント</RWS_Lineage_LegendCarried>
+  <RWS_Lineage_LegendUnproven>未証明 / 親欠損</RWS_Lineage_LegendUnproven>
+  <RWS_Lineage_Col_Graph>系統</RWS_Lineage_Col_Graph>
+  <RWS_Lineage_Col_Day>ゲーム内日数</RWS_Lineage_Col_Day>
+  <RWS_Lineage_Col_Save>セーブ / 記録</RWS_Lineage_Col_Save>
+  <RWS_Lineage_Col_Status>証拠・状態</RWS_Lineage_Col_Status>
+  <RWS_Lineage_Col_Recorded>保存日時</RWS_Lineage_Col_Recorded>
+  <RWS_Lineage_DayCarried>{0} (CP {1})</RWS_Lineage_DayCarried>
+  <RWS_Lineage_Badge_Representative>代表採用</RWS_Lineage_Badge_Representative>
+  <RWS_Lineage_Badge_Root>起点</RWS_Lineage_Badge_Root>
+  <RWS_Lineage_Badge_Checkpoint>親確認済み</RWS_Lineage_Badge_Checkpoint>
+  <RWS_Lineage_Badge_MissingParent>親欠損</RWS_Lineage_Badge_MissingParent>
+  <RWS_Lineage_Badge_InvalidParent>親未接続</RWS_Lineage_Badge_InvalidParent>
+  <RWS_Lineage_Badge_Carried>持ち越しCP</RWS_Lineage_Badge_Carried>
+  <RWS_Lineage_Badge_Conflicted>競合ID</RWS_Lineage_Badge_Conflicted>
+  <RWS_Lineage_Badge_Unproven>未証明セーブ</RWS_Lineage_Badge_Unproven>
+  <RWS_Lineage_Badge_BranchPoint>分岐点</RWS_Lineage_Badge_BranchPoint>
+  <RWS_Lineage_Badge_Branch>別分岐</RWS_Lineage_Badge_Branch>
+  <RWS_Lineage_Badge_Rewind>巻き戻し証拠</RWS_Lineage_Badge_Rewind>
+  <RWS_Lineage_Badge_SameTick>同Tick再保存</RWS_Lineage_Badge_SameTick>
+  <RWS_Lineage_Badge_RestoredArchive>アーカイブ復元</RWS_Lineage_Badge_RestoredArchive>
+  <RWS_Lineage_Badge_ArchivedMissing>アーカイブ未取得</RWS_Lineage_Badge_ArchivedMissing>
+  <RWS_Lineage_Badge_VersionChanged>本体版変更</RWS_Lineage_Badge_VersionChanged>
+  <RWS_Lineage_Badge_ModChanged>MOD構成変更</RWS_Lineage_Badge_ModChanged>
+  <RWS_Lineage_Badge_DlcChanged>DLC変更</RWS_Lineage_Badge_DlcChanged>
+  <RWS_Lineage_Badge_VerifiedInterval>+襲撃 {0} / +死亡 {1}</RWS_Lineage_Badge_VerifiedInterval>
+  <RWS_Lineage_SelectHint>行をクリックするとそのセーブの証拠詳細を表示します。2つの行をクリックすると系統関係と統計変化を比較します。</RWS_Lineage_SelectHint>
+  <RWS_Lineage_CompareHint>別の行をもう1つクリックすると、2地点間の確定した系統関係と統計変化を比較できます。</RWS_Lineage_CompareHint>
+  <RWS_Lineage_Detail_Header>ゲーム内時刻: {0} ({1} tick) · 保存日時: {2}</RWS_Lineage_Detail_Header>
+  <RWS_Lineage_Detail_Status>状態: {0}</RWS_Lineage_Detail_Status>
+  <RWS_Lineage_Detail_CapturedAt>{0} 日目 ({1} tick) に記録されたチェックポイントを未更新のまま保持しています。</RWS_Lineage_Detail_CapturedAt>
+  <RWS_Lineage_Detail_CarriedThrough>後続のセーブでも {0} 日目 ({1} tick) までこのチェックポイントが未更新のまま引き継がれました。</RWS_Lineage_Detail_CarriedThrough>
+  <RWS_Lineage_Detail_CheckpointId>チェックポイントID: {0}</RWS_Lineage_Detail_CheckpointId>
+  <RWS_Lineage_Detail_MissingParentId>参照されている親チェックポイント (未収録): {0}</RWS_Lineage_Detail_MissingParentId>
+  <RWS_Lineage_Detail_Environment>ゲーム版: {0} · 有効DLC: {1}</RWS_Lineage_Detail_Environment>
+  <RWS_Lineage_Detail_VerifiedInterval>親からの検証済み区間 ({0} → {1} 日目): 敵襲 +{2}、入植者死亡 +{3}</RWS_Lineage_Detail_VerifiedInterval>
+  <RWS_Lineage_Detail_Files>対応セーブファイル: {0}</RWS_Lineage_Detail_Files>
+  <RWS_Lineage_Rel_DirectParent>直接の親子チェックポイント ({0} 日目 → {1} 日目)。</RWS_Lineage_Rel_DirectParent>
+  <RWS_Lineage_Rel_ProvenChain>{2} 段階の確定チェックポイント系統 ({0} 日目 → {1} 日目)。</RWS_Lineage_Rel_ProvenChain>
+  <RWS_Lineage_Rel_CarriedSame>{1} 日目のセーブは {0} 日目のチェックポイントを未更新のまま保持しています（新規チェックポイント値なし）。</RWS_Lineage_Rel_CarriedSame>
+  <RWS_Lineage_Rel_SiblingBranches>{0} 日目の共通チェックポイントから分かれた別分岐です。並行する時間軸のため値は合算されません。</RWS_Lineage_Rel_SiblingBranches>
+  <RWS_Lineage_Rel_SharedCarriedOrigin>どちらも {0} 日目のチェックポイント（持ち越しを含む）に遡りますが、一方が他方の続きかは証明できません。</RWS_Lineage_Rel_SharedCarriedOrigin>
+  <RWS_Lineage_Rel_Unproven>この2つのセーブを結ぶ確定したチェックポイント経路はありません。</RWS_Lineage_Rel_Unproven>
+  <RWS_Lineage_Rel_EnvChanges>経路上の環境変化: {0}</RWS_Lineage_Rel_EnvChanges>
+</LanguageData>

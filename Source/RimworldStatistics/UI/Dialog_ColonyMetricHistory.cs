@@ -15,6 +15,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly MetricDefinition definition;
     private readonly string heading;
     private readonly string recordLabel;
+    private readonly string colonyKey;
     private readonly string colonyName;
     private readonly string? modSource;
     private readonly StatsView view;
@@ -45,6 +46,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     {
         this.definition = definition;
         this.view = view;
+        this.colonyKey = colonyKey;
         overlayTracker = new HistoryOverlayTracker(colonyKey, OverlayColors.Length);
         this.colonyName = colonyName;
         modSource = MetricText.ModSourceLabel(definition);
@@ -236,6 +238,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             pickFrom = null;
             SetChange(null);
         }
+        if (Button("RWS_Lineage_Open".Translate(), "RWS_Lineage_OpenTip".Translate(), true))
+            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey, null, definition.Key));
         Widgets.Label(new Rect(0f, y + 31f, width, linesHeight), lines);
         return y + 31f + linesHeight + 6f;
     }
@@ -272,6 +276,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     MetricText.Format(definition, picked))
                 : (string)(measured!.Length >= 2 ? "RWS_Change_Hint" : "RWS_Change_OnlyOne").Translate();
 
+        return changeText = FormatHistoryChange(definition, c);
+    }
+
+    internal static string FormatHistoryChange(MetricDefinition definition, HistoryChange c)
+    {
         string Shown(MetricHistoryPoint point) => point.Value is { } value
             ? MetricText.Format(definition, value) : Dialog_RimworldStatistics.Dash;
         var text = (string)"RWS_Change_Interval".Translate(Dialog_RimworldStatistics.Days(c.From.Tick), Shown(c.From),
@@ -279,7 +288,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         text += "\n" + c.Issue switch
         {
             HistoryChangeIssue.None => (string)(c.Kind == HistoryChangeKind.Increase ? "RWS_Change_Increase" : "RWS_Change_Difference")
-                .Translate(Delta(c.Delta!.Value), Ratio(c)),
+                .Translate(Delta(definition, c.Delta!.Value), Ratio(c)),
             HistoryChangeIssue.SamePoint => (string)"RWS_Change_SamePoint".Translate(),
             HistoryChangeIssue.NoValue => (string)"RWS_Change_NoValue".Translate(),
             HistoryChangeIssue.NotLinked => (string)"RWS_Change_NotLinked".Translate(),
@@ -294,11 +303,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         // A checkpoint later saves carried unchanged is one reading, at its own tick: the interval ends there.
         if (c.Issue == HistoryChangeIssue.None && c.To.SavedTick is { } saved)
             text += "\n" + (string)"RWS_Change_Carried".Translate(Dialog_RimworldStatistics.Days(saved));
-        return changeText = text;
+        return text;
     }
 
     /// <summary>The change with its sign; percentages and mood change by percentage points.</summary>
-    private string Delta(double delta)
+    private static string Delta(MetricDefinition definition, double delta)
     {
         var magnitude = Math.Abs(delta);
         var shown = definition.Unit switch

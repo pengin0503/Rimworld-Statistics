@@ -149,7 +149,7 @@ public static class ColoniesTab
         Widgets.EndScrollView();
 
         if (selected >= 0)
-            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, DetailHeight), view.Colonies[selected], files);
+            DrawDetail(new Rect(rect.x, rect.y + tableHeight + 8f, rect.width, DetailHeight), view, view.Colonies[selected], files);
     }
 
     private static void DrawHeader(Rect rect, int firstVisible, int lastVisible)
@@ -231,14 +231,24 @@ public static class ColoniesTab
         }
     }
 
-    private static void DrawDetail(Rect rect, Colony colony, SaveFileIndex? files)
+    private static void DrawDetail(Rect rect, StatsView view, Colony colony, SaveFileIndex? files)
     {
         Widgets.DrawMenuSection(rect);
+        var inner = rect.ContractedBy(6f);
+        var controls = new ControlRow(new Rect(inner.x, inner.y, inner.width, 28f));
+        var lineageLabel = (string)"RWS_Lineage_Open".Translate();
+        var lineageBtn = controls.Next(lineageLabel, 130f, Math.Min(inner.width, 260f));
+        var shownBtn = lineageLabel.Truncate(Math.Max(0f, lineageBtn.width - 12f));
+        if (Widgets.ButtonText(lineageBtn, shownBtn))
+            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colony.Key, files));
+        TooltipHandler.TipRegion(lineageBtn, "RWS_Lineage_OpenTip".Translate());
+
         var language = LanguageDatabase.activeLanguage;
         if (details is not { } data || !ReferenceEquals(data.Colony, colony) || !ReferenceEquals(data.Files, files)
             || !ReferenceEquals(data.Language, language))
             details = data = BuildDetail(colony, files, language);
-        DetailTable.Draw(rect.ContractedBy(6f), ref detailScroll, data.Headers, data.Rows);
+        var tableRect = new Rect(inner.x, inner.y + controls.Height + 4f, inner.width, Math.Max(0f, inner.height - controls.Height - 4f));
+        DetailTable.Draw(tableRect, ref detailScroll, data.Headers, data.Rows);
     }
 
     private static DetailCache BuildDetail(Colony colony, SaveFileIndex? files, object? language)
