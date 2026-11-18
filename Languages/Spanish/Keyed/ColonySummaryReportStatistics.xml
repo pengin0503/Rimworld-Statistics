@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>Informe resumen</RWS_Report_Open>
+  <RWS_Report_OpenTip>Abrir el resumen de una colonia: totales acumulados, récords, posiciones, cobertura y exportación HTML estática (solo lectura).</RWS_Report_OpenTip>
+  <RWS_Report_Title>Informe de colonia · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>Cambiar colonia…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>Exportar informe HTML</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>Guardar un archivo HTML estático autónomo de esta colonia en la carpeta exports.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>Escribiendo informe HTML…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>Error al exportar HTML: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>Informe HTML guardado en {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>Ámbito: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>Informe de solo lectura generado a partir de guardados y puntos de control registrados. Los valores faltantes se muestran como desconocidos y nunca como cero.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>Esta colonia está excluida de los totales y clasificaciones entre colonias.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>Esta colonia está fuera del grupo activo ({0}), por lo que no se calculan posiciones en esta vista.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>Registrada solo por rastros de final (sin punto de observación); días, riqueza y contadores permanecen desconocidos en lugar de 0.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>Resumen y linaje</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>Finales alcanzados</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>Cobertura de registro</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>Totales y récords clave</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>Top 3 entre colonias</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>Estadísticas de MOD</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>Escenario</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>Narrador</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>Dificultad</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>Modo de guardado</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>Modo compromiso</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>Recargar en cualquier momento</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>Ámbito activo</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>Linaje de guardados</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · partieron: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>{0} final(es) recuperado(s) del linaje (modo des. desconocido, excluidos de totales)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>Los finales en modo desarrollo están ocultos por la configuración actual</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>{0} estadísticas seguidas · completas: {1} · instantánea/historial: {2} · parciales: {3} · desconocidas: {4} · no aplicables: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>{0} experimentales</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>Tipo</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>Posición</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>Rango observado</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>Acumulado</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>Pico / extremo</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>Última instantánea</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>Media / tasa</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>Excluida</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>Fuera de ámbito</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>Día {0} → {1}</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>Día {0}</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* La posición incluye colonias con cobertura parcial (huecos); consulte Clasificaciones.</RWS_Report_PartialRankFootnote>
+</LanguageData>

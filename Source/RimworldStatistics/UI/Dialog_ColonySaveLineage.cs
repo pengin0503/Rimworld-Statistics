@@ -122,6 +122,12 @@ internal sealed class Dialog_ColonySaveLineage : Window
                 ShowColonyMenu();
         }
 
+        var reportLabel = (string)"RWS_Report_Open".Translate();
+        var reportRect = controls.Next(reportLabel, 130f, 230f);
+        if (Widgets.ButtonText(reportRect, reportLabel.Truncate(Math.Max(0f, reportRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colonyKey));
+        TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
+
         if (activeMetric is { } metric)
         {
             var metricBtnText = (string)"RWS_Lineage_MetricButton".Translate(metric.Label);

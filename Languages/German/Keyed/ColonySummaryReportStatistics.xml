@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>Gesamtbericht</RWS_Report_Open>
+  <RWS_Report_OpenTip>Zusammenfassung einer Kolonie öffnen: Gesamtwerte, Höchstwerte, Ränge, Abdeckung und statischer HTML-Export (schreibgeschützt).</RWS_Report_OpenTip>
+  <RWS_Report_Title>Kolonie-Gesamtbericht · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>Kolonie wechseln…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>HTML-Bericht exportieren</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>Eigenständige statische HTML-Zusammenfassung für diese Kolonie im Ordner exports speichern.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>HTML-Bericht wird geschrieben…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>HTML-Export fehlgeschlagen: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTML-Bericht gespeichert unter {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>Bereich: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>Schreibgeschützter Bericht aus erfassten Spielständen und Kontrollpunkten. Fehlende Werte werden als unbekannt angezeigt und nie als null gewertet.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>Diese Kolonie ist von Gesamtwerten und Ranglisten ausgeschlossen.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>Diese Kolonie liegt außerhalb der aktiven Gruppe ({0}); Ränge werden in dieser Ansicht nicht berechnet.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>Nur über Endspuren erfasst (kein Beobachtungspunkt); Spieltage, Wohlstand und Zähler bleiben unbekannt statt 0.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>Übersicht &amp; Spielstandslinie</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>Erreichte Enden</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>Erfassungsabdeckung</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>Wichtige Gesamt- &amp; Höchstwerte</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>Top-3-Ränge über Kolonien</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>MOD-Statistiken</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>Szenario</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>Erzähler</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>Schwierigkeit</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>Speichermodus</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>Verpflichtungsmodus</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>Jederzeit laden</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>Aktiver Bereich</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>Spielstandslinie</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · abgereist: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>{0} wiederhergestellte Linien-Ende(n) (Dev-Modus unbekannt, nicht gezählt)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>Entwicklermodus-Enden sind durch die aktuelle Einstellung ausgeblendet</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>{0} erfasste Statistiken · vollständig: {1} · Stand/Verlauf: {2} · teilweise: {3} · unbekannt: {4} · nicht zutreffend: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>{0} experimentell</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>Art</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>Rang</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>Zeitraum</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>Kumuliert</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>Spitze / Extrem</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>Letzter Stand</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>Mittel / Rate</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>Ausgeschlossen</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>Außerhalb</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>Tag {0} → {1}</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>Tag {0}</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* Rang enthält Kolonien mit lückenhafter Abdeckung; Details unter Ranglisten.</RWS_Report_PartialRankFootnote>
+</LanguageData>
