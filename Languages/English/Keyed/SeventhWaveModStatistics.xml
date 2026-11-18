@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>Prisoners resocialized</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Counts colony prisoners rehabilitated into free colony members through humane prisoner treatment in Prison Labor.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>Prisoner intel extracted</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Counts successful prisoner interrogation rituals conducted by colony wardens that extract actionable quest intel in Prison Labor.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>Automated pod treatments</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>Counts completed automated medical pod healing cycles on player home maps in MedPod, broken down by pod type and excluding interrupted or empty cycles.</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>Implant abilities activated</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Counts confirmed bionic and animal implant ability activations by player colonists and colony animals from Alpha Implants, broken down by ability.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>Permanent scars cured</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Counts permanent scar injuries cured on player pawns, colony animals, and colony prisoners by scar-curing implants in Alpha Implants.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>Island home maps</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Records active player home maps settled in Biomes! Islands biomes, broken down by biome.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>Quests purchased from informants</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>Counts quests and world incident leads purchased from visiting quest-giver informants by player negotiators in RimQuest (Continued), broken down by quest or incident.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>Silver spent on quest leads</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>Counts total silver paid directly to visiting quest-giver informants when purchasing quest leads in RimQuest (Continued).</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>Aberrant hives and dens destroyed</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Counts hostile infestation hives and dens destroyed on maps with colony presence in Horrors (Continued), broken down by structure type.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>Blighted wasteland home maps</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Records active player home maps settled in Horrors (Continued) wasteland biomes, broken down by biome.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

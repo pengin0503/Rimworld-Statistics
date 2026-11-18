@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>囚人の社会復帰</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Prison Laborの処遇改善によって社会復帰準備が完了し、自由入植者として迎え入れられたコロニー囚人の累計数を記録します。</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>尋問による機密入手</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Prison Laborの尋問儀式において、コロニーの看守が囚人からクエスト機密情報の引き出しに成功した回数を記録します。</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>自動医療ポッド治療完了</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>MedPodのプレイヤー本拠地にある医療ポッドで最後まで完了した自動治療サイクル数をポッド種別ごとに記録します（中断・空診断は除外）。</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>インプラント能力発動</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Alpha Implantsが追加する入植者・コロニー動物向けインプラント能力の確定発動回数をアビリティ別に記録します。</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>古傷の完治数</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Alpha Implantsの古傷治療インプラントによってプレイヤー側のポーン・動物・囚人から完治した永久傷の累計数を記録します。</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>島嶼の本拠地マップ</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Biomes! Islandsが追加する島嶼バイオーム上の有効なプレイヤー本拠地マップ数をバイオーム別に記録します。</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>情報屋から購入したクエスト</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>RimQuest (Continued)で訪問中の情報提供者からプレイヤー交渉人が購入したクエスト・事件情報の件数を種別ごとに記録します。</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>クエスト情報購入費</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>RimQuest (Continued)で訪問中の情報提供者からクエスト情報を購入する際に直接支払ったシルバー総額を記録します。</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>怪異の巣穴・繁殖巣の破壊</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Horrors (Continued)においてコロニー勢力が展開するマップ上で破壊した敵対巣穴・繁殖巣の累計数を構造物種別ごとに記録します。</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>汚染荒野の本拠地マップ</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Horrors (Continued)が追加する荒野バイオーム上の有効なプレイヤー本拠地マップ数をバイオーム別に記録します。</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>Перевоспитанные заключённые</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Учитывает заключённых колонии, ставших свободными поселенцами благодаря гуманному обращению в Prison Labor.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>Добытые на допросах разведданные</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Учитывает успешные ритуалы допроса надзирателями колонии, позволившие получить разведданные о заданиях в Prison Labor.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>Автоматические процедуры в медкапсулах</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>Учитывает полностью завершённые циклы автоматического лечения на домашних картах игрока в MedPod с разбивкой по типу капсулы без учёта прерываний.</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>Активации способностей имплантов</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Учитывает подтверждённые активации способностей бионических и животных имплантов поселенцами и животными колонии из Alpha Implants с разбивкой по способности.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>Залеченные застарелые шрамы</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Учитывает застарелые шрамы, залеченные у пешек игрока, животных колонии и заключённых с помощью имплантов из Alpha Implants.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>Островные домашние карты</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Учитывает активные домашние карты игрока в биомах Biomes! Islands с разбивкой по биомам.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>Купленные у информаторов задания</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>Учитывает задания и наводки на события, купленные переговорщиками игрока у приходящих информаторов в RimQuest (Continued), с разбивкой по заданию или событию.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>Потрачено серебра на наводки</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>Учитывает общее количество серебра, напрямую уплаченного приходящим информаторам за покупку наводок на задания в RimQuest (Continued).</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>Уничтоженные чужеродные ульи и логова</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Учитывает враждебные ульи и логова из Horrors (Continued), уничтоженные на картах с присутствием колонии, с разбивкой по типу постройки.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>Домашние карты в заражённых пустошах</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Учитывает активные домашние карты игрока в биомах пустошей Horrors (Continued) с разбивкой по биомам.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

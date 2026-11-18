@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>Resozialisierte Gefangene</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>Zählt Gefangene der Kolonie, die in Prison Labor durch menschenwürdige Behandlung zu freien Kolonisten rehabilitiert wurden.</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>Erpresste Verhörinformationen</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>Zählt erfolgreiche Verhörrituale von Koloniewärtern in Prison Labor, bei denen verwertbare Quest-Informationen gewonnen wurden.</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>Automatisierte Kapselbehandlungen</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>Zählt vollständig abgeschlossene automatische Heilzyklen auf Heimatkarten des Spielers in MedPod, aufgeschlüsselt nach Kapseltyp und ohne Abbrüche.</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>Implantatfähigkeiten aktiviert</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>Zählt bestätigte Aktivierungen von bionischen und tierischen Implantatfähigkeiten durch Kolonisten und Kolonietiere aus Alpha Implants, aufgeschlüsselt nach Fähigkeit.</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>Geheilte bleibende Narben</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>Zählt bleibende Narbenverletzungen, die bei Kolonisten, Kolonietieren und Gefangenen durch narbenheilende Implantate aus Alpha Implants geheilt wurden.</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>Insel-Heimatkarten</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>Erfasst aktive Heimatkarten des Spielers in Biomes! Islands-Biomen, aufgeschlüsselt nach Biom.</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>Von Informanten gekaufte Quests</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>Zählt Quests und Ereignishinweise, die Unterhändler des Spielers in RimQuest (Continued) von besuchenden Informanten gekauft haben, aufgeschlüsselt nach Quest oder Ereignis.</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>Für Quest-Hinweise gezahltes Silber</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>Zählt das gesamte Silber, das beim Kauf von Quest-Hinweisen in RimQuest (Continued) direkt an besuchende Informanten gezahlt wurde.</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>Zerstörte abnorme Nester und Bauten</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>Zählt feindliche Befallsnester und Bauten in Horrors (Continued), die auf Karten mit Koloniepräsenz zerstört wurden, aufgeschlüsselt nach Gebäudetyp.</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>Verseuchte Ödland-Heimatkarten</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>Erfasst aktive Heimatkarten des Spielers in Ödland-Biomen von Horrors (Continued), aufgeschlüsselt nach Biom.</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

@@ -80,7 +80,7 @@ internal static class FishingPlacementScope
             pawn = driver?.pawn;
             job = driver?.job;
             map = pawn?.Map;
-            canRecord = pawn != null && job != null && job.loadID >= 0 && GameFacts.IsPlayer(pawn)
+            canRecord = pawn != null && job != null && job.loadID >= 0 && GameFacts.IsColonyWorker(pawn)
                 && map is { IsPlayerHome: true } && GameFacts.AnyRecording(FishingFamily.Name);
         }
         catch (Exception e)

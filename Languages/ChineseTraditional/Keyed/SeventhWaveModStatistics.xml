@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_PrisonLaborResocializations>囚犯重返社會</RWS_PrisonLaborResocializations>
+  <RWS_PrisonLaborResocializationsDesc>統計在 Prison Labor 中透過人道勞改待遇完成重返社會準備並轉為自由殖民者的殖民地囚犯人數。</RWS_PrisonLaborResocializationsDesc>
+  <RWS_PrisonLaborInterrogationIntel>審訊獲取情報</RWS_PrisonLaborInterrogationIntel>
+  <RWS_PrisonLaborInterrogationIntelDesc>統計在 Prison Labor 中由殖民地獄卒主持審訊儀式並成功從囚犯口中提取任務情報的次數。</RWS_PrisonLaborInterrogationIntelDesc>
+  <RWS_MedPodTreatmentsCompleted>自動醫療艙治療完成</RWS_MedPodTreatmentsCompleted>
+  <RWS_MedPodTreatmentsCompletedDesc>統計在 MedPod 中玩家家園地圖上完整結束的自動醫療艙治療週期數（依醫療艙類型分類，不含中斷或空診斷）。</RWS_MedPodTreatmentsCompletedDesc>
+  <RWS_AlphaImplantsAbilitiesActivated>植入體技能發動</RWS_AlphaImplantsAbilitiesActivated>
+  <RWS_AlphaImplantsAbilitiesActivatedDesc>統計在 Alpha Implants 中由玩家殖民者或殖民地動物成功發動的仿生及動物植入體技能次數（依技能分類）。</RWS_AlphaImplantsAbilitiesActivatedDesc>
+  <RWS_AlphaImplantsScarsCured>永久傷疤治癒數</RWS_AlphaImplantsScarsCured>
+  <RWS_AlphaImplantsScarsCuredDesc>統計在 Alpha Implants 中透過祛疤植入體為玩家小人、殖民地動物及囚犯治癒的永久傷疤總數。</RWS_AlphaImplantsScarsCuredDesc>
+  <RWS_BiomesIslands_HomeMaps>島嶼生態家園地圖</RWS_BiomesIslands_HomeMaps>
+  <RWS_BiomesIslands_HomeMapsDesc>記錄位於 Biomes! Islands 島嶼生態群系上的有效玩家家園地圖數量（依生態群系分類）。</RWS_BiomesIslands_HomeMapsDesc>
+  <RWS_RimQuestQuestsPurchased>向線人購買的任務</RWS_RimQuestQuestsPurchased>
+  <RWS_RimQuestQuestsPurchasedDesc>統計在 RimQuest (Continued) 中玩家談判者向來訪任務線人購買的任務與事件線索數量（依任務或事件分類）。</RWS_RimQuestQuestsPurchasedDesc>
+  <RWS_RimQuestSilverSpent>任務情報白銀支出</RWS_RimQuestSilverSpent>
+  <RWS_RimQuestSilverSpentDesc>統計在 RimQuest (Continued) 中向來訪任務線人購買任務線索時直接支付的白銀總額。</RWS_RimQuestSilverSpentDesc>
+  <RWS_HorrorsHivesDestroyed>異怪巢穴摧毀數</RWS_HorrorsHivesDestroyed>
+  <RWS_HorrorsHivesDestroyedDesc>統計在 Horrors (Continued) 中有殖民地單位在場的地圖上被摧毀的敵對蟲巢與巢穴數量（依建築類型分類）。</RWS_HorrorsHivesDestroyedDesc>
+  <RWS_Horrors_HomeMaps>畸變荒原家園地圖</RWS_Horrors_HomeMaps>
+  <RWS_Horrors_HomeMapsDesc>記錄位於 Horrors (Continued) 荒原生態群系上的有效玩家家園地圖數量（依生態群系分類）。</RWS_Horrors_HomeMapsDesc>
+</LanguageData>

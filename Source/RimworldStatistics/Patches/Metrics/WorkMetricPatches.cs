@@ -30,7 +30,7 @@ internal static class HarvestProbe
     /// </summary>
     public static Plant? PlayerCrop(Pawn? worker, Thing? harvested)
     {
-        if (worker == null || harvested == null || !GameFacts.IsPlayer(worker))
+        if (worker == null || harvested == null || !GameFacts.IsColonyWorker(worker))
             return null;
         var plant = JobPlant(worker);
         return plant != null && plant.Spawned && plant.IsCrop ? plant : null;
@@ -58,7 +58,7 @@ internal static class TreeWoodPlacementProbe
     public static void Expect(Pawn? worker, Thing? harvest)
     {
         if (!UnityData.IsInMainThread || LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null ||
-            worker == null || harvest == null || !GameFacts.IsPlayer(worker) ||
+            worker == null || harvest == null || !GameFacts.IsColonyWorker(worker) ||
             worker.jobs?.curDriver is not JobDriver_PlantCut ||
             HarvestProbe.JobPlant(worker) is not { Spawned: true } tree ||
             tree.def?.plant?.IsTree != true || tree.def.plant.harvestedThingDef != harvest.def ||
@@ -129,7 +129,7 @@ public static class PlantCollectedMetricPatch
         if (__instance == null || !__instance.Spawned || by == null)
             return;
         var harvestJob = by.CurJobDef == JobDefOf.Harvest || by.CurJobDef == JobDefOf.HarvestDesignated;
-        if (!harvestJob || !by.RaceProps.Humanlike || !GameFacts.IsPlayer(by) || !__instance.IsCrop
+        if (!harvestJob || !by.RaceProps.Humanlike || !GameFacts.IsColonyWorker(by) || !__instance.IsCrop
             || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
             return;
         try
@@ -173,7 +173,7 @@ internal static class HaulToCellCompletionMetricPatch
         {
             var actor = __instance.pawn;
             var job = actor?.CurJob;
-            if (actor == null || !GameFacts.IsPlayer(actor) ||
+            if (actor == null || !GameFacts.IsColonyWorker(actor) ||
                 job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
                 job.targetB.Cell != dropLoc)
                 return;
@@ -244,7 +244,7 @@ internal static class SlaughteredButcheryMetricPatch
 {
     private static void Postfix(Bill_Production __instance, Pawn billDoer, List<Thing> ingredients)
     {
-        if (billDoer == null || !GameFacts.IsPlayer(billDoer) ||
+        if (billDoer == null || !GameFacts.IsColonyWorker(billDoer) ||
             ingredients is not { Count: > 0 } ||
             !LiveMetrics.IsRecordingNow(ChoreFamily.Name))
             return;
@@ -325,7 +325,7 @@ internal static class CleanJobCompletedMetricPatch
     private static void Prefix(Verse.AI.Pawn_JobTracker __instance, Verse.AI.JobCondition condition)
     {
         var actor = __instance.curDriver?.pawn;
-        if (actor == null || !GameFacts.IsPlayer(actor) ||
+        if (actor == null || !GameFacts.IsColonyWorker(actor) ||
             __instance.curDriver is not JobDriver_CleanFilth ||
             __instance.curJob is not { } job ||
             !LiveMetrics.CanCaptureEvent(ChoreFamily.Name))
@@ -354,7 +354,7 @@ public static class PlantsSownMetricPatch
         // increment FiresExtinguished after target fire.Destroyed; self-extinguish
         // destroys fire before the record increment. Reuse the same already-patched
         // tracker instead of adding a per-tick or extra Harmony interception.
-        if (__instance.pawn is not { } actor || !GameFacts.IsPlayer(actor))
+        if (__instance.pawn is not { } actor || !GameFacts.IsColonyWorker(actor))
             return;
         if (def == RecordDefOf.AnimalsSlaughtered)
         {
@@ -398,7 +398,7 @@ public static class BillDoneMetricPatch
 {
     public static void Postfix(Pawn billDoer, List<Thing> products)
     {
-        if (billDoer == null || products == null || !GameFacts.IsPlayer(billDoer)
+        if (billDoer == null || products == null || !GameFacts.IsColonyWorker(billDoer)
             || !GameFacts.AnyRecording(WorkFamily.Name, WorkDetailsFamily.Name))
             return;
         try
@@ -519,7 +519,7 @@ public static class MiningScopeMetricPatch
     public static void Prefix(Mineable __instance, Pawn pawn, out bool __state)
     {
         __state = false;
-        if (pawn == null || !GameFacts.IsPlayer(pawn) || __instance?.def?.building?.mineableThing == null || MiningProbe.Miner != null)
+        if (pawn == null || !GameFacts.IsColonyWorker(pawn) || __instance?.def?.building?.mineableThing == null || MiningProbe.Miner != null)
             return;
         MiningProbe.Miner = pawn;
         MiningProbe.Yield = __instance.def.building.mineableThing;
