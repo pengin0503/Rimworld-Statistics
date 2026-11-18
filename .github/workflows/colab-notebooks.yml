@@ -1,0 +1,25 @@
+name: Validate Colab notebooks
+
+on:
+  push:
+    paths:
+      - 'notebooks/**'
+      - 'tools/tests/test_colab_notebooks.py'
+      - '.github/workflows/colab-notebooks.yml'
+  pull_request:
+    paths:
+      - 'notebooks/**'
+      - 'tools/tests/test_colab_notebooks.py'
+      - '.github/workflows/colab-notebooks.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notebook-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate notebook JSON and Python syntax (stdlib only)
+        run: python3 -m unittest discover -s tools/tests -p 'test_colab_notebooks.py' -v
