@@ -62,6 +62,15 @@ internal static class MetricText
     /// A tooltip line with the amount per game day over the value's own recorded days (<see cref="MetricRates"/>), or an
     /// empty string when the value is not an additive total recorded completely over a known interval.
     /// </summary>
+    public static string FormatRateValue(MetricDefinition definition, double perDay)
+    {
+        var inv = System.Globalization.CultureInfo.InvariantCulture;
+        var number = perDay.ToString(perDay >= 100 ? "N0" : perDay >= 1 ? "N1" : "N2", inv);
+        if (definition.Unit == MetricUnit.Nutrition)
+            number = "RWS_Unit_Nutrition".Translate(number);
+        return "RWS_Rate_PerDayValue".Translate(number);
+    }
+
     public static string PerDay(MetricDefinition definition, NumericValue value)
     {
         if (MetricRates.PerDay(definition, value) is not { } rate)

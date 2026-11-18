@@ -105,6 +105,7 @@ public sealed class HistoryOverlayTracker
         public MetricHistoryPoint[] Measured { get; internal set; } = [];
         internal int CachedWidth { get; set; }
         internal HistoryTickRange? CachedRange { get; set; }
+        internal (int FirstTick, int LastTick)? CachedAxisTicks { get; set; }
         internal IReadOnlyList<MetricHistoryPoint> ThinnedPoints { get; set; } = [];
         internal HistoryTickRange? CachedMeasuredRange { get; set; }
         internal MetricHistoryPoint[]? CachedVisibleMeasured { get; set; }
@@ -114,20 +115,30 @@ public sealed class HistoryOverlayTracker
             ThinnedPoints = [];
             CachedWidth = 0;
             CachedRange = null;
+            CachedAxisTicks = null;
             CachedVisibleMeasured = null;
             CachedMeasuredRange = null;
         }
 
-        public IReadOnlyList<MetricHistoryPoint> GetOrThinPoints(int pixelWidth, HistoryTickRange? visibleRange = null)
+        public IReadOnlyList<MetricHistoryPoint> GetOrThinPoints(
+            int pixelWidth,
+            HistoryTickRange? visibleRange = null,
+            (int FirstTick, int LastTick)? axisTicks = null)
         {
             if (Status != HistoryOverlayStatus.Completed)
                 return [];
-            if (CachedWidth != pixelWidth || CachedRange != visibleRange)
+            if (CachedWidth != pixelWidth || CachedRange != visibleRange || CachedAxisTicks != axisTicks)
             {
                 var source = visibleRange is { } range ? MetricHistoryPlot.Slice(RawPoints, range) : RawPoints;
-                ThinnedPoints = MetricHistoryPlot.Thin(source, pixelWidth);
+                ThinnedPoints = MetricHistoryPlot.Thin(
+                    source,
+                    pixelWidth,
+                    axisTicks?.FirstTick,
+                    axisTicks?.LastTick,
+                    isZoomed: visibleRange is not null);
                 CachedWidth = pixelWidth;
                 CachedRange = visibleRange;
+                CachedAxisTicks = axisTicks;
             }
             return ThinnedPoints;
         }

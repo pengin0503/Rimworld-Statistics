@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>Smart groups ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>Commitment mode only</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>Reload anytime only</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>Ending reached only</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>Survived {0}+ days</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>Storyteller: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>Difficulty: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>Scenario: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>Starting biome: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>By survival days ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>By storyteller ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>By difficulty ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>By starting biome ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>By scenario ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/day</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>Display: Total</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>Display: Per day (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>Toggle between cumulative totals and daily rates (/day) computed strictly over each colony's complete observed interval (≥ 1.0 day) for cumulative additive statistics.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>Daily rates (/day) are computed over each individual colony's complete observed interval and are not defined for multi-colony aggregate scopes.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>Daily rate (/day) is unavailable because the reading is partial or its observed interval is shorter than 1.0 day.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>Complete ({0} d)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>Some colonies are omitted because their reading is partial or covers less than 1.0 day</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>Switch this axis between cumulative total and daily rate (/day) over each colony's complete ≥ 1.0-day interval.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>This statistic is not a cumulative additive total, so daily rate (/day) is unavailable.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>Daily rate (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day ON</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day ON</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} with partial or &lt;1 d interval</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>Color: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>Color scatter points by data status, ending reached, commitment mode, difficulty, or storyteller. No trend line or correlation is drawn.</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>Data status</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>Ending reached</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>Commitment mode</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>Difficulty</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>Storyteller</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>Ending reached</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>No ending yet</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>Commitment</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>Reload anytime</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>Other</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>Unknown</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>Mixed cluster</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

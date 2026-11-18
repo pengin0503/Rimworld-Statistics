@@ -23,6 +23,9 @@ public sealed class StatsView
 
     /// <summary>The numeric statistics over the same colonies (Details tab).</summary>
     public NumericView Numeric { get; init; } = NumericView.Empty;
+
+    /// <summary>Starting biome defNames by colony key resolved from <see cref="ColonyStartSnapshot.Biome"/> observations.</summary>
+    public IReadOnlyDictionary<string, string> StartingBiomes { get; init; } = new Dictionary<string, string>(StringComparer.Ordinal);
 }
 
 /// <summary>
@@ -464,7 +467,8 @@ public sealed class ProfileSession
             }
             var before = LedgerSignature();
             var colonies = CampaignMatcher.BuildColonies(_profile);
-            scope?.Apply(colonies);
+            var startingBiomes = SmartGroupEvaluator.ResolveStartingBiomesByKey(_profile, colonies);
+            scope?.Apply(_profile, colonies, options, startingBiomes);
             var stats = StatsCalculator.Calculate(colonies, options);
             view = new StatsView
             {
@@ -475,6 +479,7 @@ public sealed class ProfileSession
                     MetricRegistry.Compose(_profile.ModMetricDescriptors,
                         visibleUnitIds is null ? new HashSet<string>(StringComparer.Ordinal)
                             : new HashSet<string>(visibleUnitIds, StringComparer.Ordinal))),
+                StartingBiomes = startingBiomes,
             };
             ledgerChanged = LedgerSignature() != before;
             if (ledgerChanged)

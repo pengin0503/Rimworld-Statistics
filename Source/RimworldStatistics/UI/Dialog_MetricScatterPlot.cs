@@ -8,8 +8,8 @@ namespace RimworldStatistics.UI;
 
 /// <summary>
 /// Two statistics across the colonies of the current view, one point per colony (V2-D). A colony without both values is
-/// listed by its reason and never drawn at 0; no trend line or correlation is drawn. A point opens its colony's summary
-/// report or the colony's history of either statistic.
+/// listed by its reason and never drawn at 0; no trend line or correlation is drawn. Supports per-axis daily rate (/day)
+/// toggles for cumulative additive totals and attribute-based categorical dot coloring.
 /// </summary>
 internal sealed class Dialog_MetricScatterPlot : Window
 {
@@ -19,6 +19,9 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private const int TipColonies = 8;
     private const int TipNamesPerReason = 12;
     private const int MenuColonies = 30;
+    private const float LegendRowHeight = 20f;
+    private const float LegendItemGap = 14f;
+    private const float LegendRowGap = 2f;
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
     private static readonly Color PointColor = new(0.35f, 0.68f, 0.86f);
@@ -29,6 +32,19 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private static readonly Color ZeroColor = new(1f, 1f, 1f, 0.32f);
     private static readonly Color NoteColor = new(0.84f, 0.86f, 0.90f);
     private static readonly Color WarnColor = new(0.96f, 0.80f, 0.45f);
+    private static readonly Color MixedClusterColor = new(0.86f, 0.86f, 0.92f);
+    private static readonly Color OtherCategoryColor = new(0.76f, 0.72f, 0.62f);
+    private static readonly Color UnknownCategoryColor = new(0.58f, 0.60f, 0.65f);
+
+    private static readonly Color[] CategoryPalette =
+    [
+        new(0.35f, 0.68f, 0.88f),
+        new(0.30f, 0.78f, 0.56f),
+        new(0.94f, 0.76f, 0.32f),
+        new(0.90f, 0.46f, 0.38f),
+        new(0.72f, 0.54f, 0.88f),
+        new(0.34f, 0.82f, 0.80f),
+    ];
 
     /// <summary>Every text the window shows for one plot in one language, built once.</summary>
     private sealed record Texts(
@@ -43,28 +59,47 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private readonly string? scopeName;
     private string xKey;
     private string yKey;
+    private bool xPerDay;
+    private bool yPerDay;
+    private ScatterColorMode colorMode = ScatterColorMode.DataStatus;
     private MetricScatterPlot? plot;
+    private ScatterColorAssignment? colorAssignment;
     private object? textLanguage;
     private Texts? texts;
     private IReadOnlyList<ScatterCluster>? clusters;
     private Vector2 clusterArea;
     private bool[] clusterCaution = [];
+    private int[] clusterBucketIndices = [];
+    private bool hasMixedCluster;
+    private bool hasMultiCluster;
     private string?[] clusterTips = [];
     private Dictionary<string, string>? colonyNames;
+    private Dictionary<string, ColonyStats>? colonyStatsByKey;
     private string? namesSignature;
+    private List<(string Label, Action<Rect> Swatch, string? Tip)>? legendItems;
+    private HistoryLegendPlan? legendPlan;
+    private float legendWidth = -1f;
 
     /// <param name="yKey">The statistic on the Y axis (the peak wealth when missing or not plottable).</param>
     /// <param name="xKey">The statistic on the X axis (days played when missing, not plottable or the same as Y).</param>
-    internal Dialog_MetricScatterPlot(StatsView view, string? yKey, string? xKey = null, string? scopeName = null)
+    internal Dialog_MetricScatterPlot(
+        StatsView view,
+        string? yKey,
+        string? xKey = null,
+        string? scopeName = null,
+        bool xPerDay = false,
+        bool yPerDay = false)
     {
         this.view = view;
         this.scopeName = scopeName;
         var y = yKey is not null && MetricScatterPlot.CanPlot(view, yKey) ? yKey : BasicMetrics.PeakWealth;
         var x = xKey is not null && MetricScatterPlot.CanPlot(view, xKey) ? xKey : BasicMetrics.Days;
-        if (x == y)
+        if (x == y && xPerDay == yPerDay)
             x = y == BasicMetrics.Days ? BasicMetrics.PeakWealth : BasicMetrics.Days;
         this.xKey = x;
         this.yKey = y;
+        this.xPerDay = xPerDay && MetricScatterPlot.CanPlotPerDay(view, x);
+        this.yPerDay = yPerDay && MetricScatterPlot.CanPlotPerDay(view, y);
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
@@ -72,14 +107,19 @@ internal sealed class Dialog_MetricScatterPlot : Window
     }
 
     public override Vector2 InitialSize => new(
-        Math.Min(1060f, Verse.UI.screenWidth * 0.92f),
-        Math.Min(760f, Verse.UI.screenHeight * 0.90f));
+        Math.Min(1080f, Verse.UI.screenWidth * 0.92f),
+        Math.Min(780f, Verse.UI.screenHeight * 0.90f));
 
     public override void DoWindowContents(Rect rect)
     {
         try
         {
             DrawContents(rect);
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] Scatter plot window failed to draw.\n{e}", "RWS.scatter".GetHashCode());
+            Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
         }
         finally
         {
@@ -91,9 +131,23 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
     private void Rebuild()
     {
-        plot = MetricScatterPlot.Build(view, xKey, yKey);
+        plot = MetricScatterPlot.Build(view, xKey, yKey, xPerDay, yPerDay);
+        colorAssignment = plot is null ? null : ScatterColorGrouping.Assign(plot, view.Stats, colorMode);
         texts = null;
         clusters = null;
+        legendItems = null;
+        legendPlan = null;
+    }
+
+    private void SetColorMode(ScatterColorMode nextMode)
+    {
+        if (colorMode == nextMode)
+            return;
+        colorMode = nextMode;
+        colorAssignment = plot is null ? null : ScatterColorGrouping.Assign(plot, view.Stats, colorMode);
+        clusters = null;
+        legendItems = null;
+        legendPlan = null;
     }
 
     private void DrawContents(Rect rect)
@@ -107,6 +161,8 @@ internal sealed class Dialog_MetricScatterPlot : Window
             colonyNames = null; // an unnamed colony's name is translated
             texts = BuildTexts();
             clusterTips = new string?[clusterTips.Length];
+            legendItems = null;
+            legendPlan = null;
         }
         var t = texts;
 
@@ -116,13 +172,31 @@ internal sealed class Dialog_MetricScatterPlot : Window
         Text.Font = GameFont.Small;
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 36f, rect.width, 28f));
-        if (Button(ref controls, t.XButton, t.XSource is null ? t.XButton : t.XButton + "\n" + t.XSource, 170f, 360f))
-            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(key, yKey), t.XButton, xKey));
-        if (Button(ref controls, t.YButton, t.YSource is null ? t.YButton : t.YButton + "\n" + t.YSource, 170f, 360f))
-            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(xKey, key), t.YButton, yKey));
+        if (Button(ref controls, t.XButton, t.XSource is null ? t.XButton : t.XButton + "\n" + t.XSource, 155f, 320f))
+            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(key, yKey, xPerDay, yPerDay), t.XButton, xKey));
+
+        var canXRate = MetricScatterPlot.CanPlotPerDay(view, xKey);
+        var xRateLabel = (string)(xPerDay ? "RWS_Scatter_XRateOn" : "RWS_Scatter_XRateOff").Translate();
+        var xRateTip = (string)(canXRate ? "RWS_Rate_AxisToggleTip" : "RWS_Rate_AxisUnavailableTip").Translate();
+        if (Button(ref controls, xRateLabel, xRateTip, 84f, 150f, active: canXRate))
+            SetAxes(xKey, yKey, !xPerDay, yPerDay);
+
+        if (Button(ref controls, t.YButton, t.YSource is null ? t.YButton : t.YButton + "\n" + t.YSource, 155f, 320f))
+            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(xKey, key, xPerDay, yPerDay), t.YButton, yKey));
+
+        var canYRate = MetricScatterPlot.CanPlotPerDay(view, yKey);
+        var yRateLabel = (string)(yPerDay ? "RWS_Scatter_YRateOn" : "RWS_Scatter_YRateOff").Translate();
+        var yRateTip = (string)(canYRate ? "RWS_Rate_AxisToggleTip" : "RWS_Rate_AxisUnavailableTip").Translate();
+        if (Button(ref controls, yRateLabel, yRateTip, 84f, 150f, active: canYRate))
+            SetAxes(xKey, yKey, xPerDay, !yPerDay);
+
         var swap = (string)"RWS_Scatter_Swap".Translate();
-        if (Button(ref controls, swap, swap, 110f, 200f))
-            SetAxes(yKey, xKey);
+        if (Button(ref controls, swap, swap, 100f, 180f))
+            SetAxes(yKey, xKey, yPerDay, xPerDay);
+
+        var colorBtn = (string)"RWS_Scatter_ColorButton".Translate(ColorModeLabel(colorMode));
+        if (Button(ref controls, colorBtn, "RWS_Scatter_ColorButtonTip".Translate(), 145f, 260f))
+            OpenColorModeMenu();
 
         var y = rect.y + 36f + controls.Height + 4f;
         y = Line(rect, y, t.Kinds, t.Kinds, NoteColor);
@@ -132,20 +206,44 @@ internal sealed class Dialog_MetricScatterPlot : Window
         foreach (var (notice, color) in t.Notices)
             y = Line(rect, y, notice, notice, color);
 
-        const float legendHeight = 24f;
-        var area = new Rect(rect.x, y + 4f, rect.width, Math.Max(0f, rect.yMax - y - 4f - legendHeight));
+        EnsureClustersIfNeeded(rect, y);
+        EnsureLegendLayout(rect.width);
+        var legendHeight = Math.Max(22f, legendPlan?.TotalHeight ?? 22f);
+        var area = new Rect(rect.x, y + 4f, rect.width, Math.Max(0f, rect.yMax - y - 4f - legendHeight - 2f));
         if (plot is not null)
             DrawPlot(area, plot, t);
-        DrawLegend(new Rect(rect.x, rect.yMax - legendHeight + 2f, rect.width, legendHeight - 2f));
+        DrawLegend(new Rect(rect.x, rect.yMax - legendHeight, rect.width, legendHeight));
     }
 
-    private static bool Button(ref ControlRow controls, string label, string tip, float min, float max)
+    private void OpenColorModeMenu()
+    {
+        var options = Enum.GetValues<ScatterColorMode>()
+            .Select(mode => new FloatMenuOption(ColorModeLabel(mode), () => SetColorMode(mode)))
+            .ToList();
+        Find.WindowStack.Add(new FloatMenu(options));
+    }
+
+    private static string ColorModeLabel(ScatterColorMode mode) => mode switch
+    {
+        ScatterColorMode.EndingReached => "RWS_Scatter_Color_Ending".Translate(),
+        ScatterColorMode.Permadeath => "RWS_Scatter_Color_Permadeath".Translate(),
+        ScatterColorMode.Difficulty => "RWS_Scatter_Color_Difficulty".Translate(),
+        ScatterColorMode.Storyteller => "RWS_Scatter_Color_Storyteller".Translate(),
+        _ => "RWS_Scatter_Color_Status".Translate(),
+    };
+
+    private static bool Button(ref ControlRow controls, string label, string tip, float min, float max, bool active = true)
     {
         var r = controls.Next(label, min, max);
         var shown = label.Truncate(Math.Max(0f, r.width - 12f));
         if (shown != label || tip != label)
             TooltipHandler.TipRegion(r, tip);
-        return Widgets.ButtonText(r, shown);
+        var prev = GUI.color;
+        if (!active)
+            GUI.color = new Color(0.65f, 0.65f, 0.65f);
+        var clicked = Widgets.ButtonText(r, shown, active: active);
+        GUI.color = prev;
+        return clicked && active;
     }
 
     private static float Line(Rect rect, float y, string text, string tip, Color color)
@@ -160,12 +258,16 @@ internal sealed class Dialog_MetricScatterPlot : Window
         return y + 22f;
     }
 
-    private void SetAxes(string x, string y)
+    private void SetAxes(string x, string y, bool nextXPerDay, bool nextYPerDay)
     {
-        if (x == xKey && y == yKey)
+        nextXPerDay = nextXPerDay && MetricScatterPlot.CanPlotPerDay(view, x);
+        nextYPerDay = nextYPerDay && MetricScatterPlot.CanPlotPerDay(view, y);
+        if (x == xKey && y == yKey && nextXPerDay == xPerDay && nextYPerDay == yPerDay)
             return;
         xKey = x;
         yKey = y;
+        xPerDay = nextXPerDay;
+        yPerDay = nextYPerDay;
         Rebuild();
     }
 
@@ -175,12 +277,14 @@ internal sealed class Dialog_MetricScatterPlot : Window
     {
         var choices = LeaderboardBuilder.RankableKeys(view)
             .Where(k => MetricScatterPlot.CanPlot(view, k))
-            .Select(k => new MetricPickerChoice(k, Label(k), Source(k)))
+            .Select(k => new MetricPickerChoice(k, RawLabel(k), Source(k)))
             .OrderBy(c => c.Label, StringComparer.CurrentCulture)
             .ThenBy(c => c.Key, StringComparer.Ordinal)
             .ToArray();
-        var xLabel = Label(xKey);
-        var yLabel = Label(yKey);
+        var xRaw = RawLabel(xKey);
+        var yRaw = RawLabel(yKey);
+        var xLabel = xPerDay ? (string)"RWS_Rate_TitleSuffix".Translate(xRaw) : xRaw;
+        var yLabel = yPerDay ? (string)"RWS_Rate_TitleSuffix".Translate(yRaw) : yRaw;
         var xButton = (string)"RWS_Scatter_X".Translate(xLabel);
         var yButton = (string)"RWS_Scatter_Y".Translate(yLabel);
         if (plot is not { } p)
@@ -190,7 +294,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
                 null, null, [], [], []);
         }
 
-        var kinds = (string)"RWS_Scatter_Kinds".Translate(KindLabel(p.X.ValueKind), KindLabel(p.Y.ValueKind));
+        var kinds = (string)"RWS_Scatter_Kinds".Translate(AxisKindLabel(p.X), AxisKindLabel(p.Y));
         var inScope = p.Points.Count + p.Exclusions.Count(e => e.Reason is not (ScatterExclusionReason.Excluded or ScatterExclusionReason.OutOfScope));
         var summary = (string)"RWS_Scatter_Summary".Translate(p.Points.Count.ToString(Inv), inScope.ToString(Inv),
             scopeName ?? (string)"RWS_Groups_All".Translate());
@@ -214,6 +318,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
         Part(ScatterExclusionReason.Missing, ScatterAxes.X, "RWS_Scatter_Reason_MissingX");
         Part(ScatterExclusionReason.Missing, ScatterAxes.Y, "RWS_Scatter_Reason_MissingY");
         Part(ScatterExclusionReason.Missing, ScatterAxes.Both, "RWS_Scatter_Reason_MissingBoth");
+        Part(ScatterExclusionReason.IncompleteRateInterval, null, "RWS_Scatter_Reason_IncompleteRate");
         Part(ScatterExclusionReason.NotApplicable, null, "RWS_Scatter_Reason_NotApplicable");
         Part(ScatterExclusionReason.NotReached, null, "RWS_Scatter_Reason_NotReached");
         Part(ScatterExclusionReason.NoSingleValue, null, "RWS_Scatter_Reason_NoSingleValue");
@@ -234,7 +339,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
             notices, TickLabels(p.X), TickLabels(p.Y));
     }
 
-    private string Label(string key)
+    private string RawLabel(string key)
         => BasicMetrics.Contains(key) ? MetricText.BasicLabel(key)
             : MetricLookup.Definition(view, key) is { } d ? MetricText.Label(d) : key;
 
@@ -252,12 +357,26 @@ internal sealed class Dialog_MetricScatterPlot : Window
         return colonyNames.TryGetValue(colonyKey, out var name) ? name : colonyKey;
     }
 
+    private ColonyStats? StatsOf(string colonyKey)
+    {
+        if (colonyStatsByKey is null)
+        {
+            colonyStatsByKey = new Dictionary<string, ColonyStats>(StringComparer.Ordinal);
+            foreach (var stats in view.Stats.Colonies)
+                colonyStatsByKey.TryAdd(stats.Key, stats);
+        }
+        return colonyStatsByKey.GetValueOrDefault(colonyKey);
+    }
+
     private static string AxesTag(ScatterAxes axes) => axes switch
     {
         ScatterAxes.X => "RWS_Scatter_OnX".Translate(),
         ScatterAxes.Y => "RWS_Scatter_OnY".Translate(),
         _ => "RWS_Scatter_OnBoth".Translate(),
     };
+
+    private static string AxisKindLabel(ScatterAxis axis)
+        => axis.PerDay ? "RWS_Rate_AxisKindPerDay".Translate() : KindLabel(axis.ValueKind);
 
     private static string KindLabel(ColonyReportValueKind kind) => kind switch
     {
@@ -269,6 +388,8 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
     private static string[] TickLabels(ScatterAxis axis)
     {
+        if (axis.PerDay)
+            return axis.Ticks.Select(v => MetricChartTicks.FormatAxisValue(v, percent: false)).ToArray();
         var percent = axis.Definition.Unit == MetricUnit.Percent;
         var suffix = axis.Definition.Unit == MetricUnit.Mood ? "%" : "";
         return axis.Ticks.Select(v => MetricChartTicks.FormatAxisValue(v, percent) + suffix).ToArray();
@@ -277,6 +398,13 @@ internal sealed class Dialog_MetricScatterPlot : Window
     /// <summary>The value and its recording state, as the rankings' value and state columns show them.</summary>
     private static string FormatValue(ScatterAxis axis, ScatterValue value)
     {
+        if (axis.PerDay)
+        {
+            var rateText = MetricText.FormatRateValue(axis.Definition, value.Number);
+            return value.RecordedDays is { } days
+                ? rateText + " · " + (string)"RWS_Rate_RecordedInterval".Translate(days.ToString("N1", Inv))
+                : rateText;
+        }
         if (axis.IsBasic)
             return RankingsTab.BasicValue(axis.MetricKey, value.Number) + " · " + (string)"RWS_Coverage_SnapshotOnly".Translate();
         var text = MetricText.Format(axis.Definition, new NumericValue
@@ -284,6 +412,152 @@ internal sealed class Dialog_MetricScatterPlot : Window
             Number = value.Number, Coverage = value.Coverage, Evidence = value.Evidence, ThroughTick = value.ThroughTick,
         });
         return text + " · " + MetricText.State(axis.Definition, value.Coverage);
+    }
+
+    // ----- coloring & legend -----
+
+    private Color BucketColor(ScatterColorBucket bucket)
+    {
+        if (colorMode == ScatterColorMode.DataStatus)
+            return PointColor;
+        if (colorMode == ScatterColorMode.EndingReached)
+            return bucket.Kind == ScatterColorBucketKind.EndingReached
+                ? CategoryPalette[1]
+                : CategoryPalette[0];
+        if (colorMode == ScatterColorMode.Permadeath)
+            return bucket.Kind switch
+            {
+                ScatterColorBucketKind.Permadeath => CategoryPalette[3],
+                ScatterColorBucketKind.ReloadAnytime => CategoryPalette[0],
+                _ => UnknownCategoryColor,
+            };
+        return bucket.Kind switch
+        {
+            ScatterColorBucketKind.Other => OtherCategoryColor,
+            ScatterColorBucketKind.Unknown => UnknownCategoryColor,
+            _ => CategoryPalette[bucket.Index % CategoryPalette.Length],
+        };
+    }
+
+    private string BucketLabel(ScatterColorBucket bucket)
+    {
+        var baseName = bucket.Kind switch
+        {
+            ScatterColorBucketKind.EndingReached => (string)"RWS_Scatter_Bucket_EndingYes".Translate(),
+            ScatterColorBucketKind.EndingNotReached => (string)"RWS_Scatter_Bucket_EndingNo".Translate(),
+            ScatterColorBucketKind.Permadeath => (string)"RWS_Scatter_Bucket_Permadeath".Translate(),
+            ScatterColorBucketKind.ReloadAnytime => (string)"RWS_Scatter_Bucket_ReloadAnytime".Translate(),
+            ScatterColorBucketKind.Other => (string)"RWS_Scatter_Bucket_Other".Translate(),
+            ScatterColorBucketKind.Unknown => (string)"RWS_Scatter_Bucket_Unknown".Translate(),
+            ScatterColorBucketKind.CategoryValue when colorMode == ScatterColorMode.Difficulty
+                => SmartScopeUi.ResolveDifficultyLabel(bucket.RawValue ?? ""),
+            ScatterColorBucketKind.CategoryValue when colorMode == ScatterColorMode.Storyteller
+                => SmartScopeUi.ResolveStorytellerLabel(bucket.RawValue ?? ""),
+            _ => bucket.RawValue ?? (string)"RWS_Scatter_LegendPoint".Translate(),
+        };
+        return $"{baseName} ({bucket.PointCount.ToString(Inv)})";
+    }
+
+    private string? PointColorTipLine(string colonyKey)
+    {
+        if (colorMode == ScatterColorMode.DataStatus)
+            return null;
+        var stats = StatsOf(colonyKey);
+        return colorMode switch
+        {
+            ScatterColorMode.EndingReached => (string)"RWS_Scatter_TipAttr".Translate(
+                "RWS_Scatter_Color_Ending".Translate(),
+                (stats is not null && stats.EndingCounts.Values.Sum() > 0
+                    ? "RWS_Scatter_Bucket_EndingYes"
+                    : "RWS_Scatter_Bucket_EndingNo").Translate()),
+            ScatterColorMode.Permadeath => (string)"RWS_Scatter_TipAttr".Translate(
+                "RWS_Scatter_Color_Permadeath".Translate(),
+                (stats is { HasObservedPoint: true, Permadeath: { } perm }
+                    ? (perm ? "RWS_Scatter_Bucket_Permadeath" : "RWS_Scatter_Bucket_ReloadAnytime")
+                    : "RWS_Scatter_Bucket_Unknown").Translate()),
+            ScatterColorMode.Difficulty => (string)"RWS_Scatter_TipAttr".Translate(
+                "RWS_Scatter_Color_Difficulty".Translate(),
+                !string.IsNullOrWhiteSpace(stats?.Difficulty)
+                    ? SmartScopeUi.ResolveDifficultyLabel(stats!.Difficulty!)
+                    : (string)"RWS_Scatter_Bucket_Unknown".Translate()),
+            ScatterColorMode.Storyteller => (string)"RWS_Scatter_TipAttr".Translate(
+                "RWS_Scatter_Color_Storyteller".Translate(),
+                !string.IsNullOrWhiteSpace(stats?.Storyteller)
+                    ? SmartScopeUi.ResolveStorytellerLabel(stats!.Storyteller!)
+                    : (string)"RWS_Scatter_Bucket_Unknown".Translate()),
+            _ => null,
+        };
+    }
+
+    private void EnsureClustersIfNeeded(Rect rect, float topY)
+    {
+        if (plot is null || clusters is not null)
+            return;
+        //clusters are rebuilt accurately inside DrawPlot using exact plotRect.size;
+        // initialize flags conservatively before first DrawPlot pass if needed.
+        _ = rect;
+        _ = topY;
+    }
+
+    private void RebuildClusters(MetricScatterPlot p, Vector2 size)
+    {
+        clusters = p.Cluster(size.x, size.y, ClusterSpacing);
+        clusterArea = size;
+        clusterCaution = clusters.Select(c => c.PointIndices.Any(i => p.Points[i].NeedsCaution)).ToArray();
+        clusterBucketIndices = new int[clusters.Count];
+        hasMixedCluster = false;
+        hasMultiCluster = false;
+        var assignment = colorAssignment;
+        for (var i = 0; i < clusters.Count; i++)
+        {
+            if (clusters[i].PointIndices.Count > 1)
+                hasMultiCluster = true;
+            var bucketIdx = assignment is null ? 0 : ScatterColorGrouping.ResolveClusterBucket(clusters[i], assignment);
+            clusterBucketIndices[i] = bucketIdx;
+            if (bucketIdx < 0)
+                hasMixedCluster = true;
+        }
+        clusterTips = new string?[clusters.Count];
+        legendItems = null;
+        legendPlan = null;
+    }
+
+    private void EnsureLegendLayout(float availableWidth)
+    {
+        if (legendItems is null)
+        {
+            legendItems = [];
+            if (colorMode == ScatterColorMode.DataStatus || colorAssignment is null || colorAssignment.Buckets.Count == 0)
+            {
+                legendItems.Add(("RWS_Scatter_LegendPoint".Translate(), r => Widgets.DrawBoxSolid(r, PointColor), null));
+                legendItems.Add(("RWS_Scatter_LegendCaution".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, CautionColor, 1), null));
+                legendItems.Add(("RWS_Scatter_LegendStack".Translate(), r => Widgets.DrawBoxSolid(r, PointColor), null));
+            }
+            else
+            {
+                foreach (var bucket in colorAssignment.Buckets)
+                {
+                    var swatchColor = BucketColor(bucket);
+                    legendItems.Add((BucketLabel(bucket), r => Widgets.DrawBoxSolid(r, swatchColor), null));
+                }
+                if (hasMixedCluster)
+                    legendItems.Add(("RWS_Scatter_Bucket_Mixed".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, MixedClusterColor, Color.white, 1), null));
+                if (plot is { CautionCount: > 0 })
+                    legendItems.Add(("RWS_Scatter_LegendCaution".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, CautionColor, 1), null));
+                if (hasMultiCluster)
+                    legendItems.Add(("RWS_Scatter_LegendStack".Translate(), r => Widgets.DrawBoxSolid(r, PointColor), null));
+            }
+            legendPlan = null;
+        }
+
+        if (legendPlan is null || Math.Abs(legendWidth - availableWidth) > 0.5f)
+        {
+            var widths = new float[legendItems.Count];
+            for (var i = 0; i < legendItems.Count; i++)
+                widths[i] = 16f + Text.CalcSize(legendItems[i].Label).x;
+            legendPlan = HistoryLegendLayout.Resolve(widths, availableWidth, LegendRowHeight, LegendItemGap, LegendRowGap);
+            legendWidth = availableWidth;
+        }
     }
 
     // ----- plot -----
@@ -334,10 +608,8 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
         if (clusters is null || clusterArea != plotRect.size)
         {
-            clusters = p.Cluster(plotRect.width, plotRect.height, ClusterSpacing);
-            clusterArea = plotRect.size;
-            clusterCaution = clusters.Select(c => c.PointIndices.Any(i => p.Points[i].NeedsCaution)).ToArray();
-            clusterTips = new string?[clusters.Count];
+            RebuildClusters(p, plotRect.size);
+            EnsureLegendLayout(area.width);
         }
 
         var mouse = Event.current.mousePosition;
@@ -345,15 +617,31 @@ internal sealed class Dialog_MetricScatterPlot : Window
         var hovered = -1;
         var best = float.MaxValue;
         var mouseNear = Mouse.IsOver(plotRect.ExpandedBy(reach));
-        for (var i = 0; i < clusters.Count; i++)
+        for (var i = 0; i < clusters!.Count; i++)
         {
             var c = clusters[i];
             var center = new Vector2(plotRect.x + (float)c.X, plotRect.yMax - (float)c.Y);
             var marker = new Rect(center.x - MarkerSize / 2f, center.y - MarkerSize / 2f, MarkerSize, MarkerSize);
-            if (clusterCaution[i])
-                Widgets.DrawBoxSolidWithOutline(marker, HollowFill, CautionColor, 1);
+            if (colorMode == ScatterColorMode.DataStatus)
+            {
+                if (clusterCaution[i])
+                    Widgets.DrawBoxSolidWithOutline(marker, HollowFill, CautionColor, 1);
+                else
+                    Widgets.DrawBoxSolid(marker, PointColor);
+            }
             else
-                Widgets.DrawBoxSolid(marker, PointColor);
+            {
+                var bucketIdx = clusterBucketIndices[i];
+                var dotColor = bucketIdx >= 0 && colorAssignment is not null && bucketIdx < colorAssignment.Buckets.Count
+                    ? BucketColor(colorAssignment.Buckets[bucketIdx])
+                    : MixedClusterColor;
+                if (clusterCaution[i])
+                    Widgets.DrawBoxSolidWithOutline(marker, HollowFill, dotColor, 1);
+                else if (bucketIdx < 0)
+                    Widgets.DrawBoxSolidWithOutline(marker, dotColor, Color.white, 1);
+                else
+                    Widgets.DrawBoxSolid(marker, dotColor);
+            }
             if (c.PointIndices.Count > 1)
                 Widgets.Label(new Rect(marker.xMax + 1f, marker.y - 11f, 48f, 16f), c.PointIndices.Count.ToString(Inv));
 
@@ -388,6 +676,8 @@ internal sealed class Dialog_MetricScatterPlot : Window
             if (sb.Length > 0)
                 sb.AppendLine().AppendLine();
             sb.Append(Name(point.ColonyKey));
+            if (PointColorTipLine(point.ColonyKey) is { } attrLine)
+                sb.AppendLine().Append(attrLine);
             sb.AppendLine().Append((string)"RWS_Scatter_X".Translate(FormatValue(p.X, point.X)));
             sb.AppendLine().Append((string)"RWS_Scatter_Y".Translate(FormatValue(p.Y, point.Y)));
             if (point.ObservedAtDifferentTicks)
@@ -426,41 +716,45 @@ internal sealed class Dialog_MetricScatterPlot : Window
         {
             new("RWS_Report_Open".Translate(), () => Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, key, scopeName))),
         };
-        void History(ScatterAxis axis, string label, ScatterValue value)
+        void History(ScatterAxis axis, string rawLabel, ScatterValue value)
         {
             if (axis.IsBasic && !BasicMetrics.HasSaveHistory(axis.MetricKey))
                 return;
-            var comparison = new NumericValue
+            var fallback = new NumericValue
             {
                 Number = value.Number, Coverage = value.Coverage, Evidence = value.Evidence, ThroughTick = value.ThroughTick,
             };
-            options.Add(new FloatMenuOption("RWS_Scatter_History".Translate(label), () => Find.WindowStack.Add(
-                new Dialog_ColonyMetricHistory(view, key, Name(key), axis.Definition, label, comparison))));
+            var comparison = axis.PerDay
+                ? MetricLookup.ForColony(view, key, axis.MetricKey)?.Value ?? fallback
+                : fallback;
+            options.Add(new FloatMenuOption("RWS_Scatter_History".Translate(rawLabel), () => Find.WindowStack.Add(
+                new Dialog_ColonyMetricHistory(view, key, Name(key), axis.Definition, rawLabel, comparison))));
         }
-        History(p.X, t.XLabel, point.X);
+        History(p.X, RawLabel(p.X.MetricKey), point.X);
         if (p.Y.MetricKey != p.X.MetricKey)
-            History(p.Y, t.YLabel, point.Y);
+            History(p.Y, RawLabel(p.Y.MetricKey), point.Y);
         return options;
     }
 
-    private static void DrawLegend(Rect rect)
+    private void DrawLegend(Rect rect)
     {
-        var x = rect.x;
-        void Item(string label, Action<Rect> swatch)
+        if (legendItems is null || legendPlan is null)
+            return;
+
+        foreach (var placement in legendPlan.Items)
         {
-            var width = Math.Min(rect.xMax - x, 16f + Text.CalcSize(label).x);
-            if (width <= 16f)
-                return;
-            swatch(new Rect(x, rect.y + 6f, 9f, 9f));
-            var labelRect = new Rect(x + 14f, rect.y, width - 14f, rect.height);
-            var shown = label.Truncate(labelRect.width);
-            Widgets.Label(labelRect, shown);
-            if (shown != label)
-                TooltipHandler.TipRegion(labelRect, label);
-            x += width + 18f;
+            var (label, swatch, tip) = legendItems[placement.Index];
+            var x = rect.x + placement.X;
+            var y = rect.y + placement.Y;
+            var labelWidth = Math.Max(0f, placement.Width - 14f);
+            swatch(new Rect(x, y + 5f, 9f, 9f));
+            var itemRect = new Rect(x, y, placement.Width, LegendRowHeight);
+            var shown = label.Truncate(labelWidth);
+            Widgets.Label(new Rect(x + 14f, y, labelWidth, LegendRowHeight), shown);
+            if (tip is not null)
+                TooltipHandler.TipRegion(itemRect, tip);
+            else if (shown != label)
+                TooltipHandler.TipRegion(itemRect, label);
         }
-        Item("RWS_Scatter_LegendPoint".Translate(), r => Widgets.DrawBoxSolid(r, PointColor));
-        Item("RWS_Scatter_LegendCaution".Translate(), r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, CautionColor, 1));
-        Item("RWS_Scatter_LegendStack".Translate(), r => Widgets.DrawBoxSolid(r, PointColor));
     }
 }

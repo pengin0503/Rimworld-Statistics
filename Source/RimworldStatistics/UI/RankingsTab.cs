@@ -11,7 +11,7 @@ internal static class RankingsTab
     private static readonly StatsTable Table = new(26f,
         new(52, 1), new(170, 4), new(105, 2), new(130, 2), new(100, 2));
 
-    private sealed record Choice(string Key, string Label, MetricCategory? Category, string? Source);
+    private sealed record Choice(string Key, string Label, MetricCategory? Category, string? Source, bool CanRankPerDay);
 
     private static StatsView? selectorView;
     private static object? selectorLanguage;
@@ -19,12 +19,14 @@ internal static class RankingsTab
     private static Choice[] filtered = [];
     private static string? priorSearch;
     private static MetricCategory? priorCategory;
+    private static bool priorPerDay;
     private static string search = "";
     private static MetricCategory? category;
     private static string? selectedKey;
     private static bool selectorCollapsed;
     private static bool descending = true;
     private static bool showAll;
+    private static bool perDayMode;
     private static Vector2 choicesScroll;
     private static Vector2 tableScroll;
 
@@ -33,6 +35,7 @@ internal static class RankingsTab
     private static string? tableKey;
     private static bool tableDescending;
     private static bool tableShowAll;
+    private static bool tablePerDay;
     private static string tableNameSignature = "";
     private static string[][] rows = [];
     private static string coverage = "";
@@ -48,22 +51,26 @@ internal static class RankingsTab
             choices = LeaderboardBuilder.RankableKeys(view).Select(key =>
             {
                 var def = MetricLookup.Definition(view, key);
+                var canPerDay = LeaderboardBuilder.CanRankPerDay(view, key);
                 return new Choice(key,
                     def is null ? MetricText.BasicLabel(key) : MetricText.Label(def),
-                    def?.Category, def is null ? null : MetricText.ModSourceLabel(def));
+                    def?.Category, def is null ? null : MetricText.ModSourceLabel(def),
+                    canPerDay);
             }).OrderBy(c => c.Label, StringComparer.CurrentCulture)
               .ThenBy(c => c.Key, StringComparer.Ordinal).ToArray();
             priorSearch = null;
-            if (selectedKey is null || !choices.Any(c => c.Key == selectedKey))
-                selectedKey = choices.FirstOrDefault()?.Key;
         }
+
+        var eligibleChoices = perDayMode ? choices.Where(c => c.CanRankPerDay).ToArray() : choices;
+        if (selectedKey is null || !eligibleChoices.Any(c => c.Key == selectedKey))
+            selectedKey = eligibleChoices.FirstOrDefault()?.Key;
 
         var split = StatisticsWindowLayout.ResolveCollapsibleSplit(rect.width, selectorCollapsed);
         if (!selectorCollapsed && split.LeftWidth > 0f)
         {
             var left = new Rect(rect.x, rect.y, split.LeftWidth, rect.height);
             Widgets.DrawMenuSection(left);
-            DrawSelector(left.ContractedBy(8f), preferences, persist);
+            DrawSelector(left.ContractedBy(8f), eligibleChoices, preferences, persist);
         }
 
         if (split.RightWidth <= 0f)
@@ -73,7 +80,7 @@ internal static class RankingsTab
         Widgets.DrawMenuSection(right);
 
         var body = right.ContractedBy(8f);
-        var active = choices.FirstOrDefault(c => c.Key == selectedKey);
+        var active = eligibleChoices.FirstOrDefault(c => c.Key == selectedKey);
         var toggleLabel = selectorCollapsed
             ? (string)"RWS_Rankings_ShowSelector".Translate()
             : (string)"RWS_Rankings_HideSelector".Translate();
@@ -87,6 +94,13 @@ internal static class RankingsTab
                 selectorCollapsed = !selectorCollapsed;
             if (shownToggle != toggleLabel)
                 TooltipHandler.TipRegion(toggleRect, toggleLabel);
+            if (perDayMode)
+            {
+                var rateLabel = (string)"RWS_Rate_ModePerDay".Translate();
+                var rateRect = emptyControls.Next(rateLabel, 110f, 195f);
+                if (Widgets.ButtonText(rateRect, rateLabel.Truncate(Math.Max(0f, rateRect.width - 12f))))
+                    perDayMode = false;
+            }
             Widgets.Label(new Rect(body.x, body.y + emptyControls.Height + 6f, body.width, Math.Max(0f, body.height - emptyControls.Height - 6f)),
                 "RWS_Rankings_NoMatches".Translate());
             return;
@@ -94,11 +108,12 @@ internal static class RankingsTab
 
         var titleRect = new Rect(body.x, body.y, body.width, 28f);
         Text.Font = GameFont.Medium;
-        var shownTitle = active.Label.Truncate(titleRect.width);
+        var titleText = perDayMode ? (string)"RWS_Rate_TitleSuffix".Translate(active.Label) : active.Label;
+        var shownTitle = titleText.Truncate(titleRect.width);
         Widgets.Label(titleRect, shownTitle);
         Text.Font = GameFont.Small;
-        if (shownTitle != active.Label)
-            TooltipHandler.TipRegion(titleRect, active.Label);
+        if (shownTitle != titleText)
+            TooltipHandler.TipRegion(titleRect, titleText);
         var sourceOffset = active.Source is null ? 0f : 21f;
         if (active.Source is { } source)
         {
@@ -117,6 +132,17 @@ internal static class RankingsTab
             selectorCollapsed = !selectorCollapsed;
         if (shownSelectorToggle != toggleLabel)
             TooltipHandler.TipRegion(selectorToggleRect, toggleLabel);
+
+        var modeLabel = perDayMode ? (string)"RWS_Rate_ModePerDay".Translate() : (string)"RWS_Rate_ModeTotal".Translate();
+        var modeRect = controls.Next(modeLabel, 112f, 195f);
+        var shownMode = modeLabel.Truncate(Math.Max(0f, modeRect.width - 12f));
+        if (Widgets.ButtonText(modeRect, shownMode))
+        {
+            perDayMode = !perDayMode;
+            tableScroll = Vector2.zero;
+            choicesScroll = Vector2.zero;
+        }
+        TooltipHandler.TipRegion(modeRect, "RWS_Rate_ModeToggleTip".Translate());
 
         var label = descending ? (string)"RWS_Rankings_Desc".Translate() : (string)"RWS_Rankings_Asc".Translate();
         var orderRect = controls.Next(label, 112f, 185f);
@@ -143,41 +169,52 @@ internal static class RankingsTab
         label = "RWS_Scatter_Open".Translate();
         var scatterRect = controls.Next(label, 112f, 190f);
         if (Widgets.ButtonText(scatterRect, label.Truncate(Math.Max(0f, scatterRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName));
+            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName, yPerDay: perDayMode));
         TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
 
         var nameSignature = ColonyPresentation.Signature(preferences);
         if (!ReferenceEquals(tableView, view) || !ReferenceEquals(tableLanguage, lang)
             || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll
-            || tableNameSignature != nameSignature)
+            || tablePerDay != perDayMode || tableNameSignature != nameSignature)
         {
             tableView = view;
             tableLanguage = lang;
             tableKey = selectedKey;
             tableDescending = descending;
             tableShowAll = showAll;
+            tablePerDay = perDayMode;
             tableNameSignature = nameSignature;
 
-            var board = LeaderboardBuilder.Build(view, selectedKey!, descending);
+            var board = LeaderboardBuilder.Build(view, selectedKey!, descending, perDay: perDayMode);
             var def = MetricLookup.Definition(view, selectedKey!);
             rows = (showAll ? board.Entries : board.Entries.Take(10)).Select(e =>
             {
                 var name = view.Stats.Colonies.FirstOrDefault(c => c.Key == e.ColonyKey) is { } stats
                     ? Dialog_RimworldStatistics.ColonyName(stats) : e.ColonyKey;
+                var valueText = def is null
+                    ? BasicValue(selectedKey!, e.Value)
+                    : perDayMode
+                        ? MetricText.FormatRateValue(def, e.Value)
+                        : MetricText.Format(def, new NumericValue
+                        {
+                            Number = e.Value, Coverage = e.Coverage, Evidence = e.Evidence,
+                        });
+                var stateText = def is null
+                    ? (string)"RWS_Coverage_SnapshotOnly".Translate()
+                    : perDayMode && e.RecordedDays is { } days
+                        ? (string)"RWS_Rate_RecordedInterval".Translate(days.ToString("N1", CultureInfo.InvariantCulture))
+                        : MetricText.State(def, e.Coverage);
                 return new[]
                 {
                     e.Rank.ToString(CultureInfo.InvariantCulture), name,
-                    def is null ? BasicValue(selectedKey!, e.Value)
-                        : MetricText.Format(def, new NumericValue { Number = e.Value,
-                            Coverage = e.Coverage, Evidence = e.Evidence }),
-                    def is null ? (string)"RWS_Coverage_SnapshotOnly".Translate()
-                        : MetricText.State(def, e.Coverage),
+                    valueText,
+                    stateText,
                     e.ThroughTick is { } tick ? Dialog_RimworldStatistics.Days(tick) : Dialog_RimworldStatistics.Dash,
                 };
             }).ToArray();
             coverage = "RWS_Rankings_Coverage".Translate(board.Measured, board.Targets);
             if (board.HasPartial)
-                coverage += " — " + (string)"RWS_Rankings_PartialNote".Translate();
+                coverage += " — " + (string)(perDayMode ? "RWS_Rankings_RatePartialNote" : "RWS_Rankings_PartialNote").Translate();
         }
         var infoY = titleRect.yMax + sourceOffset + 7f + controls.Height + 4f;
         var infoRect = new Rect(body.x, infoY, body.width, 26f);
@@ -201,11 +238,11 @@ internal static class RankingsTab
             ], rows, RightAlignedColumns);
     }
 
-    private static void DrawSelector(Rect rect, ViewPreferences preferences, Action persist)
+    private static void DrawSelector(Rect rect, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
     {
         var label = (string)"RWS_Rankings_Search".Translate();
         Widgets.Label(new Rect(rect.x, rect.y, rect.width, 23f), label.Truncate(rect.width));
-        var newSearch = Widgets.TextField(new Rect(rect.x, rect.y + 25f, rect.width, 27f), search) ?? "";
+        var newSearch = (Widgets.TextField(new Rect(rect.x, rect.y + 25f, rect.width, 27f), search) ?? "");
         if (newSearch != search)
         {
             search = newSearch;
@@ -220,7 +257,7 @@ internal static class RankingsTab
             {
                 new("RWS_Details_AllCategories".Translate(), () => { category = null; choicesScroll = Vector2.zero; }),
             };
-            menu.AddRange(choices.Where(c => c.Category is not null).Select(c => c.Category!.Value).Distinct()
+            menu.AddRange(eligibleChoices.Where(c => c.Category is not null).Select(c => c.Category!.Value).Distinct()
                 .Select(cat => new FloatMenuOption(DetailsTab.CategoryLabel(cat), () =>
                 {
                     category = cat;
@@ -231,21 +268,23 @@ internal static class RankingsTab
         if (shownCategory != categoryText)
             TooltipHandler.TipRegion(catRect, categoryText);
 
-        if (priorSearch != search || priorCategory != category)
+        var trimmed = search.Trim();
+        if (priorSearch != search || priorCategory != category || priorPerDay != perDayMode)
         {
             priorSearch = search;
             priorCategory = category;
-            filtered = choices.Where(c => (category is null || c.Category == category)
-                && (search.Length == 0 || c.Label.Contains(search, StringComparison.CurrentCultureIgnoreCase)
-                    || c.Key.Contains(search, StringComparison.OrdinalIgnoreCase)
-                    || (c.Source?.Contains(search, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
+            priorPerDay = perDayMode;
+            filtered = eligibleChoices.Where(c => (category is null || c.Category == category)
+                && (trimmed.Length == 0 || c.Label.Contains(trimmed, StringComparison.CurrentCultureIgnoreCase)
+                    || c.Key.Contains(trimmed, StringComparison.OrdinalIgnoreCase)
+                    || (c.Source?.Contains(trimmed, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
         }
 
-        var activeFilters = FilterSummary.CountActiveFilters(false, category is not null, false, search);
+        var activeFilters = FilterSummary.CountActiveFilters(perDayMode, category is not null, false, trimmed);
         var statusRow = new ControlRow(new Rect(rect.x, rect.y + 87f, rect.width, 24f));
         var countText = activeFilters > 0
-            ? (string)"RWS_Filter_Shown".Translate(filtered.Length, choices.Length) + " · " + (string)"RWS_Filter_ActiveCount".Translate(activeFilters)
-            : (string)"RWS_Filter_Shown".Translate(filtered.Length, choices.Length);
+            ? (string)"RWS_Filter_Shown".Translate(filtered.Length, eligibleChoices.Length) + " · " + (string)"RWS_Filter_ActiveCount".Translate(activeFilters)
+            : (string)"RWS_Filter_Shown".Translate(filtered.Length, eligibleChoices.Length);
         var countRect = statusRow.Next(countText, 85f, rect.width);
         var anchor = Text.Anchor;
         var prevColor = GUI.color;
@@ -267,10 +306,9 @@ internal static class RankingsTab
             {
                 search = "";
                 category = null;
+                perDayMode = false;
                 choicesScroll = Vector2.zero;
-                filtered = choices;
-                priorSearch = search;
-                priorCategory = category;
+                priorSearch = null;
             }
             if (shownReset != resetLabel)
                 TooltipHandler.TipRegion(resetRect, resetLabel);
