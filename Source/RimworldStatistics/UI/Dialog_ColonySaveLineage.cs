@@ -73,7 +73,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
             filesTask = Task.Run(() =>
             {
                 try { return SaveFileIndex.Read(dir); }
-                catch (Exception e) when (e is IOException or UnauthorizedAccessException) { return null; }
+                catch (Exception e) when (e is not OperationCanceledException) { return null; }
             });
         }
     }
@@ -83,6 +83,20 @@ internal sealed class Dialog_ColonySaveLineage : Window
         Math.Min(760f, Verse.UI.screenHeight * 0.90f));
 
     public override void DoWindowContents(Rect rect)
+    {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
     {
         if (filesTask is { IsCompleted: true } doneFiles)
         {
@@ -408,13 +422,22 @@ internal sealed class Dialog_ColonySaveLineage : Window
 
         // Fixed column header tracking horizontal scroll.
         GUI.BeginGroup(new Rect(inner.x, inner.y, Math.Max(0f, inner.width - 16f), HeaderRowHeight));
-        DrawTableHeader(new Rect(-tableScroll.x, 0f, contentWidth, HeaderRowHeight),
-            graphWidth, colDay, colSave, colStatus, colMetric, colTime);
-        GUI.EndGroup();
+        try
+        {
+            DrawTableHeader(new Rect(-tableScroll.x, 0f, contentWidth, HeaderRowHeight),
+                graphWidth, colDay, colSave, colStatus, colMetric, colTime);
+        }
+        finally
+        {
+            GUI.EndGroup();
+        }
 
         var outRect = new Rect(inner.x, inner.y + HeaderRowHeight, inner.width, Math.Max(0f, inner.height - HeaderRowHeight));
         var viewRect = new Rect(0f, 0f, contentWidth, nodes.Count * RowHeight);
+        var prevAnchor = Text.Anchor;
         Widgets.BeginScrollView(outRect, ref tableScroll, viewRect);
+        try
+        {
 
         var firstRow = Math.Max(0, (int)(tableScroll.y / RowHeight) - 1);
         var lastRow = Math.Min(nodes.Count - 1, (int)((tableScroll.y + outRect.height) / RowHeight) + 1);
@@ -422,7 +445,6 @@ internal sealed class Dialog_ColonySaveLineage : Window
         var clipMaxY = tableScroll.y + outRect.height + RowHeight * 2f;
 
         // 1. Row backgrounds & click targets for visible rows only.
-        var prevAnchor = Text.Anchor;
         for (var i = firstRow; i <= lastRow; i++)
         {
             var rowRect = new Rect(0f, i * RowHeight, contentWidth, RowHeight);
@@ -494,8 +516,12 @@ internal sealed class Dialog_ColonySaveLineage : Window
             DrawCell(ref x, rowY, colTime, display.Timestamp);
         }
 
-        Text.Anchor = prevAnchor;
-        Widgets.EndScrollView();
+        }
+        finally
+        {
+            Text.Anchor = prevAnchor;
+            Widgets.EndScrollView();
+        }
     }
 
     private void DrawTableHeader(Rect rect, float graphWidth, float colDay, float colSave, float colStatus, float colMetric, float colTime)
@@ -777,8 +803,14 @@ internal sealed class Dialog_ColonySaveLineage : Window
         var contentWidth = Math.Max(1f, inner.width - 16f);
         var textHeight = Math.Max(inner.height, Text.CalcHeight(detailCache, contentWidth) + 4f);
         Widgets.BeginScrollView(inner, ref detailScroll, new Rect(0f, 0f, contentWidth, textHeight));
-        Widgets.Label(new Rect(0f, 0f, contentWidth, textHeight), detailCache);
-        Widgets.EndScrollView();
+        try
+        {
+            Widgets.Label(new Rect(0f, 0f, contentWidth, textHeight), detailCache);
+        }
+        finally
+        {
+            Widgets.EndScrollView();
+        }
     }
 
     private string BuildDetailText(ColonySaveLineage lineage)
