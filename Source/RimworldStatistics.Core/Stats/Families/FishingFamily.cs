@@ -43,9 +43,19 @@ public static class FishingFamily
             }
             state.Count(Actions);
         }
+        var unitsAcc = state.Acc(Units);
         foreach (var (def, units) in valid)
         {
-            state.Count(Units, units);
+            var current = unitsAcc.N ?? 0;
+            if (current > long.MaxValue - units)
+            {
+                unitsAcc.N = long.MaxValue;
+                unitsAcc.Overflow = true;
+            }
+            else
+            {
+                unitsAcc.N = current + units;
+            }
             state.CountBy(Units, def, units);
         }
     }
@@ -67,9 +77,10 @@ public static class FishingFamily
         context.Put(SuccessfulActions,
             context.Value(integer: context.State.Peek(Actions)?.N ?? 0, partial: missed));
         var acc = context.State.Peek(Units);
+        var unitsPartial = missed || acc?.Overflow == true;
         context.PutBreakdown(AcceptedUnitsByDef, context.Counts(acc),
-            context.Value(integer: acc?.N ?? 0, partial: missed));
-        if (missed)
+            context.Value(integer: acc?.N ?? 0, partial: unitsPartial));
+        if (unitsPartial)
             context.MarkPartial(AcceptedUnitsByDef);
     }
 }

@@ -69,6 +69,7 @@ public static class OptionalTransitionRecording
             output.PutCount(counter, metricKey);
         // An optional MOD statistic is defined with its family's revision (ModMetricDescriptor.Revision); the built-in key
         // table would give every MOD key revision 1, and a revised family's values could then never be shown.
-        output.Into[metricKey].Revision = output.State.Revision;
+        if (metricKey.StartsWith("mod.", StringComparison.Ordinal))
+            output.Into[metricKey].Revision = output.State.Revision;
     }
 }

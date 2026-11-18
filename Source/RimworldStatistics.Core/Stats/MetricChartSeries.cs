@@ -8,12 +8,12 @@ public sealed record MetricChartBar(string Key, NumericValue Value);
 
 public static class MetricChartSeries
 {
-    /// <summary>One comparable observation per included colony, ordered from highest value to lowest.</summary>
-    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, string metricKey)
+    /// <summary>One comparable observation per included colony (plus <paramref name="includeColonyKey"/> when explicitly viewed), ordered from highest value to lowest.</summary>
+    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, string metricKey, string? includeColonyKey = null)
     {
         ArgumentNullException.ThrowIfNull(view);
         return Sort(view.Colonies
-            .Where(c => !c.Excluded && !c.OutOfScope)
+            .Where(c => (!c.Excluded && !c.OutOfScope) || c.Key == includeColonyKey)
             .Select(c => new { c.Key, Row = c.Rows.FirstOrDefault(r => r.Definition.Key == metricKey) })
             .Where(c => c.Row is not null && Measured(c.Row.Value))
             .Select(c => new MetricChartBar(c.Key, c.Row!.Value)));
@@ -23,10 +23,10 @@ public static class MetricChartSeries
     /// The colony comparison for a definition. A derived cross-colony maximum, minimum or sum
     /// is computed only for all colonies; its per-colony inputs are the rows of the source metric.
     /// </summary>
-    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, MetricDefinition definition)
+    public static IReadOnlyList<MetricChartBar> ByColony(NumericView view, MetricDefinition definition, string? includeColonyKey = null)
     {
         ArgumentNullException.ThrowIfNull(definition);
-        return ByColony(view, ColonyComparisonKey(definition));
+        return ByColony(view, ColonyComparisonKey(definition), includeColonyKey);
     }
 
     /// <summary>
@@ -42,13 +42,13 @@ public static class MetricChartSeries
     }
 
     /// <summary>Basic Overview values use the same inclusion and evidence rules as BasicMetrics.</summary>
-    public static IReadOnlyList<MetricChartBar> BasicByColony(StatsResult stats, string metricKey)
+    public static IReadOnlyList<MetricChartBar> BasicByColony(StatsResult stats, string metricKey, string? includeColonyKey = null)
     {
         ArgumentNullException.ThrowIfNull(stats);
         if (!BasicMetrics.Contains(metricKey))
             return [];
         return Sort(stats.Colonies
-            .Where(c => !c.Excluded && !c.OutOfScope)
+            .Where(c => (!c.Excluded && !c.OutOfScope) || c.Key == includeColonyKey)
             .Select(c => new { c.Key, Number = BasicMetrics.Value(c, metricKey) })
             .Where(c => c.Number is { } number && double.IsFinite(number))
             .Select(c => new MetricChartBar(c.Key, new NumericValue

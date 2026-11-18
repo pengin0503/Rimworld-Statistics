@@ -122,9 +122,7 @@ public sealed class ColonySummaryReport
         var numericColony = view.Numeric.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         var rowsByKey = numericColony?.Rows.ToDictionary(r => r.Definition.Key, Ord)
             ?? new Dictionary<string, NumericRow>(Ord);
-        var explainedTypes = stats.CountedEndings.Select(e => e.Type).ToHashSet();
-        var unexplainedTraces = colony?.Traces.Where(t => !explainedTypes.Contains(t)).OrderBy(t => t).ToArray()
-            ?? Array.Empty<EndingType>();
+        var unexplainedTraces = EndingTraces.Unexplained(colony);
 
         var overview = new ColonyReportOverview
         {
@@ -157,10 +155,14 @@ public sealed class ColonySummaryReport
 
         // Cache leaderboards across sections so each metric is ranked at most once.
         var boardCache = new Dictionary<string, Leaderboard>(Ord);
-        Leaderboard GetBoard(string key)
+        Leaderboard GetBoard(string key, MetricDefinition? def = null)
         {
             if (!boardCache.TryGetValue(key, out var board))
-                boardCache[key] = board = LeaderboardBuilder.Build(view, key, descending: true);
+            {
+                def ??= BasicMetrics.Contains(key) ? BasicMetrics.Definition(key)
+                    : rowsByKey.GetValueOrDefault(key)?.Definition ?? MetricLookup.Definition(view, key);
+                boardCache[key] = board = LeaderboardBuilder.Build(view, key, LeaderboardBuilder.DefaultDescending(def));
+            }
             return board;
         }
 
@@ -181,7 +183,7 @@ public sealed class ColonySummaryReport
             var val = rowsByKey.TryGetValue(metricKey, out var row)
                 ? row.Value
                 : new NumericValue { Coverage = MetricCoverage.Unknown };
-            keyRecords.Add(BuildNumericItem(stats, def, val, GetBoard(metricKey)));
+            keyRecords.Add(BuildNumericItem(stats, def, val, GetBoard(metricKey, def)));
             keyRecordSet.Add(metricKey);
         }
 
@@ -202,14 +204,14 @@ public sealed class ColonySummaryReport
                 var isMod = !string.IsNullOrWhiteSpace(def.OwnerPackageId);
                 if (isMod)
                 {
-                    modHighlights.Add(BuildNumericItem(stats, def, row.Value, GetBoard(def.Key)));
+                    modHighlights.Add(BuildNumericItem(stats, def, row.Value, GetBoard(def.Key, def)));
                     continue;
                 }
 
                 if (keyRecordSet.Contains(def.Key) || stats.Excluded || stats.OutOfScope)
                     continue;
 
-                var board = GetBoard(def.Key);
+                var board = GetBoard(def.Key, def);
                 if (board.Measured < 2)
                     continue;
                 var entry = board.Entries.FirstOrDefault(e => e.ColonyKey == colonyKey);
@@ -260,13 +262,9 @@ public sealed class ColonySummaryReport
         var key = definition.Key;
         if (key.EndsWith(".mean", StringComparison.Ordinal)
             || key.EndsWith("_mean", StringComparison.Ordinal)
-            || key.EndsWith("_rate", StringComparison.Ordinal)
             || key.Contains("_per_year", StringComparison.Ordinal)
-            || definition.Unit is MetricUnit.Percent or MetricUnit.Mood)
+            || definition.Overall == OverallAggregation.Ratio)
             return ColonyReportValueKind.MeanOrRate;
-
-        if (key.EndsWith(".latest", StringComparison.Ordinal))
-            return ColonyReportValueKind.LatestSnapshot;
 
         if (key.Contains(".peak", StringComparison.Ordinal)
             || key.EndsWith("_peak", StringComparison.Ordinal)
@@ -276,10 +274,20 @@ public sealed class ColonySummaryReport
             || key.EndsWith("_min", StringComparison.Ordinal)
             || key.Contains(".max_", StringComparison.Ordinal)
             || key.Contains(".longest_", StringComparison.Ordinal)
-            || key.Contains(".first_", StringComparison.Ordinal)
             || key.EndsWith(".oldest", StringComparison.Ordinal)
-            || definition.Overall is OverallAggregation.Max or OverallAggregation.Min)
+            || (key.Contains(".first_", StringComparison.Ordinal) && definition.Overall == OverallAggregation.Min)
+            || definition.Overall is OverallAggregation.Max or OverallAggregation.Min
+            || definition.Selection is ColonySelection.ObservationMax
+                or ColonySelection.ObservationMin
+                or ColonySelection.ObservationMaxByBreakdown)
             return ColonyReportValueKind.PeakOrExtreme;
+
+        if (key.EndsWith(".latest", StringComparison.Ordinal))
+            return ColonyReportValueKind.LatestSnapshot;
+
+        if (key.EndsWith("_rate", StringComparison.Ordinal)
+            || definition.Unit is MetricUnit.Percent or MetricUnit.Mood)
+            return ColonyReportValueKind.MeanOrRate;
 
         return definition.Provenance == MetricProvenance.SaveSnapshot
             ? ColonyReportValueKind.LatestSnapshot
@@ -290,38 +298,14 @@ public sealed class ColonySummaryReport
     {
         var def = BasicMetrics.Definition(key);
         var raw = BasicMetrics.Value(stats, key);
-        // Endings and save count are known even on ending-only colonies; BasicMetrics.Value requires HasObservedPoint,
-        // so preserve BasicMetrics.Value's exact contract so ending-only colonies never show 0 days/raids/wealth (#332).
-        NumericValue val;
-        if (raw is { } num && double.IsFinite(num))
-        {
-            val = new NumericValue
+        var val = raw is { } num && double.IsFinite(num)
+            ? new NumericValue
             {
                 Number = num,
                 Coverage = MetricCoverage.SnapshotOnly,
                 ThroughTick = stats.HasObservedPoint ? stats.MaxTicks : null,
-            };
-        }
-        else if (!stats.HasObservedPoint && key == BasicMetrics.Endings)
-        {
-            val = new NumericValue
-            {
-                Number = stats.EndingCounts.Values.Sum(),
-                Coverage = MetricCoverage.SnapshotOnly,
-            };
-        }
-        else if (!stats.HasObservedPoint && key == BasicMetrics.Saves)
-        {
-            val = new NumericValue
-            {
-                Number = stats.SaveCount,
-                Coverage = MetricCoverage.SnapshotOnly,
-            };
-        }
-        else
-        {
-            val = new NumericValue { Coverage = MetricCoverage.Unknown };
-        }
+            }
+            : new NumericValue { Coverage = MetricCoverage.Unknown };
 
         var (status, rank) = ResolveRank(stats, val, board);
         return new ColonyReportMetricItem

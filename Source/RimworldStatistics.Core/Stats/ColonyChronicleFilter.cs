@@ -30,7 +30,8 @@ public enum ChronicleDayRangeStatus
 public readonly record struct ChronicleDayRange(
     ChronicleDayRangeStatus Status,
     decimal? StartDay,
-    decimal? EndDay)
+    decimal? EndDay,
+    bool WasReversed = false)
 {
     private static readonly decimal MaxSupportedDays = decimal.MaxValue / StatFormat.TicksPerDay;
 
@@ -92,7 +93,7 @@ public readonly record struct ChronicleDayRange(
             return new ChronicleDayRange(ChronicleDayRangeStatus.InvalidEndDay, start, null);
 
         if (start is { } s && end is { } e && s > e)
-            return new ChronicleDayRange(ChronicleDayRangeStatus.ReversedRange, s, e);
+            return new ChronicleDayRange(ChronicleDayRangeStatus.Valid, e, s, WasReversed: true);
 
         return new ChronicleDayRange(ChronicleDayRangeStatus.Valid, start, end);
     }
@@ -105,7 +106,18 @@ public readonly record struct ChronicleDayRange(
             return false;
         }
 
-        if (!decimal.TryParse(trimmed, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out days))
+        var normalized = trimmed;
+        if (!trimmed.Contains('.') && trimmed.IndexOf(',') is var comma && comma >= 0)
+        {
+            if (trimmed.IndexOf(',', comma + 1) >= 0)
+            {
+                days = 0m;
+                return false;
+            }
+            normalized = trimmed.Replace(',', '.');
+        }
+
+        if (!decimal.TryParse(normalized, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out days))
             return false;
 
         return days >= 0m && days <= MaxSupportedDays;
@@ -196,6 +208,7 @@ public static class ColonyChronicleFilter
     /// match when their day is inside <paramref name="range"/>; bounded intervals
     /// (<see cref="ChronicleTimingKind.ProvenInterval"/>) match when <c>[StartTick, EndTick]</c> overlaps
     /// <paramref name="range"/>, with both ends inclusive and without altering the entry's original span.
+    /// Bounds entered at integer or 0.1-day precision match the UI's <c>N1</c> displayed day; finer decimal bounds compare exact ticks.
     /// </summary>
     public static bool MatchesDayRange(ChronicleEntry entry, ChronicleDayRange range)
     {
@@ -207,22 +220,35 @@ public static class ColonyChronicleFilter
 
         if (entry.TimingKind == ChronicleTimingKind.ProvenInterval)
         {
-            var start = (decimal)Math.Min(entry.StartTick, entry.EndTick);
-            var end = (decimal)Math.Max(entry.StartTick, entry.EndTick);
-            if (range.StartTicks is { } min && end < min)
+            var startTick = Math.Min(entry.StartTick, entry.EndTick);
+            var endTick = Math.Max(entry.StartTick, entry.EndTick);
+            if (range.StartDay is { } minDay && IsBeforeStartDay(endTick, minDay))
                 return false;
-            if (range.EndTicks is { } max && start > max)
+            if (range.EndDay is { } maxDay && IsAfterEndDay(startTick, maxDay))
                 return false;
             return true;
         }
 
-        var tick = (decimal)entry.EndTick;
-        if (range.StartTicks is { } minSingle && tick < minSingle)
+        var tick = entry.EndTick;
+        if (range.StartDay is { } minSingle && IsBeforeStartDay(tick, minSingle))
             return false;
-        if (range.EndTicks is { } maxSingle && tick > maxSingle)
+        if (range.EndDay is { } maxSingle && IsAfterEndDay(tick, maxSingle))
             return false;
         return true;
     }
+
+    private static bool IsBeforeStartDay(int tick, decimal minDay)
+        => minDay.Scale <= 1
+            ? DisplayedDay(tick) < minDay
+            : (decimal)tick < minDay * StatFormat.TicksPerDay;
+
+    private static bool IsAfterEndDay(int tick, decimal maxDay)
+        => maxDay.Scale <= 1
+            ? DisplayedDay(tick) > maxDay
+            : (decimal)tick > maxDay * StatFormat.TicksPerDay;
+
+    private static decimal DisplayedDay(int tick)
+        => Math.Round((decimal)tick / StatFormat.TicksPerDay, 1, MidpointRounding.AwayFromZero);
 
     public static bool MatchesSearch(string? eventText, IReadOnlyList<string>? additionalTerms, string? query)
     {

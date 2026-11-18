@@ -27,6 +27,10 @@ public static class LeaderboardBuilder
         return keys;
     }
 
+    public static bool DefaultDescending(MetricDefinition? definition)
+        => definition is null
+            || (definition.Overall != OverallAggregation.Min && definition.Selection != ColonySelection.ObservationMin);
+
     public static Leaderboard Build(StatsView view, string metricKey, bool descending)
     {
         var candidates = new List<Candidate>();

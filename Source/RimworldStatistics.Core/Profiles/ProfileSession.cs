@@ -277,31 +277,33 @@ public sealed class ProfileSession
                 continue;
 
             var first = validChildren[0];
-            var mismatch = false;
+            var needsRestore = false;
             foreach (var key in lastCaptureKeys)
             {
+                if (observation.Metrics.TryGetValue(key, out var parentEntry) && !parentEntry.IsQuarantined)
+                    continue;
                 var firstHas = first.Metrics.TryGetValue(key, out var fe) && !fe.IsQuarantined;
                 for (var i = 1; i < validChildren.Count; i++)
                 {
                     var otherHas = validChildren[i].Metrics.TryGetValue(key, out var oe) && !oe.IsQuarantined;
                     if (firstHas != otherHas || (firstHas && fe!.Revision != oe!.Revision))
                     {
-                        mismatch = true;
+                        needsRestore = true;
                         break;
                     }
                 }
-                if (mismatch)
+                if (needsRestore)
                     break;
             }
 
-            if (mismatch)
+            if (needsRestore)
                 RestoreCheckpointMetrics(observation);
         }
     }
 
     private void RestoreCheckpointMetrics(MetricObservation target)
     {
-        if (_archive is null || target.Identity.ModCampaignId is not { Length: > 0 } campaign)
+        if (!target.ArchivedMetrics || _archive is null || target.Identity.ModCampaignId is not { Length: > 0 } campaign)
             return;
 
         try

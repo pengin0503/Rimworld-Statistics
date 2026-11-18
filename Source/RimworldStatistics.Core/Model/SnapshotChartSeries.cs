@@ -60,5 +60,7 @@ public sealed class SnapshotChartKey
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
     /// <summary>The readings line up with <paramref name="rows"/> (a damaged or hand-edited series is ignored).</summary>
-    public bool Fits(int rows) => Values is not null && Values.Count == rows && (Coverage is null || Coverage.Count == rows);
+    public bool Fits(int rows)
+        => Values is not null && Values.Count == rows
+            && (Coverage is null || (Coverage.Count == rows && Coverage.All(Enum.IsDefined)));
 }

@@ -57,8 +57,18 @@ public static class BasicMetrics
 
     public static double? Value(ColonyStats colony, string key)
     {
-        if (!colony.HasObservedPoint || !Contains(key))
+        if (!Contains(key))
             return null;
+        if (!colony.HasObservedPoint)
+        {
+            return key switch
+            {
+                Endings => colony.EndingCounts.Values.Sum(),
+                Saves => colony.SaveCount,
+                Departed when colony.CountedEndings.Any(e => e.Source == EndingSource.Live) => colony.Departed,
+                _ => null,
+            };
+        }
 
         return key switch
         {

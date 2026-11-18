@@ -62,6 +62,28 @@ public static class CrossColonyCatalog
     // Passion entries count captured pawn-skill assignments, NOT skill levels.
     private static readonly string[] CrossSumKeys = { RosterSnapshot.Passions };
 
+    private static readonly HashSet<string> ThingDefBreakdownKeys = new(StringComparer.Ordinal)
+    {
+        WorkFamily.HarvestByCrop, TradeFamily.SalesUnits, TradeFamily.BuysUnits,
+        WorkDetailsFamily.CraftedByDef, WorkDetailsFamily.MinedByDef,
+        WorkFamily.MealsByDef, WorkFamily.Sown_,
+        StockSnapshot.MaterialsLatest,
+        WorkFamily.ConstructionMaterials,
+        FishingFamily.AcceptedUnitsByDef,
+        HealthDeathFamily.DeathsBySpecies,
+        MembershipFamily.JoinsBySpecies,
+        OutpostProduction.ByDef,
+    };
+
+    public static bool UsesThingDefBreakdown(MetricDefinition definition)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        if (definition.DescriptionKey == "RWS_CrossDesc_TopType")
+            return true;
+        var key = IsDerived(definition) ? definition.StoredKey : definition.Key;
+        return ThingDefBreakdownKeys.Contains(key);
+    }
+
     public static bool IsDerived(MetricDefinition definition)
         => definition.Overall == OverallAggregation.Ranking
             && definition.ProviderId is null && definition.OwnerPackageId is null

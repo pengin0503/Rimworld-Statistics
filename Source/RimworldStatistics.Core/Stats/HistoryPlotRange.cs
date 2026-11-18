@@ -49,21 +49,18 @@ public static class HistoryPlotRange
             return false;
 
         var trimmed = text.Trim();
-        if (trimmed[0] == '-')
+        if (trimmed[0] is '-' or '+')
             return false;
 
         string normalized = trimmed;
-        if (!trimmed.Contains('.') && trimmed.IndexOf(',') is var comma && comma >= 0)
+        if (trimmed.IndexOf(',') is var comma && comma >= 0)
         {
-            if (trimmed.IndexOf(',', comma + 1) >= 0)
+            if (trimmed.Contains('.') || trimmed.IndexOf(',', comma + 1) >= 0)
                 return false;
             normalized = trimmed.Replace(',', '.');
         }
 
-        const NumberStyles style = NumberStyles.AllowLeadingWhite
-            | NumberStyles.AllowTrailingWhite
-            | NumberStyles.AllowDecimalPoint
-            | NumberStyles.AllowLeadingSign;
+        const NumberStyles style = NumberStyles.AllowDecimalPoint;
 
         if (!double.TryParse(normalized, style, CultureInfo.InvariantCulture, out var parsed)
             || !double.IsFinite(parsed)

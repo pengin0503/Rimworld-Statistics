@@ -38,7 +38,38 @@ public static class EndingTraces
     /// (spec §4.3): any launch-style ending explains the launch traces, either Cerebrex ending the Cerebrex traces, and
     /// either void ending the void traces.
     /// </summary>
-    public static bool Explains(EndingType recorded, EndingType trace) => Group(recorded) is { } g && g == Group(trace);
+    public static bool Explains(EndingType recorded, EndingType trace)
+        => recorded == trace || (Group(recorded) is { } g && g == Group(trace));
+
+    /// <summary>
+    /// Selects the representative record for a single <c>(Type, Ordinal)</c> group, preferring higher departed count,
+    /// live play over seeded trace when departed is tied (including 0), and non-dev-mode over dev-mode.
+    /// </summary>
+    public static EndingEvent Representative(IEnumerable<EndingEvent> group)
+        => group.OrderByDescending(e => e.Departed).ThenBy(e => e.Source).ThenBy(e => e.DevMode).First();
+
+    /// <summary>
+    /// Returns save traces on <paramref name="colony"/> that are not already explained by any recorded ending
+    /// (including dev-mode endings hidden when dev-mode display is off) or recovered lineage ending.
+    /// </summary>
+    public static EndingType[] Unexplained(Colony? colony)
+    {
+        if (colony is null || colony.Traces.Count == 0)
+            return Array.Empty<EndingType>();
+        return colony.Traces
+            .Where(trace => !colony.Endings.Any(e => Explains(e.Type, trace))
+                && !colony.RecoveredEndings.Any(e => Explains(e.Type, trace)))
+            .OrderBy(t => t)
+            .ToArray();
+    }
+
+    /// <summary>Earliest save timestamp carrying evidence of <paramref name="trace"/> (including explained-trace fallback).</summary>
+    public static DateTime? FirstTraceUtc(Colony colony, EndingType trace)
+        => colony.Observations
+            .Where(o => o.EndingTraces.Contains(trace) || o.ExplainedTraces.Contains(trace))
+            .Select(o => o.LastWriteUtc != default ? (DateTime?)o.LastWriteUtc : null)
+            .Where(t => t.HasValue)
+            .Min();
 
     private static int? Group(EndingType t) => t switch
     {

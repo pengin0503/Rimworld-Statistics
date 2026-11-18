@@ -59,7 +59,7 @@ public sealed partial class SaveReader
                 : HistoryMetricReader.RecorderHistory(recorder, values, state.Obs.GameVersion, state.Obs.Values.TicksGame));
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or XmlException or ArgumentException
-            or FormatException or InvalidDataException)
+            or FormatException or OverflowException or InvalidDataException)
         {
             return (false, []);
         }

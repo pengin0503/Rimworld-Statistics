@@ -156,9 +156,15 @@ public sealed partial class SaveReader
         });
     }
 
+    private const int MaxRecorderDefChars = 256;
+    private const long MaxLegacyWealthBase64Chars = ((64L * 1024 * 1024 + 2) / 3) * 4;
+
     private static void ReadRecorder(XmlReader r, ReadState s, string? chartRecorder)
     {
         string? def = null;
+        var defCount = 0;
+        var recordsCount = 0;
+        var oversized = false;
         (string? Payload, bool Deflate)? data = null;
         (string? Payload, bool Deflate)? extension = null;
         FileStream? overflow = null;
@@ -169,36 +175,59 @@ public sealed partial class SaveReader
                 switch (name)
                 {
                     case "def":
-                        def = r.ReadElementContentAsString().Trim();
-                        break;
-                    case "records" or "recordsDeflate" when chartRecorder is not null && (def is null || def == chartRecorder):
-                        data = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
-                        break;
-                    case "records" or "recordsDeflate" when chartRecorder is null && (def is null or "Wealth_Total"):
-                        overflow?.Dispose();
-                        overflow = null;
-                        if (def is null)
+                        defCount++;
+                        if (defCount == 1)
+                            def = ReadBoundedElementText(r, s, MaxRecorderDefChars)?.Trim();
+                        else
                         {
-                            var early = ReadRecorderText(r, s, preserveOverflow: true);
-                            overflow = early.Overflow;
-                            data = (early.Text, name == "recordsDeflate");
+                            def = null;
+                            r.Skip();
+                        }
+                        break;
+                    case "records" or "recordsDeflate":
+                        recordsCount++;
+                        if (recordsCount > 1)
+                        {
+                            overflow?.Dispose();
+                            overflow = null;
+                            data = null;
+                            extension = null;
+                            oversized = false;
+                            r.Skip();
+                            break;
+                        }
+                        if (chartRecorder is not null && (def is null || def == chartRecorder))
+                        {
+                            data = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
+                        }
+                        else if (chartRecorder is null && (def is null || (def == "Wealth_Total" && s.WealthTotalCount == 0 && s.Wealth is null)))
+                        {
+                            overflow?.Dispose();
+                            overflow = null;
+                            var read = ReadRecorderText(r, s, preserveOverflow: true);
+                            overflow = read.Overflow;
+                            oversized = read.Oversized;
+                            data = (read.Text, name == "recordsDeflate");
+                        }
+                        else if (chartRecorder is null && def is not null && def != "Wealth_Total" && HistoryMetricReader.Defs.Contains(def))
+                        {
+                            extension = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
                         }
                         else
                         {
-                            data = (r.ReadElementContentAsString(), name == "recordsDeflate");
+                            r.Skip();
                         }
-                        break;
-                    case "records" or "recordsDeflate" when chartRecorder is null && def is not null && HistoryMetricReader.Defs.Contains(def):
-                        extension = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
                         break;
                     default:
                         r.Skip();
                         break;
                 }
             });
-            if (def == "Wealth_Total" && data is { } d)
+            if (def == "Wealth_Total")
             {
                 s.WealthTotalCount++;
+                if (data is not { } d)
+                    return;
                 if (chartRecorder is not null)
                 {
                     if (s.WealthTotalCount == 1 && d.Payload is { } text
@@ -211,6 +240,11 @@ public sealed partial class SaveReader
                 }
                 if (s.Wealth is null)
                 {
+                    if (oversized)
+                    {
+                        s.WealthReadError = new InvalidDataException("Wealth_Total exceeds the size limit");
+                        return;
+                    }
                     try
                     {
                         var payload = d.Payload;
@@ -220,9 +254,14 @@ public sealed partial class SaveReader
                             using var reader = new StreamReader(overflow, Encoding.UTF8, leaveOpen: true);
                             payload = reader.ReadToEnd();
                         }
-                        s.Wealth = RecordsCodec.Decode(payload!, d.Deflate);
+                        if (payload is null)
+                        {
+                            s.WealthReadError = new InvalidDataException("Wealth_Total payload is unreadable");
+                            return;
+                        }
+                        s.Wealth = RecordsCodec.Decode(payload, d.Deflate);
                         s.WealthTotalWithinTextLimit = overflow is null
-                            && CountNonWhitespace(payload!) <= HistoryMetricReader.MaxBase64Chars;
+                            && CountNonWhitespace(payload) <= HistoryMetricReader.MaxBase64Chars;
                     }
                     catch (Exception error) when (error is FormatException or InvalidDataException)
                     {
@@ -251,18 +290,66 @@ public sealed partial class SaveReader
             s.Series[def] = decoded;
     }
 
+    private static string? ReadBoundedElementText(XmlReader r, ReadState state, int maxChars)
+    {
+        if (r.IsEmptyElement)
+        {
+            r.Read();
+            return "";
+        }
+        var depth = r.Depth;
+        r.Read();
+        var sb = new StringBuilder();
+        var buffer = state.HistoryTextChunk ??= new char[8192];
+        var usable = true;
+        while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+        {
+            if (r.EOF)
+                throw new XmlException("unexpected end of file");
+            switch (r.NodeType)
+            {
+                case XmlNodeType.Text or XmlNodeType.CDATA or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace:
+                    int n;
+                    while ((n = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                    {
+                        if (!usable)
+                            continue;
+                        if (n > maxChars - sb.Length)
+                        {
+                            usable = false;
+                            sb.Clear();
+                            continue;
+                        }
+                        sb.Append(buffer, 0, n);
+                    }
+                    r.Read();
+                    break;
+                case XmlNodeType.Element:
+                    usable = false;
+                    sb.Clear();
+                    r.Skip();
+                    break;
+                default:
+                    r.Read();
+                    break;
+            }
+        }
+        r.Read();
+        return usable ? sb.ToString() : null;
+    }
+
     /// <summary>
     /// Reads non-whitespace payload text within the numeric history limit. If the definition is
-    /// still unknown, spill oversized text to disk in case it belongs to legacy Wealth_Total.
+    /// still unknown or belongs to legacy Wealth_Total, spill oversized text to disk up to the 64 MiB codec cap.
     /// The caller owns any returned overflow stream.
     /// </summary>
-    private static (string? Text, FileStream? Overflow) ReadRecorderText(
+    private static (string? Text, FileStream? Overflow, bool Oversized) ReadRecorderText(
         XmlReader r, ReadState state, bool preserveOverflow)
     {
         if (r.IsEmptyElement)
         {
             r.Read();
-            return ("", null);
+            return ("", null, false);
         }
         var depth = r.Depth;
         r.Read();
@@ -270,7 +357,9 @@ public sealed partial class SaveReader
         var buffer = state.HistoryTextChunk ??= new char[8192];
         FileStream? overflow = null;
         StreamWriter? writer = null;
+        long overflowChars = 0;
         var usable = true;
+        var oversized = false;
         try
         {
             try
@@ -301,19 +390,44 @@ public sealed partial class SaveReader
                                         continue;
                                     }
 
+                                    if ((long)text.Length + count > MaxLegacyWealthBase64Chars)
+                                    {
+                                        usable = false;
+                                        oversized = true;
+                                        text.Clear();
+                                        continue;
+                                    }
+
                                     overflow = new FileStream(Path.Combine(Path.GetTempPath(), Path.GetRandomFileName()),
                                         FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None, 4096,
                                         FileOptions.DeleteOnClose | FileOptions.SequentialScan);
                                     writer = new StreamWriter(overflow, new UTF8Encoding(false), leaveOpen: true);
                                     foreach (var chunk in text.GetChunks())
+                                    {
                                         writer.Write(chunk.Span);
+                                        overflowChars += chunk.Length;
+                                    }
                                     text = new StringBuilder();
                                 }
 
                                 if (writer is null)
+                                {
                                     text.Append(buffer, 0, count);
+                                }
+                                else if (count > MaxLegacyWealthBase64Chars - overflowChars)
+                                {
+                                    usable = false;
+                                    oversized = true;
+                                    writer.Dispose();
+                                    writer = null;
+                                    overflow?.Dispose();
+                                    overflow = null;
+                                }
                                 else
+                                {
                                     writer.Write(buffer, 0, count);
+                                    overflowChars += count;
+                                }
                             }
                             r.Read();
                             break;
@@ -334,7 +448,7 @@ public sealed partial class SaveReader
             {
                 writer?.Dispose();
             }
-            return (usable && overflow is null ? text.ToString() : null, overflow);
+            return (usable && overflow is null ? text.ToString() : null, overflow, oversized);
         }
         catch
         {
