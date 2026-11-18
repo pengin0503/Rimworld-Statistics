@@ -73,6 +73,7 @@ internal sealed class Dialog_ColonyChronicle : Window
     private Task<ColonyChronicle?>? chronicleTask;
     private bool loadFailureLogged;
     private object? cachedLanguage;
+    private string? cachedNameSignature;
     private ChronicleBranchCache? branchCache;
     private ChronicleDisplayCache? displayCache;
     private ColumnPlan? tablePlan;
@@ -115,13 +116,20 @@ internal sealed class Dialog_ColonyChronicle : Window
     private void DrawContents(Rect rect)
     {
         var lang = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(cachedLanguage, lang))
+        var languageChanged = !ReferenceEquals(cachedLanguage, lang);
+        if (languageChanged)
         {
             cachedLanguage = lang;
-            RefreshColonyName();
             branchCache = null;
             displayCache = null;
             tablePlan = null;
+        }
+
+        var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (languageChanged || cachedNameSignature != nameSig)
+        {
+            cachedNameSignature = nameSig;
+            RefreshColonyName();
         }
 
         var titleText = (string)"RWS_Chronicle_Title".Translate(colonyName);

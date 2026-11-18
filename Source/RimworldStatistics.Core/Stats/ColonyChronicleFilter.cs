@@ -226,10 +226,12 @@ public static class ColonyChronicleFilter
 
     public static bool MatchesSearch(string? eventText, IReadOnlyList<string>? additionalTerms, string? query)
     {
-        var term = (query ?? string.Empty).Trim();
-        if (term.Length == 0)
-            return true;
+        var term = (query ?? string.Empty).AsSpan().Trim();
+        return term.Length == 0 || MatchesTrimmedSearch(eventText, additionalTerms, term);
+    }
 
+    private static bool MatchesTrimmedSearch(string? eventText, IReadOnlyList<string>? additionalTerms, ReadOnlySpan<char> term)
+    {
         if (ContainsIgnoreCase(eventText, term))
             return true;
 
@@ -302,14 +304,14 @@ public static class ColonyChronicleFilter
 
         var rows = new List<TEntry>(entries.Count);
         int allCount = 0, highlightsCount = 0, intervalsAndGapsCount = 0, researchCount = 0;
-        var term = query.SearchText;
+        var term = (query.SearchText ?? string.Empty).AsSpan().Trim();
 
         for (var i = 0; i < entries.Count; i++)
         {
             var candidate = entries[i];
             if (!MatchesDayRange(candidate.Entry, query.DayRange))
                 continue;
-            if (term.Length > 0 && !MatchesSearch(candidate.EventText, candidate.AdditionalSearchTerms, term))
+            if (term.Length > 0 && !MatchesTrimmedSearch(candidate.EventText, candidate.AdditionalSearchTerms, term))
                 continue;
 
             allCount++;
@@ -368,8 +370,7 @@ public static class ColonyChronicleFilter
             HiddenUndatedTraceCountByDayRange: 0);
     }
 
-    private static bool ContainsIgnoreCase(string? text, string term)
+    private static bool ContainsIgnoreCase(string? text, ReadOnlySpan<char> term)
         => !string.IsNullOrEmpty(text)
-            && (text.Contains(term, StringComparison.CurrentCultureIgnoreCase)
-                || text.Contains(term, StringComparison.OrdinalIgnoreCase));
+            && text.AsSpan().Contains(term, StringComparison.OrdinalIgnoreCase);
 }

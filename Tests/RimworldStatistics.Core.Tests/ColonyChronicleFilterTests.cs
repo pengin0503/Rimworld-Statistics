@@ -72,6 +72,13 @@ public sealed class ColonyChronicleFilterTests
         var byFullStat = ColonyChronicleFilter.Apply(
             entries, traces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "敵の襲撃", "", ""));
         Assert.Equal(["int-1-2", "int-4-6"], byFullStat.Rows.Select(e => e.StableKey));
+
+        // Direct MatchesSearch handles null, whitespace, and untrimmed queries without allocating or false-matching.
+        Assert.True(ColonyChronicleFilter.MatchesSearch("Raids +2", ["Enemy raids"], null));
+        Assert.True(ColonyChronicleFilter.MatchesSearch("Raids +2", ["Enemy raids"], "   "));
+        Assert.True(ColonyChronicleFilter.MatchesSearch("Raids +2", ["Enemy raids"], "  ENEMY RAIDS "));
+        Assert.False(ColonyChronicleFilter.MatchesSearch("Raids +2", ["Enemy raids"], "Solar"));
+        Assert.Equal(entries.Length, ColonyChronicleFilter.Apply(entries, traces, default).Rows.Length);
     }
 
     [Fact]
