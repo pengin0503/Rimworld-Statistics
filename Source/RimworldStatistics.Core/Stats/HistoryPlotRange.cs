@@ -150,19 +150,7 @@ public static class HistoryPlotRange
         if (visibleRange is not { } range || measured.Length == 0)
             return measured;
         if (range.Contains(measured[0].Tick) && range.Contains(measured[^1].Tick))
-        {
-            var allInside = true;
-            for (var i = 0; i < measured.Length; i++)
-            {
-                if (!range.Contains(measured[i].Tick))
-                {
-                    allInside = false;
-                    break;
-                }
-            }
-            if (allInside)
-                return measured;
-        }
+            return measured;
 
         var list = new List<MetricHistoryPoint>();
         for (var i = 0; i < measured.Length; i++)

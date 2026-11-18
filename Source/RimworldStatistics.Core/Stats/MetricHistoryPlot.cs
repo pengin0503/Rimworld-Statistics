@@ -90,16 +90,7 @@ public static class MetricHistoryPlot
         if (points.Count == 0)
             return points;
 
-        var allInside = true;
-        for (var i = 0; i < points.Count; i++)
-        {
-            if (!range.Contains(points[i].Tick))
-            {
-                allInside = false;
-                break;
-            }
-        }
-        if (allInside)
+        if (range.Contains(points[0].Tick) && range.Contains(points[^1].Tick))
             return points;
 
         var mappedIndex = new int[points.Count];

@@ -176,8 +176,6 @@ public static class HistoryChanges
             if (previous < first || previous >= i)
                 break;
             i = previous;
-            if (visibleRange is { } range && !range.Contains(points[i].Tick))
-                break;
             if (HasValue(points[i]))
                 earliest = i;
         }
