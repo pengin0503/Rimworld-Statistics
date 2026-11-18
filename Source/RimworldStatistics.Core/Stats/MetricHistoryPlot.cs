@@ -78,4 +78,45 @@ public static class MetricHistoryPlot
         }
         return output;
     }
+
+    /// <summary>
+    /// Projects <paramref name="points"/> onto <paramref name="range"/> (keeping gaps with null values, partial coverage,
+    /// and <see cref="MetricHistoryPoint.Unlinked"/> flags unchanged) and remaps predecessor indices so two kept points are
+    /// joined if and only if the later one directly continued the earlier one in <paramref name="points"/>.
+    /// </summary>
+    public static IReadOnlyList<MetricHistoryPoint> Slice(IReadOnlyList<MetricHistoryPoint> points, HistoryTickRange range)
+    {
+        ArgumentNullException.ThrowIfNull(points);
+        if (points.Count == 0)
+            return points;
+
+        if (range.Contains(points[0].Tick) && range.Contains(points[^1].Tick))
+            return points;
+
+        var mappedIndex = new int[points.Count];
+        var output = new List<MetricHistoryPoint>();
+        for (var i = 0; i < points.Count; i++)
+        {
+            var point = points[i];
+            if (!range.Contains(point.Tick))
+            {
+                mappedIndex[i] = -1;
+                continue;
+            }
+
+            var pred = point.Predecessor(i);
+            var mappedPred = pred >= 0 && pred < i ? mappedIndex[pred] : -1;
+            mappedIndex[i] = output.Count;
+            var adjacent = mappedPred >= 0 && mappedPred == output.Count - 1;
+            output.Add(mappedPred < 0
+                ? point with { ConnectToPrevious = false, ContinuesFrom = -1, SkipsOnlyOtherBranches = false }
+                : point with
+                {
+                    ConnectToPrevious = adjacent,
+                    ContinuesFrom = adjacent ? -1 : mappedPred,
+                    SkipsOnlyOtherBranches = !adjacent && point.SkipsOnlyOtherBranches,
+                });
+        }
+        return output;
+    }
 }

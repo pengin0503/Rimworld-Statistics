@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Диапазон (дни)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Начальный игровой день (оставьте пустым, чтобы начать с первого дня).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>Конечный игровой день (оставьте пустым, чтобы показать до последнего дня).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Показать период</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Масштабировать график до указанного диапазона игровых дней.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Весь период</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Вернуть отображение всего записанного периода.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>Показан весь период: день {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Масштаб: день {0}–{1} (весь период: день {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Масштаб: день {0}–{1} — нет точек в этом диапазоне (весь период: день {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Введите неотрицательные числа дней (например, 10 или 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>В указанном диапазоне дней нет записанных значений.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>В отображаемом диапазоне меньше двух точек этой колонии для сравнения.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

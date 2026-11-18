@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>顯示範圍（天）</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>起始遊戲內天數（留空則從最早一天開始顯示）。</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>結束遊戲內天數（留空則顯示到最後一天）。</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>顯示範圍</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>將圖表縮放到指定的遊戲內天數範圍。</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>全部期間</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>恢復顯示全部已記錄的期間。</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>正在顯示全部期間：第 {0}–{1} 天</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>已縮放：第 {0}–{1} 天（全部期間：第 {2}–{3} 天）</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>已縮放：第 {0}–{1} 天 — 此範圍內沒有觀測點（全部期間：第 {2}–{3} 天）</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>請輸入非負的天數數值（例如 10 或 25.5）。</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>此天數範圍內沒有已記錄的觀測點。</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>目前顯示範圍內此殖民地的觀測點少於兩個，無法比較。</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

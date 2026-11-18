@@ -144,12 +144,21 @@ public static class HistoryChanges
     /// comparison then says why they cannot be compared. Null with fewer than two readings with a value.
     /// </summary>
     public static (int From, int To)? FirstAndLast(MetricHistory history)
+        => FirstAndLast(history, visibleRange: null);
+
+    /// <summary>
+    /// Like <see cref="FirstAndLast(MetricHistory)"/>, restricted to readings inside <paramref name="visibleRange"/> so
+    /// points outside a zoomed range are never selected for comparison, while keeping full-history lineage semantics.
+    /// </summary>
+    public static (int From, int To)? FirstAndLast(MetricHistory history, HistoryTickRange? visibleRange)
     {
         ArgumentNullException.ThrowIfNull(history);
         var points = history.Points;
         int first = -1, last = -1;
         for (var i = 0; i < points.Count; i++)
         {
+            if (visibleRange is { } range && !range.Contains(points[i].Tick))
+                continue;
             if (!HasValue(points[i]))
                 continue;
             if (first < 0)
@@ -164,13 +173,39 @@ public static class HistoryChanges
         for (var i = last; ;)
         {
             var previous = points[i].Predecessor(i);
-            if (previous < 0 || previous >= i)
+            if (previous < first || previous >= i)
                 break;
             i = previous;
             if (HasValue(points[i]))
                 earliest = i;
         }
         return earliest >= 0 ? (earliest, last) : (first, last);
+    }
+
+    /// <summary>Whether the reading at <paramref name="index"/> is a selectable measured reading within <paramref name="visibleRange"/>.</summary>
+    public static bool CanPick(MetricHistory history, int index, HistoryTickRange? visibleRange = null)
+    {
+        ArgumentNullException.ThrowIfNull(history);
+        var points = history.Points;
+        if (index < 0 || index >= points.Count || !HasValue(points[index]))
+            return false;
+        return visibleRange is not { } range || range.Contains(points[index].Tick);
+    }
+
+    /// <summary>Drops any in-progress or completed two-point comparison whose endpoint lies outside <paramref name="visibleRange"/>.</summary>
+    public static (int? PickFrom, HistoryChange? Change) FilterSelection(
+        MetricHistory history,
+        int? pickFrom,
+        HistoryChange? change,
+        HistoryTickRange? visibleRange)
+    {
+        ArgumentNullException.ThrowIfNull(history);
+        var filteredPick = pickFrom is { } first && CanPick(history, first, visibleRange) ? first : (int?)null;
+        var filteredChange = change is { } c
+            && CanPick(history, c.FromIndex, visibleRange)
+            && CanPick(history, c.ToIndex, visibleRange)
+            ? c : null;
+        return (filteredPick, filteredChange);
     }
 
     /// <summary>The change between the readings at <paramref name="a"/> and <paramref name="b"/>, in either order.</summary>

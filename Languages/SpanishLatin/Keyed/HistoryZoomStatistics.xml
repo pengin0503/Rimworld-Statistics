@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Rango mostrado (días)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Día inicial en el juego (déjalo en blanco para empezar desde el primer día).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>Día final en el juego (déjalo en blanco para terminar en el último día).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Mostrar rango</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Ampliar el gráfico al rango de días del juego indicado.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Período completo</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Volver a mostrar todo el período registrado.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>Mostrando período completo: día {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Ampliado: día {0}–{1} (período completo: día {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Ampliado: día {0}–{1} — sin datos en este rango (período completo: día {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Ingresa números de días no negativos (por ejemplo, 10 o 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>No hay datos registrados en este rango de días.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>Hay menos de dos datos de esta colonia en el rango mostrado.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>
