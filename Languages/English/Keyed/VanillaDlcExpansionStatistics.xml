@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>World landmarks visited</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Distinct world landmark tiles visited by player maps, gravships, pods, or caravans, grouped by landmark type.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Growth vat completions</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Completed living child growth cycles and living embryo births in player growth vats.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Completed living child growth cycles and living embryo births in player growth vats. A child's growth is complete when the vat ejects the child at age 18; a child ejected earlier with "Cancel vatgrowth" is not counted.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Gene extractions completed</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Completed gene extractions on player gene extractors that produced a genepack.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Xenogerms assembled</RWS_Metric_BiotechXenogermsAssembled>

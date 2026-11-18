@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Marcos do mundo visitados</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Azulejos únicos de marcos do mundo visitados pelo jogador, agrupados por tipo de marco.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Conclusões em cuba de crescimento</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crescimento de crianças vivas e nascimentos vivos de embriões concluídos em cubas do jogador.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crescimento de crianças vivas e nascimentos vivos de embriões concluídos em cubas do jogador. Um crescimento termina quando a cuba ejeta a criança aos 18 anos; uma criança ejetada antes, ao cancelar o crescimento, não é contada.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Extrações genéticas concluídas</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Extrações genéticas concluídas que produziram um pacote genético em extratores do jogador.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Xenogermes montados</RWS_Metric_BiotechXenogermsAssembled>

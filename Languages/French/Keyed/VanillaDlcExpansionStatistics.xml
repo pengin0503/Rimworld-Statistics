@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Sites remarquables visités</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Cases distinctes de sites remarquables visitées par le joueur, ventilées par type de site.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Cycles de cuve de croissance terminés</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Cycles de croissance d’enfants vivants et naissances d’embryons vivants terminés dans les cuves du joueur.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Cycles de croissance d’enfants vivants et naissances d’embryons vivants terminés dans les cuves du joueur. Une croissance est terminée quand la cuve éjecte l’enfant à 18 ans ; un enfant éjecté plus tôt en annulant la croissance n’est pas compté.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Extractions de gènes terminées</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Extractions de gènes terminées ayant produit un génopack sur un extracteur du joueur.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Xénogermes assemblés</RWS_Metric_BiotechXenogermsAssembled>

@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>已造訪世界地標數</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>己方曾抵達或駐留的不同世界地標格數量及地標類型明細。</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>生長培育艙完成次數</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>己方生長培育艙完成的存活兒童成長或胚胎分娩次數。</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>己方生長培育艙完成的存活兒童成長或胚胎分娩次數。兒童在18歲時由培育艙排出才算完成成長；中途取消培育而排出的兒童不計入。</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>基因提取完成次數</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>己方基因提取器成功產出基因包的完成次數。</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>異種胚合成完成次數</RWS_Metric_BiotechXenogermsAssembled>

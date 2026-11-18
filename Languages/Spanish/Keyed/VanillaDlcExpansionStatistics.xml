@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Lugares emblemáticos visitados</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Casillas únicas de lugares emblemáticos del mundo visitadas por el jugador, agrupadas por tipo.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Ciclos completados en cuba de crecimiento</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crecimiento infantil vivo y nacimientos vivos de embriones completados en cubas del jugador.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crecimiento infantil vivo y nacimientos vivos de embriones completados en cubas del jugador. Un crecimiento termina cuando la cuba expulsa al niño a los 18 años; no se cuenta un niño expulsado antes al cancelar el crecimiento.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Extracciones génicas completadas</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Extracciones génicas completadas que produjeron un genopaquete en extractores del jugador.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Xenogérmenes ensamblados</RWS_Metric_BiotechXenogermsAssembled>

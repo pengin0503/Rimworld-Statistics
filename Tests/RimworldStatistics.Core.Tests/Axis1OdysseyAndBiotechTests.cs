@@ -102,6 +102,18 @@ public sealed class Axis1OdysseyAndBiotechTests
         Assert.False(landmarks.ContainsKey("ludeon.rimworld.odyssey/LavaField"));
     }
 
+    [Theory]
+    [InlineData(18f, true)]          // the vat's own ejection (Building_GrowthVat.AgeToEject)
+    [InlineData(18.5f, true)]
+    [InlineData(17.999f, false)]     // "Cancel vatgrowth" just before the end
+    [InlineData(3f, false)]          // "Cancel vatgrowth" early
+    [InlineData(float.NaN, false)]
+    public void GrowthVatCompletion_IsOnlyTheVatEjectingAnAdult(float biologicalAge, bool completed)
+    {
+        Assert.Equal(18f, BiotechGeneticsFamily.GrowthVatEjectAge);
+        Assert.Equal(completed, BiotechGeneticsFamily.IsGrowthVatCompletionAge(biologicalAge));
+    }
+
     [Fact]
     public void BiotechGeneticsFamily_TracksVatsGeneticsImplantationsAndExactFirstBossDefeats()
     {

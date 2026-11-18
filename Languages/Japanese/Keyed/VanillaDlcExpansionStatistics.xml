@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>訪問済みランドマーク数</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>自勢力が到達・滞在したユニークなワールドランドマーク地点数とランドマーク種別内訳。</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>成長培養槽の育成完了数</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>自勢力の成長培養槽で完了した生存児の成長または胚培養出産の回数。</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>自勢力の成長培養槽で完了した生存児の成長または胚培養出産の回数。成長は培養槽が18歳で子どもを排出したときに完了とし、「生育をキャンセル」で途中で排出した子どもは数えません。</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>遺伝子抽出完了数</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>自勢力の遺伝子抽出機でジーンパックが生成された完了回数。</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>ゼノジャーム合成完了数</RWS_Metric_BiotechXenogermsAssembled>
