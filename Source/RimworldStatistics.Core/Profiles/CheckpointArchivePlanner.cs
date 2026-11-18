@@ -23,10 +23,11 @@ public static class CheckpointArchivePlanner
         if (!profile.MetricObservations.Any(CanDrop))
             return Array.Empty<ArchiveStep>();
 
-        var checkpoints = profile.MetricObservations.Where(o => o.Source == MetricObservationSource.Checkpoint
-            && !o.IsQuarantined && !o.Conflicted && !string.IsNullOrEmpty(o.Identity.ModCampaignId));
-        var children = checkpoints.Where(o => o.ParentKey is not null)
+        var allCheckpoints = profile.MetricObservations.Where(o => o.Source == MetricObservationSource.Checkpoint
+            && !o.IsQuarantined && !string.IsNullOrEmpty(o.Identity.ModCampaignId));
+        var children = allCheckpoints.Where(o => o.ParentKey is not null)
             .ToLookup(o => (o.Identity.ModCampaignId, o.ParentKey));
+        var checkpoints = allCheckpoints.Where(o => !o.Conflicted);
         var composed = MetricRegistry.Compose(profile.ModMetricDescriptors, MetricDisplayPolicy.AllDetailsVisibleUnits);
 
         var knownKeys = new HashSet<string>(StringComparer.Ordinal);
@@ -76,9 +77,21 @@ public static class CheckpointArchivePlanner
                 continue;
 
             validChildren.Clear();
+            var hasConflictedChild = false;
             foreach (var candidate in children[(ancestor.Identity.ModCampaignId, ancestor.Key)])
-                if (candidate.SaveTick > ancestor.SaveTick)
-                    validChildren.Add(candidate);
+            {
+                if (candidate.SaveTick <= ancestor.SaveTick)
+                    continue;
+                if (candidate.Conflicted)
+                {
+                    hasConflictedChild = true;
+                    break;
+                }
+                validChildren.Add(candidate);
+            }
+
+            if (hasConflictedChild)
+                continue;
 
             var child = MetricObservationOrder.Latest(validChildren);
             if (child is null)

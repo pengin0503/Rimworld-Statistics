@@ -169,11 +169,10 @@ public sealed class ColonyChronicleFilterTests
     [InlineData("", "-1", ChronicleDayRangeStatus.InvalidEndDay, false, true)]
     [InlineData("-0", "", ChronicleDayRangeStatus.InvalidStartDay, true, false)]
     [InlineData("+5", "", ChronicleDayRangeStatus.InvalidStartDay, true, false)]
-    [InlineData("1,5", "2.0", ChronicleDayRangeStatus.InvalidStartDay, true, false)]
+    [InlineData("1,2,3", "2.0", ChronicleDayRangeStatus.InvalidStartDay, true, false)]
+    [InlineData("1.2,3", "2.0", ChronicleDayRangeStatus.InvalidStartDay, true, false)]
     [InlineData(".", "bad", ChronicleDayRangeStatus.InvalidBothDays, true, true)]
-    [InlineData("20", "10", ChronicleDayRangeStatus.ReversedRange, true, true)]
-    [InlineData("4.0001", "4.0", ChronicleDayRangeStatus.ReversedRange, true, true)]
-    public void InvalidAndReversedDayInputs_AreFlaggedAndNeverLeakEntriesOrUndatedTraces(
+    public void InvalidDayInputs_AreFlaggedAndNeverLeakEntriesOrUndatedTraces(
         string start,
         string end,
         ChronicleDayRangeStatus expectedStatus,
@@ -183,7 +182,6 @@ public sealed class ColonyChronicleFilterTests
         var entries = SampleEntries();
         var traces = SampleUndatedTraces();
 
-        // Include a wide interval [0.5, 50.0] that spans [10, 20] to verify reversed ranges never match by naive overlap.
         var wideInterval = new ChronicleEntry
         {
             StableKey = "int-wide",
@@ -205,6 +203,42 @@ public sealed class ColonyChronicleFilterTests
         Assert.Empty(result.Rows);
         Assert.Empty(result.UndatedTraces);
         Assert.Equal(0, result.FilterCount(ChronicleKindFilter.All));
+    }
+
+    [Fact]
+    public void DecimalCommaReversedBoundsAndDisplayedDayRounding_MatchHistoryPlotAndShownLabels()
+    {
+        var entries = SampleEntries();
+        var traces = SampleUndatedTraces();
+
+        // Decimal comma ("1,5" .. "3,5") matches HistoryPlotRange.TryParseDay behavior.
+        var commaResult = ColonyChronicleFilter.Apply(
+            entries, traces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "1,5", "3,5"));
+        Assert.Equal(["int-1-2", "res-micro", "int-2-4", "gap-3"], commaResult.Rows.Select(e => e.StableKey));
+
+        // Reversed range ("3.5" .. "2.5") normalizes to [2.5, 3.5] with WasReversed = true and no error highlights.
+        var reversedQuery = ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "3.5", "2.5");
+        Assert.Equal(ChronicleDayRangeStatus.Valid, reversedQuery.DayRange.Status);
+        Assert.True(reversedQuery.DayRange.IsValid);
+        Assert.True(reversedQuery.DayRange.WasReversed);
+        Assert.False(reversedQuery.DayRange.HighlightStartField);
+        Assert.False(reversedQuery.DayRange.HighlightEndField);
+        Assert.Equal((2.5m, 3.5m), (reversedQuery.DayRange.StartDay, reversedQuery.DayRange.EndDay));
+        var reversedResult = ColonyChronicleFilter.Apply(entries, traces, reversedQuery);
+        Assert.Equal(["int-2-4", "gap-3"], reversedResult.Rows.Select(e => e.StableKey));
+        Assert.Empty(reversedResult.UndatedTraces);
+
+        // 70,000 ticks (1.1666... days) is displayed as "1.2" in the UI; entering "1.2" matches start-only, end-only, and [1.2, 1.2].
+        var at70k = MakeSingleDay("res-70k", ChronicleEntryKind.ResearchCompleted, ChronicleTimingKind.ExactTick, 70_000);
+        var wrapped70k = new[] { new ChronicleFilterableEntry<ChronicleEntry>(at70k, "Solar", ["Solar"], at70k) };
+        var noTraces = Array.Empty<ChronicleFilterableUndatedTrace<string>>();
+
+        Assert.Single(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "1.2", "")).Rows);
+        Assert.Single(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "", "1.2")).Rows);
+        Assert.Single(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "1.2", "1.2")).Rows);
+        Assert.Single(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "1,2", "1,2")).Rows);
+        Assert.Empty(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "1.3", "")).Rows);
+        Assert.Empty(ColonyChronicleFilter.Apply(wrapped70k, noTraces, ChronicleFilterQuery.Create(ChronicleKindFilter.All, "", "", "1.1")).Rows);
     }
 
     [Fact]

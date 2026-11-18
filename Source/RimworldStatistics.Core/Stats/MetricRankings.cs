@@ -275,11 +275,13 @@ public static class MetricRankings
     private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
     {
-        var inputs = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
-            .Where(x => x.Row?.Value.Number is not null)
-            .ToList();
+        var all = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey))).ToList();
+        var applicable = all.Where(x => x.Row?.Value.Coverage != MetricCoverage.NotApplicable).ToList();
+        if (applicable.Count == 0 && all.Count > 0)
+            return new NumericRow { Definition = definition, Value = new NumericValue { Coverage = MetricCoverage.NotApplicable }, Targets = 0 };
+        var inputs = applicable.Where(x => x.Row?.Value.Number is not null).ToList();
         var candidates = inputs.Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage)).ToList();
-        return Extreme(definition, candidates, max: true, colonies.Count, InputEvidence(inputs.Select(x => x.Row)));
+        return Extreme(definition, candidates, max: true, applicable.Count, InputEvidence(inputs.Select(x => x.Row)));
     }
 
     private static string? Permadeath(ColonyStats c) => c.Permadeath switch

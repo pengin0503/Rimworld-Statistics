@@ -75,7 +75,7 @@ public static partial class MetricCalculator
     public static MetricHistory BuildChartHistory(Profile profile, IReadOnlyList<Colony> colonies,
         string colonyKey, MetricDefinition definition)
     {
-        var colony = colonies.FirstOrDefault(c => c.Key == colonyKey && c.Counted);
+        var colony = colonies.FirstOrDefault(c => c.Key == colonyKey);
         if (colony is null)
             return new(MetricHistoryKind.SaveObservations, []);
 

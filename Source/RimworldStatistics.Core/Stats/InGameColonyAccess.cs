@@ -62,7 +62,8 @@ public static class InGameColonyAccess
     {
         var stats = view.Stats.Colonies.FirstOrDefault(s => Ord.Equals(s.Key, colony.Key));
         var hasObservedPoint = stats?.HasObservedPoint
-            ?? (colony.Observations.Count > 0 || colony.LiveCampaigns.Any(l => l.HasObservation));
+            ?? (colony.Observations.Any(o => o.Status == ObservationStatus.Ok)
+                || colony.LiveCampaigns.Any(l => l.HasObservation));
         if (!hasObservedPoint)
             return RecordedPointInfo.None;
 
@@ -71,8 +72,9 @@ public static class InGameColonyAccess
 
         foreach (var obs in colony.Observations)
         {
-            DateTime? utc = obs.LastWriteUtc != default ? obs.LastWriteUtc : null;
-            candidates.Add((utc, Math.Max(0, obs.Values.TicksGame)));
+            if (obs.Status != ObservationStatus.Ok)
+                continue;
+            candidates.Add((ValidUtc(obs.LastWriteUtc), Math.Max(0, obs.Values.TicksGame)));
         }
 
         foreach (var live in colony.LiveCampaigns)
@@ -80,14 +82,16 @@ public static class InGameColonyAccess
             if (!live.HasObservation)
                 continue;
 
+            var savedUtc = ValidUtc(live.LastSavedUtc);
+            var maxObservedUtc = live.MaxObservedUtc is { } rawMax ? ValidUtc(rawMax) : null;
             var hasAnyTimestamp = false;
-            if (live.LastSavedUtc != default)
+            if (savedUtc.HasValue)
             {
-                candidates.Add((live.LastSavedUtc, Math.Max(0, live.Latest.TicksGame)));
+                candidates.Add((savedUtc, Math.Max(0, live.Latest.TicksGame)));
                 hasAnyTimestamp = true;
             }
-            if (live.MaxObservedUtc is { } maxUtc && maxUtc != default
-                && (live.LastSavedUtc == default || maxUtc > live.LastSavedUtc))
+            if (maxObservedUtc is { } maxUtc
+                && (!savedUtc.HasValue || maxUtc > savedUtc.Value))
             {
                 candidates.Add((maxUtc, Math.Max(0, live.Max.TicksGame)));
                 hasAnyTimestamp = true;
@@ -98,8 +102,8 @@ public static class InGameColonyAccess
 
         foreach (var ending in colony.Endings)
         {
-            if (ending.Source == EndingSource.Live && ending.RealTimeUtc != default)
-                candidates.Add((ending.RealTimeUtc, Math.Max(0, ending.TicksGame)));
+            if (ending.Source == EndingSource.Live && ValidUtc(ending.RealTimeUtc) is { } endingUtc)
+                candidates.Add((endingUtc, Math.Max(0, ending.TicksGame)));
         }
 
         if (candidates.Count == 0)
@@ -118,6 +122,9 @@ public static class InGameColonyAccess
         var fallbackTicks = candidates.Max(c => c.Ticks);
         return new RecordedPointInfo(true, null, fallbackTicks);
     }
+
+    private static DateTime? ValidUtc(DateTime utc)
+        => utc == default || utc.Year <= 1970 ? null : utc;
 }
 
 /// <summary>

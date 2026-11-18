@@ -174,21 +174,16 @@ public static class StatisticsExport
         {
             if (!byKey.TryGetValue(stats.Key, out var colony))
                 continue;
-            var knownTypes = new HashSet<EndingType>();
             foreach (var group in stats.CountedEndings.GroupBy(e => (e.Type, e.Ordinal)))
             {
-                var best = group.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
-                knownTypes.Add(best.Type);
+                var best = EndingTraces.Representative(group);
                 yield return new EndingRow(group.Min(e => e.RealTimeUtc), stats.Key, best.Type, best.Ordinal + 1L,
                     best.Source == EndingSource.SeededTrace ? null : best.Departed, best.Source.ToString());
             }
             foreach (var ending in colony.RecoveredEndings)
                 yield return new EndingRow(null, stats.Key, ending.Type, ending.Ordinal + 1L, null, "RecoveredLineage");
-            foreach (var type in colony.Traces.Where(t => !knownTypes.Contains(t)).Order())
-            {
-                var first = colony.Observations.Where(o => o.EndingTraces.Contains(type)).Select(o => (DateTime?)o.LastWriteUtc).Min();
-                yield return new EndingRow(first, stats.Key, type, null, null, "SaveTrace");
-            }
+            foreach (var type in EndingTraces.Unexplained(colony))
+                yield return new EndingRow(EndingTraces.FirstTraceUtc(colony, type), stats.Key, type, null, null, "SaveTrace");
         }
     }
 }

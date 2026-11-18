@@ -98,12 +98,13 @@ public static partial class ProfileMutations
             lastCaptureKeys ??= CheckpointArchivePlanner.LastCaptureCheckpointKeys(p);
             if (lastCaptureKeys.Count == 0)
                 return;
-            foreach (var (key, entry) in other.Metrics)
+            foreach (var key in lastCaptureKeys)
             {
-                if (entry.IsQuarantined || !lastCaptureKeys.Contains(key))
+                if (parent.Metrics.TryGetValue(key, out var parentEntry) && !parentEntry.IsQuarantined)
                     continue;
-                if (!obs.Metrics.TryGetValue(key, out var incomingEntry)
-                    || incomingEntry.IsQuarantined || incomingEntry.Revision != entry.Revision)
+                var otherHas = other.Metrics.TryGetValue(key, out var entry) && !entry.IsQuarantined;
+                var incomingHas = obs.Metrics.TryGetValue(key, out var incomingEntry) && !incomingEntry.IsQuarantined;
+                if (otherHas != incomingHas || (otherHas && entry!.Revision != incomingEntry!.Revision))
                 {
                     p.PendingCheckpointRestorations.Add(parent);
                     return;
