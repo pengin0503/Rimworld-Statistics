@@ -383,9 +383,9 @@
   <RWS_Metric_PlayerMechKills>プレイヤーのメカノイドによる撃破</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>敵の撃破のうち、攻撃者がプレイヤーのメカノイドだったもの（Biotech）。</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>入植者の死因</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>自由入植者の死亡を、死因となった健康状態または致命傷のダメージの種類で分けたもの。どちらも分からない死亡は「不明」です。</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>自由入植者の死亡を、死因となった健康状態または致命傷のダメージの種類で分けたもの。どちらも分からない死亡は「（不明）」です。</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>襲撃による入植者の死亡</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>自由入植者の死亡を、襲撃者によるもの・その他の判明した原因・不明に分けたもの。襲撃を記録していない間の死亡は「不明」になります。</RWS_MetricDesc_DeathsByRaid>
+  <RWS_MetricDesc_DeathsByRaid>自由入植者の死亡を、襲撃者によるもの・その他の判明した原因・「（不明）」に分けたもの。襲撃を記録していない間の死亡は「（不明）」になります。</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>病気による入植者の死亡</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>死因が病気（ゲームが病気として扱う健康状態）だった自由入植者の死亡。病気にかかっていただけの死亡は含めません。</RWS_MetricDesc_DiseaseDeaths>
   <RWS_Metric_DiseaseDeathRate>病死の割合</RWS_Metric_DiseaseDeathRate>
@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>最初の入植者死亡までの日数</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>ゲーム開始時から記録していた場合のみ、最初に自由入植者が死亡したゲーム内日。</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>最も高齢で死亡した入植者の年齢</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>自由入植者の死亡直前の生物学的年齢の最大値。歴代入植者の最長寿命（P-010）と同じ値です。</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>自由入植者の死亡直前の生物学的年齢の最大値。</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>キャラバン中に死亡した入植者</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>プレイヤーのキャラバンに加わっている間に死亡した自由入植者の数。</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>飼育動物の死亡数</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>入植者がダウンした回数</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>自由入植者がダウンしていない状態からダウンした回数。ダウンせずに即死した場合は含めません。</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>敵をダウンさせた回数（無力化）</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>プレイヤーと敵対するポーンがダウンした回数。回復後に再びダウンした場合も数えます。敵の累計無力化数（B-002）と同じ値です。</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>プレイヤーと敵対するポーンがダウンした回数。回復後に再びダウンした場合も数えます。</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>毒の蓄積によるダウン</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>自由入植者のダウンのうち、直接の原因が毒の蓄積だったもの（Biotech）。</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>喧嘩によるダウン</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>1回の襲撃での最多撃破数</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>記録中の1回の襲撃について、その襲撃が続いている間にプレイヤー側が撃破した敵の数の最大。</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>包囲の回数</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>戦術が包囲（Siege）だった敵の襲撃の数。</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>戦術が包囲だった敵の襲撃の数。</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>壁破壊型の襲撃の回数</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>戦術が壁破壊（ImmediateAttackBreaching、ImmediateAttackBreachingSmart）だった敵の襲撃の数。トンネルを掘る工兵は含めません。</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>戦術が壁破壊（通常の壁破壊・賢い壁破壊）だった敵の襲撃の数。トンネルを掘る工兵は含めません。</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>ドロップポッドによる襲撃の回数</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>ドロップポッドで到着した（EdgeDrop、EdgeDropGroups、CenterDrop、RandomDrop）敵の襲撃の数。</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>ドロップポッドで到着した（マップ端・複数地点・中央降下・分散降下）敵の襲撃の数。</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>虫の襲来の回数</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>虫の巣の発生（Infestation、DeepDrillInfestation）が成功した回数。虫に関係するその他の出来事は含めません。</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>「虫の襲来」および「深深度:虫の襲来」が発生した回数。虫に関係するその他の出来事は含めません。</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>メカクラスターの出現回数</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>メカクラスターの出現が成功した回数（Royalty）。通常のメカノイドの襲撃は含めません。</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>人狩りの群れの襲来回数</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>人狩りの群れ（ManhunterPack）の発生が成功した回数。</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>「人狩りの群れ」の発生が成功した回数。</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>最長無襲撃期間</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>記録中に続けて起きた敵の襲撃の間隔のうち、最も長いもの。最初の襲撃より前と最後の襲撃より後は含めません。敵襲の最大発生間隔（N2-C-002）と同じ値です。</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>記録中に続けて起きた敵の襲撃の間隔のうち、最も長いもの。最初の襲撃より前と最後の襲撃より後は含めません。</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>敵襲の平均発生間隔</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>上と同じ襲撃間隔の平均日数。全体では間隔の数で重み付けします。</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>最初の敵襲までの日数</RWS_Metric_RaidFirstDay>
@@ -533,7 +533,7 @@
   <RWS_Metric_HarvestUnits>作物の収穫量</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>プレイヤーのポーンが収穫で得た主産物のスタック個数の合計。追加の収穫物は含めません。</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>作物別の収穫量</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>収穫量を元の作物別に合計したもの。作物の分からない収穫は「不明」です。</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>収穫量を元の作物別に合計したもの。作物の分からない収穫は「（不明）」です。</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>最も多く収穫した作物</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>作物別の収穫量が最も多い作物と、その量。</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>1年の最多収穫量</RWS_Metric_HarvestYearPeak>
@@ -599,7 +599,7 @@
   <RWS_Metric_TradeBoughtDefs>買った品の種類数</RWS_Metric_TradeBoughtDefs>
   <RWS_MetricDesc_TradeBoughtDefs>購入した通貨以外の品の種類の数。</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>取引した勢力の種類数</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>取引したことのある勢力の種類の数。勢力のない相手は別枠の「不明」に分けます。</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>取引したことのある勢力の種類の数。勢力のない相手は別枠の「（不明）」に分けます。</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>贈り物で上がった友好値</RWS_Metric_GiftGoodwill>
   <RWS_MetricDesc_GiftGoodwill>贈り物によって相手の勢力の友好値が実際に上がった量の合計。すでに上限だった場合は0です。</RWS_MetricDesc_GiftGoodwill>
   <RWS_Metric_AllyToHostile>同盟から敵対に変わった回数</RWS_Metric_AllyToHostile>
@@ -872,9 +872,9 @@
   <RWS_Metric_MinedByDef>品目別の採掘量</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>記録期間に実際に置かれた採掘の産出物の数を品目別に集計します。独立した系列で、有効化前の期間は推定しません。</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>完全に取り除いた汚れの数</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>プレイヤーのポーンの掃除で汚れを1つ完全に取り除くごとに1回（バニラの「掃除した汚れ」の記録）。汚れの厚みが減っただけの場合や、掃除のジョブ全体の回数ではありません。有効にしている間だけ記録します。</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>プレイヤーのポーンの掃除で汚れを1つ完全に取り除くごとに1回（バニラの「掃除した回数」の記録）。汚れの厚みが減っただけの場合や、掃除のジョブ全体の回数ではありません。有効にしている間だけ記録します。</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>消火した火の数</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>プレイヤーのポーンが通常の消火作業または自分に付いた火をはたき消すことで消した火1つごとに1回（バニラの「消火した火」の記録）。自然に消えた火は数えません。有効にしている間だけ記録します。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>プレイヤーのポーンが通常の消火作業または自分に付いた火をはたき消すことで消した火1つごとに1回（バニラの「消火した回数」の記録）。自然に消えた火は数えません。有効にしている間だけ記録します。</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>食事の回数</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>プレイヤー派閥の人型のポーンが、正の栄養を得て食事を実際に食べた回数。食事1回を1回と数え、キャラバン中の食事も含みます。食事以外の食べ物・薬物・プレイヤー以外のポーンは含めません。</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>備蓄セルへの運搬回数</RWS_Metric_HaulPlacements>
@@ -1026,14 +1026,14 @@
   <RWS_Details_StatusPartial>部分記録</RWS_Details_StatusPartial>
   <RWS_Details_StatusMissing>未取得</RWS_Details_StatusMissing>
   <RWS_Details_StatusExperimental>実験的</RWS_Details_StatusExperimental>
-  <RWS_Metric_VpeLevelsGained>サイキャスターのレベル上昇</RWS_Metric_VpeLevelsGained>
-  <RWS_MetricDesc_VpeLevelsGained>記録開始後に確認された、プレイヤー派閥のポーンのVPEサイキャスターレベルの上昇の合計。</RWS_MetricDesc_VpeLevelsGained>
-  <RWS_Metric_VpePsycasters>サイキャスター数</RWS_Metric_VpePsycasters>
-  <RWS_MetricDesc_VpePsycasters>記録したセーブの時点で、VPEのサイキャスターのインプラントを持つ自由入植者の数。</RWS_MetricDesc_VpePsycasters>
-  <RWS_Metric_VpeMaxLevel>サイキャスターの最高レベル</RWS_Metric_VpeMaxLevel>
-  <RWS_MetricDesc_VpeMaxLevel>記録したセーブの時点での、自由入植者のVPEサイキャスターレベルの最高値。</RWS_MetricDesc_VpeMaxLevel>
-  <RWS_Metric_VpeSumLevels>サイキャスターのレベル合計</RWS_Metric_VpeSumLevels>
-  <RWS_MetricDesc_VpeSumLevels>記録したセーブの時点での、自由入植者のVPEサイキャスターレベルの合計。</RWS_MetricDesc_VpeSumLevels>
+  <RWS_Metric_VpeLevelsGained>超能力者のレベル上昇</RWS_Metric_VpeLevelsGained>
+  <RWS_MetricDesc_VpeLevelsGained>記録開始後に確認された、プレイヤー派閥のポーンのVPE超能力者レベルの上昇の合計。</RWS_MetricDesc_VpeLevelsGained>
+  <RWS_Metric_VpePsycasters>超能力者数</RWS_Metric_VpePsycasters>
+  <RWS_MetricDesc_VpePsycasters>記録したセーブの時点で、VPEの超能力者のインプラントを持つ自由入植者の数。</RWS_MetricDesc_VpePsycasters>
+  <RWS_Metric_VpeMaxLevel>超能力者の最高レベル</RWS_Metric_VpeMaxLevel>
+  <RWS_MetricDesc_VpeMaxLevel>記録したセーブの時点での、自由入植者のVPE超能力者レベルの最高値。</RWS_MetricDesc_VpeMaxLevel>
+  <RWS_Metric_VpeSumLevels>超能力者のレベル合計</RWS_Metric_VpeSumLevels>
+  <RWS_MetricDesc_VpeSumLevels>記録したセーブの時点での、自由入植者のVPE超能力者レベルの合計。</RWS_MetricDesc_VpeSumLevels>
   <RWS_Metric_OutpostPawns>前哨基地の駐在人数</RWS_Metric_OutpostPawns>
   <RWS_MetricDesc_OutpostPawns>記録したセーブの時点で、プレイヤーが所有する前哨基地に駐在しているポーンの数。</RWS_MetricDesc_OutpostPawns>
   <RWS_Metric_OutpostByType>種類別の前哨基地の数</RWS_Metric_OutpostByType>
@@ -1064,7 +1064,7 @@
   <RWS_VTE_ContractPurchasesDesc>プレイヤーが出したVTEの購入契約のうち、VTEの銀行取引で代金を全額支払い、生成された品物で達成されたものの数。支払いのキャンセルや、支払わずに契約を受けただけでは数えません。</RWS_VTE_ContractPurchasesDesc>
   <RWS_VTE_ContractReceived>VTE 契約で購入した品物の数</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>支払いが完了したプレイヤーのVTE購入契約によって生成された品物の数。NPCの買い取り契約への納品や通常の交易とは別です。</RWS_VTE_ContractReceivedDesc>
-  <RWS_Metric_VpeCasts>サイキャストの使用回数</RWS_Metric_VpeCasts>
+  <RWS_Metric_VpeCasts>超能力の使用回数</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>プレイヤーの自由入植者がVanilla Psycasts Expandedの能力を実際に使用した回数（VPEが能力の使用を消費した時点で数えます）。能力別の内訳もあります。予約した指示、キャンセルした使用、NPCの使用は数えません。</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>罠の再装填回数</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>プレイ中に、解除状態だったプレイヤー所有の罠が再装填に成功した回数。解除状態から作動可能な状態への実際の変化だけを数え、作業の指示、罠の設置時の初期化、デバッグ操作、MOD側のポーンの記録は含めません。</RWS_VfeSecurity_TrapsRearmedDesc>
@@ -1202,7 +1202,7 @@
   <RWS_NewMod_UpgradesDesc>プレイヤーの作業の完了によって新たに取り付けられた車両のアップグレードの数（車両の種類別）。</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>残骸から復元した車両</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>追跡中の残骸の建設が完了して出現したプレイヤーの車両の数。</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Real Ruins キャラバンが入った遺跡</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>キャラバンが入ったReal Ruinsの遺跡</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>マップの生成が必要だったReal Ruinsの遺跡にプレイヤーのキャラバンが到着し、ポーンが実際に入ったことを確認した回数。</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>スロットマシンの完了ラウンド</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>プレイヤーのスロットマシンで完了したラウンドの数。負けと各種の当たりに分けて集計します。</RWS_NewMod_CasinoDesc>
@@ -1276,9 +1276,9 @@
   <RWS_VqeAncients_SuccessfulInjections>アルコジェン注入の成功</RWS_VqeAncients_SuccessfulInjections>
   <RWS_VqeAncients_SuccessfulInjectionsDesc>自動適用または遺伝子の選択確定後に、入植者に新しい異種遺伝子が付与された注入の回数。</RWS_VqeAncients_SuccessfulInjectionsDesc>
   <RWS_VfeClassical_Perks>獲得したパーク</RWS_VfeClassical_Perks>
-  <RWS_VfeClassical_PerksDesc>通常の議員後援で新たに獲得したパークの数。解除後の再獲得を含む。</RWS_VfeClassical_PerksDesc>
+  <RWS_VfeClassical_PerksDesc>通常の議員後援で新たに獲得したパークの数。解除後の再獲得を含みます。</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>艦船戦の勝利</RWS_Sos2_BattlesWon>
-  <RWS_Sos2_BattlesWonDesc>相手側の敗北が確定した艦船戦の勝利数。ハッキングによる勝利を含む。</RWS_Sos2_BattlesWonDesc>
+  <RWS_Sos2_BattlesWonDesc>相手側の敗北が確定した艦船戦の勝利数。ハッキングによる勝利を含みます。</RWS_Sos2_BattlesWonDesc>
   <RWS_Metric_JoinsBySpecies>種族別の加入数</RWS_Metric_JoinsBySpecies>
   <RWS_MetricDesc_JoinsBySpecies>初めて加入した入植者の記録を種族別に集計します。</RWS_MetricDesc_JoinsBySpecies>
   <RWS_Metric_DeathsBySpecies>種族別の入植者死亡数</RWS_Metric_DeathsBySpecies>
@@ -1322,7 +1322,7 @@
   <RWS_AcqUnit_royalty>Royalty: 出来事</RWS_AcqUnit_royalty>
   <RWS_AcqUnit_vpe_events>VPE: レベル成長</RWS_AcqUnit_vpe_events>
   <RWS_AcqUnit_vpe_casts>VPE: 超能力使用</RWS_AcqUnit_vpe_casts>
-  <RWS_AcqUnit_vpe_snapshot>VPE: サイキャスター（セーブ時点）</RWS_AcqUnit_vpe_snapshot>
+  <RWS_AcqUnit_vpe_snapshot>VPE: 超能力者（セーブ時点）</RWS_AcqUnit_vpe_snapshot>
   <RWS_AcqUnit_royalty_state>Royalty: 爵位・能力（セーブ時点）</RWS_AcqUnit_royalty_state>
   <RWS_AcqUnit_royalty_quests>Royalty: クエスト・施設（セーブ時点）</RWS_AcqUnit_royalty_quests>
   <RWS_AcqUnit_ideology>Ideology: 出来事</RWS_AcqUnit_ideology>

@@ -46,6 +46,18 @@ public sealed partial class TranslationCopyRefinementTests
         "(hediff)",
         "（hediff）",
         "（Def名）",
+        "VHGE_HelixienNet",
+        "VRE_HemogenNet",
+        "ImmediateAttackBreaching",
+        "EdgeDrop",
+        "CenterDrop",
+        "RandomDrop",
+        "DeepDrillInfestation",
+        "ManhunterPack",
+        "P-010",
+        "B-002",
+        "N2-C-002",
+        "non-lethal hediffs",
     ];
 
     [GeneratedRegex(@"\{\d+\}")]

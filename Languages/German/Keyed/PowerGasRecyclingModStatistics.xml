@@ -3,7 +3,7 @@
   <RWS_VfePower_NuclearMeltdowns>Kernschmelzen von Reaktoren</RWS_VfePower_NuclearMeltdowns>
   <RWS_VfePower_NuclearMeltdownsDesc>Zählt Atomgeneratoren des Spielers aus Vanilla Furniture Expanded - Power, die tatsächlich eine bestätigte Kernschmelze samt Ausfall erlitten haben.</RWS_VfePower_NuclearMeltdownsDesc>
   <RWS_VheHelixienGas_StoredUnits>Gespeichertes Helixien-Gas</RWS_VheHelixienGas_StoredUnits>
-  <RWS_VheHelixienGas_StoredUnitsDesc>Gesamtmenge an Helixien-Gas, die von Pumpen des Spielers tatsächlich in das VHGE_HelixienNet-Rohrspeichernetz eingespeist wurde.</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VheHelixienGas_StoredUnitsDesc>Gesamtmenge an Helixien-Gas, die von Pumpen des Spielers tatsächlich in das Helixien-Gasrohrspeichernetz eingespeist wurde.</RWS_VheHelixienGas_StoredUnitsDesc>
   <RWS_VreRecycling_ProcessedItems>Recycelte und verdichtete Erzeugnisse</RWS_VreRecycling_ProcessedItems>
   <RWS_VreRecycling_ProcessedItemsDesc>Zählt Gegenstände, die von Verarbeitungsanlagen des Spielers aus Vanilla Recycling Expanded (Müllpressen und Legierungspack-Trenner) tatsächlich erzeugt und abgelegt wurden, nach Gegenstand.</RWS_VreRecycling_ProcessedItemsDesc>
 </LanguageData>

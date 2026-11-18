@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>Eclosiones de capullo</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Cuenta los insectoides negros vivos del jugador que emergieron realmente de capullos de Alpha Animals, por especie.</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>Hemógeno almacenado por draincasket</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>Unidades totales de hemógeno aceptadas realmente por el almacenamiento de la red VRE_HemogenNet desde draincaskets del jugador.</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Unidades totales de hemógeno aceptadas realmente por la red de almacenamiento por tuberías de hemógeno desde draincaskets del jugador.</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

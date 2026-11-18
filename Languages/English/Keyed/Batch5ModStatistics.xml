@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_VefStews_Batches>Stew batches cooked</RWS_VefStews_Batches>
-  <RWS_VefStews_BatchesDesc>Counts completed stew processing batches finished in player-owned stew pots from Vanilla Cooking Expanded - Stews, broken down by process definition.</RWS_VefStews_BatchesDesc>
+  <RWS_VefStews_BatchesDesc>Counts completed stew processing batches finished in player-owned stew pots from Vanilla Cooking Expanded - Stews, broken down by stew recipe.</RWS_VefStews_BatchesDesc>
   <RWS_RimMarket_StallSales>Market stall revenue</RWS_RimMarket_StallSales>
   <RWS_RimMarket_StallSalesDesc>Counts total silver earned from selling colony goods at player-owned market stalls in RimMarket, broken down by sold item type.</RWS_RimMarket_StallSalesDesc>
   <RWS_RimMarket_MarketFees>Market fees collected</RWS_RimMarket_MarketFees>

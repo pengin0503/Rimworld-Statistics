@@ -17,7 +17,7 @@
   <RWS_Lineage_SummaryCarried>{0} übernommene Prüfpunkte</RWS_Lineage_SummaryCarried>
   <RWS_Lineage_SummaryMissingParents>{0} fehlende Vorgänger</RWS_Lineage_SummaryMissingParents>
   <RWS_Lineage_SummaryUnproven>{0} unbewiesene Spielstände</RWS_Lineage_SummaryUnproven>
-  <RWS_Lineage_SummaryConflicted>{0} widprüchliche Prüfpunkte</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryConflicted>{0} widersprüchliche Prüfpunkte</RWS_Lineage_SummaryConflicted>
   <RWS_Lineage_SummaryCompacted>{0} ältere Schnappschüsse verdichtet</RWS_Lineage_SummaryCompacted>
   <RWS_Lineage_ReadOnlyNote>Schreibgeschützt; unbewiesene Spielstände werden nie durch Vermutung verbunden</RWS_Lineage_ReadOnlyNote>
   <RWS_Lineage_LegendProven>Nachgewiesene Kette</RWS_Lineage_LegendProven>

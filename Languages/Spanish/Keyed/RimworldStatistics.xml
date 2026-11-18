@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>Días hasta la primera muerte de un colono</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>Día de juego de la primera muerte de un colono libre, solo si se ha registrado desde el comienzo de la partida.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>Colono de mayor edad al morir</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>Mayor edad biológica de un colono libre justo antes de morir. Es el mismo valor que el del colono más longevo (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Mayor edad biológica de un colono libre justo antes de morir.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>Colonos fallecidos en caravanas</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>Colonos libres que murieron mientras formaban parte de una caravana del jugador.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>Muertes de animales de la colonia</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>Colonos incapacitados</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>Veces que un colono libre pasó de no estar incapacitado a estarlo. No se cuentan las muertes instantáneas sin incapacitación previa.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>Enemigos incapacitados</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Veces que un personaje hostil al jugador quedó incapacitado; si se recupera y vuelve a caer, cuenta de nuevo. Es el mismo valor que enemigos neutralizados (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Veces que un personaje hostil al jugador quedó incapacitado; si se recupera y vuelve a caer, cuenta de nuevo.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>Incapacitaciones por acumulación tóxica</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>Incapacitaciones de colonos libres causadas directamente por acumulación tóxica (Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>Incapacitaciones por peleas sociales</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>Máximo de bajas en un asalto</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>Mayor número de enemigos de un mismo asalto registrado que el bando del jugador abatió mientras duró ese asalto.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Asedios</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Asaltos que utilizan la estrategia Siege (asedio).</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Asaltos con estrategia de asedio.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>Asaltos de ruptura</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Asaltos con una estrategia de ruptura (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). No se incluyen los zapadores.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Asaltos con estrategia de ruptura estándar o inteligente. No se incluyen los zapadores.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>Asaltos con cápsulas de transporte</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Asaltos que llegan por cápsulas de transporte (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Asaltos que llegan en cápsulas de transporte (borde del mapa, grupos en el borde, caída central o dispersa).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Infestaciones</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Infestaciones de colmenas de insectos que se produjeron con éxito (Infestation, DeepDrillInfestation). No se cuentan otros eventos relacionados con insectos.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>Infestaciones de colmenas de insectos producidas con éxito, incluidas las de perforación profunda. No se cuentan otros eventos relacionados con insectos.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>Mecaconglomerados</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>Incidentes de mecaconglomerados iniciados con éxito (Royalty). Los asaltos normales de mecanoides no se cuentan.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>Manadas cazahombres</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Incidentes de manadas cazahombres iniciados con éxito (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Incidentes de manadas cazahombres iniciados con éxito.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>Mayor intervalo sin asaltos</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>Mayor intervalo entre dos asaltos consecutivos registrados, sin contar el tiempo anterior al primero ni posterior al último. Es el mismo valor que el mayor intervalo entre asaltos (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Mayor intervalo entre dos asaltos consecutivos registrados, sin contar el tiempo anterior al primero ni posterior al último.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>Intervalo medio entre asaltos</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>Media de esos mismos intervalos; para el total, se pondera según el número de intervalos.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>Días hasta el primer asalto</RWS_Metric_RaidFirstDay>
@@ -745,7 +745,7 @@
   <RWS_Metric_RosterAnimalDefsPeak>Máximo de especies animales de la colonia</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Mayor número de especies distintas entre los animales vivos de la colonia en una misma partida guardada registrada.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>Necesidad diaria de nutrición de los animales de la colonia</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>Nutrición total que los animales vivos de la colonia (en mapas, en caravanas y en tránsito, igual que en el número de animales de la colonia) comen al día cuando están saciados, en un guardado correcto. Es el cálculo del propio juego, el que se muestra para cada animal al cargar caravanas o cápsulas de transporte: incluye la etapa de vida (las crías comen menos), la gestación, la lactancia y estados similares. Los animales que no necesitan comida y los que están en una cápsula de criosueño cuentan como 0. No se compara con la comida almacenada, así que no se muestran días de comida. Parcial si no se pudo leer algún animal. El valor de todas las colonias suma el último guardado registrado de cada colonia.</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Nutrición total que los animales vivos de la colonia (en mapas, en caravanas y en tránsito, igual que en el número de animales de la colonia) comen al día cuando están saciados, en un guardado correcto. Es el cálculo del propio juego, el que se muestra para cada animal al cargar caravanas o cápsulas de transporte: incluye la etapa de vida (las crías comen menos), la gestación, la lactancia y estados similares. Los animales que no necesitan comida y los que están en un sarcófago de criptosueño cuentan como 0. No se compara con la comida almacenada, así que no se muestran días de comida. Parcial si no se pudo leer algún animal. El valor de todas las colonias suma el último guardado registrado de cada colonia.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Pasiones de colonos por habilidad</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Pasiones de colonos libres (ninguna, menor, mayor) para cada habilidad en una partida guardada exitosa.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Edad media de colonos vivos</RWS_Metric_RosterAgeMean>
@@ -814,7 +814,7 @@
   <RWS_MetricDesc_IdeologyAppointments>Nuevos nombramientos confirmados de colonos del jugador como líderes o especialistas de una ideoligión; volver a asignar la misma función no cuenta.</RWS_MetricDesc_IdeologyAppointments>
   <RWS_Metric_OdysseyFlights>Vuelos de gravinaves completados</RWS_Metric_OdysseyFlights>
   <RWS_MetricDesc_OdysseyFlights>Vuelos de gravinaves confirmados como completados mediante un aterrizaje del jugador. No cuentan los despegues ni las vistas previas de rutas por sí solos.</RWS_MetricDesc_OdysseyFlights>
-  <RWS_Metric_OdysseyDistance>Distancia total de vuelos gravitatorios</RWS_Metric_OdysseyDistance>
+  <RWS_Metric_OdysseyDistance>Distancia total de vuelos de gravinave</RWS_Metric_OdysseyDistance>
   <RWS_MetricDesc_OdysseyDistance>Distancia total de vuelos completados de gravinaves (confirmados por un aterrizaje del jugador).</RWS_MetricDesc_OdysseyDistance>
   <RWS_Metric_OdysseyUniqueTiles>Lugares de aterrizaje distintos</RWS_Metric_OdysseyUniqueTiles>
   <RWS_MetricDesc_OdysseyUniqueTiles>Casillas del mundo distintas donde aterrizaron vuelos completados de gravinaves.</RWS_MetricDesc_OdysseyUniqueTiles>
@@ -1041,11 +1041,11 @@
   <RWS_MetricDesc_OutpostDeliveries>Lotes no vacíos de productos de puestos de avanzada entregados al sistema de reparto. Puede que los objetos almacenados allí o aún en tránsito no hayan llegado.</RWS_MetricDesc_OutpostDeliveries>
   <RWS_Metric_OutpostProducts>Productos de puestos de avanzada por objeto</RWS_Metric_OutpostProducts>
   <RWS_MetricDesc_OutpostProducts>Unidades de productos de puestos de avanzada entregadas al reparto, agrupadas por objeto.</RWS_MetricDesc_OutpostProducts>
-  <RWS_Metric_DbhFixtures>Instalaciones de por tipo</RWS_Metric_DbhFixtures>
+  <RWS_Metric_DbhFixtures>Instalaciones por tipo</RWS_Metric_DbhFixtures>
   <RWS_MetricDesc_DbhFixtures>Edificios de Dubs Bad Hygiene pertenecientes al jugador en mapas de hogar en una partida guardada exitosa.</RWS_MetricDesc_DbhFixtures>
   <RWS_Metric_DbhActivities>Actividades completadas por tarea</RWS_Metric_DbhActivities>
   <RWS_MetricDesc_DbhActivities>Tareas de retrete, ducha y lavado comprobado que han completado personajes del jugador en mapas de hogar desde que se activó esta estadística.</RWS_MetricDesc_DbhActivities>
-  <RWS_SAU_CompletedSwaps>Cambios de completados</RWS_SAU_CompletedSwaps>
+  <RWS_SAU_CompletedSwaps>Cambios de ropa completados</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>Órdenes automáticas de Smart Apparel Upgrade que han terminado de poner el objeto elegido desde que se activó esta estadística.</RWS_SAU_CompletedSwapsDesc>
   <RWS_VTE_BankCredits>Plata VTE ingresada en bancos</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>Plata neta abonada por depósitos bancarios VTE completados, después de las comisiones, desde que se activó esta estadística experimental. No se incluyen pagos de contratos.</RWS_VTE_BankCreditsDesc>
@@ -1107,20 +1107,20 @@
   <RWS_Vsie_AspirationsCompletedDesc>Aspiraciones vinculadas a una inspiración activa de un colono en Vanilla Social Interactions Expanded que se han cumplido por primera vez, agrupadas por inspiración. No cuentan progresos incompletos, caducidad ni inspiraciones sin relación.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Montas Giddy-Up 2 iniciadas</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Veces que un colono del jugador ha empezado realmente a montar un animal propio tras completar un trabajo de montar de Giddy-Up, por tipo de animal. No cuentan llegar ya montado, órdenes en cola ni observaciones repetidas.</RWS_GiddyUp_MountSessionsDesc>
-  <RWS_CombatExtended_Reloads>Recargas de por colonos</RWS_CombatExtended_Reloads>
+  <RWS_CombatExtended_Reloads>Recargas por colonos</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Recargas terminadas por personajes del jugador que realmente han introducido munición en el cargador de un arma. Cada recarga cuenta una vez aunque cargue varias pilas. Se excluyen torretas, cargadores automáticos, munición desactivada y recargas fallidas.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>Despertares naturales de androides VRE</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androides del jugador de cuerpo sintético que han despertado naturalmente mediante la comprobación genética basada en el humor. No cuentan despertar con herramientas de desarrollo, configuración inicial ni androides ya despiertos. Requiere Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializaciones VSE elegidas</RWS_VseExpertise_Selected>
-  <RWS_VseExpertise_SelectedDesc>Especializaciones nuevas elegidas por colonos del jugador en el panel normal de especializaciones, por especialização. No cuentan desbloqueos de depuración ni registros restaurados.</RWS_VseExpertise_SelectedDesc>
+  <RWS_VseExpertise_SelectedDesc>Especializaciones nuevas elegidas por colonos del jugador en el panel normal de especializaciones, por especialización. No cuentan desbloqueos de depuración ni registros restaurados.</RWS_VseExpertise_SelectedDesc>
   <RWS_VseExpertise_LevelUps>Niveles de especialización VSE ganados</RWS_VseExpertise_LevelUps>
-  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes de niveles VSE desde que se activó el registro, sumados entre todas las colonias independientes y agrupados por especialização.</RWS_VseExpertise_LevelUpsDesc>
+  <RWS_VseExpertise_LevelUpsDesc>Aumentos permanentes de niveles VSE desde que se activó el registro, sumados entre todas las colonias independientes y agrupados por especialización.</RWS_VseExpertise_LevelUpsDesc>
   <RWS_VseExpertise_Highest>Nivel de especialización VSE máximo alcanzado</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Mayor nivel de especialización alcanzado realmente por experiencia entre colonias independientes; no es suma de niveles ni instantánea de la última partida guardada.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Lotes procesados</RWS_VefCooking_Batches>
-  <RWS_VefCooking_BatchesDesc>Procesos VEF de sopa, queso y otros productos de Vanilla Cooking Expanded que se han completado, por processo. No cuentan producción normal mediante órdenes ni salidas parcialmente bloqueadas.</RWS_VefCooking_BatchesDesc>
+  <RWS_VefCooking_BatchesDesc>Procesos VEF de sopa, queso y otros productos de Vanilla Cooking Expanded que se han completado, por proceso. No cuentan producción normal mediante órdenes ni salidas parcialmente bloqueadas.</RWS_VefCooking_BatchesDesc>
   <RWS_VefBrewing_Batches>Lotes de fermentación y maduración</RWS_VefBrewing_Batches>
-  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentación, elaboración y envejecimiento de Vanilla Brewing Expanded completados, por processo. No cuentan salidas pausadas, bloqueadas o incompletas ni producción normal mediante órdenes.</RWS_VefBrewing_BatchesDesc>
+  <RWS_VefBrewing_BatchesDesc>Lotes VEF de fermentación, elaboración y envejecimiento de Vanilla Brewing Expanded completados, por proceso. No cuentan salidas pausadas, bloqueadas o incompletas ni producción normal mediante órdenes.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Plata de comidas de clientes</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Plata realmente pagada por clientes ajenos al jugador por comidas en un restaurante del jugador. Los pagos parciales suman solo lo pagado; se excluyen deudas sin pagar, comidas gratis y otras transacciones.</RWS_Gastronomy_SilverCollectedDesc>
   <RWS_VqeDrones_Assembled>Drones VQE Drone Factory ensamblados</RWS_VqeDrones_Assembled>
@@ -1154,7 +1154,7 @@
   <RWS_Rimatomics_Byproducts>Subproductos de reprocesado</RWS_Rimatomics_Byproducts>
   <RWS_Rimatomics_ByproductsDesc>Objetos realmente colocados o fusionados con pilas como subproductos cuando el procesador de plutonio del jugador termina de descargar combustible, por tipo producido. No cuentan combustible gastado devuelto, materiales solo procesados ni colocaciones sin relación.</RWS_Rimatomics_ByproductsDesc>
   <RWS_CE_RoundsUsed>Cartuchos disparados</RWS_CE_RoundsUsed>
-  <RWS_CE_RoundsUsedDesc>Cartuchos realmente gastados de cargadores de armas de colonos del jugador, o al disparar directamente desde el inventario, por tipo de munição. No cuentan mover munición al recargar, disparos en seco, uso de torretas ni recargas de depuración.</RWS_CE_RoundsUsedDesc>
+  <RWS_CE_RoundsUsedDesc>Cartuchos realmente gastados de cargadores de armas de colonos del jugador, o al disparar directamente desde el inventario, por tipo de munición. No cuentan mover munición al recargar, disparos en seco, uso de torretas ni recargas de depuración.</RWS_CE_RoundsUsedDesc>
   <RWS_CE_SuppressionReceived>Veces que los colonos recibieron supresión</RWS_CE_SuppressionReceived>
   <RWS_CE_SuppressionReceivedDesc>Veces que un personaje de la colonia del jugador pasó de no estar suprimido a estarlo en Combat Extended. No cuentan más supresión mientras ya lo está ni pruebas de desarrollador. Mide la supresión recibida, no la infligida a los enemigos.</RWS_CE_SuppressionReceivedDesc>
   <RWS_VfePirates_HireContracts>Contratos de contratación</RWS_VfePirates_HireContracts>

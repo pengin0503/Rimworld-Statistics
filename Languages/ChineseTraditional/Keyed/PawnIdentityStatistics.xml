@@ -6,5 +6,5 @@
   <RWS_MetricDesc_SpeciesPeak>按物種分別計算成功存檔時觀察到的最高人數。</RWS_MetricDesc_SpeciesPeak>
   <RWS_Metric_JoinsByXenotype>按異種型態統計加入人數</RWS_Metric_JoinsByXenotype>
   <RWS_Metric_DeathsByXenotype>按異種型態統計殖民者死亡人數</RWS_Metric_DeathsByXenotype>
-  <RWS_MetricDesc_ByXenotype>根據事件發生時的生物科技異種型態對記錄分類。</RWS_MetricDesc_ByXenotype>
+  <RWS_MetricDesc_ByXenotype>根據事件發生時的 Biotech 異種人對記錄分類。</RWS_MetricDesc_ByXenotype>
 </LanguageData>

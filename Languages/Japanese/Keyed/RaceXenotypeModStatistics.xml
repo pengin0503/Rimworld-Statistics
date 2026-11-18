@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>繭からの羽化数</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Alpha Animalsでプレイヤー側の繭から実際に出現した生存中のインセクトイドを、生物の種類別に数えます。</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>Draincasketのヘモゲン貯蔵量</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>プレイヤー側のDraincasketからVRE_HemogenNet配管貯蔵へ実際に受け入れられたヘモゲンの合計量を記録します。</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>プレイヤー側のDraincasketからヘモゲン配管貯蔵網へ実際に受け入れられたヘモゲンの合計量を記録します。</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>
