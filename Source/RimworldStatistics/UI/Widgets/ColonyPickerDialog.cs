@@ -29,7 +29,7 @@ internal sealed class ColonyPickerDialog : Window
         all = colonies
             .OrderBy(c => c.Excluded ? 1 : 0)
             .ThenBy(c => c.OutOfScope ? 1 : 0)
-            .ThenBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
+            .ThenBy(c => Dialog_RimworldStatistics.ColonyName(c, preferences), StringComparer.CurrentCulture)
             .ThenByDescending(c => c.MaxTicks)
             .Select(c => BuildEntry(c, preferences))
             .ToArray();
@@ -121,7 +121,7 @@ internal sealed class ColonyPickerDialog : Window
 
     private static Entry BuildEntry(ColonyStats stats, ViewPreferences? preferences)
     {
-        var display = Dialog_RimworldStatistics.ColonyName(stats)
+        var display = Dialog_RimworldStatistics.ColonyName(stats, preferences)
             + (stats.Excluded ? (string)"RWS_ExcludedMark".Translate() : "");
         var parts = new List<string>(3);
         var tipLines = new List<string>(4) { display };
@@ -150,7 +150,7 @@ internal static class ColonyChartPicker
 {
     public static void OpenMetricPicker(StatsView view, ColonyStats colony, ViewPreferences preferences, Action savePreferences)
     {
-        var colonyDisplay = Dialog_RimworldStatistics.ColonyName(colony);
+        var colonyDisplay = Dialog_RimworldStatistics.ColonyName(colony, preferences);
         var choices = ColonyHistoryFavorites.CandidateMetricKeys(view, colony.Key)
             .Select(key =>
             {

@@ -71,6 +71,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
     private Task<ColonySummaryReport?>? reportTask;
     private object? cachedLanguage;
+    private string? cachedNameSignature;
     private ReportDisplayCache? displayCache;
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
@@ -139,6 +140,10 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 displayCache = null;
                 tablePlan = null;
             }
+            var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+            var namesChanged = cachedNameSignature != nameSig;
+            if (namesChanged)
+                cachedNameSignature = nameSig;
 
             InGameLoadedState? inGameState = null;
             ColonySummaryReport? currentReport;
@@ -195,7 +200,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                     return;
                 }
 
-                if (!ReferenceEquals(view, inGameState.View) || colonyKey != inGameState.ActiveColonyKey || languageChanged)
+                if (!ReferenceEquals(view, inGameState.View) || colonyKey != inGameState.ActiveColonyKey || languageChanged || namesChanged)
                 {
                     view = inGameState.View;
                     colonyKey = inGameState.ActiveColonyKey;
@@ -207,7 +212,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             }
             else
             {
-                if (languageChanged)
+                if (languageChanged || namesChanged)
                     RefreshColonyName();
                 currentReport = reportTask is { IsCompletedSuccessfully: true } t ? t.Result : null;
             }

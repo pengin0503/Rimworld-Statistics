@@ -24,7 +24,7 @@ public static class DetailsTab
     private static Func<string>?[] chartTipCache = [];
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, MetricVisualKind VisualKind, string? MetricKey, string? ModSource);
+    private sealed record Line(string Label, string Value, string State, string Count, Func<string> Tip, int TipId, int Depth, string? ExpandKey, MetricVisualKind VisualKind, string? MetricKey, string? ModSource, bool SupportsColonyHistory);
 
     private sealed class LazyTip(Func<string> build)
     {
@@ -219,11 +219,14 @@ public static class DetailsTab
             }
             return;
         }
+        var selectedColonyStats = perColony && colonyKey is not null
+            ? view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey)
+            : null;
         var viewRect = new Rect(0f, 0f, width, offsets.Total);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
         var (first, last) = offsets.Visible(scroll.y, outRect.height);
         for (var i = first; i <= last; i++)
-            DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view);
+            DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view, selectedColonyStats);
         Widgets.EndScrollView();
     }
 
@@ -408,7 +411,7 @@ public static class DetailsTab
         GUI.color = Color.white;
     }
 
-    private static void DrawLine(Rect rect, Line line, int index, StatsView view)
+    private static void DrawLine(Rect rect, Line line, int index, StatsView view, ColonyStats? selectedColonyStats)
     {
         if (index % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
@@ -481,19 +484,12 @@ public static class DetailsTab
         // One tooltip per row: the same id keeps RimWorld from stacking a second copy,
         // and the chart hint is shown only over the area that opens the chart.
         var starRect = new Rect(hit.Star.X, rect.y + 2f, hit.Star.Width, rect.height - 4f);
-        var supportsColonyFav = perColony && colonyKey is not null
-            && line.MetricKey is { } mk && ColonyHistoryFavorites.SupportsColonyHistory(view, mk);
+        var supportsColonyFav = perColony && colonyKey is not null && line.SupportsColonyHistory;
         if (line.MetricKey is { } metricKey && favoritePreferences is not null && !hit.Star.IsEmpty)
         {
             var savedMetric = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
-            ColonyStats? selectedColonyStats = null;
-            var savedColony = false;
-            if (supportsColonyFav && colonyKey is { } activeKey)
-            {
-                selectedColonyStats = view.Stats.Colonies.FirstOrDefault(c => c.Key == activeKey);
-                savedColony = ColonyHistoryFavorites.IsFavorite(
-                    favoritePreferences, activeKey, selectedColonyStats?.AliasKeys, metricKey);
-            }
+            var savedColony = supportsColonyFav && colonyKey is { } activeKey
+                && ColonyHistoryFavorites.IsFavorite(favoritePreferences, activeKey, selectedColonyStats?.AliasKeys, metricKey);
 
             if (Widgets.ButtonText(starRect, savedMetric || savedColony ? "★" : "☆"))
             {
@@ -599,6 +595,9 @@ public static class DetailsTab
                 : selected.OrderByDescending(x => x.Label, StringComparer.CurrentCulture)).ToList();
         }
 
+        var breakdownOnlyKeys = input.PerColony
+            ? ColonyHistoryFavorites.BuildBreakdownOnlyKeys(input.View)
+            : null;
         var enableGrouping = DerivedMetricGroups.ShouldGroup(input.GroupDerived, input.PerColony, input.ByValue, term);
         var grouped = DerivedMetricGroups.Group(ordered, x => x.Row.Definition, enableGrouping);
         var result = new List<Line>();
@@ -610,7 +609,7 @@ public static class DetailsTab
             var hasBreakdowns = row.Breakdowns.Count > 0 && (row.Definition.HasBreakdown || crossTop);
             var expandable = hasBreakdowns || node.Children.Count > 0;
             var expandKey = expandable ? (input.PerColony ? "c:" : "a:") + row.Definition.Key : null;
-            result.Add(MakeLine(row, label, 0, expandKey, input, colony,
+            result.Add(MakeLine(row, label, 0, expandKey, input, colony, breakdownOnlyKeys,
                 tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: true));
             if (expandKey is null || !Expanded.Contains(expandKey))
                 continue;
@@ -621,7 +620,7 @@ public static class DetailsTab
                     && child.Row.Definition.Key.StartsWith(CrossColonyCatalog.TopPrefix, StringComparison.Ordinal);
                 var childHasBreakdowns = child.Row.Breakdowns.Count > 0 && (child.Row.Definition.HasBreakdown || childCrossTop);
                 var childExpandKey = childHasBreakdowns ? (input.PerColony ? "c:" : "a:") + child.Row.Definition.Key : null;
-                result.Add(MakeLine(child.Row, child.Label, 1, childExpandKey, input, colony,
+                result.Add(MakeLine(child.Row, child.Label, 1, childExpandKey, input, colony, breakdownOnlyKeys,
                     tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: true));
                 if (childExpandKey is not null && Expanded.Contains(childExpandKey))
                     AppendBreakdowns(child.Row, childExpandKey, 2, childCrossTop, input, colony, version, result);
@@ -642,17 +641,18 @@ public static class DetailsTab
             var childKey = crossTop && b.Breakdowns.Count > 0 ? parentExpandKey + ":" + b.Breakdown : null;
             var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
                 useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
-            result.Add(MakeLine(b, breakdownLabel, depth, childKey, input, colony,
+            result.Add(MakeLine(b, breakdownLabel, depth, childKey, input, colony, null,
                 tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
             if (childKey is not null && Expanded.Contains(childKey))
                 foreach (var contribution in b.Breakdowns)
                     result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
-                        depth + 1, null, input, colony,
+                        depth + 1, null, input, colony, null,
                         tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
         }
     }
 
-    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony, int tipId, bool isMetricRow)
+    private static Line MakeLine(NumericRow row, string label, int depth, string? expandKey, Inputs input, NumericColony? colony,
+        IReadOnlySet<string>? breakdownOnlyKeys, int tipId, bool isMetricRow)
     {
         var d = row.Definition;
         var v = row.Value;
@@ -665,10 +665,12 @@ public static class DetailsTab
         if (d.Acquisition is not null && !d.Published)
             state = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + state;
 
+        var supportsHistory = isMetricRow && breakdownOnlyKeys is not null
+            && ColonyHistoryFavorites.SupportsColonyHistory(d, breakdownOnlyKeys);
         var lazy = new LazyTip(() => BuildTip(row, label, isMetricRow, input, colony));
         return new Line(label, value, state, count, lazy.Get, tipId, depth, expandKey,
             MetricVisualState.Classify(row), isMetricRow ? d.Key : null,
-            isMetricRow ? MetricText.ModSourceLabel(d) : null);
+            isMetricRow ? MetricText.ModSourceLabel(d) : null, supportsHistory);
     }
 
     private static string BuildTip(NumericRow row, string label, bool isMetricRow, Inputs input, NumericColony? colony)

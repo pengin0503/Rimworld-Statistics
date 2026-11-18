@@ -28,7 +28,8 @@ public static class ColonyPresentation
         if (aliasKeys is not { Count: > 0 })
             return null;
         if (aliasKeys.Count == 1)
-            return map.TryGetValue(aliasKeys[0], out var single) ? NormalizeDisplayName(single) : null;
+            return !string.IsNullOrWhiteSpace(aliasKeys[0]) && map.TryGetValue(aliasKeys[0], out var single)
+                ? NormalizeDisplayName(single) : null;
 
         foreach (var alias in aliasKeys.Order(StringComparer.Ordinal))
         {

@@ -359,6 +359,9 @@ public sealed class Dialog_RimworldStatistics : Window
     internal static string ColonyName(ColonyStats s)
         => ColonyPresentation.ResolveName(s, ActivePreferences, UnnamedColonyFallback);
 
+    internal static string ColonyName(ColonyStats s, ViewPreferences? preferences)
+        => ColonyPresentation.ResolveName(s, preferences ?? ActivePreferences, UnnamedColonyFallback);
+
     internal static string Local(DateTime? utc)
         => utc is { } t ? DateTime.SpecifyKind(t, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) : Dash;
 

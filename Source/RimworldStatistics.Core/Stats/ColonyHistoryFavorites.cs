@@ -34,6 +34,37 @@ public sealed record ResolvedColonyHistoryFavorite(
 /// </summary>
 public static class ColonyHistoryFavorites
 {
+    public static HashSet<string> BuildBreakdownOnlyKeys(NumericView numeric)
+    {
+        ArgumentNullException.ThrowIfNull(numeric);
+        var set = new HashSet<string>(StringComparer.Ordinal);
+        for (var c = 0; c < numeric.Colonies.Count; c++)
+        {
+            var rows = numeric.Colonies[c].Rows;
+            for (var r = 0; r < rows.Count; r++)
+            {
+                if (rows[r].Value.BreakdownOnly)
+                    set.Add(rows[r].Definition.Key);
+            }
+        }
+        for (var r = 0; r < numeric.Overall.Count; r++)
+        {
+            if (numeric.Overall[r].Value.BreakdownOnly)
+                set.Add(numeric.Overall[r].Definition.Key);
+        }
+        return set;
+    }
+
+    public static bool SupportsColonyHistory(MetricDefinition definition, IReadOnlySet<string> breakdownOnlyKeys)
+    {
+        ArgumentNullException.ThrowIfNull(definition);
+        ArgumentNullException.ThrowIfNull(breakdownOnlyKeys);
+        if (!SupportsColonyHistoryDefinition(definition))
+            return false;
+        var sourceKey = MetricChartSeries.ColonyComparisonKey(definition);
+        return !breakdownOnlyKeys.Contains(sourceKey);
+    }
+
     public static bool SupportsColonyHistory(StatsView view, string metricKey)
     {
         ArgumentNullException.ThrowIfNull(view);
@@ -51,11 +82,25 @@ public static class ColonyHistoryFavorites
             c.Rows.FirstOrDefault(r => r.Definition.Key == sourceKey)?.Value.BreakdownOnly == true);
     }
 
+    public static string CanonicalHistoryMetricKey(string metricKey)
+    {
+        if (string.IsNullOrWhiteSpace(metricKey))
+            return metricKey;
+        if (metricKey.StartsWith(CrossColonyCatalog.MaxPrefix, StringComparison.Ordinal)
+            && metricKey.Length > CrossColonyCatalog.MaxPrefix.Length)
+            return metricKey[CrossColonyCatalog.MaxPrefix.Length..];
+        if (metricKey.StartsWith(CrossColonyCatalog.MinPrefix, StringComparison.Ordinal)
+            && metricKey.Length > CrossColonyCatalog.MinPrefix.Length)
+            return metricKey[CrossColonyCatalog.MinPrefix.Length..];
+        return metricKey;
+    }
+
     public static IReadOnlyList<string> CandidateMetricKeys(StatsView view, string? colonyKey = null)
     {
         ArgumentNullException.ThrowIfNull(view);
         var keys = new List<string>(BasicMetrics.SaveHistoryKeys);
         var seen = new HashSet<string>(keys, StringComparer.Ordinal);
+        var breakdownOnlyKeys = BuildBreakdownOnlyKeys(view.Numeric);
 
         var numericRows = colonyKey is not null
             ? (view.Numeric.Colonies.FirstOrDefault(c => c.Key == colonyKey)?.Rows
@@ -65,12 +110,9 @@ public static class ColonyHistoryFavorites
         foreach (var row in numericRows.Concat(view.Numeric.Overall))
         {
             var def = row.Definition;
-            if (!SupportsColonyHistoryDefinition(def) || CrossColonyCatalog.IsDerived(def))
+            if (CrossColonyCatalog.IsDerived(def) || row.Value.BreakdownOnly)
                 continue;
-            if (row.Value.BreakdownOnly)
-                continue;
-            if (view.Numeric.Colonies.Any(c =>
-                    c.Rows.FirstOrDefault(r => r.Definition.Key == def.Key)?.Value.BreakdownOnly == true))
+            if (!SupportsColonyHistory(def, breakdownOnlyKeys))
                 continue;
             if (seen.Add(def.Key))
                 keys.Add(def.Key);
@@ -103,7 +145,7 @@ public static class ColonyHistoryFavorites
                 colonyByAnyKey.TryAdd(alias, stats);
         }
 
-        var groupedIndex = new Dictionary<(string CanonicalColonyKey, string MetricKey), int>();
+        var groupedIndex = new Dictionary<(string CanonicalColonyKey, string CanonicalMetricKey), int>();
         var storedKeysPerEntry = new List<List<string>>(items.Count);
         var drafts = new List<(string StoredKey, string CanonicalKey, string MetricKey, ColonyStats? Colony)>(items.Count);
 
@@ -113,15 +155,20 @@ public static class ColonyHistoryFavorites
                 continue;
             colonyByAnyKey.TryGetValue(item.ColonyKey, out var colony);
             var canonicalKey = colony?.Key ?? item.ColonyKey;
-            var groupKey = (canonicalKey, item.MetricKey);
+            var canonicalMetricKey = CanonicalHistoryMetricKey(item.MetricKey);
+            var groupKey = (canonicalKey, canonicalMetricKey);
             if (groupedIndex.TryGetValue(groupKey, out var existingIndex))
             {
                 var keys = storedKeysPerEntry[existingIndex];
                 if (!keys.Contains(item.ColonyKey, StringComparer.Ordinal))
                     keys.Add(item.ColonyKey);
-                // Prefer showing canonical key as StoredColonyKey if present among merged duplicates.
-                if (item.ColonyKey == canonicalKey && drafts[existingIndex].StoredKey != canonicalKey)
-                    drafts[existingIndex] = drafts[existingIndex] with { StoredKey = canonicalKey };
+                // Prefer showing canonical colony/metric keys if present among merged duplicates.
+                var updated = drafts[existingIndex];
+                if (item.ColonyKey == canonicalKey && updated.StoredKey != canonicalKey)
+                    updated = updated with { StoredKey = canonicalKey };
+                if (item.MetricKey == canonicalMetricKey && updated.MetricKey != canonicalMetricKey)
+                    updated = updated with { MetricKey = canonicalMetricKey };
+                drafts[existingIndex] = updated;
                 continue;
             }
 
@@ -145,9 +192,10 @@ public static class ColonyHistoryFavorites
         if (preferences?.FavoriteColonyMetrics is not { Count: > 0 } list
             || string.IsNullOrWhiteSpace(canonicalColonyKey) || string.IsNullOrWhiteSpace(metricKey))
             return false;
+        var targetMetric = CanonicalHistoryMetricKey(metricKey);
         foreach (var f in list)
         {
-            if (!string.Equals(f.MetricKey, metricKey, StringComparison.Ordinal))
+            if (!string.Equals(CanonicalHistoryMetricKey(f.MetricKey), targetMetric, StringComparison.Ordinal))
                 continue;
             if (string.Equals(f.ColonyKey, canonicalColonyKey, StringComparison.Ordinal)
                 || (aliasKeys is not null && aliasKeys.Contains(f.ColonyKey, StringComparer.Ordinal)))
@@ -172,7 +220,7 @@ public static class ColonyHistoryFavorites
         preferences.FavoriteColonyMetrics.Add(new ColonyMetricFavorite
         {
             ColonyKey = canonicalColonyKey,
-            MetricKey = metricKey,
+            MetricKey = CanonicalHistoryMetricKey(metricKey),
         });
         return true;
     }
@@ -190,8 +238,10 @@ public static class ColonyHistoryFavorites
         ArgumentNullException.ThrowIfNull(preferences);
         if (string.IsNullOrWhiteSpace(metricKey))
             return false;
+        var targetMetric = CanonicalHistoryMetricKey(metricKey);
         var removed = preferences.FavoriteColonyMetrics.RemoveAll(f =>
-            string.Equals(f.MetricKey, metricKey, StringComparison.Ordinal)
+            (string.Equals(f.MetricKey, metricKey, StringComparison.Ordinal)
+                || string.Equals(CanonicalHistoryMetricKey(f.MetricKey), targetMetric, StringComparison.Ordinal))
             && (string.Equals(f.ColonyKey, canonicalColonyKey, StringComparison.Ordinal)
                 || (aliasKeys is not null && aliasKeys.Contains(f.ColonyKey, StringComparer.Ordinal))));
         return removed > 0;

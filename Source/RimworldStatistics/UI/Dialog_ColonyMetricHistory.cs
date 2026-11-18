@@ -247,7 +247,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             contentWidth - axisWidth - 16f, vertical.PlotHeight);
         if (plot.width >= 10f)
         {
-            DrawPlot(plot, axisWidth, history);
+            DrawPlot(plot, axisWidth, history, currentColonyName);
             DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
         }
         Widgets.EndScrollView();
@@ -654,7 +654,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         }
     }
 
-    private void DrawPlot(Rect plot, float axisWidth, MetricHistory history)
+    private void DrawPlot(Rect plot, float axisWidth, MetricHistory history, string primaryColonyName)
     {
         var pixelWidth = Math.Max(1, (int)plot.width);
         if (plotWidth != pixelWidth)
@@ -781,7 +781,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             return;
         }
         MetricHistoryPoint? nearest = null;
-        var hoverName = colonyName;
+        var hoverName = primaryColonyName;
         IReadOnlyList<MetricHistoryPoint> hoverSeries = history.Points;
         var bestDistance = float.PositiveInfinity;
         var primaryCandidates = visiblePrimaryMeasured ?? measured!;

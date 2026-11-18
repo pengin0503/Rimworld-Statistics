@@ -394,7 +394,7 @@ public static class OverviewTab
         {
             var fav = items[i];
             var colonyName = fav.Colony is not null
-                ? Dialog_RimworldStatistics.ColonyName(fav.Colony)
+                ? Dialog_RimworldStatistics.ColonyName(fav.Colony, chosen)
                 : ColonyPresentation.TryGetCustomName(chosen, fav.StoredColonyKey)
                     ?? (string)"RWS_ColonyFav_MissingColony".Translate();
 

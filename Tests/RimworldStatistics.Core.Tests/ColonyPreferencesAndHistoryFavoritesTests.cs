@@ -373,4 +373,48 @@ public sealed class ColonyPreferencesAndHistoryFavoritesTests
         Assert.All(remaining, r => Assert.True(r.CanOpen));
         Assert.Equal([BasicMetrics.Days], prefs.FavoriteMetricKeys);
     }
+
+    [Fact]
+    public void DerivedCrossColonyHistoryKeys_CoalesceWithSourceMetricAndGuardWhitespaceAliases()
+    {
+        var prefs = new ViewPreferences
+        {
+            ColonyDisplayNames = new(StringComparer.Ordinal) { ["valid-key"] = "Valid Name" },
+            FavoriteColonyMetrics =
+            [
+                new() { ColonyKey = "col-1", MetricKey = CrossColonyCatalog.MaxPrefix + MetricKeys.ModsLatest },
+                new() { ColonyKey = "col-1", MetricKey = MetricKeys.ModsLatest },
+            ],
+        };
+
+        Assert.Null(ColonyPresentation.TryGetCustomName(prefs, "other-key", ["   "]));
+
+        Assert.True(ColonyHistoryFavorites.IsFavorite(prefs, "col-1", null, MetricKeys.ModsLatest));
+        Assert.True(ColonyHistoryFavorites.IsFavorite(prefs, "col-1", null, CrossColonyCatalog.MaxPrefix + MetricKeys.ModsLatest));
+
+        using var tmp = new TempDir();
+        var session = new ProfileSession(new ProfileStore(tmp.Path), () => Now);
+        var save = MakeSave("c1.rws", "SeedCanon", 60000, factionName: "Alpha", worldName: "World1");
+        session.Mutate(p =>
+        {
+            p.SaveObservations.Add(save);
+            p.MetricObservations.Add(MakeMetricObservation(save, MetricKeys.ModsLatest, 5));
+        }, SaveMode.None);
+
+        var view = session.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var actualKey = view.Stats.Colonies[0].Key;
+        prefs.FavoriteColonyMetrics =
+        [
+            new() { ColonyKey = actualKey, MetricKey = CrossColonyCatalog.MaxPrefix + MetricKeys.ModsLatest },
+            new() { ColonyKey = actualKey, MetricKey = MetricKeys.ModsLatest },
+        ];
+
+        var resolved = ColonyHistoryFavorites.ResolveAll(view, prefs);
+        Assert.Single(resolved);
+        Assert.Equal(MetricKeys.ModsLatest, resolved[0].MetricKey);
+
+        // Toggling from the opened history chart (which uses the canonical source key) removes both entries cleanly.
+        Assert.True(ColonyHistoryFavorites.Toggle(prefs, actualKey, null, MetricKeys.ModsLatest));
+        Assert.Empty(prefs.FavoriteColonyMetrics);
+    }
 }
