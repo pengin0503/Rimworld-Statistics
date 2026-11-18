@@ -72,9 +72,12 @@ internal static class VfeMedieval2Statistics
             throw new InvalidOperationException("Selected Medieval2 1.7 apiary assembly is absent");
 
         var unload = AccessTools.DeclaredMethod(driver, "<MakeNewToils>b__5_1", Type.EmptyTypes);
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), "TryPlaceThing",
+        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
             [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing,int>), typeof(Predicate<IntVec3>)]);
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
+            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
+            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
         var property = AccessTools.Property(driver, "Apiary");
         var ready = AccessTools.Property(apiary, "HoneyReady");
         var pawn = AccessTools.Field(typeof(JobDriver), "pawn");

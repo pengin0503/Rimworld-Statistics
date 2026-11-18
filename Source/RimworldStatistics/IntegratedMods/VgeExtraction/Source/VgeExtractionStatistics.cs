@@ -62,9 +62,12 @@ internal static class VgeExtractionStatistics
             throw new InvalidOperationException("VGE 1.7 GeneticRim extractor assembly is absent");
 
         var extract = AccessTools.DeclaredMethod(comp, "DoEffectOn", [typeof(Pawn), typeof(Thing)]);
-        // The selected GeneticRim source uses exactly the no-out, four-argument
+        // The selected GeneticRim 1.7 binary calls the no-out eight-argument
         // GenPlace.TryPlaceThing overload once in its successful output branch.
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), "TryPlaceThing",
+        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
+            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
+            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
             [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode)]);
         if (extract?.ReturnType != typeof(void) ||
             place?.ReturnType != typeof(bool))

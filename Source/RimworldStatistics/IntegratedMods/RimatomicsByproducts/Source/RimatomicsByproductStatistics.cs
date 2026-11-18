@@ -74,7 +74,10 @@ internal static class RimatomicsByproductStatistics
             !typeof(Verse.AI.JobDriver).IsAssignableFrom(job))
             throw new InvalidOperationException("Rimatomics fuel processor/unload types changed");
         var takeOut = AccessTools.DeclaredMethod(proc, "TakeOutFuel", Type.EmptyTypes);
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), "TryPlaceThing",
+        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
+            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
+            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
             [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
              typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
         if (takeOut is null || !typeof(Thing).IsAssignableFrom(takeOut.ReturnType) ||
