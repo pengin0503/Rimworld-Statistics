@@ -44,6 +44,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         bool EmptyMessageIsWarning);
 
     private readonly StatsView view;
+    private readonly string? scopeName;
     private string colonyKey;
     private string colonyName = "";
     private string? originalFactionName;
@@ -69,10 +70,15 @@ internal sealed class Dialog_ColonyChronicle : Window
     private ColonyChronicleExportResult? exportCompleted;
     private string? exportError;
 
-    internal Dialog_ColonyChronicle(StatsView view, string colonyKey, ChronicleBranchKey? initialBranch = null)
+    internal Dialog_ColonyChronicle(
+        StatsView view,
+        string colonyKey,
+        ChronicleBranchKey? initialBranch = null,
+        string? scopeName = null)
     {
         this.view = view;
         this.colonyKey = colonyKey;
+        this.scopeName = scopeName;
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
@@ -95,13 +101,15 @@ internal sealed class Dialog_ColonyChronicle : Window
             Log.ErrorOnce($"[RimworldStatistics] The colony chronicle failed to draw.\n{e}", "RWS.chronicle".GetHashCode());
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
             GUI.color = Color.white;
-            Widgets.Label(rect, "RWS_WindowError".Translate());
+            Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
         }
         finally
         {
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
             GUI.color = Color.white;
         }
     }
@@ -154,7 +162,8 @@ internal sealed class Dialog_ColonyChronicle : Window
             TooltipHandler.TipRegion(titleRect, titleText);
         Text.Font = GameFont.Small;
 
-        var currentChronicle = chronicleTask is { IsCompletedSuccessfully: true } done ? done.Result : null;
+        var rawChronicle = chronicleTask is { IsCompletedSuccessfully: true } done ? done.Result : null;
+        var currentChronicle = rawChronicle is not null && rawChronicle.ColonyKey == colonyKey ? rawChronicle : null;
         var display = currentChronicle is not null ? EnsureDisplayCache(currentChronicle, lang) : null;
 
         var y = rect.y + 36f;
@@ -199,13 +208,13 @@ internal sealed class Dialog_ColonyChronicle : Window
         var reportLabel = (string)"RWS_Report_Open".Translate();
         var reportRect = controls.Next(reportLabel, 120f, 215f);
         if (Widgets.ButtonText(reportRect, reportLabel.Truncate(Math.Max(0f, reportRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colonyKey));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySummaryReport(view, colonyKey, scopeName));
         TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
 
         var lineageLabel = (string)"RWS_Lineage_Open".Translate();
         var lineageRect = controls.Next(lineageLabel, 120f, 215f);
         if (Widgets.ButtonText(lineageRect, lineageLabel.Truncate(Math.Max(0f, lineageRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySaveLineage(view, colonyKey, null, null, scopeName));
         TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
 
         if (display is not null)
@@ -245,9 +254,11 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (exportStatus is not null)
         {
             var statusRect = new Rect(rect.x, y, rect.width, 22f);
-            GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
-            Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
-            GUI.color = Color.white;
+            using (UiScopes.GuiState())
+            {
+                GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
+                Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
+            }
             TooltipHandler.TipRegion(statusRect, exportStatus);
             y += 24f;
         }
@@ -288,11 +299,13 @@ internal sealed class Dialog_ColonyChronicle : Window
                 TooltipHandler.TipRegion(clearRect, clearLabel);
 
             var canClear = HasAnyFilterInput(display.Query);
-            var previousColor = GUI.color;
-            if (!canClear)
-                GUI.color = new Color(0.65f, 0.65f, 0.65f);
-            var clearClicked = Widgets.ButtonText(clearRect, shownClear, active: canClear);
-            GUI.color = previousColor;
+            bool clearClicked;
+            using (UiScopes.GuiState())
+            {
+                if (!canClear)
+                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                clearClicked = Widgets.ButtonText(clearRect, shownClear, active: canClear);
+            }
             if (clearClicked && canClear)
                 ClearFilters();
 
@@ -350,8 +363,12 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private ColonyChronicleExportText BuildExportText(ChronicleDisplayCache display)
     {
-        var origLine = originalFactionName is { Length: > 0 } rawFaction
-            && !string.Equals(colonyName, rawFaction, StringComparison.Ordinal)
+        var exportColonyKey = display.Branch.Chronicle.ColonyKey;
+        var exportStats = view.Stats.Colonies.FirstOrDefault(c => c.Key == exportColonyKey);
+        var exportColonyName = exportStats is not null ? Dialog_RimworldStatistics.ColonyName(exportStats) : exportColonyKey;
+        var exportRawFaction = exportStats?.FactionName;
+        var origLine = exportRawFaction is { Length: > 0 } rawFaction
+            && !string.Equals(exportColonyName, rawFaction, StringComparison.Ordinal)
                 ? (string)"RWS_Report_OriginalFactionSubtitle".Translate(rawFaction)
                 : null;
 
@@ -368,12 +385,12 @@ internal sealed class Dialog_ColonyChronicle : Window
 
         return new ColonyChronicleExportText
         {
-            ColonyKey = colonyKey,
-            ColonyName = colonyName,
+            ColonyKey = exportColonyKey,
+            ColonyName = exportColonyName,
             OriginalFactionLine = origLine,
             ModVersion = RimworldStatisticsMod.InstalledVersion,
             Language = LanguageDatabase.activeLanguage?.folderName ?? "en",
-            PageTitle = (string)"RWS_Chronicle_Title".Translate(colonyName),
+            PageTitle = (string)"RWS_Chronicle_Title".Translate(exportColonyName),
             Subtitle = string.Join(" · ", subtitleParts),
             SummaryLine = display.SummaryText,
             NoticeLines = display.NoticeLines,
@@ -403,15 +420,15 @@ internal sealed class Dialog_ColonyChronicle : Window
         var actualFieldWidth = Math.Max(40f, groupRect.width - labelWidth);
         var actualLabelWidth = Math.Max(0f, groupRect.width - actualFieldWidth);
 
-        var previousColor = GUI.color;
-        if (highlightError)
-            GUI.color = FieldErrorLabelColor;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        Widgets.Label(
-            new Rect(groupRect.x, groupRect.y, actualLabelWidth, groupRect.height),
-            label.Truncate(actualLabelWidth));
-        Text.Anchor = TextAnchor.UpperLeft;
-        GUI.color = previousColor;
+        using (UiScopes.GuiState())
+        {
+            if (highlightError)
+                GUI.color = FieldErrorLabelColor;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(
+                new Rect(groupRect.x, groupRect.y, actualLabelWidth, groupRect.height),
+                label.Truncate(actualLabelWidth));
+        }
 
         var fieldRect = new Rect(groupRect.x + actualLabelWidth, groupRect.y + 2f, actualFieldWidth, groupRect.height - 4f);
         var nextValue = Widgets.TextField(fieldRect, value) ?? "";
@@ -477,7 +494,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         var currentColonyKey = Current.ProgramState == ProgramState.Playing
             ? InGameColonyAccess.Resolve(view, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
             : null;
-        Find.WindowStack.Add(new ColonyPickerDialog(
+        UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
             view.Stats.Colonies,
             Dialog_RimworldStatistics.ActivePreferences,
             picked => StartLoad(picked.Key, null),
@@ -576,8 +593,8 @@ internal sealed class Dialog_ColonyChronicle : Window
         var viewWidth = Math.Max(innerWidth, tablePlan.TotalWidth);
         var viewRect = new Rect(0f, 0f, viewWidth, viewHeight);
 
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        try
+        using (UiScopes.ScrollView(outRect, ref scroll, viewRect))
+        using (UiScopes.GuiState())
         {
             var cy = 0f;
 
@@ -595,12 +612,6 @@ internal sealed class Dialog_ColonyChronicle : Window
             if (undatedLines.Length > 0)
                 DrawUndated(undatedLines, cy, innerWidth, subtitle);
         }
-        finally
-        {
-            Text.Anchor = TextAnchor.UpperLeft;
-            GUI.color = Color.white;
-            Widgets.EndScrollView();
-        }
     }
 
     private float DrawTable(ChronicleDisplayCache display, float cy, float innerWidth, float viewportHeight, float emptyLabelHeight)
@@ -616,32 +627,35 @@ internal sealed class Dialog_ColonyChronicle : Window
             "RWS_Chronicle_ColEvidence".Translate(),
         ];
 
-        GUI.color = new Color(0.78f, 0.80f, 0.84f);
-        Text.Anchor = TextAnchor.MiddleLeft;
-        var hx = 0f;
-        for (var c = 0; c < headers.Length; c++)
+        using (UiScopes.GuiState())
         {
-            var cell = new Rect(hx + 4f, cy, Math.Max(0f, widths[c] - 8f), HeaderRowHeight);
-            var shown = headers[c].Truncate(cell.width);
-            Widgets.Label(cell, shown);
-            if (shown != headers[c])
-                TooltipHandler.TipRegion(cell, headers[c]);
-            hx += widths[c];
+            GUI.color = new Color(0.78f, 0.80f, 0.84f);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            var hx = 0f;
+            for (var c = 0; c < headers.Length; c++)
+            {
+                var cell = new Rect(hx + 4f, cy, Math.Max(0f, widths[c] - 8f), HeaderRowHeight);
+                var shown = headers[c].Truncate(cell.width);
+                Widgets.Label(cell, shown);
+                if (shown != headers[c])
+                    TooltipHandler.TipRegion(cell, headers[c]);
+                hx += widths[c];
+            }
+            Widgets.DrawBoxSolid(new Rect(0f, cy + HeaderRowHeight - 1f, plan.TotalWidth, 1f), new Color(1f, 1f, 1f, 0.15f));
         }
-        Widgets.DrawBoxSolid(new Rect(0f, cy + HeaderRowHeight - 1f, plan.TotalWidth, 1f), new Color(1f, 1f, 1f, 0.15f));
-        GUI.color = Color.white;
-        Text.Anchor = TextAnchor.UpperLeft;
         cy += HeaderRowHeight;
 
         if (rows.Length == 0)
         {
-            GUI.color = display.EmptyMessageIsWarning
-                ? WarningTextColor
-                : new Color(0.72f, 0.75f, 0.80f);
-            Widgets.Label(
-                new Rect(4f, cy + 6f, Math.Max(80f, innerWidth - 8f), emptyLabelHeight),
-                display.EmptyMessage);
-            GUI.color = Color.white;
+            using (UiScopes.GuiState())
+            {
+                GUI.color = display.EmptyMessageIsWarning
+                    ? WarningTextColor
+                    : new Color(0.72f, 0.75f, 0.80f);
+                Widgets.Label(
+                    new Rect(4f, cy + 6f, Math.Max(80f, innerWidth - 8f), emptyLabelHeight),
+                    display.EmptyMessage);
+            }
             return cy + emptyLabelHeight + 8f + 8f;
         }
 
@@ -664,37 +678,38 @@ internal sealed class Dialog_ColonyChronicle : Window
                 Widgets.DrawHighlightIfMouseover(rowRect);
             var hovered = chartable && Mouse.IsOver(rowRect);
 
-            Text.Anchor = TextAnchor.MiddleLeft;
-            var rx = 0f;
-
-            var timeCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[0] - 8f), RowHeight);
-            Widgets.Label(timeCell, r.TimeText.Truncate(timeCell.width));
-            rx += widths[0];
-
-            var kindCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[1] - 8f), RowHeight);
-            GUI.color = r.KindColor;
-            Widgets.Label(kindCell, r.KindText.Truncate(kindCell.width));
-            GUI.color = Color.white;
-            rx += widths[1];
-
-            var iconReserve = chartable ? 18f : 0f;
-            var eventCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[2] - 8f - iconReserve), RowHeight);
-            Widgets.Label(eventCell, r.EventText.Truncate(eventCell.width));
-            if (chartable)
+            using (UiScopes.GuiState())
             {
-                var iconRect = new Rect(rx + widths[2] - 18f, ry + (RowHeight - 12f) * 0.5f, 12f, 12f);
-                MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
+                Text.Anchor = TextAnchor.MiddleLeft;
+                var rx = 0f;
+
+                var timeCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[0] - 8f), RowHeight);
+                Widgets.Label(timeCell, r.TimeText.Truncate(timeCell.width));
+                rx += widths[0];
+
+                var kindCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[1] - 8f), RowHeight);
+                GUI.color = r.KindColor;
+                Widgets.Label(kindCell, r.KindText.Truncate(kindCell.width));
+                GUI.color = Color.white;
+                rx += widths[1];
+
+                var iconReserve = chartable ? 18f : 0f;
+                var eventCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[2] - 8f - iconReserve), RowHeight);
+                Widgets.Label(eventCell, r.EventText.Truncate(eventCell.width));
+                if (chartable)
+                {
+                    var iconRect = new Rect(rx + widths[2] - 18f, ry + (RowHeight - 12f) * 0.5f, 12f, 12f);
+                    MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
+                }
+                rx += widths[2];
+
+                var evCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[3] - 8f), RowHeight);
+                GUI.color = r.Entry.Coverage == MetricCoverage.Partial
+                    ? new Color(0.92f, 0.79f, 0.52f)
+                    : new Color(0.82f, 0.85f, 0.90f);
+                Widgets.Label(evCell, r.EvidenceText.Truncate(evCell.width));
             }
-            rx += widths[2];
 
-            var evCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[3] - 8f), RowHeight);
-            GUI.color = r.Entry.Coverage == MetricCoverage.Partial
-                ? new Color(0.92f, 0.79f, 0.52f)
-                : new Color(0.82f, 0.85f, 0.90f);
-            Widgets.Label(evCell, r.EvidenceText.Truncate(evCell.width));
-            GUI.color = Color.white;
-
-            Text.Anchor = TextAnchor.UpperLeft;
             TooltipHandler.TipRegion(rowRect, r.Tooltip);
             if (chartable && Widgets.ButtonInvisible(rowRect))
                 OpenEntryChart(r.ChartTargets);
@@ -705,11 +720,13 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private static void DrawUndated(string[] undatedLines, float cy, float innerWidth, string subtitle)
     {
-        GUI.color = new Color(0.58f, 0.82f, 0.94f);
-        Widgets.Label(new Rect(0f, cy, innerWidth, 23f),
-            "RWS_Chronicle_UndatedTitle".Translate(undatedLines.Length.ToString(Inv)));
-        Widgets.DrawBoxSolid(new Rect(0f, cy + 23f, innerWidth, 1f), new Color(1f, 1f, 1f, 0.14f));
-        GUI.color = Color.white;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.58f, 0.82f, 0.94f);
+            Widgets.Label(new Rect(0f, cy, innerWidth, 23f),
+                "RWS_Chronicle_UndatedTitle".Translate(undatedLines.Length.ToString(Inv)));
+            Widgets.DrawBoxSolid(new Rect(0f, cy + 23f, innerWidth, 1f), new Color(1f, 1f, 1f, 0.14f));
+        }
         cy += 28f;
 
         var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
@@ -717,9 +734,11 @@ internal sealed class Dialog_ColonyChronicle : Window
         Widgets.DrawMenuSection(new Rect(0f, cy, innerWidth, 14f + subtitleH + linesH));
 
         var uy = cy + 7f;
-        GUI.color = new Color(0.76f, 0.79f, 0.84f);
-        Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), subtitle);
-        GUI.color = Color.white;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.76f, 0.79f, 0.84f);
+            Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), subtitle);
+        }
         uy += subtitleH;
 
         foreach (var line in undatedLines)
@@ -735,14 +754,14 @@ internal sealed class Dialog_ColonyChronicle : Window
     {
         if (targets.Length == 1)
         {
-            Find.WindowStack.Add(new Dialog_MetricChart(view, targets[0].MetricKey, colonyKey));
+            UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(view, targets[0].MetricKey, colonyKey, scopeName));
             return;
         }
 
         var options = targets
             .Select(t => new FloatMenuOption(
                 (string)"RWS_Chronicle_OpenChartMenu".Translate(t.Label),
-                () => Find.WindowStack.Add(new Dialog_MetricChart(view, t.MetricKey, colonyKey))))
+                () => UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(view, t.MetricKey, colonyKey, scopeName))))
             .ToList();
         if (options.Count > 0)
             Find.WindowStack.Add(new FloatMenu(options));

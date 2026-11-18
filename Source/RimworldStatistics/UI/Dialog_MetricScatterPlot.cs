@@ -125,6 +125,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
         {
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
             GUI.color = Color.white;
         }
     }
@@ -173,7 +174,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 36f, rect.width, 28f));
         if (Button(ref controls, t.XButton, t.XSource is null ? t.XButton : t.XButton + "\n" + t.XSource, 155f, 320f))
-            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(key, yKey, xPerDay, yPerDay), t.XButton, xKey));
+            UiScopes.OpenOrReplaceWindow(new MetricPickerDialog(t.Choices, key => SetAxes(key, yKey, xPerDay, yPerDay), t.XButton, xKey));
 
         var canXRate = MetricScatterPlot.CanPlotPerDay(view, xKey);
         var xRateLabel = (string)(xPerDay ? "RWS_Scatter_XRateOn" : "RWS_Scatter_XRateOff").Translate();
@@ -182,7 +183,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
             SetAxes(xKey, yKey, !xPerDay, yPerDay);
 
         if (Button(ref controls, t.YButton, t.YSource is null ? t.YButton : t.YButton + "\n" + t.YSource, 155f, 320f))
-            Find.WindowStack.Add(new MetricPickerDialog(t.Choices, key => SetAxes(xKey, key, xPerDay, yPerDay), t.YButton, yKey));
+            UiScopes.OpenOrReplaceWindow(new MetricPickerDialog(t.Choices, key => SetAxes(xKey, key, xPerDay, yPerDay), t.YButton, yKey));
 
         var canYRate = MetricScatterPlot.CanPlotPerDay(view, yKey);
         var yRateLabel = (string)(yPerDay ? "RWS_Scatter_YRateOn" : "RWS_Scatter_YRateOff").Translate();
@@ -238,21 +239,26 @@ internal sealed class Dialog_MetricScatterPlot : Window
         var shown = label.Truncate(Math.Max(0f, r.width - 12f));
         if (shown != label || tip != label)
             TooltipHandler.TipRegion(r, tip);
-        var prev = GUI.color;
-        if (!active)
-            GUI.color = new Color(0.65f, 0.65f, 0.65f);
-        var clicked = Widgets.ButtonText(r, shown, active: active);
-        GUI.color = prev;
+        bool clicked;
+        using (UiScopes.GuiState())
+        {
+            if (!active)
+                GUI.color = new Color(0.65f, 0.65f, 0.65f);
+            clicked = Widgets.ButtonText(r, shown, active: active);
+        }
         return clicked && active;
     }
 
     private static float Line(Rect rect, float y, string text, string tip, Color color)
     {
         var r = new Rect(rect.x, y, rect.width, 22f);
-        GUI.color = color;
-        var shown = text.Truncate(r.width);
-        Widgets.Label(r, shown);
-        GUI.color = Color.white;
+        string shown;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = color;
+            shown = text.Truncate(r.width);
+            Widgets.Label(r, shown);
+        }
         if (shown != text || tip != text)
             TooltipHandler.TipRegion(r, tip);
         return y + 22f;
@@ -340,7 +346,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
     }
 
     private string RawLabel(string key)
-        => BasicMetrics.Contains(key) ? MetricText.BasicLabel(key)
+        => BasicMetrics.Contains(key) ? MetricText.PerColonyBasicLabel(key)
             : MetricLookup.Definition(view, key) is { } d ? MetricText.Label(d) : key;
 
     private string? Source(string key)
@@ -564,12 +570,14 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
     private void DrawPlot(Rect area, MetricScatterPlot p, Texts t)
     {
-        Text.Font = GameFont.Tiny;
-        var yLabelWidth = 36f;
-        foreach (var label in t.YTicks)
-            yLabelWidth = Math.Max(yLabelWidth, Text.CalcSize(label).x + 8f);
-        yLabelWidth = Math.Min(yLabelWidth, 120f);
-        Text.Font = GameFont.Small;
+        float yLabelWidth = 36f;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Tiny;
+            foreach (var label in t.YTicks)
+                yLabelWidth = Math.Max(yLabelWidth, Text.CalcSize(label).x + 8f);
+            yLabelWidth = Math.Min(yLabelWidth, 120f);
+        }
 
         var plotRect = new Rect(area.x + yLabelWidth, area.y + 24f,
             Math.Max(0f, area.width - yLabelWidth - 16f), Math.Max(0f, area.height - 24f - 44f));
@@ -580,31 +588,32 @@ internal sealed class Dialog_MetricScatterPlot : Window
         var yName = (string)"RWS_Scatter_Y".Translate(t.YLabel);
         var yNameRect = new Rect(area.x, area.y, area.width, 22f);
         Widgets.Label(yNameRect, yName.Truncate(yNameRect.width));
-        var anchor = Text.Anchor;
-        Text.Anchor = TextAnchor.UpperCenter;
-        var xName = (string)"RWS_Scatter_X".Translate(t.XLabel);
-        Widgets.Label(new Rect(plotRect.x, plotRect.yMax + 20f, plotRect.width, 22f), xName.Truncate(plotRect.width));
-
-        Widgets.DrawBoxSolid(plotRect, PlotBackground);
-        Text.Font = GameFont.Tiny;
-        for (var i = 0; i < p.Y.Ticks.Count; i++)
+        using (UiScopes.GuiState())
         {
-            var value = p.Y.Ticks[i];
-            var py = plotRect.yMax - (float)p.Y.Position(value) * plotRect.height;
-            Widgets.DrawBoxSolid(new Rect(plotRect.x, py, plotRect.width, 1f), value == 0d ? ZeroColor : GridColor);
-            Text.Anchor = TextAnchor.MiddleRight;
-            Widgets.Label(new Rect(area.x, py - 9f, yLabelWidth - 5f, 18f), t.YTicks[i].Truncate(yLabelWidth - 5f));
-        }
-        var xLabelWidth = Math.Max(30f, plotRect.width / Math.Max(1, p.X.Ticks.Count) - 4f);
-        for (var i = 0; i < p.X.Ticks.Count; i++)
-        {
-            var value = p.X.Ticks[i];
-            var px = plotRect.x + (float)p.X.Position(value) * plotRect.width;
-            Widgets.DrawBoxSolid(new Rect(px, plotRect.y, 1f, plotRect.height), value == 0d ? ZeroColor : GridColor);
             Text.Anchor = TextAnchor.UpperCenter;
-            Widgets.Label(new Rect(px - xLabelWidth / 2f, plotRect.yMax + 2f, xLabelWidth, 18f), t.XTicks[i].Truncate(xLabelWidth));
+            var xName = (string)"RWS_Scatter_X".Translate(t.XLabel);
+            Widgets.Label(new Rect(plotRect.x, plotRect.yMax + 20f, plotRect.width, 22f), xName.Truncate(plotRect.width));
+
+            Widgets.DrawBoxSolid(plotRect, PlotBackground);
+            Text.Font = GameFont.Tiny;
+            for (var i = 0; i < p.Y.Ticks.Count; i++)
+            {
+                var value = p.Y.Ticks[i];
+                var py = plotRect.yMax - (float)p.Y.Position(value) * plotRect.height;
+                Widgets.DrawBoxSolid(new Rect(plotRect.x, py, plotRect.width, 1f), value == 0d ? ZeroColor : GridColor);
+                Text.Anchor = TextAnchor.MiddleRight;
+                Widgets.Label(new Rect(area.x, py - 9f, yLabelWidth - 5f, 18f), t.YTicks[i].Truncate(yLabelWidth - 5f));
+            }
+            var xLabelWidth = Math.Max(30f, plotRect.width / Math.Max(1, p.X.Ticks.Count) - 4f);
+            for (var i = 0; i < p.X.Ticks.Count; i++)
+            {
+                var value = p.X.Ticks[i];
+                var px = plotRect.x + (float)p.X.Position(value) * plotRect.width;
+                Widgets.DrawBoxSolid(new Rect(px, plotRect.y, 1f, plotRect.height), value == 0d ? ZeroColor : GridColor);
+                Text.Anchor = TextAnchor.UpperCenter;
+                Widgets.Label(new Rect(px - xLabelWidth / 2f, plotRect.yMax + 2f, xLabelWidth, 18f), t.XTicks[i].Truncate(xLabelWidth));
+            }
         }
-        Text.Anchor = anchor;
 
         if (clusters is null || clusterArea != plotRect.size)
         {
@@ -617,45 +626,48 @@ internal sealed class Dialog_MetricScatterPlot : Window
         var hovered = -1;
         var best = float.MaxValue;
         var mouseNear = Mouse.IsOver(plotRect.ExpandedBy(reach));
-        for (var i = 0; i < clusters!.Count; i++)
+        using (UiScopes.GuiState())
         {
-            var c = clusters[i];
-            var center = new Vector2(plotRect.x + (float)c.X, plotRect.yMax - (float)c.Y);
-            var marker = new Rect(center.x - MarkerSize / 2f, center.y - MarkerSize / 2f, MarkerSize, MarkerSize);
-            if (colorMode == ScatterColorMode.DataStatus)
+            Text.Font = GameFont.Tiny;
+            for (var i = 0; i < clusters!.Count; i++)
             {
-                if (clusterCaution[i])
-                    Widgets.DrawBoxSolidWithOutline(marker, HollowFill, CautionColor, 1);
+                var c = clusters[i];
+                var center = new Vector2(plotRect.x + (float)c.X, plotRect.yMax - (float)c.Y);
+                var marker = new Rect(center.x - MarkerSize / 2f, center.y - MarkerSize / 2f, MarkerSize, MarkerSize);
+                if (colorMode == ScatterColorMode.DataStatus)
+                {
+                    if (clusterCaution[i])
+                        Widgets.DrawBoxSolidWithOutline(marker, HollowFill, CautionColor, 1);
+                    else
+                        Widgets.DrawBoxSolid(marker, PointColor);
+                }
                 else
-                    Widgets.DrawBoxSolid(marker, PointColor);
-            }
-            else
-            {
-                var bucketIdx = clusterBucketIndices[i];
-                var dotColor = bucketIdx >= 0 && colorAssignment is not null && bucketIdx < colorAssignment.Buckets.Count
-                    ? BucketColor(colorAssignment.Buckets[bucketIdx])
-                    : MixedClusterColor;
-                if (clusterCaution[i])
-                    Widgets.DrawBoxSolidWithOutline(marker, HollowFill, dotColor, 1);
-                else if (bucketIdx < 0)
-                    Widgets.DrawBoxSolidWithOutline(marker, dotColor, Color.white, 1);
-                else
-                    Widgets.DrawBoxSolid(marker, dotColor);
-            }
-            if (c.PointIndices.Count > 1)
-                Widgets.Label(new Rect(marker.xMax + 1f, marker.y - 11f, 48f, 16f), c.PointIndices.Count.ToString(Inv));
+                {
+                    var bucketIdx = clusterBucketIndices[i];
+                    var dotColor = bucketIdx >= 0 && colorAssignment is not null && bucketIdx < colorAssignment.Buckets.Count
+                        ? BucketColor(colorAssignment.Buckets[bucketIdx])
+                        : MixedClusterColor;
+                    if (clusterCaution[i])
+                        Widgets.DrawBoxSolidWithOutline(marker, HollowFill, dotColor, 1);
+                    else if (bucketIdx < 0)
+                        Widgets.DrawBoxSolidWithOutline(marker, dotColor, Color.white, 1);
+                    else
+                        Widgets.DrawBoxSolid(marker, dotColor);
+                }
+                if (c.PointIndices.Count > 1)
+                    Widgets.Label(new Rect(marker.xMax + 1f, marker.y - 11f, 48f, 16f), c.PointIndices.Count.ToString(Inv));
 
-            if (!mouseNear)
-                continue;
-            var dx = Math.Abs(mouse.x - center.x);
-            var dy = Math.Abs(mouse.y - center.y);
-            if (dx <= reach && dy <= reach && dx + dy < best)
-            {
-                best = dx + dy;
-                hovered = i;
+                if (!mouseNear)
+                    continue;
+                var dx = Math.Abs(mouse.x - center.x);
+                var dy = Math.Abs(mouse.y - center.y);
+                if (dx <= reach && dy <= reach && dx + dy < best)
+                {
+                    best = dx + dy;
+                    hovered = i;
+                }
             }
         }
-        Text.Font = GameFont.Small;
 
         if (hovered < 0)
             return;
@@ -714,7 +726,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
         var key = point.ColonyKey;
         var options = new List<FloatMenuOption>
         {
-            new("RWS_Report_Open".Translate(), () => Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, key, scopeName))),
+            new("RWS_Report_Open".Translate(), () => UiScopes.OpenOrReplaceWindow(new Dialog_ColonySummaryReport(view, key, scopeName))),
         };
         void History(ScatterAxis axis, string rawLabel, ScatterValue value)
         {
@@ -727,8 +739,8 @@ internal sealed class Dialog_MetricScatterPlot : Window
             var comparison = axis.PerDay
                 ? MetricLookup.ForColony(view, key, axis.MetricKey)?.Value ?? fallback
                 : fallback;
-            options.Add(new FloatMenuOption("RWS_Scatter_History".Translate(rawLabel), () => Find.WindowStack.Add(
-                new Dialog_ColonyMetricHistory(view, key, Name(key), axis.Definition, rawLabel, comparison))));
+            options.Add(new FloatMenuOption("RWS_Scatter_History".Translate(rawLabel), () => UiScopes.OpenOrReplaceWindow(
+                new Dialog_ColonyMetricHistory(view, key, Name(key), axis.Definition, rawLabel, comparison, scopeName))));
         }
         History(p.X, RawLabel(p.X.MetricKey), point.X);
         if (p.Y.MetricKey != p.X.MetricKey)

@@ -232,10 +232,21 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 if (languageChanged || namesChanged)
                     RefreshColonyName();
                 if (reportTask is { IsCompletedSuccessfully: true } t)
-                    (currentReport, currentChronicle) = t.Result;
+                {
+                    var (rawReport, rawChronicle) = t.Result;
+                    currentReport = rawReport is not null && rawReport.Overview.ColonyKey == colonyKey ? rawReport : null;
+                    currentChronicle = rawChronicle is not null && rawChronicle.ColonyKey == colonyKey ? rawChronicle : null;
+                }
                 else
+                {
                     (currentReport, currentChronicle) = (null, null);
+                }
             }
+
+            if (currentReport is not null && currentReport.Overview.ColonyKey != colonyKey)
+                currentReport = null;
+            if (currentChronicle is not null && currentChronicle.ColonyKey != colonyKey)
+                currentChronicle = null;
 
             var activeView = view!;
             DrawWindowTitle(rect, currentReport?.Overview.FactionName);
@@ -254,13 +265,13 @@ internal sealed class Dialog_ColonySummaryReport : Window
             var lineageLabel = (string)"RWS_Lineage_Open".Translate();
             var lineageRect = controls.Next(lineageLabel, 125f, 220f);
             if (Widgets.ButtonText(lineageRect, lineageLabel.Truncate(Math.Max(0f, lineageRect.width - 12f))))
-                Find.WindowStack.Add(new Dialog_ColonySaveLineage(activeView, colonyKey));
+                UiScopes.OpenOrReplaceWindow(new Dialog_ColonySaveLineage(activeView, colonyKey, null, null, explicitScopeName));
             TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
 
             var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
             var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
             if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
-                Find.WindowStack.Add(new Dialog_ColonyChronicle(activeView, colonyKey));
+                UiScopes.OpenOrReplaceWindow(new Dialog_ColonyChronicle(activeView, colonyKey, null, explicitScopeName));
             TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
 
             var exportLabel = (string)"RWS_Report_ExportHtml".Translate();
@@ -306,9 +317,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
             if (exportStatus is not null)
             {
                 var statusRect = new Rect(rect.x, y, rect.width, 22f);
-                GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
-                Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
+                    Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
+                }
                 TooltipHandler.TipRegion(statusRect, exportStatus);
                 y += 24f;
             }
@@ -349,6 +362,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         {
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
             GUI.color = Color.white;
         }
     }
@@ -359,13 +373,15 @@ internal sealed class Dialog_ColonySummaryReport : Window
         if (rawFactionName is { Length: > 0 } raw && !string.Equals(colonyName, raw, StringComparison.Ordinal))
             titleText += " (" + (string)"RWS_Report_OriginalFactionSubtitle".Translate(raw) + ")";
 
-        Text.Font = GameFont.Medium;
-        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
-        var shownTitle = titleText.Truncate(titleRect.width);
-        Widgets.Label(titleRect, shownTitle);
-        if (shownTitle != titleText)
-            TooltipHandler.TipRegion(titleRect, titleText);
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
+            var shownTitle = titleText.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+            if (shownTitle != titleText)
+                TooltipHandler.TipRegion(titleRect, titleText);
+        }
     }
 
     private void DrawInGameSavedNotice(ref float y, Rect rect, InGameLoadedState state)
@@ -421,9 +437,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
         Widgets.DrawBoxSolid(new Rect(cardRect.x, cardRect.y, 4f, cardRect.height), new Color(0.42f, 0.76f, 0.92f));
 
         var cy = cardRect.y + 14f;
-        GUI.color = new Color(0.72f, 0.88f, 0.96f);
-        Widgets.Label(new Rect(cardRect.x + 16f, cy, innerWidth, headingHeight), heading);
-        GUI.color = Color.white;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.72f, 0.88f, 0.96f);
+            Widgets.Label(new Rect(cardRect.x + 16f, cy, innerWidth, headingHeight), heading);
+        }
         cy += headingHeight + 6f;
 
         Widgets.Label(new Rect(cardRect.x + 16f, cy, innerWidth, bodyHeight), explanation);
@@ -554,7 +572,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             : Current.ProgramState == ProgramState.Playing
                 ? InGameColonyAccess.Resolve(activeView, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
                 : null;
-        Find.WindowStack.Add(new ColonyPickerDialog(
+        UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
             activeView.Stats.Colonies,
             Dialog_RimworldStatistics.ActivePreferences,
             picked => SelectColony(picked.Key),
@@ -574,7 +592,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             var directory = Path.Combine(ProfileService.DirectoryPath, "exports");
             var gen = ++exportGeneration;
             activeExportGeneration = gen;
-            exportTask = Task.Run(() => ColonyReportHtmlExport.Write(report, text, directory));
+            exportTask = Task.Run(() => ColonyReportHtmlExport.Write(display.Report, text, directory));
         }
         catch (Exception ex)
         {
@@ -593,11 +611,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
         return new ColonyReportHtmlText
         {
-            ColonyName = colonyName,
+            ColonyName = display.ColonyName,
             ScopeName = display.ScopeLabel,
             ModVersion = RimworldStatisticsMod.InstalledVersion,
             Language = LanguageDatabase.activeLanguage?.folderName ?? "en",
-            PageTitle = (string)"RWS_Report_Title".Translate(colonyName),
+            PageTitle = (string)"RWS_Report_Title".Translate(display.ColonyName),
             Subtitle = (string)"RWS_Report_HtmlSubtitle".Translate(display.ScopeLabel),
             OriginalFactionLine = display.OriginalFactionLine,
             StatusBanner = display.Banner,
@@ -667,8 +685,8 @@ internal sealed class Dialog_ColonySummaryReport : Window
             totalHeight += 26f;
 
         var viewRect = new Rect(0f, 0f, innerWidth, totalHeight + 8f);
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        try
+        using (UiScopes.ScrollView(outRect, ref scroll, viewRect))
+        using (UiScopes.GuiState())
         {
             var cy = 0f;
             if (display.Banner is { } banner)
@@ -693,9 +711,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 var fx = 10f + col * (cellWidth + 12f);
                 var fy = cy + 8f + row * 42f;
                 var (fieldKey, fieldVal) = display.OverviewFields[i];
-                GUI.color = new Color(0.72f, 0.76f, 0.82f);
-                Widgets.Label(new Rect(fx, fy, cellWidth, 18f), fieldKey.Truncate(cellWidth));
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = new Color(0.72f, 0.76f, 0.82f);
+                    Widgets.Label(new Rect(fx, fy, cellWidth, 18f), fieldKey.Truncate(cellWidth));
+                }
                 var shownVal = fieldVal.Truncate(cellWidth);
                 var valRect = new Rect(fx, fy + 18f, cellWidth, 22f);
                 Widgets.Label(valRect, shownVal);
@@ -711,9 +731,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
             var ey = cy + 8f;
             if (display.EndingLines.Length == 0)
             {
-                GUI.color = new Color(0.75f, 0.78f, 0.82f);
-                Widgets.Label(new Rect(12f, ey, innerWidth - 24f, 22f), "RWS_Endings_None".Translate());
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = new Color(0.75f, 0.78f, 0.82f);
+                    Widgets.Label(new Rect(12f, ey, innerWidth - 24f, 22f), "RWS_Endings_None".Translate());
+                }
                 ey += 24f;
             }
             else
@@ -729,9 +751,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
             if (display.EndingFootnote is { } foot)
             {
                 var fh = Math.Max(20f, Text.CalcHeight(foot, innerWidth - 24f) + 4f);
-                GUI.color = new Color(0.76f, 0.79f, 0.84f);
-                Widgets.Label(new Rect(12f, ey, innerWidth - 24f, fh), foot);
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = new Color(0.76f, 0.79f, 0.84f);
+                    Widgets.Label(new Rect(12f, ey, innerWidth - 24f, fh), foot);
+                }
             }
             cy += endingsCardHeight + 12f;
 
@@ -751,24 +775,23 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
             if (display.AnyPartialRank)
             {
-                GUI.color = new Color(0.78f, 0.80f, 0.84f);
-                Widgets.Label(new Rect(0f, cy, innerWidth, 24f), "RWS_Report_PartialRankFootnote".Translate());
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = new Color(0.78f, 0.80f, 0.84f);
+                    Widgets.Label(new Rect(0f, cy, innerWidth, 24f), "RWS_Report_PartialRankFootnote".Translate());
+                }
             }
-        }
-        finally
-        {
-            Widgets.EndScrollView();
         }
     }
 
     private static void DrawSectionHeading(ref float y, float width, string heading)
     {
-        var prevColor = GUI.color;
-        GUI.color = new Color(0.58f, 0.82f, 0.94f);
-        Widgets.Label(new Rect(0f, y, width, 23f), heading);
-        Widgets.DrawBoxSolid(new Rect(0f, y + 23f, width, 1f), new Color(1f, 1f, 1f, 0.14f));
-        GUI.color = prevColor;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.58f, 0.82f, 0.94f);
+            Widgets.Label(new Rect(0f, y, width, 23f), heading);
+            Widgets.DrawBoxSolid(new Rect(0f, y + 23f, width, 1f), new Color(1f, 1f, 1f, 0.14f));
+        }
         y += 26f;
     }
 
@@ -788,22 +811,21 @@ internal sealed class Dialog_ColonySummaryReport : Window
         ];
         bool[] rightAligned = [false, true, false, true, false, true];
 
-        var prevAnchor = Text.Anchor;
-        var prevColor = GUI.color;
-        GUI.color = new Color(0.78f, 0.80f, 0.84f);
-        var hx = 0f;
-        for (var c = 0; c < headers.Length; c++)
+        using (UiScopes.GuiState())
         {
-            var cell = new Rect(hx + 4f, y, Math.Max(0f, widths[c] - 8f), HeaderRowHeight);
-            Text.Anchor = rightAligned[c] ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
-            var shown = headers[c].Truncate(cell.width);
-            Widgets.Label(cell, shown);
-            if (shown != headers[c])
-                TooltipHandler.TipRegion(cell, headers[c]);
-            hx += widths[c];
+            GUI.color = new Color(0.78f, 0.80f, 0.84f);
+            var hx = 0f;
+            for (var c = 0; c < headers.Length; c++)
+            {
+                var cell = new Rect(hx + 4f, y, Math.Max(0f, widths[c] - 8f), HeaderRowHeight);
+                Text.Anchor = rightAligned[c] ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+                var shown = headers[c].Truncate(cell.width);
+                Widgets.Label(cell, shown);
+                if (shown != headers[c])
+                    TooltipHandler.TipRegion(cell, headers[c]);
+                hx += widths[c];
+            }
         }
-        GUI.color = prevColor;
-        Text.Anchor = prevAnchor;
         y += HeaderRowHeight;
 
         for (var i = 0; i < rows.Length; i++)
@@ -817,49 +839,50 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 Widgets.DrawHighlightIfMouseover(rowRect);
 
             var hovered = r.Chartable && Mouse.IsOver(rowRect);
-            var rx = 0f;
+            using (UiScopes.GuiState())
+            {
+                var rx = 0f;
 
-            // Column 0: Metric label (+ optional MOD source + mini chart icon).
-            var iconReserved = r.Chartable ? 18f : 0f;
-            var nameWidth = Math.Max(0f, widths[0] - 8f - iconReserved);
-            if (r.ModSource is { } modSource)
-            {
-                Text.Anchor = TextAnchor.MiddleLeft;
-                Widgets.Label(new Rect(rx + 4f, y + 2f, nameWidth, 21f), r.Label.Truncate(nameWidth));
-                GUI.color = new Color(0.75f, 0.77f, 0.81f);
-                Widgets.Label(new Rect(rx + 4f, y + 21f, nameWidth, 19f), modSource.Truncate(nameWidth));
-                GUI.color = Color.white;
-            }
-            else
-            {
-                Text.Anchor = TextAnchor.MiddleLeft;
-                Widgets.Label(new Rect(rx + 4f, y, nameWidth, rh), r.Label.Truncate(nameWidth));
-            }
-            if (r.Chartable)
-            {
-                var iconRect = new Rect(rx + widths[0] - 18f, y + (rh - 12f) * 0.5f, 12f, 12f);
-                MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
-            }
-            rx += widths[0];
+                // Column 0: Metric label (+ optional MOD source + mini chart icon).
+                var iconReserved = r.Chartable ? 18f : 0f;
+                var nameWidth = Math.Max(0f, widths[0] - 8f - iconReserved);
+                if (r.ModSource is { } modSource)
+                {
+                    Text.Anchor = TextAnchor.MiddleLeft;
+                    Widgets.Label(new Rect(rx + 4f, y + 2f, nameWidth, 21f), r.Label.Truncate(nameWidth));
+                    GUI.color = new Color(0.75f, 0.77f, 0.81f);
+                    Widgets.Label(new Rect(rx + 4f, y + 21f, nameWidth, 19f), modSource.Truncate(nameWidth));
+                    GUI.color = Color.white;
+                }
+                else
+                {
+                    Text.Anchor = TextAnchor.MiddleLeft;
+                    Widgets.Label(new Rect(rx + 4f, y, nameWidth, rh), r.Label.Truncate(nameWidth));
+                }
+                if (r.Chartable)
+                {
+                    var iconRect = new Rect(rx + widths[0] - 18f, y + (rh - 12f) * 0.5f, 12f, 12f);
+                    MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
+                }
+                rx += widths[0];
 
-            string[] rest = [r.ValueText, r.KindText, r.RankText, r.StateText, r.RangeText];
-            for (var c = 0; c < rest.Length; c++)
-            {
-                var colIndex = c + 1;
-                var cell = new Rect(rx + 4f, y, Math.Max(0f, widths[colIndex] - 8f), rh);
-                Text.Anchor = rightAligned[colIndex] ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
-                GUI.color = colIndex == 1 && r.IsMissingOrNa ? new Color(0.68f, 0.68f, 0.70f)
-                    : colIndex == 4 && r.IsPartial ? new Color(0.92f, 0.79f, 0.52f)
-                    : Color.white;
-                Widgets.Label(cell, rest[c].Truncate(cell.width));
-                rx += widths[colIndex];
+                string[] rest = [r.ValueText, r.KindText, r.RankText, r.StateText, r.RangeText];
+                for (var c = 0; c < rest.Length; c++)
+                {
+                    var colIndex = c + 1;
+                    var cell = new Rect(rx + 4f, y, Math.Max(0f, widths[colIndex] - 8f), rh);
+                    Text.Anchor = rightAligned[colIndex] ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+                    GUI.color = colIndex == 1 && r.IsMissingOrNa ? new Color(0.68f, 0.68f, 0.70f)
+                        : colIndex == 4 && r.IsPartial ? new Color(0.92f, 0.79f, 0.52f)
+                        : Color.white;
+                    Widgets.Label(cell, rest[c].Truncate(cell.width));
+                    rx += widths[colIndex];
+                }
             }
 
-            GUI.color = Color.white;
-            Text.Anchor = TextAnchor.UpperLeft;
             TooltipHandler.TipRegion(rowRect, r.Tooltip);
             if (r.Chartable && Widgets.ButtonInvisible(rowRect))
-                Find.WindowStack.Add(new Dialog_MetricChart(view!, r.Item.MetricKey, colonyKey));
+                UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(view!, r.Item.MetricKey, colonyKey, explicitScopeName));
 
             y += rh;
         }
@@ -938,9 +961,9 @@ internal sealed class Dialog_ColonySummaryReport : Window
         if (cov.ExperimentalCount > 0)
             coverageLine += " · " + (string)"RWS_Report_CoverageExperimental".Translate(cov.ExperimentalCount);
 
-        var keyRows = report.KeyRecords.Select(BuildDisplayRow).ToArray();
-        var topRows = report.TopRankedHighlights.Select(BuildDisplayRow).ToArray();
-        var modRows = report.ModHighlights.Select(BuildDisplayRow).ToArray();
+        var keyRows = report.KeyRecords.Select(i => BuildDisplayRow(i, report.Overview.ColonyKey)).ToArray();
+        var topRows = report.TopRankedHighlights.Select(i => BuildDisplayRow(i, report.Overview.ColonyKey)).ToArray();
+        var modRows = report.ModHighlights.Select(i => BuildDisplayRow(i, report.Overview.ColonyKey)).ToArray();
         var anyPartialRank = keyRows.Concat(topRows).Concat(modRows).Any(r => r.Item.Rank is not null && r.Item.RankHasPartial);
         var chronicleSection = chronicle is not null && view is not null
             ? ColonyChronicleFormatter.BuildReportSection(view, chronicle)
@@ -979,7 +1002,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var list = new List<string>();
         foreach (var pair in ov.CountedEndings.GroupBy(e => (e.Type, e.Ordinal)).OrderBy(g => g.Key.Type).ThenBy(g => g.Key.Ordinal))
         {
-            var best = pair.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+            var best = EndingTraces.Representative(pair);
             var time = Dialog_RimworldStatistics.Local(pair.Min(e => e.RealTimeUtc));
             var source = best.Source == EndingSource.SeededTrace
                 ? (string)"RWS_Source_SeededTrace".Translate()
@@ -1008,13 +1031,17 @@ internal sealed class Dialog_ColonySummaryReport : Window
         return list.ToArray();
     }
 
-    private DisplayRow BuildDisplayRow(ColonyReportMetricItem item)
+    private DisplayRow BuildDisplayRow(ColonyReportMetricItem item, string targetColonyKey)
     {
         var def = item.Definition;
         var val = item.Value;
         var label = item.IsBasic ? BasicPerColonyLabel(item.MetricKey) : MetricText.Label(def);
         var modSource = item.IsBasic ? null : MetricText.ModSourceLabel(def);
-        var valueText = MetricText.Format(def, val);
+        var valueText = !item.IsBasic && view is not null && MetricLookup.ForColony(view, targetColonyKey, item.MetricKey) is { } row
+            ? DetailsTab.FormatRowValue(row, key => view.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } s
+                ? Dialog_RimworldStatistics.ColonyName(s)
+                : key)
+            : MetricText.Format(def, val);
         var kindText = KindLabel(item.ValueKind);
         var rankText = FormatRank(item);
 
@@ -1048,12 +1075,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             tip.ToString(), chartable, isMissingOrNa, isPartial);
     }
 
-    private static string BasicPerColonyLabel(string key) => key switch
-    {
-        BasicMetrics.PeakWealth => "RWS_Col_PeakWealth".Translate(),
-        BasicMetrics.LastWealth => "RWS_Col_LastWealth".Translate(),
-        _ => MetricText.BasicLabel(key),
-    };
+    private static string BasicPerColonyLabel(string key) => MetricText.PerColonyBasicLabel(key);
 
     private static string KindLabel(ColonyReportValueKind kind) => kind switch
     {

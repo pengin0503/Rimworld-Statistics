@@ -156,6 +156,7 @@ public sealed class CheckpointArchiveTests
         Revision = 1,
         Source = MetricObservationSource.Checkpoint,
         Selection = selection,
+        HasBreakdown = selection == ColonySelection.ObservationMaxByBreakdown,
         Overall = OverallAggregation.Sum,
         LabelKey = "Test",
         DescriptionKey = "Test",

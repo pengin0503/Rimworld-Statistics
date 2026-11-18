@@ -10,6 +10,8 @@ public sealed record HistoricalCounterInterval(
     int StartTick, int EndTick, long RaidsIncrease, long ColonistDeathsIncrease)
 {
     public MetricCoverage Coverage => MetricCoverage.Partial;
+    public string? CampaignId { get; init; }
+    public string? FingerprintHash { get; init; }
     public string? ColonyName { get; init; }
     public string? ParentSaveName { get; init; }
     public string? ChildSaveName { get; init; }
@@ -120,6 +122,8 @@ public static class HistoricalCounterIntervals
                 parent.SaveTick, child.SaveTick, toRaids.Value - fromRaids.Value,
                 toDeaths.Value - fromDeaths.Value)
             {
+                CampaignId = child.Identity.ModCampaignId,
+                FingerprintHash = child.Identity.FingerprintHash(),
                 ColonyName = inputs.ColonyNames.GetValueOrDefault(child.Identity.ModCampaignId!),
                 ParentSaveName = BoundaryName(parent, from),
                 ChildSaveName = BoundaryName(child, through),

@@ -48,82 +48,87 @@ internal sealed class ColonyPickerDialog : Window
 
     public override void DoWindowContents(Rect rect)
     {
-        var y = rect.y;
-        var headingRect = new Rect(rect.x, y, Math.Max(0f, rect.width - 32f), 26f);
-        var shownHeading = heading.Truncate(headingRect.width);
-        Widgets.Label(headingRect, shownHeading);
-        if (shownHeading != heading)
-            TooltipHandler.TipRegion(headingRect, heading);
-        y += 28f;
-
-        var searchLabel = (string)"RWS_Colonies_Search".Translate();
-        var searchLabelRect = new Rect(rect.x, y, Math.Max(0f, rect.width - 32f), 24f);
-        Widgets.Label(searchLabelRect, searchLabel.Truncate(searchLabelRect.width));
-        TooltipHandler.TipRegion(searchLabelRect, "RWS_Colonies_SearchTip".Translate());
-
-        var next = Widgets.TextField(new Rect(rect.x, y + 26f, rect.width, 28f), search) ?? "";
-        if (next != search)
-        {
-            search = next;
-            scroll = Vector2.zero;
-        }
-        if (priorSearch != search)
-        {
-            priorSearch = search;
-            filtered = string.IsNullOrWhiteSpace(search)
-                ? all
-                : all.Where(e => ColonyPresentation.MatchesSearch(
-                    e.Stats, preferences, Dialog_RimworldStatistics.UnnamedColonyFallback, search)).ToArray();
-        }
-
-        var listTop = y + 60f;
-        var listRect = new Rect(rect.x, listTop, rect.width, Math.Max(0f, rect.yMax - listTop));
-        if (filtered.Length == 0)
-        {
-            Widgets.Label(listRect, "RWS_Details_NoMatch".Translate());
-            return;
-        }
-
-        var viewWidth = Math.Max(0f, listRect.width - 16f);
-        Widgets.BeginScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Length * ItemHeight));
         try
         {
-            var first = Math.Max(0, (int)(scroll.y / ItemHeight));
-            var last = Math.Min(filtered.Length - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
-            var anchor = Text.Anchor;
-            try
+            var y = rect.y;
+            var headingRect = new Rect(rect.x, y, Math.Max(0f, rect.width - 32f), 26f);
+            var shownHeading = heading.Truncate(headingRect.width);
+            Verse.Widgets.Label(headingRect, shownHeading);
+            if (shownHeading != heading)
+                TooltipHandler.TipRegion(headingRect, heading);
+            y += 28f;
+
+            var searchLabel = (string)"RWS_Colonies_Search".Translate();
+            var searchLabelRect = new Rect(rect.x, y, Math.Max(0f, rect.width - 32f), 24f);
+            Verse.Widgets.Label(searchLabelRect, searchLabel.Truncate(searchLabelRect.width));
+            TooltipHandler.TipRegion(searchLabelRect, "RWS_Colonies_SearchTip".Translate());
+
+            var next = Verse.Widgets.TextField(new Rect(rect.x, y + 26f, rect.width, 28f), search) ?? "";
+            if (next != search)
             {
+                search = next;
+                scroll = Vector2.zero;
+            }
+            if (priorSearch != search)
+            {
+                priorSearch = search;
+                filtered = string.IsNullOrWhiteSpace(search)
+                    ? all
+                    : all.Where(e => ColonyPresentation.MatchesSearch(
+                        e.Stats, preferences, Dialog_RimworldStatistics.UnnamedColonyFallback, search)).ToArray();
+            }
+
+            var listTop = y + 60f;
+            var listRect = new Rect(rect.x, listTop, rect.width, Math.Max(0f, rect.yMax - listTop));
+            if (filtered.Length == 0)
+            {
+                Verse.Widgets.Label(listRect, "RWS_Details_NoMatch".Translate());
+                return;
+            }
+
+            var viewWidth = Math.Max(0f, listRect.width - 16f);
+            ColonyStats? picked = null;
+            using (UiScopes.ScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Length * ItemHeight)))
+            using (UiScopes.GuiState())
+            {
+                var first = Math.Max(0, (int)(scroll.y / ItemHeight));
+                var last = Math.Min(filtered.Length - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
                 for (var i = first; i <= last; i++)
                 {
                     var entry = filtered[i];
                     var row = new Rect(0f, i * ItemHeight, viewWidth, ItemHeight - 1f);
                     if (entry.IsSelected)
-                        Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.22f));
-                    Widgets.DrawHighlightIfMouseover(row);
+                        Verse.Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.22f));
+                    Verse.Widgets.DrawHighlightIfMouseover(row);
                     var line = entry.Detail.Length == 0 ? entry.Primary : $"{entry.Primary} · {entry.Detail}";
                     var shown = line.Truncate(Math.Max(0f, row.width - 8f));
                     Text.Anchor = TextAnchor.MiddleLeft;
                     if (entry.Stats.Excluded || entry.Stats.OutOfScope)
                         GUI.color = new Color(1f, 1f, 1f, 0.6f);
-                    Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
+                    Verse.Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
                     GUI.color = Color.white;
                     TooltipHandler.TipRegion(row, entry.FullTip);
-                    if (Widgets.ButtonInvisible(row))
-                    {
-                        onPick(entry.Stats);
-                        Close();
-                    }
+                    if (Verse.Widgets.ButtonInvisible(row))
+                        picked = entry.Stats;
                 }
             }
-            finally
+            if (picked is not null)
             {
-                Text.Anchor = anchor;
-                GUI.color = Color.white;
+                onPick(picked);
+                Close();
             }
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] The colony picker window failed to draw.\n{e}", "RWS.colonyPicker".GetHashCode());
+            Verse.Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
         }
         finally
         {
-            Widgets.EndScrollView();
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
+            GUI.color = Color.white;
         }
     }
 
@@ -166,11 +171,12 @@ internal static class ColonyChartPicker
 {
     public static void OpenMetricPicker(StatsView view, ColonyStats colony, ViewPreferences preferences, Action savePreferences)
     {
-        var colonyDisplay = Dialog_RimworldStatistics.ColonyName(colony, preferences);
+        var latestPrefs = Dialog_RimworldStatistics.ActivePreferences;
+        var colonyDisplay = Dialog_RimworldStatistics.ColonyName(colony, latestPrefs);
         var choices = ColonyHistoryFavorites.CandidateMetricKeys(view, colony.Key)
             .Select(key =>
             {
-                var isFavorite = ColonyHistoryFavorites.IsFavorite(preferences, colony.Key, colony.AliasKeys, key);
+                var isFavorite = ColonyHistoryFavorites.IsFavorite(latestPrefs, colony.Key, colony.AliasKeys, key);
                 string metricLabel;
                 string valueText;
                 string? source = null;
@@ -178,7 +184,7 @@ internal static class ColonyChartPicker
                 if (BasicMetrics.Contains(key))
                 {
                     var def = BasicMetrics.Definition(key);
-                    metricLabel = OverviewTab.BasicLabel(key);
+                    metricLabel = MetricText.PerColonyBasicLabel(key);
                     if (BasicMetrics.Value(colony, key) is { } number && double.IsFinite(number))
                     {
                         valueText = MetricText.Format(def, new NumericValue { Number = number, Coverage = MetricCoverage.SnapshotOnly });
@@ -220,11 +226,18 @@ internal static class ColonyChartPicker
             .Select(x => x.Choice)
             .ToArray();
 
-        Find.WindowStack.Add(new MetricPickerDialog(
+        UiScopes.OpenOrReplaceWindow(new MetricPickerDialog(
             choices,
             pickedKey =>
             {
-                if (ColonyHistoryFavorites.Toggle(preferences, colony.Key, colony.AliasKeys, pickedKey))
+                var changed = false;
+                Dialog_RimworldStatistics.UpdateActivePreferences(active =>
+                {
+                    changed = ColonyHistoryFavorites.Toggle(active, colony.Key, colony.AliasKeys, pickedKey);
+                    if (changed && !ReferenceEquals(active, preferences))
+                        ColonyHistoryFavorites.Toggle(preferences, colony.Key, colony.AliasKeys, pickedKey);
+                });
+                if (changed && RimworldStatisticsMod.Settings is null)
                     savePreferences();
             },
             heading: (string)"RWS_ColonyFav_PickMetric".Translate(colonyDisplay)));

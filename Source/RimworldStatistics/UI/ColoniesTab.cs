@@ -162,23 +162,17 @@ public static class ColoniesTab
         if (tableHeight >= RowHeight)
         {
             // Keep the sortable header fixed vertically while tracking horizontal body scroll.
-            GUI.BeginGroup(new Rect(rect.x, contentTop, available, RowHeight));
-            try
+            using (UiScopes.Group(new Rect(rect.x, contentTop, available, RowHeight)))
             {
                 var headerColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, available);
                 DrawHeader(new Rect(-scroll.x, 0f, width, RowHeight), headerColumns.First, headerColumns.LastExclusive);
-            }
-            finally
-            {
-                GUI.EndGroup();
             }
 
             var outRect = new Rect(rect.x, contentTop + RowHeight, rect.width, Math.Max(0f, tableHeight - RowHeight));
             if (outRect.height > 0f)
             {
                 var viewRect = new Rect(0f, 0f, width, order.Length * RowHeight);
-                Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-                try
+                using (UiScopes.ScrollView(outRect, ref scroll, viewRect))
                 {
                     var visibleColumns = ColumnLayout.VisibleColumns(columnPlan.Widths, scroll.x, outRect.width);
                     var first = Math.Max(0, (int)(scroll.y / RowHeight));
@@ -186,10 +180,6 @@ public static class ColoniesTab
                     for (var row = first; row <= last; row++)
                         DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]],
                             row, table, visibleColumns.First, visibleColumns.LastExclusive, preferences);
-                }
-                finally
-                {
-                    Widgets.EndScrollView();
                 }
             }
         }
@@ -280,33 +270,34 @@ public static class ColoniesTab
     private static void DrawHeader(Rect rect, int firstVisible, int lastVisible)
     {
         var x = rect.x;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        for (var c = 0; c < Columns.Length; c++)
+        using (UiScopes.GuiState())
         {
-            if (c >= firstVisible && c < lastVisible)
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            for (var c = 0; c < Columns.Length; c++)
             {
-                var cell = new Rect(x, rect.y, columnPlan!.Widths[c], rect.height);
-                var label = labels[c] + (sortColumn == c ? (ascending ? " ▲" : " ▼") : "");
-                Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), label);
-                Widgets.DrawHighlightIfMouseover(cell);
-                TooltipHandler.TipRegion(cell, label);
-                if (Widgets.ButtonInvisible(cell))
+                if (c >= firstVisible && c < lastVisible)
                 {
-                    if (sortColumn == c) ascending = !ascending;
-                    else { sortColumn = c; ascending = false; }
+                    var cell = new Rect(x, rect.y, columnPlan!.Widths[c], rect.height);
+                    var label = labels[c] + (sortColumn == c ? (ascending ? " ▲" : " ▼") : "");
+                    Widgets.Label(new Rect(cell.x + 3f, cell.y, cell.width - 6f, cell.height), label);
+                    Widgets.DrawHighlightIfMouseover(cell);
+                    TooltipHandler.TipRegion(cell, label);
+                    if (Widgets.ButtonInvisible(cell))
+                    {
+                        if (sortColumn == c) ascending = !ascending;
+                        else { sortColumn = c; ascending = false; }
+                    }
                 }
+                x += columnPlan!.Widths[c];
             }
-            x += columnPlan!.Widths[c];
+            var excludeWidth = columnPlan!.Widths[^1];
+            if (lastVisible > Columns.Length)
+            {
+                Widgets.Label(new Rect(x + 3f, rect.y, excludeWidth - 6f, rect.height), labels[^1]);
+                TooltipHandler.TipRegion(new Rect(x, rect.y, excludeWidth, rect.height), "RWS_ExcludeTip".Translate());
+            }
         }
-        var excludeWidth = columnPlan!.Widths[^1];
-        if (lastVisible > Columns.Length)
-        {
-            Widgets.Label(new Rect(x + 3f, rect.y, excludeWidth - 6f, rect.height), labels[^1]);
-            TooltipHandler.TipRegion(new Rect(x, rect.y, excludeWidth, rect.height), "RWS_ExcludeTip".Translate());
-        }
-        GUI.color = Color.white;
-        Text.Anchor = TextAnchor.UpperLeft;
     }
 
     private static void DrawColony(Rect rect, Colony colony, ColonyStats s, int row, TableCache table,
@@ -317,37 +308,38 @@ public static class ColoniesTab
         else if (row % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
         Widgets.DrawHighlightIfMouseover(rect);
-        if (s.Excluded)
-            GUI.color = new Color(1f, 1f, 1f, 0.5f);
         var x = rect.x;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        // Fill only intersecting cells on demand. Horizontal scrolling reuses
-        // cached strings for previously visible columns instead of materializing all 16.
-        var texts = table.Cells[row] ??= new string[Columns.Length];
-        var shown = table.Display[row] ??= new string[Columns.Length];
-        for (var c = 0; c < Columns.Length; c++)
+        using (UiScopes.GuiState())
         {
-            var columnWidth = columnPlan!.Widths[c];
-            if (c >= firstVisible && c < lastVisible)
+            if (s.Excluded)
+                GUI.color = new Color(1f, 1f, 1f, 0.5f);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            // Fill only intersecting cells on demand. Horizontal scrolling reuses
+            // cached strings for previously visible columns instead of materializing all 16.
+            var texts = table.Cells[row] ??= new string[Columns.Length];
+            var shown = table.Display[row] ??= new string[Columns.Length];
+            for (var c = 0; c < Columns.Length; c++)
             {
-                var cell = new Rect(x + 3f, rect.y, columnWidth - 6f, rect.height);
-                var text = texts[c] ??= Columns[c].Text(s);
-                var label = shown[c] ??= text.Truncate(columnWidth - 6f);
-                Widgets.Label(cell, label);
-                if (c == 0 && ColonyPresentation.HasCustomName(preferences, s))
+                var columnWidth = columnPlan!.Widths[c];
+                if (c >= firstVisible && c < lastVisible)
                 {
-                    var original = Dialog_RimworldStatistics.OriginalColonyName(s);
-                    TooltipHandler.TipRegion(cell, text + "\n" + "RWS_ColonyName_Original".Translate(original));
+                    var cell = new Rect(x + 3f, rect.y, columnWidth - 6f, rect.height);
+                    var text = texts[c] ??= Columns[c].Text(s);
+                    var label = shown[c] ??= text.Truncate(columnWidth - 6f);
+                    Widgets.Label(cell, label);
+                    if (c == 0 && ColonyPresentation.HasCustomName(preferences, s))
+                    {
+                        var original = Dialog_RimworldStatistics.OriginalColonyName(s);
+                        TooltipHandler.TipRegion(cell, text + "\n" + "RWS_ColonyName_Original".Translate(original));
+                    }
+                    else if (label != text)
+                    {
+                        TooltipHandler.TipRegion(cell, text);
+                    }
                 }
-                else if (label != text)
-                {
-                    TooltipHandler.TipRegion(cell, text);
-                }
+                x += columnWidth;
             }
-            x += columnWidth;
         }
-        Text.Anchor = TextAnchor.UpperLeft;
-        GUI.color = Color.white;
 
         var excluded = s.Excluded;
         var box = new Rect(x + 4f, rect.y + (rect.height - 24f) / 2f, 24f, 24f);
@@ -355,7 +347,7 @@ public static class ColoniesTab
         if (excluded != s.Excluded)
         {
             var keys = colony.AliasKeys.Prepend(colony.Key).ToList();
-            ProfileService.Session.Mutate(p => ProfileMutations.SetExcluded(p, keys, excluded), SaveMode.Background);
+            ProfileService.Session.MutateWithoutBlocking(p => ProfileMutations.SetExcluded(p, keys, excluded));
         }
         else if (Widgets.ButtonInvisible(new Rect(rect.x, rect.y, x - rect.x, rect.height)))
         {
@@ -393,9 +385,7 @@ public static class ColoniesTab
             var maxFieldW = Math.Max(70f, inner.width - labelW - saveW - clearW - 16f);
             var fieldW = Math.Min(240f, maxFieldW);
 
-            var prevAnchor = Text.Anchor;
-            var prevColor = GUI.color;
-            try
+            using (UiScopes.GuiState())
             {
                 var lblRect = new Rect(inner.x, y, Math.Min(labelW, inner.width), nameRowHeight);
                 Text.Anchor = TextAnchor.MiddleLeft;
@@ -451,11 +441,6 @@ public static class ColoniesTab
                     TooltipHandler.TipRegion(origRect, originalInfo);
                 }
             }
-            finally
-            {
-                Text.Anchor = prevAnchor;
-                GUI.color = prevColor;
-            }
 
             y += nameRowHeight + 4f;
         }
@@ -464,20 +449,20 @@ public static class ColoniesTab
         var reportLabel = (string)"RWS_Report_Open".Translate();
         var reportBtn = controls.Next(reportLabel, 135f, Math.Min(inner.width, 260f));
         if (Widgets.ButtonText(reportBtn, reportLabel.Truncate(Math.Max(0f, reportBtn.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colony.Key));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySummaryReport(view, colony.Key));
         TooltipHandler.TipRegion(reportBtn, "RWS_Report_OpenTip".Translate());
 
         var lineageLabel = (string)"RWS_Lineage_Open".Translate();
         var lineageBtn = controls.Next(lineageLabel, 130f, Math.Min(inner.width, 260f));
         var shownBtn = lineageLabel.Truncate(Math.Max(0f, lineageBtn.width - 12f));
         if (Widgets.ButtonText(lineageBtn, shownBtn))
-            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colony.Key, files));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySaveLineage(view, colony.Key, files));
         TooltipHandler.TipRegion(lineageBtn, "RWS_Lineage_OpenTip".Translate());
 
         var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
         var chronicleBtn = controls.Next(chronicleLabel, 125f, Math.Min(inner.width, 250f));
         if (Widgets.ButtonText(chronicleBtn, chronicleLabel.Truncate(Math.Max(0f, chronicleBtn.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colony.Key));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonyChronicle(view, colony.Key));
         TooltipHandler.TipRegion(chronicleBtn, "RWS_Chronicle_OpenTip".Translate());
 
         if (preferences is not null && savePreferences is not null)
@@ -507,17 +492,23 @@ public static class ColoniesTab
             "RWS_Col_Superseded".Translate(), "RWS_Col_FilePresent".Translate(),
         };
         var lines = colony.Observations
-            .OrderByDescending(o => o.Values.TicksGame)
+            .OrderByDescending(o => o.Status == ObservationStatus.Ok ? 1 : 0)
+            .ThenByDescending(o => o.Values.TicksGame)
             .Select(o => new[]
             {
-                o.FileName, o.GameVersion ?? Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Days(o.Values.TicksGame),
+                o.FileName,
+                o.GameVersion ?? Dialog_RimworldStatistics.Dash,
+                o.Status == ObservationStatus.Ok ? Dialog_RimworldStatistics.Days(o.Values.TicksGame) : Dialog_RimworldStatistics.Dash,
                 o.Superseded ? (string)"RWS_Yes".Translate() : (string)"RWS_No".Translate(),
                 files == null ? Dialog_RimworldStatistics.Dash : files.Contains(o) ? (string)"RWS_Yes".Translate() : (string)"RWS_FileMissing".Translate(),
             })
             .Concat(colony.LiveCampaigns.Select(l => new[]
             {
-                (string)"RWS_LiveRecord".Translate(), Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Days(l.Max.TicksGame),
-                Dialog_RimworldStatistics.Dash, Dialog_RimworldStatistics.Dash,
+                (string)"RWS_LiveRecord".Translate(),
+                Dialog_RimworldStatistics.Dash,
+                l.HasObservation ? Dialog_RimworldStatistics.Days(l.Max.TicksGame) : Dialog_RimworldStatistics.Dash,
+                Dialog_RimworldStatistics.Dash,
+                Dialog_RimworldStatistics.Dash,
             }))
             .ToArray();
         return new DetailCache(colony, files, language, headers, lines);

@@ -113,14 +113,16 @@ public sealed class Dialog_RimworldStatistics : Window
 
                 var chronicleLabel = (string)"RWS_InGame_OpenCurrentChronicle".Translate();
                 var chronicleRect = navControls.Next(chronicleLabel, 145f, 270f);
-                var prevColor = GUI.color;
-                if (!canOpenChronicle)
-                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
-                var chronicleClicked = Widgets.ButtonText(
-                    chronicleRect,
-                    chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f)),
-                    active: canOpenChronicle);
-                GUI.color = prevColor;
+                bool chronicleClicked;
+                using (UiScopes.GuiState())
+                {
+                    if (!canOpenChronicle)
+                        GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                    chronicleClicked = Verse.Widgets.ButtonText(
+                        chronicleRect,
+                        chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f)),
+                        active: canOpenChronicle);
+                }
                 TooltipHandler.TipRegion(
                     chronicleRect,
                     (canOpenChronicle ? "RWS_InGame_OpenCurrentChronicleTip" : "RWS_InGame_CurrentChronicleUnavailableTip").Translate());
@@ -136,7 +138,7 @@ public sealed class Dialog_RimworldStatistics : Window
 
             var topChrome = TitleHeight + inGameBarOffset + TabHeight;
             var body = new Rect(inRect.x, inRect.y + topChrome, inRect.width, Math.Max(0f, inRect.height - topChrome));
-            Widgets.DrawMenuSection(body);
+            Verse.Widgets.DrawMenuSection(body);
             var tabs = new List<TabRecord>
             {
                 new("RWS_Tab_Overview".Translate(), () => current = Tab.Overview, current == Tab.Overview),
@@ -159,7 +161,7 @@ public sealed class Dialog_RimworldStatistics : Window
                 var tabRect = new Rect(body.x + 8f, body.y - 30f, Math.Max(0f, Math.Min(230f, body.width - 16f)), 28f);
                 var activeTabName = tabNames[(int)current];
                 var shownTab = activeTabName.Truncate(Math.Max(0f, tabRect.width - 12f));
-                if (tabRect.width > 0f && Widgets.ButtonText(tabRect, shownTab))
+                if (tabRect.width > 0f && Verse.Widgets.ButtonText(tabRect, shownTab))
                 {
                     Find.WindowStack.Add(new FloatMenu(tabNames.Select((label, index) =>
                         new FloatMenuOption(label, () => current = (Tab)index)).ToList()));
@@ -175,7 +177,7 @@ public sealed class Dialog_RimworldStatistics : Window
             var content = body.ContractedBy(12f);
             if (ProfileService.DataOperationRunning)
             {
-                Widgets.Label(content, "RWS_Backup_Working".Translate());
+                Verse.Widgets.Label(content, "RWS_Backup_Working".Translate());
                 return;
             }
             var session = ProfileService.TryGetSession(out var loadFailure);
@@ -183,7 +185,7 @@ public sealed class Dialog_RimworldStatistics : Window
             {
                 if (loadFailure is null)
                 {
-                    Widgets.Label(content, "RWS_Loading".Translate());
+                    Verse.Widgets.Label(content, "RWS_Loading".Translate());
                     return;
                 }
                 // A failed load is not started again every frame (#326): it waits for Retry or the next opening of this window.
@@ -207,13 +209,13 @@ public sealed class Dialog_RimworldStatistics : Window
                 if (viewBuild.Failure is { } failure)
                     DrawFailure(content, "RWS_ViewBuildFailed".Translate(), failure, viewBuild.Running, viewBuild.Retry);
                 else
-                    Widgets.Label(content, "RWS_Loading".Translate());
+                    Verse.Widgets.Label(content, "RWS_Loading".Translate());
                 return;
             }
 
             switch (current)
             {
-                case Tab.Overview: OverviewTab.Draw(content, view, preferences, SavePreferences); break;
+                case Tab.Overview: OverviewTab.Draw(content, view, preferences, SavePreferences, ScopeLabel()); break;
                 case Tab.Endings: EndingsTab.Draw(content, view); break;
                 case Tab.Colonies:
                     RefreshPresentFiles();
@@ -227,12 +229,13 @@ public sealed class Dialog_RimworldStatistics : Window
         catch (Exception e)
         {
             Log.ErrorOnce($"[RimworldStatistics] The statistics window failed to draw.\n{e}", "RWS.window".GetHashCode());
-            Widgets.Label(inRect.ContractedBy(20f), "RWS_WindowError".Translate());
+            Verse.Widgets.Label(inRect.ContractedBy(20f), "RWS_WindowError".Translate());
         }
         finally
         {
             Text.Font = GameFont.Small;
             Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
             GUI.color = Color.white;
         }
     }
@@ -272,12 +275,14 @@ public sealed class Dialog_RimworldStatistics : Window
         var newline = cause.IndexOf('\n');
         var text = message + "\n" + failure.GetType().Name + ": " + (newline < 0 ? cause : cause[..newline]).Trim();
         var height = Math.Min(Text.CalcHeight(text, rect.width), Math.Max(0f, rect.height - 40f));
-        GUI.color = ColorLibrary.RedReadable;
-        Widgets.Label(new Rect(rect.x, rect.y, rect.width, height), text);
-        GUI.color = Color.white;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = ColorLibrary.RedReadable;
+            Verse.Widgets.Label(new Rect(rect.x, rect.y, rect.width, height), text);
+        }
         string label = running ? "RWS_Retrying".Translate() : "RWS_Retry".Translate();
         var button = new Rect(rect.x, rect.y + height + 6f, Math.Min(rect.width, Math.Max(160f, Text.CalcSize(label).x + 24f)), 32f);
-        if (Widgets.ButtonText(button, label, active: !running) && !running)
+        if (Verse.Widgets.ButtonText(button, label, active: !running) && !running)
             retry();
     }
 
@@ -303,7 +308,8 @@ public sealed class Dialog_RimworldStatistics : Window
         var prefs = ActivePreferences;
         mutate(prefs);
         var serialized = prefs.ToJson();
-        RimworldStatisticsMod.Settings.viewPreferencesJson = serialized;
+        if (RimworldStatisticsMod.Settings is not null)
+            RimworldStatisticsMod.Settings.viewPreferencesJson = serialized;
         cachedPreferences = prefs;
         cachedPreferencesJson = serialized;
         RimworldStatisticsMod.Instance?.WriteSettings();
@@ -350,7 +356,12 @@ public sealed class Dialog_RimworldStatistics : Window
         };
         choices.AddRange(preferences.Groups.Select(g => new FloatMenuOption(g.Name, () => SelectScope(g.Id))));
         choices.Add(new FloatMenuOption("RWS_Groups_Edit".Translate(), () =>
-            Find.WindowStack.Add(new Dialog_ColonyGroups(preferences, viewBuild.Value, SavePreferences))));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonyGroups(preferences, viewBuild.Value, () =>
+            {
+                RefreshSavedPreferences();
+                viewBuild.Reset();
+                activeScopeKey = "";
+            }))));
         Find.WindowStack.Add(new FloatMenu(choices));
     }
 
@@ -397,7 +408,7 @@ public sealed class Dialog_RimworldStatistics : Window
             {
                 return SaveFileIndex.Read(directory);
             }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            catch (Exception)
             {
                 return null;
             }

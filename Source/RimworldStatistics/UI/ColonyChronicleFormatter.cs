@@ -365,14 +365,7 @@ internal static class ColonyChronicleFormatter
     private static string ResolveMetricLabel(StatsView view, string metricKey)
     {
         if (BasicMetrics.Contains(metricKey))
-        {
-            return metricKey switch
-            {
-                BasicMetrics.PeakWealth => "RWS_Col_PeakWealth".Translate(),
-                BasicMetrics.LastWealth => "RWS_Col_LastWealth".Translate(),
-                _ => MetricText.BasicLabel(metricKey),
-            };
-        }
+            return MetricText.PerColonyBasicLabel(metricKey);
         return MetricLookup.Definition(view, metricKey) is { } def ? MetricText.Label(def) : metricKey;
     }
 

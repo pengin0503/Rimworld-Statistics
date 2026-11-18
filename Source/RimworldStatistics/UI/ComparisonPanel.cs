@@ -26,6 +26,7 @@ internal static class ComparisonPanel
     private static object? builtFilter;
     private static bool builtPerDay;
     private static object? language;
+    private static string builtNameSignature = "";
     private static TableRow[] rows = [];
     private static Vector2 scroll;
 
@@ -47,13 +48,20 @@ internal static class ComparisonPanel
         {
             var label = Label(Choices[i], view.Stats, groups, preferences);
             var button = controls.Next(label, 105f, 210f);
-            if (Widgets.ButtonText(button, label.Truncate(button.width - 12f)))
+            var shown = label.Truncate(Math.Max(0f, button.width - 12f));
+            if (shown != label)
+                TooltipHandler.TipRegion(button, label);
+            if (Widgets.ButtonText(button, shown))
                 ShowChoices(i, view, groups, preferences);
         }
         if (Choices.Count < Comparison.MaxColumns)
         {
             string add = "RWS_Compare_Add".Translate();
-            if (Widgets.ButtonText(controls.Next(add, 105f, 180f), add))
+            var addButton = controls.Next(add, 105f, 180f);
+            var shownAdd = add.Truncate(Math.Max(0f, addButton.width - 12f));
+            if (shownAdd != add)
+                TooltipHandler.TipRegion(addButton, add);
+            if (Widgets.ButtonText(addButton, shownAdd))
                 ShowChoices(Choices.Count, view, groups, preferences);
         }
 
@@ -101,13 +109,19 @@ internal static class ComparisonPanel
         }
 
         var currentLanguage = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(builtFor, current) || !Equals(builtFilter, filter) || builtPerDay != perDayMode || !ReferenceEquals(language, currentLanguage))
+        var currentNameSignature = ColonyPresentation.Signature(preferences);
+        if (!ReferenceEquals(builtFor, current)
+            || !Equals(builtFilter, filter)
+            || builtPerDay != perDayMode
+            || !ReferenceEquals(language, currentLanguage)
+            || builtNameSignature != currentNameSignature)
         {
-            rows = Build(current, acceptDefinition, acceptStatus, perDayMode);
+            rows = Build(current, acceptDefinition, acceptStatus, perDayMode, preferences);
             builtFor = current;
             builtFilter = filter;
             builtPerDay = perDayMode;
             language = currentLanguage;
+            builtNameSignature = currentNameSignature;
         }
         if (rows.Length == 0)
         {
@@ -141,16 +155,20 @@ internal static class ComparisonPanel
         }
 
         var rightViewport = new Rect(rect.x + plan.NameWidth, bodyY, Math.Max(0f, rect.width - plan.NameWidth), bodyHeight);
-        Widgets.BeginScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight));
-        try
+        int firstCol;
+        int lastCol;
+        int first;
+        int last;
+        using (UiScopes.ScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight)))
+        using (UiScopes.GuiState())
         {
             // BeginScrollView may update the scroll position for the current input event.
             // Calculate all visible ranges after that update, then paint pinned columns and
             // the header with the same scroll snapshot as the data cells.
-            var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
+            (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
                 current.Length, plan.ColumnWidth, scroll.x, plan.DataViewportWidth);
-            var first = Math.Max(0, (int)(scroll.y / RowHeight));
-            var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
+            first = Math.Max(0, (int)(scroll.y / RowHeight));
+            last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
             for (var i = first; i <= last; i++)
             {
                 var row = rows[i];
@@ -171,88 +189,79 @@ internal static class ComparisonPanel
                     {
                         if (perDayMode && column.Target is ScopeTarget)
                             return "RWS_Rate_ScopeNotApplicableTip".Translate();
-                        var original = column.Target is ColonyTarget target
-                            ? MetricLookup.ForColony(column.View, target.ColonyKey, row.Record.MetricKey)
+                        var colonyTarget = column.Target as ColonyTarget;
+                        var original = colonyTarget is not null
+                            ? MetricLookup.ForColony(column.View, colonyTarget.ColonyKey, row.Record.MetricKey)
                             : MetricLookup.Overall(column.View, row.Record.MetricKey);
                         if (original is null)
                             return "RWS_Coverage_Unknown".Translate();
+                        var targetColony = colonyTarget is not null
+                            ? column.View.Numeric.Colonies.FirstOrDefault(nc => nc.Key == colonyTarget.ColonyKey)
+                            : null;
+                        var baseTip = colonyTarget is not null
+                            ? DetailsTab.ColonyTip(original, column.View.Stats, targetColony)
+                            : MetricText.Tip(original, column.View.Stats);
                         if (value is null)
                             return perDayMode
-                                ? "RWS_Rate_IncompleteIntervalTip".Translate() + "\n" + MetricText.Tip(original, column.View.Stats)
+                                ? "RWS_Rate_IncompleteIntervalTip".Translate() + "\n" + baseTip
                                 : "RWS_Coverage_Unknown".Translate();
-                        return text + "\n" + MetricText.Tip(original, column.View.Stats);
+                        return text + "\n" + baseTip;
                     }, tipId);
                 }
                 GUI.color = Color.white;
             }
-            Widgets.EndScrollView();
+        }
 
-            // Pinned names and header are drawn last to use the final scroll position.
-            if (leftViewport.height > 0f)
+        // Pinned names and header are drawn last to use the final scroll position.
+        if (leftViewport.height > 0f)
+        {
+            using (UiScopes.Group(leftViewport))
             {
-                GUI.BeginGroup(leftViewport);
-                try
+                for (var i = first; i <= last; i++)
                 {
-                    for (var i = first; i <= last; i++)
+                    var row = rows[i];
+                    var rowY = i * RowHeight - scroll.y;
+                    var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
+                    if (i % 2 == 1)
+                        Widgets.DrawHighlight(nameRect, 0.25f);
+                    var titleRect = row.Source is null ? nameRect
+                        : new Rect(nameRect.x, nameRect.y, nameRect.width, 20f);
+                    var shownName = DrawCell(titleRect, row.Label);
+                    if (row.Source is null)
                     {
-                        var row = rows[i];
-                        var rowY = i * RowHeight - scroll.y;
-                        var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
-                        if (i % 2 == 1)
-                            Widgets.DrawHighlight(nameRect, 0.25f);
-                        var titleRect = row.Source is null ? nameRect
-                            : new Rect(nameRect.x, nameRect.y, nameRect.width, 20f);
-                        var shownName = DrawCell(titleRect, row.Label);
-                        if (row.Source is null)
-                        {
-                            if (shownName != row.Label)
-                                TooltipHandler.TipRegion(nameRect, row.Label);
-                        }
-                        else
-                        {
-                            var sourceRect = new Rect(nameRect.x, nameRect.y + 20f, nameRect.width, 19f);
-                            var shownSource = DrawCell(sourceRect, row.Source);
-                            if (shownName != row.Label)
-                                TooltipHandler.TipRegion(titleRect, row.Label);
-                            if (shownSource != row.Source)
-                                TooltipHandler.TipRegion(sourceRect, row.Source);
-                        }
+                        if (shownName != row.Label)
+                            TooltipHandler.TipRegion(nameRect, row.Label);
+                    }
+                    else
+                    {
+                        var sourceRect = new Rect(nameRect.x, nameRect.y + 20f, nameRect.width, 19f);
+                        var shownSource = DrawCell(sourceRect, row.Source);
+                        if (shownName != row.Label)
+                            TooltipHandler.TipRegion(titleRect, row.Label);
+                        if (shownSource != row.Source)
+                            TooltipHandler.TipRegion(sourceRect, row.Source);
                     }
                 }
-                finally
-                {
-                    GUI.EndGroup();
-                }
-            }
-
-            GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
-            try
-            {
-                for (var i = firstCol; i < lastCol; i++)
-                {
-                    var label = Label(current[i].Choice, view.Stats, groups, preferences);
-                    var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
-                    if (sortColumn == i)
-                        label += descending ? " ▼" : " ▲";
-                    if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
-                    {
-                        descending = sortColumn != i || !descending;
-                        sortColumn = i;
-                        builtFor = null;
-                        scroll = Vector2.zero;
-                    }
-                    TooltipHandler.TipRegion(header, label);
-                }
-            }
-            finally
-            {
-                GUI.EndGroup();
             }
         }
-        catch
+
+        using (UiScopes.Group(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight)))
         {
-            GUI.color = Color.white;
-            throw;
+            for (var i = firstCol; i < lastCol; i++)
+            {
+                var label = Label(current[i].Choice, view.Stats, groups, preferences);
+                var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
+                if (sortColumn == i)
+                    label += descending ? " ▼" : " ▲";
+                if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+                {
+                    descending = sortColumn != i || !descending;
+                    sortColumn = i;
+                    builtFor = null;
+                    scroll = Vector2.zero;
+                }
+                TooltipHandler.TipRegion(header, label);
+            }
         }
 
         Widgets.DrawBoxSolid(new Rect(rect.x + plan.NameWidth - 1f, y, 1f, Math.Max(0f, rect.yMax - y - bottomHScrollReserve)), new Color(1f, 1f, 1f, 0.14f));
@@ -260,8 +269,7 @@ internal static class ComparisonPanel
 
     private static string DrawCell(Rect cell, string text, TextAnchor cellAnchor = TextAnchor.MiddleLeft)
     {
-        var anchor = Text.Anchor;
-        try
+        using (UiScopes.GuiState())
         {
             Text.Anchor = cellAnchor;
             cell.x += 4f;
@@ -270,13 +278,14 @@ internal static class ComparisonPanel
             Widgets.Label(cell, shown);
             return shown;
         }
-        finally
-        {
-            Text.Anchor = anchor;
-        }
     }
 
-    private static TableRow[] Build(Column[] current, Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus, bool perDay)
+    private static TableRow[] Build(
+        Column[] current,
+        Func<MetricDefinition, string, bool> acceptDefinition,
+        Func<NumericRow, bool> acceptStatus,
+        bool perDay,
+        ViewPreferences? preferences)
     {
         var candidateRows = current.SelectMany(column => column.Target switch
         {
@@ -307,15 +316,29 @@ internal static class ComparisonPanel
                     visualKinds[i] = MetricVisualKind.Missing;
                     continue;
                 }
+                var col = current[i];
+                var originalRow = !perDay
+                    ? (col.Target is ColonyTarget ct
+                        ? MetricLookup.ForColony(col.View, ct.ColonyKey, row.MetricKey)
+                        : MetricLookup.Overall(col.View, row.MetricKey))
+                    : null;
                 var formatted = perDay && v.Number is { } rateNum
                     ? MetricText.FormatRateValue(definition, rateNum)
-                    : MetricText.Format(definition, v);
+                    : originalRow is not null
+                        ? DetailsTab.FormatRowValue(
+                            originalRow,
+                            key => col.View.Stats.Colonies.FirstOrDefault(s => s.Key == key) is { } cs
+                                ? Dialog_RimworldStatistics.ColonyName(cs, preferences)
+                                : key)
+                        : MetricText.Format(definition, v);
                 if (!perDay && v.Coverage is MetricCoverage.Partial or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                     formatted += " · " + MetricText.State(definition, v.Coverage);
                 if (v.Evidence is MetricEvidence.Experimental or MetricEvidence.Mixed || definition.Acquisition is not null && !definition.Published)
                     formatted += " · " + "RWS_Exp_ExperimentalRow".Translate();
                 text[i] = formatted;
-                visualKinds[i] = MetricVisualState.Classify(definition, v);
+                visualKinds[i] = originalRow is not null
+                    ? MetricVisualState.Classify(originalRow)
+                    : MetricVisualState.Classify(definition, v);
             }
             return new TableRow(row, label, MetricText.ModSourceLabel(definition), text, visualKinds);
         }).ToArray();
@@ -391,7 +414,7 @@ internal static class ComparisonPanel
             var pickMenuLabel = (string)"RWS_Compare_Colony".Translate() + " · " + pickHeading;
             menu.Add(new FloatMenuOption(pickMenuLabel, () =>
             {
-                Find.WindowStack.Add(new ColonyPickerDialog(
+                UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
                     selectableColonies,
                     preferences ?? Dialog_RimworldStatistics.ActivePreferences,
                     picked => ApplyChoice(index, new Choice(Kind.Colony, picked.Key)),

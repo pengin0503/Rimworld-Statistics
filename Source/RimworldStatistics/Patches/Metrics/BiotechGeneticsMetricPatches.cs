@@ -12,11 +12,14 @@ internal static class BiotechGeneticsProbe
     public static bool CanObserve()
         => UnityData.IsInMainThread
             && Scribe.mode == LoadSaveMode.Inactive
+            && LiveMetrics.IsRecordingUnit(BiotechGeneticsFamily.Name)
             && ModsConfig.BiotechActive;
 
     public static bool IsColonyPawn(Pawn? pawn)
         => pawn is { Dead: false, Destroyed: false }
-            && (GameFacts.IsPlayerFaction(pawn.Faction) || pawn.IsPrisonerOfColony || pawn.IsSlaveOfColony);
+            && (GameFacts.IsPlayerFaction(pawn.Faction)
+                || GameFacts.IsPrisonerOfColonySafe(pawn)
+                || (pawn.IsSlave && GameFacts.IsPlayerFaction(pawn.SlaveFaction)));
 }
 
 /// <summary>

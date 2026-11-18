@@ -19,6 +19,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly string colonyName;
     private readonly string? modSource;
     private readonly StatsView view;
+    private readonly string? scopeName;
     private readonly string directory;
     private readonly HistoryOverlayTracker overlayTracker;
     private readonly Dictionary<long, Task<MetricHistory>> overlayTasks = [];
@@ -51,10 +52,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     internal Dialog_ColonyMetricHistory(StatsView view, string colonyKey, string colonyName,
-        MetricDefinition definition, string metricLabel, NumericValue comparison)
+        MetricDefinition definition, string metricLabel, NumericValue comparison, string? scopeName = null)
     {
         this.definition = definition;
         this.view = view;
+        this.scopeName = scopeName;
         this.colonyKey = colonyKey;
         overlayTracker = new HistoryOverlayTracker(colonyKey, OverlayColors.Length);
         this.colonyName = colonyName;
@@ -71,6 +73,31 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     public override Vector2 InitialSize => new(Math.Min(930f, Verse.UI.screenWidth * 0.88f), Math.Min(605f, Verse.UI.screenHeight * 0.85f));
 
     public override void DoWindowContents(Rect rect)
+    {
+        try
+        {
+            DrawContents(rect);
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] Colony metric history window failed to draw.\n{e}", "RWS.history".GetHashCode());
+            Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
+            GUI.color = Color.white;
+        }
+    }
+
+    private string OverlayColonyName(HistoryOverlayTracker.Entry overlay)
+        => view.Stats.Colonies.FirstOrDefault(c => c.Key == overlay.ColonyKey) is { } stats
+            ? Dialog_RimworldStatistics.ColonyName(stats)
+            : overlay.ColonyName;
+
+    private void DrawContents(Rect rect)
     {
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 32f), 32f);
@@ -160,97 +187,97 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
         // The whole dynamic content scrolls: adding overlays or using a longer
         // translation cannot silently remove the graph or the legend on small screens.
-        Widgets.BeginScrollView(body, ref chartScroll,
-            new Rect(0f, 0f, contentWidth, scrollHeight));
-
-        var topControls = new ControlRow(new Rect(0f, 0f, contentWidth, 28f));
-        var add = topControls.Next(addColonyText, 120f, 250f);
-        if (Widgets.ButtonText(add, addColonyText.Truncate(Math.Max(0f, add.width - 12f)), active: overlayTracker.CanAdd))
+        using (UiScopes.ScrollView(body, ref chartScroll, new Rect(0f, 0f, contentWidth, scrollHeight)))
         {
-            var candidates = view.Stats.Colonies
-                .Where(c => !c.Excluded && !c.OutOfScope && !overlayTracker.IsSelected(c.Key))
-                .ToList();
-            if (candidates.Count > 0)
+            var topControls = new ControlRow(new Rect(0f, 0f, contentWidth, 28f));
+            var add = topControls.Next(addColonyText, 120f, 250f);
+            if (Widgets.ButtonText(add, addColonyText.Truncate(Math.Max(0f, add.width - 12f)), active: overlayTracker.CanAdd))
             {
-                Find.WindowStack.Add(new ColonyPickerDialog(candidates, activePreferences, c =>
+                var candidates = view.Stats.Colonies
+                    .Where(c => !c.Excluded && !c.OutOfScope && !overlayTracker.IsSelected(c.Key))
+                    .ToList();
+                if (candidates.Count > 0)
                 {
-                    var name = Dialog_RimworldStatistics.ColonyName(c);
-                    if (!overlayTracker.TryAdd(c.Key, name, out var entry) || entry is null)
-                        return;
-                    var task = Task.Run(() => ProfileService.Session.ReadChartHistory(view, c.Key, definition, directory));
-                    task.ContinueWith(t => _ = t.Exception, TaskContinuationOptions.OnlyOnFaulted);
-                    overlayTasks[entry.RequestId] = task;
+                    UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(candidates, activePreferences, c =>
+                    {
+                        var name = Dialog_RimworldStatistics.ColonyName(c);
+                        if (!overlayTracker.TryAdd(c.Key, name, out var entry) || entry is null)
+                            return;
+                        var task = Task.Run(() => ProfileService.Session.ReadChartHistory(view, c.Key, definition, directory));
+                        task.ContinueWith(t => _ = t.Exception, TaskContinuationOptions.OnlyOnFaulted);
+                        overlayTasks[entry.RequestId] = task;
+                        InvalidateOverlays();
+                    }, addColonyText));
+                }
+            }
+            var favButton = topControls.Next(favText, 140f, 360f);
+            var shownFavText = favText.Truncate(Math.Max(0f, favButton.width - 12f));
+            if (Widgets.ButtonText(favButton, shownFavText))
+            {
+                Dialog_RimworldStatistics.UpdateActivePreferences(prefs =>
+                    ColonyHistoryFavorites.Toggle(prefs, colonyKey, colonyStats?.AliasKeys, definition.Key));
+            }
+            TooltipHandler.TipRegion(favButton, favText);
+
+            var y = topControls.Height + 3f;
+            string? removeKey = null;
+            foreach (var overlay in overlayTracker.Entries)
+            {
+                var row = new Rect(0f, y, contentWidth, overlayRowHeight);
+                var color = OverlayColors[overlay.ColorIndex];
+                Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), color);
+
+                var status = overlay.Status switch
+                {
+                    HistoryOverlayStatus.Loading => (string)"RWS_Loading".Translate(),
+                    HistoryOverlayStatus.Empty => (string)"RWS_Chart_HistoryEmpty".Translate(),
+                    HistoryOverlayStatus.Incompatible => (string)"RWS_Chart_OverlayOtherSource".Translate(),
+                    _ => "",
+                };
+                var overlayDisplayName = OverlayColonyName(overlay);
+                var label = status.Length == 0 ? overlayDisplayName : overlayDisplayName + " · " + status;
+
+                const float removeWidth = 24f;
+                var removeRect = new Rect(row.xMax - removeWidth, row.y + 1f, removeWidth, 21f);
+                if (Widgets.ButtonText(removeRect, "×"))
+                    removeKey = overlay.ColonyKey;
+                TooltipHandler.TipRegion(removeRect, "RWS_Chart_RemoveOverlay".Translate());
+
+                var labelWidth = Math.Max(0f, removeRect.x - (row.x + 18f) - 6f);
+                var labelRect = new Rect(row.x + 18f, row.y, labelWidth, row.height);
+                Widgets.Label(labelRect, label.Truncate(labelRect.width));
+                if (Text.CalcSize(label).x > labelRect.width)
+                    TooltipHandler.TipRegion(labelRect, label);
+
+                y = row.yMax;
+            }
+
+            if (removeKey is not null)
+            {
+                var removed = overlayTracker.Entries.FirstOrDefault(e => string.Equals(e.ColonyKey, removeKey, StringComparison.Ordinal));
+                if (removed is not null)
+                    overlayTasks.Remove(removed.RequestId);
+                if (overlayTracker.Remove(removeKey))
                     InvalidateOverlays();
-                }, addColonyText));
+            }
+
+            y = DrawZoomControls(history, y, contentWidth, zoomStatus);
+            if (boundsDirty)
+            {
+                EnsureBoundsAndLegend(history, contentWidth);
+                changeLines = ChangeText(history);
+            }
+            y = DrawChangeControls(history, y, contentWidth, changeLines, changeTextHeight);
+            Widgets.Label(new Rect(0f, y, contentWidth, noteHeight), note);
+            var axisWidth = Math.Min(145f, contentWidth * 0.28f);
+            var plot = new Rect(axisWidth, y + noteHeight + 13f,
+                contentWidth - axisWidth - 16f, vertical.PlotHeight);
+            if (plot.width >= 10f)
+            {
+                DrawPlot(plot, axisWidth, history, currentColonyName);
+                DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
             }
         }
-        var favButton = topControls.Next(favText, 140f, 360f);
-        var shownFavText = favText.Truncate(Math.Max(0f, favButton.width - 12f));
-        if (Widgets.ButtonText(favButton, shownFavText))
-        {
-            Dialog_RimworldStatistics.UpdateActivePreferences(prefs =>
-                ColonyHistoryFavorites.Toggle(prefs, colonyKey, colonyStats?.AliasKeys, definition.Key));
-        }
-        TooltipHandler.TipRegion(favButton, favText);
-
-        var y = topControls.Height + 3f;
-        string? removeKey = null;
-        foreach (var overlay in overlayTracker.Entries)
-        {
-            var row = new Rect(0f, y, contentWidth, overlayRowHeight);
-            var color = OverlayColors[overlay.ColorIndex];
-            Widgets.DrawBoxSolid(new Rect(row.x, row.y + 5f, 12f, 12f), color);
-
-            var status = overlay.Status switch
-            {
-                HistoryOverlayStatus.Loading => (string)"RWS_Loading".Translate(),
-                HistoryOverlayStatus.Empty => (string)"RWS_Chart_HistoryEmpty".Translate(),
-                HistoryOverlayStatus.Incompatible => (string)"RWS_Chart_OverlayOtherSource".Translate(),
-                _ => "",
-            };
-            var label = status.Length == 0 ? overlay.ColonyName : overlay.ColonyName + " · " + status;
-
-            const float removeWidth = 24f;
-            var removeRect = new Rect(row.xMax - removeWidth, row.y + 1f, removeWidth, 21f);
-            if (Widgets.ButtonText(removeRect, "×"))
-                removeKey = overlay.ColonyKey;
-            TooltipHandler.TipRegion(removeRect, "RWS_Chart_RemoveOverlay".Translate());
-
-            var labelWidth = Math.Max(0f, removeRect.x - (row.x + 18f) - 6f);
-            var labelRect = new Rect(row.x + 18f, row.y, labelWidth, row.height);
-            Widgets.Label(labelRect, label.Truncate(labelRect.width));
-            if (Text.CalcSize(label).x > labelRect.width)
-                TooltipHandler.TipRegion(labelRect, label);
-
-            y = row.yMax;
-        }
-
-        if (removeKey is not null)
-        {
-            var removed = overlayTracker.Entries.FirstOrDefault(e => string.Equals(e.ColonyKey, removeKey, StringComparison.Ordinal));
-            if (removed is not null)
-                overlayTasks.Remove(removed.RequestId);
-            if (overlayTracker.Remove(removeKey))
-                InvalidateOverlays();
-        }
-
-        y = DrawZoomControls(history, y, contentWidth, zoomStatus);
-        if (boundsDirty)
-        {
-            EnsureBoundsAndLegend(history, contentWidth);
-            changeLines = ChangeText(history);
-        }
-        y = DrawChangeControls(history, y, contentWidth, changeLines, changeTextHeight);
-        Widgets.Label(new Rect(0f, y, contentWidth, noteHeight), note);
-        var axisWidth = Math.Min(145f, contentWidth * 0.28f);
-        var plot = new Rect(axisWidth, y + noteHeight + 13f,
-            contentWidth - axisWidth - 16f, vertical.PlotHeight);
-        if (plot.width >= 10f)
-        {
-            DrawPlot(plot, axisWidth, history, currentColonyName);
-            DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
-        }
-        Widgets.EndScrollView();
     }
 
     private readonly record struct ZoomControlsLayout(
@@ -300,24 +327,27 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         string resetText = "RWS_Chart_ZoomReset".Translate();
         var layout = ComputeZoomControlsLayout(y, width, labelText, applyText, resetText, statusText);
 
-        var prevAnchor = Text.Anchor;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        var shownLabel = labelText.Truncate(layout.LabelRect.width);
-        Widgets.Label(layout.LabelRect, shownLabel);
-        if (shownLabel != labelText)
-            TooltipHandler.TipRegion(layout.LabelRect, labelText);
+        string nextStart;
+        string nextEnd;
+        using (UiScopes.GuiState())
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            var shownLabel = labelText.Truncate(layout.LabelRect.width);
+            Widgets.Label(layout.LabelRect, shownLabel);
+            if (shownLabel != labelText)
+                TooltipHandler.TipRegion(layout.LabelRect, labelText);
 
-        Text.Anchor = TextAnchor.UpperLeft;
-        var nextStart = Widgets.TextField(layout.StartRect, zoomStartInput) ?? "";
-        TooltipHandler.TipRegion(layout.StartRect, "RWS_Chart_ZoomStartTip".Translate());
+            Text.Anchor = TextAnchor.UpperLeft;
+            nextStart = Widgets.TextField(layout.StartRect, zoomStartInput) ?? "";
+            TooltipHandler.TipRegion(layout.StartRect, "RWS_Chart_ZoomStartTip".Translate());
 
-        Text.Anchor = TextAnchor.MiddleCenter;
-        Widgets.Label(layout.SeparatorRect, "–");
+            Text.Anchor = TextAnchor.MiddleCenter;
+            Widgets.Label(layout.SeparatorRect, "–");
 
-        Text.Anchor = TextAnchor.UpperLeft;
-        var nextEnd = Widgets.TextField(layout.EndRect, zoomEndInput) ?? "";
-        TooltipHandler.TipRegion(layout.EndRect, "RWS_Chart_ZoomEndTip".Translate());
-        Text.Anchor = prevAnchor;
+            Text.Anchor = TextAnchor.UpperLeft;
+            nextEnd = Widgets.TextField(layout.EndRect, zoomEndInput) ?? "";
+            TooltipHandler.TipRegion(layout.EndRect, "RWS_Chart_ZoomEndTip".Translate());
+        }
 
         if (nextStart != zoomStartInput || nextEnd != zoomEndInput)
         {
@@ -338,11 +368,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             ResetZoom(history);
         TooltipHandler.TipRegion(layout.ResetRect, "RWS_Chart_ZoomResetTip".Translate());
 
-        var prevColor = GUI.color;
-        if (zoomInputInvalid)
-            GUI.color = ColorLibrary.RedReadable;
-        Widgets.Label(layout.StatusRect, statusText);
-        GUI.color = prevColor;
+        using (UiScopes.GuiState())
+        {
+            if (zoomInputInvalid)
+                GUI.color = ColorLibrary.RedReadable;
+            Widgets.Label(layout.StatusRect, statusText);
+        }
 
         return y + layout.TotalHeight;
     }
@@ -405,7 +436,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         {
             var rect = new Rect(x, y, Math.Min(Math.Max(110f, Text.CalcSize(label).x + 20f), Math.Max(0f, width - x)), 28f);
             x = rect.xMax + 6f;
-            var clicked = Widgets.ButtonText(rect, label, active: active);
+            var clicked = Widgets.ButtonText(rect, label.Truncate(Math.Max(0f, rect.width - 12f)), active: active);
             if (tip is not null)
                 TooltipHandler.TipRegion(rect, tip);
             return clicked && active;
@@ -428,7 +459,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             SetChange(null);
         }
         if (Button("RWS_Lineage_Open".Translate(), "RWS_Lineage_OpenTip".Translate(), true))
-            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey, null, definition.Key));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySaveLineage(view, colonyKey, null, definition.Key, scopeName));
         Widgets.Label(new Rect(0f, y + 31f, width, linesHeight), lines);
         return y + 31f + linesHeight + 6f;
     }
@@ -679,27 +710,28 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var span = range.Max / scale - min;
         float Y(double value) => plot.yMax - plot.height * (span == 0 ? 0.5f : (float)((value / scale - min) / span));
 
-        var anchor = Text.Anchor;
-        Text.Anchor = TextAnchor.MiddleRight;
-        var gridSteps = range.Min == range.Max ? 0 : 4;
-        for (var i = 0; i <= gridSteps; i++)
+        using (UiScopes.GuiState())
         {
-            var fraction = gridSteps == 0 ? 0.5d : i / (double)gridSteps;
-            var value = range.Min * (1d - fraction) + range.Max * fraction;
-            var y = plot.yMax - plot.height * (float)fraction;
-            Widgets.DrawBoxSolid(new Rect(plot.x, y, plot.width, 1f), GridColor);
-            var label = MetricText.Format(definition, new NumericValue { Number = value, Coverage = MetricCoverage.SnapshotOnly });
-            Widgets.Label(new Rect(plot.x - axisWidth, y - 12f, axisWidth - 6f, 24f), label.Truncate(axisWidth - 6f));
+            Text.Anchor = TextAnchor.MiddleRight;
+            var gridSteps = range.Min == range.Max ? 0 : 4;
+            for (var i = 0; i <= gridSteps; i++)
+            {
+                var fraction = gridSteps == 0 ? 0.5d : i / (double)gridSteps;
+                var value = range.Min * (1d - fraction) + range.Max * fraction;
+                var y = plot.yMax - plot.height * (float)fraction;
+                Widgets.DrawBoxSolid(new Rect(plot.x, y, plot.width, 1f), GridColor);
+                var label = MetricText.Format(definition, new NumericValue { Number = value, Coverage = MetricCoverage.SnapshotOnly });
+                Widgets.Label(new Rect(plot.x - axisWidth, y - 12f, axisWidth - 6f, 24f), label.Truncate(axisWidth - 6f));
+            }
+            Text.Anchor = TextAnchor.MiddleCenter;
+            var tickSteps = ticks.First == ticks.Last ? 0 : 4;
+            for (var i = 0; i <= tickSteps; i++)
+            {
+                var tick = tickSteps == 0 ? ticks.First : ticks.First + (int)((ticks.Last - ticks.First) * (i / (double)tickSteps));
+                Widgets.Label(new Rect(X(tick) - 36f, plot.yMax + 3f, 72f, 22f), Dialog_RimworldStatistics.Days(tick));
+            }
+            Widgets.Label(new Rect(plot.x, plot.yMax + 23f, plot.width, 21f), "RWS_Col_Days".Translate());
         }
-        Text.Anchor = TextAnchor.MiddleCenter;
-        var tickSteps = ticks.First == ticks.Last ? 0 : 4;
-        for (var i = 0; i <= tickSteps; i++)
-        {
-            var tick = tickSteps == 0 ? ticks.First : ticks.First + (int)((ticks.Last - ticks.First) * (i / (double)tickSteps));
-            Widgets.Label(new Rect(X(tick) - 36f, plot.yMax + 3f, 72f, 22f), Dialog_RimworldStatistics.Days(tick));
-        }
-        Widgets.Label(new Rect(plot.x, plot.yMax + 23f, plot.width, 21f), "RWS_Col_Days".Translate());
-        Text.Anchor = anchor;
 
         DrawSeries(plotPoints, SeriesColor, PartialColor, isRawSeries: ReferenceEquals(plotPoints, slicedPrimaryPoints) && zoomRange is not null);
         foreach (var overlay in overlayTracker.Entries)
@@ -717,13 +749,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
         if (zoomRange is not null && visibleTotalMeasuredCount == 0)
         {
-            var prevAnchor = Text.Anchor;
-            var prevColor = GUI.color;
-            Text.Anchor = TextAnchor.MiddleCenter;
-            GUI.color = PartialColor;
-            Widgets.Label(plot, "RWS_Chart_ZoomEmptyPlot".Translate());
-            GUI.color = prevColor;
-            Text.Anchor = prevAnchor;
+            using (UiScopes.GuiState())
+            {
+                Text.Anchor = TextAnchor.MiddleCenter;
+                GUI.color = PartialColor;
+                Widgets.Label(plot, "RWS_Chart_ZoomEmptyPlot".Translate());
+            }
         }
 
         // The readings picked for a comparison (#307), from the full series: thinning may not have kept them.
@@ -814,7 +845,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             {
                 nearest = candidate;
                 bestDistance = distance;
-                hoverName = overlay.ColonyName;
+                hoverName = OverlayColonyName(overlay);
                 hoverSeries = overlay.RawPoints;
             }
         }

@@ -34,41 +34,44 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
             tips = new string?[rows.Count][];
         }
 
-        var previousAnchor = Text.Anchor;
-        var previousColor = GUI.color;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.BeginGroup(new Rect(rect.x, rect.y, width, rowHeight));
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null, rightAligned);
-        GUI.EndGroup();
-        GUI.color = previousColor;
-
-        var viewport = new Rect(rect.x, rect.y + rowHeight, rect.width, rect.height - rowHeight);
-        Widgets.BeginScrollView(viewport, ref scroll, new Rect(0, 0, plan.TotalWidth, rows.Count * rowHeight));
-        var first = Math.Max(0, (int)(scroll.y / rowHeight));
-        var last = Math.Min(rows.Count - 1, (int)((scroll.y + viewport.height) / rowHeight) + 1);
-        for (var i = first; i <= last; i++)
+        using (UiScopes.GuiState())
         {
-            var row = new Rect(0, i * rowHeight, plan.TotalWidth, rowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(row, 0.25f);
-            if (display[i] is null)
+            var previousColor = GUI.color;
+            Text.Anchor = TextAnchor.MiddleLeft;
+            using (UiScopes.Group(new Rect(rect.x, rect.y, width, rowHeight)))
             {
-                var source = rows[i];
-                display[i] = new string[source.Length];
-                tips[i] = new string?[source.Length];
-                for (var c = 0; c < source.Length; c++)
+                GUI.color = new Color(0.8f, 0.8f, 0.8f);
+                DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null, rightAligned);
+            }
+            GUI.color = previousColor;
+
+            var viewport = new Rect(rect.x, rect.y + rowHeight, rect.width, rect.height - rowHeight);
+            using (UiScopes.ScrollView(viewport, ref scroll, new Rect(0, 0, plan.TotalWidth, rows.Count * rowHeight)))
+            {
+                var first = Math.Max(0, (int)(scroll.y / rowHeight));
+                var last = Math.Min(rows.Count - 1, (int)((scroll.y + viewport.height) / rowHeight) + 1);
+                for (var i = first; i <= last; i++)
                 {
-                    var shown = source[c].Truncate(Math.Max(0, plan.Widths[c] - 8f));
-                    display[i][c] = shown;
-                    if (shown != source[c])
-                        tips[i][c] = source[c];
+                    var row = new Rect(0, i * rowHeight, plan.TotalWidth, rowHeight);
+                    if (i % 2 == 1)
+                        Verse.Widgets.DrawHighlight(row, 0.25f);
+                    if (display[i] is null)
+                    {
+                        var source = rows[i];
+                        display[i] = new string[source.Length];
+                        tips[i] = new string?[source.Length];
+                        for (var c = 0; c < source.Length; c++)
+                        {
+                            var shown = source[c].Truncate(Math.Max(0, plan.Widths[c] - 8f));
+                            display[i][c] = shown;
+                            if (shown != source[c])
+                                tips[i][c] = source[c];
+                        }
+                    }
+                    DrawCells(row, display[i], tips[i], rightAligned);
                 }
             }
-            DrawCells(row, display[i], tips[i], rightAligned);
         }
-        Widgets.EndScrollView();
-        Text.Anchor = previousAnchor;
     }
 
     private void DrawCells(Rect row, string[] cells, string?[]? fullText, IReadOnlyList<bool>? rightAligned)
@@ -82,7 +85,7 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
                 ? TextAnchor.MiddleRight
                 : TextAnchor.MiddleLeft;
             var shown = fullText is null ? cells[i].Truncate(cell.width) : cells[i];
-            Widgets.Label(cell, shown);
+            Verse.Widgets.Label(cell, shown);
             var tip = fullText is null && shown != cells[i] ? cells[i] : fullText?[i];
             if (tip is not null)
                 TooltipHandler.TipRegion(cell, tip);

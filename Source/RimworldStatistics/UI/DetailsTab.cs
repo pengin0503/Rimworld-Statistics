@@ -79,15 +79,18 @@ public static class DetailsTab
 
         if (!comparing)
         {
-            GUI.color = new Color(0.8f, 0.8f, 0.8f);
-            var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
-            if (view.Stats.OutOfScopeColonyCount > 0)
-                note += " " + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
-            if (numeric.Unattributed > 0)
-                note += " " + "RWS_Details_Unattributed".Translate(numeric.Unattributed);
-            var noteHeight = Text.CalcHeight(note, rect.width);
-            Widgets.Label(new Rect(rect.x, y, rect.width, noteHeight), note);
-            GUI.color = Color.white;
+            float noteHeight;
+            using (UiScopes.GuiState())
+            {
+                GUI.color = new Color(0.8f, 0.8f, 0.8f);
+                var note = (string)"RWS_Details_Note".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
+                if (view.Stats.OutOfScopeColonyCount > 0)
+                    note += " " + "RWS_Groups_OutOfScope".Translate(view.Stats.OutOfScopeColonyCount);
+                if (numeric.Unattributed > 0)
+                    note += " " + "RWS_Details_Unattributed".Translate(numeric.Unattributed);
+                noteHeight = Text.CalcHeight(note, rect.width);
+                Widgets.Label(new Rect(rect.x, y, rect.width, noteHeight), note);
+            }
             y += noteHeight + 4f;
         }
 
@@ -112,14 +115,15 @@ public static class DetailsTab
             var canGroupNow = DerivedMetricGroups.ShouldGroup(true, perColony, byValue, search);
             string groupLabel = "RWS_Details_GroupDerived".Translate();
             var toggleRect = filterRow.Next(groupLabel + "   ", 145f, Math.Min(rect.width, 260f));
-            var previousColor = GUI.color;
-            if (!canGroupNow)
-                GUI.color = new Color(0.65f, 0.65f, 0.65f);
             var nextGroup = groupDerived;
-            // Greyed out while searching or sorting by value, and then it does not take clicks either (#336).
-            Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup,
-                disabled: !canGroupNow);
-            GUI.color = previousColor;
+            using (UiScopes.GuiState())
+            {
+                if (!canGroupNow)
+                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                // Greyed out while searching or sorting by value, and then it does not take clicks either (#336).
+                Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup,
+                    disabled: !canGroupNow);
+            }
             TooltipHandler.TipRegion(toggleRect,
                 canGroupNow ? "RWS_Details_GroupDerivedTip".Translate() : "RWS_Details_GroupDerivedFlatTip".Translate());
             if (nextGroup != groupDerived)
@@ -153,12 +157,12 @@ public static class DetailsTab
         if (summaryText.Length > 0)
         {
             var summaryRect = filterRow.Next(summaryText, 90f, Math.Min(rect.width, 250f));
-            var previousAnchor = Text.Anchor;
-            Text.Anchor = TextAnchor.MiddleLeft;
-            GUI.color = new Color(0.8f, 0.8f, 0.8f);
-            Widgets.Label(summaryRect, summaryText.Truncate(summaryRect.width));
-            GUI.color = Color.white;
-            Text.Anchor = previousAnchor;
+            using (UiScopes.GuiState())
+            {
+                Text.Anchor = TextAnchor.MiddleLeft;
+                GUI.color = new Color(0.8f, 0.8f, 0.8f);
+                Widgets.Label(summaryRect, summaryText.Truncate(summaryRect.width));
+            }
             TooltipHandler.TipRegion(summaryRect, summaryText);
         }
         if (activeFilters > 0)
@@ -202,9 +206,10 @@ public static class DetailsTab
             Array.Clear(chartTipCache);
         }
         var width = tablePlan.TotalWidth;
-        GUI.BeginGroup(new Rect(rect.x, y, available, DetailsRowHeights.Header));
-        DrawHeader(new Rect(-scroll.x, 0, width, DetailsRowHeights.Header));
-        GUI.EndGroup();
+        using (UiScopes.Group(new Rect(rect.x, y, available, DetailsRowHeights.Header)))
+        {
+            DrawHeader(new Rect(-scroll.x, 0, width, DetailsRowHeights.Header));
+        }
         y += DetailsRowHeights.Header;
         var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         if (outRect.height <= 0)
@@ -223,11 +228,12 @@ public static class DetailsTab
             ? view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey)
             : null;
         var viewRect = new Rect(0f, 0f, width, offsets.Total);
-        Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        var (first, last) = offsets.Visible(scroll.y, outRect.height);
-        for (var i = first; i <= last; i++)
-            DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view, selectedColonyStats);
-        Widgets.EndScrollView();
+        using (UiScopes.ScrollView(outRect, ref scroll, viewRect))
+        {
+            var (first, last) = offsets.Visible(scroll.y, outRect.height);
+            for (var i = first; i <= last; i++)
+                DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view, selectedColonyStats, scopeName);
+        }
     }
 
     private static void SetLines(List<Line> built)
@@ -293,7 +299,7 @@ public static class DetailsTab
             {
                 var selectableKeys = view.Numeric.Colonies.Select(c => c.Key).ToHashSet(StringComparer.Ordinal);
                 var selectable = view.Stats.Colonies.Where(s => selectableKeys.Contains(s.Key)).ToArray();
-                Find.WindowStack.Add(new ColonyPickerDialog(
+                UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
                     selectable,
                     favoritePreferences,
                     picked => colonyKey = picked.Key,
@@ -302,13 +308,13 @@ public static class DetailsTab
             var reportLabel = (string)"RWS_Report_Open".Translate();
             var reportRect = controls.Next(reportLabel, 120f, 220f);
             if (Widgets.ButtonText(reportRect, reportLabel.Truncate(Math.Max(0f, reportRect.width - 12f))))
-                Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, selected, scopeName));
+                UiScopes.OpenOrReplaceWindow(new Dialog_ColonySummaryReport(view, selected, scopeName));
             TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
         }
         var scatterLabel = (string)"RWS_Scatter_Open".Translate();
         var scatterRect = controls.Next(scatterLabel, 110f, 200f);
         if (Widgets.ButtonText(scatterRect, scatterLabel.Truncate(Math.Max(0f, scatterRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, null, null, scopeName));
+            UiScopes.OpenOrReplaceWindow(new Dialog_MetricScatterPlot(view, null, null, scopeName));
         TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
         if (Button(category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate(), 240f))
         {
@@ -321,9 +327,11 @@ public static class DetailsTab
         var searchLabel = (string)"RWS_Details_Search".Translate();
         var labelWidth = Math.Min(Text.CalcSize(searchLabel).x + 6f, Math.Max(0, rect.width - 120f));
         var searchArea = controls.Next(labelWidth + 120f, fill: true);
-        Text.Anchor = TextAnchor.MiddleLeft;
-        Widgets.Label(new Rect(searchArea.x, searchArea.y, labelWidth, searchArea.height), searchLabel.Truncate(labelWidth));
-        Text.Anchor = TextAnchor.UpperLeft;
+        using (UiScopes.GuiState())
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(new Rect(searchArea.x, searchArea.y, labelWidth, searchArea.height), searchLabel.Truncate(labelWidth));
+        }
         var field = new Rect(searchArea.x + labelWidth, searchArea.y + 2f, searchArea.width - labelWidth, searchArea.height - 4f);
         search = Widgets.TextField(field, search) ?? "";
         return controls.Height;
@@ -377,45 +385,62 @@ public static class DetailsTab
             perColony ? (string)"RWS_Details_Col_Through".Translate() : (string)"RWS_Details_Col_Colonies".Translate(),
         };
         var x = rect.x;
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        for (var c = 0; c < headers.Length; c++)
+        using (UiScopes.GuiState())
         {
-            var cell = new Rect(x, rect.y, tablePlan!.Widths[c], rect.height);
-            var metrics = DetailsTableLayout.MeasureColumn(c, x, cell.width, 0f, isMetricRow: false, hasExpand: false);
-            var labelRect = new Rect(x + metrics.LeftOffset, cell.y, metrics.ContentWidth, cell.height);
-            Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
-                ? TextAnchor.MiddleRight
-                : TextAnchor.MiddleLeft;
-            var shown = headers[c].Truncate(Math.Max(1f, labelRect.width));
-            Widgets.Label(labelRect, shown);
-            if (c <= 1)
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            for (var c = 0; c < headers.Length; c++)
             {
-                Widgets.DrawHighlightIfMouseover(cell);
-                if (Widgets.ButtonInvisible(cell))
+                var cell = new Rect(x, rect.y, tablePlan!.Widths[c], rect.height);
+                var metrics = DetailsTableLayout.MeasureColumn(c, x, cell.width, 0f, isMetricRow: false, hasExpand: false);
+                var labelRect = new Rect(x + metrics.LeftOffset, cell.y, metrics.ContentWidth, cell.height);
+                Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
+                    ? TextAnchor.MiddleRight
+                    : TextAnchor.MiddleLeft;
+                var shown = headers[c].Truncate(Math.Max(1f, labelRect.width));
+                Widgets.Label(labelRect, shown);
+                if (c <= 1)
                 {
-                    var wantValue = c == 1;
-                    if (byValue == wantValue)
-                        ascending = !ascending;
-                    else
-                        (byValue, ascending) = (wantValue, !wantValue);   // values start largest first
+                    Widgets.DrawHighlightIfMouseover(cell);
+                    if (Widgets.ButtonInvisible(cell))
+                    {
+                        var wantValue = c == 1;
+                        if (byValue == wantValue)
+                            ascending = !ascending;
+                        else
+                            (byValue, ascending) = (wantValue, !wantValue);   // values start largest first
+                    }
                 }
+                if (c == 3 && perColony)
+                {
+                    var tip = shown != headers[c] ? headers[c] + "\n" + (string)"RWS_Details_ThroughTip".Translate() : (string)"RWS_Details_ThroughTip".Translate();
+                    TooltipHandler.TipRegion(cell, tip);
+                }
+                else if (shown != headers[c])
+                {
+                    TooltipHandler.TipRegion(cell, headers[c]);
+                }
+                x += cell.width;
             }
-            if (c == 3 && perColony)
-            {
-                var tip = shown != headers[c] ? headers[c] + "\n" + (string)"RWS_Details_ThroughTip".Translate() : (string)"RWS_Details_ThroughTip".Translate();
-                TooltipHandler.TipRegion(cell, tip);
-            }
-            else if (shown != headers[c])
-            {
-                TooltipHandler.TipRegion(cell, headers[c]);
-            }
-            x += cell.width;
         }
-        Text.Anchor = TextAnchor.UpperLeft;
-        GUI.color = Color.white;
     }
 
-    private static void DrawLine(Rect rect, Line line, int index, StatsView view, ColonyStats? selectedColonyStats)
+    private static void MutateFavorites(ViewPreferences? fallbackPrefs, Action? fallbackSave, Action<ViewPreferences> mutate)
+    {
+        if (RimworldStatisticsMod.Settings is not null)
+        {
+            Dialog_RimworldStatistics.UpdateActivePreferences(mutate);
+            if (fallbackPrefs is not null && !ReferenceEquals(fallbackPrefs, Dialog_RimworldStatistics.ActivePreferences))
+                mutate(fallbackPrefs);
+            return;
+        }
+        if (fallbackPrefs is not null)
+        {
+            mutate(fallbackPrefs);
+            fallbackSave?.Invoke();
+        }
+    }
+
+    private static void DrawLine(Rect rect, Line line, int index, StatsView view, ColonyStats? selectedColonyStats, string? scopeName)
     {
         if (index % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
@@ -447,31 +472,32 @@ public static class DetailsTab
                 : new LazyTip(() => tip() + "\n\n" + "RWS_Chart_OpenTip".Translate()).Get;
         }
         var x = rect.x;
-        for (var c = 0; c < cells.Length; c++)
+        using (UiScopes.GuiState())
         {
-            var col = c == 0 ? nameMetrics : DetailsTableLayout.MeasureColumn(c, x, widths[c], hit.Indent, line.MetricKey is not null, line.ExpandKey is not null);
-            var cell = new Rect(x + col.LeftOffset, rect.y, col.ContentWidth, rect.height);
-            Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
-                ? TextAnchor.MiddleRight
-                : TextAnchor.MiddleLeft;
-            GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind)
-                : c == 1 ? MetricVisualStyle.ValueColor(line.VisualKind)
-                : Color.white;
-            if (c == 0 && line.ModSource is { } source)
+            for (var c = 0; c < cells.Length; c++)
             {
-                Widgets.Label(new Rect(cell.x, cell.y, cell.width, DetailsRowHeights.TitleLineHeight), cells[c].Text);
-                GUI.color = new Color(0.78f, 0.78f, 0.81f);
-                Widgets.Label(new Rect(cell.x, cell.y + DetailsRowHeights.SourceLineTop, cell.width, DetailsRowHeights.SourceLineHeight),
-                    source.Truncate(cell.width));
+                var col = c == 0 ? nameMetrics : DetailsTableLayout.MeasureColumn(c, x, widths[c], hit.Indent, line.MetricKey is not null, line.ExpandKey is not null);
+                var cell = new Rect(x + col.LeftOffset, rect.y, col.ContentWidth, rect.height);
+                Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
+                    ? TextAnchor.MiddleRight
+                    : TextAnchor.MiddleLeft;
+                GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind)
+                    : c == 1 ? MetricVisualStyle.ValueColor(line.VisualKind)
+                    : Color.white;
+                if (c == 0 && line.ModSource is { } source)
+                {
+                    Widgets.Label(new Rect(cell.x, cell.y, cell.width, DetailsRowHeights.TitleLineHeight), cells[c].Text);
+                    GUI.color = new Color(0.78f, 0.78f, 0.81f);
+                    Widgets.Label(new Rect(cell.x, cell.y + DetailsRowHeights.SourceLineTop, cell.width, DetailsRowHeights.SourceLineHeight),
+                        source.Truncate(cell.width));
+                }
+                else
+                {
+                    Widgets.Label(cell, cells[c].Text);
+                }
+                x += widths[c];
             }
-            else
-            {
-                Widgets.Label(cell, cells[c].Text);
-            }
-            x += widths[c];
         }
-        GUI.color = Color.white;
-        Text.Anchor = TextAnchor.UpperLeft;
         // The star, disclosure triangle, and chart click area remain strictly disjoint.
         Rect? chartRect = !hit.Chart.IsEmpty
             ? new Rect(hit.Chart.X, rect.y, hit.Chart.Width, rect.height)
@@ -507,32 +533,30 @@ public static class DetailsTab
                     [
                         new FloatMenuOption(
                             savedMetric ? "RWS_ColonyFav_MenuMetricRemove".Translate() : "RWS_ColonyFav_MenuMetricAdd".Translate(),
-                            () =>
+                            () => MutateFavorites(prefs, save, p =>
                             {
-                                if (prefs.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
-                                    prefs.FavoriteMetricKeys.Remove(metricKey);
-                                else if (prefs.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                                    prefs.FavoriteMetricKeys.Add(metricKey);
-                                save?.Invoke();
-                            }),
+                                if (p.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
+                                    p.FavoriteMetricKeys.Remove(metricKey);
+                                else if (p.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                                    p.FavoriteMetricKeys.Add(metricKey);
+                            })),
                         new FloatMenuOption(
                             savedColony
                                 ? "RWS_ColonyFav_MenuColonyRemove".Translate(colonyLabel)
                                 : "RWS_ColonyFav_MenuColonyAdd".Translate(colonyLabel),
-                            () =>
-                            {
-                                if (ColonyHistoryFavorites.Toggle(prefs, targetColonyKey, aliases, metricKey))
-                                    save?.Invoke();
-                            }),
+                            () => MutateFavorites(prefs, save, p =>
+                                ColonyHistoryFavorites.Toggle(p, targetColonyKey, aliases, metricKey))),
                     ]));
                 }
                 else
                 {
-                    if (savedMetric)
-                        favoritePreferences.FavoriteMetricKeys.Remove(metricKey);
-                    else if (favoritePreferences.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                        favoritePreferences.FavoriteMetricKeys.Add(metricKey);
-                    persistFavorites?.Invoke();
+                    MutateFavorites(favoritePreferences, persistFavorites, p =>
+                    {
+                        if (p.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
+                            p.FavoriteMetricKeys.Remove(metricKey);
+                        else if (p.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                            p.FavoriteMetricKeys.Add(metricKey);
+                    });
                 }
             }
         }
@@ -542,7 +566,7 @@ public static class DetailsTab
             TooltipHandler.TipRegion(rect,
                 chartRect is { } hintArea && Mouse.IsOver(hintArea) ? chartTipCache[index]! : tipCache[index]!, line.TipId);
         if (line.MetricKey is { } chartKey && chartRect is { } chartArea && Widgets.ButtonInvisible(chartArea))
-            Find.WindowStack.Add(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null));
+            UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(view, chartKey, perColony ? colonyKey : null, scopeName));
         if (line.ExpandKey is { } key && !hit.Toggle.IsEmpty)
         {
             var toggle = new Rect(hit.Toggle.X, rect.y, hit.Toggle.Width, rect.height);
@@ -644,7 +668,7 @@ public static class DetailsTab
         {
             var childKey = crossTop && b.Breakdowns.Count > 0 ? parentExpandKey + ":" + b.Breakdown : null;
             var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
-                useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
+                useThingLabel: crossTop && CrossColonyCatalog.UsesThingDefBreakdown(row.Definition));
             result.Add(MakeLine(b, breakdownLabel, depth, childKey, input, colony, null,
                 tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
             if (childKey is not null && Expanded.Contains(childKey))
@@ -774,7 +798,7 @@ public static class DetailsTab
             {
                 // The top items or categories named as their breakdown rows name them (#334).
                 var source = MetricRegistry.Find(d.StoredKey) ?? d;
-                var useThingLabel = d.DescriptionKey == "RWS_CrossDesc_TopType";
+                var useThingLabel = CrossColonyCatalog.UsesThingDefBreakdown(d);
                 value += " · " + CrossColonyAggregator.TiedLabel(tied,
                     key => MetricText.Breakdown(source, key, useThingLabel));
             }
@@ -819,6 +843,11 @@ public static class DetailsTab
         => BuildTip(row, DefinitionLabel(row.Definition), true,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
                 DetailsViewMode.All, DetailsStatusFilter.All, true, null, ""), null);
+
+    internal static string ColonyTip(NumericRow row, StatsResult stats, NumericColony? colony)
+        => BuildTip(row, DefinitionLabel(row.Definition), true,
+            new Inputs(NumericView.Empty, stats, true, colony?.Key, null, "", false, true, 0,
+                DetailsViewMode.All, DetailsStatusFilter.All, true, null, ""), colony);
 
     internal static string DefinitionLabel(MetricDefinition d)
     {

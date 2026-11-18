@@ -61,14 +61,12 @@ public static class EndingsTab
             var colony = view.Colonies[i];
             var stats = view.Stats.Colonies[i];
             var name = Dialog_RimworldStatistics.ColonyName(stats) + (stats.Excluded ? (string)"RWS_ExcludedMark".Translate() : "");
-            var shownTypes = new HashSet<EndingType>();
             foreach (var pair in colony.Endings.GroupBy(e => (e.Type, e.Ordinal)))
             {
                 var visible = pair.Where(e => includeDev || !e.DevMode).ToList();
                 if (visible.Count == 0)
                     continue;   // dev-mode-only and the setting is off
-                shownTypes.Add(pair.Key.Type);
-                var best = visible.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+                var best = EndingTraces.Representative(visible);
                 var source = best.Source == EndingSource.SeededTrace ? "RWS_Source_SeededTrace".Translate() : "RWS_Source_Live".Translate();
                 if (best.DevMode)
                     source += "RWS_DevModeMark".Translate();
@@ -78,9 +76,9 @@ public static class EndingsTab
             foreach (var recovered in colony.RecoveredEndings)
                 list.Add(new Row(null, name, recovered.Type, (recovered.Ordinal + 1L).ToString(CultureInfo.InvariantCulture),
                     Dialog_RimworldStatistics.Dash, "RWS_Source_RecoveredLineage".Translate()));
-            foreach (var trace in colony.Traces.Where(t => !shownTypes.Contains(t)).OrderBy(t => t))
+            foreach (var trace in EndingTraces.Unexplained(colony))
             {
-                var first = colony.Observations.Where(o => o.EndingTraces.Contains(trace)).Select(o => (DateTime?)o.LastWriteUtc).DefaultIfEmpty(null).Min();
+                var first = EndingTraces.FirstTraceUtc(colony, trace);
                 list.Add(new Row(first, name, trace, "RWS_AtLeastOnce".Translate(), Dialog_RimworldStatistics.Dash, "RWS_Source_SaveTrace".Translate()));
             }
         }

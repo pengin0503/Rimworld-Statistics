@@ -34,10 +34,13 @@ public static class OverviewTab
                 return (label, value, tip);
 
             lastWidth = width;
-            Text.Font = GameFont.Small;
-            label = Label.Truncate(width);
-            Text.Font = font;
-            value = Value.Truncate(width);
+            using (UiScopes.GuiState())
+            {
+                Text.Font = GameFont.Small;
+                label = Label.Truncate(width);
+                Text.Font = font;
+                value = Value.Truncate(width);
+            }
             tip = label != Label || value != Value ? Label + " — " + Value + "\n\n" + Tip : Tip;
             chartTip = FavoriteKey is null ? tip : tip + "\n\n" + "RWS_Chart_OpenTip".Translate();
             return (label, value, tip);
@@ -55,6 +58,7 @@ public static class OverviewTab
     private static StatsView? builtFor;
     private static ViewPreferences? preferences;
     private static Action? onSave;
+    private static string? activeScopeName;
     private static FavoriteCell[] favoriteCells = [];
     private static IReadOnlyList<ResolvedColonyHistoryFavorite> resolvedColonyFavorites = [];
     private static ColonyFavoriteCard[] colonyFavoriteCards = [];
@@ -64,10 +68,12 @@ public static class OverviewTab
     private static Cell[] bottom = [];
     private static Vector2 scroll;
 
-    public static void Draw(Rect rect, StatsView view, ViewPreferences? favoritePreferences = null, Action? saveFavorites = null)
+    public static void Draw(Rect rect, StatsView view, ViewPreferences? favoritePreferences = null, Action? saveFavorites = null,
+        string? scopeName = null)
     {
         preferences = favoritePreferences;
         onSave = saveFavorites;
+        activeScopeName = scopeName;
         var currentLanguage = LanguageDatabase.activeLanguage;
         var signature = string.Join("\u001f", (IEnumerable<string>?)favoritePreferences?.FavoriteMetricKeys ?? Array.Empty<string>())
             + "\u001e" + ColonyPresentation.Signature(favoritePreferences)
@@ -96,16 +102,21 @@ public static class OverviewTab
         var colonyFavRows = (colonyFavoriteCards.Length + bottomColumns - 1) / bottomColumns;
         var colonyFavContentHeight = colonyFavRows == 0 ? 55f : 30f + colonyFavRows * (104f + gap);
 
-        Widgets.BeginScrollView(rect, ref scroll,
-            new Rect(0f, 0f, width, colonyFavTop + colonyFavContentHeight));
-        try
+        using (UiScopes.ScrollView(rect, ref scroll,
+            new Rect(0f, 0f, width, colonyFavTop + colonyFavContentHeight)))
         {
             DrawGrid(top, topColumns, 0f, TopCellHeight, GameFont.Medium);
             DrawGrid(bottom, bottomColumns, topHeight + 14f, BottomCellHeight, GameFont.Small);
 
             var addBasicLabel = (string)"RWS_Fav_AddBasic".Translate();
-            var addBasicRect = new Rect(Math.Max(0f, width - 180f), favoriteTop, Math.Min(180f, width), 27f);
-            Widgets.Label(new Rect(0f, favoriteTop, Math.Max(0f, width - 185f), 27f), "RWS_Fav_Title".Translate());
+            var addBasicWidth = Math.Min(180f, Math.Max(80f, width * 0.45f));
+            var addBasicRect = new Rect(Math.Max(0f, width - addBasicWidth), favoriteTop, Math.Min(addBasicWidth, width), 27f);
+            var favTitle = (string)"RWS_Fav_Title".Translate();
+            var favTitleRect = new Rect(0f, favoriteTop, Math.Max(0f, width - addBasicRect.width - 6f), 27f);
+            var shownFavTitle = favTitle.Truncate(favTitleRect.width);
+            Widgets.Label(favTitleRect, shownFavTitle);
+            if (shownFavTitle != favTitle)
+                TooltipHandler.TipRegion(favTitleRect, favTitle);
             var shownAddBasic = addBasicLabel.Truncate(Math.Max(0f, addBasicRect.width - 12f));
             if (shownAddBasic != addBasicLabel)
                 TooltipHandler.TipRegion(addBasicRect, addBasicLabel);
@@ -146,9 +157,9 @@ public static class OverviewTab
             }
 
             var addColonyLabel = (string)"RWS_ColonyFav_Add".Translate();
-            var addColonyWidth = Math.Min(210f, width);
-            var addColonyRect = new Rect(Math.Max(0f, width - addColonyWidth), colonyFavTop, addColonyWidth, 27f);
-            var colonyTitleRect = new Rect(0f, colonyFavTop, Math.Max(0f, width - addColonyWidth - 6f), 27f);
+            var addColonyWidth = Math.Min(210f, Math.Max(80f, width * 0.48f));
+            var addColonyRect = new Rect(Math.Max(0f, width - addColonyWidth), colonyFavTop, Math.Min(addColonyWidth, width), 27f);
+            var colonyTitleRect = new Rect(0f, colonyFavTop, Math.Max(0f, width - addColonyRect.width - 6f), 27f);
             var colonyTitle = (string)"RWS_ColonyFav_Title".Translate();
             var shownColonyTitle = colonyTitle.Truncate(colonyTitleRect.width);
             Widgets.Label(colonyTitleRect, shownColonyTitle);
@@ -161,12 +172,12 @@ public static class OverviewTab
             var canAddColonyFav = preferences is not null && view.Stats.Colonies.Count > 0;
             if (Widgets.ButtonText(addColonyRect, shownAddColony, active: canAddColonyFav) && canAddColonyFav)
             {
-                var currentPrefs = preferences!;
                 var save = onSave ?? (() => { });
-                Find.WindowStack.Add(new ColonyPickerDialog(
+                UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
                     view.Stats.Colonies,
-                    currentPrefs,
-                    pickedColony => ColonyChartPicker.OpenMetricPicker(view, pickedColony, currentPrefs, save)));
+                    Dialog_RimworldStatistics.ActivePreferences,
+                    pickedColony => ColonyChartPicker.OpenMetricPicker(
+                        view, pickedColony, Dialog_RimworldStatistics.ActivePreferences, save)));
             }
 
             if (colonyFavoriteCards.Length == 0)
@@ -201,10 +212,6 @@ public static class OverviewTab
                     TooltipHandler.TipRegion(remove, "RWS_Fav_Remove".Translate());
                 }
             }
-        }
-        finally
-        {
-            Widgets.EndScrollView();
         }
 
         void DrawGrid(Cell[] cells, int columns, float y, float height, GameFont font)
@@ -259,16 +266,18 @@ public static class OverviewTab
         var chartView = item.FavoriteKey is not null && builtFor is { } current && item.Chartable(current) ? current : null;
         var labelReserved = (hasStar ? 27f : 0f) + (chartView is not null ? 18f : 0f);
         var (label, value, tip) = item.Fit(Math.Max(1f, inner.width - labelReserved), valueFont);
-        Text.Font = GameFont.Small;
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
-        var valueOffset = item.Source is null ? 26f : 35f;
-        if (item.Source is { } source)
-            Widgets.Label(new Rect(inner.x, inner.y + 18f, inner.width, 18f), source.Truncate(inner.width));
-        GUI.color = Color.white;
-        Text.Font = valueFont;
-        Widgets.Label(new Rect(inner.x, inner.y + valueOffset, inner.width, Math.Max(0f, inner.height - valueOffset)), value);
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Small;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            Widgets.Label(new Rect(inner.x, inner.y, inner.width, 24f), label);
+            var valueOffset = item.Source is null ? 26f : 35f;
+            if (item.Source is { } source)
+                Widgets.Label(new Rect(inner.x, inner.y + 18f, inner.width, 18f), source.Truncate(inner.width));
+            GUI.color = Color.white;
+            Text.Font = valueFont;
+            Widgets.Label(new Rect(inner.x, inner.y + valueOffset, inner.width, Math.Max(0f, inner.height - valueOffset)), value);
+        }
         // Do not cover the favourite star at the right edge of the card.
         var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - (hasStar ? 40f : 8f)), cell.height - 4f);
         if (chartView is not null)
@@ -287,7 +296,7 @@ public static class OverviewTab
             activeTip += "\n" + sourceName;
         TooltipHandler.TipRegion(cell, activeTip);
         if (chartView is not null && Widgets.ButtonInvisible(chartRect))
-            Find.WindowStack.Add(new Dialog_MetricChart(chartView, item.FavoriteKey!, null));
+            UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(chartView, item.FavoriteKey!, null, activeScopeName));
         if (hasStar && item.FavoriteKey is { } key)
         {
             var selected = preferences!.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal);
@@ -305,18 +314,20 @@ public static class OverviewTab
         var openable = card.Resolved.CanOpen;
         var labelWidth = Math.Max(1f, inner.width - (openable ? 18f : 0f));
 
-        Text.Font = GameFont.Small;
-        var shownLabel = card.MetricLabel.Truncate(labelWidth);
-        var shownSub = card.Subtitle.Truncate(inner.width);
-        var shownVal = card.ValueText.Truncate(inner.width);
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Small;
+            var shownLabel = card.MetricLabel.Truncate(labelWidth);
+            var shownSub = card.Subtitle.Truncate(inner.width);
+            var shownVal = card.ValueText.Truncate(inner.width);
 
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        Widgets.Label(new Rect(inner.x, inner.y, labelWidth, 22f), shownLabel);
-        GUI.color = openable ? new Color(0.75f, 0.82f, 0.88f) : new Color(0.68f, 0.68f, 0.72f);
-        Widgets.Label(new Rect(inner.x, inner.y + 18f, inner.width, 18f), shownSub);
-        GUI.color = openable ? Color.white : new Color(0.7f, 0.7f, 0.7f);
-        Widgets.Label(new Rect(inner.x, inner.y + 35f, inner.width, Math.Max(0f, inner.height - 35f)), shownVal);
-        GUI.color = Color.white;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            Widgets.Label(new Rect(inner.x, inner.y, labelWidth, 22f), shownLabel);
+            GUI.color = openable ? new Color(0.75f, 0.82f, 0.88f) : new Color(0.68f, 0.68f, 0.72f);
+            Widgets.Label(new Rect(inner.x, inner.y + 18f, inner.width, 18f), shownSub);
+            GUI.color = openable ? Color.white : new Color(0.7f, 0.7f, 0.7f);
+            Widgets.Label(new Rect(inner.x, inner.y + 35f, inner.width, Math.Max(0f, inner.height - 35f)), shownVal);
+        }
 
         var clickRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - 8f), cell.height - 4f);
         if (openable)
@@ -329,13 +340,14 @@ public static class OverviewTab
         TooltipHandler.TipRegion(cell, card.Tooltip);
         if (openable && Widgets.ButtonInvisible(clickRect))
         {
-            Find.WindowStack.Add(new Dialog_ColonyMetricHistory(
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonyMetricHistory(
                 view,
                 card.Resolved.CanonicalColonyKey,
                 card.ColonyDisplayName,
                 card.Resolved.Definition!,
                 card.MetricLabel,
-                card.Resolved.ComparisonValue!));
+                card.Resolved.ComparisonValue!,
+                activeScopeName));
         }
     }
 
@@ -343,9 +355,19 @@ public static class OverviewTab
     {
         if (preferences is null)
             return;
-        if (!preferences.FavoriteMetricKeys.Remove(key) && preferences.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-            preferences.FavoriteMetricKeys.Add(key);
-        onSave?.Invoke();
+        var fallback = preferences;
+        Dialog_RimworldStatistics.UpdateActivePreferences(active =>
+        {
+            if (!active.FavoriteMetricKeys.Remove(key) && active.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                active.FavoriteMetricKeys.Add(key);
+            if (!ReferenceEquals(active, fallback))
+            {
+                if (!fallback.FavoriteMetricKeys.Remove(key) && fallback.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                    fallback.FavoriteMetricKeys.Add(key);
+            }
+        });
+        if (RimworldStatisticsMod.Settings is null)
+            onSave?.Invoke();
         builtFor = null;
     }
 
@@ -402,7 +424,7 @@ public static class OverviewTab
             string? modSource = null;
             if (BasicMetrics.Contains(fav.MetricKey))
             {
-                metricLabel = BasicLabel(fav.MetricKey);
+                metricLabel = MetricText.PerColonyBasicLabel(fav.MetricKey);
             }
             else if (fav.Definition is { } def)
             {

@@ -32,6 +32,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
     private sealed record RowDisplay(string Day, string SaveLabel, string Status, string MetricValue, string Timestamp, string Tooltip);
 
     private readonly StatsView view;
+    private readonly string? scopeName;
     private readonly string savesDirectory;
     private string colonyKey;
     private string colonyName = "";
@@ -56,11 +57,17 @@ internal sealed class Dialog_ColonySaveLineage : Window
     private string? detailCache;
     private (int? A, int? B, string? MetricKey, SaveFileIndex? Files, object? Lang) detailCacheKey;
 
-    internal Dialog_ColonySaveLineage(StatsView view, string colonyKey, SaveFileIndex? files = null, string? initialMetricKey = null)
+    internal Dialog_ColonySaveLineage(
+        StatsView view,
+        string colonyKey,
+        SaveFileIndex? files = null,
+        string? initialMetricKey = null,
+        string? scopeName = null)
     {
         this.view = view;
         this.colonyKey = colonyKey;
         this.files = files;
+        this.scopeName = scopeName;
         savesDirectory = GenFilePaths.SavedGamesFolderPath;
         doCloseX = true;
         absorbInputAroundWindow = true;
@@ -74,7 +81,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
             filesTask = Task.Run(() =>
             {
                 try { return SaveFileIndex.Read(dir); }
-                catch (Exception e) when (e is IOException or UnauthorizedAccessException) { return null; }
+                catch (Exception) { return null; }
             });
         }
     }
@@ -84,6 +91,26 @@ internal sealed class Dialog_ColonySaveLineage : Window
         Math.Min(760f, Verse.UI.screenHeight * 0.90f));
 
     public override void DoWindowContents(Rect rect)
+    {
+        try
+        {
+            DrawContents(rect);
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] Colony save lineage window failed to draw.\n{e}", "RWS.lineage".GetHashCode());
+            Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            Text.WordWrap = true;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawContents(Rect rect)
     {
         if (filesTask is { IsCompleted: true } doneFiles)
         {
@@ -132,13 +159,13 @@ internal sealed class Dialog_ColonySaveLineage : Window
         var reportLabel = (string)"RWS_Report_Open".Translate();
         var reportRect = controls.Next(reportLabel, 130f, 230f);
         if (Widgets.ButtonText(reportRect, reportLabel.Truncate(Math.Max(0f, reportRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colonyKey));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonySummaryReport(view, colonyKey, scopeName));
         TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
 
         var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
         var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
         if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colonyKey, PickedChronicleBranch()));
+            UiScopes.OpenOrReplaceWindow(new Dialog_ColonyChronicle(view, colonyKey, PickedChronicleBranch(), scopeName));
         TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
 
         if (activeMetric is { } metric)
@@ -147,7 +174,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
             var metricRect = controls.Next(metricBtnText, 170f, 340f);
             var shownMetric = metricBtnText.Truncate(Math.Max(0f, metricRect.width - 12f));
             if (Widgets.ButtonText(metricRect, shownMetric))
-                Find.WindowStack.Add(new MetricPickerDialog(
+                UiScopes.OpenOrReplaceWindow(new MetricPickerDialog(
                     metricChoices.Select(c => new MetricPickerChoice(c.Key, c.Label, c.Source)).ToArray(),
                     key => { if (metricChoices.FirstOrDefault(c => c.Key == key) is { } picked) SelectMetric(picked); },
                     selectedKey: metric.Key));
@@ -160,7 +187,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
             if (Widgets.ButtonText(openChartRect, openChartLabel.Truncate(Math.Max(0f, openChartRect.width - 12f)),
                 active: colonyValue is not null) && colonyValue is { } val)
             {
-                Find.WindowStack.Add(new Dialog_ColonyMetricHistory(view, colonyKey, colonyName, metric.Definition, metric.Label, val));
+                UiScopes.OpenOrReplaceWindow(new Dialog_ColonyMetricHistory(view, colonyKey, colonyName, metric.Definition, metric.Label, val, scopeName));
             }
         }
 
@@ -200,9 +227,11 @@ internal sealed class Dialog_ColonySaveLineage : Window
 
         var summary = BuildSummaryLine(lineage);
         var summaryHeight = Math.Max(22f, Text.CalcHeight(summary, body.width));
-        GUI.color = new Color(0.86f, 0.88f, 0.92f);
-        Widgets.Label(new Rect(body.x, body.y, body.width, summaryHeight), summary);
-        GUI.color = Color.white;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.86f, 0.88f, 0.92f);
+            Widgets.Label(new Rect(body.x, body.y, body.width, summaryHeight), summary);
+        }
 
         var legendY = body.y + summaryHeight + 3f;
         DrawLegendRow(new Rect(body.x, legendY, body.width, 22f));
@@ -258,7 +287,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
         {
             if (BasicMetrics.Contains(key))
                 return BasicMetrics.HasSaveHistory(key)
-                    ? new MetricChoice(key, BasicMetrics.Definition(key), MetricText.BasicLabel(key), null)
+                    ? new MetricChoice(key, BasicMetrics.Definition(key), MetricText.PerColonyBasicLabel(key), null)
                     : null;
             var def = MetricLookup.Definition(view, key);
             return def is null || CrossColonyCatalog.IsDerived(def)
@@ -295,7 +324,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
         var currentColonyKey = Current.ProgramState == ProgramState.Playing
             ? InGameColonyAccess.Resolve(view, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
             : null;
-        Find.WindowStack.Add(new ColonyPickerDialog(
+        UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
             view.Stats.Colonies,
             Dialog_RimworldStatistics.ActivePreferences,
             picked => StartLoad(picked.Key),
@@ -420,129 +449,127 @@ internal sealed class Dialog_ColonySaveLineage : Window
         var colStatus = Math.Max(150f, remaining - colDay - colSave - colMetric - colTime);
 
         // Fixed column header tracking horizontal scroll.
-        GUI.BeginGroup(new Rect(inner.x, inner.y, Math.Max(0f, inner.width - 16f), HeaderRowHeight));
-        DrawTableHeader(new Rect(-tableScroll.x, 0f, contentWidth, HeaderRowHeight),
-            graphWidth, colDay, colSave, colStatus, colMetric, colTime);
-        GUI.EndGroup();
+        using (UiScopes.Group(new Rect(inner.x, inner.y, Math.Max(0f, inner.width - 16f), HeaderRowHeight)))
+        {
+            DrawTableHeader(new Rect(-tableScroll.x, 0f, contentWidth, HeaderRowHeight),
+                graphWidth, colDay, colSave, colStatus, colMetric, colTime);
+        }
 
         var outRect = new Rect(inner.x, inner.y + HeaderRowHeight, inner.width, Math.Max(0f, inner.height - HeaderRowHeight));
         var viewRect = new Rect(0f, 0f, contentWidth, nodes.Count * RowHeight);
-        Widgets.BeginScrollView(outRect, ref tableScroll, viewRect);
-
-        var firstRow = Math.Max(0, (int)(tableScroll.y / RowHeight) - 1);
-        var lastRow = Math.Min(nodes.Count - 1, (int)((tableScroll.y + outRect.height) / RowHeight) + 1);
-        var clipMinY = tableScroll.y - RowHeight * 2f;
-        var clipMaxY = tableScroll.y + outRect.height + RowHeight * 2f;
-
-        // 1. Row backgrounds & click targets for visible rows only.
-        var prevAnchor = Text.Anchor;
-        for (var i = firstRow; i <= lastRow; i++)
+        using (UiScopes.ScrollView(outRect, ref tableScroll, viewRect))
+        using (UiScopes.GuiState())
         {
-            var rowRect = new Rect(0f, i * RowHeight, contentWidth, RowHeight);
-            var isPicked = selectedA == i || selectedB == i;
-            if (isPicked)
-                Widgets.DrawHighlightSelected(rowRect);
-            else if (i % 2 == 1)
-                Widgets.DrawHighlight(rowRect, 0.2f);
-            Widgets.DrawHighlightIfMouseover(rowRect);
+            var firstRow = Math.Max(0, (int)(tableScroll.y / RowHeight) - 1);
+            var lastRow = Math.Min(nodes.Count - 1, (int)((tableScroll.y + outRect.height) / RowHeight) + 1);
+            var clipMinY = tableScroll.y - RowHeight * 2f;
+            var clipMaxY = tableScroll.y + outRect.height + RowHeight * 2f;
 
-            var display = rowCache[i] ??= BuildRowDisplay(lineage, i);
-            TooltipHandler.TipRegion(rowRect, display.Tooltip);
-            if (Widgets.ButtonInvisible(rowRect))
-                OnRowClicked(i);
-        }
-
-        // 2. Proven edges intersecting [firstRow, lastRow] (viewport-clipped so 3,000+ rows stay light).
-        float LaneX(int lane) => 12f + lane * LaneSpacing;
-        float RowY(int index) => index * RowHeight + RowHeight * 0.5f;
-
-        foreach (var edge in lineage.Edges)
-        {
-            if (edge.ToIndex < firstRow || edge.FromIndex > lastRow)
-                continue;
-
-            var fromNode = nodes[edge.FromIndex];
-            var toNode = nodes[edge.ToIndex];
-            var color = EdgeColor(edge, fromNode, toNode);
-            var width = edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint ? 1.2f
-                : fromNode.OnRepresentativeLine && toNode.OnRepresentativeLine ? 2.2f : 1.7f;
-
-            var x0 = LaneX(edge.FromLane);
-            var y0 = RowY(edge.FromIndex);
-            var x1 = LaneX(edge.ToLane);
-            var y1 = RowY(edge.ToIndex);
-
-            if (edge.FromLane == edge.ToLane)
+            // 1. Row backgrounds & click targets for visible rows only.
+            for (var i = firstRow; i <= lastRow; i++)
             {
-                DrawClippedSegment(x0, y0, x1, y1, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
+                var rowRect = new Rect(0f, i * RowHeight, contentWidth, RowHeight);
+                var isPicked = selectedA == i || selectedB == i;
+                if (isPicked)
+                    Widgets.DrawHighlightSelected(rowRect);
+                else if (i % 2 == 1)
+                    Widgets.DrawHighlight(rowRect, 0.2f);
+                Widgets.DrawHighlightIfMouseover(rowRect);
+
+                var display = rowCache[i] ??= BuildRowDisplay(lineage, i);
+                TooltipHandler.TipRegion(rowRect, display.Tooltip);
+                if (Widgets.ButtonInvisible(rowRect))
+                    OnRowClicked(i);
             }
-            else
+
+            // 2. Proven edges intersecting [firstRow, lastRow] (viewport-clipped so 3,000+ rows stay light).
+            float LaneX(int lane) => 12f + lane * LaneSpacing;
+            float RowY(int index) => index * RowHeight + RowHeight * 0.5f;
+
+            foreach (var edge in lineage.Edges)
             {
-                var bendY = Math.Min(y1, y0 + 11f);
-                DrawClippedSegment(x0, y0, x1, bendY, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
-                DrawClippedSegment(x1, bendY, x1, y1, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
+                if (edge.ToIndex < firstRow || edge.FromIndex > lastRow)
+                    continue;
+
+                var fromNode = nodes[edge.FromIndex];
+                var toNode = nodes[edge.ToIndex];
+                var color = EdgeColor(edge, fromNode, toNode);
+                var width = edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint ? 1.2f
+                    : fromNode.OnRepresentativeLine && toNode.OnRepresentativeLine ? 2.2f : 1.7f;
+
+                var x0 = LaneX(edge.FromLane);
+                var y0 = RowY(edge.FromIndex);
+                var x1 = LaneX(edge.ToLane);
+                var y1 = RowY(edge.ToIndex);
+
+                if (edge.FromLane == edge.ToLane)
+                {
+                    DrawClippedSegment(x0, y0, x1, y1, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
+                }
+                else
+                {
+                    var bendY = Math.Min(y1, y0 + 11f);
+                    DrawClippedSegment(x0, y0, x1, bendY, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
+                    DrawClippedSegment(x1, bendY, x1, y1, clipMinY, clipMaxY, color, width, edge.Kind == SaveLineageEdgeKind.CarriedCheckpoint);
+                }
+            }
+
+            // 3. Node markers & row text for visible rows only.
+            for (var i = firstRow; i <= lastRow; i++)
+            {
+                var node = nodes[i];
+                var center = new Vector2(LaneX(node.Lane), RowY(i));
+                DrawNodeMarker(center, node, selectedA == i || selectedB == i);
+
+                var display = rowCache[i] ??= BuildRowDisplay(lineage, i);
+                var rowY = i * RowHeight;
+                var x = graphWidth;
+
+                Text.Anchor = TextAnchor.MiddleLeft;
+                DrawCell(ref x, rowY, colDay, display.Day);
+                DrawCell(ref x, rowY, colSave, display.SaveLabel);
+                DrawCell(ref x, rowY, colStatus, display.Status);
+
+                Text.Anchor = TextAnchor.MiddleRight;
+                DrawCell(ref x, rowY, colMetric, display.MetricValue);
+
+                Text.Anchor = TextAnchor.MiddleLeft;
+                DrawCell(ref x, rowY, colTime, display.Timestamp);
             }
         }
-
-        // 3. Node markers & row text for visible rows only.
-        for (var i = firstRow; i <= lastRow; i++)
-        {
-            var node = nodes[i];
-            var center = new Vector2(LaneX(node.Lane), RowY(i));
-            DrawNodeMarker(center, node, selectedA == i || selectedB == i);
-
-            var display = rowCache[i] ??= BuildRowDisplay(lineage, i);
-            var rowY = i * RowHeight;
-            var x = graphWidth;
-
-            Text.Anchor = TextAnchor.MiddleLeft;
-            DrawCell(ref x, rowY, colDay, display.Day);
-            DrawCell(ref x, rowY, colSave, display.SaveLabel);
-            DrawCell(ref x, rowY, colStatus, display.Status);
-
-            Text.Anchor = TextAnchor.MiddleRight;
-            DrawCell(ref x, rowY, colMetric, display.MetricValue);
-
-            Text.Anchor = TextAnchor.MiddleLeft;
-            DrawCell(ref x, rowY, colTime, display.Timestamp);
-        }
-
-        Text.Anchor = prevAnchor;
-        Widgets.EndScrollView();
     }
 
     private void DrawTableHeader(Rect rect, float graphWidth, float colDay, float colSave, float colStatus, float colMetric, float colTime)
     {
-        var prevAnchor = Text.Anchor;
-        var prevColor = GUI.color;
-        GUI.color = new Color(0.80f, 0.82f, 0.86f);
-        Text.Anchor = TextAnchor.MiddleLeft;
-
-        var x = rect.x;
-        Widgets.Label(new Rect(x + 4f, rect.y, graphWidth - 8f, rect.height),
-            ((string)"RWS_Lineage_Col_Graph".Translate()).Truncate(Math.Max(0f, graphWidth - 8f)));
-        x += graphWidth;
-
-        void Header(float width, string label, bool right = false)
+        using (UiScopes.GuiState())
         {
-            Text.Anchor = right ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
-            var shown = label.Truncate(Math.Max(0f, width - 8f));
-            var cell = new Rect(x + 4f, rect.y, Math.Max(0f, width - 8f), rect.height);
-            Widgets.Label(cell, shown);
-            if (shown != label)
-                TooltipHandler.TipRegion(cell, label);
-            x += width;
+            GUI.color = new Color(0.80f, 0.82f, 0.86f);
+            Text.Anchor = TextAnchor.MiddleLeft;
+
+            var x = rect.x;
+            Widgets.Label(new Rect(x + 4f, rect.y, graphWidth - 8f, rect.height),
+                ((string)"RWS_Lineage_Col_Graph".Translate()).Truncate(Math.Max(0f, graphWidth - 8f)));
+            x += graphWidth;
+
+            void Header(float width, string label, bool right = false)
+            {
+                Text.Anchor = right ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+                var shown = label.Truncate(Math.Max(0f, width - 8f));
+                var cell = new Rect(x + 4f, rect.y, Math.Max(0f, width - 8f), rect.height);
+                Widgets.Label(cell, shown);
+                if (shown != label)
+                    TooltipHandler.TipRegion(cell, label);
+                x += width;
+            }
+
+            Header(colDay, "RWS_Lineage_Col_Day".Translate());
+            Header(colSave, "RWS_Lineage_Col_Save".Translate());
+            Header(colStatus, "RWS_Lineage_Col_Status".Translate());
+            Header(colMetric, activeMetric?.Label ?? (string)"RWS_Details_Col_Value".Translate(), right: true);
+            Header(colTime, "RWS_Lineage_Col_Recorded".Translate());
+
+            Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 1f, rect.width, 1f), new Color(1f, 1f, 1f, 0.14f));
         }
-
-        Header(colDay, "RWS_Lineage_Col_Day".Translate());
-        Header(colSave, "RWS_Lineage_Col_Save".Translate());
-        Header(colStatus, "RWS_Lineage_Col_Status".Translate());
-        Header(colMetric, activeMetric?.Label ?? (string)"RWS_Details_Col_Value".Translate(), right: true);
-        Header(colTime, "RWS_Lineage_Col_Recorded".Translate());
-
-        Widgets.DrawBoxSolid(new Rect(rect.x, rect.yMax - 1f, rect.width, 1f), new Color(1f, 1f, 1f, 0.14f));
-        GUI.color = prevColor;
-        Text.Anchor = prevAnchor;
     }
 
     private static void DrawCell(ref float x, float y, float width, string text)
@@ -789,9 +816,10 @@ internal sealed class Dialog_ColonySaveLineage : Window
 
         var contentWidth = Math.Max(1f, inner.width - 16f);
         var textHeight = Math.Max(inner.height, Text.CalcHeight(detailCache, contentWidth) + 4f);
-        Widgets.BeginScrollView(inner, ref detailScroll, new Rect(0f, 0f, contentWidth, textHeight));
-        Widgets.Label(new Rect(0f, 0f, contentWidth, textHeight), detailCache);
-        Widgets.EndScrollView();
+        using (UiScopes.ScrollView(inner, ref detailScroll, new Rect(0f, 0f, contentWidth, textHeight)))
+        {
+            Widgets.Label(new Rect(0f, 0f, contentWidth, textHeight), detailCache);
+        }
     }
 
     private string BuildDetailText(ColonySaveLineage lineage)
