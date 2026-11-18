@@ -105,7 +105,11 @@ public static partial class ProfileMutations
                 if (!obs.Metrics.TryGetValue(key, out var incomingEntry)
                     || incomingEntry.IsQuarantined || incomingEntry.Revision != entry.Revision)
                 {
-                    p.PendingCheckpointRestorations.Add(parent);
+                    if (parent.Metrics.TryGetValue(key, out var parentEntry)
+                        && !parentEntry.IsQuarantined && parentEntry.Revision == entry.Revision)
+                        continue;
+                    if (!p.PendingCheckpointRestorations.Contains(parent))
+                        p.PendingCheckpointRestorations.Add(parent);
                     return;
                 }
             }
