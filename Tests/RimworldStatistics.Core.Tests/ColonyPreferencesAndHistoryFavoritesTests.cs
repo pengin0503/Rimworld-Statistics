@@ -388,6 +388,13 @@ public sealed class ColonyPreferencesAndHistoryFavoritesTests
         };
 
         Assert.Null(ColonyPresentation.TryGetCustomName(prefs, "other-key", ["   "]));
+        Assert.True(ColonyPresentation.SetCustomName(prefs, "other-key", [null!, "", "   ", "valid-key"], "Renamed"));
+        Assert.False(prefs.ColonyDisplayNames.ContainsKey("valid-key"));
+        Assert.Equal("Renamed", prefs.ColonyDisplayNames["other-key"]);
+        prefs.FavoriteColonyMetrics.Add(null!);
+        prefs.FavoriteColonyMetrics.Add(new() { ColonyKey = null!, MetricKey = null! });
+        Assert.NotEmpty(ColonyHistoryFavorites.Signature(prefs));
+        Assert.NotEmpty(ColonyPresentation.Signature(prefs));
 
         Assert.True(ColonyHistoryFavorites.IsFavorite(prefs, "col-1", null, MetricKeys.ModsLatest));
         Assert.True(ColonyHistoryFavorites.IsFavorite(prefs, "col-1", null, CrossColonyCatalog.MaxPrefix + MetricKeys.ModsLatest));

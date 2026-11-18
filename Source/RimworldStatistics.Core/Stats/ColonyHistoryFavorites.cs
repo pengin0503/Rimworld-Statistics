@@ -131,18 +131,31 @@ public static class ColonyHistoryFavorites
         for (var i = 0; i < view.Stats.Colonies.Count; i++)
         {
             var stats = view.Stats.Colonies[i];
-            colonyByAnyKey[stats.Key] = stats;
-            foreach (var alias in stats.AliasKeys)
-                colonyByAnyKey.TryAdd(alias, stats);
+            if (!string.IsNullOrWhiteSpace(stats.Key))
+                colonyByAnyKey[stats.Key] = stats;
+            if (stats.AliasKeys is not null)
+            {
+                foreach (var alias in stats.AliasKeys)
+                {
+                    if (!string.IsNullOrWhiteSpace(alias))
+                        colonyByAnyKey.TryAdd(alias, stats);
+                }
+            }
         }
         // Fallback if a test constructs StatsView with Colony.AliasKeys only on view.Colonies.
         for (var i = 0; i < view.Colonies.Count; i++)
         {
             var col = view.Colonies[i];
-            if (!colonyByAnyKey.TryGetValue(col.Key, out var stats))
+            if (string.IsNullOrWhiteSpace(col.Key) || !colonyByAnyKey.TryGetValue(col.Key, out var stats))
                 continue;
-            foreach (var alias in col.AliasKeys)
-                colonyByAnyKey.TryAdd(alias, stats);
+            if (col.AliasKeys is not null)
+            {
+                foreach (var alias in col.AliasKeys)
+                {
+                    if (!string.IsNullOrWhiteSpace(alias))
+                        colonyByAnyKey.TryAdd(alias, stats);
+                }
+            }
         }
 
         var groupedIndex = new Dictionary<(string CanonicalColonyKey, string CanonicalMetricKey), int>();
@@ -195,6 +208,8 @@ public static class ColonyHistoryFavorites
         var targetMetric = CanonicalHistoryMetricKey(metricKey);
         foreach (var f in list)
         {
+            if (f is null || string.IsNullOrWhiteSpace(f.ColonyKey) || string.IsNullOrWhiteSpace(f.MetricKey))
+                continue;
             if (!string.Equals(CanonicalHistoryMetricKey(f.MetricKey), targetMetric, StringComparison.Ordinal))
                 continue;
             if (string.Equals(f.ColonyKey, canonicalColonyKey, StringComparison.Ordinal)
@@ -240,7 +255,10 @@ public static class ColonyHistoryFavorites
             return false;
         var targetMetric = CanonicalHistoryMetricKey(metricKey);
         var removed = preferences.FavoriteColonyMetrics.RemoveAll(f =>
-            (string.Equals(f.MetricKey, metricKey, StringComparison.Ordinal)
+            f is not null
+            && !string.IsNullOrWhiteSpace(f.ColonyKey)
+            && !string.IsNullOrWhiteSpace(f.MetricKey)
+            && (string.Equals(f.MetricKey, metricKey, StringComparison.Ordinal)
                 || string.Equals(CanonicalHistoryMetricKey(f.MetricKey), targetMetric, StringComparison.Ordinal))
             && (string.Equals(f.ColonyKey, canonicalColonyKey, StringComparison.Ordinal)
                 || (aliasKeys is not null && aliasKeys.Contains(f.ColonyKey, StringComparer.Ordinal))));
@@ -276,8 +294,14 @@ public static class ColonyHistoryFavorites
             return "";
         var sb = new StringBuilder();
         foreach (var item in list)
-            sb.Append(item.ColonyKey.Length).Append(':').Append(item.ColonyKey)
-                .Append('/').Append(item.MetricKey.Length).Append(':').Append(item.MetricKey).Append(';');
+        {
+            if (item is null)
+                continue;
+            var colonyKey = item.ColonyKey ?? "";
+            var metricKey = item.MetricKey ?? "";
+            sb.Append(colonyKey.Length).Append(':').Append(colonyKey)
+                .Append('/').Append(metricKey.Length).Append(':').Append(metricKey).Append(';');
+        }
         return sb.ToString();
     }
 

@@ -83,7 +83,8 @@ public static class ColonyPresentation
 
         var map = preferences.ColonyDisplayNames;
         var hasCanonical = map.TryGetValue(canonicalColonyKey, out var existing);
-        var aliasPresent = aliasKeys is not null && aliasKeys.Any(a => a != canonicalColonyKey && map.ContainsKey(a));
+        var aliasPresent = aliasKeys is not null
+            && aliasKeys.Any(a => !string.IsNullOrWhiteSpace(a) && a != canonicalColonyKey && map.ContainsKey(a));
         if (!hasCanonical && !aliasPresent && map.Count >= ViewPreferences.MaxColonyKeys)
             return false;
 
@@ -92,7 +93,7 @@ public static class ColonyPresentation
         {
             foreach (var alias in aliasKeys)
             {
-                if (alias != canonicalColonyKey && map.Remove(alias))
+                if (!string.IsNullOrWhiteSpace(alias) && alias != canonicalColonyKey && map.Remove(alias))
                     changed = true;
             }
         }
@@ -141,7 +142,10 @@ public static class ColonyPresentation
             return "";
         var sb = new StringBuilder();
         foreach (var (key, value) in map.OrderBy(kv => kv.Key, StringComparer.Ordinal))
-            sb.Append(key.Length).Append(':').Append(key).Append('=').Append(value.Length).Append(':').Append(value).Append(';');
+        {
+            var safeValue = value ?? "";
+            sb.Append(key.Length).Append(':').Append(key).Append('=').Append(safeValue.Length).Append(':').Append(safeValue).Append(';');
+        }
         return sb.ToString();
     }
 
