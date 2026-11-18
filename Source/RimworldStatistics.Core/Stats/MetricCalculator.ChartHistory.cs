@@ -60,6 +60,11 @@ public sealed record MetricHistory(MetricHistoryKind Kind, IReadOnlyList<MetricH
 
 internal sealed record ArchivedChartPoint(int Index, string Campaign, string Key, string? Parent, string? Hash, int Tick);
 
+public sealed record ColonyMetricHistorySeries(
+    string ColonyKey,
+    MetricDefinition Definition,
+    MetricHistory History);
+
 public static partial class MetricCalculator
 {
     public static string? ChartRecorder(string key) => key switch
@@ -81,6 +86,142 @@ public static partial class MetricCalculator
 
         var observations = Attach(profile, colonies, out _).GetValueOrDefault(colony) ?? [];
         var ancestry = new CheckpointAncestry(observations);
+        return BuildChartHistoryForColony(colony, observations, ancestry, definition);
+    }
+
+    internal static IReadOnlyList<ColonyMetricHistorySeries> BuildColonyChartHistoriesCore(Profile profile, StatsView view)
+    {
+        ArgumentNullException.ThrowIfNull(profile);
+        ArgumentNullException.ThrowIfNull(view);
+        if (view.Colonies.Count == 0)
+            return [];
+
+        var attached = Attach(profile, view.Colonies, out _);
+        var statsByKey = view.Stats.Colonies.ToDictionary(c => c.Key, Ord);
+        var numericByKey = view.Numeric.Colonies.ToDictionary(c => c.Key, Ord);
+        var basicDefs = BasicMetrics.SaveHistoryKeys.Select(BasicMetrics.Definition).ToArray();
+        var result = new List<ColonyMetricHistorySeries>();
+
+        foreach (var colony in view.Colonies)
+        {
+            if (colony.Excluded || colony.OutOfScope)
+                continue;
+            if (statsByKey.TryGetValue(colony.Key, out var cs) && (cs.Excluded || cs.OutOfScope))
+                continue;
+
+            var observations = attached.GetValueOrDefault(colony) ?? [];
+            var ancestry = new CheckpointAncestry(observations);
+
+            if (colony.Observations.Any(o => o.Values.TicksGame >= 0))
+            {
+                foreach (var basicDef in basicDefs)
+                {
+                    var history = BasicChartHistory(colony, basicDef.Key, ancestry);
+                    if (history.Points.Any(p => p.Value is { Known: true }))
+                        result.Add(new ColonyMetricHistorySeries(colony.Key, basicDef, history));
+                }
+            }
+
+            if (!numericByKey.TryGetValue(colony.Key, out var numColony) || numColony.Excluded || numColony.OutOfScope)
+                continue;
+
+            var storedKeysPresent = new HashSet<string>(Ord);
+            var hasArchivedCheckpoint = false;
+            foreach (var obs in observations)
+            {
+                if (obs.Source == MetricObservationSource.Checkpoint && obs.ArchivedMetrics)
+                    hasArchivedCheckpoint = true;
+                foreach (var mk in obs.Metrics.Keys)
+                    storedKeysPresent.Add(mk);
+                if (obs.CompactedChart?.Metrics is { } cm)
+                {
+                    foreach (var mk in cm.Keys)
+                        storedKeysPresent.Add(mk);
+                }
+            }
+
+            foreach (var row in numColony.Rows)
+            {
+                var def = row.Definition;
+                if (CrossColonyCatalog.IsDerived(def))
+                    continue;
+                var maybeArchived = def.Source == MetricObservationSource.Checkpoint && hasArchivedCheckpoint;
+                if (!row.Value.Known && !storedKeysPresent.Contains(def.StoredKey) && !maybeArchived)
+                    continue;
+
+                var history = BuildChartHistoryForColony(colony, observations, ancestry, def);
+                if (history.Points.Any(p => p.Value is { Known: true }) || history.ArchivedPoints.Count > 0)
+                    result.Add(new ColonyMetricHistorySeries(colony.Key, def, history));
+            }
+        }
+
+        return result;
+    }
+
+    internal static IReadOnlyList<ColonyMetricHistorySeries> RestoreExportHistories(
+        IReadOnlyList<ColonyMetricHistorySeries> series,
+        ICheckpointArchive? archive)
+    {
+        if (series.Count == 0)
+            return [];
+
+        if (archive is null || !series.Any(s => s.History.ArchivedPoints.Count > 0))
+            return series.Where(s => s.History.Points.Any(p => p.Value is { Known: true })).ToArray();
+
+        var keysByCampaign = new Dictionary<string, HashSet<string>>(Ord);
+        foreach (var item in series)
+        {
+            foreach (var pt in item.History.ArchivedPoints)
+            {
+                if (!keysByCampaign.TryGetValue(pt.Campaign, out var set))
+                    keysByCampaign[pt.Campaign] = set = new HashSet<string>(Ord);
+                set.Add(pt.Key);
+            }
+        }
+
+        var recordsByCampaign = new Dictionary<string, ILookup<string, MetricObservation>>(Ord);
+        foreach (var (campaign, keys) in keysByCampaign)
+        {
+            try
+            {
+                recordsByCampaign[campaign] = archive.ReadMany(campaign, keys).ToLookup(o => o.Key, Ord);
+            }
+            catch (Exception e) when (e is IOException or UnauthorizedAccessException or System.Text.Json.JsonException)
+            {
+                // Keep explicit unmeasured gaps if an archive file cannot be read.
+            }
+        }
+
+        var restored = new List<ColonyMetricHistorySeries>(series.Count);
+        foreach (var item in series)
+        {
+            var history = item.History;
+            if (history.ArchivedPoints.Count > 0)
+            {
+                var points = history.Points.ToArray();
+                foreach (var pt in history.ArchivedPoints)
+                {
+                    if (!recordsByCampaign.TryGetValue(pt.Campaign, out var byKey))
+                        continue;
+                    var value = byKey[pt.Key].Where(o => !o.IsQuarantined && !o.Conflicted
+                            && o.Source == MetricObservationSource.Checkpoint && o.Identity?.ModCampaignId == pt.Campaign
+                            && o.PayloadHash == pt.Hash && o.ParentKey == pt.Parent && o.SaveTick == pt.Tick)
+                        .Select(o => ChartValue(o, item.Definition)).LastOrDefault(v => v is not null);
+                    points[pt.Index] = points[pt.Index] with { Value = value };
+                }
+                history = history with { Points = points, ArchivedPoints = [] };
+            }
+
+            if (history.Points.Any(p => p.Value is { Known: true }))
+                restored.Add(item with { History = history });
+        }
+
+        return restored;
+    }
+
+    private static MetricHistory BuildChartHistoryForColony(Colony colony, List<MetricObservation> observations,
+        CheckpointAncestry ancestry, MetricDefinition definition)
+    {
         if (BasicMetrics.Contains(definition.Key))
             return BasicChartHistory(colony, definition.Key, ancestry);
         if (definition.Source == MetricObservationSource.Checkpoint)

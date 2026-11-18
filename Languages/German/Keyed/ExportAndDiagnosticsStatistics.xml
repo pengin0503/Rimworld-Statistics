@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>Ursprüngliche Fraktion</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>Ursprüngliche Fraktion: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>Kolonie-Chronik (Repräsentativer Zweig)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Markdown exportieren</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>Die aktuell angezeigte Kolonie-Chronik als eigenständige Markdown-Datei (.md) speichern.</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>HTML exportieren</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>Die aktuell angezeigte Kolonie-Chronik als eigenständige Offline-HTML-Datei (.html) speichern.</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>Chronik wird exportiert...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>Chronik exportiert: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>Chronik-Export fehlgeschlagen: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>Beweisbasierte Einzelzweig-Koloniechronik. Aufzeichnungslücken und undatierte Spuren bleiben ohne Interpolation explizit.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>Diagnoseübersicht kopieren</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>Schreibgeschützte anonyme Diagnoseübersicht in die Zwischenablage kopieren (keine Dateipfade, Kolonie-/Fraktions-/Weltnamen, IDs, Hashes oder Geheimnisse).</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>Diagnosetext speichern</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>Schreibgeschützte anonyme Diagnoseübersicht (.txt) im Ordner exports speichern (keine Dateipfade, Namen, IDs, Hashes oder Geheimnisse).</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>Diagnoseübersicht wird erstellt...</RWS_Diag_Working>
+  <RWS_Diag_Copied>Anonyme Diagnoseübersicht (ohne Pfade, Namen oder IDs) in die Zwischenablage kopiert.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>Anonyme Diagnoseübersicht (ohne Pfade, Namen oder IDs) gespeichert.</RWS_Diag_Saved>
+  <RWS_Diag_Error>Diagnoseübersicht konnte nicht erstellt werden ({0}).</RWS_Diag_Error>
+</LanguageData>

@@ -357,6 +357,29 @@ public sealed class ProfileSession
         return ColonySummaryReport.Build(view, colonyKey, lineage);
     }
 
+    public (ColonySummaryReport? Report, ColonyChronicle? Chronicle) ReadColonySummaryAndChronicle(
+        StatsView view,
+        string colonyKey,
+        bool includeDevMode = false)
+    {
+        var (captured, evidence) = Read(profile =>
+            (ColonySaveLineage.Capture(profile, view.Colonies, colonyKey), ColonyChronicle.Capture(view, colonyKey)));
+        var lineage = captured is null ? ColonySaveLineage.Empty(colonyKey) : ColonySaveLineage.BuildFromCaptured(captured, _archive);
+        var report = ColonySummaryReport.Build(view, colonyKey, lineage);
+        var chronicle = evidence is null ? null : ColonyChronicle.Build(view, evidence, lineage, null, includeDevMode);
+        return (report, chronicle);
+    }
+
+    /// <summary>
+    /// Builds all recorded per-colony time-series histories for in-scope non-excluded colonies in <paramref name="view"/>,
+    /// restoring archived checkpoint points in a single pass per campaign outside the profile lock.
+    /// </summary>
+    public IReadOnlyList<ColonyMetricHistorySeries> ReadExportHistories(StatsView view)
+    {
+        var series = Read(profile => MetricCalculator.BuildColonyChartHistoriesCore(profile, view));
+        return MetricCalculator.RestoreExportHistories(series, _archive);
+    }
+
     /// <summary>
     /// The evidence-based chronicle of one colony (V2-A) on <paramref name="branch"/> (the representative line when null or
     /// not found). The lineage inputs and the colony's ending evidence are copied together under the lock.

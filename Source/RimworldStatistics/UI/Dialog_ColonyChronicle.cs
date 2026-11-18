@@ -1,5 +1,4 @@
 using System.Globalization;
-using System.Text;
 using RimWorld;
 using RimworldStatistics.Core;
 using UnityEngine;
@@ -8,7 +7,7 @@ using Verse;
 namespace RimworldStatistics.UI;
 
 /// <summary>
-/// Read-only evidence-based colony chronicle viewer (V2-A).
+/// Read-only evidence-based colony chronicle viewer &amp; standalone Markdown/HTML exporter (V2-A / §4.2.6).
 /// Shows confirmed endings, milestones, completed research, verified checkpoint-to-checkpoint intervals, and explicit
 /// recording gaps strictly on one selected save branch; undated traces remain in a separate section.
 /// </summary>
@@ -19,26 +18,9 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
-    private static readonly Color EndingColor = new(0.98f, 0.84f, 0.38f);
-    private static readonly Color MilestoneColor = new(0.46f, 0.82f, 0.62f);
-    private static readonly Color ResearchColor = new(0.48f, 0.74f, 0.94f);
-    private static readonly Color IntervalColor = new(0.78f, 0.82f, 0.88f);
-    private static readonly Color GapColor = new(0.94f, 0.64f, 0.38f);
     private static readonly Color WarningTextColor = new(0.95f, 0.72f, 0.45f);
     private static readonly Color FieldErrorLabelColor = new(0.96f, 0.58f, 0.44f);
     private static readonly Color FieldErrorBorderColor = new(0.95f, 0.45f, 0.35f, 0.85f);
-
-    private sealed record ChartTarget(string MetricKey, string Label);
-
-    private sealed record DisplayEntryRow(
-        ChronicleEntry Entry,
-        string TimeText,
-        string KindText,
-        Color KindColor,
-        string EventText,
-        string EvidenceText,
-        string Tooltip,
-        ChartTarget[] ChartTargets);
 
     /// <summary>
     /// Branch-level localized rows and search terms built once per loaded <see cref="ColonyChronicle"/> and active language,
@@ -49,13 +31,13 @@ internal sealed class Dialog_ColonyChronicle : Window
         object? Language,
         string ActiveBranchLabel,
         string[] BaseNoticeLines,
-        ChronicleFilterableEntry<DisplayEntryRow>[] Entries,
+        ChronicleFilterableEntry<ChronicleDisplayEntryRow>[] Entries,
         ChronicleFilterableUndatedTrace<string>[] UndatedTraces);
 
     private sealed record ChronicleDisplayCache(
         ChronicleBranchCache Branch,
         ChronicleFilterQuery Query,
-        ChronicleFilterResult<DisplayEntryRow, string> Result,
+        ChronicleFilterResult<ChronicleDisplayEntryRow, string> Result,
         string SummaryText,
         string[] NoticeLines,
         string EmptyMessage,
@@ -64,6 +46,7 @@ internal sealed class Dialog_ColonyChronicle : Window
     private readonly StatsView view;
     private string colonyKey;
     private string colonyName = "";
+    private string? originalFactionName;
     private ChronicleKindFilter filter = ChronicleKindFilter.All;
     private bool newestFirst;
     private string searchText = "";
@@ -79,6 +62,12 @@ internal sealed class Dialog_ColonyChronicle : Window
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
     private Vector2 scroll;
+
+    private int exportGeneration;
+    private int activeExportGeneration;
+    private Task<ColonyChronicleExportResult>? exportTask;
+    private ColonyChronicleExportResult? exportCompleted;
+    private string? exportError;
 
     internal Dialog_ColonyChronicle(StatsView view, string colonyKey, ChronicleBranchKey? initialBranch = null)
     {
@@ -104,6 +93,10 @@ internal sealed class Dialog_ColonyChronicle : Window
         catch (Exception e)
         {
             Log.ErrorOnce($"[RimworldStatistics] The colony chronicle failed to draw.\n{e}", "RWS.chronicle".GetHashCode());
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+            Widgets.Label(rect, "RWS_WindowError".Translate());
         }
         finally
         {
@@ -115,6 +108,23 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private void DrawContents(Rect rect)
     {
+        if (exportTask is { IsCompleted: true } doneExport)
+        {
+            var matchedGeneration = activeExportGeneration == exportGeneration;
+            exportTask = null;
+            if (matchedGeneration)
+            {
+                if (doneExport.IsCompletedSuccessfully)
+                    exportCompleted = doneExport.Result;
+                else
+                    exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+            }
+            else
+            {
+                _ = doneExport.Exception;
+            }
+        }
+
         var lang = LanguageDatabase.activeLanguage;
         var languageChanged = !ReferenceEquals(cachedLanguage, lang);
         if (languageChanged)
@@ -133,6 +143,9 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
 
         var titleText = (string)"RWS_Chronicle_Title".Translate(colonyName);
+        if (originalFactionName is { Length: > 0 } rawFaction && !string.Equals(colonyName, rawFaction, StringComparison.Ordinal))
+            titleText += " (" + (string)"RWS_Report_OriginalFactionSubtitle".Translate(rawFaction) + ")";
+
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
         var shownTitle = titleText.Truncate(titleRect.width);
@@ -195,7 +208,49 @@ internal sealed class Dialog_ColonyChronicle : Window
             Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey));
         TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
 
+        if (display is not null)
+        {
+            var mdLabel = (string)"RWS_Chronicle_ExportMarkdown".Translate();
+            var mdRect = controls.Next(mdLabel, 115f, 210f);
+            if (Widgets.ButtonText(mdRect, mdLabel.Truncate(Math.Max(0f, mdRect.width - 12f)), active: exportTask is null))
+                StartChronicleExport(display, ChronicleExportFormat.Markdown);
+            TooltipHandler.TipRegion(mdRect, "RWS_Chronicle_ExportMarkdownTip".Translate());
+
+            var htmlLabel = (string)"RWS_Chronicle_ExportHtml".Translate();
+            var htmlRect = controls.Next(htmlLabel, 115f, 210f);
+            if (Widgets.ButtonText(htmlRect, htmlLabel.Truncate(Math.Max(0f, htmlRect.width - 12f)), active: exportTask is null))
+                StartChronicleExport(display, ChronicleExportFormat.Html);
+            TooltipHandler.TipRegion(htmlRect, "RWS_Chronicle_ExportHtmlTip".Translate());
+
+            if (exportCompleted is { } exported)
+            {
+                var openFolder = (string)"RWS_Backup_OpenFolder".Translate();
+                var openRect = controls.Next(openFolder, 90f, 165f);
+                if (Widgets.ButtonText(openRect, openFolder.Truncate(Math.Max(0f, openRect.width - 12f))))
+                    Application.OpenURL(new Uri(Path.GetFullPath(exported.DirectoryPath) + Path.DirectorySeparatorChar).AbsoluteUri);
+
+                var copyPath = (string)"RWS_Backup_CopyPath".Translate();
+                var copyRect = controls.Next(copyPath, 90f, 165f);
+                if (Widgets.ButtonText(copyRect, copyPath.Truncate(Math.Max(0f, copyRect.width - 12f))))
+                    GUIUtility.systemCopyBuffer = exported.FilePath;
+            }
+        }
+
         y += controls.Height + 6f;
+
+        var exportStatus = exportTask is not null ? (string)"RWS_Chronicle_Exporting".Translate()
+            : exportError is not null ? (string)"RWS_Chronicle_ExportError".Translate(exportError)
+            : exportCompleted is { } doneResult ? (string)"RWS_Chronicle_ExportDone".Translate(doneResult.FilePath)
+            : null;
+        if (exportStatus is not null)
+        {
+            var statusRect = new Rect(rect.x, y, rect.width, 22f);
+            GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
+            Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
+            GUI.color = Color.white;
+            TooltipHandler.TipRegion(statusRect, exportStatus);
+            y += 24f;
+        }
 
         if (currentChronicle is not null && display is not null)
         {
@@ -275,6 +330,66 @@ internal sealed class Dialog_ColonyChronicle : Window
         DrawBody(body, display);
     }
 
+    private void StartChronicleExport(ChronicleDisplayCache display, ChronicleExportFormat format)
+    {
+        exportCompleted = null;
+        exportError = null;
+        try
+        {
+            var text = BuildExportText(display);
+            var directory = Path.Combine(ProfileService.DirectoryPath, "exports");
+            var gen = ++exportGeneration;
+            activeExportGeneration = gen;
+            exportTask = Task.Run(() => ColonyChronicleExport.Write(text, directory, format));
+        }
+        catch (Exception ex)
+        {
+            exportError = ex.Message;
+        }
+    }
+
+    private ColonyChronicleExportText BuildExportText(ChronicleDisplayCache display)
+    {
+        var origLine = originalFactionName is { Length: > 0 } rawFaction
+            && !string.Equals(colonyName, rawFaction, StringComparison.Ordinal)
+                ? (string)"RWS_Report_OriginalFactionSubtitle".Translate(rawFaction)
+                : null;
+
+        var subtitleParts = new List<string>(3)
+        {
+            (string)"RWS_Chronicle_BranchButton".Translate(display.Branch.ActiveBranchLabel),
+            (string)(newestFirst ? "RWS_Chronicle_OrderNewest" : "RWS_Chronicle_OrderOldest").Translate(),
+        };
+        if (filter != ChronicleKindFilter.All)
+            subtitleParts.Add(FilterName(filter));
+
+        var entries = display.Result.Rows.Select(ColonyChronicleFormatter.ToExportEntry).ToArray();
+        var undated = display.Result.UndatedTraces;
+
+        return new ColonyChronicleExportText
+        {
+            ColonyKey = colonyKey,
+            ColonyName = colonyName,
+            OriginalFactionLine = origLine,
+            ModVersion = RimworldStatisticsMod.InstalledVersion,
+            Language = LanguageDatabase.activeLanguage?.folderName ?? "en",
+            PageTitle = (string)"RWS_Chronicle_Title".Translate(colonyName),
+            Subtitle = string.Join(" · ", subtitleParts),
+            SummaryLine = display.SummaryText,
+            NoticeLines = display.NoticeLines,
+            ColTime = (string)"RWS_Chronicle_ColTime".Translate(),
+            ColKind = (string)"RWS_Chronicle_ColKind".Translate(),
+            ColEvent = (string)"RWS_Chronicle_ColEvent".Translate(),
+            ColEvidence = (string)"RWS_Chronicle_ColEvidence".Translate(),
+            Entries = entries,
+            EmptyMessage = display.EmptyMessage,
+            UndatedTitle = undated.Length > 0 ? (string)"RWS_Chronicle_UndatedTitle".Translate(undated.Length.ToString(Inv)) : null,
+            UndatedSubtitle = undated.Length > 0 ? (string)"RWS_Chronicle_UndatedSubtitle".Translate() : null,
+            UndatedLines = undated,
+            FooterNote = (string)"RWS_Chronicle_ExportFooterNote".Translate(),
+        };
+    }
+
     private static bool DrawLabeledField(
         ref ControlRow controls,
         string label,
@@ -337,6 +452,10 @@ internal sealed class Dialog_ColonyChronicle : Window
         tablePlan = null;
         scroll = Vector2.zero;
         loadFailureLogged = false;
+        exportGeneration++;
+        exportTask = null;
+        exportCompleted = null;
+        exportError = null;
 
         var v = view;
         var includeDev = ProfileService.Options.IncludeDevMode;
@@ -348,6 +467,7 @@ internal sealed class Dialog_ColonyChronicle : Window
     {
         var stats = view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         colonyName = stats is not null ? Dialog_RimworldStatistics.ColonyName(stats) : colonyKey;
+        originalFactionName = stats?.FactionName;
     }
 
     private void ShowColonyMenu()
@@ -372,7 +492,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         foreach (var b in chronicle.Branches)
         {
             var key = b.Key;
-            var label = FormatBranchOptionLabel(b);
+            var label = ColonyChronicleFormatter.FormatBranchOptionLabel(b);
             if (b.LeafNodeIndex == chronicle.SelectedLeafNodeIndex)
                 label = "✓ " + label;
             options.Add(new FloatMenuOption(label, () => StartLoad(colonyKey, key)));
@@ -609,7 +729,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
     }
 
-    private void OpenEntryChart(ChartTarget[] targets)
+    private void OpenEntryChart(ChronicleChartTarget[] targets)
     {
         if (targets.Length == 1)
         {
@@ -636,13 +756,13 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
 
         var researchDef = MetricLookup.Definition(view, ResearchFamily.CompletedTicks);
-        var entries = new ChronicleFilterableEntry<DisplayEntryRow>[chronicle.Entries.Count];
+        var entries = new ChronicleFilterableEntry<ChronicleDisplayEntryRow>[chronicle.Entries.Count];
         for (var i = 0; i < chronicle.Entries.Count; i++)
         {
             var entry = chronicle.Entries[i];
-            var row = BuildEntryRow(entry, researchDef);
-            var additionalTerms = BuildAdditionalSearchTerms(entry, researchDef);
-            entries[i] = new ChronicleFilterableEntry<DisplayEntryRow>(entry, row.EventText, additionalTerms, row);
+            var row = ColonyChronicleFormatter.BuildEntryRow(view, entry, researchDef);
+            var additionalTerms = ColonyChronicleFormatter.BuildAdditionalSearchTerms(view, entry, researchDef);
+            entries[i] = new ChronicleFilterableEntry<ChronicleDisplayEntryRow>(entry, row.EventText, additionalTerms, row);
         }
 
         var undated = new ChronicleFilterableUndatedTrace<string>[chronicle.UndatedTraces.Count];
@@ -650,28 +770,21 @@ internal sealed class Dialog_ColonyChronicle : Window
         {
             var trace = chronicle.UndatedTraces[i];
             var traceName = Dialog_RimworldStatistics.EndingLabel(trace.EndingType);
-            undated[i] = new ChronicleFilterableUndatedTrace<string>(trace, traceName, FormatUndatedTrace(trace));
+            undated[i] = new ChronicleFilterableUndatedTrace<string>(
+                trace, traceName, ColonyChronicleFormatter.FormatUndatedTrace(trace));
         }
 
         var activeBranchLabel = chronicle.SelectedBranch is { } activeBranch
-            ? FormatBranchOptionLabel(activeBranch)
+            ? ColonyChronicleFormatter.FormatBranchOptionLabel(activeBranch)
             : Dialog_RimworldStatistics.Dash;
 
-        var notices = new List<string>(4);
-        if (chronicle.RequestedBranchMissing)
-            notices.Add((string)"RWS_Chronicle_BranchMissingNotice".Translate());
-        if (chronicle.OtherBranchEndingCount > 0)
-            notices.Add((string)"RWS_Chronicle_OtherBranchEndingsNotice".Translate(chronicle.OtherBranchEndingCount.ToString(Inv)));
-        if (chronicle.AmbiguousBranchEndingCount > 0)
-            notices.Add((string)"RWS_Chronicle_AmbiguousEndingsNotice".Translate(chronicle.AmbiguousBranchEndingCount.ToString(Inv)));
-        if (chronicle.OmittedEntryCount > 0)
-            notices.Add((string)"RWS_Chronicle_OmittedCapNotice".Translate(chronicle.OmittedEntryCount.ToString(Inv)));
+        var notices = ColonyChronicleFormatter.BuildBaseNotices(chronicle);
 
         branchCache = new ChronicleBranchCache(
             Chronicle: chronicle,
             Language: lang,
             ActiveBranchLabel: activeBranchLabel,
-            BaseNoticeLines: notices.ToArray(),
+            BaseNoticeLines: notices,
             Entries: entries,
             UndatedTraces: undated);
         return branchCache;
@@ -732,305 +845,5 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (query.HasSearch || query.HasDayInput)
             return ((string)"RWS_Chronicle_NoFilterMatches".Translate(), false);
         return ((string)"RWS_Chronicle_Empty".Translate(), false);
-    }
-
-    private IReadOnlyList<string> BuildAdditionalSearchTerms(ChronicleEntry e, MetricDefinition? researchCompletedDef)
-    {
-        if (e.Kind == ChronicleEntryKind.ResearchCompleted)
-        {
-            var (projLabel, _) = ResolveResearchProjectLabel(e.ResearchDefKey ?? "", researchCompletedDef);
-            return [projLabel];
-        }
-
-        if (e.Kind == ChronicleEntryKind.VerifiedInterval && e.IntervalFacts.Count > 0)
-        {
-            var terms = new List<string>(e.IntervalFacts.Count * 2);
-            foreach (var fact in e.IntervalFacts)
-            {
-                var shortLabel = FactLabel(fact);
-                terms.Add(shortLabel);
-                if (TryResolveKnownMetricLabel(fact.MetricKey) is { } fullLabel
-                    && !string.Equals(fullLabel, shortLabel, StringComparison.Ordinal))
-                {
-                    terms.Add(fullLabel);
-                }
-            }
-            return terms.ToArray();
-        }
-
-        return [];
-    }
-
-    private DisplayEntryRow BuildEntryRow(ChronicleEntry e, MetricDefinition? researchCompletedDef)
-    {
-        var timeText = e.TimingKind switch
-        {
-            ChronicleTimingKind.ExactTick => (string)"RWS_Chronicle_DayExact".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-            ChronicleTimingKind.HistorySampleDay => (string)"RWS_Chronicle_DaySample".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-            _ => (string)"RWS_Chronicle_DayInterval".Translate(
-                Dialog_RimworldStatistics.Days(e.StartTick),
-                Dialog_RimworldStatistics.Days(e.EndTick)),
-        };
-
-        var (kindText, kindColor) = e.Kind switch
-        {
-            ChronicleEntryKind.Ending => ((string)"RWS_Chronicle_Kind_Ending".Translate(), EndingColor),
-            ChronicleEntryKind.Milestone => ((string)"RWS_Chronicle_Kind_Milestone".Translate(), MilestoneColor),
-            ChronicleEntryKind.ResearchCompleted => ((string)"RWS_Chronicle_Kind_Research".Translate(), ResearchColor),
-            ChronicleEntryKind.VerifiedInterval => ((string)"RWS_Chronicle_Kind_Interval".Translate(), IntervalColor),
-            _ => ((string)"RWS_Chronicle_Kind_Gap".Translate(), GapColor),
-        };
-
-        var (eventText, extraNote) = FormatEventText(e, researchCompletedDef);
-        var evidenceBase = FormatEvidenceSource(e.EvidenceSource);
-        var evidenceText = e.Coverage == MetricCoverage.Partial
-            ? evidenceBase + " · " + (string)"RWS_Coverage_Partial".Translate()
-            : evidenceBase;
-
-        var targets = ResolveChartTargets(e);
-
-        var tip = new StringBuilder(220);
-        tip.Append(kindText).Append(" — ").Append(timeText);
-        tip.Append('\n').Append(eventText);
-        tip.Append('\n').Append((string)"RWS_Chronicle_ColEvidence".Translate()).Append(": ").Append(evidenceText);
-
-        if (e.TimingKind == ChronicleTimingKind.HistorySampleDay)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipHistorySample".Translate());
-        else if (e.TimingKind == ChronicleTimingKind.ProvenInterval && e.Kind == ChronicleEntryKind.VerifiedInterval)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipInterval".Translate());
-
-        if (extraNote is not null)
-            tip.Append('\n').Append(extraNote);
-
-        if (e.ParentSaveName is { Length: > 0 } pSave && e.ChildSaveName is { Length: > 0 } cSave)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipSaves".Translate(pSave, cSave));
-        else if (e.ChildSaveName is { Length: > 0 } singleSave)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipSaveSingle".Translate(singleSave));
-
-        if (e.RealTimeUtc is { } utc)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipRealTime".Translate(
-                DateTime.SpecifyKind(utc, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", Inv)));
-
-        if (targets.Length > 0)
-            tip.Append("\n\n").Append((string)"RWS_Chart_OpenTip".Translate());
-
-        return new DisplayEntryRow(e, timeText, kindText, kindColor, eventText, evidenceText, tip.ToString(), targets);
-    }
-
-    private (string Text, string? ExtraNote) FormatEventText(ChronicleEntry e, MetricDefinition? researchCompletedDef)
-    {
-        switch (e.Kind)
-        {
-            case ChronicleEntryKind.Ending:
-            {
-                var typeName = e.EndingType is { } t ? Dialog_RimworldStatistics.EndingLabel(t) : Dialog_RimworldStatistics.Dash;
-                var head = e.EndingOrdinal is > 0 and { } ord
-                    ? (string)"RWS_Chronicle_EndingDetail".Translate(typeName, (ord + 1).ToString(Inv))
-                    : typeName;
-
-                var parts = new List<string>(4) { head };
-                var showsDeparted = e.DepartedCount is > 0;
-                if (e.DepartedCount is > 0 and { } dep)
-                    parts.Add((string)"RWS_Chronicle_EndingDeparted".Translate(dep.ToString(Inv)));
-                if (e.PartyAtEnding is > 0 and { } party)
-                    parts.Add((string)"RWS_Chronicle_EndingParty".Translate(party.ToString(Inv)));
-                if (e.ColonistsKilledAtEnding is { } deathsAt)
-                    parts.Add((string)"RWS_Chronicle_EndingDeathsAt".Translate(deathsAt.ToString(Inv)));
-
-                var text = string.Join(" · ", parts);
-                if (e.DevMode == true)
-                    text += " " + (string)"RWS_Chronicle_EndingDevTag".Translate();
-                else if (e.DevMode is null)
-                    text += " " + (string)"RWS_Chronicle_EndingDevUnknown".Translate();
-                return (text, showsDeparted ? (string)"RWS_Chronicle_TipDepartedMax".Translate() : null);
-            }
-
-            case ChronicleEntryKind.Milestone:
-            {
-                var mText = e.MilestoneKind switch
-                {
-                    ChronicleMilestoneKind.FirstColonistJoined => (string)"RWS_Chronicle_Milestone_FirstJoin".Translate(),
-                    ChronicleMilestoneKind.FirstEnemyRaid => (string)"RWS_Chronicle_Milestone_FirstRaid".Translate(),
-                    ChronicleMilestoneKind.FirstColonistDeath => (string)"RWS_Chronicle_Milestone_FirstDeath".Translate(),
-                    ChronicleMilestoneKind.FirstResearchCompleted => (string)"RWS_Chronicle_Milestone_FirstResearch".Translate(),
-                    ChronicleMilestoneKind.WealthFirst100K => (string)"RWS_Chronicle_Milestone_Wealth100K".Translate(),
-                    ChronicleMilestoneKind.WealthFirst1M => (string)"RWS_Chronicle_Milestone_Wealth1M".Translate(),
-                    ChronicleMilestoneKind.ColonistsFirst10 => (string)"RWS_Chronicle_Milestone_Colonists10".Translate(),
-                    ChronicleMilestoneKind.WealthPeakDay when e.MilestoneValue is { } peak =>
-                        (string)"RWS_Chronicle_Milestone_WealthPeak".Translate(Math.Round(peak).ToString("N0", Inv)),
-                    ChronicleMilestoneKind.WealthPeakDay => (string)"RWS_Chronicle_Milestone_WealthPeakNoVal".Translate(),
-                    _ => Dialog_RimworldStatistics.Dash,
-                };
-                return (mText, null);
-            }
-
-            case ChronicleEntryKind.ResearchCompleted:
-            {
-                var defKey = e.ResearchDefKey ?? "";
-                var (projLabel, unloaded) = ResolveResearchProjectLabel(defKey, researchCompletedDef);
-                var note = unloaded ? (string)"RWS_Chronicle_ResearchUnloadedNote".Translate() : null;
-                return ((string)"RWS_Chronicle_ResearchDone".Translate(projLabel), note);
-            }
-
-            case ChronicleEntryKind.VerifiedInterval:
-            {
-                var chunks = new List<string>(e.IntervalFacts.Count);
-                foreach (var fact in e.IntervalFacts)
-                {
-                    var mLabel = FactLabel(fact);
-                    var sign = fact.Delta >= 0 ? "+" : "";
-                    var numText = Math.Abs(fact.Delta - Math.Round(fact.Delta)) < 1e-6
-                        ? ((long)Math.Round(fact.Delta)).ToString("N0", Inv)
-                        : fact.Delta.ToString("N1", Inv);
-                    chunks.Add($"{mLabel} {sign}{numText}");
-                }
-                return (string.Join(" · ", chunks), null);
-            }
-
-            case ChronicleEntryKind.RecordingGap:
-            default:
-            {
-                var gapText = e.GapKind switch
-                {
-                    ChronicleGapKind.MissingParentCheckpoint =>
-                        (string)"RWS_Chronicle_Gap_MissingParent".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.UnprovenSaveWithoutCheckpoint =>
-                        (string)"RWS_Chronicle_Gap_UnprovenSave".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.CarriedCheckpointUnrecordedSpan =>
-                        (string)"RWS_Chronicle_Gap_CarriedSpan".Translate(
-                            Dialog_RimworldStatistics.Days(e.StartTick),
-                            Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.LiveRecordingStartedLateOrReset =>
-                        (string)"RWS_Chronicle_Gap_LateLiveStart".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.IntervalNotCounted =>
-                        (string)"RWS_Chronicle_Gap_NotCounted".Translate(
-                            Dialog_RimworldStatistics.Days(e.StartTick),
-                            Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.ArchivedMetricsUnavailable =>
-                        (string)"RWS_Chronicle_Gap_ArchiveUnavailable".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
-                    ChronicleGapKind.ResearchKeyCapReached =>
-                        (string)"RWS_Chronicle_Gap_ResearchCap".Translate(),
-                    ChronicleGapKind.EnvironmentChanged =>
-                        (string)"RWS_Chronicle_Gap_EnvChanged".Translate(FormatEnvChangeSummary(e)),
-                    _ => Dialog_RimworldStatistics.Dash,
-                };
-                return (gapText, null);
-            }
-        }
-    }
-
-    private static string FormatEnvChangeSummary(ChronicleEntry e)
-    {
-        var items = new List<string>(3);
-        if (e.VersionChanged) items.Add((string)"RWS_Chronicle_Env_Version".Translate());
-        if (e.ModSetChanged) items.Add((string)"RWS_Chronicle_Env_ModList".Translate());
-        if (e.DlcChanged) items.Add((string)"RWS_Chronicle_Env_Dlc".Translate());
-        return items.Count > 0 ? string.Join(", ", items) : Dialog_RimworldStatistics.Dash;
-    }
-
-    private static (string Label, bool Unloaded) ResolveResearchProjectLabel(string defKey, MetricDefinition? completedDef)
-        => ColonyChronicleFilter.ResolveResearchProjectLabel(
-            defKey,
-            tryResolveLoadedProjectLabel: static key =>
-                DefDatabase<ResearchProjectDef>.GetNamedSilentFail(key) is { } def && !string.IsNullOrWhiteSpace(def.label)
-                    ? def.LabelCap.ToString()
-                    : null,
-            tryResolveBreakdownLabel: completedDef is null
-                ? null
-                : key => MetricText.Breakdown(completedDef, key),
-            emptyPlaceholder: Dialog_RimworldStatistics.Dash);
-
-    private string? TryResolveKnownMetricLabel(string metricKey)
-    {
-        if (BasicMetrics.Contains(metricKey))
-            return ResolveMetricLabel(metricKey);
-        return MetricLookup.Definition(view, metricKey) is { } def ? MetricText.Label(def) : null;
-    }
-
-    /// <summary>
-    /// The label of one interval change. Two live totals have chronicle labels of their own (their statistic is named after
-    /// its breakdown), and the game's own counters say so, so they are never mistaken for the live totals.
-    /// </summary>
-    private string FactLabel(ChronicleIntervalFact fact) => fact.MetricKey switch
-    {
-        HealthDeathFamily.DeathsByRaid => "RWS_Chronicle_Fact_ColonistDeaths".Translate(),
-        RaidFamily.ByArrivalMode => "RWS_Chronicle_Fact_Raids".Translate(),
-        BasicMetrics.Killed => "RWS_Chronicle_Fact_VanillaDeaths".Translate(),
-        BasicMetrics.Raids => "RWS_Chronicle_Fact_VanillaRaids".Translate(),
-        BasicMetrics.LastWealth => "RWS_Chronicle_Fact_Wealth".Translate(),
-        _ => ResolveMetricLabel(fact.MetricKey),
-    };
-
-    private string ResolveMetricLabel(string metricKey)
-    {
-        if (BasicMetrics.Contains(metricKey))
-        {
-            return metricKey switch
-            {
-                BasicMetrics.PeakWealth => "RWS_Col_PeakWealth".Translate(),
-                BasicMetrics.LastWealth => "RWS_Col_LastWealth".Translate(),
-                _ => MetricText.BasicLabel(metricKey),
-            };
-        }
-        return MetricLookup.Definition(view, metricKey) is { } def ? MetricText.Label(def) : metricKey;
-    }
-
-    private ChartTarget[] ResolveChartTargets(ChronicleEntry e)
-    {
-        if (e.Kind == ChronicleEntryKind.VerifiedInterval)
-        {
-            var list = new List<ChartTarget>(e.IntervalFacts.Count);
-            foreach (var f in e.IntervalFacts)
-            {
-                if (MetricLookup.IsKnownKey(view, f.MetricKey))
-                    list.Add(new ChartTarget(f.MetricKey, FactLabel(f)));
-            }
-            return list.ToArray();
-        }
-
-        if (e.RelatedMetricKey is { } key && MetricLookup.IsKnownKey(view, key))
-            return [new ChartTarget(key, ResolveMetricLabel(key))];
-
-        return [];
-    }
-
-    private static string FormatEvidenceSource(ChronicleEvidenceSource source) => source switch
-    {
-        ChronicleEvidenceSource.LiveEvent => "RWS_Chronicle_Evidence_Live".Translate(),
-        ChronicleEvidenceSource.CheckpointAggregate => "RWS_Chronicle_Evidence_Checkpoint".Translate(),
-        ChronicleEvidenceSource.VanillaCounterInterval => "RWS_Chronicle_Evidence_VanillaInterval".Translate(),
-        ChronicleEvidenceSource.SaveHistoryGraph => "RWS_Chronicle_Evidence_HistoryGraph".Translate(),
-        ChronicleEvidenceSource.RecoveredLineage => "RWS_Chronicle_Evidence_Recovered".Translate(),
-        ChronicleEvidenceSource.SaveMetadata => "RWS_Chronicle_Evidence_Metadata".Translate(),
-        ChronicleEvidenceSource.SeededTrace => "RWS_Chronicle_Evidence_SeededTrace".Translate(),
-        _ => "RWS_Chronicle_Evidence_SaveTrace".Translate(),
-    };
-
-    private static string FormatUndatedTrace(ChronicleUndatedTrace t)
-    {
-        var typeName = Dialog_RimworldStatistics.EndingLabel(t.EndingType);
-        var srcName = FormatEvidenceSource(t.EvidenceSource);
-        var line = $"{typeName} — {srcName}";
-        if (t.DevMode == true)
-            line += " " + (string)"RWS_Chronicle_EndingDevTag".Translate();
-        return line;
-    }
-
-    private static string FormatBranchOptionLabel(ChronicleBranchOption b)
-    {
-        var day = Dialog_RimworldStatistics.Days(b.SaveTick);
-        var file = string.IsNullOrWhiteSpace(b.PrimaryFileName)
-            ? (string)"RWS_Chronicle_BranchNoFile".Translate()
-            : b.PrimaryFileName!;
-
-        if (b.IsRepresentative && b.Kind == SaveLineageNodeKind.Checkpoint)
-            return (string)"RWS_Chronicle_BranchRep".Translate(day, file);
-        if (b.Kind == SaveLineageNodeKind.CarriedCheckpointSave)
-            return (string)"RWS_Chronicle_BranchCarried".Translate(day, file);
-        if (b.Kind != SaveLineageNodeKind.Checkpoint)
-            return (string)"RWS_Chronicle_BranchUnproven".Translate(day, file);
-        if (b.HasRewindEvidence)
-            return (string)"RWS_Chronicle_BranchRewind".Translate(day, file);
-        return (string)"RWS_Chronicle_BranchAlt".Translate(day, file);
     }
 }

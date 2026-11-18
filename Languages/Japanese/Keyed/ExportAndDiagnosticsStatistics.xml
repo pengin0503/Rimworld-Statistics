@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>元の派閥名</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>元の派閥名: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>コロニー年表（代表セーブ系統）</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Markdown出力</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>現在表示中のコロニー年表を単体の Markdown（.md）ファイルとして出力します。</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>HTML出力</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>現在表示中のコロニー年表をオフライン単体で閲覧できる静的 HTML（.html）ファイルとして出力します。</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>年表を出力中...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>年表を出力しました: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>年表の出力に失敗しました: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>証拠に基づく単一セーブ系統のコロニー年表です。未記録区間や日付不明痕跡は補間せず明示しています。</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>匿名診断サマリをコピー</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>パス・コロニー名・ワールド名・ID・ハッシュ・秘密情報を一切含まない読み取り専用の匿名診断サマリをクリップボードにコピーします。</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>診断テキストを保存</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>パス・コロニー名・ワールド名・ID・ハッシュ・秘密情報を一切含まない読み取り専用の匿名診断テキスト（.txt）を exports フォルダに保存します。</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>診断サマリを作成中...</RWS_Diag_Working>
+  <RWS_Diag_Copied>匿名診断サマリ（パス・コロニー名・ID不含）をクリップボードにコピーしました。</RWS_Diag_Copied>
+  <RWS_Diag_Saved>匿名診断サマリ（パス・コロニー名・ID不含）を保存しました。</RWS_Diag_Saved>
+  <RWS_Diag_Error>診断サマリの出力に失敗しました ({0})。</RWS_Diag_Error>
+</LanguageData>

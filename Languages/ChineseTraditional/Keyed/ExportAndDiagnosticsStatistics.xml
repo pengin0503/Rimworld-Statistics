@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>原派系名稱</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>原派系名稱: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>殖民地編年史（代表存檔分支）</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>匯出 Markdown</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>將目前顯示的殖民地編年史匯出為獨立的 Markdown (.md) 檔案。</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>匯出 HTML</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>將目前顯示的殖民地編年史匯出為可離線檢視的靜態 HTML (.html) 檔案。</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>正在匯出編年史...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>編年史已匯出: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>編年史匯出失敗: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>基於證據的單分支殖民地編年史。記錄缺口與無日期痕跡均原樣明示，不做插值。</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>複製匿名診斷摘要</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>將不含任何檔案路徑、殖民地/派系/世界名稱、ID、雜湊或密鑰的唯讀匿名診斷摘要複製到剪貼簿。</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>儲存診斷文字</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>將不含任何檔案路徑、殖民地/派系/世界名稱、ID、雜湊或密鑰的唯讀匿名診斷文字 (.txt) 儲存至 exports 資料夾。</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>正在產生診斷摘要...</RWS_Diag_Working>
+  <RWS_Diag_Copied>已將匿名診斷摘要（不含路徑、名稱或 ID）複製到剪貼簿。</RWS_Diag_Copied>
+  <RWS_Diag_Saved>已儲存匿名診斷摘要（不含路徑、名稱或 ID）。</RWS_Diag_Saved>
+  <RWS_Diag_Error>無法產生診斷摘要 ({0})。</RWS_Diag_Error>
+</LanguageData>

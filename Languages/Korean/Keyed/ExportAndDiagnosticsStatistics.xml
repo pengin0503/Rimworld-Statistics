@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>원래 세력명</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>원래 세력명: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>정착지 연대기 (대표 세이브 계통)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Markdown 내보내기</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>현재 표시된 정착지 연대기를 독립 실행형 Markdown (.md) 파일로 내보냅니다.</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>HTML 내보내기</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>현재 표시된 정착지 연대기를 오프라인 정적 HTML (.html) 파일로 내보냅니다.</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>연대기 내보내는 중...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>연대기 내보내기 완료: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>연대기 내보내기 실패: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>증거 기반 단일 분기 정착지 연대기입니다. 기록 공백 및 날짜 미상 흔적은 보간 없이 명시됩니다.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>익명 진단 요약 복사</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>파일 경로, 정착지/세력/세계 이름, 캠페인 ID, 해시, 비밀 정보를 전혀 포함하지 않는 읽기 전용 익명 진단 요약을 클립보드에 복사합니다.</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>진단 텍스트 저장</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>파일 경로, 정착지/세력/세계 이름, 캠페인 ID, 해시, 비밀 정보를 전혀 포함하지 않는 읽기 전용 익명 진단 텍스트(.txt)를 exports 폴더에 저장합니다.</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>진단 요약 생성 중...</RWS_Diag_Working>
+  <RWS_Diag_Copied>익명 진단 요약(경로·이름·ID 미포함)을 클립보드에 복사했습니다.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>익명 진단 요약(경로·이름·ID 미포함)을 저장했습니다.</RWS_Diag_Saved>
+  <RWS_Diag_Error>진단 요약 생성 실패 ({0}).</RWS_Diag_Error>
+</LanguageData>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>Faction d'origine</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>Faction d'origine : {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>Chronique de la colonie (branche représentative)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Exporter Markdown</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>Enregistrer la chronique affichée sous forme de fichier Markdown (.md) autonome.</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>Exporter HTML</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>Enregistrer la chronique affichée sous forme de fichier HTML (.html) autonome hors ligne.</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>Exportation de la chronique...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>Chronique exportée : {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>Échec de l'exportation : {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>Chronique de colonie sur une seule branche fondée sur les preuves. Les lacunes et traces non datées restent explicites.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>Copier le résumé diagnostique</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>Copier dans le presse-papiers un résumé diagnostique anonyme en lecture seule (aucun chemin, nom de colonie/faction/monde, identifiant, hachage ni secret).</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>Enregistrer le diagnostic</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>Enregistrer un résumé diagnostique anonyme (.txt) dans le dossier exports (aucun chemin, nom, identifiant, hachage ni secret).</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>Génération du diagnostic...</RWS_Diag_Working>
+  <RWS_Diag_Copied>Résumé diagnostique anonyme (sans chemins, noms ni ID) copié dans le presse-papiers.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>Résumé diagnostique anonyme (sans chemins, noms ni ID) enregistré.</RWS_Diag_Saved>
+  <RWS_Diag_Error>Échec de la génération du diagnostic ({0}).</RWS_Diag_Error>
+</LanguageData>

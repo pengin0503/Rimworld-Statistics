@@ -35,7 +35,10 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
     private sealed record ReportDisplayCache(
         ColonySummaryReport Report,
+        ColonyChronicle? Chronicle,
         object? Language,
+        string ColonyName,
+        string? OriginalFactionLine,
         string ScopeLabel,
         string? Banner,
         (string Key, string Value)[] OverviewFields,
@@ -45,6 +48,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         DisplayRow[] KeyRecords,
         DisplayRow[] TopRanks,
         DisplayRow[] ModMetrics,
+        ColonyChronicleSectionHtmlText? ChronicleSection,
         bool AnyPartialRank);
 
     private sealed record InGameLoadedState(
@@ -52,6 +56,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         InGameColonyResolution Resolution,
         string? ActiveColonyKey,
         ColonySummaryReport? Report,
+        ColonyChronicle? Chronicle,
         RecordedPointInfo ActiveRecordedPoint);
 
     private StatsView? view;
@@ -69,7 +74,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
     private string colonyKey;
     private string colonyName = "";
 
-    private Task<ColonySummaryReport?>? reportTask;
+    private Task<(ColonySummaryReport? Report, ColonyChronicle? Chronicle)>? reportTask;
     private object? cachedLanguage;
     private string? cachedNameSignature;
     private ReportDisplayCache? displayCache;
@@ -77,6 +82,8 @@ internal sealed class Dialog_ColonySummaryReport : Window
     private float cachedTableWidth = -1f;
     private Vector2 scroll;
 
+    private int exportGeneration;
+    private int activeExportGeneration;
     private Task<ColonyReportHtmlExportResult>? exportTask;
     private ColonyReportHtmlExportResult? exportCompleted;
     private string? exportError;
@@ -125,11 +132,19 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
             if (exportTask is { IsCompleted: true } doneExport)
             {
+                var matchedGeneration = activeExportGeneration == exportGeneration;
                 exportTask = null;
-                if (doneExport.IsCompletedSuccessfully)
-                    exportCompleted = doneExport.Result;
+                if (matchedGeneration)
+                {
+                    if (doneExport.IsCompletedSuccessfully)
+                        exportCompleted = doneExport.Result;
+                    else
+                        exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+                }
                 else
-                    exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+                {
+                    _ = doneExport.Exception;
+                }
             }
 
             var lang = LanguageDatabase.activeLanguage;
@@ -147,12 +162,13 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
             InGameLoadedState? inGameState = null;
             ColonySummaryReport? currentReport;
+            ColonyChronicle? currentChronicle;
             if (isInGameEntry)
             {
                 if (ProfileService.DataOperationRunning)
                 {
                     colonyName = FallbackColonyName();
-                    DrawWindowTitle(rect);
+                    DrawWindowTitle(rect, null);
                     Widgets.Label(new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f)), "RWS_Backup_Working".Translate());
                     return;
                 }
@@ -161,7 +177,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 if (session is null)
                 {
                     colonyName = FallbackColonyName();
-                    DrawWindowTitle(rect);
+                    DrawWindowTitle(rect, null);
                     var waitBody = new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f));
                     if (loadFailure is null)
                     {
@@ -181,7 +197,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 if (inGameState is null)
                 {
                     colonyName = FallbackColonyName();
-                    DrawWindowTitle(rect);
+                    DrawWindowTitle(rect, null);
                     var waitBody = new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f));
                     if (inGameBuild!.Failure is { } buildFailure)
                         Dialog_RimworldStatistics.DrawFailure(waitBody, "RWS_ViewBuildFailed".Translate(), buildFailure, inGameBuild.Running, inGameBuild.Retry);
@@ -195,7 +211,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                     view = inGameState.View;
                     colonyKey = "";
                     colonyName = FallbackColonyName();
-                    DrawWindowTitle(rect);
+                    DrawWindowTitle(rect, null);
                     DrawUnrecordedBody(new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f)));
                     return;
                 }
@@ -209,16 +225,20 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 }
 
                 currentReport = inGameState.Report;
+                currentChronicle = inGameState.Chronicle;
             }
             else
             {
                 if (languageChanged || namesChanged)
                     RefreshColonyName();
-                currentReport = reportTask is { IsCompletedSuccessfully: true } t ? t.Result : null;
+                if (reportTask is { IsCompletedSuccessfully: true } t)
+                    (currentReport, currentChronicle) = t.Result;
+                else
+                    (currentReport, currentChronicle) = (null, null);
             }
 
             var activeView = view!;
-            DrawWindowTitle(rect);
+            DrawWindowTitle(rect, currentReport?.Overview.FactionName);
 
             var y = rect.y + 36f;
             var controls = new ControlRow(new Rect(rect.x, y, rect.width, 28f));
@@ -248,7 +268,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             if (Widgets.ButtonText(exportRect, exportLabel.Truncate(Math.Max(0f, exportRect.width - 12f)),
                 active: currentReport is not null && exportTask is null) && currentReport is not null)
             {
-                StartHtmlExport(currentReport);
+                StartHtmlExport(currentReport, currentChronicle);
             }
             TooltipHandler.TipRegion(exportRect, "RWS_Report_ExportHtmlTip".Translate());
 
@@ -317,7 +337,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 return;
             }
 
-            var display = EnsureDisplayCache(currentReport, lang);
+            var display = EnsureDisplayCache(currentReport, currentChronicle, lang);
             DrawReportBody(body, display);
         }
         catch (Exception e)
@@ -333,9 +353,12 @@ internal sealed class Dialog_ColonySummaryReport : Window
         }
     }
 
-    private void DrawWindowTitle(Rect rect)
+    private void DrawWindowTitle(Rect rect, string? rawFactionName)
     {
         var titleText = (string)"RWS_Report_Title".Translate(colonyName);
+        if (rawFactionName is { Length: > 0 } raw && !string.Equals(colonyName, raw, StringComparison.Ordinal))
+            titleText += " (" + (string)"RWS_Report_OriginalFactionSubtitle".Translate(raw) + ")";
+
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
         var shownTitle = titleText.Truncate(titleRect.width);
@@ -455,13 +478,15 @@ internal sealed class Dialog_ColonySummaryReport : Window
             else if (resolution.Found)
                 targetKey = resolution.ColonyKey;
 
-            var report = targetKey is not null ? session.ReadColonySummaryReport(builtView, targetKey) : null;
+            var (report, chronicle) = targetKey is not null
+                ? session.ReadColonySummaryAndChronicle(builtView, targetKey, options.IncludeDevMode)
+                : (null, null);
             var recordedPoint = targetKey is not null
                 ? (targetKey == resolution.ColonyKey
                     ? resolution.RecordedPoint
                     : InGameColonyAccess.DescribeRecordedPoint(builtView, targetKey))
                 : RecordedPointInfo.None;
-            return new InGameLoadedState(builtView, resolution, targetKey, report, recordedPoint);
+            return new InGameLoadedState(builtView, resolution, targetKey, report, chronicle, recordedPoint);
         }));
         if (failure is not null)
             Log.Error("[RimworldStatistics] The in-game colony summary could not be calculated. It is calculated again when the "
@@ -475,12 +500,15 @@ internal sealed class Dialog_ColonySummaryReport : Window
         RefreshColonyName();
         scroll = Vector2.zero;
         displayCache = null;
+        exportGeneration++;
+        exportTask = null;
         exportCompleted = null;
         exportError = null;
 
         var session = ProfileService.Session;
         var currentView = view!;
-        reportTask = Task.Run(() => session.ReadColonySummaryReport(currentView, targetColonyKey));
+        var includeDev = ProfileService.Options.IncludeDevMode;
+        reportTask = Task.Run(() => session.ReadColonySummaryAndChronicle(currentView, targetColonyKey, includeDev));
     }
 
     private void RefreshColonyName()
@@ -511,6 +539,8 @@ internal sealed class Dialog_ColonySummaryReport : Window
         selectedColonyOverride = targetColonyKey == resolvedCurrent ? null : targetColonyKey;
         scroll = Vector2.zero;
         displayCache = null;
+        exportGeneration++;
+        exportTask = null;
         exportCompleted = null;
         exportError = null;
     }
@@ -533,15 +563,17 @@ internal sealed class Dialog_ColonySummaryReport : Window
             currentInGameColonyKey: currentColonyKey));
     }
 
-    private void StartHtmlExport(ColonySummaryReport report)
+    private void StartHtmlExport(ColonySummaryReport report, ColonyChronicle? chronicle)
     {
         exportCompleted = null;
         exportError = null;
         try
         {
-            var display = EnsureDisplayCache(report, LanguageDatabase.activeLanguage);
+            var display = EnsureDisplayCache(report, chronicle, LanguageDatabase.activeLanguage);
             var text = BuildHtmlText(display);
             var directory = Path.Combine(ProfileService.DirectoryPath, "exports");
+            var gen = ++exportGeneration;
+            activeExportGeneration = gen;
             exportTask = Task.Run(() => ColonyReportHtmlExport.Write(report, text, directory));
         }
         catch (Exception ex)
@@ -567,6 +599,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             Language = LanguageDatabase.activeLanguage?.folderName ?? "en",
             PageTitle = (string)"RWS_Report_Title".Translate(colonyName),
             Subtitle = (string)"RWS_Report_HtmlSubtitle".Translate(display.ScopeLabel),
+            OriginalFactionLine = display.OriginalFactionLine,
             StatusBanner = display.Banner,
             SectionOverview = (string)"RWS_Report_SectionOverview".Translate(),
             SectionEndings = (string)"RWS_Report_SectionEndings".Translate(),
@@ -587,6 +620,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             KeyRecords = display.KeyRecords.Select(MapItem).ToArray(),
             TopRanks = display.TopRanks.Select(MapItem).ToArray(),
             ModMetrics = display.ModMetrics.Select(MapItem).ToArray(),
+            ChronicleSection = display.ChronicleSection,
             FooterNote = (string)"RWS_Report_HtmlFooterNote".Translate(),
         };
     }
@@ -833,12 +867,14 @@ internal sealed class Dialog_ColonySummaryReport : Window
         y += 12f;
     }
 
-    private ReportDisplayCache EnsureDisplayCache(ColonySummaryReport report, object? lang)
+    private ReportDisplayCache EnsureDisplayCache(ColonySummaryReport report, ColonyChronicle? chronicle, object? lang)
     {
         var scopeLabel = explicitScopeName ?? (string)"RWS_Groups_All".Translate();
         if (displayCache is { } cached
             && ReferenceEquals(cached.Report, report)
+            && ReferenceEquals(cached.Chronicle, chronicle)
             && ReferenceEquals(cached.Language, lang)
+            && cached.ColonyName == colonyName
             && cached.ScopeLabel == scopeLabel)
         {
             return cached;
@@ -866,20 +902,27 @@ internal sealed class Dialog_ColonySummaryReport : Window
             ? Dialog_RimworldStatistics.ShortVersions(ov.GameVersions)
             : Dialog_RimworldStatistics.Dash;
 
+        var hasCustomDisplayName = ov.FactionName is { Length: > 0 } rawFaction
+            && !string.Equals(colonyName, rawFaction, StringComparison.Ordinal);
+        var originalFactionLine = hasCustomDisplayName
+            ? (string)"RWS_Report_OriginalFactionSubtitle".Translate(ov.FactionName!)
+            : null;
+
         var lineageText = FormatLineageSummary(ov);
-        var overviewFields = new (string Key, string Value)[]
-        {
-            ((string)"RWS_Col_World".Translate(), ov.WorldName ?? Dialog_RimworldStatistics.Dash),
-            ((string)"RWS_Report_Field_Scenario".Translate(), ov.Scenario ?? Dialog_RimworldStatistics.Dash),
-            ((string)"RWS_Report_Field_Storyteller".Translate(), ov.Storyteller ?? Dialog_RimworldStatistics.Dash),
-            ((string)"RWS_Report_Field_Difficulty".Translate(), ov.Difficulty ?? Dialog_RimworldStatistics.Dash),
-            ((string)"RWS_Report_Field_Permadeath".Translate(), permadeathText),
-            ((string)"RWS_Col_Versions".Translate(), versionsText),
-            ((string)"RWS_Col_Saves".Translate(), ov.SaveCount.ToString(Inv)),
-            ((string)"RWS_Col_LastPlayed".Translate(), Dialog_RimworldStatistics.Local(ov.LastPlayedUtc)),
-            ((string)"RWS_Report_Field_Scope".Translate(), scopeLabel),
-            ((string)"RWS_Report_Field_Lineage".Translate(), lineageText),
-        };
+        var overviewList = new List<(string Key, string Value)>(11);
+        if (hasCustomDisplayName)
+            overviewList.Add(((string)"RWS_Report_Field_OriginalFaction".Translate(), ov.FactionName!));
+        overviewList.Add(((string)"RWS_Col_World".Translate(), ov.WorldName ?? Dialog_RimworldStatistics.Dash));
+        overviewList.Add(((string)"RWS_Report_Field_Scenario".Translate(), ov.Scenario ?? Dialog_RimworldStatistics.Dash));
+        overviewList.Add(((string)"RWS_Report_Field_Storyteller".Translate(), ov.Storyteller ?? Dialog_RimworldStatistics.Dash));
+        overviewList.Add(((string)"RWS_Report_Field_Difficulty".Translate(), ov.Difficulty ?? Dialog_RimworldStatistics.Dash));
+        overviewList.Add(((string)"RWS_Report_Field_Permadeath".Translate(), permadeathText));
+        overviewList.Add(((string)"RWS_Col_Versions".Translate(), versionsText));
+        overviewList.Add(((string)"RWS_Col_Saves".Translate(), ov.SaveCount.ToString(Inv)));
+        overviewList.Add(((string)"RWS_Col_LastPlayed".Translate(), Dialog_RimworldStatistics.Local(ov.LastPlayedUtc)));
+        overviewList.Add(((string)"RWS_Report_Field_Scope".Translate(), scopeLabel));
+        overviewList.Add(((string)"RWS_Report_Field_Lineage".Translate(), lineageText));
+        var overviewFields = overviewList.ToArray();
 
         var endingLines = BuildEndingLines(ov);
         var endingNotes = new List<string>(2);
@@ -899,10 +942,13 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var topRows = report.TopRankedHighlights.Select(BuildDisplayRow).ToArray();
         var modRows = report.ModHighlights.Select(BuildDisplayRow).ToArray();
         var anyPartialRank = keyRows.Concat(topRows).Concat(modRows).Any(r => r.Item.Rank is not null && r.Item.RankHasPartial);
+        var chronicleSection = chronicle is not null && view is not null
+            ? ColonyChronicleFormatter.BuildReportSection(view, chronicle)
+            : null;
 
         displayCache = new ReportDisplayCache(
-            report, lang, scopeLabel, banner, overviewFields, endingLines, endingFootnote, coverageLine,
-            keyRows, topRows, modRows, anyPartialRank);
+            report, chronicle, lang, colonyName, originalFactionLine, scopeLabel, banner, overviewFields, endingLines,
+            endingFootnote, coverageLine, keyRows, topRows, modRows, chronicleSection, anyPartialRank);
         return displayCache;
     }
 

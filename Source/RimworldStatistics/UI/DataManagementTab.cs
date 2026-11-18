@@ -23,12 +23,14 @@ internal static class DataManagementTab
 
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
-        const float exportHeight = 56f;
-        ExportPanel.Draw(new Rect(rect.x, rect.yMax - exportHeight, rect.width, exportHeight), exportView, scope);
-        rect.height = Math.Max(0, rect.height - exportHeight - 6f);
-        var importHeight = Math.Min(325f, rect.height * 0.53f);
+        const float exportHeight = 52f;
+        const float diagHeight = 52f;
+        DiagnosticsPanel.Draw(new Rect(rect.x, rect.yMax - diagHeight, rect.width, diagHeight), session, exportView);
+        ExportPanel.Draw(new Rect(rect.x, rect.yMax - diagHeight - 4f - exportHeight, rect.width, exportHeight), session, exportView, scope);
+        rect.height = Math.Max(0, rect.height - diagHeight - exportHeight - 10f);
+        var importHeight = Math.Min(305f, rect.height * 0.52f);
         ImportTab.Draw(new Rect(rect.x, rect.y, rect.width, importHeight), session);
-        var backupRect = new Rect(rect.x, rect.y + importHeight + 8f, rect.width, rect.height - importHeight - 8f);
+        var backupRect = new Rect(rect.x, rect.y + importHeight + 8f, rect.width, Math.Max(0f, rect.height - importHeight - 8f));
         DrawBackups(backupRect, session);
     }
 

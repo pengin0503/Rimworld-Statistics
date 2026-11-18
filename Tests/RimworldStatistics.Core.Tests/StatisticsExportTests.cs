@@ -9,11 +9,13 @@ public sealed class StatisticsExportTests
         new Dictionary<NumericRow, string>(), "en", "Test group", "test");
 
     [Fact]
-    public void EmptyProfileWritesFiveHeadersAndManifest()
+    public void EmptyProfileWritesSixHeadersAndManifest()
     {
         using var root = new TempDir();
         var export = StatisticsExport.Write(View(), Labels, _ => UnitRecordingState.NotSelected, root.Path, TestContext.Current.CancellationToken);
-        Assert.Equal(6, Directory.GetFiles(export.Directory).Length);
+        Assert.Equal(StatisticsExport.TotalFileCount, Directory.GetFiles(export.Directory).Length);
+        Assert.Equal(6, export.Rows.Count);
+        Assert.True(export.Rows.ContainsKey("colony_metric_history.csv"));
         Assert.All(export.Rows, count => Assert.Equal(0, count.Value));
         Assert.All(Directory.GetFiles(export.Directory, "*.csv"), path => Assert.Single(File.ReadAllLines(path)));
         using var manifest = JsonDocument.Parse(File.ReadAllText(Path.Combine(export.Directory, "manifest.json")));
@@ -48,6 +50,7 @@ public sealed class StatisticsExportTests
         Assert.Contains(",," + MetricCoverage.Unknown + ",", Read("colony_metrics.csv")[2]);
         Assert.Contains("a,'=入植地,", Read("colonies.csv")[1]);
         Assert.Equal("false", Read("colonies.csv")[3].Split(',')[8]);
+        Assert.Equal("faction_name", Read("colonies.csv")[0].Split(',')[22]);
         Assert.Contains(Read("rankings.csv"), row => row.StartsWith(definition.Key + "," + definition.Key + ",descending,1,a,") && row.Contains(",7,Partial,"));
     }
 
