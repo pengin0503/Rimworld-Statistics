@@ -34,7 +34,7 @@ public static class PawnKillMetricPatch
         __state = null;
         if (__instance == null || __instance.Dead)
             return;
-        if (!UnityData.IsInMainThread && !__instance.Spawned && !__instance.IsFreeColonist
+        if (!UnityData.IsInMainThread && !__instance.Spawned
             && !GameFacts.IsPlayerFaction(__instance.Faction) && !GameFacts.InPlayerCaravan(__instance))
             return;
         if (!GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)
@@ -46,16 +46,17 @@ public static class PawnKillMetricPatch
             var instigator = dinfo?.Instigator;
             var raid = LiveMetrics.Family(RaidFamily.Name);
             var map = p.MapHeld;
+            var freeColonist = GameFacts.IsFreeColonistSafe(p);
             __state = new DeathFacts
             {
                 PawnId = GameFacts.Id(p),
-                FreeColonist = p.IsFreeColonist,
+                FreeColonist = freeColonist,
                 ColonyAnimal = GameFacts.IsColonyAnimal(p),
                 Wild = p.RaceProps.Animal && p.Faction == null,
-                HostileToPlayer = p.HostileTo(GameFacts.PlayerFaction),
+                HostileToPlayer = GameFacts.PlayerFaction is { } pf && p.HostileTo(pf),
                 VictimKind = GameFacts.VictimKind(p),
-                Species = p.IsFreeColonist ? GameFacts.Species(p) : null,
-                Xenotype = p.IsFreeColonist ? GameFacts.Xenotype(p) : null,
+                Species = freeColonist ? GameFacts.Species(p) : null,
+                Xenotype = freeColonist ? GameFacts.Xenotype(p) : null,
                 AgeYears = p.ageTracker?.AgeBiologicalYearsFloat,
                 InPlayerCaravan = GameFacts.InPlayerCaravan(p),
                 Cause = exactCulprit?.def != null ? "hediff:" + exactCulprit.def.defName : dinfo?.Def != null ? "damage:" + dinfo.Value.Def.defName : null,

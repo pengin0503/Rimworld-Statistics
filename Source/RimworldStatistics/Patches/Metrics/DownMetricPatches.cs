@@ -26,19 +26,22 @@ public static class MakeDownedMetricPatch
         __state = null;
         if (___pawn == null || ___pawn.Downed || ___pawn.Dead)
             return;
+        if (GameFacts.PlayerFaction is not { } playerFaction
+            || (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction)))
+            return;
         bool freeColonist;
         bool hostile;
         try
         {
-            freeColonist = ___pawn.IsFreeColonist;
-            hostile = ___pawn.HostileTo(GameFacts.PlayerFaction);
+            freeColonist = GameFacts.IsFreeColonistSafe(___pawn);
+            hostile = ___pawn.HostileTo(playerFaction);
         }
         catch (Exception e)
         {
             GameFacts.FailAll(e, DownFamily.Name, RaidFamily.Name);
             return;
         }
-        if ((!freeColonist && !hostile) || (!UnityData.IsInMainThread && !___pawn.Spawned && !freeColonist))
+        if (!freeColonist && !hostile)
             return;
         if (!GameFacts.AnyRecording(DownFamily.Name, RaidFamily.Name))
             return;

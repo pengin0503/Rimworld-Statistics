@@ -57,7 +57,7 @@ public static class MentalBreakMetricPatch
     {
         try
         {
-            if (!__result || breakDef is null || ___pawn is null || !___pawn.IsFreeNonSlaveColonist
+            if (!__result || breakDef is null || !GameFacts.IsMember(___pawn)
                 || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
                 return;
             MentalFamily.Break(s, breakDef.defName, success: ___pawn.InMentalState,
@@ -78,7 +78,7 @@ public static class InspirationMetricPatch
     {
         try
         {
-            if (!__result || def is null || __instance?.pawn is not { } pawn || !pawn.IsFreeNonSlaveColonist
+            if (!__result || def is null || __instance is null || !GameFacts.IsMember(__instance.pawn)
                 || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
                 return;
             MentalFamily.Inspiration(s, def.defName, success: true, started: __instance.CurStateDef == def,

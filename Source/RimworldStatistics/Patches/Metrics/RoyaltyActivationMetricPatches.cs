@@ -38,7 +38,7 @@ public static class RoyalPermitUsedMetricPatch
             if (__instance?.Faction?.def?.HasRoyalTitles != true || __instance.LastUsedTick == __state)
                 return;
             var ownedByPlayer = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep
-                .Any(p => p != null && p.IsFreeNonSlaveColonist
+                .Any(p => GameFacts.IsMember(p)
                     && p.royalty?.AllFactionPermits?.Contains(__instance) == true);
             if (!ownedByPlayer)
                 return;
@@ -58,9 +58,9 @@ internal static class RoyalPsycastFacts
 {
     private static readonly FieldInfo? LastCastTick = AccessTools.Field(typeof(Ability), "lastCastTick");
 
-    public static int? Tick(Psycast ability)
+    public static int? Tick(Psycast? ability)
     {
-        if (LastCastTick?.GetValue(ability) is int v)
+        if (ability is not null && LastCastTick?.GetValue(ability) is int v)
             return v;
         return null;
     }
@@ -75,7 +75,7 @@ public static class RoyalPsycastLocalMetricPatch
         __state = null;
         try
         {
-            if (__instance?.pawn?.IsFreeNonSlaveColonist != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
+            if (!GameFacts.IsMember(__instance?.pawn) || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
                 return;
             __state = RoyalPsycastFacts.Tick(__instance);
         }
@@ -88,7 +88,7 @@ public static class RoyalPsycastLocalMetricPatch
             return;
         try
         {
-            if (__instance?.pawn?.IsFreeNonSlaveColonist != true
+            if (!GameFacts.IsMember(__instance?.pawn)
                 || RoyalPsycastFacts.Tick(__instance) is not { } after || after == tick)
                 return;
             GameFacts.Record(RoyaltyFamily.Name, s => RoyaltyFamily.PsycastSucceeded(
@@ -107,7 +107,7 @@ public static class RoyalPsycastWorldMetricPatch
         __state = null;
         try
         {
-            if (__instance?.pawn?.IsFreeNonSlaveColonist != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
+            if (!GameFacts.IsMember(__instance?.pawn) || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
                 return;
             __state = RoyalPsycastFacts.Tick(__instance);
         }
@@ -120,7 +120,7 @@ public static class RoyalPsycastWorldMetricPatch
             return;
         try
         {
-            if (__instance?.pawn?.IsFreeNonSlaveColonist != true
+            if (!GameFacts.IsMember(__instance?.pawn)
                 || RoyalPsycastFacts.Tick(__instance) is not { } after || after == tick)
                 return;
             GameFacts.Record(RoyaltyFamily.Name, s => RoyaltyFamily.PsycastSucceeded(

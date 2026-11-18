@@ -20,7 +20,7 @@ public static class BiotechChildStageMetricPatch
         __state = -1;
         try
         {
-            if (___pawn is null || ___pawn.Dead || !___pawn.IsFreeNonSlaveColonist
+            if (___pawn is null || ___pawn.Dead || !GameFacts.IsMember(___pawn)
                 || !___pawn.RaceProps.Humanlike || __instance.AgeBiologicalYearsFloat >= 18f
                 || !LiveMetrics.CanCaptureEvent(BiotechFamily.Name))
                 return;
@@ -35,7 +35,7 @@ public static class BiotechChildStageMetricPatch
             return;
         try
         {
-            if (___pawn is null || ___pawn.Dead || !___pawn.IsFreeNonSlaveColonist
+            if (___pawn is null || ___pawn.Dead || !GameFacts.IsMember(___pawn)
                 || __instance.CurLifeStageIndex == __state)
                 return;
             var newStage = __instance.CurLifeStage?.defName;

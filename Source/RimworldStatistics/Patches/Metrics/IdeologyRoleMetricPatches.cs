@@ -17,7 +17,7 @@ internal static class RoleAssignmentMetricFacts
     {
         try
         {
-            if (pawn is null || role is null || !pawn.IsFreeNonSlaveColonist
+            if (pawn is null || role is null || !GameFacts.IsMember(pawn)
                 || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
                 return false;
             return role.IsAssigned(pawn);
@@ -27,7 +27,7 @@ internal static class RoleAssignmentMetricFacts
 
     public static void Assigned(Precept_Role role, Pawn pawn, bool wasAssigned)
     {
-        if (wasAssigned || pawn is null || role is null || !pawn.IsFreeNonSlaveColonist
+        if (wasAssigned || pawn is null || role is null || !GameFacts.IsMember(pawn)
             || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
             return;
         try

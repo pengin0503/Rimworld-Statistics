@@ -25,14 +25,14 @@ public static class SetFactionMetricPatch
     public static void Prefix(Pawn __instance, out Before __state)
     {
         __state = default;
-        if (__instance == null)
+        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
             return;
         try
         {
             __state = new Before
             {
                 Member = GameFacts.IsMember(__instance),
-                Prisoner = __instance.IsPrisonerOfColony,
+                Prisoner = GameFacts.IsPrisonerOfColonySafe(__instance),
                 Player = GameFacts.IsPlayerFaction(__instance.Faction),
             };
         }
@@ -44,7 +44,7 @@ public static class SetFactionMetricPatch
 
     public static void Postfix(Pawn __instance, Before __state)
     {
-        if (__instance == null)
+        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
             return;
         try
         {

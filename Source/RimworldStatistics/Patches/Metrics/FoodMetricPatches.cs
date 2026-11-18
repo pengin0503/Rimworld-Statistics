@@ -17,7 +17,7 @@ public static class IngestedMetricPatch
         {
             if (ingester == null || !(__result > 0f))
                 return;
-            if (ingester.IsFreeColonist)
+            if (GameFacts.IsFreeColonistSafe(ingester))
             {
                 var n = (double)__result;
                 GameFacts.Record(FoodFamily.Name, s => FoodFamily.Ate(s, n, freeColonist: true));

@@ -19,7 +19,7 @@ public static class RoyaltySetTitleMetricPatch
         __state = default;
         try
         {
-            if (___pawn is null || faction is null || !___pawn.IsFreeNonSlaveColonist
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
                 || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
                 return;
             var rank = __instance.GetCurrentTitleInFaction(faction)?.def.seniority;
@@ -55,7 +55,7 @@ public static class RoyaltyGainHonorMetricPatch
         __state = default;
         try
         {
-            if (___pawn is null || faction is null || !___pawn.IsFreeNonSlaveColonist
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
                 || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
                 return;
             __state = (__instance.GetFavor(faction), true);
@@ -87,7 +87,7 @@ public static class RoyaltySpendHonorMetricPatch
         __state = default;
         try
         {
-            if (___pawn is null || faction is null || !___pawn.IsFreeNonSlaveColonist
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
                 || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
                 return;
             __state = (__instance.GetFavor(faction), true);
