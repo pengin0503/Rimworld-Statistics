@@ -161,9 +161,9 @@ internal static class ComparisonPanel
                         ? MetricLookup.ForColony(column.View, target.ColonyKey, row.Record.MetricKey)
                         : MetricLookup.Overall(column.View, row.Record.MetricKey);
                     return original is null || value is null ? "RWS_Coverage_Unknown".Translate()
-                        : text + "\n" + (column.Target is ColonyTarget target
-                            ? DetailsTab.ColonyTip(original, column.View.Stats, target.ColonyKey,
-                                column.View.Numeric.Colonies.FirstOrDefault(c => c.Key == target.ColonyKey))
+                        : text + "\n" + (column.Target is ColonyTarget selectedTarget
+                            ? DetailsTab.ColonyTip(original, column.View.Stats, selectedTarget.ColonyKey,
+                                column.View.Numeric.Colonies.FirstOrDefault(c => c.Key == selectedTarget.ColonyKey))
                             : DetailsTab.OverallTip(original, column.View.Stats));
                 }, tipId);
             }

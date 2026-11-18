@@ -290,7 +290,16 @@ public sealed class Issue357RegressionTests
         Assert.Null(BasicMetrics.Value(liveOnly, BasicMetrics.Days));
         Assert.Null(BasicMetrics.Value(liveOnly, BasicMetrics.Raids));
 
-        var traceOnly = liveOnly with { Key = "c-trace", Departed = 0, CountedEndings = [] };
+        var traceOnly = new ColonyStats
+        {
+            Key = "c-trace",
+            HasObservedPoint = false,
+            Departed = 0,
+            SaveCount = 0,
+            GameVersions = [],
+            EndingCounts = new Dictionary<EndingType, int> { [EndingType.Ship] = 1 },
+            CountedEndings = [],
+        };
         Assert.Equal(1d, BasicMetrics.Value(traceOnly, BasicMetrics.Endings));
         Assert.Equal(0d, BasicMetrics.Value(traceOnly, BasicMetrics.Saves));
         Assert.Null(BasicMetrics.Value(traceOnly, BasicMetrics.Departed));
@@ -368,11 +377,11 @@ public sealed class Issue357RegressionTests
         OptionalTransitionRecording.PutCount(ctx, "cnt", "mod.owner.fam.metric");
         Assert.Equal(9, into["mod.owner.fam.metric"].Revision);
 
-        var fishState = new FamilyState { Revision = FishingFamily.Spec.Revision, SinceTick = 0, ThroughTick = 100 };
+        var fishState = new FamilyState { Revision = FishingFamily.Family.Revision, SinceTick = 0, ThroughTick = 100 };
         fishState.Count("units", 5);
         fishState.Acc("units").Overflow = true;
         var fishOut = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
-        FishingFamily.Spec.Build(new FamilyOutputContext(fishState, 100, fishOut));
+        FishingFamily.Family.Build(new FamilyOutputContext(fishState, 100, fishOut));
         Assert.Equal(MetricCoverage.Partial, fishOut[FishingFamily.AcceptedUnitsByDef].Values[MetricEntry.Scalar].Coverage);
 
         var badKey = JsonSerializer.Deserialize<SnapshotChartKey>("{\"revision\":1,\"values\":[1.0],\"coverage\":[999]}")!;
