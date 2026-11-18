@@ -148,6 +148,23 @@ public sealed class ExportAndDiagnosticsEnhancementsTests
         Assert.Contains("&lt;img src=x onerror=alert(1)&gt;", html);
         Assert.Contains("class=\"chron-kind-milestone\"", html);
         Assert.Contains("class=\"chron-partial\"", html);
+        AssertStylesEveryEntryKind(html);
+    }
+
+    /// <summary>#394: every chronicle entry kind is styled on each page that embeds a chronicle, in dark and light schemes.</summary>
+    private static void AssertStylesEveryEntryKind(string html)
+    {
+        var light = html[html.IndexOf("@media (prefers-color-scheme: light) { .chron-kind-", StringComparison.Ordinal)..];
+        light = light[..light.IndexOf('\n')];
+        foreach (var kind in Enum.GetValues<ChronicleEntryKind>())
+        {
+            var css = ColonyChronicleExport.KindCssClass(kind);
+            Assert.Contains($"    .{css} {{", html);
+            // Kinds with their own color also have a light-scheme color; intervals and gaps use the theme's variables.
+            if (kind is ChronicleEntryKind.Ending or ChronicleEntryKind.Milestone or ChronicleEntryKind.ResearchCompleted
+                or ChronicleEntryKind.HistoricalTale)
+                Assert.Contains($".{css} {{ color:#", light);
+        }
     }
 
     [Fact]
@@ -228,6 +245,7 @@ public sealed class ExportAndDiagnosticsEnhancementsTests
         Assert.Contains("初の研究完了 &lt;tag&gt;", html);
         Assert.Contains("日付不明の痕跡 (1)", html);
         Assert.Contains("宇宙船発進 — セーブ痕跡", html);
+        AssertStylesEveryEntryKind(html);
     }
 
     [Fact]
