@@ -16,7 +16,11 @@ class CheckSdkPackageTests(unittest.TestCase):
                 zf.writestr(f"RimworldStatistics/{about}", (ROOT / about).read_bytes())
             for dll in ("RimworldStatistics.Api.dll", "RimworldStatistics.Core.dll", "RimworldStatistics.dll"):
                 zf.writestr(f"RimworldStatistics/1.7/Assemblies/{dll}", b"MZ-mock")
-            for xml in sorted((ROOT / "Languages").glob("*/Keyed/*.xml")):
+            for xml in sorted(
+                list((ROOT / "Languages").glob("*/Keyed/*.xml"))
+                + list((ROOT / "Languages").glob("*/DefInjected/**/*.xml"))
+                + list((ROOT / "Defs").rglob("*.xml"))
+            ):
                 zf.writestr(f"RimworldStatistics/{xml.relative_to(ROOT).as_posix()}", xml.read_bytes())
             for name, payload in (extra_entries or {}).items():
                 zf.writestr(name, payload)
