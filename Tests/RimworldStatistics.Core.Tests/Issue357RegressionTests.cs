@@ -378,8 +378,8 @@ public sealed class Issue357RegressionTests
         Assert.Equal(9, into["mod.owner.fam.metric"].Revision);
 
         var fishState = new FamilyState { Revision = FishingFamily.Family.Revision, SinceTick = 0, ThroughTick = 100 };
-        fishState.Count("units", 5);
-        fishState.Acc("units").Overflow = true;
+        fishState.Count("placed_units", 5);
+        fishState.Acc("placed_units").Overflow = true;
         var fishOut = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
         FishingFamily.Family.Build(new FamilyOutputContext(fishState, 100, fishOut));
         Assert.Equal(MetricCoverage.Partial, fishOut[FishingFamily.AcceptedUnitsByDef].Values[MetricEntry.Scalar].Coverage);

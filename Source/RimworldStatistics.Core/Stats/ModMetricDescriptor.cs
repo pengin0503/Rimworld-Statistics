@@ -44,6 +44,7 @@ public sealed record ModMetricDescriptor
             && Source is MetricObservationSource.SaveSnapshot or MetricObservationSource.Checkpoint
             && Enum.IsDefined(Category) && Enum.IsDefined(Unit) && Enum.IsDefined(Overall)
             && Overall != OverallAggregation.Ranking && Enum.IsDefined(Selection)
+            && (HasBreakdown || Selection != ColonySelection.ObservationMaxByBreakdown)
             && (RequiredDlc is null || ValidId(RequiredDlc, allowDot: true))
             && (RequiredPackages ?? Array.Empty<ModPackageRequirement>()).All(r =>
                 r is not null && ValidId(r.PackageId, allowDot: true) &&
