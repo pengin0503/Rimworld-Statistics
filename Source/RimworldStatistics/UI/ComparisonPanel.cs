@@ -12,14 +12,12 @@ internal static class ComparisonPanel
     private sealed record Column(Choice Choice, ComparisonTarget Target, StatsView View);
     private sealed record TableRow(ComparisonRow Record, string Label, string? Source, string[] Text, MetricVisualKind[] VisualKinds);
 
-    // Space for the statistic title plus a separate MOD attribution line.
     private const float RowHeight = 40f;
     private static readonly List<Choice> Choices = [new(Kind.All)];
     private static int selectionVersion;
     private static int sortColumn = -1;
     private static bool descending;
     private static Request? request;
-    // The columns of the current request, built once; a failed build waits for Retry or another request (#326).
     private static readonly RetainedBuild<Request, Column[]> ColumnBuild = new();
     private static Column[]? builtFor;
     private static object? builtFilter;
@@ -128,93 +126,114 @@ internal static class ComparisonPanel
         }
 
         var rightViewport = new Rect(rect.x + plan.NameWidth, bodyY, Math.Max(0f, rect.width - plan.NameWidth), bodyHeight);
+        int firstCol, lastCol, first, last;
         Widgets.BeginScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight));
-        // BeginScrollView may update the scroll position for the current input event.
-        // Calculate all visible ranges after that update, then paint pinned columns and
-        // the header with the same scroll snapshot as the data cells.
-        var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
-            current.Length, plan.ColumnWidth, scroll.x, plan.DataViewportWidth);
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
-        for (var i = first; i <= last; i++)
+        try
         {
-            var row = rows[i];
-            var line = new Rect(0f, i * RowHeight, plan.DataTotalWidth, RowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(line, 0.25f);
-            for (var c = firstCol; c < lastCol; c++)
-            {
-                var cell = new Rect(c * plan.ColumnWidth, line.y, plan.ColumnWidth, RowHeight);
-                var text = row.Text[c];
-                var visualKind = row.VisualKinds[c];
-                GUI.color = visualKind == MetricVisualKind.Complete ? Color.white : MetricVisualStyle.StateColor(visualKind);
-                DrawCell(cell, text, TextAnchor.MiddleRight);
-                var value = row.Record.Values[c];
-                var column = current[c];
-                var tipId = unchecked(0x60500000 + i * Comparison.MaxColumns + c);
-                TooltipHandler.TipRegion(cell, () =>
-                {
-                    var original = column.Target is ColonyTarget target
-                        ? MetricLookup.ForColony(column.View, target.ColonyKey, row.Record.MetricKey)
-                        : MetricLookup.Overall(column.View, row.Record.MetricKey);
-                    return original is null || value is null ? "RWS_Coverage_Unknown".Translate()
-                        : text + "\n" + MetricText.Tip(original, column.View.Stats);
-                }, tipId);
-            }
-            GUI.color = Color.white;
-        }
-        Widgets.EndScrollView();
-
-        // Pinned names and header are drawn last to use the final scroll position.
-        if (leftViewport.height > 0f)
-        {
-            GUI.BeginGroup(leftViewport);
+            (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
+                current.Length, plan.ColumnWidth, scroll.x, plan.DataViewportWidth);
+            first = Math.Max(0, (int)(scroll.y / RowHeight));
+            last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
             for (var i = first; i <= last; i++)
             {
                 var row = rows[i];
-                var rowY = i * RowHeight - scroll.y;
-                var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
+                var line = new Rect(0f, i * RowHeight, plan.DataTotalWidth, RowHeight);
                 if (i % 2 == 1)
-                    Widgets.DrawHighlight(nameRect, 0.25f);
-                var titleRect = row.Source is null ? nameRect
-                    : new Rect(nameRect.x, nameRect.y, nameRect.width, 20f);
-                var shownName = DrawCell(titleRect, row.Label);
-                if (row.Source is null)
+                    Widgets.DrawHighlight(line, 0.25f);
+                for (var c = firstCol; c < lastCol; c++)
                 {
-                    if (shownName != row.Label)
-                        TooltipHandler.TipRegion(nameRect, row.Label);
+                    var cell = new Rect(c * plan.ColumnWidth, line.y, plan.ColumnWidth, RowHeight);
+                    var text = row.Text[c];
+                    var visualKind = row.VisualKinds[c];
+                    GUI.color = visualKind == MetricVisualKind.Complete ? Color.white : MetricVisualStyle.StateColor(visualKind);
+                    DrawCell(cell, text, TextAnchor.MiddleRight);
+                    var value = row.Record.Values[c];
+                    var column = current[c];
+                    var tipId = unchecked(0x60500000 + i * Comparison.MaxColumns + c);
+                    TooltipHandler.TipRegion(cell, () =>
+                    {
+                        if (column.Target is ColonyTarget target)
+                        {
+                            var originalColonyRow = MetricLookup.ForColony(column.View, target.ColonyKey, row.Record.MetricKey);
+                            if (originalColonyRow is null || value is null)
+                                return "RWS_Coverage_Unknown".Translate();
+                            var numericColony = column.View.Numeric.Colonies.FirstOrDefault(nc => nc.Key == target.ColonyKey);
+                            return text + "\n" + MetricText.ColonyTip(originalColonyRow, column.View.Stats, target.ColonyKey, numericColony);
+                        }
+                        var original = MetricLookup.Overall(column.View, row.Record.MetricKey);
+                        return original is null || value is null ? "RWS_Coverage_Unknown".Translate()
+                            : text + "\n" + MetricText.Tip(original, column.View.Stats);
+                    }, tipId);
                 }
-                else
+                GUI.color = Color.white;
+            }
+        }
+        finally
+        {
+            GUI.color = Color.white;
+            Widgets.EndScrollView();
+        }
+
+        if (leftViewport.height > 0f)
+        {
+            GUI.BeginGroup(leftViewport);
+            try
+            {
+                for (var i = first; i <= last; i++)
                 {
-                    var sourceRect = new Rect(nameRect.x, nameRect.y + 20f, nameRect.width, 19f);
-                    var shownSource = DrawCell(sourceRect, row.Source);
-                    if (shownName != row.Label)
-                        TooltipHandler.TipRegion(titleRect, row.Label);
-                    if (shownSource != row.Source)
-                        TooltipHandler.TipRegion(sourceRect, row.Source);
+                    var row = rows[i];
+                    var rowY = i * RowHeight - scroll.y;
+                    var nameRect = new Rect(0f, rowY, plan.NameWidth, RowHeight);
+                    if (i % 2 == 1)
+                        Widgets.DrawHighlight(nameRect, 0.25f);
+                    var titleRect = row.Source is null ? nameRect
+                        : new Rect(nameRect.x, nameRect.y, nameRect.width, 20f);
+                    var shownName = DrawCell(titleRect, row.Label);
+                    if (row.Source is null)
+                    {
+                        if (shownName != row.Label)
+                            TooltipHandler.TipRegion(nameRect, row.Label);
+                    }
+                    else
+                    {
+                        var sourceRect = new Rect(nameRect.x, nameRect.y + 20f, nameRect.width, 19f);
+                        var shownSource = DrawCell(sourceRect, row.Source);
+                        if (shownName != row.Label)
+                            TooltipHandler.TipRegion(titleRect, row.Label);
+                        if (shownSource != row.Source)
+                            TooltipHandler.TipRegion(sourceRect, row.Source);
+                    }
                 }
             }
-            GUI.EndGroup();
+            finally
+            {
+                GUI.EndGroup();
+            }
         }
 
         GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
-        for (var i = firstCol; i < lastCol; i++)
+        try
         {
-            var label = Label(current[i].Choice, view.Stats, groups);
-            var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
-            if (sortColumn == i)
-                label += descending ? " ▼" : " ▲";
-            if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+            for (var i = firstCol; i < lastCol; i++)
             {
-                descending = sortColumn != i || !descending;
-                sortColumn = i;
-                builtFor = null;
-                scroll = Vector2.zero;
+                var label = Label(current[i].Choice, view.Stats, groups);
+                var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
+                if (sortColumn == i)
+                    label += descending ? " ▼" : " ▲";
+                if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+                {
+                    descending = sortColumn != i || !descending;
+                    sortColumn = i;
+                    builtFor = null;
+                    scroll = Vector2.zero;
+                }
+                TooltipHandler.TipRegion(header, label);
             }
-            TooltipHandler.TipRegion(header, label);
         }
-        GUI.EndGroup();
-
+        finally
+        {
+            GUI.EndGroup();
+        }
 
         Widgets.DrawBoxSolid(new Rect(rect.x + plan.NameWidth - 1f, y, 1f, Math.Max(0f, rect.yMax - y - bottomHScrollReserve)), new Color(1f, 1f, 1f, 0.14f));
     }
@@ -222,13 +241,19 @@ internal static class ComparisonPanel
     private static string DrawCell(Rect cell, string text, TextAnchor cellAnchor = TextAnchor.MiddleLeft)
     {
         var anchor = Text.Anchor;
-        Text.Anchor = cellAnchor;
-        cell.x += 4f;
-        cell.width = Math.Max(0f, cell.width - 8f);
-        var shown = text.Truncate(cell.width);
-        Widgets.Label(cell, shown);
-        Text.Anchor = anchor;
-        return shown;
+        try
+        {
+            Text.Anchor = cellAnchor;
+            cell.x += 4f;
+            cell.width = Math.Max(0f, cell.width - 8f);
+            var shown = text.Truncate(cell.width);
+            Widgets.Label(cell, shown);
+            return shown;
+        }
+        finally
+        {
+            Text.Anchor = anchor;
+        }
     }
 
     private static TableRow[] Build(Column[] current, Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
@@ -261,13 +286,20 @@ internal static class ComparisonPanel
                     visualKinds[i] = MetricVisualKind.Missing;
                     continue;
                 }
-                var formatted = MetricText.Format(definition, v);
+                var column = current[i];
+                var original = column.Target is ColonyTarget ct
+                    ? MetricLookup.ForColony(column.View, ct.ColonyKey, row.MetricKey)
+                    : MetricLookup.Overall(column.View, row.MetricKey);
+                var formatted = original is not null
+                    ? DetailsTab.FormatRowValue(original, key => column.View.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } cs
+                        ? Dialog_RimworldStatistics.ColonyName(cs) : key)
+                    : MetricText.Format(definition, v);
                 if (v.Coverage is MetricCoverage.Partial or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                     formatted += " · " + MetricText.State(definition, v.Coverage);
                 if (v.Evidence is MetricEvidence.Experimental or MetricEvidence.Mixed || definition.Acquisition is not null && !definition.Published)
                     formatted += " · " + "RWS_Exp_ExperimentalRow".Translate();
                 text[i] = formatted;
-                visualKinds[i] = MetricVisualState.Classify(definition, v);
+                visualKinds[i] = original is not null ? MetricVisualState.Classify(original) : MetricVisualState.Classify(definition, v);
             }
             return new TableRow(row, label, MetricText.ModSourceLabel(definition), text, visualKinds);
         }).ToArray();
