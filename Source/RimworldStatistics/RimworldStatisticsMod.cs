@@ -103,6 +103,18 @@ public sealed class RimworldStatisticsMod : Mod
             }
             listing.Label("RWS_Setting_WindowSizeHelp".Translate());
             listing.Gap(8f);
+            listing.Label("RWS_Setting_ShortcutsHeading".Translate());
+            listing.Label("RWS_Setting_ShortcutsSummary".Translate(
+                UI.RimworldStatisticsKeyBindingDefOf.DescribeBinding(UI.RimworldStatisticsKeyBindingDefOf.ToggleStatistics),
+                UI.RimworldStatisticsKeyBindingDefOf.DescribeBinding(UI.RimworldStatisticsKeyBindingDefOf.ToggleLifetimeStatistics)));
+            var keyBindButton = listing.GetRect(30f);
+            if (Widgets.ButtonText(
+                    new Rect(keyBindButton.x, keyBindButton.y, Math.Min(keyBindButton.width, 320f), keyBindButton.height),
+                    "RWS_Setting_ConfigureKeyBindings".Translate()))
+            {
+                Find.WindowStack.Add(new RimWorld.Dialog_KeyBindings());
+            }
+            listing.Gap(8f);
             listing.CheckboxLabeled("RWS_Exp_Enable".Translate(), ref Settings.experimentalEnabled);
             listing.Label("RWS_Exp_Warning".Translate());
             var buttons = listing.GetRect(28f);

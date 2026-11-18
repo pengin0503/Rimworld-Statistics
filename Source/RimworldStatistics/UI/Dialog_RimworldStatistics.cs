@@ -90,7 +90,52 @@ public sealed class Dialog_RimworldStatistics : Window
             if (shownScope != scopeText)
                 TooltipHandler.TipRegion(scopeRect, scopeText);
 
-            var body = new Rect(inRect.x, inRect.y + TitleHeight + TabHeight, inRect.width, Math.Max(0f, inRect.height - TitleHeight - TabHeight));
+            var isPlaying = Current.ProgramState == ProgramState.Playing;
+            var inGameBarOffset = 0f;
+            if (isPlaying)
+            {
+                var navControls = new ControlRow(new Rect(inRect.x, inRect.y + TitleHeight, inRect.width, 28f));
+                var backLabel = (string)"RWS_InGame_BackToSummary".Translate();
+                var backRect = navControls.Next(backLabel, 145f, 270f);
+                if (Widgets.ButtonText(backRect, backLabel.Truncate(Math.Max(0f, backRect.width - 12f))))
+                {
+                    Close(doCloseSound: false);
+                    InGameStatisticsLauncher.OpenFromMenu();
+                    return;
+                }
+                TooltipHandler.TipRegion(backRect, "RWS_InGame_BackToSummaryTip".Translate());
+
+                var resolvedView = viewBuild.Failure is null ? viewBuild.Value : null;
+                var resolution = resolvedView is not null
+                    ? InGameColonyAccess.Resolve(resolvedView, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId)
+                    : InGameColonyResolution.Unrecorded;
+                var canOpenChronicle = resolvedView is not null && resolution is { Found: true, ColonyKey: not null };
+
+                var chronicleLabel = (string)"RWS_InGame_OpenCurrentChronicle".Translate();
+                var chronicleRect = navControls.Next(chronicleLabel, 145f, 270f);
+                var prevColor = GUI.color;
+                if (!canOpenChronicle)
+                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                var chronicleClicked = Widgets.ButtonText(
+                    chronicleRect,
+                    chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f)),
+                    active: canOpenChronicle);
+                GUI.color = prevColor;
+                TooltipHandler.TipRegion(
+                    chronicleRect,
+                    (canOpenChronicle ? "RWS_InGame_OpenCurrentChronicleTip" : "RWS_InGame_CurrentChronicleUnavailableTip").Translate());
+                if (chronicleClicked && canOpenChronicle)
+                {
+                    Close(doCloseSound: false);
+                    InGameStatisticsLauncher.OpenCurrentChronicle(resolvedView!, resolution.ColonyKey!);
+                    return;
+                }
+
+                inGameBarOffset = navControls.Height + 6f;
+            }
+
+            var topChrome = TitleHeight + inGameBarOffset + TabHeight;
+            var body = new Rect(inRect.x, inRect.y + topChrome, inRect.width, Math.Max(0f, inRect.height - topChrome));
             Widgets.DrawMenuSection(body);
             var tabs = new List<TabRecord>
             {

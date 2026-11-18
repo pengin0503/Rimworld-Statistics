@@ -24,6 +24,9 @@ mod="$stage/RimworldStatistics"
 mkdir -p "$mod/About" "$mod/1.7/Assemblies"
 cp About/About.xml About/Preview.png About/PublishedFileId.txt "$mod/About/"
 cp 1.7/Assemblies/RimworldStatistics.dll 1.7/Assemblies/RimworldStatistics.Core.dll 1.7/Assemblies/RimworldStatistics.Api.dll "$mod/1.7/Assemblies/"
+if [ -d Defs ]; then
+  cp -r Defs "$mod/"
+fi
 shopt -s nullglob
 for lang in Languages/*/; do
   xmls=("${lang}Keyed/"*.xml)
@@ -33,6 +36,9 @@ for lang in Languages/*/; do
   fi
   mkdir -p "$mod/${lang}Keyed"
   cp "${xmls[@]}" "$mod/${lang}Keyed/"
+  if [ -d "${lang}DefInjected" ]; then
+    cp -r "${lang}DefInjected" "$mod/${lang}"
+  fi
 done
 shopt -u nullglob
 

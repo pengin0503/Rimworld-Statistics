@@ -42,6 +42,8 @@ public static class ImportRunner
 
     private static void Start(bool manual, ImportMode mode = ImportMode.Incremental)
     {
+        if (Current.ProgramState != ProgramState.Entry)
+            return;
         lock (Gate)
         {
             if (ProfileService.DataOperationRunning || task is { IsCompleted: false })

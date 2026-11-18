@@ -416,7 +416,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
     private void OpenAllStatisticsWindow()
     {
         Close(doCloseSound: false);
-        Find.WindowStack.Add(new Dialog_RimworldStatistics());
+        InGameStatisticsLauncher.OpenAllStatistics();
     }
 
     private InGameLoadedState? ResolveInGameState(ProfileSession session)
@@ -517,22 +517,20 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
     private void ShowColonyMenu(StatsView activeView)
     {
-        var currentColonyKey = isInGameEntry ? inGameBuild?.Value?.Resolution.ColonyKey : null;
-        var options = activeView.Stats.Colonies
-            .OrderByDescending(c => currentColonyKey is not null && c.Key == currentColonyKey)
-            .ThenBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
-            .Select(c =>
-            {
-                var name = Dialog_RimworldStatistics.ColonyName(c);
-                if (currentColonyKey is not null && c.Key == currentColonyKey)
-                    name += (string)"RWS_InGame_CurrentColonyMark".Translate();
-                if (c.Excluded)
-                    name += (string)"RWS_ExcludedMark".Translate();
-                var key = c.Key;
-                return new FloatMenuOption(name, () => SelectColony(key));
-            })
-            .ToList();
-        Find.WindowStack.Add(new FloatMenu(options));
+        if (activeView.Stats.Colonies.Count == 0)
+            return;
+        var currentColonyKey = isInGameEntry
+            ? inGameBuild?.Value?.Resolution.ColonyKey
+            : Current.ProgramState == ProgramState.Playing
+                ? InGameColonyAccess.Resolve(activeView, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
+                : null;
+        Find.WindowStack.Add(new ColonyPickerDialog(
+            activeView.Stats.Colonies,
+            Dialog_RimworldStatistics.ActivePreferences,
+            picked => SelectColony(picked.Key),
+            heading: (string)"RWS_Report_SwitchColony".Translate(),
+            selectedColonyKey: colonyKey,
+            currentInGameColonyKey: currentColonyKey));
     }
 
     private void StartHtmlExport(ColonySummaryReport report)

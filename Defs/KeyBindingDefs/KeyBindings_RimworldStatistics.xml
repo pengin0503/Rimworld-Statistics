@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <KeyBindingCategoryDef>
+    <defName>RWS_KeyBindings</defName>
+    <label>Rimworld Statistics</label>
+    <description>Keyboard shortcuts for opening and closing Rimworld Statistics windows.</description>
+    <isGameUniversal>true</isGameUniversal>
+    <checkForConflicts>
+      <li>Game</li>
+      <li>MainTabs</li>
+      <li>GameMapCamera</li>
+      <li>SelectionMisc</li>
+      <li>Development</li>
+    </checkForConflicts>
+  </KeyBindingCategoryDef>
+
+  <KeyBindingDef>
+    <defName>RWS_ToggleStatistics</defName>
+    <category>RWS_KeyBindings</category>
+    <label>toggle statistics window</label>
+    <defaultKeyCodeA>None</defaultKeyCodeA>
+  </KeyBindingDef>
+
+  <KeyBindingDef>
+    <defName>RWS_ToggleLifetimeStatistics</defName>
+    <category>RWS_KeyBindings</category>
+    <label>toggle lifetime statistics window</label>
+    <defaultKeyCodeA>None</defaultKeyCodeA>
+  </KeyBindingDef>
+
+</Defs>

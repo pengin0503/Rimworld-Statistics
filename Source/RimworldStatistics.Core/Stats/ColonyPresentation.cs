@@ -136,6 +136,20 @@ public static class ColonyPresentation
             || ContainsTerm(stats.WorldName, term);
     }
 
+    public static bool MatchesGroupMemberSearch(Colony colony, ColonyStats? stats, ViewPreferences? preferences,
+        Func<string?, string> unnamedFallback, string? query)
+    {
+        ArgumentNullException.ThrowIfNull(colony);
+        ArgumentNullException.ThrowIfNull(unnamedFallback);
+        if (string.IsNullOrWhiteSpace(query))
+            return true;
+        if (stats is not null)
+            return MatchesSearch(stats, preferences, unnamedFallback, query);
+        var term = query.Trim();
+        var custom = TryGetCustomName(preferences, colony);
+        return ContainsTerm(custom ?? colony.Key, term);
+    }
+
     public static string Signature(ViewPreferences? preferences)
     {
         if (preferences?.ColonyDisplayNames is not { Count: > 0 } map)

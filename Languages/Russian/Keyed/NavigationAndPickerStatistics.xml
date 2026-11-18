@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Горячие клавиши</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Окно статистики: {0} · Общая статистика: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Настроить горячие клавиши…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Не назначено</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>К сводке текущего поселения</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Вернуться к сохранённому сводному отчёту текущего поселения.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Летопись текущего поселения</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Открыть сохранённую летопись текущего поселения.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>Для текущего поселения ещё нет сохранённой статистики. Сначала сохраните игру.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>Полное сканирование папки сохранений доступно только в главном меню, чтобы избежать конфликтов во время игры.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Выбрать поселение…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Выбрать поселение…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>Разбивка по всем поселениям</RWS_Chart_ByCategoryAll>
+</LanguageData>

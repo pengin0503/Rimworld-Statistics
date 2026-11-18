@@ -10,12 +10,13 @@ public sealed class Dialog_ColonyGroups : Window
     private readonly ViewPreferences preferences;
     private readonly bool viewLoaded;
     private readonly IReadOnlyList<Colony> colonies;
-    private readonly IReadOnlyDictionary<string, string> names;
+    private readonly IReadOnlyDictionary<string, ColonyStats> statsByKey;
     private readonly Dictionary<string, string> savedNames = new(StringComparer.Ordinal);
     private readonly Action onChange;
     private Vector2 groupScroll;
     private Vector2 memberScroll;
     private string newGroupName = "";
+    private string memberSearch = "";
     private string? selectedId;
     private bool nameDirty;
 
@@ -24,8 +25,8 @@ public sealed class Dialog_ColonyGroups : Window
         this.preferences = preferences;
         viewLoaded = view is not null;
         colonies = view?.Colonies ?? Array.Empty<Colony>();
-        names = view?.Stats.Colonies.ToDictionary(s => s.Key, Dialog_RimworldStatistics.ColonyName)
-            ?? new Dictionary<string, string>(StringComparer.Ordinal);
+        statsByKey = view?.Stats.Colonies.ToDictionary(s => s.Key, StringComparer.Ordinal)
+            ?? new Dictionary<string, ColonyStats>(StringComparer.Ordinal);
         foreach (var group in preferences.Groups)
             if (!string.IsNullOrWhiteSpace(group.Name))
                 savedNames[group.Id] = group.Name.Trim();
@@ -149,33 +150,91 @@ public sealed class Dialog_ColonyGroups : Window
             : 0;
         var notice = new Rect(nameRect.x, nameRect.yMax + 4f, width, 32f);
         Widgets.Label(notice, "RWS_Groups_Members".Translate(selected.ColonyKeys.Count, unavailable));
-        if (unavailable > 0 && Widgets.ButtonText(new Rect(nameRect.x, notice.yMax, width, 26f), "RWS_Groups_RemoveMissing".Translate()))
+        var controlsY = notice.yMax;
+        if (unavailable > 0)
         {
-            selected.ColonyKeys.RemoveAll(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)));
-            SaveStructuralChange();
+            if (Widgets.ButtonText(new Rect(nameRect.x, controlsY, width, 26f), "RWS_Groups_RemoveMissing".Translate()))
+            {
+                selected.ColonyKeys.RemoveAll(k => colonies.All(c => c.Key != k && !c.AliasKeys.Contains(k)));
+                SaveStructuralChange();
+            }
+            controlsY += 30f;
+        }
+        else
+        {
+            controlsY += 2f;
         }
 
-        var listRect = new Rect(nameRect.x, notice.yMax + (unavailable > 0 ? 32f : 3f),
-            width, Math.Max(0f, right.yMax - notice.yMax - (unavailable > 0 ? 40f : 11f) - margin));
-        var visible = colonies.OrderBy(c => names.GetValueOrDefault(c.Key) ?? c.Key, StringComparer.CurrentCulture).ToList();
+        var searchLabel = (string)"RWS_Colonies_Search".Translate();
+        var searchLabelWidth = Math.Min(Text.CalcSize(searchLabel).x + 8f, Math.Max(0f, width * 0.42f));
+        var searchLabelRect = new Rect(nameRect.x, controlsY, searchLabelWidth, 28f);
+        var prevAnchor = Text.Anchor;
+        try
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            Widgets.Label(searchLabelRect, searchLabel.Truncate(searchLabelRect.width));
+        }
+        finally
+        {
+            Text.Anchor = prevAnchor;
+        }
+        TooltipHandler.TipRegion(searchLabelRect, "RWS_Colonies_SearchTip".Translate());
+
+        var searchFieldRect = new Rect(searchLabelRect.xMax + 4f, controlsY, Math.Max(0f, width - searchLabelWidth - 4f), 28f);
+        var nextSearch = Widgets.TextField(searchFieldRect, memberSearch) ?? "";
+        if (nextSearch != memberSearch)
+        {
+            memberSearch = nextSearch;
+            memberScroll = Vector2.zero;
+        }
+        controlsY += 34f;
+
+        var activePrefs = Dialog_RimworldStatistics.ActivePreferences;
+        string DisplayNameFor(Colony c)
+            => statsByKey.TryGetValue(c.Key, out var s)
+                ? Dialog_RimworldStatistics.ColonyName(s, activePrefs)
+                : ColonyPresentation.TryGetCustomName(activePrefs, c) ?? c.Key;
+
+        var listRect = new Rect(nameRect.x, controlsY, width, Math.Max(0f, right.yMax - controlsY - margin));
+        var visible = colonies
+            .Where(c => ColonyPresentation.MatchesGroupMemberSearch(
+                c,
+                statsByKey.GetValueOrDefault(c.Key),
+                activePrefs,
+                Dialog_RimworldStatistics.UnnamedColonyFallback,
+                memberSearch))
+            .OrderBy(DisplayNameFor, StringComparer.CurrentCulture)
+            .ToList();
+        if (visible.Count == 0 && colonies.Count > 0)
+        {
+            Widgets.Label(listRect, "RWS_Details_NoMatch".Translate());
+            return;
+        }
+
         var listView = new Rect(0f, 0f, Math.Max(0f, listRect.width - 16f), visible.Count * 30f + 8f);
         Widgets.BeginScrollView(listRect, ref memberScroll, listView);
-        for (var i = 0; i < visible.Count; i++)
+        try
         {
-            var colony = visible[i];
-            var was = filtered.Contains(colony.Key) || colony.AliasKeys.Any(filtered.Contains);
-            var included = was;
-            var label = (names.GetValueOrDefault(colony.Key) ?? colony.Key)
-                + (colony.Excluded ? " (" + "RWS_Groups_Excluded".Translate() + ")" : "");
-            Widgets.CheckboxLabeled(new Rect(0f, i * 30f, listView.width, 28f), label.Truncate(listView.width - 30f), ref included);
-            if (included == was)
-                continue;
-            // After a manual merge, replace any stale aliases with the current canonical key.
-            selected.ColonyKeys.RemoveAll(k => k == colony.Key || colony.AliasKeys.Contains(k));
-            if (included)
-                selected.ColonyKeys.Add(colony.Key);
-            SaveStructuralChange();
+            for (var i = 0; i < visible.Count; i++)
+            {
+                var colony = visible[i];
+                var was = filtered.Contains(colony.Key) || colony.AliasKeys.Any(filtered.Contains);
+                var included = was;
+                var label = DisplayNameFor(colony)
+                    + (colony.Excluded ? " (" + "RWS_Groups_Excluded".Translate() + ")" : "");
+                Widgets.CheckboxLabeled(new Rect(0f, i * 30f, listView.width, 28f), label.Truncate(listView.width - 30f), ref included);
+                if (included == was)
+                    continue;
+                // After a manual merge, replace any stale aliases with the current canonical key.
+                selected.ColonyKeys.RemoveAll(k => k == colony.Key || colony.AliasKeys.Contains(k));
+                if (included)
+                    selected.ColonyKeys.Add(colony.Key);
+                SaveStructuralChange();
+            }
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Widgets.EndScrollView();
+        }
     }
 }

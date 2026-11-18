@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>キーボードショートカット</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>統計画面の開閉: {0} ・ 通算統計の開閉: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>キー割り当てを設定…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>未設定</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>現在のコロニー総括へ戻る</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>現在プレイ中のコロニーの保存済み総括レポートへ戻ります。</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>現在のコロニー年表を開く</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>現在プレイ中のコロニーの保存済み年表を開きます。</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>現在のコロニーにはまだ保存済み統計がありません。ゲームをセーブすると年表を確認できます。</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>プレイ中のセーブ書き込みとの競合を防ぐため、セーブフォルダ全体の走査はタイトル画面でのみ実行できます。</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>コロニーを選択…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>コロニーを選択…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>全コロニーの内訳</RWS_Chart_ByCategoryAll>
+</LanguageData>

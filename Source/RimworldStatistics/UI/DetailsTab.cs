@@ -293,7 +293,11 @@ public static class DetailsTab
             {
                 var selectableKeys = view.Numeric.Colonies.Select(c => c.Key).ToHashSet(StringComparer.Ordinal);
                 var selectable = view.Stats.Colonies.Where(s => selectableKeys.Contains(s.Key)).ToArray();
-                Find.WindowStack.Add(new ColonyPickerDialog(selectable, favoritePreferences, picked => colonyKey = picked.Key));
+                Find.WindowStack.Add(new ColonyPickerDialog(
+                    selectable,
+                    favoritePreferences,
+                    picked => colonyKey = picked.Key,
+                    selectedColonyKey: selected));
             }
             var reportLabel = (string)"RWS_Report_Open".Translate();
             var reportRect = controls.Next(reportLabel, 120f, 220f);
