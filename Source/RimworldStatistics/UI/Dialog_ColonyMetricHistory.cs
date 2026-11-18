@@ -63,6 +63,20 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 32f), 32f);
         var shownTitle = heading.Truncate(titleRect.width);
@@ -133,6 +147,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         // translation cannot silently remove the graph or the legend on small screens.
         Widgets.BeginScrollView(body, ref chartScroll,
             new Rect(0f, 0f, contentWidth, scrollHeight));
+        try {
 
         var add = new Rect(0f, 0f, Math.Min(250f, contentWidth), 28f);
         if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlayTracker.CanAdd))
@@ -205,7 +220,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             DrawPlot(plot, axisWidth, history);
             DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
         }
-        Widgets.EndScrollView();
+        } finally { Widgets.EndScrollView(); }
     }
 
     /// <summary>The buttons and lines of the two-reading comparison (#307); returns the y below them.</summary>
