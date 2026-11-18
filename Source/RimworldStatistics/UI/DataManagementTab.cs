@@ -8,6 +8,8 @@ namespace RimworldStatistics.UI;
 internal static class DataManagementTab
 {
     private static readonly StatsTable Table = new(24f, new(110, 2), new(90, 2), new(65, 1), new(66, 1), new(110, 2));
+    private static Vector2 outerScroll;
+    private static float lastBackupContentHeight;
     private static Vector2 scroll;
     private static Task<IReadOnlyList<BackupInfo>>? refresh;
     private static Task? operation;
@@ -23,13 +25,20 @@ internal static class DataManagementTab
 
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
-        const float exportHeight = 56f;
+        if (rect.height <= 0f)
+            return;
+        var exportHeight = Math.Min(56f, rect.height);
         ExportPanel.Draw(new Rect(rect.x, rect.yMax - exportHeight, rect.width, exportHeight), exportView, scope);
-        rect.height = Math.Max(0, rect.height - exportHeight - 6f);
-        var importHeight = Math.Min(325f, rect.height * 0.53f);
+        rect.height = Math.Max(0f, rect.height - exportHeight - 6f);
+        if (rect.height <= 0f)
+            return;
+        var importHeight = rect.height >= 280f
+            ? Math.Clamp(rect.height * 0.55f, 140f, Math.Min(360f, Math.Max(140f, rect.height - 132f)))
+            : rect.height * 0.52f;
         ImportTab.Draw(new Rect(rect.x, rect.y, rect.width, importHeight), session);
-        var backupRect = new Rect(rect.x, rect.y + importHeight + 8f, rect.width, rect.height - importHeight - 8f);
-        DrawBackups(backupRect, session);
+        var backupHeight = Math.Max(0f, rect.height - importHeight - 8f);
+        if (backupHeight > 0f)
+            DrawBackups(new Rect(rect.x, rect.y + importHeight + 8f, rect.width, backupHeight), session);
     }
 
     private static void DrawBackups(Rect rect, ProfileSession session)
@@ -46,8 +55,15 @@ internal static class DataManagementTab
         if (backups is null)
             refresh ??= Task.Run(() => ProfileBackup.List(directory));
 
-        var y = rect.y;
-        var actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
+        var needsOuterScroll = lastBackupContentHeight > rect.height + 0.5f;
+        var innerWidth = Math.Max(1f, rect.width - (needsOuterScroll ? 16f : 0f));
+        var outerView = new Rect(0f, 0f, innerWidth, Math.Max(rect.height, lastBackupContentHeight));
+        Widgets.BeginScrollView(rect, ref outerScroll, outerView);
+        try
+        {
+        var localRect = new Rect(0f, 0f, innerWidth, outerView.height);
+        var y = 0f;
+        var actions = new ControlRow(new Rect(localRect.x, y, localRect.width, 26f));
         var idle = operation is null && !ImportRunner.Running && Current.ProgramState == ProgramState.Entry;
         if (Button(ref actions, "RWS_Backup_Create", idle))
             Run(() => ProfileService.CreateBackup(session, Metadata(""), RimworldStatisticsMod.Settings.viewPreferencesJson));
@@ -63,13 +79,16 @@ internal static class DataManagementTab
         var selectedInfo = available?.FirstOrDefault(b => b.Path == selected);
         if (available is { Count: > 0 })
         {
-            Widgets.CheckboxLabeled(new Rect(rect.x, y, rect.width, 26f),
+            Widgets.CheckboxLabeled(new Rect(localRect.x, y, localRect.width, 26f),
                 "RWS_Backup_RestorePreferences".Translate(), ref restoreViewPreferences);
             y += 28f;
-            actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
+            actions = new ControlRow(new Rect(localRect.x, y, localRect.width, 26f));
             string selectLabel = selectedInfo is null ? "RWS_Backup_Select".Translate() : Title(selectedInfo);
             var selectRect = actions.Next(selectLabel, 110f, 300f);
-            if (Widgets.ButtonText(selectRect, selectLabel.Truncate(selectRect.width - 12f)))
+            var shownSelect = selectLabel.Truncate(Math.Max(0f, selectRect.width - 12f));
+            if (shownSelect != selectLabel)
+                TooltipHandler.TipRegion(selectRect, selectLabel);
+            if (Widgets.ButtonText(selectRect, shownSelect))
                 Find.WindowStack.Add(new FloatMenu(available.Select(b => new FloatMenuOption(Title(b), () => selected = b.Path)).ToList()));
             if (Button(ref actions, "RWS_Backup_Restore", idle && !session.LoadResult.ReadOnly && selectedInfo?.Validation.Ok == true))
             {
@@ -77,8 +96,6 @@ internal static class DataManagementTab
                 var manifest = info.Validation.Manifest!;
                 var summary = "RWS_Backup_ConfirmRestore".Translate(
                     Dialog_RimworldStatistics.Local(manifest.CreatedUtc), manifest.ModVersion, manifest.Colonies, manifest.Observations);
-                // The restored settings are applied by ProfileService on the main thread once the restore succeeded, whether or
-                // not this tab is drawn again (#325).
                 var withPreferences = restoreViewPreferences;
                 Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(summary, () =>
                     Run(() => ProfileService.RestoreBackup(session, info.Path, Metadata("RWS_Backup_BeforeRestore".Translate()),
@@ -101,7 +118,7 @@ internal static class DataManagementTab
             : available is { Count: 0 } ? "RWS_Backup_None".Translate() : null;
         if (status is not null)
         {
-            var label = new Rect(rect.x, y, rect.width, 24f);
+            var label = new Rect(localRect.x, y, localRect.width, 24f);
             var shown = status.Truncate(label.width);
             Widgets.Label(label, shown);
             if (shown != status)
@@ -110,7 +127,10 @@ internal static class DataManagementTab
         }
 
         if (available is not { Count: > 0 })
+        {
+            lastBackupContentHeight = y;
             return;
+        }
         var currentLanguage = LanguageDatabase.activeLanguage;
         if (!ReferenceEquals(builtFor, available) || !ReferenceEquals(language, currentLanguage))
         {
@@ -131,7 +151,15 @@ internal static class DataManagementTab
                 };
             }).ToArray();
         }
-        Table.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), ref scroll, headers, rows);
+        var minTableHeight = Math.Min(144f, (rows.Length + 1) * 24f + 4f);
+        var tableHeight = Math.Max(minTableHeight, rect.height - y);
+        Table.Draw(new Rect(localRect.x, y, localRect.width, tableHeight), ref scroll, headers, rows);
+        lastBackupContentHeight = y + tableHeight;
+        }
+        finally
+        {
+            Widgets.EndScrollView();
+        }
     }
 
     private static string Verification(BackupProblem problem) => problem switch
@@ -150,7 +178,10 @@ internal static class DataManagementTab
     {
         string label = key.Translate();
         var rect = row.Next(label, 68f, 250f);
-        return Widgets.ButtonText(rect, label.Truncate(rect.width - 12f), active: active);
+        var shown = label.Truncate(Math.Max(0f, rect.width - 12f));
+        if (shown != label)
+            TooltipHandler.TipRegion(rect, label);
+        return Widgets.ButtonText(rect, shown, active: active);
     }
 
     private static BackupMetadata Metadata(string label) =>
