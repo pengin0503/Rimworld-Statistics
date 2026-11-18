@@ -230,10 +230,14 @@ public static partial class ProfileMutations
             return;
 
         rows = rows.OrderBy(r => r.Row.Tick).ThenBy(r => r.Row.ObservedUtc).ToList();
-        while (rows.Count > SnapshotChartSeries.MaxRows)
+        if (rows.Count > SnapshotChartSeries.MaxRows)
         {
-            rows.RemoveAt(LeastShapeChange(rows.Select(r => (r.Row.Tick, r.Readings)).ToList()));
-            thinned++;
+            var ranges = new Dictionary<string, (double Min, double Max)>(Ord);
+            while (rows.Count > SnapshotChartSeries.MaxRows)
+            {
+                rows.RemoveAt(LeastShapeChange(rows, ranges));
+                thinned++;
+            }
         }
 
         // One revision per key: the current definition's, else (a provider no longer described) the newest stored one.
@@ -263,9 +267,11 @@ public static partial class ProfileMutations
     /// cost is the largest. The first and last reading of a statistic cost the whole range, so peaks, valleys and ends stay.
     /// On a tie, the row closest in time to its neighbours goes. The first and last rows are never removed.
     /// </summary>
-    private static int LeastShapeChange(IReadOnlyList<(int Tick, Dictionary<string, ChartReading> Readings)> rows)
+    private static int LeastShapeChange(
+        IReadOnlyList<(SnapshotChartRow Row, Dictionary<string, ChartReading> Readings)> rows,
+        Dictionary<string, (double Min, double Max)> ranges)
     {
-        var ranges = new Dictionary<string, (double Min, double Max)>(Ord);
+        ranges.Clear();
         foreach (var (_, readings) in rows)
             foreach (var (key, r) in readings)
                 ranges[key] = ranges.TryGetValue(key, out var range)
@@ -290,24 +296,25 @@ public static partial class ProfileMutations
                 else
                 {
                     var span = a.Tick - (double)b.Tick;
-                    var line = span <= 0 ? (a.Value + b.Value) / 2 : b.Value + (a.Value - b.Value) * ((rows[i].Tick - (double)b.Tick) / span);
+                    var line = span <= 0 ? (a.Value + b.Value) / 2 : b.Value + (a.Value - b.Value) * ((rows[i].Row.Tick - (double)b.Tick) / span);
                     share = Math.Abs(r.Value - line) / (max - min);
                 }
                 cost = Math.Max(cost, share);
             }
-            var gap = (long)rows[i + 1].Tick - rows[i - 1].Tick;
+            var gap = (long)rows[i + 1].Row.Tick - rows[i - 1].Row.Tick;
             if (cost < bestCost || cost == bestCost && gap < bestSpan)
                 (best, bestCost, bestSpan) = (i, cost, gap);
         }
         return best;
     }
 
-    private static (int Tick, double Value)? Neighbour(IReadOnlyList<(int Tick, Dictionary<string, ChartReading> Readings)> rows,
+    private static (int Tick, double Value)? Neighbour(
+        IReadOnlyList<(SnapshotChartRow Row, Dictionary<string, ChartReading> Readings)> rows,
         int from, string key, int step)
     {
         for (var j = from + step; j >= 0 && j < rows.Count; j += step)
             if (rows[j].Readings.TryGetValue(key, out var r))
-                return (rows[j].Tick, r.Value);
+                return (rows[j].Row.Tick, r.Value);
         return null;
     }
 
