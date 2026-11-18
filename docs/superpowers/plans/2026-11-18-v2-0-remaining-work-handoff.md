@@ -3,7 +3,7 @@
 - 作成日: 2026-11-18（同日、V2-A マージ・V2-D 実装・V2-E 判定の結果で更新）
 - 対象リポジトリ: `https://github.com/pengin0503/Rimworld-Statistics`
 - V2-D 着手時点の `main` 最新コミット: `1d7ff87` (`PR #363` マージ済み)
-- V2-D の作業ブランチ: `feat/v2-scatter-plot`
+- V2-D の作業ブランチ: `feat/v2-scatter-plot`（PR `#364`）
 
 ---
 
@@ -14,7 +14,7 @@
 | 1 (P0) | V2-B | セーブ系統・分岐の可視化 | **完了・`main` マージ済み** | PR `#355` (`847ef57`) |
 | 2 (P0) | V2-C | コロニー総括レポート + 静的HTML出力 | **完了・`main` マージ済み** | PR `#360` (`00657b4`) |
 | 3 (P1) | V2-A | コロニー記録年表 | **完了・`main` マージ済み**（翻訳12言語・単体テスト・実セーブ受入テスト込み） | PR `#363` (`1d7ff87`) |
-| 4 (P2) | V2-D | 散布図による統計分析 | **完了（2026-11-18、翻訳12言語・単体テスト・実セーブ受入テスト・性能計測込み）** | ブランチ `feat/v2-scatter-plot` の PR |
+| 4 (P2) | V2-D | 散布図による統計分析 | **完了（2026-11-18、翻訳12言語・単体テスト・実セーブ受入テスト・性能計測込み）** | PR `#364`（ブランチ `feat/v2-scatter-plot`） |
 | 5 (P3) | V2-E | 自己ベスト更新履歴（条件付き） | **不採用（2026-11-18、仕様 §6 のゲート不通過。根拠は Step 3）** | ブランチなし |
 
 ### `main` に合流済みの関連変更（競合・規約確認済み）
@@ -147,8 +147,8 @@ bash tools/package.sh /tmp/rws-pkg.zip && python3 tools/check_sdk_package.py /tm
 Rimworld Statistics v2.0.0 の残作業を進めてください。
 対象リポジトリ: https://github.com/pengin0503/Rimworld-Statistics
 
-V2-B（PR #355）・V2-C（PR #360）・V2-A（PR #363）・V2-D（ブランチ feat/v2-scatter-plot の PR）は実装済み、V2-E は仕様 §6 により不採用です。
-1. `docs/superpowers/plans/2026-11-18-v2-0-remaining-work-handoff.md` と `docs/superpowers/specs/2026-11-17-v2-0-distinctive-features-design.md` を読み、V2-D の PR がマージ済みか確認する。
+V2-B（PR #355）・V2-C（PR #360）・V2-A（PR #363）・V2-D（PR #364）は実装済み、V2-E は仕様 §6 により不採用です。
+1. `docs/superpowers/plans/2026-11-18-v2-0-remaining-work-handoff.md` と `docs/superpowers/specs/2026-11-17-v2-0-distinctive-features-design.md` を読み、PR #364 がマージ済みか確認する。
 2. 実ゲーム（1.7。可能なら Windows も）で V2-B 系統画面・V2-C 総括レポートと HTML 出力・V2-A 年表・V2-D 散布図を開き、狭いウィンドウ・12言語・長い MOD 統計名・多数コロニーで表示が崩れないかを目視確認し、問題があれば修正する。
 3. 後方互換性、欠測の非ゼロ扱い、セーブ分岐の非合算、R2/セーブデータの読み取り専用、秘密情報の非公開を厳守する。GitHub Release と Steam Workshop は明示的な依頼があるまで更新しない。
 ```
