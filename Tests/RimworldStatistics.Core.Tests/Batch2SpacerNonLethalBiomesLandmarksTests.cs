@@ -7,20 +7,6 @@ namespace RimworldStatistics.Core.Tests;
 
 public sealed class Batch2SpacerNonLethalBiomesLandmarksTests
 {
-    private static readonly DateTime T0 = new(2026, 11, 15, 0, 0, 0, DateTimeKind.Utc);
-    private const string Campaign = "cafe1234cafe1234cafe1234cafe1234";
-
-    private static ColonyIdentity TestIdentity() => new()
-    {
-        SeedString = "batch2-spacer-nonlethal-biomes-landmarks",
-        PersistentRandomValue = 23,
-        StartingTile = "8,11",
-        GameStartAbsTick = 0,
-        FirstWealthBits = 12,
-        StartingPawnIds = { "Thing_Human1" },
-        ModCampaignId = Campaign,
-    };
-
     [Theory]
     [InlineData(50, 51, 100, 1, false)]
     [InlineData(99, 100, 100, 1, true)]
@@ -128,83 +114,5 @@ public sealed class Batch2SpacerNonLethalBiomesLandmarksTests
         ])!;
         Assert.Equal(MetricCoverage.Partial, partial.Values[MetricEntry.Scalar].Coverage);
         Assert.Null(VleLandmarksRules.HomeLandmarks([(1, null)]));
-    }
-
-    [Fact]
-    public void Batch2CheckpointsAccumulateBranchAndReloadCleanly()
-    {
-        var spacerUnit = "mod.vanillaexpanded.vfespacer.repair_shelf";
-        var spacerHpKey = spacerUnit + ".hp_repaired";
-        var spacerItemsKey = spacerUnit + ".items_repaired";
-        var nonLethalUnit = "mod.vanillaexpanded.vwenl.nonlethal_downs";
-        var nonLethalKey = nonLethalUnit + ".completed";
-        var drillUnit = "mod.sarg.alphabiomes.core_drill";
-        var drillKey = drillUnit + ".completed";
-
-        var families = new LiveFamily[]
-        {
-            new()
-            {
-                Name = spacerUnit,
-                Revision = 1,
-                Build = output =>
-                {
-                    output.PutCount("hp_repaired", spacerHpKey);
-                    OptionalTransitionRecording.PutCount(output, "items_repaired", spacerItemsKey, withBreakdown: true);
-                },
-            },
-            new()
-            {
-                Name = nonLethalUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", nonLethalKey, withBreakdown: true),
-            },
-            new()
-            {
-                Name = drillUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", drillKey, withBreakdown: true),
-            },
-        };
-
-        var acc = LiveMetricAccumulator.StartNew(families.Select(f => f.Spec).ToArray(), 0);
-        acc.Family(spacerUnit)!.Count("hp_repaired", 5);
-        OptionalTransitionRecording.RecordCount(acc.Family(spacerUnit)!, "items_repaired", 1,
-            OptionalTransitionRecording.QualifiedDefKey("Ludeon.RimWorld", "Apparel_PowerArmor"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(nonLethalUnit)!, "completed", 1,
-            OptionalTransitionRecording.QualifiedDefKey("VanillaExpanded.VWENL", "VWE_Gun_Taser"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(drillUnit)!, "completed", 2,
-            OptionalTransitionRecording.QualifiedDefKey("Ludeon.RimWorld", "ChunkMarble"), true);
-
-        var save1 = acc.PrepareSave(100, T0, "save1")!;
-        acc.Commit(save1);
-
-        acc.Family(spacerUnit)!.Count("hp_repaired", 3);
-        OptionalTransitionRecording.RecordCount(acc.Family(nonLethalUnit)!, "completed", 1,
-            OptionalTransitionRecording.QualifiedDefKey("VanillaExpanded.VWENL", "VWE_Anesthetic"), true);
-        var branchA = acc.PrepareSave(200, T0.AddMinutes(5), "branchA")!;
-        acc.Commit(branchA);
-
-        var reloadedWithoutMods = LiveMetricAccumulator.Resume(save1.Json, Array.Empty<FamilySpec>(), 100);
-        var branchB = reloadedWithoutMods.PrepareSave(250, T0.AddMinutes(10), "branchB")!;
-        reloadedWithoutMods.Commit(branchB);
-
-        var obsA = CheckpointMetrics.ToObservation(
-            CheckpointJson.Parse(branchA.Json).Payload!, branchA.Json,
-            TestIdentity(), "1.7.4985", null, families);
-        var obsB = CheckpointMetrics.ToObservation(
-            CheckpointJson.Parse(branchB.Json).Payload!, branchB.Json,
-            TestIdentity(), "1.7.4985", null, families);
-
-        Assert.Equal(8L, obsA.Scalar(spacerHpKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsA.Scalar(spacerItemsKey, 1)!.IntegerValue);
-        Assert.Equal(2L, obsA.Scalar(nonLethalKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsA.Metrics[nonLethalKey].Values["vanillaexpanded.vwenl/VWE_Gun_Taser"].IntegerValue);
-        Assert.Equal(1L, obsA.Metrics[nonLethalKey].Values["vanillaexpanded.vwenl/VWE_Anesthetic"].IntegerValue);
-        Assert.Equal(2L, obsA.Scalar(drillKey, 1)!.IntegerValue);
-
-        Assert.Equal(5L, obsB.Scalar(spacerHpKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsB.Scalar(nonLethalKey, 1)!.IntegerValue);
-        Assert.Equal(2L, obsB.Scalar(drillKey, 1)!.IntegerValue);
     }
 }

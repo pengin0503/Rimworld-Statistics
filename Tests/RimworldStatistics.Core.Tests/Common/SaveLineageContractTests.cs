@@ -19,33 +19,45 @@ public sealed class SaveLineageContractTests
     {
         var colony = new TestColony("branches");
         var metric = TestShapes.CounterMetric(breakdown: breakdown);
-        var family = TestShapes.FamilyOf(metric);
-        var game = GameSession.NewGame(colony, family);
+        var realMetric = TestShapes.RealMetric();
+        var families = new[] { TestShapes.FamilyOf(metric), TestShapes.FamilyOf(realMetric) };
+        var game = GameSession.NewGame(colony, families);
         game.Record(metric, 2, TestShapes.DefKey("A"));
+        game.RecordReal(realMetric, 1.25);
         var root = game.Save(100, "root");
         game.Record(metric, 3, TestShapes.DefKey("B"));
+        game.RecordReal(realMetric, 2.5);
         var first = game.Save(200, "first");           // root → first
         game.Record(metric, 1, TestShapes.DefKey("A"));
-        var second = game.Save(300, "second");         // first → second: 6
+        game.RecordReal(realMetric, 0.75);
+        var second = game.Save(300, "second");         // first → second: 6, real 4.5
 
-        var sibling = GameSession.Load(colony, first, family);
+        var sibling = GameSession.Load(colony, first, families);
         sibling.Record(metric, 10, TestShapes.DefKey("C"));
-        var branch = sibling.Save(250, "branch");      // first → branch: 15, earlier than second
-        var rewound = GameSession.Load(colony, root, family).Save(150, "rewind");   // root → rewind: 2
+        sibling.RecordReal(realMetric, 6.25);
+        var branch = sibling.Save(250, "branch");      // first → branch: 15, real 10.0, earlier than second
+        var rewound = GameSession.Load(colony, root, families).Save(150, "rewind");   // root → rewind: 2
 
-        var profile = new TestProfile().Played(colony, 300).Remember(metric).Import(root, first, second, branch, rewound);
+        var profile = new TestProfile().Played(colony, 300).Remember(metric, realMetric).Import(root, first, second, branch, rewound);
         var view = profile.View();
         Assert.Equal(CheckpointLineage.Branched, view.Colony(colony).Lineage);
         Assert.Equal(6, view.Row(colony, metric.StableKey).Value.Number);
         Assert.Equal(6, view.Overall(metric.StableKey).Value.Number);
+        Assert.Equal(4.5, view.Row(colony, realMetric.StableKey).Value.Number!.Value, 6);
+        Assert.Equal(4.5, view.Overall(realMetric.StableKey).Value.Number!.Value, 6);
         if (breakdown)
             Assert.Equal(new double?[] { 3, 3 }, view.Row(colony, metric.StableKey).Breakdowns.Select(b => b.Value.Number));
 
         // The sibling branch is played on and becomes the latest save: its own totals, not added to the other branch.
+        // An aborted save (PrepareSave without Commit) neither drops nor double-counts subsequent events.
         sibling.Record(metric, 1, TestShapes.DefKey("C"));
+        sibling.RecordReal(realMetric, 0.25);
+        Assert.True(sibling.Accumulator.PrepareSave(350, new DateTime(2026, 11, 15, 0, 5, 50, DateTimeKind.Utc), "aborted")!.IsNew);
+        sibling.RecordReal(realMetric, 0.25);
         var later = sibling.Save(400, "later");
-        view = profile.Played(colony, 400).Import(later).View();
+        view = profile.Played(colony, 400).Import(later).Reopen().View();
         Assert.Equal(16, view.Row(colony, metric.StableKey).Value.Number);
+        Assert.Equal(10.5, view.Row(colony, realMetric.StableKey).Value.Number!.Value, 6);
         Assert.Equal(MetricCoverage.Complete, view.Row(colony, metric.StableKey).Value.Coverage);
     }
 

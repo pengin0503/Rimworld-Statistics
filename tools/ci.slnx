@@ -1,0 +1,20 @@
+<Solution>
+  <Project Path="../Source/RimworldStatistics.Api/RimworldStatistics.Api.csproj" />
+  <Project Path="../Source/RimworldStatistics.Core/RimworldStatistics.Core.csproj" />
+  <Project Path="../Source/RimworldStatistics/RimworldStatistics.csproj" />
+  <Project Path="../Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj" />
+  <Project Path="../examples/StatisticsSdkSample/StatisticsSdkSample.csproj" />
+  <Project Path="VerifyHarness/RimworldStatistics.VerifyHarness.csproj" />
+  <Project Path="RealSaveImport/RealSaveImport.csproj" />
+  <Project Path="RealGameEventProbe/RealGameEventProbe.csproj" />
+  <Project Path="RealGameEventProbe/Analyzer/RealGameEventAnalyzer.csproj" />
+  <Project Path="RefMetadataIndex/RefMetadataIndex.csproj" />
+  <Project Path="PatchTargetCheck/PatchTargetCheck.csproj" />
+  <Project Path="PatchTargetCheckSelfTest/Target/SyntheticTarget.csproj" />
+  <Project Path="PatchTargetCheckSelfTest/Good/SyntheticGoodPatches.csproj" />
+  <Project Path="PatchTargetCheckSelfTest/Bad/SyntheticBadPatches.csproj" />
+  <Project Path="IntegratedModAudit/RaceBirthIlAudit/RaceBirthIlAudit.csproj" />
+  <Project Path="IntegratedModAudit/VpeCastIlAudit/VpeCastIlAudit.csproj" />
+  <Project Path="IntegratedModAudit/VteIlAudit/VteIlAudit.csproj" />
+  <Project Path="IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj" />
+</Solution>

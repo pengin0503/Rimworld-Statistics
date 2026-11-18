@@ -23,15 +23,4 @@ public sealed class VaeAchievementStatisticsTests
     [InlineData(5, null, null)]
     public void Points_OnlyPositiveOrZeroMeasuredCredit(int? before, int? after, int? expected)
         => Assert.Equal(expected, VaeAchievementRules.CreditedPoints(before, after));
-
-    [Fact]
-    public void MissingPointManagerStillCountsUnlockButMarksPointsPartial()
-    {
-        var family = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 10, Continuous = true };
-        var key = OptionalTransitionRecording.QualifiedDefKey("mod.first", "Card1");
-        OptionalTransitionRecording.RecordCount(family, "completed", key: key, withBreakdown: true);
-        family.Acc("points").Overflow = true;
-        Assert.Equal(1L, family.Peek("completed")!.N);
-        Assert.True(family.Peek("points")!.Overflow);
-    }
 }

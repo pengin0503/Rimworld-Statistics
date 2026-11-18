@@ -162,21 +162,32 @@ public sealed class RecorderChartCacheTests
     }
 
     [Fact]
-    public async Task RequestsForOneChartAtTheSameTime_ShareOneParse()
+    public void RequestsForOneChartAtTheSameTime_ShareOneParse()
     {
         using var saves = new TempDir();
-        var save = WriteSave(saves, "a.rws", 4001);
+        var save = WriteSave(saves, "a.rws", 513);
         var cache = new RecorderChartCache(maxEntries: 16, maxPoints: 10_000);
         using var start = new Barrier(8);
-        var reads = Enumerable.Range(0, 8).Select(_ => Task.Run(() =>
+        var results = new IReadOnlyList<MetricHistoryPoint>[8];
+        var errors = new Exception?[8];
+        var threads = Enumerable.Range(0, 8).Select(i => new Thread(() =>
         {
-            start.SignalAndWait(TestContext.Current.CancellationToken);
-            return Read(cache, saves, save);
-        }, TestContext.Current.CancellationToken)).ToArray();
-        var results = await Task.WhenAll(reads);
+            try
+            {
+                start.SignalAndWait();
+                results[i] = Read(cache, saves, save);
+            }
+            catch (Exception ex)
+            {
+                errors[i] = ex;
+            }
+        }) { IsBackground = true }).ToArray();
+        foreach (var thread in threads) thread.Start();
+        foreach (var thread in threads) thread.Join();
 
+        Assert.All(errors, Assert.Null);
         Assert.Equal(1, cache.Parses);
-        Assert.All(results, r => Assert.Equal(4001, r.Count));
+        Assert.All(results, r => Assert.Equal(513, r.Count));
         Assert.All(results, r => Assert.Same(results[0], r));
     }
 }

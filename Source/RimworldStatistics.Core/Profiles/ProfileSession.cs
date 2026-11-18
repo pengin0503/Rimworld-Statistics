@@ -479,8 +479,8 @@ public sealed class ProfileSession
     /// <summary>Entries are only appended and their pawn unions only grow, so this changes exactly when the ledger does.</summary>
     private (int, long) LedgerSignature() => (_profile.ColonyKeys.Count, _profile.ColonyKeys.Sum(k => (long)k.StartingPawnIds.Count));
 
-    /// <summary>Waits for a running background write, then writes anything not yet on disk.</summary>
-    public void Flush()
+    /// <summary>Waits for any currently scheduled background write without starting a new write.</summary>
+    internal void WaitForBackgroundWrite()
     {
         Task? running;
         lock (_lock)
@@ -493,6 +493,12 @@ public sealed class ProfileSession
         {
             // WriteLatest records its own errors; nothing else can fault the task
         }
+    }
+
+    /// <summary>Waits for a running background write, then writes anything not yet on disk.</summary>
+    public void Flush()
+    {
+        WaitForBackgroundWrite();
         WriteLatest();
     }
 

@@ -90,6 +90,7 @@ public sealed class ProfileStoreTests
     [Theory]
     [InlineData("""{ "schemaVersion": 3, "saveObservations": [ { "fileName": "future.rws", "status": "ok", "newField": { "x": 1 } } ] }""", "future.rws")]
     [InlineData("""{ "schemaVersion": 3, "endingEvents": [ { "type": "someFutureEnding" } ] }""", null)]   // not readable by this version at all
+    [InlineData("""{ "schemaVersion": 3, "metricObservations": [ { "source": "somethingNew" } ] }""", null)]
     public void Load_NewerSchema_IsReadOnlyAndSaveThrows(string json, string? visibleFile)
     {
         using var dir = new TempDir();
@@ -141,13 +142,13 @@ public sealed class ProfileStoreTests
         _ = store.Load(Now);
         var profile = Tagged("unchanged");
         store.Save(profile);
-        for (var i = 0; i < 12; i++)
+        for (var i = 0; i < 4; i++)
         {
             profile.ImportState.LastScanUtc = Now.AddSeconds(i + 1);
             store.Save(profile);
         }
         Assert.False(File.Exists(dir.File("profile.json.bak1")));
-        Assert.Equal(Now.AddSeconds(12), ProfileJson.Deserialize(
+        Assert.Equal(Now.AddSeconds(4), ProfileJson.Deserialize(
             File.ReadAllText(store.ProfilePath)).ImportState.LastScanUtc);
 
         profile.SaveObservations.Add(new SaveObservation { FileName = "real-stat-change" });

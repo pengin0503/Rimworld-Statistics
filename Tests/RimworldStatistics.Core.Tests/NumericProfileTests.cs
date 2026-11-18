@@ -126,19 +126,6 @@ public sealed class NumericProfileTests
         Assert.False(File.Exists(dir.File("profile.v1.json")));
     }
 
-    [Fact]
-    public void FutureSchema_IsReadOnly()
-    {
-        using var dir = new TempDir();
-        const string json = """{ "schemaVersion": 3, "metricObservations": [ { "source": "somethingNew" } ] }""";
-        File.WriteAllText(dir.File("profile.json"), json);
-        var store = new ProfileStore(dir.Path);
-        var r = store.Load(Now);
-        Assert.Equal((ProfileLoadSource.NewerSchema, true), (r.Source, r.ReadOnly));
-        Assert.Throws<InvalidOperationException>(() => store.Save(new Profile()));
-        Assert.Equal(json, File.ReadAllText(dir.File("profile.json")));
-    }
-
     private const string V2WithUnknowns = """
         {
           "schemaVersion": 2,

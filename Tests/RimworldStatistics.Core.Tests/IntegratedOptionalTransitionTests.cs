@@ -37,12 +37,18 @@ public sealed class IntegratedOptionalTransitionTests
         Assert.True(OptionalTransitionRecording.RecordCount(state, "items", 2, second, true));
 
         var output = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
-        OptionalTransitionRecording.PutCount(new FamilyOutputContext(state, 100, output),
-            "items", MetricId, withBreakdown: true);
+        OptionalTransitionRecording.RecordCount(state, "other", 1, "Example.OwnerA/Other", true);
+        state.Acc("other").Overflow = true;
+        var ctx = new FamilyOutputContext(state, 100, output);
+        OptionalTransitionRecording.PutCount(ctx, "items", MetricId, withBreakdown: true);
+        OptionalTransitionRecording.PutCount(ctx, "other", FamilyId + ".other", withBreakdown: true);
 
         Assert.Equal(5L, output[MetricId].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, output[MetricId].Values[MetricEntry.Scalar].Coverage);
         Assert.Equal(3L, output[MetricId].Values[first!].IntegerValue);
         Assert.Equal(2L, output[MetricId].Values[second!].IntegerValue);
+        Assert.Equal(1L, output[FamilyId + ".other"].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, output[FamilyId + ".other"].Values[MetricEntry.Scalar].Coverage);
     }
 
     [Fact]
@@ -76,7 +82,9 @@ public sealed class IntegratedOptionalTransitionTests
 
         Assert.True(OptionalTransitionRecording.RecordReal(state, "volume", 0.4));
         Assert.True(OptionalTransitionRecording.RecordReal(state, "volume", 0.6));
-        Assert.Equal(1d, state.Peek("volume")!.Sum);
+        Assert.True(OptionalTransitionRecording.RecordReal(state, "volume", 0.25));
+        Assert.Equal(1.25d, state.Peek("volume")!.Sum!.Value, 6);
+        Assert.Equal(0.6d, state.Peek("volume")!.Max);
     }
 
     [Theory]

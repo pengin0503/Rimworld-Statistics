@@ -17,15 +17,4 @@ public sealed class VfeInsectoidsBirthTests
         bool normalTickScope, bool expected)
         => Assert.Equal(expected, VfeInsectoidsRules.NewBirth(
             before, after, pawnSpawned, owner, sameMap, normalTickScope));
-
-    [Fact]
-    public void RepeatedGenuineBirthsKeepQualifiedKindCounts()
-    {
-        var family = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
-        var key = OptionalTransitionRecording.QualifiedDefKey("VFEInsectoid2", "WorkerKind");
-        OptionalTransitionRecording.RecordCount(family, "spawned", key: key, withBreakdown: true);
-        OptionalTransitionRecording.RecordCount(family, "spawned", key: key, withBreakdown: true);
-        Assert.Equal(2L, family.Peek("spawned")!.N);
-        Assert.Equal(2d, family.Peek("spawned")!.By![key!]);
-    }
 }

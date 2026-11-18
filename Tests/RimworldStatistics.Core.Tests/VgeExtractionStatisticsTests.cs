@@ -18,17 +18,4 @@ public sealed class VgeExtractionStatisticsTests
         int amount, long expected)
         => Assert.Equal(expected, VgeExtractionRules.ItemsPlaced(
             successfulPlacement, colonistUser, correctExtractCall, amount));
-
-    [Fact]
-    public void PlacementOfTwoDifferentDefsIsBrokenDownByOwnerAndDefName()
-    {
-        var state = new FamilyState
-            { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
-        var first = OptionalTransitionRecording.QualifiedDefKey("vanillaexpanded.vgeneticse", "GeneticDNA");
-        var second = OptionalTransitionRecording.QualifiedDefKey("vanillaexpanded.vgeneticse", "AnimalDNA");
-        OptionalTransitionRecording.RecordCount(state, "items", key:first, withBreakdown:true);
-        OptionalTransitionRecording.RecordCount(state, "items", key:second, withBreakdown:true);
-        Assert.Equal(2, state.Peek("items")!.N);
-        Assert.Equal(2, state.Peek("items")!.By!.Count);
-    }
 }

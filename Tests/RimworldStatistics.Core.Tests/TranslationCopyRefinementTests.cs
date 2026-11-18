@@ -63,7 +63,16 @@ public sealed partial class TranslationCopyRefinementTests
     [GeneratedRegex(@"\{\d+\}")]
     private static partial Regex PlaceholderRegex();
 
-    internal static DirectoryInfo LanguagesRoot()
+    private static readonly Lazy<DirectoryInfo> CachedRoot = new(FindLanguagesRoot);
+    private static readonly Lazy<IReadOnlyDictionary<string, Dictionary<string, string>>> CachedAllKeyed = new(() =>
+        AllLanguages.ToDictionary(lang => lang, lang => ParseLanguageFiles(CachedRoot.Value, lang), StringComparer.Ordinal));
+    private static readonly Lazy<IReadOnlyDictionary<string, Dictionary<string, string>>> CachedMainKeyed = new(() =>
+        AllLanguages.ToDictionary(lang => lang, lang => ParseKeyedFile(
+            Path.Combine(CachedRoot.Value.FullName, lang, "Keyed", "RimworldStatistics.xml")), StringComparer.Ordinal));
+
+    internal static DirectoryInfo LanguagesRoot() => CachedRoot.Value;
+
+    private static DirectoryInfo FindLanguagesRoot()
     {
         for (var dir = new DirectoryInfo(AppContext.BaseDirectory); dir is not null; dir = dir.Parent)
         {
@@ -76,23 +85,41 @@ public sealed partial class TranslationCopyRefinementTests
 
     internal static Dictionary<string, string> LoadLanguage(DirectoryInfo languagesRoot, string language)
     {
+        if (string.Equals(languagesRoot.FullName, CachedRoot.Value.FullName, StringComparison.Ordinal)
+            && CachedAllKeyed.Value.TryGetValue(language, out var cached))
+            return new Dictionary<string, string>(cached, StringComparer.Ordinal);
+        return ParseLanguageFiles(languagesRoot, language);
+    }
+
+    private static Dictionary<string, string> ParseLanguageFiles(DirectoryInfo languagesRoot, string language)
+    {
         var keyedDir = Path.Combine(languagesRoot.FullName, language, "Keyed");
         var result = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var file in Directory.GetFiles(keyedDir, "*.xml").OrderBy(f => f, StringComparer.Ordinal))
         {
-            var doc = XDocument.Load(file);
-            foreach (var element in doc.Root!.Elements())
-                result[element.Name.LocalName] = element.Value;
+            foreach (var (key, value) in ParseKeyedFile(file))
+                Assert.True(result.TryAdd(key, value), $"Duplicate translation key '{key}' in {file}");
         }
         return result;
     }
 
-    private static Dictionary<string, string> LoadMainKeyed(DirectoryInfo languagesRoot, string language)
+    private static Dictionary<string, string> ParseKeyedFile(string path)
     {
-        var path = Path.Combine(languagesRoot.FullName, language, "Keyed", "RimworldStatistics.xml");
-        return XDocument.Load(path).Root!.Elements()
-            .ToDictionary(e => e.Name.LocalName, e => e.Value, StringComparer.Ordinal);
+        var doc = XDocument.Load(path);
+        Assert.Equal("LanguageData", doc.Root?.Name.LocalName);
+        var result = new Dictionary<string, string>(StringComparer.Ordinal);
+        foreach (var element in doc.Root!.Elements())
+        {
+            Assert.False(element.HasElements, $"{path}/{element.Name.LocalName} contains nested XML elements");
+            Assert.True(result.TryAdd(element.Name.LocalName, element.Value),
+                $"Duplicate translation key '{element.Name.LocalName}' in {path}");
+        }
+        return result;
     }
+
+    private static IReadOnlyDictionary<string, string> MainKeyed(string language) => CachedMainKeyed.Value[language];
+
+    private static IReadOnlyDictionary<string, string> AllKeyed(string language) => CachedAllKeyed.Value[language];
 
     private static string[] Placeholders(string value)
         => PlaceholderRegex().Matches(value).Select(m => m.Value).OrderBy(v => v, StringComparer.Ordinal).ToArray();
@@ -100,13 +127,12 @@ public sealed partial class TranslationCopyRefinementTests
     [Fact]
     public void AllTwelveLanguagesShareExactKeysAndPlaceholders()
     {
-        var root = LanguagesRoot();
-        var english = LoadLanguage(root, "English");
+        var english = AllKeyed("English");
         Assert.NotEmpty(english);
 
         foreach (var lang in AllLanguages)
         {
-            var strings = LoadLanguage(root, lang);
+            var strings = AllKeyed(lang);
             Assert.Equal(english.Keys.OrderBy(k => k, StringComparer.Ordinal), strings.Keys.OrderBy(k => k, StringComparer.Ordinal));
             foreach (var (key, enVal) in english)
             {
@@ -122,9 +148,8 @@ public sealed partial class TranslationCopyRefinementTests
     [Fact]
     public void SpecEightKeysExistAcrossAllTwelveLanguagesAndAreRefined()
     {
-        var root = LanguagesRoot();
-        var ja = LoadMainKeyed(root, "Japanese");
-        var en = LoadMainKeyed(root, "English");
+        var ja = MainKeyed("Japanese");
+        var en = MainKeyed("English");
 
         foreach (var key in SpecEightKeys)
         {
@@ -154,23 +179,11 @@ public sealed partial class TranslationCopyRefinementTests
     }
 
     [Fact]
-    public void ProviderLabelDoesNotExposeInternalProviderIdPlaceholder()
-    {
-        var root = LanguagesRoot();
-        foreach (var lang in AllLanguages)
-        {
-            var strings = LoadMainKeyed(root, lang);
-            Assert.Equal(["{0}"], Placeholders(strings["RWS_Mod_Provider"]));
-        }
-    }
-
-    [Fact]
     public void MetricDescriptionsDoNotExposeInternalClassOrFieldNames()
     {
-        var root = LanguagesRoot();
         foreach (var lang in AllLanguages)
         {
-            var strings = LoadLanguage(root, lang);
+            var strings = AllKeyed(lang);
             foreach (var (key, text) in strings)
             {
                 if (key == "RWS_Status_SdkEventCapExceeded")
@@ -213,12 +226,12 @@ public sealed partial class TranslationCopyRefinementTests
             "RWS_Chart_LegendUnlinked",
         };
 
-        var root = LanguagesRoot();
-        var english = LoadLanguage(root, "English");
+        var english = AllKeyed("English");
 
         foreach (var lang in AllLanguages)
         {
-            var strings = LoadLanguage(root, lang);
+            Assert.Equal(["{0}"], Placeholders(MainKeyed(lang)["RWS_Mod_Provider"]));
+            var strings = AllKeyed(lang);
             foreach (var key in requiredNewKeys.Concat(invariantKeys))
             {
                 Assert.True(strings.TryGetValue(key, out var text), $"{lang} missing {key}");

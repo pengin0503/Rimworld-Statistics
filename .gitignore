@@ -2,6 +2,7 @@ bin/
 obj/
 .refs/
 .devinputs/
+.devoutputs/
 1.7/Assemblies/
 artifacts/
 *.user
@@ -13,3 +14,5 @@ tools/translation/.cache/
 
 # Development-only real-game event probe build output (tools/RealGameEventProbe/README.md)
 tools/RealGameEventProbe/Mod/Assemblies/
+__pycache__/
+*.py[cod]

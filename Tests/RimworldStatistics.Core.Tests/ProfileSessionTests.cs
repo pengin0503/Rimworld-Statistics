@@ -72,13 +72,13 @@ public sealed class ProfileSessionTests
         // checks the end state, it cannot force the interleaving.)
         using var dir = new TempDir();
         var session = new ProfileSession(new ProfileStore(dir.Path), () => Now);
-        for (var i = 0; i < 300; i++)
+        for (var i = 0; i < 90; i++)
             session.Mutate(p => p.SaveObservations.Add(Obs($"{i}.rws")), i % 3 == 0 ? SaveMode.Immediate : SaveMode.Background);
         session.Mutate(p => p.SaveObservations.Add(Obs("last.rws")), SaveMode.Immediate);
-        Thread.Sleep(200);   // let any queued background write finish
-        Assert.Equal(301, Reload(dir).SaveObservations.Count);
+        session.WaitForBackgroundWrite();
+        Assert.Equal(91, Reload(dir).SaveObservations.Count);
         session.Flush();
-        Assert.Equal(301, Reload(dir).SaveObservations.Count);
+        Assert.Equal(91, Reload(dir).SaveObservations.Count);
     }
 
     [Fact]

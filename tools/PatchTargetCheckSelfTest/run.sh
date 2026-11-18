@@ -5,22 +5,26 @@ set -euo pipefail
 cd "$(dirname "$0")/../.."
 work=$(mktemp -d)
 trap 'rm -rf "${work:?}"' EXIT
-build() { dotnet build "$1" -c Release -nologo -v quiet ${2:+-o "$2"} -p:UseNuGetRefs=true > "$work/build.log" || { cat "$work/build.log"; exit 1; }; }
-build tools/RefMetadataIndex/RefMetadataIndex.csproj
-build tools/PatchTargetCheck/PatchTargetCheck.csproj
-build tools/PatchTargetCheckSelfTest/Good/SyntheticGoodPatches.csproj "$work/good"
-build tools/PatchTargetCheckSelfTest/Bad/SyntheticBadPatches.csproj "$work/bad"
-dotnet tools/RefMetadataIndex/bin/Release/net10.0/RefMetadataIndex.dll "$work/good/SyntheticTarget.dll" "$work/index" > /dev/null
+if [[ "${1:-}" != "--no-build" ]]; then
+  build() { dotnet build "$1" -c Release -nologo -v quiet -p:UseNuGetRefs=true > "$work/build.log" || { cat "$work/build.log"; exit 1; }; }
+  build tools/RefMetadataIndex/RefMetadataIndex.csproj
+  build tools/PatchTargetCheck/PatchTargetCheck.csproj
+  build tools/PatchTargetCheckSelfTest/Good/SyntheticGoodPatches.csproj
+  build tools/PatchTargetCheckSelfTest/Bad/SyntheticBadPatches.csproj
+fi
+good_bin="tools/PatchTargetCheckSelfTest/Good/bin/Release/net10.0"
+bad_bin="tools/PatchTargetCheckSelfTest/Bad/bin/Release/net10.0"
+dotnet tools/RefMetadataIndex/bin/Release/net10.0/RefMetadataIndex.dll "$good_bin/SyntheticTarget.dll" "$work/index" > /dev/null
 check() { dotnet tools/PatchTargetCheck/bin/Release/net10.0/PatchTargetCheck.dll "$1" "$work/index"; }
 
 status=0
-if ! check "$work/good/SyntheticGoodPatches.dll" > "$work/good.txt"; then
+if ! check "$good_bin/SyntheticGoodPatches.dll" > "$work/good.txt"; then
   echo "FAIL: the correct synthetic patches were refused:"; cat "$work/good.txt"; status=1
 elif ! grep -qx 'patch targets checked: 6, failures: 0' "$work/good.txt"; then
   echo "FAIL: unexpected result for the correct synthetic patches:"; cat "$work/good.txt"; status=1
 fi
 
-if check "$work/bad/SyntheticBadPatches.dll" > "$work/bad.txt"; then
+if check "$bad_bin/SyntheticBadPatches.dll" > "$work/bad.txt"; then
   echo "FAIL: the mismatched synthetic patches passed:"; cat "$work/bad.txt"; status=1
 fi
 expected=(

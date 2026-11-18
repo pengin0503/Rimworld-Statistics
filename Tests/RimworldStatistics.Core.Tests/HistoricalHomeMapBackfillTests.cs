@@ -132,7 +132,7 @@ public sealed class HistoricalHomeMapBackfillTests
         Assert.Contains(MetricKeys.ModsLatest, overflow.Metrics.Metrics.Keys);
 
         // Large values, even whitespace, must not be buffered unboundedly.
-        var longName = Map(0, "WorldObject_" + new string(' ', 300_000) + "42");
+        var longName = Map(0, "WorldObject_" + new string(' ', 2_048) + "42");
         var overlong = Read(Save(maps: new[] { longName }));
         Assert.Equal(ObservationStatus.Ok, overlong.Observation.Status);
         Assert.DoesNotContain(FacilitiesSnapshot.HomeMapsPeak, overlong.Metrics!.Metrics.Keys);

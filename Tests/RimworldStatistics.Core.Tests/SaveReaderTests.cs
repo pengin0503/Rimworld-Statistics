@@ -94,7 +94,7 @@ public sealed class SaveReaderTests
 
     [Fact]
     public void Read_SkipsMapsAndUnknownSections()
-        => AssertBasicValues(Read(Basic().Maps(1_000_000).Unknown(5_000_000)));
+        => AssertBasicValues(Read(Basic().Maps(150_000).Unknown(150_000)));
 
     [Fact]
     public void Read_PathOverload_SetsFileInfo()

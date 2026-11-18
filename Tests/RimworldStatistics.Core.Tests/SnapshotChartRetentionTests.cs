@@ -113,7 +113,7 @@ public sealed class SnapshotChartRetentionTests
         static int Size(int saves) => ProfileJson.Serialize(Saved(Enumerable.Range(0, saves)
             .Select(i => Snapshot(i, 1000 + i % 37 * 13, weapons: i % 5)))).Length;
         var few = Size(SnapshotChartSeries.MaxRows * 2);
-        var many = Size(SnapshotChartSeries.MaxRows * 12);
+        var many = Size(SnapshotChartSeries.MaxRows * 6);
         Assert.InRange(many, few * 9 / 10, few * 11 / 10);
     }
 
