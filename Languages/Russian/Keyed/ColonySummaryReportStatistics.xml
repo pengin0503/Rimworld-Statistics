@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>Сводный отчёт</RWS_Report_Open>
+  <RWS_Report_OpenTip>Открыть сводку по поселению: общие итоги, рекорды, места в рейтинге, полнота данных и экспорт в статический HTML (только чтение).</RWS_Report_OpenTip>
+  <RWS_Report_Title>Сводный отчёт поселения · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>Сменить поселение…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>Экспорт HTML-отчёта</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>Сохранить автономный статический HTML-отчёт по этому поселению в папку exports.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>Запись HTML-отчёта…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>Ошибка экспорта HTML: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTML-отчёт сохранён: {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>Область: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>Отчёт только для чтения, сформированный по записанным сохранениям и контрольным точкам. Отсутствующие значения показаны как неизвестные и никогда не приравниваются к нулю.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>Это поселение исключено из общих итогов и рейтингов.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>Это поселение вне активной группы ({0}), поэтому места в рейтинге здесь не рассчитываются.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>Записано только по следам концовок (нет точек наблюдения); дни, богатство и счётчики остаются неизвестными, а не 0.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>Обзор и родословная сохранений</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>Достигнутые концовки</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>Полнота записей</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>Основные итоги и рекорды</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>Места в топ-3 среди поселений</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>Статистика модов</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>Сценарий</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>Рассказчик</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>Сложность</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>Режим сохранения</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>Ответственный режим</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>Свободная загрузка</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>Активная область</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>Родословная сохранений</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · улетело: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>Восстановлено из линии: {0} (режим разраб. неизвестен, не входит в итоги)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>Концовки в режиме разработчика скрыты текущей настройкой</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>Всего показателей: {0} · полные: {1} · снимок/история: {2} · частичные: {3} · неизвестно: {4} · неприменимо: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>экспериментальных: {0}</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>Тип</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>Место</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>Диапазон</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>Сумма</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>Пик / экстремум</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>Последний снимок</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>Среднее / доля</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>Исключено</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>Вне области</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>День {0} → {1}</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>День {0}</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* Место учитывает поселения с неполным покрытием (пропусками); подробности во вкладке Рейтинги.</RWS_Report_PartialRankFootnote>
+</LanguageData>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>Relatório de resumo</RWS_Report_Open>
+  <RWS_Report_OpenTip>Abrir resumo de uma colónia: totais acumulados, recordes, classificações, cobertura e exportação HTML estática (só leitura).</RWS_Report_OpenTip>
+  <RWS_Report_Title>Relatório da colónia · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>Mudar de colónia…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>Exportar relatório HTML</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>Guardar um ficheiro HTML estático autónomo para esta colónia na pasta exports.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>A escrever relatório HTML…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>Falha ao exportar HTML: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>Relatório HTML guardado em {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>Âmbito: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>Relatório só de leitura gerado a partir de gravações e pontos de controlo. Valores em falta são mostrados como desconhecidos e nunca como zero.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>Esta colónia está excluída dos totais e classificações entre colónias.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>Esta colónia está fora do grupo ativo ({0}), pelo que as classificações não são calculadas nesta vista.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>Registada apenas por vestígios de final (sem ponto de observação); dias, riqueza e contadores permanecem desconhecidos em vez de 0.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>Visão geral e linhagem</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>Finais alcançados</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>Cobertura de registo</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>Principais totais e recordes</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>Top 3 entre colónias</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>Estatísticas de MOD</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>Cenário</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>Narrador</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>Dificuldade</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>Modo de gravação</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>Modo compromisso</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>Recarregar a qualquer altura</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>Âmbito ativo</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>Linhagem de gravações</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · partiram: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>{0} final(is) recuperado(s) da linhagem (modo dev desconhecido, excluídos dos totais)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>Os finais em modo de desenvolvimento estão ocultos pela definição atual</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>{0} estatísticas acompanhadas · completas: {1} · instantâneo/histórico: {2} · parciais: {3} · desconhecidas: {4} · não aplicáveis: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>{0} experimentais</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>Tipo</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>Posição</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>Intervalo observado</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>Acumulado</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>Pico / extremo</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>Último estado</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>Média / taxa</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>Excluída</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>Fora do âmbito</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>Dia {0} → {1}</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>Dia {0}</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* A posição inclui colónias com cobertura parcial (lacunas); veja o separador Classificações.</RWS_Report_PartialRankFootnote>
+</LanguageData>

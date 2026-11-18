@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>종합 보고서</RWS_Report_Open>
+  <RWS_Report_OpenTip>단일 정착지의 누적 실적, 최고 기록, 범위 내 순위, 기록 범위 및 정적 HTML 내보내기를 엽니다 (읽기 전용).</RWS_Report_OpenTip>
+  <RWS_Report_Title>정착지 종합 보고서 · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>정착지 전환…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>HTML 보고서 내보내기</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>이 정착지의 독립형 정적 HTML 요약 파일을 exports 폴더에 저장합니다.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>HTML 보고서 작성 중…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>HTML 내보내기 실패: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTML 보고서 저장됨: {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>범위: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>기록된 세이브와 체크포인트에서 생성된 읽기 전용 보고서입니다. 누락되거나 측정되지 않은 값은 0이 아닌 알 수 없음으로 표시됩니다.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>이 정착지는 전체 합계 및 순위에서 제외되어 있습니다.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>이 정착지는 활성 그룹({0}) 밖이므로 이 화면에서는 순위를 계산하지 않습니다.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>엔딩 흔적만으로 기록됨(세이브/플레이 관측점 없음). 일수, 재산, 카운터는 0이 아닌 알 수 없음으로 유지됩니다.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>개요 및 세이브 계보</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>도달한 엔딩</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>기록 상태 요약</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>주요 누적 및 최고 기록</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>정착지 간 상위 3위 기록</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>MOD 통계</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>시나리오</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>이야기꾼</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>난이도</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>저장 방식</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>책임 모드</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>언제든 불러오기</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>활성 범위</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>세이브 계보</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · 출발: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>계보 복구 엔딩 {0}건 (개발자 모드 여부 불명, 합계 제외)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>현재 설정에 의해 개발자 모드 엔딩이 숨겨져 있습니다</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>추적 통계 {0}개 · 완전: {1} · 스냅샷/기록: {2} · 부분: {3} · 알 수 없음: {4} · 해당 없음: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>실험적 {0}개</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>종류</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>순위</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>관측 구간</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>누적 합계</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>최고 / 극값</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>최신 스냅샷</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>평균 / 비율</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>제외됨</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>범위 밖</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>{0} → {1}일</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>{0}일</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* 순위에 부분 기록(누락 구간 포함) 정착지가 포함되어 있습니다. 자세한 내용은 순위 탭을 참고하세요.</RWS_Report_PartialRankFootnote>
+</LanguageData>

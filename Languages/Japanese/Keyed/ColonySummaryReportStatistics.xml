@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>総括レポート</RWS_Report_Open>
+  <RWS_Report_OpenTip>このコロニーの通算実績・最高記録・スコープ内順位・取得状況・静的HTML出力を表示します（読み取り専用）。</RWS_Report_OpenTip>
+  <RWS_Report_Title>コロニー総括レポート · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>コロニー切替…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>HTMLレポート出力</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>このコロニーの自己完結した静的HTMLレポートを exports フォルダに書き出します。</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>HTMLレポートを出力中…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>HTML出力に失敗しました: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTMLレポートを保存しました: {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>集計対象: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>保存済みセーブとチェックポイントから生成された読み取り専用レポートです。欠測・未計測の値は 0 ではなく不明として表示されます。</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>このコロニーは通算集計およびランキングから除外されています。</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>このコロニーは選択中のグループ（{0}）の対象外のため、この画面では順位を算出しません。</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>エンディング痕跡のみが記録されており、セーブ・実プレイの観測点がありません。経過日数・資産・各種カウンタは 0 ではなく不明のまま保持されます。</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>概要・セーブ系統</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>到達エンディング</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>統計の取得状況</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>主要な通算実績・最高記録</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>コロニー間の上位記録（3位以内）</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>MOD提供統計</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>シナリオ</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>ストーリーテラー</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>難易度</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>セーブ方式</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>コミットメントモード</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>いつでもリロード</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>集計スコープ</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>セーブ系統</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0}（#{1}）· 離脱者: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0}（{1}）· {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>系統復元エンディング {0} 件（開発モード不明のため合計から除外）</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>開発モード中のエンディングは現在の設定により非表示です</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>対象統計 {0} 件 · 完全: {1} · 保存時点/履歴: {2} · 一部（欠損あり）: {3} · 不明: {4} · 対象外: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>実験的: {0} 件</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>種別</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>順位</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>観測区間</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>通算合計</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>最高・極値</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>最終観測値</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>平均・比率</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>除外中</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>対象外</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>{0} → {1} 日目</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>{0} 日目</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* 欠損区間を含む部分記録のコロニーを含む順位です。詳細はランキングタブを参照してください。</RWS_Report_PartialRankFootnote>
+</LanguageData>
