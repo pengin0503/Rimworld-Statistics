@@ -17,7 +17,6 @@ internal sealed class Dialog_MetricChart : Window
 
     private sealed record BarText(string Name, string Value, string Tip);
 
-    /// <summary>One immutable series with its axis range; row text is built once, when the row is first shown.</summary>
     private sealed class Series
     {
         public Series(ChartMode mode, IReadOnlyList<MetricChartBar> bars, MetricUnit unit)
@@ -106,6 +105,20 @@ internal sealed class Dialog_MetricChart : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 35f), 32f);
         var shownTitle = title.Truncate(titleRect.width);
@@ -148,7 +161,6 @@ internal sealed class Dialog_MetricChart : Window
             : canBreakdown ? breakdown : overall;
         if (series.Bars.Count == 0)
         {
-            // No series has a measured value: no explanation of a chart that is not drawn.
             Widgets.Label(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), "RWS_Chart_NoData".Translate());
             return;
         }
@@ -189,56 +201,62 @@ internal sealed class Dialog_MetricChart : Window
         DrawAxisHeader(new Rect(rect.x, rect.y, width, AxisHeaderHeight), plotX, plotWidth, series, Position);
 
         var bodyRect = new Rect(rect.x, rect.y + AxisHeaderHeight, rect.width, Math.Max(0f, rect.height - AxisHeaderHeight));
-        Widgets.BeginScrollView(bodyRect, ref scroll, new Rect(0f, 0f, width, bars.Count * RowHeight));
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(bars.Count - 1, (int)((scroll.y + bodyRect.height) / RowHeight) + 1);
-        var anchor = Text.Anchor;
         MetricChartBar? selected = null;
-        for (var i = first; i <= last; i++)
+        var anchor = Text.Anchor;
+        Widgets.BeginScrollView(bodyRect, ref scroll, new Rect(0f, 0f, width, bars.Count * RowHeight));
+        try
         {
-            var bar = bars[i];
-            if (bar.Value.Number is not { } value || !double.IsFinite(value))
-                continue;
-            var text = series.Text[i] ??= Describe(series.Mode, bar);
-            var row = new Rect(0, i * RowHeight, width, RowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(row, 0.2f);
-            Widgets.DrawHighlightIfMouseover(row);
-            if (series.Mode == ChartMode.Colony && OpensHistory && Widgets.ButtonInvisible(row))
-                selected = bar;
-
-            Text.Anchor = TextAnchor.MiddleLeft;
-            var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
-            Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
-
-            var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
-            for (var t = 0; t < series.Ticks.Count; t++)
+            var first = Math.Max(0, (int)(scroll.y / RowHeight));
+            var last = Math.Min(bars.Count - 1, (int)((scroll.y + bodyRect.height) / RowHeight) + 1);
+            for (var i = first; i <= last; i++)
             {
-                var tickValue = series.Ticks[t];
-                var tx = Position(tickValue);
-                if (tickValue == 0d)
+                var bar = bars[i];
+                if (bar.Value.Number is not { } value || !double.IsFinite(value))
                     continue;
-                Widgets.DrawBoxSolid(new Rect(tx, row.y, 1f, RowHeight), new Color(0.7f, 0.7f, 0.7f, 0.16f));
-            }
-            Widgets.DrawBoxSolid(new Rect(zero - 0.5f, row.y, 1.5f, RowHeight), new Color(0.86f, 0.88f, 0.92f, 0.85f));
+                var text = series.Text[i] ??= Describe(series.Mode, bar);
+                var row = new Rect(0, i * RowHeight, width, RowHeight);
+                if (i % 2 == 1)
+                    Widgets.DrawHighlight(row, 0.2f);
+                Widgets.DrawHighlightIfMouseover(row);
+                if (series.Mode == ChartMode.Colony && OpensHistory && Widgets.ButtonInvisible(row))
+                    selected = bar;
 
-            var end = Position(value);
-            if (value != 0d)
-            {
-                var start = Math.Min(zero, end);
-                var length = Math.Max(1f, Math.Abs(end - zero));
-                Widgets.DrawBoxSolid(new Rect(start, plotRow.y + 3f, length, plotRow.height - 6f),
-                    bar.Value.Coverage == MetricCoverage.Partial
-                        ? new Color(0.63f, 0.66f, 0.71f) : new Color(0.35f, 0.64f, 0.78f));
-            }
+                Text.Anchor = TextAnchor.MiddleLeft;
+                var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
+                Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
 
-            Text.Anchor = TextAnchor.MiddleRight;
-            var valueRect = new Rect(plotX + plotWidth + 10f, row.y, Math.Max(0f, valueWidth - 10f), RowHeight);
-            Widgets.Label(valueRect, text.Value.Truncate(valueRect.width));
-            TooltipHandler.TipRegion(row, text.Tip);
+                var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
+                for (var t = 0; t < series.Ticks.Count; t++)
+                {
+                    var tickValue = series.Ticks[t];
+                    var tx = Position(tickValue);
+                    if (tickValue == 0d)
+                        continue;
+                    Widgets.DrawBoxSolid(new Rect(tx, row.y, 1f, RowHeight), new Color(0.7f, 0.7f, 0.7f, 0.16f));
+                }
+                Widgets.DrawBoxSolid(new Rect(zero - 0.5f, row.y, 1.5f, RowHeight), new Color(0.86f, 0.88f, 0.92f, 0.85f));
+
+                var end = Position(value);
+                if (value != 0d)
+                {
+                    var start = Math.Min(zero, end);
+                    var length = Math.Max(1f, Math.Abs(end - zero));
+                    Widgets.DrawBoxSolid(new Rect(start, plotRow.y + 3f, length, plotRow.height - 6f),
+                        bar.Value.Coverage == MetricCoverage.Partial
+                            ? new Color(0.63f, 0.66f, 0.71f) : new Color(0.35f, 0.64f, 0.78f));
+                }
+
+                Text.Anchor = TextAnchor.MiddleRight;
+                var valueRect = new Rect(plotX + plotWidth + 10f, row.y, Math.Max(0f, valueWidth - 10f), RowHeight);
+                Widgets.Label(valueRect, text.Value.Truncate(valueRect.width));
+                TooltipHandler.TipRegion(row, text.Tip);
+            }
         }
-        Text.Anchor = anchor;
-        Widgets.EndScrollView();
+        finally
+        {
+            Text.Anchor = anchor;
+            Widgets.EndScrollView();
+        }
         if (selected is not null)
         {
             var key = MetricChartSeries.ColonyComparisonKey(definition);
@@ -312,18 +330,12 @@ internal sealed class Dialog_MetricChart : Window
             _ => ColonyName(bar.Key),
         };
         var value = MetricText.Format(mode == ChartMode.Breakdown ? breakdownDefinition : definition, bar.Value);
-        // Colonies recorded for different lengths of time: a complete additive total also per recorded day of that colony.
         var perDay = mode == ChartMode.Colony ? MetricText.PerDay(ColonySource, bar.Value) : "";
         return new BarText(name, value, name + ": " + value + "\n" + MetricText.State(definition, bar.Value.Coverage) + perDay);
     }
 
-    /// <summary>
-    /// A colony's bar opens its history, except for a basic statistic no save holds (endings, departures, the save count),
-    /// whose history would always be empty (#333).
-    /// </summary>
     private bool OpensHistory => !BasicMetrics.Contains(definition.Key) || BasicMetrics.HasSaveHistory(definition.Key);
 
-    /// <summary>The per-colony rows a colony comparison shows (a derived cross-colony record reads its source metric).</summary>
     private MetricDefinition ColonySource => colonySource ??= MetricChartSeries.ColonyComparisonKey(definition) is var key
         && key != definition.Key && MetricLookup.Definition(view, key) is { } source ? source : definition;
     private MetricDefinition? colonySource;
@@ -348,8 +360,10 @@ internal sealed class Dialog_MetricChart : Window
 
     private string BreakdownName(string key)
     {
-        var source = CrossColonyCatalog.IsDerived(definition)
+        var isDerived = CrossColonyCatalog.IsDerived(definition);
+        var source = isDerived
             ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
-        return MetricText.Breakdown(source, key, useThingLabel: true);
+        return MetricText.Breakdown(source, key,
+            useThingLabel: isDerived ? definition.DescriptionKey == "RWS_CrossDesc_TopType" : null);
     }
 }
