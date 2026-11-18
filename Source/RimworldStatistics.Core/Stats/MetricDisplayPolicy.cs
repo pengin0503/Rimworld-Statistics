@@ -90,8 +90,11 @@ public static class MetricDisplayPolicy
         RoyaltyFamily.TitleGrants, RoyaltyFamily.PermitUses, RoyaltyFamily.Psycasts, RoyaltyFamily.Honor,
         IdeologyFamily.Conversions, IdeologyFamily.RitualResults, IdeologyFamily.RoleAppointments,
         OdysseyFamily.Flights, OdysseyFamily.Distance, OdysseyFamily.UniqueTiles, OdysseyFamily.NewMapLandings,
+        OdysseyVoyageFamily.ChemfuelConsumed, OdysseyVoyageFamily.OrbitArrivals, OdysseyVoyageFamily.VisitedLandmarks,
         BiotechFamily.MechsCreated, BiotechFamily.BirthMothers, BiotechFamily.ChildStages, BiotechFamily.MechRepairs,
         BiotechFamily.WasteCreated, BiotechFamily.WasteDisposed, BiotechFamily.PollutionCleaned,
+        BiotechGeneticsFamily.GrowthVatCompletions, BiotechGeneticsFamily.GeneExtractions,
+        BiotechGeneticsFamily.XenogermsAssembled, BiotechGeneticsFamily.GenesImplanted,
         AnomalyFamily.PsychicRituals, AnomalyFamily.PsychicRitualsByDef, AnomalyFamily.EntityEscapes,
         AnomalyFamily.EntitiesContained, AnomalyFamily.PitGatesCollapsed,
     };

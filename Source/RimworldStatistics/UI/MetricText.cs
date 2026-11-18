@@ -22,6 +22,38 @@ internal static class MetricText
             && !string.IsNullOrWhiteSpace(ritualDef.label))
             return ritualDef.label;
 
+        if (definition.Key == OdysseyStateSnapshot.UniqueWeaponsByTrait
+            && DefDatabase<WeaponTraitDef>.GetNamedSilentFail(name) is { } traitDef
+            && string.Equals(traitDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(traitDef.label))
+            return traitDef.label;
+
+        if (definition.Key == OdysseyVoyageFamily.VisitedLandmarks
+            && DefDatabase<LandmarkDef>.GetNamedSilentFail(name) is { } landmarkDef
+            && string.Equals(landmarkDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(landmarkDef.label))
+            return landmarkDef.label;
+
+        if (definition.Key is BiotechStateSnapshot.BossgroupsSummoned
+                or BiotechStateSnapshot.BossesDefeated
+                or BiotechGeneticsFamily.BossFirstDefeatedTicks)
+        {
+            if (DefDatabase<BossgroupDef>.GetNamedSilentFail(name) is { } bgDef
+                && string.Equals(bgDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase))
+            {
+                var bgLabel = !string.IsNullOrWhiteSpace(bgDef.label) ? bgDef.label : bgDef.boss?.kindDef?.label;
+                if (!string.IsNullOrWhiteSpace(bgLabel))
+                    return bgLabel!;
+            }
+            if (DefDatabase<BossDef>.GetNamedSilentFail(name) is { } bossDef
+                && string.Equals(bossDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase))
+            {
+                var bLabel = !string.IsNullOrWhiteSpace(bossDef.label) ? bossDef.label : bossDef.kindDef?.label;
+                if (!string.IsNullOrWhiteSpace(bLabel))
+                    return bLabel!;
+            }
+        }
+
         var pack = LoadedModManager.RunningMods.FirstOrDefault(mod =>
             string.Equals(mod.PackageId, owner, StringComparison.OrdinalIgnoreCase));
         if (pack is null)

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>Пик очков угрозы</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>Максимальные очки угрозы рассказчика в истории сохранения (ThreatPoints каждые 0,5 дня, восстановленные из масштаба 1/10).</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>Уникальные живые сущности, впервые закреплённые на платформах сдерживания за время записи (без учёта переноса между платформами).</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>Обрушено врат ямы</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>Врата ямы, обрушившиеся после уничтожения жуткосплетения в подземной пещере.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech: Генетика и выращивание (события)</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey: Полёты и ориентиры (события)</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey: Гравкорабль и уникальное оружие (при сохранении)</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>Призвано групп боссов механитора</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>Общее число призванных волн боссов механитора к моменту сохранения по типам (включая консервативное восстановление из сохранений 1.7).</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>Побеждено типов боссов механитора</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>Количество различных побеждённых боссов механитора в поселении с разбивкой по боссам (включая консервативное восстановление из сохранений 1.7).</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>Пик клеток каркаса гравкорабля</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>Наибольшее число подключённых клеток каркаса приземлённого гравкорабля игрока при сохранении (неприменимо в полёте).</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>Пик двигателей гравкорабля</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>Наибольшее число подключённых двигателей приземлённого гравкорабля игрока при сохранении (неприменимо в полёте).</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>Пик уникального оружия во владении</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>Наибольшее число уникального оружия на домашних картах или у живых пешек игрока при сохранении.</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>Уникальное оружие по свойствам</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>Распределение свойств уникального оружия игрока в репрезентативном сохранении.</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>Израсходовано химтоплива при запусках гравкорабля</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>Суммарный расход химтоплива из баков гравкорабля игрока при запусках.</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>Прибытия на орбитальный слой</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>Подтверждённые прибытия игрока на слой Orbit при посадке гравкорабля или прибытии капсул и челноков.</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>Посещено мировых ориентиров</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>Уникальные клетки мировых ориентиров, посещённые игроком, с разбивкой по типам ориентиров.</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>Завершений цикла в камере роста</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Завершённые циклы выращивания живых детей и рождения живых эмбрионов в камерах роста игрока.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>Завершено извлечений генов</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>Завершённые извлечения генов в экстракторах игрока с получением генопака.</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>Собрано ксеногермов</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>Завершённые сборки ксеногермов на генных сборщиках игрока.</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>Имплантаций ксеногермов</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>Завершённые имплантации и реимплантации ксеногермов с участием пешек поселения.</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>Дни первой победы над боссами механитора</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>Игровой день первой победы над каждым боссом механитора за время записи.</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>Побеждён босс механитора Диаболус</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>Побеждён босс механитора Королева войны</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>Побеждён босс механитора Апокритон</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

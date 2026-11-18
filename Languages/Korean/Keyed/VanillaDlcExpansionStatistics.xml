@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>최대 위협 점수</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>세이브 기록(ThreatPoints, 0.5일 간격·내부 1/10 배율을 실제 점수로 복원)에 기록된 최대 위협 점수입니다.</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>기록 기간 중 아군 구속 플랫폼에 새로 확보한 고유 실체 수입니다 (플랫폼 간 이동 제외).</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>구덩이 관문 붕괴 공략 수</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>지하 동굴의 드레드멜드를 처치한 뒤 붕괴가 완료된 구덩이 관문 수입니다.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech: 유전 및 배양 (사건)</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey: 항해 및 랜드마크 (사건)</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey: 함선 및 고유 무기 (저장 시점)</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>메카니터 보스 소환 횟수</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>저장 성공 시점까지 소환된 메카니터 보스 웨이브 총횟수 및 유형별 내역 (1.7 과거 세이브 보수적 복원 포함).</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>처치한 메카니터 보스 종류 수</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>정착지에서 처치 기록이 확인된 메카니터 보스 종류 수 및 내역 (1.7 과거 세이브 보수적 복원 포함).</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>그래브쉽 선체 바닥 칸 수 정점</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>저장 성공 시점에 착륙 중인 아군 그래브쉽에 연결된 유효 선체 바닥 칸 수의 최댓값 (비행 중 저장은 해당 없음).</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>그래브쉽 추진기 수 정점</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>저장 성공 시점에 착륙 중인 아군 그래브쉽에 연결된 추진기 수의 최댓값 (비행 중 저장은 해당 없음).</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>보유 고유 무기 수 정점</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>저장 성공 시점에 정착지 지도 또는 아군 정착민이 보유한 고유 무기 수의 최댓값.</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>특성별 보유 고유 무기</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>대표 세이브 시점에 아군이 보유한 고유 무기에 부여된 무기 특성별 집계.</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>그래브쉽 발사 화학연료 누적 소모량</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>아군 그래브쉽 발사 시 연료 탱크에서 실제 차감된 화학연료의 누적량.</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>궤도층 도달 횟수</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>그래브쉽 착륙 또는 수송 포드·셔틀 도착으로 궤도(Orbit) 층에 도달한 확정 횟수.</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>방문한 월드 랜드마크 수</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>아군이 방문한 고유 월드 랜드마크 타일 수 및 랜드마크 유형별 내역.</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>성장 배양기 완료 횟수</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>아군 성장 배양기에서 완료된 생존 아동 성장 및 배아 출산 횟수.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>유전자 추출 완료 횟수</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>아군 유전자 추출기에서 유전자 팩이 생성된 완료 횟수.</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>제노점 합성 완료 횟수</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>아군 유전자 합성기에서 제노점 재조합이 완료된 횟수.</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>유전자 이식 완료 횟수</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>정착지 소속 폰이 관여한 제노점 이식 및 유전자 재이식 완료 횟수.</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>메카니터 보스 최초 처치 일수</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>기록 기간 중 각 메카니터 보스를 최초로 처치한 게임 내 일수.</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>메카니터 보스 디아볼루스 처치</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>메카니터 보스 워퀸 처치</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>메카니터 보스 아포크리톤 처치</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

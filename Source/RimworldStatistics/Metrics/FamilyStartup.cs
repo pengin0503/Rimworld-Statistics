@@ -44,6 +44,11 @@ internal static class FamilyStartup
             if (fresh && ModsConfig.AnomalyActive)
                 AnomalyFamily.BaselineHeldEntities(s, AnomalyHoldingProbe.CurrentlyHeldPawnIds());
         });
+        RunSelected(OdysseyVoyageFamily.Name, (s, _) =>
+        {
+            if (ModsConfig.OdysseyActive)
+                OdysseyVoyageProbe.ReconcileCurrentPlayerLocations(s);
+        });
     }
 
     /// <summary>
@@ -55,6 +60,8 @@ internal static class FamilyStartup
         Run(acc, FoodFamily.Name, tick, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
         // Retire abandoned corpse IDs even if no further slaughter jobs occur.
         Run(acc, ChoreFamily.Name, tick, (s, _) => ChoreFamily.PruneDestroyedCorpses(s, tick));
+        if (ModsConfig.OdysseyActive)
+            Run(acc, OdysseyVoyageFamily.Name, tick, (s, _) => OdysseyVoyageProbe.ReconcileCurrentPlayerLocations(s));
     }
 
     private static IEnumerable<Pawn> Members()

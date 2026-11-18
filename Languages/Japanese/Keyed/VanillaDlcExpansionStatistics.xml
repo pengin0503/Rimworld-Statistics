@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>最大脅威ポイント</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>セーブ履歴（ThreatPoints、0.5日間隔・内部1/10スケールを実ポイントへ復元）に記録された脅威ポイントの最大値。</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>記録期間中に自勢力の拘束プラットフォームへ新たに収容された実体数（既存収容個体および台座間の移送を除く）。</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>ピットゲート攻略崩壊数</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>地下洞窟のドレッドメルド撃破後に崩壊完了したピットゲートの数。</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech: 遺伝子・培養（出来事）</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey: 航行・探索（出来事）</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey: 船体・固有武器（セーブ時点）</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>メカニターボス召喚回数</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>保存成功時点までに召喚されたメカニターボス編成の累計回数と種別内訳（1.7過去セーブからの保守的復元を含む）。</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>撃破済みメカニターボス種類数</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>コロニーで撃破実績が記録されたメカニターボスの種類数と内訳（1.7過去セーブからの保守的復元を含む）。</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>グラヴシップ船体床セル数ピーク</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>保存成功時点で着陸中の自勢力グラヴシップに接続された有効船体床セル数の最大値（航行中セーブは対象外）。</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>グラヴシップ推進器数ピーク</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>保存成功時点で着陸中の自勢力グラヴシップに接続された推進器数の最大値（航行中セーブは対象外）。</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>固有武器保有数ピーク</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>保存成功時点でホームマップまたは自勢力ポーンが保有していた固有武器数の最大値。</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>特性別の保有固有武器内訳</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>代表セーブ時点で自勢力が保有していた固有武器に付与された武器特性別の集計。</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>グラヴシップ発進燃料消費累計</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>自勢力グラヴシップの発進時に燃料タンクから実際に消費された化合燃料の累計量。</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>軌道層への到達回数</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>自勢力のグラヴシップ着陸または輸送ポッド・シャトル到着により軌道（Orbit）層へ到達した確定回数。</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>訪問済みランドマーク数</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>自勢力が到達・滞在したユニークなワールドランドマーク地点数とランドマーク種別内訳。</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>成長培養槽の育成完了数</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>自勢力の成長培養槽で完了した生存児の成長または胚培養出産の回数。</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>遺伝子抽出完了数</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>自勢力の遺伝子抽出機でジーンパックが生成された完了回数。</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>ゼノジャーム合成完了数</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>自勢力の遺伝子合成機でゼノジャームの組み換え合成が完了した回数。</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>遺伝子移植完了数</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>コロニー所属ポーンに対するゼノジャーム移植および遺伝子再移植の完了回数。</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>メカニターボス初回撃破日数</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>記録期間中に各メカニターボスを初めて撃破したゲーム内日数。</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>メカニターボス「ディアボルス」撃破</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>メカニターボス「ウォークイーン」撃破</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>メカニターボス「アポクリトン」撃破</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

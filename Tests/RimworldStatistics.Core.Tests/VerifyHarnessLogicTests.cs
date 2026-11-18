@@ -106,7 +106,7 @@ public sealed class VerifyHarnessLogicTests
         // The 276 active acquisition definitions are a stable, separately
         // auditable baseline. Derived comparisons reuse those acquisition gates.
         var defs = MetricRegistry.BaseCatalog.Where(d => d.Acquisition is not null).ToArray();
-        Assert.Equal(289, defs.Length);
+        Assert.Equal(303, defs.Length);
         var snapshot = SnapshotCatalog.Definitions[0];
         var reported = VerifyCatalogAudit.Build(defs,
             new HashSet<string> { snapshot.Acquisition!, "research" },

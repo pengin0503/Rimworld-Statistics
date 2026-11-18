@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>Pico de pontos de ameaça</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>Máximo de pontos de ameaça do narrador registrado no histórico do salvamento (ThreatPoints a cada 0,5 dia, restaurado da escala interna 1/10).</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>Entidades vivas distintas recém-presas em plataformas de contenção (excluindo transferências).</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>Portões do fosso colapsados</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>Portões do fosso colapsados após derrotar o Dreadmeld da caverna subterrânea.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech: Genética e cultivo (eventos)</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey: Viagens e marcos do mundo (eventos)</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey: Gravnave e armas únicas (ao salvar)</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>Grupos de chefes mecanitor invocados</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>Total de ondas de chefes mecanitor invocadas até um salvamento bem-sucedido, por tipo (inclui recuperação conservadora de salvamentos 1.7).</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>Tipos de chefes mecanitor derrotados</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>Tipos distintos de chefes mecanitor derrotados na colônia por chefe (inclui recuperação conservadora de salvamentos 1.7).</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>Pico de células de subestrutura da gravnave</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>Maior número de células válidas de subestrutura conectadas a uma gravnave do jogador pousada ao salvar (não aplicável em voo).</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>Pico de propulsores da gravnave</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>Maior número de propulsores conectados a uma gravnave do jogador pousada ao salvar (não aplicável em voo).</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>Pico de armas únicas possuídas</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>Maior número de armas únicas em mapas do jogador ou carregadas por peões vivos do jogador ao salvar.</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>Armas únicas possuídas por atributo</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>Atributos presentes nas armas únicas possuídas pelo jogador no salvamento representativo.</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>Quimicombustível consumido em lançamentos da gravnave</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>Quimicombustível acumulado deduzido dos tanques da gravnave do jogador durante lançamentos.</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>Chegadas à camada orbital</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>Chegadas confirmadas do jogador à camada Orbit por pouso da gravnave ou cápsulas e ônibus espaciais.</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>Marcos do mundo visitados</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>Hexágonos únicos de marcos do mundo visitados pelo jogador, agrupados por tipo de marco.</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>Conclusões em cuba de crescimento</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crescimento de crianças vivas e nascimentos vivos de embriões concluídos em cubas do jogador.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>Extrações genéticas concluídas</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>Extrações genéticas concluídas que produziram um pacote genético em extratores do jogador.</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>Xenogermes montados</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>Recombinações de xenogermes concluídas em montadores genéticos do jogador.</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>Implantações de xenogermes</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>Implantações e reimplantações de xenogermes concluídas envolvendo peões da colônia.</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>Dias da primeira derrota de chefes mecanitor</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>Dia no jogo em que cada chefe mecanitor foi derrotado pela primeira vez durante o registro.</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>Chefe mecanitor Diabolus derrotado</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>Chefe mecanitor Rainha da Guerra derrotado</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>Chefe mecanitor Apocriton derrotado</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

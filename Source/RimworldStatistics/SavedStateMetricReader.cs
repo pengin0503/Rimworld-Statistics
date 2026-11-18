@@ -1,3 +1,4 @@
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using RimworldStatistics.Core;
@@ -12,7 +13,10 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", AnomalyStateSnapshot.Unit, OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
+    private static readonly AccessTools.FieldRef<GameComponent_Bossgroup, Dictionary<BossgroupDef, int>> BossgroupsCalledField =
+        AccessTools.FieldRefAccess<GameComponent_Bossgroup, Dictionary<BossgroupDef, int>>("timesCalledBossgroups");
+
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", AnomalyStateSnapshot.Unit, OdysseyStateSnapshot.Unit, OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -65,6 +69,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == AnomalyStateSnapshot.Unit)
                     foreach (var (key, value) in ReadAnomalyState())
+                        observation.Metrics[key] = value;
+                else if (unit == OdysseyStateSnapshot.Unit)
+                    foreach (var (key, value) in ReadOdysseyState())
                         observation.Metrics[key] = value;
                 else if (unit == VpeStatistics.SnapshotUnit)
                     foreach (var (key, value) in ReadVpe())
@@ -495,7 +502,38 @@ internal static class SavedStateMetricReader
                 partial = true;
             }
         }
-        return BiotechStateSnapshot.Build(polluted, bandwidth, partial);
+
+        List<BiotechBossFact>? bossFacts = null;
+        try
+        {
+            if (Find.BossgroupManager is { } bossMgr)
+            {
+                bossFacts = new List<BiotechBossFact>();
+                if (BossgroupsCalledField(bossMgr) is { } calledMap)
+                {
+                    foreach (var (bgDef, times) in calledMap)
+                    {
+                        if (bgDef is null || times == 0)
+                            continue;
+                        var q = OptionalTransitionRecording.QualifiedDefKey(bgDef.modContentPack?.PackageId, bgDef.defName) ?? "";
+                        bossFacts.Add(new BiotechBossFact(q, times, Defeated: false));
+                    }
+                }
+                foreach (var bossDef in DefDatabase<BossDef>.AllDefsListForReading)
+                {
+                    if (bossDef is null || !bossMgr.IsDefeated(bossDef))
+                        continue;
+                    var q = OptionalTransitionRecording.QualifiedDefKey(bossDef.modContentPack?.PackageId, bossDef.defName) ?? "";
+                    bossFacts.Add(new BiotechBossFact(q, TimesSummoned: 0, Defeated: true));
+                }
+            }
+        }
+        catch (Exception)
+        {
+            partial = true;
+            bossFacts = null;
+        }
+        return BiotechStateSnapshot.Build(polluted, bandwidth, partial, bossFacts);
     }
 
     private static Dictionary<string, MetricEntry> ReadAnomalyState()
@@ -548,6 +586,104 @@ internal static class SavedStateMetricReader
         int? monolith = anomaly.GenerateMonolith || highestLevel > 0 ? highestLevel : null;
         int? held = anomaly.AnomalyStudyEnabled || heldIds.Count > 0 ? heldIds.Count : null;
         return AnomalyStateSnapshot.Build(discovered, monolith, held, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadOdysseyState()
+    {
+        if (!ModsConfig.OdysseyActive)
+            throw new InvalidOperationException("Odyssey DLC is disabled");
+        var player = Faction.OfPlayerSilentFail
+            ?? throw new InvalidOperationException("Player faction is not initialized");
+
+        var partial = false;
+        int? bestSubstructure = null;
+        int? bestThrusters = null;
+
+        foreach (var map in Find.Maps)
+        {
+            if (map?.listerBuildings?.allBuildingsColonist is not { } buildings)
+                continue;
+            foreach (var building in buildings)
+            {
+                if (building is not Building_GravEngine { Spawned: true, Destroyed: false } engine || engine.Faction != player)
+                    continue;
+                try
+                {
+                    var cells = engine.ValidSubstructureNoRegen?.Count ?? 0;
+                    var thrusters = 0;
+                    if (engine.GravshipComponents is { } comps)
+                    {
+                        foreach (var comp in comps)
+                            if (comp is CompGravshipThruster && comp.parent is { Spawned: true, Destroyed: false })
+                                thrusters++;
+                    }
+                    bestSubstructure = bestSubstructure.HasValue ? Math.Max(bestSubstructure.Value, cells) : cells;
+                    bestThrusters = bestThrusters.HasValue ? Math.Max(bestThrusters.Value, thrusters) : thrusters;
+                }
+                catch (Exception)
+                {
+                    partial = true;
+                }
+            }
+        }
+
+        var uniqueWeapons = new List<UniqueWeaponFact>();
+        var visitedWeaponIds = new HashSet<string>(StringComparer.Ordinal);
+
+        void InspectWeapon(Thing? thing, bool checkForbidden)
+        {
+            if (thing is null || thing.Destroyed || thing is Corpse || thing is Pawn)
+                return;
+            try
+            {
+                if (thing.Faction is { } owner && owner != player)
+                    return;
+                if (checkForbidden && thing.IsForbidden(player))
+                    return;
+                if (thing is MinifiedThing min && min.InnerThing is { } inner)
+                {
+                    InspectWeapon(inner, checkForbidden: false);
+                    return;
+                }
+                var uniqueComp = thing.TryGetComp<CompUniqueWeapon>();
+                if (uniqueComp is null)
+                    return;
+                var id = thing.GetUniqueLoadID();
+                if (string.IsNullOrEmpty(id) || !visitedWeaponIds.Add(id))
+                    return;
+                var traits = uniqueComp.TraitsListForReading?
+                    .Select(td => td is null ? null : OptionalTransitionRecording.QualifiedDefKey(td.modContentPack?.PackageId, td.defName))
+                    .ToArray() ?? Array.Empty<string?>();
+                uniqueWeapons.Add(new UniqueWeaponFact(id, traits));
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+
+        foreach (var map in Find.Maps)
+        {
+            if (map is not { IsPlayerHome: true })
+                continue;
+            foreach (var thing in map.listerThings.AllThings)
+                if (thing?.def?.category == ThingCategory.Item)
+                    InspectWeapon(thing, checkForbidden: true);
+        }
+
+        foreach (var pawn in PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive)
+        {
+            if (pawn is null || pawn.Dead || pawn.Faction != player)
+                continue;
+            if (pawn.equipment != null)
+                foreach (var item in pawn.equipment.AllEquipmentListForReading)
+                    InspectWeapon(item, checkForbidden: false);
+            if (pawn.inventory?.innerContainer is { } inventory)
+                foreach (var item in inventory)
+                    InspectWeapon(item, checkForbidden: false);
+        }
+
+        return OdysseyStateSnapshot.Build(bestSubstructure, bestThrusters, uniqueWeapons, partial);
     }
 
 }

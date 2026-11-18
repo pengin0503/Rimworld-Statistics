@@ -12,9 +12,9 @@ from historical_recovery_inventory import build_inventory, csv_text
 class HistoricalRecoveryInventoryTests(unittest.TestCase):
     def test_every_implemented_acquisition_output_has_one_recovery_decision(self):
         rows = build_inventory(ROOT)
-        self.assertEqual(289, len(rows))
+        self.assertEqual(303, len(rows))
         self.assertEqual(
-            {"live": 230, "snapshot": 50, "derived": 9},
+            {"live": 238, "snapshot": 56, "derived": 9},
             dict(collections.Counter(row["catalog"] for row in rows)),
         )
         keys = [row["metric_key"] for row in rows]

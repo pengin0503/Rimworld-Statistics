@@ -169,6 +169,17 @@ public sealed partial class SaveReader
             m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
             m.EvidenceByAcquisition[AnomalyStateSnapshot.Unit] = MetricEvidence.Experimental;
         }
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalBiotechBossReader.Build(
+                s.BossgroupComponentCount, s.BossgroupComponentMalformed,
+                s.BossgroupKilledDefs, s.BossgroupCalledKeys, s.BossgroupCalledValues,
+                m.ActiveDlcIds) is { } biotechBossState)
+        {
+            foreach (var (key, value) in biotechBossState)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            m.EvidenceByAcquisition["biotech_state"] = MetricEvidence.Experimental;
+        }
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,
         // but are not proof of the saved MOD-resolved runtime DefDatabase.

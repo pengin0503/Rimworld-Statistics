@@ -74,6 +74,9 @@ public enum ChronicleMilestoneKind
     WealthFirst1M,
     ColonistsFirst10,
     WealthPeakDay,
+    BossDiabolusDefeated,
+    BossWarqueenDefeated,
+    BossApocritonDefeated,
 }
 
 /// <summary>Gap or discontinuity subtype for <see cref="ChronicleEntryKind.RecordingGap"/>.</summary>
@@ -328,10 +331,13 @@ public sealed class ColonyChronicle
         // 3. Exact-tick milestones and per-project research completions from the selected branch's checkpoint chain.
         CollectCheckpointMilestonesAndResearch(chain, AddEntry);
 
-        // 4. 0.5-day history-graph threshold milestones from the selected branch's latest save-file observation.
+        // 4. Biotech mechanitor boss defeat milestones (exact live tick when recorded, else bounded save interval).
+        CollectBiotechBossMilestones(chain, AddEntry);
+
+        // 5. 0.5-day history-graph threshold milestones from the selected branch's latest save-file observation.
         CollectSaveHistoryMilestones(view, lineage, chain, AddEntry);
 
-        // 5. Proven checkpoint-to-checkpoint interval summaries (never single-day events), and intervals not counted.
+        // 6. Proven checkpoint-to-checkpoint interval summaries (never single-day events), and intervals not counted.
         CollectVerifiedIntervals(view, lineage, chain, lateStartNodes, AddEntry);
 
         var sorted = entriesByKey.Values.ToList();
@@ -995,6 +1001,121 @@ public sealed class ColonyChronicle
             MilestoneKind = milestoneKind,
             MilestoneValue = day,
         });
+    }
+
+    private static readonly (string BossKey, ChronicleMilestoneKind Kind)[] BiotechBossMilestones =
+    [
+        (HistoricalBiotechBossReader.Diabolus, ChronicleMilestoneKind.BossDiabolusDefeated),
+        (HistoricalBiotechBossReader.Warqueen, ChronicleMilestoneKind.BossWarqueenDefeated),
+        (HistoricalBiotechBossReader.Apocriton, ChronicleMilestoneKind.BossApocritonDefeated),
+    ];
+
+    private static void CollectBiotechBossMilestones(
+        List<SaveLineageNode> chain,
+        Action<ChronicleEntry> addEntry)
+    {
+        if (chain.Count == 0)
+            return;
+
+        MetricObservation? latestCp = null;
+        for (var i = chain.Count - 1; i >= 0; i--)
+        {
+            if (chain[i].CheckpointObservation is { Conflicted: false } cp && cp.Metrics.Count > 0)
+            {
+                latestCp = cp;
+                break;
+            }
+        }
+
+        MetricEntry? exactTicksEntry = null;
+        if (latestCp is not null
+            && latestCp.Metrics.TryGetValue(BiotechGeneticsFamily.BossFirstDefeatedTicks, out var candidate)
+            && !candidate.IsQuarantined
+            && candidate.Revision == MetricKeys.Revision(BiotechGeneticsFamily.BossFirstDefeatedTicks))
+        {
+            exactTicksEntry = candidate;
+        }
+
+        var bossesRev = MetricKeys.Revision(BiotechStateSnapshot.BossesDefeated);
+
+        foreach (var (bossKey, milestoneKind) in BiotechBossMilestones)
+        {
+            // 1. Live exact tick from BiotechGeneticsFamily on this branch.
+            if (exactTicksEntry is not null
+                && exactTicksEntry.Values.TryGetValue(bossKey, out var exactMv)
+                && exactMv.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+                && exactMv.RealValue is { } day
+                && double.IsFinite(day)
+                && day >= 0)
+            {
+                var tick = ClampToIntTick(Math.Round(day * StatFormat.TicksPerDay));
+                addEntry(new ChronicleEntry
+                {
+                    StableKey = $"milestone:boss:{bossKey}",
+                    Kind = ChronicleEntryKind.Milestone,
+                    TimingKind = ChronicleTimingKind.ExactTick,
+                    StartTick = tick,
+                    EndTick = tick,
+                    EvidenceSource = ChronicleEvidenceSource.CheckpointAggregate,
+                    Coverage = MetricCoverage.Complete,
+                    RelatedMetricKey = BiotechGeneticsFamily.BossFirstDefeatedTicks,
+                    MilestoneKind = milestoneKind,
+                    MilestoneValue = day,
+                });
+                continue;
+            }
+
+            // 2. Saved GameComponent_Bossgroup state along the proven branch: bounded interval [prevUndefeatedTick, firstDefeatedSaveTick].
+            var prevUndefeatedTick = 0;
+            foreach (var node in chain)
+            {
+                MetricEntry? defeatedEntry = null;
+                if (node.SnapshotObservation is { Conflicted: false } snap
+                    && snap.Metrics.TryGetValue(BiotechStateSnapshot.BossesDefeated, out var snapEntry)
+                    && !snapEntry.IsQuarantined
+                    && snapEntry.Revision == bossesRev)
+                {
+                    defeatedEntry = snapEntry;
+                }
+                else if (node.SaveFileObservation is { Conflicted: false } saveFile
+                    && saveFile.Metrics.TryGetValue(BiotechStateSnapshot.BossesDefeated, out var fileEntry)
+                    && !fileEntry.IsQuarantined
+                    && fileEntry.Revision == bossesRev)
+                {
+                    defeatedEntry = fileEntry;
+                }
+
+                if (defeatedEntry is null
+                    || !defeatedEntry.Values.TryGetValue(MetricEntry.Scalar, out var scalar)
+                    || scalar.Coverage is MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+                {
+                    continue;
+                }
+
+                if (defeatedEntry.Values.TryGetValue(bossKey, out var bossMv)
+                    && bossMv.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
+                    && bossMv.IntegerValue is >= 1)
+                {
+                    var startTick = Math.Clamp(prevUndefeatedTick, 0, Math.Max(0, node.SaveTick));
+                    addEntry(new ChronicleEntry
+                    {
+                        StableKey = $"milestone:boss:{bossKey}",
+                        Kind = ChronicleEntryKind.Milestone,
+                        TimingKind = ChronicleTimingKind.ProvenInterval,
+                        StartTick = startTick,
+                        EndTick = Math.Max(0, node.SaveTick),
+                        EvidenceSource = ChronicleEvidenceSource.SaveMetadata,
+                        Coverage = MetricCoverage.Partial,
+                        RelatedMetricKey = BiotechStateSnapshot.BossesDefeated,
+                        MilestoneKind = milestoneKind,
+                    });
+                    break;
+                }
+
+                if (scalar.Weakened != true && node.SaveTick > prevUndefeatedTick)
+                    prevUndefeatedTick = node.SaveTick;
+            }
+        }
     }
 
     private static void CollectSaveHistoryMilestones(
