@@ -6,10 +6,10 @@
   <RWS_VfeSpacer_RepairShelfItemsDesc>Cuenta los objetos restaurados por completo por los estantes de reparación de Vanilla Furniture Expanded - Spacer Module, desglosado por tipo.</RWS_VfeSpacer_RepairShelfItemsDesc>
   <RWS_VweNonLethal_Downs>Incapacitaciones no letales de enemigos</RWS_VweNonLethal_Downs>
   <RWS_VweNonLethal_DownsDesc>Cuenta los peones hostiles derribados con vida por armas, daños o estados de Vanilla Weapons Expanded - Non-Lethal, desglosado por causa.</RWS_VweNonLethal_DownsDesc>
-  <RWS_AlphaBiomes_HomeMaps>Pico de mapas base en Alpha Biomes</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMaps>Pico de mapas base en biomas exóticos</RWS_AlphaBiomes_HomeMaps>
   <RWS_AlphaBiomes_HomeMapsDesc>Número máximo de mapas base activos del jugador asentados en biomas de Alpha Biomes observado en un guardado exitoso, desglosado por bioma.</RWS_AlphaBiomes_HomeMapsDesc>
   <RWS_AlphaBiomes_CoreDrill>Bloques extraídos con taladro de núcleos</RWS_AlphaBiomes_CoreDrill>
   <RWS_AlphaBiomes_CoreDrillDesc>Cuenta los bloques de piedra extraídos y colocados por taladros de núcleos de Alpha Biomes del jugador, desglosado por tipo.</RWS_AlphaBiomes_CoreDrillDesc>
-  <RWS_VleLandmarks_HomeMaps>Pico de mapas base Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMaps>Pico de mapas base con lugares emblemáticos</RWS_VleLandmarks_HomeMaps>
   <RWS_VleLandmarks_HomeMapsDesc>Número máximo de mapas base activos del jugador con puntos de interés o mutadores de Vanilla Landmarks Expanded observado en un guardado exitoso, desglosado por característica.</RWS_VleLandmarks_HomeMapsDesc>
 </LanguageData>

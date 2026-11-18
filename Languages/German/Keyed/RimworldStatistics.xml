@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>Senatoren, die zuvor nicht zugeneigt waren und durch gewöhnliche Diplomatie oder Quests ihre Unterstützung zusagten, nach Fraktion. Entwickleraktionen, bereits zugeneigte Senatoren und die Wiederherstellung älterer Spielstände zählen nicht.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Verliehene Ehrungen</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>Vorgemerkte Ehrungen aus VFE Empire, die nach Abschluss eines Rituals tatsächlich einem Kolonisten des Spielers verliehen wurden, nach Ehrung. Eine verfügbare Ehrung lediglich zu erhalten und Entwickleraktionen zählen nicht.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE: erfüllte Inspirationswünsche</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>Erfüllte Inspirationswünsche</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Neu erfüllte Wünsche, die in Vanilla Social Interactions Expanded mit einer aktiven Inspiration eines Kolonisten verknüpft waren, nach Inspiration. Unfertiger Fortschritt, abgelaufene Fristen und nicht zugehörige Inspirationen zählen nicht.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2: begonnene Ritte</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Häufigkeit, mit der ein Kolonist des Spielers nach Abschluss einer Giddy-Up-Reitaufgabe tatsächlich ein eigenes Tier bestieg, nach Tierart. Bereits aufgesessenes Ankommen, vorgemerkte Aufträge und wiederholte Beobachtungen zählen nicht.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Nachladungen durch Kolonisten</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Abgeschlossene Nachladungen durch Spieler-Pawns, bei denen tatsächlich Munition in ein Waffenmagazin gelangte. Jede Nachladung zählt einmal, auch bei mehreren Munitionsstapeln. Geschütztürme, automatische Lader, deaktivierte Munition und fehlgeschlagene Nachladungen zählen nicht.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android: natürliches Erwachen</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>Natürliches Erwachen von Androiden</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androiden des Spielers mit synthetischen Körpern, die durch die stimmungsabhängige Genprüfung natürlich erwachten. Direkte Entwickleraktionen, Initialisierung beim Spielstart und bereits erwachte Androiden zählen nicht. Benötigt Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE: gewählte Spezialisierungen</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Neue Spezialisierungen, die Kolonisten des Spielers in der normalen Auswahl ausgewählt haben, nach Spezialisierung. Debug-Freischaltungen und wiederhergestellte Aufzeichnungen zählen nicht.</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem, das aus Förderpumpen des Spielers tatsächlich in Rohrspeicher aufgenommen wurde, einschließlich Bruchteilen, gemessen bei der Speicherbestätigung des Rohrnetzes. Geplante Produktion, auf den Boden abgegebene Erzeugnisse und blockierte Lagerung zählen nicht.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Extrahierte DNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA-Gegenstände, die bei erfolgreichen Extraktionen des Spielers tatsächlich platziert oder zu Stapeln hinzugefügt wurden, nach Ausgabe-Gegenstand. Ungültige Ziele, fehlgeschlagene Platzierungen, ohne Erzeugnis verbrauchte Ladungen und andere Hybriderzeugung zählen nicht.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE: Nährschlamm in Rohren gelagert</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>In Rohren gelagerter Nährschlamm</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Nährschlamm, der aus Nährstoffmühlen des Spielers aus Vanilla Nutrient Paste Expanded tatsächlich in das Rohrnetz aufgenommen wurde, einschließlich Bruchteilen. Mahlversuche, verbrauchte Zutaten ohne angenommene Schlammmenge und Rohrlagerung durch andere Gebäude zählen nicht.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Geernteter Honig</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Honig, der nach dem Leeren eines Bienenstands aus Medieval 2 durch einen Spieler-Kolonisten tatsächlich platziert oder zu Stapeln hinzugefügt wurde, nach Ausgabe-Gegenstand. Ein erntereifer Bienenstand allein, fehlgeschlagene Platzierung und späteres Tragen zählen nicht.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>Neue Fahrzeugverbesserungen, die durch abgeschlossene Arbeit des Spielers installiert wurden, nach Fahrzeugtyp.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Aus Wracks wiederhergestellte Fahrzeuge</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>Fahrzeuge des Spielers, die nach Abschluss der Bauarbeiten an einem verfolgten Wrackrahmen entstanden.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Von Karawanen betretene Real Ruins</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>Von Karawanen betretene Ruinenstätten</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>Spielerkarawanen, die an Real Ruins-Orten ankamen, deren Karte erst erzeugt werden musste, und deren Pawns diese Karte nachweislich betraten.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>Abgeschlossene Spielautomatenrunden</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>Anzahl abgeschlossener Runden an Spielautomaten des Spielers, getrennt nach Verlusten und den verschiedenen Gewinnarten.</RWS_NewMod_CasinoDesc>

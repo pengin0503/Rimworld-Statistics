@@ -2,8 +2,8 @@
 <LanguageData>
   <RWS_MechanoidUpgrades_Installed>装着済みメカノイドアップグレード数</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>自勢力のメカノイドアップグレーダーで味方メカノイドへ新規装着が完了したアップグレード数をアップグレード種別ごとに集計します。</RWS_MechanoidUpgrades_InstalledDesc>
-  <RWS_RimTalk_Conversations>RimTalk 会話成立数</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_Conversations>会話成立数</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>RimTalkで生成されプレイログへ確定記録された自勢力ポーン関連の会話件数を会話種別ごとに集計します（会話本文・プロンプトは保存しません）。</RWS_RimTalk_ConversationsDesc>
-  <RWS_AlphaMechs_MechConversions>メカノイド転向成功数 (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversions>メカノイド転向成功数</RWS_AlphaMechs_MechConversions>
   <RWS_AlphaMechs_MechConversionsDesc>Alpha Mechsのメカノイド変換能力で自勢力へ転向させた非味方メカノイド数を機体種別ごとに集計します。</RWS_AlphaMechs_MechConversionsDesc>
 </LanguageData>

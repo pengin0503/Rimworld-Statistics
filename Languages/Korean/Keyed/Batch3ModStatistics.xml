@@ -2,8 +2,8 @@
 <LanguageData>
   <RWS_MechanoidUpgrades_Installed>설치된 메카노이드 업그레이드</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>플레이어 소유의 메카노이드 업그레이드 장치에서 아군 메카노이드에 새로 설치 완료된 업그레이드 수를 유형별로 집계합니다.</RWS_MechanoidUpgrades_InstalledDesc>
-  <RWS_RimTalk_Conversations>RimTalk 대화 성립 수</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_Conversations>대화 성립 수</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>RimTalk으로 생성되어 플레이 로그에 최종 기록된 플레이어 세력 폰 관련 대화 수를 대화 유형별로 집계합니다.</RWS_RimTalk_ConversationsDesc>
-  <RWS_AlphaMechs_MechConversions>전향된 메카노이드 (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversions>전향된 메카노이드</RWS_AlphaMechs_MechConversions>
   <RWS_AlphaMechs_MechConversionsDesc>Alpha Mechs의 메카노이드 변환 능력으로 플레이어 세력으로 전향시킨 비아군 메카노이드 수를 기체 유형별로 집계합니다.</RWS_AlphaMechs_MechConversionsDesc>
 </LanguageData>

@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>Senadores anteriormente desfavorables que se han vuelto favorables mediante diplomacia normal o misiones, por facción. No cuentan acciones de desarrollo, senadores ya favorables ni restauración de partidas guardadas antiguas.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Honores concedidos</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>Honores VFE Empire pendientes que realmente se han otorgado a un colono del jugador al completar un ritual, por honor. No cuentan solo obtener disponibilidad para conceder un honor ni las acciones de desarrollo.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>Aspiraciones inspiradas VSIE cumplidas</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>Aspiraciones inspiradas cumplidas</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Aspiraciones vinculadas a una inspiración activa de un colono en Vanilla Social Interactions Expanded que se han cumplido por primera vez, agrupadas por inspiración. No cuentan progresos incompletos, caducidad ni inspiraciones sin relación.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Montas Giddy-Up 2 iniciadas</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Veces que un colono del jugador ha empezado realmente a montar un animal propio tras completar un trabajo de montar de Giddy-Up, por tipo de animal. No cuentan llegar ya montado, órdenes en cola ni observaciones repetidas.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Recargas por colonos</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Recargas terminadas por personajes del jugador que realmente han introducido munición en el cargador de un arma. Cada recarga cuenta una vez aunque cargue varias pilas. Se excluyen torretas, cargadores automáticos, munición desactivada y recargas fallidas.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>Despertares naturales de androides VRE</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>Despertares naturales de androides</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androides del jugador de cuerpo sintético que han despertado naturalmente mediante la comprobación genética basada en el humor. No cuentan despertar con herramientas de desarrollo, configuración inicial ni androides ya despiertos. Requiere Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializaciones VSE elegidas</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Especializaciones nuevas elegidas por colonos del jugador en el panel normal de especializaciones, por especialización. No cuentan desbloqueos de depuración ni registros restaurados.</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem realmente aceptado en el almacenamiento de tuberías desde bombas extractoras del jugador, incluidas fracciones, medido cuando la red confirma el almacenamiento. No cuentan producción prevista, salida al suelo ni almacenamiento bloqueado.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>ADN extraído</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Objetos de ADN realmente colocados o fusionados en pilas por extracciones exitosas del jugador, por tipo producido. No cuentan objetivos inválidos, fallos de colocación, cargas consumidas sin producción ni otras formas de crear híbridos.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>Pasta nutritiva VNPE almacenada en tuberías</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>Pasta nutritiva almacenada en tuberías</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Pasta nutritiva realmente aceptada en la red de tuberías desde trituradores del jugador de Vanilla Nutrient Paste Expanded, incluidas fracciones. No cuentan los intentos de triturar, los ingredientes gastados sin almacenar pasta ni el almacenamiento realizado por otros edificios.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Miel cosechada</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Miel realmente colocada o fusionada con pilas después de que un colono del jugador vacíe un colmenar Medieval 2 propio, por tipo producido. No cuentan que el colmenar esté listo, los depósitos fallidos ni el transporte posterior.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>Mejoras nuevas instaladas mediante trabajo del jugador completado, por tipo de vehículo.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Vehículos restaurados de restos</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>Vehículos del jugador generados al completar la construcción de un armazón de restos seguido.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Lugares Real Ruins visitados por caravanas</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>Ruinas visitadas por caravanas</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>Caravanas del jugador que llegaron a un lugar Real Ruins cuya carta se tuvo que generar y cuyos personajes entraron en ella de forma confirmada.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>Rondas de tragaperras completadas</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>Rondas completadas en las tragaperras del jugador, desglosadas entre pérdidas y tipos de premio.</RWS_NewMod_CasinoDesc>

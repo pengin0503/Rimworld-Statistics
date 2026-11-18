@@ -2,8 +2,8 @@
 <LanguageData>
   <RWS_MechanoidUpgrades_Installed>Installierte Mechanoid-Upgrades</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>Zählt Upgrades, die in einem spielereigenen Mechanoid-Upgrader neu auf spielereigenen Mechanoiden installiert wurden, aufgeschlüsselt nach Upgrade-Typ.</RWS_MechanoidUpgrades_InstalledDesc>
-  <RWS_RimTalk_Conversations>RimTalk-Gespräche</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_Conversations>Geführte Gespräche</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>Zählt abgeschlossene dynamische RimTalk-Gespräche mit Spieler-Kolonisten im Spielprotokoll, aufgeschlüsselt nach Gesprächskategorie.</RWS_RimTalk_ConversationsDesc>
-  <RWS_AlphaMechs_MechConversions>Konvertierte Mechanoiden (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversions>Konvertierte Mechanoiden</RWS_AlphaMechs_MechConversions>
   <RWS_AlphaMechs_MechConversionsDesc>Zählt feindliche oder fremde Mechanoiden, die durch die Mechanoid-Konvertierungsfähigkeit von Alpha Mechs zur Spielerfraktion überführt wurden, aufgeschlüsselt nach Typ.</RWS_AlphaMechs_MechConversionsDesc>
 </LanguageData>

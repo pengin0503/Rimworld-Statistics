@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>Senadores antes contrários que passaram a apoiar o jogador por diplomacia normal ou missões, por facção. Ações de desenvolvedor, senadores que já apoiavam e restauração de jogos salvos antigos não contam.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Honrarias concedidas</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>Honrarias pendentes do VFE Empire efetivamente concedidas a colonos do jogador quando um ritual termina, por honraria. Apenas receber uma honraria disponível e ações de desenvolvedor não contam.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>Aspirações de inspiração VSIE realizadas</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>Aspirações de inspiração realizadas</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Aspirações ligadas à inspiração ativa de um colono em Vanilla Social Interactions Expanded e recém-realizadas, por inspiração. Progresso inacabado, expiração e inspirações sem relação não contam.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Montarias iniciadas em Giddy-Up 2</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Vezes em que um colono do jogador realmente começou a montar um animal próprio após concluir um trabalho de montagem Giddy-Up, por tipo de animal. Chegar já montado, ordens na fila e observações repetidas não contam.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Recargas por colonos</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Recargas concluídas por peões do jogador que realmente colocaram munição no carregador de uma arma. Cada recarga conta uma vez, mesmo com várias pilhas de munição. Torres, carregadores automáticos, munição desativada e recargas fracassadas não contam.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>Despertares naturais de androides VRE</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>Despertares naturais de androides</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androides do jogador com corpo sintético que despertaram naturalmente pela verificação genética baseada no humor. Despertar por ferramentas de desenvolvedor, configuração inicial e androides já despertos não contam. Requer Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>Especializações VSE escolhidas</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Novas especializações escolhidas por colonos do jogador no painel normal, por especialização. Desbloqueios de depuração e registros restaurados não contam.</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem realmente recebido no armazenamento das tubulações a partir de bombas de extração do jogador, incluindo frações, medido quando a rede confirma o armazenamento. Produção planejada, saída no chão e armazenamento bloqueado não contam.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>DNA extraído</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Itens de DNA realmente colocados ou incorporados a pilhas por extrações bem-sucedidas do jogador, por tipo de saída. Alvos inválidos, falhas de colocação, cargas gastas sem produto e outras criações híbridas não contam.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>Slurry nutritivo VNPE armazenado em tubulações</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>Slurry nutritivo armazenado em tubulações</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Slurry nutritivo realmente recebido na rede de tubulações pelos trituradores do jogador do Vanilla Nutrient Paste Expanded, incluindo frações. Tentativas de triturar, ingredientes gastos sem slurry aceito e armazenamento nas tubulações por outros edifícios não contam.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Mel colhido</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Mel realmente colocado ou incorporado a pilhas depois que um colono do jogador esvaziou um apiário Medieval 2 próprio, por tipo de saída. O apiário apenas estar pronto, falhas de colocação e transporte posterior não contam.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>Novas melhorias de veículos instaladas por trabalho concluído do jogador, por tipo de veículo.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Veículos restaurados de destroços</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>Veículos do jogador gerados ao concluir a construção de uma estrutura de destroços acompanhada.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Locais Real Ruins visitados por caravanas</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>Locais de ruínas visitados por caravanas</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>Caravanas do jogador que chegaram a um local Real Ruins cuja geração de mapa era necessária, com confirmação de que os peões entraram nele.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>Rodadas de caça-níqueis concluídas</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>Rodadas concluídas em máquinas caça-níqueis do jogador, separadas entre perdas e tipos de prêmio.</RWS_NewMod_CasinoDesc>
