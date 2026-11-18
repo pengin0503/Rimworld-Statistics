@@ -33,6 +33,7 @@ internal static class RankingsTab
     private static string? tableKey;
     private static bool tableDescending;
     private static bool tableShowAll;
+    private static string tableNameSignature = "";
     private static string[][] rows = [];
     private static string coverage = "";
     private static readonly bool[] RightAlignedColumns = [true, false, true, false, true];
@@ -145,14 +146,17 @@ internal static class RankingsTab
             Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName));
         TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
 
+        var nameSignature = ColonyPresentation.Signature(preferences);
         if (!ReferenceEquals(tableView, view) || !ReferenceEquals(tableLanguage, lang)
-            || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll)
+            || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll
+            || tableNameSignature != nameSignature)
         {
             tableView = view;
             tableLanguage = lang;
             tableKey = selectedKey;
             tableDescending = descending;
             tableShowAll = showAll;
+            tableNameSignature = nameSignature;
 
             var board = LeaderboardBuilder.Build(view, selectedKey!, descending);
             var def = MetricLookup.Definition(view, selectedKey!);

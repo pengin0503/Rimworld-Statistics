@@ -17,6 +17,7 @@ public static class EndingsTab
 
     private static StatsView? builtFor;
     private static object? language;
+    private static string nameSignature = "";
     private static string[][] rows = [];
     private static string[] headers = [];
     private static readonly StatsTable Table = new(RowHeight, new(112, 2), new(136, 4), new(104, 3),
@@ -26,10 +27,12 @@ public static class EndingsTab
     public static void Draw(Rect rect, StatsView view)
     {
         var currentLanguage = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage))
+        var currentNameSignature = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage) || nameSignature != currentNameSignature)
         {
             builtFor = view;
             language = currentLanguage;
+            nameSignature = currentNameSignature;
             rows = Build(view, ProfileService.Options.IncludeDevMode).Select(r => new[]
             {
                 Dialog_RimworldStatistics.Local(r.Time), r.Colony, Dialog_RimworldStatistics.EndingLabel(r.Type),
