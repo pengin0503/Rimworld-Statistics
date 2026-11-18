@@ -159,6 +159,8 @@ public sealed partial class SaveReader
     private static void ReadRecorder(XmlReader r, ReadState s, string? chartRecorder)
     {
         string? def = null;
+        var defCount = 0;
+        var recordsCount = 0;
         (string? Payload, bool Deflate)? data = null;
         (string? Payload, bool Deflate)? extension = null;
         FileStream? overflow = null;
@@ -169,36 +171,58 @@ public sealed partial class SaveReader
                 switch (name)
                 {
                     case "def":
-                        def = r.ReadElementContentAsString().Trim();
+                        defCount++;
+                        def = ReadBoundedDefName(r, s);
                         break;
                     case "records" or "recordsDeflate" when chartRecorder is not null && (def is null || def == chartRecorder):
-                        data = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
+                        recordsCount++;
+                        data = recordsCount == 1
+                            ? (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate")
+                            : (SkipAndNull(r), name == "recordsDeflate");
                         break;
                     case "records" or "recordsDeflate" when chartRecorder is null && (def is null or "Wealth_Total"):
+                        recordsCount++;
                         overflow?.Dispose();
                         overflow = null;
-                        if (def is null)
+                        if (recordsCount > 1 || (def == "Wealth_Total" && (s.WealthTotalCount > 0 || s.Wealth is not null)))
+                        {
+                            r.Skip();
+                            data = (null, name == "recordsDeflate");
+                        }
+                        else
                         {
                             var early = ReadRecorderText(r, s, preserveOverflow: true);
                             overflow = early.Overflow;
                             data = (early.Text, name == "recordsDeflate");
                         }
-                        else
-                        {
-                            data = (r.ReadElementContentAsString(), name == "recordsDeflate");
-                        }
                         break;
                     case "records" or "recordsDeflate" when chartRecorder is null && def is not null && HistoryMetricReader.Defs.Contains(def):
-                        extension = (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate");
+                        recordsCount++;
+                        extension = recordsCount == 1
+                            ? (ReadRecorderText(r, s, preserveOverflow: false).Text, name == "recordsDeflate")
+                            : (SkipAndNull(r), name == "recordsDeflate");
                         break;
                     default:
                         r.Skip();
                         break;
                 }
             });
-            if (def == "Wealth_Total" && data is { } d)
+            if (defCount > 1)
+                def = null;
+            if (def == "Wealth_Total")
             {
                 s.WealthTotalCount++;
+                if (recordsCount != 1 || data is not { } d)
+                {
+                    if (s.WealthTotalCount > 1)
+                        s.WealthTotalWithinTextLimit = false;
+                    if (chartRecorder is not null)
+                    {
+                        s.Wealth = null;
+                        s.WealthTotalWithinTextLimit = false;
+                    }
+                    return;
+                }
                 if (chartRecorder is not null)
                 {
                     if (s.WealthTotalCount == 1 && d.Payload is { } text
@@ -207,9 +231,19 @@ public sealed partial class SaveReader
                         s.Wealth = wealth;
                         s.WealthTotalWithinTextLimit = true;
                     }
+                    else
+                    {
+                        s.Wealth = null;
+                        s.WealthTotalWithinTextLimit = false;
+                    }
                     return;
                 }
-                if (s.Wealth is null)
+                if (s.WealthTotalCount > 1)
+                {
+                    s.WealthTotalWithinTextLimit = false;
+                    return;
+                }
+                if (s.Wealth is null && (d.Payload is not null || overflow is not null))
                 {
                     try
                     {
@@ -341,6 +375,59 @@ public sealed partial class SaveReader
             overflow?.Dispose();
             throw;
         }
+    }
+    private static string? SkipAndNull(XmlReader r)
+    {
+        r.Skip();
+        return null;
+    }
+
+    private static string? ReadBoundedDefName(XmlReader r, ReadState state)
+    {
+        const int maxDefChars = 256;
+        if (r.IsEmptyElement)
+        {
+            r.Read();
+            return "";
+        }
+        var depth = r.Depth;
+        r.Read();
+        var sb = new StringBuilder();
+        var buffer = state.HistoryTextChunk ??= new char[8192];
+        var usable = true;
+        while (!(r.NodeType == XmlNodeType.EndElement && r.Depth == depth))
+        {
+            if (r.EOF)
+                throw new XmlException("unexpected end of file");
+            if (r.NodeType is XmlNodeType.Text or XmlNodeType.CDATA or XmlNodeType.Whitespace or XmlNodeType.SignificantWhitespace)
+            {
+                int n;
+                while ((n = r.ReadValueChunk(buffer, 0, buffer.Length)) > 0)
+                {
+                    if (!usable)
+                        continue;
+                    if (sb.Length + n > maxDefChars)
+                    {
+                        usable = false;
+                        sb.Clear();
+                        continue;
+                    }
+                    sb.Append(buffer, 0, n);
+                }
+                r.Read();
+            }
+            else if (r.NodeType == XmlNodeType.Element)
+            {
+                usable = false;
+                r.Skip();
+            }
+            else
+            {
+                r.Read();
+            }
+        }
+        r.Read();
+        return usable ? sb.ToString().Trim() : null;
     }
 
     private static long CountNonWhitespace(string text)
