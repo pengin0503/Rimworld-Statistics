@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>散布図</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>2つの統計項目をコロニーごとに1点で比べます。</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>コロニーの散布図</RWS_Scatter_Title>
+  <RWS_Scatter_X>X：{0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y：{0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>X と Y を入れ替え</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>値の種類 · X：{0} · Y：{1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{1} コロニー中 {0} コロニーを表示 · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>1つの点が1つのコロニーで、2つの値はランキングの表示と同じです。どちらかの値がないコロニーは0として描かず、一覧で示します。近似直線や相関は計算しません。</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>表示していないコロニー：{0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>点のないコロニーを理由別に示します。値がないものを0として描くことはありません。「単一の数値なし」は 0÷0 の比率や、内訳だけで記録された値を指します。</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>X の値なし {0}</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>Y の値なし {0}</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>両方の値なし {0}</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>対象外 {0}</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>しきい値に未到達 {0}</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>単一の数値なし {0}</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>合計から除外中 {0}</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>選択中のグループ外 {0}</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>（X）</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>（Y）</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>（X と Y）</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>ほか {0} 件</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>両方の値があるコロニーがないため、表示できる点はありません。</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>両方の値があるコロニーは {0} 件です。傾向を読み取るには少なすぎ、2つの統計項目に関係がないことを示すものでもありません。</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} 点は、一部のみの記録か、X と Y で記録日が異なる値です（中抜きの点）。</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X は {0} 日目まで、Y は {1} 日目までの値です。</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>クリックで、このコロニーの総括レポートや推移グラフを開きます。</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>推移：{0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>1コロニー</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>一部のみの記録、または X と Y で記録日が異なる</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>点の横の数字：同じ位置にあるコロニー数</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>この統計項目は散布図に表示できません。</RWS_Scatter_Unavailable>
+</LanguageData>

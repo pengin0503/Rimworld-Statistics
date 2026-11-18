@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Scatter plot</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Compare two statistics across colonies, one point per colony.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Scatter plot of colonies</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>Swap X and Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Kind of value · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{0} of {1} colonies plotted · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Each point is one colony, with both values exactly as the rankings show them. Colonies without both values are listed instead, never drawn at 0. No trend line or correlation is calculated.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Not plotted: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Colonies without a point, by reason. A missing value is never drawn as 0. “No single number” means a 0 ÷ 0 rate or a value recorded only by category.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>{0} without an X value</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>{0} without a Y value</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>{0} without either value</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>{0} not applicable</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>{0} threshold not reached</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>{0} with no single number</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>{0} excluded in the settings</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>{0} outside the selected group</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X and Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>…and {0} more</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>No colony has both values, so there is nothing to plot.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Colonies with both values: {0}. That is too few to read a pattern, and it does not show that the two statistics are unrelated.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} points use a partly recorded value, or values that run to different days (hollow markers).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X runs to day {0}, Y to day {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Click for the colony's summary report or history charts.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>History: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>One colony</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Partly recorded, or X and Y run to different days</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Number beside a point: colonies at the same spot</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>This statistic cannot be plotted.</RWS_Scatter_Unavailable>
+</LanguageData>

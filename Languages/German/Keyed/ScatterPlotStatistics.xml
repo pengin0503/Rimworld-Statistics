@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Streudiagramm</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Zwei Statistiken über Kolonien hinweg vergleichen, ein Punkt pro Kolonie.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Streudiagramm der Kolonien</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>X und Y tauschen</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Art des Werts · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{0} von {1} Kolonien dargestellt · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Jeder Punkt ist eine Kolonie, mit beiden Werten genau wie in den Ranglisten. Kolonien ohne beide Werte werden aufgelistet und nie bei 0 gezeichnet. Es wird weder eine Trendlinie noch eine Korrelation berechnet.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Nicht dargestellt: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Kolonien ohne Punkt, nach Grund. Ein fehlender Wert wird nie als 0 gezeichnet. „Keine Einzelzahl“ bedeutet eine Rate von 0 ÷ 0 oder einen Wert, der nur nach Kategorie erfasst ist.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>{0} ohne X-Wert</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>{0} ohne Y-Wert</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>{0} ohne beide Werte</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>{0} nicht zutreffend</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>{0} Schwelle nicht erreicht</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>{0} ohne Einzelzahl</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>{0} in den Einstellungen ausgeschlossen</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>{0} außerhalb der gewählten Gruppe</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X und Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>… und {0} weitere</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>Keine Kolonie hat beide Werte, daher gibt es nichts darzustellen.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Kolonien mit beiden Werten: {0}. Das ist zu wenig, um ein Muster zu erkennen, und zeigt nicht, dass die beiden Statistiken nicht zusammenhängen.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} Punkte nutzen einen teilweise erfassten Wert oder Werte bis zu verschiedenen Tagen (hohle Markierungen).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X reicht bis Tag {0}, Y bis Tag {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Klicken für den Gesamtbericht oder die Verläufe der Kolonie.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>Verlauf: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>Eine Kolonie</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Teilweise erfasst, oder X und Y reichen bis zu verschiedenen Tagen</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Zahl neben einem Punkt: Kolonien an derselben Stelle</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>Diese Statistik kann nicht im Streudiagramm dargestellt werden.</RWS_Scatter_Unavailable>
+</LanguageData>

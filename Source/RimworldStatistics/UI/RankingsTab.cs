@@ -37,7 +37,7 @@ internal static class RankingsTab
     private static string coverage = "";
     private static readonly bool[] RightAlignedColumns = [true, false, true, false, true];
 
-    public static void Draw(Rect rect, StatsView view, ViewPreferences preferences, Action persist)
+    public static void Draw(Rect rect, StatsView view, ViewPreferences preferences, Action persist, string? scopeName = null)
     {
         var lang = LanguageDatabase.activeLanguage;
         if (!ReferenceEquals(selectorView, view) || !ReferenceEquals(selectorLanguage, lang))
@@ -138,6 +138,12 @@ internal static class RankingsTab
         }
         if (shownCount != label)
             TooltipHandler.TipRegion(countRect, label);
+
+        label = "RWS_Scatter_Open".Translate();
+        var scatterRect = controls.Next(label, 112f, 190f);
+        if (Widgets.ButtonText(scatterRect, label.Truncate(Math.Max(0f, scatterRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName));
+        TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
 
         if (!ReferenceEquals(tableView, view) || !ReferenceEquals(tableLanguage, lang)
             || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll)
@@ -308,7 +314,7 @@ internal static class RankingsTab
         Widgets.EndScrollView();
     }
 
-    private static string BasicValue(string key, double n)
+    internal static string BasicValue(string key, double n)
     {
         var number = n.ToString("N1", CultureInfo.InvariantCulture);
         if (key == BasicMetrics.Days)

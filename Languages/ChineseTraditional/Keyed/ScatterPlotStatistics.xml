@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>散佈圖</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>依殖民地比較兩個統計項，每個殖民地一個點。</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>殖民地散佈圖</RWS_Scatter_Title>
+  <RWS_Scatter_X>X：{0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y：{0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>交換 X 與 Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>數值類型 · X：{0} · Y：{1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>已繪製 {0} / {1} 個殖民地 · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>每個點代表一個殖民地，兩個數值與排行榜顯示的相同。缺少任一數值的殖民地會另外列出，絕不會畫成 0。不計算趨勢線或相關性。</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>未繪製：{0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>依原因列出沒有點的殖民地。缺失的數值絕不會畫成 0。「無單一數值」指 0÷0 的比率，或只依分類記錄的數值。</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>缺少 X 值 {0}</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>缺少 Y 值 {0}</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>兩個值都缺少 {0}</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>不適用 {0}</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>未達到門檻 {0}</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>無單一數值 {0}</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>不計入 {0}</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>不在所選群組 {0}</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>（X）</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>（Y）</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>（X 和 Y）</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>另有 {0} 個</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>沒有同時具備兩個數值的殖民地，因此沒有可繪製的點。</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>同時具備兩個數值的殖民地：{0} 個。數量太少，無法看出規律，也不能說明這兩個統計項無關。</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} 個點使用了部分記錄的數值，或 X 與 Y 截至的天數不同（空心點）。</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X 截至第 {0} 天，Y 截至第 {1} 天。</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>點擊開啟該殖民地的總括報告或歷史記錄圖表。</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>歷史記錄：{0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>一個殖民地</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>部分記錄，或 X 與 Y 截至的天數不同</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>點旁的數字：同一位置的殖民地數</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>此統計項無法繪製成散佈圖。</RWS_Scatter_Unavailable>
+</LanguageData>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Nuage de points</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Comparer deux statistiques entre colonies, un point par colonie.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Nuage de points des colonies</RWS_Scatter_Title>
+  <RWS_Scatter_X>X : {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y : {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>Inverser X et Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Type de valeur · X : {0} · Y : {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{0} colonies affichées sur {1} · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Chaque point est une colonie, avec ses deux valeurs telles que les classements les affichent. Les colonies sans les deux valeurs sont listées, jamais tracées à 0. Aucune droite de tendance ni corrélation n'est calculée.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Non affichées : {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Colonies sans point, par motif. Une valeur manquante n'est jamais tracée à 0. « Sans valeur unique » désigne un taux de 0 ÷ 0 ou une valeur relevée seulement par catégorie.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>{0} sans valeur X</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>{0} sans valeur Y</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>{0} sans aucune des deux valeurs</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>{0} sans objet</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>{0} seuil non atteint</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>{0} sans valeur unique</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>{0} exclues dans les réglages</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>{0} hors du groupe choisi</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X et Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>… et {0} de plus</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>Aucune colonie n'a les deux valeurs : il n'y a rien à afficher.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Colonies ayant les deux valeurs : {0}. C'est trop peu pour lire une tendance, et cela ne montre pas que les deux statistiques sont sans lien.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} points utilisent une valeur partielle, ou des valeurs arrêtées à des jours différents (marqueurs creux).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X s'arrête au jour {0}, Y au jour {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Cliquer pour ouvrir le rapport de synthèse ou les historiques de la colonie.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>Historique : {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>Une colonie</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Relevé partiel, ou X et Y arrêtés à des jours différents</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Nombre près d'un point : colonies au même endroit</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>Cette statistique ne peut pas être affichée en nuage de points.</RWS_Scatter_Unavailable>
+</LanguageData>

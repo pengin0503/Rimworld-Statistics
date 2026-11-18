@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Диаграмма рассеяния</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Сравнить два показателя по колониям: одна точка на колонию.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Диаграмма рассеяния колоний</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>Поменять X и Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Тип значения · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>Показано колоний: {0} из {1} · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Каждая точка — одна колония; оба значения совпадают с рейтингами. Колонии без обоих значений перечислены отдельно и никогда не рисуются как 0. Линия тренда и корреляция не вычисляются.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Не показаны: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Колонии без точки, по причинам. Отсутствующее значение никогда не рисуется как 0. «Нет единого числа» — это доля 0 ÷ 0 или значение, записанное только по категориям.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>нет значения X: {0}</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>нет значения Y: {0}</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>нет обоих значений: {0}</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>неприменимо: {0}</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>порог не достигнут: {0}</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>нет единого числа: {0}</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>исключены в настройках: {0}</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>вне выбранной группы: {0}</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X и Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>…и ещё {0}</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>Ни у одной колонии нет обоих значений, показывать нечего.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Колоний с обоими значениями: {0}. Этого слишком мало, чтобы увидеть закономерность, и это не значит, что показатели не связаны.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>Точек с частично записанным значением или со значениями на разные дни: {0} (полые маркеры).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X — по день {0}, Y — по день {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Нажмите, чтобы открыть сводный отчёт или графики истории колонии.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>История: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>Одна колония</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Частичная запись или X и Y на разные дни</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Число рядом с точкой: колоний в одном месте</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>Этот показатель нельзя показать на диаграмме рассеяния.</RWS_Scatter_Unavailable>
+</LanguageData>
