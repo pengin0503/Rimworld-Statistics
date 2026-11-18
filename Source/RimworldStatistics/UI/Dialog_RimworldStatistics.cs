@@ -306,7 +306,7 @@ public sealed class Dialog_RimworldStatistics : Window
             {
                 return SaveFileIndex.Read(directory);
             }
-            catch (Exception e) when (e is IOException or UnauthorizedAccessException)
+            catch (Exception e) when (e is not OperationCanceledException)
             {
                 return null;
             }
