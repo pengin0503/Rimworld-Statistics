@@ -277,37 +277,60 @@ public sealed class ProfileSession
                 continue;
 
             var first = validChildren[0];
-            var mismatch = false;
+            HashSet<string>? missingFromParent = null;
             foreach (var key in lastCaptureKeys)
             {
                 var firstHas = first.Metrics.TryGetValue(key, out var fe) && !fe.IsQuarantined;
+                var keyMismatch = false;
                 for (var i = 1; i < validChildren.Count; i++)
                 {
                     var otherHas = validChildren[i].Metrics.TryGetValue(key, out var oe) && !oe.IsQuarantined;
                     if (firstHas != otherHas || (firstHas && fe!.Revision != oe!.Revision))
                     {
-                        mismatch = true;
+                        keyMismatch = true;
                         break;
                     }
                 }
-                if (mismatch)
-                    break;
+                if (!keyMismatch)
+                    continue;
+                if (observation.Metrics.TryGetValue(key, out var parentEntry) && !parentEntry.IsQuarantined)
+                    continue;
+                (missingFromParent ??= new HashSet<string>(StringComparer.Ordinal)).Add(key);
             }
 
-            if (mismatch)
-                RestoreCheckpointMetrics(observation);
+            if (missingFromParent is { Count: > 0 })
+                RestoreCheckpointMetrics(observation, missingFromParent);
         }
     }
 
-    private void RestoreCheckpointMetrics(MetricObservation target)
+    private void RestoreCheckpointMetrics(MetricObservation target, HashSet<string>? requiredKeys = null)
     {
         if (_archive is null || target.Identity.ModCampaignId is not { Length: > 0 } campaign)
             return;
 
         try
         {
-            var restored = false;
-            foreach (var observation in _archive.Read(campaign, target.Key))
+            var archived = _archive.Read(campaign, target.Key);
+            var matchedAny = false;
+            var hasRequired = requiredKeys is null;
+            foreach (var observation in archived)
+            {
+                if (observation.Source != MetricObservationSource.Checkpoint || observation.IsQuarantined
+                    || observation.Metrics is not { Count: > 0 }
+                    || observation.Identity?.ModCampaignId != campaign || observation.Key != target.Key
+                    || observation.PayloadHash != target.PayloadHash || observation.ParentKey != target.ParentKey
+                    || observation.SaveTick != target.SaveTick)
+                    continue;
+                matchedAny = true;
+                if (!hasRequired && requiredKeys!.Any(k => observation.Metrics.TryGetValue(k, out var e) && !e.IsQuarantined))
+                    hasRequired = true;
+            }
+            if (!matchedAny || !hasRequired)
+            {
+                _lastArchiveReadError = null;
+                return;
+            }
+            foreach (var observation in archived)
             {
                 if (observation.Source != MetricObservationSource.Checkpoint || observation.IsQuarantined
                     || observation.Metrics is not { Count: > 0 }
@@ -316,10 +339,8 @@ public sealed class ProfileSession
                     || observation.SaveTick != target.SaveTick)
                     continue;
                 ProfileMutations.RestoreArchivedMetrics(target, observation);
-                restored = true;
             }
-            if (restored)
-                target.ArchivedMetrics = false;
+            target.ArchivedMetrics = false;
             _lastArchiveReadError = null;
         }
         catch (Exception e) when (e is IOException or UnauthorizedAccessException or JsonException)
