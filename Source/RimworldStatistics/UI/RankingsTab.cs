@@ -231,10 +231,11 @@ internal static class RankingsTab
         {
             priorSearch = search;
             priorCategory = category;
+            var term = search.Trim();
             filtered = choices.Where(c => (category is null || c.Category == category)
-                && (search.Length == 0 || c.Label.Contains(search, StringComparison.CurrentCultureIgnoreCase)
-                    || c.Key.Contains(search, StringComparison.OrdinalIgnoreCase)
-                    || (c.Source?.Contains(search, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
+                && (term.Length == 0 || c.Label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
+                    || c.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
+                    || (c.Source?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
         }
 
         var activeFilters = FilterSummary.CountActiveFilters(false, category is not null, false, search);
@@ -281,37 +282,43 @@ internal static class RankingsTab
         }
         var totalWidth = Math.Max(0f, viewport.width - 16f);
         Widgets.BeginScrollView(viewport, ref choicesScroll, new Rect(0, 0, totalWidth, filtered.Length * 30f));
-        var first = Math.Max(0, (int)(choicesScroll.y / 30f));
-        var last = Math.Min(filtered.Length - 1, (int)((choicesScroll.y + viewport.height) / 30f) + 1);
-        for (var i = first; i <= last; i++)
+        try
         {
-            var option = filtered[i];
-            var star = new Rect(0, i * 30f, 26f, 28f);
-            var saved = preferences.FavoriteMetricKeys.Contains(option.Key, StringComparer.Ordinal);
-            if (Widgets.ButtonText(star, saved ? "★" : "☆"))
+            var first = Math.Max(0, (int)(choicesScroll.y / 30f));
+            var last = Math.Min(filtered.Length - 1, (int)((choicesScroll.y + viewport.height) / 30f) + 1);
+            for (var i = first; i <= last; i++)
             {
-                if (saved)
-                    preferences.FavoriteMetricKeys.Remove(option.Key);
-                else if (preferences.FavoriteMetricKeys.Count < 500)
-                    preferences.FavoriteMetricKeys.Add(option.Key);
-                persist();
+                var option = filtered[i];
+                var star = new Rect(0, i * 30f, 26f, 28f);
+                var saved = preferences.FavoriteMetricKeys.Contains(option.Key, StringComparer.Ordinal);
+                if (Widgets.ButtonText(star, saved ? "★" : "☆"))
+                {
+                    if (saved)
+                        preferences.FavoriteMetricKeys.Remove(option.Key);
+                    else if (preferences.FavoriteMetricKeys.Count < 500)
+                        preferences.FavoriteMetricKeys.Add(option.Key);
+                    persist();
+                }
+                var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
+                var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);
+                if (isSelected)
+                    Widgets.DrawBoxSolid(button, new Color(0.26f, 0.44f, 0.56f, 0.35f));
+                if (Widgets.ButtonText(button, option.Label.Truncate(Math.Max(0f, button.width - 10f))))
+                {
+                    selectedKey = option.Key;
+                    tableScroll = Vector2.zero;
+                }
+                if (isSelected)
+                    Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
+                TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
+                TooltipHandler.TipRegion(button, option.Source is null ? option.Label
+                    : option.Label + "\n" + option.Source);
             }
-            var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
-            var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);
-            if (isSelected)
-                Widgets.DrawBoxSolid(button, new Color(0.26f, 0.44f, 0.56f, 0.35f));
-            if (Widgets.ButtonText(button, option.Label.Truncate(Math.Max(0f, button.width - 10f))))
-            {
-                selectedKey = option.Key;
-                tableScroll = Vector2.zero;
-            }
-            if (isSelected)
-                Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
-            TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
-            TooltipHandler.TipRegion(button, option.Source is null ? option.Label
-                : option.Label + "\n" + option.Source);
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Widgets.EndScrollView();
+        }
     }
 
     internal static string BasicValue(string key, double n)
