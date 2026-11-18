@@ -67,9 +67,10 @@ public static class FishingFamily
         context.Put(SuccessfulActions,
             context.Value(integer: context.State.Peek(Actions)?.N ?? 0, partial: missed));
         var acc = context.State.Peek(Units);
+        var unitsPartial = missed || acc?.Overflow == true;
         context.PutBreakdown(AcceptedUnitsByDef, context.Counts(acc),
-            context.Value(integer: acc?.N ?? 0, partial: missed));
-        if (missed)
+            context.Value(integer: acc?.N ?? 0, partial: unitsPartial));
+        if (unitsPartial)
             context.MarkPartial(AcceptedUnitsByDef);
     }
 }
