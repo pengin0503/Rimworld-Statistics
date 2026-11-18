@@ -234,7 +234,14 @@ jobs:
             ${{ runner.temp }}/RimworldStatistics-unverified.zip
             ${{ runner.temp }}/RimworldStatisticsVerifyHarness.zip
             ${{ runner.temp }}/RWS-Verify-Windows.ps1
-            ${{ runner.temp }}/rws-profile-benchmark.csv
+          if-no-files-found: error
+          retention-days: 14
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+        with:
+          name: rws-profile-benchmark-${{ github.sha }}
+          path: ${{ runner.temp }}/rws-profile-benchmark.csv
           if-no-files-found: error
           retention-days: 14
 
