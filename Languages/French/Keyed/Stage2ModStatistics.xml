@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>Patients guéris sortis</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Compte les patients visiteurs sortis vivants après avoir terminé tous les soins, le repos médical et les opérations prévues dans Hospital, à l'exclusion des évacuations d'urgence et des renvois manuels.</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>Honoraires médicaux reçus</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Compte le total d'argent effectivement déposé sur la carte d'une colonie du joueur lorsque des patients visiteurs guéris paient leurs soins à la sortie dans Hospital.</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>Projectiles balistiques interceptés</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Compte les obus et projectiles hostiles détruits en plein vol par les lasers de défense ponctuelle HEL du joueur dans Dubs Rimatomics.</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>Bombardements au canon électrique</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Compte les frappes intercontinentales de sabots Punisher tirées depuis une colonie du joueur et ayant atteint leur cible mondiale dans Dubs Rimatomics.</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>Arrêts d'urgence de réacteur</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Compte les arrêts d'urgence SCRAM déclenchés sur des cœurs de réacteurs nucléaires actifs et alimentés appartenant au joueur dans Dubs Rimatomics.</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>Fusions du cœur de réacteur</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Compte les fusions catastrophiques du cœur survenues dans les réacteurs nucléaires appartenant au joueur dans Dubs Rimatomics.</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>Enveloppes cultivées en cuve</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Compte les corps synthétiques cultivés jusqu'à maturité dans les cuves de gestation du joueur dans Altered Carbon 2: ReSleeved, ventilés par type d'individu.</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>Transferts de conscience à distance</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Compte les transferts de conscience à distance terminés vers des corps cibles vivants du joueur dans Altered Carbon 2: ReSleeved.</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>Valeur fiscale des vassaux reçue</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Compte le total d'argent et la valeur marchande des biens fiscaux effectivement livrés sur une carte du joueur depuis les colonies vassales dans Empire Refactored, ventilés par objet et hors livraisons reportées.</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>Gènes absorbés par siphon</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Compte les gènes nouvellement absorbés par les lanceurs du joueur via la capacité de siphon génétique dans Alpha Genes, ventilés par gène absorbé.</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>Mutations tumorales tératogènes</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Compte les activations tératogènes des lanceurs du joueur qui consomment des carcinomes pour les convertir en mutations bénéfiques dans Alpha Genes, ventilées par état résultant.</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>Commandants mécanoïdes suprêmes abattus</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>Compte le nombre cumulé de commandants mécanoïdes de groupe de boss issus d'Alpha Mechs éliminés sur des cartes où la colonie est présente, ventilé par type de mécanoïde.</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>Données gravitationnelles nettes acquises</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Compte les données gravitationnelles nouvellement obtenues lors d'atterrissages non corrompus et de recherches sur console orbitale dans Vanilla Gravship Expanded, hors transferts de boîte noire.</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>Colonies ennemies conquises</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>Compte les colonies non-joueurs conquises directement par les forces du joueur dans World Domination 2.0, ventilées par faction vaincue et hors guerres entre IA.</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>Victoires des forces stratégiques</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>Compte les victoires offensives, défenses d'avant-postes et affrontements de caravanes remportés par les forces du joueur dans World Domination 2.0, ventilées par faction ennemie vaincue.</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

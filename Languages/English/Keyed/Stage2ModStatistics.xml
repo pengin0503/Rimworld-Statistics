@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>Cured patient discharges</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Counts visiting hospital patients discharged alive after completing all required medical rest, tending, and scheduled surgeries in Hospital, excluding uncured danger evacuations and manual dismissals.</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>Patient treatment fees received</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Counts total silver actually placed onto a player colony map when cured visiting patients pay for medical treatment upon discharge in Hospital.</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>Ballistic projectiles intercepted</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Counts incoming hostile shells and projectiles destroyed in midair by player-owned HEL point-defense lasers in Dubs Rimatomics.</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>World railgun bombardments</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Counts intercontinental Punisher railgun sabot strikes launched from a player colony that reached and bombarded their world target in Dubs Rimatomics.</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>Reactor emergency scrams</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Counts emergency SCRAM shutdowns triggered on fueled, active player nuclear reactor cores in Dubs Rimatomics.</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>Reactor meltdowns</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Counts catastrophic nuclear core meltdowns occurring in player-owned reactor cores in Dubs Rimatomics.</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>Sleeves grown in gestators</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Counts synthetic bodies grown to completion inside player-owned sleeve gestators in Altered Carbon 2: ReSleeved, broken down by pawn kind.</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>Consciousness needlecasts</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Counts completed remote cortical stack consciousness transfers into living player target bodies in Altered Carbon 2: ReSleeved.</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>Vassal tax value received</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Counts total silver and market value of tax goods actually delivered onto a player map from vassal settlements in Empire Refactored, broken down by item type and excluding rescheduled deliveries.</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>Genes absorbed via syphon</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Counts genes newly absorbed onto living player casters via the Gene Syphon ability in Alpha Genes, broken down by absorbed gene.</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>Teratogenic tumor mutations</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Counts teratogenic ability activations by player casters that consume carcinoma tumors and convert them into mutation buffs in Alpha Genes, broken down by resulting condition.</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>Apex mechanoid commanders slain</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>Counts cumulative kills of hostile apex bossgroup mechanoid commanders from Alpha Mechs on maps with colony presence, broken down by mechanoid kind.</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>Net gravdata earned</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Counts net newly earned gravdata from uncorrupted player gravship flight landings and orbital gravtech console research in Vanilla Gravship Expanded, excluding black box storage round-trips.</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>Enemy settlements conquered</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>Counts non-player settlements conquered directly by player forces in World Domination 2.0, broken down by defeated faction and excluding AI-versus-AI wars.</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>Strategic force victories</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>Counts offensive raid, outpost defense, and caravan clash victories won by player forces in World Domination 2.0, broken down by defeated enemy faction.</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

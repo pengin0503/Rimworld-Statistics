@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>완치 환자 퇴원 수</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Hospital에서 필요한 모든 안정, 치료 및 예정된 수술을 마치고 생존 퇴원한 방문 환자 수를 집계합니다(미완치 긴급 대피 및 수동 퇴거 제외).</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>수령한 진료비 은</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Hospital에서 완치된 방문 환자가 퇴원 시 플레이어 정착지 지도에 실제로 지불·배치한 진료비 은 총량을 집계합니다.</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>탄도 발사체 요격 수</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Dubs Rimatomics에서 플레이어 소유의 HEL 근접 방공 레이저가 날아오는 적 포탄과 발사체를 공중에서 격추한 횟수를 집계합니다.</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>장거리 레일건 포격 횟수</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Dubs Rimatomics에서 플레이어 정착지에서 발사된 퍼니셔 레일건 철갑탄이 월드 목표에 도달해 타격한 횟수를 집계합니다.</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>원자로 긴급 정지 횟수</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Dubs Rimatomics에서 연료가 장전된 가동 중 플레이어 원자로 노심에서 긴급 정지(SCRAM)가 발동된 횟수를 집계합니다.</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>원자로 노심 용융 횟수</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Dubs Rimatomics에서 플레이어 소유 원자로 노심에서 발생한 치명적 노심 용융 폭발 횟수를 집계합니다.</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>배양기에서 완성된 슬리브 수</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Altered Carbon 2: ReSleeved에서 플레이어 소유 슬리브 배양기에서 성장을 완료한 육체 수를 폰 종류별로 집계합니다.</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>원격 의식 전송 횟수</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Altered Carbon 2: ReSleeved에서 생존 중인 플레이어 측 대상 육체로 원격 스택 의식 전송(니들캐스트)을 완료한 횟수를 집계합니다.</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>수령한 속령 조세 가치</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Empire Refactored에서 속령 정착지로부터 플레이어 지도에 실제로 도착한 은 및 조세 물자의 시장 가치 총합을 품목별로 집계합니다(연기된 배송 제외).</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>사이펀으로 흡수한 유전자 수</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Alpha Genes에서 플레이어 시전자가 유전자 사이펀 능력으로 새로 흡수한 유전자 수를 유전자별로 집계합니다.</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>종양 변환 변이 횟수</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Alpha Genes에서 플레이어 시전자가 악성 종양을 소모하여 기형 변이 강화 효과로 변환한 횟수를 결과 상태별로 집계합니다.</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>최상위 지휘 메카노이드 처치 수</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>정착민이 존재하는 지도에서 Alpha Mechs의 적대적 보스그룹 지휘 메카노이드를 처치한 누적 횟수를 메카노이드 종류별로 집계합니다.</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>순증 획득 중력데이터량</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Vanilla Gravship Expanded에서 손상되지 않은 중력선 착륙 보상과 궤도 콘솔 연구로 새로 획득한 순증 중력데이터 총량을 집계합니다(블랙박스 입출고 제외).</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>적대 정착지 정복 수</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>World Domination 2.0에서 플레이어 병력이 직접 정복한 비플레이어 정착지 수를 격파 세력별로 집계합니다(AI 간 교전 제외).</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>전략 병력 전투 승리 수</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>World Domination 2.0에서 플레이어 병력이 원정 습격, 전초기지 방어 및 상단 교전에서 거둔 승리 횟수를 적 세력별로 집계합니다.</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

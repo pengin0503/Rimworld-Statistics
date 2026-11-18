@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>Geheilte Patientenentlassungen</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Zählt Gastpatienten in Hospital, die nach Abschluss aller Behandlungen, Bettruhe und geplanten Operationen lebend entlassen wurden, ohne ungeheilte Notfallevakuierungen oder manuelle Abweisungen.</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>Erhaltenes Behandlungshonorar</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Zählt das gesamte Silber, das bei der Entlassung geheilter Gastpatienten in Hospital tatsächlich auf einer Spielerkoloniekarte abgelegt wurde.</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>Abgefangene ballistische Projektile</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Zählt anfliegende feindliche Granaten und Projektile, die in Dubs Rimatomics von spielereigenen HEL-Punktverteidigungslasern in der Luft zerstört wurden.</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>Langstrecken-Railgun-Beschüsse</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Zählt interkontinentale Punisher-Railgun-Sabot-Schläge aus einer Spielerkolonie, die ihr Weltkartenziel in Dubs Rimatomics erreicht und getroffen haben.</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>Reaktor-Notabschaltungen</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Zählt ausgelöste SCRAM-Notabschaltungen an beladenen, aktiven Kernreaktoren des Spielers in Dubs Rimatomics.</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>Reaktor-Kernschmelzen</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Zählt katastrophale Kernschmelzen in spielereigenen Kernreaktoren in Dubs Rimatomics.</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>In Tanks gezüchtete Hüllen</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Zählt synthetische Körper, die in spielereigenen Hüllen-Zuchttanks in Altered Carbon 2: ReSleeved vollständig herangewachsen sind, aufgeschlüsselt nach Personenart.</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>Bewusstseins-Fernübertragungen</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Zählt abgeschlossene Bewusstseins-Fernübertragungen (Needlecasts) in lebende Zielkörper des Spielers in Altered Carbon 2: ReSleeved.</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>Gelieferter Vasallen-Steuerwert</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Zählt das gesamte Silber und den Marktwert tatsächlich auf einer Spielerkarte eingetroffener Steuern aus Vasallensiedlungen in Empire Refactored, aufgeschlüsselt nach Gegenstand und ohne verschobene Lieferungen.</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>Durch Siphon absorbierte Gene</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Zählt Gene, die lebende Spielerwirker über die Gen-Siphon-Fähigkeit in Alpha Genes neu aufgenommen haben, aufgeschlüsselt nach Gen.</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>Teratogene Tumormutationen</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Zählt teratogene Fähigkeitsaktivierungen durch Spielerwirker in Alpha Genes, die Karzinome verbrauchen und in Mutationsboni umwandeln, aufgeschlüsselt nach Zustand.</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>Besiegte Spitzen-Mechanoidenkommandanten</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>Zählt kumulative Abschüsse feindlicher Bossgruppen-Mechanoidenkommandanten aus Alpha Mechs auf Karten mit Koloniepräsenz, aufgeschlüsselt nach Mechanoidenart.</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>Netto gewonnene Gravdaten</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Zählt neu gewonnene Gravdaten aus unbeschädigten Gravschiff-Landungen und orbitaler Konsolenforschung in Vanilla Gravship Expanded, ohne Blackbox-Zwischenspeicherungen.</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>Eroberte feindliche Siedlungen</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>Zählt Nicht-Spieler-Siedlungen, die in World Domination 2.0 direkt von Spielerstreitkräften erobert wurden, aufgeschlüsselt nach besiegter Fraktion und ohne KI-gegen-KI-Kämpfe.</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>Siege strategischer Streitkräfte</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>Zählt gewonnene Offensivangriffe, Außenpostenverteidigungen und Karawanengefechte der Spielerstreitkräfte in World Domination 2.0, aufgeschlüsselt nach besiegter Feindfraktion.</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

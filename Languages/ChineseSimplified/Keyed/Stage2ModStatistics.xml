@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>治愈出院病患数</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>统计在 Hospital 中完成全部疗养、包扎与预定手术后存活出院的来访病患总数（不含未治愈撤离与手动遣返）。</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>实收诊疗白银</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>统计在 Hospital 中治愈病患出院时实际放置到玩家殖民地地图上的诊疗费白银总额。</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>拦截弹道投射物数</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>统计在 Dubs Rimatomics 中由玩家所属高能激光近防武器在空中摧毁的来袭炮弹与投射物数量。</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>远程磁轨炮轰击次数</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>统计在 Dubs Rimatomics 中从玩家殖民地发射并命中世界地图目标的惩戒者磁轨炮穿甲弹打击次数。</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>反应堆紧急停堆次数</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>统计在 Dubs Rimatomics 中装有燃料且运行中的玩家核反应堆堆芯触发紧急停堆（SCRAM）的次数。</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>反应堆堆芯熔毁次数</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>统计在 Dubs Rimatomics 中玩家所属核反应堆堆芯发生灾难性熔毁爆炸的次数。</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>培育完成的义体数</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>统计在 Altered Carbon 2: ReSleeved 中由玩家所属义体培育舱培育完成的躯体数量（按单位种类细分）。</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>远距意识传输次数</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>统计在 Altered Carbon 2: ReSleeved 中将皮质栈意识成功远距传输至存活玩家目标躯体的完成次数。</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>实收附庸贡税价值</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>统计在 Empire Refactored 中从附庸聚落实际送达玩家地图的白银与贡税物资市场价值总额（按物品种类细分，不含推迟重排的运送）。</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>虹吸吸收基因数</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>统计在 Alpha Genes 中玩家施放者通过基因虹吸技能新吸收获得的基因数量（按基因种类细分）。</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>肿瘤转化突变次数</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>统计在 Alpha Genes 中玩家施放者消耗恶性肿瘤并转化为畸变增益状态的次数（按突变状态细分）。</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>击杀高阶机械指挥官数</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>统计在有殖民地人员在场的地图上累计击杀 Alpha Mechs 高阶首领机械指挥官的次数（按机械族种类细分）。</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>净增重力数据获取量</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>统计在 Vanilla Gravship Expanded 中通过未受损的重力船航行着陆与轨道终端研究新获得的净增重力数据总量（不含黑匣子存取往返）。</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>攻占敌方聚落数</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>统计在 World Domination 2.0 中由玩家部队直接攻占的非玩家聚落数量（按战败派系细分，不含AI派系间交战）。</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>战略部队战斗胜利数</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>统计在 World Domination 2.0 中玩家部队在进攻突袭、前哨防卫与商队遭遇战中取得的胜利次数（按战败敌对派系细分）。</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

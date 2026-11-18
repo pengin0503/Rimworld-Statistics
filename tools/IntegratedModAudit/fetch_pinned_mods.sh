@@ -251,6 +251,30 @@ queue_fetch vsie Vanilla-Expanded/VanillaSocialInteractionsExpanded ac4fdfec2713
   About/About.xml \
   1.7/Assemblies/VanillaSocialInteractionsExpanded.dll
 
+queue_fetch ac2 Helixien/AlteredCarbon2-ReSleeved 775cb87a93e8ca2f40441f66172acde2586bee10 \
+  About/About.xml \
+  1.6/Assemblies/AlteredCarbon.dll
+
+queue_fetch alphagenes juanosarg/AlphaGenes 269144a43261ef48b437d00966c159eb9ead03b0 \
+  About/About.xml \
+  1.7/Assemblies/AlphaGenes.dll
+
+queue_fetch alphamechs juanosarg/AlphaMechs c5bca9d91ac85057fca96c18c4109ff6022f3280 \
+  About/About.xml \
+  1.6/Assemblies/AlphaMechs.dll
+
+queue_fetch empire matathias/Empire-1_6-Continued c5bcd677542326c4971df4145d182f9fbe110d49 \
+  About/About.xml \
+  1.7/Assemblies/Empire.dll
+
+queue_fetch vgravship Vanilla-Expanded/VanillaGravshipExpanded 7212a0c11bc392079d1f8ac9395d6434aa29b8af \
+  About/About.xml \
+  1.7/Assemblies/VanillaGravshipExpanded.dll
+
+queue_fetch worlddom Likewise87/World-Domination-2.0 feb106d0b34fc9587957129f95dd79c9f78637f9 \
+  About/About.xml \
+  1.7/Assemblies/TSA_WorldDomination.dll
+
 wait_wave
 
 (
