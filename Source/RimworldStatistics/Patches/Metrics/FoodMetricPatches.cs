@@ -13,18 +13,27 @@ public static class IngestedMetricPatch
 {
     public static void Postfix(Thing __instance, float __result, Pawn ingester)
     {
-        if (ingester == null || !(__result > 0f))
-            return;
-        var free = ingester.IsFreeColonist;
-        var n = (double)__result;
-        GameFacts.Record(FoodFamily.Name, s => FoodFamily.Ate(s, n, free));
+        try
+        {
+            if (ingester == null || !(__result > 0f))
+                return;
+            if (ingester.IsFreeColonist)
+            {
+                var n = (double)__result;
+                GameFacts.Record(FoodFamily.Name, s => FoodFamily.Ate(s, n, freeColonist: true));
+            }
 
-        // Reuse the original low-frequency successful-ingestion hook.
-        // A meal eaten by a player-faction humanlike is distinct from the
-        // already-captured nutrition amount. No extra Harmony patch needed.
-        if (__instance.def?.ingestible?.IsMeal == true &&
-            ingester.RaceProps.Humanlike && GameFacts.IsPlayer(ingester))
-            GameFacts.Record(ChoreFamily.Name, ChoreFamily.MealIngested);
+            // Reuse the original low-frequency successful-ingestion hook.
+            // A meal eaten by a player-faction humanlike is distinct from the
+            // already-captured nutrition amount. No extra Harmony patch needed.
+            if (__instance?.def?.ingestible?.IsMeal == true &&
+                ingester.RaceProps.Humanlike && GameFacts.IsPlayer(ingester))
+                GameFacts.Record(ChoreFamily.Name, ChoreFamily.MealIngested);
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, FoodFamily.Name, ChoreFamily.Name);
+        }
     }
 }
 
@@ -40,18 +49,28 @@ public static class RotMetricPatch
     public static void Prefix(CompRottable __instance, out int __state)
     {
         __state = 0;
-        var t = __instance.parent;
-        if (t == null || t.Destroyed || !t.def.IsNutritionGivingIngestible || t is Corpse || t.MapHeld is not { IsPlayerHome: true })
-            return;
-        var holder = t.ParentHolder;
-        if (holder is Map || (holder is ThingOwner { Owner: Thing owner } && GameFacts.IsPlayer(owner)))
-            __state = t.stackCount;
+        try
+        {
+            var t = __instance?.parent;
+            if (t == null || t.Destroyed || !t.def.IsNutritionGivingIngestible || t is Corpse || t.MapHeld is not { IsPlayerHome: true })
+                return;
+            var holder = t.ParentHolder;
+            if (holder is Map || (holder is ThingOwner { Owner: Thing owner } && GameFacts.IsPlayer(owner)))
+                __state = t.stackCount;
+        }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
     }
 
     public static void Postfix(CompRottable __instance, int __state)
     {
-        if (__state > 0 && __instance.parent.Destroyed && __instance.Stage == RotStage.Rotting)
-            GameFacts.Record(FoodFamily.Name, s => FoodFamily.Spoiled(s, __state));
+        if (__state <= 0)
+            return;
+        try
+        {
+            if (__instance?.parent is { Destroyed: true } && __instance.Stage == RotStage.Rotting)
+                GameFacts.Record(FoodFamily.Name, s => FoodFamily.Spoiled(s, __state));
+        }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
     }
 }
 
@@ -90,8 +109,10 @@ public static class GrowingCellAddedMetricPatch
 
     public static void Postfix(Zone __instance, int __state)
     {
-        if (__state >= 0)
-            GrowingProbe.Changed(__instance.CellCount - __state);
+        if (__state < 0)
+            return;
+        try { GrowingProbe.Changed(__instance.CellCount - __state); }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
     }
 }
 
@@ -103,8 +124,10 @@ public static class GrowingCellRemovedMetricPatch
 
     public static void Postfix(Zone __instance, int __state)
     {
-        if (__state >= 0)
-            GrowingProbe.Changed(__instance.CellCount - __state);
+        if (__state < 0)
+            return;
+        try { GrowingProbe.Changed(__instance.CellCount - __state); }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
     }
 }
 
@@ -115,11 +138,11 @@ public static class ZoneHarvestMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
-        if (!LiveMetrics.CanCaptureEvent(FoodFamily.Name))
-            return;
         try
         {
-            if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant || plant.Map.zoneManager.ZoneAt(plant.Position) is not Zone_Growing)
+            if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant
+                || plant.Map?.zoneManager?.ZoneAt(plant.Position) is not Zone_Growing
+                || !LiveMetrics.CanCaptureEvent(FoodFamily.Name))
                 return;
             var units = harvested.stackCount;
             var tick = GameFacts.Tick;

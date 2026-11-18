@@ -56,26 +56,59 @@ internal static class FishingPlacementScope
         var original = placedAction;
         placedAction = (placed, count) =>
         {
-            if (count > 0 && !string.IsNullOrWhiteSpace(defName))
-                capture.Accepted[defName] = capture.Accepted.GetValueOrDefault(defName) + count;
             original?.Invoke(placed, count);
+            try
+            {
+                if (count > 0 && !string.IsNullOrWhiteSpace(defName))
+                    capture.Accepted[defName] = checked(capture.Accepted.GetValueOrDefault(defName) + count);
+            }
+            catch (Exception e)
+            {
+                LiveMetrics.Fail(FishingFamily.Name, e);
+            }
         };
     }
 
     internal static void Run(JobDriver_Fish driver, string stage, Action original)
     {
-        var pawn = driver.pawn;
-        var job = driver.job;
-        if (pawn == null || job == null || job.loadID < 0 || !GameFacts.IsPlayer(pawn)
-            || pawn.Map is not { IsPlayerHome: true } map || !GameFacts.AnyRecording(FishingFamily.Name))
+        Pawn? pawn = null;
+        Job? job = null;
+        Map? map = null;
+        var canRecord = false;
+        try
+        {
+            pawn = driver?.pawn;
+            job = driver?.job;
+            map = pawn?.Map;
+            canRecord = pawn != null && job != null && job.loadID >= 0 && GameFacts.IsPlayer(pawn)
+                && map is { IsPlayerHome: true } && GameFacts.AnyRecording(FishingFamily.Name);
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(FishingFamily.Name, e);
+        }
+
+        if (!canRecord || pawn == null || job == null || map == null)
         {
             original();
             return;
         }
 
         var previous = current;
-        var capture = new Capture(pawn, map, pawn.Position, job.GetTarget(TargetIndex.A).Cell, stage == VfeBonusStage);
-        current = capture;
+        Capture? capture = null;
+        try
+        {
+            capture = new Capture(pawn, map, pawn.Position, job.GetTarget(TargetIndex.A).Cell, stage == VfeBonusStage);
+            current = capture;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(FishingFamily.Name, e);
+            current = previous;
+            original();
+            return;
+        }
+
         try
         {
             original();
@@ -84,12 +117,20 @@ internal static class FishingPlacementScope
         {
             current = previous;
         }
-        if (capture.Accepted.Count == 0)
-            return;
-        var jobId = job.loadID.ToString(CultureInfo.InvariantCulture);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(FishingFamily.Name, s =>
-            FishingFamily.RecordAccepted(s, jobId, stage, capture.Accepted, tick));
+
+        try
+        {
+            if (capture.Accepted.Count == 0)
+                return;
+            var jobId = job.loadID.ToString(CultureInfo.InvariantCulture);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(FishingFamily.Name, s =>
+                FishingFamily.RecordAccepted(s, jobId, stage, capture.Accepted, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(FishingFamily.Name, e);
+        }
     }
 }
 

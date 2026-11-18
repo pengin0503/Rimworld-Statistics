@@ -13,7 +13,7 @@ namespace RimworldStatistics.Patches.Metrics;
 /// </summary>
 internal static class ConditionProbe
 {
-    public static int SpreadDepth;
+    [ThreadStatic] public static int SpreadDepth;
 
     public static bool Relevant(GameCondition c)
         => c?.def != null && DisasterFamily.Conditions.Contains(c.def.defName)
@@ -43,12 +43,18 @@ public static class RegisterConditionMetricPatch
 {
     public static void Postfix(GameConditionManager __instance, GameCondition cond)
     {
-        if (cond == null || !__instance.ActiveConditions.Contains(cond) || !ConditionProbe.Relevant(cond))
+        if (cond == null || __instance == null || !LiveMetrics.IsRecordingUnit(DisasterFamily.Name))
             return;
-        var def = cond.def.defName;
-        var id = ConditionProbe.Id(cond);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.ConditionStarted(s, def, id, tick, counted: true));
+        try
+        {
+            if (!__instance.ActiveConditions.Contains(cond) || !ConditionProbe.Relevant(cond))
+                return;
+            var def = cond.def.defName;
+            var id = ConditionProbe.Id(cond);
+            var tick = GameFacts.Tick;
+            LiveMetrics.RecordOrDefer(DisasterFamily.Name, s => DisasterFamily.ConditionStarted(s, def, id, tick, counted: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
     }
 }
 
@@ -58,12 +64,17 @@ public static class EndConditionMetricPatch
 {
     public static void Prefix(GameCondition __instance)
     {
-        if (__instance?.def == null || !DisasterFamily.Conditions.Contains(__instance.def.defName))
+        if (__instance?.def == null || !DisasterFamily.Conditions.Contains(__instance.def.defName)
+            || !LiveMetrics.IsRecordingUnit(DisasterFamily.Name))
             return;
-        var def = __instance.def.defName;
-        var id = ConditionProbe.Id(__instance);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.ConditionEnded(s, def, id, tick));
+        try
+        {
+            var def = __instance.def.defName;
+            var id = ConditionProbe.Id(__instance);
+            var tick = GameFacts.Tick;
+            LiveMetrics.RecordOrDefer(DisasterFamily.Name, s => DisasterFamily.ConditionEnded(s, def, id, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
     }
 }
 
@@ -72,7 +83,17 @@ public static class EndConditionMetricPatch
 public static class DisasterIncidentMetricPatch
 {
     public static void Prefix(IncidentWorker __instance, IncidentParms parms, out bool __state)
-        => __state = GameFacts.SkippedForNoColonists(__instance, parms);
+    {
+        __state = false;
+        try
+        {
+            __state = GameFacts.SkippedForNoColonists(__instance, parms);
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, DisasterFamily.Name, ModdedIncidentFamily.Name);
+        }
+    }
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, bool __state)
     {
@@ -80,7 +101,8 @@ public static class DisasterIncidentMetricPatch
             return;
 
         // Preserve the exact legacy three-def counters, independent of incident provenance.
-        GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, definition.defName));
+        if (definition.defName is "CropBlight" or "MeteoriteImpact" or "ShortCircuit")
+            GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, definition.defName));
 
         // The generic family is an independent opt-in. A successful player-home incident
         // is observed once at the outer TryExecute return, never during the worker attempt.
@@ -112,7 +134,16 @@ public static class FireSpreadScopeMetricPatch
 public static class FireStartMetricPatch
 {
     public static void Prefix(IntVec3 c, Map map, out bool __state)
-        => __state = ConditionProbe.SpreadDepth == 0 && map is { IsPlayerHome: true } && c.InBounds(map) && !c.ContainsStaticFire(map);
+    {
+        __state = false;
+        if (ConditionProbe.SpreadDepth != 0 || map is not { IsPlayerHome: true })
+            return;
+        try
+        {
+            __state = c.InBounds(map) && !c.ContainsStaticFire(map);
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
+    }
 
     public static void Postfix(bool __result, bool __state)
     {

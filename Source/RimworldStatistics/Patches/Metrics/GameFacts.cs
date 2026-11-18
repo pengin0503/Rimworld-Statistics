@@ -118,6 +118,12 @@ internal static class GameFacts
         }
     }
 
+    public static void FailAll(Exception e, params string[] families)
+    {
+        foreach (var f in families)
+            LiveMetrics.Fail(f, e);
+    }
+
     public static bool AnyRecording(params string[] families)
     {
         foreach (var f in families)

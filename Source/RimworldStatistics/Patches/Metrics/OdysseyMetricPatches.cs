@@ -66,9 +66,13 @@ public static class OdysseyPreflightMapsMetricPatch
         if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
             || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
             return;
-        var maps = Find.Maps?.Where(m => m is not null)
-            .Select(m => GameFacts.MapId(m)).ToArray() ?? Array.Empty<string>();
-        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedExistingMaps(s, maps));
+        try
+        {
+            var maps = Find.Maps?.Where(m => m is not null)
+                .Select(m => GameFacts.MapId(m)).ToArray() ?? Array.Empty<string>();
+            GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedExistingMaps(s, maps));
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
     }
 }
 
@@ -77,15 +81,23 @@ public static class OdysseyPreflightMapsMetricPatch
 public static class OdysseyTakeoffMetricPatch
 {
     public static void Prefix(Gravship ___gravship, out Building_GravEngine? __state)
-        => __state = LiveMetrics.CanCaptureEvent(OdysseyFamily.Name) ? ___gravship?.Engine : null;
+        => __state = ___gravship?.Engine is { Destroyed: false } engine
+            && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
+            ? engine : null;
 
     public static void Postfix(Building_GravEngine? __state)
     {
         var engine = __state;
         if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction))
             return;
-        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedTakeoff(
-            s, GameFacts.Id(engine), GameFacts.Tick, playerShip: true));
+        try
+        {
+            var id = GameFacts.Id(engine);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedTakeoff(
+                s, id, tick, playerShip: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
     }
 }
 
@@ -100,15 +112,22 @@ public static class OdysseyNewLandingMapMetricPatch
 {
     public static void Postfix(Map __result)
     {
-        if (__result is null || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
+        if (__result is null || !LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
             return;
-        var ship = Find.CurrentGravship;
-        var engine = ship?.Engine;
-        if (ship is null || engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
-            || !ship.destinationTile.Valid || !__result.Tile.Equals(ship.destinationTile))
-            return;
-        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedMapGenerated(
-            s, GameFacts.Id(engine), GameFacts.MapId(__result), GameFacts.Tick, confirmed: true));
+        try
+        {
+            var ship = Find.CurrentGravship;
+            var engine = ship?.Engine;
+            if (ship is null || engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
+                || !ship.destinationTile.Valid || !__result.Tile.Equals(ship.destinationTile))
+                return;
+            var engineId = GameFacts.Id(engine);
+            var mapId = GameFacts.MapId(__result);
+            var tick = GameFacts.Tick;
+            LiveMetrics.RecordOrDefer(OdysseyFamily.Name, s => OdysseyFamily.ObservedMapGenerated(
+                s, engineId, mapId, tick, confirmed: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
     }
 }
 
@@ -123,8 +142,9 @@ public static class OdysseyLandingMetricPatch
     public static void Prefix(Gravship ___gravship, PlanetTile ___takeoffTile,
         PlanetTile ___landingTile, Map ___landingMap,
         out (Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
-        => __state = LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
-            ? (___gravship?.Engine, ___takeoffTile, ___landingTile, ___landingMap)
+        => __state = ___gravship?.Engine is { Destroyed: false } engine
+            && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
+            ? (engine, ___takeoffTile, ___landingTile, ___landingMap)
             : default;
 
     public static void Postfix((Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
@@ -134,14 +154,20 @@ public static class OdysseyLandingMetricPatch
             || !GameFacts.IsPlayerFaction(engine.Faction) || engine.Map != targetMap
             || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
             return;
-        // The landing has completed and the original player engine is spawned
-        // at the destination. Resolve the vanilla traversal route now, not from
-        // a launch UI preview or a geometric approximation.
-        var length = OdysseyArrivalFacts.ConfirmedRouteDistance(from, to);
-        GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedLanding(
-            s, GameFacts.Id(engine), layerId, tileId,
-            playerShip: true, successfullyLanded: true,
-            routeDistanceInTiles: length, landedOnNewMap: null,
-            arrivedMapId: GameFacts.MapId(targetMap)));
+        try
+        {
+            // The landing has completed and the original player engine is spawned
+            // at the destination. Resolve the vanilla traversal route now, not from
+            // a launch UI preview or a geometric approximation.
+            var length = OdysseyArrivalFacts.ConfirmedRouteDistance(from, to);
+            var engineId = GameFacts.Id(engine);
+            var arrivedMapId = GameFacts.MapId(targetMap);
+            GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedLanding(
+                s, engineId, layerId, tileId,
+                playerShip: true, successfullyLanded: true,
+                routeDistanceInTiles: length, landedOnNewMap: null,
+                arrivedMapId: arrivedMapId));
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
     }
 }

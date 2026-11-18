@@ -26,13 +26,30 @@ internal static class VpeMetricPatch
         ?? throw new MissingMethodException(VpeStatistics.ImplantType, nameof(Hediff_Level.ChangeLevel));
 
     [HarmonyPrefix]
-    private static void Prefix(Hediff_Level __instance, out int __state) => __state = __instance.level;
+    private static void Prefix(Hediff_Level __instance, out int __state)
+    {
+        __state = int.MaxValue;
+        try
+        {
+            if (__instance != null)
+                __state = __instance.level;
+        }
+        catch (Exception e) { LiveMetrics.Fail(VpeStatistics.EventUnit, e); }
+    }
 
     [HarmonyPostfix]
     private static void Postfix(Hediff_Level __instance, int __0, int __state)
     {
-        var level = __instance.level;
-        if (__0 > 0 && level > __state && GameFacts.IsPlayer(__instance.pawn))
-            GameFacts.Record(VpeStatistics.EventUnit, state => VpeStatistics.RecordLevels(state, __state, level, true));
+        if (__0 <= 0 || __state == int.MaxValue)
+            return;
+        try
+        {
+            if (__instance == null)
+                return;
+            var level = __instance.level;
+            if (level > __state && GameFacts.IsPlayer(__instance.pawn))
+                GameFacts.Record(VpeStatistics.EventUnit, state => VpeStatistics.RecordLevels(state, __state, level, true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(VpeStatistics.EventUnit, e); }
     }
 }

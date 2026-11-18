@@ -23,18 +23,30 @@ internal static class SocialProbe
 [HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.AddDirectRelation))]
 public static class AddRelationMetricPatch
 {
-    public static void Prefix(Pawn_RelationsTracker __instance, PawnRelationDef def, Pawn otherPawn, out bool __state)
-        => __state = def != null && otherPawn != null && __instance.DirectRelationExists(def, otherPawn);
+    public static void Prefix(Pawn_RelationsTracker __instance, Pawn ___pawn, PawnRelationDef def, Pawn otherPawn, out bool __state)
+    {
+        __state = true;
+        if (def == null || otherPawn == null || ___pawn == null || !SocialProbe.PlayerSide(___pawn, otherPawn))
+            return;
+        try { __state = __instance.DirectRelationExists(def, otherPawn); }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn_RelationsTracker __instance, Pawn ___pawn, PawnRelationDef def, Pawn otherPawn, bool __state)
     {
-        if (__state || def == null || otherPawn == null || ___pawn == null || !__instance.DirectRelationExists(def, otherPawn)
-            || !SocialProbe.PlayerSide(___pawn, otherPawn))
+        if (__state || def == null || otherPawn == null || ___pawn == null || !SocialProbe.PlayerSide(___pawn, otherPawn)
+            || !LiveMetrics.CanCaptureEvent(SocialFamily.Name))
             return;
-        var pair = SocialProbe.Pair(___pawn, otherPawn);
-        var name = def.defName;
-        var tick = GameFacts.Tick;
-        GameFacts.Record(SocialFamily.Name, s => SocialFamily.Relation(s, name, pair, tick));
+        try
+        {
+            if (!__instance.DirectRelationExists(def, otherPawn))
+                return;
+            var pair = SocialProbe.Pair(___pawn, otherPawn);
+            var name = def.defName;
+            var tick = GameFacts.Tick;
+            GameFacts.Record(SocialFamily.Name, s => SocialFamily.Relation(s, name, pair, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
     }
 }
 
@@ -43,12 +55,25 @@ public static class AddRelationMetricPatch
 public static class DivorceMetricPatch
 {
     public static void Prefix(Pawn initiator, Pawn recipient, out bool __state)
-        => __state = initiator?.relations != null && recipient != null && initiator.relations.DirectRelationExists(PawnRelationDefOf.Spouse, recipient);
+    {
+        __state = false;
+        if (initiator?.relations == null || recipient == null || !SocialProbe.PlayerSide(initiator, recipient))
+            return;
+        try { __state = initiator.relations.DirectRelationExists(PawnRelationDefOf.Spouse, recipient); }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn initiator, Pawn recipient, bool __state)
     {
-        if (__state && !initiator.relations.DirectRelationExists(PawnRelationDefOf.Spouse, recipient) && SocialProbe.PlayerSide(initiator, recipient))
-            GameFacts.Record(SocialFamily.Name, SocialFamily.Divorce);
+        if (!__state || initiator?.relations == null || recipient == null || !SocialProbe.PlayerSide(initiator, recipient)
+            || !LiveMetrics.CanCaptureEvent(SocialFamily.Name))
+            return;
+        try
+        {
+            if (!initiator.relations.DirectRelationExists(PawnRelationDefOf.Spouse, recipient))
+                GameFacts.Record(SocialFamily.Name, SocialFamily.Divorce);
+        }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
     }
 }
 

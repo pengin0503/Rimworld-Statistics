@@ -18,17 +18,31 @@ namespace RimworldStatistics.Patches.Metrics;
 public static class BiotechProducedWasteMetricPatch
 {
     public static void Prefix(CompWasteProducer __instance, out int __state)
-        => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-            && GameFacts.IsPlayerFaction(__instance.parent?.Faction)
-                ? Held(__instance) : -1;
+    {
+        __state = -1;
+        try
+        {
+            if (__instance?.parent is null || !GameFacts.IsPlayerFaction(__instance.parent.Faction)
+                || !LiveMetrics.CanCaptureEvent(BiotechFamily.Name))
+                return;
+            __state = Held(__instance);
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
+    }
 
     public static void Postfix(CompWasteProducer __instance, int __state)
     {
-        if (__state < 0 || !GameFacts.IsPlayerFaction(__instance.parent?.Faction))
+        if (__state < 0)
             return;
-        var produced = Held(__instance) - __state;
-        GameFacts.Record(BiotechFamily.Name, s =>
-            BiotechFamily.WastePackProduced(s, produced, playerProductionComplete: produced > 0));
+        try
+        {
+            if (__instance?.parent is null || !GameFacts.IsPlayerFaction(__instance.parent.Faction))
+                return;
+            var produced = Held(__instance) - __state;
+            GameFacts.Record(BiotechFamily.Name, s =>
+                BiotechFamily.WastePackProduced(s, produced, playerProductionComplete: produced > 0));
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
     }
 
     /// <summary>The container ProduceWaste adds to (the same owner as CompWasteProducer.Waste and its inspect string).</summary>
@@ -53,15 +67,30 @@ public static class BiotechProducedWasteMetricPatch
 public static class BiotechAtomizedWasteMetricPatch
 {
     public static void Prefix(CompAtomizer __instance, out int __state)
-        => __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-            && GameFacts.IsPlayerFaction(__instance.parent?.Faction) ? __instance.SpaceLeft : -1;
+    {
+        __state = -1;
+        try
+        {
+            if (__instance?.parent is null || !GameFacts.IsPlayerFaction(__instance.parent.Faction)
+                || !LiveMetrics.CanCaptureEvent(BiotechFamily.Name))
+                return;
+            __state = __instance.SpaceLeft;
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
+    }
 
     public static void Postfix(CompAtomizer __instance, int __state)
     {
-        if (__state < 0 || !GameFacts.IsPlayerFaction(__instance.parent?.Faction))
+        if (__state < 0)
             return;
-        var destroyed = __instance.SpaceLeft - __state;
-        GameFacts.Record(BiotechFamily.Name, s =>
-            BiotechFamily.WastePackNeutralized(s, destroyed, playerNeutralizationComplete: destroyed > 0));
+        try
+        {
+            if (__instance?.parent is null || !GameFacts.IsPlayerFaction(__instance.parent.Faction))
+                return;
+            var destroyed = __instance.SpaceLeft - __state;
+            GameFacts.Record(BiotechFamily.Name, s =>
+                BiotechFamily.WastePackNeutralized(s, destroyed, playerNeutralizationComplete: destroyed > 0));
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
     }
 }

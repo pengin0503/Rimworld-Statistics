@@ -15,7 +15,11 @@ namespace RimworldStatistics.Patches.Metrics;
 /// </summary>
 internal static class MedicalProbe
 {
-    public static int SurgeryDepth;
+    [ThreadStatic] public static int SurgeryDepth;
+
+    public static bool CanBeTrackedHediff(Hediff hediff)
+        => hediff?.def != null
+            && (hediff.def.makesSickThought || hediff.def == HediffDefOf.WoundInfection || hediff is Hediff_Addiction);
 }
 
 [MetricAdapter(MedicineFamily.Name)]
@@ -36,40 +40,47 @@ public static class DoTendMetricPatch
         __state = null;
         if (patient?.health?.hediffSet == null)
             return;
-
-        var doctorId = doctor != null && GameFacts.IsPlayer(doctor) ? GameFacts.Id(doctor) : null;
-        var playerPatient = GameFacts.IsPlayer(patient);
-        var colonistPatient = patient.IsFreeColonist;
-        var colonyPatient = playerPatient || colonistPatient || patient.IsPrisonerOfColony;
-        if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
-            return;
-
-        var b = new Before
+        try
         {
-            DoctorId = doctorId,
-            ColonyPatient = colonyPatient,
-            NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && GameFacts.PlayerFaction != null
-                && patient.RaceProps.Humanlike && !patient.HostileTo(GameFacts.PlayerFaction),
-            Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0,
-        };
-        foreach (var h in patient.health.hediffSet.hediffs)
-            if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td)
-                b.Comps[td] = (td.tendTicksLeft, td.tendQuality);
-        __state = b;
+            var doctorId = doctor != null && GameFacts.IsPlayer(doctor) ? GameFacts.Id(doctor) : null;
+            var playerPatient = GameFacts.IsPlayer(patient);
+            var colonistPatient = patient.IsFreeColonist;
+            var colonyPatient = playerPatient || colonistPatient || patient.IsPrisonerOfColony;
+            if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
+
+            var b = new Before
+            {
+                DoctorId = doctorId,
+                ColonyPatient = colonyPatient,
+                NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && GameFacts.PlayerFaction != null
+                    && patient.RaceProps.Humanlike && !patient.HostileTo(GameFacts.PlayerFaction),
+                Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0,
+            };
+            foreach (var h in patient.health.hediffSet.hediffs)
+                if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td)
+                    b.Comps[td] = (td.tendTicksLeft, td.tendQuality);
+            __state = b;
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 
     public static void Postfix(Pawn patient, Medicine medicine, Before? __state)
     {
-        if (__state == null)
+        if (__state == null || patient?.health?.hediffSet == null)
             return;
-        var qualities = new List<double>();
-        foreach (var h in patient.health.hediffSet.hediffs)
-            if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td
-                && (!__state.Comps.TryGetValue(td, out var before) || before.Ticks != td.tendTicksLeft || before.Quality != td.tendQuality) && td.IsTended)
-                qualities.Add(td.tendQuality);
-        var used = __state.Medicine - (medicine is { Destroyed: false } ? medicine.stackCount : 0);
-        GameFacts.Record(MedicineFamily.Name, s =>
-            MedicineFamily.Tended(s, __state.DoctorId, __state.ColonyPatient, __state.NeutralPatient, qualities, Math.Max(0, used)));
+        try
+        {
+            var qualities = new List<double>();
+            foreach (var h in patient.health.hediffSet.hediffs)
+                if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td
+                    && (!__state.Comps.TryGetValue(td, out var before) || before.Ticks != td.tendTicksLeft || before.Quality != td.tendQuality) && td.IsTended)
+                    qualities.Add(td.tendQuality);
+            var used = __state.Medicine - (medicine is { Destroyed: false } ? medicine.stackCount : 0);
+            GameFacts.Record(MedicineFamily.Name, s =>
+                MedicineFamily.Tended(s, __state.DoctorId, __state.ColonyPatient, __state.NeutralPatient, qualities, Math.Max(0, used)));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -92,11 +103,15 @@ public static class SurgeryOutcomeMetricPatch
 {
     public static void Postfix(Recipe_Surgery __instance, bool __result, Pawn surgeon, Pawn patient)
     {
-        if (surgeon == null || patient == null || !GameFacts.IsPlayer(surgeon))
+        if (surgeon == null || patient == null || !GameFacts.IsPlayer(surgeon) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
-        var id = GameFacts.Id(surgeon);
-        var implant = __instance is Recipe_InstallArtificialBodyPart or Recipe_InstallImplant;
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Surgery(s, id, !__result, implant));
+        try
+        {
+            var id = GameFacts.Id(surgeon);
+            var implant = __instance is Recipe_InstallArtificialBodyPart or Recipe_InstallImplant;
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Surgery(s, id, !__result, implant));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -105,14 +120,27 @@ public static class SurgeryOutcomeMetricPatch
 public static class RescueMetricPatch
 {
     public static void Prefix(Pawn taker, Pawn takee, bool rescued, out bool __state)
-        => __state = rescued && takee != null && taker != null && GameFacts.IsPlayer(taker) && takee.HostileTo(GameFacts.PlayerFaction);
+    {
+        __state = false;
+        if (!rescued || takee == null || taker == null || !GameFacts.IsPlayer(taker))
+            return;
+        try { __state = takee.HostileTo(GameFacts.PlayerFaction); }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
+    }
 
     public static void Postfix(Building_Bed bed, Pawn taker, Pawn takee, bool rescued, bool __state)
     {
-        if (!rescued || bed == null || takee == null || taker == null || !GameFacts.IsPlayer(taker) || takee.CurrentBed() != bed)
+        if (!rescued || bed == null || takee == null || taker == null || !GameFacts.IsPlayer(taker)
+            || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
-        var away = bed.Map is not { IsPlayerHome: true };
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Rescued(s, __state, away));
+        try
+        {
+            if (takee.CurrentBed() != bed)
+                return;
+            var away = bed.Map is not { IsPlayerHome: true };
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Rescued(s, __state, away));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -124,10 +152,14 @@ public static class ResurrectMetricPatch
 
     public static void Postfix(bool __result, Pawn pawn, bool __state)
     {
-        if (!__state || !__result || pawn.Dead)
+        if (!__state || !__result || pawn == null || pawn.Dead || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
-        var id = GameFacts.Id(pawn);
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Resurrected(s, id));
+        try
+        {
+            var id = GameFacts.Id(pawn);
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Resurrected(s, id));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -138,30 +170,42 @@ public static class ResurrectMetricPatch
 public static class AddHediffMetricPatch
 {
     public static void Prefix(Pawn ___pawn, Hediff hediff, out bool __state)
-        => __state = ___pawn != null && hediff?.def != null && ___pawn.IsFreeColonist && !___pawn.Dead && ___pawn.health.hediffSet.HasHediff(hediff.def);
+    {
+        __state = false;
+        if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead)
+            return;
+        try { __state = ___pawn.health.hediffSet.HasHediff(hediff.def); }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn ___pawn, Hediff hediff, BodyPartRecord part, DamageInfo? dinfo, bool __state)
     {
-        if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead || !___pawn.health.hediffSet.hediffs.Contains(hediff)
+        if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead
             || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
-        var set = ___pawn.health.hediffSet;
-        var attacker = dinfo?.Instigator as Pawn;
-        var facts = new HediffFacts
+        try
         {
-            Id = hediff.GetUniqueLoadID(),
-            PawnId = GameFacts.Id(___pawn),
-            Disease = hediff.def.makesSickThought && !__state,
-            Infection = hediff.def == HediffDefOf.WoundInfection,
-            FoodPoisoning = hediff.def == HediffDefOf.FoodPoisoning && !__state,
-            Addiction = hediff is Hediff_Addiction && !__state,
-            Overdose = hediff.def == HediffDefOf.DrugOverdose && !__state,
-            MissingPart = hediff is Hediff_MissingPart && part != null && MedicalProbe.SurgeryDepth == 0 && (part.parent == null || !set.PartIsMissing(part.parent)),
-            Injury = hediff is Hediff_Injury,
-            WildAnimalAttack = hediff is Hediff_Injury && attacker != null && attacker.RaceProps.Animal && attacker.Faction == null,
-        };
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.HediffAdded(s, facts, tick));
+            var set = ___pawn.health.hediffSet;
+            if (!set.hediffs.Contains(hediff))
+                return;
+            var attacker = dinfo?.Instigator as Pawn;
+            var facts = new HediffFacts
+            {
+                Id = hediff.GetUniqueLoadID(),
+                PawnId = GameFacts.Id(___pawn),
+                Disease = hediff.def.makesSickThought && !__state,
+                Infection = hediff.def == HediffDefOf.WoundInfection,
+                FoodPoisoning = hediff.def == HediffDefOf.FoodPoisoning && !__state,
+                Addiction = hediff is Hediff_Addiction && !__state,
+                Overdose = hediff.def == HediffDefOf.DrugOverdose && !__state,
+                MissingPart = hediff is Hediff_MissingPart && part != null && MedicalProbe.SurgeryDepth == 0 && (part.parent == null || !set.PartIsMissing(part.parent)),
+                Injury = hediff is Hediff_Injury,
+                WildAnimalAttack = hediff is Hediff_Injury && attacker != null && attacker.RaceProps.Animal && attacker.Faction == null,
+            };
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.HediffAdded(s, facts, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -172,19 +216,27 @@ public static class RemoveHediffMetricPatch
 {
     public static void Prefix(Pawn ___pawn, Hediff hediff)
     {
-        if (___pawn == null || hediff == null || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (___pawn == null || hediff == null || !MedicalProbe.CanBeTrackedHediff(hediff))
             return;
-        var id = hediff.GetUniqueLoadID();
-        var cured = !___pawn.Dead && MedicalProbe.SurgeryDepth == 0 && hediff.ShouldRemove
-            && (hediff.Part == null || !___pawn.health.hediffSet.PartIsMissing(hediff.Part));
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MedicineFamily.Name, s =>
+        if (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction) && !___pawn.IsPrisonerOfColony)
+            return;
+        if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+            return;
+        try
         {
-            if (cured)
-                MedicineFamily.HediffCured(s, id, tick);
-            else
-                MedicineFamily.HediffGone(s, id);
-        });
+            var id = hediff.GetUniqueLoadID();
+            var cured = !___pawn.Dead && MedicalProbe.SurgeryDepth == 0 && hediff.ShouldRemove
+                && (hediff.Part == null || !___pawn.health.hediffSet.PartIsMissing(hediff.Part));
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MedicineFamily.Name, s =>
+            {
+                if (cured)
+                    MedicineFamily.HediffCured(s, id, tick);
+                else
+                    MedicineFamily.HediffGone(s, id);
+            });
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -210,7 +262,7 @@ internal static class ScarProbe
 {
     public static void Check(HediffComp_GetsPermanent comp, bool wasPermanent)
     {
-        if (!wasPermanent && comp.IsPermanent && comp.Pawn is { IsFreeColonist: true })
+        if (!wasPermanent && comp is { IsPermanent: true, Pawn.IsFreeColonist: true })
             GameFacts.Record(MedicineFamily.Name, MedicineFamily.Scar);
     }
 }
@@ -226,17 +278,19 @@ public static class WithdrawalMetricPatch
     public static void Postfix(Hediff_Addiction __instance)
     {
         var pawn = __instance?.pawn;
-        if (pawn == null || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (pawn == null || __instance?.Need is not { } need)
+            return;
+        var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
+        // An onset counts for a living free colonist only; leaving withdrawal is passed on for anyone, so a pawn that was
+        // a prisoner or away when it recovered is not left marked as still in withdrawal.
+        if (withdrawal && (pawn.Dead || !pawn.IsFreeColonist))
+            return;
+        if (!withdrawal && !UnityData.IsInMainThread && !pawn.Spawned && !GameFacts.IsPlayerFaction(pawn.Faction) && !pawn.IsPrisonerOfColony)
+            return;
+        if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
             return;
         try
         {
-            if (__instance!.Need is not { } need)
-                return;
-            var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
-            // An onset counts for a living free colonist only; leaving withdrawal is passed on for anyone, so a pawn that was
-            // a prisoner or away when it recovered is not left marked as still in withdrawal.
-            if (withdrawal && (pawn.Dead || !pawn.IsFreeColonist))
-                return;
             var id = __instance.GetUniqueLoadID();
             var tick = GameFacts.Tick;
             GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.AddictionNeedChanged(s, id, withdrawal, tick));

@@ -16,8 +16,8 @@ namespace RimworldStatistics.Patches.Metrics;
 internal static class MentalProbe
 {
     public const string Unit = MentalFamily.Name;
-    public static int TickDepth;
-    public static int MoodDepth;
+    [ThreadStatic] public static int TickDepth;
+    [ThreadStatic] public static int MoodDepth;
 
     /// <summary>The reason text of the dev tool that grants an inspiration (1.7.4985 DebugToolsPawns).</summary>
     public const string DebugInspirationReason = "Debug gain";
@@ -55,12 +55,13 @@ public static class MentalBreakMetricPatch
 {
     public static void Postfix(bool __result, MentalBreakDef breakDef, Pawn ___pawn)
     {
-        if (LiveMetrics.Family(MentalProbe.Unit) is not { } s || breakDef is null || ___pawn is null)
-            return;
         try
         {
-            MentalFamily.Break(s, breakDef.defName, success: __result && ___pawn.InMentalState,
-                moodCaused: MentalProbe.TickDepth > 0 && MentalProbe.MoodDepth > 0, freeColonist: ___pawn.IsFreeNonSlaveColonist);
+            if (!__result || breakDef is null || ___pawn is null || !___pawn.IsFreeNonSlaveColonist
+                || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
+                return;
+            MentalFamily.Break(s, breakDef.defName, success: ___pawn.InMentalState,
+                moodCaused: MentalProbe.TickDepth > 0 && MentalProbe.MoodDepth > 0, freeColonist: true);
         }
         catch (Exception e)
         {
@@ -75,12 +76,13 @@ public static class InspirationMetricPatch
 {
     public static void Postfix(bool __result, InspirationDef def, string reason, InspirationHandler __instance)
     {
-        if (LiveMetrics.Family(MentalProbe.Unit) is not { } s || def is null || __instance?.pawn is not { } pawn)
-            return;
         try
         {
-            MentalFamily.Inspiration(s, def.defName, success: __result, started: __instance.CurStateDef == def,
-                freeColonist: pawn.IsFreeNonSlaveColonist, debug: reason == MentalProbe.DebugInspirationReason);
+            if (!__result || def is null || __instance?.pawn is not { } pawn || !pawn.IsFreeNonSlaveColonist
+                || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
+                return;
+            MentalFamily.Inspiration(s, def.defName, success: true, started: __instance.CurStateDef == def,
+                freeColonist: true, debug: reason == MentalProbe.DebugInspirationReason);
         }
         catch (Exception e)
         {

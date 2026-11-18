@@ -12,11 +12,15 @@ namespace RimworldStatistics.Metrics;
 /// </summary>
 public static class LiveMetrics
 {
+    private sealed record DeferredEvent(Game TargetGame, string Unit, Action<FamilyState> Handler);
+
     private static Game? game;
     private static LiveMetricAccumulator? accumulator;
     private static CheckpointSaveSession? session;
     private static readonly ConcurrentDictionary<string, bool> Missed = new(StringComparer.Ordinal);
+    private static readonly ConcurrentQueue<DeferredEvent> Deferred = new();
     private static Dictionary<string, int>? hitCounts;
+    [ThreadStatic] private static bool flushingDeferred;
 
     /// <summary>The totals of the game being played, or null (no game, another game, or still setting up).</summary>
     public static LiveMetricAccumulator? Accumulator => IsCurrent ? accumulator : null;
@@ -29,6 +33,7 @@ public static class LiveMetrics
     public static void StartNew(Game g)
     {
         Missed.Clear();
+        ClearDeferred();
         var acc = LiveMetricAccumulator.StartNew(MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         ModProviderAdapters.AttachEventOrigins(acc);
         Install(g, acc);
@@ -38,10 +43,18 @@ public static class LiveMetrics
     public static LiveMetricAccumulator Resume(Game g, string? raw)
     {
         Missed.Clear();
+        ClearDeferred();
         var acc = LiveMetricAccumulator.Resume(raw, MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         ModProviderAdapters.AttachEventOrigins(acc);
         Install(g, acc);
         return acc;
+    }
+
+    private static void ClearDeferred()
+    {
+        while (Deferred.TryDequeue(out _))
+        {
+        }
     }
 
     private static void Install(Game g, LiveMetricAccumulator acc)
@@ -76,6 +89,10 @@ public static class LiveMetrics
     /// <summary>Whether this family is recording on this thread. This query does not change the recording.</summary>
     public static bool IsRecordingNow(string name) => Resolve(name, eventAttempt: false) != null;
 
+    /// <summary>Thread-safe check for whether a unit is active in the current game outside Scribe, without marking gaps.</summary>
+    internal static bool IsRecordingUnit(string name)
+        => Scribe.mode == LoadSaveMode.Inactive && Accumulator is { } acc && acc.Recording.Contains(name);
+
     /// <summary>Whether the hook can capture an event. An off-thread attempt may make the family's coverage partial.</summary>
     internal static bool CanCaptureEvent(string name) => Resolve(name, eventAttempt: true) != null;
 
@@ -89,13 +106,69 @@ public static class LiveMetrics
     }
 
     /// <summary>
+    /// Records immediately on the Unity main thread, or queues a pre-extracted value-only callback when a legitimate hook
+    /// (such as RimWorld 1.7 async <c>LongEvent</c> map generation) runs on a worker thread, without degrading coverage to Partial.
+    /// </summary>
+    internal static void RecordOrDefer(string unit, Action<FamilyState> handler)
+    {
+        if (Scribe.mode != LoadSaveMode.Inactive || game is not { } targetGame || !ReferenceEquals(Current.Game, targetGame)
+            || accumulator is not { } acc || !acc.Recording.Contains(unit))
+            return;
+        if (UnityData.IsInMainThread)
+        {
+            if (Family(unit) is not { } s)
+                return;
+            try
+            {
+                handler(s);
+            }
+            catch (Exception e)
+            {
+                Fail(unit, e);
+            }
+            return;
+        }
+        Deferred.Enqueue(new DeferredEvent(targetGame, unit, handler));
+    }
+
+    /// <summary>Drains worker-thread events queued during async LongEvents onto the Unity main thread.</summary>
+    internal static void FlushDeferred()
+    {
+        if (flushingDeferred || Deferred.IsEmpty || !UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
+        flushingDeferred = true;
+        try
+        {
+            while (Deferred.TryDequeue(out var item))
+            {
+                if (!ReferenceEquals(item.TargetGame, game) || !IsCurrent)
+                    continue;
+                if (Family(item.Unit) is not { } s)
+                    continue;
+                try
+                {
+                    item.Handler(s);
+                }
+                catch (Exception e)
+                {
+                    Fail(item.Unit, e);
+                }
+            }
+        }
+        finally
+        {
+            flushingDeferred = false;
+        }
+    }
+
+    /// <summary>
     /// The totals an adapter adds to, or null when the family does not record now. Off the game thread an event is never
     /// applied (the totals are not thread-safe); the family is marked as having a gap instead.
     /// </summary>
     private static FamilyState? Resolve(string name, bool eventAttempt)
     {
         var acc = Accumulator;
-        if (acc is null)
+        if (acc is null || Scribe.mode != LoadSaveMode.Inactive)
             return null;
         if (!UnityData.IsInMainThread)
         {
@@ -103,6 +176,8 @@ public static class LiveMetrics
                 Missed[name] = true;
             return null;
         }
+        if (eventAttempt && !Deferred.IsEmpty)
+            FlushDeferred();
         if (eventAttempt && !Missed.IsEmpty && Missed.TryRemove(name, out _))
             acc.MarkGap(name, Find.TickManager.TicksGame);
         return acc.Family(name);
@@ -114,8 +189,10 @@ public static class LiveMetrics
         MetricGates.Fail(unit, e);
         try
         {
-            if (Accumulator is { } acc)
+            if (UnityData.IsInMainThread && Accumulator is { } acc)
                 acc.Stop(unit, Find.TickManager.TicksGame);
+            else if (!UnityData.IsInMainThread && Accumulator is { } offThreadAcc && offThreadAcc.Recording.Contains(unit))
+                Missed[unit] = true;
         }
         catch (Exception)
         {
@@ -126,6 +203,7 @@ public static class LiveMetrics
     /// <summary>Applies pending gap marks before a save writes the totals (game thread).</summary>
     internal static void FlushMissed()
     {
+        FlushDeferred();
         if (Missed.IsEmpty || Accumulator is not { } acc)
             return;
         foreach (var name in Missed.Keys.ToList())

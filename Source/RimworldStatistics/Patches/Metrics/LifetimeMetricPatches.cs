@@ -18,11 +18,17 @@ public static class SkillLearnMetricPatch
 
     public static void Postfix(SkillRecord __instance, int ___levelInt, Pawn ___pawn, int __state)
     {
-        if (___levelInt == __state || ___pawn == null || __instance.def == null || !GameFacts.IsMember(___pawn))
+        if (___levelInt == __state)
             return;
-        var id = GameFacts.Id(___pawn);
-        var skill = __instance.def.defName;
-        var after = ___levelInt;
-        GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.SkillChanged(s, id, skill, __state, after));
+        try
+        {
+            if (___pawn == null || __instance?.def == null || !GameFacts.IsMember(___pawn))
+                return;
+            var id = GameFacts.Id(___pawn);
+            var skill = __instance.def.defName;
+            var after = ___levelInt;
+            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.SkillChanged(s, id, skill, __state, after));
+        }
+        catch (Exception e) { LiveMetrics.Fail(LifetimeFamily.Name, e); }
     }
 }

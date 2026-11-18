@@ -19,6 +19,10 @@ internal static class FamilyStartup
         // never replay other families' baselines or condition probes.
         if (onlyFamilies is null || onlyFamilies.Contains(CaravanFamily.Name))
             ShrineProbe.Reset();
+        if (onlyFamilies is null || onlyFamilies.Contains(WorkFamily.Name) || onlyFamilies.Contains(FoodFamily.Name))
+            HarvestProbe.Reset();
+        if (onlyFamilies is null || onlyFamilies.Contains(ChoreFamily.Name))
+            TreeWoodPlacementProbe.Reset();
         void RunSelected(string family, Action<FamilyState, bool> action)
         {
             if (onlyFamilies is null || onlyFamilies.Contains(family))

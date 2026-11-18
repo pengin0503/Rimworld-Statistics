@@ -50,12 +50,16 @@ internal static class DbhActivityMetricPatch
         out (Job? Job, string? DefName) __state)
     {
         __state = default;
-        if (__0 != JobCondition.Succeeded || __instance.curJob is not { } job ||
-            targets?.Contains(job.def) != true)
-            return;
-        if (__instance.curDriver?.pawn is { MapHeld.IsPlayerHome: true } pawn &&
-            GameFacts.IsPlayerFaction(pawn.Faction) && LiveMetrics.CanCaptureEvent(DbhStatistics.ActivitiesUnit))
-            __state = (job, job.def.defName);
+        try
+        {
+            if (__0 != JobCondition.Succeeded || __instance?.curJob is not { } job ||
+                targets?.Contains(job.def) != true)
+                return;
+            if (__instance.curDriver?.pawn is { MapHeld.IsPlayerHome: true } pawn &&
+                GameFacts.IsPlayerFaction(pawn.Faction) && LiveMetrics.CanCaptureEvent(DbhStatistics.ActivitiesUnit))
+                __state = (job, job.def.defName);
+        }
+        catch (Exception e) { LiveMetrics.Fail(DbhStatistics.ActivitiesUnit, e); }
     }
 
     private static void Postfix(Pawn_JobTracker __instance, bool __runOriginal,

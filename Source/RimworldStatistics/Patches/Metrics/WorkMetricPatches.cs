@@ -16,6 +16,12 @@ internal static class HarvestProbe
     public static string? LastPlant;
     public static int LastTick = -1;
 
+    public static void Reset()
+    {
+        LastPlant = null;
+        LastTick = -1;
+    }
+
     public static Plant? JobPlant(Pawn worker) => worker.CurJob?.targetA.Thing as Plant;
 
     /// <summary>
@@ -41,9 +47,17 @@ internal static class TreeWoodPlacementProbe
     private static Game? game;
     private static int tick = -1;
 
+    public static void Reset()
+    {
+        expected = null;
+        map = null;
+        game = null;
+        tick = -1;
+    }
+
     public static void Expect(Pawn? worker, Thing? harvest)
     {
-        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null ||
+        if (!UnityData.IsInMainThread || LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null ||
             worker == null || harvest == null || !GameFacts.IsPlayer(worker) ||
             worker.jobs?.curDriver is not JobDriver_PlantCut ||
             HarvestProbe.JobPlant(worker) is not { Spawned: true } tree ||
@@ -58,18 +72,16 @@ internal static class TreeWoodPlacementProbe
 
     public static bool Take(Thing? candidate, Map? targetMap)
     {
+        if (!UnityData.IsInMainThread || expected == null)
+            return false;
         if (tick != GameFacts.Tick || !ReferenceEquals(game, Current.Game))
         {
-            expected = null;
-            map = null;
-            game = null;
+            Reset();
             return false;
         }
         if (candidate == null || !ReferenceEquals(expected, candidate) || !ReferenceEquals(map, targetMap))
             return false;
-        expected = null;
-        map = null;
-        game = null;
+        Reset();
         return true;
     }
 }
@@ -80,17 +92,31 @@ public static class PlantHarvestedMetricPatch
 {
     public static void Postfix(Pawn worker, Thing harvested)
     {
-        TreeWoodPlacementProbe.Expect(worker, harvested);
-        if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant)
-            return;
-        var plantId = GameFacts.Id(plant);
-        var tick = GameFacts.Tick;
-        HarvestProbe.LastPlant = plantId;
-        HarvestProbe.LastTick = tick;
-        var crop = plant.def.defName;
-        var worker_ = GameFacts.Id(worker);
-        var units = harvested.stackCount;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Harvested(s, worker_, plantId, crop, units, tick));
+        try
+        {
+            TreeWoodPlacementProbe.Expect(worker, harvested);
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
+        try
+        {
+            if (HarvestProbe.PlayerCrop(worker, harvested) is not { } plant || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+                return;
+            var plantId = GameFacts.Id(plant);
+            var tick = GameFacts.Tick;
+            HarvestProbe.LastPlant = plantId;
+            HarvestProbe.LastTick = tick;
+            var crop = plant.def.defName;
+            var worker_ = GameFacts.Id(worker);
+            var units = harvested.stackCount;
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Harvested(s, worker_, plantId, crop, units, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
     }
 }
 
@@ -100,15 +126,24 @@ public static class PlantCollectedMetricPatch
 {
     public static void Prefix(Plant __instance, Pawn by)
     {
-        if (__instance == null || !__instance.Spawned || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+        if (__instance == null || !__instance.Spawned || by == null)
             return;
-        var id = GameFacts.Id(__instance);
-        var harvestJob = by?.CurJobDef == JobDefOf.Harvest || by?.CurJobDef == JobDefOf.HarvestDesignated;
-        var failed = harvestJob && by!.RaceProps.Humanlike && GameFacts.IsPlayer(by) && __instance.IsCrop
-            && __instance.def.plant.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
-            && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
-        if (failed)
-            GameFacts.Record(WorkFamily.Name, WorkFamily.HarvestFailed);
+        var harvestJob = by.CurJobDef == JobDefOf.Harvest || by.CurJobDef == JobDefOf.HarvestDesignated;
+        if (!harvestJob || !by.RaceProps.Humanlike || !GameFacts.IsPlayer(by) || !__instance.IsCrop
+            || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+            return;
+        try
+        {
+            var id = GameFacts.Id(__instance);
+            var failed = __instance.def?.plant?.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
+                && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
+            if (failed)
+                GameFacts.Record(WorkFamily.Name, WorkFamily.HarvestFailed);
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
     }
 }
 
@@ -132,25 +167,39 @@ internal static class HaulToCellCompletionMetricPatch
     {
         __state = 0;
         // Avoid incrementing diagnostics for speculative haul deliveries.
-        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+        if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
             return;
-        var actor = __instance.pawn;
-        var job = actor?.CurJob;
-        if (actor == null || !GameFacts.IsPlayer(actor) ||
-            job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
-            job.targetB.Cell != dropLoc)
-            return;
-        __state = __instance.CarriedThing?.stackCount ?? 0;
+        try
+        {
+            var actor = __instance.pawn;
+            var job = actor?.CurJob;
+            if (actor == null || !GameFacts.IsPlayer(actor) ||
+                job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
+                job.targetB.Cell != dropLoc)
+                return;
+            __state = __instance.CarriedThing?.stackCount ?? 0;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 
     private static void Postfix(Pawn_CarryTracker __instance, bool __result, int __state)
     {
         if (!__result || __state <= 0)
             return;
-        var remaining = __instance.CarriedThing?.stackCount ?? 0;
-        int deposited = __state - remaining;
-        if (deposited > 0)
-            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.HaulDeposited(state, deposited));
+        try
+        {
+            var remaining = __instance.CarriedThing?.stackCount ?? 0;
+            int deposited = __state - remaining;
+            if (deposited > 0)
+                GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.HaulDeposited(state, deposited));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -164,14 +213,22 @@ internal static class SlaughterProvenanceMetric
 {
     public static void Observe(Pawn actor)
     {
-        if (actor.jobs?.curDriver is not JobDriver_Slaughter ||
-            actor.CurJob?.targetA.Thing is not Pawn animal ||
-            !animal.RaceProps.Animal || !animal.Dead || !GameFacts.IsPlayer(animal) ||
-            animal.Corpse is not { Destroyed: false } corpse)
-            return;
-        var corpseId = GameFacts.Id(corpse);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId, tick));
+        try
+        {
+            if (actor.jobs?.curDriver is not JobDriver_Slaughter ||
+                actor.CurJob?.targetA.Thing is not Pawn animal ||
+                !animal.RaceProps.Animal || !animal.Dead || !GameFacts.IsPlayer(animal) ||
+                animal.Corpse is not { Destroyed: false } corpse ||
+                !LiveMetrics.CanCaptureEvent(ChoreFamily.Name))
+                return;
+            var corpseId = GameFacts.Id(corpse);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -189,23 +246,30 @@ internal static class SlaughteredButcheryMetricPatch
     {
         if (billDoer == null || !GameFacts.IsPlayer(billDoer) ||
             ingredients is not { Count: > 0 } ||
-            LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+            !LiveMetrics.IsRecordingNow(ChoreFamily.Name))
             return;
-        var isButcherFlesh = __instance.recipe?.defName == "ButcherCorpseFlesh";
-        // Each input corpse can be counted at most once even when a bill has duplicates.
-        HashSet<string> uniqueCorpses = new(StringComparer.Ordinal);
-        foreach (var ingredient in ingredients)
+        try
         {
-            if (ingredient is Corpse corpse)
-                uniqueCorpses.Add(GameFacts.Id(corpse));
+            var isButcherFlesh = __instance.recipe?.defName == "ButcherCorpseFlesh";
+            // Each input corpse can be counted at most once even when a bill has duplicates.
+            HashSet<string> uniqueCorpses = new(StringComparer.Ordinal);
+            foreach (var ingredient in ingredients)
+            {
+                if (ingredient is Corpse corpse)
+                    uniqueCorpses.Add(GameFacts.Id(corpse));
+            }
+            if (uniqueCorpses.Count == 0)
+                return;
+            GameFacts.Record(ChoreFamily.Name, state =>
+            {
+                foreach (var corpseId in uniqueCorpses)
+                    ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
+            });
         }
-        if (uniqueCorpses.Count == 0)
-            return;
-        GameFacts.Record(ChoreFamily.Name, state =>
+        catch (Exception e)
         {
-            foreach (var corpseId in uniqueCorpses)
-                ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
-        });
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -223,7 +287,7 @@ internal static class SlaughteredCorpseDestroyedMetricPatch
     private static void Prefix(Corpse __instance, out string? __state)
     {
         __state = null;
-        if (LiveMetrics.Accumulator?.Family(ChoreFamily.Name) is null)
+        if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
             return;
         try
         {
@@ -239,8 +303,15 @@ internal static class SlaughteredCorpseDestroyedMetricPatch
     {
         if (__state is null || !__instance.Destroyed)
             return;
-        var tick = GameFacts.Tick;
-        GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.CorpseDestroyed(state, __state, tick));
+        try
+        {
+            var tick = GameFacts.Tick;
+            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.CorpseDestroyed(state, __state, tick));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -256,11 +327,19 @@ internal static class CleanJobCompletedMetricPatch
         var actor = __instance.curDriver?.pawn;
         if (actor == null || !GameFacts.IsPlayer(actor) ||
             __instance.curDriver is not JobDriver_CleanFilth ||
-            __instance.curJob is not { } job)
+            __instance.curJob is not { } job ||
+            !LiveMetrics.CanCaptureEvent(ChoreFamily.Name))
             return;
-        string jobId = job.GetUniqueLoadID();
-        GameFacts.Record(ChoreFamily.Name, state =>
-            ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
+        try
+        {
+            string jobId = job.GetUniqueLoadID();
+            GameFacts.Record(ChoreFamily.Name, state =>
+                ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -299,10 +378,17 @@ public static class PlantsSownMetricPatch
         }
         if (def != RecordDefOf.PlantsSown)
             return;
-        if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned)
-            return;
-        var crop = plant.def.defName;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, crop));
+        try
+        {
+            if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+                return;
+            var crop = plant.def.defName;
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, crop));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
     }
 }
 
@@ -312,21 +398,29 @@ public static class BillDoneMetricPatch
 {
     public static void Postfix(Pawn billDoer, List<Thing> products)
     {
-        if (billDoer == null || products == null || !GameFacts.IsPlayer(billDoer))
+        if (billDoer == null || products == null || !GameFacts.IsPlayer(billDoer)
+            || !GameFacts.AnyRecording(WorkFamily.Name, WorkDetailsFamily.Name))
             return;
-        var items = products.Where(p => p != null && p.stackCount > 0).Select(p => new CraftedThing
+        try
         {
-            Def = p.def.defName,
-            Count = p.stackCount,
-            Quality = p.TryGetQuality(out var q) ? q.ToString() : null,
-            UnitMarketValue = p.MarketValue,
-            Meal = p.def.IsIngestible && p.def.ingestible.IsMeal,
-            Art = p.TryGetComp<CompArt>() != null,
-        }).ToList();
-        var worker = GameFacts.Id(billDoer);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
-        GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.CraftedProducts(s, items));
+            var items = products.Where(p => p != null && p.stackCount > 0 && p.def != null).Select(p => new CraftedThing
+            {
+                Def = p.def.defName,
+                Count = p.stackCount,
+                Quality = p.TryGetQuality(out var q) ? q.ToString() : null,
+                UnitMarketValue = p.MarketValue,
+                Meal = p.def.IsIngestible && p.def.ingestible?.IsMeal == true,
+                Art = p.TryGetComp<CompArt>() != null,
+            }).ToList();
+            var worker = GameFacts.Id(billDoer);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
+            GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.CraftedProducts(s, items));
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, WorkFamily.Name, WorkDetailsFamily.Name);
+        }
     }
 }
 
@@ -339,18 +433,33 @@ public static class FrameCompleteMetricPatch
         __state = null;
         if (__instance == null || !GameFacts.IsPlayer(__instance) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
             return;
-        __state = new Dictionary<string, int>(StringComparer.Ordinal);
-        foreach (var t in __instance.resourceContainer)
-            if (t?.def != null)
-                __state[t.def.defName] = __state.GetValueOrDefault(t.def.defName) + t.stackCount;
+        try
+        {
+            var resources = new Dictionary<string, int>(StringComparer.Ordinal);
+            foreach (var t in __instance.resourceContainer)
+                if (t?.def != null)
+                    resources[t.def.defName] = resources.GetValueOrDefault(t.def.defName) + t.stackCount;
+            __state = resources;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
     }
 
     public static void Postfix(Frame __instance, Pawn worker, Dictionary<string, int>? __state)
     {
         if (__state == null || !__instance.Destroyed)
             return;
-        var id = worker != null ? GameFacts.Id(worker) : null;
-        GameFacts.Record(WorkFamily.Name, s => WorkFamily.Constructed(s, id, __state));
+        try
+        {
+            var id = worker != null ? GameFacts.Id(worker) : null;
+            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Constructed(s, id, __state));
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
     }
 }
 
@@ -399,8 +508,8 @@ public static class RepairedMetricPatch
 /// <summary>Mining yield (evidence #work): the stack Mineable.TrySpawnYield places for a player miner, inside its scope.</summary>
 internal static class MiningProbe
 {
-    public static Pawn? Miner;
-    public static ThingDef? Yield;
+    [ThreadStatic] public static Pawn? Miner;
+    [ThreadStatic] public static ThingDef? Yield;
 }
 
 [MetricAdapter(WorkFamily.Name, WorkDetailsFamily.Name)]
@@ -454,16 +563,41 @@ public static class MiningPlaceMetricPatch
         bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map);
         if (!isMineYield && !isTreeWood)
             return;
-        var state = new Placement { MinerId = isMineYield ? GameFacts.Id(miner!) : null,
-            YieldDef = thing.def, CutTreeWood = isTreeWood };
-        __state = state;
-        var original = placedAction;
-        placedAction = (placedThing, count) =>
+        try
         {
-            original?.Invoke(placedThing, count);
-            if (placedThing?.def == state.YieldDef && count > 0)
-                state.Placed = state.Placed > int.MaxValue - count ? int.MaxValue : state.Placed + count;
-        };
+            var state = new Placement
+            {
+                MinerId = isMineYield ? GameFacts.Id(miner!) : null,
+                YieldDef = thing.def,
+                CutTreeWood = isTreeWood,
+            };
+            __state = state;
+            var original = placedAction;
+            placedAction = (placedThing, count) =>
+            {
+                original?.Invoke(placedThing, count);
+                try
+                {
+                    if (placedThing?.def == state.YieldDef && count > 0)
+                        state.Placed = state.Placed > int.MaxValue - count ? int.MaxValue : state.Placed + count;
+                }
+                catch (Exception e)
+                {
+                    if (state.MinerId is not null)
+                        GameFacts.FailAll(e, WorkFamily.Name, WorkDetailsFamily.Name);
+                    if (state.CutTreeWood)
+                        LiveMetrics.Fail(ChoreFamily.Name, e);
+                }
+            };
+        }
+        catch (Exception e)
+        {
+            if (isMineYield)
+                GameFacts.FailAll(e, WorkFamily.Name, WorkDetailsFamily.Name);
+            if (isTreeWood)
+                LiveMetrics.Fail(ChoreFamily.Name, e);
+            __state = null;
+        }
     }
 
     // Preserve the callback's successful partial placements even if TryPlaceThing returns false
@@ -487,7 +621,19 @@ public static class MiningPlaceMetricPatch
 public static class PodsLaunchMetricPatch
 {
     public static void Prefix(CompLaunchable __instance, out int __state)
-        => __state = __instance?.parent is { Spawned: true } p && GameFacts.IsPlayer(p) ? p.TryGetComp<CompTransporter>()?.TransportersInGroup(p.Map)?.Count ?? 0 : 0;
+    {
+        __state = 0;
+        if (__instance?.parent is not { Spawned: true } p || !GameFacts.IsPlayer(p) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+            return;
+        try
+        {
+            __state = p.TryGetComp<CompTransporter>()?.TransportersInGroup(p.Map)?.Count ?? 0;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(WorkFamily.Name, e);
+        }
+    }
 
     public static void Postfix(CompLaunchable __instance, int __state)
     {

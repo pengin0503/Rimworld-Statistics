@@ -32,8 +32,12 @@ public static class PawnKillMetricPatch
     public static void Prefix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, out DeathFacts? __state)
     {
         __state = null;
-        if (__instance == null || __instance.Dead
-            || !GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)
+        if (__instance == null || __instance.Dead)
+            return;
+        if (!UnityData.IsInMainThread && !__instance.Spawned && !__instance.IsFreeColonist
+            && !GameFacts.IsPlayerFaction(__instance.Faction) && !GameFacts.InPlayerCaravan(__instance))
+            return;
+        if (!GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)
             || !(activeDeaths ??= new(ReferenceEqualityComparer.Instance)).Add(__instance))
             return;
         try
@@ -73,7 +77,7 @@ public static class PawnKillMetricPatch
         catch (Exception e)
         {
             activeDeaths.Remove(__instance);
-            LiveMetrics.Fail(HealthDeathFamily.Name, e);
+            GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name);
             __state = null;
         }
     }
@@ -82,7 +86,13 @@ public static class PawnKillMetricPatch
     {
         if (!__runOriginal || __state is not { } d || __instance == null || !__instance.Dead)
             return;
-        var tick = GameFacts.Tick;
+        int tick;
+        try { tick = GameFacts.Tick; }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, MembershipFamily.Name);
+            return;
+        }
         GameFacts.Record(HealthDeathFamily.Name, s => HealthDeathFamily.Died(s, d, tick));
         GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Died(s, d.PawnId, d.FreeColonist, d.AgeYears, tick));
         GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Died(s, d));

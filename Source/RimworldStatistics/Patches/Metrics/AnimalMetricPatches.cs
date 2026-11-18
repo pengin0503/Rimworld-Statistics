@@ -13,14 +13,24 @@ namespace RimworldStatistics.Patches.Metrics;
     new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Out, ArgumentType.Out, ArgumentType.Normal, ArgumentType.Normal })]
 public static class TameMetricPatch
 {
-    public static void Prefix(Pawn recruitee, out bool __state) => __state = recruitee != null && recruitee.RaceProps.Animal && recruitee.Faction == null;
+    public static void Prefix(Pawn recruitee, out bool __state)
+    {
+        __state = false;
+        try { __state = recruitee != null && recruitee.RaceProps.Animal && recruitee.Faction == null; }
+        catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn recruitee, bool __state)
     {
-        if (recruitee == null || !recruitee.RaceProps.Animal)
+        if (!__state)
             return;
-        var now = GameFacts.IsPlayerFaction(recruitee.Faction);
-        GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Tamed(s, __state, now));
+        try
+        {
+            if (recruitee == null || !recruitee.RaceProps.Animal || !GameFacts.IsPlayerFaction(recruitee.Faction))
+                return;
+            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Tamed(s, wasWild: true, nowPlayer: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
     }
 }
 
@@ -31,9 +41,14 @@ public static class AnimalBornMetricPatch
 {
     public static void Postfix(bool __result, Pawn pawn)
     {
-        if (!__result || pawn == null || pawn.Dead || !pawn.RaceProps.Animal)
+        if (!__result)
             return;
-        var player = GameFacts.IsPlayerFaction(pawn.Faction);
-        GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Born(s, player));
+        try
+        {
+            if (pawn == null || pawn.Dead || !pawn.RaceProps.Animal || !GameFacts.IsPlayerFaction(pawn.Faction))
+                return;
+            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Born(s, true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
     }
 }
