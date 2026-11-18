@@ -81,6 +81,20 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         if (exportTask is { IsCompleted: true } doneExport)
         {
             exportTask = null;
@@ -326,6 +340,8 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
         var viewRect = new Rect(0f, 0f, innerWidth, totalHeight + 8f);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
+        try
+        {
 
         var cy = 0f;
         if (display.Banner is { } banner)
@@ -413,7 +429,12 @@ internal sealed class Dialog_ColonySummaryReport : Window
             GUI.color = Color.white;
         }
 
-        Widgets.EndScrollView();
+        }
+        finally
+        {
+            GUI.color = Color.white;
+            Widgets.EndScrollView();
+        }
     }
 
     private static void DrawSectionHeading(ref float y, float width, string heading)
@@ -621,7 +642,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var list = new List<string>();
         foreach (var pair in ov.CountedEndings.GroupBy(e => (e.Type, e.Ordinal)).OrderBy(g => g.Key.Type).ThenBy(g => g.Key.Ordinal))
         {
-            var best = pair.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+            var best = pair.OrderByDescending(e => e.Departed).ThenBy(e => e.Source).ThenBy(e => e.DevMode).First();
             var time = Dialog_RimworldStatistics.Local(pair.Min(e => e.RealTimeUtc));
             var source = best.Source == EndingSource.SeededTrace
                 ? (string)"RWS_Source_SeededTrace".Translate()
@@ -656,7 +677,12 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var val = item.Value;
         var label = item.IsBasic ? BasicPerColonyLabel(item.MetricKey) : MetricText.Label(def);
         var modSource = item.IsBasic ? null : MetricText.ModSourceLabel(def);
-        var valueText = MetricText.Format(def, val);
+        var valueText = item.IsBasic
+            ? MetricText.Format(def, val)
+            : MetricLookup.ForColony(view, colonyKey, item.MetricKey) is { } colonyRow
+                ? DetailsTab.FormatRowValue(colonyRow, key => view.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } cs
+                    ? Dialog_RimworldStatistics.ColonyName(cs) : key)
+                : MetricText.Format(def, val);
         var kindText = KindLabel(item.ValueKind);
         var rankText = FormatRank(item);
 
