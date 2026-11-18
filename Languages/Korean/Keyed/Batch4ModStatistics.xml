@@ -8,7 +8,7 @@
   <RWS_VqeDeadlife_SiloDecryptionsDesc>Vanilla Quests Expanded - Deadlife에서 플레이어 폰이 고대 계획 탁자 연구를 완료해 새 사일로 위치를 밝혀낸 횟수를 집계합니다.</RWS_VqeDeadlife_SiloDecryptionsDesc>
   <RWS_VqeDeadlife_PowerKickstarts>비상 발전기 시동 성공 수</RWS_VqeDeadlife_PowerKickstarts>
   <RWS_VqeDeadlife_PowerKickstartsDesc>Vanilla Quests Expanded - Deadlife에서 플레이어 폰이 고대 비상 발전기 시동에 성공한 횟수를 발전기 종류별로 집계합니다.</RWS_VqeDeadlife_PowerKickstartsDesc>
-  <RWS_AnomaliesExpected_StudiedEntities>Anomalies Expected 연구 완료 변칙체</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntities>연구 완료 변칙체</RWS_AnomaliesExpected_StudiedEntities>
   <RWS_AnomaliesExpected_StudiedEntitiesDesc>Anomalies Expected 엔티티 데이터베이스에서 연구 노트가 해금된 고유 변칙체 종 수를 기록합니다.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
   <RWS_WayBetterRomance_Dates>데이트 및 외출 완료 수</RWS_WayBetterRomance_Dates>
   <RWS_WayBetterRomance_DatesDesc>Way Better Romance에서 플레이어 폰이 참여해 끝까지 완료한 데이트와 외출 횟수를 활동 유형별로 집계합니다.</RWS_WayBetterRomance_DatesDesc>
