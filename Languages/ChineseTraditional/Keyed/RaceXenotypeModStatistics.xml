@@ -14,6 +14,6 @@
   <RWS_AlphaAnimals_CocoonMetamorphosesDesc>統計Alpha Animals中我方幼蟲或群蟲實際完成化繭蛻變的次數，依繭類型分類。</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
   <RWS_AlphaAnimals_CocoonHatches>蟲繭孵化數量</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>統計Alpha Animals中我方蟲繭實際孵化的存活黑蟲數量，依生物種類分類。</RWS_AlphaAnimals_CocoonHatchesDesc>
-  <RWS_VreSanguophage_DraincasketHemogen>汲血棺實際入庫血原質</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>累計我方汲血棺實際存入VRE_HemogenNet管網儲存的血原質總量。</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>汲血棺實際入庫血原</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>累計我方汲血棺實際存入血原管網儲存的血原總量。</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

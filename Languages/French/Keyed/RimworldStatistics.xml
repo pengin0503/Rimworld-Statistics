@@ -383,9 +383,9 @@
   <RWS_Metric_PlayerMechKills>Ennemis tués par mécanoïdes du joueur</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Ennemis tués dont l'attaquant était un mécanoïde du joueur (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Décès de colons par cause</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Décès de colons libres répartis selon la maladie ou condition de santé responsable, ou selon le type de dégâts mortels. Si les deux sont inconnus, la catégorie est «(inconnu)».</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Décès de colons libres répartis selon la maladie ou condition de santé responsable, ou selon le type de dégâts mortels. Si les deux sont inconnus, la catégorie est « (inconnu) ».</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Décès de colons lors des raids</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>Décès de colons libres répartis entre ceux causés par des assaillants, ceux d'autres causes connues et «(inconnu)». Quand les raids ne sont pas enregistrés, ces décès sont classés «(inconnu)».</RWS_MetricDesc_DeathsByRaid>
+  <RWS_MetricDesc_DeathsByRaid>Décès de colons libres répartis entre ceux causés par des assaillants, ceux d'autres causes connues et « (inconnu) ». Quand les raids ne sont pas enregistrés, ces décès sont classés « (inconnu) ».</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Décès de colons dus aux maladies</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>Décès de colons libres causés par une maladie (une affection que le jeu considère comme rendant le personnage malade). Une maladie simplement présente au moment de la mort ne suffit pas.</RWS_MetricDesc_DiseaseDeaths>
   <RWS_Metric_DiseaseDeathRate>Part des décès dus aux maladies</RWS_Metric_DiseaseDeathRate>
@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>Jours avant le premier décès de colon</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>Jour de jeu du premier décès d'un colon libre, uniquement si l'enregistrement a commencé au début de la partie.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>Colon mort à l'âge le plus avancé</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>Âge biologique maximal d'un colon libre juste avant sa mort. Identique à la valeur du colon ayant vécu le plus longtemps (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Âge biologique maximal d'un colon libre juste avant sa mort.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>Colons morts en caravane</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>Colons libres morts alors qu'ils faisaient partie d'une caravane du joueur.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>Décès d'animaux de la colonie</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>Colons mis à terre</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>Nombre de passages de l'état debout à l'état à terre chez les colons libres. Les morts instantanées sans mise à terre ne sont pas comptées.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>Ennemis mis à terre (neutralisés)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Nombre de mises à terre de personnages hostiles au joueur. Une nouvelle mise à terre après rétablissement compte à nouveau. Identique aux ennemis neutralisés (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Nombre de mises à terre de personnages hostiles au joueur. Une nouvelle mise à terre après rétablissement compte à nouveau.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>Mises à terre par accumulation toxique</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>Mises à terre de colons libres directement causées par l'accumulation toxique (Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>Mises à terre lors de bagarres</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>Plus grand nombre de victimes lors d'un raid</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>Nombre maximal d'assaillants tués par le camp du joueur pendant un même raid enregistré.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Sièges</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Raids utilisant la stratégie Siege (siège).</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Raids utilisant une stratégie de siège.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>Raids avec percée</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Raids utilisant une stratégie de percée (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Les sapeurs ne sont pas comptés.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Raids utilisant une stratégie de percée standard ou intelligente. Les sapeurs ne sont pas comptés.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>Raids par capsules de largage</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Raids arrivant par capsules de largage (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Raids arrivant par capsules de largage (bord de carte, groupes en bordure, centre ou largage dispersé).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Infestations</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Infestations de ruches déclenchées avec succès (Infestation, DeepDrillInfestation). Les autres événements concernant les insectes ne sont pas comptés.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>Infestations de ruches déclenchées avec succès, y compris les infestations en profondeur. Les autres événements concernant les insectes ne sont pas comptés.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>Groupes de mécanoïdes</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>Incidents de groupe de mécanoïdes déclenchés avec succès (Royalty). Les raids ordinaires de mécanoïdes ne sont pas comptés.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>Meutes de chasseurs d'hommes</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Incidents de meute de chasseurs d'hommes déclenchés avec succès (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Incidents de meute de chasseurs d'hommes déclenchés avec succès.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>Plus longue période sans raid</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>Plus long intervalle entre deux raids consécutifs enregistrés, sans compter avant le premier ni après le dernier. Identique au plus long intervalle entre raids (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Plus long intervalle entre deux raids consécutifs enregistrés, sans compter avant le premier ni après le dernier.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>Intervalle moyen entre raids</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>Moyenne de ces mêmes intervalles, pondérée pour l'ensemble des colonies par leur nombre d'intervalles.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>Jours avant le premier raid</RWS_Metric_RaidFirstDay>
@@ -509,7 +509,7 @@
   <RWS_Metric_CraftedUnits>Objets fabriqués</RWS_Metric_CraftedUnits>
   <RWS_MetricDesc_CraftedUnits>Quantités en piles des produits principaux et secondaires des commandes de fabrication achevées du joueur, cuisine et art compris. Extraction minière, récoltes et gestation des mécanoïdes sont exclues.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Objets fabriqués par qualité</RWS_Metric_CraftQuality>
-  <RWS_MetricDesc_CraftQuality>Les objets fabriqués ci-dessus, répartis par qualité. Ceux sans qualité figurent sous «none».</RWS_MetricDesc_CraftQuality>
+  <RWS_MetricDesc_CraftQuality>Les objets fabriqués ci-dessus, répartis par qualité. Ceux sans qualité figurent sous « none ».</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Objets de qualité légendaire fabriqués</RWS_Metric_CraftLegendary>
   <RWS_MetricDesc_CraftLegendary>Objets fabriqués de qualité légendaire.</RWS_MetricDesc_CraftLegendary>
   <RWS_Metric_CraftMasterwork>Objets de qualité chef-d’œuvre fabriqués</RWS_Metric_CraftMasterwork>
@@ -533,7 +533,7 @@
   <RWS_Metric_HarvestUnits>Récoltes de cultures</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>Quantités en piles des produits principaux récoltés par les personnages du joueur ; les rendements supplémentaires sont exclus.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Récoltes par culture</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>Quantités récoltées par culture d'origine ; celles dont la culture est inconnue sont classées «(inconnu)».</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>Quantités récoltées par culture d'origine ; celles dont la culture est inconnue sont classées « (inconnu) ».</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Culture la plus récoltée</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>Culture dont le volume récolté est le plus élevé, et quantité correspondante.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>Récolte maximale en un an</RWS_Metric_HarvestYearPeak>
@@ -599,7 +599,7 @@
   <RWS_Metric_TradeBoughtDefs>Types d'objets achetés</RWS_Metric_TradeBoughtDefs>
   <RWS_MetricDesc_TradeBoughtDefs>Nombre de types d'objets non monétaires achetés.</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>Types de factions partenaires commerciales</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>Nombre de types de factions connues avec lesquelles des transactions ont eu lieu; les partenaires sans faction figurent séparément sous «(inconnu)».</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>Nombre de types de factions connues avec lesquelles des transactions ont eu lieu ; les partenaires sans faction figurent séparément sous « (inconnu) ».</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>Relations gagnées grâce aux cadeaux</RWS_Metric_GiftGoodwill>
   <RWS_MetricDesc_GiftGoodwill>Gain réel de relations obtenu par la faction destinataire de chaque cadeau ; zéro si ses relations avaient déjà atteint le maximum.</RWS_MetricDesc_GiftGoodwill>
   <RWS_Metric_AllyToHostile>Alliés devenus hostiles</RWS_Metric_AllyToHostile>
@@ -745,7 +745,7 @@
   <RWS_Metric_RosterAnimalDefsPeak>Maximum d'espèces animales de colonie</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Plus grand nombre d'espèces distinctes parmi les animaux vivants de la colonie lors d'une sauvegarde enregistrée.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>Besoin nutritif quotidien des animaux de la colonie</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>Nutrition totale que les animaux vivants de la colonie (sur les cartes, en caravane et en transit, comme pour le nombre d'animaux de la colonie) mangent par jour lorsqu'ils sont rassasiés, lors d'une sauvegarde réussie. C'est le calcul du jeu lui-même, affiché pour chaque animal lors du chargement d'une caravane ou de capsules de transport : il tient compte du stade de vie (les jeunes mangent moins), de la gestation, de la lactation et d'états semblables. Les animaux sans besoin de nourriture et ceux dans un caisson de cryptosommeil comptent pour 0. Il n'est pas comparé à la nourriture en stock : aucun nombre de jours de vivres n'est affiché. Partiel si un animal n'a pas pu être lu. La valeur de toutes les colonies additionne la dernière sauvegarde enregistrée de chaque colonie.</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Nutrition totale que les animaux vivants de la colonie (sur les cartes, en caravane et en transit, comme pour le nombre d'animaux de la colonie) mangent par jour lorsqu'ils sont rassasiés, lors d'une sauvegarde réussie. C'est le calcul du jeu lui-même, affiché pour chaque animal lors du chargement d'une caravane ou de capsules de transport : il tient compte du stade de vie (les jeunes mangent moins), de la gestation, de la lactation et d'états semblables. Les animaux sans besoin de nourriture et ceux dans un caisson d'hypersommeil comptent pour 0. Il n'est pas comparé à la nourriture en stock : aucun nombre de jours de vivres n'est affiché. Partiel si un animal n'a pas pu être lu. La valeur de toutes les colonies additionne la dernière sauvegarde enregistrée de chaque colonie.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Passions des colons par compétence</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Passions des colons libres (aucune, mineure, majeure) pour chaque compétence lors d'un enregistrement réussi.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Âge moyen des colons vivants</RWS_Metric_RosterAgeMean>
@@ -805,7 +805,7 @@
   <RWS_Metric_IdeologyConversions>Conversions achevées</RWS_Metric_IdeologyConversions>
   <RWS_MetricDesc_IdeologyConversions>Changements observés d'un personnage du camp du joueur entre deux idéoligions existantes. L'idéoligion attribuée à la création d'un personnage ne compte pas.</RWS_MetricDesc_IdeologyConversions>
   <RWS_Metric_IdeologyRitualResults>Rituels par issue finale</RWS_Metric_IdeologyRitualResults>
-  <RWS_MetricDesc_IdeologyRitualResults>Rituels Ideology confirmés, par issue; les rituels interrompus ont une catégorie séparée.</RWS_MetricDesc_IdeologyRitualResults>
+  <RWS_MetricDesc_IdeologyRitualResults>Rituels Ideology confirmés, par issue ; les rituels interrompus ont une catégorie séparée.</RWS_MetricDesc_IdeologyRitualResults>
   <RWS_Metric_IdeologyRitualRate>Taux de réussite des rituels</RWS_Metric_IdeologyRitualRate>
   <RWS_MetricDesc_IdeologyRitualRate>Réussites confirmées ÷ rituels classés comme réussite ou échec ; les rituels interrompus sont exclus.</RWS_MetricDesc_IdeologyRitualRate>
   <RWS_Metric_IdeologyConversionDays>Durée moyenne de conversion</RWS_Metric_IdeologyConversionDays>
@@ -871,21 +871,21 @@
   <RWS_Metric_MinedByDef>Ressources extraites par article</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>Quantités réellement déposées après extraction pendant la période enregistrée, par article. Série distincte ; aucune estimation n'est faite avant son activation.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Saletés entièrement nettoyées</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Une unité par saleté entièrement retirée par le nettoyage d'un personnage du joueur (statistique du jeu «saletés nettoyées»). Réduire seulement l'épaisseur ou compter des tâches entières n'est pas équivalent. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>Une unité par saleté entièrement retirée par le nettoyage d'un personnage du joueur (statistique du jeu « saletés nettoyées »). Réduire seulement l'épaisseur ou compter des tâches entières n'est pas équivalent. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Feux éteints</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Une unité par feu éteint par un personnage du joueur lors de la lutte contre les incendies ou en se débarrassant des flammes sur lui-même (statistique «feux éteints»). Les feux qui s'éteignent seuls sont exclus. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>Une unité par feu éteint par un personnage du joueur lors de la lutte contre les incendies ou en se débarrassant des flammes sur lui-même (statistique « feux éteints »). Les feux qui s'éteignent seuls sont exclus. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Repas consommés</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Repas effectivement consommés, apportant une nutrition positive, par des personnages humanoïdes de la faction du joueur. Chaque repas compte une fois, y compris en caravane ; les autres aliments, drogues et personnages étrangers sont exclus.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Transports vers des cases de stockage</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Tâches de transport du joueur ayant réellement déposé leur charge dans la case choisie. Couverture partielle: les dépôts dans des récipients et transports propres aux mods sont exclus. Ramasser sans déposer ne compte jamais.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Tâches de transport du joueur ayant réellement déposé leur charge dans la case choisie. Couverture partielle : les dépôts dans des récipients et transports propres aux mods sont exclus. Ramasser sans déposer ne compte jamais.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Objets transportés dans les cases de stockage</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total des objets réellement déposés par les tâches de transport du joueur, mesuré par la diminution de la pile transportée. Couverture partielle: transport dans les récipients et autres modes de déplacement non comptés.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total des objets réellement déposés par les tâches de transport du joueur, mesuré par la diminution de la pile transportée. Couverture partielle : transport dans les récipients et autres modes de déplacement non comptés.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Tâches de nettoyage achevées</RWS_Metric_CleaningJobsCompleted>
   <RWS_MetricDesc_CleaningJobsCompleted>Tâches de nettoyage du joueur terminées avec succès après retrait complet d'au moins une saleté. Plusieurs saletés retirées dans une même tâche comptent comme une tâche. Les tâches interrompues sont exclues.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Bois issu de l'abattage d'arbres (produit principal)</RWS_Metric_TreeWoodPlaced>
   <RWS_MetricDesc_TreeWoodPlaced>Bois effectivement déposé ou fusionné avec une pile après l'abattage d'un arbre par un personnage du joueur (produit principal mesuré au moment du dépôt). Couverture partielle : le bois supplémentaire de certains mods et les méthodes d'abattage non standard sont exclus.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Animaux abattus puis dépecés</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Cadavres d'animaux abattus par un personnage du joueur, puis consommés par une tâche de dépeçage standard achevée. Un même cadavre est suivi entre les sauvegardes. Les animaux chassés, les morts sauvages et les cadavres ennemis sont exclus. Couverture partielle: les recettes de mods et certaines disparitions de cadavres ne sont pas reconnues.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Cadavres d'animaux abattus par un personnage du joueur, puis consommés par une tâche de dépeçage standard achevée. Un même cadavre est suivi entre les sauvegardes. Les animaux chassés, les morts sauvages et les cadavres ennemis sont exclus. Couverture partielle : les recettes de mods et certaines disparitions de cadavres ne sont pas reconnues.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Colonie avec le maximum : {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colonie avec le minimum : {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Article le plus fréquent : {0}</RWS_Cross_TopType>
@@ -1129,7 +1129,7 @@
   <RWS_VqeDrones_HatchedDesc>Drones du joueur réellement nés d'œufs éclos avec succès, par type. Les œufs détruits sans naissance et les drones créés par assembleur sont exclus.</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>Deepchem stocké dans les conduites</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Quantité de Deepchem réellement acceptée dans le stockage des conduites depuis des pompes du joueur, fractions comprises, mesurée lorsque le réseau confirme le stockage. Production prévue, produits déposés au sol et stockage bloqué sont exclus.</RWS_VceDeepchem_StoredUnitsDesc>
-  <RWS_VgeExtraction_ItemsPlaced>ADN extrait par</RWS_VgeExtraction_ItemsPlaced>
+  <RWS_VgeExtraction_ItemsPlaced>ADN extrait</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Objets ADN réellement déposés ou fusionnés dans des piles par une extraction réussie du joueur, par objet produit. Cibles invalides, dépôts échoués, charges dépensées sans produit et autres créations d'hybrides sont exclus.</RWS_VgeExtraction_ItemsPlacedDesc>
   <RWS_VnpeGrinder_SlurryStored>Bouillie nutritive VNPE stockée dans les conduites</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Quantité de bouillie nutritive réellement acceptée dans le réseau de conduites depuis les broyeurs du joueur dans Vanilla Nutrient Paste Expanded, fractions comprises. Les tentatives de broyage, les ingrédients consommés sans stockage de bouillie et les dépôts provenant d'autres bâtiments sont exclus.</RWS_VnpeGrinder_SlurryStoredDesc>

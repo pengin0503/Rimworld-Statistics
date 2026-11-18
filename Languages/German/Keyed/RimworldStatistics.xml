@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>Tage bis zum ersten Kolonistentod</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>Spieltag des ersten Todes eines freien Kolonisten, nur bei Aufzeichnung seit Spielbeginn.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>Höchstes Sterbealter eines Kolonisten</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>Höchstes biologisches Alter eines freien Kolonisten unmittelbar vor seinem Tod. Derselbe Wert wie beim langlebigsten Kolonisten (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Höchstes biologisches Alter eines freien Kolonisten unmittelbar vor seinem Tod.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>Auf Karawanen verstorbene Kolonisten</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>Freie Kolonisten, die während der Teilnahme an einer Spielerkarawane starben.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>Todesfälle von Kolonietieren</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>Kampfunfähig gewordene Kolonisten</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>Anzahl der Übergänge freier Kolonisten von kampffähig zu kampfunfähig. Sofortige Todesfälle ohne vorherige Kampfunfähigkeit zählen nicht.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>Kampfunfähig gewordene Feinde</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Anzahl der Kampfunfähigkeiten eines dem Spieler feindlichen Pawns. Wird er nach der Genesung erneut kampfunfähig, zählt das erneut. Derselbe Wert wie außer Gefecht gesetzte Feinde (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Anzahl der Kampfunfähigkeiten eines dem Spieler feindlichen Pawns. Wird er nach der Genesung erneut kampfunfähig, zählt das erneut.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>Kampfunfähigkeit durch Giftbelastung</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>Kampfunfähigkeit freier Kolonisten, die direkt durch Giftbelastung verursacht wurde (Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>Kampfunfähigkeit durch Prügelei</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>Meiste Tötungen bei einem Überfall</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>Höchste Zahl der Feinde eines aufgezeichneten Überfalls, die die Spielerseite während dieses Überfalls tötete.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Belagerungen</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Überfälle mit der Strategie Siege (Belagerung).</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Überfälle mit Belagerungsstrategie.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>Durchbruchüberfälle</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Überfälle mit einer Durchbruchstrategie (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Tunnelgräber werden nicht mitgezählt.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Überfälle mit regulärer oder gezielter Durchbruchstrategie. Tunnelgräber werden nicht mitgezählt.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>Landekapsel-Überfälle</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Überfälle mit Ankunft per Landekapsel (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Überfälle mit Ankunft per Landekapsel (Kartenrand, Randgruppen, Zentrum oder verstreut).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Insektenplagen</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Erfolgreich ausgelöste Insektennest-Ereignisse (Infestation, DeepDrillInfestation). Andere Ereignisse mit Insekten zählen nicht.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>Erfolgreich ausgelöste Insektenplagen, einschließlich Tiefenbohrungs-Insektenplagen. Andere Ereignisse mit Insekten zählen nicht.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>Mech-Cluster</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>Erfolgreich ausgelöste Mech-Cluster-Ereignisse (Royalty). Gewöhnliche Mechanoidenüberfälle zählen nicht.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>Menschenjagende Rudel</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Erfolgreich ausgelöste Ereignisse mit menschenjagenden Rudeln (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Erfolgreich ausgelöste Ereignisse mit menschenjagenden Rudeln.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>Längste Zeit ohne Überfall</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>Längster Abstand zwischen aufeinanderfolgenden aufgezeichneten Überfällen, ohne die Zeit vor dem ersten oder nach dem letzten. Derselbe Wert wie der größte Überfallabstand (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Längster Abstand zwischen aufeinanderfolgenden aufgezeichneten Überfällen, ohne die Zeit vor dem ersten oder nach dem letzten.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>Mittlerer Abstand zwischen Überfällen</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>Mittelwert derselben Überfallabstände; für alle Kolonien nach der Anzahl der Abstände gewichtet.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>Tage bis zum ersten Überfall</RWS_Metric_RaidFirstDay>
@@ -745,7 +745,7 @@
   <RWS_Metric_RosterAnimalDefsPeak>Größte Vielfalt der Kolonietiere</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Höchste Zahl unterschiedlicher Tierarten unter lebenden Kolonietieren in einem aufgezeichneten Spielstand.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>Nahrungsbedarf der Kolonietiere pro Tag</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>Gesamte Nahrung, die die lebenden Kolonietiere (auf Karten, in Karawanen und unterwegs, wie bei der Zahl der Kolonietiere) bei einem erfolgreichen Speichern pro Tag essen, wenn sie satt sind. Es ist die Berechnung des Spiels selbst, die beim Beladen von Karawanen oder Transportkapseln für jedes Tier angezeigt wird: Sie berücksichtigt den Lebensabschnitt (Jungtiere essen weniger), Trächtigkeit, Laktation und Ähnliches. Tiere ohne Nahrungsbedarf und Tiere in einer Kryoschlafkapsel zählen als 0. Der Wert wird nicht mit dem Nahrungsvorrat verglichen, daher werden keine Vorratstage angezeigt. Teilweise, wenn ein Tier nicht gelesen werden konnte. Der Wert aller Kolonien addiert den zuletzt aufgezeichneten Spielstand jeder Kolonie.</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Gesamte Nahrung, die die lebenden Kolonietiere (auf Karten, in Karawanen und unterwegs, wie bei der Zahl der Kolonietiere) bei einem erfolgreichen Speichern pro Tag essen, wenn sie satt sind. Es ist die Berechnung des Spiels selbst, die beim Beladen von Karawanen oder Transportkapseln für jedes Tier angezeigt wird: Sie berücksichtigt den Lebensabschnitt (Jungtiere essen weniger), Trächtigkeit, Laktation und Ähnliches. Tiere ohne Nahrungsbedarf und Tiere in einer Kryptoschlafkapsel zählen als 0. Der Wert wird nicht mit dem Nahrungsvorrat verglichen, daher werden keine Vorratstage angezeigt. Teilweise, wenn ein Tier nicht gelesen werden konnte. Der Wert aller Kolonien addiert den zuletzt aufgezeichneten Spielstand jeder Kolonie.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Hingabe nach Fertigkeit</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Hingabe freier Kolonisten (keine, gering, groß) je Fertigkeit beim erfolgreichen Speichern.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Mittleres Alter lebender Kolonisten</RWS_Metric_RosterAgeMean>
@@ -871,9 +871,9 @@
   <RWS_Metric_MinedByDef>Abgebaute Rohstoffe nach Gegenstand</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>Tatsächlich während des Aufzeichnungszeitraums platzierte Abbauprodukte nach Gegenstand. Eigene Datenreihe; Zeit vor Aktivierung wird nicht geschätzt.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Vollständig entfernte Verschmutzungen</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Pro durch Reinigungsarbeit eines Spieler-Pawns vollständig entferntem Schmutzstück eine Zählung (Vanilla-Statistik „gereinigte Verschmutzungen“). Teilweise verringerte Dicke und gesamte Reinigungsaufträge zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>Pro durch Reinigungsarbeit eines Spieler-Pawns vollständig entferntem Schmutzstück eine Zählung (Vanilla-Statistik „Gereinigt“). Teilweise verringerte Dicke und gesamte Reinigungsaufträge zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Gelöschte Feuer</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Pro von einem Spieler-Pawn durch normale Brandbekämpfung oder das Ausschlagen von Flammen an sich selbst gelöschtem Feuer eine Zählung („gelöschte Feuer“). Von selbst erloschene Feuer zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>Pro von einem Spieler-Pawn durch normale Brandbekämpfung oder das Ausschlagen von Flammen an sich selbst gelöschtem Feuer eine Zählung („Feuer gelöscht“). Von selbst erloschene Feuer zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Verzehrte Mahlzeiten</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Erfolgreich verzehrte Mahlzeiten mit positiver Nahrungsmenge durch menschenähnliche Pawns der Spielerfraktion. Jede Mahlzeit zählt einmal, auch in Karawanen. Andere Lebensmittel, Drogen und fremde Pawns zählen nicht.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Transportvorgänge zu Lagerfeldern</RWS_Metric_HaulPlacements>

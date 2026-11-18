@@ -5,7 +5,7 @@
   <RWS_VreLycanthrope_GermlineReimplants>Germline reimplantations</RWS_VreLycanthrope_GermlineReimplants>
   <RWS_VreLycanthrope_GermlineReimplantsDesc>Counts committed Lycanthrope germline reimplantations or absorptions involving a player pawn that altered genes, xenotype, or applied endogermination coma.</RWS_VreLycanthrope_GermlineReimplantsDesc>
   <RWS_VreFungoid_InfectionConversions>Fungal infection conversions</RWS_VreFungoid_InfectionConversions>
-  <RWS_VreFungoid_InfectionConversionsDesc>Counts living colony colonists, slaves, and prisoners whose Fungoid gene infection completed conversion.</RWS_VreFungoid_InfectionConversionsDesc>
+  <RWS_VreFungoid_InfectionConversionsDesc>Counts living colonists, slaves, and prisoners whose Fungoid gene infection completed conversion.</RWS_VreFungoid_InfectionConversionsDesc>
   <RWS_VreInsector_GenelineEvolutions>Insector geneline evolutions</RWS_VreInsector_GenelineEvolutions>
   <RWS_VreInsector_GenelineEvolutionsDesc>Counts living player Insector pawns that completed a metapod evolution or geneline change.</RWS_VreInsector_GenelineEvolutionsDesc>
   <RWS_VreInsector_GenelineReversions>Insector geneline reversions</RWS_VreInsector_GenelineReversions>
@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>Cocoon hatchings</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Counts living player black insectoids that actually emerged from hatched Alpha Animals cocoons, by animal kind.</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>Draincasket hemogen stored</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>Total hemogen units actually accepted by VRE_HemogenNet pipe storage from player Draincaskets.</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Total hemogen units actually accepted by the hemogen pipe storage network from player Draincaskets.</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

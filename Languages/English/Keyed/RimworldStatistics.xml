@@ -383,9 +383,9 @@
   <RWS_Metric_PlayerMechKills>Kills by player mechs</RWS_Metric_PlayerMechKills>
   <RWS_MetricDesc_PlayerMechKills>Enemy kills whose attacker was a player mechanoid (Biotech).</RWS_MetricDesc_PlayerMechKills>
   <RWS_Metric_DeathCauses>Colonist deaths by cause</RWS_Metric_DeathCauses>
-  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition or the killing damage type. Deaths with neither are "unknown".</RWS_MetricDesc_DeathCauses>
+  <RWS_MetricDesc_DeathCauses>Free colonist deaths by the culprit health condition or the killing damage type. Deaths with neither are "(unknown)".</RWS_MetricDesc_DeathCauses>
   <RWS_Metric_DeathsByRaid>Colonist deaths by raids</RWS_Metric_DeathsByRaid>
-  <RWS_MetricDesc_DeathsByRaid>Free colonist deaths split into those caused by a raider, other known causes, and unknown. While raids are not being recorded, deaths count as unknown.</RWS_MetricDesc_DeathsByRaid>
+  <RWS_MetricDesc_DeathsByRaid>Free colonist deaths split into those caused by a raider, other known causes, and "(unknown)". While raids are not being recorded, deaths count as "(unknown)".</RWS_MetricDesc_DeathsByRaid>
   <RWS_Metric_DiseaseDeaths>Colonist deaths from disease</RWS_Metric_DiseaseDeaths>
   <RWS_MetricDesc_DiseaseDeaths>Free colonist deaths whose culprit was a disease (a condition the game treats as making the pawn sick). Deaths in which a disease was merely present are not counted.</RWS_MetricDesc_DiseaseDeaths>
   <RWS_Metric_DiseaseDeathRate>Share of deaths from disease</RWS_Metric_DiseaseDeathRate>
@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>Days to the first colonist death</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>The game day of the first free colonist death, only when recorded from the start of the game.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>Oldest colonist at death</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>The highest biological age of a free colonist just before dying. The same value as the longest-lived colonist (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>The highest biological age of a free colonist just before dying.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>Colonists who died on caravans</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>Free colonists who died while in a player caravan.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>Colony animal deaths</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>Colonists downed</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>Times a free colonist went from not downed to downed. Instant deaths without a downing are not counted.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>Enemies downed (incapacitated)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Times a pawn hostile to the player was downed; being downed again after recovering counts again. The same value as enemies incapacitated (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Times a pawn hostile to the player was downed; being downed again after recovering counts again.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>Downs from toxic buildup</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>Free colonist downs directly caused by toxic buildup (Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>Downs from social fights</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>Most kills in one raid</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>The most kills the player's side made among one tracked raid's pawns while that raid lasted.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Sieges</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Raids with the Siege strategy.</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Raids with a siege strategy.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>Breach raids</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Raids with a breaching strategy (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Sappers are not included.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Raids with a standard or smart breaching strategy. Tunneling sappers are not included.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>Drop pod raids</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Raids arriving by drop pod (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Raids arriving by drop pod (map edge, edge groups, center drop, or scattered drop).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Infestations</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Successful insect hive infestations (Infestation, DeepDrillInfestation). Other insect-related events are not counted.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>Successful insect hive infestations, including deep drill infestations. Other insect-related events are not counted.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>Mech clusters</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>Successful mech cluster incidents (Royalty). Ordinary mechanoid raids are not counted.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>Manhunter packs</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Successful manhunter pack incidents (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Successful manhunter pack incidents.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>Longest time without a raid</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>The longest interval between two consecutive raids while recorded, not counting before the first or after the last. The same value as the largest raid interval (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>The longest interval between two consecutive raids while recorded, not counting before the first or after the last.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>Mean time between raids</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>The mean of the same intervals; overall, weighted by the number of intervals.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>Days to the first raid</RWS_Metric_RaidFirstDay>
@@ -533,7 +533,7 @@
   <RWS_Metric_HarvestUnits>Crops harvested</RWS_Metric_HarvestUnits>
   <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Harvest by crop</RWS_Metric_HarvestByCrop>
-  <RWS_MetricDesc_HarvestByCrop>The harvest by crop; harvests whose crop is not known are "unknown".</RWS_MetricDesc_HarvestByCrop>
+  <RWS_MetricDesc_HarvestByCrop>The harvest by crop; harvests whose crop is not known are "(unknown)".</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Most harvested crop</RWS_Metric_TopCrop>
   <RWS_MetricDesc_TopCrop>The crop with the largest harvest, and that amount.</RWS_MetricDesc_TopCrop>
   <RWS_Metric_HarvestYearPeak>Largest harvest in a year</RWS_Metric_HarvestYearPeak>
@@ -599,7 +599,7 @@
   <RWS_Metric_TradeBoughtDefs>Kinds of items bought</RWS_Metric_TradeBoughtDefs>
   <RWS_MetricDesc_TradeBoughtDefs>The number of non-currency item types bought.</RWS_MetricDesc_TradeBoughtDefs>
   <RWS_Metric_TradePartnerFactionDefs>Kinds of factions traded with</RWS_Metric_TradePartnerFactionDefs>
-  <RWS_MetricDesc_TradePartnerFactionDefs>The number of known faction types traded with; partners without a faction are shown apart as "unknown".</RWS_MetricDesc_TradePartnerFactionDefs>
+  <RWS_MetricDesc_TradePartnerFactionDefs>The number of known faction types traded with; partners without a faction are shown apart as "(unknown)".</RWS_MetricDesc_TradePartnerFactionDefs>
   <RWS_Metric_GiftGoodwill>Goodwill gained from gifts</RWS_Metric_GiftGoodwill>
   <RWS_MetricDesc_GiftGoodwill>The goodwill the receiving faction actually gained from each gift; 0 when its goodwill was already at the maximum.</RWS_MetricDesc_GiftGoodwill>
   <RWS_Metric_AllyToHostile>Allies turned hostile</RWS_Metric_AllyToHostile>
@@ -1148,7 +1148,7 @@
   <RWS_VqeAncients_RejectedDesc>Player archogen injector results in which the occupant rejected the injection, was released alive and fell into an injection coma. Cancelled work, a chosen result that never completed, and pending gene choices after success do not count. Requires Biotech.</RWS_VqeAncients_RejectedDesc>
   <RWS_VqeAncients_Mutations>VQE Ancients mutant transformations</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>Player archogen injector mutation results that destroy the original pawn and spawn one player-owned mutant of the chosen kind, grouped by mutant kind. Other spawns, cancellations and pending choices after success do not count. Requires Biotech.</RWS_VqeAncients_MutationsDesc>
-  <RWS_VfeSettlers_BountyHandins>Bounties turned</RWS_VfeSettlers_BountyHandins>
+  <RWS_VfeSettlers_BountyHandins>Bounties turned in</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Wanted criminals, or their bodies, actually turned in and removed from a player caravan while a positive silver reward was received. Opening the command, missing targets, failed transfers and unrelated belongings do not count.</RWS_VfeSettlers_BountyHandinsDesc>
   <RWS_VfeSettlers_BountySilver>Bounty silver received</RWS_VfeSettlers_BountySilver>
   <RWS_VfeSettlers_BountySilverDesc>Silver actually added to the player caravan by the first reward payment of a successful VFE Settlers bounty hand-in. The criminal's items, and any silver among them, are not included.</RWS_VfeSettlers_BountySilverDesc>
@@ -1163,7 +1163,7 @@
   <RWS_VfePirates_HireSilver>Silver paid for hires</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>Silver actually removed from player-map stock when a new VFE Pirates hiring contract is registered, rather than the rounded quoted price. Free contracts add no silver.</RWS_VfePirates_HireSilverDesc>
   <RWS_VgeHybrid_Births>VGE electro-womb hybrid births</RWS_VgeHybrid_Births>
-  <RWS_VgeHybrid_BirthsDesc>New player-owned hybrid pawns actually spawned, one each, when a player-owned VGE electro-womb completes a successful growth cycle, grouped by pawn kind. Failed growth, timer progress and restoring a save do not count.</RWS_VgeHybrid_BirthsDesc>
+  <RWS_VgeHybrid_BirthsDesc>New player-owned hybrid pawns actually spawned, one each, when a player-owned VGE electrowomb completes a successful growth cycle, grouped by pawn kind. Failed growth, timer progress and restoring a save do not count.</RWS_VgeHybrid_BirthsDesc>
   <RWS_VgeHybrid_Conversions>VGE biomechanical transformations</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>Successful transformations in player-owned mechahybridizers that destroy the original subject and spawn one new player-owned converted pawn, by resulting pawn kind. Starting the machine, waiting and failed spawns do not count.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Paroles approved</RWS_PrisonExpanded_ParoleApproved>

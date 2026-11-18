@@ -11,5 +11,5 @@
   <RWS_AlphaBiomes_CoreDrill>Blocs extraits par foreuse carottière</RWS_AlphaBiomes_CoreDrill>
   <RWS_AlphaBiomes_CoreDrillDesc>Nombre de blocs de pierre extraits et placés par les foreuses carottières d'Alpha Biomes du joueur, détaillé par type.</RWS_AlphaBiomes_CoreDrillDesc>
   <RWS_VleLandmarks_HomeMaps>Pic de cartes de colonie Vanilla Landmarks</RWS_VleLandmarks_HomeMaps>
-  <RWS_VleLandmarks_HomeMapsDesc>Nombre maximal de cartes de colonie actives comportant des repères ou modificateurs de Vanilla Landmarks Expanded lors d'une sauvegarde réussie, détaillé par caractéristique.</RWS_VleLandmarks_HomeMapsDesc>
+  <RWS_VleLandmarks_HomeMapsDesc>Nombre maximal de cartes de colonie actives comportant des points de repère ou modificateurs de Vanilla Landmarks Expanded lors d'une sauvegarde réussie, détaillé par caractéristique.</RWS_VleLandmarks_HomeMapsDesc>
 </LanguageData>

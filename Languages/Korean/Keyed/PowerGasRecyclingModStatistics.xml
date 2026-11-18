@@ -3,7 +3,7 @@
   <RWS_VfePower_NuclearMeltdowns>원자로 노심 용융 횟수</RWS_VfePower_NuclearMeltdowns>
   <RWS_VfePower_NuclearMeltdownsDesc>Vanilla Furniture Expanded - Power의 플레이어 소유 원자로가 실제로 노심 용융 상태에 돌입하여 고장난 횟수를 셉니다.</RWS_VfePower_NuclearMeltdownsDesc>
   <RWS_VheHelixienGas_StoredUnits>헬릭시엔 가스 저장량</RWS_VheHelixienGas_StoredUnits>
-  <RWS_VheHelixienGas_StoredUnitsDesc>플레이어 소유의 헬릭시엔 펌프가 VHGE_HelixienNet 배관 저장소로 실제로 공급·수용한 가스의 총량을 기록합니다.</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VheHelixienGas_StoredUnitsDesc>플레이어 소유의 헬릭시엔 펌프가 헬릭시엔 가스 배관 저장망으로 실제로 공급·수용한 가스의 총량을 기록합니다.</RWS_VheHelixienGas_StoredUnitsDesc>
   <RWS_VreRecycling_ProcessedItems>재활용 및 압축 산출량</RWS_VreRecycling_ProcessedItems>
   <RWS_VreRecycling_ProcessedItemsDesc>Vanilla Recycling Expanded의 플레이어 소유 처리 장치(쓰레기 압축기 및 합금팩 분리기)가 실제로 생성하여 배치한 아이템 수를 품목별로 셉니다.</RWS_VreRecycling_ProcessedItemsDesc>
 </LanguageData>

@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>首次殖民者死亡前的天数</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>仅在从游戏开始记录时，统计首名自由殖民者死亡时的游戏内日期。</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>死亡时年龄最大的殖民者</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>自由殖民者死亡前最高的生物学年龄。与最长寿殖民者（P-010）的数值相同。</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>自由殖民者死亡前最高的生物学年龄。</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>远行队中死亡的殖民者</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>加入玩家远行队期间死亡的自由殖民者数。</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>殖民地动物死亡数</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>殖民者倒地次数</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>自由殖民者从未倒地状态变为倒地状态的次数。未倒地就立即死亡的不计入。</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>敌人倒地次数（失去行动能力）</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>与玩家敌对的单位倒地次数。恢复后再次倒地也会再次计数。与敌人失去行动能力次数（B-002）相同。</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>与玩家敌对的单位倒地次数。恢复后再次倒地也会再次计数。</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>因毒素累积而倒地</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>由毒素累积直接导致的自由殖民者倒地次数（Biotech）。</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>因打架而倒地</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>单次袭击最多敌人击杀数</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>在同一次记录中的袭击持续期间，玩家一方击杀的该次袭击敌人最多数量。</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>围攻次数</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>使用Siege（围攻）战术的袭击次数。</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>采用围攻战术的袭击次数。</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>破墙袭击次数</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>采用破墙战术（ImmediateAttackBreaching、ImmediateAttackBreachingSmart）的袭击次数。不包括挖掘地道的工兵。</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>采用普通或智能破墙战术的袭击次数。不包括挖掘地道的工兵。</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>空投袭击次数</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>通过运输舱到达的袭击次数（EdgeDrop、EdgeDropGroups、CenterDrop、RandomDrop）。</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>通过运输舱到达（地图边缘、边缘分组、中心空投或分散空投）的袭击次数。</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>虫灾次数</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>成功触发的虫巢虫灾（Infestation、DeepDrillInfestation）次数。其他昆虫相关事件不计入。</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>成功触发的虫灾与钻井虫灾次数。其他昆虫相关事件不计入。</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>机械集群出现次数</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>成功触发的机械集群事件（Royalty）次数。普通机械族袭击不计入。</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>猎杀人类动物群出现次数</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>成功触发的猎杀人类动物群（ManhunterPack）事件次数。</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>成功触发的大群动物猎杀人类事件次数。</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>最长无袭击间隔</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>连续两次已记录袭击之间最长的间隔，不包括首次袭击之前或末次袭击之后的时间。与最长袭击间隔（N2-C-002）的数值相同。</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>连续两次已记录袭击之间最长的间隔，不包括首次袭击之前或末次袭击之后的时间。</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>袭击平均间隔</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>上述间隔的平均值。汇总所有殖民地时按间隔数量加权。</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>首次袭击前的天数</RWS_Metric_RaidFirstDay>
@@ -745,9 +745,9 @@
   <RWS_Metric_RosterAnimalDefsPeak>殖民地动物最多种类数</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>任一次已记录的保存中，存活的殖民地动物物种种类数最大值。</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>殖民地动物每日营养需求</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>成功存档时，存活的殖民地动物（地图上、远行队中和运输途中，与殖民地动物数量的范围相同）在吃饱状态下每天食用的营养总和。这是游戏自身的计算，即装载远行队或运输舱时为每只动物显示的数值：包括生命阶段（幼崽吃得较少）、怀孕、哺乳等状态。不需要进食的动物和冬眠舱中的动物计为 0。不与食物储备比较，因此不显示可维持天数。若有动物无法读取，则为部分记录。所有殖民地的数值为各殖民地最后记录的存档时数值之和。</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>成功存档时，存活的殖民地动物（地图上、远行队中和运输途中，与殖民地动物数量的范围相同）在吃饱状态下每天食用的营养总和。这是游戏自身的计算，即装载远行队或运输舱时为每只动物显示的数值：包括生命阶段（幼崽吃得较少）、怀孕、哺乳等状态。不需要进食的动物和低温休眠舱中的动物计为 0。不与食物储备比较，因此不显示可维持天数。若有动物无法读取，则为部分记录。所有殖民地的数值为各殖民地最后记录的存档时数值之和。</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>按技能统计的殖民者兴趣</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>成功保存时自由殖民者各技能的兴趣（无、普通、强烈）数量。</RWS_MetricDesc_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>成功保存时自由殖民者各技能的兴趣（无、好奇、狂热）数量。</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>存活殖民者平均年龄</RWS_Metric_RosterAgeMean>
   <RWS_MetricDesc_RosterAgeMean>成功保存时仍存活的自由殖民者平均生物学年龄。</RWS_MetricDesc_RosterAgeMean>
   <RWS_Metric_RosterInjuredPeak>同时负伤的最多殖民者人数</RWS_Metric_RosterInjuredPeak>
@@ -852,9 +852,9 @@
   <RWS_ModRecruitment_StartedDesc>记录开始后成功创建的Recruitment 1.1.2招募请求数量。启用记录前的时段仅有部分数据。创建后取消的请求仍计为已开始。</RWS_ModRecruitment_StartedDesc>
   <RWS_ModRecruitment_Active>进行中的招募请求数</RWS_ModRecruitment_Active>
   <RWS_ModRecruitment_ActiveDesc>上次成功保存时仍在等待处理的招募请求数。此值不是历史累计总数。</RWS_ModRecruitment_ActiveDesc>
-  <RWS_ModHospitality_PresentGuests>存档时的在访客人数</RWS_ModHospitality_PresentGuests>
+  <RWS_ModHospitality_PresentGuests>存档时的访客人数</RWS_ModHospitality_PresentGuests>
   <RWS_ModHospitality_PresentGuestsDesc>成功保存时，玩家主基地地图上留宿的Hospitality访客数量。不是累计来访人数。</RWS_ModHospitality_PresentGuestsDesc>
-  <RWS_ModHospitality_PresentGroups>存档时的在访客组数</RWS_ModHospitality_PresentGroups>
+  <RWS_ModHospitality_PresentGroups>存档时的访客组数</RWS_ModHospitality_PresentGroups>
   <RWS_ModHospitality_PresentGroupsDesc>成功保存时，玩家主基地地图上留宿的Hospitality访客组数量。不是累计来访组数。</RWS_ModHospitality_PresentGroupsDesc>
   <RWS_Details_ViewLifetime>累计（已记录时段）</RWS_Details_ViewLifetime>
   <RWS_Details_ViewOther>其他</RWS_Details_ViewOther>
@@ -871,9 +871,9 @@
   <RWS_Metric_MinedByDef>按物品统计的开采资源数</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>记录期间按物品种类统计实际放置的采矿产物数量。属于独立的数据系列，不会推算启用前的数值。</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>完全清除的污垢数</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>玩家单位每彻底清除一处污垢计一次（原版“清理污垢”记录）。仅减少污垢厚度或完成一次清洁任务不等于此项。仅在启用时记录。</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>玩家单位每彻底清除一处污垢计一次（原版“清洁数”记录）。仅减少污垢厚度或完成一次清洁任务不等于此项。仅在启用时记录。</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>扑灭火焰数量</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>玩家单位通过正常灭火或拍灭自己身上的火焰，每扑灭一处火焰计一次（原版“扑灭火焰”记录）。自行熄灭的火焰不计入。仅在启用时记录。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>玩家单位通过正常灭火或拍灭自己身上的火焰，每扑灭一处火焰计一次（原版“火灾扑灭次数”记录）。自行熄灭的火焰不计入。仅在启用时记录。</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>吃下的餐食份数</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>玩家派系的人形单位实际吃下并获得正营养值的餐食份数。每份餐食计一次，包括远行队中吃的餐食。其他食物、药物及非玩家单位不计入。</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>运到储存格子的次数</RWS_Metric_HaulPlacements>
@@ -1355,7 +1355,7 @@
   <RWS_Change_PercentPoints>{0}个百分点</RWS_Change_PercentPoints>
   <RWS_Change_Partial>其中至少有一个值是部分记录；差值只包含已记录的部分。</RWS_Change_Partial>
   <RWS_Change_SamePoint>两个点属于同一时刻，请选择不同时刻的点。</RWS_Change_SamePoint>
-  <RWS_Change_NoValue>无法比较：其中有没有数值的点。</RWS_Change_NoValue>
+  <RWS_Change_NoValue>无法比较：其中包含没有数值的点。</RWS_Change_NoValue>
   <RWS_Change_NotLinked>无法比较：无法通过记录确认后一个点延续自前一个点（其他分支、从更早的存档重新开始、父记录缺失或存档没有检查点等）。</RWS_Change_NotLinked>
   <RWS_Change_CounterGap>期间增量：无法计算（无法确认记录在两个时刻之前均无中断、停止或重新开始；包括因达到上限而不完整的值，以及由旧版本记录的中途开始的值）</RWS_Change_CounterGap>
   <RWS_Change_CounterDecrease>期间增量：无法计算（累计值在后一个点减少，不能作为计数的数量）</RWS_Change_CounterDecrease>

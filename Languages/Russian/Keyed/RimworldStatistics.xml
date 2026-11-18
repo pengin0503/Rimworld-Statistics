@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>Дни до первой смерти поселенца</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>Игровой день первой смерти свободного поселенца, только если запись началась с начала игры.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>Самый старый умерший поселенец</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>Наибольший биологический возраст свободного поселенца непосредственно перед смертью. То же значение, что у самого долгоживущего поселенца (P-010).</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>Наибольший биологический возраст свободного поселенца непосредственно перед смертью.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>Поселенцы, умершие в караванах</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>Свободные поселенцы, умершие во время нахождения в караване игрока.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>Смерти животных колонии</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>Обездвиживания поселенцев</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>Случаи перехода свободного поселенца из состояния без обездвиживания в состояние обездвиживания. Мгновенные смерти без этого перехода не учитываются.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>Обездвиживания врагов</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>Случаи обездвиживания враждебной игроку пешки. Повторное обездвиживание после восстановления учитывается снова. То же значение, что число обезвреженных врагов (B-002).</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>Случаи обездвиживания враждебной игроку пешки. Повторное обездвиживание после восстановления учитывается снова.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>Обездвиживания от токсического накопления</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>Обездвиживания свободных поселенцев, непосредственно вызванные накоплением токсинов (Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>Обездвиживания из-за потасовок</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>Максимум убийств за один налёт</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>Наибольшее число врагов из одного отслеживаемого налёта, убитых стороной игрока во время этого налёта.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>Осады</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Налёты со стратегией Siege (осада).</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>Налёты со стратегией осады.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>Налёты с проломом</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>Налёты со стратегией пробивания укреплений (ImmediateAttackBreaching, ImmediateAttackBreachingSmart). Сапёры не включаются.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>Налёты с обычной или умной стратегией пробивания укреплений. Сапёры не включаются.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>Налёты с транспортными капсулами</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>Налёты с прибытием в транспортных капсулах (EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop).</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>Налёты с прибытием в транспортных капсулах (на край карты, группами у края, в центр или вразброс).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>Нашествия насекомых</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>Успешно запущенные события появления ульев насекомых (Infestation, DeepDrillInfestation). Другие события с насекомыми не учитываются.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>Успешно запущенные события нашествия насекомых, включая насекомых из недр. Другие события с насекомыми не учитываются.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>Кластеры механоидов</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>Успешно запущенные события с кластерами механоидов (Royalty). Обычные налёты механоидов не учитываются.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>Стаи агрессивных животных</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>Успешно запущенные события со стаями агрессивных животных (ManhunterPack).</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>Успешно запущенные события со стаями агрессивных животных.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>Самый долгий период без налётов</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>Наибольший интервал между последовательными записанными налётами без времени до первого и после последнего. То же значение, что максимальный промежуток между налётами (N2-C-002).</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>Наибольший интервал между последовательными записанными налётами без времени до первого и после последнего.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>Средний интервал между налётами</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>Среднее тех же интервалов; для всех колоний взвешивается по их количеству.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>Дни до первого налёта</RWS_Metric_RaidFirstDay>
@@ -745,7 +745,7 @@
   <RWS_Metric_RosterAnimalDefsPeak>Максимум видов животных колонии</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>Наибольшее число разных видов живых животных колонии в одном из записанных сохранений.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>Суточная потребность животных колонии в питании</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>Общее питание, которое живые животные колонии (на картах, в караванах и в пути — как в числе животных колонии) съедают за день, будучи сытыми, на момент успешного сохранения. Это расчёт самой игры, который показывается для каждого животного при загрузке каравана или транспортных капсул: он учитывает стадию жизни (детёныши едят меньше), беременность, лактацию и подобные состояния. Животные, которым не нужна еда, и животные в криокапсуле считаются как 0. Значение не сравнивается с запасами еды, поэтому дни запаса не показываются. Частично, если какое-то животное не удалось прочитать. Значение по всем колониям складывает последнее записанное сохранение каждой колонии.</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>Общее питание, которое живые животные колонии (на картах, в караванах и в пути — как в числе животных колонии) съедают за день, будучи сытыми, на момент успешного сохранения. Это расчёт самой игры, который показывается для каждого животного при загрузке каравана или транспортных капсул: он учитывает стадию жизни (детёныши едят меньше), беременность, лактацию и подобные состояния. Животные, которым не нужна еда, и животные в саркофаге криптосна считаются как 0. Значение не сравнивается с запасами еды, поэтому дни запаса не показываются. Частично, если какое-то животное не удалось прочитать. Значение по всем колониям складывает последнее записанное сохранение каждой колонии.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>Интерес поселенцев по навыкам</RWS_Metric_RosterPassions>
   <RWS_MetricDesc_RosterPassions>Интерес свободных поселенцев к каждому навыку (нет, слабый, сильный) на момент успешного сохранения.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>Средний возраст живых поселенцев</RWS_Metric_RosterAgeMean>
@@ -871,9 +871,9 @@
   <RWS_Metric_MinedByDef>Добытые ресурсы по предметам</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>Число единиц добытых ресурсов по типам, фактически размещённых в записанный период. Отдельный ряд данных; время до включения не оценивается.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Полностью убранная грязь</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>По одному за каждый полностью убранный пешкой игрока след грязи (обычная статистика игры «убранный мусор»). Частичное уменьшение толщины и целые задания уборки сюда не входят. Записывается только при включённом сборе.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>По одному за каждый полностью убранный пешкой игрока след грязи (обычная статистика игры «мусора убрано»). Частичное уменьшение толщины и целые задания уборки сюда не входят. Записывается только при включённом сборе.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Потушенные пожары</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>По одному за каждый огонь, потушенный пешкой игрока при тушении пожара или сбивании пламени с себя (обычная статистика «потушенные пожары»). Самопроизвольно угасший огонь не учитывается. Записывается только при включённом сборе.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>По одному за каждый огонь, потушенный пешкой игрока при тушении пожара или сбивании пламени с себя (обычная статистика «пожаров потушено»). Самопроизвольно угасший огонь не учитывается. Записывается только при включённом сборе.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Съеденные блюда</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Фактически съеденные блюда с положительной питательностью человекоподобными пешками фракции игрока. Каждое блюдо считается один раз, в том числе в караване. Прочая пища, наркотики и пешки других фракций исключаются.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Переноски в клетки хранилища</RWS_Metric_HaulPlacements>

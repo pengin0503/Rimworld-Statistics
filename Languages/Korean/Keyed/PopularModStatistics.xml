@@ -8,12 +8,12 @@
   <RWS_HospitalAdmissionsDesc>Hospital이 본거지 맵에 환자로 등록한 인원을 셉니다.</RWS_HospitalAdmissionsDesc>
   <RWS_MultistageEvents>다단계 사건 완료 수</RWS_MultistageEvents>
   <RWS_MultistageEventsDesc>최종 단계를 마치고 종료된 사건을 종류별로 셉니다.</RWS_MultistageEventsDesc>
-  <RWS_AwakenedDryads>각성 드라이어드 출현 수</RWS_AwakenedDryads>
-  <RWS_AwakenedDryadsDesc>본거지 맵에 실제로 출현한 각성 드라이어드를 종류별로 셉니다.</RWS_AwakenedDryadsDesc>
+  <RWS_AwakenedDryads>각성 나무지기 출현 수</RWS_AwakenedDryads>
+  <RWS_AwakenedDryadsDesc>본거지 맵에 실제로 출현한 각성 나무지기를 종류별로 셉니다.</RWS_AwakenedDryadsDesc>
   <RWS_ArchonReturns>초월한 아르콘 귀환 수</RWS_ArchonReturns>
   <RWS_ArchonReturnsDesc>플레이어 편의 초월한 아르콘이 실제로 본거지에 돌아온 횟수를 셉니다.</RWS_ArchonReturnsDesc>
   <RWS_StingerImplants>독침 유전자 이식 수</RWS_StingerImplants>
-  <RWS_StingerImplantsDesc>Alpha Genes의 독침으로 대상의 유전자나 제노타입이 바뀐 횟수를 셉니다.</RWS_StingerImplantsDesc>
+  <RWS_StingerImplantsDesc>Alpha Genes의 독침으로 대상의 유전자나 인종형이 바뀐 횟수를 셉니다.</RWS_StingerImplantsDesc>
   <RWS_PuppetsCreated>꼭두각시 생성 수</RWS_PuppetsCreated>
   <RWS_PuppetsCreatedDesc>플레이어 편의 꼭두각시술사에게 연결된 새 꼭두각시를 셉니다.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>꼭두각시술사 의식 전이 수</RWS_PuppetTransfers>

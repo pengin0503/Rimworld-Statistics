@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_VfeSpacer_RepairShelfHp>修復架恢復的耐久度</RWS_VfeSpacer_RepairShelfHp>
-  <RWS_VfeSpacer_RepairShelfHpDesc>統計玩家擁有的Vanilla Furniture Expanded - Spacer Module通電修復架為存放物品實際恢復的耐久度總計。</RWS_VfeSpacer_RepairShelfHpDesc>
+  <RWS_VfeSpacer_RepairShelfHp>修復架恢復的耐久值</RWS_VfeSpacer_RepairShelfHp>
+  <RWS_VfeSpacer_RepairShelfHpDesc>統計玩家擁有的Vanilla Furniture Expanded - Spacer Module通電修復架為存放物品實際恢復的耐久值總計。</RWS_VfeSpacer_RepairShelfHpDesc>
   <RWS_VfeSpacer_RepairShelfItems>修復架完全修復次數</RWS_VfeSpacer_RepairShelfItems>
   <RWS_VfeSpacer_RepairShelfItemsDesc>依物品種類統計透過Vanilla Furniture Expanded - Spacer Module修復架恢復至滿耐久的物品數量。</RWS_VfeSpacer_RepairShelfItemsDesc>
   <RWS_VweNonLethal_Downs>非致命武器擊倒敵人數</RWS_VweNonLethal_Downs>
