@@ -126,7 +126,9 @@ internal static class VqeDroneFactoryStatistics
         var hatch = AccessTools.DeclaredMethod(type, "Hatch", Type.EmptyTypes);
         var owned = AccessTools.DeclaredField(compType, "isPlayerDrone");
         var spawn = AccessTools.DeclaredMethod(typeof(PawnUtility),
-            "TrySpawnHatchedOrBornPawn", [typeof(Pawn), typeof(Thing)]);
+            nameof(PawnUtility.TrySpawnHatchedOrBornPawn), [typeof(Pawn), typeof(Thing), typeof(IntVec3?)])
+            ?? AccessTools.DeclaredMethod(typeof(PawnUtility),
+            nameof(PawnUtility.TrySpawnHatchedOrBornPawn), [typeof(Pawn), typeof(Thing)]);
         if (hatch?.ReturnType != typeof(void) || owned?.FieldType != typeof(bool) ||
             spawn?.ReturnType != typeof(bool))
             throw new InvalidOperationException("VQE hatcher or vanilla successful-spawn signature changed");

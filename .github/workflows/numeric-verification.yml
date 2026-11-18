@@ -130,6 +130,16 @@ jobs:
             .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll \
             .devinputs/integrated/dbh-3258/1.7/Assemblies/BadHygiene.dll
 
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          test -f "$game_ref"
+          dotnet tools/IntegratedModAudit/AdapterSignatureAudit/bin/Release/net10.0/AdapterSignatureAudit.dll \
+            .devinputs/integrated --game-dll "$game_ref"
+          if dotnet tools/IntegratedModAudit/AdapterSignatureAudit/bin/Release/net10.0/AdapterSignatureAudit.dll \
+            .devinputs/integrated --override giddyup=.devinputs/integrated/vse/1.7/Assemblies/VSE.dll; then
+            echo "Adapter signature audit accepted swapped/incorrect target assembly" >&2
+            exit 1
+          fi
+
       - name: Static packaging/hook guards and Python tool unit tests
         shell: bash
         run: |

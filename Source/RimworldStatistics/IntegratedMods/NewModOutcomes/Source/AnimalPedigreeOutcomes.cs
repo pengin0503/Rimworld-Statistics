@@ -33,7 +33,7 @@ internal static class AnimalPedigreeOutcomes
             throw new InvalidOperationException("Animal Genetics pedigree signature changed");
 
         var method = OutcomeMetric.Method(typeof(PawnUtility), nameof(PawnUtility.TrySpawnHatchedOrBornPawn),
-            typeof(bool), typeof(Pawn), typeof(Thing));
+            typeof(bool), typeof(Pawn), typeof(Thing), typeof(IntVec3?));
         OutcomeMetric.Patch(harmony, method, typeof(AnimalPedigreeOutcomes));
     }
 

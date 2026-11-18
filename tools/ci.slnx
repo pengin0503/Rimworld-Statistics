@@ -17,4 +17,5 @@
   <Project Path="IntegratedModAudit/VpeCastIlAudit/VpeCastIlAudit.csproj" />
   <Project Path="IntegratedModAudit/VteIlAudit/VteIlAudit.csproj" />
   <Project Path="IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj" />
+  <Project Path="IntegratedModAudit/AdapterSignatureAudit/AdapterSignatureAudit.csproj" />
 </Solution>

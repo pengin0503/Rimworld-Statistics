@@ -89,9 +89,12 @@ internal static class VfeFactoryStatistics
         var cells = AccessTools.DeclaredMethod(type, "GetRowCells", [typeof(int)]);
         var buffer = AccessTools.DeclaredField(type, "harvestStorageThings");
         var plant = AccessTools.DeclaredField(type, "plantDefToGrow");
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), "TryPlaceThing",
+        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
             [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing,int>), typeof(Predicate<IntVec3>)]);
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
+            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
+            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
+             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
         if (row?.ReturnType != typeof(void) ||
             cells is null || !typeof(IEnumerable<IntVec3>).IsAssignableFrom(cells.ReturnType) ||
             buffer is null || !typeof(IList).IsAssignableFrom(buffer.FieldType) ||
