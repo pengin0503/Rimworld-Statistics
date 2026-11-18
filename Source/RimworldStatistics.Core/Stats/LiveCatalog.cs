@@ -104,7 +104,9 @@ public static class LiveCatalog
         Live(RaidFamily.MeanGap, "N2-C-001", Defense, Days, Ratio, RaidFamily.Name, "RWS_Metric_RaidMeanGap", "RWS_MetricDesc_RaidMeanGap"),
         Live(RaidFamily.FirstDay, "N5-M-001", Defense, Days, Min, RaidFamily.Name, "RWS_Metric_RaidFirstDay", "RWS_MetricDesc_RaidFirstDay"),
         Live(RaidFamily.Retreated, "N2-C-011", Defense, Count, Sum, RaidFamily.Name, "RWS_Metric_RaidsRetreated", "RWS_MetricDesc_RaidsRetreated"),
+        Live(RaidFamily.RetreatedByFaction, "N2-C-011-FAC", Defense, Count, Sum, RaidFamily.Name, "RWS_Metric_RaidsRetreatedByFaction", "RWS_MetricDesc_RaidsRetreatedByFaction", breakdown: true),
         Live(RaidFamily.Wiped, "N2-C-012", Defense, Count, Sum, RaidFamily.Name, "RWS_Metric_RaidsWiped", "RWS_MetricDesc_RaidsWiped"),
+        Live(RaidFamily.WipedByFaction, "N2-C-012-FAC", Defense, Count, Sum, RaidFamily.Name, "RWS_Metric_RaidsWipedByFaction", "RWS_MetricDesc_RaidsWipedByFaction", breakdown: true),
         Live(RaidFamily.RepelledRate, "N1-B-010", Defense, Percent, Ratio, RaidFamily.Name, "RWS_Metric_RaidRepelledRate", "RWS_MetricDesc_RaidRepelledRate"),
         Live(RaidFamily.RepelledNoDown, "N1-B-009", Defense, Count, Sum, RaidFamily.Name, "RWS_Metric_RaidRepelledNoDown", "RWS_MetricDesc_RaidRepelledNoDown"),
         Live(RaidFamily.DurationMean, "N1-B-008", Defense, Days, Ratio, RaidFamily.Name, "RWS_Metric_RaidDurationMean", "RWS_MetricDesc_RaidDurationMean"),
@@ -153,9 +155,13 @@ public static class LiveCatalog
 
         // C2 · animals
         Live(AnimalsFamily.Tames, "A-001", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsTamed", "RWS_MetricDesc_AnimalsTamed"),
+        Live(AnimalsFamily.TamesBySpecies, "A-001-SPECIES", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsTamedBySpecies", "RWS_MetricDesc_AnimalsTamedBySpecies", breakdown: true),
         Live(AnimalsFamily.Births, "A-002", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalBirths", "RWS_MetricDesc_AnimalBirths"),
+        Live(AnimalsFamily.BirthsBySpecies, "A-002-SPECIES", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalBirthsBySpecies", "RWS_MetricDesc_AnimalBirthsBySpecies", breakdown: true),
         Live(AnimalsFamily.Slaughtered, "A-004", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsSlaughtered", "RWS_MetricDesc_AnimalsSlaughtered"),
+        Live(AnimalsFamily.SlaughteredBySpecies, "A-004-SPECIES", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsSlaughteredBySpecies", "RWS_MetricDesc_AnimalsSlaughteredBySpecies", breakdown: true),
         Live(AnimalsFamily.Hunted, "N1-D-006", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsHunted", "RWS_MetricDesc_AnimalsHunted"),
+        Live(AnimalsFamily.HuntedBySpecies, "N1-D-006-SPECIES", Animals, Count, Sum, AnimalsFamily.Name, "RWS_Metric_AnimalsHuntedBySpecies", "RWS_MetricDesc_AnimalsHuntedBySpecies", breakdown: true),
 
         // C3 · work
         Live(ChoreFamily.SlaughteredButchery, "P2-W-008", Work, Count, Sum, ChoreFamily.Name, "RWS_Metric_SlaughteredButchery", "RWS_MetricDesc_SlaughteredButchery"),
@@ -288,16 +294,21 @@ public static class LiveCatalog
         Live(CaravanFamily.AncientDangersOpened, "Q-014", Explore, Count, Sum, CaravanFamily.Name, "RWS_Metric_AncientDangersOpened", "RWS_MetricDesc_AncientDangersOpened"),
         // D2 · royalty (only audited title and honor state transitions)
         Live(RoyaltyFamily.PermitUses, "L-002", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPermitUses", "RWS_MetricDesc_RoyaltyPermitUses"),
+        Live(RoyaltyFamily.PermitUsesByDef, "L-002-DEF", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPermitUsesByDef", "RWS_MetricDesc_RoyaltyPermitUsesByDef", breakdown: true),
         Live(RoyaltyFamily.Psycasts, "L-005", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPsycasts", "RWS_MetricDesc_RoyaltyPsycasts"),
+        Live(RoyaltyFamily.PsycastsByDef, "L-005-DEF", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyPsycastsByDef", "RWS_MetricDesc_RoyaltyPsycastsByDef", breakdown: true),
         Live(RoyaltyFamily.TitleGrants, "L-001", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyTitleGrants", "RWS_MetricDesc_RoyaltyTitleGrants"),
         Live(RoyaltyFamily.HighestTitle, "L-004", MetricCategory.Royalty, Count, Max, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHighestTitle", "RWS_MetricDesc_RoyaltyHighestTitle", breakdown: true),
         Live(RoyaltyFamily.Honor, "N1-E-006", MetricCategory.Royalty, Count, Sum, RoyaltyFamily.Name, "RWS_Metric_RoyaltyHonor", "RWS_MetricDesc_RoyaltyHonor", breakdown: true),
+        Live(RoyaltyLinkingFamily.AnimaTreeLinks, "L-ROY-003", MetricCategory.Royalty, Count, Sum, RoyaltyLinkingFamily.Name, "RWS_Metric_RoyaltyAnimaLinks", "RWS_MetricDesc_RoyaltyAnimaLinks"),
         // D2 · ideology: actual existing-ideology changes on the player side
         Live(IdeologyFamily.Conversions, "L-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyConversions", "RWS_MetricDesc_IdeologyConversions"),
         Live(IdeologyFamily.RitualResults, "L-008", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyRitualResults", "RWS_MetricDesc_IdeologyRitualResults", breakdown: true),
         Live(IdeologyFamily.RitualSuccessRate, "L-009", MetricCategory.Ideology, Percent, Ratio, IdeologyFamily.Name, "RWS_Metric_IdeologyRitualRate", "RWS_MetricDesc_IdeologyRitualRate"),
         Live(IdeologyFamily.ConversionDaysMean, "L-010", MetricCategory.Ideology, Days, Ratio, IdeologyFamily.Name, "RWS_Metric_IdeologyConversionDays", "RWS_MetricDesc_IdeologyConversionDays"),
         Live(IdeologyFamily.RoleAppointments, "N1-E-007", MetricCategory.Ideology, Count, Sum, IdeologyFamily.Name, "RWS_Metric_IdeologyAppointments", "RWS_MetricDesc_IdeologyAppointments"),
+        Live(IdeologyExpansionFamily.PrisonersEnslaved, "L-IDEO-001", MetricCategory.Ideology, Count, Sum, IdeologyExpansionFamily.Name, "RWS_Metric_IdeologyPrisonersEnslaved", "RWS_MetricDesc_IdeologyPrisonersEnslaved"),
+        Live(IdeologyExpansionFamily.BiosculpterCompletions, "L-IDEO-002", MetricCategory.Ideology, Count, Sum, IdeologyExpansionFamily.Name, "RWS_Metric_IdeologyBiosculpterCompletions", "RWS_MetricDesc_IdeologyBiosculpterCompletions", breakdown: true),
         // D2 · odyssey: Core completion accounting, waiting for audited landing hook and stable flight identity
         Live(OdysseyFamily.Flights, "L-022", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyFlights", "RWS_MetricDesc_OdysseyFlights"),
         Live(OdysseyFamily.Distance, "L-023", MetricCategory.Odyssey, Count, Sum, OdysseyFamily.Name, "RWS_Metric_OdysseyDistance", "RWS_MetricDesc_OdysseyDistance"),

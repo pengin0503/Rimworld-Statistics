@@ -9,6 +9,7 @@ public enum ChronicleKindFilter
     Highlights,
     IntervalsAndGaps,
     Research,
+    Tales,
 }
 
 /// <summary>Validation state of the optional in-game start/end day inputs in the colony chronicle viewer.</summary>
@@ -172,13 +173,15 @@ public sealed record ChronicleFilterResult<TEntry, TTrace>(
     int MatchingHighlightsCount,
     int MatchingIntervalsAndGapsCount,
     int MatchingResearchCount,
-    int HiddenUndatedTraceCountByDayRange)
+    int HiddenUndatedTraceCountByDayRange,
+    int MatchingTalesCount = 0)
 {
     public int FilterCount(ChronicleKindFilter mode) => mode switch
     {
         ChronicleKindFilter.Highlights => MatchingHighlightsCount,
         ChronicleKindFilter.IntervalsAndGaps => MatchingIntervalsAndGapsCount,
         ChronicleKindFilter.Research => MatchingResearchCount,
+        ChronicleKindFilter.Tales => MatchingTalesCount,
         _ => MatchingAllCount,
     };
 }
@@ -199,6 +202,7 @@ public static class ColonyChronicleFilter
             ChronicleKindFilter.Highlights => entry.Kind is ChronicleEntryKind.Ending or ChronicleEntryKind.Milestone,
             ChronicleKindFilter.IntervalsAndGaps => entry.Kind is ChronicleEntryKind.VerifiedInterval or ChronicleEntryKind.RecordingGap,
             ChronicleKindFilter.Research => entry.Kind == ChronicleEntryKind.ResearchCompleted,
+            ChronicleKindFilter.Tales => entry.Kind == ChronicleEntryKind.HistoricalTale,
             _ => true,
         };
     }
@@ -325,11 +329,12 @@ public static class ColonyChronicleFilter
                 MatchingHighlightsCount: 0,
                 MatchingIntervalsAndGapsCount: 0,
                 MatchingResearchCount: 0,
-                HiddenUndatedTraceCountByDayRange: 0);
+                HiddenUndatedTraceCountByDayRange: 0,
+                MatchingTalesCount: 0);
         }
 
         var rows = new List<TEntry>(entries.Count);
-        int allCount = 0, highlightsCount = 0, intervalsAndGapsCount = 0, researchCount = 0;
+        int allCount = 0, highlightsCount = 0, intervalsAndGapsCount = 0, researchCount = 0, talesCount = 0;
         var term = (query.SearchText ?? string.Empty).AsSpan().Trim();
 
         for (var i = 0; i < entries.Count; i++)
@@ -347,6 +352,8 @@ public static class ColonyChronicleFilter
                 intervalsAndGapsCount++;
             if (MatchesKind(candidate.Entry, ChronicleKindFilter.Research))
                 researchCount++;
+            if (MatchesKind(candidate.Entry, ChronicleKindFilter.Tales))
+                talesCount++;
 
             if (MatchesKind(candidate.Entry, query.Kind))
                 rows.Add(candidate.Payload);
@@ -365,7 +372,8 @@ public static class ColonyChronicleFilter
                 MatchingHighlightsCount: highlightsCount,
                 MatchingIntervalsAndGapsCount: intervalsAndGapsCount,
                 MatchingResearchCount: researchCount,
-                HiddenUndatedTraceCountByDayRange: undatedTraces.Count);
+                HiddenUndatedTraceCountByDayRange: undatedTraces.Count,
+                MatchingTalesCount: talesCount);
         }
 
         List<TTrace> keptTraces;
@@ -393,7 +401,8 @@ public static class ColonyChronicleFilter
             MatchingHighlightsCount: highlightsCount,
             MatchingIntervalsAndGapsCount: intervalsAndGapsCount,
             MatchingResearchCount: researchCount,
-            HiddenUndatedTraceCountByDayRange: 0);
+            HiddenUndatedTraceCountByDayRange: 0,
+            MatchingTalesCount: talesCount);
     }
 
     private static bool ContainsIgnoreCase(string? text, ReadOnlySpan<char> term)

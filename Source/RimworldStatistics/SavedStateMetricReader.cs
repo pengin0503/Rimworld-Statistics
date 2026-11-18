@@ -16,7 +16,7 @@ internal static class SavedStateMetricReader
     private static readonly AccessTools.FieldRef<GameComponent_Bossgroup, Dictionary<BossgroupDef, int>> BossgroupsCalledField =
         AccessTools.FieldRefAccess<GameComponent_Bossgroup, Dictionary<BossgroupDef, int>>("timesCalledBossgroups");
 
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", AnomalyStateSnapshot.Unit, OdysseyStateSnapshot.Unit, OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", IdeologyStateSnapshot.Unit, "biotech_state", AnomalyStateSnapshot.Unit, OdysseyStateSnapshot.Unit, OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -63,6 +63,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "royalty_quests")
                     foreach (var (key, value) in ReadRoyaltyQuests())
+                        observation.Metrics[key] = value;
+                else if (unit == IdeologyStateSnapshot.Unit)
+                    foreach (var (key, value) in ReadIdeologyState())
                         observation.Metrics[key] = value;
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
@@ -124,18 +127,29 @@ internal static class SavedStateMetricReader
                         yield return new DbhFixture(building.def?.defName, building.def?.modContentPack?.PackageId, true);
     }
 
-    /// <summary>Biome of the original game starting tile; relocation never changes the category.</summary>
+    /// <summary>Biome of the original game starting tile and immutable <c>WorldInfo</c> settings; relocation never changes the category.</summary>
     private static Dictionary<string, MetricEntry> ReadColonyStart()
     {
         var startingTile = Find.GameInfo.startingTile;
-        if (!startingTile.Valid)
-            return ColonyStartSnapshot.Build(null);
-        // PlanetTile is stable across saving and reloading; unlike any currently
-        // loaded player's home map, this is the game's original start location.
-        var grid = Find.World?.grid;
-        var biomeDef = grid is not null && grid.InBounds(startingTile)
-            ? grid[startingTile]?.PrimaryBiome?.defName : null;
-        return ColonyStartSnapshot.Build(biomeDef);
+        string? biomeDef = null;
+        if (startingTile.Valid)
+        {
+            // PlanetTile is stable across saving and reloading; unlike any currently
+            // loaded player's home map, this is the game's original start location.
+            var grid = Find.World?.grid;
+            biomeDef = grid is not null && grid.InBounds(startingTile)
+                ? grid[startingTile]?.PrimaryBiome?.defName : null;
+        }
+
+        var info = Find.World?.info;
+        return ColonyStartSnapshot.Build(
+            biomeDef,
+            overallTemperature: info?.overallTemperature.ToString(),
+            overallRainfall: info?.overallRainfall.ToString(),
+            worldPollution: info is not null ? info.pollution : null,
+            initialMapWidth: info is not null && info.initialMapSize.x > 0 ? info.initialMapSize.x : null,
+            initialMapHeight: info is not null && info.initialMapSize.z > 0 ? info.initialMapSize.z : null,
+            biotechActive: ModsConfig.BiotechActive);
     }
 
     private static Dictionary<string, MetricEntry> ReadResearch()
@@ -217,7 +231,8 @@ internal static class SavedStateMetricReader
                 facts.Add(new RosterPawnFact
                 {
                     Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName,
-                    Species = animal ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName)
+                    Species = (animal || kind == RosterKind.ColonyMech)
+                        ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName)
                         : GameFacts.Species(pawn),
                     Xenotype = humanlike ? GameFacts.Xenotype(pawn) : null,
                     NutritionPerDay = animal ? AnimalNutritionPerDay(pawn) : null,
@@ -684,6 +699,79 @@ internal static class SavedStateMetricReader
         }
 
         return OdysseyStateSnapshot.Build(bestSubstructure, bestThrusters, uniqueWeapons, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadIdeologyState()
+    {
+        if (!ModsConfig.IdeologyActive)
+            throw new InvalidOperationException("Ideology DLC is disabled");
+        var player = Faction.OfPlayerSilentFail
+            ?? throw new InvalidOperationException("Player faction is not initialized");
+        var ideos = player.ideos
+            ?? throw new InvalidOperationException("Player faction ideos tracker is not initialized");
+
+        var partial = false;
+        int? fluidReforms = null;
+        try
+        {
+            if (ideos.FluidIdeo is { } fluid)
+                fluidReforms = fluid.development?.reformCount ?? 0;
+        }
+        catch (Exception)
+        {
+            partial = true;
+        }
+
+        var connectedTrees = 0;
+        foreach (var map in Find.Maps)
+        {
+            if (map is not { IsPlayerHome: true })
+                continue;
+            try
+            {
+                foreach (var thing in map.listerThings.ThingsInGroup(ThingRequestGroup.Plant))
+                {
+                    if (thing is null || thing.Destroyed || !thing.Spawned)
+                        continue;
+                    if (thing.TryGetComp<CompTreeConnection>() is { Connected: true } tc
+                        && tc.ConnectedPawn is { Dead: false } cp
+                        && cp.Faction == player)
+                    {
+                        connectedTrees++;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+
+        int? collectedRelics = null;
+        try
+        {
+            if (ideos.PrimaryIdeo is { } primary && primary.PreceptsListForReading is { } precepts)
+            {
+                var totalRelics = 0;
+                var ownedRelics = 0;
+                foreach (var precept in precepts)
+                {
+                    if (precept is not Precept_Relic relic)
+                        continue;
+                    totalRelics++;
+                    if (relic.RelicInPlayerPossession)
+                        ownedRelics++;
+                }
+                if (totalRelics > 0)
+                    collectedRelics = ownedRelics;
+            }
+        }
+        catch (Exception)
+        {
+            partial = true;
+        }
+
+        return IdeologyStateSnapshot.Build(fluidReforms, connectedTrees, collectedRelics, partial);
     }
 
 }

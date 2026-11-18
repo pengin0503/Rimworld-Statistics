@@ -36,6 +36,14 @@ public sealed class SaveObservation
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public string? ContentHash { get; set; }
 
+    /// <summary>
+    /// Auxiliary permanent RimWorld tales (<c>TileSettled</c>, <c>Marriage</c>, <c>MajorThreat</c>) converted from saved
+    /// <c>TicksAbs</c> to colony-relative <c>TicksGame</c>. Strictly for branch-scoped chronicle display; never summed into
+    /// numeric statistics, and devoid of pawn/settlement names.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public List<PermanentTaleFact>? PermanentTales { get; set; }
+
     /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
     [System.Text.Json.Serialization.JsonExtensionData]
     public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }
@@ -50,3 +58,14 @@ public sealed class SaveObservation
         => FileName == other.FileName && SameFileContent(other.FileSize, other.LastWriteUtc)
             && (ContentHash is null || other.ContentHash is null || ContentHash == other.ContentHash);
 }
+
+/// <summary>Audited permanent RimWorld <c>TaleDef</c>s (<c>expireDays == -1</c>) surfaced as auxiliary chronicle entries.</summary>
+public enum PermanentTaleKind
+{
+    TileSettled,
+    Marriage,
+    MajorThreat,
+}
+
+/// <summary>Detached, name-free permanent tale timestamp converted to colony-relative <c>TicksGame</c>.</summary>
+public sealed record PermanentTaleFact(PermanentTaleKind Kind, int Id, int TicksGame);

@@ -72,6 +72,15 @@ public static class CrossColonyCatalog
         FishingFamily.AcceptedUnitsByDef,
         HealthDeathFamily.DeathsBySpecies,
         MembershipFamily.JoinsBySpecies,
+        MembershipFamily.HumanBirthsBySpecies,
+        AnimalsFamily.TamesBySpecies,
+        AnimalsFamily.BirthsBySpecies,
+        AnimalsFamily.SlaughteredBySpecies,
+        AnimalsFamily.HuntedBySpecies,
+        RosterSnapshot.FreeSpeciesPeak,
+        RosterSnapshot.PrisonerSpeciesPeak,
+        RosterSnapshot.SlaveSpeciesPeak,
+        RosterSnapshot.MechSpeciesPeak,
         OutpostProduction.ByDef,
     };
 

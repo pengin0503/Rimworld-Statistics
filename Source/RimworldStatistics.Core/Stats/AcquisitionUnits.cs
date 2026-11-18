@@ -77,12 +77,15 @@ public static class AcquisitionUnits
 
         // Phase D2
         new("royalty", AcquisitionKind.Family, U, Royalty),
+        new(RoyaltyLinkingFamily.Name, AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.EventUnit, AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.CastUnit, AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.SnapshotUnit, AcquisitionKind.Snapshot, U, Royalty),
         new("royalty_state", AcquisitionKind.Snapshot, U, Royalty),
         new("royalty_quests", AcquisitionKind.Snapshot, U, Royalty),
         new("ideology", AcquisitionKind.Family, U, Ideology),
+        new(IdeologyExpansionFamily.Name, AcquisitionKind.Family, U, Ideology),
+        new(IdeologyStateSnapshot.Unit, AcquisitionKind.Snapshot, U, Ideology),
         new("biotech", AcquisitionKind.Family, U, Biotech),
         new(BiotechGeneticsFamily.Name, AcquisitionKind.Family, U, Biotech),
         new("biotech_state", AcquisitionKind.Snapshot, U, Biotech),

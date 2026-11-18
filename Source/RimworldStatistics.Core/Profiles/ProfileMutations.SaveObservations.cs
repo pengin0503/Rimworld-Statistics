@@ -119,7 +119,20 @@ public static partial class ProfileMutations
             && ContainsAllDefault(older.EndingTraces, newer.EndingTraces)
             && ContainsAllDefault(older.Lineage, newer.Lineage)
             && ContainsAllExplainedTraces(older.ExplainedTraces, newer.EndingTraces, newer.ExplainedTraces)
+            && ContainsAllOptional(older.PermanentTales, newer.PermanentTales)
             && ContainsAllOrdinal(older.Identity.StartingPawnIds, newer.Identity.StartingPawnIds);
+    }
+
+    private static bool ContainsAllOptional<T>(List<T>? required, List<T>? container)
+    {
+        if (required is not { Count: > 0 })
+            return true;
+        if (container is not { Count: > 0 })
+            return false;
+        for (var i = 0; i < required.Count; i++)
+            if (!container.Contains(required[i]))
+                return false;
+        return true;
     }
 
     private static bool ContainsAllDefault<T>(List<T> required, List<T> container)

@@ -75,4 +75,70 @@
   <RWS_Chronicle_Milestone_BossDiabolus>メカニターボス「ディアボルス」撃破</RWS_Chronicle_Milestone_BossDiabolus>
   <RWS_Chronicle_Milestone_BossWarqueen>メカニターボス「ウォークイーン」撃破</RWS_Chronicle_Milestone_BossWarqueen>
   <RWS_Chronicle_Milestone_BossApocriton>メカニターボス「アポクリトン」撃破</RWS_Chronicle_Milestone_BossApocriton>
+  <RWS_AcqUnit_royalty_linking>Royalty: アニマ木リンク（出来事）</RWS_AcqUnit_royalty_linking>
+  <RWS_AcqUnit_ideology_expansion>Ideology: 奴隷化・生体彫刻（出来事）</RWS_AcqUnit_ideology_expansion>
+  <RWS_AcqUnit_ideology_state>Ideology: 改革・ガウランレン・聖遺物（セーブ時点）</RWS_AcqUnit_ideology_state>
+  <RWS_Metric_WorldTemperature>惑星の全体気温</RWS_Metric_WorldTemperature>
+  <RWS_MetricDesc_WorldTemperature>コロニーが属するワールド生成時の全体気温設定。</RWS_MetricDesc_WorldTemperature>
+  <RWS_Metric_WorldRainfall>惑星の全体降水量</RWS_Metric_WorldRainfall>
+  <RWS_MetricDesc_WorldRainfall>コロニーが属するワールド生成時の全体降水量設定。</RWS_MetricDesc_WorldRainfall>
+  <RWS_Metric_WorldPollution>惑星の汚染率</RWS_Metric_WorldPollution>
+  <RWS_MetricDesc_WorldPollution>コロニーが属するワールド地表の汚染割合。</RWS_MetricDesc_WorldPollution>
+  <RWS_Metric_InitialMapSize>初期マップセル数</RWS_Metric_InitialMapSize>
+  <RWS_MetricDesc_InitialMapSize>ワールド生成時の初期マップ総セル数（内訳に寸法を表示）。</RWS_MetricDesc_InitialMapSize>
+  <RWS_WorldTemp_VeryCold>極寒</RWS_WorldTemp_VeryCold>
+  <RWS_WorldTemp_Cold>寒冷</RWS_WorldTemp_Cold>
+  <RWS_WorldTemp_LittleBitColder>やや寒冷</RWS_WorldTemp_LittleBitColder>
+  <RWS_WorldTemp_Normal>標準</RWS_WorldTemp_Normal>
+  <RWS_WorldTemp_LittleBitWarmer>やや温暖</RWS_WorldTemp_LittleBitWarmer>
+  <RWS_WorldTemp_Hot>高温</RWS_WorldTemp_Hot>
+  <RWS_WorldTemp_VeryHot>酷暑</RWS_WorldTemp_VeryHot>
+  <RWS_WorldRain_AlmostNone>ほぼ皆無</RWS_WorldRain_AlmostNone>
+  <RWS_WorldRain_Little>少雨</RWS_WorldRain_Little>
+  <RWS_WorldRain_LittleBitLess>やや少雨</RWS_WorldRain_LittleBitLess>
+  <RWS_WorldRain_Normal>標準</RWS_WorldRain_Normal>
+  <RWS_WorldRain_LittleBitMore>やや多雨</RWS_WorldRain_LittleBitMore>
+  <RWS_WorldRain_High>多雨</RWS_WorldRain_High>
+  <RWS_WorldRain_VeryHigh>豪雨</RWS_WorldRain_VeryHigh>
+  <RWS_Metric_MechSpeciesPeak>機種別の自勢力メカノイド数ピーク</RWS_Metric_MechSpeciesPeak>
+  <RWS_MetricDesc_MechSpeciesPeak>保存成功時点で生存していた自勢力メカノイドの数を、機種ごとに最大値で集計します。</RWS_MetricDesc_MechSpeciesPeak>
+  <RWS_Metric_IdeologyFluidReforms>流動イデオロギー改革回数</RWS_Metric_IdeologyFluidReforms>
+  <RWS_MetricDesc_IdeologyFluidReforms>保存成功時点までに完了した流動イデオロギーの改革回数（固定イデオロギーでは対象外、1.7過去セーブからの保守的復元を含む）。</RWS_MetricDesc_IdeologyFluidReforms>
+  <RWS_Metric_IdeologyGauranlenPeak>接続ガウランレンの木数ピーク</RWS_Metric_IdeologyGauranlenPeak>
+  <RWS_MetricDesc_IdeologyGauranlenPeak>保存成功時点でホームマップ上にあり、生存する自勢力ポーンと接続されていたガウランレンの木数の最大値。</RWS_MetricDesc_IdeologyGauranlenPeak>
+  <RWS_Metric_IdeologyRelicsPeak>保有イデオロギー聖遺物数ピーク</RWS_Metric_IdeologyRelicsPeak>
+  <RWS_MetricDesc_IdeologyRelicsPeak>保存成功時点で自勢力が確保・保有していた主要イデオロギー聖遺物数の最大値。</RWS_MetricDesc_IdeologyRelicsPeak>
+  <RWS_Metric_IdeologyPrisonersEnslaved>囚人の奴隷化数</RWS_Metric_IdeologyPrisonersEnslaved>
+  <RWS_MetricDesc_IdeologyPrisonersEnslaved>記録期間中に自勢力の囚人を新たに奴隷化した確定回数。</RWS_MetricDesc_IdeologyPrisonersEnslaved>
+  <RWS_Metric_IdeologyBiosculpterCompletions>サイクル別の生体彫刻ポッド完了数</RWS_Metric_IdeologyBiosculpterCompletions>
+  <RWS_MetricDesc_IdeologyBiosculpterCompletions>自勢力の生体彫刻ポッドでコロニー側ポーンに対して完了したサイクル数と種別内訳。</RWS_MetricDesc_IdeologyBiosculpterCompletions>
+  <RWS_Biosculpter_Medic>治療サイクル</RWS_Biosculpter_Medic>
+  <RWS_Biosculpter_Bioregeneration>生体再生サイクル</RWS_Biosculpter_Bioregeneration>
+  <RWS_Biosculpter_AgeReversal>若返りサイクル</RWS_Biosculpter_AgeReversal>
+  <RWS_Biosculpter_Pleasure>快楽サイクル</RWS_Biosculpter_Pleasure>
+  <RWS_Metric_RoyaltyPermitUsesByDef>許可証別の帝国許可証使用回数</RWS_Metric_RoyaltyPermitUsesByDef>
+  <RWS_MetricDesc_RoyaltyPermitUsesByDef>コロニー側ポーンが発動した帝国称号許可証の確定使用回数を許可証種別ごとに集計します。</RWS_MetricDesc_RoyaltyPermitUsesByDef>
+  <RWS_Metric_RoyaltyPsycastsByDef>能力別の超能力発動回数</RWS_Metric_RoyaltyPsycastsByDef>
+  <RWS_MetricDesc_RoyaltyPsycastsByDef>コロニー側ポーンが発動したバニラ超能力の確定回数を超能力ごとに集計します。</RWS_MetricDesc_RoyaltyPsycastsByDef>
+  <RWS_Metric_RoyaltyAnimaLinks>アニマ木リンク完了数</RWS_Metric_RoyaltyAnimaLinks>
+  <RWS_MetricDesc_RoyaltyAnimaLinks>コロニー側ポーンがリンク儀式を完了しサイリンク段階を獲得した回数。</RWS_MetricDesc_RoyaltyAnimaLinks>
+  <RWS_Metric_RaidsRetreatedByFaction>勢力別の襲撃撃退（撤退）数</RWS_Metric_RaidsRetreatedByFaction>
+  <RWS_MetricDesc_RaidsRetreatedByFaction>記録期間中に撤退させて撃退した敵襲撃を、攻撃元の勢力種別ごとに集計します。</RWS_MetricDesc_RaidsRetreatedByFaction>
+  <RWS_Metric_RaidsWipedByFaction>勢力別の襲撃殲滅数</RWS_Metric_RaidsWipedByFaction>
+  <RWS_MetricDesc_RaidsWipedByFaction>記録期間中に全滅させた敵襲撃を、攻撃元の勢力種別ごとに集計します。</RWS_MetricDesc_RaidsWipedByFaction>
+  <RWS_Metric_AnimalsTamedBySpecies>種別の動物手懐け数</RWS_Metric_AnimalsTamedBySpecies>
+  <RWS_MetricDesc_AnimalsTamedBySpecies>プレイヤー勢力へ手懐けた野生動物を動物の種ごとに集計します。</RWS_MetricDesc_AnimalsTamedBySpecies>
+  <RWS_Metric_AnimalBirthsBySpecies>種別の動物出生・孵化数</RWS_Metric_AnimalBirthsBySpecies>
+  <RWS_MetricDesc_AnimalBirthsBySpecies>プレイヤー勢力で誕生または孵化した動物を動物の種ごとに集計します。</RWS_MetricDesc_AnimalBirthsBySpecies>
+  <RWS_Metric_AnimalsSlaughteredBySpecies>種別の動物屠殺数</RWS_Metric_AnimalsSlaughteredBySpecies>
+  <RWS_MetricDesc_AnimalsSlaughteredBySpecies>処置によって屠殺されたプレイヤー勢力の動物を動物の種ごとに集計します。</RWS_MetricDesc_AnimalsSlaughteredBySpecies>
+  <RWS_Metric_AnimalsHuntedBySpecies>種別の狩猟討伐数</RWS_Metric_AnimalsHuntedBySpecies>
+  <RWS_MetricDesc_AnimalsHuntedBySpecies>自勢力ポーンの狩猟によって討伐した野生動物を動物の種ごとに集計します。</RWS_MetricDesc_AnimalsHuntedBySpecies>
+  <RWS_Chronicle_Kind_Tale>歴史逸話</RWS_Chronicle_Kind_Tale>
+  <RWS_Chronicle_Evidence_SaveTale>セーブ逸話記録</RWS_Chronicle_Evidence_SaveTale>
+  <RWS_Chronicle_FilterTales>歴史逸話</RWS_Chronicle_FilterTales>
+  <RWS_Chronicle_Tale_TileSettled>入植地の設営（セーブ逸話）</RWS_Chronicle_Tale_TileSettled>
+  <RWS_Chronicle_Tale_Marriage>入植者の結婚記録（セーブ逸話）</RWS_Chronicle_Tale_Marriage>
+  <RWS_Chronicle_Tale_MajorThreat>重大脅威との遭遇（セーブ逸話）</RWS_Chronicle_Tale_MajorThreat>
+  <RWS_Chronicle_TipAuxiliaryTale>セーブ内の永続逸話（Tale）から復元された年表補助記録です。数値統計の累計には合算されません。</RWS_Chronicle_TipAuxiliaryTale>
 </LanguageData>

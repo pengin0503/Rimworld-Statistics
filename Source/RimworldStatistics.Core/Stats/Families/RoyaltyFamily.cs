@@ -8,10 +8,14 @@ public static class RoyaltyFamily
     public const string HighestTitle = "royalty.highest_title";
     public const string Honor = "royalty.honor";
     public const string PermitUses = "royalty.permit_uses";
+    public const string PermitUsesByDef = "royalty.permit_uses_by_def";
     public const string Psycasts = "royalty.psycasts";
+    public const string PsycastsByDef = "royalty.psycasts_by_def";
     private const string Grants = "grants";
     private const string UsedPermits = "permits_used";
+    private const string UsedPermitsByDef = "permits_used_by_def";
     private const string CastPsycasts = "psycasts";
+    private const string CastPsycastsByDef = "psycasts_by_def";
     private const string Titles = "title";
     private const string HonorGained = "honor_gained";
     private const string HonorSpent = "honor_spent";
@@ -46,24 +50,37 @@ public static class RoyaltyFamily
     }
 
     /// <summary>Count only a permit belonging to a free player colonist once it was actually used.</summary>
-    public static void PermitUsed(FamilyState s, bool playerOwned, bool confirmed)
+    public static void PermitUsed(FamilyState s, bool playerOwned, bool confirmed, string? permitDefKey = null)
     {
-        if (playerOwned && confirmed)
-            s.Count(UsedPermits);
+        if (!playerOwned || !confirmed)
+            return;
+        s.Count(UsedPermits);
+        if (permitDefKey is not null)
+            OptionalTransitionRecording.RecordCount(s, UsedPermitsByDef, key: permitDefKey, withBreakdown: true);
     }
 
     /// <summary>Count a successful activation by a free player colonist, never UI targeting or failed casts.</summary>
-    public static void PsycastSucceeded(FamilyState s, bool playerFreeColonist, bool confirmed)
+    public static void PsycastSucceeded(FamilyState s, bool playerFreeColonist, bool confirmed, string? psycastDefKey = null)
     {
-        if (playerFreeColonist && confirmed)
-            s.Count(CastPsycasts);
+        if (!playerFreeColonist || !confirmed)
+            return;
+        s.Count(CastPsycasts);
+        if (psycastDefKey is not null)
+            OptionalTransitionRecording.RecordCount(s, CastPsycastsByDef, key: psycastDefKey, withBreakdown: true);
     }
 
     private static void Build(FamilyOutputContext c)
     {
+        var s = c.State;
         c.PutCount(Grants, TitleGrants);
         c.PutCount(UsedPermits, PermitUses);
+        OptionalTransitionRecording.PutCount(c, UsedPermitsByDef, PermitUsesByDef, withBreakdown: true);
+        if ((s.Peek(UsedPermitsByDef)?.N ?? 0) != (s.Peek(UsedPermits)?.N ?? 0))
+            c.MarkPartial(PermitUsesByDef);
         c.PutCount(CastPsycasts, Psycasts);
+        OptionalTransitionRecording.PutCount(c, CastPsycastsByDef, PsycastsByDef, withBreakdown: true);
+        if ((s.Peek(CastPsycastsByDef)?.N ?? 0) != (s.Peek(CastPsycasts)?.N ?? 0))
+            c.MarkPartial(PsycastsByDef);
         var title = c.State.Peek(Titles);
         if (title?.Max is { } rank)
         {

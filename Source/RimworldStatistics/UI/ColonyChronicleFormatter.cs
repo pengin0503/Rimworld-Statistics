@@ -31,6 +31,7 @@ internal static class ColonyChronicleFormatter
     private static readonly Color EndingColor = new(0.98f, 0.84f, 0.38f);
     private static readonly Color MilestoneColor = new(0.46f, 0.82f, 0.62f);
     private static readonly Color ResearchColor = new(0.48f, 0.74f, 0.94f);
+    private static readonly Color TaleColor = new(0.78f, 0.62f, 0.94f);
     private static readonly Color IntervalColor = new(0.78f, 0.82f, 0.88f);
     private static readonly Color GapColor = new(0.94f, 0.64f, 0.38f);
 
@@ -50,6 +51,7 @@ internal static class ColonyChronicleFormatter
             ChronicleEntryKind.Ending => ((string)"RWS_Chronicle_Kind_Ending".Translate(), EndingColor),
             ChronicleEntryKind.Milestone => ((string)"RWS_Chronicle_Kind_Milestone".Translate(), MilestoneColor),
             ChronicleEntryKind.ResearchCompleted => ((string)"RWS_Chronicle_Kind_Research".Translate(), ResearchColor),
+            ChronicleEntryKind.HistoricalTale => ((string)"RWS_Chronicle_Kind_Tale".Translate(), TaleColor),
             ChronicleEntryKind.VerifiedInterval => ((string)"RWS_Chronicle_Kind_Interval".Translate(), IntervalColor),
             _ => ((string)"RWS_Chronicle_Kind_Gap".Translate(), GapColor),
         };
@@ -263,6 +265,18 @@ internal static class ColonyChronicleFormatter
                 return ((string)"RWS_Chronicle_ResearchDone".Translate(projLabel), note);
             }
 
+            case ChronicleEntryKind.HistoricalTale:
+            {
+                var taleText = e.TaleKind switch
+                {
+                    PermanentTaleKind.TileSettled => (string)"RWS_Chronicle_Tale_TileSettled".Translate(),
+                    PermanentTaleKind.Marriage => (string)"RWS_Chronicle_Tale_Marriage".Translate(),
+                    PermanentTaleKind.MajorThreat => (string)"RWS_Chronicle_Tale_MajorThreat".Translate(),
+                    _ => Dialog_RimworldStatistics.Dash,
+                };
+                return (taleText, (string)"RWS_Chronicle_TipAuxiliaryTale".Translate());
+            }
+
             case ChronicleEntryKind.VerifiedInterval:
             {
                 var chunks = new List<string>(e.IntervalFacts.Count);
@@ -387,6 +401,7 @@ internal static class ColonyChronicleFormatter
         ChronicleEvidenceSource.CheckpointAggregate => "RWS_Chronicle_Evidence_Checkpoint".Translate(),
         ChronicleEvidenceSource.VanillaCounterInterval => "RWS_Chronicle_Evidence_VanillaInterval".Translate(),
         ChronicleEvidenceSource.SaveHistoryGraph => "RWS_Chronicle_Evidence_HistoryGraph".Translate(),
+        ChronicleEvidenceSource.SaveTale => "RWS_Chronicle_Evidence_SaveTale".Translate(),
         ChronicleEvidenceSource.RecoveredLineage => "RWS_Chronicle_Evidence_Recovered".Translate(),
         ChronicleEvidenceSource.SaveMetadata => "RWS_Chronicle_Evidence_Metadata".Translate(),
         ChronicleEvidenceSource.SeededTrace => "RWS_Chronicle_Evidence_SeededTrace".Translate(),

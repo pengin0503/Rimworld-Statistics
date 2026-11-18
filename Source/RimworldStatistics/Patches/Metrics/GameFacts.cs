@@ -35,6 +35,9 @@ internal static class GameFacts
             isPrisoner: p.guest is { IsPrisoner: true },
             isHostPlayerFaction: IsPlayerFaction(p.guest?.HostFaction));
 
+    /// <summary>Colony slave check guarded by <see cref="IsPlayerFaction"/> on <c>Faction</c> so <c>Faction.OfPlayer</c> is never read when absent.</summary>
+    public static bool IsSlaveOfColonySafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.Faction) && p.IsSlaveOfColony;
+
     /// <summary>
     /// The player's faction, or null while there is none. World generation makes the other factions and their leaders
     /// (with injuries that are tended, records, relations, titles) before the scenario adds the player faction, and the
@@ -48,6 +51,10 @@ internal static class GameFacts
     public static bool IsPlayer(Thing? t) => IsPlayerFaction(t?.Faction);
 
     public static bool IsColonyAnimal(Pawn p) => p.RaceProps.Animal && IsPlayerFaction(p.Faction);
+
+    public static string? AnimalSpecies(Pawn? pawn)
+        => pawn is not null && pawn.RaceProps.Animal
+            ? OptionalTransitionRecording.QualifiedDefKey(pawn.def?.modContentPack?.PackageId, pawn.def?.defName) : null;
 
     // HAR races and vanilla humans both expose their owning race through Pawn.def.
     // Xenotypes use a separate game identity and are deliberately not part of this key.

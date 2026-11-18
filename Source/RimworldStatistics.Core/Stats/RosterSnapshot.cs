@@ -42,6 +42,7 @@ public static class RosterSnapshot
     public const string SlaveXenotypePeak = "population.snapshot.slave_xenotype_peak";
     public const string Animals = "population.snapshot.animals";
     public const string Mechs = "population.snapshot.mechs";
+    public const string MechSpeciesPeak = "population.snapshot.mech_species_peak";
     public const string AugmentedPeak = "population.snapshot.augmented_peak";
     public const string Skill20PawnsPeak = "population.snapshot.skill20_pawns_peak";
     public const string Skill20PerPawnPeak = "population.snapshot.skill20_per_pawn_peak";
@@ -75,6 +76,7 @@ public static class RosterSnapshot
         var freeXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
         var prisonerXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
         var slaveXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+        var mechSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
         var anyXenotypeObserved = false;
         var animalDefs = new HashSet<string>(StringComparer.Ordinal);
         var passions = new Dictionary<string, long>(StringComparer.Ordinal);
@@ -161,6 +163,7 @@ public static class RosterSnapshot
                     break;
                 case RosterKind.ColonyMech:
                     mechs++;
+                    CountSpecies(mechSpecies, p.Species);
                     break;
             }
         }
@@ -189,6 +192,8 @@ public static class RosterSnapshot
         }
         Count(Animals, animals);
         Count(Mechs, mechs);
+        if (biotechActive || mechs > 0)
+            SpeciesPeak(MechSpeciesPeak, mechs, mechSpecies);
         Count(AugmentedPeak, augmented);
         Count(Skill20PawnsPeak, skill20Pawns);
         Count(Skill20PerPawnPeak, skill20PerPawn);

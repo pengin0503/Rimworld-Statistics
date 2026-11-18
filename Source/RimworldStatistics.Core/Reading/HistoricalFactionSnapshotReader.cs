@@ -6,7 +6,8 @@ namespace RimworldStatistics.Core;
 internal readonly record struct SavedFactionRelation(string? Other, string? Kind, int? Goodwill, bool Valid);
 internal readonly record struct SavedFaction(
     string? Def, int? LoadId, bool Active,
-    IReadOnlyList<SavedFactionRelation> Relations, bool Valid);
+    IReadOnlyList<SavedFactionRelation> Relations, bool Valid,
+    string? PrimaryIdeoRef = null, IReadOnlyList<string>? MinorIdeoRefs = null, bool IdeoTrackerMalformed = false);
 
 /// <summary>
 /// Reads only confirmed explicit player relations of a small first-party visible

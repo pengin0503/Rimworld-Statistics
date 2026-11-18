@@ -173,8 +173,8 @@ public sealed class PostV14LeaderboardTests
     [Fact]
     public void Catalog_ReplacesRetiredGeneratorWithSlaveMetricAndPreservesStorageContract()
     {
-        Assert.Equal(367, MetricRegistry.BaseCatalog.Count);
-        Assert.Equal(458, MetricRegistry.Catalog.Count);
+        Assert.Equal(386, MetricRegistry.BaseCatalog.Count);
+        Assert.Equal(477, MetricRegistry.Catalog.Count);
         Assert.Equal(MetricRegistry.Catalog.Count,
             MetricRegistry.Catalog.Select(d => d.Key).Distinct(StringComparer.Ordinal).Count());
         Assert.False(MetricRegistry.Find(CrossColonyCatalog.TopPrefix + WorkFamily.HarvestByCrop)!.HasBreakdown);
@@ -182,6 +182,6 @@ public sealed class PostV14LeaderboardTests
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MaxPrefix + RosterSnapshot.Slaves));
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MinPrefix + RosterSnapshot.Slaves));
         Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
-        Assert.Equal(20, SaveReader.Version);
+        Assert.Equal(21, SaveReader.Version);
     }
 }

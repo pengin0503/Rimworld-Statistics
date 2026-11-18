@@ -81,6 +81,12 @@ public static class ProfileJson
             o.ExplainedTraces ??= new List<EndingType>();
             o.Lineage ??= new List<LineageEntry>();
             o.Display ??= new DisplayInfo();
+            if (o.PermanentTales is not null)
+            {
+                o.PermanentTales = Clean(o.PermanentTales);
+                if (o.PermanentTales.Count == 0)
+                    o.PermanentTales = null;
+            }
         }
 
         p.LiveCampaigns = Clean(p.LiveCampaigns);

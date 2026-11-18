@@ -16,6 +16,8 @@ public static class TameMetricPatch
     public static void Prefix(Pawn recruitee, out bool __state)
     {
         __state = false;
+        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
         try { __state = recruitee != null && recruitee.RaceProps.Animal && recruitee.Faction == null; }
         catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
     }
@@ -28,7 +30,8 @@ public static class TameMetricPatch
         {
             if (recruitee == null || !recruitee.RaceProps.Animal || !GameFacts.IsPlayerFaction(recruitee.Faction))
                 return;
-            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Tamed(s, wasWild: true, nowPlayer: true));
+            var species = GameFacts.AnimalSpecies(recruitee);
+            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Tamed(s, wasWild: true, nowPlayer: true, species));
         }
         catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
     }
@@ -41,13 +44,14 @@ public static class AnimalBornMetricPatch
 {
     public static void Postfix(bool __result, Pawn pawn)
     {
-        if (!__result)
+        if (!__result || !UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
             return;
         try
         {
             if (pawn == null || pawn.Dead || !pawn.RaceProps.Animal || !GameFacts.IsPlayerFaction(pawn.Faction))
                 return;
-            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Born(s, true));
+            var species = GameFacts.AnimalSpecies(pawn);
+            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Born(s, true, species));
         }
         catch (Exception e) { LiveMetrics.Fail(AnimalsFamily.Name, e); }
     }

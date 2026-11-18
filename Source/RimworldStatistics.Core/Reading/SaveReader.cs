@@ -37,9 +37,11 @@ public sealed partial class SaveReader
     /// 18: ThreatPoints (10x rescaled) and Adaptation (60000-tick) save history recorders, plus conservative Biotech saved pawn xenotypes.
     /// 19: Anomaly DLC historical entityCodex discoveredEntities, monolith highestLevelReached, and player holding-platform entities.
     /// 20: Biotech DLC historical GameComponent_Bossgroup summon counts and defeated boss types.
+    /// 21: World environment info, Ideology fluid reformCount salvage, and auxiliary permanent Tale timestamps.
     /// </summary>
-    public const int Version = 20;
+    public const int Version = 21;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
+    public const int MaxPermanentTales = 256;
 
     private const int MaxReasonLength = 200;
 
@@ -136,6 +138,8 @@ public sealed partial class SaveReader
         }
     }
 
+    private readonly record struct RawSavedTale(PermanentTaleKind Kind, int Id, int DateAbs);
+
     private sealed class ReadState(SaveObservation obs)
     {
         public SaveObservation Obs { get; } = obs;
@@ -175,6 +179,17 @@ public sealed partial class SaveReader
         public List<string>? BossgroupKilledDefs { get; set; }
         public List<string>? BossgroupCalledKeys { get; set; }
         public List<int>? BossgroupCalledValues { get; set; }
+        public List<SavedIdeo>? SavedIdeos { get; set; }
+        public bool SavedIdeosMalformed { get; set; }
+        public bool WorldInfoHasMapSize { get; set; }
+        public string? WorldOverallTemperature { get; set; }
+        public string? WorldOverallRainfall { get; set; }
+        public double? WorldPollution { get; set; }
+        public bool WorldPollutionMalformed { get; set; }
+        public int? WorldInitialMapWidth { get; set; }
+        public int? WorldInitialMapHeight { get; set; }
+        public bool TickManagerRead { get; set; }
+        public List<RawSavedTale>? RawTales { get; set; }
 
         // Numeric expansion inputs (never used by the v1 values above).
         public List<string>? ModIds { get; set; }
@@ -216,7 +231,10 @@ public sealed partial class SaveReader
             switch (name)
             {
                 case "info": ReadInfo(Load(r), obs); break;
-                case "tickManager": ReadTickManager(Load(r), obs); break;
+                case "tickManager":
+                    ReadTickManager(Load(r), obs);
+                    s.TickManagerRead = true;
+                    break;
                 case "scenario": ReadScenario(Load(r), s); break;
                 case "storyteller": ReadStoryteller(Load(r), obs); break;
                 case "storyWatcher":
@@ -236,6 +254,11 @@ public sealed partial class SaveReader
                         ReadEntityCodex(r, s);
                     else r.Skip();
                     break;
+                case "taleManager":
+                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                        ReadTales(r, s);
+                    else r.Skip();
+                    break;
                 case "world": ReadWorld(r, s); break;
                 case "maps":
                     if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadMaps(r, s);
@@ -246,6 +269,73 @@ public sealed partial class SaveReader
                 case "components": ReadComponents(r, s); break;
                 default: r.Skip(); break;
             }
+        });
+    }
+
+    private static void ReadTales(XmlReader r, ReadState s)
+    {
+        ForEachChild(r, child =>
+        {
+            if (child != "tales") { r.Skip(); return; }
+            if (r.AttributeCount > 0 && r.GetAttribute("IsNull") == "True") { r.Skip(); return; }
+            ForEachChild(r, item =>
+            {
+                if (item != "li") { r.Skip(); return; }
+                if (s.RawTales is { Count: >= MaxPermanentTales })
+                {
+                    r.Skip();
+                    return;
+                }
+                string? def = null;
+                int? id = null, date = null;
+                var hidden = false;
+                var valid = true;
+                ForEachChild(r, field =>
+                {
+                    switch (field)
+                    {
+                        case "def":
+                            var d = ReadHistoricalAtom(r, s);
+                            if (def is not null || string.IsNullOrWhiteSpace(d)) valid = false;
+                            else def = d;
+                            break;
+                        case "id":
+                            var idText = ReadHistoricalAtom(r, s);
+                            if (id is not null || !int.TryParse(idText, NumberStyles.Integer, Inv, out var parsedId) || parsedId < 0)
+                                valid = false;
+                            else id = parsedId;
+                            break;
+                        case "date":
+                            var dateText = ReadHistoricalAtom(r, s);
+                            if (date is not null || !int.TryParse(dateText, NumberStyles.Integer, Inv, out var parsedDate))
+                                valid = false;
+                            else date = parsedDate;
+                            break;
+                        case "hidden":
+                            var hidText = ReadHistoricalAtom(r, s);
+                            if (!bool.TryParse(hidText, out var parsedHid)) valid = false;
+                            else hidden = parsedHid;
+                            break;
+                        default:
+                            r.Skip();
+                            break;
+                    }
+                });
+                if (!valid || hidden || id is not { } tid || date is not { } tdate)
+                    return;
+                PermanentTaleKind? kind = def switch
+                {
+                    "TileSettled" => PermanentTaleKind.TileSettled,
+                    "Marriage" => PermanentTaleKind.Marriage,
+                    "MajorThreat" => PermanentTaleKind.MajorThreat,
+                    _ => null,
+                };
+                if (kind is { } k)
+                {
+                    s.RawTales ??= new List<RawSavedTale>();
+                    s.RawTales.Add(new RawSavedTale(k, tid, tdate));
+                }
+            });
         });
     }
 
@@ -301,6 +391,30 @@ public sealed partial class SaveReader
     {
         var obs = s.Obs;
         obs.Display.FactionName = PlayerFactionName(s);
+        if (s.TickManagerRead && s.RawTales is { Count: > 0 } rawTales)
+        {
+            var converted = new List<PermanentTaleFact>(rawTales.Count);
+            var seenIds = new HashSet<(PermanentTaleKind, int)>();
+            foreach (var raw in rawTales)
+            {
+                var relTick = (long)raw.DateAbs - obs.Identity.GameStartAbsTick;
+                if (relTick < 0 || relTick > obs.Values.TicksGame || relTick > int.MaxValue)
+                    continue;
+                if (seenIds.Add((raw.Kind, raw.Id)))
+                    converted.Add(new PermanentTaleFact(raw.Kind, raw.Id, (int)relTick));
+            }
+            if (converted.Count > 0)
+            {
+                converted.Sort(static (a, b) =>
+                {
+                    var c = a.TicksGame.CompareTo(b.TicksGame);
+                    if (c != 0) return c;
+                    c = a.Kind.CompareTo(b.Kind);
+                    return c != 0 ? c : a.Id.CompareTo(b.Id);
+                });
+                obs.PermanentTales = converted;
+            }
+        }
         TraceInputs Inputs(IReadOnlyCollection<EndingType> lineage) => new()
         {
             ColonistsLaunched = obs.Values.ColonistsLaunched,

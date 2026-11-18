@@ -523,6 +523,7 @@ internal sealed class Dialog_ColonyChronicle : Window
             MakeOption(ChronicleKindFilter.Highlights),
             MakeOption(ChronicleKindFilter.IntervalsAndGaps),
             MakeOption(ChronicleKindFilter.Research),
+            MakeOption(ChronicleKindFilter.Tales),
         ]));
     }
 
@@ -531,6 +532,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         ChronicleKindFilter.Highlights => "RWS_Chronicle_FilterHighlights".Translate(),
         ChronicleKindFilter.IntervalsAndGaps => "RWS_Chronicle_FilterIntervalsAndGaps".Translate(),
         ChronicleKindFilter.Research => "RWS_Chronicle_FilterResearch".Translate(),
+        ChronicleKindFilter.Tales => "RWS_Chronicle_FilterTales".Translate(),
         _ => "RWS_Chronicle_FilterAll".Translate(),
     };
 

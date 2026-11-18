@@ -48,6 +48,7 @@ public sealed class DeathFacts
     public required string VictimKind { get; init; }
     public string? Species { get; init; }
     public string? Xenotype { get; init; }
+    public string? AnimalSpecies { get; init; }
 
     public double? AgeYears { get; init; }
     public bool InPlayerCaravan { get; init; }

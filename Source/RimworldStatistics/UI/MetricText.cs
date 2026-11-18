@@ -8,13 +8,53 @@ namespace RimworldStatistics.UI;
 internal static class MetricText
 {
     private static readonly Dictionary<ModContentPack, Dictionary<string, Def>> DefsByPack = new();
+    private static object? cachedCycleLanguage;
+    private static Dictionary<string, string>? biosculpterCycleLabels;
 
     public static string Breakdown(MetricDefinition definition, string key, bool useThingLabel = false)
     {
         if (MetricDisplayPolicy.BreakdownLabelKey(definition, key) is { } translation)
             return translation.Translate();
+
+        if (definition.Key == IdeologyExpansionFamily.BiosculpterCompletions)
+        {
+            if (ResolveBiosculpterCycleLabel(key) is { } cycleLabel)
+                return cycleLabel;
+            return key switch
+            {
+                "medic" => "RWS_Biosculpter_Medic".Translate(),
+                "bioregeneration" => "RWS_Biosculpter_Bioregeneration".Translate(),
+                "ageReversal" => "RWS_Biosculpter_AgeReversal".Translate(),
+                "pleasure" => "RWS_Biosculpter_Pleasure".Translate(),
+                _ => key,
+            };
+        }
+
+        if (definition.Key is RaidFamily.ByFaction or RaidFamily.RetreatedByFaction or RaidFamily.WipedByFaction
+            && DefDatabase<FactionDef>.GetNamedSilentFail(key) is { } factionDef
+            && !string.IsNullOrWhiteSpace(factionDef.label))
+            return factionDef.label;
+
         if (!OptionalTransitionRecording.TryParseQualifiedDefKey(key, out var owner, out var name))
             return useThingLabel ? DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key : key;
+
+        if (CrossColonyCatalog.UsesThingDefBreakdown(definition)
+            && DefDatabase<ThingDef>.GetNamedSilentFail(name) is { } thingDef
+            && string.Equals(thingDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(thingDef.label))
+            return thingDef.label;
+
+        if (definition.Key == RoyaltyFamily.PermitUsesByDef
+            && DefDatabase<RoyalTitlePermitDef>.GetNamedSilentFail(name) is { } permitDef
+            && string.Equals(permitDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(permitDef.label))
+            return permitDef.label;
+
+        if (definition.Key == RoyaltyFamily.PsycastsByDef
+            && DefDatabase<AbilityDef>.GetNamedSilentFail(name) is { } abilityDef
+            && string.Equals(abilityDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(abilityDef.label))
+            return abilityDef.label;
 
         if (definition.Key == AnomalyFamily.PsychicRitualsByDef
             && DefDatabase<PsychicRitualDef>.GetNamedSilentFail(name) is { } ritualDef
@@ -76,6 +116,32 @@ internal static class MetricText
             DefsByPack.Add(pack, defs);
         }
         return defs.TryGetValue(name!, out var match) ? match.label : key;
+    }
+
+    private static string? ResolveBiosculpterCycleLabel(string cycleKey)
+    {
+        var lang = LanguageDatabase.activeLanguage;
+        if (biosculpterCycleLabels is null || !ReferenceEquals(cachedCycleLanguage, lang))
+        {
+            cachedCycleLanguage = lang;
+            var map = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var thingDef in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                if (thingDef?.comps is not { } comps)
+                    continue;
+                foreach (var comp in comps)
+                {
+                    if (comp is CompProperties_BiosculpterPod_BaseCycle cycle
+                        && !string.IsNullOrWhiteSpace(cycle.key)
+                        && !string.IsNullOrWhiteSpace(cycle.label))
+                    {
+                        map.TryAdd(cycle.key, cycle.label);
+                    }
+                }
+            }
+            biosculpterCycleLabels = map;
+        }
+        return biosculpterCycleLabels.TryGetValue(cycleKey, out var label) ? label : null;
     }
 
     // Metric titles and MOD attribution are separate presentation fields.

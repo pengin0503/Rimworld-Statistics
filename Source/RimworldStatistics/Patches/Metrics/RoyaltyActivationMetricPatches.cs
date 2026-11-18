@@ -20,6 +20,8 @@ public static class RoyalPermitUsedMetricPatch
     public static void Prefix(FactionPermit __instance, out int __state)
     {
         __state = int.MinValue;
+        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
         try
         {
             if (__instance?.Faction?.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
@@ -42,8 +44,11 @@ public static class RoyalPermitUsedMetricPatch
                     && p.royalty?.AllFactionPermits?.Contains(__instance) == true);
             if (!ownedByPlayer)
                 return;
+            var permitDefKey = OptionalTransitionRecording.QualifiedDefKey(
+                __instance.Permit?.modContentPack?.PackageId,
+                __instance.Permit?.defName);
             GameFacts.Record(RoyaltyFamily.Name, s =>
-                RoyaltyFamily.PermitUsed(s, playerOwned: true, confirmed: true));
+                RoyaltyFamily.PermitUsed(s, playerOwned: true, confirmed: true, permitDefKey));
         }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
@@ -73,6 +78,8 @@ public static class RoyalPsycastLocalMetricPatch
     public static void Prefix(Psycast __instance, out int? __state)
     {
         __state = null;
+        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
         try
         {
             if (!GameFacts.IsMember(__instance?.pawn) || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
@@ -91,8 +98,11 @@ public static class RoyalPsycastLocalMetricPatch
             if (!GameFacts.IsMember(__instance?.pawn)
                 || RoyalPsycastFacts.Tick(__instance) is not { } after || after == tick)
                 return;
+            var abilityDefKey = OptionalTransitionRecording.QualifiedDefKey(
+                __instance.def?.modContentPack?.PackageId,
+                __instance.def?.defName);
             GameFacts.Record(RoyaltyFamily.Name, s => RoyaltyFamily.PsycastSucceeded(
-                s, playerFreeColonist: true, confirmed: true));
+                s, playerFreeColonist: true, confirmed: true, abilityDefKey));
         }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
@@ -105,6 +115,8 @@ public static class RoyalPsycastWorldMetricPatch
     public static void Prefix(Psycast __instance, out int? __state)
     {
         __state = null;
+        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
         try
         {
             if (!GameFacts.IsMember(__instance?.pawn) || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
@@ -123,8 +135,11 @@ public static class RoyalPsycastWorldMetricPatch
             if (!GameFacts.IsMember(__instance?.pawn)
                 || RoyalPsycastFacts.Tick(__instance) is not { } after || after == tick)
                 return;
+            var abilityDefKey = OptionalTransitionRecording.QualifiedDefKey(
+                __instance.def?.modContentPack?.PackageId,
+                __instance.def?.defName);
             GameFacts.Record(RoyaltyFamily.Name, s => RoyaltyFamily.PsycastSucceeded(
-                s, playerFreeColonist: true, confirmed: true));
+                s, playerFreeColonist: true, confirmed: true, abilityDefKey));
         }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
