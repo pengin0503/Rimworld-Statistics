@@ -1,6 +1,6 @@
-# 現在のMOD実装候補（2026-11-15時点）
+# 現在のMOD実装候補（2026-11-18時点）
 
-**現行の未対応・未完了候補：58件。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
+**現行の未対応・未完了候補：70件（既存58件 ＋ 第7波新規12件）。** このページを唯一の実装候補一覧とする。既に対応済みのMODは[対応MOD一覧](../supported-mods.md)に掲載し、ここでは再列挙しない。各候補の実装優先度ティア分類（Tier 1〜3・保留再評価）および対応済みMODの第2段階拡張候補については[第7波調査・全候補ティア分類台帳（2026-11-18）](2026-11-18-seventhwave-and-tier-roadmap-ja.md)を参照。以下は**候補**であり、実装済み・完全な1.7互換性検証済みを意味しない。
 
 2026-11-15の整理では、過去の候補台帳に登録されていた168件のうち、**80件は既に対応MOD一覧に掲載済み**、**1件は汎用統計で扱うため専用MOD対応を見送った項目（Vanilla Books Expanded）**、残る**87件が現在の実装候補**となった。その後、一括実装で対応済みになったMOD（A02/B07/S28/B06/C02/D05/S03/C05/S13/S58/H05/S01/S04/S38/S59/A04/N03/S32）を順次[対応MOD一覧](../supported-mods.md)へ移行し、既存基盤・汎用統計で網羅済みの以下11件を見送り（除外）とした：
 - **S34 Vanilla Vehicles Expanded – Tier 3**：車両の搭乗・アップグレード・残骸修復・所有スナップショットは既存のVehicle FrameworkおよびVanilla Vehicles ExpandedアダプターがDef別内訳付きで取得しており、Tier 3独自C#は心情Thoughtのみ。
@@ -103,6 +103,23 @@
 | HOLD-08 | [WVC - Xenotypes and Genes](https://steamcommunity.com/sharedfiles/filedetails/?id=2886992038) | Steam版が1.7正式対応前（GitHubベータ段階）のため、正式リリース待ちとして保留。 |
 
 詳細： [第6波調査台帳](2026-11-15-sixthwave-popular-mods-register-ja.md)
+
+## 第7波の未対応候補（12件）
+
+| ID | MOD | 詳細資料 | 未対応理由・必要情報 |
+|---|---|---|---|
+| W01 | [Prison Labor](https://steamcommunity.com/sharedfiles/filedetails/?id=1899474310) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL未確認（囚人作業ジョブの実産出確定点および汎用`WorkMetricPatches`の帰属フィルタとの関係整理が必要）。 |
+| W02 | [MedPod](https://steamcommunity.com/sharedfiles/filedetails/?id=2153065191) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL未確認（自動治療・部位再生サイクルの正常完了メソッド署名確認が必要）。 |
+| W03 | [Alpha Implants](https://steamcommunity.com/sharedfiles/filedetails/?id=3275091331) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7上流ソース・実DLLでの汎用医療手術統計との重複分離および固有アビリティ完了点確認が必要。 |
+| W04 | [Alpha Vehicles - Neolithic](https://steamcommunity.com/sharedfiles/filedetails/?id=3028675048) / [Early Cars](https://steamcommunity.com/sharedfiles/filedetails/?id=3337198188) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 既存`Vehicle Framework`汎用統計での完全網羅可否、および動物牽引等の独自確定イベント有無のソース確認が必要。 |
+| W05 | [Biomes! Islands](https://steamcommunity.com/sharedfiles/filedetails/?id=2038001322) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL/Def確認（既存`Biomes! Caverns`等と同方式のBiomeDef分類・固有資源採取イベント確認が必要）。 |
+| W06 | [Biomes! Prehistoric](https://steamcommunity.com/sharedfiles/filedetails/?id=2860715703) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7選択アセンブリ確認および既存`Biomes! Fossils`統計との二重計上防止確認が必要。 |
+| W07 | [RimNauts 2](https://steamcommunity.com/sharedfiles/filedetails/?id=2880599514) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL確認およびOdyssey軌道層・SOS2との重複切り分けが必要。 |
+| W08 | [Universum](https://steamcommunity.com/sharedfiles/filedetails/?id=2954266198) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | 1.7配布DLL確認および`RimNauts 2`併用時の宇宙拠点創設・真空設備イベントの境界確認が必要。 |
+| W09 | [RimQuest (Continued)](https://steamcommunity.com/sharedfiles/filedetails/?id=2263331727) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（来訪者からのクエスト情報購入確定・シルバー支払決済フックの確認が必要）。 |
+| W10 | [Custom Base Framework](https://steamcommunity.com/sharedfiles/filedetails/?id=3813689040) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（カスタム多階層敵拠点・ダンジョンの完全制圧確定フックの確認が必要）。 |
+| W11 | [Faction Traits: Quests & Visitors](https://steamcommunity.com/sharedfiles/filedetails/?id=3829919233) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（人材派遣・鉱脈取引・遺跡共同探査契約の成功完了点確認が必要）。 |
+| W12 | [Cash Register](https://steamcommunity.com/sharedfiles/filedetails/?id=2506046833) | [第7波調査台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md) | Steam配布1.7実DLL確認（既存`Gastronomy`/`Storefront`売上との二重計上を避けたシフト完了単位の切り出しが必要）。 |
 
 ## 状態判定と更新ルール
 
