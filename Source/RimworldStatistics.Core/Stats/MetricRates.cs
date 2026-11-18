@@ -20,6 +20,8 @@ public static class MetricRates
         WorkFamily.UniqueCraftedDefs, WorkFamily.SownDefs, TradeFamily.SoldDefs, TradeFamily.BoughtDefs,
         TradeFamily.PartnerFactionDefs, CaravanFamily.UniqueTiles, OdysseyFamily.UniqueTiles, BiotechFamily.BirthMothers,
         LifetimeFamily.FirstSkill20, RoyaltyFamily.Honor,
+        // Distinct landmark tiles visited at least once (#390).
+        OdysseyVoyageFamily.VisitedLandmarks,
         // Units of different materials: a total per day would add steel to components (W-007 shows them by type).
         WorkFamily.ConstructionMaterials,
     };

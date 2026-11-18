@@ -73,12 +73,19 @@ public sealed class HistoryDiagnosticsTests
     [InlineData(TradeFamily.SoldDefs)]
     [InlineData(TradeFamily.PartnerFactionDefs)]
     [InlineData(CaravanFamily.UniqueTiles)]
+    [InlineData(OdysseyFamily.UniqueTiles)]
+    [InlineData(OdysseyVoyageFamily.VisitedLandmarks)]
     [InlineData(WorkFamily.UniqueCraftedDefs)]
     [InlineData(BiotechFamily.BirthMothers)]
     [InlineData(LifetimeFamily.FirstSkill20)]
     [InlineData(RoyaltyFamily.Honor)]
     public void SizesOfSetsAndMixedTotalsHaveNoDailyRate(string key)
-        => Assert.Null(MetricRates.PerDay(MetricRegistry.Find(key)!, Value(10)));
+    {
+        var definition = MetricRegistry.Find(key)!;
+        Assert.Null(MetricRates.PerDay(definition, Value(10)));
+        // Nor is a change between two readings counted as events that happened in between.
+        Assert.False(HistoryChanges.IsRunningTotal(definition));
+    }
 
     [Theory]
     [InlineData(ObservationStatus.Error, "IOException: save changed during read", ImportProblemKind.ChangedDuringRead)]
