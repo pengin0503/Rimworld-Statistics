@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>保存済み統計を表示しています（最終記録時点: {0} / {1}）。それ以降の未セーブの進行分は含まれません。</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>保存済み統計を表示しています（最終記録時点: 数値観測なし・エンディング痕跡のみ）。ゲームをセーブすると数値統計が記録されます。</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>別のコロニーの保存済み統計を表示しています（最終記録時点: {0} / {1}）。</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>このコロニーの保存済み統計はまだありません</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>現在のコロニーの統計は、ゲームをセーブした時点で記録されます。この画面を開いても自動セーブやセーブデータの取り込みは行われません。他の記録済みコロニーを確認したい場合は、通常の通算統計を開けます。</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>通算統計を開く</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>全コロニーの通算統計ウィンドウを開きます。</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark>（現在のコロニー）</RWS_InGame_CurrentColonyMark>
+</LanguageData>

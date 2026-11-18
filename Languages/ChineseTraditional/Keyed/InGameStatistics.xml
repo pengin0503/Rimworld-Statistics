@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>正在顯示已儲存的統計（最後記錄時間點：{0} / {1}）。此後的未存檔進度尚未計入。</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>正在顯示已儲存的統計（最後記錄時間點：僅有結局痕跡，尚無數值觀測）。儲存遊戲後即可記錄數值統計。</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>正在顯示其他殖民地的已儲存統計（最後記錄時間點：{0} / {1}）。</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>目前殖民地尚無已儲存的統計記錄</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>目前殖民地的統計會在儲存遊戲時記錄。開啟此畫面不會觸發存檔或掃描存檔檔案。你仍可開啟累計統計檢視其他已記錄的殖民地。</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>開啟累計統計</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>開啟跨殖民地的完整累計統計視窗。</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark>（目前殖民地）</RWS_InGame_CurrentColonyMark>
+</LanguageData>

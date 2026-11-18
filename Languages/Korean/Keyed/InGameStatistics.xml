@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>저장된 통계를 표시하고 있습니다 (마지막 기록 시점: {0} / {1}). 이후 저장하지 않은 진행분은 포함되지 않습니다.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>저장된 통계를 표시하고 있습니다 (마지막 기록 시점: 엔딩 흔적만 있으며 수치 관측 없음). 게임을 저장하면 수치 통계가 기록됩니다.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>다른 정착지의 저장된 통계를 표시하고 있습니다 (마지막 기록 시점: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>이 정착지의 저장된 통계가 아직 없습니다</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>현재 정착지의 통계는 게임을 저장할 때 기록됩니다. 이 화면을 열어도 게임 저장이나 세이브 파일 스캔은 실행되지 않습니다. 다른 기록된 정착지를 확인하려면 누적 통계를 열 수 있습니다.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>누적 통계 열기</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>전체 정착지의 누적 통계 창을 엽니다.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (현재 정착지)</RWS_InGame_CurrentColonyMark>
+</LanguageData>

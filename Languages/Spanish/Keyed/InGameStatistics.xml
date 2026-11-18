@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Mostrando estadísticas guardadas (último registro: {0} / {1}). El progreso sin guardar desde entonces no está incluido.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Mostrando estadísticas guardadas (último registro: solo rastro de final, sin observación numérica). Guarda la partida para registrar estadísticas numéricas.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Mostrando estadísticas guardadas de otra colonia (último registro: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>Aún no hay estadísticas guardadas para esta colonia</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>Las estadísticas de la colonia actual se registran al guardar la partida. Abrir esta pantalla no guarda la partida ni analiza archivos de guardado. Aun así, puedes abrir Estadísticas totales para consultar otras colonias registradas.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Abrir estadísticas totales</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Abrir la ventana completa de estadísticas totales de todas las colonias.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (colonia actual)</RWS_InGame_CurrentColonyMark>
+</LanguageData>
