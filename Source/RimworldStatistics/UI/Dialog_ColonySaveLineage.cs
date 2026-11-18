@@ -128,6 +128,12 @@ internal sealed class Dialog_ColonySaveLineage : Window
             Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colonyKey));
         TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
 
+        var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
+        var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
+        if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colonyKey, PickedChronicleBranch()));
+        TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
+
         if (activeMetric is { } metric)
         {
             var metricBtnText = (string)"RWS_Lineage_MetricButton".Translate(metric.Label);
@@ -219,6 +225,20 @@ internal sealed class Dialog_ColonySaveLineage : Window
     {
         var stats = view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         colonyName = stats is not null ? Dialog_RimworldStatistics.ColonyName(stats) : colonyKey;
+    }
+
+    /// <summary>
+    /// The record picked in this view as a branch of the chronicle, by what it is rather than by its index (the chronicle
+    /// reads the lineage again). Null for the representative line, which is the chronicle's own default.
+    /// </summary>
+    private ChronicleBranchKey? PickedChronicleBranch()
+    {
+        if ((selectedB ?? selectedA) is not { } picked || lineageTask is not { IsCompletedSuccessfully: true } done)
+            return null;
+        var lineage = done.Result;
+        if (picked < 0 || picked >= lineage.Nodes.Count || picked == lineage.RepresentativeIndex)
+            return null;
+        return ChronicleBranchKey.Of(lineage.Nodes[picked]);
     }
 
     private void BuildMetricChoices(string? preferredKey)

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>殖民地年表</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>沿著一條存檔分支，以唯讀方式顯示此殖民地已確認的結局、里程碑、已完成的研究、已驗證的區間和記錄說明。不做任何推測補全，也絕不跨分支合計。</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>殖民地年表 · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>切換殖民地…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>分支: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>第 {0} 天 · {1}（代表）</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>第 {0} 天 · {1}（其他分支）</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>第 {0} 天 · {1}（讀檔後的分支）</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>第 {0} 天 · {1}（沿用檢查點）</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>第 {0} 天 · {1}（未證實的記錄）</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>（無存檔檔案）</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>先前選擇的分支已無法找到，因此顯示預設分支。</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>顯示: {0}（{1}）</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>全部</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>結局和里程碑</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>區間和記錄說明</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>研究</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>由舊到新</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>由新到舊</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>無法讀取年表。錯誤會寫入日誌。</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>沒有符合此分支和篩選條件的帶日期項目。</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>顯示 {1} 項中的 {0} 項 · 此分支共有 {2} 筆記錄</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>有 {0} 個結局發生在其他分支上，此處不顯示。</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>有 {0} 個結局目前還無法確定屬於哪一條分支，此處不顯示。</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>為便於瀏覽，省略了 {0} 項（先省略較晚完成的研究，再省略較早的區間）。結局、里程碑和記錄說明會優先保留。</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>遊戲內時間</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>類型</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>事件</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>依據</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>第 {0} 天</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>第 {0} 天（取樣）</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>第 {0} – {1} 天</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>結局</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>里程碑</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>研究</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>區間</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>記錄說明</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>遊戲中記錄</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>檢查點</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>遊戲本體計數器</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>存檔內的歷史圖表</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>存檔內的結局清單</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>存檔資訊</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>安裝前的痕跡</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>存檔檔案中的痕跡</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0}（第 {1} 次）</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>離開 {0} 人</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>參與 {0} 人</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>截至當時殖民者死亡 {0} 人</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>（開發者模式）</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>（無法確定是否為開發者模式）</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>同一結局被記錄多次時，顯示離開人數的最大值。</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>首位新成員加入</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>首次敵襲</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>首位殖民者死亡</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>首個研究完成</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>財富達到 100,000</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>財富達到 1,000,000</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>殖民者達到 10 人</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>最高財富: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>最高財富</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>已完成: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>此研究項目目前未載入，因此顯示儲存時的名稱。</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>第 {0} 天的檢查點所引用的父節點不在記錄中，因此此分支更早的經過並不完整。</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>第 {0} 天的存檔沒有檢查點（在安裝此MOD之前或關閉記錄時儲存），因此其在譜系中的位置未經證實。</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>從第 {0} 天到第 {1} 天沒有新的檢查點：之後的存檔原樣保留了舊的檢查點。</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>部分遊戲中記錄的統計從第 {0} 天才開始（遊戲中途安裝MOD、啟用了統計項目，或記錄重新開始）。</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>在第 {0} 天到第 {1} 天之間，部分累計值沒有連續記錄，因此不顯示其變化。</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>第 {0} 天檢查點的詳細數值已封存，但無法讀取該封存。</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>已完成研究的清單已達到上限，之後完成的研究缺漏。</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>遊戲環境變化: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>遊戲版本</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>MOD清單</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>已啟用的DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>日期取自存檔內的歷史圖表（每半天一個取樣點），確切時刻沒有記錄。</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>兩個直接相連的檢查點之間的變化。無法得知每項變化發生在區間內的哪個時刻。</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>存檔: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>存檔: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>記錄時間（本地）: {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>開啟圖表: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>無日期的痕跡（{0}）</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>有證據顯示這些結局已經發生，但無法證明其遊戲內日期，因此不放入年表。</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>殖民者死亡</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>襲擊</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>殖民者死亡（本體計數器）</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>敵人襲擊（本體計數器）</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>財富</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

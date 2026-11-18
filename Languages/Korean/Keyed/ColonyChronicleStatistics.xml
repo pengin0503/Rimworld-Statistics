@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>정착지 연대기</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>이 정착지의 확정된 엔딩, 이정표, 완료한 연구, 검증된 구간, 기록 참고 사항을 하나의 세이브 분기를 따라 읽기 전용으로 표시합니다. 추측으로 채우지 않으며, 분기끼리 합산하지 않습니다.</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>정착지 연대기 · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>정착지 전환…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>분기: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>{0}일차 · {1} (대표)</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>{0}일차 · {1} (다른 분기)</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>{0}일차 · {1} (불러오기 후의 분기)</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>{0}일차 · {1} (이월 체크포인트)</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>{0}일차 · {1} (미검증 기록)</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>(세이브 파일 없음)</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>이전에 선택한 분기를 다시 찾을 수 없어 기본 분기를 표시합니다.</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>표시: {0} ({1})</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>전체</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>엔딩과 이정표</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>구간과 기록 참고 사항</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>연구</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>오래된 순</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>최신 순</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>연대기를 읽지 못했습니다. 오류는 로그에 기록됩니다.</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>이 분기와 필터에 해당하는 날짜가 있는 항목이 없습니다.</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>{1}개 항목 중 {0}개 표시 · 이 분기의 기록 {2}개</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>다른 분기에서 일어난 엔딩 {0}개는 여기에 표시하지 않습니다.</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>어느 분기에서 일어났는지 아직 특정할 수 없는 엔딩 {0}개는 여기에 표시하지 않습니다.</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>목록을 보기 쉽게 하기 위해 {0}개 항목을 생략했습니다 (나중에 완료한 연구부터 생략하고, 그다음 오래된 구간을 생략). 엔딩, 이정표, 기록 참고 사항은 우선 유지합니다.</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>게임 내 시간</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>종류</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>사건</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>근거</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>{0}일차</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>{0}일차 (표본)</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>{0}–{1}일차</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>엔딩</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>이정표</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>연구</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>구간</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>기록 참고</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>플레이 중 기록</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>체크포인트</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>게임 자체 카운터</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>세이브 내 기록 그래프</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>세이브 내 엔딩 목록</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>세이브 정보</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>설치 전 흔적</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>세이브 파일 속 흔적</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0} ({1}회차)</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>{0}명 떠남</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>{0}명 참가</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>그때까지 정착민 사망 {0}명</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>(개발자 모드)</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>(개발자 모드 여부 불명)</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>같은 엔딩이 여러 번 기록된 경우, 떠난 인원의 최댓값을 표시합니다.</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>첫 신규 정착민 합류</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>첫 습격</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>첫 정착민 사망</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>첫 연구 완료</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>재산 100,000 도달</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>재산 1,000,000 도달</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>정착민 10명 도달</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>최고 재산: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>최고 재산</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>완료: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>이 연구 프로젝트는 지금 로드되어 있지 않아 저장된 이름을 표시합니다.</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>{0}일차 체크포인트가 가리키는 부모가 기록에 없어, 이 분기의 그 이전 경과는 불완전합니다.</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>{0}일차 세이브에는 체크포인트가 없어 (이 MOD 설치 전 또는 기록을 끈 상태에서 저장) 계보상의 위치가 검증되지 않았습니다.</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>{0}일차부터 {1}일차까지 새 체크포인트가 없습니다. 이후 세이브는 이전 체크포인트를 그대로 유지했습니다.</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>플레이 중 기록하는 통계 중 일부는 {0}일차부터 시작됩니다 (게임 도중 MOD 설치, 통계 활성화, 또는 기록 재시작).</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>{0}일차와 {1}일차 사이에 일부 누계가 끊김 없이 기록되지 않아 그 변화는 표시하지 않습니다.</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>{0}일차 체크포인트의 상세 값은 아카이브되었으며, 그 아카이브를 읽을 수 없었습니다.</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>완료한 연구 목록이 상한에 도달하여 이후의 완료는 빠져 있습니다.</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>게임 환경 변경: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>게임 버전</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>MOD 목록</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>활성 DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>날짜는 반나절마다 한 점을 남기는 세이브 내 기록 그래프에서 읽은 것이며, 정확한 시각은 기록되지 않습니다.</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>직접 연결된 두 체크포인트 사이의 변화입니다. 각 변화가 구간 안의 언제 일어났는지는 알 수 없습니다.</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>세이브: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>세이브: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>기록 시각 (로컬): {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>차트 열기: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>날짜 없는 흔적 ({0})</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>이 엔딩들은 일어났다는 증거가 있지만 게임 내 날짜를 증명할 수 없어 연대기에는 넣지 않습니다.</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>정착민 사망</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>습격</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>정착민 사망 (게임 카운터)</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>적 습격 (게임 카운터)</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>재산</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

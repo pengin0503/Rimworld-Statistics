@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>Chronique de la colonie</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>Affiche, le long d'une seule branche de sauvegardes, les fins confirmées, les étapes marquantes, les recherches terminées, les intervalles vérifiés et les notes d'enregistrement de cette colonie (lecture seule). Rien n'est deviné, et les branches ne sont jamais additionnées.</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>Chronique de la colonie · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>Changer de colonie…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>Branche : {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>Jour {0} · {1} (représentative)</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>Jour {0} · {1} (autre branche)</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>Jour {0} · {1} (branche après un rechargement)</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>Jour {0} · {1} (point de contrôle reporté)</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>Jour {0} · {1} (enregistrement non prouvé)</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>(aucun fichier de sauvegarde)</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>La branche choisie auparavant est introuvable ; la branche par défaut est affichée.</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>Afficher : {0} ({1})</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>Tout</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>Fins et étapes marquantes</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>Intervalles et notes d'enregistrement</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>Recherche</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>Plus ancien d'abord</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>Plus récent d'abord</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>Impossible de lire la chronique. Les erreurs sont écrites dans le journal.</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>Aucune entrée datée ne correspond à cette branche et à ce filtre.</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>{0} entrées affichées sur {1} · {2} enregistrements sur cette branche</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>{0} fins ont eu lieu sur d'autres branches et ne sont pas affichées ici.</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>{0} fins ne peuvent pas encore être rattachées à une seule branche et ne sont pas affichées ici.</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>{0} entrées sont omises pour garder la liste lisible (d'abord les recherches les plus tardives, puis les intervalles les plus anciens). Les fins, étapes marquantes et notes d'enregistrement sont conservées en priorité.</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>Temps de jeu</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>Type</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>Événement</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>Preuve</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>Jour {0}</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>Jour {0} (échantillon)</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>Jour {0} – {1}</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>Fin</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>Étape marquante</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>Recherche</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>Intervalle</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>Note d'enregistrement</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>Enregistré en jeu</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>Point de contrôle</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>Compteurs du jeu</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>Graphique d'historique de la sauvegarde</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>Liste des fins dans la sauvegarde</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>Informations de sauvegarde</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>Trace antérieure à l'installation</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>Trace dans un fichier de sauvegarde</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0} (n° {1})</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>{0} partis</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>{0} participants</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>décès de colons jusque-là : {0}</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>(mode développement)</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>(mode développement inconnu)</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>Si cette fin a été enregistrée plusieurs fois, le plus grand nombre de partis est affiché.</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>Premier nouveau membre</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>Premier raid</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>Premier décès de colon</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>Première recherche terminée</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>Richesse de 100 000 atteinte</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>Richesse de 1 000 000 atteinte</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>10 colons atteints</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>Richesse maximale : {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>Richesse maximale</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>Terminée : {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>Ce projet de recherche n'est pas chargé actuellement ; son nom enregistré est affiché.</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>Le point de contrôle du jour {0} désigne un parent absent des enregistrements ; l'historique antérieur de cette branche est incomplet.</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>La sauvegarde du jour {0} n'a pas de point de contrôle (faite avant l'ajout de ce MOD ou avec l'enregistrement désactivé) ; sa place dans la lignée n'est pas prouvée.</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>Aucun nouveau point de contrôle du jour {0} au jour {1} : la sauvegarde suivante a conservé l'ancien tel quel.</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>Certaines statistiques enregistrées en jeu ne commencent qu'au jour {0} (MOD ajouté en cours de partie, statistique activée ou enregistrement redémarré).</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>Entre le jour {0} et le jour {1}, certains totaux cumulés n'ont pas été enregistrés sans interruption ; aucune variation n'est affichée pour eux.</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>Les valeurs détaillées du point de contrôle du jour {0} ont été archivées, et l'archive n'a pas pu être lue.</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>La liste des recherches terminées a atteint sa taille maximale ; les achèvements ultérieurs manquent.</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>Environnement de jeu modifié : {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>version du jeu</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>liste des mods</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>DLC actifs</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>Le jour provient du graphique d'historique de la sauvegarde, qui garde un point par demi-journée ; le moment exact n'est pas enregistré.</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>Variation entre deux points de contrôle directement liés. On ne sait pas à quel moment de l'intervalle chaque variation s'est produite.</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>Sauvegardes : {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>Sauvegarde : {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>Enregistré (heure locale) : {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>Ouvrir le graphique : {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>Traces non datées ({0})</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>Ces fins ont bien eu lieu selon les preuves, mais aucun jour de jeu ne peut être prouvé pour elles ; elles restent donc hors de la chronologie.</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>Décès de colons</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>Raids</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>Décès de colons (compteur du jeu)</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>Raids ennemis (compteur du jeu)</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>Richesse</RWS_Chronicle_Fact_Wealth>
+</LanguageData>
