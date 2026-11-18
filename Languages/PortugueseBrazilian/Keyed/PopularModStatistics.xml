@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>Conta as novas marionetes ligadas a um manipulador do jogador.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>Transferências de consciência</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Conta as transferências bem-sucedidas da consciência de um manipulador do jogador.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Capturas em Vanilla Fishing Expanded</RWS_VFECatches>
+  <RWS_VFECatches>Capturas de pesca</RWS_VFECatches>
   <RWS_VFECatchesDesc>Conta por tipo os itens que surgiram por meio de tarefas de pesca do jogador com Vanilla Fishing Expanded sem Odyssey.</RWS_VFECatchesDesc>
 </LanguageData>
