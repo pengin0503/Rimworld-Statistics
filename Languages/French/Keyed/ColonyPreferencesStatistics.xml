@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>Rechercher :</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>Rechercher des colonies par nom affiché, nom de faction d'origine ou nom du monde.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>Nom affiché :</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>Définir</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>Réinitialiser</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>Nom de faction d'origine : {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>Nom personnalisé utilisé uniquement dans les tableaux et graphiques de statistiques. Les sauvegardes, les clés de colonie, la fusion et les totaux ne sont pas modifiés.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>Graphiques de colonie favoris</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>Ajouter un graphique…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>Aucun graphique de colonie favori. Ajoutez-en un ici, dans Colonies ou via ☆ dans Détails par colonie.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>Sélectionner une colonie</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>Sélectionner un graphique pour {0}</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>Graphiques favoris…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>Ajouter ou retirer des courbes favorites pour cette colonie dans l'onglet Vue d'ensemble.</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>Cliquer pour ouvrir la courbe d'historique de {0}.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>Colonie non enregistrée</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>Cette colonie ne figure pas dans l'enregistrement actuel. Vous pouvez retirer ce favori avec ×.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>Cette colonie est exclue des statistiques. Décochez Exclure dans Colonies pour ouvrir son graphique ou retirez ce favori avec ×.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>Cette colonie est hors du groupe sélectionné. Passez sur Toutes les colonies pour ouvrir son graphique.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>Cette statistique n'est pas enregistrée actuellement (son MOD source est peut-être désactivé). Vous pouvez retirer ce favori avec ×.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>Cette statistique ne dispose pas de courbe d'historique par colonie. Vous pouvez retirer ce favori avec ×.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>Aucune valeur mesurée n'est encore enregistrée pour cette colonie (ou son MOD source n'a pas été utilisé). Vous pouvez retirer ce favori avec ×.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>Le MOD source est actuellement inactif : {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>Ajouter la statistique aux favoris de la vue d'ensemble</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>Retirer la statistique des favoris de la vue d'ensemble</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>Ajouter la courbe de {0} aux favoris de la vue d'ensemble</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>Retirer la courbe de {0} des favoris de la vue d'ensemble</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>Ajouter ou retirer cette statistique ou la courbe de la colonie sélectionnée des favoris</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

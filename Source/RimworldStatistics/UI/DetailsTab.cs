@@ -38,7 +38,7 @@ public static class DetailsTab
     private enum DetailsStatusFilter { All, Measured, Partial, Missing, Experimental }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, bool GroupDerived, object? Language);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, bool GroupDerived, object? Language, string ColonyNameSignature);
 
     // Show all metrics immediately, including optional MOD outputs and non-lifetime readings.
     private static DetailsViewMode viewMode = DetailsViewMode.All;
@@ -130,9 +130,10 @@ public static class DetailsTab
         }
 
         var language = LanguageDatabase.activeLanguage;
+        var colonyNameSig = ColonyPresentation.Signature(favorites);
         if (!comparing)
         {
-            var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
+            var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language, colonyNameSig);
             if (builtFor != inputs)
             {
                 if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
@@ -247,7 +248,7 @@ public static class DetailsTab
             ComparisonPanel.ResetScroll();
             return;
         }
-        var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language);
+        var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language, ColonyPresentation.Signature(favoritePreferences));
         builtFor = inputs;
         SetLines(Build(inputs));
     }
@@ -287,11 +288,9 @@ public static class DetailsTab
         {
             if (Button(Name(view.Stats, selected), 260f))
             {
-                var options = view.Numeric.Colonies
-                    .OrderBy(c => Name(view.Stats, c.Key), StringComparer.CurrentCulture)
-                    .Select(c => new FloatMenuOption(Name(view.Stats, c.Key) + (c.Excluded ? (string)"RWS_ExcludedMark".Translate() : ""), () => colonyKey = c.Key))
-                    .ToList();
-                Find.WindowStack.Add(new FloatMenu(options));
+                var selectableKeys = view.Numeric.Colonies.Select(c => c.Key).ToHashSet(StringComparer.Ordinal);
+                var selectable = view.Stats.Colonies.Where(s => selectableKeys.Contains(s.Key)).ToArray();
+                Find.WindowStack.Add(new ColonyPickerDialog(selectable, favoritePreferences, picked => colonyKey = picked.Key));
             }
             var reportLabel = (string)"RWS_Report_Open".Translate();
             var reportRect = controls.Next(reportLabel, 120f, 220f);
@@ -482,20 +481,63 @@ public static class DetailsTab
         // One tooltip per row: the same id keeps RimWorld from stacking a second copy,
         // and the chart hint is shown only over the area that opens the chart.
         var starRect = new Rect(hit.Star.X, rect.y + 2f, hit.Star.Width, rect.height - 4f);
+        var supportsColonyFav = perColony && colonyKey is not null
+            && line.MetricKey is { } mk && ColonyHistoryFavorites.SupportsColonyHistory(view, mk);
         if (line.MetricKey is { } metricKey && favoritePreferences is not null && !hit.Star.IsEmpty)
         {
-            var saved = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
-            if (Widgets.ButtonText(starRect, saved ? "★" : "☆"))
+            var savedMetric = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
+            ColonyStats? selectedColonyStats = null;
+            var savedColony = false;
+            if (supportsColonyFav && colonyKey is { } activeKey)
             {
-                if (saved)
-                    favoritePreferences.FavoriteMetricKeys.Remove(metricKey);
-                else if (favoritePreferences.FavoriteMetricKeys.Count < 500)
-                    favoritePreferences.FavoriteMetricKeys.Add(metricKey);
-                persistFavorites?.Invoke();
+                selectedColonyStats = view.Stats.Colonies.FirstOrDefault(c => c.Key == activeKey);
+                savedColony = ColonyHistoryFavorites.IsFavorite(
+                    favoritePreferences, activeKey, selectedColonyStats?.AliasKeys, metricKey);
+            }
+
+            if (Widgets.ButtonText(starRect, savedMetric || savedColony ? "★" : "☆"))
+            {
+                if (supportsColonyFav && colonyKey is { } targetColonyKey)
+                {
+                    var prefs = favoritePreferences;
+                    var save = persistFavorites;
+                    var colonyLabel = Name(view.Stats, targetColonyKey);
+                    var aliases = selectedColonyStats?.AliasKeys;
+                    Find.WindowStack.Add(new FloatMenu(
+                    [
+                        new FloatMenuOption(
+                            savedMetric ? "RWS_ColonyFav_MenuMetricRemove".Translate() : "RWS_ColonyFav_MenuMetricAdd".Translate(),
+                            () =>
+                            {
+                                if (prefs.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
+                                    prefs.FavoriteMetricKeys.Remove(metricKey);
+                                else if (prefs.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                                    prefs.FavoriteMetricKeys.Add(metricKey);
+                                save?.Invoke();
+                            }),
+                        new FloatMenuOption(
+                            savedColony
+                                ? "RWS_ColonyFav_MenuColonyRemove".Translate(colonyLabel)
+                                : "RWS_ColonyFav_MenuColonyAdd".Translate(colonyLabel),
+                            () =>
+                            {
+                                if (ColonyHistoryFavorites.Toggle(prefs, targetColonyKey, aliases, metricKey))
+                                    save?.Invoke();
+                            }),
+                    ]));
+                }
+                else
+                {
+                    if (savedMetric)
+                        favoritePreferences.FavoriteMetricKeys.Remove(metricKey);
+                    else if (favoritePreferences.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                        favoritePreferences.FavoriteMetricKeys.Add(metricKey);
+                    persistFavorites?.Invoke();
+                }
             }
         }
         if (line.MetricKey is not null && favoritePreferences is not null && !hit.Star.IsEmpty && Mouse.IsOver(starRect))
-            TooltipHandler.TipRegion(rect, () => "RWS_Fav_StarTip".Translate(), line.TipId);
+            TooltipHandler.TipRegion(rect, () => supportsColonyFav ? "RWS_ColonyFav_StarMenuTip".Translate() : "RWS_Fav_StarTip".Translate(), line.TipId);
         else
             TooltipHandler.TipRegion(rect,
                 chartRect is { } hintArea && Mouse.IsOver(hintArea) ? chartTipCache[index]! : tipCache[index]!, line.TipId);
@@ -770,7 +812,7 @@ public static class DetailsTab
     internal static string OverallTip(NumericRow row, StatsResult stats)
         => BuildTip(row, DefinitionLabel(row.Definition), true,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
-                DetailsViewMode.All, DetailsStatusFilter.All, true, null), null);
+                DetailsViewMode.All, DetailsStatusFilter.All, true, null, ""), null);
 
     internal static string DefinitionLabel(MetricDefinition d)
     {

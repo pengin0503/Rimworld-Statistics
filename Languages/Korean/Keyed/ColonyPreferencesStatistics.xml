@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>검색:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>표시 이름, 원래 세력 이름 또는 세계 이름으로 정착지를 검색합니다.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>표시 이름:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>설정</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>초기화</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>원래 세력 이름: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>통계 표와 차트에서만 표시되는 사용자 지정 이름입니다. 저장 파일, 정착지 키, 병합 및 집계는 변경되지 않습니다.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>즐겨찾기 (정착지별 차트)</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>정착지 차트 추가…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>등록된 정착지 차트가 없습니다. 여기서 추가하거나 '정착지' 또는 정착지별 '상세'의 ☆로 추가할 수 있습니다.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>정착지 선택</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>{0}의 꺾은선 차트 선택</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>즐겨찾기 차트…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>이 정착지의 꺾은선 차트를 '개요' 즐겨찾기에 추가하거나 해제합니다.</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>클릭하여 {0}의 기록 꺾은선 차트를 엽니다.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>기록되지 않은 정착지</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>현재 통계 기록에 해당 정착지가 없습니다. × 버튼으로 해제할 수 있습니다.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>이 정착지는 현재 통계에서 제외되어 있습니다. '정착지'에서 제외를 해제하거나 × 버튼으로 즐겨찾기를 해제하세요.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>선택한 정착지 그룹 범위에 포함되지 않습니다. 범위를 '모든 정착지'로 바꾸면 차트를 열 수 있습니다.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>현재 등록되지 않은 통계입니다(원본 모드가 비활성화되었을 수 있음). × 버튼으로 해제할 수 있습니다.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>이 통계는 정착지별 저장 기록 꺾은선 차트를 제공하지 않습니다. × 버튼으로 해제할 수 있습니다.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>이 정착지에 아직 측정된 값이 없습니다(또는 원본 모드를 사용하지 않음). × 버튼으로 해제할 수 있습니다.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>원본 모드가 현재 비활성 상태입니다: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>전체 통계를 개요 즐겨찾기에 추가</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>전체 통계를 개요 즐겨찾기에서 해제</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>{0} 꺾은선 차트를 개요 즐겨찾기에 추가</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>{0} 꺾은선 차트를 개요 즐겨찾기에서 해제</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>전체 통계 또는 선택한 정착지의 꺾은선 차트를 개요 즐겨찾기에 추가·해제</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

@@ -79,9 +79,17 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         if (shownTitle != heading)
             TooltipHandler.TipRegion(titleRect, heading);
         Text.Font = GameFont.Small;
+        var colonyStats = view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey);
+        var activePreferences = Dialog_RimworldStatistics.ActivePreferences;
+        var currentColonyName = colonyStats is not null
+            ? Dialog_RimworldStatistics.ColonyName(colonyStats)
+            : colonyName;
+        var colonyTip = colonyStats is not null && ColonyPresentation.HasCustomName(activePreferences, colonyStats)
+            ? currentColonyName + "\n" + (string)"RWS_ColonyName_Original".Translate(Dialog_RimworldStatistics.OriginalColonyName(colonyStats))
+            : currentColonyName;
         var colony = new Rect(rect.x, rect.y + 35f, rect.width, 26f);
-        Widgets.Label(colony, colonyName.Truncate(colony.width));
-        TooltipHandler.TipRegion(colony, colonyName);
+        Widgets.Label(colony, currentColonyName.Truncate(colony.width));
+        TooltipHandler.TipRegion(colony, colonyTip);
         var sourceOffset = modSource is null ? 0f : 20f;
         if (modSource is { } source)
         {
@@ -129,13 +137,23 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         EnsureBoundsAndLegend(history, contentWidth);
         var legendHeight = Math.Max(LegendRowHeight, legendPlan?.TotalHeight ?? LegendRowHeight);
         const float overlayRowHeight = 23f;
+        var isFavorite = ColonyHistoryFavorites.IsFavorite(
+            activePreferences, colonyKey, colonyStats?.AliasKeys, definition.Key);
+        string addColonyText = "RWS_Chart_AddColony".Translate();
+        var favText = (isFavorite ? "★ " : "☆ ") + (string)(isFavorite
+            ? "RWS_ColonyFav_MenuColonyRemove".Translate(currentColonyName)
+            : "RWS_ColonyFav_MenuColonyAdd".Translate(currentColonyName));
+        var topMeasure = new ControlRow(new Rect(0f, 0f, contentWidth, 28f));
+        _ = topMeasure.Next(addColonyText, 120f, 250f);
+        _ = topMeasure.Next(favText, 140f, 360f);
+        var topControlsHeight = topMeasure.Height + 3f;
         var zoomStatus = ZoomStatusText();
         var zoomHeight = MeasureZoomControls(contentWidth, zoomStatus);
         var changeLines = ChangeText(history);
         // Room for three lines (an interval and a reason) is kept, so picking a reading does not move the chart under the mouse.
         var changeTextHeight = Math.Max(Text.CalcHeight(changeLines, contentWidth), Text.LineHeight * 3f);
         var changeHeight = 31f + changeTextHeight + 6f;
-        var controlsHeight = 31f + overlayRowHeight * overlayTracker.Entries.Count + zoomHeight + changeHeight;
+        var controlsHeight = topControlsHeight + overlayRowHeight * overlayTracker.Entries.Count + zoomHeight + changeHeight;
         var vertical = HistoryLegendLayout.ResolveVertical(
             body.height - controlsHeight, noteHeight, legendHeight);
         var scrollHeight = controlsHeight + vertical.ContentHeight;
@@ -145,13 +163,16 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Widgets.BeginScrollView(body, ref chartScroll,
             new Rect(0f, 0f, contentWidth, scrollHeight));
 
-        var add = new Rect(0f, 0f, Math.Min(250f, contentWidth), 28f);
-        if (Widgets.ButtonText(add, "RWS_Chart_AddColony".Translate(), active: overlayTracker.CanAdd))
+        var topControls = new ControlRow(new Rect(0f, 0f, contentWidth, 28f));
+        var add = topControls.Next(addColonyText, 120f, 250f);
+        if (Widgets.ButtonText(add, addColonyText.Truncate(Math.Max(0f, add.width - 12f)), active: overlayTracker.CanAdd))
         {
-            var options = view.Stats.Colonies
+            var candidates = view.Stats.Colonies
                 .Where(c => !c.Excluded && !c.OutOfScope && !overlayTracker.IsSelected(c.Key))
-                .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
-                .Select(c => new FloatMenuOption(Dialog_RimworldStatistics.ColonyName(c), () =>
+                .ToList();
+            if (candidates.Count > 0)
+            {
+                Find.WindowStack.Add(new ColonyPickerDialog(candidates, activePreferences, c =>
                 {
                     var name = Dialog_RimworldStatistics.ColonyName(c);
                     if (!overlayTracker.TryAdd(c.Key, name, out var entry) || entry is null)
@@ -160,12 +181,19 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     task.ContinueWith(t => _ = t.Exception, TaskContinuationOptions.OnlyOnFaulted);
                     overlayTasks[entry.RequestId] = task;
                     InvalidateOverlays();
-                })).ToList();
-            if (options.Count > 0)
-                Find.WindowStack.Add(new FloatMenu(options));
+                }, addColonyText));
+            }
         }
+        var favButton = topControls.Next(favText, 140f, 360f);
+        var shownFavText = favText.Truncate(Math.Max(0f, favButton.width - 12f));
+        if (Widgets.ButtonText(favButton, shownFavText))
+        {
+            Dialog_RimworldStatistics.UpdateActivePreferences(prefs =>
+                ColonyHistoryFavorites.Toggle(prefs, colonyKey, colonyStats?.AliasKeys, definition.Key));
+        }
+        TooltipHandler.TipRegion(favButton, favText);
 
-        var y = add.yMax + 3f;
+        var y = topControls.Height + 3f;
         string? removeKey = null;
         foreach (var overlay in overlayTracker.Entries)
         {
