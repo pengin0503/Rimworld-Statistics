@@ -40,7 +40,6 @@ public sealed class Dialog_ColonyGroups : Window
 
     public override void PostClose()
     {
-        // A completed rename is persisted once, not after every TextField keystroke.
         if (nameDirty)
         {
             NormalizeGroupNames();
@@ -51,7 +50,6 @@ public sealed class Dialog_ColonyGroups : Window
 
     private void SaveStructuralChange()
     {
-        // A structural operation persists an earlier rename as part of the same write.
         NormalizeGroupNames();
         nameDirty = false;
         onChange();
@@ -75,6 +73,20 @@ public sealed class Dialog_ColonyGroups : Window
     }
 
     public override void DoWindowContents(Rect rect)
+    {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
     {
         Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "RWS_Groups_Title".Translate());
         var input = new Rect(rect.x, rect.y + 34f, Math.Max(50f, rect.width - 160f), 30f);
@@ -104,29 +116,35 @@ public sealed class Dialog_ColonyGroups : Window
         var groupsRect = left.ContractedBy(7f);
         var groupsView = new Rect(0f, 0f, groupsRect.width - 16f, preferences.Groups.Count * 34f + 8f);
         Widgets.BeginScrollView(groupsRect, ref groupScroll, groupsView);
-        for (var i = 0; i < preferences.Groups.Count; i++)
+        try
         {
-            var group = preferences.Groups[i];
-            var y = i * 34f;
-            var choose = new Rect(0, y, groupsView.width - 34f, 30f);
-            var displayName = string.IsNullOrWhiteSpace(group.Name)
-                ? savedNames.GetValueOrDefault(group.Id, group.Id) : group.Name;
-            if (Widgets.ButtonText(choose, displayName.Truncate(choose.width)))
+            for (var i = 0; i < preferences.Groups.Count; i++)
             {
-                NormalizeGroupNames();
-                selectedId = group.Id;
-            }
-            if (Widgets.ButtonText(new Rect(choose.xMax + 2f, y, 30f, 30f), "×"))
-            {
-                preferences.Groups.RemoveAt(i);
-                savedNames.Remove(group.Id);
-                if (selectedId == group.Id)
-                    selectedId = preferences.Groups.FirstOrDefault()?.Id;
-                SaveStructuralChange();
-                break;
+                var group = preferences.Groups[i];
+                var y = i * 34f;
+                var choose = new Rect(0, y, groupsView.width - 34f, 30f);
+                var displayName = string.IsNullOrWhiteSpace(group.Name)
+                    ? savedNames.GetValueOrDefault(group.Id, group.Id) : group.Name;
+                if (Widgets.ButtonText(choose, displayName.Truncate(choose.width)))
+                {
+                    NormalizeGroupNames();
+                    selectedId = group.Id;
+                }
+                if (Widgets.ButtonText(new Rect(choose.xMax + 2f, y, 30f, 30f), "×"))
+                {
+                    preferences.Groups.RemoveAt(i);
+                    savedNames.Remove(group.Id);
+                    if (selectedId == group.Id)
+                        selectedId = preferences.Groups.FirstOrDefault()?.Id;
+                    SaveStructuralChange();
+                    break;
+                }
             }
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Widgets.EndScrollView();
+        }
 
         var selected = preferences.Groups.FirstOrDefault(g => g.Id == selectedId);
         if (selected is null)
@@ -160,22 +178,27 @@ public sealed class Dialog_ColonyGroups : Window
         var visible = colonies.OrderBy(c => names.GetValueOrDefault(c.Key) ?? c.Key, StringComparer.CurrentCulture).ToList();
         var listView = new Rect(0f, 0f, Math.Max(0f, listRect.width - 16f), visible.Count * 30f + 8f);
         Widgets.BeginScrollView(listRect, ref memberScroll, listView);
-        for (var i = 0; i < visible.Count; i++)
+        try
         {
-            var colony = visible[i];
-            var was = filtered.Contains(colony.Key) || colony.AliasKeys.Any(filtered.Contains);
-            var included = was;
-            var label = (names.GetValueOrDefault(colony.Key) ?? colony.Key)
-                + (colony.Excluded ? " (" + "RWS_Groups_Excluded".Translate() + ")" : "");
-            Widgets.CheckboxLabeled(new Rect(0f, i * 30f, listView.width, 28f), label.Truncate(listView.width - 30f), ref included);
-            if (included == was)
-                continue;
-            // After a manual merge, replace any stale aliases with the current canonical key.
-            selected.ColonyKeys.RemoveAll(k => k == colony.Key || colony.AliasKeys.Contains(k));
-            if (included)
-                selected.ColonyKeys.Add(colony.Key);
-            SaveStructuralChange();
+            for (var i = 0; i < visible.Count; i++)
+            {
+                var colony = visible[i];
+                var was = filtered.Contains(colony.Key) || colony.AliasKeys.Any(filtered.Contains);
+                var included = was;
+                var label = (names.GetValueOrDefault(colony.Key) ?? colony.Key)
+                    + (colony.Excluded ? " (" + "RWS_Groups_Excluded".Translate() + ")" : "");
+                Widgets.CheckboxLabeled(new Rect(0f, i * 30f, listView.width, 28f), label.Truncate(listView.width - 30f), ref included);
+                if (included == was)
+                    continue;
+                selected.ColonyKeys.RemoveAll(k => k == colony.Key || colony.AliasKeys.Contains(k));
+                if (included)
+                    selected.ColonyKeys.Add(colony.Key);
+                SaveStructuralChange();
+            }
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Widgets.EndScrollView();
+        }
     }
 }
