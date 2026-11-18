@@ -1,11 +1,15 @@
 # Planned MOD-specific statistics — master index (2026-11-12)
 
-> **Current backlog (2026-11-15): [実装候補87件（未対応・未完了のみ）](active-candidates.md)**。実装済みの候補80件は既に[対応MOD一覧](../supported-mods.md)に記載済み。Vanilla Books Expanded は汎用統計による扱いのため新規専用キーを作らない。**本READMEの旧表および日付付き調査台帳は、実装状況を判定するための現行候補一覧ではなく履歴資料です。**
+> **Current backlog (2026-11-18): [実装候補70件（未対応・未完了のみ）](active-candidates.md)**。実装済みの候補は既に[対応MOD一覧](../supported-mods.md)に記載済み。Vanilla Books Expanded 等、汎用統計で網羅済みの項目は新規専用キーを作らない。**本READMEの旧表および日付付き調査台帳は、実装状況を判定するための現行候補一覧ではなく履歴資料です。**
 
 
 **Historical scope (original plan, not the current backlog):** RimWorld 1.7; main repository `pengin0503/Rimworld-Statistics`. These are **all 35 implementation-planned candidates** from the 2026-11-12 discussions (18 previously listed + 8 additional research targets + 9 popularity-selected follow-ups). "Planned" is a backlog commitment to investigate and implement **eligible distinct statistics**, **not** a statement that every proposed metric is currently collectable, compatible, tested, or shipping. Do not silently delete candidates when blocked: annotate the reason and prerequisite.
 
 **Authoritative for these proposals:** this folder. For pre-existing host integration status use the current source and README; older documents such as [generic-first audit](../research/2026-11-11-content-mod-coverage-and-priority-audit.md), [optional MOD audit](../research/2026-11-12-m7-optional-mod-audit.md), and [next MOD metric backlog](../research/2026-11-11-next-modded-statistics-backlog.md) contain dated evidence, **not a claim of present implementation state**.
+
+## 第7波候補・既存候補ティア分類・第2段階拡張調査（2026-11-18）
+
+[第7波追加MOD候補・既存対応MOD第2段階拡張・全候補ティア分類台帳](2026-11-18-seventhwave-and-tier-roadmap-ja.md)を追加。既存未対応58件の優先度ティア整理（Tier 1: 12件 / Tier 2: 27件 / Tier 3: 11件 / 保留再評価: 8件）、対応済み105件への第2段階メトリクス追加候補、新規1.7対応候補12件（`W01`〜`W12`）、および旧1.6止まりからの1.7復活ウォッチリスト8件（`RW01`〜`RW08`）を記録している。あわせてリポジトリ全体の不具合・改善・バニラ/DLC新機能監査は[最新main包括監査・ロードマップ（2026-11-18）](../research/2026-11-18-main-comprehensive-audit-and-roadmap-ja.md)を参照。
 
 ## 87件の実装設計（2026-11-15）
 
