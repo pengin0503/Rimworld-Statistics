@@ -1103,13 +1103,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>Сенаторы, ранее не поддерживавшие игрока, но ставшие сторонниками через обычную дипломатию или задания, с разбивкой по фракции. Действия разработчика, уже поддерживавшие сенаторы и восстановление старых сохранений исключаются.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Пожалованные почести</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>Ожидавшие присвоения почести VFE Empire, которые действительно были вручены поселенцу игрока при завершении ритуала, по виду почести. Получение доступного выбора почести и действия разработчика не учитываются.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE: выполненные стремления вдохновения</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>Выполненные стремления вдохновения</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Стремления, связанные с активным вдохновением поселенца в Vanilla Social Interactions Expanded и впервые выполненные, по вдохновению. Незавершённый прогресс, истечение срока и посторонние вдохновения не учитываются.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2: начатые поездки верхом</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Случаи, когда поселенец игрока действительно начал верховую езду на собственном животном после завершённого задания Giddy-Up, по виду животного. Прибытие уже верхом, отложенные приказы и повторные наблюдения исключаются.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Перезарядки поселенцев</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Завершённые перезарядки пешек игрока, при которых патроны действительно попали в магазин оружия. Каждая перезарядка считается один раз, даже при загрузке нескольких стопок. Турели, автозарядчики, отключённые боеприпасы и неудачные перезарядки исключаются.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android: естественные пробуждения</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>Естественные пробуждения андроидов</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Андроиды игрока с синтетическими телами, естественно пробудившиеся после проверки генов с учётом настроения. Пробуждение инструментами разработчика, начальная настройка и уже бодрствовавшие андроиды не учитываются. Требуется Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE: выбранные специализации</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Новые специализации, выбранные поселенцами игрока в обычном окне специализаций, по специализации. Отладочные открытия и восстановленные записи исключаются.</RWS_VseExpertise_SelectedDesc>
@@ -1131,7 +1131,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>Объём Deepchem, фактически принятый на хранение в трубы из насосов игрока, включая дробные единицы, измеренный после подтверждения хранения сетью. Плановая добыча, продукция на земле и заблокированное хранение исключаются.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>Извлечённая ДНК</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>Предметы ДНК, действительно положенные на землю или объединённые в стопки после успешного извлечения игроком, по виду предмета. Неподходящие цели, неудачное размещение, потраченные без результата заряды и иное создание гибридов исключаются.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE: питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>Питательная смесь в трубах</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Питательная смесь, действительно принятая в трубопроводную сеть от измельчителей Vanilla Nutrient Paste Expanded игрока, включая дробные количества. Попытки измельчения, расход ингредиентов без принятой смеси и хранение в трубах из других зданий не учитываются.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Собранный мёд</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Мёд, действительно размещённый или добавленный к стопкам после опустошения принадлежащей игроку пасеки Medieval 2 его поселенцем, по виду предмета. Готовность пасеки к сбору, неудачное размещение и последующая переноска исключаются.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1201,7 +1201,7 @@
   <RWS_NewMod_UpgradesDesc>Новые улучшения транспорта, установленные по завершении работы игрока, по типу транспорта.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Восстановленный из обломков транспорт</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>Транспорт игрока, созданный после завершения строительства отслеживаемого каркаса обломков.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Посещения Real Ruins караванами</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>Посещения руин караванами</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>Караваны игрока, прибывшие на объект Real Ruins, для которого пришлось создать новую карту, с подтверждённым входом пешек на неё.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>Завершённые раунды игровых автоматов</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>Завершённые раунды на игровых автоматах игрока, раздельно по проигрышам и видам выигрыша.</RWS_NewMod_CasinoDesc>
