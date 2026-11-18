@@ -432,8 +432,9 @@ public static class OverviewTab
                 tip.Append('\n').Append(modSource);
 
             var ownerPkg = fav.Definition?.OwnerPackageId ?? fav.RequestedDefinition?.OwnerPackageId;
+            var ownerDisp = fav.Definition?.OwnerDisplayName ?? fav.RequestedDefinition?.OwnerDisplayName;
             if (!string.IsNullOrWhiteSpace(ownerPkg) && MetricText.ActiveModTitle(ownerPkg) is null)
-                tip.Append('\n').Append((string)"RWS_ColonyFav_TipModInactive".Translate(MetricText.SafeModDisplayName(ownerPkg)));
+                tip.Append('\n').Append((string)"RWS_ColonyFav_TipModInactive".Translate(MetricText.SafeModDisplayName(ownerPkg, ownerDisp)));
 
             if (fav.CanOpen)
             {

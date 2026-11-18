@@ -157,6 +157,7 @@ public sealed record MetricDefinition
     /// <summary>Optional external-provider metadata; null for built-in metrics.</summary>
     public string? ProviderId { get; init; }
     public string? OwnerPackageId { get; init; }
+    public string? OwnerDisplayName { get; init; }
     public int? DefinitionRevision { get; init; }
 
     public int Revision => DefinitionRevision ?? MetricKeys.Revision(StoredKey);

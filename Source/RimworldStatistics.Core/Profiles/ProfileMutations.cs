@@ -21,8 +21,21 @@ public static partial class ProfileMutations
             if (current >= 0)
             {
                 var old = profile.ModMetricDescriptors[current];
-                if (old.ProviderId == definition.ProviderId && definition.Revision > old.Revision)
-                    profile.ModMetricDescriptors[current] = definition;
+                if (old.ProviderId == definition.ProviderId)
+                {
+                    if (definition.Revision > old.Revision)
+                    {
+                        profile.ModMetricDescriptors[current] = definition.OwnerDisplayName is null && old.OwnerDisplayName is not null
+                            ? definition with { OwnerDisplayName = old.OwnerDisplayName }
+                            : definition;
+                    }
+                    else if (definition.Revision == old.Revision
+                        && definition.OwnerDisplayName is not null
+                        && !Ord.Equals(old.OwnerDisplayName, definition.OwnerDisplayName))
+                    {
+                        profile.ModMetricDescriptors[current] = old with { OwnerDisplayName = definition.OwnerDisplayName };
+                    }
+                }
                 continue;
             }
             if (!registry.Register(definition).Accepted)

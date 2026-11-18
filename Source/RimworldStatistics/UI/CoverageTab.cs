@@ -267,7 +267,7 @@ internal static class CoverageTab
                 reqParts.Add(MetricText.DlcDisplayName(group.RequiredDlc!));
             // The same "MOD: name" as each statistic's row and tooltip, with the generic label for an unknown provider (#303).
             if (!string.IsNullOrEmpty(group.OwnerPackageId))
-                reqParts.Add((string)"RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(group.OwnerPackageId!)));
+                reqParts.Add((string)"RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(group.OwnerPackageId!, group.OwnerDisplayName)));
             var requirement = string.Join(" · ", reqParts);
 
             var displayLabel = displayLabels[index];
@@ -355,7 +355,7 @@ internal static class CoverageTab
         if (status.Definition.RequiredDlc is { } dlc)
             lines.Add("RWS_Exp_RequiresDlc".Translate(MetricText.DlcDisplayName(dlc)));
         if (status.Definition.OwnerPackageId is { } owner)
-            lines.Add("RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(owner)));
+            lines.Add("RWS_Mod_Provider".Translate(MetricText.SafeModDisplayName(owner, status.Definition.OwnerDisplayName)));
         if (ExternalSdkHost.Instance.IsEventDedupCapacityExceeded(status.Definition.Key))
             lines.Add("RWS_Status_SdkEventCapExceeded".Translate(1, FamilyOps.KeyCap));
         if (status.MissingColonyKeys.Count > 0)

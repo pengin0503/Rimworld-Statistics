@@ -58,17 +58,20 @@ public sealed class ExternalSdkMetricRegistry
         if (selection == ColonySelection.ObservationMaxByBreakdown
             || api.Kind == ApiMetricKind.Event && ((api.EventMode == ApiEventMode.Mean) != (overall == OverallAggregation.Ratio)
                 || selection != ColonySelection.Representative)
-            || api.Kind == ApiMetricKind.SaveSnapshot && (overall == OverallAggregation.Ratio || api.EventMode != ApiEventMode.Count))
+            || api.Kind == ApiMetricKind.SaveSnapshot && (overall == OverallAggregation.Ratio || api.EventMode != ApiEventMode.Count)
+            || api.HasBreakdown && (api.Kind != ApiMetricKind.Event || api.EventMode == ApiEventMode.Mean)
+            || !ModMetricDescriptor.IsValidOwnerDisplayName(api.OwnerDisplayName, api.OwnerPackageId))
             return ApiRegistrationResult.InvalidDefinition;
         var packages = api.RequiredPackages.Select(x => new ModPackageRequirement(x.PackageId, x.MinimumVersion, x.MaximumVersionExclusive)).ToList();
         if (api.MinimumOwnerVersion is not null || api.MaximumOwnerVersionExclusive is not null)
             packages.Insert(0, new ModPackageRequirement(api.OwnerPackageId, api.MinimumOwnerVersion, api.MaximumOwnerVersionExclusive));
         var descriptor = new ModMetricDescriptor
         {
-            ProviderId = api.ProviderId, OwnerPackageId = api.OwnerPackageId,
+            ProviderId = api.ProviderId, OwnerPackageId = api.OwnerPackageId, OwnerDisplayName = api.OwnerDisplayName,
             FamilyId = api.FamilyId, MetricName = api.MetricName, Revision = api.Revision,
             Source = api.Kind == ApiMetricKind.Event ? MetricObservationSource.Checkpoint : MetricObservationSource.SaveSnapshot,
             Category = category, Unit = unit, Overall = overall, Selection = selection,
+            HasBreakdown = api.HasBreakdown,
             RequiredDlc = api.RequiredDlc, RequiredPackages = packages,
             LabelKey = api.LabelKey, DescriptionKey = api.DescriptionKey,
         };
@@ -131,12 +134,30 @@ public sealed class ExternalSdkMetricRegistry
 /// <summary>Deliberately bounded, idempotent numerical recording. A cap produces partial coverage instead of overcounting.</summary>
 public static class ExternalSdkMetricPolicy
 {
+    /// <summary>Maximum distinct breakdown bucket keys retained per SDK breakdown metric before failing closed with Partial coverage.</summary>
+    public const int BreakdownBucketCap = 64;
+
+    /// <summary>Maximum character length of a breakdown bucket key.</summary>
+    public const int MaxBreakdownKeyLength = 96;
+
     private static string Seen(string metric) => "sdk.seen." + metric.ToLowerInvariant();
     private static string Value(string metric) => "sdk.value." + metric.ToLowerInvariant();
 
+    public static bool IsValidBreakdownKey(string? breakdownKey)
+    {
+        if (string.IsNullOrWhiteSpace(breakdownKey) || breakdownKey.Length > MaxBreakdownKeyLength || breakdownKey != breakdownKey.Trim())
+            return false;
+        for (var i = 0; i < breakdownKey.Length; i++)
+        {
+            if (char.IsControl(breakdownKey[i]))
+                return false;
+        }
+        return true;
+    }
+
     public static ApiRecordResult Record(FamilyState state, ApiMetricDefinition metric, string? eventId, int tick, double value)
     {
-        if (state is null || metric is null || metric.Kind != ApiMetricKind.Event ||
+        if (state is null || metric is null || metric.Kind != ApiMetricKind.Event || metric.HasBreakdown ||
             string.IsNullOrWhiteSpace(eventId) || eventId.Length > 128 || tick < 0 ||
             !double.IsFinite(value) || Math.Abs(value) > 1e12 ||
             metric.EventMode == ApiEventMode.Count && value != 1)
@@ -146,7 +167,7 @@ public static class ExternalSdkMetricPolicy
         if (state.Peek(seen)?.Overflow == true)
             return ApiRecordResult.CapExceeded;
         // Store only a fixed-length one-way digest. Never persist an external event/pawn/guest identifier.
-        var digest = Convert.ToHexStringLower(SHA256.HashData(Encoding.UTF8.GetBytes(eventId)));
+        var digest = HashEventId(eventId);
         if (!state.Distinct(seen, digest))
             return state.Peek(seen)?.Overflow == true ? ApiRecordResult.CapExceeded : ApiRecordResult.Duplicate;
         var key = Value(metric.MetricName);
@@ -165,7 +186,7 @@ public static class ExternalSdkMetricPolicy
     /// </summary>
     public static ApiRecordResult Record(FamilyState state, RegisteredSdkMetric? registered, string? eventId, int tick, double value)
     {
-        if (state is null || registered is null || registered.Api.Kind != ApiMetricKind.Event ||
+        if (state is null || registered is null || registered.Api.Kind != ApiMetricKind.Event || registered.Api.HasBreakdown ||
             string.IsNullOrWhiteSpace(eventId) || eventId.Length > 128 || tick < 0 ||
             !double.IsFinite(value) || Math.Abs(value) > 1e12 ||
             registered.Api.EventMode == ApiEventMode.Count && value != 1)
@@ -175,13 +196,7 @@ public static class ExternalSdkMetricPolicy
         if (state.Peek(seen)?.Overflow == true)
             return ApiRecordResult.CapExceeded;
 
-        // The validation above bounds UTF-16 input to 128 chars; the maximum UTF-8 byte count
-        // also covers fallback sequences for malformed surrogate pairs.
-        Span<byte> utf8 = stackalloc byte[Encoding.UTF8.GetMaxByteCount(128)];
-        var written = Encoding.UTF8.GetBytes(eventId.AsSpan(), utf8);
-        Span<byte> hash = stackalloc byte[32];
-        SHA256.HashData(utf8[..written], hash);
-        var digest = Convert.ToHexStringLower(hash);
+        var digest = HashEventId(eventId);
         if (!state.Distinct(seen, digest))
             return state.Peek(seen)?.Overflow == true ? ApiRecordResult.CapExceeded : ApiRecordResult.Duplicate;
 
@@ -194,12 +209,111 @@ public static class ExternalSdkMetricPolicy
         return ApiRecordResult.Recorded;
     }
 
+    public static ApiRecordResult RecordBreakdown(
+        FamilyState state,
+        ApiMetricDefinition metric,
+        string? eventId,
+        string? breakdownKey,
+        int tick,
+        double value)
+    {
+        if (state is null || metric is null || metric.Kind != ApiMetricKind.Event || !metric.HasBreakdown
+            || metric.EventMode is not (ApiEventMode.Count or ApiEventMode.Sum))
+            return ApiRecordResult.InvalidEvent;
+
+        return RecordBreakdownCore(state, Seen(metric.MetricName), Value(metric.MetricName), metric.EventMode, eventId, breakdownKey, tick, value);
+    }
+
+    public static ApiRecordResult RecordBreakdown(
+        FamilyState state,
+        RegisteredSdkMetric? registered,
+        string? eventId,
+        string? breakdownKey,
+        int tick,
+        double value)
+    {
+        if (state is null || registered is null || registered.Api.Kind != ApiMetricKind.Event || !registered.Api.HasBreakdown
+            || registered.Api.EventMode is not (ApiEventMode.Count or ApiEventMode.Sum))
+            return ApiRecordResult.InvalidEvent;
+
+        return RecordBreakdownCore(
+            state,
+            registered.SeenAccumulatorKey,
+            registered.ValueAccumulatorKey,
+            registered.Api.EventMode,
+            eventId,
+            breakdownKey,
+            tick,
+            value);
+    }
+
+    private static ApiRecordResult RecordBreakdownCore(
+        FamilyState state,
+        string seenKey,
+        string valueKey,
+        ApiEventMode mode,
+        string? eventId,
+        string? breakdownKey,
+        int tick,
+        double value)
+    {
+        if (string.IsNullOrWhiteSpace(eventId) || eventId.Length > 128 || !IsValidBreakdownKey(breakdownKey) || tick < 0
+            || !double.IsFinite(value) || value < 0 || value > 1e12
+            || (mode == ApiEventMode.Count && value != 1))
+            return ApiRecordResult.InvalidEvent;
+
+        var seenAcc = state.Peek(seenKey);
+        var valAcc = state.Peek(valueKey);
+        if (seenAcc?.Overflow == true || valAcc?.Overflow == true)
+            return ApiRecordResult.CapExceeded;
+
+        var digest = HashEventId(eventId);
+        if (seenAcc?.By?.ContainsKey(digest) == true)
+            return ApiRecordResult.Duplicate;
+
+        if (valAcc?.By is { Count: >= BreakdownBucketCap } existingBuckets && !existingBuckets.ContainsKey(breakdownKey!))
+        {
+            valAcc.Overflow = true;
+            return ApiRecordResult.CapExceeded;
+        }
+
+        if (!state.Distinct(seenKey, digest))
+            return state.Peek(seenKey)?.Overflow == true ? ApiRecordResult.CapExceeded : ApiRecordResult.Duplicate;
+
+        var target = valAcc ?? state.Acc(valueKey);
+        target.N = (target.N ?? 0) + 1;
+        if (mode != ApiEventMode.Count)
+        {
+            target.Sum = (target.Sum ?? 0) + value;
+            if (target.Min is null || value < target.Min)
+                target.Min = value;
+            if (target.Max is null || value > target.Max)
+                target.Max = value;
+        }
+        var by = target.By ??= new Dictionary<string, double>(StringComparer.Ordinal);
+        var delta = mode == ApiEventMode.Count ? 1.0 : value;
+        by[breakdownKey!] = by.GetValueOrDefault(breakdownKey!) + delta;
+        target.First ??= tick;
+        target.Last = tick;
+        return ApiRecordResult.Recorded;
+    }
+
+    private static string HashEventId(string eventId)
+    {
+        // The caller bounds UTF-16 input to 128 chars; GetMaxByteCount(128) covers malformed surrogates as well.
+        Span<byte> utf8 = stackalloc byte[Encoding.UTF8.GetMaxByteCount(128)];
+        var written = Encoding.UTF8.GetBytes(eventId.AsSpan(), utf8);
+        Span<byte> hash = stackalloc byte[32];
+        SHA256.HashData(utf8[..written], hash);
+        return Convert.ToHexStringLower(hash);
+    }
+
     public static void Build(FamilyOutputContext output, RegisteredSdkMetric metric)
     {
         var d = metric.Descriptor;
-        var count = output.State.Peek(Value(d.MetricName));
+        var count = output.State.Peek(metric.ValueAccumulatorKey);
         var n = count?.N ?? 0;
-        var partial = output.State.Peek(Seen(d.MetricName))?.Overflow == true;
+        var partial = output.State.Peek(metric.SeenAccumulatorKey)?.Overflow == true || count?.Overflow == true;
         MetricValue value;
         switch (metric.Api.EventMode)
         {
@@ -218,7 +332,25 @@ public static class ExternalSdkMetricPolicy
             default:
                 return;
         }
-        output.Into[d.StableKey] = MetricEntry.Of(d.Revision, value);
+
+        if (!d.HasBreakdown)
+        {
+            output.Into[d.StableKey] = MetricEntry.Of(d.Revision, value);
+            return;
+        }
+
+        var entry = new MetricEntry { Revision = d.Revision };
+        entry.Values[MetricEntry.Scalar] = value;
+        if (count?.By is { Count: > 0 } by)
+        {
+            foreach (var (k, v) in by)
+            {
+                entry.Values[k] = metric.Api.EventMode == ApiEventMode.Count
+                    ? output.Value(integer: (long)Math.Round(v), partial: partial)
+                    : output.Value(real: v, partial: partial);
+            }
+        }
+        output.Into[d.StableKey] = entry;
     }
 
     public static MetricEntry? Snapshot(RegisteredSdkMetric metric)
