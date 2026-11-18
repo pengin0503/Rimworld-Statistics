@@ -11,7 +11,7 @@ using RimworldStatistics.Core;
 /// </summary>
 internal static class RealFolder
 {
-    public const string Header = "run,files,cold_read,cold_failed,cold_ms,cold_cpu_ms,cold_alloc_bytes,"
+    public const string Header = "run,files,cold_read,cold_failed,unidentifiable,cold_ms,cold_cpu_ms,cold_alloc_bytes,"
         + "warm_skipped,warm_failed,warm_ms,warm_cpu_ms,warm_alloc_bytes,peak_working_set_bytes,save_observations,"
         + "checkpoints,proven_intervals,profile_bytes";
 
@@ -57,17 +57,19 @@ internal static class RealFolder
 
                 var cold = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
                 var warm = Phase(() => importer.Run(folder, session, null, CancellationToken.None), session);
-                // A save the reader cannot read is counted as failed each time; any other file is read once, then skipped.
+                // A save the reader cannot read is counted as failed each time; any other file (including Unidentifiable) is read once, then skipped.
                 if (cold.Result.Read + cold.Result.Skipped + cold.Result.Failed != files || warm.Result.Read != 0
                     || warm.Result.Skipped + warm.Result.Failed != files)
                     throw new InvalidOperationException("The repeat scan read a file again, or a file was not counted.");
-                var (saves, checkpoints, intervals) = session.Read(p => (p.SaveObservations.Count,
+                var (saves, unidentifiable, checkpoints, intervals) = session.Read(p => (
+                    p.SaveObservations.Count,
+                    p.SaveObservations.Count(o => !o.Superseded && o.Status == ObservationStatus.Unidentifiable),
                     p.MetricObservations.Count(o => !o.IsQuarantined && o.Source == MetricObservationSource.Checkpoint),
                     HistoricalCounterIntervals.Evaluate(p).Count));
                 closed = true;
                 session.Close();
                 var profileBytes = new FileInfo(Path.Combine(profileDir.FullName, "profile.json")).Length;
-                return string.Join(",", I(run), I(files), I(cold.Result.Read), I(cold.Result.Failed), F(cold.Ms), F(cold.CpuMs),
+                return string.Join(",", I(run), I(files), I(cold.Result.Read), I(cold.Result.Failed), I(unidentifiable), F(cold.Ms), F(cold.CpuMs),
                     I(cold.Allocated), I(warm.Result.Skipped), I(warm.Result.Failed), F(warm.Ms), F(warm.CpuMs), I(warm.Allocated),
                     I(Process.GetCurrentProcess().PeakWorkingSet64), I(saves), I(checkpoints), I(intervals), I(profileBytes));
             }

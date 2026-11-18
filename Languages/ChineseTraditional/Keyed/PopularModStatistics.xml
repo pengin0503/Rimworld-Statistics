@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>統計成功與玩家傀儡師建立連結的新傀儡。</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>傀儡師意識轉移</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>統計玩家傀儡師成功將意識移至另一角色的次數。</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Vanilla Fishing Expanded 漁獲</RWS_VFECatches>
+  <RWS_VFECatches>釣魚收穫數</RWS_VFECatches>
   <RWS_VFECatchesDesc>未啟用 Odyssey 時，按類型統計玩家釣魚工作實際產生的物品。</RWS_VFECatchesDesc>
 </LanguageData>

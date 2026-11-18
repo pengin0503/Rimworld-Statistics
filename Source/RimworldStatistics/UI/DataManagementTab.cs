@@ -21,15 +21,36 @@ internal static class DataManagementTab
     private static string? error;
     private static bool succeeded;
 
+    private static Vector2 outerScroll;
+
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
         const float exportHeight = 52f;
         const float diagHeight = 52f;
+        const float minStructuredHeight = 460f;
+        if (rect.height < minStructuredHeight)
+        {
+            var viewWidth = Math.Max(0f, rect.width - 16f);
+            var totalHeight = 305f + 8f + 220f + 8f + exportHeight + 4f + diagHeight;
+            using (UiScopes.ScrollView(rect, ref outerScroll, new Rect(0f, 0f, viewWidth, totalHeight)))
+            {
+                var y = 0f;
+                ImportTab.Draw(new Rect(0f, y, viewWidth, 305f), session, exportView);
+                y += 305f + 8f;
+                DrawBackups(new Rect(0f, y, viewWidth, 220f), session);
+                y += 220f + 8f;
+                ExportPanel.Draw(new Rect(0f, y, viewWidth, exportHeight), session, exportView, scope);
+                y += exportHeight + 4f;
+                DiagnosticsPanel.Draw(new Rect(0f, y, viewWidth, diagHeight), session, exportView);
+            }
+            return;
+        }
+
         DiagnosticsPanel.Draw(new Rect(rect.x, rect.yMax - diagHeight, rect.width, diagHeight), session, exportView);
         ExportPanel.Draw(new Rect(rect.x, rect.yMax - diagHeight - 4f - exportHeight, rect.width, exportHeight), session, exportView, scope);
-        rect.height = Math.Max(0, rect.height - diagHeight - exportHeight - 10f);
+        rect.height = Math.Max(0f, rect.height - diagHeight - exportHeight - 10f);
         var importHeight = Math.Min(305f, rect.height * 0.52f);
-        ImportTab.Draw(new Rect(rect.x, rect.y, rect.width, importHeight), session);
+        ImportTab.Draw(new Rect(rect.x, rect.y, rect.width, importHeight), session, exportView);
         var backupRect = new Rect(rect.x, rect.y + importHeight + 8f, rect.width, Math.Max(0f, rect.height - importHeight - 8f));
         DrawBackups(backupRect, session);
     }
@@ -65,13 +86,13 @@ internal static class DataManagementTab
         var selectedInfo = available?.FirstOrDefault(b => b.Path == selected);
         if (available is { Count: > 0 })
         {
-            Widgets.CheckboxLabeled(new Rect(rect.x, y, rect.width, 26f),
+            Verse.Widgets.CheckboxLabeled(new Rect(rect.x, y, rect.width, 26f),
                 "RWS_Backup_RestorePreferences".Translate(), ref restoreViewPreferences);
             y += 28f;
             actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
             string selectLabel = selectedInfo is null ? "RWS_Backup_Select".Translate() : Title(selectedInfo);
             var selectRect = actions.Next(selectLabel, 110f, 300f);
-            if (Widgets.ButtonText(selectRect, selectLabel.Truncate(selectRect.width - 12f)))
+            if (Verse.Widgets.ButtonText(selectRect, selectLabel.Truncate(Math.Max(0f, selectRect.width - 12f))))
                 Find.WindowStack.Add(new FloatMenu(available.Select(b => new FloatMenuOption(Title(b), () => selected = b.Path)).ToList()));
             if (Button(ref actions, "RWS_Backup_Restore", idle && !session.LoadResult.ReadOnly && selectedInfo?.Validation.Ok == true))
             {
@@ -105,7 +126,7 @@ internal static class DataManagementTab
         {
             var label = new Rect(rect.x, y, rect.width, 24f);
             var shown = status.Truncate(label.width);
-            Widgets.Label(label, shown);
+            Verse.Widgets.Label(label, shown);
             if (shown != status)
                 TooltipHandler.TipRegion(label, status);
             y += 26f;
@@ -133,7 +154,7 @@ internal static class DataManagementTab
                 };
             }).ToArray();
         }
-        Table.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), ref scroll, headers, rows);
+        Table.Draw(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), ref scroll, headers, rows);
     }
 
     private static string Verification(BackupProblem problem) => problem switch
@@ -152,7 +173,11 @@ internal static class DataManagementTab
     {
         string label = key.Translate();
         var rect = row.Next(label, 68f, 250f);
-        return Widgets.ButtonText(rect, label.Truncate(rect.width - 12f), active: active);
+        var shown = label.Truncate(Math.Max(0f, rect.width - 12f));
+        var clicked = Verse.Widgets.ButtonText(rect, shown, active: active);
+        if (shown != label)
+            TooltipHandler.TipRegion(rect, label);
+        return clicked;
     }
 
     private static BackupMetadata Metadata(string label) =>

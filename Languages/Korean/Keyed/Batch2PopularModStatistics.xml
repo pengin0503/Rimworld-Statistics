@@ -6,10 +6,10 @@
   <RWS_VfeSpacer_RepairShelfItemsDesc>Vanilla Furniture Expanded - Spacer Module의 수리 선반으로 최대 내구도까지 완전히 수리된 물품 수를 종류별로 기록합니다.</RWS_VfeSpacer_RepairShelfItemsDesc>
   <RWS_VweNonLethal_Downs>비살상 무기 적 제압 수</RWS_VweNonLethal_Downs>
   <RWS_VweNonLethal_DownsDesc>Vanilla Weapons Expanded - Non-Lethal 무기, 피해 유형 또는 상태 이상으로 적대적 폰을 생존 상태로 쓰러뜨린 횟수를 원인별로 기록합니다.</RWS_VweNonLethal_DownsDesc>
-  <RWS_AlphaBiomes_HomeMaps>Alpha Biomes 정착지 맵 최댓값</RWS_AlphaBiomes_HomeMaps>
+  <RWS_AlphaBiomes_HomeMaps>특수 생물군계 정착지 맵 최댓값</RWS_AlphaBiomes_HomeMaps>
   <RWS_AlphaBiomes_HomeMapsDesc>저장 성공 시 Alpha Biomes 생물군계에 위치한 플레이어 정착지 맵의 최대 수를 생물군계별로 기록합니다.</RWS_AlphaBiomes_HomeMapsDesc>
   <RWS_AlphaBiomes_CoreDrill>코어 샘플 드릴 채굴 석재 덩어리 수</RWS_AlphaBiomes_CoreDrill>
   <RWS_AlphaBiomes_CoreDrillDesc>플레이어 소유의 Alpha Biomes 코어 샘플 드릴이 실제로 추출하여 배치한 석재 덩어리 수를 종류별로 기록합니다.</RWS_AlphaBiomes_CoreDrillDesc>
-  <RWS_VleLandmarks_HomeMaps>Vanilla Landmarks 정착지 맵 최댓값</RWS_VleLandmarks_HomeMaps>
+  <RWS_VleLandmarks_HomeMaps>랜드마크 정착지 맵 최댓값</RWS_VleLandmarks_HomeMaps>
   <RWS_VleLandmarks_HomeMapsDesc>저장 성공 시 Vanilla Landmarks Expanded 랜드마크 또는 타일 변이를 보유한 플레이어 정착지 맵의 최대 수를 특징별로 기록합니다.</RWS_VleLandmarks_HomeMapsDesc>
 </LanguageData>

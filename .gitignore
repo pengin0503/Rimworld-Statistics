@@ -16,3 +16,6 @@ tools/translation/.cache/
 tools/RealGameEventProbe/Mod/Assemblies/
 __pycache__/
 *.py[cod]
+.env
+*.env
+r2_credentials.env

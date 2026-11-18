@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>플레이어 편의 꼭두각시술사에게 연결된 새 꼭두각시를 셉니다.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>꼭두각시술사 의식 전이 수</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>플레이어 편의 꼭두각시술사 의식이 다른 폰으로 옮겨진 횟수를 셉니다.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Vanilla Fishing Expanded 어획량</RWS_VFECatches>
+  <RWS_VFECatches>어획량</RWS_VFECatches>
   <RWS_VFECatchesDesc>Odyssey가 비활성화된 경우 Vanilla Fishing Expanded의 낚시 작업으로 실제 생성된 아이템을 종류별로 셉니다.</RWS_VFECatchesDesc>
 </LanguageData>

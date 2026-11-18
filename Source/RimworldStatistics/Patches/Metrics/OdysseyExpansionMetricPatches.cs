@@ -13,6 +13,7 @@ internal static class OdysseyVoyageProbe
     public static bool CanObserve()
         => UnityData.IsInMainThread
             && Scribe.mode == LoadSaveMode.Inactive
+            && LiveMetrics.IsRecordingUnit(OdysseyVoyageFamily.Name)
             && ModsConfig.OdysseyActive;
 
     public static bool IsOrbitTile(PlanetTile tile)
@@ -231,8 +232,15 @@ public static class OdysseyVoyageCaravanStepMetricPatch
         __state = PlanetTile.Invalid;
         if (!OdysseyVoyageProbe.CanObserve())
             return;
-        if (___caravan is not null && GameFacts.IsPlayerFaction(___caravan.Faction))
-            __state = ___caravan.Tile;
+        try
+        {
+            if (___caravan is not null && GameFacts.IsPlayerFaction(___caravan.Faction))
+                __state = ___caravan.Tile;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(OdysseyVoyageFamily.Name, e);
+        }
     }
 
     public static void Postfix(Caravan ___caravan, PlanetTile __state)

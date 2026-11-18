@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>プレイヤー側の傀儡使いに紐づいた新しい傀儡を数えます。</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>傀儡使いの意識転送数</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>プレイヤー側の傀儡使いの意識が別のポーンに移った回数を数えます。</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Vanilla Fishing Expandedの釣果</RWS_VFECatches>
+  <RWS_VFECatches>釣果数</RWS_VFECatches>
   <RWS_VFECatchesDesc>Odysseyが無効のとき、Vanilla Fishing Expandedの釣り作業で実際に出現した品目を種類別に数えます。</RWS_VFECatchesDesc>
 </LanguageData>

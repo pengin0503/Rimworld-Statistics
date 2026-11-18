@@ -2,6 +2,6 @@
 <LanguageData>
   <RWS_WorldDominationVictory>世界制覇クエストの勝利数</RWS_WorldDominationVictory>
   <RWS_WorldDominationVictoryDesc>World Domination 2.0で支配期間を満たして勝利した記録を、クエスト削除後も保持します。</RWS_WorldDominationVictoryDesc>
-  <RWS_RimWarVictory>Rim Warの宿敵チャレンジ勝利数</RWS_RimWarVictory>
+  <RWS_RimWarVictory>宿敵チャレンジ勝利数</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>指定された宿敵派閥に拠点がなくなり、Rim Warが勝利を宣言した回数を数えます。</RWS_RimWarVictoryDesc>
 </LanguageData>

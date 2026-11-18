@@ -6,18 +6,14 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
-NOTEBOOKS = [
-    "01_Save_Analysis.ipynb",
-    "02_Performance_Comparison.ipynb",
-    "03_Regression_Report.ipynb",
-]
+NOTEBOOKS = sorted((ROOT / "notebooks").glob("*.ipynb"))
 
 
 class ColabNotebookTests(unittest.TestCase):
     def test_notebook_structure_and_python_syntax(self):
-        for filename in NOTEBOOKS:
-            with self.subTest(notebook=filename):
-                notebook_path = ROOT / "notebooks" / filename
+        self.assertGreaterEqual(len(NOTEBOOKS), 3)
+        for notebook_path in NOTEBOOKS:
+            with self.subTest(notebook=notebook_path.name):
                 notebook = json.loads(notebook_path.read_text(encoding="utf-8"))
                 self.assertEqual(notebook["nbformat"], 4)
                 self.assertGreaterEqual(notebook["nbformat_minor"], 5)

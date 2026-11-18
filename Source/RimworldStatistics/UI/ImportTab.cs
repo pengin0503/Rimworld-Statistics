@@ -17,7 +17,7 @@ public static class ImportTab
     private static Snapshot? cached;
     private static readonly StatsTable ProblemsTable = new(24f, new ColumnSpec(0f, 1f));
 
-    public static void Draw(Rect rect, ProfileSession session)
+    public static void Draw(Rect rect, ProfileSession session, StatsView? view = null)
     {
         var language = LanguageDatabase.activeLanguage;
         if (!session.TryReadWithRevision((profile, revision) =>
@@ -46,7 +46,7 @@ public static class ImportTab
         {
             if (cached is not { } previous || !ReferenceEquals(previous.Session, session) || !ReferenceEquals(previous.Language, language))
             {
-                Widgets.Label(rect, "RWS_Loading".Translate());
+                Verse.Widgets.Label(rect, "RWS_Loading".Translate());
                 return;
             }
             snapshot = previous;
@@ -82,46 +82,55 @@ public static class ImportTab
                 }
                 break;
             default:
-                GUI.color = ColorLibrary.RedReadable;
-                Line(rect, ref y, "RWS_Import_Error".Translate(run.Error is { } error ? error.GetType().Name + ": " + error.Message : ""));
-                GUI.color = Color.white;
+                using (UiScopes.GuiState())
+                {
+                    GUI.color = ColorLibrary.RedReadable;
+                    Line(rect, ref y, "RWS_Import_Error".Translate(run.Error is { } error ? error.GetType().Name + ": " + error.Message : ""));
+                }
                 break;
         }
 
         y += 6f;
-        var buttonRect = new Rect(rect.x, y, 180f, 32f);
         var canScanOnTitleScreen = Current.ProgramState == ProgramState.Entry;
         if (ImportRunner.Running)
         {
             var p = run.Progress;
             var fraction = p is { Total: > 0 } ? p.Done / (float)p.Total : 0f;
-            var bar = new Rect(rect.x, y, Math.Max(0, rect.width - 200f), 32f);
-            Widgets.FillableBar(bar, fraction);
-            Text.Anchor = TextAnchor.MiddleCenter;
-            var full = p is null ? "…" : (string)"RWS_Import_Progress".Translate(p.Done, p.Total, p.Failed, p.CurrentFile ?? "");
-            var shown = full.Truncate(Math.Max(0, bar.width - 8f));
-            Widgets.Label(bar, shown);
-            if (shown != full)
-                TooltipHandler.TipRegion(bar, full);
-            Text.Anchor = TextAnchor.UpperLeft;
-            if (Widgets.ButtonText(new Rect(rect.xMax - 180f, y, 180f, 32f), "RWS_Cancel".Translate()))
+            var cancelWidth = Math.Min(180f, Math.Max(80f, rect.width * 0.32f));
+            var bar = new Rect(rect.x, y, Math.Max(0f, rect.width - cancelWidth - 12f), 32f);
+            Verse.Widgets.FillableBar(bar, fraction);
+            using (UiScopes.GuiState())
+            {
+                Text.Anchor = TextAnchor.MiddleCenter;
+                var full = p is null ? "…" : (string)"RWS_Import_Progress".Translate(p.Done, p.Total, p.Failed, p.CurrentFile ?? "");
+                var shown = full.Truncate(Math.Max(0f, bar.width - 8f));
+                Verse.Widgets.Label(bar, shown);
+                if (shown != full)
+                    TooltipHandler.TipRegion(bar, full);
+            }
+            var cancelLabel = (string)"RWS_Cancel".Translate();
+            var cancelRect = new Rect(rect.xMax - cancelWidth, y, cancelWidth, 32f);
+            if (Verse.Widgets.ButtonText(cancelRect, cancelLabel.Truncate(Math.Max(0f, cancelRect.width - 12f))))
                 ImportRunner.Cancel();
+            y += 40f;
         }
         else
         {
-            if (Widgets.ButtonText(buttonRect, "RWS_Rescan".Translate(), active: canScanOnTitleScreen) && canScanOnTitleScreen)
+            var controls = new ControlRow(new Rect(rect.x, y, rect.width, 32f));
+            var rescanLabel = (string)"RWS_Rescan".Translate();
+            var rescanRect = controls.Next(rescanLabel, 110f, 200f);
+            var shownRescan = rescanLabel.Truncate(Math.Max(0f, rescanRect.width - 12f));
+            if (Verse.Widgets.ButtonText(rescanRect, shownRescan, active: canScanOnTitleScreen) && canScanOnTitleScreen)
                 ImportRunner.StartIfIdle();
             if (!canScanOnTitleScreen)
-                TooltipHandler.TipRegion(buttonRect, "RWS_Import_TitleScreenOnlyTip".Translate());
-        }
-        var nextX = buttonRect.xMax + 8f;
-        if (!ImportRunner.Running && rect.xMax - nextX > 45f)
-        {
+                TooltipHandler.TipRegion(rescanRect, "RWS_Import_TitleScreenOnlyTip".Translate());
+            else if (shownRescan != rescanLabel)
+                TooltipHandler.TipRegion(rescanRect, rescanLabel);
+
             // A forced re-check reads every save in full, so it only runs after the player confirms it (#310).
             var recheckLabel = (string)"RWS_ForceRecheck".Translate();
-            var recheckRect = new Rect(nextX, y, Math.Min(Math.Max(160f, Text.CalcSize(recheckLabel).x + 24f), rect.xMax - nextX),
-                buttonRect.height);
-            if (Widgets.ButtonText(recheckRect, recheckLabel.Truncate(recheckRect.width - 12f), active: canScanOnTitleScreen)
+            var recheckRect = controls.Next(recheckLabel, 130f, 240f);
+            if (Verse.Widgets.ButtonText(recheckRect, recheckLabel.Truncate(Math.Max(0f, recheckRect.width - 12f)), active: canScanOnTitleScreen)
                 && canScanOnTitleScreen)
             {
                 Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RWS_ForceRecheck_Confirm".Translate(),
@@ -129,17 +138,17 @@ public static class ImportTab
             }
             TooltipHandler.TipRegion(recheckRect,
                 canScanOnTitleScreen ? "RWS_ForceRecheckTip".Translate() : "RWS_Import_TitleScreenOnlyTip".Translate());
-            nextX = recheckRect.xMax + 8f;
-        }
-        if (!ImportRunner.Running && rect.xMax - nextX > 45f)
-        {
+
             var historicalLabel = (string)"RWS_HistoricalIntervals_Title".Translate();
-            var historicalRect = new Rect(nextX, y,
-                Math.Min(Math.Max(190f, Text.CalcSize(historicalLabel).x + 24f), rect.xMax - nextX), buttonRect.height);
-            if (Widgets.ButtonText(historicalRect, historicalLabel.Truncate(historicalRect.width - 12f)))
-                Find.WindowStack.Add(new Dialog_HistoricalCounterIntervals(session));
+            var historicalRect = controls.Next(historicalLabel, 140f, 280f);
+            var shownHistorical = historicalLabel.Truncate(Math.Max(0f, historicalRect.width - 12f));
+            if (Verse.Widgets.ButtonText(historicalRect, shownHistorical))
+                UiScopes.OpenOrReplaceWindow(new Dialog_HistoricalCounterIntervals(session, view));
+            if (shownHistorical != historicalLabel)
+                TooltipHandler.TipRegion(historicalRect, historicalLabel);
+
+            y += controls.Height + 8f;
         }
-        y += 44f;
 
         // Record file, load source, backups, write errors.
         var load = session.LoadResult;
@@ -153,9 +162,11 @@ public static class ImportTab
         Line(rect, ref y, "RWS_Import_Backups".Translate(BackupCount()));
         if (session.LastSaveError is { } saveError && !load.ReadOnly)
         {
-            GUI.color = ColorLibrary.RedReadable;
-            Line(rect, ref y, "RWS_Import_SaveError".Translate(saveError.GetType().Name + ": " + saveError.Message));
-            GUI.color = Color.white;
+            using (UiScopes.GuiState())
+            {
+                GUI.color = ColorLibrary.RedReadable;
+                Line(rect, ref y, "RWS_Import_SaveError".Translate(saveError.GetType().Name + ": " + saveError.Message));
+            }
         }
 
         y += 8f;
@@ -163,7 +174,7 @@ public static class ImportTab
         if (snapshot.ProblemSummary is { } summary)
             Line(rect, ref y, summary);
         var title = (string)"RWS_Import_Problems".Translate(problems.Length);
-        ProblemsTable.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), ref scroll, [title], problems);
+        ProblemsTable.Draw(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), ref scroll, [title], problems);
     }
 
     private static string ProblemLabel(ImportProblemKind kind) => kind switch

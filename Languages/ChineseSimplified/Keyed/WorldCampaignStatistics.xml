@@ -2,6 +2,6 @@
 <LanguageData>
   <RWS_WorldDominationVictory>世界征服胜利次数</RWS_WorldDominationVictory>
   <RWS_WorldDominationVictoryDesc>在完成 World Domination 2.0 的控制挑战并取得战役胜利后，即使任务被移除也会保留该胜利记录。</RWS_WorldDominationVictoryDesc>
-  <RWS_RimWarVictory>Rim War 宿敌挑战胜利</RWS_RimWarVictory>
+  <RWS_RimWarVictory>宿敌挑战胜利</RWS_RimWarVictory>
   <RWS_RimWarVictoryDesc>统计指定宿敌派系失去最后一个定居点后 Rim War 宣布胜利的次数。</RWS_RimWarVictoryDesc>
 </LanguageData>

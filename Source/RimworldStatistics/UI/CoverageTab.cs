@@ -75,14 +75,22 @@ internal static class CoverageTab
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 63f, rect.width, 28f));
         var filterText = FilterLabel(filter);
-        if (Widgets.ButtonText(controls.Next(filterText, 140f, 185f), filterText))
+        var filterBtn = controls.Next(filterText, 140f, 185f);
+        var shownFilter = filterText.Truncate(Math.Max(0f, filterBtn.width - 12f));
+        if (shownFilter != filterText)
+            TooltipHandler.TipRegion(filterBtn, filterText);
+        if (Widgets.ButtonText(filterBtn, shownFilter))
         {
             var menu = Enum.GetValues<CoverageFilter>().Select(s =>
                 new FloatMenuOption(FilterLabel(s), () => { filter = s; rebuildRows = true; scroll = Vector2.zero; })).ToList();
             Find.WindowStack.Add(new FloatMenu(menu));
         }
         var categoryText = category is { } cat ? DetailsTab.CategoryLabel(cat) : (string)"RWS_Details_AllCategories".Translate();
-        if (Widgets.ButtonText(controls.Next(categoryText, 135f, 200f), categoryText.Truncate(192f)))
+        var catBtn = controls.Next(categoryText, 135f, 200f);
+        var shownCat = categoryText.Truncate(Math.Max(0f, catBtn.width - 12f));
+        if (shownCat != categoryText)
+            TooltipHandler.TipRegion(catBtn, categoryText);
+        if (Widgets.ButtonText(catBtn, shownCat))
         {
             var menu = new List<FloatMenuOption>
             {
@@ -97,7 +105,11 @@ internal static class CoverageTab
         var verificationText = verification is null
             ? (string)"RWS_Status_VerificationAll".Translate()
             : VerificationLabel(verification.Value);
-        if (Widgets.ButtonText(controls.Next(verificationText, 135f, 200f), verificationText.Truncate(192f)))
+        var verBtn = controls.Next(verificationText, 135f, 200f);
+        var shownVer = verificationText.Truncate(Math.Max(0f, verBtn.width - 12f));
+        if (shownVer != verificationText)
+            TooltipHandler.TipRegion(verBtn, verificationText);
+        if (Widgets.ButtonText(verBtn, shownVer))
         {
             Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
             {
@@ -136,12 +148,12 @@ internal static class CoverageTab
             scroll = Vector2.zero;
         }
         var summaryRect2 = searchRow.Next(summaryLabelText, 95f, 240f);
-        var priorAnchor = Text.Anchor;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        Widgets.Label(summaryRect2, summaryLabelText.Truncate(summaryRect2.width));
-        GUI.color = Color.white;
-        Text.Anchor = priorAnchor;
+        using (UiScopes.GuiState())
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            Widgets.Label(summaryRect2, summaryLabelText.Truncate(summaryRect2.width));
+        }
         TooltipHandler.TipRegion(summaryRect2, summaryLabelText);
         if (activeFilters > 0)
         {
@@ -167,11 +179,12 @@ internal static class CoverageTab
         }
         var tableWidth = tablePlan.TotalWidth;
         var titleRect = new Rect(rect.x, start, rect.width, 27f);
-        GUI.BeginGroup(titleRect);
-        DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
-            ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
-                "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths, null);
-        GUI.EndGroup();
+        using (UiScopes.Group(titleRect))
+        {
+            DrawCells(new Rect(-scroll.x, 0f, tableWidth, 27f),
+                ["RWS_Status_Statistic".Translate(), "RWS_Status_Recording".Translate(),
+                    "RWS_Status_Coverage".Translate(), "RWS_Status_Count".Translate()], tablePlan.Widths, null);
+        }
 
         var viewport = new Rect(rect.x, start + RowHeight, rect.width, Math.Max(0, rect.yMax - start - RowHeight));
         if (viewport.height <= 0)
@@ -181,36 +194,36 @@ internal static class CoverageTab
             Widgets.Label(viewport, "RWS_Details_NoMatch".Translate());
             return;
         }
-        Widgets.BeginScrollView(viewport, ref scroll,
-            new Rect(0, 0, tableWidth, rows.Length * RowHeight));
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(rows.Length - 1, (int)((scroll.y + viewport.height) / RowHeight) + 1);
-        for (var i = first; i <= last; i++)
+        using (UiScopes.ScrollView(viewport, ref scroll, new Rect(0, 0, tableWidth, rows.Length * RowHeight)))
         {
-            var row = rows[i];
-            var rowRect = new Rect(0f, i * RowHeight, tableWidth, RowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(rowRect, 0.2f);
-            DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths,
-                row.VisualKind, isGroup: row.Status is null);
-            if (row.Status is null)
+            var first = Math.Max(0, (int)(scroll.y / RowHeight));
+            var last = Math.Min(rows.Length - 1, (int)((scroll.y + viewport.height) / RowHeight) + 1);
+            for (var i = first; i <= last; i++)
             {
-                Widgets.DrawHighlightIfMouseover(rowRect);
-                if (Widgets.ButtonInvisible(rowRect) && string.IsNullOrWhiteSpace(search))
+                var row = rows[i];
+                var rowRect = new Rect(0f, i * RowHeight, tableWidth, RowHeight);
+                if (i % 2 == 1)
+                    Widgets.DrawHighlight(rowRect, 0.2f);
+                DrawCells(rowRect, [row.Label, row.Capture, row.Coverage, row.Count], tablePlan.Widths,
+                    row.VisualKind, isGroup: row.Status is null);
+                if (row.Status is null)
                 {
-                    if (!Expanded.Remove(row.Group))
-                        Expanded.Add(row.Group);
-                    rebuildRows = true;
+                    Widgets.DrawHighlightIfMouseover(rowRect);
+                    if (Widgets.ButtonInvisible(rowRect) && string.IsNullOrWhiteSpace(search))
+                    {
+                        if (!Expanded.Remove(row.Group))
+                            Expanded.Add(row.Group);
+                        rebuildRows = true;
+                    }
+                }
+                else
+                {
+                    var metric = row.Status;
+                    var id = unchecked(0x52571000 + i * 8191);
+                    TooltipHandler.TipRegion(rowRect, () => Tooltip(metric, view.Stats), id);
                 }
             }
-            else
-            {
-                var metric = row.Status;
-                var id = unchecked(0x52571000 + i * 8191);
-                TooltipHandler.TipRegion(rowRect, () => Tooltip(metric, view.Stats), id);
-            }
         }
-        Widgets.EndScrollView();
     }
 
     private static void ResetFilters()
@@ -373,23 +386,22 @@ internal static class CoverageTab
     private static void DrawCells(Rect rect, string[] cells, float[] widths, MetricVisualKind? visualKind, bool isGroup = false)
     {
         var x = rect.x;
-        var priorAnchor = Text.Anchor;
-        var priorColor = GUI.color;
-        for (var i = 0; i < cells.Length; i++)
+        using (UiScopes.GuiState())
         {
-            Text.Anchor = i == 3 ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
-            GUI.color = visualKind is { } kind && (isGroup ? i == 3 : i == 2)
-                ? MetricVisualStyle.StateColor(kind) : Color.white;
-            var cell = new Rect(x + 4f, rect.y, Math.Max(0, widths[i] - 8f), rect.height);
-            var shown = cells[i].Truncate(cell.width);
-            Widgets.Label(cell, shown);
-            // Metric rows use one full-row tooltip (which contains the untruncated label,
-            // recording, coverage and counts). Group/header rows have no such tooltip.
-            if ((isGroup || visualKind is null) && shown != cells[i])
-                TooltipHandler.TipRegion(cell, cells[i]);
-            x += widths[i];
+            for (var i = 0; i < cells.Length; i++)
+            {
+                Text.Anchor = i == 3 ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
+                GUI.color = visualKind is { } kind && (isGroup ? i == 3 : i == 2)
+                    ? MetricVisualStyle.StateColor(kind) : Color.white;
+                var cell = new Rect(x + 4f, rect.y, Math.Max(0, widths[i] - 8f), rect.height);
+                var shown = cells[i].Truncate(cell.width);
+                Widgets.Label(cell, shown);
+                // Metric rows use one full-row tooltip (which contains the untruncated label,
+                // recording, coverage and counts). Group/header rows have no such tooltip.
+                if ((isGroup || visualKind is null) && shown != cells[i])
+                    TooltipHandler.TipRegion(cell, cells[i]);
+                x += widths[i];
+            }
         }
-        GUI.color = priorColor;
-        Text.Anchor = priorAnchor;
     }
 }

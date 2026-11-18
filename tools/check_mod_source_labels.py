@@ -58,6 +58,17 @@ BRANDS_BY_PREFIX = {
     "RWS_BiomesIslands_": ("Biomes! Islands", "Biomes Islands"),
     "RWS_RimQuest": ("RimQuest",),
     "RWS_Horrors": ("Horrors",),
+    "RWS_VFECatches": ("Vanilla Fishing Expanded",),
+    "RWS_AlphaBiomes_": ("Alpha Biomes",),
+    "RWS_VleLandmarks_": ("Vanilla Landmarks",),
+    "RWS_RimTalk_": ("RimTalk",),
+    "RWS_AlphaMechs_": ("Alpha Mechs",),
+    "RWS_AnomaliesExpected_": ("Anomalies Expected",),
+    "RWS_NewMod_RealRuins": ("Real Ruins",),
+    "RWS_RimWar": ("Rim War",),
+    "RWS_VnpeGrinder_": ("VNPE", "Vanilla Nutrient Paste Expanded"),
+    "RWS_VreAndroid_": ("VRE Android", "VRE", "Vanilla Races Expanded"),
+    "RWS_Vsie_": ("VSIE", "Vanilla Social Interactions Expanded"),
 }
 MOD_LABEL = re.compile(r"^MOD[:：]\s*\{0\}$")
 issues: list[str] = []

@@ -8,7 +8,7 @@
   <RWS_VqeDeadlife_SiloDecryptionsDesc>Подсчитывает древние столы планирования, полностью изученные поселенцами игрока в Vanilla Quests Expanded - Deadlife для открытия нового бункера.</RWS_VqeDeadlife_SiloDecryptionsDesc>
   <RWS_VqeDeadlife_PowerKickstarts>Запущенные аварийные генераторы</RWS_VqeDeadlife_PowerKickstarts>
   <RWS_VqeDeadlife_PowerKickstartsDesc>Подсчитывает древние аварийные генераторы, успешно запущенные поселенцами игрока в Vanilla Quests Expanded - Deadlife, с разбивкой по типам.</RWS_VqeDeadlife_PowerKickstartsDesc>
-  <RWS_AnomaliesExpected_StudiedEntities>Изученные аномалии Anomalies Expected</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntities>Изученные записи аномалий</RWS_AnomaliesExpected_StudiedEntities>
   <RWS_AnomaliesExpected_StudiedEntitiesDesc>Фиксирует количество уникальных основных сущностей Anomalies Expected, для которых открыты исследовательские заметки в базе данных.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
   <RWS_WayBetterRomance_Dates>Завершённые свидания и прогулки</RWS_WayBetterRomance_Dates>
   <RWS_WayBetterRomance_DatesDesc>Подсчитывает успешно завершённые свидания и совместные прогулки с участием колонистов игрока в Way Better Romance с разбивкой по типу.</RWS_WayBetterRomance_DatesDesc>

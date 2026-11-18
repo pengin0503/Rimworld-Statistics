@@ -18,6 +18,6 @@
   <RWS_PuppetsCreatedDesc>Counts new puppets successfully linked to a player puppeteer.</RWS_PuppetsCreatedDesc>
   <RWS_PuppetTransfers>Puppeteer mind transfers</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Counts successful transfers of a player puppeteer’s mind to another pawn.</RWS_PuppetTransfersDesc>
-  <RWS_VFECatches>Vanilla Fishing Expanded catches</RWS_VFECatches>
+  <RWS_VFECatches>Fish catches</RWS_VFECatches>
   <RWS_VFECatchesDesc>Counts items spawned by player fishing jobs in Vanilla Fishing Expanded without Odyssey, by item type.</RWS_VFECatchesDesc>
 </LanguageData>

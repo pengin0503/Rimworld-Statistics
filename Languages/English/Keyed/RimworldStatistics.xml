@@ -1104,13 +1104,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>Senators who were not in favor before and became favorable through normal diplomacy or quests, grouped by faction. Developer actions, senators already in favor, and restoring older saves do not count.</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>Honors bestowed</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>Pending VFE Empire honors actually bestowed on a player colonist when a ritual completes, grouped by honor. Merely receiving an available honor and developer actions do not count.</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE inspiration aspirations fulfilled</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>Inspiration aspirations fulfilled</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Aspirations tied to a colonist's active inspiration in Vanilla Social Interactions Expanded that were newly fulfilled, grouped by inspiration. Unfinished progress, expiry and unrelated inspirations do not count.</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 rides started</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Times a player colonist actually started riding an owned animal through a completed Giddy-Up mount job, grouped by animal type. Arriving already mounted, queued commands and repeated observations do not count.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Reloads by colonists</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Completed reloads by player pawns that actually put ammunition into a weapon's magazine. Each reload counts once even if it loads several ammo stacks. Turrets, auto-loaders, disabled ammo and failed reloads are not counted.</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android natural awakenings</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>Android natural awakenings</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Player-owned androids with synthetic bodies that awakened naturally through the mood-based gene check. Awakening directly through developer tools, setup at game start, and androids that were already awake do not count. Requires Biotech.</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE expertise chosen</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>New expertise chosen by player colonists in the normal expertise panel, by expertise type. Debug unlocks and restored records do not count.</RWS_VseExpertise_SelectedDesc>
@@ -1132,7 +1132,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem actually accepted into pipe storage from player-owned pumpjacks, fractions included, measured when the pipe network confirms storage. Planned yield, output dropped on the ground and storage that was blocked do not count.</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>DNA extracted</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>DNA items actually placed or merged into stacks by successful player extractions, by output item. Invalid targets, failed placement, charges used without output and other hybrid creation do not count.</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>Nutrient slurry stored in pipes</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>Nutrient slurry actually accepted into the pipe network from player-owned Vanilla Nutrient Paste Expanded grinders, fractions included. Grinding attempts, ingredients used without slurry being accepted, and pipe storage by other buildings do not count.</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>Honey harvested</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>Honey actually placed or merged into stacks after a player colonist empties a player-owned Medieval 2 apiary, grouped by output item. An apiary merely being ready, failed placement and later hauling do not count.</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1202,7 +1202,7 @@
   <RWS_NewMod_UpgradesDesc>New vehicle upgrades installed through completed player work, by vehicle type.</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>Vehicles restored from wrecks</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>Player vehicles spawned by completed construction of a tracked wreck frame.</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>Real Ruins sites entered by caravans</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>Ruin sites entered by caravans</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>Player caravans that arrived at a Real Ruins site whose map had to be generated, with pawns confirmed as entering it.</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>Slot machine rounds completed</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>Slot machine rounds completed on player machines, split into losses and each kind of win.</RWS_NewMod_CasinoDesc>

@@ -53,7 +53,7 @@ internal static class RankingsTab
                 var def = MetricLookup.Definition(view, key);
                 var canPerDay = LeaderboardBuilder.CanRankPerDay(view, key);
                 return new Choice(key,
-                    def is null ? MetricText.BasicLabel(key) : MetricText.Label(def),
+                    def is null ? MetricText.PerColonyBasicLabel(key) : MetricText.Label(def),
                     def?.Category, def is null ? null : MetricText.ModSourceLabel(def),
                     canPerDay);
             }).OrderBy(c => c.Label, StringComparer.CurrentCulture)
@@ -63,14 +63,18 @@ internal static class RankingsTab
 
         var eligibleChoices = perDayMode ? choices.Where(c => c.CanRankPerDay).ToArray() : choices;
         if (selectedKey is null || !eligibleChoices.Any(c => c.Key == selectedKey))
+        {
             selectedKey = eligibleChoices.FirstOrDefault()?.Key;
+            if (selectedKey is not null)
+                descending = perDayMode || LeaderboardBuilder.DefaultDescending(MetricLookup.Definition(view, selectedKey));
+        }
 
         var split = StatisticsWindowLayout.ResolveCollapsibleSplit(rect.width, selectorCollapsed);
         if (!selectorCollapsed && split.LeftWidth > 0f)
         {
             var left = new Rect(rect.x, rect.y, split.LeftWidth, rect.height);
             Widgets.DrawMenuSection(left);
-            DrawSelector(left.ContractedBy(8f), eligibleChoices, preferences, persist);
+            DrawSelector(left.ContractedBy(8f), view, eligibleChoices, preferences, persist);
         }
 
         if (split.RightWidth <= 0f)
@@ -107,11 +111,14 @@ internal static class RankingsTab
         }
 
         var titleRect = new Rect(body.x, body.y, body.width, 28f);
-        Text.Font = GameFont.Medium;
         var titleText = perDayMode ? (string)"RWS_Rate_TitleSuffix".Translate(active.Label) : active.Label;
-        var shownTitle = titleText.Truncate(titleRect.width);
-        Widgets.Label(titleRect, shownTitle);
-        Text.Font = GameFont.Small;
+        string shownTitle;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            shownTitle = titleText.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+        }
         if (shownTitle != titleText)
             TooltipHandler.TipRegion(titleRect, titleText);
         var sourceOffset = active.Source is null ? 0f : 21f;
@@ -139,6 +146,8 @@ internal static class RankingsTab
         if (Widgets.ButtonText(modeRect, shownMode))
         {
             perDayMode = !perDayMode;
+            if (selectedKey is not null)
+                descending = perDayMode || LeaderboardBuilder.DefaultDescending(MetricLookup.Definition(view, selectedKey));
             tableScroll = Vector2.zero;
             choicesScroll = Vector2.zero;
         }
@@ -169,7 +178,7 @@ internal static class RankingsTab
         label = "RWS_Scatter_Open".Translate();
         var scatterRect = controls.Next(label, 112f, 190f);
         if (Widgets.ButtonText(scatterRect, label.Truncate(Math.Max(0f, scatterRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName, yPerDay: perDayMode));
+            UiScopes.OpenOrReplaceWindow(new Dialog_MetricScatterPlot(view, selectedKey, null, scopeName, yPerDay: perDayMode));
         TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
 
         var nameSignature = ColonyPresentation.Signature(preferences);
@@ -218,11 +227,13 @@ internal static class RankingsTab
         }
         var infoY = titleRect.yMax + sourceOffset + 7f + controls.Height + 4f;
         var infoRect = new Rect(body.x, infoY, body.width, 26f);
-        var prevColor = GUI.color;
-        GUI.color = new Color(0.84f, 0.86f, 0.90f);
-        var shownInfo = coverage.Truncate(infoRect.width);
-        Widgets.Label(infoRect, shownInfo);
-        GUI.color = prevColor;
+        string shownInfo;
+        using (UiScopes.GuiState())
+        {
+            GUI.color = new Color(0.84f, 0.86f, 0.90f);
+            shownInfo = coverage.Truncate(infoRect.width);
+            Widgets.Label(infoRect, shownInfo);
+        }
         if (shownInfo != coverage)
             TooltipHandler.TipRegion(infoRect, coverage);
 
@@ -238,7 +249,7 @@ internal static class RankingsTab
             ], rows, RightAlignedColumns);
     }
 
-    private static void DrawSelector(Rect rect, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
+    private static void DrawSelector(Rect rect, StatsView view, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
     {
         var label = (string)"RWS_Rankings_Search".Translate();
         Widgets.Label(new Rect(rect.x, rect.y, rect.width, 23f), label.Truncate(rect.width));
@@ -269,9 +280,9 @@ internal static class RankingsTab
             TooltipHandler.TipRegion(catRect, categoryText);
 
         var trimmed = search.Trim();
-        if (priorSearch != search || priorCategory != category || priorPerDay != perDayMode)
+        if (priorSearch != trimmed || priorCategory != category || priorPerDay != perDayMode)
         {
-            priorSearch = search;
+            priorSearch = trimmed;
             priorCategory = category;
             priorPerDay = perDayMode;
             filtered = eligibleChoices.Where(c => (category is null || c.Category == category)
@@ -286,14 +297,14 @@ internal static class RankingsTab
             ? (string)"RWS_Filter_Shown".Translate(filtered.Length, eligibleChoices.Length) + " · " + (string)"RWS_Filter_ActiveCount".Translate(activeFilters)
             : (string)"RWS_Filter_Shown".Translate(filtered.Length, eligibleChoices.Length);
         var countRect = statusRow.Next(countText, 85f, rect.width);
-        var anchor = Text.Anchor;
-        var prevColor = GUI.color;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        var shownCountText = countText.Truncate(countRect.width);
-        Widgets.Label(countRect, shownCountText);
-        GUI.color = prevColor;
-        Text.Anchor = anchor;
+        string shownCountText;
+        using (UiScopes.GuiState())
+        {
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.color = new Color(0.8f, 0.8f, 0.8f);
+            shownCountText = countText.Truncate(countRect.width);
+            Widgets.Label(countRect, shownCountText);
+        }
         if (shownCountText != countText)
             TooltipHandler.TipRegion(countRect, countText);
 
@@ -307,6 +318,8 @@ internal static class RankingsTab
                 search = "";
                 category = null;
                 perDayMode = false;
+                if (selectedKey is not null)
+                    descending = LeaderboardBuilder.DefaultDescending(MetricLookup.Definition(view, selectedKey));
                 choicesScroll = Vector2.zero;
                 priorSearch = null;
             }
@@ -322,38 +335,40 @@ internal static class RankingsTab
             return;
         }
         var totalWidth = Math.Max(0f, viewport.width - 16f);
-        Widgets.BeginScrollView(viewport, ref choicesScroll, new Rect(0, 0, totalWidth, filtered.Length * 30f));
-        var first = Math.Max(0, (int)(choicesScroll.y / 30f));
-        var last = Math.Min(filtered.Length - 1, (int)((choicesScroll.y + viewport.height) / 30f) + 1);
-        for (var i = first; i <= last; i++)
+        using (UiScopes.ScrollView(viewport, ref choicesScroll, new Rect(0, 0, totalWidth, filtered.Length * 30f)))
         {
-            var option = filtered[i];
-            var star = new Rect(0, i * 30f, 26f, 28f);
-            var saved = preferences.FavoriteMetricKeys.Contains(option.Key, StringComparer.Ordinal);
-            if (Widgets.ButtonText(star, saved ? "★" : "☆"))
+            var first = Math.Max(0, (int)(choicesScroll.y / 30f));
+            var last = Math.Min(filtered.Length - 1, (int)((choicesScroll.y + viewport.height) / 30f) + 1);
+            for (var i = first; i <= last; i++)
             {
-                if (saved)
-                    preferences.FavoriteMetricKeys.Remove(option.Key);
-                else if (preferences.FavoriteMetricKeys.Count < 500)
-                    preferences.FavoriteMetricKeys.Add(option.Key);
-                persist();
+                var option = filtered[i];
+                var star = new Rect(0, i * 30f, 26f, 28f);
+                var saved = preferences.FavoriteMetricKeys.Contains(option.Key, StringComparer.Ordinal);
+                if (Widgets.ButtonText(star, saved ? "★" : "☆"))
+                {
+                    if (saved)
+                        preferences.FavoriteMetricKeys.Remove(option.Key);
+                    else if (preferences.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
+                        preferences.FavoriteMetricKeys.Add(option.Key);
+                    persist();
+                }
+                var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
+                var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);
+                if (isSelected)
+                    Widgets.DrawBoxSolid(button, new Color(0.26f, 0.44f, 0.56f, 0.35f));
+                if (Widgets.ButtonText(button, option.Label.Truncate(Math.Max(0f, button.width - 10f))))
+                {
+                    selectedKey = option.Key;
+                    descending = perDayMode || LeaderboardBuilder.DefaultDescending(MetricLookup.Definition(view, option.Key));
+                    tableScroll = Vector2.zero;
+                }
+                if (isSelected)
+                    Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
+                TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
+                TooltipHandler.TipRegion(button, option.Source is null ? option.Label
+                    : option.Label + "\n" + option.Source);
             }
-            var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
-            var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);
-            if (isSelected)
-                Widgets.DrawBoxSolid(button, new Color(0.26f, 0.44f, 0.56f, 0.35f));
-            if (Widgets.ButtonText(button, option.Label.Truncate(Math.Max(0f, button.width - 10f))))
-            {
-                selectedKey = option.Key;
-                tableScroll = Vector2.zero;
-            }
-            if (isSelected)
-                Widgets.DrawBoxSolid(new Rect(button.x, button.y + 2f, 3f, button.height - 4f), new Color(0.45f, 0.78f, 0.94f, 0.95f));
-            TooltipHandler.TipRegion(star, "RWS_Fav_StarTip".Translate());
-            TooltipHandler.TipRegion(button, option.Source is null ? option.Label
-                : option.Label + "\n" + option.Source);
         }
-        Widgets.EndScrollView();
     }
 
     internal static string BasicValue(string key, double n)

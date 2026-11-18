@@ -1104,13 +1104,13 @@
   <RWS_VfeClassical_SenatorFavorsDesc>通常の外交やクエストによって、支持していなかった状態から新たに支持するようになった議員の数（派閥別）。開発者の操作、すでに支持していた議員、古いセーブの復元は数えません。</RWS_VfeClassical_SenatorFavorsDesc>
   <RWS_VfeEmpire_HonorsBestowed>授与された栄誉</RWS_VfeEmpire_HonorsBestowed>
   <RWS_VfeEmpire_HonorsBestowedDesc>保留中だったVFE Empireの栄誉のうち、儀式の完了時にプレイヤーの入植者へ実際に授与されたものの数（栄誉別）。授与可能な栄誉を受け取っただけの場合や開発者の操作は数えません。</RWS_VfeEmpire_HonorsBestowedDesc>
-  <RWS_Vsie_AspirationsCompleted>VSIE ひらめきに伴う願望の達成数</RWS_Vsie_AspirationsCompleted>
+  <RWS_Vsie_AspirationsCompleted>ひらめきに伴う願望の達成数</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで、入植者のひらめきに結びついた願望が新たに達成された回数（ひらめき別）。未完了の進捗、期限切れ、関係のないひらめきは数えません。</RWS_Vsie_AspirationsCompletedDesc>
   <RWS_GiddyUp_MountSessions>Giddy-Up 2 騎乗した回数</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>プレイヤーの入植者がGiddy-Upの騎乗ジョブを完了し、所有する動物に実際に乗り始めた回数（動物の種類別）。騎乗した状態での到着、予約した指示、重複した観測は数えません。</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>入植者のリロード回数</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>プレイヤーのポーンが武器の弾倉に実際に弾薬を込めたリロードの完了回数。1回のリロードで複数の弾薬スタックを込めても1回です。タレット、自動装填装置、弾薬を無効にした武器、失敗したリロードは数えません。</RWS_CombatExtended_ReloadsDesc>
-  <RWS_VreAndroid_Awakenings>VRE Android 自然な覚醒の回数</RWS_VreAndroid_Awakenings>
+  <RWS_VreAndroid_Awakenings>アンドロイドの自然な覚醒回数</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>人工の身体を持つプレイヤー所有のアンドロイドが、心情に基づく遺伝子の判定によって自然に覚醒した回数。開発者ツールによる直接の覚醒、ゲーム開始時の設定、すでに覚醒していたものは数えません。Biotechが必要です。</RWS_VreAndroid_AwakeningsDesc>
   <RWS_VseExpertise_Selected>VSE 選択した専門技能</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>プレイヤーの入植者が通常の専門技能画面で新たに選択した専門技能の数（専門技能別）。デバッグによる解除や復元された記録は数えません。</RWS_VseExpertise_SelectedDesc>
@@ -1132,7 +1132,7 @@
   <RWS_VceDeepchem_StoredUnitsDesc>プレイヤー所有のポンプジャックからパイプの貯蔵に実際に受け入れられたディープケムの量（小数を含む）。パイプ網が貯蔵を確定した時点で測ります。予定産出量、地面への排出、満杯などで貯蔵できなかった分は数えません。</RWS_VceDeepchem_StoredUnitsDesc>
   <RWS_VgeExtraction_ItemsPlaced>抽出したDNA</RWS_VgeExtraction_ItemsPlaced>
   <RWS_VgeExtraction_ItemsPlacedDesc>プレイヤーによるDNA抽出が成功し、実際に置かれたかスタックに統合されたDNAアイテムの数（種類別）。無効な対象、配置の失敗、成果物のないチャージの消費、その他のハイブリッドの作成は数えません。</RWS_VgeExtraction_ItemsPlacedDesc>
-  <RWS_VnpeGrinder_SlurryStored>VNPE パイプに貯蔵した栄養スラリー</RWS_VnpeGrinder_SlurryStored>
+  <RWS_VnpeGrinder_SlurryStored>パイプに貯蔵した栄養スラリー</RWS_VnpeGrinder_SlurryStored>
   <RWS_VnpeGrinder_SlurryStoredDesc>プレイヤー所有のVanilla Nutrient Paste Expandedの粉砕機から、パイプ網に実際に受け入れられた栄養スラリーの量（小数を含む）。粉砕の試行、スラリーが受け入れられなかった材料の消費、他の建物によるパイプへの貯蔵は数えません。</RWS_VnpeGrinder_SlurryStoredDesc>
   <RWS_VfeMedieval2_HoneyItems>収穫した蜂蜜</RWS_VfeMedieval2_HoneyItems>
   <RWS_VfeMedieval2_HoneyItemsDesc>プレイヤーの入植者がプレイヤー所有の養蜂箱（Medieval 2）から取り出し、実際に置かれたかスタックに統合された蜂蜜の数（種類別）。養蜂箱が収穫可能になっただけの場合、配置の失敗、その後の運搬は数えません。</RWS_VfeMedieval2_HoneyItemsDesc>
@@ -1202,7 +1202,7 @@
   <RWS_NewMod_UpgradesDesc>プレイヤーの作業の完了によって新たに取り付けられた車両のアップグレードの数（車両の種類別）。</RWS_NewMod_UpgradesDesc>
   <RWS_NewMod_Wrecks>残骸から復元した車両</RWS_NewMod_Wrecks>
   <RWS_NewMod_WrecksDesc>追跡中の残骸の建設が完了して出現したプレイヤーの車両の数。</RWS_NewMod_WrecksDesc>
-  <RWS_NewMod_RealRuins>キャラバンが入ったReal Ruinsの遺跡</RWS_NewMod_RealRuins>
+  <RWS_NewMod_RealRuins>キャラバンが入った遺跡</RWS_NewMod_RealRuins>
   <RWS_NewMod_RealRuinsDesc>マップの生成が必要だったReal Ruinsの遺跡にプレイヤーのキャラバンが到着し、ポーンが実際に入ったことを確認した回数。</RWS_NewMod_RealRuinsDesc>
   <RWS_NewMod_Casino>スロットマシンの完了ラウンド</RWS_NewMod_Casino>
   <RWS_NewMod_CasinoDesc>プレイヤーのスロットマシンで完了したラウンドの数。負けと各種の当たりに分けて集計します。</RWS_NewMod_CasinoDesc>

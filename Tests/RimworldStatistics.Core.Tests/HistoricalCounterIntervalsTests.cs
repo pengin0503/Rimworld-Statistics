@@ -93,6 +93,8 @@ public sealed class HistoricalCounterIntervalsTests
 
         var row = Assert.Single(HistoricalCounterIntervals.ForDiagnostics(p));
         Assert.Equal(("Colony Name", "A.rws", "B-copy.rws"), (row.ColonyName, row.ParentSaveName, row.ChildSaveName));
+        Assert.Equal(Identity().ModCampaignId, row.CampaignId);
+        Assert.Equal(Identity().FingerprintHash(), row.FingerprintHash);
     }
 
     [Fact]

@@ -90,11 +90,12 @@ internal static class DiagnosticsPanel
             return;
 
         var statusRect = new Rect(rect.x, rect.y + controls.Height + 2f, rect.width, 22f);
-        var prevColor = GUI.color;
-        if (lastErrorType is not null)
-            GUI.color = ColorLibrary.RedReadable;
-        Widgets.Label(statusRect, status.Truncate(statusRect.width));
-        GUI.color = prevColor;
+        using (UiScopes.GuiState())
+        {
+            if (lastErrorType is not null)
+                GUI.color = ColorLibrary.RedReadable;
+            Verse.Widgets.Label(statusRect, status.Truncate(statusRect.width));
+        }
         TooltipHandler.TipRegion(statusRect, status);
     }
 
