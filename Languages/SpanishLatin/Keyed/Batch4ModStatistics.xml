@@ -8,7 +8,7 @@
   <RWS_VqeDeadlife_SiloDecryptionsDesc>Cuenta las mesas de planificación antiguas estudiadas por completo por colonos del jugador en Vanilla Quests Expanded - Deadlife para revelar otro silo antiguo.</RWS_VqeDeadlife_SiloDecryptionsDesc>
   <RWS_VqeDeadlife_PowerKickstarts>Generadores auxiliares encendidos</RWS_VqeDeadlife_PowerKickstarts>
   <RWS_VqeDeadlife_PowerKickstartsDesc>Cuenta los generadores antiguos encendidos con éxito por colonos del jugador en Vanilla Quests Expanded - Deadlife, desglosados por tipo.</RWS_VqeDeadlife_PowerKickstartsDesc>
-  <RWS_AnomaliesExpected_StudiedEntities>Entradas estudiadas de Anomalies Expected</RWS_AnomaliesExpected_StudiedEntities>
+  <RWS_AnomaliesExpected_StudiedEntities>Entradas de anomalías estudiadas</RWS_AnomaliesExpected_StudiedEntities>
   <RWS_AnomaliesExpected_StudiedEntitiesDesc>Registra las entidades principales únicas de Anomalies Expected cuyas notas de estudio se desbloquearon en la base de datos.</RWS_AnomaliesExpected_StudiedEntitiesDesc>
   <RWS_WayBetterRomance_Dates>Citas y salidas completadas</RWS_WayBetterRomance_Dates>
   <RWS_WayBetterRomance_DatesDesc>Cuenta las citas y salidas completadas con participación de colonos del jugador en Way Better Romance, desglosadas por tipo de actividad.</RWS_WayBetterRomance_DatesDesc>
