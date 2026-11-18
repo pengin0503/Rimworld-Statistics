@@ -50,6 +50,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private Vector2 clusterArea;
     private bool[] clusterCaution = [];
     private string?[] clusterTips = [];
+    private Dictionary<string, string>? colonyNames;
 
     /// <param name="yKey">The statistic on the Y axis (the peak wealth when missing or not plottable).</param>
     /// <param name="xKey">The statistic on the X axis (days played when missing, not plottable or the same as Y).</param>
@@ -100,6 +101,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
         if (texts is null || !ReferenceEquals(textLanguage, lang))
         {
             textLanguage = lang;
+            colonyNames = null; // an unnamed colony's name is translated
             texts = BuildTexts();
             clusterTips = new string?[clusterTips.Length];
         }
@@ -238,8 +240,13 @@ internal sealed class Dialog_MetricScatterPlot : Window
 
     private string Name(string colonyKey)
     {
-        var stats = view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey);
-        return stats is null ? colonyKey : Dialog_RimworldStatistics.ColonyName(stats);
+        if (colonyNames is null)
+        {
+            colonyNames = new Dictionary<string, string>(StringComparer.Ordinal);
+            foreach (var stats in view.Stats.Colonies)
+                colonyNames.TryAdd(stats.Key, Dialog_RimworldStatistics.ColonyName(stats));
+        }
+        return colonyNames.TryGetValue(colonyKey, out var name) ? name : colonyKey;
     }
 
     private static string AxesTag(ScatterAxes axes) => axes switch

@@ -198,7 +198,7 @@ public sealed class MetricScatterPlot
         var h = double.IsFinite(height) && height > 0d ? height : 1d;
         var cell = double.IsFinite(spacing) && spacing > 0d ? spacing : 1d;
 
-        var clusters = new List<(double X, double Y, List<int> Members)>();
+        var clusters = new List<PendingCluster>();
         var buckets = new Dictionary<(long, long), List<int>>();
         for (var i = 0; i < Points.Count; i++)
         {
@@ -208,13 +208,14 @@ public sealed class MetricScatterPlot
             var by = (long)Math.Floor(py / cell);
 
             var joined = -1;
-            for (var dx = -1L; dx <= 1 && joined < 0; dx++)
-                for (var dy = -1L; dy <= 1 && joined < 0; dy++)
+            // Every neighbouring cell, so the point joins the earliest cluster in reach, not the first one found.
+            for (var dx = -1L; dx <= 1; dx++)
+                for (var dy = -1L; dy <= 1; dy++)
                     if (buckets.TryGetValue((bx + dx, by + dy), out var nearby))
                         foreach (var c in nearby)
                         {
-                            var (cx, cy, _) = clusters[c];
-                            if (Math.Abs(cx - px) <= cell && Math.Abs(cy - py) <= cell
+                            var candidate = clusters[c];
+                            if (Math.Abs(candidate.X - px) <= cell && Math.Abs(candidate.Y - py) <= cell
                                 && (joined < 0 || c < joined))
                                 joined = c;
                         }
@@ -227,9 +228,17 @@ public sealed class MetricScatterPlot
             if (!buckets.TryGetValue((bx, by), out var bucket))
                 buckets[(bx, by)] = bucket = [];
             bucket.Add(clusters.Count);
-            clusters.Add((px, py, [i]));
+            clusters.Add(new PendingCluster(px, py, i));
         }
         return clusters.Select(c => new ScatterCluster(c.X, c.Y, c.Members)).ToArray();
+    }
+
+    /// <summary>A cluster while points are still joining it: placed at its first member.</summary>
+    private sealed class PendingCluster(double x, double y, int firstMember)
+    {
+        public double X { get; } = x;
+        public double Y { get; } = y;
+        public List<int> Members { get; } = [firstMember];
     }
 
     private static bool Plottable(MetricDefinition definition)

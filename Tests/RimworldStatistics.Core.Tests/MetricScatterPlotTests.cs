@@ -233,6 +233,27 @@ public sealed class MetricScatterPlotTests
     }
 
     [Fact]
+    public void APointInReachOfTwoMarkersJoinsTheEarlierOne()
+    {
+        // At one pixel per unit: a at 27 and b at 13 are two markers 14 px apart; c at 20 is 7 px from each, and the
+        // later marker (b) lies in the cell scanned first.
+        var view = View(
+            Make("a", rows: [Row(Quests, 27), Row(Mood, 10)]),
+            Make("b", rows: [Row(Quests, 13), Row(Mood, 10)]),
+            Make("c", rows: [Row(Quests, 20), Row(Mood, 10)]));
+        var plot = MetricScatterPlot.Build(view, MetricKeys.QuestSuccess, MetricKeys.MoodMean)!;
+        Assert.Equal(0d, plot.X.Ticks[0]);
+        var width = plot.X.Ticks[^1];
+
+        var clusters = plot.Cluster(width, 300, 8);
+
+        Assert.Equal(new[] { 0, 2 }, clusters[0].PointIndices);
+        Assert.Equal(new[] { 1 }, clusters[1].PointIndices);
+        Assert.Equal(27d, clusters[0].X, 9);
+        Assert.Equal(13d, clusters[1].X, 9);
+    }
+
+    [Fact]
     public void GroupScopeAndExclusionFollowTheView()
     {
         var all = View(Make("a", rows: [Row(Quests, 1)]), Make("b", rows: [Row(Quests, 2)]), Make("c", rows: [Row(Quests, 3)]));
