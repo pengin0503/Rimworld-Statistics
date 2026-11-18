@@ -84,6 +84,7 @@ public sealed class AuditCoreRegressionTests
                 ProfileMutations.UpsertMetricObservation(p, MakeCheckpoint("C2", "P", 300, 99, "hash-c2-b"));
             }, SaveMode.None);
             session.Flush();
+            session.Close();
 
             var appendsAfterConflict = archive.AppendCalls;
             var readsAfterConflict = archive.ReadCalls;
@@ -93,6 +94,7 @@ public sealed class AuditCoreRegressionTests
                 var reopened = new ProfileSession(new ProfileStore(tempPath), () => UtcNow, archive);
                 reopened.Mutate(_ => { }, SaveMode.None);
                 reopened.Flush();
+                reopened.Close();
             }
 
             Assert.Equal(appendsAfterConflict, archive.AppendCalls);
@@ -508,13 +510,14 @@ public sealed class AuditCoreRegressionTests
     {
         var tempPath = Path.Combine(Path.GetTempPath(), "rws-audit-excl-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(tempPath);
+        ProfileSession? session = null;
         try
         {
             var def = MetricRegistry.ImplementedCatalog
                 .First(d => d.Source == MetricObservationSource.Checkpoint && d.Selection == ColonySelection.Representative);
             const string campaign = "camp-excl";
             var id = MakeIdentity(campaign);
-            var session = new ProfileSession(new ProfileStore(tempPath), () => UtcNow);
+            session = new ProfileSession(new ProfileStore(tempPath), () => UtcNow);
             session.Mutate(p =>
             {
                 ProfileMutations.ApplyLiveObservation(p, campaign, id,
@@ -554,6 +557,8 @@ public sealed class AuditCoreRegressionTests
         }
         finally
         {
+            session?.Flush();
+            session?.Close();
             if (Directory.Exists(tempPath))
                 Directory.Delete(tempPath, recursive: true);
         }
