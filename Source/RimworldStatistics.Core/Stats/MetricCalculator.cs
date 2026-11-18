@@ -206,7 +206,7 @@ public static partial class MetricCalculator
     /// observation (rejected if the identities disagree); else by a unique <see cref="CampaignMatcher.SameColony"/> match.
     /// None or several candidates: not attached. No colony is ever created for numeric data.
     /// </summary>
-    private static Dictionary<Colony, List<MetricObservation>> Attach(Profile profile, IReadOnlyList<Colony> colonies, out int unattributed)
+    internal static Dictionary<Colony, List<MetricObservation>> Attach(Profile profile, IReadOnlyList<Colony> colonies, out int unattributed)
     {
         var byCampaign = new Dictionary<string, HashSet<Colony>>(Ord);
         var byFile = new Dictionary<(string, long, DateTime), List<(Colony Colony, SaveObservation Obs)>>();

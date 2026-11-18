@@ -340,6 +340,12 @@ public sealed class ProfileSession
     public IReadOnlyList<HistoricalCounterInterval> ReadHistoricalCounterIntervals()
         => HistoricalCounterIntervals.ForDiagnostics(Read(HistoricalCounterIntervals.Capture));
 
+    public ColonySaveLineage ReadColonySaveLineage(StatsView view, string colonyKey)
+    {
+        var captured = Read(profile => ColonySaveLineage.Capture(profile, view.Colonies, colonyKey));
+        return captured is null ? ColonySaveLineage.Empty(colonyKey) : ColonySaveLineage.BuildFromCaptured(captured, _archive);
+    }
+
     public MetricHistory ReadChartHistory(StatsView view, string colonyKey, MetricDefinition definition, string savesDirectory)
     {
         var history = Read(profile => MetricCalculator.BuildChartHistory(profile, view.Colonies, colonyKey, definition));

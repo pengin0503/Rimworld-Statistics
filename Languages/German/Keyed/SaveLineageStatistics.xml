@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Lineage_Open>Speicher-Stammbaum</RWS_Lineage_Open>
+  <RWS_Lineage_OpenTip>Nachgewiesene Eltern-Kind-Ketten, Verzweigungen, übernommene Prüfpunkte und unbewiesene Spielstände dieser Kolonie schreibgeschützt prüfen.</RWS_Lineage_OpenTip>
+  <RWS_Lineage_Title>Speicher-Stammbaum · {0}</RWS_Lineage_Title>
+  <RWS_Lineage_SwitchColony>Kolonie wechseln…</RWS_Lineage_SwitchColony>
+  <RWS_Lineage_MetricButton>Messwert: {0}</RWS_Lineage_MetricButton>
+  <RWS_Lineage_OpenChart>Verlaufsdiagramm öffnen</RWS_Lineage_OpenChart>
+  <RWS_Lineage_ClearSelection>Auswahl aufheben</RWS_Lineage_ClearSelection>
+  <RWS_Lineage_Empty>Für diese Kolonie liegen noch keine gespeicherten Beobachtungen mit Spielzeit vor.</RWS_Lineage_Empty>
+  <RWS_Lineage_State_SingleChain>Durchgehende nachgewiesene Kette</RWS_Lineage_State_SingleChain>
+  <RWS_Lineage_State_Branched>Verzweigter Stammbaum</RWS_Lineage_State_Branched>
+  <RWS_Lineage_State_Gaps>Unvollständiger oder lückenhafter Stammbaum</RWS_Lineage_State_Gaps>
+  <RWS_Lineage_State_None>Keine Prüfpunktkette</RWS_Lineage_State_None>
+  <RWS_Lineage_SummaryNodes>{0} Einträge</RWS_Lineage_SummaryNodes>
+  <RWS_Lineage_SummaryBranches>{0} Verzweigungspunkte</RWS_Lineage_SummaryBranches>
+  <RWS_Lineage_SummaryCarried>{0} übernommene Prüfpunkte</RWS_Lineage_SummaryCarried>
+  <RWS_Lineage_SummaryMissingParents>{0} fehlende Vorgänger</RWS_Lineage_SummaryMissingParents>
+  <RWS_Lineage_SummaryUnproven>{0} unbewiesene Spielstände</RWS_Lineage_SummaryUnproven>
+  <RWS_Lineage_SummaryConflicted>{0} widprüchliche Prüfpunkte</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryCompacted>{0} ältere Schnappschüsse verdichtet</RWS_Lineage_SummaryCompacted>
+  <RWS_Lineage_ReadOnlyNote>Schreibgeschützt; unbewiesene Spielstände werden nie durch Vermutung verbunden</RWS_Lineage_ReadOnlyNote>
+  <RWS_Lineage_LegendProven>Nachgewiesene Kette</RWS_Lineage_LegendProven>
+  <RWS_Lineage_LegendBranch>Zweig</RWS_Lineage_LegendBranch>
+  <RWS_Lineage_LegendCarried>Übernommener Prüfpunkt</RWS_Lineage_LegendCarried>
+  <RWS_Lineage_LegendUnproven>Unbewiesen / Vorgänger fehlt</RWS_Lineage_LegendUnproven>
+  <RWS_Lineage_Col_Graph>Linie</RWS_Lineage_Col_Graph>
+  <RWS_Lineage_Col_Day>Spieltag</RWS_Lineage_Col_Day>
+  <RWS_Lineage_Col_Save>Spielstand / Eintrag</RWS_Lineage_Col_Save>
+  <RWS_Lineage_Col_Status>Nachweis &amp; Status</RWS_Lineage_Col_Status>
+  <RWS_Lineage_Col_Recorded>Gespeichert (lokal)</RWS_Lineage_Col_Recorded>
+  <RWS_Lineage_DayCarried>{0} (CP {1})</RWS_Lineage_DayCarried>
+  <RWS_Lineage_Badge_Representative>Repräsentativ</RWS_Lineage_Badge_Representative>
+  <RWS_Lineage_Badge_Root>Kettenbeginn</RWS_Lineage_Badge_Root>
+  <RWS_Lineage_Badge_Checkpoint>Vorgänger belegt</RWS_Lineage_Badge_Checkpoint>
+  <RWS_Lineage_Badge_MissingParent>Vorgänger fehlt</RWS_Lineage_Badge_MissingParent>
+  <RWS_Lineage_Badge_InvalidParent>Nicht verknüpft</RWS_Lineage_Badge_InvalidParent>
+  <RWS_Lineage_Badge_Carried>Übernommener CP</RWS_Lineage_Badge_Carried>
+  <RWS_Lineage_Badge_Conflicted>ID-Konflikt</RWS_Lineage_Badge_Conflicted>
+  <RWS_Lineage_Badge_Unproven>Unbewiesener Stand</RWS_Lineage_Badge_Unproven>
+  <RWS_Lineage_Badge_BranchPoint>Verzweigung</RWS_Lineage_Badge_BranchPoint>
+  <RWS_Lineage_Badge_Branch>Alternativzweig</RWS_Lineage_Badge_Branch>
+  <RWS_Lineage_Badge_Rewind>Neuladen / früherer Tick</RWS_Lineage_Badge_Rewind>
+  <RWS_Lineage_Badge_SameTick>Gleicher Tick</RWS_Lineage_Badge_SameTick>
+  <RWS_Lineage_Badge_RestoredArchive>Aus Archiv geladen</RWS_Lineage_Badge_RestoredArchive>
+  <RWS_Lineage_Badge_ArchivedMissing>Archiv fehlt</RWS_Lineage_Badge_ArchivedMissing>
+  <RWS_Lineage_Badge_VersionChanged>Version geändert</RWS_Lineage_Badge_VersionChanged>
+  <RWS_Lineage_Badge_ModChanged>Mod-Liste geändert</RWS_Lineage_Badge_ModChanged>
+  <RWS_Lineage_Badge_DlcChanged>DLC geändert</RWS_Lineage_Badge_DlcChanged>
+  <RWS_Lineage_Badge_VerifiedInterval>+{0} Überfälle / +{1} Tode</RWS_Lineage_Badge_VerifiedInterval>
+  <RWS_Lineage_SelectHint>Klicke auf eine Zeile für Nachweisdetails oder auf zwei Zeilen, um deren Beziehung und Messwertänderung zu vergleichen.</RWS_Lineage_SelectHint>
+  <RWS_Lineage_CompareHint>Klicke auf eine weitere Zeile, um die nachgewiesene Beziehung und Änderung zwischen beiden Spielständen zu vergleichen.</RWS_Lineage_CompareHint>
+  <RWS_Lineage_Detail_Header>Spielzeit: {0} ({1} Ticks) · Gespeichert: {2}</RWS_Lineage_Detail_Header>
+  <RWS_Lineage_Detail_Status>Status: {0}</RWS_Lineage_Detail_Status>
+  <RWS_Lineage_Detail_CapturedAt>Prüfpunkt am Tag {0} ({1} Ticks) erfasst und unverändert in diesen Spielstand übernommen.</RWS_Lineage_Detail_CapturedAt>
+  <RWS_Lineage_Detail_CarriedThrough>Spätere Spielstände haben diesen Prüfpunkt ebenfalls unverändert bis Tag {0} ({1} Ticks) übernommen.</RWS_Lineage_Detail_CarriedThrough>
+  <RWS_Lineage_Detail_CheckpointId>Prüfpunkt-ID: {0}</RWS_Lineage_Detail_CheckpointId>
+  <RWS_Lineage_Detail_MissingParentId>Referenzierter Vorgänger-Prüfpunkt (nicht im Profil): {0}</RWS_Lineage_Detail_MissingParentId>
+  <RWS_Lineage_Detail_Environment>Spielversion: {0} · Aktive DLCs: {1}</RWS_Lineage_Detail_Environment>
+  <RWS_Lineage_Detail_VerifiedInterval>Bestätigtes Intervall seit Vorgänger (Tag {0} → {1}): +{2} feindliche Überfälle, +{3} Kolonistentode</RWS_Lineage_Detail_VerifiedInterval>
+  <RWS_Lineage_Detail_Files>Speicherdateien: {0}</RWS_Lineage_Detail_Files>
+  <RWS_Lineage_Rel_DirectParent>Direkter Vorgänger → Nachfolger-Prüfpunkt (Tag {0} → Tag {1}).</RWS_Lineage_Rel_DirectParent>
+  <RWS_Lineage_Rel_ProvenChain>Nachgewiesene Prüfpunktkette über {2} Schritte (Tag {0} → Tag {1}).</RWS_Lineage_Rel_ProvenChain>
+  <RWS_Lineage_Rel_CarriedSame>Spielstand an Tag {1} übernimmt den Prüfpunkt von Tag {0} unverändert (kein neuer Prüfpunktwert).</RWS_Lineage_Rel_CarriedSame>
+  <RWS_Lineage_Rel_SiblingBranches>Getrennte Zweige ab gemeinsamem Prüfpunkt an Tag {0} — parallele Zeitlinien werden niemals summiert.</RWS_Lineage_Rel_SiblingBranches>
+  <RWS_Lineage_Rel_SharedCarriedOrigin>Beide Einträge gehen auf den Prüfpunkt an Tag {0} zurück (inkl. Übernahme); ob einer den anderen fortsetzt, ist nicht beweisbar.</RWS_Lineage_Rel_SharedCarriedOrigin>
+  <RWS_Lineage_Rel_Unproven>Kein nachgewiesener Prüfpunktpfad verbindet diese beiden Spielstände.</RWS_Lineage_Rel_Unproven>
+  <RWS_Lineage_Rel_EnvChanges>Umgebungsänderungen entlang des Pfads: {0}</RWS_Lineage_Rel_EnvChanges>
+</LanguageData>

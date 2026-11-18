@@ -302,7 +302,7 @@ public static partial class MetricCalculator
         return new(MetricHistoryKind.SaveObservations, SaveChartPoints(points, ancestry));
     }
 
-    private static NumericValue? BasicChartValue(ObservedValues values, string key)
+    internal static NumericValue? BasicChartValue(ObservedValues values, string key)
     {
         double? number = key switch
         {

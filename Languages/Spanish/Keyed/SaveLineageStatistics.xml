@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Lineage_Open>Linaje de guardados</RWS_Lineage_Open>
+  <RWS_Lineage_OpenTip>Inspeccionar en modo de solo lectura las cadenas padre-hijo probadas, ramas, puntos de control arrastrados y guardados no probados de esta colonia.</RWS_Lineage_OpenTip>
+  <RWS_Lineage_Title>Linaje de guardados · {0}</RWS_Lineage_Title>
+  <RWS_Lineage_SwitchColony>Cambiar colonia…</RWS_Lineage_SwitchColony>
+  <RWS_Lineage_MetricButton>Métrica: {0}</RWS_Lineage_MetricButton>
+  <RWS_Lineage_OpenChart>Abrir gráfico</RWS_Lineage_OpenChart>
+  <RWS_Lineage_ClearSelection>Limpiar selección</RWS_Lineage_ClearSelection>
+  <RWS_Lineage_Empty>Aún no hay observaciones guardadas con tiempo de juego para esta colonia.</RWS_Lineage_Empty>
+  <RWS_Lineage_State_SingleChain>Cadena única probada</RWS_Lineage_State_SingleChain>
+  <RWS_Lineage_State_Branched>Linaje ramificado</RWS_Lineage_State_Branched>
+  <RWS_Lineage_State_Gaps>Linaje incompleto o con huecos</RWS_Lineage_State_Gaps>
+  <RWS_Lineage_State_None>Sin cadena de puntos de control</RWS_Lineage_State_None>
+  <RWS_Lineage_SummaryNodes>{0} registros</RWS_Lineage_SummaryNodes>
+  <RWS_Lineage_SummaryBranches>{0} bifurcaciones</RWS_Lineage_SummaryBranches>
+  <RWS_Lineage_SummaryCarried>{0} puntos arrastrados</RWS_Lineage_SummaryCarried>
+  <RWS_Lineage_SummaryMissingParents>{0} padres faltantes</RWS_Lineage_SummaryMissingParents>
+  <RWS_Lineage_SummaryUnproven>{0} guardados no probados</RWS_Lineage_SummaryUnproven>
+  <RWS_Lineage_SummaryConflicted>{0} puntos en conflicto</RWS_Lineage_SummaryConflicted>
+  <RWS_Lineage_SummaryCompacted>{0} instantáneas antiguas compactadas</RWS_Lineage_SummaryCompacted>
+  <RWS_Lineage_ReadOnlyNote>Solo lectura; nunca se conectan guardados no probados por suposición</RWS_Lineage_ReadOnlyNote>
+  <RWS_Lineage_LegendProven>Cadena probada</RWS_Lineage_LegendProven>
+  <RWS_Lineage_LegendBranch>Rama</RWS_Lineage_LegendBranch>
+  <RWS_Lineage_LegendCarried>Punto arrastrado</RWS_Lineage_LegendCarried>
+  <RWS_Lineage_LegendUnproven>No probado / sin padre</RWS_Lineage_LegendUnproven>
+  <RWS_Lineage_Col_Graph>Linaje</RWS_Lineage_Col_Graph>
+  <RWS_Lineage_Col_Day>Día en juego</RWS_Lineage_Col_Day>
+  <RWS_Lineage_Col_Save>Guardado / registro</RWS_Lineage_Col_Save>
+  <RWS_Lineage_Col_Status>Evidencia y marcas</RWS_Lineage_Col_Status>
+  <RWS_Lineage_Col_Recorded>Guardado (local)</RWS_Lineage_Col_Recorded>
+  <RWS_Lineage_DayCarried>{0} (PC {1})</RWS_Lineage_DayCarried>
+  <RWS_Lineage_Badge_Representative>Representativo</RWS_Lineage_Badge_Representative>
+  <RWS_Lineage_Badge_Root>Inicio de cadena</RWS_Lineage_Badge_Root>
+  <RWS_Lineage_Badge_Checkpoint>Padre probado</RWS_Lineage_Badge_Checkpoint>
+  <RWS_Lineage_Badge_MissingParent>Padre faltante</RWS_Lineage_Badge_MissingParent>
+  <RWS_Lineage_Badge_InvalidParent>Padre no enlazado</RWS_Lineage_Badge_InvalidParent>
+  <RWS_Lineage_Badge_Carried>Punto arrastrado</RWS_Lineage_Badge_Carried>
+  <RWS_Lineage_Badge_Conflicted>ID en conflicto</RWS_Lineage_Badge_Conflicted>
+  <RWS_Lineage_Badge_Unproven>Guardado no probado</RWS_Lineage_Badge_Unproven>
+  <RWS_Lineage_Badge_BranchPoint>Bifurcación</RWS_Lineage_Badge_BranchPoint>
+  <RWS_Lineage_Badge_Branch>Rama alternativa</RWS_Lineage_Badge_Branch>
+  <RWS_Lineage_Badge_Rewind>Recarga / tick anterior</RWS_Lineage_Badge_Rewind>
+  <RWS_Lineage_Badge_SameTick>Mismo tick</RWS_Lineage_Badge_SameTick>
+  <RWS_Lineage_Badge_RestoredArchive>Restaurado de archivo</RWS_Lineage_Badge_RestoredArchive>
+  <RWS_Lineage_Badge_ArchivedMissing>Archivo no disponible</RWS_Lineage_Badge_ArchivedMissing>
+  <RWS_Lineage_Badge_VersionChanged>Versión cambiada</RWS_Lineage_Badge_VersionChanged>
+  <RWS_Lineage_Badge_ModChanged>Lista de mods cambiada</RWS_Lineage_Badge_ModChanged>
+  <RWS_Lineage_Badge_DlcChanged>DLC cambiado</RWS_Lineage_Badge_DlcChanged>
+  <RWS_Lineage_Badge_VerifiedInterval>+{0} asaltos / +{1} muertes</RWS_Lineage_Badge_VerifiedInterval>
+  <RWS_Lineage_SelectHint>Haz clic en una fila para ver su evidencia o en dos filas para comparar su relación de linaje y el cambio de la métrica.</RWS_Lineage_SelectHint>
+  <RWS_Lineage_CompareHint>Haz clic en otra fila para comparar la relación de linaje probada y el cambio de la métrica entre ambos guardados.</RWS_Lineage_CompareHint>
+  <RWS_Lineage_Detail_Header>Tiempo de juego: {0} ({1} ticks) · Guardado: {2}</RWS_Lineage_Detail_Header>
+  <RWS_Lineage_Detail_Status>Estado: {0}</RWS_Lineage_Detail_Status>
+  <RWS_Lineage_Detail_CapturedAt>Punto de control capturado en el día {0} ({1} ticks) y conservado sin cambios en este guardado.</RWS_Lineage_Detail_CapturedAt>
+  <RWS_Lineage_Detail_CarriedThrough>Guardados posteriores también conservaron este punto sin cambios hasta el día {0} ({1} ticks).</RWS_Lineage_Detail_CarriedThrough>
+  <RWS_Lineage_Detail_CheckpointId>ID de punto de control: {0}</RWS_Lineage_Detail_CheckpointId>
+  <RWS_Lineage_Detail_MissingParentId>Punto padre referenciado (ausente en el perfil): {0}</RWS_Lineage_Detail_MissingParentId>
+  <RWS_Lineage_Detail_Environment>Versión del juego: {0} · DLC activos: {1}</RWS_Lineage_Detail_Environment>
+  <RWS_Lineage_Detail_VerifiedInterval>Intervalo verificado desde el padre (día {0} → {1}): +{2} asaltos enemigos, +{3} muertes de colonos</RWS_Lineage_Detail_VerifiedInterval>
+  <RWS_Lineage_Detail_Files>Archivos de guardado: {0}</RWS_Lineage_Detail_Files>
+  <RWS_Lineage_Rel_DirectParent>Punto de control padre → hijo directo (día {0} → día {1}).</RWS_Lineage_Rel_DirectParent>
+  <RWS_Lineage_Rel_ProvenChain>Linaje probado a lo largo de {2} pasos (día {0} → día {1}).</RWS_Lineage_Rel_ProvenChain>
+  <RWS_Lineage_Rel_CarriedSame>El guardado del día {1} conserva sin cambios el punto del día {0} (sin nueva lectura de punto de control).</RWS_Lineage_Rel_CarriedSame>
+  <RWS_Lineage_Rel_SiblingBranches>Ramas separadas desde un punto común en el día {0} — líneas temporales paralelas que nunca se suman.</RWS_Lineage_Rel_SiblingBranches>
+  <RWS_Lineage_Rel_SharedCarriedOrigin>Ambos registros provienen del punto del día {0} (incluido arrastre); no puede probarse si uno continuó del otro.</RWS_Lineage_Rel_SharedCarriedOrigin>
+  <RWS_Lineage_Rel_Unproven>Ninguna ruta probada de puntos de control conecta estos dos guardados.</RWS_Lineage_Rel_Unproven>
+  <RWS_Lineage_Rel_EnvChanges>Cambios de entorno en la ruta: {0}</RWS_Lineage_Rel_EnvChanges>
+</LanguageData>
