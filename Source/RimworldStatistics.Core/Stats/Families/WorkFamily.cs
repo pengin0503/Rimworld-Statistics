@@ -62,7 +62,10 @@ public static class WorkFamily
 
     // Revision 1 is retained so existing counters for sow/harvest/other retained work metrics continue uninterrupted.
     // Legacy crop-loss accumulator keys are never emitted as public outputs.
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 1, Build = Build, Started = ColonyWorkAttribution.Started,
+    };
 
     private const string Harvest = "harvest";            // Sum; By crop
     private const string HarvestByWorker = "harvest_by_worker";
@@ -211,6 +214,11 @@ public static class WorkFamily
         var sow = s.Peek(Sow);
         c.PutBreakdown(Sown_, c.Counts(sow), c.Value(integer: sow?.N ?? 0));
         c.Put(SownDefs, c.Value(integer: sow?.By?.Count ?? 0, partial: sow?.Overflow == true));
+
+        // What colony workers did (harvests, mining, bills, sowing); construction and the rest are attributed to the building.
+        ColonyWorkAttribution.WeakenMixed(c, HarvestUnits, HarvestByCrop, TopCrop, BestHarvester, HarvestYearPeak, HarvestFailures,
+            MiningUnits, BestMiner, CraftedUnits, QualityBreakdown, Legendary, Masterwork, BestQuality, BestPrice, Sculptures,
+            UniqueCraftedDefs, BestCrafter, DailyPeak, MealsByDef, BestCook, Sown_, SownDefs);
     }
 
     private static void PutTopOf(FamilyOutputContext c, Dictionary<string, double>? by, bool overflow, string key)

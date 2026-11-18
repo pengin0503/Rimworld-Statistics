@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>Переносы сознания кукловодов</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Учитывает успешные переносы сознания кукловода игрока в другого персонажа.</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>Рыбный улов</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Учитывает по типам предметы, появившиеся при рыбалке персонажей игрока в Vanilla Fishing Expanded без Odyssey.</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Учитывает по типам предметы, появившиеся при рыбалке персонажей игрока в Vanilla Fishing Expanded без Odyssey. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_VFECatchesDesc>
 </LanguageData>

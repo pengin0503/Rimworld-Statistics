@@ -21,6 +21,14 @@ public static class FamilyOps
 
     public static Accumulator? Peek(this FamilyState s, string name) => s.Metrics.GetValueOrDefault(name);
 
+    /// <summary>
+    /// Whether the family began at <paramref name="tick"/> and has recorded nothing since. The rule marker its
+    /// <see cref="LiveFamily.Started"/> hook sets (<see cref="ColonyWorkAttribution.RuleMarker"/>) is not a recording.
+    /// </summary>
+    public static bool IsFreshAt(this FamilyState s, int tick)
+        => s.SinceTick == tick && s.Active.Count == 0
+            && s.Metrics.Keys.All(key => string.Equals(key, ColonyWorkAttribution.RuleMarker, StringComparison.Ordinal));
+
     public static void Count(this FamilyState s, string name, long delta = 1)
     {
         var a = s.Acc(name);

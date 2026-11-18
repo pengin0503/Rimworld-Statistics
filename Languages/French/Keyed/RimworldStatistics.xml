@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0} ans</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} / case-jour</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Objets fabriqués</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Quantités en piles des produits principaux et secondaires des commandes de fabrication achevées du joueur, cuisine et art compris. Extraction minière, récoltes et gestation des mécanoïdes sont exclues.</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Quantités en piles des produits principaux et secondaires des commandes de fabrication achevées du joueur, cuisine et art compris. Extraction minière, récoltes et gestation des mécanoïdes sont exclues. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Objets fabriqués par qualité</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>Les objets fabriqués ci-dessus, répartis par qualité. Ceux sans qualité figurent sous « none ».</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Objets de qualité légendaire fabriqués</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>Meilleur cuisinier</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>Nombre de repas préparés par le personnage qui en a cuisiné le plus ; le détail indique son ID.</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>Récoltes de cultures</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Quantités en piles des produits principaux récoltés par les personnages du joueur ; les rendements supplémentaires sont exclus.</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Quantités en piles des produits principaux récoltés par les personnages du joueur ; les rendements supplémentaires sont exclus. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Récoltes par culture</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>Quantités récoltées par culture d'origine ; celles dont la culture est inconnue sont classées « (inconnu) ».</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Culture la plus récoltée</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>Meilleur récolteur</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>Quantité récoltée par le personnage qui en a récolté le plus ; le détail indique son ID.</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>Récoltes ratées</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Plantes dont la récolte effectuée par un personnage du joueur a effectivement échoué. Différent de la mort d'une plante.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Plantes dont la récolte effectuée par un personnage du joueur a effectivement échoué. Différent de la mort d'une plante. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>Cultures semées</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Plantes semées par les personnages du joueur.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>Plantes semées par les personnages du joueur. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>Types de cultures semées</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>Nombre de types de cultures semées au moins une fois.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>Ressources extraites</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>Quantités en piles des ressources obtenues par les personnages du joueur lors de l'extraction minière.</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Quantités en piles des ressources obtenues par les personnages du joueur lors de l'extraction minière. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>Meilleur mineur</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>Quantité extraite par le personnage qui a extrait le plus de ressources ; le détail indique son ID.</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>Bâtiments achevés</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>Nutrition consommée</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>Quantité totale de nutrition réellement ingérée par les colons libres en mangeant.</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>Récolte par case-jour de zone agricole</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Récolte principale des cultures situées dans les zones agricoles ÷ nombre de cases de zone agricole cumulé sur la même durée (cases-jours). La culture hydroponique et les plantes sauvages sont exclues.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Récolte principale des cultures situées dans les zones agricoles ÷ nombre de cases de zone agricole cumulé sur la même durée (cases-jours). La culture hydroponique et les plantes sauvages sont exclues. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Transactions commerciales</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>Transactions conclues avec échange d'au moins un objet autre qu'une devise. Transactions vides, cadeaux et transactions échouées sont exclus.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>Transactions avec des vaisseaux marchands</RWS_Metric_TradeOrbital>
@@ -867,25 +867,25 @@
   <RWS_Details_TradeKindOther>Autre commerçant</RWS_Details_TradeKindOther>
   <RWS_Details_Other>Autres</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>Produits achevés par article</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Unités de produits achevés avec succès pendant la période d'enregistrement, par article. Série distincte ; aucune estimation n'est faite avant son activation.</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Unités de produits achevés avec succès pendant la période d'enregistrement, par article. Série distincte ; aucune estimation n'est faite avant son activation. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>Ressources extraites par article</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Quantités réellement déposées après extraction pendant la période enregistrée, par article. Série distincte ; aucune estimation n'est faite avant son activation.</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Quantités réellement déposées après extraction pendant la période enregistrée, par article. Série distincte ; aucune estimation n'est faite avant son activation. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Saletés entièrement nettoyées</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Une unité par saleté entièrement retirée par le nettoyage d'un personnage du joueur (statistique du jeu « saletés nettoyées »). Réduire seulement l'épaisseur ou compter des tâches entières n'est pas équivalent. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>Une unité par saleté entièrement retirée par le nettoyage d'un personnage du joueur (statistique du jeu « saletés nettoyées »). Réduire seulement l'épaisseur ou compter des tâches entières n'est pas équivalent. Enregistré uniquement pendant l'activation. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Feux éteints</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Une unité par feu éteint par un personnage du joueur lors de la lutte contre les incendies ou en se débarrassant des flammes sur lui-même (statistique « feux éteints »). Les feux qui s'éteignent seuls sont exclus. Enregistré uniquement pendant l'activation.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>Une unité par feu éteint par un personnage du joueur lors de la lutte contre les incendies ou en se débarrassant des flammes sur lui-même (statistique « feux éteints »). Les feux qui s'éteignent seuls sont exclus. Enregistré uniquement pendant l'activation. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Repas consommés</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Repas effectivement consommés, apportant une nutrition positive, par des personnages humanoïdes de la faction du joueur. Chaque repas compte une fois, y compris en caravane ; les autres aliments, drogues et personnages étrangers sont exclus.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Transports vers des cases de stockage</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Tâches de transport du joueur ayant réellement déposé leur charge dans la case choisie. Couverture partielle : les dépôts dans des récipients et transports propres aux mods sont exclus. Ramasser sans déposer ne compte jamais.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Tâches de transport du joueur ayant réellement déposé leur charge dans la case choisie. Couverture partielle : les dépôts dans des récipients et transports propres aux mods sont exclus. Ramasser sans déposer ne compte jamais. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Objets transportés dans les cases de stockage</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total des objets réellement déposés par les tâches de transport du joueur, mesuré par la diminution de la pile transportée. Couverture partielle : transport dans les récipients et autres modes de déplacement non comptés.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total des objets réellement déposés par les tâches de transport du joueur, mesuré par la diminution de la pile transportée. Couverture partielle : transport dans les récipients et autres modes de déplacement non comptés. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Tâches de nettoyage achevées</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>Tâches de nettoyage du joueur terminées avec succès après retrait complet d'au moins une saleté. Plusieurs saletés retirées dans une même tâche comptent comme une tâche. Les tâches interrompues sont exclues.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Tâches de nettoyage du joueur terminées avec succès après retrait complet d'au moins une saleté. Plusieurs saletés retirées dans une même tâche comptent comme une tâche. Les tâches interrompues sont exclues. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Bois issu de l'abattage d'arbres (produit principal)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Bois effectivement déposé ou fusionné avec une pile après l'abattage d'un arbre par un personnage du joueur (produit principal mesuré au moment du dépôt). Couverture partielle : le bois supplémentaire de certains mods et les méthodes d'abattage non standard sont exclus.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Bois effectivement déposé ou fusionné avec une pile après l'abattage d'un arbre par un personnage du joueur (produit principal mesuré au moment du dépôt). Couverture partielle : le bois supplémentaire de certains mods et les méthodes d'abattage non standard sont exclus. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Animaux abattus puis dépecés</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Cadavres d'animaux abattus par un personnage du joueur, puis consommés par une tâche de dépeçage standard achevée. Un même cadavre est suivi entre les sauvegardes. Les animaux chassés, les morts sauvages et les cadavres ennemis sont exclus. Couverture partielle : les recettes de mods et certaines disparitions de cadavres ne sont pas reconnues.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Cadavres d'animaux abattus par un personnage du joueur, puis consommés par une tâche de dépeçage standard achevée. Un même cadavre est suivi entre les sauvegardes. Les animaux chassés, les morts sauvages et les cadavres ennemis sont exclus. Couverture partielle : les recettes de mods et certaines disparitions de cadavres ne sont pas reconnues. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Colonie avec le maximum : {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colonie avec le minimum : {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Article le plus fréquent : {0}</RWS_Cross_TopType>
@@ -937,9 +937,9 @@
   <RWS_Metric_OutpostsActive>Avant-postes du joueur actifs (état sauvegardé)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>Avant-postes actifs de Vanilla Expanded Framework contrôlés par le joueur lors d'une sauvegarde réussie. Entre colonies, les valeurs des sauvegardes représentatives sont additionnées. Ni total cumulatif, ni mesure des articles produits ou reçus. Expérimental ; les périodes antérieures ne sont pas reconstituées.</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>Tâches de pêche avec prise</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Tâches de pêche du joueur sur les cartes d'habitation ayant déposé au moins une prise. Une prise bonus de la même tâche n'augmente que le nombre d'articles.</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>Tâches de pêche du joueur sur les cartes d'habitation ayant déposé au moins une prise. Une prise bonus de la même tâche n'augmente que le nombre d'articles. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>Prises de pêche par article</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Articles réellement déposés par les tâches de pêche du joueur sur les cartes d'habitation, y compris prises rares et bonus pris en charge de Vanilla Fishing Expanded. Seules les périodes enregistrées sont couvertes.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Articles réellement déposés par les tâches de pêche du joueur sur les cartes d'habitation, y compris prises rares et bonus pris en charge de Vanilla Fishing Expanded. Seules les périodes enregistrées sont couvertes. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>Sauvegarder maintenant</RWS_Backup_Create>
   <RWS_Backup_Refresh>Actualiser les sauvegardes</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>Ouvrir le dossier</RWS_Backup_OpenFolder>

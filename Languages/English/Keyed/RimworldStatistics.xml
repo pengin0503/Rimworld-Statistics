@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0} years</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} per cell-day</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Items crafted</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Stack counts of the main and side products of the player's finished bills, including cooking and art; mining, harvests and mech gestation are not included.</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Stack counts of the main and side products of the player's finished bills, including cooking and art; mining, harvests and mech gestation are not included. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Crafted items by quality</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>The crafted items above by quality; items without quality are listed as "none".</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Legendary items crafted</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>Top cook</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>The meal count of the pawn who cooked the most; the breakdown shows who (by ID).</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>Crops harvested</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included.</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Stack counts of the main products player pawns harvested; additional yields are not included. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Harvest by crop</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>The harvest by crop; harvests whose crop is not known are "(unknown)".</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Most harvested crop</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>Top harvester</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>The harvest of the pawn who harvested the most; the breakdown shows who (by ID).</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>Failed harvests</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Plants whose harvest by a player pawn actually failed. Not the same as plants dying.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Plants whose harvest by a player pawn actually failed. Not the same as plants dying. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>Crops sown</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Plants sown by player pawns.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>Plants sown by player pawns. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>Kinds of crops sown</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>The number of crop types sown at least once.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>Resources mined</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>Stack counts of what player pawns' mining produced.</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Stack counts of what player pawns' mining produced. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>Top miner</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>The amount mined by the pawn who mined the most; the breakdown shows who (by ID).</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>Buildings completed</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>Nutrition eaten</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>The nutrition free colonists actually took in by eating.</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>Harvest per growing-zone cell-day</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Main harvest of crops standing in growing zones divided by the growing-zone cells integrated over the same time (cell-days). Hydroponics and wild plants are not included.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Main harvest of crops standing in growing zones divided by the growing-zone cells integrated over the same time (cell-days). Hydroponics and wild plants are not included. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Trade deals</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>Deals in which at least one non-currency item changed hands. Empty deals, gifts and failures are not counted.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>Deals with trade ships</RWS_Metric_TradeOrbital>
@@ -868,25 +868,25 @@
   <RWS_Details_TradeKindOther>Other trader</RWS_Details_TradeKindOther>
   <RWS_Details_Other>Other</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>Finished products by item</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Product units successfully completed during the recorded period, by item. A separate series; nothing is estimated for the time before it was enabled.</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Product units successfully completed during the recorded period, by item. A separate series; nothing is estimated for the time before it was enabled. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>Mined resources by item</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Mining yield actually placed during the recorded period, by item. A separate series; nothing is estimated for the time before it was enabled.</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Mining yield actually placed during the recorded period, by item. A separate series; nothing is estimated for the time before it was enabled. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Filth completely removed</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>One per piece of filth completely removed by a player pawn's cleaning (the vanilla "messes cleaned" record). Partial reductions of thickness and whole cleaning jobs are not what is counted. Recorded only while enabled.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>One per piece of filth completely removed by a player pawn's cleaning (the vanilla "messes cleaned" record). Partial reductions of thickness and whole cleaning jobs are not what is counted. Recorded only while enabled. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Fires extinguished</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>One per fire put out by a player pawn through vanilla firefighting or by beating out flames on themselves (the "fires extinguished" record). Fires that go out on their own are not counted. Recorded only while enabled.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>One per fire put out by a player pawn through vanilla firefighting or by beating out flames on themselves (the "fires extinguished" record). Fires that go out on their own are not counted. Recorded only while enabled. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Meals eaten</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Meals successfully eaten, with positive nutrition, by humanlike pawns of the player faction. Each meal counts once, including meals eaten in a caravan; other food, drugs and non-player pawns are not counted.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Hauls into storage cells</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Player hauling jobs that actually put their load down in the chosen cell. Partial coverage: deposits into containers and mod-specific hauling are not counted. Picking something up alone never counts.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Player hauling jobs that actually put their load down in the chosen cell. Partial coverage: deposits into containers and mod-specific hauling are not counted. Picking something up alone never counts. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Items hauled into storage cells</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Total items successfully put down by player hauling jobs, measured by the decrease of the carried stack. Partial coverage: hauling into containers and other ways of moving items are not counted.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Total items successfully put down by player hauling jobs, measured by the decrease of the carried stack. Partial coverage: hauling into containers and other ways of moving items are not counted. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Cleaning jobs completed</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>Player cleaning jobs that finished successfully after completely removing at least one piece of filth. Several pieces removed in one job count as one job. Interrupted jobs are not counted.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Player cleaning jobs that finished successfully after completely removing at least one piece of filth. Several pieces removed in one job count as one job. Interrupted jobs are not counted. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Wood from tree cutting (main yield)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Wood actually placed or merged into stacks after a player pawn cut down a tree (the main yield, measured when the game places it). Partial coverage: extra wood from some mods and non-standard ways of cutting are not counted.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Wood actually placed or merged into stacks after a player pawn cut down a tree (the main yield, measured when the game places it). Partial coverage: extra wood from some mods and non-standard ways of cutting are not counted. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Slaughtered animals later butchered</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Corpses of animals slaughtered by a player pawn that were later used up by a completed vanilla butchering bill. The same corpse is tracked across saves. Hunted animals, wild deaths and enemy corpses are not counted. Partial: mod butchering recipes and some ways a corpse can disappear are not recognized.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Corpses of animals slaughtered by a player pawn that were later used up by a completed vanilla butchering bill. The same corpse is tracked across saves. Hunted animals, wild deaths and enemy corpses are not counted. Partial: mod butchering recipes and some ways a corpse can disappear are not recognized. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Colony with most: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Colony with least: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Top item across colonies: {0}</RWS_Cross_TopType>
@@ -938,9 +938,9 @@
   <RWS_Metric_OutpostsActive>Active player Outposts (saved state)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>Active player-controlled Vanilla Expanded Framework outposts at a successful save. Across colonies, the representative saves are summed. Not a lifetime count or a measure of items produced or received. Experimental; earlier periods are not filled in.</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>Fishing jobs that landed a catch</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Player fishing jobs on home maps that placed at least one catch. A bonus catch from the same job only adds items.</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>Player fishing jobs on home maps that placed at least one catch. A bonus catch from the same job only adds items. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>Fishing catch by item</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Items actually placed by player fishing jobs on home maps, including rare catches and supported Vanilla Fishing Expanded bonuses. Only recorded periods are covered.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Items actually placed by player fishing jobs on home maps, including rare catches and supported Vanilla Fishing Expanded bonuses. Only recorded periods are covered. Work by prisoners in the colony's custody (possible with some mods) is included.</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>Back up now</RWS_Backup_Create>
   <RWS_Backup_Refresh>Refresh backups</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>Open folder</RWS_Backup_OpenFolder>

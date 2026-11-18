@@ -146,7 +146,7 @@ public static class ZoneHarvestMetricPatch
                 return;
             var units = harvested.stackCount;
             var tick = GameFacts.Tick;
-            GameFacts.Record(FoodFamily.Name, s => FoodFamily.ZoneHarvested(s, units, tick));
+            GameFacts.RecordWork(FoodFamily.Name, GameFacts.IsPrisonerWorker(worker), s => FoodFamily.ZoneHarvested(s, units, tick));
         }
         catch (Exception e)
         {

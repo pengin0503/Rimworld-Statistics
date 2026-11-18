@@ -46,6 +46,7 @@ internal static class TreeWoodPlacementProbe
     private static Map? map;
     private static Game? game;
     private static int tick = -1;
+    private static bool byPrisoner;
 
     public static void Reset()
     {
@@ -53,6 +54,7 @@ internal static class TreeWoodPlacementProbe
         map = null;
         game = null;
         tick = -1;
+        byPrisoner = false;
     }
 
     public static void Expect(Pawn? worker, Thing? harvest)
@@ -68,10 +70,13 @@ internal static class TreeWoodPlacementProbe
         map = tree.Map;
         game = Current.Game;
         tick = GameFacts.Tick;
+        byPrisoner = GameFacts.IsPrisonerWorker(worker);
     }
 
-    public static bool Take(Thing? candidate, Map? targetMap)
+    /// <summary>Whether <paramref name="candidate"/> is the expected wood; <paramref name="prisonerWork"/> says who cut the tree.</summary>
+    public static bool Take(Thing? candidate, Map? targetMap, out bool prisonerWork)
     {
+        prisonerWork = false;
         if (!UnityData.IsInMainThread || expected == null)
             return false;
         if (tick != GameFacts.Tick || !ReferenceEquals(game, Current.Game))
@@ -81,6 +86,7 @@ internal static class TreeWoodPlacementProbe
         }
         if (candidate == null || !ReferenceEquals(expected, candidate) || !ReferenceEquals(map, targetMap))
             return false;
+        prisonerWork = byPrisoner;
         Reset();
         return true;
     }
@@ -111,7 +117,8 @@ public static class PlantHarvestedMetricPatch
             var crop = plant.def.defName;
             var worker_ = GameFacts.Id(worker);
             var units = harvested.stackCount;
-            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Harvested(s, worker_, plantId, crop, units, tick));
+            GameFacts.RecordWork(WorkFamily.Name, GameFacts.IsPrisonerWorker(worker),
+                s => WorkFamily.Harvested(s, worker_, plantId, crop, units, tick));
         }
         catch (Exception e)
         {
@@ -138,7 +145,7 @@ public static class PlantCollectedMetricPatch
             var failed = __instance.def?.plant?.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
                 && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
             if (failed)
-                GameFacts.Record(WorkFamily.Name, WorkFamily.HarvestFailed);
+                GameFacts.RecordWork(WorkFamily.Name, GameFacts.IsPrisonerWorker(by), WorkFamily.HarvestFailed);
         }
         catch (Exception e)
         {
@@ -163,9 +170,9 @@ public static class PlantCollectedMetricPatch
 internal static class HaulToCellCompletionMetricPatch
 {
     private static void Prefix(Pawn_CarryTracker __instance, IntVec3 dropLoc,
-        ThingPlaceMode mode, out int __state)
+        ThingPlaceMode mode, out (int Carried, bool Prisoner) __state)
     {
-        __state = 0;
+        __state = default;
         // Avoid incrementing diagnostics for speculative haul deliveries.
         if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
             return;
@@ -177,7 +184,7 @@ internal static class HaulToCellCompletionMetricPatch
                 job?.def != JobDefOf.HaulToCell || mode != ThingPlaceMode.Direct ||
                 job.targetB.Cell != dropLoc)
                 return;
-            __state = __instance.CarriedThing?.stackCount ?? 0;
+            __state = (__instance.CarriedThing?.stackCount ?? 0, GameFacts.IsPrisonerWorker(actor));
         }
         catch (Exception e)
         {
@@ -185,16 +192,16 @@ internal static class HaulToCellCompletionMetricPatch
         }
     }
 
-    private static void Postfix(Pawn_CarryTracker __instance, bool __result, int __state)
+    private static void Postfix(Pawn_CarryTracker __instance, bool __result, (int Carried, bool Prisoner) __state)
     {
-        if (!__result || __state <= 0)
+        if (!__result || __state.Carried <= 0)
             return;
         try
         {
             var remaining = __instance.CarriedThing?.stackCount ?? 0;
-            int deposited = __state - remaining;
+            int deposited = __state.Carried - remaining;
             if (deposited > 0)
-                GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.HaulDeposited(state, deposited));
+                GameFacts.RecordWork(ChoreFamily.Name, __state.Prisoner, state => ChoreFamily.HaulDeposited(state, deposited));
         }
         catch (Exception e)
         {
@@ -223,7 +230,8 @@ internal static class SlaughterProvenanceMetric
                 return;
             var corpseId = GameFacts.Id(corpse);
             var tick = GameFacts.Tick;
-            GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId, tick));
+            GameFacts.RecordWork(ChoreFamily.Name, GameFacts.IsPrisonerWorker(actor),
+                state => ChoreFamily.MarkSlaughteredCorpse(state, corpseId, tick));
         }
         catch (Exception e)
         {
@@ -260,7 +268,7 @@ internal static class SlaughteredButcheryMetricPatch
             }
             if (uniqueCorpses.Count == 0)
                 return;
-            GameFacts.Record(ChoreFamily.Name, state =>
+            GameFacts.RecordWork(ChoreFamily.Name, GameFacts.IsPrisonerWorker(billDoer), state =>
             {
                 foreach (var corpseId in uniqueCorpses)
                     ChoreFamily.CorpseConsumed(state, corpseId, isButcherFlesh);
@@ -333,7 +341,7 @@ internal static class CleanJobCompletedMetricPatch
         try
         {
             string jobId = job.GetUniqueLoadID();
-            GameFacts.Record(ChoreFamily.Name, state =>
+            GameFacts.RecordWork(ChoreFamily.Name, GameFacts.IsPrisonerWorker(actor), state =>
                 ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
         }
         catch (Exception e)
@@ -361,9 +369,12 @@ public static class PlantsSownMetricPatch
             SlaughterProvenanceMetric.Observe(actor);
             return;
         }
+        if (def != RecordDefOf.MessesCleaned && def != RecordDefOf.FiresExtinguished && def != RecordDefOf.PlantsSown)
+            return;
+        var prisonerWork = GameFacts.IsPrisonerWorker(actor);
         if (def == RecordDefOf.MessesCleaned)
         {
-            GameFacts.Record(ChoreFamily.Name, state =>
+            GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, state =>
             {
                 ChoreFamily.FilthCleared(state);
                 if (actor.jobs?.curDriver is JobDriver_CleanFilth && actor.CurJob is { } job)
@@ -373,17 +384,16 @@ public static class PlantsSownMetricPatch
         }
         if (def == RecordDefOf.FiresExtinguished)
         {
-            GameFacts.Record(ChoreFamily.Name, ChoreFamily.FireCleared);
+            GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, ChoreFamily.FireCleared);
             return;
         }
-        if (def != RecordDefOf.PlantsSown)
-            return;
+        // PlantsSown.
         try
         {
             if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
                 return;
             var crop = plant.def.defName;
-            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Sown(s, crop));
+            GameFacts.RecordWork(WorkFamily.Name, prisonerWork, s => WorkFamily.Sown(s, crop));
         }
         catch (Exception e)
         {
@@ -414,8 +424,9 @@ public static class BillDoneMetricPatch
             }).ToList();
             var worker = GameFacts.Id(billDoer);
             var tick = GameFacts.Tick;
-            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Crafted(s, worker, items, tick));
-            GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.CraftedProducts(s, items));
+            var prisonerWork = GameFacts.IsPrisonerWorker(billDoer);
+            GameFacts.RecordWork(WorkFamily.Name, prisonerWork, s => WorkFamily.Crafted(s, worker, items, tick));
+            GameFacts.RecordWork(WorkDetailsFamily.Name, prisonerWork, s => WorkDetailsFamily.CraftedProducts(s, items));
         }
         catch (Exception e)
         {
@@ -545,8 +556,10 @@ public static class MiningPlaceMetricPatch
     public sealed class Placement
     {
         public string? MinerId;
+        public bool MinerIsPrisoner;
         public required ThingDef YieldDef;
         public bool CutTreeWood;
+        public bool WoodByPrisoner;
         public int Placed;
     }
 
@@ -560,7 +573,7 @@ public static class MiningPlaceMetricPatch
             return;
         var miner = MiningProbe.Miner;
         bool isMineYield = miner != null && thing.def == MiningProbe.Yield;
-        bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map);
+        bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map, out var woodByPrisoner);
         if (!isMineYield && !isTreeWood)
             return;
         try
@@ -568,8 +581,10 @@ public static class MiningPlaceMetricPatch
             var state = new Placement
             {
                 MinerId = isMineYield ? GameFacts.Id(miner!) : null,
+                MinerIsPrisoner = isMineYield && GameFacts.IsPrisonerWorker(miner!),
                 YieldDef = thing.def,
                 CutTreeWood = isTreeWood,
+                WoodByPrisoner = woodByPrisoner,
             };
             __state = state;
             var original = placedAction;
@@ -608,11 +623,13 @@ public static class MiningPlaceMetricPatch
             return;
         if (state.MinerId is { } miner)
         {
-            GameFacts.Record(WorkFamily.Name, s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
-            GameFacts.Record(WorkDetailsFamily.Name, s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+            GameFacts.RecordWork(WorkFamily.Name, state.MinerIsPrisoner,
+                s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
+            GameFacts.RecordWork(WorkDetailsFamily.Name, state.MinerIsPrisoner,
+                s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
         }
         if (state.CutTreeWood)
-            GameFacts.Record(ChoreFamily.Name, s => ChoreFamily.WoodObtained(s, state.Placed));
+            GameFacts.RecordWork(ChoreFamily.Name, state.WoodByPrisoner, s => ChoreFamily.WoodObtained(s, state.Placed));
     }
 }
 

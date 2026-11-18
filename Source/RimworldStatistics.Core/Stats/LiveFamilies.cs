@@ -23,6 +23,13 @@ public sealed class LiveFamily
     /// </summary>
     public Action<FamilyState, int, int>? Interrupted { get; init; }
 
+    /// <summary>
+    /// Called when the family starts a new recording interval, before any event: a new game, a family not recorded before, or
+    /// totals of an older revision that start over. A family marks here the rules the interval is recorded under when a rule
+    /// changed without a new revision, so totals continued from before the change can be told apart (#392).
+    /// </summary>
+    public Action<FamilyState>? Started { get; init; }
+
     public FamilySpec Spec => new(Name, Revision);
 }
 

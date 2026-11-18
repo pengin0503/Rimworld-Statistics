@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0} 歳</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} 個/セル日</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>製作した品の総数</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>プレイヤーの作業指示で完成した主産物と副産物のスタック個数の合計。調理と芸術品を含み、採掘・収穫・メカの培養は含めません。</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>プレイヤーの作業指示で完成した主産物と副産物のスタック個数の合計。調理と芸術品を含み、採掘・収穫・メカの培養は含めません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>品質別の製作数</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>上の製作品を品質別に数えたもの。品質のない品は「none」と表示されます。</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>品質「幻の一品」の製作数</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>最も多く調理した入植者</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>最も多く調理したポーンの食事の数。内訳にそのポーン（ID）を表示します。</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>作物の収穫量</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>プレイヤーのポーンが収穫で得た主産物のスタック個数の合計。追加の収穫物は含めません。</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>プレイヤーのポーンが収穫で得た主産物のスタック個数の合計。追加の収穫物は含めません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>作物別の収穫量</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>収穫量を元の作物別に合計したもの。作物の分からない収穫は「（不明）」です。</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>最も多く収穫した作物</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>最も多く収穫した入植者</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>最も多く収穫したポーンの収穫量。内訳にそのポーン（ID）を表示します。</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>収穫に失敗した株数</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>プレイヤーのポーンの収穫作業で実際に失敗した株の数。植物の枯死とは別です。</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>プレイヤーのポーンの収穫作業で実際に失敗した株の数。植物の枯死とは別です。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>植えた作物の数</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>プレイヤーのポーンが植え付けた株の数。</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>プレイヤーのポーンが植え付けた株の数。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>栽培した作物の種類数</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>一度でも植え付けた作物の種類の数。</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>採掘した資源量</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>プレイヤーのポーンの採掘で得られた品のスタック個数の合計。</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>プレイヤーのポーンの採掘で得られた品のスタック個数の合計。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>最も多く採掘した入植者</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>最も多く採掘したポーンの採掘量。内訳にそのポーン（ID）を表示します。</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>完成した建築物の数</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>食べた食料の総栄養量</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>自由入植者が食事で実際に得た栄養の合計。</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>農業ゾーン1セル・1日あたりの収穫量</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>農業ゾーンに植わっていた作物の主産物の収穫量を、同じ期間の農業ゾーンのセル数を時間で積算した値（セル日）で割ったもの。水耕栽培器と野生の植物は含めません。</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>農業ゾーンに植わっていた作物の主産物の収穫量を、同じ期間の農業ゾーンのセル数を時間で積算した値（セル日）で割ったもの。水耕栽培器と野生の植物は含めません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>取引回数</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>通貨以外の品が1つ以上やり取りされた取引の数。空の取引・贈り物・失敗した取引は含めません。</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>商船との取引回数</RWS_Metric_TradeOrbital>
@@ -868,25 +868,25 @@
   <RWS_Details_TradeKindOther>その他の交易相手</RWS_Details_TradeKindOther>
   <RWS_Details_Other>その他</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>品目別の製作数</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>記録期間に完成した製作品の数を品目別に集計します。独立した系列で、有効化前の期間は推定しません。</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>記録期間に完成した製作品の数を品目別に集計します。独立した系列で、有効化前の期間は推定しません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>品目別の採掘量</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>記録期間に実際に置かれた採掘の産出物の数を品目別に集計します。独立した系列で、有効化前の期間は推定しません。</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>記録期間に実際に置かれた採掘の産出物の数を品目別に集計します。独立した系列で、有効化前の期間は推定しません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>完全に取り除いた汚れの数</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>プレイヤーのポーンの掃除で汚れを1つ完全に取り除くごとに1回（バニラの「掃除した回数」の記録）。汚れの厚みが減っただけの場合や、掃除のジョブ全体の回数ではありません。有効にしている間だけ記録します。</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>プレイヤーのポーンの掃除で汚れを1つ完全に取り除くごとに1回（バニラの「掃除した回数」の記録）。汚れの厚みが減っただけの場合や、掃除のジョブ全体の回数ではありません。有効にしている間だけ記録します。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>消火した火の数</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>プレイヤーのポーンが通常の消火作業または自分に付いた火をはたき消すことで消した火1つごとに1回（バニラの「消火した回数」の記録）。自然に消えた火は数えません。有効にしている間だけ記録します。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>プレイヤーのポーンが通常の消火作業または自分に付いた火をはたき消すことで消した火1つごとに1回（バニラの「消火した回数」の記録）。自然に消えた火は数えません。有効にしている間だけ記録します。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>食事の回数</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>プレイヤー派閥の人型のポーンが、正の栄養を得て食事を実際に食べた回数。食事1回を1回と数え、キャラバン中の食事も含みます。食事以外の食べ物・薬物・プレイヤー以外のポーンは含めません。</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>備蓄セルへの運搬回数</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>プレイヤーの運搬ジョブが、指定したセルに実際に荷物を置いた回数。コンテナへの格納やMOD独自の運搬は数えないため、部分的な記録です。拾い上げただけでは数えません。</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>プレイヤーの運搬ジョブが、指定したセルに実際に荷物を置いた回数。コンテナへの格納やMOD独自の運搬は数えないため、部分的な記録です。拾い上げただけでは数えません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>備蓄セルに運んだアイテム数</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>プレイヤーの運搬ジョブで実際に置いたアイテムの合計数。運んでいるスタックの減少量から測ります。コンテナへの運搬やその他の移動方法は数えないため、部分的な記録です。</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>プレイヤーの運搬ジョブで実際に置いたアイテムの合計数。運んでいるスタックの減少量から測ります。コンテナへの運搬やその他の移動方法は数えないため、部分的な記録です。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>完了した掃除ジョブの数</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>汚れを1つ以上完全に取り除いたうえで正常に終了した、プレイヤーの掃除ジョブの数。1回のジョブで複数の汚れを取り除いても1回です。中断されたジョブは数えません。</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>汚れを1つ以上完全に取り除いたうえで正常に終了した、プレイヤーの掃除ジョブの数。1回のジョブで複数の汚れを取り除いても1回です。中断されたジョブは数えません。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>伐採で得た木材（主産物）</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>プレイヤーのポーンが木を伐採した後、主産物の木材が実際に置かれた、またはスタックに統合された数（ゲームが配置した時点で計測）。一部のMODによる追加の木材や標準外の伐採方法は数えないため、部分的な記録です。</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>プレイヤーのポーンが木を伐採した後、主産物の木材が実際に置かれた、またはスタックに統合された数（ゲームが配置した時点で計測）。一部のMODによる追加の木材や標準外の伐採方法は数えないため、部分的な記録です。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>屠殺後に解体された動物</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>プレイヤーのポーンが屠殺した動物の死体のうち、その後にバニラの解体の作業指示が完了して消費されたものの数。同じ死体をセーブをまたいで追跡します。狩猟した動物・野生での死亡・敵の死体は含めません。MODの解体レシピや死体が消える一部の経路は認識できないため、部分的な記録です。</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>プレイヤーのポーンが屠殺した動物の死体のうち、その後にバニラの解体の作業指示が完了して消費されたものの数。同じ死体をセーブをまたいで追跡します。狩猟した動物・野生での死亡・敵の死体は含めません。MODの解体レシピや死体が消える一部の経路は認識できないため、部分的な記録です。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>最大のコロニー：{0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>最小のコロニー：{0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>全コロニーで最も多い品目：{0}</RWS_Cross_TopType>
@@ -938,9 +938,9 @@
   <RWS_Metric_OutpostsActive>稼働中のプレイヤーの前哨基地（セーブ時点）</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>正常にセーブした時点でプレイヤーが管理している、Vanilla Expanded Frameworkの稼働中の前哨基地の数。全コロニーでは代表セーブ時点の数を合計します。通算の数や、生産・受け取ったアイテムの量ではありません。実験的な統計で、以前の期間は補完しません。</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>釣果のあった釣りの回数</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>プレイヤーの拠点マップで、釣果を1つ以上置いた釣りジョブの回数。同じジョブでの追加の釣果はアイテム数にだけ加算します。</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>プレイヤーの拠点マップで、釣果を1つ以上置いた釣りジョブの回数。同じジョブでの追加の釣果はアイテム数にだけ加算します。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>品目別の釣果</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>プレイヤーの拠点マップで釣りジョブによって実際に置かれたアイテムと個数。珍しい釣果や、対応するVanilla Fishing Expandedの追加の釣果を含みます。記録した期間だけが対象です。</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>プレイヤーの拠点マップで釣りジョブによって実際に置かれたアイテムと個数。珍しい釣果や、対応するVanilla Fishing Expandedの追加の釣果を含みます。記録した期間だけが対象です。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>今すぐバックアップ</RWS_Backup_Create>
   <RWS_Backup_Refresh>一覧を更新</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>フォルダーを開く</RWS_Backup_OpenFolder>

@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0} Jahre</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} / Feldtag</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Hergestellte Gegenstände</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Stapelgrößen der Haupt- und Nebenprodukte abgeschlossener Arbeitsaufträge des Spielers, einschließlich Kochen und Kunst. Bergbau, Ernten und Mech-Gestation zählen nicht.</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Stapelgrößen der Haupt- und Nebenprodukte abgeschlossener Arbeitsaufträge des Spielers, einschließlich Kochen und Kunst. Bergbau, Ernten und Mech-Gestation zählen nicht. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Hergestellte Gegenstände nach Qualität</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>Die oben genannten hergestellten Gegenstände nach Qualität. Gegenstände ohne Qualität erscheinen als „none“.</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Hergestellte legendäre Gegenstände</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>Produktivster Koch</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>Höchste Zahl zubereiteter Mahlzeiten eines Pawns; die Aufschlüsselung zeigt ihn anhand seiner ID.</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>Geerntete Feldfrüchte</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Stapelgrößen der Hauptprodukte, die Spieler-Pawns geerntet haben; zusätzliche Erträge zählen nicht.</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Stapelgrößen der Hauptprodukte, die Spieler-Pawns geerntet haben; zusätzliche Erträge zählen nicht. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Erntemenge nach Feldfrucht</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>Erntemenge nach der zugehörigen Feldfrucht; Ernten mit unbekannter Pflanze stehen unter „(unbekannt)“.</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Meistgeerntete Feldfrucht</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>Produktivster Erntehelfer</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>Höchste Erntemenge eines Pawns; die Aufschlüsselung zeigt ihn anhand seiner ID.</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>Fehlgeschlagene Ernten</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Pflanzen, deren Ernte durch einen Spieler-Pawn tatsächlich fehlschlug. Nicht mit abgestorbenen Pflanzen gleichzusetzen.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Pflanzen, deren Ernte durch einen Spieler-Pawn tatsächlich fehlschlug. Nicht mit abgestorbenen Pflanzen gleichzusetzen. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>Ausgesäte Feldfrüchte</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Von Spieler-Pawns ausgesäte Pflanzen.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>Von Spieler-Pawns ausgesäte Pflanzen. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>Arten ausgesäter Feldfrüchte</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>Anzahl verschiedener Feldfruchtarten, die mindestens einmal ausgesät wurden.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>Abgebaute Rohstoffe</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>Stapelgrößen der durch Bergbau von Spieler-Pawns gewonnenen Gegenstände.</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Stapelgrößen der durch Bergbau von Spieler-Pawns gewonnenen Gegenstände. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>Produktivster Bergmann</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>Höchste Abbaumenge eines Pawns; die Aufschlüsselung zeigt ihn anhand seiner ID.</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>Fertiggestellte Gebäude</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>Aufgenommene Nahrungseinheiten</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>Nahrungseinheiten, die freie Kolonisten beim Essen tatsächlich aufgenommen haben.</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>Ernte pro Feldtag in Anbauzonen</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Haupternte von Pflanzen in Anbauzonen ÷ über denselben Zeitraum aufaddierte Anbauzonen-Feldtage. Hydrokultur und Wildpflanzen sind nicht enthalten.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Haupternte von Pflanzen in Anbauzonen ÷ über denselben Zeitraum aufaddierte Anbauzonen-Feldtage. Hydrokultur und Wildpflanzen sind nicht enthalten. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Handelsabschlüsse</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>Abgeschlossene Geschäfte, bei denen mindestens ein Gegenstand außer Währung den Besitzer wechselte. Leere Geschäfte, Geschenke und fehlgeschlagene Geschäfte zählen nicht.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>Geschäfte mit Handelsschiffen</RWS_Metric_TradeOrbital>
@@ -867,25 +867,25 @@
   <RWS_Details_TradeKindOther>Sonstiger Händler</RWS_Details_TradeKindOther>
   <RWS_Details_Other>Sonstige</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>Fertigprodukte nach Gegenstand</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Erfolgreich fertiggestellte Produktmengen nach Gegenstand während des Aufzeichnungszeitraums. Eigene Datenreihe; Zeit vor Aktivierung wird nicht geschätzt.</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Erfolgreich fertiggestellte Produktmengen nach Gegenstand während des Aufzeichnungszeitraums. Eigene Datenreihe; Zeit vor Aktivierung wird nicht geschätzt. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>Abgebaute Rohstoffe nach Gegenstand</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Tatsächlich während des Aufzeichnungszeitraums platzierte Abbauprodukte nach Gegenstand. Eigene Datenreihe; Zeit vor Aktivierung wird nicht geschätzt.</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Tatsächlich während des Aufzeichnungszeitraums platzierte Abbauprodukte nach Gegenstand. Eigene Datenreihe; Zeit vor Aktivierung wird nicht geschätzt. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Vollständig entfernte Verschmutzungen</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>Pro durch Reinigungsarbeit eines Spieler-Pawns vollständig entferntem Schmutzstück eine Zählung (Vanilla-Statistik „Gereinigt“). Teilweise verringerte Dicke und gesamte Reinigungsaufträge zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>Pro durch Reinigungsarbeit eines Spieler-Pawns vollständig entferntem Schmutzstück eine Zählung (Vanilla-Statistik „Gereinigt“). Teilweise verringerte Dicke und gesamte Reinigungsaufträge zählen nicht. Nur bei Aktivierung aufgezeichnet. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Gelöschte Feuer</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>Pro von einem Spieler-Pawn durch normale Brandbekämpfung oder das Ausschlagen von Flammen an sich selbst gelöschtem Feuer eine Zählung („Feuer gelöscht“). Von selbst erloschene Feuer zählen nicht. Nur bei Aktivierung aufgezeichnet.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>Pro von einem Spieler-Pawn durch normale Brandbekämpfung oder das Ausschlagen von Flammen an sich selbst gelöschtem Feuer eine Zählung („Feuer gelöscht“). Von selbst erloschene Feuer zählen nicht. Nur bei Aktivierung aufgezeichnet. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Verzehrte Mahlzeiten</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Erfolgreich verzehrte Mahlzeiten mit positiver Nahrungsmenge durch menschenähnliche Pawns der Spielerfraktion. Jede Mahlzeit zählt einmal, auch in Karawanen. Andere Lebensmittel, Drogen und fremde Pawns zählen nicht.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Transportvorgänge zu Lagerfeldern</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Transportaufträge des Spielers, die ihre Ladung wirklich auf dem bestimmten Feld ablegten. Teilabdeckung: Behälterlagerung und mod-spezifischer Transport zählen nicht. Bloßes Aufheben zählt nie.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Transportaufträge des Spielers, die ihre Ladung wirklich auf dem bestimmten Feld ablegten. Teilabdeckung: Behälterlagerung und mod-spezifischer Transport zählen nicht. Bloßes Aufheben zählt nie. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Zu Lagerfeldern transportierte Gegenstände</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Gesamtzahl der durch Transportaufträge des Spielers tatsächlich abgelegten Gegenstände, gemessen anhand des schrumpfenden getragenen Stapels. Teilabdeckung: Transport in Behälter und andere Transportarten fehlen.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Gesamtzahl der durch Transportaufträge des Spielers tatsächlich abgelegten Gegenstände, gemessen anhand des schrumpfenden getragenen Stapels. Teilabdeckung: Transport in Behälter und andere Transportarten fehlen. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Abgeschlossene Reinigungsaufträge</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>Reinigungsaufträge des Spielers, die nach vollständiger Entfernung mindestens eines Schmutzstücks erfolgreich abgeschlossen wurden. Mehrere Schmutzstücke pro Auftrag zählen als ein Auftrag. Unterbrochene Aufträge zählen nicht.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Reinigungsaufträge des Spielers, die nach vollständiger Entfernung mindestens eines Schmutzstücks erfolgreich abgeschlossen wurden. Mehrere Schmutzstücke pro Auftrag zählen als ein Auftrag. Unterbrochene Aufträge zählen nicht. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Holz aus Baumfällung (Hauptertrag)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Holz, das ein Spieler-Pawn beim Baumfällen als Hauptertrag tatsächlich abgelegt oder mit einem Stapel vereint hat (gemessen beim Platzieren). Teilabdeckung: Zusätzliches Holz einiger Mods und andere Fällmethoden zählen nicht.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Holz, das ein Spieler-Pawn beim Baumfällen als Hauptertrag tatsächlich abgelegt oder mit einem Stapel vereint hat (gemessen beim Platzieren). Teilabdeckung: Zusätzliches Holz einiger Mods und andere Fällmethoden zählen nicht. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Geschlachtete und danach zerlegte Tiere</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Kadaver von Tieren, die ein Spieler-Pawn schlachtete und die später bei einem abgeschlossenen Vanilla-Zerlegeauftrag verbraucht wurden. Derselbe Kadaver wird über Spielstände hinweg verfolgt. Gejagte Tiere, natürlich verendete Wildtiere und Feindkadaver zählen nicht. Teilabdeckung: Zerlegerezepte von Mods und bestimmte Wege, auf denen Kadaver verschwinden, werden nicht erkannt.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Kadaver von Tieren, die ein Spieler-Pawn schlachtete und die später bei einem abgeschlossenen Vanilla-Zerlegeauftrag verbraucht wurden. Derselbe Kadaver wird über Spielstände hinweg verfolgt. Gejagte Tiere, natürlich verendete Wildtiere und Feindkadaver zählen nicht. Teilabdeckung: Zerlegerezepte von Mods und bestimmte Wege, auf denen Kadaver verschwinden, werden nicht erkannt. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Kolonie mit Höchstwert: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Kolonie mit Mindestwert: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Häufigster Gegenstand aller Kolonien: {0}</RWS_Cross_TopType>
@@ -937,9 +937,9 @@
   <RWS_Metric_OutpostsActive>Aktive Spieler-Außenposten (Speicherstand)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>Aktive, vom Spieler kontrollierte Außenposten von Vanilla Expanded Framework beim erfolgreichen Speichern. Über Kolonien werden die repräsentativen Speicherstände summiert. Keine lebenszeitliche Gesamtzahl und keine Produktions- oder Empfangsmenge. Experimentell; frühere Zeiträume werden nicht aufgefüllt.</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>Angelaufträge mit Fang</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Angelaufträge des Spielers auf Heimatkarten, bei denen mindestens ein Fang abgelegt wurde. Ein Zusatzfang desselben Auftrags erhöht nur die Anzahl der Gegenstände.</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>Angelaufträge des Spielers auf Heimatkarten, bei denen mindestens ein Fang abgelegt wurde. Ein Zusatzfang desselben Auftrags erhöht nur die Anzahl der Gegenstände. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>Angelfänge nach Gegenstand</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Gegenstände, die Angelaufträge des Spielers auf Heimatkarten tatsächlich ablegten, einschließlich seltener Fänge und unterstützter Boni von Vanilla Fishing Expanded. Nur aufgezeichnete Zeiträume.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Gegenstände, die Angelaufträge des Spielers auf Heimatkarten tatsächlich ablegten, einschließlich seltener Fänge und unterstützter Boni von Vanilla Fishing Expanded. Nur aufgezeichnete Zeiträume. Arbeit von Gefangenen in Gewahrsam der Kolonie (mit manchen Mods möglich) zählt mit.</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>Jetzt sichern</RWS_Backup_Create>
   <RWS_Backup_Refresh>Sicherungen aktualisieren</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>Ordner öffnen</RWS_Backup_OpenFolder>
