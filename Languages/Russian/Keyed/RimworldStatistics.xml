@@ -507,7 +507,7 @@
   <RWS_Unit_Years>Лет: {0}</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>На клетко-день: {0}</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>Изготовленные предметы</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>Размеры стопок основных и побочных продуктов завершённых производственных заданий игрока, включая приготовление пищи и произведения искусства. Добыча руды, сбор урожая и выращивание механоидов не учитываются.</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>Размеры стопок основных и побочных продуктов завершённых производственных заданий игрока, включая приготовление пищи и произведения искусства. Добыча руды, сбор урожая и выращивание механоидов не учитываются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>Изготовленные предметы по качеству</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>Указанные выше изготовленные предметы по качеству; изделия без качества указаны как «none».</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>Изготовленные предметы качества «легенда»</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>Лучший повар</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>Число блюд, приготовленных самой продуктивной пешкой; в разбивке указан её ID.</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>Собранные урожаи</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>Количество единиц основных продуктов, собранных пешками игрока; дополнительные выходы не учитываются.</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>Количество единиц основных продуктов, собранных пешками игрока; дополнительные выходы не учитываются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>Урожай по культурам</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>Урожай по исходной культуре; если культура неизвестна, запись попадает в «(неизвестно)».</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>Самая урожайная культура</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>Лучший сборщик урожая</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>Число собранных единиц самой продуктивной пешки; в разбивке указан её ID.</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>Неудачные попытки сбора урожая</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>Растения, для которых сбор урожая пешкой игрока действительно завершился неудачей. Не то же самое, что гибель растений.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>Растения, для которых сбор урожая пешкой игрока действительно завершился неудачей. Не то же самое, что гибель растений. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>Посаженные культуры</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>Растения, посаженные пешками игрока.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>Растения, посаженные пешками игрока. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>Виды посаженных культур</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>Число типов культур, посаженных хотя бы один раз.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>Добытые ресурсы</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>Число единиц ресурсов, добытых пешками игрока.</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>Число единиц ресурсов, добытых пешками игрока. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>Лучший шахтёр</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>Объём добычи самой продуктивной пешки; в разбивке указан её ID.</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>Завершённые постройки</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>Полученная с пищей питательность</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>Суммарная питательность, фактически полученная свободными поселенцами при приёме пищи.</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>Урожай на клетко-день посадок</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>Основной урожай растений в зонах посадки ÷ суммарная площадь зон посадки с учётом времени за тот же период (клетко-дни). Гидропоника и дикорастущие растения исключаются.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>Основной урожай растений в зонах посадки ÷ суммарная площадь зон посадки с учётом времени за тот же период (клетко-дни). Гидропоника и дикорастущие растения исключаются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>Торговые сделки</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>Завершённые сделки, в которых хотя бы один предмет, не являющийся валютой, сменил владельца. Пустые сделки, подарки и неудачные сделки исключаются.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>Сделки с торговыми кораблями</RWS_Metric_TradeOrbital>
@@ -867,25 +867,25 @@
   <RWS_Details_TradeKindOther>Другой торговец</RWS_Details_TradeKindOther>
   <RWS_Details_Other>Прочее</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>Готовая продукция по предметам</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>Число успешно изготовленных изделий по типам за записанный период. Отдельный ряд данных; время до включения не оценивается.</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>Число успешно изготовленных изделий по типам за записанный период. Отдельный ряд данных; время до включения не оценивается. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>Добытые ресурсы по предметам</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>Число единиц добытых ресурсов по типам, фактически размещённых в записанный период. Отдельный ряд данных; время до включения не оценивается.</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>Число единиц добытых ресурсов по типам, фактически размещённых в записанный период. Отдельный ряд данных; время до включения не оценивается. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>Полностью убранная грязь</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>По одному за каждый полностью убранный пешкой игрока след грязи (обычная статистика игры «мусора убрано»). Частичное уменьшение толщины и целые задания уборки сюда не входят. Записывается только при включённом сборе.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>По одному за каждый полностью убранный пешкой игрока след грязи (обычная статистика игры «мусора убрано»). Частичное уменьшение толщины и целые задания уборки сюда не входят. Записывается только при включённом сборе. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>Потушенные пожары</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>По одному за каждый огонь, потушенный пешкой игрока при тушении пожара или сбивании пламени с себя (обычная статистика «пожаров потушено»). Самопроизвольно угасший огонь не учитывается. Записывается только при включённом сборе.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>По одному за каждый огонь, потушенный пешкой игрока при тушении пожара или сбивании пламени с себя (обычная статистика «пожаров потушено»). Самопроизвольно угасший огонь не учитывается. Записывается только при включённом сборе. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>Съеденные блюда</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>Фактически съеденные блюда с положительной питательностью человекоподобными пешками фракции игрока. Каждое блюдо считается один раз, в том числе в караване. Прочая пища, наркотики и пешки других фракций исключаются.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>Переноски в клетки хранилища</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>Работы по переноске игрока, в которых груз действительно положен в выбранную клетку. Неполный охват: укладка в контейнеры и модифицированные переноски исключаются. Само поднятие предмета не учитывается.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>Работы по переноске игрока, в которых груз действительно положен в выбранную клетку. Неполный охват: укладка в контейнеры и модифицированные переноски исключаются. Само поднятие предмета не учитывается. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>Предметы, перенесённые в хранилище</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока, измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>Суммарное число предметов, реально положенных работами по переноске игрока, измеряется по уменьшению переносимой стопки. Неполный охват: переноска в контейнеры и другие способы перемещения не учитываются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>Завершённые задания уборки</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>Работы по уборке игрока, успешно завершившиеся после полного удаления хотя бы одного следа грязи. Несколько следов за одну работу считаются одним заданием. Прерванные работы не учитываются.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>Работы по уборке игрока, успешно завершившиеся после полного удаления хотя бы одного следа грязи. Несколько следов за одну работу считаются одним заданием. Прерванные работы не учитываются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>Древесина от рубки деревьев (основной выход)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>Древесина, фактически размещённая или добавленная в стопки после рубки дерева пешкой игрока (основной продукт, измеряется при размещении игрой). Неполный охват: дополнительная древесина некоторых модов и нестандартные способы рубки не учитываются.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>Древесина, фактически размещённая или добавленная в стопки после рубки дерева пешкой игрока (основной продукт, измеряется при размещении игрой). Неполный охват: дополнительная древесина некоторых модов и нестандартные способы рубки не учитываются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>Забитые, затем разделанные животные</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>Трупы животных, забитых пешкой игрока, которые затем были израсходованы завершённым обычным заданием разделки. Один и тот же труп отслеживается между сохранениями. Добытые на охоте, погибшие в дикой природе животные и трупы врагов исключаются. Неполный охват: рецепты разделки из модов и некоторые способы исчезновения трупов не распознаются.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>Трупы животных, забитых пешкой игрока, которые затем были израсходованы завершённым обычным заданием разделки. Один и тот же труп отслеживается между сохранениями. Добытые на охоте, погибшие в дикой природе животные и трупы врагов исключаются. Неполный охват: рецепты разделки из модов и некоторые способы исчезновения трупов не распознаются. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>Колония с максимумом: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>Колония с минимумом: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>Самый частый предмет во всех колониях: {0}</RWS_Cross_TopType>
@@ -937,9 +937,9 @@
   <RWS_Metric_OutpostsActive>Активные аванпосты игрока (сохранённое состояние)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>Активные аванпосты Vanilla Expanded Framework под управлением игрока при успешном сохранении. По колониям суммируются представительные сохранения. Это не накопленная история и не число изготовленных или полученных предметов. Экспериментально; прежние периоды не восполняются.</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>Рыболовные задания с уловом</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>Рыболовные задания игрока на домашних картах, в которых размещён хотя бы один улов. Дополнительный улов того же задания увеличивает только число предметов.</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>Рыболовные задания игрока на домашних картах, в которых размещён хотя бы один улов. Дополнительный улов того же задания увеличивает только число предметов. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>Улов рыбы по предметам</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>Предметы, фактически размещённые при рыбалке игрока на домашних картах, включая редкий улов и поддерживаемые бонусы Vanilla Fishing Expanded. Учитывается только записанный период.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>Предметы, фактически размещённые при рыбалке игрока на домашних картах, включая редкий улов и поддерживаемые бонусы Vanilla Fishing Expanded. Учитывается только записанный период. Учитывается и работа пленников, которых содержит колония (возможна с некоторыми модами).</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>Создать копию</RWS_Backup_Create>
   <RWS_Backup_Refresh>Обновить список копий</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>Открыть папку</RWS_Backup_OpenFolder>

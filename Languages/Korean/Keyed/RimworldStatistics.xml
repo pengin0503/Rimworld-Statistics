@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0}세</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} / 칸·일</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>제작한 아이템 수</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>플레이어의 완료된 작업 지시로 만들어진 주생산물과 부산물의 중첩 수량 합계입니다. 요리와 예술품을 포함하지만 채굴, 수확, 메카노이드 배양은 제외합니다.</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>플레이어의 완료된 작업 지시로 만들어진 주생산물과 부산물의 중첩 수량 합계입니다. 요리와 예술품을 포함하지만 채굴, 수확, 메카노이드 배양은 제외합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>품질별 제작품 수</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>위 제작품을 품질별로 나눕니다. 품질이 없는 아이템은 “none”으로 표시합니다.</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>전설적 품질 제작품 수</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>요리를 가장 많이 한 폰</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>식사를 가장 많이 요리한 폰의 식사 제작 수입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>수확한 작물 수</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>플레이어 측 폰이 수확한 주생산물의 중첩 수량입니다. 추가 산출물은 제외합니다.</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>플레이어 측 폰이 수확한 주생산물의 중첩 수량입니다. 추가 산출물은 제외합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>작물별 수확량</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>수확량을 원래 작물별로 집계합니다. 작물을 알 수 없으면 “(알 수 없음)”으로 표시합니다.</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>가장 많이 수확한 작물</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>수확을 가장 많이 한 폰</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>수확량이 가장 많은 폰의 수확량입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>수확 실패 수</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>플레이어 측 폰이 실제로 수확에 실패한 식물의 수입니다. 식물이 죽은 경우는 포함하지 않습니다.</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>플레이어 측 폰이 실제로 수확에 실패한 식물의 수입니다. 식물이 죽은 경우는 포함하지 않습니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>심은 작물 수</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>플레이어 측 폰이 파종한 식물 수입니다.</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>플레이어 측 폰이 파종한 식물 수입니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>파종한 작물의 종류 수</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>한 번 이상 파종한 작물 종류의 수입니다.</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>채굴 자원 수량</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>플레이어 측 폰의 채굴로 나온 아이템의 중첩 수량입니다.</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>플레이어 측 폰의 채굴로 나온 아이템의 중첩 수량입니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>채굴을 가장 많이 한 폰</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>채굴량이 가장 많은 폰의 채굴량입니다. 내역에 해당 폰의 ID를 표시합니다.</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>완성한 건축물 수</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>섭취한 영양량</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>자유 정착민이 실제로 식사하여 섭취한 영양량의 합계입니다.</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>재배구역 칸·일당 수확량</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>재배구역에서 자란 작물의 주생산물 수확량 ÷ 같은 기간 동안 시간에 따라 누적한 재배구역 칸 수(칸·일)입니다. 수경재배와 야생 식물은 제외합니다.</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>재배구역에서 자란 작물의 주생산물 수확량 ÷ 같은 기간 동안 시간에 따라 누적한 재배구역 칸 수(칸·일)입니다. 수경재배와 야생 식물은 제외합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>거래 체결 횟수</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>화폐가 아닌 아이템을 한 개 이상 교환한 거래 횟수입니다. 빈 거래, 선물 및 실패한 거래는 제외합니다.</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>궤도 상선과의 거래</RWS_Metric_TradeOrbital>
@@ -867,25 +867,25 @@
   <RWS_Details_TradeKindOther>기타 상인</RWS_Details_TradeKindOther>
   <RWS_Details_Other>기타</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>아이템별 완성품 수</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>기록 기간에 성공적으로 완성된 생산품의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다.</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>기록 기간에 성공적으로 완성된 생산품의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>아이템별 채굴 자원 수</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>기록 기간에 실제로 놓인 채굴 산출물의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다.</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>기록 기간에 실제로 놓인 채굴 산출물의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>완전히 제거한 오염물 수</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>플레이어 폰이 청소로 오염물 한 개를 완전히 제거할 때마다 한 번 집계합니다(기본 게임의 “청소” 기록). 두께만 줄인 경우나 청소 작업 전체 횟수를 센 것이 아닙니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>플레이어 폰이 청소로 오염물 한 개를 완전히 제거할 때마다 한 번 집계합니다(기본 게임의 “청소” 기록). 두께만 줄인 경우나 청소 작업 전체 횟수를 센 것이 아닙니다. 활성화한 동안에만 기록합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>불을 끈 횟수</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>플레이어 폰이 정상적인 소방 작업이나 몸에 붙은 불꽃을 털어 끄면서 제거한 불 한 건당 한 번 집계합니다(“화재 진압” 기록). 저절로 꺼진 불은 제외합니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>플레이어 폰이 정상적인 소방 작업이나 몸에 붙은 불꽃을 털어 끄면서 제거한 불 한 건당 한 번 집계합니다(“화재 진압” 기록). 저절로 꺼진 불은 제외합니다. 활성화한 동안에만 기록합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>먹은 식사 수</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>플레이어 세력의 인간형 폰이 실제로 먹고 영양을 얻은 식사의 수입니다. 상단에서 먹은 식사를 포함하여 한 끼당 한 번 집계합니다. 다른 음식, 약물, 비플레이어 폰은 제외합니다.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>저장 칸으로 운반한 횟수</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>플레이어 운반 작업이 지정한 칸에 실제로 화물을 내려놓은 횟수입니다. 일부만 포함합니다. 용기에 넣거나 모드 고유 방식으로 운반하는 경우는 제외하며, 물건을 집어 들기만 해서는 집계하지 않습니다.</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>플레이어 운반 작업이 지정한 칸에 실제로 화물을 내려놓은 횟수입니다. 일부만 포함합니다. 용기에 넣거나 모드 고유 방식으로 운반하는 경우는 제외하며, 물건을 집어 들기만 해서는 집계하지 않습니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>저장 칸으로 운반한 아이템 수</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>플레이어 운반 작업으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다.</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>플레이어 운반 작업으로 실제로 내려놓은 아이템 총수입니다. 운반 중인 묶음 수량의 감소로 측정합니다. 용기 안에 넣거나 다른 방식으로 이동한 아이템은 제외하는 부분적인 기록입니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>완료한 청소 작업 수</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>오염물을 한 개 이상 완전히 제거하고 정상적으로 끝난 플레이어 청소 작업 수입니다. 한 작업에서 여러 오염물을 치워도 한 번만 셉니다. 중단된 작업은 제외합니다.</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>오염물을 한 개 이상 완전히 제거하고 정상적으로 끝난 플레이어 청소 작업 수입니다. 한 작업에서 여러 오염물을 치워도 한 번만 셉니다. 중단된 작업은 제외합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>벌목으로 얻은 목재 (주생산물)</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>플레이어 폰이 나무를 벤 후 주생산물 목재가 실제로 놓이거나 다른 묶음에 합쳐진 수량입니다(게임에서 놓을 때 측정). 일부만 집계하며 일부 모드의 추가 목재나 비표준 벌목 방법은 제외합니다.</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>플레이어 폰이 나무를 벤 후 주생산물 목재가 실제로 놓이거나 다른 묶음에 합쳐진 수량입니다(게임에서 놓을 때 측정). 일부만 집계하며 일부 모드의 추가 목재나 비표준 벌목 방법은 제외합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>도축 후 해체한 동물</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>플레이어 폰이 도축한 동물의 시체가 나중에 완료된 기본 게임 해체 작업 지시로 소모된 수입니다. 같은 시체를 저장 파일 사이에서도 추적합니다. 사냥한 동물, 야생에서 죽은 동물, 적 시체는 포함하지 않습니다. 모드 해체 조리법과 일부 시체 소멸 경로는 인식하지 못하므로 일부만 집계합니다.</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>플레이어 폰이 도축한 동물의 시체가 나중에 완료된 기본 게임 해체 작업 지시로 소모된 수입니다. 같은 시체를 저장 파일 사이에서도 추적합니다. 사냥한 동물, 야생에서 죽은 동물, 적 시체는 포함하지 않습니다. 모드 해체 조리법과 일부 시체 소멸 경로는 인식하지 못하므로 일부만 집계합니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>값이 가장 큰 정착지: {0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>값이 가장 작은 정착지: {0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>모든 정착지에서 가장 많은 아이템: {0}</RWS_Cross_TopType>
@@ -937,9 +937,9 @@
   <RWS_Metric_OutpostsActive>활성 플레이어 전초기지 (저장 상태)</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>저장에 성공한 시점에 플레이어가 관리하는 Vanilla Expanded Framework의 활성 전초기지 수입니다. 정착지 전체에서는 각 정착지 대표 저장 시점 값을 합산합니다. 평생 누적 개수도 생산하거나 받은 아이템 수량도 아닙니다. 실험적 통계이며 이전 기간은 보완하지 않습니다.</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>어획에 성공한 낚시 작업 수</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>플레이어 본거지 지도에서 한 개 이상의 어획물을 놓은 낚시 작업의 횟수입니다. 같은 작업의 추가 어획물은 아이템 수만 증가시킵니다.</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>플레이어 본거지 지도에서 한 개 이상의 어획물을 놓은 낚시 작업의 횟수입니다. 같은 작업의 추가 어획물은 아이템 수만 증가시킵니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>아이템별 낚시 어획량</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>플레이어 본거지 지도에서 낚시 작업으로 실제로 놓은 아이템 수입니다. 희귀한 어획물 및 지원되는 Vanilla Fishing Expanded 추가 어획물을 포함합니다. 기록한 기간에만 적용됩니다.</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>플레이어 본거지 지도에서 낚시 작업으로 실제로 놓은 아이템 수입니다. 희귀한 어획물 및 지원되는 Vanilla Fishing Expanded 추가 어획물을 포함합니다. 기록한 기간에만 적용됩니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>지금 백업</RWS_Backup_Create>
   <RWS_Backup_Refresh>백업 목록 새로 고침</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>폴더 열기</RWS_Backup_OpenFolder>

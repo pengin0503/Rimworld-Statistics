@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Besuchte Welt-Wahrzeichen</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Verschiedene vom Spieler besuchte Welt-Wahrzeichenfelder, gruppiert nach Wahrzeichentyp.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Wachstumstank-Abschlüsse</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Abgeschlossene Wachstumszyklen lebender Kinder und lebende Embryogeburten in Spieler-Wachstumstanks.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Abgeschlossene Wachstumszyklen lebender Kinder und lebende Embryogeburten in Spieler-Wachstumstanks. Ein Wachstumszyklus ist abgeschlossen, wenn der Tank das Kind mit 18 Jahren auswirft; ein Kind, das vorher durch Abbrechen des Wachstums ausgeworfen wird, zählt nicht.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Abgeschlossene Genextraktionen</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Abgeschlossene Genextraktionen an Spieler-Genextraktoren mit erzeugtem Genpaket.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Zusammengesetzte Xenogerme</RWS_Metric_BiotechXenogermsAssembled>
@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Kolonistenhochzeit verzeichnet (Speicher-Erzählung)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Große Bedrohung erlebt (Speicher-Erzählung)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Ergänzender Chronikeintrag aus den dauerhaften Erzählungen des Spielstands; fließt niemals in numerische Gesamtsummen ein.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Pro Spielstand werden nur die neuesten {0} dauerhaften Erzählungen gelesen. Ein Spielstand dieses Zweigs enthielt mehr, daher werden einige Erzählungen bis Tag {1} möglicherweise nicht angezeigt.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

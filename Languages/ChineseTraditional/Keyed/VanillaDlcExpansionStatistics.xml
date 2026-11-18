@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>已造訪世界地標數</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>己方曾抵達或駐留的不同世界地標格數量及地標類型明細。</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>生長培育艙完成次數</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>己方生長培育艙完成的存活兒童成長或胚胎分娩次數。</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>己方生長培育艙完成的存活兒童成長或胚胎分娩次數。兒童在18歲時由培育艙排出才算完成成長；中途取消培育而排出的兒童不計入。</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>基因提取完成次數</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>己方基因提取器成功產出基因包的完成次數。</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>異種胚合成完成次數</RWS_Metric_BiotechXenogermsAssembled>
@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>殖民者婚禮紀錄（存檔軼事）</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>遭遇重大威脅（存檔軼事）</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>來自存檔永久軼事紀錄的編年史輔助條目，不會計入數值統計總計。</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>每個存檔只讀取最新的 {0} 條永久軼事。此分支上的存檔超過該數量，因此第 {1} 天及之前的部分軼事可能未顯示。</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

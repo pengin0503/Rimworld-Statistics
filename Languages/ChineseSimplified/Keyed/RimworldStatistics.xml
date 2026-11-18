@@ -507,7 +507,7 @@
   <RWS_Unit_Years>{0} 岁</RWS_Unit_Years>
   <RWS_Unit_PerCellDay>{0} / 格·天</RWS_Unit_PerCellDay>
   <RWS_Metric_CraftedUnits>制造物品总数</RWS_Metric_CraftedUnits>
-  <RWS_MetricDesc_CraftedUnits>玩家完成的生产工作单中主产品和副产品的堆叠数量总和，包括烹饪与艺术品。不包括采矿、收获和机械族培育。</RWS_MetricDesc_CraftedUnits>
+  <RWS_MetricDesc_CraftedUnits>玩家完成的生产工作单中主产品和副产品的堆叠数量总和，包括烹饪与艺术品。不包括采矿、收获和机械族培育。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_CraftedUnits>
   <RWS_Metric_CraftQuality>按品质统计的制造物品数</RWS_Metric_CraftQuality>
   <RWS_MetricDesc_CraftQuality>将上述制造物品按品质分类；没有品质的物品显示为“none”。</RWS_MetricDesc_CraftQuality>
   <RWS_Metric_CraftLegendary>制造的传奇级物品数</RWS_Metric_CraftLegendary>
@@ -531,7 +531,7 @@
   <RWS_Metric_BestCook>最多烹饪者</RWS_Metric_BestCook>
   <RWS_MetricDesc_BestCook>烹饪食物最多的单位所完成的食物数量；明细中显示其ID。</RWS_MetricDesc_BestCook>
   <RWS_Metric_HarvestUnits>收获的作物数</RWS_Metric_HarvestUnits>
-  <RWS_MetricDesc_HarvestUnits>玩家单位收获的主要产物堆叠数量；不包括额外产出。</RWS_MetricDesc_HarvestUnits>
+  <RWS_MetricDesc_HarvestUnits>玩家单位收获的主要产物堆叠数量；不包括额外产出。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_HarvestUnits>
   <RWS_Metric_HarvestByCrop>按作物统计的收获量</RWS_Metric_HarvestByCrop>
   <RWS_MetricDesc_HarvestByCrop>按原作物种类统计收获量；来源作物不明的收获归为“（未知）”。</RWS_MetricDesc_HarvestByCrop>
   <RWS_Metric_TopCrop>收获量最多的作物</RWS_Metric_TopCrop>
@@ -541,13 +541,13 @@
   <RWS_Metric_BestHarvester>最多收获者</RWS_Metric_BestHarvester>
   <RWS_MetricDesc_BestHarvester>收获最多的单位的收获数量；明细中显示其ID。</RWS_MetricDesc_BestHarvester>
   <RWS_Metric_HarvestFailures>收获失败次数</RWS_Metric_HarvestFailures>
-  <RWS_MetricDesc_HarvestFailures>玩家单位实际收获失败的植物株数，与植物死亡不同。</RWS_MetricDesc_HarvestFailures>
+  <RWS_MetricDesc_HarvestFailures>玩家单位实际收获失败的植物株数，与植物死亡不同。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_HarvestFailures>
   <RWS_Metric_CropsSown>种植作物数</RWS_Metric_CropsSown>
-  <RWS_MetricDesc_CropsSown>玩家单位种下的植物株数。</RWS_MetricDesc_CropsSown>
+  <RWS_MetricDesc_CropsSown>玩家单位种下的植物株数。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_CropsSown>
   <RWS_Metric_CropsSownDefs>种植作物的种类数</RWS_Metric_CropsSownDefs>
   <RWS_MetricDesc_CropsSownDefs>至少种过一次的作物种类数量。</RWS_MetricDesc_CropsSownDefs>
   <RWS_Metric_MiningUnits>开采资源数量</RWS_Metric_MiningUnits>
-  <RWS_MetricDesc_MiningUnits>玩家单位通过采矿产出的物品堆叠数量。</RWS_MetricDesc_MiningUnits>
+  <RWS_MetricDesc_MiningUnits>玩家单位通过采矿产出的物品堆叠数量。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_MiningUnits>
   <RWS_Metric_BestMiner>最多采矿者</RWS_Metric_BestMiner>
   <RWS_MetricDesc_BestMiner>采矿量最多的单位开采的数量；明细中显示其ID。</RWS_MetricDesc_BestMiner>
   <RWS_Metric_Constructions>完工建筑数</RWS_Metric_Constructions>
@@ -569,7 +569,7 @@
   <RWS_Metric_FoodNutrition>摄入的营养量</RWS_Metric_FoodNutrition>
   <RWS_MetricDesc_FoodNutrition>自由殖民者通过进食实际摄入的营养总量。</RWS_MetricDesc_FoodNutrition>
   <RWS_Metric_FoodHarvestPerCell>每种植区格·天的收获量</RWS_Metric_FoodHarvestPerCell>
-  <RWS_MetricDesc_FoodHarvestPerCell>种植区中作物的主要收获量 ÷ 同期按时间累积的种植区格子数（格·天）。不包括水栽培植物盆和野生植物。</RWS_MetricDesc_FoodHarvestPerCell>
+  <RWS_MetricDesc_FoodHarvestPerCell>种植区中作物的主要收获量 ÷ 同期按时间累积的种植区格子数（格·天）。不包括水栽培植物盆和野生植物。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_FoodHarvestPerCell>
   <RWS_Metric_TradeDeals>交易次数</RWS_Metric_TradeDeals>
   <RWS_MetricDesc_TradeDeals>至少交换过一件非货币物品的已完成交易次数。不包括空交易、赠礼和失败交易。</RWS_MetricDesc_TradeDeals>
   <RWS_Metric_TradeOrbital>与轨道商船的交易次数</RWS_Metric_TradeOrbital>
@@ -867,25 +867,25 @@
   <RWS_Details_TradeKindOther>其他商人</RWS_Details_TradeKindOther>
   <RWS_Details_Other>其他</RWS_Details_Other>
   <RWS_Metric_CraftedByDef>按物品统计完成的制品数</RWS_Metric_CraftedByDef>
-  <RWS_MetricDesc_CraftedByDef>记录期间按物品种类统计成功完成的制品数量。属于独立的数据系列，不会推算启用前的数值。</RWS_MetricDesc_CraftedByDef>
+  <RWS_MetricDesc_CraftedByDef>记录期间按物品种类统计成功完成的制品数量。属于独立的数据系列，不会推算启用前的数值。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_CraftedByDef>
   <RWS_Metric_MinedByDef>按物品统计的开采资源数</RWS_Metric_MinedByDef>
-  <RWS_MetricDesc_MinedByDef>记录期间按物品种类统计实际放置的采矿产物数量。属于独立的数据系列，不会推算启用前的数值。</RWS_MetricDesc_MinedByDef>
+  <RWS_MetricDesc_MinedByDef>记录期间按物品种类统计实际放置的采矿产物数量。属于独立的数据系列，不会推算启用前的数值。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>完全清除的污垢数</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>玩家单位每彻底清除一处污垢计一次（原版“清洁数”记录）。仅减少污垢厚度或完成一次清洁任务不等于此项。仅在启用时记录。</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>玩家单位每彻底清除一处污垢计一次（原版“清洁数”记录）。仅减少污垢厚度或完成一次清洁任务不等于此项。仅在启用时记录。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>扑灭火焰数量</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>玩家单位通过正常灭火或拍灭自己身上的火焰，每扑灭一处火焰计一次（原版“火灾扑灭次数”记录）。自行熄灭的火焰不计入。仅在启用时记录。</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>玩家单位通过正常灭火或拍灭自己身上的火焰，每扑灭一处火焰计一次（原版“火灾扑灭次数”记录）。自行熄灭的火焰不计入。仅在启用时记录。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>吃下的餐食份数</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>玩家派系的人形单位实际吃下并获得正营养值的餐食份数。每份餐食计一次，包括远行队中吃的餐食。其他食物、药物及非玩家单位不计入。</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>运到储存格子的次数</RWS_Metric_HaulPlacements>
-  <RWS_MetricDesc_HaulPlacements>玩家运送工作实际将负载放入指定格子的次数。仅部分覆盖：不统计放入容器或模组特有的搬运。只拿起物品不计入。</RWS_MetricDesc_HaulPlacements>
+  <RWS_MetricDesc_HaulPlacements>玩家运送工作实际将负载放入指定格子的次数。仅部分覆盖：不统计放入容器或模组特有的搬运。只拿起物品不计入。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_HaulPlacements>
   <RWS_Metric_HauledUnits>运到储存格子的物品数</RWS_Metric_HauledUnits>
-  <RWS_MetricDesc_HauledUnits>玩家运送工作实际放置的物品总数量，以所携带堆叠的减少量测定。仅部分覆盖：不统计放入容器或其他移动物品方式。</RWS_MetricDesc_HauledUnits>
+  <RWS_MetricDesc_HauledUnits>玩家运送工作实际放置的物品总数量，以所携带堆叠的减少量测定。仅部分覆盖：不统计放入容器或其他移动物品方式。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_HauledUnits>
   <RWS_Metric_CleaningJobsCompleted>完成清洁工作次数</RWS_Metric_CleaningJobsCompleted>
-  <RWS_MetricDesc_CleaningJobsCompleted>玩家清洁工作在彻底清除至少一处污垢后成功结束的次数。同一工作清除多处污垢只算一项工作。中断的工作不计入。</RWS_MetricDesc_CleaningJobsCompleted>
+  <RWS_MetricDesc_CleaningJobsCompleted>玩家清洁工作在彻底清除至少一处污垢后成功结束的次数。同一工作清除多处污垢只算一项工作。中断的工作不计入。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_CleaningJobsCompleted>
   <RWS_Metric_TreeWoodPlaced>伐树获得的木材（主要产物）</RWS_Metric_TreeWoodPlaced>
-  <RWS_MetricDesc_TreeWoodPlaced>玩家单位砍伐树木后，主要产出的木材实际放到地面或并入堆叠的数量（在游戏放置木材时测量）。仅部分覆盖：某些模组增加的额外木材及非标准伐树方式不计入。</RWS_MetricDesc_TreeWoodPlaced>
+  <RWS_MetricDesc_TreeWoodPlaced>玩家单位砍伐树木后，主要产出的木材实际放到地面或并入堆叠的数量（在游戏放置木材时测量）。仅部分覆盖：某些模组增加的额外木材及非标准伐树方式不计入。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_TreeWoodPlaced>
   <RWS_Metric_SlaughteredButchery>屠宰后又完成分割的动物数</RWS_Metric_SlaughteredButchery>
-  <RWS_MetricDesc_SlaughteredButchery>玩家单位屠宰的动物尸体，随后被完整执行的原版屠宰工作单消耗的数量。同一尸体跨存档持续追踪。狩猎的动物、野外死亡动物及敌人尸体不计入。仅部分覆盖：模组屠宰配方及尸体消失的部分途径无法识别。</RWS_MetricDesc_SlaughteredButchery>
+  <RWS_MetricDesc_SlaughteredButchery>玩家单位屠宰的动物尸体，随后被完整执行的原版屠宰工作单消耗的数量。同一尸体跨存档持续追踪。狩猎的动物、野外死亡动物及敌人尸体不计入。仅部分覆盖：模组屠宰配方及尸体消失的部分途径无法识别。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_SlaughteredButchery>
   <RWS_Cross_MaxColony>数值最高的殖民地：{0}</RWS_Cross_MaxColony>
   <RWS_Cross_MinColony>数值最低的殖民地：{0}</RWS_Cross_MinColony>
   <RWS_Cross_TopType>所有殖民地中最多的物品：{0}</RWS_Cross_TopType>
@@ -937,9 +937,9 @@
   <RWS_Metric_OutpostsActive>活跃的玩家哨所（存档状态）</RWS_Metric_OutpostsActive>
   <RWS_MetricDesc_OutpostsActive>成功保存时，玩家控制的Vanilla Expanded Framework活跃哨所数量。跨殖民地合计各自代表性存档的数值。不是历史累计数量，也不是生产或接收物品的数量。属于实验性统计，不会补录较早数据。</RWS_MetricDesc_OutpostsActive>
   <RWS_Metric_FishingActions>成功钓到鱼的钓鱼工作次数</RWS_Metric_FishingActions>
-  <RWS_MetricDesc_FishingActions>玩家在主基地地图上进行的钓鱼工作中，实际放下至少一件渔获的次数。同一工作获得的额外渔获只增加物品数。</RWS_MetricDesc_FishingActions>
+  <RWS_MetricDesc_FishingActions>玩家在主基地地图上进行的钓鱼工作中，实际放下至少一件渔获的次数。同一工作获得的额外渔获只增加物品数。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_FishingActions>
   <RWS_Metric_FishingCatchByDef>按物品统计的渔获</RWS_Metric_FishingCatchByDef>
-  <RWS_MetricDesc_FishingCatchByDef>玩家主基地地图上钓鱼工作实际放置的物品数量，包括稀有渔获及受支持的Vanilla Fishing Expanded额外渔获。只统计已记录的时间段。</RWS_MetricDesc_FishingCatchByDef>
+  <RWS_MetricDesc_FishingCatchByDef>玩家主基地地图上钓鱼工作实际放置的物品数量，包括稀有渔获及受支持的Vanilla Fishing Expanded额外渔获。只统计已记录的时间段。也包括殖民地关押的囚犯所做的工作（部分模组可实现）。</RWS_MetricDesc_FishingCatchByDef>
   <RWS_Backup_Create>立即备份</RWS_Backup_Create>
   <RWS_Backup_Refresh>刷新备份</RWS_Backup_Refresh>
   <RWS_Backup_OpenFolder>打开文件夹</RWS_Backup_OpenFolder>

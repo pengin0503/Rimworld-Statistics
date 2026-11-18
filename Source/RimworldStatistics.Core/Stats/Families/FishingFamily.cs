@@ -14,7 +14,7 @@ public static class FishingFamily
 
     public static LiveFamily Family { get; } = new()
     {
-        Name = Name, Revision = 1, RequiredDlc = AcquisitionUnits.Odyssey, Build = Build
+        Name = Name, Revision = 1, RequiredDlc = AcquisitionUnits.Odyssey, Build = Build, Started = ColonyWorkAttribution.Started,
     };
 
     /// <summary>One completed and accepted placement phase. The optional extra phase adds units, not another action.</summary>
@@ -82,5 +82,6 @@ public static class FishingFamily
             context.Value(integer: acc?.N ?? 0, partial: unitsPartial));
         if (unitsPartial)
             context.MarkPartial(AcceptedUnitsByDef);
+        ColonyWorkAttribution.WeakenMixed(context, SuccessfulActions, AcceptedUnitsByDef);
     }
 }

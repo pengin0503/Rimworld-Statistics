@@ -28,7 +28,10 @@ public static class ChoreFamily
     private const string DestroyedCorpseKey = "destroyed_slaughter_corpses";
     private const string ButcheredKey = "butcher_after_slaughter";
 
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 1, Build = Build, Started = ColonyWorkAttribution.Started,
+    };
 
     public static void FilthCleared(FamilyState state) => state.Count(FilthKey);
 
@@ -125,5 +128,8 @@ public static class ChoreFamily
         // Only the vanilla flesh-butcher recipe has a source-proven completion
         // boundary. Alternate MOD butchering and unobserved corpse lifetimes remain partial.
         context.Put(SlaughteredButchery, context.Value(integer: context.State.Peek(ButcheredKey)?.N ?? 0, partial: true));
+        // Meals eaten are counted for player-faction eaters, not by the colony-worker rule.
+        ColonyWorkAttribution.WeakenMixed(context, FilthRemoved, CleaningJobsCompleted, FiresExtinguished, HaulPlacements,
+            HauledUnits, TreeWoodPlaced, SlaughteredButchery);
     }
 }

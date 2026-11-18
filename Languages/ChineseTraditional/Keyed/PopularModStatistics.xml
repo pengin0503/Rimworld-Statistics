@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>傀儡師意識轉移</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>統計玩家傀儡師成功將意識移至另一角色的次數。</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>釣魚收穫數</RWS_VFECatches>
-  <RWS_VFECatchesDesc>未啟用 Odyssey 時，按類型統計玩家釣魚工作實際產生的物品。</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>未啟用 Odyssey 時，按類型統計玩家釣魚工作實際產生的物品。也包括殖民地關押的囚犯所做的工作（部分模組可實現）。</RWS_VFECatchesDesc>
 </LanguageData>

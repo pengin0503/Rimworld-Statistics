@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Lugares emblemáticos visitados</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Casillas únicas de lugares emblemáticos del mundo visitadas por el jugador, agrupadas por tipo.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Ciclos completados en cuba de crecimiento</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crecimiento infantil vivo y nacimientos vivos de embriones completados en cubas del jugador.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Ciclos de crecimiento infantil vivo y nacimientos vivos de embriones completados en cubas del jugador. Un crecimiento termina cuando la cuba expulsa al niño a los 18 años; no se cuenta un niño expulsado antes al cancelar el crecimiento.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Extracciones génicas completadas</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Extracciones génicas completadas que produjeron un genopaquete en extractores del jugador.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Xenogérmenes ensamblados</RWS_Metric_BiotechXenogermsAssembled>
@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Matrimonio de colonos registrado (relato del guardado)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Amenaza mayor enfrentada (relato del guardado)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Registro narrativo auxiliar conservado en los relatos permanentes del guardado; nunca se suma a los totales numéricos.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Solo se leen los {0} relatos permanentes más recientes de cada guardado. Un guardado de esta rama tenía más, así que puede que no se muestren algunos relatos hasta el día {1}.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

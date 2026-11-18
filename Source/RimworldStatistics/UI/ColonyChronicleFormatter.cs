@@ -122,7 +122,7 @@ internal static class ColonyChronicleFormatter
 
     public static string[] BuildBaseNotices(ColonyChronicle chronicle)
     {
-        var notices = new List<string>(4);
+        var notices = new List<string>(5);
         if (chronicle.RequestedBranchMissing)
             notices.Add((string)"RWS_Chronicle_BranchMissingNotice".Translate());
         if (chronicle.OtherBranchEndingCount > 0)
@@ -131,6 +131,9 @@ internal static class ColonyChronicleFormatter
             notices.Add((string)"RWS_Chronicle_AmbiguousEndingsNotice".Translate(chronicle.AmbiguousBranchEndingCount.ToString(Inv)));
         if (chronicle.OmittedEntryCount > 0)
             notices.Add((string)"RWS_Chronicle_OmittedCapNotice".Translate(chronicle.OmittedEntryCount.ToString(Inv)));
+        if (chronicle.TalesMissingThroughTick is { } talesThrough)
+            notices.Add((string)"RWS_Chronicle_TalesDroppedNotice".Translate(
+                SaveReader.MaxPermanentTales.ToString(Inv), Dialog_RimworldStatistics.Days(talesThrough)));
         return notices.ToArray();
     }
 

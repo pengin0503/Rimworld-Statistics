@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>꼭두각시술사 의식 전이 수</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>플레이어 편의 꼭두각시술사 의식이 다른 폰으로 옮겨진 횟수를 셉니다.</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>어획량</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Odyssey가 비활성화된 경우 Vanilla Fishing Expanded의 낚시 작업으로 실제 생성된 아이템을 종류별로 셉니다.</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Odyssey가 비활성화된 경우 Vanilla Fishing Expanded의 낚시 작업으로 실제 생성된 아이템을 종류별로 셉니다. 콜로니가 수감 중인 죄수의 작업(일부 모드에서 가능)도 포함합니다.</RWS_VFECatchesDesc>
 </LanguageData>

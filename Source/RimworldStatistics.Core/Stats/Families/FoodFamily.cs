@@ -21,6 +21,7 @@ public static class FoodFamily
     public static LiveFamily Family { get; } = new()
     {
         Name = Name, Revision = 2, Build = Build, Interrupted = (s, throughTick, _) => AccrueOpen(s, throughTick),
+        Started = ColonyWorkAttribution.Started,
     };
 
     private const string Spoil = "spoiled";
@@ -114,6 +115,8 @@ public static class FoodFamily
         c.PutCount(Spoil, SpoiledUnits);
         c.PutSum(Eaten, Nutrition);
         PutYield(c);
+        // The yield's harvests are colony workers' (the work family's main harvest).
+        ColonyWorkAttribution.WeakenMixed(c, HarvestPerGrowingCell);
     }
 
     private static void PutYield(FamilyOutputContext c)

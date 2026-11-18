@@ -44,6 +44,13 @@ public sealed class SaveObservation
     [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
     public List<PermanentTaleFact>? PermanentTales { get; set; }
 
+    /// <summary>
+    /// Set when the save held more permanent tales than <see cref="SaveReader.MaxPermanentTales"/>: only the newest were kept, and
+    /// every tale of the save after this colony-relative tick is in <see cref="PermanentTales"/> (#393). Null when none was left out.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]
+    public int? PermanentTalesDroppedThroughTick { get; set; }
+
     /// <summary>Fields of a newer minor version of the same schema, kept and written back unchanged.</summary>
     [System.Text.Json.Serialization.JsonExtensionData]
     public Dictionary<string, System.Text.Json.JsonElement>? ExtensionData { get; set; }

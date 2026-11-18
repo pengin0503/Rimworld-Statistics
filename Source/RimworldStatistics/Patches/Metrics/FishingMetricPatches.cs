@@ -124,7 +124,7 @@ internal static class FishingPlacementScope
                 return;
             var jobId = job.loadID.ToString(CultureInfo.InvariantCulture);
             var tick = GameFacts.Tick;
-            GameFacts.Record(FishingFamily.Name, s =>
+            GameFacts.RecordWork(FishingFamily.Name, GameFacts.IsPrisonerWorker(pawn), s =>
                 FishingFamily.RecordAccepted(s, jobId, stage, capture.Accepted, tick));
         }
         catch (Exception e)

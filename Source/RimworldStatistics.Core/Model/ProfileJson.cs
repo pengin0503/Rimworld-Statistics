@@ -87,6 +87,8 @@ public static class ProfileJson
                 if (o.PermanentTales.Count == 0)
                     o.PermanentTales = null;
             }
+            if (o.PermanentTalesDroppedThroughTick < 0)
+                o.PermanentTalesDroppedThroughTick = null;
         }
 
         p.LiveCampaigns = Clean(p.LiveCampaigns);

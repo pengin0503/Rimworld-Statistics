@@ -234,10 +234,69 @@ public sealed class HistoryChangeTests
         Assert.Null(tookOlder.MetricObservations[1].ContinuousFamilies);
         Assert.Equal(HistoryChangeIssue.CounterGap, Issue(tookOlder));
 
-        // An older record never gains a list from a re-read: the values it already holds were not marked.
+        // An older record read again by a reader that marks weakenings (an upgrade re-reads every save): the marked reading
+        // holds every value the record holds, so it replaces them and the record is what a fresh import gives (#388).
         var older = Merged(Older(Read(bDraft, [Counter])), Read(bDraft, [Counter]));
-        Assert.Null(older.MetricObservations[1].ContinuousFamilies);
-        Assert.Equal(HistoryChangeIssue.CounterGap, Issue(older));
+        Assert.Equal(["test.307"], older.MetricObservations[1].ContinuousFamilies!);
+        Assert.Equal(HistoryChangeIssue.None, Issue(older));
+        var fresh = Merged(Read(bDraft, [Counter]), Read(bDraft, [Counter]));
+        Assert.Equal(JsonSerializer.Serialize(fresh.MetricObservations[1], ProfileJson.CompactOptions),
+            JsonSerializer.Serialize(older.MetricObservations[1], ProfileJson.CompactOptions));
+
+        // A value only the older record holds (its optional family is not loaded now) may be weakened without saying so:
+        // the record takes the new values as before and stays without a list.
+        var otherFamily = new LiveFamily { Name = "test.307.other", Revision = 1, Build = c => c.Put("test.307.other.count", c.Value(integer: 1)) };
+        var withOther = LiveMetricAccumulator.StartNew([Counter.Spec, otherFamily.Spec], 1000);
+        Events(withOther, 3);
+        var oa = Draft(withOther, "oa", 2000);
+        Events(withOther, 4);
+        var ob = Draft(withOther, "ob", 3000);
+        var partialReRead = new Profile();
+        ProfileMutations.UpsertMetricObservation(partialReRead, Read(oa, [Counter, otherFamily]));
+        ProfileMutations.UpsertMetricObservation(partialReRead, Older(Read(ob, [Counter, otherFamily])));
+        ProfileMutations.UpsertMetricObservation(partialReRead, Read(ob, [Counter]));
+        Assert.Null(partialReRead.MetricObservations[1].ContinuousFamilies);
+        Assert.True(partialReRead.MetricObservations[1].Metrics.ContainsKey("test.307.other.count"));
+        Assert.Equal(HistoryChangeIssue.CounterGap, Issue(partialReRead));
+
+        // A marked record of other content (another payload hash) never lends its list.
+        var target = Older(Read(bDraft, [Counter]));
+        var otherContent = Read(bDraft, [Counter]);
+        otherContent.PayloadHash = "other";
+        ProfileMutations.RestoreArchivedMetrics(target, otherContent);
+        Assert.Null(target.ContinuousFamilies);
+    }
+
+    [Fact]
+    public void AnUpgradedRecord_KeepsTheValuesItsFamilyWeakened_AndTheListAfterAnArchiveRestore()
+    {
+        // The re-read gives the list, never more than its values say: a capped total stays a lower bound.
+        var capped = LiveMetricAccumulator.StartNew([Counter.Spec], 1000);
+        Events(capped, 3);
+        var aDraft = Draft(capped, "a", 2000);
+        capped.Family(Counter.Name)!.Count("capped");
+        Events(capped, 4);
+        var bDraft = Draft(capped, "b", 3000);
+        MetricObservation Read(SaveDraft draft) => CheckpointMetrics.ToObservation(
+            draft.Payload!, draft.Json, new ColonyIdentity { ModCampaignId = Campaign }, "1.7", null, [Counter]);
+        var profile = new Profile();
+        ProfileMutations.UpsertMetricObservation(profile, Older(Read(aDraft)));
+        ProfileMutations.UpsertMetricObservation(profile, Older(Read(bDraft)));
+        ProfileMutations.UpsertMetricObservation(profile, Read(aDraft));
+        ProfileMutations.UpsertMetricObservation(profile, Read(bDraft));
+        Assert.All(profile.MetricObservations, o => Assert.Equal(["test.307"], o.ContinuousFamilies!));
+        Assert.True(profile.MetricObservations[1].Scalar(CounterKey, 1)!.Weakened);
+        Assert.Equal(HistoryChangeIssue.CounterGap,
+            HistoryChanges.Compare(CounterDef, History(profile, CounterDef), 0, 1).Issue);
+
+        // An archive keeps the older copy first and the marked copy after it: restoring both in that order ends marked.
+        var restored = Older(Read(aDraft));
+        restored.Metrics.Clear();
+        restored.ContinuousFamilies = ["test.307"];
+        ProfileMutations.RestoreArchivedMetrics(restored, Older(Read(aDraft)));
+        Assert.Null(restored.ContinuousFamilies);
+        ProfileMutations.RestoreArchivedMetrics(restored, Read(aDraft));
+        Assert.Equal(["test.307"], restored.ContinuousFamilies!);
     }
 
     [Fact]

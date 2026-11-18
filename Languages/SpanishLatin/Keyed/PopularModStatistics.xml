@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>Transferencias de mente de titiriteros</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Cuenta las transferencias exitosas de la mente de un titiritero del jugador a otro peón.</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>Capturas de pesca</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Cuenta por tipo los objetos que aparecieron al pescar con Vanilla Fishing Expanded sin Odyssey.</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Cuenta por tipo los objetos que aparecieron al pescar con Vanilla Fishing Expanded sin Odyssey. Incluye el trabajo de los prisioneros bajo custodia de la colonia (posible con algunos mods).</RWS_VFECatchesDesc>
 </LanguageData>

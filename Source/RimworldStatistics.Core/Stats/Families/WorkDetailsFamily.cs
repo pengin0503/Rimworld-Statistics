@@ -10,7 +10,10 @@ public static class WorkDetailsFamily
 
     private const string Crafted = "crafted";
     private const string Mined = "mined";
-    public static LiveFamily Family { get; } = new() { Name = Name, Revision = 1, Build = Build };
+    public static LiveFamily Family { get; } = new()
+    {
+        Name = Name, Revision = 1, Build = Build, Started = ColonyWorkAttribution.Started,
+    };
 
     public static void CraftedProducts(FamilyState s, IEnumerable<CraftedThing> products)
     {
@@ -36,5 +39,6 @@ public static class WorkDetailsFamily
         // A dropped new key weakens only the breakdown, not the independent total.
         c.PutBreakdown(CraftedByDef, c.Counts(crafted), c.Value(integer: crafted?.N ?? 0));
         c.PutBreakdown(MinedByDef, c.Counts(mined), c.Value(integer: mined?.N ?? 0));
+        ColonyWorkAttribution.WeakenMixed(c, CraftedByDef, MinedByDef);
     }
 }

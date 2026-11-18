@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>Transferências de consciência</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Conta as transferências bem-sucedidas da consciência de um manipulador do jogador.</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>Capturas de pesca</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Conta por tipo os itens que surgiram por meio de tarefas de pesca do jogador com Vanilla Fishing Expanded sem Odyssey.</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Conta por tipo os itens que surgiram por meio de tarefas de pesca do jogador com Vanilla Fishing Expanded sem Odyssey. Inclui o trabalho de prisioneiros sob custódia da colônia (possível com alguns mods).</RWS_VFECatchesDesc>
 </LanguageData>

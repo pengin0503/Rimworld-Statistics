@@ -23,7 +23,8 @@ internal static class BiotechGeneticsProbe
 }
 
 /// <summary>
-/// Records growth vat child-growth completions when Building_GrowthVat.FinishPawn drops a living pawn.
+/// Records growth vat child-growth completions when Building_GrowthVat.FinishPawn drops a living pawn that reached the vat's
+/// eject age. "Cancel vatgrowth" ejects a younger child through the same FinishPawn and is not counted (#391).
 /// </summary>
 [MetricAdapter(BiotechGeneticsFamily.Name)]
 [HarmonyPatch(typeof(Building_GrowthVat), "FinishPawn")]
@@ -40,6 +41,8 @@ public static class BiotechGrowthVatPawnMetricPatch
                 && GameFacts.IsPlayerFaction(__instance.Faction)
                 && __instance.SelectedPawn is { } pawn
                 && __instance.innerContainer?.Contains(pawn) == true
+                && pawn.ageTracker is { } age
+                && BiotechGeneticsFamily.IsGrowthVatCompletionAge(age.AgeBiologicalYearsFloat)
                 && LiveMetrics.CanCaptureEvent(BiotechGeneticsFamily.Name))
             {
                 __state = pawn;

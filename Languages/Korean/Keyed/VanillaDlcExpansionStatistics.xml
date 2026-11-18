@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>방문한 월드 랜드마크 수</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>아군이 방문한 고유 월드 랜드마크 타일 수 및 랜드마크 유형별 내역.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>성장 배양기 완료 횟수</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>아군 성장 배양기에서 완료된 생존 아동 성장 및 배아 출산 횟수.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>아군 성장 배양기에서 완료된 생존 아동 성장 및 배아 출산 횟수. 배양기가 18세에 아이를 내보낼 때 성장이 완료된 것으로 보며, 배양을 취소해 도중에 내보낸 아이는 세지 않습니다.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>유전자 추출 완료 횟수</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>아군 유전자 추출기에서 유전자 팩이 생성된 완료 횟수.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>제노점 합성 완료 횟수</RWS_Metric_BiotechXenogermsAssembled>
@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>정착민 결혼 기록 (세이브 일화)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>중대 위협 조우 (세이브 일화)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>세이브의 영구 일화 기록에서 복원된 연대기 보조 항목이며 수치 통계 합계에는 포함되지 않습니다.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>영구 일화는 세이브마다 최신 {0}개만 읽습니다. 이 분기의 세이브에 그보다 많이 있어서 {1}일차까지의 일화 일부가 표시되지 않았을 수 있습니다.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

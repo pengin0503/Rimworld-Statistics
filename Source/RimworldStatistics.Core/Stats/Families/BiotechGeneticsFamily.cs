@@ -28,6 +28,18 @@ public static class BiotechGeneticsFamily
         Build = Build,
     };
 
+    /// <summary>
+    /// The biological age at which a growth vat ejects its occupant on its own (Building_GrowthVat.AgeToEject, 1.7.5011): its
+    /// tick finishes the cycle once <c>AgeBiologicalYearsFloat &gt;= 18f</c>.
+    /// </summary>
+    public const float GrowthVatEjectAge = 18f;
+
+    /// <summary>
+    /// Whether a child leaving a growth vat at <paramref name="biologicalAgeYears"/> completed its growth (#391). "Cancel vatgrowth"
+    /// ejects a younger child through the same FinishPawn; that ends the cycle early and is not a completion.
+    /// </summary>
+    public static bool IsGrowthVatCompletionAge(float biologicalAgeYears) => biologicalAgeYears >= GrowthVatEjectAge;
+
     /// <summary>Records a completed growth vat cycle (living child growth completion or living vat birth).</summary>
     public static void GrowthVatCompleted(FamilyState s, bool playerVat, bool livingResult)
     {

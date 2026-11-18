@@ -251,10 +251,19 @@ public static class ColonyChronicleExport
     internal static void AppendChronicleCssRules(StringBuilder sb)
     {
         sb.AppendLine("    .card { background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:14px 16px; margin-bottom:16px; }");
-        sb.AppendLine("    .chron-notice { margin-top:6px; color:var(--warn); font-size:0.88rem; }");
         sb.AppendLine("    table { width:100%; border-collapse:collapse; background:var(--panel); border:1px solid var(--border); border-radius:6px; overflow:hidden; font-size:0.9rem; }");
         sb.AppendLine("    th, td { padding:8px 10px; border-bottom:1px solid var(--border); text-align:left; vertical-align:top; }");
         sb.AppendLine("    th { color:var(--muted); font-weight:600; background:rgba(127,127,127,0.06); }");
+        AppendChronicleOwnCssRules(sb);
+    }
+
+    /// <summary>
+    /// The rules of the chronicle's own classes (notices, time and partial cells, entry kinds, undated list). Every page that
+    /// embeds a chronicle body uses these, so a new entry kind is styled everywhere at once (#394).
+    /// </summary>
+    internal static void AppendChronicleOwnCssRules(StringBuilder sb)
+    {
+        sb.AppendLine("    .chron-notice { margin-top:6px; color:var(--warn); font-size:0.88rem; }");
         sb.AppendLine("    td.chron-time { white-space:nowrap; font-variant-numeric:tabular-nums; }");
         sb.AppendLine("    td.chron-partial { color:var(--warn); }");
         sb.AppendLine("    .chron-kind-ending { color:#e8be4a; font-weight:600; }");

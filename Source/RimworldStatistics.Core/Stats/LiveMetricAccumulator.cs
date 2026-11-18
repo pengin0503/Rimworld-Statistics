@@ -102,12 +102,14 @@ public sealed class LiveMetricAccumulator
 
     private void Begin(FamilySpec spec, int tick)
     {
-        _recording[spec.Name] = new FamilyState
+        var state = new FamilyState
         {
             Revision = spec.Revision, SinceTick = tick, ThroughTick = tick, Continuous = true,
             Evidence = _experimentalUnits is null ? null
                 : _experimentalUnits.Contains(spec.Name) ? MetricEvidence.Experimental : MetricEvidence.Verified,
         };
+        LiveFamilies.Find(spec.Name)?.Started?.Invoke(state);
+        _recording[spec.Name] = state;
         if (!_order.Contains(spec.Name))
             _order.Add(spec.Name);
     }

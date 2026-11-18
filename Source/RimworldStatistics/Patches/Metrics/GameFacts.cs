@@ -35,6 +35,12 @@ internal static class GameFacts
             isPrisoner: p.guest is { IsPrisoner: true },
             isHostPlayerFaction: IsPlayerFaction(p.guest?.HostFaction));
 
+    /// <summary>
+    /// Whether a colony worker's work counts only under the colony-worker rule of 2.0: a prisoner in the colony's custody, outside
+    /// the player's faction. Only for a pawn <see cref="IsColonyWorker"/> accepted.
+    /// </summary>
+    public static bool IsPrisonerWorker(Pawn worker) => ColonyWorkAttribution.CountsOnlyUnderThisRule(IsPlayerFaction(worker.Faction));
+
     /// <summary>Colony slave check guarded by <see cref="IsPlayerFaction"/> on <c>Faction</c> so <c>Faction.OfPlayer</c> is never read when absent.</summary>
     public static bool IsSlaveOfColonySafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.Faction) && p.IsSlaveOfColony;
 
@@ -142,6 +148,24 @@ internal static class GameFacts
         {
             LiveMetrics.Fail(family, e);
         }
+    }
+
+    /// <summary>
+    /// <see cref="Record"/> for a colony worker's work. A prisoner's work is noted in the family's totals, which then show a lower
+    /// bound when they were continued from before the colony-worker rule (#392).
+    /// </summary>
+    public static void RecordWork(string family, bool prisonerWork, Action<FamilyState> handler)
+    {
+        if (!prisonerWork)
+        {
+            Record(family, handler);
+            return;
+        }
+        Record(family, s =>
+        {
+            handler(s);
+            ColonyWorkAttribution.CountedPrisonerWork(s);
+        });
     }
 
     public static void FailAll(Exception e, params string[] families)

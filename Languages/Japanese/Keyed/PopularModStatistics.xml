@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>傀儡使いの意識転送数</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>プレイヤー側の傀儡使いの意識が別のポーンに移った回数を数えます。</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>釣果数</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Odysseyが無効のとき、Vanilla Fishing Expandedの釣り作業で実際に出現した品目を種類別に数えます。</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Odysseyが無効のとき、Vanilla Fishing Expandedの釣り作業で実際に出現した品目を種類別に数えます。コロニーが拘束している囚人の作業（一部のMODで可能）も含みます。</RWS_VFECatchesDesc>
 </LanguageData>

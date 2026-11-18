@@ -77,7 +77,7 @@ internal static class FamilyStartup
             return;
         try
         {
-            var fresh = s.SinceTick == tick && s.Metrics.Count == 0 && s.Active.Count == 0;
+            var fresh = s.IsFreshAt(tick);
             action(s, fresh);
         }
         catch (Exception e)

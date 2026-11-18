@@ -63,7 +63,7 @@
   <RWS_Metric_OdysseyVisitedLandmarks>Посещено мировых ориентиров</RWS_Metric_OdysseyVisitedLandmarks>
   <RWS_MetricDesc_OdysseyVisitedLandmarks>Уникальные клетки мировых ориентиров, посещённые игроком, с разбивкой по типам ориентиров.</RWS_MetricDesc_OdysseyVisitedLandmarks>
   <RWS_Metric_BiotechGrowthVatCompletions>Завершений цикла в камере роста</RWS_Metric_BiotechGrowthVatCompletions>
-  <RWS_MetricDesc_BiotechGrowthVatCompletions>Завершённые циклы выращивания живых детей и рождения живых эмбрионов в камерах роста игрока.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Завершённые циклы выращивания живых детей и рождения живых эмбрионов в камерах роста игрока. Выращивание завершено, когда камера выпускает ребёнка в 18 лет; ребёнок, извлечённый раньше отменой выращивания, не учитывается.</RWS_MetricDesc_BiotechGrowthVatCompletions>
   <RWS_Metric_BiotechGeneExtractions>Завершено извлечений генов</RWS_Metric_BiotechGeneExtractions>
   <RWS_MetricDesc_BiotechGeneExtractions>Завершённые извлечения генов в экстракторах игрока с получением генопака.</RWS_MetricDesc_BiotechGeneExtractions>
   <RWS_Metric_BiotechXenogermsAssembled>Собрано ксеногермов</RWS_Metric_BiotechXenogermsAssembled>
@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Свадьба поселенцев (предание сохранения)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Столкновение с крупной угрозой (предание сохранения)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Вспомогательная летописная запись из постоянных преданий сохранения; никогда не прибавляется к числовым итогам.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Из каждого сохранения читаются только {0} самых новых постоянных преданий. В сохранении этой ветви их было больше, поэтому часть преданий до дня {1} может быть не показана.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

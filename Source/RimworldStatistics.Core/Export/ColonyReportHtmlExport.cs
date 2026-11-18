@@ -181,16 +181,7 @@ public static class ColonyReportHtmlExport
         sb.AppendLine("    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }");
         sb.AppendLine("    .sub { display:block; font-size:0.78rem; color:var(--muted); margin-top:2px; }");
         sb.AppendLine("    ul.endings { margin:0; padding-left:20px; }");
-        sb.AppendLine("    .chron-notice { margin-top:6px; color:var(--warn); font-size:0.88rem; }");
-        sb.AppendLine("    td.chron-time { white-space:nowrap; font-variant-numeric:tabular-nums; }");
-        sb.AppendLine("    td.chron-partial { color:var(--warn); }");
-        sb.AppendLine("    .chron-kind-ending { color:#e8be4a; font-weight:600; }");
-        sb.AppendLine("    .chron-kind-milestone { color:#5ec488; font-weight:600; }");
-        sb.AppendLine("    .chron-kind-research { color:#62aef0; font-weight:600; }");
-        sb.AppendLine("    .chron-kind-interval { color:var(--text); }");
-        sb.AppendLine("    .chron-kind-gap { color:var(--warn); font-weight:600; }");
-        sb.AppendLine("    @media (prefers-color-scheme: light) { .chron-kind-ending { color:#946800; } .chron-kind-milestone { color:#1c7a43; } .chron-kind-research { color:#175ea8; } }");
-        sb.AppendLine("    ul.chron-undated { margin:8px 0 0 0; padding-left:20px; }");
+        ColonyChronicleExport.AppendChronicleOwnCssRules(sb);
         sb.AppendLine("    footer { margin-top:28px; padding-top:12px; border-top:1px solid var(--border); color:var(--muted); font-size:0.82rem; }");
         sb.AppendLine("  </style>");
         sb.AppendLine("</head>");

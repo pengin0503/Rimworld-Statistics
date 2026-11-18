@@ -256,6 +256,13 @@ public sealed class ColonyChronicle
 
     public int OmittedEntryCount { get; init; }
 
+    /// <summary>
+    /// Permanent tales at or before this tick may be missing (#393): a save on the branch held more than
+    /// <see cref="SaveReader.MaxPermanentTales"/> of them and kept the newest, and no earlier save on the branch holds the ones it
+    /// left out. Null when the branch's saves hold every tale they had.
+    /// </summary>
+    public int? TalesMissingThroughTick { get; init; }
+
     // ----- captured inputs -----
 
     /// <summary>One recorded ending, copied so the chronicle never reads profile objects outside the session lock.</summary>
@@ -267,7 +274,7 @@ public sealed class ColonyChronicle
     internal sealed record SaveFact(
         string FileName, long FileSize, DateTime LastWriteUtc, int Tick, string? CampaignId,
         LineageEntry[] Lineage, EndingType[] EndingTraces, EndingType[] ExplainedTraces,
-        PermanentTaleFact[]? Tales = null)
+        PermanentTaleFact[]? Tales = null, int? TalesDroppedThroughTick = null)
     {
         /// <summary>A save written with the MOD active carries every ending of its own past in <see cref="Lineage"/>.</summary>
         public bool LineageAuthoritative => CampaignId is { Length: > 0 };
@@ -293,7 +300,7 @@ public sealed class ColonyChronicle
             .Select(o => new SaveFact(o.FileName, o.FileSize, o.LastWriteUtc, o.Values.TicksGame,
                 o.Identity.ModCampaignId is { Length: > 0 } id ? id : null,
                 o.Lineage.ToArray(), o.EndingTraces.ToArray(), o.ExplainedTraces.ToArray(),
-                o.PermanentTales?.ToArray()))
+                o.PermanentTales?.ToArray(), o.PermanentTalesDroppedThroughTick))
             .ToArray();
         return new Evidence(colony.Key, endings, saves, colony.Traces.OrderBy(t => t).ToArray());
     }
@@ -378,6 +385,7 @@ public sealed class ColonyChronicle
             OtherBranchEndingCount = otherBranchEndings,
             AmbiguousBranchEndingCount = ambiguousEndings,
             OmittedEntryCount = omitted,
+            TalesMissingThroughTick = MissingTalesThroughTick(chainSaves.Select(cs => cs.Save)),
         };
     }
 
@@ -869,6 +877,39 @@ public sealed class ColonyChronicle
         }
 
         return (otherBranchCount, ambiguousCount, chainSaves);
+    }
+
+    /// <summary>
+    /// The latest tick through which the branch's saves may lack a permanent tale (#393). A save's tales are its whole past (they
+    /// are never culled), so the latest save holds every one, except those at or before the tick through which it left some out.
+    /// Those are held by an earlier save that was at least as far on and read tales, down to what that save left out in turn; a
+    /// save that was not yet that far on leaves the rest uncovered.
+    /// </summary>
+    internal static int? MissingTalesThroughTick(IEnumerable<SaveFact> branchSaves)
+    {
+        int? missing = null;
+        var first = true;
+        foreach (var save in branchSaves.OrderByDescending(s => s.Tick))
+        {
+            if (save.Tales is not { Length: > 0 } && save.TalesDroppedThroughTick is null)
+                continue;   // no tales read from this save: it neither holds nor proves anything
+            if (first)
+            {
+                first = false;
+                missing = save.TalesDroppedThroughTick;
+            }
+            else if (save.Tick >= missing)
+            {
+                missing = save.TalesDroppedThroughTick;
+            }
+            else
+            {
+                break;
+            }
+            if (missing is null)
+                break;
+        }
+        return missing;
     }
 
     private static void CollectPermanentSaveTales(

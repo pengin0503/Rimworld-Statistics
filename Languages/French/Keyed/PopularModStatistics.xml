@@ -19,5 +19,5 @@
   <RWS_PuppetTransfers>Transferts d’esprit des marionnettistes</RWS_PuppetTransfers>
   <RWS_PuppetTransfersDesc>Compte les transferts réussis de l’esprit d’un marionnettiste du joueur.</RWS_PuppetTransfersDesc>
   <RWS_VFECatches>Prises de pêche</RWS_VFECatches>
-  <RWS_VFECatchesDesc>Compte par type les objets générés par la pêche du joueur avec Vanilla Fishing Expanded sans Odyssey.</RWS_VFECatchesDesc>
+  <RWS_VFECatchesDesc>Compte par type les objets générés par la pêche du joueur avec Vanilla Fishing Expanded sans Odyssey. Le travail des prisonniers détenus par la colonie (possible avec certains mods) est inclus.</RWS_VFECatchesDesc>
 </LanguageData>

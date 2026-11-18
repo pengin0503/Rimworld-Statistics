@@ -17,7 +17,7 @@ internal static class FishCatchOutcomes
 
     internal static ModMetricAdapterRegistration Build()
         => OutcomeMetric.Count("VanillaExpanded.VCEF", "fishing_catches", "RWS_VFECatches", "RWS_VFECatchesDesc",
-            MetricCategory.Work, Install, breakdown: true);
+            MetricCategory.Work, Install, breakdown: true, colonyWorkers: true);
 
     private static void Install(Harmony harmony)
     {
@@ -52,7 +52,8 @@ internal static class FishCatchOutcomes
         var result = GenSpawn.Spawn(thing, cell, map, mode);
         if (ReferenceEquals(thing, result) && result.Spawned && result.Map == map && GameFacts.IsColonyWorker(driver.pawn) &&
             OutcomeMetric.Observing(Unit))
-            OutcomeMetric.Record(Unit, result.def, breakdown: true, amount: result.stackCount);
+            OutcomeMetric.Record(Unit, result.def, breakdown: true, amount: result.stackCount,
+                prisonerWork: GameFacts.IsPrisonerWorker(driver.pawn));
         return result;
     }
 }
