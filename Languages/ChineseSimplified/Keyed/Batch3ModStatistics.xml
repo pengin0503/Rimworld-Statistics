@@ -2,8 +2,8 @@
 <LanguageData>
   <RWS_MechanoidUpgrades_Installed>已安装的机械体升级</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>统计在玩家所属的机械体升级装置中为己方机械体新安装完成的升级数量（按升级类型分类）。</RWS_MechanoidUpgrades_InstalledDesc>
-  <RWS_RimTalk_Conversations>RimTalk 对话次数</RWS_RimTalk_Conversations>
+  <RWS_RimTalk_Conversations>对话成立次数</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>统计通过 RimTalk 生成并成功写入游戏日志的玩家派系成员相关对话次数（按对话类型分类，不保存文本内容）。</RWS_RimTalk_ConversationsDesc>
-  <RWS_AlphaMechs_MechConversions>已转换的机械体 (Alpha Mechs)</RWS_AlphaMechs_MechConversions>
+  <RWS_AlphaMechs_MechConversions>已转换的机械体</RWS_AlphaMechs_MechConversions>
   <RWS_AlphaMechs_MechConversionsDesc>统计通过 Alpha Mechs 的机械体转换技能成功转为玩家派系的非友方机械体数量（按机械体类型分类）。</RWS_AlphaMechs_MechConversionsDesc>
 </LanguageData>
