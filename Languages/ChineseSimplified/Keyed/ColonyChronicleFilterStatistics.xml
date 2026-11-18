@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>搜索</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>按研究名称（含未加载 MOD 的替代名称）、事件描述、已验证区间内的统计名称或无日期的痕迹名称筛选当前分支的条目。</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>起始天数</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>结束天数</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>可选的游戏内天数闭区间（可只填一端，如 10 或 12.5）。在范围内的单日记录以及与范围重叠的区间记录会保留原有区间显示；指定天数时将排除无日期的痕迹。</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>清除筛选</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>请在起始天数和结束天数中输入非负数字（例如 0、10 或 12.5）。</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>起始天数晚于结束天数。请确保起始天数小于或等于结束天数。</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>当前分支中没有符合搜索与天数筛选条件的带日期条目。</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>按游戏内天数筛选时，已隐藏 {0} 条无日期的痕迹。</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

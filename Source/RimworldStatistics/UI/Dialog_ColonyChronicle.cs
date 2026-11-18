@@ -24,14 +24,9 @@ internal sealed class Dialog_ColonyChronicle : Window
     private static readonly Color ResearchColor = new(0.48f, 0.74f, 0.94f);
     private static readonly Color IntervalColor = new(0.78f, 0.82f, 0.88f);
     private static readonly Color GapColor = new(0.94f, 0.64f, 0.38f);
-
-    private enum FilterMode
-    {
-        All,
-        Highlights,
-        IntervalsAndGaps,
-        Research,
-    }
+    private static readonly Color WarningTextColor = new(0.95f, 0.72f, 0.45f);
+    private static readonly Color FieldErrorLabelColor = new(0.96f, 0.58f, 0.44f);
+    private static readonly Color FieldErrorBorderColor = new(0.95f, 0.45f, 0.35f, 0.85f);
 
     private sealed record ChartTarget(string MetricKey, string Label);
 
@@ -45,30 +40,41 @@ internal sealed class Dialog_ColonyChronicle : Window
         string Tooltip,
         ChartTarget[] ChartTargets);
 
-    private sealed record ChronicleDisplayCache(
+    /// <summary>
+    /// Branch-level localized rows and search terms built once per loaded <see cref="ColonyChronicle"/> and active language,
+    /// so text and day-range edits never re-read saves, rebuild the chronicle, or re-query Def/translation tables.
+    /// </summary>
+    private sealed record ChronicleBranchCache(
         ColonyChronicle Chronicle,
         object? Language,
-        FilterMode Filter,
-        bool NewestFirst,
         string ActiveBranchLabel,
+        string[] BaseNoticeLines,
+        ChronicleFilterableEntry<DisplayEntryRow>[] Entries,
+        ChronicleFilterableUndatedTrace<string>[] UndatedTraces);
+
+    private sealed record ChronicleDisplayCache(
+        ChronicleBranchCache Branch,
+        ChronicleFilterQuery Query,
+        ChronicleFilterResult<DisplayEntryRow, string> Result,
         string SummaryText,
         string[] NoticeLines,
-        DisplayEntryRow[] Rows,
-        string[] UndatedLines,
-        int TotalCount,
-        int HighlightsCount,
-        int IntervalsAndGapsCount,
-        int ResearchCount);
+        string EmptyMessage,
+        bool EmptyMessageIsWarning);
 
     private readonly StatsView view;
     private string colonyKey;
     private string colonyName = "";
-    private FilterMode filter = FilterMode.All;
+    private ChronicleKindFilter filter = ChronicleKindFilter.All;
     private bool newestFirst;
+    private string searchText = "";
+    private string startDayText = "";
+    private string endDayText = "";
 
     private Task<ColonyChronicle?>? chronicleTask;
     private bool loadFailureLogged;
     private object? cachedLanguage;
+    private string? cachedNameSignature;
+    private ChronicleBranchCache? branchCache;
     private ChronicleDisplayCache? displayCache;
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
@@ -110,12 +116,20 @@ internal sealed class Dialog_ColonyChronicle : Window
     private void DrawContents(Rect rect)
     {
         var lang = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(cachedLanguage, lang))
+        var languageChanged = !ReferenceEquals(cachedLanguage, lang);
+        if (languageChanged)
         {
             cachedLanguage = lang;
-            RefreshColonyName();
+            branchCache = null;
             displayCache = null;
             tablePlan = null;
+        }
+
+        var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (languageChanged || cachedNameSignature != nameSig)
+        {
+            cachedNameSignature = nameSig;
+            RefreshColonyName();
         }
 
         var titleText = (string)"RWS_Chronicle_Title".Translate(colonyName);
@@ -143,7 +157,7 @@ internal sealed class Dialog_ColonyChronicle : Window
 
         if (currentChronicle is { Branches.Count: > 1 } && display is not null)
         {
-            var branchBtn = (string)"RWS_Chronicle_BranchButton".Translate(display.ActiveBranchLabel);
+            var branchBtn = (string)"RWS_Chronicle_BranchButton".Translate(display.Branch.ActiveBranchLabel);
             var branchRect = controls.Next(branchBtn, 165f, 320f);
             var shownBranch = branchBtn.Truncate(Math.Max(0f, branchRect.width - 12f));
             if (Widgets.ButtonText(branchRect, shownBranch))
@@ -155,7 +169,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (display is not null)
         {
             var filterLabel = (string)"RWS_Chronicle_FilterButton".Translate(
-                FilterName(filter), FilterCount(display, filter).ToString(Inv));
+                FilterName(filter), display.Result.FilterCount(filter).ToString(Inv));
             var filterRect = controls.Next(filterLabel, 145f, 260f);
             if (Widgets.ButtonText(filterRect, filterLabel.Truncate(Math.Max(0f, filterRect.width - 12f))))
                 ShowFilterMenu(display);
@@ -182,6 +196,63 @@ internal sealed class Dialog_ColonyChronicle : Window
         TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
 
         y += controls.Height + 6f;
+
+        if (currentChronicle is not null && display is not null)
+        {
+            var filterControls = new ControlRow(new Rect(rect.x, y, rect.width, 28f));
+
+            var searchChanged = DrawLabeledField(
+                ref filterControls,
+                (string)"RWS_Chronicle_SearchLabel".Translate(),
+                ref searchText,
+                fieldWidth: 210f,
+                tooltip: (string)"RWS_Chronicle_SearchTip".Translate(),
+                highlightError: false);
+
+            var dayTip = (string)"RWS_Chronicle_DayRangeTip".Translate();
+            var startChanged = DrawLabeledField(
+                ref filterControls,
+                (string)"RWS_Chronicle_StartDayLabel".Translate(),
+                ref startDayText,
+                fieldWidth: 76f,
+                tooltip: dayTip,
+                highlightError: display.Query.DayRange.HighlightStartField);
+
+            var endChanged = DrawLabeledField(
+                ref filterControls,
+                (string)"RWS_Chronicle_EndDayLabel".Translate(),
+                ref endDayText,
+                fieldWidth: 76f,
+                tooltip: dayTip,
+                highlightError: display.Query.DayRange.HighlightEndField);
+
+            var clearLabel = (string)"RWS_Chronicle_ClearFilters".Translate();
+            var clearRect = filterControls.Next(clearLabel, 96f, 185f);
+            var shownClear = clearLabel.Truncate(Math.Max(0f, clearRect.width - 12f));
+            if (shownClear != clearLabel)
+                TooltipHandler.TipRegion(clearRect, clearLabel);
+
+            var canClear = HasAnyFilterInput(display.Query);
+            var previousColor = GUI.color;
+            if (!canClear)
+                GUI.color = new Color(0.65f, 0.65f, 0.65f);
+            var clearClicked = Widgets.ButtonText(clearRect, shownClear, active: canClear);
+            GUI.color = previousColor;
+            if (clearClicked && canClear)
+                ClearFilters();
+
+            if (searchChanged || startChanged || endChanged)
+            {
+                displayCache = null;
+                scroll = Vector2.zero;
+            }
+
+            if (displayCache is null)
+                display = EnsureDisplayCache(currentChronicle, lang);
+
+            y += filterControls.Height + 6f;
+        }
+
         var body = new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y));
 
         if (chronicleTask is null || !chronicleTask.IsCompleted)
@@ -204,10 +275,64 @@ internal sealed class Dialog_ColonyChronicle : Window
         DrawBody(body, display);
     }
 
+    private static bool DrawLabeledField(
+        ref ControlRow controls,
+        string label,
+        ref string value,
+        float fieldWidth,
+        string tooltip,
+        bool highlightError)
+    {
+        var labelWidth = Math.Min(150f, Text.CalcSize(label).x + 6f);
+        var groupRect = controls.Next(labelWidth + fieldWidth);
+        var actualFieldWidth = Math.Max(40f, groupRect.width - labelWidth);
+        var actualLabelWidth = Math.Max(0f, groupRect.width - actualFieldWidth);
+
+        var previousColor = GUI.color;
+        if (highlightError)
+            GUI.color = FieldErrorLabelColor;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        Widgets.Label(
+            new Rect(groupRect.x, groupRect.y, actualLabelWidth, groupRect.height),
+            label.Truncate(actualLabelWidth));
+        Text.Anchor = TextAnchor.UpperLeft;
+        GUI.color = previousColor;
+
+        var fieldRect = new Rect(groupRect.x + actualLabelWidth, groupRect.y + 2f, actualFieldWidth, groupRect.height - 4f);
+        var nextValue = Widgets.TextField(fieldRect, value) ?? "";
+        if (highlightError)
+            Widgets.DrawBoxSolidWithOutline(fieldRect, Color.clear, FieldErrorBorderColor);
+        TooltipHandler.TipRegion(groupRect, tooltip);
+
+        if (string.Equals(nextValue, value, StringComparison.Ordinal))
+            return false;
+
+        value = nextValue;
+        return true;
+    }
+
+    private bool HasAnyFilterInput(ChronicleFilterQuery query)
+        => query.HasAnyFilter
+            || searchText.Length > 0
+            || startDayText.Length > 0
+            || endDayText.Length > 0;
+
+    private void ClearFilters()
+    {
+        filter = ChronicleKindFilter.All;
+        searchText = "";
+        startDayText = "";
+        endDayText = "";
+        displayCache = null;
+        scroll = Vector2.zero;
+        Verse.UI.UnfocusCurrentControl();
+    }
+
     private void StartLoad(string targetColonyKey, ChronicleBranchKey? branch)
     {
         colonyKey = targetColonyKey;
         RefreshColonyName();
+        branchCache = null;
         displayCache = null;
         tablePlan = null;
         scroll = Vector2.zero;
@@ -257,9 +382,9 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private void ShowFilterMenu(ChronicleDisplayCache display)
     {
-        FloatMenuOption MakeOption(FilterMode mode)
+        FloatMenuOption MakeOption(ChronicleKindFilter mode)
         {
-            var text = $"{FilterName(mode)} ({FilterCount(display, mode).ToString(Inv)})";
+            var text = $"{FilterName(mode)} ({display.Result.FilterCount(mode).ToString(Inv)})";
             return new FloatMenuOption(text, () =>
             {
                 if (filter != mode)
@@ -273,35 +398,19 @@ internal sealed class Dialog_ColonyChronicle : Window
 
         Find.WindowStack.Add(new FloatMenu(
         [
-            MakeOption(FilterMode.All),
-            MakeOption(FilterMode.Highlights),
-            MakeOption(FilterMode.IntervalsAndGaps),
-            MakeOption(FilterMode.Research),
+            MakeOption(ChronicleKindFilter.All),
+            MakeOption(ChronicleKindFilter.Highlights),
+            MakeOption(ChronicleKindFilter.IntervalsAndGaps),
+            MakeOption(ChronicleKindFilter.Research),
         ]));
     }
 
-    private static string FilterName(FilterMode mode) => mode switch
+    private static string FilterName(ChronicleKindFilter mode) => mode switch
     {
-        FilterMode.Highlights => "RWS_Chronicle_FilterHighlights".Translate(),
-        FilterMode.IntervalsAndGaps => "RWS_Chronicle_FilterIntervalsAndGaps".Translate(),
-        FilterMode.Research => "RWS_Chronicle_FilterResearch".Translate(),
+        ChronicleKindFilter.Highlights => "RWS_Chronicle_FilterHighlights".Translate(),
+        ChronicleKindFilter.IntervalsAndGaps => "RWS_Chronicle_FilterIntervalsAndGaps".Translate(),
+        ChronicleKindFilter.Research => "RWS_Chronicle_FilterResearch".Translate(),
         _ => "RWS_Chronicle_FilterAll".Translate(),
-    };
-
-    private static int FilterCount(ChronicleDisplayCache d, FilterMode mode) => mode switch
-    {
-        FilterMode.Highlights => d.HighlightsCount,
-        FilterMode.IntervalsAndGaps => d.IntervalsAndGapsCount,
-        FilterMode.Research => d.ResearchCount,
-        _ => d.TotalCount,
-    };
-
-    private static bool MatchesFilter(ChronicleEntry entry, FilterMode mode) => mode switch
-    {
-        FilterMode.Highlights => entry.Kind is ChronicleEntryKind.Ending or ChronicleEntryKind.Milestone,
-        FilterMode.IntervalsAndGaps => entry.Kind is ChronicleEntryKind.VerifiedInterval or ChronicleEntryKind.RecordingGap,
-        FilterMode.Research => entry.Kind == ChronicleEntryKind.ResearchCompleted,
-        _ => true,
     };
 
     private void DrawBody(Rect outRect, ChronicleDisplayCache display)
@@ -320,17 +429,23 @@ internal sealed class Dialog_ColonyChronicle : Window
             : display.SummaryText;
         var summaryHeight = Math.Max(26f, Text.CalcHeight(summaryBlock, innerWidth - 16f) + 12f);
 
-        var tableBodyHeight = display.Rows.Length == 0
-            ? 32f
-            : display.Rows.Length * RowHeight;
+        var rows = display.Result.Rows;
+        var undatedLines = display.Result.UndatedTraces;
+        var emptyLabelWidth = Math.Max(80f, innerWidth - 8f);
+        var emptyLabelHeight = rows.Length == 0
+            ? Math.Max(24f, Text.CalcHeight(display.EmptyMessage, emptyLabelWidth) + 4f)
+            : 0f;
+        var tableBodyHeight = rows.Length == 0
+            ? emptyLabelHeight + 8f
+            : rows.Length * RowHeight;
         var tableTotalHeight = HeaderRowHeight + tableBodyHeight + 8f;
 
         var undatedHeight = 0f;
         var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
-        if (display.UndatedLines.Length > 0)
+        if (undatedLines.Length > 0)
         {
             var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
-            var linesH = display.UndatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
+            var linesH = undatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
             undatedHeight = 28f + 14f + subtitleH + linesH + 8f;
         }
 
@@ -351,11 +466,11 @@ internal sealed class Dialog_ColonyChronicle : Window
             Widgets.Label(new Rect(8f, cy + 6f, innerWidth - 16f, summaryHeight - 12f), summaryBlock);
             cy += summaryHeight + 8f;
 
-            cy = DrawTable(display, cy, innerWidth, outRect.height);
+            cy = DrawTable(display, cy, innerWidth, outRect.height, emptyLabelHeight);
 
             // Separate undated traces section so undated evidence never receives a fabricated day.
-            if (display.UndatedLines.Length > 0)
-                DrawUndated(display, cy, innerWidth, subtitle);
+            if (undatedLines.Length > 0)
+                DrawUndated(undatedLines, cy, innerWidth, subtitle);
         }
         finally
         {
@@ -365,10 +480,11 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
     }
 
-    private float DrawTable(ChronicleDisplayCache display, float cy, float innerWidth, float viewportHeight)
+    private float DrawTable(ChronicleDisplayCache display, float cy, float innerWidth, float viewportHeight, float emptyLabelHeight)
     {
         var plan = tablePlan!;
         var widths = plan.Widths;
+        var rows = display.Result.Rows;
         string[] headers =
         [
             "RWS_Chronicle_ColTime".Translate(),
@@ -394,23 +510,27 @@ internal sealed class Dialog_ColonyChronicle : Window
         Text.Anchor = TextAnchor.UpperLeft;
         cy += HeaderRowHeight;
 
-        if (display.Rows.Length == 0)
+        if (rows.Length == 0)
         {
-            GUI.color = new Color(0.72f, 0.75f, 0.80f);
-            Widgets.Label(new Rect(4f, cy + 6f, innerWidth - 8f, 24f), "RWS_Chronicle_Empty".Translate());
+            GUI.color = display.EmptyMessageIsWarning
+                ? WarningTextColor
+                : new Color(0.72f, 0.75f, 0.80f);
+            Widgets.Label(
+                new Rect(4f, cy + 6f, Math.Max(80f, innerWidth - 8f), emptyLabelHeight),
+                display.EmptyMessage);
             GUI.color = Color.white;
-            return cy + 32f + 8f;
+            return cy + emptyLabelHeight + 8f + 8f;
         }
 
         // Only the rows inside the scroll viewport are drawn.
         var viewportTop = scroll.y - cy;
         var viewportBottom = scroll.y + viewportHeight - cy;
         var firstRow = Math.Max(0, (int)Math.Floor(viewportTop / RowHeight) - 1);
-        var lastRow = Math.Min(display.Rows.Length - 1, (int)Math.Ceiling(viewportBottom / RowHeight) + 1);
+        var lastRow = Math.Min(rows.Length - 1, (int)Math.Ceiling(viewportBottom / RowHeight) + 1);
 
         for (var i = firstRow; i <= lastRow; i++)
         {
-            var r = display.Rows[i];
+            var r = rows[i];
             var ry = cy + i * RowHeight;
             var rowRect = new Rect(0f, ry, plan.TotalWidth, RowHeight);
 
@@ -457,20 +577,20 @@ internal sealed class Dialog_ColonyChronicle : Window
                 OpenEntryChart(r.ChartTargets);
         }
 
-        return cy + display.Rows.Length * RowHeight + 8f;
+        return cy + rows.Length * RowHeight + 8f;
     }
 
-    private static void DrawUndated(ChronicleDisplayCache display, float cy, float innerWidth, string subtitle)
+    private static void DrawUndated(string[] undatedLines, float cy, float innerWidth, string subtitle)
     {
         GUI.color = new Color(0.58f, 0.82f, 0.94f);
         Widgets.Label(new Rect(0f, cy, innerWidth, 23f),
-            "RWS_Chronicle_UndatedTitle".Translate(display.UndatedLines.Length.ToString(Inv)));
+            "RWS_Chronicle_UndatedTitle".Translate(undatedLines.Length.ToString(Inv)));
         Widgets.DrawBoxSolid(new Rect(0f, cy + 23f, innerWidth, 1f), new Color(1f, 1f, 1f, 0.14f));
         GUI.color = Color.white;
         cy += 28f;
 
         var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
-        var linesH = display.UndatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
+        var linesH = undatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
         Widgets.DrawMenuSection(new Rect(0f, cy, innerWidth, 14f + subtitleH + linesH));
 
         var uy = cy + 7f;
@@ -479,7 +599,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         GUI.color = Color.white;
         uy += subtitleH;
 
-        foreach (var line in display.UndatedLines)
+        foreach (var line in undatedLines)
         {
             var bullet = "• " + line;
             var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 20f) + 2f);
@@ -505,40 +625,36 @@ internal sealed class Dialog_ColonyChronicle : Window
             Find.WindowStack.Add(new FloatMenu(options));
     }
 
-    private ChronicleDisplayCache EnsureDisplayCache(ColonyChronicle chronicle, object? lang)
+    private ChronicleBranchCache EnsureBranchCache(ColonyChronicle chronicle, object? lang)
     {
-        if (displayCache is { } cached
+        if (branchCache is { } cached
             && ReferenceEquals(cached.Chronicle, chronicle)
-            && ReferenceEquals(cached.Language, lang)
-            && cached.Filter == filter
-            && cached.NewestFirst == newestFirst)
+            && ReferenceEquals(cached.Language, lang))
         {
             return cached;
         }
 
         var researchDef = MetricLookup.Definition(view, ResearchFamily.CompletedTicks);
-        var total = chronicle.Entries.Count;
-        int highlights = 0, intervalsAndGaps = 0, research = 0;
-        foreach (var e in chronicle.Entries)
+        var entries = new ChronicleFilterableEntry<DisplayEntryRow>[chronicle.Entries.Count];
+        for (var i = 0; i < chronicle.Entries.Count; i++)
         {
-            if (MatchesFilter(e, FilterMode.Highlights)) highlights++;
-            if (MatchesFilter(e, FilterMode.IntervalsAndGaps)) intervalsAndGaps++;
-            if (MatchesFilter(e, FilterMode.Research)) research++;
+            var entry = chronicle.Entries[i];
+            var row = BuildEntryRow(entry, researchDef);
+            var additionalTerms = BuildAdditionalSearchTerms(entry, researchDef);
+            entries[i] = new ChronicleFilterableEntry<DisplayEntryRow>(entry, row.EventText, additionalTerms, row);
         }
 
-        var filtered = chronicle.Entries.Where(e => MatchesFilter(e, filter));
-        if (newestFirst)
-            filtered = filtered.Reverse();
-        var rows = filtered.Select(e => BuildEntryRow(e, researchDef)).ToArray();
+        var undated = new ChronicleFilterableUndatedTrace<string>[chronicle.UndatedTraces.Count];
+        for (var i = 0; i < chronicle.UndatedTraces.Count; i++)
+        {
+            var trace = chronicle.UndatedTraces[i];
+            var traceName = Dialog_RimworldStatistics.EndingLabel(trace.EndingType);
+            undated[i] = new ChronicleFilterableUndatedTrace<string>(trace, traceName, FormatUndatedTrace(trace));
+        }
 
         var activeBranchLabel = chronicle.SelectedBranch is { } activeBranch
             ? FormatBranchOptionLabel(activeBranch)
             : Dialog_RimworldStatistics.Dash;
-
-        var summaryText = (string)"RWS_Chronicle_SummaryLine".Translate(
-            rows.Length.ToString(Inv),
-            total.ToString(Inv),
-            chronicle.BranchNodeChain.Count.ToString(Inv));
 
         var notices = new List<string>(4);
         if (chronicle.RequestedBranchMissing)
@@ -550,23 +666,98 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (chronicle.OmittedEntryCount > 0)
             notices.Add((string)"RWS_Chronicle_OmittedCapNotice".Translate(chronicle.OmittedEntryCount.ToString(Inv)));
 
-        var undatedLines = chronicle.UndatedTraces.Select(FormatUndatedTrace).ToArray();
-
-        displayCache = new ChronicleDisplayCache(
+        branchCache = new ChronicleBranchCache(
             Chronicle: chronicle,
             Language: lang,
-            Filter: filter,
-            NewestFirst: newestFirst,
             ActiveBranchLabel: activeBranchLabel,
+            BaseNoticeLines: notices.ToArray(),
+            Entries: entries,
+            UndatedTraces: undated);
+        return branchCache;
+    }
+
+    private ChronicleDisplayCache EnsureDisplayCache(ColonyChronicle chronicle, object? lang)
+    {
+        var branch = EnsureBranchCache(chronicle, lang);
+        var query = ChronicleFilterQuery.Create(filter, searchText, startDayText, endDayText, newestFirst);
+
+        if (displayCache is { } cached
+            && ReferenceEquals(cached.Branch, branch)
+            && cached.Query == query)
+        {
+            return cached;
+        }
+
+        var result = ColonyChronicleFilter.Apply(branch.Entries, branch.UndatedTraces, query);
+
+        var summaryText = (string)"RWS_Chronicle_SummaryLine".Translate(
+            result.Rows.Length.ToString(Inv),
+            chronicle.Entries.Count.ToString(Inv),
+            chronicle.BranchNodeChain.Count.ToString(Inv));
+
+        string[] noticeLines;
+        if (result.HiddenUndatedTraceCountByDayRange > 0)
+        {
+            var list = new List<string>(branch.BaseNoticeLines.Length + 1);
+            list.AddRange(branch.BaseNoticeLines);
+            list.Add((string)"RWS_Chronicle_UndatedHiddenByDayNotice".Translate(
+                result.HiddenUndatedTraceCountByDayRange.ToString(Inv)));
+            noticeLines = list.ToArray();
+        }
+        else
+        {
+            noticeLines = branch.BaseNoticeLines;
+        }
+
+        var (emptyMessage, emptyWarning) = ResolveEmptyMessage(query);
+
+        displayCache = new ChronicleDisplayCache(
+            Branch: branch,
+            Query: query,
+            Result: result,
             SummaryText: summaryText,
-            NoticeLines: notices.ToArray(),
-            Rows: rows,
-            UndatedLines: undatedLines,
-            TotalCount: total,
-            HighlightsCount: highlights,
-            IntervalsAndGapsCount: intervalsAndGaps,
-            ResearchCount: research);
+            NoticeLines: noticeLines,
+            EmptyMessage: emptyMessage,
+            EmptyMessageIsWarning: emptyWarning);
         return displayCache;
+    }
+
+    private static (string Message, bool IsWarning) ResolveEmptyMessage(ChronicleFilterQuery query)
+    {
+        if (query.DayRange.HasInvalidNumber)
+            return ((string)"RWS_Chronicle_InvalidDayRange".Translate(), true);
+        if (query.DayRange.IsReversed)
+            return ((string)"RWS_Chronicle_ReversedDayRange".Translate(), true);
+        if (query.HasSearch || query.HasDayInput)
+            return ((string)"RWS_Chronicle_NoFilterMatches".Translate(), false);
+        return ((string)"RWS_Chronicle_Empty".Translate(), false);
+    }
+
+    private IReadOnlyList<string> BuildAdditionalSearchTerms(ChronicleEntry e, MetricDefinition? researchCompletedDef)
+    {
+        if (e.Kind == ChronicleEntryKind.ResearchCompleted)
+        {
+            var (projLabel, _) = ResolveResearchProjectLabel(e.ResearchDefKey ?? "", researchCompletedDef);
+            return [projLabel];
+        }
+
+        if (e.Kind == ChronicleEntryKind.VerifiedInterval && e.IntervalFacts.Count > 0)
+        {
+            var terms = new List<string>(e.IntervalFacts.Count * 2);
+            foreach (var fact in e.IntervalFacts)
+            {
+                var shortLabel = FactLabel(fact);
+                terms.Add(shortLabel);
+                if (TryResolveKnownMetricLabel(fact.MetricKey) is { } fullLabel
+                    && !string.Equals(fullLabel, shortLabel, StringComparison.Ordinal))
+                {
+                    terms.Add(fullLabel);
+                }
+            }
+            return terms.ToArray();
+        }
+
+        return [];
     }
 
     private DisplayEntryRow BuildEntryRow(ChronicleEntry e, MetricDefinition? researchCompletedDef)
@@ -737,30 +928,22 @@ internal sealed class Dialog_ColonyChronicle : Window
     }
 
     private static (string Label, bool Unloaded) ResolveResearchProjectLabel(string defKey, MetricDefinition? completedDef)
+        => ColonyChronicleFilter.ResolveResearchProjectLabel(
+            defKey,
+            tryResolveLoadedProjectLabel: static key =>
+                DefDatabase<ResearchProjectDef>.GetNamedSilentFail(key) is { } def && !string.IsNullOrWhiteSpace(def.label)
+                    ? def.LabelCap.ToString()
+                    : null,
+            tryResolveBreakdownLabel: completedDef is null
+                ? null
+                : key => MetricText.Breakdown(completedDef, key),
+            emptyPlaceholder: Dialog_RimworldStatistics.Dash);
+
+    private string? TryResolveKnownMetricLabel(string metricKey)
     {
-        if (string.IsNullOrEmpty(defKey))
-            return (Dialog_RimworldStatistics.Dash, false);
-
-        var named = DefDatabase<ResearchProjectDef>.GetNamedSilentFail(defKey);
-        if (named is not null && !string.IsNullOrWhiteSpace(named.label))
-            return (named.LabelCap.ToString(), false);
-
-        if (completedDef is not null)
-        {
-            var viaBreakdown = MetricText.Breakdown(completedDef, defKey);
-            if (!string.Equals(viaBreakdown, defKey, StringComparison.Ordinal))
-                return (viaBreakdown, false);
-        }
-
-        if (OptionalTransitionRecording.TryParseQualifiedDefKey(defKey, out _, out var shortName) && !string.IsNullOrEmpty(shortName))
-        {
-            var byShort = DefDatabase<ResearchProjectDef>.GetNamedSilentFail(shortName);
-            if (byShort is not null && !string.IsNullOrWhiteSpace(byShort.label))
-                return (byShort.LabelCap.ToString(), false);
-            return (shortName, true);
-        }
-
-        return (defKey, true);
+        if (BasicMetrics.Contains(metricKey))
+            return ResolveMetricLabel(metricKey);
+        return MetricLookup.Definition(view, metricKey) is { } def ? MetricText.Label(def) : null;
     }
 
     /// <summary>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Search</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Filter entries on this branch by research name (including fallback names for unloaded MODs), event text, statistic names inside verified intervals, or undated trace names.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Start day</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>End day</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Optional inclusive in-game day bounds (you may enter either end alone, e.g. 10 or 12.5). Single-day entries inside the range and verified intervals that overlap it are shown with their original span; undated traces are excluded while a day bound is set.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Clear filters</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Enter non-negative numbers for start and end days (for example, 0, 10, or 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>Start day is later than end day. Enter a start day less than or equal to the end day.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>No dated entries match the current search and day filter on this branch.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>{0} undated traces are hidden while filtering by in-game days.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

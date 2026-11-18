@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>検索</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>この分岐の記録を、研究名（未導入MODの代替名を含む）・出来事・検証済み区間内の統計名・日付のない痕跡名で絞り込みます。</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>開始日</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>終了日</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>ゲーム内日数の範囲を両端を含む形で指定します（片側のみの入力も可能。例: 10、12.5）。単日の記録は範囲内、区間記録は範囲と重なるものを元の区間表記のまま表示します。日数指定中は日付のない痕跡を除外します。</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>絞り込み解除</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>開始日・終了日には 0 以上の数値を入力してください（例: 0、10、12.5）。</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>開始日が終了日より後になっています。開始日は終了日以下にしてください。</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>この分岐で現在の検索・日数条件に当てはまる日付付きの項目はありません。</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>ゲーム内日数で絞り込み中のため、日付のない痕跡 {0} 件は除外しています。</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>
