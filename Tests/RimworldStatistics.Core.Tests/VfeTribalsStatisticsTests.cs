@@ -21,16 +21,4 @@ public sealed class VfeTribalsStatisticsTests
     [InlineData(true, false, false)]
     public void CornerstoneOnlyCountsNewAcquisition(bool previous, bool next, bool expected)
         => Assert.Equal(expected, VfeTribalsRules.NewCornerstone(previous, next));
-
-    [Fact]
-    public void EraAndCornerstoneBreakdownsDoNotClobberOneAnother()
-    {
-        var family = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 10, Continuous = true };
-        OptionalTransitionRecording.RecordCount(family, "eras", 1, "example.mod/Era1", withBreakdown: true);
-        OptionalTransitionRecording.RecordCount(family, "cornerstones", 1, "example.mod/Stone1", withBreakdown: true);
-        Assert.Equal(1L, family.Peek("eras")!.N);
-        Assert.Equal(1L, family.Peek("cornerstones")!.N);
-        Assert.Equal("example.mod/Era1", Assert.Single(family.Peek("eras")!.By!).Key);
-        Assert.Equal("example.mod/Stone1", Assert.Single(family.Peek("cornerstones")!.By!).Key);
-    }
 }

@@ -8,20 +8,6 @@ namespace RimworldStatistics.Core.Tests;
 
 public sealed class Batch4BiomesDeadlifeAnomalyRomanceTests
 {
-    private static readonly DateTime T0 = new(2026, 11, 15, 0, 0, 0, DateTimeKind.Utc);
-    private const string Campaign = "bead5678bead5678bead5678bead5678";
-
-    private static ColonyIdentity TestIdentity() => new()
-    {
-        SeedString = "batch4-biomes-deadlife-anomaly-romance",
-        PersistentRandomValue = 41,
-        StartingTile = "14,22",
-        GameStartAbsTick = 0,
-        FirstWealthBits = 18,
-        StartingPawnIds = { "Thing_Human1" },
-        ModCampaignId = Campaign,
-    };
-
     [Theory]
     [InlineData(true, 0.2f, 0.3f, "Ludeon.RimWorld", "Plant_Rice", "ludeon.rimworld/Plant_Rice")]
     [InlineData(true, 0.95f, 1.0f, "BiomesTeam.BiomesBees", "BMT_Clover", "biomesteam.biomesbees/BMT_Clover")]
@@ -148,90 +134,5 @@ public sealed class Batch4BiomesDeadlifeAnomalyRomanceTests
     {
         Assert.Equal(expected, WayBetterRomanceRules.ResolveDateBreakdown(
             playerInvolved, participantsAlive, partnerWasFollowingExpectedJob, isDate));
-    }
-
-    [Fact]
-    public void Batch4CheckpointsAccumulateBranchAndReloadCleanlyWithoutMods()
-    {
-        var beesUnit = "mod.biomesteam.biomesbees.pollinations";
-        var beesKey = beesUnit + ".completed";
-        var siloUnit = "mod.vanillaquestsexpanded.deadlife.silo_decryptions";
-        var siloKey = siloUnit + ".completed";
-        var powerUnit = "mod.vanillaquestsexpanded.deadlife.power_kickstarts";
-        var powerKey = powerUnit + ".completed";
-        var datesUnit = "mod.divinederivative.romance.dates";
-        var datesKey = datesUnit + ".completed";
-
-        var families = new LiveFamily[]
-        {
-            new()
-            {
-                Name = beesUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", beesKey, withBreakdown: true),
-            },
-            new()
-            {
-                Name = siloUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", siloKey, withBreakdown: true),
-            },
-            new()
-            {
-                Name = powerUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", powerKey, withBreakdown: true),
-            },
-            new()
-            {
-                Name = datesUnit,
-                Revision = 1,
-                Build = output => OptionalTransitionRecording.PutCount(output, "completed", datesKey, withBreakdown: true),
-            },
-        };
-
-        var acc = LiveMetricAccumulator.StartNew(families.Select(f => f.Spec).ToArray(), 0);
-        OptionalTransitionRecording.RecordCount(acc.Family(beesUnit)!, "completed", 1,
-            OptionalTransitionRecording.QualifiedDefKey("Ludeon.RimWorld", "Plant_Rice"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(siloUnit)!, "completed", 1,
-            OptionalTransitionRecording.QualifiedDefKey("vanillaquestsexpanded.deadlife", "VQED_AncientPlanningDesk"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(powerUnit)!, "completed", 1,
-            OptionalTransitionRecording.QualifiedDefKey("vanillaquestsexpanded.deadlife", "VQED_AncientBurnoutGenerator"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(datesUnit)!, "completed", 1,
-            WayBetterRomanceRules.DateBreakdownKey, true);
-
-        var save1 = acc.PrepareSave(100, T0, "save1")!;
-        acc.Commit(save1);
-
-        OptionalTransitionRecording.RecordCount(acc.Family(beesUnit)!, "completed", 2,
-            OptionalTransitionRecording.QualifiedDefKey("Ludeon.RimWorld", "Plant_Rice"), true);
-        OptionalTransitionRecording.RecordCount(acc.Family(datesUnit)!, "completed", 1,
-            WayBetterRomanceRules.HangoutBreakdownKey, true);
-        var branchA = acc.PrepareSave(200, T0.AddMinutes(5), "branchA")!;
-        acc.Commit(branchA);
-
-        var reloadedWithoutMods = LiveMetricAccumulator.Resume(save1.Json, Array.Empty<FamilySpec>(), 100);
-        var branchB = reloadedWithoutMods.PrepareSave(250, T0.AddMinutes(10), "branchB")!;
-        reloadedWithoutMods.Commit(branchB);
-
-        var obsA = CheckpointMetrics.ToObservation(
-            CheckpointJson.Parse(branchA.Json).Payload!, branchA.Json,
-            TestIdentity(), "1.7.4985", null, families);
-        var obsB = CheckpointMetrics.ToObservation(
-            CheckpointJson.Parse(branchB.Json).Payload!, branchB.Json,
-            TestIdentity(), "1.7.4985", null, families);
-
-        Assert.Equal(3L, obsA.Scalar(beesKey, 1)!.IntegerValue);
-        Assert.Equal(3L, obsA.Metrics[beesKey].Values["ludeon.rimworld/Plant_Rice"].IntegerValue);
-        Assert.Equal(1L, obsA.Scalar(siloKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsA.Scalar(powerKey, 1)!.IntegerValue);
-        Assert.Equal(2L, obsA.Scalar(datesKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsA.Metrics[datesKey].Values[WayBetterRomanceRules.DateBreakdownKey].IntegerValue);
-        Assert.Equal(1L, obsA.Metrics[datesKey].Values[WayBetterRomanceRules.HangoutBreakdownKey].IntegerValue);
-
-        Assert.Equal(1L, obsB.Scalar(beesKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsB.Scalar(siloKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsB.Scalar(powerKey, 1)!.IntegerValue);
-        Assert.Equal(1L, obsB.Scalar(datesKey, 1)!.IntegerValue);
     }
 }

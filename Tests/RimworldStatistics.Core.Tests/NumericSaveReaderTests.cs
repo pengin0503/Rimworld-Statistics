@@ -304,24 +304,13 @@ public sealed class NumericSaveReaderTests
     }
 
     private static byte[] RecordsBeforeDef(SaveXmlBuilder save, string def)
-    {
-        using var source = new MemoryStream(save.Build());
-        var xml = XDocument.Load(source);
-        foreach (var recorder in xml.Descendants("recorders").Elements("li")
-            .Where(r => (string?)r.Element("def") == def))
-        {
-            var definition = recorder.Element("def")!;
-            definition.Remove();
-            recorder.Add(definition);
-        }
-        return System.Text.Encoding.UTF8.GetBytes(xml.ToString(SaveOptions.DisableFormatting));
-    }
+        => save.RecordsBeforeDef(def).Build();
 
     [Fact]
     public void EarlyRecorderWhitespaceDoesNotScaleManagedAllocations()
     {
         var payload = Convert.ToBase64String(SaveXmlBuilder.FloatBytes(1f, 2f, 3f));
-        var spaced = payload[..4] + "\n" + new string(' ', 8 * 1024 * 1024) + payload[4..];
+        var spaced = payload[..4] + "\n" + new string(' ', 1024 * 1024) + payload[4..];
         var bytes = RecordsBeforeDef(Aligned([100f, 150f, 120f]).RecorderRaw("Prisoners", "records", spaced), "Prisoners");
         using var source = new MemoryStream(bytes);
         var reader = new SaveReader();
@@ -329,7 +318,7 @@ public sealed class NumericSaveReaderTests
         var result = reader.ReadDetailed(source, "early.rws", bytes.Length, DateTime.UnixEpoch);
         var allocated = GC.GetAllocatedBytesForCurrentThread() - before;
         Real(result.Metrics!, MetricKeys.PrisonersPeak, 3);
-        Assert.True(allocated < 8 * 1024 * 1024, $"Allocated {allocated} bytes on the reader thread.");
+        Assert.True(allocated < 256 * 1024, $"Allocated {allocated} bytes on the reader thread.");
     }
 
     [Theory]
@@ -530,18 +519,6 @@ public sealed class NumericSaveReaderTests
         Assert.Equal((MetricCoverage.Partial, 1L), (V(m, MetricKeys.QuestFailure).Coverage, V(m, MetricKeys.QuestFailure).IntegerValue));
     }
 
-    [Fact]
-    public void Quests_SuccessByRoot_KeepsPartialWhenNoSuccessRemains()
-    {
-        var b = Base(600000).WealthTotal(1f).QuestFull(1, "A", acceptanceTick: 5, ended: true, outcome: "Success", cleanupTick: 60005);
-        var xml = System.Text.Encoding.UTF8.GetString(b.Build()).Replace("<acceptanceTick>5</acceptanceTick>", "<acceptanceTick>five</acceptanceTick>");
-        var bytes = System.Text.Encoding.UTF8.GetBytes(xml);
-        using var ms = new MemoryStream(bytes);
-        var m = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length, DateTime.UnixEpoch).Metrics!;
-        var byRoot = V(m, MetricKeys.QuestSuccessByRoot);
-        Assert.Equal((MetricCoverage.Partial, 0L), (byRoot.Coverage, byRoot.IntegerValue));
-    }
-
     [Theory]
     [InlineData("invalid")]
     [InlineData("")]
@@ -629,7 +606,9 @@ public sealed class NumericSaveReaderTests
         var r = new SaveReader().ReadDetailed(ms, "a.rws", bytes.Length, DateTime.UnixEpoch);
         Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
         var success = V(r.Metrics!, MetricKeys.QuestSuccess);
+        var byRoot = V(r.Metrics!, MetricKeys.QuestSuccessByRoot);
         Assert.Equal((MetricCoverage.Partial, 0L), (success.Coverage, success.IntegerValue));   // that quest is left out
+        Assert.Equal((MetricCoverage.Partial, 0L), (byRoot.Coverage, byRoot.IntegerValue));
         Assert.NotNull(r.Metrics!.Scalar(MetricKeys.WealthTotalMean, MetricKeys.Revision(MetricKeys.WealthTotalMean)));
     }
 
@@ -700,9 +679,4 @@ public sealed class NumericSaveReaderTests
         Assert.Null(ReadDetailed(new SaveXmlBuilder().Meta(V17).Tick(ticksGame: 1)).Metrics);                     // unidentifiable
         Assert.Null(ReadDetailed(Aligned(new[] { 1f }).WealthTotalRaw("records", "%%%")).Metrics);                 // v1 error
     }
-
-    /// <summary>Phase A observations need reader 4 or later (Phase C made it 5: NumericCheckpointTests pins the exact number).</summary>
-    [Fact]
-    public void ReaderVersion_IsAtLeastFour()
-        => Assert.True(SaveReader.Version >= 4);
 }

@@ -740,16 +740,18 @@ public sealed class NumericCheckpointTests
         Assert.False(same.MetricObservations.Single(o => o.Key == "Q").Compressed);
     }
 
+    /// <summary>Codex review: a conflicted child restores its compressed ancestor immediately and remains idempotent on reread.</summary>
     [Fact]
-    public void ConflictedChild_RestoresAncestorMetricsEvenWhenOriginalSaveCannotBeRead()
+    public void ConflictedChild_RestoresAncestorMetricsBeforeAndAfterReread()
     {
         var (parent, child, _) = Branches(2000, 1500);
+        var reread = CloneWithAlias(parent, "P again.rws");   // what a later read of P's file builds (a fresh observation)
         var profile = ProfileWithColony();
         ProfileMutations.UpsertMetricObservation(profile, parent);
         ProfileMutations.UpsertMetricObservation(profile, child);
         Assert.True(profile.MetricObservations.Single(o => o.Key == "P").Compressed);
 
-        // The original parent save no longer exists; no reread is possible.
+        // Even before any reread of the original parent save, the ancestor's own metrics are restored.
         var conflictingChild = CloneWithAlias(child, "conflict.rws");
         conflictingChild.PayloadHash = "different-content";
         ProfileMutations.UpsertMetricObservation(profile, conflictingChild);
@@ -758,26 +760,10 @@ public sealed class NumericCheckpointTests
         Assert.False(restoredParent.Compressed);
         Assert.Equal(3, Count(CheckpointSelector.Select(profile.MetricObservations).Representative));
         Assert.Equal(3d, Overall(profile).Value.Number);
-    }
 
-    /// <summary>Codex review: a conflicted child must not leave its compressed ancestor unusable.</summary>
-    [Fact]
-    public void ConflictedChild_UncompressesItsAncestor_AndARereadRestoresIt()
-    {
-        var (p, a, _) = Branches(2000, 1500);
-        var reread = CloneWithAlias(p, "P again.rws");   // what a later read of P's file builds (a fresh observation)
-        var profile = ProfileWithColony();
-        ProfileMutations.UpsertMetricObservation(profile, p);
-        ProfileMutations.UpsertMetricObservation(profile, a);
-        Assert.True(profile.MetricObservations.Single(o => o.Key == "P").Compressed);
-        var forged = CloneWithAlias(a, "other.rws");
-        forged.PayloadHash = "0000";
-        ProfileMutations.UpsertMetricObservation(profile, forged);
-        var stored = profile.MetricObservations.Single(o => o.Key == "P");
-        Assert.False(stored.Compressed);   // its only later child is set aside
         ProfileMutations.UpsertMetricObservation(profile, reread);   // re-read, or recovered when P is loaded
         Assert.Equal(3, Count(CheckpointSelector.Select(profile.MetricObservations).Representative));
-        Assert.Equal(3, Overall(profile).Value.Number);
+        Assert.Equal(3d, Overall(profile).Value.Number);
     }
 
     /// <summary>Codex review: a recorded 0 of a DLC output in an observation without that DLC is "not applicable".</summary>

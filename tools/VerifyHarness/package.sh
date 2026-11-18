@@ -1,12 +1,19 @@
 #!/usr/bin/env bash
 # Builds the development-only verification harness and zips it as RimworldStatisticsVerifyHarness/{About,1.7/Assemblies}.
-# usage: tools/VerifyHarness/package.sh <out.zip>   (same references as tools/package.sh: .refs/ or GameDir/HarmonyDll)
+# usage: tools/VerifyHarness/package.sh [--no-build] <out.zip>   (same references as tools/package.sh: .refs/ or GameDir/HarmonyDll)
 # It is never part of tools/package.sh or the publish workflow; install it next to the main mod for a verification run only.
 set -euo pipefail
 cd "$(dirname "$0")"
-out=${1:?usage: tools/VerifyHarness/package.sh <out.zip>}
+no_build=false
+if [[ "${1:-}" == "--no-build" ]]; then
+  no_build=true
+  shift
+fi
+out=${1:?usage: tools/VerifyHarness/package.sh [--no-build] <out.zip>}
 
-dotnet build RimworldStatistics.VerifyHarness.csproj -c Release -nologo -v quiet
+if [[ "$no_build" == false ]]; then
+  dotnet build RimworldStatistics.VerifyHarness.csproj -c Release -nologo -v quiet
+fi
 
 mkdir -p "$(dirname "$out")"
 out_abs="$(cd "$(dirname "$out")" && pwd)/$(basename "$out")"

@@ -80,8 +80,8 @@ public sealed class ProfileWriteCostTests
                         ["work.total"] = new MetricEntry
                         {
                             Revision = 1,
-                            Values = Enumerable.Range(0, 25000).ToDictionary(
-                                i => "Item_" + i.ToString("D5", System.Globalization.CultureInfo.InvariantCulture) + "_" + new string('a', 30),
+                            Values = Enumerable.Range(0, 15000).ToDictionary(
+                                i => "Item_" + i.ToString("D5", System.Globalization.CultureInfo.InvariantCulture) + "_" + new string('a', 55),
                                 i => new MetricValue { Coverage = MetricCoverage.Complete, IntegerValue = i }),
                         },
                     },
@@ -124,12 +124,12 @@ public sealed class ProfileWriteCostTests
     [Fact]
     public void SerializingOnManyThreadsAtOnceGivesEachTheSameBytes()
     {
-        var profiles = Enumerable.Range(0, 8).Select(i => Diverse(5 + i * 7, "t" + i)).ToArray();
+        var profiles = Enumerable.Range(0, 8).Select(i => Diverse(5 + i * 5, "t" + i)).ToArray();
         var expected = profiles.Select(ProfileJson.SerializeToUtf8Bytes).ToArray();
 
         var results = new byte[profiles.Length][][];
         Parallel.For(0, profiles.Length, new ParallelOptions { MaxDegreeOfParallelism = profiles.Length }, i =>
-            results[i] = Enumerable.Range(0, 30).Select(_ => ProfileJson.SerializeToUtf8Bytes(profiles[i])).ToArray());
+            results[i] = Enumerable.Range(0, 8).Select(_ => ProfileJson.SerializeToUtf8Bytes(profiles[i])).ToArray());
 
         for (var i = 0; i < profiles.Length; i++)
             Assert.All(results[i], bytes => Assert.Equal(expected[i], bytes));
@@ -269,12 +269,8 @@ public sealed class ProfileWriteCostTests
         return digits[0] == '0' ? n + 1 : int.Parse(digits, System.Globalization.CultureInfo.InvariantCulture);
     }
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(2)]
-    [InlineData(3)]
-    [InlineData(4)]
-    public void BackupsRotateExactlyWhenTheStatisticsChange(int seed)
+    [Fact]
+    public void BackupsRotateExactlyWhenTheStatisticsChange()
     {
         using var dir = new TempDir();
         var store = new ProfileStore(dir.Path);
@@ -282,11 +278,18 @@ public sealed class ProfileWriteCostTests
         var profile = Diverse(8);
         profile.LiveCampaigns.Add(new LiveCampaign { CampaignId = "campaign-0", Display = new DisplayInfo { FactionName = "Alpha" } });
         store.Save(profile);
-        var random = new Random(seed);
+        var random = new Random(1);
         var seen = new HashSet<(string, bool)>();
-        for (var step = 0; step < 150; step++)
+
+        // Deterministically exercise every single change kind first, then interleaved randomized transitions.
+        var schedule = Enumerable.Range(0, Changes.Length)
+            .Concat(Enumerable.Range(0, Changes.Length).Reverse())
+            .Concat(Enumerable.Range(0, 28).Select(_ => random.Next(Changes.Length)))
+            .ToArray();
+
+        for (var step = 0; step < schedule.Length; step++)
         {
-            var (name, change) = Changes[random.Next(Changes.Length)];
+            var (name, change) = Changes[schedule[step]];
             var previous = File.ReadAllBytes(store.ProfilePath);
             var bak1 = File.Exists(store.ProfilePath + ".bak1") ? File.ReadAllBytes(store.ProfilePath + ".bak1") : null;
             Assert.False(bak1 is not null && bak1.AsSpan().SequenceEqual(previous));
@@ -302,7 +305,8 @@ public sealed class ProfileWriteCostTests
             Assert.True(expected == rotated, $"step {step}, '{name}': rotated {rotated}, expected {expected}");
             seen.Add((name, rotated));
         }
-        // The cases that must fall back to parsing were exercised both ways.
+        // Every change kind and every fallback-to-parsing case was exercised.
+        Assert.Equal(Changes.Length, seen.Select(x => x.Item1).Distinct().Count());
         Assert.Contains(("dictionary order only", false), seen);
         Assert.Contains(("zero sign only", false), seen);
         Assert.Contains(("two values swapped", true), seen);

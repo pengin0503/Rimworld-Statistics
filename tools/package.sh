@@ -1,11 +1,18 @@
 #!/usr/bin/env bash
 # Builds the mod in Release and zips it as RimworldStatistics/{About,1.7/Assemblies,Languages}.
-# usage: tools/package.sh <out.zip>      (needs .refs/ from tools/fetch_dev_inputs.py refs .refs, or GameDir/HarmonyDll)
+# usage: tools/package.sh [--no-build] <out.zip>      (needs .refs/ from tools/fetch_dev_inputs.py refs .refs, or GameDir/HarmonyDll)
 set -euo pipefail
 cd "$(dirname "$0")/.."
-out=${1:?usage: tools/package.sh <out.zip>}
+no_build=false
+if [[ "${1:-}" == "--no-build" ]]; then
+  no_build=true
+  shift
+fi
+out=${1:?usage: tools/package.sh [--no-build] <out.zip>}
 
-dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release -nologo -v quiet
+if [[ "$no_build" == false ]]; then
+  dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release -nologo -v quiet
+fi
 
 mkdir -p "$(dirname "$out")"
 out_abs="$(cd "$(dirname "$out")" && pwd)/$(basename "$out")"

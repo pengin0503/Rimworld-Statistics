@@ -10,6 +10,7 @@ internal static class TestShapes
 {
     public const string Owner = "example.owner";
     public const string Counter = "completed";
+    public const string StoredUnits = "stored_units";
 
     /// <summary>
     /// The descriptor an integrated MOD counter gets on the game side (<c>OutcomeMetric.Count</c>): one "completed" counter
@@ -37,13 +38,41 @@ internal static class TestShapes
         DescriptionKey = "RWS_TestDesc_" + family,
     };
 
+    /// <summary>An integrated MOD fractional quantity (<c>stored_units</c>), summed across colonies.</summary>
+    public static ModMetricDescriptor RealMetric(string family = "quantities", int revision = 1) => new()
+    {
+        ProviderId = "rws." + family,
+        OwnerPackageId = Owner,
+        FamilyId = family,
+        MetricName = StoredUnits,
+        Source = MetricObservationSource.Checkpoint,
+        Revision = revision,
+        Category = MetricCategory.Work,
+        Overall = OverallAggregation.Sum,
+        Selection = ColonySelection.Representative,
+        RequiredPackages = [new ModPackageRequirement(Owner)],
+        LabelKey = "RWS_Test_" + family,
+        DescriptionKey = "RWS_TestDesc_" + family,
+    };
+
     /// <summary>The event family of <paramref name="descriptor"/>, built like the game side builds it.</summary>
     public static LiveFamily FamilyOf(ModMetricDescriptor descriptor) => new()
     {
         Name = descriptor.AcquisitionId,
         Revision = descriptor.Revision,
         RequiredDlc = descriptor.RequiredDlc,
-        Build = output => OptionalTransitionRecording.PutCount(output, Counter, descriptor.StableKey, descriptor.HasBreakdown),
+        Build = output =>
+        {
+            if (descriptor.MetricName == StoredUnits)
+            {
+                output.Put(descriptor.StableKey, output.Value(real: output.State.Peek(StoredUnits)?.Sum ?? 0d));
+                output.Into[descriptor.StableKey].Revision = output.State.Revision;
+            }
+            else
+            {
+                OptionalTransitionRecording.PutCount(output, Counter, descriptor.StableKey, descriptor.HasBreakdown);
+            }
+        },
     };
 
     /// <summary>A breakdown key the way an integrated MOD makes it: content owner plus DefName.</summary>
@@ -107,6 +136,10 @@ internal sealed class GameSession
     /// <summary>One committed outcome, recorded as an integrated MOD records it.</summary>
     public bool Record(ModMetricDescriptor descriptor, long amount = 1, string? key = null)
         => OptionalTransitionRecording.RecordCount(State(descriptor), TestShapes.Counter, amount, key, descriptor.HasBreakdown);
+
+    /// <summary>One committed fractional outcome, recorded as an integrated MOD records it.</summary>
+    public bool RecordReal(ModMetricDescriptor descriptor, double amount)
+        => OptionalTransitionRecording.RecordReal(State(descriptor), TestShapes.StoredUnits, amount);
 
     /// <summary>
     /// A successful save at <paramref name="tick"/>. The observation is built with the families this session knows, as the

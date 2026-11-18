@@ -34,6 +34,7 @@ public sealed class SaveXmlBuilder
     private string[]? _modIds;
     private bool _omitModIds;
     private bool _emptyQuests;
+    private readonly HashSet<string> _recordsBeforeDef = new(StringComparer.Ordinal);
 
     public SaveXmlBuilder Meta(string version, int mods = 0) { _meta = (version, mods); return this; }
 
@@ -52,6 +53,9 @@ public sealed class SaveXmlBuilder
 
     /// <summary>A history recorder with an arbitrary payload; several calls with one def add duplicates.</summary>
     public SaveXmlBuilder RecorderRaw(string def, string element, string payload) { _recorders.Add((def, element, payload)); return this; }
+
+    /// <summary>Writes the recorder payload element before &lt;def&gt; for this recorder def.</summary>
+    public SaveXmlBuilder RecordsBeforeDef(string def) { _recordsBeforeDef.Add(def); return this; }
 
     /// <summary>An empty quest list, as a game without quests saves it.</summary>
     public SaveXmlBuilder EmptyQuests() { _emptyQuests = true; return this; }
@@ -193,18 +197,23 @@ public sealed class SaveXmlBuilder
                 new XElement("li", new XAttribute("Class", "StandardLetter"), new XElement("def", "NegativeEvent"), new XElement("text", "崩落")))));
         var groups = new XElement("autoRecorderGroups");
         var custom = _recorders.Select(r => r.Def).ToHashSet();
+        XElement RecorderItem(string def, string element, string payload)
+            => _recordsBeforeDef.Contains(def)
+                ? new XElement("li", new XElement(element, payload), new XElement("def", def))
+                : new XElement("li", new XElement("def", def), new XElement(element, payload));
+
         var wealthRecorders = new XElement("recorders");
         if (!custom.Contains("Wealth_Items"))
-            wealthRecorders.Add(new XElement("li", new XElement("def", "Wealth_Items"), new XElement("records", Convert.ToBase64String(FloatBytes(123456f, 999999f)))));
+            wealthRecorders.Add(RecorderItem("Wealth_Items", "records", Convert.ToBase64String(FloatBytes(123456f, 999999f))));
         if (_wealth is { } w)
-            wealthRecorders.AddFirst(new XElement("li", new XElement("def", "Wealth_Total"), new XElement(w.Element, w.Payload)));
+            wealthRecorders.AddFirst(RecorderItem("Wealth_Total", w.Element, w.Payload));
         var populationRecorders = new XElement("recorders");
         if (!custom.Contains("FreeColonists"))
-            populationRecorders.Add(new XElement("li", new XElement("def", "FreeColonists"), new XElement("records", Convert.ToBase64String(FloatBytes(3f, 4f)))));
+            populationRecorders.Add(RecorderItem("FreeColonists", "records", Convert.ToBase64String(FloatBytes(3f, 4f))));
         foreach (var r in _recorders)
         {
             var target = r.Def.StartsWith("Wealth", StringComparison.Ordinal) ? wealthRecorders : populationRecorders;
-            target.Add(new XElement("li", new XElement("def", r.Def), new XElement(r.Element, r.Payload)));
+            target.Add(RecorderItem(r.Def, r.Element, r.Payload));
         }
         groups.Add(new XElement("li", new XElement("def", "Wealth"), wealthRecorders));
         groups.Add(new XElement("li", new XElement("def", "Population"), populationRecorders));

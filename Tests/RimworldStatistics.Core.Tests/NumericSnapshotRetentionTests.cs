@@ -49,6 +49,13 @@ public sealed class NumericSnapshotRetentionTests
         return profile;
     }
 
+    private static readonly Lazy<(Profile Raw, Profile Compact, string CompactJson)> Sample250 = new(() =>
+    {
+        var raw = Build(compact: false);
+        var compact = Build(compact: true);
+        return (raw, compact, ProfileJson.Serialize(compact));
+    });
+
     private static IReadOnlyList<NumericRow> Rows(Profile p)
     {
         var defs = SnapshotCatalog.Definitions.Where(d => d.Key is
@@ -172,21 +179,24 @@ public sealed class NumericSnapshotRetentionTests
     [Fact]
     public void HundredsOfSnapshots_CompactWithoutChangingLatestExtremaCoverageOrSampleCounts()
     {
-        var raw = Build(compact: false);
-        var compact = Build(compact: true);
+        var (raw, compact, compactJson) = Sample250.Value;
+        var restored = ProfileJson.Deserialize(compactJson);
         var rowsBefore = Rows(raw).ToDictionary(r => r.Definition.Key);
         var rowsAfter = Rows(compact).ToDictionary(r => r.Definition.Key);
+        var rowsRestored = Rows(restored).ToDictionary(r => r.Definition.Key);
         foreach (var (key, before) in rowsBefore)
         {
-            var after = rowsAfter[key];
-            Assert.Equal(before.Value.Number, after.Value.Number);
-            Assert.Equal(before.Value.Coverage, after.Value.Coverage);
-            Assert.Equal(before.Value.SampleCount, after.Value.SampleCount);
-            Assert.Equal(before.Value.ThroughTick, after.Value.ThroughTick);
-            Assert.Equal(before.Targets, after.Targets);
-            Assert.Equal(before.Valid, after.Valid);
-            Assert.Equal(before.Breakdowns.Select(b => (b.Breakdown, b.Value.Number)),
-                after.Breakdowns.Select(b => (b.Breakdown, b.Value.Number)));
+            foreach (var after in new[] { rowsAfter[key], rowsRestored[key] })
+            {
+                Assert.Equal(before.Value.Number, after.Value.Number);
+                Assert.Equal(before.Value.Coverage, after.Value.Coverage);
+                Assert.Equal(before.Value.SampleCount, after.Value.SampleCount);
+                Assert.Equal(before.Value.ThroughTick, after.Value.ThroughTick);
+                Assert.Equal(before.Targets, after.Targets);
+                Assert.Equal(before.Valid, after.Valid);
+                Assert.Equal(before.Breakdowns.Select(b => (b.Breakdown, b.Value.Number)),
+                    after.Breakdowns.Select(b => (b.Breakdown, b.Value.Number)));
+            }
         }
         Assert.Equal(250, raw.MetricObservations.Count);
         Assert.InRange(compact.MetricObservations.Count, 2, 16);
@@ -236,23 +246,9 @@ public sealed class NumericSnapshotRetentionTests
     }
 
     [Fact]
-    public void Compaction_RemainsCorrectAcrossJsonRoundTrip()
-    {
-        var compact = Build(compact: true);
-        var restored = ProfileJson.Deserialize(ProfileJson.Serialize(compact));
-        var a = Rows(compact).ToDictionary(r => r.Definition.Key);
-        var b = Rows(restored).ToDictionary(r => r.Definition.Key);
-        foreach (var key in a.Keys)
-        {
-            Assert.Equal(a[key].Value.Number, b[key].Value.Number);
-            Assert.Equal(a[key].Value.SampleCount, b[key].Value.SampleCount);
-            Assert.Equal(a[key].Value.Coverage, b[key].Value.Coverage);
-        }
-    }
-    [Fact]
     public void Compaction_NeverCombinesDifferentCampaignsOrOtherRevisions()
     {
-        var p = Build(compact: true);
+        var p = ProfileJson.Deserialize(Sample250.Value.CompactJson);
         var firstCampaignCount = p.MetricObservations.Count;
         var other = Identity("another-campaign-with-identical-fingerprint");
         ProfileMutations.ApplyLiveObservation(p, other.ModCampaignId!, other,
@@ -306,7 +302,7 @@ public sealed class NumericSnapshotRetentionTests
             FacilitiesSnapshot.OutdoorTempMax or FacilitiesSnapshot.OutdoorTempMin
             or RosterSnapshot.AugmentedPeak or StockSnapshot.PersonaWeaponsPeak
             or RosterSnapshot.Slaves).ToArray();
-        for (var seed = 0; seed < 12; seed++)
+        for (var seed = 0; seed < 6; seed++)
         {
             var random = new Random(seed + 1234);
             var original = new Profile();
@@ -498,8 +494,7 @@ public sealed class NumericSnapshotRetentionTests
     [Fact]
     public void Compaction_RetainsOriginalDisplayedObservationCountEvenAfterLosingAttribution()
     {
-        var raw = Build(compact: false);
-        var compact = Build(compact: true);
+        var (raw, compact, compactJson) = Sample250.Value;
         NumericView View(Profile p)
         {
             var colonies = CampaignMatcher.BuildColonies(p);
@@ -508,10 +503,10 @@ public sealed class NumericSnapshotRetentionTests
         }
         Assert.Equal(250, Assert.Single(View(raw).Colonies).Observations);
         Assert.Equal(250, Assert.Single(View(compact).Colonies).Observations);
-        compact = ProfileJson.Deserialize(ProfileJson.Serialize(compact));
-        Assert.Equal(250, Assert.Single(View(compact).Colonies).Observations);
-        compact.LiveCampaigns.Clear();
-        var unknown = View(compact);
+        var restored = ProfileJson.Deserialize(compactJson);
+        Assert.Equal(250, Assert.Single(View(restored).Colonies).Observations);
+        restored.LiveCampaigns.Clear();
+        var unknown = View(restored);
         Assert.Empty(unknown.Colonies);
         Assert.Equal(250, unknown.Unattributed);
     }

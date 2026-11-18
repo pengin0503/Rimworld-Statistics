@@ -59,14 +59,21 @@ public sealed class EventRecordingContractTests
     {
         // Same Def, same tick, same amount: without a real id nothing says they were one event.
         var metric = TestShapes.CounterMetric(breakdown: true);
-        var game = GameSession.NewGame(Colony, TestShapes.FamilyOf(metric));
+        var realMetric = TestShapes.RealMetric();
+        var game = GameSession.NewGame(Colony, TestShapes.FamilyOf(metric), TestShapes.FamilyOf(realMetric));
+        Assert.False(game.RecordReal(realMetric, 0));
+        Assert.False(game.RecordReal(realMetric, -0.5));
+        Assert.False(game.RecordReal(realMetric, double.NaN));
         Assert.True(game.Record(metric, 1, TestShapes.DefKey("A")));
         Assert.True(game.Record(metric, 1, TestShapes.DefKey("A")));
+        Assert.True(game.RecordReal(realMetric, 0.35));
+        Assert.True(game.RecordReal(realMetric, 0.45));
 
         var save = game.Save(100, "c1");
 
         Assert.Equal(2, Scalar(save, metric).IntegerValue);
         Assert.Equal(2, save.Observation.Metrics[metric.StableKey].Values[TestShapes.DefKey("A")].IntegerValue);
+        Assert.Equal(0.8d, Scalar(save, realMetric).RealValue!.Value, 6);
     }
 
     [Fact]

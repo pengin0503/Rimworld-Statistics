@@ -17,13 +17,4 @@ public sealed class VfeMedieval2HarvestTests
         int placed, bool playerOwned, bool matchingApiary, long expected)
         => Assert.Equal(expected,
             VfeMedieval2Rules.HoneyPlaced(placed, playerOwned, matchingApiary));
-
-    [Fact]
-    public void TwoPartialHoneyPlacementsSumToActualOutput()
-    {
-        var family = new FamilyState {Revision=1, SinceTick=0, ThroughTick=100, Continuous=true};
-        OptionalTransitionRecording.RecordCount(family,"honey",4,key:"honey.owner/Honey",withBreakdown:true);
-        OptionalTransitionRecording.RecordCount(family,"honey",2,key:"honey.owner/Honey",withBreakdown:true);
-        Assert.Equal(6, family.Peek("honey")!.N);
-    }
 }

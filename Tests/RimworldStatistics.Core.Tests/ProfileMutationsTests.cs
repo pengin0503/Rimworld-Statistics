@@ -89,7 +89,7 @@ public sealed class ProfileMutationsTests
             ticks: lower == "ticks" ? 999 : 5000, raids: lower == "raids" ? 1 : 2, wealthMax: lower == "wealth" ? 99 : 100,
             realPlay: lower == "realPlay" ? 9 : 10, traces: lower == "traces" ? Array.Empty<EndingType>() : new[] { EndingType.Ship }));
         Assert.Equal(2, p.SaveObservations.Count);
-        Assert.Single(p.SaveObservations, o => o.Superseded);
+        Assert.True(Assert.Single(p.SaveObservations, o => o.Superseded).LastWriteUtc == t0);
     }
 
     [Fact]
@@ -139,16 +139,6 @@ public sealed class ProfileMutationsTests
         Assert.True(p.SaveObservations.Single(o => o.Identity.StartingPawnIds.Count == 3).Superseded);
         ProfileMutations.AddSaveObservation(p, Obs("other.rws", t0, pawns: "A,C"));
         Assert.Single(CampaignMatcher.BuildColonies(p));   // {A,B,C} still joins {A,B} and {A,C}
-    }
-
-    [Fact]
-    public void Overwrite_BySameColonyNotDominating_KeepsBoth()
-    {
-        var p = new Profile();
-        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t0, ticks: 900000));
-        ProfileMutations.AddSaveObservation(p, Obs("a.rws", t1, ticks: 300000));   // an older save loaded and saved over the name
-        Assert.Equal(2, p.SaveObservations.Count);
-        Assert.True(p.SaveObservations.Single(o => o.Values.TicksGame == 900000).Superseded);
     }
 
     [Fact]

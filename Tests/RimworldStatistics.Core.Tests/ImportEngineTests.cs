@@ -239,14 +239,14 @@ public sealed class ImportEngineTests
         {
             if (p.Done == 5)
             {
-                Assert.False(SpinWait.SpinUntil(() => session.LastSaveError is not null, TimeSpan.FromMilliseconds(400)),
-                    "A fast batch queued an intermediate profile write.");
+                session.WaitForBackgroundWrite();
+                Assert.Null(session.LastSaveError);
                 clock.Advance(TimeSpan.FromSeconds(6));
             }
             if (p.Done == 6)
             {
-                Assert.True(SpinWait.SpinUntil(() => session.LastSaveError is not null, TimeSpan.FromSeconds(5)),
-                    "A slow batch did not queue an intermediate profile write.");
+                session.WaitForBackgroundWrite();
+                Assert.NotNull(session.LastSaveError);
                 Directory.Delete(primary);
                 cts.Cancel();
             }

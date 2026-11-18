@@ -18,13 +18,4 @@ public sealed class VnpeGrinderStatisticsTests
         float amount, bool productionSucceeded, bool netMatches, bool playerOwned, double expected)
         => Assert.Equal(expected, VnpeGrinderRules.AcceptedPaste(
             amount, productionSucceeded, netMatches, playerOwned), 6);
-
-    [Fact]
-    public void RealPastureVolumesStayFractional()
-    {
-        var s = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 100, Continuous = true };
-        Assert.True(OptionalTransitionRecording.RecordReal(s, "stored", 0.25));
-        Assert.True(OptionalTransitionRecording.RecordReal(s, "stored", 0.75));
-        Assert.Equal(1d, s.Peek("stored")!.Sum!.Value, 6);
-    }
 }

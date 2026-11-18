@@ -39,155 +39,56 @@ on:
 permissions:
   contents: read
 
+# Cancel superseded runs on the same PR, while never cancelling push runs on main (required by publish.yml).
+concurrency:
+  group: numeric-verification-${{ github.workflow }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   static-and-unit:
     runs-on: ubuntu-latest
     env:
       UseNuGetRefs: 'true'
+      DOTNET_NOLOGO: 'true'
+      DOTNET_SKIP_FIRST_TIME_EXPERIENCE: 'true'
+      DOTNET_CLI_TELEMETRY_OPTOUT: 'true'
     steps:
       - uses: actions/checkout@v4
+
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
-      # Read-only pinned public sources. No target assembly is bundled.
-      - uses: actions/checkout@v4
+
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
         with:
-          repository: pengin0503/rimworld-Smart-Apparel-Upgrade
-          ref: 5e910b82281fa6d5a4ebc3bcb5b88b1610b1dba8
-          path: .devinputs/integrated/sau
-          sparse-checkout: |
-            About/About.xml
-            Source/SmartApparelUpgrade.cs
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
+          path: ~/.nuget/packages
+          key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj', 'Directory.Build.props', 'global.json') }}
+          restore-keys: |
+            nuget-${{ runner.os }}-
+
+      - name: Cache pinned optional MOD audit inputs
+        uses: actions/cache@v4
         with:
-          repository: pengin0503/Rimworld-Recruitment
-          ref: cff2f296bc152ee61000d132107767977193a243
-          path: .devinputs/integrated/recruitment
-          sparse-checkout: |
-            About/About.xml
-            Source/Recruitment/GameComponent_Recruitment.cs
-            Source/Recruitment/RecruitmentDrive.cs
-            Source/Recruitment/Recruitment.csproj
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
+          path: .devinputs/integrated
+          key: integrated-mods-${{ hashFiles('tools/IntegratedModAudit/fetch_pinned_mods.sh') }}
+
+      - name: Cache immutable reference metadata indexes
+        uses: actions/cache@v4
         with:
-          repository: Dubwise56/Dubs-Bad-Hygiene
-          ref: 96ec4b51efaf9ef4baa98aa832a8078be09d3f45
-          path: .devinputs/integrated/dbh
-          sparse-checkout: |
-            About/About.xml
-            1.7/Assemblies/BadHygiene.dll
-            1.7/Languages/English/Keyed/DubsHygiene.xml
-            1.7/Defs/ThingDefs_Buildings/BuildingsD_WaterManagement.xml
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Dubwise56/Dubs-Bad-Hygiene
-          ref: f949f17b0c8f71e3621ff7c299b5e49e534e27a6
-          path: .devinputs/integrated/dbh-3258
-          sparse-checkout: 1.7/Assemblies/BadHygiene.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Zaljerem/Hospitality
-          ref: d465bdc07b88d77eb3d158c215af388dcf771863
-          path: .devinputs/integrated/hospitality
-          sparse-checkout: |
-            About/About.xml
-            Source/Hospitality_MapComponent.cs
-            Source/JobDriver_BuyItem.cs
-            Source/Utilities/GuestUtility.cs
-            Source/LordJob_VisitColony.cs
-            Source/LordToil_VisitPoint.cs
-            Source/CompGuest.cs
-            Source/Building_GuestBed.cs
-            Source/IncidentWorker_VisitorGroup.cs
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaPsycastsExpanded
-          ref: 379b3235a4e91fa03d589af544fd8d5845d23690
-          path: .devinputs/integrated/vpe
-          sparse-checkout: |
-            About/About.xml
-            1.7/Source/VanillaPsycastsExpanded/Hediff_PsycastAbilities.cs
-            1.7/Source/VanillaPsycastsExpanded/AbilityExtension_Psycast.cs
-            1.7/Assemblies/VanillaPsycastsExpanded.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaExpandedFramework
-          ref: ee22c9fe0d3460ce7cecf625ab9926b0d9e8eb5c
-          path: .devinputs/integrated/vef-outposts
-          sparse-checkout: |
-            Source/Outposts/Outpost/Outpost.cs
-            Source/Outposts/Outpost/Outpost_Deliveries.cs
-            1.7/Assemblies/Outposts.dll
-            Source/VEF/Abilities/Misc/Ability.cs
-            Source/VEF/Abilities/ModExtensions/AbilityExtension_AbilityMod.cs
-            1.7/Assemblies/VEF.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaOutpostsExpanded
-          ref: 2b4d6869398719fd071f1e6186473b3433dd95b1
-          path: .devinputs/integrated/voe
-          sparse-checkout: |
-            loadFolders.xml
-            1.6/Source/VOE/Outpost_Town.cs
-            1.6/Assemblies/VOE.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaTradingExpanded
-          ref: 85524a235b4ff6dc7b25858420518aa79ef35442
-          path: .devinputs/integrated/vte
-          sparse-checkout: |
-            About/About.xml
-            loadFolders.xml
-            1.6/Source/VanillaTradingExpanded/Banks/Bank.cs
-            1.6/Source/VanillaTradingExpanded/TradingManager.cs
-            1.6/Source/VanillaTradingExpanded/AI/LordJob_GrabItemsAndLeave.cs
-            1.6/Source/VanillaTradingExpanded/Misc/TransactionProcess.cs
-            1.6/Source/VanillaTradingExpanded/UI/Window_PerformTransactionCosts.cs
-            1.6/Assemblies/VanillaTradingExpanded.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      # These are the exact 1.6 binaries selected by each upstream 1.7 loadFolders.xml.
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaRacesExpanded-Saurid
-          ref: 021b9f684c7670ef325bc33e17e0a692367913a5
-          path: .devinputs/integrated/saurid
-          sparse-checkout: |
-            About/About.xml
-            loadFolders.xml
-            1.6/Source/VRESaurids/Comp_HumanHatcher.cs
-            1.6/Assemblies/VRESaurids.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - uses: actions/checkout@v4
-        with:
-          repository: Vanilla-Expanded/VanillaRacesExpanded-Phytokin
-          ref: 2c2eb8dd18cc0cad02b6f68b5b5b657aec25d62b
-          path: .devinputs/integrated/phytokin
-          sparse-checkout: |
-            About/About.xml
-            loadFolders.xml
-            1.6/Source/VanillaRacesExpanded-Phytokin/VanillaRacesExpanded-Phytokin/Building/Building_SaplingChild.cs
-            1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll
-          sparse-checkout-cone-mode: false
-          persist-credentials: false
-      - name: Audit actual 1.7-selected Saurid and Phytokin DLLs (read-only)
+          path: .devinputs/ref-indexes
+          key: ref-indexes-${{ runner.os }}-${{ hashFiles('tools/RefMetadataIndex/**', 'Source/RimworldStatistics/RimworldStatistics.csproj', 'tools/IntegratedModAudit/fetch_pinned_mods.sh') }}
+
+      # Read-only pinned public sources. No target assembly is bundled; cached files are SHA-256 verified.
+      - name: Fetch or verify pinned optional MOD audit inputs (read-only)
+        run: bash tools/IntegratedModAudit/fetch_pinned_mods.sh
+
+      - name: Restore and build all CI assemblies in parallel
+        run: |
+          dotnet restore tools/ci.slnx -p:UseNuGetRefs=true
+          dotnet build tools/ci.slnx -c Release --no-restore -m -p:UseNuGetRefs=true
+
+      - name: Audit optional MOD contracts and pinned public IL (read-only)
         shell: bash
         run: |
           set -euo pipefail
@@ -195,18 +96,15 @@ jobs:
           p=.devinputs/integrated/phytokin
           python3 tools/IntegratedModAudit/check_race_birth_contract.py "$s" "$p"
           sha256sum "$s/1.6/Assemblies/VRESaurids.dll" "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll"
-          dotnet run -c Release --project tools/IntegratedModAudit/RaceBirthIlAudit/RaceBirthIlAudit.csproj -- \
+          dotnet tools/IntegratedModAudit/RaceBirthIlAudit/bin/Release/net10.0/RaceBirthIlAudit.dll \
             "$s/1.6/Assemblies/VRESaurids.dll" "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll"
           # Wrong target versions must fail closed, not silently pass an unrelated DLL.
-          if dotnet run --no-build -c Release --project tools/IntegratedModAudit/RaceBirthIlAudit/RaceBirthIlAudit.csproj -- \
+          if dotnet tools/IntegratedModAudit/RaceBirthIlAudit/bin/Release/net10.0/RaceBirthIlAudit.dll \
             "$p/1.6/Assemblies/VanillaRacesExpanded-Phytokin.dll" "$s/1.6/Assemblies/VRESaurids.dll"; then
             echo "Race birth IL audit accepted swapped/incorrect target assemblies" >&2
             exit 1
           fi
-      - name: Verify source-pinned optional MOD contracts and DBH public IL (read-only)
-        shell: bash
-        run: |
-          set -euo pipefail
+
           python3 tools/IntegratedModAudit/check_outposts_contract.py .devinputs/integrated/vef-outposts .devinputs/integrated/voe
           python3 tools/IntegratedModAudit/check_vpe_contract.py .devinputs/integrated/vpe .devinputs/integrated/vef-outposts
           vpe=.devinputs/integrated/vpe/1.7/Assemblies/VanillaPsycastsExpanded.dll
@@ -215,43 +113,36 @@ jobs:
           test "$(stat -c%s "$vef")" -eq 1567744
           printf '646245929f2a2d3121de8298abb602fa  %s\n' "$vpe" | md5sum -c -
           printf 'c22466f560cec75f6f0092ab52067da4  %s\n' "$vef" | md5sum -c -
-          dotnet run -c Release --project tools/IntegratedModAudit/VpeCastIlAudit/VpeCastIlAudit.csproj -- "$vpe" "$vef"
+          dotnet tools/IntegratedModAudit/VpeCastIlAudit/bin/Release/net10.0/VpeCastIlAudit.dll "$vpe" "$vef"
+
           python3 tools/IntegratedModAudit/check_vte_contract.py .devinputs/integrated/vte
-          # R2 observed this same 153088-byte DLL under the v1.6 folder
-          # selected by loadFolders for RimWorld 1.7. This is an exact
-          # binary identity check, not a server-side R2 mutation.
+          # Exact binary identity check for the v1.6 DLL selected by loadFolders for RimWorld 1.7.
           vte=.devinputs/integrated/vte/1.6/Assemblies/VanillaTradingExpanded.dll
           test "$(stat -c%s "$vte")" -eq 153088
           printf 'b76e66b58f02b28f40bb7446970bcb1e  %s\n' "$vte" | md5sum -c -
-          dotnet run -c Release --project tools/IntegratedModAudit/VteIlAudit/VteIlAudit.csproj -- "$vte"
+          dotnet tools/IntegratedModAudit/VteIlAudit/bin/Release/net10.0/VteIlAudit.dll "$vte"
+
           python3 tools/IntegratedModAudit/check_sau_contract.py .devinputs/integrated/sau
           python3 tools/IntegratedModAudit/check_recruitment_contract.py .devinputs/integrated/recruitment
           python3 tools/IntegratedModAudit/check_hospitality_contract.py .devinputs/integrated/hospitality
           python3 tools/IntegratedModAudit/check_dbh_contract.py .devinputs/integrated/dbh
-          dotnet run -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll
-          dotnet run --no-build -c Release --project tools/IntegratedModAudit/BadHygieneIlAudit/BadHygieneIlAudit.csproj -- .devinputs/integrated/dbh-3258/1.7/Assemblies/BadHygiene.dll
-      - name: Assert one-MOD packaging, old-addon coexistence and unchanged metric IDs
-        run: python3 tools/IntegratedModAudit/check_embedded_integrations.py
-      - name: Hooks never call Faction.OfPlayer (it logs an error during world generation)
-        run: python3 tools/check_player_faction_access.py
-      - name: Compile read-only local save-structure verification tool
-        run: python3 -m py_compile tools/check_private_save_shapes.py
-      - name: Unit-test independent XML/deflate private-save verifier
-        run: python3 -m unittest discover -s tools/tests -p 'test_private_save_shapes.py' -v
-      - name: Research XML read-only structural and privacy regression tests
-        run: python3 -m unittest discover -s tools/PrivateSaveProbe -p 'test_private_research_probe.py' -v
-      - name: Verify historical-recovery inventory decisions against source
-        run: python3 -m unittest discover -s tools/tests -p 'test_historical_recovery_inventory.py' -v
-      - name: Compile opt-in read-only production .NET original-save verifier
-        run: dotnet build tools/RealSaveImport/RealSaveImport.csproj -c Release --nologo -p:UseNuGetRefs=true
-      - name: Build preserved independent SDK development sample
-        run: dotnet build examples/StatisticsSdkSample/StatisticsSdkSample.csproj -c Release --nologo -p:UseNuGetRefs=true
-      - name: Compile development-only real-game event probe and its analyzer (not packaged)
+          dotnet tools/IntegratedModAudit/BadHygieneIlAudit/bin/Release/net10.0/BadHygieneIlAudit.dll \
+            .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll \
+            .devinputs/integrated/dbh-3258/1.7/Assemblies/BadHygiene.dll
+
+      - name: Static packaging/hook guards and Python tool unit tests
+        shell: bash
         run: |
-          dotnet build tools/RealGameEventProbe/RealGameEventProbe.csproj -c Release --nologo -p:UseNuGetRefs=true
-          dotnet build tools/RealGameEventProbe/Analyzer/RealGameEventAnalyzer.csproj -c Release --nologo
+          set -euo pipefail
+          python3 tools/IntegratedModAudit/check_embedded_integrations.py
+          python3 tools/check_player_faction_access.py
+          python3 -m py_compile tools/check_private_save_shapes.py
+          python3 -m unittest discover -s tools/tests -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/PrivateSaveProbe -p 'test_private_research_probe.py' -v
+
       - name: Core unit tests (no game launch)
-        run: dotnet test Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --nologo -p:UseNuGetRefs=true
+        run: dotnet test --project Tests/RimworldStatistics.Core.Tests/RimworldStatistics.Core.Tests.csproj -c Release --no-build
+
       # The complete benchmark suite is intentionally opt-in / weekly: on PRs and regular pushes
       # preserve fast compile, all xUnit cases, API audits, key checks and package verification.
       - name: External SDK event allocation and throughput benchmark
@@ -283,74 +174,49 @@ jobs:
       - name: Matched synthetic breakdown lookup A/B benchmark
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
         run: dotnet run -c Release --project tools/BreakdownLookupBenchmark/BreakdownLookupBenchmark.csproj --no-launch-profile
+
       - name: Translation key consistency
         run: bash tools/check_keys.sh
-      - name: Build production ZIP
-        run: bash tools/package.sh "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
-      - name: Validate host-only SDK DLL ownership and package contents
-        run: python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
-      - name: Build separate development verification harness
-        run: bash tools/VerifyHarness/package.sh "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
-      - name: Stage standalone Windows verification launcher with developer packages
-        run: cp tools/VerifyHarness/launch-windows.ps1 "$RUNNER_TEMP/RWS-Verify-Windows.ps1"
-      - name: Static Harmony patch targets and injected argument types (1.7.4985 reference metadata)
+
+      - name: Package and validate production and harness ZIPs
         shell: bash
         run: |
           set -euo pipefail
-          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
-          test -f "$game_ref"
-          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- "$game_ref" "$RUNNER_TEMP/ref-index"
-          python3 tools/inspect_reference_api.py "$RUNNER_TEMP/ref-index/chunk-0000.json.gz"
-          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/vpe/1.7/Assemblies/VanillaPsycastsExpanded.dll "$RUNNER_TEMP/vpe-index"
-          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/vef-outposts/1.7/Assemblies/Outposts.dll "$RUNNER_TEMP/outposts-index"
-          # VPE's psycast hediff derives from a VEF class: its index lets the check prove the __instance base type.
-          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/vef-outposts/1.7/Assemblies/VEF.dll "$RUNNER_TEMP/vef-index"
-          dotnet run -c Release --project tools/RefMetadataIndex/RefMetadataIndex.csproj -- .devinputs/integrated/voe/1.6/Assemblies/VOE.dll "$RUNNER_TEMP/voe-index"
-          dotnet run -c Release --project tools/PatchTargetCheck/PatchTargetCheck.csproj -- 1.7/Assemblies/RimworldStatistics.dll "$RUNNER_TEMP/ref-index" \
-            --index "$RUNNER_TEMP/vpe-index" --index "$RUNNER_TEMP/vef-index" --target 'VpeMetricPatch:VanillaPsycastsExpanded.Hediff_PsycastAbilities:ChangeLevel:int32' \
+          bash tools/package.sh --no-build "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
+          bash tools/VerifyHarness/package.sh --no-build "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+          cp tools/VerifyHarness/launch-windows.ps1 "$RUNNER_TEMP/RWS-Verify-Windows.ps1"
+          python3 tools/check_sdk_package.py "$RUNNER_TEMP/RimworldStatistics-unverified.zip" \
+            --verify-contents \
+            --harness-zip "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
+
+      - name: Static Harmony patch targets and self-test (1.7.4985 reference metadata)
+        shell: bash
+        run: |
+          set -euo pipefail
+          idx=.devinputs/ref-indexes
+          if [[ ! -s "$idx/ref-index/chunk-0000.json.gz" \
+             || ! -s "$idx/vpe-index/chunk-0000.json.gz" \
+             || ! -s "$idx/outposts-index/chunk-0000.json.gz" \
+             || ! -s "$idx/vef-index/chunk-0000.json.gz" \
+             || ! -s "$idx/voe-index/chunk-0000.json.gz" ]]; then
+            game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+            test -f "$game_ref"
+            dotnet tools/RefMetadataIndex/bin/Release/net10.0/RefMetadataIndex.dll \
+              "$game_ref" "$idx/ref-index" \
+              .devinputs/integrated/vpe/1.7/Assemblies/VanillaPsycastsExpanded.dll "$idx/vpe-index" \
+              .devinputs/integrated/vef-outposts/1.7/Assemblies/Outposts.dll "$idx/outposts-index" \
+              .devinputs/integrated/vef-outposts/1.7/Assemblies/VEF.dll "$idx/vef-index" \
+              .devinputs/integrated/voe/1.6/Assemblies/VOE.dll "$idx/voe-index"
+          fi
+          dotnet tools/PatchTargetCheck/bin/Release/net10.0/PatchTargetCheck.dll 1.7/Assemblies/RimworldStatistics.dll "$idx/ref-index" \
+            --index "$idx/vpe-index" --index "$idx/vef-index" --target 'VpeMetricPatch:VanillaPsycastsExpanded.Hediff_PsycastAbilities:ChangeLevel:int32' \
             --target 'VpeCastMetricPatch:VanillaPsycastsExpanded.AbilityExtension_Psycast:Cast:[Assembly-CSharp]RimWorld.Planet.GlobalTargetInfo[]|[VEF]VEF.Abilities.Ability' \
-            --index "$RUNNER_TEMP/outposts-index" --index "$RUNNER_TEMP/voe-index" \
+            --index "$idx/outposts-index" --index "$idx/voe-index" \
             --target 'OutpostProduceMetricPatch:Outposts.Outpost:Produce:' \
             --target 'OutpostProduceMetricPatch:VOE.Outpost_Town:Produce:' \
             --target 'OutpostDeliverMetricPatch:Outposts.Outpost:Deliver:[mscorlib]System.Collections.Generic.IEnumerable`1<[Assembly-CSharp]Verse.Thing>'
-      - name: Patch target check refuses synthetic type mismatches
-        run: bash tools/PatchTargetCheckSelfTest/run.sh
-      - name: Check ZIP content
-        shell: bash
-        run: |
-          set -euo pipefail
-          unzip -t "$RUNNER_TEMP/RimworldStatistics-unverified.zip"
-          unzip -t "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
-          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-unverified.zip" | grep -E '(^|/)(Recruitment\.dll|Recruitment\.csproj|\.devinputs)(/|$)'; then
-            echo 'Optional Recruitment dependency or build input leaked into production ZIP' >&2
-            exit 1
-          fi
-          if unzip -Z -1 "$RUNNER_TEMP/RimworldStatistics-unverified.zip" | grep -F 'VerifyHarness'; then
-            echo 'Development harness leaked into production ZIP' >&2
-            exit 1
-          fi
-          python3 - "$RUNNER_TEMP/RimworldStatistics-unverified.zip" <<'PY'
-          import sys, zipfile
-          from pathlib import Path
-          with zipfile.ZipFile(sys.argv[1]) as z:
-              path_set = set(z.namelist())
-              for about_file in ("About/About.xml", "About/Preview.png", "About/PublishedFileId.txt"):
-                  member = f"RimworldStatistics/{about_file}"
-                  if member not in path_set:
-                      raise SystemExit(f"Missing About file in production ZIP: {member}")
-                  if z.read(member) != Path(about_file).read_bytes():
-                      raise SystemExit(f"About file content mismatch in production ZIP: {member}")
-              published_id = z.read("RimworldStatistics/About/PublishedFileId.txt").decode("ascii").strip()
-              if not published_id.isdigit():
-                  raise SystemExit(f"Invalid PublishedFileId.txt content: {published_id!r}")
-          expected = {
-              f"RimworldStatistics/{p.as_posix()}"
-              for p in Path("Languages").glob("*/Keyed/*.xml")
-          }
-          missing = sorted(expected - path_set)
-          if missing:
-              raise SystemExit(f"Missing keyed XMLs in production ZIP: {missing}")
-          PY
+          bash tools/PatchTargetCheckSelfTest/run.sh --no-build
+
       - uses: actions/upload-artifact@v4
         with:
           name: RimworldStatistics-unverified-${{ github.sha }}
@@ -366,6 +232,9 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: tools/VerifyHarness/launch-windows.ps1
+          sparse-checkout-cone-mode: false
       - name: Guard isolated test profile and idempotent mod-list setup
         shell: pwsh
         run: |

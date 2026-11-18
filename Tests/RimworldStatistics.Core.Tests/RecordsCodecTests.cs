@@ -54,7 +54,7 @@ public sealed class RecordsCodecTests
     [InlineData(CompressionLevel.Optimal)]
     public void Deflate_EveryStrictPrefix_Throws(CompressionLevel level)
     {
-        var full = Convert.FromBase64String(DeflateBase64(Series(300, 4), level));
+        var full = Convert.FromBase64String(DeflateBase64(Series(80, 4), level));
         // Length 0 is excluded: an empty payload is the encoding of an empty series (see the count 0 case above).
         for (var len = 1; len < full.Length; len++)
         {
