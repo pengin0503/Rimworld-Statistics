@@ -84,9 +84,7 @@ jobs:
         run: bash tools/IntegratedModAudit/fetch_pinned_mods.sh
 
       - name: Restore and build all CI assemblies in parallel
-        run: |
-          dotnet restore tools/ci.slnx -p:UseNuGetRefs=true
-          dotnet build tools/ci.slnx -c Release --no-restore -m -p:UseNuGetRefs=true
+        run: dotnet build tools/ci.slnx -c Release -m -p:UseNuGetRefs=true
 
       - name: Audit optional MOD contracts and pinned public IL (read-only)
         shell: bash
