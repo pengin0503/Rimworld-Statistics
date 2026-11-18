@@ -24,15 +24,34 @@ public static class MakeDownedMetricPatch
     public static void Prefix(Pawn ___pawn, DamageInfo? dinfo, Hediff hediff, out DownFacts? __state)
     {
         __state = null;
-        if (___pawn == null || ___pawn.Downed || ___pawn.Dead || !GameFacts.AnyRecording(DownFamily.Name, RaidFamily.Name))
+        if (___pawn == null || ___pawn.Downed || ___pawn.Dead)
+            return;
+        if (GameFacts.PlayerFaction is not { } playerFaction
+            || (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction)))
+            return;
+        bool freeColonist;
+        bool hostile;
+        try
+        {
+            freeColonist = GameFacts.IsFreeColonistSafe(___pawn);
+            hostile = ___pawn.HostileTo(playerFaction);
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, DownFamily.Name, RaidFamily.Name);
+            return;
+        }
+        if (!freeColonist && !hostile)
+            return;
+        if (!GameFacts.AnyRecording(DownFamily.Name, RaidFamily.Name))
             return;
         try
         {
             var attacker = dinfo?.Instigator as Pawn;
             __state = new DownFacts
             {
-                FreeColonist = ___pawn.IsFreeColonist,
-                HostileToPlayer = ___pawn.HostileTo(GameFacts.PlayerFaction),
+                FreeColonist = freeColonist,
+                HostileToPlayer = hostile,
                 Toxic = hediff?.def?.defName == ToxicBuildup,
                 SocialFight = ___pawn.MentalStateDef?.defName == SocialFighting && attacker?.MentalStateDef?.defName == SocialFighting
                     && (attacker.MentalState as MentalState_SocialFighting)?.otherPawn == ___pawn,
@@ -40,7 +59,7 @@ public static class MakeDownedMetricPatch
         }
         catch (Exception e)
         {
-            LiveMetrics.Fail(DownFamily.Name, e);
+            GameFacts.FailAll(e, DownFamily.Name, RaidFamily.Name);
         }
     }
 
@@ -51,8 +70,12 @@ public static class MakeDownedMetricPatch
         GameFacts.Record(DownFamily.Name, s => DownFamily.Downed(s, d));
         if (d.FreeColonist)
         {
-            var map = GameFacts.MapId(___pawn.MapHeld);
-            GameFacts.Record(RaidFamily.Name, s => RaidFamily.ColonistDowned(s, map));
+            try
+            {
+                var map = GameFacts.MapId(___pawn.MapHeld);
+                GameFacts.Record(RaidFamily.Name, s => RaidFamily.ColonistDowned(s, map));
+            }
+            catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
         }
     }
 }

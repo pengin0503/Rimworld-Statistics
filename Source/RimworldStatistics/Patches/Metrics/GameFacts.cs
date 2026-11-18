@@ -13,8 +13,14 @@ internal static class GameFacts
 
     public static string Id(Thing t) => t.GetUniqueLoadID();
 
-    /// <summary>A member of the colony (membership family): a free, non-slave colonist.</summary>
-    public static bool IsMember(Pawn p) => p.IsFreeNonSlaveColonist;
+    /// <summary>A member of the colony (membership family): a free, non-slave colonist, guarded by silent player-faction check.</summary>
+    public static bool IsMember([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.Faction) && p.IsFreeNonSlaveColonist;
+
+    /// <summary>Free colonist check guarded by <see cref="IsPlayerFaction"/> so <c>Faction.OfPlayer</c> is never read before player faction exists.</summary>
+    public static bool IsFreeColonistSafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.Faction) && p.IsFreeColonist;
+
+    /// <summary>Colony prisoner check guarded by <see cref="IsPlayerFaction"/> on <c>HostFaction</c> so <c>Faction.OfPlayer</c> is never read when absent.</summary>
+    public static bool IsPrisonerOfColonySafe([System.Diagnostics.CodeAnalysis.NotNullWhen(true)] Pawn? p) => p is not null && IsPlayerFaction(p.HostFaction) && p.IsPrisonerOfColony;
 
     /// <summary>
     /// The player's faction, or null while there is none. World generation makes the other factions and their leaders
@@ -116,6 +122,12 @@ internal static class GameFacts
         {
             LiveMetrics.Fail(family, e);
         }
+    }
+
+    public static void FailAll(Exception e, params string[] families)
+    {
+        foreach (var f in families)
+            LiveMetrics.Fail(f, e);
     }
 
     public static bool AnyRecording(params string[] families)

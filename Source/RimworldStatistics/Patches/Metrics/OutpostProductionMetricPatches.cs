@@ -57,8 +57,14 @@ internal static class OutpostProduceMetricPatch
     private static void Prefix(WorldObject __instance, out WorldObject? __state)
     {
         __state = CurrentOutpost;
-        CurrentOutpost = __instance.Faction == Faction.OfPlayerSilentFail
-            && GameFacts.AnyRecording(OutpostProduction.Unit) ? __instance : null;
+        CurrentOutpost = null;
+        try
+        {
+            if (__instance != null && GameFacts.IsPlayerFaction(__instance.Faction)
+                && GameFacts.AnyRecording(OutpostProduction.Unit))
+                CurrentOutpost = __instance;
+        }
+        catch (Exception e) { LiveMetrics.Fail(OutpostProduction.Unit, e); }
     }
 
     [HarmonyFinalizer]
@@ -81,16 +87,26 @@ internal static class OutpostDeliverMetricPatch
         __state = null;
         if (!ReferenceEquals(__instance, OutpostProduceMetricPatch.CurrentOutpost) || __0 is null)
             return;
-        // The original begins by materializing the sequence. Reuse exactly those
-        // generated items and capture their counts before delivery changes stacks.
-        __state = OutpostProduction.Capture(__0, item => (item?.def?.defName, item?.stackCount ?? 0));
-        __0 = __state.Items;
+        try
+        {
+            // The original begins by materializing the sequence. Reuse exactly those
+            // generated items and capture their counts before delivery changes stacks.
+            __state = OutpostProduction.Capture(__0, item => (item?.def?.defName, item?.stackCount ?? 0));
+            __0 = __state.Items;
+        }
+        catch (Exception e)
+        {
+            __state = null;
+            LiveMetrics.Fail(OutpostProduction.Unit, e);
+        }
     }
 
     [HarmonyPostfix]
     private static void Postfix(OutpostProduction.Delivery<Thing>? __state, bool __runOriginal)
     {
-        if (__state is { } delivery && __runOriginal)
-            GameFacts.Record(OutpostProduction.Unit, state => delivery.Record(state, succeeded: true));
+        if (__state is not { } delivery || !__runOriginal)
+            return;
+        try { GameFacts.Record(OutpostProduction.Unit, state => delivery.Record(state, succeeded: true)); }
+        catch (Exception e) { LiveMetrics.Fail(OutpostProduction.Unit, e); }
     }
 }

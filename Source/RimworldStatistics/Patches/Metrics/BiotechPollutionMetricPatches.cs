@@ -43,10 +43,16 @@ public static class BiotechPlayerCleanupJobMetricPatch
 {
     public static void Prefix(JobDriver_ClearPollution __instance, Map map, out bool __state)
     {
-        __state = LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-            && GameFacts.IsPlayerFaction(__instance.pawn?.Faction) && map?.pollutionGrid is not null;
-        if (__state && map?.pollutionGrid is { } grid)
-            BiotechCleanupScope.Enter(grid, map.uniqueID);
+        __state = false;
+        try
+        {
+            __state = __instance?.pawn != null && GameFacts.IsPlayerFaction(__instance.pawn.Faction)
+                && map?.pollutionGrid is not null
+                && LiveMetrics.CanCaptureEvent(BiotechFamily.Name);
+            if (__state && map?.pollutionGrid is { } grid)
+                BiotechCleanupScope.Enter(grid, map.uniqueID);
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
     }
 
     public static Exception? Finalizer(bool __state, Exception? __exception)
@@ -62,18 +68,29 @@ public static class BiotechPlayerCleanupJobMetricPatch
 public static class BiotechPollutionCellClearedMetricPatch
 {
     public static void Prefix(PollutionGrid __instance, IntVec3 cell, bool isPolluted, out bool __state)
-        => __state = !isPolluted && ReferenceEquals(BiotechCleanupScope.Current, __instance)
-            && __instance.IsPolluted(cell);
+    {
+        __state = false;
+        if (isPolluted || !ReferenceEquals(BiotechCleanupScope.Current, __instance))
+            return;
+        try { __state = __instance.IsPolluted(cell); }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
+    }
 
     public static void Postfix(PollutionGrid __instance, IntVec3 cell, bool isPolluted, bool __state)
     {
-        if (!__state || isPolluted || __instance.IsPolluted(cell))
+        if (!__state || isPolluted)
             return;
-        var id = GameFacts.Tick.ToString(System.Globalization.CultureInfo.InvariantCulture)
-            + "/map/" + BiotechCleanupScope.MapId.ToString(System.Globalization.CultureInfo.InvariantCulture)
-            + "/cell/" + cell.ToString();
-        GameFacts.Record(BiotechFamily.Name, s =>
-            BiotechFamily.PollutionCellCleaned(s, id, playerCleanup: true,
-                pollutedBefore: true, pollutedAfter: false, mapCell: true));
+        try
+        {
+            if (__instance.IsPolluted(cell))
+                return;
+            var id = GameFacts.Tick.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                + "/map/" + BiotechCleanupScope.MapId.ToString(System.Globalization.CultureInfo.InvariantCulture)
+                + "/cell/" + cell.ToString();
+            GameFacts.Record(BiotechFamily.Name, s =>
+                BiotechFamily.PollutionCellCleaned(s, id, playerCleanup: true,
+                    pollutedBefore: true, pollutedAfter: false, mapCell: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
     }
 }

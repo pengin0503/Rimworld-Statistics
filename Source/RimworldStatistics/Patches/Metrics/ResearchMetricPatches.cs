@@ -14,7 +14,8 @@ namespace RimworldStatistics.Patches.Metrics;
 internal static class ResearchProbe
 {
     public const string Unit = ResearchFamily.Name;
-    public static readonly ResearchHooks Hooks = new();
+    [ThreadStatic] private static ResearchHooks? hooks;
+    public static ResearchHooks Hooks => hooks ??= new();
 
     public sealed class Scope
     {

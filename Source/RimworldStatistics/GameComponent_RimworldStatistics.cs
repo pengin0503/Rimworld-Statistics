@@ -252,6 +252,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
 
     public override void GameComponentUpdate()
     {
+        LiveMetrics.FlushDeferred();
         while (DeferredFailures.TryDequeue(out var e))
             Fail("RecordSave", e);
     }

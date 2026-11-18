@@ -23,7 +23,9 @@ internal static class RaidProbe
         public bool SkippedForNoColonists;
     }
 
-    public static readonly List<Scope> Stack = new();
+    [ThreadStatic] private static List<Scope>? stack;
+
+    public static List<Scope> Stack => stack ??= new List<Scope>();
 }
 
 [MetricAdapter(RaidFamily.Name)]
@@ -35,30 +37,44 @@ public static class IncidentExecuteMetricPatch
         __state = null;
         if (!LiveMetrics.CanCaptureEvent(RaidFamily.Name))
             return;
-        var scope = new RaidProbe.Scope { SkippedForNoColonists = GameFacts.SkippedForNoColonists(__instance, parms) };
-        RaidProbe.Stack.Add(scope);
-        __state = scope;
+        try
+        {
+            var scope = new RaidProbe.Scope { SkippedForNoColonists = GameFacts.SkippedForNoColonists(__instance, parms) };
+            RaidProbe.Stack.Add(scope);
+            __state = scope;
+        }
+        catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, object? __state)
     {
         if (__state is not RaidProbe.Scope scope || !__result || scope.SkippedForNoColonists || __instance?.def == null)
             return;
-        var tick = GameFacts.Tick;
-        var def = __instance.def.defName;
-        GameFacts.Record(RaidFamily.Name, s =>
+        try
         {
-            RaidFamily.Incident(s, def);
-            if (__instance is IncidentWorker_RaidEnemy && scope.Pawns != null && parms?.faction != null
-                && parms.faction.HostileTo(GameFacts.PlayerFaction))
-            {
-                RaidFamily.Arrived(s, new RaidArrival
+            var tick = GameFacts.Tick;
+            var def = __instance.def.defName;
+            var isEnemyRaid = __instance is IncidentWorker_RaidEnemy && scope.Pawns != null && parms?.faction != null
+                && parms.faction.HostileTo(GameFacts.PlayerFaction);
+            RaidArrival? arrival = isEnemyRaid
+                ? new RaidArrival
                 {
-                    MapId = GameFacts.MapId(parms.target as Map), PawnIds = scope.Pawns, Points = parms.points,
-                    ArrivalMode = parms.raidArrivalMode?.defName, Strategy = parms.raidStrategy?.defName, FactionDef = parms.faction.def?.defName,
-                }, tick);
-            }
-        });
+                    MapId = GameFacts.MapId(parms!.target as Map),
+                    PawnIds = scope.Pawns!,
+                    Points = parms.points,
+                    ArrivalMode = parms.raidArrivalMode?.defName,
+                    Strategy = parms.raidStrategy?.defName,
+                    FactionDef = parms.faction.def?.defName,
+                }
+                : null;
+            GameFacts.Record(RaidFamily.Name, s =>
+            {
+                RaidFamily.Incident(s, def);
+                if (arrival != null)
+                    RaidFamily.Arrived(s, arrival, tick);
+            });
+        }
+        catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }
 
     public static Exception? Finalizer(Exception? __exception, object? __state)
@@ -77,7 +93,11 @@ public static class RaidGenerateMetricPatch
     {
         if (!__result || debugTest || pawns == null || RaidProbe.Stack.Count == 0)
             return;
-        RaidProbe.Stack[^1].Pawns = pawns.Where(p => p != null).Select(GameFacts.Id).ToList();
+        try
+        {
+            RaidProbe.Stack[^1].Pawns = pawns.Where(p => p != null).Select(GameFacts.Id).ToList();
+        }
+        catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }
 }
 
@@ -88,21 +108,27 @@ public static class LordPawnLostMetricPatch
 {
     public static void Postfix(Lord __instance, Pawn pawn, PawnLostCondition cond)
     {
-        if (pawn == null || __instance.ownedPawns.Contains(pawn))
-            return;   // the lord job kept the pawn
-        var tick = GameFacts.Tick;
-        if (cond == PawnLostCondition.Killed && PawnKillMetricPatch.TryDeferRaidLoss(pawn, tick))
-            return;   // Pawn.Kill will credit the confirmed kill before applying the loss.
-        var id = GameFacts.Id(pawn);
-        var loss = cond switch
+        if (pawn == null || __instance == null || !LiveMetrics.IsRecordingUnit(RaidFamily.Name))
+            return;
+        try
         {
-            PawnLostCondition.Killed => RaidLoss.Killed,
-            PawnLostCondition.ExitedMap or PawnLostCondition.LeftVoluntarily => RaidLoss.Exited,
-            PawnLostCondition.MadePrisoner or PawnLostCondition.MadeSlave => RaidLoss.Captured,
-            PawnLostCondition.Incapped => RaidLoss.Downed,
-            _ => RaidLoss.Other,
-        };
-        GameFacts.Record(RaidFamily.Name, s => RaidFamily.MemberLost(s, id, loss, tick));
+            if (__instance.ownedPawns.Contains(pawn))
+                return;   // the lord job kept the pawn
+            var tick = GameFacts.Tick;
+            if (cond == PawnLostCondition.Killed && PawnKillMetricPatch.TryDeferRaidLoss(pawn, tick))
+                return;   // Pawn.Kill will credit the confirmed kill before applying the loss.
+            var id = GameFacts.Id(pawn);
+            var loss = cond switch
+            {
+                PawnLostCondition.Killed => RaidLoss.Killed,
+                PawnLostCondition.ExitedMap or PawnLostCondition.LeftVoluntarily => RaidLoss.Exited,
+                PawnLostCondition.MadePrisoner or PawnLostCondition.MadeSlave => RaidLoss.Captured,
+                PawnLostCondition.Incapped => RaidLoss.Downed,
+                _ => RaidLoss.Other,
+            };
+            LiveMetrics.RecordOrDefer(RaidFamily.Name, s => RaidFamily.MemberLost(s, id, loss, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }
 }
 
@@ -112,10 +138,14 @@ public static class MapRemovedMetricPatch
 {
     public static void Prefix(Map map)
     {
-        if (map == null)
+        if (map == null || !LiveMetrics.IsRecordingUnit(RaidFamily.Name))
             return;
-        var id = GameFacts.MapId(map);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(RaidFamily.Name, s => RaidFamily.MapRemoved(s, id, tick));
+        try
+        {
+            var id = GameFacts.MapId(map);
+            var tick = GameFacts.Tick;
+            LiveMetrics.RecordOrDefer(RaidFamily.Name, s => RaidFamily.MapRemoved(s, id, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }
 }

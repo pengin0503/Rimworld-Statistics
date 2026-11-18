@@ -15,15 +15,19 @@ internal static class RoleAssignmentMetricFacts
 {
     public static bool WasAssigned(Precept_Role role, Pawn pawn)
     {
-        if (pawn is null || role is null || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
-            return false;
-        try { return role.IsAssigned(pawn); }
+        try
+        {
+            if (pawn is null || role is null || !GameFacts.IsMember(pawn)
+                || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
+                return false;
+            return role.IsAssigned(pawn);
+        }
         catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); return false; }
     }
 
     public static void Assigned(Precept_Role role, Pawn pawn, bool wasAssigned)
     {
-        if (wasAssigned || pawn is null || role is null || !pawn.IsFreeNonSlaveColonist
+        if (wasAssigned || pawn is null || role is null || !GameFacts.IsMember(pawn)
             || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
             return;
         try

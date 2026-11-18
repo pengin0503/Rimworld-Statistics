@@ -17,13 +17,13 @@ public static class RoyaltySetTitleMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int?, bool) __state)
     {
         __state = default;
-        if (!LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name) || ___pawn is null || faction is null)
-            return;
         try
         {
-            var eligible = ___pawn.IsFreeNonSlaveColonist && faction.def.HasRoyalTitles;
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
+                || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
+                return;
             var rank = __instance.GetCurrentTitleInFaction(faction)?.def.seniority;
-            __state = (rank, eligible);
+            __state = (rank, true);
         }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
@@ -53,9 +53,13 @@ public static class RoyaltyGainHonorMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int Before, bool Eligible) __state)
     {
         __state = default;
-        if (!LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name) || ___pawn is null || faction is null)
-            return;
-        try { __state = (__instance.GetFavor(faction), ___pawn.IsFreeNonSlaveColonist && faction.def.HasRoyalTitles); }
+        try
+        {
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
+                || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
+                return;
+            __state = (__instance.GetFavor(faction), true);
+        }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
 
@@ -81,9 +85,13 @@ public static class RoyaltySpendHonorMetricPatch
     public static void Prefix(Pawn_RoyaltyTracker __instance, Pawn ___pawn, Faction faction, out (int Before, bool Eligible) __state)
     {
         __state = default;
-        if (!LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name) || ___pawn is null || faction is null)
-            return;
-        try { __state = (__instance.GetFavor(faction), ___pawn.IsFreeNonSlaveColonist && faction.def.HasRoyalTitles); }
+        try
+        {
+            if (___pawn is null || faction is null || !GameFacts.IsMember(___pawn)
+                || faction.def?.HasRoyalTitles != true || !LiveMetrics.CanCaptureEvent(RoyaltyFamily.Name))
+                return;
+            __state = (__instance.GetFavor(faction), true);
+        }
         catch (Exception e) { LiveMetrics.Fail(RoyaltyFamily.Name, e); }
     }
 

@@ -23,32 +23,60 @@ public static class SetFactionMetricPatch
     }
 
     public static void Prefix(Pawn __instance, out Before __state)
-        => __state = __instance == null ? default : new Before
+    {
+        __state = default;
+        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
+            return;
+        try
         {
-            Member = GameFacts.IsMember(__instance), Prisoner = __instance.IsPrisonerOfColony, Player = GameFacts.IsPlayerFaction(__instance.Faction),
-        };
+            __state = new Before
+            {
+                Member = GameFacts.IsMember(__instance),
+                Prisoner = GameFacts.IsPrisonerOfColonySafe(__instance),
+                Player = GameFacts.IsPlayerFaction(__instance.Faction),
+            };
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name);
+        }
+    }
 
     public static void Postfix(Pawn __instance, Before __state)
     {
-        if (__instance == null || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name))
+        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
             return;
-        var id = GameFacts.Id(__instance);
-        var tick = GameFacts.Tick;
-        var member = GameFacts.IsMember(__instance);
-        if (member && !__state.Member)
+        try
         {
-            var route = __state.Prisoner ? MembershipFamily.RoutePrisoner : MembershipFamily.RouteOther;
-            var age = (double?)__instance.ageTracker?.AgeBiologicalYearsFloat;
-            var skills = GameFacts.Skills(__instance);
-            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Joined(s, id, route, age, tick, GameFacts.Species(__instance), GameFacts.Xenotype(__instance)));
-            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
+            var member = GameFacts.IsMember(__instance);
+            var lostPlayer = __state.Player && !GameFacts.IsPlayerFaction(__instance.Faction);
+            if (member == __state.Member && !lostPlayer)
+                return;
+            if (!GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name))
+                return;
+            var id = GameFacts.Id(__instance);
+            var tick = GameFacts.Tick;
+            if (member && !__state.Member)
+            {
+                var route = __state.Prisoner ? MembershipFamily.RoutePrisoner : MembershipFamily.RouteOther;
+                var age = (double?)__instance.ageTracker?.AgeBiologicalYearsFloat;
+                var skills = GameFacts.Skills(__instance);
+                var species = GameFacts.Species(__instance);
+                var xenotype = GameFacts.Xenotype(__instance);
+                GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Joined(s, id, route, age, tick, species, xenotype));
+                GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
+            }
+            else if (!member && __state.Member)
+            {
+                GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Left(s, id, tick));
+            }
+            if (lostPlayer)
+                GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, id));   // e.g. a captive who joined the kidnappers
         }
-        else if (!member && __state.Member)
+        catch (Exception e)
         {
-            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Left(s, id, tick));
+            GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name);
         }
-        if (__state.Player && !GameFacts.IsPlayerFaction(__instance.Faction))
-            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, id));   // e.g. a captive who joined the kidnappers
     }
 }
 
@@ -57,25 +85,41 @@ public static class SetFactionMetricPatch
 public static class EmancipateSlaveMetricPatch
 {
     public static void Prefix(Pawn slave, out (bool Slave, bool Member) __state)
-        => __state = slave == null ? default : (slave.IsSlaveOfColony, GameFacts.IsMember(slave));
+    {
+        __state = default;
+        if (slave == null)
+            return;
+        try { __state = (slave.IsSlaveOfColony, GameFacts.IsMember(slave)); }
+        catch (Exception e) { GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name); }
+    }
 
     public static void Postfix(Pawn slave, (bool Slave, bool Member) __state)
     {
-        if (slave == null || !__state.Slave || slave.IsSlave)
+        if (slave == null || !__state.Slave || slave.IsSlave
+            || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name))
             return;
-        var id = GameFacts.Id(slave);
-        var tick = GameFacts.Tick;
-        var member = GameFacts.IsMember(slave);
-        var age = (double?)slave.ageTracker?.AgeBiologicalYearsFloat;
-        var skills = GameFacts.Skills(slave);
-        GameFacts.Record(MembershipFamily.Name, s =>
+        try
         {
-            MembershipFamily.SlaveFreed(s, id);
+            var id = GameFacts.Id(slave);
+            var tick = GameFacts.Tick;
+            var member = GameFacts.IsMember(slave);
+            var age = (double?)slave.ageTracker?.AgeBiologicalYearsFloat;
+            var skills = GameFacts.Skills(slave);
+            var species = GameFacts.Species(slave);
+            var xenotype = GameFacts.Xenotype(slave);
+            GameFacts.Record(MembershipFamily.Name, s =>
+            {
+                MembershipFamily.SlaveFreed(s, id);
+                if (member && !__state.Member)
+                    MembershipFamily.Joined(s, id, MembershipFamily.RouteSlave, age, tick, species, xenotype);
+            });
             if (member && !__state.Member)
-                MembershipFamily.Joined(s, id, MembershipFamily.RouteSlave, age, tick, GameFacts.Species(slave), GameFacts.Xenotype(slave));
-        });
-        if (member && !__state.Member)
-            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
+                GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name);
+        }
     }
 }
 
@@ -91,19 +135,32 @@ public static class BirthMetricPatch
 {
     public static void Postfix(Thing __result, Thing birtherThing)
     {
-        if (__result is not Pawn baby || baby.Dead || !GameFacts.IsPlayerFaction(baby.Faction) || !baby.RaceProps.Humanlike)
+        if (__result is not Pawn baby || baby.Dead || !GameFacts.IsPlayerFaction(baby.Faction) || !baby.RaceProps.Humanlike
+            || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name, BiotechFamily.Name))
             return;
-        var id = GameFacts.Id(baby);
-        var tick = GameFacts.Tick;
-        var species = GameFacts.Species(baby);
-        var xenotype = GameFacts.Xenotype(baby);
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Born(s, id, tick, species, xenotype));
-        GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, GameFacts.Skills(baby)));
-        // One unique birther across multiple live babies/twins; exclude artificial
-        // incubators, outsiders and babies not attributed to a free colony member.
-        if (birtherThing is Pawn mother)
-            GameFacts.Record(BiotechFamily.Name, s => BiotechFamily.BirthConfirmed(
-                s, GameFacts.Id(mother), mother.IsFreeNonSlaveColonist, livingBaby: true));
+        try
+        {
+            var id = GameFacts.Id(baby);
+            var tick = GameFacts.Tick;
+            var species = GameFacts.Species(baby);
+            var xenotype = GameFacts.Xenotype(baby);
+            var skills = GameFacts.Skills(baby);
+            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Born(s, id, tick, species, xenotype));
+            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, skills));
+            // One unique birther across multiple live babies/twins; exclude artificial
+            // incubators, outsiders and babies not attributed to a free colony member.
+            if (birtherThing is Pawn mother)
+            {
+                var motherId = GameFacts.Id(mother);
+                var freeColonist = mother.IsFreeNonSlaveColonist;
+                GameFacts.Record(BiotechFamily.Name, s => BiotechFamily.BirthConfirmed(
+                    s, motherId, freeColonist, livingBaby: true));
+            }
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name, BiotechFamily.Name);
+        }
     }
 }
 
@@ -115,11 +172,17 @@ public static class KidnapMetricPatch
 
     public static void Postfix(Pawn pawn, bool __state, KidnappedPawnsTracker __instance)
     {
-        if (!__state || pawn == null || !__instance.KidnappedPawnsListForReading.Contains(pawn))
+        if (!__state || pawn == null || __instance == null || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
             return;
-        var id = GameFacts.Id(pawn);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Kidnapped(s, id, tick));
+        try
+        {
+            if (!__instance.KidnappedPawnsListForReading.Contains(pawn))
+                return;
+            var id = GameFacts.Id(pawn);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Kidnapped(s, id, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MembershipFamily.Name, e); }
     }
 }
 
@@ -130,11 +193,16 @@ public static class KidnapReturnMetricPatch
 {
     public static void Postfix(Pawn pawn)
     {
-        if (pawn == null || pawn.Dead || !GameFacts.IsPlayerFaction(pawn.Faction))
+        if (pawn == null || pawn.Dead || !GameFacts.IsPlayerFaction(pawn.Faction)
+            || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
             return;
-        var id = GameFacts.Id(pawn);
-        var tick = GameFacts.Tick;
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapReturned(s, id, tick));
+        try
+        {
+            var id = GameFacts.Id(pawn);
+            var tick = GameFacts.Tick;
+            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapReturned(s, id, tick));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MembershipFamily.Name, e); }
     }
 }
 
@@ -144,14 +212,19 @@ public static class KidnapReturnMetricPatch
 public static class CapturedMetricPatch
 {
     public static void Prefix(Pawn ___pawn, out (bool Hostile, bool Prisoner) __state)
-        => __state = ___pawn == null ? default : (___pawn.HostileTo(GameFacts.PlayerFaction), ___pawn.IsPrisonerOfColony);
+    {
+        __state = default;
+        if (___pawn == null)
+            return;
+        try { __state = (___pawn.HostileTo(GameFacts.PlayerFaction), ___pawn.IsPrisonerOfColony); }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn ___pawn, Faction by, (bool Hostile, bool Prisoner) __state)
     {
-        if (___pawn == null || !GameFacts.IsPlayerFaction(by) || __state.Prisoner || !___pawn.IsPrisonerOfColony)
+        if (___pawn == null || !__state.Hostile || __state.Prisoner || !GameFacts.IsPlayerFaction(by) || !___pawn.IsPrisonerOfColony)
             return;
-        if (__state.Hostile)
-            GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);
+        GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);
     }
 }
 

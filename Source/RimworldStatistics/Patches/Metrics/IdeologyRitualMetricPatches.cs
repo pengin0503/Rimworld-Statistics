@@ -70,16 +70,24 @@ public static class IdeologyRitualOutcomeApplyMetricPatch
 {
     public static void Prefix(LordJob_Ritual jobRitual, out bool __state)
     {
-        __state = LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
-            && jobRitual is not null && IdeologyRitualFacts.IsPlayerRitual(jobRitual);
-        if (__state && jobRitual is not null)
-            IdeologyRitualFacts.Enter(jobRitual);
+        __state = false;
+        try
+        {
+            __state = jobRitual is not null && IdeologyRitualFacts.IsPlayerRitual(jobRitual)
+                && LiveMetrics.CanCaptureEvent(IdeologyFamily.Name);
+            if (__state && jobRitual is not null)
+                IdeologyRitualFacts.Enter(jobRitual);
+        }
+        catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
     }
 
     public static Exception? Finalizer(bool __state, Exception? __exception)
     {
         if (__state)
-            IdeologyRitualFacts.Exit(__exception is null);
+        {
+            try { IdeologyRitualFacts.Exit(__exception is null); }
+            catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
+        }
         return __exception;
     }
 }
@@ -102,14 +110,18 @@ public static class IdeologyOtherCompletedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
-        if (cancelled || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
-            || !IdeologyRitualFacts.IsPlayerRitual(__instance)
-            || IdeologyRitualFacts.Id(__instance) is not { } id)
-            return;
-        // This is a completed event, but its outcome may not have a
-        // quality selector. The earlier classified record wins by Lord ID.
-        GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.RitualConcluded(
-            s, id, null, null, completed: true, interrupted: false));
+        try
+        {
+            if (cancelled || !IdeologyRitualFacts.IsPlayerRitual(__instance)
+                || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
+                || IdeologyRitualFacts.Id(__instance) is not { } id)
+                return;
+            // This is a completed event, but its outcome may not have a
+            // quality selector. The earlier classified record wins by Lord ID.
+            GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.RitualConcluded(
+                s, id, null, null, completed: true, interrupted: false));
+        }
+        catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
     }
 }
 
@@ -119,11 +131,15 @@ public static class IdeologyInterruptedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
-        if (!cancelled || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
-            || !IdeologyRitualFacts.IsPlayerRitual(__instance)
-            || IdeologyRitualFacts.Id(__instance) is not { } id)
-            return;
-        GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.RitualConcluded(
-            s, id, null, null, completed: false, interrupted: true));
+        try
+        {
+            if (!cancelled || !IdeologyRitualFacts.IsPlayerRitual(__instance)
+                || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
+                || IdeologyRitualFacts.Id(__instance) is not { } id)
+                return;
+            GameFacts.Record(IdeologyFamily.Name, s => IdeologyFamily.RitualConcluded(
+                s, id, null, null, completed: false, interrupted: true));
+        }
+        catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
     }
 }

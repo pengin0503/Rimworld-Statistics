@@ -71,6 +71,143 @@ namespace RimworldStatistics.Core.Tests
             LiveMetrics.StartNew(game);
             Assert.Empty(LiveMetrics.HitCounts());
         }
+
+        [Fact]
+        public void RecordOrDefer_QueuesOffThreadEventsWithoutGapAndDiscardsStaleGames()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+
+                UnityData.IsInMainThread = false;
+                Assert.True(LiveMetrics.IsRecordingUnit(family));
+                LiveMetrics.RecordOrDefer(family, s => s.Count("events", 3));
+                Assert.Null(state.Peek("events"));
+
+                UnityData.IsInMainThread = true;
+                LiveMetrics.FlushDeferred();
+                Assert.Equal(3, state.Peek("events")?.N);
+                Assert.True(state.Continuous);
+
+                // Events queued for a previous Game instance must never bleed into a newly started game.
+                UnityData.IsInMainThread = false;
+                LiveMetrics.RecordOrDefer(family, s => s.Count("events", 99));
+                UnityData.IsInMainThread = true;
+                var nextGame = Current.Game = new Game();
+                LiveMetrics.StartNew(nextGame);
+                LiveMetrics.FlushDeferred();
+                var nextState = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+                Assert.Null(nextState.Peek("events"));
+                Assert.True(nextState.Continuous);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                MetricGates.Selected = [new(family, 1)];
+            }
+        }
+
+        [Fact]
+        public void ScribeActiveMode_SuppressesCaptureAndDeferWithoutMarkingGap()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+
+                Scribe.mode = LoadSaveMode.LoadingVars;
+                UnityData.IsInMainThread = false;
+                Assert.False(LiveMetrics.IsRecordingUnit(family));
+                Assert.False(LiveMetrics.CanCaptureEvent(family));
+                LiveMetrics.RecordOrDefer(family, s => s.Count("events", 5));
+
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                LiveMetrics.FlushMissed();
+                Assert.Null(state.Peek("events"));
+                Assert.True(state.Continuous);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+            }
+        }
+
+        [Fact]
+        public void OffThreadFail_StopsAccumulatorUnitOnMainThreadAndBlocksFurtherDeferrals()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+                state.Count("events", 2);
+
+                UnityData.IsInMainThread = false;
+                LiveMetrics.Fail(family, new InvalidOperationException("worker fault"));
+                Assert.False(LiveMetrics.IsRecordingUnit(family));
+                LiveMetrics.RecordOrDefer(family, s => s.Count("events", 10));
+
+                UnityData.IsInMainThread = true;
+                Assert.Null(LiveMetrics.Family(family));
+                Assert.Equal(2, state.Peek("events")?.N);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                MetricGates.Selected = [new(family, 1)];
+            }
+        }
+
+        [Fact]
+        public void FlushDeferred_PreservesChronologicalOrderBetweenDeferredEventsAndOffThreadGaps()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+
+                // 1) Deferred event opens an active interval, 2) subsequent off-thread non-deferrable hook causes a gap.
+                UnityData.IsInMainThread = false;
+                LiveMetrics.RecordOrDefer(family, s => s.Active["raid"] = new System.Collections.Generic.Dictionary<string, long> { ["1"] = 50 });
+                Assert.False(LiveMetrics.CanCaptureEvent(family));
+
+                // On flush, the active interval opened BEFORE the gap must be cleared by the subsequent MarkGap!
+                UnityData.IsInMainThread = true;
+                LiveMetrics.FlushDeferred();
+                Assert.False(state.Continuous);
+                Assert.Empty(state.Active);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                MetricGates.Selected = [new(family, 1)];
+            }
+        }
     }
 }
 
@@ -81,6 +218,8 @@ namespace Verse
     internal static class Current { internal static Game? Game { get; set; } }
     public sealed class Game;
     internal static class UnityData { internal static bool IsInMainThread { get; set; } }
+    internal enum LoadSaveMode { Inactive = 0, Saving = 1, LoadingVars = 2, ResolvingCrossRefs = 3, PostLoadInit = 4 }
+    internal static class Scribe { internal static LoadSaveMode mode { get; set; } = LoadSaveMode.Inactive; }
     internal static class Find { internal static TickManager TickManager { get; } = new(); }
     internal sealed class TickManager { internal int TicksGame => 100; }
     internal static class LoadedModManager { internal static Mod[] RunningMods => []; }
