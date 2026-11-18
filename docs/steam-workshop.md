@@ -21,7 +21,7 @@ Steam Workshop（PublishedFileId: `3837802361`）に掲載するための説明�
 [h2]主な機能[/h2]
 [list]
 [*][b]全コロニーの通算実績：[/b]ゲーム内日数、実プレイ時間、コロニー数、最高・最終資産、襲撃・大脅威・死亡数、種類別のエンディング到達履歴を一括確認できます。
-[*][b]340項目以上の詳細統計：[/b]資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、各DLC（Royalty / Ideology / Biotech / Anomaly / Odyssey）、対応MODの統計を検索・絞り込みできます。対応項目では1日あたりの平均値も確認できます。
+[*][b]340項目以上の詳細統計：[/b]資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、各DLC（Royalty / Ideology / Biotech / Odyssey）、対応MODの統計を検索・絞り込みできます。対応項目では1日あたりの平均値も確認できます。
 [*][b]グループ集計・比較・ランキング：[/b]任意のコロニーグループ作成、最大4列の横並び比較（全コロニー・グループ・個別コロニー）、項目別の歴代コロニーランキングに対応しています。
 [*][b]グラフと推移の比較：[/b]統計項目をクリックするとコロニー別・内訳別の棒グラフを表示し、さらにコロニー別の履歴折れ線グラフへ進めます。他コロニーとの重ね合わせ（最大2件追加）や、連続性が証明された2時点間の増減比較も可能です。
 [*][b]MOD導入前セーブの取り込み：[/b]導入前に作成された RimWorld 1.5〜1.7 のセーブデータも、対応する範囲で[b]読み取り専用[/b]で解析します。元のセーブデータは書き換えません。
@@ -49,7 +49,7 @@ Steam Workshop（PublishedFileId: `3837802361`）に掲載するための説明�
 [*][b]未取得の値と 0 の区別：[/b]記録が残っていない過去の出来事は復元できません。測定根拠のない値は無条件に 0 にせず、[b]「不明（—）」「部分記録」「対象外」[/b]として区別します。
 [*][b]セーブ分岐と重複防止：[/b]同じコロニーの複数セーブを別コロニーとして二重計上したり、セーブ＆ロードで分岐した別ルートの記録を無条件に合算したりしません。履歴グラフでは親子関係が確認できたセーブ間のみを実線で結びます。
 [*][b]追加統計・MOD統計の記録期間：[/b]プレイ中のイベント記録やMOD統計は、有効化された時点から記録されます。MOD導入前や無効化していた期間の出来事は後から自動補完されません。
-[*][b]導入前セーブのエンディング痕跡：[/b]導入前のセーブに残っているエンディング痕跡も検出しますが、到達日時・何回目か・旅立った人数が残っていない場合は不明となります。
+[*][b]導入前セーブのエンディング痕跡：[/b]導入前のセーブに残っている痕跡は種類ごとに「少なくとも1回（1回以上）」として扱います。アルコネクサスなど痕跡が残らないエンディングは導入前セーブからは計上できず、正確な到達回数・日時や旅立った人数も特定できない場合があります。
 [*][b]開発者モード設定の範囲：[/b]MOD設定の「開発者モード中に記録したエンディングを表示し、合計に含める」が切り替えるのは[b]エンディングと旅立った人数のみ[/b]です。富・襲撃回数・人口などの他統計は設定に関わらず集計されます。
 [*][b]実験的な統計：[/b]「実験的」と表示される項目や一部MOD連携は、対象MODのバージョンや構成によって取得できない場合があります。
 [/list]
@@ -88,7 +88,7 @@ Browse lifetime statistics across every save and colony [b]directly from the Rim
 [h2]Key Features[/h2]
 [list]
 [*][b]Cross-Colony Lifetime Totals:[/b] View total in-game days, real play time, colony count, peak and final wealth records, enemy raids, major threats, colonist deaths, and reached endings by type at a glance.
-[*][b]340+ Detailed Statistics:[/b] Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, official DLCs (Royalty, Ideology, Biotech, Anomaly, Odyssey), and supported mods, including per-in-game-day rates where applicable.
+[*][b]340+ Detailed Statistics:[/b] Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, official DLCs (Royalty, Ideology, Biotech, Odyssey), and supported mods, including per-in-game-day rates where applicable.
 [*][b]Colony Groups, Comparison & Rankings:[/b] Create custom colony groups, compare up to 4 columns side by side (All colonies, Groups, or individual Colonies), and inspect all-time colony leaderboards.
 [*][b]Charts & Lineage-Aware History:[/b] Click any statistic to open bar charts ([b]By colony[/b] / [b]By category[/b]), then select a colony to inspect its day-by-day history line chart, overlay up to 2 additional colonies, or compare exact changes between any two proven continuous saves.
 [*][b]Read-Only Import of Pre-Install Saves:[/b] Saves created in RimWorld 1.5–1.7 before installing this mod are analyzed [b]read-only[/b] to the extent supported by the data in each save. Original .rws files are never modified.
@@ -116,7 +116,7 @@ Mod-specific statistics are built directly into Rimworld Statistics—no separat
 [*][b]Missing Values Are Never Treated as 0:[/b] Unrecorded historical events cannot always be reconstructed. Unmeasured values are shown as [b]Unknown (—)[/b], [b]Partial record[/b], or [b]Not applicable[/b] rather than silently filled with 0.
 [*][b]No Colony or Branch Double-Counting:[/b] Multiple saves of the same colony are grouped into one colony, and reloaded/branched timelines are never blindly summed together. History line charts connect saves only when parent-child continuity is proven.
 [*][b]Recording Window for Live & Mod Statistics:[/b] Live gameplay events and mod-specific metrics record from the moment they are active; events before installing the mod or while a unit/mod was disabled are not retroactively backfilled.
-[*][b]Pre-Install Ending Traces:[/b] Ending traces inside pre-install saves are detected where possible, though completion time, ordinal, or departed count may be unknown if not stored in the save.
+[*][b]Pre-Install Ending Traces:[/b] Traces remaining in pre-install saves count as "at least once" (1 or more) per ending type. Endings that leave no trace in the save—such as the Archonexus—cannot be counted from pre-install saves, and exact completion counts, timestamps, or departed counts may not be determinable.
 [*][b]Development Mode Setting Scope:[/b] "Show and count endings recorded in development mode" affects [b]only endings and departed colonist counts[/b]. Other statistics (wealth, raids, population, etc.) remain included unless you exclude the colony in the Colonies tab.
 [*][b]Experimental Statistics:[/b] Metrics marked [b]Experimental[/b] and third-party mod hooks depend on target mod versions and internals, and may not record in every setup.
 [/list]

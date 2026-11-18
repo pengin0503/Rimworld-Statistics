@@ -20,7 +20,7 @@ Cross-save, cross-colony lifetime statistics viewer on the title screen for RimW
 ### 主な機能
 
 - **全コロニーの通算実績**：ゲーム内日数、実プレイ時間、コロニー数、資産の最高・最終記録、襲撃・大脅威・死亡数、種類別のエンディング到達履歴などを一括確認できます。
-- **340項目以上の詳細統計**：資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、各DLC（Royalty / Ideology / Biotech / Anomaly / Odyssey）、対応MODの統計を一覧・検索・絞り込みできます。対応項目では1日あたりの平均値も表示します。
+- **340項目以上の詳細統計**：資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、各DLC（Royalty / Ideology / Biotech / Odyssey）、対応MODの統計を一覧・検索・絞り込みできます。対応項目では1日あたりの平均値も表示します。
 - **グループ集計・横並び比較・ランキング**：任意のコロニーグループ作成、全コロニー・グループ・個別コロニーを最大4列で並べる比較表示、項目別の歴代コロニーランキングに対応しています。
 - **グラフと推移の比較**：統計項目をクリックするとコロニー別・内訳別の棒グラフを表示し、さらにコロニー別の履歴折れ線グラフへ進めます。履歴グラフでは他コロニーとの重ね合わせ（最大2件追加）や、連続性が証明された2時点間の増減比較が可能です。
 - **MOD導入前セーブの取り込み**：MOD導入前に作成された RimWorld 1.5〜1.7 のセーブデータも、対応する範囲で**読み取り専用**で解析します。元のセーブファイルは一切書き換えません。
@@ -97,7 +97,7 @@ Cross-save, cross-colony lifetime statistics viewer on the title screen for RimW
 - **未取得の値と `0` の区別**：記録が存在しない出来事は過去セーブから復元できません。測定根拠がない項目は **「不明（`—`）」**・**「部分記録」**・**「対象外」** として区別し、無条件に `0` として扱うことはありません。
 - **同一コロニーの重複防止とセーブ分岐の扱い**：同じコロニーの複数セーブを別コロニーとして二重計上することはありません。また、セーブ＆ロードで分岐した別ルートの記録を無条件に合算することもありません。履歴折れ線グラフでは親子関係（連続性）が確認できたセーブ間のみを実線で結び、確認できない点は白抜きで表示します。
 - **追加統計・MOD統計の記録期間**：プレイ中のイベント記録やMOD固有統計は、**その統計が有効化された時点から**記録されます。本MOD導入前や、統計設定をOFFにしていた期間、対象DLC／MODを外していた期間の出来事は後から自動補完されません（一時的に無効化して再度有効化した場合は、以前の累計を保持したまま「部分記録」として扱います）。
-- **導入前セーブのエンディング痕跡**：MOD導入前のセーブに残っているエンディング痕跡も可能な範囲で検出しますが、到達日時・何回目か・旅立った人数がセーブ内に残っていない場合は不明として表示します。
+- **導入前セーブのエンディング痕跡**：MOD導入前のセーブに残っているエンディング痕跡も可能な範囲で検出し、種類ごとに「少なくとも1回（`1回以上`）」の到達として扱います。ただし、アルコネクサスなどセーブ内に痕跡が残らないエンディングは導入前セーブからは計上できません（宇宙船発射と王室昇叙の両方の痕跡がある場合は「宇宙船または王室昇叙」として扱われます）。また、正確な到達回数・日時や旅立った人数は特定できない場合があります。
 - **開発者モード設定の適用範囲**：初期設定では開発者モード中に記録したエンディング（および旅立った人数）も表示・集計します。除外したい場合はMOD設定の **「開発者モード中に記録したエンディングを表示し、合計に含める」** をOFFにしてください。この設定が切り替えるのは**エンディングと旅立った人数のみ**であり、富・襲撃回数・人口などの他統計は設定に関係なく集計されます（コロニー単位で外したい場合は `コロニー` タブの `合計から外す` を使用してください）。
 - **実験的な統計について**：`実験的` と表示される統計や一部MOD連携は、対象MODのバージョンや内部実装の変更により取得できない場合があります。
 
@@ -119,7 +119,7 @@ A. MOD導入前の期間や対象MOD・記録設定が無効だった期間な�
 A. 二重計上されません。プレイ中の記録は各セーブのチェックポイント系統に紐づいて管理されるため、ロードしてやり直した試行分のカウントが別ルートへ混ざることはありません。
 
 **Q. 統計データやバックアップ、CSV出力ファイルはどこに保存されますか？**  
-A. RimWorldのセーブデータフォルダー配下の `RimworldStatistics/` フォルダーに保存されます（統計本体：`profile.json` および自動バックアップ `.bak1`〜`.bak3`、手動バックアップ：`backups/`、CSV出力：`exports/`）。`データ管理` タブの **「フォルダーを開く」** から直接開けます。
+A. RimWorldのセーブデータフォルダー配下の `RimworldStatistics/` フォルダーに保存されます（統計本体：`profile.json` および自動バックアップ `.bak1`〜`.bak3`、手動バックアップ：`backups/`、CSV出力：`exports/`）。`データ管理` タブに `profile.json` の保存先パスが表示されるほか、`パスをコピー` や、手動バックアップ作成後・CSV出力後に利用できる **「フォルダーを開く」** から保存先へ移動できます。
 
 ### 関連資料
 
@@ -141,7 +141,7 @@ A. RimWorldのセーブデータフォルダー配下の `RimworldStatistics/` �
 ### Key Features
 
 - **Cross-Colony Lifetime Totals**: View total in-game days, real play time, colony count, peak and final wealth records, enemy raids, major threats, colonist deaths, and reached endings by type at a glance.
-- **340+ Detailed Statistics**: Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, official DLCs (Royalty, Ideology, Biotech, Anomaly, Odyssey), and supported mods, including per-in-game-day rates where applicable.
+- **340+ Detailed Statistics**: Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, official DLCs (Royalty, Ideology, Biotech, Odyssey), and supported mods, including per-in-game-day rates where applicable.
 - **Colony Groups, Side-by-Side Comparison & Leaderboards**: Create custom colony groups, compare up to 4 columns side by side (All colonies, Groups, or individual Colonies), and view all-time colony rankings in ascending or descending order.
 - **Charts & Lineage-Aware History**: Click any statistic to open bar charts (**By colony** / **By category**), then select a colony to inspect its day-by-day history line chart, overlay up to 2 additional colonies, or compare exact changes between any two proven continuous saves.
 - **Read-Only Import of Pre-Install Saves**: Saves created in RimWorld 1.5–1.7 before installing this mod are analyzed **read-only** to the extent supported by the data inside each save. Original `.rws` files are never modified.
@@ -218,7 +218,7 @@ Rimworld Statistics combines multiple data sources while strictly avoiding fabri
 - **Missing Values Are Never Treated as `0`**: Events without recorded evidence cannot always be reconstructed from older saves. Unmeasured values are explicitly marked as **Unknown (`—`)**, **Partial record**, or **Not applicable** rather than silently filled with `0`.
 - **No Colony Duplication or Branch Double-Counting**: Multiple saves belonging to the same colony are grouped into a single colony rather than summed as separate colonies, and branched timelines (from reloading earlier saves) are never blindly added together. On history line charts, only saves with proven parent-child continuity are connected by solid lines; saves whose continuity cannot be proven are drawn as hollow points.
 - **Recording Window for Live & Mod Statistics**: Live event statistics and mod integrations record **only from the moment they are active**. Events that occurred before installing Rimworld Statistics, while a statistic unit was turned off, or while a target DLC/mod was disabled are not retroactively backfilled. Disabling and re-enabling a unit preserves earlier totals and marks the interrupted span as a partial record.
-- **Pre-Install Ending Traces**: Ending traces remaining inside pre-install saves are detected where possible, but exact completion time, ordinal, or departed colonist count may be unknown if the save does not store them.
+- **Pre-Install Ending Traces**: Ending traces remaining inside pre-install saves are detected where possible and counted as "at least once" (`1 or more`) per ending type. Endings that leave no trace in the save—such as the Archonexus—cannot be counted from pre-install saves (and saves holding traces of both Ship launch and Royal ascent appear as "Ship or Royal Ascent"), nor can exact completion counts, timestamps, or departed colonist counts always be determined.
 - **Scope of the Development Mode Setting**: By default, endings (and departed colonist counts) recorded in Development Mode are shown and counted. Turn off **"Show and count endings recorded in development mode"** in Mod Settings to hide them. This setting affects **only endings and departed colonist counts**—all other statistics (wealth, raids, population, etc.) for colonies played with Development Mode remain included unless you check **Exclude** for that colony in the **Colonies** tab.
 - **Experimental Statistics**: Metrics labeled **Experimental** and third-party mod hooks depend on the target mod's version and internal methods, and may not record in every mod configuration.
 
@@ -240,7 +240,7 @@ A. When a colony has play periods before the mod was installed or while a unit/m
 A. No. Live event counters follow checkpoint lineage per save, so reloaded attempts on discarded branches are not merged into your active branch's totals.
 
 **Q. Where are my profile data, backups, and CSV exports stored?**  
-A. Everything is stored under `<RimWorld SaveDataFolder>/RimworldStatistics/` (`profile.json` with rolling `.bak1`–`.bak3` files, manual ZIP backups in `backups/`, and CSV exports in `exports/`). Click **"Open folder"** in the **Data management** tab to open it directly.
+A. Everything is stored under `<RimWorld SaveDataFolder>/RimworldStatistics/` (`profile.json` with rolling `.bak1`–`.bak3` files, manual ZIP backups in `backups/`, and CSV exports in `exports/`). The **Data management** tab shows the full path to `profile.json`, lets you click **Copy path** for the backup directory, and provides **"Open folder"** buttons once a manual backup or CSV export has been created.
 
 ### Related Documents
 
