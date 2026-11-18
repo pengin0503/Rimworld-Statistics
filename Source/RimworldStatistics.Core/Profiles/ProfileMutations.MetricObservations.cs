@@ -99,6 +99,18 @@ public static partial class ProfileMutations
                 existing.CompactedEvidenceByMetric[key] = existing.CompactedEvidenceByMetric.TryGetValue(key, out var previous)
                     ? MetricEvidencePolicy.Combine(previous, evidence) : evidence;
         }
+        // A checkpoint recorded without the list of continuous families (read by a version before #307, or one that took a value
+        // from such a record), read again from the same content by a reader that marks weakenings: an upgrade re-reads every
+        // save. When the marked reading holds every value the record holds, its values replace them all and the record gains
+        // its list, so the record is what a fresh import of that save gives (#388). Otherwise the record stays unmarked.
+        if (TakesMarkedReading(existing, obs))
+        {
+            foreach (var (key, entry) in obs.Metrics)
+                if (!entry.IsQuarantined)
+                    existing.Metrics[key] = entry;
+            existing.ContinuousFamilies = obs.ContinuousFamilies!.ToList();
+            return;
+        }
         // A value taken from a record without the list of continuous families may be weakened without saying so (#307).
         var unmarked = obs.ContinuousFamilies is null;
         var tookUnmarked = false;
@@ -130,8 +142,7 @@ public static partial class ProfileMutations
             }
         }
         // Checkpoints merge only with the same content, whose families' continuity is the same: the lists add up. A record
-        // without the list never gains one (its values were read before weakenings were marked), and loses it on taking an
-        // unmarked value.
+        // without the list gains one only by taking a whole marked reading (above), and loses it on taking an unmarked value.
         if (existing.ContinuousFamilies is { } continuous)
         {
             if (tookUnmarked)
@@ -141,6 +152,24 @@ public static partial class ProfileMutations
                     if (!continuous.Contains(family, StringComparer.Ordinal))
                         continuous.Add(family);
         }
+    }
+
+    /// <summary>
+    /// A checkpoint without the list, and a marked reading of the same content (same payload hash) that holds every value the
+    /// record holds, at the same or a newer definition revision. A value only the record holds may be weakened without saying
+    /// so, so such a record never takes the reading as a whole.
+    /// </summary>
+    private static bool TakesMarkedReading(MetricObservation existing, MetricObservation obs)
+    {
+        if (existing.Source != MetricObservationSource.Checkpoint || obs.Source != MetricObservationSource.Checkpoint
+            || existing.ContinuousFamilies is not null || obs.ContinuousFamilies is null
+            || existing.PayloadHash is null || !string.Equals(existing.PayloadHash, obs.PayloadHash, StringComparison.Ordinal))
+            return false;
+        foreach (var (key, old) in existing.Metrics)
+            if (!old.IsQuarantined
+                && (!obs.Metrics.TryGetValue(key, out var entry) || entry.IsQuarantined || entry.Revision < old.Revision))
+                return false;
+        return true;
     }
 
     private static readonly IReadOnlyDictionary<string, int> SaveFileRevisions = MetricRegistry.BaseCatalog
