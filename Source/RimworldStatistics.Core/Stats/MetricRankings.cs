@@ -275,11 +275,36 @@ public static class MetricRankings
     private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
         IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
     {
-        var inputs = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey)))
-            .Where(x => x.Row?.Value.Number is not null)
-            .ToList();
-        var candidates = inputs.Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage)).ToList();
-        return Extreme(definition, candidates, max: true, colonies.Count, InputEvidence(inputs.Select(x => x.Row)));
+        var targets = 0;
+        var inputs = new List<(string Key, NumericRow Row)>();
+        var notApplicable = new List<NumericRow>();
+        foreach (var c in colonies)
+        {
+            var row = RowOf(rows, c.Key, sourceKey);
+            if (row?.Value.Coverage == MetricCoverage.NotApplicable)
+            {
+                notApplicable.Add(row);
+                continue;
+            }
+            targets++;
+            if (row?.Value.Number is not null)
+                inputs.Add((c.Key, row));
+        }
+        if (targets == 0 && notApplicable.Count > 0)
+        {
+            return new NumericRow
+            {
+                Definition = definition,
+                Value = new NumericValue
+                {
+                    Coverage = MetricCoverage.NotApplicable,
+                    Evidence = InputEvidence(notApplicable),
+                },
+                Targets = 0,
+            };
+        }
+        var candidates = inputs.Select(x => (x.Key, Value: x.Row.Value.Number, x.Row.Value.Coverage)).ToList();
+        return Extreme(definition, candidates, max: true, targets, InputEvidence(inputs.Select(x => (NumericRow?)x.Row)));
     }
 
     private static string? Permadeath(ColonyStats c) => c.Permadeath switch
