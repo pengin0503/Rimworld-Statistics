@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Rechercher</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Filtrer les entrées de cette branche par nom de recherche (y compris les noms de repli des mods non chargés), texte d'événement, noms de statistiques dans les intervalles vérifiés ou noms de traces non datées.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Jour début</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>Jour fin</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Bornes facultatives inclusives en jours de jeu (une seule borne suffit, ex. 10 ou 12.5). Les entrées d'un jour dans la plage et les intervalles vérifiés qui la chevauchent conservent leur plage d'origine ; les traces non datées sont exclues lorsqu'une borne de jour est définie.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Effacer les filtres</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Saisissez des nombres positifs ou nuls pour les jours de début et de fin (par exemple 0, 10 ou 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>Le jour de début est postérieur au jour de fin. Saisissez un jour de début inférieur ou égal au jour de fin.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>Aucune entrée datée ne correspond à la recherche et au filtre de jours sur cette branche.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>{0} traces non datées sont masquées lors du filtrage par jours de jeu.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

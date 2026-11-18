@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Buscar</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Filtra las entradas de esta rama por nombre de investigación (incluidos los nombres alternativos de mods no cargados), texto del suceso, nombres de estadísticas en intervalos verificados o nombres de rastros sin fecha.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Día inicial</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>Día final</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Límites opcionales inclusivos en días de juego (puedes ingresar solo uno de los extremos, p. ej. 10 o 12.5). Las entradas de un día dentro del rango y los intervalos verificados que se superponen conservan su tramo original; los rastros sin fecha se excluyen al filtrar por días.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Limpiar filtros</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Ingresa números no negativos para el día inicial y el día final (por ejemplo, 0, 10 o 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>El día inicial es posterior al día final. Ingresa un día inicial menor o igual que el día final.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>No hay entradas con fecha en esta rama que coincidan con la búsqueda y el filtro de días actuales.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>Se ocultan {0} rastros sin fecha mientras se filtra por días de juego.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

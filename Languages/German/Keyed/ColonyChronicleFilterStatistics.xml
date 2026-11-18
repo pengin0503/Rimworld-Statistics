@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Suche</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Einträge dieses Zweigs nach Forschungsnamen (einschließlich Ersatznamen nicht geladener Mods), Ereignistext, Statistiknamen in bestätigten Intervallen oder Namen undatierter Spuren filtern.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Starttag</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>Endtag</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Optionale inklusive Spieltagsgrenzen (auch einzeln angebbar, z. B. 10 oder 12.5). Einzeltagseinträge im Bereich und überlappende bestätigte Intervalle behalten ihre ursprüngliche Spanne; undatierte Spuren werden bei gesetzter Tagesgrenze ausgeblendet.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Filter zurücksetzen</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Geben Sie für Start- und Endtag nichtnegative Zahlen ein (zum Beispiel 0, 10 oder 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>Der Starttag liegt nach dem Endtag. Geben Sie einen Starttag kleiner oder gleich dem Endtag ein.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>Keine datierten Einträge in diesem Zweig entsprechen der aktuellen Suche und Tagesgrenze.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>{0} undatierte Spuren sind während der Filterung nach Spieltagen ausgeblendet.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

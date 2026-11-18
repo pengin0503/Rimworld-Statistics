@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Поиск</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Фильтровать записи этой ветви по названию исследования (включая резервные имена для незагруженных модов), тексту события, названиям статистик в проверенных интервалах или названиям следов без даты.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Нач. день</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>Кон. день</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Необязательные включительные границы в игровых днях (можно указать только одну границу, напр. 10 или 12.5). Однодневные записи в диапазоне и пересекающиеся проверенные интервалы сохраняют исходный промежуток; при фильтрации по дням следы без даты исключаются.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Сбросить фильтры</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Введите неотрицательные числа для начального и конечного дня (например, 0, 10 или 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>Начальный день больше конечного. Укажите начальный день меньше или равный конечному.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>В этой ветви нет датированных записей, соответствующих текущему поиску и фильтру по дням.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>При фильтрации по игровым дням скрыто следов без даты: {0}.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>

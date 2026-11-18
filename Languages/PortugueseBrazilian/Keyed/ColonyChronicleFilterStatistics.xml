@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_SearchLabel>Buscar</RWS_Chronicle_SearchLabel>
+  <RWS_Chronicle_SearchTip>Filtre as entradas deste ramo pelo nome da pesquisa (incluindo nomes alternativos de MODs não carregados), texto do evento, nomes de estatísticas em intervalos verificados ou nomes de vestígios sem data.</RWS_Chronicle_SearchTip>
+  <RWS_Chronicle_StartDayLabel>Dia inicial</RWS_Chronicle_StartDayLabel>
+  <RWS_Chronicle_EndDayLabel>Dia final</RWS_Chronicle_EndDayLabel>
+  <RWS_Chronicle_DayRangeTip>Limites opcionais inclusivos de dias no jogo (é possível informar apenas um dos lados, ex.: 10 ou 12.5). Registros de um único dia dentro da faixa e intervalos verificados sobrepostos mantêm o período original; vestígios sem data são excluídos enquanto houver filtro de dias.</RWS_Chronicle_DayRangeTip>
+  <RWS_Chronicle_ClearFilters>Limpar filtros</RWS_Chronicle_ClearFilters>
+  <RWS_Chronicle_InvalidDayRange>Digite números não negativos para o dia inicial e o dia final (por exemplo, 0, 10 ou 12.5).</RWS_Chronicle_InvalidDayRange>
+  <RWS_Chronicle_ReversedDayRange>O dia inicial é posterior ao dia final. Informe um dia inicial menor ou igual ao dia final.</RWS_Chronicle_ReversedDayRange>
+  <RWS_Chronicle_NoFilterMatches>Nenhuma entrada com data corresponde à busca e ao filtro de dias neste ramo.</RWS_Chronicle_NoFilterMatches>
+  <RWS_Chronicle_UndatedHiddenByDayNotice>{0} vestígios sem data estão ocultos durante a filtragem por dias no jogo.</RWS_Chronicle_UndatedHiddenByDayNotice>
+</LanguageData>
