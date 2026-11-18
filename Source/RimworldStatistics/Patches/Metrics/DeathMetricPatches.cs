@@ -56,6 +56,7 @@ public static class PawnKillMetricPatch
                 HostileToPlayer = GameFacts.PlayerFaction is { } pf && p.HostileTo(pf),
                 VictimKind = GameFacts.VictimKind(p),
                 Species = freeColonist ? GameFacts.Species(p) : null,
+                AnimalSpecies = GameFacts.AnimalSpecies(p),
                 Xenotype = freeColonist ? GameFacts.Xenotype(p) : null,
                 AgeYears = p.ageTracker?.AgeBiologicalYearsFloat,
                 InPlayerCaravan = GameFacts.InPlayerCaravan(p),

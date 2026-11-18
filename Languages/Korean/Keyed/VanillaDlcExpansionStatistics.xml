@@ -75,4 +75,70 @@
   <RWS_Chronicle_Milestone_BossDiabolus>메카니터 보스 디아볼루스 처치</RWS_Chronicle_Milestone_BossDiabolus>
   <RWS_Chronicle_Milestone_BossWarqueen>메카니터 보스 워퀸 처치</RWS_Chronicle_Milestone_BossWarqueen>
   <RWS_Chronicle_Milestone_BossApocriton>메카니터 보스 아포크리톤 처치</RWS_Chronicle_Milestone_BossApocriton>
+  <RWS_AcqUnit_royalty_linking>Royalty: 영혼나무 연결 (사건)</RWS_AcqUnit_royalty_linking>
+  <RWS_AcqUnit_ideology_expansion>Ideology: 노예화 및 생체조형 (사건)</RWS_AcqUnit_ideology_expansion>
+  <RWS_AcqUnit_ideology_state>Ideology: 개혁·가우란렌·성물 (저장 시점)</RWS_AcqUnit_ideology_state>
+  <RWS_Metric_WorldTemperature>행성 전체 기온</RWS_Metric_WorldTemperature>
+  <RWS_MetricDesc_WorldTemperature>정착지가 속한 세계의 전체 기온 설정입니다.</RWS_MetricDesc_WorldTemperature>
+  <RWS_Metric_WorldRainfall>행성 전체 강수량</RWS_Metric_WorldRainfall>
+  <RWS_MetricDesc_WorldRainfall>정착지가 속한 세계의 전체 강수량 설정입니다.</RWS_MetricDesc_WorldRainfall>
+  <RWS_Metric_WorldPollution>행성 오염 비율</RWS_Metric_WorldPollution>
+  <RWS_MetricDesc_WorldPollution>정착지가 속한 세계 지표면의 오염 백분율입니다.</RWS_MetricDesc_WorldPollution>
+  <RWS_Metric_InitialMapSize>초기 맵 셀 수</RWS_Metric_InitialMapSize>
+  <RWS_MetricDesc_InitialMapSize>초기 정착지 맵의 전체 셀 수입니다 (내역에 크기 표시).</RWS_MetricDesc_InitialMapSize>
+  <RWS_WorldTemp_VeryCold>매우 추움</RWS_WorldTemp_VeryCold>
+  <RWS_WorldTemp_Cold>추움</RWS_WorldTemp_Cold>
+  <RWS_WorldTemp_LittleBitColder>약간 추움</RWS_WorldTemp_LittleBitColder>
+  <RWS_WorldTemp_Normal>보통</RWS_WorldTemp_Normal>
+  <RWS_WorldTemp_LittleBitWarmer>약간 따뜻함</RWS_WorldTemp_LittleBitWarmer>
+  <RWS_WorldTemp_Hot>더움</RWS_WorldTemp_Hot>
+  <RWS_WorldTemp_VeryHot>매우 더움</RWS_WorldTemp_VeryHot>
+  <RWS_WorldRain_AlmostNone>거의 없음</RWS_WorldRain_AlmostNone>
+  <RWS_WorldRain_Little>적음</RWS_WorldRain_Little>
+  <RWS_WorldRain_LittleBitLess>약간 적음</RWS_WorldRain_LittleBitLess>
+  <RWS_WorldRain_Normal>보통</RWS_WorldRain_Normal>
+  <RWS_WorldRain_LittleBitMore>약간 많음</RWS_WorldRain_LittleBitMore>
+  <RWS_WorldRain_High>많음</RWS_WorldRain_High>
+  <RWS_WorldRain_VeryHigh>매우 많음</RWS_WorldRain_VeryHigh>
+  <RWS_Metric_MechSpeciesPeak>기종별 아군 메카노이드 정점</RWS_Metric_MechSpeciesPeak>
+  <RWS_MetricDesc_MechSpeciesPeak>저장 시점에 생존해 있던 플레이어 세력 메카노이드의 기종별 최고 수입니다.</RWS_MetricDesc_MechSpeciesPeak>
+  <RWS_Metric_IdeologyFluidReforms>유동 사상 개혁 횟수</RWS_Metric_IdeologyFluidReforms>
+  <RWS_MetricDesc_IdeologyFluidReforms>저장 시점까지 완료된 유동 사상 개혁 횟수입니다 (고정 사상은 해당 없음; 1.7 이전 세이브 보수적 복원 포함).</RWS_MetricDesc_IdeologyFluidReforms>
+  <RWS_Metric_IdeologyGauranlenPeak>연결된 가우란렌 나무 정점</RWS_Metric_IdeologyGauranlenPeak>
+  <RWS_MetricDesc_IdeologyGauranlenPeak>저장 시점에 홈 맵에서 생존 아군 폰과 연결된 가우란렌 나무의 최고 수입니다.</RWS_MetricDesc_IdeologyGauranlenPeak>
+  <RWS_Metric_IdeologyRelicsPeak>확보한 사상 성물 정점</RWS_Metric_IdeologyRelicsPeak>
+  <RWS_MetricDesc_IdeologyRelicsPeak>저장 시점에 플레이어가 보유한 주 사상 성물의 최고 수입니다.</RWS_MetricDesc_IdeologyRelicsPeak>
+  <RWS_Metric_IdeologyPrisonersEnslaved>죄수 노예화 수</RWS_Metric_IdeologyPrisonersEnslaved>
+  <RWS_MetricDesc_IdeologyPrisonersEnslaved>기록 기간 중 정착지 죄수를 새로 노예화한 확정 횟수입니다.</RWS_MetricDesc_IdeologyPrisonersEnslaved>
+  <RWS_Metric_IdeologyBiosculpterCompletions>생체조형기 주기 완료 수</RWS_Metric_IdeologyBiosculpterCompletions>
+  <RWS_MetricDesc_IdeologyBiosculpterCompletions>아군 생체조형기에서 정착지 폰에 대해 완료된 주기 횟수(주기 유형별)입니다.</RWS_MetricDesc_IdeologyBiosculpterCompletions>
+  <RWS_Biosculpter_Medic>치료 주기</RWS_Biosculpter_Medic>
+  <RWS_Biosculpter_Bioregeneration>생체재생 주기</RWS_Biosculpter_Bioregeneration>
+  <RWS_Biosculpter_AgeReversal>역노화 주기</RWS_Biosculpter_AgeReversal>
+  <RWS_Biosculpter_Pleasure>쾌락 주기</RWS_Biosculpter_Pleasure>
+  <RWS_Metric_RoyaltyPermitUsesByDef>제국 허가증 사용 수 (허가증별)</RWS_Metric_RoyaltyPermitUsesByDef>
+  <RWS_MetricDesc_RoyaltyPermitUsesByDef>정착지 폰이 발동한 제국 작위 허가증 확정 횟수를 허가증 종류별로 집계합니다.</RWS_MetricDesc_RoyaltyPermitUsesByDef>
+  <RWS_Metric_RoyaltyPsycastsByDef>초능력 시전 수 (능력별)</RWS_Metric_RoyaltyPsycastsByDef>
+  <RWS_MetricDesc_RoyaltyPsycastsByDef>정착지 폰이 시전한 바닐라 초능력 확정 횟수를 능력별로 집계합니다.</RWS_MetricDesc_RoyaltyPsycastsByDef>
+  <RWS_Metric_RoyaltyAnimaLinks>영혼나무 연결 의식 완료 수</RWS_Metric_RoyaltyAnimaLinks>
+  <RWS_MetricDesc_RoyaltyAnimaLinks>정착지 폰이 초능력 연결 단계를 획득한 연결 의식 완료 횟수입니다.</RWS_MetricDesc_RoyaltyAnimaLinks>
+  <RWS_Metric_RaidsRetreatedByFaction>습격 격퇴 수 (세력별)</RWS_Metric_RaidsRetreatedByFaction>
+  <RWS_MetricDesc_RaidsRetreatedByFaction>기록 기간 중 후퇴한 적 습격을 공격 세력 유형별로 집계합니다.</RWS_MetricDesc_RaidsRetreatedByFaction>
+  <RWS_Metric_RaidsWipedByFaction>습격 섬멸 수 (세력별)</RWS_Metric_RaidsWipedByFaction>
+  <RWS_MetricDesc_RaidsWipedByFaction>기록 기간 중 전멸시킨 적 습격을 공격 세력 유형별로 집계합니다.</RWS_MetricDesc_RaidsWipedByFaction>
+  <RWS_Metric_AnimalsTamedBySpecies>길들인 동물 수 (종별)</RWS_Metric_AnimalsTamedBySpecies>
+  <RWS_MetricDesc_AnimalsTamedBySpecies>플레이어 세력으로 길들인 야생 동물을 종별로 집계합니다.</RWS_MetricDesc_AnimalsTamedBySpecies>
+  <RWS_Metric_AnimalBirthsBySpecies>동물 출생·부화 수 (종별)</RWS_Metric_AnimalBirthsBySpecies>
+  <RWS_MetricDesc_AnimalBirthsBySpecies>플레이어 세력에서 태어나거나 부화한 동물을 종별로 집계합니다.</RWS_MetricDesc_AnimalBirthsBySpecies>
+  <RWS_Metric_AnimalsSlaughteredBySpecies>도축한 동물 수 (종별)</RWS_Metric_AnimalsSlaughteredBySpecies>
+  <RWS_MetricDesc_AnimalsSlaughteredBySpecies>도축 처치된 플레이어 세력 동물을 종별로 집계합니다.</RWS_MetricDesc_AnimalsSlaughteredBySpecies>
+  <RWS_Metric_AnimalsHuntedBySpecies>사냥한 동물 수 (종별)</RWS_Metric_AnimalsHuntedBySpecies>
+  <RWS_MetricDesc_AnimalsHuntedBySpecies>아군 폰의 사냥으로 처치한 야생 동물을 종별로 집계합니다.</RWS_MetricDesc_AnimalsHuntedBySpecies>
+  <RWS_Chronicle_Kind_Tale>역사 일화</RWS_Chronicle_Kind_Tale>
+  <RWS_Chronicle_Evidence_SaveTale>세이브 일화 기록</RWS_Chronicle_Evidence_SaveTale>
+  <RWS_Chronicle_FilterTales>역사 일화</RWS_Chronicle_FilterTales>
+  <RWS_Chronicle_Tale_TileSettled>정착지 건설 (세이브 일화)</RWS_Chronicle_Tale_TileSettled>
+  <RWS_Chronicle_Tale_Marriage>정착민 결혼 기록 (세이브 일화)</RWS_Chronicle_Tale_Marriage>
+  <RWS_Chronicle_Tale_MajorThreat>중대 위협 조우 (세이브 일화)</RWS_Chronicle_Tale_MajorThreat>
+  <RWS_Chronicle_TipAuxiliaryTale>세이브의 영구 일화 기록에서 복원된 연대기 보조 항목이며 수치 통계 합계에는 포함되지 않습니다.</RWS_Chronicle_TipAuxiliaryTale>
 </LanguageData>

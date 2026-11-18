@@ -260,9 +260,10 @@ public static class ColonyChronicleExport
         sb.AppendLine("    .chron-kind-ending { color:#e8be4a; font-weight:600; }");
         sb.AppendLine("    .chron-kind-milestone { color:#5ec488; font-weight:600; }");
         sb.AppendLine("    .chron-kind-research { color:#62aef0; font-weight:600; }");
+        sb.AppendLine("    .chron-kind-tale { color:#c79bf2; font-weight:600; }");
         sb.AppendLine("    .chron-kind-interval { color:var(--text); }");
         sb.AppendLine("    .chron-kind-gap { color:var(--warn); font-weight:600; }");
-        sb.AppendLine("    @media (prefers-color-scheme: light) { .chron-kind-ending { color:#946800; } .chron-kind-milestone { color:#1c7a43; } .chron-kind-research { color:#175ea8; } }");
+        sb.AppendLine("    @media (prefers-color-scheme: light) { .chron-kind-ending { color:#946800; } .chron-kind-milestone { color:#1c7a43; } .chron-kind-research { color:#175ea8; } .chron-kind-tale { color:#6b3fa0; } }");
         sb.AppendLine("    ul.chron-undated { margin:8px 0 0 0; padding-left:20px; }");
     }
 
@@ -326,13 +327,14 @@ public static class ColonyChronicleExport
         ChronicleEntryKind.Ending => "chron-kind-ending",
         ChronicleEntryKind.Milestone => "chron-kind-milestone",
         ChronicleEntryKind.ResearchCompleted => "chron-kind-research",
+        ChronicleEntryKind.HistoricalTale => "chron-kind-tale",
         ChronicleEntryKind.VerifiedInterval => "chron-kind-interval",
         _ => "chron-kind-gap",
     };
 
     private static string SafeKindClass(string? raw) => raw switch
     {
-        "chron-kind-ending" or "chron-kind-milestone" or "chron-kind-research" or "chron-kind-interval" or "chron-kind-gap" => raw,
+        "chron-kind-ending" or "chron-kind-milestone" or "chron-kind-research" or "chron-kind-tale" or "chron-kind-interval" or "chron-kind-gap" => raw,
         _ => "chron-kind-interval",
     };
 

@@ -35,8 +35,8 @@ public static class MetricDisplayPolicy
         DownFamily.ColonistsDowned, DownFamily.EnemiesDowned, DownFamily.ToxicDowns,
         DownFamily.SocialFightDowns,
         RaidFamily.Sieges, RaidFamily.Breaches, RaidFamily.Drops, RaidFamily.Infestations,
-        RaidFamily.MechClusters, RaidFamily.Manhunters, RaidFamily.Retreated,
-        RaidFamily.Wiped, RaidFamily.RepelledNoDown,
+        RaidFamily.MechClusters, RaidFamily.Manhunters, RaidFamily.Retreated, RaidFamily.RetreatedByFaction,
+        RaidFamily.Wiped, RaidFamily.WipedByFaction, RaidFamily.RepelledNoDown,
         MembershipFamily.FirstJoin, MembershipFamily.PrisonerRecruit,
         MembershipFamily.HumanBirths, MembershipFamily.HumanBirthsBySpecies, MembershipFamily.HumanBirthsByXenotype,
         MembershipFamily.SlavesFreed,
@@ -45,7 +45,8 @@ public static class MetricDisplayPolicy
         SocialFamily.Marriages, SocialFamily.Divorces, SocialFamily.Lovers,
         SocialFamily.Fights, SocialFamily.PrisonBreaks, SocialFamily.PrisonersReleased,
         SocialFamily.PrisonersCaptured, SocialFamily.AnimalBonds,
-        AnimalsFamily.Tames, AnimalsFamily.Births, AnimalsFamily.Slaughtered, AnimalsFamily.Hunted,
+        AnimalsFamily.Tames, AnimalsFamily.TamesBySpecies, AnimalsFamily.Births, AnimalsFamily.BirthsBySpecies,
+        AnimalsFamily.Slaughtered, AnimalsFamily.SlaughteredBySpecies, AnimalsFamily.Hunted, AnimalsFamily.HuntedBySpecies,
         ChoreFamily.FilthRemoved, ChoreFamily.CleaningJobsCompleted, ChoreFamily.FiresExtinguished, ChoreFamily.MealIngestions,
         ChoreFamily.HaulPlacements, ChoreFamily.HauledUnits, ChoreFamily.TreeWoodPlaced,
         ChoreFamily.SlaughteredButchery,
@@ -87,8 +88,11 @@ public static class MetricDisplayPolicy
         TradeFamily.SoldDefs, TradeFamily.BoughtDefs, TradeFamily.PartnerFactionDefs,
         // DLC event streams (#331): each counts confirmed events, or a distinct set that only grows, along the lineage.
         MentalFamily.BreaksByDef, MentalFamily.InspirationsByDef,
-        RoyaltyFamily.TitleGrants, RoyaltyFamily.PermitUses, RoyaltyFamily.Psycasts, RoyaltyFamily.Honor,
+        RoyaltyFamily.TitleGrants, RoyaltyFamily.PermitUses, RoyaltyFamily.PermitUsesByDef,
+        RoyaltyFamily.Psycasts, RoyaltyFamily.PsycastsByDef, RoyaltyFamily.Honor,
+        RoyaltyLinkingFamily.AnimaTreeLinks,
         IdeologyFamily.Conversions, IdeologyFamily.RitualResults, IdeologyFamily.RoleAppointments,
+        IdeologyExpansionFamily.PrisonersEnslaved, IdeologyExpansionFamily.BiosculpterCompletions,
         OdysseyFamily.Flights, OdysseyFamily.Distance, OdysseyFamily.UniqueTiles, OdysseyFamily.NewMapLandings,
         OdysseyVoyageFamily.ChemfuelConsumed, OdysseyVoyageFamily.OrbitArrivals, OdysseyVoyageFamily.VisitedLandmarks,
         BiotechFamily.MechsCreated, BiotechFamily.BirthMothers, BiotechFamily.ChildStages, BiotechFamily.MechRepairs,
@@ -153,6 +157,30 @@ public static class MetricDisplayPolicy
             return "RWS_Details_UnknownBucket";
         if (key == MetricKeys.CustomXenotypeBucket)
             return "RWS_Details_CustomXenotype";
+        if (definition.Key == ColonyStartSnapshot.WorldTemperature)
+            return key switch
+            {
+                "VeryCold" => "RWS_WorldTemp_VeryCold",
+                "Cold" => "RWS_WorldTemp_Cold",
+                "LittleBitColder" => "RWS_WorldTemp_LittleBitColder",
+                "Normal" => "RWS_WorldTemp_Normal",
+                "LittleBitWarmer" => "RWS_WorldTemp_LittleBitWarmer",
+                "Hot" => "RWS_WorldTemp_Hot",
+                "VeryHot" => "RWS_WorldTemp_VeryHot",
+                _ => null,
+            };
+        if (definition.Key == ColonyStartSnapshot.WorldRainfall)
+            return key switch
+            {
+                "AlmostNone" => "RWS_WorldRain_AlmostNone",
+                "Little" => "RWS_WorldRain_Little",
+                "LittleBitLess" => "RWS_WorldRain_LittleBitLess",
+                "Normal" => "RWS_WorldRain_Normal",
+                "LittleBitMore" => "RWS_WorldRain_LittleBitMore",
+                "High" => "RWS_WorldRain_High",
+                "VeryHigh" => "RWS_WorldRain_VeryHigh",
+                _ => null,
+            };
         if (definition.Key == MedicineFamily.Surgeries)
             return key switch
             {

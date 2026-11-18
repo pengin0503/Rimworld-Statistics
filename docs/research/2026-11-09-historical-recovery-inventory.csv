@@ -49,7 +49,9 @@ raid.longest_gap,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,"B-008, N2-C-002",RaidF
 raid.gap.mean,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-001,RaidFamily.MeanGap
 raid.first_day,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N5-M-001,RaidFamily.FirstDay
 raid.retreated,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-011,RaidFamily.Retreated
+raid.retreated_by_faction,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-011-FAC,RaidFamily.RetreatedByFaction
 raid.wiped,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-012,RaidFamily.Wiped
+raid.wiped_by_faction,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N2-C-012-FAC,RaidFamily.WipedByFaction
 raid.repelled.rate,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-B-010,RaidFamily.RepelledRate
 raid.repelled.no_down,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-B-009,RaidFamily.RepelledNoDown
 raid.duration.mean,raid,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-B-008,RaidFamily.DurationMean
@@ -84,9 +86,13 @@ social.prisoners_released,social,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-017,Social
 social.prisoners_captured,social,live,EVENT_LOG_REQUIRED,UNVERIFIED,B-003,SocialFamily.PrisonersCaptured
 social.animal_bonds,social,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-D-009,SocialFamily.AnimalBonds
 animals.tamed,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-001,AnimalsFamily.Tames
+animals.tamed_by_species,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-001-SPECIES,AnimalsFamily.TamesBySpecies
 animals.birth,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-002,AnimalsFamily.Births
+animals.birth_by_species,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-002-SPECIES,AnimalsFamily.BirthsBySpecies
 animals.slaughtered,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-004,AnimalsFamily.Slaughtered
+animals.slaughtered_by_species,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,A-004-SPECIES,AnimalsFamily.SlaughteredBySpecies
 animals.hunted,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-D-006,AnimalsFamily.Hunted
+animals.hunted_by_species,animals,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-D-006-SPECIES,AnimalsFamily.HuntedBySpecies
 work.butcher.slaughtered_carcasses_processed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-008,ChoreFamily.SlaughteredButchery
 work.trees.wood_placed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-007,ChoreFamily.TreeWoodPlaced
 work.cleaning.jobs_completed,chore,live,EVENT_LOG_REQUIRED,UNVERIFIED,P2-W-006,ChoreFamily.CleaningJobsCompleted
@@ -202,15 +208,20 @@ exploration.settlements_founded,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,N3-X-
 exploration.settlements_abandoned,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,Q-013,CaravanFamily.SettlementsAbandoned
 exploration.ancient_danger_opened,caravan,live,EVENT_LOG_REQUIRED,UNVERIFIED,Q-014,CaravanFamily.AncientDangersOpened
 royalty.permit_uses,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-002,RoyaltyFamily.PermitUses
+royalty.permit_uses_by_def,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-002-DEF,RoyaltyFamily.PermitUsesByDef
 royalty.psycasts,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-005,RoyaltyFamily.Psycasts
+royalty.psycasts_by_def,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-005-DEF,RoyaltyFamily.PsycastsByDef
 royalty.title_grants,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-001,RoyaltyFamily.TitleGrants
 royalty.highest_title,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-004,RoyaltyFamily.HighestTitle
 royalty.honor,royalty,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-006,RoyaltyFamily.Honor
+royalty.anima_links,royalty_linking,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ROY-003,RoyaltyLinkingFamily.AnimaTreeLinks
 ideology.conversions,ideology,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-007,IdeologyFamily.Conversions
 ideology.ritual.results,ideology,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-008,IdeologyFamily.RitualResults
 ideology.ritual.success_rate,ideology,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-009,IdeologyFamily.RitualSuccessRate
 ideology.conversion.days_mean,ideology,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-010,IdeologyFamily.ConversionDaysMean
 ideology.role_appointments,ideology,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-007,IdeologyFamily.RoleAppointments
+ideology.prisoners_enslaved,ideology_expansion,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-IDEO-001,IdeologyExpansionFamily.PrisonersEnslaved
+ideology.biosculpter.completions,ideology_expansion,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-IDEO-002,IdeologyExpansionFamily.BiosculpterCompletions
 odyssey.gravship.flights,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-022,OdysseyFamily.Flights
 odyssey.gravship.distance,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-023,OdysseyFamily.Distance
 odyssey.gravship.unique_tiles,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-024,OdysseyFamily.UniqueTiles
@@ -238,6 +249,10 @@ anomaly.entity_escapes,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-006,Ano
 anomaly.entities_contained,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-007,AnomalyFamily.EntitiesContained
 anomaly.pit_gates_collapsed,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-008,AnomalyFamily.PitGatesCollapsed
 colony.start.biome,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,"N1-F-001, N1-F-002",ColonyStartSnapshot.Biome
+colony.world.temperature,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-F-003,ColonyStartSnapshot.WorldTemperature
+colony.world.rainfall,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-F-004,ColonyStartSnapshot.WorldRainfall
+colony.world.pollution,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-F-005,ColonyStartSnapshot.WorldPollution
+colony.world.initial_map_size,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-F-006,ColonyStartSnapshot.InitialMapSize
 research.snapshot.finished,research_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-012,ResearchStateSnapshot.Finished
 research.snapshot.finished_rate,research_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-012,ResearchStateSnapshot.FinishedRate
 research.snapshot.tech_peak,research_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-013,ResearchStateSnapshot.TechPeak
@@ -254,6 +269,7 @@ population.snapshot.prisoner_xenotype_peak,roster,snapshot,SAVED_STATE_CANDIDATE
 population.snapshot.slave_xenotype_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-S-XENO,RosterSnapshot.SlaveXenotypePeak
 population.snapshot.animals,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-007,RosterSnapshot.Animals
 population.snapshot.mechs,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-008,RosterSnapshot.Mechs
+population.snapshot.mech_species_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-008-SPECIES,RosterSnapshot.MechSpeciesPeak
 population.snapshot.augmented_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-021,RosterSnapshot.AugmentedPeak
 population.snapshot.skill20_pawns_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-022,RosterSnapshot.Skill20PawnsPeak
 population.snapshot.skill20_per_pawn_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-023,RosterSnapshot.Skill20PerPawnPeak
@@ -280,6 +296,9 @@ stock.persona_weapons.peak,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-020
 stock.medicine.peak,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-004,StockSnapshot.MedicinePeak
 stock.food_nutrition.min,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-005,StockSnapshot.FoodMin
 royalty.psylink.max,royalty_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-006,RoyaltyStateSnapshot.PsylinkPeak
+ideology.fluid.reforms,ideology_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-IDEO-003,IdeologyStateSnapshot.FluidReforms
+ideology.gauranlen.connected_peak,ideology_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-IDEO-004,IdeologyStateSnapshot.ConnectedGauranlenTreesPeak
+ideology.relics.collected_peak,ideology_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-IDEO-005,IdeologyStateSnapshot.CollectedRelicsPeak
 biotech.pollution.cells_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-004,BiotechStateSnapshot.PollutionCellsPeak
 biotech.bandwidth.used_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-005,BiotechStateSnapshot.BandwidthUsedPeak
 biotech.bossgroups.summoned,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-BIO-001,BiotechStateSnapshot.BossgroupsSummoned

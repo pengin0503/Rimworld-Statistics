@@ -75,4 +75,70 @@
   <RWS_Chronicle_Milestone_BossDiabolus>Boss mécaniste Diabolus vaincu</RWS_Chronicle_Milestone_BossDiabolus>
   <RWS_Chronicle_Milestone_BossWarqueen>Boss mécaniste Reine de guerre vaincu</RWS_Chronicle_Milestone_BossWarqueen>
   <RWS_Chronicle_Milestone_BossApocriton>Boss mécaniste Apocriton vaincu</RWS_Chronicle_Milestone_BossApocriton>
+  <RWS_AcqUnit_royalty_linking>Royalty : Lien à l'arbre anima (événements)</RWS_AcqUnit_royalty_linking>
+  <RWS_AcqUnit_ideology_expansion>Ideology : Asservissement et biosculpture (événements)</RWS_AcqUnit_ideology_expansion>
+  <RWS_AcqUnit_ideology_state>Ideology : Réformes, Gauranlen et reliques (à la sauvegarde)</RWS_AcqUnit_ideology_state>
+  <RWS_Metric_WorldTemperature>Température globale du monde</RWS_Metric_WorldTemperature>
+  <RWS_MetricDesc_WorldTemperature>Paramètre de température globale enregistré pour le monde de la colonie.</RWS_MetricDesc_WorldTemperature>
+  <RWS_Metric_WorldRainfall>Précipitations globales du monde</RWS_Metric_WorldRainfall>
+  <RWS_MetricDesc_WorldRainfall>Paramètre de précipitations globales enregistré pour le monde de la colonie.</RWS_MetricDesc_WorldRainfall>
+  <RWS_Metric_WorldPollution>Pollution globale du monde</RWS_Metric_WorldPollution>
+  <RWS_MetricDesc_WorldPollution>Pourcentage de pollution de surface enregistré pour le monde de la colonie.</RWS_MetricDesc_WorldPollution>
+  <RWS_Metric_InitialMapSize>Cellules de la carte initiale</RWS_Metric_InitialMapSize>
+  <RWS_MetricDesc_InitialMapSize>Nombre total de cellules de la carte initiale de la colonie, avec dimensions en détail.</RWS_MetricDesc_InitialMapSize>
+  <RWS_WorldTemp_VeryCold>Très froid</RWS_WorldTemp_VeryCold>
+  <RWS_WorldTemp_Cold>Froid</RWS_WorldTemp_Cold>
+  <RWS_WorldTemp_LittleBitColder>Un peu plus froid</RWS_WorldTemp_LittleBitColder>
+  <RWS_WorldTemp_Normal>Normal</RWS_WorldTemp_Normal>
+  <RWS_WorldTemp_LittleBitWarmer>Un peu plus chaud</RWS_WorldTemp_LittleBitWarmer>
+  <RWS_WorldTemp_Hot>Chaud</RWS_WorldTemp_Hot>
+  <RWS_WorldTemp_VeryHot>Très chaud</RWS_WorldTemp_VeryHot>
+  <RWS_WorldRain_AlmostNone>Presque aucune</RWS_WorldRain_AlmostNone>
+  <RWS_WorldRain_Little>Faible</RWS_WorldRain_Little>
+  <RWS_WorldRain_LittleBitLess>Un peu moins</RWS_WorldRain_LittleBitLess>
+  <RWS_WorldRain_Normal>Normale</RWS_WorldRain_Normal>
+  <RWS_WorldRain_LittleBitMore>Un peu plus</RWS_WorldRain_LittleBitMore>
+  <RWS_WorldRain_High>Élevée</RWS_WorldRain_High>
+  <RWS_WorldRain_VeryHigh>Très élevée</RWS_WorldRain_VeryHigh>
+  <RWS_Metric_MechSpeciesPeak>Pic de mécanoïdes de la colonie par type</RWS_Metric_MechSpeciesPeak>
+  <RWS_MetricDesc_MechSpeciesPeak>Nombre maximal de mécanoïdes vivants de la faction du joueur observé lors d'une sauvegarde réussie, par type.</RWS_MetricDesc_MechSpeciesPeak>
+  <RWS_Metric_IdeologyFluidReforms>Réformes d'idéoligion fluide</RWS_Metric_IdeologyFluidReforms>
+  <RWS_MetricDesc_IdeologyFluidReforms>Réformes terminées de l'idéoligion fluide du joueur à la sauvegarde (non applicable aux idéoligions fixes ; inclut la récupération prudente 1.7).</RWS_MetricDesc_IdeologyFluidReforms>
+  <RWS_Metric_IdeologyGauranlenPeak>Pic d'arbres Gauranlen connectés</RWS_Metric_IdeologyGauranlenPeak>
+  <RWS_MetricDesc_IdeologyGauranlenPeak>Nombre maximal d'arbres Gauranlen sur les cartes du joueur connectés à des colons vivants à la sauvegarde.</RWS_MetricDesc_IdeologyGauranlenPeak>
+  <RWS_Metric_IdeologyRelicsPeak>Pic de reliques d'idéoligion réunies</RWS_Metric_IdeologyRelicsPeak>
+  <RWS_MetricDesc_IdeologyRelicsPeak>Nombre maximal de reliques de l'idéoligion principale en possession du joueur à la sauvegarde.</RWS_MetricDesc_IdeologyRelicsPeak>
+  <RWS_Metric_IdeologyPrisonersEnslaved>Prisonniers réduits en esclavage</RWS_Metric_IdeologyPrisonersEnslaved>
+  <RWS_MetricDesc_IdeologyPrisonersEnslaved>Prisonniers de la colonie nouvellement asservis pendant le jeu enregistré.</RWS_MetricDesc_IdeologyPrisonersEnslaved>
+  <RWS_Metric_IdeologyBiosculpterCompletions>Cycles de biosculpteur terminés</RWS_Metric_IdeologyBiosculpterCompletions>
+  <RWS_MetricDesc_IdeologyBiosculpterCompletions>Cycles terminés dans les capsules de biosculpture du joueur pour les membres de la colonie, par type de cycle.</RWS_MetricDesc_IdeologyBiosculpterCompletions>
+  <RWS_Biosculpter_Medic>Cycle médical</RWS_Biosculpter_Medic>
+  <RWS_Biosculpter_Bioregeneration>Cycle de biorégénération</RWS_Biosculpter_Bioregeneration>
+  <RWS_Biosculpter_AgeReversal>Cycle de rajeunissement</RWS_Biosculpter_AgeReversal>
+  <RWS_Biosculpter_Pleasure>Cycle de plaisir</RWS_Biosculpter_Pleasure>
+  <RWS_Metric_RoyaltyPermitUsesByDef>Permis impériaux utilisés (par permis)</RWS_Metric_RoyaltyPermitUsesByDef>
+  <RWS_MetricDesc_RoyaltyPermitUsesByDef>Activations confirmées de permis de titre royal par les membres de la colonie, par type de permis.</RWS_MetricDesc_RoyaltyPermitUsesByDef>
+  <RWS_Metric_RoyaltyPsycastsByDef>Pouvoirs psychiques lancés (par capacité)</RWS_Metric_RoyaltyPsycastsByDef>
+  <RWS_MetricDesc_RoyaltyPsycastsByDef>Activations confirmées de pouvoirs psychiques vanilla par les membres de la colonie, par capacité.</RWS_MetricDesc_RoyaltyPsycastsByDef>
+  <RWS_Metric_RoyaltyAnimaLinks>Rituels de lien anima terminés</RWS_Metric_RoyaltyAnimaLinks>
+  <RWS_MetricDesc_RoyaltyAnimaLinks>Rituels de lien psychique terminés ayant conféré un niveau de psylien à un membre de la colonie.</RWS_MetricDesc_RoyaltyAnimaLinks>
+  <RWS_Metric_RaidsRetreatedByFaction>Raids repoussés en retraite (par faction)</RWS_Metric_RaidsRetreatedByFaction>
+  <RWS_MetricDesc_RaidsRetreatedByFaction>Raids hostiles ayant battu en retraite pendant le jeu enregistré, par type de faction.</RWS_MetricDesc_RaidsRetreatedByFaction>
+  <RWS_Metric_RaidsWipedByFaction>Raids anéantis (par faction)</RWS_Metric_RaidsWipedByFaction>
+  <RWS_MetricDesc_RaidsWipedByFaction>Raids hostiles entièrement éliminés pendant le jeu enregistré, par type de faction.</RWS_MetricDesc_RaidsWipedByFaction>
+  <RWS_Metric_AnimalsTamedBySpecies>Animaux apprivoisés (par espèce)</RWS_Metric_AnimalsTamedBySpecies>
+  <RWS_MetricDesc_AnimalsTamedBySpecies>Animaux sauvages apprivoisés dans la faction du joueur, par espèce.</RWS_MetricDesc_AnimalsTamedBySpecies>
+  <RWS_Metric_AnimalBirthsBySpecies>Naissances animales (par espèce)</RWS_Metric_AnimalBirthsBySpecies>
+  <RWS_MetricDesc_AnimalBirthsBySpecies>Animaux nés ou éclos dans la faction du joueur, par espèce.</RWS_MetricDesc_AnimalBirthsBySpecies>
+  <RWS_Metric_AnimalsSlaughteredBySpecies>Animaux abattus (par espèce)</RWS_Metric_AnimalsSlaughteredBySpecies>
+  <RWS_MetricDesc_AnimalsSlaughteredBySpecies>Animaux de la faction du joueur abattus, par espèce.</RWS_MetricDesc_AnimalsSlaughteredBySpecies>
+  <RWS_Metric_AnimalsHuntedBySpecies>Animaux chassés (par espèce)</RWS_Metric_AnimalsHuntedBySpecies>
+  <RWS_MetricDesc_AnimalsHuntedBySpecies>Animaux sauvages tués à la chasse par les colons, par espèce.</RWS_MetricDesc_AnimalsHuntedBySpecies>
+  <RWS_Chronicle_Kind_Tale>Récit historique</RWS_Chronicle_Kind_Tale>
+  <RWS_Chronicle_Evidence_SaveTale>Journal de récits de sauvegarde</RWS_Chronicle_Evidence_SaveTale>
+  <RWS_Chronicle_FilterTales>Récits historiques</RWS_Chronicle_FilterTales>
+  <RWS_Chronicle_Tale_TileSettled>Colonie fondée (récit de sauvegarde)</RWS_Chronicle_Tale_TileSettled>
+  <RWS_Chronicle_Tale_Marriage>Mariage de colons enregistré (récit de sauvegarde)</RWS_Chronicle_Tale_Marriage>
+  <RWS_Chronicle_Tale_MajorThreat>Menace majeure affrontée (récit de sauvegarde)</RWS_Chronicle_Tale_MajorThreat>
+  <RWS_Chronicle_TipAuxiliaryTale>Trace narrative auxiliaire conservée dans les récits permanents de la sauvegarde ; jamais additionnée aux totaux numériques.</RWS_Chronicle_TipAuxiliaryTale>
 </LanguageData>

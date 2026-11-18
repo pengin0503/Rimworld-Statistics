@@ -180,6 +180,44 @@ public sealed partial class SaveReader
             m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
             m.EvidenceByAcquisition["biotech_state"] = MetricEvidence.Experimental;
         }
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalIdeologyStateReader.Build(
+                s.HistoricalFactions, s.ScenarioPlayerFactionDef, s.HistoricalFactionsOverflowed,
+                s.SavedIdeos, s.SavedIdeosMalformed, m.ActiveDlcIds) is { } ideologyState)
+        {
+            foreach (var (key, value) in ideologyState)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            m.EvidenceByAcquisition[IdeologyStateSnapshot.Unit] = MetricEvidence.Experimental;
+        }
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && (s.WorldInfoHasMapSize || s.WorldOverallTemperature is not null
+                || s.WorldOverallRainfall is not null || s.WorldPollution is not null))
+        {
+            bool? biotechActive = m.ActiveDlcIds is { } dlcs
+                ? dlcs.Contains(AcquisitionUnits.Biotech, StringComparer.OrdinalIgnoreCase)
+                : null;
+            var worldMetrics = ColonyStartSnapshot.BuildWorldInfo(
+                s.WorldOverallTemperature,
+                s.WorldOverallRainfall,
+                s.WorldPollutionMalformed ? null : s.WorldPollution,
+                s.WorldInitialMapWidth,
+                s.WorldInitialMapHeight,
+                biotechActive);
+            var anyEmitted = false;
+            foreach (var (key, value) in worldMetrics)
+            {
+                if (value.Values.TryGetValue(MetricEntry.Scalar, out var scalar) && scalar.Coverage == MetricCoverage.Unknown)
+                    continue;
+                m.Metrics[key] = value;
+                anyEmitted = true;
+            }
+            if (anyEmitted)
+            {
+                m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+                m.EvidenceByAcquisition["colony_start"] = MetricEvidence.Experimental;
+            }
+        }
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,
         // but are not proof of the saved MOD-resolved runtime DefDatabase.

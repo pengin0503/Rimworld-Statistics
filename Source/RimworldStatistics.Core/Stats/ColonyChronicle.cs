@@ -12,6 +12,9 @@ public enum ChronicleEntryKind
     /// <summary>A completed research project at its exact recorded completion tick on the selected branch.</summary>
     ResearchCompleted,
 
+    /// <summary>An auxiliary permanent <c>Tale</c> preserved in a save file on the selected branch (never summed into numeric totals).</summary>
+    HistoricalTale,
+
     /// <summary>A verified multi-tick interval <c>[StartTick, EndTick]</c> between two proven checkpoints.</summary>
     VerifiedInterval,
 
@@ -46,6 +49,9 @@ public enum ChronicleEvidenceSource
 
     /// <summary>RimWorld's 0.5-day <c>HistoryAutoRecorder</c> curve inside a save file on the selected branch.</summary>
     SaveHistoryGraph,
+
+    /// <summary>Permanent <c>Tale</c> entry stored in <c>&lt;taleManager&gt;</c> inside a save file on the selected branch.</summary>
+    SaveTale,
 
     /// <summary>
     /// A save's own <c>lineageEndings</c> entry without a matching live record in the profile. Dated only when the profile
@@ -175,6 +181,9 @@ public sealed record ChronicleEntry
 
     public string? ResearchDefKey { get; init; }
 
+    public PermanentTaleKind? TaleKind { get; init; }
+    public int? TaleId { get; init; }
+
     public IReadOnlyList<ChronicleIntervalFact> IntervalFacts { get; init; } = [];
 
     public ChronicleGapKind? GapKind { get; init; }
@@ -254,10 +263,11 @@ public sealed class ColonyChronicle
         string CampaignId, EndingType Type, int Ordinal, EndingSource Source, int TicksGame, DateTime RealTimeUtc,
         int Departed, bool DevMode, int? PartyAtEnding, int? ColonistsKilledAtEnding);
 
-    /// <summary>One read save of the colony, with the ending evidence it carries.</summary>
+    /// <summary>One read save of the colony, with the ending and permanent-tale evidence it carries.</summary>
     internal sealed record SaveFact(
         string FileName, long FileSize, DateTime LastWriteUtc, int Tick, string? CampaignId,
-        LineageEntry[] Lineage, EndingType[] EndingTraces, EndingType[] ExplainedTraces)
+        LineageEntry[] Lineage, EndingType[] EndingTraces, EndingType[] ExplainedTraces,
+        PermanentTaleFact[]? Tales = null)
     {
         /// <summary>A save written with the MOD active carries every ending of its own past in <see cref="Lineage"/>.</summary>
         public bool LineageAuthoritative => CampaignId is { Length: > 0 };
@@ -282,7 +292,8 @@ public sealed class ColonyChronicle
             .Where(o => o.Status == ObservationStatus.Ok)
             .Select(o => new SaveFact(o.FileName, o.FileSize, o.LastWriteUtc, o.Values.TicksGame,
                 o.Identity.ModCampaignId is { Length: > 0 } id ? id : null,
-                o.Lineage.ToArray(), o.EndingTraces.ToArray(), o.ExplainedTraces.ToArray()))
+                o.Lineage.ToArray(), o.EndingTraces.ToArray(), o.ExplainedTraces.ToArray(),
+                o.PermanentTales?.ToArray()))
             .ToArray();
         return new Evidence(colony.Key, endings, saves, colony.Traces.OrderBy(t => t).ToArray());
     }
@@ -325,19 +336,22 @@ public sealed class ColonyChronicle
 
         // 2. Endings & undated traces (strictly isolated to the selected branch).
         var undatedTraces = new List<ChronicleUndatedTrace>();
-        var (otherBranchEndings, ambiguousEndings) = CollectEndingsAndTraces(
+        var (otherBranchEndings, ambiguousEndings, chainSaves) = CollectEndingsAndTraces(
             evidence, lineage, chain, includeDevMode, AddEntry, undatedTraces);
 
-        // 3. Exact-tick milestones and per-project research completions from the selected branch's checkpoint chain.
+        // 3. Auxiliary permanent save tales strictly from saves mapped to the selected branch (never summed into numeric totals).
+        CollectPermanentSaveTales(chainSaves, AddEntry);
+
+        // 4. Exact-tick milestones and per-project research completions from the selected branch's checkpoint chain.
         CollectCheckpointMilestonesAndResearch(chain, AddEntry);
 
-        // 4. Biotech mechanitor boss defeat milestones (exact live tick when recorded, else bounded save interval).
+        // 5. Biotech mechanitor boss defeat milestones (exact live tick when recorded, else bounded save interval).
         CollectBiotechBossMilestones(chain, AddEntry);
 
-        // 5. 0.5-day history-graph threshold milestones from the selected branch's latest save-file observation.
+        // 6. 0.5-day history-graph threshold milestones from the selected branch's latest save-file observation.
         CollectSaveHistoryMilestones(view, lineage, chain, AddEntry);
 
-        // 6. Proven checkpoint-to-checkpoint interval summaries (never single-day events), and intervals not counted.
+        // 7. Proven checkpoint-to-checkpoint interval summaries (never single-day events), and intervals not counted.
         CollectVerifiedIntervals(view, lineage, chain, lateStartNodes, AddEntry);
 
         var sorted = entriesByKey.Values.ToList();
@@ -672,7 +686,7 @@ public sealed class ColonyChronicle
 
     private readonly record struct ChainSave(SaveFact Save, int NodeIndex);
 
-    private static (int OtherBranchCount, int AmbiguousCount) CollectEndingsAndTraces(
+    private static (int OtherBranchCount, int AmbiguousCount, List<ChainSave> ChainSaves) CollectEndingsAndTraces(
         Evidence evidence,
         ColonySaveLineage lineage,
         List<SaveLineageNode> chain,
@@ -854,7 +868,43 @@ public sealed class ColonyChronicle
                 EvidenceSource: ChronicleEvidenceSource.SaveTrace));
         }
 
-        return (otherBranchCount, ambiguousCount);
+        return (otherBranchCount, ambiguousCount, chainSaves);
+    }
+
+    private static void CollectPermanentSaveTales(
+        List<ChainSave> chainSaves,
+        Action<ChronicleEntry> addEntry)
+    {
+        if (chainSaves.Count == 0)
+            return;
+
+        var seen = new HashSet<(PermanentTaleKind Kind, int Id)>();
+        foreach (var cs in chainSaves.OrderBy(s => s.Save.Tick))
+        {
+            if (cs.Save.Tales is not { Length: > 0 } tales)
+                continue;
+            foreach (var t in tales)
+            {
+                if (t.TicksGame < 0 || t.TicksGame > cs.Save.Tick)
+                    continue;
+                if (!Enum.IsDefined(t.Kind) || !seen.Add((t.Kind, t.Id)))
+                    continue;
+
+                addEntry(new ChronicleEntry
+                {
+                    StableKey = $"tale:{t.Kind}:{t.Id}",
+                    Kind = ChronicleEntryKind.HistoricalTale,
+                    TimingKind = ChronicleTimingKind.ExactTick,
+                    StartTick = t.TicksGame,
+                    EndTick = t.TicksGame,
+                    EvidenceSource = ChronicleEvidenceSource.SaveTale,
+                    Coverage = MetricCoverage.SnapshotOnly,
+                    ChildSaveName = cs.Save.FileName,
+                    TaleKind = t.Kind,
+                    TaleId = t.Id,
+                });
+            }
+        }
     }
 
     /// <summary>
@@ -1355,10 +1405,11 @@ public sealed class ColonyChronicle
         if (sorted.Count <= maxEntries)
             return (sorted, 0);
 
-        // Endings, gaps and milestones first, then the most recent intervals, then research completions in completion
-        // order, so hundreds of modded research projects never hide an ending or a gap.
-        var critical = sorted.Where(e => e.Kind is not (ChronicleEntryKind.ResearchCompleted or ChronicleEntryKind.VerifiedInterval)).ToList();
+        // Endings, gaps and milestones first, then the most recent intervals, then auxiliary permanent tales, then research
+        // completions in completion order, so auxiliary tales or hundreds of modded research projects never hide an ending or a gap.
+        var critical = sorted.Where(e => e.Kind is not (ChronicleEntryKind.ResearchCompleted or ChronicleEntryKind.VerifiedInterval or ChronicleEntryKind.HistoricalTale)).ToList();
         var intervals = sorted.Where(e => e.Kind == ChronicleEntryKind.VerifiedInterval).ToList();
+        var tales = sorted.Where(e => e.Kind == ChronicleEntryKind.HistoricalTale).ToList();
         var research = sorted.Where(e => e.Kind == ChronicleEntryKind.ResearchCompleted).ToList();
 
         var kept = critical.Take(maxEntries).ToList();
@@ -1368,6 +1419,12 @@ public sealed class ColonyChronicle
             var keptIntervals = intervals.Skip(Math.Max(0, intervals.Count - room)).ToList();
             kept.AddRange(keptIntervals);
             room -= keptIntervals.Count;
+        }
+        if (room > 0)
+        {
+            var keptTales = tales.Take(room).ToList();
+            kept.AddRange(keptTales);
+            room -= keptTales.Count;
         }
         if (room > 0)
             kept.AddRange(research.Take(room));
@@ -1381,9 +1438,10 @@ public sealed class ColonyChronicle
         ChronicleEntryKind.RecordingGap => 0,
         ChronicleEntryKind.Ending => 1,
         ChronicleEntryKind.Milestone => 2,
-        ChronicleEntryKind.ResearchCompleted => 3,
-        ChronicleEntryKind.VerifiedInterval => 4,
-        _ => 5,
+        ChronicleEntryKind.HistoricalTale => 3,
+        ChronicleEntryKind.ResearchCompleted => 4,
+        ChronicleEntryKind.VerifiedInterval => 5,
+        _ => 6,
     };
 
     internal static string? PrimaryFileName(SaveLineageNode node)

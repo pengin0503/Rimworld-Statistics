@@ -31,7 +31,9 @@ public static class RaidFamily
     public const string MeanGap = "raid.gap.mean";
     public const string DurationMax = "raid.duration.max";
     public const string Retreated = "raid.retreated";
+    public const string RetreatedByFaction = "raid.retreated_by_faction";
     public const string Wiped = "raid.wiped";
+    public const string WipedByFaction = "raid.wiped_by_faction";
     public const string ByFaction = "raid.factions";
     public const string DurationMinRepelled = "raid.duration.min_repelled";
     public const string FirstDay = "raid.first_day";
@@ -65,7 +67,9 @@ public static class RaidFamily
     private const string RepelledDuration = "repelled_duration";
     private const string NoDown = "no_down";
     private const string Retreat = "retreated";
+    private const string RetreatByFaction = "retreated_by_faction";
     private const string Wipe = "wiped";
+    private const string WipeByFaction = "wiped_by_faction";
     private const string RaidKills = "raid_kills";
 
     // Active trackers, keyed by the raid's sequence number (as text) or a pawn id.
@@ -79,9 +83,13 @@ public static class RaidFamily
     private const string MapOf = "map";
     private const string MapCodes = "map_codes";
     private const string MapSeq = "map_seq";   // N: the last map code handed out (codes are never reused)
+    private const string FactionOf = "raid_faction";
+    private const string FactionCodes = "faction_codes";
+    private const string FactionSeq = "faction_seq";
 
     /// <summary>The per-raid trackers: a key dropped at the cap of any of them loses a raid's outcome.</summary>
     private static readonly string[] RaidTrackers = { Member, Start, Alive, Size, Dead, Killed, Flags, MapOf, MapCodes };
+    private static readonly string[] FactionOutcomeTrackers = { FactionOf, FactionCodes };
 
     private const long FlagRetreat = 1;
     private const long FlagColonistDowned = 2;
@@ -102,17 +110,41 @@ public static class RaidFamily
         return next;
     }
 
+    private static long FactionCode(FamilyState s, string factionKey)
+    {
+        if (s.Tracked(FactionCodes, factionKey) is { } code)
+            return code;
+        var seq = s.Acc(FactionSeq);
+        var used = s.Active.TryGetValue(FactionCodes, out var m) && m.Count > 0 ? m.Values.Max() : 0;
+        var next = Math.Max(seq.N ?? 0, used) + 1;
+        if (!s.Track(FactionCodes, factionKey, next))
+            return 0;
+        seq.N = next;
+        return next;
+    }
+
+    private static string? ResolveFactionKey(FamilyState s, long? code)
+    {
+        if (code is not > 0 || !s.Active.TryGetValue(FactionCodes, out var map))
+            return null;
+        foreach (var (key, val) in map)
+            if (val == code.Value)
+                return key;
+        return null;
+    }
+
     public static void Arrived(FamilyState s, RaidArrival a, int tick)
     {
         var seq = s.Acc(Seq);
         seq.N = (seq.N ?? 0) + 1;
         var id = Id(seq.N.Value);
+        var factionBucket = string.IsNullOrWhiteSpace(a.FactionDef) ? MetricKeys.UnknownBucket : a.FactionDef;
         s.Gap(Arrivals, tick);
         s.Observe(Pawns, a.PawnIds.Count);
         s.Observe(Points, a.Points);
         s.Count(Modes);
         s.CountBy(Modes, a.ArrivalMode ?? MetricKeys.UnknownBucket);
-        s.CountBy(Factions, a.FactionDef ?? MetricKeys.UnknownBucket);
+        s.CountBy(Factions, factionBucket);
         if (a.Strategy is { } strategy && SiegeStrategies.Contains(strategy))
             s.Count(Siege);
         if (a.Strategy is { } b && BreachStrategies.Contains(b))
@@ -131,6 +163,7 @@ public static class RaidFamily
         s.Track(Killed, id, 0);
         s.Track(Flags, id, 0);
         s.Track(MapOf, id, MapCode(s, a.MapId));
+        s.Track(FactionOf, id, FactionCode(s, factionBucket));
         var alive = 0;
         foreach (var pawn in a.PawnIds.Distinct(StringComparer.Ordinal))
             if (s.Track(Member, pawn, seq.N.Value))
@@ -204,6 +237,7 @@ public static class RaidFamily
         var size = s.Untrack(Size, id) ?? 0;
         var dead = s.Untrack(Dead, id) ?? 0;
         var flags = s.Untrack(Flags, id) ?? 0;
+        var factionKey = ResolveFactionKey(s, s.Untrack(FactionOf, id));
         s.Observe(RaidKills, s.Untrack(Killed, id) ?? 0);
         s.Untrack(Alive, id);
         s.Untrack(MapOf, id);
@@ -221,9 +255,23 @@ public static class RaidFamily
         var retreated = (flags & FlagRetreat) != 0;
         var wiped = !retreated && size > 0 && dead == size;
         if (retreated)
+        {
             s.Count(Retreat);
+            if (factionKey is not null)
+            {
+                s.Count(RetreatByFaction);
+                s.CountBy(RetreatByFaction, factionKey);
+            }
+        }
         if (wiped)
+        {
             s.Count(Wipe);
+            if (factionKey is not null)
+            {
+                s.Count(WipeByFaction);
+                s.CountBy(WipeByFaction, factionKey);
+            }
+        }
         if (retreated || wiped)
         {
             s.Count(Repelled);
@@ -259,7 +307,23 @@ public static class RaidFamily
         c.PutExtreme(RepelledDuration, DurationMinRepelled, max: false, Days);
         c.PutCount(NoDown, RepelledNoDown);
         c.PutCount(Retreat, Retreated);
+        var retreatTotal = s.Peek(Retreat)?.N ?? 0;
+        var retreatFaction = s.Peek(RetreatByFaction);
+        var retreatPartial = retreatFaction?.Overflow == true
+            || retreatFaction?.By?.ContainsKey(MetricKeys.UnknownBucket) == true
+            || (retreatFaction?.N ?? 0) != retreatTotal;
+        c.PutBreakdown(RetreatedByFaction, c.Counts(retreatFaction), c.Value(integer: retreatFaction?.N ?? 0, partial: retreatPartial));
+        if (retreatPartial)
+            c.MarkPartial(RetreatedByFaction);
         c.PutCount(Wipe, Wiped);
+        var wipeTotal = s.Peek(Wipe)?.N ?? 0;
+        var wipeFaction = s.Peek(WipeByFaction);
+        var wipePartial = wipeFaction?.Overflow == true
+            || wipeFaction?.By?.ContainsKey(MetricKeys.UnknownBucket) == true
+            || (wipeFaction?.N ?? 0) != wipeTotal;
+        c.PutBreakdown(WipedByFaction, c.Counts(wipeFaction), c.Value(integer: wipeFaction?.N ?? 0, partial: wipePartial));
+        if (wipePartial)
+            c.MarkPartial(WipedByFaction);
         var decided = s.Peek(Decided)?.N ?? 0;
         var repelled = s.Peek(Repelled)?.N ?? 0;
         c.Put(RepelledRate, decided == 0
@@ -268,7 +332,14 @@ public static class RaidFamily
         // A raid (or a raider, or a map) dropped at a tracker's cap has no outcome, or a wrong one: every output built from the
         // tracked raids is partial, "no decided raid" included.
         if (RaidTrackers.Any(s.TrackerOverflowed))
-            c.MarkPartial(KillsMax, DurationMean, DurationMax, DurationMinRepelled, RepelledNoDown, Retreated, Wiped, RepelledRate);
+        {
+            c.MarkPartial(KillsMax, DurationMean, DurationMax, DurationMinRepelled, RepelledNoDown,
+                Retreated, RetreatedByFaction, Wiped, WipedByFaction, RepelledRate);
+        }
+        else if (FactionOutcomeTrackers.Any(s.TrackerOverflowed))
+        {
+            c.MarkPartial(RetreatedByFaction, WipedByFaction);
+        }
     }
 }
 
