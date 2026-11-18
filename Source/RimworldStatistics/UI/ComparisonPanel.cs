@@ -128,14 +128,17 @@ internal static class ComparisonPanel
         }
 
         var rightViewport = new Rect(rect.x + plan.NameWidth, bodyY, Math.Max(0f, rect.width - plan.NameWidth), bodyHeight);
+        int firstCol, lastCol, first, last;
         Widgets.BeginScrollView(rightViewport, ref scroll, new Rect(0f, 0f, plan.DataTotalWidth, contentHeight));
+        try
+        {
         // BeginScrollView may update the scroll position for the current input event.
         // Calculate all visible ranges after that update, then paint pinned columns and
         // the header with the same scroll snapshot as the data cells.
-        var (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
+        (firstCol, lastCol) = ColumnLayout.VisibleUniformColumns(
             current.Length, plan.ColumnWidth, scroll.x, plan.DataViewportWidth);
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
+        first = Math.Max(0, (int)(scroll.y / RowHeight));
+        last = Math.Min(rows.Length - 1, (int)((scroll.y + visibleBodyHeight) / RowHeight) + 1);
         for (var i = first; i <= last; i++)
         {
             var row = rows[i];
@@ -158,17 +161,27 @@ internal static class ComparisonPanel
                         ? MetricLookup.ForColony(column.View, target.ColonyKey, row.Record.MetricKey)
                         : MetricLookup.Overall(column.View, row.Record.MetricKey);
                     return original is null || value is null ? "RWS_Coverage_Unknown".Translate()
-                        : text + "\n" + MetricText.Tip(original, column.View.Stats);
+                        : text + "\n" + (column.Target is ColonyTarget target
+                            ? DetailsTab.ColonyTip(original, column.View.Stats, target.ColonyKey,
+                                column.View.Numeric.Colonies.FirstOrDefault(c => c.Key == target.ColonyKey))
+                            : DetailsTab.OverallTip(original, column.View.Stats));
                 }, tipId);
             }
             GUI.color = Color.white;
         }
-        Widgets.EndScrollView();
+        }
+        finally
+        {
+            GUI.color = Color.white;
+            Widgets.EndScrollView();
+        }
 
         // Pinned names and header are drawn last to use the final scroll position.
         if (leftViewport.height > 0f)
         {
             GUI.BeginGroup(leftViewport);
+            try
+            {
             for (var i = first; i <= last; i++)
             {
                 var row = rows[i];
@@ -194,7 +207,11 @@ internal static class ComparisonPanel
                         TooltipHandler.TipRegion(sourceRect, row.Source);
                 }
             }
-            GUI.EndGroup();
+            }
+            finally
+            {
+                GUI.EndGroup();
+            }
         }
 
         GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
@@ -273,13 +290,20 @@ internal static class ComparisonPanel
                     visualKinds[i] = MetricVisualKind.Missing;
                     continue;
                 }
-                var formatted = MetricText.Format(definition, v);
+                var column = current[i];
+                var original = column.Target is ColonyTarget ct
+                    ? MetricLookup.ForColony(column.View, ct.ColonyKey, row.MetricKey)
+                    : MetricLookup.Overall(column.View, row.MetricKey);
+                var formatted = original is not null
+                    ? DetailsTab.FormatRowValue(original, key => column.View.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } cs
+                        ? Dialog_RimworldStatistics.ColonyName(cs) : key)
+                    : MetricText.Format(definition, v);
                 if (v.Coverage is MetricCoverage.Partial or MetricCoverage.SnapshotOnly or MetricCoverage.NotApplicable)
                     formatted += " · " + MetricText.State(definition, v.Coverage);
                 if (v.Evidence is MetricEvidence.Experimental or MetricEvidence.Mixed || definition.Acquisition is not null && !definition.Published)
                     formatted += " · " + "RWS_Exp_ExperimentalRow".Translate();
                 text[i] = formatted;
-                visualKinds[i] = MetricVisualState.Classify(definition, v);
+                visualKinds[i] = original is not null ? MetricVisualState.Classify(original) : MetricVisualState.Classify(definition, v);
             }
             return new TableRow(row, label, MetricText.ModSourceLabel(definition), text, visualKinds);
         }).ToArray();
