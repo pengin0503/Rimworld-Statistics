@@ -161,13 +161,17 @@ public static class FoodMapRemovedMetricPatch
 {
     public static void Prefix(Map map)
     {
-        if (map == null || !LiveMetrics.CanCaptureEvent(FoodFamily.Name))
+        if (map == null || !LiveMetrics.IsRecordingUnit(FoodFamily.Name))
             return;
         try   // a failure here must close the food family only, never break the map's removal
         {
             if (!Find.Maps.Contains(map))
                 return;
-            GrowingProbe.Changed(-GrowingProbe.CellsOn(map));
+            var delta = -GrowingProbe.CellsOn(map);
+            if (delta == 0)
+                return;
+            var tick = GameFacts.Tick;
+            LiveMetrics.RecordOrDefer(FoodFamily.Name, s => FoodFamily.GrowingCellsChanged(s, delta, tick));
         }
         catch (Exception e)
         {

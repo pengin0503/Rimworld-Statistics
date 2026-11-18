@@ -12,12 +12,14 @@ namespace RimworldStatistics.Metrics;
 /// </summary>
 public static class LiveMetrics
 {
-    private sealed record DeferredEvent(Game TargetGame, string Unit, Action<FamilyState> Handler);
+    private sealed record DeferredEvent(Game TargetGame, string Unit, Action<FamilyState>? Handler);
 
+    private static readonly object SnapshotGate = new();
     private static Game? game;
     private static LiveMetricAccumulator? accumulator;
     private static CheckpointSaveSession? session;
-    private static readonly ConcurrentDictionary<string, bool> Missed = new(StringComparer.Ordinal);
+    private static volatile HashSet<string> recordingSnapshot = new(StringComparer.Ordinal);
+    private static readonly ConcurrentDictionary<string, bool> FailedPendingStop = new(StringComparer.Ordinal);
     private static readonly ConcurrentQueue<DeferredEvent> Deferred = new();
     private static Dictionary<string, int>? hitCounts;
     [ThreadStatic] private static bool flushingDeferred;
@@ -27,12 +29,12 @@ public static class LiveMetrics
 
     public static CheckpointSaveSession? Session => IsCurrent ? session : null;
 
-    private static bool IsCurrent => game != null && ReferenceEquals(Current.Game, game);
+    private static bool IsCurrent => Volatile.Read(ref game) is { } activeGame && ReferenceEquals(Current.Game, activeGame);
 
     /// <summary>A new game: called from StartedNewGame, after the scenario, starting research and starting pawns are in place.</summary>
     public static void StartNew(Game g)
     {
-        Missed.Clear();
+        FailedPendingStop.Clear();
         ClearDeferred();
         var acc = LiveMetricAccumulator.StartNew(MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         ModProviderAdapters.AttachEventOrigins(acc);
@@ -42,7 +44,7 @@ public static class LiveMetrics
     /// <summary>A loaded game: called from LoadedGame with the save's numericStatistics text (null when it has none).</summary>
     public static LiveMetricAccumulator Resume(Game g, string? raw)
     {
-        Missed.Clear();
+        FailedPendingStop.Clear();
         ClearDeferred();
         var acc = LiveMetricAccumulator.Resume(raw, MetricGates.RecordingFamilies(), Find.TickManager.TicksGame, MetricGates.RecordingExperimentalUnits());
         ModProviderAdapters.AttachEventOrigins(acc);
@@ -61,11 +63,54 @@ public static class LiveMetrics
     {
         // HitCounts are diagnostic counts for the current game, not a global
         // process-wide total. Reset when starting or resuming another colony.
+        Volatile.Write(ref game, null);
+        SyncRecordingSnapshot(null);
         hitCounts?.Clear();
+        // Run startup baselines before publishing the new game so worker/other hooks
+        // never observe a partially initialized accumulator.
+        FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
         accumulator = acc;
         session = new CheckpointSaveSession(acc);
-        game = g;
-        FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
+        SyncRecordingSnapshot(acc);
+        Volatile.Write(ref game, g);
+    }
+
+    internal static void SyncRecordingSnapshot(LiveMetricAccumulator? acc)
+    {
+        lock (SnapshotGate)
+        {
+            recordingSnapshot = acc is null
+                ? new HashSet<string>(StringComparer.Ordinal)
+                : new HashSet<string>(acc.Recording, StringComparer.Ordinal);
+        }
+    }
+
+    private static void RemoveFromRecordingSnapshot(string unit)
+    {
+        lock (SnapshotGate)
+        {
+            if (!recordingSnapshot.Contains(unit))
+                return;
+            var next = new HashSet<string>(recordingSnapshot, StringComparer.Ordinal);
+            next.Remove(unit);
+            recordingSnapshot = next;
+        }
+    }
+
+    private static void DrainPendingStops(LiveMetricAccumulator acc)
+    {
+        if (FailedPendingStop.IsEmpty)
+            return;
+        var changed = false;
+        foreach (var unit in FailedPendingStop.Keys.ToList())
+        {
+            if (!FailedPendingStop.TryRemove(unit, out _))
+                continue;
+            acc.Stop(unit, Find.TickManager.TicksGame);
+            changed = true;
+        }
+        if (changed)
+            SyncRecordingSnapshot(acc);
     }
 
     /// <summary>
@@ -77,13 +122,16 @@ public static class LiveMetrics
     {
         if (!UnityData.IsInMainThread || Accumulator is not { } acc)
             return;
+        DrainPendingStops(acc);
         var tick = Find.TickManager.TicksGame;
         var started = acc.Reconfigure(MetricGates.RecordingFamilies(), tick,
             MetricGates.RecordingExperimentalUnits());
+        SyncRecordingSnapshot(acc);
         if (started.Count == 0)
             return;
         ModProviderAdapters.AttachEventOrigins(acc);
         FamilyStartup.Apply(acc, tick, started.ToHashSet(StringComparer.Ordinal));
+        SyncRecordingSnapshot(acc);
     }
 
     /// <summary>Whether this family is recording on this thread. This query does not change the recording.</summary>
@@ -91,7 +139,7 @@ public static class LiveMetrics
 
     /// <summary>Thread-safe check for whether a unit is active in the current game outside Scribe, without marking gaps.</summary>
     internal static bool IsRecordingUnit(string name)
-        => Scribe.mode == LoadSaveMode.Inactive && Accumulator is { } acc && acc.Recording.Contains(name);
+        => Scribe.mode == LoadSaveMode.Inactive && IsCurrent && recordingSnapshot.Contains(name);
 
     /// <summary>Whether the hook can capture an event. An off-thread attempt may make the family's coverage partial.</summary>
     internal static bool CanCaptureEvent(string name) => Resolve(name, eventAttempt: true) != null;
@@ -111,8 +159,8 @@ public static class LiveMetrics
     /// </summary>
     internal static void RecordOrDefer(string unit, Action<FamilyState> handler)
     {
-        if (Scribe.mode != LoadSaveMode.Inactive || game is not { } targetGame || !ReferenceEquals(Current.Game, targetGame)
-            || accumulator is not { } acc || !acc.Recording.Contains(unit))
+        if (Scribe.mode != LoadSaveMode.Inactive || Volatile.Read(ref game) is not { } targetGame
+            || !ReferenceEquals(Current.Game, targetGame) || !recordingSnapshot.Contains(unit))
             return;
         if (UnityData.IsInMainThread)
         {
@@ -131,18 +179,28 @@ public static class LiveMetrics
         Deferred.Enqueue(new DeferredEvent(targetGame, unit, handler));
     }
 
-    /// <summary>Drains worker-thread events queued during async LongEvents onto the Unity main thread.</summary>
+    /// <summary>Drains worker-thread events and gap markers queued during async LongEvents onto the Unity main thread in FIFO order.</summary>
     internal static void FlushDeferred()
     {
-        if (flushingDeferred || Deferred.IsEmpty || !UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+        if (flushingDeferred || !UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+            return;
+        if (Accumulator is { } currentAcc)
+            DrainPendingStops(currentAcc);
+        if (Deferred.IsEmpty)
             return;
         flushingDeferred = true;
         try
         {
             while (Deferred.TryDequeue(out var item))
             {
-                if (!ReferenceEquals(item.TargetGame, game) || !IsCurrent)
+                if (!ReferenceEquals(item.TargetGame, Volatile.Read(ref game)) || Accumulator is not { } acc)
                     continue;
+                DrainPendingStops(acc);
+                if (item.Handler is null)
+                {
+                    acc.MarkGap(item.Unit, Find.TickManager.TicksGame);
+                    continue;
+                }
                 if (Family(item.Unit) is not { } s)
                     continue;
                 try
@@ -167,32 +225,40 @@ public static class LiveMetrics
     /// </summary>
     private static FamilyState? Resolve(string name, bool eventAttempt)
     {
-        var acc = Accumulator;
-        if (acc is null || Scribe.mode != LoadSaveMode.Inactive)
+        if (Scribe.mode != LoadSaveMode.Inactive || Volatile.Read(ref game) is not { } targetGame
+            || !ReferenceEquals(Current.Game, targetGame) || accumulator is not { } acc)
             return null;
         if (!UnityData.IsInMainThread)
         {
-            if (eventAttempt && acc.Recording.Contains(name))
-                Missed[name] = true;
+            if (eventAttempt && recordingSnapshot.Contains(name))
+                Deferred.Enqueue(new DeferredEvent(targetGame, name, Handler: null));
             return null;
         }
-        if (eventAttempt && !Deferred.IsEmpty)
+        DrainPendingStops(acc);
+        if (eventAttempt && !flushingDeferred && !Deferred.IsEmpty)
             FlushDeferred();
-        if (eventAttempt && !Missed.IsEmpty && Missed.TryRemove(name, out _))
-            acc.MarkGap(name, Find.TickManager.TicksGame);
         return acc.Family(name);
     }
 
     /// <summary>A hook of <paramref name="unit"/> threw: close the unit and keep what it recorded, measured through now.</summary>
     public static void Fail(string unit, Exception e)
     {
+        // Ignore transient exceptions while Scribe is mid-load/save or when no active game is installed.
+        if (Scribe.mode != LoadSaveMode.Inactive || !IsCurrent)
+            return;
         MetricGates.Fail(unit, e);
+        RemoveFromRecordingSnapshot(unit);
         try
         {
             if (UnityData.IsInMainThread && Accumulator is { } acc)
+            {
                 acc.Stop(unit, Find.TickManager.TicksGame);
-            else if (!UnityData.IsInMainThread && Accumulator is { } offThreadAcc && offThreadAcc.Recording.Contains(unit))
-                Missed[unit] = true;
+                SyncRecordingSnapshot(acc);
+            }
+            else if (!UnityData.IsInMainThread)
+            {
+                FailedPendingStop[unit] = true;
+            }
         }
         catch (Exception)
         {
@@ -200,22 +266,15 @@ public static class LiveMetrics
         }
     }
 
-    /// <summary>Applies pending gap marks before a save writes the totals (game thread).</summary>
-    internal static void FlushMissed()
-    {
-        FlushDeferred();
-        if (Missed.IsEmpty || Accumulator is not { } acc)
-            return;
-        foreach (var name in Missed.Keys.ToList())
-            if (Missed.TryRemove(name, out _))
-                acc.MarkGap(name, Find.TickManager.TicksGame);
-    }
+    /// <summary>Applies pending deferred events, stops, and gap marks before a save writes the totals (game thread).</summary>
+    internal static void FlushMissed() => FlushDeferred();
 
     /// <summary>The save-time recounts of the families (game thread only; a save elsewhere skips them).</summary>
     internal static void BeforeSave()
     {
         if (!UnityData.IsInMainThread || Accumulator is not { } acc)
             return;
+        DrainPendingStops(acc);
         FamilyStartup.BeforeSave(acc, Find.TickManager.TicksGame);
     }
 

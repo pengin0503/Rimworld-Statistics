@@ -23,10 +23,10 @@ public static class PawnSetIdeoMetricPatch
                 return;
             // Stable scenario-created or worker-thread generated NPC ideologies are applied
             // before world placement or outside player ownership; filter before CanCaptureEvent
-            // so off-thread PawnGenerator calls never mark Ideology as Partial.
+            // so off-thread PawnGenerator / MapGenerator calls never mark Ideology as Partial.
             var owned = ___pawn.IsFreeNonSlaveColonist || ___pawn.IsPrisonerOfColony;
             var active = ___pawn.Spawned || GameFacts.InPlayerCaravan(___pawn);
-            if ((!owned && !active && !UnityData.IsInMainThread) || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
+            if (!owned || !active || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
                 return;
             __state = ___pawn.Ideo;
         }
@@ -44,9 +44,7 @@ public static class PawnSetIdeoMetricPatch
                 return;
             var owned = ___pawn.IsFreeNonSlaveColonist || ___pawn.IsPrisonerOfColony;
             var active = ___pawn.Spawned || GameFacts.InPlayerCaravan(___pawn);
-            if ((!owned || !active) && !UnityData.IsInMainThread)
-                return;
-            if (!LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
+            if (!owned || !active || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name))
                 return;
             // Stable scenario-created pawn ideologies are applied before world placement; exclude them.
             var id = GameFacts.Id(___pawn);

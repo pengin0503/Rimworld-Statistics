@@ -70,7 +70,9 @@ internal static class FamilyStartup
         }
         catch (Exception e)
         {
-            LiveMetrics.Fail(family, e);
+            MetricGates.Fail(family, e);
+            acc.Stop(family, tick);
+            LiveMetrics.SyncRecordingSnapshot(LiveMetrics.Accumulator);
         }
     }
 }

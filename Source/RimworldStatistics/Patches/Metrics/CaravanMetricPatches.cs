@@ -226,18 +226,43 @@ internal static class ShrineProbe
         CaravanFamily.ShrineSealed(s, Key(map, trigger.Rect), tick);
     }
 
-    public static List<string> CaptureSealedKeys(Map map)
+    public static List<(CellRect Rect, string Key)> CaptureSealedEntries(Map map)
     {
-        var keys = new List<string>();
+        var entries = new List<(CellRect Rect, string Key)>();
         foreach (var t in map.listerThings.ThingsOfDef(ThingDefOf.RectTrigger))
             if (IsShrineTrigger(t) && t is RectTrigger trigger && Sealed(map, trigger.Rect))
-                keys.Add(Key(map, trigger.Rect));
-        return keys;
+                entries.Add((trigger.Rect, Key(map, trigger.Rect)));
+        return entries;
+    }
+
+    public static void StageMapEntries(int mapUniqueId, List<(CellRect Rect, string Key)> entries)
+    {
+        lock (Gate)
+        {
+            var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
+            if (entries.Count == 0)
+                next.Remove(mapUniqueId);
+            else
+                next[mapUniqueId] = entries.ToArray();
+            watched = next;
+        }
+    }
+
+    public static void RemoveStagedMap(int mapUniqueId)
+    {
+        lock (Gate)
+        {
+            if (!watched.ContainsKey(mapUniqueId))
+                return;
+            var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
+            next.Remove(mapUniqueId);
+            watched = next;
+        }
     }
 
     public static void RegisterMap(FamilyState s, Map map, int tick)
     {
-        foreach (var key in CaptureSealedKeys(map))
+        foreach (var (_, key) in CaptureSealedEntries(map))
             CaravanFamily.ShrineSealed(s, key, tick);
     }
 
@@ -294,6 +319,19 @@ internal static class ShrineProbe
                 (opened ??= new List<string>()).Add(key);
         if (opened is null)
             return;
+        lock (Gate)
+        {
+            if (watched.TryGetValue(map.uniqueID, out var currentList))
+            {
+                var remaining = currentList.Where(item => !opened.Contains(item.Key)).ToArray();
+                var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
+                if (remaining.Length == 0)
+                    next.Remove(map.uniqueID);
+                else
+                    next[map.uniqueID] = remaining;
+                watched = next;
+            }
+        }
         LiveMetrics.RecordOrDefer(CaravanFamily.Name, s =>
         {
             foreach (var key in opened)
@@ -362,11 +400,12 @@ public static class ShrineMapGeneratedMetricPatch
             return;
         try
         {
-            var keys = ShrineProbe.CaptureSealedKeys(__result);
+            var entries = ShrineProbe.CaptureSealedEntries(__result);
+            ShrineProbe.StageMapEntries(__result.uniqueID, entries);
             var tick = GameFacts.Tick;
             LiveMetrics.RecordOrDefer(CaravanFamily.Name, s =>
             {
-                foreach (var key in keys)
+                foreach (var (_, key) in entries)
                     CaravanFamily.ShrineSealed(s, key, tick);
                 ShrineProbe.Rebuild(s);
             });
@@ -385,6 +424,7 @@ public static class ShrineMapRemovedMetricPatch
             return;
         try
         {
+            ShrineProbe.RemoveStagedMap(map.uniqueID);
             var id = GameFacts.MapId(map);
             LiveMetrics.RecordOrDefer(CaravanFamily.Name, s =>
             {

@@ -145,6 +145,69 @@ namespace RimworldStatistics.Core.Tests
                 UnityData.IsInMainThread = true;
             }
         }
+
+        [Fact]
+        public void OffThreadFail_StopsAccumulatorUnitOnMainThreadAndBlocksFurtherDeferrals()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+                state.Count("events", 2);
+
+                UnityData.IsInMainThread = false;
+                LiveMetrics.Fail(family, new InvalidOperationException("worker fault"));
+                Assert.False(LiveMetrics.IsRecordingUnit(family));
+                LiveMetrics.RecordOrDefer(family, s => s.Count("events", 10));
+
+                UnityData.IsInMainThread = true;
+                Assert.Null(LiveMetrics.Family(family));
+                Assert.Equal(2, state.Peek("events")?.N);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                MetricGates.Selected = [new(family, 1)];
+            }
+        }
+
+        [Fact]
+        public void FlushDeferred_PreservesChronologicalOrderBetweenDeferredEventsAndOffThreadGaps()
+        {
+            const string family = "test-diagnostics";
+            var game = Current.Game = new Game();
+            UnityData.IsInMainThread = true;
+            Scribe.mode = LoadSaveMode.Inactive;
+            MetricGates.Selected = [new(family, 1)];
+            try
+            {
+                LiveMetrics.StartNew(game);
+                var state = Assert.IsType<FamilyState>(LiveMetrics.Family(family));
+
+                // 1) Deferred event opens an active interval, 2) subsequent off-thread non-deferrable hook causes a gap.
+                UnityData.IsInMainThread = false;
+                LiveMetrics.RecordOrDefer(family, s => s.Active["raid"] = new System.Collections.Generic.Dictionary<string, long> { ["1"] = 50 });
+                Assert.False(LiveMetrics.CanCaptureEvent(family));
+
+                // On flush, the active interval opened BEFORE the gap must be cleared by the subsequent MarkGap!
+                UnityData.IsInMainThread = true;
+                LiveMetrics.FlushDeferred();
+                Assert.False(state.Continuous);
+                Assert.Empty(state.Active);
+            }
+            finally
+            {
+                Scribe.mode = LoadSaveMode.Inactive;
+                UnityData.IsInMainThread = true;
+                MetricGates.Selected = [new(family, 1)];
+            }
+        }
     }
 }
 
