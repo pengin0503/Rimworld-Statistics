@@ -249,6 +249,12 @@ public static class ColoniesTab
             Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colony.Key, files));
         TooltipHandler.TipRegion(lineageBtn, "RWS_Lineage_OpenTip".Translate());
 
+        var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
+        var chronicleBtn = controls.Next(chronicleLabel, 125f, Math.Min(inner.width, 250f));
+        if (Widgets.ButtonText(chronicleBtn, chronicleLabel.Truncate(Math.Max(0f, chronicleBtn.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colony.Key));
+        TooltipHandler.TipRegion(chronicleBtn, "RWS_Chronicle_OpenTip".Translate());
+
         var language = LanguageDatabase.activeLanguage;
         if (details is not { } data || !ReferenceEquals(data.Colony, colony) || !ReferenceEquals(data.Files, files)
             || !ReferenceEquals(data.Language, language))

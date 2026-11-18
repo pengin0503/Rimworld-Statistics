@@ -128,6 +128,12 @@ internal sealed class Dialog_ColonySaveLineage : Window
             Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colonyKey));
         TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
 
+        var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
+        var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
+        if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colonyKey, selectedB ?? selectedA));
+        TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
+
         if (activeMetric is { } metric)
         {
             var metricBtnText = (string)"RWS_Lineage_MetricButton".Translate(metric.Label);
