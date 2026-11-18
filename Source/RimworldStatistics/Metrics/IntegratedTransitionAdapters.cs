@@ -62,6 +62,7 @@ using RimworldStatistics.AnomaliesExpected;
 using RimworldStatistics.WayBetterRomance;
 using RimworldStatistics.RimMarket;
 using RimworldStatistics.CaravanAdventures;
+using RimworldStatistics.Stage2ModOutcomes;
 
 namespace RimworldStatistics.Metrics;
 
@@ -174,6 +175,14 @@ internal static class IntegratedTransitionAdapters
         result.AddRange(WayBetterRomanceStatistics.Build());
         result.AddRange(RimMarketStatistics.Build());
         result.AddRange(CaravanAdventuresStatistics.Build());
+        result.AddRange(HospitalStage2Outcomes.Build());
+        result.AddRange(RimatomicsStage2Outcomes.Build());
+        result.AddRange(AlteredCarbonStage2Outcomes.Build());
+        result.AddRange(EmpireTaxStage2Outcomes.Build());
+        result.AddRange(AlphaGenesStage2Outcomes.Build());
+        result.AddRange(AlphaMechsStage2Outcomes.Build());
+        result.AddRange(GravshipStage2Outcomes.Build());
+        result.AddRange(WorldDominationStage2Outcomes.Build());
         return result;
     }
 }

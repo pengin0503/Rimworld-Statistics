@@ -33,7 +33,7 @@ BRANDS_BY_PREFIX = {
     "RWS_CombatExtended_": ("Combat Extended",),
     "RWS_CE_": ("Combat Extended",),
     "RWS_Gastronomy_": ("Gastronomy",),
-    "RWS_Rimatomics_": ("Dubs Rimatomics", "Rimatomics"),
+    "RWS_Rimatomics": ("Dubs Rimatomics", "Rimatomics"),
     "RWS_Rimefeller_": ("Rimefeller",),
     "RWS_VaeAspirations_": ("Vanilla Aspirations Expanded",),
     "RWS_SimpleWarrants_": ("Simple Warrants",),
@@ -41,21 +41,31 @@ BRANDS_BY_PREFIX = {
     "RWS_VefBrewing_": ("Vanilla Brewing Expanded",),
     "RWS_VceDeepchem_": ("Vanilla Chemfuel Expanded",),
     "RWS_VgeExtraction_": ("Vanilla Genetics Expanded",),
+    "RWS_VgeGravdata": ("Vanilla Gravship Expanded",),
     "RWS_AddonRecruitment_": ("Recruitment",),
     "RWS_PrisonExpanded_": ("Prison Expanded",),
+    "RWS_HospitalCured": ("Adamas",),
+    "RWS_HospitalTreatment": ("Adamas",),
+    "RWS_AlteredCarbon": ("Altered Carbon", "ReSleeved"),
+    "RWS_EmpireTax": ("Empire Refactored",),
+    "RWS_AlphaGenes": ("Alpha Genes",),
+    "RWS_AlphaMechsBoss": ("Alpha Mechs",),
+    "RWS_WorldDominationConquests": ("World Domination",),
+    "RWS_WorldDominationPlayer": ("World Domination",),
 }
 MOD_LABEL = re.compile(r"^MOD[:：]\s*\{0\}$")
 issues: list[str] = []
 count = 0
-for source in sorted((ROOT / "Languages").glob("*/Keyed/RimworldStatistics.xml")):
+for source in sorted((ROOT / "Languages").glob("*/Keyed/*.xml")):
     try:
         root = ET.parse(source).getroot()
     except ET.ParseError as exc:
         issues.append(f"{source}: invalid XML: {exc}")
         continue
-    provider = root.find("RWS_Mod_Provider")
-    if provider is None or not MOD_LABEL.fullmatch(provider.text or ""):
-        issues.append(f"{source}: RWS_Mod_Provider must be MOD: {{0}} or MOD：{{0}}")
+    if source.name == "RimworldStatistics.xml":
+        provider = root.find("RWS_Mod_Provider")
+        if provider is None or not MOD_LABEL.fullmatch(provider.text or ""):
+            issues.append(f"{source}: RWS_Mod_Provider must be MOD: {{0}} or MOD：{{0}}")
     for item in root:
         key = item.tag
         if key.endswith("Desc") or key.startswith("RWS_MetricDesc"):

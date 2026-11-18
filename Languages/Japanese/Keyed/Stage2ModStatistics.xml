@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>完治患者の退院数</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Hospital において、必要な療養・処置・予定手術をすべて終えて生還退院した来院患者の累計（未完治のまま危険退避した例や手動退去を除く）。</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>受領した治療報酬シルバー</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Hospital において、完治退院した来院患者からプレイヤー拠点マップ上に実際に配置・受領された治療報酬シルバーの合計。</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>弾道飛翔体の迎撃数</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Dubs Rimatomics において、プレイヤー所有のHEL防空レーザーが飛来中の敵対砲弾・飛翔体を空中で撃墜した回数。</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>長距離レールガン砲撃数</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Dubs Rimatomics において、プレイヤー拠点から発射されたパニッシャー長距離レールガン徹甲弾がワールド目標へ着弾した回数。</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>原子炉の緊急スクラム回数</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Dubs Rimatomics において、燃料装荷済みの稼働中プレイヤー原子炉心で緊急スクラム停止が発動した回数。</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>原子炉メルトダウン回数</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Dubs Rimatomics において、プレイヤー所有の原子炉心で炉心溶融爆発が発生した回数。</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>培養槽で育成完了した義体数</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Altered Carbon 2: ReSleeved において、プレイヤー所有のスリーブ培養槽で最後まで育成完了した義体の累計（ポーン種別ごとの内訳付き）。</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>遠隔意識転送の完了回数</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Altered Carbon 2: ReSleeved において、生存中のプレイヤー側義体へ遠隔スタック意識転送（ニードルキャスト）を完了した回数。</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>到着した属領税収価値</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Empire Refactored において、属領集落からプレイヤーマップへ実際に配送完了した税収シルバーおよび物資の市場価値合計（品目別内訳付き・再スケジュール分を除く）。</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>サイフォンで吸収した遺伝子数</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Alpha Genes において、プレイヤーの術者が遺伝子サイフォン能力で新たに吸収獲得した遺伝子の累計（遺伝子別内訳付き）。</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>腫瘍変換による変異発動数</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Alpha Genes において、プレイヤーの術者が悪性腫瘍を消費して変異強化状態へ変換した回数（付与された状態別内訳付き）。</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>上位指揮メカノイド討伐数</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>Alpha Mechs で追加された敵対ボスグループ指揮メカノイドをコロニー勢力存在マップ上で撃破した累計回数（メカノイド種別ごとの内訳付き）。</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>純増獲得グラヴデータ量</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Vanilla Gravship Expanded において、破損しなかった航行着陸報酬および軌道コンソール研究で新規獲得したグラヴデータの純増合計（ブラックボックス保管の出し入れを除く）。</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>敵対拠点の制圧数</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>World Domination 2.0 において、プレイヤー部隊が直接制圧した非プレイヤー拠点の累計（撃破派閥別内訳付き・AI同士の抗争を除く）。</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>戦略部隊の戦闘勝利数</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>World Domination 2.0 において、プレイヤー部隊が遠征襲撃・前哨防衛・キャラバン迎撃戦で勝利した累計回数（敵対派閥別内訳付き）。</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

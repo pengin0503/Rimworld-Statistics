@@ -213,7 +213,7 @@ using (var asm = OpenModAssembly("rimfactory", "Assemblies/ProjectRimFactory.dll
         "ProjectRimFactory", "PlaceThingUtility.PRFTryPlaceThing missing");
 }
 
-// 3. Dubs Rimatomics (RimatomicsByproductStatistics)
+// 3. Dubs Rimatomics (RimatomicsByproductStatistics & RimatomicsStage2Outcomes)
 using (var asm = OpenModAssembly("rimatomics", "1.7/Assemblies/Rimatomics.dll", "Rimatomics", "Dubwise.Rimatomics"))
 {
     var proc = RequireTypeByShortName(asm, "Building_PlutoniumProc");
@@ -221,6 +221,24 @@ using (var asm = OpenModAssembly("rimatomics", "1.7/Assemblies/Rimatomics.dll", 
     Ensure(job.BaseType?.FullName == "Verse.AI.JobDriver", "Rimatomics", "JobDriver_UnloadPlutonium must derive from JobDriver");
     var takeOut = RequireMethod(proc, "TakeOutFuel", "Verse.Thing");
     Ensure(CallsMethod(takeOut, "TryPlaceThing", "GenPlace"), "Rimatomics", "TakeOutFuel must place plutonium byproducts via GenPlace.TryPlaceThing");
+
+    var hel = RequireType(asm, "Rimatomics.Verb_HELBeam");
+    var energyWeapon = RequireType(asm, "Rimatomics.Building_EnergyWeapon");
+    var sabot = RequireType(asm, "Rimatomics.WorldObject_Sabot");
+    var core = RequireType(asm, "Rimatomics.reactorCore");
+    var popped = RequireType(asm, "Rimatomics.Building_PoppedCore");
+    RequireMethod(hel, "TryCastShot", "System.Boolean");
+    RequireField(energyWeapon, "KillCounter", "System.Int32");
+    RequireMethod(sabot, "Arrived", "System.Void");
+    RequireField(sabot, "arrived", "System.Boolean");
+    RequireField(sabot, "railgun");
+    RequireField(sabot, "initialTile", "RimWorld.Planet.PlanetTile");
+    RequireMethod(core, "SCRAM", "System.Void");
+    RequireField(core, "IsShutdown", "System.Boolean");
+    RequireField(core, "FuelCount", "System.Int32");
+    var coreDestroy = RequireMethod(core, "Destroy", "System.Void", "Verse.DestroyMode");
+    RequireMethod(popped, "GoBang", "System.Void", "System.Int32", "Verse.Map");
+    Ensure(CallsMethod(coreDestroy, "GoBang", "Rimatomics.Building_PoppedCore"), "Rimatomics", "reactorCore.Destroy must invoke Building_PoppedCore.GoBang on meltdown");
 }
 
 // 4. Dubs Rimefeller (RimefellerExtractionStatistics & RimefellerFuelUsageStatistics)
@@ -555,6 +573,107 @@ using (var asm = OpenModAssembly("vsie", "1.7/Assemblies/VanillaSocialInteractio
     Ensure(teaching.Methods.Any(m => m.Name == "Interacted"), "VSIE", "InteractionWorker_Teaching.Interacted missing");
 }
 
+// 27. Altered Carbon 2: ReSleeved (ResleevingOutcomes & AlteredCarbonStage2Outcomes)
+using (var asm = OpenModAssembly("ac2", "1.6/Assemblies/AlteredCarbon.dll", "AlteredCarbon", "hlx.UltratechAlteredCarbon"))
+{
+    var incubator = RequireType(asm, "AlteredCarbon.Building_Incubator");
+    var gestator = RequireType(asm, "AlteredCarbon.Building_SleeveGestator");
+    var stateEnum = RequireType(asm, "AlteredCarbon.IncubatorState");
+    RequireMethod(gestator, "FinishGrowth", "System.Void");
+    RequireProperty(gestator, "InnerPawn", "Verse.Pawn");
+    RequireField(incubator, "incubatorState", stateEnum.FullName);
+
+    var remoteStack = RequireType(asm, "AlteredCarbon.Hediff_RemoteStack");
+    var needlecastable = RequireType(asm, "AlteredCarbon.INeedlecastable");
+    RequireMethod(remoteStack, "Needlecast", "System.Void", needlecastable.FullName);
+    RequireProperty(remoteStack, "Needlecasted", "System.Boolean");
+}
+
+// 28. Alpha Genes (PopularOutcomes & AlphaGenesStage2Outcomes)
+using (var asm = OpenModAssembly("alphagenes", "1.7/Assemblies/AlphaGenes.dll", "AlphaGenes", "sarg.alphagenes"))
+{
+    var syphon = RequireType(asm, "AlphaGenes.CompGeneSyphon");
+    RequireMethod(syphon, "Apply", "System.Void", "Verse.LocalTargetInfo", "Verse.LocalTargetInfo");
+
+    var teratogenic = RequireType(asm, "AlphaGenes.CompTeratogenicHediff");
+    var teratogenicProps = RequireType(asm, "AlphaGenes.CompProperties_TeratogenicHediff");
+    RequireMethod(teratogenic, "Apply", "System.Void", "Verse.LocalTargetInfo", "Verse.LocalTargetInfo");
+    RequireProperty(teratogenic, "Props", teratogenicProps.FullName);
+    RequireField(teratogenicProps, "targetOther", "System.Boolean");
+    RequireField(teratogenicProps, "hediff", "Verse.HediffDef");
+}
+
+// 29. Alpha Mechs (AlphaMechsStatistics & AlphaMechsStage2Outcomes)
+using (var asm = OpenModAssembly("alphamechs", "1.6/Assemblies/AlphaMechs.dll", "AlphaMechs", "sarg.alphamechs"))
+{
+    var conv = RequireType(asm, "AlphaMechs.CompMechConversion");
+    RequireMethod(conv, "Apply", "System.Void", "Verse.LocalTargetInfo", "Verse.LocalTargetInfo");
+}
+
+// 30. Empire Refactored (EmpireOutcomes, EmpireBattleOutcomes, EmpireTaxStage2Outcomes)
+using (var asm = OpenModAssembly("empire", "1.7/Assemblies/Empire.dll", "Empire", "Matathias.Empire"))
+{
+    var delivery = RequireType(asm, "FactionColonies.util.DeliveryEvent");
+    var fcEvent = RequireType(asm, "FactionColonies.FCEvent");
+    var fcEventDef = RequireType(asm, "FactionColonies.FCEventDef");
+    var action = RequireMethod(delivery, "Action", "System.Void", fcEvent.FullName, "System.Boolean");
+    RequireMethod(delivery, "CreateDeliveryEvent", "System.Void", fcEvent.FullName);
+    Ensure(CallsMethod(action, "SpawnOnTaxSpot", "FactionColonies.util.DeliveryLogistics"), "Empire", "DeliveryEvent.Action must delegate through DeliveryLogistics.SpawnOnTaxSpot");
+    RequireField(fcEvent, "def", fcEventDef.FullName);
+    RequireField(fcEvent, "goods");
+    RequireField(fcEvent, "customDescription", "System.String");
+}
+
+// 31. Vanilla Gravship Expanded (GravshipOutcomes & GravshipStage2Outcomes)
+using (var asm = OpenModAssembly("vgravship", "1.7/Assemblies/VanillaGravshipExpanded.dll", "VanillaGravshipExpanded", "vanillaexpanded.gravship"))
+{
+    var landingPatch = RequireType(asm, "VanillaGravshipExpanded.WorldComponent_GravshipController_LandingEnded_Patch");
+    var gravUtil = RequireType(asm, "VanillaGravshipExpanded.GravdataUtility");
+    var researchUtil = RequireType(asm, "VanillaGravshipExpanded.GravshipResearchUtility");
+    var worldExpose = RequireType(asm, "VanillaGravshipExpanded.World_ExposeData_Patch");
+
+    var applyYield = RequireMethod(landingPatch, "ApplyGravDataYield", "System.Void", "RimWorld.Planet.Gravship", "System.Int32&");
+    RequireMethod(gravUtil, "CalculateGravdataYield", "System.Int32", "System.Single", "System.Single", "RimWorld.Building_GravEngine", "Verse.Pawn");
+    Ensure(CallsMethod(applyYield, "CalculateGravdataYield", "VanillaGravshipExpanded.GravdataUtility"), "VGE", "ApplyGravDataYield must call GravdataUtility.CalculateGravdataYield");
+    RequireMethod(researchUtil, "ResearchPerformed", "System.Void", "System.Single", "Verse.Pawn");
+    RequireField(worldExpose, "currentGravtechProject", "Verse.ResearchProjectDef");
+}
+
+// 32. World Domination 2.0 (WorldCampaignOutcomes & WorldDominationStage2Outcomes)
+using (var asm = OpenModAssembly("worlddom", "1.7/Assemblies/TSA_WorldDomination.dll", "TSA_WorldDomination", "TSA.WorldDominationExperimental"))
+{
+    var raidSim = RequireType(asm, "TSA_WorldDomination.Raid_Simulated");
+    var intercept = RequireType(asm, "TSA_WorldDomination.Patch_InterceptDefeat");
+    var goodwill = RequireType(asm, "TSA_WorldDomination.NpcRaidKillGoodwillUtility");
+    var clash = RequireType(asm, "TSA_WorldDomination.WD_MapComponent_CaravanClash");
+
+    Ensure(raidSim.Methods.Any(m => m.Name == "ResolveVictoryWithPlayerConquestChoices" && m.Parameters.Count == 15),
+        "WorldDomination", "Raid_Simulated.ResolveVictoryWithPlayerConquestChoices 15-arg signature missing");
+    Ensure(raidSim.Methods.Any(m => m.Name == "ApplyLossesAndLog" && m.Parameters.Count == 23 && m.Parameters[12].ParameterType.FullName == "System.Boolean"),
+        "WorldDomination", "Raid_Simulated.ApplyLossesAndLog 23-arg signature missing");
+    RequireMethod(intercept, "Prefix", "System.Boolean", "RimWorld.Planet.Settlement");
+    Ensure(goodwill.Methods.Any(m => m.Name == "TryRewardFromSnapshot" && m.Parameters.Count == 8),
+        "WorldDomination", "NpcRaidKillGoodwillUtility.TryRewardFromSnapshot 8-arg signature missing");
+    RequireMethod(clash, "NotifyAirborneSurvivorsLeftThisClash", "System.Void");
+    RequireMethod(clash, "MapRemoved", "System.Void");
+    RequireProperty(clash, "PlayerHasWon", "System.Boolean");
+    RequireProperty(clash, "EncounterActive", "System.Boolean");
+    RequireField(clash, "enemyFaction", "RimWorld.Faction");
+}
+
+// Optional Steam-only Workshop override check: Hospital (Adamas.Hospital)
+if (overrides.ContainsKey("hospital"))
+{
+    using var asm = OpenModAssembly("hospital", "1.7/Assemblies/Hospital.dll", "Hospital");
+    var comp = RequireType(asm, "Hospital.HospitalMapComponent");
+    var data = RequireType(asm, "Hospital.PatientData");
+    var leaves = RequireMethod(comp, "PatientLeaves", "System.Void", "Verse.Pawn");
+    Ensure(CallsMethod(leaves, "TryPlaceThing", "Verse.GenPlace"), "Hospital", "PatientLeaves must place silver via GenPlace.TryPlaceThing");
+    RequireField(comp, "Patients");
+    RequireField(data, "Dismissed", "System.Boolean");
+    RequireField(data, "HasPendingSurgeryBill", "System.Boolean");
+}
+
 // Optional RimWorld Assembly-CSharp bridge verification (supports both Game-Windows 1.7.5011 rev24 and NuGet 1.7.4985).
 if (gameDll is not null)
 {
@@ -596,6 +715,10 @@ if (gameDll is not null)
 
     var enterable = RequireType(game, "RimWorld.Building_Enterable");
     RequireField(enterable, "innerContainer", "Verse.ThingOwner");
+
+    var bossgroup = RequireType(game, "RimWorld.GameComponent_Bossgroup");
+    RequireMethod(bossgroup, "Notify_PawnKilled", "System.Void", "Verse.Pawn");
+    RequireProperty(bossgroup, "AllBosses");
 }
 
 Console.WriteLine($"AdapterSignatureAudit: verified {checkedAssertions} contract assertions across {checkedAssemblies} assemblies: PASS");

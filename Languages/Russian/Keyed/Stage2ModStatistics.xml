@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_HospitalCuredDischarges>Выписано вылеченных пациентов</RWS_HospitalCuredDischarges>
+  <RWS_HospitalCuredDischargesDesc>Подсчитывает посетивших госпиталь пациентов в Hospital, выписанных живыми после завершения всего лечения, постельного режима и назначенных операций (без учета невылеченных эвакуаций и ручных отказов).</RWS_HospitalCuredDischargesDesc>
+  <RWS_HospitalTreatmentSilver>Получено серебра за лечение</RWS_HospitalTreatmentSilver>
+  <RWS_HospitalTreatmentSilverDesc>Подсчитывает общее количество серебра, фактически размещенного на карте колонии игрока при оплате лечения выписанными пациентами в Hospital.</RWS_HospitalTreatmentSilverDesc>
+  <RWS_RimatomicsSacsIntercepts>Перехвачено баллистических снарядов</RWS_RimatomicsSacsIntercepts>
+  <RWS_RimatomicsSacsInterceptsDesc>Подсчитывает вражеские снаряды и ракеты, уничтоженные в воздухе лазерными комплексами ПРО HEL игрока в Dubs Rimatomics.</RWS_RimatomicsSacsInterceptsDesc>
+  <RWS_RimatomicsRailgunBombardments>Дальние удары рельсотрона</RWS_RimatomicsRailgunBombardments>
+  <RWS_RimatomicsRailgunBombardmentsDesc>Подсчитывает межконтинентальные удары бронебойными сердечниками рельсотрона «Каратель», выпущенными из колонии игрока и поразившими цель на карте мира в Dubs Rimatomics.</RWS_RimatomicsRailgunBombardmentsDesc>
+  <RWS_RimatomicsReactorScrams>Аварийные остановки реактора</RWS_RimatomicsReactorScrams>
+  <RWS_RimatomicsReactorScramsDesc>Подсчитывает срабатывания аварийной защиты SCRAM на загруженных топливом активных ядерных реакторах игрока в Dubs Rimatomics.</RWS_RimatomicsReactorScramsDesc>
+  <RWS_RimatomicsReactorMeltdowns>Расплавления активной зоны реактора</RWS_RimatomicsReactorMeltdowns>
+  <RWS_RimatomicsReactorMeltdownsDesc>Подсчитывает катастрофические расплавления активной зоны на принадлежащих игроку ядерных реакторах в Dubs Rimatomics.</RWS_RimatomicsReactorMeltdownsDesc>
+  <RWS_AlteredCarbonSleeveGrowth>Выращено оболочек в инкубаторах</RWS_AlteredCarbonSleeveGrowth>
+  <RWS_AlteredCarbonSleeveGrowthDesc>Подсчитывает синтетические тела, полностью выращенные в принадлежащих игроку инкубаторах оболочек в Altered Carbon 2: ReSleeved, с разбивкой по виду пешки.</RWS_AlteredCarbonSleeveGrowthDesc>
+  <RWS_AlteredCarbonNeedlecasts>Дальние переносы сознания</RWS_AlteredCarbonNeedlecasts>
+  <RWS_AlteredCarbonNeedlecastsDesc>Подсчитывает завершенные дистанционные переносы сознания стека в живые целевые тела игрока в Altered Carbon 2: ReSleeved.</RWS_AlteredCarbonNeedlecastsDesc>
+  <RWS_EmpireTaxDelivered>Получена стоимость налогов вассалов</RWS_EmpireTaxDelivered>
+  <RWS_EmpireTaxDeliveredDesc>Подсчитывает общее серебро и рыночную стоимость налоговых товаров, фактически доставленных на карту игрока из вассальных поселений в Empire Refactored, с разбивкой по предметам и без отложенных доставок.</RWS_EmpireTaxDeliveredDesc>
+  <RWS_AlphaGenesGeneAbsorptions>Поглощено генов сифоном</RWS_AlphaGenesGeneAbsorptions>
+  <RWS_AlphaGenesGeneAbsorptionsDesc>Подсчитывает гены, вновь поглощенные пешками игрока с помощью способности генного сифона в Alpha Genes, с разбивкой по генам.</RWS_AlphaGenesGeneAbsorptionsDesc>
+  <RWS_AlphaGenesTeratogenicMutations>Тератогенные мутации опухолей</RWS_AlphaGenesTeratogenicMutations>
+  <RWS_AlphaGenesTeratogenicMutationsDesc>Подсчитывает применения тератогенных способностей пешками игрока в Alpha Genes, поглощающих карциномы и превращающих их в усиления-мутации, с разбивкой по состояниям.</RWS_AlphaGenesTeratogenicMutationsDesc>
+  <RWS_AlphaMechsBossKills>Уничтожено высших командиров механоидов</RWS_AlphaMechsBossKills>
+  <RWS_AlphaMechsBossKillsDesc>Подсчитывает суммарные убийства враждебных боссов-командиров механоидов из Alpha Mechs на картах с присутствием колонии, с разбивкой по типам механоидов.</RWS_AlphaMechsBossKillsDesc>
+  <RWS_VgeGravdataGained>Чистый прирост гравданных</RWS_VgeGravdataGained>
+  <RWS_VgeGravdataGainedDesc>Подсчитывает вновь полученные гравданные от неповрежденных посадок гравикорабля игрока и орбитальных исследований на консоли в Vanilla Gravship Expanded, исключая перезапись черного ящика.</RWS_VgeGravdataGainedDesc>
+  <RWS_WorldDominationConquests>Захвачено вражеских поселений</RWS_WorldDominationConquests>
+  <RWS_WorldDominationConquestsDesc>Подсчитывает поселения других фракций, напрямую захваченные силами игрока в World Domination 2.0, с разбивкой по побежденным фракциям и без учета боев ИИ между собой.</RWS_WorldDominationConquestsDesc>
+  <RWS_WorldDominationPlayerVictories>Победы стратегических сил</RWS_WorldDominationPlayerVictories>
+  <RWS_WorldDominationPlayerVictoriesDesc>Подсчитывает победы сил игрока в наступательных рейдах, обороне аванпостов и столкновениях караванов в World Domination 2.0, с разбивкой по побежденным фракциям.</RWS_WorldDominationPlayerVictoriesDesc>
+</LanguageData>

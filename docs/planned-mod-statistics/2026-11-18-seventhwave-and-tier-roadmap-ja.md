@@ -23,6 +23,8 @@
 | **Vanilla Gravship Expanded Ch.1 & 2** | `3609835606` | 整備タスク・ワープ・ポイント | 新規獲得した **Gravdata 総量** | 既存のブラックボックス格納／取出による往復増減を除外し、調査・解析での純増分のみ記録。 |
 | **World Domination 2.0** / **Rim War (Continued)** | `3546683812` / `2222935097` | 都市占領・外交行動等 | **プレイヤー自身の部隊が勝利したワールド戦闘・拠点制圧数** | NPC 派閥同士の自動戦闘（高頻度ノイズ）を厳密に除外し、自派閥編成部隊の勝利確定点のみ計上。 |
 
+> **2026-11-18 実装状況メモ**：RimWorld 1.7 実選択アセンブリが確認できた 8件（**Hospital**、**Dubs Rimatomics**、**Altered Carbon 2: ReSleeved**、**Alpha Mechs**、**Alpha Genes**、**Empire Refactored**、**Vanilla Gravship Expanded**、**World Domination 2.0**）の計 15指標を `Stage2ModOutcomes` として実装済み。**A RimWorld of Magic**（上流 `TorannD/RWoM` は `1.6` 止まり）および **Rim War (Continued)**（上流 `TorannD/RimWar---Threaded` は `1.6` 止まり）は 1.7 実配布DLL未確認のため推測実装を行わず保留とする。
+
 ---
 
 ## 2. `active-candidates.md` 既存 58件の優先度ティア分類
