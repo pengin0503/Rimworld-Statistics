@@ -122,10 +122,15 @@ public sealed class ColonySummaryReport
         var numericColony = view.Numeric.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         var rowsByKey = numericColony?.Rows.ToDictionary(r => r.Definition.Key, Ord)
             ?? new Dictionary<string, NumericRow>(Ord);
-        var explainedTypes = stats.CountedEndings.Select(e => e.Type).ToHashSet();
-        var unexplainedTraces = colony?.Traces.Where(t => !explainedTypes.Contains(t)).OrderBy(t => t).ToArray()
+        var explainedTypes = stats.CountedEndings.Select(e => e.Type)
+            .Concat(colony?.RecoveredEndings.Select(e => e.Type) ?? Enumerable.Empty<EndingType>())
+            .ToHashSet();
+        var unexplainedTraces = colony?.Traces
+            .Where(t => !explainedTypes.Any(k => k == t || EndingTraces.Explains(k, t)))
+            .OrderBy(t => t)
+            .ToArray()
             ?? Array.Empty<EndingType>();
-
+        
         var overview = new ColonyReportOverview
         {
             ColonyKey = stats.Key,
@@ -300,22 +305,6 @@ public sealed class ColonySummaryReport
                 Number = num,
                 Coverage = MetricCoverage.SnapshotOnly,
                 ThroughTick = stats.HasObservedPoint ? stats.MaxTicks : null,
-            };
-        }
-        else if (!stats.HasObservedPoint && key == BasicMetrics.Endings)
-        {
-            val = new NumericValue
-            {
-                Number = stats.EndingCounts.Values.Sum(),
-                Coverage = MetricCoverage.SnapshotOnly,
-            };
-        }
-        else if (!stats.HasObservedPoint && key == BasicMetrics.Saves)
-        {
-            val = new NumericValue
-            {
-                Number = stats.SaveCount,
-                Coverage = MetricCoverage.SnapshotOnly,
             };
         }
         else
