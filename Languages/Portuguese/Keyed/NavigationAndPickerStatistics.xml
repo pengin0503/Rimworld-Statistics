@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Atalhos de teclado</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Alternar estatísticas: {0} · Alternar estatísticas totais: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Configurar atalhos de teclado…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Não associado</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>Resumo da colónia atual</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Voltar ao relatório de resumo guardado da colónia atual.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Crónica da colónia atual</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Abrir a crónica guardada da colónia atual.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>Ainda não existem estatísticas guardadas para a colónia atual. Guarde o jogo primeiro.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>A análise completa da pasta de gravações apenas está disponível no ecrã principal para evitar conflitos durante o jogo.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Selecionar colónia…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Selecionar colónia…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>Detalhe de todas as colónias</RWS_Chart_ByCategoryAll>
+</LanguageData>

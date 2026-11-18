@@ -62,6 +62,13 @@ with zipfile.ZipFile(args.host_zip) as archive:
         if missing:
             raise SystemExit(f"Missing keyed XMLs in production ZIP: {missing}")
 
+        for rel_path in sorted(list(Path("Defs").rglob("*.xml")) + list(Path("Languages").glob("*/DefInjected/**/*.xml"))):
+            member = f"RimworldStatistics/{rel_path.as_posix()}"
+            if member not in path_set:
+                raise SystemExit(f"Missing Def/DefInjected XML in production ZIP: {member}")
+            if archive.read(member) != rel_path.read_bytes():
+                raise SystemExit(f"Def/DefInjected XML content mismatch in production ZIP: {member}")
+
 if args.harness_zip:
     with zipfile.ZipFile(args.harness_zip) as harness:
         failed = harness.testzip()

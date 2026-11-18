@@ -352,17 +352,18 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private void ShowColonyMenu()
     {
-        var options = view.Stats.Colonies
-            .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
-            .Select(c =>
-            {
-                var key = c.Key;
-                var label = Dialog_RimworldStatistics.ColonyName(c) + (c.Excluded ? (string)"RWS_ExcludedMark".Translate() : "");
-                return new FloatMenuOption(label, () => StartLoad(key, null));
-            })
-            .ToList();
-        if (options.Count > 0)
-            Find.WindowStack.Add(new FloatMenu(options));
+        if (view.Stats.Colonies.Count == 0)
+            return;
+        var currentColonyKey = Current.ProgramState == ProgramState.Playing
+            ? InGameColonyAccess.Resolve(view, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
+            : null;
+        Find.WindowStack.Add(new ColonyPickerDialog(
+            view.Stats.Colonies,
+            Dialog_RimworldStatistics.ActivePreferences,
+            picked => StartLoad(picked.Key, null),
+            heading: (string)"RWS_Chronicle_SwitchColony".Translate(),
+            selectedColonyKey: colonyKey,
+            currentInGameColonyKey: currentColonyKey));
     }
 
     private void ShowBranchMenu(ColonyChronicle chronicle)

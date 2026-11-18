@@ -48,10 +48,14 @@ internal sealed class Dialog_MetricChart : Window
     private readonly string metricLabel;
     private readonly string? modSource;
     private readonly Series colony;
-    private readonly Series breakdown;
+    private readonly Series allBreakdown;
     private readonly Series overall;
-    private readonly string? breakdownColony;
-    private readonly string? breakdownButtonLabel;
+    private readonly ColonyStats[] colonyPickerTargets;
+    private readonly ColonyStats[] breakdownPickerTargets;
+    private Series activeBreakdown;
+    private string? breakdownColony;
+    private string? highlightedColonyKey;
+    private string? cachedNameSignature;
     private bool showBreakdown;
     private Vector2 scroll;
 
@@ -59,14 +63,16 @@ internal sealed class Dialog_MetricChart : Window
     {
         this.view = view;
         string chartLabel;
-        IReadOnlyList<MetricChartBar> colonyBars, breakdownBars, overallBars;
+        IReadOnlyList<MetricChartBar> colonyBars, allBreakdownBars, initialBreakdownBars, overallBars;
         if (BasicMetrics.Contains(metricKey))
         {
             definition = BasicMetrics.Definition(metricKey);
             chartLabel = OverviewTab.BasicLabel(metricKey);
             colonyBars = MetricChartSeries.BasicByColony(view.Stats, metricKey);
-            breakdownBars = [];
+            allBreakdownBars = [];
+            initialBreakdownBars = [];
             breakdownColony = null;
+            breakdownPickerTargets = [];
             var total = BasicMetrics.OverallValue(view.Stats, metricKey);
             overallBars = total is { } n && double.IsFinite(n)
                 ? [new MetricChartBar(metricKey, new NumericValue { Number = n, Coverage = MetricCoverage.SnapshotOnly })]
@@ -78,25 +84,36 @@ internal sealed class Dialog_MetricChart : Window
                 ?? throw new ArgumentException("Metric not found in the current view.", nameof(metricKey));
             chartLabel = MetricText.Label(definition);
             colonyBars = MetricChartSeries.ByColony(view.Numeric, definition);
+            allBreakdownBars = MetricChartSeries.Breakdowns(view.Numeric, metricKey);
             IReadOnlyList<MetricChartBar> selected = selectedColony is null ? []
                 : MetricChartSeries.Breakdowns(view.Numeric, metricKey, selectedColony);
             breakdownColony = selected.Count > 0 ? selectedColony : null;
-            breakdownBars = breakdownColony is null
-                ? MetricChartSeries.Breakdowns(view.Numeric, metricKey) : selected;
+            initialBreakdownBars = breakdownColony is null ? allBreakdownBars : selected;
             overallBars = MetricChartSeries.Overall(view.Numeric, metricKey);
+
+            var breakdownKeys = view.Numeric.Colonies
+                .Where(c => MetricChartSeries.Breakdowns(view.Numeric, metricKey, c.Key).Count > 0)
+                .Select(c => c.Key)
+                .ToHashSet(StringComparer.Ordinal);
+            breakdownPickerTargets = view.Stats.Colonies.Where(c => breakdownKeys.Contains(c.Key)).ToArray();
         }
+
+        var colonyBarKeys = colonyBars.Select(b => b.Key).ToHashSet(StringComparer.Ordinal);
+        colonyPickerTargets = view.Stats.Colonies.Where(c => colonyBarKeys.Contains(c.Key)).ToArray();
+        highlightedColonyKey = selectedColony is not null && colonyBarKeys.Contains(selectedColony) ? selectedColony : null;
+
         breakdownDefinition = definition.BreakdownUnit is { } unit ? definition with { Unit = unit } : definition;
         metricLabel = chartLabel;
         modSource = MetricText.ModSourceLabel(definition);
         title = "RWS_Chart_Title".Translate(chartLabel);
         colony = new Series(ChartMode.Colony, colonyBars, definition.Unit);
-        breakdown = new Series(ChartMode.Breakdown, breakdownBars, breakdownDefinition.Unit);
+        allBreakdown = new Series(ChartMode.Breakdown, allBreakdownBars, breakdownDefinition.Unit);
+        activeBreakdown = breakdownColony is null
+            ? allBreakdown
+            : new Series(ChartMode.Breakdown, initialBreakdownBars, breakdownDefinition.Unit);
         overall = new Series(ChartMode.Overall, overallBars, definition.Unit);
-        if (breakdownBars.Count > 0)
-            breakdownButtonLabel = breakdownColony is null
-                ? (string)"RWS_Chart_ByCategory".Translate()
-                : (string)"RWS_Chart_ByCategoryColony".Translate(ColonyName(breakdownColony));
-        showBreakdown = breakdownColony is not null || (colonyBars.Count == 0 && breakdownBars.Count > 0);
+        showBreakdown = breakdownColony is not null || (colonyBars.Count == 0 && activeBreakdown.Bars.Count > 0);
+        cachedNameSignature = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
@@ -106,6 +123,13 @@ internal sealed class Dialog_MetricChart : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (cachedNameSignature != nameSig)
+        {
+            cachedNameSignature = nameSig;
+            Array.Clear(colony.Text);
+        }
+
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 35f), 32f);
         var shownTitle = title.Truncate(titleRect.width);
@@ -115,7 +139,7 @@ internal sealed class Dialog_MetricChart : Window
         Text.Font = GameFont.Small;
 
         var canCompare = colony.Bars.Count > 0;
-        var canBreakdown = breakdown.Bars.Count > 0;
+        var canBreakdown = activeBreakdown.Bars.Count > 0 || allBreakdown.Bars.Count > 0 || breakdownPickerTargets.Length > 0;
         var y = rect.y + 38f;
         if (modSource is { } source)
         {
@@ -126,26 +150,85 @@ internal sealed class Dialog_MetricChart : Window
                 TooltipHandler.TipRegion(sourceRect, source);
             y += 22f;
         }
+
+        var controls = new ControlRow(new Rect(rect.x, y, rect.width, 29f));
+        var hasControls = false;
         if (canCompare && canBreakdown)
         {
-            var compareRect = new Rect(rect.x, y, Math.Min(205f, rect.width * 0.42f), 29f);
-            var breakdownRect = new Rect(compareRect.xMax + 8f, y, Math.Min(300f, rect.width - compareRect.width - 8f), 29f);
-            if (Widgets.ButtonText(compareRect, "RWS_Chart_ByColony".Translate(), active: showBreakdown))
+            hasControls = true;
+            var byColonyLabel = (string)"RWS_Chart_ByColony".Translate();
+            var compareRect = controls.Next(byColonyLabel, 130f, 220f);
+            if (Widgets.ButtonText(compareRect, byColonyLabel.Truncate(Math.Max(0f, compareRect.width - 12f)), active: showBreakdown))
             {
                 showBreakdown = false;
                 scroll = Vector2.zero;
             }
-            if (Widgets.ButtonText(breakdownRect, breakdownButtonLabel!.Truncate(breakdownRect.width - 12f), active: !showBreakdown))
+
+            var breakdownBtnLabel = breakdownColony is null
+                ? (string)"RWS_Chart_ByCategory".Translate()
+                : (string)"RWS_Chart_ByCategoryColony".Translate(ColonyName(breakdownColony));
+            var breakdownRect = controls.Next(breakdownBtnLabel, 145f, 310f);
+            if (Widgets.ButtonText(breakdownRect, breakdownBtnLabel.Truncate(Math.Max(0f, breakdownRect.width - 12f)), active: !showBreakdown))
             {
+                if (activeBreakdown.Bars.Count == 0 && allBreakdown.Bars.Count > 0)
+                {
+                    breakdownColony = null;
+                    activeBreakdown = allBreakdown;
+                }
                 showBreakdown = true;
                 scroll = Vector2.zero;
             }
-            TooltipHandler.TipRegion(breakdownRect, breakdownButtonLabel);
-            y += 36f;
+            TooltipHandler.TipRegion(breakdownRect, breakdownBtnLabel);
         }
 
-        var series = showBreakdown && canBreakdown ? breakdown : canCompare ? colony
-            : canBreakdown ? breakdown : overall;
+        var series = showBreakdown && activeBreakdown.Bars.Count > 0 ? activeBreakdown : canCompare ? colony
+            : activeBreakdown.Bars.Count > 0 ? activeBreakdown : overall;
+
+        if (series.Mode == ChartMode.Breakdown)
+        {
+            if (breakdownColony is not null && allBreakdown.Bars.Count > 0)
+            {
+                hasControls = true;
+                var allCatLabel = (string)"RWS_Chart_ByCategoryAll".Translate();
+                var allCatRect = controls.Next(allCatLabel, 125f, 230f);
+                if (Widgets.ButtonText(allCatRect, allCatLabel.Truncate(Math.Max(0f, allCatRect.width - 12f))))
+                    SelectBreakdownColony(null);
+            }
+            if (breakdownPickerTargets.Length > 0)
+            {
+                hasControls = true;
+                var pickLabel = (string)"RWS_Chart_PickColony".Translate();
+                var pickRect = controls.Next(pickLabel, 125f, 220f);
+                if (Widgets.ButtonText(pickRect, pickLabel.Truncate(Math.Max(0f, pickRect.width - 12f))))
+                {
+                    Find.WindowStack.Add(new ColonyPickerDialog(
+                        breakdownPickerTargets,
+                        Dialog_RimworldStatistics.ActivePreferences,
+                        picked => SelectBreakdownColony(picked.Key),
+                        heading: pickLabel,
+                        selectedColonyKey: breakdownColony));
+                }
+            }
+        }
+        else if (series.Mode == ChartMode.Colony && colonyPickerTargets.Length > 1)
+        {
+            hasControls = true;
+            var pickLabel = (string)"RWS_Chart_PickColony".Translate();
+            var pickRect = controls.Next(pickLabel, 125f, 220f);
+            if (Widgets.ButtonText(pickRect, pickLabel.Truncate(Math.Max(0f, pickRect.width - 12f))))
+            {
+                Find.WindowStack.Add(new ColonyPickerDialog(
+                    colonyPickerTargets,
+                    Dialog_RimworldStatistics.ActivePreferences,
+                    picked => FocusColonyBar(picked.Key),
+                    heading: pickLabel,
+                    selectedColonyKey: highlightedColonyKey));
+            }
+        }
+
+        if (hasControls)
+            y += controls.Height + 6f;
+
         if (series.Bars.Count == 0)
         {
             // No series has a measured value: no explanation of a chart that is not drawn.
@@ -190,61 +273,102 @@ internal sealed class Dialog_MetricChart : Window
 
         var bodyRect = new Rect(rect.x, rect.y + AxisHeaderHeight, rect.width, Math.Max(0f, rect.height - AxisHeaderHeight));
         Widgets.BeginScrollView(bodyRect, ref scroll, new Rect(0f, 0f, width, bars.Count * RowHeight));
-        var first = Math.Max(0, (int)(scroll.y / RowHeight));
-        var last = Math.Min(bars.Count - 1, (int)((scroll.y + bodyRect.height) / RowHeight) + 1);
         var anchor = Text.Anchor;
         MetricChartBar? selected = null;
-        for (var i = first; i <= last; i++)
+        try
         {
-            var bar = bars[i];
-            if (bar.Value.Number is not { } value || !double.IsFinite(value))
-                continue;
-            var text = series.Text[i] ??= Describe(series.Mode, bar);
-            var row = new Rect(0, i * RowHeight, width, RowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(row, 0.2f);
-            Widgets.DrawHighlightIfMouseover(row);
-            if (series.Mode == ChartMode.Colony && OpensHistory && Widgets.ButtonInvisible(row))
-                selected = bar;
-
-            Text.Anchor = TextAnchor.MiddleLeft;
-            var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
-            Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
-
-            var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
-            for (var t = 0; t < series.Ticks.Count; t++)
+            var first = Math.Max(0, (int)(scroll.y / RowHeight));
+            var last = Math.Min(bars.Count - 1, (int)((scroll.y + bodyRect.height) / RowHeight) + 1);
+            for (var i = first; i <= last; i++)
             {
-                var tickValue = series.Ticks[t];
-                var tx = Position(tickValue);
-                if (tickValue == 0d)
+                var bar = bars[i];
+                if (bar.Value.Number is not { } value || !double.IsFinite(value))
                     continue;
-                Widgets.DrawBoxSolid(new Rect(tx, row.y, 1f, RowHeight), new Color(0.7f, 0.7f, 0.7f, 0.16f));
-            }
-            Widgets.DrawBoxSolid(new Rect(zero - 0.5f, row.y, 1.5f, RowHeight), new Color(0.86f, 0.88f, 0.92f, 0.85f));
+                var text = series.Text[i] ??= Describe(series.Mode, bar);
+                var row = new Rect(0, i * RowHeight, width, RowHeight);
+                if (series.Mode == ChartMode.Colony && highlightedColonyKey is not null && bar.Key == highlightedColonyKey)
+                    Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.24f));
+                else if (i % 2 == 1)
+                    Widgets.DrawHighlight(row, 0.2f);
+                Widgets.DrawHighlightIfMouseover(row);
+                if (series.Mode == ChartMode.Colony && OpensHistory && Widgets.ButtonInvisible(row))
+                    selected = bar;
 
-            var end = Position(value);
-            if (value != 0d)
-            {
-                var start = Math.Min(zero, end);
-                var length = Math.Max(1f, Math.Abs(end - zero));
-                Widgets.DrawBoxSolid(new Rect(start, plotRow.y + 3f, length, plotRow.height - 6f),
-                    bar.Value.Coverage == MetricCoverage.Partial
-                        ? new Color(0.63f, 0.66f, 0.71f) : new Color(0.35f, 0.64f, 0.78f));
-            }
+                Text.Anchor = TextAnchor.MiddleLeft;
+                var labelRect = new Rect(4f, row.y, Math.Max(0, labelWidth - 8f), RowHeight);
+                Widgets.Label(labelRect, text.Name.Truncate(labelRect.width));
 
-            Text.Anchor = TextAnchor.MiddleRight;
-            var valueRect = new Rect(plotX + plotWidth + 10f, row.y, Math.Max(0f, valueWidth - 10f), RowHeight);
-            Widgets.Label(valueRect, text.Value.Truncate(valueRect.width));
-            TooltipHandler.TipRegion(row, text.Tip);
+                var plotRow = new Rect(plotX, row.y + 5f, plotWidth, RowHeight - 10f);
+                for (var t = 0; t < series.Ticks.Count; t++)
+                {
+                    var tickValue = series.Ticks[t];
+                    var tx = Position(tickValue);
+                    if (tickValue == 0d)
+                        continue;
+                    Widgets.DrawBoxSolid(new Rect(tx, row.y, 1f, RowHeight), new Color(0.7f, 0.7f, 0.7f, 0.16f));
+                }
+                Widgets.DrawBoxSolid(new Rect(zero - 0.5f, row.y, 1.5f, RowHeight), new Color(0.86f, 0.88f, 0.92f, 0.85f));
+
+                var end = Position(value);
+                if (value != 0d)
+                {
+                    var start = Math.Min(zero, end);
+                    var length = Math.Max(1f, Math.Abs(end - zero));
+                    Widgets.DrawBoxSolid(new Rect(start, plotRow.y + 3f, length, plotRow.height - 6f),
+                        bar.Value.Coverage == MetricCoverage.Partial
+                            ? new Color(0.63f, 0.66f, 0.71f) : new Color(0.35f, 0.64f, 0.78f));
+                }
+
+                Text.Anchor = TextAnchor.MiddleRight;
+                var valueRect = new Rect(plotX + plotWidth + 10f, row.y, Math.Max(0f, valueWidth - 10f), RowHeight);
+                Widgets.Label(valueRect, text.Value.Truncate(valueRect.width));
+                TooltipHandler.TipRegion(row, text.Tip);
+            }
         }
-        Text.Anchor = anchor;
-        Widgets.EndScrollView();
+        finally
+        {
+            Text.Anchor = anchor;
+            Widgets.EndScrollView();
+        }
         if (selected is not null)
         {
             var key = MetricChartSeries.ColonyComparisonKey(definition);
             var source = key == definition.Key ? definition : MetricLookup.Definition(view, key) ?? definition;
             var label = key == definition.Key ? metricLabel : MetricText.Label(source);
             Find.WindowStack.Add(new Dialog_ColonyMetricHistory(view, selected.Key, ColonyName(selected.Key), source, label, selected.Value));
+        }
+    }
+
+    private void SelectBreakdownColony(string? targetColonyKey)
+    {
+        if (targetColonyKey is null)
+        {
+            breakdownColony = null;
+            activeBreakdown = allBreakdown;
+        }
+        else
+        {
+            var bars = MetricChartSeries.Breakdowns(view.Numeric, definition.Key, targetColonyKey);
+            if (bars.Count == 0)
+                return;
+            breakdownColony = targetColonyKey;
+            activeBreakdown = new Series(ChartMode.Breakdown, bars, breakdownDefinition.Unit);
+        }
+        showBreakdown = true;
+        scroll = Vector2.zero;
+    }
+
+    private void FocusColonyBar(string targetColonyKey)
+    {
+        highlightedColonyKey = targetColonyKey;
+        showBreakdown = false;
+        for (var i = 0; i < colony.Bars.Count; i++)
+        {
+            if (colony.Bars[i].Key == targetColonyKey)
+            {
+                scroll.y = Math.Max(0f, (i - 2) * RowHeight);
+                return;
+            }
         }
     }
 

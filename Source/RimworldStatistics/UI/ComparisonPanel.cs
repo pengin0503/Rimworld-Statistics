@@ -43,16 +43,16 @@ internal static class ComparisonPanel
         var controls = new ControlRow(new Rect(rect.x, rect.y, rect.width, 27f));
         for (var i = 0; i < Choices.Count; i++)
         {
-            var label = Label(Choices[i], view.Stats, groups);
+            var label = Label(Choices[i], view.Stats, groups, preferences);
             var button = controls.Next(label, 105f, 210f);
             if (Widgets.ButtonText(button, label.Truncate(button.width - 12f)))
-                ShowChoices(i, view.Stats, groups);
+                ShowChoices(i, view.Stats, groups, preferences);
         }
         if (Choices.Count < Comparison.MaxColumns)
         {
             string add = "RWS_Compare_Add".Translate();
             if (Widgets.ButtonText(controls.Next(add, 105f, 180f), add))
-                ShowChoices(Choices.Count, view.Stats, groups);
+                ShowChoices(Choices.Count, view.Stats, groups, preferences);
         }
 
         var y = rect.y + controls.Height + 4f;
@@ -198,22 +198,28 @@ internal static class ComparisonPanel
         }
 
         GUI.BeginGroup(new Rect(rect.x + plan.NameWidth, y, plan.DataViewportWidth, RowHeight));
-        for (var i = firstCol; i < lastCol; i++)
+        try
         {
-            var label = Label(current[i].Choice, view.Stats, groups);
-            var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
-            if (sortColumn == i)
-                label += descending ? " ▼" : " ▲";
-            if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+            for (var i = firstCol; i < lastCol; i++)
             {
-                descending = sortColumn != i || !descending;
-                sortColumn = i;
-                builtFor = null;
-                scroll = Vector2.zero;
+                var label = Label(current[i].Choice, view.Stats, groups, preferences);
+                var header = new Rect(i * plan.ColumnWidth - scroll.x, 0, plan.ColumnWidth, RowHeight);
+                if (sortColumn == i)
+                    label += descending ? " ▼" : " ▲";
+                if (Widgets.ButtonText(header, label.Truncate(Math.Max(1f, plan.ColumnWidth - 12f))))
+                {
+                    descending = sortColumn != i || !descending;
+                    sortColumn = i;
+                    builtFor = null;
+                    scroll = Vector2.zero;
+                }
+                TooltipHandler.TipRegion(header, label);
             }
-            TooltipHandler.TipRegion(header, label);
         }
-        GUI.EndGroup();
+        finally
+        {
+            GUI.EndGroup();
+        }
 
 
         Widgets.DrawBoxSolid(new Rect(rect.x + plan.NameWidth - 1f, y, 1f, Math.Max(0f, rect.yMax - y - bottomHScrollReserve)), new Color(1f, 1f, 1f, 0.14f));
@@ -222,13 +228,19 @@ internal static class ComparisonPanel
     private static string DrawCell(Rect cell, string text, TextAnchor cellAnchor = TextAnchor.MiddleLeft)
     {
         var anchor = Text.Anchor;
-        Text.Anchor = cellAnchor;
-        cell.x += 4f;
-        cell.width = Math.Max(0f, cell.width - 8f);
-        var shown = text.Truncate(cell.width);
-        Widgets.Label(cell, shown);
-        Text.Anchor = anchor;
-        return shown;
+        try
+        {
+            Text.Anchor = cellAnchor;
+            cell.x += 4f;
+            cell.width = Math.Max(0f, cell.width - 8f);
+            var shown = text.Truncate(cell.width);
+            Widgets.Label(cell, shown);
+            return shown;
+        }
+        finally
+        {
+            Text.Anchor = anchor;
+        }
     }
 
     private static TableRow[] Build(Column[] current, Func<MetricDefinition, string, bool> acceptDefinition, Func<NumericRow, bool> acceptStatus)
@@ -281,34 +293,61 @@ internal static class ComparisonPanel
         _ => new ScopeTarget(ViewScope.All),
     };
 
-    private static string Label(Choice choice, StatsResult stats, IReadOnlyList<ColonyGroup>? groups) => choice.Kind switch
+    private static string Label(Choice choice, StatsResult stats, IReadOnlyList<ColonyGroup>? groups, ViewPreferences? preferences) => choice.Kind switch
     {
         Kind.All => "RWS_Details_AllColonies".Translate(),
         Kind.Group => groups?.FirstOrDefault(group => group.Id == choice.Id)?.Name ?? choice.Id,
         _ => stats.Colonies.FirstOrDefault(c => c.Key == choice.Id) is { } colony
-            ? Dialog_RimworldStatistics.ColonyName(colony) : choice.Id,
+            ? Dialog_RimworldStatistics.ColonyName(colony, preferences) : choice.Id,
     };
 
-    private static void ShowChoices(int index, StatsResult stats, IReadOnlyList<ColonyGroup>? groups)
+    private static void ApplyChoice(int index, Choice choice)
+    {
+        if (index < Choices.Count)
+            Choices[index] = choice;
+        else if (Choices.Count < Comparison.MaxColumns)
+            Choices.Add(choice);
+        selectionVersion++;
+    }
+
+    private static void ShowChoices(int index, StatsResult stats, IReadOnlyList<ColonyGroup>? groups, ViewPreferences? preferences)
     {
         var menu = new List<FloatMenuOption>();
-        var available = new[] { new Choice(Kind.All) }
-            .Concat((groups ?? []).Select(group => new Choice(Kind.Group, group.Id)))
-            .Concat(stats.Colonies.Select(colony => new Choice(Kind.Colony, colony.Key)));
-        foreach (var choice in available.Where(choice => !Choices.Contains(choice)))
+        var scopeChoices = new[] { new Choice(Kind.All) }
+            .Concat((groups ?? []).Select(group => new Choice(Kind.Group, group.Id)));
+        foreach (var choice in scopeChoices.Where(choice => !Choices.Contains(choice)))
         {
-            var label = Label(choice, stats, groups);
-            if (choice.Kind != Kind.All)
-                label = (choice.Kind == Kind.Group ? (string)"RWS_Compare_Group".Translate() : "RWS_Compare_Colony".Translate()) + " · " + label;
-            menu.Add(new FloatMenuOption(label, () =>
+            var label = Label(choice, stats, groups, preferences);
+            if (choice.Kind == Kind.Group)
+                label = (string)"RWS_Compare_Group".Translate() + " · " + label;
+            menu.Add(new FloatMenuOption(label, () => ApplyChoice(index, choice)));
+        }
+
+        var currentColonyChoice = index < Choices.Count && Choices[index].Kind == Kind.Colony
+            ? Choices[index].Id
+            : null;
+        var takenOtherColonies = Choices
+            .Where((c, i) => i != index && c.Kind == Kind.Colony)
+            .Select(c => c.Id)
+            .ToHashSet(StringComparer.Ordinal);
+        var selectableColonies = stats.Colonies
+            .Where(c => !takenOtherColonies.Contains(c.Key))
+            .ToArray();
+        if (selectableColonies.Length > 0)
+        {
+            var pickHeading = (string)"RWS_Compare_PickColony".Translate();
+            var pickMenuLabel = (string)"RWS_Compare_Colony".Translate() + " · " + pickHeading;
+            menu.Add(new FloatMenuOption(pickMenuLabel, () =>
             {
-                if (index < Choices.Count)
-                    Choices[index] = choice;
-                else if (Choices.Count < Comparison.MaxColumns)
-                    Choices.Add(choice);
-                selectionVersion++;
+                Find.WindowStack.Add(new ColonyPickerDialog(
+                    selectableColonies,
+                    preferences ?? Dialog_RimworldStatistics.ActivePreferences,
+                    picked => ApplyChoice(index, new Choice(Kind.Colony, picked.Key)),
+                    heading: pickHeading,
+                    selectedColonyKey: currentColonyChoice));
             }));
         }
+
         if (index < Choices.Count && Choices.Count > 1)
             menu.Add(new FloatMenuOption("RWS_Compare_Remove".Translate(), () =>
             {

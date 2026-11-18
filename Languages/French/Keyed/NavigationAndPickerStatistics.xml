@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Raccourcis clavier</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Afficher/masquer les statistiques : {0} · Statistiques globales : {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Configurer les raccourcis clavier…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Non attribué</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>Synthèse de la colonie actuelle</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Revenir au rapport de synthèse enregistré pour la colonie en cours.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Chronique de la colonie actuelle</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Ouvrir la chronique enregistrée pour la colonie en cours.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>Aucune statistique enregistrée pour la colonie actuelle. Sauvegardez d'abord la partie.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>L'analyse complète du dossier de sauvegardes n'est disponible que depuis l'écran titre afin d'éviter tout conflit pendant la partie.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Choisir une colonie…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Choisir une colonie…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>Détail de toutes les colonies</RWS_Chart_ByCategoryAll>
+</LanguageData>

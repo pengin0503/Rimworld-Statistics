@@ -90,6 +90,7 @@ public static class ImportTab
 
         y += 6f;
         var buttonRect = new Rect(rect.x, y, 180f, 32f);
+        var canScanOnTitleScreen = Current.ProgramState == ProgramState.Entry;
         if (ImportRunner.Running)
         {
             var p = run.Progress;
@@ -106,9 +107,12 @@ public static class ImportTab
             if (Widgets.ButtonText(new Rect(rect.xMax - 180f, y, 180f, 32f), "RWS_Cancel".Translate()))
                 ImportRunner.Cancel();
         }
-        else if (Widgets.ButtonText(buttonRect, "RWS_Rescan".Translate()))
+        else
         {
-            ImportRunner.StartIfIdle();
+            if (Widgets.ButtonText(buttonRect, "RWS_Rescan".Translate(), active: canScanOnTitleScreen) && canScanOnTitleScreen)
+                ImportRunner.StartIfIdle();
+            if (!canScanOnTitleScreen)
+                TooltipHandler.TipRegion(buttonRect, "RWS_Import_TitleScreenOnlyTip".Translate());
         }
         var nextX = buttonRect.xMax + 8f;
         if (!ImportRunner.Running && rect.xMax - nextX > 45f)
@@ -117,10 +121,14 @@ public static class ImportTab
             var recheckLabel = (string)"RWS_ForceRecheck".Translate();
             var recheckRect = new Rect(nextX, y, Math.Min(Math.Max(160f, Text.CalcSize(recheckLabel).x + 24f), rect.xMax - nextX),
                 buttonRect.height);
-            if (Widgets.ButtonText(recheckRect, recheckLabel.Truncate(recheckRect.width - 12f)))
+            if (Widgets.ButtonText(recheckRect, recheckLabel.Truncate(recheckRect.width - 12f), active: canScanOnTitleScreen)
+                && canScanOnTitleScreen)
+            {
                 Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RWS_ForceRecheck_Confirm".Translate(),
                     ImportRunner.StartForcedRecheckIfIdle));
-            TooltipHandler.TipRegion(recheckRect, "RWS_ForceRecheckTip".Translate());
+            }
+            TooltipHandler.TipRegion(recheckRect,
+                canScanOnTitleScreen ? "RWS_ForceRecheckTip".Translate() : "RWS_Import_TitleScreenOnlyTip".Translate());
             nextX = recheckRect.xMax + 8f;
         }
         if (!ImportRunner.Running && rect.xMax - nextX > 45f)

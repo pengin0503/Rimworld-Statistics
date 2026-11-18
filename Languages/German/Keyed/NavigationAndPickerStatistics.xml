@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Tastenkürzel</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Statistik umschalten: {0} · Gesamtstatistik umschalten: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Tastenkürzel konfigurieren…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Nicht belegt</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>Zusammenfassung der aktuellen Kolonie</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Zur gespeicherten Zusammenfassung der aktuell gespielten Kolonie zurückkehren.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Chronik der aktuellen Kolonie</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Die gespeicherte Chronik der aktuell gespielten Kolonie öffnen.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>Für die aktuelle Kolonie liegt noch keine gespeicherte Statistik vor. Speichere zuerst das Spiel.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>Das vollständige Durchsuchen des Spielstand-Ordners ist nur im Hauptmenü verfügbar, um Konflikte während des Spielens zu vermeiden.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Kolonie auswählen…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Kolonie auswählen…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>Aufschlüsselung aller Kolonien</RWS_Chart_ByCategoryAll>
+</LanguageData>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Keyboard shortcuts</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Toggle statistics: {0} · Toggle lifetime statistics: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Configure keyboard shortcuts…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Not bound</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>Current colony summary</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Return to the saved summary report for the colony currently being played.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Current colony chronicle</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Open the saved chronicle timeline for the colony currently being played.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>The current colony has no saved statistics yet. Save the game first to record its chronicle.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>Full save-folder scanning is available only on the title screen to avoid interfering with active gameplay saves.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Select colony…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Select colony…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>All colonies breakdown</RWS_Chart_ByCategoryAll>
+</LanguageData>

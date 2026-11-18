@@ -120,6 +120,10 @@ jobs:
               }
               missing_keyed = sorted(expected_keyed - path_set)
               assert not missing_keyed, f"Missing keyed XMLs in release zip: {missing_keyed}"
+              for rel_path in sorted(list(Path("Defs").rglob("*.xml")) + list(Path("Languages").glob("*/DefInjected/**/*.xml"))):
+                  member = f"RimworldStatistics/{rel_path.as_posix()}"
+                  assert member in path_set, f"Missing Def/DefInjected XML in release zip: {member}"
+                  assert z.read(member) == rel_path.read_bytes(), f"Def/DefInjected mismatch in release zip: {member}"
               assert all(p.startswith("RimworldStatistics/") for p in paths)
               assert not any(term in p.lower() for p in paths for term in (
                   "verifyharness", "smartapparel", "recruitment", "hospitality", "addon"

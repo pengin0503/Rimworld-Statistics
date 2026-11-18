@@ -42,6 +42,7 @@ internal sealed class Dialog_ColonySaveLineage : Window
     private MetricChoice[] metricChoices = [];
     private MetricChoice? activeMetric;
     private object? cachedLanguage;
+    private string? cachedNameSignature;
 
     private Vector2 tableScroll;
     private Vector2 detailScroll;
@@ -94,12 +95,18 @@ internal sealed class Dialog_ColonySaveLineage : Window
         }
 
         var lang = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(cachedLanguage, lang))
+        var languageChanged = !ReferenceEquals(cachedLanguage, lang);
+        if (languageChanged)
         {
             cachedLanguage = lang;
             BuildMetricChoices(activeMetric?.Key);
-            RefreshColonyName();
             InvalidateDisplay();
+        }
+        var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (languageChanged || cachedNameSignature != nameSig)
+        {
+            cachedNameSignature = nameSig;
+            RefreshColonyName();
         }
 
         var titleText = (string)"RWS_Lineage_Title".Translate(colonyName);
@@ -283,12 +290,18 @@ internal sealed class Dialog_ColonySaveLineage : Window
 
     private void ShowColonyMenu()
     {
-        var options = view.Stats.Colonies
-            .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
-            .Select(c => new FloatMenuOption(Dialog_RimworldStatistics.ColonyName(c), () => StartLoad(c.Key)))
-            .ToList();
-        if (options.Count > 0)
-            Find.WindowStack.Add(new FloatMenu(options));
+        if (view.Stats.Colonies.Count == 0)
+            return;
+        var currentColonyKey = Current.ProgramState == ProgramState.Playing
+            ? InGameColonyAccess.Resolve(view, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
+            : null;
+        Find.WindowStack.Add(new ColonyPickerDialog(
+            view.Stats.Colonies,
+            Dialog_RimworldStatistics.ActivePreferences,
+            picked => StartLoad(picked.Key),
+            heading: (string)"RWS_Lineage_SwitchColony".Translate(),
+            selectedColonyKey: colonyKey,
+            currentInGameColonyKey: currentColonyKey));
     }
 
     private NumericValue? ColonyComparisonValue(MetricChoice choice)

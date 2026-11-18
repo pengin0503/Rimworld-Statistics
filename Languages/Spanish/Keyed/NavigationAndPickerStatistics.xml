@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>Atajos de teclado</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>Alternar estadísticas: {0} · Estadísticas totales: {1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>Configurar atajos de teclado…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>Sin asignar</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>Resumen de la colonia actual</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>Volver al informe resumido guardado de la colonia actual.</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>Crónica de la colonia actual</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>Abrir la crónica guardada de la colonia actual.</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>Aún no hay estadísticas guardadas para la colonia actual. Guarda primero la partida.</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>El análisis completo de la carpeta de guardados solo está disponible en la pantalla de título para evitar conflictos durante la partida.</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>Seleccionar colonia…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>Seleccionar colonia…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>Desglose de todas las colonias</RWS_Chart_ByCategoryAll>
+</LanguageData>

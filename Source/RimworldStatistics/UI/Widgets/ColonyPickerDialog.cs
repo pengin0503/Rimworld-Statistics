@@ -9,7 +9,7 @@ internal sealed class ColonyPickerDialog : Window
 {
     private const float ItemHeight = 32f;
 
-    private sealed record Entry(ColonyStats Stats, string Primary, string Detail, string FullTip);
+    private sealed record Entry(ColonyStats Stats, string Primary, string Detail, string FullTip, bool IsSelected);
 
     private readonly ViewPreferences? preferences;
     private readonly Entry[] all;
@@ -20,18 +20,24 @@ internal sealed class ColonyPickerDialog : Window
     private Entry[] filtered = [];
     private Vector2 scroll;
 
-    public ColonyPickerDialog(IReadOnlyList<ColonyStats> colonies, ViewPreferences? preferences,
-        Action<ColonyStats> onPick, string? heading = null)
+    public ColonyPickerDialog(
+        IReadOnlyList<ColonyStats> colonies,
+        ViewPreferences? preferences,
+        Action<ColonyStats> onPick,
+        string? heading = null,
+        string? selectedColonyKey = null,
+        string? currentInGameColonyKey = null)
     {
         this.preferences = preferences;
         this.onPick = onPick;
         this.heading = heading ?? (string)"RWS_ColonyFav_PickColony".Translate();
         all = colonies
-            .OrderBy(c => c.Excluded ? 1 : 0)
+            .OrderByDescending(c => currentInGameColonyKey is not null && string.Equals(c.Key, currentInGameColonyKey, StringComparison.Ordinal))
+            .ThenBy(c => c.Excluded ? 1 : 0)
             .ThenBy(c => c.OutOfScope ? 1 : 0)
             .ThenBy(c => Dialog_RimworldStatistics.ColonyName(c, preferences), StringComparer.CurrentCulture)
             .ThenByDescending(c => c.MaxTicks)
-            .Select(c => BuildEntry(c, preferences))
+            .Select(c => BuildEntry(c, preferences, selectedColonyKey, currentInGameColonyKey))
             .ToArray();
         doCloseX = true;
         absorbInputAroundWindow = true;
@@ -91,6 +97,8 @@ internal sealed class ColonyPickerDialog : Window
                 {
                     var entry = filtered[i];
                     var row = new Rect(0f, i * ItemHeight, viewWidth, ItemHeight - 1f);
+                    if (entry.IsSelected)
+                        Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.22f));
                     Widgets.DrawHighlightIfMouseover(row);
                     var line = entry.Detail.Length == 0 ? entry.Primary : $"{entry.Primary} · {entry.Detail}";
                     var shown = line.Truncate(Math.Max(0f, row.width - 8f));
@@ -119,9 +127,17 @@ internal sealed class ColonyPickerDialog : Window
         }
     }
 
-    private static Entry BuildEntry(ColonyStats stats, ViewPreferences? preferences)
+    private static Entry BuildEntry(
+        ColonyStats stats,
+        ViewPreferences? preferences,
+        string? selectedColonyKey,
+        string? currentInGameColonyKey)
     {
-        var display = Dialog_RimworldStatistics.ColonyName(stats, preferences)
+        var isSelected = selectedColonyKey is not null && string.Equals(stats.Key, selectedColonyKey, StringComparison.Ordinal);
+        var isCurrentInGame = currentInGameColonyKey is not null && string.Equals(stats.Key, currentInGameColonyKey, StringComparison.Ordinal);
+        var display = (isSelected ? "✓ " : "")
+            + Dialog_RimworldStatistics.ColonyName(stats, preferences)
+            + (isCurrentInGame ? (string)"RWS_InGame_CurrentColonyMark".Translate() : "")
             + (stats.Excluded ? (string)"RWS_ExcludedMark".Translate() : "");
         var parts = new List<string>(3);
         var tipLines = new List<string>(4) { display };
@@ -142,7 +158,7 @@ internal sealed class ColonyPickerDialog : Window
             parts.Add(days);
             tipLines.Add((string)"RWS_Col_Days".Translate() + ": " + days);
         }
-        return new Entry(stats, display, string.Join(" · ", parts), string.Join("\n", tipLines));
+        return new Entry(stats, display, string.Join(" · ", parts), string.Join("\n", tipLines), isSelected);
     }
 }
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ShortcutsHeading>键盘快捷键</RWS_Setting_ShortcutsHeading>
+  <RWS_Setting_ShortcutsSummary>切换统计窗口：{0} · 切换累计统计：{1}</RWS_Setting_ShortcutsSummary>
+  <RWS_Setting_ConfigureKeyBindings>配置键盘快捷键…</RWS_Setting_ConfigureKeyBindings>
+  <RWS_Setting_KeyUnbound>未绑定</RWS_Setting_KeyUnbound>
+  <RWS_InGame_BackToSummary>返回当前殖民地总览</RWS_InGame_BackToSummary>
+  <RWS_InGame_BackToSummaryTip>返回当前游玩殖民地的已保存总览报告。</RWS_InGame_BackToSummaryTip>
+  <RWS_InGame_OpenCurrentChronicle>打开当前殖民地编年史</RWS_InGame_OpenCurrentChronicle>
+  <RWS_InGame_OpenCurrentChronicleTip>打开当前游玩殖民地的已保存编年史时间线。</RWS_InGame_OpenCurrentChronicleTip>
+  <RWS_InGame_CurrentChronicleUnavailableTip>当前殖民地尚无已保存的统计记录。请先保存游戏以记录编年史。</RWS_InGame_CurrentChronicleUnavailableTip>
+  <RWS_Import_TitleScreenOnlyTip>为避免与游玩中的存档写入冲突，完整存档文件夹扫描仅可在标题画面执行。</RWS_Import_TitleScreenOnlyTip>
+  <RWS_Compare_PickColony>选择殖民地…</RWS_Compare_PickColony>
+  <RWS_Chart_PickColony>选择殖民地…</RWS_Chart_PickColony>
+  <RWS_Chart_ByCategoryAll>全部殖民地明细</RWS_Chart_ByCategoryAll>
+</LanguageData>
