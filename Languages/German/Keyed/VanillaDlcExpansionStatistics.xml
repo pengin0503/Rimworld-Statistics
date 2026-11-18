@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>Maximale Bedrohungspunkte</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>Höchste im Speicherverlauf erfasste Erzähler-Bedrohungspunkte (ThreatPoints alle 0,5 Tage, aus interner 1/10-Skalierung wiederhergestellt).</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>Während der Aufzeichnung neu auf Halteplattformen gesicherte einzelne Entitäten (ohne Plattformwechsel).</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>Eingestürzte Grubentore</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>Nach dem Sieg über das Schreckensgeflecht vollständig eingestürzte Grubentore.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech: Genetik &amp; Zucht (Ereignisse)</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey: Flüge &amp; Wahrzeichen (Ereignisse)</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey: Gravschiff &amp; Einzigartige Waffen (beim Speichern)</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>Beschworene Mechanitor-Bossgruppen</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>Gesamtzahl beschworener Mechanitor-Bosswellen bis zum Speichern, aufgeschlüsselt nach Typ (inkl. konservativer 1.7-Spielstandswiederherstellung).</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>Besiegte Mechanitor-Bosstypen</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>Verschiedene in der Kolonie besiegte Mechanitor-Bosstypen nach Boss (inkl. konservativer 1.7-Spielstandswiederherstellung).</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>Spitzenwert Gravschiff-Unterstrukturzellen</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>Höchste Anzahl gültiger verbundener Unterstrukturzellen eines gelandeten Spieler-Gravschiffs beim Speichern (während des Flugs nicht zutreffend).</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>Spitzenwert Gravschiff-Triebwerke</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>Höchste Anzahl verbundener Triebwerke eines gelandeten Spieler-Gravschiffs beim Speichern (während des Flugs nicht zutreffend).</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>Spitzenwert einzigartiger Waffen im Besitz</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>Höchste Anzahl einzigartiger Waffen auf Heimatkarten oder bei lebenden Spieler-Pawns beim Speichern.</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>Einzigartige Waffen nach Eigenschaft</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>Waffeneigenschaften auf einzigartigen Waffen im Spielerbesitz beim repräsentativen Spielstand.</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>Verbrauchter Chemfuel bei Gravschiff-Starts</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>Kumulierter Chemfuel, der bei Starts aus den Treibstofftanks des Spieler-Gravschiffs entnommen wurde.</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>Ankünfte im Orbit</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>Bestätigte Ankünfte des Spielers in der Orbit-Ebene per Gravschiff-Landung oder Transportkapseln und Shuttles.</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>Besuchte Welt-Wahrzeichen</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>Verschiedene vom Spieler besuchte Welt-Wahrzeichenfelder, gruppiert nach Wahrzeichentyp.</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>Wachstumstank-Abschlüsse</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Abgeschlossene Wachstumszyklen lebender Kinder und lebende Embryogeburten in Spieler-Wachstumstanks.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>Abgeschlossene Genextraktionen</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>Abgeschlossene Genextraktionen an Spieler-Genextraktoren mit erzeugtem Genpaket.</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>Zusammengesetzte Xenogerme</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>Abgeschlossene Xenogerm-Rekombinationen an Spieler-Genassemblern.</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>Xenogerm-Implantationen</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>Abgeschlossene Xenogerm-Implantationen und direkte Reimplantationen bei Kolonie-Pawns.</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>Tage des ersten Sieges über Mechanitor-Bosse</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>Spieltag, an dem jeder Mechanitor-Boss während der Aufzeichnung erstmals besiegt wurde.</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>Mechanitor-Boss Diabolus besiegt</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>Mechanitor-Boss Kriegskönigin besiegt</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>Mechanitor-Boss Apocriton besiegt</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

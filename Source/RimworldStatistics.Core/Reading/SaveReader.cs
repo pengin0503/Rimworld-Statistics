@@ -36,8 +36,9 @@ public sealed partial class SaveReader
     /// 17: distinguish exact-boundary checkpoint metadata from later files and live load context.
     /// 18: ThreatPoints (10x rescaled) and Adaptation (60000-tick) save history recorders, plus conservative Biotech saved pawn xenotypes.
     /// 19: Anomaly DLC historical entityCodex discoveredEntities, monolith highestLevelReached, and player holding-platform entities.
+    /// 20: Biotech DLC historical GameComponent_Bossgroup summon counts and defeated boss types.
     /// </summary>
-    public const int Version = 19;
+    public const int Version = 20;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -169,6 +170,11 @@ public sealed partial class SaveReader
         public bool EntityCodexPresent { get; set; }
         public bool EntityCodexMalformed { get; set; }
         public HashSet<string>? SavedDiscoveredEntities { get; set; }
+        public int BossgroupComponentCount { get; set; }
+        public bool BossgroupComponentMalformed { get; set; }
+        public List<string>? BossgroupKilledDefs { get; set; }
+        public List<string>? BossgroupCalledKeys { get; set; }
+        public List<int>? BossgroupCalledValues { get; set; }
 
         // Numeric expansion inputs (never used by the v1 values above).
         public List<string>? ModIds { get; set; }
@@ -188,6 +194,7 @@ public sealed partial class SaveReader
     }
 
     private const string AnomalyComponentName = "GameComponent_Anomaly";
+    private const string BossgroupComponentName = "GameComponent_Bossgroup";
 
     private static SaveObservation NewObservation(string fileName, long fileSize, DateTime lastWriteUtc)
         => new() { FileName = fileName, FileSize = fileSize, LastWriteUtc = lastWriteUtc, ReaderVersion = Version, Status = ObservationStatus.Ok };

@@ -181,8 +181,143 @@ public sealed partial class SaveReader
                     }
                 });
             }
+            else if (cls is BossgroupComponentName or "RimWorld." + BossgroupComponentName)
+            {
+                if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                    ReadBossgroupComponent(r, s);
+                else
+                    r.Skip();
+            }
             else
                 r.Skip();
+        });
+    }
+
+    private static void ReadBossgroupComponent(XmlReader r, ReadState s)
+    {
+        s.BossgroupComponentCount++;
+        if (r.GetAttribute("IsNull") == "True")
+        {
+            r.Skip();
+            return;
+        }
+        var killedSeen = false;
+        var calledSeen = false;
+        ForEachChild(r, child =>
+        {
+            switch (child)
+            {
+                case "killedBosses":
+                    if (killedSeen)
+                    {
+                        s.BossgroupComponentMalformed = true;
+                        r.Skip();
+                        break;
+                    }
+                    killedSeen = true;
+                    if (r.GetAttribute("IsNull") == "True") { r.Skip(); break; }
+                    s.BossgroupKilledDefs ??= new List<string>();
+                    ForEachChild(r, item =>
+                    {
+                        if (item != "li")
+                        {
+                            s.BossgroupComponentMalformed = true;
+                            r.Skip();
+                            return;
+                        }
+                        var defName = ReadHistoricalAtom(r, s);
+                        if (string.IsNullOrWhiteSpace(defName) || defName == "null"
+                            || s.BossgroupKilledDefs.Count >= HistoricalBiotechBossReader.MaxBossEntries)
+                        {
+                            s.BossgroupComponentMalformed = true;
+                            return;
+                        }
+                        s.BossgroupKilledDefs.Add(defName);
+                    });
+                    break;
+                case "timesCalledBossgroups":
+                    if (calledSeen)
+                    {
+                        s.BossgroupComponentMalformed = true;
+                        r.Skip();
+                        break;
+                    }
+                    calledSeen = true;
+                    if (r.GetAttribute("IsNull") == "True") { r.Skip(); break; }
+                    var keysSeen = false;
+                    var valuesSeen = false;
+                    ForEachChild(r, sub =>
+                    {
+                        if (sub == "keys")
+                        {
+                            if (keysSeen)
+                            {
+                                s.BossgroupComponentMalformed = true;
+                                r.Skip();
+                                return;
+                            }
+                            keysSeen = true;
+                            if (r.GetAttribute("IsNull") == "True") { r.Skip(); return; }
+                            s.BossgroupCalledKeys ??= new List<string>();
+                            ForEachChild(r, item =>
+                            {
+                                if (item != "li")
+                                {
+                                    s.BossgroupComponentMalformed = true;
+                                    r.Skip();
+                                    return;
+                                }
+                                var keyText = ReadHistoricalAtom(r, s);
+                                if (string.IsNullOrWhiteSpace(keyText) || keyText == "null"
+                                    || s.BossgroupCalledKeys.Count >= HistoricalBiotechBossReader.MaxBossEntries)
+                                {
+                                    s.BossgroupComponentMalformed = true;
+                                    return;
+                                }
+                                s.BossgroupCalledKeys.Add(keyText);
+                            });
+                        }
+                        else if (sub == "values")
+                        {
+                            if (valuesSeen)
+                            {
+                                s.BossgroupComponentMalformed = true;
+                                r.Skip();
+                                return;
+                            }
+                            valuesSeen = true;
+                            if (r.GetAttribute("IsNull") == "True") { r.Skip(); return; }
+                            s.BossgroupCalledValues ??= new List<int>();
+                            ForEachChild(r, item =>
+                            {
+                                if (item != "li")
+                                {
+                                    s.BossgroupComponentMalformed = true;
+                                    r.Skip();
+                                    return;
+                                }
+                                var valText = ReadHistoricalAtom(r, s);
+                                if (!int.TryParse(valText, NumberStyles.Integer, Inv, out var cnt)
+                                    || s.BossgroupCalledValues.Count >= HistoricalBiotechBossReader.MaxBossEntries)
+                                {
+                                    s.BossgroupComponentMalformed = true;
+                                    return;
+                                }
+                                s.BossgroupCalledValues.Add(cnt);
+                            });
+                        }
+                        else
+                        {
+                            r.Skip();
+                        }
+                    });
+                    if (keysSeen != valuesSeen)
+                        s.BossgroupComponentMalformed = true;
+                    break;
+                default:
+                    r.Skip();
+                    break;
+            }
         });
     }
 

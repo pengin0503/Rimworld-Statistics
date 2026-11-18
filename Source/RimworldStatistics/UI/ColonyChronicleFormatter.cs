@@ -247,6 +247,9 @@ internal static class ColonyChronicleFormatter
                     ChronicleMilestoneKind.WealthPeakDay when e.MilestoneValue is { } peak =>
                         (string)"RWS_Chronicle_Milestone_WealthPeak".Translate(Math.Round(peak).ToString("N0", Inv)),
                     ChronicleMilestoneKind.WealthPeakDay => (string)"RWS_Chronicle_Milestone_WealthPeakNoVal".Translate(),
+                    ChronicleMilestoneKind.BossDiabolusDefeated => (string)"RWS_Chronicle_Milestone_BossDiabolus".Translate(),
+                    ChronicleMilestoneKind.BossWarqueenDefeated => (string)"RWS_Chronicle_Milestone_BossWarqueen".Translate(),
+                    ChronicleMilestoneKind.BossApocritonDefeated => (string)"RWS_Chronicle_Milestone_BossApocriton".Translate(),
                     _ => Dialog_RimworldStatistics.Dash,
                 };
                 return (mText, null);

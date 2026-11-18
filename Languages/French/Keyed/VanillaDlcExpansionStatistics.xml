@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <LanguageData>
   <RWS_Metric_ThreatPointsPeak>Points de menace max.</RWS_Metric_ThreatPointsPeak>
   <RWS_MetricDesc_ThreatPointsPeak>Maximum des points de menace enregistré dans l'historique de sauvegarde (ThreatPoints tous les 0,5 jours, restauré depuis l'échelle interne 1/10).</RWS_MetricDesc_ThreatPointsPeak>
@@ -41,4 +41,38 @@
   <RWS_MetricDesc_AnomalyEntitiesContained>Entités vivantes distinctes nouvellement attachées aux plateformes de confinement (hors transferts).</RWS_MetricDesc_AnomalyEntitiesContained>
   <RWS_Metric_AnomalyPitGatesCollapsed>Portes des gouffres effondrées</RWS_Metric_AnomalyPitGatesCollapsed>
   <RWS_MetricDesc_AnomalyPitGatesCollapsed>Portes des gouffres refermées et effondrées après la défaite de l'amalgame d'effroi.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
+  <RWS_AcqUnit_biotech_genetics>Biotech : Génétique et croissance (événements)</RWS_AcqUnit_biotech_genetics>
+  <RWS_AcqUnit_odyssey_voyage>Odyssey : Voyages et sites remarquables (événements)</RWS_AcqUnit_odyssey_voyage>
+  <RWS_AcqUnit_odyssey_state>Odyssey : Gravship et armes uniques (à la sauvegarde)</RWS_AcqUnit_odyssey_state>
+  <RWS_Metric_BiotechBossgroupsSummoned>Groupes de boss mécaniste invoqués</RWS_Metric_BiotechBossgroupsSummoned>
+  <RWS_MetricDesc_BiotechBossgroupsSummoned>Nombre total d’invocations de boss mécaniste à une sauvegarde réussie, ventilé par type (inclut la récupération prudente des sauvegardes 1.7).</RWS_MetricDesc_BiotechBossgroupsSummoned>
+  <RWS_Metric_BiotechBossesDefeated>Types de boss mécaniste vaincus</RWS_Metric_BiotechBossesDefeated>
+  <RWS_MetricDesc_BiotechBossesDefeated>Types distincts de boss mécaniste vaincus dans la colonie, ventilés par boss (inclut la récupération prudente des sauvegardes 1.7).</RWS_MetricDesc_BiotechBossesDefeated>
+  <RWS_Metric_OdysseySubstructurePeak>Pic de cellules de structure du gravship</RWS_Metric_OdysseySubstructurePeak>
+  <RWS_MetricDesc_OdysseySubstructurePeak>Nombre maximal de cellules de sous-structure valides connectées à un gravship joueur posé lors d’une sauvegarde (non applicable en plein vol).</RWS_MetricDesc_OdysseySubstructurePeak>
+  <RWS_Metric_OdysseyThrustersPeak>Pic de propulseurs du gravship</RWS_Metric_OdysseyThrustersPeak>
+  <RWS_MetricDesc_OdysseyThrustersPeak>Nombre maximal de propulseurs connectés à un gravship joueur posé lors d’une sauvegarde (non applicable en plein vol).</RWS_MetricDesc_OdysseyThrustersPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsPeak>Pic d’armes uniques possédées</RWS_Metric_OdysseyUniqueWeaponsPeak>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsPeak>Nombre maximal d’armes uniques détenues sur les cartes du joueur ou portées par ses colons vivants à la sauvegarde.</RWS_MetricDesc_OdysseyUniqueWeaponsPeak>
+  <RWS_Metric_OdysseyUniqueWeaponsByTrait>Armes uniques possédées par trait</RWS_Metric_OdysseyUniqueWeaponsByTrait>
+  <RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>Répartition par trait d’arme des armes uniques détenues à la sauvegarde représentative.</RWS_MetricDesc_OdysseyUniqueWeaponsByTrait>
+  <RWS_Metric_OdysseyChemfuelConsumed>Chemfuel consommé au décollage du gravship</RWS_Metric_OdysseyChemfuelConsumed>
+  <RWS_MetricDesc_OdysseyChemfuelConsumed>Quantité cumulée de chemfuel déduite des réservoirs du gravship joueur lors des décollages.</RWS_MetricDesc_OdysseyChemfuelConsumed>
+  <RWS_Metric_OdysseyOrbitArrivals>Arrivées en couche orbitale</RWS_Metric_OdysseyOrbitArrivals>
+  <RWS_MetricDesc_OdysseyOrbitArrivals>Arrivées confirmées du joueur dans la couche Orbit par atterrissage de gravship ou arrivée de capsules et navettes.</RWS_MetricDesc_OdysseyOrbitArrivals>
+  <RWS_Metric_OdysseyVisitedLandmarks>Sites remarquables visités</RWS_Metric_OdysseyVisitedLandmarks>
+  <RWS_MetricDesc_OdysseyVisitedLandmarks>Cases distinctes de sites remarquables visitées par le joueur, ventilées par type de site.</RWS_MetricDesc_OdysseyVisitedLandmarks>
+  <RWS_Metric_BiotechGrowthVatCompletions>Cycles de cuve de croissance terminés</RWS_Metric_BiotechGrowthVatCompletions>
+  <RWS_MetricDesc_BiotechGrowthVatCompletions>Cycles de croissance d’enfants vivants et naissances d’embryons vivants terminés dans les cuves du joueur.</RWS_MetricDesc_BiotechGrowthVatCompletions>
+  <RWS_Metric_BiotechGeneExtractions>Extractions de gènes terminées</RWS_Metric_BiotechGeneExtractions>
+  <RWS_MetricDesc_BiotechGeneExtractions>Extractions de gènes terminées ayant produit un génopack sur un extracteur du joueur.</RWS_MetricDesc_BiotechGeneExtractions>
+  <RWS_Metric_BiotechXenogermsAssembled>Xénogermes assemblés</RWS_Metric_BiotechXenogermsAssembled>
+  <RWS_MetricDesc_BiotechXenogermsAssembled>Recombinaisons de xénogermes terminées sur un assembleur de gènes du joueur.</RWS_MetricDesc_BiotechXenogermsAssembled>
+  <RWS_Metric_BiotechGenesImplanted>Implantations de xénogermes</RWS_Metric_BiotechGenesImplanted>
+  <RWS_MetricDesc_BiotechGenesImplanted>Implantations et réimplantations de xénogermes terminées impliquant un membre de la colonie.</RWS_MetricDesc_BiotechGenesImplanted>
+  <RWS_Metric_BiotechBossFirstDefeatedTicks>Jours de première victoire contre les boss mécaniste</RWS_Metric_BiotechBossFirstDefeatedTicks>
+  <RWS_MetricDesc_BiotechBossFirstDefeatedTicks>Jour en jeu où chaque boss mécaniste a été vaincu pour la première fois pendant l’enregistrement.</RWS_MetricDesc_BiotechBossFirstDefeatedTicks>
+  <RWS_Chronicle_Milestone_BossDiabolus>Boss mécaniste Diabolus vaincu</RWS_Chronicle_Milestone_BossDiabolus>
+  <RWS_Chronicle_Milestone_BossWarqueen>Boss mécaniste Reine de guerre vaincu</RWS_Chronicle_Milestone_BossWarqueen>
+  <RWS_Chronicle_Milestone_BossApocriton>Boss mécaniste Apocriton vaincu</RWS_Chronicle_Milestone_BossApocriton>
 </LanguageData>

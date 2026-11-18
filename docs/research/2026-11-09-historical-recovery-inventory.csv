@@ -215,6 +215,9 @@ odyssey.gravship.flights,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-022,Odysse
 odyssey.gravship.distance,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-023,OdysseyFamily.Distance
 odyssey.gravship.unique_tiles,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-024,OdysseyFamily.UniqueTiles
 odyssey.gravship.new_map_landings,odyssey,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-026,OdysseyFamily.NewMapLandings
+odyssey.gravship.chemfuel_consumed,odyssey_voyage,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ODY-003,OdysseyVoyageFamily.ChemfuelConsumed
+odyssey.gravship.orbit_arrivals,odyssey_voyage,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ODY-004,OdysseyVoyageFamily.OrbitArrivals
+odyssey.landmarks.visited,odyssey_voyage,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ODY-005,OdysseyVoyageFamily.VisitedLandmarks
 exploration.fishing.successful_actions,fishing,live,EVENT_LOG_REQUIRED,UNVERIFIED,GEN-FISH-001,FishingFamily.SuccessfulActions
 exploration.fishing.accepted_units_by_def,fishing,live,EVENT_LOG_REQUIRED,UNVERIFIED,GEN-FISH-002,FishingFamily.AcceptedUnitsByDef
 biotech.mechs.created,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-012,BiotechFamily.MechsCreated
@@ -224,6 +227,11 @@ biotech.mechs.repairs,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-016,BiotechFa
 biotech.waste.created,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-001,BiotechFamily.WasteCreated
 biotech.waste.disposed,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-002,BiotechFamily.WasteDisposed
 biotech.pollution.cleaned,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-003,BiotechFamily.PollutionCleaned
+biotech.growth_vat.completions,biotech_genetics,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-BIO-003,BiotechGeneticsFamily.GrowthVatCompletions
+biotech.genetics.extractions,biotech_genetics,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-BIO-004,BiotechGeneticsFamily.GeneExtractions
+biotech.genetics.xenogerms_assembled,biotech_genetics,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-BIO-005,BiotechGeneticsFamily.XenogermsAssembled
+biotech.genetics.implanted,biotech_genetics,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-BIO-006,BiotechGeneticsFamily.GenesImplanted
+biotech.bossgroups.first_defeated_ticks,biotech_genetics,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-BIO-007,BiotechGeneticsFamily.BossFirstDefeatedTicks
 anomaly.psychic_rituals,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-004,AnomalyFamily.PsychicRituals
 anomaly.psychic_rituals_by_def,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-005,AnomalyFamily.PsychicRitualsByDef
 anomaly.entity_escapes,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-006,AnomalyFamily.EntityEscapes
@@ -274,9 +282,15 @@ stock.food_nutrition.min,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-00
 royalty.psylink.max,royalty_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-006,RoyaltyStateSnapshot.PsylinkPeak
 biotech.pollution.cells_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-004,BiotechStateSnapshot.PollutionCellsPeak
 biotech.bandwidth.used_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-005,BiotechStateSnapshot.BandwidthUsedPeak
+biotech.bossgroups.summoned,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-BIO-001,BiotechStateSnapshot.BossgroupsSummoned
+biotech.bossgroups.defeated,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-BIO-002,BiotechStateSnapshot.BossesDefeated
 anomaly.codex.discovered,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-001,AnomalyStateSnapshot.DiscoveredEntities
 anomaly.monolith.highest_level,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-002,AnomalyStateSnapshot.MonolithHighestLevel
 anomaly.holding.entities_peak,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-003,AnomalyStateSnapshot.HeldEntitiesPeak
+odyssey.gravship.substructure_cells_peak,odyssey_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ODY-001,OdysseyStateSnapshot.SubstructureCellsPeak
+odyssey.gravship.thrusters_peak,odyssey_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ODY-002,OdysseyStateSnapshot.ThrustersPeak
+odyssey.unique_weapons.owned_peak,odyssey_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ODY-006,OdysseyStateSnapshot.UniqueWeaponsPeak
+odyssey.unique_weapons.by_trait,odyssey_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ODY-007,OdysseyStateSnapshot.UniqueWeaponsByTrait
 royalty.quest_success,royalty_quests,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-003,RoyaltyQuestSnapshot.Success
 exploration.outposts.active,outpost_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,GEN-OUT-001,OutpostSnapshot.Active
 ranking.survival.by_biome,colony_start,derived,DEPENDS_ON_INPUT,UNVERIFIED,N1-F-001,MetricRankings.DaysByBiome

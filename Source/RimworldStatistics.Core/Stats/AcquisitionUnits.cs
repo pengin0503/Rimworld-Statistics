@@ -84,10 +84,13 @@ public static class AcquisitionUnits
         new("royalty_quests", AcquisitionKind.Snapshot, U, Royalty),
         new("ideology", AcquisitionKind.Family, U, Ideology),
         new("biotech", AcquisitionKind.Family, U, Biotech),
+        new(BiotechGeneticsFamily.Name, AcquisitionKind.Family, U, Biotech),
         new("biotech_state", AcquisitionKind.Snapshot, U, Biotech),
         new(AnomalyFamily.Name, AcquisitionKind.Family, U, Anomaly),
         new(AnomalyStateSnapshot.Unit, AcquisitionKind.Snapshot, U, Anomaly),
         new("odyssey", AcquisitionKind.Family, U, Odyssey),
+        new(OdysseyVoyageFamily.Name, AcquisitionKind.Family, U, Odyssey),
+        new(OdysseyStateSnapshot.Unit, AcquisitionKind.Snapshot, U, Odyssey),
         new(FishingFamily.Name, AcquisitionKind.Family, U, Odyssey),
 
         // Phase D derived: the participants of an ending, recorded with the v1 ending record (N1-F-004)
