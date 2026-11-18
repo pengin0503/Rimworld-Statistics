@@ -933,7 +933,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var list = new List<string>();
         foreach (var pair in ov.CountedEndings.GroupBy(e => (e.Type, e.Ordinal)).OrderBy(g => g.Key.Type).ThenBy(g => g.Key.Ordinal))
         {
-            var best = pair.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+            var best = pair.OrderByDescending(e => e.Departed).ThenBy(e => e.Source).ThenBy(e => e.DevMode).First();
             var time = Dialog_RimworldStatistics.Local(pair.Min(e => e.RealTimeUtc));
             var source = best.Source == EndingSource.SeededTrace
                 ? (string)"RWS_Source_SeededTrace".Translate()
@@ -968,7 +968,12 @@ internal sealed class Dialog_ColonySummaryReport : Window
         var val = item.Value;
         var label = item.IsBasic ? BasicPerColonyLabel(item.MetricKey) : MetricText.Label(def);
         var modSource = item.IsBasic ? null : MetricText.ModSourceLabel(def);
-        var valueText = MetricText.Format(def, val);
+        var valueText = item.IsBasic
+            ? MetricText.Format(def, val)
+            : MetricLookup.ForColony(view!, colonyKey, item.MetricKey) is { } colonyRow
+                ? DetailsTab.FormatRowValue(colonyRow, key => view!.Stats.Colonies.FirstOrDefault(c => c.Key == key) is { } cs
+                    ? Dialog_RimworldStatistics.ColonyName(cs) : key)
+                : MetricText.Format(def, val);
         var kindText = KindLabel(item.ValueKind);
         var rankText = FormatRank(item);
 

@@ -77,6 +77,20 @@ public sealed class Dialog_ColonyGroups : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         Widgets.Label(new Rect(rect.x, rect.y, rect.width, 30f), "RWS_Groups_Title".Translate());
         var input = new Rect(rect.x, rect.y + 34f, Math.Max(50f, rect.width - 160f), 30f);
         newGroupName = Widgets.TextField(input, newGroupName);
@@ -105,6 +119,8 @@ public sealed class Dialog_ColonyGroups : Window
         var groupsRect = left.ContractedBy(7f);
         var groupsView = new Rect(0f, 0f, groupsRect.width - 16f, preferences.Groups.Count * 34f + 8f);
         Widgets.BeginScrollView(groupsRect, ref groupScroll, groupsView);
+        try
+        {
         for (var i = 0; i < preferences.Groups.Count; i++)
         {
             var group = preferences.Groups[i];
@@ -127,7 +143,11 @@ public sealed class Dialog_ColonyGroups : Window
                 break;
             }
         }
-        Widgets.EndScrollView();
+        }
+        finally
+        {
+            Widgets.EndScrollView();
+        }
 
         var selected = preferences.Groups.FirstOrDefault(g => g.Id == selectedId);
         if (selected is null)

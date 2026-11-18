@@ -123,6 +123,20 @@ internal sealed class Dialog_MetricChart : Window
 
     public override void DoWindowContents(Rect rect)
     {
+        try
+        {
+            DrawWindowContents(rect);
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawWindowContents(Rect rect)
+    {
         var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
         if (cachedNameSignature != nameSig)
         {
@@ -472,8 +486,9 @@ internal sealed class Dialog_MetricChart : Window
 
     private string BreakdownName(string key)
     {
-        var source = CrossColonyCatalog.IsDerived(definition)
-            ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
-        return MetricText.Breakdown(source, key, useThingLabel: true);
+        var isDerived = CrossColonyCatalog.IsDerived(definition);
+        var source = isDerived ? MetricRegistry.Find(definition.StoredKey) ?? definition : definition;
+        return MetricText.Breakdown(source, key,
+            useThingLabel: isDerived ? definition.DescriptionKey == "RWS_CrossDesc_TopType" : null);
     }
 }
