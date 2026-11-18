@@ -236,6 +236,12 @@ public static class ColoniesTab
         Widgets.DrawMenuSection(rect);
         var inner = rect.ContractedBy(6f);
         var controls = new ControlRow(new Rect(inner.x, inner.y, inner.width, 28f));
+        var reportLabel = (string)"RWS_Report_Open".Translate();
+        var reportBtn = controls.Next(reportLabel, 135f, Math.Min(inner.width, 260f));
+        if (Widgets.ButtonText(reportBtn, reportLabel.Truncate(Math.Max(0f, reportBtn.width - 12f))))
+            Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, colony.Key));
+        TooltipHandler.TipRegion(reportBtn, "RWS_Report_OpenTip".Translate());
+
         var lineageLabel = (string)"RWS_Lineage_Open".Translate();
         var lineageBtn = controls.Next(lineageLabel, 130f, Math.Min(inner.width, 260f));
         var shownBtn = lineageLabel.Truncate(Math.Max(0f, lineageBtn.width - 12f));

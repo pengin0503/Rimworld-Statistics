@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_VreLycanthrope_Morphs>라이칸스로프 변신 횟수</RWS_VreLycanthrope_Morphs>
-  <RWS_VreLycanthrope_MorphsDesc>아군 폰이 완료한 라이칸스로프 형태 전환(수동 및 조건 발동 포함)을 결과 제노타입별로 집계합니다. 식별할 수 없는 커스텀 제노타입 복귀는 총합에만 포함됩니다.</RWS_VreLycanthrope_MorphsDesc>
+  <RWS_VreLycanthrope_MorphsDesc>아군 폰이 완료한 라이칸스로프 형태 전환(수동 및 조건 발동 포함)을 결과 인종형별로 집계합니다. 식별할 수 없는 커스텀 인종형 복귀는 총합에만 포함됩니다.</RWS_VreLycanthrope_MorphsDesc>
   <RWS_VreLycanthrope_GermlineReimplants>생식세포계 재이식 횟수</RWS_VreLycanthrope_GermlineReimplants>
-  <RWS_VreLycanthrope_GermlineReimplantsDesc>아군 폰이 관여해 유전자나 제노타입 변경 또는 내배아 혼수 적용이 완료된 생식세포계 재이식 및 흡수 횟수를 집계합니다.</RWS_VreLycanthrope_GermlineReimplantsDesc>
+  <RWS_VreLycanthrope_GermlineReimplantsDesc>아군 폰이 관여해 유전자나 인종형 변경 또는 내배아 혼수 적용이 완료된 생식세포계 재이식 및 흡수 횟수를 집계합니다.</RWS_VreLycanthrope_GermlineReimplantsDesc>
   <RWS_VreFungoid_InfectionConversions>균류 감염 전환 횟수</RWS_VreFungoid_InfectionConversions>
   <RWS_VreFungoid_InfectionConversionsDesc>정착지 정착민, 노예, 수감자가 생존 상태에서 Fungoid 유전자 감염 전환을 완료한 횟수를 집계합니다.</RWS_VreFungoid_InfectionConversionsDesc>
   <RWS_VreInsector_GenelineEvolutions>인섹터 유전계통 진화 횟수</RWS_VreInsector_GenelineEvolutions>
@@ -14,6 +14,6 @@
   <RWS_AlphaAnimals_CocoonMetamorphosesDesc>Alpha Animals에서 아군 유충 또는 스웜링이 실제로 고치로 변태를 완료한 횟수를 고치 종류별로 집계합니다.</RWS_AlphaAnimals_CocoonMetamorphosesDesc>
   <RWS_AlphaAnimals_CocoonHatches>고치 부화 수</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Alpha Animals에서 아군 고치로부터 실제로 부화해 생존한 검은 곤충류를 종별로 집계합니다.</RWS_AlphaAnimals_CocoonHatchesDesc>
-  <RWS_VreSanguophage_DraincasketHemogen>착혈관 혈청 저장량</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>아군 착혈관에서 VRE_HemogenNet 배관 저장소로 실제 수용된 혈청 총량을 기록합니다.</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogen>착혈관 혈액정수 저장량</RWS_VreSanguophage_DraincasketHemogen>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>아군 착혈관에서 혈액정수 배관 저장망으로 실제 수용된 혈액정수 총량을 기록합니다.</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

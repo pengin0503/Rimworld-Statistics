@@ -346,6 +346,12 @@ public sealed class ProfileSession
         return captured is null ? ColonySaveLineage.Empty(colonyKey) : ColonySaveLineage.BuildFromCaptured(captured, _archive);
     }
 
+    public ColonySummaryReport? ReadColonySummaryReport(StatsView view, string colonyKey)
+    {
+        var lineage = ReadColonySaveLineage(view, colonyKey);
+        return ColonySummaryReport.Build(view, colonyKey, lineage);
+    }
+
     public MetricHistory ReadChartHistory(StatsView view, string colonyKey, MetricDefinition definition, string savesDirectory)
     {
         var history = Read(profile => MetricCalculator.BuildChartHistory(profile, view.Colonies, colonyKey, definition));

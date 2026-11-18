@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>Summary report</RWS_Report_Open>
+  <RWS_Report_OpenTip>Open a single-colony summary of lifetime totals, peak records, scope ranks, coverage, and static HTML export (read-only).</RWS_Report_OpenTip>
+  <RWS_Report_Title>Colony summary report · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>Switch colony…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>Export HTML report</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>Write a self-contained static HTML summary file for this colony to the exports folder.</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>Writing HTML report…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>HTML export failed: {0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTML report saved to {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>Scope: {0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>Read-only report generated from recorded saves and checkpoints. Missing or unmeasured values are shown as unknown and never treated as zero.</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>This colony is excluded from cross-colony totals and rankings.</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>This colony is outside the active group ({0}), so cross-colony ranks are not computed in this view.</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>Recorded only from ending traces (no saved or live observation point); game days, wealth, and counters remain unknown rather than 0.</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>Overview &amp; lineage</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>Endings reached</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>Recording coverage</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>Key lifetime &amp; peak records</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>Top-3 ranks across colonies</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>MOD statistics</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>Scenario</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>Storyteller</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>Difficulty</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>Save mode</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>Commitment mode</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>Reload anytime</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>Active scope</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>Save lineage</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0} (#{1}) · departed: {2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0} ({1}) · {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>{0} recovered lineage ending(s) (dev mode unknown, excluded from totals)</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>Development-mode endings are hidden by the current setting</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>{0} tracked statistics · complete: {1} · snapshot/history: {2} · partial: {3} · unknown: {4} · not applicable: {5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>{0} experimental</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>Kind</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>Rank</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>Observed range</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>Cumulative</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>Peak / extreme</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>Latest snapshot</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>Mean / rate</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>Excluded</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>Out of scope</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>Day {0} → {1}</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>Day {0}</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* Rank includes colonies with partial (gapped) coverage; see Rankings for details.</RWS_Report_PartialRankFootnote>
+</LanguageData>

@@ -5,7 +5,7 @@
   <RWS_RimMarket_StallSales>露店販売の売上額</RWS_RimMarket_StallSales>
   <RWS_RimMarket_StallSalesDesc>RimMarketで自勢力所有の市場露店から訪問客へ物品を販売して得たシルバー総額を品目別に集計します。</RWS_RimMarket_StallSalesDesc>
   <RWS_RimMarket_MarketFees>市場使用料・歩合収入</RWS_RimMarket_MarketFees>
-  <RWS_RimMarket_MarketFeesDesc>RimMarketで訪問した隊商から徴収した露店使用料および売上歩合の収入総額を派閥別に集計します。</RWS_RimMarket_MarketFeesDesc>
+  <RWS_RimMarket_MarketFeesDesc>RimMarketで訪問したキャラバンから徴収した露店使用料および売上歩合の収入総額を派閥別に集計します。</RWS_RimMarket_MarketFeesDesc>
   <RWS_CaravanAdventures_BountyCredits>メカノイド賞金獲得クレジット</RWS_CaravanAdventures_BountyCredits>
   <RWS_CaravanAdventures_BountyCreditsDesc>Caravan Adventuresで敵対メカノイドの撃破により獲得した賞金クレジットの合計をメカノイド種別ごとに集計します。</RWS_CaravanAdventures_BountyCreditsDesc>
   <RWS_CaravanAdventures_ShrinesCompleted>古代神殿の制覇完了数</RWS_CaravanAdventures_ShrinesCompleted>

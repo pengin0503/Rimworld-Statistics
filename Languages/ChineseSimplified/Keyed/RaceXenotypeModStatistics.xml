@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>虫茧孵化数量</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>统计Alpha Animals中我方虫茧实际孵化的存活黑虫数量，按生物种类分类。</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>汲血棺实际入库血原质</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>累计我方汲血棺实际存入VRE_HemogenNet管网存储的血原质总量。</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>累计我方汲血棺实际存入血原质管道存储网络的总量。</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

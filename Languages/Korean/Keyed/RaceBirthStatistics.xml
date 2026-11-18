@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_SauridEggBirths>사우리드 알 부화 출생 수</RWS_SauridEggBirths>
-  <RWS_SauridEggBirthsDesc>사우리드 알에서 실제 부화한 생존 중인 플레이어 측 폰을 최종 제노타입별로 집계합니다. 식별할 수 없는 사용자 지정 제노타입은 총계에만 포함됩니다.</RWS_SauridEggBirthsDesc>
+  <RWS_SauridEggBirthsDesc>사우리드 알에서 실제 부화한 생존 중인 플레이어 측 폰을 최종 인종형별로 집계합니다. 식별할 수 없는 사용자 지정 인종형은 총계에만 포함됩니다.</RWS_SauridEggBirthsDesc>
   <RWS_PhytokinSaplingBirths>파이토킨 묘목 출생 수</RWS_PhytokinSaplingBirths>
-  <RWS_PhytokinSaplingBirthsDesc>파이토킨 묘목에서 실제로 태어나 유전자가 확정된 생존 중인 플레이어 측 폰을 최종 제노타입별로 집계합니다. 식별할 수 없는 사용자 지정 제노타입은 총계에만 포함됩니다.</RWS_PhytokinSaplingBirthsDesc>
+  <RWS_PhytokinSaplingBirthsDesc>파이토킨 묘목에서 실제로 태어나 유전자가 확정된 생존 중인 플레이어 측 폰을 최종 인종형별로 집계합니다. 식별할 수 없는 사용자 지정 인종형은 총계에만 포함됩니다.</RWS_PhytokinSaplingBirthsDesc>
 </LanguageData>

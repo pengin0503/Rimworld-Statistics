@@ -395,7 +395,7 @@
   <RWS_Metric_FirstDeathDay>첫 정착민 사망까지의 일수</RWS_Metric_FirstDeathDay>
   <RWS_MetricDesc_FirstDeathDay>게임 시작부터 기록한 경우에만 첫 자유 정착민이 사망한 게임 내 날짜를 집계합니다.</RWS_MetricDesc_FirstDeathDay>
   <RWS_Metric_OldestDeathAge>사망 당시 가장 나이가 많았던 정착민</RWS_Metric_OldestDeathAge>
-  <RWS_MetricDesc_OldestDeathAge>자유 정착민이 사망하기 직전의 생물학적 나이 중 최대값입니다. 최장수 정착민(P-010)과 같은 값입니다.</RWS_MetricDesc_OldestDeathAge>
+  <RWS_MetricDesc_OldestDeathAge>자유 정착민이 사망하기 직전의 생물학적 나이 중 최대값입니다.</RWS_MetricDesc_OldestDeathAge>
   <RWS_Metric_CaravanMemberDeaths>상단에서 사망한 정착민</RWS_Metric_CaravanMemberDeaths>
   <RWS_MetricDesc_CaravanMemberDeaths>플레이어 상단에 속해 있는 동안 사망한 자유 정착민 수입니다.</RWS_MetricDesc_CaravanMemberDeaths>
   <RWS_Metric_ColonyAnimalDeaths>정착지 동물 사망 수</RWS_Metric_ColonyAnimalDeaths>
@@ -405,7 +405,7 @@
   <RWS_Metric_ColonistsDowned>정착민 쓰러짐 횟수</RWS_Metric_ColonistsDowned>
   <RWS_MetricDesc_ColonistsDowned>자유 정착민이 쓰러지지 않은 상태에서 쓰러진 상태로 바뀐 횟수입니다. 쓰러지기 전에 즉사한 경우는 제외합니다.</RWS_MetricDesc_ColonistsDowned>
   <RWS_Metric_EnemiesDowned>적 쓰러짐 횟수 (무력화)</RWS_Metric_EnemiesDowned>
-  <RWS_MetricDesc_EnemiesDowned>플레이어에게 적대적인 폰이 쓰러진 횟수입니다. 회복한 뒤 다시 쓰러져도 새로 집계합니다. 적 무력화 횟수(B-002)와 같은 값입니다.</RWS_MetricDesc_EnemiesDowned>
+  <RWS_MetricDesc_EnemiesDowned>플레이어에게 적대적인 폰이 쓰러진 횟수입니다. 회복한 뒤 다시 쓰러져도 새로 집계합니다.</RWS_MetricDesc_EnemiesDowned>
   <RWS_Metric_ToxicDowns>독성 축적으로 쓰러짐</RWS_Metric_ToxicDowns>
   <RWS_MetricDesc_ToxicDowns>독성 축적으로 인해 자유 정착민이 직접 쓰러진 횟수입니다(Biotech).</RWS_MetricDesc_ToxicDowns>
   <RWS_Metric_SocialFightDowns>말다툼으로 쓰러짐</RWS_Metric_SocialFightDowns>
@@ -421,19 +421,19 @@
   <RWS_Metric_RaidKillsMax>단일 습격 최대 적 처치 수</RWS_Metric_RaidKillsMax>
   <RWS_MetricDesc_RaidKillsMax>하나의 기록된 습격이 지속되는 동안 플레이어 측이 처치한 해당 습격의 적 수 중 최대값입니다.</RWS_MetricDesc_RaidKillsMax>
   <RWS_Metric_RaidSieges>포위 습격</RWS_Metric_RaidSieges>
-  <RWS_MetricDesc_RaidSieges>Siege(포위) 전략을 사용한 습격 수입니다.</RWS_MetricDesc_RaidSieges>
+  <RWS_MetricDesc_RaidSieges>포위 전략을 사용한 습격 수입니다.</RWS_MetricDesc_RaidSieges>
   <RWS_Metric_RaidBreaches>방벽 돌파 습격</RWS_Metric_RaidBreaches>
-  <RWS_MetricDesc_RaidBreaches>방벽 돌파 전략(ImmediateAttackBreaching, ImmediateAttackBreachingSmart)을 사용한 습격 수입니다. 땅굴을 파는 공병은 포함하지 않습니다.</RWS_MetricDesc_RaidBreaches>
+  <RWS_MetricDesc_RaidBreaches>일반 또는 지능형 방벽 돌파 전략을 사용한 습격 수입니다. 땅굴을 파는 공병은 포함하지 않습니다.</RWS_MetricDesc_RaidBreaches>
   <RWS_Metric_RaidDrops>수송 포드 습격</RWS_Metric_RaidDrops>
-  <RWS_MetricDesc_RaidDrops>수송 포드(EdgeDrop, EdgeDropGroups, CenterDrop, RandomDrop)로 도착한 습격 수입니다.</RWS_MetricDesc_RaidDrops>
+  <RWS_MetricDesc_RaidDrops>수송 포드로 도착한 습격 수입니다(지도 가장자리, 가장자리 분산, 중앙 강하, 무작위 분산 포함).</RWS_MetricDesc_RaidDrops>
   <RWS_Metric_Infestations>곤충 군락 발생</RWS_Metric_Infestations>
-  <RWS_MetricDesc_Infestations>성공적으로 발생한 곤충 군락 사건(Infestation, DeepDrillInfestation) 수입니다. 그 밖의 곤충 관련 사건은 제외합니다.</RWS_MetricDesc_Infestations>
+  <RWS_MetricDesc_Infestations>성공적으로 발생한 곤충 군락 등장 및 곤충 굴 자극 사건 수입니다. 그 밖의 곤충 관련 사건은 제외합니다.</RWS_MetricDesc_Infestations>
   <RWS_Metric_MechClusters>메카노이드 전초기지 발생</RWS_Metric_MechClusters>
   <RWS_MetricDesc_MechClusters>성공적으로 발생한 메카노이드 전초기지 사건(Royalty) 수입니다. 일반 메카노이드 습격은 제외합니다.</RWS_MetricDesc_MechClusters>
   <RWS_Metric_ManhunterPacks>식인동물 무리 발생</RWS_Metric_ManhunterPacks>
-  <RWS_MetricDesc_ManhunterPacks>성공적으로 발생한 식인동물 무리 사건(ManhunterPack) 수입니다.</RWS_MetricDesc_ManhunterPacks>
+  <RWS_MetricDesc_ManhunterPacks>성공적으로 발생한 식인동물 무리 사건 수입니다.</RWS_MetricDesc_ManhunterPacks>
   <RWS_Metric_RaidLongestGap>습격이 없었던 최장 기간</RWS_Metric_RaidLongestGap>
-  <RWS_MetricDesc_RaidLongestGap>연속된 기록된 두 습격 사이의 최장 간격입니다. 첫 습격 이전과 마지막 습격 이후는 제외합니다. 최대 습격 간격(N2-C-002)과 같은 값입니다.</RWS_MetricDesc_RaidLongestGap>
+  <RWS_MetricDesc_RaidLongestGap>연속된 기록된 두 습격 사이의 최장 간격입니다. 첫 습격 이전과 마지막 습격 이후는 제외합니다.</RWS_MetricDesc_RaidLongestGap>
   <RWS_Metric_RaidMeanGap>습격 평균 간격</RWS_Metric_RaidMeanGap>
   <RWS_MetricDesc_RaidMeanGap>위 간격의 평균값입니다. 전체 합계에서는 간격 수에 따라 가중 평균을 계산합니다.</RWS_MetricDesc_RaidMeanGap>
   <RWS_Metric_RaidFirstDay>첫 습격까지의 일수</RWS_Metric_RaidFirstDay>
@@ -745,9 +745,9 @@
   <RWS_Metric_RosterAnimalDefsPeak>최대 정착지 동물 종 수</RWS_Metric_RosterAnimalDefsPeak>
   <RWS_MetricDesc_RosterAnimalDefsPeak>기록된 저장 파일 하나에서 살아 있는 정착지 동물의 서로 다른 종 수의 최대값입니다.</RWS_MetricDesc_RosterAnimalDefsPeak>
   <RWS_Metric_RosterAnimalNutrition>정착지 동물의 하루 영양 필요량</RWS_Metric_RosterAnimalNutrition>
-  <RWS_MetricDesc_RosterAnimalNutrition>정상적으로 저장한 시점에 살아 있는 정착지 동물(맵 위, 캐러밴, 이동 중 — 정착지 동물 수와 같은 범위)이 배부른 상태에서 하루에 먹는 영양의 합계입니다. 캐러밴이나 수송 포드를 적재할 때 동물마다 표시되는 게임 자체의 계산과 같으며, 성장 단계(새끼는 적게 먹음), 임신, 수유 등을 포함합니다. 먹을 필요가 없는 동물과 냉동 수면 캡슐 안의 동물은 0으로 셉니다. 식량 비축량과 비교하지 않으므로 버틸 수 있는 일수는 표시하지 않습니다. 읽지 못한 동물이 있으면 부분 기록입니다. 모든 정착지의 값은 각 정착지에서 마지막으로 기록된 저장 시점 값의 합계입니다.</RWS_MetricDesc_RosterAnimalNutrition>
+  <RWS_MetricDesc_RosterAnimalNutrition>정상적으로 저장한 시점에 살아 있는 정착지 동물(맵 위, 상단, 이동 중 — 정착지 동물 수와 같은 범위)이 배부른 상태에서 하루에 먹는 영양의 합계입니다. 상단이나 수송 포드를 적재할 때 동물마다 표시되는 게임 자체의 “일일 섭취 열량” 계산과 같으며, 성장 단계(새끼는 적게 먹음), 임신, 수유 등을 포함합니다. 먹을 필요가 없는 동물과 동면관 안의 동물은 0으로 셉니다. 식량 비축량과 비교하지 않으므로 버틸 수 있는 일수는 표시하지 않습니다. 읽지 못한 동물이 있으면 부분 기록입니다. 모든 정착지의 값은 각 정착지에서 마지막으로 기록된 저장 시점 값의 합계입니다.</RWS_MetricDesc_RosterAnimalNutrition>
   <RWS_Metric_RosterPassions>기술별 정착민 열정</RWS_Metric_RosterPassions>
-  <RWS_MetricDesc_RosterPassions>저장에 성공한 시점의 자유 정착민별 기술 열정(없음, 약함, 강함)을 집계합니다.</RWS_MetricDesc_RosterPassions>
+  <RWS_MetricDesc_RosterPassions>저장에 성공한 시점의 자유 정착민별 기술 열정(무관심, 관심, 열정적)을 집계합니다.</RWS_MetricDesc_RosterPassions>
   <RWS_Metric_RosterAgeMean>생존 정착민 평균 나이</RWS_Metric_RosterAgeMean>
   <RWS_MetricDesc_RosterAgeMean>저장에 성공한 시점에 살아 있는 자유 정착민의 평균 생물학적 나이입니다.</RWS_MetricDesc_RosterAgeMean>
   <RWS_Metric_RosterInjuredPeak>동시에 다친 최대 정착민 수</RWS_Metric_RosterInjuredPeak>
@@ -846,7 +846,7 @@
   <RWS_Exp_ExperimentalRow>실험적</RWS_Exp_ExperimentalRow>
   <RWS_Exp_Since>게임 내 {0}일째부터 기록</RWS_Exp_Since>
   <RWS_Mod_RequiresMod>필요한 MOD: {0}</RWS_Mod_RequiresMod>
-  <RWS_Mod_Provider>MOD：{0}</RWS_Mod_Provider>
+  <RWS_Mod_Provider>MOD: {0}</RWS_Mod_Provider>
   <RWS_Mod_SourceUnavailable>출처 모드가 현재 설치되어 있지 않습니다. 기록된 값은 유지되지만 새 값은 기록하지 않습니다.</RWS_Mod_SourceUnavailable>
   <RWS_ModRecruitment_Started>시작한 모집 요청 수</RWS_ModRecruitment_Started>
   <RWS_ModRecruitment_StartedDesc>기록 시작 후 성공적으로 생성된 Recruitment 1.1.2 모집 요청 수입니다. 기록 활성화 전 기간은 일부만 포함합니다. 생성 후 취소한 요청도 시작된 것으로 셉니다.</RWS_ModRecruitment_StartedDesc>
@@ -871,9 +871,9 @@
   <RWS_Metric_MinedByDef>아이템별 채굴 자원 수</RWS_Metric_MinedByDef>
   <RWS_MetricDesc_MinedByDef>기록 기간에 실제로 놓인 채굴 산출물의 아이템별 수량입니다. 별도 집계이며 활성화 전 기간의 값은 추정하지 않습니다.</RWS_MetricDesc_MinedByDef>
   <RWS_Metric_FilthRemoved>완전히 제거한 오염물 수</RWS_Metric_FilthRemoved>
-  <RWS_MetricDesc_FilthRemoved>플레이어 폰이 청소로 오염물 한 개를 완전히 제거할 때마다 한 번 집계합니다(기본 게임의 “청소한 오염물” 기록). 두께만 줄인 경우나 청소 작업 전체 횟수를 센 것이 아닙니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FilthRemoved>
+  <RWS_MetricDesc_FilthRemoved>플레이어 폰이 청소로 오염물 한 개를 완전히 제거할 때마다 한 번 집계합니다(기본 게임의 “청소” 기록). 두께만 줄인 경우나 청소 작업 전체 횟수를 센 것이 아닙니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FilthRemoved>
   <RWS_Metric_FiresExtinguished>불을 끈 횟수</RWS_Metric_FiresExtinguished>
-  <RWS_MetricDesc_FiresExtinguished>플레이어 폰이 정상적인 소방 작업이나 몸에 붙은 불꽃을 털어 끄면서 제거한 불 한 건당 한 번 집계합니다(“진화한 불” 기록). 저절로 꺼진 불은 제외합니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FiresExtinguished>
+  <RWS_MetricDesc_FiresExtinguished>플레이어 폰이 정상적인 소방 작업이나 몸에 붙은 불꽃을 털어 끄면서 제거한 불 한 건당 한 번 집계합니다(“화재 진압” 기록). 저절로 꺼진 불은 제외합니다. 활성화한 동안에만 기록합니다.</RWS_MetricDesc_FiresExtinguished>
   <RWS_Metric_MealIngestions>먹은 식사 수</RWS_Metric_MealIngestions>
   <RWS_MetricDesc_MealIngestions>플레이어 세력의 인간형 폰이 실제로 먹고 영양을 얻은 식사의 수입니다. 상단에서 먹은 식사를 포함하여 한 끼당 한 번 집계합니다. 다른 음식, 약물, 비플레이어 폰은 제외합니다.</RWS_MetricDesc_MealIngestions>
   <RWS_Metric_HaulPlacements>저장 칸으로 운반한 횟수</RWS_Metric_HaulPlacements>
@@ -1273,7 +1273,7 @@
   <RWS_Vsie_Teaching>효과가 있었던 지도</RWS_Vsie_Teaching>
   <RWS_Vsie_TeachingDesc>플레이어 측 학습자의 해당 기술 경험치나 레벨이 오른 지도 횟수입니다.</RWS_Vsie_TeachingDesc>
   <RWS_VqeAncients_SuccessfulInjections>성공한 아르코젠 주입</RWS_VqeAncients_SuccessfulInjections>
-  <RWS_VqeAncients_SuccessfulInjectionsDesc>정착민에게 실제로 새 이종유전자가 추가된 주입 횟수입니다.</RWS_VqeAncients_SuccessfulInjectionsDesc>
+  <RWS_VqeAncients_SuccessfulInjectionsDesc>정착민에게 실제로 새 변형인자가 추가된 주입 횟수입니다.</RWS_VqeAncients_SuccessfulInjectionsDesc>
   <RWS_VfeClassical_Perks>획득한 특전</RWS_VfeClassical_Perks>
   <RWS_VfeClassical_PerksDesc>의원의 후원으로 얻은 특전 수입니다. 잃은 뒤 다시 얻은 경우도 포함합니다.</RWS_VfeClassical_PerksDesc>
   <RWS_Sos2_BattlesWon>승리한 함선 전투</RWS_Sos2_BattlesWon>

@@ -3,7 +3,7 @@
   <RWS_VfePower_NuclearMeltdowns>Расплавления ядерных реакторов</RWS_VfePower_NuclearMeltdowns>
   <RWS_VfePower_NuclearMeltdownsDesc>Учитывает ядерные генераторы игрока из Vanilla Furniture Expanded - Power, которые фактически перешли в состояние расплавления и вышли из строя.</RWS_VfePower_NuclearMeltdownsDesc>
   <RWS_VheHelixienGas_StoredUnits>Накоплено газа Helixien</RWS_VheHelixienGas_StoredUnits>
-  <RWS_VheHelixienGas_StoredUnitsDesc>Общее количество газа Helixien, фактически принятое в хранилище сети VHGE_HelixienNet от насосов игрока.</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VheHelixienGas_StoredUnitsDesc>Общее количество газа Helixien, фактически принятое в трубопроводную сеть хранения газа Helixien от насосов игрока.</RWS_VheHelixienGas_StoredUnitsDesc>
   <RWS_VreRecycling_ProcessedItems>Переработано и спрессовано предметов</RWS_VreRecycling_ProcessedItems>
   <RWS_VreRecycling_ProcessedItemsDesc>Учитывает предметы, фактически созданные и размещённые переработчиками игрока из Vanilla Recycling Expanded (уплотнителями мусора и разделителями сплавпакетов), с разбивкой по предметам.</RWS_VreRecycling_ProcessedItemsDesc>
 </LanguageData>

@@ -3,7 +3,7 @@
   <RWS_VfePower_NuclearMeltdowns>Nuclear reactor meltdowns</RWS_VfePower_NuclearMeltdowns>
   <RWS_VfePower_NuclearMeltdownsDesc>Counts player Vanilla Furniture Expanded - Power nuclear generators that actually entered a committed meltdown and broke down.</RWS_VfePower_NuclearMeltdownsDesc>
   <RWS_VheHelixienGas_StoredUnits>Helixien gas stored</RWS_VheHelixienGas_StoredUnits>
-  <RWS_VheHelixienGas_StoredUnitsDesc>Total Helixien gas units actually accepted into VHGE_HelixienNet pipe storage by player Helixien pumps.</RWS_VheHelixienGas_StoredUnitsDesc>
+  <RWS_VheHelixienGas_StoredUnitsDesc>Total Helixien gas units actually accepted into the Helixien gas pipe storage network by player Helixien pumps.</RWS_VheHelixienGas_StoredUnitsDesc>
   <RWS_VreRecycling_ProcessedItems>Recycled and compacted outputs</RWS_VreRecycling_ProcessedItems>
   <RWS_VreRecycling_ProcessedItemsDesc>Counts items actually placed or stacked into output cells by player Vanilla Recycling Expanded processors (garbage compactors and alloypack splitters), broken down by output item.</RWS_VreRecycling_ProcessedItemsDesc>
 </LanguageData>

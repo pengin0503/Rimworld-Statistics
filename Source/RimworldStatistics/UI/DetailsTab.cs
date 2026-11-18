@@ -61,7 +61,7 @@ public static class DetailsTab
     private static int totalMetricCount;
     private static int matchedMetricCount;
 
-    public static void Draw(Rect rect, StatsView view, ProfileSession session, ViewPreferences? favorites = null, Action? saveFavorites = null)
+    public static void Draw(Rect rect, StatsView view, ProfileSession session, ViewPreferences? favorites = null, Action? saveFavorites = null, string? scopeName = null)
     {
         favoritePreferences = favorites;
         persistFavorites = saveFavorites;
@@ -75,7 +75,7 @@ public static class DetailsTab
             colonyKey = numeric.Colonies.OrderBy(c => Name(view.Stats, c.Key), StringComparer.CurrentCulture).First().Key;
 
         var y = rect.y;
-        y += DrawControls(new Rect(rect.x, y, rect.width, ControlHeight), view) + 4f;
+        y += DrawControls(new Rect(rect.x, y, rect.width, ControlHeight), view, scopeName) + 4f;
 
         if (!comparing)
         {
@@ -252,7 +252,7 @@ public static class DetailsTab
         SetLines(Build(inputs));
     }
 
-    private static float DrawControls(Rect rect, StatsView view)
+    private static float DrawControls(Rect rect, StatsView view, string? scopeName)
     {
         var controls = new ControlRow(rect);
         bool Button(string text, float max)
@@ -293,6 +293,11 @@ public static class DetailsTab
                     .ToList();
                 Find.WindowStack.Add(new FloatMenu(options));
             }
+            var reportLabel = (string)"RWS_Report_Open".Translate();
+            var reportRect = controls.Next(reportLabel, 120f, 220f);
+            if (Widgets.ButtonText(reportRect, reportLabel.Truncate(Math.Max(0f, reportRect.width - 12f))))
+                Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, selected, scopeName));
+            TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
         }
         if (Button(category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate(), 240f))
         {

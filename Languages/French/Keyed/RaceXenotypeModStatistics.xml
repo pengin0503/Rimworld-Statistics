@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>Éclosions de cocon</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Compte les insectoïdes noirs alliés vivants effectivement sortis de cocons d’Alpha Animals, par espèce.</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>Hémogène stocké par draincasket</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>Quantité totale d’hémogène réellement acceptée par le stockage du réseau VRE_HemogenNet depuis les draincaskets alliés.</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Quantité totale d’hémogène réellement acceptée par le réseau de stockage d’hémogène depuis les draincaskets alliés.</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

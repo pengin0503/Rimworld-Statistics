@@ -15,5 +15,5 @@
   <RWS_AlphaAnimals_CocoonHatches>Выходы из коконов</RWS_AlphaAnimals_CocoonHatches>
   <RWS_AlphaAnimals_CocoonHatchesDesc>Учитывает живых чёрных инсектоидов игрока, фактически вышедших из коконов Alpha Animals, по виду существа.</RWS_AlphaAnimals_CocoonHatchesDesc>
   <RWS_VreSanguophage_DraincasketHemogen>Гемоген в хранилище от Draincasket</RWS_VreSanguophage_DraincasketHemogen>
-  <RWS_VreSanguophage_DraincasketHemogenDesc>Суммарный объём гемогена, фактически принятый трубным хранилищем VRE_HemogenNet из дренажных саркофагов игрока.</RWS_VreSanguophage_DraincasketHemogenDesc>
+  <RWS_VreSanguophage_DraincasketHemogenDesc>Суммарный объём гемогена, фактически принятый трубопроводной сетью хранения гемогена из дренажных саркофагов игрока.</RWS_VreSanguophage_DraincasketHemogenDesc>
 </LanguageData>

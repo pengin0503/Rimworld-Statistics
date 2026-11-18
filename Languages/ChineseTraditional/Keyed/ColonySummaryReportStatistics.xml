@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Open>總括報告</RWS_Report_Open>
+  <RWS_Report_OpenTip>開啟單一殖民地的累計實績、最高紀錄、範圍內排名、記錄涵蓋度與靜態 HTML 匯出（唯讀）。</RWS_Report_OpenTip>
+  <RWS_Report_Title>殖民地總括報告 · {0}</RWS_Report_Title>
+  <RWS_Report_SwitchColony>切換殖民地…</RWS_Report_SwitchColony>
+  <RWS_Report_ExportHtml>匯出 HTML 報告</RWS_Report_ExportHtml>
+  <RWS_Report_ExportHtmlTip>將此殖民地的獨立靜態 HTML 總括檔案寫入 exports 資料夾。</RWS_Report_ExportHtmlTip>
+  <RWS_Report_Exporting>正在寫入 HTML 報告…</RWS_Report_Exporting>
+  <RWS_Report_ExportError>HTML 匯出失敗：{0}</RWS_Report_ExportError>
+  <RWS_Report_ExportDone>HTML 報告已儲存至 {0}</RWS_Report_ExportDone>
+  <RWS_Report_HtmlSubtitle>範圍：{0}</RWS_Report_HtmlSubtitle>
+  <RWS_Report_HtmlFooterNote>依據已記錄存檔與檢查點產生的唯讀報告。缺失或未測量的值顯示為未知，絕不視為零。</RWS_Report_HtmlFooterNote>
+  <RWS_Report_BannerExcluded>此殖民地已從跨殖民地總計與排名中排除。</RWS_Report_BannerExcluded>
+  <RWS_Report_BannerOutOfScope>此殖民地不在目前群組（{0}）內，因此本檢視不計算跨殖民地排名。</RWS_Report_BannerOutOfScope>
+  <RWS_Report_BannerEndingOnly>僅依據結局痕跡記錄（無存檔或即時觀測點）；遊戲天數、財富與計數器保持未知而非 0。</RWS_Report_BannerEndingOnly>
+  <RWS_Report_SectionOverview>概覽與存檔譜系</RWS_Report_SectionOverview>
+  <RWS_Report_SectionEndings>達成的結局</RWS_Report_SectionEndings>
+  <RWS_Report_SectionCoverage>記錄涵蓋情況</RWS_Report_SectionCoverage>
+  <RWS_Report_SectionKeyRecords>關鍵累計與峰值紀錄</RWS_Report_SectionKeyRecords>
+  <RWS_Report_SectionTopRanks>跨殖民地前三名紀錄</RWS_Report_SectionTopRanks>
+  <RWS_Report_SectionModMetrics>MOD 統計</RWS_Report_SectionModMetrics>
+  <RWS_Report_Field_Scenario>劇本</RWS_Report_Field_Scenario>
+  <RWS_Report_Field_Storyteller>敘事者</RWS_Report_Field_Storyteller>
+  <RWS_Report_Field_Difficulty>難度</RWS_Report_Field_Difficulty>
+  <RWS_Report_Field_Permadeath>存檔模式</RWS_Report_Field_Permadeath>
+  <RWS_Report_PermadeathYes>承諾模式</RWS_Report_PermadeathYes>
+  <RWS_Report_PermadeathReloadAnytime>隨時讀檔</RWS_Report_PermadeathReloadAnytime>
+  <RWS_Report_Field_Scope>目前範圍</RWS_Report_Field_Scope>
+  <RWS_Report_Field_Lineage>存檔譜系</RWS_Report_Field_Lineage>
+  <RWS_Report_EndingLine>{0}（#{1}）· 離開人數：{2} · {3} · {4}</RWS_Report_EndingLine>
+  <RWS_Report_EndingTraceLine>{0}（{1}）· {2}</RWS_Report_EndingTraceLine>
+  <RWS_Report_RecoveredEndingsNote>{0} 個譜系復原結局（開發模式未知，不計入總計）</RWS_Report_RecoveredEndingsNote>
+  <RWS_Report_DevOnlyEndingsNote>目前設定已隱藏開發模式結局</RWS_Report_DevOnlyEndingsNote>
+  <RWS_Report_CoverageSummary>共 {0} 項統計 · 完整：{1} · 快照/歷史：{2} · 部分：{3} · 未知：{4} · 不適用：{5}</RWS_Report_CoverageSummary>
+  <RWS_Report_CoverageExperimental>{0} 項實驗性</RWS_Report_CoverageExperimental>
+  <RWS_Report_Col_Kind>類型</RWS_Report_Col_Kind>
+  <RWS_Report_Col_Rank>排名</RWS_Report_Col_Rank>
+  <RWS_Report_Col_Range>觀測範圍</RWS_Report_Col_Range>
+  <RWS_Report_Kind_Cumulative>累計總和</RWS_Report_Kind_Cumulative>
+  <RWS_Report_Kind_Peak>峰值 / 極值</RWS_Report_Kind_Peak>
+  <RWS_Report_Kind_Snapshot>最新快照</RWS_Report_Kind_Snapshot>
+  <RWS_Report_Kind_MeanRate>均值 / 比率</RWS_Report_Kind_MeanRate>
+  <RWS_Report_Rank_Excluded>已排除</RWS_Report_Rank_Excluded>
+  <RWS_Report_Rank_OutOfScope>範圍外</RWS_Report_Rank_OutOfScope>
+  <RWS_Report_RangeSpan>第 {0} → {1} 天</RWS_Report_RangeSpan>
+  <RWS_Report_RangePoint>第 {0} 天</RWS_Report_RangePoint>
+  <RWS_Report_PartialRankFootnote>* 排名包含涵蓋不完整（有缺口）的殖民地；詳見排名分頁。</RWS_Report_PartialRankFootnote>
+</LanguageData>

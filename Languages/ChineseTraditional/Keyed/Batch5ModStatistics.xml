@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
   <RWS_VefStews_Batches>完成燉菜批次</RWS_VefStews_Batches>
-  <RWS_VefStews_BatchesDesc>統計 Vanilla Cooking Expanded - Stews 中己方燉鍋實際完成燉煮的批次，依配方定義細分。</RWS_VefStews_BatchesDesc>
+  <RWS_VefStews_BatchesDesc>統計 Vanilla Cooking Expanded - Stews 中己方燉鍋實際完成燉煮的批次，依燉菜配方細分。</RWS_VefStews_BatchesDesc>
   <RWS_RimMarket_StallSales>攤位銷售收入</RWS_RimMarket_StallSales>
   <RWS_RimMarket_StallSalesDesc>統計在 RimMarket 中透過殖民地所屬攤位向訪客出售物品獲得的白銀總額，依出售物品細分。</RWS_RimMarket_StallSalesDesc>
   <RWS_RimMarket_MarketFees>市場攤位費與抽成收入</RWS_RimMarket_MarketFees>
