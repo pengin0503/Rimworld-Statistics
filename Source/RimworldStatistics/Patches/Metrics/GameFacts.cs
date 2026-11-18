@@ -36,11 +36,18 @@ internal static class GameFacts
         => pawn.RaceProps.Humanlike
             ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName) : null;
 
-    // A named custom xenotype has no stable package/Def identity. Do not
-    // attribute it to the fallback Baseliner Def or use a player-editable label.
+    // Named custom and hybrid xenotypes map to the reserved CustomXenotypeBucket so
+    // player-editable names are not stored and valid custom pawns do not force Partial coverage.
     public static string? Xenotype(Pawn pawn)
-        => ModsConfig.BiotechActive && pawn.genes is { xenotypeName: null or "" } genes && genes.Xenotype is { } def
-            ? OptionalTransitionRecording.QualifiedDefKey(def.modContentPack?.PackageId, def.defName) : null;
+        => pawn.genes is { } genes
+            ? XenotypeRules.BreakdownKey(
+                ModsConfig.BiotechActive,
+                hasGeneTracker: true,
+                genes.xenotypeName,
+                genes.hybrid,
+                genes.Xenotype?.modContentPack?.PackageId,
+                genes.Xenotype?.defName)
+            : null;
 
     public static string MapId(Map? map) => map == null ? "?" : "Map_" + map.uniqueID;
 

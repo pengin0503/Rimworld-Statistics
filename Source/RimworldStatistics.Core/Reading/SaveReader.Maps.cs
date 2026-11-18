@@ -194,7 +194,7 @@ public sealed partial class SaveReader
     /// </summary>
     private static SavedMapPawn ReadSavedPawn(XmlReader r, ReadState s)
     {
-        string? id = null, race = null, kind = null, faction = null, host = null, status = null;
+        string? id = null, race = null, kind = null, faction = null, host = null, status = null, xenotypeDef = null;
         var valid = true;
         var idSeen = false;
         var raceSeen = false;
@@ -204,6 +204,9 @@ public sealed partial class SaveReader
         var hostSeen = false;
         var statusSeen = false;
         var healthSeen = false;
+        var genesSeen = false;
+        var genesPresent = false;
+        var customXenotype = false;
         var dead = false;
         ForEachChild(r, field =>
         {
@@ -274,11 +277,53 @@ public sealed partial class SaveReader
                         dead |= stateText == "Dead";
                     });
                     break;
+                case "genes":
+                    if (genesSeen) { valid = false; r.Skip(); break; }
+                    genesSeen = true;
+                    if (r.GetAttribute("IsNull") == "True") { r.Skip(); break; }
+                    genesPresent = true;
+                    var xenotypeSeen = false;
+                    var xenotypeNameSeen = false;
+                    var hybridSeen = false;
+                    ForEachChild(r, geneField =>
+                    {
+                        switch (geneField)
+                        {
+                            case "xenotype":
+                                var xenoText = ReadHistoricalAtom(r, s);
+                                if (xenotypeSeen || string.IsNullOrWhiteSpace(xenoText))
+                                    valid = false;
+                                xenotypeSeen = true;
+                                xenotypeDef = xenoText is "null" ? null : xenoText;
+                                break;
+                            case "xenotypeName":
+                                if (xenotypeNameSeen) { valid = false; r.Skip(); break; }
+                                xenotypeNameSeen = true;
+                                if (r.GetAttribute("IsNull") == "True") { r.Skip(); break; }
+                                // A non-empty string (including one exceeding the 128-char atom buffer) marks UniqueXenotype;
+                                // the player-editable name itself is never retained.
+                                var nameText = ReadHistoricalAtom(r, s);
+                                if (nameText is null || !string.IsNullOrWhiteSpace(nameText))
+                                    customXenotype = true;
+                                break;
+                            case "hybrid":
+                                var hybridText = ReadHistoricalAtom(r, s);
+                                if (hybridSeen || !bool.TryParse(hybridText, out var isHybrid))
+                                    valid = false;
+                                else if (isHybrid)
+                                    customXenotype = true;
+                                hybridSeen = true;
+                                break;
+                            default: r.Skip(); break;
+                        }
+                    });
+                    break;
                 default: r.Skip(); break;
             }
         });
         return new SavedMapPawn(null, id, race, kind, faction, host, status,
-            guestSeen, hostSeen, healthSeen, dead, valid && idSeen && raceSeen);
+            guestSeen, hostSeen, healthSeen, dead, valid && idSeen && raceSeen,
+            genesPresent, customXenotype, xenotypeDef);
     }
 
     /// <summary>Fixed-memory small XML scalar reader, including overlong whitespace.</summary>

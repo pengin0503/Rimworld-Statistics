@@ -34,8 +34,9 @@ public sealed partial class SaveReader
     /// 15: drop canceled medical-bed and indoor-room snapshot definitions and prevent legacy values from reimporting.
     /// 16: retry unstable reads and isolate invalid wealth history when the campaign ID is available.
     /// 17: distinguish exact-boundary checkpoint metadata from later files and live load context.
+    /// 18: ThreatPoints (10x rescaled) and Adaptation (60000-tick) save history recorders, plus conservative Biotech saved pawn xenotypes.
     /// </summary>
-    public const int Version = 17;
+    public const int Version = 18;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;

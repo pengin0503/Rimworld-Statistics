@@ -18,7 +18,8 @@ internal readonly record struct SavedMapPawn(
     int? MapId, string? ThingId, string? RaceDef, string? KindDef,
     string? Faction, string? HostFaction, string? GuestStatus,
     bool GuestPresent, bool HostFactionSeen, bool HealthPresent,
-    bool Dead, bool Valid);
+    bool Dead, bool Valid,
+    bool GenesPresent = false, bool CustomXenotype = false, string? XenotypeDef = null);
 
 /// <summary>
 /// Partial lower bound for player home maps in pre-install saves. Only explicit
@@ -48,7 +49,8 @@ internal static class HistoricalHomeMapReader
         IReadOnlyList<SavedMapStockItem>? stock = null,
         bool stockOverflowed = false,
         IReadOnlyList<SavedMapPawn>? pawns = null,
-        bool pawnsOverflowed = false)
+        bool pawnsOverflowed = false,
+        IReadOnlyList<string>? activeDlcIds = null)
     {
         if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
@@ -181,7 +183,12 @@ internal static class HistoricalHomeMapReader
         // so an unobserved category remains Unknown rather than measured zero.
         if (pawns is { Count: > 0 } && !pawnsOverflowed && pawns.Count <= MaxSavedPawns)
         {
+            var biotechActive = activeDlcIds?.Contains(AcquisitionUnits.Biotech, StringComparer.OrdinalIgnoreCase) == true;
+            var odysseyActive = activeDlcIds?.Contains(AcquisitionUnits.Odyssey, StringComparer.OrdinalIgnoreCase) == true;
             long free = 0, prisoners = 0, slaves = 0;
+            var freeXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+            var prisonerXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+            var slaveXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
             foreach (var group in pawns.Where(p => !string.IsNullOrWhiteSpace(p.ThingId))
                 .GroupBy(p => p.ThingId!, StringComparer.Ordinal))
             {
@@ -192,14 +199,30 @@ internal static class HistoricalHomeMapReader
                     && p.RaceDef == "Human" && p.GuestPresent && p.HostFactionSeen
                     && p.HealthPresent && !p.Dead && p.Equals(first)))
                     continue;
+                var xenotypeKey = biotechActive
+                    ? XenotypeRules.HistoricalSavedKey(biotechActive, odysseyActive,
+                        first.GenesPresent, first.CustomXenotype, first.XenotypeDef)
+                    : null;
                 if (first.GuestStatus == "Prisoner" && first.HostFaction == playerReference)
+                {
                     prisoners++;
+                    if (xenotypeKey is not null)
+                        prisonerXenotypes[xenotypeKey] = prisonerXenotypes.GetValueOrDefault(xenotypeKey) + 1;
+                }
                 else if (first.GuestStatus == "Slave" && first.Faction == playerReference)
+                {
                     slaves++;
+                    if (xenotypeKey is not null)
+                        slaveXenotypes[xenotypeKey] = slaveXenotypes.GetValueOrDefault(xenotypeKey) + 1;
+                }
                 else if (first.Faction == playerReference && first.HostFaction is null
                     && first.KindDef == "Colonist"
                     && first.GuestStatus is (null or "Guest"))
+                {
                     free++;
+                    if (xenotypeKey is not null)
+                        freeXenotypes[xenotypeKey] = freeXenotypes.GetValueOrDefault(xenotypeKey) + 1;
+                }
             }
             void RecordIfPositive(string key, long n)
             {
@@ -210,9 +233,32 @@ internal static class HistoricalHomeMapReader
                         IntegerValue = n,
                     });
             }
+            void RecordBreakdownIfPositive(string key, long n, Dictionary<string, long> buckets)
+            {
+                if (n <= 0)
+                    return;
+                var entry = MetricEntry.Of(MetricKeys.Revision(key), new MetricValue
+                {
+                    Coverage = MetricCoverage.Partial,
+                    IntegerValue = n,
+                });
+                foreach (var (bucket, count) in buckets)
+                    entry.Values[bucket] = new MetricValue
+                    {
+                        Coverage = MetricCoverage.Partial,
+                        IntegerValue = count,
+                    };
+                result[key] = entry;
+            }
             RecordIfPositive(RosterSnapshot.Free, free);
             RecordIfPositive(RosterSnapshot.Prisoners, prisoners);
             RecordIfPositive(RosterSnapshot.Slaves, slaves);
+            if (biotechActive)
+            {
+                RecordBreakdownIfPositive(RosterSnapshot.FreeXenotypePeak, free, freeXenotypes);
+                RecordBreakdownIfPositive(RosterSnapshot.PrisonerXenotypePeak, prisoners, prisonerXenotypes);
+                RecordBreakdownIfPositive(RosterSnapshot.SlaveXenotypePeak, slaves, slaveXenotypes);
+            }
         }
 
         return result;

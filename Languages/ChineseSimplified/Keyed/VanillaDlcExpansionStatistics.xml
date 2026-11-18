@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>最高威胁点数</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>存档历史（ThreatPoints，每0.5天记录并由内部1/10比例还原为实际点数）中记录的最高威胁点数。</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>最新威胁点数</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>存档历史（ThreatPoints）最后记录的实际威胁点数。可在殖民地历史中查看每0.5天的曲线。</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>平均威胁点数</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>存档历史（ThreatPoints）全部有效记录点的平均实际威胁点数。可在殖民地历史中查看每0.5天的曲线。</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>最新叙事者适应天数</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>存档历史（Adaptation）最后记录的叙事者适应天数（殖民者倒地或死亡后可能为负数）。可在殖民地历史中查看每日曲线。</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>平均叙事者适应天数</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>存档历史（Adaptation，每日记录）全部有效记录点的平均叙事者适应天数。可在殖民地历史中查看每日曲线。</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>最高叙事者适应天数</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>存档历史（Adaptation）中达到的最高叙事者适应天数。</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>最低叙事者适应天数</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>存档历史（Adaptation）中记录的最低叙事者适应天数（包括受挫后的负值）。</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>自定义／混血异种</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>各异种自由殖民者峰值</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>各异种囚犯峰值</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>各异种奴隶峰值</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>根据成功保存时的人数，按Biotech异种分别统计观测到的最高值。</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>各种族出生人数</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>按出生时的种族统计玩家方存活出生的人形婴儿数量。</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>各异种出生人数</RWS_Metric_BirthsByXenotype>
+</LanguageData>

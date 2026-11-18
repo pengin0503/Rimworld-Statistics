@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>最大脅威ポイント</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>セーブ履歴（ThreatPoints、0.5日間隔・内部1/10スケールを実ポイントへ復元）に記録された脅威ポイントの最大値。</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>最終脅威ポイント</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>セーブ履歴（ThreatPoints）の最終時点で記録された実脅威ポイント。コロニー履歴で0.5日間隔の推移グラフを表示できます。</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>平均脅威ポイント</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>セーブ履歴（ThreatPoints）の全有効記録点における実脅威ポイントの平均。コロニー履歴で0.5日間隔の推移グラフを表示できます。</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>最終ストーリーテラー順応日数</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>セーブ履歴（Adaptation）の最終時点で記録された順応日数（入植者のダウン・死亡直後は負値になり得ます）。コロニー履歴で1日間隔の推移グラフを表示できます。</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>平均ストーリーテラー順応日数</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>セーブ履歴（Adaptation、1日間隔）の全有効記録点におけるストーリーテラー順応日数の平均。コロニー履歴で1日間隔の推移グラフを表示できます。</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>最大ストーリーテラー順応日数</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>セーブ履歴（Adaptation）で到達したストーリーテラー順応日数の最大値。</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>最小ストーリーテラー順応日数</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>セーブ履歴（Adaptation）で記録されたストーリーテラー順応日数の最小値（損害後の負値を含む）。</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>カスタム／ハイブリッドゼノタイプ</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>ゼノタイプ別の自由入植者数ピーク</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>ゼノタイプ別の囚人数ピーク</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>ゼノタイプ別の奴隷数ピーク</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>保存が成功した時点の人数から、Biotechゼノタイプごとに最大値を求めます。</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>種族別の出生数</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>プレイヤー側に生きて生まれた人型の子の記録を、出生時点の種族別に集計します。</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>ゼノタイプ別の出生数</RWS_Metric_BirthsByXenotype>
+</LanguageData>

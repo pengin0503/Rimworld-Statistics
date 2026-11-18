@@ -222,7 +222,14 @@ public static class MetricRegistry
         Def(MetricKeys.MoodAtLeast80Days, "H-030", P, MetricUnit.Days, H, OverallAggregation.Sum, "RWS_Metric_MoodAtLeast80Days", "RWS_MetricDesc_MoodAtLeast80Days"),
         Def(MetricKeys.DeathsPerYear, "H-032", P, MetricUnit.PerYear, MetricProvenance.VanillaCounter, OverallAggregation.Ratio, "RWS_Metric_DeathsPerYear", "RWS_MetricDesc_DeathsPerYear"),
 
-        // Phase A · vanilla counters and save metadata
+        // Phase A · defense history recorders, vanilla counters and save metadata
+        Def(MetricKeys.ThreatPointsPeak, "H-034", MetricCategory.Defense, MetricUnit.Count, H, OverallAggregation.Max, "RWS_Metric_ThreatPointsPeak", "RWS_MetricDesc_ThreatPointsPeak"),
+        Def(MetricKeys.ThreatPointsLatest, "H-035", MetricCategory.Defense, MetricUnit.Count, H, OverallAggregation.IndividualOnly, "RWS_Metric_ThreatPointsLatest", "RWS_MetricDesc_ThreatPointsLatest"),
+        Def(MetricKeys.ThreatPointsMean, "H-036", MetricCategory.Defense, MetricUnit.Count, H, OverallAggregation.Ratio, "RWS_Metric_ThreatPointsMean", "RWS_MetricDesc_ThreatPointsMean"),
+        Def(MetricKeys.AdaptationLatest, "H-037", MetricCategory.Defense, MetricUnit.Days, H, OverallAggregation.IndividualOnly, "RWS_Metric_AdaptationLatest", "RWS_MetricDesc_AdaptationLatest", signed: true),
+        Def(MetricKeys.AdaptationMean, "H-038", MetricCategory.Defense, MetricUnit.Days, H, OverallAggregation.Ratio, "RWS_Metric_AdaptationMean", "RWS_MetricDesc_AdaptationMean", signed: true),
+        Def(MetricKeys.AdaptationPeak, "H-039", MetricCategory.Defense, MetricUnit.Days, H, OverallAggregation.Max, "RWS_Metric_AdaptationPeak", "RWS_MetricDesc_AdaptationPeak", signed: true),
+        Def(MetricKeys.AdaptationMin, "H-040", MetricCategory.Defense, MetricUnit.Days, H, OverallAggregation.Min, "RWS_Metric_AdaptationMin", "RWS_MetricDesc_AdaptationMin", signed: true),
         Def(MetricKeys.RaidsPerYear, "H-031", MetricCategory.Defense, MetricUnit.PerYear, MetricProvenance.VanillaCounter, OverallAggregation.Ratio, "RWS_Metric_RaidsPerYear", "RWS_MetricDesc_RaidsPerYear"),
         Def(MetricKeys.ModsLatest, "H-033", MetricCategory.Colony, MetricUnit.Count, S, OverallAggregation.IndividualOnly, "RWS_Metric_ModsLatest", "RWS_MetricDesc_ModsLatest"),
         Def("colony.mods.peak", "H-033", MetricCategory.Colony, MetricUnit.Count, S, OverallAggregation.IndividualOnly, "RWS_Metric_ModsPeak", "RWS_MetricDesc_ModsPeak",

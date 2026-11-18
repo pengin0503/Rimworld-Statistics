@@ -95,7 +95,9 @@ public static class BirthMetricPatch
             return;
         var id = GameFacts.Id(baby);
         var tick = GameFacts.Tick;
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Born(s, id, tick));
+        var species = GameFacts.Species(baby);
+        var xenotype = GameFacts.Xenotype(baby);
+        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.Born(s, id, tick, species, xenotype));
         GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Joined(s, id, tick, GameFacts.Skills(baby)));
         // One unique birther across multiple live babies/twins; exclude artificial
         // incubators, outsiders and babies not attributed to a free colony member.

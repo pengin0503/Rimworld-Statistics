@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>Пик очков угрозы</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>Максимальные очки угрозы рассказчика в истории сохранения (ThreatPoints каждые 0,5 дня, восстановленные из масштаба 1/10).</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>Последние очки угрозы</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>Фактические очки угрозы в последней точке истории ThreatPoints. Открывает график с шагом 0,5 дня в истории поселения.</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>Средние очки угрозы</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>Среднее значение очков угрозы по всем допустимым точкам истории ThreatPoints. Открывает график с шагом 0,5 дня.</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>Последние дни адаптации</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>Дни адаптации рассказчика в последней точке истории Adaptation (могут быть отрицательными после потерь). Открывает посуточный график.</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>Средние дни адаптации</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>Среднее число дней адаптации рассказчика по допустимым суточным точкам истории Adaptation.</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>Пик дней адаптации</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>Наибольшее число дней адаптации рассказчика, записанное в истории Adaptation.</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>Минимум дней адаптации</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>Наименьшее число дней адаптации рассказчика в истории Adaptation (включая отрицательные значения).</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>Пользовательский / гибридный ксенотип</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>Пик свободных поселенцев по ксенотипам</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>Пик пленников по ксенотипам</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>Пик рабов по ксенотипам</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>Наибольшая численность при успешном сохранении, рассчитанная отдельно для каждого ксенотипа Biotech.</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>Рождения по видам</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>Гуманоидные дети, рождённые живыми на стороне игрока, сгруппированные по виду при рождении.</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>Рождения по ксенотипам</RWS_Metric_BirthsByXenotype>
+</LanguageData>

@@ -142,7 +142,8 @@ public sealed partial class SaveReader
                 s.HistoricalFactionsOverflowed,
                 s.HistoricalTurrets, s.HistoricalTurretsOverflowed,
                 s.HistoricalStock, s.HistoricalStockOverflowed,
-                s.HistoricalPawns, s.HistoricalPawnsOverflowed) is { } homes)
+                s.HistoricalPawns, s.HistoricalPawnsOverflowed,
+                m.ActiveDlcIds) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;

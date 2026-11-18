@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>Pico de pontos de ameaça</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>Máximo de pontos de ameaça do narrador registado no histórico da gravação (ThreatPoints a cada 0,5 dias, restaurado da escala interna 1/10).</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>Últimos pontos de ameaça</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>Pontos de ameaça reais no último ponto do histórico ThreatPoints. Abre a curva de 0,5 dias no histórico da colónia.</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>Média de pontos de ameaça</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>Média dos pontos de ameaça válidos no histórico ThreatPoints. Abre a curva de 0,5 dias no histórico da colónia.</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>Últimos dias de adaptação</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>Dias de adaptação do narrador no último ponto do histórico Adaptation (pode ser negativo após baixas). Abre a curva diária.</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>Média de dias de adaptação</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>Média de dias de adaptação do narrador nos pontos diários válidos do histórico Adaptation.</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>Pico de dias de adaptação</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>Maior valor de dias de adaptação do narrador registado no histórico Adaptation.</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>Mínimo de dias de adaptação</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>Menor valor de dias de adaptação do narrador no histórico Adaptation (incluindo valores negativos).</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>Xenótipo personalizado / híbrido</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>Pico de colonos livres por xenótipo</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>Pico de prisioneiros por xenótipo</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>Pico de escravos por xenótipo</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>A contagem máxima observada numa gravação bem-sucedida, calculada separadamente para cada xenótipo de Biotech.</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>Nascimentos por espécie</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>Crianças humanoides nascidas vivas do lado do jogador, agrupadas por espécie à nascença.</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>Nascimentos por xenótipo</RWS_Metric_BirthsByXenotype>
+</LanguageData>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>최대 위협 점수</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>세이브 기록(ThreatPoints, 0.5일 간격·내부 1/10 배율을 실제 점수로 복원)에 기록된 최대 위협 점수입니다.</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>최신 위협 점수</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>세이브 기록(ThreatPoints) 마지막 시점의 실제 위협 점수입니다. 정착지 기록에서 0.5일 간격 그래프를 볼 수 있습니다.</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>평균 위협 점수</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>세이브 기록(ThreatPoints)의 모든 유효 기록 지점 평균 위협 점수입니다. 정착지 기록에서 0.5일 간격 그래프를 볼 수 있습니다.</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>최신 이야기꾼 적응 일수</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>세이브 기록(Adaptation) 마지막 시점의 이야기꾼 적응 일수입니다(정착민 쓰러짐·사망 후 음수가 될 수 있음). 정착지 기록에서 1일 간격 그래프를 볼 수 있습니다.</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>평균 이야기꾼 적응 일수</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>세이브 기록(Adaptation, 1일 간격)의 유효 기록 지점 평균 적응 일수입니다. 정착지 기록에서 1일 간격 그래프를 볼 수 있습니다.</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>최대 이야기꾼 적응 일수</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>세이브 기록(Adaptation)에서 도달한 최대 이야기꾼 적응 일수입니다.</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>최소 이야기꾼 적응 일수</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>세이브 기록(Adaptation)에 기록된 최소 이야기꾼 적응 일수(손실 후 음수 포함)입니다.</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>커스텀 / 하이브리드 제노타입</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>제노타입별 자유 정착민 최대 인원</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>제노타입별 수감자 최대 인원</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>제노타입별 노예 최대 인원</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>성공적으로 저장된 시점의 인원에서 Biotech 제노타입별 최댓값을 구합니다.</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>종족별 출생 수</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>플레이어 진영에서 살아 태어난 인간형 아기를 출생 시점의 종족별로 집계합니다.</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>제노타입별 출생 수</RWS_Metric_BirthsByXenotype>
+</LanguageData>
