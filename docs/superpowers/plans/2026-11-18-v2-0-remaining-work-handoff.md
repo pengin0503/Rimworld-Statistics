@@ -13,7 +13,7 @@
 |---|---|---|---|---|
 | 1 (P0) | V2-B | セーブ系統・分岐の可視化 | **完了・`main` マージ済み** | PR `#355` (`847ef57`) |
 | 2 (P0) | V2-C | コロニー総括レポート + 静的HTML出力 | **完了・`main` マージ済み** | PR `#360` (`00657b4`) |
-| 3 (P1) | V2-A | コロニー記録年表 | **Core・UI・導線まで実装済み（翻訳XML・単体テスト・PR未完）** | ブランチ `feat/v2-colony-chronicle` |
+| 3 (P1) | V2-A | コロニー記録年表 | **完了（2026-11-18、翻訳12言語・単体テスト・実セーブ受入テスト込み）** | ブランチ `feat/v2-colony-chronicle` の PR |
 | 4 (P2) | V2-D | 散布図による統計分析 | **未着手** | V2-A マージ後に `feat/v2-scatter-plot` を作成 |
 | 5 (P3) | V2-E | 自己ベスト更新履歴（条件付き） | **未着手（差別化・時刻証明の採否判定から実施）** | 採用時のみ `feat/v2-personal-bests` |
 
@@ -26,9 +26,9 @@
 
 ---
 
-## 2. ブランチ `feat/v2-colony-chronicle` に保存済みの途中実装（V2-A）
+## 2. V2-A の実装内容（2026-11-18 完了時点）
 
-以下のファイルが `feat/v2-colony-chronicle` ブランチにコミット済みである。
+以下は完了時点の内容である（作業途中に書いた版から、件数上限・API・集計系列・キー数を実装に合わせて訂正済み）。
 
 1. `Source/RimworldStatistics.Core/Stats/ColonyChronicle.cs`
    - 読み取り専用・単一分岐限定の年表モデル・ビルダー（`RimworldStatistics.Core` Release ビルド成功確認済み）。
@@ -40,11 +40,13 @@
      - **初達成・閾値マイルストーン (`ChronicleEntryKind.Milestone`)**:
        - チェックポイント厳密値 (`ExactTick`): `MembershipFamily.FirstJoinDay`, `RaidFamily.FirstDay`, `HealthDeathFamily.FirstDeathDay`, `ResearchFamily.FirstDay`
        - セーブ内履歴グラフ観測 (`HistorySampleDay`, 0.5日刻み): `MetricKeys.WealthTotalFirst100K`, `MetricKeys.WealthTotalFirst1M`, `MetricKeys.FreeColonistsFirst10`, `MetricKeys.WealthTotalPeakDay`
-     - **検証済みセーブ区間差分 (`ChronicleEntryKind.VerifiedInterval`, `ProvenInterval`)**: 証明済み親子チェックポイント列 `prev -> next` ごとに `ColonySaveLineage.CompareMetric`（内部で `HistoryChanges.Compare` を使用）で加入・勧誘・誕生・死亡・襲撃・撃破・クエスト達成・取引・拠点制圧・総資産増減を集約。ライブ記録がない場合のみ `VerifiedParentInterval` (`HistoricalCounterInterval`) にフォールバック。決して単一日の出来事として表示しない。
+     - **検証済みセーブ区間差分 (`ChronicleEntryKind.VerifiedInterval`, `ProvenInterval`)**: 証明済み親子チェックポイント列 `prev -> next` ごとに `ColonySaveLineage.CompareMetric`（内部で `HistoryChanges.Compare` を使用）で初回加入・囚人勧誘・誕生・襲撃死・襲撃（到着方法別）・敵撃破・取引・拠点制圧の累計増加と総資産の増減を集約（`IntervalCounterMetricKeys`、すべて `HistoryChanges.IsRunningTotal` を満たす系列のみ）。死亡・襲撃のライブ比較がない区間だけ `VerifiedParentInterval`（ゲーム側累計）にフォールバック。決して単一日の出来事として表示しない。比較不能（`CounterGap`／`CounterDecrease`）や連続記録系列の途絶がある区間は `IntervalNotCounted` の記録上の注意としてまとめて表示し、増減を作らない。
      - **記録欠損・環境変化 (`ChronicleEntryKind.RecordingGap`)**: 親チェックポイント欠損 (`MissingParentCheckpoint`)、未証明セーブ (`UnprovenSaveWithoutCheckpoint`)、チェックポイント未更新区間 (`CarriedCheckpointUnrecordedSpan`)、途中からのライブ記録開始/再開 (`LiveRecordingStartedLateOrReset`)、アーカイブ読込不可 (`ArchivedMetricsUnavailable`)、バージョン/MOD構成/DLC変化 (`EnvironmentChanged`) を明示。
-     - **件数上限 (`DefaultMaxEntries = 512`)**: 結末・欠損・節目・区間差分を優先保持し、研究完了が大量にある場合のみ超過分を省略して `OmittedEntryCount` に記録。
+     - **件数上限 (`DefaultMaxEntries = 4096`)**: 結末・欠損・節目を最優先で保持し、次に新しい区間差分、最後に研究完了を完了順で保持する（超過時は新しい研究から省略）。省略数は `OmittedEntryCount` に記録。
+     - **分岐の指定 (`ChronicleBranchKey`)**: 系統ノードの添字は記録の増減で変わるため、分岐は種類・チェックポイントID・セーブ時刻・代表ファイル名で指定する。見つからない場合は既定の分岐を表示し `RequestedBranchMissing` を立てる。
+     - **結末の所属判定**: 分岐上のセーブが結末を自身の過去（`Lineage` の種類・序数・ティック一致）として持てば確定。同一キャンペーンの後続セーブが持たない場合は別分岐。どのセーブも持たない結末は、他のすべての系統がそれぞれのセーブで否定される場合に限りこの分岐に置き、それ以外は件数のみ通知する。
 2. `Source/RimworldStatistics.Core/Profiles/ProfileSession.cs`
-   - `ReadColonyChronicle(StatsView view, string colonyKey, int? selectedLeafNodeIndex = null, bool includeDevMode = false)` を追加済み。
+   - `ReadColonyChronicle(StatsView view, string colonyKey, ChronicleBranchKey? branch = null, bool includeDevMode = false)`。系統入力と結末の根拠をセッションのロック内で同時に複製してから構築する。
 3. `Source/RimworldStatistics/UI/Dialog_ColonyChronicle.cs`
    - コロニー切替、分岐切替 (`Branches.Count > 1`)、区分フィルタ（すべて／結末・節目／区間・欠損／研究）、並び順切替（古い順／新しい順）、仮想スクロール年表テーブル、関連統計グラフ (`Dialog_MetricChart`) への遷移、発生日不明痕跡セクション、未導入MOD研究名の安全なフォールバックを実装済み。
 4. 導線ボタン追加済みファイル
@@ -56,31 +58,13 @@
 
 ## 3. 残りの作業手順（優先順位順）
 
-### Step 1: V2-A（コロニー記録年表）の残作業・PR・マージ
+### Step 1: V2-A（コロニー記録年表）— 完了（2026-11-18）
 
-ブランチ `feat/v2-colony-chronicle` をチェックアウトし（`main` が進んでいれば rebase して確認）、以下を実施する。
-
-1. **12言語翻訳ファイル `Languages/<Lang>/Keyed/ColonyChronicleStatistics.xml` の作成**
-   - 対象12言語: `ChineseSimplified`, `ChineseTraditional`, `English`, `French`, `German`, `Japanese`, `Korean`, `Portuguese`, `PortugueseBrazilian`, `Russian`, `Spanish`, `SpanishLatin`
-   - UI が参照している全 **79キー**（下記リストとプレースホルダ仕様を厳守）:
-     - 引数なし:
-       `RWS_Chronicle_Open`, `RWS_Chronicle_OpenTip`, `RWS_Chronicle_SwitchColony`, `RWS_Chronicle_BranchNoFile`, `RWS_Chronicle_FilterAll`, `RWS_Chronicle_FilterHighlights`, `RWS_Chronicle_FilterIntervalsAndGaps`, `RWS_Chronicle_FilterResearch`, `RWS_Chronicle_OrderOldest`, `RWS_Chronicle_OrderNewest`, `RWS_Chronicle_LoadFailed`, `RWS_Chronicle_Empty`, `RWS_Chronicle_ColTime`, `RWS_Chronicle_ColKind`, `RWS_Chronicle_ColEvent`, `RWS_Chronicle_ColEvidence`, `RWS_Chronicle_Kind_Ending`, `RWS_Chronicle_Kind_Milestone`, `RWS_Chronicle_Kind_Research`, `RWS_Chronicle_Kind_Interval`, `RWS_Chronicle_Kind_Gap`, `RWS_Chronicle_Evidence_Live`, `RWS_Chronicle_Evidence_Checkpoint`, `RWS_Chronicle_Evidence_VanillaInterval`, `RWS_Chronicle_Evidence_HistoryGraph`, `RWS_Chronicle_Evidence_Recovered`, `RWS_Chronicle_Evidence_Metadata`, `RWS_Chronicle_Evidence_SeededTrace`, `RWS_Chronicle_Evidence_SaveTrace`, `RWS_Chronicle_EndingDevTag`, `RWS_Chronicle_EndingDevUnknown`, `RWS_Chronicle_Milestone_FirstJoin`, `RWS_Chronicle_Milestone_FirstRaid`, `RWS_Chronicle_Milestone_FirstDeath`, `RWS_Chronicle_Milestone_FirstResearch`, `RWS_Chronicle_Milestone_Wealth100K`, `RWS_Chronicle_Milestone_Wealth1M`, `RWS_Chronicle_Milestone_Colonists10`, `RWS_Chronicle_Milestone_WealthPeakNoVal`, `RWS_Chronicle_ResearchUnloadedNote`, `RWS_Chronicle_Gap_ResearchCap`, `RWS_Chronicle_Env_Version`, `RWS_Chronicle_Env_ModList`, `RWS_Chronicle_Env_Dlc`, `RWS_Chronicle_TipHistorySample`, `RWS_Chronicle_TipInterval`, `RWS_Chronicle_UndatedSubtitle`
-     - `{0}` のみ:
-       `RWS_Chronicle_Title`, `RWS_Chronicle_BranchButton`, `RWS_Chronicle_OtherBranchEndingsNotice`, `RWS_Chronicle_AmbiguousEndingsNotice`, `RWS_Chronicle_OmittedCapNotice`, `RWS_Chronicle_DayExact`, `RWS_Chronicle_DaySample`, `RWS_Chronicle_EndingDeparted`, `RWS_Chronicle_EndingParty`, `RWS_Chronicle_EndingDeathsAt`, `RWS_Chronicle_Milestone_WealthPeak`, `RWS_Chronicle_ResearchDone`, `RWS_Chronicle_Gap_MissingParent`, `RWS_Chronicle_Gap_UnprovenSave`, `RWS_Chronicle_Gap_LateLiveStart`, `RWS_Chronicle_Gap_ArchiveUnavailable`, `RWS_Chronicle_Gap_EnvChanged`, `RWS_Chronicle_TipSaveSingle`, `RWS_Chronicle_TipRealTime`, `RWS_Chronicle_OpenChartMenu`, `RWS_Chronicle_UndatedTitle`
-     - `{0}`, `{1}`:
-       `RWS_Chronicle_BranchRep`, `RWS_Chronicle_BranchAlt`, `RWS_Chronicle_BranchRewind`, `RWS_Chronicle_BranchCarried`, `RWS_Chronicle_BranchUnproven`, `RWS_Chronicle_FilterButton`, `RWS_Chronicle_DayInterval`, `RWS_Chronicle_EndingDetail`, `RWS_Chronicle_Gap_CarriedSpan`, `RWS_Chronicle_TipSaves`
-     - `{0}`, `{1}`, `{2}`:
-       `RWS_Chronicle_SummaryLine`（`{0}`=表示件数, `{1}`=分岐内総件数, `{2}`=連結ノード数）
-2. **単体テスト `Tests/RimworldStatistics.Core.Tests/ColonyChronicleTests.cs` の追加**
-   - 必読設計書 `docs/superpowers/specs/2026-11-17-v2-0-distinctive-features-design.md` §4.5 の受入テストを網羅する:
-     1. 同一系統でのセーブロード・同一チェックポイント持ち越しで研究・節目・結末・区間差分が二重記録されないこと。
-     2. 親チェックポイントからの分岐・巻き戻し時に、選択した分岐のイベント・研究・区間差分だけが表示され、別分岐のイベントや別分岐の結末が混在しないこと。
-     3. 途中からライブ記録開始 (`SinceTick > 0`) または途中でMOD OFF→ON になった場合、ギャップをまたぐ誤った区間増減を作らず `LiveRecordingStartedLateOrReset` 欠損エントリが出ること。
-     4. チェックポイントを持たないMOD導入前セーブ (`UnprovenSave`) で、スナップショット累計値に仮の発生日を付けず、0.5日履歴グラフ閾値 (`SaveHistoryGraph`) と `UnprovenSaveWithoutCheckpoint` のみを出すこと。
-     5. `SeededTrace` や未説明の `SaveTrace` が日付付き `Entries` に混入せず `UndatedTraces` に分離されること。
-     6. 大量の研究完了がある場合に `maxEntries` 上限で結末・節目・欠損・区間差分が優先保持され、`OmittedEntryCount`（および4,096件上限超過時の `ResearchKeyCapReached`）が記録されること。
-3. **ビルド・全検証・PR作成・CI確認・マージ**
-   - §4 のローカル検証コマンドをすべて通し、コードレビューを実施して PR を作成、GitHub Actions（`static-and-unit`, `windows-verify-launcher`）成功を確認して squash merge する。
+- **翻訳**: `Languages/<12言語>/Keyed/ColonyChronicleStatistics.xml`（全言語同順の **87キー**）。作業途中版の79キーに、UI が参照する `RWS_Chronicle_BranchMissingNotice`, `RWS_Chronicle_Fact_ColonistDeaths`, `RWS_Chronicle_Fact_Raids`, `RWS_Chronicle_Fact_VanillaDeaths`, `RWS_Chronicle_Fact_VanillaRaids`, `RWS_Chronicle_Fact_Wealth`, `RWS_Chronicle_Gap_NotCounted`（`{0}`,`{1}`）, `RWS_Chronicle_TipDepartedMax` を追加。用語は各言語の `SaveLineageStatistics.xml` に合わせた。`check_keys.sh`（書式・MOD表示名・提供元名の検査を含む）と `TranslationCopyRefinementTests` に合格。
+- **単体テスト**: `Tests/RimworldStatistics.Core.Tests/ColonyChronicleTests.cs`（15件）。§4.5 の受入条件1〜6に加え、分岐キーの再解決、開発者モード結末、持ち越しセーブ末尾の未記録区間、連続記録系列の途絶、1,500チェックポイントの構築速度（約90 ms、上限5秒）を検証。
+- **実セーブ受入テスト**: `PrivateSixSaveChartLineageAcceptanceTests.SuppliedSixOriginals_ChronicleKeepsEachBranchToItsOwnProvenChain`（`RWS_PRIVATE_SIX_SAVES_DIR` 指定時のみ実行。ファイル名・ID・内容は検証も出力もしない）。4分岐それぞれが自分の証明済み連鎖だけから作られ、区間が連続チェックポイント間だけに限られ、結末・痕跡を捏造せず、再構築で同一結果になり、元ファイルの長さ・更新時刻・SHA-256 が不変であることを確認。
+- **計測**（クラウド Linux、1.7.5005 の6セーブ）: 取込 約1.2秒、既定分岐の初回構築 80〜204 ms（JIT込み）、分岐ごと 10〜14 ms。
+- **未実施**: 実ゲーム画面での目視確認（ヘッドレス環境のため）。
 
 ### Step 2: V2-D（散布図による統計分析）の実装・PR・マージ
 
@@ -133,6 +117,7 @@ python3 tools/check_translation_formats.py
 python3 tools/check_player_faction_access.py
 bash tools/package.sh /tmp/rws-pkg.zip && python3 tools/check_sdk_package.py /tmp/rws-pkg.zip && rm -f /tmp/rws-pkg.zip
 ```
+※ `GameDir` を設定できない環境では、先に `dotnet build Source/RimworldStatistics/RimworldStatistics.csproj -c Release -p:UseNuGetRefs=true` でゲーム側 DLL を作り、`bash tools/package.sh --no-build <zip>` で包装する。
 ※ `.NET SDK 10` が `/home/antigravity/.dotnet` にある環境では `export PATH="/home/antigravity/.dotnet:$PATH" DOTNET_ROOT="/home/antigravity/.dotnet"` を設定する。
 
 ### 翻訳品質ゲート（`TranslationCopyRefinementTests.cs`）

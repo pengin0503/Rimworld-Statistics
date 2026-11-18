@@ -22,7 +22,7 @@ public enum ChronicleEntryKind
 /// <summary>How precisely an entry's game time is proven.</summary>
 public enum ChronicleTimingKind
 {
-    /// <summary>Exact in-game tick recorded live or from a start-of-game live accumulator.</summary>
+    /// <summary>Exact in-game tick recorded live or kept in a checkpoint.</summary>
     ExactTick,
 
     /// <summary>Sampled in-game day from RimWorld's 0.5-day <c>HistoryAutoRecorder</c> curve in a save file.</summary>
@@ -47,7 +47,10 @@ public enum ChronicleEvidenceSource
     /// <summary>RimWorld's 0.5-day <c>HistoryAutoRecorder</c> curve inside a save file on the selected branch.</summary>
     SaveHistoryGraph,
 
-    /// <summary>Recovered from a save's <c>lineageEndings</c> list when no live ending record exists (dev mode unknown).</summary>
+    /// <summary>
+    /// A save's own <c>lineageEndings</c> entry without a matching live record in the profile. Dated only when the profile
+    /// holds a live record of the same ending that the ledger kept from another branch (a redo deduplicated by design).
+    /// </summary>
     RecoveredLineage,
 
     /// <summary>Checkpoint lineage, archive or save-header metadata.</summary>
@@ -76,13 +79,50 @@ public enum ChronicleMilestoneKind
 /// <summary>Gap or discontinuity subtype for <see cref="ChronicleEntryKind.RecordingGap"/>.</summary>
 public enum ChronicleGapKind
 {
+    /// <summary>The branch's first checkpoint names a parent that is missing or cannot be linked.</summary>
     MissingParentCheckpoint,
+
+    /// <summary>The selected record has no proven checkpoint (a save from before the MOD, or recording off).</summary>
     UnprovenSaveWithoutCheckpoint,
+
+    /// <summary>A later save carried the last checkpoint unchanged: nothing was recorded from its tick to that save.</summary>
     CarriedCheckpointUnrecordedSpan,
+
+    /// <summary>Some live statistics began recording only at this tick (MOD added mid-game, unit enabled, or a revision restart).</summary>
     LiveRecordingStartedLateOrReset,
+
+    /// <summary>
+    /// Between two proven checkpoints some running totals were not recorded without a gap (recording interrupted, stopped or a
+    /// cap reached), so the chronicle shows no change for them over that interval.
+    /// </summary>
+    IntervalNotCounted,
+
+    /// <summary>The checkpoint's detailed values were archived and the archive could not be read.</summary>
     ArchivedMetricsUnavailable,
+
+    /// <summary>The research completion list reached its key cap; later completions are missing.</summary>
     ResearchKeyCapReached,
+
+    /// <summary>The game version, MOD list or active DLC changed between two checkpoints of the branch.</summary>
     EnvironmentChanged,
+}
+
+/// <summary>
+/// Identifies a lineage node across rebuilds of the lineage. Node indexes change whenever the profile gains or loses a
+/// record, so a branch is requested by what the node is, never by its index.
+/// </summary>
+public sealed record ChronicleBranchKey(SaveLineageNodeKind Kind, string? CheckpointId, int SaveTick, string? FileName)
+{
+    public static ChronicleBranchKey Of(SaveLineageNode node)
+    {
+        ArgumentNullException.ThrowIfNull(node);
+        return new ChronicleBranchKey(node.Kind, node.CheckpointId, node.SaveTick, ColonyChronicle.PrimaryFileName(node));
+    }
+
+    internal bool Matches(SaveLineageNode node)
+        => node.Kind == Kind && node.SaveTick == SaveTick
+            && string.Equals(node.CheckpointId, CheckpointId, StringComparison.Ordinal)
+            && string.Equals(ColonyChronicle.PrimaryFileName(node), FileName, StringComparison.Ordinal);
 }
 
 /// <summary>One selectable branch or terminal save target in <see cref="ColonyChronicle"/>.</summary>
@@ -94,7 +134,10 @@ public sealed record ChronicleBranchOption(
     bool HasRewindEvidence,
     SaveLineageNodeKind Kind,
     string? CheckpointId,
-    string? PrimaryFileName);
+    string? PrimaryFileName)
+{
+    public ChronicleBranchKey Key => new(Kind, CheckpointId, SaveTick, PrimaryFileName);
+}
 
 /// <summary>One proven metric change inside a <see cref="ChronicleEntryKind.VerifiedInterval"/>.</summary>
 public sealed record ChronicleIntervalFact(
@@ -151,14 +194,23 @@ public sealed record ChronicleUndatedTrace(
 /// Read-only, single-branch evidence-based chronicle of one colony (V2-A).
 /// Only events with proven ticks, 0.5-day history-graph thresholds, or verified checkpoint-to-checkpoint intervals on the
 /// selected branch are placed on the timeline; sibling branches are never mixed, and undated traces remain separate.
+/// Nothing is persisted: the chronicle is rebuilt from the profile's existing records each time it is read.
 /// </summary>
 public sealed class ColonyChronicle
 {
-    public const int DefaultMaxEntries = 512;
+    /// <summary>
+    /// The most entries one chronicle returns. Research completions are bounded by their family's key cap (4,096), and
+    /// intervals by the number of checkpoints; past this bound research completions are dropped first and counted.
+    /// </summary>
+    public const int DefaultMaxEntries = 4096;
 
     private static readonly StringComparer Ord = StringComparer.Ordinal;
 
-    private static readonly string[] IntervalCounterMetricKeys =
+    /// <summary>
+    /// Live running totals summarised for each proven checkpoint interval. Each one must be a running total of events
+    /// (<see cref="HistoryChanges.IsRunningTotal"/>): its change over an interval is what was counted in it.
+    /// </summary>
+    internal static readonly string[] IntervalCounterMetricKeys =
     [
         MembershipFamily.FirstJoin,
         MembershipFamily.PrisonerRecruit,
@@ -166,57 +218,112 @@ public sealed class ColonyChronicle
         HealthDeathFamily.DeathsByRaid,
         RaidFamily.ByArrivalMode,
         HealthDeathFamily.HostileKills,
-        MetricKeys.QuestSuccess,
         TradeFamily.Deals,
         CaravanFamily.SitesCleared,
     ];
 
     public required string ColonyKey { get; init; }
     public required int SelectedLeafNodeIndex { get; init; }
+
+    /// <summary>The branch shown; null only when the colony has no lineage node at all.</summary>
+    public ChronicleBranchOption? SelectedBranch { get; init; }
+
+    /// <summary>A branch was requested but is not (uniquely) in the current lineage; the default branch is shown instead.</summary>
+    public bool RequestedBranchMissing { get; init; }
+
     public required IReadOnlyList<ChronicleBranchOption> Branches { get; init; }
     public required IReadOnlyList<int> BranchNodeChain { get; init; }
     public required IReadOnlyList<ChronicleEntry> Entries { get; init; }
     public required IReadOnlyList<ChronicleUndatedTrace> UndatedTraces { get; init; }
+
+    /// <summary>Recorded endings proven to belong to another branch (or another campaign), left out of this chronicle.</summary>
     public int OtherBranchEndingCount { get; init; }
+
+    /// <summary>Recorded endings whose branch cannot be proven (the lineage forks and no save settles it), left out.</summary>
     public int AmbiguousBranchEndingCount { get; init; }
+
     public int OmittedEntryCount { get; init; }
+
+    // ----- captured inputs -----
+
+    /// <summary>One recorded ending, copied so the chronicle never reads profile objects outside the session lock.</summary>
+    internal sealed record EndingFact(
+        string CampaignId, EndingType Type, int Ordinal, EndingSource Source, int TicksGame, DateTime RealTimeUtc,
+        int Departed, bool DevMode, int? PartyAtEnding, int? ColonistsKilledAtEnding);
+
+    /// <summary>One read save of the colony, with the ending evidence it carries.</summary>
+    internal sealed record SaveFact(
+        string FileName, long FileSize, DateTime LastWriteUtc, int Tick, string? CampaignId,
+        LineageEntry[] Lineage, EndingType[] EndingTraces, EndingType[] ExplainedTraces)
+    {
+        /// <summary>A save written with the MOD active carries every ending of its own past in <see cref="Lineage"/>.</summary>
+        public bool LineageAuthoritative => CampaignId is { Length: > 0 };
+    }
+
+    internal sealed record Evidence(string ColonyKey, EndingFact[] Endings, SaveFact[] Saves, EndingType[] ColonyTraces);
+
+    /// <summary>Copies the colony's ending evidence; call it under the profile session lock when the view is live.</summary>
+    internal static Evidence? Capture(StatsView view, string colonyKey)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        ArgumentNullException.ThrowIfNull(colonyKey);
+        var colony = view.Colonies.FirstOrDefault(c => c.Key == colonyKey);
+        if (colony is null || !view.Stats.Colonies.Any(s => s.Key == colonyKey))
+            return null;
+
+        var endings = colony.Endings
+            .Select(e => new EndingFact(e.CampaignId ?? "", e.Type, e.Ordinal, e.Source, e.TicksGame, e.RealTimeUtc,
+                e.Departed, e.DevMode, e.PartyAtEnding, e.ColonistsKilledAtEnding))
+            .ToArray();
+        var saves = colony.Observations
+            .Where(o => o.Status == ObservationStatus.Ok)
+            .Select(o => new SaveFact(o.FileName, o.FileSize, o.LastWriteUtc, o.Values.TicksGame,
+                o.Identity.ModCampaignId is { Length: > 0 } id ? id : null,
+                o.Lineage.ToArray(), o.EndingTraces.ToArray(), o.ExplainedTraces.ToArray()))
+            .ToArray();
+        return new Evidence(colony.Key, endings, saves, colony.Traces.OrderBy(t => t).ToArray());
+    }
 
     public static ColonyChronicle? Build(
         StatsView view,
         string colonyKey,
         ColonySaveLineage lineage,
-        int? selectedLeafNodeIndex = null,
+        ChronicleBranchKey? branch = null,
         bool includeDevMode = false,
         int maxEntries = DefaultMaxEntries)
     {
+        ArgumentNullException.ThrowIfNull(lineage);
+        var evidence = Capture(view, colonyKey);
+        return evidence is null ? null : Build(view, evidence, lineage, branch, includeDevMode, maxEntries);
+    }
+
+    internal static ColonyChronicle Build(
+        StatsView view,
+        Evidence evidence,
+        ColonySaveLineage lineage,
+        ChronicleBranchKey? branch,
+        bool includeDevMode,
+        int maxEntries = DefaultMaxEntries)
+    {
         ArgumentNullException.ThrowIfNull(view);
-        ArgumentNullException.ThrowIfNull(colonyKey);
+        ArgumentNullException.ThrowIfNull(evidence);
         ArgumentNullException.ThrowIfNull(lineage);
         ArgumentOutOfRangeException.ThrowIfNegativeOrZero(maxEntries);
 
-        var colony = view.Colonies.FirstOrDefault(c => c.Key == colonyKey);
-        var stats = view.Stats.Colonies.FirstOrDefault(s => s.Key == colonyKey);
-        if (colony is null || stats is null)
-            return null;
-
-        var branches = BuildBranchOptions(lineage);
-        var selectedIdx = ResolveSelectedLeafIndex(lineage, branches, selectedLeafNodeIndex);
+        var (selectedIdx, requestedMissing) = ResolveSelected(lineage, branch);
+        var branches = BuildBranchOptions(lineage, selectedIdx);
         var chain = BuildProvenBranchChain(lineage, selectedIdx);
-        var chainIndexSet = chain.Select(n => n.Index).ToHashSet();
 
         var entriesByKey = new Dictionary<string, ChronicleEntry>(Ord);
         void AddEntry(ChronicleEntry entry) => entriesByKey.TryAdd(entry.StableKey, entry);
 
-        // Map save observations onto lineage nodes so save-embedded lineageEndings identify branch endings precisely.
-        var saveObsByNode = MapSaveObservationsToNodes(colony, lineage);
-
         // 1. Recording gaps, missing parents, unproven saves, late starts, and environment changes along the branch.
-        CollectBranchStructureGaps(chain, AddEntry);
+        var lateStartNodes = CollectBranchStructureGaps(chain, AddEntry);
 
         // 2. Endings & undated traces (strictly isolated to the selected branch).
         var undatedTraces = new List<ChronicleUndatedTrace>();
         var (otherBranchEndings, ambiguousEndings) = CollectEndingsAndTraces(
-            colony, lineage, chain, chainIndexSet, saveObsByNode, includeDevMode, AddEntry, undatedTraces);
+            evidence, lineage, chain, includeDevMode, AddEntry, undatedTraces);
 
         // 3. Exact-tick milestones and per-project research completions from the selected branch's checkpoint chain.
         CollectCheckpointMilestonesAndResearch(chain, AddEntry);
@@ -224,16 +331,11 @@ public sealed class ColonyChronicle
         // 4. 0.5-day history-graph threshold milestones from the selected branch's latest save-file observation.
         CollectSaveHistoryMilestones(view, lineage, chain, AddEntry);
 
-        // 5. Proven checkpoint-to-checkpoint interval summaries (never single-day events).
-        CollectVerifiedIntervals(view, lineage, chain, AddEntry);
+        // 5. Proven checkpoint-to-checkpoint interval summaries (never single-day events), and intervals not counted.
+        CollectVerifiedIntervals(view, lineage, chain, lateStartNodes, AddEntry);
 
-        var sorted = entriesByKey.Values
-            .OrderBy(e => e.EndTick)
-            .ThenBy(e => e.StartTick)
-            .ThenBy(e => KindSortOrder(e.Kind))
-            .ThenBy(e => e.StableKey, Ord)
-            .ToList();
-
+        var sorted = entriesByKey.Values.ToList();
+        sorted.Sort(CompareEntries);
         var (bounded, omitted) = ApplyEntryCap(sorted, maxEntries);
 
         var sortedUndated = undatedTraces
@@ -245,8 +347,10 @@ public sealed class ColonyChronicle
 
         return new ColonyChronicle
         {
-            ColonyKey = colonyKey,
+            ColonyKey = evidence.ColonyKey,
             SelectedLeafNodeIndex = selectedIdx,
+            SelectedBranch = branches.FirstOrDefault(b => b.LeafNodeIndex == selectedIdx),
+            RequestedBranchMissing = requestedMissing,
             Branches = branches,
             BranchNodeChain = chain.Select(n => n.Index).ToArray(),
             Entries = bounded,
@@ -260,40 +364,80 @@ public sealed class ColonyChronicle
     private static MetricDefinition? ResolveDefinition(StatsView view, string key)
         => BasicMetrics.Contains(key) ? BasicMetrics.Definition(key) : MetricLookup.Definition(view, key);
 
-    private static List<ChronicleBranchOption> BuildBranchOptions(ColonySaveLineage lineage)
+    // ----- branch selection -----
+
+    private static (int Index, bool RequestedMissing) ResolveSelected(ColonySaveLineage lineage, ChronicleBranchKey? requested)
     {
         if (lineage.Nodes.Count == 0)
-            return [];
+            return (-1, requested is not null);
+        if (requested is not null)
+        {
+            var matches = lineage.Nodes.Where(requested.Matches).Take(2).ToArray();
+            if (matches.Length == 1)
+                return (matches[0].Index, false);
+        }
+        return (DefaultSelection(lineage), requested is not null);
+    }
 
-        var candidateIndices = new HashSet<int>();
+    private static int DefaultSelection(ColonySaveLineage lineage)
+    {
         if (lineage.RepresentativeIndex >= 0 && lineage.RepresentativeIndex < lineage.Nodes.Count)
-            candidateIndices.Add(lineage.RepresentativeIndex);
+        {
+            // A single later save that carried the representative checkpoint unchanged is the furthest point of that line.
+            var rep = lineage.Nodes[lineage.RepresentativeIndex];
+            if (rep.ChildIndices.Count == 1 && lineage.Nodes[rep.ChildIndices[0]] is
+                { Kind: SaveLineageNodeKind.CarriedCheckpointSave } carried && carried.SaveTick > rep.SaveTick)
+                return carried.Index;
+            return rep.Index;
+        }
+        return BranchCandidates(lineage)
+            .Select(i => lineage.Nodes[i])
+            .OrderByDescending(n => n.Kind == SaveLineageNodeKind.Checkpoint)
+            .ThenByDescending(n => n.SaveTick)
+            .ThenBy(n => n.Index)
+            .First().Index;
+    }
+
+    private static HashSet<int> BranchCandidates(ColonySaveLineage lineage)
+    {
+        var candidates = new HashSet<int>();
+        if (lineage.RepresentativeIndex >= 0 && lineage.RepresentativeIndex < lineage.Nodes.Count)
+            candidates.Add(lineage.RepresentativeIndex);
 
         var hasAnyCheckpoint = lineage.Nodes.Any(n => n.Kind == SaveLineageNodeKind.Checkpoint);
         foreach (var node in lineage.Nodes)
         {
             if (node.Kind == SaveLineageNodeKind.Checkpoint)
             {
-                var hasCheckpointChild = node.ChildIndices.Any(ci => lineage.Nodes[ci].Kind == SaveLineageNodeKind.Checkpoint);
-                if (!hasCheckpointChild)
-                    candidateIndices.Add(node.Index);
+                if (!node.ChildIndices.Any(ci => lineage.Nodes[ci].Kind == SaveLineageNodeKind.Checkpoint))
+                    candidates.Add(node.Index);
             }
-            else if (node.Kind == SaveLineageNodeKind.CarriedCheckpointSave && node.ChildIndices.Count == 0)
+            else if (node.Kind == SaveLineageNodeKind.CarriedCheckpointSave)
             {
-                // Surface a carried-checkpoint leaf when its parent also forked into another checkpoint or when it extends past its parent.
+                // A later save that carried its checkpoint unchanged reaches further than that checkpoint.
                 if (node.ParentIndex >= 0 && node.SaveTick > lineage.Nodes[node.ParentIndex].SaveTick)
-                    candidateIndices.Add(node.Index);
+                    candidates.Add(node.Index);
             }
             else if (!hasAnyCheckpoint && node.Kind == SaveLineageNodeKind.UnprovenSave)
             {
-                candidateIndices.Add(node.Index);
+                candidates.Add(node.Index);
             }
         }
+        if (candidates.Count == 0)
+            candidates.Add(lineage.Nodes[^1].Index);
+        return candidates;
+    }
 
-        if (candidateIndices.Count == 0)
-            candidateIndices.Add(lineage.Nodes[^1].Index);
+    private static List<ChronicleBranchOption> BuildBranchOptions(ColonySaveLineage lineage, int selectedIdx)
+    {
+        if (lineage.Nodes.Count == 0)
+            return [];
 
-        return candidateIndices
+        var candidates = BranchCandidates(lineage);
+        if (selectedIdx >= 0)
+            candidates.Add(selectedIdx);   // a node picked in the lineage view is offered even when it is not a leaf
+
+        return candidates
             .Select(i => lineage.Nodes[i])
             .OrderByDescending(n => n.IsRepresentative)
             .ThenByDescending(n => n.Kind == SaveLineageNodeKind.Checkpoint)
@@ -313,27 +457,15 @@ public sealed class ColonyChronicle
 
     private static bool SubchainHasRewind(ColonySaveLineage lineage, int leafIndex)
     {
-        for (var cur = lineage.Nodes[leafIndex]; ; cur = lineage.Nodes[cur.ParentIndex])
+        var visited = new HashSet<int>();
+        for (var cur = lineage.Nodes[leafIndex]; visited.Add(cur.Index); cur = lineage.Nodes[cur.ParentIndex])
         {
             if (cur.HasRewindEvidence)
                 return true;
             if (cur.ParentIndex < 0 || cur.ParentState != SaveLineageParentState.ProvenParent)
                 return false;
         }
-    }
-
-    private static int ResolveSelectedLeafIndex(
-        ColonySaveLineage lineage,
-        IReadOnlyList<ChronicleBranchOption> branches,
-        int? requested)
-    {
-        if (lineage.Nodes.Count == 0)
-            return -1;
-        if (requested is { } req && req >= 0 && req < lineage.Nodes.Count)
-            return req;
-        if (lineage.RepresentativeIndex >= 0 && lineage.RepresentativeIndex < lineage.Nodes.Count)
-            return lineage.RepresentativeIndex;
-        return branches.Count > 0 ? branches[0].LeafNodeIndex : lineage.Nodes[^1].Index;
+        return false;
     }
 
     private static List<SaveLineageNode> BuildProvenBranchChain(ColonySaveLineage lineage, int selectedIdx)
@@ -354,38 +486,42 @@ public sealed class ColonyChronicle
         return reversed;
     }
 
-    private static Dictionary<int, List<SaveObservation>> MapSaveObservationsToNodes(Colony colony, ColonySaveLineage lineage)
+    /// <summary>
+    /// The other lines an unsaved ending could have happened on: every other branch leaf (and conflicted checkpoint) with
+    /// the proven chain leading to it. Null when the colony's saves cannot be linked at all (no checkpoint) and there is
+    /// more than one record, so no line can be singled out.
+    /// </summary>
+    private static List<HashSet<int>>? OtherLines(ColonySaveLineage lineage, List<SaveLineageNode> chain)
     {
-        var byNode = new Dictionary<int, List<SaveObservation>>();
-        if (colony.Observations.Count == 0 || lineage.Nodes.Count == 0)
-            return byNode;
+        var lines = new List<HashSet<int>>();
+        if (lineage.Nodes.Count == 0)
+            return lines;
+        if (!lineage.Nodes.Any(n => n.Kind == SaveLineageNodeKind.Checkpoint))
+            return lineage.Nodes.Count == 1 ? lines : null;
 
-        var obsLookup = colony.Observations
-            .Where(o => o.Status == ObservationStatus.Ok)
-            .ToLookup(o => (o.FileName, o.FileSize, o.LastWriteUtc));
-
-        foreach (var node in lineage.Nodes)
+        var selected = chain.Count > 0 ? chain[^1].Index : -1;
+        var others = BranchCandidates(lineage)
+            .Concat(lineage.Nodes.Where(n => n.Kind == SaveLineageNodeKind.ConflictedCheckpoint).Select(n => n.Index))
+            .Where(i => i != selected)
+            .Distinct();
+        foreach (var leaf in others)
         {
-            List<SaveObservation>? list = null;
-            foreach (var file in node.Files.Concat(node.CarriedByFiles))
-            {
-                foreach (var match in obsLookup[(file.FileName, file.FileSize, file.LastWriteUtc)])
-                {
-                    list ??= [];
-                    if (!list.Contains(match))
-                        list.Add(match);
-                }
-            }
-            if (list is not null)
-                byNode[node.Index] = list;
+            // A shorter line that our chain fully contains is not another line (e.g. the representative under our carried save).
+            if (chain.Any(n => n.Index == leaf))
+                continue;
+            lines.Add(BuildProvenBranchChain(lineage, leaf).Select(n => n.Index).ToHashSet());
         }
-        return byNode;
+        return lines;
     }
 
-    private static void CollectBranchStructureGaps(List<SaveLineageNode> chain, Action<ChronicleEntry> add)
+    // ----- structural gaps -----
+
+    /// <summary>Adds the branch's structural gaps; returns the checkpoint nodes where a late start was reported.</summary>
+    private static HashSet<int> CollectBranchStructureGaps(List<SaveLineageNode> chain, Action<ChronicleEntry> add)
     {
+        var lateStartNodes = new HashSet<int>();
         if (chain.Count == 0)
-            return;
+            return lateStartNodes;
 
         var root = chain[0];
         if (root.ParentState is SaveLineageParentState.MissingParent or SaveLineageParentState.InvalidOrConflictedParent)
@@ -472,13 +608,14 @@ public sealed class ColonyChronicle
                         StableKey = $"gap:live_since:{maxSince.Value}",
                         Kind = ChronicleEntryKind.RecordingGap,
                         TimingKind = ChronicleTimingKind.ProvenInterval,
-                        StartTick = spanStart,
+                        StartTick = Math.Min(spanStart, maxSince.Value),
                         EndTick = maxSince.Value,
                         EvidenceSource = ChronicleEvidenceSource.CheckpointAggregate,
                         Coverage = MetricCoverage.Partial,
                         GapKind = ChronicleGapKind.LiveRecordingStartedLateOrReset,
                         ChildSaveName = PrimaryFileName(node),
                     });
+                    lateStartNodes.Add(node.Index);
                 }
                 if (maxSince is not null)
                     previousMaxSinceTick = Math.Max(previousMaxSinceTick ?? 0, maxSince.Value);
@@ -509,6 +646,7 @@ public sealed class ColonyChronicle
                 prevCheckpoint = node;
             }
         }
+        return lateStartNodes;
     }
 
     private static int? MaxLiveSinceTick(MetricObservation cp)
@@ -524,78 +662,71 @@ public sealed class ColonyChronicle
         return maxSince;
     }
 
+    // ----- endings -----
+
+    private readonly record struct ChainSave(SaveFact Save, int NodeIndex);
+
     private static (int OtherBranchCount, int AmbiguousCount) CollectEndingsAndTraces(
-        Colony colony,
+        Evidence evidence,
         ColonySaveLineage lineage,
         List<SaveLineageNode> chain,
-        HashSet<int> chainIndexSet,
-        Dictionary<int, List<SaveObservation>> saveObsByNode,
         bool includeDevMode,
         Action<ChronicleEntry> addEntry,
         List<ChronicleUndatedTrace> undatedTraces)
     {
-        var chainLineageEntries = new HashSet<(EndingType Type, int Ordinal)>();
-        var chainLineageList = new List<LineageEntry>();
-        var otherBranchLineageEntries = new HashSet<(EndingType Type, int Ordinal)>();
+        var chainIndexSet = chain.Select(n => n.Index).ToHashSet();
+        var nodeOfSave = MapSavesToNodes(evidence.Saves, lineage);
 
-        foreach (var (nodeIdx, obsList) in saveObsByNode)
+        // With no lineage node at all (an ending-only colony) every read save counts as this colony's only record.
+        var chainSaves = new List<ChainSave>();
+        var offChainProvenSaves = new List<SaveFact>();
+        var savesByNode = new Dictionary<int, List<SaveFact>>();
+        foreach (var save in evidence.Saves)
         {
-            var onChain = chainIndexSet.Contains(nodeIdx);
-            foreach (var obs in obsList)
+            if (lineage.Nodes.Count == 0)
             {
-                foreach (var le in obs.Lineage)
-                {
-                    if (onChain)
-                    {
-                        if (chainLineageEntries.Add((le.Type, le.Ordinal)))
-                            chainLineageList.Add(le);
-                    }
-                    else
-                    {
-                        otherBranchLineageEntries.Add((le.Type, le.Ordinal));
-                    }
-                }
+                chainSaves.Add(new ChainSave(save, -1));
+                continue;
             }
+            if (!nodeOfSave.TryGetValue(save, out var nodeIdx))
+                continue;
+            if (!savesByNode.TryGetValue(nodeIdx, out var list))
+                savesByNode[nodeIdx] = list = [];
+            list.Add(save);
+            if (chainIndexSet.Contains(nodeIdx))
+                chainSaves.Add(new ChainSave(save, nodeIdx));
+            else if (lineage.Nodes[nodeIdx].Kind is SaveLineageNodeKind.Checkpoint or SaveLineageNodeKind.CarriedCheckpointSave)
+                offChainProvenSaves.Add(save);
         }
 
-        // Determine whether checkpoint forks exist and where this chain first diverges from another checkpoint branch.
-        var checkpointRoots = lineage.Nodes.Count(n =>
-            n.Kind == SaveLineageNodeKind.Checkpoint && n.ParentState != SaveLineageParentState.ProvenParent);
-        var checkpointTerminals = lineage.Nodes.Count(n =>
-            n.Kind == SaveLineageNodeKind.Checkpoint
-            && !n.ChildIndices.Any(ci => lineage.Nodes[ci].Kind == SaveLineageNodeKind.Checkpoint));
-        var hasCheckpointForks = lineage.BranchPointCount > 0 || checkpointRoots > 1 || checkpointTerminals > 1;
+        var chainCampaigns = chain.Select(n => n.CampaignId)
+            .Concat(chainSaves.Select(s => s.Save.CampaignId))
+            .OfType<string>().Where(id => id.Length > 0).ToHashSet(Ord);
+        var otherLines = OtherLines(lineage, chain);
 
-        int? firstDivergenceTick = null;
-        if (checkpointRoots > 1)
-        {
-            firstDivergenceTick = -1;
-        }
-        else if (lineage.BranchPointCount > 0)
-        {
-            foreach (var node in chain)
-            {
-                if (node.IsBranchPoint)
-                {
-                    firstDivergenceTick = node.SaveTick;
-                    break;
-                }
-            }
-        }
+        bool SameCampaign(SaveFact save, string campaignId)
+            => campaignId.Length == 0 || save.CampaignId is null || string.Equals(save.CampaignId, campaignId, StringComparison.Ordinal);
 
-        var branchCampaignId = chain.Select(n => n.CampaignId).FirstOrDefault(id => !string.IsNullOrEmpty(id));
-        var recordedPairs = new HashSet<(EndingType Type, int Ordinal)>();
-        var explainedTypes = new HashSet<EndingType>();
+        bool InLineage(SaveFact save, EndingType type, int ordinal, int tick)
+            => save.Lineage.Any(le => le.Type == type && le.Ordinal == ordinal && le.TicksGame == tick);
+
+        // A save of the ending's campaign made after it, without it in its own past: its line did not have that ending.
+        bool Excludes(SaveFact save, EndingFact ending)
+            => save.LineageAuthoritative && string.Equals(save.CampaignId, ending.CampaignId, StringComparison.Ordinal)
+                && save.Tick > ending.TicksGame && !InLineage(save, ending.Type, ending.Ordinal, ending.TicksGame);
+
+        // An ending no save holds can still be placed on this branch when every other line is excluded by its own saves.
+        bool OnlyThisLineFits(EndingFact ending)
+            => otherLines is not null && otherLines.All(line =>
+                line.Any(idx => savesByNode.TryGetValue(idx, out var saves) && saves.Any(s => Excludes(s, ending))));
+
         int otherBranchCount = 0;
         int ambiguousCount = 0;
 
-        foreach (var ending in colony.Endings)
+        foreach (var ending in evidence.Endings)
         {
             if (!includeDevMode && ending.DevMode)
                 continue;
-
-            recordedPairs.Add((ending.Type, ending.Ordinal));
-            explainedTypes.Add(ending.Type);
 
             if (ending.Source == EndingSource.SeededTrace || ending.TicksGame <= 0)
             {
@@ -610,35 +741,26 @@ public sealed class ColonyChronicle
                 continue;
             }
 
-            var keyPair = (ending.Type, ending.Ordinal);
-            var provenOnChain = chainLineageEntries.Contains(keyPair);
-            var provenOnOtherOnly = !provenOnChain && otherBranchLineageEntries.Contains(keyPair);
-
-            if (provenOnOtherOnly)
+            // A save holds its own past endings with their exact ticks: one on this branch proves the ending is here, and
+            // a later save of the same campaign on this branch without it proves it happened elsewhere.
+            var proven = chainSaves.Any(s => s.Save.LineageAuthoritative && SameCampaign(s.Save, ending.CampaignId)
+                && InLineage(s.Save, ending.Type, ending.Ordinal, ending.TicksGame));
+            if (!proven)
             {
-                otherBranchCount++;
-                continue;
-            }
-
-            if (!provenOnChain)
-            {
-                if (branchCampaignId is not null
-                    && ending.CampaignId.Length > 0
-                    && !string.Equals(ending.CampaignId, branchCampaignId, StringComparison.Ordinal))
+                var contradicted = chainSaves.Any(s => Excludes(s.Save, ending));
+                var elsewhere = offChainProvenSaves.Any(s => s.LineageAuthoritative && SameCampaign(s, ending.CampaignId)
+                    && InLineage(s, ending.Type, ending.Ordinal, ending.TicksGame));
+                var otherCampaign = chainCampaigns.Count > 0 && ending.CampaignId.Length > 0
+                    && !chainCampaigns.Contains(ending.CampaignId);
+                if (contradicted || elsewhere || otherCampaign)
                 {
                     otherBranchCount++;
                     continue;
                 }
-
-                if (hasCheckpointForks)
+                if (!OnlyThisLineFits(ending))
                 {
-                    // Before the earliest fork on a single-root lineage, the trunk is shared by all branches.
-                    var onSharedTrunk = firstDivergenceTick is { } divTick && divTick >= 0 && ending.TicksGame <= divTick;
-                    if (!onSharedTrunk)
-                    {
-                        ambiguousCount++;
-                        continue;
-                    }
+                    ambiguousCount++;
+                    continue;
                 }
             }
 
@@ -662,50 +784,64 @@ public sealed class ColonyChronicle
             });
         }
 
-        // Recovered endings from save lineageEndings: use chain saves when nodes exist, or colony-level fallback when no nodes exist.
-        var recoveredSource = chain.Count > 0 ? chainLineageList : colony.RecoveredEndings;
-        foreach (var rec in recoveredSource)
+        // Endings in this branch's saves that the profile holds no record of at the same tick.
+        var explainedTypes = new HashSet<EndingType>(evidence.Endings.Select(e => e.Type));
+        var seenRecovered = new HashSet<(EndingType, int, int)>();
+        foreach (var cs in chainSaves.OrderBy(s => s.Save.Tick))
         {
-            explainedTypes.Add(rec.Type);
-            if (colony.Endings.Any(e => e.Type == rec.Type && e.Ordinal == rec.Ordinal))
+            if (!cs.Save.LineageAuthoritative)
                 continue;
-
-            if (rec.TicksGame <= 0)
+            foreach (var le in cs.Save.Lineage)
             {
-                undatedTraces.Add(new ChronicleUndatedTrace(
-                    StableKey: $"trace:recovered:{rec.Type}:{rec.Ordinal}",
-                    EndingType: rec.Type,
-                    EvidenceSource: ChronicleEvidenceSource.RecoveredLineage));
-                continue;
+                explainedTypes.Add(le.Type);
+                if (!seenRecovered.Add((le.Type, le.Ordinal, le.TicksGame)))
+                    continue;
+                if (evidence.Endings.Any(e => e.Type == le.Type && e.Ordinal == le.Ordinal && e.TicksGame == le.TicksGame))
+                    continue;   // the live (or seeded) record itself, shown or deliberately hidden above
+
+                // The ledger keeps the first of endings sharing (campaign, type, ordinal, dev mode): a redo on this branch
+                // after loading a pre-ending save is in this save's lineage at its own tick. Its dev-mode flag is the one
+                // those records share. Without such a live record the entry may be a pre-install trace seeded at the load
+                // tick, so its tick is not shown as the ending's day.
+                var sameGroup = evidence.Endings
+                    .Where(e => e.Source == EndingSource.Live && e.Type == le.Type && e.Ordinal == le.Ordinal
+                        && string.Equals(e.CampaignId, cs.Save.CampaignId, StringComparison.Ordinal))
+                    .ToArray();
+                if (sameGroup.Length > 0 && le.TicksGame > 0)
+                {
+                    bool? dev = sameGroup.All(e => e.DevMode) ? true : sameGroup.All(e => !e.DevMode) ? false : null;
+                    if (dev == true && !includeDevMode)
+                        continue;
+                    addEntry(new ChronicleEntry
+                    {
+                        StableKey = $"ending:recovered:{cs.Save.CampaignId}:{le.Type}:{le.Ordinal}:{le.TicksGame}",
+                        Kind = ChronicleEntryKind.Ending,
+                        TimingKind = ChronicleTimingKind.ExactTick,
+                        StartTick = le.TicksGame,
+                        EndTick = le.TicksGame,
+                        EvidenceSource = ChronicleEvidenceSource.RecoveredLineage,
+                        Coverage = MetricCoverage.Partial,
+                        RelatedMetricKey = BasicMetrics.Endings,
+                        EndingType = le.Type,
+                        EndingOrdinal = le.Ordinal,
+                        DevMode = dev,
+                    });
+                }
+                else
+                {
+                    undatedTraces.Add(new ChronicleUndatedTrace(
+                        StableKey: $"trace:recovered:{le.Type}:{le.Ordinal}",
+                        EndingType: le.Type,
+                        EvidenceSource: ChronicleEvidenceSource.RecoveredLineage));
+                }
             }
-
-            addEntry(new ChronicleEntry
-            {
-                StableKey = $"ending:recovered:{rec.Type}:{rec.Ordinal}:{rec.TicksGame}",
-                Kind = ChronicleEntryKind.Ending,
-                TimingKind = ChronicleTimingKind.ExactTick,
-                StartTick = rec.TicksGame,
-                EndTick = rec.TicksGame,
-                EvidenceSource = ChronicleEvidenceSource.RecoveredLineage,
-                Coverage = MetricCoverage.Partial,
-                RelatedMetricKey = BasicMetrics.Endings,
-                EndingType = rec.Type,
-                EndingOrdinal = rec.Ordinal,
-                DevMode = null,
-            });
         }
 
         // Unexplained save-file traces (no game tick exists in the save).
-        var traceSource = CollectBranchTraces(colony, chain, saveObsByNode);
-        foreach (var traceType in traceSource.OrderBy(t => t))
+        foreach (var traceType in CollectBranchTraces(evidence, chainSaves).OrderBy(t => t))
         {
-            if (explainedTypes.Any(recorded => EndingTraces.Explains(recorded, traceType))
-                || colony.Endings.Any(e => EndingTraces.Explains(e.Type, traceType))
-                || colony.RecoveredEndings.Any(r => EndingTraces.Explains(r.Type, traceType)))
-            {
+            if (explainedTypes.Any(recorded => EndingTraces.Explains(recorded, traceType)))
                 continue;
-            }
-
             undatedTraces.Add(new ChronicleUndatedTrace(
                 StableKey: $"trace:save:{traceType}",
                 EndingType: traceType,
@@ -715,36 +851,41 @@ public sealed class ColonyChronicle
         return (otherBranchCount, ambiguousCount);
     }
 
-    private static HashSet<EndingType> CollectBranchTraces(
-        Colony colony,
-        List<SaveLineageNode> chain,
-        Dictionary<int, List<SaveObservation>> saveObsByNode)
+    /// <summary>
+    /// Each read save mapped to the one lineage node that holds its file. Files of later saves that merely carried a
+    /// checkpoint belong to their own carried node, never to the checkpoint they carried.
+    /// </summary>
+    private static Dictionary<SaveFact, int> MapSavesToNodes(SaveFact[] saves, ColonySaveLineage lineage)
     {
-        if (chain.Count == 0)
-            return new HashSet<EndingType>(colony.Traces);
+        var byFile = new Dictionary<(string FileName, long FileSize, DateTime LastWriteUtc), int>();
+        foreach (var node in lineage.Nodes)
+            foreach (var file in node.Files)
+                byFile.TryAdd((file.FileName, file.FileSize, file.LastWriteUtc), node.Index);
+
+        var result = new Dictionary<SaveFact, int>(ReferenceEqualityComparer.Instance);
+        foreach (var save in saves)
+            if (byFile.TryGetValue((save.FileName, save.FileSize, save.LastWriteUtc), out var idx))
+                result[save] = idx;
+        return result;
+    }
+
+    private static HashSet<EndingType> CollectBranchTraces(Evidence evidence, List<ChainSave> chainSaves)
+    {
+        if (chainSaves.Count == 0)
+            return new HashSet<EndingType>(evidence.ColonyTraces);
 
         var set = new HashSet<EndingType>();
-        var anyMapped = false;
-        foreach (var node in chain)
+        foreach (var cs in chainSaves)
         {
-            if (!saveObsByNode.TryGetValue(node.Index, out var obsList))
-                continue;
-            anyMapped = true;
-            foreach (var obs in obsList)
-            {
-                set.UnionWith(obs.EndingTraces);
-                foreach (var t in obs.ExplainedTraces)
-                {
-                    if (!obs.Lineage.Any(le => EndingTraces.Explains(le.Type, t))
-                        && !colony.Endings.Any(e => EndingTraces.Explains(e.Type, t)))
-                    {
-                        set.Add(t);
-                    }
-                }
-            }
+            set.UnionWith(cs.Save.EndingTraces);
+            foreach (var t in cs.Save.ExplainedTraces)
+                if (!cs.Save.Lineage.Any(le => EndingTraces.Explains(le.Type, t)))
+                    set.Add(t);
         }
-        return anyMapped ? set : new HashSet<EndingType>(colony.Traces);
+        return set;
     }
+
+    // ----- checkpoint milestones and research -----
 
     private static void CollectCheckpointMilestonesAndResearch(
         List<SaveLineageNode> chain,
@@ -776,21 +917,20 @@ public sealed class ColonyChronicle
             return;
         }
 
-        var capOverflowed = completedEntry.Values.TryGetValue(MetricEntry.Scalar, out var scalar)
-            && scalar.Weakened == true;
+        // The family weakens every value of the list when it reached its key cap (later completions were dropped).
+        var capOverflowed = completedEntry.Values.Values.Any(v => v.Weakened == true);
 
         foreach (var (defKey, mv) in completedEntry.Values)
         {
             if (defKey == MetricEntry.Scalar)
                 continue;
-            if (mv.Weakened == true)
-                capOverflowed = true;
             if (mv.RealValue is not { } day || !double.IsFinite(day) || day < 0
                 || mv.Coverage is MetricCoverage.Unknown or MetricCoverage.NotApplicable)
             {
                 continue;
             }
 
+            // Each kept completion is exact, whatever the list as a whole misses (shown by the gap entries).
             var tick = ClampToIntTick(Math.Round(day * StatFormat.TicksPerDay));
             addEntry(new ChronicleEntry
             {
@@ -800,7 +940,7 @@ public sealed class ColonyChronicle
                 StartTick = tick,
                 EndTick = tick,
                 EvidenceSource = ChronicleEvidenceSource.CheckpointAggregate,
-                Coverage = mv.Coverage,
+                Coverage = MetricCoverage.Complete,
                 RelatedMetricKey = ResearchFamily.CompletedTicks,
                 ResearchDefKey = defKey,
             });
@@ -830,6 +970,7 @@ public sealed class ColonyChronicle
         ChronicleMilestoneKind milestoneKind,
         Action<ChronicleEntry> addEntry)
     {
+        // A first day is known only when its family recorded from the start of the game without a gap (otherwise Unknown).
         var mv = cp.Scalar(metricKey, MetricKeys.Revision(metricKey));
         if (mv is null
             || mv.Coverage is MetricCoverage.Unknown or MetricCoverage.NotApplicable
@@ -849,7 +990,7 @@ public sealed class ColonyChronicle
             StartTick = tick,
             EndTick = tick,
             EvidenceSource = ChronicleEvidenceSource.CheckpointAggregate,
-            Coverage = mv.Coverage,
+            Coverage = MetricCoverage.Complete,
             RelatedMetricKey = metricKey,
             MilestoneKind = milestoneKind,
             MilestoneValue = day,
@@ -881,9 +1022,10 @@ public sealed class ColonyChronicle
         TryAddHistoryDayMilestone(view, lineage, targetNode.Index,
             MetricKeys.FreeColonistsFirst10, ChronicleMilestoneKind.ColonistsFirst10, null, addEntry);
 
-        var peakWealth = lineage.MetricAt(targetNode.Index, BasicMetrics.Definition(BasicMetrics.PeakWealth))?.Number;
+        var peakWealth = lineage.MetricAt(targetNode.Index, BasicMetrics.Definition(BasicMetrics.PeakWealth));
         TryAddHistoryDayMilestone(view, lineage, targetNode.Index,
-            MetricKeys.WealthTotalPeakDay, ChronicleMilestoneKind.WealthPeakDay, peakWealth, addEntry);
+            MetricKeys.WealthTotalPeakDay, ChronicleMilestoneKind.WealthPeakDay,
+            peakWealth is { Known: true, Number: { } peak } && double.IsFinite(peak) ? peak : null, addEntry);
     }
 
     private static void TryAddHistoryDayMilestone(
@@ -917,77 +1059,86 @@ public sealed class ColonyChronicle
         });
     }
 
+    // ----- intervals -----
+
     private static void CollectVerifiedIntervals(
         StatsView view,
         ColonySaveLineage lineage,
         List<SaveLineageNode> chain,
+        HashSet<int> lateStartNodes,
         Action<ChronicleEntry> addEntry)
     {
         var checkpoints = chain.Where(n => n.Kind == SaveLineageNodeKind.Checkpoint).ToList();
         if (checkpoints.Count < 2)
             return;
 
+        var counterDefs = IntervalCounterMetricKeys
+            .Select(key => ResolveDefinition(view, key))
+            .OfType<MetricDefinition>()
+            .Where(HistoryChanges.IsRunningTotal)
+            .ToArray();
+        var wealthDef = ResolveDefinition(view, BasicMetrics.LastWealth);
+        var notCountedSpans = new List<(SaveLineageNode From, SaveLineageNode To)>();
+
         for (var i = 1; i < checkpoints.Count; i++)
         {
             var prev = checkpoints[i - 1];
             var next = checkpoints[i];
-            if (next.SaveTick <= prev.SaveTick)
+            if (next.SaveTick <= prev.SaveTick || next.ParentIndex != prev.Index)
                 continue;
 
             var facts = new List<ChronicleIntervalFact>();
-            var hasLiveDeaths = false;
-            var hasLiveRaids = false;
+            var liveDeathsCompared = false;
+            var liveRaidsCompared = false;
+            var notCounted = false;
 
-            foreach (var key in IntervalCounterMetricKeys)
+            foreach (var def in counterDefs)
             {
-                if (ResolveDefinition(view, key) is not { } def)
-                    continue;
-
                 var change = lineage.CompareMetric(def, prev.Index, next.Index);
-                if (change.Issue != HistoryChangeIssue.None || change.Delta is not { } delta || !(delta > 0) || !double.IsFinite(delta))
+                if (change.Issue is HistoryChangeIssue.CounterGap or HistoryChangeIssue.CounterDecrease)
+                    notCounted = true;
+                if (change.Issue != HistoryChangeIssue.None || change.Delta is not { } delta || !double.IsFinite(delta))
                     continue;
 
-                var cov = change.Partial || change.RecordedSince is > 0
-                    ? MetricCoverage.Partial
-                    : MetricCoverage.Complete;
+                if (def.Key == HealthDeathFamily.DeathsByRaid)
+                    liveDeathsCompared = true;
+                else if (def.Key == RaidFamily.ByArrivalMode)
+                    liveRaidsCompared = true;
+                if (!(delta > 0))
+                    continue;
+
                 facts.Add(new ChronicleIntervalFact(
-                    MetricKey: key,
+                    MetricKey: def.Key,
                     Delta: delta,
                     IsSignedDifference: false,
-                    Coverage: cov,
+                    Coverage: change.Partial || change.RecordedSince is > 0 ? MetricCoverage.Partial : MetricCoverage.Complete,
                     EvidenceSource: ChronicleEvidenceSource.CheckpointAggregate));
-
-                if (key == HealthDeathFamily.DeathsByRaid)
-                    hasLiveDeaths = true;
-                else if (key == RaidFamily.ByArrivalMode)
-                    hasLiveRaids = true;
             }
 
-            // Fall back to strict verified vanilla counter intervals only when direct parent-child proof exists and live was absent.
-            if (next.ParentIndex == prev.Index && next.VerifiedParentInterval is { } vpi
-                && vpi.StartTick == prev.SaveTick && vpi.EndTick == next.SaveTick)
+            // The game's own counters over a strictly verified direct parent-child pair, only where no live comparison exists.
+            if (next.VerifiedParentInterval is { } vpi && vpi.StartTick == prev.SaveTick && vpi.EndTick == next.SaveTick)
             {
-                if (!hasLiveDeaths && vpi.ColonistDeathsIncrease > 0)
+                if (!liveDeathsCompared && vpi.ColonistDeathsIncrease > 0)
                 {
                     facts.Add(new ChronicleIntervalFact(
                         MetricKey: BasicMetrics.Killed,
                         Delta: vpi.ColonistDeathsIncrease,
                         IsSignedDifference: false,
-                        Coverage: MetricCoverage.Partial,
+                        Coverage: vpi.Coverage,
                         EvidenceSource: ChronicleEvidenceSource.VanillaCounterInterval));
                 }
-                if (!hasLiveRaids && vpi.RaidsIncrease > 0)
+                if (!liveRaidsCompared && vpi.RaidsIncrease > 0)
                 {
                     facts.Add(new ChronicleIntervalFact(
                         MetricKey: BasicMetrics.Raids,
                         Delta: vpi.RaidsIncrease,
                         IsSignedDifference: false,
-                        Coverage: MetricCoverage.Partial,
+                        Coverage: vpi.Coverage,
                         EvidenceSource: ChronicleEvidenceSource.VanillaCounterInterval));
                 }
             }
 
-            if (ResolveDefinition(view, BasicMetrics.LastWealth) is { } wealthDef)
+            if (wealthDef is not null)
             {
                 var wealthChange = lineage.CompareMetric(wealthDef, prev.Index, next.Index);
                 if (wealthChange.Issue == HistoryChangeIssue.None
@@ -1004,6 +1155,23 @@ public sealed class ColonyChronicle
                 }
             }
 
+            // A family recorded without a gap at the parent but not at the child was interrupted, stopped or restarted.
+            if (prev.CheckpointObservation?.ContinuousFamilies is { } before
+                && next.CheckpointObservation?.ContinuousFamilies is { } after
+                && before.Any(f => !after.Contains(f, Ord))
+                && !lateStartNodes.Contains(next.Index))
+            {
+                notCounted = true;
+            }
+            if (notCounted && !lateStartNodes.Contains(next.Index))
+            {
+                // Consecutive intervals that could not be counted are reported as one span.
+                if (notCountedSpans.Count > 0 && notCountedSpans[^1].To.Index == prev.Index)
+                    notCountedSpans[^1] = (notCountedSpans[^1].From, next);
+                else
+                    notCountedSpans.Add((prev, next));
+            }
+
             if (facts.Count == 0)
                 continue;
 
@@ -1013,7 +1181,6 @@ public sealed class ColonyChronicle
                     ? ChronicleEvidenceSource.VanillaCounterInterval
                     : ChronicleEvidenceSource.SaveMetadata;
 
-            var anyPartial = facts.Any(f => f.Coverage == MetricCoverage.Partial);
             addEntry(new ChronicleEntry
             {
                 StableKey = $"interval:{prev.Index}:{next.Index}",
@@ -1022,13 +1189,42 @@ public sealed class ColonyChronicle
                 StartTick = prev.SaveTick,
                 EndTick = next.SaveTick,
                 EvidenceSource = primarySource,
-                Coverage = anyPartial ? MetricCoverage.Partial : MetricCoverage.Complete,
+                Coverage = facts.Any(f => f.Coverage == MetricCoverage.Partial) ? MetricCoverage.Partial : MetricCoverage.Complete,
                 RelatedMetricKey = facts[0].MetricKey,
                 IntervalFacts = facts,
                 ParentSaveName = PrimaryFileName(prev),
                 ChildSaveName = PrimaryFileName(next),
             });
         }
+
+        foreach (var (from, to) in notCountedSpans)
+        {
+            addEntry(new ChronicleEntry
+            {
+                StableKey = $"gap:not_counted:{from.Index}:{to.Index}",
+                Kind = ChronicleEntryKind.RecordingGap,
+                TimingKind = ChronicleTimingKind.ProvenInterval,
+                StartTick = from.SaveTick,
+                EndTick = to.SaveTick,
+                EvidenceSource = ChronicleEvidenceSource.CheckpointAggregate,
+                Coverage = MetricCoverage.Partial,
+                GapKind = ChronicleGapKind.IntervalNotCounted,
+                ParentSaveName = PrimaryFileName(from),
+                ChildSaveName = PrimaryFileName(to),
+            });
+        }
+    }
+
+    // ----- ordering and bounds -----
+
+    private static int CompareEntries(ChronicleEntry a, ChronicleEntry b)
+    {
+        var c = a.EndTick.CompareTo(b.EndTick);
+        if (c != 0) return c;
+        c = a.StartTick.CompareTo(b.StartTick);
+        if (c != 0) return c;
+        c = KindSortOrder(a.Kind).CompareTo(KindSortOrder(b.Kind));
+        return c != 0 ? c : Ord.Compare(a.StableKey, b.StableKey);
     }
 
     private static (IReadOnlyList<ChronicleEntry> Entries, int Omitted) ApplyEntryCap(
@@ -1038,50 +1234,24 @@ public sealed class ColonyChronicle
         if (sorted.Count <= maxEntries)
             return (sorted, 0);
 
-        // Always prioritize high-signal structural entries (Endings, RecordingGaps, Milestones, VerifiedIntervals)
-        // before individual ResearchCompleted items so hundreds of modded techs never hide endings or gaps.
-        var priority = new List<ChronicleEntry>(Math.Min(sorted.Count, maxEntries));
-        var research = new List<ChronicleEntry>();
-        foreach (var entry in sorted)
-        {
-            if (entry.Kind == ChronicleEntryKind.ResearchCompleted)
-                research.Add(entry);
-            else
-                priority.Add(entry);
-        }
+        // Endings, gaps and milestones first, then the most recent intervals, then research completions in completion
+        // order, so hundreds of modded research projects never hide an ending or a gap.
+        var critical = sorted.Where(e => e.Kind is not (ChronicleEntryKind.ResearchCompleted or ChronicleEntryKind.VerifiedInterval)).ToList();
+        var intervals = sorted.Where(e => e.Kind == ChronicleEntryKind.VerifiedInterval).ToList();
+        var research = sorted.Where(e => e.Kind == ChronicleEntryKind.ResearchCompleted).ToList();
 
-        List<ChronicleEntry> kept;
-        if (priority.Count >= maxEntries)
+        var kept = critical.Take(maxEntries).ToList();
+        var room = maxEntries - kept.Count;
+        if (room > 0)
         {
-            // Keep all Endings, Milestones and RecordingGaps first, then the most recent VerifiedIntervals.
-            var critical = priority.Where(e => e.Kind != ChronicleEntryKind.VerifiedInterval).ToList();
-            if (critical.Count >= maxEntries)
-            {
-                kept = critical.Take(maxEntries).ToList();
-            }
-            else
-            {
-                var remaining = maxEntries - critical.Count;
-                var intervals = priority.Where(e => e.Kind == ChronicleEntryKind.VerifiedInterval).TakeLast(remaining);
-                kept = critical.Concat(intervals).ToList();
-            }
+            var keptIntervals = intervals.Skip(Math.Max(0, intervals.Count - room)).ToList();
+            kept.AddRange(keptIntervals);
+            room -= keptIntervals.Count;
         }
-        else
-        {
-            var remainingForResearch = maxEntries - priority.Count;
-            kept = priority.Concat(research.Take(remainingForResearch)).ToList();
-        }
+        if (room > 0)
+            kept.AddRange(research.Take(room));
 
-        kept.Sort((a, b) =>
-        {
-            var c = a.EndTick.CompareTo(b.EndTick);
-            if (c != 0) return c;
-            c = a.StartTick.CompareTo(b.StartTick);
-            if (c != 0) return c;
-            c = KindSortOrder(a.Kind).CompareTo(KindSortOrder(b.Kind));
-            return c != 0 ? c : Ord.Compare(a.StableKey, b.StableKey);
-        });
-
+        kept.Sort(CompareEntries);
         return (kept, sorted.Count - kept.Count);
     }
 
@@ -1095,7 +1265,7 @@ public sealed class ColonyChronicle
         _ => 5,
     };
 
-    private static string? PrimaryFileName(SaveLineageNode node)
+    internal static string? PrimaryFileName(SaveLineageNode node)
         => node.Files.FirstOrDefault(f => !f.Superseded)?.FileName
             ?? node.Files.FirstOrDefault()?.FileName
             ?? node.CarriedByFiles.FirstOrDefault(f => !f.Superseded)?.FileName

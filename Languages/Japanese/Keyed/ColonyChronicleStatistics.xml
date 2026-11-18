@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>コロニー年表</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>このコロニーの確定したエンディング・節目・完了した研究・検証済みの区間・記録上の注意を、1つのセーブ分岐に沿って読み取り専用で表示します。推測による補完や、分岐をまたいだ合算はしません。</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>コロニー年表 · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>コロニー切替…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>分岐: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>{0} 日目 · {1}（代表）</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>{0} 日目 · {1}（別分岐）</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>{0} 日目 · {1}（読み込み後の分岐）</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>{0} 日目 · {1}（持ち越しチェックポイント）</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>{0} 日目 · {1}（未証明の記録）</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>（セーブファイルなし）</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>以前に選んだ分岐が見つからなくなったため、既定の分岐を表示しています。</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>表示: {0}（{1}）</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>すべて</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>エンディングと節目</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>区間と記録上の注意</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>研究</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>古い順</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>新しい順</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>年表を読み込めませんでした。エラーはログに記録されます。</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>この分岐と表示条件に当てはまる日付付きの項目はありません。</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>{1} 件中 {0} 件を表示 · この分岐の記録 {2} 件</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>別の分岐で起きたエンディング {0} 件はここには表示していません。</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>どの分岐で起きたかまだ特定できないエンディング {0} 件はここには表示していません。</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>一覧を扱いやすくするため {0} 件を省略しています（後に完了した研究から省き、次に古い区間を省きます）。エンディング・節目・記録上の注意は優先して残します。</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>ゲーム内時刻</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>種類</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>出来事</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>根拠</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>{0} 日目</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>{0} 日目（標本）</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>{0} – {1} 日目</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>エンディング</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>節目</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>研究</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>区間</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>記録上の注意</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>プレイ中の記録</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>チェックポイント</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>ゲーム本体のカウンター</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>セーブ内の履歴グラフ</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>セーブ内のエンディング一覧</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>セーブ情報</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>導入前の痕跡</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>セーブファイル内の痕跡</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0}（{1} 回目）</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>旅立ち {0} 人</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>参加 {0} 人</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>それまでの入植者の死亡 {0} 人</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>（開発者モード）</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>（開発者モードか不明）</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>同じエンディングが複数回記録されている場合は、旅立ち人数の最大値を表示します。</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>最初の新規加入</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>最初の敵襲</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>最初の入植者の死亡</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>最初の研究完了</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>資産 100,000 に到達</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>資産 1,000,000 に到達</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>入植者 10 人に到達</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>最高資産: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>最高資産</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>完了: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>この研究は現在読み込まれていないため、保存されている名前を表示しています。</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>{0} 日目のチェックポイントが参照する親が記録にないため、この分岐のそれ以前の経過は不完全です。</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>{0} 日目のセーブにはチェックポイントがない（このMODの導入前、または記録オフで保存）ため、系統上の位置は証明されていません。</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>{0} 日目から {1} 日目まで新しいチェックポイントはなく、後のセーブは古いものを未更新のまま保持していました。</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>プレイ中に記録する統計の一部は {0} 日目から始まっています（ゲーム途中でのMOD導入、統計の有効化、または記録の再開）。</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>{0} 日目から {1} 日目の間、一部の累計は途切れずに記録されていないため、その変化は表示しません。</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>{0} 日目のチェックポイントの詳細値はアーカイブ済みで、そのアーカイブを読めませんでした。</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>完了した研究の一覧が上限に達したため、それ以降の完了は記録されていません。</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>ゲーム環境の変化: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>ゲーム版</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>MOD構成</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>有効DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>日付はセーブ内の履歴グラフ（半日ごとに1点）から読み取ったもので、正確な時刻は記録されていません。</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>直接つながった2つのチェックポイント間の変化です。区間内のいつ起きたかは分かりません。</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>セーブ: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>セーブ: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>記録日時（ローカル）: {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>グラフを開く: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>日付のない痕跡（{0}）</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>これらのエンディングには起きた証拠がありますが、ゲーム内の日付を証明できないため、年表には載せていません。</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>入植者の死亡</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>襲撃</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>入植者の死亡（本体カウンター）</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>敵の襲撃（本体カウンター）</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>資産</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

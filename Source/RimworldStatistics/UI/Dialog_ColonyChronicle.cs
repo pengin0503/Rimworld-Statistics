@@ -63,27 +63,26 @@ internal sealed class Dialog_ColonyChronicle : Window
     private readonly StatsView view;
     private string colonyKey;
     private string colonyName = "";
-    private int? requestedBranchLeafIndex;
     private FilterMode filter = FilterMode.All;
     private bool newestFirst;
 
     private Task<ColonyChronicle?>? chronicleTask;
+    private bool loadFailureLogged;
     private object? cachedLanguage;
     private ChronicleDisplayCache? displayCache;
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
     private Vector2 scroll;
 
-    internal Dialog_ColonyChronicle(StatsView view, string colonyKey, int? initialBranchLeafIndex = null)
+    internal Dialog_ColonyChronicle(StatsView view, string colonyKey, ChronicleBranchKey? initialBranch = null)
     {
         this.view = view;
         this.colonyKey = colonyKey;
-        requestedBranchLeafIndex = initialBranchLeafIndex;
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = false;
 
-        StartLoad(colonyKey, initialBranchLeafIndex);
+        StartLoad(colonyKey, initialBranch);
     }
 
     public override Vector2 InitialSize => new(
@@ -91,6 +90,24 @@ internal sealed class Dialog_ColonyChronicle : Window
         Math.Min(780f, Verse.UI.screenHeight * 0.90f));
 
     public override void DoWindowContents(Rect rect)
+    {
+        try
+        {
+            DrawContents(rect);
+        }
+        catch (Exception e)
+        {
+            Log.ErrorOnce($"[RimworldStatistics] The colony chronicle failed to draw.\n{e}", "RWS.chronicle".GetHashCode());
+        }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
+
+    private void DrawContents(Rect rect)
     {
         var lang = LanguageDatabase.activeLanguage;
         if (!ReferenceEquals(cachedLanguage, lang))
@@ -174,6 +191,12 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
         if (!chronicleTask.IsCompletedSuccessfully || display is null)
         {
+            // Observed: a failed read is shown and logged once, never rethrown on the finalizer thread.
+            if (chronicleTask.Exception is { } failure && !loadFailureLogged)
+            {
+                loadFailureLogged = true;
+                Log.Warning($"[RimworldStatistics] The colony chronicle could not be read.\n{failure.GetBaseException()}");
+            }
             Widgets.Label(body, "RWS_Chronicle_LoadFailed".Translate());
             return;
         }
@@ -181,18 +204,19 @@ internal sealed class Dialog_ColonyChronicle : Window
         DrawBody(body, display);
     }
 
-    private void StartLoad(string targetColonyKey, int? branchLeafIndex)
+    private void StartLoad(string targetColonyKey, ChronicleBranchKey? branch)
     {
         colonyKey = targetColonyKey;
-        requestedBranchLeafIndex = branchLeafIndex;
         RefreshColonyName();
         displayCache = null;
         tablePlan = null;
         scroll = Vector2.zero;
+        loadFailureLogged = false;
 
         var v = view;
         var includeDev = ProfileService.Options.IncludeDevMode;
-        chronicleTask = Task.Run(() => ProfileService.Session.ReadColonyChronicle(v, targetColonyKey, branchLeafIndex, includeDev));
+        var session = ProfileService.Session;
+        chronicleTask = Task.Run(() => session.ReadColonyChronicle(v, targetColonyKey, branch, includeDev));
     }
 
     private void RefreshColonyName()
@@ -221,9 +245,11 @@ internal sealed class Dialog_ColonyChronicle : Window
         var options = new List<FloatMenuOption>(chronicle.Branches.Count);
         foreach (var b in chronicle.Branches)
         {
-            var idx = b.LeafNodeIndex;
+            var key = b.Key;
             var label = FormatBranchOptionLabel(b);
-            options.Add(new FloatMenuOption(label, () => StartLoad(colonyKey, idx)));
+            if (b.LeafNodeIndex == chronicle.SelectedLeafNodeIndex)
+                label = "✓ " + label;
+            options.Add(new FloatMenuOption(label, () => StartLoad(colonyKey, key)));
         }
         if (options.Count > 0)
             Find.WindowStack.Add(new FloatMenu(options));
@@ -300,9 +326,9 @@ internal sealed class Dialog_ColonyChronicle : Window
         var tableTotalHeight = HeaderRowHeight + tableBodyHeight + 8f;
 
         var undatedHeight = 0f;
+        var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
         if (display.UndatedLines.Length > 0)
         {
-            var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
             var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
             var linesH = display.UndatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
             undatedHeight = 28f + 14f + subtitleH + linesH + 8f;
@@ -313,18 +339,36 @@ internal sealed class Dialog_ColonyChronicle : Window
         var viewRect = new Rect(0f, 0f, viewWidth, viewHeight);
 
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        var cy = 0f;
+        try
+        {
+            var cy = 0f;
 
-        // Summary & notice card.
-        var summaryRect = new Rect(0f, cy, innerWidth, summaryHeight);
-        Widgets.DrawBoxSolidWithOutline(summaryRect,
-            new Color(0.14f, 0.16f, 0.19f, 0.85f),
-            new Color(0.38f, 0.52f, 0.66f, 0.55f));
-        Widgets.Label(new Rect(8f, cy + 6f, innerWidth - 16f, summaryHeight - 12f), summaryBlock);
-        cy += summaryHeight + 8f;
+            // Summary & notice card.
+            var summaryRect = new Rect(0f, cy, innerWidth, summaryHeight);
+            Widgets.DrawBoxSolidWithOutline(summaryRect,
+                new Color(0.14f, 0.16f, 0.19f, 0.85f),
+                new Color(0.38f, 0.52f, 0.66f, 0.55f));
+            Widgets.Label(new Rect(8f, cy + 6f, innerWidth - 16f, summaryHeight - 12f), summaryBlock);
+            cy += summaryHeight + 8f;
 
-        // Table header.
-        var widths = tablePlan.Widths;
+            cy = DrawTable(display, cy, innerWidth, outRect.height);
+
+            // Separate undated traces section so undated evidence never receives a fabricated day.
+            if (display.UndatedLines.Length > 0)
+                DrawUndated(display, cy, innerWidth, subtitle);
+        }
+        finally
+        {
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+            Widgets.EndScrollView();
+        }
+    }
+
+    private float DrawTable(ChronicleDisplayCache display, float cy, float innerWidth, float viewportHeight)
+    {
+        var plan = tablePlan!;
+        var widths = plan.Widths;
         string[] headers =
         [
             "RWS_Chronicle_ColTime".Translate(),
@@ -333,8 +377,6 @@ internal sealed class Dialog_ColonyChronicle : Window
             "RWS_Chronicle_ColEvidence".Translate(),
         ];
 
-        var prevAnchor = Text.Anchor;
-        var prevColor = GUI.color;
         GUI.color = new Color(0.78f, 0.80f, 0.84f);
         Text.Anchor = TextAnchor.MiddleLeft;
         var hx = 0f;
@@ -347,9 +389,9 @@ internal sealed class Dialog_ColonyChronicle : Window
                 TooltipHandler.TipRegion(cell, headers[c]);
             hx += widths[c];
         }
-        Widgets.DrawBoxSolid(new Rect(0f, cy + HeaderRowHeight - 1f, tablePlan.TotalWidth, 1f), new Color(1f, 1f, 1f, 0.15f));
-        GUI.color = prevColor;
-        Text.Anchor = prevAnchor;
+        Widgets.DrawBoxSolid(new Rect(0f, cy + HeaderRowHeight - 1f, plan.TotalWidth, 1f), new Color(1f, 1f, 1f, 0.15f));
+        GUI.color = Color.white;
+        Text.Anchor = TextAnchor.UpperLeft;
         cy += HeaderRowHeight;
 
         if (display.Rows.Length == 0)
@@ -357,105 +399,93 @@ internal sealed class Dialog_ColonyChronicle : Window
             GUI.color = new Color(0.72f, 0.75f, 0.80f);
             Widgets.Label(new Rect(4f, cy + 6f, innerWidth - 8f, 24f), "RWS_Chronicle_Empty".Translate());
             GUI.color = Color.white;
-            cy += 32f;
-        }
-        else
-        {
-            var viewportTop = scroll.y - cy;
-            var viewportBottom = scroll.y + outRect.height - cy;
-            var firstRow = Math.Max(0, (int)Math.Floor(viewportTop / RowHeight) - 1);
-            var lastRow = Math.Min(display.Rows.Length - 1, (int)Math.Ceiling(viewportBottom / RowHeight) + 1);
-
-            for (var i = firstRow; i <= lastRow; i++)
-            {
-                var r = display.Rows[i];
-                var ry = cy + i * RowHeight;
-                var rowRect = new Rect(0f, ry, tablePlan.TotalWidth, RowHeight);
-
-                if (i % 2 == 1)
-                    Widgets.DrawHighlight(rowRect, 0.22f);
-                var chartable = r.ChartTargets.Length > 0;
-                if (chartable)
-                    Widgets.DrawHighlightIfMouseover(rowRect);
-                var hovered = chartable && Mouse.IsOver(rowRect);
-
-                Text.Anchor = TextAnchor.MiddleLeft;
-                var rx = 0f;
-
-                // Time column.
-                var timeCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[0] - 8f), RowHeight);
-                Widgets.Label(timeCell, r.TimeText.Truncate(timeCell.width));
-                rx += widths[0];
-
-                // Kind column.
-                var kindCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[1] - 8f), RowHeight);
-                GUI.color = r.KindColor;
-                Widgets.Label(kindCell, r.KindText.Truncate(kindCell.width));
-                GUI.color = Color.white;
-                rx += widths[1];
-
-                // Event column (+ mini chart icon when chartable).
-                var iconReserve = chartable ? 18f : 0f;
-                var eventWidth = Math.Max(0f, widths[2] - 8f - iconReserve);
-                var eventCell = new Rect(rx + 4f, ry, eventWidth, RowHeight);
-                Widgets.Label(eventCell, r.EventText.Truncate(eventCell.width));
-                if (chartable)
-                {
-                    var iconRect = new Rect(rx + widths[2] - 18f, ry + (RowHeight - 12f) * 0.5f, 12f, 12f);
-                    MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
-                }
-                rx += widths[2];
-
-                // Evidence column.
-                var evCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[3] - 8f), RowHeight);
-                GUI.color = r.Entry.Coverage == MetricCoverage.Partial
-                    ? new Color(0.92f, 0.79f, 0.52f)
-                    : new Color(0.82f, 0.85f, 0.90f);
-                Widgets.Label(evCell, r.EvidenceText.Truncate(evCell.width));
-                GUI.color = Color.white;
-
-                Text.Anchor = TextAnchor.UpperLeft;
-                TooltipHandler.TipRegion(rowRect, r.Tooltip);
-                if (chartable && Widgets.ButtonInvisible(rowRect))
-                    OpenEntryChart(r.ChartTargets);
-            }
-
-            cy += display.Rows.Length * RowHeight + 8f;
+            return cy + 32f + 8f;
         }
 
-        // Separate undated traces section so undated evidence never receives a fabricated day.
-        if (display.UndatedLines.Length > 0)
+        // Only the rows inside the scroll viewport are drawn.
+        var viewportTop = scroll.y - cy;
+        var viewportBottom = scroll.y + viewportHeight - cy;
+        var firstRow = Math.Max(0, (int)Math.Floor(viewportTop / RowHeight) - 1);
+        var lastRow = Math.Min(display.Rows.Length - 1, (int)Math.Ceiling(viewportBottom / RowHeight) + 1);
+
+        for (var i = firstRow; i <= lastRow; i++)
         {
-            var prevHeadingColor = GUI.color;
-            GUI.color = new Color(0.58f, 0.82f, 0.94f);
-            Widgets.Label(new Rect(0f, cy, innerWidth, 23f),
-                "RWS_Chronicle_UndatedTitle".Translate(display.UndatedLines.Length.ToString(Inv)));
-            Widgets.DrawBoxSolid(new Rect(0f, cy + 23f, innerWidth, 1f), new Color(1f, 1f, 1f, 0.14f));
-            GUI.color = prevHeadingColor;
-            cy += 28f;
+            var r = display.Rows[i];
+            var ry = cy + i * RowHeight;
+            var rowRect = new Rect(0f, ry, plan.TotalWidth, RowHeight);
 
-            var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
-            var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
-            var linesH = display.UndatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
-            var cardH = 14f + subtitleH + linesH;
-            Widgets.DrawMenuSection(new Rect(0f, cy, innerWidth, cardH));
+            if (i % 2 == 1)
+                Widgets.DrawHighlight(rowRect, 0.22f);
+            var chartable = r.ChartTargets.Length > 0;
+            if (chartable)
+                Widgets.DrawHighlightIfMouseover(rowRect);
+            var hovered = chartable && Mouse.IsOver(rowRect);
 
-            var uy = cy + 7f;
-            GUI.color = new Color(0.76f, 0.79f, 0.84f);
-            Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), subtitle);
+            Text.Anchor = TextAnchor.MiddleLeft;
+            var rx = 0f;
+
+            var timeCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[0] - 8f), RowHeight);
+            Widgets.Label(timeCell, r.TimeText.Truncate(timeCell.width));
+            rx += widths[0];
+
+            var kindCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[1] - 8f), RowHeight);
+            GUI.color = r.KindColor;
+            Widgets.Label(kindCell, r.KindText.Truncate(kindCell.width));
             GUI.color = Color.white;
-            uy += subtitleH;
+            rx += widths[1];
 
-            foreach (var line in display.UndatedLines)
+            var iconReserve = chartable ? 18f : 0f;
+            var eventCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[2] - 8f - iconReserve), RowHeight);
+            Widgets.Label(eventCell, r.EventText.Truncate(eventCell.width));
+            if (chartable)
             {
-                var bullet = "• " + line;
-                var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 20f) + 2f);
-                Widgets.Label(new Rect(10f, uy, innerWidth - 20f, lh), bullet);
-                uy += lh;
+                var iconRect = new Rect(rx + widths[2] - 18f, ry + (RowHeight - 12f) * 0.5f, 12f, 12f);
+                MetricVisualStyle.DrawMiniChartIcon(iconRect, hovered);
             }
+            rx += widths[2];
+
+            var evCell = new Rect(rx + 4f, ry, Math.Max(0f, widths[3] - 8f), RowHeight);
+            GUI.color = r.Entry.Coverage == MetricCoverage.Partial
+                ? new Color(0.92f, 0.79f, 0.52f)
+                : new Color(0.82f, 0.85f, 0.90f);
+            Widgets.Label(evCell, r.EvidenceText.Truncate(evCell.width));
+            GUI.color = Color.white;
+
+            Text.Anchor = TextAnchor.UpperLeft;
+            TooltipHandler.TipRegion(rowRect, r.Tooltip);
+            if (chartable && Widgets.ButtonInvisible(rowRect))
+                OpenEntryChart(r.ChartTargets);
         }
 
-        Widgets.EndScrollView();
+        return cy + display.Rows.Length * RowHeight + 8f;
+    }
+
+    private static void DrawUndated(ChronicleDisplayCache display, float cy, float innerWidth, string subtitle)
+    {
+        GUI.color = new Color(0.58f, 0.82f, 0.94f);
+        Widgets.Label(new Rect(0f, cy, innerWidth, 23f),
+            "RWS_Chronicle_UndatedTitle".Translate(display.UndatedLines.Length.ToString(Inv)));
+        Widgets.DrawBoxSolid(new Rect(0f, cy + 23f, innerWidth, 1f), new Color(1f, 1f, 1f, 0.14f));
+        GUI.color = Color.white;
+        cy += 28f;
+
+        var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
+        var linesH = display.UndatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
+        Widgets.DrawMenuSection(new Rect(0f, cy, innerWidth, 14f + subtitleH + linesH));
+
+        var uy = cy + 7f;
+        GUI.color = new Color(0.76f, 0.79f, 0.84f);
+        Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), subtitle);
+        GUI.color = Color.white;
+        uy += subtitleH;
+
+        foreach (var line in display.UndatedLines)
+        {
+            var bullet = "• " + line;
+            var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 20f) + 2f);
+            Widgets.Label(new Rect(10f, uy, innerWidth - 20f, lh), bullet);
+            uy += lh;
+        }
     }
 
     private void OpenEntryChart(ChartTarget[] targets)
@@ -501,16 +531,18 @@ internal sealed class Dialog_ColonyChronicle : Window
             filtered = filtered.Reverse();
         var rows = filtered.Select(e => BuildEntryRow(e, researchDef)).ToArray();
 
-        var activeBranch = chronicle.Branches.FirstOrDefault(b => b.LeafNodeIndex == chronicle.SelectedLeafNodeIndex)
-            ?? chronicle.Branches.FirstOrDefault();
-        var activeBranchLabel = activeBranch is not null ? FormatBranchOptionLabel(activeBranch) : Dialog_RimworldStatistics.Dash;
+        var activeBranchLabel = chronicle.SelectedBranch is { } activeBranch
+            ? FormatBranchOptionLabel(activeBranch)
+            : Dialog_RimworldStatistics.Dash;
 
         var summaryText = (string)"RWS_Chronicle_SummaryLine".Translate(
             rows.Length.ToString(Inv),
             total.ToString(Inv),
             chronicle.BranchNodeChain.Count.ToString(Inv));
 
-        var notices = new List<string>(3);
+        var notices = new List<string>(4);
+        if (chronicle.RequestedBranchMissing)
+            notices.Add((string)"RWS_Chronicle_BranchMissingNotice".Translate());
         if (chronicle.OtherBranchEndingCount > 0)
             notices.Add((string)"RWS_Chronicle_OtherBranchEndingsNotice".Translate(chronicle.OtherBranchEndingCount.ToString(Inv)));
         if (chronicle.AmbiguousBranchEndingCount > 0)
@@ -584,7 +616,8 @@ internal sealed class Dialog_ColonyChronicle : Window
             tip.Append('\n').Append((string)"RWS_Chronicle_TipSaveSingle".Translate(singleSave));
 
         if (e.RealTimeUtc is { } utc)
-            tip.Append('\n').Append((string)"RWS_Chronicle_TipRealTime".Translate(utc.ToString("yyyy-MM-dd HH:mm", Inv)));
+            tip.Append('\n').Append((string)"RWS_Chronicle_TipRealTime".Translate(
+                DateTime.SpecifyKind(utc, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", Inv)));
 
         if (targets.Length > 0)
             tip.Append("\n\n").Append((string)"RWS_Chart_OpenTip".Translate());
@@ -604,6 +637,7 @@ internal sealed class Dialog_ColonyChronicle : Window
                     : typeName;
 
                 var parts = new List<string>(4) { head };
+                var showsDeparted = e.DepartedCount is > 0;
                 if (e.DepartedCount is > 0 and { } dep)
                     parts.Add((string)"RWS_Chronicle_EndingDeparted".Translate(dep.ToString(Inv)));
                 if (e.PartyAtEnding is > 0 and { } party)
@@ -616,7 +650,7 @@ internal sealed class Dialog_ColonyChronicle : Window
                     text += " " + (string)"RWS_Chronicle_EndingDevTag".Translate();
                 else if (e.DevMode is null)
                     text += " " + (string)"RWS_Chronicle_EndingDevUnknown".Translate();
-                return (text, null);
+                return (text, showsDeparted ? (string)"RWS_Chronicle_TipDepartedMax".Translate() : null);
             }
 
             case ChronicleEntryKind.Milestone:
@@ -651,7 +685,7 @@ internal sealed class Dialog_ColonyChronicle : Window
                 var chunks = new List<string>(e.IntervalFacts.Count);
                 foreach (var fact in e.IntervalFacts)
                 {
-                    var mLabel = ResolveMetricLabel(fact.MetricKey);
+                    var mLabel = FactLabel(fact);
                     var sign = fact.Delta >= 0 ? "+" : "";
                     var numText = Math.Abs(fact.Delta - Math.Round(fact.Delta)) < 1e-6
                         ? ((long)Math.Round(fact.Delta)).ToString("N0", Inv)
@@ -676,6 +710,10 @@ internal sealed class Dialog_ColonyChronicle : Window
                             Dialog_RimworldStatistics.Days(e.EndTick)),
                     ChronicleGapKind.LiveRecordingStartedLateOrReset =>
                         (string)"RWS_Chronicle_Gap_LateLiveStart".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
+                    ChronicleGapKind.IntervalNotCounted =>
+                        (string)"RWS_Chronicle_Gap_NotCounted".Translate(
+                            Dialog_RimworldStatistics.Days(e.StartTick),
+                            Dialog_RimworldStatistics.Days(e.EndTick)),
                     ChronicleGapKind.ArchivedMetricsUnavailable =>
                         (string)"RWS_Chronicle_Gap_ArchiveUnavailable".Translate(Dialog_RimworldStatistics.Days(e.EndTick)),
                     ChronicleGapKind.ResearchKeyCapReached =>
@@ -725,6 +763,20 @@ internal sealed class Dialog_ColonyChronicle : Window
         return (defKey, true);
     }
 
+    /// <summary>
+    /// The label of one interval change. Two live totals have chronicle labels of their own (their statistic is named after
+    /// its breakdown), and the game's own counters say so, so they are never mistaken for the live totals.
+    /// </summary>
+    private string FactLabel(ChronicleIntervalFact fact) => fact.MetricKey switch
+    {
+        HealthDeathFamily.DeathsByRaid => "RWS_Chronicle_Fact_ColonistDeaths".Translate(),
+        RaidFamily.ByArrivalMode => "RWS_Chronicle_Fact_Raids".Translate(),
+        BasicMetrics.Killed => "RWS_Chronicle_Fact_VanillaDeaths".Translate(),
+        BasicMetrics.Raids => "RWS_Chronicle_Fact_VanillaRaids".Translate(),
+        BasicMetrics.LastWealth => "RWS_Chronicle_Fact_Wealth".Translate(),
+        _ => ResolveMetricLabel(fact.MetricKey),
+    };
+
     private string ResolveMetricLabel(string metricKey)
     {
         if (BasicMetrics.Contains(metricKey))
@@ -747,7 +799,7 @@ internal sealed class Dialog_ColonyChronicle : Window
             foreach (var f in e.IntervalFacts)
             {
                 if (MetricLookup.IsKnownKey(view, f.MetricKey))
-                    list.Add(new ChartTarget(f.MetricKey, ResolveMetricLabel(f.MetricKey)));
+                    list.Add(new ChartTarget(f.MetricKey, FactLabel(f)));
             }
             return list.ToArray();
         }

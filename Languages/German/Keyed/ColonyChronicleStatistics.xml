@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>Kolonie-Chronik</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>Zeigt entlang eines einzigen Spielstand-Zweigs die bestätigten Spielenden, Meilensteine, abgeschlossenen Forschungen, bestätigten Intervalle und Aufzeichnungshinweise dieser Kolonie (nur lesen). Nichts wird geschätzt, und Zweige werden nie zusammengerechnet.</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>Kolonie-Chronik · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>Kolonie wechseln…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>Zweig: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>Tag {0} · {1} (repräsentativ)</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>Tag {0} · {1} (anderer Zweig)</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>Tag {0} · {1} (Zweig nach Neuladen)</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>Tag {0} · {1} (übernommener Prüfpunkt)</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>Tag {0} · {1} (unbewiesener Eintrag)</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>(keine Speicherdatei)</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>Der zuvor gewählte Zweig wurde nicht wiedergefunden; der Standardzweig wird angezeigt.</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>Anzeigen: {0} ({1})</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>Alles</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>Spielenden und Meilensteine</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>Intervalle und Aufzeichnungshinweise</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>Forschung</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>Älteste zuerst</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>Neueste zuerst</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>Die Chronik konnte nicht gelesen werden. Fehler werden ins Protokoll geschrieben.</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>Keine datierten Einträge passen zu diesem Zweig und Filter.</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>{0} von {1} Einträgen angezeigt · {2} Einträge in diesem Zweig</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>{0} Spielenden fanden in anderen Zweigen statt und werden hier nicht angezeigt.</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>{0} Spielenden lassen sich noch keinem einzelnen Zweig zuordnen und werden hier nicht angezeigt.</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>{0} Einträge sind ausgelassen, damit die Liste überschaubar bleibt (zuerst die spätesten Forschungen, dann die ältesten Intervalle). Spielenden, Meilensteine und Aufzeichnungshinweise werden vorrangig behalten.</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>Spielzeit</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>Art</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>Ereignis</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>Beleg</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>Tag {0}</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>Tag {0} (Stichprobe)</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>Tag {0} – {1}</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>Spielende</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>Meilenstein</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>Forschung</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>Intervall</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>Aufzeichnungshinweis</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>Im Spiel aufgezeichnet</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>Prüfpunkt</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>Zähler des Spiels</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>Verlaufsgrafik im Spielstand</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>Liste der Spielenden im Spielstand</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>Spielstand-Angaben</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>Spur vor der Installation</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>Spur in einer Speicherdatei</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0} (Nr. {1})</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>{0} abgereist</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>{0} Teilnehmer</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>Kolonistentode bis dahin: {0}</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>(Entwicklermodus)</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>(Entwicklermodus unbekannt)</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>Wurde dieses Spielende mehrfach aufgezeichnet, wird die größte Zahl Abgereister angezeigt.</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>Erstes neues Koloniemitglied</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>Erster Überfall</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>Erster Kolonistentod</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>Erste Forschung abgeschlossen</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>Vermögen von 100.000 erreicht</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>Vermögen von 1.000.000 erreicht</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>10 Kolonisten erreicht</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>Höchstvermögen: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>Höchstvermögen</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>Abgeschlossen: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>Dieses Forschungsprojekt ist derzeit nicht geladen; der gespeicherte Name wird angezeigt.</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>Der Prüfpunkt von Tag {0} verweist auf einen Vorgänger, der nicht aufgezeichnet ist; der frühere Verlauf dieses Zweigs ist unvollständig.</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>Der Spielstand von Tag {0} hat keinen Prüfpunkt (vor dem Hinzufügen dieses MODs oder bei ausgeschalteter Aufzeichnung gespeichert); seine Stelle im Stammbaum ist nicht bewiesen.</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>Kein neuer Prüfpunkt von Tag {0} bis Tag {1}: Der spätere Spielstand hat den älteren unverändert übernommen.</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>Einige im Spiel aufgezeichnete Statistiken beginnen erst an Tag {0} (MOD mitten im Spiel hinzugefügt, Statistik eingeschaltet oder Aufzeichnung neu gestartet).</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>Zwischen Tag {0} und Tag {1} wurden einige laufende Summen nicht lückenlos aufgezeichnet; für sie wird keine Änderung angezeigt.</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>Die genauen Prüfpunktwerte von Tag {0} wurden archiviert, und das Archiv konnte nicht gelesen werden.</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>Die Liste abgeschlossener Forschungen hat ihre Höchstgröße erreicht; spätere Abschlüsse fehlen.</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>Spielumgebung geändert: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>Spielversion</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>Mod-Liste</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>aktive DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>Der Tag stammt aus der Verlaufsgrafik im Spielstand, die einen Messpunkt pro halbem Tag behält; der genaue Zeitpunkt ist nicht aufgezeichnet.</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>Änderung zwischen zwei direkt verbundenen Prüfpunkten. Wann innerhalb dieser Spanne jede Änderung geschah, ist nicht bekannt.</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>Spielstände: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>Spielstand: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>Aufgezeichnet (Ortszeit): {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>Diagramm öffnen: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>Undatierte Spuren ({0})</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>Für diese Spielenden gibt es Belege, aber kein Spieltag lässt sich für sie beweisen; deshalb stehen sie nicht in der Zeitleiste.</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>Kolonistentode</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>Überfälle</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>Kolonistentode (Zähler des Spiels)</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>Feindliche Überfälle (Zähler des Spiels)</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>Vermögen</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

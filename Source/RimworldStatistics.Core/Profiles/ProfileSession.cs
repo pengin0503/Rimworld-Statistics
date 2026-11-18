@@ -352,14 +352,22 @@ public sealed class ProfileSession
         return ColonySummaryReport.Build(view, colonyKey, lineage);
     }
 
+    /// <summary>
+    /// The evidence-based chronicle of one colony (V2-A) on <paramref name="branch"/> (the representative line when null or
+    /// not found). The lineage inputs and the colony's ending evidence are copied together under the lock.
+    /// </summary>
     public ColonyChronicle? ReadColonyChronicle(
         StatsView view,
         string colonyKey,
-        int? selectedLeafNodeIndex = null,
+        ChronicleBranchKey? branch = null,
         bool includeDevMode = false)
     {
-        var lineage = ReadColonySaveLineage(view, colonyKey);
-        return ColonyChronicle.Build(view, colonyKey, lineage, selectedLeafNodeIndex, includeDevMode);
+        var (captured, evidence) = Read(profile =>
+            (ColonySaveLineage.Capture(profile, view.Colonies, colonyKey), ColonyChronicle.Capture(view, colonyKey)));
+        if (evidence is null)
+            return null;
+        var lineage = captured is null ? ColonySaveLineage.Empty(colonyKey) : ColonySaveLineage.BuildFromCaptured(captured, _archive);
+        return ColonyChronicle.Build(view, evidence, lineage, branch, includeDevMode);
     }
 
     public MetricHistory ReadChartHistory(StatsView view, string colonyKey, MetricDefinition definition, string savesDirectory)

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>Colony chronicle</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>Show this colony's confirmed endings, milestones, completed research, verified intervals and recording notes along one save branch (read-only). Nothing is guessed, and branches are never added together.</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>Colony chronicle · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>Switch colony…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>Branch: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>Day {0} · {1} (representative)</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>Day {0} · {1} (other branch)</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>Day {0} · {1} (branch after a reload)</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>Day {0} · {1} (carried checkpoint)</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>Day {0} · {1} (unproven record)</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>(no save file)</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>The branch picked earlier could not be found again, so the default branch is shown.</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>Show: {0} ({1})</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>Everything</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>Endings and milestones</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>Intervals and recording notes</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>Research</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>Oldest first</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>Newest first</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>The chronicle could not be read. Errors are written to the log.</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>No dated entries match this branch and filter.</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>Showing {0} of {1} entries · {2} records on this branch</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>{0} endings happened on other branches and are not shown here.</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>{0} endings cannot be placed on a single branch yet and are not shown here.</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>{0} entries are left out to keep the list manageable (the latest research first, then the oldest intervals). Endings, milestones and recording notes are kept first.</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>In-game time</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>Type</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>Event</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>Evidence</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>Day {0}</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>Day {0} (sampled)</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>Day {0} – {1}</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>Ending</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>Milestone</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>Research</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>Interval</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>Recording note</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>Recorded in play</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>Checkpoint</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>Game's own counters</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>Save history graph</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>Ending list in the save</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>Save details</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>Pre-install trace</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>Trace in a save file</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0} (#{1})</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>{0} departed</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>{0} took part</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>colonist deaths by then: {0}</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>(dev mode)</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>(dev mode unknown)</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>If this ending was recorded more than once, the largest departed count is shown.</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>First new member joined</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>First raid</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>First colonist death</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>First research completed</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>Wealth reached 100,000</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>Wealth reached 1,000,000</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>10 colonists reached</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>Peak wealth: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>Peak wealth</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>Completed: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>This research project is not loaded now, so its saved name is shown.</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>The checkpoint at day {0} names a parent that is not in the records, so this branch's earlier history is incomplete.</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>The save at day {0} has no checkpoint (saved before this MOD was added, or with recording off), so its place in the lineage is not proven.</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>No new checkpoint from day {0} to day {1}: the later save kept the older one unchanged.</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>Some statistics recorded in play only start at day {0} (MOD added mid-game, a statistic turned on, or its recording restarted).</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>Between day {0} and day {1} some running totals were not recorded without interruption, so no change is shown for them.</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>The detailed checkpoint values of day {0} were archived, and the archive could not be read.</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>The list of completed research reached its size limit; later completions are missing.</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>Game environment changed: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>game version</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>MOD list</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>active DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>The day comes from the save's history graph, which keeps one sample every half day; the exact moment is not recorded.</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>Change between two directly linked checkpoints. When within this span each change happened is not known.</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>Saves: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>Save: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>Recorded (local time): {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>Open chart: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>Undated traces ({0})</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>There is evidence that these endings happened, but no in-game day can be proven for them, so they are kept off the timeline.</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>Colonist deaths</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>Raids</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>Colonist deaths (game counter)</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>Enemy raids (game counter)</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>Wealth</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

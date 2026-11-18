@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chronicle_Open>Хроника поселения</RWS_Chronicle_Open>
+  <RWS_Chronicle_OpenTip>Показывает вдоль одной ветви сохранений подтверждённые концовки, вехи, завершённые исследования, проверенные интервалы и примечания о записи этого поселения (только чтение). Ничего не додумывается, и ветви никогда не суммируются.</RWS_Chronicle_OpenTip>
+  <RWS_Chronicle_Title>Хроника поселения · {0}</RWS_Chronicle_Title>
+  <RWS_Chronicle_SwitchColony>Сменить поселение…</RWS_Chronicle_SwitchColony>
+  <RWS_Chronicle_BranchButton>Ветвь: {0}</RWS_Chronicle_BranchButton>
+  <RWS_Chronicle_BranchRep>День {0} · {1} (основная)</RWS_Chronicle_BranchRep>
+  <RWS_Chronicle_BranchAlt>День {0} · {1} (другая ветвь)</RWS_Chronicle_BranchAlt>
+  <RWS_Chronicle_BranchRewind>День {0} · {1} (ветвь после перезагрузки)</RWS_Chronicle_BranchRewind>
+  <RWS_Chronicle_BranchCarried>День {0} · {1} (перенесённая контрольная точка)</RWS_Chronicle_BranchCarried>
+  <RWS_Chronicle_BranchUnproven>День {0} · {1} (недоказанная запись)</RWS_Chronicle_BranchUnproven>
+  <RWS_Chronicle_BranchNoFile>(нет файла сохранения)</RWS_Chronicle_BranchNoFile>
+  <RWS_Chronicle_BranchMissingNotice>Выбранную ранее ветвь не удалось найти снова, поэтому показана ветвь по умолчанию.</RWS_Chronicle_BranchMissingNotice>
+  <RWS_Chronicle_FilterButton>Показать: {0} ({1})</RWS_Chronicle_FilterButton>
+  <RWS_Chronicle_FilterAll>Всё</RWS_Chronicle_FilterAll>
+  <RWS_Chronicle_FilterHighlights>Концовки и вехи</RWS_Chronicle_FilterHighlights>
+  <RWS_Chronicle_FilterIntervalsAndGaps>Интервалы и примечания о записи</RWS_Chronicle_FilterIntervalsAndGaps>
+  <RWS_Chronicle_FilterResearch>Исследования</RWS_Chronicle_FilterResearch>
+  <RWS_Chronicle_OrderOldest>Сначала старые</RWS_Chronicle_OrderOldest>
+  <RWS_Chronicle_OrderNewest>Сначала новые</RWS_Chronicle_OrderNewest>
+  <RWS_Chronicle_LoadFailed>Не удалось прочитать хронику. Ошибки записываются в журнал.</RWS_Chronicle_LoadFailed>
+  <RWS_Chronicle_Empty>Нет датированных записей для этой ветви и фильтра.</RWS_Chronicle_Empty>
+  <RWS_Chronicle_SummaryLine>Показано {0} из {1} записей · {2} записей в этой ветви</RWS_Chronicle_SummaryLine>
+  <RWS_Chronicle_OtherBranchEndingsNotice>Концовки ({0}) произошли в других ветвях и здесь не показаны.</RWS_Chronicle_OtherBranchEndingsNotice>
+  <RWS_Chronicle_AmbiguousEndingsNotice>Концовки ({0}) пока нельзя отнести к одной ветви, поэтому здесь они не показаны.</RWS_Chronicle_AmbiguousEndingsNotice>
+  <RWS_Chronicle_OmittedCapNotice>Пропущено записей: {0}, чтобы список оставался удобным (сначала самые поздние исследования, затем самые старые интервалы). Концовки, вехи и примечания о записи сохраняются в первую очередь.</RWS_Chronicle_OmittedCapNotice>
+  <RWS_Chronicle_ColTime>Игровое время</RWS_Chronicle_ColTime>
+  <RWS_Chronicle_ColKind>Тип</RWS_Chronicle_ColKind>
+  <RWS_Chronicle_ColEvent>Событие</RWS_Chronicle_ColEvent>
+  <RWS_Chronicle_ColEvidence>Основание</RWS_Chronicle_ColEvidence>
+  <RWS_Chronicle_DayExact>День {0}</RWS_Chronicle_DayExact>
+  <RWS_Chronicle_DaySample>День {0} (выборка)</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DayInterval>Дни {0} – {1}</RWS_Chronicle_DayInterval>
+  <RWS_Chronicle_Kind_Ending>Концовка</RWS_Chronicle_Kind_Ending>
+  <RWS_Chronicle_Kind_Milestone>Веха</RWS_Chronicle_Kind_Milestone>
+  <RWS_Chronicle_Kind_Research>Исследование</RWS_Chronicle_Kind_Research>
+  <RWS_Chronicle_Kind_Interval>Интервал</RWS_Chronicle_Kind_Interval>
+  <RWS_Chronicle_Kind_Gap>Примечание о записи</RWS_Chronicle_Kind_Gap>
+  <RWS_Chronicle_Evidence_Live>Записано во время игры</RWS_Chronicle_Evidence_Live>
+  <RWS_Chronicle_Evidence_Checkpoint>Контрольная точка</RWS_Chronicle_Evidence_Checkpoint>
+  <RWS_Chronicle_Evidence_VanillaInterval>Счётчики игры</RWS_Chronicle_Evidence_VanillaInterval>
+  <RWS_Chronicle_Evidence_HistoryGraph>График истории в сохранении</RWS_Chronicle_Evidence_HistoryGraph>
+  <RWS_Chronicle_Evidence_Recovered>Список концовок в сохранении</RWS_Chronicle_Evidence_Recovered>
+  <RWS_Chronicle_Evidence_Metadata>Сведения о сохранении</RWS_Chronicle_Evidence_Metadata>
+  <RWS_Chronicle_Evidence_SeededTrace>След до установки</RWS_Chronicle_Evidence_SeededTrace>
+  <RWS_Chronicle_Evidence_SaveTrace>След в файле сохранения</RWS_Chronicle_Evidence_SaveTrace>
+  <RWS_Chronicle_EndingDetail>{0} (№ {1})</RWS_Chronicle_EndingDetail>
+  <RWS_Chronicle_EndingDeparted>улетело: {0}</RWS_Chronicle_EndingDeparted>
+  <RWS_Chronicle_EndingParty>участников: {0}</RWS_Chronicle_EndingParty>
+  <RWS_Chronicle_EndingDeathsAt>смертей поселенцев к тому моменту: {0}</RWS_Chronicle_EndingDeathsAt>
+  <RWS_Chronicle_EndingDevTag>(режим разработчика)</RWS_Chronicle_EndingDevTag>
+  <RWS_Chronicle_EndingDevUnknown>(режим разработчика неизвестен)</RWS_Chronicle_EndingDevUnknown>
+  <RWS_Chronicle_TipDepartedMax>Если эта концовка записана несколько раз, показано наибольшее число улетевших.</RWS_Chronicle_TipDepartedMax>
+  <RWS_Chronicle_Milestone_FirstJoin>Первый новый участник колонии</RWS_Chronicle_Milestone_FirstJoin>
+  <RWS_Chronicle_Milestone_FirstRaid>Первый налёт</RWS_Chronicle_Milestone_FirstRaid>
+  <RWS_Chronicle_Milestone_FirstDeath>Первая смерть поселенца</RWS_Chronicle_Milestone_FirstDeath>
+  <RWS_Chronicle_Milestone_FirstResearch>Первое завершённое исследование</RWS_Chronicle_Milestone_FirstResearch>
+  <RWS_Chronicle_Milestone_Wealth100K>Богатство достигло 100 000</RWS_Chronicle_Milestone_Wealth100K>
+  <RWS_Chronicle_Milestone_Wealth1M>Богатство достигло 1 000 000</RWS_Chronicle_Milestone_Wealth1M>
+  <RWS_Chronicle_Milestone_Colonists10>Достигнуто 10 поселенцев</RWS_Chronicle_Milestone_Colonists10>
+  <RWS_Chronicle_Milestone_WealthPeak>Пиковое богатство: {0}</RWS_Chronicle_Milestone_WealthPeak>
+  <RWS_Chronicle_Milestone_WealthPeakNoVal>Пиковое богатство</RWS_Chronicle_Milestone_WealthPeakNoVal>
+  <RWS_Chronicle_ResearchDone>Завершено: {0}</RWS_Chronicle_ResearchDone>
+  <RWS_Chronicle_ResearchUnloadedNote>Этот исследовательский проект сейчас не загружен, поэтому показано сохранённое название.</RWS_Chronicle_ResearchUnloadedNote>
+  <RWS_Chronicle_Gap_MissingParent>Контрольная точка дня {0} ссылается на предка, которого нет в записях, поэтому более ранняя история этой ветви неполна.</RWS_Chronicle_Gap_MissingParent>
+  <RWS_Chronicle_Gap_UnprovenSave>У сохранения дня {0} нет контрольной точки (сделано до добавления этого мода или с выключенной записью), поэтому его место в родословной не доказано.</RWS_Chronicle_Gap_UnprovenSave>
+  <RWS_Chronicle_Gap_CarriedSpan>С дня {0} по день {1} новых контрольных точек нет: следующее сохранение оставило старую без изменений.</RWS_Chronicle_Gap_CarriedSpan>
+  <RWS_Chronicle_Gap_LateLiveStart>Часть статистики, записываемой во время игры, начинается только с дня {0} (мод добавлен посреди игры, статистика включена или запись перезапущена).</RWS_Chronicle_Gap_LateLiveStart>
+  <RWS_Chronicle_Gap_NotCounted>Между днями {0} и {1} некоторые накопительные итоги записывались с перерывами, поэтому их изменение не показано.</RWS_Chronicle_Gap_NotCounted>
+  <RWS_Chronicle_Gap_ArchiveUnavailable>Подробные значения контрольной точки дня {0} были заархивированы, и архив не удалось прочитать.</RWS_Chronicle_Gap_ArchiveUnavailable>
+  <RWS_Chronicle_Gap_ResearchCap>Список завершённых исследований достиг предельного размера; более поздние завершения отсутствуют.</RWS_Chronicle_Gap_ResearchCap>
+  <RWS_Chronicle_Gap_EnvChanged>Игровая среда изменилась: {0}</RWS_Chronicle_Gap_EnvChanged>
+  <RWS_Chronicle_Env_Version>версия игры</RWS_Chronicle_Env_Version>
+  <RWS_Chronicle_Env_ModList>список модов</RWS_Chronicle_Env_ModList>
+  <RWS_Chronicle_Env_Dlc>активные DLC</RWS_Chronicle_Env_Dlc>
+  <RWS_Chronicle_TipHistorySample>День взят из графика истории в сохранении, где хранится одна точка на каждые полдня; точный момент не записан.</RWS_Chronicle_TipHistorySample>
+  <RWS_Chronicle_TipInterval>Изменение между двумя напрямую связанными контрольными точками. Когда именно внутри этого промежутка произошло каждое изменение, неизвестно.</RWS_Chronicle_TipInterval>
+  <RWS_Chronicle_TipSaves>Сохранения: {0} → {1}</RWS_Chronicle_TipSaves>
+  <RWS_Chronicle_TipSaveSingle>Сохранение: {0}</RWS_Chronicle_TipSaveSingle>
+  <RWS_Chronicle_TipRealTime>Записано (местное время): {0}</RWS_Chronicle_TipRealTime>
+  <RWS_Chronicle_OpenChartMenu>Открыть график: {0}</RWS_Chronicle_OpenChartMenu>
+  <RWS_Chronicle_UndatedTitle>Следы без даты ({0})</RWS_Chronicle_UndatedTitle>
+  <RWS_Chronicle_UndatedSubtitle>Есть свидетельства, что эти концовки произошли, но игровой день для них доказать нельзя, поэтому они не помещены на временную шкалу.</RWS_Chronicle_UndatedSubtitle>
+  <RWS_Chronicle_Fact_ColonistDeaths>Смерти поселенцев</RWS_Chronicle_Fact_ColonistDeaths>
+  <RWS_Chronicle_Fact_Raids>Налёты</RWS_Chronicle_Fact_Raids>
+  <RWS_Chronicle_Fact_VanillaDeaths>Смерти поселенцев (счётчик игры)</RWS_Chronicle_Fact_VanillaDeaths>
+  <RWS_Chronicle_Fact_VanillaRaids>Налёты врагов (счётчик игры)</RWS_Chronicle_Fact_VanillaRaids>
+  <RWS_Chronicle_Fact_Wealth>Богатство</RWS_Chronicle_Fact_Wealth>
+</LanguageData>

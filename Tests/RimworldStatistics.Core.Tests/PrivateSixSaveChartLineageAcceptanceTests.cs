@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -187,6 +188,87 @@ public sealed class PrivateSixSaveChartLineageAcceptanceTests
         Assert.Equal(new[] { MetricCoverage.Partial, MetricCoverage.Partial }, lineage.Skip(5).Select(p => p.Value!.Coverage));
 
         Assert.Equal(before, files.Select(Fingerprint).ToArray());
+    }
+
+    /// <summary>
+    /// The colony chronicle over the six originals: each branch is read from its own proven chain only. A's line starts
+    /// at its missing parent and holds no interval; E and F each end in the span their carried checkpoint did not record;
+    /// the checkpoint they both carried is the default end, since neither later save is proven to continue it alone.
+    /// Nothing is invented (the saves hold no ending), and reading a branch again gives the same entries.
+    /// </summary>
+    [Fact]
+    public void SuppliedSixOriginals_ChronicleKeepsEachBranchToItsOwnProvenChain()
+    {
+        var files = Originals();
+        var before = files.Select(Fingerprint).ToArray();
+
+        using var directory = new TempDir();
+        var session = Import(directory, Path.GetDirectoryName(files[0])!);
+        var view = session.GetView(new StatsOptions(), MetricDisplayPolicy.AllDetailsVisibleUnits);
+        var colony = Assert.Single(view.Colonies, c => c.Counted);
+        var ticks = session.Read(p => p.SaveObservations.Select(o => o.Values.TicksGame).Order().ToArray());
+
+        var watch = Stopwatch.StartNew();
+        var chronicle = session.ReadColonyChronicle(view, colony.Key);
+        var defaultMs = watch.ElapsedMilliseconds;
+        Assert.NotNull(chronicle);
+        Assert.False(chronicle!.RequestedBranchMissing);
+        Assert.Equal(4, chronicle.Branches.Count);
+        var representative = Assert.Single(chronicle.Branches, b => b.IsRepresentative);
+        Assert.Equal(SaveLineageNodeKind.Checkpoint, representative.Kind);
+        Assert.Equal(representative.LeafNodeIndex, chronicle.SelectedLeafNodeIndex);
+        Assert.InRange(representative.SaveTick, ticks[3] + 1, ticks[4] - 1);
+        Assert.Equal(new[] { ticks[4], ticks[5] }, chronicle.Branches
+            .Where(b => b.Kind == SaveLineageNodeKind.CarriedCheckpointSave).Select(b => b.SaveTick).Order());
+        var lineA = Assert.Single(chronicle.Branches, b => b.Kind == SaveLineageNodeKind.Checkpoint && !b.IsRepresentative);
+        Assert.Equal(ticks[0], lineA.SaveTick);
+
+        // Intervals only ever join two consecutive checkpoints of the line, B→C→D→(carried checkpoint).
+        var provenPairs = new[] { (ticks[1], ticks[2]), (ticks[2], ticks[3]), (ticks[3], representative.SaveTick) };
+        var branchMs = new List<long>();
+        foreach (var option in chronicle.Branches)
+        {
+            watch.Restart();
+            var branch = session.ReadColonyChronicle(view, colony.Key, option.Key)!;
+            branchMs.Add(watch.ElapsedMilliseconds);
+            Assert.False(branch.RequestedBranchMissing);
+            Assert.Equal(option.LeafNodeIndex, branch.SelectedLeafNodeIndex);
+            Assert.Equal(Keys(branch), Keys(session.ReadColonyChronicle(view, colony.Key, option.Key)!));
+
+            Assert.Equal(0, branch.OmittedEntryCount);
+            Assert.Empty(branch.UndatedTraces);
+            Assert.Equal(0, branch.OtherBranchEndingCount);
+            Assert.Equal(0, branch.AmbiguousBranchEndingCount);
+            Assert.DoesNotContain(branch.Entries, e => e.Kind == ChronicleEntryKind.Ending);
+            Assert.All(branch.Entries, e => Assert.InRange(e.StartTick, 0, e.EndTick));
+            Assert.All(branch.Entries, e => Assert.True(e.EndTick <= option.SaveTick));
+            Assert.Equal(branch.Entries.Select(e => e.EndTick).Order(), branch.Entries.Select(e => e.EndTick));
+
+            var root = option == lineA ? ticks[0] : ticks[1];
+            Assert.Equal(root, Assert.Single(branch.Entries, e => e.GapKind == ChronicleGapKind.MissingParentCheckpoint).EndTick);
+
+            var carried = branch.Entries.Where(e => e.GapKind == ChronicleGapKind.CarriedCheckpointUnrecordedSpan).ToArray();
+            if (option.Kind == SaveLineageNodeKind.CarriedCheckpointSave)
+                Assert.Equal((representative.SaveTick, option.SaveTick), (Assert.Single(carried).StartTick, carried[0].EndTick));
+            else
+                Assert.Empty(carried);
+
+            var intervals = branch.Entries.Where(e => e.Kind == ChronicleEntryKind.VerifiedInterval).ToArray();
+            if (option == lineA)
+                Assert.Empty(intervals);
+            else
+                Assert.NotEmpty(intervals);
+            Assert.All(intervals, e => Assert.Contains((e.StartTick, e.EndTick), provenPairs));
+            Assert.All(intervals, e => Assert.All(e.IntervalFacts, f =>
+                Assert.True(double.IsFinite(f.Delta) && (f.IsSignedDifference || f.Delta > 0))));
+        }
+        TestContext.Current.TestOutputHelper?.WriteLine(
+            $"chronicle: default {defaultMs} ms, per branch {string.Join(", ", branchMs)} ms");
+        Assert.All(branchMs, ms => Assert.InRange(ms, 0, 5000));
+
+        Assert.Equal(before, files.Select(Fingerprint).ToArray());
+
+        static string[] Keys(ColonyChronicle c) => c.Entries.Select(e => e.StableKey).ToArray();
     }
 
     private static string[] Originals()
