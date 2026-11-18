@@ -691,7 +691,7 @@ public static class DetailsTab
         tip.Append('\n');
         if (d.OwnerPackageId is { } owner)
         {
-            tip.Append((string)"RWS_Mod_Provider".Translate(MetricText.ModDisplayName(owner))).Append('\n');
+            tip.Append((string)"RWS_Mod_Provider".Translate(MetricText.ModDisplayName(owner, d.OwnerDisplayName))).Append('\n');
             if (!ModsConfig.IsActive(owner))
                 tip.Append((string)"RWS_Mod_SourceUnavailable".Translate()).Append('\n');
         }

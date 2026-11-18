@@ -12,6 +12,8 @@ public sealed record ModMetricDescriptor
 {
     public string ProviderId { get; init; } = "";
     public string OwnerPackageId { get; init; } = "";
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public string? OwnerDisplayName { get; init; }
     public string FamilyId { get; init; } = "";
     public string MetricName { get; init; } = "";
     public int Revision { get; init; } = 1;
@@ -39,6 +41,7 @@ public sealed record ModMetricDescriptor
 
     public bool IsValid()
         => ValidId(ProviderId, allowDot: true) && ValidId(OwnerPackageId, allowDot: true)
+            && IsValidOwnerDisplayName(OwnerDisplayName, OwnerPackageId)
             && ValidId(FamilyId, allowDot: false) && ValidId(MetricName, allowDot: false)
             && Revision >= 1 && Revision <= 9999
             && Source is MetricObservationSource.SaveSnapshot or MetricObservationSource.Checkpoint
@@ -49,6 +52,26 @@ public sealed record ModMetricDescriptor
                 r is not null && ValidId(r.PackageId, allowDot: true) &&
                 ValidVersion(r.MinVersion) && ValidVersion(r.MaxVersionExclusive))
             && (RequiredDefNames ?? Array.Empty<string>()).All(s => ValidId(s, allowDot: true));
+
+    /// <summary>
+    /// True when <paramref name="value"/> is null or a trimmed 1..128-character human-readable MOD title with no control
+    /// characters and not equal to <paramref name="ownerPackageId"/> (raw package IDs are never valid display names).
+    /// </summary>
+    public static bool IsValidOwnerDisplayName(string? value, string? ownerPackageId)
+        => value is null
+            || (value.Length is >= 1 and <= 128
+                && value == value.Trim()
+                && !value.Any(char.IsControl)
+                && !string.Equals(value, ownerPackageId?.Trim(), StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>Normalizes a candidate MOD title or returns null when empty, malformed, or identical to <paramref name="ownerPackageId"/>.</summary>
+    public static string? SanitizeOwnerDisplayName(string? candidate, string? ownerPackageId)
+    {
+        if (string.IsNullOrWhiteSpace(candidate))
+            return null;
+        var trimmed = candidate.Trim();
+        return IsValidOwnerDisplayName(trimmed, ownerPackageId) ? trimmed : null;
+    }
 
     private static bool ValidVersion(string? value) => value is null || Version.TryParse(value, out _);
 
@@ -67,7 +90,7 @@ public sealed record ModMetricDescriptor
             Provenance = Source == MetricObservationSource.Checkpoint ? MetricProvenance.LiveAggregate : MetricProvenance.SaveSnapshot,
             Source = Source, Selection = Selection, Overall = Overall, HasBreakdown = HasBreakdown,
             RequiredDlc = RequiredDlc, Acquisition = AcquisitionId,
-            ProviderId = ProviderId, OwnerPackageId = OwnerPackageId,
+            ProviderId = ProviderId, OwnerPackageId = OwnerPackageId, OwnerDisplayName = OwnerDisplayName,
             DefinitionRevision = Revision,
             LabelKey = string.IsNullOrWhiteSpace(LabelKey) ? StableKey : LabelKey,
             DescriptionKey = string.IsNullOrWhiteSpace(DescriptionKey) ? StableKey : DescriptionKey,

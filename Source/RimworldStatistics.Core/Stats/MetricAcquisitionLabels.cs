@@ -9,7 +9,8 @@ public sealed record CoverageGroup(
     IReadOnlyList<MetricStatus> Items,
     int MeasuredCount,
     int TotalCount,
-    MetricVisualKind VisualKind);
+    MetricVisualKind VisualKind,
+    string? OwnerDisplayName = null);
 
 /// <summary>
 /// Maps internal acquisition/provenance identifiers to user-facing display labels
@@ -81,10 +82,15 @@ public static class MetricAcquisitionLabels
 
     /// <summary>
     /// The provider name shown as "MOD: name": the catalog name of a built-in provider, whether or not the MOD is loaded,
-    /// else the loaded MOD's own name, else null (#303). A package ID is never shown as a name.
+    /// else the loaded MOD's own name, else the persisted <paramref name="persistedDisplayName"/> (SDK 1.2+), else null (#303).
+    /// A raw package ID is never shown as a name.
     /// </summary>
-    public static string? SafeModDisplayName(string? packageId, Func<string, string?>? activeModNameLookup)
-        => ModProviderNames.Resolve(packageId, activeModNameLookup);
+    public static string? SafeModDisplayName(
+        string? packageId,
+        Func<string, string?>? activeModNameLookup,
+        string? persistedDisplayName = null)
+        => ModProviderNames.Resolve(packageId, activeModNameLookup)
+            ?? ModMetricDescriptor.SanitizeOwnerDisplayName(persistedDisplayName, packageId);
 
     /// <summary>
     /// The name of an acquisition unit, the same in the Coverage tab and the MOD settings (#320): its translated name, else
@@ -95,11 +101,12 @@ public static class MetricAcquisitionLabels
         string? acquisitionId,
         string? ownerPackageId,
         Func<string, string?>? activeModNameLookup,
-        Func<string, string> translateKey)
+        Func<string, string> translateKey,
+        string? persistedDisplayName = null)
     {
         if (UnitLabelKey(acquisitionId) is { } key && translateKey(key) is { } text && !string.IsNullOrWhiteSpace(text))
             return text.Trim();
-        return SafeModDisplayName(ownerPackageId, activeModNameLookup);
+        return SafeModDisplayName(ownerPackageId, activeModNameLookup, persistedDisplayName);
     }
 
     /// <summary>
@@ -136,7 +143,7 @@ public static class MetricAcquisitionLabels
         if (definition.Acquisition is null)
             return NonEmpty(translateKey(ProvenanceGroupLabelKey(definition.Provenance)), "Statistics");
 
-        if (UnitLabel(definition.Acquisition, definition.OwnerPackageId, activeModNameLookup, translateKey) is { } unitLabel)
+        if (UnitLabel(definition.Acquisition, definition.OwnerPackageId, activeModNameLookup, translateKey, definition.OwnerDisplayName) is { } unitLabel)
             return unitLabel;
 
         if (Enum.IsDefined(definition.Category))
@@ -179,7 +186,8 @@ public static class MetricAcquisitionLabels
                 items,
                 measured,
                 items.Length,
-                MetricVisualState.ClassifyGroup(items)));
+                MetricVisualState.ClassifyGroup(items),
+                first.Definition.OwnerDisplayName));
         }
 
         groups.Sort((a, b) =>

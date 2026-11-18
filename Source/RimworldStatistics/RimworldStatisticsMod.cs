@@ -148,7 +148,8 @@ public sealed class RimworldStatisticsMod : Mod
                 if (UnitRecordingStates.OwnerPackageId(unit.Id) is { } owner && !ModsConfig.IsActive(owner))
                 {
                     // The MOD to install: its name, or its package ID when no name is known (an external provider's target).
-                    var required = ModProviderNames.Resolve(owner, UI.MetricText.ActiveModTitle) ?? owner;
+                    var persistedName = ModProviderAdapters.FirstDescriptorFor(unit.Id)?.OwnerDisplayName;
+                    var required = MetricAcquisitionLabels.SafeModDisplayName(owner, UI.MetricText.ActiveModTitle, persistedName) ?? owner;
                     TooltipHandler.TipRegion(listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(required)),
                         unit.Id);
                     continue;
@@ -203,7 +204,8 @@ public sealed class RimworldStatisticsMod : Mod
             && ReferenceEquals(selectableUnitLabelsLanguage, LanguageDatabase.activeLanguage))
             return cached;
         var names = units.Select(u => MetricAcquisitionLabels.UnitLabel(u.Id, UnitRecordingStates.OwnerPackageId(u.Id),
-            UI.MetricText.ActiveModTitle, key => (string)key.Translate()) ?? u.Id).ToArray();
+            UI.MetricText.ActiveModTitle, key => (string)key.Translate(),
+            ModProviderAdapters.FirstDescriptorFor(u.Id)?.OwnerDisplayName) ?? u.Id).ToArray();
         selectableUnitLabels = MetricAcquisitionLabels.Distinguish(names, i => UnitStatisticLabels(units[i].Id),
             StringComparer.CurrentCulture);
         selectableUnitLabelsLanguage = LanguageDatabase.activeLanguage;

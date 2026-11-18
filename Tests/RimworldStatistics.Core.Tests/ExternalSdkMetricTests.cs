@@ -412,4 +412,327 @@ public sealed class ExternalSdkMetricTests
         Assert.Single(roundtrip.ModMetricDescriptors);
         Assert.Equal("mod.other.hospitality.stays.checkouts", roundtrip.ModMetricDescriptors[0].StableKey);
     }
+
+    [Fact]
+    public void ApiVersionNegotiation_SupportsMinorZeroOneTwoAndRejectsFutureMinorOrWrongMajor()
+    {
+        Assert.Equal(1, StatisticsApi.ApiVersionMajor);
+        Assert.Equal(2, StatisticsApi.ApiVersionMinor);
+        Assert.Equal(new Version(1, 0, 0, 0), typeof(StatisticsApi).Assembly.GetName().Version);
+
+        _ = StatisticsApi.InstallHost(new StubHost12());
+
+        Assert.True(StatisticsApi.TryGetHost(1, 0, out var h0) && h0 is not null);
+        Assert.True(StatisticsApi.TryGetHost(1, 1, out var h1) && h1 is not null);
+        Assert.True(StatisticsApi.TryGetHost(1, 2, out var h2) && h2 is not null);
+        Assert.Equal(2, h2!.ApiMinor);
+
+        Assert.False(StatisticsApi.TryGetHost(1, 3, out var future));
+        Assert.Null(future);
+        Assert.False(StatisticsApi.TryGetHost(1, -1, out _));
+        Assert.False(StatisticsApi.TryGetHost(2, 0, out _));
+        Assert.False(StatisticsApi.TryGetHost(0, 0, out _));
+    }
+
+    [Fact]
+    public void PersistedOwnerDisplayName_SurvivesModRemovalBackfillsLegacyDescriptorsAndNeverAllowsRawPackageId()
+    {
+        var reg = new ExternalSdkMetricRegistry();
+        // Raw packageId, untrimmed text, control chars, and >128 chars are rejected.
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("bad1") with { OwnerDisplayName = "other.hospitality" }, null));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("bad2") with { OwnerDisplayName = "OTHER.HOSPITALITY" }, null));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("bad3") with { OwnerDisplayName = " Padded Title " }, null));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("bad4") with { OwnerDisplayName = "Bad\nTitle" }, null));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("bad5") with { OwnerDisplayName = new string('A', 129) }, null));
+
+        // 1) Legacy v1.1 descriptor without OwnerDisplayName keeps generic "External mod" fallback after MOD removal.
+        var legacyReg = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, legacyReg.Register(Metric(), null));
+        var legacyDesc = Assert.Single(legacyReg.Seal()).Descriptor;
+        Assert.Null(legacyDesc.OwnerDisplayName);
+
+        var profile = new Profile();
+        ProfileMutations.RememberModMetrics(profile, [legacyDesc]);
+        var legacyDef = profile.ModMetricDescriptors[0].ToDefinition();
+        Assert.Null(MetricAcquisitionLabels.SafeModDisplayName(legacyDef.OwnerPackageId, _ => null, legacyDef.OwnerDisplayName));
+
+        // 2) Same-provider, same-revision descriptor with OwnerDisplayName backfills existing profile entry on save.
+        var v12Reg = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted,
+            v12Reg.Register(Metric() with { OwnerDisplayName = "Cozy Hospitality Addon" }, null));
+        var namedDesc = Assert.Single(v12Reg.Seal()).Descriptor;
+        ProfileMutations.RememberModMetrics(profile, [namedDesc]);
+
+        var roundtrip = ProfileJson.Deserialize(ProfileJson.Serialize(profile));
+        var persistedDesc = Assert.Single(roundtrip.ModMetricDescriptors);
+        Assert.Equal("Cozy Hospitality Addon", persistedDesc.OwnerDisplayName);
+
+        // 3) After the external MOD is uninstalled (activeModNameLookup returns null), UI helpers still resolve the persisted title!
+        var defAfterRemoval = persistedDesc.ToDefinition();
+        Assert.Equal("Cozy Hospitality Addon",
+            MetricAcquisitionLabels.SafeModDisplayName(defAfterRemoval.OwnerPackageId, _ => null, defAfterRemoval.OwnerDisplayName));
+        Assert.Equal("Cozy Hospitality Addon",
+            MetricAcquisitionLabels.UnitLabel(defAfterRemoval.Acquisition, defAfterRemoval.OwnerPackageId, _ => null, k => k, defAfterRemoval.OwnerDisplayName));
+        Assert.Equal("Cozy Hospitality Addon",
+            MetricAcquisitionLabels.ResolveGroupLabel(defAfterRemoval, _ => null, k => k, c => c.ToString(), c => "External: " + c));
+
+        var groups = MetricAcquisitionLabels.BuildGroups(
+            [
+                new MetricStatus(
+                    defAfterRemoval,
+                    MetricAvailability.AllMeasuredColonies,
+                    false,
+                    MetricVerification.Experimental,
+                    UnitRecordingState.TargetModMissing,
+                    1,
+                    1,
+                    Array.Empty<string>()),
+            ],
+            _ => null,
+            k => k,
+            c => c.ToString(),
+            c => "External: " + c,
+            StringComparer.Ordinal);
+        var group = Assert.Single(groups);
+        Assert.Equal("Cozy Hospitality Addon", group.Label);
+        Assert.Equal("Cozy Hospitality Addon", group.OwnerDisplayName);
+
+        // 4) Revision bump without OwnerDisplayName preserves the previously remembered display name.
+        ProfileMutations.RememberModMetrics(roundtrip, [legacyDesc with { Revision = 2 }]);
+        Assert.Equal(2, roundtrip.ModMetricDescriptors[0].Revision);
+        Assert.Equal("Cozy Hospitality Addon", roundtrip.ModMetricDescriptors[0].OwnerDisplayName);
+    }
+
+    [Fact]
+    public void BreakdownEventRecording_SupportsCountAndSumDeduplicatesForksAndRejectsScalarMismatch()
+    {
+        var reg = new ExternalSdkMetricRegistry();
+        // Breakdown is rejected on SaveSnapshot and Mean.
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("snap") with { FamilyId = "state", Kind = ApiMetricKind.SaveSnapshot, HasBreakdown = true }, () => 1));
+        Assert.Equal(ApiRegistrationResult.InvalidDefinition,
+            reg.Register(Metric("avg", ApiEventMode.Mean) with { HasBreakdown = true }, null));
+
+        var countApi = Metric("by_room") with { HasBreakdown = true, OwnerDisplayName = "Hotel Expanded" };
+        var sumApi = Metric("revenue_by_room", ApiEventMode.Sum) with { HasBreakdown = true, OwnerDisplayName = "Hotel Expanded", Unit = "Silver" };
+        var plainApi = Metric("plain_checkouts");
+        Assert.Equal(ApiRegistrationResult.Accepted, reg.Register(countApi, null));
+        Assert.Equal(ApiRegistrationResult.Accepted, reg.Register(sumApi, null));
+        Assert.Equal(ApiRegistrationResult.Accepted, reg.Register(plainApi, null));
+
+        var sealedMetrics = reg.Seal().ToDictionary(m => m.Descriptor.MetricName, StringComparer.Ordinal);
+        var countReg = sealedMetrics["by_room"];
+        var sumReg = sealedMetrics["revenue_by_room"];
+        var plainReg = sealedMetrics["plain_checkouts"];
+
+        var spec = new[] { new FamilySpec(countReg.Descriptor.AcquisitionId, 1) };
+        var live = LiveMetricAccumulator.StartNew(spec, 0);
+        var state = live.Family(spec[0].Name)!;
+
+        // Scalar Record on HasBreakdown=true and RecordBreakdown on HasBreakdown=false must both fail closed with InvalidEvent.
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.Record(state, countReg, "ev-scalar", 10, 1));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, plainReg, "ev-b", "suite", 10, 1));
+
+        // Malformed breakdown keys (empty, whitespace-padded, control chars, >96 chars) and negative/non-unit values are rejected.
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "ev-bad1", "", 10, 1));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "ev-bad2", " suite ", 10, 1));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "ev-bad3", "suite\t1", 10, 1));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "ev-bad4", new string('k', 97), 10, 1));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "ev-bad5", "suite", 10, 2));
+        Assert.Equal(ApiRecordResult.InvalidEvent, ExternalSdkMetricPolicy.RecordBreakdown(state, sumReg, "ev-bad6", "suite", 10, -5));
+
+        // Valid breakdown events record and deduplicate across checkpoint save/load forks without persisting raw event IDs.
+        Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "secret-evt-1", "suite_luxury", 100, 1));
+        Assert.Equal(ApiRecordResult.Duplicate, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "secret-evt-1", "suite_luxury", 105, 1));
+        Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.RecordBreakdown(state, countReg, "secret-evt-2", "dormitory", 110, 1));
+        Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.RecordBreakdown(state, sumReg, "rev-1", "suite_luxury", 100, 120.5));
+        Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.RecordBreakdown(state, sumReg, "rev-2", "suite_luxury", 120, 79.5));
+
+        var draft = live.PrepareSave(200, DateTime.UtcNow, "cp-root")!;
+        Assert.DoesNotContain("secret-evt-1", draft.Json);
+
+        var fork = LiveMetricAccumulator.Resume(draft.Json, spec, 200);
+        var forkState = fork.Family(spec[0].Name)!;
+        Assert.Equal(ApiRecordResult.Duplicate, ExternalSdkMetricPolicy.RecordBreakdown(forkState, countReg, "secret-evt-1", "suite_luxury", 210, 1));
+        Assert.Equal(ApiRecordResult.Recorded, ExternalSdkMetricPolicy.RecordBreakdown(forkState, countReg, "secret-evt-3", "suite_luxury", 220, 1));
+
+        var forkDraft = fork.PrepareSave(220, DateTime.UtcNow, "cp-fork")!;
+        var savedForkState = forkDraft.Payload!.Families[spec[0].Name];
+        var output = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        var ctx = new FamilyOutputContext(savedForkState, 220, output);
+        ExternalSdkMetricPolicy.Build(ctx, countReg);
+        ExternalSdkMetricPolicy.Build(ctx, sumReg);
+
+        var countEntry = output[countReg.Descriptor.StableKey];
+        Assert.Equal(3L, countEntry.Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Complete, countEntry.Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(2L, countEntry.Values["suite_luxury"].IntegerValue);
+        Assert.Equal(1L, countEntry.Values["dormitory"].IntegerValue);
+
+        var sumEntry = output[sumReg.Descriptor.StableKey];
+        Assert.Equal(200.0, sumEntry.Values[MetricEntry.Scalar].RealValue!.Value, 6);
+        Assert.Equal(200.0, sumEntry.Values["suite_luxury"].RealValue!.Value, 6);
+    }
+
+    [Fact]
+    public void BreakdownBucketCap_FailsClosedAt64BucketsMarksPartialAndNeverFabricatesZeroForAbsentBuckets()
+    {
+        var api = Metric("by_item") with { HasBreakdown = true };
+        var reg = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, reg.Register(api, null));
+        var registered = Assert.Single(reg.Seal());
+        var def = registered.Descriptor.ToDefinition();
+
+        var stateCol1 = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 60_000, Continuous = true };
+        for (var i = 0; i < ExternalSdkMetricPolicy.BreakdownBucketCap; i++)
+        {
+            Assert.Equal(ApiRecordResult.Recorded,
+                ExternalSdkMetricPolicy.RecordBreakdown(stateCol1, registered, $"evt-{i}", $"bucket-{i:D2}", i + 1, 1));
+        }
+
+        // Duplicate eventId at full bucket capacity still reports Duplicate; existing bucket still accepts new events!
+        Assert.Equal(ApiRecordResult.Duplicate,
+            ExternalSdkMetricPolicy.RecordBreakdown(stateCol1, registered, "evt-0", "bucket-00", 100, 1));
+        Assert.Equal(ApiRecordResult.Recorded,
+            ExternalSdkMetricPolicy.RecordBreakdown(stateCol1, registered, "evt-extra-existing", "bucket-00", 101, 1));
+
+        var beforeOverflow = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(stateCol1, 60_000, beforeOverflow), registered);
+        Assert.Equal(MetricCoverage.Complete, beforeOverflow[def.StoredKey].Values[MetricEntry.Scalar].Coverage);
+        Assert.Equal(65L, beforeOverflow[def.StoredKey].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(2L, beforeOverflow[def.StoredKey].Values["bucket-00"].IntegerValue);
+
+        // 65th distinct bucket triggers CapExceeded, marks Overflow=true, and weakens scalar + all buckets to Partial!
+        Assert.Equal(ApiRecordResult.CapExceeded,
+            ExternalSdkMetricPolicy.RecordBreakdown(stateCol1, registered, "evt-overflow", "bucket-64", 102, 1));
+        Assert.Equal(ApiRecordResult.CapExceeded,
+            ExternalSdkMetricPolicy.RecordBreakdown(stateCol1, registered, "evt-after-overflow", "bucket-00", 103, 1));
+
+        var col1Metrics = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(stateCol1, 60_000, col1Metrics), registered);
+        Assert.Equal(65L, col1Metrics[def.StoredKey].Values[MetricEntry.Scalar].IntegerValue);
+        Assert.Equal(MetricCoverage.Partial, col1Metrics[def.StoredKey].Values[MetricEntry.Scalar].Coverage);
+        Assert.True(col1Metrics[def.StoredKey].Values[MetricEntry.Scalar].Weakened);
+        Assert.Equal(MetricCoverage.Partial, col1Metrics[def.StoredKey].Values["bucket-00"].Coverage);
+
+        // Cross-colony check: Colony 2 has "bucket-99" (Complete, 4 events). Because Colony 1 overflowed (Partial),
+        // Colony 1's missing "bucket-99" must NOT be treated as a known 0 — overall "bucket-99" must be Partial (4), not Complete!
+        var stateCol2 = new FamilyState { Revision = 1, SinceTick = 0, ThroughTick = 60_000, Continuous = true };
+        for (var i = 0; i < 4; i++)
+            Assert.Equal(ApiRecordResult.Recorded,
+                ExternalSdkMetricPolicy.RecordBreakdown(stateCol2, registered, $"c2-{i}", "bucket-99", i + 1, 1));
+        var col2Metrics = new Dictionary<string, MetricEntry>(StringComparer.Ordinal);
+        ExternalSdkMetricPolicy.Build(new FamilyOutputContext(stateCol2, 60_000, col2Metrics), registered);
+
+        var profile = new Profile
+        {
+            ModMetricDescriptors = [registered.Descriptor],
+            SaveObservations =
+            [
+                new SaveObservation
+                {
+                    FileName = "c1.rws", Status = ObservationStatus.Ok,
+                    Identity = new ColonyIdentity { ModCampaignId = "c1" },
+                    Values = new ObservedValues { TicksGame = 60_000 },
+                },
+                new SaveObservation
+                {
+                    FileName = "c2.rws", Status = ObservationStatus.Ok,
+                    Identity = new ColonyIdentity { ModCampaignId = "c2" },
+                    Values = new ObservedValues { TicksGame = 60_000 },
+                },
+            ],
+            MetricObservations =
+            [
+                new MetricObservation
+                {
+                    Source = MetricObservationSource.Checkpoint, Key = "cp-c1", PayloadHash = "h1", SaveTick = 60_000,
+                    ContinuousFamilies = [registered.Descriptor.AcquisitionId],
+                    Identity = new ColonyIdentity { ModCampaignId = "c1" },
+                    Metrics = col1Metrics,
+                },
+                new MetricObservation
+                {
+                    Source = MetricObservationSource.Checkpoint, Key = "cp-c2", PayloadHash = "h2", SaveTick = 60_000,
+                    ContinuousFamilies = [registered.Descriptor.AcquisitionId],
+                    Identity = new ColonyIdentity { ModCampaignId = "c2" },
+                    Metrics = col2Metrics,
+                },
+            ],
+        };
+
+        var colonies = CampaignMatcher.BuildColonies(profile);
+        var numeric = MetricCalculator.BuildView(
+            profile,
+            colonies,
+            StatsCalculator.Calculate(colonies, new StatsOptions()),
+            MetricRegistry.Compose(
+                profile.ModMetricDescriptors,
+                new HashSet<string>(StringComparer.Ordinal) { registered.Descriptor.AcquisitionId }));
+        var overallRow = numeric.Overall.Single(r => r.Definition.Key == def.Key);
+        var bucket99 = overallRow.Breakdowns.Single(b => b.Breakdown == "bucket-99");
+        Assert.Equal(4.0, bucket99.Value.Number);
+        Assert.Equal(MetricCoverage.Partial, bucket99.Value.Coverage);
+        Assert.Equal(1, bucket99.Valid); // Only Colony 2 is counted as measured; Colony 1 was Unknown, NOT fabricated 0!
+    }
+
+    [Fact]
+    public void BreakdownFastPath_HasBoundedPerEventAllocation()
+    {
+        var api = Metric("fast_breakdown") with { HasBreakdown = true };
+        var reg = new ExternalSdkMetricRegistry();
+        Assert.Equal(ApiRegistrationResult.Accepted, reg.Register(api, null));
+        var registered = Assert.Single(reg.Seal());
+
+        string[] buckets = ["alpha", "beta", "gamma", "delta"];
+        string[] eventIds = Enumerable.Range(0, 256).Select(i => $"steady-event-{i:D4}").ToArray();
+
+        // Warm the JIT and SHA-256 implementation outside the timed/allocation window.
+        var warmState = new FamilyState { Revision = 1 };
+        for (var i = 0; i < 128; i++)
+            _ = ExternalSdkMetricPolicy.RecordBreakdown(warmState, registered, eventIds[i & 31], buckets[i & 3], i + 1, 1);
+
+        // 1) Duplicate fast-path check: zero dictionary growth, allocates only the 64-char hex digest (~152 bytes/call).
+        var dupOk = true;
+        var dupBefore = GC.GetAllocatedBytesForCurrentThread();
+        for (var i = 0; i < 128; i++)
+        {
+            if (ExternalSdkMetricPolicy.RecordBreakdown(warmState, registered, eventIds[0], buckets[0], 500 + i, 1) != ApiRecordResult.Duplicate)
+                dupOk = false;
+        }
+        var dupPerCall = (GC.GetAllocatedBytesForCurrentThread() - dupBefore) / 128.0;
+        Assert.True(dupOk);
+        Assert.True(dupPerCall <= 256.0, $"Expected duplicate fast-path <= 256 B/call, got {dupPerCall:F1} B/call.");
+
+        // 2) Unique fast-path check across 200 events (amortizing Dictionary capacity growth): <= 384 B/event.
+        var state = new FamilyState { Revision = 1 };
+        for (var i = 0; i < 16; i++)
+            Assert.Equal(ApiRecordResult.Recorded,
+                ExternalSdkMetricPolicy.RecordBreakdown(state, registered, eventIds[i], buckets[i & 3], i + 1, 1));
+
+        var uniqOk = true;
+        var uniqBefore = GC.GetAllocatedBytesForCurrentThread();
+        for (var i = 16; i < 216; i++)
+        {
+            if (ExternalSdkMetricPolicy.RecordBreakdown(state, registered, eventIds[i], buckets[i & 3], i + 1, 1) != ApiRecordResult.Recorded)
+                uniqOk = false;
+        }
+        var uniqPerCall = (GC.GetAllocatedBytesForCurrentThread() - uniqBefore) / 200.0;
+        Assert.True(uniqOk);
+        Assert.True(uniqPerCall <= 384.0, $"Expected unique fast-path <= 384 B/event, got {uniqPerCall:F1} B/event.");
+    }
+
+    private sealed class StubHost12 : IStatisticsHost
+    {
+        public int ApiMajor => StatisticsApi.ApiVersionMajor;
+        public int ApiMinor => StatisticsApi.ApiVersionMinor;
+        public ApiRegistrationResult Register(ApiMetricDefinition metric, Func<double?>? captureSnapshot = null) => ApiRegistrationResult.Accepted;
+        public ApiRecordResult RecordEvent(string metricId, string uniqueEventId, double value = 1) => ApiRecordResult.Recorded;
+        public ApiRecordResult RecordBreakdownEvent(string metricId, string uniqueEventId, string breakdownKey, double value = 1) => ApiRecordResult.Recorded;
+    }
 }

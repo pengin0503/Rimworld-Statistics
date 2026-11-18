@@ -83,7 +83,7 @@ internal static class MetricText
 
     public static string? ModSourceLabel(MetricDefinition definition)
         => string.IsNullOrWhiteSpace(definition.OwnerPackageId) ? null
-            : (string)"RWS_Mod_Provider".Translate(SafeModDisplayName(definition.OwnerPackageId));
+            : (string)"RWS_Mod_Provider".Translate(SafeModDisplayName(definition.OwnerPackageId, definition.OwnerDisplayName));
     public static string Format(MetricDefinition definition, NumericValue value) => DetailsTab.Format(definition, value);
     public static string Tip(NumericRow row, StatsResult stats) => DetailsTab.OverallTip(row, stats);
     public static string BasicLabel(string key) => OverviewTab.BasicLabel(key);
@@ -139,10 +139,10 @@ internal static class MetricText
     }
 
     // Saved metrics may outlive their source mod. Never expose an unknown package ID in the UI.
-    public static string ModDisplayName(string packageId)
-        => SafeModDisplayName(packageId);
+    public static string ModDisplayName(string packageId, string? persistedDisplayName = null)
+        => SafeModDisplayName(packageId, persistedDisplayName);
 
-    public static string SafeModDisplayName(string packageId)
-        => MetricAcquisitionLabels.SafeModDisplayName(packageId, ActiveModTitle)
+    public static string SafeModDisplayName(string packageId, string? persistedDisplayName = null)
+        => MetricAcquisitionLabels.SafeModDisplayName(packageId, ActiveModTitle, persistedDisplayName)
             ?? (string)"RWS_Status_ExternalMod".Translate();
 }

@@ -18,7 +18,7 @@
   <loadAfter>
     <li>brrainz.harmony</li>
   </loadAfter>
-  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面から表示します。MOD 導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。Hospitality、Recruitment、Dubs Bad Hygiene、Smart Apparel Upgrade、Vanilla Psycasts Expanded、Vanilla Trading Expanded、VEF Outpostsなどの対応統計を本体に内蔵しています。対応MODの統計は新規導入時に既定で取得します。個別に設定でき、別の統計アドオンは不要です。
+  <description>全セーブ・全コロニーを通した通算のプレイ統計を、タイトル画面およびプレイ中のメニュー（またはショートカットキー）から表示します。コロニー別の総括レポート・年表・セーブ系統・折れ線／散布図グラフ、CSV・HTML・Markdown出力に対応し、MOD導入前のセーブ（1.5〜1.7）も読み取り専用で取り込みます。Hospitality、Recruitment、Dubs Bad Hygiene、Smart Apparel Upgrade、Vanilla Psycasts Expanded、Vanilla Trading Expanded、VEF Outpostsなど100件以上の対応MOD統計を本体に内蔵しています（新規導入時に既定で取得・個別に設定可能、別の統計アドオンは不要）。
 
-Shows lifetime play statistics across all saves and colonies from the title screen. Includes optional MOD statistics enabled by default on new installations for Hospitality, Recruitment, Dubs Bad Hygiene, Smart Apparel Upgrade, Vanilla Psycasts Expanded, Vanilla Trading Expanded and VEF Outposts without separate statistics addons. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
+Shows lifetime play statistics across all saves and colonies from both the title screen and in-game menu/shortcuts. Includes colony summary reports, chronicles, save-lineage views, history &amp; scatter charts, and CSV/HTML/Markdown exports, plus built-in optional statistics (enabled by default on new installations) for 100+ mods such as Hospitality, Recruitment, Dubs Bad Hygiene, Smart Apparel Upgrade, Vanilla Psycasts Expanded, Vanilla Trading Expanded and VEF Outposts without separate statistics addons. Saves made before the mod was installed (1.5 to 1.7) are imported read-only.</description>
 </ModMetaData>

@@ -87,6 +87,44 @@ internal sealed class ExternalSdkHost : IStatisticsHost
         }
     }
 
+    public ApiRecordResult RecordBreakdownEvent(string metricId, string uniqueEventId, string breakdownKey, double value = 1)
+    {
+        RegisteredSdkMetric? metric;
+        lock (gate)
+            metric = registry.Find(metricId);
+        if (metric is null || metric.Api.Kind != ApiMetricKind.Event)
+            return ApiRecordResult.Disabled;
+        var unit = metric.Descriptor.AcquisitionId;
+        if (!MetricGates.IsRecording(unit))
+            return ApiRecordResult.Disabled;
+        var family = LiveMetrics.Family(unit);
+        if (family is null)
+            return ApiRecordResult.Disabled;
+        try
+        {
+            var tick = Find.TickManager.TicksGame;
+            var result = ExternalSdkMetricPolicy.RecordBreakdown(family, metric, uniqueEventId, breakdownKey, tick, value);
+            if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
+                LiveMetrics.Accumulator?.MarkGap(unit, tick);
+            if (result == ApiRecordResult.CapExceeded)
+            {
+                var bucketOverflow = family.Peek(metric.ValueAccumulatorKey)?.Overflow == true;
+                var limitText = bucketOverflow
+                    ? "breakdown bucket limit (" + ExternalSdkMetricPolicy.BreakdownBucketCap + ")"
+                    : "event ID deduplication limit (" + FamilyOps.KeyCap + ")";
+                Log.WarningOnce("[RimworldStatistics] SDK " + limitText + " reached for " + metricId +
+                    "; later event attempts are not counted and this metric has partial coverage.",
+                    ("RWS.sdk.bcap." + metricId).GetHashCode());
+            }
+            return result;
+        }
+        catch (Exception e)
+        {
+            LiveMetrics.Fail(unit, e);
+            return ApiRecordResult.Failed;
+        }
+    }
+
     /// <summary>Freeze registrations once after all MOD constructors, before the acquisition adapter scan.</summary>
     internal IReadOnlyList<ModMetricAdapterRegistration> BuildAdapters()
     {

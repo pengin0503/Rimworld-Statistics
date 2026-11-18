@@ -577,7 +577,10 @@ public static partial class MetricCalculator
                 SinceTick = row.Value.SinceTick, ThroughTick = row.Value.ThroughTick,
             };
 
-        if (ExhaustiveEventBreakdowns.Contains(row.Definition.Key))
+        if (ExhaustiveEventBreakdowns.Contains(row.Definition.Key)
+            || (row.Definition.ProviderId is not null
+                && row.Definition.Source == MetricObservationSource.Checkpoint
+                && row.Definition.HasBreakdown))
         {
             var complete = row.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly
                 && row.Breakdowns.All(child => child.Breakdown != MetricKeys.UnknownBucket && child.Value.Number is not null

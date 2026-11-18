@@ -160,7 +160,16 @@ internal static class ModProviderAdapters
         }
         LiveFamilies.SetOptionalFamilies(families);
         active = enabled.ToArray();
-        activeDescriptors = active.Select(x => x.Registration.Descriptor).ToArray();
+        activeDescriptors = active.Select(x =>
+        {
+            var d = x.Registration.Descriptor;
+            var resolvedTitle = ModMetricDescriptor.SanitizeOwnerDisplayName(
+                UI.MetricText.ActiveModTitle(d.OwnerPackageId),
+                d.OwnerPackageId) ?? d.OwnerDisplayName;
+            return resolvedTitle is not null && !string.Equals(d.OwnerDisplayName, resolvedTitle, StringComparison.Ordinal)
+                ? d with { OwnerDisplayName = resolvedTitle }
+                : d;
+        }).ToArray();
         hasSnapshots = active.Any(x => x.Registration.Descriptor.Source == MetricObservationSource.SaveSnapshot);
     }
 

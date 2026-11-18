@@ -6,7 +6,7 @@ namespace RimworldStatistics.Api;
 public static class StatisticsApi
 {
     public const int ApiVersionMajor = 1;
-    public const int ApiVersionMinor = 1;
+    public const int ApiVersionMinor = 2;
     private static IStatisticsHost? host;
 
     /// <summary>Returns false when the host is absent or cannot satisfy the requested major/minor version.</summary>
@@ -42,11 +42,15 @@ public sealed record ApiMetricDefinition
 {
     public string ProviderId { get; init; } = "";
     public string OwnerPackageId { get; init; } = "";
+    /// <summary>Optional human-readable MOD display name persisted so removed external MODs keep their title (SDK 1.2+).</summary>
+    public string? OwnerDisplayName { get; init; }
     public string FamilyId { get; init; } = "";
     public string MetricName { get; init; } = "";
     public int Revision { get; init; } = 1;
     public ApiMetricKind Kind { get; init; } = ApiMetricKind.Event;
     public ApiEventMode EventMode { get; init; } = ApiEventMode.Count;
+    /// <summary>When true, events are recorded per bucket via <see cref="IStatisticsHost.RecordBreakdownEvent"/> (Count or Sum only, SDK 1.2+).</summary>
+    public bool HasBreakdown { get; init; }
     public string Category { get; init; } = "Colony";
     public string Unit { get; init; } = "Count";
     public string Overall { get; init; } = "Sum";
@@ -73,6 +77,14 @@ public interface IStatisticsHost
     /// <summary>Call in the MOD constructor (after Statistics in load order). Snapshot readers run after successful saves.</summary>
     ApiRegistrationResult Register(ApiMetricDefinition metric, Func<double?>? captureSnapshot = null);
 
-    /// <summary>Call for one confirmed, game-thread event. uniqueEventId is hashed before persistence.</summary>
+    /// <summary>Call for one confirmed, game-thread scalar event. uniqueEventId is hashed before persistence.</summary>
     ApiRecordResult RecordEvent(string metricId, string uniqueEventId, double value = 1);
+
+    /// <summary>
+    /// Call for one confirmed, game-thread breakdown event attributed to <paramref name="breakdownKey"/> (SDK 1.2+).
+    /// Requires <see cref="ApiMetricDefinition.HasBreakdown"/> = true. Both uniqueEventId deduplication and per-metric
+    /// breakdown buckets are strictly capped; exceeding either cap returns <see cref="ApiRecordResult.CapExceeded"/>
+    /// and marks the metric partial rather than silently dropping activity.
+    /// </summary>
+    ApiRecordResult RecordBreakdownEvent(string metricId, string uniqueEventId, string breakdownKey, double value = 1);
 }
