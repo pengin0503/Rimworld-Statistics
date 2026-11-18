@@ -92,6 +92,53 @@ public sealed partial class SaveReader
         });
     }
 
+    private static void ReadEntityCodex(XmlReader r, ReadState s)
+    {
+        if (s.EntityCodexPresent)
+        {
+            s.EntityCodexMalformed = true;
+            r.Skip();
+            return;
+        }
+        s.EntityCodexPresent = true;
+        if (r.GetAttribute("IsNull") == "True")
+        {
+            r.Skip();
+            return;
+        }
+        var discoveredSeen = false;
+        ForEachChild(r, child =>
+        {
+            if (child != "discoveredEntities") { r.Skip(); return; }
+            if (discoveredSeen)
+            {
+                s.EntityCodexMalformed = true;
+                r.Skip();
+                return;
+            }
+            discoveredSeen = true;
+            if (r.GetAttribute("IsNull") == "True") { r.Skip(); return; }
+            s.SavedDiscoveredEntities ??= new HashSet<string>(StringComparer.Ordinal);
+            ForEachChild(r, item =>
+            {
+                if (item != "li")
+                {
+                    s.EntityCodexMalformed = true;
+                    r.Skip();
+                    return;
+                }
+                var defName = ReadHistoricalAtom(r, s);
+                if (string.IsNullOrWhiteSpace(defName) || defName == "null"
+                    || s.SavedDiscoveredEntities.Count >= HistoricalAnomalyStateReader.MaxDiscoveredEntities)
+                {
+                    s.EntityCodexMalformed = true;
+                    return;
+                }
+                s.SavedDiscoveredEntities.Add(defName);
+            });
+        });
+    }
+
     private static void ReadComponents(XmlReader r, ReadState s)
     {
         ForEachChild(r, _ =>                                       // components/li[@Class]
@@ -101,11 +148,39 @@ public sealed partial class SaveReader
             if (cls == ComponentClassName)
                 ReadOwnComponent(r, s);
             else if (cls is AnomalyComponentName or "RimWorld." + AnomalyComponentName)
+            {
+                s.AnomalyComponentCount++;
+                var highestSeen = false;
+                var monolithSeen = false;
                 ForEachChild(r, child =>
                 {
-                    if (child == "levelDef") s.AnomalyLevelDef = r.ReadElementContentAsString().Trim();
-                    else r.Skip();
+                    switch (child)
+                    {
+                        case "levelDef":
+                            s.AnomalyLevelDef = r.ReadElementContentAsString().Trim();
+                            break;
+                        case "highestLevelReached":
+                            var lvlText = ReadHistoricalAtom(r, s);
+                            if (highestSeen || !int.TryParse(lvlText, NumberStyles.Integer, Inv, out var lvl) || lvl < 0)
+                                s.AnomalyComponentMalformed = true;
+                            else
+                                s.AnomalyHighestLevel = lvl;
+                            highestSeen = true;
+                            break;
+                        case "monolith":
+                            var monoText = ReadHistoricalAtom(r, s);
+                            if (monolithSeen || string.IsNullOrWhiteSpace(monoText))
+                                s.AnomalyComponentMalformed = true;
+                            else
+                                s.AnomalyMonolithRef = monoText;
+                            monolithSeen = true;
+                            break;
+                        default:
+                            r.Skip();
+                            break;
+                    }
                 });
+            }
             else
                 r.Skip();
         });

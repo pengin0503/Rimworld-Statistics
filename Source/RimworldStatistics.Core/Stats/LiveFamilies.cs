@@ -235,6 +235,7 @@ public static class LiveFamilies
         OdysseyFamily.Family,
         FishingFamily.Family,
         BiotechFamily.Family,
+        AnomalyFamily.Family,
         CaravanFamily.Family,
     };
 

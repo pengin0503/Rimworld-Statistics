@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Geburten nach Spezies</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Lebend geborene humanoide Kinder auf Spielerseite, gruppiert nach Spezies bei der Geburt.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Geburten nach Xenotyp</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: Ereignisse</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: Zustand (im Spielstand)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Entdeckte Anomalie-Kreaturentypen</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Höchstzahl entdeckter Entitätstypen im Entitätenkodex bei erfolgreichem Speichern.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Höchste Erweckungsstufe des Monolithen</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Höchste erreichte Stufe des Leerenmonolithen.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Höchstwert eingedämmter Entitäten</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Höchstzahl lebender Entitäten auf kolonieeigenen Halteplattformen beim Speichern.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Abgeschlossene psionische Rituale</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Von der Kolonie gestartete und erfolgreich abgeschlossene psionische Rituale.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Abgeschlossene psionische Rituale (nach Ritual)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Abgeschlossene psionische Rituale der Kolonie, aufgeschlüsselt nach ritual.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Ausbrüche eingedämmter Entitäten</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Bestätigte Ausbrüche lebender Entitäten von kolonieeigenen Halteplattformen.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Neu eingedämmte Entitäten</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Während der Aufzeichnung neu auf Halteplattformen gesicherte einzelne Entitäten (ohne Plattformwechsel).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Eingestürzte Grubentore</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Nach dem Sieg über das Schreckensgeflecht vollständig eingestürzte Grubentore.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

@@ -68,6 +68,8 @@ public static class MetricAcquisitionLabels
         "ideology" => "RWS_AcqUnit_ideology",
         "biotech" => "RWS_AcqUnit_biotech",
         "biotech_state" => "RWS_AcqUnit_biotech_state",
+        AnomalyFamily.Name => "RWS_AcqUnit_anomaly",
+        AnomalyStateSnapshot.Unit => "RWS_AcqUnit_anomaly_state",
         "odyssey" => "RWS_AcqUnit_odyssey",
         FishingFamily.Name => "RWS_AcqUnit_fishing",
         "ending_party" => "RWS_AcqUnit_ending_party",

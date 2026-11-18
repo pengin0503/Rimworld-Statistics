@@ -24,6 +24,7 @@ public enum MetricCategory
     Royalty,
     Ideology,
     Biotech,
+    Anomaly,
     Odyssey,
 }
 

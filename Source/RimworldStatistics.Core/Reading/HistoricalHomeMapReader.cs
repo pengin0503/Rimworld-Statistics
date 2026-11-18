@@ -21,6 +21,10 @@ internal readonly record struct SavedMapPawn(
     bool Dead, bool Valid,
     bool GenesPresent = false, bool CustomXenotype = false, string? XenotypeDef = null);
 
+/// <summary>Detached living Pawn inside a Building_HoldingPlatform's innerContainer.</summary>
+internal readonly record struct SavedHeldPlatformPawn(
+    int? MapId, string? PlatformId, string? PlatformFaction, string? PawnId, bool Valid);
+
 /// <summary>
 /// Partial lower bound for player home maps in pre-install saves. Only explicit
 /// WorldObject references to vanilla player-owned Settlement parents count.
@@ -35,6 +39,7 @@ internal static class HistoricalHomeMapReader
     public const int MaxSavedStockItems = 16384;
     public const int MaxTrustedStockStack = 1_000_000;
     public const int MaxSavedPawns = 8192;
+    public const int MaxSavedHoldingPlatforms = 4096;
 
     public static Dictionary<string, MetricEntry>? Build(
         IReadOnlyList<SavedMapParent> maps,
@@ -50,7 +55,9 @@ internal static class HistoricalHomeMapReader
         bool stockOverflowed = false,
         IReadOnlyList<SavedMapPawn>? pawns = null,
         bool pawnsOverflowed = false,
-        IReadOnlyList<string>? activeDlcIds = null)
+        IReadOnlyList<string>? activeDlcIds = null,
+        IReadOnlyList<SavedHeldPlatformPawn>? heldEntities = null,
+        bool heldEntitiesOverflowed = false)
     {
         if (mapsOverflowed || worldObjectsOverflowed || factionsOverflowed || maps.Count == 0
             || maps.Count > MaxMaps || objects.Count > MaxWorldObjects)
@@ -258,6 +265,29 @@ internal static class HistoricalHomeMapReader
                 RecordBreakdownIfPositive(RosterSnapshot.FreeXenotypePeak, free, freeXenotypes);
                 RecordBreakdownIfPositive(RosterSnapshot.PrisonerXenotypePeak, prisoners, prisonerXenotypes);
                 RecordBreakdownIfPositive(RosterSnapshot.SlaveXenotypePeak, slaves, slaveXenotypes);
+            }
+        }
+
+        if (activeDlcIds?.Contains(AcquisitionUnits.Anomaly, StringComparer.OrdinalIgnoreCase) == true
+            && heldEntities is { Count: > 0 } && !heldEntitiesOverflowed && heldEntities.Count <= MaxSavedHoldingPlatforms)
+        {
+            var verifiedHeld = heldEntities.Where(h => !string.IsNullOrWhiteSpace(h.PawnId))
+                .GroupBy(h => h.PawnId!, StringComparer.Ordinal)
+                .LongCount(group =>
+                {
+                    var first = group.First();
+                    return group.All(h => h.Valid && h.MapId is { } id && confirmedMapIds.Contains(id)
+                        && h.PlatformFaction == playerReference && !string.IsNullOrWhiteSpace(h.PlatformId)
+                        && h.PlatformId == first.PlatformId);
+                });
+            if (verifiedHeld > 0)
+            {
+                var heldKey = AnomalyStateSnapshot.HeldEntitiesPeak;
+                result[heldKey] = MetricEntry.Of(MetricKeys.Revision(heldKey), new MetricValue
+                {
+                    Coverage = MetricCoverage.Partial,
+                    IntegerValue = verifiedHeld,
+                });
             }
         }
 

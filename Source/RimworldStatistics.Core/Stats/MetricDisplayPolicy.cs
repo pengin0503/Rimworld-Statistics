@@ -92,6 +92,8 @@ public static class MetricDisplayPolicy
         OdysseyFamily.Flights, OdysseyFamily.Distance, OdysseyFamily.UniqueTiles, OdysseyFamily.NewMapLandings,
         BiotechFamily.MechsCreated, BiotechFamily.BirthMothers, BiotechFamily.ChildStages, BiotechFamily.MechRepairs,
         BiotechFamily.WasteCreated, BiotechFamily.WasteDisposed, BiotechFamily.PollutionCleaned,
+        AnomalyFamily.PsychicRituals, AnomalyFamily.PsychicRitualsByDef, AnomalyFamily.EntityEscapes,
+        AnomalyFamily.EntitiesContained, AnomalyFamily.PitGatesCollapsed,
     };
 
     /// <summary>A monotone event accumulation along one recorded checkpoint lineage, not

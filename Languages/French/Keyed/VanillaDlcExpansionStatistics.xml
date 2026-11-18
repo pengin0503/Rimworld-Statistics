@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Naissances par espèce</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Enfants humanoïdes nés vivants côté joueur, regroupés par espèce à la naissance.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Naissances par xénotype</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly : événements</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly : état (à la sauvegarde)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Types d'entités d'anomalie découverts</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Nombre maximal de types d'entités découverts dans le codex des entités lors d'une sauvegarde réussie.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Niveau maximal d'éveil du monolithe</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Plus haut niveau d'éveil du monolithe du vide atteint dans Anomaly.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Pic d'entités confinées</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Nombre maximal d'entités vivantes maintenues sur les plateformes de confinement de la colonie à la sauvegarde.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Rituels psychiques accomplis</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Rituels psychiques lancés et terminés par la colonie.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Rituels psychiques accomplis (par rituel)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Rituels psychiques accomplis par la colonie, ventilés par ritual.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Évasions d'entités confinées</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Évasions confirmées d'entités vivantes depuis les plateformes de confinement de la colonie.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Nouvelles entités confinées</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Entités vivantes distinctes nouvellement attachées aux plateformes de confinement (hors transferts).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Portes des gouffres effondrées</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Portes des gouffres refermées et effondrées après la défaite de l'amalgame d'effroi.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

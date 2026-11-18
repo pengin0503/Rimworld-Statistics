@@ -1,3 +1,4 @@
+using RimWorld;
 using RimworldStatistics.Core;
 using Verse;
 
@@ -14,6 +15,12 @@ internal static class MetricText
             return translation.Translate();
         if (!OptionalTransitionRecording.TryParseQualifiedDefKey(key, out var owner, out var name))
             return useThingLabel ? DefDatabase<ThingDef>.GetNamedSilentFail(key)?.label ?? key : key;
+
+        if (definition.Key == AnomalyFamily.PsychicRitualsByDef
+            && DefDatabase<PsychicRitualDef>.GetNamedSilentFail(name) is { } ritualDef
+            && string.Equals(ritualDef.modContentPack?.PackageId, owner, StringComparison.OrdinalIgnoreCase)
+            && !string.IsNullOrWhiteSpace(ritualDef.label))
+            return ritualDef.label;
 
         var pack = LoadedModManager.RunningMods.FirstOrDefault(mod =>
             string.Equals(mod.PackageId, owner, StringComparison.OrdinalIgnoreCase));
@@ -76,7 +83,7 @@ internal static class MetricText
             return "Biotech";
         if (string.Equals(packageId, AcquisitionUnits.Odyssey, StringComparison.OrdinalIgnoreCase))
             return "Odyssey";
-        if (string.Equals(packageId, "ludeon.rimworld.anomaly", StringComparison.OrdinalIgnoreCase))
+        if (string.Equals(packageId, AcquisitionUnits.Anomaly, StringComparison.OrdinalIgnoreCase))
             return "Anomaly";
         return ModDisplayName(packageId);
     }

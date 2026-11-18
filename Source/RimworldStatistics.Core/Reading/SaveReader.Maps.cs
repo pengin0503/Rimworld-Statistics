@@ -27,6 +27,7 @@ public sealed partial class SaveReader
             var onMapTurrets = new List<(string? Id, string? Faction, bool Valid)>();
             var onMapStock = new List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)>();
             var onMapPawns = new List<SavedMapPawn>();
+            var onMapHeldEntities = new List<SavedHeldPlatformPawn>();
             ForEachChild(r, child =>
             {
                 switch (child)
@@ -40,7 +41,7 @@ public sealed partial class SaveReader
                             id = parsedId;
                         break;
                     case "things":
-                        ReadSavedMapThings(r, s, onMapTurrets, onMapStock, onMapPawns);
+                        ReadSavedMapThings(r, s, onMapTurrets, onMapStock, onMapPawns, onMapHeldEntities);
                         break;
                     case "mapInfo":
                         if (mapInfoSeen) valid = false;
@@ -75,6 +76,8 @@ public sealed partial class SaveReader
                     stockItem.Faction, stockItem.Forbidden, valid && stockItem.Valid));
             foreach (var savedPawn in onMapPawns)
                 s.HistoricalPawns.Add(savedPawn with { MapId = id, Valid = valid && savedPawn.Valid });
+            foreach (var held in onMapHeldEntities)
+                s.HistoricalHeldEntities.Add(held with { MapId = id, Valid = valid && held.Valid });
         });
     }
 
@@ -86,7 +89,8 @@ public sealed partial class SaveReader
     private static void ReadSavedMapThings(XmlReader r, ReadState s,
         List<(string? Id, string? Faction, bool Valid)> turrets,
         List<(string? Id, string? Def, int Count, string? Faction, bool Forbidden, bool Valid)> stock,
-        List<SavedMapPawn> pawns)
+        List<SavedMapPawn> pawns,
+        List<SavedHeldPlatformPawn> heldEntities)
     {
         ForEachChild(r, node =>
         {
@@ -101,6 +105,17 @@ public sealed partial class SaveReader
                 }
                 else
                     pawns.Add(ReadSavedPawn(r, s));
+                return;
+            }
+            if (className == "Building_HoldingPlatform")
+            {
+                if (s.HistoricalHeldEntities.Count + heldEntities.Count >= HistoricalHomeMapReader.MaxSavedHoldingPlatforms)
+                {
+                    s.HistoricalHeldEntitiesOverflowed = true;
+                    r.Skip();
+                }
+                else
+                    ReadSavedHoldingPlatform(r, s, heldEntities);
                 return;
             }
             var isTurret = className is "Building_TurretGun" or "Building_Turret";
@@ -324,6 +339,102 @@ public sealed partial class SaveReader
         return new SavedMapPawn(null, id, race, kind, faction, host, status,
             guestSeen, hostSeen, healthSeen, dead, valid && idSeen && raceSeen,
             genesPresent, customXenotype, xenotypeDef);
+    }
+
+    private static void ReadSavedHoldingPlatform(XmlReader r, ReadState s, List<SavedHeldPlatformPawn> into)
+    {
+        string? platformId = null, faction = null;
+        var valid = true;
+        var idSeen = false;
+        var factionSeen = false;
+        var containerSeen = false;
+        var heldPawnIds = new List<(string? PawnId, bool Valid)>();
+        ForEachChild(r, field =>
+        {
+            switch (field)
+            {
+                case "id":
+                    var idText = ReadHistoricalAtom(r, s);
+                    if (idSeen || string.IsNullOrWhiteSpace(idText)) valid = false;
+                    idSeen = true;
+                    platformId = idText;
+                    break;
+                case "faction":
+                    var factionText = ReadHistoricalAtom(r, s);
+                    if (factionSeen || string.IsNullOrWhiteSpace(factionText)) valid = false;
+                    factionSeen = true;
+                    faction = factionText is "null" ? null : factionText;
+                    break;
+                case "innerContainer":
+                    if (containerSeen) { valid = false; r.Skip(); break; }
+                    containerSeen = true;
+                    if (r.GetAttribute("IsNull") == "True") { r.Skip(); break; }
+                    var listSeen = false;
+                    ForEachChild(r, containerField =>
+                    {
+                        if (containerField != "innerList") { r.Skip(); return; }
+                        if (listSeen) { valid = false; r.Skip(); return; }
+                        listSeen = true;
+                        if (r.GetAttribute("IsNull") == "True") { r.Skip(); return; }
+                        ForEachChild(r, item =>
+                        {
+                            if (item != "li") { valid = false; r.Skip(); return; }
+                            var cls = r.GetAttribute("Class");
+                            if (cls != "Pawn") { r.Skip(); return; }
+                            string? pawnId = null;
+                            var pawnValid = true;
+                            var pawnIdSeen = false;
+                            var healthSeen = false;
+                            var dead = false;
+                            ForEachChild(r, pawnField =>
+                            {
+                                switch (pawnField)
+                                {
+                                    case "id":
+                                        var pText = ReadHistoricalAtom(r, s);
+                                        if (pawnIdSeen || string.IsNullOrWhiteSpace(pText)) pawnValid = false;
+                                        pawnIdSeen = true;
+                                        pawnId = pText;
+                                        break;
+                                    case "healthTracker":
+                                        if (healthSeen) { pawnValid = false; r.Skip(); break; }
+                                        healthSeen = true;
+                                        var stateSeen = false;
+                                        ForEachChild(r, hField =>
+                                        {
+                                            if (hField != "healthState") { r.Skip(); return; }
+                                            var stateText = ReadHistoricalAtom(r, s);
+                                            if (stateSeen || stateText is not ("Dead" or "Down" or "Mobile"))
+                                                pawnValid = false;
+                                            stateSeen = true;
+                                            dead |= stateText == "Dead";
+                                        });
+                                        break;
+                                    default:
+                                        r.Skip();
+                                        break;
+                                }
+                            });
+                            if (!dead)
+                                heldPawnIds.Add((pawnId, pawnValid && pawnIdSeen && healthSeen));
+                        });
+                    });
+                    break;
+                default:
+                    r.Skip();
+                    break;
+            }
+        });
+        foreach (var (pawnId, pawnValid) in heldPawnIds)
+        {
+            if (s.HistoricalHeldEntities.Count + into.Count >= HistoricalHomeMapReader.MaxSavedHoldingPlatforms)
+            {
+                s.HistoricalHeldEntitiesOverflowed = true;
+                break;
+            }
+            into.Add(new SavedHeldPlatformPawn(null, platformId, faction, pawnId,
+                valid && idSeen && factionSeen && !string.IsNullOrWhiteSpace(faction) && pawnValid));
+        }
     }
 
     /// <summary>Fixed-memory small XML scalar reader, including overlong whitespace.</summary>

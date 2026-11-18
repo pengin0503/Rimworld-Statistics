@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>種族別の出生数</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>プレイヤー側に生きて生まれた人型の子の記録を、出生時点の種族別に集計します。</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>ゼノタイプ別の出生数</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: 出来事</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: 状態（セーブ時点）</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>発見済みアノマリー実体種類数</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>保存成功時点のエンティティ図鑑（entityCodex）で発見済みとなった実体Def種類数の最大値（1.7過去セーブからの保守的復元を含む）。</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>モノリス最大覚醒段階</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Anomalyで到達したヴォイドモノリスの最大覚醒段階（モノリスを生成しないプレイスタイルでは未到達時「対象外」）。</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>収容中アノマリー実体数ピーク</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>保存成功時点で自勢力の拘束プラットフォーム上に収容されていた生存実体数の最大値。</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>超能力儀式完了数</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>プレイヤー側が実行し完了した超能力儀式の回数。</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>儀式別の超能力儀式完了数</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>プレイヤー側が完了した超能力儀式を、パッケージ修飾付きritual別に集計します。</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>収容実体の脱走回数</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>自勢力の拘束プラットフォームから生存実体が脱走した確定回数。</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>実体の新規拘束完了数</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>記録期間中に自勢力の拘束プラットフォームへ新たに収容された実体数（既存収容個体および台座間の移送を除く）。</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>ピットゲート攻略崩壊数</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>地下洞窟のドレッドメルド撃破後に崩壊完了したピットゲートの数。</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

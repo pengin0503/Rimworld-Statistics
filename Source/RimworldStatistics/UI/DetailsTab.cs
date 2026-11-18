@@ -876,6 +876,7 @@ public static class DetailsTab
         MetricCategory.Royalty => "RWS_Category_Royalty".Translate(),
         MetricCategory.Ideology => "RWS_Category_Ideology".Translate(),
         MetricCategory.Biotech => "RWS_Category_Biotech".Translate(),
+        MetricCategory.Anomaly => "RWS_Category_Anomaly".Translate(),
         MetricCategory.Odyssey => "RWS_Category_Odyssey".Translate(),
         _ => "RWS_Category_Rankings".Translate(),
     };

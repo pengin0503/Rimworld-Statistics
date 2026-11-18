@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>종족별 출생 수</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>플레이어 진영에서 살아 태어난 인간형 아기를 출생 시점의 종족별로 집계합니다.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>제노타입별 출생 수</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: 사건</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: 상태 (저장 시점)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>발견한 이상 실체 종류 수</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>저장 성공 시점 실체 도감(Entity Codex)에 기록된 발견 실체 Def 종류의 최댓값입니다.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>모노리스 최고 각성 단계</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Anomaly에 기록된 공허 모노리스의 최고 각성 단계입니다.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>격리 중인 실체 수 최고치</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>저장 성공 시점 정착지 구속 플랫폼에 격리된 생존 실체 수의 최댓값입니다.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>초능력 의식 완료 횟수</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>플레이어가 시작하여 완료한 초능력 의식 횟수입니다.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>의식별 초능력 의식 완료 횟수</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>플레이어가 완료한 초능력 의식을 패키지 수식 ritual별로 집계합니다.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>격리 실체 탈출 횟수</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>아군 구속 플랫폼에서 생존 실체가 탈출한 확정 횟수입니다.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>신규 격리 완료 실체 수</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>기록 기간 중 아군 구속 플랫폼에 새로 확보한 고유 실체 수입니다 (플랫폼 간 이동 제외).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>구덩이 관문 붕괴 공략 수</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>지하 동굴의 드레드멜드를 처치한 뒤 붕괴가 완료된 구덩이 관문 수입니다.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>
