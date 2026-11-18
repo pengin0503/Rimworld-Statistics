@@ -384,9 +384,15 @@ public sealed class Issue357RegressionTests
         FishingFamily.Family.Build(new FamilyOutputContext(fishState, 100, fishOut));
         Assert.Equal(MetricCoverage.Partial, fishOut[FishingFamily.AcceptedUnitsByDef].Values[MetricEntry.Scalar].Coverage);
 
-        var badKey = JsonSerializer.Deserialize<SnapshotChartKey>("{\"revision\":1,\"values\":[1.0],\"coverage\":[999]}")!;
+        var badKey = new SnapshotChartKey
+        {
+            Revision = 1, Values = [1d], Coverage = [(MetricCoverage)999],
+        };
         Assert.False(badKey.Fits(1));
-        var goodKey = JsonSerializer.Deserialize<SnapshotChartKey>("{\"revision\":1,\"values\":[1.0],\"coverage\":[2]}")!;
+        var goodKey = new SnapshotChartKey
+        {
+            Revision = 1, Values = [1d], Coverage = [MetricCoverage.SnapshotOnly],
+        };
         Assert.True(goodKey.Fits(1));
 
         Assert.True(CrossColonyCatalog.UsesThingDefBreakdown(MetricRegistry.Find(WorkFamily.HarvestByCrop)!));

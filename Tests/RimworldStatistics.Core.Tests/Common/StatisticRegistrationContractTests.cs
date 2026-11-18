@@ -14,7 +14,12 @@ public sealed class StatisticRegistrationContractTests
         foreach (var source in new[] { MetricObservationSource.Checkpoint, MetricObservationSource.SaveSnapshot })
             foreach (var selection in Enum.GetValues<ColonySelection>())
                 foreach (var breakdown in new[] { false, true })
+                {
+                    // ObservationMaxByBreakdown requires an actual breakdown by contract.
+                    if (selection == ColonySelection.ObservationMaxByBreakdown && !breakdown)
+                        continue;
                     data.Add(source, selection, breakdown);
+                }
         return data;
     }
 
