@@ -657,14 +657,19 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private void DrawPlot(Rect plot, float axisWidth, MetricHistory history, string primaryColonyName)
     {
         var pixelWidth = Math.Max(1, (int)plot.width);
+        var ticks = (First: bounds.FirstTick, Last: bounds.LastTick);
         if (plotWidth != pixelWidth)
         {
-            plotPoints = MetricHistoryPlot.Thin(slicedPrimaryPoints, pixelWidth);
+            plotPoints = MetricHistoryPlot.Thin(
+                slicedPrimaryPoints,
+                pixelWidth,
+                ticks.First,
+                ticks.Last,
+                isZoomed: zoomRange is not null);
             gapTicks = null;
             plotWidth = pixelWidth;
         }
 
-        var ticks = (First: bounds.FirstTick, Last: bounds.LastTick);
         var range = (Min: bounds.MinValue, Max: bounds.MaxValue);
         float X(int tick) => plot.x + plot.width * (ticks.First == ticks.Last ? 0.5f
             : (float)((tick - ticks.First) / (double)(ticks.Last - ticks.First)));
@@ -696,14 +701,14 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Widgets.Label(new Rect(plot.x, plot.yMax + 23f, plot.width, 21f), "RWS_Col_Days".Translate());
         Text.Anchor = anchor;
 
-        DrawSeries(plotPoints, SeriesColor, PartialColor);
+        DrawSeries(plotPoints, SeriesColor, PartialColor, isRawSeries: ReferenceEquals(plotPoints, slicedPrimaryPoints) && zoomRange is not null);
         foreach (var overlay in overlayTracker.Entries)
         {
-            var overlayPoints = overlay.GetOrThinPoints(pixelWidth, zoomRange);
+            var overlayPoints = overlay.GetOrThinPoints(pixelWidth, zoomRange, ticks);
             if (overlayPoints.Count == 0)
                 continue;
             var color = OverlayColors[overlay.ColorIndex];
-            DrawSeries(overlayPoints, color, Color.Lerp(color, PartialColor, 0.5f));
+            DrawSeries(overlayPoints, color, Color.Lerp(color, PartialColor, 0.5f), isRawSeries: zoomRange is not null && overlayPoints.Count <= pixelWidth * 2);
         }
         // A save or checkpoint exists here, but it holds no value for this statistic: marked on the axis, never as zero.
         gapTicks ??= plotPoints.Where(p => p.Value is null).Select(p => p.Tick).ToArray();
@@ -739,7 +744,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             DrawPicked(change.ToIndex);
         }
 
-        void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor)
+        void DrawSeries(IReadOnlyList<MetricHistoryPoint> points, Color color, Color partialColor, bool isRawSeries)
         {
             // A line joins two readings only where the later one continues the earlier (MetricHistoryPoint);
             // a gap (no value) joins nothing, and a reading of unproven ancestry is drawn hollow.
@@ -764,7 +769,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     Widgets.DrawBoxSolidWithOutline(new Rect(position.x - 3.5f, position.y - 3.5f, 7f, 7f), HollowFill, marker, 1);
                     continue;
                 }
-                var size = points.Count <= 90 || !joined ? 5f : 2f;
+                var size = points.Count <= 90 || (isRawSeries && points.Count <= 220) || !joined ? 5f : 2f;
                 Widgets.DrawBoxSolid(new Rect(position.x - size / 2f, position.y - size / 2f, size, size), marker);
             }
         }

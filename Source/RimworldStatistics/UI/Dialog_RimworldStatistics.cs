@@ -318,24 +318,35 @@ public sealed class Dialog_RimworldStatistics : Window
         loadedPreferencesJson = serialized;
         cachedPreferences = preferences;
         cachedPreferencesJson = serialized;
-        if (selectedGroupId is not null && preferences.Groups.All(g => g.Id != selectedGroupId))
+        if (selectedGroupId is not null
+            && !SmartGroupSpec.IsSmartGroupId(selectedGroupId)
+            && preferences.Groups.All(g => g.Id != selectedGroupId))
             SelectScope(null);
     }
 
     private ViewScope ActiveScope()
     {
+        if (SmartGroupSpec.TryParse(selectedGroupId, out var smart) && smart is not null)
+            return ViewScope.ForSmartGroup(smart);
         var selected = preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId);
         return selected is null ? ViewScope.All : ViewScope.ForGroup(selected);
     }
 
-    private string ScopeLabel() => preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId)?.Name
-        ?? "RWS_Groups_All".Translate();
+    private string ScopeLabel()
+    {
+        if (SmartGroupSpec.TryParse(selectedGroupId, out var smart) && smart is not null)
+            return SmartScopeUi.Label(smart);
+        return preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId)?.Name
+            ?? "RWS_Groups_All".Translate();
+    }
 
     private void ShowScopeMenu()
     {
         var choices = new List<FloatMenuOption>
         {
             new("RWS_Groups_All".Translate(), () => SelectScope(null)),
+            new("RWS_SmartGroup_Menu".Translate(), () =>
+                SmartScopeUi.OpenMenu(viewBuild.Value, spec => SelectScope(spec.Id))),
         };
         choices.AddRange(preferences.Groups.Select(g => new FloatMenuOption(g.Name, () => SelectScope(g.Id))));
         choices.Add(new FloatMenuOption("RWS_Groups_Edit".Translate(), () =>
@@ -357,7 +368,9 @@ public sealed class Dialog_RimworldStatistics : Window
         cachedPreferences = preferences;
         cachedPreferencesJson = loadedPreferencesJson;
         RimworldStatisticsMod.Instance?.WriteSettings();
-        if (preferences.Groups.All(g => g.Id != selectedGroupId))
+        if (selectedGroupId is not null
+            && !SmartGroupSpec.IsSmartGroupId(selectedGroupId)
+            && preferences.Groups.All(g => g.Id != selectedGroupId))
             selectedGroupId = null;
         viewBuild.Reset();
         activeScopeKey = "";

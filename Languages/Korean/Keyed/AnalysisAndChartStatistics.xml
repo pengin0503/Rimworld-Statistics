@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>스마트 그룹 ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>책임 모드만</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>언제든 불러오기만</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>엔딩 달성만</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>{0}일 이상 생존</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>이야기꾼: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>난이도: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>시나리오: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>시작 생물군계: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>생존 일수별 ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>이야기꾼별 ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>난이도별 ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>시작 생물군계별 ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>시나리오별 ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/일</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>표시: 누적값</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>표시: 일일 변화율 (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>누적 합산 지표에 대해 누적값과 정착지별 완전 관측 구간(≥1.0일) 기준 일일 변화율(/day) 표시를 전환합니다.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>일일 변화율(/day)은 개별 정착지의 완전 관측 구간별로 계산되므로 다중 정착지 합산 열에는 적용되지 않습니다.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>부분 기록이거나 관측 구간이 1.0일 미만이어서 일일 변화율(/day)을 계산할 수 없습니다.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>완전 ({0}일)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>일부 정착지는 부분 기록 또는 관측 구간 1.0일 미만으로 순위에서 제외됨</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>이 축을 누적값과 일일 변화율(/day, 완전 관측 및 ≥1.0일 구간만) 간에 전환합니다.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>이 지표는 누적 합산 지표가 아니므로 일일 변화율(/day)로 전환할 수 없습니다.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>일일 변화율 (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day 켜짐</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day 켜짐</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>부분 기록 또는 1일 미만 {0}</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>색상: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>점 색상을 데이터 상태, 엔딩 달성, 책임 모드, 난이도, 이야기꾼별로 전환합니다(회귀선·상관계수는 그리지 않음).</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>데이터 상태</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>엔딩 달성</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>책임 모드</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>난이도</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>이야기꾼</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>달성함</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>미달성</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>책임 모드</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>언제든 불러오기</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>기타</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>알 수 없음</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>복합 클러스터</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

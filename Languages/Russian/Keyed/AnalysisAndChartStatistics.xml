@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>Умные группы ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>Только ответственный режим</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>Только со свободной загрузкой</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>Только с достигнутой концовкой</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>Прожито {0}+ дн.</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>Рассказчик: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>Сложность: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>Сценарий: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>Стартовый биом: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>По дням выживания ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>По рассказчику ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>По сложности ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>По стартовому биому ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>По сценарию ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/день</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>Вид: Сумма</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>Вид: В день (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>Переключает отображение между накопленной суммой и суточной скоростью (/day) за полный интервал наблюдения (≥ 1,0 дня) каждой колонии.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>Суточная скорость (/day) вычисляется по отдельной колонии и не применима к сводным столбцам.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>Суточная скорость (/day) недоступна: запись неполная или интервал короче 1,0 дня.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>Полный ({0} дн.)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>Часть колоний не учтена из-за неполной записи или интервала менее 1,0 дня</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>Переключить эту ось между суммой и суточной скоростью (/day) за полный интервал ≥ 1,0 дня.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>Этот показатель не является накапливаемой суммой; режим (/day) недоступен.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>Скорость в день (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day ВКЛ</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day ВКЛ</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} с неполным или &lt;1 дн. интервалом</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>Цвет: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>Окраска точек по статусу данных, концовке, ответственному режиму, сложности или рассказчику (без линии тренда и корреляции).</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>Статус данных</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>Концовка</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>Ответств. режим</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>Сложность</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>Рассказчик</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>Достигнута</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>Не достигнута</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>Ответственный</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>Свободная загрузка</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>Прочее</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>Неизвестно</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>Смешанная точка</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

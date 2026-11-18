@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>Intelligente Gruppen ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>Nur Verpflichtungsmodus</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>Nur jederzeit laden</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>Nur Ende erreicht</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>{0}+ Tage überlebt</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>Erzähler: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>Schwierigkeit: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>Szenario: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>Startbiom: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>Nach Überlebenstagen ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>Nach Erzähler ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>Nach Schwierigkeit ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>Nach Startbiom ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>Nach Szenario ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/Tag</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>Anzeige: Gesamt</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>Anzeige: Pro Tag (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>Wechselt bei kumulativen Summen zwischen Gesamtwerten und Tagesraten (/day) über das vollständig erfasste Intervall (≥ 1,0 Tag) jeder Kolonie.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>Tagesraten (/day) werden pro Kolonie über ihr eigenes vollständiges Intervall berechnet und gelten nicht für Sammelspalten.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>Tagesrate (/day) nicht verfügbar, da der Wert unvollständig ist oder weniger als 1,0 Tag umfasst.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>Vollständig ({0} T.)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>Einige Kolonien fehlen, da ihr Wert unvollständig ist oder unter 1,0 Tag liegt</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>Diese Achse zwischen Gesamtwert und Tagesrate (/day, vollständiges Intervall ≥ 1,0 Tag) umschalten.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>Diese Statistik ist keine kumulative Summe; Tagesrate (/day) nicht verfügbar.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>Tagesrate (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day AN</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day AN</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} unvollständig oder &lt;1 T.</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>Farbe: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>Punkte nach Datenstatus, erreichtem Ende, Verpflichtungsmodus, Schwierigkeit oder Erzähler einfärben (keine Trendlinie oder Korrelation).</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>Datenstatus</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>Ende erreicht</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>Verpflichtungsmodus</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>Schwierigkeit</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>Erzähler</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>Ende erreicht</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>Kein Ende</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>Verpflichtung</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>Jederzeit laden</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>Sonstige</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>Unbekannt</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>Gemischte Gruppe</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

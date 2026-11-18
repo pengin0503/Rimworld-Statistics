@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>Grupos inteligentes ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>Solo modo compromiso</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>Solo recarga libre</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>Solo con final alcanzado</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>Sobrevivió {0}+ días</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>Cuentacuentos: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>Dificultad: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>Escenario: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>Bioma inicial: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>Por días sobrevividos ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>Por cuentacuentos ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>Por dificultad ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>Por bioma inicial ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>Por escenario ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/día</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>Vista: Total</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>Vista: Por día (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>Alterna entre totales acumulados y tasas diarias (/day) calculadas sobre el intervalo completo observado (≥ 1,0 día) de cada colonia.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>Las tasas diarias (/day) se calculan por colonia individual y no se aplican a columnas agregadas.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>Tasa diaria (/day) no disponible porque el registro es parcial o cubre menos de 1,0 día.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>Completo ({0} d)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>Algunas colonias se omiten por tener un registro parcial o menor de 1,0 día</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>Cambiar este eje entre total acumulado y tasa diaria (/day) sobre un intervalo completo ≥ 1,0 día.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>Esta estadística no es un total acumulativo aditivo; tasa (/day) no disponible.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>Tasa diaria (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day ACTIVO</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day ACTIVO</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} parcial o &lt;1 d</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>Color: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>Colorear puntos por estado de datos, final alcanzado, modo compromiso, dificultad o cuentacuentos (sin línea de tendencia ni correlación).</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>Estado de datos</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>Final alcanzado</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>Modo compromiso</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>Dificultad</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>Cuentacuentos</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>Final alcanzado</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>Sin final</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>Compromiso</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>Recarga libre</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>Otro</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>Desconocido</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>Grupo mixto</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

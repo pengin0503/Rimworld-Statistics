@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>スマートグループ ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>パーマデスのみ</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>いつでもリロードのみ</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>エンディング到達済みのみ</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>生存 {0} 日以上</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>語り手: {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>難易度: {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>シナリオ: {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>開始バイオーム: {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>生存日数別 ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>ストーリーテラー別 ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>難易度別 ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>開始バイオーム別 ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>シナリオ別 ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/日</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>表示: 累積値</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>表示: 1日あたり (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>累積加算指標について、累積値表示とコロニーごとの完全観測区間（1.0日以上）に基づく1日あたり変化率（/day）表示を切り替えます。</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>1日あたり変化率（/day）は個別コロニーの完全観測区間ごとに算出されるため、複数コロニーの合算スコープ列には適用されません。</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>完全観測（Complete）でないか、観測区間が1.0日未満のため、1日あたり変化率（/day）を算出できません。</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>完全 ({0}日区間)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>一部の対象コロニーは部分観測または観測区間1.0日未満のため順位対象外</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>この軸を累積値と1日あたり変化率（/day）の間で切り替えます（完全観測かつ区間1.0日以上のコロニーのみ描画）。</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>この指標は累積加算指標ではないため、1日あたり変化率（/day）には切り替えられません。</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>1日あたり変化率 (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day ON</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day ON</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>部分観測または区間1日未満 {0}</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>色分け: {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>散布図のドット色をデータ状態・エンディング到達有無・パーマデス・難易度・ストーリーテラー別で切り替えます（回帰直線・相関係数は描画しません）。</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>データ状態</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>エンディング到達</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>パーマデス</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>難易度</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>ストーリーテラー</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>到達済み</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>未到達</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>パーマデス</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>いつでもリロード</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>その他</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>不明</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>複数属性の重なり</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+</LanguageData>

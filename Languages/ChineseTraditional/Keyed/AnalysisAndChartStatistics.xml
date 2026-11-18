@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>智慧分組 ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>僅鐵人模式</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>僅隨時讀檔</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>僅已達成結局</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>存活 {0}+ 天</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>敘事者：{0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>難度：{0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>劇本：{0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>初始生態區：{0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>依存活天數 ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>依敘事者 ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>依難度 ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>依初始生態區 ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>依劇本 ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/天</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>顯示：累計值</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>顯示：每日變化率 (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>針對累計可加指標，在累計值與基於完整觀測區間（≥1.0天）的每日變化率（/day）之間切換。</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>每日變化率（/day）依單一殖民地的完整觀測區間計算，不適用於多殖民地彙總欄。</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>由於記錄不完整或觀測區間不足1.0天，無法計算每日變化率（/day）。</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>完整 ({0}天)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>部分殖民地因記錄不完整或觀測區間不足1.0天而未計入排名</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>將此軸在累計值與每日變化率（/day，僅限完整且≥1.0天區間）之間切換。</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>此指標不是累計可加指標，無法切換為每日變化率（/day）。</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>每日變化率 (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day 開</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day 開</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} 區間不完整或不足1天</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>著色：{0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>依資料狀態、結局達成、鐵人模式、難度或敘事者切換散點顏色（不繪製迴歸線或相關係數）。</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>資料狀態</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>結局達成</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>鐵人模式</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>難度</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>敘事者</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>已達成結局</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>未達成結局</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>鐵人模式</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>隨時讀檔</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>其他</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>未知</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>多屬性重疊</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}：{1}</RWS_Scatter_TipAttr>
+</LanguageData>

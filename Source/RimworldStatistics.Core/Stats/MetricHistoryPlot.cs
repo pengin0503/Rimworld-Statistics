@@ -4,17 +4,55 @@ namespace RimworldStatistics.Core;
 public static class MetricHistoryPlot
 {
     /// <summary>
-    /// For a history much denser than <paramref name="width"/> pixels: within each run of readings that each continue the
-    /// previous one, keeps the first, lowest, highest and last reading of every pixel-sized chunk. Gaps, unlinked readings,
-    /// branch starts and every reading a non-adjacent one continues from are always kept, and branch references are
-    /// renumbered, so no line is drawn between readings that were not joined before. Returns the same list when it is
-    /// already sparse enough.
+    /// Peak-preserving 1px X-column Min-Max Envelope decimation for per-colony histories:
+    /// maps each point's game tick onto its 1px horizontal column across <paramref name="width"/> pixels and, within each
+    /// continuous run of plain same-coverage readings inside a single 1px column, keeps at most 4 points
+    /// <c>(first, min, max, last)</c> in chronological order. True extrema, missing-data gaps, partial-coverage transitions,
+    /// unlinked points, and branch anchors (<see cref="MetricHistoryPoint.ContinuesFrom"/>) are 100% preserved and
+    /// renumbered. When <paramref name="points"/> already fits within <paramref name="width"/> (or within <c>2 * width</c>
+    /// while zoomed in), the raw <paramref name="points"/> list is returned untouched.
     /// </summary>
     public static IReadOnlyList<MetricHistoryPoint> Thin(IReadOnlyList<MetricHistoryPoint> points, int width)
+        => Thin(points, width, axisFirstTick: null, axisLastTick: null, isZoomed: false);
+
+    public static IReadOnlyList<MetricHistoryPoint> Thin(
+        IReadOnlyList<MetricHistoryPoint> points,
+        int width,
+        int? axisFirstTick,
+        int? axisLastTick,
+        bool isZoomed = false)
     {
         ArgumentNullException.ThrowIfNull(points);
-        if (width < 1 || points.Count <= width * 2L)
+        if (width < 1 || points.Count <= width || (isZoomed && points.Count <= width * 2L))
             return points;
+
+        int firstTick;
+        int lastTick;
+        if (axisFirstTick is { } explicitFirst && axisLastTick is { } explicitLast)
+        {
+            firstTick = explicitFirst;
+            lastTick = explicitLast;
+        }
+        else
+        {
+            firstTick = points[0].Tick;
+            lastTick = points[0].Tick;
+            for (var i = 1; i < points.Count; i++)
+            {
+                var tick = points[i].Tick;
+                if (tick < firstTick) firstTick = tick;
+                if (tick > lastTick) lastTick = tick;
+            }
+        }
+
+        var tickSpan = (double)lastTick - firstTick;
+        int PixelColumn(int tick)
+        {
+            if (width <= 1 || tickSpan <= 0d)
+                return 0;
+            var ratio = (tick - (double)firstTick) / tickSpan;
+            return Math.Clamp((int)Math.Floor(ratio * width), 0, width - 1);
+        }
 
         var referenced = new bool[points.Count];
         for (var i = 0; i < points.Count; i++)
@@ -29,13 +67,13 @@ public static class MetricHistoryPlot
             && !referenced[i] && !points[i].Unlinked && points[i].ContinuesFrom < 0;
 
         var keep = new bool[points.Count];
-        var step = Math.Max(1, points.Count / width);
         for (var start = 0; start < points.Count;)
         {
+            var startCol = PixelColumn(points[start].Tick);
             if (points[start].Value?.Number is null)
             {
                 var gapEnd = start + 1;
-                for (; gapEnd < Math.Min(start + step, points.Count) && PlainGap(gapEnd); gapEnd++)
+                for (; gapEnd < points.Count && PlainGap(gapEnd) && PixelColumn(points[gapEnd].Tick) == startCol; gapEnd++)
                 {
                 }
                 keep[start] = keep[gapEnd - 1] = true;
@@ -45,7 +83,7 @@ public static class MetricHistoryPlot
             var end = start + 1;
             var min = start;
             var max = start;
-            for (; end < Math.Min(start + step, points.Count) && Plain(end); end++)
+            for (; end < points.Count && Plain(end) && PixelColumn(points[end].Tick) == startCol; end++)
             {
                 if (points[end].Value!.Number < points[min].Value!.Number)
                     min = end;
@@ -56,8 +94,15 @@ public static class MetricHistoryPlot
             start = end;
         }
 
+        var keptCount = 0;
+        for (var i = 0; i < keep.Length; i++)
+            if (keep[i])
+                keptCount++;
+        if (keptCount == points.Count)
+            return points;
+
         var index = new int[points.Count];
-        var output = new List<MetricHistoryPoint>();
+        var output = new List<MetricHistoryPoint>(keptCount);
         for (var i = 0; i < points.Count; i++)
         {
             index[i] = -1;

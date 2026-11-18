@@ -21,6 +21,9 @@ public enum ScatterExclusionReason
     /// <summary>A known reading without one number (a 0 ÷ 0 rate, or a reading kept only by category).</summary>
     NoSingleValue,
 
+    /// <summary>A per-day rate was requested, but the reading is partial or its observed interval is shorter than one day.</summary>
+    IncompleteRateInterval,
+
     /// <summary>No reading: not recorded, unknown, or not a finite number.</summary>
     Missing,
 }
@@ -36,7 +39,12 @@ public enum ScatterAxes
 }
 
 /// <summary>One plotted value, exactly as the rankings and colony charts show it for the colony.</summary>
-public sealed record ScatterValue(double Number, MetricCoverage Coverage, MetricEvidence Evidence, int? ThroughTick);
+public sealed record ScatterValue(
+    double Number,
+    MetricCoverage Coverage,
+    MetricEvidence Evidence,
+    int? ThroughTick,
+    double? RecordedDays = null);
 
 /// <summary>One colony's point: its X and Y values from the same view.</summary>
 public sealed record ScatterPoint(string ColonyKey, ScatterValue X, ScatterValue Y)
@@ -55,7 +63,12 @@ public sealed record ScatterExclusion(string ColonyKey, ScatterExclusionReason R
 
 /// <summary>One axis: the statistic, how its values should be read, and its zero-inclusive ticks.</summary>
 public sealed record ScatterAxis(
-    string MetricKey, MetricDefinition Definition, bool IsBasic, ColonyReportValueKind ValueKind, IReadOnlyList<double> Ticks)
+    string MetricKey,
+    MetricDefinition Definition,
+    bool IsBasic,
+    ColonyReportValueKind ValueKind,
+    IReadOnlyList<double> Ticks,
+    bool PerDay = false)
 {
     /// <summary>
     /// Where <paramref name="value"/> lies between the first and last tick, from 0 to 1 (0.5 when the ticks have no span).
@@ -98,6 +111,7 @@ public sealed class MetricScatterPlot
         NotApplicable = ScatterExclusionReason.NotApplicable,
         NotReached = ScatterExclusionReason.NotReached,
         NoSingleValue = ScatterExclusionReason.NoSingleValue,
+        IncompleteRateInterval = ScatterExclusionReason.IncompleteRateInterval,
         Missing = ScatterExclusionReason.Missing,
         Value = int.MaxValue,
     }
@@ -133,13 +147,24 @@ public sealed class MetricScatterPlot
             || (MetricLookup.Definition(view, metricKey) is { } definition && Plottable(definition));
     }
 
+    /// <summary>True when <paramref name="metricKey"/> is a cumulative additive checkpoint total eligible for <see cref="MetricRates.PerDay"/>.</summary>
+    public static bool CanPlotPerDay(StatsView view, string metricKey)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        ArgumentNullException.ThrowIfNull(metricKey);
+        return !BasicMetrics.Contains(metricKey)
+            && MetricLookup.Definition(view, metricKey) is { } definition
+            && Plottable(definition)
+            && MetricRates.IsAdditiveTotal(definition);
+    }
+
     /// <summary>The plot of <paramref name="yKey"/> against <paramref name="xKey"/>; null when either cannot be plotted.</summary>
-    public static MetricScatterPlot? Build(StatsView view, string xKey, string yKey)
+    public static MetricScatterPlot? Build(StatsView view, string xKey, string yKey, bool xPerDay = false, bool yPerDay = false)
     {
         ArgumentNullException.ThrowIfNull(view);
         ArgumentNullException.ThrowIfNull(xKey);
         ArgumentNullException.ThrowIfNull(yKey);
-        if (Axis(view, xKey) is not { } x || Axis(view, yKey) is not { } y)
+        if (Axis(view, xKey, xPerDay) is not { } x || Axis(view, yKey, yPerDay) is not { } y)
             return null;
 
         var numeric = new Dictionary<string, NumericColony>(Ord);
@@ -244,8 +269,17 @@ public sealed class MetricScatterPlot
     private static bool Plottable(MetricDefinition definition)
         => definition.Overall != OverallAggregation.Ranking && !CrossColonyCatalog.IsDerived(definition);
 
-    private static ScatterAxis? Axis(StatsView view, string key)
+    private static ScatterAxis? Axis(StatsView view, string key, bool perDay)
     {
+        if (perDay)
+        {
+            return !BasicMetrics.Contains(key)
+                && MetricLookup.Definition(view, key) is { } rateDef
+                && Plottable(rateDef)
+                && MetricRates.IsAdditiveTotal(rateDef)
+                    ? new ScatterAxis(key, rateDef, false, ColonyReportValueKind.MeanOrRate, [], PerDay: true)
+                    : null;
+        }
         if (BasicMetrics.Contains(key))
         {
             var basic = BasicMetrics.Definition(key);
@@ -275,6 +309,15 @@ public sealed class MetricScatterPlot
             return new AxisRead(AxisState.NotApplicable, null);
         if (value.Coverage == MetricCoverage.Unknown)
             return new AxisRead(AxisState.Missing, null);
+        if (axis.PerDay)
+        {
+            if (MetricRates.PerDay(axis.Definition, value) is { } rate)
+                return new AxisRead(AxisState.Value, new ScatterValue(
+                    rate.PerDay, MetricCoverage.Complete, value.Evidence, value.ThroughTick, rate.Days));
+            return value.Number is { } raw && double.IsFinite(raw)
+                ? new AxisRead(AxisState.IncompleteRateInterval, null)
+                : new AxisRead(AxisState.Missing, null);
+        }
         if (value.Number is { } n)
             return double.IsFinite(n)
                 ? new AxisRead(AxisState.Value, new ScatterValue(n, value.Coverage, value.Evidence, value.ThroughTick))

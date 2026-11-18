@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>智能分组 ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>仅铁人模式</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>仅随时读档</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>仅已达成结局</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>存活 {0}+ 天</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>叙事者：{0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>难度：{0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>剧本：{0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>初始生态区：{0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>按存活天数 ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>按叙事者 ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>按难度 ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>按初始生态区 ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>按剧本 ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/天</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>显示：累计值</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>显示：每日变化率 (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>针对累计可加指标，在累计值与基于完整观测区间（≥1.0天）的每日变化率（/day）之间切换。</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>每日变化率（/day）按单个殖民地的完整观测区间计算，不适用于多殖民地汇总列。</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>由于记录不完整或观测区间不足1.0天，无法计算每日变化率（/day）。</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>完整 ({0}天)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>部分殖民地因记录不完整或观测区间不足1.0天而未计入排名</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>将该轴在累计值与每日变化率（/day，仅限完整且≥1.0天区间）之间切换。</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>该指标不是累计可加指标，无法切换为每日变化率（/day）。</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>每日变化率 (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X: /day 开</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X: /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y: /day 开</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y: /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} 区间不完整或不足1天</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>着色：{0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>按数据状态、结局达成、铁人模式、难度或叙事者切换散点颜色（不绘制回归线或相关系数）。</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>数据状态</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>结局达成</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>铁人模式</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>难度</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>叙事者</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>已达成结局</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>未达成结局</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>铁人模式</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>随时读档</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>其他</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>未知</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>多属性重叠</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0}：{1}</RWS_Scatter_TipAttr>
+</LanguageData>

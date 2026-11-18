@@ -3,7 +3,7 @@ namespace RimworldStatistics.Core;
 /// <summary>A previously collected colony value and its rank; no new statistics are stored.</summary>
 public sealed record LeaderboardEntry(
     int Rank, string ColonyKey, double Value, MetricCoverage Coverage,
-    MetricEvidence Evidence, int? ThroughTick);
+    MetricEvidence Evidence, int? ThroughTick, double? RecordedDays = null);
 
 public sealed record Leaderboard(
     string MetricKey, bool Descending, IReadOnlyList<LeaderboardEntry> Entries,
@@ -12,10 +12,35 @@ public sealed record Leaderboard(
 public static class LeaderboardBuilder
 {
     private sealed record Candidate(
-        string Key, double Value, MetricCoverage Coverage, MetricEvidence Evidence, int? ThroughTick);
+        string Key, double Value, MetricCoverage Coverage, MetricEvidence Evidence, int? ThroughTick, double? RecordedDays = null);
 
-    public static IReadOnlyList<string> RankableKeys(StatsView view)
+    public static bool CanRankPerDay(StatsView view, string metricKey)
     {
+        ArgumentNullException.ThrowIfNull(view);
+        ArgumentNullException.ThrowIfNull(metricKey);
+        return !BasicMetrics.Contains(metricKey)
+            && MetricLookup.Definition(view, metricKey) is { } definition
+            && definition.Overall != OverallAggregation.Ranking
+            && !CrossColonyCatalog.IsDerived(definition)
+            && MetricRates.IsAdditiveTotal(definition);
+    }
+
+    public static IReadOnlyList<string> RankableKeys(StatsView view, bool perDayOnly = false)
+    {
+        if (perDayOnly)
+        {
+            var rateKeys = new List<string>();
+            var rateSeen = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var c in view.Numeric.Colonies)
+                foreach (var row in c.Rows)
+                    if (row.Definition.Overall != OverallAggregation.Ranking
+                        && !CrossColonyCatalog.IsDerived(row.Definition)
+                        && MetricRates.IsAdditiveTotal(row.Definition)
+                        && rateSeen.Add(row.Definition.Key))
+                        rateKeys.Add(row.Definition.Key);
+            return rateKeys;
+        }
+
         var keys = new List<string>(BasicMetrics.Keys);
         var existing = keys.ToHashSet(StringComparer.Ordinal);
         foreach (var c in view.Numeric.Colonies)
@@ -31,11 +56,28 @@ public static class LeaderboardBuilder
         => definition is null
             || (definition.Overall != OverallAggregation.Min && definition.Selection != ColonySelection.ObservationMin);
 
-    public static Leaderboard Build(StatsView view, string metricKey, bool descending)
+    public static Leaderboard Build(StatsView view, string metricKey, bool descending, bool perDay = false)
     {
         var candidates = new List<Candidate>();
         int targets = 0;
-        if (BasicMetrics.Contains(metricKey))
+        if (perDay)
+        {
+            if (CanRankPerDay(view, metricKey) && MetricLookup.Definition(view, metricKey) is { } rateDef)
+            {
+                foreach (var c in view.Numeric.Colonies.Where(c => !c.Excluded && !c.OutOfScope))
+                {
+                    var row = c.Rows.FirstOrDefault(r => r.Definition.Key == metricKey);
+                    if (row?.Value.Coverage == MetricCoverage.NotApplicable)
+                        continue;
+                    targets++;
+                    if (row is null || MetricRates.PerDay(rateDef, row.Value) is not { } rate)
+                        continue;
+                    candidates.Add(new Candidate(c.Key, rate.PerDay, MetricCoverage.Complete,
+                        row.Value.Evidence, row.Value.ThroughTick, rate.Days));
+                }
+            }
+        }
+        else if (BasicMetrics.Contains(metricKey))
         {
             foreach (var c in view.Stats.Colonies.Where(c => !c.Excluded && !c.OutOfScope))
             {
@@ -74,7 +116,7 @@ public static class LeaderboardBuilder
             var c = sorted[i];
             if (i == 0 || c.Value != sorted[i - 1].Value)
                 rank = i + 1;
-            results.Add(new LeaderboardEntry(rank, c.Key, c.Value, c.Coverage, c.Evidence, c.ThroughTick));
+            results.Add(new LeaderboardEntry(rank, c.Key, c.Value, c.Coverage, c.Evidence, c.ThroughTick, c.RecordedDays));
         }
 
         var partial = candidates.Any(c => c.Coverage == MetricCoverage.Partial) || candidates.Count < targets;

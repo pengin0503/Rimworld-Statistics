@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_SmartGroup_Menu>Groupes intelligents ▸</RWS_SmartGroup_Menu>
+  <RWS_SmartGroup_Permadeath>Mode engagement uniquement</RWS_SmartGroup_Permadeath>
+  <RWS_SmartGroup_ReloadAnytime>Rechargement libre uniquement</RWS_SmartGroup_ReloadAnytime>
+  <RWS_SmartGroup_EndingReached>Fin atteinte uniquement</RWS_SmartGroup_EndingReached>
+  <RWS_SmartGroup_MinDays>Survie {0}+ jours</RWS_SmartGroup_MinDays>
+  <RWS_SmartGroup_Storyteller>Conteur : {0}</RWS_SmartGroup_Storyteller>
+  <RWS_SmartGroup_Difficulty>Difficulté : {0}</RWS_SmartGroup_Difficulty>
+  <RWS_SmartGroup_Scenario>Scénario : {0}</RWS_SmartGroup_Scenario>
+  <RWS_SmartGroup_Biome>Biome de départ : {0}</RWS_SmartGroup_Biome>
+  <RWS_SmartGroup_ByDays>Par jours de survie ▸</RWS_SmartGroup_ByDays>
+  <RWS_SmartGroup_ByStoryteller>Par conteur ▸</RWS_SmartGroup_ByStoryteller>
+  <RWS_SmartGroup_ByDifficulty>Par difficulté ▸</RWS_SmartGroup_ByDifficulty>
+  <RWS_SmartGroup_ByBiome>Par biome de départ ▸</RWS_SmartGroup_ByBiome>
+  <RWS_SmartGroup_ByScenario>Par scénario ▸</RWS_SmartGroup_ByScenario>
+  <RWS_Rate_PerDayValue>{0}/j</RWS_Rate_PerDayValue>
+  <RWS_Rate_ModeTotal>Affichage : Total</RWS_Rate_ModeTotal>
+  <RWS_Rate_ModePerDay>Affichage : Par jour (/day)</RWS_Rate_ModePerDay>
+  <RWS_Rate_ModeToggleTip>Bascule entre les totaux cumulés et le taux journalier (/day) calculé sur l'intervalle complet observé (≥ 1,0 jour) de chaque colonie.</RWS_Rate_ModeToggleTip>
+  <RWS_Rate_ScopeNotApplicableTip>Les taux journaliers (/day) sont calculés par colonie sur son propre intervalle complet et ne s'appliquent pas aux colonnes agrégées.</RWS_Rate_ScopeNotApplicableTip>
+  <RWS_Rate_IncompleteIntervalTip>Taux journalier (/day) indisponible : relevé partiel ou intervalle inférieur à 1,0 jour.</RWS_Rate_IncompleteIntervalTip>
+  <RWS_Rate_TitleSuffix>{0} (/day)</RWS_Rate_TitleSuffix>
+  <RWS_Rate_RecordedInterval>Complet ({0} j)</RWS_Rate_RecordedInterval>
+  <RWS_Rankings_RatePartialNote>Certaines colonies sont omises car leur relevé est partiel ou couvre moins de 1,0 jour</RWS_Rankings_RatePartialNote>
+  <RWS_Rate_AxisToggleTip>Basculer cet axe entre le total cumulé et le taux journalier (/day) sur un intervalle complet ≥ 1,0 jour.</RWS_Rate_AxisToggleTip>
+  <RWS_Rate_AxisUnavailableTip>Cette statistique n'est pas un total cumulatif additif ; le taux (/day) est indisponible.</RWS_Rate_AxisUnavailableTip>
+  <RWS_Rate_AxisKindPerDay>Taux journalier (/day)</RWS_Rate_AxisKindPerDay>
+  <RWS_Scatter_XRateOn>X : /day ON</RWS_Scatter_XRateOn>
+  <RWS_Scatter_XRateOff>X : /day</RWS_Scatter_XRateOff>
+  <RWS_Scatter_YRateOn>Y : /day ON</RWS_Scatter_YRateOn>
+  <RWS_Scatter_YRateOff>Y : /day</RWS_Scatter_YRateOff>
+  <RWS_Scatter_Reason_IncompleteRate>{0} avec relevé partiel ou &lt;1 j</RWS_Scatter_Reason_IncompleteRate>
+  <RWS_Scatter_ColorButton>Couleur : {0}</RWS_Scatter_ColorButton>
+  <RWS_Scatter_ColorButtonTip>Colorer les points par état des données, fin atteinte, mode engagement, difficulté ou conteur (aucune droite de régression ni corrélation).</RWS_Scatter_ColorButtonTip>
+  <RWS_Scatter_Color_Status>État des données</RWS_Scatter_Color_Status>
+  <RWS_Scatter_Color_Ending>Fin atteinte</RWS_Scatter_Color_Ending>
+  <RWS_Scatter_Color_Permadeath>Mode engagement</RWS_Scatter_Color_Permadeath>
+  <RWS_Scatter_Color_Difficulty>Difficulté</RWS_Scatter_Color_Difficulty>
+  <RWS_Scatter_Color_Storyteller>Conteur</RWS_Scatter_Color_Storyteller>
+  <RWS_Scatter_Bucket_EndingYes>Fin atteinte</RWS_Scatter_Bucket_EndingYes>
+  <RWS_Scatter_Bucket_EndingNo>Aucune fin</RWS_Scatter_Bucket_EndingNo>
+  <RWS_Scatter_Bucket_Permadeath>Engagement</RWS_Scatter_Bucket_Permadeath>
+  <RWS_Scatter_Bucket_ReloadAnytime>Rechargement libre</RWS_Scatter_Bucket_ReloadAnytime>
+  <RWS_Scatter_Bucket_Other>Autre</RWS_Scatter_Bucket_Other>
+  <RWS_Scatter_Bucket_Unknown>Inconnu</RWS_Scatter_Bucket_Unknown>
+  <RWS_Scatter_Bucket_Mixed>Groupe mixte</RWS_Scatter_Bucket_Mixed>
+  <RWS_Scatter_TipAttr>{0} : {1}</RWS_Scatter_TipAttr>
+</LanguageData>
