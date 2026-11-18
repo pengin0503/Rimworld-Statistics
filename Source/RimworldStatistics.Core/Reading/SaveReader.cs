@@ -41,7 +41,14 @@ public sealed partial class SaveReader
     /// </summary>
     public const int Version = 21;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
+    /// <summary>
+    /// The most permanent tales one save observation keeps: the newest by date, so that a later save of a long colony still
+    /// shows its recent tales; older ones stay in the observations of older saves (#393).
+    /// </summary>
     public const int MaxPermanentTales = 256;
+
+    /// <summary>A bound on the tales gathered while reading, before the newest <see cref="MaxPermanentTales"/> are chosen.</summary>
+    internal const int MaxRawPermanentTales = 65_536;
 
     private const int MaxReasonLength = 200;
 
@@ -190,6 +197,7 @@ public sealed partial class SaveReader
         public int? WorldInitialMapHeight { get; set; }
         public bool TickManagerRead { get; set; }
         public List<RawSavedTale>? RawTales { get; set; }
+        public bool RawTalesOverflow { get; set; }
 
         // Numeric expansion inputs (never used by the v1 values above).
         public List<string>? ModIds { get; set; }
@@ -281,8 +289,10 @@ public sealed partial class SaveReader
             ForEachChild(r, item =>
             {
                 if (item != "li") { r.Skip(); return; }
-                if (s.RawTales is { Count: >= MaxPermanentTales })
+                if (s.RawTales is { Count: >= MaxRawPermanentTales })
                 {
+                    // Tales are saved oldest first, so the ones left here are the newest: which of them were left is unknown.
+                    s.RawTalesOverflow = true;
                     r.Skip();
                     return;
                 }
@@ -412,8 +422,17 @@ public sealed partial class SaveReader
                     c = a.Kind.CompareTo(b.Kind);
                     return c != 0 ? c : a.Id.CompareTo(b.Id);
                 });
+                if (converted.Count > MaxPermanentTales)
+                {
+                    // Keep the newest; every tale after the latest one left out is kept (#393).
+                    var dropped = converted.Count - MaxPermanentTales;
+                    obs.PermanentTalesDroppedThroughTick = converted[dropped - 1].TicksGame;
+                    converted.RemoveRange(0, dropped);
+                }
                 obs.PermanentTales = converted;
             }
+            if (s.RawTalesOverflow)
+                obs.PermanentTalesDroppedThroughTick = obs.Values.TicksGame;   // which of the newest were left is unknown
         }
         TraceInputs Inputs(IReadOnlyCollection<EndingType> lineage) => new()
         {

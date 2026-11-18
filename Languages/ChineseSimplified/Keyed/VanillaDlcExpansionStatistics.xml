@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>殖民者婚礼记录（存档轶事）</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>遭遇重大威胁（存档轶事）</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>来自存档永久轶事记录的编年史辅助条目，不会计入数值统计总计。</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>每个存档只读取最新的 {0} 条永久轶事。此分支上的存档超过该数量，因此第 {1} 天及之前的部分轶事可能未显示。</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

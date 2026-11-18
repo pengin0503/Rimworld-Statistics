@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Mariage de colons enregistré (récit de sauvegarde)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Menace majeure affrontée (récit de sauvegarde)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Trace narrative auxiliaire conservée dans les récits permanents de la sauvegarde ; jamais additionnée aux totaux numériques.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Seuls les {0} récits permanents les plus récents de chaque sauvegarde sont lus. Une sauvegarde de cette branche en contenait davantage : certains récits jusqu'au jour {1} peuvent ne pas être affichés.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

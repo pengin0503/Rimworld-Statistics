@@ -488,5 +488,126 @@ public sealed class Axis1IdeologyRoyaltyVanillaTests
         Assert.Contains(bTales, t => t.TaleKind == PermanentTaleKind.TileSettled && t.TaleId == 1);
         Assert.Contains(bTales, t => t.TaleKind == PermanentTaleKind.MajorThreat && t.TaleId == 20 && t.StartTick == 120_000);
         Assert.DoesNotContain(bTales, t => t.TaleKind == PermanentTaleKind.Marriage);
+        Assert.Null(chronA.TalesMissingThroughTick);
+        Assert.Null(chronB.TalesMissingThroughTick);
+    }
+
+    [Fact]
+    public void PermanentTalesOverTheCap_KeepTheNewest_AndTheChronicleSaysWhatNoEarlierSaveHolds()
+    {
+        const int StartAbs = 3_600_000;
+
+        static (SaveObservation Obs, MetricObservation Metrics) ReadSave(string fileName, int ticksGame, DateTime lastWriteUtc,
+            int threats)
+        {
+            var root = XDocument.Load(new MemoryStream(new SaveXmlBuilder().Minimal()
+                .MetaMods("1.7.5011 rev24", ["ludeon.rimworld"])
+                .Tick(ticksGame, start: StartAbs)
+                .Build()));
+            var game = root.Root!.Element("game")!;
+            var comps = game.Element("components") ?? new XElement("components");
+            if (comps.Parent is null)
+                game.Add(comps);
+            comps.Add(new XElement("li", new XAttribute("Class", "RimworldStatistics.GameComponent_RimworldStatistics"),
+                new XElement("campaignId", "camp-tale-cap")));
+            // Saved oldest first, as TaleManager.Add appends: the founding, then one major threat every 1,000 ticks.
+            var tales = new List<XElement>
+            {
+                new("li", new XElement("def", "TileSettled"), new XElement("id", 1_000), new XElement("date", StartAbs)),
+            };
+            for (var i = 1; i <= threats; i++)
+                tales.Add(new XElement("li", new XElement("def", "MajorThreat"), new XElement("id", i),
+                    new XElement("date", StartAbs + i * 1_000)));
+            game.Add(new XElement("taleManager", new XElement("tales", tales)));
+
+            var bytes = Encoding.UTF8.GetBytes(root.ToString());
+            var res = new SaveReader().ReadDetailed(new MemoryStream(bytes), fileName, bytes.Length, lastWriteUtc);
+            Assert.Equal(ObservationStatus.Ok, res.Observation.Status);
+            return (res.Observation, res.Metrics!);
+        }
+
+        // 301 tales (the founding and 300 threats): the newest 256 are kept, threats 45 to 300.
+        var late = ReadSave("late.rws", 400_000, T0.AddHours(2), threats: 300);
+        Assert.Equal(SaveReader.MaxPermanentTales, late.Obs.PermanentTales!.Count);
+        Assert.Equal(new PermanentTaleFact(PermanentTaleKind.MajorThreat, 45, 45_000), late.Obs.PermanentTales[0]);
+        Assert.Equal(new PermanentTaleFact(PermanentTaleKind.MajorThreat, 300, 300_000), late.Obs.PermanentTales[^1]);
+        Assert.Equal(44_000, late.Obs.PermanentTalesDroppedThroughTick);
+
+        // Exactly the cap: nothing is left out.
+        var exact = ReadSave("exact.rws", 400_000, T0.AddHours(3), threats: SaveReader.MaxPermanentTales - 1);
+        Assert.Equal(SaveReader.MaxPermanentTales, exact.Obs.PermanentTales!.Count);
+        Assert.Null(exact.Obs.PermanentTalesDroppedThroughTick);
+
+        // The field is written only when set, and read back.
+        var json = System.Text.Json.JsonSerializer.Serialize(late.Obs);
+        Assert.Contains("\"PermanentTalesDroppedThroughTick\":44000", json, StringComparison.Ordinal);
+        Assert.DoesNotContain("PermanentTalesDroppedThroughTick", System.Text.Json.JsonSerializer.Serialize(exact.Obs), StringComparison.Ordinal);
+        Assert.Equal(44_000, System.Text.Json.JsonSerializer.Deserialize<SaveObservation>(json)!.PermanentTalesDroppedThroughTick);
+
+        static ColonyChronicle Chronicle(params (SaveObservation Obs, MetricObservation Metrics, string Cp, string? Parent)[] saves)
+        {
+            var profile = new Profile();
+            foreach (var (obs, metrics, cpKey, parent) in saves)
+            {
+                var cp = new MetricObservation
+                {
+                    Source = MetricObservationSource.Checkpoint, Key = cpKey, ParentKey = parent, PayloadHash = "h-" + cpKey,
+                    Identity = obs.Identity.Clone(), FormatVersion = SaveReader.Version, SaveTick = obs.Values.TicksGame,
+                    ObservedUtc = obs.LastWriteUtc, GameVersion = "1.7.5011 rev24",
+                };
+                cp.FileAliases.Add(new MetricFileAlias { FileName = obs.FileName, FileSize = obs.FileSize, LastWriteUtc = obs.LastWriteUtc });
+                profile.SaveObservations.Add(obs);
+                profile.MetricObservations.Add(metrics);
+                profile.MetricObservations.Add(cp);
+            }
+            var colonies = CampaignMatcher.BuildColonies(profile);
+            var colony = Assert.Single(colonies);
+            var stats = StatsCalculator.Calculate(colonies, new StatsOptions());
+            var view = new StatsView
+            {
+                Colonies = colonies, Stats = stats,
+                Numeric = MetricCalculator.BuildView(profile, colonies, stats,
+                    MetricRegistry.Compose(profile.ModMetricDescriptors, MetricDisplayPolicy.AllDetailsVisibleUnits)),
+            };
+            return ColonyChronicle.Build(view, colony.Key, ColonySaveLineage.Build(profile, colonies, colony.Key))!;
+        }
+
+        static ChronicleEntry[] Tales(ColonyChronicle c) => c.Entries.Where(e => e.Kind == ChronicleEntryKind.HistoricalTale).ToArray();
+
+        // Only the late save: what it left out is said to be missing.
+        var alone = Chronicle((late.Obs, late.Metrics, "cp-late", null));
+        Assert.Equal(SaveReader.MaxPermanentTales, Tales(alone).Length);
+        Assert.Equal(44_000, alone.TalesMissingThroughTick);
+
+        // An earlier save on the same branch, read when the colony had 140 threats, holds the ones the late save left out.
+        var early = ReadSave("early.rws", 150_000, T0.AddHours(1), threats: 140);
+        Assert.Null(early.Obs.PermanentTalesDroppedThroughTick);
+        var both = Chronicle((early.Obs, early.Metrics, "cp-early", null), (late.Obs, late.Metrics, "cp-late", "cp-early"));
+        var bothTales = Tales(both);
+        Assert.Equal(301, bothTales.Length);
+        Assert.Contains(bothTales, t => t.TaleKind == PermanentTaleKind.TileSettled && t.StartTick == 0);
+        Assert.Null(both.TalesMissingThroughTick);
+    }
+
+    [Fact]
+    public void MissingTales_AreThoseNoSaveFarEnoughOnHolds()
+    {
+        static ColonyChronicle.SaveFact Save(int tick, int? droppedThrough, bool tales = true)
+            => new($"s{tick}.rws", 1, T0, tick, "camp", [], [], [],
+                tales ? [new PermanentTaleFact(PermanentTaleKind.MajorThreat, tick, tick)] : null, droppedThrough);
+
+        Assert.Null(ColonyChronicle.MissingTalesThroughTick([]));
+        Assert.Null(ColonyChronicle.MissingTalesThroughTick([Save(400_000, null), Save(100_000, 50_000)]));   // the latest holds all
+        Assert.Equal(44_000, ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000)]));
+        // An earlier save that was already past the gap fills it, down to what it left out itself.
+        Assert.Null(ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000), Save(44_000, null)]));
+        Assert.Equal(10_000, ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000), Save(150_000, 10_000)]));
+        Assert.Null(ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000), Save(150_000, 10_000), Save(12_000, null)]));
+        // One that was not yet that far on cannot: tales after it and up to the gap are in no save.
+        Assert.Equal(44_000, ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000), Save(30_000, null)]));
+        // A save whose tales were not read proves nothing either way.
+        Assert.Equal(44_000, ColonyChronicle.MissingTalesThroughTick([Save(400_000, 44_000), Save(200_000, null, tales: false)]));
+        Assert.Null(ColonyChronicle.MissingTalesThroughTick(
+            [Save(400_000, 44_000), Save(200_000, null, tales: false), Save(100_000, null)]));
     }
 }

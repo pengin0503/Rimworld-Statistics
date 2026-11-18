@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Свадьба поселенцев (предание сохранения)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Столкновение с крупной угрозой (предание сохранения)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Вспомогательная летописная запись из постоянных преданий сохранения; никогда не прибавляется к числовым итогам.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Из каждого сохранения читаются только {0} самых новых постоянных преданий. В сохранении этой ветви их было больше, поэтому часть преданий до дня {1} может быть не показана.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

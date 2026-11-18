@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Colonist marriage recorded (save tale)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Major threat encountered (save tale)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Auxiliary narrative record preserved in the save's permanent Tale Manager; never added to numeric event totals.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Only the newest {0} permanent tales of each save are read. A save on this branch held more, so some tales up to Day {1} may not be shown.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

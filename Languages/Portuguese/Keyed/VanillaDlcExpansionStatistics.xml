@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Casamento de colonos registado (relato da gravação)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Grande ameaça enfrentada (relato da gravação)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Registo narrativo auxiliar preservado nos relatos permanentes da gravação; nunca é somado aos totais numéricos.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Só são lidos os {0} relatos permanentes mais recentes de cada gravação. Uma gravação deste ramo tinha mais, por isso alguns relatos até ao dia {1} podem não ser mostrados.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

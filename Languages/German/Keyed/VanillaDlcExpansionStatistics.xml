@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Kolonistenhochzeit verzeichnet (Speicher-Erzählung)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Große Bedrohung erlebt (Speicher-Erzählung)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Ergänzender Chronikeintrag aus den dauerhaften Erzählungen des Spielstands; fließt niemals in numerische Gesamtsummen ein.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Pro Spielstand werden nur die neuesten {0} dauerhaften Erzählungen gelesen. Ein Spielstand dieses Zweigs enthielt mehr, daher werden einige Erzählungen bis Tag {1} möglicherweise nicht angezeigt.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>

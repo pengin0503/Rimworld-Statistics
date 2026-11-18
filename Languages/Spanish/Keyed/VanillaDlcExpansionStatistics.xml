@@ -141,4 +141,5 @@
   <RWS_Chronicle_Tale_Marriage>Matrimonio de colonos registrado (relato del guardado)</RWS_Chronicle_Tale_Marriage>
   <RWS_Chronicle_Tale_MajorThreat>Amenaza mayor afrontada (relato del guardado)</RWS_Chronicle_Tale_MajorThreat>
   <RWS_Chronicle_TipAuxiliaryTale>Registro narrativo auxiliar conservado en los relatos permanentes del guardado; nunca se suma a los totales numéricos.</RWS_Chronicle_TipAuxiliaryTale>
+  <RWS_Chronicle_TalesDroppedNotice>Solo se leen los {0} relatos permanentes más recientes de cada guardado. Un guardado de esta rama tenía más, así que puede que no se muestren algunos relatos hasta el día {1}.</RWS_Chronicle_TalesDroppedNotice>
 </LanguageData>
