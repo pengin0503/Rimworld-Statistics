@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>検索:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>表示名、元の派閥名、ワールド名でコロニーを検索します。</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>表示名:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>設定</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>解除</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>元の派閥名: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>統計画面の一覧・グラフでのみ使う表示名です。セーブ内の派閥名、コロニー識別キー、統合や集計の判定は変更しません。</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>お気に入り（コロニー別グラフ）</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>コロニー別グラフを追加…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>登録されたコロニー別グラフはありません。ここから追加するか、「コロニー」または個別表示の「詳細」の☆から登録できます。</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>コロニーを選択</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>{0} の折れ線グラフを選択</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>お気に入りグラフ…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>このコロニーの折れ線グラフを「概要」のお気に入りに登録・解除します。</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>クリックして {0} の履歴折れ線グラフを開きます。</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>未記録のコロニー</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>現在の統計記録に該当するコロニーがありません。× でお気に入りから解除できます。</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>このコロニーは集計除外に設定されているためグラフを開けません。「コロニー」タブで除外を外すか、× で登録を解除してください。</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>選択中のコロニーグループの対象外です。スコープを「全コロニー」に切り替えるとグラフを開けます。</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>この統計は現在登録されていません（対象MODが無効化されている可能性があります）。× で登録を解除できます。</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>この統計にはコロニー別のセーブ履歴折れ線グラフがありません。× で登録を解除できます。</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>このコロニーにはまだ計測値が記録されていません（対象MOD未使用・未計測など）。× で登録を解除できます。</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>提供元MODは現在無効です: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>統計全体のお気に入りに登録</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>統計全体のお気に入りから解除</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>{0} の折れ線グラフをお気に入りに登録</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>{0} の折れ線グラフをお気に入りから解除</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>統計全体、または選択中コロニーの折れ線グラフを「概要」のお気に入りに登録・解除</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

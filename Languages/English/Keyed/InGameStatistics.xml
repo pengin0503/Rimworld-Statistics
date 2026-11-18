@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Showing saved statistics (last recorded: {0} / {1}). Unsaved progress since then is not included.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Showing saved statistics (last recorded: ending trace only, no numeric observation yet). Save the game to record numeric statistics.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Showing saved statistics for another colony (last recorded: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>No saved statistics for this colony yet</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>Statistics for the current colony are recorded when the game is saved. Opening this screen does not save the game or scan save files. You can still open Lifetime statistics to browse other recorded colonies.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Open lifetime statistics</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Open the full cross-colony Lifetime statistics window.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (current colony)</RWS_InGame_CurrentColonyMark>
+</LanguageData>

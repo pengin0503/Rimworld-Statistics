@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>Search:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>Search colonies by display name, original faction name, or world name.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>Display name:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>Set name</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>Reset</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>Original faction name: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>Custom name shown only in statistics tables and charts. Save files, colony keys, merging, and totals are not changed.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>Favorite colony charts</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>Add colony chart…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>No favorite colony charts yet. Add one here, in Colonies, or with ☆ in per-colony Details.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>Select a colony</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>Select a line chart for {0}</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>Favorite charts…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>Add or remove favorite line charts for this colony on the Overview tab.</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>Click to open the history line chart for {0}.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>Unrecorded colony</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>This colony is not in the current statistics record. You can remove this favorite with ×.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>This colony is currently excluded from statistics. Uncheck Exclude in Colonies to open its chart, or remove this favorite with ×.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>This colony is outside the selected colony group. Switch the scope to All colonies to open its chart.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>This statistic is not currently registered (its source MOD may be inactive). You can remove this favorite with ×.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>This statistic does not have a per-colony save history line chart. You can remove this favorite with ×.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>No measured value is recorded for this colony yet (or its source MOD was not used). You can remove this favorite with ×.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>Source MOD is currently inactive: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>Add statistic to Overview favorites</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>Remove statistic from Overview favorites</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>Add {0} line chart to Overview favorites</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>Remove {0} line chart from Overview favorites</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>Add or remove this statistic or the selected colony's line chart in Overview favorites</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

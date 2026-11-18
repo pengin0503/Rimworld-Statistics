@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>Pesquisar:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>Pesquisar colônias pelo nome de exibição, nome original da facção ou nome do mundo.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>Nome de exibição:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>Definir</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>Redefinir</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>Nome original da facção: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>Nome personalizado exibido apenas nas tabelas e gráficos de estatísticas. Os salvamentos, chaves de colônia, mesclagem e totais não são alterados.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>Gráficos de colônia favoritos</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>Adicionar gráfico…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>Nenhum gráfico de colônia favorito ainda. Adicione aqui, em Colônias ou com ☆ em Detalhes por colônia.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>Selecionar uma colônia</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>Selecionar gráfico de linhas para {0}</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>Gráficos favoritos…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>Adicionar ou remover gráficos de linhas favoritos desta colônia na aba Visão geral.</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>Clique para abrir o gráfico de histórico de {0}.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>Colônia não registrada</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>Esta colônia não está no registro atual de estatísticas. Você pode remover este favorito com ×.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>Esta colônia está excluída das estatísticas. Desmarque Excluir em Colônias para abrir o gráfico ou remova com ×.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>Esta colônia está fora do grupo selecionado. Mude o escopo para Todas as colônias para abrir o gráfico.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>Esta estatística não está registrada no momento (o MOD de origem pode estar inativo). Você pode remover com ×.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>Esta estatística não possui gráfico de linhas de histórico por colônia. Você pode remover com ×.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>Nenhum valor medido foi registrado para esta colônia ainda (ou o MOD de origem não foi usado). Você pode remover com ×.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>O MOD de origem está inativo no momento: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>Adicionar estatística aos favoritos da Visão geral</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>Remover estatística dos favoritos da Visão geral</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>Adicionar gráfico de {0} aos favoritos da Visão geral</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>Remover gráfico de {0} dos favoritos da Visão geral</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>Adicionar ou remover esta estatística ou o gráfico da colônia selecionada nos favoritos da Visão geral</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

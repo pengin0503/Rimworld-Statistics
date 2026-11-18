@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>表示期間（日）</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>表示を開始するゲーム内日数（空欄で最初の日から表示）。</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>表示を終了するゲーム内日数（空欄で最後の日まで表示）。</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>期間を表示</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>指定したゲーム内日数の範囲にグラフを拡大表示します。</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>全期間に戻す</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>記録されている全期間の表示に戻します。</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>全期間を表示中：{0}〜{1}日</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>拡大表示中：{0}〜{1}日（全期間：{2}〜{3}日）</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>拡大表示中：{0}〜{1}日 — この期間に観測点はありません（全期間：{2}〜{3}日）</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>0以上の日数を数値で入力してください（例：10、25.5）。</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>指定した期間に観測点はありません。</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>表示期間内にこのコロニーの観測点が2つ未満のため比較できません。</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

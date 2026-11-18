@@ -51,6 +51,7 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private bool[] clusterCaution = [];
     private string?[] clusterTips = [];
     private Dictionary<string, string>? colonyNames;
+    private string? namesSignature;
 
     /// <param name="yKey">The statistic on the Y axis (the peak wealth when missing or not plottable).</param>
     /// <param name="xKey">The statistic on the X axis (days played when missing, not plottable or the same as Y).</param>
@@ -98,9 +99,11 @@ internal sealed class Dialog_MetricScatterPlot : Window
     private void DrawContents(Rect rect)
     {
         var lang = LanguageDatabase.activeLanguage;
-        if (texts is null || !ReferenceEquals(textLanguage, lang))
+        var prefSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
+        if (texts is null || !ReferenceEquals(textLanguage, lang) || namesSignature != prefSig)
         {
             textLanguage = lang;
+            namesSignature = prefSig;
             colonyNames = null; // an unnamed colony's name is translated
             texts = BuildTexts();
             clusterTips = new string?[clusterTips.Length];

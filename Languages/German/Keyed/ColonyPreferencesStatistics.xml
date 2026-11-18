@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Colonies_Search>Suche:</RWS_Colonies_Search>
+  <RWS_Colonies_SearchTip>Kolonien nach Anzeigename, ursprünglichem Fraktionsnamen oder Weltname durchsuchen.</RWS_Colonies_SearchTip>
+  <RWS_ColonyName_Label>Anzeigename:</RWS_ColonyName_Label>
+  <RWS_ColonyName_Save>Festlegen</RWS_ColonyName_Save>
+  <RWS_ColonyName_Clear>Zurücksetzen</RWS_ColonyName_Clear>
+  <RWS_ColonyName_Original>Ursprünglicher Fraktionsname: {0}</RWS_ColonyName_Original>
+  <RWS_ColonyName_EditTip>Eigener Name nur für Statistiktabellen und Diagramme. Spielstände, Kolonieschlüssel, Zusammenführungen und Summen bleiben unverändert.</RWS_ColonyName_EditTip>
+  <RWS_ColonyFav_Title>Favorisierte Koloniediagramme</RWS_ColonyFav_Title>
+  <RWS_ColonyFav_Add>Koloniediagramm hinzufügen…</RWS_ColonyFav_Add>
+  <RWS_ColonyFav_Empty>Noch keine Koloniediagramme favorisiert. Hier hinzufügen, unter Kolonien oder mit ☆ in den Kolonie-Details.</RWS_ColonyFav_Empty>
+  <RWS_ColonyFav_PickColony>Kolonie auswählen</RWS_ColonyFav_PickColony>
+  <RWS_ColonyFav_PickMetric>Liniendiagramm für {0} auswählen</RWS_ColonyFav_PickMetric>
+  <RWS_ColonyFav_ManageButton>Favoriten-Diagramme…</RWS_ColonyFav_ManageButton>
+  <RWS_ColonyFav_ManageTip>Liniendiagramme dieser Kolonie zu den Favoriten in der Übersicht hinzufügen oder entfernen.</RWS_ColonyFav_ManageTip>
+  <RWS_ColonyFav_OpenTip>Klicken, um das Verlaufsdiagramm für {0} zu öffnen.</RWS_ColonyFav_OpenTip>
+  <RWS_ColonyFav_MissingColony>Nicht erfasste Kolonie</RWS_ColonyFav_MissingColony>
+  <RWS_ColonyFav_TipColonyMissing>Diese Kolonie ist im aktuellen Statistikbestand nicht vorhanden. Mit × entfernen.</RWS_ColonyFav_TipColonyMissing>
+  <RWS_ColonyFav_TipColonyExcluded>Diese Kolonie ist derzeit von der Statistik ausgeschlossen. Ausschluss unter Kolonien aufheben oder Favorit mit × entfernen.</RWS_ColonyFav_TipColonyExcluded>
+  <RWS_ColonyFav_TipColonyOutOfScope>Diese Kolonie liegt außerhalb der gewählten Koloniegruppe. Auf Alle Kolonien wechseln, um das Diagramm zu öffnen.</RWS_ColonyFav_TipColonyOutOfScope>
+  <RWS_ColonyFav_TipMetricUnknown>Diese Statistik ist derzeit nicht registriert (Quell-MOD evtl. deaktiviert). Mit × entfernen.</RWS_ColonyFav_TipMetricUnknown>
+  <RWS_ColonyFav_TipMetricNoHistory>Für diese Statistik gibt es kein koloniespezifisches Verlaufsdiagramm. Mit × entfernen.</RWS_ColonyFav_TipMetricNoHistory>
+  <RWS_ColonyFav_TipNoValue>Für diese Kolonie liegt noch kein Messwert vor (oder die Quell-MOD wurde nicht genutzt). Mit × entfernen.</RWS_ColonyFav_TipNoValue>
+  <RWS_ColonyFav_TipModInactive>Quell-MOD ist derzeit inaktiv: {0}</RWS_ColonyFav_TipModInactive>
+  <RWS_ColonyFav_MenuMetricAdd>Statistik zu Übersichtsfavoriten hinzufügen</RWS_ColonyFav_MenuMetricAdd>
+  <RWS_ColonyFav_MenuMetricRemove>Statistik aus Übersichtsfavoriten entfernen</RWS_ColonyFav_MenuMetricRemove>
+  <RWS_ColonyFav_MenuColonyAdd>Liniendiagramm für {0} zu Übersichtsfavoriten hinzufügen</RWS_ColonyFav_MenuColonyAdd>
+  <RWS_ColonyFav_MenuColonyRemove>Liniendiagramm für {0} aus Übersichtsfavoriten entfernen</RWS_ColonyFav_MenuColonyRemove>
+  <RWS_ColonyFav_StarMenuTip>Diese Statistik oder das Liniendiagramm der gewählten Kolonie in der Übersicht favorisieren oder entfernen</RWS_ColonyFav_StarMenuTip>
+</LanguageData>

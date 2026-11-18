@@ -104,18 +104,46 @@ public sealed class HistoryOverlayTracker
         public IReadOnlyList<MetricHistoryPoint> RawPoints { get; internal set; } = [];
         public MetricHistoryPoint[] Measured { get; internal set; } = [];
         internal int CachedWidth { get; set; }
+        internal HistoryTickRange? CachedRange { get; set; }
         internal IReadOnlyList<MetricHistoryPoint> ThinnedPoints { get; set; } = [];
+        internal HistoryTickRange? CachedMeasuredRange { get; set; }
+        internal MetricHistoryPoint[]? CachedVisibleMeasured { get; set; }
 
-        public IReadOnlyList<MetricHistoryPoint> GetOrThinPoints(int pixelWidth)
+        internal void ClearPlotCache()
+        {
+            ThinnedPoints = [];
+            CachedWidth = 0;
+            CachedRange = null;
+            CachedVisibleMeasured = null;
+            CachedMeasuredRange = null;
+        }
+
+        public IReadOnlyList<MetricHistoryPoint> GetOrThinPoints(int pixelWidth, HistoryTickRange? visibleRange = null)
         {
             if (Status != HistoryOverlayStatus.Completed)
                 return [];
-            if (CachedWidth != pixelWidth)
+            if (CachedWidth != pixelWidth || CachedRange != visibleRange)
             {
-                ThinnedPoints = MetricHistoryPlot.Thin(RawPoints, pixelWidth);
+                var source = visibleRange is { } range ? MetricHistoryPlot.Slice(RawPoints, range) : RawPoints;
+                ThinnedPoints = MetricHistoryPlot.Thin(source, pixelWidth);
                 CachedWidth = pixelWidth;
+                CachedRange = visibleRange;
             }
             return ThinnedPoints;
+        }
+
+        public MetricHistoryPoint[] GetVisibleMeasured(HistoryTickRange? visibleRange = null)
+        {
+            if (Status != HistoryOverlayStatus.Completed || Measured.Length == 0)
+                return [];
+            if (visibleRange is null)
+                return Measured;
+            if (CachedVisibleMeasured is null || CachedMeasuredRange != visibleRange)
+            {
+                CachedVisibleMeasured = HistoryPlotRange.FilterMeasured(Measured, visibleRange);
+                CachedMeasuredRange = visibleRange;
+            }
+            return CachedVisibleMeasured;
         }
     }
 
@@ -177,8 +205,7 @@ public sealed class HistoryOverlayTracker
             entry.Status = HistoryOverlayStatus.Empty;
             entry.RawPoints = [];
             entry.Measured = [];
-            entry.ThinnedPoints = [];
-            entry.CachedWidth = 0;
+            entry.ClearPlotCache();
             return true;
         }
 
@@ -187,16 +214,14 @@ public sealed class HistoryOverlayTracker
             entry.Status = HistoryOverlayStatus.Incompatible;
             entry.RawPoints = [];
             entry.Measured = [];
-            entry.ThinnedPoints = [];
-            entry.CachedWidth = 0;
+            entry.ClearPlotCache();
             return true;
         }
 
         entry.Status = HistoryOverlayStatus.Completed;
         entry.RawPoints = history.Points;
         entry.Measured = measured;
-        entry.ThinnedPoints = [];
-        entry.CachedWidth = 0;
+        entry.ClearPlotCache();
         return true;
     }
 
@@ -209,17 +234,47 @@ public sealed class HistoryOverlayTracker
         entry.Status = HistoryOverlayStatus.Empty;
         entry.RawPoints = [];
         entry.Measured = [];
-        entry.ThinnedPoints = [];
-        entry.CachedWidth = 0;
+        entry.ClearPlotCache();
         return true;
     }
 
     public HistoryPlotBounds ComputeBounds(
         MetricHistory primaryHistory,
         IReadOnlyList<MetricHistoryPoint> primaryMeasured)
+        => ComputeBounds(primaryHistory, primaryMeasured, visibleRange: null);
+
+    public HistoryPlotBounds ComputeBounds(
+        MetricHistory primaryHistory,
+        IReadOnlyList<MetricHistoryPoint> primaryMeasured,
+        HistoryTickRange? visibleRange)
     {
         ArgumentNullException.ThrowIfNull(primaryHistory);
         ArgumentNullException.ThrowIfNull(primaryMeasured);
+
+        if (visibleRange is { } range)
+        {
+            var zoomedMin = double.PositiveInfinity;
+            var zoomedMax = double.NegativeInfinity;
+            var zoomedPartial = false;
+            var zoomedUnlinked = false;
+
+            FoldMeasuredInRange(primaryMeasured, range, ref zoomedMin, ref zoomedMax, ref zoomedPartial, ref zoomedUnlinked);
+            foreach (var entry in entries)
+            {
+                if (entry.Status != HistoryOverlayStatus.Completed || entry.Measured.Length == 0)
+                    continue;
+                FoldMeasuredInRange(entry.Measured, range, ref zoomedMin, ref zoomedMax, ref zoomedPartial, ref zoomedUnlinked);
+            }
+
+            if (!double.IsFinite(zoomedMin) || !double.IsFinite(zoomedMax))
+            {
+                var full = ComputeBounds(primaryHistory, primaryMeasured, visibleRange: null);
+                zoomedMin = full.MinValue;
+                zoomedMax = full.MaxValue;
+            }
+
+            return new HistoryPlotBounds(range.StartTick, range.EndTick, zoomedMin, zoomedMax, zoomedPartial, zoomedUnlinked);
+        }
 
         var firstTick = primaryHistory.Points.Count > 0 ? primaryHistory.Points[0].Tick : 0;
         var lastTick = primaryHistory.Points.Count > 0 ? primaryHistory.Points[^1].Tick : 0;
@@ -246,6 +301,21 @@ public sealed class HistoryOverlayTracker
         }
 
         return new HistoryPlotBounds(firstTick, lastTick, minValue, maxValue, hasPartial, hasUnlinked);
+    }
+
+    public int CountVisibleMeasured(
+        IReadOnlyList<MetricHistoryPoint> primaryMeasured,
+        HistoryTickRange? visibleRange)
+    {
+        ArgumentNullException.ThrowIfNull(primaryMeasured);
+        var count = CountInRange(primaryMeasured, visibleRange);
+        foreach (var entry in entries)
+        {
+            if (entry.Status != HistoryOverlayStatus.Completed || entry.Measured.Length == 0)
+                continue;
+            count += CountInRange(entry.Measured, visibleRange);
+        }
+        return count;
     }
 
     private Entry? FindByRequestId(long requestId)
@@ -283,21 +353,58 @@ public sealed class HistoryOverlayTracker
         ref bool hasUnlinked)
     {
         for (var i = 0; i < points.Count; i++)
+            FoldPoint(points[i], ref minValue, ref maxValue, ref hasPartial, ref hasUnlinked);
+    }
+
+    private static void FoldMeasuredInRange(
+        IReadOnlyList<MetricHistoryPoint> points,
+        HistoryTickRange range,
+        ref double minValue,
+        ref double maxValue,
+        ref bool hasPartial,
+        ref bool hasUnlinked)
+    {
+        for (var i = 0; i < points.Count; i++)
         {
             var p = points[i];
-            if (p.Unlinked)
-                hasUnlinked = true;
-            if (p.Value is not { } v)
-                continue;
-            if (v.Coverage == MetricCoverage.Partial)
-                hasPartial = true;
-            if (v.Number is { } n && double.IsFinite(n))
-            {
-                if (n < minValue)
-                    minValue = n;
-                if (n > maxValue)
-                    maxValue = n;
-            }
+            if (range.Contains(p.Tick))
+                FoldPoint(p, ref minValue, ref maxValue, ref hasPartial, ref hasUnlinked);
         }
+    }
+
+    private static void FoldPoint(
+        MetricHistoryPoint p,
+        ref double minValue,
+        ref double maxValue,
+        ref bool hasPartial,
+        ref bool hasUnlinked)
+    {
+        if (p.Unlinked)
+            hasUnlinked = true;
+        if (p.Value is not { } v)
+            return;
+        if (v.Coverage == MetricCoverage.Partial)
+            hasPartial = true;
+        if (v.Number is { } n && double.IsFinite(n))
+        {
+            if (n < minValue)
+                minValue = n;
+            if (n > maxValue)
+                maxValue = n;
+        }
+    }
+
+    private static int CountInRange(IReadOnlyList<MetricHistoryPoint> points, HistoryTickRange? visibleRange)
+    {
+        var count = 0;
+        for (var i = 0; i < points.Count; i++)
+        {
+            var p = points[i];
+            if (visibleRange is { } range && !range.Contains(p.Tick))
+                continue;
+            if (p.Value is { Number: { } n } && double.IsFinite(n))
+                count++;
+        }
+        return count;
     }
 }

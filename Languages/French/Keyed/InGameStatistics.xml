@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Affichage des statistiques enregistrées (dernier enregistrement : {0} / {1}). La progression non sauvegardée depuis n'est pas incluse.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Affichage des statistiques enregistrées (dernier enregistrement : trace de fin uniquement, aucune observation numérique). Sauvegardez la partie pour enregistrer les statistiques numériques.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Affichage des statistiques enregistrées d'une autre colonie (dernier enregistrement : {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>Aucune statistique enregistrée pour cette colonie</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>Les statistiques de la colonie actuelle sont enregistrées lors de la sauvegarde. L'ouverture de cet écran ne déclenche ni sauvegarde ni analyse des fichiers de sauvegarde. Vous pouvez tout de même ouvrir les Statistiques globales pour consulter les autres colonies.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Ouvrir les statistiques globales</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Ouvrir la fenêtre complète des statistiques globales pour toutes les colonies.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (colonie actuelle)</RWS_InGame_CurrentColonyMark>
+</LanguageData>

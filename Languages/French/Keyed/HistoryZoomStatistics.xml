@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Plage affichée (jours)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Jour de début en jeu (laisser vide pour partir du premier jour).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>Jour de fin en jeu (laisser vide pour aller jusqu'au dernier jour).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Afficher la plage</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Zoomer le graphique sur la plage de jours en jeu indiquée.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Période complète</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Revenir à l'affichage de toute la période enregistrée.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>Période complète affichée : jour {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Zoom : jour {0}–{1} (période complète : jour {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Zoom : jour {0}–{1} — aucun relevé dans cette plage (période complète : jour {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Saisissez un nombre de jours positif ou nul (par exemple 10 ou 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>Aucun relevé enregistré dans cette plage de jours.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>Moins de deux relevés de cette colonie se trouvent dans la plage affichée.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

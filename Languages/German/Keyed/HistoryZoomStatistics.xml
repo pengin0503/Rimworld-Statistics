@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Anzeigebereich (Tage)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Starttag im Spiel (leer lassen, um beim ersten Tag zu beginnen).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>Endtag im Spiel (leer lassen, um bis zum letzten Tag anzuzeigen).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Bereich zeigen</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Das Diagramm auf den angegebenen Spieltage-Bereich vergrößern.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Gesamter Zeitraum</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Zur Anzeige des gesamten aufgezeichneten Zeitraums zurückkehren.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>Gesamter Zeitraum: Tag {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Vergrößert: Tag {0}–{1} (gesamt: Tag {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Vergrößert: Tag {0}–{1} — keine Werte in diesem Bereich (gesamt: Tag {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Gib nichtnegative Tageszahlen ein (z. B. 10 oder 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>Keine aufgezeichneten Werte in diesem Tagesbereich.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>Im angezeigten Bereich liegen weniger als zwei Werte dieser Kolonie.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

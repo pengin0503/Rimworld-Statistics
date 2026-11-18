@@ -10,6 +10,7 @@ public sealed class StatsOptions
 public sealed class ColonyStats
 {
     public required string Key { get; init; }
+    public IReadOnlyList<string> AliasKeys { get; init; } = Array.Empty<string>();
     public string? FactionName { get; init; }
     public string? WorldName { get; init; }
     public string? Scenario { get; init; }
@@ -170,6 +171,7 @@ public static class StatsCalculator
         return new ColonyStats
         {
             Key = colony.Key,
+            AliasKeys = colony.AliasKeys.Count == 0 ? Array.Empty<string>() : colony.AliasKeys.ToArray(),
             FactionName = display?.FactionName,
             WorldName = display?.WorldName,
             Scenario = display?.Scenario,

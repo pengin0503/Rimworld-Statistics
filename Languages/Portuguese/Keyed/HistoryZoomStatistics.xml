@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Intervalo exibido (dias)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Dia inicial no jogo (deixe em branco para começar no primeiro dia).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>Dia final no jogo (deixe em branco para terminar no último dia).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Mostrar intervalo</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Ampliar o gráfico para o intervalo de dias no jogo indicado.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Período completo</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Voltar a apresentar todo o período registado.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>A mostrar período completo: dia {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Ampliado: dia {0}–{1} (período completo: dia {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Ampliado: dia {0}–{1} — sem registos neste intervalo (período completo: dia {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Introduza números de dias não negativos (por exemplo, 10 ou 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>Não há registos gravados neste intervalo de dias.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>Há menos de dois registos desta colónia no intervalo apresentado.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

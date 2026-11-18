@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Показана сохранённая статистика (последняя запись: {0} / {1}). Несохранённый прогресс с этого момента не учтён.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Показана сохранённая статистика (последняя запись: только след концовки, без числовых наблюдений). Сохраните игру, чтобы записать числовую статистику.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Показана сохранённая статистика другого поселения (последняя запись: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>Для этого поселения ещё нет сохранённой статистики</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>Статистика текущего поселения записывается при сохранении игры. Открытие этого окна не вызывает сохранение и не запускает сканирование файлов сохранений. Вы можете открыть Общую статистику, чтобы посмотреть другие записанные поселения.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Открыть общую статистику</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Открыть полное окно общей статистики по всем поселениям.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (текущее поселение)</RWS_InGame_CurrentColonyMark>
+</LanguageData>

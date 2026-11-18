@@ -172,7 +172,7 @@ public sealed class Dialog_RimworldStatistics : Window
                 case Tab.Endings: EndingsTab.Draw(content, view); break;
                 case Tab.Colonies:
                     RefreshPresentFiles();
-                    ColoniesTab.Draw(content, view, fileIndex);
+                    ColoniesTab.Draw(content, view, fileIndex, preferences, SavePreferences);
                     break;
                 case Tab.Details: DetailsTab.Draw(content, view, session, preferences, SavePreferences, ScopeLabel()); break;
                 case Tab.Rankings: RankingsTab.Draw(content, view, preferences, SavePreferences, ScopeLabel()); break;
@@ -236,6 +236,34 @@ public sealed class Dialog_RimworldStatistics : Window
             retry();
     }
 
+    private static string? cachedPreferencesJson;
+    private static ViewPreferences cachedPreferences = new();
+
+    internal static ViewPreferences ActivePreferences
+    {
+        get
+        {
+            var raw = RimworldStatisticsMod.Settings?.viewPreferencesJson ?? "";
+            if (!string.Equals(raw, cachedPreferencesJson, StringComparison.Ordinal))
+            {
+                cachedPreferences = ViewPreferences.Parse(raw);
+                cachedPreferencesJson = raw;
+            }
+            return cachedPreferences;
+        }
+    }
+
+    internal static void UpdateActivePreferences(Action<ViewPreferences> mutate)
+    {
+        var prefs = ActivePreferences;
+        mutate(prefs);
+        var serialized = prefs.ToJson();
+        RimworldStatisticsMod.Settings.viewPreferencesJson = serialized;
+        cachedPreferences = prefs;
+        cachedPreferencesJson = serialized;
+        RimworldStatisticsMod.Instance?.WriteSettings();
+    }
+
     private void RefreshSavedPreferences()
     {
         var serialized = RimworldStatisticsMod.Settings.viewPreferencesJson ?? "";
@@ -243,7 +271,10 @@ public sealed class Dialog_RimworldStatistics : Window
             return;
         preferences = ViewPreferences.Parse(serialized);
         loadedPreferencesJson = serialized;
-        SelectScope(null);
+        cachedPreferences = preferences;
+        cachedPreferencesJson = serialized;
+        if (selectedGroupId is not null && preferences.Groups.All(g => g.Id != selectedGroupId))
+            SelectScope(null);
     }
 
     private ViewScope ActiveScope()
@@ -278,6 +309,8 @@ public sealed class Dialog_RimworldStatistics : Window
     {
         RimworldStatisticsMod.Settings.viewPreferencesJson = preferences.ToJson();
         loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
+        cachedPreferences = preferences;
+        cachedPreferencesJson = loadedPreferencesJson;
         RimworldStatisticsMod.Instance?.WriteSettings();
         if (preferences.Groups.All(g => g.Id != selectedGroupId))
             selectedGroupId = null;
@@ -317,8 +350,17 @@ public sealed class Dialog_RimworldStatistics : Window
 
     internal const string Dash = "—";
 
+    internal static string UnnamedColonyFallback(string? worldName)
+        => "RWS_UnnamedColony".Translate(worldName ?? Dash);
+
+    internal static string OriginalColonyName(ColonyStats s)
+        => ColonyPresentation.OriginalName(s, UnnamedColonyFallback);
+
     internal static string ColonyName(ColonyStats s)
-        => s.FactionName is { Length: > 0 } name ? name : "RWS_UnnamedColony".Translate(s.WorldName ?? Dash);
+        => ColonyPresentation.ResolveName(s, ActivePreferences, UnnamedColonyFallback);
+
+    internal static string ColonyName(ColonyStats s, ViewPreferences? preferences)
+        => ColonyPresentation.ResolveName(s, preferences ?? ActivePreferences, UnnamedColonyFallback);
 
     internal static string Local(DateTime? utc)
         => utc is { } t ? DateTime.SpecifyKind(t, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) : Dash;
