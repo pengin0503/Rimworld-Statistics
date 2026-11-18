@@ -36,39 +36,60 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
 
         var previousAnchor = Text.Anchor;
         var previousColor = GUI.color;
-        Text.Anchor = TextAnchor.MiddleLeft;
-        GUI.BeginGroup(new Rect(rect.x, rect.y, width, rowHeight));
-        GUI.color = new Color(0.8f, 0.8f, 0.8f);
-        DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null, rightAligned);
-        GUI.EndGroup();
-        GUI.color = previousColor;
-
-        var viewport = new Rect(rect.x, rect.y + rowHeight, rect.width, rect.height - rowHeight);
-        Widgets.BeginScrollView(viewport, ref scroll, new Rect(0, 0, plan.TotalWidth, rows.Count * rowHeight));
-        var first = Math.Max(0, (int)(scroll.y / rowHeight));
-        var last = Math.Min(rows.Count - 1, (int)((scroll.y + viewport.height) / rowHeight) + 1);
-        for (var i = first; i <= last; i++)
+        try
         {
-            var row = new Rect(0, i * rowHeight, plan.TotalWidth, rowHeight);
-            if (i % 2 == 1)
-                Widgets.DrawHighlight(row, 0.25f);
-            if (display[i] is null)
+            Text.Anchor = TextAnchor.MiddleLeft;
+            GUI.BeginGroup(new Rect(rect.x, rect.y, width, rowHeight));
+            try
             {
-                var source = rows[i];
-                display[i] = new string[source.Length];
-                tips[i] = new string?[source.Length];
-                for (var c = 0; c < source.Length; c++)
+                GUI.color = new Color(0.8f, 0.8f, 0.8f);
+                DrawCells(new Rect(-scroll.x, 0, plan.TotalWidth, rowHeight), headers, null, rightAligned);
+            }
+            finally
+            {
+                GUI.color = previousColor;
+                GUI.EndGroup();
+            }
+
+            var viewport = new Rect(rect.x, rect.y + rowHeight, rect.width, Math.Max(0f, rect.height - rowHeight));
+            if (viewport.height <= 0f)
+                return;
+            Widgets.BeginScrollView(viewport, ref scroll, new Rect(0, 0, plan.TotalWidth, rows.Count * rowHeight));
+            try
+            {
+                var first = Math.Max(0, (int)(scroll.y / rowHeight));
+                var last = Math.Min(rows.Count - 1, (int)((scroll.y + viewport.height) / rowHeight) + 1);
+                for (var i = first; i <= last; i++)
                 {
-                    var shown = source[c].Truncate(Math.Max(0, plan.Widths[c] - 8f));
-                    display[i][c] = shown;
-                    if (shown != source[c])
-                        tips[i][c] = source[c];
+                    var row = new Rect(0, i * rowHeight, plan.TotalWidth, rowHeight);
+                    if (i % 2 == 1)
+                        Widgets.DrawHighlight(row, 0.25f);
+                    if (display[i] is null)
+                    {
+                        var source = rows[i];
+                        display[i] = new string[source.Length];
+                        tips[i] = new string?[source.Length];
+                        for (var c = 0; c < source.Length; c++)
+                        {
+                            var shown = source[c].Truncate(Math.Max(0, plan.Widths[c] - 8f));
+                            display[i][c] = shown;
+                            if (shown != source[c])
+                                tips[i][c] = source[c];
+                        }
+                    }
+                    DrawCells(row, display[i], tips[i], rightAligned);
                 }
             }
-            DrawCells(row, display[i], tips[i], rightAligned);
+            finally
+            {
+                Widgets.EndScrollView();
+            }
         }
-        Widgets.EndScrollView();
-        Text.Anchor = previousAnchor;
+        finally
+        {
+            GUI.color = previousColor;
+            Text.Anchor = previousAnchor;
+        }
     }
 
     private void DrawCells(Rect row, string[] cells, string?[]? fullText, IReadOnlyList<bool>? rightAligned)
