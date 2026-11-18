@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>Maximale Bedrohungspunkte</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>Höchste im Speicherverlauf erfasste Erzähler-Bedrohungspunkte (ThreatPoints alle 0,5 Tage, aus interner 1/10-Skalierung wiederhergestellt).</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>Aktuelle Bedrohungspunkte</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>Tatsächliche Bedrohungspunkte am letzten Punkt des ThreatPoints-Verlaufs. Öffnet die 0,5-Tage-Kurve im Kolonieverlauf.</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>Mittlere Bedrohungspunkte</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>Mittelwert aller gültigen Bedrohungspunkte im ThreatPoints-Verlauf. Öffnet die 0,5-Tage-Kurve im Kolonieverlauf.</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>Aktuelle Anpassungstage</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>Anpassungstage des Erzählers am letzten Punkt des Adaptation-Verlaufs (nach Verlusten auch negativ). Öffnet die Tageskurve.</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>Mittlere Anpassungstage</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>Mittelwert der Erzähler-Anpassungstage über alle gültigen Tagespunkte im Adaptation-Verlauf.</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>Maximale Anpassungstage</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>Höchster im Adaptation-Verlauf aufgezeichneter Wert der Erzähler-Anpassungstage.</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>Minimale Anpassungstage</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>Niedrigster im Adaptation-Verlauf aufgezeichneter Wert der Erzähler-Anpassungstage (einschließlich negativer Werte).</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>Benutzerdefinierter / hybrider Xenotyp</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>Spitzenwert freier Kolonisten nach Xenotyp</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>Spitzenwert Gefangener nach Xenotyp</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>Spitzenwert Sklaven nach Xenotyp</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>Die höchste bei einem erfolgreichen Speichern beobachtete Anzahl, getrennt für jeden Biotech-Xenotyp berechnet.</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>Geburten nach Spezies</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>Lebend geborene humanoide Kinder auf Spielerseite, gruppiert nach Spezies bei der Geburt.</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>Geburten nach Xenotyp</RWS_Metric_BirthsByXenotype>
+</LanguageData>

@@ -12,6 +12,8 @@ public static class MembershipFamily
     public const string FirstJoin = "membership.first_join";
     public const string PrisonerRecruit = "membership.prisoner_recruit";
     public const string HumanBirths = "membership.human_birth";
+    public const string HumanBirthsBySpecies = "membership.births_by_species";
+    public const string HumanBirthsByXenotype = "membership.births_by_xenotype";
     public const string JoinsBySpecies = "membership.joins_by_species";
     public const string JoinsByXenotype = "membership.joins_by_xenotype";
     public const string Routes = "membership.route";
@@ -35,6 +37,8 @@ public static class MembershipFamily
     private const string Xenotype = "join_xenotype";
     private const string Recruits = "recruits";
     private const string Births = "births";
+    private const string BirthSpecies = "birth_species";
+    private const string BirthXenotype = "birth_xenotype";
     private const string JoinAge = "join_age";
     private const string Freed = "slaves_freed";
     private const string KidnapCount = "kidnapped";
@@ -75,10 +79,19 @@ public static class MembershipFamily
     }
 
     /// <summary>A living player-side human baby was born: a new member, not a join.</summary>
-    public static void Born(FamilyState s, string id, int tick)
+    public static void Born(FamilyState s, string id, int tick, string? species = null, string? xenotype = null)
     {
         if (s.Distinct(Members, id))
+        {
             s.Count(Births);
+            if (species is not null)
+            {
+                s.Count(BirthSpecies);
+                s.CountBy(BirthSpecies, species);
+            }
+            if (xenotype is not null)
+                OptionalTransitionRecording.RecordCount(s, BirthXenotype, key: xenotype, withBreakdown: true);
+        }
     }
 
     public static void SlaveFreed(FamilyState s, string id) => s.Count(Freed);
@@ -117,7 +130,16 @@ public static class MembershipFamily
             c.MarkPartial(JoinsByXenotype);
         c.PutBreakdown(Routes, c.Counts(joins), c.Value(integer: joins?.N ?? 0));
         c.PutCount(Recruits, PrisonerRecruit);
+        var births = s.Peek(Births);
         c.PutCount(Births, HumanBirths);
+        var birthSpecies = s.Peek(BirthSpecies);
+        c.PutBreakdown(HumanBirthsBySpecies, c.Counts(birthSpecies), c.Value(integer: birthSpecies?.N ?? 0,
+            partial: birthSpecies?.Overflow == true || (birthSpecies?.N ?? 0) != (births?.N ?? 0)));
+        if ((birthSpecies?.N ?? 0) != (births?.N ?? 0))
+            c.MarkPartial(HumanBirthsBySpecies);
+        OptionalTransitionRecording.PutCount(c, BirthXenotype, HumanBirthsByXenotype, withBreakdown: true);
+        if ((s.Peek(BirthXenotype)?.N ?? 0) != (births?.N ?? 0))
+            c.MarkPartial(HumanBirthsByXenotype);
         c.PutMean(JoinAge, JoinAgeMean);
         c.PutCount(Freed, SlavesFreed);
         c.PutCount(KidnapCount, Kidnaps);
@@ -126,7 +148,8 @@ public static class MembershipFamily
         c.PutFirstDay(Joins, FirstJoinDay);
         // Past the member cap a new pawn cannot be told from a known one: every output that needs that is partial.
         if (s.Peek(Members)?.Overflow == true)
-            c.MarkPartial(FirstJoin, Routes, JoinsBySpecies, JoinsByXenotype, PrisonerRecruit, HumanBirths, JoinAgeMean, FirstJoinDay);
+            c.MarkPartial(FirstJoin, Routes, JoinsBySpecies, JoinsByXenotype, PrisonerRecruit,
+                HumanBirths, HumanBirthsBySpecies, HumanBirthsByXenotype, JoinAgeMean, FirstJoinDay);
         if (s.TrackerOverflowed(KidnappedSince))
             c.MarkPartial(KidnapRescues, CaptiveMax);
     }

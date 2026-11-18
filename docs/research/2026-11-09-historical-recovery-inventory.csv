@@ -63,6 +63,8 @@ population.deaths_by_species,health_death,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-0
 membership.route,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-C-003,MembershipFamily.Routes
 membership.prisoner_recruit,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-002,MembershipFamily.PrisonerRecruit
 membership.human_birth,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,"P-003, L-011",MembershipFamily.HumanBirths
+membership.births_by_species,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-003-SPECIES,MembershipFamily.HumanBirthsBySpecies
+membership.births_by_xenotype,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-003-XENO,MembershipFamily.HumanBirthsByXenotype
 membership.join_age_mean,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N4-P-003,MembershipFamily.JoinAgeMean
 membership.first_day,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,N5-M-002,MembershipFamily.FirstJoinDay
 membership.slave_freed,membership,live,EVENT_LOG_REQUIRED,UNVERIFIED,P-018,MembershipFamily.SlavesFreed
@@ -234,6 +236,9 @@ population.snapshot.slaves,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-00
 population.snapshot.free_species_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-005-SPECIES,RosterSnapshot.FreeSpeciesPeak
 population.snapshot.prisoner_species_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-SPECIES,RosterSnapshot.PrisonerSpeciesPeak
 population.snapshot.slave_species_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-S-SPECIES,RosterSnapshot.SlaveSpeciesPeak
+population.snapshot.free_xenotype_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-005-XENO,RosterSnapshot.FreeXenotypePeak
+population.snapshot.prisoner_xenotype_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-XENO,RosterSnapshot.PrisonerXenotypePeak
+population.snapshot.slave_xenotype_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-006-S-XENO,RosterSnapshot.SlaveXenotypePeak
 population.snapshot.animals,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-007,RosterSnapshot.Animals
 population.snapshot.mechs,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-008,RosterSnapshot.Mechs
 population.snapshot.augmented_peak,roster,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-021,RosterSnapshot.AugmentedPeak

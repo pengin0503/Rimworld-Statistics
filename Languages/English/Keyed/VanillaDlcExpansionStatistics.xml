@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Metric_ThreatPointsPeak>Peak threat points</RWS_Metric_ThreatPointsPeak>
+  <RWS_MetricDesc_ThreatPointsPeak>Highest storyteller threat points recorded in save history (ThreatPoints at 0.5-day intervals, restored from internal 1/10 scale).</RWS_MetricDesc_ThreatPointsPeak>
+  <RWS_Metric_ThreatPointsLatest>Latest threat points</RWS_Metric_ThreatPointsLatest>
+  <RWS_MetricDesc_ThreatPointsLatest>Actual storyteller threat points at the final point of the save's ThreatPoints history. Opens the 0.5-day recorder curve in colony history.</RWS_MetricDesc_ThreatPointsLatest>
+  <RWS_Metric_ThreatPointsMean>Mean threat points</RWS_Metric_ThreatPointsMean>
+  <RWS_MetricDesc_ThreatPointsMean>Mean of valid storyteller threat points across the save's ThreatPoints history. Opens the 0.5-day recorder curve in colony history.</RWS_MetricDesc_ThreatPointsMean>
+  <RWS_Metric_AdaptationLatest>Latest adaptation days</RWS_Metric_AdaptationLatest>
+  <RWS_MetricDesc_AdaptationLatest>Storyteller adaptation days at the final point of the save's Adaptation history (may be negative after colonist downs or deaths). Opens the 1-day recorder curve in colony history.</RWS_MetricDesc_AdaptationLatest>
+  <RWS_Metric_AdaptationMean>Mean adaptation days</RWS_Metric_AdaptationMean>
+  <RWS_MetricDesc_AdaptationMean>Mean storyteller adaptation days across valid 1-day points in the save's Adaptation history. Opens the 1-day recorder curve in colony history.</RWS_MetricDesc_AdaptationMean>
+  <RWS_Metric_AdaptationPeak>Peak adaptation days</RWS_Metric_AdaptationPeak>
+  <RWS_MetricDesc_AdaptationPeak>Highest storyteller adaptation days recorded in the save's Adaptation history.</RWS_MetricDesc_AdaptationPeak>
+  <RWS_Metric_AdaptationMin>Minimum adaptation days</RWS_Metric_AdaptationMin>
+  <RWS_MetricDesc_AdaptationMin>Lowest storyteller adaptation days recorded in the save's Adaptation history (including negative values after losses).</RWS_MetricDesc_AdaptationMin>
+  <RWS_Details_CustomXenotype>Custom / hybrid xenotype</RWS_Details_CustomXenotype>
+  <RWS_Metric_FreeXenotypePeak>Peak free colonists by xenotype</RWS_Metric_FreeXenotypePeak>
+  <RWS_Metric_PrisonerXenotypePeak>Peak prisoners by xenotype</RWS_Metric_PrisonerXenotypePeak>
+  <RWS_Metric_SlaveXenotypePeak>Peak slaves by xenotype</RWS_Metric_SlaveXenotypePeak>
+  <RWS_MetricDesc_XenotypePeak>The highest count observed in a successful save, calculated separately for each Biotech xenotype.</RWS_MetricDesc_XenotypePeak>
+  <RWS_Metric_BirthsBySpecies>Births by species</RWS_Metric_BirthsBySpecies>
+  <RWS_MetricDesc_BirthsBySpecies>Humanlike children born alive on the player's side, grouped by species at birth.</RWS_MetricDesc_BirthsBySpecies>
+  <RWS_Metric_BirthsByXenotype>Births by xenotype</RWS_Metric_BirthsByXenotype>
+</LanguageData>

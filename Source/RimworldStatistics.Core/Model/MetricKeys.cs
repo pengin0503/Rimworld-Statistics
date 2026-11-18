@@ -10,6 +10,9 @@ public static class MetricKeys
     /// <summary>Breakdown key of a value whose category is not known (e.g. a quest without a root def).</summary>
     public const string UnknownBucket = "?";
 
+    /// <summary>Reserved breakdown key for named custom or hybrid Biotech xenotypes (<c>Pawn_GeneTracker.UniqueXenotype</c>).</summary>
+    public const string CustomXenotypeBucket = "RimWorld/CustomXenotype";
+
     // Phase A · wealth (history recorders Wealth_*)
     public const string WealthItemsPeak = "wealth.items.peak";
     public const string WealthItemsLatest = "wealth.items.latest";
@@ -47,7 +50,14 @@ public static class MetricKeys
     public const string MoodBelow50Days = "population.mood.below_50d";
     public const string MoodAtLeast80Days = "population.mood.at_least_80d";
 
-    // Phase A · vanilla counters and save metadata
+    // Phase A · defense history recorders (ThreatPoints, Adaptation) and vanilla counters
+    public const string ThreatPointsPeak = "defense.threat_points.peak";
+    public const string ThreatPointsLatest = "defense.threat_points.latest";
+    public const string ThreatPointsMean = "defense.threat_points.mean";
+    public const string AdaptationLatest = "defense.adaptation.latest";
+    public const string AdaptationMean = "defense.adaptation.mean";
+    public const string AdaptationPeak = "defense.adaptation.peak";
+    public const string AdaptationMin = "defense.adaptation.min";
     public const string RaidsPerYear = "defense.raids_per_year";
     public const string DeathsPerYear = "population.deaths_per_year";
     public const string ModsLatest = "colony.mods.latest";

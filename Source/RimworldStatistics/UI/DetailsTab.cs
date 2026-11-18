@@ -795,7 +795,7 @@ public static class DetailsTab
         {
             MetricUnit.Silver => sign + StatFormat.Group(n),
             MetricUnit.Count => Math.Abs(n - Math.Round(n)) < 1e-9 ? n.ToString("N0", Inv) : n.ToString("N1", Inv),
-            MetricUnit.Days => "RWS_Unit_Days".Translate(n.ToString("N1", Inv)),
+            MetricUnit.Days => "RWS_Unit_Days".Translate(sign + n.ToString("N1", Inv)),
             MetricUnit.Percent => sign + (n * 100).ToString("N1", Inv) + "%",
             MetricUnit.Mood => n.ToString("N1", Inv) + "%",
             MetricUnit.PerYear => "RWS_Unit_PerYear".Translate(n.ToString("N2", Inv)),

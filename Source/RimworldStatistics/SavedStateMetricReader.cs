@@ -203,11 +203,13 @@ internal static class SavedStateMetricReader
                     : Array.Empty<RosterSkillFact>();
                 var hediffs = pawn.health?.hediffSet?.hediffs;
                 var animal = kind == RosterKind.ColonyAnimal;
+                var humanlike = kind is RosterKind.FreeColonist or RosterKind.Prisoner or RosterKind.Slave;
                 facts.Add(new RosterPawnFact
                 {
                     Id = pawn.GetUniqueLoadID(), Kind = kind, RaceDef = pawn.def.defName,
                     Species = animal ? OptionalTransitionRecording.QualifiedDefKey(pawn.def.modContentPack?.PackageId, pawn.def.defName)
                         : GameFacts.Species(pawn),
+                    Xenotype = humanlike ? GameFacts.Xenotype(pawn) : null,
                     NutritionPerDay = animal ? AnimalNutritionPerDay(pawn) : null,
                     AgeYears = kind == RosterKind.FreeColonist ? pawn.ageTracker?.AgeBiologicalYearsFloat : null,
                     Augmented = hediffs?.Any(h => h is Hediff_AddedPart) == true,
@@ -220,7 +222,7 @@ internal static class SavedStateMetricReader
                 partial = true;
             }
         }
-        return RosterSnapshot.Build(facts, partial);
+        return RosterSnapshot.Build(facts, partial, ModsConfig.BiotechActive);
     }
 
     /// <summary>

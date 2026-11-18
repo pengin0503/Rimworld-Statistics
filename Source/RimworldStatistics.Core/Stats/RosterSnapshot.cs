@@ -13,6 +13,9 @@ public sealed record RosterPawnFact
 
     /// <summary>The race as a qualified def key (owner package / defName): of a humanlike, or of a colony animal.</summary>
     public string? Species { get; init; }
+
+    /// <summary>The Biotech xenotype as a qualified def key or <see cref="MetricKeys.CustomXenotypeBucket"/>, for humanlikes.</summary>
+    public string? Xenotype { get; init; }
     public double? AgeYears { get; init; }
     public bool Augmented { get; init; }
     public bool Injured { get; init; }
@@ -34,6 +37,9 @@ public static class RosterSnapshot
     public const string FreeSpeciesPeak = "population.snapshot.free_species_peak";
     public const string PrisonerSpeciesPeak = "population.snapshot.prisoner_species_peak";
     public const string SlaveSpeciesPeak = "population.snapshot.slave_species_peak";
+    public const string FreeXenotypePeak = "population.snapshot.free_xenotype_peak";
+    public const string PrisonerXenotypePeak = "population.snapshot.prisoner_xenotype_peak";
+    public const string SlaveXenotypePeak = "population.snapshot.slave_xenotype_peak";
     public const string Animals = "population.snapshot.animals";
     public const string Mechs = "population.snapshot.mechs";
     public const string AugmentedPeak = "population.snapshot.augmented_peak";
@@ -51,7 +57,7 @@ public static class RosterSnapshot
     /// </summary>
     public const string AnimalNutritionPerDay = "population.snapshot.animal_nutrition_per_day";
 
-    public static Dictionary<string, MetricEntry> Build(IEnumerable<RosterPawnFact> pawns, bool partial = false)
+    public static Dictionary<string, MetricEntry> Build(IEnumerable<RosterPawnFact> pawns, bool partial = false, bool biotechActive = false)
     {
         var seen = new HashSet<string>(StringComparer.Ordinal);
         var free = 0L;
@@ -66,6 +72,10 @@ public static class RosterSnapshot
         var freeSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
         var prisonerSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
         var slaveSpecies = new Dictionary<string, long>(StringComparer.Ordinal);
+        var freeXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+        var prisonerXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+        var slaveXenotypes = new Dictionary<string, long>(StringComparer.Ordinal);
+        var anyXenotypeObserved = false;
         var animalDefs = new HashSet<string>(StringComparer.Ordinal);
         var passions = new Dictionary<string, long>(StringComparer.Ordinal);
         var nutrition = 0d;
@@ -88,6 +98,8 @@ public static class RosterSnapshot
                 case RosterKind.FreeColonist:
                     free++;
                     CountSpecies(freeSpecies, p.Species);
+                    CountSpecies(freeXenotypes, p.Xenotype);
+                    anyXenotypeObserved |= p.Xenotype is not null;
                     if (p.Augmented) augmented++;
                     if (p.Injured) injured++;
                     var n20 = 0;
@@ -119,10 +131,14 @@ public static class RosterSnapshot
                 case RosterKind.Prisoner:
                     prisoners++;
                     CountSpecies(prisonerSpecies, p.Species);
+                    CountSpecies(prisonerXenotypes, p.Xenotype);
+                    anyXenotypeObserved |= p.Xenotype is not null;
                     break;
                 case RosterKind.Slave:
                     slaves++;
                     CountSpecies(slaveSpecies, p.Species);
+                    CountSpecies(slaveXenotypes, p.Xenotype);
+                    anyXenotypeObserved |= p.Xenotype is not null;
                     break;
                 case RosterKind.ColonyAnimal:
                     animals++;
@@ -165,6 +181,12 @@ public static class RosterSnapshot
         SpeciesPeak(FreeSpeciesPeak, free, freeSpecies);
         SpeciesPeak(PrisonerSpeciesPeak, prisoners, prisonerSpecies);
         SpeciesPeak(SlaveSpeciesPeak, slaves, slaveSpecies);
+        if (biotechActive || anyXenotypeObserved)
+        {
+            SpeciesPeak(FreeXenotypePeak, free, freeXenotypes);
+            SpeciesPeak(PrisonerXenotypePeak, prisoners, prisonerXenotypes);
+            SpeciesPeak(SlaveXenotypePeak, slaves, slaveXenotypes);
+        }
         Count(Animals, animals);
         Count(Mechs, mechs);
         Count(AugmentedPeak, augmented);

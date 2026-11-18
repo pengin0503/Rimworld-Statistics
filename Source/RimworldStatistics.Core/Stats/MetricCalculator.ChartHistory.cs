@@ -67,6 +67,8 @@ public static partial class MetricCalculator
         MetricKeys.WealthTotalMean or MetricKeys.WealthTotalMaxGain15D => HistoryMetricReader.WealthTotal,
         MetricKeys.FreeColonistsMean => HistoryMetricReader.FreeColonists,
         MetricKeys.MoodMean => HistoryMetricReader.ColonistMood,
+        MetricKeys.ThreatPointsMean or MetricKeys.ThreatPointsLatest => HistoryMetricReader.ThreatPoints,
+        MetricKeys.AdaptationMean or MetricKeys.AdaptationLatest => HistoryMetricReader.Adaptation,
         _ => null,
     };
 

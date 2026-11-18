@@ -23,7 +23,7 @@ COLUMNS = (
     "metric_key", "acquisition_id", "catalog", "recovery_decision",
     "evidence", "ledger_id", "source_symbol",
 )
-EXPECTED_COUNTS = {"live": 223, "snapshot": 44, "derived": 9}
+EXPECTED_COUNTS = {"live": 225, "snapshot": 47, "derived": 9}
 SYMBOL = re.compile(r"^([A-Za-z_]\w*)\.([A-Za-z_]\w*)$")
 CONST = re.compile(r'\b(?:public|private|internal)\s+const\s+string\s+(\w+)\s*=\s*"([^"]+)"\s*;')
 

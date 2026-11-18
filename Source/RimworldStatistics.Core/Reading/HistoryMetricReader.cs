@@ -14,6 +14,8 @@ namespace RimworldStatistics.Core;
 public static class HistoryMetricReader
 {
     public const int TicksPerPoint = 30000;
+    public const int TicksPerAdaptationPoint = 60000;
+    public const double ThreatPointsScale = 10.0;
     public const int MaxPoints = 262144;
     public const int MaxBase64Chars = 2097152;
     private const int PointsPer15Days = 30;
@@ -26,14 +28,19 @@ public static class HistoryMetricReader
     public const string FreeColonists = "FreeColonists";
     public const string Prisoners = "Prisoners";
     public const string ColonistMood = "ColonistMood";
-
-    /// <summary>The recorder defs read for Phase A; each records every 30000 ticks (1.7.4985 HistoryAutoRecorders.xml).</summary>
-    public static readonly IReadOnlySet<string> Defs = new HashSet<string>(StringComparer.Ordinal)
-        { WealthTotal, WealthItems, WealthBuildings, WealthPawns, FreeColonists, Prisoners, ColonistMood };
+    public const string ThreatPoints = "ThreatPoints";
+    public const string Adaptation = "Adaptation";
 
     /// <summary>
-    /// Versions whose 30000-tick cadence is verified: 1.7 by its Defs, 1.5 and 1.6 by real saves (point counts match the
-    /// ticks in every save examined). Other versions get no time-based outputs.
+    /// The recorder defs read for Phase A (1.7.5011 HistoryAutoRecorders.xml &amp; HistoryAutoRecorderGroups.xml):
+    /// Adaptation records every 60000 ticks; all others record every 30000 ticks. ThreatPoints stores DefaultThreatPointsNow / 10f.
+    /// </summary>
+    public static readonly IReadOnlySet<string> Defs = new HashSet<string>(StringComparer.Ordinal)
+        { WealthTotal, WealthItems, WealthBuildings, WealthPawns, FreeColonists, Prisoners, ColonistMood, ThreatPoints, Adaptation };
+
+    /// <summary>
+    /// Versions whose recorder cadences (30000 ticks, and 60000 ticks for Adaptation) are verified: 1.7 by its Defs and IL,
+    /// 1.5 and 1.6 by real saves (point counts match the ticks in every save examined). Other versions get no time-based outputs.
     /// </summary>
     private static readonly HashSet<string> TimedVersions = new(StringComparer.Ordinal) { "1.5", "1.6", "1.7" };
 
@@ -52,12 +59,22 @@ public static class HistoryMetricReader
 
     public static IReadOnlyList<MetricHistoryPoint> RecorderHistory(string recorder, float[] values, string? gameVersion, int tick)
     {
-        if (recorder is not (WealthTotal or FreeColonists or ColonistMood) || tick <= 0
-            || !IsTimedVersion(gameVersion) || values.Length != tick / TicksPerPoint + 1)
+        if (recorder is not (WealthTotal or FreeColonists or ColonistMood or ThreatPoints or Adaptation) || tick <= 0
+            || !IsTimedVersion(gameVersion))
             return [];
 
-        bool Valid(float value) => float.IsFinite(value)
-            && (recorder == ColonistMood ? value is > 0 and <= 100 : value >= 0);
+        var cadence = recorder == Adaptation ? TicksPerAdaptationPoint : TicksPerPoint;
+        if (values.Length != tick / cadence + 1)
+            return [];
+
+        var scale = recorder == ThreatPoints ? ThreatPointsScale : 1.0;
+        bool Valid(float value) => float.IsFinite(value) && double.IsFinite(value * scale)
+            && recorder switch
+            {
+                ColonistMood => value is > 0 and <= 100,
+                Adaptation => true,
+                _ => value >= 0,
+            };
         if (!Valid(values[0]))
             return [];
 
@@ -65,9 +82,9 @@ public static class HistoryMetricReader
         for (var i = 0; i < values.Length; i++)
         {
             var value = Valid(values[i])
-                ? new NumericValue { Number = values[i], Coverage = MetricCoverage.SnapshotOnly }
+                ? new NumericValue { Number = values[i] * scale, Coverage = MetricCoverage.SnapshotOnly }
                 : null;
-            points[i] = new(i * TicksPerPoint, value, i > 0 && value is not null && points[i - 1].Value is not null);
+            points[i] = new(i * cadence, value, i > 0 && value is not null && points[i - 1].Value is not null);
         }
         return points;
     }
@@ -76,6 +93,7 @@ public static class HistoryMetricReader
     {
         public required float[] X { get; init; }
         public required bool[] Valid { get; init; }
+        public double Scale { get; init; } = 1.0;
         public int N => X.Length;
         public bool AnyMissing { get; init; }
         public bool Aligned { get; init; }
@@ -85,23 +103,25 @@ public static class HistoryMetricReader
     public static void Summarize(IReadOnlyDictionary<string, float[]?> series, string? gameVersion, int ticksGame, IDictionary<string, MetricEntry> into)
     {
         var timed = IsTimedVersion(gameVersion);
-        Series? Get(string def, Func<float, bool> valid)
+        Series? Get(string def, Func<float, bool> valid, int cadence = TicksPerPoint, double scale = 1.0)
         {
             if (!series.TryGetValue(def, out var x) || x is null || x.Length == 0)
                 return null;
-            var ok = x.Select(valid).ToArray();
+            var ok = x.Select(v => valid(v) && double.IsFinite(v * scale)).ToArray();
             return new Series
             {
                 X = x,
                 Valid = ok,
+                Scale = scale,
                 AnyMissing = ok.Any(v => !v),
-                Aligned = timed && ticksGame > 0 && x.Length == ticksGame / TicksPerPoint + 1 && ok[0],
+                Aligned = timed && ticksGame > 0 && x.Length == ticksGame / cadence + 1 && ok[0],
             };
         }
 
         static bool Wealth(float v) => float.IsFinite(v) && v >= 0;
         static bool Count(float v) => float.IsFinite(v) && v >= 0;
         static bool Mood(float v) => float.IsFinite(v) && v > 0 && v <= 100;   // 0 is what the worker records without colonists
+        static bool SignedReal(float v) => float.IsFinite(v);
 
         void Put(string key, MetricValue? value)
         {
@@ -165,6 +185,19 @@ public static class HistoryMetricReader
             Put(MetricKeys.MoodBelow50Days, IntervalDays(mood, left => left < 50));
             Put(MetricKeys.MoodAtLeast80Days, IntervalDays(mood, left => left >= 80));
         }
+
+        // HistoryAutoRecorderWorker_ThreatPoints records DefaultThreatPointsNow(AnyPlayerHomeMap) / 10f every 30000 ticks.
+        var threat = Get(ThreatPoints, Count, TicksPerPoint, ThreatPointsScale);
+        Put(MetricKeys.ThreatPointsPeak, Max(threat));
+        Put(MetricKeys.ThreatPointsLatest, Latest(threat));
+        Put(MetricKeys.ThreatPointsMean, Mean(threat));
+
+        // HistoryAutoRecorderWorker_Adaptation records StoryWatcher_Adaptation.AdaptDays every 60000 ticks (may be negative).
+        var adaptation = Get(Adaptation, SignedReal, TicksPerAdaptationPoint);
+        Put(MetricKeys.AdaptationLatest, Latest(adaptation));
+        Put(MetricKeys.AdaptationMean, Mean(adaptation));
+        Put(MetricKeys.AdaptationPeak, Max(adaptation));
+        Put(MetricKeys.AdaptationMin, Min(adaptation));
     }
 
     private static MetricValue Snap(double value, bool partial)
@@ -183,13 +216,18 @@ public static class HistoryMetricReader
             return null;
         double? best = null;
         for (var i = 0; i < s.N; i++)
-            if (s.Valid[i] && (best is null || (max ? s.X[i] > best : s.X[i] < best)))
-                best = s.X[i];
+        {
+            if (!s.Valid[i])
+                continue;
+            var value = s.X[i] * s.Scale;
+            if (best is null || (max ? value > best : value < best))
+                best = value;
+        }
         return best is { } b ? Snap(b, s.AnyMissing) : null;
     }
 
     /// <summary>The last point; an invalid last point is unknown, never replaced by an earlier one.</summary>
-    private static MetricValue? Latest(Series? s) => s is not null && s.Valid[^1] ? Snap(s.X[^1], false) : null;
+    private static MetricValue? Latest(Series? s) => s is not null && s.Valid[^1] ? Snap(s.X[^1] * s.Scale, false) : null;
 
     private static MetricValue? Mean(Series? s)
     {
@@ -201,7 +239,7 @@ public static class HistoryMetricReader
         {
             if (!s.Valid[i])
                 continue;
-            sum += s.X[i];
+            sum += s.X[i] * s.Scale;
             n++;
         }
         if (n == 0)

@@ -38,7 +38,8 @@ public static class MetricDisplayPolicy
         RaidFamily.MechClusters, RaidFamily.Manhunters, RaidFamily.Retreated,
         RaidFamily.Wiped, RaidFamily.RepelledNoDown,
         MembershipFamily.FirstJoin, MembershipFamily.PrisonerRecruit,
-        MembershipFamily.HumanBirths, MembershipFamily.SlavesFreed,
+        MembershipFamily.HumanBirths, MembershipFamily.HumanBirthsBySpecies, MembershipFamily.HumanBirthsByXenotype,
+        MembershipFamily.SlavesFreed,
         MembershipFamily.Kidnaps, MembershipFamily.KidnapRescues,
         LifetimeFamily.FirstSkill20,
         SocialFamily.Marriages, SocialFamily.Divorces, SocialFamily.Lovers,
@@ -145,6 +146,8 @@ public static class MetricDisplayPolicy
     {
         if (key == MetricKeys.UnknownBucket)
             return "RWS_Details_UnknownBucket";
+        if (key == MetricKeys.CustomXenotypeBucket)
+            return "RWS_Details_CustomXenotype";
         if (definition.Key == MedicineFamily.Surgeries)
             return key switch
             {
