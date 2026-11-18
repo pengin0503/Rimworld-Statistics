@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Nacimientos por especie</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Niños humanoides nacidos vivos del lado del jugador, agrupados por especie al nacer.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Nacimientos por xenotipo</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: eventos</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: estado (al guardar)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Tipos de entidades anómalas descubiertos</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Mayor número de tipos de entidades descubiertos en el Códice de entidades al guardar.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Nivel máximo del monolito</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Nivel máximo de despertar del monolito del vacío alcanzado en Anomaly.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Pico de entidades contenidas</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Mayor número de entidades vivas retenidas en plataformas de contención de la colonia al guardar.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Rituales psíquicos completados</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Rituales psíquicos iniciados y completados por la colonia.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Rituales psíquicos completados (por ritual)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Rituales psíquicos completados por la colonia desglosados por ritual.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Fugas de entidades contenidas</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Fugas confirmadas de entidades vivas desde plataformas de contención de la colonia.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Nuevas entidades contenidas</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Entidades vivas distintas aseguradas por primera vez en plataformas de contención (sin traslados).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Puertas de foso colapsadas</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Puertas de foso despejadas y colapsadas tras derrotar al Dreadmeld subterráneo.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

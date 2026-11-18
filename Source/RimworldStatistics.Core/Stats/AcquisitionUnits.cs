@@ -35,6 +35,7 @@ public static class AcquisitionUnits
     public const string Royalty = "ludeon.rimworld.royalty";
     public const string Ideology = "ludeon.rimworld.ideology";
     public const string Biotech = "ludeon.rimworld.biotech";
+    public const string Anomaly = "ludeon.rimworld.anomaly";
     public const string Odyssey = "ludeon.rimworld.odyssey";
 
     private const AcquisitionStatus U = AcquisitionStatus.Unverified;
@@ -74,7 +75,7 @@ public static class AcquisitionUnits
         new(DbhStatistics.FixturesUnit, AcquisitionKind.Snapshot, U),
         new(DbhStatistics.ActivitiesUnit, AcquisitionKind.Family, U),
 
-        // Phase D2 (Anomaly is not implemented: no audited defs or saves, and not owned by the user)
+        // Phase D2
         new("royalty", AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.EventUnit, AcquisitionKind.Family, U, Royalty),
         new(VpeStatistics.CastUnit, AcquisitionKind.Family, U, Royalty),
@@ -84,6 +85,8 @@ public static class AcquisitionUnits
         new("ideology", AcquisitionKind.Family, U, Ideology),
         new("biotech", AcquisitionKind.Family, U, Biotech),
         new("biotech_state", AcquisitionKind.Snapshot, U, Biotech),
+        new(AnomalyFamily.Name, AcquisitionKind.Family, U, Anomaly),
+        new(AnomalyStateSnapshot.Unit, AcquisitionKind.Snapshot, U, Anomaly),
         new("odyssey", AcquisitionKind.Family, U, Odyssey),
         new(FishingFamily.Name, AcquisitionKind.Family, U, Odyssey),
 

@@ -314,5 +314,11 @@ public static class LiveCatalog
         Live(BiotechFamily.WasteCreated, "N1-E-001", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechWasteCreated", "RWS_MetricDesc_BiotechWasteCreated"),
         Live(BiotechFamily.WasteDisposed, "N1-E-002", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechWasteDisposed", "RWS_MetricDesc_BiotechWasteDisposed"),
         Live(BiotechFamily.PollutionCleaned, "N1-E-003", MetricCategory.Biotech, Count, Sum, BiotechFamily.Name, "RWS_Metric_BiotechPollutionCleaned", "RWS_MetricDesc_BiotechPollutionCleaned"),
+        // D2 · anomaly: completed player psychic rituals, platform escapes/captures, and collapsed pit gates
+        Live(AnomalyFamily.PsychicRituals, "L-ANOM-004", MetricCategory.Anomaly, Count, Sum, AnomalyFamily.Name, "RWS_Metric_AnomalyPsychicRituals", "RWS_MetricDesc_AnomalyPsychicRituals"),
+        Live(AnomalyFamily.PsychicRitualsByDef, "L-ANOM-005", MetricCategory.Anomaly, Count, Sum, AnomalyFamily.Name, "RWS_Metric_AnomalyPsychicRitualsByDef", "RWS_MetricDesc_AnomalyPsychicRitualsByDef", breakdown: true),
+        Live(AnomalyFamily.EntityEscapes, "L-ANOM-006", MetricCategory.Anomaly, Count, Sum, AnomalyFamily.Name, "RWS_Metric_AnomalyEntityEscapes", "RWS_MetricDesc_AnomalyEntityEscapes"),
+        Live(AnomalyFamily.EntitiesContained, "L-ANOM-007", MetricCategory.Anomaly, Count, Sum, AnomalyFamily.Name, "RWS_Metric_AnomalyEntitiesContained", "RWS_MetricDesc_AnomalyEntitiesContained"),
+        Live(AnomalyFamily.PitGatesCollapsed, "L-ANOM-008", MetricCategory.Anomaly, Count, Sum, AnomalyFamily.Name, "RWS_Metric_AnomalyPitGatesCollapsed", "RWS_MetricDesc_AnomalyPitGatesCollapsed"),
     };
 }

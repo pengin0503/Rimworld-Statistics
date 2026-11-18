@@ -12,7 +12,7 @@ namespace RimworldStatistics;
 /// </summary>
 internal static class SavedStateMetricReader
 {
-    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
+    private static readonly HashSet<string> Supported = new(StringComparer.Ordinal) { "research_state", "factions", "roster", "facilities", "stock", "colony_start", "royalty_state", "royalty_quests", "biotech_state", AnomalyStateSnapshot.Unit, OutpostSnapshot.Unit, VpeStatistics.SnapshotUnit, DbhStatistics.FixturesUnit };
 
     internal static bool Supports(string id) => Supported.Contains(id);
 
@@ -62,6 +62,9 @@ internal static class SavedStateMetricReader
                         observation.Metrics[key] = value;
                 else if (unit == "biotech_state")
                     foreach (var (key, value) in ReadBiotechState())
+                        observation.Metrics[key] = value;
+                else if (unit == AnomalyStateSnapshot.Unit)
+                    foreach (var (key, value) in ReadAnomalyState())
                         observation.Metrics[key] = value;
                 else if (unit == VpeStatistics.SnapshotUnit)
                     foreach (var (key, value) in ReadVpe())
@@ -493,6 +496,58 @@ internal static class SavedStateMetricReader
             }
         }
         return BiotechStateSnapshot.Build(polluted, bandwidth, partial);
+    }
+
+    private static Dictionary<string, MetricEntry> ReadAnomalyState()
+    {
+        if (!ModsConfig.AnomalyActive)
+            throw new InvalidOperationException("Anomaly DLC is disabled");
+        var anomaly = Find.Anomaly ?? throw new InvalidOperationException("GameComponent_Anomaly is unavailable");
+        var codex = Find.EntityCodex ?? throw new InvalidOperationException("EntityCodex is unavailable");
+        var player = Faction.OfPlayerSilentFail
+            ?? throw new InvalidOperationException("Player faction is not initialized");
+
+        var partial = false;
+        var discoveredCount = 0;
+        foreach (var def in DefDatabase<ThingDef>.AllDefsListForReading)
+        {
+            if (def is null || string.IsNullOrEmpty(def.defName))
+                continue;
+            try
+            {
+                if (codex.Discovered(def))
+                    discoveredCount++;
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+
+        var heldIds = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var map in Find.Maps)
+        {
+            if (map is not { IsPlayerHome: true })
+                continue;
+            try
+            {
+                foreach (var building in map.listerBuildings.allBuildingsColonist)
+                    if (building is Building_HoldingPlatform platform
+                        && platform.Faction == player
+                        && platform.HeldPawn is { Dead: false, Destroyed: false } heldPawn)
+                        heldIds.Add(GameFacts.Id(heldPawn));
+            }
+            catch (Exception)
+            {
+                partial = true;
+            }
+        }
+
+        var highestLevel = anomaly.HighestLevelReached;
+        int? discovered = anomaly.AnomalyStudyEnabled || discoveredCount > 0 ? discoveredCount : null;
+        int? monolith = anomaly.GenerateMonolith || highestLevel > 0 ? highestLevel : null;
+        int? held = anomaly.AnomalyStudyEnabled || heldIds.Count > 0 ? heldIds.Count : null;
+        return AnomalyStateSnapshot.Build(discovered, monolith, held, partial);
     }
 
 }

@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Nascimentos por espécie</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Crianças humanoides nascidas vivas do lado do jogador, agrupadas por espécie ao nascer.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Nascimentos por xenótipo</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: eventos</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: estado (ao salvar)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Tipos de entidades anômalas descobertos</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Maior número de tipos de entidades descobertos no Códice de Entidades ao salvar.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Nível máximo do monólito</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Maior nível de despertar do monólito do vazio alcançado em Anomaly.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Pico de entidades contidas</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Maior número de entidades vivas presas em plataformas de contenção da colônia ao salvar.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Rituais psíquicos concluídos</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Rituais psíquicos iniciados pela colônia e concluídos.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Rituais psíquicos concluídos (por ritual)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Rituais psíquicos concluídos pela colônia agrupados por ritual.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Fugas de entidades contidas</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Fugas confirmadas de entidades vivas das plataformas de contenção da colônia.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Novas entidades contidas</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Entidades vivas distintas recém-presas em plataformas de contenção (excluindo transferências).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Portões do fosso colapsados</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Portões do fosso colapsados após derrotar o Dreadmeld da caverna subterrânea.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

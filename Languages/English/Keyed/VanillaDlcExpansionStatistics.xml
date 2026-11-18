@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Births by species</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Humanlike children born alive on the player's side, grouped by species at birth.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Births by xenotype</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: Events</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: State (at save)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Discovered anomaly entity types</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Highest number of discovered entity types recorded in the Entity Codex at a successful save (including conservative 1.7 historical save salvage).</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Monolith highest awakening level</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Highest void monolith awakening level reached (not applicable in playstyles without a monolith unless progressed).</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Contained entities peak</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Highest number of living entities held on player-owned holding platforms at a successful save.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Psychic rituals completed</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Completed player-initiated psychic rituals.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Psychic rituals completed (by ritual)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Completed player-initiated psychic rituals grouped by ritual type.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Contained entity escapes</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Confirmed escapes of living entities from player-owned holding platforms.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Entities newly contained</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Distinct living entities newly secured onto player-owned holding platforms during recorded play (excluding platform transfers and pre-existing captives).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Pit gates collapsed</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Pit gates cleared and collapsed after defeating the Undercave Dreadmeld.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

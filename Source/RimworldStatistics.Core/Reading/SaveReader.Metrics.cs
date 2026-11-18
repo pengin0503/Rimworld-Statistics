@@ -143,7 +143,8 @@ public sealed partial class SaveReader
                 s.HistoricalTurrets, s.HistoricalTurretsOverflowed,
                 s.HistoricalStock, s.HistoricalStockOverflowed,
                 s.HistoricalPawns, s.HistoricalPawnsOverflowed,
-                m.ActiveDlcIds) is { } homes)
+                m.ActiveDlcIds,
+                s.HistoricalHeldEntities, s.HistoricalHeldEntitiesOverflowed) is { } homes)
         {
             foreach (var (key, value) in homes)
                 m.Metrics[key] = value;
@@ -154,6 +155,19 @@ public sealed partial class SaveReader
             if (homes.ContainsKey(RosterSnapshot.Free) || homes.ContainsKey(RosterSnapshot.Prisoners)
                 || homes.ContainsKey(RosterSnapshot.Slaves))
                 m.EvidenceByAcquisition["roster"] = MetricEvidence.Experimental;
+            if (homes.ContainsKey(AnomalyStateSnapshot.HeldEntitiesPeak))
+                m.EvidenceByAcquisition[AnomalyStateSnapshot.Unit] = MetricEvidence.Experimental;
+        }
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+            && HistoricalAnomalyStateReader.Build(
+                s.SavedDiscoveredEntities, s.EntityCodexPresent, s.EntityCodexMalformed,
+                s.AnomalyComponentCount, s.AnomalyComponentMalformed,
+                s.AnomalyHighestLevel, s.AnomalyMonolithRef, m.ActiveDlcIds) is { } anomalyState)
+        {
+            foreach (var (key, value) in anomalyState)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            m.EvidenceByAcquisition[AnomalyStateSnapshot.Unit] = MetricEvidence.Experimental;
         }
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,

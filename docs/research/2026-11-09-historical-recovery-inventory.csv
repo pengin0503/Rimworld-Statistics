@@ -224,6 +224,11 @@ biotech.mechs.repairs,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-016,BiotechFa
 biotech.waste.created,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-001,BiotechFamily.WasteCreated
 biotech.waste.disposed,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-002,BiotechFamily.WasteDisposed
 biotech.pollution.cleaned,biotech,live,EVENT_LOG_REQUIRED,UNVERIFIED,N1-E-003,BiotechFamily.PollutionCleaned
+anomaly.psychic_rituals,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-004,AnomalyFamily.PsychicRituals
+anomaly.psychic_rituals_by_def,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-005,AnomalyFamily.PsychicRitualsByDef
+anomaly.entity_escapes,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-006,AnomalyFamily.EntityEscapes
+anomaly.entities_contained,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-007,AnomalyFamily.EntitiesContained
+anomaly.pit_gates_collapsed,anomaly,live,EVENT_LOG_REQUIRED,UNVERIFIED,L-ANOM-008,AnomalyFamily.PitGatesCollapsed
 colony.start.biome,colony_start,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,"N1-F-001, N1-F-002",ColonyStartSnapshot.Biome
 research.snapshot.finished,research_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-012,ResearchStateSnapshot.Finished
 research.snapshot.finished_rate,research_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,S-012,ResearchStateSnapshot.FinishedRate
@@ -269,6 +274,9 @@ stock.food_nutrition.min,stock,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-A-00
 royalty.psylink.max,royalty_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-006,RoyaltyStateSnapshot.PsylinkPeak
 biotech.pollution.cells_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-004,BiotechStateSnapshot.PollutionCellsPeak
 biotech.bandwidth.used_peak,biotech_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,N1-E-005,BiotechStateSnapshot.BandwidthUsedPeak
+anomaly.codex.discovered,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-001,AnomalyStateSnapshot.DiscoveredEntities
+anomaly.monolith.highest_level,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-002,AnomalyStateSnapshot.MonolithHighestLevel
+anomaly.holding.entities_peak,anomaly_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-ANOM-003,AnomalyStateSnapshot.HeldEntitiesPeak
 royalty.quest_success,royalty_quests,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,L-003,RoyaltyQuestSnapshot.Success
 exploration.outposts.active,outpost_state,snapshot,SAVED_STATE_CANDIDATE,UNVERIFIED,GEN-OUT-001,OutpostSnapshot.Active
 ranking.survival.by_biome,colony_start,derived,DEPENDS_ON_INPUT,UNVERIFIED,N1-F-001,MetricRankings.DaysByBiome

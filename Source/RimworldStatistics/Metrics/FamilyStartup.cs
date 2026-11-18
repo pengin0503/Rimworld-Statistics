@@ -39,6 +39,11 @@ internal static class FamilyStartup
         RunSelected(CaravanFamily.Name, (s, _) => CaravanFamily.Concurrent(s, CaravanProbe.PlayerCaravans()));
         RunSelected(CaravanFamily.Name, (s, _) => ShrineProbe.Startup(s, tick));
         RunSelected(FoodFamily.Name, (s, _) => FoodFamily.GrowingCellsBaseline(s, GrowingProbe.Cells(), tick));
+        RunSelected(AnomalyFamily.Name, (s, fresh) =>
+        {
+            if (fresh && ModsConfig.AnomalyActive)
+                AnomalyFamily.BaselineHeldEntities(s, AnomalyHoldingProbe.CurrentlyHeldPawnIds());
+        });
     }
 
     /// <summary>

@@ -34,7 +34,8 @@ public sealed class NumericCatalogTests
         Assert.All(LiveFamilies.All, f => Assert.Equal(AcquisitionKind.Family, AcquisitionUnits.Find(f.Name)?.Kind));
         Assert.All(LiveFamilies.All, f => Assert.Equal(AcquisitionUnits.Find(f.Name)!.RequiredDlc, f.RequiredDlc));
         Assert.Equal(AcquisitionUnits.All.Count, AcquisitionUnits.All.Select(u => u.Id).Distinct(StringComparer.Ordinal).Count());
-        Assert.DoesNotContain(AcquisitionUnits.All, u => u.Id.Contains("anomaly", StringComparison.OrdinalIgnoreCase));
+        Assert.Equal(AcquisitionUnits.Anomaly, AcquisitionUnits.Find(AnomalyFamily.Name)?.RequiredDlc);
+        Assert.Equal(AcquisitionUnits.Anomaly, AcquisitionUnits.Find(AnomalyStateSnapshot.Unit)?.RequiredDlc);
     }
 
     [Fact]

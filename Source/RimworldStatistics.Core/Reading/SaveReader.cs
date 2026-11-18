@@ -35,8 +35,9 @@ public sealed partial class SaveReader
     /// 16: retry unstable reads and isolate invalid wealth history when the campaign ID is available.
     /// 17: distinguish exact-boundary checkpoint metadata from later files and live load context.
     /// 18: ThreatPoints (10x rescaled) and Adaptation (60000-tick) save history recorders, plus conservative Biotech saved pawn xenotypes.
+    /// 19: Anomaly DLC historical entityCodex discoveredEntities, monolith highestLevelReached, and player holding-platform entities.
     /// </summary>
-    public const int Version = 18;
+    public const int Version = 19;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
 
     private const int MaxReasonLength = 200;
@@ -155,10 +156,19 @@ public sealed partial class SaveReader
         public bool HistoricalStockOverflowed { get; set; }
         public List<SavedMapPawn> HistoricalPawns { get; } = new();
         public bool HistoricalPawnsOverflowed { get; set; }
+        public List<SavedHeldPlatformPawn> HistoricalHeldEntities { get; } = new();
+        public bool HistoricalHeldEntitiesOverflowed { get; set; }
         public bool MechanoidsDeactivated { get; set; }
         public bool RoyalAscentSucceeded { get; set; }
         public bool MechhiveSucceeded { get; set; }
         public string? AnomalyLevelDef { get; set; }
+        public int AnomalyComponentCount { get; set; }
+        public bool AnomalyComponentMalformed { get; set; }
+        public int? AnomalyHighestLevel { get; set; }
+        public string? AnomalyMonolithRef { get; set; }
+        public bool EntityCodexPresent { get; set; }
+        public bool EntityCodexMalformed { get; set; }
+        public HashSet<string>? SavedDiscoveredEntities { get; set; }
 
         // Numeric expansion inputs (never used by the v1 values above).
         public List<string>? ModIds { get; set; }
@@ -212,6 +222,11 @@ public sealed partial class SaveReader
                 case "researchManager":
                     if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
                         ReadSavedResearch(Load(r), s);
+                    else r.Skip();
+                    break;
+                case "entityCodex":
+                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                        ReadEntityCodex(r, s);
                     else r.Skip();
                     break;
                 case "world": ReadWorld(r, s); break;

@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>各种族出生人数</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>按出生时的种族统计玩家方存活出生的人形婴儿数量。</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>各异种出生人数</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly：事件</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly：状态（存档时）</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>已发现异常实体种类数</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>成功存档时实体图鉴（Entity Codex）中已发现实体Def种类的最高数量（含1.7旧存档保守恢复）。</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>虚空巨石最高觉醒阶段</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Anomaly记录的虚空巨石最高觉醒阶段（无巨石玩法且未推进时为不适用）。</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>收容中异常实体数峰值</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>成功存档时玩家收容平台上收容存活实体的最高数量。</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>心灵仪式完成次数</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>玩家发起并完成的心灵仪式次数。</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>各心灵仪式完成次数</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>按带包名前缀的ritual统计玩家完成的心灵仪式次数。</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>收容实体逃脱次数</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>存活实体从玩家收容平台逃脱的确认次数。</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>新收容实体数</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>记录期间新固定到玩家收容平台上的独立存活实体数（不含已有收容体与平台间转移）。</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>深渊之门坍塌攻略数</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>击败地底洞穴恐惧融合体后完成坍塌的深渊之门数量。</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>

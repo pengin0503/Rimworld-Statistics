@@ -22,4 +22,23 @@
   <RWS_Metric_BirthsBySpecies>Рождения по видам</RWS_Metric_BirthsBySpecies>
   <RWS_MetricDesc_BirthsBySpecies>Гуманоидные дети, рождённые живыми на стороне игрока, сгруппированные по виду при рождении.</RWS_MetricDesc_BirthsBySpecies>
   <RWS_Metric_BirthsByXenotype>Рождения по ксенотипам</RWS_Metric_BirthsByXenotype>
+  <RWS_Category_Anomaly>Anomaly</RWS_Category_Anomaly>
+  <RWS_AcqUnit_anomaly>Anomaly: события</RWS_AcqUnit_anomaly>
+  <RWS_AcqUnit_anomaly_state>Anomaly: состояние (на момент сохранения)</RWS_AcqUnit_anomaly_state>
+  <RWS_Metric_AnomalyDiscoveredEntities>Открыто видов аномальных сущностей</RWS_Metric_AnomalyDiscoveredEntities>
+  <RWS_MetricDesc_AnomalyDiscoveredEntities>Наибольшее число открытых видов сущностей в кодексе сущностей на момент сохранения.</RWS_MetricDesc_AnomalyDiscoveredEntities>
+  <RWS_Metric_AnomalyMonolithHighestLevel>Максимальный уровень пробуждения монолита</RWS_Metric_AnomalyMonolithHighestLevel>
+  <RWS_MetricDesc_AnomalyMonolithHighestLevel>Наивысший достигнутый уровень монолита пустоты в Anomaly.</RWS_MetricDesc_AnomalyMonolithHighestLevel>
+  <RWS_Metric_AnomalyHeldEntitiesPeak>Пик удерживаемых сущностей</RWS_Metric_AnomalyHeldEntitiesPeak>
+  <RWS_MetricDesc_AnomalyHeldEntitiesPeak>Наибольшее число живых сущностей на платформах сдерживания поселения на момент сохранения.</RWS_MetricDesc_AnomalyHeldEntitiesPeak>
+  <RWS_Metric_AnomalyPsychicRituals>Завершено пси-ритуалов</RWS_Metric_AnomalyPsychicRituals>
+  <RWS_MetricDesc_AnomalyPsychicRituals>Пси-ритуалы, начатые и успешно завершённые поселением.</RWS_MetricDesc_AnomalyPsychicRituals>
+  <RWS_Metric_AnomalyPsychicRitualsByDef>Завершено пси-ритуалов (по виду)</RWS_Metric_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>Завершённые поселением пси-ритуалы с разбивкой по ritual.</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_Metric_AnomalyEntityEscapes>Побеги удерживаемых сущностей</RWS_Metric_AnomalyEntityEscapes>
+  <RWS_MetricDesc_AnomalyEntityEscapes>Подтверждённые побеги живых сущностей с платформ сдерживания поселения.</RWS_MetricDesc_AnomalyEntityEscapes>
+  <RWS_Metric_AnomalyEntitiesContained>Новые заключённые сущности</RWS_Metric_AnomalyEntitiesContained>
+  <RWS_MetricDesc_AnomalyEntitiesContained>Уникальные живые сущности, впервые закреплённые на платформах сдерживания за время записи (без учёта переноса между платформами).</RWS_MetricDesc_AnomalyEntitiesContained>
+  <RWS_Metric_AnomalyPitGatesCollapsed>Обрушено врат ямы</RWS_Metric_AnomalyPitGatesCollapsed>
+  <RWS_MetricDesc_AnomalyPitGatesCollapsed>Врата ямы, обрушившиеся после уничтожения жуткосплетения в подземной пещере.</RWS_MetricDesc_AnomalyPitGatesCollapsed>
 </LanguageData>
