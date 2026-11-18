@@ -21,11 +21,9 @@ public static class OverviewTab
         private string chartTip = "";
         private bool? chartable;
 
-        /// <summary>Cells are rebuilt whenever the view changes, so the lookup is made once per built view.</summary>
         public bool Chartable(StatsView view)
             => chartable ??= FavoriteKey is { } key && MetricLookup.IsKnownKey(view, key);
 
-        /// <summary>The tooltip over the area that opens the chart.</summary>
         public string ChartTip => chartTip;
 
         public (string Label, string Value, string Tip) Fit(float width, GameFont font)
@@ -80,46 +78,62 @@ public static class OverviewTab
         var favoritesContentHeight = favoriteRows == 0 ? 55f : 30f + favoriteRows * (104f + gap);
         Widgets.BeginScrollView(rect, ref scroll,
             new Rect(0, 0, width, favoriteTop + favoritesContentHeight));
-        DrawGrid(top, topColumns, 0, TopCellHeight, GameFont.Medium);
-        DrawGrid(bottom, bottomColumns, topHeight + 14f, BottomCellHeight, GameFont.Small);
-        Widgets.Label(new Rect(0, favoriteTop, Math.Max(0, width - 185f), 27f), "RWS_Fav_Title".Translate());
-        if (Widgets.ButtonText(new Rect(Math.Max(0f, width - 180f), favoriteTop, Math.Min(180f, width), 27f),
-                "RWS_Fav_AddBasic".Translate()))
+        try
         {
-            var available = BasicMetrics.Keys.Where(key =>
-                preferences?.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal) != true)
-                .Select(key => new FloatMenuOption(BasicLabel(key), () => ToggleFavorite(key))).ToList();
-            if (available.Count > 0)
-                Find.WindowStack.Add(new FloatMenu(available));
-        }
-        if (favoriteCells.Length == 0)
-        {
-            Widgets.Label(new Rect(0, favoriteTop + 27f, width, 25f), "RWS_Fav_Empty".Translate());
-        }
-        else
-        {
-            var cellWidth = (width - gap * (bottomColumns - 1)) / bottomColumns;
-            for (var i = 0; i < favoriteCells.Length; i++)
+            DrawGrid(top, topColumns, 0, TopCellHeight, GameFont.Medium);
+            DrawGrid(bottom, bottomColumns, topHeight + 14f, BottomCellHeight, GameFont.Small);
+            var addBasicLabel = (string)"RWS_Fav_AddBasic".Translate();
+            var addBasicWidth = Math.Min(Math.Max(180f, Text.CalcSize(addBasicLabel).x + 20f), Math.Max(110f, width * 0.45f));
+            var favTitle = (string)"RWS_Fav_Title".Translate();
+            var favTitleRect = new Rect(0f, favoriteTop, Math.Max(0f, width - addBasicWidth - 6f), 27f);
+            var shownFavTitle = favTitle.Truncate(favTitleRect.width);
+            Widgets.Label(favTitleRect, shownFavTitle);
+            if (shownFavTitle != favTitle)
+                TooltipHandler.TipRegion(favTitleRect, favTitle);
+            var addBasicRect = new Rect(Math.Max(0f, width - addBasicWidth), favoriteTop, Math.Min(addBasicWidth, width), 27f);
+            var shownAddBasic = addBasicLabel.Truncate(Math.Max(0f, addBasicRect.width - 12f));
+            if (shownAddBasic != addBasicLabel)
+                TooltipHandler.TipRegion(addBasicRect, addBasicLabel);
+            if (Widgets.ButtonText(addBasicRect, shownAddBasic))
             {
-                var c = favoriteCells[i];
-                var x = (i % bottomColumns) * (cellWidth + gap);
-                var y = favoriteTop + 30f + (i / bottomColumns) * (104f + gap);
-                DrawCell(new Rect(x, y, cellWidth, 70f), c.Content, GameFont.Small);
-                var up = new Rect(x + 4f, y + 73f, 28f, 26f);
-                var down = new Rect(up.xMax + 4f, up.y, 28f, 26f);
-                var remove = new Rect(down.xMax + 4f, up.y, 28f, 26f);
-                if (Widgets.ButtonText(up, "▲", active: i > 0))
-                    MoveFavorite(i, -1);
-                if (Widgets.ButtonText(down, "▼", active: i < favoriteCells.Length - 1))
-                    MoveFavorite(i, 1);
-                if (Widgets.ButtonText(remove, "×"))
-                    RemoveFavorite(c.Key);
-                TooltipHandler.TipRegion(up, "RWS_Fav_MoveUp".Translate());
-                TooltipHandler.TipRegion(down, "RWS_Fav_MoveDown".Translate());
-                TooltipHandler.TipRegion(remove, "RWS_Fav_Remove".Translate());
+                var available = BasicMetrics.Keys.Where(key =>
+                    preferences?.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal) != true)
+                    .Select(key => new FloatMenuOption(BasicLabel(key), () => ToggleFavorite(key))).ToList();
+                if (available.Count > 0)
+                    Find.WindowStack.Add(new FloatMenu(available));
+            }
+            if (favoriteCells.Length == 0)
+            {
+                Widgets.Label(new Rect(0, favoriteTop + 27f, width, 25f), "RWS_Fav_Empty".Translate());
+            }
+            else
+            {
+                var cellWidth = (width - gap * (bottomColumns - 1)) / bottomColumns;
+                for (var i = 0; i < favoriteCells.Length; i++)
+                {
+                    var c = favoriteCells[i];
+                    var x = (i % bottomColumns) * (cellWidth + gap);
+                    var y = favoriteTop + 30f + (i / bottomColumns) * (104f + gap);
+                    DrawCell(new Rect(x, y, cellWidth, 70f), c.Content, GameFont.Small);
+                    var up = new Rect(x + 4f, y + 73f, 28f, 26f);
+                    var down = new Rect(up.xMax + 4f, up.y, 28f, 26f);
+                    var remove = new Rect(down.xMax + 4f, up.y, 28f, 26f);
+                    if (Widgets.ButtonText(up, "▲", active: i > 0))
+                        MoveFavorite(i, -1);
+                    if (Widgets.ButtonText(down, "▼", active: i < favoriteCells.Length - 1))
+                        MoveFavorite(i, 1);
+                    if (Widgets.ButtonText(remove, "×"))
+                        RemoveFavorite(c.Key);
+                    TooltipHandler.TipRegion(up, "RWS_Fav_MoveUp".Translate());
+                    TooltipHandler.TipRegion(down, "RWS_Fav_MoveDown".Translate());
+                    TooltipHandler.TipRegion(remove, "RWS_Fav_Remove".Translate());
+                }
             }
         }
-        Widgets.EndScrollView();
+        finally
+        {
+            Widgets.EndScrollView();
+        }
 
         void DrawGrid(Cell[] cells, int columns, float y, float height, GameFont font)
         {
@@ -183,7 +197,6 @@ public static class OverviewTab
         Text.Font = valueFont;
         Widgets.Label(new Rect(inner.x, inner.y + valueOffset, inner.width, Math.Max(0f, inner.height - valueOffset)), value);
         Text.Font = GameFont.Small;
-        // Do not cover the favourite star at the right edge of the card.
         var chartRect = new Rect(cell.x + 4f, cell.y + 2f, Math.Max(0f, cell.width - (hasStar ? 40f : 8f)), cell.height - 4f);
         if (chartView is not null)
         {
@@ -191,7 +204,6 @@ public static class OverviewTab
             if (iconX >= cell.x + 12f)
                 MetricVisualStyle.DrawMiniChartIcon(new Rect(iconX, cell.y + 9f, 12f, 12f), Mouse.IsOver(chartRect));
         }
-        // A single tooltip region: a second overlapping one would be drawn as a second stacked copy.
         var star = new Rect(cell.xMax - 28f, cell.y + 4f, 24f, 25f);
         var activeTip = hasStar && Mouse.IsOver(star)
             ? (string)"RWS_Fav_StarTip".Translate()
@@ -288,7 +300,6 @@ public static class OverviewTab
         _ => key,
     };
 
-    /// <summary>"Computed from N colonies (excluded M)" plus what is missing (spec §4.4).</summary>
     private static string Basis(StatsView view)
     {
         string text = "RWS_TooltipBasis".Translate(view.Stats.ColonyCount, view.Stats.ExcludedColonyCount);
