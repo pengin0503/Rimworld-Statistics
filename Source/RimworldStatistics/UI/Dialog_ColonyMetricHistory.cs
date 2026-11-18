@@ -26,12 +26,21 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private readonly Task<MetricHistory> pending;
     private string? historyNote;
     private MetricHistoryPoint[]? measured;
+    private MetricHistoryPoint[]? visiblePrimaryMeasured;
+    private IReadOnlyList<MetricHistoryPoint> slicedPrimaryPoints = [];
+    private int visibleTotalMeasuredCount;
+    private HistoryPlotBounds fullBounds;
     private HistoryPlotBounds bounds;
     private bool boundsDirty = true;
     private IReadOnlyList<MetricHistoryPoint> plotPoints = [];
     private int[]? gapTicks;   // ticks of drawn readings without a value, ascending
     private int plotWidth;
     private Vector2 chartScroll;
+    // Screen-local day-range zoom (kept separate from the two-reading comparison below and never persisted).
+    private string zoomStartInput = "";
+    private string zoomEndInput = "";
+    private HistoryTickRange? zoomRange;
+    private bool zoomInputInvalid;
     // Two readings of this colony compared (#307): the first one clicked, then the change once a second one is.
     private int? pickFrom;
     private HistoryChange? change;
@@ -120,11 +129,13 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         EnsureBoundsAndLegend(history, contentWidth);
         var legendHeight = Math.Max(LegendRowHeight, legendPlan?.TotalHeight ?? LegendRowHeight);
         const float overlayRowHeight = 23f;
+        var zoomStatus = ZoomStatusText();
+        var zoomHeight = MeasureZoomControls(contentWidth, zoomStatus);
         var changeLines = ChangeText(history);
         // Room for three lines (an interval and a reason) is kept, so picking a reading does not move the chart under the mouse.
         var changeTextHeight = Math.Max(Text.CalcHeight(changeLines, contentWidth), Text.LineHeight * 3f);
         var changeHeight = 31f + changeTextHeight + 6f;
-        var controlsHeight = 31f + overlayRowHeight * overlayTracker.Entries.Count + changeHeight;
+        var controlsHeight = 31f + overlayRowHeight * overlayTracker.Entries.Count + zoomHeight + changeHeight;
         var vertical = HistoryLegendLayout.ResolveVertical(
             body.height - controlsHeight, noteHeight, legendHeight);
         var scrollHeight = controlsHeight + vertical.ContentHeight;
@@ -195,6 +206,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 InvalidateOverlays();
         }
 
+        y = DrawZoomControls(history, y, contentWidth, zoomStatus);
+        if (boundsDirty)
+        {
+            EnsureBoundsAndLegend(history, contentWidth);
+            changeLines = ChangeText(history);
+        }
         y = DrawChangeControls(history, y, contentWidth, changeLines, changeTextHeight);
         Widgets.Label(new Rect(0f, y, contentWidth, noteHeight), note);
         var axisWidth = Math.Min(145f, contentWidth * 0.28f);
@@ -206,6 +223,150 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             DrawLegend(new Rect(0f, plot.yMax + 46f, contentWidth, legendHeight));
         }
         Widgets.EndScrollView();
+    }
+
+    private readonly record struct ZoomControlsLayout(
+        Rect LabelRect,
+        Rect StartRect,
+        Rect SeparatorRect,
+        Rect EndRect,
+        Rect ApplyRect,
+        Rect ResetRect,
+        Rect StatusRect,
+        float TotalHeight);
+
+    private static ZoomControlsLayout ComputeZoomControlsLayout(
+        float y, float width, string labelText, string applyText, string resetText, string statusText)
+    {
+        var row = new ControlRow(new Rect(0f, y, width, 28f));
+        var labelRect = row.Next(Math.Min(width, Text.CalcSize(labelText).x + 4f));
+        var groupWidth = Math.Min(width, 170f);
+        var groupRect = row.Next(groupWidth);
+        var sepWidth = Math.Min(18f, groupRect.width * 0.14f);
+        var fieldWidth = Math.Max(20f, (groupRect.width - sepWidth) * 0.5f);
+        var startRect = new Rect(groupRect.x, groupRect.y + 1f, fieldWidth, 26f);
+        var separatorRect = new Rect(startRect.xMax, groupRect.y, sepWidth, 28f);
+        var endRect = new Rect(separatorRect.xMax, groupRect.y + 1f, fieldWidth, 26f);
+        var applyRect = row.Next(applyText, 96f, 220f);
+        var resetRect = row.Next(resetText, 96f, 220f);
+        var statusY = y + row.Height + 3f;
+        var statusHeight = Math.Max(Text.LineHeight, Text.CalcHeight(statusText, width));
+        var statusRect = new Rect(0f, statusY, width, statusHeight);
+        return new ZoomControlsLayout(
+            labelRect, startRect, separatorRect, endRect, applyRect, resetRect, statusRect,
+            row.Height + 3f + statusHeight + 6f);
+    }
+
+    private static float MeasureZoomControls(float width, string statusText)
+        => ComputeZoomControlsLayout(
+            0f, width,
+            "RWS_Chart_ZoomLabel".Translate(),
+            "RWS_Chart_ZoomApply".Translate(),
+            "RWS_Chart_ZoomReset".Translate(),
+            statusText).TotalHeight;
+
+    private float DrawZoomControls(MetricHistory history, float y, float width, string statusText)
+    {
+        string labelText = "RWS_Chart_ZoomLabel".Translate();
+        string applyText = "RWS_Chart_ZoomApply".Translate();
+        string resetText = "RWS_Chart_ZoomReset".Translate();
+        var layout = ComputeZoomControlsLayout(y, width, labelText, applyText, resetText, statusText);
+
+        var prevAnchor = Text.Anchor;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        var shownLabel = labelText.Truncate(layout.LabelRect.width);
+        Widgets.Label(layout.LabelRect, shownLabel);
+        if (shownLabel != labelText)
+            TooltipHandler.TipRegion(layout.LabelRect, labelText);
+
+        Text.Anchor = TextAnchor.UpperLeft;
+        var nextStart = Widgets.TextField(layout.StartRect, zoomStartInput) ?? "";
+        TooltipHandler.TipRegion(layout.StartRect, "RWS_Chart_ZoomStartTip".Translate());
+
+        Text.Anchor = TextAnchor.MiddleCenter;
+        Widgets.Label(layout.SeparatorRect, "–");
+
+        Text.Anchor = TextAnchor.UpperLeft;
+        var nextEnd = Widgets.TextField(layout.EndRect, zoomEndInput) ?? "";
+        TooltipHandler.TipRegion(layout.EndRect, "RWS_Chart_ZoomEndTip".Translate());
+        Text.Anchor = prevAnchor;
+
+        if (nextStart != zoomStartInput || nextEnd != zoomEndInput)
+        {
+            zoomStartInput = nextStart;
+            zoomEndInput = nextEnd;
+            zoomInputInvalid = false;
+        }
+
+        var hasInput = !string.IsNullOrWhiteSpace(zoomStartInput) || !string.IsNullOrWhiteSpace(zoomEndInput);
+        var shownApply = applyText.Truncate(Math.Max(0f, layout.ApplyRect.width - 12f));
+        if (Widgets.ButtonText(layout.ApplyRect, shownApply, active: hasInput) && hasInput)
+            ApplyZoomInput(history);
+        TooltipHandler.TipRegion(layout.ApplyRect, "RWS_Chart_ZoomApplyTip".Translate());
+
+        var canReset = zoomRange is not null || hasInput || zoomInputInvalid;
+        var shownReset = resetText.Truncate(Math.Max(0f, layout.ResetRect.width - 12f));
+        if (Widgets.ButtonText(layout.ResetRect, shownReset, active: canReset) && canReset)
+            ResetZoom(history);
+        TooltipHandler.TipRegion(layout.ResetRect, "RWS_Chart_ZoomResetTip".Translate());
+
+        var prevColor = GUI.color;
+        if (zoomInputInvalid)
+            GUI.color = ColorLibrary.RedReadable;
+        Widgets.Label(layout.StatusRect, statusText);
+        GUI.color = prevColor;
+
+        return y + layout.TotalHeight;
+    }
+
+    private string ZoomStatusText()
+    {
+        if (zoomInputInvalid)
+            return "RWS_Chart_ZoomInvalid".Translate();
+        var fullFrom = Dialog_RimworldStatistics.Days(fullBounds.FirstTick);
+        var fullTo = Dialog_RimworldStatistics.Days(fullBounds.LastTick);
+        if (zoomRange is not { } range)
+            return "RWS_Chart_ZoomStatusFull".Translate(fullFrom, fullTo);
+        var zoomFrom = Dialog_RimworldStatistics.Days(range.StartTick);
+        var zoomTo = Dialog_RimworldStatistics.Days(range.EndTick);
+        return visibleTotalMeasuredCount == 0
+            ? (string)"RWS_Chart_ZoomStatusEmpty".Translate(zoomFrom, zoomTo, fullFrom, fullTo)
+            : (string)"RWS_Chart_ZoomStatusActive".Translate(zoomFrom, zoomTo, fullFrom, fullTo);
+    }
+
+    private void ApplyZoomInput(MetricHistory history)
+    {
+        var resolution = HistoryPlotRange.Resolve(zoomStartInput, zoomEndInput, fullBounds.FirstTick, fullBounds.LastTick);
+        if (resolution.Status == HistoryRangeStatus.InvalidInput)
+        {
+            zoomInputInvalid = true;
+            return;
+        }
+        zoomInputInvalid = false;
+        if (resolution.WasReversed)
+            (zoomStartInput, zoomEndInput) = (zoomEndInput.Trim(), zoomStartInput.Trim());
+        SetZoomRange(history, resolution.Range);
+    }
+
+    private void ResetZoom(MetricHistory history)
+    {
+        zoomStartInput = "";
+        zoomEndInput = "";
+        zoomInputInvalid = false;
+        SetZoomRange(history, null);
+    }
+
+    private void SetZoomRange(MetricHistory history, HistoryTickRange? nextRange)
+    {
+        if (zoomRange == nextRange)
+            return;
+        zoomRange = nextRange;
+        (pickFrom, change) = HistoryChanges.FilterSelection(history, pickFrom, change, zoomRange);
+        firstAndLastKnown = false;
+        changeText = null;
+        plotWidth = 0;
+        gapTicks = null;
+        InvalidateOverlays();
     }
 
     /// <summary>The buttons and lines of the two-reading comparison (#307); returns the y below them.</summary>
@@ -224,7 +385,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
 
         if (!firstAndLastKnown)
         {
-            firstAndLast = HistoryChanges.FirstAndLast(history);
+            firstAndLast = HistoryChanges.FirstAndLast(history, zoomRange);
             firstAndLastKnown = true;
         }
         if (Button("RWS_Change_FirstLast".Translate(), "RWS_Change_FirstLastTip".Translate(), firstAndLast is not null)
@@ -247,7 +408,9 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     /// <summary>A click on a reading of this colony: the first of two, or the second, which shows the change.</summary>
     private void Pick(MetricHistory history, int index)
     {
-        if (pickFrom is { } first && change is null)
+        if (!HistoryChanges.CanPick(history, index, zoomRange))
+            return;
+        if (pickFrom is { } first && change is null && HistoryChanges.CanPick(history, first, zoomRange))
         {
             if (first == index)
                 return;
@@ -271,10 +434,16 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             return changeText;
         var points = history.Points;
         if (change is not { } c)
-            return changeText = pickFrom is { } first && first < points.Count && points[first].Value is { } picked
-                ? (string)"RWS_Change_PickSecond".Translate(Dialog_RimworldStatistics.Days(points[first].Tick),
-                    MetricText.Format(definition, picked))
-                : (string)(measured!.Length >= 2 ? "RWS_Change_Hint" : "RWS_Change_OnlyOne").Translate();
+        {
+            if (pickFrom is { } first && HistoryChanges.CanPick(history, first, zoomRange) && points[first].Value is { } picked)
+                return changeText = (string)"RWS_Change_PickSecond".Translate(Dialog_RimworldStatistics.Days(points[first].Tick),
+                    MetricText.Format(definition, picked));
+            if (measured!.Length < 2)
+                return changeText = (string)"RWS_Change_OnlyOne".Translate();
+            if ((visiblePrimaryMeasured ?? measured).Length < 2)
+                return changeText = (string)"RWS_Chart_ZoomCompareTooFew".Translate();
+            return changeText = (string)"RWS_Change_Hint".Translate();
+        }
 
         return changeText = FormatHistoryChange(definition, c);
     }
@@ -399,8 +568,14 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     {
         if (boundsDirty)
         {
-            bounds = overlayTracker.ComputeBounds(history, measured!);
+            fullBounds = overlayTracker.ComputeBounds(history, measured!, visibleRange: null);
+            bounds = zoomRange is null ? fullBounds : overlayTracker.ComputeBounds(history, measured!, zoomRange);
+            visiblePrimaryMeasured = HistoryPlotRange.FilterMeasured(measured!, zoomRange);
+            slicedPrimaryPoints = zoomRange is { } r ? MetricHistoryPlot.Slice(history.Points, r) : history.Points;
+            visibleTotalMeasuredCount = overlayTracker.CountVisibleMeasured(measured!, zoomRange);
             boundsDirty = false;
+            plotWidth = 0;
+            gapTicks = null;
             legend = null;
             legendPlan = null;
         }
@@ -414,7 +589,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 legend.Add(("RWS_Chart_LegendUnlinkedShort".Translate(),
                     r => Widgets.DrawBoxSolidWithOutline(r, HollowFill, SeriesColor, 1),
                     "RWS_Chart_LegendUnlinked".Translate()));
-            if (history.Points.Any(p => p.Value is null))
+            if (slicedPrimaryPoints.Any(p => p.Value is null))
                 legend.Add(("RWS_Chart_LegendGap".Translate(),
                     r => Widgets.DrawBoxSolid(new Rect(r.center.x - 1f, r.y, 2f, r.height), GapColor), null));
             legendPlan = null;
@@ -456,7 +631,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var pixelWidth = Math.Max(1, (int)plot.width);
         if (plotWidth != pixelWidth)
         {
-            plotPoints = MetricHistoryPlot.Thin(history.Points, pixelWidth);
+            plotPoints = MetricHistoryPlot.Thin(slicedPrimaryPoints, pixelWidth);
             gapTicks = null;
             plotWidth = pixelWidth;
         }
@@ -496,7 +671,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         DrawSeries(plotPoints, SeriesColor, PartialColor);
         foreach (var overlay in overlayTracker.Entries)
         {
-            var overlayPoints = overlay.GetOrThinPoints(pixelWidth);
+            var overlayPoints = overlay.GetOrThinPoints(pixelWidth, zoomRange);
             if (overlayPoints.Count == 0)
                 continue;
             var color = OverlayColors[overlay.ColorIndex];
@@ -507,11 +682,22 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         foreach (var tick in gapTicks)
             Widgets.DrawBoxSolid(new Rect(X(tick) - 1f, plot.yMax - 7f, 2f, 7f), GapColor);
 
+        if (zoomRange is not null && visibleTotalMeasuredCount == 0)
+        {
+            var prevAnchor = Text.Anchor;
+            var prevColor = GUI.color;
+            Text.Anchor = TextAnchor.MiddleCenter;
+            GUI.color = PartialColor;
+            Widgets.Label(plot, "RWS_Chart_ZoomEmptyPlot".Translate());
+            GUI.color = prevColor;
+            Text.Anchor = prevAnchor;
+        }
+
         // The readings picked for a comparison (#307), from the full series: thinning may not have kept them.
         // A local function, not an array of the indices: this runs every frame.
         void DrawPicked(int? picked)
         {
-            if (picked is not { } index || index >= history.Points.Count
+            if (picked is not { } index || !HistoryChanges.CanPick(history, index, zoomRange)
                 || history.Points[index].Value is not { Number: { } pickedNumber })
                 return;
             var at = new Vector2(X(history.Points[index].Tick), Y(pickedNumber));
@@ -566,21 +752,32 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             TooltipHandler.TipRegion(plot, (string)"RWS_Chart_GapTip".Translate(Dialog_RimworldStatistics.Days(gap)));
             return;
         }
-        var nearest = Nearest(measured!, hoverTick);
+        MetricHistoryPoint? nearest = null;
         var hoverName = colonyName;
         IReadOnlyList<MetricHistoryPoint> hoverSeries = history.Points;
-        var bestDistance = (new Vector2(X(nearest.Tick), Y(nearest.Value!.Number!.Value)) - mouse).sqrMagnitude;
-        var hasOverlayPoints = false;
+        var bestDistance = float.PositiveInfinity;
+        var primaryCandidates = visiblePrimaryMeasured ?? measured!;
+        var totalCandidateCount = primaryCandidates.Length;
+        if (primaryCandidates.Length > 0)
+        {
+            var candidate = Nearest(primaryCandidates, hoverTick);
+            if (candidate.Value?.Number is { } n)
+            {
+                nearest = candidate;
+                bestDistance = (new Vector2(X(candidate.Tick), Y(n)) - mouse).sqrMagnitude;
+            }
+        }
         foreach (var overlay in overlayTracker.Entries)
         {
-            if (overlay.Status != HistoryOverlayStatus.Completed || overlay.Measured.Length == 0)
+            var overlayCandidates = overlay.GetVisibleMeasured(zoomRange);
+            if (overlayCandidates.Length == 0)
                 continue;
-            hasOverlayPoints = true;
-            var candidate = Nearest(overlay.Measured, hoverTick);
+            totalCandidateCount += overlayCandidates.Length;
+            var candidate = Nearest(overlayCandidates, hoverTick);
             if (candidate.Value?.Number is not { } n)
                 continue;
             var distance = (new Vector2(X(candidate.Tick), Y(n)) - mouse).sqrMagnitude;
-            if (distance < bestDistance)
+            if (nearest is null || distance < bestDistance)
             {
                 nearest = candidate;
                 bestDistance = distance;
@@ -588,14 +785,16 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                 hoverSeries = overlay.RawPoints;
             }
         }
+        if (nearest is null)
+            return;
         var x = X(nearest.Tick);
-        if ((measured!.Length > 1 || hasOverlayPoints) && Math.Abs(x - mouse.x) > 18f)
+        if ((totalCandidateCount > 1 || ticks.First != ticks.Last) && Math.Abs(x - mouse.x) > 18f)
             return;
         var ownReading = ReferenceEquals(hoverSeries, history.Points);
         // A click picks the reading the tooltip names, and only this colony's own: other colonies are not its timeline.
         if (ownReading && Event.current.type == EventType.MouseDown && Event.current.button == 0)
         {
-            if (FindIndex(history.Points, nearest) is var index && index >= 0)
+            if (FindIndex(history.Points, nearest) is var index && index >= 0 && HistoryChanges.CanPick(history, index, zoomRange))
                 Pick(history, index);
             Event.current.Use();
         }

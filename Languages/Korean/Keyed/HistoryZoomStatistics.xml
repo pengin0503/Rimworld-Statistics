@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>표시 기간 (일)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>표시를 시작할 게임 내 일수 (비워 두면 첫날부터 표시).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>표시를 마칠 게임 내 일수 (비워 두면 마지막 날까지 표시).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>기간 표시</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>지정한 게임 내 일수 범위로 그래프를 확대 표시합니다.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>전체 기간</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>기록된 전체 기간 표시로 되돌립니다.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>전체 기간 표시 중: {0}–{1}일</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>확대 표시 중: {0}–{1}일 (전체 기간: {2}–{3}일)</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>확대 표시 중: {0}–{1}일 — 이 범위에 기록된 관측점이 없습니다 (전체 기간: {2}–{3}일)</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>0 이상의 일수 숫자를 입력해 주세요 (예: 10 또는 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>지정한 일수 범위에 기록된 관측점이 없습니다.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>표시된 범위 내에 이 정착지의 관측점이 2개 미만이어서 비교할 수 없습니다.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>

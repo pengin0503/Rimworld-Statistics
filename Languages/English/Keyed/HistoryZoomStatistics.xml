@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomLabel>Display range (days)</RWS_Chart_ZoomLabel>
+  <RWS_Chart_ZoomStartTip>Start in-game day (leave blank to start from the earliest day).</RWS_Chart_ZoomStartTip>
+  <RWS_Chart_ZoomEndTip>End in-game day (leave blank to end at the latest day).</RWS_Chart_ZoomEndTip>
+  <RWS_Chart_ZoomApply>Show range</RWS_Chart_ZoomApply>
+  <RWS_Chart_ZoomApplyTip>Zoom the chart to the specified in-game day range.</RWS_Chart_ZoomApplyTip>
+  <RWS_Chart_ZoomReset>Full range</RWS_Chart_ZoomReset>
+  <RWS_Chart_ZoomResetTip>Return the chart to the full recorded range.</RWS_Chart_ZoomResetTip>
+  <RWS_Chart_ZoomStatusFull>Showing full range: day {0}–{1}</RWS_Chart_ZoomStatusFull>
+  <RWS_Chart_ZoomStatusActive>Zoomed: day {0}–{1} (full range: day {2}–{3})</RWS_Chart_ZoomStatusActive>
+  <RWS_Chart_ZoomStatusEmpty>Zoomed: day {0}–{1} — no recorded readings in this range (full range: day {2}–{3})</RWS_Chart_ZoomStatusEmpty>
+  <RWS_Chart_ZoomInvalid>Enter non-negative day numbers (for example, 10 or 25.5).</RWS_Chart_ZoomInvalid>
+  <RWS_Chart_ZoomEmptyPlot>No recorded readings in this day range.</RWS_Chart_ZoomEmptyPlot>
+  <RWS_Chart_ZoomCompareTooFew>Fewer than two of this colony's readings are in the displayed range.</RWS_Chart_ZoomCompareTooFew>
+</LanguageData>
