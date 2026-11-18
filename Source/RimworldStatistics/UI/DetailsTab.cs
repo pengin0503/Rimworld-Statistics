@@ -202,28 +202,38 @@ public static class DetailsTab
         }
         var width = tablePlan.TotalWidth;
         GUI.BeginGroup(new Rect(rect.x, y, available, DetailsRowHeights.Header));
-        DrawHeader(new Rect(-scroll.x, 0, width, DetailsRowHeights.Header));
-        GUI.EndGroup();
+        try
+        {
+            DrawHeader(new Rect(-scroll.x, 0, width, DetailsRowHeights.Header));
+        }
+        finally
+        {
+            GUI.EndGroup();
+        }
         y += DetailsRowHeights.Header;
         var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         if (outRect.height <= 0)
             return;
         if (lines.Count == 0)
         {
-            Widgets.Label(new Rect(outRect.x, outRect.y, outRect.width, 28f), "RWS_Details_NoMatch".Translate());
-            if (activeFilters > 0 && outRect.height >= 64f
-                && Widgets.ButtonText(new Rect(outRect.x, outRect.y + 32f, Math.Min(180f, outRect.width), 28f), "RWS_Filter_Reset".Translate()))
-            {
-                ResetFilters(numeric, view.Stats, language);
-            }
+         var message = activeFilters > 0 || scope != Scope.Overall
+             ? "RWS_Details_NoMatch".Translate()
+             : "RWS_Details_Empty".Translate();
+            Widgets.Label(outRect, message);
             return;
         }
         var viewRect = new Rect(0f, 0f, width, offsets.Total);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-        var (first, last) = offsets.Visible(scroll.y, outRect.height);
-        for (var i = first; i <= last; i++)
-            DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view);
-        Widgets.EndScrollView();
+        try
+        {
+            var (first, last) = offsets.Visible(scroll.y, outRect.height);
+            for (var i = first; i <= last; i++)
+                DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view);
+        }
+        finally
+        {
+            Widgets.EndScrollView();
+        }    
     }
 
     private static void SetLines(List<Line> built)
@@ -599,7 +609,7 @@ public static class DetailsTab
         {
             var childKey = crossTop && b.Breakdowns.Count > 0 ? parentExpandKey + ":" + b.Breakdown : null;
             var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
-                useThingLabel: crossTop && row.Definition.DescriptionKey == "RWS_CrossDesc_TopType");
+                useThingLabel: crossTop ? row.Definition.DescriptionKey == "RWS_CrossDesc_TopType" : null);
             result.Add(MakeLine(b, breakdownLabel, depth, childKey, input, colony,
                 tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
             if (childKey is not null && Expanded.Contains(childKey))
@@ -768,10 +778,13 @@ public static class DetailsTab
     }
 
     internal static string OverallTip(NumericRow row, StatsResult stats)
-        => BuildTip(row, DefinitionLabel(row.Definition), true,
+        => BuildTip(row, DefinitionLabel(row.Definition), false,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
                 DetailsViewMode.All, DetailsStatusFilter.All, true, null), null);
-
+    internal static string ColonyTip(NumericRow row, StatsResult stats, string colonyKey, NumericColony? colony)
+            => BuildTip(row, DefinitionLabel(row.Definition), true,
+                   new Inputs(NumericView.Empty, stats, true, colonyKey, null, "", false, true, 0,
+                        DetailsViewMode.All, DetailsStatusFilter.All, true, null), colony);          
     internal static string DefinitionLabel(MetricDefinition d)
     {
         string label;
