@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>Facção original</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>Facção original: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>Crônica da colônia (ramo representativo)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Exportar Markdown</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>Salvar a crônica exibida no momento como um arquivo Markdown (.md) independente.</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>Exportar HTML</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>Salvar a crônica exibida no momento como um arquivo HTML (.html) estático offline.</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>Exportando crônica...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>Crônica exportada: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>Falha ao exportar a crônica: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>Crônica de ramo único baseada em evidências. Lacunas de registro e vestígios sem data permanecem explícitos sem interpolação.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>Copiar resumo de diagnóstico</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>Copiar para a área de transferência um resumo de diagnóstico anônimo somente leitura (sem caminhos, nomes de colônia/facção/mundo, IDs, hashes ou segredos).</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>Salvar texto de diagnóstico</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>Salvar um resumo de diagnóstico anônimo (.txt) na pasta exports (sem caminhos, nomes, IDs, hashes ou segredos).</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>Gerando resumo de diagnóstico...</RWS_Diag_Working>
+  <RWS_Diag_Copied>Resumo de diagnóstico anônimo (sem caminhos, nomes ou IDs) copiado para a área de transferência.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>Resumo de diagnóstico anônimo (sem caminhos, nomes ou IDs) salvo.</RWS_Diag_Saved>
+  <RWS_Diag_Error>Falha ao gerar o resumo de diagnóstico ({0}).</RWS_Diag_Error>
+</LanguageData>

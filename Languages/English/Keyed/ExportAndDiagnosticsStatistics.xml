@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>Original faction</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>Original faction: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>Colony Chronicle (Representative Branch)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Export Markdown</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>Write the currently displayed colony chronicle as a standalone Markdown (.md) file.</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>Export HTML</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>Write the currently displayed colony chronicle as an offline self-contained HTML (.html) file.</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>Exporting chronicle...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>Chronicle exported: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>Chronicle export failed: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>Evidence-based single-branch colony chronicle. Recording gaps and undated traces are kept explicit without interpolating missing intervals.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>Copy diagnostic summary</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>Copy a read-only anonymous diagnostic summary to the clipboard. Contains zero file paths, colony/faction/world names, campaign IDs, hashes, or secrets.</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>Save diagnostic text</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>Save a read-only anonymous diagnostic summary (.txt) to the exports folder. Contains zero file paths, colony/faction/world names, campaign IDs, hashes, or secrets.</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>Generating diagnostic summary...</RWS_Diag_Working>
+  <RWS_Diag_Copied>Copied anonymous diagnostic summary (no paths, colony names, or IDs) to clipboard.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>Saved anonymous diagnostic summary (no paths, colony names, or IDs).</RWS_Diag_Saved>
+  <RWS_Diag_Error>Failed to generate diagnostic summary ({0}).</RWS_Diag_Error>
+</LanguageData>

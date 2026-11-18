@@ -13,9 +13,11 @@ public sealed record ExportSummary(string Directory, IReadOnlyDictionary<string,
 public static class StatisticsExport
 {
     private const string ColumnsDocumentation = "https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/csv-export.md";
+    public const int TotalFileCount = 7;
 
     public static ExportSummary Write(StatsView view, ExportText text, Func<string, UnitRecordingState> unitState,
-        string directory, CancellationToken cancel = default, Action<int>? fileCompleted = null)
+        string directory, CancellationToken cancel = default, Action<int>? fileCompleted = null,
+        IReadOnlyList<ColonyMetricHistorySeries>? historySeries = null)
     {
         cancel.ThrowIfCancellationRequested();
         Directory.CreateDirectory(directory);
@@ -75,13 +77,13 @@ public static class StatisticsExport
             WriteCsv("colonies.csv",
                 ["colony_key", "name", "world", "scenario", "storyteller", "difficulty", "permadeath", "excluded", "in_scope",
                     "days", "real_play_hours", "peak_wealth", "last_wealth", "raids", "threats", "killed", "departed",
-                    "max_population", "endings", "saves", "last_played_utc", "game_versions"], add =>
+                    "max_population", "endings", "saves", "last_played_utc", "game_versions", "faction_name"], add =>
                 {
                     foreach (var colony in view.Stats.Colonies)
                         add([Of(colony.Key), Of(ColonyName(colony.Key)), Of(colony.WorldName), Of(colony.Scenario),
                             Of(colony.Storyteller), Of(colony.Difficulty), Flag(colony.Permadeath), Flag(colony.Excluded), Flag(!colony.OutOfScope),
                             .. BasicMetrics.Keys.Select(key => Number(BasicMetrics.Value(colony, key))),
-                            Of(Utc(colony.LastPlayedUtc)), Of(string.Join(";", colony.GameVersions))]);
+                            Of(Utc(colony.LastPlayedUtc)), Of(string.Join(";", colony.GameVersions)), Of(colony.FactionName)]);
                 });
 
             WriteCsv("rankings.csv", ["metric_key", "label", "direction", "rank", "colony_key", "colony_name", "value", "coverage", "evidence"], add =>
@@ -105,6 +107,53 @@ public static class StatisticsExport
                         Integer(ending.Ordinal), Integer(ending.Departed), Of(ending.Source)]);
             });
 
+            WriteCsv("colony_metric_history.csv",
+                ["colony_key", "colony_name", "metric_key", "label", "unit", "history_kind", "point_index", "day", "tick",
+                    "value", "coverage", "evidence", "predecessor_index", "unlinked"], add =>
+                {
+                    var resolvedHistories = historySeries ?? (view.Colonies.Count > 0
+                        ? MetricCalculator.RestoreExportHistories(MetricCalculator.BuildColonyChartHistoriesCore(new Profile(), view), null)
+                        : []);
+                    if (resolvedHistories.Count == 0)
+                        return;
+
+                    var inScopeColonies = view.Stats.Colonies
+                        .Where(c => !c.OutOfScope && !c.Excluded)
+                        .Select(c => c.Key)
+                        .ToHashSet(StringComparer.Ordinal);
+                    foreach (var series in resolvedHistories)
+                    {
+                        if (!inScopeColonies.Contains(series.ColonyKey))
+                            continue;
+                        var def = series.Definition;
+                        var points = series.History.Points;
+                        if (!points.Any(p => p.Value is { Known: true }))
+                            continue;
+                        for (var i = 0; i < points.Count; i++)
+                        {
+                            var pt = points[i];
+                            var v = pt.Value;
+                            var pred = pt.Predecessor(i);
+                            add([
+                                Of(series.ColonyKey),
+                                Of(ColonyName(series.ColonyKey)),
+                                Of(def.Key),
+                                Of(Label(def.Key)),
+                                Of(def.Unit.ToString()),
+                                Of(series.History.Kind.ToString()),
+                                Integer(i),
+                                Day(pt.Tick),
+                                Integer(pt.Tick),
+                                Number(v is not null ? Measured(v) : null),
+                                Of(v is not null ? v.Coverage.ToString() : nameof(MetricCoverage.Unknown)),
+                                Of(v is not null ? v.Evidence.ToString() : null),
+                                Integer(pred >= 0 ? pred : null),
+                                Flag(pt.Unlinked),
+                            ]);
+                        }
+                    }
+                });
+
             cancel.ThrowIfCancellationRequested();
             using (var output = File.Create(Path.Combine(staging, "manifest.json")))
             {
@@ -115,7 +164,7 @@ public static class StatisticsExport
                 }, ProfileJson.Options);
                 output.Flush(flushToDisk: true);
             }
-            fileCompleted?.Invoke(6);
+            fileCompleted?.Invoke(TotalFileCount);
             cancel.ThrowIfCancellationRequested();
             Directory.Move(staging, destination);
             return new ExportSummary(destination, counts);

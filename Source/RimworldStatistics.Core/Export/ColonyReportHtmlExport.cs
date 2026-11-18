@@ -23,6 +23,7 @@ public sealed record ColonyReportHtmlText
     public required string Language { get; init; }
     public required string PageTitle { get; init; }
     public required string Subtitle { get; init; }
+    public string? OriginalFactionLine { get; init; }
     public string? StatusBanner { get; init; }
 
     public required string SectionOverview { get; init; }
@@ -47,6 +48,7 @@ public sealed record ColonyReportHtmlText
     public required IReadOnlyList<ColonyReportHtmlItemText> KeyRecords { get; init; }
     public required IReadOnlyList<ColonyReportHtmlItemText> TopRanks { get; init; }
     public required IReadOnlyList<ColonyReportHtmlItemText> ModMetrics { get; init; }
+    public ColonyChronicleSectionHtmlText? ChronicleSection { get; init; }
     public required string FooterNote { get; init; }
 }
 
@@ -179,6 +181,16 @@ public static class ColonyReportHtmlExport
         sb.AppendLine("    td.num, th.num { text-align:right; font-variant-numeric:tabular-nums; }");
         sb.AppendLine("    .sub { display:block; font-size:0.78rem; color:var(--muted); margin-top:2px; }");
         sb.AppendLine("    ul.endings { margin:0; padding-left:20px; }");
+        sb.AppendLine("    .chron-notice { margin-top:6px; color:var(--warn); font-size:0.88rem; }");
+        sb.AppendLine("    td.chron-time { white-space:nowrap; font-variant-numeric:tabular-nums; }");
+        sb.AppendLine("    td.chron-partial { color:var(--warn); }");
+        sb.AppendLine("    .chron-kind-ending { color:#e8be4a; font-weight:600; }");
+        sb.AppendLine("    .chron-kind-milestone { color:#5ec488; font-weight:600; }");
+        sb.AppendLine("    .chron-kind-research { color:#62aef0; font-weight:600; }");
+        sb.AppendLine("    .chron-kind-interval { color:var(--text); }");
+        sb.AppendLine("    .chron-kind-gap { color:var(--warn); font-weight:600; }");
+        sb.AppendLine("    @media (prefers-color-scheme: light) { .chron-kind-ending { color:#946800; } .chron-kind-milestone { color:#1c7a43; } .chron-kind-research { color:#175ea8; } }");
+        sb.AppendLine("    ul.chron-undated { margin:8px 0 0 0; padding-left:20px; }");
         sb.AppendLine("    footer { margin-top:28px; padding-top:12px; border-top:1px solid var(--border); color:var(--muted); font-size:0.82rem; }");
         sb.AppendLine("  </style>");
         sb.AppendLine("</head>");
@@ -186,6 +198,8 @@ public static class ColonyReportHtmlExport
         sb.AppendLine("<main>");
         sb.AppendLine("  <header>");
         sb.AppendLine($"    <h1>{Enc(text.PageTitle)}</h1>");
+        if (!string.IsNullOrWhiteSpace(text.OriginalFactionLine))
+            sb.AppendLine($"    <div class=\"meta\">{Enc(text.OriginalFactionLine)}</div>");
         sb.AppendLine($"    <div class=\"meta\">{Enc(text.Subtitle)} · {Enc(exportedIso)} · Rimworld Statistics {Enc(text.ModVersion)}</div>");
         sb.AppendLine("  </header>");
 
@@ -221,6 +235,8 @@ public static class ColonyReportHtmlExport
             AppendTable(sb, text.SectionTopRanks, text, text.TopRanks);
         if (text.ModMetrics.Count > 0)
             AppendTable(sb, text.SectionModMetrics, text, text.ModMetrics);
+        if (text.ChronicleSection is { } chronSection)
+            ColonyChronicleExport.AppendChronicleBody(sb, chronSection, includeHeading: true);
 
         sb.AppendLine($"  <footer>{Enc(text.FooterNote)} · ColonyKey: {Enc(report.Overview.ColonyKey)} · Scope: {Enc(text.ScopeName)} · Generator: Rimworld Statistics {Enc(text.ModVersion)}</footer>");
         sb.AppendLine("</main>");

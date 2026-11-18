@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Report_Field_OriginalFaction>Исходная фракция</RWS_Report_Field_OriginalFaction>
+  <RWS_Report_OriginalFactionSubtitle>Исходная фракция: {0}</RWS_Report_OriginalFactionSubtitle>
+  <RWS_Report_SectionChronicle>Летопись колонии (основная ветвь)</RWS_Report_SectionChronicle>
+  <RWS_Chronicle_ExportMarkdown>Экспорт Markdown</RWS_Chronicle_ExportMarkdown>
+  <RWS_Chronicle_ExportMarkdownTip>Сохранить текущую летопись колонии в отдельный файл Markdown (.md).</RWS_Chronicle_ExportMarkdownTip>
+  <RWS_Chronicle_ExportHtml>Экспорт HTML</RWS_Chronicle_ExportHtml>
+  <RWS_Chronicle_ExportHtmlTip>Сохранить текущую летопись колонии в автономный статический файл HTML (.html).</RWS_Chronicle_ExportHtmlTip>
+  <RWS_Chronicle_Exporting>Экспорт летописи...</RWS_Chronicle_Exporting>
+  <RWS_Chronicle_ExportDone>Летопись экспортирована: {0}</RWS_Chronicle_ExportDone>
+  <RWS_Chronicle_ExportError>Ошибка экспорта летописи: {0}</RWS_Chronicle_ExportError>
+  <RWS_Chronicle_ExportFooterNote>Летопись одной ветви сохранений на основе подтверждённых данных. Пробелы записи и следы без даты указаны явно без интерполяции.</RWS_Chronicle_ExportFooterNote>
+  <RWS_Diag_CopyButton>Копировать анонимную сводку</RWS_Diag_CopyButton>
+  <RWS_Diag_CopyTip>Скопировать в буфер обмена анонимную диагностическую сводку только для чтения (без путей, имён колоний/фракций/миров, ID, хешей и секретов).</RWS_Diag_CopyTip>
+  <RWS_Diag_SaveButton>Сохранить текст диагностики</RWS_Diag_SaveButton>
+  <RWS_Diag_SaveTip>Сохранить анонимную диагностическую сводку (.txt) в папку exports (без путей, имён, ID, хешей и секретов).</RWS_Diag_SaveTip>
+  <RWS_Diag_Working>Создание диагностической сводки...</RWS_Diag_Working>
+  <RWS_Diag_Copied>Анонимная диагностическая сводка (без путей, имён и ID) скопирована в буфер обмена.</RWS_Diag_Copied>
+  <RWS_Diag_Saved>Анонимная диагностическая сводка (без путей, имён и ID) сохранена.</RWS_Diag_Saved>
+  <RWS_Diag_Error>Не удалось создать диагностическую сводку ({0}).</RWS_Diag_Error>
+</LanguageData>

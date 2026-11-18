@@ -12,7 +12,7 @@ internal static class ExportPanel
     private static string? error;
     private static int filesWritten;
 
-    public static void Draw(Rect rect, StatsView? view, string scope)
+    public static void Draw(Rect rect, ProfileSession session, StatsView? view, string scope)
     {
         if (pending is { IsCompleted: true } task)
         {
@@ -30,7 +30,7 @@ internal static class ExportPanel
         if (shown != label)
             TooltipHandler.TipRegion(button, label);
         if (Widgets.ButtonText(button, shown, active: view is not null && pending is null))
-            Start(view!, scope);
+            Start(session, view!, scope);
         if (completed is { } done)
         {
             string open = "RWS_Backup_OpenFolder".Translate();
@@ -41,7 +41,7 @@ internal static class ExportPanel
                 GUIUtility.systemCopyBuffer = done.Directory;
         }
 
-        string? status = pending is not null ? "RWS_Export_Progress".Translate(Volatile.Read(ref filesWritten), 6)
+        string? status = pending is not null ? "RWS_Export_Progress".Translate(Volatile.Read(ref filesWritten), StatisticsExport.TotalFileCount)
             : error is not null ? "RWS_Export_Error".Translate(error)
             : completed is { } result ? "RWS_Export_Done".Translate(result.Directory)
             : null;
@@ -52,7 +52,7 @@ internal static class ExportPanel
         TooltipHandler.TipRegion(statusRect, status);
     }
 
-    private static void Start(StatsView view, string scope)
+    private static void Start(ProfileSession session, StatsView view, string scope)
     {
         completed = null;
         error = null;
@@ -75,8 +75,12 @@ internal static class ExportPanel
             var text = new ExportText(labels, names, values, LanguageDatabase.activeLanguage?.folderName ?? "",
                 scope, RimworldStatisticsMod.InstalledVersion);
             var directory = Path.Combine(ProfileService.DirectoryPath, "exports");
-            pending = Task.Run(() => StatisticsExport.Write(view, text, id => units.GetValueOrDefault(id, UnitRecordingState.NotRequired),
-                directory, fileCompleted: n => Volatile.Write(ref filesWritten, n)));
+            pending = Task.Run(() =>
+            {
+                var histories = session.ReadExportHistories(view);
+                return StatisticsExport.Write(view, text, id => units.GetValueOrDefault(id, UnitRecordingState.NotRequired),
+                    directory, fileCompleted: n => Volatile.Write(ref filesWritten, n), historySeries: histories);
+            });
 
             void Capture(NumericRow row)
             {
