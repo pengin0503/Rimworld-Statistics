@@ -177,16 +177,22 @@ public static class StatisticsExport
             var knownTypes = new HashSet<EndingType>();
             foreach (var group in stats.CountedEndings.GroupBy(e => (e.Type, e.Ordinal)))
             {
-                var best = group.OrderByDescending(e => e.Departed).ThenBy(e => e.DevMode).First();
+                var best = group.OrderByDescending(e => e.Departed).ThenBy(e => e.Source).ThenBy(e => e.DevMode).First();
                 knownTypes.Add(best.Type);
                 yield return new EndingRow(group.Min(e => e.RealTimeUtc), stats.Key, best.Type, best.Ordinal + 1L,
                     best.Source == EndingSource.SeededTrace ? null : best.Departed, best.Source.ToString());
             }
             foreach (var ending in colony.RecoveredEndings)
-                yield return new EndingRow(null, stats.Key, ending.Type, ending.Ordinal + 1L, null, "RecoveredLineage");
-            foreach (var type in colony.Traces.Where(t => !knownTypes.Contains(t)).Order())
             {
-                var first = colony.Observations.Where(o => o.EndingTraces.Contains(type)).Select(o => (DateTime?)o.LastWriteUtc).Min();
+                knownTypes.Add(ending.Type);
+                yield return new EndingRow(null, stats.Key, ending.Type, ending.Ordinal + 1L, null, "RecoveredLineage");
+            }
+            foreach (var type in colony.Traces.Where(t => !knownTypes.Any(k => k == t || EndingTraces.Explains(k, t))).Order())
+            {
+                var first = colony.Observations
+                    .Where(o => o.EndingTraces.Contains(type) || o.ExplainedTraces.Contains(type))
+                    .Select(o => (DateTime?)o.LastWriteUtc)
+                    .Min();
                 yield return new EndingRow(first, stats.Key, type, null, null, "SaveTrace");
             }
         }
