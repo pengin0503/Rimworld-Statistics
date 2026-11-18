@@ -1,7 +1,7 @@
 # Rimworld Statistics v2.0.0：差別化した新機能の実装前設計
 
 - 作成：2026-11-17 / RimWorld 1.7
-- 状態：**採用候補の要件定義・実装順序。実装・Issue登録・リリースは未着手。**
+- 状態：**2026-11-18 時点で V2-B・V2-C・V2-A・V2-D は実装済み、V2-E は §6 により不採用。リリースは未実施。** 実装結果は[引き継ぎ資料](../plans/2026-11-18-v2-0-remaining-work-handoff.md)を参照。
 - 対象：`pengin0503/Rimworld-Statistics` の実装着手時点の最新main
 - [他MODとの機能重複・独自性調査](../../research/2026-11-17-v2-0-originality-comparison-ja.md)
 - 関連：[v1.9.1の機能](../../../README.md) / [履歴系統設計](2026-11-14-chart-history-lineage-design.md) / [Issue #307：履歴の期間比較](https://github.com/pengin0503/Rimworld-Statistics/issues/307) / [Issue #304：実機確認](https://github.com/pengin0503/Rimworld-Statistics/issues/304)
@@ -87,6 +87,7 @@ v2.0.0を「数値一覧を見るMOD」から「過去の各コロニーを、�
 - 既存`ランキング`の別名となる「実績画面」は作らない。実装するなら、**過去の記録に対し、いつ確定した新記録かを追跡できる場合**の「記録更新履歴」に限定する。
 - 新しい称号・達成解除通知・ポイント・ゲームイベント報酬は作らない。Vanilla Achievements Expandedの領域と不要に重複させない。
 - 正確な更新時刻を証明できず、現状の最高値/順位表示と実質同じなら**不採用のまま終了**してよい。
+- **判定（2026-11-18）：不採用。** MODが書く現実時刻（チェックポイントの保存時刻）はPCの時計に依存し、ファイル更新日時はコピーで変わり、ゲーム内ティックはコロニー間で比較できない。実セーブ34コロニーでは `Complete` のライブ値を持つコロニーがなく、証明できる更新順序は作れなかった。根拠の詳細は[引き継ぎ資料 Step 3](../plans/2026-11-18-v2-0-remaining-work-handoff.md)。
 
 ## 7. 実装順序・レビューゲート
 

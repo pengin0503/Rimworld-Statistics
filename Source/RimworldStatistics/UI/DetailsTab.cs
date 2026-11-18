@@ -299,6 +299,11 @@ public static class DetailsTab
                 Find.WindowStack.Add(new Dialog_ColonySummaryReport(view, selected, scopeName));
             TooltipHandler.TipRegion(reportRect, "RWS_Report_OpenTip".Translate());
         }
+        var scatterLabel = (string)"RWS_Scatter_Open".Translate();
+        var scatterRect = controls.Next(scatterLabel, 110f, 200f);
+        if (Widgets.ButtonText(scatterRect, scatterLabel.Truncate(Math.Max(0f, scatterRect.width - 12f))))
+            Find.WindowStack.Add(new Dialog_MetricScatterPlot(view, null, null, scopeName));
+        TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
         if (Button(category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate(), 240f))
         {
             var options = new List<FloatMenuOption> { new("RWS_Details_AllCategories".Translate(), () => category = null) };

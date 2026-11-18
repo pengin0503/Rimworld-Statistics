@@ -140,7 +140,10 @@ internal sealed class Dialog_ColonySaveLineage : Window
             var metricRect = controls.Next(metricBtnText, 170f, 340f);
             var shownMetric = metricBtnText.Truncate(Math.Max(0f, metricRect.width - 12f));
             if (Widgets.ButtonText(metricRect, shownMetric))
-                Find.WindowStack.Add(new MetricPickerDialog(metricChoices, SelectMetric));
+                Find.WindowStack.Add(new MetricPickerDialog(
+                    metricChoices.Select(c => new MetricPickerChoice(c.Key, c.Label, c.Source)).ToArray(),
+                    key => { if (metricChoices.FirstOrDefault(c => c.Key == key) is { } picked) SelectMetric(picked); },
+                    selectedKey: metric.Key));
             if (shownMetric != metricBtnText)
                 TooltipHandler.TipRegion(metricRect, metricBtnText);
 
@@ -901,71 +904,4 @@ internal sealed class Dialog_ColonySaveLineage : Window
     }
 
     private static string ShortId(string id) => id.Length <= 12 ? id : id[..12] + "…";
-
-    private sealed class MetricPickerDialog : Window
-    {
-        private readonly MetricChoice[] all;
-        private readonly Action<MetricChoice> onPick;
-        private string search = "";
-        private string? priorSearch;
-        private MetricChoice[] filtered = [];
-        private Vector2 scroll;
-
-        public MetricPickerDialog(MetricChoice[] all, Action<MetricChoice> onPick)
-        {
-            this.all = all;
-            this.onPick = onPick;
-            doCloseX = true;
-            absorbInputAroundWindow = true;
-            closeOnClickedOutside = true;
-        }
-
-        public override Vector2 InitialSize => new(460f, 520f);
-
-        public override void DoWindowContents(Rect rect)
-        {
-            Widgets.Label(new Rect(rect.x, rect.y, rect.width - 32f, 24f), "RWS_Rankings_Search".Translate());
-            var next = Widgets.TextField(new Rect(rect.x, rect.y + 26f, rect.width, 28f), search) ?? "";
-            if (next != search)
-            {
-                search = next;
-                scroll = Vector2.zero;
-            }
-            if (priorSearch != search)
-            {
-                priorSearch = search;
-                var term = search.Trim();
-                filtered = term.Length == 0
-                    ? all
-                    : all.Where(c => c.Label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
-                        || (c.Source?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false)).ToArray();
-            }
-
-            var listRect = new Rect(rect.x, rect.y + 60f, rect.width, Math.Max(0f, rect.yMax - (rect.y + 60f)));
-            const float itemHeight = 28f;
-            var viewWidth = Math.Max(0f, listRect.width - 16f);
-            Widgets.BeginScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Length * itemHeight));
-            var first = Math.Max(0, (int)(scroll.y / itemHeight));
-            var last = Math.Min(filtered.Length - 1, (int)((scroll.y + listRect.height) / itemHeight) + 1);
-            for (var i = first; i <= last; i++)
-            {
-                var choice = filtered[i];
-                var row = new Rect(0f, i * itemHeight, viewWidth, itemHeight - 1f);
-                Widgets.DrawHighlightIfMouseover(row);
-                var label = choice.Source is null ? choice.Label : $"{choice.Label} · {choice.Source}";
-                var shown = label.Truncate(Math.Max(0f, row.width - 8f));
-                Text.Anchor = TextAnchor.MiddleLeft;
-                Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
-                Text.Anchor = TextAnchor.UpperLeft;
-                if (shown != label)
-                    TooltipHandler.TipRegion(row, label);
-                if (Widgets.ButtonInvisible(row))
-                {
-                    onPick(choice);
-                    Close();
-                }
-            }
-            Widgets.EndScrollView();
-        }
-    }
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>산점도</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>두 통계를 정착지별로 비교합니다. 정착지마다 점 하나입니다.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>정착지 산점도</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>X와 Y 바꾸기</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>값 종류 · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>정착지 {1}곳 중 {0}곳 표시 · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>점 하나가 정착지 하나이며, 두 값은 순위에 표시되는 값과 같습니다. 두 값 중 하나라도 없는 정착지는 0으로 그리지 않고 따로 나열합니다. 추세선이나 상관관계는 계산하지 않습니다.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>표시하지 않은 정착지: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>점이 없는 정착지를 이유별로 보여 줍니다. 값이 없는 경우를 0으로 그리지 않습니다. '단일 수치 없음'은 0÷0 비율이나 분류별로만 기록된 값을 뜻합니다.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>X 값 없음 {0}</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>Y 값 없음 {0}</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>두 값 모두 없음 {0}</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>해당 없음 {0}</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>기준 미달성 {0}</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>단일 수치 없음 {0}</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>설정에서 제외됨 {0}</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>선택한 그룹 밖 {0}</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X, Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>외 {0}곳</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>두 값을 모두 가진 정착지가 없어 표시할 점이 없습니다.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>두 값을 모두 가진 정착지: {0}곳. 경향을 읽기에는 너무 적으며, 두 통계가 서로 관계없다는 뜻도 아닙니다.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>점 {0}개는 일부만 기록된 값이거나, X와 Y의 기록 일자가 다른 값입니다(속이 빈 점).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X는 {0}일차까지, Y는 {1}일차까지의 값입니다.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>클릭하면 이 정착지의 종합 보고서나 추이 차트를 엽니다.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>추이: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>정착지 1곳</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>일부만 기록됨, 또는 X와 Y의 기록 일자가 다름</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>점 옆 숫자: 같은 위치에 있는 정착지 수</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>이 통계는 산점도로 표시할 수 없습니다.</RWS_Scatter_Unavailable>
+</LanguageData>

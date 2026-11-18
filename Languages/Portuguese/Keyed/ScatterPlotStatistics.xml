@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Gráfico de dispersão</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Compara duas estatísticas entre colónias, com um ponto por colónia.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Gráfico de dispersão das colónias</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>Trocar X e Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Tipo de valor · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{0} de {1} colónias representadas · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Cada ponto é uma colónia, com os dois valores tal como as classificações os mostram. As colónias sem ambos os valores são listadas à parte e nunca desenhadas em 0. Não é calculada nenhuma linha de tendência nem correlação.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Não representadas: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Colónias sem ponto, por motivo. Um valor em falta nunca é desenhado como 0. «Sem um número único» significa uma taxa de 0 ÷ 0 ou um valor registado apenas por categoria.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>{0} sem valor X</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>{0} sem valor Y</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>{0} sem nenhum dos valores</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>{0} não se aplica</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>{0} sem atingir o limiar</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>{0} sem um número único</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>{0} excluídas nas configurações</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>{0} fora do grupo escolhido</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X e Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>…e mais {0}</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>Nenhuma colónia tem ambos os valores, por isso não há nada para representar.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Colónias com ambos os valores: {0}. São demasiado poucas para ler um padrão, e isso não mostra que as duas estatísticas não estejam relacionadas.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} pontos usam um valor parcial ou valores que vão até dias diferentes (marcadores ocos).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X vai até ao dia {0}; Y, até ao dia {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Clique para abrir o relatório de resumo ou os históricos da colónia.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>Histórico: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>Uma colónia</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Registo parcial, ou X e Y vão até dias diferentes</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Número junto a um ponto: colónias no mesmo lugar</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>Esta estatística não pode ser representada no gráfico de dispersão.</RWS_Scatter_Unavailable>
+</LanguageData>

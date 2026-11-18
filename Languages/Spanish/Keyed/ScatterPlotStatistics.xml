@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Scatter_Open>Diagrama de dispersión</RWS_Scatter_Open>
+  <RWS_Scatter_OpenTip>Compara dos estadísticas entre colonias, con un punto por colonia.</RWS_Scatter_OpenTip>
+  <RWS_Scatter_Title>Diagrama de dispersión de colonias</RWS_Scatter_Title>
+  <RWS_Scatter_X>X: {0}</RWS_Scatter_X>
+  <RWS_Scatter_Y>Y: {0}</RWS_Scatter_Y>
+  <RWS_Scatter_Swap>Intercambiar X e Y</RWS_Scatter_Swap>
+  <RWS_Scatter_Kinds>Tipo de valor · X: {0} · Y: {1}</RWS_Scatter_Kinds>
+  <RWS_Scatter_Summary>{0} de {1} colonias representadas · {2}</RWS_Scatter_Summary>
+  <RWS_Scatter_SummaryTip>Cada punto es una colonia, con sus dos valores tal como los muestran las clasificaciones. Las colonias sin ambos valores se enumeran aparte y nunca se dibujan en 0. No se calcula ninguna línea de tendencia ni correlación.</RWS_Scatter_SummaryTip>
+  <RWS_Scatter_NotPlotted>Sin representar: {0}</RWS_Scatter_NotPlotted>
+  <RWS_Scatter_NotPlottedTip>Colonias sin punto, por motivo. Un valor que falta nunca se dibuja como 0. «Sin un número único» indica una tasa de 0 ÷ 0 o un valor registrado solo por categoría.</RWS_Scatter_NotPlottedTip>
+  <RWS_Scatter_Reason_MissingX>{0} sin valor X</RWS_Scatter_Reason_MissingX>
+  <RWS_Scatter_Reason_MissingY>{0} sin valor Y</RWS_Scatter_Reason_MissingY>
+  <RWS_Scatter_Reason_MissingBoth>{0} sin ninguno de los dos valores</RWS_Scatter_Reason_MissingBoth>
+  <RWS_Scatter_Reason_NotApplicable>{0} no aplicable</RWS_Scatter_Reason_NotApplicable>
+  <RWS_Scatter_Reason_NotReached>{0} sin alcanzar el umbral</RWS_Scatter_Reason_NotReached>
+  <RWS_Scatter_Reason_NoSingleValue>{0} sin un número único</RWS_Scatter_Reason_NoSingleValue>
+  <RWS_Scatter_Reason_Excluded>{0} excluidas en la configuración</RWS_Scatter_Reason_Excluded>
+  <RWS_Scatter_Reason_OutOfScope>{0} fuera del grupo elegido</RWS_Scatter_Reason_OutOfScope>
+  <RWS_Scatter_OnX>(X)</RWS_Scatter_OnX>
+  <RWS_Scatter_OnY>(Y)</RWS_Scatter_OnY>
+  <RWS_Scatter_OnBoth>(X e Y)</RWS_Scatter_OnBoth>
+  <RWS_Scatter_More>…y {0} más</RWS_Scatter_More>
+  <RWS_Scatter_NoPoints>Ninguna colonia tiene ambos valores, así que no hay nada que representar.</RWS_Scatter_NoPoints>
+  <RWS_Scatter_TooFew>Colonias con ambos valores: {0}. Son demasiado pocas para ver un patrón, y eso no demuestra que las dos estadísticas no estén relacionadas.</RWS_Scatter_TooFew>
+  <RWS_Scatter_Caution>{0} puntos usan un valor parcial o valores que llegan a días distintos (marcadores huecos).</RWS_Scatter_Caution>
+  <RWS_Scatter_TipDifferentDays>X llega hasta el día {0}; Y, hasta el día {1}.</RWS_Scatter_TipDifferentDays>
+  <RWS_Scatter_TipClick>Haz clic para abrir el informe resumen o los historiales de la colonia.</RWS_Scatter_TipClick>
+  <RWS_Scatter_History>Historial: {0}</RWS_Scatter_History>
+  <RWS_Scatter_LegendPoint>Una colonia</RWS_Scatter_LegendPoint>
+  <RWS_Scatter_LegendCaution>Registro parcial, o X e Y llegan a días distintos</RWS_Scatter_LegendCaution>
+  <RWS_Scatter_LegendStack>Número junto a un punto: colonias en el mismo lugar</RWS_Scatter_LegendStack>
+  <RWS_Scatter_Unavailable>Esta estadística no se puede representar en el diagrama de dispersión.</RWS_Scatter_Unavailable>
+</LanguageData>

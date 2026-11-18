@@ -175,7 +175,7 @@ public sealed class Dialog_RimworldStatistics : Window
                     ColoniesTab.Draw(content, view, fileIndex);
                     break;
                 case Tab.Details: DetailsTab.Draw(content, view, session, preferences, SavePreferences, ScopeLabel()); break;
-                case Tab.Rankings: RankingsTab.Draw(content, view, preferences, SavePreferences); break;
+                case Tab.Rankings: RankingsTab.Draw(content, view, preferences, SavePreferences, ScopeLabel()); break;
                 case Tab.Coverage: CoverageTab.Draw(content, view); break;
             }
         }
