@@ -47,8 +47,25 @@ internal sealed class Dialog_ColonySummaryReport : Window
         DisplayRow[] ModMetrics,
         bool AnyPartialRank);
 
-    private readonly StatsView view;
+    private sealed record InGameLoadedState(
+        StatsView View,
+        InGameColonyResolution Resolution,
+        string? ActiveColonyKey,
+        ColonySummaryReport? Report,
+        RecordedPointInfo ActiveRecordedPoint);
+
+    private StatsView? view;
     private readonly string? explicitScopeName;
+    private readonly bool isInGameEntry;
+    private string? inGameCampaignId;
+    private readonly string? fallbackFactionName;
+    private readonly string? fallbackWorldName;
+    private readonly RetainedBuild<(long Revision, string? CampaignId, string? ColonyOverride), InGameLoadedState>? inGameBuild;
+    private ProfileSession? inGameSession;
+    private bool inGameIncludesDevMode;
+    private string? selectedColonyOverride;
+    private static Exception? loggedInGameSessionFailure;
+
     private string colonyKey;
     private string colonyName = "";
 
@@ -75,30 +92,244 @@ internal sealed class Dialog_ColonySummaryReport : Window
         StartLoad(colonyKey);
     }
 
+    private Dialog_ColonySummaryReport(string? campaignId, string? fallbackFactionName, string? fallbackWorldName)
+    {
+        isInGameEntry = true;
+        inGameCampaignId = campaignId;
+        this.fallbackFactionName = fallbackFactionName;
+        this.fallbackWorldName = fallbackWorldName;
+        inGameBuild = new();
+        colonyKey = "";
+        doCloseX = true;
+        absorbInputAroundWindow = true;
+        closeOnClickedOutside = false;
+    }
+
+    internal static Dialog_ColonySummaryReport CreateForInGame(
+        string? campaignId,
+        string? fallbackFactionName,
+        string? fallbackWorldName)
+        => new(campaignId, fallbackFactionName, fallbackWorldName);
+
     public override Vector2 InitialSize => new(
         Math.Min(1160f, Verse.UI.screenWidth * 0.92f),
         Math.Min(780f, Verse.UI.screenHeight * 0.90f));
 
     public override void DoWindowContents(Rect rect)
     {
-        if (exportTask is { IsCompleted: true } doneExport)
+        try
         {
-            exportTask = null;
-            if (doneExport.IsCompletedSuccessfully)
-                exportCompleted = doneExport.Result;
+            if (ProfileService.RestoredPreferencesPending)
+                ProfileService.ApplyRestoredPreferences();
+
+            if (exportTask is { IsCompleted: true } doneExport)
+            {
+                exportTask = null;
+                if (doneExport.IsCompletedSuccessfully)
+                    exportCompleted = doneExport.Result;
+                else
+                    exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+            }
+
+            var lang = LanguageDatabase.activeLanguage;
+            var languageChanged = !ReferenceEquals(cachedLanguage, lang);
+            if (languageChanged)
+            {
+                cachedLanguage = lang;
+                displayCache = null;
+                tablePlan = null;
+            }
+
+            InGameLoadedState? inGameState = null;
+            ColonySummaryReport? currentReport;
+            if (isInGameEntry)
+            {
+                if (ProfileService.DataOperationRunning)
+                {
+                    colonyName = FallbackColonyName();
+                    DrawWindowTitle(rect);
+                    Widgets.Label(new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f)), "RWS_Backup_Working".Translate());
+                    return;
+                }
+
+                var session = ProfileService.TryGetSession(out var loadFailure);
+                if (session is null)
+                {
+                    colonyName = FallbackColonyName();
+                    DrawWindowTitle(rect);
+                    var waitBody = new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f));
+                    if (loadFailure is null)
+                    {
+                        Widgets.Label(waitBody, "RWS_Loading".Translate());
+                        return;
+                    }
+                    if (!ReferenceEquals(loggedInGameSessionFailure, loadFailure))
+                    {
+                        loggedInGameSessionFailure = loadFailure;
+                        Log.Error($"[RimworldStatistics] The record file could not be opened.\n{loadFailure}");
+                    }
+                    Dialog_RimworldStatistics.DrawFailure(waitBody, "RWS_SessionLoadFailed".Translate(), loadFailure, running: false, ProfileService.RetryLoading);
+                    return;
+                }
+
+                inGameState = ResolveInGameState(session);
+                if (inGameState is null)
+                {
+                    colonyName = FallbackColonyName();
+                    DrawWindowTitle(rect);
+                    var waitBody = new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f));
+                    if (inGameBuild!.Failure is { } buildFailure)
+                        Dialog_RimworldStatistics.DrawFailure(waitBody, "RWS_ViewBuildFailed".Translate(), buildFailure, inGameBuild.Running, inGameBuild.Retry);
+                    else
+                        Widgets.Label(waitBody, "RWS_Loading".Translate());
+                    return;
+                }
+
+                if (inGameState.ActiveColonyKey is null)
+                {
+                    view = inGameState.View;
+                    colonyKey = "";
+                    colonyName = FallbackColonyName();
+                    DrawWindowTitle(rect);
+                    DrawUnrecordedBody(new Rect(rect.x, rect.y + 36f, rect.width, Math.Max(0f, rect.height - 36f)));
+                    return;
+                }
+
+                if (!ReferenceEquals(view, inGameState.View) || colonyKey != inGameState.ActiveColonyKey || languageChanged)
+                {
+                    view = inGameState.View;
+                    colonyKey = inGameState.ActiveColonyKey;
+                    RefreshColonyName();
+                    displayCache = null;
+                }
+
+                currentReport = inGameState.Report;
+            }
             else
-                exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
-        }
+            {
+                if (languageChanged)
+                    RefreshColonyName();
+                currentReport = reportTask is { IsCompletedSuccessfully: true } t ? t.Result : null;
+            }
 
-        var lang = LanguageDatabase.activeLanguage;
-        if (!ReferenceEquals(cachedLanguage, lang))
+            var activeView = view!;
+            DrawWindowTitle(rect);
+
+            var y = rect.y + 36f;
+            var controls = new ControlRow(new Rect(rect.x, y, rect.width, 28f));
+
+            if (activeView.Colonies.Count > 1)
+            {
+                var switchLabel = (string)"RWS_Report_SwitchColony".Translate();
+                var switchRect = controls.Next(switchLabel, 130f, 220f);
+                if (Widgets.ButtonText(switchRect, switchLabel.Truncate(Math.Max(0f, switchRect.width - 12f))))
+                    ShowColonyMenu(activeView);
+            }
+
+            var lineageLabel = (string)"RWS_Lineage_Open".Translate();
+            var lineageRect = controls.Next(lineageLabel, 125f, 220f);
+            if (Widgets.ButtonText(lineageRect, lineageLabel.Truncate(Math.Max(0f, lineageRect.width - 12f))))
+                Find.WindowStack.Add(new Dialog_ColonySaveLineage(activeView, colonyKey));
+            TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
+
+            var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
+            var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
+            if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
+                Find.WindowStack.Add(new Dialog_ColonyChronicle(activeView, colonyKey));
+            TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
+
+            var exportLabel = (string)"RWS_Report_ExportHtml".Translate();
+            var exportRect = controls.Next(exportLabel, 140f, 250f);
+            if (Widgets.ButtonText(exportRect, exportLabel.Truncate(Math.Max(0f, exportRect.width - 12f)),
+                active: currentReport is not null && exportTask is null) && currentReport is not null)
+            {
+                StartHtmlExport(currentReport);
+            }
+            TooltipHandler.TipRegion(exportRect, "RWS_Report_ExportHtmlTip".Translate());
+
+            if (exportCompleted is { } exported)
+            {
+                var openFolder = (string)"RWS_Backup_OpenFolder".Translate();
+                var openRect = controls.Next(openFolder, 90f, 165f);
+                if (Widgets.ButtonText(openRect, openFolder.Truncate(Math.Max(0f, openRect.width - 12f))))
+                    Application.OpenURL(new Uri(Path.GetFullPath(exported.DirectoryPath) + Path.DirectorySeparatorChar).AbsoluteUri);
+
+                var copyPath = (string)"RWS_Backup_CopyPath".Translate();
+                var copyRect = controls.Next(copyPath, 90f, 165f);
+                if (Widgets.ButtonText(copyRect, copyPath.Truncate(Math.Max(0f, copyRect.width - 12f))))
+                    GUIUtility.systemCopyBuffer = exported.FilePath;
+            }
+
+            if (isInGameEntry)
+            {
+                var allStatsLabel = (string)"RWS_InGame_OpenAllStats".Translate();
+                var allStatsRect = controls.Next(allStatsLabel, 125f, 230f);
+                if (Widgets.ButtonText(allStatsRect, allStatsLabel.Truncate(Math.Max(0f, allStatsRect.width - 12f))))
+                {
+                    OpenAllStatisticsWindow();
+                    return;
+                }
+                TooltipHandler.TipRegion(allStatsRect, "RWS_InGame_OpenAllStatsTip".Translate());
+            }
+
+            y += controls.Height + 4f;
+
+            var exportStatus = exportTask is not null ? (string)"RWS_Report_Exporting".Translate()
+                : exportError is not null ? (string)"RWS_Report_ExportError".Translate(exportError)
+                : exportCompleted is { } done ? (string)"RWS_Report_ExportDone".Translate(done.FilePath)
+                : null;
+            if (exportStatus is not null)
+            {
+                var statusRect = new Rect(rect.x, y, rect.width, 22f);
+                GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
+                Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
+                GUI.color = Color.white;
+                TooltipHandler.TipRegion(statusRect, exportStatus);
+                y += 24f;
+            }
+
+            if (inGameState is not null)
+                DrawInGameSavedNotice(ref y, rect, inGameState);
+
+            var body = new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y));
+            if (!isInGameEntry)
+            {
+                if (reportTask is null || !reportTask.IsCompleted)
+                {
+                    Widgets.Label(body, "RWS_Loading".Translate());
+                    return;
+                }
+                if (!reportTask.IsCompletedSuccessfully)
+                {
+                    _ = reportTask.Exception;
+                    Widgets.Label(body, "RWS_WindowError".Translate());
+                    return;
+                }
+            }
+            if (currentReport is null)
+            {
+                Widgets.Label(body, "RWS_NoData".Translate());
+                return;
+            }
+
+            var display = EnsureDisplayCache(currentReport, lang);
+            DrawReportBody(body, display);
+        }
+        catch (Exception e)
         {
-            cachedLanguage = lang;
-            RefreshColonyName();
-            displayCache = null;
-            tablePlan = null;
+            Log.ErrorOnce($"[RimworldStatistics] Colony summary report failed to draw.\n{e}", "RWS.report.window".GetHashCode());
+            Widgets.Label(rect.ContractedBy(20f), "RWS_WindowError".Translate());
         }
+        finally
+        {
+            Text.Font = GameFont.Small;
+            Text.Anchor = TextAnchor.UpperLeft;
+            GUI.color = Color.white;
+        }
+    }
 
+    private void DrawWindowTitle(Rect rect)
+    {
         var titleText = (string)"RWS_Report_Title".Translate(colonyName);
         Text.Font = GameFont.Medium;
         var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
@@ -107,89 +338,130 @@ internal sealed class Dialog_ColonySummaryReport : Window
         if (shownTitle != titleText)
             TooltipHandler.TipRegion(titleRect, titleText);
         Text.Font = GameFont.Small;
+    }
 
-        var y = rect.y + 36f;
-        var currentReport = reportTask is { IsCompletedSuccessfully: true } t ? t.Result : null;
-        var controls = new ControlRow(new Rect(rect.x, y, rect.width, 28f));
-
-        if (view.Colonies.Count > 1)
+    private void DrawInGameSavedNotice(ref float y, Rect rect, InGameLoadedState state)
+    {
+        string notice;
+        var isCurrentColony = state.Resolution.Found && state.ActiveColonyKey == state.Resolution.ColonyKey;
+        if (isCurrentColony)
         {
-            var switchLabel = (string)"RWS_Report_SwitchColony".Translate();
-            var switchRect = controls.Next(switchLabel, 130f, 220f);
-            if (Widgets.ButtonText(switchRect, switchLabel.Truncate(Math.Max(0f, switchRect.width - 12f))))
-                ShowColonyMenu();
+            if (state.ActiveRecordedPoint.HasObservedPoint)
+            {
+                var timeText = Dialog_RimworldStatistics.Local(state.ActiveRecordedPoint.LastRecordedUtc);
+                var dayText = state.ActiveRecordedPoint.LastRecordedTicks is { } ticks
+                    ? Dialog_RimworldStatistics.DaysWithYears(ticks)
+                    : Dialog_RimworldStatistics.Dash;
+                notice = (string)"RWS_InGame_SavedNotice".Translate(timeText, dayText);
+            }
+            else
+            {
+                notice = (string)"RWS_InGame_SavedNoticeEndingOnly".Translate();
+            }
+        }
+        else
+        {
+            var timeText = Dialog_RimworldStatistics.Local(state.ActiveRecordedPoint.LastRecordedUtc);
+            var dayText = state.ActiveRecordedPoint.HasObservedPoint && state.ActiveRecordedPoint.LastRecordedTicks is { } ticks
+                ? Dialog_RimworldStatistics.DaysWithYears(ticks)
+                : Dialog_RimworldStatistics.Dash;
+            notice = (string)"RWS_InGame_OtherColonySavedNotice".Translate(timeText, dayText);
         }
 
-        var lineageLabel = (string)"RWS_Lineage_Open".Translate();
-        var lineageRect = controls.Next(lineageLabel, 125f, 220f);
-        if (Widgets.ButtonText(lineageRect, lineageLabel.Truncate(Math.Max(0f, lineageRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonySaveLineage(view, colonyKey));
-        TooltipHandler.TipRegion(lineageRect, "RWS_Lineage_OpenTip".Translate());
+        var textWidth = Math.Max(80f, rect.width - 24f);
+        var boxHeight = Math.Max(28f, Text.CalcHeight(notice, textWidth) + 10f);
+        var boxRect = new Rect(rect.x, y, rect.width, boxHeight);
+        Widgets.DrawBoxSolid(boxRect, new Color(0.14f, 0.23f, 0.30f, 0.62f));
+        Widgets.DrawBoxSolid(new Rect(rect.x, y, 4f, boxHeight), new Color(0.42f, 0.76f, 0.92f));
+        Widgets.Label(new Rect(rect.x + 12f, y + 5f, textWidth, boxHeight - 10f), notice);
+        y += boxHeight + 6f;
+    }
 
-        var chronicleLabel = (string)"RWS_Chronicle_Open".Translate();
-        var chronicleRect = controls.Next(chronicleLabel, 120f, 215f);
-        if (Widgets.ButtonText(chronicleRect, chronicleLabel.Truncate(Math.Max(0f, chronicleRect.width - 12f))))
-            Find.WindowStack.Add(new Dialog_ColonyChronicle(view, colonyKey));
-        TooltipHandler.TipRegion(chronicleRect, "RWS_Chronicle_OpenTip".Translate());
+    private void DrawUnrecordedBody(Rect rect)
+    {
+        var innerWidth = Math.Max(120f, rect.width - 28f);
+        var heading = (string)"RWS_InGame_UnrecordedTitle".Translate();
+        var explanation = (string)"RWS_InGame_UnrecordedBody".Translate();
+        var openLabel = (string)"RWS_InGame_OpenAllStats".Translate();
 
-        var exportLabel = (string)"RWS_Report_ExportHtml".Translate();
-        var exportRect = controls.Next(exportLabel, 140f, 250f);
-        if (Widgets.ButtonText(exportRect, exportLabel.Truncate(Math.Max(0f, exportRect.width - 12f)),
-            active: currentReport is not null && exportTask is null) && currentReport is not null)
+        var headingHeight = Math.Max(24f, Text.CalcHeight(heading, innerWidth) + 4f);
+        var bodyHeight = Math.Max(28f, Text.CalcHeight(explanation, innerWidth) + 6f);
+        var cardHeight = 16f + headingHeight + 6f + bodyHeight + 12f + 32f + 16f;
+        var cardRect = new Rect(rect.x, rect.y + 4f, rect.width, Math.Min(Math.Max(0f, rect.height - 4f), cardHeight));
+
+        Widgets.DrawMenuSection(cardRect);
+        Widgets.DrawBoxSolid(new Rect(cardRect.x, cardRect.y, 4f, cardRect.height), new Color(0.42f, 0.76f, 0.92f));
+
+        var cy = cardRect.y + 14f;
+        GUI.color = new Color(0.72f, 0.88f, 0.96f);
+        Widgets.Label(new Rect(cardRect.x + 16f, cy, innerWidth, headingHeight), heading);
+        GUI.color = Color.white;
+        cy += headingHeight + 6f;
+
+        Widgets.Label(new Rect(cardRect.x + 16f, cy, innerWidth, bodyHeight), explanation);
+        cy += bodyHeight + 12f;
+
+        var buttonWidth = Math.Min(innerWidth, Math.Max(180f, Text.CalcSize(openLabel).x + 28f));
+        var buttonRect = new Rect(cardRect.x + 16f, cy, buttonWidth, 32f);
+        if (Widgets.ButtonText(buttonRect, openLabel.Truncate(Math.Max(0f, buttonRect.width - 12f))))
+            OpenAllStatisticsWindow();
+        TooltipHandler.TipRegion(buttonRect, "RWS_InGame_OpenAllStatsTip".Translate());
+    }
+
+    private void OpenAllStatisticsWindow()
+    {
+        Close(doCloseSound: false);
+        Find.WindowStack.Add(new Dialog_RimworldStatistics());
+    }
+
+    private InGameLoadedState? ResolveInGameState(ProfileSession session)
+    {
+        var options = ProfileService.Options;
+        var visibleUnits = MetricDisplayPolicy.AllDetailsVisibleUnits;
+        var scope = ViewScope.All;
+        if (!ReferenceEquals(inGameSession, session) || inGameIncludesDevMode != options.IncludeDevMode)
         {
-            StartHtmlExport(currentReport);
-        }
-        TooltipHandler.TipRegion(exportRect, "RWS_Report_ExportHtmlTip".Translate());
-
-        if (exportCompleted is { } exported)
-        {
-            var openFolder = (string)"RWS_Backup_OpenFolder".Translate();
-            var openRect = controls.Next(openFolder, 90f, 165f);
-            if (Widgets.ButtonText(openRect, openFolder.Truncate(Math.Max(0f, openRect.width - 12f))))
-                Application.OpenURL(new Uri(Path.GetFullPath(exported.DirectoryPath) + Path.DirectorySeparatorChar).AbsoluteUri);
-
-            var copyPath = (string)"RWS_Backup_CopyPath".Translate();
-            var copyRect = controls.Next(copyPath, 90f, 165f);
-            if (Widgets.ButtonText(copyRect, copyPath.Truncate(Math.Max(0f, copyRect.width - 12f))))
-                GUIUtility.systemCopyBuffer = exported.FilePath;
+            inGameSession = session;
+            inGameIncludesDevMode = options.IncludeDevMode;
+            inGameBuild!.Reset();
         }
 
-        y += controls.Height + 4f;
-
-        var exportStatus = exportTask is not null ? (string)"RWS_Report_Exporting".Translate()
-            : exportError is not null ? (string)"RWS_Report_ExportError".Translate(exportError)
-            : exportCompleted is { } done ? (string)"RWS_Report_ExportDone".Translate(done.FilePath)
+        var liveCampaignId = Current.ProgramState == ProgramState.Playing
+            ? GameComponent_RimworldStatistics.CurrentOrNull?.campaignId
             : null;
-        if (exportStatus is not null)
+        if (liveCampaignId != inGameCampaignId)
         {
-            var statusRect = new Rect(rect.x, y, rect.width, 22f);
-            GUI.color = exportError is not null ? ColorLibrary.RedReadable : new Color(0.82f, 0.88f, 0.92f);
-            Widgets.Label(statusRect, exportStatus.Truncate(statusRect.width));
-            GUI.color = Color.white;
-            TooltipHandler.TipRegion(statusRect, exportStatus);
-            y += 24f;
+            inGameCampaignId = liveCampaignId;
+            selectedColonyOverride = null;
         }
 
-        var body = new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y));
-        if (reportTask is null || !reportTask.IsCompleted)
+        // Flush any queued profile mutations before reading Revision (#322).
+        _ = session.TryGetCachedView(options, visibleUnits, scope);
+        var key = (session.Revision, inGameCampaignId, selectedColonyOverride);
+        var capturedCampaignId = inGameCampaignId;
+        var capturedOverride = selectedColonyOverride;
+        var failure = inGameBuild!.Update(key, () => Task.Run(() =>
         {
-            Widgets.Label(body, "RWS_Loading".Translate());
-            return;
-        }
-        if (!reportTask.IsCompletedSuccessfully)
-        {
-            _ = reportTask.Exception;
-            Widgets.Label(body, "RWS_WindowError".Translate());
-            return;
-        }
-        if (currentReport is null)
-        {
-            Widgets.Label(body, "RWS_NoData".Translate());
-            return;
-        }
+            var builtView = session.GetView(options, visibleUnits, scope);
+            var resolution = InGameColonyAccess.Resolve(builtView, capturedCampaignId);
+            string? targetKey = null;
+            if (capturedOverride is { Length: > 0 } ov && builtView.Colonies.Any(c => c.Key == ov))
+                targetKey = ov;
+            else if (resolution.Found)
+                targetKey = resolution.ColonyKey;
 
-        var display = EnsureDisplayCache(currentReport, lang);
-        DrawReportBody(body, display);
+            var report = targetKey is not null ? session.ReadColonySummaryReport(builtView, targetKey) : null;
+            var recordedPoint = targetKey is not null
+                ? (targetKey == resolution.ColonyKey
+                    ? resolution.RecordedPoint
+                    : InGameColonyAccess.DescribeRecordedPoint(builtView, targetKey))
+                : RecordedPointInfo.None;
+            return new InGameLoadedState(builtView, resolution, targetKey, report, recordedPoint);
+        }));
+        if (failure is not null)
+            Log.Error("[RimworldStatistics] The in-game colony summary could not be calculated. It is calculated again when the "
+                + $"record changes or on Retry.\n{failure}");
+        return inGameBuild.Failure is null ? inGameBuild.Value : null;
     }
 
     private void StartLoad(string targetColonyKey)
@@ -202,24 +474,57 @@ internal sealed class Dialog_ColonySummaryReport : Window
         exportError = null;
 
         var session = ProfileService.Session;
-        var currentView = view;
+        var currentView = view!;
         reportTask = Task.Run(() => session.ReadColonySummaryReport(currentView, targetColonyKey));
     }
 
     private void RefreshColonyName()
     {
+        if (view is null)
+        {
+            colonyName = FallbackColonyName();
+            return;
+        }
         var stats = view.Stats.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         colonyName = stats is not null ? Dialog_RimworldStatistics.ColonyName(stats) : colonyKey;
     }
 
-    private void ShowColonyMenu()
+    private string FallbackColonyName()
+        => fallbackFactionName is { Length: > 0 } name
+            ? name
+            : (string)"RWS_UnnamedColony".Translate(fallbackWorldName is { Length: > 0 } world ? world : Dialog_RimworldStatistics.Dash);
+
+    private void SelectColony(string targetColonyKey)
     {
-        var options = view.Stats.Colonies
-            .OrderBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
+        if (!isInGameEntry)
+        {
+            StartLoad(targetColonyKey);
+            return;
+        }
+
+        var resolvedCurrent = inGameBuild?.Value?.Resolution.ColonyKey;
+        selectedColonyOverride = targetColonyKey == resolvedCurrent ? null : targetColonyKey;
+        scroll = Vector2.zero;
+        displayCache = null;
+        exportCompleted = null;
+        exportError = null;
+    }
+
+    private void ShowColonyMenu(StatsView activeView)
+    {
+        var currentColonyKey = isInGameEntry ? inGameBuild?.Value?.Resolution.ColonyKey : null;
+        var options = activeView.Stats.Colonies
+            .OrderByDescending(c => currentColonyKey is not null && c.Key == currentColonyKey)
+            .ThenBy(Dialog_RimworldStatistics.ColonyName, StringComparer.CurrentCulture)
             .Select(c =>
             {
-                var name = Dialog_RimworldStatistics.ColonyName(c) + (c.Excluded ? (string)"RWS_ExcludedMark".Translate() : "");
-                return new FloatMenuOption(name, () => StartLoad(c.Key));
+                var name = Dialog_RimworldStatistics.ColonyName(c);
+                if (currentColonyKey is not null && c.Key == currentColonyKey)
+                    name += (string)"RWS_InGame_CurrentColonyMark".Translate();
+                if (c.Excluded)
+                    name += (string)"RWS_ExcludedMark".Translate();
+                var key = c.Key;
+                return new FloatMenuOption(name, () => SelectColony(key));
             })
             .ToList();
         Find.WindowStack.Add(new FloatMenu(options));
@@ -326,94 +631,98 @@ internal sealed class Dialog_ColonySummaryReport : Window
 
         var viewRect = new Rect(0f, 0f, innerWidth, totalHeight + 8f);
         Widgets.BeginScrollView(outRect, ref scroll, viewRect);
-
-        var cy = 0f;
-        if (display.Banner is { } banner)
+        try
         {
-            var boxHeight = bannerHeight - 8f;
-            var bannerRect = new Rect(0f, cy, innerWidth, boxHeight);
-            Widgets.DrawBoxSolid(bannerRect, new Color(0.28f, 0.22f, 0.12f, 0.55f));
-            Widgets.DrawBoxSolid(new Rect(0f, cy, 4f, boxHeight), new Color(0.92f, 0.72f, 0.32f));
-            Widgets.Label(new Rect(12f, cy + 6f, innerWidth - 20f, boxHeight - 12f), banner);
-            cy += bannerHeight;
-        }
-
-        // Overview card.
-        DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionOverview".Translate());
-        var overviewRect = new Rect(0f, cy, innerWidth, overviewCardHeight);
-        Widgets.DrawMenuSection(overviewRect);
-        var cellWidth = (innerWidth - 20f - (overviewCols - 1) * 12f) / overviewCols;
-        for (var i = 0; i < display.OverviewFields.Length; i++)
-        {
-            var col = i % overviewCols;
-            var row = i / overviewCols;
-            var fx = 10f + col * (cellWidth + 12f);
-            var fy = cy + 8f + row * 42f;
-            var (fieldKey, fieldVal) = display.OverviewFields[i];
-            GUI.color = new Color(0.72f, 0.76f, 0.82f);
-            Widgets.Label(new Rect(fx, fy, cellWidth, 18f), fieldKey.Truncate(cellWidth));
-            GUI.color = Color.white;
-            var shownVal = fieldVal.Truncate(cellWidth);
-            var valRect = new Rect(fx, fy + 18f, cellWidth, 22f);
-            Widgets.Label(valRect, shownVal);
-            if (shownVal != fieldVal)
-                TooltipHandler.TipRegion(valRect, fieldVal);
-        }
-        cy += overviewCardHeight + 12f;
-
-        // Endings card.
-        DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionEndings".Translate());
-        var endingsRect = new Rect(0f, cy, innerWidth, endingsCardHeight);
-        Widgets.DrawMenuSection(endingsRect);
-        var ey = cy + 8f;
-        if (display.EndingLines.Length == 0)
-        {
-            GUI.color = new Color(0.75f, 0.78f, 0.82f);
-            Widgets.Label(new Rect(12f, ey, innerWidth - 24f, 22f), "RWS_Endings_None".Translate());
-            GUI.color = Color.white;
-            ey += 24f;
-        }
-        else
-        {
-            foreach (var line in display.EndingLines)
+            var cy = 0f;
+            if (display.Banner is { } banner)
             {
-                var bullet = "• " + line;
-                var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 24f) + 2f);
-                Widgets.Label(new Rect(12f, ey, innerWidth - 24f, lh), bullet);
-                ey += lh;
+                var boxHeight = bannerHeight - 8f;
+                var bannerRect = new Rect(0f, cy, innerWidth, boxHeight);
+                Widgets.DrawBoxSolid(bannerRect, new Color(0.28f, 0.22f, 0.12f, 0.55f));
+                Widgets.DrawBoxSolid(new Rect(0f, cy, 4f, boxHeight), new Color(0.92f, 0.72f, 0.32f));
+                Widgets.Label(new Rect(12f, cy + 6f, innerWidth - 20f, boxHeight - 12f), banner);
+                cy += bannerHeight;
+            }
+
+            // Overview card.
+            DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionOverview".Translate());
+            var overviewRect = new Rect(0f, cy, innerWidth, overviewCardHeight);
+            Widgets.DrawMenuSection(overviewRect);
+            var cellWidth = (innerWidth - 20f - (overviewCols - 1) * 12f) / overviewCols;
+            for (var i = 0; i < display.OverviewFields.Length; i++)
+            {
+                var col = i % overviewCols;
+                var row = i / overviewCols;
+                var fx = 10f + col * (cellWidth + 12f);
+                var fy = cy + 8f + row * 42f;
+                var (fieldKey, fieldVal) = display.OverviewFields[i];
+                GUI.color = new Color(0.72f, 0.76f, 0.82f);
+                Widgets.Label(new Rect(fx, fy, cellWidth, 18f), fieldKey.Truncate(cellWidth));
+                GUI.color = Color.white;
+                var shownVal = fieldVal.Truncate(cellWidth);
+                var valRect = new Rect(fx, fy + 18f, cellWidth, 22f);
+                Widgets.Label(valRect, shownVal);
+                if (shownVal != fieldVal)
+                    TooltipHandler.TipRegion(valRect, fieldVal);
+            }
+            cy += overviewCardHeight + 12f;
+
+            // Endings card.
+            DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionEndings".Translate());
+            var endingsRect = new Rect(0f, cy, innerWidth, endingsCardHeight);
+            Widgets.DrawMenuSection(endingsRect);
+            var ey = cy + 8f;
+            if (display.EndingLines.Length == 0)
+            {
+                GUI.color = new Color(0.75f, 0.78f, 0.82f);
+                Widgets.Label(new Rect(12f, ey, innerWidth - 24f, 22f), "RWS_Endings_None".Translate());
+                GUI.color = Color.white;
+                ey += 24f;
+            }
+            else
+            {
+                foreach (var line in display.EndingLines)
+                {
+                    var bullet = "• " + line;
+                    var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 24f) + 2f);
+                    Widgets.Label(new Rect(12f, ey, innerWidth - 24f, lh), bullet);
+                    ey += lh;
+                }
+            }
+            if (display.EndingFootnote is { } foot)
+            {
+                var fh = Math.Max(20f, Text.CalcHeight(foot, innerWidth - 24f) + 4f);
+                GUI.color = new Color(0.76f, 0.79f, 0.84f);
+                Widgets.Label(new Rect(12f, ey, innerWidth - 24f, fh), foot);
+                GUI.color = Color.white;
+            }
+            cy += endingsCardHeight + 12f;
+
+            // Coverage card.
+            DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionCoverage".Translate());
+            var covRect = new Rect(0f, cy, innerWidth, coverageCardHeight);
+            Widgets.DrawMenuSection(covRect);
+            Widgets.Label(new Rect(12f, cy + 8f, innerWidth - 24f, coverageCardHeight - 16f), display.CoverageLine);
+            cy += coverageCardHeight + 14f;
+
+            // Interactive metric tables.
+            DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionKeyRecords".Translate(), display.KeyRecords);
+            if (display.TopRanks.Length > 0)
+                DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionTopRanks".Translate(), display.TopRanks);
+            if (display.ModMetrics.Length > 0)
+                DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionModMetrics".Translate(), display.ModMetrics);
+
+            if (display.AnyPartialRank)
+            {
+                GUI.color = new Color(0.78f, 0.80f, 0.84f);
+                Widgets.Label(new Rect(0f, cy, innerWidth, 24f), "RWS_Report_PartialRankFootnote".Translate());
+                GUI.color = Color.white;
             }
         }
-        if (display.EndingFootnote is { } foot)
+        finally
         {
-            var fh = Math.Max(20f, Text.CalcHeight(foot, innerWidth - 24f) + 4f);
-            GUI.color = new Color(0.76f, 0.79f, 0.84f);
-            Widgets.Label(new Rect(12f, ey, innerWidth - 24f, fh), foot);
-            GUI.color = Color.white;
+            Widgets.EndScrollView();
         }
-        cy += endingsCardHeight + 12f;
-
-        // Coverage card.
-        DrawSectionHeading(ref cy, innerWidth, "RWS_Report_SectionCoverage".Translate());
-        var covRect = new Rect(0f, cy, innerWidth, coverageCardHeight);
-        Widgets.DrawMenuSection(covRect);
-        Widgets.Label(new Rect(12f, cy + 8f, innerWidth - 24f, coverageCardHeight - 16f), display.CoverageLine);
-        cy += coverageCardHeight + 14f;
-
-        // Interactive metric tables.
-        DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionKeyRecords".Translate(), display.KeyRecords);
-        if (display.TopRanks.Length > 0)
-            DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionTopRanks".Translate(), display.TopRanks);
-        if (display.ModMetrics.Length > 0)
-            DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionModMetrics".Translate(), display.ModMetrics);
-
-        if (display.AnyPartialRank)
-        {
-            GUI.color = new Color(0.78f, 0.80f, 0.84f);
-            Widgets.Label(new Rect(0f, cy, innerWidth, 24f), "RWS_Report_PartialRankFootnote".Translate());
-            GUI.color = Color.white;
-        }
-
-        Widgets.EndScrollView();
     }
 
     private static void DrawSectionHeading(ref float y, float width, string heading)
@@ -513,7 +822,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             Text.Anchor = TextAnchor.UpperLeft;
             TooltipHandler.TipRegion(rowRect, r.Tooltip);
             if (r.Chartable && Widgets.ButtonInvisible(rowRect))
-                Find.WindowStack.Add(new Dialog_MetricChart(view, r.Item.MetricKey, colonyKey));
+                Find.WindowStack.Add(new Dialog_MetricChart(view!, r.Item.MetricKey, colonyKey));
 
             y += rh;
         }
@@ -667,7 +976,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
             stateText = (string)"RWS_Exp_ExperimentalRow".Translate() + " · " + stateText;
 
         var rangeText = FormatRange(def, val, item.IsBasic);
-        var chartable = MetricLookup.IsKnownKey(view, item.MetricKey);
+        var chartable = MetricLookup.IsKnownKey(view!, item.MetricKey);
 
         var tip = new StringBuilder(192);
         tip.Append(label);

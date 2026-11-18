@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Exibindo estatísticas salvas (último registro: {0} / {1}). O progresso não salvo desde então não está incluído.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Exibindo estatísticas salvas (último registro: apenas vestígio de final, sem observação numérica). Salve o jogo para registrar estatísticas numéricas.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Exibindo estatísticas salvas de outra colônia (último registro: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>Ainda não há estatísticas salvas para esta colônia</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>As estatísticas da colônia atual são registradas ao salvar o jogo. Abrir esta tela não salva o jogo nem verifica arquivos de salvamento. Você ainda pode abrir as Estatísticas totais para consultar outras colônias registradas.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Abrir estatísticas totais</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Abrir a janela completa de estatísticas totais de todas as colônias.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (colônia atual)</RWS_InGame_CurrentColonyMark>
+</LanguageData>

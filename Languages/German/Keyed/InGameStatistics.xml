@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_InGame_SavedNotice>Gespeicherte Statistik wird angezeigt (zuletzt erfasst: {0} / {1}). Ungespeicherter Fortschritt seitdem ist nicht enthalten.</RWS_InGame_SavedNotice>
+  <RWS_InGame_SavedNoticeEndingOnly>Gespeicherte Statistik wird angezeigt (zuletzt erfasst: nur Endspur, noch keine numerische Messung). Speichere das Spiel, um numerische Statistiken zu erfassen.</RWS_InGame_SavedNoticeEndingOnly>
+  <RWS_InGame_OtherColonySavedNotice>Gespeicherte Statistik einer anderen Kolonie wird angezeigt (zuletzt erfasst: {0} / {1}).</RWS_InGame_OtherColonySavedNotice>
+  <RWS_InGame_UnrecordedTitle>Noch keine gespeicherte Statistik für diese Kolonie</RWS_InGame_UnrecordedTitle>
+  <RWS_InGame_UnrecordedBody>Die Statistik der aktuellen Kolonie wird beim Speichern des Spiels erfasst. Das Öffnen dieser Ansicht löst weder ein Speichern noch einen Spielstand-Scan aus. Du kannst dennoch die Gesamtstatistik öffnen, um andere erfasste Kolonien anzusehen.</RWS_InGame_UnrecordedBody>
+  <RWS_InGame_OpenAllStats>Gesamtstatistik öffnen</RWS_InGame_OpenAllStats>
+  <RWS_InGame_OpenAllStatsTip>Das vollständige Gesamtstatistik-Fenster für alle Kolonien öffnen.</RWS_InGame_OpenAllStatsTip>
+  <RWS_InGame_CurrentColonyMark> (aktuelle Kolonie)</RWS_InGame_CurrentColonyMark>
+</LanguageData>
