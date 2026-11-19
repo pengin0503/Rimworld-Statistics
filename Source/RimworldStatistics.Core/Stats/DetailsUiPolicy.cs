@@ -100,8 +100,9 @@ public static class DetailsTableLayout
     // GenText.Truncate keeps a string whose measured width is at most the cell's content width.
     public const float FitSlack = 2f;
 
+    // Only the count column (3) is right-aligned; the value column reads from the left like the name and state columns.
     public static CellAlignment ColumnAlignment(int columnIndex)
-        => columnIndex is 1 or 3 ? CellAlignment.Right : CellAlignment.Left;
+        => columnIndex == 3 ? CellAlignment.Right : CellAlignment.Left;
 
     /// <summary>
     /// The width a column needs so that <see cref="MeasureColumn"/> leaves <paramref name="textWidth"/> for its text:

@@ -83,10 +83,10 @@ public sealed class DetailsUiPolicyTests
     }
 
     [Fact]
-    public void DetailsTableLayout_RightAlignsNumericAndCountColumnsOnly()
+    public void DetailsTableLayout_RightAlignsTheCountColumnOnly()
     {
         Assert.Equal(CellAlignment.Left, DetailsTableLayout.ColumnAlignment(0));
-        Assert.Equal(CellAlignment.Right, DetailsTableLayout.ColumnAlignment(1));
+        Assert.Equal(CellAlignment.Left, DetailsTableLayout.ColumnAlignment(1));
         Assert.Equal(CellAlignment.Left, DetailsTableLayout.ColumnAlignment(2));
         Assert.Equal(CellAlignment.Right, DetailsTableLayout.ColumnAlignment(3));
     }
