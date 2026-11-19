@@ -16,13 +16,6 @@ internal static class MetricVisualStyle
         _ => Color.white,
     };
 
-    internal static Color ValueColor(MetricVisualKind kind) => kind switch
-    {
-        MetricVisualKind.Missing or MetricVisualKind.NotApplicable => new Color(0.68f, 0.68f, 0.70f),
-        MetricVisualKind.Partial => new Color(0.86f, 0.84f, 0.78f),
-        _ => Color.white,
-    };
-
     /// <summary>Draws a crisp 12x12 mini 3-bar chart icon using solid boxes so it renders reliably across bitmap fonts and UI scales.</summary>
     internal static void DrawMiniChartIcon(Rect rect, bool hovered)
     {
