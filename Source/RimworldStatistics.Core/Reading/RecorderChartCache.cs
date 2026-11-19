@@ -27,13 +27,17 @@ namespace RimworldStatistics.Core;
 /// </summary>
 public sealed class RecorderChartCache
 {
-    /// <summary>The cache every profile session uses unless it is given another.</summary>
-    public static RecorderChartCache Shared { get; } = new(maxEntries: 256, maxPoints: 32_768);
+    /// <summary>
+    /// The cache every profile session uses unless it is given another. Its limits follow the memory-use setting
+    /// (<see cref="SetLimits"/>); the standard ones are <see cref="ResourcePolicy.StandardCaches"/>.
+    /// </summary>
+    public static RecorderChartCache Shared { get; } =
+        new(ResourcePolicy.StandardCaches.ChartSeries, ResourcePolicy.StandardCaches.ChartPoints);
 
     private readonly record struct Key(string Hash, string Recorder, bool RunningGain, int ReaderVersion);
 
-    private readonly int _maxEntries;
-    private readonly int _maxPoints;
+    private int _maxEntries;   // under _gate
+    private int _maxPoints;    // under _gate
     private readonly object _gate = new();
     // Most recently used first. A series is shared by every request for it, read only (its points are immutable records).
     private readonly LinkedList<(Key Key, ReadOnlyCollection<MetricHistoryPoint> Points)> _order = new();
@@ -48,6 +52,40 @@ public sealed class RecorderChartCache
         ArgumentOutOfRangeException.ThrowIfNegative(maxPoints);
         _maxEntries = maxEntries;
         _maxPoints = maxPoints;
+    }
+
+    public int MaxEntries
+    {
+        get
+        {
+            lock (_gate)
+                return _maxEntries;
+        }
+    }
+
+    public int MaxPoints
+    {
+        get
+        {
+            lock (_gate)
+                return _maxPoints;
+        }
+    }
+
+    /// <summary>
+    /// Changes the bounds (the memory-use setting). Lower bounds drop the least recently used entries at once; what is kept
+    /// is unchanged, so a chart shows the same series whatever the bounds, only parsed again more or less often.
+    /// </summary>
+    public void SetLimits(int maxEntries, int maxPoints)
+    {
+        ArgumentOutOfRangeException.ThrowIfNegative(maxEntries);
+        ArgumentOutOfRangeException.ThrowIfNegative(maxPoints);
+        lock (_gate)
+        {
+            _maxEntries = maxEntries;
+            _maxPoints = maxPoints;
+            TrimLocked();
+        }
     }
 
     /// <summary>XML parses this cache has run (a hit runs none).</summary>
@@ -138,21 +176,25 @@ public sealed class RecorderChartCache
 
     private void Store(Key key, ReadOnlyCollection<MetricHistoryPoint> points)
     {
-        if (points.Count > _maxPoints || _maxEntries == 0)
-            return;
         lock (_gate)
         {
-            if (_entries.ContainsKey(key))
+            if (points.Count > _maxPoints || _maxEntries == 0 || _entries.ContainsKey(key))
                 return;
             _entries[key] = _order.AddFirst((key, points));
             _points += points.Count;
-            while (_entries.Count > _maxEntries || _points > _maxPoints)
-            {
-                var last = _order.Last!;
-                _order.RemoveLast();
-                _entries.Remove(last.Value.Key);
-                _points -= last.Value.Points.Count;
-            }
+            TrimLocked();
+        }
+    }
+
+    // Under _gate.
+    private void TrimLocked()
+    {
+        while (_entries.Count > _maxEntries || _points > _maxPoints)
+        {
+            var last = _order.Last!;
+            _order.RemoveLast();
+            _entries.Remove(last.Value.Key);
+            _points -= last.Value.Points.Count;
         }
     }
 }

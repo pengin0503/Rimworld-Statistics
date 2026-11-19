@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>Ресурсы ПК для обработки</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Сохранений, читаемых одновременно при импорте</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Обычно ({0} одновременно)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>Больше ({0} одновременно, приоритет ниже игры)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Вручную ({0} одновременно, приоритет ниже игры)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Сохранений одновременно: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>Применяется со следующего импорта. Чем больше сохранений читается одновременно, тем быстрее импорт, но тем больше он занимает процессора и памяти, пока идёт. В режимах «Больше» и «Вручную» потоки чтения работают с приоритетом ниже игры (в Linux это не действует). Логических процессоров на этом ПК: {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Заранее вычислять статистику в фоне</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Открывает запись на титульном экране и вскоре после каждого изменения (импорта или сохранения) заранее вычисляет то, что сначала нужно окну общей статистики и, во время игры, сводному отчёту этого поселения, чтобы они открывались быстрее. Это занимает процессор и память, даже если вы их не открываете. Во время импорта, а также пока игра загружается или сохраняется, ничего не выполняется. Показываемые данные не меняются.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Память для кэшей</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Обычно</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>Больше</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>В режиме «Больше» хранится больше рядов графиков, вычисленной статистики и сводных отчётов поселений, поэтому повторно они открываются быстрее. Ряды графиков ограничены примерно {0} МБ в режиме «Обычно» и {1} МБ в режиме «Больше»; остальное зависит от размера записи. Применяется сразу.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

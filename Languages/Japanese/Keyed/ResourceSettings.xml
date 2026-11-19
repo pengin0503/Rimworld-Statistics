@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>処理に使うPCの資源</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>取り込みで同時に読むセーブの数</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>標準（同時に{0}件）</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>多め（同時に{0}件、ゲームより低い優先度）</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>手動（同時に{0}件、ゲームより低い優先度）</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>同時に読む数: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>次の取り込みから適用されます。同時に読む数を増やすと取り込みが速くなる代わりに、その間CPUとメモリを多く使います。「多め」と「手動」では読み込み用のスレッドの優先度をゲームより下げます（Linuxでは効果がありません）。このPCの論理プロセッサ数: {0}</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>統計をバックグラウンドで先に計算する</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>タイトル画面で記録を読み込み、取り込みやセーブで記録が変わると少し後に、通算統計ウィンドウと、プレイ中はこのコロニーのコロニー総括レポートを開いたときに最初に必要な計算を先に済ませ、開くまでの時間を短くします。開かなくてもCPUとメモリを使います。取り込み中やゲームの読み込み・保存中は動きません。表示される内容は変わりません。</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>キャッシュに使うメモリ</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>標準</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>多め</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>「多め」にすると、グラフの系列、計算済みの統計、コロニー総括レポートをより多く保持し、再び開くのが速くなります。グラフの系列の上限は「標準」で約{0} MB、「多め」で約{1} MBです。それ以外の分は記録の量によります。すぐに適用されます。</RWS_Setting_MemoryUseHelp>
+</LanguageData>

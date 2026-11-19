@@ -6,13 +6,17 @@ public sealed partial class SaveReader
 {
     /// <summary>
     /// Hashes exactly the bytes served, in order. Small inputs use the XML reader buffer directly; larger reads
-    /// overlap XML parsing and hashing using pooled blocks and a worker.
+    /// overlap XML parsing and hashing using pooled blocks and a worker, which runs at the priority of the thread that
+    /// created the stream (an import that yields to the game's threads hashes at the same lower priority). Once the token
+    /// is cancelled, the next read throws <see cref="OperationCanceledException"/>, so a stopped import gives up a save within
+    /// one block instead of reading it to the end.
     /// </summary>
     private sealed class HashingStream : Stream
     {
         private const int BlockSize = 1 << 16;
         private const int Blocks = 4;
         private readonly Stream _inner;
+        private readonly CancellationToken _ct;
         private readonly IncrementalHash _hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         private readonly BlockingCollection<byte[]>? _free;
         private readonly BlockingCollection<(byte[] Block, int Length)>? _filled;
@@ -24,9 +28,10 @@ public sealed partial class SaveReader
         private int _len;
         private bool _eof;
 
-        public HashingStream(Stream inner, long expectedSize)
+        public HashingStream(Stream inner, long expectedSize, CancellationToken ct = default)
         {
             _inner = inner;
+            _ct = ct;
             if (expectedSize <= BlockSize)
                 return;
 
@@ -38,8 +43,12 @@ public sealed partial class SaveReader
                 _buffers[i] = ArrayPool<byte>.Shared.Rent(BlockSize);
                 free.Add(_buffers[i]);
             }
+            var priority = CurrentPriority();
             _worker = Task.Factory.StartNew(() =>
             {
+                // A dedicated thread (LongRunning) that ends with this stream: its priority needs no restoring.
+                if (priority != ThreadPriority.Normal)
+                    TrySetPriority(priority);
                 foreach (var (block, length) in filled.GetConsumingEnumerable())
                 {
                     _hash.AppendData(block, 0, length);
@@ -50,6 +59,41 @@ public sealed partial class SaveReader
 
         public long BytesRead { get; private set; }
 
+        /// <summary>A read was refused because the token was cancelled: the bytes after it were never seen.</summary>
+        public bool Cancelled { get; private set; }
+
+        private void ThrowIfCancelled()
+        {
+            if (!_ct.IsCancellationRequested)
+                return;
+            Cancelled = true;
+            throw new OperationCanceledException(_ct);
+        }
+
+        private static ThreadPriority CurrentPriority()
+        {
+            try
+            {
+                return Thread.CurrentThread.Priority;
+            }
+            catch (Exception e) when (e is ThreadStateException or PlatformNotSupportedException)
+            {
+                return ThreadPriority.Normal;
+            }
+        }
+
+        private static void TrySetPriority(ThreadPriority priority)
+        {
+            try
+            {
+                Thread.CurrentThread.Priority = priority;
+            }
+            catch (Exception e) when (e is ThreadStateException or PlatformNotSupportedException)
+            {
+                // the priority is only a hint; hashing at normal priority is still correct
+            }
+        }
+
         public override int Read(byte[] buffer, int offset, int count) => Read(buffer.AsSpan(offset, count));
 
         public override int Read(Span<byte> buffer)
@@ -58,6 +102,7 @@ public sealed partial class SaveReader
                 return 0;
             if (_worker is null)
             {
+                ThrowIfCancelled();
                 var read = _inner.Read(buffer);
                 _hash.AppendData(buffer[..read]);
                 BytesRead += read;
@@ -75,6 +120,7 @@ public sealed partial class SaveReader
         {
             if (_eof)
                 return false;
+            ThrowIfCancelled();
             if (_block is not null && _len > 0)
                 _filled!.Add((_block, _len));
             _block = _free!.Take();

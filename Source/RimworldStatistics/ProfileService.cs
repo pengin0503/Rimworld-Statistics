@@ -63,8 +63,22 @@ public static class ProfileService
     {
         var session = new ProfileSession(new ProfileStore(path), () => DateTime.UtcNow,
             new FileCheckpointArchive(Path.Combine(path, "checkpoint-archive")));
+        session.ApplyCacheLimits(RimworldStatisticsMod.Settings.CacheLimits);
         ReportLoadProblems(session.LoadResult, path);
         return session;
+    }
+
+    /// <summary>
+    /// Main thread, after the processing-resource settings changed: the loaded session (if any) and the chart cache keep
+    /// what the new settings allow. A session opened later gets them when it opens. Never waits for the profile.
+    /// </summary>
+    internal static void ApplyResourceSettings()
+    {
+        var limits = RimworldStatisticsMod.Settings.CacheLimits;
+        if (Loader.TryPeek() is { } session)
+            session.ApplyCacheLimits(limits);
+        else
+            RecorderChartCache.Shared.SetLimits(limits.ChartSeries, limits.ChartPoints);
     }
 
     internal static Task<BackupInfo> CreateBackup(ProfileSession session, BackupMetadata metadata, string? preferences = null)

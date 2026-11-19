@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>Für die Verarbeitung genutzte PC-Ressourcen</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Gleichzeitig gelesene Spielstände beim Import</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Standard ({0} gleichzeitig)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>Mehr ({0} gleichzeitig, niedrigere Priorität als das Spiel)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Manuell ({0} gleichzeitig, niedrigere Priorität als das Spiel)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Gleichzeitig gelesene Spielstände: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>Gilt ab dem nächsten Import. Mehr gleichzeitig gelesene Spielstände machen den Import schneller, belegen währenddessen aber mehr CPU und Arbeitsspeicher. Mehr und Manuell lassen die Lese-Threads mit niedrigerer Priorität als das Spiel laufen (unter Linux ohne Wirkung). Logische Prozessoren dieses PCs: {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Statistik im Hintergrund vorausberechnen</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Öffnet die Aufzeichnung im Titelbildschirm und berechnet kurz nach jeder Änderung (Import oder Speichern) im Voraus, was das Fenster der Gesamtstatistik und im Spiel der Gesamtbericht dieser Kolonie zuerst brauchen, damit sie schneller öffnen. Das belegt CPU und Arbeitsspeicher, auch wenn du sie nie öffnest. Während eines Imports und während das Spiel lädt oder speichert, läuft nichts. Was angezeigt wird, ändert sich nicht.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Arbeitsspeicher für Zwischenspeicher</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Standard</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>Mehr</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>Mehr behält mehr Diagrammreihen, berechnete Statistiken und Kolonie-Gesamtberichte, damit sie erneut schneller öffnen. Diagrammreihen sind bei Standard auf etwa {0} MB und bei Mehr auf etwa {1} MB begrenzt; der Rest hängt von der Größe deiner Aufzeichnung ab. Gilt sofort.</RWS_Setting_MemoryUseHelp>
+</LanguageData>
