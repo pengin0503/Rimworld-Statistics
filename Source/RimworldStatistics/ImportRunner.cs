@@ -57,9 +57,14 @@ public static class ImportRunner
             try
             {
                 var savesDir = GenFilePaths.SavedGamesFolderPath;
+                // Read on this thread: the processing-resource setting as it is when the scan starts.
+                var settings = RimworldStatisticsMod.Settings;
+                var threadMode = settings.ImportThreads;
+                var threads = ResourcePolicy.ImportThreads(threadMode, settings.importThreadsManual, Environment.ProcessorCount);
+                var priority = ResourcePolicy.ImportPriority(threadMode);
                 var source = new CancellationTokenSource();
                 cts = source;
-                task = Task.Run(() => Run(run, savesDir, mode, source.Token));
+                task = Task.Run(() => Run(run, savesDir, mode, threads, priority, source.Token));
             }
             catch (Exception e)
             {
@@ -101,11 +106,12 @@ public static class ImportRunner
                 Start(manual: false);
     }
 
-    private static void Run(long run, string savesDir, ImportMode mode, CancellationToken ct)
+    private static void Run(long run, string savesDir, ImportMode mode, int threads, ThreadPriority priority, CancellationToken ct)
     {
         try
         {
-            Status.Complete(run, new ImportEngine(new SaveReader()).Run(savesDir, ProfileService.Session, new ProgressSink(run), ct, mode));
+            var engine = new ImportEngine(new SaveReader(), threads, TimeProvider.System, priority);
+            Status.Complete(run, engine.Run(savesDir, ProfileService.Session, new ProgressSink(run), ct, mode));
         }
         catch (Exception e)
         {

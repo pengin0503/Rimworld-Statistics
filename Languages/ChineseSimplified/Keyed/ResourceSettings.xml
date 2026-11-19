@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>处理所用的电脑资源</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>导入时同时读取的存档数</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>标准（同时 {0} 个）</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>较多（同时 {0} 个，优先级低于游戏）</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>手动（同时 {0} 个，优先级低于游戏）</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>同时读取数：{0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>从下次导入开始生效。同时读取更多存档会让导入更快，但导入期间会占用更多 CPU 和内存。“较多”和“手动”会让读取线程的优先级低于游戏（在 Linux 上无效）。本机的逻辑处理器数：{0}。</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>在后台预先计算统计</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>在标题界面载入记录，并在记录变化（导入或保存）后不久，预先完成累计统计窗口以及游戏中本殖民地的殖民地总结报告打开时首先需要的计算，让它们更快打开。即使不打开也会占用 CPU 和内存。导入期间以及游戏载入或保存时不会运行。显示的内容不会改变。</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>缓存所用的内存</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>标准</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>较多</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>选择“较多”会保留更多的图表数据序列、已计算的统计和殖民地总结报告，再次打开时更快。图表数据序列的上限在“标准”下约为 {0} MB，在“较多”下约为 {1} MB；其余部分取决于记录的大小。立即生效。</RWS_Setting_MemoryUseHelp>
+</LanguageData>

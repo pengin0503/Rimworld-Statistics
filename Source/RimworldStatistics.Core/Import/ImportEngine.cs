@@ -35,24 +35,39 @@ public sealed class ImportResult
 
 /// <summary>
 /// Reads new or changed saves in one folder into the profile (spec §7.1, §7.5), or, in a forced re-check, every save
-/// (#310). Runs on a background thread and touches no game API and no save file (read only). Cancellation is checked
-/// between files; what was read is kept and the next run continues.
+/// (#310). Runs on a background thread and touches no game API and no save file (read only). Cancellation stops the reads
+/// in progress within one block; a save whose read was stopped is not recorded at all, so what was read is kept and the
+/// next run continues with the rest.
 /// </summary>
 public sealed class ImportEngine
 {
     private readonly SaveReader _reader;
     private readonly TimeProvider _timeProvider;
     private readonly int _readAhead;
+    private readonly ThreadPriority _priority;
 
     public ImportEngine(SaveReader reader, int readAhead = -1)
         : this(reader, readAhead, TimeProvider.System) { }
 
     public ImportEngine(SaveReader reader, int readAhead, TimeProvider timeProvider)
+        : this(reader, readAhead, timeProvider, ThreadPriority.Normal) { }
+
+    /// <param name="readAhead">Saves read at once; negative for <see cref="ResourcePolicy.StandardImportThreads"/>.</param>
+    /// <param name="priority">
+    /// The priority the reading threads run at (the calling thread's is restored when the run ends). Normal leaves every
+    /// thread as it is.
+    /// </param>
+    public ImportEngine(SaveReader reader, int readAhead, TimeProvider timeProvider, ThreadPriority priority)
     {
         _reader = reader;
         _timeProvider = timeProvider ?? throw new ArgumentNullException(nameof(timeProvider));
-        _readAhead = readAhead < 0 ? Math.Clamp(Environment.ProcessorCount / 2, 1, 3) : readAhead;
+        _readAhead = readAhead < 0 ? ResourcePolicy.StandardImportThreads(Environment.ProcessorCount)
+            : Math.Min(readAhead, ResourcePolicy.MaxImportThreads);
+        _priority = priority;
     }
+
+    /// <summary>Saves read at once.</summary>
+    public int ReadAhead => _readAhead;
 
     private static readonly TimeSpan SaveInterval = TimeSpan.FromSeconds(5);
 
@@ -87,6 +102,10 @@ public sealed class ImportEngine
 
     public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct,
         ImportMode mode)
+        => ThreadPriorities.Run(_priority, () => RunAtPriority(savesDir, session, progress, ct, mode));
+
+    private ImportResult RunAtPriority(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress,
+        CancellationToken ct, ImportMode mode)
     {
         if (!Directory.Exists(savesDir))
             return new ImportResult { Mode = mode, PresentFiles = Array.Empty<string>() };
@@ -164,7 +183,7 @@ public sealed class ImportEngine
                 }
                 pending[index] = Task.Run(() =>
                 {
-                    try { return ct.IsCancellationRequested ? null : _reader.ReadDetailed(aheadPath); }
+                    try { return ct.IsCancellationRequested ? null : ThreadPriorities.Run(_priority, () => _reader.ReadUnlessCancelled(aheadPath, ct)); }
                     catch (Exception) { return null; }
                 });
             }
@@ -203,13 +222,19 @@ public sealed class ImportEngine
                         DiscardReadAhead(index);
                         continue;
                     }
-                    SaveReadResult result;
+                    SaveReadResult? result = null;
                     if (pending.Remove(index, out var ahead) && ahead.GetAwaiter().GetResult() is { } prefetched
                         && prefetched.Observation.FileName == name && prefetched.Observation.FileSize == size
                         && prefetched.Observation.LastWriteUtc == time)
                         result = prefetched;
-                    else
-                        result = _reader.ReadDetailed(path);
+                    else if (!ct.IsCancellationRequested)
+                        result = _reader.ReadUnlessCancelled(path, ct);
+                    if (result is null)
+                    {
+                        // Stopped before this save was read through (or its read-ahead was): record nothing for it.
+                        cancelled = true;
+                        break;
+                    }
                     var obs = result.Observation;
                     read++;
                     countedRead = true;

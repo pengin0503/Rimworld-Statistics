@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>Recursos do PC usados no processamento</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Jogos guardados lidos ao mesmo tempo numa importação</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Normal ({0} de cada vez)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>Mais ({0} de cada vez, prioridade abaixo do jogo)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Manual ({0} de cada vez, prioridade abaixo do jogo)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Jogos guardados lidos ao mesmo tempo: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>Aplica-se a partir da próxima importação. Ler mais jogos guardados de cada vez torna a importação mais rápida, mas usa mais CPU e memória enquanto decorre. Mais e Manual correm as threads de leitura com prioridade abaixo da do jogo (sem efeito em Linux). Processadores lógicos deste PC: {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Pré-calcular as estatísticas em segundo plano</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Abre o registo no ecrã inicial e, pouco depois de cada alteração (importação ou gravação), calcula antecipadamente o que a janela de estatísticas totais e, durante o jogo, o relatório desta colónia precisam primeiro, para abrirem mais depressa. Usa CPU e memória mesmo que nunca os abra. Não corre durante uma importação nem enquanto o jogo carrega ou grava. O que é mostrado não muda.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Memória usada para caches</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Normal</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>Mais</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>Mais guarda mais séries de gráficos, estatísticas calculadas e relatórios de colónia, para os voltar a abrir mais depressa. As séries de gráficos ficam limitadas a cerca de {0} MB em Normal e {1} MB em Mais; o resto depende do tamanho do registo. Aplica-se de imediato.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

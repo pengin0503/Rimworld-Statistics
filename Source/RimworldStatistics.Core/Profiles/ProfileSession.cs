@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Text.Json;
 
 namespace RimworldStatistics.Core;
@@ -45,9 +46,23 @@ public sealed class ProfileSession
     private readonly object _ioLock = new();
     // The active scope and up to four comparison columns must coexist with the all-colony view.
     // LRU eviction also avoids repeatedly rebuilding recently requested groups when users switch scopes.
-    private const int MaxCachedViews = 8;
+    private int _maxCachedViews = ResourcePolicy.StandardCaches.Views;   // set without _lock (volatile), applied under it
     private readonly Dictionary<(bool IncludeDevMode, string Visible, string Scope), (StatsView View, long LastAccess)> _views = new();
     private long _viewAccess;
+    private string? _lastVisibilityKey;                   // under _lock: the key of _lastVisibleUnits
+    private IReadOnlyCollection<string>? _lastVisibleUnits;
+
+    // Colony summaries and chronicles already built for a view (the memory-use and precomputation settings; none kept by
+    // default). An entry is used only for the same view object, colony and option while neither the profile nor the
+    // archived checkpoint data changed since it was built from them, so it is exactly what building it again would give.
+    private int _maxColonyReports;                        // set without _lock (volatile), applied under it
+    private int _trimPending;                             // 1: a bound was lowered and not yet applied under _lock
+    private readonly List<ColonyReportEntry> _colonyReports = new();   // under _lock, most recently used last
+    // Under _lock: bumped before the archive files change and again when archived data replaces inline data.
+    private long _archiveGeneration;
+
+    private sealed record ColonyReportEntry(long Revision, long ArchiveGeneration, StatsView View, string ColonyKey,
+        bool IncludeDevMode, ColonySummaryReport? Report, ColonyChronicle? Chronicle);
 
     private long _changeSeq;     // bumped by every change (under _lock)
     private long _writtenSeq;    // newest change seq that reached the file (under _ioLock)
@@ -84,6 +99,117 @@ public sealed class ProfileSession
     /// <see cref="MutateWithoutBlocking"/> count once they are applied, which every read of the profile does first.
     /// </summary>
     public long Revision => Interlocked.Read(ref _changeSeq);
+
+    /// <summary>
+    /// The most statistics views kept (one per option set and scope), at least one. Lowering it drops the least recently
+    /// used views; a dropped view is only built again when asked for.
+    /// </summary>
+    public int ViewCacheCapacity
+    {
+        get => Volatile.Read(ref _maxCachedViews);
+        set
+        {
+            Volatile.Write(ref _maxCachedViews, Math.Max(1, value));
+            TrimCachesIfFree();
+        }
+    }
+
+    /// <summary>The most colony summaries (with their chronicles) kept for reuse; 0, the default, keeps none.</summary>
+    public int ColonyReportCacheCapacity
+    {
+        get => Volatile.Read(ref _maxColonyReports);
+        set
+        {
+            Volatile.Write(ref _maxColonyReports, Math.Max(0, value));
+            TrimCachesIfFree();
+        }
+    }
+
+    /// <summary>
+    /// Applies the processing-resource settings: the views and colony reports this session keeps and the bounds of its chart
+    /// cache. Never waits for the profile (the settings window calls it on the main thread while a view may be building):
+    /// if the profile is busy, the next use of it trims to the new bounds. Only what is kept changes, never what is shown.
+    /// </summary>
+    public void ApplyCacheLimits(CacheLimits limits)
+    {
+        Volatile.Write(ref _maxCachedViews, Math.Max(1, limits.Views));
+        Volatile.Write(ref _maxColonyReports, Math.Max(0, limits.ColonyReports));
+        _recorderCharts.SetLimits(Math.Max(0, limits.ChartSeries), Math.Max(0, limits.ChartPoints));
+        TrimCachesIfFree();
+    }
+
+    /// <summary>Colony summaries kept for reuse now, within the current bound (tests and diagnostics).</summary>
+    internal int CachedColonyReports
+    {
+        get
+        {
+            lock (_lock)
+            {
+                TrimIfPending();
+                return _colonyReports.Count;
+            }
+        }
+    }
+
+    /// <summary>Statistics views kept now, within the current bound (tests and diagnostics).</summary>
+    internal int CachedViews
+    {
+        get
+        {
+            lock (_lock)
+            {
+                TrimIfPending();
+                return _views.Count;
+            }
+        }
+    }
+
+    // Lowered bounds are applied at once when the profile is free, else by whoever uses it next (ApplyQueuedAndRequestSave).
+    private void TrimCachesIfFree()
+    {
+        Volatile.Write(ref _trimPending, 1);
+        if (!Monitor.TryEnter(_lock))
+            return;
+        try
+        {
+            TrimIfPending();
+        }
+        finally
+        {
+            Monitor.Exit(_lock);
+        }
+    }
+
+    // Under _lock.
+    private void TrimIfPending()
+    {
+        if (Interlocked.Exchange(ref _trimPending, 0) == 0)
+            return;
+        TrimViews(0);
+        TrimColonyReports();
+    }
+
+    // Under _lock. Drops the least recently used views until <paramref name="room"/> more fit, and the colony reports kept
+    // for them, which would otherwise keep a dropped view in memory (a window still holding that view builds its report
+    // again, as without the cache).
+    private void TrimViews(int room)
+    {
+        var max = Math.Max(1, _maxCachedViews);
+        while (_views.Count > 0 && _views.Count + room > max)
+        {
+            var oldest = _views.MinBy(entry => entry.Value.LastAccess);
+            _views.Remove(oldest.Key);
+            var dropped = oldest.Value.View;
+            _colonyReports.RemoveAll(entry => ReferenceEquals(entry.View, dropped));
+        }
+    }
+
+    // Under _lock.
+    private void TrimColonyReports()
+    {
+        if (_colonyReports.Count > _maxColonyReports)
+            _colonyReports.RemoveRange(0, _colonyReports.Count - _maxColonyReports);
+    }
 
     public Exception? LastSaveError => _lastSaveError;
     public Exception? LastArchiveError => _lastArchiveError ?? _lastArchiveReadError;
@@ -144,6 +270,7 @@ public sealed class ProfileSession
     /// <summary>Under _lock, at every use of the profile: queued changes first, then a background write for them.</summary>
     private void ApplyQueuedAndRequestSave()
     {
+        TrimIfPending();
         if (ApplyQueued())
             Save(SaveMode.Background);   // re-entrant lock: starts or flags the writer, never waits
     }
@@ -164,6 +291,7 @@ public sealed class ProfileSession
         {
             _mutationDepth--;
             _views.Clear();
+            _colonyReports.Clear();
             _changeSeq++;
         }
         return (before, _changeSeq);
@@ -362,12 +490,50 @@ public sealed class ProfileSession
         string colonyKey,
         bool includeDevMode = false)
     {
-        var (captured, evidence) = Read(profile =>
-            (ColonySaveLineage.Capture(profile, view.Colonies, colonyKey), ColonyChronicle.Capture(view, colonyKey)));
+        ColonySaveLineage.CapturedInputs? captured;
+        ColonyChronicle.Evidence? evidence;
+        long revision, archiveGeneration;
+        lock (_lock)
+        {
+            ApplyQueuedAndRequestSave();
+            revision = _changeSeq;
+            archiveGeneration = _archiveGeneration;
+            if (FindColonyReport(revision, archiveGeneration, view, colonyKey, includeDevMode) is { } kept)
+                return (kept.Report, kept.Chronicle);
+            captured = ColonySaveLineage.Capture(_profile, view.Colonies, colonyKey);
+            evidence = ColonyChronicle.Capture(view, colonyKey);
+        }
         var lineage = captured is null ? ColonySaveLineage.Empty(colonyKey) : ColonySaveLineage.BuildFromCaptured(captured, _archive);
         var report = ColonySummaryReport.Build(view, colonyKey, lineage);
         var chronicle = evidence is null ? null : ColonyChronicle.Build(view, evidence, lineage, null, includeDevMode);
+        lock (_lock)
+        {
+            // Kept only if nothing it was built from changed meanwhile: a later call would build exactly this again.
+            if (_maxColonyReports > 0 && _changeSeq == revision && _archiveGeneration == archiveGeneration
+                && FindColonyReport(revision, archiveGeneration, view, colonyKey, includeDevMode) is null)
+            {
+                _colonyReports.Add(new ColonyReportEntry(revision, archiveGeneration, view, colonyKey, includeDevMode, report, chronicle));
+                TrimColonyReports();
+            }
+        }
         return (report, chronicle);
+    }
+
+    // Under _lock. A hit becomes the most recently used entry.
+    private ColonyReportEntry? FindColonyReport(long revision, long archiveGeneration, StatsView view, string colonyKey,
+        bool includeDevMode)
+    {
+        for (var i = _colonyReports.Count - 1; i >= 0; i--)
+        {
+            var entry = _colonyReports[i];
+            if (entry.Revision != revision || entry.ArchiveGeneration != archiveGeneration || !ReferenceEquals(entry.View, view)
+                || entry.ColonyKey != colonyKey || entry.IncludeDevMode != includeDevMode)
+                continue;
+            _colonyReports.RemoveAt(i);
+            _colonyReports.Add(entry);
+            return entry;
+        }
+        return null;
     }
 
     /// <summary>
@@ -440,7 +606,7 @@ public sealed class ProfileSession
         try
         {
             ApplyQueuedAndRequestSave();
-            var key = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
+            var key = (options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
             if (!_views.TryGetValue(key, out var entry))
                 return null;
             _views[key] = (entry.View, ++_viewAccess);
@@ -482,7 +648,7 @@ public sealed class ProfileSession
         lock (_lock)
         {
             ApplyQueuedAndRequestSave();
-            var cacheKey = (options.IncludeDevMode, VisibilityKey(visibleUnitIds), scope?.CacheKey ?? "");
+            var cacheKey = (options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
             if (_views.TryGetValue(cacheKey, out var cached))
             {
                 _views[cacheKey] = (cached.View, ++_viewAccess);
@@ -508,11 +674,11 @@ public sealed class ProfileSession
             if (ledgerChanged)
             {
                 _views.Clear();   // other option sets were built before the ledger changed; keep them consistent
+                _colonyReports.Clear();   // built for the views just dropped, and for the previous revision
                 _changeSeq++;
             }
-            // Keep a complete comparison working set; evict only the least recently accessed view.
-            if (_views.Count >= MaxCachedViews)
-                _views.Remove(_views.MinBy(entry => entry.Value.LastAccess).Key);
+            // Keep a complete comparison working set; evict only the least recently accessed views.
+            TrimViews(1);
             _views[cacheKey] = (view, ++_viewAccess);
         }
         if (ledgerChanged)
@@ -520,7 +686,24 @@ public sealed class ProfileSession
         return view;
     }
 
-    private static string VisibilityKey(IReadOnlyCollection<string>? unitIds)
+    /// <summary>
+    /// Under _lock. <see cref="VisibilityKey"/>, remembered for the last immutable set: the windows pass the same frozen set
+    /// every frame, and joining its sorted IDs each time only made garbage. Any other collection is keyed afresh.
+    /// </summary>
+    private string VisibilityKeyFor(IReadOnlyCollection<string>? unitIds)
+    {
+        if (unitIds is FrozenSet<string> && ReferenceEquals(unitIds, _lastVisibleUnits))
+            return _lastVisibilityKey!;
+        var key = VisibilityKey(unitIds);
+        if (unitIds is FrozenSet<string>)
+        {
+            _lastVisibleUnits = unitIds;
+            _lastVisibilityKey = key;
+        }
+        return key;
+    }
+
+    internal static string VisibilityKey(IReadOnlyCollection<string>? unitIds)
         => unitIds is null || unitIds.Count == 0 ? "" :
             string.Join("\u001f", unitIds.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
 
@@ -656,6 +839,9 @@ public sealed class ProfileSession
                     lines.Add(json);
                     serialized.Add((step, json));
                 }
+                // The archive files change from here on: a colony report built before or while they do is not kept.
+                if (steps.Count > 0)
+                    _archiveGeneration++;
             }
 
             foreach (var (campaign, lines) in batches)
@@ -669,6 +855,8 @@ public sealed class ProfileSession
                 {
                     foreach (var step in steps)
                         CheckpointArchivePlanner.Apply(step);
+                    if (steps.Count > 0)
+                        _archiveGeneration++;
                 }
                 else
                 {
@@ -692,6 +880,7 @@ public sealed class ProfileSession
                                 json, StringComparison.Ordinal))
                             continue;
                         CheckpointArchivePlanner.Apply(step);
+                        _archiveGeneration++;
                     }
                 }
             }

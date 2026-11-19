@@ -78,26 +78,39 @@ public sealed partial class SaveReader
     /// Reads the file once. The numeric observation is kept only when every byte was read, the byte count equals the size
     /// taken before reading, and the size and time are unchanged afterwards (a file replaced mid-read confirms nothing).
     /// </summary>
-    public SaveReadResult ReadDetailed(string path)
+    public SaveReadResult ReadDetailed(string path) => ReadUnlessCancelled(path, CancellationToken.None)!;
+
+    /// <summary>
+    /// <see cref="ReadDetailed(string)"/> that stops within one 64 KiB block once <paramref name="ct"/> is cancelled (an import
+    /// interrupted by a game start, or cancelled by the player). A stopped read returns null: it tells nothing about the
+    /// file, so it must not be recorded, neither as read nor as failed. (Not an overload of ReadDetailed: tests see internal
+    /// members, and an overload taking a token would make the xUnit analyzer ask every existing call for one.)
+    /// </summary>
+    internal SaveReadResult? ReadUnlessCancelled(string path, CancellationToken ct)
     {
         var fileName = Path.GetFileName(path);
         long size = 0;
         DateTime lastWrite = default;
         try
         {
+            ct.ThrowIfCancellationRequested();
             // Metadata first: if the file changes while we read it, the next scan sees a different size/time and reads it again.
             var info = new FileInfo(path);
             size = info.Length;
             lastWrite = info.LastWriteTimeUtc;
             SaveReadResult result;
             using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete, 1 << 16, FileOptions.SequentialScan))
-                result = ReadDetailed(fs, fileName, size, lastWrite);
+                result = ReadStream(fs, fileName, size, lastWrite, ct);
             if (result.Observation.Status == ObservationStatus.Error)
                 return result;
             var after = new FileInfo(path);
             return after.Exists && after.Length == size && after.LastWriteTimeUtc == lastWrite
                 ? result
                 : new SaveReadResult(Failed(fileName, size, lastWrite, new IOException("save changed during read")), null);
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            return null;
         }
         catch (Exception e)
         {
@@ -106,11 +119,28 @@ public sealed partial class SaveReader
     }
 
     public SaveReadResult ReadDetailed(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc)
+        => ReadStream(xml, fileName, fileSize, lastWriteUtc, CancellationToken.None);
+
+    /// <summary>The stream form of <see cref="ReadUnlessCancelled(string, CancellationToken)"/>: null once stopped.</summary>
+    internal SaveReadResult? ReadUnlessCancelled(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc, CancellationToken ct)
+    {
+        try
+        {
+            return ReadStream(xml, fileName, fileSize, lastWriteUtc, ct);
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            return null;
+        }
+    }
+
+    /// <summary>Never throws, except <see cref="OperationCanceledException"/> once <paramref name="ct"/> is cancelled.</summary>
+    private SaveReadResult ReadStream(Stream xml, string fileName, long fileSize, DateTime lastWriteUtc, CancellationToken ct)
     {
         try
         {
             var obs = NewObservation(fileName, fileSize, lastWriteUtc);
-            using var hashing = new HashingStream(xml, fileSize);
+            using var hashing = new HashingStream(xml, fileSize, ct);
             var state = new ReadState(obs);
             using (var reader = XmlReader.Create(hashing, Settings))
             {
@@ -131,6 +161,9 @@ public sealed partial class SaveReader
                 });
             }
             hashing.ReadToEnd();
+            // A stop that something above swallowed still makes the read worthless: nothing past it was seen.
+            if (hashing.Cancelled)
+                throw new OperationCanceledException(ct);
             if (hashing.BytesRead != fileSize)
                 throw new IOException("save length changed during read");
             Finish(state);
@@ -138,6 +171,10 @@ public sealed partial class SaveReader
             obs.ContentHash = hash;
             var metrics = hash is null ? null : TryBuildMetrics(state, hash);
             return new SaveReadResult(obs, metrics) { Checkpoint = metrics is null ? null : TryBuildCheckpoint(state, metrics) };
+        }
+        catch (OperationCanceledException) when (ct.IsCancellationRequested)
+        {
+            throw;
         }
         catch (Exception e)
         {

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>처리에 사용할 PC 자원</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>가져오기 중 동시에 읽는 저장 파일 수</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>표준 (동시에 {0}개)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>많이 (동시에 {0}개, 게임보다 낮은 우선순위)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>수동 (동시에 {0}개, 게임보다 낮은 우선순위)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>동시에 읽는 수: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>다음 가져오기부터 적용됩니다. 동시에 더 많이 읽으면 가져오기가 빨라지지만, 그동안 CPU와 메모리를 더 많이 사용합니다. '많이'와 '수동'은 읽기 스레드의 우선순위를 게임보다 낮춥니다 (Linux에서는 효과가 없습니다). 이 PC의 논리 프로세서 수: {0}</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>통계를 백그라운드에서 미리 계산</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>타이틀 화면에서 기록을 불러오고, 기록이 바뀐 뒤(가져오기 또는 저장) 잠시 후에 누적 통계 창과 플레이 중에는 이 정착지의 정착지 종합 보고서를 열 때 처음 필요한 계산을 미리 끝내 더 빨리 열리게 합니다. 열지 않아도 CPU와 메모리를 사용합니다. 가져오기 중이나 게임을 불러오거나 저장하는 동안에는 실행되지 않습니다. 표시되는 내용은 바뀌지 않습니다.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>캐시에 사용할 메모리</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>표준</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>많이</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>'많이'로 하면 차트 계열, 계산된 통계, 정착지 종합 보고서를 더 많이 보관해 다시 열 때 더 빠릅니다. 차트 계열의 상한은 '표준'에서 약 {0} MB, '많이'에서 약 {1} MB이며, 나머지는 기록의 크기에 따라 다릅니다. 즉시 적용됩니다.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

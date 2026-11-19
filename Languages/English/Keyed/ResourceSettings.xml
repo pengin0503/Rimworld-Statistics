@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>PC resources used for processing</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Saves read at once during an import</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Standard ({0} at once)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>More ({0} at once, below the game's priority)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Manual ({0} at once, below the game's priority)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Saves read at once: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>Applies from the next import. Reading more saves at once makes an import faster but uses more CPU and memory while it runs. More and Manual run the reading threads below the game's priority (this has no effect on Linux). Logical processors on this PC: {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Precompute statistics in the background</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Opens the record on the title screen and, shortly after it changes (an import or a save), works out in advance what the Lifetime statistics window and, in play, this colony's summary report need first, so they open faster. This uses CPU and memory even if you never open them. It does not run during an import or while the game loads or saves. What is shown does not change.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Memory used for caches</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Standard</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>More</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>More keeps more chart series, calculated statistics and colony summary reports, so opening them again is faster. Chart series are limited to about {0} MB with Standard and {1} MB with More; the rest depends on the size of your record. Applies immediately.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

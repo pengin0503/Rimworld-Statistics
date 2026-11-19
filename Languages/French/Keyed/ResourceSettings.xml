@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>Ressources du PC utilisées pour le traitement</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Sauvegardes lues en même temps pendant une importation</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Standard ({0} à la fois)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>Plus ({0} à la fois, priorité inférieure au jeu)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Manuel ({0} à la fois, priorité inférieure au jeu)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Sauvegardes lues en même temps : {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>S'applique à la prochaine importation. Lire plus de sauvegardes à la fois accélère l'importation, mais utilise plus de processeur et de mémoire pendant qu'elle tourne. Plus et Manuel font tourner les fils de lecture avec une priorité inférieure à celle du jeu (sans effet sous Linux). Processeurs logiques de ce PC : {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Précalculer les statistiques en arrière-plan</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Ouvre le registre sur l'écran titre et, peu après chaque changement (importation ou sauvegarde), calcule à l'avance ce dont la fenêtre des statistiques globales et, en jeu, le rapport de cette colonie ont besoin en premier, pour qu'ils s'ouvrent plus vite. Cela utilise du processeur et de la mémoire même si vous ne les ouvrez jamais. Rien ne tourne pendant une importation ni pendant que le jeu charge ou sauvegarde. Ce qui est affiché ne change pas.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Mémoire utilisée pour les caches</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Standard</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>Plus</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>Plus conserve davantage de séries de graphiques, de statistiques calculées et de rapports de colonie, pour les rouvrir plus vite. Les séries de graphiques sont limitées à environ {0} Mo en Standard et {1} Mo en Plus ; le reste dépend de la taille de votre registre. S'applique immédiatement.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

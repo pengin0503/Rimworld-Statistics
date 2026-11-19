@@ -43,6 +43,7 @@ Steam Workshop（PublishedFileId: `3837802361`）に掲載するための説明�
 [*]タイトル画面の[b]「通算統計」[/b]、プレイ中の Esc メニュー[b]「現在のコロニーの統計」[/b]、または [b]オプション → キーボード設定[/b] で割り当てたショートカットキーからいつでも開けます。
 [*]画面上部の[b]「全コロニー」[/b]からグループやスマートグループを選択でき、[b]「コロニー」[/b]タブで表示名の変更や[b]「合計から外す」[/b]を設定できます。
 [*]ウィンドウの大きさ、自動取り込み、開発者モード中のエンディング集計、各統計単位の記録ON/OFFは [b]オプション → MOD設定 → 通算統計（Rimworld Statistics）[/b] から変更できます（記録対象のON/OFFは再起動不要でプレイ中のコロニーにも即時反映されます）。
+[*]同じ画面の「処理に使うPCの資源」で、取り込みで同時に読むセーブの数、統計のバックグラウンド事前計算、キャッシュに使うメモリを選べます。初期値は従来どおりで、記録・表示される内容は変わりません。
 [/list]
 
 [h2]統計の記録範囲と注意事項[/h2]
@@ -111,6 +112,7 @@ Mod-specific statistics are built directly into Rimworld Statistics—no separat
 [*]Open via [b]"Lifetime stats"[/b] on the title screen, [b]"Current colony stats"[/b] in the in-game Esc menu, or custom hotkeys under [b]Options → Keyboard configuration[/b].
 [*]Use the [b]"All colonies"[/b] dropdown in the header to select custom groups or Smart Groups, and set custom colony display names or check [b]"Exclude"[/b] in the [b]Colonies[/b] tab.
 [*]Open [b]Options → Mod Settings → Rimworld Statistics[/b] to change window size, automatic import, dev-mode ending counting, or individual statistic units (unit toggles take effect immediately without restarting, even mid-session).
+[*]In the same screen, [b]PC resources used for processing[/b] sets how many saves an import reads at once, background precomputation of statistics, and how much memory the caches use. The defaults keep the previous behaviour; what is recorded or shown does not change.
 [/list]
 
 [h2]Recording Scope & Important Notes[/h2]

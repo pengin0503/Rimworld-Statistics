@@ -71,7 +71,8 @@ Cross-save, cross-colony lifetime statistics viewer on the title screen and in-g
    - **2指標散布図**では任意の2項目（総量または `/day`）をX軸・Y軸に選び、データ状態・エンディング到達有無・パーマデス・難易度・ストーリーテラーでドット色を切り替えられます。
    - **総括レポート**からはオフライン静的HTML（年表セクション統合）、**コロニー年表**からは単体Markdown（`.md`）／HTML（`.html`）を `exports/` 配下へ出力できます。
 5. **MOD設定**  
-   `オプション` → `MOD設定` → **「通算統計（Rimworld Statistics）」** から、ウィンドウの大きさ（標準／大／特大／画面に合わせる）、タイトル画面での自動取り込み、開発者モード中のエンディング集計、各統計単位の記録ON/OFFを変更できます。統計単位のON/OFFは**ゲームを再起動せず、プレイ中のコロニーにも即時反映**されます。
+   `オプション` → `MOD設定` → **「通算統計（Rimworld Statistics）」** から、ウィンドウの大きさ（標準／大／特大／画面に合わせる）、タイトル画面での自動取り込み、開発者モード中のエンディング集計、各統計単位の記録ON/OFFを変更できます。統計単位のON/OFFは**ゲームを再起動せず、プレイ中のコロニーにも即時反映**されます。  
+   **「処理に使うPCの資源」**では、取り込みで同時に読むセーブの数（標準／多め／手動）、統計のバックグラウンド事前計算、キャッシュに使うメモリ（標準／多め）を選べます。初期値はすべて従来どおりの動作で、変わるのは同時に処理する量と保持する量だけです（記録・表示される内容は変わりません）。詳細と計測値は [docs/performance/2026-11-19-processing-resources.md](docs/performance/2026-11-19-processing-resources.md) を参照してください。
 
 ### 対応MOD
 
@@ -198,7 +199,8 @@ If you previously used standalone statistics add-ons (for Hospitality, Recruitme
    - Open the **2-Metric Scatter Plot** to plot any two metrics (totals or `/day` rates) and color colony dots by Data state, Ending reached, Permadeath, Difficulty, or Storyteller.
    - Export offline static HTML reports (with integrated chronicles) from the **Colony Summary Report**, or standalone Markdown (`.md`) / HTML (`.html`) timelines from the **Colony Chronicle** into `exports/`.
 5. **Mod Settings**  
-   Open `Options` → `Mod Settings` → **Rimworld Statistics** to configure **Statistics window size** (Standard, Large, Extra large, Fit screen), automatic title-screen save import, dev-mode ending counting, and per-unit recording toggles. Toggling individual statistic units takes effect **immediately without restarting the game**, including in an active colony.
+   Open `Options` → `Mod Settings` → **Rimworld Statistics** to configure **Statistics window size** (Standard, Large, Extra large, Fit screen), automatic title-screen save import, dev-mode ending counting, and per-unit recording toggles. Toggling individual statistic units takes effect **immediately without restarting the game**, including in an active colony.  
+   **PC resources used for processing** lets you choose how many saves an import reads at once (Standard, More, Manual), background precomputation of statistics, and how much memory the caches use (Standard, More). Every default keeps the previous behaviour; only how much work runs at once and how much is kept in memory change, never what is recorded or shown. See [docs/performance/2026-11-19-processing-resources.md](docs/performance/2026-11-19-processing-resources.md) for details and measurements.
 
 ### Supported Mods
 

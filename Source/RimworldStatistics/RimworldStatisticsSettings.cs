@@ -18,6 +18,22 @@ public sealed class RimworldStatisticsSettings : ModSettings
     public bool showRecordedExperimental = false;
     // UI presentation choices only: groups and favourites never enter profile.json.
     public string viewPreferencesJson = "";
+    // Processing resources. The defaults keep exactly what the MOD did before these settings existed; they change only how
+    // much work runs at once and what is kept in memory, never what is read, recorded or shown.
+    public int importThreadMode = (int)ImportThreadMode.Standard;
+    public int importThreadsManual = DefaultManualImportThreads;
+    public bool precomputeStatistics = false;
+    public int memoryUseMode = (int)MemoryUseMode.Standard;
+
+    /// <summary>What the manual thread count starts at: the standard count of this PC, so choosing Manual changes nothing yet.</summary>
+    public static int DefaultManualImportThreads => ResourcePolicy.StandardImportThreads(Environment.ProcessorCount);
+
+    public ImportThreadMode ImportThreads => ResourcePolicy.ParseImportThreadMode(importThreadMode);
+
+    public MemoryUseMode MemoryUse => ResourcePolicy.ParseMemoryUseMode(memoryUseMode);
+
+    /// <summary>The cache sizes these settings stand for.</summary>
+    public CacheLimits CacheLimits => ResourcePolicy.Caches(MemoryUse, precomputeStatistics);
 
     /// <summary>User's desired acquisition choices; UI edits are applied to the current game immediately.</summary>
     public ExperimentalSelection DesiredSelection => new(experimentalEnabled, experimentalUnitIds.ToArray());
@@ -33,6 +49,10 @@ public sealed class RimworldStatisticsSettings : ModSettings
         Scribe_Collections.Look(ref experimentalUnitIds, "experimentalUnitIds", LookMode.Value);
         Scribe_Values.Look(ref showRecordedExperimental, "showRecordedExperimental", false);
         Scribe_Values.Look(ref viewPreferencesJson, "viewPreferencesJson", "");
+        Scribe_Values.Look(ref importThreadMode, "importThreadMode", (int)ImportThreadMode.Standard);
+        Scribe_Values.Look(ref importThreadsManual, "importThreadsManual", DefaultManualImportThreads);
+        Scribe_Values.Look(ref precomputeStatistics, "precomputeStatistics", false);
+        Scribe_Values.Look(ref memoryUseMode, "memoryUseMode", (int)MemoryUseMode.Standard);
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
             experimentalUnitIds ??= experimentalEnabled
                 ? new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken }

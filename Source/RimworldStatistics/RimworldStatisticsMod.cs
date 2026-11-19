@@ -115,6 +115,8 @@ public sealed class RimworldStatisticsMod : Mod
                 Find.WindowStack.Add(new RimWorld.Dialog_KeyBindings());
             }
             listing.Gap(8f);
+            DrawResourceSettings(listing);
+            listing.Gap(8f);
             listing.CheckboxLabeled("RWS_Exp_Enable".Translate(), ref Settings.experimentalEnabled);
             listing.Label("RWS_Exp_Warning".Translate());
             var buttons = listing.GetRect(28f);
@@ -216,6 +218,85 @@ public sealed class RimworldStatisticsMod : Mod
         => MetricRegistry.ImplementedCatalog.Where(d => d.Acquisition == unitId)
             .Concat(ModProviderAdapters.KnownDescriptors.Where(d => d.AcquisitionId == unitId).Select(d => d.ToDefinition()))
             .Select(UI.MetricText.Label);
+
+    private static CacheLimits? appliedCacheLimits;
+
+    /// <summary>
+    /// The processing-resource settings: how many saves an import reads at once, background precomputation and how much the
+    /// caches keep. Standard everywhere is what the MOD did before they existed.
+    /// </summary>
+    private static void DrawResourceSettings(Listing_Standard listing)
+    {
+        var processors = Environment.ProcessorCount;
+        listing.Label("RWS_Setting_ResourcesHeading".Translate());
+
+        listing.Label("RWS_Setting_ImportThreads".Translate());
+        var mode = Settings.ImportThreads;
+        var threadButton = listing.GetRect(30f);
+        if (Widgets.ButtonText(new Rect(threadButton.x, threadButton.y, Math.Min(threadButton.width, 420f), threadButton.height),
+                ImportThreadModeLabel(mode, processors)))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(ImportThreadModeLabel(ImportThreadMode.Standard, processors),
+                    () => Settings.importThreadMode = (int)ImportThreadMode.Standard),
+                new(ImportThreadModeLabel(ImportThreadMode.More, processors),
+                    () => Settings.importThreadMode = (int)ImportThreadMode.More),
+                new(ImportThreadModeLabel(ImportThreadMode.Manual, processors),
+                    () => Settings.importThreadMode = (int)ImportThreadMode.Manual),
+            }));
+        }
+        if (mode == ImportThreadMode.Manual)
+        {
+            var max = ResourcePolicy.MaxManualImportThreads(processors);
+            var current = Math.Clamp(Settings.importThreadsManual, 1, max);
+            var chosen = listing.SliderLabeled("RWS_Setting_ImportThreadsCount".Translate(current), current, 1f, max);
+            Settings.importThreadsManual = Math.Clamp((int)Math.Round(chosen), 1, max);
+        }
+        listing.Label("RWS_Setting_ImportThreadsHelp".Translate(processors));
+
+        listing.Gap(6f);
+        listing.CheckboxLabeled("RWS_Setting_Precompute".Translate(), ref Settings.precomputeStatistics);
+        listing.Label("RWS_Setting_PrecomputeHelp".Translate());
+
+        listing.Gap(6f);
+        listing.Label("RWS_Setting_MemoryUse".Translate());
+        var memoryButton = listing.GetRect(30f);
+        if (Widgets.ButtonText(new Rect(memoryButton.x, memoryButton.y, Math.Min(memoryButton.width, 420f), memoryButton.height),
+                MemoryUseLabel(Settings.MemoryUse)))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(MemoryUseLabel(MemoryUseMode.Standard), () => Settings.memoryUseMode = (int)MemoryUseMode.Standard),
+                new(MemoryUseLabel(MemoryUseMode.More), () => Settings.memoryUseMode = (int)MemoryUseMode.More),
+            }));
+        }
+        listing.Label("RWS_Setting_MemoryUseHelp".Translate(ResourcePolicy.ChartCacheMiB(ResourcePolicy.StandardCaches),
+            ResourcePolicy.ChartCacheMiB(ResourcePolicy.MoreCaches)));
+
+        // Applied at once, without waiting for the record: only what the caches keep changes.
+        var limits = Settings.CacheLimits;
+        if (appliedCacheLimits != limits)
+        {
+            appliedCacheLimits = limits;
+            ProfileService.ApplyResourceSettings();
+        }
+    }
+
+    private static string ImportThreadModeLabel(ImportThreadMode mode, int processors)
+    {
+        var count = ResourcePolicy.ImportThreads(mode, Settings.importThreadsManual, processors);
+        return mode switch
+        {
+            ImportThreadMode.More => "RWS_Setting_ImportThreadsMore".Translate(count),
+            ImportThreadMode.Manual => "RWS_Setting_ImportThreadsManual".Translate(count),
+            _ => "RWS_Setting_ImportThreadsStandard".Translate(count),
+        };
+    }
+
+    private static string MemoryUseLabel(MemoryUseMode mode) => mode == MemoryUseMode.More
+        ? "RWS_Setting_MemoryUseMore".Translate()
+        : "RWS_Setting_MemoryUseStandard".Translate();
 
     private static string WindowSizeLabel(StatisticsWindowSizePreset preset) => preset switch
     {

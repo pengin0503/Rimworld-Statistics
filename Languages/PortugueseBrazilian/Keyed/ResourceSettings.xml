@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Setting_ResourcesHeading>Recursos do PC usados no processamento</RWS_Setting_ResourcesHeading>
+  <RWS_Setting_ImportThreads>Jogos salvos lidos ao mesmo tempo durante uma importação</RWS_Setting_ImportThreads>
+  <RWS_Setting_ImportThreadsStandard>Padrão ({0} por vez)</RWS_Setting_ImportThreadsStandard>
+  <RWS_Setting_ImportThreadsMore>Mais ({0} por vez, prioridade abaixo do jogo)</RWS_Setting_ImportThreadsMore>
+  <RWS_Setting_ImportThreadsManual>Manual ({0} por vez, prioridade abaixo do jogo)</RWS_Setting_ImportThreadsManual>
+  <RWS_Setting_ImportThreadsCount>Jogos salvos lidos ao mesmo tempo: {0}</RWS_Setting_ImportThreadsCount>
+  <RWS_Setting_ImportThreadsHelp>Vale a partir da próxima importação. Ler mais jogos salvos por vez deixa a importação mais rápida, mas usa mais CPU e memória enquanto ela roda. Mais e Manual rodam as threads de leitura com prioridade abaixo da do jogo (sem efeito no Linux). Processadores lógicos deste PC: {0}.</RWS_Setting_ImportThreadsHelp>
+  <RWS_Setting_Precompute>Pré-calcular as estatísticas em segundo plano</RWS_Setting_Precompute>
+  <RWS_Setting_PrecomputeHelp>Abre o registro na tela inicial e, pouco depois de cada mudança (importação ou salvamento), calcula com antecedência o que a janela de estatísticas totais e, durante o jogo, o relatório desta colônia precisam primeiro, para que abram mais rápido. Usa CPU e memória mesmo que você nunca os abra. Não roda durante uma importação nem enquanto o jogo carrega ou salva. O que é exibido não muda.</RWS_Setting_PrecomputeHelp>
+  <RWS_Setting_MemoryUse>Memória usada para caches</RWS_Setting_MemoryUse>
+  <RWS_Setting_MemoryUseStandard>Padrão</RWS_Setting_MemoryUseStandard>
+  <RWS_Setting_MemoryUseMore>Mais</RWS_Setting_MemoryUseMore>
+  <RWS_Setting_MemoryUseHelp>Mais guarda mais séries de gráficos, estatísticas calculadas e relatórios de colônia, para que abram de novo mais rápido. As séries de gráficos ficam limitadas a cerca de {0} MB em Padrão e {1} MB em Mais; o resto depende do tamanho do seu registro. Vale imediatamente.</RWS_Setting_MemoryUseHelp>
+</LanguageData>

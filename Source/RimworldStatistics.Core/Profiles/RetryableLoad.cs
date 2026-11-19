@@ -50,6 +50,13 @@ public sealed class RetryableLoad<T> where T : class
         return null;
     }
 
+    /// <summary>The value if a load already succeeded; never starts one (unlike <see cref="TryGet"/>).</summary>
+    public T? TryPeek()
+    {
+        lock (_gate)
+            return _task is { Status: TaskStatus.RanToCompletion } loaded ? loaded.Result : null;
+    }
+
     /// <summary>Puts <paramref name="task"/> in place of the current load (a restore hands over the session it opens).</summary>
     public void Replace(Task<T> task)
     {
