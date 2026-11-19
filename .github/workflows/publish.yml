@@ -12,6 +12,14 @@ on:
         required: true
         type: boolean
         default: false
+      replace_existing:
+        description: >-
+          Replace an existing release instead of creating one. Only the release named in About.xml qualifies. With
+          publish, its tag moves to this commit and its ZIP and checksum are replaced; the old ones are kept as an
+          artifact. Without publish, only checks that the replacement is possible.
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -28,13 +36,14 @@ jobs:
     env:
       UseNuGetRefs: 'true'
       RELEASE_TAG: ${{ inputs.release_tag }}
+      REPLACE_EXISTING: ${{ inputs.replace_existing }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '10.0.x'
 
-      - name: Validate version and reject an existing tag or release
+      - name: Validate version and reject an existing tag or release (unless replacing it)
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -44,15 +53,36 @@ jobs:
             echo "Expected a stable vX.Y.Z tag." >&2
             exit 1
           fi
-          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
-            echo "Release already exists; refusing overwrite." >&2
-            exit 1
-          fi
-          status=0
-          git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null || status=$?
-          if [ "$status" -ne 2 ]; then
-            echo "Tag already exists or its absence could not be verified." >&2
-            exit 1
+          if [ "$REPLACE_EXISTING" = "true" ]; then
+            # Replacing needs the published release and its tag; the About.xml check below limits it to the release
+            # of the version on main.
+            if ! release=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG"); then
+              echo "No release $RELEASE_TAG to replace." >&2
+              exit 1
+            fi
+            if [ "$(jq -r '.draft' <<<"$release")" != false ] || [ "$(jq -r '.prerelease' <<<"$release")" != false ]; then
+              echo "Only a published stable release can be replaced." >&2
+              exit 1
+            fi
+            if [ "$(jq -r '.immutable // false' <<<"$release")" != false ]; then
+              echo "Release $RELEASE_TAG is immutable; its assets cannot be replaced." >&2
+              exit 1
+            fi
+            if ! git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null; then
+              echo "Tag $RELEASE_TAG is missing; refusing to replace." >&2
+              exit 1
+            fi
+          else
+            if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+              echo "Release already exists; refusing overwrite." >&2
+              exit 1
+            fi
+            status=0
+            git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" >/dev/null || status=$?
+            if [ "$status" -ne 2 ]; then
+              echo "Tag already exists or its absence could not be verified." >&2
+              exit 1
+            fi
           fi
           python3 - "$RELEASE_TAG" <<'PY_RELEASE'
           import sys
@@ -142,7 +172,7 @@ jobs:
           if-no-files-found: error
 
       - name: Create tag and release
-        if: ${{ inputs.publish }}
+        if: ${{ inputs.publish && !inputs.replace_existing }}
         shell: bash
         env:
           GH_TOKEN: ${{ github.token }}
@@ -165,3 +195,62 @@ jobs:
           tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')
           test "$tag_sha" = "$GITHUB_SHA"
           echo "$RELEASE_TAG published at $GITHUB_SHA with host ZIP and checksum."
+
+      - name: Download the assets about to be replaced
+        id: previous
+        if: ${{ inputs.publish && inputs.replace_existing }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          previous="$RUNNER_TEMP/replaced"
+          mkdir -p "$previous"
+          gh release download "$RELEASE_TAG" --dir "$previous" --pattern "RimworldStatistics-$RELEASE_TAG.*"
+          sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')
+          echo "$sha" > "$previous/previous-tag-sha.txt"
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          ls -l "$previous"
+          echo "Previous $RELEASE_TAG tag: $sha"
+
+      - name: Keep the replaced assets
+        if: ${{ inputs.publish && inputs.replace_existing }}
+        uses: actions/upload-artifact@v4
+        with:
+          # Named by the commit the tag pointed to: a re-run after the tag has moved keeps the first copy.
+          name: RimworldStatistics-${{ inputs.release_tag }}-replaced-${{ steps.previous.outputs.sha }}
+          path: ${{ runner.temp }}/replaced
+          if-no-files-found: error
+          retention-days: 90
+          overwrite: true
+
+      - name: Move the tag and replace the release assets
+        if: ${{ inputs.publish && inputs.replace_existing }}
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          asset="RimworldStatistics-$RELEASE_TAG"
+          gh api -X PATCH "repos/$GITHUB_REPOSITORY/git/refs/tags/$RELEASE_TAG" -f sha="$GITHUB_SHA" -F force=true >/dev/null
+          gh release upload "$RELEASE_TAG" "$RUNNER_TEMP/$asset.zip" "$RUNNER_TEMP/$asset.sha256" --clobber
+          gh release edit "$RELEASE_TAG" \
+            --target "$GITHUB_SHA" \
+            --title "Rimworld Statistics $RELEASE_TAG" \
+            --notes-file "docs/releases/$RELEASE_TAG.md" \
+            --latest
+          release=$(gh api "repos/$GITHUB_REPOSITORY/releases/tags/$RELEASE_TAG")
+          test "$(jq -r '.tag_name' <<<"$release")" = "$RELEASE_TAG"
+          test "$(jq -r '.draft' <<<"$release")" = false
+          test "$(jq -r '.prerelease' <<<"$release")" = false
+          names=$(jq -r '[.assets[].name] | sort | join(",")' <<<"$release")
+          test "$names" = "$asset.sha256,$asset.zip"
+          tag_sha=$(gh api "repos/$GITHUB_REPOSITORY/git/ref/tags/$RELEASE_TAG" --jq '.object.sha')
+          test "$tag_sha" = "$GITHUB_SHA"
+          # The published files must be byte for byte the ones verified above.
+          check="$RUNNER_TEMP/published"
+          mkdir -p "$check"
+          gh release download "$RELEASE_TAG" --dir "$check" --pattern "$asset.*"
+          cmp "$check/$asset.zip" "$RUNNER_TEMP/$asset.zip"
+          cmp "$check/$asset.sha256" "$RUNNER_TEMP/$asset.sha256"
+          echo "$RELEASE_TAG replaced: tag $(cat "$RUNNER_TEMP/replaced/previous-tag-sha.txt") -> $GITHUB_SHA, host ZIP and checksum re-uploaded."
