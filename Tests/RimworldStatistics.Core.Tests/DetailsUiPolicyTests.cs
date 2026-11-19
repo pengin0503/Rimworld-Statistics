@@ -120,6 +120,77 @@ public sealed class DetailsUiPolicyTests
         Assert.True(breakdown.ChartIcon.IsEmpty);
     }
 
+    // Widest state and count texts (headers included): Japanese "実験的 · 部分（欠けあり）" and "値あり / 対象" as measured
+    // on an in-game screenshot, English "Experimental · partial (gaps)" and "Known / colonies" estimated with Arial
+    // metrics at the same scale, and short ones for a list with no experimental row.
+    [Theory]
+    [InlineData(212f, 111f)]
+    [InlineData(242f, 146f)]
+    [InlineData(95f, 60f)]
+    public void DetailsTableLayout_StateAndCountColumnsFitTheirWidestTextWithOnlyTheCellPadding(float stateText, float countText)
+    {
+        foreach (var available in new[] { 900f, 1245f, 1520f, 2200f })
+        {
+            var plan = DetailsTableLayout.PlanColumns(available, stateText, countText);
+            Assert.Equal(available, plan.TotalWidth, 3);
+            Assert.False(plan.NeedsHorizontalScroll(available));
+            foreach (var (column, text) in new[] { (2, stateText), (3, countText) })
+            {
+                var content = DetailsTableLayout.MeasureColumn(column, 0f, plan.Widths[column], 0f, isMetricRow: true, hasExpand: true).ContentWidth;
+                // Never cut, and no more than the slack left over: the column does not grow with the window.
+                Assert.InRange(content - text, 0f, DetailsTableLayout.FitSlack + 0.01f);
+                Assert.Equal(DetailsTableLayout.FittedWidth(column, text), plan.Widths[column]);
+            }
+        }
+    }
+
+    [Theory]
+    [InlineData(212f, 111f)]
+    [InlineData(242f, 146f)]
+    [InlineData(95f, 60f)]
+    public void DetailsTableLayout_ValueColumnTakesTheLargestShareOfTheRemainingWidth(float stateText, float countText)
+    {
+        // From the standard 1000-wide window up to a wide screen, the value column is the widest of the four.
+        foreach (var available in new[] { 900f, 1000f, 1245f, 1320f, 1520f, 2200f })
+        {
+            var widths = DetailsTableLayout.PlanColumns(available, stateText, countText).Widths;
+            Assert.Equal(1, Array.IndexOf(widths, widths.Max()));
+            var nameExtra = widths[0] - DetailsTableLayout.NameMinWidth;
+            var valueExtra = widths[1] - DetailsTableLayout.ValueMinWidth;
+            Assert.Equal(DetailsTableLayout.ValueWeight / DetailsTableLayout.NameWeight, valueExtra / nameExtra, 3);
+        }
+        // At any width the value column is at least as wide as the name column.
+        for (var available = 0f; available <= 3000f; available += 25f)
+        {
+            var widths = DetailsTableLayout.PlanColumns(available, stateText, countText).Widths;
+            Assert.True(widths[1] >= widths[0], $"value {widths[1]} < name {widths[0]} at {available}");
+        }
+    }
+
+    [Fact]
+    public void DetailsTableLayout_TooNarrowTableKeepsEveryMinimumAndScrollsSideways()
+    {
+        var plan = DetailsTableLayout.PlanColumns(500f, 212f, 111f);
+        Assert.Equal(new[]
+        {
+            DetailsTableLayout.NameMinWidth,
+            DetailsTableLayout.ValueMinWidth,
+            DetailsTableLayout.FittedWidth(2, 212f),
+            DetailsTableLayout.FittedWidth(3, 111f),
+        }, plan.Widths);
+        Assert.True(plan.NeedsHorizontalScroll(500f));
+    }
+
+    [Theory]
+    [InlineData(-10f)]
+    [InlineData(float.NaN)]
+    [InlineData(float.PositiveInfinity)]
+    public void DetailsTableLayout_FittedWidthTreatsAnUnusableMeasurementAsEmptyText(float textWidth)
+    {
+        Assert.Equal(DetailsTableLayout.FittedWidth(2, 0f), DetailsTableLayout.FittedWidth(2, textWidth));
+        Assert.True(float.IsFinite(DetailsTableLayout.PlanColumns(1000f, textWidth, textWidth).TotalWidth));
+    }
+
     [Fact]
     public void DetailsRowHeights_PlainRowsAreLowerAndTheProviderRowKeepsBothLines()
     {

@@ -89,8 +89,45 @@ public static class DetailsTableLayout
     public const float ChartIconSize = 12f;
     public const float ChartIconMarginRight = 6f;
 
+    // The name and value columns share what the state and count columns leave. The value column starts as wide as the
+    // name column and takes the larger share, so it is never the narrower of the two.
+    public const float NameMinWidth = 150f;
+    public const float ValueMinWidth = 150f;
+    public const float NameWeight = 2f;
+    public const float ValueWeight = 3f;
+
+    // Room left over in a fitted column beyond its widest text, so rounding never cuts that text with "...":
+    // GenText.Truncate keeps a string whose measured width is at most the cell's content width.
+    public const float FitSlack = 2f;
+
     public static CellAlignment ColumnAlignment(int columnIndex)
         => columnIndex is 1 or 3 ? CellAlignment.Right : CellAlignment.Left;
+
+    /// <summary>
+    /// The width a column needs so that <see cref="MeasureColumn"/> leaves <paramref name="textWidth"/> for its text:
+    /// the cell's own padding plus <see cref="FitSlack"/>, and nothing more.
+    /// </summary>
+    public static float FittedWidth(int columnIndex, float textWidth)
+    {
+        var padding = MeasureColumn(columnIndex, 0f, 0f, 0f, isMetricRow: false, hasExpand: false);
+        var text = float.IsFinite(textWidth) ? Math.Max(0f, textWidth) : 0f;
+        return text + padding.LeftOffset + padding.RightPad + FitSlack;
+    }
+
+    /// <summary>
+    /// Column widths of the Details table. The state column (2) and the count column (3) are only as wide as the widest
+    /// text they show, header included; the name (0) and value (1) columns split the rest 2:3. A table narrower than the
+    /// minimums keeps them and scrolls sideways.
+    /// </summary>
+    public static ColumnPlan PlanColumns(float available, float stateTextWidth, float countTextWidth)
+        => ColumnLayout.Resolve(
+            [
+                new ColumnSpec(NameMinWidth, NameWeight),
+                new ColumnSpec(ValueMinWidth, ValueWeight),
+                new ColumnSpec(FittedWidth(2, stateTextWidth), 0f),
+                new ColumnSpec(FittedWidth(3, countTextWidth), 0f),
+            ],
+            available);
 
     public static DetailsColumnMetrics MeasureColumn(
         int columnIndex,

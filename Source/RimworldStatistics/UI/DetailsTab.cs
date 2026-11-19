@@ -19,6 +19,9 @@ public static class DetailsTab
     private static Action? persistFavorites;
     private static float tableWidth;
     private static object? tableLanguage;
+    // The widest state and count texts of the current rows (headers included), measured when the rows are built.
+    private static float stateTextWidth;
+    private static float countTextWidth;
     private static (string Text, string? Full)[][] cellCache = [];
     private static Func<string>?[] tipCache = [];
     private static Func<string>?[] chartTipCache = [];
@@ -189,18 +192,7 @@ public static class DetailsTab
         {
             tableWidth = available;
             tableLanguage = language;
-            var experimental = (string)"RWS_Exp_ExperimentalRow".Translate();
-            var widestState = new[]
-            {
-                (string)"RWS_Coverage_Complete".Translate(),
-                (string)"RWS_Coverage_Partial".Translate(),
-                (string)"RWS_Coverage_History".Translate(),
-                (string)"RWS_Coverage_SnapshotOnly".Translate(),
-                (string)"RWS_Coverage_NotApplicable".Translate(),
-                (string)"RWS_Coverage_Unknown".Translate(),
-            }.Max(s => Text.CalcSize(experimental + " · " + s).x);
-            var stateWidth = Math.Clamp(widestState + 12f, 115f, Math.Max(145f, available * 0.30f));
-            tablePlan = ColumnLayout.Resolve([new(150, 4), new(90, 3), new(stateWidth, 2), new(96, 1)], available);
+            tablePlan = DetailsTableLayout.PlanColumns(available, stateTextWidth, countTextWidth);
             Array.Clear(cellCache);
             Array.Clear(tipCache);
             Array.Clear(chartTipCache);
@@ -243,7 +235,25 @@ public static class DetailsTab
         cellCache = new (string, string?)[built.Count][];
         tipCache = new Func<string>?[built.Count];
         chartTipCache = new Func<string>?[built.Count];
+        // The state and count columns fit the widest text of the rows just built, so the value column gets the rest.
+        stateTextWidth = WidestText(StateHeader(), built.Select(line => line.State));
+        countTextWidth = WidestText(CountHeader(), built.Select(line => line.Count));
+        tablePlan = null;
     }
+
+    private static float WidestText(string header, IEnumerable<string> texts)
+    {
+        var widest = Text.CalcSize(header).x;
+        foreach (var text in new HashSet<string>(texts, StringComparer.Ordinal))
+            widest = Math.Max(widest, Text.CalcSize(text).x);
+        return widest;
+    }
+
+    private static string StateHeader() => "RWS_Details_Col_State".Translate();
+
+    private static string CountHeader() => perColony
+        ? "RWS_Details_Col_Through".Translate()
+        : "RWS_Details_Col_Colonies".Translate();
 
     private static void ResetFilters(NumericView numeric, StatsResult stats, object? language)
     {
@@ -381,8 +391,8 @@ public static class DetailsTab
         {
             (string)"RWS_Details_Col_Name".Translate() + (!byValue ? (ascending ? " ▲" : " ▼") : ""),
             (string)"RWS_Details_Col_Value".Translate() + (byValue ? (ascending ? " ▲" : " ▼") : ""),
-            (string)"RWS_Details_Col_State".Translate(),
-            perColony ? (string)"RWS_Details_Col_Through".Translate() : (string)"RWS_Details_Col_Colonies".Translate(),
+            StateHeader(),
+            CountHeader(),
         };
         var x = rect.x;
         using (UiScopes.GuiState())
@@ -481,9 +491,8 @@ public static class DetailsTab
                 Text.Anchor = DetailsTableLayout.ColumnAlignment(c) == CellAlignment.Right
                     ? TextAnchor.MiddleRight
                     : TextAnchor.MiddleLeft;
-                GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind)
-                    : c == 1 ? MetricVisualStyle.ValueColor(line.VisualKind)
-                    : Color.white;
+                // Only the state column is colored; the state it names is never repeated in the value's color.
+                GUI.color = c == 2 ? MetricVisualStyle.StateColor(line.VisualKind) : Color.white;
                 if (c == 0 && line.ModSource is { } source)
                 {
                     Widgets.Label(new Rect(cell.x, cell.y, cell.width, DetailsRowHeights.TitleLineHeight), cells[c].Text);
