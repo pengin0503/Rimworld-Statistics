@@ -237,7 +237,7 @@ public sealed record GuidedAuditReport
         sb.AppendLine().AppendLine("## Guidance");
         foreach (var u in Units.Where(x => x.Action != "CROSS_CHECK_VALUES"))
             sb.AppendLine("- **" + u.Unit + "** (" + u.Action + "): " + u.Hint);
-        sb.AppendLine().AppendLine().AppendLine("## Automated cases (separate from 264 metric observations)");
+        sb.AppendLine().AppendLine().AppendLine($"## Automated cases (separate from {Metrics.Count} metric observations)");
         foreach (var c in Cases)
             sb.AppendLine($"- {c.CaseId} [{c.Outcome}, evidence={c.Evidence}]: expected={c.Expected}, actual={c.Actual}, hooks={c.Hooks}" +
                 (c.Note is null ? "" : ", note=" + c.Note.Replace("\r", " ").Replace("\n", " ")));

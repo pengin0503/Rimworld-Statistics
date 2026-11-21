@@ -81,11 +81,11 @@ PowerShell の実行ポリシーにより拒否された場合は、信頼でき
 | ファイル | 内容 |
 |---|---|
 | `RimworldStatistics-verify-guide.md` | **取得単位別に優先順**で原因・次の操作を示すレポート。自動ケースの結果、パッチ一覧、プレビュー値も含む |
-| `RimworldStatistics-verify-metrics.csv` | 全264項目を1行ずつ列挙。取得状態、対応操作、「未検証」を明示 |
+| `RimworldStatistics-verify-metrics.csv` | 全統計項目を1行ずつ列挙。取得状態、対応操作、「未検証」を明示 |
 | `RimworldStatistics-verify-report.json` | 前回レポートと比較するための機械可読ファイル。ゲーム・キャンペーン・バージョンが一致した場合だけ新規観測/消失を比較 |
 | `RimworldStatistics-verify.log` | 既存のケースログと今回の概要を追記 |
 
-`guide.md` で優先度の高い順に処理するだけで、毎回264個のログを手動検索する必要がなくなる。`Observed` は数値を見つけた意味であり**数値の正確性を保証しない**。`NotObserved` は未観測を意味し、不具合の断定ではない。`DlcUnavailable` はDLC不在による適用外であり失敗ではない。
+`guide.md` で優先度の高い順に処理するだけで、毎回全ログを手動検索する必要がなくなる。`Observed` は数値を見つけた意味であり**数値の正確性を保証しない**。`NotObserved` は未観測を意味し、不具合の断定ではない。`DlcUnavailable` はDLC不在による適用外であり失敗ではない。
 
 ## ビルドと導入
 
@@ -124,7 +124,7 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 **注意:** `medicine.hospital_bed` は同期呼出しから入院開始を確定できないため、開始しない場合は SKIP とします。これは本体の入院記録が正常だと検証できた意味ではありません。
 
-## 一括検証（264項目のカバレッジ監査）
+## 一括検証（全カタログ項目のカバレッジ監査）
 
 最短の手順は上記の **Windows用スクリプトを使った専用環境の起動**です。手動起動する場合は、Steam の起動オプションへ `-savedatafolder=C:\\rws-verify -rwsverify=all` を指定することもできます。起動後に **開発モード → Debug actions → RWS Verify → 1. Run guided full audit (MODIFIES TEST WORLD)** を選びます。
 
@@ -132,8 +132,8 @@ Windows では `RimWorldWin64.exe -savedatafolder=C:\rws-verify -rwsverify=all`�
 
 1. ゲームのバージョン、DLLハッシュ、Harmonyの適用先、全取得ゲートを記録する。
 2. 従来の自動ケース18件を一括実行する。研究・襲撃・Pawn操作などで **テスト用コロニーが変更される** ため、普段のセーブでは実行しない。
-3. 全264項目のカタログについて `OBSERVED`（記録済み数値あり）、`NOT_OBSERVED`（未観測）、`NOT_RECORDING`（取得ゲートなし）、`DLC_UNAVAILABLE`（DLC不在）、`DERIVED_ONLY`（ランキング等）を1行ずつ出力する。
-4. ケース別PASS/FAIL/SKIP/ERRORと264項目の状態別件数をログへ記録し、優先順レポート・CSV・JSONを生成する。
+3. 全実装済みカタログ（本体 322 項目＋統合 MOD 指標 132 項目）について `OBSERVED`（記録済み数値あり）、`NOT_OBSERVED`（未観測）、`NOT_RECORDING`（取得ゲートなし）、`DLC_UNAVAILABLE`（DLC不在）、`DERIVED_ONLY`（ランキング等）を1行ずつ出力する。
+4. ケース別PASS/FAIL/SKIP/ERRORと全カタログ項目の状態別件数をログへ記録し、優先順レポート・CSV・JSONを生成する。
 
 **重要:** OBSERVED は取得データの存在確認であり、正しい値かどうかは保証しません。イベントを一括で発生させても未観測になる項目や、数日経過・保存・再読み込みが必要な項目があります。実機の数値正確性・セーブ/ロード・TPS は別に検証する必要があり、全項目が自動でVerifiedになる機能ではありません。セーブ時スナップショットの項目を観測したい場合、一度**テスト用データへ正常に保存**してから再実行してください。ログはテストフォルダ内だけに出力され、公開用MODにはこの機能を入れません。
 

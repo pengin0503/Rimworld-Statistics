@@ -112,15 +112,13 @@ internal static class VgeHybridOutcomeStatistics
         wombHours = hours;
         wombFailure = failure;
         wombPower = power;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VgeHybridOutcomeStatistics), nameof(BeforeBirth)),
-                postfix: new HarmonyMethod(typeof(VgeHybridOutcomeStatistics), nameof(AfterBirth)));
+            patcher.Patch(tick, typeof(VgeHybridOutcomeStatistics), nameof(BeforeBirth), nameof(AfterBirth));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
             wombKind = wombProgress = wombHours = wombFailure = wombPower = null;
             throw;
         }
@@ -144,25 +142,19 @@ internal static class VgeHybridOutcomeStatistics
         converterProgress = progress;
         converterDuration = duration;
         converterContents = contents;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VgeHybridOutcomeStatistics), nameof(BeforeConversion)),
-                postfix: new HarmonyMethod(typeof(VgeHybridOutcomeStatistics), nameof(AfterConversion)));
+            patcher.Patch(tick, typeof(VgeHybridOutcomeStatistics), nameof(BeforeConversion), nameof(AfterConversion));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
             converterProgress = converterDuration = converterContents = null;
             throw;
         }
     }
 
-    private static bool CanObserve(string unit)
-        => MetricGates.IsRecording(unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve(string unit) => OptionalTransitionCallSite.Observing(unit);
 
     private static bool PlayerMap(ThingComp comp, out Map? map)
     {

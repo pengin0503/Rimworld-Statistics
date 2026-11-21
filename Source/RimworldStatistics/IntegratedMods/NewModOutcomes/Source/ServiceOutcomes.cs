@@ -92,20 +92,35 @@ internal static class ServiceOutcomes
 
     private static long Goods(Pawn buyer, ThingDef product, ThingDef? stuff)
     {
-        static IEnumerable<Thing> Items(Pawn pawn)
+        long total = 0;
+        if (buyer.inventory?.innerContainer is { } inventory)
         {
-            if (pawn.inventory is { } inventory)
-                foreach (var item in inventory.innerContainer)
-                    yield return item;
-            if (pawn.apparel is { } apparel)
-                foreach (var item in apparel.WornApparel)
-                    yield return item;
-            if (pawn.equipment is { } equipment)
-                foreach (var item in equipment.AllEquipmentListForReading)
-                    yield return item;
+            for (var i = 0; i < inventory.Count; i++)
+            {
+                var item = inventory[i];
+                if (item.def == product && item.Stuff == stuff)
+                    total += item.stackCount;
+            }
         }
-        return Items(buyer).Where(item => item.def == product && item.Stuff == stuff)
-            .Sum(item => (long)item.stackCount);
+        if (buyer.apparel?.WornApparel is { } apparel)
+        {
+            for (var i = 0; i < apparel.Count; i++)
+            {
+                var item = apparel[i];
+                if (item.def == product && item.Stuff == stuff)
+                    total += item.stackCount;
+            }
+        }
+        if (buyer.equipment?.AllEquipmentListForReading is { } equipment)
+        {
+            for (var i = 0; i < equipment.Count; i++)
+            {
+                var item = equipment[i];
+                if (item.def == product && item.Stuff == stuff)
+                    total += item.stackCount;
+            }
+        }
+        return total;
     }
 
     private static void BeforeSale(Pawn __0, Pawn __1, Thing __2, Building? __3, out Sale? __state)
@@ -141,16 +156,24 @@ internal static class ServiceOutcomes
     private static void BeforeMuseum(JobDriver __instance, JobCondition __0, out Def? __state)
     {
         __state = null;
-        if (__0 != JobCondition.Succeeded || !GameFacts.IsPlayer(__instance.pawn))
+        if (__0 != JobCondition.Succeeded || !OutcomeMetric.Observing(Museum))
             return;
-        var type = __instance.GetType();
-        if ((type == museumLearning || type == museumVisit) && OutcomeMetric.Observing(Museum))
-            __state = __instance.job?.def;
+        try
+        {
+            if (!GameFacts.IsPlayer(__instance.pawn))
+                return;
+            var type = __instance.GetType();
+            if (type == museumLearning || type == museumVisit)
+                __state = __instance.job?.def;
+        }
+        catch (Exception error) { LiveMetrics.Fail(Museum, error); }
     }
 
     private static void AfterMuseum(bool __runOriginal, Def? __state)
     {
-        if (__runOriginal && __state is { } job)
-            OutcomeMetric.Record(Museum, job, breakdown: true);
+        if (!__runOriginal || __state is not { } job)
+            return;
+        try { OutcomeMetric.Record(Museum, job, breakdown: true); }
+        catch (Exception error) { LiveMetrics.Fail(Museum, error); }
     }
 }

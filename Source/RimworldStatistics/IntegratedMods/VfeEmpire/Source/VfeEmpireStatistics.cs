@@ -90,15 +90,13 @@ internal static class VfeEmpireStatistics
         pendingProperty = pending;
         bestowedProperty = bestowed;
         honorDefField = defField;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(apply,
-                prefix: new HarmonyMethod(typeof(VfeEmpireStatistics), nameof(BeforeRitual)),
-                postfix: new HarmonyMethod(typeof(VfeEmpireStatistics), nameof(AfterRitual)));
+            patcher.Patch(apply, typeof(VfeEmpireStatistics), nameof(BeforeRitual), nameof(AfterRitual));
         }
         catch
         {
-            harmony.Unpatch(apply, HarmonyPatchType.All, harmony.Id);
             pawnWithRoleMethod = honorsMethod = null;
             pendingProperty = bestowedProperty = null;
             honorDefField = null;
@@ -106,11 +104,7 @@ internal static class VfeEmpireStatistics
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static object[] Enumerate(PropertyInfo property, object instance)
         => (property.GetValue(instance) as IEnumerable)?.Cast<object>().ToArray() ?? [];

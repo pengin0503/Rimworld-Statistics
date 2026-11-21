@@ -55,9 +55,11 @@ public static class MentalBreakMetricPatch
 {
     public static void Postfix(bool __result, MentalBreakDef breakDef, Pawn ___pawn)
     {
+        if (!__result || breakDef is null || !LiveMetrics.IsRecordingUnit(MentalProbe.Unit))
+            return;
         try
         {
-            if (!__result || breakDef is null || !GameFacts.IsMember(___pawn)
+            if (!GameFacts.IsMember(___pawn)
                 || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
                 return;
             MentalFamily.Break(s, breakDef.defName, success: ___pawn.InMentalState,
@@ -76,9 +78,11 @@ public static class InspirationMetricPatch
 {
     public static void Postfix(bool __result, InspirationDef def, string reason, InspirationHandler __instance)
     {
+        if (!__result || def is null || __instance is null || !LiveMetrics.IsRecordingUnit(MentalProbe.Unit))
+            return;
         try
         {
-            if (!__result || def is null || __instance is null || !GameFacts.IsMember(__instance.pawn)
+            if (!GameFacts.IsMember(__instance.pawn)
                 || LiveMetrics.Family(MentalProbe.Unit) is not { } s)
                 return;
             MentalFamily.Inspiration(s, def.defName, success: true, started: __instance.CurStateDef == def,

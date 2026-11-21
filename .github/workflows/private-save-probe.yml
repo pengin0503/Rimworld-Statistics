@@ -2,7 +2,7 @@ name: Build private-save probe (self-contained Linux x64)
 
 on:
   push:
-    branches: [test/portable-real-save-probe-20261109, test/self-contained-five-save-acceptance-20261110]
+    branches: [main]
     paths:
       - 'tools/PrivateSaveProbe/**'
       - '.github/workflows/private-save-probe.yml'

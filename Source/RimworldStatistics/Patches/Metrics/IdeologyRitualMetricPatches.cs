@@ -71,6 +71,8 @@ public static class IdeologyRitualOutcomeApplyMetricPatch
     public static void Prefix(LordJob_Ritual jobRitual, out bool __state)
     {
         __state = false;
+        if (!LiveMetrics.IsRecordingUnit(IdeologyFamily.Name))
+            return;
         try
         {
             __state = jobRitual is not null && IdeologyRitualFacts.IsPlayerRitual(jobRitual)
@@ -99,8 +101,13 @@ public static class IdeologySelectedRitualOutcomeMetricPatch
 {
     public static void Postfix(LordJob_Ritual ritual, RitualOutcomePossibility __result)
     {
-        if (__result != null && ritual != null)
+        if (__result is null || ritual is null || !LiveMetrics.IsRecordingUnit(IdeologyFamily.Name))
+            return;
+        try
+        {
             IdeologyRitualFacts.Select(ritual, __result);
+        }
+        catch (Exception e) { LiveMetrics.Fail(IdeologyFamily.Name, e); }
     }
 }
 
@@ -110,9 +117,11 @@ public static class IdeologyOtherCompletedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
+        if (cancelled || !LiveMetrics.IsRecordingUnit(IdeologyFamily.Name))
+            return;
         try
         {
-            if (cancelled || !IdeologyRitualFacts.IsPlayerRitual(__instance)
+            if (!IdeologyRitualFacts.IsPlayerRitual(__instance)
                 || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
                 || IdeologyRitualFacts.Id(__instance) is not { } id)
                 return;
@@ -131,9 +140,11 @@ public static class IdeologyInterruptedRitualMetricPatch
 {
     public static void Postfix(LordJob_Ritual __instance, bool cancelled)
     {
+        if (!cancelled || !LiveMetrics.IsRecordingUnit(IdeologyFamily.Name))
+            return;
         try
         {
-            if (!cancelled || !IdeologyRitualFacts.IsPlayerRitual(__instance)
+            if (!IdeologyRitualFacts.IsPlayerRitual(__instance)
                 || !LiveMetrics.CanCaptureEvent(IdeologyFamily.Name)
                 || IdeologyRitualFacts.Id(__instance) is not { } id)
                 return;

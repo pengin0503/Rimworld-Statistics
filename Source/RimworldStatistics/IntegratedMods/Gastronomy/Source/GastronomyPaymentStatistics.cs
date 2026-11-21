@@ -89,33 +89,23 @@ internal static class GastronomyPaymentStatistics
             throw new InvalidOperationException("Gastronomy 1.7 payment signatures do not match");
 
         driverPawnField = pawn;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(onFood,
-                prefix: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(BeforeDineTransfer)),
-                finalizer: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(FinishDineTransfer)));
-            harmony.Patch(pay,
-                prefix: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(BeforePayment)),
-                postfix: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(AfterPayment)),
-                finalizer: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(FinishPayment)));
-            harmony.Patch(payDebt,
-                prefix: new HarmonyMethod(typeof(GastronomyPaymentStatistics), nameof(BeforeDebtPayment)));
+            patcher.Patch(onFood, typeof(GastronomyPaymentStatistics),
+                prefix: nameof(BeforeDineTransfer), finalizer: nameof(FinishDineTransfer));
+            patcher.Patch(pay, typeof(GastronomyPaymentStatistics),
+                prefix: nameof(BeforePayment), postfix: nameof(AfterPayment), finalizer: nameof(FinishPayment));
+            patcher.Patch(payDebt, typeof(GastronomyPaymentStatistics), prefix: nameof(BeforeDebtPayment));
         }
         catch
         {
-            harmony.Unpatch(onFood, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(pay, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(payDebt, HarmonyPatchType.All, harmony.Id);
             driverPawnField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeDineTransfer(object __instance, ThingOwner __1, out DineScope? __state)
     {

@@ -84,13 +84,12 @@ internal static class VheHelixienGasStatistics
             throw new InvalidOperationException("Selected 1.7 HelixienGas or PipeSystem extractor assembly not available");
 
         var produce = AccessTools.DeclaredMethod(extractor, "TryProducePortion", Type.EmptyTypes);
-        var deposit = AccessTools.DeclaredMethod(net, "DistributeAmongStorage",
-            [typeof(float), typeof(float).MakeByRefType()]);
+        var deposit = OptionalTransitionCallSite.ResolvePipeNetDistributeAmongStorage(net);
         var getNet = AccessTools.Property(resource, "PipeNet");
         var netDef = AccessTools.DeclaredField(net, "def");
         var deepThing = AccessTools.DeclaredField(deepProps, "deepThing");
         var pipeDef = AccessTools.DeclaredField(resourceProps, "pipeNet");
-        if (produce?.ReturnType != typeof(void) || deposit?.ReturnType != typeof(void) ||
+        if (produce?.ReturnType != typeof(void) || deposit is null ||
             getNet?.GetMethod is null || getNet.PropertyType != net ||
             netDef is null || !typeof(Def).IsAssignableFrom(netDef.FieldType) ||
             deepThing?.FieldType != typeof(ThingDef) ||
@@ -101,6 +100,7 @@ internal static class VheHelixienGasStatistics
         pipeNetDefField = netDef;
         extractorDeepThingField = deepThing;
         propsPipeNetField = pipeDef;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
             // Must run before VHelixienGasE's Prefix so geyser extractions that return false
@@ -109,28 +109,21 @@ internal static class VheHelixienGasStatistics
             {
                 priority = Priority.First,
             };
-            harmony.Patch(produce,
+            patcher.Patch(produce,
                 prefix: before,
                 postfix: new HarmonyMethod(typeof(VheHelixienGasStatistics), nameof(AfterProduction)),
                 finalizer: new HarmonyMethod(typeof(VheHelixienGasStatistics), nameof(FinishProduction)));
-            harmony.Patch(deposit,
-                postfix: new HarmonyMethod(typeof(VheHelixienGasStatistics), nameof(AfterStorage)));
+            patcher.Patch(deposit, typeof(VheHelixienGasStatistics), postfix: nameof(AfterStorage));
         }
         catch
         {
-            harmony.Unpatch(produce, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(deposit, HarmonyPatchType.All, harmony.Id);
             pipeNetProperty = null;
             pipeNetDefField = extractorDeepThingField = propsPipeNetField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeProduction(object __instance, out DepositScope? __state)
     {

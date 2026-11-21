@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_WinstonCleared>윈스턴 웨이브 격퇴 수</RWS_WinstonCleared>
-  <RWS_WinstonHighest>윈스턴 최고 격퇴 웨이브</RWS_WinstonHighest>
-  <RWS_WinstonBoss>윈스턴 보스 웨이브 격퇴 수</RWS_WinstonBoss>
+  <RWS_WinstonCleared>습격 웨이브 격퇴 수</RWS_WinstonCleared>
+  <RWS_WinstonHighest>최고 격퇴 웨이브</RWS_WinstonHighest>
+  <RWS_WinstonBoss>보스 웨이브 격퇴 수</RWS_WinstonBoss>
   <RWS_WinstonClearDesc>다음 웨이브가 시작되기 전에 격퇴한 웨이브를 셉니다. 시간 초과로 넘어간 웨이브는 제외합니다.</RWS_WinstonClearDesc>
-  <RWS_WinstonRewards>확정된 윈스턴 보상</RWS_WinstonRewards>
+  <RWS_WinstonRewards>확정된 웨이브 보상</RWS_WinstonRewards>
   <RWS_WinstonRewardsDesc>확정된 보상을 종류별로 셉니다. 자동 선택과 시간 초과 후 선택한 보상도 포함합니다.</RWS_WinstonRewardsDesc>
 </LanguageData>

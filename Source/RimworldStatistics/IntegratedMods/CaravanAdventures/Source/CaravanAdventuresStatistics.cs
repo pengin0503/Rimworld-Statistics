@@ -22,10 +22,10 @@ internal static class CaravanAdventuresStatistics
     private const string BountyCreditsUnit = "mod.iforgotmysocks.caravanadventures.bounty_credits";
     private const string ShrinesCompletedUnit = "mod.iforgotmysocks.caravanadventures.shrines_completed";
 
-    private static MethodInfo? bountyWcGetter;
-    private static MethodInfo? bountyPointsGetter;
-    private static MethodInfo? storyWcGetter;
-    private static FieldInfo? countShrinesCompletedField;
+    private static Func<object, object?>? getBountyWc;
+    private static Func<object, float>? getBountyPoints;
+    private static Func<object, object?>? getStoryWc;
+    private static Func<object, int>? getCountShrinesCompleted;
 
     private sealed record BountyAttempt(object BountyWc, float BeforePoints, ThingDef MechDef);
     private sealed record ShrineAttempt(object StoryWc, int BeforeCount);
@@ -65,17 +65,17 @@ internal static class CaravanAdventuresStatistics
 
         var addBounty = OutcomeMetric.Method(utilityType, "AddBountyPointsForKilledMech", typeof(void), typeof(Pawn));
 
-        bountyWcGetter = wcGetter;
-        bountyPointsGetter = pointsGetter;
+        getBountyWc = OptionalTransitionCallSite.CompileGetter<object?>(wcGetter);
+        getBountyPoints = OptionalTransitionCallSite.CompileGetter<float>(pointsGetter);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            OutcomeMetric.Patch(harmony, addBounty, typeof(CaravanAdventuresStatistics),
-                nameof(BeforeBounty), nameof(AfterBounty));
+            patcher.Patch(addBounty, typeof(CaravanAdventuresStatistics), nameof(BeforeBounty), nameof(AfterBounty));
         }
         catch
         {
-            bountyWcGetter = null;
-            bountyPointsGetter = null;
+            getBountyWc = null;
+            getBountyPoints = null;
             throw;
         }
     }
@@ -96,31 +96,19 @@ internal static class CaravanAdventuresStatistics
         var checkShrine = OutcomeMetric.Method(shrineMpType, "CheckBossDefeated", typeof(void));
         var checkJudgment = OutcomeMetric.Method(judgmentMpType, "CheckBossDefeated", typeof(void));
 
-        storyWcGetter = wcGetter;
-        countShrinesCompletedField = counterField;
+        getStoryWc = OptionalTransitionCallSite.CompileGetter<object?>(wcGetter);
+        getCountShrinesCompleted = OptionalTransitionCallSite.CompileFieldGetter<int>(counterField);
 
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            OutcomeMetric.Patch(harmony, checkShrine, typeof(CaravanAdventuresStatistics),
-                nameof(BeforeShrineCheck), nameof(AfterShrineCheck));
+            patcher.Patch(checkShrine, typeof(CaravanAdventuresStatistics), nameof(BeforeShrineCheck), nameof(AfterShrineCheck));
+            patcher.Patch(checkJudgment, typeof(CaravanAdventuresStatistics), nameof(BeforeShrineCheck), nameof(AfterShrineCheck));
         }
         catch
         {
-            storyWcGetter = null;
-            countShrinesCompletedField = null;
-            throw;
-        }
-
-        try
-        {
-            OutcomeMetric.Patch(harmony, checkJudgment, typeof(CaravanAdventuresStatistics),
-                nameof(BeforeShrineCheck), nameof(AfterShrineCheck));
-        }
-        catch
-        {
-            harmony.Unpatch(checkShrine, HarmonyPatchType.All, harmony.Id);
-            storyWcGetter = null;
-            countShrinesCompletedField = null;
+            getStoryWc = null;
+            getCountShrinesCompleted = null;
             throw;
         }
     }
@@ -130,7 +118,7 @@ internal static class CaravanAdventuresStatistics
         __state = null;
         if (!OutcomeMetric.Observing(BountyCreditsUnit) ||
             __0 is null || __0.def is null ||
-            bountyWcGetter is null || bountyPointsGetter is null)
+            getBountyWc is null || getBountyPoints is null)
             return;
 
         try
@@ -139,11 +127,11 @@ internal static class CaravanAdventuresStatistics
             if (player is not null && __0.Faction == player)
                 return;
 
-            var bountyWc = bountyWcGetter.Invoke(null, null);
+            var bountyWc = getBountyWc(null!);
             if (bountyWc is null)
                 return;
 
-            var before = Convert.ToSingle(bountyPointsGetter.Invoke(bountyWc, null));
+            var before = getBountyPoints(bountyWc);
             __state = new BountyAttempt(bountyWc, before, __0.def);
         }
         catch (Exception e)
@@ -155,12 +143,12 @@ internal static class CaravanAdventuresStatistics
 
     private static void AfterBounty(bool __runOriginal, BountyAttempt? __state)
     {
-        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(BountyCreditsUnit) || bountyPointsGetter is null)
+        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(BountyCreditsUnit) || getBountyPoints is null)
             return;
 
         try
         {
-            var after = Convert.ToSingle(bountyPointsGetter.Invoke(__state.BountyWc, null));
+            var after = getBountyPoints(__state.BountyWc);
             var (delta, key) = CaravanAdventuresRules.ResolveBountyCreditReward(
                 mechValid: true,
                 targetIsNonPlayer: true,
@@ -182,16 +170,16 @@ internal static class CaravanAdventuresStatistics
     {
         __state = null;
         if (!OutcomeMetric.Observing(ShrinesCompletedUnit) ||
-            storyWcGetter is null || countShrinesCompletedField is null)
+            getStoryWc is null || getCountShrinesCompleted is null)
             return;
 
         try
         {
-            var storyWc = storyWcGetter.Invoke(null, null);
+            var storyWc = getStoryWc(null!);
             if (storyWc is null)
                 return;
 
-            var before = Convert.ToInt32(countShrinesCompletedField.GetValue(storyWc));
+            var before = getCountShrinesCompleted(storyWc);
             __state = new ShrineAttempt(storyWc, before);
         }
         catch (Exception e)
@@ -204,12 +192,12 @@ internal static class CaravanAdventuresStatistics
     private static void AfterShrineCheck(bool __runOriginal, ShrineAttempt? __state)
     {
         if (!__runOriginal || __state is null || !OutcomeMetric.Observing(ShrinesCompletedUnit) ||
-            countShrinesCompletedField is null)
+            getCountShrinesCompleted is null)
             return;
 
         try
         {
-            var after = Convert.ToInt32(countShrinesCompletedField.GetValue(__state.StoryWc));
+            var after = getCountShrinesCompleted(__state.StoryWc);
             if (CaravanAdventuresRules.ResolveShrineCompletion(worldCompValid: true, __state.BeforeCount, after))
                 OutcomeMetric.Record(ShrinesCompletedUnit);
         }

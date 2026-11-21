@@ -79,29 +79,32 @@ internal static class VfeSecurityArtilleryStatistics
         targetTileField = target;
         projectileDefField = projectile;
         launcherField = launcher;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(onArrival,
-                prefix: new HarmonyMethod(typeof(VfeSecurityArtilleryStatistics), nameof(BeforeArrival)),
-                postfix: new HarmonyMethod(typeof(VfeSecurityArtilleryStatistics), nameof(AfterArrival)));
+            patcher.Patch(onArrival, typeof(VfeSecurityArtilleryStatistics), nameof(BeforeArrival), nameof(AfterArrival));
         }
         catch
         {
-            harmony.Unpatch(onArrival, HarmonyPatchType.All, harmony.Id);
             sourceTileField = targetTileField = projectileDefField = launcherField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static int SpawnedProjectiles(Map map, ThingDef projectileDef)
-        => map.listerThings.ThingsOfDef(projectileDef)
-            .Count(thing => thing.Spawned && thing is Projectile);
+    {
+        var count = 0;
+        var things = map.listerThings.ThingsOfDef(projectileDef);
+        for (var i = 0; i < things.Count; i++)
+        {
+            var thing = things[i];
+            if (thing.Spawned && thing is Projectile)
+                count++;
+        }
+        return count;
+    }
 
     private static void BeforeArrival(object __instance, out ArrivalBefore? __state)
     {

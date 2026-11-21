@@ -20,6 +20,7 @@ public sealed partial class SaveReader
         private readonly IncrementalHash _hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         private readonly BlockingCollection<byte[]>? _free;
         private readonly BlockingCollection<(byte[] Block, int Length)>? _filled;
+        private readonly CancellationTokenSource? _linkedCts;
         private readonly Task? _worker;
         private readonly byte[][]? _buffers;
         private bool _disposed;
@@ -37,6 +38,7 @@ public sealed partial class SaveReader
 
             var free = _free = new BlockingCollection<byte[]>();
             var filled = _filled = new BlockingCollection<(byte[] Block, int Length)>();
+            var linked = _linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct);
             _buffers = new byte[Blocks][];
             for (var i = 0; i < Blocks; i++)
             {
@@ -44,17 +46,31 @@ public sealed partial class SaveReader
                 free.Add(_buffers[i]);
             }
             var priority = CurrentPriority();
-            _worker = Task.Factory.StartNew(() =>
+            _worker = Task.Run(() =>
             {
-                // A dedicated thread (LongRunning) that ends with this stream: its priority needs no restoring.
-                if (priority != ThreadPriority.Normal)
+                var original = CurrentPriority();
+                var restore = priority != original;
+                if (restore)
                     TrySetPriority(priority);
-                foreach (var (block, length) in filled.GetConsumingEnumerable())
+                try
                 {
-                    _hash.AppendData(block, 0, length);
-                    free.Add(block);
+                    foreach (var (block, length) in filled.GetConsumingEnumerable())
+                    {
+                        _hash.AppendData(block, 0, length);
+                        free.Add(block);
+                    }
                 }
-            }, CancellationToken.None, TaskCreationOptions.LongRunning, TaskScheduler.Default);
+                catch
+                {
+                    linked.Cancel();
+                    throw;
+                }
+                finally
+                {
+                    if (restore)
+                        TrySetPriority(original);
+                }
+            });
         }
 
         public long BytesRead { get; private set; }
@@ -122,8 +138,25 @@ public sealed partial class SaveReader
                 return false;
             ThrowIfCancelled();
             if (_block is not null && _len > 0)
+            {
                 _filled!.Add((_block, _len));
-            _block = _free!.Take();
+                _block = null;
+                _len = 0;
+            }
+            try
+            {
+                _block = _free!.Take(_linkedCts!.Token);
+            }
+            catch (OperationCanceledException) when (_ct.IsCancellationRequested)
+            {
+                Cancelled = true;
+                throw new OperationCanceledException(_ct);
+            }
+            catch (OperationCanceledException)
+            {
+                _worker?.GetAwaiter().GetResult();
+                throw;
+            }
             _pos = 0;
             _len = Math.Max(0, _inner.Read(_block, 0, BlockSize));
             BytesRead += _len;
@@ -181,11 +214,12 @@ public sealed partial class SaveReader
                 {
                     // the worker only hashes; nothing to report after a failed read
                 }
+                _linkedCts?.Dispose();
                 _filled?.Dispose();
                 _free?.Dispose();
                 if (_buffers is not null)
                     foreach (var buffer in _buffers)
-                        ArrayPool<byte>.Shared.Return(buffer, clearArray: true);
+                        ArrayPool<byte>.Shared.Return(buffer, clearArray: false);
                 _hash.Dispose();
             }
             base.Dispose(disposing);

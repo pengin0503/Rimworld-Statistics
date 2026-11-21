@@ -127,8 +127,8 @@ public sealed class ImportEngine
         // identities; mutations from another thread invalidate the cache.
         var indexedRevision = -1L;
         var skippable = new HashSet<(string FileName, long FileSize, DateTime LastWriteUtc)>();
-        var pending = new Dictionary<int, Task<SaveReadResult?>>();
-        List<Task<SaveReadResult?>>? discarded = null;
+        var pending = new Dictionary<int, Task<(SaveReadResult? Result, Exception? Error)>>();
+        List<Task<(SaveReadResult? Result, Exception? Error)>>? discarded = null;
         var nextToSchedule = 0;
 
         // A forced re-check reads every save: whether one holds what its record was read from is decided after reading it.
@@ -157,7 +157,7 @@ public sealed class ImportEngine
         void DiscardReadAhead(int index)
         {
             if (pending.Remove(index, out var task) && !task.IsCompleted)
-                (discarded ??= new List<Task<SaveReadResult?>>()).Add(task);
+                (discarded ??= new List<Task<(SaveReadResult? Result, Exception? Error)>>()).Add(task);
         }
 
         void ScheduleReadAhead(int current)
@@ -181,10 +181,22 @@ public sealed class ImportEngine
                 {
                     continue;   // decided again, and reported, at its turn
                 }
-                pending[index] = Task.Run(() =>
+                pending[index] = Task.Run<(SaveReadResult? Result, Exception? Error)>(() =>
                 {
-                    try { return ct.IsCancellationRequested ? null : ThreadPriorities.Run(_priority, () => _reader.ReadUnlessCancelled(aheadPath, ct)); }
-                    catch (Exception) { return null; }
+                    try
+                    {
+                        return ct.IsCancellationRequested
+                            ? (null, null)
+                            : (ThreadPriorities.Run(_priority, () => _reader.ReadUnlessCancelled(aheadPath, ct)), null);
+                    }
+                    catch (OperationCanceledException) when (ct.IsCancellationRequested)
+                    {
+                        return (null, null);
+                    }
+                    catch (Exception e)
+                    {
+                        return (null, e);
+                    }
                 });
             }
         }
@@ -223,11 +235,23 @@ public sealed class ImportEngine
                         continue;
                     }
                     SaveReadResult? result = null;
-                    if (pending.Remove(index, out var ahead) && ahead.GetAwaiter().GetResult() is { } prefetched
-                        && prefetched.Observation.FileName == name && prefetched.Observation.FileSize == size
-                        && prefetched.Observation.LastWriteUtc == time)
-                        result = prefetched;
-                    else if (!ct.IsCancellationRequested)
+                    if (pending.Remove(index, out var ahead))
+                    {
+                        var (prefetched, error) = ahead.GetAwaiter().GetResult();
+                        if (error is not null)
+                        {
+                            if (!ct.IsCancellationRequested)
+                                System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw(error);
+                        }
+                        else if (prefetched is not null
+                            && prefetched.Observation.FileName == name
+                            && prefetched.Observation.FileSize == size
+                            && prefetched.Observation.LastWriteUtc == time)
+                        {
+                            result = prefetched;
+                        }
+                    }
+                    if (result is null && !ct.IsCancellationRequested)
                         result = _reader.ReadUnlessCancelled(path, ct);
                     if (result is null)
                     {
@@ -303,11 +327,35 @@ public sealed class ImportEngine
         }
         finally
         {
+            static void ObserveTask(Task<(SaveReadResult? Result, Exception? Error)> task, bool wait)
+            {
+                if (wait)
+                {
+                    try
+                    {
+                        task.GetAwaiter().GetResult();
+                    }
+                    catch (Exception)
+                    {
+                        // Isolate exceptions in finally to prevent masking the primary exception.
+                    }
+                }
+                else if (task.IsCompleted)
+                {
+                    _ = task.Exception;
+                }
+                else
+                {
+                    _ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
+                        TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                }
+            }
+            var waitTasks = !cancelled && !ct.IsCancellationRequested;
             foreach (var task in pending.Values)
-                task.GetAwaiter().GetResult();
+                ObserveTask(task, waitTasks);
             if (discarded is not null)
                 foreach (var task in discarded)
-                    task.GetAwaiter().GetResult();
+                    ObserveTask(task, waitTasks);
         }
 
         // Spec §6.3: write when the import completes; a cancelled run still keeps what it read.

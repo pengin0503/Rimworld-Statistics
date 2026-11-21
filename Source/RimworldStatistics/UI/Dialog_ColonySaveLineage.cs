@@ -137,13 +137,15 @@ internal sealed class Dialog_ColonySaveLineage : Window
         }
 
         var titleText = (string)"RWS_Lineage_Title".Translate(colonyName);
-        Text.Font = GameFont.Medium;
-        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
-        var shownTitle = titleText.Truncate(titleRect.width);
-        Widgets.Label(titleRect, shownTitle);
-        if (shownTitle != titleText)
-            TooltipHandler.TipRegion(titleRect, titleText);
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
+            var shownTitle = titleText.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+            if (shownTitle != titleText)
+                TooltipHandler.TipRegion(titleRect, titleText);
+        }
 
         var y = rect.y + 36f;
         var controls = new ControlRow(new Rect(rect.x, y, rect.width, 28f));

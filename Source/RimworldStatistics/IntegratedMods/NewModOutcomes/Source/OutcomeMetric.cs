@@ -49,8 +49,7 @@ internal static class OutcomeMetric
         }, install);
     }
 
-    internal static bool Observing(string unit) => Current.ProgramState == ProgramState.Playing &&
-        Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null && MetricGates.IsRecording(unit);
+    internal static bool Observing(string unit) => OptionalTransitionCallSite.Observing(unit);
 
     internal static void Record(string unit, Def? def = null, bool breakdown = false, long amount = 1, bool prisonerWork = false)
     {

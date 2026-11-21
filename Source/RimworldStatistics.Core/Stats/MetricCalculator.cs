@@ -122,14 +122,33 @@ public static partial class MetricCalculator
 
     /// <param name="definitions">The outputs to build (the published registry, or the whole catalog for verification).</param>
     public static NumericView BuildView(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats, IReadOnlyList<MetricDefinition> definitions)
+        => BuildViewCancellable(profile, colonies, stats, definitions, CancellationToken.None);
+
+    /// <param name="definitions">The outputs to build (the published registry, or the whole catalog for verification).</param>
+    internal static NumericView BuildViewCancellable(Profile profile, IReadOnlyList<Colony> colonies, StatsResult stats, IReadOnlyList<MetricDefinition> definitions, CancellationToken ct)
     {
+        ct.ThrowIfCancellationRequested();
         var attached = Attach(profile, colonies, out var unattributed);
+        return BuildViewWithAttached(profile, colonies, stats, definitions, attached, unattributed, ct);
+    }
+
+    internal static NumericView BuildViewWithAttached(
+        Profile profile,
+        IReadOnlyList<Colony> colonies,
+        StatsResult stats,
+        IReadOnlyList<MetricDefinition> definitions,
+        Dictionary<Colony, List<MetricObservation>> attached,
+        int unattributed,
+        CancellationToken ct)
+    {
+        ct.ThrowIfCancellationRequested();
         // Derived rankings consume selected input rows, but require no extra
         // per-colony observations or save-data lookups of their own.
         var sourceDefinitions = definitions.Where(d => !CrossColonyCatalog.IsDerived(d)).ToList();
         var perColony = new List<(Colony Colony, List<NumericRow> Rows, CheckpointLineage Lineage)>(colonies.Count);
         foreach (var colony in colonies)
         {
+            ct.ThrowIfCancellationRequested();
             var observations = attached.GetValueOrDefault(colony) ?? new List<MetricObservation>();
             var checkpoints = CheckpointSelector.Select(observations);
             // Group once per colony instead of scanning/allocating a source-specific list
@@ -167,6 +186,7 @@ public static partial class MetricCalculator
         var overall = new List<NumericRow>();
         for (var i = 0; i < sourceDefinitions.Count; i++)
         {
+            ct.ThrowIfCancellationRequested();
             var def = sourceDefinitions[i];
             if (def.Overall is OverallAggregation.IndividualOnly or OverallAggregation.Ranking)
                 continue;
@@ -208,19 +228,29 @@ public static partial class MetricCalculator
     /// </summary>
     internal static Dictionary<Colony, List<MetricObservation>> Attach(Profile profile, IReadOnlyList<Colony> colonies, out int unattributed)
     {
+        if (profile.MetricObservations.Count == 0)
+        {
+            unattributed = 0;
+            return new Dictionary<Colony, List<MetricObservation>>();
+        }
         var byCampaign = new Dictionary<string, HashSet<Colony>>(Ord);
         var byFile = new Dictionary<(string, long, DateTime), List<(Colony Colony, SaveObservation Obs)>>();
+        var byFingerprint = new Dictionary<string, List<(Colony Colony, HashSet<string> Pawns)>>(Ord);
         foreach (var c in colonies)
         {
             foreach (var id in c.CampaignIds())
                 Add(byCampaign, id, c);
             foreach (var o in c.Observations)
             {
-                var k = (o.FileName, o.FileSize, o.LastWriteUtc);
+                var utc = UtcTime.ToUtc(o.LastWriteUtc);
+                var k = (o.FileName, o.FileSize, utc);
                 if (!byFile.TryGetValue(k, out var list))
                     byFile[k] = list = new();
                 list.Add((c, o));
+                AddFingerprintEntry(byFingerprint, c, o.Identity);
             }
+            foreach (var live in c.LiveCampaigns)
+                AddFingerprintEntry(byFingerprint, c, live.Identity);
         }
 
         var result = new Dictionary<Colony, List<MetricObservation>>();
@@ -229,7 +259,7 @@ public static partial class MetricCalculator
         {
             if (m.IsQuarantined)
                 continue;
-            var colony = Find(m, colonies, byCampaign, byFile);
+            var colony = Find(m, byCampaign, byFile, byFingerprint);
             if (colony is null)
             {
                 unattributed = (int)Math.Min(int.MaxValue, (long)unattributed + ObservationWeight(m));
@@ -240,6 +270,18 @@ public static partial class MetricCalculator
             list.Add(m);
         }
         return result;
+    }
+
+    private static void AddFingerprintEntry(
+        Dictionary<string, List<(Colony Colony, HashSet<string> Pawns)>> byFingerprint,
+        Colony colony,
+        ColonyIdentity? identity)
+    {
+        if (identity is not { HasFingerprint: true } || identity.FingerprintHash() is not { } hash)
+            return;
+        if (!byFingerprint.TryGetValue(hash, out var list))
+            byFingerprint[hash] = list = new();
+        list.Add((colony, new HashSet<string>(identity.StartingPawnIds, Ord)));
     }
 
     /// <summary>A compacted SaveSnapshot still represents its original save-time observations.</summary>
@@ -254,30 +296,69 @@ public static partial class MetricCalculator
         set.Add(c);
     }
 
-    private static Colony? Find(MetricObservation m, IReadOnlyList<Colony> colonies, Dictionary<string, HashSet<Colony>> byCampaign,
-        Dictionary<(string, long, DateTime), List<(Colony Colony, SaveObservation Obs)>> byFile)
+    private static Colony? Find(
+        MetricObservation m,
+        Dictionary<string, HashSet<Colony>> byCampaign,
+        Dictionary<(string, long, DateTime), List<(Colony Colony, SaveObservation Obs)>> byFile,
+        Dictionary<string, List<(Colony Colony, HashSet<string> Pawns)>> byFingerprint)
     {
         if (m.Identity is null)
             return null;
         if (m.Identity.ModCampaignId is { } cid)
             return byCampaign.TryGetValue(cid, out var set) && set.Count == 1 ? set.First() : null;
 
-        var fileMatches = m.FileAliases
-            .SelectMany(a => byFile.GetValueOrDefault((a.FileName, a.FileSize, a.LastWriteUtc)) ?? new())
-            .ToList();
-        if (fileMatches.Count > 0)
+        Colony? matchedColony = null;
+        var anyFileMatch = false;
+        var disagrees = false;
+        string? obsFingerprint = null;
+        foreach (var a in m.FileAliases)
         {
-            var distinct = fileMatches.Select(f => f.Colony).Distinct().ToList();
-            var agrees = fileMatches.All(f => f.Obs.Identity.FingerprintHash() == m.Identity.FingerprintHash()
-                && f.Obs.Identity.ModCampaignId == m.Identity.ModCampaignId);
-            return distinct.Count == 1 && agrees ? distinct[0] : null;
+            if (!byFile.TryGetValue((a.FileName, a.FileSize, UtcTime.ToUtc(a.LastWriteUtc)), out var hits))
+                continue;
+            obsFingerprint ??= m.Identity.FingerprintHash();
+            for (var i = 0; i < hits.Count; i++)
+            {
+                anyFileMatch = true;
+                var hit = hits[i];
+                if (hit.Obs.Identity is null || hit.Obs.Identity.FingerprintHash() != obsFingerprint
+                    || hit.Obs.Identity.ModCampaignId != m.Identity.ModCampaignId)
+                {
+                    disagrees = true;
+                    break;
+                }
+                if (matchedColony is null)
+                    matchedColony = hit.Colony;
+                else if (!ReferenceEquals(matchedColony, hit.Colony))
+                {
+                    disagrees = true;
+                    break;
+                }
+            }
+            if (disagrees)
+                break;
         }
+        if (anyFileMatch)
+            return disagrees ? null : matchedColony;
 
-        if (!m.Identity.HasFingerprint)
+        if (!m.Identity.HasFingerprint || m.Identity.FingerprintHash() is not { } fpHash)
             return null;
-        var candidates = colonies.Where(c => c.Observations.Select(o => o.Identity).Concat(c.LiveCampaigns.Select(l => l.Identity))
-            .Any(id => CampaignMatcher.SameColony(id, m.Identity))).Take(2).ToList();
-        return candidates.Count == 1 ? candidates[0] : null;
+        if (!byFingerprint.TryGetValue(fpHash, out var candidates))
+            return null;
+        var obsPawns = new HashSet<string>(m.Identity.StartingPawnIds, Ord);
+        Colony? uniqueColony = null;
+        for (var i = 0; i < candidates.Count; i++)
+        {
+            var entry = candidates[i];
+            if (ReferenceEquals(uniqueColony, entry.Colony))
+                continue;
+            if (obsPawns.IsSubsetOf(entry.Pawns) || entry.Pawns.IsSubsetOf(obsPawns))
+            {
+                if (uniqueColony is not null)
+                    return null;
+                uniqueColony = entry.Colony;
+            }
+        }
+        return uniqueColony;
     }
 
     // ----- one colony -----
@@ -379,38 +460,90 @@ public static partial class MetricCalculator
         return new NumericRow { Definition = d, Value = row.Value, Targets = row.Targets, Valid = row.Valid, Breakdowns = breakdowns };
     }
 
+    private static bool BeatsObservation(MetricObservation candidate, MetricObservation current)
+    {
+        if (candidate.SaveTick != current.SaveTick)
+            return candidate.SaveTick > current.SaveTick;
+        var cmp = UtcTime.ToUtc(candidate.ObservedUtc).CompareTo(UtcTime.ToUtc(current.ObservedUtc));
+        if (cmp != 0)
+            return cmp > 0;
+        return string.CompareOrdinal(candidate.Key, current.Key) < 0;
+    }
+
     private static NumericRow AcrossObservations(MetricDefinition d, IReadOnlyList<MetricObservation> observations)
     {
-        var nonConflicted = observations.Where(o => !o.Conflicted).ToList();
-        if (nonConflicted.Count == 0)
-            return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
+        var anyNonConflicted = false;
+        var anyApplicable = false;
+        var anyMissing = false;
+        var anyPartial = false;
+        var maxSaveTick = int.MinValue;
+        long totalSamples = 0;
+        var values = new List<(MetricObservation Obs, NumericValue Value)>();
 
-        // A zero emitted while the DLC was absent is not an observed zero and must not
-        // take part in a historical maximum/minimum. A nonzero, explicitly recorded
-        // value remains evidence even when the DLC list says it was absent.
-        var applicable = nonConflicted.Where(o => !DlcAbsent(d, o)
-            || MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is { } recorded && recorded != 0).ToList();
-        if (applicable.Count == 0)
+        for (var i = 0; i < observations.Count; i++)
+        {
+            var o = observations[i];
+            if (o.Conflicted)
+                continue;
+            anyNonConflicted = true;
+            if (o.SaveTick > maxSaveTick)
+                maxSaveTick = o.SaveTick;
+
+            var scalar = Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar);
+            var measured = MeasuredNumber(scalar);
+            // A zero emitted while the DLC was absent is not an observed zero and must not
+            // take part in a historical maximum/minimum. A nonzero, explicitly recorded
+            // value remains evidence even when the DLC list says it was absent.
+            if (DlcAbsent(d, o) && !(measured is { } recorded && recorded != 0))
+                continue;
+            anyApplicable = true;
+
+            if (measured is null || !double.IsFinite(measured.Value))
+            {
+                anyMissing = true;
+                continue;
+            }
+            var converted = From(scalar!, o, d);
+            values.Add((o, converted));
+            if (converted.Coverage == MetricCoverage.Partial)
+                anyPartial = true;
+            totalSamples += Math.Max(1, o.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1);
+        }
+
+        if (!anyNonConflicted)
+            return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
+        if (!anyApplicable)
             return Row(d, MetricEntry.Scalar, new NumericValue { Coverage = MetricCoverage.NotApplicable });
-        var values = applicable.Select(o => (Obs: o, Value: Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)))
-            .Where(x => MeasuredNumber(x.Value) is not null).ToList();
         if (values.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = 1 };
-        var best = d.Selection == ColonySelection.ObservationMin
-            ? values.MinBy(x => x.Value!.Number)
-            : values.MaxBy(x => x.Value!.Number);
-        // A compacted history retains a witness for any missing applicable reading;
-        // raw value counts are no longer interchangeable with observation counts.
-        var partial = applicable.Any(o => MeasuredNumber(Entry(o, d)?.Values.GetValueOrDefault(MetricEntry.Scalar)) is null)
-            || values.Any(x => x.Value!.Coverage == MetricCoverage.Partial);
+
+        var minMode = d.Selection == ColonySelection.ObservationMin;
+        var best = values[0];
+        var bestNum = best.Value.Number!.Value;
+        for (var i = 1; i < values.Count; i++)
+        {
+            var cur = values[i];
+            var curNum = cur.Value.Number!.Value;
+            var better = minMode ? curNum < bestNum : curNum > bestNum;
+            if (better || (curNum == bestNum && BeatsObservation(cur.Obs, best.Obs)))
+            {
+                best = cur;
+                bestNum = curNum;
+            }
+        }
+
+        var partial = anyMissing || anyPartial;
+        var evidence = values[0].Obs is { } firstObs ? EvidenceFor(firstObs, d) : MetricEvidence.UnknownLegacy;
+        if (values.Count > 1)
+            evidence = MetricEvidencePolicy.Combine(values.Select(x => EvidenceFor(x.Obs, d)));
+
         var row = Row(d, MetricEntry.Scalar, new NumericValue
         {
-            Number = best.Value!.Number,
+            Number = best.Value.Number,
             Coverage = partial ? MetricCoverage.Partial : best.Value.Coverage,
-            ThroughTick = nonConflicted.Max(o => o.SaveTick),
-            Evidence = MetricEvidencePolicy.Combine(values.Select(x => EvidenceFor(x.Obs, d))),
-            SampleCount = (int)Math.Min(int.MaxValue, values.Sum(x => (long)Math.Max(1,
-                x.Obs.CompactedSampleCounts?.GetValueOrDefault(d.StoredKey) ?? 1))),
+            ThroughTick = maxSaveTick,
+            Evidence = evidence,
+            SampleCount = (int)Math.Min(int.MaxValue, totalSamples),
         });
         if (!d.HasBreakdown || Entry(best.Obs, d) is not { } witness)
             return row;
@@ -418,7 +551,7 @@ public static partial class MetricCalculator
         // A breakdown describes the winning scalar's observation, so its
         // counts refer to one actual save and remain valid after compaction.
         var breakdowns = d.Selection == ColonySelection.ObservationMaxByBreakdown
-            ? BreakdownMaxima(d, values.Select(x => x.Obs), row.Value)
+            ? BreakdownMaxima(d, values, row.Value)
             : witness.Values.Where(kv => kv.Key != MetricEntry.Scalar)
                 .OrderBy(kv => kv.Key, Ord)
                 .Select(kv => Row(d, kv.Key, From(kv.Value, best.Obs, d))).ToArray();
@@ -426,24 +559,41 @@ public static partial class MetricCalculator
     }
 
     private static NumericRow[] BreakdownMaxima(MetricDefinition definition,
-        IEnumerable<MetricObservation> observations, NumericValue scalar)
-        => observations.SelectMany(obs => Entry(obs, definition)!.Values
-                .Where(kv => kv.Key != MetricEntry.Scalar && MeasuredNumber(kv.Value) is not null)
-                .Select(kv => (kv.Key, Value: kv.Value, Observation: obs)))
-            .GroupBy(sample => sample.Key, Ord)
-            .OrderBy(group => group.Key, Ord)
-            .Select(group =>
+        List<(MetricObservation Obs, NumericValue Value)> observations, NumericValue scalar)
+    {
+        var peaks = new Dictionary<string, (MetricValue Value, MetricObservation Obs)>(Ord);
+        for (var i = 0; i < observations.Count; i++)
+        {
+            var obs = observations[i].Obs;
+            var entry = Entry(obs, definition);
+            if (entry is null)
+                continue;
+            foreach (var (key, val) in entry.Values)
             {
-                var peak = group.MaxBy(sample => sample.Value.Number);
-                return Row(definition, group.Key, new NumericValue
+                if (key == MetricEntry.Scalar)
+                    continue;
+                var num = MeasuredNumber(val);
+                if (num is null || !double.IsFinite(num.Value))
+                    continue;
+                if (!peaks.TryGetValue(key, out var existing)
+                    || val.Number > existing.Value.Number
+                    || (val.Number == existing.Value.Number && BeatsObservation(obs, existing.Obs)))
                 {
-                    Number = peak.Value.Number,
-                    Coverage = scalar.Coverage,
-                    Evidence = scalar.Evidence,
-                    SinceTick = peak.Value.SinceTick,
-                    ThroughTick = peak.Observation.SaveTick,
-                });
-            }).ToArray();
+                    peaks[key] = (val, obs);
+                }
+            }
+        }
+        return peaks
+            .OrderBy(kv => kv.Key, Ord)
+            .Select(kv => Row(definition, kv.Key, new NumericValue
+            {
+                Number = kv.Value.Value.Number,
+                Coverage = scalar.Coverage,
+                Evidence = scalar.Evidence,
+                SinceTick = kv.Value.Value.SinceTick,
+                ThroughTick = kv.Value.Obs.SaveTick,
+            })).ToArray();
+    }
 
     /// <summary>
     /// No value, and the observation's mod list shows the output's DLC was not active: the output does not apply. A value that
@@ -524,28 +674,42 @@ public static partial class MetricCalculator
     private static NumericRow Combine(MetricDefinition d, List<(string Key, NumericRow Row)> colonies)
     {
         var breakdowns = new List<NumericRow>();
+        var reuseBuffer = new List<(string Key, NumericValue Value)>(colonies.Count);
         if (d.HasBreakdown)
         {
             // Each colony's per-Def dictionary is indexed once. Previously every
             // global key searched all children and re-summed the source to decide
             // whether a missing key was a *known zero* (O(colonies * keys²)).
             // Preserve the first-child-wins behavior for malformed duplicate keys.
-            var lookups = colonies.Select(c =>
+            var lookups = new (string Key, Dictionary<string, NumericValue> ByKey, NumericValue Missing)[colonies.Count];
+            var allKeys = new HashSet<string>(Ord);
+            for (var i = 0; i < colonies.Count; i++)
             {
-                var byKey = new Dictionary<string, NumericValue>(Ord);
-                foreach (var child in c.Row.Breakdowns)
-                    byKey.TryAdd(child.Breakdown, child.Value);
-                return (c.Key, ByKey: byKey, Missing: MissingBreakdownValue(c.Row));
-            }).ToArray();
-            var keys = lookups.SelectMany(c => c.ByKey.Keys).Distinct(Ord).Order(Ord);
-            foreach (var key in keys)
+                var c = colonies[i];
+                var byKey = new Dictionary<string, NumericValue>(c.Row.Breakdowns.Count, Ord);
+                for (var j = 0; j < c.Row.Breakdowns.Count; j++)
+                {
+                    var child = c.Row.Breakdowns[j];
+                    if (byKey.TryAdd(child.Breakdown, child.Value))
+                        allKeys.Add(child.Breakdown);
+                }
+                lookups[i] = (c.Key, byKey, MissingBreakdownValue(c.Row));
+            }
+            foreach (var key in allKeys.Order(Ord))
             {
-                var values = lookups.Select(c => (c.Key, Value:
-                    c.ByKey.TryGetValue(key, out var value) ? value : c.Missing)).ToList();
-                breakdowns.Add(Aggregate(d, key, values));
+                reuseBuffer.Clear();
+                for (var i = 0; i < lookups.Length; i++)
+                {
+                    var item = lookups[i];
+                    reuseBuffer.Add((item.Key, item.ByKey.TryGetValue(key, out var val) ? val : item.Missing));
+                }
+                breakdowns.Add(Aggregate(d, key, reuseBuffer));
             }
         }
-        var scalar = Aggregate(d, MetricEntry.Scalar, colonies.Select(c => (c.Key, c.Row.Value)).ToList());
+        reuseBuffer.Clear();
+        for (var i = 0; i < colonies.Count; i++)
+            reuseBuffer.Add((colonies[i].Key, colonies[i].Row.Value));
+        var scalar = Aggregate(d, MetricEntry.Scalar, reuseBuffer);
         return new NumericRow { Definition = d, Value = scalar.Value, Targets = scalar.Targets, Valid = scalar.Valid, Breakdowns = breakdowns };
     }
 
@@ -582,10 +746,26 @@ public static partial class MetricCalculator
                 && row.Definition.Source == MetricObservationSource.Checkpoint
                 && row.Definition.HasBreakdown))
         {
-            var complete = row.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly
-                && row.Breakdowns.All(child => child.Breakdown != MetricKeys.UnknownBucket && child.Value.Number is not null
-                    && child.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly)
-                && Math.Abs(row.Breakdowns.Sum(child => child.Value.Number ?? 0) - row.Value.Number.Value) < 1e-6;
+            double breakdownSum = 0;
+            var complete = row.Value.Coverage is MetricCoverage.Complete or MetricCoverage.SnapshotOnly;
+            if (complete)
+            {
+                for (var i = 0; i < row.Breakdowns.Count; i++)
+                {
+                    var child = row.Breakdowns[i];
+                    if (child.Breakdown == MetricKeys.UnknownBucket
+                        || child.Value.Number is not { } childNum
+                        || !double.IsFinite(childNum)
+                        || child.Value.Coverage is not (MetricCoverage.Complete or MetricCoverage.SnapshotOnly))
+                    {
+                        complete = false;
+                        break;
+                    }
+                    breakdownSum += childNum;
+                }
+                if (complete)
+                    complete = UtcTime.RelativeEquals(breakdownSum, row.Value.Number.Value);
+            }
             if (!complete)
                 return new NumericValue
                 {
@@ -603,21 +783,83 @@ public static partial class MetricCalculator
 
     private static NumericRow Aggregate(MetricDefinition d, string breakdown, List<(string Key, NumericValue Value)> colonies)
     {
-        var applicable = colonies.Where(c => c.Value.Coverage != MetricCoverage.NotApplicable).ToList();
-        var known = applicable.Where(c => c.Value.Known && (d.Overall != OverallAggregation.Ratio
-            || (c.Value.Numerator is not null && c.Value.Denominator is not null))).ToList();
-        NumericValue Result(double? number, string? colony = null, double? num = null, double? den = null)
+        var applicableCount = 0;
+        var knownCount = 0;
+        var anyNonFinite = false;
+        double sum = 0;
+        double num = 0;
+        double den = 0;
+        var maxMode = d.Overall == OverallAggregation.Max;
+        var hasExtreme = false;
+        double extreme = 0;
+        var holder = "";
+        var weakest = MetricCoverage.Complete;
+        var evidence = MetricEvidence.UnknownLegacy;
+        var firstKnown = true;
+
+        for (var i = 0; i < colonies.Count; i++)
         {
-            if (known.Count == 0)
+            var c = colonies[i];
+            if (c.Value.Coverage == MetricCoverage.NotApplicable)
+                continue;
+            applicableCount++;
+            if (!c.Value.Known)
+                continue;
+            if (d.Overall == OverallAggregation.Ratio && (c.Value.Numerator is null || c.Value.Denominator is null))
+                continue;
+
+            knownCount++;
+            if (c.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown)
+                weakest = MetricCoverage.Partial;
+            else if (c.Value.Coverage == MetricCoverage.SnapshotOnly && weakest != MetricCoverage.Partial)
+                weakest = MetricCoverage.SnapshotOnly;
+            evidence = firstKnown ? c.Value.Evidence : MetricEvidencePolicy.Combine(evidence, c.Value.Evidence);
+            firstKnown = false;
+
+            switch (d.Overall)
+            {
+                case OverallAggregation.Sum:
+                    if (c.Value.Number is { } sv)
+                    {
+                        if (!double.IsFinite(sv))
+                            anyNonFinite = true;
+                        else
+                        {
+                            sum += sv;
+                            if (!double.IsFinite(sum))
+                                anyNonFinite = true;
+                        }
+                    }
+                    break;
+                case OverallAggregation.Ratio:
+                    num += c.Value.Numerator!.Value;
+                    den += c.Value.Denominator!.Value;
+                    break;
+                case OverallAggregation.Max or OverallAggregation.Min:
+                    if (c.Value.Number is { } ev && double.IsFinite(ev))
+                    {
+                        if (!hasExtreme || (maxMode ? ev > extreme : ev < extreme)
+                            || (ev == extreme && Ord.Compare(c.Key, holder) < 0))
+                        {
+                            extreme = ev;
+                            holder = c.Key;
+                            hasExtreme = true;
+                        }
+                    }
+                    break;
+            }
+        }
+
+        NumericValue Result(double? number, string? colony = null, double? rNum = null, double? rDen = null)
+        {
+            if (knownCount == 0)
                 return NumericValue.Unknown;
-            var coverage = Weakest(known.Select(k => k.Value.Coverage));
-            if (known.Count < applicable.Count)
-                coverage = MetricCoverage.Partial;
+            var coverage = knownCount < applicableCount ? MetricCoverage.Partial : weakest;
             return new NumericValue
             {
                 Number = number, Coverage = coverage,
-                Evidence = MetricEvidencePolicy.Combine(known.Select(k => k.Value.Evidence)),
-                ColonyKey = colony, Numerator = num, Denominator = den,
+                Evidence = evidence,
+                ColonyKey = colony, Numerator = rNum, Denominator = rDen,
             };
         }
 
@@ -625,30 +867,29 @@ public static partial class MetricCalculator
         switch (d.Overall)
         {
             case OverallAggregation.Sum:
-                value = Result(known.Sum(k => k.Value.Number ?? 0));
+                value = knownCount == 0 || anyNonFinite || !double.IsFinite(sum)
+                    ? NumericValue.Unknown
+                    : Result(sum);
                 break;
             case OverallAggregation.Ratio:
-                var num = known.Sum(k => k.Value.Numerator!.Value);
-                var den = known.Sum(k => k.Value.Denominator!.Value);
-                // 0 ÷ 0 over known colonies stays known: no value, but the colonies count as read.
-                value = Result(den > 0 ? num / den : null, num: num, den: den);
+                if (knownCount == 0 || !double.IsFinite(num) || !double.IsFinite(den))
+                    value = NumericValue.Unknown;
+                else
+                {
+                    var ratio = den > 0 ? num / den : (double?)null;
+                    if (ratio is { } r && !double.IsFinite(r))
+                        value = NumericValue.Unknown;
+                    else
+                        value = Result(ratio, rNum: num, rDen: den);
+                }
                 break;
             case OverallAggregation.Max or OverallAggregation.Min:
-                var withNumber = known.Where(k => k.Value.Number is not null).ToList();
-                if (withNumber.Count == 0)
-                {
-                    value = Result(null);   // every known colony is "not reached"
-                    break;
-                }
-                var max = d.Overall == OverallAggregation.Max;
-                var extreme = max ? withNumber.Max(k => k.Value.Number!.Value) : withNumber.Min(k => k.Value.Number!.Value);
-                var holder = withNumber.Where(k => k.Value.Number == extreme).Select(k => k.Key).Order(Ord).First();
-                value = Result(extreme, holder);
+                value = !hasExtreme ? Result(null) : Result(extreme, holder);
                 break;
             default:
                 value = NumericValue.Unknown;
                 break;
         }
-        return new NumericRow { Definition = d, Breakdown = breakdown, Value = value, Targets = applicable.Count, Valid = value.Known ? known.Count : 0 };
+        return new NumericRow { Definition = d, Breakdown = breakdown, Value = value, Targets = applicableCount, Valid = value.Known ? knownCount : 0 };
     }
 }

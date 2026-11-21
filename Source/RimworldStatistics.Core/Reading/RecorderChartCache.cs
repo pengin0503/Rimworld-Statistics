@@ -161,7 +161,7 @@ public sealed class RecorderChartCache
                 var (verified, points) = SaveReader.ReadRecorderChartVerified(path, file, expectedHash, recorder, runningGain);
                 if (!verified)
                     return points;
-                var shared = Array.AsReadOnly(points.ToArray());
+                var shared = Array.AsReadOnly(points as MetricHistoryPoint[] ?? points.ToArray());
                 Store(key, shared);
                 return shared;
             }

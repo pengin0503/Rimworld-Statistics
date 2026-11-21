@@ -110,30 +110,22 @@ internal static class VfeSettlersStatistics
         caravanField = caravan;
         wantedField = criminal;
         rewardField = reward;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(action,
-                prefix: new HarmonyMethod(typeof(VfeSettlersStatistics), nameof(BeforeHandin)),
-                postfix: new HarmonyMethod(typeof(VfeSettlersStatistics), nameof(AfterHandin)),
-                finalizer: new HarmonyMethod(typeof(VfeSettlersStatistics), nameof(FinishHandin)));
-            harmony.Patch(give,
-                prefix: new HarmonyMethod(typeof(VfeSettlersStatistics), nameof(BeforeGive)),
-                postfix: new HarmonyMethod(typeof(VfeSettlersStatistics), nameof(AfterGive)));
+            patcher.Patch(action, typeof(VfeSettlersStatistics),
+                prefix: nameof(BeforeHandin), postfix: nameof(AfterHandin), finalizer: nameof(FinishHandin));
+            patcher.Patch(give, typeof(VfeSettlersStatistics),
+                prefix: nameof(BeforeGive), postfix: nameof(AfterGive));
         }
         catch
         {
-            harmony.Unpatch(action, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(give, HarmonyPatchType.All, harmony.Id);
             caravanField = wantedField = rewardField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool HasWanted(Caravan caravan, Pawn wanted)
         => caravan.PawnsListForReading.Contains(wanted) ||

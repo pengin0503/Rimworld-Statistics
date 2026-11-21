@@ -130,7 +130,9 @@ jobs:
             .devinputs/integrated/dbh/1.7/Assemblies/BadHygiene.dll \
             .devinputs/integrated/dbh-3258/1.7/Assemblies/BadHygiene.dll
 
-          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+          krafs_ver=$(grep -oE 'Krafs\.Rimworld\.Ref"\s+Version="[^"]+"' Source/RimworldStatistics/RimworldStatistics.csproj | sed -E 's/.*Version="([^"]+)"/\1/' | head -n 1)
+          krafs_ver="${krafs_ver:-1.7.4985-unstable}"
+          game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/$krafs_ver" -type f -name 'Assembly-CSharp.dll' | head -n 1)
           test -f "$game_ref"
           dotnet tools/IntegratedModAudit/AdapterSignatureAudit/bin/Release/net10.0/AdapterSignatureAudit.dll \
             .devinputs/integrated --game-dll "$game_ref"
@@ -199,7 +201,7 @@ jobs:
             --verify-contents \
             --harness-zip "$RUNNER_TEMP/RimworldStatisticsVerifyHarness.zip"
 
-      - name: Static Harmony patch targets and self-test (1.7.4985 reference metadata)
+      - name: Static Harmony patch targets and self-test (reference metadata)
         shell: bash
         run: |
           set -euo pipefail
@@ -209,7 +211,9 @@ jobs:
              || ! -s "$idx/outposts-index/chunk-0000.json.gz" \
              || ! -s "$idx/vef-index/chunk-0000.json.gz" \
              || ! -s "$idx/voe-index/chunk-0000.json.gz" ]]; then
-            game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/1.7.4985-unstable" -type f -name 'Assembly-CSharp.dll' | head -n 1)
+            krafs_ver=$(grep -oE 'Krafs\.Rimworld\.Ref"\s+Version="[^"]+"' Source/RimworldStatistics/RimworldStatistics.csproj | sed -E 's/.*Version="([^"]+)"/\1/' | head -n 1)
+            krafs_ver="${krafs_ver:-1.7.4985-unstable}"
+            game_ref=$(find "$HOME/.nuget/packages/krafs.rimworld.ref/$krafs_ver" -type f -name 'Assembly-CSharp.dll' | head -n 1)
             test -f "$game_ref"
             dotnet tools/RefMetadataIndex/bin/Release/net10.0/RefMetadataIndex.dll \
               "$game_ref" "$idx/ref-index" \
@@ -219,6 +223,8 @@ jobs:
               .devinputs/integrated/voe/1.6/Assemblies/VOE.dll "$idx/voe-index"
           fi
           dotnet tools/PatchTargetCheck/bin/Release/net10.0/PatchTargetCheck.dll 1.7/Assemblies/RimworldStatistics.dll "$idx/ref-index" \
+            --field RimWorld.ShipCountdown:shipRoot \
+            --field RimWorld.ShipCountdown:customLaunchString \
             --index "$idx/vpe-index" --index "$idx/vef-index" --target 'VpeMetricPatch:VanillaPsycastsExpanded.Hediff_PsycastAbilities:ChangeLevel:int32' \
             --target 'VpeCastMetricPatch:VanillaPsycastsExpanded.AbilityExtension_Psycast:Cast:[Assembly-CSharp]RimWorld.Planet.GlobalTargetInfo[]|[VEF]VEF.Abilities.Ability' \
             --index "$idx/outposts-index" --index "$idx/voe-index" \

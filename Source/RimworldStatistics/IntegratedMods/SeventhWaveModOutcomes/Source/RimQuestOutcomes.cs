@@ -22,12 +22,14 @@ internal static class RimQuestOutcomes
     private const string QuestsPurchasedUnit = "mod.mlie.rimquest.quests_purchased";
     private const string QuestSilverSpentUnit = "mod.mlie.rimquest.quest_silver_spent";
 
-    private static FieldInfo trackerInstanceField = null!;
-    private static FieldInfo questPawnsField = null!;
-    private static FieldInfo dialogQuestPawnField = null!;
-    private static FieldInfo dialogInteractorField = null!;
-    private static FieldInfo dialogSelectedQuestField = null!;
-    private static FieldInfo dialogSilverCostField = null!;
+    private static readonly object ContractLock = new();
+    private static MethodInfo? executeSelectedQuestMethod;
+    private static Func<object, object?> getTrackerInstance = null!;
+    private static Func<object, IList?> getQuestPawns = null!;
+    private static Func<object, object?> getDialogQuestPawn = null!;
+    private static Func<object, Pawn?> getDialogInteractor = null!;
+    private static Func<object, Def?> getDialogSelectedQuest = null!;
+    private static Func<object, int> getDialogSilverCost = null!;
 
     private sealed record QuestPurchaseSnapshot(object QuestPawn, Def SelectedQuestDef, int SilverCost);
 
@@ -54,50 +56,64 @@ internal static class RimQuestOutcomes
 
     private static MethodInfo ResolveExecuteSelectedQuest()
     {
-        var dialogType = OutcomeMetric.Bind("RimQuest.Dialog_QuestGiver", AssemblyName);
-        var trackerType = OutcomeMetric.Bind("RimQuest.RimQuestTracker", AssemblyName);
-        var questPawnType = OutcomeMetric.Bind("RimQuest.QuestPawn", AssemblyName);
+        lock (ContractLock)
+        {
+            if (executeSelectedQuestMethod is not null)
+                return executeSelectedQuestMethod;
 
-        trackerInstanceField = AccessTools.DeclaredField(trackerType, "Instance") is { IsStatic: true } tif &&
-            tif.FieldType == trackerType
-            ? tif
-            : throw new InvalidOperationException("RimQuest RimQuestTracker.Instance field signature changed");
-        questPawnsField = AccessTools.DeclaredField(trackerType, "questPawns") is { } qpf &&
-            qpf.FieldType == typeof(List<>).MakeGenericType(questPawnType)
-            ? qpf
-            : throw new InvalidOperationException("RimQuest RimQuestTracker.questPawns field signature changed");
-        dialogQuestPawnField = AccessTools.DeclaredField(dialogType, "questPawn") is { } dqp &&
-            dqp.FieldType == questPawnType
-            ? dqp
-            : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.questPawn field signature changed");
-        dialogInteractorField = AccessTools.DeclaredField(dialogType, "interactor") is { } dif &&
-            dif.FieldType == typeof(Pawn)
-            ? dif
-            : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.interactor field signature changed");
-        dialogSelectedQuestField = AccessTools.DeclaredField(dialogType, "selectedQuest") is { } dsq &&
-            dsq.FieldType == typeof(object)
-            ? dsq
-            : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.selectedQuest field signature changed");
-        dialogSilverCostField = AccessTools.DeclaredField(dialogType, "actualSilverCost") is { } dsc &&
-            dsc.FieldType == typeof(int)
-            ? dsc
-            : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.actualSilverCost field signature changed");
+            var dialogType = OutcomeMetric.Bind("RimQuest.Dialog_QuestGiver", AssemblyName);
+            var trackerType = OutcomeMetric.Bind("RimQuest.RimQuestTracker", AssemblyName);
+            var questPawnType = OutcomeMetric.Bind("RimQuest.QuestPawn", AssemblyName);
 
-        return OutcomeMetric.Method(dialogType, "ExecuteSelectedQuest", typeof(void));
+            var trackerInstanceField = AccessTools.DeclaredField(trackerType, "Instance") is { IsStatic: true } tif &&
+                tif.FieldType == trackerType
+                ? tif
+                : throw new InvalidOperationException("RimQuest RimQuestTracker.Instance field signature changed");
+            var questPawnsField = AccessTools.DeclaredField(trackerType, "questPawns") is { } qpf &&
+                qpf.FieldType == typeof(List<>).MakeGenericType(questPawnType)
+                ? qpf
+                : throw new InvalidOperationException("RimQuest RimQuestTracker.questPawns field signature changed");
+            var dialogQuestPawnField = AccessTools.DeclaredField(dialogType, "questPawn") is { } dqp &&
+                dqp.FieldType == questPawnType
+                ? dqp
+                : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.questPawn field signature changed");
+            var dialogInteractorField = AccessTools.DeclaredField(dialogType, "interactor") is { } dif &&
+                dif.FieldType == typeof(Pawn)
+                ? dif
+                : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.interactor field signature changed");
+            var dialogSelectedQuestField = AccessTools.DeclaredField(dialogType, "selectedQuest") is { } dsq &&
+                dsq.FieldType == typeof(object)
+                ? dsq
+                : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.selectedQuest field signature changed");
+            var dialogSilverCostField = AccessTools.DeclaredField(dialogType, "actualSilverCost") is { } dsc &&
+                dsc.FieldType == typeof(int)
+                ? dsc
+                : throw new InvalidOperationException("RimQuest Dialog_QuestGiver.actualSilverCost field signature changed");
+
+            var execute = OutcomeMetric.Method(dialogType, "ExecuteSelectedQuest", typeof(void));
+            getTrackerInstance = OptionalTransitionCallSite.CompileFieldGetter<object?>(trackerInstanceField);
+            getQuestPawns = OptionalTransitionCallSite.CompileFieldGetter<IList?>(questPawnsField);
+            getDialogQuestPawn = OptionalTransitionCallSite.CompileFieldGetter<object?>(dialogQuestPawnField);
+            getDialogInteractor = OptionalTransitionCallSite.CompileFieldGetter<Pawn?>(dialogInteractorField);
+            getDialogSelectedQuest = OptionalTransitionCallSite.CompileFieldGetter<Def?>(dialogSelectedQuestField);
+            getDialogSilverCost = OptionalTransitionCallSite.CompileFieldGetter<int>(dialogSilverCostField);
+            executeSelectedQuestMethod = execute;
+            return execute;
+        }
     }
 
     private static bool IsQuestPawnTracked(object questPawn) =>
-        trackerInstanceField.GetValue(null) is { } tracker &&
-        questPawnsField.GetValue(tracker) is IList list &&
+        getTrackerInstance(null!) is { } tracker &&
+        getQuestPawns(tracker) is { } list &&
         list.Contains(questPawn);
 
     private static QuestPurchaseSnapshot? CaptureBefore(Window dialog)
     {
-        if (dialogQuestPawnField.GetValue(dialog) is not { } questPawn ||
-            dialogInteractorField.GetValue(dialog) is not Pawn interactor ||
-            dialogSelectedQuestField.GetValue(dialog) is not Def questDef ||
-            dialogSilverCostField.GetValue(dialog) is not int silverCost)
+        if (getDialogQuestPawn(dialog) is not { } questPawn ||
+            getDialogInteractor(dialog) is not { } interactor ||
+            getDialogSelectedQuest(dialog) is not { } questDef)
             return null;
+        var silverCost = getDialogSilverCost(dialog);
 
         return RimQuestRules.IsEligiblePurchaseBefore(
             isPlayerInteractor: GameFacts.IsPlayer(interactor),

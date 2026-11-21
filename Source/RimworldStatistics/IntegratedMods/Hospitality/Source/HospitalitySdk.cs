@@ -28,11 +28,23 @@ internal static class HospitalitySdk
             if (!Bridge.HasHost()) return;
             var hooks = ExternalSdkHost.Instance.IntegratedHooks;
             var arrivalReady = HospitalityArrival.TryBind();
-            if (arrivalReady)
-                hooks.Defer("mod.orion.hospitality.visits", HospitalityArrival.TryInstall);
             var completionReady = HospitalityDeparture.TryBind();
-            if (completionReady)
-                hooks.Defer("mod.orion.hospitality.visits", HospitalityDeparture.TryInstall);
+            if (arrivalReady || completionReady)
+                hooks.Defer("mod.orion.hospitality.visits", () =>
+                {
+                    var patcher = new ScopedHarmonyPatcher(new HarmonyLib.Harmony("pengin0503.rws.hospitalityaddon.visits"));
+                    if (arrivalReady && !HospitalityArrival.TryInstall(patcher))
+                    {
+                        patcher.Rollback();
+                        return false;
+                    }
+                    if (completionReady && !HospitalityDeparture.TryInstall(patcher))
+                    {
+                        patcher.Rollback();
+                        return false;
+                    }
+                    return true;
+                });
             var recruitReady = HospitalityRecruitHook.TryBind();
             if (recruitReady)
                 hooks.Defer("mod.orion.hospitality.recruits", HospitalityRecruitHook.TryInstall);

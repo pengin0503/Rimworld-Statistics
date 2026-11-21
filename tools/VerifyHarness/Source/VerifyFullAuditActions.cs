@@ -166,12 +166,17 @@ public static class VerifyFullAuditActions
                 return true;
             });
 
-        var recording = AcquisitionUnits.All.Where(u => MetricGates.IsRecording(u.Id))
+        var allUnits = AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits);
+        var recording = allUnits.Where(u => MetricGates.IsRecording(u.Id))
             .Select(u => u.Id).ToHashSet(StringComparer.Ordinal);
-        var absentDlc = AcquisitionUnits.All.Where(u =>
+        var absentDlc = allUnits.Where(u =>
                 u.RequiredDlc is not null && !ModsConfig.IsActive(u.RequiredDlc))
             .Select(u => u.RequiredDlc!).ToHashSet(StringComparer.Ordinal);
-        var rows = VerifyCatalogAudit.Build(MetricRegistry.ImplementedCatalog, recording, observed, absentDlc);
+        var provider = new ModMetricProviderRegistry();
+        foreach (var descriptor in ModProviderAdapters.KnownDescriptors)
+            provider.Register(descriptor);
+        var catalog = MetricRegistry.ImplementedCatalog.Concat(provider.BuildCatalog()).ToArray();
+        var rows = VerifyCatalogAudit.Build(catalog, recording, observed, absentDlc);
         var report = GuidedAuditReport.Build(rows, cases, VerifyProbe.GameVersion, campaign, DateTime.UtcNow);
 
         // Preserve last successful dossier for same-campaign progress diffs,
@@ -201,7 +206,7 @@ public static class VerifyFullAuditActions
             progressText.AppendLine();
         }
 
-        // Export 264 exact registry rows, grouped user guidance, and raw cases.
+        // Export all implemented catalog rows, grouped user guidance, and raw cases.
         // Every file is written only inside the isolated test data folder.
         var details = new StringBuilder(report.ToMarkdown())
             .AppendLine().Append(progressText)

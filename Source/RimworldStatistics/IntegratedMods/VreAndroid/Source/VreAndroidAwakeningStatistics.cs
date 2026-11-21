@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
@@ -11,8 +9,8 @@ namespace RimworldStatistics.VreAndroid;
 
 /// <summary>
 /// Biotech VRE Android natural awakenings from Gene_SyntheticBody.TickInterval.
-/// A developer's direct Awaken call is deliberately excluded by observing the
-/// origin stack at the very rare completion call rather than polling gene ticks.
+/// A developer's direct Awaken call is excluded by lightweight caller scope counters
+/// around TickInterval and VREAndroids.Utils helpers that invoke Awaken.
 /// </summary>
 internal static class VreAndroidAwakeningStatistics
 {
@@ -20,8 +18,10 @@ internal static class VreAndroidAwakeningStatistics
     private const string Unit = "mod.vanillaracesexpanded.android.awakening";
     private const string Key = Unit + ".completed";
     private const string Biotech = "Ludeon.RimWorld.Biotech";
-    private static FieldInfo? pawnField;
-    private static MethodInfo? isAwakened;
+    private static Func<object, Pawn?>? getPawn;
+    private static Func<Pawn, bool>? isAwakenedFunc;
+    [ThreadStatic] private static int tickDepth;
+    [ThreadStatic] private static int utilsDepth;
 
     private sealed record AwakeningBefore(Pawn Pawn, bool WasAwakened, bool NormalTick);
 
@@ -73,48 +73,44 @@ internal static class VreAndroidAwakeningStatistics
             isAwake?.ReturnType != typeof(bool) || pawn?.FieldType != typeof(Pawn))
             throw new InvalidOperationException("VREAndroids awakening API changed");
 
-        pawnField = pawn;
-        isAwakened = isAwake;
+        getPawn = OptionalTransitionCallSite.CompileFieldGetter<Pawn?>(pawn);
+        isAwakenedFunc = (Func<Pawn, bool>)Delegate.CreateDelegate(typeof(Func<Pawn, bool>), isAwake);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(awaken,
-                prefix: new HarmonyMethod(typeof(VreAndroidAwakeningStatistics), nameof(BeforeAwakening)),
-                postfix: new HarmonyMethod(typeof(VreAndroidAwakeningStatistics), nameof(AfterAwakening)));
+            patcher.Patch(awaken, typeof(VreAndroidAwakeningStatistics), nameof(BeforeAwakening), nameof(AfterAwakening));
+            patcher.Patch(tick, typeof(VreAndroidAwakeningStatistics), prefix: nameof(EnterTick), finalizer: nameof(ExitTick));
+            foreach (var helper in OptionalTransitionCallSite.FindCallersInTypeTree(utils, awaken))
+                patcher.Patch(helper, typeof(VreAndroidAwakeningStatistics), prefix: nameof(EnterUtils), finalizer: nameof(ExitUtils));
         }
         catch
         {
-            harmony.Unpatch(awaken, HarmonyPatchType.All, harmony.Id);
-            pawnField = null;
-            isAwakened = null;
+            getPawn = null;
+            isAwakenedFunc = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
-    private static bool IsAwakened(Pawn p)
-        => isAwakened?.Invoke(null, [p]) is true;
+    private static bool IsAwakened(Pawn p) => isAwakenedFunc?.Invoke(p) is true;
 
-    private static bool NaturalOrigin()
+    private static void EnterTick() => tickDepth++;
+
+    private static Exception? ExitTick(Exception? __exception)
     {
-        // Original has only two mood-triggered Awaken call sites inside
-        // TickInterval; debug utility calls Awaken directly. Inspect infrequent
-        // calls here rather than patching every SyntheticBody gene tick.
-        foreach (var frame in new StackTrace(1, false).GetFrames() ?? [])
-        {
-            var caller = frame.GetMethod();
-            if (caller?.DeclaringType?.FullName == "VREAndroids.Gene_SyntheticBody" &&
-                caller.Name == "TickInterval")
-                return true;
-            if (caller?.DeclaringType?.FullName?.StartsWith(
-                "VREAndroids.Utils", StringComparison.Ordinal) == true)
-                return false;
-        }
-        return false;
+        if (tickDepth > 0)
+            tickDepth--;
+        return __exception;
+    }
+
+    private static void EnterUtils() => utilsDepth++;
+
+    private static Exception? ExitUtils(Exception? __exception)
+    {
+        if (utilsDepth > 0)
+            utilsDepth--;
+        return __exception;
     }
 
     private static void BeforeAwakening(object __instance, out AwakeningBefore? __state)
@@ -124,10 +120,10 @@ internal static class VreAndroidAwakeningStatistics
             return;
         try
         {
-            var pawn = pawnField?.GetValue(__instance) as Pawn;
+            var pawn = getPawn?.Invoke(__instance);
             if (pawn is null || !GameFacts.IsMember(pawn) || IsAwakened(pawn))
                 return;
-            __state = new AwakeningBefore(pawn, WasAwakened: false, NormalTick: NaturalOrigin());
+            __state = new AwakeningBefore(pawn, WasAwakened: false, NormalTick: tickDepth > 0 && utilsDepth == 0);
         }
         catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }

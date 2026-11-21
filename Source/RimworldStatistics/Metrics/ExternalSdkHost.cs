@@ -14,8 +14,24 @@ internal sealed class ExternalSdkHost : IStatisticsHost
     private readonly ExternalSdkMetricRegistry registry = new(() => ModProviderAdapters.BuiltInDescriptors);
     private readonly object gate = new();
 
+    private volatile bool sealedForStartup;
+
     public int ApiMajor => StatisticsApi.ApiVersionMajor;
     public int ApiMinor => StatisticsApi.ApiVersionMinor;
+
+    private RegisteredSdkMetric? LookupMetric(string metricId)
+    {
+        if (sealedForStartup)
+            return registry.Find(metricId);
+        lock (gate)
+            return registry.Find(metricId);
+    }
+
+    internal void ReserveBuiltInUnits(IEnumerable<string> unitIds)
+    {
+        lock (gate)
+            registry.ReserveBuiltInUnits(unitIds);
+    }
 
     public ApiRegistrationResult Register(ApiMetricDefinition metric, Func<double?>? captureSnapshot = null)
     {
@@ -43,9 +59,7 @@ internal sealed class ExternalSdkHost : IStatisticsHost
     /// <summary>Current-game SDK ID-set saturation; historical profile evidence is separate.</summary>
     internal bool IsEventDedupCapacityExceeded(string metricId)
     {
-        RegisteredSdkMetric? metric;
-        lock (gate)
-            metric = registry.Find(metricId);
+        var metric = LookupMetric(metricId);
         if (metric is null || metric.Api.Kind != ApiMetricKind.Event)
             return false;
         return LiveMetrics.Accumulator?.Family(metric.Descriptor.AcquisitionId)?
@@ -54,25 +68,23 @@ internal sealed class ExternalSdkHost : IStatisticsHost
 
     public ApiRecordResult RecordEvent(string metricId, string uniqueEventId, double value = 1)
     {
-        RegisteredSdkMetric? metric;
-        lock (gate)
-            metric = registry.Find(metricId);
+        var metric = LookupMetric(metricId);
         if (metric is null || metric.Api.Kind != ApiMetricKind.Event)
             return ApiRecordResult.Disabled;
         var unit = metric.Descriptor.AcquisitionId;
-        if (!MetricGates.IsRecording(unit))
+        if (!MetricGates.IsRecording(unit) || Find.TickManager is not { } tickManager)
             return ApiRecordResult.Disabled;
         // LiveMetrics.Family marks a gap if a provider mistakenly invokes this from a worker thread.
         var family = LiveMetrics.Family(unit);
         if (family is null)
-            return ApiRecordResult.Disabled;
+            return UnityData.IsInMainThread ? ApiRecordResult.Disabled : ApiRecordResult.Failed;
         try
         {
-            var result = ExternalSdkMetricPolicy.Record(family, metric, uniqueEventId, Find.TickManager.TicksGame, value);
-            // An invalid confirmed event is a missed observation, not evidence of zero activity.
-            // Both invalid input and dedup-cap overflow must weaken coverage, never claim Complete.
-            if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
-                LiveMetrics.Accumulator?.MarkGap(unit, Find.TickManager.TicksGame);
+            var tick = tickManager.TicksGame;
+            var result = ExternalSdkMetricPolicy.Record(family, metric, uniqueEventId, tick, value);
+            // An invalid confirmed event weakens only the affected metric; CapExceeded already marks per-metric Overflow.
+            if (result == ApiRecordResult.InvalidEvent)
+                family.Acc(metric.GapAccumulatorKey).Overflow = true;
             if (result == ApiRecordResult.CapExceeded)
                 Log.WarningOnce("[RimworldStatistics] SDK event ID deduplication limit (" +
                     FamilyOps.KeyCap + ") reached for " + metricId +
@@ -89,23 +101,21 @@ internal sealed class ExternalSdkHost : IStatisticsHost
 
     public ApiRecordResult RecordBreakdownEvent(string metricId, string uniqueEventId, string breakdownKey, double value = 1)
     {
-        RegisteredSdkMetric? metric;
-        lock (gate)
-            metric = registry.Find(metricId);
+        var metric = LookupMetric(metricId);
         if (metric is null || metric.Api.Kind != ApiMetricKind.Event)
             return ApiRecordResult.Disabled;
         var unit = metric.Descriptor.AcquisitionId;
-        if (!MetricGates.IsRecording(unit))
+        if (!MetricGates.IsRecording(unit) || Find.TickManager is not { } tickManager)
             return ApiRecordResult.Disabled;
         var family = LiveMetrics.Family(unit);
         if (family is null)
-            return ApiRecordResult.Disabled;
+            return UnityData.IsInMainThread ? ApiRecordResult.Disabled : ApiRecordResult.Failed;
         try
         {
-            var tick = Find.TickManager.TicksGame;
+            var tick = tickManager.TicksGame;
             var result = ExternalSdkMetricPolicy.RecordBreakdown(family, metric, uniqueEventId, breakdownKey, tick, value);
-            if (result is ApiRecordResult.CapExceeded or ApiRecordResult.InvalidEvent)
-                LiveMetrics.Accumulator?.MarkGap(unit, tick);
+            if (result == ApiRecordResult.InvalidEvent)
+                family.Acc(metric.GapAccumulatorKey).Overflow = true;
             if (result == ApiRecordResult.CapExceeded)
             {
                 var bucketOverflow = family.Peek(metric.ValueAccumulatorKey)?.Overflow == true;
@@ -130,7 +140,10 @@ internal sealed class ExternalSdkHost : IStatisticsHost
     {
         RegisteredSdkMetric[] registered;
         lock (gate)
+        {
             registered = registry.Seal().ToArray();
+            sealedForStartup = true;
+        }
         var result = new List<ModMetricAdapterRegistration>();
         var eventFamilies = registered.Where(x => x.Api.Kind == ApiMetricKind.Event)
             .GroupBy(x => x.Descriptor.AcquisitionId, StringComparer.Ordinal)
@@ -146,7 +159,13 @@ internal sealed class ExternalSdkHost : IStatisticsHost
                 {
                     // A malformed external unit cannot block unrelated metrics or the game save.
                     try { ExternalSdkMetricPolicy.Build(output, metric); }
-                    catch (Exception) { /* only that metric is omitted */ }
+                    catch (Exception e)
+                    {
+                        Log.WarningOnce($"[RimworldStatistics] External SDK metric '{metric.Descriptor.StableKey}' could not be built: {e.Message}",
+                            ("RWS.sdk.build." + metric.Descriptor.StableKey).GetHashCode());
+                        if (Find.TickManager is { } tm)
+                            LiveMetrics.Accumulator?.MarkGap(kv.Key, tm.TicksGame);
+                    }
                 }
             },
         }, StringComparer.Ordinal);

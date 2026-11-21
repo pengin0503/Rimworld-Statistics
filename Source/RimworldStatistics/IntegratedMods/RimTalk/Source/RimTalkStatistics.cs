@@ -73,19 +73,15 @@ internal static class RimTalkStatistics
         recipientProperty = recipProp;
         talkTypeProperty = typeProp;
 
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(createInteraction,
-                prefix: new HarmonyMethod(typeof(RimTalkStatistics), nameof(BeforeCreateInteraction)),
-                postfix: new HarmonyMethod(typeof(RimTalkStatistics), nameof(AfterCreateInteraction)),
-                finalizer: new HarmonyMethod(typeof(RimTalkStatistics), nameof(FinishCreateInteraction)));
-            harmony.Patch(playLogAdd,
-                postfix: new HarmonyMethod(typeof(RimTalkStatistics), nameof(AfterPlayLogAdd)));
+            patcher.Patch(createInteraction, typeof(RimTalkStatistics),
+                prefix: nameof(BeforeCreateInteraction), postfix: nameof(AfterCreateInteraction), finalizer: nameof(FinishCreateInteraction));
+            patcher.Patch(playLogAdd, typeof(RimTalkStatistics), postfix: nameof(AfterPlayLogAdd));
         }
         catch
         {
-            harmony.Unpatch(createInteraction, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(playLogAdd, HarmonyPatchType.All, harmony.Id);
             playLogEntryType = null;
             initiatorProperty = null;
             recipientProperty = null;

@@ -42,6 +42,8 @@ public sealed class SampleGameComponent : GameComponent
         sessionToken ??= Guid.NewGuid().ToString("N");
         var ledger = new SampleEventLedger(sessionToken, completedActions);
         var recorded = ledger.Emit(SampleSdkClient.OnConfirmedEvent);
+        var bucket = (ledger.Count & 1) == 0 ? "sample_even" : "sample_odd";
+        _ = SampleSdkClient.OnConfirmedBreakdownEvent($"{sessionToken}:{ledger.Count}:breakdown", bucket, 1);
         completedActions = ledger.Count;
         SampleSdkClient.SetCurrentCount(completedActions);
         return recorded;

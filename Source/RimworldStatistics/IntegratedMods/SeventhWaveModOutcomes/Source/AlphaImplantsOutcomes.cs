@@ -69,8 +69,9 @@ internal static class AlphaImplantsOutcomes
             typeof(bool),
             typeof(GlobalTargetInfo));
 
-        OutcomeMetric.Patch(harmony, localActivate, typeof(AlphaImplantsOutcomes), nameof(BeforeAbilityActivate), nameof(AfterAbilityActivate));
-        OutcomeMetric.Patch(harmony, globalActivate, typeof(AlphaImplantsOutcomes), nameof(BeforeAbilityActivate), nameof(AfterAbilityActivate));
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(localActivate, typeof(AlphaImplantsOutcomes), nameof(BeforeAbilityActivate), nameof(AfterAbilityActivate));
+        patcher.Patch(globalActivate, typeof(AlphaImplantsOutcomes), nameof(BeforeAbilityActivate), nameof(AfterAbilityActivate));
     }
 
     private static void BeforeAbilityActivate(Ability __instance, out int? __state)

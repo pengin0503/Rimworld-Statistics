@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
@@ -22,13 +20,14 @@ internal static class VfePiratesStatistics
     private const string Unit = "mod.oskarpotocki.vfe.pirates.warcasketfit";
     private const string Key = Unit + ".completed";
 
-    private static FieldInfo? projectField;
-    private static FieldInfo? occupantField;
-    private static FieldInfo? armorField;
-    private static FieldInfo? helmetField;
-    private static FieldInfo? shouldersField;
-    private static FieldInfo? workField;
-    private static FieldInfo? totalField;
+    private static Func<object, object?>? getProject;
+    private static Func<object, Pawn?>? getOccupant;
+    private static Func<object, Def?>? getArmor;
+    private static Func<object, Def?>? getHelmet;
+    private static Func<object, Def?>? getShoulders;
+    private static Func<object, float>? getWork;
+    private static Func<object, float>? getTotal;
+    [ThreadStatic] private static int normalWeldingDepth;
 
     private sealed record FittingBefore(Pawn Occupant, Def Armor, Def Helmet,
         Def Shoulders, HashSet<Apparel> WornBefore, string? DefKey);
@@ -88,67 +87,64 @@ internal static class VfePiratesStatistics
             work?.FieldType != typeof(float) || total?.FieldType != typeof(float))
             throw new InvalidOperationException("VFEPirates 1.7 Warcasket project signatures changed");
 
-        projectField = projectMember;
-        occupantField = occupantMember;
-        armorField = armor;
-        helmetField = helmet;
-        shouldersField = shoulders;
-        workField = work;
-        totalField = total;
+        getProject = OptionalTransitionCallSite.CompileFieldGetter<object?>(projectMember);
+        getOccupant = OptionalTransitionCallSite.CompileFieldGetter<Pawn?>(occupantMember);
+        getArmor = OptionalTransitionCallSite.CompileFieldGetter<Def?>(armor);
+        getHelmet = OptionalTransitionCallSite.CompileFieldGetter<Def?>(helmet);
+        getShoulders = OptionalTransitionCallSite.CompileFieldGetter<Def?>(shoulders);
+        getWork = OptionalTransitionCallSite.CompileFieldGetter<float>(work);
+        getTotal = OptionalTransitionCallSite.CompileFieldGetter<float>(total);
+
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(finish,
-                prefix: new HarmonyMethod(typeof(VfePiratesStatistics), nameof(BeforeFinish)),
-                postfix: new HarmonyMethod(typeof(VfePiratesStatistics), nameof(AfterFinish)));
+            patcher.Patch(finish, typeof(VfePiratesStatistics), nameof(BeforeFinish), nameof(AfterFinish));
+            var weldingCallback = OptionalTransitionCallSite.FindDeclaredMethodInHierarchyByContains(driver, "<MakeNewToils>b__3_5");
+            if (weldingCallback is not null)
+                patcher.Patch(weldingCallback, typeof(VfePiratesStatistics), prefix: nameof(EnterWelding), finalizer: nameof(ExitWelding));
         }
         catch
         {
-            harmony.Unpatch(finish, HarmonyPatchType.All, harmony.Id);
-            projectField = occupantField = armorField = helmetField = shouldersField =
-                workField = totalField = null;
+            getProject = null;
+            getOccupant = null;
+            getArmor = null;
+            getHelmet = null;
+            getShoulders = null;
+            getWork = null;
+            getTotal = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
-    private static bool FromNormalWelding()
+    private static void EnterWelding() => normalWeldingDepth++;
+
+    private static Exception? ExitWelding(Exception? __exception)
     {
-        // FinishWarCasketProject can be called by a DEV gizmo. Trace only rare
-        // successful finish calls; do not patch the per-tick welding action.
-        foreach (var frame in new StackTrace(1, false).GetFrames() ?? [])
-        {
-            var method = frame.GetMethod();
-            if (method?.DeclaringType?.FullName is not { } name)
-                continue;
-            if (name.StartsWith("VFEPirates.JobDriver_DoWelding", StringComparison.Ordinal) &&
-                method.Name.Contains("<MakeNewToils>b__3_5", StringComparison.Ordinal))
-                return true;
-        }
-        return false;
+        if (normalWeldingDepth > 0)
+            normalWeldingDepth--;
+        return __exception;
     }
 
     private static void BeforeFinish(object __instance, out FittingBefore? __state)
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } foundry ||
-            !GameFacts.IsPlayerFaction(foundry.Faction) || !FromNormalWelding())
+            !GameFacts.IsPlayerFaction(foundry.Faction) || normalWeldingDepth <= 0)
             return;
         try
         {
-            if (occupantField?.GetValue(__instance) is not Pawn pawn ||
+            if (getOccupant?.Invoke(__instance) is not { } pawn ||
                 !GameFacts.IsMember(pawn) || pawn.apparel is null ||
-                projectField?.GetValue(__instance) is not { } project ||
-                workField?.GetValue(project) is not float done ||
-                totalField?.GetValue(project) is not float required ||
-                required <= 0 || done < required ||
-                armorField?.GetValue(project) is not Def armor ||
-                helmetField?.GetValue(project) is not Def helmet ||
-                shouldersField?.GetValue(project) is not Def shoulders)
+                getProject?.Invoke(__instance) is not { } project)
+                return;
+            var done = getWork!(project);
+            var required = getTotal!(project);
+            if (required <= 0 || done < required ||
+                getArmor!(project) is not { } armor ||
+                getHelmet!(project) is not { } helmet ||
+                getShoulders!(project) is not { } shoulders)
                 return;
 
             __state = new FittingBefore(pawn, armor, helmet, shoulders,
@@ -165,14 +161,22 @@ internal static class VfePiratesStatistics
             return;
         try
         {
-            if (projectField?.GetValue(__instance) is not null ||
-                occupantField?.GetValue(__instance) is not null ||
+            if (getProject?.Invoke(__instance) is not null ||
+                getOccupant?.Invoke(__instance) is not null ||
                 !GameFacts.IsMember(__state.Occupant) ||
                 __state.Occupant.apparel is null)
                 return;
             var worn = __state.Occupant.apparel.WornApparel;
-            bool NewPiece(Def def) => worn.Any(a =>
-                ReferenceEquals(a.def, def) && !__state.WornBefore.Contains(a));
+            bool NewPiece(Def def)
+            {
+                for (var i = 0; i < worn.Count; i++)
+                {
+                    var a = worn[i];
+                    if (ReferenceEquals(a.def, def) && !__state.WornBefore.Contains(a))
+                        return true;
+                }
+                return false;
+            }
             var fitted = VfePiratesRules.Fitted(
                 owned: true, normalCompletedWeld: true,
                 newArmor: NewPiece(__state.Armor),

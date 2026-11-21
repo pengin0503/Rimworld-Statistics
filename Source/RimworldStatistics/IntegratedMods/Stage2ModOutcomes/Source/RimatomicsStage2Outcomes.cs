@@ -306,22 +306,11 @@ internal static class RimatomicsStage2Outcomes
         var destroy = OutcomeMetric.Method(reactorType, "Destroy", typeof(void), typeof(DestroyMode));
         var goBang = OutcomeMetric.Method(poppedType, "GoBang", typeof(void), typeof(int), typeof(Map));
 
-        try
-        {
-            harmony.Patch(
-                destroy,
-                prefix: new HarmonyMethod(typeof(RimatomicsStage2Outcomes), nameof(BeginReactorDestroy)),
-                finalizer: new HarmonyMethod(typeof(RimatomicsStage2Outcomes), nameof(EndReactorDestroy)));
-            harmony.Patch(
-                goBang,
-                postfix: new HarmonyMethod(typeof(RimatomicsStage2Outcomes), nameof(AfterPoppedCoreGoBang)));
-        }
-        catch
-        {
-            harmony.Unpatch(destroy, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(goBang, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(destroy, typeof(RimatomicsStage2Outcomes),
+            prefix: nameof(BeginReactorDestroy), finalizer: nameof(EndReactorDestroy));
+        patcher.Patch(goBang, typeof(RimatomicsStage2Outcomes),
+            postfix: nameof(AfterPoppedCoreGoBang));
     }
 
     private static void BeginReactorDestroy(Building __instance, out MeltdownScope? __state)

@@ -1,4 +1,4 @@
-"""Regression checks for the conservative 276-output historical-recovery inventory."""
+"""Regression checks for the conservative 322-output historical-recovery inventory."""
 import collections
 import pathlib
 import sys

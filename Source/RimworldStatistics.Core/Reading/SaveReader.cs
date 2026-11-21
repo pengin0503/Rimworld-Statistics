@@ -409,7 +409,7 @@ public sealed partial class SaveReader
 
     private static void ReadTickManager(XElement tm, SaveObservation obs)
     {
-        obs.Values.TicksGame = Int(tm.Element("ticksGame"), 0);
+        obs.Values.TicksGame = StrictInt(tm.Element("ticksGame"), 0);
         obs.Identity.GameStartAbsTick = Int(tm.Element("gameStartAbsTick"), 0);
     }
 
@@ -559,12 +559,17 @@ public sealed partial class SaveReader
 
     private static string? Text(XElement? e) => e?.Value;
 
-    private static int Int(XElement? e, int fallback)
+    private static int StrictInt(XElement? e, int fallback)
         => e is null ? fallback : int.Parse(e.Value.Trim(), NumberStyles.Integer, Inv);
 
+    private static int Int(XElement? e, int fallback)
+        => e is not null && int.TryParse(e.Value.Trim(), NumberStyles.Integer, Inv, out var value) ? value : fallback;
+
     private static double Double(XElement? e, double fallback)
-        => e is null ? fallback : double.Parse(e.Value.Trim(), NumberStyles.Float, Inv);
+        => e is not null && double.TryParse(e.Value.Trim(), NumberStyles.Float, Inv, out var value) && double.IsFinite(value)
+            ? value
+            : fallback;
 
     private static bool Bool(XElement? e, bool fallback)
-        => e is null ? fallback : bool.Parse(e.Value.Trim());
+        => e is not null && bool.TryParse(e.Value.Trim(), out var value) ? value : fallback;
 }

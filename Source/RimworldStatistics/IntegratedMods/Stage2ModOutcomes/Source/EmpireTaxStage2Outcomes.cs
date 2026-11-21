@@ -65,23 +65,10 @@ internal static class EmpireTaxStage2Outcomes
         var actionMethod = OutcomeMetric.Method(deliveryType, "Action", typeof(void), fcEventType, typeof(bool));
         var rescheduleMethod = OutcomeMetric.Method(deliveryType, "CreateDeliveryEvent", typeof(void), fcEventType);
 
-        try
-        {
-            harmony.Patch(
-                actionMethod,
-                prefix: new HarmonyMethod(typeof(EmpireTaxStage2Outcomes), nameof(BeforeDeliveryAction)),
-                postfix: new HarmonyMethod(typeof(EmpireTaxStage2Outcomes), nameof(AfterDeliveryAction)),
-                finalizer: new HarmonyMethod(typeof(EmpireTaxStage2Outcomes), nameof(FinishDeliveryAction)));
-            harmony.Patch(
-                rescheduleMethod,
-                postfix: new HarmonyMethod(typeof(EmpireTaxStage2Outcomes), nameof(OnRescheduled)));
-        }
-        catch
-        {
-            harmony.Unpatch(actionMethod, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(rescheduleMethod, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(actionMethod, typeof(EmpireTaxStage2Outcomes),
+            prefix: nameof(BeforeDeliveryAction), postfix: nameof(AfterDeliveryAction), finalizer: nameof(FinishDeliveryAction));
+        patcher.Patch(rescheduleMethod, typeof(EmpireTaxStage2Outcomes), postfix: nameof(OnRescheduled));
     }
 
     private static void BeforeDeliveryAction(object? __0, out TaxDeliveryScope? __state)

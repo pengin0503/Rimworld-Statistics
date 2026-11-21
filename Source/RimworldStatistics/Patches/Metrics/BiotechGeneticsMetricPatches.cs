@@ -138,9 +138,10 @@ public static class BiotechGeneExtractorFinishMetricPatch
         try
         {
             if (__instance is { Destroyed: false, Map: { } map }
-                && __instance.innerContainer?.FirstOrDefault() is Pawn
+                && LiveMetrics.CanCaptureEvent(BiotechGeneticsFamily.Name)
                 && GameFacts.IsPlayerFaction(__instance.Faction)
-                && LiveMetrics.CanCaptureEvent(BiotechGeneticsFamily.Name))
+                && __instance.innerContainer is { Count: > 0 } container
+                && container[0] is Pawn)
             {
                 var before = map.listerThings?.ThingsOfDef(ThingDefOf.Genepack)?.Count ?? 0;
                 __state = (true, map, before);
@@ -326,7 +327,14 @@ public static class BiotechBossDefeatedMetricPatch
             if (__instance is null || pawn?.kindDef is not { } kind
                 || !LiveMetrics.CanCaptureEvent(BiotechGeneticsFamily.Name))
                 return;
-            var bossDef = __instance.AllBosses?.FirstOrDefault(b => b?.kindDef == kind);
+            BossDef? bossDef = null;
+            if (__instance.AllBosses is { } allBosses)
+                for (var i = 0; i < allBosses.Count; i++)
+                    if (allBosses[i]?.kindDef == kind)
+                    {
+                        bossDef = allBosses[i];
+                        break;
+                    }
             if (bossDef is not null && !__instance.IsDefeated(bossDef))
                 __state = bossDef;
         }

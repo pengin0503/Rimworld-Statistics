@@ -69,8 +69,9 @@ internal static class HorrorsOutcomes
         var hiveDeSpawn = OutcomeMetric.Method(hiveType, "DeSpawn", typeof(void), typeof(DestroyMode));
         var denDeSpawn = OutcomeMetric.Method(denType, "DeSpawn", typeof(void), typeof(DestroyMode));
 
-        OutcomeMetric.Patch(harmony, hiveDeSpawn, typeof(HorrorsOutcomes), nameof(BeforeHiveDeSpawn), nameof(AfterHiveDeSpawn));
-        OutcomeMetric.Patch(harmony, denDeSpawn, typeof(HorrorsOutcomes), nameof(BeforeHiveDeSpawn), nameof(AfterHiveDeSpawn));
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(hiveDeSpawn, typeof(HorrorsOutcomes), nameof(BeforeHiveDeSpawn), nameof(AfterHiveDeSpawn));
+        patcher.Patch(denDeSpawn, typeof(HorrorsOutcomes), nameof(BeforeHiveDeSpawn), nameof(AfterHiveDeSpawn));
     }
 
     private static bool HasColonyPresence(Map map)

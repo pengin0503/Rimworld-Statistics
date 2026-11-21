@@ -239,7 +239,7 @@ public static class ColoniesTab
                     GUI.color = new Color(0.8f, 0.8f, 0.8f);
                     var shownSummary = summary.Truncate(shownRect.width);
                     Widgets.Label(shownRect, shownSummary);
-                    GUI.color = Color.white;
+                    GUI.color = prevColor;
                     if (shownSummary != summary)
                         TooltipHandler.TipRegion(shownRect, summary);
                     x = shownRect.xMax + 6f;
@@ -433,11 +433,13 @@ public static class ColoniesTab
                 if (inner.xMax - origX >= 60f)
                 {
                     var origRect = new Rect(origX, y, inner.xMax - origX, nameRowHeight);
-                    Text.Anchor = TextAnchor.MiddleLeft;
-                    GUI.color = new Color(0.78f, 0.78f, 0.82f);
-                    var shownOrig = originalInfo.Truncate(origRect.width);
-                    Widgets.Label(origRect, shownOrig);
-                    GUI.color = Color.white;
+                    using (UiScopes.GuiState())
+                    {
+                        Text.Anchor = TextAnchor.MiddleLeft;
+                        GUI.color = new Color(0.78f, 0.78f, 0.82f);
+                        var shownOrig = originalInfo.Truncate(origRect.width);
+                        Widgets.Label(origRect, shownOrig);
+                    }
                     TooltipHandler.TipRegion(origRect, originalInfo);
                 }
             }

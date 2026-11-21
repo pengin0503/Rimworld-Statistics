@@ -1,3 +1,4 @@
+using System.Collections.Frozen;
 using RimworldStatistics.Core;
 using RimworldStatistics.Patches.Metrics;
 using Verse;
@@ -11,12 +12,16 @@ namespace RimworldStatistics.Metrics;
 /// </summary>
 public static class MetricGates
 {
+    private sealed record RecordingSnapshot(long Revision, FrozenSet<string> Units);
+
     private static readonly object Gate = new();
     private static long recordingRevision;
     internal static long RecordingRevision => Volatile.Read(ref recordingRevision);
     private static readonly HashSet<string> OpenedForVerification = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Failed = new(StringComparer.Ordinal);
     private static readonly HashSet<string> Applied = new(StringComparer.Ordinal);
+    private static int appliedCount;
+    private static RecordingSnapshot? recordingCache;
     private static IReadOnlySet<string> productionSelection = new HashSet<string>(StringComparer.Ordinal);
     private static IReadOnlySet<string> optionalSelection = new HashSet<string>(StringComparer.Ordinal);
     private static IReadOnlyDictionary<string, AcquisitionUnit> optionalUnits =
@@ -28,7 +33,7 @@ public static class MetricGates
         lock (Gate)
         {
             productionSelection = new HashSet<string>(selected, StringComparer.Ordinal);
-            Interlocked.Increment(ref recordingRevision);
+            InvalidateCacheLocked();
         }
     }
 
@@ -53,7 +58,7 @@ public static class MetricGates
                     : selection.ExplicitUnitIds.Where(id => valid.ContainsKey(id))
                 : Enumerable.Empty<string>();
             optionalSelection = explicitIds.ToHashSet(StringComparer.Ordinal);
-            Interlocked.Increment(ref recordingRevision);
+            InvalidateCacheLocked();
         }
     }
 
@@ -107,11 +112,13 @@ public static class MetricGates
     /// </summary>
     public static void OpenForVerification(IEnumerable<string> unitIds, string caller)
     {
-        var ids = unitIds.Where(id => AcquisitionUnits.Find(id) != null).ToList();
+        var ids = unitIds.Where(id => AcquisitionUnits.Find(id) != null
+            || optionalUnits.ContainsKey(id)
+            || id.StartsWith("mod.", StringComparison.Ordinal)).ToList();
         lock (Gate)
         {
             OpenedForVerification.UnionWith(ids);
-            Interlocked.Increment(ref recordingRevision);
+            InvalidateCacheLocked();
         }
         Log.Warning($"[RimworldStatistics] {caller} opened unverified acquisition units for verification: {string.Join(", ", ids)}. "
             + "Use a separate -savedatafolder; values recorded now are not published.");
@@ -177,17 +184,53 @@ public static class MetricGates
 
     public static bool IsRecording(string unitId)
     {
-        if (!IsOpen(unitId))
+        if (Volatile.Read(ref appliedCount) == 0)
             return false;
+        var rev = Volatile.Read(ref recordingRevision);
+        var cache = Volatile.Read(ref recordingCache);
+        if (cache is not null && cache.Revision == rev)
+            return cache.Units.Contains(unitId);
+        return RebuildRecordingCache(rev).Contains(unitId);
+    }
+
+    private static FrozenSet<string> RebuildRecordingCache(long observedRev)
+    {
+        string[] appliedUnits;
         lock (Gate)
-            return Applied.Contains(unitId);
+        {
+            if (Applied.Count == 0)
+                return FrozenSet<string>.Empty;
+            appliedUnits = Applied.ToArray();
+        }
+        var open = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var id in appliedUnits)
+            if (IsOpen(id))
+                open.Add(id);
+        var frozen = open.ToFrozenSet(StringComparer.Ordinal);
+        lock (Gate)
+        {
+            if (Volatile.Read(ref recordingRevision) == observedRev)
+                Volatile.Write(ref recordingCache, new RecordingSnapshot(observedRev, frozen));
+        }
+        return frozen;
+    }
+
+    private static void InvalidateCacheLocked()
+    {
+        Interlocked.Increment(ref recordingRevision);
+        Volatile.Write(ref recordingCache, null);
     }
 
     internal static void MarkApplied(string unitId)
     {
         lock (Gate)
+        {
             if (Applied.Add(unitId))
-                Interlocked.Increment(ref recordingRevision);
+            {
+                Volatile.Write(ref appliedCount, Applied.Count);
+                InvalidateCacheLocked();
+            }
+        }
     }
 
     /// <summary>Closes a unit for the rest of the session and logs the cause once. What it recorded so far is kept.</summary>
@@ -197,7 +240,7 @@ public static class MetricGates
         {
             if (!Failed.Add(unitId))
                 return;
-            Interlocked.Increment(ref recordingRevision);
+            InvalidateCacheLocked();
         }
         Log.ErrorOnce($"[RimworldStatistics] Numeric statistics unit '{unitId}' failed and is off for this session.\n{e}", ("RWS.unit." + unitId).GetHashCode());
     }

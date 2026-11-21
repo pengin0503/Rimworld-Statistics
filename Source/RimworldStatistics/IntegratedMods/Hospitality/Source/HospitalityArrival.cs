@@ -45,6 +45,9 @@ internal static class HospitalityArrival
     }
 
     internal static bool TryInstall()
+        => TryInstall(new RimworldStatistics.Metrics.ScopedHarmonyPatcher(new Harmony("pengin0503.rws.hospitalityaddon.visits")));
+
+    internal static bool TryInstall(RimworldStatistics.Metrics.ScopedHarmonyPatcher patcher)
     {
         if (onLordSpawned is null) return false;
         try
@@ -52,8 +55,7 @@ internal static class HospitalityArrival
             var postfix = typeof(HospitalityArrival).GetMethod(nameof(AfterLordSpawned),
                 BindingFlags.NonPublic | BindingFlags.Static);
             if (postfix is null) return false;
-            new Harmony("pengin0503.rws.hospitalityaddon.visits").Patch(
-                onLordSpawned, postfix: new HarmonyMethod(postfix));
+            patcher.Patch(onLordSpawned, postfix: new HarmonyMethod(postfix));
             return true;
         }
         catch (Exception) { return false; }
@@ -81,6 +83,6 @@ internal static class HospitalityArrival
             if (id is null) return;
             HospitalitySdk.RecordArrival(id, groupSize);
         }
-        catch (Exception) { /* Optional source changes must not break the game. */ }
+        catch (Exception e) { RimworldStatistics.Metrics.LiveMetrics.Fail("mod.orion.hospitality.visits", e); }
     }
 }

@@ -18,10 +18,11 @@ internal static class VqeDroneFactoryStatistics
     private const string Owner = "vanillaquestsexpanded.dronefactory";
     private const string AssemblyUnit = "mod.vanillaquestsexpanded.dronefactory.assembly";
     private const string HatchUnit = "mod.vanillaquestsexpanded.dronefactory.hatching";
-    private static FieldInfo? assemblerCounter;
-    private static FieldInfo? assemblerTimer;
-    private static FieldInfo? assemblerKind;
-    private static FieldInfo? droneOwnershipField;
+    private static Func<object, int>? getAssemblerCounter;
+    private static Func<object, int>? getAssemblerTimer;
+    private static Func<object, PawnKindDef?>? getAssemblerKind;
+    private static Type? droneCompType;
+    private static Func<object, bool>? getDroneOwnership;
     [ThreadStatic] private static HatchScope? hatching;
 
     private sealed record AssemblerBefore(int CountBefore, int Target, PawnKindDef Kind, Map Map,
@@ -98,19 +99,19 @@ internal static class VqeDroneFactoryStatistics
             counter?.FieldType != typeof(int) || timer?.FieldType != typeof(int) ||
             kind?.FieldType != typeof(PawnKindDef))
             throw new InvalidOperationException("VQE Drone Factory active assembler signature changed");
-        assemblerCounter = counter;
-        assemblerTimer = timer;
-        assemblerKind = kind;
+        getAssemblerCounter = OptionalTransitionCallSite.CompileFieldGetter<int>(counter);
+        getAssemblerTimer = OptionalTransitionCallSite.CompileFieldGetter<int>(timer);
+        getAssemblerKind = OptionalTransitionCallSite.CompileFieldGetter<PawnKindDef?>(kind);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(BeforeAssemblerTick)),
-                postfix: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(AfterAssemblerTick)));
+            patcher.Patch(tick, typeof(VqeDroneFactoryStatistics), nameof(BeforeAssemblerTick), nameof(AfterAssemblerTick));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
-            assemblerCounter = assemblerTimer = assemblerKind = null;
+            getAssemblerCounter = null;
+            getAssemblerTimer = null;
+            getAssemblerKind = null;
             throw;
         }
     }
@@ -132,30 +133,25 @@ internal static class VqeDroneFactoryStatistics
         if (hatch?.ReturnType != typeof(void) || owned?.FieldType != typeof(bool) ||
             spawn?.ReturnType != typeof(bool))
             throw new InvalidOperationException("VQE hatcher or vanilla successful-spawn signature changed");
-        droneOwnershipField = owned;
+        droneCompType = compType;
+        getDroneOwnership = OptionalTransitionCallSite.CompileFieldGetter<bool>(owned);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(hatch,
-                prefix: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(BeforeHatch)),
-                postfix: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(AfterHatch)),
-                finalizer: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(FinishHatch)));
-            harmony.Patch(spawn,
-                postfix: new HarmonyMethod(typeof(VqeDroneFactoryStatistics), nameof(AfterSpawnHatchedPawn)));
+            patcher.Patch(hatch, typeof(VqeDroneFactoryStatistics),
+                prefix: nameof(BeforeHatch), postfix: nameof(AfterHatch), finalizer: nameof(FinishHatch));
+            patcher.Patch(spawn, typeof(VqeDroneFactoryStatistics),
+                postfix: nameof(AfterSpawnHatchedPawn));
         }
         catch
         {
-            harmony.Unpatch(hatch, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(spawn, HarmonyPatchType.All, harmony.Id);
-            droneOwnershipField = null;
+            droneCompType = null;
+            getDroneOwnership = null;
             throw;
         }
     }
 
-    private static bool CanObserve(string unit)
-        => MetricGates.IsRecording(unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve(string unit) => OptionalTransitionCallSite.Observing(unit);
 
     private static void BeforeAssemblerTick(object __instance, out AssemblerBefore? __state)
     {
@@ -165,10 +161,11 @@ internal static class VqeDroneFactoryStatistics
             return;
         try
         {
-            if (assemblerCounter?.GetValue(__instance) is not int before ||
-                assemblerTimer?.GetValue(__instance) is not int target ||
-                assemblerKind?.GetValue(__instance) is not PawnKindDef kind ||
-                before <= target)
+            if (getAssemblerCounter is null || getAssemblerTimer is null)
+                return;
+            var before = getAssemblerCounter(__instance);
+            var target = getAssemblerTimer(__instance);
+            if (before <= target || getAssemblerKind?.Invoke(__instance) is not { } kind)
                 return;
             __state = new AssemblerBefore(before, target, kind, map,
                 new HashSet<Pawn>(map.mapPawns.AllPawnsSpawned, ReferenceEqualityComparer.Instance));
@@ -185,16 +182,29 @@ internal static class VqeDroneFactoryStatistics
             return;
         try
         {
-            if (assemblerCounter?.GetValue(__instance) is not int after || after >= __state.CountBefore)
+            if (getAssemblerCounter is null)
                 return;
-            var produced = __state.Map.mapPawns.AllPawnsSpawned
-                .Where(p => !__state.Existing.Contains(p)
+            var after = getAssemblerCounter(__instance);
+            if (after >= __state.CountBefore)
+                return;
+            var spawned = __state.Map.mapPawns.AllPawnsSpawned;
+            var producedCount = 0;
+            for (var i = 0; i < spawned.Count; i++)
+            {
+                var p = spawned[i];
+                if (!__state.Existing.Contains(p)
                     && p.Spawned && p.Map == __state.Map &&
                     GameFacts.IsPlayerFaction(p.Faction) &&
-                    ReferenceEquals(p.kindDef, __state.Kind)).ToArray();
+                    ReferenceEquals(p.kindDef, __state.Kind))
+                {
+                    producedCount++;
+                    if (producedCount > 1)
+                        break;
+                }
+            }
             if (!VqeDroneRules.AssemblerSuccess(
                     __state.CountBefore, __state.Target,
-                    produced.Length == 1, matchesKind: true, playerOwned: true))
+                    producedCount == 1, matchesKind: true, playerOwned: true))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(
                 __state.Kind.modContentPack?.PackageId, __state.Kind.defName);
@@ -234,9 +244,19 @@ internal static class VqeDroneFactoryStatistics
             var born = child.Spawned && child.MapHeld?.IsPlayerHome == true;
             // The upstream hatcher tags the child as a player drone *after*
             // the successful vanilla spawn call, before Hatch returns.
-            var markedAsDrone = child.AllComps.Any(c =>
-                droneOwnershipField?.DeclaringType?.IsAssignableFrom(c.GetType()) == true
-                    && droneOwnershipField.GetValue(c) is true);
+            var markedAsDrone = false;
+            if (droneCompType is not null && getDroneOwnership is not null && child.AllComps is { } comps)
+            {
+                for (var i = 0; i < comps.Count; i++)
+                {
+                    var c = comps[i];
+                    if (droneCompType.IsInstanceOfType(c) && getDroneOwnership(c))
+                    {
+                        markedAsDrone = true;
+                        break;
+                    }
+                }
+            }
             if (!VqeDroneRules.HatchSuccess(__state.SpawnSucceeded, born, player && markedAsDrone))
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(

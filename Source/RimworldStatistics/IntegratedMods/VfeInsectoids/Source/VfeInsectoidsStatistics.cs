@@ -19,7 +19,7 @@ internal static class VfeInsectoidsStatistics
     private const string Owner = "OskarPotocki.VFE.Insectoid2";
     private const string Unit = "mod.oskarpotocki.vfe.insectoid2.hivebirth";
     private const string Key = Unit + ".spawned";
-    private static FieldInfo? insectsField;
+    private static Func<object, IList?>? getInsects;
     [ThreadStatic] private static int tickScope;
 
     private sealed record BirthBefore(int Count);
@@ -66,30 +66,23 @@ internal static class VfeInsectoidsStatistics
             insects is null || !typeof(IList).IsAssignableFrom(insects.FieldType))
             throw new InvalidOperationException("VFE Insectoids 2 tick, spawn or list signature changed");
 
-        insectsField = insects;
+        getInsects = OptionalTransitionCallSite.CompileFieldGetter<IList?>(insects);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VfeInsectoidsStatistics), nameof(BeforeHiveTick)),
-                finalizer: new HarmonyMethod(typeof(VfeInsectoidsStatistics), nameof(AfterHiveTick)));
-            harmony.Patch(spawn,
-                prefix: new HarmonyMethod(typeof(VfeInsectoidsStatistics), nameof(BeforeSpawn)),
-                postfix: new HarmonyMethod(typeof(VfeInsectoidsStatistics), nameof(AfterSpawn)));
+            patcher.Patch(tick, typeof(VfeInsectoidsStatistics),
+                prefix: nameof(BeforeHiveTick), finalizer: nameof(AfterHiveTick));
+            patcher.Patch(spawn, typeof(VfeInsectoidsStatistics),
+                prefix: nameof(BeforeSpawn), postfix: nameof(AfterSpawn));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(spawn, HarmonyPatchType.All, harmony.Id);
-            insectsField = null;
+            getInsects = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeHiveTick(out bool __state)
     {
@@ -117,7 +110,7 @@ internal static class VfeInsectoidsStatistics
             return;
         try
         {
-            if (insectsField?.GetValue(__instance) is IList insects)
+            if (getInsects?.Invoke(__instance) is { } insects)
                 __state = new BirthBefore(insects.Count);
         }
         catch (Exception e) { LiveMetrics.Fail(Unit, e); }
@@ -130,7 +123,7 @@ internal static class VfeInsectoidsStatistics
             return;
         try
         {
-            if (insectsField?.GetValue(__instance) is not IList insects ||
+            if (getInsects?.Invoke(__instance) is not { } insects ||
                 insects.Count != __state.Count + 1 ||
                 insects[insects.Count - 1] is not Pawn child ||
                 __instance is not ThingComp comp)

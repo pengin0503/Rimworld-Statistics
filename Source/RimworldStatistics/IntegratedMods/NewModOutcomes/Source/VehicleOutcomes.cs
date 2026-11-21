@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
@@ -15,14 +16,15 @@ internal static class VehicleOutcomes
     private const string Boarding = "mod.smashphil.vehicleframework.boarding";
     private const string Upgrades = "mod.smashphil.vehicleframework.workshopupgrades";
     private const string Restoration = "mod.oskarpotocki.vanillavehiclesexpanded.wreckrestorations";
-    private static PropertyInfo passengers = null!;
-    private static FieldInfo tracker = null!;
-    private static FieldInfo wrecks = null!;
-    private static PropertyInfo jobVehicle = null!;
-    private static PropertyInfo upgradeTree = null!;
-    private static PropertyInfo unlocking = null!;
-    private static FieldInfo nodeKey = null!;
-    private static FieldInfo installedUpgrades = null!;
+    private static Func<object, List<Pawn>?> getPassengers = null!;
+    private static Func<object, object?> getTracker = null!;
+    private static Func<object, Dictionary<Frame, ThingDef>?> getWrecks = null!;
+    private static Func<object, Pawn?> getJobVehicle = null!;
+    private static Func<object, object?> getUpgradeTree = null!;
+    private static Func<object, object?> getUnlocking = null!;
+    private static Func<object, string?> getNodeKey = null!;
+    private static Func<object, HashSet<string>?> getInstalledUpgrades = null!;
+    private static readonly ConcurrentDictionary<Type, Func<object, ThingDef?>?> ThingToSpawnCache = new();
     private sealed record Upgrade(object Tree, string Key, Def Vehicle);
     private static Type vehicle = null!;
     private sealed record Wreck(Frame Frame, Map Map, IntVec3 Cell, ThingDef Vehicle);
@@ -46,9 +48,10 @@ internal static class VehicleOutcomes
     {
         var pawn = OutcomeMetric.Bind("Vehicles.VehiclePawn", "Vehicles");
         var handler = OutcomeMetric.Bind("Vehicles.VehicleRoleHandler", "Vehicles");
-        passengers = AccessTools.DeclaredProperty(pawn, "AllPawnsAboard");
+        var passengers = AccessTools.DeclaredProperty(pawn, "AllPawnsAboard");
         if (!typeof(Pawn).IsAssignableFrom(pawn) || passengers?.PropertyType != typeof(List<Pawn>))
             throw new InvalidOperationException("Vehicle manifest signature changed");
+        getPassengers = OptionalTransitionCallSite.CompilePropertyGetter<List<Pawn>?>(passengers);
         OutcomeMetric.Patch(harmony, OutcomeMetric.Method(pawn, "TryAddPawn", typeof(bool), typeof(Pawn), handler),
             typeof(VehicleOutcomes), "BeforeBoard", "AfterBoard");
     }
@@ -60,7 +63,7 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            __state = passengers.GetValue(__instance) is List<Pawn> list && !list.Contains(__0);
+            __state = getPassengers(__instance) is { } list && !list.Contains(__0);
         }
         catch (Exception error) { LiveMetrics.Fail(Boarding, error); }
     }
@@ -71,7 +74,7 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            if (passengers.GetValue(__instance) is List<Pawn> list && list.Contains(__0))
+            if (getPassengers(__instance) is { } list && list.Contains(__0))
                 OutcomeMetric.Record(Boarding, __instance.def, breakdown: true);
         }
         catch (Exception error) { LiveMetrics.Fail(Boarding, error); }
@@ -84,15 +87,20 @@ internal static class VehicleOutcomes
         var pawn = OutcomeMetric.Bind(assembly + ".VehiclePawn", assembly);
         var tree = OutcomeMetric.Bind(assembly + ".CompUpgradeTree", assembly);
         var node = OutcomeMetric.Bind(assembly + ".UpgradeNode", assembly);
-        jobVehicle = AccessTools.Property(driver, "Vehicle");
-        upgradeTree = AccessTools.DeclaredProperty(pawn, "CompUpgradeTree");
-        unlocking = AccessTools.DeclaredProperty(tree, "NodeUnlocking");
-        nodeKey = AccessTools.DeclaredField(node, "key");
-        installedUpgrades = AccessTools.DeclaredField(tree, "upgrades");
+        var jobVehicle = AccessTools.Property(driver, "Vehicle");
+        var upgradeTree = AccessTools.DeclaredProperty(pawn, "CompUpgradeTree");
+        var unlocking = AccessTools.DeclaredProperty(tree, "NodeUnlocking");
+        var nodeKey = AccessTools.DeclaredField(node, "key");
+        var installedUpgrades = AccessTools.DeclaredField(tree, "upgrades");
         if (jobVehicle?.PropertyType != pawn || upgradeTree?.PropertyType != tree ||
             unlocking?.PropertyType != node || nodeKey?.FieldType != typeof(string) ||
             installedUpgrades?.FieldType != typeof(HashSet<string>))
             throw new InvalidOperationException("Vehicle upgrade state changed");
+        getJobVehicle = OptionalTransitionCallSite.CompilePropertyGetter<Pawn?>(jobVehicle);
+        getUpgradeTree = OptionalTransitionCallSite.CompilePropertyGetter<object?>(upgradeTree);
+        getUnlocking = OptionalTransitionCallSite.CompilePropertyGetter<object?>(unlocking);
+        getNodeKey = OptionalTransitionCallSite.CompileFieldGetter<string?>(nodeKey);
+        getInstalledUpgrades = OptionalTransitionCallSite.CompileFieldGetter<HashSet<string>?>(installedUpgrades);
         OutcomeMetric.Patch(harmony, OutcomeMetric.Method(driver, "WorkComplete", typeof(void), typeof(Pawn)),
             typeof(VehicleOutcomes), "BeforeUpgrade", "AfterUpgrade");
     }
@@ -104,10 +112,10 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            if (jobVehicle.GetValue(__instance) is not Pawn { Spawned: true } target || !GameFacts.IsPlayer(target) ||
-                upgradeTree.GetValue(target) is not { } tree || unlocking.GetValue(tree) is not { } node ||
-                nodeKey.GetValue(node) is not string key || string.IsNullOrWhiteSpace(key) ||
-                installedUpgrades.GetValue(tree) is not HashSet<string> current || current.Contains(key))
+            if (getJobVehicle(__instance) is not { Spawned: true } target || !GameFacts.IsPlayer(target) ||
+                getUpgradeTree(target) is not { } tree || getUnlocking(tree) is not { } node ||
+                getNodeKey(node) is not { } key || string.IsNullOrWhiteSpace(key) ||
+                getInstalledUpgrades(tree) is not { } current || current.Contains(key))
                 return;
             __state = new Upgrade(tree, key, target.def);
         }
@@ -120,7 +128,7 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            if (installedUpgrades.GetValue(upgrade.Tree) is HashSet<string> current && current.Contains(upgrade.Key))
+            if (getInstalledUpgrades(upgrade.Tree) is { } current && current.Contains(upgrade.Key))
                 OutcomeMetric.Record(Upgrades, upgrade.Vehicle, breakdown: true);
         }
         catch (Exception error) { LiveMetrics.Fail(Upgrades, error); }
@@ -130,27 +138,34 @@ internal static class VehicleOutcomes
     {
         const string assembly = "VanillaVehiclesExpanded";
         var useTracker = OutcomeMetric.Bind(assembly + ".GameComponent_VehicleUseTracker", assembly);
-        tracker = AccessTools.DeclaredField(useTracker, "Instance");
-        wrecks = AccessTools.DeclaredField(useTracker, "frameWrecks");
+        var tracker = AccessTools.DeclaredField(useTracker, "Instance");
+        var wrecks = AccessTools.DeclaredField(useTracker, "frameWrecks");
         vehicle = OutcomeMetric.Bind("Vehicles.VehiclePawn", "Vehicles");
         var construction = OutcomeMetric.Bind("Vehicles.Patch_Construction", "Vehicles");
         if (tracker?.FieldType != useTracker || !tracker.IsStatic ||
             wrecks?.FieldType != typeof(Dictionary<Frame, ThingDef>) || !typeof(Pawn).IsAssignableFrom(vehicle))
             throw new InvalidOperationException("Vehicle wreck provenance signature changed");
+        getTracker = OptionalTransitionCallSite.CompileFieldGetter<object?>(tracker);
+        getWrecks = OptionalTransitionCallSite.CompileFieldGetter<Dictionary<Frame, ThingDef>?>(wrecks);
         var original = OutcomeMetric.Method(construction, "CompleteConstructionVehicle", typeof(bool), typeof(Pawn), typeof(Frame));
         var prefix = AccessTools.DeclaredMethod(typeof(VehicleOutcomes), nameof(BeforeRestoration));
         var postfix = AccessTools.DeclaredMethod(typeof(VehicleOutcomes), nameof(AfterRestoration));
-        try
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(original,
+            prefix: new HarmonyMethod(prefix) { priority = Priority.First, before = ["VanillaVehiclesExpanded.Mod"] },
+            postfix: new HarmonyMethod(postfix));
+    }
+
+    private static ThingDef? ResolveThingToSpawn(ThingDef blueprint)
+    {
+        var getter = ThingToSpawnCache.GetOrAdd(blueprint.GetType(), static type =>
         {
-            harmony.Patch(original, prefix: new HarmonyMethod(prefix) { priority = Priority.First, before = ["VanillaVehiclesExpanded.Mod"] },
-                postfix: new HarmonyMethod(postfix));
-        }
-        catch
-        {
-            harmony.Unpatch(original, prefix);
-            harmony.Unpatch(original, postfix);
-            throw;
-        }
+            var field = AccessTools.Field(type, "thingToSpawn");
+            return field is not null && typeof(ThingDef).IsAssignableFrom(field.FieldType)
+                ? OptionalTransitionCallSite.CompileFieldGetter<ThingDef?>(field)
+                : null;
+        });
+        return getter?.Invoke(blueprint);
     }
 
     private static void BeforeRestoration(Pawn __0, Frame __1, out Wreck? __state)
@@ -161,12 +176,17 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            if (tracker.GetValue(null) is not { } instance ||
-                wrecks.GetValue(instance) is not Dictionary<Frame, ThingDef> tracked || !tracked.ContainsKey(__1) ||
+            if (getTracker(null!) is not { } instance ||
+                getWrecks(instance) is not { } tracked || !tracked.ContainsKey(__1) ||
                 __1.def.entityDefToBuild is not ThingDef blueprint ||
-                AccessTools.Field(blueprint.GetType(), "thingToSpawn")?.GetValue(blueprint) is not ThingDef expected ||
-                __1.Position.GetThingList(__1.Map).Any(thing => thing.def == expected))
+                ResolveThingToSpawn(blueprint) is not { } expected)
                 return;
+            var things = __1.Position.GetThingList(__1.Map);
+            for (var i = 0; i < things.Count; i++)
+            {
+                if (things[i].def == expected)
+                    return;
+            }
             __state = new Wreck(__1, __1.Map, __1.Position, expected);
         }
         catch (Exception error) { LiveMetrics.Fail(Restoration, error); }
@@ -178,9 +198,18 @@ internal static class VehicleOutcomes
             return;
         try
         {
-            if (restored.Cell.GetThingList(restored.Map).Any(thing => vehicle.IsInstanceOfType(thing) &&
-                thing.Spawned && thing.Position == restored.Cell && thing.def == restored.Vehicle && GameFacts.IsPlayer(thing)))
-                OutcomeMetric.Record(Restoration, restored.Vehicle, breakdown: true);
+            var things = restored.Cell.GetThingList(restored.Map);
+            for (var i = 0; i < things.Count; i++)
+            {
+                var thing = things[i];
+                if (vehicle.IsInstanceOfType(thing) &&
+                    thing.Spawned && thing.Position == restored.Cell &&
+                    thing.def == restored.Vehicle && GameFacts.IsPlayer(thing))
+                {
+                    OutcomeMetric.Record(Restoration, restored.Vehicle, breakdown: true);
+                    return;
+                }
+            }
         }
         catch (Exception error) { LiveMetrics.Fail(Restoration, error); }
     }

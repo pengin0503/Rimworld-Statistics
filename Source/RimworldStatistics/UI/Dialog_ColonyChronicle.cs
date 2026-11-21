@@ -54,12 +54,28 @@ internal sealed class Dialog_ColonyChronicle : Window
     private string startDayText = "";
     private string endDayText = "";
 
+    private sealed record ChronicleLayoutCache(
+        ChronicleDisplayCache Display,
+        object? Language,
+        float InnerWidth,
+        string SummaryBlock,
+        float SummaryHeight,
+        float EmptyLabelHeight,
+        string UndatedSubtitle,
+        float UndatedSubtitleHeight,
+        float[] UndatedLineHeights,
+        float UndatedHeight,
+        float ContentHeight);
+
     private Task<ColonyChronicle?>? chronicleTask;
     private bool loadFailureLogged;
     private object? cachedLanguage;
     private string? cachedNameSignature;
     private ChronicleBranchCache? branchCache;
     private ChronicleDisplayCache? displayCache;
+    private ChronicleLayoutCache? layoutCache;
+    private object? cachedHeaderLanguage;
+    private string[]? cachedHeaders;
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
     private Vector2 scroll;
@@ -125,7 +141,7 @@ internal sealed class Dialog_ColonyChronicle : Window
                 if (doneExport.IsCompletedSuccessfully)
                     exportCompleted = doneExport.Result;
                 else
-                    exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+                    exportError = doneExport.Exception?.GetBaseException().Message ?? "RWS_Error_Unknown".Translate();
             }
             else
             {
@@ -154,13 +170,15 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (originalFactionName is { Length: > 0 } rawFaction && !string.Equals(colonyName, rawFaction, StringComparison.Ordinal))
             titleText += " (" + (string)"RWS_Report_OriginalFactionSubtitle".Translate(rawFaction) + ")";
 
-        Text.Font = GameFont.Medium;
-        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
-        var shownTitle = titleText.Truncate(titleRect.width);
-        Widgets.Label(titleRect, shownTitle);
-        if (shownTitle != titleText)
-            TooltipHandler.TipRegion(titleRect, titleText);
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f);
+            var shownTitle = titleText.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+            if (shownTitle != titleText)
+                TooltipHandler.TipRegion(titleRect, titleText);
+        }
 
         var rawChronicle = chronicleTask is { IsCompletedSuccessfully: true } done ? done.Result : null;
         var currentChronicle = rawChronicle is not null && rawChronicle.ColonyKey == colonyKey ? rawChronicle : null;
@@ -404,6 +422,8 @@ internal sealed class Dialog_ColonyChronicle : Window
             UndatedSubtitle = undated.Length > 0 ? (string)"RWS_Chronicle_UndatedSubtitle".Translate() : null,
             UndatedLines = undated,
             FooterNote = (string)"RWS_Chronicle_ExportFooterNote".Translate(),
+            FooterColonyKeyLabel = (string)"RWS_Export_FooterColonyKey".Translate(),
+            FooterGeneratorLabel = (string)"RWS_Export_FooterGenerator".Translate(),
         };
     }
 
@@ -564,32 +584,52 @@ internal sealed class Dialog_ColonyChronicle : Window
                 innerWidth);
         }
 
-        var summaryBlock = display.NoticeLines.Length > 0
-            ? display.SummaryText + "\n" + string.Join("\n", display.NoticeLines)
-            : display.SummaryText;
-        var summaryHeight = Math.Max(26f, Text.CalcHeight(summaryBlock, innerWidth - 16f) + 12f);
-
         var rows = display.Result.Rows;
         var undatedLines = display.Result.UndatedTraces;
-        var emptyLabelWidth = Math.Max(80f, innerWidth - 8f);
-        var emptyLabelHeight = rows.Length == 0
-            ? Math.Max(24f, Text.CalcHeight(display.EmptyMessage, emptyLabelWidth) + 4f)
-            : 0f;
-        var tableBodyHeight = rows.Length == 0
-            ? emptyLabelHeight + 8f
-            : rows.Length * RowHeight;
-        var tableTotalHeight = HeaderRowHeight + tableBodyHeight + 8f;
-
-        var undatedHeight = 0f;
-        var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
-        if (undatedLines.Length > 0)
+        var lang = LanguageDatabase.activeLanguage;
+        var layout = layoutCache;
+        if (layout is null
+            || !ReferenceEquals(layout.Display, display)
+            || !ReferenceEquals(layout.Language, lang)
+            || Math.Abs(layout.InnerWidth - innerWidth) > 0.5f)
         {
-            var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
-            var linesH = undatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
-            undatedHeight = 28f + 14f + subtitleH + linesH + 8f;
+            var summaryBlock = display.NoticeLines.Length > 0
+                ? display.SummaryText + "\n" + string.Join("\n", display.NoticeLines)
+                : display.SummaryText;
+            var summaryHeight = Math.Max(26f, Text.CalcHeight(summaryBlock, innerWidth - 16f) + 12f);
+            var emptyLabelWidth = Math.Max(80f, innerWidth - 8f);
+            var emptyLabelHeight = rows.Length == 0
+                ? Math.Max(24f, Text.CalcHeight(display.EmptyMessage, emptyLabelWidth) + 4f)
+                : 0f;
+            var tableBodyHeight = rows.Length == 0
+                ? emptyLabelHeight + 8f
+                : rows.Length * RowHeight;
+            var tableTotalHeight = HeaderRowHeight + tableBodyHeight + 8f;
+
+            var subtitle = (string)"RWS_Chronicle_UndatedSubtitle".Translate();
+            var subtitleH = 0f;
+            var undatedHeights = undatedLines.Length > 0 ? new float[undatedLines.Length] : [];
+            var undatedHeight = 0f;
+            if (undatedLines.Length > 0)
+            {
+                subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
+                var linesH = 0f;
+                for (var i = 0; i < undatedLines.Length; i++)
+                {
+                    var h = Math.Max(20f, Text.CalcHeight("• " + undatedLines[i], innerWidth - 20f) + 2f);
+                    undatedHeights[i] = h;
+                    linesH += h;
+                }
+                undatedHeight = 28f + 14f + subtitleH + linesH + 8f;
+            }
+            var contentHeight = summaryHeight + 8f + tableTotalHeight + undatedHeight;
+            layout = new ChronicleLayoutCache(
+                display, lang, innerWidth, summaryBlock, summaryHeight, emptyLabelHeight,
+                subtitle, subtitleH, undatedHeights, undatedHeight, contentHeight);
+            layoutCache = layout;
         }
 
-        var viewHeight = Math.Max(outRect.height, summaryHeight + 8f + tableTotalHeight + undatedHeight);
+        var viewHeight = Math.Max(outRect.height, layout.ContentHeight);
         var viewWidth = Math.Max(innerWidth, tablePlan.TotalWidth);
         var viewRect = new Rect(0f, 0f, viewWidth, viewHeight);
 
@@ -599,18 +639,18 @@ internal sealed class Dialog_ColonyChronicle : Window
             var cy = 0f;
 
             // Summary & notice card.
-            var summaryRect = new Rect(0f, cy, innerWidth, summaryHeight);
+            var summaryRect = new Rect(0f, cy, innerWidth, layout.SummaryHeight);
             Widgets.DrawBoxSolidWithOutline(summaryRect,
                 new Color(0.14f, 0.16f, 0.19f, 0.85f),
                 new Color(0.38f, 0.52f, 0.66f, 0.55f));
-            Widgets.Label(new Rect(8f, cy + 6f, innerWidth - 16f, summaryHeight - 12f), summaryBlock);
-            cy += summaryHeight + 8f;
+            Widgets.Label(new Rect(8f, cy + 6f, innerWidth - 16f, layout.SummaryHeight - 12f), layout.SummaryBlock);
+            cy += layout.SummaryHeight + 8f;
 
-            cy = DrawTable(display, cy, innerWidth, outRect.height, emptyLabelHeight);
+            cy = DrawTable(display, cy, innerWidth, outRect.height, layout.EmptyLabelHeight);
 
             // Separate undated traces section so undated evidence never receives a fabricated day.
             if (undatedLines.Length > 0)
-                DrawUndated(undatedLines, cy, innerWidth, subtitle);
+                DrawUndated(undatedLines, cy, innerWidth, layout);
         }
     }
 
@@ -619,13 +659,19 @@ internal sealed class Dialog_ColonyChronicle : Window
         var plan = tablePlan!;
         var widths = plan.Widths;
         var rows = display.Result.Rows;
-        string[] headers =
-        [
-            "RWS_Chronicle_ColTime".Translate(),
-            "RWS_Chronicle_ColKind".Translate(),
-            "RWS_Chronicle_ColEvent".Translate(),
-            "RWS_Chronicle_ColEvidence".Translate(),
-        ];
+        var lang = LanguageDatabase.activeLanguage;
+        if (cachedHeaders is null || !ReferenceEquals(cachedHeaderLanguage, lang))
+        {
+            cachedHeaderLanguage = lang;
+            cachedHeaders =
+            [
+                "RWS_Chronicle_ColTime".Translate(),
+                "RWS_Chronicle_ColKind".Translate(),
+                "RWS_Chronicle_ColEvent".Translate(),
+                "RWS_Chronicle_ColEvidence".Translate(),
+            ];
+        }
+        var headers = cachedHeaders;
 
         using (UiScopes.GuiState())
         {
@@ -718,7 +764,7 @@ internal sealed class Dialog_ColonyChronicle : Window
         return cy + rows.Length * RowHeight + 8f;
     }
 
-    private static void DrawUndated(string[] undatedLines, float cy, float innerWidth, string subtitle)
+    private static void DrawUndated(string[] undatedLines, float cy, float innerWidth, ChronicleLayoutCache layout)
     {
         using (UiScopes.GuiState())
         {
@@ -729,22 +775,22 @@ internal sealed class Dialog_ColonyChronicle : Window
         }
         cy += 28f;
 
-        var subtitleH = Math.Max(20f, Text.CalcHeight(subtitle, innerWidth - 20f) + 4f);
-        var linesH = undatedLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 20f) + 2f));
+        var subtitleH = layout.UndatedSubtitleHeight;
+        var linesH = layout.UndatedHeight - 28f - 14f - subtitleH - 8f;
         Widgets.DrawMenuSection(new Rect(0f, cy, innerWidth, 14f + subtitleH + linesH));
 
         var uy = cy + 7f;
         using (UiScopes.GuiState())
         {
             GUI.color = new Color(0.76f, 0.79f, 0.84f);
-            Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), subtitle);
+            Widgets.Label(new Rect(10f, uy, innerWidth - 20f, subtitleH), layout.UndatedSubtitle);
         }
         uy += subtitleH;
 
-        foreach (var line in undatedLines)
+        for (var i = 0; i < undatedLines.Length; i++)
         {
-            var bullet = "• " + line;
-            var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 20f) + 2f);
+            var bullet = "• " + undatedLines[i];
+            var lh = layout.UndatedLineHeights[i];
             Widgets.Label(new Rect(10f, uy, innerWidth - 20f, lh), bullet);
             uy += lh;
         }

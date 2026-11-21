@@ -53,23 +53,19 @@ internal static class VqeGeneratorStatistics
             throw new InvalidOperationException("The Generator construction signature changed");
 
         genetronType = type;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(complete,
-                prefix: new HarmonyMethod(typeof(VqeGeneratorStatistics), nameof(BeforeConstruction)),
-                postfix: new HarmonyMethod(typeof(VqeGeneratorStatistics), nameof(AfterConstruction)));
+            patcher.Patch(complete, typeof(VqeGeneratorStatistics), nameof(BeforeConstruction), nameof(AfterConstruction));
         }
         catch
         {
-            harmony.Unpatch(complete, HarmonyPatchType.All, harmony.Id);
             genetronType = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeConstruction(Frame __instance, Pawn __0, out UpgradeBefore? __state)
     {

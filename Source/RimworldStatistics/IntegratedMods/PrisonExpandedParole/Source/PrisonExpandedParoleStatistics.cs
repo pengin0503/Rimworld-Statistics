@@ -61,7 +61,7 @@ internal static class PrisonExpandedParoleStatistics
         if (assembly is null)
             throw new InvalidOperationException("Prison Expanded 1.7 DLL not loaded");
 
-        var allTypes = assembly.GetTypes();
+        var allTypes = AccessTools.GetTypesFromAssembly(assembly);
         var letter = allTypes.SingleOrDefault(t => t.Name == "ChoiceLetter_ParoleHearing");
         var sentences = allTypes.SingleOrDefault(t => t.FullName == "PrisonExpanded.Justice.Sentences");
         if (letter is null || sentences is null)
@@ -98,25 +98,19 @@ internal static class PrisonExpandedParoleStatistics
         prisonerField = pawn;
         dueField = due;
         sentenceField = sentence;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(action,
-                prefix: new HarmonyMethod(typeof(PrisonExpandedParoleStatistics), nameof(BeforeApproval)),
-                postfix: new HarmonyMethod(typeof(PrisonExpandedParoleStatistics), nameof(AfterApproval)));
+            patcher.Patch(action, typeof(PrisonExpandedParoleStatistics), nameof(BeforeApproval), nameof(AfterApproval));
         }
         catch
         {
-            harmony.Unpatch(action, HarmonyPatchType.All, harmony.Id);
             closureRecordField = prisonerField = dueField = sentenceField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool ReleaseMode(Pawn pawn)
         => pawn.guest?.ExclusiveInteractionMode == PrisonerInteractionModeDefOf.Release;

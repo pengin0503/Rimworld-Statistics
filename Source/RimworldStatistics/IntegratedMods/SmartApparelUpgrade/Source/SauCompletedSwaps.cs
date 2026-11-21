@@ -11,7 +11,7 @@ internal static class SauCompletedSwaps
 {
     private const string Unit = "mod.pengin0503.smartapparelupgrade.swaps";
     private const string Metric = Unit + ".completed";
-    private static SauOrderHook.Binding? active;
+    private static volatile SauOrderHook.Binding? active;
 
     internal static void TryRegister(SauOrderHook.Binding binding)
     {
@@ -46,22 +46,19 @@ internal static class SauCompletedSwaps
 
         ExternalSdkHost.Instance.IntegratedHooks.Defer(Unit, () =>
         {
-            var harmony = new Harmony("pengin0503.rws.smartapparel.swaps");
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.smartapparel.swaps"));
             try
             {
-                harmony.Patch(wear,
-                    prefix: new HarmonyMethod(typeof(SauCompletedSwaps), nameof(BeforeWear)),
-                    postfix: new HarmonyMethod(typeof(SauCompletedSwaps), nameof(AfterWear)));
-                harmony.Patch(binding.Target,
-                    prefix: new HarmonyMethod(typeof(SauCompletedSwaps), nameof(BeforeOrder)),
-                    postfix: new HarmonyMethod(typeof(SauCompletedSwaps), nameof(AfterOrder)));
+                patcher.Patch(wear, typeof(SauCompletedSwaps), nameof(BeforeWear), nameof(AfterWear));
+                patcher.Patch(binding.Target, typeof(SauCompletedSwaps), nameof(BeforeOrder), nameof(AfterOrder));
                 active = binding;
                 return true;
             }
-            catch
+            catch (Exception e)
             {
-                harmony.Unpatch(wear, HarmonyPatchType.All, harmony.Id);
-                harmony.Unpatch(binding.Target, HarmonyPatchType.All, harmony.Id);
+                Log.WarningOnce(
+                    $"[RimworldStatistics] SAU completed swaps patch failed ({e.GetType().Name}): {e.Message}",
+                    "RWS.sau.swaps.install".GetHashCode());
                 return false;
             }
         });
@@ -89,14 +86,16 @@ internal static class SauCompletedSwaps
         try
         {
             int tick = Find.TickManager.TicksGame;
+            var colonists = scanner.map.mapPawns.FreeColonistsSpawned;
             foreach (var stamp in CurrentStamps(binding, scanner, tick))
             {
                 if (__state?.Contains(stamp) == true ||
-                    binding.PawnId.GetValue(stamp) is not string pawnId ||
-                    binding.ApparelId.GetValue(stamp) is not string apparelId)
+                    binding.GetPawnId(stamp) is not { } pawnId ||
+                    binding.GetApparelId(stamp) is not { } apparelId)
                     continue;
-                foreach (var pawn in scanner.map.mapPawns.FreeColonistsSpawned)
+                for (var i = 0; i < colonists.Count; i++)
                 {
+                    var pawn = colonists[i];
                     if (pawn.ThingID != pawnId || pawn.CurJob is not { } job || job.def != JobDefOf.Wear ||
                         job.targetA.Thing is not Apparel apparel || apparel.ThingID != apparelId)
                         continue;
@@ -112,11 +111,14 @@ internal static class SauCompletedSwaps
 
     private static IEnumerable<object> CurrentStamps(SauOrderHook.Binding binding, object scanner, int tick)
     {
-        if (binding.Stamps.GetValue(scanner) is not IList stamps)
+        if (binding.GetStamps(scanner) is not { } stamps)
             throw new InvalidOperationException("Smart Apparel Upgrade stamp list is unavailable");
-        foreach (var stamp in stamps)
-            if (stamp is not null && (int?)binding.IssuedTick.GetValue(stamp) == tick)
+        for (var i = 0; i < stamps.Count; i++)
+        {
+            var stamp = stamps[i];
+            if (stamp is not null && binding.GetIssuedTick(stamp) == tick)
                 yield return stamp;
+        }
     }
 
     private static void BeforeWear(Pawn_ApparelTracker __instance, Apparel __0, out SauSwapTicket? __state)

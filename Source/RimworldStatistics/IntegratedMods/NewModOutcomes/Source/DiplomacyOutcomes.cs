@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Diagnostics;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -14,14 +12,14 @@ internal static class DiplomacyOutcomes
 {
     private const string Treaty = "mod.wowgag.rimpacts.treaties";
     private const string Vassal = "mod.jaeger972.factionterritories2.vassalizations";
-    private static FieldInfo treaties = null!;
-    private static FieldInfo treatyFaction = null!;
-    private static FieldInfo treatyDef = null!;
-    private static FieldInfo settlement = null!;
-    private static FieldInfo vassal = null!;
-    private static FieldInfo rebelling = null!;
-    private static FieldInfo attacker = null!;
-    private static Type vassalTab = null!;
+    private static Func<object, IList?>? getTreaties;
+    private static Func<object, Faction?>? getTreatyFaction;
+    private static Func<object, Def?>? getTreatyDef;
+    private static Func<object, Settlement?>? getSettlement;
+    private static Func<object, bool>? getVassal;
+    private static Func<object, bool>? getRebelling;
+    private static Func<object, Faction?>? getAttacker;
+    [ThreadStatic] private static int vassalTabDepth;
 
     internal static ModMetricAdapterRegistration Treaties() =>
         OutcomeMetric.Count("wowgag.RimPacts", "treaties", "RWS_NewMod_Treaties", "RWS_NewMod_TreatiesDesc",
@@ -38,13 +36,28 @@ internal static class DiplomacyOutcomes
         var world = OutcomeMetric.Bind(assembly + ".WorldComponent_RimPacts", assembly);
         var definition = OutcomeMetric.Bind(assembly + ".TreatyDef", assembly);
         var active = OutcomeMetric.Bind(assembly + ".ActiveTreaty", assembly);
-        treaties = RequireField(world, "treaties", typeof(List<>).MakeGenericType(active));
-        treatyDef = RequireField(active, "def", definition);
-        treatyFaction = RequireField(active, "faction", typeof(Faction));
+        var treaties = RequireField(world, "treaties", typeof(List<>).MakeGenericType(active));
+        var treatyDef = RequireField(active, "def", definition);
+        var treatyFaction = RequireField(active, "faction", typeof(Faction));
         if (!typeof(Def).IsAssignableFrom(definition))
             throw new InvalidOperationException("RimPacts treaty definition changed");
         var sign = OutcomeMetric.Method(world, "SignTreaty", active, typeof(Faction), definition, typeof(bool));
-        OutcomeMetric.Patch(harmony, sign, typeof(DiplomacyOutcomes), nameof(BeforeTreaty), nameof(AfterTreaty));
+
+        getTreaties = OptionalTransitionCallSite.CompileFieldGetter<IList?>(treaties);
+        getTreatyDef = OptionalTransitionCallSite.CompileFieldGetter<Def?>(treatyDef);
+        getTreatyFaction = OptionalTransitionCallSite.CompileFieldGetter<Faction?>(treatyFaction);
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        try
+        {
+            patcher.Patch(sign, typeof(DiplomacyOutcomes), nameof(BeforeTreaty), nameof(AfterTreaty));
+        }
+        catch
+        {
+            getTreaties = null;
+            getTreatyDef = null;
+            getTreatyFaction = null;
+            throw;
+        }
     }
 
     private static void BeforeTreaty(object __instance, Faction? __0, Def? __1, out bool __state)
@@ -55,10 +68,17 @@ internal static class DiplomacyOutcomes
         try
         {
             // SignTreaty inserts a new object even when a caller requests the same pair twice.
-            __state = treaties.GetValue(__instance) is IList list &&
-                !list.Cast<object>().Any(record => record is not null &&
-                    ReferenceEquals(treatyFaction.GetValue(record), __0) &&
-                    ReferenceEquals(treatyDef.GetValue(record), __1));
+            if (getTreaties?.Invoke(__instance) is not { } list)
+                return;
+            for (var i = 0; i < list.Count; i++)
+            {
+                var record = list[i];
+                if (record is not null
+                    && ReferenceEquals(getTreatyFaction!(record), __0)
+                    && ReferenceEquals(getTreatyDef!(record), __1))
+                    return;
+            }
+            __state = true;
         }
         catch (Exception error) { LiveMetrics.Fail(Treaty, error); }
     }
@@ -70,9 +90,9 @@ internal static class DiplomacyOutcomes
             return;
         try
         {
-            if (ReferenceEquals(treatyFaction.GetValue(__result), __0) &&
-                ReferenceEquals(treatyDef.GetValue(__result), __1) &&
-                treaties.GetValue(__instance) is IList list && list.Contains(__result))
+            if (ReferenceEquals(getTreatyFaction?.Invoke(__result), __0) &&
+                ReferenceEquals(getTreatyDef?.Invoke(__result), __1) &&
+                getTreaties?.Invoke(__instance) is { } list && list.Contains(__result))
                 OutcomeMetric.Record(Treaty, __1, breakdown: true);
         }
         catch (Exception error) { LiveMetrics.Fail(Treaty, error); }
@@ -85,29 +105,50 @@ internal static class DiplomacyOutcomes
         var operations = OutcomeMetric.Bind(assembly + ".Operations", assembly);
         var campaign = OutcomeMetric.Bind(assembly + ".Campaign", assembly);
         var vassalage = OutcomeMetric.Bind(assembly + ".Vassalage", assembly);
-        vassalTab = OutcomeMetric.Bind(assembly + ".VassalageTab", assembly);
-        settlement = RequireField(state, "settlement", typeof(Settlement));
-        vassal = RequireField(state, "vassal", typeof(bool));
-        rebelling = RequireField(state, "rebelling", typeof(bool));
-        attacker = RequireField(campaign, "attacker", typeof(Faction));
+        var vassalTab = OutcomeMetric.Bind(assembly + ".VassalageTab", assembly);
+        var settlement = RequireField(state, "settlement", typeof(Settlement));
+        var vassal = RequireField(state, "vassal", typeof(bool));
+        var rebelling = RequireField(state, "rebelling", typeof(bool));
+        var attacker = RequireField(campaign, "attacker", typeof(Faction));
 
         var establish = OutcomeMetric.Method(vassalage, "Establish", typeof(void), state);
         var expedition = OutcomeMetric.Method(operations, "EstablishAiVassal", typeof(bool), campaign, state);
+
+        getSettlement = OptionalTransitionCallSite.CompileFieldGetter<Settlement?>(settlement);
+        getVassal = OptionalTransitionCallSite.CompileFieldGetter<bool>(vassal);
+        getRebelling = OptionalTransitionCallSite.CompileFieldGetter<bool>(rebelling);
+        getAttacker = OptionalTransitionCallSite.CompileFieldGetter<Faction?>(attacker);
+
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            OutcomeMetric.Patch(harmony, establish, typeof(DiplomacyOutcomes), nameof(BeforeEstablish), nameof(AfterEstablish));
-            OutcomeMetric.Patch(harmony, expedition, typeof(DiplomacyOutcomes), nameof(BeforeExpedition), nameof(AfterExpedition));
+            patcher.Patch(establish, typeof(DiplomacyOutcomes), nameof(BeforeEstablish), nameof(AfterEstablish));
+            patcher.Patch(expedition, typeof(DiplomacyOutcomes), nameof(BeforeExpedition), nameof(AfterExpedition));
+            foreach (var caller in OptionalTransitionCallSite.FindCallersInTypeTree(vassalTab, establish))
+                patcher.Patch(caller, typeof(DiplomacyOutcomes), prefix: nameof(EnterVassalTab), finalizer: nameof(ExitVassalTab));
         }
         catch
         {
-            harmony.Unpatch(establish, AccessTools.DeclaredMethod(typeof(DiplomacyOutcomes), nameof(BeforeEstablish)));
-            harmony.Unpatch(establish, AccessTools.DeclaredMethod(typeof(DiplomacyOutcomes), nameof(AfterEstablish)));
+            getSettlement = null;
+            getVassal = null;
+            getRebelling = null;
+            getAttacker = null;
             throw;
         }
     }
 
+    private static void EnterVassalTab() => vassalTabDepth++;
+
+    private static Exception? ExitVassalTab(Exception? __exception)
+    {
+        if (vassalTabDepth > 0)
+            vassalTabDepth--;
+        return __exception;
+    }
+
     private static bool ActiveVassal(object state) =>
-        vassal.GetValue(state) is true && rebelling.GetValue(state) is false;
+        getVassal is not null && getRebelling is not null
+        && getVassal(state) && !getRebelling(state);
 
     private static void BeforeEstablish(object? __0, out Settlement? __state)
     {
@@ -116,8 +157,7 @@ internal static class DiplomacyOutcomes
             return;
         try
         {
-            if (Prefs.DevMode && new StackTrace(1, false).GetFrames().Any(frame =>
-                Harmony.GetOriginalMethodFromStackframe(frame)?.DeclaringType == vassalTab))
+            if (Prefs.DevMode && vassalTabDepth > 0)
                 return;
             __state = Candidate(__0);
         }
@@ -131,14 +171,14 @@ internal static class DiplomacyOutcomes
             return;
         try
         {
-            if (attacker.GetValue(__0) is Faction { IsPlayer: true })
+            if (getAttacker?.Invoke(__0) is { IsPlayer: true })
                 __state = Candidate(__1);
         }
         catch (Exception error) { LiveMetrics.Fail(Vassal, error); }
     }
 
     private static Settlement? Candidate(object state) => !ActiveVassal(state) &&
-        settlement.GetValue(state) is Settlement { Spawned: true } site ? site : null;
+        getSettlement?.Invoke(state) is { Spawned: true } site ? site : null;
 
     private static void AfterEstablish(object __0, bool __runOriginal, Settlement? __state)
     {
@@ -158,13 +198,13 @@ internal static class DiplomacyOutcomes
             return;
         try
         {
-            if (ReferenceEquals(settlement.GetValue(state), site) && ActiveVassal(state))
+            if (ReferenceEquals(getSettlement?.Invoke(state), site) && ActiveVassal(state))
                 OutcomeMetric.Record(Vassal);
         }
         catch (Exception error) { LiveMetrics.Fail(Vassal, error); }
     }
 
-    private static FieldInfo RequireField(Type owner, string name, Type type)
+    private static System.Reflection.FieldInfo RequireField(Type owner, string name, Type type)
     {
         var field = AccessTools.DeclaredField(owner, name);
         return field?.FieldType == type ? field : throw new InvalidOperationException($"{owner.Name}.{name} changed");

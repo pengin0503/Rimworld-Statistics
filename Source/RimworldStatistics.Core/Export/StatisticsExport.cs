@@ -17,7 +17,7 @@ public static class StatisticsExport
 
     public static ExportSummary Write(StatsView view, ExportText text, Func<string, UnitRecordingState> unitState,
         string directory, CancellationToken cancel = default, Action<int>? fileCompleted = null,
-        IReadOnlyList<ColonyMetricHistorySeries>? historySeries = null)
+        IReadOnlyList<ColonyMetricHistorySeries>? historySeries = null, Profile? profile = null)
     {
         cancel.ThrowIfCancellationRequested();
         Directory.CreateDirectory(directory);
@@ -112,7 +112,7 @@ public static class StatisticsExport
                     "value", "coverage", "evidence", "predecessor_index", "unlinked"], add =>
                 {
                     var resolvedHistories = historySeries ?? (view.Colonies.Count > 0
-                        ? MetricCalculator.RestoreExportHistories(MetricCalculator.BuildColonyChartHistoriesCore(new Profile(), view), null)
+                        ? MetricCalculator.RestoreExportHistories(MetricCalculator.BuildColonyChartHistoriesCore(profile ?? new Profile(), view), null)
                         : []);
                     if (resolvedHistories.Count == 0)
                         return;

@@ -23,12 +23,12 @@ internal static class RimMarketStatistics
     private const string MarketFeesUnit = "mod.forti.rimmarket.market_fees";
 
     private static Type? buildingStallType;
-    private static MethodInfo? colonyStallGetter;
-    private static MethodInfo? managerInstanceGetter;
-    private static MethodInfo? totalFeesGetter;
-    private static FieldInfo? visitStallField;
-    private static FieldInfo? visitMapField;
-    private static FieldInfo? visitFactionField;
+    private static Func<object, bool>? getColonyStall;
+    private static Func<object, object?>? getManagerInstance;
+    private static Func<object, int>? getTotalFees;
+    private static Func<object, ThingComp?>? getVisitStall;
+    private static Func<object, Map?>? getVisitMap;
+    private static Func<object, Faction?>? getVisitFaction;
 
     private sealed record FeeAttempt(object Manager, int BeforeTotalFees, FactionDef? FactionDef);
 
@@ -71,15 +71,16 @@ internal static class RimMarketStatistics
             throw new InvalidOperationException("RimMarket.Market.ColonyStalls.Sell signature changed");
 
         buildingStallType = stallType;
-        colonyStallGetter = isColonyStall;
+        getColonyStall = OptionalTransitionCallSite.CompileGetter<bool>(isColonyStall);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            OutcomeMetric.Patch(harmony, sell, typeof(RimMarketStatistics), prefix: null, postfix: nameof(AfterStallSell));
+            patcher.Patch(sell, typeof(RimMarketStatistics), postfix: nameof(AfterStallSell));
         }
         catch
         {
             buildingStallType = null;
-            colonyStallGetter = null;
+            getColonyStall = null;
             throw;
         }
     }
@@ -109,29 +110,20 @@ internal static class RimMarketStatistics
         var payFee = OutcomeMetric.Method(managerType, "PayFee", typeof(void), visitType, typeof(Pawn));
         var collectShare = OutcomeMetric.Method(utilityType, "CollectShare", typeof(void), visitType);
 
-        managerInstanceGetter = instanceGetter;
-        totalFeesGetter = feesGetter;
-        visitStallField = stallField;
-        visitMapField = mapField;
-        visitFactionField = factionField;
+        getManagerInstance = OptionalTransitionCallSite.CompileGetter<object?>(instanceGetter);
+        getTotalFees = OptionalTransitionCallSite.CompileGetter<int>(feesGetter);
+        getVisitStall = OptionalTransitionCallSite.CompileFieldGetter<ThingComp?>(stallField);
+        getVisitMap = OptionalTransitionCallSite.CompileFieldGetter<Map?>(mapField);
+        getVisitFaction = OptionalTransitionCallSite.CompileFieldGetter<Faction?>(factionField);
 
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            OutcomeMetric.Patch(harmony, payFee, typeof(RimMarketStatistics), nameof(BeforePayFee), nameof(AfterFeeMethod));
+            patcher.Patch(payFee, typeof(RimMarketStatistics), nameof(BeforePayFee), nameof(AfterFeeMethod));
+            patcher.Patch(collectShare, typeof(RimMarketStatistics), nameof(BeforeCollectShare), nameof(AfterFeeMethod));
         }
         catch
         {
-            ClearFeeBindings();
-            throw;
-        }
-
-        try
-        {
-            OutcomeMetric.Patch(harmony, collectShare, typeof(RimMarketStatistics), nameof(BeforeCollectShare), nameof(AfterFeeMethod));
-        }
-        catch
-        {
-            harmony.Unpatch(payFee, HarmonyPatchType.All, harmony.Id);
             ClearFeeBindings();
             throw;
         }
@@ -139,17 +131,17 @@ internal static class RimMarketStatistics
 
     private static void ClearFeeBindings()
     {
-        managerInstanceGetter = null;
-        totalFeesGetter = null;
-        visitStallField = null;
-        visitMapField = null;
-        visitFactionField = null;
+        getManagerInstance = null;
+        getTotalFees = null;
+        getVisitStall = null;
+        getVisitMap = null;
+        getVisitFaction = null;
     }
 
     private static void AfterStallSell(bool __runOriginal, bool __result, Pawn? __0, Building? __1, Thing? __2, int __3)
     {
         if (!__runOriginal || !__result || __3 <= 0 || !OutcomeMetric.Observing(StallSalesUnit) ||
-            __0 is null || __1 is null || __2 is null || buildingStallType is null || colonyStallGetter is null ||
+            __0 is null || __1 is null || __2 is null || buildingStallType is null || getColonyStall is null ||
             !buildingStallType.IsInstanceOfType(__1))
             return;
 
@@ -159,7 +151,7 @@ internal static class RimMarketStatistics
             if (player is null)
                 return;
 
-            var isColonyStall = Convert.ToBoolean(colonyStallGetter.Invoke(__1, null));
+            var isColonyStall = getColonyStall(__1);
             var item = __2.GetInnerIfMinified() ?? __2;
             var itemDef = item.def;
             var key = RimMarketRules.ResolveStallSaleBreakdown(
@@ -189,12 +181,12 @@ internal static class RimMarketStatistics
     private static void BeforeCollectShare(object? __0, out FeeAttempt? __state)
     {
         __state = null;
-        if (!OutcomeMetric.Observing(MarketFeesUnit) || managerInstanceGetter is null)
+        if (!OutcomeMetric.Observing(MarketFeesUnit) || getManagerInstance is null)
             return;
 
         try
         {
-            var manager = managerInstanceGetter.Invoke(null, null);
+            var manager = getManagerInstance(null!);
             __state = CaptureFeeAttempt(manager, __0);
         }
         catch (Exception e)
@@ -206,7 +198,7 @@ internal static class RimMarketStatistics
     private static FeeAttempt? CaptureFeeAttempt(object? manager, object? visit)
     {
         if (!OutcomeMetric.Observing(MarketFeesUnit) || manager is null || visit is null ||
-            totalFeesGetter is null || visitStallField is null || visitMapField is null || visitFactionField is null)
+            getTotalFees is null || getVisitStall is null || getVisitMap is null || getVisitFaction is null)
             return null;
 
         try
@@ -215,14 +207,14 @@ internal static class RimMarketStatistics
             if (player is null)
                 return null;
 
-            var stallComp = visitStallField.GetValue(visit) as ThingComp;
-            var map = visitMapField.GetValue(visit) as Map;
+            var stallComp = getVisitStall(visit);
+            var map = getVisitMap(visit);
             var marketIsPlayer = stallComp?.parent?.Faction == player || map?.ParentFaction == player;
             if (!marketIsPlayer)
                 return null;
 
-            var before = Convert.ToInt32(totalFeesGetter.Invoke(manager, null));
-            var faction = visitFactionField.GetValue(visit) as Faction;
+            var before = getTotalFees(manager);
+            var faction = getVisitFaction(visit);
             return new FeeAttempt(manager, before, faction?.def);
         }
         catch (Exception e)
@@ -234,12 +226,12 @@ internal static class RimMarketStatistics
 
     private static void AfterFeeMethod(bool __runOriginal, FeeAttempt? __state)
     {
-        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(MarketFeesUnit) || totalFeesGetter is null)
+        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(MarketFeesUnit) || getTotalFees is null)
             return;
 
         try
         {
-            var after = Convert.ToInt32(totalFeesGetter.Invoke(__state.Manager, null));
+            var after = getTotalFees(__state.Manager);
             var delta = RimMarketRules.ResolveMarketFeeDelta(
                 visitValid: true,
                 marketIsPlayer: true,

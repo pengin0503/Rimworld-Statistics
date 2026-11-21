@@ -102,19 +102,15 @@ internal static class VaeAchievementsStatistics
         definitionField = definition;
         totalPointsField = points;
         getManagerMethod = getManager;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(unlock,
-                prefix: new HarmonyMethod(typeof(VaeAchievementsStatistics), nameof(BeforeCardUnlock)),
-                postfix: new HarmonyMethod(typeof(VaeAchievementsStatistics), nameof(AfterCardUnlock)));
-            harmony.Patch(setupScan,
-                prefix: new HarmonyMethod(typeof(VaeAchievementsStatistics), nameof(BeforeStartupUnlockScan)),
-                finalizer: new HarmonyMethod(typeof(VaeAchievementsStatistics), nameof(AfterStartupUnlockScan)));
+            patcher.Patch(unlock, typeof(VaeAchievementsStatistics), nameof(BeforeCardUnlock), nameof(AfterCardUnlock));
+            patcher.Patch(setupScan, typeof(VaeAchievementsStatistics),
+                prefix: nameof(BeforeStartupUnlockScan), finalizer: nameof(AfterStartupUnlockScan));
         }
         catch
         {
-            harmony.Unpatch(unlock, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(setupScan, HarmonyPatchType.All, harmony.Id);
             unlockedField = definitionField = totalPointsField = null;
             getManagerMethod = null;
             throw;

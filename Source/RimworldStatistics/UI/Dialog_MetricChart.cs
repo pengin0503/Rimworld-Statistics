@@ -154,13 +154,15 @@ internal sealed class Dialog_MetricChart : Window
             Array.Clear(colony.Text);
         }
 
-        Text.Font = GameFont.Medium;
-        var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 35f), 32f);
-        var shownTitle = title.Truncate(titleRect.width);
-        Widgets.Label(titleRect, shownTitle);
-        if (shownTitle != title)
-            TooltipHandler.TipRegion(titleRect, title);
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            var titleRect = new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 35f), 32f);
+            var shownTitle = title.Truncate(titleRect.width);
+            Widgets.Label(titleRect, shownTitle);
+            if (shownTitle != title)
+                TooltipHandler.TipRegion(titleRect, title);
+        }
 
         var canCompare = colony.Bars.Count > 0;
         var canBreakdown = activeBreakdown.Bars.Count > 0 || allBreakdown.Bars.Count > 0 || breakdownPickerTargets.Length > 0;

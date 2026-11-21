@@ -65,8 +65,8 @@ public sealed class FamilyOutputContext
         Weakened = partial || coverage == MetricCoverage.Partial ? true : null,
         IntegerValue = integer,
         RealValue = real is { } r && double.IsFinite(r) ? r : null,
-        Numerator = numerator,
-        Denominator = denominator,
+        Numerator = numerator is { } num && double.IsFinite(num) ? num : null,
+        Denominator = denominator is { } den && double.IsFinite(den) ? den : null,
         SampleCount = samples,
         SinceTick = State.SinceTick,
         ThroughTick = State.ThroughTick,
@@ -117,7 +117,9 @@ public sealed class FamilyOutputContext
 
     /// <summary>Integer amounts per key (partial when keys were dropped at the cap).</summary>
     public Dictionary<string, MetricValue> Counts(Accumulator? a)
-        => (a?.By ?? new Dictionary<string, double>()).ToDictionary(kv => kv.Key, kv => Value(integer: (long)Math.Round(kv.Value), partial: a!.Overflow),
+        => (a?.By ?? new Dictionary<string, double>()).ToDictionary(
+            kv => kv.Key,
+            kv => Value(integer: UtcTime.ClampToInt64(kv.Value), partial: a!.Overflow),
             StringComparer.Ordinal);
 
     /// <summary>A real sum (0 when nothing happened in the range).</summary>
@@ -130,10 +132,11 @@ public sealed class FamilyOutputContext
     public void PutExtreme(string acc, string key, bool max, double scale = 1)
     {
         var a = State.Peek(acc);
-        var n = (int)(a?.N ?? 0);
-        Put(key, n == 0 || (max ? a!.Max : a!.Min) is not { } v
+        var n = a?.N ?? 0;
+        var scaled = (max ? a?.Max : a?.Min) is { } v ? v * scale : double.NaN;
+        Put(key, n <= 0 || !double.IsFinite(scaled)
             ? Value(coverage: MetricCoverage.NotApplicable, samples: 0)
-            : Value(real: v * scale, samples: n));
+            : Value(real: scaled, samples: UtcTime.ClampToInt32(n)));
     }
 
     /// <summary>The mean of the samples (sum ÷ count) with its numerator and denominator; no sample: not applicable.</summary>
@@ -141,9 +144,22 @@ public sealed class FamilyOutputContext
     {
         var a = State.Peek(acc);
         var n = a?.N ?? 0;
-        Put(key, n == 0
-            ? Value(coverage: MetricCoverage.NotApplicable, numerator: 0, denominator: 0, samples: 0)
-            : Value(real: a!.Sum!.Value * scale / n, numerator: a.Sum.Value * scale, denominator: n, samples: (int)n));
+        if (n <= 0)
+        {
+            Put(key, Value(coverage: MetricCoverage.NotApplicable, numerator: 0, denominator: 0, samples: 0));
+            return;
+        }
+        var clampedSamples = UtcTime.ClampToInt32(n);
+        if (a?.Sum is not { } rawSum || !double.IsFinite(rawSum) || !double.IsFinite(scale))
+        {
+            Put(key, Value(coverage: MetricCoverage.Unknown, samples: clampedSamples));
+            return;
+        }
+        var scaled = rawSum * scale;
+        var mean = scaled / n;
+        Put(key, double.IsFinite(scaled) && double.IsFinite(mean)
+            ? Value(real: mean, numerator: scaled, denominator: n, samples: clampedSamples)
+            : Value(coverage: MetricCoverage.Unknown, samples: clampedSamples));
     }
 
     /// <summary>
@@ -158,10 +174,25 @@ public sealed class FamilyOutputContext
             Put(key, Value(coverage: MetricCoverage.NotApplicable));
             return;
         }
-        var best = by.Values.Max();
+        var hasBest = false;
+        double best = 0;
+        foreach (var v in by.Values)
+        {
+            if (double.IsFinite(v) && (!hasBest || v > best))
+            {
+                best = v;
+                hasBest = true;
+            }
+        }
+        if (!hasBest)
+        {
+            Put(key, Value(coverage: MetricCoverage.NotApplicable));
+            return;
+        }
+        var rounded = UtcTime.ClampToInt64(best);
         var holders = by.Where(kv => kv.Value == best).Select(kv => kv.Key).Order(StringComparer.Ordinal)
-            .ToDictionary(k => k, _ => Value(integer: (long)Math.Round(best), partial: a.Overflow), StringComparer.Ordinal);
-        PutBreakdown(key, holders, Value(integer: (long)Math.Round(best), partial: a.Overflow));
+            .ToDictionary(k => k, _ => Value(integer: rounded, partial: a.Overflow), StringComparer.Ordinal);
+        PutBreakdown(key, holders, Value(integer: rounded, partial: a.Overflow));
     }
 
     /// <summary>The number of distinct keys (partial when keys were dropped at the cap).</summary>
@@ -193,13 +224,15 @@ public sealed class FamilyOutputContext
         double best = 0;
         foreach (var (k, v) in a?.By ?? new Dictionary<string, double>())
         {
+            if (!double.IsFinite(v))
+                continue;
             if (!long.TryParse(k, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out var p))
                 continue;
             if (p < firstWhole || p >= completeBefore)
                 continue;
             best = Math.Max(best, v);
         }
-        Put(key, Value(integer: (long)Math.Round(best), partial: !State.Continuous || a?.Overflow == true));
+        Put(key, Value(integer: UtcTime.ClampToInt64(best), partial: !State.Continuous || a?.Overflow == true));
     }
 
     /// <summary>The first event's day, known only for a range recorded from the start (null: not reached yet).</summary>

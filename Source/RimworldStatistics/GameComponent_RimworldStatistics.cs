@@ -87,6 +87,7 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
 
     public override void LoadedGame()
     {
+        ColonyIdentity? identity = null;
         try
         {
             EndingRuntime.Context.Reset();
@@ -99,14 +100,22 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
                 campaignId = session.Read(p => CampaignMatcher.FindCampaignIdFor(p, probe)) ?? NewId();
             }
             var id = campaignId!;
-            var identity = LiveStateReader.ReadIdentity(id);
+            identity = LiveStateReader.ReadIdentity(id);
             var display = LiveStateReader.ReadDisplay();
-            var lineage = Lineage;
-            var traces = EndingTraces.Detect(LiveStateReader.ReadTraceInputs(lineage.Select(e => e.Type).Distinct().ToList()));
-            var seeded = EndingLedger.SeedTraces(id, lineage, traces, Find.TickManager.TicksGame,
-                Find.StoryWatcher.statsRecord.colonistsLaunched, LiveStateReader.GameVersion, DateTime.UtcNow);
-            if (seeded.Count > 0)
-                Lineage = lineage;
+            List<EndingEvent> seeded = [];
+            try
+            {
+                var lineage = Lineage;
+                var traces = EndingTraces.Detect(LiveStateReader.ReadTraceInputs(lineage.Select(e => e.Type).Distinct().ToList()));
+                seeded = EndingLedger.SeedTraces(id, lineage, traces, Find.TickManager.TicksGame,
+                    Find.StoryWatcher.statsRecord.colonistsLaunched, LiveStateReader.GameVersion, DateTime.UtcNow);
+                if (seeded.Count > 0)
+                    Lineage = lineage;
+            }
+            catch (Exception e)
+            {
+                Fail("LoadedGame.lineage", e);
+            }
             var recovered = ResumeNumeric(identity);
             session.Mutate(p =>
             {
@@ -120,6 +129,8 @@ public sealed class GameComponent_RimworldStatistics : GameComponent
         catch (Exception e)
         {
             Fail("LoadedGame", e);
+            if (identity is not null && LiveMetrics.Accumulator is null)
+                _ = ResumeNumeric(identity);
         }
     }
 

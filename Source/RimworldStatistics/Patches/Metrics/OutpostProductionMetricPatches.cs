@@ -58,6 +58,8 @@ internal static class OutpostProduceMetricPatch
     {
         __state = CurrentOutpost;
         CurrentOutpost = null;
+        if (!LiveMetrics.IsRecordingUnit(OutpostProduction.Unit))
+            return;
         try
         {
             if (__instance != null && GameFacts.IsPlayerFaction(__instance.Faction)
@@ -85,7 +87,9 @@ internal static class OutpostDeliverMetricPatch
     private static void Prefix(WorldObject __instance, ref IEnumerable<Thing> __0, out OutpostProduction.Delivery<Thing>? __state)
     {
         __state = null;
-        if (!ReferenceEquals(__instance, OutpostProduceMetricPatch.CurrentOutpost) || __0 is null)
+        if (!LiveMetrics.IsRecordingUnit(OutpostProduction.Unit)
+            || !ReferenceEquals(__instance, OutpostProduceMetricPatch.CurrentOutpost)
+            || __0 is null)
             return;
         try
         {

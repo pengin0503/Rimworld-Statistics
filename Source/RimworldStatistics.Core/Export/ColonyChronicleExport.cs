@@ -55,6 +55,8 @@ public sealed record ColonyChronicleExportText
     public string? UndatedSubtitle { get; init; }
     public IReadOnlyList<string> UndatedLines { get; init; } = [];
     public required string FooterNote { get; init; }
+    public string FooterColonyKeyLabel { get; init; } = "ColonyKey";
+    public string FooterGeneratorLabel { get; init; } = "Generator";
 }
 
 public sealed record ColonyChronicleExportResult(
@@ -94,25 +96,13 @@ public static class ColonyChronicleExport
         ArgumentNullException.ThrowIfNull(text);
         ArgumentException.ThrowIfNullOrWhiteSpace(directory);
 
-        Directory.CreateDirectory(directory);
-        var now = utcNow ?? DateTime.UtcNow;
-        var stamp = now.ToString("yyyyMMdd'T'HHmmss'Z'", CultureInfo.InvariantCulture);
-        var safeColony = ColonyReportHtmlExport.SanitizeFileName(text.ColonyName);
+        var now = UtcTime.ToUtc(utcNow ?? DateTime.UtcNow);
         var ext = format == ChronicleExportFormat.Markdown ? "md" : "html";
-        var fileName = $"colony-chronicle-{safeColony}-{stamp}-{Guid.NewGuid().ToString("N")[..8]}.{ext}";
-        var fullPath = Path.Combine(directory, fileName);
-
+        var fileName = ColonyReportHtmlExport.BuildExportFileName("colony-chronicle", text.ColonyName, now, ext);
         var content = format == ChronicleExportFormat.Markdown
             ? RenderMarkdown(text, now)
             : RenderHtml(text, now);
-
-        AtomicFile.Create(fullPath, stream =>
-        {
-            using var writer = new StreamWriter(stream, Utf8NoBom, bufferSize: 16384, leaveOpen: true);
-            writer.Write(content);
-            writer.Flush();
-            injectWriteHook?.Invoke(stream);
-        });
+        var fullPath = ColonyReportHtmlExport.WriteExportFile(directory, fileName, content, injectWriteHook);
 
         return new ColonyChronicleExportResult(fullPath, directory, format);
     }
@@ -120,8 +110,7 @@ public static class ColonyChronicleExport
     public static string RenderMarkdown(ColonyChronicleExportText text, DateTime exportedUtc)
     {
         ArgumentNullException.ThrowIfNull(text);
-        var exportedIso = DateTime.SpecifyKind(exportedUtc, DateTimeKind.Utc)
-            .ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture);
+        var exportedIso = UtcTime.FormatIso(exportedUtc);
 
         var sb = new StringBuilder(8192);
         sb.Append("# ").AppendLine(SingleLine(text.PageTitle));
@@ -181,38 +170,24 @@ public static class ColonyChronicleExport
         sb.AppendLine();
         sb.AppendLine("---");
         sb.Append(SingleLine(text.FooterNote))
-            .Append(" · ColonyKey: `").Append(EscapeInlineCode(text.ColonyKey)).Append('`')
-            .Append(" · Generator: Rimworld Statistics ").AppendLine(SingleLine(text.ModVersion));
-
+            .Append(" · ").Append(SingleLine(text.FooterColonyKeyLabel)).Append(": `").Append(EscapeInlineCode(text.ColonyKey)).Append('`')
+            .Append(" · ").Append(SingleLine(text.FooterGeneratorLabel)).Append(": Rimworld Statistics ").AppendLine(SingleLine(text.ModVersion));
         return sb.ToString();
     }
 
     public static string RenderHtml(ColonyChronicleExportText text, DateTime exportedUtc)
     {
         ArgumentNullException.ThrowIfNull(text);
-        var exportedIso = DateTime.SpecifyKind(exportedUtc, DateTimeKind.Utc)
-            .ToString("yyyy-MM-dd HH:mm:ss 'UTC'", CultureInfo.InvariantCulture);
+        var exportedIso = UtcTime.FormatIso(exportedUtc);
 
         var sb = new StringBuilder(16384);
-        sb.AppendLine("<!DOCTYPE html>");
-        sb.AppendLine($"<html lang=\"{Enc(string.IsNullOrWhiteSpace(text.Language) ? "en" : text.Language)}\">");
-        sb.AppendLine("<head>");
-        sb.AppendLine("  <meta charset=\"utf-8\">");
-        sb.AppendLine("  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-        sb.AppendLine($"  <meta name=\"generator\" content=\"Rimworld Statistics {Enc(text.ModVersion)}\">");
-        sb.AppendLine($"  <title>{Enc(text.PageTitle)}</title>");
-        sb.AppendLine("  <style>");
-        sb.AppendLine("    :root { --bg:#12151a; --panel:#1a1f27; --border:#2d3542; --text:#e8ecf2; --muted:#9aa4b2; --accent:#5ab0d8; --warn:#e0a84b; }");
-        sb.AppendLine("    @media (prefers-color-scheme: light) { :root { --bg:#f5f7fa; --panel:#ffffff; --border:#d6dce5; --text:#18202a; --muted:#566273; --accent:#1b6fa8; --warn:#9c6500; } }");
-        sb.AppendLine("    @media print { :root { --bg:#ffffff; --panel:#ffffff; --border:#cccccc; --text:#000000; --muted:#444444; --accent:#000000; --warn:#553300; } body { padding:0; } }");
-        sb.AppendLine("    * { box-sizing:border-box; }");
-        sb.AppendLine("    body { margin:0; padding:24px; background:var(--bg); color:var(--text); font-family:system-ui,-apple-system,'Segoe UI',Roboto,'Noto Sans',sans-serif; line-height:1.5; }");
-        sb.AppendLine("    main { max-width:1120px; margin:0 auto; }");
-        sb.AppendLine("    header { margin-bottom:20px; padding-bottom:14px; border-bottom:1px solid var(--border); }");
-        sb.AppendLine("    h1 { margin:0 0 6px 0; font-size:1.65rem; }");
-        sb.AppendLine("    h2 { margin:24px 0 10px 0; font-size:1.15rem; color:var(--accent); }");
-        sb.AppendLine("    .meta { color:var(--muted); font-size:0.9rem; }");
-        AppendChronicleCssRules(sb);
+        ColonyReportHtmlExport.AppendHtmlDocumentHead(
+            sb,
+            text.Language,
+            text.ModVersion,
+            text.PageTitle,
+            "@media print { :root { --bg:#ffffff; --panel:#ffffff; --border:#cccccc; --text:#000000; --muted:#444444; --accent:#000000; --warn:#553300; } body { padding:0; } }",
+            AppendChronicleCssRules);
         sb.AppendLine("    footer { margin-top:28px; padding-top:12px; border-top:1px solid var(--border); color:var(--muted); font-size:0.82rem; }");
         sb.AppendLine("  </style>");
         sb.AppendLine("</head>");
@@ -241,7 +216,7 @@ public static class ColonyChronicleExport
             UndatedLines = text.UndatedLines,
         }, includeHeading: false);
 
-        sb.AppendLine($"  <footer>{Enc(text.FooterNote)} · ColonyKey: {Enc(text.ColonyKey)} · Generator: Rimworld Statistics {Enc(text.ModVersion)}</footer>");
+        sb.AppendLine($"  <footer>{Enc(text.FooterNote)} · {Enc(text.FooterColonyKeyLabel)}: {Enc(text.ColonyKey)} · {Enc(text.FooterGeneratorLabel)}: Rimworld Statistics {Enc(text.ModVersion)}</footer>");
         sb.AppendLine("</main>");
         sb.AppendLine("</body>");
         sb.AppendLine("</html>");

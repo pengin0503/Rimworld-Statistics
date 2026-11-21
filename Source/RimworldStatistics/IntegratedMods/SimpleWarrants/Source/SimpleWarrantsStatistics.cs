@@ -102,34 +102,35 @@ internal static class SimpleWarrantsStatistics
         completedStatus = completed;
         baseReward = rootReward;
         var rewards = new[] { rootReward, pawnReward, artifactReward };
-        try
-        {
-            harmony.Patch(fulfill,
-                prefix: new HarmonyMethod(typeof(SimpleWarrantsStatistics), nameof(BeforeFulfill)),
-                postfix: new HarmonyMethod(typeof(SimpleWarrantsStatistics), nameof(AfterFulfill)),
-                finalizer: new HarmonyMethod(typeof(SimpleWarrantsStatistics), nameof(FinishFulfill)));
-            foreach (var reward in rewards)
-                harmony.Patch(reward,
-                    prefix: new HarmonyMethod(typeof(SimpleWarrantsStatistics), nameof(BeforeReward)),
-                    postfix: new HarmonyMethod(typeof(SimpleWarrantsStatistics), nameof(AfterReward)));
-        }
-        catch
-        {
-            harmony.Unpatch(fulfill, HarmonyPatchType.All, harmony.Id);
-            foreach (var reward in rewards)
-                harmony.Unpatch(reward, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(fulfill, typeof(SimpleWarrantsStatistics),
+            prefix: nameof(BeforeFulfill), postfix: nameof(AfterFulfill), finalizer: nameof(FinishFulfill));
+        foreach (var reward in rewards)
+            patcher.Patch(reward, typeof(SimpleWarrantsStatistics),
+                prefix: nameof(BeforeReward), postfix: nameof(AfterReward));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, bool> DirectBaseRewardCache = new();
+    private static readonly Type[] RewardArgTypes = [typeof(Caravan), typeof(Thing)];
+
+    private static bool InheritsBaseReward(Type warrantType)
+        => DirectBaseRewardCache.GetOrAdd(warrantType,
+            static t => Equals(AccessTools.Method(t, "GiveReward", RewardArgTypes), baseReward));
+
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static long Silver(Caravan caravan)
-        => CaravanInventoryUtility.AllInventoryItems(caravan)
-            .Where(t => t.def == ThingDefOf.Silver && !t.Destroyed && t.stackCount > 0)
-            .Sum(t => (long)t.stackCount);
+    {
+        long total = 0;
+        var items = CaravanInventoryUtility.AllInventoryItems(caravan);
+        for (var i = 0; i < items.Count; i++)
+        {
+            var t = items[i];
+            if (t.def == ThingDefOf.Silver && !t.Destroyed && t.stackCount > 0)
+                total += t.stackCount;
+        }
+        return total;
+    }
 
     private static void BeforeFulfill(Caravan __0, out HandinScope? __state)
     {
@@ -158,8 +159,7 @@ internal static class SimpleWarrantsStatistics
                 return;
             // Pawn and Artifact call the base method before awarding silver.
             // Only observe the base directly when the concrete warrant inherits it.
-            if (__originalMethod.Equals(baseReward) &&
-                !Equals(AccessTools.Method(__instance.GetType(), "GiveReward", [typeof(Caravan), typeof(Thing)]), baseReward))
+            if (__originalMethod.Equals(baseReward) && !InheritsBaseReward(__instance.GetType()))
                 return;
             __state = new RewardBefore(scope, __1, Silver(__0));
         }

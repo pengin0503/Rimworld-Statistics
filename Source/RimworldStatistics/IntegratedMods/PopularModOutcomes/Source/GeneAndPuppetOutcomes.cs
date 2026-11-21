@@ -47,24 +47,40 @@ internal static class GeneAndPuppetOutcomes
     }
 
     private static Hediff? ExactHediff(Pawn pawn, Type type)
-        => pawn.health?.hediffSet?.hediffs.FirstOrDefault(hediff => hediff?.GetType() == type);
+    {
+        if (pawn.health?.hediffSet?.hediffs is not { } hediffs)
+            return null;
+        for (var i = 0; i < hediffs.Count; i++)
+        {
+            var hediff = hediffs[i];
+            if (hediff?.GetType() == type)
+                return hediff;
+        }
+        return null;
+    }
 
     private static void BeforePuppet(Pawn? ___pawn, GlobalTargetInfo[]? __0, out Pawn? __state)
     {
         __state = null;
-        if (OutcomeMetric.Observing(Puppet) && GameFacts.IsPlayer(___pawn) && __0 is { Length: > 0 } &&
-            __0[0].Thing is Pawn { Dead: false } target && ExactHediff(target, puppetHediff) is null)
-            __state = target;
+        if (!OutcomeMetric.Observing(Puppet))
+            return;
+        try
+        {
+            if (GameFacts.IsPlayer(___pawn) && __0 is { Length: > 0 } &&
+                __0[0].Thing is Pawn { Dead: false } target && ExactHediff(target, puppetHediff) is null)
+                __state = target;
+        }
+        catch (Exception error) { LiveMetrics.Fail(Puppet, error); }
     }
 
     private static void AfterPuppet(Pawn? ___pawn, Pawn? __state, bool __runOriginal)
     {
-        if (!__runOriginal || __state is not { Dead: false } target || !GameFacts.IsPlayer(target) ||
-            !OutcomeMetric.Observing(Puppet))
+        if (!__runOriginal || __state is not { Dead: false } target || !OutcomeMetric.Observing(Puppet))
             return;
         try
         {
-            if (ExactHediff(target, puppetHediff) is { } created && ReferenceEquals(master.GetValue(created), ___pawn))
+            if (GameFacts.IsPlayer(target) && ExactHediff(target, puppetHediff) is { } created &&
+                ReferenceEquals(master.GetValue(created), ___pawn))
                 OutcomeMetric.Record(Puppet);
         }
         catch (Exception error) { LiveMetrics.Fail(Puppet, error); }
@@ -81,18 +97,28 @@ internal static class GeneAndPuppetOutcomes
     private static void BeforeTransfer(Pawn? __0, Pawn? __1, out Hediff? __state)
     {
         __state = null;
-        if (__0 is { Dead: false } && __1 is not null && !ReferenceEquals(__0, __1) &&
-            GameFacts.IsPlayer(__1) && OutcomeMetric.Observing(Transfer))
-            __state = ExactHediff(__1, puppeteerHediff);
+        if (!OutcomeMetric.Observing(Transfer))
+            return;
+        try
+        {
+            if (__0 is { Dead: false } && __1 is not null && !ReferenceEquals(__0, __1) && GameFacts.IsPlayer(__1))
+                __state = ExactHediff(__1, puppeteerHediff);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Transfer, error); }
     }
 
     private static void AfterTransfer(Pawn __0, Pawn __1, Hediff? __state, bool __runOriginal)
     {
-        if (__runOriginal && __state is not null && !__0.Dead && GameFacts.IsPlayer(__0) &&
-            OutcomeMetric.Observing(Transfer) &&
-            ReferenceEquals(ExactHediff(__0, puppeteerHediff), __state) &&
-            !ReferenceEquals(ExactHediff(__1, puppeteerHediff), __state))
-            OutcomeMetric.Record(Transfer);
+        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(Transfer))
+            return;
+        try
+        {
+            if (!__0.Dead && GameFacts.IsPlayer(__0) &&
+                ReferenceEquals(ExactHediff(__0, puppeteerHediff), __state) &&
+                !ReferenceEquals(ExactHediff(__1, puppeteerHediff), __state))
+                OutcomeMetric.Record(Transfer);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Transfer, error); }
     }
 
     private static void InstallStinger(Harmony harmony)
@@ -107,20 +133,47 @@ internal static class GeneAndPuppetOutcomes
     private static void BeforeImplant(Pawn? __0, Pawn? __1, out GeneState? __state)
     {
         __state = null;
-        if (!GameFacts.IsPlayer(__0) || __1 is not { Dead: false, genes: { } target } ||
-            !OutcomeMetric.Observing(Stinger))
+        if (!OutcomeMetric.Observing(Stinger))
             return;
-        __state = new GeneState(target.Xenotype, target.xenotypeName, target.Endogenes.Select(gene => gene.def).ToHashSet(),
-            target.Xenogenes.Select(gene => gene.def).ToHashSet());
+        try
+        {
+            if (!GameFacts.IsPlayer(__0) || __1 is not { Dead: false, genes: { } target })
+                return;
+            var endogenes = new HashSet<GeneDef>();
+            for (var i = 0; i < target.Endogenes.Count; i++)
+                endogenes.Add(target.Endogenes[i].def);
+            var xenogenes = new HashSet<GeneDef>();
+            for (var i = 0; i < target.Xenogenes.Count; i++)
+                xenogenes.Add(target.Xenogenes[i].def);
+            __state = new GeneState(target.Xenotype, target.xenotypeName, endogenes, xenogenes);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Stinger, error); }
     }
 
     private static void AfterImplant(Pawn __1, GeneState? __state, bool __runOriginal)
     {
-        if (__runOriginal && __state is not null && __1 is { Dead: false, genes: { } actual } &&
-            OutcomeMetric.Observing(Stinger) &&
-            (__state.Xenotype != actual.Xenotype || !string.Equals(__state.Name, actual.xenotypeName, StringComparison.Ordinal) ||
-             !__state.Endogenes.SetEquals(actual.Endogenes.Select(gene => gene.def)) ||
-             !__state.Xenogenes.SetEquals(actual.Xenogenes.Select(gene => gene.def))))
-            OutcomeMetric.Record(Stinger);
+        if (!__runOriginal || __state is null || !OutcomeMetric.Observing(Stinger))
+            return;
+        try
+        {
+            if (__1 is not { Dead: false, genes: { } actual })
+                return;
+            if (__state.Xenotype != actual.Xenotype
+                || !string.Equals(__state.Name, actual.xenotypeName, StringComparison.Ordinal)
+                || !SameGenes(__state.Endogenes, actual.Endogenes)
+                || !SameGenes(__state.Xenogenes, actual.Xenogenes))
+                OutcomeMetric.Record(Stinger);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Stinger, error); }
+    }
+
+    private static bool SameGenes(HashSet<GeneDef> before, List<Gene> after)
+    {
+        if (before.Count == 0 && after.Count == 0)
+            return true;
+        var current = new HashSet<GeneDef>(after.Count);
+        for (var i = 0; i < after.Count; i++)
+            current.Add(after[i].def);
+        return before.SetEquals(current);
     }
 }

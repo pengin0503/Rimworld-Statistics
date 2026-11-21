@@ -78,44 +78,20 @@ internal static class VreRecyclingStatistics
         var doAtomize = AccessTools.DeclaredMethod(proc, "DoAtomize", Type.EmptyTypes);
         var trySpawn = AccessTools.DeclaredMethod(proc, "TrySpawnAtCell",
             [typeof(IntVec3), typeof(ThingDef), typeof(int)]);
-        var ground = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
+        var ground = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
         if (doAtomize?.ReturnType != typeof(void) ||
-            trySpawn?.ReturnType != typeof(bool) ||
-            ground?.ReturnType != typeof(bool))
+            trySpawn?.ReturnType != typeof(bool))
             throw new InvalidOperationException("VanillaRecyclingExpanded CompSuperSimpleProcessor signature changed");
 
-        try
-        {
-            harmony.Patch(doAtomize,
-                prefix: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(BeforeAtomize)),
-                postfix: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(AfterAtomize)),
-                finalizer: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(FinishAtomize)));
-            harmony.Patch(trySpawn,
-                prefix: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(BeforeTrySpawn)),
-                postfix: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(AfterTrySpawn)),
-                finalizer: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(FinishTrySpawn)));
-            harmony.Patch(ground,
-                prefix: new HarmonyMethod(typeof(VreRecyclingStatistics), nameof(BeforeGroundPlace)));
-        }
-        catch
-        {
-            harmony.Unpatch(doAtomize, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(trySpawn, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(ground, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(doAtomize, typeof(VreRecyclingStatistics),
+            prefix: nameof(BeforeAtomize), postfix: nameof(AfterAtomize), finalizer: nameof(FinishAtomize));
+        patcher.Patch(trySpawn, typeof(VreRecyclingStatistics),
+            prefix: nameof(BeforeTrySpawn), postfix: nameof(AfterTrySpawn), finalizer: nameof(FinishTrySpawn));
+        patcher.Patch(ground, typeof(VreRecyclingStatistics), prefix: nameof(BeforeGroundPlace));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeAtomize(object __instance, out AtomizeScope? __state)
     {

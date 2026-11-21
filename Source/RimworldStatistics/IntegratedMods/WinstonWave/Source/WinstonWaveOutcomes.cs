@@ -74,16 +74,9 @@ internal static class WinstonWaveOutcomes
         pawnsLeft = RequireField(raid, "totalPawnsLeft", typeof(int));
         var advance = OutcomeMetric.Method(component, "PrepareNextWave", typeof(void), typeof(bool));
         var raidOver = OutcomeMetric.Method(raid, "RaidOver", typeof(bool));
-        OutcomeMetric.Patch(harmony, raidOver, typeof(WinstonWaveOutcomes), null, nameof(AfterRaidOver));
-        try
-        {
-            OutcomeMetric.Patch(harmony, advance, typeof(WinstonWaveOutcomes), nameof(BeforeAdvance), nameof(AfterAdvance));
-        }
-        catch
-        {
-            harmony.Unpatch(raidOver, AccessTools.DeclaredMethod(typeof(WinstonWaveOutcomes), nameof(AfterRaidOver)));
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(raidOver, typeof(WinstonWaveOutcomes), postfix: nameof(AfterRaidOver));
+        patcher.Patch(advance, typeof(WinstonWaveOutcomes), nameof(BeforeAdvance), nameof(AfterAdvance));
     }
 
     private sealed record ClearProof(int Tick);
@@ -91,32 +84,37 @@ internal static class WinstonWaveOutcomes
 
     private static void AfterRaidOver(object __instance, bool __result, bool __runOriginal)
     {
-        if (!OutcomeMetric.Observing(WaveUnit))
+        if (__instance is null || !OutcomeMetric.Observing(WaveUnit))
             return;
-        if (__runOriginal && __result)
+        try
         {
-            var tick = GameFacts.Tick;
-            if (!VerifiedRaids.TryGetValue(__instance, out var prior) || prior.Tick != tick)
+            if (__runOriginal && __result)
             {
-                VerifiedRaids.Remove(__instance);
-                VerifiedRaids.Add(__instance, new ClearProof(tick));
+                var tick = GameFacts.Tick;
+                if (!VerifiedRaids.TryGetValue(__instance, out var prior) || prior.Tick != tick)
+                {
+                    VerifiedRaids.Remove(__instance);
+                    VerifiedRaids.Add(__instance, new ClearProof(tick));
+                }
             }
+            else
+                VerifiedRaids.Remove(__instance);
         }
-        else
-            VerifiedRaids.Remove(__instance);
+        catch (Exception error) { LiveMetrics.Fail(WaveUnit, error); }
     }
 
     private static void BeforeAdvance(MapComponent __instance, bool __0, object? ___nextRaidInfo,
         int ___currentWave, out Advance? __state)
     {
         __state = null;
-        if (!__0 || ___nextRaidInfo is null || !OutcomeMetric.Observing(WaveUnit) ||
-            __instance.map is not { IsPlayerHome: true } map ||
-            !VerifiedRaids.TryGetValue(___nextRaidInfo, out var proof) || proof.Tick != GameFacts.Tick)
+        if (!__0 || ___nextRaidInfo is null || !OutcomeMetric.Observing(WaveUnit))
             return;
-        VerifiedRaids.Remove(___nextRaidInfo);
         try
         {
+            if (__instance.map is not { IsPlayerHome: true } map ||
+                !VerifiedRaids.TryGetValue(___nextRaidInfo, out var proof) || proof.Tick != GameFacts.Tick)
+                return;
+            VerifiedRaids.Remove(___nextRaidInfo);
             // On the normal tick path, RaidOver already computed the remaining
             // enemies in ShouldSendNextWave. Calling it again can send reinforcements.
             if (waveNumber.GetValue(___nextRaidInfo) is int number && number == ___currentWave)
@@ -128,9 +126,14 @@ internal static class WinstonWaveOutcomes
 
     private static void AfterAdvance(int ___currentWave, bool __runOriginal, Advance? __state)
     {
-        if (__runOriginal && __state is { } advance && OutcomeMetric.Observing(WaveUnit))
+        if (!__runOriginal || __state is not { } advance || !OutcomeMetric.Observing(WaveUnit))
+            return;
+        try
+        {
             GameFacts.Record(WaveUnit, state => WinstonWaveRules.RecordClear(state, advance.Map, advance.Wave,
                 ___currentWave, advance.Sent, advance.Dispatched, advance.Left));
+        }
+        catch (Exception error) { LiveMetrics.Fail(WaveUnit, error); }
     }
 
     private static void InstallRewards(Harmony harmony)
@@ -147,10 +150,15 @@ internal static class WinstonWaveOutcomes
 
     private static void RewardChosen(Window __instance, Def? ___choosenReward, Map? ___map, bool __runOriginal)
     {
-        if (!__runOriginal || ___choosenReward is null || ___map is not { IsPlayerHome: true } ||
-            !OutcomeMetric.Observing(RewardUnit) || RecordedWindows.TryGetValue(__instance, out _))
+        if (!__runOriginal || ___choosenReward is null || !OutcomeMetric.Observing(RewardUnit))
             return;
-        RecordedWindows.Add(__instance, Recorded);
-        OutcomeMetric.Record(RewardUnit, ___choosenReward, breakdown: true);
+        try
+        {
+            if (___map is not { IsPlayerHome: true } || RecordedWindows.TryGetValue(__instance, out _))
+                return;
+            RecordedWindows.Add(__instance, Recorded);
+            OutcomeMetric.Record(RewardUnit, ___choosenReward, breakdown: true);
+        }
+        catch (Exception error) { LiveMetrics.Fail(RewardUnit, error); }
     }
 }

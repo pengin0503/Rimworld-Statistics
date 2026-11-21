@@ -85,7 +85,7 @@ internal static class ColonyChronicleFormatter
 
         if (e.RealTimeUtc is { } utc)
             tip.Append('\n').Append((string)"RWS_Chronicle_TipRealTime".Translate(
-                DateTime.SpecifyKind(utc, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", Inv)));
+                UtcTime.ToUtc(utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", Inv)));
 
         if (targets.Length > 0)
             tip.Append("\n\n").Append((string)"RWS_Chart_OpenTip".Translate());

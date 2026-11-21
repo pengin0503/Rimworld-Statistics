@@ -77,26 +77,23 @@ internal static class SaveOurShip2Statistics
         playerMap = isPlayerMap;
         inTransit = transitValue;
         nominal = nominalValue;
-        try
-        {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(SaveOurShip2Statistics), nameof(BeforeTransit)),
-                postfix: new HarmonyMethod(typeof(SaveOurShip2Statistics), nameof(AfterTransit)));
-        }
-        catch
-        {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(tick, typeof(SaveOurShip2Statistics), nameof(BeforeTransit), nameof(AfterTransit));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool PlayerBridge(object comp)
-        => playerMap?.GetValue(comp) is true && bridges?.GetValue(comp) is IEnumerable candidates
-            && candidates.OfType<Building>().Any(b => b.Spawned && GameFacts.IsPlayer(b));
+    {
+        if (playerMap?.GetValue(comp) is not true || bridges?.GetValue(comp) is not IEnumerable candidates)
+            return false;
+        foreach (var candidate in candidates)
+        {
+            if (candidate is Building b && b.Spawned && GameFacts.IsPlayer(b))
+                return true;
+        }
+        return false;
+    }
 
     private static void BeforeTransit(object __instance, out bool __state)
     {

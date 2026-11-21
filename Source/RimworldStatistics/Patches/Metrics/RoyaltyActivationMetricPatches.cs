@@ -20,7 +20,9 @@ public static class RoyalPermitUsedMetricPatch
     public static void Prefix(FactionPermit __instance, out int __state)
     {
         __state = int.MinValue;
-        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+        if (!LiveMetrics.IsRecordingUnit(RoyaltyFamily.Name)
+            || !UnityData.IsInMainThread
+            || Scribe.mode != LoadSaveMode.Inactive)
             return;
         try
         {
@@ -39,9 +41,17 @@ public static class RoyalPermitUsedMetricPatch
         {
             if (__instance?.Faction?.def?.HasRoyalTitles != true || __instance.LastUsedTick == __state)
                 return;
-            var ownedByPlayer = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep
-                .Any(p => GameFacts.IsMember(p)
-                    && p.royalty?.AllFactionPermits?.Contains(__instance) == true);
+            var ownedByPlayer = false;
+            var colonists = PawnsFinder.AllMapsCaravansAndTravellingTransporters_Alive_FreeColonists_NoCryptosleep;
+            for (var i = 0; i < colonists.Count; i++)
+            {
+                var p = colonists[i];
+                if (GameFacts.IsMember(p) && p.royalty?.AllFactionPermits?.Contains(__instance) == true)
+                {
+                    ownedByPlayer = true;
+                    break;
+                }
+            }
             if (!ownedByPlayer)
                 return;
             var permitDefKey = OptionalTransitionRecording.QualifiedDefKey(
@@ -61,14 +71,25 @@ public static class RoyalPermitUsedMetricPatch
 /// </summary>
 internal static class RoyalPsycastFacts
 {
-    private static readonly FieldInfo? LastCastTick = AccessTools.Field(typeof(Ability), "lastCastTick");
+    private static readonly AccessTools.FieldRef<Ability, int>? LastCastTickRef = CreateLastCastTickRef();
 
-    public static int? Tick(Psycast? ability)
+    private static AccessTools.FieldRef<Ability, int>? CreateLastCastTickRef()
     {
-        if (ability is not null && LastCastTick?.GetValue(ability) is int v)
-            return v;
-        return null;
+        try
+        {
+            var field = AccessTools.Field(typeof(Ability), "lastCastTick");
+            return field?.FieldType == typeof(int)
+                ? AccessTools.FieldRefAccess<Ability, int>(field)
+                : null;
+        }
+        catch
+        {
+            return null;
+        }
     }
+
+    public static int? Tick(Psycast? ability) =>
+        ability is not null && LastCastTickRef is not null ? LastCastTickRef(ability) : null;
 }
 
 [MetricAdapter(RoyaltyFamily.Name)]
@@ -78,7 +99,9 @@ public static class RoyalPsycastLocalMetricPatch
     public static void Prefix(Psycast __instance, out int? __state)
     {
         __state = null;
-        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+        if (!LiveMetrics.IsRecordingUnit(RoyaltyFamily.Name)
+            || !UnityData.IsInMainThread
+            || Scribe.mode != LoadSaveMode.Inactive)
             return;
         try
         {
@@ -115,7 +138,9 @@ public static class RoyalPsycastWorldMetricPatch
     public static void Prefix(Psycast __instance, out int? __state)
     {
         __state = null;
-        if (!UnityData.IsInMainThread || Scribe.mode != LoadSaveMode.Inactive)
+        if (!LiveMetrics.IsRecordingUnit(RoyaltyFamily.Name)
+            || !UnityData.IsInMainThread
+            || Scribe.mode != LoadSaveMode.Inactive)
             return;
         try
         {

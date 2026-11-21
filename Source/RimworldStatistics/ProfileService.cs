@@ -15,7 +15,10 @@ public static class ProfileService
         return Task.Run(() => OpenSession(path));
     });
     private static readonly RestoredPreferences PendingPreferences = new();
+    internal static readonly object OperationGate = new();
     private static int dataOperationRunning;
+    private static long resourceSettingsVersion;
+    private static ProfileSession? activeOpeningSession;
     public static bool DataOperationRunning => Volatile.Read(ref dataOperationRunning) != 0;
 
     public static string DirectoryPath => Path.Combine(GenFilePaths.SaveDataFolderPath, "RimworldStatistics");
@@ -63,7 +66,14 @@ public static class ProfileService
     {
         var session = new ProfileSession(new ProfileStore(path), () => DateTime.UtcNow,
             new FileCheckpointArchive(Path.Combine(path, "checkpoint-archive")));
-        session.ApplyCacheLimits(RimworldStatisticsMod.Settings.CacheLimits);
+        Volatile.Write(ref activeOpeningSession, session);
+        long version;
+        do
+        {
+            version = Volatile.Read(ref resourceSettingsVersion);
+            session.ApplyCacheLimits(RimworldStatisticsMod.Settings.CacheLimits);
+        }
+        while (version != Volatile.Read(ref resourceSettingsVersion));
         ReportLoadProblems(session.LoadResult, path);
         return session;
     }
@@ -74,8 +84,9 @@ public static class ProfileService
     /// </summary>
     internal static void ApplyResourceSettings()
     {
+        Interlocked.Increment(ref resourceSettingsVersion);
         var limits = RimworldStatisticsMod.Settings.CacheLimits;
-        if (Loader.TryPeek() is { } session)
+        if ((Loader.TryPeek() ?? Volatile.Read(ref activeOpeningSession)) is { } session)
             session.ApplyCacheLimits(limits);
         else
             RecorderChartCache.Shared.SetLimits(limits.ChartSeries, limits.ChartPoints);
@@ -154,12 +165,15 @@ public static class ProfileService
 
     private static string BeginDataOperation()
     {
-        if (Current.ProgramState != ProgramState.Entry || ImportRunner.Running)
-            throw new InvalidOperationException("Profile operations require the title screen and an idle import.");
-        var directory = DirectoryPath;
-        if (Interlocked.CompareExchange(ref dataOperationRunning, 1, 0) != 0)
-            throw new InvalidOperationException("A profile operation is in progress.");
-        return directory;
+        lock (OperationGate)
+        {
+            if (Current.ProgramState != ProgramState.Entry || ImportRunner.Running)
+                throw new InvalidOperationException("Profile operations require the title screen and an idle import.");
+            var directory = DirectoryPath;
+            if (Interlocked.CompareExchange(ref dataOperationRunning, 1, 0) != 0)
+                throw new InvalidOperationException("A profile operation is in progress.");
+            return directory;
+        }
     }
 
     private static BackupInfo WriteBackup(ProfileSession session, string directory, BackupMetadata metadata, string? preferences)

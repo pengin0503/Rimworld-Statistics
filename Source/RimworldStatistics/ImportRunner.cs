@@ -9,7 +9,6 @@ namespace RimworldStatistics;
 /// </summary>
 public static class ImportRunner
 {
-    private static readonly object Gate = new();
     private static CancellationTokenSource? cts;
     private static Task? task;
     private static readonly AutoImportGate AutoGate = new();
@@ -20,7 +19,7 @@ public static class ImportRunner
     {
         get
         {
-            lock (Gate)
+            lock (ProfileService.OperationGate)
                 return task is { IsCompleted: false };
         }
     }
@@ -44,7 +43,7 @@ public static class ImportRunner
     {
         if (Current.ProgramState != ProgramState.Entry)
             return;
-        lock (Gate)
+        lock (ProfileService.OperationGate)
         {
             if (ProfileService.DataOperationRunning || task is { IsCompleted: false })
                 return;
@@ -75,7 +74,7 @@ public static class ImportRunner
 
     public static void Cancel()
     {
-        lock (Gate)
+        lock (ProfileService.OperationGate)
         {
             AutoGate.CancelledByUser();
             cts?.Cancel();
@@ -84,7 +83,7 @@ public static class ImportRunner
 
     public static void CancelForGameStart()
     {
-        lock (Gate)
+        lock (ProfileService.OperationGate)
         {
             if (task is not { IsCompleted: false } || cts is not { IsCancellationRequested: false })
                 return;
@@ -101,7 +100,9 @@ public static class ImportRunner
     /// </summary>
     public static void AutoStartOnce()
     {
-        lock (Gate)
+        if (ProfileService.DataOperationRunning || !AutoGate.MayNeedStart(RimworldStatisticsMod.Settings.autoImport))
+            return;
+        lock (ProfileService.OperationGate)
             if (!ProfileService.DataOperationRunning && AutoGate.ShouldStart(RimworldStatisticsMod.Settings.autoImport, task is { IsCompleted: false }))
                 Start(manual: false);
     }

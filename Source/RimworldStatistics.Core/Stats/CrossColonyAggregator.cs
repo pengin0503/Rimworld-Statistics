@@ -19,8 +19,16 @@ public static class CrossColonyAggregator
         // catalog would allocate hundreds of unnecessary entries per colony.
         var sourceKeys = derived.Select(d => d.StoredKey).ToHashSet(Ord);
         var indexed = colonyRows.OrderBy(c => c.Key, Ord)
-            .Select(c => (c.Key, Rows: c.Value.Where(r => sourceKeys.Contains(r.Definition.Key))
-                .ToDictionary(r => r.Definition.Key, Ord))).ToList();
+            .Select(c =>
+            {
+                var rows = new Dictionary<string, NumericRow>(Ord);
+                foreach (var r in c.Value)
+                {
+                    if (sourceKeys.Contains(r.Definition.Key))
+                        rows.TryAdd(r.Definition.Key, r);
+                }
+                return (c.Key, Rows: rows);
+            }).ToList();
         foreach (var definition in derived)
         {
             var values = indexed.Select(c => (c.Key,

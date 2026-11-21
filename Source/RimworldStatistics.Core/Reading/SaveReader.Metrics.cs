@@ -13,7 +13,7 @@ public sealed partial class SaveReader
         {
             return Convert.ToHexStringLower(hashing.Hash());
         }
-        catch (Exception)
+        catch (Exception e) when (e is not OutOfMemoryException and not StackOverflowException)
         {
             return null;
         }
@@ -27,7 +27,7 @@ public sealed partial class SaveReader
         {
             return BuildMetrics(state, hash);
         }
-        catch (Exception)
+        catch (Exception e) when (e is not OutOfMemoryException and not StackOverflowException)
         {
             return null;
         }
@@ -57,7 +57,7 @@ public sealed partial class SaveReader
             c.FileAliases.AddRange(metrics.FileAliases.Select(a => new MetricFileAlias { FileName = a.FileName, FileSize = a.FileSize, LastWriteUtc = a.LastWriteUtc }));
             return c;
         }
-        catch (Exception)
+        catch (Exception e) when (e is not OutOfMemoryException and not StackOverflowException)
         {
             return null;
         }
@@ -133,10 +133,23 @@ public sealed partial class SaveReader
                 ["factions"] = MetricEvidence.Experimental,
             };
         }
+        if (HistoryMetricReader.MajorMinor(obs.GameVersion) != "1.7")
+            return m;
+
+        void MergeSalvage(IReadOnlyDictionary<string, MetricEntry>? entries, params string[] units)
+        {
+            if (entries is null || entries.Count == 0)
+                return;
+            foreach (var (key, value) in entries)
+                m.Metrics[key] = value;
+            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+            foreach (var unit in units)
+                m.EvidenceByAcquisition[unit] = MetricEvidence.Experimental;
+        }
+
         // At most a lower bound of mapped, explicitly player-owned vanilla
         // settlements at this saved tick. Never invent a lifetime maximum.
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && HistoricalHomeMapReader.Build(s.HistoricalMaps, s.HistoricalMapObjects,
+        if (HistoricalHomeMapReader.Build(s.HistoricalMaps, s.HistoricalMapObjects,
                 s.HistoricalFactions, s.ScenarioPlayerFactionDef,
                 s.HistoricalMapsOverflowed, s.HistoricalMapObjectsOverflowed,
                 s.HistoricalFactionsOverflowed,
@@ -158,41 +171,26 @@ public sealed partial class SaveReader
             if (homes.ContainsKey(AnomalyStateSnapshot.HeldEntitiesPeak))
                 m.EvidenceByAcquisition[AnomalyStateSnapshot.Unit] = MetricEvidence.Experimental;
         }
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && HistoricalAnomalyStateReader.Build(
+
+        MergeSalvage(HistoricalAnomalyStateReader.Build(
                 s.SavedDiscoveredEntities, s.EntityCodexPresent, s.EntityCodexMalformed,
                 s.AnomalyComponentCount, s.AnomalyComponentMalformed,
-                s.AnomalyHighestLevel, s.AnomalyMonolithRef, m.ActiveDlcIds) is { } anomalyState)
-        {
-            foreach (var (key, value) in anomalyState)
-                m.Metrics[key] = value;
-            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
-            m.EvidenceByAcquisition[AnomalyStateSnapshot.Unit] = MetricEvidence.Experimental;
-        }
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && HistoricalBiotechBossReader.Build(
+                s.AnomalyHighestLevel, s.AnomalyMonolithRef, m.ActiveDlcIds),
+            AnomalyStateSnapshot.Unit);
+
+        MergeSalvage(HistoricalBiotechBossReader.Build(
                 s.BossgroupComponentCount, s.BossgroupComponentMalformed,
                 s.BossgroupKilledDefs, s.BossgroupCalledKeys, s.BossgroupCalledValues,
-                m.ActiveDlcIds) is { } biotechBossState)
-        {
-            foreach (var (key, value) in biotechBossState)
-                m.Metrics[key] = value;
-            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
-            m.EvidenceByAcquisition["biotech_state"] = MetricEvidence.Experimental;
-        }
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && HistoricalIdeologyStateReader.Build(
+                m.ActiveDlcIds),
+            "biotech_state");
+
+        MergeSalvage(HistoricalIdeologyStateReader.Build(
                 s.HistoricalFactions, s.ScenarioPlayerFactionDef, s.HistoricalFactionsOverflowed,
-                s.SavedIdeos, s.SavedIdeosMalformed, m.ActiveDlcIds) is { } ideologyState)
-        {
-            foreach (var (key, value) in ideologyState)
-                m.Metrics[key] = value;
-            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
-            m.EvidenceByAcquisition[IdeologyStateSnapshot.Unit] = MetricEvidence.Experimental;
-        }
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && (s.WorldInfoHasMapSize || s.WorldOverallTemperature is not null
-                || s.WorldOverallRainfall is not null || s.WorldPollution is not null))
+                s.SavedIdeos, s.SavedIdeosMalformed, m.ActiveDlcIds),
+            IdeologyStateSnapshot.Unit);
+
+        if (s.WorldInfoHasMapSize || s.WorldOverallTemperature is not null
+            || s.WorldOverallRainfall is not null || s.WorldPollution is not null)
         {
             bool? biotechActive = m.ActiveDlcIds is { } dlcs
                 ? dlcs.Contains(AcquisitionUnits.Biotech, StringComparer.OrdinalIgnoreCase)
@@ -218,18 +216,14 @@ public sealed partial class SaveReader
                 m.EvidenceByAcquisition["colony_start"] = MetricEvidence.Experimental;
             }
         }
+
         // P0-C: all reconstructed values remain Partial and Experimental:
         // official 1.7.4985 reference costs are assumed compatible across 1.7,
         // but are not proof of the saved MOD-resolved runtime DefDatabase.
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
-            && HistoricalResearchStateReader.Build(s.SavedResearchKeys, s.SavedResearchValues,
-                s.ModIds, s.SavedResearchMalformed) is { } research)
-        {
-            foreach (var (key, value) in research)
-                m.Metrics[key] = value;
-            m.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
-            m.EvidenceByAcquisition["research_state"] = MetricEvidence.Experimental;
-        }
+        MergeSalvage(HistoricalResearchStateReader.Build(s.SavedResearchKeys, s.SavedResearchValues,
+                s.ModIds, s.SavedResearchMalformed),
+            "research_state");
+
         return m;
     }
 

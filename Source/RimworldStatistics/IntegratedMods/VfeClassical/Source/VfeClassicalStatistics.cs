@@ -1,5 +1,4 @@
-using System.Diagnostics;
-using System.Reflection;
+using System.Linq.Expressions;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
@@ -15,8 +14,9 @@ internal static class VfeClassicalStatistics
     private const string Owner = "OskarPotocki.VFE.Classical";
     private const string Unit = "mod.oskarpotocki.vfe.classical.senatorfavor";
     private const string Key = Unit + ".gained";
-    private static MethodInfo? infoForMethod;
-    private static FieldInfo? favoredField;
+    private static Func<object, Pawn, Faction, object?>? infoForFunc;
+    private static Func<object, bool>? getFavored;
+    [ThreadStatic] private static int debugFavorDepth;
 
     private sealed record FavorBefore(object Info, string? DefKey);
 
@@ -64,50 +64,60 @@ internal static class VfeClassicalStatistics
             favored?.FieldType != typeof(bool))
             throw new InvalidOperationException("VFE Classical senator favor method/field signature mismatch");
 
-        infoForMethod = info;
-        favoredField = favored;
+        var objParam = Expression.Parameter(typeof(object), "comp");
+        var pawnParam = Expression.Parameter(typeof(Pawn), "pawn");
+        var factionParam = Expression.Parameter(typeof(Faction), "faction");
+        infoForFunc = Expression.Lambda<Func<object, Pawn, Faction, object?>>(
+            Expression.Convert(
+                Expression.Call(Expression.Convert(objParam, component), info, pawnParam, factionParam),
+                typeof(object)),
+            objParam, pawnParam, factionParam).Compile();
+        getFavored = OptionalTransitionCallSite.CompileFieldGetter<bool>(favored);
+
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(gain,
-                prefix: new HarmonyMethod(typeof(VfeClassicalStatistics), nameof(BeforeFavor)),
-                postfix: new HarmonyMethod(typeof(VfeClassicalStatistics), nameof(AfterFavor)));
+            patcher.Patch(gain, typeof(VfeClassicalStatistics), nameof(BeforeFavor), nameof(AfterFavor));
+            var debugTypes = AccessTools.GetTypesFromAssembly(component.Assembly);
+            for (var i = 0; i < debugTypes.Length; i++)
+            {
+                var type = debugTypes[i];
+                if (type.FullName?.StartsWith("VFEC.Senators.DebugActionsSenators", StringComparison.Ordinal) != true)
+                    continue;
+                foreach (var caller in OptionalTransitionCallSite.FindCallersInTypeTree(type, gain))
+                    patcher.Patch(caller, typeof(VfeClassicalStatistics), prefix: nameof(EnterDebugFavor), finalizer: nameof(ExitDebugFavor));
+            }
         }
         catch
         {
-            harmony.Unpatch(gain, HarmonyPatchType.All, harmony.Id);
-            infoForMethod = null;
-            favoredField = null;
+            patcher.Rollback();
+            infoForFunc = null;
+            getFavored = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
-    private static bool IsDebugOrigin()
+    private static void EnterDebugFavor() => debugFavorDepth++;
+
+    private static Exception? ExitDebugFavor(Exception? __exception)
     {
-        // This optional call is infrequent: inspecting only a successful-favor
-        // candidate is cheaper than patching every UI or quest caller.
-        foreach (var frame in new StackTrace(1, false).GetFrames() ?? [])
-            if (frame.GetMethod()?.DeclaringType?.FullName is { } name &&
-                name.StartsWith("VFEC.Senators.DebugActionsSenators", StringComparison.Ordinal))
-                return true;
-        return false;
+        if (debugFavorDepth > 0)
+            debugFavorDepth--;
+        return __exception;
     }
 
     private static void BeforeFavor(object __instance, Pawn __0, Faction __1,
         out FavorBefore? __state)
     {
         __state = null;
-        if (!CanObserve() || __0 is null || __1 is null || IsDebugOrigin())
+        if (!CanObserve() || __0 is null || __1 is null || debugFavorDepth > 0)
             return;
         try
         {
-            var info = infoForMethod?.Invoke(__instance, [__0, __1]);
-            if (info is null || favoredField?.GetValue(info) is not false)
+            var info = infoForFunc?.Invoke(__instance, __0, __1);
+            if (info is null || getFavored is null || getFavored(info))
                 return;
             var def = __1.def;
             __state = new FavorBefore(info, OptionalTransitionRecording.QualifiedDefKey(
@@ -123,9 +133,9 @@ internal static class VfeClassicalStatistics
             return;
         try
         {
-            var info = infoForMethod?.Invoke(__instance, [__0, __1]);
+            var info = infoForFunc?.Invoke(__instance, __0, __1);
             if (!ReferenceEquals(__state.Info, info) ||
-                favoredField?.GetValue(info) is not true ||
+                getFavored is null || !getFavored(info!) ||
                 !VfeClassicalRules.FavorGained(before: false, after: true, normalPlay: true))
                 return;
             GameFacts.Record(Unit, s => OptionalTransitionRecording.RecordCount(

@@ -50,6 +50,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private bool firstAndLastKnown;
     private static readonly Color PickColor = new(1f, 1f, 1f, 0.85f);
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
+    private Vector2?[] drawSeriesPositions = [];
+    private bool[] drawSeriesPartials = [];
 
     internal Dialog_ColonyMetricHistory(StatsView view, string colonyKey, string colonyName,
         MetricDefinition definition, string metricLabel, NumericValue comparison, string? scopeName = null)
@@ -174,8 +176,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         _ = topMeasure.Next(addColonyText, 120f, 250f);
         _ = topMeasure.Next(favText, 140f, 360f);
         var topControlsHeight = topMeasure.Height + 3f;
+        var zoomLabelText = (string)"RWS_Chart_ZoomLabel".Translate();
+        var zoomApplyText = (string)"RWS_Chart_ZoomApply".Translate();
+        var zoomResetText = (string)"RWS_Chart_ZoomReset".Translate();
         var zoomStatus = ZoomStatusText();
-        var zoomHeight = MeasureZoomControls(contentWidth, zoomStatus);
+        var zoomLayout = ComputeZoomControlsLayout(0f, contentWidth, zoomLabelText, zoomApplyText, zoomResetText, zoomStatus);
+        var zoomHeight = zoomLayout.TotalHeight;
         var changeLines = ChangeText(history);
         // Room for three lines (an interval and a reason) is kept, so picking a reading does not move the chart under the mouse.
         var changeTextHeight = Math.Max(Text.CalcHeight(changeLines, contentWidth), Text.LineHeight * 3f);
@@ -261,7 +267,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     InvalidateOverlays();
             }
 
-            y = DrawZoomControls(history, y, contentWidth, zoomStatus);
+            y = DrawZoomControls(history, y, zoomLayout, zoomLabelText, zoomApplyText, zoomResetText, zoomStatus);
             if (boundsDirty)
             {
                 EnsureBoundsAndLegend(history, contentWidth);
@@ -290,6 +296,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Rect StatusRect,
         float TotalHeight);
 
+    private static Rect OffsetY(Rect r, float y) => new(r.x, r.y + y, r.width, r.height);
+
     private static ZoomControlsLayout ComputeZoomControlsLayout(
         float y, float width, string labelText, string applyText, string resetText, string statusText)
     {
@@ -312,20 +320,19 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             row.Height + 3f + statusHeight + 6f);
     }
 
-    private static float MeasureZoomControls(float width, string statusText)
-        => ComputeZoomControlsLayout(
-            0f, width,
-            "RWS_Chart_ZoomLabel".Translate(),
-            "RWS_Chart_ZoomApply".Translate(),
-            "RWS_Chart_ZoomReset".Translate(),
-            statusText).TotalHeight;
-
-    private float DrawZoomControls(MetricHistory history, float y, float width, string statusText)
+    private float DrawZoomControls(
+        MetricHistory history, float y, ZoomControlsLayout layout,
+        string labelText, string applyText, string resetText, string statusText)
     {
-        string labelText = "RWS_Chart_ZoomLabel".Translate();
-        string applyText = "RWS_Chart_ZoomApply".Translate();
-        string resetText = "RWS_Chart_ZoomReset".Translate();
-        var layout = ComputeZoomControlsLayout(y, width, labelText, applyText, resetText, statusText);
+        layout = new ZoomControlsLayout(
+            OffsetY(layout.LabelRect, y),
+            OffsetY(layout.StartRect, y),
+            OffsetY(layout.SeparatorRect, y),
+            OffsetY(layout.EndRect, y),
+            OffsetY(layout.ApplyRect, y),
+            OffsetY(layout.ResetRect, y),
+            OffsetY(layout.StatusRect, y),
+            layout.TotalHeight);
 
         string nextStart;
         string nextEnd;
@@ -779,9 +786,17 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         {
             // A line joins two readings only where the later one continues the earlier (MetricHistoryPoint);
             // a gap (no value) joins nothing, and a reading of unproven ancestry is drawn hollow.
-            var positions = new Vector2?[points.Count];
-            var partials = new bool[points.Count];
-            for (var i = 0; i < points.Count; i++)
+            var count = points.Count;
+            if (drawSeriesPositions.Length < count)
+            {
+                drawSeriesPositions = new Vector2?[count];
+                drawSeriesPartials = new bool[count];
+            }
+            var positions = drawSeriesPositions;
+            var partials = drawSeriesPartials;
+            Array.Clear(positions, 0, count);
+            Array.Clear(partials, 0, count);
+            for (var i = 0; i < count; i++)
             {
                 var point = points[i];
                 if (point.Value is not { Number: { } number } value)

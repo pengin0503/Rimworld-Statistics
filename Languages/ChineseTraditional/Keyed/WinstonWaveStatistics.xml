@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_WinstonCleared>擊退溫斯頓浪潮數</RWS_WinstonCleared>
-  <RWS_WinstonHighest>擊退的最高溫斯頓浪潮</RWS_WinstonHighest>
-  <RWS_WinstonBoss>擊退溫斯頓首領浪潮數</RWS_WinstonBoss>
+  <RWS_WinstonCleared>擊退襲擾浪潮數</RWS_WinstonCleared>
+  <RWS_WinstonHighest>擊退的最高襲擾浪潮</RWS_WinstonHighest>
+  <RWS_WinstonBoss>擊退首領浪潮數</RWS_WinstonBoss>
   <RWS_WinstonClearDesc>統計下一波開始前已擊退的浪潮。逾時推進不列入統計。</RWS_WinstonClearDesc>
-  <RWS_WinstonRewards>已確認的溫斯頓獎勵</RWS_WinstonRewards>
+  <RWS_WinstonRewards>已確認的浪潮獎勵</RWS_WinstonRewards>
   <RWS_WinstonRewardsDesc>依種類統計已確認的獎勵，包括自動選中的獎勵和逾時後選中的獎勵。</RWS_WinstonRewardsDesc>
 </LanguageData>

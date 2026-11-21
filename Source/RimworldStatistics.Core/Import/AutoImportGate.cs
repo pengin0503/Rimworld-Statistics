@@ -11,18 +11,33 @@ public sealed class AutoImportGate
     private bool started;
     private bool resumeRequested;
     private bool userCancelled;
+    private int idle;   // 1 when no start/resume is pending under normal auto-import operation
+
+    /// <summary>Lock-free per-frame fast check on the title screen.</summary>
+    public bool MayNeedStart(bool autoImportEnabled) => autoImportEnabled && Volatile.Read(ref idle) == 0;
 
     /// <summary>Call on every title-menu draw; true means "start a scan now".</summary>
     public bool ShouldStart(bool autoImportEnabled, bool running)
     {
+        if (!autoImportEnabled)
+            return false;
         lock (gate)
         {
-            if (!autoImportEnabled || running || userCancelled)
+            if (userCancelled)
+            {
+                Volatile.Write(ref idle, 1);
+                return false;
+            }
+            if (running)
                 return false;
             if (started && !resumeRequested)
+            {
+                Volatile.Write(ref idle, 1);
                 return false;
+            }
             started = true;
             resumeRequested = false;
+            Volatile.Write(ref idle, 1);
             return true;
         }
     }
@@ -33,6 +48,7 @@ public sealed class AutoImportGate
         {
             userCancelled = true;
             resumeRequested = false;
+            Volatile.Write(ref idle, 1);
         }
     }
 
@@ -43,6 +59,7 @@ public sealed class AutoImportGate
             userCancelled = false;
             started = true;
             resumeRequested = false;
+            Volatile.Write(ref idle, 1);
         }
     }
 
@@ -54,7 +71,12 @@ public sealed class AutoImportGate
     private void RequestRefresh()
     {
         lock (gate)
+        {
             if (!userCancelled)
+            {
                 resumeRequested = true;
+                Volatile.Write(ref idle, 0);
+            }
+        }
     }
 }

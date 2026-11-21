@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_WinstonCleared>Oleadas de Winston repelidas</RWS_WinstonCleared>
-  <RWS_WinstonHighest>Mayor oleada de Winston repelida</RWS_WinstonHighest>
-  <RWS_WinstonBoss>Oleadas de jefes de Winston repelidas</RWS_WinstonBoss>
+  <RWS_WinstonCleared>Oleadas de asalto repelidas</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Mayor oleada repelida</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Oleadas de jefes repelidas</RWS_WinstonBoss>
   <RWS_WinstonClearDesc>Cuenta las oleadas repelidas antes del inicio de la siguiente. Excluye los avances por tiempo agotado.</RWS_WinstonClearDesc>
-  <RWS_WinstonRewards>Recompensas de Winston confirmadas</RWS_WinstonRewards>
+  <RWS_WinstonRewards>Recompensas de oleada confirmadas</RWS_WinstonRewards>
   <RWS_WinstonRewardsDesc>Cuenta las elecciones confirmadas por tipo, incluidas las automáticas y las ofrecidas al agotarse el tiempo.</RWS_WinstonRewardsDesc>
 </LanguageData>

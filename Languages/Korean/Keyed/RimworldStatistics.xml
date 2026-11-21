@@ -1047,29 +1047,29 @@
   <RWS_MetricDesc_DbhActivities>이 통계를 활성화한 후 플레이어 폰이 본거지 지도에서 완료한 화장실, 샤워 및 확인된 세척 작업의 수입니다.</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>갈아입기 완료 횟수</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>이 통계를 활성화한 후 Smart Apparel Upgrade의 자동 지시로 선택된 옷을 실제로 입는 작업을 끝낸 횟수입니다.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE 은행 입금액</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCredits>은행 입금액</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>이 실험적 통계를 활성화한 후 완료한 VTE 은행 예금에서 수수료를 제외하고 실제로 계좌에 입금된 은입니다. 계약 보상 입금은 제외합니다.</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>VTE 은행 인출액</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebits>은행 인출액</RWS_VTE_BankDebits>
   <RWS_VTE_BankDebitsDesc>이 통계를 활성화한 후 성공적인 인출로 VTE 은행 계좌에서 빠져나간 수수료 공제 전의 총 은 수량입니다.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE 대출 실행 횟수</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssued>대출 실행 횟수</RWS_VTE_LoansIssued>
   <RWS_VTE_LoansIssuedDesc>기록 활성화 후 VTE 은행에서 실제로 실행된 대출 횟수입니다. 실패한 신청과 상환은 제외합니다.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE 대출 원금 총액</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipal>대출 원금 총액</RWS_VTE_LoanPrincipal>
   <RWS_VTE_LoanPrincipalDesc>실제로 실행된 VTE 대출의 은 원금 합계입니다. 상환금이나 이자는 제외합니다.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>물품 납품으로 완료한 VTE 계약</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveries>물품 납품으로 완료한 계약</RWS_VTE_ContractDeliveries>
   <RWS_VTE_ContractDeliveriesDesc>물품이 실제로 소비되거나 운반되어 이행된 VTE NPC 구매 계약 수입니다. 계약을 수락하기만 한 경우는 제외합니다. 보상이 계좌에 입금되었다는 뜻은 아닙니다.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>VTE 계약에 납품한 물품 수</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItems>계약에 납품한 물품 수</RWS_VTE_ContractItems>
   <RWS_VTE_ContractItemsDesc>전체 또는 일부를 이행한 VTE NPC 구매 계약에 실제로 넘긴 물품 수량입니다. 상단의 물품 수령도 포함합니다. 요청량이 아닌 실제 이동량을 셉니다.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>플레이어가 올린 VTE 구매 계약 완료 수</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchases>플레이어가 올린 구매 계약 완료 수</RWS_VTE_ContractPurchases>
   <RWS_VTE_ContractPurchasesDesc>플레이어가 게시하고 VTE 은행 거래를 통해 대금을 전액 지불한 뒤 생성된 아이템으로 이행한 구매 계약 수입니다. 지불 취소나 돈을 내지 않고 수락만 한 계약은 제외합니다.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>VTE 계약으로 구매한 물품 수</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceived>계약으로 구매한 물품 수</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>플레이어가 올려 대금 지불을 완료한 VTE 구매 계약에서 생성된 아이템 수량입니다. NPC 구매 계약 납품이나 일반 거래와 구분합니다.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>초능력 사용 횟수</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>플레이어의 자유 정착민이 Vanilla Psycasts Expanded 능력을 실제로 사용한 횟수입니다. VPE에서 능력 사용을 소비한 시점에 세며 능력별로도 표시합니다. 대기 명령, 취소한 사용 및 NPC의 사용은 제외합니다.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>함정 재장전 횟수</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>플레이 중 플레이어의 해제된 함정을 실제로 다시 작동 상태로 만든 횟수입니다. 해제에서 장전으로 바뀐 경우만 세며, 작업 지시, 함정 생성 시 초기화, 개발자 작업, 모드 자체의 폰 기록은 제외합니다.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE 업적 카드 해금 수</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_Unlocked>업적 카드 해금 수</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>정상적인 플레이 중 새로 해금한 업적 카드를 업적 정의별로 집계합니다. 디버그 해금과 게임 시작 시 복원 확인은 제외합니다.</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>VAE 획득 업적 점수</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_Points>획득 업적 점수</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>디버그가 아닌 새 업적 해금으로 실제 지급된 점수입니다. 점수 합계를 읽지 못하면 기록량을 부분 기록으로 표시합니다.</RWS_VaeAchievements_PointsDesc>
   <RWS_VfeTribals_EraAdvances>시대 발전 횟수</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>플레이어 부족의 기술 시대가 실제로 발전한 횟수이며 시대별로 집계합니다. 초기화, 같은 시대 유지, 이전 시대로 후퇴 및 저장 파일 복원은 제외합니다.</RWS_VfeTribals_EraAdvancesDesc>
@@ -1079,9 +1079,9 @@
   <RWS_VaeAspirations_CompletedDesc>플레이어 정착민이 모드의 정상 완료 확인을 통해 새로 달성한 열망의 수이며 열망별로 집계합니다. 디버그로 완료한 경우, 이미 달성했거나 배정되지 않은 열망 및 저장 파일 복원은 제외합니다.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>플레이어 둥지에서 태어난 곤충</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>정상 플레이 중 플레이어 소유 둥지에서 새로 생성된 곤충 수이며 곤충 종류별로 집계합니다. 고치 교체, 기존 둥지 구성원 복원 및 개발자 생성은 제외합니다.</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Cryptoforge 중계기 스캔 완료 횟수</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScans>중계기 스캔 완료 횟수</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>플레이어 정착민이 임무 지도에 있는 동안 완료된 Frozen Scanning Relay의 스캔 횟수입니다.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>Auto Machine Tool 지상 출력 수</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutput>기계 지상 출력 수</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>플레이어 소유 Auto Machine Tool이 지도 위에 실제로 배치한 아이템 수이며 종류별로 집계합니다. 컨베이어나 다른 기계로 직접 전달한 아이템은 제외합니다.</RWS_RimFactory_GroundOutputDesc>
   <RWS_Rwom_HealingCasts>치유 마법 성공 횟수</RWS_Rwom_HealingCasts>
   <RWS_Rwom_HealingCastsDesc>플레이어가 Heal 또는 Advanced Heal을 사용해 대상의 부상을 실제로 완화하거나 갓 잃은 신체 부위를 안정시킨 횟수입니다.</RWS_Rwom_HealingCastsDesc>
@@ -1091,7 +1091,7 @@
   <RWS_SimpleWarrants_CompletedDesc>플레이어 상단이 수배 대상을 실제로 인도해 대상이 제거되고 수배가 완료된 횟수입니다.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>획득한 은</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>완료한 수배 대상 인도의 보상으로 플레이어 상단에 실제로 추가된 은의 양입니다.</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>The Generator ARC 개량 완료 수</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_Upgrades>ARC 발전기 개량 완료 수</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>플레이어가 소유한 기존 ARC 발전기를 같은 자리에 교체하는 건설이 완료된 횟수이며 새 발전기 종류별로 집계합니다.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>최대 소유 차량 수</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>한 정착지에서 플레이어가 동시에 소유한 Vehicle Framework 차량의 최대 수입니다. 지도, 상단, 비행 중, 보관 중 차량을 모두 포함하며 저장 성공 시에 기록합니다. 차량 종류는 최댓값을 기록한 저장 시점의 구성입니다.</RWS_VehicleFramework_OwnedPeakDesc>
@@ -1105,17 +1105,17 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>행사가 끝날 때 보류 중이던 VFE Empire 영예가 플레이어 정착민에게 실제로 수여된 횟수이며 영예별로 집계합니다. 사용 가능한 영예를 받기만 한 경우와 개발자 조작은 제외합니다.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>영감 열망 달성 횟수</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expanded에서 정착민의 활성 영감과 연결된 열망을 새로 달성한 횟수이며 영감별로 집계합니다. 미완료 진행, 기한 만료 및 관련 없는 영감은 제외합니다.</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Giddy-Up 2 탑승 시작 횟수</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessions>탑승 시작 횟수</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>플레이어 정착민이 Giddy-Up 탑승 작업을 완료하고 소유 동물에 실제로 타기 시작한 횟수이며 동물 종류별로 집계합니다. 이미 탄 채로 도착하거나 대기 중인 명령 또는 중복 관측은 제외합니다.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>정착민 재장전 횟수</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>플레이어 측 폰이 무기 탄창에 실제로 탄약을 넣고 완료한 재장전 횟수입니다. 여러 탄약 중첩을 넣어도 한 번으로 셉니다. 포탑, 자동 장전기, 탄약 비활성화 상태 및 실패한 재장전은 제외합니다.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>안드로이드 자연 각성 횟수</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>합성 신체를 가진 플레이어 소유 안드로이드가 기분에 따른 유전자 검사로 자연스럽게 각성한 횟수입니다. 개발자 도구로 직접 각성하거나 시작 시 설정, 이미 각성한 안드로이드는 제외합니다. Biotech가 필요합니다.</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>VSE 선택한 전문 기술</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_Selected>선택한 전문 기술</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>플레이어 정착민이 일반 전문 기술 창에서 새로 선택한 전문 기술 수이며 전문 기술별로 집계합니다. 디버그 해금과 복원된 기록은 제외합니다.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE 전문 기술 레벨 상승량</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUps>전문 기술 레벨 상승량</RWS_VseExpertise_LevelUps>
   <RWS_VseExpertise_LevelUpsDesc>기록 활성화 후 영구적으로 높아진 VSE 전문 기술 레벨의 합계이며 서로 독립된 모든 정착지를 합산하고 전문 기술별로 나눕니다.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE 최고 도달 전문 기술 레벨</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_Highest>최고 도달 전문 기술 레벨</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>서로 독립된 정착지 전체에서 경험을 통해 실제로 도달한 전문 기술 최고 레벨입니다. 레벨 총합이나 최신 저장 파일의 상태만 나타내는 값이 아닙니다.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>가공 완료 묶음</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expanded에 속한 수프, 치즈 및 기타 VEF 가공 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일반 제작 지시나 출력이 일부 막힌 경우는 제외합니다.</RWS_VefCooking_BatchesDesc>
@@ -1123,9 +1123,9 @@
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing Expanded에 속한 VEF 발효, 양조 및 숙성 작업이 완료된 묶음 수이며 가공 유형별로 집계합니다. 일시정지, 막힘, 미완료 출력 및 일반 제작 지시는 제외합니다.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>손님 식사 대금</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>플레이어 식당에서 다른 세력 손님이 식사비로 실제 지불한 은입니다. 일부만 지불했다면 실제 금액만 더하며, 미지불 외상, 무료 식사 및 관련 없는 거래는 제외합니다.</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE Drone Factory 조립한 드론</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_Assembled>조립한 드론</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>자동 드론 조립기의 생산 시간이 끝나 실제로 생성된 플레이어 소유 드론 수이며 폰 종류별로 집계합니다. 시간 경과만 이루어진 경우, 생성 실패, 알에서 부화한 경우는 제외합니다.</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE Drone Factory 부화한 드론</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_Hatched>부화한 드론</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>알에서 성공적으로 부화해 실제로 태어난 플레이어 드론 수이며 폰 종류별로 집계합니다. 드론이 태어나지 않고 파괴된 알이나 조립기로 만든 드론은 제외합니다.</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>배관에 저장한 Deepchem</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>플레이어 소유 원유 펌프에서 배관 저장소로 실제 받아들여진 Deepchem의 양이며 소수도 포함합니다. 배관망에서 저장을 확인한 시점에 측정합니다. 예상 산출량, 땅에 떨어진 산출물 및 저장 실패는 제외합니다.</RWS_VceDeepchem_StoredUnitsDesc>
@@ -1143,9 +1143,9 @@
   <RWS_VfeFactory_SownDesc>플레이어 소유 Autofarmer의 작업 주기 중 실제로 생성되어 파종된 것으로 표시되고 선택 작물과 일치하는 새 식물 수입니다. 식물별로 집계하며 실패한 주기와 기존 식물은 제외합니다.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>워캐스킷 장착 완료 횟수</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>일반 용접으로 완료한 플레이어 워캐스킷 장착 작업입니다. 프로젝트가 완료되고 일치하는 세 부위를 새로 착용한 경우에만 확인하며 방어구 유형별로 집계합니다. 미완료 작업, 일부만 착용한 세트 및 개발자 완료는 제외합니다.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>VQE Ancients 주입 거부 횟수</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_Rejected>아르코젠 주입 거부 횟수</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>플레이어의 아르코진 주입기에서 폰이 주입을 거부하고 살아서 풀려나 주입 혼수에 빠진 결과의 수입니다. 취소한 작업, 선택했지만 완료되지 않은 결과, 성공 후 남은 유전자 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>VQE Ancients 돌연변이 변신 횟수</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_Mutations>아르코젠 돌연변이 변신 횟수</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>플레이어 아르코진 주입기의 돌연변이 결과로 원래 폰이 사라지고 선택한 종류의 플레이어 소유 돌연변이가 하나 생성된 횟수이며 돌연변이 종류별로 집계합니다. 다른 생성, 취소 및 성공 후 대기 중인 선택은 제외합니다. Biotech가 필요합니다.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>현상금 대상 인도 횟수</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>수배 범죄자나 시체를 플레이어 상단에서 실제로 인도하고 제거하면서 은 보상을 0보다 많이 받은 횟수입니다. 명령만 열거나 대상 없음, 인도 실패 및 관련 없는 소지품은 제외합니다.</RWS_VfeSettlers_BountyHandinsDesc>
@@ -1161,9 +1161,9 @@
   <RWS_VfePirates_HireContractsDesc>Vanilla Expanded Framework의 고용 창에서 VFE Pirates의 고용 세력과 실제로 체결한 새 해적 또는 용병 계약 수입니다. 창을 보기만 하거나 취소한 제안 또는 결제 실패는 제외합니다.</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>고용에 지불한 은</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>새 VFE Pirates 고용 계약을 등록할 때 플레이어 지도 재고에서 실제 차감한 은입니다. 반올림한 견적 가격이 아닙니다. 무료 계약은 은을 더하지 않습니다.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>VGE 전자 자궁에서 태어난 잡종</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_Births>전자 자궁에서 태어난 잡종</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>플레이어 소유 VGE 전자 자궁의 성장 주기가 성공적으로 끝나 실제로 하나씩 생성된 플레이어 소유 잡종 폰 수이며 폰 종류별로 집계합니다. 성장 실패, 단순 시간 경과 및 저장 파일 복원은 제외합니다.</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>VGE 생체 기계 변환 횟수</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_Conversions>생체 기계 변환 횟수</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>플레이어 소유 메카 잡종 변환기가 원래 대상을 제거하고 플레이어 소유 변환 폰을 새로 하나 생성하는 데 성공한 횟수이며 결과 폰 종류별로 집계합니다. 기계 작동 시작, 대기 및 생성 실패는 제외합니다.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>가석방 승인 횟수</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>가석방 심사에서 플레이어가 구금 중인 살아 있는 수감자의 만료된 형기를 실제로 종료하고 석방 명령을 내린 결정의 수입니다. 심사만 개최한 경우, 형기 연장, 모집 선택지, 반복 결정 및 이후 실제 출소는 제외합니다.</RWS_PrisonExpanded_ParoleApprovedDesc>
@@ -1363,4 +1363,7 @@
   <RWS_Change_Carried>나중 값은 {0}일 저장까지 변하지 않고 이어졌습니다. 기간은 값이 기록된 시점까지로 계산합니다.</RWS_Change_Carried>
   <RWS_Change_RecordedSince>이 통계의 기록은 {0}일에 시작되었습니다. 기간 증가분은 그 이후에 센 수이며, 그 시점에 이미 진행 중이던 사건은 세지 않았을 수 있습니다.</RWS_Change_RecordedSince>
   <RWS_Change_ClickTip>클릭하여 비교할 점으로 선택</RWS_Change_ClickTip>
+  <RWS_Error_Unknown>알 수 없는 오류</RWS_Error_Unknown>
+  <RWS_Export_FooterColonyKey>정착지 키</RWS_Export_FooterColonyKey>
+  <RWS_Export_FooterGenerator>생성기</RWS_Export_FooterGenerator>
 </LanguageData>

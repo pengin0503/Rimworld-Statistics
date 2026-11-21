@@ -15,6 +15,7 @@ public static class LiveMetrics
     private sealed record DeferredEvent(Game TargetGame, string Unit, Action<FamilyState>? Handler);
 
     private static readonly object SnapshotGate = new();
+    private static readonly object HitCountGate = new();
     private static Game? game;
     private static LiveMetricAccumulator? accumulator;
     private static CheckpointSaveSession? session;
@@ -25,9 +26,9 @@ public static class LiveMetrics
     [ThreadStatic] private static bool flushingDeferred;
 
     /// <summary>The totals of the game being played, or null (no game, another game, or still setting up).</summary>
-    public static LiveMetricAccumulator? Accumulator => IsCurrent ? accumulator : null;
+    public static LiveMetricAccumulator? Accumulator => IsCurrent ? Volatile.Read(ref accumulator) : null;
 
-    public static CheckpointSaveSession? Session => IsCurrent ? session : null;
+    public static CheckpointSaveSession? Session => IsCurrent ? Volatile.Read(ref session) : null;
 
     private static bool IsCurrent => Volatile.Read(ref game) is { } activeGame && ReferenceEquals(Current.Game, activeGame);
 
@@ -52,6 +53,19 @@ public static class LiveMetrics
         return acc;
     }
 
+    /// <summary>Releases live game references and queued closures when returning to the main menu.</summary>
+    internal static void ClearForMainMenu()
+    {
+        Volatile.Write(ref game, null);
+        Volatile.Write(ref accumulator, null);
+        Volatile.Write(ref session, null);
+        SyncRecordingSnapshot(null);
+        FailedPendingStop.Clear();
+        ClearDeferred();
+        lock (HitCountGate)
+            hitCounts?.Clear();
+    }
+
     private static void ClearDeferred()
     {
         while (Deferred.TryDequeue(out _))
@@ -65,12 +79,13 @@ public static class LiveMetrics
         // process-wide total. Reset when starting or resuming another colony.
         Volatile.Write(ref game, null);
         SyncRecordingSnapshot(null);
-        hitCounts?.Clear();
+        lock (HitCountGate)
+            hitCounts?.Clear();
         // Run startup baselines before publishing the new game so worker/other hooks
         // never observe a partially initialized accumulator.
         FamilyStartup.Apply(acc, Find.TickManager.TicksGame);
-        accumulator = acc;
-        session = new CheckpointSaveSession(acc);
+        Volatile.Write(ref accumulator, acc);
+        Volatile.Write(ref session, new CheckpointSaveSession(acc));
         SyncRecordingSnapshot(acc);
         Volatile.Write(ref game, g);
     }
@@ -122,6 +137,8 @@ public static class LiveMetrics
     {
         if (!UnityData.IsInMainThread || Accumulator is not { } acc)
             return;
+        // Apply legitimate worker-thread events queued before the setting changed so they are not dropped.
+        FlushDeferred();
         DrainPendingStops(acc);
         var tick = Find.TickManager.TicksGame;
         var started = acc.Reconfigure(MetricGates.RecordingFamilies(), tick,
@@ -148,8 +165,14 @@ public static class LiveMetrics
     public static FamilyState? Family(string name)
     {
         var family = Resolve(name, eventAttempt: true);
-        if (family != null && hitCounts is { } hits)
-            hits[name] = hits.GetValueOrDefault(name) + 1;
+        if (family != null && Volatile.Read(ref hitCounts) is not null)
+        {
+            lock (HitCountGate)
+            {
+                if (hitCounts is { } hits)
+                    hits[name] = hits.GetValueOrDefault(name) + 1;
+            }
+        }
         return family;
     }
 
@@ -226,7 +249,7 @@ public static class LiveMetrics
     private static FamilyState? Resolve(string name, bool eventAttempt)
     {
         if (Scribe.mode != LoadSaveMode.Inactive || Volatile.Read(ref game) is not { } targetGame
-            || !ReferenceEquals(Current.Game, targetGame) || accumulator is not { } acc)
+            || !ReferenceEquals(Current.Game, targetGame) || Volatile.Read(ref accumulator) is not { } acc)
             return null;
         if (!UnityData.IsInMainThread)
         {
@@ -243,8 +266,14 @@ public static class LiveMetrics
     /// <summary>A hook of <paramref name="unit"/> threw: close the unit and keep what it recorded, measured through now.</summary>
     public static void Fail(string unit, Exception e)
     {
-        // Ignore transient exceptions while Scribe is mid-load/save or when no active game is installed.
-        if (Scribe.mode != LoadSaveMode.Inactive || !IsCurrent)
+        // While Scribe is loading/saving, isolate and log without disabling the unit for the whole session.
+        if (Scribe.mode != LoadSaveMode.Inactive)
+        {
+            Log.WarningOnce($"[RimworldStatistics] Numeric statistics unit '{unit}' threw during save/load and was isolated.\n{e}",
+                ("RWS.unit.scribe." + unit).GetHashCode());
+            return;
+        }
+        if (!IsCurrent)
             return;
         MetricGates.Fail(unit, e);
         RemoveFromRecordingSnapshot(unit);
@@ -279,12 +308,20 @@ public static class LiveMetrics
     }
 
     /// <summary>Turns on diagnostic state handout counts for an isolated verification session.</summary>
-    public static void EnableHitDiagnostics() => hitCounts ??= new Dictionary<string, int>(StringComparer.Ordinal);
+    public static void EnableHitDiagnostics()
+    {
+        lock (HitCountGate)
+            Volatile.Write(ref hitCounts, hitCounts ?? new Dictionary<string, int>(StringComparer.Ordinal));
+    }
 
     /// <summary>How often each family handed out its state for recording this game, when diagnostics are enabled.</summary>
-    public static IReadOnlyDictionary<string, int> HitCounts() => hitCounts is { } hits
-        ? new Dictionary<string, int>(hits, StringComparer.Ordinal)
-        : new Dictionary<string, int>(StringComparer.Ordinal);
+    public static IReadOnlyDictionary<string, int> HitCounts()
+    {
+        lock (HitCountGate)
+            return hitCounts is { } hits
+                ? new Dictionary<string, int>(hits, StringComparer.Ordinal)
+                : new Dictionary<string, int>(StringComparer.Ordinal);
+    }
 
     /// <summary>The DLC package ids active now, in the form saves list them (meta/modIds).</summary>
     public static List<string> ActiveDlcIds()

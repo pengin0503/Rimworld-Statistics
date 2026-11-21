@@ -100,37 +100,15 @@ internal static class AlphaBiomesStatistics
             throw new InvalidOperationException("AlphaBiomes.CompCoreSampleDrill type changed");
 
         var produce = OutcomeMetric.Method(drill, "TryProducePortion", typeof(void), typeof(float));
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
-        if (place?.ReturnType != typeof(bool))
-            throw new InvalidOperationException("GenPlace.TryPlaceThing signature changed");
+        var place = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
 
-        try
-        {
-            harmony.Patch(produce,
-                prefix: new HarmonyMethod(typeof(AlphaBiomesStatistics), nameof(BeforeProduce)),
-                postfix: new HarmonyMethod(typeof(AlphaBiomesStatistics), nameof(AfterProduce)),
-                finalizer: new HarmonyMethod(typeof(AlphaBiomesStatistics), nameof(FinishProduce)));
-            harmony.Patch(place,
-                postfix: new HarmonyMethod(typeof(AlphaBiomesStatistics), nameof(AfterPlace)));
-        }
-        catch
-        {
-            harmony.Unpatch(produce, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(produce, typeof(AlphaBiomesStatistics),
+            prefix: nameof(BeforeProduce), postfix: nameof(AfterProduce), finalizer: nameof(FinishProduce));
+        patcher.Patch(place, typeof(AlphaBiomesStatistics), postfix: nameof(AfterPlace));
     }
 
-    private static bool CanObserveDrill()
-        => MetricGates.IsRecording(DrillUnit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserveDrill() => OptionalTransitionCallSite.Observing(DrillUnit);
 
     private static void BeforeProduce(ThingComp __instance, out DrillScope? __state)
     {

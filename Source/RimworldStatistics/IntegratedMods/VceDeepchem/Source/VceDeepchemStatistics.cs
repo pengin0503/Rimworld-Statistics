@@ -81,13 +81,12 @@ internal static class VceDeepchemStatistics
             throw new InvalidOperationException("Selected 1.7 PipeSystem extractor assembly not available");
 
         var produce = AccessTools.DeclaredMethod(extractor, "TryProducePortion", Type.EmptyTypes);
-        var deposit = AccessTools.DeclaredMethod(net, "DistributeAmongStorage",
-            [typeof(float), typeof(float).MakeByRefType()]);
+        var deposit = OptionalTransitionCallSite.ResolvePipeNetDistributeAmongStorage(net);
         var getNet = AccessTools.Property(resource, "PipeNet");
         var netDef = AccessTools.DeclaredField(net, "def");
         var deepThing = AccessTools.DeclaredField(deepProps, "deepThing");
         var pipeDef = AccessTools.DeclaredField(resourceProps, "pipeNet");
-        if (produce?.ReturnType != typeof(void) || deposit?.ReturnType != typeof(void) ||
+        if (produce?.ReturnType != typeof(void) || deposit is null ||
             getNet?.GetMethod is null || getNet.PropertyType != net ||
             netDef is null || !typeof(Def).IsAssignableFrom(netDef.FieldType) ||
             deepThing?.FieldType != typeof(ThingDef) ||
@@ -98,30 +97,22 @@ internal static class VceDeepchemStatistics
         pipeNetDefField = netDef;
         extractorDeepThingField = deepThing;
         propsPipeNetField = pipeDef;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(produce,
-                prefix: new HarmonyMethod(typeof(VceDeepchemStatistics), nameof(BeforeProduction)),
-                postfix: new HarmonyMethod(typeof(VceDeepchemStatistics), nameof(AfterProduction)),
-                finalizer: new HarmonyMethod(typeof(VceDeepchemStatistics), nameof(FinishProduction)));
-            harmony.Patch(deposit,
-                postfix: new HarmonyMethod(typeof(VceDeepchemStatistics), nameof(AfterStorage)));
+            patcher.Patch(produce, typeof(VceDeepchemStatistics),
+                prefix: nameof(BeforeProduction), postfix: nameof(AfterProduction), finalizer: nameof(FinishProduction));
+            patcher.Patch(deposit, typeof(VceDeepchemStatistics), postfix: nameof(AfterStorage));
         }
         catch
         {
-            harmony.Unpatch(produce, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(deposit, HarmonyPatchType.All, harmony.Id);
             pipeNetProperty = null;
             pipeNetDefField = extractorDeepThingField = propsPipeNetField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeProduction(object __instance, out DepositScope? __state)
     {

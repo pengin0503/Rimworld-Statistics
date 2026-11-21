@@ -116,16 +116,14 @@ internal static class VefProcessingStatistics
             parentField = parent;
             definitionField = def;
             processCountField = count;
+            var patcher = new ScopedHarmonyPatcher(harmony);
             try
             {
-                harmony.Patch(method,
-                    prefix: new HarmonyMethod(typeof(VefProcessingStatistics), nameof(BeforeProcess)),
-                    postfix: new HarmonyMethod(typeof(VefProcessingStatistics), nameof(AfterProcess)));
+                patcher.Patch(method, typeof(VefProcessingStatistics), nameof(BeforeProcess), nameof(AfterProcess));
                 installed = true;
             }
             catch
             {
-                harmony.Unpatch(method, HarmonyPatchType.All, harmony.Id);
                 parentField = definitionField = processCountField = null;
                 throw;
             }

@@ -78,25 +78,19 @@ internal static class VsieStatistics
         countField = count;
         finalCountField = threshold;
         inspirationField = inspiration;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(notify,
-                prefix: new HarmonyMethod(typeof(VsieStatistics), nameof(BeforeProgress)),
-                postfix: new HarmonyMethod(typeof(VsieStatistics), nameof(AfterProgress)));
+            patcher.Patch(notify, typeof(VsieStatistics), nameof(BeforeProgress), nameof(AfterProgress));
         }
         catch
         {
-            harmony.Unpatch(notify, HarmonyPatchType.All, harmony.Id);
             activeAspirationsField = countField = finalCountField = inspirationField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeProgress(object __instance, Pawn __0,
         out AspirationBefore? __state)

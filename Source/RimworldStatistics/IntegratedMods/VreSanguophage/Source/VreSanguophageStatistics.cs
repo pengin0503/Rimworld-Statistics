@@ -21,9 +21,9 @@ internal static class VreSanguophageStatistics
     private const string Unit = "mod.vanillaracesexpanded.sanguophage.draincasket_hemogen";
     private const string Key = Unit + ".stored_units";
 
-    private static FieldInfo? hemogenCompField;
-    private static PropertyInfo? pipeNetProperty;
-    private static FieldInfo? pipeNetDefField;
+    private static Func<object, object?>? getHemogenComp;
+    private static Func<object, object?>? getPipeNet;
+    private static Func<object, Def?>? getPipeNetDef;
 
     [ThreadStatic] private static object? activeNet;
     [ThreadStatic] private static double activeStored;
@@ -83,44 +83,35 @@ internal static class VreSanguophageStatistics
         var hemogenField = AccessTools.DeclaredField(casket, "compResourceHemogen");
         var getNet = AccessTools.Property(resource, "PipeNet");
         var netDef = AccessTools.DeclaredField(net, "def");
-        var deposit = AccessTools.DeclaredMethod(net, "DistributeAmongStorage",
-            [typeof(float), typeof(float).MakeByRefType(), typeof(List<>).MakeGenericType(storage), typeof(bool)]);
+        var deposit = OptionalTransitionCallSite.ResolvePipeNetDistributeAmongStorage(net, storage);
 
         if (tick?.ReturnType != typeof(void) ||
             hemogenField?.FieldType != resource ||
             getNet?.GetMethod is null || getNet.PropertyType != net ||
             netDef is null || !typeof(Def).IsAssignableFrom(netDef.FieldType) ||
-            deposit?.ReturnType != typeof(void))
+            deposit is null)
             throw new InvalidOperationException("Draincasket or PipeNet hemogen storage signature changed");
 
-        hemogenCompField = hemogenField;
-        pipeNetProperty = getNet;
-        pipeNetDefField = netDef;
+        getHemogenComp = OptionalTransitionCallSite.CompileFieldGetter<object?>(hemogenField);
+        getPipeNet = OptionalTransitionCallSite.CompilePropertyGetter<object?>(getNet);
+        getPipeNetDef = OptionalTransitionCallSite.CompileFieldGetter<Def?>(netDef);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VreSanguophageStatistics), nameof(BeforeDraincasket)),
-                postfix: new HarmonyMethod(typeof(VreSanguophageStatistics), nameof(AfterDraincasket)),
-                finalizer: new HarmonyMethod(typeof(VreSanguophageStatistics), nameof(FinishDraincasket)));
-            harmony.Patch(deposit,
-                postfix: new HarmonyMethod(typeof(VreSanguophageStatistics), nameof(AfterStorage)));
+            patcher.Patch(tick, typeof(VreSanguophageStatistics),
+                prefix: nameof(BeforeDraincasket), postfix: nameof(AfterDraincasket), finalizer: nameof(FinishDraincasket));
+            patcher.Patch(deposit, typeof(VreSanguophageStatistics), postfix: nameof(AfterStorage));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(deposit, HarmonyPatchType.All, harmony.Id);
-            hemogenCompField = null;
-            pipeNetProperty = null;
-            pipeNetDefField = null;
+            getHemogenComp = null;
+            getPipeNet = null;
+            getPipeNetDef = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeDraincasket(object __instance, out ScopeToken __state)
     {
@@ -133,12 +124,12 @@ internal static class VreSanguophageStatistics
 
         try
         {
-            var hemogenComp = hemogenCompField?.GetValue(__instance);
+            var hemogenComp = getHemogenComp?.Invoke(__instance);
             if (hemogenComp is null)
                 return;
-            var net = pipeNetProperty?.GetValue(hemogenComp);
+            var net = getPipeNet?.Invoke(hemogenComp);
             if (net is null ||
-                pipeNetDefField?.GetValue(net) is not Def def ||
+                getPipeNetDef?.Invoke(net) is not { } def ||
                 def.defName != "VRE_HemogenNet")
                 return;
 

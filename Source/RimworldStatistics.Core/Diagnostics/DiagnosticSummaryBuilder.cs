@@ -260,7 +260,7 @@ public static class DiagnosticSummaryBuilder
     {
         ArgumentNullException.ThrowIfNull(input);
 
-        var utcIso = DateTime.SpecifyKind(input.GeneratedUtc, DateTimeKind.Utc)
+        var utcIso = UtcTime.ToUtc(input.GeneratedUtc)
             .ToString("yyyy-MM-dd'T'HH:mm:ss'Z'", Inv);
         var dlcs = FilterOfficialDlcs(input.ActiveOfficialDlcs);
         var dlcText = dlcs.Count > 0 ? string.Join(", ", dlcs) : "None";
@@ -354,7 +354,7 @@ public static class DiagnosticSummaryBuilder
 
         Directory.CreateDirectory(directory);
         var now = utcNow ?? input.GeneratedUtc;
-        var stamp = DateTime.SpecifyKind(now, DateTimeKind.Utc).ToString("yyyyMMdd'T'HHmmss'Z'", Inv);
+        var stamp = UtcTime.FormatCompactStamp(now);
         var fileName = $"rws-diagnostic-summary-{stamp}-{Guid.NewGuid().ToString("N")[..8]}.txt";
         var fullPath = Path.Combine(directory, fileName);
         var text = FormatText(input);

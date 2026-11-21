@@ -20,7 +20,7 @@ public static class StatisticsPrecompute
         if (ct.IsCancellationRequested)
             return;
         // The same arguments as Dialog_RimworldStatistics (scope All until a group is chosen) and Dialog_ColonySummaryReport.
-        var view = session.GetView(options, MetricDisplayPolicy.AllDetailsVisibleUnits, ViewScope.All);
+        var view = session.GetViewCancellable(options, MetricDisplayPolicy.AllDetailsVisibleUnits, ViewScope.All, ct);
         if (ct.IsCancellationRequested || string.IsNullOrWhiteSpace(campaignId))
             return;
         var resolution = InGameColonyAccess.Resolve(view, campaignId);
@@ -71,7 +71,7 @@ public sealed class PrecomputeSchedule
 /// Runs <see cref="StatisticsPrecompute"/> on a pool thread at below-normal priority when <see cref="PrecomputeSchedule"/>
 /// says so; one build at a time. Owned by the main thread: <see cref="Poll"/> and <see cref="Stop"/> are not thread-safe.
 /// </summary>
-public sealed class StatisticsPrecomputer
+public sealed class StatisticsPrecomputer : IDisposable
 {
     private readonly PrecomputeSchedule _schedule = new();
     private readonly Func<Action, Task> _start;
@@ -108,7 +108,11 @@ public sealed class StatisticsPrecomputer
         if (_job is { IsCompleted: true } done)
         {
             if (done.IsFaulted && done.Exception is { } aggregate)
-                failure = aggregate.InnerExceptions.Count == 1 ? aggregate.InnerExceptions[0] : aggregate;
+            {
+                var flattened = aggregate.Flatten();
+                if (!flattened.InnerExceptions.All(static e => e is OperationCanceledException))
+                    failure = flattened.InnerExceptions.Count == 1 ? flattened.InnerExceptions[0] : flattened;
+            }
             _job = null;
             _cts?.Dispose();
             _cts = null;
@@ -142,5 +146,22 @@ public sealed class StatisticsPrecomputer
     {
         _cts?.Cancel();
         _schedule.Reset();
+    }
+
+    public void Dispose()
+    {
+        var cts = _cts;
+        var job = _job;
+        _cts = null;
+        _job = null;
+        _schedule.Reset();
+        if (cts is null)
+            return;
+        cts.Cancel();
+        if (job is null || job.IsCompleted)
+            cts.Dispose();
+        else
+            _ = job.ContinueWith(static (_, state) => ((CancellationTokenSource)state!).Dispose(),
+                cts, CancellationToken.None, TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
     }
 }

@@ -11,6 +11,7 @@ public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescr
     // The persisted spelling is intentionally identical to the SDK's original checkpoint format.
     public string SeenAccumulatorKey { get; } = "sdk.seen." + Descriptor.MetricName.ToLowerInvariant();
     public string ValueAccumulatorKey { get; } = "sdk.value." + Descriptor.MetricName.ToLowerInvariant();
+    public string GapAccumulatorKey { get; } = "sdk.gap." + Descriptor.MetricName.ToLowerInvariant();
 }
 
 /// <summary>
@@ -20,6 +21,7 @@ public sealed record RegisteredSdkMetric(ApiMetricDefinition Api, ModMetricDescr
 /// </summary>
 public sealed class ExternalSdkMetricRegistry
 {
+    private readonly object sync = new();
     private readonly ModMetricProviderRegistry registry =
         new(MetricRegistry.ImplementedCatalog.Select(d => d.Key));
     private readonly Dictionary<string, RegisteredSdkMetric> entries = new(StringComparer.Ordinal);
@@ -27,6 +29,7 @@ public sealed class ExternalSdkMetricRegistry
     private HashSet<string>? builtInUnits;
     private HashSet<string>? builtInKeys;
     private bool sealedForStartup;
+    private System.Collections.Frozen.FrozenDictionary<string, RegisteredSdkMetric>? frozenEntries;
 
     /// <param name="builtIn">
     /// The descriptors of the host's built-in (non-SDK) integrations, read once at the first registration, whether or not
@@ -43,17 +46,15 @@ public sealed class ExternalSdkMetricRegistry
     public ApiRegistrationResult Register(ApiMetricDefinition? api, Func<double?>? snapshot, out string? builtInUnit)
     {
         builtInUnit = null;
-        if (sealedForStartup)
-            return ApiRegistrationResult.Closed;
         if (api is null || !Enum.IsDefined(api.Kind) || !Enum.IsDefined(api.EventMode)
             || api.Kind == ApiMetricKind.SaveSnapshot != (snapshot is not null)
             || !Version.TryParse(api.ProviderVersion, out _)
             || api.RequiredPackages is null || api.RequiredPackages.Any(x => x is null))
             return ApiRegistrationResult.InvalidDefinition;
-        if (!Enum.TryParse<MetricCategory>(api.Category, false, out var category) || !Enum.IsDefined(category)
-            || !Enum.TryParse<MetricUnit>(api.Unit, false, out var unit) || !Enum.IsDefined(unit)
-            || !Enum.TryParse<OverallAggregation>(api.Overall, false, out var overall) || !Enum.IsDefined(overall)
-            || !Enum.TryParse<ColonySelection>(api.Selection, false, out var selection) || !Enum.IsDefined(selection))
+        if (!TryParseEnumName<MetricCategory>(api.Category, out var category)
+            || !TryParseEnumName<MetricUnit>(api.Unit, out var unit)
+            || !TryParseEnumName<OverallAggregation>(api.Overall, out var overall)
+            || !TryParseEnumName<ColonySelection>(api.Selection, out var selection))
             return ApiRegistrationResult.InvalidDefinition;
         if (selection == ColonySelection.ObservationMaxByBreakdown
             || api.Kind == ApiMetricKind.Event && ((api.EventMode == ApiEventMode.Mean) != (overall == OverallAggregation.Ratio)
@@ -77,31 +78,62 @@ public sealed class ExternalSdkMetricRegistry
         };
         if (!descriptor.IsValid())
             return ApiRegistrationResult.InvalidDefinition;
-        LoadBuiltIn();
-        if (builtInUnits!.Contains(descriptor.AcquisitionId))
+
+        lock (sync)
         {
-            // Same metric: a duplicate; another metric in that unit: a family the built-in provider already defines.
-            builtInUnit = descriptor.AcquisitionId;
-            return builtInKeys!.Contains(descriptor.StableKey)
-                ? ApiRegistrationResult.DuplicateMetric : ApiRegistrationResult.ConflictingFamily;
+            if (sealedForStartup)
+                return ApiRegistrationResult.Closed;
+            LoadBuiltIn();
+            if (builtInUnits!.Contains(descriptor.AcquisitionId))
+            {
+                // Same metric: a duplicate; another metric in that unit: a family the built-in provider already defines.
+                builtInUnit = descriptor.AcquisitionId;
+                return builtInKeys!.Contains(descriptor.StableKey)
+                    ? ApiRegistrationResult.DuplicateMetric : ApiRegistrationResult.ConflictingFamily;
+            }
+            if (entries.ContainsKey(descriptor.StableKey))
+                return ApiRegistrationResult.DuplicateMetric;
+            if (entries.Values.Any(x => x.Descriptor.AcquisitionId == descriptor.AcquisitionId &&
+                (x.Descriptor.ProviderId != descriptor.ProviderId || x.Descriptor.Revision != descriptor.Revision ||
+                 x.Descriptor.Source != descriptor.Source || x.Api.ProviderVersion != api.ProviderVersion ||
+                 x.Descriptor.RequiredDlc != descriptor.RequiredDlc ||
+                 !x.Descriptor.RequiredPackages.Select(r => r.ToString()).SequenceEqual(
+                     descriptor.RequiredPackages.Select(r => r.ToString()), StringComparer.Ordinal))))
+                return ApiRegistrationResult.ConflictingFamily;
+            var registration = registry.Register(descriptor);
+            if (!registration.Accepted)
+                return registration.Failure == ModRegistrationFailure.DuplicateMetric
+                    ? ApiRegistrationResult.DuplicateMetric : ApiRegistrationResult.InvalidDefinition;
+            // Never hold caller-owned mutable dependency lists after registering.
+            var frozen = api with { RequiredPackages = api.RequiredPackages.ToArray() };
+            entries.Add(descriptor.StableKey, new RegisteredSdkMetric(frozen, descriptor, snapshot));
+            return ApiRegistrationResult.Accepted;
         }
-        if (entries.ContainsKey(descriptor.StableKey))
-            return ApiRegistrationResult.DuplicateMetric;
-        if (entries.Values.Any(x => x.Descriptor.AcquisitionId == descriptor.AcquisitionId &&
-            (x.Descriptor.ProviderId != descriptor.ProviderId || x.Descriptor.Revision != descriptor.Revision ||
-             x.Descriptor.Source != descriptor.Source || x.Api.ProviderVersion != api.ProviderVersion ||
-             x.Descriptor.RequiredDlc != descriptor.RequiredDlc ||
-             !x.Descriptor.RequiredPackages.Select(r => r.ToString()).SequenceEqual(
-                 descriptor.RequiredPackages.Select(r => r.ToString()), StringComparer.Ordinal))))
-            return ApiRegistrationResult.ConflictingFamily;
-        var registration = registry.Register(descriptor);
-        if (!registration.Accepted)
-            return registration.Failure == ModRegistrationFailure.DuplicateMetric
-                ? ApiRegistrationResult.DuplicateMetric : ApiRegistrationResult.InvalidDefinition;
-        // Never hold caller-owned mutable dependency lists after registering.
-        var frozen = api with { RequiredPackages = api.RequiredPackages.ToArray() };
-        entries.Add(descriptor.StableKey, new RegisteredSdkMetric(frozen, descriptor, snapshot));
-        return ApiRegistrationResult.Accepted;
+    }
+
+    private static bool TryParseEnumName<TEnum>(string? text, out TEnum value) where TEnum : struct, Enum
+    {
+        value = default;
+        return !string.IsNullOrEmpty(text)
+            && char.IsLetter(text[0])
+            && Enum.TryParse(text, ignoreCase: false, out value)
+            && Enum.IsDefined(value)
+            && string.Equals(Enum.GetName(value), text, StringComparison.Ordinal);
+    }
+
+    public void ReserveBuiltInUnits(IEnumerable<string> unitIds)
+    {
+        if (unitIds is null)
+            return;
+        lock (sync)
+        {
+            LoadBuiltIn();
+            foreach (var unitId in unitIds)
+            {
+                if (!string.IsNullOrWhiteSpace(unitId))
+                    builtInUnits!.Add(unitId.Trim().ToLowerInvariant());
+            }
+        }
     }
 
     private void LoadBuiltIn()
@@ -122,12 +154,24 @@ public sealed class ExternalSdkMetricRegistry
     }
 
     public RegisteredSdkMetric? Find(string id)
-        => id is not null && entries.TryGetValue(id, out var value) ? value : null;
+    {
+        if (id is null)
+            return null;
+        if (Volatile.Read(ref frozenEntries) is { } frozen)
+            return frozen.GetValueOrDefault(id);
+        lock (sync)
+            return entries.TryGetValue(id, out var value) ? value : null;
+    }
 
     public IReadOnlyList<RegisteredSdkMetric> Seal()
     {
-        sealedForStartup = true;
-        return entries.Values.OrderBy(x => x.Descriptor.StableKey, StringComparer.Ordinal).ToArray();
+        lock (sync)
+        {
+            sealedForStartup = true;
+            Volatile.Write(ref frozenEntries,
+                System.Collections.Frozen.FrozenDictionary.ToFrozenDictionary(entries, StringComparer.Ordinal));
+            return entries.Values.OrderBy(x => x.Descriptor.StableKey, StringComparer.Ordinal).ToArray();
+        }
     }
 }
 
@@ -313,7 +357,9 @@ public static class ExternalSdkMetricPolicy
         var d = metric.Descriptor;
         var count = output.State.Peek(metric.ValueAccumulatorKey);
         var n = count?.N ?? 0;
-        var partial = output.State.Peek(metric.SeenAccumulatorKey)?.Overflow == true || count?.Overflow == true;
+        var partial = output.State.Peek(metric.SeenAccumulatorKey)?.Overflow == true
+            || count?.Overflow == true
+            || output.State.Peek(metric.GapAccumulatorKey)?.Overflow == true;
         MetricValue value;
         switch (metric.Api.EventMode)
         {
@@ -321,14 +367,25 @@ public static class ExternalSdkMetricPolicy
                 value = output.Value(integer: n, partial: partial);
                 break;
             case ApiEventMode.Sum:
-                value = output.Value(real: count?.Sum ?? 0, partial: partial);
+            {
+                var sum = count?.Sum ?? 0;
+                value = double.IsFinite(sum)
+                    ? output.Value(real: sum, partial: partial)
+                    : output.Value(coverage: MetricCoverage.Unknown, partial: partial);
                 break;
+            }
             case ApiEventMode.Mean:
-                value = n == 0 ? output.Value(coverage: output.Coverage == MetricCoverage.Complete
-                        ? MetricCoverage.NotApplicable : MetricCoverage.Unknown, samples: 0)
-                    : output.Value(real: count!.Sum!.Value / n, numerator: count.Sum.Value,
-                        denominator: n, samples: (int)Math.Min(n, int.MaxValue), partial: partial);
+            {
+                var samples = UtcTime.ClampToInt32(n);
+                if (n <= 0)
+                    value = output.Value(coverage: output.Coverage == MetricCoverage.Complete
+                        ? MetricCoverage.NotApplicable : MetricCoverage.Unknown, samples: 0);
+                else if (count?.Sum is not { } sum || !double.IsFinite(sum) || !double.IsFinite(sum / n))
+                    value = output.Value(coverage: MetricCoverage.Unknown, samples: samples, partial: partial);
+                else
+                    value = output.Value(real: sum / n, numerator: sum, denominator: n, samples: samples, partial: partial);
                 break;
+            }
             default:
                 return;
         }
@@ -345,8 +402,10 @@ public static class ExternalSdkMetricPolicy
         {
             foreach (var (k, v) in by)
             {
+                if (!double.IsFinite(v))
+                    continue;
                 entry.Values[k] = metric.Api.EventMode == ApiEventMode.Count
-                    ? output.Value(integer: (long)Math.Round(v), partial: partial)
+                    ? output.Value(integer: UtcTime.ClampToInt64(v), partial: partial)
                     : output.Value(real: v, partial: partial);
             }
         }

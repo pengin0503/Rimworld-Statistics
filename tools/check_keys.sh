@@ -12,7 +12,12 @@ used=$(printf '%s\n' "$used" "$legacy_keys" | sort -u)
 status=0
 for d in Languages/*/Keyed; do
   f="$d"
-  all=$(cat "$d"/*.xml | grep -oE '<RWS_[A-Za-z0-9_]+>' | tr -d '<>' | sort)
+  all=$(python3 -c '
+import glob, sys, xml.etree.ElementTree as ET
+for p in sorted(glob.glob(sys.argv[1] + "/*.xml")):
+    for el in ET.parse(p).getroot():
+        print(el.tag)
+' "$d" | sort)
   dup=$(echo "$all" | uniq -d)
   [ -n "$dup" ] && { echo "$d duplicated:"; echo "$dup" | sed 's/^/  /'; status=1; }
   have=$(echo "$all" | sort -u)

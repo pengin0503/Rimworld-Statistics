@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Reflection;
 using HarmonyLib;
+using RimworldStatistics.Metrics;
 using Verse;
 
 namespace RimworldStatistics.SmartApparelAddon;
@@ -13,10 +14,16 @@ namespace RimworldStatistics.SmartApparelAddon;
 /// </summary>
 internal static class SauOrderHook
 {
-    internal sealed record Binding(MethodInfo Target, FieldInfo Stamps, FieldInfo IssuedTick,
-        FieldInfo PawnId, FieldInfo ApparelId);
+    private const string Unit = "mod.pengin0503.smartapparelupgrade.orders";
 
-    private static Binding? active;
+    internal sealed record Binding(
+        MethodInfo Target,
+        Func<object, IList?> GetStamps,
+        Func<object, int> GetIssuedTick,
+        Func<object, string?> GetPawnId,
+        Func<object, string?> GetApparelId);
+
+    private static volatile Binding? active;
 
     public static bool TryResolve(out Binding binding)
     {
@@ -43,13 +50,19 @@ internal static class SauOrderHook
                 issued?.FieldType != typeof(int) || pawn?.FieldType != typeof(string) ||
                 apparel?.FieldType != typeof(string))
                 return false;
-            binding = new Binding(target, stamps, issued!, pawn!, apparel!);
+            binding = new Binding(
+                target,
+                OptionalTransitionCallSite.CompileFieldGetter<IList?>(stamps),
+                OptionalTransitionCallSite.CompileFieldGetter<int>(issued),
+                OptionalTransitionCallSite.CompileFieldGetter<string?>(pawn),
+                OptionalTransitionCallSite.CompileFieldGetter<string?>(apparel));
             return true;
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            // A broken, disabled or changed optional MOD must never prevent
-            // other MODs from starting, nor publish an unsupported collector.
+            Log.WarningOnce(
+                $"[RimworldStatistics] Smart Apparel Upgrade binding failed ({e.GetType().Name}): {e.Message}",
+                "RWS.sau.orders.bind".GetHashCode());
             return false;
         }
     }
@@ -58,16 +71,16 @@ internal static class SauOrderHook
     {
         try
         {
-            var method = typeof(SauOrderHook).GetMethod(nameof(AfterOrder), BindingFlags.Static | BindingFlags.NonPublic);
-            if (method is null)
-                return false;
-            new Harmony("pengin0503.rws.smartappareladdon").Patch(binding.Target,
-                postfix: new HarmonyMethod(method));
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.smartappareladdon"));
+            patcher.Patch(binding.Target, typeof(SauOrderHook), postfix: nameof(AfterOrder));
             active = binding;
             return true;
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Smart Apparel Upgrade patch failed ({e.GetType().Name}): {e.Message}",
+                "RWS.sau.orders.install".GetHashCode());
             return false;
         }
     }
@@ -80,23 +93,20 @@ internal static class SauOrderHook
         try
         {
             var now = Find.TickManager.TicksGame;
-            if (bound.Stamps.GetValue(__instance) is not IEnumerable stamps)
+            if (bound.GetStamps(__instance) is not { } stamps)
                 return;
-            foreach (var item in stamps)
+            for (var i = 0; i < stamps.Count; i++)
             {
-                if (item is null || (int?)bound.IssuedTick.GetValue(item) != now)
+                var item = stamps[i];
+                if (item is null || bound.GetIssuedTick(item) != now)
                     continue;
                 var id = SauOrderEventId.Create(
-                    bound.PawnId.GetValue(item) as string,
-                    bound.ApparelId.GetValue(item) as string, now);
+                    bound.GetPawnId(item),
+                    bound.GetApparelId(item), now);
                 if (id is not null)
                     SauHostClient.OnIssuedOrder(id);
             }
         }
-        catch (Exception)
-        {
-            // Another MOD may have changed scanner state at runtime. Do not
-            // interrupt the original auto-wear job or interfere with saving.
-        }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 }

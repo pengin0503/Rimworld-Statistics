@@ -1047,29 +1047,29 @@
   <RWS_MetricDesc_DbhActivities>Tâches de toilettes, de douche et de lavage vérifié achevées par les personnages du joueur sur ses cartes d'habitation depuis l'activation de cette statistique.</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>Changements achevés</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>Ordres automatiques Smart Apparel Upgrade ayant effectivement fini d'enfiler l'objet sélectionné depuis l'activation de cette statistique.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>Argent VTE crédité en banque</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCredits>Argent crédité en banque</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>Argent net crédité après des dépôts bancaires VTE achevés, frais bancaires déduits, depuis l'activation de cette statistique expérimentale. Les paiements de contrats sont exclus.</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>Argent VTE retiré des banques</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebits>Argent retiré des banques</RWS_VTE_BankDebits>
   <RWS_VTE_BankDebitsDesc>Montant brut d'argent débité des comptes VTE lors de retraits réussis depuis l'activation de cette statistique, avant frais de retrait.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>Prêts VTE accordés</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssued>Prêts accordés</RWS_VTE_LoansIssued>
   <RWS_VTE_LoansIssuedDesc>Prêts bancaires VTE effectivement accordés après l'activation de l'enregistrement. Les demandes refusées et les remboursements sont exclus.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>Capital des prêts VTE accordés</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipal>Capital des prêts accordés</RWS_VTE_LoanPrincipal>
   <RWS_VTE_LoanPrincipalDesc>Principal en argent des prêts VTE effectivement accordés. Remboursements et intérêts exclus.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>Contrats VTE remplis par livraison de biens</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveries>Contrats remplis par livraison de biens</RWS_VTE_ContractDeliveries>
   <RWS_VTE_ContractDeliveriesDesc>Contrats de rachat des PNJ VTE pour lesquels les biens ont effectivement été consommés ou emportés. Accepter seulement un contrat ne suffit pas. Cela ne confirme pas le crédit de la récompense.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>Biens livrés aux contrats VTE</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItems>Biens livrés aux contrats</RWS_VTE_ContractItems>
   <RWS_VTE_ContractItemsDesc>Quantités de biens remises dans le cadre de contrats de rachat des PNJ VTE remplis ou partiellement honorés, y compris les enlèvements par caravane. Quantités réellement transférées, pas celles demandées.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>Contrats d'achat VTE du joueur honorés</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchases>Contrats d'achat du joueur honorés</RWS_VTE_ContractPurchases>
   <RWS_VTE_ContractPurchasesDesc>Contrats d'achat publiés par le joueur, intégralement payés par transactions bancaires VTE et honorés par la génération d'objets. Annuler un paiement ou accepter sans payer ne compte pas.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>Biens achetés via des contrats VTE</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceived>Biens achetés via des contrats</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>Quantités d'objets générés par les contrats d'achat VTE publiés par le joueur et payés avec succès. Distinct des livraisons de rachat aux PNJ et du commerce ordinaire.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>Pouvoirs psychiques lancés</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>Lancements réussis de capacités Vanilla Psycasts Expanded par des colons libres du joueur, comptés lorsque VPE consomme effectivement l'utilisation ; détail par capacité. Ordres en attente, lancements annulés et utilisations des PNJ sont exclus.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>Pièges réarmés</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>Pièges du joueur désarmés puis réellement réarmés pendant la partie. Seul le passage de désarmé à armé compte, pas les ordres de travail, l'initialisation à l'apparition du piège, les actions de développement ni les propres données de personnage du mod.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>Cartes de succès VAE débloquées</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_Unlocked>Cartes de succès débloquées</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>Nouvelles cartes de succès débloquées en jeu normal, par définition de succès. Les déblocages de débogage et les vérifications de restauration au démarrage sont exclus.</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>Points de succès VAE gagnés</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_Points>Points de succès gagnés</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>Points de succès réellement attribués par de nouveaux déblocages hors débogage. Si le total des points ne peut être lu, la quantité enregistrée est signalée comme partielle.</RWS_VaeAchievements_PointsDesc>
   <RWS_VfeTribals_EraAdvances>Progressions d'ère</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>Passages réels à une nouvelle ère technologique pour la tribu du joueur, par ère. Initialisation, maintien ou recul d'ère et restauration d'une sauvegarde ne comptent pas.</RWS_VfeTribals_EraAdvancesDesc>
@@ -1079,9 +1079,9 @@
   <RWS_VaeAspirations_CompletedDesc>Aspirations nouvellement accomplies par des colons du joueur via la vérification normale du mod, par aspiration. Accomplissements de débogage, aspirations déjà accomplies ou non attribuées et restauration de sauvegarde sont exclus.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Naissances dans les ruches du joueur</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>Nouveaux insectes apparus dans des ruches du joueur pendant le jeu normal, par type d'insecte. Remplacements de cocons, restauration de membres existants de la ruche et apparitions par outils de développement sont exclus.</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Scans du relais Cryptoforge achevés</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScans>Scans du relais achevés</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>Scans du Frozen Scanning Relay achevés alors qu'un colon du joueur se trouvait sur la carte de quête.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>Sorties au sol des Auto Machine Tools</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutput>Sorties au sol des machines</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>Objets dont la pose sur la carte par des Auto Machine Tools du joueur est confirmée, par type. Les objets envoyés directement vers des convoyeurs ou d'autres machines sont exclus.</RWS_RimFactory_GroundOutputDesc>
   <RWS_Rwom_HealingCasts>Sorts de soin réussis</RWS_Rwom_HealingCasts>
   <RWS_Rwom_HealingCastsDesc>Sorts Heal et Advanced Heal du joueur qui ont réellement réduit les blessures d'une cible ou stabilisé une partie du corps récemment perdue.</RWS_Rwom_HealingCastsDesc>
@@ -1091,7 +1091,7 @@
   <RWS_SimpleWarrants_CompletedDesc>Mandats réglés par la remise de la cible par une caravane du joueur, après suppression de la cible et clôture du mandat.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Argent gagné</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Argent réellement ajouté à une caravane du joueur en récompense de remises de mandats achevées.</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>Améliorations ARC de The Generator achevées</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_Upgrades>Améliorations ARC du générateur achevées</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Constructions achevées par le joueur remplaçant sur place un générateur ARC qui lui appartenait, par nouveau type de générateur.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Maximum de véhicules possédés</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>Plus grand nombre de véhicules Vehicle Framework appartenant simultanément au joueur dans une colonie, sur les cartes, en caravane, en vol ou entreposés, constaté lors de sauvegardes réussies. Les types de véhicules sont ceux de la sauvegarde au maximum.</RWS_VehicleFramework_OwnedPeakDesc>
@@ -1105,17 +1105,17 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>Honneurs VFE Empire en attente réellement décernés à un colon du joueur à la fin d'un rituel, par honneur. Recevoir seulement la possibilité d'un honneur et les actions de développement ne comptent pas.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>Aspirations d'inspiration accomplies</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Aspirations liées à une inspiration active d'un colon dans Vanilla Social Interactions Expanded, nouvellement accomplies, par inspiration. Progression inachevée, expiration et inspirations sans rapport sont exclues.</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Montées en selle Giddy-Up 2 commencées</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessions>Montées en selle commencées</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Nombre de fois où un colon du joueur a réellement commencé à chevaucher un animal lui appartenant après une tâche de monte Giddy-Up achevée, par type d'animal. Arrivée déjà en selle, ordres en attente et observations répétées ne comptent pas.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Rechargements de colons</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Rechargements achevés par des personnages du joueur ayant réellement introduit des munitions dans le chargeur d'une arme. Chaque rechargement compte une fois, même avec plusieurs piles de munitions. Tourelles, chargeurs automatiques, munitions désactivées et rechargements ratés sont exclus.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>Éveils naturels d'androïdes</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androïdes du joueur à corps synthétique éveillés naturellement via la vérification génétique liée à l'humeur. Éveil direct par outils de développement, configuration initiale et androïdes déjà éveillés sont exclus. Nécessite Biotech.</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>Expertises VSE choisies</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_Selected>Expertises choisies</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Nouvelles expertises choisies par des colons du joueur dans le panneau normal, par type d'expertise. Déblocages de débogage et données restaurées sont exclus.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>Niveaux d'expertise VSE gagnés</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUps>Niveaux d'expertise gagnés</RWS_VseExpertise_LevelUps>
   <RWS_VseExpertise_LevelUpsDesc>Augmentations permanentes de niveaux d'expertise VSE depuis l'activation de l'enregistrement, additionnées entre toutes les colonies indépendantes, par type d'expertise.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>Niveau d'expertise VSE maximal atteint</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_Highest>Niveau d'expertise maximal atteint</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Plus haut niveau d'expertise réellement atteint par expérience entre les colonies indépendantes ; ni une somme de niveaux ni un instantané de la dernière sauvegarde.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Lots de traitement</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Lots de soupe, fromage et autres procédés VEF de Vanilla Cooking Expanded effectivement achevés, par procédé. La fabrication ordinaire sur ordre et les sorties partiellement bloquées sont exclues.</RWS_VefCooking_BatchesDesc>
@@ -1123,9 +1123,9 @@
   <RWS_VefBrewing_BatchesDesc>Lots VEF de fermentation, brassage et maturation de Vanilla Brewing Expanded effectivement achevés, par procédé. Sorties interrompues, bloquées ou inachevées et fabrication ordinaire sur ordre sont exclues.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Argent payé par les clients pour les repas</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Argent réellement payé par des clients extérieurs pour des repas dans un restaurant du joueur. Les paiements partiels ajoutent seulement la somme versée ; dettes impayées, repas gratuits et échanges sans rapport sont exclus.</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>Drones VQE Drone Factory assemblés</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_Assembled>Drones d'usine assemblés</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>Drones du joueur réellement apparus dans l'assembleur automatique après la fin de sa minuterie de production, par type de personnage. La progression de la minuterie seule, les échecs d'apparition et les éclosions d'œufs sont exclus.</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>Drones VQE Drone Factory éclos</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_Hatched>Drones d'usine éclos</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Drones du joueur réellement nés d'œufs éclos avec succès, par type. Les œufs détruits sans naissance et les drones créés par assembleur sont exclus.</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>Deepchem stocké dans les conduites</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Quantité de Deepchem réellement acceptée dans le stockage des conduites depuis des pompes du joueur, fractions comprises, mesurée lorsque le réseau confirme le stockage. Production prévue, produits déposés au sol et stockage bloqué sont exclus.</RWS_VceDeepchem_StoredUnitsDesc>
@@ -1143,9 +1143,9 @@
   <RWS_VfeFactory_SownDesc>Plantes nouvelles réellement apparues, marquées comme semées et correspondant à la culture sélectionnée pendant le cycle de travail d'un Autofarmer du joueur, par plante. Les cycles ratés et les plantes déjà présentes sont exclus.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>Installations de warcaskets achevées</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>Installations de warcaskets du joueur achevées par soudure normale, confirmées lorsque le projet se termine et que les trois pièces correspondantes sont nouvellement portées, par type d'armure. Tâches inachevées, ensembles partiellement équipés et achèvements par outils de développement sont exclus.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>Rejets d'injection VQE Ancients</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_Rejected>Rejets d'injection d'archogènes</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Résultats d'injecteur d'archogènes du joueur où l'occupant a rejeté l'injection, a été libéré vivant et est tombé dans le coma de l'injection. Tâches annulées, résultats choisis mais non achevés et choix de gènes encore en attente après un succès sont exclus. Nécessite Biotech.</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>Transformations mutantes VQE Ancients</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_Mutations>Transformations mutantes d'archogènes</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>Résultats de mutation d'un injecteur d'archogènes du joueur détruisant le personnage original et générant un mutant du joueur du type choisi, par type de mutant. Autres générations, annulations et choix en attente après succès sont exclus. Nécessite Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>Primes remises</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Criminels recherchés, ou leurs corps, réellement remis et retirés d'une caravane du joueur après réception d'une récompense positive en argent. Ouvrir seulement la commande, les cibles manquantes, transferts échoués et possessions sans rapport ne comptent pas.</RWS_VfeSettlers_BountyHandinsDesc>
@@ -1161,9 +1161,9 @@
   <RWS_VfePirates_HireContractsDesc>Nouveaux contrats de pirates ou mercenaires réellement conclus dans la fenêtre d'embauche de Vanilla Expanded Framework avec une faction employeuse de VFE Pirates. Afficher la fenêtre, annuler une offre et échouer au paiement ne compte pas.</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>Argent payé pour les embauches</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>Argent réellement retiré des stocks des cartes du joueur lors de l'enregistrement d'un nouveau contrat d'embauche VFE Pirates, et non le prix annoncé arrondi. Les contrats gratuits n'ajoutent aucun argent.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>Naissances d'hybrides en utérus électrique VGE</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_Births>Naissances d'hybrides en utérus électrique</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>Nouveaux personnages hybrides du joueur réellement apparus un par un lorsqu'un utérus électrique VGE lui appartenant achève un cycle de croissance réussi, par type de personnage. Croissance ratée, simple progression du minuteur et restauration d'une sauvegarde sont exclus.</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>Transformations biomécaniques VGE</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_Conversions>Transformations biomécaniques</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>Transformations réussies dans les hybridiseurs mécaniques du joueur, détruisant le sujet original et générant un nouveau personnage transformé lui appartenant, par type obtenu. Démarrer la machine, attendre et échouer à la génération ne comptent pas.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Libérations conditionnelles approuvées</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Décisions de libération prises en audience de libération conditionnelle, ayant réellement effacé une peine terminée pour un prisonnier vivant encore détenu par le joueur, avec ordre de libération. Audiences seules, prolongations, options de recrutement, décisions répétées et départ ultérieur du prisonnier sont exclus.</RWS_PrisonExpanded_ParoleApprovedDesc>
@@ -1363,4 +1363,7 @@
   <RWS_Change_Carried>La valeur ultérieure a été reprise sans changement jusqu'à une sauvegarde du jour {0} ; la période s'arrête là où elle a été enregistrée.</RWS_Change_Carried>
   <RWS_Change_RecordedSince>L'enregistrement de cette statistique a commencé le jour {0}. La hausse correspond à ce qui a été compté depuis ; un événement déjà en cours à ce moment-là peut ne pas être compté.</RWS_Change_RecordedSince>
   <RWS_Change_ClickTip>Cliquez pour choisir ce relevé pour une comparaison</RWS_Change_ClickTip>
+  <RWS_Error_Unknown>Erreur inconnue</RWS_Error_Unknown>
+  <RWS_Export_FooterColonyKey>Clé de colonie</RWS_Export_FooterColonyKey>
+  <RWS_Export_FooterGenerator>Générateur</RWS_Export_FooterGenerator>
 </LanguageData>

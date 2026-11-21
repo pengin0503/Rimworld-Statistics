@@ -23,13 +23,21 @@ public static class CampaignMatcher
             .FirstOrDefault();
 
     /// <summary>Rebuilds every colony from the profile. May append to <see cref="Profile.ColonyKeys"/>.</summary>
-    public static IReadOnlyList<Colony> BuildColonies(Profile profile)
+    public static IReadOnlyList<Colony> BuildColonies(Profile profile) => BuildColoniesCancellable(profile, CancellationToken.None);
+
+    /// <summary>Rebuilds every colony from the profile. May append to <see cref="Profile.ColonyKeys"/>.</summary>
+    internal static IReadOnlyList<Colony> BuildColoniesCancellable(Profile profile, CancellationToken ct)
     {
-        var colonies = GroupByFingerprint(GroupById(profile));
+        ct.ThrowIfCancellationRequested();
+        var groups = GroupById(profile);
+        ct.ThrowIfCancellationRequested();
+        var colonies = GroupByFingerprint(groups);
+        ct.ThrowIfCancellationRequested();
         // A new game is registered when it starts; until it is saved once (or reaches an ending, which also records the
         // live state) it is not a colony, e.g. a map that was re-rolled and abandoned.
         AttachEndings(profile, colonies);
         colonies.RemoveAll(c => c.Endings.Count == 0 && c.Observations.Count == 0 && c.LiveCampaigns.All(l => !l.HasObservation));
+        ct.ThrowIfCancellationRequested();
         AssignKeys(profile, colonies);
         ApplyManualMerges(profile, colonies);
         var excludedKeys = profile.UserDecisions.ExcludedCampaignKeys.Count > 0
@@ -37,6 +45,7 @@ public static class CampaignMatcher
             : null;
         foreach (var c in colonies)
         {
+            ct.ThrowIfCancellationRequested();
             foreach (var o in c.Observations)
             {
                 c.Traces.UnionWith(o.EndingTraces);
@@ -78,8 +87,8 @@ public static class CampaignMatcher
         public HashSet<string> Pawns { get; } = new(Ord);
         public string? Hash { get; set; }
 
-        public DateTime Oldest => Obs.Select(o => o.LastWriteUtc)
-            .Concat(Live.Select(l => l.LastSavedUtc == default ? l.MaxObservedUtc ?? DateTime.MaxValue : l.LastSavedUtc))
+        public DateTime Oldest => Obs.Select(o => UtcTime.ValidUtc(o.LastWriteUtc) ?? DateTime.MaxValue)
+            .Concat(Live.Select(l => (l.LastSavedUtc == default ? UtcTime.ValidUtc(l.MaxObservedUtc ?? default) : UtcTime.ValidUtc(l.LastSavedUtc)) ?? DateTime.MaxValue))
             .DefaultIfEmpty(DateTime.MaxValue).Min();
         public string MinFile => Obs.Select(o => o.FileName).DefaultIfEmpty("").Min(Ord)!;
         public string MinId => Live.Select(l => l.CampaignId).Concat(Obs.Select(o => o.Identity.ModCampaignId ?? "")).DefaultIfEmpty("").Min(Ord)!;

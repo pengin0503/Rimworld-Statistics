@@ -70,19 +70,10 @@ internal static class RaceBirthOutcomes
 
     private static void PatchHatch(Harmony harmony, MethodInfo hatch, string prefix, string postfix)
     {
-        try
-        {
-            harmony.Patch(hatch,
-                prefix: new HarmonyMethod(typeof(RaceBirthOutcomes), prefix),
-                postfix: new HarmonyMethod(typeof(RaceBirthOutcomes), postfix),
-                transpiler: new HarmonyMethod(typeof(RaceBirthOutcomes), nameof(CaptureSpawnReturn)),
-                finalizer: new HarmonyMethod(typeof(RaceBirthOutcomes), nameof(CleanupAttempt)));
-        }
-        catch
-        {
-            harmony.Unpatch(hatch, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(hatch, typeof(RaceBirthOutcomes),
+            prefix: prefix, postfix: postfix,
+            transpiler: nameof(CaptureSpawnReturn), finalizer: nameof(CleanupAttempt));
     }
 
     private static IEnumerable<CodeInstruction> CaptureSpawnReturn(IEnumerable<CodeInstruction> instructions)

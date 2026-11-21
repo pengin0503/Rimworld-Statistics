@@ -28,9 +28,11 @@ internal static class HospitalStage2Outcomes
     private const string DischargesUnit = "mod.adamas.hospital.patient_discharges";
     private const string SilverUnit = "mod.adamas.hospital.treatment_silver";
 
-    private static FieldInfo patientsField = null!;
-    private static FieldInfo dismissedField = null!;
-    private static FieldInfo pendingSurgeryField = null!;
+    private static readonly object ContractLock = new();
+    private static MethodInfo? patientLeavesMethod;
+    private static Func<object, IDictionary?> getPatients = null!;
+    private static Func<object, bool> getDismissed = null!;
+    private static Func<object, bool> getPendingSurgery = null!;
     [ThreadStatic] private static Map? activeSilverMap;
 
     private sealed record DischargeAttempt(Pawn Patient, object Data);
@@ -57,19 +59,31 @@ internal static class HospitalStage2Outcomes
 
     private static MethodInfo ResolvePatientLeaves()
     {
-        var component = OutcomeMetric.Bind("Hospital.HospitalMapComponent", AssemblyName);
-        var data = OutcomeMetric.Bind("Hospital.PatientData", AssemblyName);
-        patientsField = AccessTools.DeclaredField(component, "Patients") is { } pf &&
-            pf.FieldType == typeof(Dictionary<,>).MakeGenericType(typeof(Pawn), data)
-            ? pf
-            : throw new InvalidOperationException("Hospital Patients field signature changed");
-        dismissedField = AccessTools.DeclaredField(data, "Dismissed") is { } df && df.FieldType == typeof(bool)
-            ? df
-            : throw new InvalidOperationException("Hospital PatientData.Dismissed field signature changed");
-        pendingSurgeryField = AccessTools.DeclaredField(data, "HasPendingSurgeryBill") is { } sf && sf.FieldType == typeof(bool)
-            ? sf
-            : throw new InvalidOperationException("Hospital PatientData.HasPendingSurgeryBill field signature changed");
-        return OutcomeMetric.Method(component, "PatientLeaves", typeof(void), typeof(Pawn));
+        lock (ContractLock)
+        {
+            if (patientLeavesMethod is not null)
+                return patientLeavesMethod;
+
+            var component = OutcomeMetric.Bind("Hospital.HospitalMapComponent", AssemblyName);
+            var data = OutcomeMetric.Bind("Hospital.PatientData", AssemblyName);
+            var patientsField = AccessTools.DeclaredField(component, "Patients") is { } pf &&
+                pf.FieldType == typeof(Dictionary<,>).MakeGenericType(typeof(Pawn), data)
+                ? pf
+                : throw new InvalidOperationException("Hospital Patients field signature changed");
+            var dismissedField = AccessTools.DeclaredField(data, "Dismissed") is { } df && df.FieldType == typeof(bool)
+                ? df
+                : throw new InvalidOperationException("Hospital PatientData.Dismissed field signature changed");
+            var pendingSurgeryField = AccessTools.DeclaredField(data, "HasPendingSurgeryBill") is { } sf && sf.FieldType == typeof(bool)
+                ? sf
+                : throw new InvalidOperationException("Hospital PatientData.HasPendingSurgeryBill field signature changed");
+            var leaves = OutcomeMetric.Method(component, "PatientLeaves", typeof(void), typeof(Pawn));
+
+            getPatients = OptionalTransitionCallSite.CompileFieldGetter<IDictionary?>(patientsField);
+            getDismissed = OptionalTransitionCallSite.CompileFieldGetter<bool>(dismissedField);
+            getPendingSurgery = OptionalTransitionCallSite.CompileFieldGetter<bool>(pendingSurgeryField);
+            patientLeavesMethod = leaves;
+            return leaves;
+        }
     }
 
     private static void InstallDischarges(Harmony harmony)
@@ -88,12 +102,12 @@ internal static class HospitalStage2Outcomes
 
         try
         {
-            if (patientsField.GetValue(__instance) is not IDictionary registry ||
+            if (getPatients(__instance) is not { } registry ||
                 !registry.Contains(pawn) ||
-                registry[pawn] is not { } data ||
-                dismissedField.GetValue(data) is not bool wasDismissed ||
-                pendingSurgeryField.GetValue(data) is not bool hasPendingSurgery)
+                registry[pawn] is not { } data)
                 return;
+            var wasDismissed = getDismissed(data);
+            var hasPendingSurgery = getPendingSurgery(data);
 
             var billCount = health.surgeryBills?.Count ?? 0;
             if (HospitalStage2Rules.IsEligibleCuredPatientBefore(
@@ -123,8 +137,8 @@ internal static class HospitalStage2Outcomes
 
         try
         {
-            if (dismissedField.GetValue(__state.Data) is bool dismissedAfter &&
-                HospitalStage2Rules.ShouldRecordCuredDischarge(
+            var dismissedAfter = getDismissed(__state.Data);
+            if (HospitalStage2Rules.ShouldRecordCuredDischarge(
                     eligibleBefore: true,
                     isAliveAfter: !__state.Patient.Dead,
                     dismissedAfter: dismissedAfter))
@@ -141,24 +155,11 @@ internal static class HospitalStage2Outcomes
     private static void InstallTreatmentSilver(Harmony harmony)
     {
         var leaves = ResolvePatientLeaves();
-        var prefix = AccessTools.DeclaredMethod(typeof(HospitalStage2Outcomes), nameof(BeginSilverScope));
-        var finalizer = AccessTools.DeclaredMethod(typeof(HospitalStage2Outcomes), nameof(EndSilverScope));
-        var transpiler = AccessTools.DeclaredMethod(typeof(HospitalStage2Outcomes), nameof(TranspileSilverPlacement));
-        try
-        {
-            harmony.Patch(
-                leaves,
-                prefix: new HarmonyMethod(prefix),
-                finalizer: new HarmonyMethod(finalizer),
-                transpiler: new HarmonyMethod(transpiler));
-        }
-        catch
-        {
-            harmony.Unpatch(leaves, prefix);
-            harmony.Unpatch(leaves, finalizer);
-            harmony.Unpatch(leaves, transpiler);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(leaves, typeof(HospitalStage2Outcomes),
+            prefix: nameof(BeginSilverScope),
+            transpiler: nameof(TranspileSilverPlacement),
+            finalizer: nameof(EndSilverScope));
     }
 
     private static void BeginSilverScope(MapComponent __instance, out Map? __state)

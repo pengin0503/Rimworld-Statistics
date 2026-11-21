@@ -76,10 +76,13 @@ internal sealed class StatsTable(float rowHeight, params ColumnSpec[] columns)
 
     private void DrawCells(Rect row, string[] cells, string?[]? fullText, IReadOnlyList<bool>? rightAligned)
     {
+        if (plan is null)
+            return;
+        var count = Math.Min(cells.Length, plan.Widths.Length);
         var x = row.x;
-        for (var i = 0; i < cells.Length; i++)
+        for (var i = 0; i < count; i++)
         {
-            var width = plan!.Widths[i];
+            var width = plan.Widths[i];
             var cell = new Rect(x + 4f, row.y, Math.Max(0, width - 8f), row.height);
             Text.Anchor = rightAligned is not null && i < rightAligned.Count && rightAligned[i]
                 ? TextAnchor.MiddleRight

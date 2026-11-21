@@ -1047,29 +1047,29 @@
   <RWS_MetricDesc_DbhActivities>Abgeschlossene Toiletten-, Dusch- und nachweislich abgeschlossene Waschaufgaben von Spieler-Pawns auf Heimatkarten seit Aktivierung dieser Statistik.</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>Abgeschlossene Kleidungswechsel</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>Automatische Smart Apparel Upgrade-Aufträge, bei denen der ausgewählte Gegenstand seit Aktivierung dieser Statistik tatsächlich angezogen wurde.</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE: Silbergutschriften bei Banken</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCredits>Silbergutschriften bei Banken</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>Nach Abzug der Bankgebühren gutgeschriebenes Netto-Silber aus abgeschlossenen VTE-Bankeinzahlungen seit Aktivierung dieser experimentellen Statistik. Auszahlungen aus Verträgen sind nicht enthalten.</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>VTE: Silberabhebungen von Banken</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebits>Silberabhebungen von Banken</RWS_VTE_BankDebits>
   <RWS_VTE_BankDebitsDesc>Brutto-Silber, das seit Aktivierung dieser Statistik durch erfolgreiche Abhebungen VTE-Bankkonten entnommen wurde, vor Abzugsgebühren.</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE: vergebene Darlehen</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssued>Vergebene Darlehen</RWS_VTE_LoansIssued>
   <RWS_VTE_LoansIssuedDesc>Seit Beginn der Aufzeichnung erfolgreich ausgezahlte VTE-Bankdarlehen. Fehlgeschlagene Anträge und Rückzahlungen zählen nicht.</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE: ausgezahlte Darlehenssumme</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipal>Ausgezahlte Darlehenssumme</RWS_VTE_LoanPrincipal>
   <RWS_VTE_LoanPrincipalDesc>Silber-Hauptbetrag der tatsächlich ausgezahlten VTE-Darlehen. Rückzahlungen und Zinsen sind nicht enthalten.</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>VTE: durch Warenlieferung erfüllte Verträge</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveries>Durch Warenlieferung erfüllte Verträge</RWS_VTE_ContractDeliveries>
   <RWS_VTE_ContractDeliveriesDesc>VTE-NPC-Ankaufsverträge, für die Waren tatsächlich verbraucht oder mitgenommen wurden. Die bloße Annahme eines Vertrags zählt nicht. Eine Gutschrift der Belohnung wird damit nicht bestätigt.</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>An VTE-Verträge gelieferte Waren</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItems>An Verträge gelieferte Waren</RWS_VTE_ContractItems>
   <RWS_VTE_ContractItemsDesc>Stückzahl der Waren, die für vollständig oder teilweise erfüllte VTE-NPC-Ankaufsverträge übergeben wurden, einschließlich der Abholung durch Karawanen. Tatsächliche Übergaben, nicht angeforderte Mengen.</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>VTE: erfüllte Kaufverträge des Spielers</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchases>Erfüllte Kaufverträge des Spielers</RWS_VTE_ContractPurchases>
   <RWS_VTE_ContractPurchasesDesc>Vom Spieler aufgegebene Kaufverträge, die über VTE-Bankgeschäfte vollständig bezahlt und durch erzeugte Gegenstände erfüllt wurden. Stornierte Zahlungen und Vertragsannahme ohne Bezahlung zählen nicht.</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>Über VTE-Verträge gekaufte Waren</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceived>Über Verträge gekaufte Waren</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>Stückzahl der Gegenstände, die aus erfolgreich bezahlten VTE-Kaufverträgen des Spielers erzeugt wurden. Getrennt von NPC-Ankaufsverträgen und gewöhnlichem Handel.</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>Gewirkte mentale Kräfte</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>Erfolgreich gewirkte Fähigkeiten aus Vanilla Psycasts Expanded durch freie Kolonisten des Spielers, gezählt beim tatsächlichen Verbrauch der Fähigkeit durch VPE und nach Fähigkeit aufgeschlüsselt. Vorgemerkte Aufträge, abgebrochene Anwendungen und NPC-Anwendungen zählen nicht.</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>Erneut scharfgestellte Fallen</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>Fallen des Spielers, die während des Spiels tatsächlich von entschärft zu scharfgestellt wechselten. Reine Arbeitsaufträge, Initialisierung beim Erscheinen einer Falle, Entwickleraktionen und die eigene Pawn-Aufzeichnung des Mods zählen nicht.</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE: freigeschaltete Erfolgskarten</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_Unlocked>Freigeschaltete Erfolgskarten</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>Bei normalem Spiel neu freigeschaltete Erfolgskarten, nach Erfolgsdefinition. Debug-Freischaltungen und Wiederherstellungsprüfungen beim Spielstart zählen nicht.</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>VAE: erhaltene Erfolgspunkte</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_Points>Erhaltene Erfolgspunkte</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>Erfolgspunkte, die durch neue Freischaltungen außerhalb des Debug-Modus tatsächlich vergeben wurden. Wenn die Punktesumme nicht auslesbar ist, wird die Aufzeichnung als teilweise gekennzeichnet.</RWS_VaeAchievements_PointsDesc>
   <RWS_VfeTribals_EraAdvances>Fortschritte in neue Zeitalter</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>Tatsächliche Fortschritte des Technologiezeitalters des Spielerstamms, nach Zeitalter. Initialisierung, unveränderte oder zurückfallende Zeitalter sowie das Wiederherstellen von Spielständen zählen nicht.</RWS_VfeTribals_EraAdvancesDesc>
@@ -1079,9 +1079,9 @@
   <RWS_VaeAspirations_CompletedDesc>Wünsche, die Kolonisten des Spielers durch die normale Erfüllungsprüfung des Mods erstmals erfüllten, nach Wunsch. Debug-Abschlüsse, zuvor erfüllte oder nicht zugewiesene Wünsche sowie das Wiederherstellen eines Spielstands zählen nicht.</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>Geburten in Spielerschwärmen</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>Neue Insekten, die während des normalen Spiels in Nestern des Spielers entstanden, nach Insektenart. Kokonersatz, wiederhergestellte bestehende Nestbewohner und Erzeugung durch Entwickleraktionen zählen nicht.</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Cryptoforge: abgeschlossene Relais-Scans</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScans>Abgeschlossene Relais-Scans</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>Scans des Frozen Scanning Relay, die abgeschlossen wurden, während ein Kolonist des Spielers auf der Questkarte war.</RWS_VqeCryptoforge_RelayScansDesc>
-  <RWS_RimFactory_GroundOutput>Gegenstände vom Auto Machine Tool auf dem Boden</RWS_RimFactory_GroundOutput>
+  <RWS_RimFactory_GroundOutput>Maschinenausgabe auf dem Boden</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>Gegenstände, die Auto Machine Tools des Spielers nachweislich auf der Karte platzierten, nach Gegenstandstyp. Direkt an Förderbänder oder andere Maschinen übergebene Gegenstände sind ausgeschlossen.</RWS_RimFactory_GroundOutputDesc>
   <RWS_Rwom_HealingCasts>Erfolgreiche Heilzauber</RWS_Rwom_HealingCasts>
   <RWS_Rwom_HealingCastsDesc>Vom Spieler gewirkte Heal- und Advanced Heal-Zauber, die Verletzungen des Ziels tatsächlich verminderten oder eine frisch verlorene Körperstelle stabilisierten.</RWS_Rwom_HealingCastsDesc>
@@ -1091,7 +1091,7 @@
   <RWS_SimpleWarrants_CompletedDesc>Steckbriefe, die durch die Übergabe des Ziels durch eine Spielerkarawane erledigt wurden, nachdem das Ziel entfernt und der Steckbrief geschlossen war.</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>Erhaltenes Silber</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>Silber, das als Belohnung für abgeschlossene Steckbrief-Übergaben tatsächlich einer Spielerkarawane hinzugefügt wurde.</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>The Generator: abgeschlossene ARC-Upgrades</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_Upgrades>Abgeschlossene ARC-Generator-Upgrades</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>Abgeschlossene Bauarbeiten des Spielers, bei denen ein bestehender ARC-Generator des Spielers an derselben Stelle ersetzt wurde, nach neuem Generatortyp.</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>Meiste Fahrzeuge im Besitz</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>Höchste Zahl gleichzeitig vorhandener Fahrzeuge des Spielers aus Vehicle Framework innerhalb einer Kolonie, einschließlich der Fahrzeuge auf Karten, in Karawanen, im Flug und in Lagern. Gemessen bei erfolgreichen Spielständen. Die Fahrzeugtypen stammen aus dem Spielstand mit dem Höchstwert.</RWS_VehicleFramework_OwnedPeakDesc>
@@ -1105,17 +1105,17 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>Vorgemerkte Ehrungen aus VFE Empire, die nach Abschluss eines Rituals tatsächlich einem Kolonisten des Spielers verliehen wurden, nach Ehrung. Eine verfügbare Ehrung lediglich zu erhalten und Entwickleraktionen zählen nicht.</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>Erfüllte Inspirationswünsche</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Neu erfüllte Wünsche, die in Vanilla Social Interactions Expanded mit einer aktiven Inspiration eines Kolonisten verknüpft waren, nach Inspiration. Unfertiger Fortschritt, abgelaufene Fristen und nicht zugehörige Inspirationen zählen nicht.</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Giddy-Up 2: begonnene Ritte</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessions>Begonnene Ritte</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>Häufigkeit, mit der ein Kolonist des Spielers nach Abschluss einer Giddy-Up-Reitaufgabe tatsächlich ein eigenes Tier bestieg, nach Tierart. Bereits aufgesessenes Ankommen, vorgemerkte Aufträge und wiederholte Beobachtungen zählen nicht.</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>Nachladungen durch Kolonisten</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>Abgeschlossene Nachladungen durch Spieler-Pawns, bei denen tatsächlich Munition in ein Waffenmagazin gelangte. Jede Nachladung zählt einmal, auch bei mehreren Munitionsstapeln. Geschütztürme, automatische Lader, deaktivierte Munition und fehlgeschlagene Nachladungen zählen nicht.</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>Natürliches Erwachen von Androiden</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>Androiden des Spielers mit synthetischen Körpern, die durch die stimmungsabhängige Genprüfung natürlich erwachten. Direkte Entwickleraktionen, Initialisierung beim Spielstart und bereits erwachte Androiden zählen nicht. Benötigt Biotech.</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>VSE: gewählte Spezialisierungen</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_Selected>Gewählte Spezialisierungen</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>Neue Spezialisierungen, die Kolonisten des Spielers in der normalen Auswahl ausgewählt haben, nach Spezialisierung. Debug-Freischaltungen und wiederhergestellte Aufzeichnungen zählen nicht.</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE: gewonnene Spezialisierungsstufen</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUps>Gewonnene Spezialisierungsstufen</RWS_VseExpertise_LevelUps>
   <RWS_VseExpertise_LevelUpsDesc>Permanente Erhöhungen der VSE-Spezialisierungsstufen seit Aktivierung der Aufzeichnung, aufsummiert über alle unabhängigen Kolonien und nach Spezialisierung gruppiert.</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE: höchste erreichte Spezialisierungsstufe</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_Highest>Höchste erreichte Spezialisierungsstufe</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>Höchste Spezialisierungsstufe, die durch Erfahrung in unabhängigen Kolonien tatsächlich erreicht wurde; keine Stufensumme und kein Schnappschuss des neuesten Spielstands.</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>Verarbeitete Chargen</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Abgeschlossene VEF-Verarbeitungen für Suppen, Käse und andere Prozesse von Vanilla Cooking Expanded, nach Prozess. Gewöhnliche Herstellungsaufträge und teilweise blockierte Ausgaben zählen nicht.</RWS_VefCooking_BatchesDesc>
@@ -1123,9 +1123,9 @@
   <RWS_VefBrewing_BatchesDesc>Abgeschlossene VEF-Gär-, Brau- und Reifungschargen von Vanilla Brewing Expanded, nach Prozess. Pausierte, blockierte oder unvollständige Ausgaben und normale Herstellungsaufträge zählen nicht.</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>Silber für Gästemahlzeiten</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>Silber, das auswärtige Gäste für Mahlzeiten in einem Restaurant des Spielers tatsächlich bezahlten. Teilzahlungen zählen nur in Höhe des bezahlten Betrags; offene Rechnungen, kostenlose Mahlzeiten und fremde Geschäfte nicht.</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE Drone Factory: montierte Drohnen</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_Assembled>Montierte Fabrikdrohnen</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>Drohnen des Spielers, die nach Ablauf des Produktionstimers tatsächlich vom automatischen Drohnenmontierer erzeugt wurden, nach Pawn-Art. Fortschritt des Timers allein, fehlgeschlagene Erzeugung und Schlüpfen aus Eiern zählen nicht.</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE Drone Factory: geschlüpfte Drohnen</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_Hatched>Geschlüpfte Fabrikdrohnen</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>Drohnen des Spielers, die nach erfolgreichem Schlüpfen tatsächlich aus Eiern geboren wurden, nach Pawn-Art. Ohne Drohne zerstörte Eier und im Montierer gefertigte Drohnen zählen nicht.</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>Deepchem in Rohren gelagert</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>Deepchem, das aus Förderpumpen des Spielers tatsächlich in Rohrspeicher aufgenommen wurde, einschließlich Bruchteilen, gemessen bei der Speicherbestätigung des Rohrnetzes. Geplante Produktion, auf den Boden abgegebene Erzeugnisse und blockierte Lagerung zählen nicht.</RWS_VceDeepchem_StoredUnitsDesc>
@@ -1143,9 +1143,9 @@
   <RWS_VfeFactory_SownDesc>Neue Pflanzen, die während eines Arbeitszyklus eines Autofarmers des Spielers tatsächlich entstanden, als gesät markiert waren und zur ausgewählten Feldfrucht passten, nach Pflanze. Fehlgeschlagene Zyklen und vorhandene Pflanzen zählen nicht.</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>Fertiggestellte Warcasket-Ausrüstungen</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>Durch normales Schweißen abgeschlossene Warcasket-Ausrüstungen des Spielers, bestätigt, wenn das Projekt abgeschlossen und alle drei passenden Teile neu angelegt wurden, nach Rüstungstyp. Unfertige Aufträge, nur teilweise ausgerüstete Sets und Abschlüsse durch Entwicklerwerkzeuge zählen nicht.</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>VQE Ancients: abgelehnte Injektionen</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_Rejected>Abgelehnte Archogen-Injektionen</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>Ergebnisse eines Archogen-Injektors des Spielers, bei denen der Insasse die Injektion ablehnte, lebend freigelassen wurde und in ein Injektionskoma fiel. Abgebrochene Arbeit, nicht abgeschlossene ausgewählte Ergebnisse und ausstehende Genwahlen nach einem Erfolg zählen nicht. Benötigt Biotech.</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>VQE Ancients: Mutantenverwandlungen</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_Mutations>Archogen-Mutantenverwandlungen</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>Mutationsergebnisse eines Archogen-Injektors des Spielers, bei denen der ursprüngliche Pawn zerstört und ein neuer Mutant des Spielers der gewählten Art erzeugt wurde, nach Mutantenart. Andere Erzeugungen, Abbrüche und ausstehende Wahlen nach Erfolg zählen nicht. Benötigt Biotech.</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>Abgegebene Kopfgeldziele</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>Gesuchte Verbrecher oder ihre Leichen, die tatsächlich aus einer Spielerkarawane übergeben und entfernt wurden, während eine positive Silberbelohnung einging. Bloßes Öffnen des Befehls, fehlende Ziele, fehlgeschlagene Übergaben und fremder Besitz zählen nicht.</RWS_VfeSettlers_BountyHandinsDesc>
@@ -1161,9 +1161,9 @@
   <RWS_VfePirates_HireContractsDesc>Neue Piraten- oder Söldnerverträge, die im Anwerbefenster von Vanilla Expanded Framework mit einer Anwerbefraktion aus VFE Pirates tatsächlich geschlossen wurden. Bloßes Öffnen des Dialogs, abgebrochene Angebote und fehlgeschlagene Zahlungen zählen nicht.</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>Für Anwerbung bezahltes Silber</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>Silber, das bei Registrierung eines neuen VFE Pirates-Anwerbevertrags tatsächlich aus Vorräten auf Spielerkarten entnommen wurde, nicht der gerundete Angebotspreis. Kostenlose Verträge erhöhen den Wert nicht.</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>VGE: Geburten von Hybriden aus der elektrischen Gebärmutter</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_Births>Geburten von Hybriden aus der elektrischen Gebärmutter</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>Neue Hybriden-Pawns des Spielers, die nach erfolgreichem Wachstumszyklus einer elektrischen Gebärmutter des Spielers aus VGE tatsächlich einzeln entstanden, nach Pawn-Art. Fehlgeschlagenes Wachstum, bloßer Timerfortschritt und Wiederherstellen von Spielständen zählen nicht.</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>VGE: biomechanische Verwandlungen</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_Conversions>Biomechanische Verwandlungen</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>Erfolgreiche Umwandlungen in Mecha-Hybridisierern des Spielers, bei denen das ursprüngliche Wesen zerstört und ein neuer umgewandelter Pawn des Spielers erzeugt wurde, nach resultierender Pawn-Art. Maschinenstart, Warten und fehlgeschlagene Erzeugung zählen nicht.</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>Genehmigte Bewährungen</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>Freilassungsentscheidungen bei Bewährungsanhörungen, die eine vollständig verbüßte Strafe eines lebenden Gefangenen des Spielers tatsächlich löschten und seine Freilassung anordneten. Nur die Anhörung, Verlängerungen, Anwerbeoptionen, wiederholte Entscheidungen und der spätere Weggang des Gefangenen zählen nicht.</RWS_PrisonExpanded_ParoleApprovedDesc>
@@ -1363,4 +1363,7 @@
   <RWS_Change_Carried>Der spätere Wert wurde unverändert bis zu einem Spielstand von Tag {0} übernommen; der Zeitraum endet dort, wo er aufgezeichnet wurde.</RWS_Change_Carried>
   <RWS_Change_RecordedSince>Die Aufzeichnung dieser Statistik begann an Tag {0}. Der Zuwachs ist das seitdem Gezählte; ein damals bereits laufendes Ereignis wird möglicherweise nicht gezählt.</RWS_Change_RecordedSince>
   <RWS_Change_ClickTip>Klicken, um diesen Wert für einen Vergleich auszuwählen</RWS_Change_ClickTip>
+  <RWS_Error_Unknown>Unbekannter Fehler</RWS_Error_Unknown>
+  <RWS_Export_FooterColonyKey>Kolonieschlüssel</RWS_Export_FooterColonyKey>
+  <RWS_Export_FooterGenerator>Generator</RWS_Export_FooterGenerator>
 </LanguageData>

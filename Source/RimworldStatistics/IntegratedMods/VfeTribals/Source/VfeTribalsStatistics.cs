@@ -99,29 +99,20 @@ internal static class VfeTribalsStatistics
         newTechLevelField = target;
         cornerstonesField = stones;
         pointsField = points;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(advance,
-                prefix: new HarmonyMethod(typeof(VfeTribalsStatistics), nameof(BeforeEra)),
-                postfix: new HarmonyMethod(typeof(VfeTribalsStatistics), nameof(AfterEra)));
-            harmony.Patch(add,
-                prefix: new HarmonyMethod(typeof(VfeTribalsStatistics), nameof(BeforeCornerstone)),
-                postfix: new HarmonyMethod(typeof(VfeTribalsStatistics), nameof(AfterCornerstone)));
+            patcher.Patch(advance, typeof(VfeTribalsStatistics), nameof(BeforeEra), nameof(AfterEra));
+            patcher.Patch(add, typeof(VfeTribalsStatistics), nameof(BeforeCornerstone), nameof(AfterCornerstone));
         }
         catch
         {
-            harmony.Unpatch(advance, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(add, HarmonyPatchType.All, harmony.Id);
             levelField = newTechLevelField = cornerstonesField = pointsField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeEra(object __instance, object __0, out EraBefore? __state)
     {

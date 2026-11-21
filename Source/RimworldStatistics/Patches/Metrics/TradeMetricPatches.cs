@@ -26,10 +26,12 @@ public static class TradeExecuteMetricPatch
     public static void Prefix(List<Tradeable> ___tradeables, out Before? __state)
     {
         __state = null;
-        if (TradeSession.trader == null || !GameFacts.AnyRecording(TradeFamily.Name, DiplomacyFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(TradeFamily.Name) && !LiveMetrics.IsRecordingUnit(DiplomacyFamily.Name))
             return;
         try
         {
+            if (TradeSession.trader == null || !GameFacts.AnyRecording(TradeFamily.Name, DiplomacyFamily.Name))
+                return;
             var b = new Before { Gift = TradeSession.giftMode, Goodwill = TradeSession.trader.Faction?.PlayerGoodwill ?? 0 };
             if (!b.Gift && ___tradeables != null)
                 foreach (var t in ___tradeables)
@@ -53,10 +55,12 @@ public static class TradeExecuteMetricPatch
 
     public static void Postfix(bool __result, Before? __state)
     {
-        if (__state == null || !__result || TradeSession.trader == null)
+        if (__state == null || !__result)
             return;
         try
         {
+            if (TradeSession.trader == null)
+                return;
             if (__state.Gift)
             {
                 var after = TradeSession.trader.Faction?.PlayerGoodwill ?? __state.Goodwill;
@@ -87,14 +91,16 @@ public static class RelationKindMetricPatch
 {
     public static void Postfix(Faction __instance, Faction other, FactionRelationKind previousKind)
     {
-        var player = GameFacts.PlayerFaction;
-        if (player == null || other == null)
-            return;
-        var npc = __instance == player ? other : other == player ? __instance : null;
-        if (npc == null || !LiveMetrics.CanCaptureEvent(DiplomacyFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(DiplomacyFamily.Name))
             return;
         try
         {
+            var player = GameFacts.PlayerFaction;
+            if (player == null || other == null)
+                return;
+            var npc = __instance == player ? other : other == player ? __instance : null;
+            if (npc == null || !LiveMetrics.CanCaptureEvent(DiplomacyFamily.Name))
+                return;
             var id = npc.GetUniqueLoadID();
             var from = previousKind.ToString();
             var to = player.RelationKindWith(npc).ToString();
@@ -112,8 +118,14 @@ public static class CallForAidMetricPatch
 {
     public static void Prefix(Faction faction)
     {
-        if (faction != null)
-            GameFacts.Record(DiplomacyFamily.Name, DiplomacyFamily.AidRequested);
+        if (!LiveMetrics.IsRecordingUnit(DiplomacyFamily.Name))
+            return;
+        try
+        {
+            if (faction != null)
+                GameFacts.Record(DiplomacyFamily.Name, DiplomacyFamily.AidRequested);
+        }
+        catch (Exception e) { LiveMetrics.Fail(DiplomacyFamily.Name, e); }
     }
 }
 
@@ -124,7 +136,7 @@ public static class AidArrivedMetricPatch
     public static void Prefix(IncidentWorker __instance, IncidentParms parms, out bool __state)
     {
         __state = false;
-        if (__instance is not IncidentWorker_RaidFriendly)
+        if (__instance is not IncidentWorker_RaidFriendly || !LiveMetrics.IsRecordingUnit(DiplomacyFamily.Name))
             return;
         try { __state = GameFacts.SkippedForNoColonists(__instance, parms); }
         catch (Exception e) { LiveMetrics.Fail(DiplomacyFamily.Name, e); }
@@ -132,7 +144,9 @@ public static class AidArrivedMetricPatch
 
     public static void Postfix(bool __result, IncidentWorker __instance, bool __state)
     {
-        if (__result && !__state && __instance is IncidentWorker_RaidFriendly)
-            GameFacts.Record(DiplomacyFamily.Name, DiplomacyFamily.AidArrived);
+        if (!__result || __state || __instance is not IncidentWorker_RaidFriendly || !LiveMetrics.IsRecordingUnit(DiplomacyFamily.Name))
+            return;
+        try { GameFacts.Record(DiplomacyFamily.Name, DiplomacyFamily.AidArrived); }
+        catch (Exception e) { LiveMetrics.Fail(DiplomacyFamily.Name, e); }
     }
 }

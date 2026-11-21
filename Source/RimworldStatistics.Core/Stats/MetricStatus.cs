@@ -37,9 +37,17 @@ public static class MetricStatusClassifier
             .OrderBy(d => d.Key, StringComparer.Ordinal)
             .ToArray();
 
-        var overall = view.Numeric.Overall.ToDictionary(r => r.Definition.Key, StringComparer.Ordinal);
+        var overall = new Dictionary<string, NumericRow>(view.Numeric.Overall.Count, StringComparer.Ordinal);
+        foreach (var r in view.Numeric.Overall)
+            overall.TryAdd(r.Definition.Key, r);
         var counted = view.Numeric.Colonies.Where(c => !c.Excluded && !c.OutOfScope).ToArray();
-        var rowsByColony = counted.Select(c => (c.Key, Rows: c.Rows.ToDictionary(r => r.Definition.Key, StringComparer.Ordinal))).ToArray();
+        var rowsByColony = counted.Select(c =>
+        {
+            var dict = new Dictionary<string, NumericRow>(c.Rows.Count, StringComparer.Ordinal);
+            foreach (var r in c.Rows)
+                dict.TryAdd(r.Definition.Key, r);
+            return (c.Key, Rows: dict);
+        }).ToArray();
         var recordingByUnit = new Dictionary<string, UnitRecordingState>(StringComparer.Ordinal);
         var results = new List<MetricStatus>(definitions.Length);
 

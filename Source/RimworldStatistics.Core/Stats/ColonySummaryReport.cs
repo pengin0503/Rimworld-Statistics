@@ -120,8 +120,24 @@ public sealed class ColonySummaryReport
 
         var colony = view.Colonies.FirstOrDefault(c => c.Key == colonyKey);
         var numericColony = view.Numeric.Colonies.FirstOrDefault(c => c.Key == colonyKey);
-        var rowsByKey = numericColony?.Rows.ToDictionary(r => r.Definition.Key, Ord)
-            ?? new Dictionary<string, NumericRow>(Ord);
+        var countedRowIndex = LeaderboardBuilder.IndexCountedColonyRows(view);
+        Dictionary<string, NumericRow> rowsByKey;
+        if (numericColony is not null && countedRowIndex.TryGetValue(colonyKey, out var indexedOwn))
+        {
+            rowsByKey = indexedOwn;
+        }
+        else
+        {
+            rowsByKey = new Dictionary<string, NumericRow>(Ord);
+            if (numericColony is not null)
+                foreach (var r in numericColony.Rows)
+                    rowsByKey.TryAdd(r.Definition.Key, r);
+        }
+        var defIndex = new Dictionary<string, MetricDefinition>(Ord);
+        foreach (var r in view.Numeric.Overall)
+            defIndex.TryAdd(r.Definition.Key, r.Definition);
+        foreach (var r in rowsByKey.Values)
+            defIndex.TryAdd(r.Definition.Key, r.Definition);
         var unexplainedTraces = EndingTraces.Unexplained(colony);
 
         var overview = new ColonyReportOverview
@@ -160,8 +176,9 @@ public sealed class ColonySummaryReport
             if (!boardCache.TryGetValue(key, out var board))
             {
                 def ??= BasicMetrics.Contains(key) ? BasicMetrics.Definition(key)
-                    : rowsByKey.GetValueOrDefault(key)?.Definition ?? MetricLookup.Definition(view, key);
-                boardCache[key] = board = LeaderboardBuilder.Build(view, key, LeaderboardBuilder.DefaultDescending(def));
+                    : defIndex.GetValueOrDefault(key) ?? MetricLookup.Definition(view, key);
+                boardCache[key] = board = LeaderboardBuilder.BuildWithIndex(
+                    view, key, LeaderboardBuilder.DefaultDescending(def), perDay: false, countedRowIndex, def);
             }
             return board;
         }
@@ -177,7 +194,7 @@ public sealed class ColonySummaryReport
 
         foreach (var metricKey in CuratedNumericKeys)
         {
-            var def = rowsByKey.GetValueOrDefault(metricKey)?.Definition ?? MetricLookup.Definition(view, metricKey);
+            var def = defIndex.GetValueOrDefault(metricKey) ?? MetricLookup.Definition(view, metricKey);
             if (def is null)
                 continue;
             var val = rowsByKey.TryGetValue(metricKey, out var row)

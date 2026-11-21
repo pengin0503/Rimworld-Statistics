@@ -1,14 +1,16 @@
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
-using Verse;
+using RimworldStatistics.Metrics;
 using RimworldStatistics.Patches.Metrics;
+using Verse;
 
 namespace RimworldStatistics.HospitalityAddon;
 
 /// <summary>Counts successful Hospitality Recruit callbacks; never counts UI clicks.</summary>
 internal static class HospitalityRecruitHook
 {
+    private const string Unit = "mod.orion.hospitality.recruits";
     private static MethodInfo? recruit;
 
     internal static bool TryBind()
@@ -24,7 +26,13 @@ internal static class HospitalityRecruitHook
             recruit = method;
             return true;
         }
-        catch (Exception) { return false; }
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Hospitality recruit binding failed ({e.GetType().Name}): {e.Message}",
+                "RWS.hospitality.recruit.bind".GetHashCode());
+            return false;
+        }
     }
 
     internal static bool TryInstall()
@@ -32,14 +40,17 @@ internal static class HospitalityRecruitHook
         if (recruit is null) return false;
         try
         {
-            var postfix = typeof(HospitalityRecruitHook).GetMethod(nameof(OnRecruited),
-                BindingFlags.NonPublic | BindingFlags.Static);
-            if (postfix is null) return false;
-            new Harmony("pengin0503.rws.hospitalityaddon.recruits")
-                .Patch(recruit, postfix: new HarmonyMethod(postfix));
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.hospitalityaddon.recruits"));
+            patcher.Patch(recruit, typeof(HospitalityRecruitHook), postfix: nameof(OnRecruited));
             return true;
         }
-        catch (Exception) { return false; }
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Hospitality recruit patch failed ({e.GetType().Name}): {e.Message}",
+                "RWS.hospitality.recruit.install".GetHashCode());
+            return false;
+        }
     }
 
     private static void OnRecruited(Pawn guest, bool forced)
@@ -58,6 +69,6 @@ internal static class HospitalityRecruitHook
             if (id is not null)
                 HospitalitySdk.RecordRecruitment(id, forced);
         }
-        catch (Exception) { /* Optional target incompatibility must not break RimWorld. */ }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 }

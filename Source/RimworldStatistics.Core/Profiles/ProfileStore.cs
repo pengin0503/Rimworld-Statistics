@@ -93,9 +93,16 @@ public sealed class ProfileStore
         var primaryUnreadable = false;
         foreach (var (path, source) in candidates)
         {
-            if (!File.Exists(path))
+            var info = new FileInfo(path);
+            if (!info.Exists)
             {
                 if (source == ProfileLoadSource.Primary && Directory.Exists(path))
+                    primaryUnreadable = true;
+                continue;
+            }
+            if (info.Length > MaxProfileFileBytes)
+            {
+                if (source == ProfileLoadSource.Primary)
                     primaryUnreadable = true;
                 continue;
             }
@@ -110,23 +117,44 @@ public sealed class ProfileStore
                     primaryUnreadable = true;
                 continue;
             }
-            var json = Decode(raw);
 
             if (source == ProfileLoadSource.Primary)
                 _expectedPrimary = raw;
-            if (SchemaVersionOf(json) is not { } version)
+
+            int? version;
+            Profile? deserialized;
+            if (!HasNonUtf8Bom(raw) && Utf8Body(raw.AsMemory()) is var body && System.Text.Unicode.Utf8.IsValid(body.Span))
             {
-                if (source == ProfileLoadSource.Primary)
-                    primaryCorrupt = true;
-                continue;
+                var utf8 = body.Span;
+                version = SchemaVersionOf(utf8);
+                if (version is null)
+                {
+                    if (source == ProfileLoadSource.Primary)
+                        primaryCorrupt = true;
+                    continue;
+                }
+                deserialized = TryDeserialize(utf8);
             }
+            else
+            {
+                var json = Decode(raw);
+                version = SchemaVersionOf(json);
+                if (version is null)
+                {
+                    if (source == ProfileLoadSource.Primary)
+                        primaryCorrupt = true;
+                    continue;
+                }
+                deserialized = TryDeserialize(json);
+            }
+
             if (version > Profile.CurrentSchemaVersion)
             {
                 // Written by a newer version of the mod: show what we can, never overwrite it.
                 _readOnly = true;
-                return new ProfileLoadResult { Profile = TryDeserialize(json) ?? new Profile(), Source = ProfileLoadSource.NewerSchema, ReadOnly = true };
+                return new ProfileLoadResult { Profile = deserialized ?? new Profile(), Source = ProfileLoadSource.NewerSchema, ReadOnly = true };
             }
-            if (TryDeserialize(json) is not { } profile)
+            if (deserialized is not { } profile)
             {
                 if (source == ProfileLoadSource.Primary)
                     primaryCorrupt = true;
@@ -142,6 +170,12 @@ public sealed class ProfileStore
         }
         return Finish(new Profile(), ProfileLoadSource.Empty, primaryCorrupt, primaryUnreadable, utcNow);
     }
+
+    internal const long MaxProfileFileBytes = 256L * 1024 * 1024;
+
+    private static bool HasNonUtf8Bom(ReadOnlySpan<byte> raw)
+        => (raw.Length >= 2 && ((raw[0] == 0xFF && raw[1] == 0xFE) || (raw[0] == 0xFE && raw[1] == 0xFF)))
+            || (raw.Length >= 4 && raw[0] == 0x00 && raw[1] == 0x00 && raw[2] == 0xFE && raw[3] == 0xFF);
 
     private ProfileLoadResult Finish(Profile profile, ProfileLoadSource source, bool primaryCorrupt, bool primaryUnreadable, DateTime utcNow)
     {
@@ -188,15 +222,31 @@ public sealed class ProfileStore
 
     /// <summary>Null when the text is not a JSON object with a usable integer schemaVersion (missing is schema 1, as v1 wrote it).</summary>
     internal static int? SchemaVersionOf(string json)
+        => SchemaVersionOf(Encoding.UTF8.GetBytes(json));
+
+    internal static int? SchemaVersionOf(ReadOnlySpan<byte> utf8Json)
     {
         try
         {
-            using var doc = JsonDocument.Parse(json);
-            if (doc.RootElement.ValueKind != JsonValueKind.Object)
+            var reader = new Utf8JsonReader(utf8Json);
+            if (!reader.Read() || reader.TokenType != JsonTokenType.StartObject)
                 return null;
-            if (!doc.RootElement.TryGetProperty("schemaVersion", out var v))
-                return 1;
-            return v.ValueKind == JsonValueKind.Number && v.TryGetInt32(out var n) ? n : null;
+            while (reader.Read())
+            {
+                if (reader.TokenType == JsonTokenType.EndObject)
+                    return 1;
+                if (reader.TokenType == JsonTokenType.PropertyName && reader.CurrentDepth == 1)
+                {
+                    if (reader.ValueTextEquals("schemaVersion"))
+                    {
+                        if (!reader.Read())
+                            return null;
+                        return reader.TokenType == JsonTokenType.Number && reader.TryGetInt32(out var n) ? n : null;
+                    }
+                    reader.Skip();
+                }
+            }
+            return null;
         }
         catch (JsonException)
         {
@@ -209,6 +259,18 @@ public sealed class ProfileStore
         try
         {
             return ProfileJson.Deserialize(json);
+        }
+        catch (Exception e) when (e is JsonException or NotSupportedException or InvalidOperationException or FormatException)
+        {
+            return null;
+        }
+    }
+
+    private static Profile? TryDeserialize(ReadOnlySpan<byte> utf8Json)
+    {
+        try
+        {
+            return ProfileJson.Deserialize(utf8Json);
         }
         catch (Exception e) when (e is JsonException or NotSupportedException or InvalidOperationException or FormatException)
         {

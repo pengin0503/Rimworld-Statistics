@@ -35,9 +35,41 @@ public sealed class RimworldStatisticsSettings : ModSettings
     /// <summary>The cache sizes these settings stand for.</summary>
     public CacheLimits CacheLimits => ResourcePolicy.Caches(MemoryUse, precomputeStatistics);
 
-    /// <summary>User's desired acquisition choices; UI edits are applied to the current game immediately.</summary>
-    public ExperimentalSelection DesiredSelection => new(experimentalEnabled, experimentalUnitIds.ToArray());
+    private ExperimentalSelection? cachedDesiredSelection;
+    private bool cachedDesiredEnabled;
+    private string[]? cachedDesiredUnitIds;
 
+    /// <summary>User's desired acquisition choices; UI edits are applied to the current game immediately.</summary>
+    public ExperimentalSelection DesiredSelection
+    {
+        get
+        {
+            var units = experimentalUnitIds;
+            if (cachedDesiredSelection is { } cached
+                && cachedDesiredEnabled == experimentalEnabled
+                && cachedDesiredUnitIds is { } cachedUnits
+                && SequenceEquals(units, cachedUnits))
+            {
+                return cached;
+            }
+            var copied = units is { Count: > 0 } ? units.ToArray() : Array.Empty<string>();
+            cachedDesiredEnabled = experimentalEnabled;
+            cachedDesiredUnitIds = copied;
+            cachedDesiredSelection = new ExperimentalSelection(experimentalEnabled, copied);
+            return cachedDesiredSelection;
+        }
+    }
+
+    private static bool SequenceEquals(List<string>? list, string[] array)
+    {
+        var count = list?.Count ?? 0;
+        if (count != array.Length)
+            return false;
+        for (var i = 0; i < count; i++)
+            if (!string.Equals(list![i], array[i], StringComparison.Ordinal))
+                return false;
+        return true;
+    }
 
     public override void ExposeData()
     {
@@ -54,8 +86,28 @@ public sealed class RimworldStatisticsSettings : ModSettings
         Scribe_Values.Look(ref precomputeStatistics, "precomputeStatistics", false);
         Scribe_Values.Look(ref memoryUseMode, "memoryUseMode", (int)MemoryUseMode.Standard);
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
-            experimentalUnitIds ??= experimentalEnabled
-                ? new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken }
-                : new List<string>();
+        {
+            if (!Enum.IsDefined(typeof(StatisticsWindowSizePreset), windowSizePreset))
+                windowSizePreset = (int)StatisticsWindowSizePreset.Standard;
+            importThreadMode = (int)ResourcePolicy.ParseImportThreadMode(importThreadMode);
+            memoryUseMode = (int)ResourcePolicy.ParseMemoryUseMode(memoryUseMode);
+            importThreadsManual = Math.Clamp(importThreadsManual, 1, ResourcePolicy.MaxImportThreads);
+            viewPreferencesJson ??= "";
+            if (experimentalUnitIds is null)
+            {
+                experimentalUnitIds = experimentalEnabled
+                    ? new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken }
+                    : new List<string>();
+            }
+            else
+            {
+                experimentalUnitIds = experimentalUnitIds
+                    .Where(id => !string.IsNullOrWhiteSpace(id))
+                    .Distinct(StringComparer.Ordinal)
+                    .ToList();
+            }
+            cachedDesiredSelection = null;
+            cachedDesiredUnitIds = null;
+        }
     }
 }

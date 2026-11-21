@@ -59,37 +59,26 @@ internal static class RimFactoryStatistics
 
         var place = AccessTools.DeclaredMethod(utility, "PRFTryPlaceThing",
             [placer, typeof(Thing), typeof(IntVec3), typeof(Map), typeof(bool)]);
-        var ground = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
-        if (place is not { IsStatic: true } || place.ReturnType != typeof(bool) || ground?.ReturnType != typeof(bool))
+        var ground = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
+        if (place is not { IsStatic: true } || place.ReturnType != typeof(bool))
             throw new InvalidOperationException("Project RimFactory placement signature changed");
 
         autoMachine = machine;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(place,
-                prefix: new HarmonyMethod(typeof(RimFactoryStatistics), nameof(BeforePlacement)),
-                postfix: new HarmonyMethod(typeof(RimFactoryStatistics), nameof(AfterPlacement)),
-                finalizer: new HarmonyMethod(typeof(RimFactoryStatistics), nameof(FinishPlacement)));
-            harmony.Patch(ground,
-                prefix: new HarmonyMethod(typeof(RimFactoryStatistics), nameof(ObserveGroundPlacement)));
+            patcher.Patch(place, typeof(RimFactoryStatistics),
+                prefix: nameof(BeforePlacement), postfix: nameof(AfterPlacement), finalizer: nameof(FinishPlacement));
+            patcher.Patch(ground, typeof(RimFactoryStatistics), prefix: nameof(ObserveGroundPlacement));
         }
         catch
         {
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(ground, HarmonyPatchType.All, harmony.Id);
             autoMachine = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforePlacement(object __0, Thing __1, Map __3, out Placement? __state)
     {

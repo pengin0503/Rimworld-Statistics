@@ -98,26 +98,20 @@ internal static class VqeAncientsStatistics
         outcomeField = result;
         pawnKindField = pawnKind;
         occupantProperty = occupant;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(finish,
-                prefix: new HarmonyMethod(typeof(VqeAncientsStatistics), nameof(BeforeFinish)),
-                postfix: new HarmonyMethod(typeof(VqeAncientsStatistics), nameof(AfterFinish)));
+            patcher.Patch(finish, typeof(VqeAncientsStatistics), nameof(BeforeFinish), nameof(AfterFinish));
         }
         catch
         {
-            harmony.Unpatch(finish, HarmonyPatchType.All, harmony.Id);
             outcomeField = pawnKindField = null;
             occupantProperty = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeFinish(object __instance, out InjectorBefore? __state)
     {

@@ -107,30 +107,21 @@ internal static class PrisonExpandedCompletionStatistics
         servedField = served;
         dueField = due;
         getRecord = get;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(serve,
-                prefix: new HarmonyMethod(typeof(PrisonExpandedCompletionStatistics), nameof(BeforeServe)),
-                postfix: new HarmonyMethod(typeof(PrisonExpandedCompletionStatistics), nameof(AfterServe)));
-            harmony.Patch(exit,
-                prefix: new HarmonyMethod(typeof(PrisonExpandedCompletionStatistics), nameof(BeforeExit)),
-                postfix: new HarmonyMethod(typeof(PrisonExpandedCompletionStatistics), nameof(AfterExit)));
+            patcher.Patch(serve, typeof(PrisonExpandedCompletionStatistics), nameof(BeforeServe), nameof(AfterServe));
+            patcher.Patch(exit, typeof(PrisonExpandedCompletionStatistics), nameof(BeforeExit), nameof(AfterExit));
         }
         catch
         {
-            harmony.Unpatch(serve, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(exit, HarmonyPatchType.All, harmony.Id);
             recordPawn = sentenceField = servedField = dueField = null;
             getRecord = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool IsHomePrisoner(Pawn pawn)
         => !pawn.Destroyed && !pawn.Dead && pawn.IsPrisonerOfColony &&

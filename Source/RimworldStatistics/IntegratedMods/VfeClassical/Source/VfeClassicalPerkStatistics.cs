@@ -69,23 +69,10 @@ internal static class VfeClassicalPerkStatistics
         applyFavor = System.Linq.Expressions.Expression.Lambda<Action<object, Pawn, Faction>>(
             System.Linq.Expressions.Expression.Call(System.Linq.Expressions.Expression.Convert(component, senators!), gain, pawn, faction),
             component, pawn, faction).Compile();
-        try
-        {
-            var scope = new HarmonyMethod(typeof(VfeClassicalPerkStatistics), nameof(ObserveOrdinaryFavor));
-            harmony.Patch(draw, transpiler: scope);
-            harmony.Patch(receive, transpiler: scope);
-            harmony.Patch(add,
-                prefix: new HarmonyMethod(typeof(VfeClassicalPerkStatistics), nameof(Before)),
-                postfix: new HarmonyMethod(typeof(VfeClassicalPerkStatistics), nameof(After)));
-        }
-        catch
-        {
-            harmony.Unpatch(add, HarmonyPatchType.All, harmony.Id);
-            var scope = AccessTools.DeclaredMethod(typeof(VfeClassicalPerkStatistics), nameof(ObserveOrdinaryFavor));
-            harmony.Unpatch(draw, scope);
-            harmony.Unpatch(receive, scope);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(draw, typeof(VfeClassicalPerkStatistics), transpiler: nameof(ObserveOrdinaryFavor));
+        patcher.Patch(receive, typeof(VfeClassicalPerkStatistics), transpiler: nameof(ObserveOrdinaryFavor));
+        patcher.Patch(add, typeof(VfeClassicalPerkStatistics), nameof(Before), nameof(After));
     }
 
     private static IEnumerable<CodeInstruction> ObserveOrdinaryFavor(IEnumerable<CodeInstruction> instructions)
@@ -101,8 +88,16 @@ internal static class VfeClassicalPerkStatistics
     }
 
     private static bool Contains(object manager, Def perk)
-        => activePerks?.GetValue(manager) is IEnumerable items &&
-           items.Cast<object>().Any(item => ReferenceEquals(item, perk));
+    {
+        if (activePerks?.GetValue(manager) is not IEnumerable items)
+            return false;
+        foreach (var item in items)
+        {
+            if (ReferenceEquals(item, perk))
+                return true;
+        }
+        return false;
+    }
 
     private static void Before(object __instance, Def __0, out bool __state)
     {

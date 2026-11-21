@@ -18,6 +18,8 @@ public static class BiotechChildStageMetricPatch
     public static void Prefix(Pawn_AgeTracker __instance, Pawn ___pawn, out int __state)
     {
         __state = -1;
+        if (!LiveMetrics.IsRecordingUnit(BiotechFamily.Name))
+            return;
         try
         {
             if (___pawn is null || ___pawn.Dead || !GameFacts.IsMember(___pawn)
@@ -51,13 +53,26 @@ public static class BiotechChildStageMetricPatch
 /// <summary>Mech repair completion is the disappearance of the *last* injury across a confirmed repair tick.</summary>
 internal static class MechRepairMetricFacts
 {
+    private static bool HasInjury(Pawn mech)
+    {
+        var hediffs = mech.health?.hediffSet?.hediffs;
+        if (hediffs is null)
+            return false;
+        for (var i = 0; i < hediffs.Count; i++)
+            if (hediffs[i] is Hediff_Injury)
+                return true;
+        return false;
+    }
+
     public static bool WasInjured(Pawn mech)
     {
+        if (!LiveMetrics.IsRecordingUnit(BiotechFamily.Name))
+            return false;
         try
         {
             return mech is { Dead: false } && GameFacts.IsPlayerFaction(mech.Faction) && mech.RaceProps.IsMechanoid
                 && LiveMetrics.CanCaptureEvent(BiotechFamily.Name)
-                && mech.health?.hediffSet?.hediffs?.Any(h => h is Hediff_Injury) == true;
+                && HasInjury(mech);
         }
         catch (Exception e)
         {
@@ -68,12 +83,11 @@ internal static class MechRepairMetricFacts
 
     public static void Repaired(Pawn mech, bool hadInjury)
     {
-        if (!hadInjury)
+        if (!hadInjury || !LiveMetrics.IsRecordingUnit(BiotechFamily.Name))
             return;
         try
         {
-            if (mech is null || mech.Dead || !GameFacts.IsPlayerFaction(mech.Faction)
-                || mech.health?.hediffSet?.hediffs?.Any(h => h is Hediff_Injury) == true)
+            if (mech is null || mech.Dead || !GameFacts.IsPlayerFaction(mech.Faction) || HasInjury(mech))
                 return;
             // Both overloads may run for the same repair and same tick: deterministic
             // operation ID keeps it one event. A future new repair has a new tick.

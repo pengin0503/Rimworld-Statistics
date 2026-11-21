@@ -66,6 +66,31 @@ internal static class IntegratedModStartup
                 Log.WarningOnce("[RimworldStatistics] Smart Apparel SDK metric registration declined.",
                     0x52575342);
         });
+
+        // Reserve integrated SDK units so third-party MODs cannot register into them even when the target MOD is absent.
+        var reserved = new List<string>();
+        if (!ModsConfig.IsActive("pengin0503.rws.hospitalityaddon"))
+        {
+            reserved.Add("mod.orion.hospitality.visitors");
+            reserved.Add("mod.orion.hospitality.visits");
+            reserved.Add("mod.orion.hospitality.recruits");
+            reserved.Add("mod.orion.hospitality.trade");
+        }
+        if (!ModsConfig.IsActive("pengin0503.rws.recruitmentaddon"))
+            reserved.Add("mod.pengin0503.recruitment.requestsaddon");
+        if (!ModsConfig.IsActive("pengin0503.rws.dubsbadhygieneaddon"))
+            reserved.Add("mod.dubwise.dubsbadhygiene.water");
+        if (!ModsConfig.IsActive("pengin0503.rws.vteaddon"))
+        {
+            reserved.Add("mod.vanillaexpanded.vanillatradingexpanded.bank");
+            reserved.Add("mod.vanillaexpanded.vanillatradingexpanded.contract");
+        }
+        if (!ModsConfig.IsActive("pengin0503.rws.smartappareladdon"))
+        {
+            reserved.Add("mod.pengin0503.smartapparelupgrade.swaps");
+            reserved.Add("mod.pengin0503.smartapparelupgrade.orders");
+        }
+        ExternalSdkHost.Instance.ReserveBuiltInUnits(reserved);
     }
 
     private static void Safe(string targetPackageId, string oldAddonPackageId, Action install)

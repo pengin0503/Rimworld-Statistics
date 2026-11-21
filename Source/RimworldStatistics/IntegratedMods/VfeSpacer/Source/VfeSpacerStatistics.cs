@@ -19,9 +19,9 @@ internal static class VfeSpacerStatistics
     private const string HpKey = Unit + ".hp_repaired";
     private const string ItemsKey = Unit + ".items_repaired";
 
-    private static FieldInfo? powerCompField;
-    private static FieldInfo? storageField;
-    private static FieldInfo? repairIntervalField;
+    private static Func<object, CompPowerTrader?>? getPowerComp;
+    private static Func<object, Building_Storage?>? getStorage;
+    private static Func<object, int>? getRepairInterval;
 
     private readonly record struct ItemSnapshot(Thing Item, int BeforeHp, int MaxHp);
 
@@ -91,27 +91,24 @@ internal static class VfeSpacerStatistics
             intervalField?.FieldType != typeof(int))
             throw new InvalidOperationException("MFSpacer.CompRepairStored contract changed");
 
-        powerCompField = powerField;
-        storageField = storeField;
-        repairIntervalField = intervalField;
+        getPowerComp = OptionalTransitionCallSite.CompileFieldGetter<CompPowerTrader?>(powerField);
+        getStorage = OptionalTransitionCallSite.CompileFieldGetter<Building_Storage?>(storeField);
+        getRepairInterval = OptionalTransitionCallSite.CompileFieldGetter<int>(intervalField);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VfeSpacerStatistics), nameof(BeforeTick)),
-                postfix: new HarmonyMethod(typeof(VfeSpacerStatistics), nameof(AfterTick)));
+            patcher.Patch(tick, typeof(VfeSpacerStatistics), nameof(BeforeTick), nameof(AfterTick));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
+            getPowerComp = null;
+            getStorage = null;
+            getRepairInterval = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeTick(ThingComp __instance, int __0, out List<ItemSnapshot>? __state)
     {
@@ -121,19 +118,18 @@ internal static class VfeSpacerStatistics
 
         try
         {
-            if (__instance.props is null ||
-                repairIntervalField?.GetValue(__instance.props) is not int interval ||
-                interval <= 0)
+            if (__instance.props is null || getRepairInterval is null)
+                return;
+            var interval = getRepairInterval(__instance.props);
+            if (interval <= 0)
                 return;
 
-            if (storageField?.GetValue(__instance) is not Building_Storage storage ||
-                !storage.Spawned ||
-                Faction.OfPlayerSilentFail is not { } player ||
-                storage.Faction != player ||
+            if (getStorage?.Invoke(__instance) is not { Spawned: true } storage ||
+                !GameFacts.IsPlayerFaction(storage.Faction) ||
                 !storage.IsHashIntervalTick(interval, __0))
                 return;
 
-            if (powerCompField?.GetValue(__instance) is CompPowerTrader power && !power.PowerOn)
+            if (getPowerComp?.Invoke(__instance) is { PowerOn: false })
                 return;
 
             var settings = storage.GetParentStoreSettings();

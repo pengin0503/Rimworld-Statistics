@@ -75,40 +75,31 @@ internal static class VnpeGrinderStatistics
         var produce = AccessTools.DeclaredMethod(grinder, "TryProducePaste", Type.EmptyTypes);
         var resourceField = AccessTools.DeclaredField(grinder, "resourceComp");
         var getNet = AccessTools.Property(resource, "PipeNet");
-        var distribute = AccessTools.DeclaredMethod(net, "DistributeAmongStorage",
-            [typeof(float), typeof(float).MakeByRefType()]);
+        var distribute = OptionalTransitionCallSite.ResolvePipeNetDistributeAmongStorage(net);
         if (produce?.ReturnType != typeof(bool) ||
             resourceField?.FieldType != resource ||
             getNet?.PropertyType != net || getNet.GetMethod is null ||
-            distribute?.ReturnType != typeof(void))
+            distribute is null)
             throw new InvalidOperationException("VNPE grinder production or storage signature changed");
 
         resourceCompField = resourceField;
         pipeNetProperty = getNet;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(produce,
-                prefix: new HarmonyMethod(typeof(VnpeGrinderStatistics), nameof(BeforeGrind)),
-                postfix: new HarmonyMethod(typeof(VnpeGrinderStatistics), nameof(AfterGrind)),
-                finalizer: new HarmonyMethod(typeof(VnpeGrinderStatistics), nameof(FinishGrind)));
-            harmony.Patch(distribute,
-                postfix: new HarmonyMethod(typeof(VnpeGrinderStatistics), nameof(AfterStored)));
+            patcher.Patch(produce, typeof(VnpeGrinderStatistics),
+                prefix: nameof(BeforeGrind), postfix: nameof(AfterGrind), finalizer: nameof(FinishGrind));
+            patcher.Patch(distribute, typeof(VnpeGrinderStatistics), postfix: nameof(AfterStored));
         }
         catch
         {
-            harmony.Unpatch(produce, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(distribute, HarmonyPatchType.All, harmony.Id);
             resourceCompField = null;
             pipeNetProperty = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeGrind(object __instance, out GrinderScope? __state)
     {

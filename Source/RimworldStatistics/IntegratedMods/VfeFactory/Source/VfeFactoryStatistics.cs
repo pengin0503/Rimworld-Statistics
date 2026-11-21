@@ -89,46 +89,32 @@ internal static class VfeFactoryStatistics
         var cells = AccessTools.DeclaredMethod(type, "GetRowCells", [typeof(int)]);
         var buffer = AccessTools.DeclaredField(type, "harvestStorageThings");
         var plant = AccessTools.DeclaredField(type, "plantDefToGrow");
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
+        var place = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
         if (row?.ReturnType != typeof(void) ||
             cells is null || !typeof(IEnumerable<IntVec3>).IsAssignableFrom(cells.ReturnType) ||
             buffer is null || !typeof(IList).IsAssignableFrom(buffer.FieldType) ||
-            plant?.FieldType != typeof(ThingDef) ||
-            place?.ReturnType != typeof(bool))
+            plant?.FieldType != typeof(ThingDef))
             throw new InvalidOperationException("VFE Factory Autofarmer harvest/sow signature changed");
 
         getRowCells = cells;
         storageField = buffer;
         selectedPlantField = plant;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(row,
-                prefix: new HarmonyMethod(typeof(VfeFactoryStatistics), nameof(BeforeRow)),
-                postfix: new HarmonyMethod(typeof(VfeFactoryStatistics), nameof(AfterRow)),
-                finalizer: new HarmonyMethod(typeof(VfeFactoryStatistics), nameof(FinishRow)));
-            harmony.Patch(place,
-                prefix: new HarmonyMethod(typeof(VfeFactoryStatistics), nameof(BeforeGroundPlace)));
+            patcher.Patch(row, typeof(VfeFactoryStatistics),
+                prefix: nameof(BeforeRow), postfix: nameof(AfterRow), finalizer: nameof(FinishRow));
+            patcher.Patch(place, typeof(VfeFactoryStatistics), prefix: nameof(BeforeGroundPlace));
         }
         catch
         {
-            harmony.Unpatch(row, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
             getRowCells = null;
             storageField = selectedPlantField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static Dictionary<ThingDef,long> Buffered(object machine)
     {
