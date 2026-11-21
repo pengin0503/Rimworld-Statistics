@@ -127,9 +127,12 @@ public static class PawnKillMetricPatch
             return __exception;
         try
         {
-            activeDeaths?.Remove(__instance);
-            if (activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope) && __instance != null)
-                GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
+            if (__instance != null)
+            {
+                activeDeaths?.Remove(__instance);
+                if (activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope))
+                    GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
+            }
         }
         catch (Exception e)
         {

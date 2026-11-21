@@ -329,11 +329,26 @@ public sealed class ImportEngine
         {
             static void ObserveTask(Task<(SaveReadResult? Result, Exception? Error)> task, bool wait)
             {
-                if (wait || task.IsCompleted)
-                    _ = task.GetAwaiter().GetResult();
+                if (wait)
+                {
+                    try
+                    {
+                        task.GetAwaiter().GetResult();
+                    }
+                    catch (Exception)
+                    {
+                        // Isolate exceptions in finally to prevent masking the primary exception.
+                    }
+                }
+                else if (task.IsCompleted)
+                {
+                    _ = task.Exception;
+                }
                 else
+                {
                     _ = task.ContinueWith(static t => _ = t.Exception, CancellationToken.None,
                         TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously, TaskScheduler.Default);
+                }
             }
             var waitTasks = !cancelled && !ct.IsCancellationRequested;
             foreach (var task in pending.Values)

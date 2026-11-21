@@ -84,7 +84,7 @@ internal static class WinstonWaveOutcomes
 
     private static void AfterRaidOver(object __instance, bool __result, bool __runOriginal)
     {
-        if (!OutcomeMetric.Observing(WaveUnit))
+        if (__instance is null || !OutcomeMetric.Observing(WaveUnit))
             return;
         try
         {

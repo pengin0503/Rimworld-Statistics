@@ -433,7 +433,7 @@ public sealed class ColonySaveLineage
                 cpNode.ParentState = SaveLineageParentState.ProvenParent;
                 continue;
             }
-            cpNode.ParentState = keyCounts.ContainsKey(rawParent)
+            cpNode.ParentState = rawParent != null && keyCounts.ContainsKey(rawParent)
                 ? SaveLineageParentState.InvalidOrConflictedParent
                 : SaveLineageParentState.MissingParent;
         }
