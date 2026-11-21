@@ -78,7 +78,7 @@ internal static class VfeClassicalStatistics
         try
         {
             patcher.Patch(gain, typeof(VfeClassicalStatistics), nameof(BeforeFavor), nameof(AfterFavor));
-            var debugTypes = component.Assembly.GetTypes();
+            var debugTypes = AccessTools.GetTypesFromAssembly(component.Assembly);
             for (var i = 0; i < debugTypes.Length; i++)
             {
                 var type = debugTypes[i];

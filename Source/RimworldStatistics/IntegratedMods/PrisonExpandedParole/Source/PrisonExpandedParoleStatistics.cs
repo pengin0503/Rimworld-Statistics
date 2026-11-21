@@ -61,7 +61,7 @@ internal static class PrisonExpandedParoleStatistics
         if (assembly is null)
             throw new InvalidOperationException("Prison Expanded 1.7 DLL not loaded");
 
-        var allTypes = assembly.GetTypes();
+        var allTypes = AccessTools.GetTypesFromAssembly(assembly);
         var letter = allTypes.SingleOrDefault(t => t.Name == "ChoiceLetter_ParoleHearing");
         var sentences = allTypes.SingleOrDefault(t => t.FullName == "PrisonExpanded.Justice.Sentences");
         if (letter is null || sentences is null)

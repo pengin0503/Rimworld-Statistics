@@ -152,9 +152,9 @@ public sealed partial class SaveReader
                 Cancelled = true;
                 throw new OperationCanceledException(_ct);
             }
-            catch (OperationCanceledException) when (_worker?.IsFaulted == true)
+            catch (OperationCanceledException)
             {
-                _worker.GetAwaiter().GetResult();
+                _worker?.GetAwaiter().GetResult();
                 throw;
             }
             _pos = 0;

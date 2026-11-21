@@ -587,7 +587,8 @@ internal sealed class Dialog_ColonyChronicle : Window
         var rows = display.Result.Rows;
         var undatedLines = display.Result.UndatedTraces;
         var lang = LanguageDatabase.activeLanguage;
-        if (layoutCache is not { } layout
+        var layout = layoutCache;
+        if (layout is null
             || !ReferenceEquals(layout.Display, display)
             || !ReferenceEquals(layout.Language, lang)
             || Math.Abs(layout.InnerWidth - innerWidth) > 0.5f)

@@ -674,7 +674,8 @@ internal sealed class Dialog_ColonySummaryReport : Window
         }
 
         // Compute or reuse cached content heights for this (width, display) pair.
-        if (layoutCache is not { } layout
+        var layout = layoutCache;
+        if (layout is null
             || !ReferenceEquals(layout.Display, display)
             || Math.Abs(layout.InnerWidth - innerWidth) > 0.5f)
         {

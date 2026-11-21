@@ -66,8 +66,9 @@ internal static class RimatomicsByproductStatistics
         if (assembly is null)
             throw new InvalidOperationException("Rimatomics 1.7 assembly not loaded");
 
-        var proc = assembly.GetTypes().SingleOrDefault(t => t.Name == "Building_PlutoniumProc");
-        var job = assembly.GetTypes().SingleOrDefault(t => t.Name == "JobDriver_UnloadPlutonium");
+        var allTypes = AccessTools.GetTypesFromAssembly(assembly);
+        var proc = allTypes.SingleOrDefault(t => t.Name == "Building_PlutoniumProc");
+        var job = allTypes.SingleOrDefault(t => t.Name == "JobDriver_UnloadPlutonium");
         if (proc is null || job is null ||
             !typeof(Building).IsAssignableFrom(proc) ||
             !typeof(Verse.AI.JobDriver).IsAssignableFrom(job))
