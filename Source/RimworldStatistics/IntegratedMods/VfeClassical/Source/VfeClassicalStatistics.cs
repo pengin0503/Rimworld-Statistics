@@ -90,6 +90,7 @@ internal static class VfeClassicalStatistics
         }
         catch
         {
+            patcher.Rollback();
             infoForFunc = null;
             getFavored = null;
             throw;
