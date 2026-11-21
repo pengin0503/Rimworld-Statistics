@@ -795,6 +795,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             var positions = drawSeriesPositions;
             var partials = drawSeriesPartials;
             Array.Clear(positions, 0, count);
+            Array.Clear(partials, 0, count);
             for (var i = 0; i < count; i++)
             {
                 var point = points[i];

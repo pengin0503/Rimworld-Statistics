@@ -132,6 +132,8 @@ public sealed class AuditBoundaryAndConcurrencyTests
         Assert.Null(ProfileStore.SchemaVersionOf("{\"schemaVersion\":\"2\"}"u8));
         Assert.Null(ProfileStore.SchemaVersionOf("[] "u8));
         Assert.Null(ProfileStore.SchemaVersionOf("{\"schemaVersion\": 2"u8));
+        Assert.Null(ProfileStore.SchemaVersionOf("{"u8));
+        Assert.Null(ProfileStore.SchemaVersionOf("{\"a\":{}"u8));
 
         using var dir = new TempDir();
         var validJson = ProfileJson.SerializeToUtf8Bytes(new Profile { SchemaVersion = Profile.CurrentSchemaVersion });
