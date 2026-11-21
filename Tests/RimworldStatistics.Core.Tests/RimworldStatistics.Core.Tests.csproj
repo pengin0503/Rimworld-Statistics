@@ -19,5 +19,7 @@
     <Using Include="Xunit" />
     <Using Include="RimworldStatistics.Core" />
     <Compile Include="../../Source/RimworldStatistics/IntegratedMods/*/Logic/*.cs" Link="IntegratedModLogic/%(Filename)%(Extension)" />
+    <Compile Include="../../examples/StatisticsSdkSample/Source/SampleSdkClient.cs" Link="SdkSample/SampleSdkClient.cs" />
+    <Compile Include="../../examples/StatisticsSdkSample/Source/SampleEventLedger.cs" Link="SdkSample/SampleEventLedger.cs" />
   </ItemGroup>
 </Project>

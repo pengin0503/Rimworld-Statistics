@@ -240,8 +240,12 @@ public static class SmartGroupEvaluator
     }
 
     internal static Dictionary<string, string> ResolveStartingBiomesByKey(Profile profile, IReadOnlyList<Colony> colonies)
+        => ResolveStartingBiomesByKey(MetricCalculator.Attach(profile, colonies, out _), colonies);
+
+    internal static Dictionary<string, string> ResolveStartingBiomesByKey(
+        IReadOnlyDictionary<Colony, List<MetricObservation>> attached,
+        IReadOnlyList<Colony> colonies)
     {
-        var attached = MetricCalculator.Attach(profile, colonies, out _);
         var result = new Dictionary<string, string>(StringComparer.Ordinal);
         foreach (var colony in colonies)
         {

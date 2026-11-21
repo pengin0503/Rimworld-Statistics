@@ -50,6 +50,7 @@ public static class MetricRankings
     {
         MetricDefinition Def(string key) => MetricRegistry.Find(key) ?? throw new InvalidOperationException("unregistered ranking " + key);
         var ordered = colonies.OrderBy(c => c.Key, Ord).ToList();
+        var rowIndex = BuildRowIndex(rows);
         int Endings(ColonyStats c) => c.EndingCounts.Values.Sum();
         double Days(ColonyStats c) => c.MaxTicks / (double)StatFormat.TicksPerDay;
         // A colony known only from ending records has no observed save or live point: its days, population and play time
@@ -115,11 +116,11 @@ public static class MetricRankings
 
         yield return SplitSum(Def(DaysByStoryteller), ordered, c => c.Storyteller, Days, Observed);
 
-        // R-010: summed net change ÷ summed years spanned ((points − 1) ÷ 120). A series of one point spans no time and is
-        // not a target; a colony without a known net change is missing.
-        var netRows = ordered.Select(c => RowOf(rows, c.Key, MetricKeys.WealthTotalNet)?.Value ?? NumericValue.Unknown).ToList();
-        var spanning = netRows.Where(v => v.Number is not null && v.SampleCount is > 1).ToList();
-        var targetsNet = netRows.Count(v => !(v.Number is not null && v.SampleCount is <= 1));
+        // R-010: summed net change ÷ summed years spanned ((points − 1) ÷ 120). A series of one point spans no time or
+        // NotApplicable is not a target; a colony without a known net change is missing.
+        var netRows = ordered.Select(c => RowOf(rowIndex, c.Key, MetricKeys.WealthTotalNet)?.Value ?? NumericValue.Unknown).ToList();
+        var targetsNet = netRows.Count(v => v.Coverage != MetricCoverage.NotApplicable && !(v.Number is not null && v.SampleCount is <= 1));
+        var spanning = netRows.Where(v => v.Number is { } n && double.IsFinite(n) && v.SampleCount is > 1).ToList();
         yield return new NumericRow
         {
             Definition = Def(NetWealthPerYear),
@@ -129,20 +130,35 @@ public static class MetricRankings
         };
 
         // R-009: the colonies' own same-index maxima (both series start-aligned, Phase A sync rule).
-        var perColonist = ordered.Select(c => (c.Key, RowOf(rows, c.Key, MetricKeys.WealthPerColonistMax)?.Value))
-            .Where(x => x.Value?.Number is not null).Select(x => (x.Key, x.Value!.Number, x.Value.Coverage)).ToList();
+        var perColonist = ordered.Select(c => (c.Key, RowOf(rowIndex, c.Key, MetricKeys.WealthPerColonistMax)?.Value))
+            .Where(x => x.Value?.Number is { } n && double.IsFinite(n))
+            .Select(x => (x.Key, x.Value!.Number, x.Value.Coverage)).ToList();
         yield return Extreme(Def(MetricKeys.WealthPerColonistMax), perColonist, max: true, ordered.Count);
 
-        yield return BiomeSplit(Def(DaysByBiome), ordered, rows, Days);
-        yield return BiomeSplit(Def(EndingsByBiome), ordered, rows, c => Endings(c));
-        yield return SharedIntervalKillDeathRatio(Def(KillsToDeaths), ordered, rows);
-        yield return InputPeak(Def(MostKills), ordered, rows, HealthDeathFamily.HostileKills);
-        yield return InputPeak(Def(LongestDeathFree), ordered, rows, HealthDeathFamily.LongestDeathGap);
-        yield return InputPeak(Def(MostCrafting), ordered, rows, WorkFamily.CraftedUnits);
-        yield return InputPeak(Def(LargestSale), ordered, rows, TradeFamily.SalesPeak);
+        yield return BiomeSplit(Def(DaysByBiome), ordered, rowIndex, Days);
+        yield return BiomeSplit(Def(EndingsByBiome), ordered, rowIndex, c => Endings(c));
+        yield return SharedIntervalKillDeathRatio(Def(KillsToDeaths), ordered, rowIndex);
+        yield return InputPeak(Def(MostKills), ordered, rowIndex, HealthDeathFamily.HostileKills);
+        yield return InputPeak(Def(LongestDeathFree), ordered, rowIndex, HealthDeathFamily.LongestDeathGap);
+        yield return InputPeak(Def(MostCrafting), ordered, rowIndex, WorkFamily.CraftedUnits);
+        yield return InputPeak(Def(LargestSale), ordered, rowIndex, TradeFamily.SalesPeak);
         // S-012 is the save-time *finished* research set, not research events counted by Q-001.
-        yield return InputPeak(Def(MostResearch), ordered, rows, ResearchStateSnapshot.Finished);
+        yield return InputPeak(Def(MostResearch), ordered, rowIndex, ResearchStateSnapshot.Finished);
         yield return MinParty(Def(MinPartyAtEnding), ordered);
+    }
+
+    private static Dictionary<string, Dictionary<string, NumericRow>> BuildRowIndex(
+        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows)
+    {
+        var index = new Dictionary<string, Dictionary<string, NumericRow>>(rows.Count, Ord);
+        foreach (var (colonyKey, list) in rows)
+        {
+            var dict = new Dictionary<string, NumericRow>(list.Count, Ord);
+            for (var i = 0; i < list.Count; i++)
+                dict.TryAdd(list[i].Definition.Key, list[i]);
+            index[colonyKey] = dict;
+        }
+        return index;
     }
 
     /// <summary>
@@ -174,23 +190,13 @@ public static class MetricRankings
     }
 
     /// <summary>
-    /// Maximum over matched B/C source observations from independent colonies. The
-    /// source row already chooses the representative save/checkpoint and supplies
-    /// its own coverage. Missing input never silently becomes a zero.
-    /// </summary>
-    /// <summary>
-    /// Starting biome comes from a *starting-tile* observation, never from the
-    /// current player home. Missing or ambiguous values are not "unknown biome"
-    /// names and are excluded from the numerator, making coverage Partial.
-    /// </summary>
-    /// <summary>
     /// B-001 and P-004 are emitted by the SAME health_death family in the SAME
     /// representative checkpoint. Never combine a latest save's vanilla deaths
     /// counter with an older checkpoint's kills or silently replace absent inputs
     /// with zero.
     /// </summary>
     private static NumericRow SharedIntervalKillDeathRatio(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
-        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows)
+        IReadOnlyDictionary<string, Dictionary<string, NumericRow>> rows)
     {
         double kills = 0, deaths = 0;
         var valid = 0;
@@ -201,6 +207,7 @@ public static class MetricRankings
             var k = RowOf(rows, colony.Key, HealthDeathFamily.HostileKills);
             var d = RowOf(rows, colony.Key, HealthDeathFamily.DeathsByRaid);
             if (k?.Value.Number is not { } kv || d?.Value.Number is not { } dv
+                || !double.IsFinite(kv) || !double.IsFinite(dv)
                 || k.Value.ThroughTick is null || d.Value.ThroughTick != k.Value.ThroughTick
                 || kv < 0 || dv < 0)
                 continue;
@@ -213,15 +220,20 @@ public static class MetricRankings
                 || d.Value.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown)
                 weak = true;
         }
+        if (valid == 0 || !double.IsFinite(kills) || !double.IsFinite(deaths))
+            return new NumericRow { Definition = def, Targets = colonies.Count, Valid = valid, Value = NumericValue.Unknown };
+        var ratio = deaths > 0 ? kills / deaths : (double?)null;
+        if (ratio is { } r && !double.IsFinite(r))
+            return new NumericRow { Definition = def, Targets = colonies.Count, Valid = valid, Value = NumericValue.Unknown };
         var incomplete = weak || valid < colonies.Count;
         return new NumericRow
         {
             Definition = def,
             Targets = colonies.Count,
             Valid = valid,
-            Value = valid == 0 ? NumericValue.Unknown : new NumericValue
+            Value = new NumericValue
             {
-                Number = deaths > 0 ? kills / deaths : null,
+                Number = ratio,
                 Numerator = kills, Denominator = deaths,
                 Coverage = incomplete ? MetricCoverage.Partial : MetricCoverage.Complete,
                 Evidence = InputEvidence(inputs),
@@ -230,7 +242,7 @@ public static class MetricRankings
     }
 
     private static NumericRow BiomeSplit(MetricDefinition def, IReadOnlyList<ColonyStats> colonies,
-        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, Func<ColonyStats, double> quantity)
+        IReadOnlyDictionary<string, Dictionary<string, NumericRow>> rows, Func<ColonyStats, double> quantity)
     {
         var known = new List<(ColonyStats Colony, string Biome, MetricCoverage Coverage, NumericRow Source)>();
         foreach (var colony in colonies)
@@ -273,13 +285,13 @@ public static class MetricRankings
     }
 
     private static NumericRow InputPeak(MetricDefinition definition, IReadOnlyList<ColonyStats> colonies,
-        IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string sourceKey)
+        IReadOnlyDictionary<string, Dictionary<string, NumericRow>> rows, string sourceKey)
     {
         var all = colonies.Select(c => (c.Key, Row: RowOf(rows, c.Key, sourceKey))).ToList();
         var applicable = all.Where(x => x.Row?.Value.Coverage != MetricCoverage.NotApplicable).ToList();
         if (applicable.Count == 0 && all.Count > 0)
             return new NumericRow { Definition = definition, Value = new NumericValue { Coverage = MetricCoverage.NotApplicable }, Targets = 0 };
-        var inputs = applicable.Where(x => x.Row?.Value.Number is not null).ToList();
+        var inputs = applicable.Where(x => x.Row?.Value.Number is { } n && double.IsFinite(n)).ToList();
         var candidates = inputs.Select(x => (x.Key, Value: x.Row!.Value.Number, x.Row.Value.Coverage)).ToList();
         return Extreme(definition, candidates, max: true, applicable.Count, InputEvidence(inputs.Select(x => x.Row)));
     }
@@ -291,19 +303,37 @@ public static class MetricRankings
         null => null,
     };
 
-    private static NumericRow? RowOf(IReadOnlyDictionary<string, IReadOnlyList<NumericRow>> rows, string colony, string definitionKey)
-        => rows.TryGetValue(colony, out var list) ? list.FirstOrDefault(r => r.Definition.Key == definitionKey) : null;
+    private static NumericRow? RowOf(IReadOnlyDictionary<string, Dictionary<string, NumericRow>> rows, string colony, string definitionKey)
+        => rows.TryGetValue(colony, out var map) && map.TryGetValue(definitionKey, out var row) ? row : null;
 
     private static NumericValue NetPerYear(List<NumericValue> nets, bool someMissing)
     {
         if (nets.Count == 0)
             return NumericValue.Unknown;
-        var net = nets.Sum(v => v.Number!.Value);
-        var years = nets.Sum(v => (v.SampleCount!.Value - 1) * HistoryMetricReader.TicksPerPoint / TicksPerYear);
-        var partial = someMissing || nets.Any(v => v.Coverage == MetricCoverage.Partial);
+        double net = 0;
+        double years = 0;
+        var partial = someMissing;
+        for (var i = 0; i < nets.Count; i++)
+        {
+            var v = nets[i];
+            if (v.Number is not { } n || !double.IsFinite(n) || v.SampleCount is not > 1)
+                return NumericValue.Unknown;
+            var y = (v.SampleCount.Value - 1) * HistoryMetricReader.TicksPerPoint / TicksPerYear;
+            if (!double.IsFinite(y) || y <= 0)
+                continue;
+            net += n;
+            years += y;
+            if (v.Coverage == MetricCoverage.Partial)
+                partial = true;
+        }
+        if (years <= 0 || !double.IsFinite(net) || !double.IsFinite(years))
+            return NumericValue.Unknown;
+        var ratio = net / years;
+        if (!double.IsFinite(ratio))
+            return NumericValue.Unknown;
         return new NumericValue
         {
-            Number = net / years, Numerator = net, Denominator = years,
+            Number = ratio, Numerator = net, Denominator = years,
             Coverage = partial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly,
         };
     }
@@ -352,13 +382,14 @@ public static class MetricRankings
     private static NumericRow Extreme(MetricDefinition d, List<(string Key, double? Value, MetricCoverage Coverage)> candidates, bool max, int targets,
         MetricEvidence evidence = MetricEvidence.UnknownLegacy)
     {
-        if (candidates.Count == 0)
+        var finite = candidates.Where(c => c.Value is { } v && double.IsFinite(v)).ToList();
+        if (finite.Count == 0)
             return new NumericRow { Definition = d, Value = NumericValue.Unknown, Targets = targets };
-        var best = max ? candidates.Max(c => c.Value!.Value) : candidates.Min(c => c.Value!.Value);
-        var holder = candidates.Where(c => c.Value == best).Select(c => c.Key).Order(Ord).First();
-        var valid = candidates.Select(c => c.Key).Distinct(Ord).Count();
-        var partial = valid < targets || candidates.Any(c => c.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
-        var coverage = partial ? MetricCoverage.Partial : candidates.All(c => c.Coverage == MetricCoverage.Complete) ? MetricCoverage.Complete : MetricCoverage.SnapshotOnly;
+        var best = max ? finite.Max(c => c.Value!.Value) : finite.Min(c => c.Value!.Value);
+        var holder = finite.Where(c => c.Value == best).Select(c => c.Key).Order(Ord).First();
+        var valid = finite.Select(c => c.Key).Distinct(Ord).Count();
+        var partial = valid < targets || finite.Any(c => c.Coverage is MetricCoverage.Partial or MetricCoverage.Unknown);
+        var coverage = partial ? MetricCoverage.Partial : finite.All(c => c.Coverage == MetricCoverage.Complete) ? MetricCoverage.Complete : MetricCoverage.SnapshotOnly;
         return new NumericRow
         {
             Definition = d,

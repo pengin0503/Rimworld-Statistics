@@ -63,13 +63,27 @@ public static class OdysseyPreflightMapsMetricPatch
 {
     public static void Prefix(Building_GravEngine engine)
     {
-        if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
-            || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
             return;
         try
         {
-            var maps = Find.Maps?.Where(m => m is not null)
-                .Select(m => GameFacts.MapId(m)).ToArray() ?? Array.Empty<string>();
+            if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction)
+                || !LiveMetrics.CanCaptureEvent(OdysseyFamily.Name))
+                return;
+            var findMaps = Find.Maps;
+            string[] maps;
+            if (findMaps is null || findMaps.Count == 0)
+            {
+                maps = Array.Empty<string>();
+            }
+            else
+            {
+                var list = new List<string>(findMaps.Count);
+                for (var i = 0; i < findMaps.Count; i++)
+                    if (findMaps[i] is { } m)
+                        list.Add(GameFacts.MapId(m));
+                maps = list.ToArray();
+            }
             GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedExistingMaps(s, maps));
         }
         catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
@@ -81,17 +95,28 @@ public static class OdysseyPreflightMapsMetricPatch
 public static class OdysseyTakeoffMetricPatch
 {
     public static void Prefix(Gravship ___gravship, out Building_GravEngine? __state)
-        => __state = ___gravship?.Engine is { Destroyed: false } engine
-            && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
-            ? engine : null;
+    {
+        __state = null;
+        if (!LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
+            return;
+        try
+        {
+            __state = ___gravship?.Engine is { Destroyed: false } engine
+                && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
+                ? engine : null;
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
+    }
 
     public static void Postfix(Building_GravEngine? __state)
     {
         var engine = __state;
-        if (engine is null || engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction))
+        if (engine is null || !LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
             return;
         try
         {
+            if (engine.Destroyed || !GameFacts.IsPlayerFaction(engine.Faction))
+                return;
             var id = GameFacts.Id(engine);
             var tick = GameFacts.Tick;
             GameFacts.Record(OdysseyFamily.Name, s => OdysseyFamily.ObservedTakeoff(
@@ -142,20 +167,31 @@ public static class OdysseyLandingMetricPatch
     public static void Prefix(Gravship ___gravship, PlanetTile ___takeoffTile,
         PlanetTile ___landingTile, Map ___landingMap,
         out (Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
-        => __state = ___gravship?.Engine is { Destroyed: false } engine
-            && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
-            ? (engine, ___takeoffTile, ___landingTile, ___landingMap)
-            : default;
+    {
+        __state = default;
+        if (!LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
+            return;
+        try
+        {
+            __state = ___gravship?.Engine is { Destroyed: false } engine
+                && GameFacts.IsPlayerFaction(engine.Faction) && LiveMetrics.CanCaptureEvent(OdysseyFamily.Name)
+                ? (engine, ___takeoffTile, ___landingTile, ___landingMap)
+                : default;
+        }
+        catch (Exception e) { LiveMetrics.Fail(OdysseyFamily.Name, e); }
+    }
 
     public static void Postfix((Building_GravEngine? Engine, PlanetTile From, PlanetTile To, Map? Target) __state)
     {
         var (engine, from, to, targetMap) = __state;
-        if (engine is null || engine.Destroyed || !engine.Spawned
-            || !GameFacts.IsPlayerFaction(engine.Faction) || engine.Map != targetMap
-            || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
+        if (engine is null || !LiveMetrics.IsRecordingUnit(OdysseyFamily.Name))
             return;
         try
         {
+            if (engine.Destroyed || !engine.Spawned
+                || !GameFacts.IsPlayerFaction(engine.Faction) || engine.Map != targetMap
+                || targetMap is null || !OdysseyArrivalFacts.Parse(to, out var tileId, out var layerId))
+                return;
             // The landing has completed and the original player engine is spawned
             // at the destination. Resolve the vanilla traversal route now, not from
             // a launch UI preview or a geometric approximation.

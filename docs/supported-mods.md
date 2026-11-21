@@ -109,3 +109,10 @@
 - Vehicle Framework
 - Way Better Romance
 - World Domination 2.0
+
+## 補足 / Notes
+
+* `Vanilla Outposts Expanded` は `Vanilla Expanded Framework`（`OskarPotocki.VanillaFactionsExpanded.Core`）、`Vanilla Vehicles Expanded – Upgrades` は `Vehicle Framework`（`SmashPhil.VehicleFramework`）経由で統計を取得しています。
+* `Humanoid Alien Races` には個別の MOD 固有フックはなく、種族別集計（`ThingDef` / バニラ共通種族分類層）を通じて対応しています。
+* 本体内蔵プロバイダー定義（`Source/RimworldStatistics.Core/Stats/ModProviderNames.cs`）の全 109 パッケージには、上記一覧の 106 パッケージに加えて基盤フレームワーク・作者自身の MOD 3 件（`Vanilla Expanded Framework`、`Colonist Recruitment`、`Smart Apparel Upgrade`）が含まれます（`check_mod_provider_names.py` の意図的な例外登録対象）。
+* Note: `Vanilla Outposts Expanded` and `Vanilla Vehicles Expanded – Upgrades` are tracked through their hosting frameworks (`Vanilla Expanded Framework` and `Vehicle Framework`), and `Humanoid Alien Races` is covered through common race classification rather than a standalone mod hook. `ModProviderNames.cs` also includes `Vanilla Expanded Framework`, `Colonist Recruitment`, and `Smart Apparel Upgrade` (109 built-in provider packages in total).

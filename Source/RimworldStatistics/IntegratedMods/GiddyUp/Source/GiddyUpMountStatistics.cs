@@ -92,15 +92,13 @@ internal static class GiddyUpMountStatistics
         isMountedMethod = mounted;
         extendedDataMethod = extended;
         mountProperty = property;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(method,
-                prefix: new HarmonyMethod(typeof(GiddyUpMountStatistics), nameof(BeforeMount)),
-                postfix: new HarmonyMethod(typeof(GiddyUpMountStatistics), nameof(AfterMount)));
+            patcher.Patch(method, typeof(GiddyUpMountStatistics), nameof(BeforeMount), nameof(AfterMount));
         }
         catch
         {
-            harmony.Unpatch(method, HarmonyPatchType.All, harmony.Id);
             mountJob = null;
             isMountedMethod = extendedDataMethod = null;
             mountProperty = null;
@@ -108,11 +106,7 @@ internal static class GiddyUpMountStatistics
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool IsMounted(Pawn rider)
         => isMountedMethod?.Invoke(null, [rider]) is true;

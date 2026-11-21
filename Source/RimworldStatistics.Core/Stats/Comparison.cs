@@ -27,7 +27,12 @@ public static class Comparison
                 _ => throw new ArgumentException("Unrecognized comparison target.", nameof(columns)),
             };
             if (!perDay)
-                return rows.ToDictionary(row => row.Definition.Key, row => row.Value, StringComparer.Ordinal);
+            {
+                var dict = new Dictionary<string, NumericValue>(rows.Count, StringComparer.Ordinal);
+                foreach (var row in rows)
+                    dict.TryAdd(row.Definition.Key, row.Value);
+                return dict;
+            }
 
             var rateDict = new Dictionary<string, NumericValue>(StringComparer.Ordinal);
             foreach (var row in rows)
@@ -53,10 +58,18 @@ public static class Comparison
 
     public static IEnumerable<ComparisonRow> Sort(IEnumerable<ComparisonRow> rows, int column, bool descending)
     {
-        static double? Number(NumericValue? value) => value is { Known: true, Number: { } n } && double.IsFinite(n) ? n : null;
-        var byMissing = rows.OrderBy(row => Number(row.Values[column]) is null);
-        return descending
-            ? byMissing.ThenByDescending(row => Number(row.Values[column]))
-            : byMissing.ThenBy(row => Number(row.Values[column]));
+        ArgumentNullException.ThrowIfNull(rows);
+        ArgumentOutOfRangeException.ThrowIfNegative(column);
+        static double? Number(ComparisonRow row, int column)
+        {
+            if (column >= row.Values.Count)
+                return null;
+            return row.Values[column] is { Known: true, Number: { } n } && double.IsFinite(n) ? n : null;
+        }
+        var byMissing = rows.OrderBy(row => Number(row, column) is null);
+        var ordered = descending
+            ? byMissing.ThenByDescending(row => Number(row, column))
+            : byMissing.ThenBy(row => Number(row, column));
+        return ordered.ThenBy(row => row.MetricKey, StringComparer.Ordinal);
     }
 }

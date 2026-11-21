@@ -9,7 +9,7 @@ namespace RimworldStatistics.Patches.Metrics;
 /// <summary>Reads the plain facts the Core families decide from. Game-thread only; never keeps a game object.</summary>
 internal static class GameFacts
 {
-    public static int Tick => Find.TickManager.TicksGame;
+    public static int Tick => Find.TickManager?.TicksGame ?? 0;
 
     public static string Id(Thing t) => t.GetUniqueLoadID();
 
@@ -168,11 +168,23 @@ internal static class GameFacts
         });
     }
 
+    public static bool IsHostileToPlayer(Thing? thing)
+        => thing?.Faction is { } f && PlayerFaction is { } player && f.HostileTo(player);
+
+    public static bool IsHostileToPlayer(Faction? faction)
+        => faction is not null && PlayerFaction is { } player && faction.HostileTo(player);
+
     public static void FailAll(Exception e, params string[] families)
     {
         foreach (var f in families)
             LiveMetrics.Fail(f, e);
     }
+
+    public static bool AnyRecording(string f1, string f2)
+        => LiveMetrics.CanCaptureEvent(f1) || LiveMetrics.CanCaptureEvent(f2);
+
+    public static bool AnyRecording(string f1, string f2, string f3)
+        => LiveMetrics.CanCaptureEvent(f1) || LiveMetrics.CanCaptureEvent(f2) || LiveMetrics.CanCaptureEvent(f3);
 
     public static bool AnyRecording(params string[] families)
     {

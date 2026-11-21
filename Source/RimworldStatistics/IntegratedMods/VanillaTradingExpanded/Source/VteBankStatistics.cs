@@ -65,25 +65,23 @@ internal static class VteBankStatistics
 
         ExternalSdkHost.Instance.IntegratedHooks.Defer(Unit, () =>
         {
-            var harmony = new Harmony("pengin0503.rws.vte.bank");
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.vte.bank"));
             try
             {
-                harmony.Patch(deposit,
+                patcher.Patch(deposit,
                     prefix: new HarmonyMethod(typeof(VteBankStatistics), nameof(BeforeBalance)),
                     postfix: new HarmonyMethod(typeof(VteBankStatistics), nameof(AfterDeposit)));
-                harmony.Patch(withdraw,
+                patcher.Patch(withdraw,
                     prefix: new HarmonyMethod(typeof(VteBankStatistics), nameof(BeforeBalance)),
                     postfix: new HarmonyMethod(typeof(VteBankStatistics), nameof(AfterWithdraw)));
-                harmony.Patch(loan,
+                patcher.Patch(loan,
                     prefix: new HarmonyMethod(typeof(VteBankStatistics), nameof(BeforeLoan)),
                     postfix: new HarmonyMethod(typeof(VteBankStatistics), nameof(AfterLoan)));
                 return true;
             }
             catch
             {
-                harmony.Unpatch(deposit, HarmonyPatchType.All, harmony.Id);
-                harmony.Unpatch(withdraw, HarmonyPatchType.All, harmony.Id);
-                harmony.Unpatch(loan, HarmonyPatchType.All, harmony.Id);
+                patcher.Rollback();
                 return false;
             }
         });
@@ -108,8 +106,7 @@ internal static class VteBankStatistics
     };
 
     private static bool CanRecord() =>
-        MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing &&
-        Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+        OptionalTransitionCallSite.Observing(Unit);
 
     private static bool TryIdentity(object instance, out string bankId)
     {
@@ -133,7 +130,7 @@ internal static class VteBankStatistics
             if (TryIdentity(__instance, out var id))
                 __state = new BalanceBefore(id, Find.TickManager.TicksGame, Balance(__instance));
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterDeposit(object __instance, bool __runOriginal, BalanceBefore? __state)
@@ -155,7 +152,7 @@ internal static class VteBankStatistics
                 _ = host?.RecordEvent(metricId,
                     VteTradeMath.EventId(previous.BankId, action, previous.Tick, previous.Balance, after), quantity);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void BeforeLoan(object __instance, int __1, out LoanBefore? __state)
@@ -169,7 +166,7 @@ internal static class VteBankStatistics
             if (count >= 0 && TryIdentity(__instance, out var id))
                 __state = new LoanBefore(id, Find.TickManager.TicksGame, count, __1);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterLoan(object __instance, bool __runOriginal, LoanBefore? __state)
@@ -185,6 +182,6 @@ internal static class VteBankStatistics
             _ = host.RecordEvent(LoanCount, eventId);
             _ = host.RecordEvent(LoanPrincipal, eventId, __state.Principal);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 }

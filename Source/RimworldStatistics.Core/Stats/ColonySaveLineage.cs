@@ -379,10 +379,21 @@ public sealed class ColonySaveLineage
 
         // 4. Attach SaveSnapshot observations (and #318 compacted snapshot chart rows) without duplicating existing nodes.
         var snapshots = observations.Where(o => o.Source == MetricObservationSource.SaveSnapshot && o.SaveTick >= 0).ToArray();
+        var carriedByParentTick = new Dictionary<(NodeBuilder Origin, int Tick), NodeBuilder>();
+        var unprovenByTick = new Dictionary<int, List<NodeBuilder>>();
+        foreach (var existing in builders)
+        {
+            if (existing.Kind == SaveLineageNodeKind.UnprovenSave)
+            {
+                if (!unprovenByTick.TryGetValue(existing.SaveTick, out var list))
+                    unprovenByTick[existing.SaveTick] = list = new List<NodeBuilder>();
+                list.Add(existing);
+            }
+        }
         var compactedCount = 0;
         foreach (var snap in snapshots)
         {
-            AttachSnapshot(snap, null, ancestry, validCheckpointByKey, builders);
+            AttachSnapshot(snap, null, ancestry, validCheckpointByKey, builders, carriedByParentTick, unprovenByTick);
             if (snap.CompactedChart?.Rows is not { } rows)
                 continue;
             for (var r = 0; r < rows.Count; r++)
@@ -399,7 +410,7 @@ public sealed class ColonySaveLineage
                     CheckpointKey = row.CheckpointKey,
                 };
                 var rowMetrics = ExtractCompactedMetrics(snap.CompactedChart, r);
-                AttachSnapshot(ghost, rowMetrics, ancestry, validCheckpointByKey, builders);
+                AttachSnapshot(ghost, rowMetrics, ancestry, validCheckpointByKey, builders, carriedByParentTick, unprovenByTick);
             }
         }
 
@@ -422,7 +433,7 @@ public sealed class ColonySaveLineage
                 cpNode.ParentState = SaveLineageParentState.ProvenParent;
                 continue;
             }
-            cpNode.ParentState = checkpoints.Any(c => c.Key == rawParent)
+            cpNode.ParentState = keyCounts.ContainsKey(rawParent)
                 ? SaveLineageParentState.InvalidOrConflictedParent
                 : SaveLineageParentState.MissingParent;
         }
@@ -474,8 +485,10 @@ public sealed class ColonySaveLineage
             .OrderBy(b => b.SaveTick)
             .ThenBy(b => b.SameTickDepth)
             .ThenBy(b => KindOrder(b.Kind))
-            .ThenBy(b => b.ObservedUtc ?? DateTime.MaxValue)
-            .ThenBy(b => b.CheckpointId ?? FirstFileName(b), Ord)
+            .ThenBy(b => b.ObservedUtc is { } utc ? UtcTime.ToUtc(utc) : DateTime.MaxValue)
+            .ThenBy(b => b.CheckpointId ?? "", Ord)
+            .ThenBy(b => FirstFileName(b), Ord)
+            .ThenBy(b => b.SnapshotObs?.Key ?? "", Ord)
             .ToArray();
 
         for (var i = 0; i < ordered.Length; i++)
@@ -886,7 +899,9 @@ public sealed class ColonySaveLineage
         IReadOnlyDictionary<string, NumericValue>? compactedMetrics,
         CheckpointAncestry ancestry,
         Dictionary<string, NodeBuilder> validCheckpoints,
-        List<NodeBuilder> builders)
+        List<NodeBuilder> builders,
+        Dictionary<(NodeBuilder Origin, int Tick), NodeBuilder> carriedByParentTick,
+        Dictionary<int, List<NodeBuilder>> unprovenByTick)
     {
         var anchor = ancestry.OfSnapshot(snap);
         if (anchor is { Exact: true } exact && validCheckpoints.TryGetValue(exact.Key, out var cpNode))
@@ -901,11 +916,7 @@ public sealed class ColonySaveLineage
         if (anchor is { Exact: false } carried && validCheckpoints.TryGetValue(carried.Key, out var originCp))
         {
             originCp.CarriedThroughSaveTick = Math.Max(originCp.CarriedThroughSaveTick ?? int.MinValue, snap.SaveTick);
-            var existingCarried = builders.FirstOrDefault(b =>
-                b.Kind == SaveLineageNodeKind.CarriedCheckpointSave
-                && ReferenceEquals(b.ParentBuilder, originCp)
-                && b.SaveTick == snap.SaveTick);
-            if (existingCarried is not null)
+            if (carriedByParentTick.TryGetValue((originCp, snap.SaveTick), out var existingCarried))
             {
                 if (snap.Metrics.Count > 0)
                     existingCarried.SnapshotObs ??= snap;
@@ -914,7 +925,7 @@ public sealed class ColonySaveLineage
                 return;
             }
 
-            builders.Add(new NodeBuilder
+            var createdCarried = new NodeBuilder
             {
                 Kind = SaveLineageNodeKind.CarriedCheckpointSave,
                 ParentState = SaveLineageParentState.ProvenParent,
@@ -931,16 +942,29 @@ public sealed class ColonySaveLineage
                 SnapshotObs = snap.Metrics.Count > 0 ? snap : null,
                 CompactedMetrics = compactedMetrics,
                 CheckpointObs = originCp.CheckpointObs,
-            });
+            };
+            builders.Add(createdCarried);
+            carriedByParentTick[(originCp, snap.SaveTick)] = createdCarried;
             return;
         }
 
-        var existingUnproven = builders.FirstOrDefault(b =>
-            b.Kind == SaveLineageNodeKind.UnprovenSave
-            && b.SaveTick == snap.SaveTick
-            && (b.CampaignId == snap.Identity?.ModCampaignId || b.CampaignId is null || snap.Identity?.ModCampaignId is null)
-            && (ValidUtc(snap.ObservedUtc) is null || b.ObservedUtc == ValidUtc(snap.ObservedUtc)
-                || b.Files.Any(f => f.LastWriteUtc == snap.ObservedUtc)));
+        var snapUtc = ValidUtc(snap.ObservedUtc);
+        var snapUtcNorm = UtcTime.ToUtc(snap.ObservedUtc);
+        NodeBuilder? existingUnproven = null;
+        if (unprovenByTick.TryGetValue(snap.SaveTick, out var candidates))
+        {
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                var b = candidates[i];
+                if ((b.CampaignId == snap.Identity?.ModCampaignId || b.CampaignId is null || snap.Identity?.ModCampaignId is null)
+                    && (snapUtc is null || b.ObservedUtc == snapUtc
+                        || b.Files.Any(f => UtcTime.ToUtc(f.LastWriteUtc) == snapUtcNorm)))
+                {
+                    existingUnproven = b;
+                    break;
+                }
+            }
+        }
         if (existingUnproven is not null)
         {
             if (snap.Metrics.Count > 0)
@@ -950,12 +974,12 @@ public sealed class ColonySaveLineage
             return;
         }
 
-        builders.Add(new NodeBuilder
+        var createdUnproven = new NodeBuilder
         {
             Kind = SaveLineageNodeKind.UnprovenSave,
             ParentState = SaveLineageParentState.NoCheckpoint,
             SaveTick = snap.SaveTick,
-            ObservedUtc = ValidUtc(snap.ObservedUtc),
+            ObservedUtc = snapUtc,
             CampaignId = snap.Identity?.ModCampaignId,
             HasLiveSnapshotOnly = true,
             GameVersion = snap.GameVersion,
@@ -963,7 +987,11 @@ public sealed class ColonySaveLineage
             ActiveDlcIds = snap.ActiveDlcIds?.ToArray() ?? [],
             SnapshotObs = snap.Metrics.Count > 0 ? snap : null,
             CompactedMetrics = compactedMetrics,
-        });
+        };
+        builders.Add(createdUnproven);
+        if (!unprovenByTick.TryGetValue(snap.SaveTick, out var list))
+            unprovenByTick[snap.SaveTick] = list = new List<NodeBuilder>();
+        list.Add(createdUnproven);
     }
 
     private static Dictionary<string, NumericValue>? ExtractCompactedMetrics(SnapshotChartSeries series, int rowIndex)
@@ -1101,31 +1129,74 @@ public sealed class ColonySaveLineage
     {
         // A branch child has rewind evidence when another sibling subtree already reached a strictly later game tick at an
         // earlier wall-clock save timestamp, and this child was saved afterwards at an earlier game tick from the shared parent.
-        foreach (var child in children)
+        var entries = new List<(int Branch, int Tick, DateTime Utc)>();
+        var stack = new Stack<NodeBuilder>();
+        for (var branch = 0; branch < children.Length; branch++)
         {
-            if (child.ObservedUtc is not { } childUtc)
-                continue;
-            if (children.Any(other => !ReferenceEquals(other, child)
-                && SubtreeHasLaterTickBefore(other, child.SaveTick, childUtc)))
+            stack.Clear();
+            stack.Push(children[branch]);
+            while (stack.Count > 0)
             {
-                child.HasRewindEvidence = true;
+                var cur = stack.Pop();
+                if (cur.ObservedUtc is { } utc)
+                    entries.Add((branch, cur.SaveTick, UtcTime.ToUtc(utc)));
+                foreach (var sub in cur.Children)
+                    stack.Push(sub);
             }
         }
-    }
+        if (entries.Count == 0)
+            return;
 
-    private static bool SubtreeHasLaterTickBefore(NodeBuilder root, int tickThreshold, DateTime beforeUtc)
-    {
-        var stack = new Stack<NodeBuilder>();
-        stack.Push(root);
-        while (stack.Count > 0)
+        entries.Sort(static (a, b) => b.Tick.CompareTo(a.Tick));
+        var bestBranch = -1;
+        var bestUtc = DateTime.MaxValue;
+        var secondUtc = DateTime.MaxValue;
+        var minOtherUtcByBranch = new DateTime[children.Length];
+        Array.Fill(minOtherUtcByBranch, DateTime.MaxValue);
+
+        var idx = 0;
+        while (idx < entries.Count)
         {
-            var cur = stack.Pop();
-            if (cur.SaveTick > tickThreshold && cur.ObservedUtc is { } utc && utc < beforeUtc)
-                return true;
-            foreach (var child in cur.Children)
-                stack.Push(child);
+            var tick = entries[idx].Tick;
+            var groupEnd = idx;
+            while (groupEnd < entries.Count && entries[groupEnd].Tick == tick)
+                groupEnd++;
+
+            // Query using strictly greater ticks processed before this group.
+            for (var b = 0; b < children.Length; b++)
+            {
+                if (children[b].SaveTick == tick)
+                    minOtherUtcByBranch[b] = b != bestBranch ? bestUtc : secondUtc;
+            }
+
+            // Commit this tick group into top-2 earliest timestamps across distinct branches.
+            for (var k = idx; k < groupEnd; k++)
+            {
+                var (branch, _, utc) = entries[k];
+                if (branch == bestBranch)
+                {
+                    if (utc < bestUtc)
+                        bestUtc = utc;
+                }
+                else if (utc < bestUtc)
+                {
+                    secondUtc = bestUtc;
+                    bestBranch = branch;
+                    bestUtc = utc;
+                }
+                else if (utc < secondUtc)
+                {
+                    secondUtc = utc;
+                }
+            }
+            idx = groupEnd;
         }
-        return false;
+
+        for (var i = 0; i < children.Length; i++)
+        {
+            if (children[i].ObservedUtc is { } childUtc && minOtherUtcByBranch[i] < UtcTime.ToUtc(childUtc))
+                children[i].HasRewindEvidence = true;
+        }
     }
 
     private static void ComputeDepthWithinTick(List<NodeBuilder> builders)
@@ -1216,7 +1287,7 @@ public sealed class ColonySaveLineage
 
     private static string FirstFileName(NodeBuilder b) => b.Files.FirstOrDefault()?.FileName ?? "";
 
-    private static DateTime? ValidUtc(DateTime utc) => utc == default ? null : utc;
+    private static DateTime? ValidUtc(DateTime utc) => UtcTime.ValidUtc(utc);
 
     private static bool ValidHash(string? s)
         => s is { Length: 64 } && s.All(c => c is >= '0' and <= '9' or >= 'a' and <= 'f');

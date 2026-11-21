@@ -147,37 +147,43 @@ public static class FishingCompletionMetricPatch
     [HarmonyPriority(Priority.Last)]
     public static void Postfix(JobDriver_Fish __instance, ref Toil __result)
     {
-        if (__result?.initAction is not { } original)
+        if (!LiveMetrics.IsRecordingUnit(FishingFamily.Name))
             return;
-
-        var completed = false;
-        __result.initAction = () =>
+        try
         {
-            completed = false;
-            FishingPlacementScope.Run(__instance, "main", original);
-            completed = true;
-        };
+            if (__result?.initAction is not { } original)
+                return;
 
-        // Vanilla Fishing Expanded adds its optional adept catch via AddFinishAction.
-        // An interrupted job that never reached this toil never opens the collector.
-        if (__result.finishActions is not { Count: > 0 } actions)
-            return;
-        for (var i = 0; i < actions.Count; i++)
-        {
-            var action = actions[i];
-            var owner = action.Method.DeclaringType;
-            while (owner?.DeclaringType is { } parent)
-                owner = parent;
-            if (owner?.FullName != "VCE_Fishing.VCE_Fishing_JobDriver_Fish_CompleteFishingToil_PostFix_Patch")
-                continue;
-            actions[i] = () =>
+            var completed = false;
+            __result.initAction = () =>
             {
-                if (completed)
-                    FishingPlacementScope.Run(__instance, FishingPlacementScope.VfeBonusStage, action);
-                else
-                    action();
+                completed = false;
+                FishingPlacementScope.Run(__instance, "main", original);
+                completed = true;
             };
+
+            // Vanilla Fishing Expanded adds its optional adept catch via AddFinishAction.
+            // An interrupted job that never reached this toil never opens the collector.
+            if (__result.finishActions is not { Count: > 0 } actions)
+                return;
+            for (var i = 0; i < actions.Count; i++)
+            {
+                var action = actions[i];
+                var owner = action.Method.DeclaringType;
+                while (owner?.DeclaringType is { } parent)
+                    owner = parent;
+                if (owner?.FullName != "VCE_Fishing.VCE_Fishing_JobDriver_Fish_CompleteFishingToil_PostFix_Patch")
+                    continue;
+                actions[i] = () =>
+                {
+                    if (completed)
+                        FishingPlacementScope.Run(__instance, FishingPlacementScope.VfeBonusStage, action);
+                    else
+                        action();
+                };
+            }
         }
+        catch (Exception e) { LiveMetrics.Fail(FishingFamily.Name, e); }
     }
 }
 
@@ -190,7 +196,12 @@ public static class FishingCandidatesMetricPatch
     [HarmonyAfter("com.VFEFishing")]
     [HarmonyPriority(Priority.Last)]
     public static void Postfix(Pawn pawn, IntVec3 cell, bool animalFishing, List<Thing>? __result)
-        => FishingPlacementScope.SetCandidates(pawn, cell, animalFishing, __result);
+    {
+        if (!LiveMetrics.IsRecordingUnit(FishingFamily.Name))
+            return;
+        try { FishingPlacementScope.SetCandidates(pawn, cell, animalFishing, __result); }
+        catch (Exception e) { LiveMetrics.Fail(FishingFamily.Name, e); }
+    }
 }
 
 /// <summary>Only the inner GenPlace overload, which the outer overload delegates to, is patched.</summary>
@@ -204,5 +215,10 @@ public static class FishingAcceptedPlacementMetricPatch
 {
     [HarmonyPrefix]
     public static void Prefix(Thing thing, IntVec3 center, Map map, ThingPlaceMode mode, ref Action<Thing, int> placedAction)
-        => FishingPlacementScope.Observe(thing, center, map, mode, ref placedAction);
+    {
+        if (!LiveMetrics.IsRecordingUnit(FishingFamily.Name))
+            return;
+        try { FishingPlacementScope.Observe(thing, center, map, mode, ref placedAction); }
+        catch (Exception e) { LiveMetrics.Fail(FishingFamily.Name, e); }
+    }
 }

@@ -28,9 +28,10 @@ public sealed class RimworldStatisticsMod : Mod
     private static void ApplyLiveSelectionIfChanged()
     {
         var desired = Settings.DesiredSelection;
-        if (desired.Enabled == ActiveAcquisitionSelection.Enabled &&
-            desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
-                .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds))
+        if (desired.Enabled == ActiveAcquisitionSelection.Enabled
+            && (ReferenceEquals(desired.ExplicitUnitIds, ActiveAcquisitionSelection.ExplicitUnitIds)
+                || desired.ExplicitUnitIds.ToHashSet(StringComparer.Ordinal)
+                    .SetEquals(ActiveAcquisitionSelection.ExplicitUnitIds)))
             return;
 
         // Runtime capture selection is separate from one-time Harmony patch

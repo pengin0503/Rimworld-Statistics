@@ -63,9 +63,9 @@ public sealed record ApiMetricDefinition
     public string? DescriptionKey { get; init; }
     public IReadOnlyList<ApiPackageRequirement> RequiredPackages { get; init; } = Array.Empty<ApiPackageRequirement>();
 
-    public string MetricId => "mod." + OwnerPackageId.ToLowerInvariant() + "." +
-        FamilyId.ToLowerInvariant() + "." + MetricName.ToLowerInvariant();
-    public string FamilyAcquisitionId => "mod." + OwnerPackageId.ToLowerInvariant() + "." + FamilyId.ToLowerInvariant();
+    public string MetricId => "mod." + (OwnerPackageId ?? "").ToLowerInvariant() + "." +
+        (FamilyId ?? "").ToLowerInvariant() + "." + (MetricName ?? "").ToLowerInvariant();
+    public string FamilyAcquisitionId => "mod." + (OwnerPackageId ?? "").ToLowerInvariant() + "." + (FamilyId ?? "").ToLowerInvariant();
 }
 
 /// <summary>Called only by an external provider, never exposes mutable game/profile objects.</summary>
@@ -74,17 +74,21 @@ public interface IStatisticsHost
     int ApiMajor { get; }
     int ApiMinor { get; }
 
-    /// <summary>Call in the MOD constructor (after Statistics in load order). Snapshot readers run after successful saves.</summary>
+    /// <summary>Call in the MOD constructor (after Statistics in load order). Snapshot readers run after successful saves (null for unavailable, finite |value| &lt;= 1e12).</summary>
     ApiRegistrationResult Register(ApiMetricDefinition metric, Func<double?>? captureSnapshot = null);
 
-    /// <summary>Call for one confirmed, game-thread scalar event. uniqueEventId is hashed before persistence.</summary>
+    /// <summary>
+    /// Call for one confirmed, game-thread scalar event. uniqueEventId is hashed before persistence.
+    /// Value must be finite with |value| &lt;= 1e12 (Count requires 1; Sum/Mean accept signed values in range).
+    /// </summary>
     ApiRecordResult RecordEvent(string metricId, string uniqueEventId, double value = 1);
 
     /// <summary>
     /// Call for one confirmed, game-thread breakdown event attributed to <paramref name="breakdownKey"/> (SDK 1.2+).
-    /// Requires <see cref="ApiMetricDefinition.HasBreakdown"/> = true. Both uniqueEventId deduplication and per-metric
-    /// breakdown buckets are strictly capped; exceeding either cap returns <see cref="ApiRecordResult.CapExceeded"/>
-    /// and marks the metric partial rather than silently dropping activity.
+    /// Requires <see cref="ApiMetricDefinition.HasBreakdown"/> = true, finite non-negative value (0 &lt;= value &lt;= 1e12;
+    /// Count requires 1). Both uniqueEventId deduplication and per-metric breakdown buckets (max 64) are strictly capped;
+    /// exceeding either cap returns <see cref="ApiRecordResult.CapExceeded"/>, weakens only that metric to partial,
+    /// and rejects subsequent breakdown events on that metric.
     /// </summary>
     ApiRecordResult RecordBreakdownEvent(string metricId, string uniqueEventId, string breakdownKey, double value = 1);
 }

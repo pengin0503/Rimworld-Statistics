@@ -16,7 +16,15 @@ internal static class CaravanProbe
 {
     public static string Id(Caravan c) => "Caravan_" + c.ID;
 
-    public static int PlayerCaravans() => Find.WorldObjects.Caravans.Count(c => c.IsPlayerControlled);
+    public static int PlayerCaravans()
+    {
+        var count = 0;
+        var caravans = Find.WorldObjects.Caravans;
+        for (var i = 0; i < caravans.Count; i++)
+            if (caravans[i].IsPlayerControlled)
+                count++;
+        return count;
+    }
 }
 
 [MetricAdapter(CaravanFamily.Name)]
@@ -26,10 +34,12 @@ public static class CaravanDepartMetricPatch
 {
     public static void Postfix(Caravan __result)
     {
-        if (__result is not { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (__result is not { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var id = CaravanProbe.Id(__result);
             var tick = GameFacts.Tick;
             GameFacts.Record(CaravanFamily.Name, s => CaravanFamily.Departed(s, id, tick));
@@ -43,15 +53,23 @@ public static class CaravanDepartMetricPatch
 public static class CaravanStepMetricPatch
 {
     public static void Prefix(Caravan ___caravan, out PlanetTile __state)
-        => __state = ___caravan is { IsPlayerControlled: true } ? ___caravan.Tile : PlanetTile.Invalid;
+    {
+        __state = PlanetTile.Invalid;
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try { __state = ___caravan is { IsPlayerControlled: true } ? ___caravan.Tile : PlanetTile.Invalid; }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
+    }
 
     public static void Postfix(Caravan ___caravan, PlanetTile __state)
     {
-        if (___caravan is not { IsPlayerControlled: true } || !__state.Valid || ___caravan.Tile == __state
-            || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!__state.Valid || !LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (___caravan is not { IsPlayerControlled: true } || ___caravan.Tile == __state
+                || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var now = ___caravan.Tile;
             var adjacent = Find.WorldGrid.IsNeighbor(__state, now);
             var id = CaravanProbe.Id(___caravan);
@@ -69,11 +87,13 @@ public static class CaravanReturnMetricPatch
 {
     public static void Prefix(Caravan caravan, Map map)
     {
-        if (caravan is not { IsPlayerControlled: true } || map is not { IsPlayerHome: true }
-            || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (caravan is not { IsPlayerControlled: true } || map is not { IsPlayerHome: true }
+                || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var id = CaravanProbe.Id(caravan);
             var tick = GameFacts.Tick;
             GameFacts.Record(CaravanFamily.Name, s => CaravanFamily.Returned(s, id, tick));
@@ -88,12 +108,16 @@ public static class CaravanMemberDiedMetricPatch
 {
     public static void Postfix(Caravan __instance)
     {
-        if (__instance is not { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
-            if (__instance.PawnsListForReading.Any(p => !p.Dead))
+            if (__instance is not { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
                 return;
+            var pawns = __instance.PawnsListForReading;
+            for (var i = 0; i < pawns.Count; i++)
+                if (!pawns[i].Dead)
+                    return;
             var id = CaravanProbe.Id(__instance);
             GameFacts.Record(CaravanFamily.Name, s => CaravanFamily.Lost(s, id));
         }
@@ -107,10 +131,12 @@ public static class CaravanAddedMetricPatch
 {
     public static void Postfix(WorldObject o)
     {
-        if (o is not Caravan { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (o is not Caravan { IsPlayerControlled: true } || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var n = CaravanProbe.PlayerCaravans();
             GameFacts.Record(CaravanFamily.Name, s => CaravanFamily.Concurrent(s, n));
         }
@@ -124,10 +150,12 @@ public static class CaravanRemovedMetricPatch
 {
     public static void Prefix(WorldObject o)
     {
-        if (o is not Caravan { IsPlayerControlled: true } c || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (o is not Caravan { IsPlayerControlled: true } c || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var id = CaravanProbe.Id(c);
             GameFacts.Record(CaravanFamily.Name, s => CaravanFamily.Aborted(s, id));   // a return or a loss already closed it
         }
@@ -144,8 +172,14 @@ public static class CaravanAmbushMetricPatch
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms)
     {
-        if (__result && __instance?.def != null && Ambushes.Contains(__instance.def.defName) && parms?.target is Caravan { IsPlayerControlled: true })
-            GameFacts.Record(CaravanFamily.Name, CaravanFamily.Ambushed);
+        if (!__result || !LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try
+        {
+            if (__instance?.def != null && Ambushes.Contains(__instance.def.defName) && parms?.target is Caravan { IsPlayerControlled: true })
+                GameFacts.Record(CaravanFamily.Name, CaravanFamily.Ambushed);
+        }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
     }
 }
 
@@ -156,16 +190,27 @@ public static class SettlementDefeatedMetricPatch
     public static void Prefix(Settlement factionBase, out bool __state)
     {
         __state = false;
-        if (factionBase is not { Destroyed: false } || factionBase.Faction == null)
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
-        try { __state = factionBase.Faction.HostileTo(GameFacts.PlayerFaction); }
+        try
+        {
+            if (factionBase is not { Destroyed: false } || factionBase.Faction == null)
+                return;
+            __state = GameFacts.IsHostileToPlayer(factionBase.Faction);
+        }
         catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
     }
 
     public static void Postfix(Settlement factionBase, bool __state)
     {
-        if (__state && factionBase.Destroyed)
-            GameFacts.Record(CaravanFamily.Name, CaravanFamily.SiteCleared);
+        if (!__state || !LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try
+        {
+            if (factionBase is { Destroyed: true })
+                GameFacts.Record(CaravanFamily.Name, CaravanFamily.SiteCleared);
+        }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
     }
 }
 
@@ -176,8 +221,14 @@ public static class AbandonMetricPatch
 {
     public static void Postfix(MapParent settlement)
     {
-        if (settlement != null)
-            GameFacts.Record(CaravanFamily.Name, CaravanFamily.Abandoned);
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try
+        {
+            if (settlement != null)
+                GameFacts.Record(CaravanFamily.Name, CaravanFamily.Abandoned);
+        }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
     }
 }
 
@@ -185,14 +236,26 @@ public static class AbandonMetricPatch
 [HarmonyPatch(typeof(SettleInEmptyTileUtility), nameof(SettleInEmptyTileUtility.Settle))]
 public static class SettleEmptyMetricPatch
 {
-    public static void Postfix() => GameFacts.Record(CaravanFamily.Name, CaravanFamily.Founded);
+    public static void Postfix()
+    {
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try { GameFacts.Record(CaravanFamily.Name, CaravanFamily.Founded); }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
+    }
 }
 
 [MetricAdapter(CaravanFamily.Name)]
 [HarmonyPatch(typeof(SettleInExistingMapUtility), nameof(SettleInExistingMapUtility.Settle))]
 public static class SettleExistingMetricPatch
 {
-    public static void Postfix() => GameFacts.Record(CaravanFamily.Name, CaravanFamily.Founded);
+    public static void Postfix()
+    {
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
+            return;
+        try { GameFacts.Record(CaravanFamily.Name, CaravanFamily.Founded); }
+        catch (Exception e) { LiveMetrics.Fail(CaravanFamily.Name, e); }
+    }
 }
 
 /// <summary>
@@ -208,6 +271,7 @@ internal static class ShrineProbe
 
     private static readonly object Gate = new();
     private static volatile Dictionary<int, (CellRect Rect, string Key)[]> watched = new();
+    private static readonly Dictionary<int, (CellRect Rect, string Key)[]> StagedMaps = new();
 
     public static bool Empty => watched.Count == 0;
 
@@ -239,11 +303,13 @@ internal static class ShrineProbe
     {
         lock (Gate)
         {
+            var array = entries.Count == 0 ? Array.Empty<(CellRect Rect, string Key)>() : entries.ToArray();
+            StagedMaps[mapUniqueId] = array;
             var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
-            if (entries.Count == 0)
+            if (array.Length == 0)
                 next.Remove(mapUniqueId);
             else
-                next[mapUniqueId] = entries.ToArray();
+                next[mapUniqueId] = array;
             watched = next;
         }
     }
@@ -252,12 +318,19 @@ internal static class ShrineProbe
     {
         lock (Gate)
         {
+            StagedMaps.Remove(mapUniqueId);
             if (!watched.ContainsKey(mapUniqueId))
                 return;
             var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
             next.Remove(mapUniqueId);
             watched = next;
         }
+    }
+
+    public static void ClearStagedMap(int mapUniqueId)
+    {
+        lock (Gate)
+            StagedMaps.Remove(mapUniqueId);
     }
 
     public static void RegisterMap(FamilyState s, Map map, int tick)
@@ -283,7 +356,7 @@ internal static class ShrineProbe
         Rebuild(s);
     }
 
-    /// <summary>The lookup of watched shrines by map, from the family's own state.</summary>
+    /// <summary>The lookup of watched shrines by map, from the family's own state (preserving pending async-staged maps).</summary>
     public static void Rebuild(FamilyState? s)
     {
         if (s is null)
@@ -304,7 +377,16 @@ internal static class ShrineProbe
         }
         var next = staging.ToDictionary(kv => kv.Key, kv => kv.Value.ToArray());
         lock (Gate)
+        {
+            foreach (var (uid, entries) in StagedMaps)
+            {
+                if (entries.Length == 0)
+                    next.Remove(uid);
+                else if (!next.ContainsKey(uid))
+                    next[uid] = entries;
+            }
             watched = next;
+        }
     }
 
     /// <summary>After <c>FogGrid.Unfog(c)</c>: a watched shrine around <paramref name="c"/> whose centre is clear now was opened.</summary>
@@ -323,12 +405,24 @@ internal static class ShrineProbe
         {
             if (watched.TryGetValue(map.uniqueID, out var currentList))
             {
-                var remaining = currentList.Where(item => !opened.Contains(item.Key)).ToArray();
+                var remainingList = new List<(CellRect Rect, string Key)>(currentList.Length);
+                for (var i = 0; i < currentList.Length; i++)
+                    if (!opened.Contains(currentList[i].Key))
+                        remainingList.Add(currentList[i]);
                 var next = new Dictionary<int, (CellRect Rect, string Key)[]>(watched);
-                if (remaining.Length == 0)
+                if (remainingList.Count == 0)
+                {
                     next.Remove(map.uniqueID);
+                    if (StagedMaps.ContainsKey(map.uniqueID))
+                        StagedMaps[map.uniqueID] = Array.Empty<(CellRect, string)>();
+                }
                 else
-                    next[map.uniqueID] = remaining;
+                {
+                    var remArray = remainingList.ToArray();
+                    next[map.uniqueID] = remArray;
+                    if (StagedMaps.ContainsKey(map.uniqueID))
+                        StagedMaps[map.uniqueID] = remArray;
+                }
                 watched = next;
             }
         }
@@ -343,7 +437,10 @@ internal static class ShrineProbe
     public static void Reset()
     {
         lock (Gate)
+        {
             watched = new Dictionary<int, (CellRect Rect, string Key)[]>();
+            StagedMaps.Clear();
+        }
     }
 }
 
@@ -353,7 +450,7 @@ public static class ShrineUnfogMetricPatch
 {
     public static void Postfix(Map ___map, IntVec3 c)
     {
-        if (ShrineProbe.Empty || ___map == null)
+        if (ShrineProbe.Empty || ___map == null || !LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
@@ -373,11 +470,13 @@ public static class ShrineApproachMetricPatch
 {
     public static void Prefix(PawnTrigger __instance)
     {
-        if (__instance is not RectTrigger trigger || !ShrineProbe.IsShrineTrigger(trigger) || !trigger.Spawned
-            || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(CaravanFamily.Name))
             return;
         try
         {
+            if (__instance is not RectTrigger trigger || !ShrineProbe.IsShrineTrigger(trigger) || !trigger.Spawned
+                || !LiveMetrics.CanCaptureEvent(CaravanFamily.Name))
+                return;
             var tick = GameFacts.Tick;
             GameFacts.Record(CaravanFamily.Name, s =>
             {
@@ -401,12 +500,14 @@ public static class ShrineMapGeneratedMetricPatch
         try
         {
             var entries = ShrineProbe.CaptureSealedEntries(__result);
-            ShrineProbe.StageMapEntries(__result.uniqueID, entries);
+            var mapUniqueId = __result.uniqueID;
+            ShrineProbe.StageMapEntries(mapUniqueId, entries);
             var tick = GameFacts.Tick;
             LiveMetrics.RecordOrDefer(CaravanFamily.Name, s =>
             {
                 foreach (var (_, key) in entries)
                     CaravanFamily.ShrineSealed(s, key, tick);
+                ShrineProbe.ClearStagedMap(mapUniqueId);
                 ShrineProbe.Rebuild(s);
             });
         }

@@ -44,7 +44,7 @@ public readonly record struct ChronicleDayRange(
         or ChronicleDayRangeStatus.InvalidEndDay
         or ChronicleDayRangeStatus.InvalidBothDays;
 
-    public bool IsReversed => Status == ChronicleDayRangeStatus.ReversedRange;
+    public bool IsReversed => Status == ChronicleDayRangeStatus.ReversedRange || WasReversed;
 
     public bool HighlightStartField => Status is ChronicleDayRangeStatus.InvalidStartDay
         or ChronicleDayRangeStatus.InvalidBothDays
@@ -242,12 +242,12 @@ public static class ColonyChronicleFilter
     }
 
     private static bool IsBeforeStartDay(int tick, decimal minDay)
-        => minDay.Scale <= 1
+        => Math.Round(minDay, 1) == minDay
             ? DisplayedDay(tick) < minDay
             : (decimal)tick < minDay * StatFormat.TicksPerDay;
 
     private static bool IsAfterEndDay(int tick, decimal maxDay)
-        => maxDay.Scale <= 1
+        => Math.Round(maxDay, 1) == maxDay
             ? DisplayedDay(tick) > maxDay
             : (decimal)tick > maxDay * StatFormat.TicksPerDay;
 

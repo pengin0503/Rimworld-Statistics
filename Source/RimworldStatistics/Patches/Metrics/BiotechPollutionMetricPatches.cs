@@ -44,6 +44,8 @@ public static class BiotechPlayerCleanupJobMetricPatch
     public static void Prefix(JobDriver_ClearPollution __instance, Map map, out bool __state)
     {
         __state = false;
+        if (!LiveMetrics.IsRecordingUnit(BiotechFamily.Name))
+            return;
         try
         {
             __state = __instance?.pawn != null && GameFacts.IsPlayerFaction(__instance.pawn.Faction)
@@ -58,7 +60,10 @@ public static class BiotechPlayerCleanupJobMetricPatch
     public static Exception? Finalizer(bool __state, Exception? __exception)
     {
         if (__state)
-            BiotechCleanupScope.Exit();
+        {
+            try { BiotechCleanupScope.Exit(); }
+            catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }
+        }
         return __exception;
     }
 }
@@ -70,7 +75,7 @@ public static class BiotechPollutionCellClearedMetricPatch
     public static void Prefix(PollutionGrid __instance, IntVec3 cell, bool isPolluted, out bool __state)
     {
         __state = false;
-        if (isPolluted || !ReferenceEquals(BiotechCleanupScope.Current, __instance))
+        if (isPolluted || !LiveMetrics.IsRecordingUnit(BiotechFamily.Name) || !ReferenceEquals(BiotechCleanupScope.Current, __instance))
             return;
         try { __state = __instance.IsPolluted(cell); }
         catch (Exception e) { LiveMetrics.Fail(BiotechFamily.Name, e); }

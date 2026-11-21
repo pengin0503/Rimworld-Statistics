@@ -13,9 +13,11 @@ public static class IngestedMetricPatch
 {
     public static void Postfix(Thing __instance, float __result, Pawn ingester)
     {
+        if (!(__result > 0f) || (!LiveMetrics.IsRecordingUnit(FoodFamily.Name) && !LiveMetrics.IsRecordingUnit(ChoreFamily.Name)))
+            return;
         try
         {
-            if (ingester == null || !(__result > 0f))
+            if (ingester == null)
                 return;
             if (GameFacts.IsFreeColonistSafe(ingester))
             {
@@ -49,6 +51,8 @@ public static class RotMetricPatch
     public static void Prefix(CompRottable __instance, out int __state)
     {
         __state = 0;
+        if (!LiveMetrics.IsRecordingUnit(FoodFamily.Name))
+            return;
         try
         {
             var t = __instance?.parent;
@@ -63,7 +67,7 @@ public static class RotMetricPatch
 
     public static void Postfix(CompRottable __instance, int __state)
     {
-        if (__state <= 0)
+        if (__state <= 0 || !LiveMetrics.IsRecordingUnit(FoodFamily.Name))
             return;
         try
         {
@@ -90,7 +94,14 @@ internal static class GrowingProbe
         return n;
     }
 
-    public static int Cells() => Find.Maps.Sum(CellsOn);
+    public static int Cells()
+    {
+        var total = 0;
+        var maps = Find.Maps;
+        for (var i = 0; i < maps.Count; i++)
+            total += CellsOn(maps[i]);
+        return total;
+    }
 
     public static void Changed(int delta)
     {
@@ -105,11 +116,18 @@ internal static class GrowingProbe
 [HarmonyPatch(typeof(Zone), nameof(Zone.AddCell))]
 public static class GrowingCellAddedMetricPatch
 {
-    public static void Prefix(Zone __instance, out int __state) => __state = __instance is Zone_Growing ? __instance.CellCount : -1;
+    public static void Prefix(Zone __instance, out int __state)
+    {
+        __state = -1;
+        if (!LiveMetrics.IsRecordingUnit(FoodFamily.Name))
+            return;
+        try { __state = __instance is Zone_Growing ? __instance.CellCount : -1; }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
+    }
 
     public static void Postfix(Zone __instance, int __state)
     {
-        if (__state < 0)
+        if (__state < 0 || !LiveMetrics.IsRecordingUnit(FoodFamily.Name))
             return;
         try { GrowingProbe.Changed(__instance.CellCount - __state); }
         catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
@@ -120,11 +138,18 @@ public static class GrowingCellAddedMetricPatch
 [HarmonyPatch(typeof(Zone), nameof(Zone.RemoveCell))]
 public static class GrowingCellRemovedMetricPatch
 {
-    public static void Prefix(Zone __instance, out int __state) => __state = __instance is Zone_Growing ? __instance.CellCount : -1;
+    public static void Prefix(Zone __instance, out int __state)
+    {
+        __state = -1;
+        if (!LiveMetrics.IsRecordingUnit(FoodFamily.Name))
+            return;
+        try { __state = __instance is Zone_Growing ? __instance.CellCount : -1; }
+        catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }
+    }
 
     public static void Postfix(Zone __instance, int __state)
     {
-        if (__state < 0)
+        if (__state < 0 || !LiveMetrics.IsRecordingUnit(FoodFamily.Name))
             return;
         try { GrowingProbe.Changed(__instance.CellCount - __state); }
         catch (Exception e) { LiveMetrics.Fail(FoodFamily.Name, e); }

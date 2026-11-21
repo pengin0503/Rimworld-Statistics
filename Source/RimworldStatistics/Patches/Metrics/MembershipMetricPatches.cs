@@ -25,10 +25,12 @@ public static class SetFactionMetricPatch
     public static void Prefix(Pawn __instance, out Before __state)
     {
         __state = default;
-        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name) && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name))
             return;
         try
         {
+            if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
+                return;
             __state = new Before
             {
                 Member = GameFacts.IsMember(__instance),
@@ -44,10 +46,12 @@ public static class SetFactionMetricPatch
 
     public static void Postfix(Pawn __instance, Before __state)
     {
-        if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name) && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name))
             return;
         try
         {
+            if (__instance == null || !UnityData.IsInMainThread || GameFacts.PlayerFaction is null)
+                return;
             var member = GameFacts.IsMember(__instance);
             var lostPlayer = __state.Player && !GameFacts.IsPlayerFaction(__instance.Faction);
             if (member == __state.Member && !lostPlayer)
@@ -87,19 +91,25 @@ public static class EmancipateSlaveMetricPatch
     public static void Prefix(Pawn slave, out (bool Slave, bool Member) __state)
     {
         __state = default;
-        if (slave == null)
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name) && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name))
             return;
-        try { __state = (slave.IsSlaveOfColony, GameFacts.IsMember(slave)); }
+        try
+        {
+            if (slave == null)
+                return;
+            __state = (GameFacts.IsSlaveOfColonySafe(slave), GameFacts.IsMember(slave));
+        }
         catch (Exception e) { GameFacts.FailAll(e, MembershipFamily.Name, LifetimeFamily.Name); }
     }
 
     public static void Postfix(Pawn slave, (bool Slave, bool Member) __state)
     {
-        if (slave == null || !__state.Slave || slave.IsSlave
-            || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name))
+        if (!__state.Slave || (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name) && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name)))
             return;
         try
         {
+            if (slave == null || slave.IsSlave || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name))
+                return;
             var id = GameFacts.Id(slave);
             var tick = GameFacts.Tick;
             var member = GameFacts.IsMember(slave);
@@ -135,11 +145,15 @@ public static class BirthMetricPatch
 {
     public static void Postfix(Thing __result, Thing birtherThing)
     {
-        if (__result is not Pawn baby || baby.Dead || !GameFacts.IsPlayerFaction(baby.Faction) || !baby.RaceProps.Humanlike
-            || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name, BiotechFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(BiotechFamily.Name))
             return;
         try
         {
+            if (__result is not Pawn baby || baby.Dead || !GameFacts.IsPlayerFaction(baby.Faction) || !baby.RaceProps.Humanlike
+                || !GameFacts.AnyRecording(MembershipFamily.Name, LifetimeFamily.Name, BiotechFamily.Name))
+                return;
             var id = GameFacts.Id(baby);
             var tick = GameFacts.Tick;
             var species = GameFacts.Species(baby);
@@ -152,7 +166,7 @@ public static class BirthMetricPatch
             if (birtherThing is Pawn mother)
             {
                 var motherId = GameFacts.Id(mother);
-                var freeColonist = mother.IsFreeNonSlaveColonist;
+                var freeColonist = GameFacts.IsMember(mother);
                 GameFacts.Record(BiotechFamily.Name, s => BiotechFamily.BirthConfirmed(
                     s, motherId, freeColonist, livingBaby: true));
             }
@@ -168,14 +182,23 @@ public static class BirthMetricPatch
 [HarmonyPatch(typeof(KidnappedPawnsTracker), nameof(KidnappedPawnsTracker.Kidnap))]
 public static class KidnapMetricPatch
 {
-    public static void Prefix(Pawn pawn, out bool __state) => __state = pawn != null && GameFacts.IsMember(pawn);
+    public static void Prefix(Pawn pawn, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name))
+            return;
+        try { __state = GameFacts.IsMember(pawn); }
+        catch (Exception e) { LiveMetrics.Fail(MembershipFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn pawn, bool __state, KidnappedPawnsTracker __instance)
     {
-        if (!__state || pawn == null || __instance == null || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
+        if (!__state || !LiveMetrics.IsRecordingUnit(MembershipFamily.Name))
             return;
         try
         {
+            if (pawn == null || __instance == null || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
+                return;
             if (!__instance.KidnappedPawnsListForReading.Contains(pawn))
                 return;
             var id = GameFacts.Id(pawn);
@@ -193,11 +216,13 @@ public static class KidnapReturnMetricPatch
 {
     public static void Postfix(Pawn pawn)
     {
-        if (pawn == null || pawn.Dead || !GameFacts.IsPlayerFaction(pawn.Faction)
-            || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MembershipFamily.Name))
             return;
         try
         {
+            if (pawn == null || pawn.Dead || !GameFacts.IsPlayerFaction(pawn.Faction)
+                || !LiveMetrics.CanCaptureEvent(MembershipFamily.Name))
+                return;
             var id = GameFacts.Id(pawn);
             var tick = GameFacts.Tick;
             GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapReturned(s, id, tick));
@@ -214,17 +239,28 @@ public static class CapturedMetricPatch
     public static void Prefix(Pawn ___pawn, out (bool Hostile, bool Prisoner) __state)
     {
         __state = default;
-        if (___pawn == null)
+        if (!LiveMetrics.IsRecordingUnit(SocialFamily.Name))
             return;
-        try { __state = (___pawn.HostileTo(GameFacts.PlayerFaction), ___pawn.IsPrisonerOfColony); }
+        try
+        {
+            if (___pawn == null)
+                return;
+            __state = (GameFacts.IsHostileToPlayer(___pawn), GameFacts.IsPrisonerOfColonySafe(___pawn));
+        }
         catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
     }
 
     public static void Postfix(Pawn ___pawn, Faction by, (bool Hostile, bool Prisoner) __state)
     {
-        if (___pawn == null || !__state.Hostile || __state.Prisoner || !GameFacts.IsPlayerFaction(by) || !___pawn.IsPrisonerOfColony)
+        if (!__state.Hostile || __state.Prisoner || !LiveMetrics.IsRecordingUnit(SocialFamily.Name))
             return;
-        GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);
+        try
+        {
+            if (___pawn == null || !GameFacts.IsPlayerFaction(by) || !GameFacts.IsPrisonerOfColonySafe(___pawn))
+                return;
+            GameFacts.Record(SocialFamily.Name, SocialFamily.Captured);
+        }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
     }
 }
 
@@ -232,12 +268,25 @@ public static class CapturedMetricPatch
 [HarmonyPatch(typeof(GenGuest), nameof(GenGuest.PrisonerRelease))]
 public static class PrisonerReleaseMetricPatch
 {
-    public static void Prefix(Pawn p, out bool __state) => __state = p != null && p.IsPrisonerOfColony;
+    public static void Prefix(Pawn p, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(SocialFamily.Name))
+            return;
+        try { __state = GameFacts.IsPrisonerOfColonySafe(p); }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
+    }
 
     public static void Postfix(Pawn p, bool __state)
     {
-        if (!__state || p == null || p.IsPrisonerOfColony)
+        if (!__state || !LiveMetrics.IsRecordingUnit(SocialFamily.Name))
             return;
-        GameFacts.Record(SocialFamily.Name, SocialFamily.PrisonerReleased);
+        try
+        {
+            if (p == null || GameFacts.IsPrisonerOfColonySafe(p))
+                return;
+            GameFacts.Record(SocialFamily.Name, SocialFamily.PrisonerReleased);
+        }
+        catch (Exception e) { LiveMetrics.Fail(SocialFamily.Name, e); }
     }
 }

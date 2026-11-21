@@ -35,10 +35,12 @@ public static class IncidentExecuteMetricPatch
     public static void Prefix(IncidentWorker __instance, IncidentParms parms, out object? __state)
     {
         __state = null;
-        if (!LiveMetrics.CanCaptureEvent(RaidFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(RaidFamily.Name))
             return;
         try
         {
+            if (!LiveMetrics.CanCaptureEvent(RaidFamily.Name))
+                return;
             var scope = new RaidProbe.Scope { SkippedForNoColonists = GameFacts.SkippedForNoColonists(__instance, parms) };
             RaidProbe.Stack.Add(scope);
             __state = scope;
@@ -48,14 +50,16 @@ public static class IncidentExecuteMetricPatch
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, object? __state)
     {
-        if (__state is not RaidProbe.Scope scope || !__result || scope.SkippedForNoColonists || __instance?.def == null)
+        if (__state is not RaidProbe.Scope scope || !__result || scope.SkippedForNoColonists || !LiveMetrics.IsRecordingUnit(RaidFamily.Name))
             return;
         try
         {
+            if (__instance?.def == null)
+                return;
             var tick = GameFacts.Tick;
             var def = __instance.def.defName;
-            var isEnemyRaid = __instance is IncidentWorker_RaidEnemy && scope.Pawns != null && parms?.faction != null
-                && parms.faction.HostileTo(GameFacts.PlayerFaction);
+            var isEnemyRaid = __instance is IncidentWorker_RaidEnemy && scope.Pawns != null
+                && GameFacts.IsHostileToPlayer(parms?.faction);
             RaidArrival? arrival = isEnemyRaid
                 ? new RaidArrival
                 {
@@ -64,7 +68,7 @@ public static class IncidentExecuteMetricPatch
                     Points = parms.points,
                     ArrivalMode = parms.raidArrivalMode?.defName,
                     Strategy = parms.raidStrategy?.defName,
-                    FactionDef = parms.faction.def?.defName,
+                    FactionDef = parms.faction!.def?.defName,
                 }
                 : null;
             GameFacts.Record(RaidFamily.Name, s =>
@@ -80,7 +84,10 @@ public static class IncidentExecuteMetricPatch
     public static Exception? Finalizer(Exception? __exception, object? __state)
     {
         if (__state is RaidProbe.Scope scope)
-            RaidProbe.Stack.Remove(scope);
+        {
+            try { RaidProbe.Stack.Remove(scope); }
+            catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
+        }
         return __exception;
     }
 }
@@ -91,11 +98,17 @@ public static class RaidGenerateMetricPatch
 {
     public static void Postfix(bool __result, List<Pawn> pawns, bool debugTest)
     {
-        if (!__result || debugTest || pawns == null || RaidProbe.Stack.Count == 0)
+        if (!__result || debugTest || pawns == null || !LiveMetrics.IsRecordingUnit(RaidFamily.Name))
             return;
         try
         {
-            RaidProbe.Stack[^1].Pawns = pawns.Where(p => p != null).Select(GameFacts.Id).ToList();
+            if (RaidProbe.Stack.Count == 0)
+                return;
+            var ids = new List<string>(pawns.Count);
+            for (var i = 0; i < pawns.Count; i++)
+                if (pawns[i] is { } p)
+                    ids.Add(GameFacts.Id(p));
+            RaidProbe.Stack[^1].Pawns = ids;
         }
         catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
     }

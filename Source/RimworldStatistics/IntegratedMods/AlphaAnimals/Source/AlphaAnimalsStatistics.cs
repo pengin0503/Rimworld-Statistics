@@ -61,22 +61,13 @@ internal static class AlphaAnimalsStatistics
             swarmlingTick = OutcomeMetric.Method(swarmling, "CompTick", typeof(void));
         }
 
-        try
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        PatchWithSelfTranspiler(patcher, larvaeTick,
+            nameof(TranspileCompMetamorph), nameof(AfterMetamorph), nameof(CleanupMetamorph));
+        if (swarmlingTick is not null)
         {
-            PatchWithSelfTranspiler(harmony, larvaeTick,
+            PatchWithSelfTranspiler(patcher, swarmlingTick,
                 nameof(TranspileCompMetamorph), nameof(AfterMetamorph), nameof(CleanupMetamorph));
-            if (swarmlingTick is not null)
-            {
-                PatchWithSelfTranspiler(harmony, swarmlingTick,
-                    nameof(TranspileCompMetamorph), nameof(AfterMetamorph), nameof(CleanupMetamorph));
-            }
-        }
-        catch
-        {
-            harmony.Unpatch(larvaeTick, HarmonyPatchType.All, harmony.Id);
-            if (swarmlingTick is not null)
-                harmony.Unpatch(swarmlingTick, HarmonyPatchType.All, harmony.Id);
-            throw;
         }
     }
 
@@ -96,32 +87,21 @@ internal static class AlphaAnimalsStatistics
             blackCocoonTick = OutcomeMetric.Method(blackCocoon, "Tick", typeof(void));
         }
 
-        try
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        PatchWithSelfTranspiler(patcher, compCocoonTick,
+            nameof(TranspileCompHatch), nameof(AfterHatch), nameof(CleanupHatch));
+        if (blackCocoonTick is not null)
         {
-            PatchWithSelfTranspiler(harmony, compCocoonTick,
-                nameof(TranspileCompHatch), nameof(AfterHatch), nameof(CleanupHatch));
-            if (blackCocoonTick is not null)
-            {
-                PatchWithSelfTranspiler(harmony, blackCocoonTick,
-                    nameof(TranspileThingHatch), nameof(AfterHatch), nameof(CleanupHatch));
-            }
-        }
-        catch
-        {
-            harmony.Unpatch(compCocoonTick, HarmonyPatchType.All, harmony.Id);
-            if (blackCocoonTick is not null)
-                harmony.Unpatch(blackCocoonTick, HarmonyPatchType.All, harmony.Id);
-            throw;
+            PatchWithSelfTranspiler(patcher, blackCocoonTick,
+                nameof(TranspileThingHatch), nameof(AfterHatch), nameof(CleanupHatch));
         }
     }
 
-    private static void PatchWithSelfTranspiler(Harmony harmony, MethodInfo target,
+    private static void PatchWithSelfTranspiler(ScopedHarmonyPatcher patcher, MethodInfo target,
         string transpilerName, string postfixName, string finalizerName)
     {
-        harmony.Patch(target,
-            postfix: new HarmonyMethod(typeof(AlphaAnimalsStatistics), postfixName),
-            transpiler: new HarmonyMethod(typeof(AlphaAnimalsStatistics), transpilerName),
-            finalizer: new HarmonyMethod(typeof(AlphaAnimalsStatistics), finalizerName));
+        patcher.Patch(target, typeof(AlphaAnimalsStatistics),
+            postfix: postfixName, transpiler: transpilerName, finalizer: finalizerName);
     }
 
     private static IEnumerable<CodeInstruction> TranspileCompMetamorph(IEnumerable<CodeInstruction> instructions)

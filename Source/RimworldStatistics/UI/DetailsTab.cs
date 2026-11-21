@@ -385,15 +385,29 @@ public static class DetailsTab
         _ => "RWS_Details_ViewAll".Translate(),
     };
 
+    private static object? headerLanguage;
+    private static bool headerByValue;
+    private static bool headerAscending;
+    private static string[]? cachedHeaders;
+
     private static void DrawHeader(Rect rect)
     {
-        var headers = new[]
+        var lang = LanguageDatabase.activeLanguage;
+        if (cachedHeaders is null || !ReferenceEquals(headerLanguage, lang)
+            || headerByValue != byValue || headerAscending != ascending)
         {
-            (string)"RWS_Details_Col_Name".Translate() + (!byValue ? (ascending ? " ▲" : " ▼") : ""),
-            (string)"RWS_Details_Col_Value".Translate() + (byValue ? (ascending ? " ▲" : " ▼") : ""),
-            StateHeader(),
-            CountHeader(),
-        };
+            headerLanguage = lang;
+            headerByValue = byValue;
+            headerAscending = ascending;
+            cachedHeaders =
+            [
+                (string)"RWS_Details_Col_Name".Translate() + (!byValue ? (ascending ? " ▲" : " ▼") : ""),
+                (string)"RWS_Details_Col_Value".Translate() + (byValue ? (ascending ? " ▲" : " ▼") : ""),
+                StateHeader(),
+                CountHeader(),
+            ];
+        }
+        var headers = cachedHeaders;
         var x = rect.x;
         using (UiScopes.GuiState())
         {
@@ -526,7 +540,7 @@ public static class DetailsTab
         var supportsColonyFav = perColony && colonyKey is not null && line.SupportsColonyHistory;
         if (line.MetricKey is { } metricKey && favoritePreferences is not null && !hit.Star.IsEmpty)
         {
-            var savedMetric = favoritePreferences.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal);
+            var savedMetric = favoritePreferences.IsFavoriteMetric(metricKey);
             var savedColony = supportsColonyFav && colonyKey is { } activeKey
                 && ColonyHistoryFavorites.IsFavorite(favoritePreferences, activeKey, selectedColonyStats?.AliasKeys, metricKey);
 
@@ -542,13 +556,7 @@ public static class DetailsTab
                     [
                         new FloatMenuOption(
                             savedMetric ? "RWS_ColonyFav_MenuMetricRemove".Translate() : "RWS_ColonyFav_MenuMetricAdd".Translate(),
-                            () => MutateFavorites(prefs, save, p =>
-                            {
-                                if (p.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
-                                    p.FavoriteMetricKeys.Remove(metricKey);
-                                else if (p.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                                    p.FavoriteMetricKeys.Add(metricKey);
-                            })),
+                            () => MutateFavorites(prefs, save, p => p.ToggleFavoriteMetric(metricKey))),
                         new FloatMenuOption(
                             savedColony
                                 ? "RWS_ColonyFav_MenuColonyRemove".Translate(colonyLabel)
@@ -559,13 +567,7 @@ public static class DetailsTab
                 }
                 else
                 {
-                    MutateFavorites(favoritePreferences, persistFavorites, p =>
-                    {
-                        if (p.FavoriteMetricKeys.Contains(metricKey, StringComparer.Ordinal))
-                            p.FavoriteMetricKeys.Remove(metricKey);
-                        else if (p.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                            p.FavoriteMetricKeys.Add(metricKey);
-                    });
+                    MutateFavorites(favoritePreferences, persistFavorites, p => p.ToggleFavoriteMetric(metricKey));
                 }
             }
         }

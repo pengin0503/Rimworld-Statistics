@@ -1,5 +1,6 @@
 using System.Collections.Concurrent;
 using System.Collections.Frozen;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
 
 namespace RimworldStatistics.Core;
@@ -44,20 +45,28 @@ public sealed class ProfileSession
     private readonly RecorderChartCache _recorderCharts;
     private readonly object _lock = new();
     private readonly object _ioLock = new();
+    private readonly object _preemptGate = new();
+    private CancellationTokenSource _preemptCts = new();
+    private int _cancellableViews;
+
+    private readonly record struct ViewCacheKey(bool IncludeDevMode, string Visible, string Scope);
+    private readonly record struct ColonyReportKey(long Revision, long ArchiveGeneration, StatsView View, string ColonyKey, bool IncludeDevMode);
+
     // The active scope and up to four comparison columns must coexist with the all-colony view.
     // LRU eviction also avoids repeatedly rebuilding recently requested groups when users switch scopes.
     private int _maxCachedViews = ResourcePolicy.StandardCaches.Views;   // set without _lock (volatile), applied under it
-    private readonly Dictionary<(bool IncludeDevMode, string Visible, string Scope), (StatsView View, long LastAccess)> _views = new();
-    private long _viewAccess;
-    private string? _lastVisibilityKey;                   // under _lock: the key of _lastVisibleUnits
-    private IReadOnlyCollection<string>? _lastVisibleUnits;
+    private readonly LinkedList<(ViewCacheKey Key, StatsView View)> _viewOrder = new();
+    private readonly Dictionary<ViewCacheKey, LinkedListNode<(ViewCacheKey Key, StatsView View)>> _views = new();
+    private readonly ConditionalWeakTable<FrozenSet<string>, string> _visibilityKeys = new();
 
     // Colony summaries and chronicles already built for a view (the memory-use and precomputation settings; none kept by
     // default). An entry is used only for the same view object, colony and option while neither the profile nor the
     // archived checkpoint data changed since it was built from them, so it is exactly what building it again would give.
     private int _maxColonyReports;                        // set without _lock (volatile), applied under it
     private int _trimPending;                             // 1: a bound was lowered and not yet applied under _lock
-    private readonly List<ColonyReportEntry> _colonyReports = new();   // under _lock, most recently used last
+    private readonly LinkedList<ColonyReportEntry> _colonyReports = new();   // under _lock, most recently used last
+    private readonly Dictionary<ColonyReportKey, LinkedListNode<ColonyReportEntry>> _colonyReportsByKey = new();
+    private readonly Dictionary<StatsView, List<LinkedListNode<ColonyReportEntry>>> _colonyReportsByView = new(ReferenceEqualityComparer.Instance);
     // Under _lock: bumped before the archive files change and again when archived data replaces inline data.
     private long _archiveGeneration;
 
@@ -197,18 +206,63 @@ public sealed class ProfileSession
         var max = Math.Max(1, _maxCachedViews);
         while (_views.Count > 0 && _views.Count + room > max)
         {
-            var oldest = _views.MinBy(entry => entry.Value.LastAccess);
-            _views.Remove(oldest.Key);
-            var dropped = oldest.Value.View;
-            _colonyReports.RemoveAll(entry => ReferenceEquals(entry.View, dropped));
+            var oldest = _viewOrder.First!;
+            _viewOrder.RemoveFirst();
+            _views.Remove(oldest.Value.Key);
+            DropColonyReportsForViewLocked(oldest.Value.View);
         }
     }
 
     // Under _lock.
     private void TrimColonyReports()
     {
-        if (_colonyReports.Count > _maxColonyReports)
-            _colonyReports.RemoveRange(0, _colonyReports.Count - _maxColonyReports);
+        var max = Math.Max(0, _maxColonyReports);
+        while (_colonyReports.Count > max)
+            RemoveColonyReportNodeLocked(_colonyReports.First!);
+    }
+
+    // Under _lock.
+    private void DropColonyReportsForViewLocked(StatsView view)
+    {
+        if (!_colonyReportsByView.Remove(view, out var nodes))
+            return;
+        for (var i = 0; i < nodes.Count; i++)
+        {
+            var node = nodes[i];
+            _colonyReports.Remove(node);
+            var e = node.Value;
+            _colonyReportsByKey.Remove(new ColonyReportKey(e.Revision, e.ArchiveGeneration, e.View, e.ColonyKey, e.IncludeDevMode));
+        }
+    }
+
+    // Under _lock.
+    private void RemoveColonyReportNodeLocked(LinkedListNode<ColonyReportEntry> node)
+    {
+        _colonyReports.Remove(node);
+        var e = node.Value;
+        _colonyReportsByKey.Remove(new ColonyReportKey(e.Revision, e.ArchiveGeneration, e.View, e.ColonyKey, e.IncludeDevMode));
+        if (_colonyReportsByView.TryGetValue(e.View, out var nodes))
+        {
+            nodes.Remove(node);
+            if (nodes.Count == 0)
+                _colonyReportsByView.Remove(e.View);
+        }
+    }
+
+    // Under _lock.
+    private void ClearViewsLocked()
+    {
+        _views.Clear();
+        _viewOrder.Clear();
+        ClearColonyReportsLocked();
+    }
+
+    // Under _lock.
+    private void ClearColonyReportsLocked()
+    {
+        _colonyReports.Clear();
+        _colonyReportsByKey.Clear();
+        _colonyReportsByView.Clear();
     }
 
     public Exception? LastSaveError => _lastSaveError;
@@ -216,6 +270,8 @@ public sealed class ProfileSession
 
     /// <summary>The latest exception thrown by a change given to <see cref="MutateWithoutBlocking"/>.</summary>
     public Exception? LastQueuedMutationError => _lastQueuedError;
+
+    public void ClearQueuedMutationError() => _lastQueuedError = null;
 
     public void Mutate(Action<Profile> change, SaveMode mode)
     {
@@ -260,6 +316,7 @@ public sealed class ProfileSession
 
     internal (long Before, long After) MutateWithRevision(Action<Profile> change)
     {
+        PreemptCancellableViews();
         lock (_lock)
         {
             ApplyQueuedAndRequestSave();
@@ -290,8 +347,7 @@ public sealed class ProfileSession
         finally
         {
             _mutationDepth--;
-            _views.Clear();
-            _colonyReports.Clear();
+            ClearViewsLocked();
             _changeSeq++;
         }
         return (before, _changeSeq);
@@ -463,6 +519,7 @@ public sealed class ProfileSession
 
     public T Read<T>(Func<Profile, T> read)
     {
+        PreemptCancellableViews();
         lock (_lock)
         {
             ApplyQueuedAndRequestSave();
@@ -512,7 +569,15 @@ public sealed class ProfileSession
             if (_maxColonyReports > 0 && _changeSeq == revision && _archiveGeneration == archiveGeneration
                 && FindColonyReport(revision, archiveGeneration, view, colonyKey, includeDevMode) is null)
             {
-                _colonyReports.Add(new ColonyReportEntry(revision, archiveGeneration, view, colonyKey, includeDevMode, report, chronicle));
+                var entry = new ColonyReportEntry(revision, archiveGeneration, view, colonyKey, includeDevMode, report, chronicle);
+                var node = _colonyReports.AddLast(entry);
+                _colonyReportsByKey[new ColonyReportKey(revision, archiveGeneration, view, colonyKey, includeDevMode)] = node;
+                if (!_colonyReportsByView.TryGetValue(view, out var nodes))
+                {
+                    nodes = new List<LinkedListNode<ColonyReportEntry>>();
+                    _colonyReportsByView[view] = nodes;
+                }
+                nodes.Add(node);
                 TrimColonyReports();
             }
         }
@@ -523,17 +588,12 @@ public sealed class ProfileSession
     private ColonyReportEntry? FindColonyReport(long revision, long archiveGeneration, StatsView view, string colonyKey,
         bool includeDevMode)
     {
-        for (var i = _colonyReports.Count - 1; i >= 0; i--)
-        {
-            var entry = _colonyReports[i];
-            if (entry.Revision != revision || entry.ArchiveGeneration != archiveGeneration || !ReferenceEquals(entry.View, view)
-                || entry.ColonyKey != colonyKey || entry.IncludeDevMode != includeDevMode)
-                continue;
-            _colonyReports.RemoveAt(i);
-            _colonyReports.Add(entry);
-            return entry;
-        }
-        return null;
+        var key = new ColonyReportKey(revision, archiveGeneration, view, colonyKey, includeDevMode);
+        if (!_colonyReportsByKey.TryGetValue(key, out var node))
+            return null;
+        _colonyReports.Remove(node);
+        _colonyReports.AddLast(node);
+        return node.Value;
     }
 
     /// <summary>
@@ -592,6 +652,7 @@ public sealed class ProfileSession
     /// </summary>
     internal T ReadWithRevision<T>(Func<Profile, long, T> read)
     {
+        PreemptCancellableViews();
         lock (_lock)
         {
             ApplyQueuedAndRequestSave();
@@ -601,16 +662,21 @@ public sealed class ProfileSession
 
     public StatsView? TryGetCachedView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null, ViewScope? scope = null)
     {
+        if (!_queued.IsEmpty)
+            return null;
         if (!Monitor.TryEnter(_lock))
             return null;
         try
         {
-            ApplyQueuedAndRequestSave();
-            var key = (options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
-            if (!_views.TryGetValue(key, out var entry))
+            if (!_queued.IsEmpty)
                 return null;
-            _views[key] = (entry.View, ++_viewAccess);
-            return entry.View;
+            TrimIfPending();
+            var key = new ViewCacheKey(options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
+            if (!_views.TryGetValue(key, out var node))
+                return null;
+            _viewOrder.Remove(node);
+            _viewOrder.AddLast(node);
+            return node.Value.View;
         }
         finally
         {
@@ -642,65 +708,138 @@ public sealed class ProfileSession
 
     /// <summary>Colonies and statistics, cached per option set until the next change.</summary>
     public StatsView GetView(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds = null, ViewScope? scope = null)
+        => GetViewCancellable(options, visibleUnitIds, scope, CancellationToken.None);
+
+    /// <summary>Colonies and statistics, cached per option set until the next change.</summary>
+    internal StatsView GetViewCancellable(StatsOptions options, IReadOnlyCollection<string>? visibleUnitIds, ViewScope? scope, CancellationToken ct)
     {
-        bool ledgerChanged;
-        StatsView view;
-        lock (_lock)
+        ct.ThrowIfCancellationRequested();
+        CancellationTokenSource? linkedCts = null;
+        var registeredCancellable = false;
+        if (ct.CanBeCanceled)
         {
-            ApplyQueuedAndRequestSave();
-            var cacheKey = (options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
-            if (_views.TryGetValue(cacheKey, out var cached))
+            lock (_preemptGate)
             {
-                _views[cacheKey] = (cached.View, ++_viewAccess);
-                return cached.View;
+                _cancellableViews++;
+                registeredCancellable = true;
+                linkedCts = CancellationTokenSource.CreateLinkedTokenSource(ct, _preemptCts.Token);
             }
-            var before = LedgerSignature();
-            var colonies = CampaignMatcher.BuildColonies(_profile);
-            var startingBiomes = SmartGroupEvaluator.ResolveStartingBiomesByKey(_profile, colonies);
-            scope?.Apply(_profile, colonies, options, startingBiomes);
-            var stats = StatsCalculator.Calculate(colonies, options);
-            view = new StatsView
-            {
-                Colonies = colonies,
-                Stats = stats,
-                MissingObservations = _profile.SaveObservations.Count(o => !o.Superseded && o.Status != ObservationStatus.Ok),
-                Numeric = MetricCalculator.BuildView(_profile, colonies, stats,
-                    MetricRegistry.Compose(_profile.ModMetricDescriptors,
-                        visibleUnitIds is null ? new HashSet<string>(StringComparer.Ordinal)
-                            : new HashSet<string>(visibleUnitIds, StringComparer.Ordinal))),
-                StartingBiomes = startingBiomes,
-            };
-            ledgerChanged = LedgerSignature() != before;
-            if (ledgerChanged)
-            {
-                _views.Clear();   // other option sets were built before the ledger changed; keep them consistent
-                _colonyReports.Clear();   // built for the views just dropped, and for the previous revision
-                _changeSeq++;
-            }
-            // Keep a complete comparison working set; evict only the least recently accessed views.
-            TrimViews(1);
-            _views[cacheKey] = (view, ++_viewAccess);
         }
-        if (ledgerChanged)
-            Save(SaveMode.Background);   // new colony keys must survive a restart (spec §6.2)
-        return view;
+        else
+        {
+            PreemptCancellableViews();
+        }
+
+        var token = linkedCts?.Token ?? ct;
+        var ledgerChanged = false;
+        StatsView view;
+        try
+        {
+            try
+            {
+                lock (_lock)
+                {
+                    token.ThrowIfCancellationRequested();
+                    ApplyQueuedAndRequestSave();
+                    var cacheKey = new ViewCacheKey(options.IncludeDevMode, VisibilityKeyFor(visibleUnitIds), scope?.CacheKey ?? "");
+                    if (_views.TryGetValue(cacheKey, out var cached))
+                    {
+                        _viewOrder.Remove(cached);
+                        _viewOrder.AddLast(cached);
+                        return cached.Value.View;
+                    }
+                    token.ThrowIfCancellationRequested();
+                    var before = LedgerSignature();
+                    try
+                    {
+                        var colonies = CampaignMatcher.BuildColoniesCancellable(_profile, token);
+                        var attached = MetricCalculator.Attach(_profile, colonies, out var unattributed);
+                        var startingBiomes = SmartGroupEvaluator.ResolveStartingBiomesByKey(attached, colonies);
+                        token.ThrowIfCancellationRequested();
+                        scope?.Apply(_profile, colonies, options, startingBiomes);
+                        var stats = StatsCalculator.CalculateCancellable(colonies, options, token);
+                        var missing = 0;
+                        foreach (var o in _profile.SaveObservations)
+                        {
+                            if (!o.Superseded && o.Status != ObservationStatus.Ok)
+                                missing++;
+                        }
+                        view = new StatsView
+                        {
+                            Colonies = colonies,
+                            Stats = stats,
+                            MissingObservations = missing,
+                            Numeric = MetricCalculator.BuildViewWithAttached(_profile, colonies, stats,
+                                MetricRegistry.Compose(_profile.ModMetricDescriptors,
+                                    visibleUnitIds is null ? new HashSet<string>(StringComparer.Ordinal)
+                                        : new HashSet<string>(visibleUnitIds, StringComparer.Ordinal)),
+                                attached, unattributed, token),
+                            StartingBiomes = startingBiomes,
+                        };
+                    }
+                    finally
+                    {
+                        if (LedgerSignature() != before)
+                        {
+                            ledgerChanged = true;
+                            ClearViewsLocked();   // other option sets were built before the ledger changed; keep them consistent
+                            _changeSeq++;
+                        }
+                    }
+                    // Keep a complete comparison working set; evict only the least recently accessed views.
+                    TrimViews(1);
+                    _views[cacheKey] = _viewOrder.AddLast((cacheKey, view));
+                }
+            }
+            catch (OperationCanceledException) when (!ct.IsCancellationRequested && token.IsCancellationRequested)
+            {
+                // Preempted by a foreground caller waiting on _lock: restart cleanly outside if needed, or retry below if normal thread
+                throw new OperationCanceledException(token);
+            }
+            finally
+            {
+                if (ledgerChanged)
+                    Save(SaveMode.Background);   // new colony keys must survive a restart (spec §6.2)
+            }
+            return view;
+        }
+        finally
+        {
+            linkedCts?.Dispose();
+            if (registeredCancellable)
+            {
+                lock (_preemptGate)
+                    _cancellableViews--;
+            }
+        }
+    }
+
+    private void PreemptCancellableViews()
+    {
+        if (Volatile.Read(ref _cancellableViews) == 0)
+            return;
+        CancellationTokenSource toCancel;
+        lock (_preemptGate)
+        {
+            if (_cancellableViews == 0)
+                return;
+            toCancel = _preemptCts;
+            _preemptCts = new CancellationTokenSource();
+        }
+        toCancel.Cancel();
     }
 
     /// <summary>
-    /// Under _lock. <see cref="VisibilityKey"/>, remembered for the last immutable set: the windows pass the same frozen set
-    /// every frame, and joining its sorted IDs each time only made garbage. Any other collection is keyed afresh.
+    /// Under _lock. <see cref="VisibilityKey"/>, remembered per immutable <see cref="FrozenSet{T}"/> so concurrent
+    /// precomputation and UI scopes never evict each other's cached key. Any other collection is keyed afresh.
     /// </summary>
     private string VisibilityKeyFor(IReadOnlyCollection<string>? unitIds)
     {
-        if (unitIds is FrozenSet<string> && ReferenceEquals(unitIds, _lastVisibleUnits))
-            return _lastVisibilityKey!;
-        var key = VisibilityKey(unitIds);
-        if (unitIds is FrozenSet<string>)
-        {
-            _lastVisibleUnits = unitIds;
-            _lastVisibilityKey = key;
-        }
-        return key;
+        if (unitIds is null || unitIds.Count == 0)
+            return "";
+        if (unitIds is FrozenSet<string> frozen)
+            return _visibilityKeys.GetValue(frozen, static s => VisibilityKey(s));
+        return VisibilityKey(unitIds);
     }
 
     internal static string VisibilityKey(IReadOnlyCollection<string>? unitIds)
@@ -708,7 +847,13 @@ public sealed class ProfileSession
             string.Join("\u001f", unitIds.Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal));
 
     /// <summary>Entries are only appended and their pawn unions only grow, so this changes exactly when the ledger does.</summary>
-    private (int, long) LedgerSignature() => (_profile.ColonyKeys.Count, _profile.ColonyKeys.Sum(k => (long)k.StartingPawnIds.Count));
+    private (int, long) LedgerSignature()
+    {
+        long pawns = 0;
+        foreach (var k in _profile.ColonyKeys)
+            pawns += k.StartingPawnIds.Count;
+        return (_profile.ColonyKeys.Count, pawns);
+    }
 
     /// <summary>Waits for any currently scheduled background write without starting a new write.</summary>
     internal void WaitForBackgroundWrite()
@@ -749,6 +894,7 @@ public sealed class ProfileSession
 
     public void Close()
     {
+        PreemptCancellableViews();
         lock (_ioLock)
         lock (_lock)
         {

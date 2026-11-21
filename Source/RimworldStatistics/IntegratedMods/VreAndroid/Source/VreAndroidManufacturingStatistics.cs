@@ -75,17 +75,9 @@ internal static class VreAndroidManufacturingStatistics
         finishProject = complete;
         spawn = spawnThing;
         project = currentProject;
-        try
-        {
-            harmony.Patch(complete, transpiler: new HarmonyMethod(typeof(VreAndroidManufacturingStatistics), nameof(Observe)));
-            harmony.Patch(ordinary, transpiler: new HarmonyMethod(typeof(VreAndroidManufacturingStatistics), nameof(ObserveOrdinaryCompletion)));
-        }
-        catch
-        {
-            harmony.Unpatch(ordinary, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(complete, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(complete, typeof(VreAndroidManufacturingStatistics), transpiler: nameof(Observe));
+        patcher.Patch(ordinary, typeof(VreAndroidManufacturingStatistics), transpiler: nameof(ObserveOrdinaryCompletion));
     }
 
     private static IEnumerable<CodeInstruction> ObserveOrdinaryCompletion(IEnumerable<CodeInstruction> instructions)
@@ -134,12 +126,12 @@ internal static class VreAndroidManufacturingStatistics
 
     private static void RecordManufacture(Building station)
     {
-        if (active is not { Android: { Spawned: true, Dead: false } pawn } completion ||
-            !GameFacts.IsPlayer(pawn) || !ReferenceEquals(pawn.Map, completion.Map))
+        if (active is not { Android: { } pawn } completion)
             return;
         try
         {
-            if (project?.GetValue(station) is not null)
+            if (!pawn.Spawned || pawn.Dead || !GameFacts.IsPlayer(pawn) ||
+                !ReferenceEquals(pawn.Map, completion.Map) || project?.GetValue(station) is not null)
                 return;
             var key = OptionalTransitionRecording.QualifiedDefKey(pawn.kindDef?.modContentPack?.PackageId, pawn.kindDef?.defName);
             GameFacts.Record(Unit, state => OptionalTransitionRecording.RecordCount(

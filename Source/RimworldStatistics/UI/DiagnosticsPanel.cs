@@ -48,7 +48,7 @@ internal static class DiagnosticsPanel
             else
             {
                 lastKind = DiagCompletionKind.None;
-                lastErrorType = DiagnosticSummaryBuilder.SanitizeExceptionType(task.Exception) ?? "Error";
+                lastErrorType = DiagnosticSummaryBuilder.SanitizeExceptionType(task.Exception) ?? "RWS_Error_Unknown".Translate();
             }
         }
 
@@ -156,7 +156,7 @@ internal static class DiagnosticsPanel
         }
         catch (Exception ex)
         {
-            lastErrorType = DiagnosticSummaryBuilder.SanitizeExceptionType(ex) ?? "Error";
+            lastErrorType = DiagnosticSummaryBuilder.SanitizeExceptionType(ex) ?? "RWS_Error_Unknown".Translate();
         }
     }
 

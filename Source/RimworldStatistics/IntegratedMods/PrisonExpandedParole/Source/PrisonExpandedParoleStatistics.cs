@@ -98,25 +98,19 @@ internal static class PrisonExpandedParoleStatistics
         prisonerField = pawn;
         dueField = due;
         sentenceField = sentence;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(action,
-                prefix: new HarmonyMethod(typeof(PrisonExpandedParoleStatistics), nameof(BeforeApproval)),
-                postfix: new HarmonyMethod(typeof(PrisonExpandedParoleStatistics), nameof(AfterApproval)));
+            patcher.Patch(action, typeof(PrisonExpandedParoleStatistics), nameof(BeforeApproval), nameof(AfterApproval));
         }
         catch
         {
-            harmony.Unpatch(action, HarmonyPatchType.All, harmony.Id);
             closureRecordField = prisonerField = dueField = sentenceField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool ReleaseMode(Pawn pawn)
         => pawn.guest?.ExclusiveInteractionMode == PrisonerInteractionModeDefOf.Release;

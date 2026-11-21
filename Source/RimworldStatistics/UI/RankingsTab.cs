@@ -40,6 +40,9 @@ internal static class RankingsTab
     private static string[][] rows = [];
     private static string coverage = "";
     private static readonly bool[] RightAlignedColumns = [true, false, true, false, true];
+    private static Choice[] perDayChoices = [];
+    private static object? headerLanguage;
+    private static string[]? cachedHeaders;
 
     public static void Draw(Rect rect, StatsView view, ViewPreferences preferences, Action persist, string? scopeName = null)
     {
@@ -58,10 +61,11 @@ internal static class RankingsTab
                     canPerDay);
             }).OrderBy(c => c.Label, StringComparer.CurrentCulture)
               .ThenBy(c => c.Key, StringComparer.Ordinal).ToArray();
+            perDayChoices = choices.Where(c => c.CanRankPerDay).ToArray();
             priorSearch = null;
         }
 
-        var eligibleChoices = perDayMode ? choices.Where(c => c.CanRankPerDay).ToArray() : choices;
+        var eligibleChoices = perDayMode ? perDayChoices : choices;
         if (selectedKey is null || !eligibleChoices.Any(c => c.Key == selectedKey))
         {
             selectedKey = eligibleChoices.FirstOrDefault()?.Key;
@@ -239,14 +243,23 @@ internal static class RankingsTab
 
         var table = new Rect(body.x, infoY + 28f, body.width, Math.Max(0f, body.yMax - infoY - 28f));
         if (rows.Length == 0)
+        {
             Widgets.Label(table, "RWS_Rankings_NoMatches".Translate());
+        }
         else
-            Table.Draw(table, ref tableScroll,
-            [
-                "RWS_Rankings_Position".Translate(), "RWS_Details_Col_Name".Translate(),
-                "RWS_Details_Col_Value".Translate(), "RWS_Details_Col_State".Translate(),
-                "RWS_Details_Col_Through".Translate(),
-            ], rows, RightAlignedColumns);
+        {
+            if (cachedHeaders is null || !ReferenceEquals(headerLanguage, lang))
+            {
+                headerLanguage = lang;
+                cachedHeaders =
+                [
+                    "RWS_Rankings_Position".Translate(), "RWS_Details_Col_Name".Translate(),
+                    "RWS_Details_Col_Value".Translate(), "RWS_Details_Col_State".Translate(),
+                    "RWS_Details_Col_Through".Translate(),
+                ];
+            }
+            Table.Draw(table, ref tableScroll, cachedHeaders, rows, RightAlignedColumns);
+        }
     }
 
     private static void DrawSelector(Rect rect, StatsView view, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
@@ -343,14 +356,11 @@ internal static class RankingsTab
             {
                 var option = filtered[i];
                 var star = new Rect(0, i * 30f, 26f, 28f);
-                var saved = preferences.FavoriteMetricKeys.Contains(option.Key, StringComparer.Ordinal);
+                var saved = preferences.IsFavoriteMetric(option.Key);
                 if (Widgets.ButtonText(star, saved ? "★" : "☆"))
                 {
-                    if (saved)
-                        preferences.FavoriteMetricKeys.Remove(option.Key);
-                    else if (preferences.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                        preferences.FavoriteMetricKeys.Add(option.Key);
-                    persist();
+                    if (preferences.ToggleFavoriteMetric(option.Key))
+                        persist();
                 }
                 var button = new Rect(30f, i * 30f, Math.Max(0f, totalWidth - 30f), 28f);
                 var isSelected = string.Equals(option.Key, selectedKey, StringComparison.Ordinal);

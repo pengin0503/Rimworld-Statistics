@@ -60,27 +60,21 @@ internal static class VfeSecurityStatistics
             armed is null || armed.FieldType != typeof(bool))
             throw new InvalidOperationException("VFESecurity rearm transition signature does not match pinned 1.7 contract");
 
-        // A partial installation must not leave a dangling prefix or postfix.
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(target,
-                prefix: new HarmonyMethod(typeof(VfeSecurityStatistics), nameof(BeforeRearm)),
-                postfix: new HarmonyMethod(typeof(VfeSecurityStatistics), nameof(AfterRearm)));
+            patcher.Patch(target, typeof(VfeSecurityStatistics), nameof(BeforeRearm), nameof(AfterRearm));
             armedField = armed;
         }
         catch
         {
-            harmony.Unpatch(target, HarmonyPatchType.All, harmony.Id);
             armedField = null;
             throw;
         }
     }
 
     private static bool CanObserve(object instance)
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null
+        => OptionalTransitionCallSite.Observing(Unit)
            && instance is ThingComp { parent: { Spawned: true } parent }
            && GameFacts.IsPlayerFaction(parent.Faction);
 

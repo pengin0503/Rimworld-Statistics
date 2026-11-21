@@ -170,9 +170,12 @@ public static class ImportTab
         }
 
         y += 8f;
-        Text.Font = GameFont.Small;
-        if (snapshot.ProblemSummary is { } summary)
-            Line(rect, ref y, summary);
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Small;
+            if (snapshot.ProblemSummary is { } summary)
+                Line(rect, ref y, summary);
+        }
         var title = (string)"RWS_Import_Problems".Translate(problems.Length);
         ProblemsTable.Draw(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), ref scroll, [title], problems);
     }

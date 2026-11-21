@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_MechanoidUpgrades_Installed>Mechanoid upgrades installed</RWS_MechanoidUpgrades_Installed>
+  <RWS_MechanoidUpgrades_Installed>Mech upgrades installed</RWS_MechanoidUpgrades_Installed>
   <RWS_MechanoidUpgrades_InstalledDesc>Counts upgrades newly installed onto player mechanoids inside a player-owned mechanoid upgrader, broken down by upgrade type.</RWS_MechanoidUpgrades_InstalledDesc>
   <RWS_RimTalk_Conversations>Completed conversations</RWS_RimTalk_Conversations>
   <RWS_RimTalk_ConversationsDesc>Counts completed dynamic RimTalk conversations involving player pawns recorded to the play log, broken down by conversation category.</RWS_RimTalk_ConversationsDesc>

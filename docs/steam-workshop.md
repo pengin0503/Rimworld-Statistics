@@ -21,7 +21,7 @@ Steam Workshop（PublishedFileId: `3837802361`）に掲載するための説明�
 [h2]主な機能[/h2]
 [list]
 [*][b]全コロニーの通算実績：[/b]ゲーム内日数、実プレイ時間、コロニー数、最高・最終資産、襲撃・大脅威・死亡数、種類別のエンディング到達履歴を一括確認できます。
-[*][b]350項目以上の詳細統計：[/b]資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、全公式DLC（Royalty / Ideology / Biotech / Anomaly / Odyssey）、対応MODの統計を検索・絞り込みできます。累積加算項目では [b]1日あたり変化率（/day）[/b] 表示への切り替えにも対応しています。
+[*][b]450項目以上の詳細統計：[/b]資産、人口、種族・ゼノタイプ、戦闘、建築、生産、取引、クエスト、医療、全公式DLC（Royalty / Ideology / Biotech / Anomaly / Odyssey）、対応MODの統計（本体322項目＋統合MOD132項目＝454項目）を検索・絞り込みできます。累積加算項目では [b]1日あたり変化率（/day）[/b] 表示への切り替えにも対応しています。
 [*][b]グループ集計・スマートグループ・比較・ランキング：[/b]任意のコロニーグループ作成に加え、条件別の[b]スマートグループ[/b]（ストーリーテラー別・パーマデスのみ・クリア済み・生存日数N日以上・開始バイオーム別）、最大4列の横並び比較、歴代コロニーランキングに対応しています。
 [*][b]コロニー総括レポート・年表・セーブ系統：[/b]各コロニーの主要成績・順位をまとめた総括レポート、文字検索・日数絞り込み付きのコロニー年表、セーブ親子関係を確認できるセーブ系統ビュー、カスタム表示名・検索付きピッカーを備えています。
 [*][b]多彩なグラフ可視化：[/b]コロニー別・内訳別の棒グラフ、属性別ドット色切替に対応した2指標散布図、期間拡大（ズーム）・ピーク保持描画・他コロニー重ね合わせ（最大2件追加）・連続2時点間の増減比較に対応した履歴折れ線グラフを利用できます。
@@ -90,7 +90,7 @@ Browse lifetime statistics across every save and colony [b]directly from the Rim
 [h2]Key Features[/h2]
 [list]
 [*][b]Cross-Colony Lifetime Totals:[/b] View total in-game days, real play time, colony count, peak and final wealth records, enemy raids, major threats, colonist deaths, and reached endings by type at a glance.
-[*][b]350+ Detailed Statistics:[/b] Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, all official DLCs (Royalty, Ideology, Biotech, Anomaly, Odyssey), and supported mods, including a [b]Per-day rate (/day)[/b] toggle on additive totals.
+[*][b]450+ Detailed Statistics:[/b] Search and filter metrics across wealth, population, races/xenotypes, combat, construction, production, trade, quests, medical care, all official DLCs (Royalty, Ideology, Biotech, Anomaly, Odyssey), and supported mods (322 core + 132 integrated mod metrics = 454 total), including a [b]Per-day rate (/day)[/b] toggle on additive totals.
 [*][b]Colony Groups, Smart Groups, Comparison & Rankings:[/b] Create custom colony groups or rule-based [b]Smart Groups[/b] (by Storyteller, Permadeath only, Cleared only, Survived N+ days, or Starting biome), compare up to 4 columns side by side, and inspect all-time colony leaderboards.
 [*][b]Colony Summary Reports, Chronicles & Save Lineage:[/b] Inspect per-colony Summary Reports, searchable & day-filtered Colony Chronicles, and Save Lineage views, with custom colony display names and searchable pickers.
 [*][b]Rich Charts & Scatter Plots:[/b] Explore bar charts ([b]By colony[/b] / [b]By category[/b]), 2-Metric Scatter Plots with attribute dot coloring, and History Line Charts with range zoom, peak-preserving rendering, multi-colony overlays (up to 2 extra colonies), and interval comparison across continuous saves.

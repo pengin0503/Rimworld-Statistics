@@ -32,16 +32,25 @@ public static class PawnKillMetricPatch
     public static void Prefix(Pawn __instance, DamageInfo? dinfo, Hediff exactCulprit, out DeathFacts? __state)
     {
         __state = null;
-        if (__instance == null || __instance.Dead)
+        if (!LiveMetrics.IsRecordingUnit(HealthDeathFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(AnimalsFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(RaidFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(MembershipFamily.Name))
             return;
-        if (!UnityData.IsInMainThread && !__instance.Spawned
-            && !GameFacts.IsPlayerFaction(__instance.Faction) && !GameFacts.InPlayerCaravan(__instance))
-            return;
-        if (!GameFacts.AnyRecording(HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name)
-            || !(activeDeaths ??= new(ReferenceEqualityComparer.Instance)).Add(__instance))
-            return;
+        var addedActive = false;
         try
         {
+            if (__instance == null || __instance.Dead)
+                return;
+            if (!UnityData.IsInMainThread && !__instance.Spawned
+                && !GameFacts.IsPlayerFaction(__instance.Faction) && !GameFacts.InPlayerCaravan(__instance))
+                return;
+            if (!AnyDeathRecording())
+                return;
+            addedActive = (activeDeaths ??= new(ReferenceEqualityComparer.Instance)).Add(__instance);
+            if (!addedActive)
+                return;
             var p = __instance;
             var instigator = dinfo?.Instigator;
             var raid = LiveMetrics.Family(RaidFamily.Name);
@@ -53,7 +62,7 @@ public static class PawnKillMetricPatch
                 FreeColonist = freeColonist,
                 ColonyAnimal = GameFacts.IsColonyAnimal(p),
                 Wild = p.RaceProps.Animal && p.Faction == null,
-                HostileToPlayer = GameFacts.PlayerFaction is { } pf && p.HostileTo(pf),
+                HostileToPlayer = GameFacts.IsHostileToPlayer(p),
                 VictimKind = GameFacts.VictimKind(p),
                 Species = freeColonist ? GameFacts.Species(p) : null,
                 AnimalSpecies = GameFacts.AnimalSpecies(p),
@@ -78,36 +87,54 @@ public static class PawnKillMetricPatch
         }
         catch (Exception e)
         {
-            activeDeaths.Remove(__instance);
+            if (addedActive)
+                activeDeaths?.Remove(__instance);
             GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name);
             __state = null;
         }
     }
 
+    private static bool AnyDeathRecording()
+        => LiveMetrics.CanCaptureEvent(HealthDeathFamily.Name)
+            || LiveMetrics.CanCaptureEvent(LifetimeFamily.Name)
+            || LiveMetrics.CanCaptureEvent(AnimalsFamily.Name)
+            || LiveMetrics.CanCaptureEvent(RaidFamily.Name)
+            || LiveMetrics.CanCaptureEvent(MembershipFamily.Name);
+
     public static void Postfix(Pawn __instance, DeathFacts? __state, bool __runOriginal)
     {
-        if (!__runOriginal || __state is not { } d || __instance == null || !__instance.Dead)
+        if (!__runOriginal || __state is not { } d || __instance == null)
             return;
-        int tick;
-        try { tick = GameFacts.Tick; }
+        try
+        {
+            if (!__instance.Dead)
+                return;
+            var tick = GameFacts.Tick;
+            GameFacts.Record(HealthDeathFamily.Name, s => HealthDeathFamily.Died(s, d, tick));
+            GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Died(s, d.PawnId, d.FreeColonist, d.AgeYears, tick));
+            GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Died(s, d));
+            GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, d.PawnId));
+        }
         catch (Exception e)
         {
-            GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, MembershipFamily.Name);
-            return;
+            GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name);
         }
-        GameFacts.Record(HealthDeathFamily.Name, s => HealthDeathFamily.Died(s, d, tick));
-        GameFacts.Record(LifetimeFamily.Name, s => LifetimeFamily.Died(s, d.PawnId, d.FreeColonist, d.AgeYears, tick));
-        GameFacts.Record(AnimalsFamily.Name, s => AnimalsFamily.Died(s, d));
-        GameFacts.Record(MembershipFamily.Name, s => MembershipFamily.KidnapLost(s, d.PawnId));
     }
 
     public static Exception? Finalizer(Pawn __instance, DeathFacts? __state, Exception? __exception)
     {
         if (__state is null)
             return __exception;
-        activeDeaths?.Remove(__instance);
-        if (activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope))
-            GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
+        try
+        {
+            activeDeaths?.Remove(__instance);
+            if (activeRaidDeaths is not null && activeRaidDeaths.Remove(__instance, out var scope) && __instance != null)
+                GameFacts.Record(RaidFamily.Name, s => scope.Complete(s, __instance.Dead));
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, HealthDeathFamily.Name, LifetimeFamily.Name, AnimalsFamily.Name, RaidFamily.Name, MembershipFamily.Name);
+        }
         return __exception;
     }
 }

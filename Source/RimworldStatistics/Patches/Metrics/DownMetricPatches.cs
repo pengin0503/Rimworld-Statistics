@@ -24,29 +24,21 @@ public static class MakeDownedMetricPatch
     public static void Prefix(Pawn ___pawn, DamageInfo? dinfo, Hediff hediff, out DownFacts? __state)
     {
         __state = null;
-        if (___pawn == null || ___pawn.Downed || ___pawn.Dead)
-            return;
-        if (GameFacts.PlayerFaction is not { } playerFaction
-            || (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction)))
-            return;
-        bool freeColonist;
-        bool hostile;
-        try
-        {
-            freeColonist = GameFacts.IsFreeColonistSafe(___pawn);
-            hostile = ___pawn.HostileTo(playerFaction);
-        }
-        catch (Exception e)
-        {
-            GameFacts.FailAll(e, DownFamily.Name, RaidFamily.Name);
-            return;
-        }
-        if (!freeColonist && !hostile)
-            return;
-        if (!GameFacts.AnyRecording(DownFamily.Name, RaidFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(DownFamily.Name) && !LiveMetrics.IsRecordingUnit(RaidFamily.Name))
             return;
         try
         {
+            if (___pawn == null || ___pawn.Downed || ___pawn.Dead)
+                return;
+            if (GameFacts.PlayerFaction is not { } playerFaction
+                || (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction)))
+                return;
+            var freeColonist = GameFacts.IsFreeColonistSafe(___pawn);
+            var hostile = ___pawn.HostileTo(playerFaction);
+            if (!freeColonist && !hostile)
+                return;
+            if (!GameFacts.AnyRecording(DownFamily.Name, RaidFamily.Name))
+                return;
             var attacker = dinfo?.Instigator as Pawn;
             __state = new DownFacts
             {
@@ -65,17 +57,19 @@ public static class MakeDownedMetricPatch
 
     public static void Postfix(Pawn ___pawn, DownFacts? __state)
     {
-        if (__state is not { } d || ___pawn == null || !___pawn.Downed || ___pawn.Dead)
+        if (__state is not { } d || ___pawn == null)
             return;
-        GameFacts.Record(DownFamily.Name, s => DownFamily.Downed(s, d));
-        if (d.FreeColonist)
+        try
         {
-            try
+            if (!___pawn.Downed || ___pawn.Dead)
+                return;
+            GameFacts.Record(DownFamily.Name, s => DownFamily.Downed(s, d));
+            if (d.FreeColonist)
             {
                 var map = GameFacts.MapId(___pawn.MapHeld);
                 GameFacts.Record(RaidFamily.Name, s => RaidFamily.ColonistDowned(s, map));
             }
-            catch (Exception e) { LiveMetrics.Fail(RaidFamily.Name, e); }
         }
+        catch (Exception e) { GameFacts.FailAll(e, DownFamily.Name, RaidFamily.Name); }
     }
 }

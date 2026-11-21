@@ -229,8 +229,14 @@ public sealed class MetricScatterPlot
         {
             var px = X.Position(Points[i].X.Number) * w;
             var py = Y.Position(Points[i].Y.Number) * h;
-            var bx = (long)Math.Floor(px / cell);
-            var by = (long)Math.Floor(py / cell);
+            if (!double.IsFinite(px) || !double.IsFinite(py))
+                continue;
+            var qx = px / cell;
+            var qy = py / cell;
+            if (!double.IsFinite(qx) || !double.IsFinite(qy))
+                continue;
+            var bx = (long)Math.Clamp(Math.Floor(qx), long.MinValue / 2, long.MaxValue / 2);
+            var by = (long)Math.Clamp(Math.Floor(qy), long.MinValue / 2, long.MaxValue / 2);
 
             var joined = -1;
             // Every neighbouring cell, so the point joins the earliest cluster in reach, not the first one found.

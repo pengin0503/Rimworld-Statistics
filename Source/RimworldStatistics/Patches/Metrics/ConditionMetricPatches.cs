@@ -85,6 +85,8 @@ public static class DisasterIncidentMetricPatch
     public static void Prefix(IncidentWorker __instance, IncidentParms parms, out bool __state)
     {
         __state = false;
+        if (!LiveMetrics.IsRecordingUnit(DisasterFamily.Name) && !LiveMetrics.IsRecordingUnit(ModdedIncidentFamily.Name))
+            return;
         try
         {
             __state = GameFacts.SkippedForNoColonists(__instance, parms);
@@ -97,22 +99,33 @@ public static class DisasterIncidentMetricPatch
 
     public static void Postfix(bool __result, IncidentWorker __instance, IncidentParms parms, bool __state)
     {
-        if (!__result || __state || __instance?.def is not { } definition)
+        if (!__result || __state)
             return;
+        if (!LiveMetrics.IsRecordingUnit(DisasterFamily.Name) && !LiveMetrics.IsRecordingUnit(ModdedIncidentFamily.Name))
+            return;
+        try
+        {
+            if (__instance?.def is not { } definition)
+                return;
 
-        // Preserve the exact legacy three-def counters, independent of incident provenance.
-        if (definition.defName is "CropBlight" or "MeteoriteImpact" or "ShortCircuit")
-            GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, definition.defName));
+            // Preserve the exact legacy three-def counters, independent of incident provenance.
+            if (definition.defName is "CropBlight" or "MeteoriteImpact" or "ShortCircuit")
+                GameFacts.Record(DisasterFamily.Name, s => DisasterFamily.Incident(s, definition.defName));
 
-        // The generic family is an independent opt-in. A successful player-home incident
-        // is observed once at the outer TryExecute return, never during the worker attempt.
-        if (parms?.target is not Map { IsPlayerHome: true })
-            return;
-        var packageId = definition.modContentPack?.PackageId;
-        if (!ModdedIncidentFamily.IsModded(packageId, definition.defName))
-            return;
-        GameFacts.Record(ModdedIncidentFamily.Name, s =>
-            ModdedIncidentFamily.RecordSuccess(s, packageId, definition.defName, succeeded: true, playerHome: true));
+            // The generic family is an independent opt-in. A successful player-home incident
+            // is observed once at the outer TryExecute return, never during the worker attempt.
+            if (parms?.target is not Map { IsPlayerHome: true })
+                return;
+            var packageId = definition.modContentPack?.PackageId;
+            if (!ModdedIncidentFamily.IsModded(packageId, definition.defName))
+                return;
+            GameFacts.Record(ModdedIncidentFamily.Name, s =>
+                ModdedIncidentFamily.RecordSuccess(s, packageId, definition.defName, succeeded: true, playerHome: true));
+        }
+        catch (Exception e)
+        {
+            GameFacts.FailAll(e, DisasterFamily.Name, ModdedIncidentFamily.Name);
+        }
     }
 }
 
@@ -136,10 +149,12 @@ public static class FireStartMetricPatch
     public static void Prefix(IntVec3 c, Map map, out bool __state)
     {
         __state = false;
-        if (ConditionProbe.SpreadDepth != 0 || map is not { IsPlayerHome: true })
+        if (ConditionProbe.SpreadDepth != 0 || !LiveMetrics.IsRecordingUnit(DisasterFamily.Name))
             return;
         try
         {
+            if (map is not { IsPlayerHome: true })
+                return;
             __state = c.InBounds(map) && !c.ContainsStaticFire(map);
         }
         catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
@@ -147,8 +162,13 @@ public static class FireStartMetricPatch
 
     public static void Postfix(bool __result, bool __state)
     {
-        if (__state && __result)
+        if (!__state || !__result)
+            return;
+        try
+        {
             GameFacts.Record(DisasterFamily.Name, DisasterFamily.Fire);
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
     }
 }
 
@@ -157,11 +177,26 @@ public static class FireStartMetricPatch
 public static class BuildingBurnedMetricPatch
 {
     public static void Prefix(Thing __instance, DamageInfo? dinfo, out bool __state)
-        => __state = __instance is Building && !__instance.Destroyed && GameFacts.IsPlayer(__instance) && dinfo?.Def == DamageDefOf.Flame;
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(DisasterFamily.Name))
+            return;
+        try
+        {
+            __state = __instance is Building && !__instance.Destroyed && GameFacts.IsPlayer(__instance) && dinfo?.Def == DamageDefOf.Flame;
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
+    }
 
     public static void Postfix(Thing __instance, bool __state)
     {
-        if (__state && __instance.Destroyed)
-            GameFacts.Record(DisasterFamily.Name, DisasterFamily.BuildingBurned);
+        if (!__state)
+            return;
+        try
+        {
+            if (__instance is { Destroyed: true })
+                GameFacts.Record(DisasterFamily.Name, DisasterFamily.BuildingBurned);
+        }
+        catch (Exception e) { LiveMetrics.Fail(DisasterFamily.Name, e); }
     }
 }

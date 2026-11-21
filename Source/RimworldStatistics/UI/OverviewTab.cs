@@ -62,7 +62,10 @@ public static class OverviewTab
     private static FavoriteCell[] favoriteCells = [];
     private static IReadOnlyList<ResolvedColonyHistoryFavorite> resolvedColonyFavorites = [];
     private static ColonyFavoriteCard[] colonyFavoriteCards = [];
-    private static string favoritesSignature = "";
+    private static ViewPreferences? cachedPreferencesRef;
+    private static string[] cachedFavoriteMetricKeys = [];
+    private static KeyValuePair<string, string>[] cachedColonyDisplayNames = [];
+    private static ColonyMetricFavorite[] cachedFavoriteColonyMetrics = [];
     private static object? language;
     private static Cell[] top = [];
     private static Cell[] bottom = [];
@@ -75,10 +78,7 @@ public static class OverviewTab
         onSave = saveFavorites;
         activeScopeName = scopeName;
         var currentLanguage = LanguageDatabase.activeLanguage;
-        var signature = string.Join("\u001f", (IEnumerable<string>?)favoritePreferences?.FavoriteMetricKeys ?? Array.Empty<string>())
-            + "\u001e" + ColonyPresentation.Signature(favoritePreferences)
-            + "\u001e" + ColonyHistoryFavorites.Signature(favoritePreferences);
-        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage) || favoritesSignature != signature)
+        if (!ReferenceEquals(builtFor, view) || !ReferenceEquals(language, currentLanguage) || !FavoritesMatch(favoritePreferences))
         {
             (top, bottom) = Build(view);
             favoriteCells = BuildFavorites(view, favoritePreferences);
@@ -86,7 +86,7 @@ public static class OverviewTab
             colonyFavoriteCards = BuildColonyFavorites(view, favoritePreferences, resolvedColonyFavorites);
             builtFor = view;
             language = currentLanguage;
-            favoritesSignature = signature;
+            CaptureFavoritesSnapshot(favoritePreferences);
         }
 
         const float gap = 10f;
@@ -123,7 +123,7 @@ public static class OverviewTab
             if (Widgets.ButtonText(addBasicRect, shownAddBasic))
             {
                 var available = BasicMetrics.Keys.Where(key =>
-                    preferences?.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal) != true)
+                    preferences?.IsFavoriteMetric(key) != true)
                     .Select(key => new FloatMenuOption(BasicLabel(key), () => ToggleFavorite(key))).ToList();
                 if (available.Count > 0)
                     Find.WindowStack.Add(new FloatMenu(available));
@@ -134,12 +134,16 @@ public static class OverviewTab
             }
             else
             {
+                var viewTop = scroll.y;
+                var viewBottom = scroll.y + rect.height;
                 var cellWidth = (width - gap * (bottomColumns - 1)) / bottomColumns;
                 for (var i = 0; i < favoriteCells.Length; i++)
                 {
+                    var y = favoriteTop + 30f + (i / bottomColumns) * (104f + gap);
+                    if (y + 104f < viewTop || y > viewBottom)
+                        continue;
                     var c = favoriteCells[i];
                     var x = (i % bottomColumns) * (cellWidth + gap);
-                    var y = favoriteTop + 30f + (i / bottomColumns) * (104f + gap);
                     DrawCell(new Rect(x, y, cellWidth, 70f), c.Content, GameFont.Small);
                     var up = new Rect(x + 4f, y + 73f, 28f, 26f);
                     var down = new Rect(up.xMax + 4f, up.y, 28f, 26f);
@@ -191,12 +195,16 @@ public static class OverviewTab
             }
             else
             {
+                var viewTop = scroll.y;
+                var viewBottom = scroll.y + rect.height;
                 var cellWidth = (width - gap * (bottomColumns - 1)) / bottomColumns;
                 for (var i = 0; i < colonyFavoriteCards.Length; i++)
                 {
+                    var y = colonyFavTop + 30f + (i / bottomColumns) * (104f + gap);
+                    if (y + 104f < viewTop || y > viewBottom)
+                        continue;
                     var card = colonyFavoriteCards[i];
                     var x = (i % bottomColumns) * (cellWidth + gap);
-                    var y = colonyFavTop + 30f + (i / bottomColumns) * (104f + gap);
                     DrawColonyFavoriteCard(new Rect(x, y, cellWidth, 70f), view, card);
                     var up = new Rect(x + 4f, y + 73f, 28f, 26f);
                     var down = new Rect(up.xMax + 4f, up.y, 28f, 26f);
@@ -216,9 +224,16 @@ public static class OverviewTab
 
         void DrawGrid(Cell[] cells, int columns, float y, float height, GameFont font)
         {
+            var viewTop = scroll.y;
+            var viewBottom = scroll.y + rect.height;
             var cellWidth = (width - gap * (columns - 1)) / columns;
             for (var i = 0; i < cells.Length; i++)
-                DrawCell(new Rect((i % columns) * (cellWidth + gap), y + (i / columns) * (height + gap), cellWidth, height), cells[i], font);
+            {
+                var cellY = y + (i / columns) * (height + gap);
+                if (cellY + height < viewTop || cellY > viewBottom)
+                    continue;
+                DrawCell(new Rect((i % columns) * (cellWidth + gap), cellY, cellWidth, height), cells[i], font);
+            }
         }
     }
 
@@ -299,7 +314,7 @@ public static class OverviewTab
             UiScopes.OpenOrReplaceWindow(new Dialog_MetricChart(chartView, item.FavoriteKey!, null, activeScopeName));
         if (hasStar && item.FavoriteKey is { } key)
         {
-            var selected = preferences!.FavoriteMetricKeys.Contains(key, StringComparer.Ordinal);
+            var selected = preferences!.IsFavoriteMetric(key);
             if (Widgets.ButtonText(star, selected ? "★" : "☆"))
                 ToggleFavorite(key);
         }
@@ -358,13 +373,9 @@ public static class OverviewTab
         var fallback = preferences;
         Dialog_RimworldStatistics.UpdateActivePreferences(active =>
         {
-            if (!active.FavoriteMetricKeys.Remove(key) && active.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                active.FavoriteMetricKeys.Add(key);
+            active.ToggleFavoriteMetric(key);
             if (!ReferenceEquals(active, fallback))
-            {
-                if (!fallback.FavoriteMetricKeys.Remove(key) && fallback.FavoriteMetricKeys.Count < ViewPreferences.MaxFavoriteCount)
-                    fallback.FavoriteMetricKeys.Add(key);
-            }
+                fallback.ToggleFavoriteMetric(key);
         });
         if (RimworldStatisticsMod.Settings is null)
             onSave?.Invoke();
@@ -384,7 +395,7 @@ public static class OverviewTab
 
     private static void RemoveFavorite(string key)
     {
-        if (preferences is null || !preferences.FavoriteMetricKeys.Remove(key))
+        if (preferences is null || !preferences.RemoveFavoriteMetric(key))
             return;
         onSave?.Invoke();
         builtFor = null;
@@ -404,6 +415,68 @@ public static class OverviewTab
             return;
         onSave?.Invoke();
         builtFor = null;
+    }
+
+    private static bool FavoritesMatch(ViewPreferences? prefs)
+    {
+        if ((prefs is null) != (cachedPreferencesRef is null))
+            return false;
+        if (prefs is null)
+            return true;
+
+        var keys = prefs.FavoriteMetricKeys;
+        if ((keys?.Count ?? 0) != cachedFavoriteMetricKeys.Length)
+            return false;
+        for (var i = 0; i < cachedFavoriteMetricKeys.Length; i++)
+        {
+            if (!string.Equals(keys![i], cachedFavoriteMetricKeys[i], StringComparison.Ordinal))
+                return false;
+        }
+
+        var names = prefs.ColonyDisplayNames;
+        if ((names?.Count ?? 0) != cachedColonyDisplayNames.Length)
+            return false;
+        for (var i = 0; i < cachedColonyDisplayNames.Length; i++)
+        {
+            var entry = cachedColonyDisplayNames[i];
+            if (!names!.TryGetValue(entry.Key, out var value) || !string.Equals(value, entry.Value, StringComparison.Ordinal))
+                return false;
+        }
+
+        var colFavs = prefs.FavoriteColonyMetrics;
+        if ((colFavs?.Count ?? 0) != cachedFavoriteColonyMetrics.Length)
+            return false;
+        for (var i = 0; i < cachedFavoriteColonyMetrics.Length; i++)
+        {
+            var current = colFavs![i];
+            var snap = cachedFavoriteColonyMetrics[i];
+            if (!string.Equals(current.ColonyKey, snap.ColonyKey, StringComparison.Ordinal)
+                || !string.Equals(current.MetricKey, snap.MetricKey, StringComparison.Ordinal))
+                return false;
+        }
+
+        return true;
+    }
+
+    private static void CaptureFavoritesSnapshot(ViewPreferences? prefs)
+    {
+        cachedPreferencesRef = prefs;
+        if (prefs is null)
+        {
+            cachedFavoriteMetricKeys = [];
+            cachedColonyDisplayNames = [];
+            cachedFavoriteColonyMetrics = [];
+            return;
+        }
+        cachedFavoriteMetricKeys = prefs.FavoriteMetricKeys is { Count: > 0 } keys
+            ? keys.ToArray()
+            : [];
+        cachedColonyDisplayNames = prefs.ColonyDisplayNames is { Count: > 0 } names
+            ? names.ToArray()
+            : [];
+        cachedFavoriteColonyMetrics = prefs.FavoriteColonyMetrics is { Count: > 0 } favs
+            ? favs.Select(f => new ColonyMetricFavorite { ColonyKey = f.ColonyKey, MetricKey = f.MetricKey }).ToArray()
+            : [];
     }
 
     private static ColonyFavoriteCard[] BuildColonyFavorites(StatsView view, ViewPreferences? chosen,

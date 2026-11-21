@@ -64,20 +64,9 @@ internal static class VqeAncientsGeneSuccessStatistics
 
         deferredPawn = pawn;
         deferredInjector = building;
-        try
-        {
-            var after = new HarmonyMethod(typeof(VqeAncientsGeneSuccessStatistics), nameof(After));
-            harmony.Patch(immediate,
-                prefix: new HarmonyMethod(typeof(VqeAncientsGeneSuccessStatistics), nameof(BeforeImmediate)), postfix: after);
-            harmony.Patch(deferred,
-                prefix: new HarmonyMethod(typeof(VqeAncientsGeneSuccessStatistics), nameof(BeforeDeferred)), postfix: after);
-        }
-        catch
-        {
-            harmony.Unpatch(immediate, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(deferred, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(immediate, typeof(VqeAncientsGeneSuccessStatistics), nameof(BeforeImmediate), nameof(After));
+        patcher.Patch(deferred, typeof(VqeAncientsGeneSuccessStatistics), nameof(BeforeDeferred), nameof(After));
     }
 
     private static BeforeState? Capture(Building? injector, Pawn? pawn, object? choice = null)

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regenerate the conservative, source-derived 276-output historical recovery inventory.
+"""Regenerate the conservative, source-derived 322-output historical recovery inventory.
 
 This is a capability *triage*, not a confirmation that historical values can be
 reconstructed. It never touches .rws files, profiles or RimWorld. Run:

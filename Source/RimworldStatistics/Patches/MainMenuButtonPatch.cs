@@ -18,20 +18,34 @@ public static class MainMenuButtonPatch
     {
         if (PatchRunner.IsDisabled(typeof(MainMenuButtonPatch)))
             return;
-        var state = Current.ProgramState;
         try
         {
+            var state = Current.ProgramState;
             if (state is not (ProgramState.Entry or ProgramState.Playing) || optList is null)
                 return;
             string options = "Options".Translate();
             string mine = "RWS_MenuButton".Translate();
-            var index = optList.FindIndex(o => o?.label == options);
+            var index = -1;
+            var hasMine = false;
+            for (var i = 0; i < optList.Count; i++)
+            {
+                var label = optList[i]?.label;
+                if (index < 0 && label == options)
+                    index = i;
+                if (label == mine)
+                {
+                    hasMine = true;
+                    break;
+                }
+            }
             if (index < 0)
                 return;
-            if (optList.Exists(o => o?.label == mine))
+            if (hasMine)
             {
                 if (state == ProgramState.Playing)
                     FitInGameMenuOptions(rect.height, optList);
+                else if (state == ProgramState.Entry)
+                    ImportRunner.AutoStartOnce();
                 return;
             }
 
@@ -41,15 +55,14 @@ public static class MainMenuButtonPatch
             optList.Insert(index, new ListableOption(mine, open));
             if (state == ProgramState.Playing)
                 FitInGameMenuOptions(rect.height, optList);
+
+            if (state == ProgramState.Entry)
+                ImportRunner.AutoStartOnce();
         }
         catch (Exception e)
         {
             PatchRunner.Disable(typeof(MainMenuButtonPatch), e);
-            return;
         }
-
-        if (state == ProgramState.Entry)
-            ImportRunner.AutoStartOnce();
     }
 
     private static void FitInGameMenuOptions(float availableHeight, List<ListableOption> optList)

@@ -47,7 +47,7 @@ internal sealed class CheckpointAncestry
         foreach (var node in _nodes.Values)
             foreach (var alias in node.FileAliases)
             {
-                var file = (alias.FileName, alias.FileSize, alias.LastWriteUtc);
+                var file = (alias.FileName, alias.FileSize, UtcTime.ToUtc(alias.LastWriteUtc));
                 _byFile[file] = _byFile.TryGetValue(file, out var other) && other != node.Key ? null : node.Key;
             }
         foreach (var o in all)
@@ -56,13 +56,13 @@ internal sealed class CheckpointAncestry
                 continue;
             foreach (var alias in o.FileAliases)
             {
-                var file = (alias.FileName, alias.FileSize, alias.LastWriteUtc);
+                var file = (alias.FileName, alias.FileSize, UtcTime.ToUtc(alias.LastWriteUtc));
                 if (_byFile.ContainsKey(file))
                     _fileTicks[file] = _fileTicks.TryGetValue(file, out var tick) && tick != o.SaveTick ? null : o.SaveTick;
             }
         }
         _filesByWriteTime = _fileTicks.Keys.ToLookup(f => f.Item3);
-        _byTick = _nodes.Values.ToLookup(n => (n.Identity.ModCampaignId, n.SaveTick));
+        _byTick = _nodes.Values.ToLookup(n => (n.Identity?.ModCampaignId, n.SaveTick));
     }
 
     public bool IsEmpty => _nodes.Count == 0;
@@ -77,7 +77,7 @@ internal sealed class CheckpointAncestry
         string? parent = null;
         if (_nodes.TryGetValue(key, out var node) && node.ParentKey is { Length: > 0 } id && id != key
             && _nodes.TryGetValue(id, out var candidate) && candidate.SaveTick >= 0 && candidate.SaveTick <= node.SaveTick
-            && candidate.Identity.ModCampaignId is { Length: > 0 } campaign && campaign == node.Identity.ModCampaignId)
+            && candidate.Identity?.ModCampaignId is { Length: > 0 } campaign && campaign == node.Identity?.ModCampaignId)
             parent = id;
         _parents[key] = parent;
         return parent;
@@ -92,7 +92,7 @@ internal sealed class CheckpointAncestry
         string? key = null;
         foreach (var alias in aliases)
         {
-            if (!_byFile.TryGetValue((alias.FileName, alias.FileSize, alias.LastWriteUtc), out var found))
+            if (!_byFile.TryGetValue((alias.FileName, alias.FileSize, UtcTime.ToUtc(alias.LastWriteUtc)), out var found))
                 continue;
             if (found is null || (key is not null && key != found))
                 return null;
@@ -102,7 +102,7 @@ internal sealed class CheckpointAncestry
     }
 
     public Anchor? OfFile(string fileName, long fileSize, DateTime lastWriteUtc, int saveTick)
-        => _byFile.TryGetValue((fileName, fileSize, lastWriteUtc), out var key) && key is not null ? At(key, saveTick) : null;
+        => _byFile.TryGetValue((fileName, fileSize, UtcTime.ToUtc(lastWriteUtc)), out var key) && key is not null ? At(key, saveTick) : null;
 
     /// <summary>
     /// A game-side snapshot: the checkpoint the same save wrote, committed by it (its own state) or carried unchanged from
@@ -113,10 +113,10 @@ internal sealed class CheckpointAncestry
     public Anchor? OfSnapshot(MetricObservation snapshot)
     {
         if (snapshot.CheckpointKey is { } key)
-            return _nodes.TryGetValue(key, out var linked) && linked.Identity.ModCampaignId == snapshot.Identity.ModCampaignId
+            return _nodes.TryGetValue(key, out var linked) && linked.Identity?.ModCampaignId == snapshot.Identity?.ModCampaignId
                 ? At(key, snapshot.SaveTick)
                 : null;
-        if (snapshot.Identity.ModCampaignId is not { Length: > 0 } campaign)
+        if (snapshot.Identity?.ModCampaignId is not { Length: > 0 } campaign)
             return null;
         string? match = null;
         bool Accept(string? candidate)
@@ -126,13 +126,14 @@ internal sealed class CheckpointAncestry
             match = candidate;
             return true;
         }
+        var snapshotUtc = UtcTime.ToUtc(snapshot.ObservedUtc);
         foreach (var node in _byTick[(campaign, snapshot.SaveTick)])
-            if (node.FileAliases.Any(a => a.LastWriteUtc == snapshot.ObservedUtc) && !Accept(node.Key))
+            if (node.FileAliases.Any(a => UtcTime.ToUtc(a.LastWriteUtc) == snapshotUtc) && !Accept(node.Key))
                 return null;
-        foreach (var file in _filesByWriteTime[snapshot.ObservedUtc])
+        foreach (var file in _filesByWriteTime[snapshotUtc])
         {
             var held = _byFile[file];
-            if (held is not null && _nodes[held].Identity.ModCampaignId != campaign)
+            if (held is not null && _nodes[held].Identity?.ModCampaignId != campaign)
                 continue;
             // A file version read with two ticks is two saves under one name, size and write time: either may be this one.
             if (_fileTicks[file] is not { } tick || (tick == snapshot.SaveTick && !Accept(held)))

@@ -80,7 +80,7 @@ internal static class HospitalityPurchases
             var (items, silver) = Holdings(guest, item);
             __state = new Capture(guest, item, id, items, silver);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void After(bool __runOriginal, Capture? __state)
@@ -96,7 +96,7 @@ internal static class HospitalityPurchases
             if (unitsConnected) _ = host.RecordEvent(UnitsId, before.EventId, bought);
             if (silverConnected && paid > 0) _ = host.RecordEvent(SilverId, before.EventId, paid);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static (Dictionary<int, int> Items, long Silver) Holdings(Pawn guest, ThingDef item)

@@ -38,14 +38,16 @@ public static class DoTendMetricPatch
     public static void Prefix(Pawn doctor, Pawn patient, Medicine medicine, out Before? __state)
     {
         __state = null;
-        if (patient?.health?.hediffSet == null)
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (patient?.health?.hediffSet == null)
+                return;
             var doctorId = doctor != null && GameFacts.IsPlayer(doctor) ? GameFacts.Id(doctor) : null;
             var playerPatient = GameFacts.IsPlayer(patient);
-            var colonistPatient = patient.IsFreeColonist;
-            var colonyPatient = playerPatient || colonistPatient || patient.IsPrisonerOfColony;
+            var colonistPatient = GameFacts.IsFreeColonistSafe(patient);
+            var colonyPatient = playerPatient || colonistPatient || GameFacts.IsPrisonerOfColonySafe(patient);
             if (!MedicineFamily.IsColonyTend(doctorId, colonyPatient) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
                 return;
 
@@ -53,8 +55,8 @@ public static class DoTendMetricPatch
             {
                 DoctorId = doctorId,
                 ColonyPatient = colonyPatient,
-                NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null && GameFacts.PlayerFaction != null
-                    && patient.RaceProps.Humanlike && !patient.HostileTo(GameFacts.PlayerFaction),
+                NeutralPatient = !colonistPatient && !playerPatient && patient.Faction != null
+                    && GameFacts.PlayerFaction is { } pf && patient.RaceProps.Humanlike && !patient.HostileTo(pf),
                 Medicine = medicine is { Destroyed: false } ? medicine.stackCount : 0,
             };
             foreach (var h in patient.health.hediffSet.hediffs)
@@ -67,10 +69,12 @@ public static class DoTendMetricPatch
 
     public static void Postfix(Pawn patient, Medicine medicine, Before? __state)
     {
-        if (__state == null || patient?.health?.hediffSet == null)
+        if (__state == null || !LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (patient?.health?.hediffSet == null)
+                return;
             var qualities = new List<double>();
             foreach (var h in patient.health.hediffSet.hediffs)
                 if (h is HediffWithComps hc && hc.TryGetComp<HediffComp_TendDuration>() is { } td
@@ -103,10 +107,12 @@ public static class SurgeryOutcomeMetricPatch
 {
     public static void Postfix(Recipe_Surgery __instance, bool __result, Pawn surgeon, Pawn patient)
     {
-        if (surgeon == null || patient == null || !GameFacts.IsPlayer(surgeon) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (surgeon == null || patient == null || !GameFacts.IsPlayer(surgeon) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             var id = GameFacts.Id(surgeon);
             var implant = __instance is Recipe_InstallArtificialBodyPart or Recipe_InstallImplant;
             GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Surgery(s, id, !__result, implant));
@@ -122,19 +128,26 @@ public static class RescueMetricPatch
     public static void Prefix(Pawn taker, Pawn takee, bool rescued, out bool __state)
     {
         __state = false;
-        if (!rescued || takee == null || taker == null || !GameFacts.IsPlayer(taker))
+        if (!rescued || !LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
-        try { __state = takee.HostileTo(GameFacts.PlayerFaction); }
+        try
+        {
+            if (takee == null || taker == null || !GameFacts.IsPlayer(taker))
+                return;
+            __state = GameFacts.IsHostileToPlayer(takee);
+        }
         catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 
     public static void Postfix(Building_Bed bed, Pawn taker, Pawn takee, bool rescued, bool __state)
     {
-        if (!rescued || bed == null || takee == null || taker == null || !GameFacts.IsPlayer(taker)
-            || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!rescued || !LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (bed == null || takee == null || taker == null || !GameFacts.IsPlayer(taker)
+                || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             if (takee.CurrentBed() != bed)
                 return;
             var away = bed.Map is not { IsPlayerHome: true };
@@ -148,14 +161,23 @@ public static class RescueMetricPatch
 [HarmonyPatch(typeof(ResurrectionUtility), nameof(ResurrectionUtility.TryResurrect))]
 public static class ResurrectMetricPatch
 {
-    public static void Prefix(Pawn pawn, out bool __state) => __state = pawn != null && pawn.Dead && pawn.IsFreeColonist;
+    public static void Prefix(Pawn pawn, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
+            return;
+        try { __state = pawn != null && pawn.Dead && GameFacts.IsFreeColonistSafe(pawn); }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
+    }
 
     public static void Postfix(bool __result, Pawn pawn, bool __state)
     {
-        if (!__state || !__result || pawn == null || pawn.Dead || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!__state || !__result || !LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (pawn == null || pawn.Dead || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             var id = GameFacts.Id(pawn);
             GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.Resurrected(s, id));
         }
@@ -172,19 +194,26 @@ public static class AddHediffMetricPatch
     public static void Prefix(Pawn ___pawn, Hediff hediff, out bool __state)
     {
         __state = false;
-        if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead)
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
-        try { __state = ___pawn.health.hediffSet.HasHediff(hediff.def); }
+        try
+        {
+            if (___pawn == null || hediff?.def == null || !GameFacts.IsFreeColonistSafe(___pawn) || ___pawn.Dead)
+                return;
+            __state = ___pawn.health.hediffSet.HasHediff(hediff.def);
+        }
         catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 
     public static void Postfix(Pawn ___pawn, Hediff hediff, BodyPartRecord part, DamageInfo? dinfo, bool __state)
     {
-        if (___pawn == null || hediff?.def == null || !___pawn.IsFreeColonist || ___pawn.Dead
-            || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (___pawn == null || hediff?.def == null || !GameFacts.IsFreeColonistSafe(___pawn) || ___pawn.Dead
+                || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             var set = ___pawn.health.hediffSet;
             if (!set.hediffs.Contains(hediff))
                 return;
@@ -216,14 +245,16 @@ public static class RemoveHediffMetricPatch
 {
     public static void Prefix(Pawn ___pawn, Hediff hediff)
     {
-        if (___pawn == null || hediff == null || !MedicalProbe.CanBeTrackedHediff(hediff))
-            return;
-        if (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction) && !___pawn.IsPrisonerOfColony)
-            return;
-        if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            if (___pawn == null || hediff == null || !MedicalProbe.CanBeTrackedHediff(hediff))
+                return;
+            if (!UnityData.IsInMainThread && !___pawn.Spawned && !GameFacts.IsPlayerFaction(___pawn.Faction) && !GameFacts.IsPrisonerOfColonySafe(___pawn))
+                return;
+            if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             var id = hediff.GetUniqueLoadID();
             var cured = !___pawn.Dead && MedicalProbe.SurgeryDepth == 0 && hediff.ShouldRemove
                 && (hediff.Part == null || !___pawn.health.hediffSet.PartIsMissing(hediff.Part));
@@ -244,26 +275,48 @@ public static class RemoveHediffMetricPatch
 [HarmonyPatch(typeof(HediffComp_GetsPermanent), nameof(HediffComp_GetsPermanent.PreFinalizeInjury))]
 public static class ScarOnInjuryMetricPatch
 {
-    public static void Prefix(HediffComp_GetsPermanent __instance, out bool __state) => __state = __instance.IsPermanent;
+    public static void Prefix(HediffComp_GetsPermanent __instance, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
+            return;
+        try { __state = __instance is { IsPermanent: true }; }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
+    }
 
-    public static void Postfix(HediffComp_GetsPermanent __instance, bool __state) => ScarProbe.Check(__instance, __state);
+    public static void Postfix(HediffComp_GetsPermanent __instance, bool __state)
+        => ScarProbe.Check(__instance, __state);
 }
 
 [MetricAdapter(MedicineFamily.Name)]
 [HarmonyPatch(typeof(HediffComp_GetsPermanent), nameof(HediffComp_GetsPermanent.CompPostInjuryHeal))]
 public static class ScarOnHealMetricPatch
 {
-    public static void Prefix(HediffComp_GetsPermanent __instance, out bool __state) => __state = __instance.IsPermanent;
+    public static void Prefix(HediffComp_GetsPermanent __instance, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
+            return;
+        try { __state = __instance is { IsPermanent: true }; }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
+    }
 
-    public static void Postfix(HediffComp_GetsPermanent __instance, bool __state) => ScarProbe.Check(__instance, __state);
+    public static void Postfix(HediffComp_GetsPermanent __instance, bool __state)
+        => ScarProbe.Check(__instance, __state);
 }
 
 internal static class ScarProbe
 {
     public static void Check(HediffComp_GetsPermanent comp, bool wasPermanent)
     {
-        if (!wasPermanent && comp is { IsPermanent: true, Pawn.IsFreeColonist: true })
-            GameFacts.Record(MedicineFamily.Name, MedicineFamily.Scar);
+        if (wasPermanent || !LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
+            return;
+        try
+        {
+            if (comp is { IsPermanent: true } && GameFacts.IsFreeColonistSafe(comp.Pawn))
+                GameFacts.Record(MedicineFamily.Name, MedicineFamily.Scar);
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -277,20 +330,22 @@ public static class WithdrawalMetricPatch
 {
     public static void Postfix(Hediff_Addiction __instance)
     {
-        var pawn = __instance?.pawn;
-        if (pawn == null || __instance?.Need is not { } need)
-            return;
-        var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
-        // An onset counts for a living free colonist only; leaving withdrawal is passed on for anyone, so a pawn that was
-        // a prisoner or away when it recovered is not left marked as still in withdrawal.
-        if (withdrawal && (pawn.Dead || !pawn.IsFreeColonist))
-            return;
-        if (!withdrawal && !UnityData.IsInMainThread && !pawn.Spawned && !GameFacts.IsPlayerFaction(pawn.Faction) && !pawn.IsPrisonerOfColony)
-            return;
-        if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
         try
         {
+            var pawn = __instance?.pawn;
+            if (pawn == null || __instance?.Need is not { } need)
+                return;
+            var withdrawal = need.CurCategory == DrugDesireCategory.Withdrawal;
+            // An onset counts for a living free colonist only; leaving withdrawal is passed on for anyone, so a pawn that was
+            // a prisoner or away when it recovered is not left marked as still in withdrawal.
+            if (withdrawal && (pawn.Dead || !GameFacts.IsFreeColonistSafe(pawn)))
+                return;
+            if (!withdrawal && !UnityData.IsInMainThread && !pawn.Spawned && !GameFacts.IsPlayerFaction(pawn.Faction) && !GameFacts.IsPrisonerOfColonySafe(pawn))
+                return;
+            if (!LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+                return;
             var id = __instance.GetUniqueLoadID();
             var tick = GameFacts.Tick;
             GameFacts.Record(MedicineFamily.Name, s => MedicineFamily.AddictionNeedChanged(s, id, withdrawal, tick));
@@ -314,16 +369,22 @@ public static class HospitalBedMetricPatch
 {
     public static void Postfix(Toil __result, TargetIndex bedOrRestSpotIndex, bool hasBed, bool deathrest)
     {
-        if (__result == null || !hasBed || deathrest)
+        if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
             return;
-        var toil = __result;
-        var init = toil.initAction;
-        toil.initAction = () =>
+        try
         {
-            init?.Invoke();   // the game's own init first; its exceptions stay the game's
-            HospitalProbe.Entered(toil, bedOrRestSpotIndex);
-        };
-        toil.AddFinishAction(() => HospitalProbe.Left(toil));
+            if (__result == null || !hasBed || deathrest)
+                return;
+            var toil = __result;
+            var init = toil.initAction;
+            toil.initAction = () =>
+            {
+                init?.Invoke();   // the game's own init first; its exceptions stay the game's
+                HospitalProbe.Entered(toil, bedOrRestSpotIndex);
+            };
+            toil.AddFinishAction(() => HospitalProbe.Left(toil));
+        }
+        catch (Exception e) { LiveMetrics.Fail(MedicineFamily.Name, e); }
     }
 }
 
@@ -333,8 +394,10 @@ internal static class HospitalProbe
     {
         try
         {
+            if (!LiveMetrics.IsRecordingUnit(MedicineFamily.Name))
+                return;
             var pawn = toil.actor;
-            if (pawn == null || pawn.Dead || !pawn.IsFreeColonist || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
+            if (pawn == null || pawn.Dead || !GameFacts.IsFreeColonistSafe(pawn) || !LiveMetrics.CanCaptureEvent(MedicineFamily.Name))
                 return;
             // The game's init ends the job instead when the pawn is not in the bed; then it is not lying there.
             if (pawn.jobs?.posture != PawnPosture.LayingInBed || pawn.CurJob?.GetTarget(bedIndex).Thing is not Building_Bed { Medical: true } bed

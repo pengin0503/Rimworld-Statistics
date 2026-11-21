@@ -57,16 +57,57 @@ public static class LeaderboardBuilder
             || (definition.Overall != OverallAggregation.Min && definition.Selection != ColonySelection.ObservationMin);
 
     public static Leaderboard Build(StatsView view, string metricKey, bool descending, bool perDay = false)
+        => BuildWithIndex(view, metricKey, descending, perDay, null);
+
+    internal static Dictionary<string, Dictionary<string, NumericRow>> IndexCountedColonyRows(StatsView view)
     {
+        var index = new Dictionary<string, Dictionary<string, NumericRow>>(StringComparer.Ordinal);
+        foreach (var c in view.Numeric.Colonies)
+        {
+            if (c.Excluded || c.OutOfScope)
+                continue;
+            var dict = new Dictionary<string, NumericRow>(c.Rows.Count, StringComparer.Ordinal);
+            foreach (var r in c.Rows)
+                dict.TryAdd(r.Definition.Key, r);
+            index.TryAdd(c.Key, dict);
+        }
+        return index;
+    }
+
+    internal static Leaderboard BuildWithIndex(
+        StatsView view,
+        string metricKey,
+        bool descending,
+        bool perDay,
+        IReadOnlyDictionary<string, Dictionary<string, NumericRow>>? rowIndex,
+        MetricDefinition? knownDefinition = null)
+    {
+        static NumericRow? LookupRow(
+            NumericColony c,
+            string key,
+            IReadOnlyDictionary<string, Dictionary<string, NumericRow>>? index)
+        {
+            if (index is not null && index.TryGetValue(c.Key, out var map))
+                return map.GetValueOrDefault(key);
+            return c.Rows.FirstOrDefault(r => r.Definition.Key == key);
+        }
+
         var candidates = new List<Candidate>();
         int targets = 0;
         if (perDay)
         {
-            if (CanRankPerDay(view, metricKey) && MetricLookup.Definition(view, metricKey) is { } rateDef)
+            var rateDef = knownDefinition ?? MetricLookup.Definition(view, metricKey);
+            if (!BasicMetrics.Contains(metricKey)
+                && rateDef is not null
+                && rateDef.Overall != OverallAggregation.Ranking
+                && !CrossColonyCatalog.IsDerived(rateDef)
+                && MetricRates.IsAdditiveTotal(rateDef))
             {
-                foreach (var c in view.Numeric.Colonies.Where(c => !c.Excluded && !c.OutOfScope))
+                foreach (var c in view.Numeric.Colonies)
                 {
-                    var row = c.Rows.FirstOrDefault(r => r.Definition.Key == metricKey);
+                    if (c.Excluded || c.OutOfScope)
+                        continue;
+                    var row = LookupRow(c, metricKey, rowIndex);
                     if (row?.Value.Coverage == MetricCoverage.NotApplicable)
                         continue;
                     targets++;
@@ -79,8 +120,10 @@ public static class LeaderboardBuilder
         }
         else if (BasicMetrics.Contains(metricKey))
         {
-            foreach (var c in view.Stats.Colonies.Where(c => !c.Excluded && !c.OutOfScope))
+            foreach (var c in view.Stats.Colonies)
             {
+                if (c.Excluded || c.OutOfScope)
+                    continue;
                 targets++;
                 if (BasicMetrics.Value(c, metricKey) is not { } value || !double.IsFinite(value))
                     continue;
@@ -88,13 +131,15 @@ public static class LeaderboardBuilder
                     MetricEvidence.UnknownLegacy, c.HasObservedPoint ? c.MaxTicks : null));
             }
         }
-        else if (MetricLookup.Definition(view, metricKey) is { } definition
+        else if ((knownDefinition ?? MetricLookup.Definition(view, metricKey)) is { } definition
             && definition.Overall != OverallAggregation.Ranking
             && !CrossColonyCatalog.IsDerived(definition))
         {
-            foreach (var c in view.Numeric.Colonies.Where(c => !c.Excluded && !c.OutOfScope))
+            foreach (var c in view.Numeric.Colonies)
             {
-                var row = c.Rows.FirstOrDefault(r => r.Definition.Key == metricKey);
+                if (c.Excluded || c.OutOfScope)
+                    continue;
+                var row = LookupRow(c, metricKey, rowIndex);
                 if (row?.Value.Coverage == MetricCoverage.NotApplicable)
                     continue;
                 targets++;

@@ -166,9 +166,12 @@ public static class HistoricalCounterIntervals
             .Where(name => name.Length > 0).Order(Ord).FirstOrDefault();
 
     private static bool SameColony(ColonyIdentity a, ColonyIdentity b)
-        => a.ModCampaignId is { Length: > 0 } id && id == b.ModCampaignId
-            && a.FingerprintHash() is { } hash && hash == b.FingerprintHash()
-            && a.StartingPawnIds.ToHashSet(Ord).SetEquals(b.StartingPawnIds);
+    {
+        if (a.ModCampaignId is not { Length: > 0 } id || id != b.ModCampaignId
+            || a.FingerprintHash() != b.FingerprintHash())
+            return false;
+        return SetEquals(a.StartingPawnIds, b.StartingPawnIds, Ord);
+    }
 
     // Saved MOD-list digests are authoritative for compatibility. This
     // additional consistency check rejects contradictory/corrupted DLC
@@ -177,7 +180,24 @@ public static class HistoricalCounterIntervals
     {
         if (a is null || b is null)
             return a is null && b is null;
-        return a.ToHashSet(StringComparer.OrdinalIgnoreCase).SetEquals(b);
+        return SetEquals(a, b, StringComparer.OrdinalIgnoreCase);
+    }
+
+    private static bool SetEquals(IReadOnlyCollection<string> a, IReadOnlyCollection<string> b, StringComparer comparer)
+    {
+        if (ReferenceEquals(a, b))
+            return true;
+        if (a.Count == 0 && b.Count == 0)
+            return true;
+        if (a.Count == 0 || b.Count == 0)
+            return false;
+        if (a.Count == 1 && b.Count == 1)
+            return comparer.Equals(a.First(), b.First());
+        if (a is HashSet<string> setA && Equals(setA.Comparer, comparer))
+            return setA.SetEquals(b);
+        if (b is HashSet<string> setB && Equals(setB.Comparer, comparer))
+            return setB.SetEquals(a);
+        return new HashSet<string>(a, comparer).SetEquals(b);
     }
 
     private static bool ValidHash(string? s)

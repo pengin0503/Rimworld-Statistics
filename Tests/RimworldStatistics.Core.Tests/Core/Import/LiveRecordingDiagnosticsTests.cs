@@ -224,6 +224,7 @@ namespace Verse
     internal sealed class TickManager { internal int TicksGame => 100; }
     internal static class LoadedModManager { internal static Mod[] RunningMods => []; }
     internal sealed class Mod { internal string? PackageId => null; }
+    internal static class Log { internal static void WarningOnce(string text, int key) { } }
 }
 
 namespace RimworldStatistics.Metrics

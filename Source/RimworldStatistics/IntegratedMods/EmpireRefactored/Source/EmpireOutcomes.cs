@@ -41,7 +41,11 @@ internal static class EmpireOutcomes
     {
         if (!__runOriginal || __result is null || !OutcomeMetric.Observing(Founding))
             return;
-        GameFacts.Record(Founding, state => EmpireOutcomeRules.RecordFounding(state, __result.ID, __result.Spawned));
+        try
+        {
+            GameFacts.Record(Founding, state => EmpireOutcomeRules.RecordFounding(state, __result.ID, __result.Spawned));
+        }
+        catch (Exception error) { LiveMetrics.Fail(Founding, error); }
     }
 
     private static void InstallUpgrades(Harmony harmony)
@@ -54,13 +58,28 @@ internal static class EmpireOutcomes
     }
 
     private static void BeforeUpgrade(WorldObject __instance, int ___settlementLevel, out int __state)
-        => __state = __instance.Spawned && OutcomeMetric.Observing(Upgrades) ? ___settlementLevel : -1;
+    {
+        __state = -1;
+        if (!OutcomeMetric.Observing(Upgrades))
+            return;
+        try
+        {
+            if (__instance.Spawned)
+                __state = ___settlementLevel;
+        }
+        catch (Exception error) { LiveMetrics.Fail(Upgrades, error); }
+    }
 
     private static void AfterUpgrade(WorldObject __instance, int ___settlementLevel, bool __runOriginal, int __state)
     {
-        if (__runOriginal && __instance.Spawned && EmpireOutcomeRules.Increased(__state, ___settlementLevel) &&
-            OutcomeMetric.Observing(Upgrades))
-            OutcomeMetric.Record(Upgrades);
+        if (!__runOriginal || __state < 0 || !OutcomeMetric.Observing(Upgrades))
+            return;
+        try
+        {
+            if (__instance.Spawned && EmpireOutcomeRules.Increased(__state, ___settlementLevel))
+                OutcomeMetric.Record(Upgrades);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Upgrades, error); }
     }
 
     private static void InstallBuildings(Harmony harmony)
@@ -73,8 +92,13 @@ internal static class EmpireOutcomes
 
     private static void Constructed(WorldObjectComp __instance, Def? __0, bool __result, bool __runOriginal)
     {
-        if (__runOriginal && __result && __0 is not null && __instance.parent is { Spawned: true } &&
-            OutcomeMetric.Observing(Buildings))
-            OutcomeMetric.Record(Buildings, __0, breakdown: true);
+        if (!__runOriginal || !__result || __0 is null || !OutcomeMetric.Observing(Buildings))
+            return;
+        try
+        {
+            if (__instance.parent is { Spawned: true })
+                OutcomeMetric.Record(Buildings, __0, breakdown: true);
+        }
+        catch (Exception error) { LiveMetrics.Fail(Buildings, error); }
     }
 }

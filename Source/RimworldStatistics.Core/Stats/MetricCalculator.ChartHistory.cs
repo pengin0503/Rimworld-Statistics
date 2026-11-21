@@ -97,8 +97,12 @@ public static partial class MetricCalculator
             return [];
 
         var attached = Attach(profile, view.Colonies, out _);
-        var statsByKey = view.Stats.Colonies.ToDictionary(c => c.Key, Ord);
-        var numericByKey = view.Numeric.Colonies.ToDictionary(c => c.Key, Ord);
+        var statsByKey = new Dictionary<string, ColonyStats>(view.Stats.Colonies.Count, Ord);
+        foreach (var cs in view.Stats.Colonies)
+            statsByKey.TryAdd(cs.Key, cs);
+        var numericByKey = new Dictionary<string, NumericColony>(view.Numeric.Colonies.Count, Ord);
+        foreach (var nc in view.Numeric.Colonies)
+            numericByKey.TryAdd(nc.Key, nc);
         var basicDefs = BasicMetrics.SaveHistoryKeys.Select(BasicMetrics.Definition).ToArray();
         var result = new List<ColonyMetricHistorySeries>();
 
@@ -140,6 +144,7 @@ public static partial class MetricCalculator
                 }
             }
 
+            var checkpointContext = BuildCheckpointChartContext(colony, observations, ancestry);
             foreach (var row in numColony.Rows)
             {
                 var def = row.Definition;
@@ -149,7 +154,9 @@ public static partial class MetricCalculator
                 if (!row.Value.Known && !storedKeysPresent.Contains(def.StoredKey) && !maybeArchived)
                     continue;
 
-                var history = BuildChartHistoryForColony(colony, observations, ancestry, def);
+                var history = def.Source == MetricObservationSource.Checkpoint
+                    ? BuildCheckpointChartHistory(checkpointContext, def)
+                    : BuildChartHistoryForColony(colony, observations, ancestry, def);
                 if (history.Points.Any(p => p.Value is { Known: true }) || history.ArchivedPoints.Count > 0)
                     result.Add(new ColonyMetricHistorySeries(colony.Key, def, history));
             }
@@ -258,12 +265,22 @@ public static partial class MetricCalculator
         return history;
     }
 
-    private static MetricHistory CheckpointChartHistory(Colony colony, List<MetricObservation> observations, MetricDefinition definition,
-        CheckpointAncestry ancestry)
+    private sealed record CheckpointChartContext(
+        CheckpointAncestry Ancestry,
+        string? CampaignId,
+        List<(MetricObservation Obs, bool ConnectToPrevious, int? SavedLater)> LineageNodes,
+        MetricObservation[] EarlierNodes,
+        int?[] EarlierSavedLater,
+        int? LatestSaveTick)
+    {
+        public static readonly CheckpointChartContext Empty = new(new CheckpointAncestry([]), null, [], [], [], null);
+    }
+
+    private static CheckpointChartContext BuildCheckpointChartContext(Colony colony, List<MetricObservation> observations, CheckpointAncestry ancestry)
     {
         var representative = CheckpointSelector.Select(observations).Representative;
         if (representative is null || representative.SaveTick < 0)
-            return new(MetricHistoryKind.CheckpointLineage, []);
+            return CheckpointChartContext.Empty;
 
         var byKey = observations.Where(o => o.Source == MetricObservationSource.Checkpoint)
             .ToLookup(o => o.Key, Ord);
@@ -272,103 +289,136 @@ public static partial class MetricCalculator
         var fileTicks = new Dictionary<(string, long, DateTime), int>();
         void Remember(string name, long size, DateTime utc, int tick)
         {
-            var file = (name, size, utc);
+            var file = (name, size, UtcTime.ToUtc(utc));
             fileTicks[file] = Math.Max(tick, fileTicks.GetValueOrDefault(file, int.MinValue));
         }
         foreach (var save in colony.Observations)
             Remember(save.FileName, save.FileSize, save.LastWriteUtc, save.Values.TicksGame);
-        foreach (var save in observations.Where(o => o.Source == MetricObservationSource.SaveFile))
-            foreach (var alias in save.FileAliases)
-                Remember(alias.FileName, alias.FileSize, alias.LastWriteUtc, save.SaveTick);
+        foreach (var save in observations)
+        {
+            if (save.Source == MetricObservationSource.SaveFile)
+                foreach (var alias in save.FileAliases)
+                    Remember(alias.FileName, alias.FileSize, alias.LastWriteUtc, save.SaveTick);
+        }
         int? SavedLater(MetricObservation checkpoint)
         {
-            var latest = checkpoint.FileAliases.Select(a => fileTicks.TryGetValue((a.FileName, a.FileSize, a.LastWriteUtc), out var t)
-                ? t : int.MinValue).DefaultIfEmpty(int.MinValue).Max();
+            var latest = int.MinValue;
+            foreach (var a in checkpoint.FileAliases)
+            {
+                if (fileTicks.TryGetValue((a.FileName, a.FileSize, UtcTime.ToUtc(a.LastWriteUtc)), out var t) && t > latest)
+                    latest = t;
+            }
             return latest > checkpoint.SaveTick ? latest : null;
         }
 
-        var points = new List<MetricHistoryPoint>();
-        var archived = new List<ArchivedChartPoint>();
+        var lineageNodes = new List<(MetricObservation Obs, bool ConnectToPrevious, int? SavedLater)>();
         var current = representative;
         var visited = new HashSet<string>(Ord);
         while (visited.Add(current.Key))
         {
             // Saves made while paused can share a tick. Keep the last reading at that tick,
             // but follow the intervening parents to retain the earlier history.
-            if (points.Count == 0 || points[^1].Tick != current.SaveTick)
-            {
-                var value = ChartValue(current, definition);
-                if (value is null && current.ArchivedMetrics && current.Identity?.ModCampaignId is { Length: > 0 } campaign)
-                    archived.Add(new(points.Count, campaign, current.Key, current.ParentKey, current.PayloadHash, current.SaveTick));
-                points.Add(new(current.SaveTick, value, current.ParentKey is not null) { SavedTick = SavedLater(current) });
-            }
+            if (lineageNodes.Count == 0 || lineageNodes[^1].Obs.SaveTick != current.SaveTick)
+                lineageNodes.Add((current, current.ParentKey is not null, SavedLater(current)));
             if (current.ParentKey is not { } key || byKey[key].Take(2).ToArray() is not [var parent]
                 || parent.Conflicted || parent.SaveTick < 0 || parent.SaveTick > current.SaveTick
                 || parent.Identity?.ModCampaignId != current.Identity?.ModCampaignId)
                 break;
             current = parent;
         }
-        points.Reverse();
-        points[0] = points[0] with { ConnectToPrevious = false };
-        var lineageArchived = archived.Select(a => a with { Index = points.Count - 1 - a.Index }).ToArray();
+        lineageNodes.Reverse();
+        lineageNodes[0] = lineageNodes[0] with { ConnectToPrevious = false };
 
-        // The lineage ends at a parent that is missing (no save holding it was imported), duplicated or conflicting, or at
-        // its first checkpoint. Earlier checkpoints of the colony may still lead to it through such a gap (Issue #72), so
-        // they stay on the chart, joined only where their own parents are proven; the lineage's first reading then stands
-        // alone. A checkpoint at or after that reading's tick cannot be its ancestor: another branch, left out.
-        var (before, beforeArchived) = ReadingsBefore(observations, definition, ancestry,
-            representative.Identity?.ModCampaignId, visited, points[0].Tick, SavedLater);
-        if (before.Length > 0)
-            points[0] = points[0] with { Unlinked = true };
+        var campaign = representative.Identity?.ModCampaignId;
+        var beforeTick = lineageNodes[0].Obs.SaveTick;
+        MetricObservation[] earlierNodes = [];
+        int?[] earlierSavedLater = [];
+        if (campaign is { Length: > 0 })
+        {
+            earlierNodes = observations.Where(o => o.Source == MetricObservationSource.Checkpoint && o.SaveTick >= 0
+                    && o.SaveTick < beforeTick && !visited.Contains(o.Key) && o.Identity?.ModCampaignId == campaign
+                    && ReferenceEquals(ancestry.Node(o.Key), o))
+                .ToArray();
+            if (earlierNodes.Length > 0)
+            {
+                static CheckpointAncestry.Anchor? Own(MetricObservation o) => new CheckpointAncestry.Anchor(o.Key, Exact: true);
+                var ticks = earlierNodes.GroupBy(o => o.SaveTick).OrderBy(g => g.Key).ToArray();
+                earlierSavedLater = new int?[ticks.Length];
+                for (var i = 0; i < ticks.Length; i++)
+                {
+                    var group = ticks[i].ToArray();
+                    var node = group.Length == 1 ? group[0]
+                        : ancestry.Same(group.Select(Own).ToArray()) is { } same ? ancestry.Node(same.Key) : null;
+                    if (node is not null)
+                        earlierSavedLater[i] = SavedLater(node);
+                }
+            }
+        }
 
-        var furthest = colony.Observations.Where(o => o.Status == ObservationStatus.Ok).Select(o => o.Values.TicksGame)
-            .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => l.Max.TicksGame))
-            .DefaultIfEmpty(-1).Max();
+        var furthest = -1;
+        foreach (var o in colony.Observations)
+            if (o.Status == ObservationStatus.Ok && o.Values.TicksGame > furthest)
+                furthest = o.Values.TicksGame;
+        foreach (var l in colony.LiveCampaigns)
+            if (l.HasObservation && l.Max.TicksGame > furthest)
+                furthest = l.Max.TicksGame;
+
+        return new CheckpointChartContext(ancestry, campaign, lineageNodes, earlierNodes, earlierSavedLater,
+            furthest >= 0 ? furthest : null);
+    }
+
+    private static MetricHistory BuildCheckpointChartHistory(CheckpointChartContext ctx, MetricDefinition definition)
+    {
+        if (ctx.LineageNodes.Count == 0)
+            return new(MetricHistoryKind.CheckpointLineage, []);
+
+        var points = new MetricHistoryPoint[ctx.LineageNodes.Count];
+        var archived = new List<ArchivedChartPoint>();
+        for (var i = 0; i < ctx.LineageNodes.Count; i++)
+        {
+            var (node, connect, savedLater) = ctx.LineageNodes[i];
+            var value = ChartValue(node, definition);
+            if (value is null && node.ArchivedMetrics && ctx.CampaignId is { Length: > 0 })
+                archived.Add(new(i, ctx.CampaignId, node.Key, node.ParentKey, node.PayloadHash, node.SaveTick));
+            points[i] = new(node.SaveTick, value, connect) { SavedTick = savedLater };
+        }
+
+        MetricHistoryPoint[] before = [];
+        ArchivedChartPoint[] beforeArchived = [];
+        if (ctx.EarlierNodes.Length > 0 && ctx.CampaignId is { Length: > 0 } campaign)
+        {
+            static CheckpointAncestry.Anchor? Own(MetricObservation o) => new CheckpointAncestry.Anchor(o.Key, Exact: true);
+            before = SaveChartPoints(ctx.EarlierNodes.Select(o => new ChartReading(o.SaveTick, campaign, ChartValue(o, definition), Own(o))),
+                ctx.Ancestry).ToArray();
+            var ticks = ctx.EarlierNodes.GroupBy(o => o.SaveTick).OrderBy(g => g.Key).ToArray();
+            var archivedBefore = new List<ArchivedChartPoint>();
+            for (var i = 0; i < ticks.Length; i++)
+            {
+                before[i] = before[i] with { SavedTick = ctx.EarlierSavedLater[i] };
+                if (before[i].Value is null)
+                {
+                    var group = ticks[i].ToArray();
+                    var node = group.Length == 1 ? group[0]
+                        : ctx.Ancestry.Same(group.Select(Own).ToArray()) is { } same ? ctx.Ancestry.Node(same.Key) : null;
+                    if (node is { ArchivedMetrics: true })
+                        archivedBefore.Add(new(i, campaign, node.Key, node.ParentKey, node.PayloadHash, node.SaveTick));
+                }
+            }
+            beforeArchived = archivedBefore.ToArray();
+            if (before.Length > 0)
+                points[0] = points[0] with { Unlinked = true };
+        }
+
         return new(MetricHistoryKind.CheckpointLineage, [.. before, .. points])
         {
-            ArchivedPoints = [.. beforeArchived, .. lineageArchived.Select(a => a with { Index = a.Index + before.Length })],
-            LatestSaveTick = furthest >= 0 ? furthest : null,
+            ArchivedPoints = [.. beforeArchived, .. archived.Select(a => a with { Index = a.Index + before.Length })],
+            LatestSaveTick = ctx.LatestSaveTick,
         };
     }
 
-    /// <summary>
-    /// The readings of a colony's checkpoints before <paramref name="beforeTick"/> that are not on the lineage, one point
-    /// per tick and linked like save readings (each checkpoint is its own state). Duplicated or conflicting checkpoints
-    /// prove nothing and are left out, as on the lineage.
-    /// </summary>
-    private static (MetricHistoryPoint[] Points, ArchivedChartPoint[] Archived) ReadingsBefore(
-        List<MetricObservation> observations, MetricDefinition definition, CheckpointAncestry ancestry, string? campaign,
-        IReadOnlySet<string> lineage, int beforeTick, Func<MetricObservation, int?> savedLater)
-    {
-        if (campaign is not { Length: > 0 })
-            return ([], []);
-        var earlier = observations.Where(o => o.Source == MetricObservationSource.Checkpoint && o.SaveTick >= 0
-                && o.SaveTick < beforeTick && !lineage.Contains(o.Key) && o.Identity?.ModCampaignId == campaign
-                && ReferenceEquals(ancestry.Node(o.Key), o))
-            .ToArray();
-        if (earlier.Length == 0)
-            return ([], []);
-
-        static CheckpointAncestry.Anchor? Own(MetricObservation o) => new CheckpointAncestry.Anchor(o.Key, Exact: true);
-        var points = SaveChartPoints(earlier.Select(o => new ChartReading(o.SaveTick, campaign, ChartValue(o, definition), Own(o))),
-            ancestry).ToArray();
-        var archived = new List<ArchivedChartPoint>();
-        // SaveChartPoints makes one point per tick, in tick order. Re-saves made while paused are one state: the
-        // descendant-most of them stands for the tick, as on the lineage.
-        var ticks = earlier.GroupBy(o => o.SaveTick).OrderBy(g => g.Key).ToArray();
-        for (var i = 0; i < ticks.Length; i++)
-        {
-            var group = ticks[i].ToArray();
-            var node = group.Length == 1 ? group[0]
-                : ancestry.Same(group.Select(Own).ToArray()) is { } same ? ancestry.Node(same.Key) : null;
-            if (node is null)
-                continue;
-            points[i] = points[i] with { SavedTick = savedLater(node) };
-            if (points[i].Value is null && node.ArchivedMetrics)
-                archived.Add(new(i, campaign, node.Key, node.ParentKey, node.PayloadHash, node.SaveTick));
-        }
-        return (points, archived.ToArray());
-    }
+    private static MetricHistory CheckpointChartHistory(Colony colony, List<MetricObservation> observations, MetricDefinition definition,
+        CheckpointAncestry ancestry)
+        => BuildCheckpointChartHistory(BuildCheckpointChartContext(colony, observations, ancestry), definition);
 
     internal static MetricHistory RestoreChartHistory(MetricHistory history, MetricDefinition definition, ICheckpointArchive archive)
     {
@@ -480,7 +530,7 @@ public static partial class MetricCalculator
             var campaigns = group.Select(o => o.Campaign).Distinct(Ord).Take(2).ToArray();
             var measured = group.Select(o => o.Value).Where(v => v is not null).ToArray();
             values[i] = campaigns.Length == 1 && measured.Select(v => v!.Number).Distinct().Take(2).Count() == 1
-                ? measured.OrderBy(v => v!.Coverage == MetricCoverage.Partial).First() : null;
+                ? measured.OrderBy(v => v!.Coverage == MetricCoverage.Partial ? 2 : v.Coverage == MetricCoverage.SnapshotOnly ? 1 : 0).First() : null;
             anchors[i] = campaigns is [{ Length: > 0 } campaign]
                 && ancestry.Same(group.Select(o => o.Anchor).ToArray()) is { } anchor
                 && ancestry.Node(anchor.Key)?.Identity?.ModCampaignId == campaign ? anchor : null;

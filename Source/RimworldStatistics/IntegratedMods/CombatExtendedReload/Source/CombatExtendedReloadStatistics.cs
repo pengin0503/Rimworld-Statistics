@@ -87,31 +87,23 @@ internal static class CombatExtendedReloadStatistics
         useAmmoProperty = useAmmo;
         magazineProperty = rounds;
         jobDriverPawnField = pawn;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(doReload,
-                prefix: new HarmonyMethod(typeof(CombatExtendedReloadStatistics), nameof(BeforeDoReload)),
-                postfix: new HarmonyMethod(typeof(CombatExtendedReloadStatistics), nameof(AfterDoReload)),
-                finalizer: new HarmonyMethod(typeof(CombatExtendedReloadStatistics), nameof(FinishDoReload)));
-            harmony.Patch(load,
-                prefix: new HarmonyMethod(typeof(CombatExtendedReloadStatistics), nameof(BeforeLoadAmmo)),
-                postfix: new HarmonyMethod(typeof(CombatExtendedReloadStatistics), nameof(AfterLoadAmmo)));
+            patcher.Patch(doReload, typeof(CombatExtendedReloadStatistics),
+                prefix: nameof(BeforeDoReload), postfix: nameof(AfterDoReload), finalizer: nameof(FinishDoReload));
+            patcher.Patch(load, typeof(CombatExtendedReloadStatistics),
+                prefix: nameof(BeforeLoadAmmo), postfix: nameof(AfterLoadAmmo));
         }
         catch
         {
-            harmony.Unpatch(doReload, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(load, HarmonyPatchType.All, harmony.Id);
             ammoUserProperty = useAmmoProperty = magazineProperty = null;
             jobDriverPawnField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static int Rounds(object comp) => magazineProperty?.GetValue(comp) is int amount ? amount : 0;
 

@@ -1048,29 +1048,29 @@
   <RWS_MetricDesc_DbhActivities>この統計を有効にしてから、拠点マップでプレイヤーのポーンが完了したトイレ・シャワー・確認済みの洗浄ジョブの回数。</RWS_MetricDesc_DbhActivities>
   <RWS_SAU_CompletedSwaps>着替え完了数</RWS_SAU_CompletedSwaps>
   <RWS_SAU_CompletedSwapsDesc>この統計を有効にしてから、Smart Apparel Upgradeの自動指示によって選ばれた服を実際に着終えた回数。</RWS_SAU_CompletedSwapsDesc>
-  <RWS_VTE_BankCredits>VTE 銀行への入金額（手数料控除後）</RWS_VTE_BankCredits>
+  <RWS_VTE_BankCredits>銀行への入金額（手数料控除後）</RWS_VTE_BankCredits>
   <RWS_VTE_BankCreditsDesc>この実験的な統計を有効にしてから、完了したVTE銀行への預け入れによって口座に入金された正味のシルバー（銀行手数料の控除後）。契約の報酬の入金は含めません。</RWS_VTE_BankCreditsDesc>
-  <RWS_VTE_BankDebits>VTE 銀行からの引き出し額（手数料控除前）</RWS_VTE_BankDebits>
+  <RWS_VTE_BankDebits>銀行からの引き出し額（手数料控除前）</RWS_VTE_BankDebits>
   <RWS_VTE_BankDebitsDesc>この統計を有効にしてから、VTE銀行の口座から成功した引き出しによって減ったシルバーの総額（引き出し手数料の控除前）。</RWS_VTE_BankDebitsDesc>
-  <RWS_VTE_LoansIssued>VTE 融資の実行回数</RWS_VTE_LoansIssued>
+  <RWS_VTE_LoansIssued>融資の実行回数</RWS_VTE_LoansIssued>
   <RWS_VTE_LoansIssuedDesc>記録を有効にしてから、VTE銀行の融資が実際に実行された回数。失敗した申し込みや返済は含めません。</RWS_VTE_LoansIssuedDesc>
-  <RWS_VTE_LoanPrincipal>VTE 融資元本の合計</RWS_VTE_LoanPrincipal>
+  <RWS_VTE_LoanPrincipal>融資元本の合計</RWS_VTE_LoanPrincipal>
   <RWS_VTE_LoanPrincipalDesc>実際に実行されたVTE融資の元本（シルバー）の合計。返済と利息は含めません。</RWS_VTE_LoanPrincipalDesc>
-  <RWS_VTE_ContractDeliveries>VTE 品物の納品で達成した契約</RWS_VTE_ContractDeliveries>
+  <RWS_VTE_ContractDeliveries>品物の納品で達成した契約</RWS_VTE_ContractDeliveries>
   <RWS_VTE_ContractDeliveriesDesc>VTEのNPCの買い取り契約のうち、品物が実際に消費されたか持ち去られたものの数。契約を受けただけでは数えません。報酬が入金されたことを確認するものではありません。</RWS_VTE_ContractDeliveriesDesc>
-  <RWS_VTE_ContractItems>VTE 契約に納品した品物の数</RWS_VTE_ContractItems>
+  <RWS_VTE_ContractItems>契約に納品した品物の数</RWS_VTE_ContractItems>
   <RWS_VTE_ContractItemsDesc>完了または一部達成したVTEのNPCの買い取り契約に引き渡した品物の数。キャラバンによる受け取りを含みます。要求された数ではなく、実際に引き渡した数です。</RWS_VTE_ContractItemsDesc>
-  <RWS_VTE_ContractPurchases>VTE プレイヤーが出した購入契約の成立数</RWS_VTE_ContractPurchases>
+  <RWS_VTE_ContractPurchases>プレイヤーが出した購入契約の成立数</RWS_VTE_ContractPurchases>
   <RWS_VTE_ContractPurchasesDesc>プレイヤーが出したVTEの購入契約のうち、VTEの銀行取引で代金を全額支払い、生成された品物で達成されたものの数。支払いのキャンセルや、支払わずに契約を受けただけでは数えません。</RWS_VTE_ContractPurchasesDesc>
-  <RWS_VTE_ContractReceived>VTE 契約で購入した品物の数</RWS_VTE_ContractReceived>
+  <RWS_VTE_ContractReceived>契約で購入した品物の数</RWS_VTE_ContractReceived>
   <RWS_VTE_ContractReceivedDesc>支払いが完了したプレイヤーのVTE購入契約によって生成された品物の数。NPCの買い取り契約への納品や通常の交易とは別です。</RWS_VTE_ContractReceivedDesc>
   <RWS_Metric_VpeCasts>超能力の使用回数</RWS_Metric_VpeCasts>
   <RWS_MetricDesc_VpeCasts>プレイヤーの自由入植者がVanilla Psycasts Expandedの能力を実際に使用した回数（VPEが能力の使用を消費した時点で数えます）。能力別の内訳もあります。予約した指示、キャンセルした使用、NPCの使用は数えません。</RWS_MetricDesc_VpeCasts>
   <RWS_VfeSecurity_TrapsRearmed>罠の再装填回数</RWS_VfeSecurity_TrapsRearmed>
   <RWS_VfeSecurity_TrapsRearmedDesc>プレイ中に、解除状態だったプレイヤー所有の罠が再装填に成功した回数。解除状態から作動可能な状態への実際の変化だけを数え、作業の指示、罠の設置時の初期化、デバッグ操作、MOD側のポーンの記録は含めません。</RWS_VfeSecurity_TrapsRearmedDesc>
-  <RWS_VaeAchievements_Unlocked>VAE 実績カードの解除数</RWS_VaeAchievements_Unlocked>
+  <RWS_VaeAchievements_Unlocked>実績カードの解除数</RWS_VaeAchievements_Unlocked>
   <RWS_VaeAchievements_UnlockedDesc>通常のプレイ中に新たに解除した実績カードの数（実績別）。デバッグによる解除や、ゲーム起動時の復元確認は数えません。</RWS_VaeAchievements_UnlockedDesc>
-  <RWS_VaeAchievements_Points>VAE 獲得した実績ポイント</RWS_VaeAchievements_Points>
+  <RWS_VaeAchievements_Points>獲得した実績ポイント</RWS_VaeAchievements_Points>
   <RWS_VaeAchievements_PointsDesc>デバッグ以外の新たな解除によって実際に加算された実績ポイントの合計。ポイントの合計値を読み取れない場合は、部分的な記録として扱います。</RWS_VaeAchievements_PointsDesc>
   <RWS_VfeTribals_EraAdvances>時代の進歩回数</RWS_VfeTribals_EraAdvances>
   <RWS_VfeTribals_EraAdvancesDesc>プレイヤーの部族の技術時代が実際に進んだ回数（時代別）。初期化、同じ時代のままの場合や後退した場合、セーブの復元は数えません。</RWS_VfeTribals_EraAdvancesDesc>
@@ -1080,7 +1080,7 @@
   <RWS_VaeAspirations_CompletedDesc>プレイヤーの入植者がMODの通常の達成判定で新たに達成した願望の数（願望別）。デバッグによる達成、すでに達成済みや未割り当ての願望、セーブの復元は数えません。</RWS_VaeAspirations_CompletedDesc>
   <RWS_VfeInsectoids_HiveBirths>プレイヤーの巣で生まれた虫</RWS_VfeInsectoids_HiveBirths>
   <RWS_VfeInsectoids_HiveBirthsDesc>通常のプレイ中にプレイヤー所有の巣から新たに生まれた虫の数（種類別）。繭による置き換え、既存の巣の虫の復元、開発者によるスポーン操作は数えません。</RWS_VfeInsectoids_HiveBirthsDesc>
-  <RWS_VqeCryptoforge_RelayScans>Cryptoforge 中継器のスキャン完了数</RWS_VqeCryptoforge_RelayScans>
+  <RWS_VqeCryptoforge_RelayScans>中継器のスキャン完了数</RWS_VqeCryptoforge_RelayScans>
   <RWS_VqeCryptoforge_RelayScansDesc>プレイヤーの入植者がクエストマップにいる間に完了した、凍結スキャン中継器（Frozen Scanning Relay）のスキャンの回数。</RWS_VqeCryptoforge_RelayScansDesc>
   <RWS_RimFactory_GroundOutput>自動工作機械が地面に出力した数</RWS_RimFactory_GroundOutput>
   <RWS_RimFactory_GroundOutputDesc>プレイヤー所有の自動工作機械（Auto Machine Tool）がマップ上に置いたことを確認したアイテムの数（種類別）。コンベアや他の機械へ直接渡したものは含めません。</RWS_RimFactory_GroundOutputDesc>
@@ -1092,7 +1092,7 @@
   <RWS_SimpleWarrants_CompletedDesc>プレイヤーのキャラバンが対象を引き渡し、対象が取り除かれて手配書が完了した件数。</RWS_SimpleWarrants_CompletedDesc>
   <RWS_SimpleWarrants_Silver>獲得したシルバー</RWS_SimpleWarrants_Silver>
   <RWS_SimpleWarrants_SilverDesc>手配書の引き渡しの完了による報酬として、プレイヤーのキャラバンに実際に加わったシルバー。</RWS_SimpleWarrants_SilverDesc>
-  <RWS_VqeGenerator_Upgrades>The Generator ARCのアップグレード完了数</RWS_VqeGenerator_Upgrades>
+  <RWS_VqeGenerator_Upgrades>ARCジェネレーターのアップグレード完了数</RWS_VqeGenerator_Upgrades>
   <RWS_VqeGenerator_UpgradesDesc>プレイヤー所有の既存のARC発電機を同じ場所で置き換えた建設の完了数。新しい発電機の種類別に集計します。</RWS_VqeGenerator_UpgradesDesc>
   <RWS_VehicleFramework_OwnedPeak>所有車両の最多数</RWS_VehicleFramework_OwnedPeak>
   <RWS_VehicleFramework_OwnedPeakDesc>コロニーごとに、プレイヤーが所有するVehicle Frameworkの車両が同時に存在した数の最大値。マップ上・キャラバン中・飛行中・保管中の車両を含み、正常なセーブの時点で記録します。車両の種類は最大値を記録したセーブのものを表示します。</RWS_VehicleFramework_OwnedPeakDesc>
@@ -1106,17 +1106,17 @@
   <RWS_VfeEmpire_HonorsBestowedDesc>保留中だったVFE Empireの栄誉のうち、儀式の完了時にプレイヤーの入植者へ実際に授与されたものの数（栄誉別）。授与可能な栄誉を受け取っただけの場合や開発者の操作は数えません。</RWS_VfeEmpire_HonorsBestowedDesc>
   <RWS_Vsie_AspirationsCompleted>ひらめきに伴う願望の達成数</RWS_Vsie_AspirationsCompleted>
   <RWS_Vsie_AspirationsCompletedDesc>Vanilla Social Interactions Expandedで、入植者のひらめきに結びついた願望が新たに達成された回数（ひらめき別）。未完了の進捗、期限切れ、関係のないひらめきは数えません。</RWS_Vsie_AspirationsCompletedDesc>
-  <RWS_GiddyUp_MountSessions>Giddy-Up 2 騎乗した回数</RWS_GiddyUp_MountSessions>
+  <RWS_GiddyUp_MountSessions>騎乗を開始した回数</RWS_GiddyUp_MountSessions>
   <RWS_GiddyUp_MountSessionsDesc>プレイヤーの入植者がGiddy-Upの騎乗ジョブを完了し、所有する動物に実際に乗り始めた回数（動物の種類別）。騎乗した状態での到着、予約した指示、重複した観測は数えません。</RWS_GiddyUp_MountSessionsDesc>
   <RWS_CombatExtended_Reloads>入植者のリロード回数</RWS_CombatExtended_Reloads>
   <RWS_CombatExtended_ReloadsDesc>プレイヤーのポーンが武器の弾倉に実際に弾薬を込めたリロードの完了回数。1回のリロードで複数の弾薬スタックを込めても1回です。タレット、自動装填装置、弾薬を無効にした武器、失敗したリロードは数えません。</RWS_CombatExtended_ReloadsDesc>
   <RWS_VreAndroid_Awakenings>アンドロイドの自然な覚醒回数</RWS_VreAndroid_Awakenings>
   <RWS_VreAndroid_AwakeningsDesc>人工の身体を持つプレイヤー所有のアンドロイドが、心情に基づく遺伝子の判定によって自然に覚醒した回数。開発者ツールによる直接の覚醒、ゲーム開始時の設定、すでに覚醒していたものは数えません。Biotechが必要です。</RWS_VreAndroid_AwakeningsDesc>
-  <RWS_VseExpertise_Selected>VSE 選択した専門技能</RWS_VseExpertise_Selected>
+  <RWS_VseExpertise_Selected>選択した専門技能</RWS_VseExpertise_Selected>
   <RWS_VseExpertise_SelectedDesc>プレイヤーの入植者が通常の専門技能画面で新たに選択した専門技能の数（専門技能別）。デバッグによる解除や復元された記録は数えません。</RWS_VseExpertise_SelectedDesc>
-  <RWS_VseExpertise_LevelUps>VSE 専門技能のレベル上昇</RWS_VseExpertise_LevelUps>
+  <RWS_VseExpertise_LevelUps>専門技能のレベル上昇</RWS_VseExpertise_LevelUps>
   <RWS_VseExpertise_LevelUpsDesc>記録を有効にしてから増えたVSEの専門技能レベルの合計（恒久的な上昇のみ）。独立したすべてのコロニーで合計し、専門技能別に集計します。</RWS_VseExpertise_LevelUpsDesc>
-  <RWS_VseExpertise_Highest>VSE 専門技能の最高到達レベル</RWS_VseExpertise_Highest>
+  <RWS_VseExpertise_Highest>専門技能の最高到達レベル</RWS_VseExpertise_Highest>
   <RWS_VseExpertise_HighestDesc>独立したコロニー全体で、経験値によって実際に到達した専門技能レベルの最高値。レベルの合計や最新のセーブだけの状態ではありません。</RWS_VseExpertise_HighestDesc>
   <RWS_VefCooking_Batches>加工の完了数</RWS_VefCooking_Batches>
   <RWS_VefCooking_BatchesDesc>Vanilla Cooking Expandedのスープやチーズなど、VEFの独自加工が完了した回数（加工別）。通常の作業指示による製作や、出力が一部止まったものは数えません。</RWS_VefCooking_BatchesDesc>
@@ -1124,9 +1124,9 @@
   <RWS_VefBrewing_BatchesDesc>Vanilla Brewing ExpandedのVEFによる発酵・醸造・熟成が完了した回数（加工別）。一時停止・出力の停止・未完了のものや、通常の作業指示による製作は数えません。</RWS_VefBrewing_BatchesDesc>
   <RWS_Gastronomy_SilverCollected>客から受け取った食事代</RWS_Gastronomy_SilverCollected>
   <RWS_Gastronomy_SilverCollectedDesc>プレイヤー所有のレストランで、プレイヤー以外の客が食事代として実際に支払ったシルバー。一部だけの支払いは実際に支払われた額だけを加算します。未払いのツケ、無料の食事、関係のない取引は数えません。</RWS_Gastronomy_SilverCollectedDesc>
-  <RWS_VqeDrones_Assembled>VQE Drone Factory 組み立てたドローン</RWS_VqeDrones_Assembled>
+  <RWS_VqeDrones_Assembled>組み立てたドローン</RWS_VqeDrones_Assembled>
   <RWS_VqeDrones_AssembledDesc>自動ドローン組立機の生産タイマーが終わり、実際にスポーンしたプレイヤー所有のドローンの数（種類別）。タイマーの進行だけの場合、スポーンの失敗、卵からの孵化は数えません。</RWS_VqeDrones_AssembledDesc>
-  <RWS_VqeDrones_Hatched>VQE Drone Factory 孵化したドローン</RWS_VqeDrones_Hatched>
+  <RWS_VqeDrones_Hatched>孵化したドローン</RWS_VqeDrones_Hatched>
   <RWS_VqeDrones_HatchedDesc>卵が無事に孵化して実際に生まれたプレイヤーのドローンの数（種類別）。ドローンが生まれずに壊れた卵や、組立機で作られたドローンは数えません。</RWS_VqeDrones_HatchedDesc>
   <RWS_VceDeepchem_StoredUnits>パイプに貯蔵したディープケム</RWS_VceDeepchem_StoredUnits>
   <RWS_VceDeepchem_StoredUnitsDesc>プレイヤー所有のポンプジャックからパイプの貯蔵に実際に受け入れられたディープケムの量（小数を含む）。パイプ網が貯蔵を確定した時点で測ります。予定産出量、地面への排出、満杯などで貯蔵できなかった分は数えません。</RWS_VceDeepchem_StoredUnitsDesc>
@@ -1144,9 +1144,9 @@
   <RWS_VfeFactory_SownDesc>プレイヤーの自動農機の作業サイクル中に実際に生成され、植え付け済みとなり、選択した作物と一致した新しい植物の数（植物別）。失敗したサイクルと既存の植物は数えません。</RWS_VfeFactory_SownDesc>
   <RWS_VfePirates_WarcasketFits>ウォーキャスケットの装着完了数</RWS_VfePirates_WarcasketFits>
   <RWS_VfePirates_WarcasketFitsDesc>通常の溶接作業で完了したプレイヤーのウォーキャスケットの装着の数。プロジェクトが完了し、対応する3部位を新たに着用したことで確認します（装甲の種類別）。未完了の作業、一部だけの装着、開発者による完了は数えません。</RWS_VfePirates_WarcasketFitsDesc>
-  <RWS_VqeAncients_Rejected>VQE Ancients アルコジェン注入の拒絶数</RWS_VqeAncients_Rejected>
+  <RWS_VqeAncients_Rejected>アルコジェン注入の拒絶数</RWS_VqeAncients_Rejected>
   <RWS_VqeAncients_RejectedDesc>プレイヤーのアルコジェン注入装置で、入っていたポーンが注入を拒絶し、生きたまま出てきて注入昏睡に陥った回数。中止した作業、選ばれた結果が完了しなかったもの、成功後の遺伝子の選択待ちは数えません。Biotechが必要です。</RWS_VqeAncients_RejectedDesc>
-  <RWS_VqeAncients_Mutations>VQE Ancients 変異体への変化</RWS_VqeAncients_Mutations>
+  <RWS_VqeAncients_Mutations>アルコジェン変異体への変化</RWS_VqeAncients_Mutations>
   <RWS_VqeAncients_MutationsDesc>プレイヤーのアルコジェン注入装置の変異の結果、元のポーンが消え、選ばれた種類のプレイヤー所有の変異体が1体生まれた回数（変異体の種類別）。その他のスポーン、中止、成功後の選択待ちは数えません。Biotechが必要です。</RWS_VqeAncients_MutationsDesc>
   <RWS_VfeSettlers_BountyHandins>賞金首の引き渡し数</RWS_VfeSettlers_BountyHandins>
   <RWS_VfeSettlers_BountyHandinsDesc>プレイヤーのキャラバンが手配中の犯罪者またはその遺体を実際に引き渡し、0より多いシルバーの報酬を受け取った回数。コマンドを開いただけの場合、対象の不在、引き渡しの失敗、関係のない所持品は数えません。</RWS_VfeSettlers_BountyHandinsDesc>
@@ -1162,9 +1162,9 @@
   <RWS_VfePirates_HireContractsDesc>Vanilla Expanded Frameworkの雇用画面で、VFE Piratesの雇用派閥と実際に結んだ海賊または傭兵の新しい契約の数。画面を開いただけの場合、キャンセルした申し出、支払いの失敗は数えません。</RWS_VfePirates_HireContractsDesc>
   <RWS_VfePirates_HireSilver>雇用に支払ったシルバー</RWS_VfePirates_HireSilver>
   <RWS_VfePirates_HireSilverDesc>VFE Piratesの新しい雇用契約が登録されたときに、プレイヤーのマップの在庫から実際に減ったシルバー。端数を丸めた見積額ではありません。無料の契約は0になります。</RWS_VfePirates_HireSilverDesc>
-  <RWS_VgeHybrid_Births>VGE 電子子宮でのハイブリッドの誕生</RWS_VgeHybrid_Births>
+  <RWS_VgeHybrid_Births>電子子宮でのハイブリッドの誕生</RWS_VgeHybrid_Births>
   <RWS_VgeHybrid_BirthsDesc>プレイヤー所有のVGEの電子子宮が成長サイクルを成功させたときに、実際に1体ずつ生まれたプレイヤー所有のハイブリッドの数（種類別）。成長の失敗、タイマーの進行、セーブの復元は数えません。</RWS_VgeHybrid_BirthsDesc>
-  <RWS_VgeHybrid_Conversions>VGE 生体機械への変換</RWS_VgeHybrid_Conversions>
+  <RWS_VgeHybrid_Conversions>生体機械への変換</RWS_VgeHybrid_Conversions>
   <RWS_VgeHybrid_ConversionsDesc>プレイヤー所有のメカハイブリッド化装置による変換のうち、元の対象が消え、変換後のプレイヤー所有のポーンが1体新たに生まれたものの数（結果の種類別）。装置の起動、待機、生成の失敗は数えません。</RWS_VgeHybrid_ConversionsDesc>
   <RWS_PrisonExpanded_ParoleApproved>仮釈放の承認数</RWS_PrisonExpanded_ParoleApproved>
   <RWS_PrisonExpanded_ParoleApprovedDesc>仮釈放審査での釈放の決定のうち、プレイヤーが拘束している生存中の囚人の満了した刑期を実際に解除し、釈放そのものが指示されたものの数。審査だけの場合、刑期の延長、勧誘の選択、繰り返しの選択、その後の実際の退去は数えません。</RWS_PrisonExpanded_ParoleApprovedDesc>
@@ -1364,4 +1364,7 @@
   <RWS_Change_Carried>終点の値は{0}日のセーブまで変化なく持ち越されています。期間は記録された時点までで数えています。</RWS_Change_Carried>
   <RWS_Change_RecordedSince>この統計の記録は{0}日に始まりました。期間の増分はその後に数えた分で、その時点ですでに進行中だった出来事は含まれない場合があります。</RWS_Change_RecordedSince>
   <RWS_Change_ClickTip>クリックで比較する点に選ぶ</RWS_Change_ClickTip>
+  <RWS_Error_Unknown>不明なエラー</RWS_Error_Unknown>
+  <RWS_Export_FooterColonyKey>コロニーキー</RWS_Export_FooterColonyKey>
+  <RWS_Export_FooterGenerator>生成元</RWS_Export_FooterGenerator>
 </LanguageData>

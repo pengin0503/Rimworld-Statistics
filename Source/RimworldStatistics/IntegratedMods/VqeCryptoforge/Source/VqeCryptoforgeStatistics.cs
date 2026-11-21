@@ -75,24 +75,20 @@ internal static class VqeCryptoforgeStatistics
         readTicks = Reader<int>(type, counter);
         readScanning = Reader<bool>(type, scanning);
         threshold = length;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(tick,
-                prefix: new HarmonyMethod(typeof(VqeCryptoforgeStatistics), nameof(BeforeTick)),
-                postfix: new HarmonyMethod(typeof(VqeCryptoforgeStatistics), nameof(AfterTick)));
+            patcher.Patch(tick, typeof(VqeCryptoforgeStatistics), nameof(BeforeTick), nameof(AfterTick));
         }
         catch
         {
-            harmony.Unpatch(tick, HarmonyPatchType.All, harmony.Id);
             readTicks = null;
             readScanning = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeTick(Building __instance, out ScanBefore __state)
     {

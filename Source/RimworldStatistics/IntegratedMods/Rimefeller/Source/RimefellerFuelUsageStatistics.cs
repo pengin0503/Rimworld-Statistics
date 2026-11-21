@@ -138,34 +138,24 @@ internal static class RimefellerFuelUsageStatistics
         getPlantPipe = BoxedGetter(plantType, plantPipe);
         getFuel = fuelGetter;
 
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(refineryTick,
-                prefix: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(BeforeRefinery)),
-                postfix: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(AfterRefinery)),
-                finalizer: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(FinishRefinery)));
-            harmony.Patch(baseTick,
-                postfix: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(AfterBasePipeTick)));
-            harmony.Patch(plantTick,
-                prefix: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(BeforePlant)),
-                postfix: new HarmonyMethod(typeof(RimefellerFuelUsageStatistics), nameof(AfterPlant)));
+            patcher.Patch(refineryTick, typeof(RimefellerFuelUsageStatistics),
+                prefix: nameof(BeforeRefinery), postfix: nameof(AfterRefinery), finalizer: nameof(FinishRefinery));
+            patcher.Patch(baseTick, typeof(RimefellerFuelUsageStatistics), postfix: nameof(AfterBasePipeTick));
+            patcher.Patch(plantTick, typeof(RimefellerFuelUsageStatistics),
+                prefix: nameof(BeforePlant), postfix: nameof(AfterPlant));
         }
         catch
         {
-            harmony.Unpatch(refineryTick, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(baseTick, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(plantTick, HarmonyPatchType.All, harmony.Id);
             getPipeNet = getPlantPipe = null;
             getFuel = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static bool OwnedAndHome(object instance)
         => instance is ThingComp { parent: { Spawned: true } building }

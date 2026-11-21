@@ -1499,5 +1499,5 @@ public sealed class ColonyChronicle
     }
 
     private static DateTime? ValidUtc(DateTime utc)
-        => utc == default || utc.Year <= 1970 ? null : utc;
+        => UtcTime.ValidUtc(utc);
 }

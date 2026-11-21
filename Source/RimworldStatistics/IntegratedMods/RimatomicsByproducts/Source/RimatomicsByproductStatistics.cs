@@ -1,5 +1,3 @@
-using System.Diagnostics;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
@@ -22,6 +20,7 @@ internal static class RimatomicsByproductStatistics
     private const string Unit = "mod.dubwise.rimatomics.fuelreprocessing";
     private const string Key = Unit + ".byproduct_items";
     [ThreadStatic] private static ByproductScope? active;
+    [ThreadStatic] private static int normalUnloadDepth;
 
     private sealed class ByproductScope
     {
@@ -74,58 +73,36 @@ internal static class RimatomicsByproductStatistics
             !typeof(Verse.AI.JobDriver).IsAssignableFrom(job))
             throw new InvalidOperationException("Rimatomics fuel processor/unload types changed");
         var takeOut = AccessTools.DeclaredMethod(proc, "TakeOutFuel", Type.EmptyTypes);
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
-        if (takeOut is null || !typeof(Thing).IsAssignableFrom(takeOut.ReturnType) ||
-            place?.ReturnType != typeof(bool))
-            throw new InvalidOperationException("Rimatomics fuel output or vanilla placement signature changed");
+        var place = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
+        if (takeOut is null || !typeof(Thing).IsAssignableFrom(takeOut.ReturnType))
+            throw new InvalidOperationException("Rimatomics fuel output signature changed");
 
-        try
-        {
-            harmony.Patch(takeOut,
-                prefix: new HarmonyMethod(typeof(RimatomicsByproductStatistics), nameof(BeforeUnload)),
-                postfix: new HarmonyMethod(typeof(RimatomicsByproductStatistics), nameof(AfterUnload)),
-                finalizer: new HarmonyMethod(typeof(RimatomicsByproductStatistics), nameof(FinishUnload)));
-            harmony.Patch(place,
-                prefix: new HarmonyMethod(typeof(RimatomicsByproductStatistics), nameof(BeforePlacement)));
-        }
-        catch
-        {
-            harmony.Unpatch(takeOut, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(takeOut, typeof(RimatomicsByproductStatistics),
+            prefix: nameof(BeforeUnload), postfix: nameof(AfterUnload), finalizer: nameof(FinishUnload));
+        patcher.Patch(place, typeof(RimatomicsByproductStatistics), prefix: nameof(BeforePlacement));
+        var unloadCallback = OptionalTransitionCallSite.FindDeclaredMethodInHierarchyByContains(job, "<MakeNewToils>b__6_1");
+        if (unloadCallback is not null)
+            patcher.Patch(unloadCallback, typeof(RimatomicsByproductStatistics), prefix: nameof(EnterUnload), finalizer: nameof(ExitUnload));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
-    private static bool IsNormalUnload()
+    private static void EnterUnload() => normalUnloadDepth++;
+
+    private static Exception? ExitUnload(Exception? __exception)
     {
-        // This is a low-frequency action. Stack inspection is only at
-        // TakeOutFuel completion, never inside per-tick or per-projectile hooks.
-        foreach (var f in new StackTrace(1, false).GetFrames() ?? [])
-            if (f.GetMethod() is { } m &&
-                m.DeclaringType?.FullName?.Contains("JobDriver_UnloadPlutonium",
-                    StringComparison.Ordinal) == true &&
-                m.Name.Contains("<MakeNewToils>b__6_1", StringComparison.Ordinal))
-                return true;
-        return false;
+        if (normalUnloadDepth > 0)
+            normalUnloadDepth--;
+        return __exception;
     }
 
     private static void BeforeUnload(object __instance, out ByproductScope? __state)
     {
         __state = null;
         if (!CanObserve() || __instance is not Building { Spawned: true } building ||
-            !GameFacts.IsPlayerFaction(building.Faction) || building.Map is not { IsPlayerHome:true } map ||
-            !IsNormalUnload())
+            !GameFacts.IsPlayerFaction(building.Faction) || building.Map is not { IsPlayerHome: true } map ||
+            normalUnloadDepth <= 0)
             return;
         __state = new ByproductScope { Map = map, Parent = active };
         active = __state;

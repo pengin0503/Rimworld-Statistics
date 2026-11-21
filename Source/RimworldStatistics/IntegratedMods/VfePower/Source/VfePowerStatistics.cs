@@ -1,11 +1,10 @@
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
 using RimworldStatistics.Metrics;
 using RimworldStatistics.NewModOutcomes;
-using Verse;
 using RimworldStatistics.Patches.Metrics;
+using Verse;
 
 namespace RimworldStatistics.VfePower;
 
@@ -19,8 +18,8 @@ internal static class VfePowerStatistics
     private const string Owner = "VanillaExpanded.VFEPower";
     private const string Unit = "mod.vanillaexpanded.vfepower.nuclear_meltdowns";
 
-    private static FieldInfo? signalMeltdownField;
-    private static FieldInfo? breakdownableCompField;
+    private static Func<object, bool>? getSignalMeltdown;
+    private static Func<object, CompBreakdownable?>? getBreakdownableComp;
 
     internal static IReadOnlyList<ModMetricAdapterRegistration> Build() =>
     [
@@ -47,8 +46,8 @@ internal static class VfePowerStatistics
             breakdownField is null || !typeof(CompBreakdownable).IsAssignableFrom(breakdownField.FieldType))
             throw new InvalidOperationException("CompPowerPlantNuclear meltdown fields changed");
 
-        signalMeltdownField = signalField;
-        breakdownableCompField = breakdownField;
+        getSignalMeltdown = OptionalTransitionCallSite.CompileFieldGetter<bool>(signalField);
+        getBreakdownableComp = OptionalTransitionCallSite.CompileFieldGetter<CompBreakdownable?>(breakdownField);
         try
         {
             OutcomeMetric.Patch(harmony, tick, typeof(VfePowerStatistics),
@@ -56,8 +55,8 @@ internal static class VfePowerStatistics
         }
         catch
         {
-            signalMeltdownField = null;
-            breakdownableCompField = null;
+            getSignalMeltdown = null;
+            getBreakdownableComp = null;
             throw;
         }
     }
@@ -75,7 +74,7 @@ internal static class VfePowerStatistics
 
         try
         {
-            if (signalMeltdownField?.GetValue(__instance) is not false)
+            if (getSignalMeltdown is null || getSignalMeltdown(__instance))
                 return;
             __state = new MeltdownProbe(Active: true, Building: building);
         }
@@ -89,8 +88,8 @@ internal static class VfePowerStatistics
 
         try
         {
-            var signaledNow = signalMeltdownField?.GetValue(__instance) is true;
-            var breakdownable = breakdownableCompField?.GetValue(__instance) as CompBreakdownable;
+            var signaledNow = getSignalMeltdown is not null && getSignalMeltdown(__instance);
+            var breakdownable = getBreakdownableComp?.Invoke(__instance);
             var building = __state.Building;
             if (!VfePowerRules.MeltdownCommitted(
                     wasSignaled: false,

@@ -76,7 +76,7 @@ internal static class ComparisonPanel
         TooltipHandler.TipRegion(rateToggleRect, "RWS_Rate_ModeToggleTip".Translate());
 
         var y = rect.y + controls.Height + 4f;
-        var next = new Request(session, view, RimworldStatisticsMod.Settings.viewPreferencesJson ?? "", selectionVersion,
+        var next = new Request(session, view, RimworldStatisticsMod.Settings?.viewPreferencesJson ?? "", selectionVersion,
             ProfileService.Options.IncludeDevMode);
         if (request != next)
         {

@@ -26,8 +26,23 @@ internal static class DbhActivityMetricPatch
         new("7f4b7428-565f-4495-86c7-9c01a1dac461"), // 3.2.3260, CI
     ];
     private static HashSet<JobDef>? targets;
+    private static readonly object BindGate = new();
 
-    internal static bool Available => (targets ??= Bind()).Count != 0;
+    internal static bool Available => GetTargets().Count != 0;
+
+    private static HashSet<JobDef> GetTargets()
+    {
+        if (Volatile.Read(ref targets) is { } cached)
+            return cached;
+        lock (BindGate)
+        {
+            if (targets is { } existing)
+                return existing;
+            var bound = Bind();
+            Volatile.Write(ref targets, bound);
+            return bound;
+        }
+    }
 
     private static HashSet<JobDef> Bind()
     {
@@ -50,10 +65,12 @@ internal static class DbhActivityMetricPatch
         out (Job? Job, string? DefName) __state)
     {
         __state = default;
+        if (__0 != JobCondition.Succeeded || !LiveMetrics.IsRecordingUnit(DbhStatistics.ActivitiesUnit))
+            return;
         try
         {
-            if (__0 != JobCondition.Succeeded || __instance?.curJob is not { } job ||
-                targets?.Contains(job.def) != true)
+            if (__instance?.curJob is not { } job ||
+                Volatile.Read(ref targets)?.Contains(job.def) != true)
                 return;
             if (__instance.curDriver?.pawn is { MapHeld.IsPlayerHome: true } pawn &&
                 GameFacts.IsPlayerFaction(pawn.Faction) && LiveMetrics.CanCaptureEvent(DbhStatistics.ActivitiesUnit))

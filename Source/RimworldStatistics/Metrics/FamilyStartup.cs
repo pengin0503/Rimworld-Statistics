@@ -84,7 +84,7 @@ internal static class FamilyStartup
         {
             MetricGates.Fail(family, e);
             acc.Stop(family, tick);
-            LiveMetrics.SyncRecordingSnapshot(LiveMetrics.Accumulator);
+            LiveMetrics.SyncRecordingSnapshot(acc);
         }
     }
 }

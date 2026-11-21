@@ -61,38 +61,54 @@ public static class TradeFamily
         s.CountBy(Deal, traderKind);
         s.Distinct(Partners, factionDef ?? MetricKeys.UnknownBucket);
         double sold = 0, bought = 0;
+        var anySold = false;
+        var anyBought = false;
         foreach (var l in real)
         {
             if (l.PlayerSells)
             {
-                sold += l.Total;
+                anySold = true;
+                if (double.IsFinite(l.Total))
+                {
+                    sold += l.Total;
+                    var perUnit = l.Total / l.Count;
+                    if (double.IsFinite(perUnit))
+                        s.Observe(UnitSale, perUnit);
+                }
                 s.CountBy(Sold, l.Def, l.Count);
                 s.Count(SoldUnits, l.Count);
-                s.Observe(UnitSale, l.Total / l.Count);
             }
             else
             {
-                bought += l.Total;
+                anyBought = true;
+                if (double.IsFinite(l.Total))
+                    bought += l.Total;
                 s.CountBy(Bought, l.Def, l.Count);
                 s.Count(BoughtUnits, l.Count);
             }
         }
-        if (real.Any(l => l.PlayerSells))
+        if (anySold)
         {
             AddSum(s, Sold, sold);
-            s.Observe(DealSold, sold);
+            if (double.IsFinite(sold))
+                s.Observe(DealSold, sold);
         }
-        if (real.Any(l => !l.PlayerSells))
+        if (anyBought)
         {
             AddSum(s, Bought, bought);
-            s.Observe(DealBought, bought);
+            if (double.IsFinite(bought))
+                s.Observe(DealBought, bought);
         }
     }
 
     private static void AddSum(FamilyState s, string acc, double v)
     {
+        if (!double.IsFinite(v))
+            return;
         var a = s.Acc(acc);
-        a.Sum = (a.Sum ?? 0) + v;
+        var next = (a.Sum ?? 0) + v;
+        if (double.IsFinite(next))
+            a.Sum = next;
     }
 
     private static void Build(FamilyOutputContext c)

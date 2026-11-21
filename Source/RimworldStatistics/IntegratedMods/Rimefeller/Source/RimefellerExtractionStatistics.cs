@@ -77,27 +77,19 @@ internal static class RimefellerExtractionStatistics
         derrickWellField = wellField;
         wellFieldField = field;
         fieldCapacityField = current;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(pump,
-                prefix: new HarmonyMethod(typeof(RimefellerExtractionStatistics),
-                    nameof(BeforePump)),
-                postfix: new HarmonyMethod(typeof(RimefellerExtractionStatistics),
-                    nameof(AfterPump)));
+            patcher.Patch(pump, typeof(RimefellerExtractionStatistics), nameof(BeforePump), nameof(AfterPump));
         }
         catch
         {
-            harmony.Unpatch(pump, HarmonyPatchType.All, harmony.Id);
             derrickWellField = wellFieldField = fieldCapacityField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforePump(object __instance, out PumpBefore? __state)
     {

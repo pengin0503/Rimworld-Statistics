@@ -56,25 +56,12 @@ internal static class RimWorldOfMagicStatistics
         if (regularCast?.ReturnType != typeof(bool) || advancedCast?.ReturnType != typeof(bool))
             throw new InvalidOperationException("RimWorld of Magic healing spell signature changed");
 
-        var methods = new[] { regularCast, advancedCast };
-        try
-        {
-            foreach (var method in methods)
-                harmony.Patch(method,
-                    prefix: new HarmonyMethod(typeof(RimWorldOfMagicStatistics), nameof(BeforeHealing)),
-                    postfix: new HarmonyMethod(typeof(RimWorldOfMagicStatistics), nameof(AfterHealing)));
-        }
-        catch
-        {
-            foreach (var method in methods)
-                harmony.Unpatch(method, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(regularCast, typeof(RimWorldOfMagicStatistics), nameof(BeforeHealing), nameof(AfterHealing));
+        patcher.Patch(advancedCast, typeof(RimWorldOfMagicStatistics), nameof(BeforeHealing), nameof(AfterHealing));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static (float InjurySeverity, int FreshMissingParts) ReadInjuries(Pawn target)
     {

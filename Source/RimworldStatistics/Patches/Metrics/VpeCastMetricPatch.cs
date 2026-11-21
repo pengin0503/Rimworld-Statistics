@@ -44,13 +44,13 @@ internal static class VpeCastMetricPatch
     [HarmonyPostfix]
     private static void Postfix(object __1, bool __runOriginal)
     {
-        if (!__runOriginal || __1 is null)
+        if (!__runOriginal || __1 is null || !LiveMetrics.IsRecordingUnit(VpeStatistics.CastUnit))
             return;
         try
         {
             var contract = Target.Value;
             if (contract.Pawn?.GetValue(__1) is not Pawn pawn ||
-                !pawn.IsFreeNonSlaveColonist || !GameFacts.IsPlayerFaction(pawn.Faction) ||
+                !GameFacts.IsMember(pawn) ||
                 contract.Definition?.GetValue(__1) is not Def abilityDef ||
                 !LiveMetrics.CanCaptureEvent(VpeStatistics.CastUnit))
                 return;

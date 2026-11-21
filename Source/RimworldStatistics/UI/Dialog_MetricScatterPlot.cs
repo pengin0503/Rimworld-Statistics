@@ -167,10 +167,12 @@ internal sealed class Dialog_MetricScatterPlot : Window
         }
         var t = texts;
 
-        Text.Font = GameFont.Medium;
-        var title = (string)"RWS_Scatter_Title".Translate();
-        Widgets.Label(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f), title.Truncate(Math.Max(0f, rect.width - 36f)));
-        Text.Font = GameFont.Small;
+        using (UiScopes.GuiState())
+        {
+            Text.Font = GameFont.Medium;
+            var title = (string)"RWS_Scatter_Title".Translate();
+            Widgets.Label(new Rect(rect.x, rect.y, Math.Max(0f, rect.width - 36f), 32f), title.Truncate(Math.Max(0f, rect.width - 36f)));
+        }
 
         var controls = new ControlRow(new Rect(rect.x, rect.y + 36f, rect.width, 28f));
         if (Button(ref controls, t.XButton, t.XSource is null ? t.XButton : t.XButton + "\n" + t.XSource, 155f, 320f))

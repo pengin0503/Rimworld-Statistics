@@ -83,28 +83,34 @@ internal static class VfeDesertersStatistics
         dialogMap = map;
         normalDef = normal;
         criticalDef = critical;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(spend,
-                prefix: new HarmonyMethod(typeof(VfeDesertersStatistics), nameof(BeforePayment)),
-                postfix: new HarmonyMethod(typeof(VfeDesertersStatistics), nameof(AfterPayment)));
+            patcher.Patch(spend, typeof(VfeDesertersStatistics), nameof(BeforePayment), nameof(AfterPayment));
         }
         catch
         {
-            harmony.Unpatch(spend, HarmonyPatchType.All, harmony.Id);
             dialogMap = normalDef = criticalDef = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit) && Current.ProgramState == ProgramState.Playing
-            && Scribe.mode == LoadSaveMode.Inactive && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static long Stock(Map map, ThingDef? def)
-        => def is null ? 0 : map.listerThings.ThingsOfDef(def)
-            .Where(t => t.Spawned && t.stackCount > 0)
-            .Sum(t => (long)t.stackCount);
+    {
+        if (def is null)
+            return 0;
+        long total = 0;
+        var items = map.listerThings.ThingsOfDef(def);
+        for (var i = 0; i < items.Count; i++)
+        {
+            var t = items[i];
+            if (t.Spawned && t.stackCount > 0)
+                total += t.stackCount;
+        }
+        return total;
+    }
 
     private static void BeforePayment(object __instance, int __0, int __1, out PaymentBefore? __state)
     {

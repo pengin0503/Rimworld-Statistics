@@ -54,6 +54,15 @@ public static class ProfileJson
         return profile;
     }
 
+    /// <summary>Parses UTF-8 profile JSON directly without allocating an intermediate string.</summary>
+    public static Profile Deserialize(ReadOnlySpan<byte> utf8Json)
+    {
+        var profile = JsonSerializer.Deserialize<Profile>(utf8Json, Options)
+            ?? throw new JsonException("profile root is null");
+        Normalize(profile);
+        return profile;
+    }
+
     private static JsonSerializerOptions CreateOptions(bool writeIndented)
     {
         var o = new JsonSerializerOptions

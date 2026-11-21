@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Diagnostics;
-using System.Reflection;
 using HarmonyLib;
 using RimWorld;
 using RimworldStatistics.Core;
@@ -23,11 +21,12 @@ internal static class VseExpertiseStatistics
     private const string SelectionKey = Unit + ".selected";
     private const string LevelUpKey = Unit + ".levelups";
     private const string HighestKey = Unit + ".highest_level";
-    private static PropertyInfo? allExpertiseProperty;
-    private static PropertyInfo? trackerPawnProperty;
-    private static FieldInfo? expertiseDefField;
-    private static PropertyInfo? expertiseLevelProperty;
-    private static PropertyInfo? expertisePawnProperty;
+    private static Func<object, IList?>? getAllExpertise;
+    private static Func<object, Pawn?>? getTrackerPawn;
+    private static Func<object, Def?>? getExpertiseDef;
+    private static Func<object, int>? getExpertiseLevel;
+    private static Func<object, Pawn?>? getExpertisePawn;
+    [ThreadStatic] private static int expertisePanelDepth;
 
     private sealed record SelectionBefore(Def Definition, int Count, string? DefKey);
     private sealed record ProgressBefore(int Level, Pawn Pawn, string? DefKey);
@@ -108,55 +107,51 @@ internal static class VseExpertiseStatistics
             pawn?.PropertyType != typeof(Pawn))
             throw new InvalidOperationException("VSE expertise selection/learning signature mismatch");
 
-        allExpertiseProperty = all;
-        trackerPawnProperty = trackerPawn;
-        expertiseDefField = rDef;
-        expertiseLevelProperty = level;
-        expertisePawnProperty = pawn;
+        getAllExpertise = OptionalTransitionCallSite.CompilePropertyGetter<IList?>(all);
+        getTrackerPawn = OptionalTransitionCallSite.CompilePropertyGetter<Pawn?>(trackerPawn);
+        getExpertiseDef = OptionalTransitionCallSite.CompileFieldGetter<Def?>(rDef);
+        getExpertiseLevel = OptionalTransitionCallSite.CompilePropertyGetter<int>(level);
+        getExpertisePawn = OptionalTransitionCallSite.CompilePropertyGetter<Pawn?>(pawn);
+
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(add,
-                prefix: new HarmonyMethod(typeof(VseExpertiseStatistics), nameof(BeforeSelection)),
-                postfix: new HarmonyMethod(typeof(VseExpertiseStatistics), nameof(AfterSelection)));
-            harmony.Patch(learn,
-                prefix: new HarmonyMethod(typeof(VseExpertiseStatistics), nameof(BeforeLearning)),
-                postfix: new HarmonyMethod(typeof(VseExpertiseStatistics), nameof(AfterLearning)));
+            patcher.Patch(add, typeof(VseExpertiseStatistics), nameof(BeforeSelection), nameof(AfterSelection));
+            patcher.Patch(learn, typeof(VseExpertiseStatistics), nameof(BeforeLearning), nameof(AfterLearning));
+            patcher.Patch(ui, typeof(VseExpertiseStatistics), prefix: nameof(EnterPanel), finalizer: nameof(ExitPanel));
         }
         catch
         {
-            harmony.Unpatch(add, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(learn, HarmonyPatchType.All, harmony.Id);
-            allExpertiseProperty = expertiseLevelProperty = expertisePawnProperty = null;
-            trackerPawnProperty = null;
-            expertiseDefField = null;
+            getAllExpertise = null;
+            getTrackerPawn = null;
+            getExpertiseDef = null;
+            getExpertiseLevel = null;
+            getExpertisePawn = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
-    private static bool OrdinaryPanelCaller()
+    private static void EnterPanel() => expertisePanelDepth++;
+
+    private static Exception? ExitPanel(Exception? __exception)
     {
-        // Selection callbacks occur only on a UI click, so one stack scan is
-        // preferable to patching every DoExpertisePanel GUI repaint.
-        foreach (var frame in new StackTrace(1, false).GetFrames() ?? [])
-            if (frame.GetMethod() is { Name: "DoExpertisePanel", DeclaringType.FullName: "VSE.ExpertiseUIUtility" })
-                return true;
-        return false;
+        if (expertisePanelDepth > 0)
+            expertisePanelDepth--;
+        return __exception;
     }
 
-    private static IList? Expertise(object tracker) => allExpertiseProperty?.GetValue(tracker) as IList;
+    private static IList? Expertise(object tracker) => getAllExpertise?.Invoke(tracker);
 
     private static bool ContainsDef(IList records, Def definition)
     {
-        foreach (var record in records)
-            if (record is not null &&
-                ReferenceEquals(expertiseDefField?.GetValue(record), definition))
+        for (var i = 0; i < records.Count; i++)
+        {
+            var record = records[i];
+            if (record is not null && ReferenceEquals(getExpertiseDef?.Invoke(record), definition))
                 return true;
+        }
         return false;
     }
 
@@ -165,8 +160,8 @@ internal static class VseExpertiseStatistics
     {
         __state = null;
         if (!CanObserve() || __0 is not Def def ||
-            trackerPawnProperty?.GetValue(__instance) is not Pawn owner ||
-            !GameFacts.IsMember(owner) || !OrdinaryPanelCaller())
+            getTrackerPawn?.Invoke(__instance) is not { } owner ||
+            !GameFacts.IsMember(owner) || expertisePanelDepth <= 0)
             return;
         try
         {
@@ -205,11 +200,12 @@ internal static class VseExpertiseStatistics
             return;
         try
         {
-            if (expertisePawnProperty?.GetValue(__instance) is not Pawn pawn ||
+            if (getExpertisePawn?.Invoke(__instance) is not { } pawn ||
                 !GameFacts.IsMember(pawn) ||
-                expertiseLevelProperty?.GetValue(__instance) is not int level)
+                getExpertiseLevel is null)
                 return;
-            var def = expertiseDefField?.GetValue(__instance) as Def;
+            var level = getExpertiseLevel(__instance);
+            var def = getExpertiseDef?.Invoke(__instance);
             __state = new ProgressBefore(level, pawn,
                 OptionalTransitionRecording.QualifiedDefKey(
                     def?.modContentPack?.PackageId, def?.defName));
@@ -223,9 +219,9 @@ internal static class VseExpertiseStatistics
             return;
         try
         {
-            if (!GameFacts.IsMember(__state.Pawn) ||
-                expertiseLevelProperty?.GetValue(__instance) is not int level)
+            if (!GameFacts.IsMember(__state.Pawn) || getExpertiseLevel is null)
                 return;
+            var level = getExpertiseLevel(__instance);
             var gains = VseExpertiseRules.EarnedLevels(__state.Level, level);
             if (gains <= 0)
                 return;

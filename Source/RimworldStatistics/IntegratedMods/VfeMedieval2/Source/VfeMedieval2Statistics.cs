@@ -72,16 +72,11 @@ internal static class VfeMedieval2Statistics
             throw new InvalidOperationException("Selected Medieval2 1.7 apiary assembly is absent");
 
         var unload = AccessTools.DeclaredMethod(driver, "<MakeNewToils>b__5_1", Type.EmptyTypes);
-        var place = AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>), typeof(Rot4?), typeof(int)])
-            ?? AccessTools.DeclaredMethod(typeof(GenPlace), nameof(GenPlace.TryPlaceThing),
-            [typeof(Thing), typeof(IntVec3), typeof(Map), typeof(ThingPlaceMode),
-             typeof(Action<Thing, int>), typeof(Predicate<IntVec3>)]);
+        var place = OptionalTransitionCallSite.ResolveGenPlaceTryPlaceThing();
         var property = AccessTools.Property(driver, "Apiary");
         var ready = AccessTools.Property(apiary, "HoneyReady");
         var pawn = AccessTools.Field(typeof(JobDriver), "pawn");
-        if (unload?.ReturnType != typeof(void) || place?.ReturnType != typeof(bool) ||
+        if (unload?.ReturnType != typeof(void) ||
             property?.PropertyType != apiary || ready?.PropertyType != typeof(bool) ||
             pawn?.FieldType != typeof(Pawn))
             throw new InvalidOperationException("Medieval2 apiary unload and placement signatures differ");
@@ -89,29 +84,22 @@ internal static class VfeMedieval2Statistics
         apiaryProperty = property;
         readyProperty = ready;
         jobDriverPawnField = pawn;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(unload,
-                prefix:new HarmonyMethod(typeof(VfeMedieval2Statistics), nameof(BeforeUnload)),
-                finalizer:new HarmonyMethod(typeof(VfeMedieval2Statistics), nameof(FinishUnload)));
-            harmony.Patch(place,
-                prefix:new HarmonyMethod(typeof(VfeMedieval2Statistics), nameof(BeforePlace)));
+            patcher.Patch(unload, typeof(VfeMedieval2Statistics),
+                prefix: nameof(BeforeUnload), finalizer: nameof(FinishUnload));
+            patcher.Patch(place, typeof(VfeMedieval2Statistics), prefix: nameof(BeforePlace));
         }
         catch
         {
-            harmony.Unpatch(unload, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
             apiaryProperty = readyProperty = null;
             jobDriverPawnField = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeUnload(object __instance, out HarvestScope? __state)
     {

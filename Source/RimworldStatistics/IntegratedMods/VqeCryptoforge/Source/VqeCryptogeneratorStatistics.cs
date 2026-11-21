@@ -76,20 +76,10 @@ internal static class VqeCryptogeneratorStatistics
         timer = ticks;
         threshold = length;
         spawn = spawnThing;
-        try
-        {
-            harmony.Patch(restart, transpiler: new HarmonyMethod(typeof(VqeCryptogeneratorStatistics), nameof(Observe)));
-            harmony.Patch(callback,
-                prefix: new HarmonyMethod(typeof(VqeCryptogeneratorStatistics), nameof(Before)),
-                postfix: new HarmonyMethod(typeof(VqeCryptogeneratorStatistics), nameof(After)),
-                finalizer: new HarmonyMethod(typeof(VqeCryptogeneratorStatistics), nameof(Restore)));
-        }
-        catch
-        {
-            harmony.Unpatch(callback, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(restart, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(restart, typeof(VqeCryptogeneratorStatistics), transpiler: nameof(Observe));
+        patcher.Patch(callback, typeof(VqeCryptogeneratorStatistics),
+            prefix: nameof(Before), postfix: nameof(After), finalizer: nameof(Restore));
     }
 
     private static void Before(object __instance, out Restart? __state)
@@ -122,10 +112,15 @@ internal static class VqeCryptogeneratorStatistics
 
     private static void After(bool __runOriginal)
     {
-        if (!__runOriginal || active is not { Replacement: { Spawned: true } replacement } restart ||
-            restart.Original.Spawned || replacement.Map != restart.Map || replacement.Position != restart.Position)
+        if (!__runOriginal || active is not { Replacement: { } replacement } restart)
             return;
-        try { GameFacts.Record(Unit, state => OptionalTransitionRecording.RecordCount(state, "completed")); }
+        try
+        {
+            if (!replacement.Spawned || restart.Original.Spawned ||
+                replacement.Map != restart.Map || replacement.Position != restart.Position)
+                return;
+            GameFacts.Record(Unit, state => OptionalTransitionRecording.RecordCount(state, "completed"));
+        }
         catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 

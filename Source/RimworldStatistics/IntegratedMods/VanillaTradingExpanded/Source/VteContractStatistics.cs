@@ -106,25 +106,16 @@ internal static class VteContractStatistics
 
         ExternalSdkHost.Instance.IntegratedHooks.Defer(Unit, () =>
         {
-            var harmony = new Harmony("pengin0503.rws.vte.contract");
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.vte.contract"));
             try
             {
-                harmony.Patch(complete,
-                    prefix: new HarmonyMethod(typeof(VteContractStatistics), nameof(BeforeComplete)),
-                    postfix: new HarmonyMethod(typeof(VteContractStatistics), nameof(AfterComplete)));
-                harmony.Patch(exit,
-                    prefix: new HarmonyMethod(typeof(VteContractStatistics), nameof(BeforeExit)),
-                    postfix: new HarmonyMethod(typeof(VteContractStatistics), nameof(AfterExit)));
-                harmony.Patch(transaction,
-                    prefix: new HarmonyMethod(typeof(VteContractStatistics), nameof(BeforePurchase)),
-                    postfix: new HarmonyMethod(typeof(VteContractStatistics), nameof(AfterPurchase)));
+                patcher.Patch(complete, typeof(VteContractStatistics), nameof(BeforeComplete), nameof(AfterComplete));
+                patcher.Patch(exit, typeof(VteContractStatistics), nameof(BeforeExit), nameof(AfterExit));
+                patcher.Patch(transaction, typeof(VteContractStatistics), nameof(BeforePurchase), nameof(AfterPurchase));
                 return true;
             }
             catch
             {
-                harmony.Unpatch(complete, HarmonyPatchType.All, harmony.Id);
-                harmony.Unpatch(exit, HarmonyPatchType.All, harmony.Id);
-                harmony.Unpatch(transaction, HarmonyPatchType.All, harmony.Id);
                 return false;
             }
         });
@@ -199,7 +190,7 @@ internal static class VteContractStatistics
             __state = new ContractBefore(Fingerprint(__0, map), Find.TickManager.TicksGame,
                 requested, __0, stacks, (int)Math.Min(int.MaxValue, counted));
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterComplete(object __instance, bool __runOriginal, ContractBefore? __state)
@@ -226,7 +217,7 @@ internal static class VteContractStatistics
                 Record(__state.Fingerprint, "instant", __state.Tick,
                     __state.ItemCount, __state.ItemCount - delivered, delivered);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void BeforeExit(object __instance, out CaravanBefore? __state)
@@ -258,7 +249,7 @@ internal static class VteContractStatistics
             __state = new CaravanBefore(Fingerprint(contract, lord.Map), Find.TickManager.TicksGame,
                 requested, reward, amount);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterExit(object __instance, bool __runOriginal, CaravanBefore? __state)
@@ -273,8 +264,10 @@ internal static class VteContractStatistics
             if (delivered > 0)
                 Record(__state.Fingerprint, "caravan", __state.Tick, 0, delivered, delivered);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
+
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, FieldInfo?> ClosureContractFields = new();
 
     /// <summary>
     /// The player-posted contract is delivered only inside the success callback
@@ -287,11 +280,14 @@ internal static class VteContractStatistics
             contractClass is null || closure.GetType().DeclaringType != managerClass ||
             !callback.Method.Name.Contains("ProcessContracts", StringComparison.Ordinal))
             return null;
-        foreach (var field in closure.GetType().GetFields(
-                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
-            if (field.FieldType == contractClass && field.GetValue(closure) is { } contract)
-                return contract;
-        return null;
+        var field = ClosureContractFields.GetOrAdd(closure.GetType(), static closureType =>
+        {
+            foreach (var f in closureType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
+                if (f.FieldType == contractClass)
+                    return f;
+            return null;
+        });
+        return field?.GetValue(closure);
     }
 
     private static void BeforePurchase(object __instance, out PurchaseBefore? __state)
@@ -320,7 +316,7 @@ internal static class VteContractStatistics
             __state = new PurchaseBefore(Fingerprint(order, Find.AnyPlayerHomeMap),
                 Find.TickManager.TicksGame, order, cost, planned, requested);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterPurchase(object __instance, bool __runOriginal, PurchaseBefore? __state)
@@ -342,7 +338,7 @@ internal static class VteContractStatistics
             _ = host.RecordEvent(Purchases, id);
             _ = host.RecordEvent(Received, id, __state.Requested);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void Record(string fingerprint, string action, int tick, int before, int after, int delivered)

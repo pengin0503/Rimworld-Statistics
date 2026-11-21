@@ -104,15 +104,13 @@ internal static class VfePirateHiringStatistics
         dialogFactionField = chosen;
         currentTrackerField = activeTracker;
         hiredPawnsField = hired;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(accept,
-                prefix: new HarmonyMethod(typeof(VfePirateHiringStatistics), nameof(BeforeAccept)),
-                postfix: new HarmonyMethod(typeof(VfePirateHiringStatistics), nameof(AfterAccept)));
+            patcher.Patch(accept, typeof(VfePirateHiringStatistics), nameof(BeforeAccept), nameof(AfterAccept));
         }
         catch
         {
-            harmony.Unpatch(accept, HarmonyPatchType.All, harmony.Id);
             dialogMapField = dialogFactionField = currentTrackerField = hiredPawnsField = null;
             throw;
         }

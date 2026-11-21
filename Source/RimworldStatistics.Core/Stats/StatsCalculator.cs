@@ -90,8 +90,16 @@ public static class StatsCalculator
     internal static double ValidMetricOrZero(double value) => ValidMetric(value) ? value : 0;
 
     public static StatsResult Calculate(IReadOnlyList<Colony> colonies, StatsOptions options)
+        => CalculateCancellable(colonies, options, CancellationToken.None);
+
+    internal static StatsResult CalculateCancellable(IReadOnlyList<Colony> colonies, StatsOptions options, CancellationToken ct)
     {
-        var all = colonies.Select(c => CalculateColony(c, options)).ToList();
+        var all = new List<ColonyStats>(colonies.Count);
+        foreach (var colony in colonies)
+        {
+            ct.ThrowIfCancellationRequested();
+            all.Add(CalculateColony(colony, options));
+        }
         var counted = all.Where(c => !c.Excluded && !c.OutOfScope).ToList();
         var byType = new Dictionary<EndingType, int>();
         foreach (var c in counted)
@@ -128,16 +136,21 @@ public static class StatsCalculator
     public static ColonyStats CalculateColony(Colony colony, StatsOptions options)
     {
         // Superseded observations are history of this colony and count too.
-        var points = colony.Observations.Select(o => new Point(o.Values, o.LastWriteUtc, o.Display, HasWealth(o.Values.WealthLast, o.Values.WealthPoints)))
+        var points = colony.Observations.Select(o => new Point(o.Values, UtcTime.ToUtc(o.LastWriteUtc), o.Display, HasWealth(o.Values.WealthLast, o.Values.WealthPoints)))
             // Max/Display describe the furthest live point; LastSavedUtc moves on every save, so tie-break on when that point was seen.
-            .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => new Point(l.Max, l.MaxObservedUtc ?? l.LastSavedUtc, l.Display,
+            .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => new Point(l.Max, UtcTime.ToUtc(l.MaxObservedUtc ?? l.LastSavedUtc), l.Display,
                 l.WealthAtFurthestKnown ?? HasWealth(l.Max.WealthLast, l.Max.WealthPoints))))
             .ToList();
         int MaxOf(Func<ObservedValues, int> f) => points.Select(p => Math.Max(0, f(p.Values))).DefaultIfEmpty(0).Max();
         double MaxOfD(Func<ObservedValues, double> f) => points.Select(p => ValidMetricOrZero(f(p.Values))).DefaultIfEmpty(0).Max();
 
-        // Spec §4.2: the last wealth (and the display name, §9.2) come from the furthest point; ties go to the newer one.
-        Point? furthest = points.Count == 0 ? null : points.OrderByDescending(p => p.Values.TicksGame).ThenByDescending(p => p.Time).First();
+        // Spec §4.2: the last wealth (and the display name, §9.2) come from the furthest point; ties go to the newer one, then deterministic display fields.
+        Point? furthest = points.Count == 0 ? null : points
+            .OrderByDescending(p => p.Values.TicksGame)
+            .ThenByDescending(p => p.Time)
+            .ThenBy(p => p.Display?.FactionName ?? "", StringComparer.Ordinal)
+            .ThenBy(p => p.Display?.WorldName ?? "", StringComparer.Ordinal)
+            .First();
 
         // Endings grouped by (type, ordinal) after colony grouping (spec §6.2), so several campaign ids do not double count.
         var pairs = colony.Endings.GroupBy(e => (e.Type, e.Ordinal)).ToList();
@@ -166,8 +179,11 @@ public static class StatsCalculator
             departed = Math.Max(Math.Max(0, maxLaunched - devDepartures), normalSum);
         }
 
-        var times = colony.Observations.Select(o => o.LastWriteUtc).Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => l.LastSavedUtc).Where(t => t != default)).ToList();
-        var display = furthest?.Display ?? colony.LiveCampaigns.FirstOrDefault()?.Display;
+        var times = colony.Observations.Select(o => UtcTime.ValidUtc(o.LastWriteUtc))
+            .Concat(colony.LiveCampaigns.Where(l => l.HasObservation).Select(l => UtcTime.ValidUtc(l.LastSavedUtc)))
+            .OfType<DateTime>()
+            .ToList();
+        var display = furthest?.Display ?? colony.LiveCampaigns.OrderBy(l => l.CampaignId, StringComparer.Ordinal).FirstOrDefault()?.Display;
         return new ColonyStats
         {
             Key = colony.Key,

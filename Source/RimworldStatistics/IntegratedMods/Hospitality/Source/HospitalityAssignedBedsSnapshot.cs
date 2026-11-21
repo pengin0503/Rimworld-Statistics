@@ -1,5 +1,7 @@
 using System.Collections;
+using System.Linq.Expressions;
 using System.Reflection;
+using RimworldStatistics.Metrics;
 using Verse;
 
 namespace RimworldStatistics.HospitalityAddon;
@@ -8,11 +10,11 @@ namespace RimworldStatistics.HospitalityAddon;
 internal static class HospitalityAssignedBedsSnapshot
 {
     private const BindingFlags InstancePublic = BindingFlags.Public | BindingFlags.Instance;
-    private static MethodInfo? getMapComponent;
-    private static PropertyInfo? presentGuests;
+    private static Func<Map, object?>? getMapComponent;
+    private static Func<object, IEnumerable?>? getPresentGuests;
     private static Type? guestCompType;
-    private static PropertyInfo? hasAssignedBed;
-    private static FieldInfo? assignedBed;
+    private static Func<object, bool>? getHasAssignedBed;
+    private static Func<object, object?>? getAssignedBed;
 
     internal static bool TryBind()
     {
@@ -38,20 +40,30 @@ internal static class HospitalityAssignedBedsSnapshot
                 hasBed?.GetMethod is null || hasBed.PropertyType != typeof(bool) ||
                 bed?.FieldType != bedType)
                 return false;
-            getMapComponent = getter.MakeGenericMethod(mapComp);
-            presentGuests = guests;
+            var closedGetter = getter.MakeGenericMethod(mapComp);
+            var mapParam = Expression.Parameter(typeof(Map), "map");
+            getMapComponent = Expression.Lambda<Func<Map, object?>>(
+                Expression.Convert(Expression.Call(mapParam, closedGetter), typeof(object)),
+                mapParam).Compile();
+            getPresentGuests = OptionalTransitionCallSite.CompilePropertyGetter<IEnumerable?>(guests);
             guestCompType = guestComp;
-            hasAssignedBed = hasBed;
-            assignedBed = bed;
+            getHasAssignedBed = OptionalTransitionCallSite.CompilePropertyGetter<bool>(hasBed);
+            getAssignedBed = OptionalTransitionCallSite.CompileFieldGetter<object?>(bed);
             return true;
         }
-        catch (Exception) { return false; }
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Hospitality assigned beds binding failed ({e.GetType().Name}): {e.Message}",
+                "RWS.hospitality.beds.bind".GetHashCode());
+            return false;
+        }
     }
 
     internal static double? Capture()
     {
-        if (getMapComponent is null || presentGuests is null || guestCompType is null ||
-            hasAssignedBed is null || assignedBed is null) return null;
+        if (getMapComponent is null || getPresentGuests is null || guestCompType is null ||
+            getHasAssignedBed is null || getAssignedBed is null) return null;
         try
         {
             var distinct = new HospitalityAssignedBedCounter();
@@ -59,22 +71,34 @@ internal static class HospitalityAssignedBedsSnapshot
             {
                 if (!map.IsPlayerHome) continue;
                 distinct.MarkObservedMap();
-                var comp = getMapComponent.Invoke(map, null);
-                if (comp is null || presentGuests.GetValue(comp) is not IEnumerable guests)
+                var comp = getMapComponent(map);
+                if (comp is null || getPresentGuests(comp) is not { } guests)
                     return null;
                 foreach (var visitor in guests)
                 {
-                    if (visitor is not Pawn pawn || pawn.AllComps is null) return null;
-                    var guestComponent = pawn.AllComps.FirstOrDefault(guestCompType.IsInstanceOfType);
+                    if (visitor is not Pawn { AllComps: { } comps }) return null;
+                    ThingComp? guestComponent = null;
+                    for (var i = 0; i < comps.Count; i++)
+                    {
+                        if (guestCompType.IsInstanceOfType(comps[i]))
+                        {
+                            guestComponent = comps[i];
+                            break;
+                        }
+                    }
                     if (guestComponent is null) return null;
-                    if (hasAssignedBed.GetValue(guestComponent) is not bool occupied)
-                        return null;
-                    if (occupied && !distinct.Add(assignedBed.GetValue(guestComponent)))
+                    if (getHasAssignedBed(guestComponent) && !distinct.Add(getAssignedBed(guestComponent)))
                         return null;
                 }
             }
             return distinct.Value;
         }
-        catch (Exception) { return null; }
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Hospitality assigned beds capture skipped ({e.GetType().Name}): {e.Message}",
+                "RWS.hospitality.beds.capture".GetHashCode());
+            return null;
+        }
     }
 }

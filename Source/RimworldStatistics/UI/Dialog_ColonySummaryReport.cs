@@ -74,10 +74,26 @@ internal sealed class Dialog_ColonySummaryReport : Window
     private string colonyKey;
     private string colonyName = "";
 
+    private sealed record ReportLayoutCache(
+        ReportDisplayCache Display,
+        float InnerWidth,
+        int OverviewCols,
+        float BannerHeight,
+        float[] EndingLineHeights,
+        float EndingFootnoteHeight,
+        float EndingsCardHeight,
+        float CoverageCardHeight,
+        float TotalHeight);
+
+    private static readonly bool[] RightAlignedColumns = [false, true, false, true, false, true];
+
     private Task<(ColonySummaryReport? Report, ColonyChronicle? Chronicle)>? reportTask;
     private object? cachedLanguage;
     private string? cachedNameSignature;
     private ReportDisplayCache? displayCache;
+    private ReportLayoutCache? layoutCache;
+    private object? cachedHeaderLanguage;
+    private string[]? cachedHeaders;
     private ColumnPlan? tablePlan;
     private float cachedTableWidth = -1f;
     private Vector2 scroll;
@@ -139,7 +155,7 @@ internal sealed class Dialog_ColonySummaryReport : Window
                     if (doneExport.IsCompletedSuccessfully)
                         exportCompleted = doneExport.Result;
                     else
-                        exportError = doneExport.Exception?.GetBaseException().Message ?? "Unknown error";
+                        exportError = doneExport.Exception?.GetBaseException().Message ?? "RWS_Error_Unknown".Translate();
                 }
                 else
                 {
@@ -640,6 +656,9 @@ internal sealed class Dialog_ColonySummaryReport : Window
             ModMetrics = display.ModMetrics.Select(MapItem).ToArray(),
             ChronicleSection = display.ChronicleSection,
             FooterNote = (string)"RWS_Report_HtmlFooterNote".Translate(),
+            FooterColonyKeyLabel = (string)"RWS_Export_FooterColonyKey".Translate(),
+            FooterScopeLabel = (string)"RWS_Report_Field_Scope".Translate(),
+            FooterGeneratorLabel = (string)"RWS_Export_FooterGenerator".Translate(),
         };
     }
 
@@ -654,37 +673,72 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 innerWidth);
         }
 
-        // Compute content height before scroll view.
-        var overviewCols = Math.Max(1, (int)((innerWidth + 12f) / 260f));
-        var overviewRows = (display.OverviewFields.Length + overviewCols - 1) / overviewCols;
-        var overviewCardHeight = 16f + overviewRows * 42f;
+        // Compute or reuse cached content heights for this (width, display) pair.
+        if (layoutCache is not { } layout
+            || !ReferenceEquals(layout.Display, display)
+            || Math.Abs(layout.InnerWidth - innerWidth) > 0.5f)
+        {
+            var cols = Math.Max(1, (int)((innerWidth + 12f) / 260f));
+            var overviewRows = (display.OverviewFields.Length + cols - 1) / cols;
+            var ovCardHeight = 16f + overviewRows * 42f;
+            var bHeight = display.Banner is { } b ? Math.Max(28f, Text.CalcHeight(b, innerWidth - 20f) + 12f) + 8f : 0f;
+            var eLineHeights = new float[display.EndingLines.Length];
+            var eTextHeight = 0f;
+            if (display.EndingLines.Length == 0)
+            {
+                eTextHeight = 24f;
+            }
+            else
+            {
+                for (var i = 0; i < display.EndingLines.Length; i++)
+                {
+                    var h = Math.Max(20f, Text.CalcHeight("• " + display.EndingLines[i], innerWidth - 24f) + 2f);
+                    eLineHeights[i] = h;
+                    eTextHeight += h;
+                }
+            }
+            var eFootHeight = display.EndingFootnote is { } fn
+                ? Math.Max(20f, Text.CalcHeight(fn, innerWidth - 24f) + 4f)
+                : 0f;
+            eTextHeight += eFootHeight;
+            var eCardHeight = 16f + eTextHeight;
+            var cCardHeight = 16f + Math.Max(22f, Text.CalcHeight(display.CoverageLine, innerWidth - 24f));
 
-        var bannerHeight = display.Banner is { } b ? Math.Max(28f, Text.CalcHeight(b, innerWidth - 20f) + 12f) + 8f : 0f;
-        var endingsTextHeight = display.EndingLines.Length == 0
-            ? 24f
-            : display.EndingLines.Sum(l => Math.Max(20f, Text.CalcHeight("• " + l, innerWidth - 24f) + 2f));
-        if (display.EndingFootnote is { } fn)
-            endingsTextHeight += Math.Max(20f, Text.CalcHeight(fn, innerWidth - 24f) + 4f);
-        var endingsCardHeight = 16f + endingsTextHeight;
-        var coverageCardHeight = 16f + Math.Max(22f, Text.CalcHeight(display.CoverageLine, innerWidth - 24f));
+            static float SectionTableHeight(DisplayRow[] rows)
+            {
+                var h = HeaderRowHeight + 6f;
+                for (var i = 0; i < rows.Length; i++)
+                    h += rows[i].ModSource is not null ? ModRowHeight : BaseRowHeight;
+                return h;
+            }
 
-        static float SectionTableHeight(DisplayRow[] rows)
-            => HeaderRowHeight + rows.Sum(r => r.ModSource is not null ? ModRowHeight : BaseRowHeight) + 6f;
+            var total = bHeight
+                + 26f + ovCardHeight + 12f
+                + 26f + eCardHeight + 12f
+                + 26f + cCardHeight + 14f
+                + 26f + SectionTableHeight(display.KeyRecords) + 12f;
+            if (display.TopRanks.Length > 0)
+                total += 26f + SectionTableHeight(display.TopRanks) + 12f;
+            if (display.ModMetrics.Length > 0)
+                total += 26f + SectionTableHeight(display.ModMetrics) + 12f;
+            if (display.AnyPartialRank)
+                total += 26f;
 
-        var totalHeight = bannerHeight
-            + 26f + overviewCardHeight + 12f
-            + 26f + endingsCardHeight + 12f
-            + 26f + coverageCardHeight + 14f
-            + 26f + SectionTableHeight(display.KeyRecords) + 12f;
+            layout = new ReportLayoutCache(
+                display, innerWidth, cols, bHeight, eLineHeights, eFootHeight, eCardHeight, cCardHeight, total);
+            layoutCache = layout;
+        }
 
-        if (display.TopRanks.Length > 0)
-            totalHeight += 26f + SectionTableHeight(display.TopRanks) + 12f;
-        if (display.ModMetrics.Length > 0)
-            totalHeight += 26f + SectionTableHeight(display.ModMetrics) + 12f;
-        if (display.AnyPartialRank)
-            totalHeight += 26f;
+        var overviewCols = layout.OverviewCols;
+        var overviewCardHeight = 16f + ((display.OverviewFields.Length + overviewCols - 1) / overviewCols) * 42f;
+        var bannerHeight = layout.BannerHeight;
+        var endingsCardHeight = layout.EndingsCardHeight;
+        var coverageCardHeight = layout.CoverageCardHeight;
+        var totalHeight = layout.TotalHeight;
 
         var viewRect = new Rect(0f, 0f, innerWidth, totalHeight + 8f);
+        var viewTop = scroll.y;
+        var viewBottom = scroll.y + outRect.height;
         using (UiScopes.ScrollView(outRect, ref scroll, viewRect))
         using (UiScopes.GuiState())
         {
@@ -740,17 +794,17 @@ internal sealed class Dialog_ColonySummaryReport : Window
             }
             else
             {
-                foreach (var line in display.EndingLines)
+                for (var i = 0; i < display.EndingLines.Length; i++)
                 {
-                    var bullet = "• " + line;
-                    var lh = Math.Max(20f, Text.CalcHeight(bullet, innerWidth - 24f) + 2f);
+                    var bullet = "• " + display.EndingLines[i];
+                    var lh = layout.EndingLineHeights[i];
                     Widgets.Label(new Rect(12f, ey, innerWidth - 24f, lh), bullet);
                     ey += lh;
                 }
             }
             if (display.EndingFootnote is { } foot)
             {
-                var fh = Math.Max(20f, Text.CalcHeight(foot, innerWidth - 24f) + 4f);
+                var fh = layout.EndingFootnoteHeight;
                 using (UiScopes.GuiState())
                 {
                     GUI.color = new Color(0.76f, 0.79f, 0.84f);
@@ -767,11 +821,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
             cy += coverageCardHeight + 14f;
 
             // Interactive metric tables.
-            DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionKeyRecords".Translate(), display.KeyRecords);
+            DrawMetricSection(ref cy, innerWidth, viewTop, viewBottom, "RWS_Report_SectionKeyRecords".Translate(), display.KeyRecords);
             if (display.TopRanks.Length > 0)
-                DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionTopRanks".Translate(), display.TopRanks);
+                DrawMetricSection(ref cy, innerWidth, viewTop, viewBottom, "RWS_Report_SectionTopRanks".Translate(), display.TopRanks);
             if (display.ModMetrics.Length > 0)
-                DrawMetricSection(ref cy, innerWidth, "RWS_Report_SectionModMetrics".Translate(), display.ModMetrics);
+                DrawMetricSection(ref cy, innerWidth, viewTop, viewBottom, "RWS_Report_SectionModMetrics".Translate(), display.ModMetrics);
 
             if (display.AnyPartialRank)
             {
@@ -795,21 +849,27 @@ internal sealed class Dialog_ColonySummaryReport : Window
         y += 26f;
     }
 
-    private void DrawMetricSection(ref float y, float width, string heading, DisplayRow[] rows)
+    private void DrawMetricSection(ref float y, float width, float viewTop, float viewBottom, string heading, DisplayRow[] rows)
     {
         DrawSectionHeading(ref y, width, heading);
 
         var widths = tablePlan!.Widths;
-        string[] headers =
-        [
-            "RWS_Details_Col_Name".Translate(),
-            "RWS_Details_Col_Value".Translate(),
-            "RWS_Report_Col_Kind".Translate(),
-            "RWS_Report_Col_Rank".Translate(),
-            "RWS_Details_Col_State".Translate(),
-            "RWS_Report_Col_Range".Translate(),
-        ];
-        bool[] rightAligned = [false, true, false, true, false, true];
+        var lang = LanguageDatabase.activeLanguage;
+        if (cachedHeaders is null || !ReferenceEquals(cachedHeaderLanguage, lang))
+        {
+            cachedHeaderLanguage = lang;
+            cachedHeaders =
+            [
+                "RWS_Details_Col_Name".Translate(),
+                "RWS_Details_Col_Value".Translate(),
+                "RWS_Report_Col_Kind".Translate(),
+                "RWS_Report_Col_Rank".Translate(),
+                "RWS_Details_Col_State".Translate(),
+                "RWS_Report_Col_Range".Translate(),
+            ];
+        }
+        var headers = cachedHeaders;
+        var rightAligned = RightAlignedColumns;
 
         using (UiScopes.GuiState())
         {
@@ -832,6 +892,11 @@ internal sealed class Dialog_ColonySummaryReport : Window
         {
             var r = rows[i];
             var rh = r.ModSource is not null ? ModRowHeight : BaseRowHeight;
+            if (y + rh < viewTop || y > viewBottom)
+            {
+                y += rh;
+                continue;
+            }
             var rowRect = new Rect(0f, y, tablePlan.TotalWidth, rh);
             if (i % 2 == 1)
                 Widgets.DrawHighlight(rowRect, 0.22f);
@@ -866,16 +931,22 @@ internal sealed class Dialog_ColonySummaryReport : Window
                 }
                 rx += widths[0];
 
-                string[] rest = [r.ValueText, r.KindText, r.RankText, r.StateText, r.RangeText];
-                for (var c = 0; c < rest.Length; c++)
+                for (var colIndex = 1; colIndex <= 5; colIndex++)
                 {
-                    var colIndex = c + 1;
+                    var cellText = colIndex switch
+                    {
+                        1 => r.ValueText,
+                        2 => r.KindText,
+                        3 => r.RankText,
+                        4 => r.StateText,
+                        _ => r.RangeText,
+                    };
                     var cell = new Rect(rx + 4f, y, Math.Max(0f, widths[colIndex] - 8f), rh);
                     Text.Anchor = rightAligned[colIndex] ? TextAnchor.MiddleRight : TextAnchor.MiddleLeft;
                     GUI.color = colIndex == 1 && r.IsMissingOrNa ? new Color(0.68f, 0.68f, 0.70f)
                         : colIndex == 4 && r.IsPartial ? new Color(0.92f, 0.79f, 0.52f)
                         : Color.white;
-                    Widgets.Label(cell, rest[c].Truncate(cell.width));
+                    Widgets.Label(cell, cellText.Truncate(cell.width));
                     rx += widths[colIndex];
                 }
             }

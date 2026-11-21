@@ -19,6 +19,69 @@ public sealed class ViewPreferences
     public int Version { get; set; } = 1;
     public List<ColonyGroup> Groups { get; set; } = new();
     public List<string> FavoriteMetricKeys { get; set; } = new();
+
+    [System.Text.Json.Serialization.JsonIgnore]
+    private HashSet<string>? _favoriteMetricKeySet;
+    [System.Text.Json.Serialization.JsonIgnore]
+    private List<string>? _favoriteMetricKeySetSource;
+    [System.Text.Json.Serialization.JsonIgnore]
+    private int _favoriteMetricKeySetCount = -1;
+
+    public bool IsFavoriteMetric(string key)
+    {
+        var list = FavoriteMetricKeys;
+        if (list is null || list.Count == 0)
+            return false;
+        if (_favoriteMetricKeySet is null
+            || !ReferenceEquals(_favoriteMetricKeySetSource, list)
+            || _favoriteMetricKeySetCount != list.Count)
+        {
+            var set = new HashSet<string>(list.Count, StringComparer.Ordinal);
+            foreach (var item in list)
+                set.Add(item);
+            _favoriteMetricKeySet = set;
+            _favoriteMetricKeySetSource = list;
+            _favoriteMetricKeySetCount = list.Count;
+        }
+        return _favoriteMetricKeySet.Contains(key);
+    }
+
+    public bool ToggleFavoriteMetric(string key)
+    {
+        FavoriteMetricKeys ??= new List<string>();
+        bool changed;
+        if (FavoriteMetricKeys.Remove(key))
+        {
+            changed = true;
+        }
+        else if (FavoriteMetricKeys.Count < MaxFavoriteCount)
+        {
+            FavoriteMetricKeys.Add(key);
+            changed = true;
+        }
+        else
+        {
+            changed = false;
+        }
+        if (changed)
+            InvalidateFavoriteMetricCache();
+        return changed;
+    }
+
+    public bool RemoveFavoriteMetric(string key)
+    {
+        if (FavoriteMetricKeys is null || !FavoriteMetricKeys.Remove(key))
+            return false;
+        InvalidateFavoriteMetricCache();
+        return true;
+    }
+
+    public void InvalidateFavoriteMetricCache()
+    {
+        _favoriteMetricKeySet = null;
+        _favoriteMetricKeySetSource = null;
+        _favoriteMetricKeySetCount = -1;
+    }
     public Dictionary<string, string> ColonyDisplayNames { get; set; } = new(StringComparer.Ordinal);
     public List<ColonyMetricFavorite> FavoriteColonyMetrics { get; set; } = new();
 

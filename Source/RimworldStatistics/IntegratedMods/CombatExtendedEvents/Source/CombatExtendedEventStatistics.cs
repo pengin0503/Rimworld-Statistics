@@ -22,13 +22,13 @@ internal static class CombatExtendedEventStatistics
     private const string SuppressionUnit = "mod.ceteam.combatextended.suppressionreceived";
     private const string SuppressionKey = SuppressionUnit + ".newly_suppressed";
 
-    private static PropertyInfo? wielderProperty;
-    private static PropertyInfo? useAmmoProperty;
-    private static PropertyInfo? hasMagazineProperty;
-    private static PropertyInfo? magazineCountProperty;
-    private static PropertyInfo? currentAmmoProperty;
-    private static FieldInfo? reservedAmmoField;
-    private static FieldInfo? isSuppressedField;
+    private static Func<object, Pawn?>? getWielder;
+    private static Func<object, bool>? getUseAmmo;
+    private static Func<object, bool>? getHasMagazine;
+    private static Func<object, int>? getMagazineCount;
+    private static Func<object, Def?>? getCurrentAmmo;
+    private static Func<object, Thing?>? getReservedAmmo;
+    private static Func<object, bool>? getIsSuppressed;
     [ThreadStatic] private static int debugSuppressionDepth;
 
     private readonly record struct ShotBefore(bool Eligible, bool Magazine,
@@ -98,32 +98,33 @@ internal static class CombatExtendedEventStatistics
         var current = AccessTools.Property(type, "CurrentAmmo");
         var reserved = AccessTools.DeclaredField(type, "ammoToBeDeleted");
         if (notify?.ReturnType != typeof(void) ||
-            wielder?.PropertyType != typeof(Pawn) ||
-            useAmmo?.PropertyType != typeof(bool) ||
-            hasMagazine?.PropertyType != typeof(bool) ||
-            mag?.PropertyType != typeof(int) ||
-            current is null || !typeof(Def).IsAssignableFrom(current.PropertyType) ||
+            wielder?.PropertyType != typeof(Pawn) || wielder.GetMethod is null ||
+            useAmmo?.PropertyType != typeof(bool) || useAmmo.GetMethod is null ||
+            hasMagazine?.PropertyType != typeof(bool) || hasMagazine.GetMethod is null ||
+            mag?.PropertyType != typeof(int) || mag.GetMethod is null ||
+            current?.GetMethod is null || !typeof(Def).IsAssignableFrom(current.PropertyType) ||
             reserved?.FieldType != typeof(Thing))
             throw new InvalidOperationException("CombatExtended ammo debit accessors changed");
 
-        wielderProperty = wielder;
-        useAmmoProperty = useAmmo;
-        hasMagazineProperty = hasMagazine;
-        magazineCountProperty = mag;
-        currentAmmoProperty = current;
-        reservedAmmoField = reserved;
+        getWielder = OptionalTransitionCallSite.CompilePropertyGetter<Pawn?>(wielder);
+        getUseAmmo = OptionalTransitionCallSite.CompilePropertyGetter<bool>(useAmmo);
+        getHasMagazine = OptionalTransitionCallSite.CompilePropertyGetter<bool>(hasMagazine);
+        getMagazineCount = OptionalTransitionCallSite.CompilePropertyGetter<int>(mag);
+        getCurrentAmmo = OptionalTransitionCallSite.CompilePropertyGetter<Def?>(current);
+        getReservedAmmo = OptionalTransitionCallSite.CompileFieldGetter<Thing?>(reserved);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(notify,
-                prefix: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(BeforeShot)),
-                postfix: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(AfterShot)));
+            patcher.Patch(notify, typeof(CombatExtendedEventStatistics), nameof(BeforeShot), nameof(AfterShot));
         }
         catch
         {
-            harmony.Unpatch(notify, HarmonyPatchType.All, harmony.Id);
-            wielderProperty = useAmmoProperty = hasMagazineProperty =
-                magazineCountProperty = currentAmmoProperty = null;
-            reservedAmmoField = null;
+            getWielder = null;
+            getUseAmmo = null;
+            getHasMagazine = null;
+            getMagazineCount = null;
+            getCurrentAmmo = null;
+            getReservedAmmo = null;
             throw;
         }
     }
@@ -144,30 +145,23 @@ internal static class CombatExtendedEventStatistics
             suppressed?.FieldType != typeof(bool))
             throw new InvalidOperationException("CombatExtended suppression API changed");
 
-        isSuppressedField = suppressed;
+        getIsSuppressed = OptionalTransitionCallSite.CompileFieldGetter<bool>(suppressed);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(debug,
-                prefix: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(BeforeDebugSuppression)),
-                finalizer: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(FinishDebugSuppression)));
-            harmony.Patch(add,
-                prefix: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(BeforeSuppression)),
-                postfix: new HarmonyMethod(typeof(CombatExtendedEventStatistics), nameof(AfterSuppression)));
+            patcher.Patch(debug, typeof(CombatExtendedEventStatistics),
+                prefix: nameof(BeforeDebugSuppression), finalizer: nameof(FinishDebugSuppression));
+            patcher.Patch(add, typeof(CombatExtendedEventStatistics),
+                prefix: nameof(BeforeSuppression), postfix: nameof(AfterSuppression));
         }
         catch
         {
-            harmony.Unpatch(debug, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(add, HarmonyPatchType.All, harmony.Id);
-            isSuppressedField = null;
+            getIsSuppressed = null;
             throw;
         }
     }
 
-    private static bool CanObserve(string unit)
-        => MetricGates.IsRecording(unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve(string unit) => OptionalTransitionCallSite.Observing(unit);
 
     private static bool PlayerPawn(Pawn? pawn) => pawn is not null && GameFacts.IsMember(pawn);
 
@@ -178,13 +172,13 @@ internal static class CombatExtendedEventStatistics
             return;
         try
         {
-            var shooter = wielderProperty?.GetValue(__instance) as Pawn;
-            if (!PlayerPawn(shooter) || useAmmoProperty?.GetValue(__instance) is not true ||
-                hasMagazineProperty?.GetValue(__instance) is not bool hasMagazine ||
-                currentAmmoProperty?.GetValue(__instance) is not Def ammo)
+            var shooter = getWielder?.Invoke(__instance);
+            if (!PlayerPawn(shooter) || getUseAmmo is null || !getUseAmmo(__instance) ||
+                getHasMagazine is null || getCurrentAmmo?.Invoke(__instance) is not { } ammo)
                 return;
-            var count = magazineCountProperty?.GetValue(__instance) is int n ? n : 0;
-            var reserved = reservedAmmoField?.GetValue(__instance) as Thing;
+            var hasMagazine = getHasMagazine(__instance);
+            var count = getMagazineCount is not null ? getMagazineCount(__instance) : 0;
+            var reserved = getReservedAmmo?.Invoke(__instance);
             if (hasMagazine && count <= 0 || !hasMagazine && reserved is null)
                 return;
             __state = new ShotBefore(true, hasMagazine, count, reserved,
@@ -200,13 +194,13 @@ internal static class CombatExtendedEventStatistics
             return;
         try
         {
-            if (useAmmoProperty?.GetValue(__instance) is not true ||
-                wielderProperty?.GetValue(__instance) is not Pawn pawn || !PlayerPawn(pawn))
+            if (getUseAmmo is null || !getUseAmmo(__instance) ||
+                getWielder?.Invoke(__instance) is not { } pawn || !PlayerPawn(pawn))
                 return;
             long used;
             if (__state.Magazine)
             {
-                var count = magazineCountProperty?.GetValue(__instance) is int n ? n : __state.RoundCount;
+                var count = getMagazineCount is not null ? getMagazineCount(__instance) : __state.RoundCount;
                 used = CombatExtendedEventRules.MagazineRoundsUsed(
                     __state.RoundCount, count, owned: true, ammoMode: true);
             }
@@ -239,12 +233,12 @@ internal static class CombatExtendedEventStatistics
     {
         __state = null;
         if (!CanObserve(SuppressionUnit) || debugSuppressionDepth != 0 ||
-            __instance is not ThingComp { parent: Pawn pawn } || !PlayerPawn(pawn))
+            __instance is not ThingComp { parent: Pawn pawn } || !PlayerPawn(pawn) ||
+            getIsSuppressed is null)
             return;
         try
         {
-            if (isSuppressedField?.GetValue(__instance) is bool oldValue)
-                __state = oldValue;
+            __state = getIsSuppressed(__instance);
         }
         catch (Exception e) { LiveMetrics.Fail(SuppressionUnit, e); }
     }
@@ -253,11 +247,12 @@ internal static class CombatExtendedEventStatistics
     {
         if (!__runOriginal || __state is not false || !CanObserve(SuppressionUnit) ||
             debugSuppressionDepth != 0 ||
-            __instance is not ThingComp { parent: Pawn pawn } || !PlayerPawn(pawn))
+            __instance is not ThingComp { parent: Pawn pawn } || !PlayerPawn(pawn) ||
+            getIsSuppressed is null)
             return;
         try
         {
-            var newValue = isSuppressedField?.GetValue(__instance) is true;
+            var newValue = getIsSuppressed(__instance);
             if (!CombatExtendedEventRules.Suppressed(
                     before: false, after: newValue, playerOwned: true, debugScope: false))
                 return;

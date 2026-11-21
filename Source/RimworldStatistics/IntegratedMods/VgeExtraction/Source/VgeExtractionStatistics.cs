@@ -73,27 +73,13 @@ internal static class VgeExtractionStatistics
             place?.ReturnType != typeof(bool))
             throw new InvalidOperationException("VGE extractor/vanilla placement signature changed");
 
-        try
-        {
-            harmony.Patch(extract,
-                prefix: new HarmonyMethod(typeof(VgeExtractionStatistics), nameof(BeforeExtraction)),
-                finalizer: new HarmonyMethod(typeof(VgeExtractionStatistics), nameof(FinishExtraction)));
-            harmony.Patch(place,
-                postfix: new HarmonyMethod(typeof(VgeExtractionStatistics), nameof(AfterPlacement)));
-        }
-        catch
-        {
-            harmony.Unpatch(extract, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(place, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(extract, typeof(VgeExtractionStatistics),
+            prefix: nameof(BeforeExtraction), finalizer: nameof(FinishExtraction));
+        patcher.Patch(place, typeof(VgeExtractionStatistics), postfix: nameof(AfterPlacement));
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeExtraction(Pawn __0, Thing __1, out ExtractScope? __state)
     {

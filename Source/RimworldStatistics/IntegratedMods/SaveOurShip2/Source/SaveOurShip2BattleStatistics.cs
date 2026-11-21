@@ -73,17 +73,8 @@ internal static class SaveOurShip2BattleStatistics
         targetMap = opposingMap;
         battleState = state;
         bridges = roots;
-        try
-        {
-            harmony.Patch(end,
-                prefix: new HarmonyMethod(typeof(SaveOurShip2BattleStatistics), nameof(Before)),
-                postfix: new HarmonyMethod(typeof(SaveOurShip2BattleStatistics), nameof(After)));
-        }
-        catch
-        {
-            harmony.Unpatch(end, HarmonyPatchType.All, harmony.Id);
-            throw;
-        }
+        var patcher = new ScopedHarmonyPatcher(harmony);
+        patcher.Patch(end, typeof(SaveOurShip2BattleStatistics), nameof(Before), nameof(After));
     }
 
     private static void Before(object __instance, Map __0, bool __1, out Combat? __state)
@@ -98,8 +89,18 @@ internal static class SaveOurShip2BattleStatistics
                 !ReferenceEquals(enemy.map, __0) || !ReferenceEquals(targetMap?.GetValue(enemy), player.map) ||
                 !Equals(battleState?.GetValue(player), inCombat) || !Equals(battleState?.GetValue(enemy), inCombat) ||
                 playerMap?.GetValue(player) is not true || playerMap.GetValue(enemy) is not false ||
-                bridges?.GetValue(player) is not IEnumerable roots ||
-                !roots.OfType<Building>().Any(bridge => bridge.Spawned && GameFacts.IsPlayer(bridge)))
+                bridges?.GetValue(player) is not IEnumerable roots)
+                return;
+            var hasPlayerBridge = false;
+            foreach (var root in roots)
+            {
+                if (root is Building bridge && bridge.Spawned && GameFacts.IsPlayer(bridge))
+                {
+                    hasPlayerBridge = true;
+                    break;
+                }
+            }
+            if (!hasPlayerBridge)
                 return;
             __state = new Combat(player, enemy);
         }

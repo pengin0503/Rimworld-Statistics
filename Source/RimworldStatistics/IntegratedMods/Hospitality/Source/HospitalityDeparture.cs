@@ -78,19 +78,25 @@ internal static class HospitalityDeparture
 
     internal static bool TryInstall()
     {
+        var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.hospitality.departures"));
+        return TryInstall(patcher);
+    }
+
+    internal static bool TryInstall(ScopedHarmonyPatcher patcher)
+    {
         if (onLeave is null || onPawnLost is null || onLordDestroyed is null)
             return false;
         try
         {
-            var harmony = new Harmony("pengin0503.rws.hospitality.departures");
-            harmony.Patch(onLeave, postfix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(AfterVisitEnd)));
-            harmony.Patch(onPawnLost, postfix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(AfterPawnLost)));
-            harmony.Patch(onLordDestroyed, prefix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(BeforeLordDestroyed)));
+            patcher.Patch(onLeave, postfix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(AfterVisitEnd)));
+            patcher.Patch(onPawnLost, postfix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(AfterPawnLost)));
+            patcher.Patch(onLordDestroyed, prefix: new HarmonyMethod(typeof(HospitalityDeparture), nameof(BeforeLordDestroyed)));
             return true;
         }
         catch (Exception e)
         {
-            MetricGates.Fail(Unit, e);
+            patcher.Rollback();
+            LiveMetrics.Fail(Unit, e);
             return false;
         }
     }
@@ -113,7 +119,7 @@ internal static class HospitalityDeparture
             state.Finished = leavingField?.GetValue(__instance) is true &&
                 lord.Map is { IsPlayerHome: true } && pawns is { Count: > 0 };
             if (recoveredField?.GetValue(__instance) is true ||
-                lord.faction is null || lord.faction.HostileTo(GameFacts.PlayerFaction))
+                lord.faction is null || GameFacts.IsHostileToPlayer(lord.faction))
                 state.Finished = false;
 
             // A guest sent away, or a guest lacking the expected component,
@@ -127,7 +133,7 @@ internal static class HospitalityDeparture
                 }
             else state.SentAway = true;
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void AfterPawnLost(LordJob __instance, PawnLostCondition __1)
@@ -141,7 +147,7 @@ internal static class HospitalityDeparture
             if (__1 == PawnLostCondition.ExitedMap) state.SawExit = true;
             else state.OtherLoss = true;
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 
     private static void BeforeLordDestroyed(LordJob __instance)
@@ -157,7 +163,7 @@ internal static class HospitalityDeparture
                 VisitFinished: state.Finished,
                 SawActualExit: state.SawExit,
                 SentAway: state.SentAway,
-                Hostile: lord.faction is null || lord.faction.HostileTo(GameFacts.PlayerFaction),
+                Hostile: lord.faction is null || GameFacts.IsHostileToPlayer(lord.faction),
                 RecoveredVisitor: recoveredField?.GetValue(__instance) is true,
                 OtherLossOccurred: state.OtherLoss,
                 ViolentLosses: lord.numPawnsLostViolently,
@@ -169,6 +175,6 @@ internal static class HospitalityDeparture
             if (id is not null)
                 HospitalitySdk.RecordCompletion(id);
         }
-        catch (Exception e) { MetricGates.Fail(Unit, e); }
+        catch (Exception e) { LiveMetrics.Fail(Unit, e); }
     }
 }

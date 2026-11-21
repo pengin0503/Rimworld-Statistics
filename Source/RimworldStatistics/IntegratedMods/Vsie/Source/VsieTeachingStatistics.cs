@@ -57,16 +57,14 @@ internal static class VsieTeachingStatistics
 
         learn = skillLearn;
         xp = AccessTools.FieldRefAccess<SkillRecord, float>(skillXp);
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(interaction,
-                prefix: new HarmonyMethod(typeof(VsieTeachingStatistics), nameof(Before)),
-                transpiler: new HarmonyMethod(typeof(VsieTeachingStatistics), nameof(ObservePupilLearn)),
-                finalizer: new HarmonyMethod(typeof(VsieTeachingStatistics), nameof(RestorePupil)));
+            patcher.Patch(interaction, typeof(VsieTeachingStatistics),
+                prefix: nameof(Before), transpiler: nameof(ObservePupilLearn), finalizer: nameof(RestorePupil));
         }
         catch
         {
-            harmony.Unpatch(interaction, HarmonyPatchType.All, harmony.Id);
             learn = null;
             xp = null;
             throw;

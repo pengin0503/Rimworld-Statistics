@@ -38,7 +38,7 @@ internal static class ResearchProbe
 
     public static Scope? Begin(ResearchProjectDef? def, Dictionary<ResearchProjectDef, float> progress, Dictionary<ResearchProjectDef, float> knowledge)
     {
-        if (def is null || !LiveMetrics.CanCaptureEvent(Unit))
+        if (def is null || !LiveMetrics.IsRecordingUnit(Unit) || !LiveMetrics.CanCaptureEvent(Unit))
             return null;
         try
         {
@@ -57,7 +57,7 @@ internal static class ResearchProbe
             return;
         try
         {
-            Hooks.OuterEnd(LiveMetrics.Family(Unit), scope.Frame, Progress(progress, knowledge, scope.Def), Find.TickManager.TicksGame);
+            Hooks.OuterEnd(LiveMetrics.Family(Unit), scope.Frame, Progress(progress, knowledge, scope.Def), GameFacts.Tick);
         }
         catch (Exception e)
         {
@@ -123,12 +123,14 @@ public static class ResearchFinishProjectMetricPatch
         Dictionary<ResearchProjectDef, float> ___anomalyKnowledge, out bool? __state)
     {
         __state = null;
-        if (proj is null || LiveMetrics.Family(ResearchProbe.Unit) is not { } s)
+        if (proj is null || !LiveMetrics.IsRecordingUnit(ResearchProbe.Unit))
             return;
         try
         {
+            if (LiveMetrics.Family(ResearchProbe.Unit) is not { } s)
+                return;
             __state = ResearchProbe.Hooks.FinishBegin(s, proj.defName, ResearchProbe.Finished(___progress, ___anomalyKnowledge, proj),
-                ResearchProbe.Progress(___progress, ___anomalyKnowledge, proj), Find.TickManager.TicksGame);
+                ResearchProbe.Progress(___progress, ___anomalyKnowledge, proj), GameFacts.Tick);
         }
         catch (Exception e)
         {

@@ -32,11 +32,20 @@ public sealed class Dialog_RimworldStatistics : Window
     private readonly RetainedBuild<long, StatsView> viewBuild = new();
     private bool viewIncludesDevMode;
     private static Exception? loggedLoadFailure;
-    private ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings.viewPreferencesJson);
-    private string loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
+    private ViewPreferences preferences = ViewPreferences.Parse(RimworldStatisticsMod.Settings?.viewPreferencesJson ?? "");
+    private string loadedPreferencesJson = RimworldStatisticsMod.Settings?.viewPreferencesJson ?? "";
     private string? selectedGroupId;
     private string activeScopeKey = "";
     private ProfileSession? viewSession;
+    private object? cachedTabLanguage;
+    private Tab cachedTabSelected = (Tab)(-1);
+    private string[]? cachedTabNames;
+    private List<TabRecord>? cachedTabs;
+    private float cachedTabTotalWidth;
+    private object? cachedScopeLanguage;
+    private string? cachedScopeGroupId;
+    private string cachedScopePrefsJson = "";
+    private string? cachedScopeLabel;
 
     public Dialog_RimworldStatistics()
     {
@@ -139,24 +148,39 @@ public sealed class Dialog_RimworldStatistics : Window
             var topChrome = TitleHeight + inGameBarOffset + TabHeight;
             var body = new Rect(inRect.x, inRect.y + topChrome, inRect.width, Math.Max(0f, inRect.height - topChrome));
             Verse.Widgets.DrawMenuSection(body);
-            var tabs = new List<TabRecord>
+            var lang = LanguageDatabase.activeLanguage;
+            if (cachedTabNames is null || cachedTabs is null || !ReferenceEquals(cachedTabLanguage, lang) || cachedTabSelected != current)
             {
-                new("RWS_Tab_Overview".Translate(), () => current = Tab.Overview, current == Tab.Overview),
-                new("RWS_Tab_Endings".Translate(), () => current = Tab.Endings, current == Tab.Endings),
-                new("RWS_Tab_Colonies".Translate(), () => current = Tab.Colonies, current == Tab.Colonies),
-                new("RWS_Tab_Details".Translate(), () => current = Tab.Details, current == Tab.Details),
-                new("RWS_Tab_Rankings".Translate(), () => current = Tab.Rankings, current == Tab.Rankings),
-                new("RWS_Tab_Coverage".Translate(), () => current = Tab.Coverage, current == Tab.Coverage),
-                new("RWS_Tab_Import".Translate(), () => current = Tab.Import, current == Tab.Import),
-            };
-            var tabNames = new[]
-            {
-                (string)"RWS_Tab_Overview".Translate(), (string)"RWS_Tab_Endings".Translate(),
-                (string)"RWS_Tab_Colonies".Translate(), (string)"RWS_Tab_Details".Translate(),
-                (string)"RWS_Tab_Rankings".Translate(), (string)"RWS_Tab_Coverage".Translate(),
-                (string)"RWS_Tab_Import".Translate(),
-            };
-            if (body.width <= 16f || tabNames.Sum(x => Text.CalcSize(x).x + 33f) > body.width - 16f)
+                if (cachedTabNames is null || !ReferenceEquals(cachedTabLanguage, lang))
+                {
+                    cachedTabNames =
+                    [
+                        (string)"RWS_Tab_Overview".Translate(), (string)"RWS_Tab_Endings".Translate(),
+                        (string)"RWS_Tab_Colonies".Translate(), (string)"RWS_Tab_Details".Translate(),
+                        (string)"RWS_Tab_Rankings".Translate(), (string)"RWS_Tab_Coverage".Translate(),
+                        (string)"RWS_Tab_Import".Translate(),
+                    ];
+                    var totalWidth = 0f;
+                    for (var i = 0; i < cachedTabNames.Length; i++)
+                        totalWidth += Text.CalcSize(cachedTabNames[i]).x + 33f;
+                    cachedTabTotalWidth = totalWidth;
+                    cachedTabLanguage = lang;
+                }
+                cachedTabSelected = current;
+                cachedTabs = new List<TabRecord>(cachedTabNames.Length)
+                {
+                    new(cachedTabNames[0], () => current = Tab.Overview, current == Tab.Overview),
+                    new(cachedTabNames[1], () => current = Tab.Endings, current == Tab.Endings),
+                    new(cachedTabNames[2], () => current = Tab.Colonies, current == Tab.Colonies),
+                    new(cachedTabNames[3], () => current = Tab.Details, current == Tab.Details),
+                    new(cachedTabNames[4], () => current = Tab.Rankings, current == Tab.Rankings),
+                    new(cachedTabNames[5], () => current = Tab.Coverage, current == Tab.Coverage),
+                    new(cachedTabNames[6], () => current = Tab.Import, current == Tab.Import),
+                };
+            }
+            var tabs = cachedTabs;
+            var tabNames = cachedTabNames;
+            if (body.width <= 16f || cachedTabTotalWidth > body.width - 16f)
             {
                 var tabRect = new Rect(body.x + 8f, body.y - 30f, Math.Max(0f, Math.Min(230f, body.width - 16f)), 28f);
                 var activeTabName = tabNames[(int)current];
@@ -317,7 +341,7 @@ public sealed class Dialog_RimworldStatistics : Window
 
     private void RefreshSavedPreferences()
     {
-        var serialized = RimworldStatisticsMod.Settings.viewPreferencesJson ?? "";
+        var serialized = RimworldStatisticsMod.Settings?.viewPreferencesJson ?? "";
         if (serialized == loadedPreferencesJson)
             return;
         preferences = ViewPreferences.Parse(serialized);
@@ -340,10 +364,25 @@ public sealed class Dialog_RimworldStatistics : Window
 
     private string ScopeLabel()
     {
+        var lang = LanguageDatabase.activeLanguage;
+        if (cachedScopeLabel is { } cached
+            && ReferenceEquals(cachedScopeLanguage, lang)
+            && string.Equals(cachedScopeGroupId, selectedGroupId, StringComparison.Ordinal)
+            && string.Equals(cachedScopePrefsJson, loadedPreferencesJson, StringComparison.Ordinal))
+        {
+            return cached;
+        }
+        string label;
         if (SmartGroupSpec.TryParse(selectedGroupId, out var smart) && smart is not null)
-            return SmartScopeUi.Label(smart);
-        return preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId)?.Name
-            ?? "RWS_Groups_All".Translate();
+            label = SmartScopeUi.Label(smart);
+        else
+            label = preferences.Groups.FirstOrDefault(g => g.Id == selectedGroupId)?.Name
+                ?? "RWS_Groups_All".Translate();
+        cachedScopeLanguage = lang;
+        cachedScopeGroupId = selectedGroupId;
+        cachedScopePrefsJson = loadedPreferencesJson;
+        cachedScopeLabel = label;
+        return label;
     }
 
     private void ShowScopeMenu()
@@ -374,8 +413,10 @@ public sealed class Dialog_RimworldStatistics : Window
 
     private void SavePreferences()
     {
-        RimworldStatisticsMod.Settings.viewPreferencesJson = preferences.ToJson();
-        loadedPreferencesJson = RimworldStatisticsMod.Settings.viewPreferencesJson;
+        var serialized = preferences.ToJson();
+        if (RimworldStatisticsMod.Settings is not null)
+            RimworldStatisticsMod.Settings.viewPreferencesJson = serialized;
+        loadedPreferencesJson = serialized;
         cachedPreferences = preferences;
         cachedPreferencesJson = loadedPreferencesJson;
         RimworldStatisticsMod.Instance?.WriteSettings();
@@ -432,7 +473,7 @@ public sealed class Dialog_RimworldStatistics : Window
         => ColonyPresentation.ResolveName(s, preferences ?? ActivePreferences, UnnamedColonyFallback);
 
     internal static string Local(DateTime? utc)
-        => utc is { } t ? DateTime.SpecifyKind(t, DateTimeKind.Utc).ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) : Dash;
+        => utc is { } t ? UtcTime.ToUtc(t).ToLocalTime().ToString("yyyy-MM-dd HH:mm", CultureInfo.InvariantCulture) : Dash;
 
     // One literal key per value (no string concatenation), so the translation-key check sees every key.
     internal static string EndingLabel(EndingType type) => type switch

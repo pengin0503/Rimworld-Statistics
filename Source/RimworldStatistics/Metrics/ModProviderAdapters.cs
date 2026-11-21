@@ -95,68 +95,92 @@ internal static class ModProviderAdapters
         var registry = new ModMetricProviderRegistry();
         var enabled = new List<Enabled>();
         var families = new List<LiveFamily>();
-        // A family with several output descriptors owns one hook and state. Descriptors share a unit only within one
-        // provider: the SDK registry refuses a unit of a built-in integration or of another SDK provider (#314).
-        var installedEventFamilies = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var registration in declarations)
+        // Group by AcquisitionId so a partial failure in a multi-descriptor unit never leaves a half-installed
+        // hook or a dangling descriptor in LiveFamily/snapshot capture.
+        foreach (var group in declarations.GroupBy(x => x.Descriptor.AcquisitionId, StringComparer.Ordinal))
         {
-            var descriptor = registration.Descriptor;
-            if (!registry.Register(descriptor).Accepted)
+            var id = group.Key;
+            var regs = group.ToArray();
+            var groupOk = true;
+            var groupValidated = new List<Enabled>(regs.Length);
+            LiveFamily? groupFamily = null;
+            Action<Harmony>? groupInstall = null;
+
+            foreach (var registration in regs)
             {
-                Log.ErrorOnce("[RimworldStatistics] Duplicate/invalid optional statistics descriptor: " +
-                    descriptor.StableKey, ("RWS.provider.invalid." + descriptor.ProviderId).GetHashCode());
-                continue;
-            }
-            var id = descriptor.AcquisitionId;
-            // Hook registration must not depend on a preference that can change
-            // in-game. Avoid even probing definitions for an absent target MOD.
-            if (!MetricGates.IsInstallEligible(id)
-                || !installed.Any(x => string.Equals(x.PackageId, descriptor.OwnerPackageId,
-                    StringComparison.OrdinalIgnoreCase)))
-                continue;
-            var presentDefs = descriptor.RequiredDefNames.Count == 0 ? null
-                : ModProviderGameDiscovery.ExistingDefs(descriptor.RequiredDefNames);
-            var eligibility = ModProviderDiscovery.Resolve(descriptor, installed, presentDefs);
-            if (!eligibility.Available)
-            {
-                if (MetricGates.IsSelected(id))
-                    Log.WarningOnce($"[RimworldStatistics] Selected optional acquisition '{id}' unavailable: "
-                        + $"{eligibility.State} ({eligibility.Detail ?? descriptor.OwnerPackageId}).",
-                        ("RWS.provider.unavailable." + id).GetHashCode());
-                continue;
-            }
-            if (descriptor.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
-                continue;
-            var ownerVersion = installed.FirstOrDefault(x =>
-                string.Equals(x.PackageId, descriptor.OwnerPackageId, StringComparison.OrdinalIgnoreCase))?.Version;
-            if (descriptor.Source == MetricObservationSource.Checkpoint)
-            {
-                if (registration.EventFamily is not { } family || family.Name != id ||
-                    family.Revision != descriptor.Revision || registration.InstallEventHook is null)
+                var descriptor = registration.Descriptor;
+                if (!registry.Register(descriptor).Accepted)
                 {
-                    MetricGates.Fail(id, new InvalidOperationException("Optional event family lacks a complete hook/decoder"));
+                    Log.ErrorOnce("[RimworldStatistics] Duplicate/invalid optional statistics descriptor: " +
+                        descriptor.StableKey, ("RWS.provider.invalid." + descriptor.ProviderId).GetHashCode());
+                    groupOk = false;
+                    break;
+                }
+                // Hook registration must not depend on a preference that can change
+                // in-game. Avoid even probing definitions for an absent target MOD.
+                if (!MetricGates.IsInstallEligible(id)
+                    || !installed.Any(x => string.Equals(x.PackageId, descriptor.OwnerPackageId,
+                        StringComparison.OrdinalIgnoreCase)))
+                {
+                    groupOk = false;
+                    break;
+                }
+                var presentDefs = descriptor.RequiredDefNames.Count == 0 ? null
+                    : ModProviderGameDiscovery.ExistingDefs(descriptor.RequiredDefNames);
+                var eligibility = ModProviderDiscovery.Resolve(descriptor, installed, presentDefs);
+                if (!eligibility.Available)
+                {
+                    if (MetricGates.IsSelected(id))
+                        Log.WarningOnce($"[RimworldStatistics] Selected optional acquisition '{id}' unavailable: "
+                            + $"{eligibility.State} ({eligibility.Detail ?? descriptor.OwnerPackageId}).",
+                            ("RWS.unit.incompatible." + id).GetHashCode());
+                    groupOk = false;
+                    break;
+                }
+                if (descriptor.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
+                {
+                    groupOk = false;
+                    break;
+                }
+                var ownerVersion = installed.FirstOrDefault(x =>
+                    string.Equals(x.PackageId, descriptor.OwnerPackageId, StringComparison.OrdinalIgnoreCase))?.Version;
+                if (descriptor.Source == MetricObservationSource.Checkpoint)
+                {
+                    if (registration.EventFamily is not { } family || family.Name != id ||
+                        family.Revision != descriptor.Revision || registration.InstallEventHook is null)
+                    {
+                        MetricGates.Fail(id, new InvalidOperationException("Optional event family lacks a complete hook/decoder"));
+                        groupOk = false;
+                        break;
+                    }
+                    groupFamily ??= family;
+                    groupInstall ??= registration.InstallEventHook;
+                }
+                else if (registration.CaptureSnapshot is null)
+                {
+                    MetricGates.Fail(id, new InvalidOperationException("Optional snapshot has no reader"));
+                    groupOk = false;
+                    break;
+                }
+                if (registration.ValidateSnapshot is { } validate &&
+                    !Guard.TryRun(id, validate, (unit, e) => MetricGates.Fail(unit, e)))
+                {
+                    groupOk = false;
+                    break;
+                }
+                groupValidated.Add(new Enabled(registration, ownerVersion));
+            }
+
+            if (!groupOk)
+                continue;
+            if (groupFamily is not null && groupInstall is not null)
+            {
+                if (!Guard.TryRun(id, () => groupInstall(harmony), (unit, e) => MetricGates.Fail(unit, e)))
                     continue;
-                }
-                if (!installedEventFamilies.Contains(id))
-                {
-                    if (!Guard.TryRun(id, () => registration.InstallEventHook(harmony),
-                        (unit, e) => MetricGates.Fail(unit, e)))
-                        continue;
-                    installedEventFamilies.Add(id);
-                }
-                if (!families.Any(x => x.Name == family.Name))
-                    families.Add(family);
+                families.Add(groupFamily);
             }
-            else if (registration.CaptureSnapshot is null)
-            {
-                MetricGates.Fail(id, new InvalidOperationException("Optional snapshot has no reader"));
-                continue;
-            }
-            if (registration.ValidateSnapshot is { } validate &&
-                !Guard.TryRun(id, validate, (unit, e) => MetricGates.Fail(unit, e)))
-                continue;
             MetricGates.MarkApplied(id);
-            enabled.Add(new Enabled(registration, ownerVersion));
+            enabled.AddRange(groupValidated);
         }
         LiveFamilies.SetOptionalFamilies(families);
         active = enabled.ToArray();
@@ -192,9 +216,33 @@ internal static class ModProviderAdapters
         }
     }
 
-    /// <summary>Called only after a committed game save; every optional unit writes one detached scalar or nothing.</summary>
+    /// <summary>Called only after a committed game save; every optional unit writes all its detached scalars atomically or none.</summary>
     public static void CaptureSuccessfulSave(MetricObservation observation)
     {
+        var currentAcquisition = string.Empty;
+        var staged = new List<(ModMetricDescriptor Descriptor, string? OwnerVersion, string ProviderVersion, MetricEntry? Entry)>();
+        var groupFailed = false;
+
+        void CommitStaged()
+        {
+            if (groupFailed || staged.Count == 0)
+            {
+                staged.Clear();
+                return;
+            }
+            foreach (var (d, ownerVersion, providerVersion, entry) in staged)
+            {
+                if (entry is null)
+                    continue;
+                observation.Metrics[d.StableKey] = entry;
+                observation.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
+                observation.EvidenceByAcquisition[d.AcquisitionId] = MetricEvidence.Experimental;
+                observation.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(StringComparer.Ordinal);
+                observation.ProviderCaptures[d.ProviderId] = new ModProviderCapture(d.OwnerPackageId, ownerVersion, providerVersion);
+            }
+            staged.Clear();
+        }
+
         foreach (var enabled in active)
         {
             var reg = enabled.Registration;
@@ -202,20 +250,31 @@ internal static class ModProviderAdapters
             if (descriptor.Source != MetricObservationSource.SaveSnapshot ||
                 !MetricGates.IsRecording(descriptor.AcquisitionId) || reg.CaptureSnapshot is null)
                 continue;
-            Guard.TryRun(descriptor.AcquisitionId, () =>
+            if (!string.Equals(currentAcquisition, descriptor.AcquisitionId, StringComparison.Ordinal))
+            {
+                CommitStaged();
+                currentAcquisition = descriptor.AcquisitionId;
+                groupFailed = false;
+            }
+            if (groupFailed)
+                continue;
+            if (!Guard.TryRun(descriptor.AcquisitionId, () =>
             {
                 var entry = reg.CaptureSnapshot();
                 if (entry is null)
+                {
+                    staged.Add((descriptor, enabled.OwnerVersion, reg.ProviderVersion, null));
                     return; // Missing is unknown, never a fabricated zero.
+                }
                 if (entry.IsQuarantined || entry.Revision != descriptor.Revision)
                     throw new InvalidOperationException("Optional snapshot returned an unreadable or wrong-revision metric");
-                observation.Metrics[descriptor.StableKey] = entry;
-                observation.EvidenceByAcquisition ??= new Dictionary<string, MetricEvidence>(StringComparer.Ordinal);
-                observation.EvidenceByAcquisition[descriptor.AcquisitionId] = MetricEvidence.Experimental;
-                observation.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(StringComparer.Ordinal);
-                observation.ProviderCaptures[descriptor.ProviderId] = new ModProviderCapture(
-                    descriptor.OwnerPackageId, enabled.OwnerVersion, reg.ProviderVersion);
-            }, (unit, e) => LiveMetrics.Fail(unit, e));
+                staged.Add((descriptor, enabled.OwnerVersion, reg.ProviderVersion, entry));
+            }, (unit, e) => LiveMetrics.Fail(unit, e)))
+            {
+                groupFailed = true;
+                staged.Clear();
+            }
         }
+        CommitStaged();
     }
 }

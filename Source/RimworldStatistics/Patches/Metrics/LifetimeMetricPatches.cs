@@ -18,7 +18,7 @@ public static class SkillLearnMetricPatch
 
     public static void Postfix(SkillRecord __instance, int ___levelInt, Pawn ___pawn, int __state)
     {
-        if (___levelInt == __state)
+        if (___levelInt == __state || !LiveMetrics.IsRecordingUnit(LifetimeFamily.Name))
             return;
         try
         {

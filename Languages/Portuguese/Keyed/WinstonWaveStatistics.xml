@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
-  <RWS_WinstonCleared>Vagas de Winston repelidas</RWS_WinstonCleared>
-  <RWS_WinstonHighest>Vaga de Winston mais alta repelida</RWS_WinstonHighest>
-  <RWS_WinstonBoss>Vagas de chefes de Winston repelidas</RWS_WinstonBoss>
+  <RWS_WinstonCleared>Vagas de ataque repelidas</RWS_WinstonCleared>
+  <RWS_WinstonHighest>Vaga mais alta repelida</RWS_WinstonHighest>
+  <RWS_WinstonBoss>Vagas de chefes repelidas</RWS_WinstonBoss>
   <RWS_WinstonClearDesc>Conta as vagas repelidas antes do início da próxima. Exclui as que avançaram apenas por fim do prazo.</RWS_WinstonClearDesc>
-  <RWS_WinstonRewards>Recompensas de Winston confirmadas</RWS_WinstonRewards>
+  <RWS_WinstonRewards>Recompensas de vaga confirmadas</RWS_WinstonRewards>
   <RWS_WinstonRewardsDesc>Conta as recompensas confirmadas por tipo, incluindo escolhas automáticas e após o fim do prazo.</RWS_WinstonRewardsDesc>
 </LanguageData>

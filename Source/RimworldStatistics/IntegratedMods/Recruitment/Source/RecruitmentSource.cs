@@ -1,7 +1,9 @@
 using System.Collections;
-using System.Globalization;
+using System.Collections.Concurrent;
 using System.Reflection;
 using HarmonyLib;
+using RimworldStatistics.Metrics;
+using Verse;
 
 namespace RimworldStatistics.RecruitmentAddon;
 
@@ -14,11 +16,12 @@ internal static class RecruitmentSource
     private const BindingFlags InstancePublic = BindingFlags.Instance | BindingFlags.Public;
     private const BindingFlags InstancePrivate = BindingFlags.Instance | BindingFlags.NonPublic;
     private static MethodInfo? addDrive;
-    private static FieldInfo? returnedDriveId;
-    private static FieldInfo? paidSilverField;
-    private static FieldInfo? applicantCountField;
-    private static PropertyInfo? componentInstance;
-    private static PropertyInfo? componentDrives;
+    private static Func<object, int>? getReturnedDriveId;
+    private static Func<object, int>? getPaidSilver;
+    private static Func<object, int>? getApplicantCount;
+    private static Func<object, object?>? getComponentInstance;
+    private static Func<object, object?>? getComponentDrives;
+    private static readonly ConcurrentDictionary<Type, Func<object, int>?> CountGetters = new();
 
     internal static bool TryBind()
     {
@@ -45,60 +48,83 @@ internal static class RecruitmentSource
                 instance.PropertyType!=t || drives?.GetMethod is null ||
                 !typeof(IEnumerable).IsAssignableFrom(drives.PropertyType))
                 return false;
-            addDrive=methods[0];returnedDriveId=id;
-            paidSilverField=silver;applicantCountField=applicants;
-            componentInstance=instance;componentDrives=drives;
+            addDrive = methods[0];
+            getReturnedDriveId = OptionalTransitionCallSite.CompileFieldGetter<int>(id);
+            getPaidSilver = OptionalTransitionCallSite.CompileFieldGetter<int>(silver);
+            getApplicantCount = OptionalTransitionCallSite.CompileFieldGetter<int>(applicants);
+            getComponentInstance = OptionalTransitionCallSite.CompilePropertyGetter<object?>(instance);
+            getComponentDrives = OptionalTransitionCallSite.CompilePropertyGetter<object?>(drives);
             return true;
         }
-        catch(Exception) {return false;}
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Recruitment binding failed ({e.GetType().Name}): {e.Message}",
+                "RWS.recruitment.bind".GetHashCode());
+            return false;
+        }
     }
 
     internal static bool InstallEventHook()
     {
-        if(addDrive is null) return false;
-        try {
-            var method=typeof(RecruitmentSource).GetMethod(nameof(AfterDriveCreated),
-                BindingFlags.Static|BindingFlags.NonPublic);
-            if(method is null) return false;
-            new Harmony("pengin0503.rws.recruitmentaddon").Patch(addDrive,postfix:new HarmonyMethod(method));
+        if (addDrive is null) return false;
+        try
+        {
+            var patcher = new ScopedHarmonyPatcher(new Harmony("pengin0503.rws.recruitmentaddon"));
+            patcher.Patch(addDrive, typeof(RecruitmentSource), postfix: nameof(AfterDriveCreated));
             return true;
-        } catch(Exception) {return false;}
+        }
+        catch (Exception e)
+        {
+            Log.WarningOnce(
+                $"[RimworldStatistics] Recruitment event patch failed ({e.GetType().Name}): {e.Message}",
+                "RWS.recruitment.install".GetHashCode());
+            return false;
+        }
     }
 
     private static void AfterDriveCreated(object __result)
     {
-        if(__result is null || !RecruitmentSdk.EventsConnected) return;
-        try {
-            if (returnedDriveId?.GetValue(__result) is not int id ||
-                paidSilverField?.GetValue(__result) is not int silver ||
-                applicantCountField?.GetValue(__result) is not int applicants)
-            {
-                RecruitmentSdk.InvalidEvent();
-                return;
-            }
+        if (__result is null || !RecruitmentSdk.EventsConnected ||
+            getReturnedDriveId is null || getPaidSilver is null || getApplicantCount is null)
+            return;
+        try
+        {
+            var id = getReturnedDriveId(__result);
+            var silver = getPaidSilver(__result);
+            var applicants = getApplicantCount(__result);
             var record = RecruitmentDriveAccounting.Create(id, silver, applicants);
             if (record is null) { RecruitmentSdk.InvalidEvent(); return; }
             // Target AddDrive returns only after adding the paid drive.
             // RolledApplicants denotes requested/planned people, not actual arrivals.
             RecruitmentSdk.RecordEvent(record.Value.Id, record.Value.PaidSilver,
                 record.Value.RolledApplicants);
-        } catch(Exception) { RecruitmentSdk.InvalidEvent(); }
+        }
+        catch (Exception) { RecruitmentSdk.InvalidEvent(); }
     }
 
     internal static double? CaptureActive()
     {
-        if(componentInstance is null || componentDrives is null) return null;
-        var component=componentInstance.GetValue(null);
-        if(component is null) return null;
-        var drives=componentDrives.GetValue(component);
-        if(drives is null) return null;
-        int? count=drives is ICollection list?list.Count:null;
-        if(count is null) {
-            var p=drives.GetType().GetProperty("Count",InstancePublic);
-            if(p?.PropertyType==typeof(int)) count=(int?)p.GetValue(drives);
+        if (getComponentInstance is null || getComponentDrives is null) return null;
+        var component = getComponentInstance(null!);
+        if (component is null) return null;
+        var drives = getComponentDrives(component);
+        if (drives is null) return null;
+        int? count = drives is ICollection list ? list.Count : null;
+        if (count is null)
+        {
+            var getter = CountGetters.GetOrAdd(drives.GetType(), static type =>
+            {
+                var p = type.GetProperty("Count", InstancePublic);
+                return p?.PropertyType == typeof(int) && p.GetMethod is not null
+                    ? OptionalTransitionCallSite.CompilePropertyGetter<int>(p)
+                    : null;
+            });
+            if (getter is not null)
+                count = getter(drives);
         }
-        if(count is null) return null;
-        if(count<0) throw new InvalidOperationException("Recruitment active drive count is negative");
+        if (count is null) return null;
+        if (count < 0) throw new InvalidOperationException("Recruitment active drive count is negative");
         return count.Value;
     }
 }

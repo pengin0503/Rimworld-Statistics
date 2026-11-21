@@ -75,30 +75,22 @@ internal static class VaeAspirationsStatistics
         pawnField = pawn;
         aspirationsField = assigned;
         isComplete = completed;
+        var patcher = new ScopedHarmonyPatcher(harmony);
         try
         {
-            harmony.Patch(check,
-                prefix: new HarmonyMethod(typeof(VaeAspirationsStatistics), nameof(BeforeNormalCheck)),
-                finalizer: new HarmonyMethod(typeof(VaeAspirationsStatistics), nameof(AfterNormalCheck)));
-            harmony.Patch(complete,
-                prefix: new HarmonyMethod(typeof(VaeAspirationsStatistics), nameof(BeforeCompletion)),
-                postfix: new HarmonyMethod(typeof(VaeAspirationsStatistics), nameof(AfterCompletion)));
+            patcher.Patch(check, typeof(VaeAspirationsStatistics),
+                prefix: nameof(BeforeNormalCheck), finalizer: nameof(AfterNormalCheck));
+            patcher.Patch(complete, typeof(VaeAspirationsStatistics), nameof(BeforeCompletion), nameof(AfterCompletion));
         }
         catch
         {
-            harmony.Unpatch(check, HarmonyPatchType.All, harmony.Id);
-            harmony.Unpatch(complete, HarmonyPatchType.All, harmony.Id);
             pawnField = aspirationsField = null;
             isComplete = null;
             throw;
         }
     }
 
-    private static bool CanObserve()
-        => MetricGates.IsRecording(Unit)
-           && Current.ProgramState == ProgramState.Playing
-           && Scribe.mode == LoadSaveMode.Inactive
-           && Find.TickManager is not null;
+    private static bool CanObserve() => OptionalTransitionCallSite.Observing(Unit);
 
     private static void BeforeNormalCheck() => normalCompletionScope++;
 

@@ -13,8 +13,8 @@ namespace RimworldStatistics.Patches.Metrics;
 /// </summary>
 internal static class HarvestProbe
 {
-    public static string? LastPlant;
-    public static int LastTick = -1;
+    [ThreadStatic] public static string? LastPlant;
+    [ThreadStatic] public static int LastTick;
 
     public static void Reset()
     {
@@ -42,11 +42,11 @@ internal static class HarvestProbe
 /// GenPlace.TryPlaceThing, so a notification by itself is never added as gained wood.</summary>
 internal static class TreeWoodPlacementProbe
 {
-    private static Thing? expected;
-    private static Map? map;
-    private static Game? game;
-    private static int tick = -1;
-    private static bool byPrisoner;
+    [ThreadStatic] private static Thing? expected;
+    [ThreadStatic] private static Map? map;
+    [ThreadStatic] private static Game? game;
+    [ThreadStatic] private static int tick;
+    [ThreadStatic] private static bool byPrisoner;
 
     public static void Reset()
     {
@@ -133,14 +133,16 @@ public static class PlantCollectedMetricPatch
 {
     public static void Prefix(Plant __instance, Pawn by)
     {
-        if (__instance == null || !__instance.Spawned || by == null)
-            return;
-        var harvestJob = by.CurJobDef == JobDefOf.Harvest || by.CurJobDef == JobDefOf.HarvestDesignated;
-        if (!harvestJob || !by.RaceProps.Humanlike || !GameFacts.IsColonyWorker(by) || !__instance.IsCrop
-            || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
             return;
         try
         {
+            if (__instance == null || !__instance.Spawned || by == null)
+                return;
+            var harvestJob = by.CurJobDef == JobDefOf.Harvest || by.CurJobDef == JobDefOf.HarvestDesignated;
+            if (!harvestJob || !by.RaceProps.Humanlike || !GameFacts.IsColonyWorker(by) || !__instance.IsCrop
+                || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+                return;
             var id = GameFacts.Id(__instance);
             var failed = __instance.def?.plant?.harvestedThingDef != null && __instance.def.plant.harvestFailable && !__instance.Blighted
                 && __instance.YieldNow() > 0 && !(HarvestProbe.LastPlant == id && HarvestProbe.LastTick == GameFacts.Tick);
@@ -173,11 +175,12 @@ internal static class HaulToCellCompletionMetricPatch
         ThingPlaceMode mode, out (int Carried, bool Prisoner) __state)
     {
         __state = default;
-        // Avoid incrementing diagnostics for speculative haul deliveries.
-        if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
+            if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+                return;
             var actor = __instance.pawn;
             var job = actor?.CurJob;
             if (actor == null || !GameFacts.IsColonyWorker(actor) ||
@@ -194,7 +197,7 @@ internal static class HaulToCellCompletionMetricPatch
 
     private static void Postfix(Pawn_CarryTracker __instance, bool __result, (int Carried, bool Prisoner) __state)
     {
-        if (!__result || __state.Carried <= 0)
+        if (!__result || __state.Carried <= 0 || !LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
@@ -252,12 +255,14 @@ internal static class SlaughteredButcheryMetricPatch
 {
     private static void Postfix(Bill_Production __instance, Pawn billDoer, List<Thing> ingredients)
     {
-        if (billDoer == null || !GameFacts.IsColonyWorker(billDoer) ||
-            ingredients is not { Count: > 0 } ||
-            !LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
+            if (billDoer == null || !GameFacts.IsColonyWorker(billDoer) ||
+                ingredients is not { Count: > 0 } ||
+                !LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+                return;
             var isButcherFlesh = __instance.recipe?.defName == "ButcherCorpseFlesh";
             // Each input corpse can be counted at most once even when a bill has duplicates.
             HashSet<string> uniqueCorpses = new(StringComparer.Ordinal);
@@ -295,10 +300,12 @@ internal static class SlaughteredCorpseDestroyedMetricPatch
     private static void Prefix(Corpse __instance, out string? __state)
     {
         __state = null;
-        if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
+            if (!LiveMetrics.IsRecordingNow(ChoreFamily.Name))
+                return;
             __state = GameFacts.Id(__instance);
         }
         catch (Exception e)
@@ -309,10 +316,12 @@ internal static class SlaughteredCorpseDestroyedMetricPatch
 
     private static void Postfix(Corpse __instance, string? __state)
     {
-        if (__state is null || !__instance.Destroyed)
+        if (__state is null || !LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
+            if (!__instance.Destroyed)
+                return;
             var tick = GameFacts.Tick;
             GameFacts.Record(ChoreFamily.Name, state => ChoreFamily.CorpseDestroyed(state, __state, tick));
         }
@@ -332,14 +341,16 @@ internal static class CleanJobCompletedMetricPatch
 {
     private static void Prefix(Verse.AI.Pawn_JobTracker __instance, Verse.AI.JobCondition condition)
     {
-        var actor = __instance.curDriver?.pawn;
-        if (actor == null || !GameFacts.IsColonyWorker(actor) ||
-            __instance.curDriver is not JobDriver_CleanFilth ||
-            __instance.curJob is not { } job ||
-            !LiveMetrics.CanCaptureEvent(ChoreFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
         try
         {
+            if (__instance.curDriver is not JobDriver_CleanFilth driver ||
+                driver.pawn is not { } actor ||
+                __instance.curJob is not { } job ||
+                !GameFacts.IsColonyWorker(actor) ||
+                !LiveMetrics.CanCaptureEvent(ChoreFamily.Name))
+                return;
             string jobId = job.GetUniqueLoadID();
             GameFacts.RecordWork(ChoreFamily.Name, GameFacts.IsPrisonerWorker(actor), state =>
                 ChoreFamily.CleaningJobEnded(state, jobId, condition == Verse.AI.JobCondition.Succeeded));
@@ -357,39 +368,43 @@ public static class PlantsSownMetricPatch
 {
     public static void Postfix(Pawn_RecordsTracker __instance, RecordDef def)
     {
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name) && !LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
+            return;
         // 1.7.4985: the clean-filth toil increments MessesCleaned only after
         // Filth.ThinFilth leaves the filth Destroyed. Both fire-fighting toils
         // increment FiresExtinguished after target fire.Destroyed; self-extinguish
         // destroys fire before the record increment. Reuse the same already-patched
         // tracker instead of adding a per-tick or extra Harmony interception.
-        if (__instance.pawn is not { } actor || !GameFacts.IsColonyWorker(actor))
+        var isChoreRecord = def == RecordDefOf.AnimalsSlaughtered || def == RecordDefOf.MessesCleaned || def == RecordDefOf.FiresExtinguished;
+        var isWorkRecord = def == RecordDefOf.PlantsSown;
+        if (!isChoreRecord && !isWorkRecord)
             return;
-        if (def == RecordDefOf.AnimalsSlaughtered)
-        {
-            SlaughterProvenanceMetric.Observe(actor);
-            return;
-        }
-        if (def != RecordDefOf.MessesCleaned && def != RecordDefOf.FiresExtinguished && def != RecordDefOf.PlantsSown)
-            return;
-        var prisonerWork = GameFacts.IsPrisonerWorker(actor);
-        if (def == RecordDefOf.MessesCleaned)
-        {
-            GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, state =>
-            {
-                ChoreFamily.FilthCleared(state);
-                if (actor.jobs?.curDriver is JobDriver_CleanFilth && actor.CurJob is { } job)
-                    ChoreFamily.CleanedWithinJob(state, job.GetUniqueLoadID());
-            });
-            return;
-        }
-        if (def == RecordDefOf.FiresExtinguished)
-        {
-            GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, ChoreFamily.FireCleared);
-            return;
-        }
-        // PlantsSown.
         try
         {
+            if (__instance.pawn is not { } actor || !GameFacts.IsColonyWorker(actor))
+                return;
+            if (def == RecordDefOf.AnimalsSlaughtered)
+            {
+                SlaughterProvenanceMetric.Observe(actor);
+                return;
+            }
+            var prisonerWork = GameFacts.IsPrisonerWorker(actor);
+            if (def == RecordDefOf.MessesCleaned)
+            {
+                GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, state =>
+                {
+                    ChoreFamily.FilthCleared(state);
+                    if (actor.jobs?.curDriver is JobDriver_CleanFilth && actor.CurJob is { } job)
+                        ChoreFamily.CleanedWithinJob(state, job.GetUniqueLoadID());
+                });
+                return;
+            }
+            if (def == RecordDefOf.FiresExtinguished)
+            {
+                GameFacts.RecordWork(ChoreFamily.Name, prisonerWork, ChoreFamily.FireCleared);
+                return;
+            }
+            // PlantsSown.
             if (actor.CurJob?.targetA.Thing is not Plant plant || !plant.Spawned || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
                 return;
             var crop = plant.def.defName;
@@ -397,7 +412,10 @@ public static class PlantsSownMetricPatch
         }
         catch (Exception e)
         {
-            LiveMetrics.Fail(WorkFamily.Name, e);
+            if (isChoreRecord)
+                LiveMetrics.Fail(ChoreFamily.Name, e);
+            if (isWorkRecord)
+                LiveMetrics.Fail(WorkFamily.Name, e);
         }
     }
 }
@@ -408,20 +426,29 @@ public static class BillDoneMetricPatch
 {
     public static void Postfix(Pawn billDoer, List<Thing> products)
     {
-        if (billDoer == null || products == null || !GameFacts.IsColonyWorker(billDoer)
-            || !GameFacts.AnyRecording(WorkFamily.Name, WorkDetailsFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name) && !LiveMetrics.IsRecordingUnit(WorkDetailsFamily.Name))
             return;
         try
         {
-            var items = products.Where(p => p != null && p.stackCount > 0 && p.def != null).Select(p => new CraftedThing
+            if (billDoer == null || products == null || !GameFacts.IsColonyWorker(billDoer)
+                || !GameFacts.AnyRecording(WorkFamily.Name, WorkDetailsFamily.Name))
+                return;
+            var items = new List<CraftedThing>(products.Count);
+            for (var i = 0; i < products.Count; i++)
             {
-                Def = p.def.defName,
-                Count = p.stackCount,
-                Quality = p.TryGetQuality(out var q) ? q.ToString() : null,
-                UnitMarketValue = p.MarketValue,
-                Meal = p.def.IsIngestible && p.def.ingestible?.IsMeal == true,
-                Art = p.TryGetComp<CompArt>() != null,
-            }).ToList();
+                var p = products[i];
+                if (p == null || p.stackCount <= 0 || p.def == null)
+                    continue;
+                items.Add(new CraftedThing
+                {
+                    Def = p.def.defName,
+                    Count = p.stackCount,
+                    Quality = p.TryGetQuality(out var q) ? q.ToString() : null,
+                    UnitMarketValue = p.MarketValue,
+                    Meal = p.def.IsIngestible && p.def.ingestible?.IsMeal == true,
+                    Art = p.TryGetComp<CompArt>() != null,
+                });
+            }
             var worker = GameFacts.Id(billDoer);
             var tick = GameFacts.Tick;
             var prisonerWork = GameFacts.IsPrisonerWorker(billDoer);
@@ -442,10 +469,12 @@ public static class FrameCompleteMetricPatch
     public static void Prefix(Frame __instance, out Dictionary<string, int>? __state)
     {
         __state = null;
-        if (__instance == null || !GameFacts.IsPlayer(__instance) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
             return;
         try
         {
+            if (__instance == null || !GameFacts.IsPlayer(__instance) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+                return;
             var resources = new Dictionary<string, int>(StringComparer.Ordinal);
             foreach (var t in __instance.resourceContainer)
                 if (t?.def != null)
@@ -460,10 +489,12 @@ public static class FrameCompleteMetricPatch
 
     public static void Postfix(Frame __instance, Pawn worker, Dictionary<string, int>? __state)
     {
-        if (__state == null || !__instance.Destroyed)
+        if (__state == null || !LiveMetrics.IsRecordingUnit(WorkFamily.Name))
             return;
         try
         {
+            if (__instance == null || !__instance.Destroyed)
+                return;
             var id = worker != null ? GameFacts.Id(worker) : null;
             GameFacts.Record(WorkFamily.Name, s => WorkFamily.Constructed(s, id, __state));
         }
@@ -478,12 +509,21 @@ public static class FrameCompleteMetricPatch
 [HarmonyPatch(typeof(Frame), nameof(Frame.FailConstruction))]
 public static class FrameFailMetricPatch
 {
-    public static void Prefix(Frame __instance, out bool __state) => __state = __instance != null && GameFacts.IsPlayer(__instance);
+    public static void Prefix(Frame __instance, out bool __state)
+    {
+        __state = false;
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try { __state = __instance != null && GameFacts.IsPlayer(__instance); }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
+    }
 
     public static void Postfix(bool __state)
     {
-        if (__state)
-            GameFacts.Record(WorkFamily.Name, WorkFamily.ConstructionFailed);
+        if (!__state || !LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try { GameFacts.Record(WorkFamily.Name, WorkFamily.ConstructionFailed); }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
     }
 }
 
@@ -494,14 +534,27 @@ public static class DeconstructMetricPatch
 {
     public static void Prefix(JobDriver_Deconstruct __instance, out Thing? __state)
     {
-        var target = __instance?.job?.targetA.Thing;
-        __state = __instance?.GetType() == typeof(JobDriver_Deconstruct) && target is Building && GameFacts.IsPlayer(target) ? target : null;
+        __state = null;
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try
+        {
+            var target = __instance?.job?.targetA.Thing;
+            __state = __instance?.GetType() == typeof(JobDriver_Deconstruct) && target is Building && GameFacts.IsPlayer(target) ? target : null;
+        }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
     }
 
     public static void Postfix(Thing? __state)
     {
-        if (__state != null && __state.Destroyed)
-            GameFacts.Record(WorkFamily.Name, WorkFamily.Deconstructed);
+        if (__state == null || !LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try
+        {
+            if (__state.Destroyed)
+                GameFacts.Record(WorkFamily.Name, WorkFamily.Deconstructed);
+        }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
     }
 }
 
@@ -511,8 +564,14 @@ public static class RepairedMetricPatch
 {
     public static void Postfix(Building b)
     {
-        if (b != null && GameFacts.IsPlayer(b) && b.HitPoints >= b.MaxHitPoints)
-            GameFacts.Record(WorkFamily.Name, WorkFamily.Repaired);
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try
+        {
+            if (b != null && GameFacts.IsPlayer(b) && b.HitPoints >= b.MaxHitPoints)
+                GameFacts.Record(WorkFamily.Name, WorkFamily.Repaired);
+        }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
     }
 }
 
@@ -530,11 +589,17 @@ public static class MiningScopeMetricPatch
     public static void Prefix(Mineable __instance, Pawn pawn, out bool __state)
     {
         __state = false;
-        if (pawn == null || !GameFacts.IsColonyWorker(pawn) || __instance?.def?.building?.mineableThing == null || MiningProbe.Miner != null)
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name) && !LiveMetrics.IsRecordingUnit(WorkDetailsFamily.Name))
             return;
-        MiningProbe.Miner = pawn;
-        MiningProbe.Yield = __instance.def.building.mineableThing;
-        __state = true;
+        try
+        {
+            if (pawn == null || !GameFacts.IsColonyWorker(pawn) || __instance?.def?.building?.mineableThing == null || MiningProbe.Miner != null)
+                return;
+            MiningProbe.Miner = pawn;
+            MiningProbe.Yield = __instance.def.building.mineableThing;
+            __state = true;
+        }
+        catch (Exception e) { GameFacts.FailAll(e, WorkFamily.Name, WorkDetailsFamily.Name); }
     }
 
     public static Exception? Finalizer(Exception? __exception, bool __state)
@@ -569,15 +634,21 @@ public static class MiningPlaceMetricPatch
     public static void Prefix(Thing thing, Map map, ref Action<Thing, int> placedAction, out Placement? __state)
     {
         __state = null;
-        if (thing?.def == null)
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(WorkDetailsFamily.Name)
+            && !LiveMetrics.IsRecordingUnit(ChoreFamily.Name))
             return;
-        var miner = MiningProbe.Miner;
-        bool isMineYield = miner != null && thing.def == MiningProbe.Yield;
-        bool isTreeWood = TreeWoodPlacementProbe.Take(thing, map, out var woodByPrisoner);
-        if (!isMineYield && !isTreeWood)
-            return;
+        var isMineYield = false;
+        var isTreeWood = false;
         try
         {
+            if (thing?.def == null)
+                return;
+            var miner = MiningProbe.Miner;
+            isMineYield = miner != null && thing.def == MiningProbe.Yield;
+            isTreeWood = TreeWoodPlacementProbe.Take(thing, map, out var woodByPrisoner);
+            if (!isMineYield && !isTreeWood)
+                return;
             var state = new Placement
             {
                 MinerId = isMineYield ? GameFacts.Id(miner!) : null,
@@ -621,15 +692,25 @@ public static class MiningPlaceMetricPatch
     {
         if (__state is not { Placed: > 0 } state)
             return;
-        if (state.MinerId is { } miner)
+        try
         {
-            GameFacts.RecordWork(WorkFamily.Name, state.MinerIsPrisoner,
-                s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
-            GameFacts.RecordWork(WorkDetailsFamily.Name, state.MinerIsPrisoner,
-                s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+            if (state.MinerId is { } miner)
+            {
+                GameFacts.RecordWork(WorkFamily.Name, state.MinerIsPrisoner,
+                    s => WorkFamily.Mined(s, miner, state.YieldDef.defName, state.Placed));
+                GameFacts.RecordWork(WorkDetailsFamily.Name, state.MinerIsPrisoner,
+                    s => WorkDetailsFamily.MinedYield(s, state.YieldDef.defName, state.Placed));
+            }
+            if (state.CutTreeWood)
+                GameFacts.RecordWork(ChoreFamily.Name, state.WoodByPrisoner, s => ChoreFamily.WoodObtained(s, state.Placed));
         }
-        if (state.CutTreeWood)
-            GameFacts.RecordWork(ChoreFamily.Name, state.WoodByPrisoner, s => ChoreFamily.WoodObtained(s, state.Placed));
+        catch (Exception e)
+        {
+            if (state.MinerId is not null)
+                GameFacts.FailAll(e, WorkFamily.Name, WorkDetailsFamily.Name);
+            if (state.CutTreeWood)
+                LiveMetrics.Fail(ChoreFamily.Name, e);
+        }
     }
 }
 
@@ -640,10 +721,12 @@ public static class PodsLaunchMetricPatch
     public static void Prefix(CompLaunchable __instance, out int __state)
     {
         __state = 0;
-        if (__instance?.parent is not { Spawned: true } p || !GameFacts.IsPlayer(p) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+        if (!LiveMetrics.IsRecordingUnit(WorkFamily.Name))
             return;
         try
         {
+            if (__instance?.parent is not { Spawned: true } p || !GameFacts.IsPlayer(p) || !LiveMetrics.CanCaptureEvent(WorkFamily.Name))
+                return;
             __state = p.TryGetComp<CompTransporter>()?.TransportersInGroup(p.Map)?.Count ?? 0;
         }
         catch (Exception e)
@@ -654,7 +737,13 @@ public static class PodsLaunchMetricPatch
 
     public static void Postfix(CompLaunchable __instance, int __state)
     {
-        if (__state > 0 && __instance.parent.Destroyed)
-            GameFacts.Record(WorkFamily.Name, s => WorkFamily.PodsLaunched(s, __state));
+        if (__state <= 0 || !LiveMetrics.IsRecordingUnit(WorkFamily.Name))
+            return;
+        try
+        {
+            if (__instance?.parent is { Destroyed: true })
+                GameFacts.Record(WorkFamily.Name, s => WorkFamily.PodsLaunched(s, __state));
+        }
+        catch (Exception e) { LiveMetrics.Fail(WorkFamily.Name, e); }
     }
 }
