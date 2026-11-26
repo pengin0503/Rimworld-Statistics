@@ -1368,4 +1368,14 @@
   <RWS_Error_Unknown>未知錯誤</RWS_Error_Unknown>
   <RWS_Export_FooterColonyKey>殖民地鍵值</RWS_Export_FooterColonyKey>
   <RWS_Export_FooterGenerator>產生器</RWS_Export_FooterGenerator>
+  <RWS_Setting_ImportExclusions>Save files to ignore (patterns separated by semicolons)</RWS_Setting_ImportExclusions>
+  <RWS_Setting_ImportExclusionsHelp>A file name ignores that save. End a pattern with * for a prefix, start it with * for a suffix, or surround it with * to match anywhere, for example backup*, *backup.rws or *tmp*. Case is ignored. Applies from the next scan.</RWS_Setting_ImportExclusionsHelp>
+  <RWS_Import_Excluded>Ignored by exclusion rules: {0}</RWS_Import_Excluded>
+  <RWS_Import_RecordedSaves>Recorded saves: {0} (present {1} / archived {2})</RWS_Import_RecordedSaves>
+  <RWS_Import_AddedNames>Added saves: {0}</RWS_Import_AddedNames>
+  <RWS_Import_ReplacedNames>Updated saves: {0}</RWS_Import_ReplacedNames>
+  <RWS_Import_MoreNames>+{0} more</RWS_Import_MoreNames>
+  <RWS_Import_FailedActions>Failed save actions…</RWS_Import_FailedActions>
+  <RWS_Import_RecheckThisSave>Recheck this save</RWS_Import_RecheckThisSave>
+  <RWS_Import_IgnoreThisSave>Ignore this save</RWS_Import_IgnoreThisSave>
 </LanguageData>

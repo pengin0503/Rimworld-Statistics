@@ -26,22 +26,25 @@ public static class MainMenuButtonPatch
             string options = "Options".Translate();
             string mine = "RWS_MenuButton".Translate();
             var index = -1;
-            var hasMine = false;
+            var mineIndex = -1;
             for (var i = 0; i < optList.Count; i++)
             {
                 var label = optList[i]?.label;
                 if (index < 0 && label == options)
                     index = i;
-                if (label == mine)
-                {
-                    hasMine = true;
-                    break;
-                }
+                // U20: the title-screen label gains " (done/total)" while an import runs, so detect the button by the
+                // translated base text as a prefix rather than by exact equality (and never insert a second one).
+                if (mineIndex < 0 && label is not null && label.StartsWith(mine, StringComparison.Ordinal))
+                    mineIndex = i;
             }
             if (index < 0)
                 return;
-            if (hasMine)
+            if (mineIndex >= 0)
             {
+                // The in-game (Playing) label never changes; on the title screen it shows this import's progress.
+                var shown = state == ProgramState.Entry ? ImportMenuLabel.Format(mine, ImportRunner.State) : mine;
+                if (optList[mineIndex].label != shown)
+                    optList[mineIndex].label = shown;
                 if (state == ProgramState.Playing)
                     FitInGameMenuOptions(rect.height, optList);
                 else if (state == ProgramState.Entry)

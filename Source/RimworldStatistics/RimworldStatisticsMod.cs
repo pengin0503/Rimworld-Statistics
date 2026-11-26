@@ -85,6 +85,11 @@ public sealed class RimworldStatisticsMod : Mod
             listing.CheckboxLabeled("RWS_Setting_IncludeDevMode".Translate(), ref Settings.includeDevMode);
             listing.CheckboxLabeled("RWS_Setting_AutoImport".Translate(), ref Settings.autoImport);
             listing.Gap(8f);
+            listing.Label("RWS_Setting_ImportExclusions".Translate());
+            Settings.importExclusionPatterns = Widgets.TextField(listing.GetRect(28f),
+                Settings.importExclusionPatterns ?? "") ?? "";
+            listing.Label("RWS_Setting_ImportExclusionsHelp".Translate());
+            listing.Gap(8f);
             listing.Label("RWS_Setting_WindowSize".Translate());
             var sizeButton = listing.GetRect(30f);
             if (Widgets.ButtonText(new Rect(sizeButton.x, sizeButton.y, Math.Min(sizeButton.width, 320f), sizeButton.height),
