@@ -11,6 +11,7 @@ public sealed class ViewPreferences
     public const int MaxFavoriteCount = 500;
     public const int MaxExpandedKeys = 200;
     public const int MaxViewStateTextLength = 512;
+    public const int MaxRecentKeys = RecentList.DefaultCapacity;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
@@ -87,6 +88,11 @@ public sealed class ViewPreferences
     public Dictionary<string, string> ColonyDisplayNames { get; set; } = new(StringComparer.Ordinal);
     public List<ColonyMetricFavorite> FavoriteColonyMetrics { get; set; } = new();
 
+    // ----- presentation-only recently-used keys (PR-7) -----
+    // Both lists are additive and optional: absent, malformed or over-cap values fall back to an empty list.
+    public List<string> RecentMetricKeys { get; set; } = new();
+    public List<string> RecentColonyKeys { get; set; } = new();
+
     // ----- presentation-only view state (PR-6a) -----
     // Enum choices are stored as validated ints: an unknown value falls back to the same default as a missing field.
     public int DetailsViewMode { get; set; } = (int)DetailsViewModePreference.All;
@@ -149,6 +155,12 @@ public sealed class ViewPreferences
                 }).ToList();
             parsed.FavoriteMetricKeys = (parsed.FavoriteMetricKeys ?? new List<string>())
                 .Where(k => !string.IsNullOrWhiteSpace(k)).Distinct(StringComparer.Ordinal).Take(MaxFavoriteCount).ToList();
+            parsed.RecentMetricKeys = RecentList.Normalized(
+                (parsed.RecentMetricKeys ?? new List<string>()).Select(NormalizeStateText).Where(k => k is not null).Select(k => k!),
+                MaxRecentKeys);
+            parsed.RecentColonyKeys = RecentList.Normalized(
+                (parsed.RecentColonyKeys ?? new List<string>()).Select(NormalizeStateText).Where(k => k is not null).Select(k => k!),
+                MaxRecentKeys);
 
             var displayNames = new Dictionary<string, string>(StringComparer.Ordinal);
             if (parsed.ColonyDisplayNames is not null)

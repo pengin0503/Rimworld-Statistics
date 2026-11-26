@@ -14,8 +14,12 @@ internal sealed class Dialog_MetricChart : Window
     private const float AxisHeaderHeight = 24f;
 
     private enum ChartMode { Colony, Breakdown, Overall }
+    private enum BarSort { Value, Name }
 
     private sealed record BarText(string Name, string Value, string Tip);
+
+    /// <summary>The session-local breakdown filters that produced <see cref="cachedBreakdownView"/>.</summary>
+    private sealed record BreakdownViewKey(Series Source, BarSort Sort, int TopN, string Search, string NameSig, object? Language);
 
     /// <summary>One immutable series with its axis range; row text is built once, when the row is first shown.</summary>
     private sealed class Series
@@ -57,8 +61,16 @@ internal sealed class Dialog_MetricChart : Window
     private string? breakdownColony;
     private string? highlightedColonyKey;
     private string? cachedNameSignature;
+    private object? cachedTextLanguage;
     private bool showBreakdown;
     private Vector2 scroll;
+
+    // Session-local chart controls: they live only as long as this dialog, never in ViewPreferences.
+    private BarSort barSort;
+    private int barTopN;
+    private string barSearch = "";
+    private BreakdownViewKey? cachedBreakdownKey;
+    private Series? cachedBreakdownView;
 
     internal Dialog_MetricChart(StatsView view, string metricKey, string? selectedColony, string? scopeName = null)
     {
@@ -147,11 +159,17 @@ internal sealed class Dialog_MetricChart : Window
 
     private void DrawContents(Rect rect)
     {
+        var language = LanguageDatabase.activeLanguage;
         var nameSig = ColonyPresentation.Signature(Dialog_RimworldStatistics.ActivePreferences);
-        if (cachedNameSignature != nameSig)
+        if (cachedNameSignature != nameSig || !ReferenceEquals(cachedTextLanguage, language))
         {
             cachedNameSignature = nameSig;
+            cachedTextLanguage = language;
             Array.Clear(colony.Text);
+            Array.Clear(allBreakdown.Text);
+            if (!ReferenceEquals(activeBreakdown, allBreakdown))
+                Array.Clear(activeBreakdown.Text);
+            cachedBreakdownKey = null;
         }
 
         using (UiScopes.GuiState())
@@ -212,6 +230,10 @@ internal sealed class Dialog_MetricChart : Window
 
         if (series.Mode == ChartMode.Breakdown)
         {
+            // Only the breakdown rows are re-ordered/limited/filtered; colony and overall charts keep their series.
+            if (barSort != BarSort.Value || barTopN > 0 || barSearch.Length > 0)
+                series = BreakdownView(series, nameSig, language);
+
             if (breakdownColony is not null && allBreakdown.Bars.Count > 0)
             {
                 hasControls = true;
@@ -234,6 +256,57 @@ internal sealed class Dialog_MetricChart : Window
                         heading: pickLabel,
                         selectedColonyKey: breakdownColony));
                 }
+            }
+
+            hasControls = true;
+            var sortLabel = (string)(barSort == BarSort.Value
+                ? "RWS_BarChart_SortValue".Translate() : "RWS_BarChart_SortName".Translate());
+            var sortRect = controls.Next(sortLabel, 100f, 170f);
+            var sortShown = sortLabel.Truncate(Math.Max(0f, sortRect.width - 12f));
+            if (Widgets.ButtonText(sortRect, sortShown))
+            {
+                Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+                {
+                    new("RWS_BarChart_SortValue".Translate(), () => SetBarSort(BarSort.Value)),
+                    new("RWS_BarChart_SortName".Translate(), () => SetBarSort(BarSort.Name)),
+                }));
+            }
+            if (sortShown != sortLabel)
+                TooltipHandler.TipRegion(sortRect, sortLabel);
+
+            var topNLabel = barTopN > 0
+                ? (string)"RWS_BarChart_TopN".Translate(barTopN)
+                : (string)"RWS_BarChart_TopN_All".Translate();
+            var topNRect = controls.Next(topNLabel, 85f, 150f);
+            var topNShown = topNLabel.Truncate(Math.Max(0f, topNRect.width - 12f));
+            if (Widgets.ButtonText(topNRect, topNShown))
+            {
+                Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+                {
+                    new("RWS_BarChart_TopN_All".Translate(), () => SetBarTopN(0)),
+                    new("RWS_BarChart_TopN".Translate(5), () => SetBarTopN(5)),
+                    new("RWS_BarChart_TopN".Translate(10), () => SetBarTopN(10)),
+                    new("RWS_BarChart_TopN".Translate(20), () => SetBarTopN(20)),
+                }));
+            }
+            if (topNShown != topNLabel)
+                TooltipHandler.TipRegion(topNRect, topNLabel);
+
+            var searchLabel = (string)"RWS_BarChart_Search".Translate();
+            var labelWidth = Math.Min(Text.CalcSize(searchLabel).x + 6f, Math.Max(0f, rect.width - 120f));
+            var searchArea = controls.Next(labelWidth + 140f, fill: true);
+            using (UiScopes.GuiState())
+            {
+                Text.Anchor = TextAnchor.MiddleLeft;
+                Widgets.Label(new Rect(searchArea.x, searchArea.y, labelWidth, searchArea.height), searchLabel.Truncate(labelWidth));
+            }
+            var field = new Rect(searchArea.x + labelWidth, searchArea.y + 2f,
+                Math.Max(0f, searchArea.width - labelWidth), searchArea.height - 4f);
+            var nextSearch = Widgets.TextField(field, barSearch) ?? "";
+            if (nextSearch != barSearch)
+            {
+                barSearch = nextSearch;
+                scroll = Vector2.zero;
             }
         }
         else if (series.Mode == ChartMode.Colony && colonyPickerTargets.Length > 1)
@@ -359,6 +432,61 @@ internal sealed class Dialog_MetricChart : Window
                 : MetricText.Label(source);
             UiScopes.OpenOrReplaceWindow(new Dialog_ColonyMetricHistory(view, selected.Key, ColonyName(selected.Key), source, label, selected.Value, scopeName));
         }
+    }
+
+    private void SetBarSort(BarSort sort)
+    {
+        barSort = sort;
+        scroll = Vector2.zero;
+    }
+
+    private void SetBarTopN(int count)
+    {
+        barTopN = count;
+        scroll = Vector2.zero;
+    }
+
+    /// <summary>
+    /// Builds the displayed breakdown rows once per filter change (never per frame), reusing the
+    /// series' lazily created row text so name sorting and search use exactly the labels on screen.
+    /// </summary>
+    private Series BreakdownView(Series source, string nameSig, object? language)
+    {
+        var key = new BreakdownViewKey(source, barSort, barTopN, barSearch, nameSig, language);
+        if (cachedBreakdownView is { } cached && cachedBreakdownKey == key)
+            return cached;
+
+        var rows = new List<(MetricChartBar Bar, BarText Text)>(source.Bars.Count);
+        for (var i = 0; i < source.Bars.Count; i++)
+        {
+            var bar = source.Bars[i];
+            rows.Add((bar, source.Text[i] ??= Describe(source.Mode, bar)));
+        }
+
+        var query = barSearch.Trim();
+        if (query.Length > 0)
+        {
+            rows.RemoveAll(r => !r.Text.Name.Contains(query, StringComparison.CurrentCultureIgnoreCase)
+                && !r.Text.Name.Contains(query, StringComparison.OrdinalIgnoreCase));
+        }
+        if (barSort == BarSort.Name)
+        {
+            rows.Sort((a, b) =>
+            {
+                var byName = StringComparer.CurrentCultureIgnoreCase.Compare(a.Text.Name, b.Text.Name);
+                return byName != 0 ? byName : StringComparer.Ordinal.Compare(a.Bar.Key, b.Bar.Key);
+            });
+        }
+        // The source is already value-descending (MetricChartSeries.Sort); limit after filtering/sorting.
+        if (barTopN > 0 && rows.Count > barTopN)
+            rows.RemoveRange(barTopN, rows.Count - barTopN);
+
+        var view = new Series(ChartMode.Breakdown, rows.Select(r => r.Bar).ToArray(), breakdownDefinition.Unit);
+        for (var i = 0; i < rows.Count; i++)
+            view.Text[i] = rows[i].Text;
+        cachedBreakdownKey = key;
+        cachedBreakdownView = view;
+        return view;
     }
 
     private void SelectBreakdownColony(string? targetColonyKey)

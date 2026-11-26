@@ -67,6 +67,10 @@ public static class ColoniesTab
     private static string? editingColonyKey;
     private static string editingPreferencesSignature = "";
     private static string nameDraft = "";
+    // Inline row-name editing is session-local; only SetCustomName/ClearCustomName persist (U16).
+    private static string? inlineEditColonyKey;
+    private static string inlineEditDraft = "";
+    private static readonly Color CurrentColonyTint = new(0.26f, 0.44f, 0.56f, 0.35f);
     private static Vector2 scroll;
     private static Vector2 detailScroll;
     private static readonly StatsTable DetailTable = new(24f, new(180, 5), new(90, 2), new(68, 1), new(95, 1), new(95, 1));
@@ -133,6 +137,11 @@ public static class ColoniesTab
         }
 
         var nameSignature = ColonyPresentation.Signature(preferences);
+        // Resolve the played colony once per draw using the established in-game campaign-id pattern (U35).
+        var currentColonyKey = Current.ProgramState == ProgramState.Playing
+            ? InGameColonyAccess.Resolve(view, GameComponent_RimworldStatistics.CurrentOrNull?.campaignId).ColonyKey
+            : null;
+        var currentMarker = currentColonyKey is not null ? (string)"RWS_InGame_CurrentColonyMark".Translate() : "";
         if (cache is null || !ReferenceEquals(cache.View, view) || cache.SortColumn != sortColumn
             || cache.Ascending != ascending || cache.Search != search || cache.NameSignature != nameSignature)
         {
@@ -192,7 +201,8 @@ public static class ColoniesTab
                     var last = Math.Min(order.Length - 1, (int)((scroll.y + outRect.height) / RowHeight) + 1);
                     for (var row = first; row <= last; row++)
                         DrawColony(new Rect(0f, row * RowHeight, width, RowHeight), view.Colonies[order[row]], view.Stats.Colonies[order[row]],
-                            row, table, visibleColumns.First, visibleColumns.LastExclusive, preferences);
+                            row, table, visibleColumns.First, visibleColumns.LastExclusive, preferences, savePreferences,
+                            currentColonyKey, currentMarker);
                 }
             }
         }
@@ -314,11 +324,16 @@ public static class ColoniesTab
     }
 
     private static void DrawColony(Rect rect, Colony colony, ColonyStats s, int row, TableCache table,
-        int firstVisible, int lastVisible, ViewPreferences? preferences)
+        int firstVisible, int lastVisible, ViewPreferences? preferences, Action? savePreferences,
+        string? currentColonyKey, string currentMarker)
     {
+        var isCurrent = currentColonyKey is not null && string.Equals(colony.Key, currentColonyKey, StringComparison.Ordinal);
+        // Current-colony tint is drawn first; selection and mouseover highlights still win (U35).
+        if (isCurrent)
+            Widgets.DrawBoxSolid(rect, CurrentColonyTint);
         if (colony.Key == selectedKey)
             Widgets.DrawHighlightSelected(rect);
-        else if (row % 2 == 1)
+        else if (!isCurrent && row % 2 == 1)
             Widgets.DrawHighlight(rect, 0.25f);
         Widgets.DrawHighlightIfMouseover(rect);
         var x = rect.x;
@@ -338,16 +353,17 @@ public static class ColoniesTab
                 {
                     var cell = new Rect(x + 3f, rect.y, columnWidth - 6f, rect.height);
                     var text = texts[c] ??= Columns[c].Text(s);
-                    var label = shown[c] ??= text.Truncate(columnWidth - 6f);
-                    Widgets.Label(cell, label);
-                    if (c == 0 && ColonyPresentation.HasCustomName(preferences, s))
+                    if (c == 0)
                     {
-                        var original = Dialog_RimworldStatistics.OriginalColonyName(s);
-                        TooltipHandler.TipRegion(cell, text + "\n" + "RWS_ColonyName_Original".Translate(original));
+                        // The current marker is applied outside the cell cache, so it never goes stale.
+                        DrawNameCell(cell, colony, s, preferences, savePreferences, text, columnWidth - 6f, isCurrent, currentMarker);
                     }
-                    else if (label != text)
+                    else
                     {
-                        TooltipHandler.TipRegion(cell, text);
+                        var label = shown[c] ??= text.Truncate(columnWidth - 6f);
+                        Widgets.Label(cell, label);
+                        if (label != text)
+                            TooltipHandler.TipRegion(cell, text);
                     }
                 }
                 x += columnWidth;
@@ -366,6 +382,110 @@ public static class ColoniesTab
         {
             selectedKey = selectedKey == colony.Key ? null : colony.Key;
         }
+    }
+
+    /// <summary>Inline display-name cell (U16): click the pencil to edit in place, right-click for "reset to original".</summary>
+    private static void DrawNameCell(Rect cell, Colony colony, ColonyStats s, ViewPreferences? preferences,
+        Action? savePreferences, string baseText, float width, bool isCurrent, string currentMarker)
+    {
+        var canEdit = preferences is not null && savePreferences is not null;
+        var showButtons = canEdit && width >= 70f;
+        var contentWidth = showButtons ? Math.Max(10f, width - 22f) : width;
+        var text = baseText + (isCurrent ? currentMarker : "");
+        var label = text.Truncate(contentWidth);
+        var button = new Rect(cell.xMax - 20f, cell.y + 2f, 18f, cell.height - 4f);
+        var ev = Event.current;
+
+        if (canEdit && inlineEditColonyKey == colony.Key)
+        {
+            if (ev is not null && ev.type == EventType.KeyDown)
+            {
+                if (ev.keyCode == KeyCode.Escape)
+                {
+                    inlineEditColonyKey = null;
+                    inlineEditDraft = "";
+                    ev.Use();
+                    return;
+                }
+                if (ev.keyCode == KeyCode.Return || ev.keyCode == KeyCode.KeypadEnter)
+                {
+                    CommitInlineName(colony, preferences!, savePreferences!);
+                    ev.Use();
+                    return;
+                }
+            }
+            var originalInfo = (string)"RWS_ColonyName_Original".Translate(Dialog_RimworldStatistics.OriginalColonyName(s));
+            var editTip = (string)"RWS_ColonyName_EditTip".Translate() + "\n" + originalInfo;
+            Text.Anchor = TextAnchor.UpperLeft;
+            var edited = Widgets.TextField(new Rect(cell.x, cell.y, contentWidth, cell.height), inlineEditDraft) ?? "";
+            if (edited != inlineEditDraft)
+                inlineEditDraft = edited.Length > ViewPreferences.MaxNameLength ? edited[..ViewPreferences.MaxNameLength] : edited;
+            TooltipHandler.TipRegion(cell, editTip);
+            if (showButtons && Widgets.ButtonText(button, "✓"))
+                CommitInlineName(colony, preferences!, savePreferences!);
+        }
+        else
+        {
+            Widgets.Label(cell, label);
+            if (ColonyPresentation.HasCustomName(preferences, s))
+            {
+                var original = Dialog_RimworldStatistics.OriginalColonyName(s);
+                TooltipHandler.TipRegion(cell, text + "\n" + "RWS_ColonyName_Original".Translate(original));
+            }
+            else if (label != text)
+            {
+                TooltipHandler.TipRegion(cell, text);
+            }
+            if (showButtons)
+            {
+                var original = Dialog_RimworldStatistics.OriginalColonyName(s);
+                TooltipHandler.TipRegion(button, (string)"RWS_ColonyName_EditTip".Translate() + "\n"
+                    + "RWS_ColonyName_Original".Translate(original));
+                if (Widgets.ButtonText(button, "✎"))
+                    StartInlineEdit(colony, preferences!);
+            }
+        }
+
+        if (canEdit && ev is not null && ev.type == EventType.MouseDown && ev.button == 1 && cell.Contains(ev.mousePosition)
+            && Find.WindowStack is { } stack)
+        {
+            var target = colony;
+            var prefs = preferences!;
+            var persist = savePreferences!;
+            stack.Add(new FloatMenu([
+                new FloatMenuOption((string)"RWS_ColonyName_ResetOriginal".Translate(),
+                    () => ResetInlineName(target, prefs, persist)),
+            ]));
+            ev.Use();
+        }
+    }
+
+    private static void StartInlineEdit(Colony colony, ViewPreferences preferences)
+    {
+        inlineEditColonyKey = colony.Key;
+        inlineEditDraft = ColonyPresentation.TryGetCustomName(preferences, colony) ?? "";
+    }
+
+    private static void CommitInlineName(Colony colony, ViewPreferences preferences, Action savePreferences)
+    {
+        var current = ColonyPresentation.TryGetCustomName(preferences, colony);
+        var normalized = ColonyPresentation.NormalizeDisplayName(inlineEditDraft);
+        if (!string.Equals(normalized, current, StringComparison.Ordinal)
+            && ColonyPresentation.SetCustomName(preferences, colony.Key, colony.AliasKeys, inlineEditDraft))
+            savePreferences();
+        inlineEditColonyKey = null;
+        inlineEditDraft = "";
+        // Name signature is recomputed from preferences on the next Draw, rebuilding the table cache.
+        cache = null;
+    }
+
+    private static void ResetInlineName(Colony colony, ViewPreferences preferences, Action savePreferences)
+    {
+        if (ColonyPresentation.ClearCustomName(preferences, colony.Key, colony.AliasKeys))
+            savePreferences();
+        inlineEditColonyKey = null;
+        inlineEditDraft = "";
+        cache = null;
     }
 
     private static void DrawDetail(Rect rect, StatsView view, Colony colony, ColonyStats stats, SaveFileIndex? files,

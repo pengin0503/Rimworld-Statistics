@@ -13,11 +13,15 @@ internal sealed class ColonyPickerDialog : Window
 
     private readonly ViewPreferences? preferences;
     private readonly Entry[] all;
+    private readonly HashSet<string> allKeys;
+    private readonly Dictionary<string, Entry> entryByKey;
     private readonly Action<ColonyStats> onPick;
     private readonly string heading;
     private string search = "";
     private string? priorSearch;
     private Entry[] filtered = [];
+    private IReadOnlyList<Entry> recent = [];
+    private string? priorRecentSignature;
     private Vector2 scroll;
 
     public ColonyPickerDialog(
@@ -39,6 +43,14 @@ internal sealed class ColonyPickerDialog : Window
             .ThenByDescending(c => c.MaxTicks)
             .Select(c => BuildEntry(c, preferences, selectedColonyKey, currentInGameColonyKey))
             .ToArray();
+        allKeys = new HashSet<string>(StringComparer.Ordinal);
+        entryByKey = new Dictionary<string, Entry>(StringComparer.Ordinal);
+        foreach (var entry in all)
+        {
+            var key = entry.Stats.Key;
+            allKeys.Add(key);
+            entryByKey.TryAdd(key, entry);
+        }
         doCloseX = true;
         absorbInputAroundWindow = true;
         closeOnClickedOutside = true;
@@ -77,10 +89,14 @@ internal sealed class ColonyPickerDialog : Window
                     : all.Where(e => ColonyPresentation.MatchesSearch(
                         e.Stats, preferences, Dialog_RimworldStatistics.UnnamedColonyFallback, search)).ToArray();
             }
+            RefreshRecent();
 
             var listTop = y + 60f;
             var listRect = new Rect(rect.x, listTop, rect.width, Math.Max(0f, rect.yMax - listTop));
-            if (filtered.Length == 0)
+            // The optional title row and the recent rows share the scroll view with the search results.
+            var recentRows = recent.Count == 0 ? 0 : recent.Count + 1;
+            var totalRows = recentRows + filtered.Length;
+            if (totalRows == 0)
             {
                 Verse.Widgets.Label(listRect, "RWS_Details_NoMatch".Translate());
                 return;
@@ -88,33 +104,38 @@ internal sealed class ColonyPickerDialog : Window
 
             var viewWidth = Math.Max(0f, listRect.width - 16f);
             ColonyStats? picked = null;
-            using (UiScopes.ScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, filtered.Length * ItemHeight)))
+            using (UiScopes.ScrollView(listRect, ref scroll, new Rect(0f, 0f, viewWidth, totalRows * ItemHeight)))
             using (UiScopes.GuiState())
             {
                 var first = Math.Max(0, (int)(scroll.y / ItemHeight));
-                var last = Math.Min(filtered.Length - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
+                var last = Math.Min(totalRows - 1, (int)((scroll.y + listRect.height) / ItemHeight) + 1);
                 for (var i = first; i <= last; i++)
                 {
-                    var entry = filtered[i];
-                    var row = new Rect(0f, i * ItemHeight, viewWidth, ItemHeight - 1f);
-                    if (entry.IsSelected)
-                        Verse.Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.22f));
-                    Verse.Widgets.DrawHighlightIfMouseover(row);
-                    var line = entry.Detail.Length == 0 ? entry.Primary : $"{entry.Primary} · {entry.Detail}";
-                    var shown = line.Truncate(Math.Max(0f, row.width - 8f));
-                    Text.Anchor = TextAnchor.MiddleLeft;
-                    if (entry.Stats.Excluded || entry.Stats.OutOfScope)
-                        GUI.color = new Color(1f, 1f, 1f, 0.6f);
-                    Verse.Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
-                    GUI.color = Color.white;
-                    TooltipHandler.TipRegion(row, entry.FullTip);
-                    if (Verse.Widgets.ButtonInvisible(row))
+                    if (recentRows > 0 && i == 0)
+                    {
+                        var anchor = Text.Anchor;
+                        Text.Anchor = TextAnchor.MiddleLeft;
+                        Verse.Widgets.Label(new Rect(4f, 0f, Math.Max(0f, viewWidth - 8f), ItemHeight),
+                            "RWS_Picker_RecentlyUsed".Translate());
+                        Text.Anchor = anchor;
+                        continue;
+                    }
+                    if (i < recentRows)
+                    {
+                        var recentEntry = recent[i - 1];
+                        if (DrawEntryRow(recentEntry, i * ItemHeight, viewWidth))
+                            picked = recentEntry.Stats;
+                        continue;
+                    }
+                    var entry = filtered[i - recentRows];
+                    if (DrawEntryRow(entry, i * ItemHeight, viewWidth))
                         picked = entry.Stats;
                 }
             }
-            if (picked is not null)
+            if (picked is { } pickedStats)
             {
-                onPick(picked);
+                Dialog_RimworldStatistics.UpdateActivePreferences(p => RecentList.Add(p.RecentColonyKeys, pickedStats.Key));
+                onPick(pickedStats);
                 Close();
             }
         }
@@ -130,6 +151,43 @@ internal sealed class ColonyPickerDialog : Window
             Text.WordWrap = true;
             GUI.color = Color.white;
         }
+    }
+
+    private void RefreshRecent()
+    {
+        var prefs = Dialog_RimworldStatistics.ActivePreferences;
+        var keys = prefs.RecentColonyKeys;
+        var signature = search + "\u0000" + string.Join("\u0000", keys);
+        if (string.Equals(signature, priorRecentSignature, StringComparison.Ordinal))
+            return;
+        priorRecentSignature = signature;
+        var visible = RecentList.Visible(keys, allKeys);
+        var found = new List<Entry>(visible.Count);
+        foreach (var key in visible)
+        {
+            if (entryByKey.TryGetValue(key, out var entry))
+                found.Add(entry);
+        }
+        recent = found.ToArray();
+    }
+
+    private static bool DrawEntryRow(Entry entry, float top, float width)
+    {
+        var row = new Rect(0f, top, width, ItemHeight - 1f);
+        if (entry.IsSelected)
+            Verse.Widgets.DrawBoxSolid(row, new Color(0.28f, 0.52f, 0.72f, 0.22f));
+        Verse.Widgets.DrawHighlightIfMouseover(row);
+        var line = entry.Detail.Length == 0 ? entry.Primary : $"{entry.Primary} · {entry.Detail}";
+        var shown = line.Truncate(Math.Max(0f, row.width - 8f));
+        var anchor = Text.Anchor;
+        Text.Anchor = TextAnchor.MiddleLeft;
+        if (entry.Stats.Excluded || entry.Stats.OutOfScope)
+            GUI.color = new Color(1f, 1f, 1f, 0.6f);
+        Verse.Widgets.Label(new Rect(4f, row.y, Math.Max(0f, row.width - 8f), row.height), shown);
+        GUI.color = Color.white;
+        Text.Anchor = anchor;
+        TooltipHandler.TipRegion(row, entry.FullTip);
+        return Verse.Widgets.ButtonInvisible(row);
     }
 
     private static Entry BuildEntry(
