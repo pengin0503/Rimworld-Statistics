@@ -1379,4 +1379,26 @@
   <RWS_Import_FailedActions>Failed save actions…</RWS_Import_FailedActions>
   <RWS_Import_RecheckThisSave>Recheck this save</RWS_Import_RecheckThisSave>
   <RWS_Import_IgnoreThisSave>Ignore this save</RWS_Import_IgnoreThisSave>
+  <RWS_Exp_Search>Search units</RWS_Exp_Search>
+  <RWS_Exp_Recommended>Recommended</RWS_Exp_Recommended>
+  <RWS_Exp_SectionEvents>Events</RWS_Exp_SectionEvents>
+  <RWS_Exp_SectionSnapshots>Snapshots</RWS_Exp_SectionSnapshots>
+  <RWS_Tip_SettingsUnit>Records this unit while checked. Hold Shift to show its technical ID.</RWS_Tip_SettingsUnit>
+  <RWS_Coverage_Recording>Recording…</RWS_Coverage_Recording>
+  <RWS_Endings_SearchTip>Search by colony name or ending type</RWS_Endings_SearchTip>
+  <RWS_Endings_SortDesc>Newest first</RWS_Endings_SortDesc>
+  <RWS_Endings_SortAsc>Oldest first</RWS_Endings_SortAsc>
+  <RWS_Endings_FilterAll>All ending types</RWS_Endings_FilterAll>
+  <RWS_Endings_GoToColony>Go to colony</RWS_Endings_GoToColony>
+  <RWS_Guide_Button>Show the guide for this tab</RWS_Guide_Button>
+  <RWS_Guide_Title>Tab guide</RWS_Guide_Title>
+  <RWS_Guide_Overview>Overview: aggregate figures for the selected scope. • Choose a colony group in the scope selector. • Open Details or Rankings for individual values.</RWS_Guide_Overview>
+  <RWS_Guide_Endings>Endings: recorded endings and save traces. • Search by colony name or ending type. • Sort by time, filter by ending type, or open a colony's chronicle with Go to colony.</RWS_Guide_Endings>
+  <RWS_Guide_Colonies>Colonies: one row per recorded colony; selecting a row shows its details. • Search and sort with the column headers. • Open the chronicle from the selected row.</RWS_Guide_Colonies>
+  <RWS_Guide_Details>Details: every recorded statistic, per colony and period. • Pick a statistic and a view (lifetime or period). • Narrow the list with the category and search filters.</RWS_Guide_Details>
+  <RWS_Guide_Rankings>Rankings: colonies ordered by one statistic. • Pick the statistic and the sort direction. • Select a colony to read its values.</RWS_Guide_Rankings>
+  <RWS_Guide_Coverage>Acquisition status: which statistics are measured, partial or missing, and whether recording is on. • Use Recording… to turn a unit on or off without leaving this tab. • Filter by coverage, category or verification.</RWS_Guide_Coverage>
+  <RWS_Guide_Import>Data management: imports saves and manages backups and exports. • Import saves to update the record. • Restore or export from the backup and export sections.</RWS_Guide_Import>
+  <RWS_Empty_OpenImport>Open Data management tab</RWS_Empty_OpenImport>
+  <RWS_Tip_TechnicalHint>Hold Shift to show the technical identifier.</RWS_Tip_TechnicalHint>
 </LanguageData>

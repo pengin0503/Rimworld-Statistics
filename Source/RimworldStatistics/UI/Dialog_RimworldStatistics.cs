@@ -9,7 +9,7 @@ namespace RimworldStatistics.UI;
 /// <summary>The statistics window (spec §9.2): the v1 tabs plus Details (numeric expansion §4) over the cached <see cref="StatsView"/>.</summary>
 public sealed class Dialog_RimworldStatistics : Window
 {
-    private enum Tab
+    internal enum Tab
     {
         Overview,
         Endings,
@@ -90,11 +90,20 @@ public sealed class Dialog_RimworldStatistics : Window
             Text.Font = GameFont.Medium;
             string titleText = "RWS_WindowTitle".Translate();
             var titleRect = new Rect(inRect.x, inRect.y, header.TitleWidth, TitleHeight);
-            var shownTitle = titleText.Truncate(titleRect.width);
+            // U13: the guide button sits at the end of the title area, so the title yields it room.
+            const float guideSize = 26f;
+            var guideRect = new Rect(inRect.x + Math.Max(0f, header.TitleWidth - guideSize), inRect.y + 7f, guideSize, guideSize);
+            var shownTitle = titleText.Truncate(Math.Max(0f, titleRect.width - (header.TitleWidth > 40f ? guideSize + 6f : 0f)));
             Widgets.Label(titleRect, shownTitle);
             if (shownTitle != titleText)
                 TooltipHandler.TipRegion(titleRect, titleText);
             Text.Font = GameFont.Small;
+            if (header.TitleWidth > 40f)
+            {
+                if (Widgets.ButtonText(guideRect, "?"))
+                    ShowGuide();
+                TooltipHandler.TipRegion(guideRect, "RWS_Guide_Button".Translate());
+            }
 
             var scopeText = ScopeLabel();
             var scopeRect = new Rect(inRect.x + header.SelectorX, inRect.y + 4f, header.SelectorWidth, 30f);
@@ -274,6 +283,27 @@ public sealed class Dialog_RimworldStatistics : Window
             GUI.color = Color.white;
         }
     }
+
+    /// <summary>Switches the open statistics window to another tab (an empty state's action, U44/U47).</summary>
+    internal static void SwitchTo(Tab tab) => current = tab;
+
+    /// <summary>U13: a short guide for the tab that is open now.</summary>
+    private static void ShowGuide()
+    {
+        Find.WindowStack.Add(new Dialog_MessageBox(GuideText(current), title: "RWS_Guide_Title".Translate()));
+    }
+
+    // One literal key per tab, so the translation-key check sees every guide text.
+    private static string GuideText(Tab tab) => tab switch
+    {
+        Tab.Endings => "RWS_Guide_Endings".Translate(),
+        Tab.Colonies => "RWS_Guide_Colonies".Translate(),
+        Tab.Details => "RWS_Guide_Details".Translate(),
+        Tab.Rankings => "RWS_Guide_Rankings".Translate(),
+        Tab.Coverage => "RWS_Guide_Coverage".Translate(),
+        Tab.Import => "RWS_Guide_Import".Translate(),
+        _ => "RWS_Guide_Overview".Translate(),
+    };
 
     /// <summary>
     /// Whether the Data Management tab should carry the warning marker: read-only session, corrupt-primary recovery,

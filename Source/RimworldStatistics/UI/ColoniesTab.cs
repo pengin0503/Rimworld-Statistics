@@ -87,11 +87,24 @@ public static class ColoniesTab
 
     private static TableCache? cache;
 
+    /// <summary>The empty state's action (U47): leave for the Data management tab that imports the saves.</summary>
+    private static void DrawEmptyState(Rect rect)
+    {
+        var text = (string)"RWS_NoData".Translate();
+        var height = Math.Min(rect.height, Text.CalcHeight(text, Math.Max(1f, rect.width)));
+        Widgets.Label(new Rect(rect.x, rect.y, rect.width, height), text);
+        var label = (string)"RWS_Empty_OpenImport".Translate();
+        var button = new Rect(rect.x, rect.y + height + 10f,
+            Math.Min(rect.width, Math.Max(200f, Text.CalcSize(label).x + 24f)), 32f);
+        if (Widgets.ButtonText(button, label))
+            Dialog_RimworldStatistics.SwitchTo(Dialog_RimworldStatistics.Tab.Import);
+    }
+
     public static void Draw(Rect rect, StatsView view, SaveFileIndex? files, ViewPreferences? preferences = null, Action? savePreferences = null)
     {
         if (view.Colonies.Count == 0)
         {
-            Widgets.Label(rect, "RWS_NoData".Translate());
+            DrawEmptyState(rect);
             return;
         }
 
