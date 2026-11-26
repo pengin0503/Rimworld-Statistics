@@ -133,7 +133,10 @@ public static class ColonyPresentation
         var displayName = ResolveName(stats, preferences, unnamedFallback);
         return ContainsTerm(displayName, term)
             || ContainsTerm(stats.FactionName, term)
-            || ContainsTerm(stats.WorldName, term);
+            || ContainsTerm(stats.WorldName, term)
+            // U46: a colony's stable key and alias keys are identifiers too (DefName-like names).
+            || ContainsTerm(stats.Key, term)
+            || (stats.AliasKeys is { } aliases && aliases.Any(alias => ContainsTerm(alias, term)));
     }
 
     public static bool MatchesGroupMemberSearch(Colony colony, ColonyStats? stats, ViewPreferences? preferences,

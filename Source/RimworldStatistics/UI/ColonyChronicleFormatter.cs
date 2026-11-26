@@ -93,32 +93,131 @@ internal static class ColonyChronicleFormatter
         return new ChronicleDisplayEntryRow(e, timeText, kindText, kindCss, kindColor, eventText, evidenceText, tip.ToString(), targets);
     }
 
+    /// <summary>
+    /// U46: keyed entries also search by their English label, translation key or DefName. Built once with the branch
+    /// cache, never while drawing a row.
+    /// </summary>
     public static IReadOnlyList<string> BuildAdditionalSearchTerms(StatsView view, ChronicleEntry e, MetricDefinition? researchCompletedDef)
     {
+        if (e.Kind == ChronicleEntryKind.Ending)
+        {
+            var type = e.EndingType ?? EndingType.Other;
+            var terms = new List<string>(KeyedTerms(Dialog_RimworldStatistics.EndingLabelKey(type)))
+            {
+                Dialog_RimworldStatistics.EndingLabel(type),
+            };
+            return terms.ToArray();
+        }
+
+        if (e.Kind == ChronicleEntryKind.Milestone)
+            return KeyedTerms(MilestoneSearchKeys(e)).ToArray();
+
+        if (e.Kind == ChronicleEntryKind.HistoricalTale)
+            return KeyedTerms(TaleSearchKey(e.TaleKind)).ToArray();
+
+        if (e.Kind == ChronicleEntryKind.RecordingGap)
+            return KeyedTerms(GapSearchKey(e.GapKind)).ToArray();
+
         if (e.Kind == ChronicleEntryKind.ResearchCompleted)
         {
             var (projLabel, _) = ResolveResearchProjectLabel(e.ResearchDefKey ?? "", researchCompletedDef);
-            return [projLabel];
+            var terms = new List<string> { projLabel };
+            // The project's DefName (possibly qualified by its MOD package id) is a stable identifier.
+            if (!string.IsNullOrWhiteSpace(e.ResearchDefKey))
+            {
+                terms.Add(e.ResearchDefKey);
+                var unqualified = e.ResearchDefKey[(e.ResearchDefKey.LastIndexOf('.') + 1)..];
+                if (!string.Equals(unqualified, e.ResearchDefKey, StringComparison.Ordinal))
+                    terms.Add(unqualified);
+            }
+            return terms.ToArray();
         }
 
         if (e.Kind == ChronicleEntryKind.VerifiedInterval && e.IntervalFacts.Count > 0)
         {
-            var terms = new List<string>(e.IntervalFacts.Count * 2);
+            var terms = new List<string>(e.IntervalFacts.Count * 4);
             foreach (var fact in e.IntervalFacts)
             {
                 var shortLabel = FactLabel(view, fact);
                 terms.Add(shortLabel);
-                if (TryResolveKnownMetricLabel(view, fact.MetricKey) is { } fullLabel
-                    && !string.Equals(fullLabel, shortLabel, StringComparison.Ordinal))
+                terms.AddRange(KeyedTerms(FactSearchKey(fact.MetricKey), fact.MetricKey));
+                if (TryResolveKnownMetricLabel(view, fact.MetricKey) is { } fullLabel)
                 {
-                    terms.Add(fullLabel);
+                    if (!string.Equals(fullLabel, shortLabel, StringComparison.Ordinal))
+                        terms.Add(fullLabel);
+                    if (MetricLookup.Definition(view, fact.MetricKey) is { } def)
+                        foreach (var candidate in SearchCandidates.ForMetric(def, fullLabel))
+                            if (candidate is not null)
+                                terms.Add(candidate);
                 }
             }
+            if (e.RelatedMetricKey is { } related)
+                terms.Add(related);
             return terms.ToArray();
         }
 
         return [];
     }
+
+    /// <summary>The English text and literal key of each keyed search term, without translating per rendered row.</summary>
+    private static IEnumerable<string> KeyedTerms(params string?[] keys)
+    {
+        foreach (var key in keys)
+        {
+            if (string.IsNullOrWhiteSpace(key))
+                continue;
+            yield return key;
+            if (SearchCandidates.EnglishText(key) is { } english && !string.Equals(english, key, StringComparison.Ordinal))
+                yield return english;
+        }
+    }
+
+    private static string[] MilestoneSearchKeys(ChronicleEntry e) => e.MilestoneKind switch
+    {
+        ChronicleMilestoneKind.FirstColonistJoined => ["RWS_Chronicle_Milestone_FirstJoin"],
+        ChronicleMilestoneKind.FirstEnemyRaid => ["RWS_Chronicle_Milestone_FirstRaid"],
+        ChronicleMilestoneKind.FirstColonistDeath => ["RWS_Chronicle_Milestone_FirstDeath"],
+        ChronicleMilestoneKind.FirstResearchCompleted => ["RWS_Chronicle_Milestone_FirstResearch"],
+        ChronicleMilestoneKind.WealthFirst100K => ["RWS_Chronicle_Milestone_Wealth100K"],
+        ChronicleMilestoneKind.WealthFirst1M => ["RWS_Chronicle_Milestone_Wealth1M"],
+        ChronicleMilestoneKind.ColonistsFirst10 => ["RWS_Chronicle_Milestone_Colonists10"],
+        ChronicleMilestoneKind.WealthPeakDay => ["RWS_Chronicle_Milestone_WealthPeak", "RWS_Chronicle_Milestone_WealthPeakNoVal"],
+        ChronicleMilestoneKind.BossDiabolusDefeated => ["RWS_Chronicle_Milestone_BossDiabolus"],
+        ChronicleMilestoneKind.BossWarqueenDefeated => ["RWS_Chronicle_Milestone_BossWarqueen"],
+        ChronicleMilestoneKind.BossApocritonDefeated => ["RWS_Chronicle_Milestone_BossApocriton"],
+        _ => [],
+    };
+
+    private static string? TaleSearchKey(PermanentTaleKind? kind) => kind switch
+    {
+        PermanentTaleKind.TileSettled => "RWS_Chronicle_Tale_TileSettled",
+        PermanentTaleKind.Marriage => "RWS_Chronicle_Tale_Marriage",
+        PermanentTaleKind.MajorThreat => "RWS_Chronicle_Tale_MajorThreat",
+        _ => null,
+    };
+
+    private static string? GapSearchKey(ChronicleGapKind? kind) => kind switch
+    {
+        ChronicleGapKind.MissingParentCheckpoint => "RWS_Chronicle_Gap_MissingParent",
+        ChronicleGapKind.UnprovenSaveWithoutCheckpoint => "RWS_Chronicle_Gap_UnprovenSave",
+        ChronicleGapKind.CarriedCheckpointUnrecordedSpan => "RWS_Chronicle_Gap_CarriedSpan",
+        ChronicleGapKind.LiveRecordingStartedLateOrReset => "RWS_Chronicle_Gap_LateLiveStart",
+        ChronicleGapKind.IntervalNotCounted => "RWS_Chronicle_Gap_NotCounted",
+        ChronicleGapKind.ArchivedMetricsUnavailable => "RWS_Chronicle_Gap_ArchiveUnavailable",
+        ChronicleGapKind.ResearchKeyCapReached => "RWS_Chronicle_Gap_ResearchCap",
+        ChronicleGapKind.EnvironmentChanged => "RWS_Chronicle_Gap_EnvChanged",
+        _ => null,
+    };
+
+    private static string? FactSearchKey(string metricKey) => metricKey switch
+    {
+        HealthDeathFamily.DeathsByRaid => "RWS_Chronicle_Fact_ColonistDeaths",
+        RaidFamily.ByArrivalMode => "RWS_Chronicle_Fact_Raids",
+        BasicMetrics.Killed => "RWS_Chronicle_Fact_VanillaDeaths",
+        BasicMetrics.Raids => "RWS_Chronicle_Fact_VanillaRaids",
+        BasicMetrics.LastWealth => "RWS_Chronicle_Fact_Wealth",
+        _ => null,
+    };
 
     public static string[] BuildBaseNotices(ColonyChronicle chronicle)
     {

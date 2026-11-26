@@ -11,7 +11,8 @@ internal static class RankingsTab
     private static readonly StatsTable Table = new(26f,
         new(52, 1), new(170, 4), new(105, 2), new(130, 2), new(100, 2));
 
-    private sealed record Choice(string Key, string Label, MetricCategory? Category, string? Source, bool CanRankPerDay);
+    private sealed record Choice(string Key, string Label, MetricCategory? Category, string? Source, bool CanRankPerDay,
+        string?[] Candidates);
 
     private static StatsView? selectorView;
     private static object? selectorLanguage;
@@ -71,10 +72,12 @@ internal static class RankingsTab
             {
                 var def = MetricLookup.Definition(view, key);
                 var canPerDay = LeaderboardBuilder.CanRankPerDay(view, key);
-                return new Choice(key,
-                    def is null ? MetricText.PerColonyBasicLabel(key) : MetricText.Label(def),
-                    def?.Category, def is null ? null : MetricText.ModSourceLabel(def),
-                    canPerDay);
+                var label = def is null ? MetricText.PerColonyBasicLabel(key) : MetricText.Label(def);
+                var candidates = def is null
+                    ? SearchCandidates.For(MetricText.PerColonyBasicLabelKey(key), label, key)
+                    : SearchCandidates.ForMetric(def, label);
+                return new Choice(key, label, def?.Category,
+                    def is null ? null : MetricText.ModSourceLabel(def), canPerDay, candidates);
             }).OrderBy(c => c.Label, StringComparer.CurrentCulture)
               .ThenBy(c => c.Key, StringComparer.Ordinal).ToArray();
             perDayChoices = choices.Where(c => c.CanRankPerDay).ToArray();
@@ -419,10 +422,11 @@ internal static class RankingsTab
             priorSearch = trimmed;
             priorCategory = category;
             priorPerDay = perDayMode;
-            // U33: identical syntax to DetailsTab (AND terms, '-' exclusions) over label, key and MOD source.
+            // U33/U46: identical syntax to DetailsTab (AND terms, '-' exclusions) over every name of a statistic:
+            // shown/English label, key, MOD source label and MOD package id.
             var query = SearchQuery.Parse(trimmed);
             filtered = eligibleChoices.Where(c => (category is null || c.Category == category)
-                && query.Matches(c.Label, c.Key, c.Source)).ToArray();
+                && query.Matches(c.Candidates)).ToArray();
         }
 
         var activeFilters = FilterSummary.CountActiveFilters(perDayMode, category is not null, false, trimmed);

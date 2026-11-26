@@ -14,6 +14,23 @@ public static class UnitSearch
         return Contains(label, term) || Contains(id, term);
     }
 
+    /// <summary>
+    /// U46: one case-insensitive term matched against any name of an entry (shown label, English label, key,
+    /// MOD id or MOD name). Empty queries match everything; null candidates never match.
+    /// </summary>
+    public static bool MatchesAny(string? query, params string?[]? candidates)
+    {
+        var term = query?.Trim();
+        if (string.IsNullOrEmpty(term))
+            return true;
+        if (candidates is null)
+            return false;
+        foreach (var candidate in candidates)
+            if (Contains(candidate, term))
+                return true;
+        return false;
+    }
+
     private static bool Contains(string? text, string term)
         => !string.IsNullOrEmpty(text) && text.Contains(term, StringComparison.OrdinalIgnoreCase);
 }

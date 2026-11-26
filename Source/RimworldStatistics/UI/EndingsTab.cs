@@ -173,8 +173,9 @@ public static class EndingsTab
         var filtered = allRows
             .Where(row => typeFilter is not { } filter || row.Type == filter)
             .Where(row => term.Length == 0
-                || UnitSearch.Matches(row.Colony, "", term)
-                || UnitSearch.Matches(Dialog_RimworldStatistics.EndingLabel(row.Type), "", term));
+                || UnitSearch.MatchesAny(term, SearchCandidates.For(
+                    Dialog_RimworldStatistics.EndingLabelKey(row.Type),
+                    Dialog_RimworldStatistics.EndingLabel(row.Type), row.Colony)));
         var ordered = ascending
             ? filtered.OrderBy(row => row.Time is null ? 1 : 0)
                 .ThenBy(row => row.Time ?? DateTime.MinValue)

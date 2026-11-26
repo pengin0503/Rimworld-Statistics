@@ -595,19 +595,22 @@ public static class OverviewTab
         }).ToArray();
     }
 
-    internal static string BasicLabel(string key) => key switch
+    internal static string BasicLabel(string key) => BasicLabelKey(key).Translate();
+
+    /// <summary>The literal translation key behind a basic label, so searches can also find its English text.</summary>
+    internal static string BasicLabelKey(string key) => key switch
     {
-        BasicMetrics.Days => "RWS_Stat_Days".Translate(),
-        BasicMetrics.RealPlayHours => "RWS_Stat_RealPlay".Translate(),
-        BasicMetrics.PeakWealth => "RWS_Stat_PeakWealthSum".Translate(),
-        BasicMetrics.LastWealth => "RWS_Stat_LastWealthSum".Translate(),
-        BasicMetrics.Raids => "RWS_Stat_Raids".Translate(),
-        BasicMetrics.Threats => "RWS_Stat_Threats".Translate(),
-        BasicMetrics.Killed => "RWS_Stat_Killed".Translate(),
-        BasicMetrics.Departed => "RWS_Stat_Departed".Translate(),
-        BasicMetrics.MaxPopulation => "RWS_Stat_MaxPopulation".Translate(),
-        BasicMetrics.Endings => "RWS_Stat_Endings".Translate(),
-        BasicMetrics.Saves => "RWS_Col_Saves".Translate(),
+        BasicMetrics.Days => "RWS_Stat_Days",
+        BasicMetrics.RealPlayHours => "RWS_Stat_RealPlay",
+        BasicMetrics.PeakWealth => "RWS_Stat_PeakWealthSum",
+        BasicMetrics.LastWealth => "RWS_Stat_LastWealthSum",
+        BasicMetrics.Raids => "RWS_Stat_Raids",
+        BasicMetrics.Threats => "RWS_Stat_Threats",
+        BasicMetrics.Killed => "RWS_Stat_Killed",
+        BasicMetrics.Departed => "RWS_Stat_Departed",
+        BasicMetrics.MaxPopulation => "RWS_Stat_MaxPopulation",
+        BasicMetrics.Endings => "RWS_Stat_Endings",
+        BasicMetrics.Saves => "RWS_Col_Saves",
         _ => key,
     };
 

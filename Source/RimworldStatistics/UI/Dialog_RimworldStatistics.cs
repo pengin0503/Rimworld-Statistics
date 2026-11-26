@@ -552,6 +552,20 @@ public sealed class Dialog_RimworldStatistics : Window
         _ => "RWS_Ending_Other".Translate(),
     };
 
+    /// <summary>The literal key behind an ending label, so searches also find its English name and key (U46).</summary>
+    internal static string EndingLabelKey(EndingType type) => type switch
+    {
+        EndingType.Ship => "RWS_Ending_Ship",
+        EndingType.RoyalAscent => "RWS_Ending_RoyalAscent",
+        EndingType.AmbiguousLaunch => "RWS_Ending_AmbiguousLaunch",
+        EndingType.Archonexus => "RWS_Ending_Archonexus",
+        EndingType.CerebrexScavenged => "RWS_Ending_CerebrexScavenged",
+        EndingType.CerebrexDestroyed => "RWS_Ending_CerebrexDestroyed",
+        EndingType.VoidEmbraced => "RWS_Ending_VoidEmbraced",
+        EndingType.VoidDisrupted => "RWS_Ending_VoidDisrupted",
+        _ => "RWS_Ending_Other",
+    };
+
     internal static string LoadSourceLabel(ProfileLoadSource source) => source switch
     {
         ProfileLoadSource.Primary => "RWS_LoadSource_Primary".Translate(),

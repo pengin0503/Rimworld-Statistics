@@ -4,8 +4,9 @@ using Verse;
 
 namespace RimworldStatistics.UI;
 
-/// <summary>One statistic offered by <see cref="MetricPickerDialog"/>: its key, shown label and MOD source.</summary>
-internal sealed record MetricPickerChoice(string Key, string Label, string? Source);
+/// <summary>One statistic offered for picking: key, shown label, MOD source and optional name metadata for U46 search.</summary>
+internal sealed record MetricPickerChoice(string Key, string Label, string? Source,
+    string? LabelKey = null, string? ModPackageId = null);
 
 /// <summary>A searchable list of statistics; picking one closes the window and reports its key.</summary>
 internal sealed class MetricPickerDialog : Window
@@ -71,10 +72,8 @@ internal sealed class MetricPickerDialog : Window
             {
                 priorSearch = search;
                 var term = search.Trim();
-                filtered = term.Length == 0
-                    ? all
-                    : all.Where(c => c.Label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
-                        || (c.Source?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false)).ToArray();
+                var query = SearchQuery.Parse(term);
+                filtered = term.Length == 0 ? all : all.Where(c => query.Matches(Candidates(c))).ToArray();
             }
             RefreshRecent();
 
@@ -138,6 +137,19 @@ internal sealed class MetricPickerDialog : Window
             Text.WordWrap = true;
             GUI.color = Color.white;
         }
+    }
+
+    /// <summary>U46: every name of a choice, resolved once whenever the query changes.</summary>
+    private static string?[] Candidates(MetricPickerChoice choice)
+    {
+        if (BasicMetrics.Contains(choice.Key))
+            return SearchCandidates.For(MetricText.PerColonyBasicLabelKey(choice.Key), choice.Label, choice.Key, choice.Source);
+        var definition = MetricRegistry.Find(choice.Key);
+        return definition is not null
+            ? SearchCandidates.ForMetric(definition, choice.Label, choice.Key, choice.Source,
+                choice.LabelKey, choice.ModPackageId)
+            : SearchCandidates.For(choice.LabelKey ?? choice.Key, choice.Label, choice.Key, choice.Source,
+                choice.ModPackageId);
     }
 
     private void RefreshRecent()
