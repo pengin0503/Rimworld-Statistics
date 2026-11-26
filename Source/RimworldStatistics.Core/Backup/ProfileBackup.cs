@@ -138,6 +138,22 @@ public static partial class ProfileBackup
                 .OrderByDescending(info => info.Validation.Manifest?.CreatedUtc).ThenBy(info => info.Path, StringComparer.Ordinal).ToArray()
             : [];
 
+    /// <summary>
+    /// The newest backup that <see cref="Validate(string, int)"/> accepts (the first valid one in <see cref="List"/> order),
+    /// or null when there is none. Used by the guided recovery from a damaged or unreadable profile.
+    /// </summary>
+    public static BackupInfo? NewestValid(string backupDirectory) => NewestValid(List(backupDirectory));
+
+    /// <summary>As <see cref="NewestValid(string)"/> for an already validated listing, avoiding a second scan of the folder.</summary>
+    public static BackupInfo? NewestValid(IReadOnlyList<BackupInfo> backups)
+    {
+        ArgumentNullException.ThrowIfNull(backups);
+        return backups
+            .OrderByDescending(info => info.Validation.Manifest?.CreatedUtc)
+            .ThenBy(info => info.Path, StringComparer.Ordinal)
+            .FirstOrDefault(info => info.Validation.Ok);
+    }
+
     private static BackupValidation Inspect(ZipArchive zip, int currentSchemaVersion, string? staging = null,
         long maxTotalUncompressedBytes = MaxTotalUncompressedBytes)
     {

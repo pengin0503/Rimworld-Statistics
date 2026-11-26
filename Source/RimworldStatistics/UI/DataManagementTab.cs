@@ -26,23 +26,24 @@ internal static class DataManagementTab
     private static bool restorePreviewPreferences;
 
     private static Vector2 outerScroll;
+    private static readonly Color WarningColor = new(0.95f, 0.75f, 0.25f);
 
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
         const float exportHeight = 52f;
-        const float diagHeight = 52f;
+        var diagHeight = Math.Max(52f, DiagnosticsPanel.PreferredHeight);
         const float minStructuredHeight = 460f;
         if (rect.height < minStructuredHeight)
         {
             var viewWidth = Math.Max(0f, rect.width - 16f);
-            var totalHeight = 305f + 8f + 220f + 8f + exportHeight + 4f + diagHeight;
+            var totalHeight = 305f + 8f + 300f + 8f + exportHeight + 4f + diagHeight;
             using (UiScopes.ScrollView(rect, ref outerScroll, new Rect(0f, 0f, viewWidth, totalHeight)))
             {
                 var y = 0f;
                 ImportTab.Draw(new Rect(0f, y, viewWidth, 305f), session, exportView);
                 y += 305f + 8f;
-                DrawBackups(new Rect(0f, y, viewWidth, 220f), session);
-                y += 220f + 8f;
+                DrawBackups(new Rect(0f, y, viewWidth, 300f), session);
+                y += 300f + 8f;
                 ExportPanel.Draw(new Rect(0f, y, viewWidth, exportHeight), session, exportView, scope);
                 y += exportHeight + 4f;
                 DiagnosticsPanel.Draw(new Rect(0f, y, viewWidth, diagHeight), session, exportView);
@@ -62,6 +63,7 @@ internal static class DataManagementTab
     private static void DrawBackups(Rect rect, ProfileSession session)
     {
         var directory = Path.Combine(ProfileService.DirectoryPath, "backups");
+        ProfileStatusMonitor.Poll(session);
         CompleteOperation();
         CompleteRestorePreview(session);
         if (refresh is { IsCompleted: true } loaded)
@@ -94,7 +96,12 @@ internal static class DataManagementTab
             GUIUtility.systemCopyBuffer = directory;
         y += actions.Height + 4f;
 
+        y = DrawFileStatus(rect, y);
+
         var available = backups;
+        if (NeedsRecovery(session))
+            y = DrawRecovery(rect, y, session, available);
+
         var selectedInfo = available?.FirstOrDefault(b => b.Path == selected);
         if (available is { Count: > 0 })
         {
@@ -162,6 +169,68 @@ internal static class DataManagementTab
             }).ToArray();
         }
         Table.Draw(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), ref scroll, headers, rows);
+    }
+
+    /// <summary>The record file's size against the load limit, and a warning when another program changed it.</summary>
+    private static float DrawFileStatus(Rect rect, float y)
+    {
+        var status = ProfileStatusMonitor.Current;
+        if (status?.Capacity is { } capacity)
+        {
+            var sizeMb = (capacity.SizeBytes / (1024d * 1024d)).ToString("N1", CultureInfo.CurrentCulture);
+            var percent = Math.Floor(capacity.Fraction * 100d).ToString("N0", CultureInfo.CurrentCulture);
+            var limitMb = (ProfileCapacity.LimitBytes / (1024 * 1024)).ToString(CultureInfo.CurrentCulture);
+            Color? color = capacity.Level is ProfileCapacityLevel.Critical or ProfileCapacityLevel.OverLimit
+                ? ColorLibrary.RedReadable
+                : capacity.IsWarning ? WarningColor : null;
+            y = InfoLine(rect, y, "RWS_Data_ProfileCapacity".Translate(sizeMb, percent, limitMb), color);
+        }
+
+        if (status?.ExternalChange == ProfileExternalChange.ChangedExternally)
+            y = InfoLine(rect, y, "RWS_Data_ExternalChange".Translate(), WarningColor);
+        return y;
+    }
+
+    private static float InfoLine(Rect rect, float y, string text, Color? color)
+    {
+        var height = Math.Max(22f, Text.CalcHeight(text, rect.width));
+        using (UiScopes.GuiState())
+        {
+            if (color is { } c)
+                GUI.color = c;
+            Verse.Widgets.Label(new Rect(rect.x, y, rect.width, height), text);
+        }
+        return y + height + 2f;
+    }
+
+    /// <summary>
+    /// Whether this session loaded through the damaged-file fallback or could not read an existing primary at all. A
+    /// profile written by a newer version is deliberately excluded: restoring an older backup would overwrite it.
+    /// </summary>
+    private static bool NeedsRecovery(ProfileSession session)
+        => session.LoadResult.CorruptFileRenamedTo is not null
+        || (session.LoadResult.ReadOnly && session.LoadResult.Source != ProfileLoadSource.NewerSchema);
+
+    /// <summary>Guided recovery: restore the newest verified backup through the ordinary restore flow.</summary>
+    private static float DrawRecovery(Rect rect, float y, ProfileSession session, IReadOnlyList<BackupInfo>? available)
+    {
+        y = InfoLine(rect, y, "RWS_Recovery_Explanation".Translate(), null);
+
+        var newest = available is null ? null : ProfileBackup.NewestValid(available);
+        var canRun = newest is not null && operation is null && restorePreview is null
+            && !ImportRunner.Running && Current.ProgramState == ProgramState.Entry;
+        var row = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
+        if (Button(ref row, "RWS_Recovery_RestoreNewest", canRun) && newest is not null)
+            ShowRestoreConfirmation(session, newest, preview: null, withPreferences: false);
+        var used = row.Height + 2f;
+
+        // The listing loads in the background; only a loaded, empty-of-valid result says there is no usable backup.
+        if (available is not null && newest is null)
+        {
+            Verse.Widgets.Label(new Rect(rect.x, y + used, rect.width, 22f), "RWS_Recovery_NoBackup".Translate());
+            used += 24f;
+        }
+        return y + used;
     }
 
     /// <summary>The current record bytes for the restore preview; null means "show the backup side only".</summary>

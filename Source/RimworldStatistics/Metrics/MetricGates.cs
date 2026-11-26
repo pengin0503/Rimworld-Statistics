@@ -182,6 +182,20 @@ public static class MetricGates
             return Failed.Contains(unitId);
     }
 
+    /// <summary>Unit ids that stopped this session, sorted, for the diagnostics UI and its summary.</summary>
+    internal static IReadOnlyList<string> FailedUnitIds
+    {
+        get
+        {
+            lock (Gate)
+            {
+                var ids = Failed.ToArray();
+                Array.Sort(ids, StringComparer.Ordinal);
+                return ids;
+            }
+        }
+    }
+
     public static bool IsRecording(string unitId)
     {
         if (Volatile.Read(ref appliedCount) == 0)

@@ -15,6 +15,22 @@ public enum ProfileLoadSource
     NewerSchema,
 }
 
+/// <summary>Whether the primary profile file still is what this store loaded or last wrote.</summary>
+public enum ProfileExternalChange
+{
+    /// <summary>Not known (no successful load yet, or the file could not be inspected).</summary>
+    Unknown,
+
+    /// <summary>The file holds exactly the expected bytes, or still does not exist as it did not when loaded.</summary>
+    Unchanged,
+
+    /// <summary>Another program (cloud sync, an editor, a second game) changed or created the file.</summary>
+    ChangedExternally,
+
+    /// <summary>The file this store expected is gone.</summary>
+    Missing,
+}
+
 public sealed class ProfileLoadResult
 {
     public required Profile Profile { get; init; }
@@ -364,6 +380,63 @@ public sealed class ProfileStore
             {
                 // A leftover temp file is overwritten by the next save.
             }
+        }
+    }
+
+    /// <summary>
+    /// Whether the primary still is what this store loaded or last wrote, without writing anything. Meant for a periodic
+    /// UI check: a length difference is reported without reading the file; equal lengths are compared byte for byte, so an
+    /// edit that keeps the size is still found. IO errors never throw: <see cref="ProfileExternalChange.Unknown"/> is
+    /// returned instead. Not thread-safe with a concurrent <see cref="Save(Profile)"/>; <see cref="ProfileSession"/> calls
+    /// it under its write lock.
+    /// </summary>
+    public ProfileExternalChange CheckExternalChange()
+    {
+        if (!_hasExpectedPrimary)
+            return ProfileExternalChange.Unknown;   // nothing was loaded or written yet
+        try
+        {
+            if (_expectedPrimary is not { } expected)
+            {
+                // The primary did not exist at load: it is unchanged only while it still does not exist.
+                if (Directory.Exists(ProfilePath))
+                    return ProfileExternalChange.Unknown;
+                return File.Exists(ProfilePath) ? ProfileExternalChange.ChangedExternally : ProfileExternalChange.Unchanged;
+            }
+
+            using var file = new FileStream(ProfilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite | FileShare.Delete,
+                bufferSize: 1, FileOptions.SequentialScan);
+            if (file.Length != expected.Length)
+                return ProfileExternalChange.ChangedExternally;
+
+            var buffer = ArrayPool<byte>.Shared.Rent(1 << 16);
+            try
+            {
+                var offset = 0;
+                int read;
+                while (offset < expected.Length
+                    && (read = file.Read(buffer, 0, Math.Min(buffer.Length, expected.Length - offset))) > 0)
+                {
+                    if (!buffer.AsSpan(0, read).SequenceEqual(expected.Span.Slice(offset, read)))
+                        return ProfileExternalChange.ChangedExternally;
+                    offset += read;
+                }
+                return offset == expected.Length && file.Read(buffer, 0, 1) == 0
+                    ? ProfileExternalChange.Unchanged
+                    : ProfileExternalChange.ChangedExternally;
+            }
+            finally
+            {
+                ArrayPool<byte>.Shared.Return(buffer);
+            }
+        }
+        catch (Exception e) when (e is FileNotFoundException or DirectoryNotFoundException)
+        {
+            return ProfileExternalChange.Missing;
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or NotSupportedException)
+        {
+            return ProfileExternalChange.Unknown;
         }
     }
 

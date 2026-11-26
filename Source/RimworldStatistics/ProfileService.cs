@@ -121,8 +121,11 @@ public static class ProfileService
     internal static Task<RestoreResult> RestoreBackup(ProfileSession current, string zip, BackupMetadata metadata, string? preferences,
         bool restorePreferences)
     {
-        if (current.LoadResult.ReadOnly)
-            throw new InvalidOperationException("The current profile is read-only.");
+        // A newer-schema profile must never be replaced by an older backup. A session that is read-only because an
+        // existing primary could not be read is different: restoring the newest valid backup is exactly the recovery
+        // offered on the Data Management tab, and Restore moves the unreadable primary aside first.
+        if (current.LoadResult.ReadOnly && current.LoadResult.Source == ProfileLoadSource.NewerSchema)
+            throw new InvalidOperationException("The profile was written by a newer version of this mod and is read-only.");
         var directory = BeginDataOperation();
         var replacement = new TaskCompletionSource<ProfileSession>(TaskCreationOptions.RunContinuationsAsynchronously);
         Loader.Replace(replacement.Task);

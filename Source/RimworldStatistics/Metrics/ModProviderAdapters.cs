@@ -78,6 +78,9 @@ internal static class ModProviderAdapters
     private static bool hasSnapshots;
 
     public static IReadOnlyList<AcquisitionUnit> KnownUnits => KnownUnitList.Value;
+
+    /// <summary>Optional provider units whose execution guard stopped them this session (read-only diagnostics view).</summary>
+    internal static IReadOnlySet<string> FailedUnitIds => Guard.FailedUnits;
     public static IReadOnlyList<ModMetricDescriptor> KnownDescriptors => KnownDescriptorList.Value;
     public static ModMetricDescriptor? FirstDescriptorFor(string acquisitionId) => FirstByAcquisition.Value.GetValueOrDefault(acquisitionId);
     public static IReadOnlyList<ModMetricDescriptor> ActiveDescriptors => activeDescriptors;

@@ -101,6 +101,24 @@ public sealed class ProfileSessionTests
     }
 
     [Fact]
+    public void Close_WhenReadOnly_WithPendingChanges_DoesNotThrow()
+    {
+        // Guided recovery closes a read-only session before restoring; refused writes must not turn that into an error.
+        using var dir = new TempDir();
+        const string json = """{ "schemaVersion": 3, "saveObservations": [] }""";
+        File.WriteAllText(dir.File("profile.json"), json);
+        var session = new ProfileSession(new ProfileStore(dir.Path), () => Now);
+        Assert.True(session.LoadResult.ReadOnly);
+        session.Mutate(p => p.SaveObservations.Add(Obs("pending.rws")), SaveMode.None);
+
+        session.Close();
+
+        Assert.Equal(json, File.ReadAllText(dir.File("profile.json")));
+        Assert.Equal(1, session.Read(p => p.SaveObservations.Count));
+    }
+
+
+    [Fact]
     public void Mutate_WhenReadOnly_DoesNotWriteAndRecordsError()
     {
         using var dir = new TempDir();

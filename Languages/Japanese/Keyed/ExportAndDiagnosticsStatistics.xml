@@ -19,4 +19,16 @@
   <RWS_Diag_Copied>匿名診断サマリ（パス・コロニー名・ID不含）をクリップボードにコピーしました。</RWS_Diag_Copied>
   <RWS_Diag_Saved>匿名診断サマリ（パス・コロニー名・ID不含）を保存しました。</RWS_Diag_Saved>
   <RWS_Diag_Error>診断サマリの出力に失敗しました ({0})。</RWS_Diag_Error>
+  <RWS_Data_ProfileCapacity>記録ファイル: {0} MiB（上限 {2} MB の {1}%）</RWS_Data_ProfileCapacity>
+  <RWS_Data_ExternalChange>記録ファイルがゲーム外（クラウド同期など）で変更されました。保存するまでゲーム内のデータは影響を受けず、保存時にはゲーム内のデータが使われます。</RWS_Data_ExternalChange>
+  <RWS_Diag_StoppedPatches>このセッションで適用されなかったパッチクラス:</RWS_Diag_StoppedPatches>
+  <RWS_Diag_StoppedUnits>このセッションで停止した統計ユニット:</RWS_Diag_StoppedUnits>
+  <RWS_Diag_FailedUnitsWarning>このセッションで停止した統計ユニットまたはパッチがあります。詳細は下に表示されます。</RWS_Diag_FailedUnitsWarning>
+  <RWS_Diag_ChartCacheWarning>チャートキャッシュが設定上限に達しています。古いチャートは再解析されます。</RWS_Diag_ChartCacheWarning>
+  <RWS_Recovery_Explanation>このセッションは破損ファイルからの復旧、または記録ファイルを読み込めない状態で開始されました。最新の検証済みバックアップを復元すると現在の記録が置き換わります。その前に現在の記録のバックアップが作成されます。</RWS_Recovery_Explanation>
+  <RWS_Recovery_RestoreNewest>最新の有効なバックアップを復元</RWS_Recovery_RestoreNewest>
+  <RWS_Recovery_NoBackup>有効なバックアップがありません。</RWS_Recovery_NoBackup>
+  <RWS_Diag_PreviewButton>プレビュー</RWS_Diag_PreviewButton>
+  <RWS_Diag_PreviewTip>コピーまたは保存する前に、匿名診断テキストを読み取り専用で下に表示します。</RWS_Diag_PreviewTip>
+  <RWS_Diag_PreviewLabel>共有されるテキストのプレビュー（読み取り専用）:</RWS_Diag_PreviewLabel>
 </LanguageData>
