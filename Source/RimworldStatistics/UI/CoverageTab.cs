@@ -133,6 +133,28 @@ internal static class CoverageTab
         if (Widgets.ButtonText(recordingBtn, shownRecording))
             OpenRecordingMenu();
 
+        // U41: groups are forced open while searching (see MetricAcquisitionLabels.IsGroupExpanded), so pause there.
+        var canExpandAll = string.IsNullOrWhiteSpace(search);
+        var expandLabel = (string)"RWS_Details_ExpandAll".Translate();
+        var collapseLabel = (string)"RWS_Details_CollapseAll".Translate();
+        var expandBtn = controls.Next(expandLabel, 95f, 175f);
+        var collapseBtn = controls.Next(collapseLabel, 105f, 190f);
+        using (UiScopes.GuiState())
+        {
+            if (!canExpandAll)
+                GUI.color = new Color(0.65f, 0.65f, 0.65f);
+            if (Widgets.ButtonText(expandBtn, expandLabel.Truncate(Math.Max(0f, expandBtn.width - 12f))))
+                SetAllGroupsExpanded(true);
+            if (Widgets.ButtonText(collapseBtn, collapseLabel.Truncate(Math.Max(0f, collapseBtn.width - 12f))))
+                SetAllGroupsExpanded(false);
+        }
+        if (!canExpandAll)
+        {
+            var flatTip = (string)"RWS_Details_GroupDerivedFlatTip".Translate();
+            TooltipHandler.TipRegion(expandBtn, flatTip);
+            TooltipHandler.TipRegion(collapseBtn, flatTip);
+        }
+
         if (rebuildRows)
         {
             rows = BuildRows();
@@ -244,6 +266,25 @@ internal static class CoverageTab
         category = null;
         verification = null;
         search = "";
+        rebuildRows = true;
+        scroll = Vector2.zero;
+    }
+
+    /// <summary>U41: act on the groups of the current filtered view; no-op while searching forces them open.</summary>
+    private static void SetAllGroupsExpanded(bool expand)
+    {
+        if (!string.IsNullOrWhiteSpace(search))
+            return;
+        if (expand)
+        {
+            foreach (var row in rows)
+                if (row.Status is null)
+                    Expanded.Add(row.Group);
+        }
+        else
+        {
+            Expanded.Clear();
+        }
         rebuildRows = true;
         scroll = Vector2.zero;
     }

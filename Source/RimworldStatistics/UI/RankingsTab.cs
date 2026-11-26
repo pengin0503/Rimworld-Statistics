@@ -27,6 +27,7 @@ internal static class RankingsTab
     private static bool descending = true;
     private static bool showAll;
     private static bool perDayMode;
+    private static RateUnit rateUnit = RateUnit.PerDay;
     private static Vector2 choicesScroll;
     private static Vector2 tableScroll;
     private static bool restorePending;
@@ -35,7 +36,7 @@ internal static class RankingsTab
     private static PersistedState? lastPersistedState;
 
     private readonly record struct PersistedState(string Search, MetricCategory? Category, string? SelectedKey,
-        bool SelectorCollapsed, bool Descending, bool ShowAll, bool PerDayMode);
+        bool SelectorCollapsed, bool Descending, bool ShowAll, bool PerDayMode, RateUnit RateUnit);
 
     private static StatsView? tableView;
     private static object? tableLanguage;
@@ -43,12 +44,15 @@ internal static class RankingsTab
     private static bool tableDescending;
     private static bool tableShowAll;
     private static bool tablePerDay;
+    private static RateUnit tableRateUnit = RateUnit.PerDay;
     private static string tableNameSignature = "";
     private static string[][] rows = [];
     private static string coverage = "";
     private static readonly bool[] RightAlignedColumns = [true, false, true, false, true];
     private static Choice[] perDayChoices = [];
     private static object? headerLanguage;
+    private static bool headerPerDay;
+    private static RateUnit headerRateUnit = RateUnit.PerDay;
     private static string[]? cachedHeaders;
 
     /// <summary>U4: the statistics window asks for a restore on its first draw after opening.</summary>
@@ -130,6 +134,7 @@ internal static class RankingsTab
                 var rateRect = emptyControls.Next(rateLabel, 110f, 195f);
                 if (Widgets.ButtonText(rateRect, rateLabel.Truncate(Math.Max(0f, rateRect.width - 12f))))
                     perDayMode = false;
+                DrawRateUnitButton(emptyControls);
             }
             Widgets.Label(new Rect(body.x, body.y + emptyControls.Height + 6f, body.width, Math.Max(0f, body.height - emptyControls.Height - 6f)),
                 "RWS_Rankings_NoMatches".Translate());
@@ -138,7 +143,7 @@ internal static class RankingsTab
         }
 
         var titleRect = new Rect(body.x, body.y, body.width, 28f);
-        var titleText = perDayMode ? (string)"RWS_Rate_TitleSuffix".Translate(active.Label) : active.Label;
+        var titleText = perDayMode ? RateTitle(active.Label) : active.Label;
         string shownTitle;
         using (UiScopes.GuiState())
         {
@@ -180,6 +185,9 @@ internal static class RankingsTab
         }
         TooltipHandler.TipRegion(modeRect, "RWS_Rate_ModeToggleTip".Translate());
 
+        if (perDayMode)
+            DrawRateUnitButton(controls);
+
         var label = descending ? (string)"RWS_Rankings_Desc".Translate() : (string)"RWS_Rankings_Asc".Translate();
         var orderRect = controls.Next(label, 112f, 185f);
         var shownOrder = label.Truncate(Math.Max(0f, orderRect.width - 12f));
@@ -211,7 +219,7 @@ internal static class RankingsTab
         var nameSignature = ColonyPresentation.Signature(preferences);
         if (!ReferenceEquals(tableView, view) || !ReferenceEquals(tableLanguage, lang)
             || tableKey != selectedKey || tableDescending != descending || tableShowAll != showAll
-            || tablePerDay != perDayMode || tableNameSignature != nameSignature)
+            || tablePerDay != perDayMode || tableRateUnit != rateUnit || tableNameSignature != nameSignature)
         {
             tableView = view;
             tableLanguage = lang;
@@ -219,6 +227,7 @@ internal static class RankingsTab
             tableDescending = descending;
             tableShowAll = showAll;
             tablePerDay = perDayMode;
+            tableRateUnit = rateUnit;
             tableNameSignature = nameSignature;
 
             var board = LeaderboardBuilder.Build(view, selectedKey!, descending, perDay: perDayMode);
@@ -230,7 +239,7 @@ internal static class RankingsTab
                 var valueText = def is null
                     ? BasicValue(selectedKey!, e.Value)
                     : perDayMode
-                        ? MetricText.FormatRateValue(def, e.Value)
+                        ? MetricText.FormatRateValue(def, e.Value, rateUnit)
                         : MetricText.Format(def, new NumericValue
                         {
                             Number = e.Value, Coverage = e.Coverage, Evidence = e.Evidence,
@@ -271,13 +280,19 @@ internal static class RankingsTab
         }
         else
         {
-            if (cachedHeaders is null || !ReferenceEquals(headerLanguage, lang))
+            if (cachedHeaders is null || !ReferenceEquals(headerLanguage, lang)
+                || headerPerDay != perDayMode || headerRateUnit != rateUnit)
             {
                 headerLanguage = lang;
+                headerPerDay = perDayMode;
+                headerRateUnit = rateUnit;
+                var valueHeader = (string)"RWS_Details_Col_Value".Translate();
+                if (perDayMode)
+                    valueHeader += " · " + RateUnitLabel(rateUnit);
                 cachedHeaders =
                 [
                     "RWS_Rankings_Position".Translate(), "RWS_Details_Col_Name".Translate(),
-                    "RWS_Details_Col_Value".Translate(), "RWS_Details_Col_State".Translate(),
+                    valueHeader, "RWS_Details_Col_State".Translate(),
                     "RWS_Details_Col_Through".Translate(),
                 ];
             }
@@ -296,12 +311,14 @@ internal static class RankingsTab
         descending = prefs.RankingsDescending;
         showAll = prefs.RankingsShowAll;
         perDayMode = prefs.RankingsPerDayMode;
+        rateUnit = Enum.IsDefined(typeof(RateUnit), prefs.RankingsRateUnit)
+            ? (RateUnit)prefs.RankingsRateUnit : RateUnit.PerDay;
         choicesScroll = Vector2.zero;
         tableScroll = Vector2.zero;
         priorSearch = null;
     }
 
-    private static PersistedState CaptureState() => new(search, category, selectedKey, selectorCollapsed, descending, showAll, perDayMode);
+    private static PersistedState CaptureState() => new(search, category, selectedKey, selectorCollapsed, descending, showAll, perDayMode, rateUnit);
 
     private static void PersistViewStateIfChanged()
     {
@@ -318,15 +335,56 @@ internal static class RankingsTab
         prefs.RankingsDescending = descending;
         prefs.RankingsShowAll = showAll;
         prefs.RankingsPerDayMode = perDayMode;
+        prefs.RankingsRateUnit = (int)rateUnit;
         persistViewState?.Invoke();
     }
 
-    // The category FloatMenu runs after this tab's Draw, so it saves at once instead of waiting for the next frame.
+    // FloatMenu callbacks run after this tab's Draw, so they save at once instead of waiting for the next frame.
     private static void SetCategory(MetricCategory? value)
     {
         category = value;
         choicesScroll = Vector2.zero;
         PersistViewStateIfChanged();
+    }
+
+    private static void SetRateUnit(RateUnit value)
+    {
+        rateUnit = value;
+        tableScroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
+    private static string RateUnitLabel(RateUnit unit) => unit switch
+    {
+        RateUnit.PerYear => "RWS_Rate_Unit_PerYear".Translate(),
+        RateUnit.PerRealHour => "RWS_Rate_Unit_PerRealHour".Translate(),
+        _ => "RWS_Rate_Unit_PerDay".Translate(),
+    };
+
+    private static string RateTitle(string label) => rateUnit switch
+    {
+        RateUnit.PerYear => "RWS_Rate_TitleSuffixPerYear".Translate(label),
+        RateUnit.PerRealHour => "RWS_Rate_TitleSuffixPerRealHour".Translate(label),
+        _ => "RWS_Rate_TitleSuffix".Translate(label),
+    };
+
+    /// <summary>U39: a FloatMenu button beside the mode toggle; only per-day rates have a unit choice.</summary>
+    private static void DrawRateUnitButton(ControlRow controls)
+    {
+        var unitLabel = (string)"RWS_Rate_Unit".Translate(RateUnitLabel(rateUnit));
+        var rect = controls.Next(unitLabel, 120f, 210f);
+        var shown = unitLabel.Truncate(Math.Max(0f, rect.width - 12f));
+        if (Widgets.ButtonText(rect, shown))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(RateUnitLabel(RateUnit.PerDay), () => SetRateUnit(RateUnit.PerDay)),
+                new(RateUnitLabel(RateUnit.PerYear), () => SetRateUnit(RateUnit.PerYear)),
+                new(RateUnitLabel(RateUnit.PerRealHour), () => SetRateUnit(RateUnit.PerRealHour)),
+            }));
+        }
+        var tip = (string)"RWS_Rate_UnitTip".Translate();
+        TooltipHandler.TipRegion(rect, shown != unitLabel ? unitLabel + "\n" + tip : tip);
     }
 
     private static void DrawSelector(Rect rect, StatsView view, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
@@ -361,10 +419,10 @@ internal static class RankingsTab
             priorSearch = trimmed;
             priorCategory = category;
             priorPerDay = perDayMode;
+            // U33: identical syntax to DetailsTab (AND terms, '-' exclusions) over label, key and MOD source.
+            var query = SearchQuery.Parse(trimmed);
             filtered = eligibleChoices.Where(c => (category is null || c.Category == category)
-                && (trimmed.Length == 0 || c.Label.Contains(trimmed, StringComparison.CurrentCultureIgnoreCase)
-                    || c.Key.Contains(trimmed, StringComparison.OrdinalIgnoreCase)
-                    || (c.Source?.Contains(trimmed, StringComparison.CurrentCultureIgnoreCase) ?? false))).ToArray();
+                && query.Matches(c.Label, c.Key, c.Source)).ToArray();
         }
 
         var activeFilters = FilterSummary.CountActiveFilters(perDayMode, category is not null, false, trimmed);

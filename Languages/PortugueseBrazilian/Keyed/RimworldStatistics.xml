@@ -1413,4 +1413,40 @@
   <RWS_Setting_DayFormatHelp>Applies the next time you open the statistics window.</RWS_Setting_DayFormatHelp>
   <RWS_Setting_NumberGrouping>Thousands separators</RWS_Setting_NumberGrouping>
   <RWS_Setting_NumberGroupingHelp>Group digits in numbers with separators.</RWS_Setting_NumberGroupingHelp>
+  <RWS_Calc_Hint>Right-click for calculation details</RWS_Calc_Hint>
+  <RWS_Calc_Menu>How it is calculated…</RWS_Calc_Menu>
+  <RWS_Calc_Description>Description</RWS_Calc_Description>
+  <RWS_Calc_Calculation>How it is calculated</RWS_Calc_Calculation>
+  <RWS_Calc_Provenance>Provenance</RWS_Calc_Provenance>
+  <RWS_Calc_Aggregation>Overall aggregation</RWS_Calc_Aggregation>
+  <RWS_Calc_Unit>Unit</RWS_Calc_Unit>
+  <RWS_Calc_Source>Source</RWS_Calc_Source>
+  <RWS_Calc_Acquisition>Acquisition unit</RWS_Calc_Acquisition>
+  <RWS_Calc_StoredKey>Stored key</RWS_Calc_StoredKey>
+  <RWS_Calc_LedgerIds>Ledger IDs</RWS_Calc_LedgerIds>
+  <RWS_Calc_Agg_Sum>Sum</RWS_Calc_Agg_Sum>
+  <RWS_Calc_Agg_Max>Maximum</RWS_Calc_Agg_Max>
+  <RWS_Calc_Agg_Min>Minimum</RWS_Calc_Agg_Min>
+  <RWS_Calc_Agg_Ratio>Ratio (summed numerator ÷ summed denominator)</RWS_Calc_Agg_Ratio>
+  <RWS_Calc_Agg_IndividualOnly>Individual only (not combined across colonies)</RWS_Calc_Agg_IndividualOnly>
+  <RWS_Calc_Agg_Ranking>Cross-colony ranking</RWS_Calc_Agg_Ranking>
+  <RWS_Calc_Unit_Count>Count</RWS_Calc_Unit_Count>
+  <RWS_Calc_Unit_Silver>Silver</RWS_Calc_Unit_Silver>
+  <RWS_Calc_Unit_Days>Game days</RWS_Calc_Unit_Days>
+  <RWS_Calc_Unit_Percent>Percent</RWS_Calc_Unit_Percent>
+  <RWS_Calc_Unit_Mood>Mood scale (0–100)</RWS_Calc_Unit_Mood>
+  <RWS_Calc_Unit_PerYear>Per game year</RWS_Calc_Unit_PerYear>
+  <RWS_Calc_Unit_Hours>Real play hours</RWS_Calc_Unit_Hours>
+  <RWS_Calc_Unit_SilverPerYear>Silver per game year</RWS_Calc_Unit_SilverPerYear>
+  <RWS_Calc_Unit_Years>Game years</RWS_Calc_Unit_Years>
+  <RWS_Calc_Unit_Celsius>Degrees Celsius</RWS_Calc_Unit_Celsius>
+  <RWS_Calc_Unit_Watts>Watts</RWS_Calc_Unit_Watts>
+  <RWS_Calc_Unit_WattDays>Watt-days</RWS_Calc_Unit_WattDays>
+  <RWS_Calc_Unit_Nutrition>Nutrition units</RWS_Calc_Unit_Nutrition>
+  <RWS_Calc_Unit_PerCellDay>Per cell per game day</RWS_Calc_Unit_PerCellDay>
+  <RWS_Calc_Source_SaveFile>Save file</RWS_Calc_Source_SaveFile>
+  <RWS_Calc_Source_SaveSnapshot>Save snapshot</RWS_Calc_Source_SaveSnapshot>
+  <RWS_Calc_Source_Checkpoint>Checkpoint in save</RWS_Calc_Source_Checkpoint>
+  <RWS_Details_ExpandAll>Expand all</RWS_Details_ExpandAll>
+  <RWS_Details_CollapseAll>Collapse all</RWS_Details_CollapseAll>
 </LanguageData>

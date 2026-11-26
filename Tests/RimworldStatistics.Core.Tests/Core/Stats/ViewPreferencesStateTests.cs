@@ -26,6 +26,7 @@ public sealed class ViewPreferencesStateTests
         Assert.True(prefs.RankingsDescending);
         Assert.False(prefs.RankingsShowAll);
         Assert.False(prefs.RankingsPerDayMode);
+        Assert.Equal((int)RateUnit.PerDay, prefs.RankingsRateUnit);
         Assert.Equal((int)DisplayDayFormat.DecimalDays, prefs.DayFormat);
         Assert.True(prefs.NumberGrouping);
     }
@@ -39,7 +40,7 @@ public sealed class ViewPreferencesStateTests
             "detailsStatusFilter":3,"detailsGroupDerived":false,"detailsSourceFilter":2,"detailsHideZero":true,
             "detailsExpandedKeys":["a:key","c:key"],"rankingsSearch":"wealth","rankingsCategory":5,
             "rankingsSelectedKey":"kills","rankingsSelectorCollapsed":true,"rankingsDescending":false,
-            "rankingsShowAll":true,"rankingsPerDayMode":true,"dayFormat":1,"numberGrouping":false}
+            "rankingsShowAll":true,"rankingsPerDayMode":true,"rankingsRateUnit":2,"dayFormat":1,"numberGrouping":false}
             """;
         var prefs = ViewPreferences.Parse(json);
         Assert.Equal((int)DetailsViewModePreference.Other, prefs.DetailsViewMode);
@@ -61,6 +62,7 @@ public sealed class ViewPreferencesStateTests
         Assert.False(prefs.RankingsDescending);
         Assert.True(prefs.RankingsShowAll);
         Assert.True(prefs.RankingsPerDayMode);
+        Assert.Equal((int)RateUnit.PerRealHour, prefs.RankingsRateUnit);
         Assert.Equal((int)DisplayDayFormat.YearsAndDays, prefs.DayFormat);
         Assert.False(prefs.NumberGrouping);
 
@@ -84,6 +86,7 @@ public sealed class ViewPreferencesStateTests
             detailsSourceFilter = 1000,
             detailsCategory = 999,
             rankingsCategory = -7,
+            rankingsRateUnit = 99,
             dayFormat = 42,
             detailsColonyKey = "  " + longText + "  ",
             rankingsSelectedKey = "  " + longText + "  ",
@@ -98,6 +101,7 @@ public sealed class ViewPreferencesStateTests
         Assert.Equal((int)DisplayDayFormat.DecimalDays, prefs.DayFormat);
         Assert.Null(prefs.DetailsCategory);
         Assert.Null(prefs.RankingsCategory);
+        Assert.Equal((int)RateUnit.PerDay, prefs.RankingsRateUnit);
         Assert.Equal(ViewPreferences.MaxViewStateTextLength, prefs.DetailsColonyKey!.Length);
         Assert.Equal(longText[..ViewPreferences.MaxViewStateTextLength], prefs.DetailsColonyKey);
         Assert.Equal(longText[..ViewPreferences.MaxViewStateTextLength], prefs.RankingsSelectedKey);

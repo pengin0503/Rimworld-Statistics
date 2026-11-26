@@ -46,4 +46,13 @@
   <RWS_Scatter_Bucket_Unknown>不明</RWS_Scatter_Bucket_Unknown>
   <RWS_Scatter_Bucket_Mixed>複数属性の重なり</RWS_Scatter_Bucket_Mixed>
   <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+  <RWS_Rate_PerYearValue>{0}/年</RWS_Rate_PerYearValue>
+  <RWS_Rate_PerRealHourValue>{0}/実時間1時間</RWS_Rate_PerRealHourValue>
+  <RWS_Rate_Unit>変化率の単位: {0}</RWS_Rate_Unit>
+  <RWS_Rate_Unit_PerDay>1日あたり</RWS_Rate_Unit_PerDay>
+  <RWS_Rate_Unit_PerYear>1年あたり</RWS_Rate_Unit_PerYear>
+  <RWS_Rate_Unit_PerRealHour>実時間1時間あたり</RWS_Rate_Unit_PerRealHour>
+  <RWS_Rate_UnitTip>1日あたりの変化率を変換します（1年＝60日、ゲーム1日＝1倍速で実時間1000秒）。</RWS_Rate_UnitTip>
+  <RWS_Rate_TitleSuffixPerYear>{0} (/年)</RWS_Rate_TitleSuffixPerYear>
+  <RWS_Rate_TitleSuffixPerRealHour>{0} (/実時間1時間)</RWS_Rate_TitleSuffixPerRealHour>
 </LanguageData>

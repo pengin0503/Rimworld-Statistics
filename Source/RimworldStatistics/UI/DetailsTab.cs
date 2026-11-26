@@ -211,9 +211,10 @@ public static class DetailsTab
         if (comparing)
         {
             var filter = (viewMode, category, search: search.Trim(), statusFilter, sourceFilter, hideZero);
+            var filterQuery = SearchQuery.Parse(filter.search);
             ComparisonPanel.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), session, view, favorites, filter,
                 (definition, label) => MatchesMode(definition, filter.viewMode) && (filter.category is null || definition.Category == filter.category)
-                    && MatchesSource(definition, filter.sourceFilter) && MatchesSearch(definition, label, filter.search),
+                    && MatchesSource(definition, filter.sourceFilter) && MatchesSearch(definition, label, filterQuery),
                 row => MatchesStatus(row, filter.statusFilter) && !IsHiddenZero(row.Value, filter.hideZero));
             PersistViewStateIfChanged();
             return;
@@ -411,6 +412,36 @@ public static class DetailsTab
         PersistViewStateIfChanged();
     }
 
+    // #336: grouping/navigation controls are paused while searching or sorting by value, exactly like the group checkbox.
+    private static bool CanExpandAll => !comparing && !byValue && string.IsNullOrWhiteSpace(search);
+
+    /// <summary>U41: expand or collapse every derived group and breakdown row currently reachable from the built rows.</summary>
+    private static void SetAllExpanded(bool expand)
+    {
+        if (!CanExpandAll || builtFor is null)
+            return;
+        if (!expand)
+        {
+            Expanded.Clear();
+        }
+        else
+        {
+            // Rebuilding reveals nested breakdown keys one level at a time; a few passes reach every visible depth.
+            for (var pass = 0; pass < 4; pass++)
+            {
+                var added = false;
+                foreach (var builtLine in Build(builtFor with { ExpandedVersion = expandedVersion }))
+                    if (builtLine.ExpandKey is { } key)
+                        added |= Expanded.Add(key);
+                if (!added)
+                    break;
+            }
+        }
+        expandedVersion++;
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
     private static float DrawControls(Rect rect, StatsView view, string? scopeName)
     {
         var controls = new ControlRow(rect);
@@ -484,6 +515,30 @@ public static class DetailsTab
                 new(SourceFilterLabel(MetricSourceFilter.Mod), () => SetSourceFilter(MetricSourceFilter.Mod)),
             }));
         }
+        // U41: mirror the disabled group checkbox while searching or sorting by value (#336).
+        if (!comparing)
+        {
+            var canExpandAll = CanExpandAll;
+            var expandLabel = (string)"RWS_Details_ExpandAll".Translate();
+            var collapseLabel = (string)"RWS_Details_CollapseAll".Translate();
+            var expandRect = controls.Next(expandLabel, 95f, 175f);
+            var collapseRect = controls.Next(collapseLabel, 105f, 190f);
+            using (UiScopes.GuiState())
+            {
+                if (!canExpandAll)
+                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                if (Widgets.ButtonText(expandRect, expandLabel.Truncate(Math.Max(0f, expandRect.width - 12f))))
+                    SetAllExpanded(true);
+                if (Widgets.ButtonText(collapseRect, collapseLabel.Truncate(Math.Max(0f, collapseRect.width - 12f))))
+                    SetAllExpanded(false);
+            }
+            if (!canExpandAll)
+            {
+                var flatTip = (string)"RWS_Details_GroupDerivedFlatTip".Translate();
+                TooltipHandler.TipRegion(expandRect, flatTip);
+                TooltipHandler.TipRegion(collapseRect, flatTip);
+            }
+        }
         var searchLabel = (string)"RWS_Details_Search".Translate();
         var labelWidth = Math.Min(Text.CalcSize(searchLabel).x + 6f, Math.Max(0, rect.width - 120f));
         var searchArea = controls.Next(labelWidth + 120f, fill: true);
@@ -513,11 +568,32 @@ public static class DetailsTab
         _ => true,
     };
 
-    private static bool MatchesSearch(MetricDefinition definition, string label, string term) =>
-        term.Length == 0 || label.Contains(term, StringComparison.CurrentCultureIgnoreCase)
-        || definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
-        || definition.LedgerIds.Contains(term, StringComparison.OrdinalIgnoreCase)
-        || (MetricText.ModSourceLabel(definition)?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false);
+    /// <summary>U33: the same query syntax as the Rankings selector (AND terms, <c>-term</c> exclusions).</summary>
+    private static bool MatchesSearch(MetricDefinition definition, string label, SearchQuery.Parsed query)
+        => query.IsEmpty || query.Matches(label, definition.Key, definition.StoredKey, definition.LedgerIds,
+            MetricText.ModSourceLabel(definition), EnglishLabel(definition));
+
+    /// <summary>The metric's label in the default (English) language, so searches work in any UI language.</summary>
+    private static string? EnglishLabel(MetricDefinition definition)
+    {
+        // Cross-colony rows have a synthetic LabelKey; their source's label is the English surface.
+        var source = CrossColonyCatalog.IsDerived(definition) && MetricRegistry.Find(definition.StoredKey) is { } parent
+            ? parent : definition;
+        return source.ProviderId is not null
+            ? ProviderMetricText.Label(source, DefaultLanguageText)
+            : DefaultLanguageText(source.LabelKey);
+    }
+
+    private static string? DefaultLanguageText(string key)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+            return null;
+        if (LanguageDatabase.defaultLanguage is { } fallback
+            && fallback.TryGetTextFromKey(key, out var text)
+            && !string.Equals(text, key, StringComparison.Ordinal))
+            return (string)text;
+        return null;
+    }
 
     private static bool MatchesSource(MetricDefinition definition, MetricSourceFilter filter) => filter switch
     {
@@ -663,9 +739,11 @@ public static class DetailsTab
             cellCache[index] = cells;
             var fullText = string.Join("\n", cells.Where(c => c.Full is not null).Select(c => c.Full));
             var tip = fullText.Length == 0 ? line.Tip : new LazyTip(() => fullText + "\n\n" + line.Tip()).Get;
-            tipCache[index] = tip;
+            var fullTip = line.MetricKey is null ? tip
+                : new LazyTip(() => tip() + "\n\n" + (string)"RWS_Calc_Hint".Translate()).Get;
+            tipCache[index] = fullTip;
             chartTipCache[index] = line.MetricKey is null ? null
-                : new LazyTip(() => tip() + "\n\n" + "RWS_Chart_OpenTip".Translate()).Get;
+                : new LazyTip(() => fullTip() + "\n\n" + "RWS_Chart_OpenTip".Translate()).Get;
         }
         var x = rect.x;
         using (UiScopes.GuiState())
@@ -760,7 +838,74 @@ public static class DetailsTab
                 expandedVersion++;
             }
         }
+        // U21: every left-click area of a metric row already opens its chart (the star and triangle claim the rest),
+        // so the calculation popover is offered through a right-click menu instead of stealing a left click.
+        if (line.MetricKey is { } calcKey && Mouse.IsOver(rect) && Input.GetMouseButtonDown(1)
+            && MetricRegistry.Find(calcKey) is { } calcDefinition)
+        {
+            var definition = calcDefinition;
+            Find.WindowStack.Add(new FloatMenu(
+            [
+                new FloatMenuOption((string)"RWS_Calc_Menu".Translate(), () => OpenCalculation(definition)),
+            ]));
+        }
     }
+
+    /// <summary>U21: a read-only dialog with the metric description and the metadata that determines its calculation.</summary>
+    private static void OpenCalculation(MetricDefinition definition)
+    {
+        var body = new StringBuilder();
+        body.Append((string)"RWS_Calc_Description".Translate()).Append('\n');
+        var description = definition.ProviderId is not null
+            ? ProviderMetricText.Description(definition, TryTranslate)
+            : (string)definition.DescriptionKey.Translate();
+        body.AppendLine(string.IsNullOrWhiteSpace(description) ? Dialog_RimworldStatistics.Dash : description);
+        body.Append('\n').Append((string)"RWS_Calc_Calculation".Translate()).Append('\n');
+        body.Append((string)"RWS_Calc_Provenance".Translate()).Append(": ").Append((string)ProvenanceLabel(definition.Provenance)).Append('\n');
+        body.Append((string)"RWS_Calc_Aggregation".Translate()).Append(": ").Append(AggregationLabel(definition.Overall)).Append('\n');
+        body.Append((string)"RWS_Calc_Unit".Translate()).Append(": ").Append(UnitLabel(definition.Unit)).Append('\n');
+        body.Append((string)"RWS_Calc_Source".Translate()).Append(": ").Append(SourceLabel(definition.Source)).Append('\n');
+        if (definition.Acquisition is { } acquisition)
+            body.Append((string)"RWS_Calc_Acquisition".Translate()).Append(": ").AppendLine(acquisition);
+        body.Append((string)"RWS_Calc_StoredKey".Translate()).Append(": ").AppendLine(definition.StoredKey);
+        body.Append((string)"RWS_Calc_LedgerIds".Translate()).Append(": ").AppendLine(definition.LedgerIds);
+        Find.WindowStack.Add(new Dialog_MessageBox(body.ToString().TrimEnd('\n'), title: DefinitionLabel(definition)));
+    }
+
+    private static string AggregationLabel(OverallAggregation aggregation) => aggregation switch
+    {
+        OverallAggregation.Sum => "RWS_Calc_Agg_Sum".Translate(),
+        OverallAggregation.Max => "RWS_Calc_Agg_Max".Translate(),
+        OverallAggregation.Min => "RWS_Calc_Agg_Min".Translate(),
+        OverallAggregation.Ratio => "RWS_Calc_Agg_Ratio".Translate(),
+        OverallAggregation.IndividualOnly => "RWS_Calc_Agg_IndividualOnly".Translate(),
+        _ => "RWS_Calc_Agg_Ranking".Translate(),
+    };
+
+    private static string UnitLabel(MetricUnit unit) => unit switch
+    {
+        MetricUnit.Count => "RWS_Calc_Unit_Count".Translate(),
+        MetricUnit.Silver => "RWS_Calc_Unit_Silver".Translate(),
+        MetricUnit.Days => "RWS_Calc_Unit_Days".Translate(),
+        MetricUnit.Percent => "RWS_Calc_Unit_Percent".Translate(),
+        MetricUnit.Mood => "RWS_Calc_Unit_Mood".Translate(),
+        MetricUnit.PerYear => "RWS_Calc_Unit_PerYear".Translate(),
+        MetricUnit.Hours => "RWS_Calc_Unit_Hours".Translate(),
+        MetricUnit.SilverPerYear => "RWS_Calc_Unit_SilverPerYear".Translate(),
+        MetricUnit.Years => "RWS_Calc_Unit_Years".Translate(),
+        MetricUnit.Celsius => "RWS_Calc_Unit_Celsius".Translate(),
+        MetricUnit.Watts => "RWS_Calc_Unit_Watts".Translate(),
+        MetricUnit.WattDays => "RWS_Calc_Unit_WattDays".Translate(),
+        MetricUnit.Nutrition => "RWS_Calc_Unit_Nutrition".Translate(),
+        _ => "RWS_Calc_Unit_PerCellDay".Translate(),
+    };
+
+    private static string SourceLabel(MetricObservationSource source) => source switch
+    {
+        MetricObservationSource.SaveFile => "RWS_Calc_Source_SaveFile".Translate(),
+        MetricObservationSource.SaveSnapshot => "RWS_Calc_Source_SaveSnapshot".Translate(),
+        _ => "RWS_Calc_Source_Checkpoint".Translate(),
+    };
 
     // ----- building the rows (only when an input changes) -----
 
@@ -780,6 +925,7 @@ public static class DetailsTab
         }
 
         var term = input.Search.Trim();
+        var query = SearchQuery.Parse(term);
         var selected = rows
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
             .Where(r => MatchesStatus(r, input.StatusFilter))
@@ -788,7 +934,7 @@ public static class DetailsTab
             // U18: applied before derived grouping, so an all-zero derived group disappears.
             .Where(r => !IsHiddenZero(r.Value, input.HideZero))
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
-            .Where(x => MatchesSearch(x.Row.Definition, x.Label, term))
+            .Where(x => MatchesSearch(x.Row.Definition, x.Label, query))
             .ToList();
         totalMetricCount = rows.Count;
         matchedMetricCount = selected.Count;

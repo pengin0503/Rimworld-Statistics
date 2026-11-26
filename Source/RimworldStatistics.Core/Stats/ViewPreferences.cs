@@ -109,6 +109,7 @@ public sealed class ViewPreferences
     public bool RankingsDescending { get; set; } = true;
     public bool RankingsShowAll { get; set; }
     public bool RankingsPerDayMode { get; set; }
+    public int RankingsRateUnit { get; set; } = (int)RateUnit.PerDay;
 
     public int DayFormat { get; set; } = (int)DisplayDayFormat.DecimalDays;
     public bool NumberGrouping { get; set; } = true;
@@ -191,6 +192,7 @@ public sealed class ViewPreferences
             parsed.RankingsSearch = NormalizeStateText(parsed.RankingsSearch) ?? "";
             parsed.RankingsCategory = ValidCategory(parsed.RankingsCategory);
             parsed.RankingsSelectedKey = NormalizeStateText(parsed.RankingsSelectedKey);
+            parsed.RankingsRateUnit = ValidEnum<RateUnit>(parsed.RankingsRateUnit, defaults.RankingsRateUnit);
             parsed.DayFormat = ValidEnum<DisplayDayFormat>(parsed.DayFormat, defaults.DayFormat);
 
             parsed.Version = 1;
