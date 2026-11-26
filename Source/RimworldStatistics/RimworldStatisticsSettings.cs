@@ -24,6 +24,8 @@ public sealed class RimworldStatisticsSettings : ModSettings
     public int importThreadsManual = DefaultManualImportThreads;
     public bool precomputeStatistics = false;
     public int memoryUseMode = (int)MemoryUseMode.Standard;
+    // Q16/Q20: the mod version whose what's-new dialog was already shown; empty on a fresh install.
+    public string seenVersion = "";
     // S20: semicolon-separated save file name patterns kept out of every import. Lives in MOD settings, not in
     // profile.json, so restoring a profile does not restore an old ignore list.
     public string importExclusionPatterns = "";
@@ -102,6 +104,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
         Scribe_Values.Look(ref precomputeStatistics, "precomputeStatistics", false);
         Scribe_Values.Look(ref memoryUseMode, "memoryUseMode", (int)MemoryUseMode.Standard);
         Scribe_Values.Look(ref importExclusionPatterns, "importExclusionPatterns", "");
+        Scribe_Values.Look(ref seenVersion, "seenVersion", "");
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
             if (!Enum.IsDefined(typeof(StatisticsWindowSizePreset), windowSizePreset))
@@ -111,6 +114,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
             importThreadsManual = Math.Clamp(importThreadsManual, 1, ResourcePolicy.MaxImportThreads);
             viewPreferencesJson ??= "";
             importExclusionPatterns ??= "";
+            seenVersion ??= "";
             if (experimentalUnitIds is null)
             {
                 experimentalUnitIds = experimentalEnabled
