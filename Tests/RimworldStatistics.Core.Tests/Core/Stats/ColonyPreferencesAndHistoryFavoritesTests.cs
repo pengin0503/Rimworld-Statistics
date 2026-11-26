@@ -173,6 +173,8 @@ public sealed class ColonyPreferencesAndHistoryFavoritesTests
         Assert.True(ColonyPresentation.MatchesSearch(borealis, prefs, Fallback, "New Arrivals"));
         Assert.True(ColonyPresentation.MatchesSearch(borealis, prefs, Fallback, "Borealis"));
         Assert.False(ColonyPresentation.MatchesSearch(borealis, prefs, Fallback, "Tropica"));
+        // U46: the stable colony key is an identifier, just like a DefName.
+        Assert.True(ColonyPresentation.MatchesSearch(borealis, prefs, Fallback, borealis.Key.ToUpperInvariant()));
 
         // Clearing custom name restores original faction name.
         Assert.True(ColonyPresentation.ClearCustomName(prefs, borealis.Key, borealis.AliasKeys));

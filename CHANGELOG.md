@@ -10,5 +10,6 @@ This file starts at v2.1.0. Earlier releases are recorded under `docs/releases/`
 - Reworked import flow with save-name ignore patterns, present/archived counts, added/updated summaries, single-save recheck, per-failure actions and title-screen progress.
 - Improved settings, coverage and endings screens: search, collapsing, recommended selection, direct recording toggles, type filters, `?` guide, two-stage tooltips and empty-state links.
 - Persisted Details/Rankings view state and added source filtering, display formats, hide-zero, shared AND/exclude search, formula popover, rate units and expand/collapse all.
+- Search now also matches English names, DefNames/keys and MOD package names (plus resolved MOD names) alongside localized labels in Details, Rankings, pickers, settings, Endings and Chronicle.
 - Improved pickers, dialogs and charts: recent items, inline naming with reset, current-colony marker, zoom presets, multi-select chronicles, interval and bar-chart controls, unified confirmations.
 - Kept Excel-ready BOM CSV exports and added export-folder controls, Markdown/TSV copy, stable `RWS-E1xxx` import error codes, a one-time What's-new dialog and new CI consistency checks.

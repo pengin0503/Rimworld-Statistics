@@ -154,12 +154,15 @@ internal static class MetricText
     public static string Tip(NumericRow row, StatsResult stats) => DetailsTab.OverallTip(row, stats);
     public static string BasicLabel(string key) => OverviewTab.BasicLabel(key);
 
-    public static string PerColonyBasicLabel(string key) => key switch
+    public static string PerColonyBasicLabel(string key) => PerColonyBasicLabelKey(key).Translate();
+
+    /// <summary>Literal key for a basic label as it appears in per-colony views; used for English search aliases too.</summary>
+    internal static string PerColonyBasicLabelKey(string key) => key switch
     {
-        BasicMetrics.Days => "RWS_Col_Days".Translate(),
-        BasicMetrics.PeakWealth => "RWS_Col_PeakWealth".Translate(),
-        BasicMetrics.LastWealth => "RWS_Col_LastWealth".Translate(),
-        _ => BasicLabel(key),
+        BasicMetrics.Days => "RWS_Col_Days",
+        BasicMetrics.PeakWealth => "RWS_Col_PeakWealth",
+        BasicMetrics.LastWealth => "RWS_Col_LastWealth",
+        _ => OverviewTab.BasicLabelKey(key),
     };
 
     public static string State(MetricDefinition definition, MetricCoverage coverage)

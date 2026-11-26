@@ -570,30 +570,7 @@ public static class DetailsTab
 
     /// <summary>U33: the same query syntax as the Rankings selector (AND terms, <c>-term</c> exclusions).</summary>
     private static bool MatchesSearch(MetricDefinition definition, string label, SearchQuery.Parsed query)
-        => query.IsEmpty || query.Matches(label, definition.Key, definition.StoredKey, definition.LedgerIds,
-            MetricText.ModSourceLabel(definition), EnglishLabel(definition));
-
-    /// <summary>The metric's label in the default (English) language, so searches work in any UI language.</summary>
-    private static string? EnglishLabel(MetricDefinition definition)
-    {
-        // Cross-colony rows have a synthetic LabelKey; their source's label is the English surface.
-        var source = CrossColonyCatalog.IsDerived(definition) && MetricRegistry.Find(definition.StoredKey) is { } parent
-            ? parent : definition;
-        return source.ProviderId is not null
-            ? ProviderMetricText.Label(source, DefaultLanguageText)
-            : DefaultLanguageText(source.LabelKey);
-    }
-
-    private static string? DefaultLanguageText(string key)
-    {
-        if (string.IsNullOrWhiteSpace(key))
-            return null;
-        if (LanguageDatabase.defaultLanguage is { } fallback
-            && fallback.TryGetTextFromKey(key, out var text)
-            && !string.Equals(text, key, StringComparison.Ordinal))
-            return (string)text;
-        return null;
-    }
+        => query.IsEmpty || query.Matches(SearchCandidates.ForMetric(definition, label));
 
     private static bool MatchesSource(MetricDefinition definition, MetricSourceFilter filter) => filter switch
     {

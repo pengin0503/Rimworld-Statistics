@@ -2,6 +2,7 @@ using HarmonyLib;
 using RimworldStatistics.Core;
 using RimworldStatistics.Api;
 using RimworldStatistics.Metrics;
+using RimworldStatistics.UI;
 using UnityEngine;
 using Verse;
 
@@ -23,7 +24,9 @@ public sealed class RimworldStatisticsMod : Mod
     private static Vector2 experimentalScroll;
     private static AcquisitionUnit[]? selectableUnits;
     private static UnitSection[]? selectableSections;
-    private static string[]? selectableUnitLabels;
+    private sealed record UnitLabelSet(string[] Localized, string[] English, string?[][] Aliases);
+
+    private static UnitLabelSet? selectableUnitLabels;
     private static LoadedLanguage? selectableUnitLabelsLanguage;
     // U1: settings-only view state. It never enters the settings file, so collapsing or searching changes no choice.
     private static string unitSearch = "";
@@ -91,7 +94,8 @@ public sealed class RimworldStatisticsMod : Mod
         const float rowHeight = 27f;
         var selectable = SelectableUnits();
         var sections = SelectableUnitSections;
-        var unitLabels = UnitLabels(selectable);
+        var labels = UnitLabels(selectable);
+        var unitLabels = labels.Localized;
         var viewRect = new Rect(0f, 0f, inRect.width - 20f, settingsContentHeight > 0
             ? settingsContentHeight : 440f + selectable.Length * rowHeight + sections.Length * 24f);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
@@ -168,7 +172,8 @@ public sealed class RimworldStatisticsMod : Mod
             foreach (var section in sections)
             {
                 var matching = section.Indices
-                    .Where(index => UnitSearch.Matches(unitLabels[index], selectable[index].Id, term))
+                    .Where(index => UnitSearch.MatchesAny(term,
+                        [unitLabels[index], labels.English[index], .. labels.Aliases[index]]))
                     .ToArray();
                 if (term.Length > 0 && matching.Length == 0)
                     continue;
@@ -261,7 +266,7 @@ public sealed class RimworldStatisticsMod : Mod
 
     internal static UnitSection[] SelectableUnitSections => selectableSections ??= BuildUnitSections(SelectableUnits());
 
-    internal static string[] SelectableUnitLabels => UnitLabels(SelectableUnits());
+    internal static string[] SelectableUnitLabels => UnitLabels(SelectableUnits()).Localized;
 
     /// <summary>U1: events, snapshots, then one section per optional MOD provider, in a stable order.</summary>
     private static UnitSection[] BuildUnitSections(AcquisitionUnit[] units)
@@ -362,19 +367,32 @@ public sealed class RimworldStatisticsMod : Mod
     }
 
     /// <summary>
-    /// The units' names, as the Coverage tab names them (#320). They are worked out again only when the language changes:
-    /// the units and the loaded MODs stay the same while the game runs.
+    /// The units' names, as the Coverage tab names them (#320), plus their default-language (English) names for U46
+    /// search. Both are worked out again only when the language changes: the units and loaded MODs stay the same.
     /// </summary>
-    private static string[] UnitLabels(AcquisitionUnit[] units)
+    private static UnitLabelSet UnitLabels(AcquisitionUnit[] units)
     {
-        if (selectableUnitLabels is { } cached && cached.Length == units.Length
+        if (selectableUnitLabels is { } cached && cached.Localized.Length == units.Length
             && ReferenceEquals(selectableUnitLabelsLanguage, LanguageDatabase.activeLanguage))
             return cached;
-        var names = units.Select(u => MetricAcquisitionLabels.UnitLabel(u.Id, UnitRecordingStates.OwnerPackageId(u.Id),
-            UI.MetricText.ActiveModTitle, key => (string)key.Translate(),
-            ModProviderAdapters.FirstDescriptorFor(u.Id)?.OwnerDisplayName) ?? u.Id).ToArray();
-        selectableUnitLabels = MetricAcquisitionLabels.Distinguish(names, i => UnitStatisticLabels(units[i].Id),
-            StringComparer.CurrentCulture);
+        var names = new string[units.Length];
+        var english = new string[units.Length];
+        var aliases = new string?[units.Length][];
+        for (var i = 0; i < units.Length; i++)
+        {
+            var unit = units[i];
+            var owner = UnitRecordingStates.OwnerPackageId(unit.Id);
+            var persisted = ModProviderAdapters.FirstDescriptorFor(unit.Id)?.OwnerDisplayName;
+            names[i] = MetricAcquisitionLabels.UnitLabel(unit.Id, owner, UI.MetricText.ActiveModTitle,
+                key => (string)key.Translate(), persisted) ?? unit.Id;
+            english[i] = MetricAcquisitionLabels.UnitLabel(unit.Id, owner, UI.MetricText.ActiveModTitle,
+                key => SearchCandidates.EnglishText(key) ?? key, persisted) ?? unit.Id;
+            aliases[i] = [unit.Id, MetricAcquisitionLabels.UnitLabelKey(unit.Id), owner, persisted];
+        }
+        selectableUnitLabels = new UnitLabelSet(
+            MetricAcquisitionLabels.Distinguish(names, i => UnitStatisticLabels(units[i].Id),
+                StringComparer.CurrentCulture),
+            english, aliases);
         selectableUnitLabelsLanguage = LanguageDatabase.activeLanguage;
         return selectableUnitLabels;
     }

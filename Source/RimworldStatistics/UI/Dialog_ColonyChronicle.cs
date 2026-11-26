@@ -887,8 +887,11 @@ internal sealed class Dialog_ColonyChronicle : Window
         {
             var trace = chronicle.UndatedTraces[i];
             var traceName = Dialog_RimworldStatistics.EndingLabel(trace.EndingType);
+            var endingKey = Dialog_RimworldStatistics.EndingLabelKey(trace.EndingType);
+            // U46: the keyed ending is also found by its English name and key.
+            var traceSearch = string.Join(" ", traceName, endingKey, SearchCandidates.EnglishText(endingKey));
             undated[i] = new ChronicleFilterableUndatedTrace<string>(
-                trace, traceName, ColonyChronicleFormatter.FormatUndatedTrace(trace));
+                trace, traceSearch, ColonyChronicleFormatter.FormatUndatedTrace(trace));
         }
 
         var activeBranchLabel = chronicle.SelectedBranch is { } activeBranch

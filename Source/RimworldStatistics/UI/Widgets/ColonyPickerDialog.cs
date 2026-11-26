@@ -238,11 +238,14 @@ internal static class ColonyChartPicker
                 string metricLabel;
                 string valueText;
                 string? source = null;
+                string? labelKey = null;
+                string? ownerPackageId = null;
                 var hasValue = false;
                 if (BasicMetrics.Contains(key))
                 {
                     var def = BasicMetrics.Definition(key);
                     metricLabel = MetricText.PerColonyBasicLabel(key);
+                    labelKey = MetricText.PerColonyBasicLabelKey(key);
                     if (BasicMetrics.Value(colony, key) is { } number && double.IsFinite(number))
                     {
                         valueText = MetricText.Format(def, new NumericValue { Number = number, Coverage = MetricCoverage.SnapshotOnly });
@@ -258,6 +261,8 @@ internal static class ColonyChartPicker
                     var def = MetricLookup.Definition(view, key) ?? MetricRegistry.Find(key);
                     metricLabel = def is null ? key : MetricText.Label(def);
                     source = def is null ? null : MetricText.ModSourceLabel(def);
+                    labelKey = def?.LabelKey;
+                    ownerPackageId = def?.OwnerPackageId;
                     var row = def is null ? null : MetricLookup.ForColony(view, colony.Key, def.Key);
                     if (def is not null && row is not null
                         && row.Value.Coverage is not (MetricCoverage.Unknown or MetricCoverage.NotApplicable)
@@ -276,7 +281,8 @@ internal static class ColonyChartPicker
                 return (
                     SortGroup: isFavorite ? 0 : hasValue ? 1 : 2,
                     SortLabel: metricLabel,
-                    Choice: new MetricPickerChoice(key, $"{prefix}{metricLabel} ({valueText})", source));
+                    Choice: new MetricPickerChoice(key, $"{prefix}{metricLabel} ({valueText})", source,
+                        labelKey, ModPackageId: ownerPackageId));
             })
             .OrderBy(x => x.SortGroup)
             .ThenBy(x => x.SortLabel, StringComparer.CurrentCulture)
