@@ -25,7 +25,13 @@ public sealed partial class SaveReader
             return null;
         try
         {
-            return BuildMetrics(state, hash);
+            var built = BuildMetrics(state, hash);
+            // Give every partial value a reason where the data allows (history summaries already carry IncompleteSeries).
+            // Save-file salvage never mixes the colony-worker rules, and a reason set by the builder is never downgraded.
+            foreach (var entry in built.Metrics.Values)
+                foreach (var value in entry.Values.Values)
+                    PartialReasonClassifier.Apply(value);
+            return built;
         }
         catch (Exception e) when (e is not OutOfMemoryException and not StackOverflowException)
         {
@@ -67,6 +73,7 @@ public sealed partial class SaveReader
     private static MetricObservation BuildMetrics(ReadState s, string hash)
     {
         var obs = s.Obs;
+        var gate = s.VersionGate;
         var m = new MetricObservation
         {
             Source = MetricObservationSource.SaveFile,
@@ -100,7 +107,7 @@ public sealed partial class SaveReader
         if (s.StatsRecordPresent && obs.Values.TicksGame > 0)
         {
             var years = obs.Values.TicksGame / (double)(StatFormat.TicksPerDay * StatFormat.DaysPerYear);
-            var defaultKnown = HistoryMetricReader.MajorMinor(obs.GameVersion) is { } v && CounterDefaultVersions.Contains(v);
+            var defaultKnown = gate.CounterDefaultsKnown;
             void PerYear(string key, bool written, int counter)
             {
                 if (!written && !defaultKnown)
@@ -122,7 +129,7 @@ public sealed partial class SaveReader
         // Historical salvage is intentionally a partial lower bound. Unsupported
         // versions, missing player identity and ambiguous faction references remain
         // Unknown, not zero. It is independent of the game-side acquisition toggle.
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) == "1.7"
+        if (gate.SupportsCurrentSchema
             && HistoricalFactionSnapshotReader.Build(s.HistoricalFactions, s.ScenarioPlayerFactionDef,
                 s.HistoricalFactionsOverflowed, m.ActiveDlcIds) is { } historical)
         {
@@ -133,7 +140,7 @@ public sealed partial class SaveReader
                 ["factions"] = MetricEvidence.Experimental,
             };
         }
-        if (HistoryMetricReader.MajorMinor(obs.GameVersion) != "1.7")
+        if (!gate.SupportsCurrentSchema)
             return m;
 
         void MergeSalvage(IReadOnlyDictionary<string, MetricEntry>? entries, params string[] units)

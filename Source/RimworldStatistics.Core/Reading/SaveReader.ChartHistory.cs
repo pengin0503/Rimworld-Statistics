@@ -49,6 +49,10 @@ public sealed partial class SaveReader
             hashing.ReadToEnd();
             if (hashing.BytesRead != file.FileSize || Convert.ToHexStringLower(hashing.Hash()) != expectedHash)
                 return (false, []);
+            // A tickManager anomaly (S36) makes every time-based series unusable: the same "not verified" result the old
+            // OverflowException path gave, but without relying on an exception for it.
+            if (state.Obs.Status == ObservationStatus.Error)
+                return (false, []);
             var values = recorder == HistoryMetricReader.WealthTotal
                 ? state.WealthTotalCount == 1 && state.WealthTotalWithinTextLimit ? state.Wealth : null
                 : state.Series.GetValueOrDefault(recorder);

@@ -356,6 +356,12 @@ public static class CheckpointMetrics
                 obs.ProviderCaptures ??= new Dictionary<string, ModProviderCapture>(StringComparer.Ordinal);
                 obs.ProviderCaptures[providerId] = capture;
             }
+            // A family whose totals mix the colony-worker rules (#392) weakens the values it marked partial to a lower bound.
+            // Classify here, where every family value is materialised, so the reason is data and not a UI decision (S32).
+            var mixedRule = ColonyWorkAttribution.MixesRules(state);
+            foreach (var entry in built.Values)
+                foreach (var value in entry.Values.Values)
+                    PartialReasonClassifier.Apply(value, mixedRule: mixedRule);
             foreach (var (key, entry) in built)
                 obs.Metrics[key] = entry;
             // Recorded without a gap from its own start through this save (a family kept from an earlier session stops

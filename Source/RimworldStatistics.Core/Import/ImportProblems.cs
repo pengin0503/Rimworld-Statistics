@@ -42,7 +42,7 @@ public static class ImportProblems
             "IOException" or "UnauthorizedAccessException" or "FileNotFoundException" or "DirectoryNotFoundException"
                 or "PathTooLongException" => ImportProblemKind.Unreadable,
             "XmlException" or "InvalidDataException" or "EndOfStreamException" or "DecoderFallbackException"
-                or "FormatException" or "OverflowException"
+                or "FormatException" or "OverflowException" or "TickAnomaly"
                 => ImportProblemKind.Damaged,
             _ => ImportProblemKind.Unexpected,
         };

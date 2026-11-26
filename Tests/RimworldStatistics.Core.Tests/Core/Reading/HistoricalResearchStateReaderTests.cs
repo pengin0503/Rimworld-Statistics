@@ -71,6 +71,18 @@ public sealed class HistoricalResearchStateReaderTests
         Assert.False(r.Metrics!.Metrics.ContainsKey(ResearchStateSnapshot.Finished));
     }
 
+    [Theory]
+    [InlineData("1.8.5000 rev1")]   // a future schema is not admitted by accident
+    [InlineData("2.0.1 rev1")]
+    [InlineData("garbage")]
+    [InlineData("1")]               // no major.minor
+    public void FutureOrUnparseableBuildNeverBackfills(string version)
+    {
+        var r = Read(version, new[] { "ludeon.rimworld" }, ("TreeSowing", "1000"));
+        Assert.Equal(ObservationStatus.Ok, r.Observation.Status);
+        Assert.False(r.Metrics!.Metrics.ContainsKey(ResearchStateSnapshot.Finished));
+    }
+
     [Fact]
     public void NoResearchManagerNeverInventsFinishedZero()
     {

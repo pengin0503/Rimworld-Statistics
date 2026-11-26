@@ -884,7 +884,7 @@ public sealed class NumericCheckpointTests
     [Fact]
     public void Reader_IsVersion15AndReadsTheEmbeddedCheckpoint()
     {
-        Assert.Equal(21, SaveReader.Version);
+        Assert.Equal(22, SaveReader.Version);
         var acc = LiveMetricAccumulator.StartNew(Recording, 0);
         var d = acc.PrepareSave(2000, T0, "A")!;
         var r = Read(SaveWith(d.Json));

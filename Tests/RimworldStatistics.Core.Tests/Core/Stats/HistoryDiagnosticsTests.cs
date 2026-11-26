@@ -96,6 +96,8 @@ public sealed class HistoryDiagnosticsTests
     [InlineData(ObservationStatus.Error, "XmlException: '<' is an unexpected token. Line 4, position 2.", ImportProblemKind.Damaged)]
     [InlineData(ObservationStatus.Error, "InvalidDataException: Block length does not match with its complement.", ImportProblemKind.Damaged)]
     [InlineData(ObservationStatus.Error, "EndOfStreamException: Unable to read beyond the end of the stream.", ImportProblemKind.Damaged)]
+    [InlineData(ObservationStatus.Error, "TickAnomaly: ticksGame is negative", ImportProblemKind.Damaged)]
+    [InlineData(ObservationStatus.Error, "TickAnomaly: ticksGame is above the sane maximum", ImportProblemKind.Damaged)]
     [InlineData(ObservationStatus.Error, "not a savegame", ImportProblemKind.NotASave)]
     [InlineData(ObservationStatus.Error, "NullReferenceException: Object reference not set to an instance of an object.", ImportProblemKind.Unexpected)]
     [InlineData(ObservationStatus.Error, null, ImportProblemKind.Unexpected)]

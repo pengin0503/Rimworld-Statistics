@@ -38,12 +38,6 @@ public static class HistoryMetricReader
     public static readonly IReadOnlySet<string> Defs = new HashSet<string>(StringComparer.Ordinal)
         { WealthTotal, WealthItems, WealthBuildings, WealthPawns, FreeColonists, Prisoners, ColonistMood, ThreatPoints, Adaptation };
 
-    /// <summary>
-    /// Versions whose recorder cadences (30000 ticks, and 60000 ticks for Adaptation) are verified: 1.7 by its Defs and IL,
-    /// 1.5 and 1.6 by real saves (point counts match the ticks in every save examined). Other versions get no time-based outputs.
-    /// </summary>
-    private static readonly HashSet<string> TimedVersions = new(StringComparer.Ordinal) { "1.5", "1.6", "1.7" };
-
     /// <summary>"1.6.4566 rev607" → "1.6"; null when it has no major.minor.</summary>
     public static string? MajorMinor(string? gameVersion)
     {
@@ -55,7 +49,8 @@ public static class HistoryMetricReader
             : null;
     }
 
-    public static bool IsTimedVersion(string? gameVersion) => MajorMinor(gameVersion) is { } v && TimedVersions.Contains(v);
+    /// <summary>Whether the version's recorder cadence is verified, so time-based outputs may be built (see <see cref="SaveVersionGate"/>).</summary>
+    public static bool IsTimedVersion(string? gameVersion) => SaveVersionGate.For(gameVersion).IsTimedVersion;
 
     public static IReadOnlyList<MetricHistoryPoint> RecorderHistory(string recorder, float[] values, string? gameVersion, int tick)
     {
@@ -201,7 +196,13 @@ public static class HistoryMetricReader
     }
 
     private static MetricValue Snap(double value, bool partial)
-        => new() { Coverage = partial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly, RealValue = value };
+    {
+        var v = new MetricValue { Coverage = partial ? MetricCoverage.Partial : MetricCoverage.SnapshotOnly, RealValue = value };
+        // Every partial summary here is partial because the series had missing points (AnyMissing/skipped windows).
+        if (partial)
+            PartialReasonClassifier.Apply(v, incompleteSeries: true);
+        return v;
+    }
 
     /// <summary>Not defined for this series: too short for the window, or no point meets the definition (e.g. a positive start).</summary>
     private static MetricValue NotApplicable() => new() { Coverage = MetricCoverage.NotApplicable };

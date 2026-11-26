@@ -183,7 +183,7 @@ public sealed partial class SaveReader
             }
             else if (cls is BossgroupComponentName or "RimWorld." + BossgroupComponentName)
             {
-                if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                if (s.VersionGate.SupportsCurrentSchema)
                     ReadBossgroupComponent(r, s);
                 else
                     r.Skip();
