@@ -14,7 +14,7 @@ Cross-save, cross-colony lifetime statistics viewer on the title screen and in-g
 過去にプレイしたコロニーの記録を集約し、RimWorldの**タイトル画面からセーブデータを個別にロードせずに**閲覧できるほか、**プレイ中のメニューやショートカットキーから現在のコロニー総括や通算統計をいつでも確認できる**MODです。セーブフォルダ内のセーブデータと、本MODが保存する統計プロフィールをもとに全コロニーの実績を集計します。
 
 - **対応バージョン**：RimWorld 1.7
-- **MODバージョン**：2.0.0
+- **MODバージョン**：2.1.0
 - **必須MOD**：[Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077)
 - **対応言語（12言語）**：日本語、英語、中国語（簡体字・繁体字）、韓国語、ドイツ語、フランス語、スペイン語（スペイン・ラテンアメリカ）、ポルトガル語（ポルトガル・ブラジル）、ロシア語（RimWorld本体の言語設定に従います）
 
@@ -143,7 +143,7 @@ A. RimWorldのセーブデータフォルダー配下の `RimworldStatistics/` �
 **Rimworld Statistics** aggregates records across all of your colonies and lets you browse them **directly from the RimWorld title screen without loading individual save files**, as well as **in-game via the pause menu or configurable keyboard shortcuts**. It combines read-only analysis of saves in your save folder with a persistent local statistics profile maintained while you play.
 
 - **Supported Game Version**: RimWorld 1.7
-- **Mod Version**: 2.0.0
+- **Mod Version**: 2.1.0
 - **Required Mod**: [Harmony](https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077)
 - **Supported Languages (12)**: Japanese, English, Simplified Chinese, Traditional Chinese, Korean, German, French, Spanish (Spain & Latin America), Portuguese (Portugal & Brazil), Russian (follows RimWorld's language setting)
 
