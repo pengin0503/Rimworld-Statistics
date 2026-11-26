@@ -104,6 +104,17 @@ public sealed class ProfileSession
     public ProfileLoadResult LoadResult { get; }
 
     /// <summary>
+    /// Whether another program changed the profile file since this session loaded or last wrote it. Safe to call from the
+    /// main thread: it waits for a write in progress, then only reads. Never throws; <see cref="ProfileExternalChange.Unknown"/>
+    /// means it could not be checked.
+    /// </summary>
+    public ProfileExternalChange CheckExternalChange()
+    {
+        lock (_ioLock)
+            return _store.CheckExternalChange();
+    }
+
+    /// <summary>
     /// The number of changes applied so far, read without the profile lock (a window polls it every frame). Changes queued by
     /// <see cref="MutateWithoutBlocking"/> count once they are applied, which every read of the profile does first.
     /// </summary>
@@ -900,8 +911,13 @@ public sealed class ProfileSession
         {
             if (_closed)
                 return;
-            WriteLatest(retryArchive: true);   // a restore closes the session first (#315)
-            EnsureFlushed();
+            // Nothing this session can write (a newer-schema file or an unreadable primary): closing must not turn the
+            // refused saves into an error. In particular a guided recovery closes such a session before restoring.
+            if (!LoadResult.ReadOnly)
+            {
+                WriteLatest(retryArchive: true);   // a restore closes the session first (#315)
+                EnsureFlushed();
+            }
             _closed = true;
         }
     }

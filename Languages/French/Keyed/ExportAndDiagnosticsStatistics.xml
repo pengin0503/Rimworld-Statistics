@@ -19,4 +19,16 @@
   <RWS_Diag_Copied>Résumé diagnostique anonyme (sans chemins, noms ni ID) copié dans le presse-papiers.</RWS_Diag_Copied>
   <RWS_Diag_Saved>Résumé diagnostique anonyme (sans chemins, noms ni ID) enregistré.</RWS_Diag_Saved>
   <RWS_Diag_Error>Échec de la génération du diagnostic ({0}).</RWS_Diag_Error>
+  <RWS_Data_ProfileCapacity>Record file: {0} MiB ({1}% of the {2} MB limit)</RWS_Data_ProfileCapacity>
+  <RWS_Data_ExternalChange>The record file was changed outside the game (cloud sync or another tool). In-game data is unaffected until a save, which will use the in-game data.</RWS_Data_ExternalChange>
+  <RWS_Diag_StoppedPatches>Patch classes that did not apply this session:</RWS_Diag_StoppedPatches>
+  <RWS_Diag_StoppedUnits>Statistics units stopped this session:</RWS_Diag_StoppedUnits>
+  <RWS_Diag_FailedUnitsWarning>Some statistics units or patches stopped this session; details below.</RWS_Diag_FailedUnitsWarning>
+  <RWS_Diag_ChartCacheWarning>The chart cache is at its configured limit; the oldest charts will be parsed again.</RWS_Diag_ChartCacheWarning>
+  <RWS_Recovery_Explanation>This session loaded through the damaged-file fallback or could not read the record file. Restoring the newest verified backup replaces the current records; a backup of them is written first.</RWS_Recovery_Explanation>
+  <RWS_Recovery_RestoreNewest>Restore newest valid backup</RWS_Recovery_RestoreNewest>
+  <RWS_Recovery_NoBackup>No valid backup is available.</RWS_Recovery_NoBackup>
+  <RWS_Diag_PreviewButton>Preview</RWS_Diag_PreviewButton>
+  <RWS_Diag_PreviewTip>Show the anonymous diagnostic text below, read-only, before copying or saving it.</RWS_Diag_PreviewTip>
+  <RWS_Diag_PreviewLabel>Preview of the text that will be shared (read-only):</RWS_Diag_PreviewLabel>
 </LanguageData>

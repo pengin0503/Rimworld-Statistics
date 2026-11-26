@@ -8,15 +8,26 @@ namespace RimworldStatistics.UI;
 /// <summary>
 /// Read-only, zero-PII diagnostic summary controls in the Data Management tab (§4.2.8).
 /// Captures game/mod versions, official DLCs, adapter counts, observation counts, and import problem kinds on a worker thread,
-/// then copies to clipboard on the Unity main thread or writes an atomic .txt file.
+/// then previews the text, copies it to the clipboard on the Unity main thread, or writes an atomic .txt file. It also
+/// names the patches and acquisition units that stopped this session and warns when the chart cache is saturated.
 /// </summary>
 internal static class DiagnosticsPanel
 {
+    private const float PreviewHeight = 200f;
+
     private enum DiagCompletionKind
     {
         None,
         Copied,
         Saved,
+        Previewed,
+    }
+
+    private enum DiagAction
+    {
+        Copy,
+        Save,
+        Preview,
     }
 
     private sealed record DiagRunResult(DiagCompletionKind Kind, string Text, DiagnosticSummaryExportResult? Saved);
@@ -25,6 +36,30 @@ internal static class DiagnosticsPanel
     private static DiagCompletionKind lastKind;
     private static DiagnosticSummaryExportResult? lastSaved;
     private static string? lastErrorType;
+    private static string? previewText;
+    private static Vector2 previewScroll;
+
+    /// <summary>The height this panel needs at the moment, so the tab can keep the whole preview and lists visible.</summary>
+    internal static float PreferredHeight
+    {
+        get
+        {
+            var height = 52f;   // copy/save/preview row and the status line
+            var units = FailedUnitNames();
+            var patches = PatchRunner.Failed;
+            if (units.Length > 0 || patches.Count > 0)
+                height += 26f;   // the one-line failed-units warning
+            if (ChartCacheSaturated())
+                height += 26f;
+            if (units.Length > 0)
+                height += 48f;
+            if (patches.Count > 0)
+                height += 48f;
+            if (previewText is not null)
+                height += 24f + PreviewHeight + 4f;
+            return height;
+        }
+    }
 
     public static void Draw(Rect rect, ProfileSession session, StatsView? view)
     {
@@ -44,6 +79,11 @@ internal static class DiagnosticsPanel
                 {
                     lastSaved = res.Saved;
                 }
+                else if (res.Kind == DiagCompletionKind.Previewed)
+                {
+                    previewText = res.Text;
+                    previewScroll = Vector2.zero;
+                }
             }
             else
             {
@@ -58,15 +98,21 @@ internal static class DiagnosticsPanel
         var copyRect = controls.Next(copyLabel, 130f, 260f);
         var shownCopy = copyLabel.Truncate(Math.Max(0f, copyRect.width - 12f));
         if (Widgets.ButtonText(copyRect, shownCopy, active: pending is null))
-            Start(session, view, saveToFile: false);
+            Start(session, view, DiagAction.Copy);
         TooltipHandler.TipRegion(copyRect, "RWS_Diag_CopyTip".Translate());
 
         var saveLabel = (string)"RWS_Diag_SaveButton".Translate();
         var saveRect = controls.Next(saveLabel, 130f, 260f);
         var shownSave = saveLabel.Truncate(Math.Max(0f, saveRect.width - 12f));
         if (Widgets.ButtonText(saveRect, shownSave, active: pending is null))
-            Start(session, view, saveToFile: true);
+            Start(session, view, DiagAction.Save);
         TooltipHandler.TipRegion(saveRect, "RWS_Diag_SaveTip".Translate());
+
+        var previewLabel = (string)"RWS_Diag_PreviewButton".Translate();
+        var previewRect = controls.Next(previewLabel, 90f, 180f);
+        if (Widgets.ButtonText(previewRect, previewLabel.Truncate(Math.Max(0f, previewRect.width - 12f)), active: pending is null))
+            Start(session, view, DiagAction.Preview);
+        TooltipHandler.TipRegion(previewRect, "RWS_Diag_PreviewTip".Translate());
 
         if (lastSaved is { } saved)
         {
@@ -81,25 +127,109 @@ internal static class DiagnosticsPanel
                 GUIUtility.systemCopyBuffer = saved.FilePath;
         }
 
+        var y = rect.y + controls.Height + 2f;
+        var failedUnits = FailedUnitNames();
+        var failedPatches = PatchRunner.Failed;
+
+        if (failedUnits.Length > 0 || failedPatches.Count > 0)
+            y = WarningLine(rect, y, "RWS_Diag_FailedUnitsWarning");
+        if (ChartCacheSaturated())
+            y = WarningLine(rect, y, "RWS_Diag_ChartCacheWarning");
+
+        if (failedPatches.Count > 0)
+            y = StoppedSection(rect, y, "RWS_Diag_StoppedPatches", failedPatches);
+        if (failedUnits.Length > 0)
+            y = StoppedSection(rect, y, "RWS_Diag_StoppedUnits", failedUnits);
+
         string? status = pending is not null ? (string)"RWS_Diag_Working".Translate()
             : lastErrorType is not null ? (string)"RWS_Diag_Error".Translate(lastErrorType)
             : lastKind == DiagCompletionKind.Copied ? (string)"RWS_Diag_Copied".Translate()
             : lastKind == DiagCompletionKind.Saved && lastSaved is not null ? (string)"RWS_Diag_Saved".Translate()
             : null;
-        if (status is null)
-            return;
-
-        var statusRect = new Rect(rect.x, rect.y + controls.Height + 2f, rect.width, 22f);
-        using (UiScopes.GuiState())
+        if (status is not null)
         {
-            if (lastErrorType is not null)
-                GUI.color = ColorLibrary.RedReadable;
-            Verse.Widgets.Label(statusRect, status.Truncate(statusRect.width));
+            var statusRect = new Rect(rect.x, y, rect.width, 22f);
+            using (UiScopes.GuiState())
+            {
+                if (lastErrorType is not null)
+                    GUI.color = ColorLibrary.RedReadable;
+                Verse.Widgets.Label(statusRect, status.Truncate(statusRect.width));
+            }
+            TooltipHandler.TipRegion(statusRect, status);
+            y += 24f;
         }
-        TooltipHandler.TipRegion(statusRect, status);
+
+        if (previewText is not null)
+            DrawPreview(new Rect(rect.x, y, rect.width, rect.yMax - y));
     }
 
-    private static void Start(ProfileSession session, StatsView? view, bool saveToFile)
+    /// <summary>The text the copy/save actions would produce, shown read-only and scrollable before sharing.</summary>
+    private static void DrawPreview(Rect rect)
+    {
+        if (previewText is not { } text)
+            return;
+
+        var labelRect = new Rect(rect.x, rect.y, rect.width, 20f);
+        Verse.Widgets.Label(labelRect, "RWS_Diag_PreviewLabel".Translate());
+        var area = new Rect(rect.x, rect.y + 22f, rect.width, Math.Min(PreviewHeight, Math.Max(0f, rect.height - 22f)));
+        if (area.height <= 0f)
+            return;
+        Verse.Widgets.DrawMenuSection(area);
+        var inner = area.ContractedBy(6f);
+        var viewWidth = Math.Max(0f, inner.width - 16f);
+        var textHeight = Math.Max(inner.height, Text.CalcHeight(text, viewWidth));
+        using (UiScopes.ScrollView(inner, ref previewScroll, new Rect(0f, 0f, viewWidth, textHeight)))
+        {
+            // The return value is deliberately ignored: typing into the box never changes the text that will be shared.
+            GUI.TextArea(new Rect(0f, 0f, viewWidth, textHeight), text);
+        }
+    }
+
+    private static float WarningLine(Rect rect, float y, string key)
+    {
+        var line = new Rect(rect.x, y, rect.width, 22f);
+        using (UiScopes.GuiState())
+        {
+            GUI.color = ColorLibrary.RedReadable;
+            Verse.Widgets.Label(line, key.Translate());
+        }
+        return y + 26f;
+    }
+
+    private static float StoppedSection(Rect rect, float y, string key, IReadOnlyList<string> names)
+    {
+        Verse.Widgets.Label(new Rect(rect.x, y, rect.width, 20f), key.Translate());
+        y += 20f;
+        var text = string.Join(", ", names);
+        var line = new Rect(rect.x, y, rect.width, 24f);
+        var shown = text.Truncate(line.width);
+        Verse.Widgets.Label(line, shown);
+        if (shown != text)
+            TooltipHandler.TipRegion(line, text);
+        return y + 26f;
+    }
+
+    private static bool ChartCacheSaturated()
+    {
+        var cache = RecorderChartCache.Shared;
+        return (cache.MaxEntries > 0 && cache.Count >= cache.MaxEntries)
+            || (cache.MaxPoints > 0 && cache.PointCount >= cache.MaxPoints);
+    }
+
+    /// <summary>Union of the execution guard's failed units and the units the gates closed, sorted and distinct.</summary>
+    private static string[] FailedUnitNames()
+    {
+        var names = new SortedSet<string>(StringComparer.Ordinal);
+        foreach (var name in MetricGates.FailedUnitIds)
+            if (!string.IsNullOrWhiteSpace(name))
+                names.Add(name);
+        foreach (var name in ModProviderAdapters.FailedUnitIds)
+            if (!string.IsNullOrWhiteSpace(name))
+                names.Add(name);
+        return names.ToArray();
+    }
+
+    private static void Start(ProfileSession session, StatsView? view, DiagAction action)
     {
         lastErrorType = null;
         lastKind = DiagCompletionKind.None;
@@ -127,6 +257,9 @@ internal static class DiagnosticsPanel
 
             var adapters = CaptureAdapterCounts(thirdPartyCount);
             var directory = Path.Combine(ProfileService.DirectoryPath, "exports");
+            // Read on the main thread: the stopped lists are live session state, not part of the profile.
+            var failedUnits = FailedUnitNames();
+            var failedPatches = PatchRunner.Failed.ToArray();
 
             pending = Task.Run(() =>
             {
@@ -144,14 +277,21 @@ internal static class DiagnosticsPanel
                     session.LastSaveError,
                     session.LastArchiveError,
                     session.LastQueuedMutationError));
+                input = input with
+                {
+                    FailedProviderUnitNames = failedUnits,
+                    FailedPatchClassNames = failedPatches,
+                };
 
-                if (saveToFile)
+                if (action == DiagAction.Save)
                 {
                     var written = DiagnosticSummaryBuilder.WriteFile(input, directory, now);
                     return new DiagRunResult(DiagCompletionKind.Saved, written.Text, written);
                 }
 
-                return new DiagRunResult(DiagCompletionKind.Copied, DiagnosticSummaryBuilder.FormatText(input), null);
+                var text = DiagnosticSummaryBuilder.FormatText(input);
+                return new DiagRunResult(action == DiagAction.Preview ? DiagCompletionKind.Previewed : DiagCompletionKind.Copied,
+                    text, null);
             });
         }
         catch (Exception ex)

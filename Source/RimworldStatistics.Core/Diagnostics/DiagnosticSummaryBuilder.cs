@@ -71,6 +71,15 @@ public sealed record DiagnosticSummaryInput
 
     public DiagnosticAdapterCounts Adapters { get; init; } = new();
 
+    /// <summary>
+    /// Names of optional/provider acquisition units that stopped this session. Sanitized and bounded when rendered; the
+    /// default keeps the summary exactly as before these names existed.
+    /// </summary>
+    public IReadOnlyList<string> FailedProviderUnitNames { get; init; } = [];
+
+    /// <summary>Names of Harmony patch classes that could not be applied this session, rendered like the unit names.</summary>
+    public IReadOnlyList<string> FailedPatchClassNames { get; init; } = [];
+
     public int OverallMetricsComplete { get; init; }
     public int OverallMetricsSnapshotOnly { get; init; }
     public int OverallMetricsPartial { get; init; }
@@ -331,6 +340,20 @@ public static class DiagnosticSummaryBuilder
             .Append(", dlc_missing=").Append(Math.Max(0, a.OptionalUnitsDlcMissing).ToString(Inv))
             .Append(", not_selected=").AppendLine(Math.Max(0, a.OptionalUnitsNotSelected).ToString(Inv));
         sb.Append("external_sdk_providers_registered: ").AppendLine(Math.Max(0, a.ExternalSdkProvidersRegistered).ToString(Inv));
+
+        // Names are optional: with none supplied the summary keeps exactly its previous shape. They are code identifiers
+        // (unit ids, patch class names), never paths or user text, and are bounded so a heavy session stays readable.
+        var failedUnits = SanitizeStoppedNames(input.FailedProviderUnitNames);
+        var failedPatches = SanitizeStoppedNames(input.FailedPatchClassNames);
+        if (failedUnits.Count > 0 || failedPatches.Count > 0)
+        {
+            sb.AppendLine();
+            sb.AppendLine("[stopped_items]");
+            sb.Append("failed_provider_units: ")
+                .AppendLine(failedUnits.Count > 0 ? string.Join(", ", failedUnits) : "none");
+            sb.Append("failed_patch_classes: ")
+                .AppendLine(failedPatches.Count > 0 ? string.Join(", ", failedPatches) : "none");
+        }
         sb.AppendLine();
 
         sb.AppendLine("[overall_coverage]");
@@ -429,6 +452,53 @@ public static class DiagnosticSummaryBuilder
 
     private static string SanitizeIdentifierOrNone(string? raw)
         => SanitizeIdentifier(raw) ?? "none";
+
+    private const int MaxStoppedNames = 50;
+    private const int MaxStoppedNameLength = 80;
+
+    /// <summary>
+    /// Code identifiers (provider unit ids, patch class names) in a stable bounded form: path-like or otherwise unsafe input
+    /// is dropped entirely, duplicates are removed, and at most <see cref="MaxStoppedNames"/> names are kept.
+    /// </summary>
+    private static IReadOnlyList<string> SanitizeStoppedNames(IReadOnlyList<string>? raw)
+    {
+        if (raw is null || raw.Count == 0)
+            return [];
+
+        var unique = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var value in raw)
+        {
+            if (SanitizeStoppedName(value) is { } name)
+                unique.Add(name);
+        }
+        var sorted = unique.ToArray();
+        Array.Sort(sorted, StringComparer.Ordinal);
+        return sorted.Length <= MaxStoppedNames ? sorted : sorted[..MaxStoppedNames];
+    }
+
+    /// <summary>
+    /// One identifier, or null when it contains anything but the characters unit ids and patch class names use. In
+    /// particular a path separator, drive colon, whitespace or another path-like character rejects the whole value, so no
+    /// supplied path can reach the summary through the name lists.
+    /// </summary>
+    private static string? SanitizeStoppedName(string? raw)
+    {
+        if (string.IsNullOrWhiteSpace(raw))
+            return null;
+        var trimmed = raw.Trim();
+        if (trimmed.IndexOfAny(['/', '\\', ':', '@', '~', '%', '$', '=', '?', '*', '"', '<', '>', '|', ',', ';', ' ']) >= 0)
+            return null;
+
+        var sb = new StringBuilder(Math.Min(MaxStoppedNameLength, trimmed.Length));
+        foreach (var ch in trimmed)
+        {
+            if (sb.Length >= MaxStoppedNameLength)
+                break;
+            if (char.IsAsciiLetterOrDigit(ch) || ch is '.' or '_' or '-' or '`' or '+')
+                sb.Append(ch);
+        }
+        return sb.Length == 0 ? null : sb.ToString();
+    }
 
     private static string? SanitizeIdentifier(string? raw)
     {

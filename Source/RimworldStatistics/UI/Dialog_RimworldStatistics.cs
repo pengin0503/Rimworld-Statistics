@@ -39,6 +39,7 @@ public sealed class Dialog_RimworldStatistics : Window
     private ProfileSession? viewSession;
     private object? cachedTabLanguage;
     private Tab cachedTabSelected = (Tab)(-1);
+    private bool cachedTabWarning;
     private string[]? cachedTabNames;
     private List<TabRecord>? cachedTabs;
     private float cachedTabTotalWidth;
@@ -81,6 +82,10 @@ public sealed class Dialog_RimworldStatistics : Window
             if (ProfileService.RestoredPreferencesPending)
                 ProfileService.ApplyRestoredPreferences();
             RefreshSavedPreferences();
+            // Refreshed on the same two-second background cadence as the Data Management tab, never per frame.
+            var statusSession = ProfileService.TryGetSession(out _);
+            ProfileStatusMonitor.Poll(statusSession);
+            var tabWarning = TabWarningNeeded(statusSession);
             var header = StatisticsWindowLayout.ResolveHeader(inRect.width);
             Text.Font = GameFont.Medium;
             string titleText = "RWS_WindowTitle".Translate();
@@ -149,9 +154,10 @@ public sealed class Dialog_RimworldStatistics : Window
             var body = new Rect(inRect.x, inRect.y + topChrome, inRect.width, Math.Max(0f, inRect.height - topChrome));
             Verse.Widgets.DrawMenuSection(body);
             var lang = LanguageDatabase.activeLanguage;
-            if (cachedTabNames is null || cachedTabs is null || !ReferenceEquals(cachedTabLanguage, lang) || cachedTabSelected != current)
+            if (cachedTabNames is null || cachedTabs is null || !ReferenceEquals(cachedTabLanguage, lang)
+                || cachedTabSelected != current || cachedTabWarning != tabWarning)
             {
-                if (cachedTabNames is null || !ReferenceEquals(cachedTabLanguage, lang))
+                if (cachedTabNames is null || !ReferenceEquals(cachedTabLanguage, lang) || cachedTabWarning != tabWarning)
                 {
                     cachedTabNames =
                     [
@@ -160,11 +166,16 @@ public sealed class Dialog_RimworldStatistics : Window
                         (string)"RWS_Tab_Rankings".Translate(), (string)"RWS_Tab_Coverage".Translate(),
                         (string)"RWS_Tab_Import".Translate(),
                     ];
+                    // Symbol only, identical in every language: no extra translation key. Marks the Data Management tab
+                    // when it is worth looking at (read-only, recovered, externally changed, or nearly full).
+                    if (tabWarning)
+                        cachedTabNames[6] += " (!)";
                     var totalWidth = 0f;
                     for (var i = 0; i < cachedTabNames.Length; i++)
                         totalWidth += Text.CalcSize(cachedTabNames[i]).x + 33f;
                     cachedTabTotalWidth = totalWidth;
                     cachedTabLanguage = lang;
+                    cachedTabWarning = tabWarning;
                 }
                 cachedTabSelected = current;
                 cachedTabs = new List<TabRecord>(cachedTabNames.Length)
@@ -262,6 +273,20 @@ public sealed class Dialog_RimworldStatistics : Window
             Text.WordWrap = true;
             GUI.color = Color.white;
         }
+    }
+
+    /// <summary>
+    /// Whether the Data Management tab should carry the warning marker: read-only session, corrupt-primary recovery,
+    /// external change, or a profile at 90% or more of the load limit.
+    /// </summary>
+    private static bool TabWarningNeeded(ProfileSession? session)
+    {
+        if (session is null)
+            return false;
+        if (session.LoadResult.ReadOnly || session.LoadResult.CorruptFileRenamedTo is not null)
+            return true;
+        var status = ProfileStatusMonitor.Current;
+        return status is { IsChangedExternally: true } || status is { IsCriticalCapacity: true };
     }
 
     private StatsView? GetView(ProfileSession session)
