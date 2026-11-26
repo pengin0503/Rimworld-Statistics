@@ -67,4 +67,55 @@ public sealed class ExperimentalAcquisitionPolicyTests
             new ExperimentalSelection(true, Array.Empty<string>()), units));
     }
 
+    [Fact]
+    public void RecommendedSelectionIncludesEventsAndSnapshotsButExcludesDerived()
+    {
+        var units = new[]
+        {
+            new AcquisitionUnit("research", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("roster", AcquisitionKind.Snapshot, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("ending_party", AcquisitionKind.Derived, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("verified", AcquisitionKind.Family, AcquisitionStatus.Verified),
+        };
+
+        var recommended = ExperimentalAcquisitionPolicy.RecommendedSelection(units, _ => true, _ => true);
+
+        Assert.Equal(new[] { "research", "roster", "verified" }, recommended);
+    }
+
+    [Fact]
+    public void RecommendedSelectionExcludesMissingDlcAndMissingMod()
+    {
+        var units = new[]
+        {
+            new AcquisitionUnit("base", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("dlc_ok", AcquisitionKind.Family, AcquisitionStatus.Unverified, "ludeon.rimworld.royalty"),
+            new AcquisitionUnit("dlc_missing", AcquisitionKind.Snapshot, AcquisitionStatus.Unverified, "ludeon.rimworld.ideology"),
+            new AcquisitionUnit("mod.ok.unit", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("mod.missing.unit", AcquisitionKind.Snapshot, AcquisitionStatus.Unverified),
+        };
+
+        var recommended = ExperimentalAcquisitionPolicy.RecommendedSelection(
+            units,
+            dlc => dlc == "ludeon.rimworld.royalty",
+            id => !id.StartsWith("mod.missing.", StringComparison.Ordinal));
+
+        Assert.Equal(new[] { "base", "dlc_ok", "mod.ok.unit" }, recommended);
+        Assert.DoesNotContain(ExperimentalAcquisitionPolicy.AllUnitsToken, recommended);
+    }
+
+    [Fact]
+    public void RecommendedSelectionIsStableAndDistinct()
+    {
+        var units = new[]
+        {
+            new AcquisitionUnit("b", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("a", AcquisitionKind.Snapshot, AcquisitionStatus.Unverified),
+            new AcquisitionUnit("b", AcquisitionKind.Family, AcquisitionStatus.Unverified),
+        };
+
+        var recommended = ExperimentalAcquisitionPolicy.RecommendedSelection(units, _ => true, _ => true);
+
+        Assert.Equal(new[] { "a", "b" }, recommended);
+    }
 }

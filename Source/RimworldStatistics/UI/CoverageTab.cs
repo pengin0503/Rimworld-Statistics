@@ -123,6 +123,15 @@ internal static class CoverageTab
                 { verification = MetricVerification.Legacy; rebuildRows = true; scroll = Vector2.zero; }),
             }));
         }
+        // U2: change recording here, without leaving for the settings window. The menu uses the same mutation and
+        // apply path as the settings rows (RimworldStatisticsMod.SetUnitSelected).
+        var recordingText = (string)"RWS_Coverage_Recording".Translate();
+        var recordingBtn = controls.Next(recordingText, 120f, 190f);
+        var shownRecording = recordingText.Truncate(Math.Max(0f, recordingBtn.width - 12f));
+        if (shownRecording != recordingText)
+            TooltipHandler.TipRegion(recordingBtn, recordingText);
+        if (Widgets.ButtonText(recordingBtn, shownRecording))
+            OpenRecordingMenu();
 
         if (rebuildRows)
         {
@@ -220,7 +229,10 @@ internal static class CoverageTab
                 {
                     var metric = row.Status;
                     var id = unchecked(0x52571000 + i * 8191);
-                    TooltipHandler.TipRegion(rowRect, () => Tooltip(metric, view.Stats), id);
+                    // U36: the full diagnostic tooltip normally, the metric key while Shift is held.
+                    UiTooltips.Tip(rowRect,
+                        () => Tooltip(metric, view.Stats) + "\n" + (string)"RWS_Tip_TechnicalHint".Translate(),
+                        metric.Definition.Key, id);
                 }
             }
         }
@@ -234,6 +246,55 @@ internal static class CoverageTab
         search = "";
         rebuildRows = true;
         scroll = Vector2.zero;
+    }
+
+    /// <summary>
+    /// The Recording menu (U2): sections first, then every unit the settings window would show as a checkbox, marked
+    /// selected or not. Units whose DLC or owner MOD is absent are left out, exactly as the settings rows leave them out
+    /// of the checkbox list (the settings window still lists them with a requirement notice).
+    /// </summary>
+    private static void OpenRecordingMenu()
+    {
+        var units = RimworldStatisticsMod.SelectableUnits();
+        var labels = RimworldStatisticsMod.SelectableUnitLabels;
+        var ids = RimworldStatisticsMod.Settings.experimentalUnitIds;
+        var autoAll = ids.Contains(ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
+        var menu = new List<FloatMenuOption>();
+        foreach (var section in RimworldStatisticsMod.SelectableUnitSections)
+        {
+            var candidates = section.Indices
+                .Where(index => RimworldStatisticsMod.IsUnitToggleable(units[index]))
+                .ToArray();
+            if (candidates.Length == 0)
+                continue;
+            var sectionLabel = RimworldStatisticsMod.UnitSectionLabel(section);
+            menu.Add(new FloatMenuOption(sectionLabel, () =>
+            {
+                var options = new List<FloatMenuOption>(candidates.Length);
+                foreach (var index in candidates)
+                {
+                    var unit = units[index];
+                    var selected = autoAll || ids.Contains(unit.Id, StringComparer.Ordinal);
+                    var kind = unit.Kind == AcquisitionKind.Family
+                        ? (string)"RWS_Exp_Event".Translate()
+                        : (string)"RWS_Exp_Snapshot".Translate();
+                    var optionLabel = (selected ? "✓ " : "✗ ") + labels[index] + " · " + kind;
+                    var unitId = unit.Id;
+                    var choose = !selected;
+                    options.Add(new FloatMenuOption(optionLabel, () =>
+                    {
+                        RimworldStatisticsMod.SetUnitSelected(unitId, choose);
+                        // Reclassify and rebuild even when the selection happened not to change the revision.
+                        recordingRevision = -1;
+                        rebuildRows = true;
+                        scroll = Vector2.zero;
+                    }));
+                }
+                Find.WindowStack.Add(new FloatMenu(options));
+            }));
+        }
+        if (menu.Count > 0)
+            Find.WindowStack.Add(new FloatMenu(menu));
     }
 
     private static DisplayRow[] BuildRows()

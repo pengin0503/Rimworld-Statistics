@@ -1379,4 +1379,26 @@
   <RWS_Import_FailedActions>失敗したセーブの操作…</RWS_Import_FailedActions>
   <RWS_Import_RecheckThisSave>このセーブを再検査</RWS_Import_RecheckThisSave>
   <RWS_Import_IgnoreThisSave>このセーブを無視</RWS_Import_IgnoreThisSave>
+  <RWS_Exp_Search>ユニットを検索</RWS_Exp_Search>
+  <RWS_Exp_Recommended>推奨</RWS_Exp_Recommended>
+  <RWS_Exp_SectionEvents>イベント</RWS_Exp_SectionEvents>
+  <RWS_Exp_SectionSnapshots>スナップショット</RWS_Exp_SectionSnapshots>
+  <RWS_Tip_SettingsUnit>チェック中はこのユニットを記録します。Shiftを押すと技術IDを表示します。</RWS_Tip_SettingsUnit>
+  <RWS_Coverage_Recording>記録設定…</RWS_Coverage_Recording>
+  <RWS_Endings_SearchTip>コロニー名または終了種別で検索</RWS_Endings_SearchTip>
+  <RWS_Endings_SortDesc>新しい順</RWS_Endings_SortDesc>
+  <RWS_Endings_SortAsc>古い順</RWS_Endings_SortAsc>
+  <RWS_Endings_FilterAll>すべての終了種別</RWS_Endings_FilterAll>
+  <RWS_Endings_GoToColony>コロニーを開く</RWS_Endings_GoToColony>
+  <RWS_Guide_Button>このタブのガイドを表示</RWS_Guide_Button>
+  <RWS_Guide_Title>タブガイド</RWS_Guide_Title>
+  <RWS_Guide_Overview>概要: 選択中のスコープの集計値を表示します。 • 上部のスコープ選択でコロニーのグループを切り替えます。 • 個別の値は詳細またはランキングで確認できます。</RWS_Guide_Overview>
+  <RWS_Guide_Endings>終了: 記録された終了とセーブの痕跡を一覧します。 • コロニー名または終了種別で検索できます。 • 時刻順の並べ替え、終了種別の絞り込み、コロニーを開くから年代記を表示できます。</RWS_Guide_Endings>
+  <RWS_Guide_Colonies>コロニー: 記録されたコロニーの一覧です。行を選ぶと詳細が開きます。 • 検索と列ヘッダーでの並べ替えができます。 • 選択した行から年代記を開けます。</RWS_Guide_Colonies>
+  <RWS_Guide_Details>詳細: 記録されたすべての統計をコロニー・期間ごとに表示します。 • 統計と表示範囲(全期間/期間)を選びます。 • カテゴリと検索で一覧を絞り込めます。</RWS_Guide_Details>
+  <RWS_Guide_Rankings>ランキング: 1つの統計でコロニーを並べます。 • 統計と並び順を選びます。 • コロニーを選ぶとその値が表示されます。</RWS_Guide_Rankings>
+  <RWS_Guide_Coverage>取得状況: どの統計が測定済み・一部・未測定か、記録がONかを表示します。 • 「記録設定…」からタブを離れずにユニットの記録を切り替えられます。 • カバレッジ・カテゴリ・検証状態で絞り込めます。</RWS_Guide_Coverage>
+  <RWS_Guide_Import>データ管理: セーブの取り込み、バックアップ、エクスポートを行います。 • セーブを取り込むと記録が更新されます。 • バックアップとエクスポートの各項目から復元・出力できます。</RWS_Guide_Import>
+  <RWS_Empty_OpenImport>データ管理タブを開く</RWS_Empty_OpenImport>
+  <RWS_Tip_TechnicalHint>Shiftを押すと技術識別子を表示します。</RWS_Tip_TechnicalHint>
 </LanguageData>

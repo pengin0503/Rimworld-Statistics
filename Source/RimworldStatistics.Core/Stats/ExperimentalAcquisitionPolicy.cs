@@ -25,4 +25,29 @@ public static class ExperimentalAcquisitionPolicy
                 && (u.Status == AcquisitionStatus.Verified || autoAll || explicitlySelected.Contains(u.Id)))
             .Select(u => u.Id).ToFrozenSet(StringComparer.Ordinal);
     }
+
+    /// <summary>
+    /// U1 "Recommended" preset: the units that can actually record in the current environment — not derived, the
+    /// required DLC active (or none), and the owner MOD active (or none), materialized as concrete IDs rather than the
+    /// wildcard so a later catalog addition is a deliberate opt-in. <paramref name="dlcActive"/> answers whether a DLC
+    /// or package ID is loaded; <paramref name="modActive"/> answers the same for the unit as a whole, which lets the
+    /// game resolve the unit's owner package (a unit with no owner passes true).
+    /// </summary>
+    public static IReadOnlyList<string> RecommendedSelection(
+        IEnumerable<AcquisitionUnit> units,
+        Func<string, bool> dlcActive,
+        Func<string, bool> modActive)
+    {
+        ArgumentNullException.ThrowIfNull(units);
+        ArgumentNullException.ThrowIfNull(dlcActive);
+        ArgumentNullException.ThrowIfNull(modActive);
+        return units
+            .Where(u => u.Kind != AcquisitionKind.Derived)
+            .Where(u => u.RequiredDlc is not { } dlc || dlcActive(dlc))
+            .Where(u => modActive(u.Id))
+            .Select(u => u.Id)
+            .Distinct(StringComparer.Ordinal)
+            .OrderBy(id => id, StringComparer.Ordinal)
+            .ToArray();
+    }
 }

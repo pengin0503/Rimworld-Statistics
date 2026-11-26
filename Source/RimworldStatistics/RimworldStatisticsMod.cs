@@ -22,8 +22,22 @@ public sealed class RimworldStatisticsMod : Mod
 
     private static Vector2 experimentalScroll;
     private static AcquisitionUnit[]? selectableUnits;
+    private static UnitSection[]? selectableSections;
     private static string[]? selectableUnitLabels;
     private static LoadedLanguage? selectableUnitLabelsLanguage;
+    // U1: settings-only view state. It never enters the settings file, so collapsing or searching changes no choice.
+    private static string unitSearch = "";
+    private static readonly HashSet<string> collapsedUnitSections = new(StringComparer.Ordinal);
+
+    internal enum UnitSectionKind
+    {
+        Events,
+        Snapshots,
+        Mod,
+    }
+
+    /// <summary>One collapsible block of the settings unit list: the events, the snapshots, or one optional MOD's units.</summary>
+    internal sealed record UnitSection(string Key, UnitSectionKind Kind, int[] Indices, string? OwnerPackageId, string? OwnerUnitId);
 
     private static void ApplyLiveSelectionIfChanged()
     {
@@ -74,9 +88,11 @@ public sealed class RimworldStatisticsMod : Mod
     public override void DoSettingsWindowContents(Rect inRect)
     {
         const float rowHeight = 27f;
-        var selectable = selectableUnits ??= AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
+        var selectable = SelectableUnits();
+        var sections = SelectableUnitSections;
         var unitLabels = UnitLabels(selectable);
-        var viewRect = new Rect(0f, 0f, inRect.width - 20f, settingsContentHeight > 0 ? settingsContentHeight : 440f + selectable.Length * rowHeight);
+        var viewRect = new Rect(0f, 0f, inRect.width - 20f, settingsContentHeight > 0
+            ? settingsContentHeight : 440f + selectable.Length * rowHeight + sections.Length * 24f);
         Widgets.BeginScrollView(inRect, ref experimentalScroll, viewRect);
         try
         {
@@ -126,69 +142,97 @@ public sealed class RimworldStatisticsMod : Mod
             listing.CheckboxLabeled("RWS_Exp_Enable".Translate(), ref Settings.experimentalEnabled);
             listing.Label("RWS_Exp_Warning".Translate());
             var buttons = listing.GetRect(28f);
-            var width = (buttons.width - 12f) / 3f;
+            var width = (buttons.width - 18f) / 4f;
             if (Widgets.ButtonText(new Rect(buttons.x, buttons.y, width, buttons.height), "RWS_Exp_SelectAll".Translate()))
                 Settings.experimentalUnitIds = new List<string> { ExperimentalAcquisitionPolicy.AllUnitsToken };
             if (Widgets.ButtonText(new Rect(buttons.x + width + 6f, buttons.y, width, buttons.height), "RWS_Exp_SelectNone".Translate()))
                 Settings.experimentalUnitIds.Clear();
             if (Widgets.ButtonText(new Rect(buttons.x + (width + 6f) * 2f, buttons.y, width, buttons.height), "RWS_Exp_SelectEvents".Translate()))
                 Settings.experimentalUnitIds = selectable
-                    .Where(u => u.Kind == AcquisitionKind.Family
-                        && (u.RequiredDlc is null || ModsConfig.IsActive(u.RequiredDlc))
-                        && (UnitRecordingStates.OwnerPackageId(u.Id) is not { } reqMod || ModsConfig.IsActive(reqMod)))
+                    .Where(u => u.Kind == AcquisitionKind.Family && UnitRequirementsMet(u))
                     .Select(u => u.Id).ToList();
-            // The wildcard marks every current and future unit selected. When a
-            // user unticks an individual item, materialize the current catalog
-            // to preserve their choice without silently restoring all on restart.
-            var autoAll = Settings.experimentalUnitIds.Contains(
-                ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
-            for (var index = 0; index < selectable.Length; index++)
+            // U1: only units that can actually record here, written as explicit IDs (not the wildcard).
+            if (Widgets.ButtonText(new Rect(buttons.x + (width + 6f) * 3f, buttons.y, width, buttons.height),
+                    "RWS_Exp_Recommended".Translate()))
+                Settings.experimentalUnitIds = RecommendedUnitIds(selectable).ToList();
+            listing.Gap(4f);
+            listing.Label("RWS_Exp_Search".Translate());
+            var nextSearch = Widgets.TextField(listing.GetRect(28f), unitSearch) ?? "";
+            if (nextSearch != unitSearch)
+                unitSearch = nextSearch;
+            var term = unitSearch.Trim();
+            var anyDrawn = false;
+            foreach (var section in sections)
             {
-                var unit = selectable[index];
-                if (unit.Kind == AcquisitionKind.Derived)
+                var matching = section.Indices
+                    .Where(index => UnitSearch.Matches(unitLabels[index], selectable[index].Id, term))
+                    .ToArray();
+                if (term.Length > 0 && matching.Length == 0)
                     continue;
-                var enabled = autoAll ||
-                    Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
-                var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
-                    : (string)"RWS_Exp_Snapshot".Translate();
-                // The unit's name as the Coverage tab shows it; its ID only in the tooltip (#320).
-                var label = unitLabels[index] + " · " + kind;
-                if (UnitRecordingStates.OwnerPackageId(unit.Id) is { } owner && !ModsConfig.IsActive(owner))
+                anyDrawn = true;
+                var ids = Settings.experimentalUnitIds;
+                var sectionAutoAll = ids.Contains(ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
+                var selectedCount = sectionAutoAll
+                    ? section.Indices.Length
+                    : section.Indices.Count(index => ids.Contains(selectable[index].Id, StringComparer.Ordinal));
+                // A search always reveals its matches; the persisted collapse state is only used without a term.
+                var collapsed = term.Length == 0 && collapsedUnitSections.Contains(section.Key);
+                var headerRect = listing.GetRect(24f);
+                Widgets.DrawHighlightIfMouseover(headerRect);
+                Widgets.Label(headerRect, (collapsed ? "▸ " : "▾ ") + UnitSectionLabel(section)
+                    + " (" + selectedCount + "/" + section.Indices.Length + ")");
+                if (Widgets.ButtonInvisible(headerRect))
                 {
-                    // The MOD to install: its name, or its package ID when no name is known (an external provider's target).
-                    var persistedName = ModProviderAdapters.FirstDescriptorFor(unit.Id)?.OwnerDisplayName;
-                    var required = MetricAcquisitionLabels.SafeModDisplayName(owner, UI.MetricText.ActiveModTitle, persistedName) ?? owner;
-                    TooltipHandler.TipRegion(listing.Label(label + " · " + (string)"RWS_Mod_RequiresMod".Translate(required)),
-                        unit.Id);
+                    if (!collapsedUnitSections.Remove(section.Key))
+                        collapsedUnitSections.Add(section.Key);
+                    settingsContentHeight = 0f;
+                }
+                if (collapsed)
                     continue;
-                }
-                if (unit.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
+                foreach (var index in matching)
                 {
-                    TooltipHandler.TipRegion(listing.Label(label + " · " +
-                        (string)"RWS_Exp_RequiresDlc".Translate(UI.MetricText.DlcDisplayName(dlc))), unit.Id);
-                    continue;
+                    var unit = selectable[index];
+                    var enabled = Settings.experimentalUnitIds.Contains(
+                            ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal)
+                        || Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal);
+                    var kind = unit.Kind == AcquisitionKind.Family ? (string)"RWS_Exp_Event".Translate()
+                        : (string)"RWS_Exp_Snapshot".Translate();
+                    // The unit's name as the Coverage tab shows it; its ID only in the tooltip (#320).
+                    var label = unitLabels[index] + " · " + kind;
+                    if (UnitRecordingStates.OwnerPackageId(unit.Id) is { } owner && !ModsConfig.IsActive(owner))
+                    {
+                        // The MOD to install: its name, or its package ID when no name is known (an external provider's target).
+                        var persistedName = ModProviderAdapters.FirstDescriptorFor(unit.Id)?.OwnerDisplayName;
+                        var required = MetricAcquisitionLabels.SafeModDisplayName(owner, UI.MetricText.ActiveModTitle, persistedName) ?? owner;
+                        var text = label + " · " + (string)"RWS_Mod_RequiresMod".Translate(required);
+                        var rowRect = listing.GetRect(Text.LineHeight);
+                        Widgets.Label(rowRect, text);
+                        UI.UiTooltips.Tip(rowRect, text, unit.Id);
+                        continue;
+                    }
+                    if (unit.RequiredDlc is { } dlc && !ModsConfig.IsActive(dlc))
+                    {
+                        var text = label + " · " + (string)"RWS_Exp_RequiresDlc".Translate(UI.MetricText.DlcDisplayName(dlc));
+                        var rowRect = listing.GetRect(Text.LineHeight);
+                        Widgets.Label(rowRect, text);
+                        UI.UiTooltips.Tip(rowRect, text, unit.Id);
+                        continue;
+                    }
+                    var state = UnitRecordingStates.Get(unit.Id);
+                    if (enabled && state == UnitRecordingState.TargetIncompatible)
+                        label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
+                    else if (enabled && state == UnitRecordingState.TargetModMissing)
+                        label += " · " + (string)"RWS_Status_ModMissing".Translate();
+                    var checkRect = listing.GetRect(Text.LineHeight);
+                    Widgets.CheckboxLabeled(checkRect, label, ref enabled);
+                    UI.UiTooltips.Tip(checkRect, "RWS_Tip_SettingsUnit".Translate(), unit.Id);
+                    // The same mutation path as the Coverage tab's Recording menu (U2): it materializes
+                    // the wildcard when one row is turned off, and touches no hidden row while filtering.
+                    SetUnitSelected(unit.Id, enabled);
                 }
-                var state = UnitRecordingStates.Get(unit.Id);
-                if (enabled && state == UnitRecordingState.TargetIncompatible)
-                    label += " · " + (string)"RWS_Status_TargetIncompatible".Translate();
-                else if (enabled && state == UnitRecordingState.TargetModMissing)
-                    label += " · " + (string)"RWS_Status_ModMissing".Translate();
-                listing.CheckboxLabeled(label, ref enabled, unit.Id);
-                if (autoAll && !enabled)
-                {
-                    Settings.experimentalUnitIds = selectable
-                        .Where(u => u.Kind != AcquisitionKind.Derived && u.Id != unit.Id)
-                        .Select(u => u.Id)
-                        .Distinct(StringComparer.Ordinal)
-                        .ToList();
-                    autoAll = false;
-                }
-                else if (!autoAll && enabled &&
-                    !Settings.experimentalUnitIds.Contains(unit.Id, StringComparer.Ordinal))
-                    Settings.experimentalUnitIds.Add(unit.Id);
-                else if (!autoAll && !enabled)
-                    Settings.experimentalUnitIds.RemoveAll(x => x == unit.Id);
             }
+            if (!anyDrawn)
+                listing.Label("RWS_Details_NoMatch".Translate());
             // Apply immediately, on this UI (game) thread. No restart or
             // reinstallation of Harmony patches is necessary.
             ApplyLiveSelectionIfChanged();
@@ -200,6 +244,118 @@ public sealed class RimworldStatisticsMod : Mod
         {
             Widgets.EndScrollView();
         }
+    }
+
+    /// <summary>Every unit the settings window can list: built-in units plus the optional providers' units.</summary>
+    internal static AcquisitionUnit[] SelectableUnits()
+    {
+        if (selectableUnits is not null)
+            return selectableUnits;
+        selectableUnits = AcquisitionUnits.All.Concat(ModProviderAdapters.KnownUnits).ToArray();
+        selectableSections = BuildUnitSections(selectableUnits);
+        return selectableUnits;
+    }
+
+    internal static UnitSection[] SelectableUnitSections => selectableSections ??= BuildUnitSections(SelectableUnits());
+
+    internal static string[] SelectableUnitLabels => UnitLabels(SelectableUnits());
+
+    /// <summary>U1: events, snapshots, then one section per optional MOD provider, in a stable order.</summary>
+    private static UnitSection[] BuildUnitSections(AcquisitionUnit[] units)
+    {
+        var events = new List<int>();
+        var snapshots = new List<int>();
+        var mods = new Dictionary<string, List<int>>(StringComparer.Ordinal);
+        for (var index = 0; index < units.Length; index++)
+        {
+            var unit = units[index];
+            if (unit.Kind == AcquisitionKind.Derived)
+                continue;
+            if (unit.Id.StartsWith("mod.", StringComparison.Ordinal))
+            {
+                var owner = UnitRecordingStates.OwnerPackageId(unit.Id) ?? unit.Id;
+                if (!mods.TryGetValue(owner, out var indices))
+                    mods[owner] = indices = new List<int>();
+                indices.Add(index);
+                continue;
+            }
+            if (unit.Kind == AcquisitionKind.Family)
+                events.Add(index);
+            else if (unit.Kind == AcquisitionKind.Snapshot)
+                snapshots.Add(index);
+        }
+        var sections = new List<UnitSection>(2 + mods.Count);
+        if (events.Count > 0)
+            sections.Add(new UnitSection("events", UnitSectionKind.Events, events.ToArray(), null, null));
+        if (snapshots.Count > 0)
+            sections.Add(new UnitSection("snapshots", UnitSectionKind.Snapshots, snapshots.ToArray(), null, null));
+        foreach (var (owner, indices) in mods.OrderBy(pair => pair.Key, StringComparer.Ordinal))
+            sections.Add(new UnitSection("mod:" + owner, UnitSectionKind.Mod, indices.ToArray(), owner, units[indices[0]].Id));
+        return sections.ToArray();
+    }
+
+    internal static string UnitSectionLabel(UnitSection section) => section.Kind switch
+    {
+        UnitSectionKind.Events => (string)"RWS_Exp_SectionEvents".Translate(),
+        UnitSectionKind.Snapshots => (string)"RWS_Exp_SectionSnapshots".Translate(),
+        _ => (string)"RWS_Mod_Provider".Translate(ModSectionName(section)),
+    };
+
+    private static string ModSectionName(UnitSection section)
+    {
+        var persisted = section.OwnerUnitId is { } unitId
+            ? ModProviderAdapters.FirstDescriptorFor(unitId)?.OwnerDisplayName : null;
+        return MetricAcquisitionLabels.SafeModDisplayName(
+                section.OwnerPackageId, UI.MetricText.ActiveModTitle, persisted)
+            ?? section.OwnerPackageId
+            ?? (string)"RWS_Status_ExternalMod".Translate();
+    }
+
+    /// <summary>Whether the unit's DLC and owner MOD are present, the same test the unit rows apply inline (U1).</summary>
+    internal static bool UnitRequirementsMet(AcquisitionUnit unit)
+        => (unit.RequiredDlc is null || ModsConfig.IsActive(unit.RequiredDlc))
+            && (UnitRecordingStates.OwnerPackageId(unit.Id) is not { } owner || ModsConfig.IsActive(owner));
+
+    /// <summary>Units the settings window shows as a checkbox and the Coverage menu may toggle.</summary>
+    internal static bool IsUnitToggleable(AcquisitionUnit unit)
+        => unit.Kind != AcquisitionKind.Derived && UnitRequirementsMet(unit);
+
+    private static List<string> RecommendedUnitIds(AcquisitionUnit[] units)
+        => ExperimentalAcquisitionPolicy.RecommendedSelection(
+            units,
+            dlc => ModsConfig.IsActive(dlc),
+            id => UnitRecordingStates.OwnerPackageId(id) is not { } owner || ModsConfig.IsActive(owner)).ToList();
+
+    /// <summary>
+    /// The one mutation path shared by the settings rows and the Coverage tab's Recording menu. Turning one unit off
+    /// while the wildcard is stored materializes the current catalog (minus that unit) so the opt-out survives a
+    /// restart; it never touches hidden rows while the settings search filters them.
+    /// </summary>
+    internal static void SetUnitSelected(string unitId, bool selected)
+    {
+        var ids = Settings.experimentalUnitIds;
+        var autoAll = ids.Contains(ExperimentalAcquisitionPolicy.AllUnitsToken, StringComparer.Ordinal);
+        if (autoAll)
+        {
+            if (selected)
+                return;
+            Settings.experimentalUnitIds = SelectableUnits()
+                .Where(u => u.Kind != AcquisitionKind.Derived && u.Id != unitId)
+                .Select(u => u.Id)
+                .Distinct(StringComparer.Ordinal)
+                .ToList();
+        }
+        else if (selected)
+        {
+            if (ids.Contains(unitId, StringComparer.Ordinal))
+                return;
+            ids.Add(unitId);
+        }
+        else if (ids.RemoveAll(x => x == unitId) == 0)
+        {
+            return;
+        }
+        ApplyLiveSelectionIfChanged();
     }
 
     /// <summary>
