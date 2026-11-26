@@ -24,6 +24,14 @@
   <RWS_Export_Button>Exportar CSV · {0}</RWS_Export_Button>
   <RWS_Export_Progress>Exportando archivos ({0}/{1})…</RWS_Export_Progress>
   <RWS_Export_Error>Error al exportar el CSV: {0}</RWS_Export_Error>
+  <RWS_Export_Name>Folder name</RWS_Export_Name>
+  <RWS_Export_CopyMarkdown>Copy as Markdown</RWS_Export_CopyMarkdown>
+  <RWS_Export_CopyTsv>Copy as TSV</RWS_Export_CopyTsv>
+  <RWS_Export_Copied>Copied to the clipboard.</RWS_Export_Copied>
+  <RWS_Export_CopyFailed>Copy failed: {0}</RWS_Export_CopyFailed>
+  <RWS_WhatsNew_Title>What's new in Rimworld Statistics 2.1</RWS_WhatsNew_Title>
+  <RWS_WhatsNew_Body>v2.1 adds safer profile restore and backups, clearer pre-install and anomaly records, smarter save re-checks and import controls, better settings, coverage and endings screens, saved view state and display formats, improved dialogs, Excel-ready CSV exports with Markdown/TSV copy, and stable import error codes.</RWS_WhatsNew_Body>
+  <RWS_WhatsNew_Dismiss>Do not show again</RWS_WhatsNew_Dismiss>
   <RWS_Export_Done>CSV guardado en {0}</RWS_Export_Done>
   <RWS_Compare_Mode>Comparar</RWS_Compare_Mode>
   <RWS_Compare_Add>Añadir columna…</RWS_Compare_Add>

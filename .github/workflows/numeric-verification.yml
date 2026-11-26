@@ -16,6 +16,7 @@ on:
       - '.github/workflows/publish.yml'
       - 'docs/releases/**'
       - 'About/**'
+      - 'README.md'
       - 'Directory.Build.props'
       - 'global.json'
   pull_request:
@@ -31,6 +32,7 @@ on:
       - '.github/workflows/publish.yml'
       - 'docs/releases/**'
       - 'About/**'
+      - 'README.md'
       - 'Directory.Build.props'
       - 'global.json'
   workflow_dispatch:
@@ -189,6 +191,13 @@ jobs:
 
       - name: Translation key consistency
         run: bash tools/check_keys.sh
+
+      - name: CSV export header and version consistency
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/check_export_headers.py
+          python3 tools/check_version_consistency.py
 
       - name: Package and validate production and harness ZIPs
         shell: bash

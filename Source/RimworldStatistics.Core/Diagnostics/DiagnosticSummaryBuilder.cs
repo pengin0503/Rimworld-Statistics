@@ -313,7 +313,8 @@ public static class DiagnosticSummaryBuilder
         {
             var count = input.ImportProblemCounts.GetValueOrDefault(kind);
             if (count > 0)
-                sb.Append("import_problem_").Append(kind).Append(": ").AppendLine(count.ToString(Inv));
+                sb.Append("import_problem_").Append(kind).Append(": ").Append(count.ToString(Inv))
+                    .Append(" (").Append(ImportErrorCodes.CodeFor(kind).Text()).AppendLine(")");
         }
         sb.AppendLine();
 

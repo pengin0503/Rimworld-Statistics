@@ -34,7 +34,10 @@ public static class ImportTab
                 .OrderBy(o => o.FileName, StringComparer.Ordinal)
                 .Select(o => (Observation: o, Kind: ImportProblems.Classify(o) ?? ImportProblemKind.Unexpected))
                 .ToArray();
-            var problems = failed.Select(p => new[] { $"{p.Observation.FileName}  —  {ProblemLabel(p.Kind)}: {p.Observation.ErrorReason ?? ""}" })
+            var problems = failed.Select(p => new[]
+                {
+                    $"{p.Observation.FileName}  —  {ProblemLabel(p.Kind)} [{p.Observation.ErrorCode.Text()}]: {p.Observation.ErrorReason ?? ""}",
+                })
                 .ToArray();
             var failedFiles = failed.Select(p => p.Observation.FileName)
                 .Where(name => !string.IsNullOrEmpty(name))

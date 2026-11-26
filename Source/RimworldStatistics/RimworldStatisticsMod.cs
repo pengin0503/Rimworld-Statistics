@@ -71,6 +71,7 @@ public sealed class RimworldStatisticsMod : Mod
         {
             Log.Warning($"[RimworldStatistics] Could not read the installed mod version: {error.Message}");
         }
+        UI.WhatsNew.QueueIfNeeded();
         ActiveAcquisitionSelection = Settings.DesiredSelection;
         MetricGates.ConfigureProductionSelection(
             ExperimentalAcquisitionPolicy.Resolve(ActiveAcquisitionSelection, AcquisitionUnits.All));

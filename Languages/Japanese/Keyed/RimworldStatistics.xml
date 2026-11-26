@@ -24,6 +24,14 @@
   <RWS_Export_Button>CSV出力 · {0}</RWS_Export_Button>
   <RWS_Export_Progress>CSVを書き出しています（{0}/{1}）…</RWS_Export_Progress>
   <RWS_Export_Error>CSV出力に失敗しました：{0}</RWS_Export_Error>
+  <RWS_Export_Name>フォルダー名</RWS_Export_Name>
+  <RWS_Export_CopyMarkdown>Markdown としてコピー</RWS_Export_CopyMarkdown>
+  <RWS_Export_CopyTsv>TSV としてコピー</RWS_Export_CopyTsv>
+  <RWS_Export_Copied>クリップボードにコピーしました。</RWS_Export_Copied>
+  <RWS_Export_CopyFailed>コピーに失敗しました: {0}</RWS_Export_CopyFailed>
+  <RWS_WhatsNew_Title>Rimworld Statistics 2.1 の新機能</RWS_WhatsNew_Title>
+  <RWS_WhatsNew_Body>v2.1 では、プロファイル復元とバックアップの安全性、導入前セーブと異常値の記録の分かりやすさ、セーブの再チェックと取り込み設定、設定・記録範囲・エンディング画面の改善、表示状態と表示形式の保存、各種ダイアログの改善、Excel で開ける CSV 出力と Markdown/TSV コピー、安定した取り込みエラーコードを追加しました。</RWS_WhatsNew_Body>
+  <RWS_WhatsNew_Dismiss>今後表示しない</RWS_WhatsNew_Dismiss>
   <RWS_Export_Done>CSVを保存しました：{0}</RWS_Export_Done>
   <RWS_Compare_Mode>比較</RWS_Compare_Mode>
   <RWS_Compare_Add>比較列を追加…</RWS_Compare_Add>

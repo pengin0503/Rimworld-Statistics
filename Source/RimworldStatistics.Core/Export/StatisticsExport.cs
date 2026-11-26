@@ -1,4 +1,5 @@
 using System.Globalization;
+using System.Text;
 using System.Text.Json;
 using static RimworldStatistics.Core.CsvField;
 
@@ -8,25 +9,130 @@ public sealed record ExportText(
     IReadOnlyDictionary<string, string> MetricLabels, IReadOnlyDictionary<string, string> ColonyNames,
     IReadOnlyDictionary<NumericRow, string> DisplayValues, string Language, string ScopeName, string ModVersion);
 
-public sealed record ExportSummary(string Directory, IReadOnlyDictionary<string, int> Rows);
+/// <summary>Header and data rows of one export table, in the exact form written to CSV.</summary>
+public sealed record ExportTable(string[] Headers, CsvField[][] Rows);
+
+public sealed record ExportSummary(string Directory, IReadOnlyDictionary<string, int> Rows)
+{
+    /// <summary>The rows written to summary.csv, also used by the panel's Markdown/TSV copy buttons (E8).</summary>
+    public ExportTable? SummaryTable { get; init; }
+}
 
 public static class StatisticsExport
 {
     private const string ColumnsDocumentation = "https://github.com/pengin0503/Rimworld-Statistics/blob/main/docs/csv-export.md";
     public const int TotalFileCount = 7;
 
+    /// <summary>The name used when the player has not typed one: a UTC stamp plus a unique suffix.</summary>
+    public static string DefaultDirectoryName(DateTime utcNow)
+        => utcNow.ToString("yyyyMMdd'T'HHmmssfffffff'Z'", CultureInfo.InvariantCulture) + "-" + Guid.NewGuid().ToString("N");
+
+    /// <summary>
+    /// Turns a player-supplied export name into a cross-platform directory leaf. Path separators and other invalid file
+    /// characters are replaced, the length is bounded, and an empty result falls back to the supplied default.
+    /// </summary>
+    public static string SanitizeDirectoryName(string? rawName, string? fallback = null)
+        => string.IsNullOrWhiteSpace(rawName)
+            ? ColonyReportHtmlExport.SanitizeFileName(fallback ?? DefaultDirectoryName(DateTime.UtcNow))
+            : ColonyReportHtmlExport.SanitizeFileName(rawName);
+
+    /// <summary>
+    /// Builds the summary table once for both the CSV writer and the panel's clipboard buttons, so copied rows are the
+    /// same values the export produces. An empty view still returns the header row.
+    /// </summary>
+    public static ExportTable BuildSummaryTable(StatsView view, ExportText text, Func<string, UnitRecordingState> unitState,
+        CancellationToken cancel = default)
+    {
+        ArgumentNullException.ThrowIfNull(view);
+        ArgumentNullException.ThrowIfNull(text);
+        ArgumentNullException.ThrowIfNull(unitState);
+        var statuses = MetricStatusClassifier.Classify(view, unitState).ToDictionary(s => s.Definition.Key, StringComparer.Ordinal);
+        string Label(string key) => text.MetricLabels.GetValueOrDefault(key) ?? key;
+        string ColonyName(string key) => text.ColonyNames.GetValueOrDefault(key) ?? key;
+        static CsvField Day(int? tick) => Number(tick / (double)StatFormat.TicksPerDay);
+        static double? Measured(NumericValue value) => value.Known ? value.Number : null;
+
+        var rows = new List<CsvField[]>();
+        if (view.Stats.Colonies.Count > 0)
+        {
+            foreach (var row in Flatten(view.Numeric.Overall))
+            {
+                cancel.ThrowIfCancellationRequested();
+                var d = row.Definition;
+                var v = row.Value;
+                var status = statuses[d.Key];
+                var unit = row.Breakdown.Length != 0 ? d.BreakdownUnit ?? d.Unit : d.Unit;
+                rows.Add([Of(text.ScopeName), Of(d.Key), Of(row.Breakdown), Of(Label(d.Key)), Of(d.Category.ToString()),
+                    Of(unit.ToString()), Of(d.Overall.ToString()), Number(Measured(v)),
+                    Of(v.Known ? text.DisplayValues.GetValueOrDefault(row) : null),
+                    Of(v.Coverage.ToString()), Of(v.Evidence.ToString()), Of(MetricAvailabilityPolicy.Classify(row).ToString()),
+                    Of(status.Verification.ToString()), Of(d.Provenance.ToString()), Of(d.Acquisition), Of(d.OwnerPackageId),
+                    Integer(row.Valid), Integer(row.Targets), Of(v.ColonyKey), Of(v.ColonyKey is { } holder ? ColonyName(holder) : null),
+                    Day(v.SinceTick), Day(v.ThroughTick)]);
+            }
+        }
+        return new ExportTable(
+            ["scope", "metric_key", "breakdown", "label", "category", "unit", "aggregation", "value", "value_display",
+                "coverage", "evidence", "availability", "verification", "provenance", "acquisition_unit", "owner_mod",
+                "colonies_measured", "colonies_target", "holder_colony_key", "holder_colony_name", "since_day", "through_day"],
+            rows.ToArray());
+    }
+
+    /// <summary>A Markdown table of a previously built export table; cells keep the export's plain values.</summary>
+    public static string RenderMarkdown(ExportTable table)
+    {
+        ArgumentNullException.ThrowIfNull(table);
+        var sb = new StringBuilder();
+        sb.Append('|').Append(string.Join('|', table.Headers.Select(MarkdownCell))).AppendLine("|");
+        sb.Append('|').Append(string.Join('|', table.Headers.Select(_ => "---"))).AppendLine("|");
+        foreach (var row in table.Rows)
+            sb.Append('|').Append(string.Join('|', row.Select(field => MarkdownCell(field.Text)))).AppendLine("|");
+        return sb.ToString().TrimEnd('\r', '\n');
+    }
+
+    /// <summary>Tab-separated rows with LF line endings, matching the mod's other instant-copy tables.</summary>
+    public static string RenderTsv(ExportTable table)
+    {
+        ArgumentNullException.ThrowIfNull(table);
+        var rows = new List<string>(table.Rows.Length + 1)
+        {
+            string.Join('\t', table.Headers.Select(TsvCell)),
+        };
+        foreach (var row in table.Rows)
+            rows.Add(string.Join('\t', row.Select(field => TsvCell(field.Text))));
+        return string.Join('\n', rows);
+    }
+
+    // Markdown needs its column separator and escape character escaped; line breaks would end the row.
+    private static string MarkdownCell(string? value)
+        => (value ?? "").Replace("\\", "\\\\").Replace("|", "\\|")
+            .Replace("\r\n", "<br>").Replace("\r", "<br>").Replace("\n", "<br>");
+
+    // TSV has no quoting convention, so a tab or line break inside a value is flattened to a space.
+    private static string TsvCell(string? value)
+        => (value ?? "").Replace("\r\n", " ").Replace('\r', ' ').Replace('\n', ' ').Replace('\t', ' ');
+
     public static ExportSummary Write(StatsView view, ExportText text, Func<string, UnitRecordingState> unitState,
         string directory, CancellationToken cancel = default, Action<int>? fileCompleted = null,
         IReadOnlyList<ColonyMetricHistorySeries>? historySeries = null, Profile? profile = null)
+        => Write(view, text, unitState, directory, cancel, fileCompleted, historySeries, profile, directoryName: null);
+
+    public static ExportSummary Write(StatsView view, ExportText text, Func<string, UnitRecordingState> unitState,
+        string directory, CancellationToken cancel, Action<int>? fileCompleted,
+        IReadOnlyList<ColonyMetricHistorySeries>? historySeries, Profile? profile, string? directoryName)
     {
         cancel.ThrowIfCancellationRequested();
         Directory.CreateDirectory(directory);
         var utc = DateTime.UtcNow;
-        var stamp = utc.ToString("yyyyMMdd'T'HHmmssfffffff'Z'", CultureInfo.InvariantCulture);
-        var destination = Path.Combine(directory, stamp + "-" + Guid.NewGuid().ToString("N"));
+        var leaf = string.IsNullOrWhiteSpace(directoryName)
+            ? DefaultDirectoryName(utc)
+            : SanitizeDirectoryName(directoryName, DefaultDirectoryName(utc));
+        if (Directory.Exists(Path.Combine(directory, leaf)))
+            leaf += "-" + Guid.NewGuid().ToString("N")[..8];
+        var destination = Path.Combine(directory, leaf);
         var staging = destination + ".tmp";
         var counts = new Dictionary<string, int>(StringComparer.Ordinal);
-        var statuses = MetricStatusClassifier.Classify(view, unitState).ToDictionary(s => s.Definition.Key, StringComparer.Ordinal);
+        var summary = BuildSummaryTable(view, text, unitState, cancel);
         string Label(string key) => text.MetricLabels.GetValueOrDefault(key) ?? key;
         string ColonyName(string key) => text.ColonyNames.GetValueOrDefault(key) ?? key;
         static CsvField Day(int? tick) => Number(tick / (double)StatFormat.TicksPerDay);
@@ -36,28 +142,11 @@ public static class StatisticsExport
         Directory.CreateDirectory(staging);
         try
         {
-            WriteCsv("summary.csv",
-                ["scope", "metric_key", "breakdown", "label", "category", "unit", "aggregation", "value", "value_display",
-                    "coverage", "evidence", "availability", "verification", "provenance", "acquisition_unit", "owner_mod",
-                    "colonies_measured", "colonies_target", "holder_colony_key", "holder_colony_name", "since_day", "through_day"], add =>
-                {
-                    if (view.Stats.Colonies.Count == 0)
-                        return;
-                    foreach (var row in Flatten(view.Numeric.Overall))
-                    {
-                        var d = row.Definition;
-                        var v = row.Value;
-                        var status = statuses[d.Key];
-                        var unit = row.Breakdown.Length != 0 ? d.BreakdownUnit ?? d.Unit : d.Unit;
-                        add([Of(text.ScopeName), Of(d.Key), Of(row.Breakdown), Of(Label(d.Key)), Of(d.Category.ToString()),
-                            Of(unit.ToString()), Of(d.Overall.ToString()), Number(Measured(v)),
-                            Of(v.Known ? text.DisplayValues.GetValueOrDefault(row) : null),
-                            Of(v.Coverage.ToString()), Of(v.Evidence.ToString()), Of(MetricAvailabilityPolicy.Classify(row).ToString()),
-                            Of(status.Verification.ToString()), Of(d.Provenance.ToString()), Of(d.Acquisition), Of(d.OwnerPackageId),
-                            Integer(row.Valid), Integer(row.Targets), Of(v.ColonyKey), Of(v.ColonyKey is { } holder ? ColonyName(holder) : null),
-                            Day(v.SinceTick), Day(v.ThroughTick)]);
-                    }
-                });
+            WriteCsv("summary.csv", summary.Headers, add =>
+            {
+                foreach (var row in summary.Rows)
+                    add(row);
+            });
 
             WriteCsv("colony_metrics.csv",
                 ["colony_key", "colony_name", "metric_key", "breakdown", "label", "unit", "value", "coverage", "evidence", "since_day", "through_day"], add =>
@@ -167,7 +256,7 @@ public static class StatisticsExport
             fileCompleted?.Invoke(TotalFileCount);
             cancel.ThrowIfCancellationRequested();
             Directory.Move(staging, destination);
-            return new ExportSummary(destination, counts);
+            return new ExportSummary(destination, counts) { SummaryTable = summary };
         }
         finally
         {

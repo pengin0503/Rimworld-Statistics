@@ -50,4 +50,10 @@ public static class ImportProblems
 
     /// <summary>Failed reads are retried by every scan; a save without an identity is not, until the reader changes.</summary>
     public static bool RetriedOnRescan(ImportProblemKind kind) => kind != ImportProblemKind.MissingIdentity;
+
+    /// <summary>The stable code for one observation (Q21); <see cref="ImportErrorCode.None"/> when it was read.</summary>
+    public static ImportErrorCode CodeFor(SaveObservation observation) => ImportErrorCodes.CodeFor(observation);
+
+    /// <summary>The stable code for one classified problem category (Q21).</summary>
+    public static ImportErrorCode CodeFor(ImportProblemKind kind) => ImportErrorCodes.CodeFor(kind);
 }

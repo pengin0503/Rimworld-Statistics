@@ -13,6 +13,13 @@ public sealed class SaveObservation
 
     public ObservationStatus Status { get; set; }
     public string? ErrorReason { get; set; }
+
+    /// <summary>
+    /// Stable code for this failure (Q21), derived from <see cref="ErrorReason"/>; never serialized, so old records keep
+    /// their exact format and get a code when they are displayed.
+    /// </summary>
+    [System.Text.Json.Serialization.JsonIgnore]
+    public ImportErrorCode ErrorCode => ImportProblems.CodeFor(this);
     public string? GameVersion { get; set; }
     public int ModCount { get; set; }
     public ColonyIdentity Identity { get; set; } = new();

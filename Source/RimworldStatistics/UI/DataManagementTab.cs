@@ -30,7 +30,7 @@ internal static class DataManagementTab
 
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
-        const float exportHeight = 52f;
+        const float exportHeight = ExportPanel.PreferredHeight;
         var diagHeight = Math.Max(52f, DiagnosticsPanel.PreferredHeight);
         const float minStructuredHeight = 460f;
         if (rect.height < minStructuredHeight)
