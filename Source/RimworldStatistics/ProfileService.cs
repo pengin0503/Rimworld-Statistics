@@ -104,7 +104,9 @@ public static class ProfileService
                     System.IO.Directory.CreateDirectory(directory);
                     using var writeLock = File.Open(Path.Combine(directory, "profile.json.lock"),
                         FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
-                    return WriteBackup(session, directory, metadata, preferences);
+                    var created = WriteBackup(session, directory, metadata, preferences);
+                    PruneOldBackups(directory, created.Path);
+                    return created;
                 });
             }
             finally
@@ -141,7 +143,7 @@ public static class ProfileService
                     restored = candidate;
                 }, () =>
                 {
-                    var recovery = WriteBackup(current, directory, metadata, preferences);
+                    var recovery = WriteBackup(current, directory, metadata with { Kind = BackupKinds.PreRestore }, preferences);
                     if (!ProfileBackup.Validate(recovery.Path, Profile.CurrentSchemaVersion).Ok)
                         throw new IOException("The pre-restore backup cannot be restored by this version.");
                 });
@@ -184,6 +186,19 @@ public static class ProfileService
             : session.Read(ProfileJson.SerializeToUtf8Bytes);
         return ProfileBackup.Create(new BackupSource(bytes, Path.Combine(directory, "checkpoint-archive"), preferences),
             Path.Combine(directory, "backups"), metadata);
+    }
+
+    /// <summary>Retention is best-effort: the backup just written is already valid and a pruning failure must not fail it.</summary>
+    private static void PruneOldBackups(string directory, string created)
+    {
+        try
+        {
+            BackupRetention.Apply(Path.Combine(directory, "backups"), protectedPaths: [created]);
+        }
+        catch (Exception e)
+        {
+            Log.Warning($"[RimworldStatistics] Old backups could not be pruned.\n{e}");
+        }
     }
 
     public static StatsOptions Options => new() { IncludeDevMode = RimworldStatisticsMod.Settings.includeDevMode };

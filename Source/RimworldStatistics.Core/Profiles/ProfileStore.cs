@@ -69,7 +69,7 @@ public sealed class ProfileStore
 
     /// <summary>The last schema-1 profile, kept beside the record file (never part of the backup rotation).</summary>
     public const string V1CopyFileName = "profile.v1.json";
-    private FileStream LockFile() => new(ProfilePath + ".lock", FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None);
+    private FileStream LockFile() => FileLockRetry.Acquire(ProfilePath + ".lock");
 
     /// <summary>Tries the primary, then bak1..bak3. An unparseable primary is renamed to profile.json.corrupt-&lt;UTC time&gt;.</summary>
     public ProfileLoadResult Load(DateTime utcNow)

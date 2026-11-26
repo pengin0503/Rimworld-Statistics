@@ -76,6 +76,8 @@ public sealed class ProfileBackupTests
         Assert.Empty(Directory.GetFileSystemEntries(dir.Path));
     }
 
-    internal static string Make(TempDir dir, string? archive = null, string? preferences = null, int schema = 2) =>
-        ProfileBackup.Create(new(Encoding.UTF8.GetBytes(ProfileJson.Serialize(new Profile { SchemaVersion = schema })), archive, preferences), dir.Path, new(Now, "test", "")).Path;
+    internal static string Make(TempDir dir, string? archive = null, string? preferences = null, int schema = 2,
+        DateTime? created = null, string kind = BackupKinds.Manual, string label = "") =>
+        ProfileBackup.Create(new(Encoding.UTF8.GetBytes(ProfileJson.Serialize(new Profile { SchemaVersion = schema })), archive, preferences),
+            dir.Path, new(created ?? Now, "test", label, kind)).Path;
 }

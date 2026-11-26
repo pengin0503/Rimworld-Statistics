@@ -20,6 +20,10 @@ internal static class DataManagementTab
     private static string? selected;
     private static string? error;
     private static bool succeeded;
+    private static string backupMemo = "";
+    private static Task<RestorePreview>? restorePreview;
+    private static BackupInfo? restorePreviewInfo;
+    private static bool restorePreviewPreferences;
 
     private static Vector2 outerScroll;
 
@@ -59,6 +63,7 @@ internal static class DataManagementTab
     {
         var directory = Path.Combine(ProfileService.DirectoryPath, "backups");
         CompleteOperation();
+        CompleteRestorePreview(session);
         if (refresh is { IsCompleted: true } loaded)
         {
             refresh = null;
@@ -70,10 +75,17 @@ internal static class DataManagementTab
             refresh ??= Task.Run(() => ProfileBackup.List(directory));
 
         var y = rect.y;
+        var memoLabel = "RWS_Backup_Memo".Translate();
+        var memoLabelWidth = Math.Clamp(Text.CalcSize(memoLabel).x + 8f, 90f, 260f);
+        Verse.Widgets.Label(new Rect(rect.x, y, memoLabelWidth, 24f), memoLabel);
+        backupMemo = Verse.Widgets.TextField(
+            new Rect(rect.x + memoLabelWidth, y + 1f, Math.Max(0f, rect.width - memoLabelWidth), 24f), backupMemo) ?? "";
+        y += 30f;
+
         var actions = new ControlRow(new Rect(rect.x, y, rect.width, 26f));
-        var idle = operation is null && !ImportRunner.Running && Current.ProgramState == ProgramState.Entry;
+        var idle = operation is null && restorePreview is null && !ImportRunner.Running && Current.ProgramState == ProgramState.Entry;
         if (Button(ref actions, "RWS_Backup_Create", idle))
-            Run(() => ProfileService.CreateBackup(session, Metadata(""), RimworldStatisticsMod.Settings.viewPreferencesJson));
+            Run(() => ProfileService.CreateBackup(session, Metadata(backupMemo.Trim()), RimworldStatisticsMod.Settings.viewPreferencesJson));
         if (Button(ref actions, "RWS_Backup_Refresh", refresh is null && operation is null))
             refresh = Task.Run(() => ProfileBackup.List(directory));
         if (Button(ref actions, "RWS_Backup_OpenFolder", Directory.Exists(directory)))
@@ -97,15 +109,10 @@ internal static class DataManagementTab
             if (Button(ref actions, "RWS_Backup_Restore", idle && !session.LoadResult.ReadOnly && selectedInfo?.Validation.Ok == true))
             {
                 var info = selectedInfo!;
-                var manifest = info.Validation.Manifest!;
-                var summary = "RWS_Backup_ConfirmRestore".Translate(
-                    Dialog_RimworldStatistics.Local(manifest.CreatedUtc), manifest.ModVersion, manifest.Colonies, manifest.Observations);
-                // The restored settings are applied by ProfileService on the main thread once the restore succeeded, whether or
-                // not this tab is drawn again (#325).
-                var withPreferences = restoreViewPreferences;
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(summary, () =>
-                    Run(() => ProfileService.RestoreBackup(session, info.Path, Metadata("RWS_Backup_BeforeRestore".Translate()),
-                        RimworldStatisticsMod.Settings.viewPreferencesJson, withPreferences)), true));
+                // Preview validates and counts in the background; the confirmation opens when it has finished.
+                restorePreviewInfo = info;
+                restorePreviewPreferences = restoreViewPreferences;
+                restorePreview = Task.Run(() => ProfileBackup.Preview(info.Path, CurrentProfileBytes(session)));
             }
             if (Button(ref actions, "RWS_Backup_Delete", idle && selectedInfo is not null))
             {
@@ -119,7 +126,7 @@ internal static class DataManagementTab
         string? status = ImportRunner.Running ? "RWS_Backup_ImportBusy".Translate()
             : session.LoadResult.ReadOnly ? "RWS_Import_ReadOnly".Translate()
             : error is not null ? "RWS_Backup_Error".Translate(error)
-            : operation is not null || refresh is not null ? "RWS_Backup_Working".Translate()
+            : operation is not null || refresh is not null || restorePreview is not null ? "RWS_Backup_Working".Translate()
             : succeeded ? "RWS_Backup_Done".Translate(directory)
             : available is { Count: 0 } ? "RWS_Backup_None".Translate() : null;
         if (status is not null)
@@ -155,6 +162,54 @@ internal static class DataManagementTab
             }).ToArray();
         }
         Table.Draw(new Rect(rect.x, y, rect.width, Math.Max(0f, rect.yMax - y)), ref scroll, headers, rows);
+    }
+
+    /// <summary>The current record bytes for the restore preview; null means "show the backup side only".</summary>
+    private static byte[]? CurrentProfileBytes(ProfileSession session)
+    {
+        try
+        {
+            return session.Read(ProfileJson.SerializeToUtf8Bytes);
+        }
+        catch (Exception e) when (e is InvalidOperationException or IOException or UnauthorizedAccessException or NotSupportedException)
+        {
+            return null;
+        }
+    }
+
+    private static void CompleteRestorePreview(ProfileSession session)
+    {
+        if (restorePreview is not { IsCompleted: true } completed)
+            return;
+        restorePreview = null;
+        var info = restorePreviewInfo;
+        restorePreviewInfo = null;
+        if (info is null)
+            return;
+        RestorePreview? preview = null;
+        if (completed.IsCompletedSuccessfully)
+            preview = completed.Result;
+        else
+            _ = completed.Exception;   // observe it; the backup-side summary below is the fallback
+        ShowRestoreConfirmation(session, info, preview, restorePreviewPreferences);
+    }
+
+    private static void ShowRestoreConfirmation(ProfileSession session, BackupInfo info, RestorePreview? preview, bool withPreferences)
+    {
+        var manifest = info.Validation.Manifest!;
+        var summary = "RWS_Backup_ConfirmRestore".Translate(
+            Dialog_RimworldStatistics.Local(manifest.CreatedUtc), manifest.ModVersion, manifest.Colonies, manifest.Observations);
+        if (preview is { CurrentColonies: int currentColonies, CurrentObservations: int currentObservations,
+            BackupColonies: int backupColonies, BackupObservations: int backupObservations })
+        {
+            summary += "\n\n" + "RWS_Backup_RestoreDiff".Translate(
+                currentColonies, currentObservations, backupColonies, backupObservations);
+        }
+        // The restored settings are applied by ProfileService on the main thread once the restore succeeded, whether or
+        // not this tab is drawn again (#325).
+        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(summary, () =>
+            Run(() => ProfileService.RestoreBackup(session, info.Path, Metadata("RWS_Backup_BeforeRestore".Translate()),
+                RimworldStatisticsMod.Settings.viewPreferencesJson, withPreferences)), true));
     }
 
     private static string Verification(BackupProblem problem) => problem switch
