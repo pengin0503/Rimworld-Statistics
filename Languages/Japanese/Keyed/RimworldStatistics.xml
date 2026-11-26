@@ -1369,4 +1369,14 @@
   <RWS_Error_Unknown>不明なエラー</RWS_Error_Unknown>
   <RWS_Export_FooterColonyKey>コロニーキー</RWS_Export_FooterColonyKey>
   <RWS_Export_FooterGenerator>生成元</RWS_Export_FooterGenerator>
+  <RWS_Setting_ImportExclusions>取り込まないセーブ（セミコロン区切りのパターン）</RWS_Setting_ImportExclusions>
+  <RWS_Setting_ImportExclusionsHelp>ファイル名をそのまま書くとそのセーブを、末尾に * を付けると前方一致、先頭に * を付けると後方一致、両端に * を付けると部分一致で無視します（例: backup*、*backup.rws、*tmp*）。大文字と小文字は区別しません。次のスキャンから適用されます。</RWS_Setting_ImportExclusionsHelp>
+  <RWS_Import_Excluded>除外設定により無視: {0}件</RWS_Import_Excluded>
+  <RWS_Import_RecordedSaves>記録済みセーブ: {0}件（現存 {1}件／アーカイブ {2}件）</RWS_Import_RecordedSaves>
+  <RWS_Import_AddedNames>追加されたセーブ: {0}</RWS_Import_AddedNames>
+  <RWS_Import_ReplacedNames>更新されたセーブ: {0}</RWS_Import_ReplacedNames>
+  <RWS_Import_MoreNames>ほか{0}件</RWS_Import_MoreNames>
+  <RWS_Import_FailedActions>失敗したセーブの操作…</RWS_Import_FailedActions>
+  <RWS_Import_RecheckThisSave>このセーブを再検査</RWS_Import_RecheckThisSave>
+  <RWS_Import_IgnoreThisSave>このセーブを無視</RWS_Import_IgnoreThisSave>
 </LanguageData>

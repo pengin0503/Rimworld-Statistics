@@ -24,6 +24,22 @@ public sealed class RimworldStatisticsSettings : ModSettings
     public int importThreadsManual = DefaultManualImportThreads;
     public bool precomputeStatistics = false;
     public int memoryUseMode = (int)MemoryUseMode.Standard;
+    // S20: semicolon-separated save file name patterns kept out of every import. Lives in MOD settings, not in
+    // profile.json, so restoring a profile does not restore an old ignore list.
+    public string importExclusionPatterns = "";
+
+    /// <summary>The parsed, trimmed and deduplicated exclusion patterns (<see cref="SaveNameExclusions"/>).</summary>
+    public IReadOnlyList<string> ImportExclusionPatterns
+        => SaveNameExclusions.Normalize((importExclusionPatterns ?? "").Split(';'));
+
+    /// <summary>Adds an exact file name to the ignore list; the caller writes the settings.</summary>
+    public void AddImportExclusion(string fileName)
+    {
+        if (!ImportEngine.IsSaveFile(fileName))
+            return;
+        importExclusionPatterns = string.Join("; ", SaveNameExclusions.Normalize(
+            (importExclusionPatterns ?? "").Split(';').Append(fileName)));
+    }
 
     /// <summary>What the manual thread count starts at: the standard count of this PC, so choosing Manual changes nothing yet.</summary>
     public static int DefaultManualImportThreads => ResourcePolicy.StandardImportThreads(Environment.ProcessorCount);
@@ -85,6 +101,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
         Scribe_Values.Look(ref importThreadsManual, "importThreadsManual", DefaultManualImportThreads);
         Scribe_Values.Look(ref precomputeStatistics, "precomputeStatistics", false);
         Scribe_Values.Look(ref memoryUseMode, "memoryUseMode", (int)MemoryUseMode.Standard);
+        Scribe_Values.Look(ref importExclusionPatterns, "importExclusionPatterns", "");
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {
             if (!Enum.IsDefined(typeof(StatisticsWindowSizePreset), windowSizePreset))
@@ -93,6 +110,7 @@ public sealed class RimworldStatisticsSettings : ModSettings
             memoryUseMode = (int)ResourcePolicy.ParseMemoryUseMode(memoryUseMode);
             importThreadsManual = Math.Clamp(importThreadsManual, 1, ResourcePolicy.MaxImportThreads);
             viewPreferencesJson ??= "";
+            importExclusionPatterns ??= "";
             if (experimentalUnitIds is null)
             {
                 experimentalUnitIds = experimentalEnabled

@@ -27,9 +27,21 @@ public sealed class ImportResult
     /// <summary>Saves read and committed as new: not failed, not unchanged, not replaced.</summary>
     public int Added => Math.Max(0, Read - Failed - Unchanged - Replaced);
 
+    /// <summary>Saves kept out of this run by the exclusion patterns (S20); they are not read and not skipped.</summary>
+    public int Excluded { get; init; }
+
+    /// <summary>Names of the saves kept out of this run by the exclusion patterns, capped at 100, sorted ordinal.</summary>
+    public IReadOnlyList<string> ExcludedFiles { get; init; } = Array.Empty<string>();
+
+    /// <summary>Names of the saves newly recorded by this run, capped at 100, sorted ordinal (S12).</summary>
+    public IReadOnlyList<string> AddedFiles { get; init; } = Array.Empty<string>();
+
+    /// <summary>Names of the saves replaced by this run, capped at 100, sorted ordinal (S12).</summary>
+    public IReadOnlyList<string> ReplacedFiles { get; init; } = Array.Empty<string>();
+
     public bool Cancelled { get; init; }
 
-    /// <summary>Save file names present in the folder at scan time (for "元ファイルの有無", spec §7.5).</summary>
+    /// <summary>Save file names present in the folder at scan end (for "元ファイルの有無", spec §7.5).</summary>
     public required IReadOnlyList<string> PresentFiles { get; init; }
 }
 
@@ -97,30 +109,78 @@ public sealed class ImportEngine
         => fileName.EndsWith(".rws", StringComparison.OrdinalIgnoreCase)
             || fileName.EndsWith(".rws.old", StringComparison.OrdinalIgnoreCase);
 
+    /// <summary>How many file names <see cref="ImportResult"/> lists for excluded, added or replaced saves.</summary>
+    private const int MaxListedFiles = 100;
+
     public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct)
-        => Run(savesDir, session, progress, ct, ImportMode.Incremental);
+        => Run(savesDir, session, progress, ct, ImportMode.Incremental, exclusions: null);
 
     public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct,
         ImportMode mode)
-        => ThreadPriorities.Run(_priority, () => RunAtPriority(savesDir, session, progress, ct, mode));
+        => Run(savesDir, session, progress, ct, mode, exclusions: null);
+
+    /// <summary>An ordinary scan that also applies the user's save-name exclusion patterns (S20).</summary>
+    public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct,
+        IReadOnlyList<string>? exclusions)
+        => Run(savesDir, session, progress, ct, ImportMode.Incremental, exclusions);
+
+    public ImportResult Run(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress, CancellationToken ct,
+        ImportMode mode, IReadOnlyList<string>? exclusions)
+        => ThreadPriorities.Run(_priority, () => RunAtPriority(savesDir, session, progress, ct, mode, exclusions, singleFileName: null));
+
+    /// <summary>
+    /// Re-reads exactly one save with forced re-check semantics (S18): unchanged bytes are not written, changed bytes are
+    /// committed, and a failed read keeps a good earlier record. Files that do not exist or are not save files give
+    /// all-zero counts; <see cref="ImportResult.PresentFiles"/> still reflects the saves that are on disk.
+    /// </summary>
+    public ImportResult RunSingle(string savesDir, string fileName, ProfileSession session,
+        IProgress<ImportProgress>? progress, CancellationToken ct)
+        => RunSingle(savesDir, fileName, session, progress, ct, exclusions: null);
+
+    /// <summary>The same as <see cref="RunSingle(string, string, ProfileSession, IProgress{ImportProgress}?, CancellationToken)"/>
+    /// with the user's exclusion patterns applied to the named file.</summary>
+    public ImportResult RunSingle(string savesDir, string fileName, ProfileSession session,
+        IProgress<ImportProgress>? progress, CancellationToken ct, IReadOnlyList<string>? exclusions)
+        => ThreadPriorities.Run(_priority, () => RunAtPriority(savesDir, session, progress, ct, ImportMode.ForcedRecheck,
+            exclusions, singleFileName: fileName));
 
     private ImportResult RunAtPriority(string savesDir, ProfileSession session, IProgress<ImportProgress>? progress,
-        CancellationToken ct, ImportMode mode)
+        CancellationToken ct, ImportMode mode, IReadOnlyList<string>? exclusions, string? singleFileName)
     {
         if (!Directory.Exists(savesDir))
             return new ImportResult { Mode = mode, PresentFiles = Array.Empty<string>() };
         var forced = mode == ImportMode.ForcedRecheck;
 
-        var files = Directory.EnumerateFiles(savesDir)
+        // Enumerate every save once, then narrow to this run's scope (the named file for a single re-check) and drop the
+        // excluded names. PresentFiles is worked out from the whole directory at scan end, so excluded and not-read saves
+        // are still reported as present (S7).
+        var allFiles = Directory.EnumerateFiles(savesDir)
             .Select(path => (Path: path, Name: Path.GetFileName(path)))
             .Where(f => IsSaveFile(f.Name))
             .OrderBy(f => f.Name, StringComparer.Ordinal)
             .ToList();
+        var scoped = singleFileName is null
+            ? allFiles
+            : allFiles.Where(f => string.Equals(f.Name, singleFileName, StringComparison.Ordinal)).ToList();
+        var excludedFiles = new List<string>();
+        var excluded = 0;
+        var files = new List<(string Path, string Name)>(scoped.Count);
+        foreach (var file in scoped)
+        {
+            if (SaveNameExclusions.IsExcluded(file.Name, exclusions))
+            {
+                excluded++;
+                AddListed(excludedFiles, file.Name);
+                continue;
+            }
+            files.Add(file);
+        }
 
         int read = 0, skipped = 0, failed = 0, done = 0, unchanged = 0, replaced = 0, keptAfterFailure = 0;
+        var addedFiles = new List<string>();
+        var replacedFiles = new List<string>();
         var cancelled = false;
         var lastSaveRequest = _timeProvider.GetTimestamp();
-        var present = new List<string>(files.Count);
 
         // Warm scans used to search the entire profile for every unchanged
         // .rws (O(files * observations)). Cache only the matching read
@@ -220,7 +280,6 @@ public sealed class ImportEngine
                     DiscardReadAhead(index);
                     continue;   // deleted since the folder was listed
                 }
-                present.Add(name);
                 var countedRead = false;
                 (long Size, DateTime Time)? identity = null;
                 try
@@ -291,10 +350,18 @@ public sealed class ImportEngine
                     });
                     switch (outcome)
                     {
-                        case RecheckOutcome.Changed: replaced++; break;
+                        case RecheckOutcome.Changed:
+                            replaced++;
+                            AddListed(replacedFiles, name);
+                            break;
                         case RecheckOutcome.Unchanged: unchanged++; break;
                         case RecheckOutcome.FailedKept: keptAfterFailure++; break;
                         case RecheckOutcome.NewerRecord: read--; skipped++; break;
+                        case RecheckOutcome.New:
+                            // A failed read is not a save that was recorded, although it is counted in Read.
+                            if (obs.Status != ObservationStatus.Error)
+                                AddListed(addedFiles, name);
+                            break;
                     }
                 }
                 catch (Exception e)
@@ -368,12 +435,22 @@ public sealed class ImportEngine
         if (completed)
             progress?.Report(new ImportProgress(files.Count, done, failed, null));
 
-        if (cancelled)
-            present.AddRange(files.Skip(done).Select(f => f.Name).Where(n => File.Exists(Path.Combine(savesDir, n))));
+        var present = new List<string>(allFiles.Count);
+        foreach (var file in allFiles)
+            if (File.Exists(file.Path))
+                present.Add(file.Name);
         return new ImportResult
         {
             Mode = mode, Read = read, Skipped = skipped, Failed = failed, Unchanged = unchanged, Replaced = replaced,
-            KeptAfterFailure = keptAfterFailure, Cancelled = cancelled, PresentFiles = present,
+            KeptAfterFailure = keptAfterFailure, Excluded = excluded, ExcludedFiles = excludedFiles,
+            AddedFiles = addedFiles, ReplacedFiles = replacedFiles, Cancelled = cancelled, PresentFiles = present,
         };
+    }
+
+    /// <summary>Adds a name to a result list while it is below the cap; the enumeration order is ordinal.</summary>
+    private static void AddListed(List<string> names, string name)
+    {
+        if (names.Count < MaxListedFiles)
+            names.Add(name);
     }
 }

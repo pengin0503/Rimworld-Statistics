@@ -39,7 +39,13 @@ public static class ImportRunner
     /// </summary>
     public static void StartForcedRecheckIfIdle() => Start(manual: true, ImportMode.ForcedRecheck);
 
-    private static void Start(bool manual, ImportMode mode = ImportMode.Incremental)
+    /// <summary>
+    /// Main thread, title screen, after the player chose one failed save: re-reads only that save with forced re-check
+    /// semantics (S18). Gated exactly like <see cref="StartForcedRecheckIfIdle"/>.
+    /// </summary>
+    public static void StartSingleSave(string fileName) => Start(manual: true, ImportMode.ForcedRecheck, fileName);
+
+    private static void Start(bool manual, ImportMode mode = ImportMode.Incremental, string? singleFile = null)
     {
         if (Current.ProgramState != ProgramState.Entry)
             return;
@@ -56,14 +62,15 @@ public static class ImportRunner
             try
             {
                 var savesDir = GenFilePaths.SavedGamesFolderPath;
-                // Read on this thread: the processing-resource setting as it is when the scan starts.
+                // Read on this thread: the processing-resource and exclusion settings as they are when the scan starts.
                 var settings = RimworldStatisticsMod.Settings;
                 var threadMode = settings.ImportThreads;
                 var threads = ResourcePolicy.ImportThreads(threadMode, settings.importThreadsManual, Environment.ProcessorCount);
                 var priority = ResourcePolicy.ImportPriority(threadMode);
+                var exclusions = settings.ImportExclusionPatterns;
                 var source = new CancellationTokenSource();
                 cts = source;
-                task = Task.Run(() => Run(run, savesDir, mode, threads, priority, source.Token));
+                task = Task.Run(() => Run(run, savesDir, mode, threads, priority, source.Token, exclusions, singleFile));
             }
             catch (Exception e)
             {
@@ -107,12 +114,16 @@ public static class ImportRunner
                 Start(manual: false);
     }
 
-    private static void Run(long run, string savesDir, ImportMode mode, int threads, ThreadPriority priority, CancellationToken ct)
+    private static void Run(long run, string savesDir, ImportMode mode, int threads, ThreadPriority priority, CancellationToken ct,
+        IReadOnlyList<string> exclusions, string? singleFile)
     {
         try
         {
             var engine = new ImportEngine(new SaveReader(), threads, TimeProvider.System, priority);
-            Status.Complete(run, engine.Run(savesDir, ProfileService.Session, new ProgressSink(run), ct, mode));
+            var result = singleFile is null
+                ? engine.Run(savesDir, ProfileService.Session, new ProgressSink(run), ct, mode, exclusions)
+                : engine.RunSingle(savesDir, singleFile, ProfileService.Session, new ProgressSink(run), ct, exclusions);
+            Status.Complete(run, result);
         }
         catch (Exception e)
         {
