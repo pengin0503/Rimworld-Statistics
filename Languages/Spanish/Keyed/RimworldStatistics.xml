@@ -1400,4 +1400,17 @@
   <RWS_Guide_Import>Data management: imports saves and manages backups and exports. • Import saves to update the record. • Restore or export from the backup and export sections.</RWS_Guide_Import>
   <RWS_Empty_OpenImport>Open Data management tab</RWS_Empty_OpenImport>
   <RWS_Tip_TechnicalHint>Hold Shift to show the technical identifier.</RWS_Tip_TechnicalHint>
+  <RWS_Details_SourceAll>All sources</RWS_Details_SourceAll>
+  <RWS_Details_SourceVanilla>Vanilla</RWS_Details_SourceVanilla>
+  <RWS_Details_SourceDLC>DLC</RWS_Details_SourceDLC>
+  <RWS_Details_SourceMOD>MOD</RWS_Details_SourceMOD>
+  <RWS_Details_HideZero>Hide zeros</RWS_Details_HideZero>
+  <RWS_Details_HideZeroTip>Hide statistics measured exactly as zero. Statistics without a measured value remain governed by the status filter.</RWS_Details_HideZeroTip>
+  <RWS_Setting_DisplayFormat>Display format</RWS_Setting_DisplayFormat>
+  <RWS_Setting_DayFormat>Days</RWS_Setting_DayFormat>
+  <RWS_Setting_DayFormatDecimal>Decimal days</RWS_Setting_DayFormatDecimal>
+  <RWS_Setting_DayFormatYears>Years and days</RWS_Setting_DayFormatYears>
+  <RWS_Setting_DayFormatHelp>Applies the next time you open the statistics window.</RWS_Setting_DayFormatHelp>
+  <RWS_Setting_NumberGrouping>Thousands separators</RWS_Setting_NumberGrouping>
+  <RWS_Setting_NumberGroupingHelp>Group digits in numbers with separators.</RWS_Setting_NumberGroupingHelp>
 </LanguageData>

@@ -171,8 +171,8 @@ internal static class MetricText
     /// </summary>
     public static string FormatRateValue(MetricDefinition definition, double perDay)
     {
-        var inv = System.Globalization.CultureInfo.InvariantCulture;
-        var number = perDay.ToString(perDay >= 100 ? "N0" : perDay >= 1 ? "N1" : "N2", inv);
+        var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
+        var number = DisplayFormat.Number(perDay, perDay >= 100 ? 0 : perDay >= 1 ? 1 : 2, grouping);
         if (definition.Unit == MetricUnit.Nutrition)
             number = "RWS_Unit_Nutrition".Translate(number);
         return "RWS_Rate_PerDayValue".Translate(number);
@@ -182,11 +182,12 @@ internal static class MetricText
     {
         if (MetricRates.PerDay(definition, value) is not { } rate)
             return "";
-        var inv = System.Globalization.CultureInfo.InvariantCulture;
-        var number = rate.PerDay.ToString(rate.PerDay >= 100 ? "N0" : rate.PerDay >= 1 ? "N1" : "N2", inv);
+        var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
+        var number = DisplayFormat.Number(rate.PerDay, rate.PerDay >= 100 ? 0 : rate.PerDay >= 1 ? 1 : 2, grouping);
         if (definition.Unit == MetricUnit.Nutrition)
             number = "RWS_Unit_Nutrition".Translate(number);
-        return "\n" + (string)"RWS_PerDay".Translate(number, rate.Days.ToString("N1", inv));
+        var days = DisplayFormat.Number(rate.Days, 1, grouping);
+        return "\n" + (string)"RWS_PerDay".Translate(number, days);
     }
 
     public static string DlcDisplayName(string packageId)

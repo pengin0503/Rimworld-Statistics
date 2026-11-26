@@ -47,6 +47,8 @@ public sealed class Dialog_RimworldStatistics : Window
     private string? cachedScopeGroupId;
     private string cachedScopePrefsJson = "";
     private string? cachedScopeLabel;
+    // U4: each opened window asks the tab classes to restore their saved view state on their first draw.
+    private bool restoreViewStatePending = true;
 
     public Dialog_RimworldStatistics()
     {
@@ -82,6 +84,12 @@ public sealed class Dialog_RimworldStatistics : Window
             if (ProfileService.RestoredPreferencesPending)
                 ProfileService.ApplyRestoredPreferences();
             RefreshSavedPreferences();
+            if (restoreViewStatePending)
+            {
+                restoreViewStatePending = false;
+                DetailsTab.RequestRestore();
+                RankingsTab.RequestRestore();
+            }
             // Refreshed on the same two-second background cadence as the Data Management tab, never per frame.
             var statusSession = ProfileService.TryGetSession(out _);
             ProfileStatusMonitor.Poll(statusSession);
@@ -554,13 +562,31 @@ public sealed class Dialog_RimworldStatistics : Window
         _ => "RWS_LoadSource_NewerSchema".Translate(),
     };
 
-    internal static string Days(long ticks) => (ticks / (double)StatFormat.TicksPerDay).ToString("N1", CultureInfo.InvariantCulture);
-
-    internal static string DaysWithYears(long ticks)
+    internal static (DisplayDayFormat Format, bool Grouping) DisplayOptions()
     {
-        var (_, years, days) = StatFormat.SplitDays(ticks);
-        return "RWS_DaysValue".Translate(Days(ticks), years.ToString(CultureInfo.InvariantCulture), days.ToString(CultureInfo.InvariantCulture));
+        var prefs = ActivePreferences;
+        return ((DisplayDayFormat)prefs.DayFormat, prefs.NumberGrouping);
     }
+
+    // The one localized "years and days" template, reused by every day value (PR-6a U10).
+    internal static string YearsAndDaysText(string decimalDays, string years, string days)
+        => (string)"RWS_DaysValue".Translate(decimalDays, years, days);
+
+    internal static string Days(long ticks)
+    {
+        var (format, grouping) = DisplayOptions();
+        return DisplayFormat.Days(ticks, format, grouping, YearsAndDaysText);
+    }
+
+    /// <summary>A standalone day value with its unit (the years-and-days template already names its units).</summary>
+    internal static string DaysValue(long ticks)
+    {
+        var (format, _) = DisplayOptions();
+        var text = Days(ticks);
+        return format == DisplayDayFormat.YearsAndDays ? text : (string)"RWS_Unit_Days".Translate(text);
+    }
+
+    internal static string DaysWithYears(long ticks) => DaysValue(ticks);
 
     /// <summary>"1.6.4566 rev607" → "1.6"; distinct, in order.</summary>
     internal static string ShortVersions(IEnumerable<string> versions)

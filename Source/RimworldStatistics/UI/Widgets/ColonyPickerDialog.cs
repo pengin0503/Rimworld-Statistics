@@ -159,7 +159,7 @@ internal sealed class ColonyPickerDialog : Window
         }
         if (stats.HasObservedPoint)
         {
-            var days = (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(stats.MaxTicks));
+            var days = Dialog_RimworldStatistics.DaysValue(stats.MaxTicks);
             parts.Add(days);
             tipLines.Add((string)"RWS_Col_Days".Translate() + ": " + days);
         }

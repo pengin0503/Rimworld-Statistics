@@ -29,6 +29,13 @@ internal static class RankingsTab
     private static bool perDayMode;
     private static Vector2 choicesScroll;
     private static Vector2 tableScroll;
+    private static bool restorePending;
+    private static ViewPreferences? viewPreferences;
+    private static Action? persistViewState;
+    private static PersistedState? lastPersistedState;
+
+    private readonly record struct PersistedState(string Search, MetricCategory? Category, string? SelectedKey,
+        bool SelectorCollapsed, bool Descending, bool ShowAll, bool PerDayMode);
 
     private static StatsView? tableView;
     private static object? tableLanguage;
@@ -44,8 +51,13 @@ internal static class RankingsTab
     private static object? headerLanguage;
     private static string[]? cachedHeaders;
 
+    /// <summary>U4: the statistics window asks for a restore on its first draw after opening.</summary>
+    internal static void RequestRestore() => restorePending = true;
+
     public static void Draw(Rect rect, StatsView view, ViewPreferences preferences, Action persist, string? scopeName = null)
     {
+        viewPreferences = preferences;
+        persistViewState = persist;
         var lang = LanguageDatabase.activeLanguage;
         if (!ReferenceEquals(selectorView, view) || !ReferenceEquals(selectorLanguage, lang))
         {
@@ -65,6 +77,13 @@ internal static class RankingsTab
             priorSearch = null;
         }
 
+        if (restorePending)
+        {
+            restorePending = false;
+            RestoreState(preferences);
+            lastPersistedState = CaptureState();
+        }
+
         var eligibleChoices = perDayMode ? perDayChoices : choices;
         if (selectedKey is null || !eligibleChoices.Any(c => c.Key == selectedKey))
         {
@@ -82,7 +101,10 @@ internal static class RankingsTab
         }
 
         if (split.RightWidth <= 0f)
+        {
+            PersistViewStateIfChanged();
             return;
+        }
 
         var right = new Rect(rect.x + split.RightXOffset, rect.y, split.RightWidth, rect.height);
         Widgets.DrawMenuSection(right);
@@ -111,6 +133,7 @@ internal static class RankingsTab
             }
             Widgets.Label(new Rect(body.x, body.y + emptyControls.Height + 6f, body.width, Math.Max(0f, body.height - emptyControls.Height - 6f)),
                 "RWS_Rankings_NoMatches".Translate());
+            PersistViewStateIfChanged();
             return;
         }
 
@@ -260,6 +283,50 @@ internal static class RankingsTab
             }
             Table.Draw(table, ref tableScroll, cachedHeaders, rows, RightAlignedColumns);
         }
+        PersistViewStateIfChanged();
+    }
+
+    private static void RestoreState(ViewPreferences prefs)
+    {
+        search = prefs.RankingsSearch ?? "";
+        category = prefs.RankingsCategory is { } savedCategory && Enum.IsDefined(typeof(MetricCategory), savedCategory)
+            ? (MetricCategory)savedCategory : null;
+        selectedKey = prefs.RankingsSelectedKey;
+        selectorCollapsed = prefs.RankingsSelectorCollapsed;
+        descending = prefs.RankingsDescending;
+        showAll = prefs.RankingsShowAll;
+        perDayMode = prefs.RankingsPerDayMode;
+        choicesScroll = Vector2.zero;
+        tableScroll = Vector2.zero;
+        priorSearch = null;
+    }
+
+    private static PersistedState CaptureState() => new(search, category, selectedKey, selectorCollapsed, descending, showAll, perDayMode);
+
+    private static void PersistViewStateIfChanged()
+    {
+        var state = CaptureState();
+        if (lastPersistedState == state)
+            return;
+        lastPersistedState = state;
+        if (viewPreferences is not { } prefs)
+            return;
+        prefs.RankingsSearch = search ?? "";
+        prefs.RankingsCategory = category is { } selectedCategory ? (int)selectedCategory : null;
+        prefs.RankingsSelectedKey = selectedKey;
+        prefs.RankingsSelectorCollapsed = selectorCollapsed;
+        prefs.RankingsDescending = descending;
+        prefs.RankingsShowAll = showAll;
+        prefs.RankingsPerDayMode = perDayMode;
+        persistViewState?.Invoke();
+    }
+
+    // The category FloatMenu runs after this tab's Draw, so it saves at once instead of waiting for the next frame.
+    private static void SetCategory(MetricCategory? value)
+    {
+        category = value;
+        choicesScroll = Vector2.zero;
+        PersistViewStateIfChanged();
     }
 
     private static void DrawSelector(Rect rect, StatsView view, Choice[] eligibleChoices, ViewPreferences preferences, Action persist)
@@ -279,14 +346,10 @@ internal static class RankingsTab
         {
             var menu = new List<FloatMenuOption>
             {
-                new("RWS_Details_AllCategories".Translate(), () => { category = null; choicesScroll = Vector2.zero; }),
+                new("RWS_Details_AllCategories".Translate(), () => SetCategory(null)),
             };
             menu.AddRange(eligibleChoices.Where(c => c.Category is not null).Select(c => c.Category!.Value).Distinct()
-                .Select(cat => new FloatMenuOption(DetailsTab.CategoryLabel(cat), () =>
-                {
-                    category = cat;
-                    choicesScroll = Vector2.zero;
-                })));
+                .Select(cat => new FloatMenuOption(DetailsTab.CategoryLabel(cat), () => SetCategory(cat))));
             Find.WindowStack.Add(new FloatMenu(menu));
         }
         if (shownCategory != categoryText)
@@ -383,11 +446,12 @@ internal static class RankingsTab
 
     internal static string BasicValue(string key, double n)
     {
-        var number = n.ToString("N1", CultureInfo.InvariantCulture);
+        var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
+        var number = DisplayFormat.Number(n, 1, grouping);
         if (key == BasicMetrics.Days)
-            return "RWS_Unit_Days".Translate(number);
+            return DetailsTab.DayCount(n);
         if (key == BasicMetrics.RealPlayHours)
             return "RWS_HoursValue".Translate(number);
-        return StatFormat.Group(n);
+        return DisplayFormat.WholeNumber(n, grouping);
     }
 }
