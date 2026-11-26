@@ -1401,4 +1401,17 @@
   <RWS_Guide_Import>データ管理: セーブの取り込み、バックアップ、エクスポートを行います。 • セーブを取り込むと記録が更新されます。 • バックアップとエクスポートの各項目から復元・出力できます。</RWS_Guide_Import>
   <RWS_Empty_OpenImport>データ管理タブを開く</RWS_Empty_OpenImport>
   <RWS_Tip_TechnicalHint>Shiftを押すと技術識別子を表示します。</RWS_Tip_TechnicalHint>
+  <RWS_Details_SourceAll>すべての入手元</RWS_Details_SourceAll>
+  <RWS_Details_SourceVanilla>バニラ</RWS_Details_SourceVanilla>
+  <RWS_Details_SourceDLC>DLC</RWS_Details_SourceDLC>
+  <RWS_Details_SourceMOD>MOD</RWS_Details_SourceMOD>
+  <RWS_Details_HideZero>0を隠す</RWS_Details_HideZero>
+  <RWS_Details_HideZeroTip>測定値がちょうど0の統計を隠します。測定値のない統計は、状態フィルターの設定に従って表示されます。</RWS_Details_HideZeroTip>
+  <RWS_Setting_DisplayFormat>表示形式</RWS_Setting_DisplayFormat>
+  <RWS_Setting_DayFormat>日数の表示</RWS_Setting_DayFormat>
+  <RWS_Setting_DayFormatDecimal>小数の日数</RWS_Setting_DayFormatDecimal>
+  <RWS_Setting_DayFormatYears>年と日</RWS_Setting_DayFormatYears>
+  <RWS_Setting_DayFormatHelp>次に統計ウィンドウを開いたときに反映されます。</RWS_Setting_DayFormatHelp>
+  <RWS_Setting_NumberGrouping>桁区切り</RWS_Setting_NumberGrouping>
+  <RWS_Setting_NumberGroupingHelp>数値に3桁ごとの区切りを表示します。</RWS_Setting_NumberGroupingHelp>
 </LanguageData>

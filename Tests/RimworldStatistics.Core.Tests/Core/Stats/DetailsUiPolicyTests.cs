@@ -313,5 +313,7 @@ public sealed class DetailsUiPolicyTests
         Assert.Equal(1, FilterSummary.CountActiveFilters(true, false, false, ""));
         Assert.Equal(2, FilterSummary.CountActiveFilters(false, true, false, "raid"));
         Assert.Equal(4, FilterSummary.CountActiveFilters(true, true, true, "wealth"));
+        Assert.Equal(6, FilterSummary.CountActiveFilters(true, true, true, true, true, "raid"));
+        Assert.Equal(0, FilterSummary.CountActiveFilters(false, false, false, false, false, "  "));
     }
 }

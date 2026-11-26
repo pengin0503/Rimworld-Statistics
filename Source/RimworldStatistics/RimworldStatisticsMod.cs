@@ -125,6 +125,8 @@ public sealed class RimworldStatisticsMod : Mod
             }
             listing.Label("RWS_Setting_WindowSizeHelp".Translate());
             listing.Gap(8f);
+            DrawDisplayFormatSettings(listing);
+            listing.Gap(8f);
             listing.Label("RWS_Setting_ShortcutsHeading".Translate());
             listing.Label("RWS_Setting_ShortcutsSummary".Translate(
                 UI.RimworldStatisticsKeyBindingDefOf.DescribeBinding(UI.RimworldStatisticsKeyBindingDefOf.ToggleStatistics),
@@ -382,6 +384,40 @@ public sealed class RimworldStatisticsMod : Mod
             .Select(UI.MetricText.Label);
 
     private static CacheLimits? appliedCacheLimits;
+
+    /// <summary>
+    /// PR-6a U10: presentation-only display choices stored in the existing view-preferences JSON. They change the next
+    /// statistics window, like the window size, and never touch the statistics profile.
+    /// </summary>
+    private static void DrawDisplayFormatSettings(Listing_Standard listing)
+    {
+        listing.Label("RWS_Setting_DisplayFormat".Translate());
+        var preferences = UI.Dialog_RimworldStatistics.ActivePreferences;
+        listing.Label("RWS_Setting_DayFormat".Translate());
+        var dayFormat = (DisplayDayFormat)preferences.DayFormat;
+        var dayButton = listing.GetRect(30f);
+        if (Widgets.ButtonText(new Rect(dayButton.x, dayButton.y, Math.Min(dayButton.width, 320f), dayButton.height),
+                DayFormatLabel(dayFormat)))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(DayFormatLabel(DisplayDayFormat.DecimalDays), () =>
+                    UI.Dialog_RimworldStatistics.UpdateActivePreferences(p => p.DayFormat = (int)DisplayDayFormat.DecimalDays)),
+                new(DayFormatLabel(DisplayDayFormat.YearsAndDays), () =>
+                    UI.Dialog_RimworldStatistics.UpdateActivePreferences(p => p.DayFormat = (int)DisplayDayFormat.YearsAndDays)),
+            }));
+        }
+        listing.Label("RWS_Setting_DayFormatHelp".Translate());
+        var grouping = preferences.NumberGrouping;
+        listing.CheckboxLabeled("RWS_Setting_NumberGrouping".Translate(), ref grouping);
+        if (grouping != preferences.NumberGrouping)
+            UI.Dialog_RimworldStatistics.UpdateActivePreferences(p => p.NumberGrouping = grouping);
+        listing.Label("RWS_Setting_NumberGroupingHelp".Translate());
+    }
+
+    private static string DayFormatLabel(DisplayDayFormat format) => format == DisplayDayFormat.YearsAndDays
+        ? "RWS_Setting_DayFormatYears".Translate()
+        : "RWS_Setting_DayFormatDecimal".Translate();
 
     /// <summary>
     /// The processing-resource settings: how many saves an import reads at once, background precomputation and how much the

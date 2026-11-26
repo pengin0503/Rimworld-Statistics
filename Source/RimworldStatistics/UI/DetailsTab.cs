@@ -41,7 +41,12 @@ public static class DetailsTab
     private enum DetailsStatusFilter { All, Measured, Partial, Missing, Experimental }
 
     private sealed record Inputs(NumericView View, StatsResult Stats, bool PerColony, string? Colony, MetricCategory? Category, string Search,
-        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, bool GroupDerived, object? Language, string ColonyNameSignature);
+        bool ByValue, bool Ascending, int ExpandedVersion, DetailsViewMode Mode, DetailsStatusFilter StatusFilter, bool GroupDerived,
+        MetricSourceFilter SourceFilter, bool HideZero, object? Language, string ColonyNameSignature);
+
+    private readonly record struct PersistedState(DetailsViewMode ViewMode, bool PerColony, string? ColonyKey, MetricCategory? Category,
+        string Search, bool ByValue, bool Ascending, DetailsStatusFilter StatusFilter, bool GroupDerived,
+        MetricSourceFilter SourceFilter, bool HideZero, int ExpandedVersion);
 
     // Show all metrics immediately, including optional MOD outputs and non-lifetime readings.
     private static DetailsViewMode viewMode = DetailsViewMode.All;
@@ -54,23 +59,38 @@ public static class DetailsTab
     private static bool ascending = true;
     private static DetailsStatusFilter statusFilter;
     private static bool groupDerived = true;
+    private static MetricSourceFilter sourceFilter;
+    private static bool hideZero;
     private static readonly HashSet<string> Expanded = new(StringComparer.Ordinal);
     private static int expandedVersion;
     private static Vector2 scroll;
     private static Inputs? builtFor;
+    private static bool restorePending;
+    private static PersistedState? lastPersistedState;
     private static List<Line> lines = new();
     // Row tops, rebuilt with the rows: a MOD-owned statistic has a second line for its provider (#306).
     private static RowOffsets offsets = RowOffsets.Empty;
     private static int totalMetricCount;
     private static int matchedMetricCount;
 
+    /// <summary>U4: the statistics window asks for a restore on its first draw after opening.</summary>
+    internal static void RequestRestore() => restorePending = true;
+
     public static void Draw(Rect rect, StatsView view, ProfileSession session, ViewPreferences? favorites = null, Action? saveFavorites = null, string? scopeName = null)
     {
         favoritePreferences = favorites;
         persistFavorites = saveFavorites;
         var numeric = view.Numeric;
+        if (restorePending)
+        {
+            restorePending = false;
+            if (favorites is not null)
+                RestoreState(favorites, numeric);
+            lastPersistedState = CaptureState();
+        }
         if (numeric.Colonies.Count == 0)
         {
+            PersistViewStateIfChanged();
             Widgets.Label(rect, "RWS_NoData".Translate());
             return;
         }
@@ -107,31 +127,41 @@ public static class DetailsTab
         if (Widgets.ButtonText(filterRect, shownFilter))
         {
             Find.WindowStack.Add(new FloatMenu(Enum.GetValues<DetailsStatusFilter>()
-                .Select(value => new FloatMenuOption(StatusFilterLabel(value), () =>
-                {
-                    statusFilter = value;
-                    scroll = Vector2.zero;
-                })).ToList()));
+                .Select(value => new FloatMenuOption(StatusFilterLabel(value), () => SetStatusFilter(value))).ToList()));
         }
-        if (!comparing && !perColony)
+        if (!comparing)
         {
-            var canGroupNow = DerivedMetricGroups.ShouldGroup(true, perColony, byValue, search);
-            string groupLabel = "RWS_Details_GroupDerived".Translate();
-            var toggleRect = filterRow.Next(groupLabel + "   ", 145f, Math.Min(rect.width, 260f));
-            var nextGroup = groupDerived;
-            using (UiScopes.GuiState())
+            if (!perColony)
             {
-                if (!canGroupNow)
-                    GUI.color = new Color(0.65f, 0.65f, 0.65f);
-                // Greyed out while searching or sorting by value, and then it does not take clicks either (#336).
-                Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup,
-                    disabled: !canGroupNow);
+                var canGroupNow = DerivedMetricGroups.ShouldGroup(true, perColony, byValue, search);
+                string groupLabel = "RWS_Details_GroupDerived".Translate();
+                var toggleRect = filterRow.Next(groupLabel + "   ", 145f, Math.Min(rect.width, 260f));
+                var nextGroup = groupDerived;
+                using (UiScopes.GuiState())
+                {
+                    if (!canGroupNow)
+                        GUI.color = new Color(0.65f, 0.65f, 0.65f);
+                    // Greyed out while searching or sorting by value, and then it does not take clicks either (#336).
+                    Widgets.CheckboxLabeled(toggleRect, groupLabel.Truncate(Math.Max(0f, toggleRect.width - 30f)), ref nextGroup,
+                        disabled: !canGroupNow);
+                }
+                TooltipHandler.TipRegion(toggleRect,
+                    canGroupNow ? "RWS_Details_GroupDerivedTip".Translate() : "RWS_Details_GroupDerivedFlatTip".Translate());
+                if (nextGroup != groupDerived)
+                {
+                    groupDerived = nextGroup;
+                    scroll = Vector2.zero;
+                }
             }
-            TooltipHandler.TipRegion(toggleRect,
-                canGroupNow ? "RWS_Details_GroupDerivedTip".Translate() : "RWS_Details_GroupDerivedFlatTip".Translate());
-            if (nextGroup != groupDerived)
+            // U18: measured zeros only; rows without a measured number stay governed by the status filter.
+            string hideLabel = "RWS_Details_HideZero".Translate();
+            var hideRect = filterRow.Next(hideLabel + "   ", 130f, Math.Min(rect.width, 230f));
+            var nextHideZero = hideZero;
+            Widgets.CheckboxLabeled(hideRect, hideLabel.Truncate(Math.Max(0f, hideRect.width - 30f)), ref nextHideZero);
+            TooltipHandler.TipRegion(hideRect, "RWS_Details_HideZeroTip".Translate());
+            if (nextHideZero != hideZero)
             {
-                groupDerived = nextGroup;
+                hideZero = nextHideZero;
                 scroll = Vector2.zero;
             }
         }
@@ -140,7 +170,7 @@ public static class DetailsTab
         var colonyNameSig = ColonyPresentation.Signature(favorites);
         if (!comparing)
         {
-            var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language, colonyNameSig);
+            var inputs = new Inputs(numeric, view.Stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, sourceFilter, hideZero, language, colonyNameSig);
             if (builtFor != inputs)
             {
                 if (builtFor is { } previous && previous with { ExpandedVersion = inputs.ExpandedVersion } != inputs)
@@ -151,7 +181,8 @@ public static class DetailsTab
         }
 
         var activeFilters = FilterSummary.CountActiveFilters(
-            viewMode != DetailsViewMode.All, category is not null, statusFilter != DetailsStatusFilter.All, search);
+            viewMode != DetailsViewMode.All, category is not null, statusFilter != DetailsStatusFilter.All,
+            sourceFilter != MetricSourceFilter.All, hideZero, search);
         var summaryText = comparing
             ? (activeFilters > 0 ? (string)"RWS_Filter_ActiveCount".Translate(activeFilters) : "")
             : activeFilters > 0
@@ -179,11 +210,12 @@ public static class DetailsTab
         y += filterRow.Height + 4f;
         if (comparing)
         {
-            var filter = (viewMode, category, search: search.Trim(), statusFilter);
+            var filter = (viewMode, category, search: search.Trim(), statusFilter, sourceFilter, hideZero);
             ComparisonPanel.Draw(new Rect(rect.x, y, rect.width, rect.yMax - y), session, view, favorites, filter,
                 (definition, label) => MatchesMode(definition, filter.viewMode) && (filter.category is null || definition.Category == filter.category)
-                    && MatchesSearch(definition, label, filter.search),
-                row => MatchesStatus(row, filter.statusFilter));
+                    && MatchesSource(definition, filter.sourceFilter) && MatchesSearch(definition, label, filter.search),
+                row => MatchesStatus(row, filter.statusFilter) && !IsHiddenZero(row.Value, filter.hideZero));
+            PersistViewStateIfChanged();
             return;
         }
 
@@ -205,7 +237,10 @@ public static class DetailsTab
         y += DetailsRowHeights.Header;
         var outRect = new Rect(rect.x, y, rect.width, rect.yMax - y);
         if (outRect.height <= 0)
+        {
+            PersistViewStateIfChanged();
             return;
+        }
         if (lines.Count == 0)
         {
             Widgets.Label(new Rect(outRect.x, outRect.y, outRect.width, 28f), "RWS_Details_NoMatch".Translate());
@@ -214,6 +249,7 @@ public static class DetailsTab
             {
                 ResetFilters(numeric, view.Stats, language);
             }
+            PersistViewStateIfChanged();
             return;
         }
         var selectedColonyStats = perColony && colonyKey is not null
@@ -226,6 +262,7 @@ public static class DetailsTab
             for (var i = first; i <= last; i++)
                 DrawLine(new Rect(0f, offsets.Top(i), width, offsets.Height(i)), lines[i], i, view, selectedColonyStats, scopeName);
         }
+        PersistViewStateIfChanged();
     }
 
     private static void SetLines(List<Line> built)
@@ -260,16 +297,118 @@ public static class DetailsTab
         viewMode = DetailsViewMode.All;
         category = null;
         statusFilter = DetailsStatusFilter.All;
+        sourceFilter = MetricSourceFilter.All;
+        hideZero = false;
         search = "";
         scroll = Vector2.zero;
         if (comparing)
         {
             ComparisonPanel.ResetScroll();
-            return;
         }
-        var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, language, ColonyPresentation.Signature(favoritePreferences));
-        builtFor = inputs;
-        SetLines(Build(inputs));
+        else
+        {
+            var inputs = new Inputs(numeric, stats, perColony, colonyKey, category, search, byValue, ascending, expandedVersion, viewMode, statusFilter, groupDerived, sourceFilter, hideZero, language, ColonyPresentation.Signature(favoritePreferences));
+            builtFor = inputs;
+            SetLines(Build(inputs));
+        }
+        PersistViewStateIfChanged();
+    }
+
+    private static void RestoreState(ViewPreferences prefs, NumericView numeric)
+    {
+        var mode = (DetailsViewMode)prefs.DetailsViewMode;
+        viewMode = Enum.IsDefined(mode) ? mode : DetailsViewMode.All;
+        perColony = prefs.DetailsPerColony;
+        // Comparison mode is not part of the persisted view state; a fresh window starts in the normal view.
+        comparing = false;
+        colonyKey = prefs.DetailsColonyKey is { } savedColony && numeric.Colonies.Any(c => c.Key == savedColony)
+            ? savedColony : null;
+        category = prefs.DetailsCategory is { } savedCategory && Enum.IsDefined(typeof(MetricCategory), savedCategory)
+            ? (MetricCategory)savedCategory : null;
+        search = prefs.DetailsSearch ?? "";
+        byValue = prefs.DetailsByValue;
+        ascending = prefs.DetailsAscending;
+        var status = (DetailsStatusFilter)prefs.DetailsStatusFilter;
+        statusFilter = Enum.IsDefined(status) ? status : DetailsStatusFilter.All;
+        groupDerived = prefs.DetailsGroupDerived;
+        var source = (MetricSourceFilter)prefs.DetailsSourceFilter;
+        sourceFilter = Enum.IsDefined(source) ? source : MetricSourceFilter.All;
+        hideZero = prefs.DetailsHideZero;
+        Expanded.Clear();
+        foreach (var key in (prefs.DetailsExpandedKeys ?? new List<string>()).Take(ViewPreferences.MaxExpandedKeys))
+            if (!string.IsNullOrWhiteSpace(key))
+                Expanded.Add(key);
+        expandedVersion++;
+        scroll = Vector2.zero;
+        builtFor = null;
+    }
+
+    private static PersistedState CaptureState() => new(viewMode, perColony, colonyKey, category, search, byValue,
+        ascending, statusFilter, groupDerived, sourceFilter, hideZero, expandedVersion);
+
+    private static void PersistViewStateIfChanged()
+    {
+        var state = CaptureState();
+        if (lastPersistedState == state)
+            return;
+        lastPersistedState = state;
+        if (favoritePreferences is not { } prefs)
+            return;
+        prefs.DetailsViewMode = (int)viewMode;
+        prefs.DetailsPerColony = perColony;
+        prefs.DetailsColonyKey = colonyKey;
+        prefs.DetailsCategory = category is { } selectedCategory ? (int)selectedCategory : null;
+        prefs.DetailsSearch = search ?? "";
+        prefs.DetailsByValue = byValue;
+        prefs.DetailsAscending = ascending;
+        prefs.DetailsStatusFilter = (int)statusFilter;
+        prefs.DetailsGroupDerived = groupDerived;
+        prefs.DetailsSourceFilter = (int)sourceFilter;
+        prefs.DetailsHideZero = hideZero;
+        prefs.DetailsExpandedKeys = Expanded.Take(ViewPreferences.MaxExpandedKeys).ToList();
+        persistFavorites?.Invoke();
+    }
+
+    // FloatMenu and picker callbacks run after this tab's Draw, so they save at once instead of waiting for the next frame.
+    private static void SetViewMode(DetailsViewMode mode)
+    {
+        viewMode = mode;
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
+    private static void SetDisplay(bool compare, bool singleColony)
+    {
+        (comparing, perColony) = (compare, singleColony);
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
+    private static void SetColonyKey(string key)
+    {
+        colonyKey = key;
+        PersistViewStateIfChanged();
+    }
+
+    private static void SetCategory(MetricCategory? value)
+    {
+        category = value;
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
+    private static void SetSourceFilter(MetricSourceFilter value)
+    {
+        sourceFilter = value;
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
+    }
+
+    private static void SetStatusFilter(DetailsStatusFilter value)
+    {
+        statusFilter = value;
+        scroll = Vector2.zero;
+        PersistViewStateIfChanged();
     }
 
     private static float DrawControls(Rect rect, StatsView view, string? scopeName)
@@ -288,9 +427,9 @@ public static class DetailsTab
         {
             Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
             {
-                new(ViewModeLabel(DetailsViewMode.Lifetime), () => viewMode = DetailsViewMode.Lifetime),
-                new(ViewModeLabel(DetailsViewMode.Other), () => viewMode = DetailsViewMode.Other),
-                new(ViewModeLabel(DetailsViewMode.All), () => viewMode = DetailsViewMode.All),
+                new(ViewModeLabel(DetailsViewMode.Lifetime), () => SetViewMode(DetailsViewMode.Lifetime)),
+                new(ViewModeLabel(DetailsViewMode.Other), () => SetViewMode(DetailsViewMode.Other)),
+                new(ViewModeLabel(DetailsViewMode.All), () => SetViewMode(DetailsViewMode.All)),
             }));
         }
 
@@ -299,9 +438,9 @@ public static class DetailsTab
         if (Button(displayLabel, 240f))
             Find.WindowStack.Add(new FloatMenu(
             [
-                new FloatMenuOption("RWS_Details_AllColonies".Translate(), () => (comparing, perColony) = (false, false)),
-                new FloatMenuOption("RWS_Details_PerColony".Translate(), () => (comparing, perColony) = (false, true)),
-                new FloatMenuOption("RWS_Compare_Mode".Translate(), () => comparing = true),
+                new FloatMenuOption("RWS_Details_AllColonies".Translate(), () => SetDisplay(false, false)),
+                new FloatMenuOption("RWS_Details_PerColony".Translate(), () => SetDisplay(false, true)),
+                new FloatMenuOption("RWS_Compare_Mode".Translate(), () => SetDisplay(true, false)),
             ]));
         if (!comparing && perColony && colonyKey is { } selected)
         {
@@ -312,7 +451,7 @@ public static class DetailsTab
                 UiScopes.OpenOrReplaceWindow(new ColonyPickerDialog(
                     selectable,
                     favoritePreferences,
-                    picked => colonyKey = picked.Key,
+                    picked => SetColonyKey(picked.Key),
                     selectedColonyKey: selected));
             }
             var reportLabel = (string)"RWS_Report_Open".Translate();
@@ -328,11 +467,22 @@ public static class DetailsTab
         TooltipHandler.TipRegion(scatterRect, "RWS_Scatter_OpenTip".Translate());
         if (Button(category is { } c0 ? CategoryLabel(c0) : (string)"RWS_Details_AllCategories".Translate(), 240f))
         {
-            var options = new List<FloatMenuOption> { new("RWS_Details_AllCategories".Translate(), () => category = null) };
+            var options = new List<FloatMenuOption> { new("RWS_Details_AllCategories".Translate(), () => SetCategory(null)) };
             options.AddRange(view.Numeric.Colonies.SelectMany(c => c.Rows).Select(r => r.Definition.Category)
                 .Concat(view.Numeric.Overall.Select(r => r.Definition.Category)).Distinct()
-                .Select(c => new FloatMenuOption(CategoryLabel(c), () => category = c)));
+                .Select(c => new FloatMenuOption(CategoryLabel(c), () => SetCategory(c))));
             Find.WindowStack.Add(new FloatMenu(options));
+        }
+        // U5: source filter. MOD wins over DLC, which wins over Vanilla (see MatchesSource).
+        if (Button(SourceFilterLabel(sourceFilter), 170f))
+        {
+            Find.WindowStack.Add(new FloatMenu(new List<FloatMenuOption>
+            {
+                new(SourceFilterLabel(MetricSourceFilter.All), () => SetSourceFilter(MetricSourceFilter.All)),
+                new(SourceFilterLabel(MetricSourceFilter.Vanilla), () => SetSourceFilter(MetricSourceFilter.Vanilla)),
+                new(SourceFilterLabel(MetricSourceFilter.Dlc), () => SetSourceFilter(MetricSourceFilter.Dlc)),
+                new(SourceFilterLabel(MetricSourceFilter.Mod), () => SetSourceFilter(MetricSourceFilter.Mod)),
+            }));
         }
         var searchLabel = (string)"RWS_Details_Search".Translate();
         var labelWidth = Math.Min(Text.CalcSize(searchLabel).x + 6f, Math.Max(0, rect.width - 120f));
@@ -368,6 +518,28 @@ public static class DetailsTab
         || definition.Key.Contains(term, StringComparison.OrdinalIgnoreCase)
         || definition.LedgerIds.Contains(term, StringComparison.OrdinalIgnoreCase)
         || (MetricText.ModSourceLabel(definition)?.Contains(term, StringComparison.CurrentCultureIgnoreCase) ?? false);
+
+    private static bool MatchesSource(MetricDefinition definition, MetricSourceFilter filter) => filter switch
+    {
+        // A MOD-owned statistic that also requires a DLC counts as MOD.
+        MetricSourceFilter.Mod => !string.IsNullOrWhiteSpace(definition.OwnerPackageId),
+        MetricSourceFilter.Dlc => string.IsNullOrWhiteSpace(definition.OwnerPackageId)
+            && !string.IsNullOrWhiteSpace(definition.RequiredDlc),
+        MetricSourceFilter.Vanilla => string.IsNullOrWhiteSpace(definition.OwnerPackageId)
+            && string.IsNullOrWhiteSpace(definition.RequiredDlc),
+        _ => true,
+    };
+
+    private static bool IsHiddenZero(NumericValue value, bool hide)
+        => hide && value.Number is { } number && number == 0.0;
+
+    private static string SourceFilterLabel(MetricSourceFilter filter) => filter switch
+    {
+        MetricSourceFilter.Vanilla => "RWS_Details_SourceVanilla".Translate(),
+        MetricSourceFilter.Dlc => "RWS_Details_SourceDLC".Translate(),
+        MetricSourceFilter.Mod => "RWS_Details_SourceMOD".Translate(),
+        _ => "RWS_Details_SourceAll".Translate(),
+    };
 
     private static string StatusFilterLabel(DetailsStatusFilter filter) => filter switch
     {
@@ -612,6 +784,9 @@ public static class DetailsTab
             .Where(r => input.Category is null || r.Definition.Category == input.Category)
             .Where(r => MatchesStatus(r, input.StatusFilter))
             .Where(r => MatchesMode(r.Definition, input.Mode))
+            .Where(r => MatchesSource(r.Definition, input.SourceFilter))
+            // U18: applied before derived grouping, so an all-zero derived group disappears.
+            .Where(r => !IsHiddenZero(r.Value, input.HideZero))
             .Select(r => (Row: r, Label: DefinitionLabel(r.Definition)))
             .Where(x => MatchesSearch(x.Row.Definition, x.Label, term))
             .ToList();
@@ -677,6 +852,8 @@ public static class DetailsTab
         var sourceDef = crossTop ? MetricRegistry.Find(row.Definition.StoredKey) ?? row.Definition : row.Definition;
         foreach (var b in row.Breakdowns.OrderByDescending(b => b.Value.Number ?? double.MinValue).ThenBy(b => b.Breakdown, StringComparer.Ordinal))
         {
+            if (IsHiddenZero(b.Value, input.HideZero))
+                continue;
             var childKey = crossTop && b.Breakdowns.Count > 0 ? parentExpandKey + ":" + b.Breakdown : null;
             var breakdownLabel = MetricText.Breakdown(sourceDef, b.Breakdown,
                 useThingLabel: crossTop && CrossColonyCatalog.UsesThingDefBreakdown(row.Definition));
@@ -684,9 +861,13 @@ public static class DetailsTab
                 tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
             if (childKey is not null && Expanded.Contains(childKey))
                 foreach (var contribution in b.Breakdowns)
+                {
+                    if (IsHiddenZero(contribution.Value, input.HideZero))
+                        continue;
                     result.Add(MakeLine(contribution, Name(input.Stats, contribution.Breakdown),
                         depth + 1, null, input, colony, null,
                         tipId: unchecked(0x52570000 + version * 4099 + result.Count), isMetricRow: false));
+                }
         }
     }
 
@@ -787,10 +968,25 @@ public static class DetailsTab
         return tip.ToString().TrimEnd('\n');
     }
 
-    // ----- formatting -----
+    // ----- formatting (PR-6a U10: one display format choice for Details, Rankings and the window) -----
 
     private static string Number(double value)
-        => Math.Abs(value - Math.Round(value)) < 1e-9 ? value.ToString("N0", Inv) : value.ToString("N2", Inv);
+    {
+        var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
+        return Math.Abs(value - Math.Round(value)) < 1e-9
+            ? DisplayFormat.WholeNumber(value, grouping)
+            : DisplayFormat.Number(value, 2, grouping);
+    }
+
+    /// <summary>U10: a day count (not ticks) in the chosen decimal-days or years-and-days form, with its unit.</summary>
+    internal static string DayCount(double days, string sign = "")
+    {
+        var (format, grouping) = Dialog_RimworldStatistics.DisplayOptions();
+        var text = DisplayFormat.DayCount(days, format, grouping, Dialog_RimworldStatistics.YearsAndDaysText);
+        return format == DisplayDayFormat.YearsAndDays
+            ? sign + text
+            : (string)"RWS_Unit_Days".Translate(sign + DisplayFormat.Number(days, 1, grouping));
+    }
 
     internal static string FormatRowValue(NumericRow row, Func<string, string> colonyName)
     {
@@ -830,35 +1026,38 @@ public static class DetailsTab
         if (v.Number is not { } n)
             return Dialog_RimworldStatistics.Dash;
         var sign = d.Signed && n > 0 ? "+" : "";
+        var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
         return d.Unit switch
         {
-            MetricUnit.Silver => sign + StatFormat.Group(n),
-            MetricUnit.Count => Math.Abs(n - Math.Round(n)) < 1e-9 ? n.ToString("N0", Inv) : n.ToString("N1", Inv),
-            MetricUnit.Days => "RWS_Unit_Days".Translate(sign + n.ToString("N1", Inv)),
-            MetricUnit.Percent => sign + (n * 100).ToString("N1", Inv) + "%",
-            MetricUnit.Mood => n.ToString("N1", Inv) + "%",
-            MetricUnit.PerYear => "RWS_Unit_PerYear".Translate(n.ToString("N2", Inv)),
-            MetricUnit.Hours => "RWS_HoursValue".Translate(n.ToString("N1", Inv)),
-            MetricUnit.SilverPerYear => "RWS_Unit_SilverPerYear".Translate(sign + StatFormat.Group(n)),
-            MetricUnit.Years => "RWS_Unit_Years".Translate(n.ToString("N1", Inv)),
-            MetricUnit.Celsius => n.ToString("N1", Inv) + " °C",
-            MetricUnit.Watts => n.ToString("N1", Inv) + " W",
-            MetricUnit.WattDays => n.ToString("N1", Inv) + " Wd",
-            MetricUnit.Nutrition => "RWS_Unit_Nutrition".Translate(n.ToString("N2", Inv)),
-            MetricUnit.PerCellDay => "RWS_Unit_PerCellDay".Translate(n.ToString("N3", Inv)),
-            _ => n.ToString("N2", Inv),
+            MetricUnit.Silver => sign + DisplayFormat.WholeNumber(n, grouping),
+            MetricUnit.Count => Math.Abs(n - Math.Round(n)) < 1e-9
+                ? DisplayFormat.WholeNumber(n, grouping)
+                : DisplayFormat.Number(n, 1, grouping),
+            MetricUnit.Days => DayCount(n, sign),
+            MetricUnit.Percent => sign + DisplayFormat.Number(n * 100, 1, grouping) + "%",
+            MetricUnit.Mood => DisplayFormat.Number(n, 1, grouping) + "%",
+            MetricUnit.PerYear => "RWS_Unit_PerYear".Translate(DisplayFormat.Number(n, 2, grouping)),
+            MetricUnit.Hours => "RWS_HoursValue".Translate(DisplayFormat.Number(n, 1, grouping)),
+            MetricUnit.SilverPerYear => "RWS_Unit_SilverPerYear".Translate(sign + DisplayFormat.WholeNumber(n, grouping)),
+            MetricUnit.Years => "RWS_Unit_Years".Translate(DisplayFormat.Number(n, 1, grouping)),
+            MetricUnit.Celsius => DisplayFormat.Number(n, 1, grouping) + " °C",
+            MetricUnit.Watts => DisplayFormat.Number(n, 1, grouping) + " W",
+            MetricUnit.WattDays => DisplayFormat.Number(n, 1, grouping) + " Wd",
+            MetricUnit.Nutrition => "RWS_Unit_Nutrition".Translate(DisplayFormat.Number(n, 2, grouping)),
+            MetricUnit.PerCellDay => "RWS_Unit_PerCellDay".Translate(DisplayFormat.Number(n, 3, grouping)),
+            _ => DisplayFormat.Number(n, 2, grouping),
         };
     }
 
     internal static string OverallTip(NumericRow row, StatsResult stats)
         => BuildTip(row, DefinitionLabel(row.Definition), true,
             new Inputs(NumericView.Empty, stats, false, null, null, "", false, true, 0,
-                DetailsViewMode.All, DetailsStatusFilter.All, true, null, ""), null);
+                DetailsViewMode.All, DetailsStatusFilter.All, true, MetricSourceFilter.All, false, null, ""), null);
 
     internal static string ColonyTip(NumericRow row, StatsResult stats, NumericColony? colony)
         => BuildTip(row, DefinitionLabel(row.Definition), true,
             new Inputs(NumericView.Empty, stats, true, colony?.Key, null, "", false, true, 0,
-                DetailsViewMode.All, DetailsStatusFilter.All, true, null, ""), colony);
+                DetailsViewMode.All, DetailsStatusFilter.All, true, MetricSourceFilter.All, false, null, ""), colony);
 
     internal static string DefinitionLabel(MetricDefinition d)
     {

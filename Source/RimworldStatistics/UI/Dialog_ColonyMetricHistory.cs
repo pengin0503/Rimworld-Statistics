@@ -881,7 +881,7 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var yPoint = Y(reading.Number!.Value);
         Widgets.DrawBoxSolid(new Rect(x, plot.y, 1f, plot.height), GridColor);
         Widgets.DrawBoxSolid(new Rect(x - 3f, yPoint - 3f, 6f, 6f), Color.white);
-        TooltipHandler.TipRegion(plot, hoverName + "\n" + (string)"RWS_Unit_Days".Translate(Dialog_RimworldStatistics.Days(nearest.Tick))
+        TooltipHandler.TipRegion(plot, hoverName + "\n" + Dialog_RimworldStatistics.DaysValue(nearest.Tick)
             + "\n" + MetricText.Format(definition, reading) + "\n" + MetricText.State(definition, reading.Coverage)
             + MetricText.PerDay(definition, reading) + Lineage(hoverSeries, nearest)
             + (ownReading ? "\n" + (string)"RWS_Change_ClickTip".Translate() : ""));

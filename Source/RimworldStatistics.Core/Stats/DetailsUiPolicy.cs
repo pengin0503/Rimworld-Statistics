@@ -263,6 +263,16 @@ public static class FilterSummary
         bool hasSecondaryFilter,
         bool hasTertiaryFilter,
         string? search)
+        => CountActiveFilters(hasPrimaryFilter, hasSecondaryFilter, hasTertiaryFilter, false, false, search);
+
+    /// <summary>The Details tab also counts its source filter and hide-zero toggle (PR-6a).</summary>
+    public static int CountActiveFilters(
+        bool hasPrimaryFilter,
+        bool hasSecondaryFilter,
+        bool hasTertiaryFilter,
+        bool hasQuaternaryFilter,
+        bool hasQuinaryFilter,
+        string? search)
     {
         var count = 0;
         if (hasPrimaryFilter)
@@ -270,6 +280,10 @@ public static class FilterSummary
         if (hasSecondaryFilter)
             count++;
         if (hasTertiaryFilter)
+            count++;
+        if (hasQuaternaryFilter)
+            count++;
+        if (hasQuinaryFilter)
             count++;
         if (!string.IsNullOrWhiteSpace(search))
             count++;
