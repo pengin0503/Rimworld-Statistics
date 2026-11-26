@@ -170,12 +170,22 @@ internal static class MetricText
     /// empty string when the value is not an additive total recorded completely over a known interval.
     /// </summary>
     public static string FormatRateValue(MetricDefinition definition, double perDay)
+        => FormatRateValue(definition, perDay, RateUnit.PerDay);
+
+    /// <summary>U39: formats a per-day rate in the chosen display unit using the pure Core conversion.</summary>
+    public static string FormatRateValue(MetricDefinition definition, double perDay, RateUnit unit)
     {
+        var value = RateUnits.Convert(perDay, unit);
         var (_, grouping) = Dialog_RimworldStatistics.DisplayOptions();
-        var number = DisplayFormat.Number(perDay, perDay >= 100 ? 0 : perDay >= 1 ? 1 : 2, grouping);
+        var number = DisplayFormat.Number(value, value >= 100 ? 0 : value >= 1 ? 1 : 2, grouping);
         if (definition.Unit == MetricUnit.Nutrition)
             number = "RWS_Unit_Nutrition".Translate(number);
-        return "RWS_Rate_PerDayValue".Translate(number);
+        return unit switch
+        {
+            RateUnit.PerYear => "RWS_Rate_PerYearValue".Translate(number),
+            RateUnit.PerRealHour => "RWS_Rate_PerRealHourValue".Translate(number),
+            _ => "RWS_Rate_PerDayValue".Translate(number),
+        };
     }
 
     public static string PerDay(MetricDefinition definition, NumericValue value)

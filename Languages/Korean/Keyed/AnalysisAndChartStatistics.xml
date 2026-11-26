@@ -46,4 +46,13 @@
   <RWS_Scatter_Bucket_Unknown>알 수 없음</RWS_Scatter_Bucket_Unknown>
   <RWS_Scatter_Bucket_Mixed>복합 클러스터</RWS_Scatter_Bucket_Mixed>
   <RWS_Scatter_TipAttr>{0}: {1}</RWS_Scatter_TipAttr>
+  <RWS_Rate_PerYearValue>{0}/year</RWS_Rate_PerYearValue>
+  <RWS_Rate_PerRealHourValue>{0}/real hour</RWS_Rate_PerRealHourValue>
+  <RWS_Rate_Unit>Rate unit: {0}</RWS_Rate_Unit>
+  <RWS_Rate_Unit_PerDay>Per day</RWS_Rate_Unit_PerDay>
+  <RWS_Rate_Unit_PerYear>Per year</RWS_Rate_Unit_PerYear>
+  <RWS_Rate_Unit_PerRealHour>Per real hour</RWS_Rate_Unit_PerRealHour>
+  <RWS_Rate_UnitTip>Converts the per-game-day rate with 60 days per year and 1,000 real seconds per game day at 1x speed.</RWS_Rate_UnitTip>
+  <RWS_Rate_TitleSuffixPerYear>{0} (/year)</RWS_Rate_TitleSuffixPerYear>
+  <RWS_Rate_TitleSuffixPerRealHour>{0} (/real hour)</RWS_Rate_TitleSuffixPerRealHour>
 </LanguageData>

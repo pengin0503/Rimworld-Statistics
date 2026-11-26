@@ -1414,4 +1414,40 @@
   <RWS_Setting_DayFormatHelp>次に統計ウィンドウを開いたときに反映されます。</RWS_Setting_DayFormatHelp>
   <RWS_Setting_NumberGrouping>桁区切り</RWS_Setting_NumberGrouping>
   <RWS_Setting_NumberGroupingHelp>数値に3桁ごとの区切りを表示します。</RWS_Setting_NumberGroupingHelp>
+  <RWS_Calc_Hint>右クリックで計算方法を表示</RWS_Calc_Hint>
+  <RWS_Calc_Menu>計算方法を表示…</RWS_Calc_Menu>
+  <RWS_Calc_Description>説明</RWS_Calc_Description>
+  <RWS_Calc_Calculation>計算方法</RWS_Calc_Calculation>
+  <RWS_Calc_Provenance>データの出所</RWS_Calc_Provenance>
+  <RWS_Calc_Aggregation>全体の集計方法</RWS_Calc_Aggregation>
+  <RWS_Calc_Unit>単位</RWS_Calc_Unit>
+  <RWS_Calc_Source>記録元</RWS_Calc_Source>
+  <RWS_Calc_Acquisition>取得ユニット</RWS_Calc_Acquisition>
+  <RWS_Calc_StoredKey>保存キー</RWS_Calc_StoredKey>
+  <RWS_Calc_LedgerIds>台帳ID</RWS_Calc_LedgerIds>
+  <RWS_Calc_Agg_Sum>合計</RWS_Calc_Agg_Sum>
+  <RWS_Calc_Agg_Max>最大値</RWS_Calc_Agg_Max>
+  <RWS_Calc_Agg_Min>最小値</RWS_Calc_Agg_Min>
+  <RWS_Calc_Agg_Ratio>比率（分子の合計 ÷ 分母の合計）</RWS_Calc_Agg_Ratio>
+  <RWS_Calc_Agg_IndividualOnly>個別のみ（コロニー間で合算しない）</RWS_Calc_Agg_IndividualOnly>
+  <RWS_Calc_Agg_Ranking>コロニー間ランキング</RWS_Calc_Agg_Ranking>
+  <RWS_Calc_Unit_Count>個数</RWS_Calc_Unit_Count>
+  <RWS_Calc_Unit_Silver>シルバー</RWS_Calc_Unit_Silver>
+  <RWS_Calc_Unit_Days>ゲーム日数</RWS_Calc_Unit_Days>
+  <RWS_Calc_Unit_Percent>パーセント</RWS_Calc_Unit_Percent>
+  <RWS_Calc_Unit_Mood>機嫌の尺度（0～100）</RWS_Calc_Unit_Mood>
+  <RWS_Calc_Unit_PerYear>ゲーム年あたり</RWS_Calc_Unit_PerYear>
+  <RWS_Calc_Unit_Hours>実プレイ時間（時間）</RWS_Calc_Unit_Hours>
+  <RWS_Calc_Unit_SilverPerYear>ゲーム年あたりのシルバー</RWS_Calc_Unit_SilverPerYear>
+  <RWS_Calc_Unit_Years>ゲーム年数</RWS_Calc_Unit_Years>
+  <RWS_Calc_Unit_Celsius>摂氏</RWS_Calc_Unit_Celsius>
+  <RWS_Calc_Unit_Watts>ワット</RWS_Calc_Unit_Watts>
+  <RWS_Calc_Unit_WattDays>ワット日</RWS_Calc_Unit_WattDays>
+  <RWS_Calc_Unit_Nutrition>栄養値</RWS_Calc_Unit_Nutrition>
+  <RWS_Calc_Unit_PerCellDay>セルあたりゲーム日あたり</RWS_Calc_Unit_PerCellDay>
+  <RWS_Calc_Source_SaveFile>セーブファイル</RWS_Calc_Source_SaveFile>
+  <RWS_Calc_Source_SaveSnapshot>セーブ時点の状態</RWS_Calc_Source_SaveSnapshot>
+  <RWS_Calc_Source_Checkpoint>セーブ内のチェックポイント</RWS_Calc_Source_Checkpoint>
+  <RWS_Details_ExpandAll>すべて展開</RWS_Details_ExpandAll>
+  <RWS_Details_CollapseAll>すべて折りたたむ</RWS_Details_CollapseAll>
 </LanguageData>
