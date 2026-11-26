@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomPreset_7>7日</RWS_Chart_ZoomPreset_7>
+  <RWS_Chart_ZoomPreset_30>30日</RWS_Chart_ZoomPreset_30>
+  <RWS_Chart_ZoomPreset_90>90日</RWS_Chart_ZoomPreset_90>
+  <RWS_Chart_ZeroYAxis>Y軸を0から開始</RWS_Chart_ZeroYAxis>
+  <RWS_HistoricalIntervals_Search>検索</RWS_HistoricalIntervals_Search>
+  <RWS_HistoricalIntervals_Sort>開始時刻で並べ替え</RWS_HistoricalIntervals_Sort>
+  <RWS_HistoricalIntervals_SortAsc>開始時刻 ↑</RWS_HistoricalIntervals_SortAsc>
+  <RWS_HistoricalIntervals_SortDesc>開始時刻 ↓</RWS_HistoricalIntervals_SortDesc>
+  <RWS_HistoricalIntervals_Copy>コピー</RWS_HistoricalIntervals_Copy>
+  <RWS_Picker_RecentlyUsed>最近使用した項目</RWS_Picker_RecentlyUsed>
+  <RWS_BarChart_SortValue>値順</RWS_BarChart_SortValue>
+  <RWS_BarChart_SortName>名前順</RWS_BarChart_SortName>
+  <RWS_BarChart_TopN>上位{0}件</RWS_BarChart_TopN>
+  <RWS_BarChart_TopN_All>すべて</RWS_BarChart_TopN_All>
+  <RWS_BarChart_Search>内訳を検索</RWS_BarChart_Search>
+  <RWS_Confirm_Title>確認</RWS_Confirm_Title>
+  <RWS_ColonyName_ResetOriginal>元に戻す</RWS_ColonyName_ResetOriginal>
+  <RWS_Chronicle_Filter_None>なし</RWS_Chronicle_Filter_None>
+</LanguageData>

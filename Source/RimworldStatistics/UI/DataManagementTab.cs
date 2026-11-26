@@ -124,8 +124,8 @@ internal static class DataManagementTab
             if (Button(ref actions, "RWS_Backup_Delete", idle && selectedInfo is not null))
             {
                 var info = selectedInfo!;
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RWS_Backup_ConfirmDelete".Translate(Title(info)),
-                    () => Run(() => Task.Run(() => File.Delete(info.Path))), true));
+                ConfirmDialogs.Confirm("RWS_Confirm_Title", "RWS_Backup_ConfirmDelete".Translate(Title(info)),
+                    () => Run(() => Task.Run(() => File.Delete(info.Path))), danger: true);
             }
             y += actions.Height + 4f;
         }
@@ -276,9 +276,9 @@ internal static class DataManagementTab
         }
         // The restored settings are applied by ProfileService on the main thread once the restore succeeded, whether or
         // not this tab is drawn again (#325).
-        Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation(summary, () =>
+        ConfirmDialogs.Confirm("RWS_Confirm_Title", summary, () =>
             Run(() => ProfileService.RestoreBackup(session, info.Path, Metadata("RWS_Backup_BeforeRestore".Translate()),
-                RimworldStatisticsMod.Settings.viewPreferencesJson, withPreferences)), true));
+                RimworldStatisticsMod.Settings.viewPreferencesJson, withPreferences)), danger: true);
     }
 
     private static string Verification(BackupProblem problem) => problem switch

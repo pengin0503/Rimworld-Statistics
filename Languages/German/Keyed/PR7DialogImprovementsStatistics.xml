@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RWS_Chart_ZoomPreset_7>7 days</RWS_Chart_ZoomPreset_7>
+  <RWS_Chart_ZoomPreset_30>30 days</RWS_Chart_ZoomPreset_30>
+  <RWS_Chart_ZoomPreset_90>90 days</RWS_Chart_ZoomPreset_90>
+  <RWS_Chart_ZeroYAxis>Y axis starts at 0</RWS_Chart_ZeroYAxis>
+  <RWS_HistoricalIntervals_Search>Search</RWS_HistoricalIntervals_Search>
+  <RWS_HistoricalIntervals_Sort>Sort by start</RWS_HistoricalIntervals_Sort>
+  <RWS_HistoricalIntervals_SortAsc>Start ↑</RWS_HistoricalIntervals_SortAsc>
+  <RWS_HistoricalIntervals_SortDesc>Start ↓</RWS_HistoricalIntervals_SortDesc>
+  <RWS_HistoricalIntervals_Copy>Copy</RWS_HistoricalIntervals_Copy>
+  <RWS_Picker_RecentlyUsed>Recently used</RWS_Picker_RecentlyUsed>
+  <RWS_BarChart_SortValue>By value</RWS_BarChart_SortValue>
+  <RWS_BarChart_SortName>By name</RWS_BarChart_SortName>
+  <RWS_BarChart_TopN>Top {0}</RWS_BarChart_TopN>
+  <RWS_BarChart_TopN_All>All</RWS_BarChart_TopN_All>
+  <RWS_BarChart_Search>Search breakdown</RWS_BarChart_Search>
+  <RWS_Confirm_Title>Confirm</RWS_Confirm_Title>
+  <RWS_ColonyName_ResetOriginal>Reset to original</RWS_ColonyName_ResetOriginal>
+  <RWS_Chronicle_Filter_None>None</RWS_Chronicle_Filter_None>
+</LanguageData>

@@ -18,6 +18,14 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
+    private static readonly ChronicleKindFilter[] SelectableKinds =
+    [
+        ChronicleKindFilter.Highlights,
+        ChronicleKindFilter.IntervalsAndGaps,
+        ChronicleKindFilter.Research,
+        ChronicleKindFilter.Tales,
+    ];
+
     private static readonly Color WarningTextColor = new(0.95f, 0.72f, 0.45f);
     private static readonly Color FieldErrorLabelColor = new(0.96f, 0.58f, 0.44f);
     private static readonly Color FieldErrorBorderColor = new(0.95f, 0.45f, 0.35f, 0.85f);
@@ -37,6 +45,7 @@ internal sealed class Dialog_ColonyChronicle : Window
     private sealed record ChronicleDisplayCache(
         ChronicleBranchCache Branch,
         ChronicleFilterQuery Query,
+        int KindVersion,
         ChronicleFilterResult<ChronicleDisplayEntryRow, string> Result,
         string SummaryText,
         string[] NoticeLines,
@@ -48,7 +57,9 @@ internal sealed class Dialog_ColonyChronicle : Window
     private string colonyKey;
     private string colonyName = "";
     private string? originalFactionName;
-    private ChronicleKindFilter filter = ChronicleKindFilter.All;
+    // Screen-local kind filter: null means All, an empty set means None, otherwise the selected kinds are shown.
+    private HashSet<ChronicleKindFilter>? selectedKinds;
+    private int kindFilterVersion;
     private bool newestFirst;
     private string searchText = "";
     private string startDayText = "";
@@ -209,10 +220,13 @@ internal sealed class Dialog_ColonyChronicle : Window
         if (display is not null)
         {
             var filterLabel = (string)"RWS_Chronicle_FilterButton".Translate(
-                FilterName(filter), display.Result.FilterCount(filter).ToString(Inv));
+                FilterSelectionName(), display.Result.Rows.Length.ToString(Inv));
             var filterRect = controls.Next(filterLabel, 145f, 260f);
-            if (Widgets.ButtonText(filterRect, filterLabel.Truncate(Math.Max(0f, filterRect.width - 12f))))
+            var shownFilter = filterLabel.Truncate(Math.Max(0f, filterRect.width - 12f));
+            if (Widgets.ButtonText(filterRect, shownFilter))
                 ShowFilterMenu(display);
+            if (shownFilter != filterLabel)
+                TooltipHandler.TipRegion(filterRect, filterLabel);
 
             var orderLabel = (string)(newestFirst ? "RWS_Chronicle_OrderNewest" : "RWS_Chronicle_OrderOldest").Translate();
             var orderRect = controls.Next(orderLabel, 130f, 220f);
@@ -395,8 +409,8 @@ internal sealed class Dialog_ColonyChronicle : Window
             (string)"RWS_Chronicle_BranchButton".Translate(display.Branch.ActiveBranchLabel),
             (string)(newestFirst ? "RWS_Chronicle_OrderNewest" : "RWS_Chronicle_OrderOldest").Translate(),
         };
-        if (filter != ChronicleKindFilter.All)
-            subtitleParts.Add(FilterName(filter));
+        if (selectedKinds is not null)
+            subtitleParts.Add(FilterSelectionName());
 
         var entries = display.Result.Rows.Select(ColonyChronicleFormatter.ToExportEntry).ToArray();
         var undated = display.Result.UndatedTraces;
@@ -464,14 +478,16 @@ internal sealed class Dialog_ColonyChronicle : Window
     }
 
     private bool HasAnyFilterInput(ChronicleFilterQuery query)
-        => query.HasAnyFilter
+        => selectedKinds is not null
+            || query.HasAnyFilter
             || searchText.Length > 0
             || startDayText.Length > 0
             || endDayText.Length > 0;
 
     private void ClearFilters()
     {
-        filter = ChronicleKindFilter.All;
+        selectedKinds = null;
+        kindFilterVersion++;
         searchText = "";
         startDayText = "";
         endDayText = "";
@@ -540,28 +556,62 @@ internal sealed class Dialog_ColonyChronicle : Window
 
     private void ShowFilterMenu(ChronicleDisplayCache display)
     {
-        FloatMenuOption MakeOption(ChronicleKindFilter mode)
-        {
-            var text = $"{FilterName(mode)} ({display.Result.FilterCount(mode).ToString(Inv)})";
-            return new FloatMenuOption(text, () =>
-            {
-                if (filter != mode)
-                {
-                    filter = mode;
-                    displayCache = null;
-                    scroll = Vector2.zero;
-                }
-            });
-        }
+        // Mirrors the checkable FloatMenu convention used by the recording menu: "✓ " / "✗ " before each label.
+        string CheckPrefix(bool selected) => selected ? "✓ " : "✗ ";
 
-        Find.WindowStack.Add(new FloatMenu(
-        [
-            MakeOption(ChronicleKindFilter.All),
-            MakeOption(ChronicleKindFilter.Highlights),
-            MakeOption(ChronicleKindFilter.IntervalsAndGaps),
-            MakeOption(ChronicleKindFilter.Research),
-            MakeOption(ChronicleKindFilter.Tales),
-        ]));
+        var options = new List<FloatMenuOption>(SelectableKinds.Length + 2);
+        options.Add(new FloatMenuOption(
+            CheckPrefix(selectedKinds is null) + (string)"RWS_Chronicle_FilterAll".Translate(),
+            () => SetSelectedKinds(null)));
+        options.Add(new FloatMenuOption(
+            CheckPrefix(selectedKinds is { Count: 0 }) + (string)"RWS_Chronicle_Filter_None".Translate(),
+            () => SetSelectedKinds(new HashSet<ChronicleKindFilter>())));
+        foreach (var mode in SelectableKinds)
+        {
+            var kind = mode;
+            var selected = selectedKinds is null || selectedKinds.Contains(kind);
+            var text = CheckPrefix(selected) + FilterName(kind)
+                + " (" + display.Result.FilterCount(kind).ToString(Inv) + ")";
+            options.Add(new FloatMenuOption(text, () => ToggleKind(kind)));
+        }
+        Find.WindowStack.Add(new FloatMenu(options));
+    }
+
+    private void SetSelectedKinds(HashSet<ChronicleKindFilter>? kinds)
+    {
+        selectedKinds = kinds;
+        kindFilterVersion++;
+        displayCache = null;
+        scroll = Vector2.zero;
+    }
+
+    private void ToggleKind(ChronicleKindFilter kind)
+    {
+        // Starting from All when no selection is active makes the first click remove that kind from All,
+        // matching the previous single-select default while allowing arbitrary combinations afterwards.
+        var kinds = selectedKinds is { } current
+            ? new HashSet<ChronicleKindFilter>(current)
+            : new HashSet<ChronicleKindFilter>(SelectableKinds);
+        if (!kinds.Add(kind))
+            kinds.Remove(kind);
+        SetSelectedKinds(kinds);
+    }
+
+    private string FilterSelectionName()
+    {
+        if (selectedKinds is null)
+            return (string)"RWS_Chronicle_FilterAll".Translate();
+        if (selectedKinds.Count == 0)
+            return (string)"RWS_Chronicle_Filter_None".Translate();
+
+        var names = new string[selectedKinds.Count];
+        var index = 0;
+        foreach (var mode in SelectableKinds)
+        {
+            if (selectedKinds.Contains(mode))
+                names[index++] = FilterName(mode);
+        }
+        return string.Join(" + ", names);
     }
 
     private static string FilterName(ChronicleKindFilter mode) => mode switch
@@ -860,16 +910,29 @@ internal sealed class Dialog_ColonyChronicle : Window
     private ChronicleDisplayCache EnsureDisplayCache(ColonyChronicle chronicle, object? lang)
     {
         var branch = EnsureBranchCache(chronicle, lang);
-        var query = ChronicleFilterQuery.Create(filter, searchText, startDayText, endDayText, newestFirst);
+        var query = ChronicleFilterQuery.Create(ChronicleKindFilter.All, searchText, startDayText, endDayText, newestFirst);
 
         if (displayCache is { } cached
             && ReferenceEquals(cached.Branch, branch)
-            && cached.Query == query)
+            && cached.Query == query
+            && cached.KindVersion == kindFilterVersion)
         {
             return cached;
         }
 
+        // Core still applies a single-kind query (All): keep its per-kind counts and search/day semantics intact,
+        // then narrow the dated rows locally to the session's selected kinds.
         var result = ColonyChronicleFilter.Apply(branch.Entries, branch.UndatedTraces, query);
+        if (selectedKinds is not null)
+        {
+            var rows = new List<ChronicleDisplayEntryRow>(result.Rows.Length);
+            foreach (var row in result.Rows)
+            {
+                if (MatchesSelectedKind(row.Entry))
+                    rows.Add(row);
+            }
+            result = result with { Rows = rows.ToArray() };
+        }
 
         var summaryText = (string)"RWS_Chronicle_SummaryLine".Translate(
             result.Rows.Length.ToString(Inv),
@@ -895,12 +958,25 @@ internal sealed class Dialog_ColonyChronicle : Window
         displayCache = new ChronicleDisplayCache(
             Branch: branch,
             Query: query,
+            KindVersion: kindFilterVersion,
             Result: result,
             SummaryText: summaryText,
             NoticeLines: noticeLines,
             EmptyMessage: emptyMessage,
             EmptyMessageIsWarning: emptyWarning);
         return displayCache;
+    }
+
+    private bool MatchesSelectedKind(ChronicleEntry entry)
+    {
+        if (selectedKinds is null)
+            return true;
+        foreach (var mode in selectedKinds)
+        {
+            if (ColonyChronicleFilter.MatchesKind(entry, mode))
+                return true;
+        }
+        return false;
     }
 
     private static (string Message, bool IsWarning) ResolveEmptyMessage(ChronicleFilterQuery query)

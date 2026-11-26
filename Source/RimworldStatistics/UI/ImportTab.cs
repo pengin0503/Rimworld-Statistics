@@ -156,8 +156,8 @@ public static class ImportTab
             if (Verse.Widgets.ButtonText(recheckRect, recheckLabel.Truncate(Math.Max(0f, recheckRect.width - 12f)), active: canScanOnTitleScreen)
                 && canScanOnTitleScreen)
             {
-                Find.WindowStack.Add(Dialog_MessageBox.CreateConfirmation("RWS_ForceRecheck_Confirm".Translate(),
-                    ImportRunner.StartForcedRecheckIfIdle));
+                ConfirmDialogs.Confirm("RWS_Confirm_Title", "RWS_ForceRecheck_Confirm".Translate(),
+                    ImportRunner.StartForcedRecheckIfIdle);
             }
             TooltipHandler.TipRegion(recheckRect,
                 canScanOnTitleScreen ? "RWS_ForceRecheckTip".Translate() : "RWS_Import_TitleScreenOnlyTip".Translate());

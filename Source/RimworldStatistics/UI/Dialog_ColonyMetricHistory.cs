@@ -42,6 +42,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
     private string zoomEndInput = "";
     private HistoryTickRange? zoomRange;
     private bool zoomInputInvalid;
+    // Session-local Y-axis toggle: same lifetime as zoomRange, never persisted.
+    private bool zeroYAxis;
     // Two readings of this colony compared (#307): the first one clicked, then the change once a second one is.
     private int? pickFrom;
     private HistoryChange? change;
@@ -179,8 +181,15 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var zoomLabelText = (string)"RWS_Chart_ZoomLabel".Translate();
         var zoomApplyText = (string)"RWS_Chart_ZoomApply".Translate();
         var zoomResetText = (string)"RWS_Chart_ZoomReset".Translate();
+        // "All" already has a keyed label; only the day-count presets and the Y toggle need new keys.
+        var zoomAllText = (string)"RWS_Details_ViewAll".Translate();
+        var zoom7Text = (string)"RWS_Chart_ZoomPreset_7".Translate();
+        var zoom30Text = (string)"RWS_Chart_ZoomPreset_30".Translate();
+        var zoom90Text = (string)"RWS_Chart_ZoomPreset_90".Translate();
+        var zeroYAxisText = (string)"RWS_Chart_ZeroYAxis".Translate();
         var zoomStatus = ZoomStatusText();
-        var zoomLayout = ComputeZoomControlsLayout(0f, contentWidth, zoomLabelText, zoomApplyText, zoomResetText, zoomStatus);
+        var zoomLayout = ComputeZoomControlsLayout(0f, contentWidth, zoomLabelText, zoomApplyText, zoomResetText,
+            zoomStatus, zoomAllText, zoom7Text, zoom30Text, zoom90Text, zeroYAxisText);
         var zoomHeight = zoomLayout.TotalHeight;
         var changeLines = ChangeText(history);
         // Room for three lines (an interval and a reason) is kept, so picking a reading does not move the chart under the mouse.
@@ -267,7 +276,8 @@ internal sealed class Dialog_ColonyMetricHistory : Window
                     InvalidateOverlays();
             }
 
-            y = DrawZoomControls(history, y, zoomLayout, zoomLabelText, zoomApplyText, zoomResetText, zoomStatus);
+            y = DrawZoomControls(history, y, zoomLayout, zoomLabelText, zoomApplyText, zoomResetText, zoomStatus,
+                zoomAllText, zoom7Text, zoom30Text, zoom90Text, zeroYAxisText);
             if (boundsDirty)
             {
                 EnsureBoundsAndLegend(history, contentWidth);
@@ -294,12 +304,18 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         Rect ApplyRect,
         Rect ResetRect,
         Rect StatusRect,
+        Rect AllRect,
+        Rect SevenRect,
+        Rect ThirtyRect,
+        Rect NinetyRect,
+        Rect ZeroYRect,
         float TotalHeight);
 
     private static Rect OffsetY(Rect r, float y) => new(r.x, r.y + y, r.width, r.height);
 
     private static ZoomControlsLayout ComputeZoomControlsLayout(
-        float y, float width, string labelText, string applyText, string resetText, string statusText)
+        float y, float width, string labelText, string applyText, string resetText, string statusText,
+        string allText, string sevenText, string thirtyText, string ninetyText, string zeroYText)
     {
         var row = new ControlRow(new Rect(0f, y, width, 28f));
         var labelRect = row.Next(Math.Min(width, Text.CalcSize(labelText).x + 4f));
@@ -315,14 +331,23 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         var statusY = y + row.Height + 3f;
         var statusHeight = Math.Max(Text.LineHeight, Text.CalcHeight(statusText, width));
         var statusRect = new Rect(0f, statusY, width, statusHeight);
+        // Presets and the Y toggle share a row that wraps like the other ControlRows on narrow windows.
+        var presetRow = new ControlRow(new Rect(0f, statusRect.yMax + 3f, width, 26f));
+        var allRect = presetRow.Next(allText, 56f, 120f);
+        var sevenRect = presetRow.Next(sevenText, 66f, 130f);
+        var thirtyRect = presetRow.Next(thirtyText, 72f, 140f);
+        var ninetyRect = presetRow.Next(ninetyText, 72f, 140f);
+        var zeroYRect = presetRow.Next(zeroYText + "   ", 150f, 260f);
         return new ZoomControlsLayout(
             labelRect, startRect, separatorRect, endRect, applyRect, resetRect, statusRect,
-            row.Height + 3f + statusHeight + 6f);
+            allRect, sevenRect, thirtyRect, ninetyRect, zeroYRect,
+            row.Height + 3f + statusHeight + 3f + presetRow.Height + 6f);
     }
 
     private float DrawZoomControls(
         MetricHistory history, float y, ZoomControlsLayout layout,
-        string labelText, string applyText, string resetText, string statusText)
+        string labelText, string applyText, string resetText, string statusText,
+        string allText, string sevenText, string thirtyText, string ninetyText, string zeroYText)
     {
         layout = new ZoomControlsLayout(
             OffsetY(layout.LabelRect, y),
@@ -332,6 +357,11 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             OffsetY(layout.ApplyRect, y),
             OffsetY(layout.ResetRect, y),
             OffsetY(layout.StatusRect, y),
+            OffsetY(layout.AllRect, y),
+            OffsetY(layout.SevenRect, y),
+            OffsetY(layout.ThirtyRect, y),
+            OffsetY(layout.NinetyRect, y),
+            OffsetY(layout.ZeroYRect, y),
             layout.TotalHeight);
 
         string nextStart;
@@ -382,6 +412,27 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             Widgets.Label(layout.StatusRect, statusText);
         }
 
+        // Presets feed computed day strings into the same validated path as Apply.
+        var shownAll = allText.Truncate(Math.Max(0f, layout.AllRect.width - 12f));
+        var shownSeven = sevenText.Truncate(Math.Max(0f, layout.SevenRect.width - 12f));
+        var shownThirty = thirtyText.Truncate(Math.Max(0f, layout.ThirtyRect.width - 12f));
+        var shownNinety = ninetyText.Truncate(Math.Max(0f, layout.NinetyRect.width - 12f));
+        if (Widgets.ButtonText(layout.AllRect, shownAll))
+            ApplyZoomPreset(history, null);
+        TooltipHandler.TipRegion(layout.AllRect, "RWS_Chart_ZoomResetTip".Translate());
+        if (Widgets.ButtonText(layout.SevenRect, shownSeven))
+            ApplyZoomPreset(history, 7);
+        if (Widgets.ButtonText(layout.ThirtyRect, shownThirty))
+            ApplyZoomPreset(history, 30);
+        if (Widgets.ButtonText(layout.NinetyRect, shownNinety))
+            ApplyZoomPreset(history, 90);
+
+        var nextZeroYAxis = zeroYAxis;
+        Widgets.CheckboxLabeled(layout.ZeroYRect,
+            zeroYText.Truncate(Math.Max(0f, layout.ZeroYRect.width - 30f)), ref nextZeroYAxis);
+        TooltipHandler.TipRegion(layout.ZeroYRect, zeroYText);
+        zeroYAxis = nextZeroYAxis;
+
         return y + layout.TotalHeight;
     }
 
@@ -412,6 +463,27 @@ internal sealed class Dialog_ColonyMetricHistory : Window
         if (resolution.WasReversed)
             (zoomStartInput, zoomEndInput) = (zoomEndInput.Trim(), zoomStartInput.Trim());
         SetZoomRange(history, resolution.Range);
+    }
+
+    /// <summary>
+    /// Preset ranges end at the last recorded day. They go through ApplyZoomInput so the same
+    /// parsing, invalid-input handling and range selection is used as for typed values.
+    /// </summary>
+    private void ApplyZoomPreset(MetricHistory history, int? days)
+    {
+        if (days is null)
+        {
+            zoomStartInput = "";
+            zoomEndInput = "";
+        }
+        else
+        {
+            var lastDay = Math.Max(0d, fullBounds.LastTick / (double)StatFormat.TicksPerDay);
+            var firstDay = Math.Max(0d, fullBounds.FirstTick / (double)StatFormat.TicksPerDay);
+            zoomStartInput = Math.Max(firstDay, lastDay - days.Value).ToString("0.##", Inv);
+            zoomEndInput = lastDay.ToString("0.##", Inv);
+        }
+        ApplyZoomInput(history);
     }
 
     private void ResetZoom(MetricHistory history)
@@ -708,7 +780,10 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             plotWidth = pixelWidth;
         }
 
-        var range = (Min: bounds.MinValue, Max: bounds.MaxValue);
+        // U25: session-local toggle; only the plotted Y range changes, the cached bounds do not.
+        var minValue = zeroYAxis ? 0d : bounds.MinValue;
+        var maxValue = zeroYAxis ? Math.Max(0d, bounds.MaxValue) : bounds.MaxValue;
+        var range = (Min: minValue, Max: maxValue);
         float X(int tick) => plot.x + plot.width * (ticks.First == ticks.Last ? 0.5f
             : (float)((tick - ticks.First) / (double)(ticks.Last - ticks.First)));
         // Scale before subtracting to keep even opposite-sign finite extremes representable.
