@@ -955,6 +955,8 @@
   <RWS_Backup_Error>Ошибка операции с копией: {0}</RWS_Backup_Error>
   <RWS_Backup_Done>Готово. Папка копий: {0}</RWS_Backup_Done>
   <RWS_Backup_None>Резервные копии не найдены.</RWS_Backup_None>
+  <RWS_Backup_Memo>Backup memo (optional)</RWS_Backup_Memo>
+  <RWS_Backup_RestoreDiff>Current: {0} colonies, {1} observations → Backup: {2} colonies, {3} observations.</RWS_Backup_RestoreDiff>
   <RWS_Backup_Label>Метка / файл</RWS_Backup_Label>
   <RWS_Backup_Size>Размер</RWS_Backup_Size>
   <RWS_Backup_Verification>Проверка</RWS_Backup_Verification>

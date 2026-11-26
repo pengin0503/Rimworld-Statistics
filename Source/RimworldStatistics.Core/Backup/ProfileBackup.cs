@@ -14,6 +14,14 @@ public static partial class ProfileBackup
     private const string ManifestFile = "manifest.json";
     private const int Format = 1;
 
+    /// <summary>
+    /// Upper bound for the uncompressed bytes of all payload entries in one backup. The profile file itself is limited to
+    /// <see cref="ProfileStore.MaxProfileFileBytes"/> (256 MiB), but a backup also carries the checkpoint archive, which is
+    /// a directory of many files and legitimately grows beyond one profile file. 2 GiB (twice the profile limit) leaves
+    /// room for that archive while still bounding decompression of a damaged or hostile zip.
+    /// </summary>
+    public const long MaxTotalUncompressedBytes = 2L * 1024 * 1024 * 1024;
+
     public static BackupInfo Create(BackupSource source, string backupDirectory, BackupMetadata meta)
     {
         var profileText = ReadText(new MemoryStream(source.Profile));
@@ -40,7 +48,8 @@ public static partial class ProfileBackup
             if (source.Preferences is { } preferences)
                 Write(PreferencesFile, new MemoryStream(Encoding.UTF8.GetBytes(preferences)));
             var manifest = new BackupManifest(Format, meta.CreatedUtc, meta.ModVersion, schema.Value, meta.Label,
-                CampaignMatcher.BuildColonies(profile).Count, profile.SaveObservations.Count + profile.MetricObservations.Count, files);
+                CampaignMatcher.BuildColonies(profile).Count, profile.SaveObservations.Count + profile.MetricObservations.Count, files,
+                meta.Kind);
             using var entry = zip.CreateEntry(ManifestFile).Open();
             JsonSerializer.Serialize(entry, manifest, ProfileJson.Options);
 
@@ -63,15 +72,62 @@ public static partial class ProfileBackup
     }
 
     public static BackupValidation Validate(string zipPath, int currentSchemaVersion)
+        => Validate(zipPath, currentSchemaVersion, MaxTotalUncompressedBytes);
+
+    /// <summary>As <see cref="Validate(string, int)"/> with an explicit payload cap (tests use a small cap).</summary>
+    internal static BackupValidation Validate(string zipPath, int currentSchemaVersion, long maxTotalUncompressedBytes)
     {
         try
         {
             using var zip = ZipFile.OpenRead(zipPath);
-            return Inspect(zip, currentSchemaVersion);
+            return Inspect(zip, currentSchemaVersion, staging: null, maxTotalUncompressedBytes);
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidDataException or NotSupportedException)
         {
             return new BackupValidation(BackupProblem.Unreadable);
+        }
+    }
+
+    /// <summary>
+    /// What restoring <paramref name="zipPath"/> would bring back, compared with <paramref name="currentProfile"/> when it
+    /// is supplied and readable. Read-only: it validates and counts without writing or staging any file.
+    /// </summary>
+    public static RestorePreview Preview(string zipPath, byte[]? currentProfile)
+    {
+        var validation = Validate(zipPath, Profile.CurrentSchemaVersion);
+        var manifest = validation.Manifest;
+        var files = manifest?.Files;
+        var fileCount = files?.Count ?? 0;
+        var totalBytes = 0L;
+        if (files is not null)
+            foreach (var file in files)
+            {
+                if (file.Size > MaxTotalUncompressedBytes - totalBytes)
+                {
+                    totalBytes = MaxTotalUncompressedBytes;
+                    break;
+                }
+                totalBytes += file.Size;
+            }
+
+        var (currentColonies, currentObservations) = CountCurrent(currentProfile);
+        return new RestorePreview(validation.Problem, manifest, fileCount, totalBytes, currentColonies, currentObservations);
+    }
+
+    /// <summary>The current profile's colony and observation counts, or nulls when it cannot be read.</summary>
+    private static (int? Colonies, int? Observations) CountCurrent(byte[]? currentProfile)
+    {
+        if (currentProfile is null)
+            return (null, null);
+        try
+        {
+            var profile = ProfileJson.Deserialize(ReadText(new MemoryStream(currentProfile, writable: false)));
+            return (CampaignMatcher.BuildColonies(profile).Count,
+                profile.SaveObservations.Count + profile.MetricObservations.Count);
+        }
+        catch (Exception ex) when (ex is JsonException or NotSupportedException or InvalidOperationException or FormatException)
+        {
+            return (null, null);
         }
     }
 
@@ -82,10 +138,13 @@ public static partial class ProfileBackup
                 .OrderByDescending(info => info.Validation.Manifest?.CreatedUtc).ThenBy(info => info.Path, StringComparer.Ordinal).ToArray()
             : [];
 
-    private static BackupValidation Inspect(ZipArchive zip, int currentSchemaVersion, string? staging = null)
+    private static BackupValidation Inspect(ZipArchive zip, int currentSchemaVersion, string? staging = null,
+        long maxTotalUncompressedBytes = MaxTotalUncompressedBytes)
     {
         if (zip.GetEntry(ManifestFile) is not { } manifestEntry)
             return new(BackupProblem.NoManifest);
+        if (manifestEntry.Length > maxTotalUncompressedBytes)
+            return new(BackupProblem.TooLarge);
         BackupManifest? manifest;
         try
         {
@@ -108,6 +167,16 @@ public static partial class ProfileBackup
         entries.Remove(ManifestFile);
         if (manifest.Files is null || manifest.Files.Count != entries.Count)
             return new(BackupProblem.HashMismatch, manifest);
+
+        // Reject a zip that would expand past the cap before opening any payload entry. Entry lengths come from the
+        // central directory, so this costs nothing even for a deliberately huge (or zip-bombed) archive.
+        var totalUncompressed = 0L;
+        foreach (var entry in entries.Values)
+        {
+            if (entry.Length > maxTotalUncompressedBytes - totalUncompressed)
+                return new(BackupProblem.TooLarge, manifest);
+            totalUncompressed += entry.Length;
+        }
 
         string? profileText = null;
         foreach (var file in manifest.Files)

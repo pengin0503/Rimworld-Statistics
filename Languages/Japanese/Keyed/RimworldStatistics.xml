@@ -956,6 +956,8 @@
   <RWS_Backup_Error>バックアップ操作に失敗しました：{0}</RWS_Backup_Error>
   <RWS_Backup_Done>操作が完了しました。バックアップフォルダー：{0}</RWS_Backup_Done>
   <RWS_Backup_None>バックアップはありません。</RWS_Backup_None>
+  <RWS_Backup_Memo>バックアップのメモ（任意）</RWS_Backup_Memo>
+  <RWS_Backup_RestoreDiff>現在: コロニー{0}件、観測{1}件 → バックアップ: コロニー{2}件、観測{3}件</RWS_Backup_RestoreDiff>
   <RWS_Backup_Label>ラベル / ファイル</RWS_Backup_Label>
   <RWS_Backup_Size>サイズ</RWS_Backup_Size>
   <RWS_Backup_Verification>検証結果</RWS_Backup_Verification>

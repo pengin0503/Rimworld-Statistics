@@ -955,6 +955,8 @@
   <RWS_Backup_Error>备份操作失败：{0}</RWS_Backup_Error>
   <RWS_Backup_Done>完成。备份文件夹：{0}</RWS_Backup_Done>
   <RWS_Backup_None>没有找到备份。</RWS_Backup_None>
+  <RWS_Backup_Memo>Backup memo (optional)</RWS_Backup_Memo>
+  <RWS_Backup_RestoreDiff>Current: {0} colonies, {1} observations → Backup: {2} colonies, {3} observations.</RWS_Backup_RestoreDiff>
   <RWS_Backup_Label>标签／文件</RWS_Backup_Label>
   <RWS_Backup_Size>大小</RWS_Backup_Size>
   <RWS_Backup_Verification>验证</RWS_Backup_Verification>
