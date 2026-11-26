@@ -182,6 +182,6 @@ public sealed class PostV14LeaderboardTests
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MaxPrefix + RosterSnapshot.Slaves));
         Assert.NotNull(MetricRegistry.Find(CrossColonyCatalog.MinPrefix + RosterSnapshot.Slaves));
         Assert.Null(MetricRegistry.Find("facilities.running_generators.latest"));
-        Assert.Equal(21, SaveReader.Version);
+        Assert.Equal(22, SaveReader.Version);
     }
 }

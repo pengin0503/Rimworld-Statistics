@@ -211,6 +211,9 @@ public sealed class NumericSaveReaderTests
     [Theory]
     [InlineData("1.4.3901 rev1234")]
     [InlineData("2.0.1 rev1")]
+    [InlineData("1.8.5000 rev1")]
+    [InlineData("garbage")]
+    [InlineData("1")]
     public void UnverifiedVersion_KeepsOnlyUntimedOutputs(string version)
     {
         var m = M(Aligned(new[] { 100f, 150f, 120f }, version));

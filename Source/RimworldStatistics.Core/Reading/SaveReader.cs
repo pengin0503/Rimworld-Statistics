@@ -38,8 +38,10 @@ public sealed partial class SaveReader
     /// 19: Anomaly DLC historical entityCodex discoveredEntities, monolith highestLevelReached, and player holding-platform entities.
     /// 20: Biotech DLC historical GameComponent_Bossgroup summon counts and defeated boss types.
     /// 21: World environment info, Ideology fluid reformCount salvage, and auxiliary permanent Tale timestamps.
+    /// 22: One central save-version gate, subdivided Partial reasons, a one-shot retry of a save changed during read, and
+    ///     out-of-range tickManager values as a Damaged tick anomaly instead of statistics.
     /// </summary>
-    public const int Version = 21;
+    public const int Version = 22;
     public const string ComponentClassName = "RimworldStatistics.GameComponent_RimworldStatistics";
     /// <summary>
     /// The most permanent tales one save observation keeps: the newest by date, so that a later save of a long colony still
@@ -53,10 +55,25 @@ public sealed partial class SaveReader
     private const int MaxReasonLength = 200;
 
     /// <summary>
-    /// Versions where an omitted statsRecord counter is known to mean 0: 1.7 by StatsRecord.ExposeData (1.7.4985), 1.5 and
-    /// 1.6 by real saves (an explicitly written raid or death counter is never 0 there, and greatestPopulation is never 3).
+    /// The largest ticksGame treated as a real colony (S36). At 60,000 ticks per in-game day and 60 days per year this is about
+    /// 277.8 in-game years, far beyond any legitimate colony, while still below the int ceiling (2,147,483,647) so an absurd
+    /// but parseable value is diagnosed instead of flowing into day calculations. A save is rejected only for a tick value that
+    /// no real colony can have.
     /// </summary>
-    private static readonly HashSet<string> CounterDefaultVersions = new(StringComparer.Ordinal) { "1.5", "1.6", "1.7" };
+    internal const int MaxSaneTicksGame = 1_000_000_000;
+
+    /// <summary>The ErrorReason prefix of a tickManager anomaly (S36); <see cref="ImportProblems"/> maps it to Damaged.</summary>
+    internal const string TickAnomalyPrefix = "TickAnomaly: ";
+
+    /// <summary>The most file attempts one <see cref="ReadUnlessCancelled(string, CancellationToken)"/> call makes (S35): the read and one retry.</summary>
+    internal const int MaxChangedDuringReadAttempts = 2;
+
+    /// <summary>
+    /// Test seam for the retry decision (S35): a real file replaced mid-read is racy, so a test can supply the result of each
+    /// attempt and count them. Null in production.
+    /// </summary>
+    internal Func<string, CancellationToken, SaveReadResult?>? ReadAttemptForTests { get; set; }
+
     private static readonly CultureInfo Inv = CultureInfo.InvariantCulture;
 
     private static readonly XmlReaderSettings Settings = new()
@@ -86,7 +103,31 @@ public sealed partial class SaveReader
     /// file, so it must not be recorded, neither as read nor as failed. (Not an overload of ReadDetailed: tests see internal
     /// members, and an overload taking a token would make the xUnit analyzer ask every existing call for one.)
     /// </summary>
+    /// <remarks>
+    /// A save the game replaced while it was read is retried exactly once (S35): a single import pass used to record it as
+    /// changed and wait for the next scan. Only <see cref="ImportProblemKind.ChangedDuringRead"/> is retried, never a
+    /// cancellation or another failure, and the stream overloads below never retry.
+    /// </remarks>
     internal SaveReadResult? ReadUnlessCancelled(string path, CancellationToken ct)
+    {
+        SaveReadResult? result = null;
+        for (var attempt = 1; attempt <= MaxChangedDuringReadAttempts; attempt++)
+        {
+            if (ct.IsCancellationRequested)
+                return null;
+            result = ReadAttemptForTests is { } attemptRead
+                ? attemptRead(path, ct)
+                : ReadFileOnce(path, ct);
+            if (result is null)
+                return null;
+            if (ImportProblems.Classify(result.Observation) != ImportProblemKind.ChangedDuringRead)
+                return result;
+        }
+        return result;
+    }
+
+    /// <summary>One complete file attempt; a cancellation inside it is reported as null (see <see cref="ReadUnlessCancelled(string, CancellationToken)"/>).</summary>
+    private SaveReadResult? ReadFileOnce(string path, CancellationToken ct)
     {
         var fileName = Path.GetFileName(path);
         long size = 0;
@@ -187,6 +228,12 @@ public sealed partial class SaveReader
     private sealed class ReadState(SaveObservation obs)
     {
         public SaveObservation Obs { get; } = obs;
+
+        /// <summary>
+        /// The schema gate of this read (S17), built once when the meta section gives the game version. A save without a
+        /// readable version keeps <see cref="SaveVersionGate.Unknown"/> and therefore skips every 1.7-only section, as before.
+        /// </summary>
+        public SaveVersionGate VersionGate { get; set; } = SaveVersionGate.Unknown;
         public float[]? Wealth { get; set; }
         public Exception? WealthReadError { get; set; }
         public string? ScenarioPlayerFactionDef { get; set; }
@@ -290,23 +337,23 @@ public sealed partial class SaveReader
                     s.KilledWritten = statsRecord?.Element("colonistsKilled") != null;
                     break;
                 case "researchManager":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                    if (s.VersionGate.SupportsCurrentSchema)
                         ReadSavedResearch(Load(r), s);
                     else r.Skip();
                     break;
                 case "entityCodex":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                    if (s.VersionGate.SupportsCurrentSchema)
                         ReadEntityCodex(r, s);
                     else r.Skip();
                     break;
                 case "taleManager":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7")
+                    if (s.VersionGate.SupportsCurrentSchema)
                         ReadTales(r, s);
                     else r.Skip();
                     break;
                 case "world": ReadWorld(r, s); break;
                 case "maps":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadMaps(r, s);
+                    if (s.VersionGate.SupportsCurrentSchema) ReadMaps(r, s);
                     else r.Skip();
                     break;
                 case "history": ReadHistory(r, s); break;
@@ -390,6 +437,8 @@ public sealed partial class SaveReader
     {
         var obs = s.Obs;
         obs.GameVersion = Text(meta.Element("gameVersion"));
+        // Parsed once per read; every section asks this gate instead of comparing a version string (S17).
+        s.VersionGate = SaveVersionGate.For(obs.GameVersion);
         var modIds = meta.Element("modIds");
         obs.ModCount = modIds?.Elements("li").Count() ?? 0;
         s.ModIds = modIds?.Elements("li").Select(li => li.Value.Trim()).Where(id => id.Length > 0).ToList();
@@ -409,8 +458,52 @@ public sealed partial class SaveReader
 
     private static void ReadTickManager(XElement tm, SaveObservation obs)
     {
-        obs.Values.TicksGame = StrictInt(tm.Element("ticksGame"), 0);
-        obs.Identity.GameStartAbsTick = Int(tm.Element("gameStartAbsTick"), 0);
+        // ticksGame and gameStartAbsTick are parsed separately and defensively (S36): an overflowed or absurd value must
+        // become a diagnosable anomaly, not an unhandled OverflowException on the way to day calculations.
+        if (!TryParseTickValue(tm.Element("ticksGame"), out var ticksGame))
+            TickAnomaly(obs, "ticksGame is not an integer");
+        else if (ticksGame < 0)
+            TickAnomaly(obs, "ticksGame is negative");
+        else if (ticksGame > MaxSaneTicksGame)
+            TickAnomaly(obs, "ticksGame is above the sane maximum");
+        else if (obs.Status == ObservationStatus.Ok)
+            obs.Values.TicksGame = (int)ticksGame;
+
+        // A malformed gameStartAbsTick has always been read as the game default 0 (Int); only a written negative (or an
+        // absurd value that cannot be an absolute tick) is an anomaly. Existing saves with a garbage value stay readable.
+        var startElement = tm.Element("gameStartAbsTick");
+        if (startElement is not null
+            && long.TryParse(startElement.Value.Trim(), NumberStyles.Integer, Inv, out var start))
+        {
+            if (start < 0)
+                TickAnomaly(obs, "gameStartAbsTick is negative");
+            else if (start > int.MaxValue)
+                TickAnomaly(obs, "gameStartAbsTick is above the int range");
+            else if (obs.Status == ObservationStatus.Ok)
+                obs.Identity.GameStartAbsTick = (int)start;
+        }
+    }
+
+    /// <summary>An omitted element is the game default 0; a written value must parse (long, so int overflow is detected, not thrown).</summary>
+    private static bool TryParseTickValue(XElement? e, out long value)
+    {
+        value = 0;
+        return e is null || long.TryParse(e.Value.Trim(), NumberStyles.Integer, Inv, out value);
+    }
+
+    /// <summary>
+    /// Marks a tickManager anomaly (S36): the read keeps its identity fields but produces no statistics (its status is Error),
+    /// and ImportProblems classifies the reason as Damaged. Both tick fields are zeroed so no later day calculation can use them.
+    /// </summary>
+    private static void TickAnomaly(SaveObservation obs, string detail)
+    {
+        if (obs.Status == ObservationStatus.Error)
+            return;   // the first anomaly explains the failure; a second one adds nothing.
+        obs.Values.TicksGame = 0;
+        obs.Identity.GameStartAbsTick = 0;
+        obs.Status = ObservationStatus.Error;
+        var reason = TickAnomalyPrefix + detail;
+        obs.ErrorReason = reason.Length <= MaxReasonLength ? reason : reason[..MaxReasonLength];
     }
 
     private static void ReadStoryteller(XElement st, SaveObservation obs)
@@ -495,14 +588,15 @@ public sealed partial class SaveReader
             }
         }
 
-        if (obs.Identity.FirstWealthBits is null && obs.Identity.ModCampaignId is null && s.WealthReadError is { } error)
+        if (obs.Status == ObservationStatus.Ok
+            && obs.Identity.FirstWealthBits is null && obs.Identity.ModCampaignId is null && s.WealthReadError is { } error)
             throw new InvalidDataException(error.Message, error);
 
         var missing = new List<string>(3);
         if (obs.Identity.SeedString is null) missing.Add("seedString");
         if (obs.Identity.StartingTile is null) missing.Add("startingTile");
         if (obs.Identity.FirstWealthBits is null) missing.Add("Wealth_Total");
-        if (missing.Count > 0 && obs.Identity.ModCampaignId is null)
+        if (missing.Count > 0 && obs.Identity.ModCampaignId is null && obs.Status == ObservationStatus.Ok)
         {
             obs.Status = ObservationStatus.Unidentifiable;
             obs.ErrorReason = string.Join(",", missing);
@@ -558,9 +652,6 @@ public sealed partial class SaveReader
     private static XElement Load(XmlReader r) => (XElement)XNode.ReadFrom(r);
 
     private static string? Text(XElement? e) => e?.Value;
-
-    private static int StrictInt(XElement? e, int fallback)
-        => e is null ? fallback : int.Parse(e.Value.Trim(), NumberStyles.Integer, Inv);
 
     private static int Int(XElement? e, int fallback)
         => e is not null && int.TryParse(e.Value.Trim(), NumberStyles.Integer, Inv, out var value) ? value : fallback;

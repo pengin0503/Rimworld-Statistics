@@ -18,6 +18,7 @@ public sealed class SaveXmlBuilder
     private (string Version, int Mods)? _meta;
     private (float? RealPlay, string? Tile, string? Pawns, bool Permadeath)? _info;
     private (int? TicksGame, int? Start)? _tick;
+    private string? _rawTicksGame;
     private (string? Seed, int? Prv, string? Name)? _world;
     private string? _scenario;
     private string? _scenarioFactionDef;
@@ -82,7 +83,10 @@ public sealed class SaveXmlBuilder
     public SaveXmlBuilder Info(float? realPlay = null, string? tile = null, string? pawns = null, bool permadeath = false)
     { _info = (realPlay, tile, pawns, permadeath); return this; }
 
-    public SaveXmlBuilder Tick(int? ticksGame = null, int? start = null) { _tick = (ticksGame, start); return this; }
+    public SaveXmlBuilder Tick(int? ticksGame = null, int? start = null) { _tick = (ticksGame, start); _rawTicksGame = null; return this; }
+
+    /// <summary>A tickManager whose ticksGame text is arbitrary (e.g. beyond int), for anomaly tests (S36).</summary>
+    public SaveXmlBuilder TickRaw(string ticksGame, int? start = null) { _tick = (null, start); _rawTicksGame = ticksGame; return this; }
 
     public SaveXmlBuilder World(string? seed = null, int? prv = null, string? name = null) { _world = (seed, prv, name); return this; }
 
@@ -167,6 +171,7 @@ public sealed class SaveXmlBuilder
         {
             var e = new XElement("tickManager");
             if (tick.TicksGame is { } tg) e.Add(new XElement("ticksGame", tg));
+            else if (_rawTicksGame is { } raw) e.Add(new XElement("ticksGame", raw));
             if (tick.Start is { } st) e.Add(new XElement("gameStartAbsTick", st));
             e.Add(new XElement("startingYear", 5500));
             game.Add(e);

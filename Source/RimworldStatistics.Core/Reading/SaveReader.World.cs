@@ -18,7 +18,7 @@ public sealed partial class SaveReader
                     ReadWorldEnvironmentInfo(info, s);
                     break;
                 case "worldObjects":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadWorldMapObjects(r, s);
+                    if (s.VersionGate.SupportsCurrentSchema) ReadWorldMapObjects(r, s);
                     else r.Skip();
                     break;
                 case "factionManager":
@@ -29,7 +29,7 @@ public sealed partial class SaveReader
                     });
                     break;
                 case "ideoManager":
-                    if (HistoryMetricReader.MajorMinor(s.Obs.GameVersion) == "1.7") ReadIdeoManager(r, s);
+                    if (s.VersionGate.SupportsCurrentSchema) ReadIdeoManager(r, s);
                     else r.Skip();
                     break;
                 default:
@@ -296,7 +296,7 @@ public sealed partial class SaveReader
                     var mayBePlayer = def is "PlayerColony" or "PlayerTribe"
                         || (s.ScenarioPlayerFactionDef is { Length: > 0 } scenDef && def == scenDef)
                         || def is null;
-                    if (s.HistoricalFactionsOverflowed || !mayBePlayer || HistoryMetricReader.MajorMinor(s.Obs.GameVersion) != "1.7")
+                    if (s.HistoricalFactionsOverflowed || !mayBePlayer || !s.VersionGate.SupportsCurrentSchema)
                     {
                         r.Skip();
                         break;

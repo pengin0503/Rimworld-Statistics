@@ -61,6 +61,14 @@ public sealed class MetricValue
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public bool? Weakened { get; set; }
 
+    /// <summary>
+    /// Why this value is <see cref="MetricCoverage.Partial"/> (S32), when the reader can tell: a rule-mixed family, a family
+    /// weakening, a recording that started late or a history series with gaps. Null for non-Partial values and for records
+    /// written before this field existed; it is additive and never changes coverage. Written only when set.
+    /// </summary>
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public PartialReason? PartialReason { get; set; }
+
     [JsonExtensionData]
     public Dictionary<string, JsonElement>? ExtensionData { get; set; }
 
@@ -73,6 +81,7 @@ public sealed class MetricValue
 
     internal bool IsWellFormed()
         => Enum.IsDefined(Coverage)
+            && (PartialReason is null || Enum.IsDefined(PartialReason.Value))
             && Finite(RealValue) && Finite(Numerator) && Finite(Denominator);
 
     private static bool Finite(double? v) => v is null || double.IsFinite(v.Value);
