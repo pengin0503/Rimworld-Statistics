@@ -966,6 +966,7 @@
   <RWS_Backup_None>No backups found.</RWS_Backup_None>
   <RWS_Backup_Memo>Backup memo (optional)</RWS_Backup_Memo>
   <RWS_Backup_RestoreDiff>Current: {0} colonies, {1} observations → Backup: {2} colonies, {3} observations.</RWS_Backup_RestoreDiff>
+  <RWS_Backup_RestoreDiffSize>Expanded size on restore: {0}</RWS_Backup_RestoreDiffSize>
   <RWS_Backup_Label>Label / file</RWS_Backup_Label>
   <RWS_Backup_Size>Size</RWS_Backup_Size>
   <RWS_Backup_Verification>Verification</RWS_Backup_Verification>

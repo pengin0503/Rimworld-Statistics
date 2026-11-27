@@ -16,8 +16,8 @@ ABOUT = ROOT / "About/About.xml"
 README = ROOT / "README.md"
 VERSION = r"([0-9]+(?:\.[0-9]+){1,3}(?:[-+][0-9A-Za-z.-]+)?)"
 MARKERS = (
-    re.compile(r"\*\*Mod Version\*\*\s*:\s*" + VERSION),
-    re.compile(r"\*\*MODバージョン\*\*\s*[:：]\s*" + VERSION),
+    ("'**Mod Version**: X.Y.Z'", re.compile(r"\*\*Mod Version\*\*\s*:\s*" + VERSION)),
+    ("'**MODバージョン**：X.Y.Z'", re.compile(r"\*\*MODバージョン\*\*\s*[:：]\s*" + VERSION)),
 )
 
 
@@ -32,10 +32,14 @@ def main() -> int:
         return 1
 
     readme = README.read_text(encoding="utf-8")
-    found = [match.group(1) for marker in MARKERS for match in marker.finditer(readme)]
-    if not found:
-        print("README.md has no '**Mod Version**: X.Y.Z' / '**MODバージョン**：X.Y.Z' marker", file=sys.stderr)
+    # Both language sections are contractually checked: a README with only one marker must fail, not pass with a
+    # smaller marker count.
+    per_marker = {label: [match.group(1) for match in marker.finditer(readme)] for label, marker in MARKERS}
+    missing = [label for label, versions in per_marker.items() if not versions]
+    if missing:
+        print("README.md is missing version marker(s): " + ", ".join(missing), file=sys.stderr)
         return 1
+    found = [version for versions in per_marker.values() for version in versions]
 
     mismatched = sorted({version for version in found if version != about})
     if mismatched:

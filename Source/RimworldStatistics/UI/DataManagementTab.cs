@@ -31,6 +31,7 @@ internal static class DataManagementTab
     public static void Draw(Rect rect, ProfileSession session, StatsView? exportView, string scope)
     {
         const float exportHeight = ExportPanel.PreferredHeight;
+        DiagnosticsPanel.BeginFrame();   // one failed-list snapshot shared by the height probe and Draw
         var diagHeight = Math.Max(52f, DiagnosticsPanel.PreferredHeight);
         const float minStructuredHeight = 460f;
         if (rect.height < minStructuredHeight)
@@ -273,6 +274,9 @@ internal static class DataManagementTab
         {
             summary += "\n\n" + "RWS_Backup_RestoreDiff".Translate(
                 currentColonies, currentObservations, backupColonies, backupObservations);
+            // Same size formatting as the backup list: KiB with one decimal in the current culture.
+            var expanded = (preview.TotalUncompressedBytes / 1024d).ToString("N1", CultureInfo.CurrentCulture) + " KiB";
+            summary += "\n" + "RWS_Backup_RestoreDiffSize".Translate(expanded);
         }
         // The restored settings are applied by ProfileService on the main thread once the restore succeeded, whether or
         // not this tab is drawn again (#325).

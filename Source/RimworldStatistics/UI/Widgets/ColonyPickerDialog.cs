@@ -134,8 +134,10 @@ internal sealed class ColonyPickerDialog : Window
             }
             if (picked is { } pickedStats)
             {
-                Dialog_RimworldStatistics.UpdateActivePreferences(p => RecentList.Add(p.RecentColonyKeys, pickedStats.Key));
+                // onPick may persist view state (which re-serializes this dialog's older preferences snapshot), so
+                // record the recent key afterwards or it would be overwritten by that save.
                 onPick(pickedStats);
+                Dialog_RimworldStatistics.UpdateActivePreferences(p => RecentList.Add(p.RecentColonyKeys, pickedStats.Key));
                 Close();
             }
         }
