@@ -780,9 +780,12 @@ internal sealed class Dialog_ColonyMetricHistory : Window
             plotWidth = pixelWidth;
         }
 
-        // U25: session-local toggle; only the plotted Y range changes, the cached bounds do not.
-        var minValue = zeroYAxis ? 0d : bounds.MinValue;
+        // U25: session-local toggle; only the plotted Y range changes, the cached bounds do not. Zero is an anchor,
+        // not a clip: a signed series whose visible points are all negative must still get a real (0..min) span.
+        var minValue = zeroYAxis ? Math.Min(0d, bounds.MinValue) : bounds.MinValue;
         var maxValue = zeroYAxis ? Math.Max(0d, bounds.MaxValue) : bounds.MaxValue;
+        if (zeroYAxis && minValue == 0d && maxValue == 0d)
+            maxValue = 1d; // a flat zero series still gets a usable axis instead of a zero-height range
         var range = (Min: minValue, Max: maxValue);
         float X(int tick) => plot.x + plot.width * (ticks.First == ticks.Last ? 0.5f
             : (float)((tick - ticks.First) / (double)(ticks.Last - ticks.First)));

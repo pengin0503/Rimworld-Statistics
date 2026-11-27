@@ -146,9 +146,18 @@ public static class ProfileService
                     restored = candidate;
                 }, () =>
                 {
-                    var recovery = WriteBackup(current, directory, metadata with { Kind = BackupKinds.PreRestore }, preferences);
-                    if (!ProfileBackup.Validate(recovery.Path, Profile.CurrentSchemaVersion).Ok)
-                        throw new IOException("The pre-restore backup cannot be restored by this version.");
+                    // A recovery backup is best effort: the still-present primary can be exactly the unreadable or
+                    // oversized file this restore is meant to recover from. Never let it abort the confirmed restore.
+                    try
+                    {
+                        var recovery = WriteBackup(current, directory, metadata with { Kind = BackupKinds.PreRestore }, preferences);
+                        if (!ProfileBackup.Validate(recovery.Path, Profile.CurrentSchemaVersion).Ok)
+                            throw new IOException("The pre-restore backup cannot be restored by this version.");
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warning($"[RimworldStatistics] A backup could not be taken before restoring; the restore continues.\n{e}");
+                    }
                 });
                 // The main thread applies them whatever window is open by then (#325); nothing is applied on failure.
                 PendingPreferences.Offer(result, restorePreferences);
@@ -183,12 +192,34 @@ public static class ProfileService
 
     private static BackupInfo WriteBackup(ProfileSession session, string directory, BackupMetadata metadata, string? preferences)
     {
-        var primary = Path.Combine(directory, "profile.json");
-        var bytes = File.Exists(primary)
-            ? File.ReadAllBytes(primary)
-            : session.Read(ProfileJson.SerializeToUtf8Bytes);
-        return ProfileBackup.Create(new BackupSource(bytes, Path.Combine(directory, "checkpoint-archive"), preferences),
-            Path.Combine(directory, "backups"), metadata);
+        var archive = Path.Combine(directory, "checkpoint-archive");
+        var backups = Path.Combine(directory, "backups");
+        byte[] onDisk;
+        try
+        {
+            // The normal path backs up the exact on-disk bytes (a read-only newer-schema profile must not be
+            // downgraded by re-serializing it with this version's model).
+            onDisk = File.ReadAllBytes(Path.Combine(directory, "profile.json"));
+        }
+        catch (Exception e) when (e is IOException or UnauthorizedAccessException or NotSupportedException or ArgumentException)
+        {
+            onDisk = [];
+        }
+
+        if (onDisk.Length != 0)
+        {
+            try
+            {
+                return ProfileBackup.Create(new BackupSource(onDisk, archive, preferences), backups, metadata);
+            }
+            catch (InvalidDataException)
+            {
+                // The primary exists but is damaged/oversized junk: guided recovery must still be able to take a
+                // backup, so fall back to the session's in-memory profile (loaded from the newest valid backup).
+            }
+        }
+        return ProfileBackup.Create(new BackupSource(session.Read(ProfileJson.SerializeToUtf8Bytes), archive, preferences),
+            backups, metadata);
     }
 
     /// <summary>Retention is best-effort: the backup just written is already valid and a pruning failure must not fail it.</summary>

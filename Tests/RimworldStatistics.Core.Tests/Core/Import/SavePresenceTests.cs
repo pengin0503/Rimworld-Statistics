@@ -59,4 +59,38 @@ public sealed class SavePresenceTests
         var summary = SavePresence.Classify(profile, Array.Empty<string>());
         Assert.Equal((1, 0, 1), (summary.Total, summary.Present, summary.Archived));
     }
+
+    [Fact]
+    public void Classify_CaseOnlyRenameStillCountsAsPresent()
+    {
+        // On a case-insensitive filesystem (or after cloud-sync case normalisation) the file is still there.
+        var profile = new Profile();
+        profile.SaveObservations.Add(Record("Colony Save.rws"));
+        var summary = SavePresence.Classify(profile, new[] { "colony save.rws" });
+        Assert.Equal((1, 1, 0), (summary.Total, summary.Present, summary.Archived));
+        Assert.Empty(summary.MissingFiles);
+    }
+
+    [Fact]
+    public void Classify_CaseOnlyNamesAreDeduplicatedKeepingFirstSpelling()
+    {
+        var profile = new Profile();
+        profile.SaveObservations.Add(Record("Colony Save.rws"));
+        profile.SaveObservations.Add(Record("COLONY SAVE.RWS"));
+        var summary = SavePresence.Classify(profile, null);
+        Assert.Equal((1, 0, 1), (summary.Total, summary.Present, summary.Archived));
+        Assert.Equal(new[] { "Colony Save.rws" }, summary.MissingFiles);
+    }
+
+    [Fact]
+    public void Classify_CaseInsensitiveMatchKeepsOrdinalMissingOrder()
+    {
+        var profile = new Profile();
+        profile.SaveObservations.Add(Record("A.rws"));
+        profile.SaveObservations.Add(Record("b.rws"));
+        profile.SaveObservations.Add(Record("C.rws"));
+        var summary = SavePresence.Classify(profile, new[] { "a.rws" });
+        Assert.Equal((3, 1, 2), (summary.Total, summary.Present, summary.Archived));
+        Assert.Equal(new[] { "C.rws", "b.rws" }, summary.MissingFiles);
+    }
 }

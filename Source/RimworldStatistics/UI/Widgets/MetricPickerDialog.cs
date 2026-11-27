@@ -120,8 +120,10 @@ internal sealed class MetricPickerDialog : Window
             }
             if (picked is { } pickedKey)
             {
-                Dialog_RimworldStatistics.UpdateActivePreferences(p => RecentList.Add(p.RecentMetricKeys, pickedKey));
+                // onPick may persist view state (which re-serializes this dialog's older preferences snapshot), so
+                // record the recent key afterwards or it would be overwritten by that save.
                 onPick(pickedKey);
+                Dialog_RimworldStatistics.UpdateActivePreferences(p => RecentList.Add(p.RecentMetricKeys, pickedKey));
                 Close();
             }
         }

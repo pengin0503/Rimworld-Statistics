@@ -279,9 +279,13 @@ public sealed class RimworldStatisticsMod : Mod
             var unit = units[index];
             if (unit.Kind == AcquisitionKind.Derived)
                 continue;
-            if (unit.Id.StartsWith("mod.", StringComparison.Ordinal))
+            // Built-in integrations (e.g. VPE events, outpost snapshots) have an owner package even though their
+            // IDs do not carry the "mod." prefix; they belong in their owner's section too. Keep the prefix as a
+            // fallback for provider units whose descriptor is not known yet.
+            var owner = UnitRecordingStates.OwnerPackageId(unit.Id);
+            if (owner is not null || unit.Id.StartsWith("mod.", StringComparison.Ordinal))
             {
-                var owner = UnitRecordingStates.OwnerPackageId(unit.Id) ?? unit.Id;
+                owner ??= unit.Id;
                 if (!mods.TryGetValue(owner, out var indices))
                     mods[owner] = indices = new List<int>();
                 indices.Add(index);

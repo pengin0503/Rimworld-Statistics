@@ -21,13 +21,15 @@ public static class SavePresence
     public static SavePresenceSummary Classify(Profile profile, IReadOnlyList<string>? presentFiles)
     {
         ArgumentNullException.ThrowIfNull(profile);
-        var present = new HashSet<string>(StringComparer.Ordinal);
+        // Windows/macOS filesystems are case-insensitive: a case-only rename (or a cloud-sync case normalisation)
+        // still leaves the save present. Compare both sides the same way; the reported order stays ordinal.
+        var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         if (presentFiles is not null)
             for (var i = 0; i < presentFiles.Count; i++)
                 if (!string.IsNullOrEmpty(presentFiles[i]))
                     present.Add(presentFiles[i]);
 
-        var names = new HashSet<string>(StringComparer.Ordinal);
+        var names = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
         foreach (var observation in profile.SaveObservations)
         {
             if (observation.Superseded || string.IsNullOrEmpty(observation.FileName))

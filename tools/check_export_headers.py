@@ -55,14 +55,34 @@ def code_headers(source: str) -> dict[str, list[str]]:
     return headers
 
 
-def documented_headers(docs: str) -> list[tuple[str, list[str]]]:
-    headers: list[tuple[str, list[str]]] = []
+LANGUAGE_SECTIONS = ("ja", "en")
+
+
+def documented_headers(docs: str) -> dict[tuple[str, str], list[list[str]]]:
+    """Map (language section, csv name) to its documented column lists.
+
+    Both the English ``Columns:`` marker and the Japanese ``列：`` marker are accepted. Rows are keyed by the
+    heading they appear under so the caller can require the contract in *both* language sections.
+    """
+    headers: dict[tuple[str, str], list[list[str]]] = {}
+    section: str | None = None
     for line in docs.splitlines():
-        row = re.match(r"\| `([^`]+\.csv)` \|", line)
-        if not row or "Columns:" not in line:
+        if line.startswith("## "):
+            title = line[3:].strip().lower()
+            section = "ja" if "日本語" in title or "japanese" in title else "en" if "english" in title else None
             continue
-        columns = line.split("Columns:", 1)[1].split("<br>", 1)[0]
-        headers.append((row.group(1), re.findall(r"`([^`]+)`", columns)))
+        if section is None:
+            continue
+        row = re.match(r"\| `([^`]+\.csv)` \|", line)
+        if not row:
+            continue
+        columns = None
+        for marker in ("Columns:", "列："):
+            if marker in line:
+                columns = line.split(marker, 1)[1].split("<br>", 1)[0]
+                break
+        if columns is not None:
+            headers.setdefault((section, row.group(1)), []).append(re.findall(r"`([^`]+)`", columns))
     return headers
 
 
@@ -71,7 +91,6 @@ def main() -> int:
     docs = DOCS.read_text(encoding="utf-8")
     actual = code_headers(source)
     documented = documented_headers(docs)
-    documented_names = {name for name, _ in documented}
 
     problems: list[str] = []
     for name, expected in GOLDEN.items():
@@ -82,13 +101,14 @@ def main() -> int:
             problems.append(f"{name}: StatisticsExport.cs header differs from the golden contract:\n"
                             f"  expected: {expected}\n  found:    {found}")
 
-        occurrences = [columns for doc_name, columns in documented if doc_name == name]
-        if not occurrences:
-            problems.append(f"{name}: header not found in docs/csv-export.md")
-        for documented_columns in occurrences:
-            if documented_columns != expected:
-                problems.append(f"{name}: docs/csv-export.md header differs from the golden contract:\n"
-                                f"  expected: {expected}\n  found:    {documented_columns}")
+        for section in LANGUAGE_SECTIONS:
+            occurrences = documented.get((section, name), [])
+            if not occurrences:
+                problems.append(f"{name}: header not found in the {section} section of docs/csv-export.md")
+            for documented_columns in occurrences:
+                if documented_columns != expected:
+                    problems.append(f"{name}: docs/csv-export.md ({section}) header differs from the golden contract:\n"
+                                    f"  expected: {expected}\n  found:    {documented_columns}")
         if len(set(expected)) != len(expected):
             problems.append(f"{name}: the golden contract has duplicate columns")
 
@@ -101,9 +121,11 @@ def main() -> int:
         if "metric_key" not in found and name in {"summary.csv", "colony_metrics.csv", "rankings.csv",
                                                   "colony_metric_history.csv"}:
             problems.append(f"{name}: missing metric_key column")
-    for name in documented_names:
+    for (section, name), occurrences in documented.items():
         if name not in GOLDEN:
             problems.append(f"{name}: documented CSV file has no golden header")
+        elif len(occurrences) > 1:
+            problems.append(f"{name}: documented {len(occurrences)} times in the {section} section of docs/csv-export.md")
 
     if problems:
         print("CSV export header contract failed:", file=sys.stderr)
@@ -112,7 +134,8 @@ def main() -> int:
         return 1
 
     total = sum(len(columns) for columns in GOLDEN.values())
-    print(f"CSV export headers: {len(GOLDEN)} files / {total} columns match the golden contract and docs/csv-export.md")
+    print(f"CSV export headers: {len(GOLDEN)} files / {total} columns match the golden contract and both "
+          f"language sections of docs/csv-export.md")
     return 0
 
 

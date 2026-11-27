@@ -39,21 +39,44 @@ internal static class DiagnosticsPanel
     private static string? previewText;
     private static Vector2 previewScroll;
 
+    private static int snapshotFrame = -1;
+    private static string[] snapshotUnits = [];
+    private static string[] snapshotPatches = [];
+
+    /// <summary>
+    /// Captures the live failed-unit and failed-patch lists once per frame. The Data Management tab calls this before
+    /// asking for <see cref="PreferredHeight"/>, so the height probe and <see cref="Draw"/> share one snapshot instead
+    /// of sorting and allocating the same lists twice per frame.
+    /// </summary>
+    internal static void BeginFrame()
+    {
+        if (snapshotFrame == Time.frameCount)
+            return;
+        snapshotFrame = Time.frameCount;
+        snapshotUnits = FailedUnitNames();
+        snapshotPatches = PatchRunner.Failed.ToArray();
+    }
+
+    private static (string[] Units, string[] Patches) FailedSnapshot()
+    {
+        BeginFrame();
+        return (snapshotUnits, snapshotPatches);
+    }
+
     /// <summary>The height this panel needs at the moment, so the tab can keep the whole preview and lists visible.</summary>
     internal static float PreferredHeight
     {
         get
         {
             var height = 52f;   // copy/save/preview row and the status line
-            var units = FailedUnitNames();
-            var patches = PatchRunner.Failed;
-            if (units.Length > 0 || patches.Count > 0)
+            var (units, patches) = FailedSnapshot();
+            if (units.Length > 0 || patches.Length > 0)
                 height += 26f;   // the one-line failed-units warning
             if (ChartCacheSaturated())
                 height += 26f;
             if (units.Length > 0)
                 height += 48f;
-            if (patches.Count > 0)
+            if (patches.Length > 0)
                 height += 48f;
             if (previewText is not null)
                 height += 24f + PreviewHeight + 4f;
@@ -128,15 +151,14 @@ internal static class DiagnosticsPanel
         }
 
         var y = rect.y + controls.Height + 2f;
-        var failedUnits = FailedUnitNames();
-        var failedPatches = PatchRunner.Failed;
+        var (failedUnits, failedPatches) = FailedSnapshot();
 
-        if (failedUnits.Length > 0 || failedPatches.Count > 0)
+        if (failedUnits.Length > 0 || failedPatches.Length > 0)
             y = WarningLine(rect, y, "RWS_Diag_FailedUnitsWarning");
         if (ChartCacheSaturated())
             y = WarningLine(rect, y, "RWS_Diag_ChartCacheWarning");
 
-        if (failedPatches.Count > 0)
+        if (failedPatches.Length > 0)
             y = StoppedSection(rect, y, "RWS_Diag_StoppedPatches", failedPatches);
         if (failedUnits.Length > 0)
             y = StoppedSection(rect, y, "RWS_Diag_StoppedUnits", failedUnits);
