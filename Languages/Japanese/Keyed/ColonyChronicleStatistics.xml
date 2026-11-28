@@ -30,7 +30,7 @@
   <RWS_Chronicle_ColEvent>出来事</RWS_Chronicle_ColEvent>
   <RWS_Chronicle_ColEvidence>根拠</RWS_Chronicle_ColEvidence>
   <RWS_Chronicle_DayExact>{0} 日目</RWS_Chronicle_DayExact>
-  <RWS_Chronicle_DaySample>{0} 日目（標本）</RWS_Chronicle_DaySample>
+  <RWS_Chronicle_DaySample>{0} 日目（サンプル）</RWS_Chronicle_DaySample>
   <RWS_Chronicle_DayInterval>{0} – {1} 日目</RWS_Chronicle_DayInterval>
   <RWS_Chronicle_Kind_Ending>エンディング</RWS_Chronicle_Kind_Ending>
   <RWS_Chronicle_Kind_Milestone>節目</RWS_Chronicle_Kind_Milestone>

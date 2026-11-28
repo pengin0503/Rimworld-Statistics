@@ -34,7 +34,7 @@
   <RWS_Metric_AnomalyPsychicRituals>超能力儀式完了数</RWS_Metric_AnomalyPsychicRituals>
   <RWS_MetricDesc_AnomalyPsychicRituals>プレイヤー側が実行し完了した超能力儀式の回数。</RWS_MetricDesc_AnomalyPsychicRituals>
   <RWS_Metric_AnomalyPsychicRitualsByDef>儀式別の超能力儀式完了数</RWS_Metric_AnomalyPsychicRitualsByDef>
-  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>プレイヤー側が完了した超能力儀式を、パッケージ修飾付きritual別に集計します。</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
+  <RWS_MetricDesc_AnomalyPsychicRitualsByDef>プレイヤー側が完了した超能力儀式を、儀式別に集計します。</RWS_MetricDesc_AnomalyPsychicRitualsByDef>
   <RWS_Metric_AnomalyEntityEscapes>収容実体の脱走回数</RWS_Metric_AnomalyEntityEscapes>
   <RWS_MetricDesc_AnomalyEntityEscapes>自勢力の拘束プラットフォームから生存実体が脱走した確定回数。</RWS_MetricDesc_AnomalyEntityEscapes>
   <RWS_Metric_AnomalyEntitiesContained>実体の新規拘束完了数</RWS_Metric_AnomalyEntitiesContained>
